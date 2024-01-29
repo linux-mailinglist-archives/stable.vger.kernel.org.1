@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-16565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874D4840D7D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD49840FB0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12CC01F2CB67
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A3A7280A7A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D9B115959E;
-	Mon, 29 Jan 2024 17:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2456FE12;
+	Mon, 29 Jan 2024 17:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJnCsN2n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8LoQrv/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD5015705F;
-	Mon, 29 Jan 2024 17:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F1F6FDF8;
+	Mon, 29 Jan 2024 17:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548114; cv=none; b=ATFK88vThaoO+KtsV0Qi1HjIdFxK2FlZpZJdLFGGVZ4+MABLWXES1SaiyrFVmNk0I6/dRCIXHIU8iQ05Kis0MGkiZln+5J+FtZQYpUtkPstViWHg7vs7TTUfDOhZtdLAyIoNwHb2aPQ1qJeEcd3mvJ2jQk3KpQh0sfLohNYCwok=
+	t=1706548484; cv=none; b=W99uISxToyKkzekgq7o8GTvr57HDgc2R2AR1WNZRYmmxQp8oAnswz14v59pPSRR6txmbcgbFq2tgu6NCe9YkPApEs7mWKaI8v5+x7ORAUVjSaI1pTpqxS2q3ULZzMU3HyImPrBdMELQCzaKPjzFf9RV3lSzSB6CyjSfT4Sln/hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548114; c=relaxed/simple;
-	bh=HGCzG06EeLdonMuvNdd64AudNDrvFeBQlqOu10KOu/U=;
+	s=arc-20240116; t=1706548484; c=relaxed/simple;
+	bh=GyyZGraCrTYEhyJTrQZLfyJMA3YNj2m62eZnopeXWJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rMzlT9oGubBbwIGMeVrQa518d5KmAQoVDqaR+pBr+5goMcMffVDUxly5BC0Dhro2P1k8Z2K3N+Z2TRKyLN7M8eRQmgorVhBRslGsX04JpJWrwhJNxvohctGfbl2oNEKWKG6PVOUIH4M7ElNj4NaSVJYV30P6AlcG/yFHV8qlY88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJnCsN2n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAC0C433B1;
-	Mon, 29 Jan 2024 17:08:34 +0000 (UTC)
+	 MIME-Version; b=Sx1a25ShLUZ6cbIsLtX/BQJ1JTIBd5xcCCZeijx07X9EqWzEX9U4Hkvt2nSJ+ppJ4vidxr7qr/aYZSCKX711k4KsLabLFucUDl8oDcTT13xaTKHoiklBJJTEA49m9q35biLkEJGgKBv1nvNMEC9hd34i0ra8Et+gxC1KM3ocUxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8LoQrv/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C648AC433F1;
+	Mon, 29 Jan 2024 17:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548114;
-	bh=HGCzG06EeLdonMuvNdd64AudNDrvFeBQlqOu10KOu/U=;
+	s=korg; t=1706548483;
+	bh=GyyZGraCrTYEhyJTrQZLfyJMA3YNj2m62eZnopeXWJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GJnCsN2nM5gRmNneMIqhSPwGlh1nFjMY8ddwhythApHf0F18XWI5K7g1SQl77LQsI
-	 s5/6fUkk2yDvf9QiLeIZcggG9G8KTo6W2WoY9VxynLtJPNZx5gB+uMa3NRjN7RSDCK
-	 HNJGRYquZm6zBsKKDopvRqm/jGmSZAr4gE+Sw5Lk=
+	b=V8LoQrv/WyrvePGSp+AbXzRSvP/yX9XIWjO49BmJA+ZIlXy0CZ5Y3eF7wPVizOc5D
+	 L2YbunuKt5C0B8E2fQ6nGujMFpV5kznapxPTFeNqOEYcKdL6U/x4gngsxkoP6rSPYd
+	 uM2u3b0QX0c/lO/zrU1KEtip8VHGt6EcBcrMR2Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	Chris Goldsworthy <quic_cgoldswo@quicinc.com>,
-	Michal Hocko <mhocko@suse.com>,
-	David Rientjes <rientjes@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Pavankumar Kondeti <quic_pkondeti@quicinc.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Joakim Tjernlund <Joakim.Tjernlund@infinera.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 137/346] mm: page_alloc: unreserve highatomic page blocks before oom
+	Avri Altman <avri.altman@wdc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 104/331] mmc: core: Use mrq.sbc in close-ended ffu
 Date: Mon, 29 Jan 2024 09:02:48 -0800
-Message-ID: <20240129170020.418993237@linuxfoundation.org>
+Message-ID: <20240129170017.981658853@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,109 +62,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charan Teja Kalla <quic_charante@quicinc.com>
+From: Avri Altman <avri.altman@wdc.com>
 
-commit ac3f3b0a55518056bc80ed32a41931c99e1f7d81 upstream.
+commit 4d0c8d0aef6355660b6775d57ccd5d4ea2e15802 upstream.
 
-__alloc_pages_direct_reclaim() is called from slowpath allocation where
-high atomic reserves can be unreserved after there is a progress in
-reclaim and yet no suitable page is found.  Later should_reclaim_retry()
-gets called from slow path allocation to decide if the reclaim needs to be
-retried before OOM kill path is taken.
+Field Firmware Update (ffu) may use close-ended or open ended sequence.
+Each such sequence is comprised of a write commands enclosed between 2
+switch commands - to and from ffu mode. So for the close-ended case, it
+will be: cmd6->cmd23-cmd25-cmd6.
 
-should_reclaim_retry() checks the available(reclaimable + free pages)
-memory against the min wmark levels of a zone and returns:
+Some host controllers however, get confused when multi-block rw is sent
+without sbc, and may generate auto-cmd12 which breaks the ffu sequence.
+I encountered  this issue while testing fwupd (github.com/fwupd/fwupd)
+on HP Chromebook x2, a qualcomm based QC-7c, code name - strongbad.
 
-a) true, if it is above the min wmark so that slow path allocation will
-   do the reclaim retries.
+Instead of a quirk, or hooking the request function of the msm ops,
+it would be better to fix the ioctl handling and make it use mrq.sbc
+instead of issuing SET_BLOCK_COUNT separately.
 
-b) false, thus slowpath allocation takes oom kill path.
-
-should_reclaim_retry() can also unreserves the high atomic reserves **but
-only after all the reclaim retries are exhausted.**
-
-In a case where there are almost none reclaimable memory and free pages
-contains mostly the high atomic reserves but allocation context can't use
-these high atomic reserves, makes the available memory below min wmark
-levels hence false is returned from should_reclaim_retry() leading the
-allocation request to take OOM kill path.  This can turn into a early oom
-kill if high atomic reserves are holding lot of free memory and
-unreserving of them is not attempted.
-
-(early)OOM is encountered on a VM with the below state:
-[  295.998653] Normal free:7728kB boost:0kB min:804kB low:1004kB
-high:1204kB reserved_highatomic:8192KB active_anon:4kB inactive_anon:0kB
-active_file:24kB inactive_file:24kB unevictable:1220kB writepending:0kB
-present:70732kB managed:49224kB mlocked:0kB bounce:0kB free_pcp:688kB
-local_pcp:492kB free_cma:0kB
-[  295.998656] lowmem_reserve[]: 0 32
-[  295.998659] Normal: 508*4kB (UMEH) 241*8kB (UMEH) 143*16kB (UMEH)
-33*32kB (UH) 7*64kB (UH) 0*128kB 0*256kB 0*512kB 0*1024kB 0*2048kB
-0*4096kB = 7752kB
-
-Per above log, the free memory of ~7MB exist in the high atomic reserves
-is not freed up before falling back to oom kill path.
-
-Fix it by trying to unreserve the high atomic reserves in
-should_reclaim_retry() before __alloc_pages_direct_reclaim() can fallback
-to oom kill path.
-
-Link: https://lkml.kernel.org/r/1700823445-27531-1-git-send-email-quic_charante@quicinc.com
-Fixes: 0aaa29a56e4f ("mm, page_alloc: reserve pageblocks for high-order atomic allocations on demand")
-Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Reported-by: Chris Goldsworthy <quic_cgoldswo@quicinc.com>
-Suggested-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: David Rientjes <rientjes@google.com>
-Cc: Chris Goldsworthy <quic_cgoldswo@quicinc.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Mel Gorman <mgorman@techsingularity.net>
-Cc: Pavankumar Kondeti <quic_pkondeti@quicinc.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Joakim Tjernlund <Joakim.Tjernlund@infinera.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Avri Altman <avri.altman@wdc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231129092535.3278-1-avri.altman@wdc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/mmc/core/block.c |   46 +++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 43 insertions(+), 3 deletions(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3951,14 +3951,9 @@ should_reclaim_retry(gfp_t gfp_mask, uns
- 	else
- 		(*no_progress_loops)++;
- 
--	/*
--	 * Make sure we converge to OOM if we cannot make any progress
--	 * several times in the row.
--	 */
--	if (*no_progress_loops > MAX_RECLAIM_RETRIES) {
--		/* Before OOM, exhaust highatomic_reserve */
--		return unreserve_highatomic_pageblock(ac, true);
--	}
-+	if (*no_progress_loops > MAX_RECLAIM_RETRIES)
-+		goto out;
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -400,6 +400,10 @@ struct mmc_blk_ioc_data {
+ 	struct mmc_ioc_cmd ic;
+ 	unsigned char *buf;
+ 	u64 buf_bytes;
++	unsigned int flags;
++#define MMC_BLK_IOC_DROP	BIT(0)	/* drop this mrq */
++#define MMC_BLK_IOC_SBC	BIT(1)	/* use mrq.sbc */
 +
+ 	struct mmc_rpmb_data *rpmb;
+ };
  
- 	/*
- 	 * Keep reclaiming pages while there is a chance this will lead
-@@ -4001,6 +3996,11 @@ should_reclaim_retry(gfp_t gfp_mask, uns
- 		schedule_timeout_uninterruptible(1);
- 	else
- 		cond_resched();
-+out:
-+	/* Before OOM, exhaust highatomic_reserve */
-+	if (!ret)
-+		return unreserve_highatomic_pageblock(ac, true);
-+
- 	return ret;
+@@ -465,7 +469,7 @@ static int mmc_blk_ioctl_copy_to_user(st
  }
  
+ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
+-			       struct mmc_blk_ioc_data *idata)
++			       struct mmc_blk_ioc_data **idatas, int i)
+ {
+ 	struct mmc_command cmd = {}, sbc = {};
+ 	struct mmc_data data = {};
+@@ -475,10 +479,18 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 	unsigned int busy_timeout_ms;
+ 	int err;
+ 	unsigned int target_part;
++	struct mmc_blk_ioc_data *idata = idatas[i];
++	struct mmc_blk_ioc_data *prev_idata = NULL;
+ 
+ 	if (!card || !md || !idata)
+ 		return -EINVAL;
+ 
++	if (idata->flags & MMC_BLK_IOC_DROP)
++		return 0;
++
++	if (idata->flags & MMC_BLK_IOC_SBC)
++		prev_idata = idatas[i - 1];
++
+ 	/*
+ 	 * The RPMB accesses comes in from the character device, so we
+ 	 * need to target these explicitly. Else we just target the
+@@ -532,7 +544,7 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 			return err;
+ 	}
+ 
+-	if (idata->rpmb) {
++	if (idata->rpmb || prev_idata) {
+ 		sbc.opcode = MMC_SET_BLOCK_COUNT;
+ 		/*
+ 		 * We don't do any blockcount validation because the max size
+@@ -540,6 +552,8 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 		 * 'Reliable Write' bit here.
+ 		 */
+ 		sbc.arg = data.blocks | (idata->ic.write_flag & BIT(31));
++		if (prev_idata)
++			sbc.arg = prev_idata->ic.arg;
+ 		sbc.flags = MMC_RSP_R1 | MMC_CMD_AC;
+ 		mrq.sbc = &sbc;
+ 	}
+@@ -557,6 +571,15 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 	mmc_wait_for_req(card->host, &mrq);
+ 	memcpy(&idata->ic.response, cmd.resp, sizeof(cmd.resp));
+ 
++	if (prev_idata) {
++		memcpy(&prev_idata->ic.response, sbc.resp, sizeof(sbc.resp));
++		if (sbc.error) {
++			dev_err(mmc_dev(card->host), "%s: sbc error %d\n",
++							__func__, sbc.error);
++			return sbc.error;
++		}
++	}
++
+ 	if (cmd.error) {
+ 		dev_err(mmc_dev(card->host), "%s: cmd error %d\n",
+ 						__func__, cmd.error);
+@@ -1034,6 +1057,20 @@ static inline void mmc_blk_reset_success
+ 	md->reset_done &= ~type;
+ }
+ 
++static void mmc_blk_check_sbc(struct mmc_queue_req *mq_rq)
++{
++	struct mmc_blk_ioc_data **idata = mq_rq->drv_op_data;
++	int i;
++
++	for (i = 1; i < mq_rq->ioc_count; i++) {
++		if (idata[i - 1]->ic.opcode == MMC_SET_BLOCK_COUNT &&
++		    mmc_op_multi(idata[i]->ic.opcode)) {
++			idata[i - 1]->flags |= MMC_BLK_IOC_DROP;
++			idata[i]->flags |= MMC_BLK_IOC_SBC;
++		}
++	}
++}
++
+ /*
+  * The non-block commands come back from the block layer after it queued it and
+  * processed it with all other requests and then they get issued in this
+@@ -1061,11 +1098,14 @@ static void mmc_blk_issue_drv_op(struct
+ 			if (ret)
+ 				break;
+ 		}
++
++		mmc_blk_check_sbc(mq_rq);
++
+ 		fallthrough;
+ 	case MMC_DRV_OP_IOCTL_RPMB:
+ 		idata = mq_rq->drv_op_data;
+ 		for (i = 0, ret = 0; i < mq_rq->ioc_count; i++) {
+-			ret = __mmc_blk_ioctl_cmd(card, md, idata[i]);
++			ret = __mmc_blk_ioctl_cmd(card, md, idata, i);
+ 			if (ret)
+ 				break;
+ 		}
 
 
 
