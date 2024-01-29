@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-17030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B54840F89
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CE3D840D5B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 271371C236CD
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42F511F2C5CF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9DA6F065;
-	Mon, 29 Jan 2024 17:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C3B159581;
+	Mon, 29 Jan 2024 17:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqzxu1uy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNcRxRFt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D126F062;
-	Mon, 29 Jan 2024 17:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17922157E92;
+	Mon, 29 Jan 2024 17:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548458; cv=none; b=qr8puTDtMzsrEy6gYJO1kfYc4sdDyAcm4o/Y48KBdn5bW3Et3CTqoWNa/5MCRndZ6SivwYLIWtz6P8HkTIqkUNJVrMSHnbcXnzu2H2mjfsllKniLQLjB5j/sXxYOtyi7VcUCxk8b+QdgVn+kv2r0n/w67SJYOzWgdrKETLgjQuM=
+	t=1706548090; cv=none; b=Qwei4SuO3nQ4pALkGSsl/zzVON+IvrlFLNbpt2K5JHP+PWmvbr8Qcfo6InGGUS8ErIZZzvnxVjm56XDZVe2xcuhMugjuGquBaGoR5wD4K3SHenPqG1VLt9AEPiHBv7aF2HXRezKPep+8cye29oCk1PG1B4oohBvRX6iiTM1Ta38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548458; c=relaxed/simple;
-	bh=t06zTkFhWp0NImkkMZU00H/70Z2B2YaxiMPLCu0vJYo=;
+	s=arc-20240116; t=1706548090; c=relaxed/simple;
+	bh=RUUpKAi2oT8FJ9Y0r+OB/IKukxtp3jKAqrP+a0pA3KA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dCS/NVefHLrOZlVhS5zot4b/CN153QM/GY0zoov/qR3CaalPaZqvt/GOu4c0UKyU1mXNTV1tv0Ayg4OVmMntmLyoKw/1CfpNMo0J2G3w4Tv7aC9RlwrzKXZV/hEBhebKdrISlVnR8YZoy64uqLRyC1oLzmWJN2najVLO9oSahUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqzxu1uy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADEBBC433F1;
-	Mon, 29 Jan 2024 17:14:17 +0000 (UTC)
+	 MIME-Version; b=p/pEexO646qtOtIyM6mpnmw2NSd2P+AyTQtdMmQZo7CUdjJh0WlYkSEoFCnDpHY6ZdeI2FOICZ3fmuLRbtfVINCfWnM8rNHb+gYbPqim3JOXE5rAMdEwd3k9Z2HuOhgUOYDY764r1NuBaSXLRz3j38C3bMrLUwHagMjWfcrqKj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNcRxRFt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA96C433C7;
+	Mon, 29 Jan 2024 17:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548457;
-	bh=t06zTkFhWp0NImkkMZU00H/70Z2B2YaxiMPLCu0vJYo=;
+	s=korg; t=1706548089;
+	bh=RUUpKAi2oT8FJ9Y0r+OB/IKukxtp3jKAqrP+a0pA3KA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lqzxu1uycqb7r9UOyb90fOkopA8rNw4fD7Fiv3wRIAim7l0IHcKezb7CwPxtbWBD4
-	 Y9LRF+7rLpR76mq7W9zfDCPwTlIkemb22gR7gznOI++xYyfv7z5P19hM1PCK6yc5Yt
-	 +CeiJhNASGNxal8xNJFxqkPc//J3iOfVtAV9PGCU=
+	b=rNcRxRFtK0Pm3GKKbPxseBBSu3fKLIDba8X0yPN8yDLQw+9kDEHhDjPfrOZ7M9a8Q
+	 mE9nAUGXnxkNWTHZHrL8i1tfwGQDa9JHb+/24PgJZ0siEjtGscOz4Mo0zupQGqdimR
+	 tGKsDg77LESIkReJ6EYFDzCkiDmIuGbpL4dVnRiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 070/331] parisc/firmware: Fix F-extend for PDC addresses
-Date: Mon, 29 Jan 2024 09:02:14 -0800
-Message-ID: <20240129170016.972370569@linuxfoundation.org>
+	Yunhui Cui <cuiyunhui@bytedance.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.7 104/346] RISC-V: selftests: cbo: Ensure asm operands match constraints
+Date: Mon, 29 Jan 2024 09:02:15 -0800
+Message-ID: <20240129170019.463345676@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-commit 735ae74f73e55c191d48689bd11ff4a06ea0508f upstream.
+commit 0de65288d75ff96c30e216557d979fb9342c4323 upstream.
 
-When running with narrow firmware (64-bit kernel using a 32-bit
-firmware), extend PDC addresses into the 0xfffffff0.00000000
-region instead of the 0xf0f0f0f0.00000000 region.
+The 'i' constraint expects a constant operand, which fn and its
+constant derivative MK_CBO(fn) are, but passing fn through a function
+as a parameter and using a local variable for MK_CBO(fn) allow the
+compiler to lose sight of that when no optimization is done. Use
+a macro instead of a function and skip the local variable to ensure
+the compiler uses constants, matching the asm constraints.
 
-This fixes the power button on the C3700 machine in qemu (64-bit CPU
-with 32-bit firmware), and my assumption is that the previous code was
-really never used (because most 64-bit machines have a 64-bit firmware),
-or it just worked on very old machines because they may only decode
-40-bit of virtual addresses.
-
+Reported-by: Yunhui Cui <cuiyunhui@bytedance.com>
+Closes: https://lore.kernel.org/all/20240117082514.42967-1-cuiyunhui@bytedance.com
+Fixes: a29e2a48afe3 ("RISC-V: selftests: Add CBO tests")
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Link: https://lore.kernel.org/r/20240117130933.57514-2-ajones@ventanamicro.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/firmware.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/riscv/hwprobe/cbo.c |   18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
---- a/arch/parisc/kernel/firmware.c
-+++ b/arch/parisc/kernel/firmware.c
-@@ -123,10 +123,10 @@ static unsigned long f_extend(unsigned l
- #ifdef CONFIG_64BIT
- 	if(unlikely(parisc_narrow_firmware)) {
- 		if((address & 0xff000000) == 0xf0000000)
--			return 0xf0f0f0f000000000UL | (u32)address;
-+			return (0xfffffff0UL << 32) | (u32)address;
+--- a/tools/testing/selftests/riscv/hwprobe/cbo.c
++++ b/tools/testing/selftests/riscv/hwprobe/cbo.c
+@@ -36,16 +36,14 @@ static void sigill_handler(int sig, sigi
+ 	regs[0] += 4;
+ }
  
- 		if((address & 0xf0000000) == 0xf0000000)
--			return 0xffffffff00000000UL | (u32)address;
-+			return (0xffffffffUL << 32) | (u32)address;
- 	}
- #endif
- 	return address;
+-static void cbo_insn(char *base, int fn)
+-{
+-	uint32_t insn = MK_CBO(fn);
+-
+-	asm volatile(
+-	"mv	a0, %0\n"
+-	"li	a1, %1\n"
+-	".4byte	%2\n"
+-	: : "r" (base), "i" (fn), "i" (insn) : "a0", "a1", "memory");
+-}
++#define cbo_insn(base, fn)							\
++({										\
++	asm volatile(								\
++	"mv	a0, %0\n"							\
++	"li	a1, %1\n"							\
++	".4byte	%2\n"								\
++	: : "r" (base), "i" (fn), "i" (MK_CBO(fn)) : "a0", "a1", "memory");	\
++})
+ 
+ static void cbo_inval(char *base) { cbo_insn(base, 0); }
+ static void cbo_clean(char *base) { cbo_insn(base, 1); }
 
 
 
