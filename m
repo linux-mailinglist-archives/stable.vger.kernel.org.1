@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-16480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAA46840D23
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FFB9840F51
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC8031C22C33
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23EAAB25542
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA78156967;
-	Mon, 29 Jan 2024 17:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9DE6159576;
+	Mon, 29 Jan 2024 17:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPBVKyMb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neuiwtw+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE4D1586DC;
-	Mon, 29 Jan 2024 17:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861FF15D5DF;
+	Mon, 29 Jan 2024 17:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548050; cv=none; b=saM7o9rnUSzgkFYrvOgEEoOYEp+Z1uzh2gXUXpEOpod6eCPND/niRLWCW6JDtHIRHkTFlx3j/toQGb2YUl3XqEZGQH2DUYwo/tMW7vXREzl19WOhIZAsbawZj9KdXRBwxer1+yYVtgKDuc2kQOQrhlksei/Uyr7oHkuMEn4Jb30=
+	t=1706548420; cv=none; b=RA8H+NXAWqWTLVQisArp37Vp5McIfAK2snwkyKsJdxrnz5YfjynTC6NE1CpTCXWwnB85c06PvUTR0VzDNFj6tyHnOXTllUtIN8Eu5xREBXHaIi/ycbuZUvNuxVqlQq3rdZZr5lpOu5Gukda0VdO7Jmend5u8w24u8/SiJdNjlVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548050; c=relaxed/simple;
-	bh=XrDsMqoVnQxTnOllqqzKKlehP3InEVnXsb8nLZVe4Rs=;
+	s=arc-20240116; t=1706548420; c=relaxed/simple;
+	bh=nzQpkC5CmssvHEQ/6IbIQ/gJFtPyBOJEohBloBRB7F8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cBaZ1xPR3rYWLKJsfdK6BDwcHchnpO1/KjlPMLEAwHjxt/5BQ3edTRxCHwPVezEyx6udK05cb2WJvn7f+otMlzNbJoA+xzxJDfKBIFUeeZIah0Xcs3HfVDLw+mun5zVHkBWYFQ60pzzQRl5scAZy2hEUn19sAGsD8xGS/A6P62w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPBVKyMb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E97C43394;
-	Mon, 29 Jan 2024 17:07:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HC+9fItsBBHgjkHtGT7ZvP+ew9zDss7K2a9YnWJ3lG6zN9mxhgjen5SbM04C1wmts9JSwq4QbT/tq+MUCRPIvjCAnCEY4tR4fyJPr9+ZjDSxv6gc55HuXvRL175o/E8RDKO1gCRbf5vh8GvwdpQmiqECILaUKeBfzUFjPFAwINQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=neuiwtw+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B253C43390;
+	Mon, 29 Jan 2024 17:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548050;
-	bh=XrDsMqoVnQxTnOllqqzKKlehP3InEVnXsb8nLZVe4Rs=;
+	s=korg; t=1706548420;
+	bh=nzQpkC5CmssvHEQ/6IbIQ/gJFtPyBOJEohBloBRB7F8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jPBVKyMbw5iXXmGMN7DzYye1bBDY6pIs/4aCgvlPGp2lVtPLtIGnATK9AjQG/3dgG
-	 0lE3YCzqW9s5Q5rIJfZaKctbbqfuE8idauwfqoC1FfmWDc7f5uS8owFk/f9/di4Tjg
-	 ryXlLdPC9BMgJUcB2Q9eY2thqqBnJQFMb+EIoe98=
+	b=neuiwtw+1iwndMXhgCvBZb4hkrTTflf6U7Fisvt58HjbKkahC+f5FqKLSLFXXbAE2
+	 KxAvb8H26kc3mQa1l07tMqMkPID/Fv7ryZy8klRdcu+noUx1poReEWdpC5icq/9Pil
+	 iQbnIj1t4Xw4Bw9+C5J88q6Y+j2OuEz/7t8E/SNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 052/346] dmaengine: fix NULL pointer in channel unregistration function
+Subject: [PATCH 6.6 019/331] sh: ecovec24: Rename missed backlight field from fbdev to dev
 Date: Mon, 29 Jan 2024 09:01:23 -0800
-Message-ID: <20240129170017.918693757@linuxfoundation.org>
+Message-ID: <20240129170015.526132429@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit f5c24d94512f1b288262beda4d3dcb9629222fc7 ]
+[ Upstream commit d87123aa9a7920e88633ffc5c5a0a22ab08bdc06 ]
 
-__dma_async_device_channel_register() can fail. In case of failure,
-chan->local is freed (with free_percpu()), and chan->local is nullified.
-When dma_async_device_unregister() is called (because of managed API or
-intentionally by DMA controller driver), channels are unconditionally
-unregistered, leading to this NULL pointer:
-[    1.318693] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000d0
-[...]
-[    1.484499] Call trace:
-[    1.486930]  device_del+0x40/0x394
-[    1.490314]  device_unregister+0x20/0x7c
-[    1.494220]  __dma_async_device_channel_unregister+0x68/0xc0
+One instance of gpio_backlight_platform_data.fbdev was renamed, but the
+second instance was forgotten, causing a build failure:
 
-Look at dma_async_device_register() function error path, channel device
-unregistration is done only if chan->local is not NULL.
+    arch/sh/boards/mach-ecovec24/setup.c: In function ‘arch_setup’:
+    arch/sh/boards/mach-ecovec24/setup.c:1223:37: error: ‘struct gpio_backlight_platform_data’ has no member named ‘fbdev’; did you mean ‘dev’?
+     1223 |                 gpio_backlight_data.fbdev = NULL;
+	  |                                     ^~~~~
+	  |                                     dev
 
-Then add the same condition at the beginning of
-__dma_async_device_channel_unregister() function, to avoid NULL pointer
-issue whatever the API used to reach this function.
+Fix this by updating the second instance.
 
-Fixes: d2fb0a043838 ("dmaengine: break out channel registration")
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20231213160452.2598073-1-amelie.delaunay@foss.st.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: ed369def91c1579a ("backlight/gpio_backlight: Rename field 'fbdev' to 'dev'")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202309231601.Uu6qcRnU-lkp@intel.com/
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Link: https://lore.kernel.org/r/20230925111022.3626362-1-geert+renesas@glider.be
+Signed-off-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dmaengine.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/sh/boards/mach-ecovec24/setup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
-index b7388ae62d7f..491b22240221 100644
---- a/drivers/dma/dmaengine.c
-+++ b/drivers/dma/dmaengine.c
-@@ -1103,6 +1103,9 @@ EXPORT_SYMBOL_GPL(dma_async_device_channel_register);
- static void __dma_async_device_channel_unregister(struct dma_device *device,
- 						  struct dma_chan *chan)
- {
-+	if (chan->local == NULL)
-+		return;
-+
- 	WARN_ONCE(!device->device_release && chan->client_count,
- 		  "%s called while %d clients hold a reference\n",
- 		  __func__, chan->client_count);
+diff --git a/arch/sh/boards/mach-ecovec24/setup.c b/arch/sh/boards/mach-ecovec24/setup.c
+index 3be293335de5..7a788d44cc73 100644
+--- a/arch/sh/boards/mach-ecovec24/setup.c
++++ b/arch/sh/boards/mach-ecovec24/setup.c
+@@ -1220,7 +1220,7 @@ static int __init arch_setup(void)
+ 		lcdc_info.ch[0].num_modes		= ARRAY_SIZE(ecovec_dvi_modes);
+ 
+ 		/* No backlight */
+-		gpio_backlight_data.fbdev = NULL;
++		gpio_backlight_data.dev = NULL;
+ 
+ 		gpio_set_value(GPIO_PTA2, 1);
+ 		gpio_set_value(GPIO_PTU1, 1);
 -- 
 2.43.0
 
