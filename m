@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-16795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABDB3840E71
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D41841052
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DCECB21D8D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C27B1C239BA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA7F15F33A;
-	Mon, 29 Jan 2024 17:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5A77561E;
+	Mon, 29 Jan 2024 17:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgxZs7HB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="utGLWcrk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A80515F339;
-	Mon, 29 Jan 2024 17:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F146775606;
+	Mon, 29 Jan 2024 17:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548285; cv=none; b=GUXkiTizLwg5jGgv/9vyppw7TimkLhgRVDky6tTGkNmJvMYQE/LgalwIh1cxvYKZ4FgeTAwaWXPpQJLBKfnX7NfnCpnex9anI9xBaWHKZkX6OlZ6Hf+j3j1usesBrf+2NBVsGGq6NxUmjIDU+wEFmNXHAl7uzcKSztNFQps/ba8=
+	t=1706548602; cv=none; b=FLUGYqqfa8Cvry9ugZhel9yxYzQmUEjFPnCeCidpme7F+E+2/hMWovWpsZCep5Onkrye76RabyKsYtSWhAVCgMMqphKJbsnrL5IF8sGUWijObguLnqfEgNu9JyqLdtxIkOx/8GFHL3E1jVn0gAnYks2UUu3oxMmHhXN84e7mA+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548285; c=relaxed/simple;
-	bh=kIQjJzqDnHyHIZn5u1Oo3TrFW7j/SlZBJAa29IeuPNc=;
+	s=arc-20240116; t=1706548602; c=relaxed/simple;
+	bh=5w+wsKSeSDMZy92lQYCYK1vkP3dKO/jkmtWXSthJoQw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ulT/sUGswSibLLnWmgH9zXWPwkWbxC3g3exc9dC8wjm9uytOtoSYD7FFazuYPY9GHqJPtQPIW3eDvaWKjlykx0ZJXHVN3JJ386NnclnzGARr2yijD6nVX/kvVNx8bumQqvi9QWJCs5VBxJK4jCURp/C97XTvNFMgFw2Vvh8ew/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgxZs7HB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8423C43390;
-	Mon, 29 Jan 2024 17:11:24 +0000 (UTC)
+	 MIME-Version; b=ZI+DuJWCTofo6qB2QnX9WnYiCCQgZJW7mvgQzF02Ne8hEGiQA/WLDSQm1n4SNwvNKjuMrXEurGZ+72dgyl7osjkbXgsG/YEPbB3NSPbl99eLfv0ixpv45PxgKXhUnhG7N8gRvy9oZX85GKdE4vf5wi6eFOmI19mBmCOV6kuNjEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utGLWcrk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7005C43394;
+	Mon, 29 Jan 2024 17:16:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548284;
-	bh=kIQjJzqDnHyHIZn5u1Oo3TrFW7j/SlZBJAa29IeuPNc=;
+	s=korg; t=1706548601;
+	bh=5w+wsKSeSDMZy92lQYCYK1vkP3dKO/jkmtWXSthJoQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CgxZs7HBPAkiRb8rOeTkCKglvokUdWjIH7ibLiFX6StG+Pu6+lHS7m9ONd/MxoBQA
-	 ke7UGM+G0eM2mNdr9jslgOYG668QrnwTLDl902suHtpVYKYhMVcxH7uXHd3GwVqfcr
-	 PlayGu6XAnd+MvoYFwxjeBUgOKt9kAsenAmTRy44=
+	b=utGLWcrk++WLykRsD6fRyQVYLe7YbRZ8hY76yVBUFJug6P8oiEkMo8BR92yzpJrek
+	 PUEHfwEXgZ0c/SSrWzZ7MJ6K7fCpMyVu/n3lMbv3NjLiDmAXDHGdncNdtuuuAuSXqi
+	 aI59MAtguZ+434JJTGJDWrAUjVuswpEylJqd3MI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Ilya Bakoulin <ilya.bakoulin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 297/346] drm/amd/display: Fix hang/underflow when transitioning to ODM4:1
+	Melissa Wen <mwen@igalia.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Ivan Lipski <ivlipski@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 264/331] Revert "drm/amd/display: fix bandwidth validation failure on DCN 2.1"
 Date: Mon, 29 Jan 2024 09:05:28 -0800
-Message-ID: <20240129170025.152389120@linuxfoundation.org>
+Message-ID: <20240129170022.594153032@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Bakoulin <ilya.bakoulin@amd.com>
+From: Ivan Lipski <ivlipski@amd.com>
 
-[ Upstream commit e7b2b108cdeab76a7e7324459e50b0c1214c0386 ]
+commit c2ab9ce0ee7225fc05f58a6671c43b8a3684f530 upstream.
 
-[Why]
-Under some circumstances, disabling an OPTC and attempting to reclaim
-its OPP(s) for a different OPTC could cause a hang/underflow due to OPPs
-not being properly disconnected from the disabled OPTC.
+This commit causes dmesg-warn on several IGT tests on DCN 3.1.6: *ERROR*
+link_enc_cfg_validate: Invalid link encoder assignments - 0x1c
 
-[How]
-Ensure that all OPPs are unassigned from an OPTC when it gets disabled.
+Affected IGT tests include:
+- amdgpu/[amd_assr|amd_plane|amd_hotplug]
+- kms_atomic
+- kms_color
+- kms_flip
+- kms_properties
+- kms_universal_plane
 
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Ilya Bakoulin <ilya.bakoulin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+and some other tests
+
+This reverts commit 3a0fa3bc245ef92838a8296e0055569b8dff94c4.
+
+Cc: Melissa Wen <mwen@igalia.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Ivan Lipski <ivlipski@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 3ba2a0bfd8cf ("drm/amd/display: Clear OPTC mem select on disable")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c | 7 +++++++
- drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c | 7 +++++++
- 2 files changed, 14 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
-index a2c4db2cebdd..91ea0d4da06a 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
-@@ -172,6 +172,13 @@ static bool optc32_disable_crtc(struct timing_generator *optc)
- 	REG_UPDATE(OTG_CONTROL,
- 			OTG_MASTER_EN, 0);
- 
-+	REG_UPDATE_5(OPTC_DATA_SOURCE_SELECT,
-+			OPTC_SEG0_SRC_SEL, 0xf,
-+			OPTC_SEG1_SRC_SEL, 0xf,
-+			OPTC_SEG2_SRC_SEL, 0xf,
-+			OPTC_SEG3_SRC_SEL, 0xf,
-+			OPTC_NUM_OF_INPUT_SEGMENT, 0);
-+
- 	REG_UPDATE(CONTROL,
- 			VTG0_ENABLE, 0);
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c
-index a4a39f1638cf..08a59cf449ca 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c
-@@ -144,6 +144,13 @@ static bool optc35_disable_crtc(struct timing_generator *optc)
- 	REG_UPDATE(OTG_CONTROL,
- 			OTG_MASTER_EN, 0);
- 
-+	REG_UPDATE_5(OPTC_DATA_SOURCE_SELECT,
-+			OPTC_SEG0_SRC_SEL, 0xf,
-+			OPTC_SEG1_SRC_SEL, 0xf,
-+			OPTC_SEG2_SRC_SEL, 0xf,
-+			OPTC_SEG3_SRC_SEL, 0xf,
-+			OPTC_NUM_OF_INPUT_SEGMENT, 0);
-+
- 	REG_UPDATE(CONTROL,
- 			VTG0_ENABLE, 0);
- 
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -10400,7 +10400,7 @@ static int amdgpu_dm_atomic_check(struct
+ 			DRM_DEBUG_DRIVER("drm_dp_mst_atomic_check() failed\n");
+ 			goto fail;
+ 		}
+-		status = dc_validate_global_state(dc, dm_state->context, false);
++		status = dc_validate_global_state(dc, dm_state->context, true);
+ 		if (status != DC_OK) {
+ 			DRM_DEBUG_DRIVER("DC global validation failure: %s (%d)",
+ 				       dc_status_to_str(status), status);
 
 
 
