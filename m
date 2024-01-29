@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-16671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5BE0840DF0
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 822D5841001
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 861491F2A933
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 220601F237D8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895DC15DBAA;
-	Mon, 29 Jan 2024 17:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FE173755;
+	Mon, 29 Jan 2024 17:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVob/dtW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddJLhmia"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4091915AADC;
-	Mon, 29 Jan 2024 17:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6331273748;
+	Mon, 29 Jan 2024 17:15:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548192; cv=none; b=NjpjwGOwCbO6U9qlTAI2f4KU3/NgG6Q6OhWIfmZDTw6MerNjxfvfk9wuLVHQCkhoH8BkSPbMYs5hhMnrgg3BS8c5abls85VjC0zAIIyn8yQWkqy8kDaorm/LWyrNadLnqAfkI+L8FUBOg3yz6BjF/nvMieWmY/r0i1moxphTo9I=
+	t=1706548543; cv=none; b=IuuOpBas/0aiM709WiCNEmNZXXBZDf+BgYjBhfEizErnaA6QmI9t0ikTHFwtgQE7GWpZYnb0FTbekKB4WI+viQmOsgtI6IiosJLNxicC+Db14ZX0Q0BGiiIddLgfL+SmOa0iswHSKC1FAVHMSwGuSYjcmUSYNcbXSWX9R1S2rHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548192; c=relaxed/simple;
-	bh=L/RZDPC/a5RPcSrAlTOcXJAZQP/9gWRqdNhv04NPPmE=;
+	s=arc-20240116; t=1706548543; c=relaxed/simple;
+	bh=GfVrHMERLr/v5madS4hNMGRgMUYeU3eBSlwpnon1Wnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=STETjIT9/90Jw9tzssnrtlapcYGmiRBMr5VtTCUWjhbSnY//JmnN1K2/XUomn5ADA4iu0vLiEA2VVRqL36LtIySylmv6Hv3F5MMUQoDJw9xjBWUrmJVk8rmOHWqjMSDGBP6eSzDgM+gT2gq6MN9SAYJ9ENahSdL9TfqDXUQ3T2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZVob/dtW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3EFC433B1;
-	Mon, 29 Jan 2024 17:09:52 +0000 (UTC)
+	 MIME-Version; b=AqDfP83r/2ZI27/Z2olTCJ9dWg3xOmk3PO7DdbUE3h2aSf2yOV1lFA20xN1boRtxgzUFiXHCsM4y9GMnJ/i/VbSJa3xEjbSoHxb++CktGFwmJk4tNDhaI73zdbMuLTM4bcTXnq+FWK8MvBTtWinnI48CQjeRnKcbgZ1e5mDOtxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddJLhmia; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D634C433C7;
+	Mon, 29 Jan 2024 17:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548192;
-	bh=L/RZDPC/a5RPcSrAlTOcXJAZQP/9gWRqdNhv04NPPmE=;
+	s=korg; t=1706548543;
+	bh=GfVrHMERLr/v5madS4hNMGRgMUYeU3eBSlwpnon1Wnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZVob/dtWw5DxKrN3tw68wkPyR0V45EdyyO/uWHYXXvJOdt3ktt0l1v9DjSf8HApUO
-	 6DBBHFbzJnof0POL+B7vqiazO0iCnGqZHhdgIVUB7rrcDaEsoAB60dl+GYy59j9XaD
-	 hUDtB6ZyuAy+QSW/VeEIFnAR0CZn7AX5JPFIV81M=
+	b=ddJLhmiaoUQ/wmkIsRdDf8zOjc8ZO5qbX/fUE2BK9O5yitOJBMXX02EptVJCgLWN0
+	 W5h5JHXNkNzv/+QcLZHy1HLrAtX3W1vR2idFtM2ILD4BzQblFzSOVWDdAQGHv/ImgV
+	 P9rJOmqf8l62n1C2hxDwJ4q3H/I22ScR3nRpmvOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 199/346] netfilter: nft_limit: reject configurations that cause integer overflow
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 166/331] cifs: after disabling multichannel, mark tcon for reconnect
 Date: Mon, 29 Jan 2024 09:03:50 -0800
-Message-ID: <20240129170022.255793733@linuxfoundation.org>
+Message-ID: <20240129170019.780116532@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit c9d9eb9c53d37cdebbad56b91e40baf42d5a97aa ]
+commit 27e1fd343f80168ff456785c2443136b6b7ca3cc upstream.
 
-Reject bogus configs where internal token counter wraps around.
-This only occurs with very very large requests, such as 17gbyte/s.
+Once the server disables multichannel for an active multichannel
+session, on the following reconnect, the client would reduce
+the number of channels to 1. However, it could be the case that
+the tree connect was active on one of these disabled channels.
+This results in an unrecoverable state.
 
-Its better to reject this rather than having incorrect ratelimit.
+This change fixes that by making sure that whenever a channel
+is being terminated, the session and tcon are marked for
+reconnect too. This could mean a few redundant tree connect
+calls to the server, but considering that this is not a frequent
+event, we should be okay.
 
-Fixes: d2168e849ebf ("netfilter: nft_limit: add per-byte limiting")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ee1d21794e55 ("cifs: handle when server stops supporting multichannel")
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_limit.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ fs/smb/client/connect.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/net/netfilter/nft_limit.c b/net/netfilter/nft_limit.c
-index 79039afde34e..cefa25e0dbb0 100644
---- a/net/netfilter/nft_limit.c
-+++ b/net/netfilter/nft_limit.c
-@@ -58,17 +58,19 @@ static inline bool nft_limit_eval(struct nft_limit_priv *priv, u64 cost)
- static int nft_limit_init(struct nft_limit_priv *priv,
- 			  const struct nlattr * const tb[], bool pkts)
- {
-+	u64 unit, tokens, rate_with_burst;
- 	bool invert = false;
--	u64 unit, tokens;
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -212,17 +212,21 @@ cifs_mark_tcp_ses_conns_for_reconnect(st
+ 	/* If server is a channel, select the primary channel */
+ 	pserver = SERVER_IS_CHAN(server) ? server->primary_server : server;
  
- 	if (tb[NFTA_LIMIT_RATE] == NULL ||
- 	    tb[NFTA_LIMIT_UNIT] == NULL)
- 		return -EINVAL;
++	/*
++	 * if the server has been marked for termination, there is a
++	 * chance that the remaining channels all need reconnect. To be
++	 * on the safer side, mark the session and trees for reconnect
++	 * for this scenario. This might cause a few redundant session
++	 * setup and tree connect requests, but it is better than not doing
++	 * a tree connect when needed, and all following requests failing
++	 */
++	if (server->terminate) {
++		mark_smb_session = true;
++		server = pserver;
++	}
  
- 	priv->rate = be64_to_cpu(nla_get_be64(tb[NFTA_LIMIT_RATE]));
-+	if (priv->rate == 0)
-+		return -EINVAL;
-+
- 	unit = be64_to_cpu(nla_get_be64(tb[NFTA_LIMIT_UNIT]));
--	priv->nsecs = unit * NSEC_PER_SEC;
--	if (priv->rate == 0 || priv->nsecs < unit)
-+	if (check_mul_overflow(unit, NSEC_PER_SEC, &priv->nsecs))
- 		return -EOVERFLOW;
- 
- 	if (tb[NFTA_LIMIT_BURST])
-@@ -77,18 +79,25 @@ static int nft_limit_init(struct nft_limit_priv *priv,
- 	if (pkts && priv->burst == 0)
- 		priv->burst = NFT_LIMIT_PKT_BURST_DEFAULT;
- 
--	if (priv->rate + priv->burst < priv->rate)
-+	if (check_add_overflow(priv->rate, priv->burst, &rate_with_burst))
- 		return -EOVERFLOW;
- 
- 	if (pkts) {
--		tokens = div64_u64(priv->nsecs, priv->rate) * priv->burst;
-+		u64 tmp = div64_u64(priv->nsecs, priv->rate);
-+
-+		if (check_mul_overflow(tmp, priv->burst, &tokens))
-+			return -EOVERFLOW;
- 	} else {
-+		u64 tmp;
-+
- 		/* The token bucket size limits the number of tokens can be
- 		 * accumulated. tokens_max specifies the bucket size.
- 		 * tokens_max = unit * (rate + burst) / rate.
- 		 */
--		tokens = div64_u64(priv->nsecs * (priv->rate + priv->burst),
--				 priv->rate);
-+		if (check_mul_overflow(priv->nsecs, rate_with_burst, &tmp))
-+			return -EOVERFLOW;
-+
-+		tokens = div64_u64(tmp, priv->rate);
- 	}
- 
- 	if (tb[NFTA_LIMIT_FLAGS]) {
--- 
-2.43.0
-
+ 	spin_lock(&cifs_tcp_ses_lock);
+ 	list_for_each_entry_safe(ses, nses, &pserver->smb_ses_list, smb_ses_list) {
+-		/*
+-		 * if channel has been marked for termination, nothing to do
+-		 * for the channel. in fact, we cannot find the channel for the
+-		 * server. So safe to exit here
+-		 */
+-		if (server->terminate)
+-			break;
+-
+ 		/* check if iface is still active */
+ 		spin_lock(&ses->chan_lock);
+ 		if (!cifs_chan_is_iface_active(ses, server)) {
 
 
 
