@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-16535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09370840D5E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D29A840F8E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7CBD28A8CF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 601281C23671
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E16815956E;
-	Mon, 29 Jan 2024 17:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE836F083;
+	Mon, 29 Jan 2024 17:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCsofugd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cP85vYHc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF13215B110;
-	Mon, 29 Jan 2024 17:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D726F075;
+	Mon, 29 Jan 2024 17:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548091; cv=none; b=UTwbwmROJYNd4DIL7GIlOfGiBDr5vWZMdIY7HO+xU0WbYT8hqB5mE/NvR3egFNVobxCzzhJLC58BsmCDgYWB/7dxfKAQEn76ajVtfmkTrmybCN0joFjsGasErNDvZAiVD74i5//nmzxqESarlDXQ8lKOG+wT3AQAPdR3cEjCM/0=
+	t=1706548461; cv=none; b=GKfdgXJFUiA9ODkEsLOVRh/uz9satAVnU6IFtL8QtsMMMGfkrafOvBhiJ35qxpLr6jxRcdyU58bMwu8QjrU10ouzE7HCWHKJJCi4jl8Zxad8HmZRLukLsHU6jj4GEDcI9Q4ucF4h3eLeie0h9caa0aszmn5I0IfzqSz878EoZWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548091; c=relaxed/simple;
-	bh=9jOUVKhzJzLko/ohGnpf9K42PQoZlen1atvPkAuxquI=;
+	s=arc-20240116; t=1706548461; c=relaxed/simple;
+	bh=qqy2mDaM1hTEl6wxKH3TFRQqW/8Pnepj5A+5du81PoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxTDEMbBpGFnxcDb3Viler4Lzp5ELT9ItM62XMlDzypqwjG14WJX0eg+IDO7+8d2hIWnLBsrDhuupowKkx77QLREYzhtOAHExlrE7QREEqsmEDTHLmP6aUinEc5Lk6+uFrUvOuvQyyA7UoZctdAkO0io2v17FTYDbjompY1mNF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCsofugd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99640C43390;
-	Mon, 29 Jan 2024 17:08:11 +0000 (UTC)
+	 MIME-Version; b=JZsON8l/5EzTTzBe8Jt4IPLX22AkX3scRRT7G9xiK2woS5zo3zPpi6N2+IveOli/VMLCsAV2MlPkI54CLTofLIEQxKTATrDrkUgxzBYlYGzY8j7IHn90ChQUKPBbuvID4LWKnocHYiIxgcnrDYY2TfVoDtkDG+vIUjkXCM7bvig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cP85vYHc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F312C433F1;
+	Mon, 29 Jan 2024 17:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548091;
-	bh=9jOUVKhzJzLko/ohGnpf9K42PQoZlen1atvPkAuxquI=;
+	s=korg; t=1706548461;
+	bh=qqy2mDaM1hTEl6wxKH3TFRQqW/8Pnepj5A+5du81PoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yCsofugdxm7xP9pClBXSmibKW2yX7Xf2NsBC1IxuXwnY9YGB5ey8wWv27F3g9e6YZ
-	 GZsVpnnfJsTW5kEFLQfMx1Q434HDYmE5Ali4gKn6OcB22lTBNz0sdEahkFKr2t9uRM
-	 YMy5XBN6yjobYvdQ+JbXEo5Dg+pIIGgEiWGCc9PQ=
+	b=cP85vYHc+DR7OJq4wddL3rv1ZxBJ4+XJWpt8t1u1wRsG/apD4mBqOrHxFojY6tUOn
+	 R/FgKTKNE+tvmeu50TqOtMP2M1vongIpWnczRFAyqWtb2RivbsfOXnKZnOqvsb5mX2
+	 FlPiGM75nTh/HQcHtHLF8U8qWhnL5aiIveuYQPrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.7 107/346] arm64/sme: Always exit sme_alloc() early with existing storage
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 074/331] ARM: dts: qcom: sdx55: fix USB wakeup interrupt types
 Date: Mon, 29 Jan 2024 09:02:18 -0800
-Message-ID: <20240129170019.546492059@linuxfoundation.org>
+Message-ID: <20240129170017.089229587@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit dc7eb8755797ed41a0d1b5c0c39df3c8f401b3d9 upstream.
+commit d0ec3c4c11c3b30e1f2d344973b2a7bf0f986734 upstream.
 
-When sme_alloc() is called with existing storage and we are not flushing we
-will always allocate new storage, both leaking the existing storage and
-corrupting the state. Fix this by separating the checks for flushing and
-for existing storage as we do for SVE.
+The DP/DM wakeup interrupts are edge triggered and which edge to trigger
+on depends on use-case and whether a Low speed or Full/High speed device
+is connected.
 
-Callers that reallocate (eg, due to changing the vector length) should
-call sme_free() themselves.
-
-Fixes: 5d0a8d2fba50 ("arm64/ptrace: Ensure that SME is set up for target when writing SSVE state")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240115-arm64-sme-flush-v1-1-7472bd3459b7@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: fea4b41022f3 ("ARM: dts: qcom: sdx55: Add USB3 and PHY support")
+Cc: stable@vger.kernel.org      # 5.12
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231120164331.8116-2-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/fpsimd.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/qcom/qcom-sdx55.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1245,8 +1245,10 @@ void fpsimd_release_task(struct task_str
-  */
- void sme_alloc(struct task_struct *task, bool flush)
- {
--	if (task->thread.sme_state && flush) {
--		memset(task->thread.sme_state, 0, sme_state_size(task));
-+	if (task->thread.sme_state) {
-+		if (flush)
-+			memset(task->thread.sme_state, 0,
-+			       sme_state_size(task));
- 		return;
- 	}
+--- a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
+@@ -594,8 +594,8 @@
+ 
+ 			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 198 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 158 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 157 IRQ_TYPE_LEVEL_HIGH>;
++				     <GIC_SPI 158 IRQ_TYPE_EDGE_BOTH>,
++				     <GIC_SPI 157 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
  
 
 
