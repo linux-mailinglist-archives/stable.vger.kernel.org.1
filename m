@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-16913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 768AC840F03
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6687F840F30
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A93901C23D0E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22878283958
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5B3162763;
-	Mon, 29 Jan 2024 17:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10A015AAD8;
+	Mon, 29 Jan 2024 17:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O597OLxq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJ1Ot1Yo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19211586C5;
-	Mon, 29 Jan 2024 17:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A7015AAD9;
+	Mon, 29 Jan 2024 17:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548371; cv=none; b=f5lqOzvInOtLXgGM79l926srHLGkSvsE01yDw9brBa1uT60+ywxwxD2B1Im6OsPUKHyFTxPTvRpnsqG66/i5Qd2Xh35F4XOTcgijml7YYarQs/d3L7RQ4cKCnbfCDsBwVwGnoU0fHnmwKJ5URg+fZQwV1TkbLKwNkMmNl4vo4hw=
+	t=1706548398; cv=none; b=jMK4Tp0dnsYYMUNwDGDzrze17CGyp8TY46iuNnxR0ugnRB/XG2g+QclwV99i+wHVRTnCfh11CmgkvUADpg85IFimE4Ae7A7qqj9jqXyq3KJZlu7TNcDzHUCI1mdD1qg/Sj5k/yC2xU1SwAaPppVW0d3+3hhKT3CnIo/siY0MMOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548371; c=relaxed/simple;
-	bh=1x13DOhsRroRI6LdNMtTlje40D21xzbdXGp++Fgdsyg=;
+	s=arc-20240116; t=1706548398; c=relaxed/simple;
+	bh=X+GejbycaQ1NCq6kbyPiA4BA4T/XdN8D9m1Wnq1qeRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EB2pUFcfhbS794HPkIJV5UUZUHQKOu+Ww4ztwBPJOX3SsVRZsCQat6Oq4D4xTYWNK8YHH70V7FqfgLAOkYGOvy1wgR538TFaUo1gD3ifHuM20xwYw6BAtAqiOHFnAQ4C8Y4hEUR8b6fgRH8GDsMBj9VLVhQOq4NKP9kkLQ9vdcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O597OLxq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857F5C433F1;
-	Mon, 29 Jan 2024 17:12:51 +0000 (UTC)
+	 MIME-Version; b=V6kIIfjzA5aSERvB2Mn71FDsNlWPHla/hH0/VVfKH4DZ5ILYkM0IfB5Od8fLQUEXcIHm03kylNqWQmWrKxbLWqLy8EacdAD0P6a2luqUQI4lKaMpaKmdCd1FztTid+UUbuctXXUsgNxFkJlwgvo18IXrXKskzG6swzwLZwKUFQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJ1Ot1Yo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688BBC433F1;
+	Mon, 29 Jan 2024 17:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548371;
-	bh=1x13DOhsRroRI6LdNMtTlje40D21xzbdXGp++Fgdsyg=;
+	s=korg; t=1706548398;
+	bh=X+GejbycaQ1NCq6kbyPiA4BA4T/XdN8D9m1Wnq1qeRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O597OLxq5sP8wzSxtUOkon+dwO8OpQ42HosdTT4vQrUf9wJ72ZnjdVlH19Rn1UoKE
-	 Gje/ahVgVmQxaj8bNtypr4W3qo+qc8NBnBBMTYhMAnrPDq9HtCvef2/XFD4lm7fUmT
-	 kyNzBjkADUYoJOwAoIeNe6BmsGoNXlObibU/p/FQ=
+	b=vJ1Ot1YoIs6dbX9sBBMReKzH+TXhcuLIfkyX9iImglwDY2UhciDztY0X3wOyyaz48
+	 9klE9MJy6kXq0WAF45Jl4GctAKTbHpZpXM5HofgGW1ATYD1hZtOqUhtr4+WO3WRsh9
+	 If4lDYYN5+3vIoF8eB7cPEmOuzIxJQ2aQMMiKpHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.7 345/346] tick/sched: Preserve number of idle sleeps across CPU hotplug events
+	Allison Karlitskaya <allison.karlitskaya@redhat.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 176/185] block: Move checking GENHD_FL_NO_PART to bdev_add_partition()
 Date: Mon, 29 Jan 2024 09:06:16 -0800
-Message-ID: <20240129170026.667951432@linuxfoundation.org>
+Message-ID: <20240129170004.245352604@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Chen <tim.c.chen@linux.intel.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-commit 9a574ea9069be30b835a3da772c039993c43369b upstream.
+[ Upstream commit 7777f47f2ea64efd1016262e7b59fab34adfb869 ]
 
-Commit 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs
-CPU hotplug") preserved total idle sleep time and iowait sleeptime across
-CPU hotplug events.
+Commit 1a721de8489f ("block: don't add or resize partition on the disk
+with GENHD_FL_NO_PART") prevented all operations about partitions on disks
+with GENHD_FL_NO_PART in blkpg_do_ioctl() since they are meaningless.
+However, it changed error code in some scenarios. So move checking
+GENHD_FL_NO_PART to bdev_add_partition() to eliminate impact.
 
-Similar reasoning applies to the number of idle calls and idle sleeps to
-get the proper average of sleep time per idle invocation.
-
-Preserve those fields too.
-
-Fixes: 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs CPU hotplug")
-Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240122233534.3094238-1-tim.c.chen@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1a721de8489f ("block: don't add or resize partition on the disk with GENHD_FL_NO_PART")
+Reported-by: Allison Karlitskaya <allison.karlitskaya@redhat.com>
+Closes: https://lore.kernel.org/all/CAOYeF9VsmqKMcQjo1k6YkGNujwN-nzfxY17N3F-CMikE1tYp+w@mail.gmail.com/
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240118130401.792757-1-lilingfeng@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-sched.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ block/ioctl.c           | 2 --
+ block/partitions/core.c | 5 +++++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -1574,6 +1574,7 @@ void tick_cancel_sched_timer(int cpu)
- {
- 	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
- 	ktime_t idle_sleeptime, iowait_sleeptime;
-+	unsigned long idle_calls, idle_sleeps;
+diff --git a/block/ioctl.c b/block/ioctl.c
+index ebe4a2653622..47567ba1185a 100644
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -20,8 +20,6 @@ static int blkpg_do_ioctl(struct block_device *bdev,
+ 	struct blkpg_partition p;
+ 	sector_t start, length;
  
- # ifdef CONFIG_HIGH_RES_TIMERS
- 	if (ts->sched_timer.base)
-@@ -1582,9 +1583,13 @@ void tick_cancel_sched_timer(int cpu)
+-	if (disk->flags & GENHD_FL_NO_PART)
+-		return -EINVAL;
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EACCES;
+ 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
+diff --git a/block/partitions/core.c b/block/partitions/core.c
+index b8112f52d388..3927f4283f6b 100644
+--- a/block/partitions/core.c
++++ b/block/partitions/core.c
+@@ -453,6 +453,11 @@ int bdev_add_partition(struct gendisk *disk, int partno, sector_t start,
+ 		goto out;
+ 	}
  
- 	idle_sleeptime = ts->idle_sleeptime;
- 	iowait_sleeptime = ts->iowait_sleeptime;
-+	idle_calls = ts->idle_calls;
-+	idle_sleeps = ts->idle_sleeps;
- 	memset(ts, 0, sizeof(*ts));
- 	ts->idle_sleeptime = idle_sleeptime;
- 	ts->iowait_sleeptime = iowait_sleeptime;
-+	ts->idle_calls = idle_calls;
-+	ts->idle_sleeps = idle_sleeps;
- }
- #endif
- 
++	if (disk->flags & GENHD_FL_NO_PART) {
++		ret = -EINVAL;
++		goto out;
++	}
++
+ 	if (partition_overlaps(disk, start, length, -1)) {
+ 		ret = -EBUSY;
+ 		goto out;
+-- 
+2.43.0
+
 
 
 
