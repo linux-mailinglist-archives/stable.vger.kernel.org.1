@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-16910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F915840F00
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 301F7840E84
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56A0F1F25310
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63BF91C22FAA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0470016275D;
-	Mon, 29 Jan 2024 17:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0C611586D9;
+	Mon, 29 Jan 2024 17:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4W9BXll"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbQm4bRV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B77641586C5;
-	Mon, 29 Jan 2024 17:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07D015A49F;
+	Mon, 29 Jan 2024 17:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548369; cv=none; b=aHAdYSfVEomZHy3kvni3dERqiC3h8T25FoZknFCWTocSRE8bkTh/Gk3JACsppu8V/znbnoHZtTi5gSDUKP7ThkJpqhog7njfWa0bCGirFUWUWI3DgzteVfcsW2QpJ4Q1mMQ2oHEoh+THcvQaN4yYGDpugvgF7DDFpqQ4L0Wb3Mc=
+	t=1706548296; cv=none; b=qhC90erqgAt+YcXm0y/Co/p/qnXpz0T6rfQvx9ISl+SrS4YBYm+UXzIg9mO+3J0c1Kd9maOjdzKmLGUIQ/Gl9cvckjKMALfHcrsg5YFMZy4P8JZ74rPhAKe4B3e9t3kBjp2hyqR/F9dw/hAJR9vAc65tykZhbBldCnIpI3hIetg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548369; c=relaxed/simple;
-	bh=15fiWpRmpKzFokUdTX76aQ2x+VsnsfxwmHRNqhrzC2o=;
+	s=arc-20240116; t=1706548296; c=relaxed/simple;
+	bh=zFsfY2XHV2sWTyIbxQfCbXNMZSJhBiUc4rwcR+heyfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aiPf+jpKzT612xJjfOkCDyZWai57UrVyVKLHe5TiavxmhrgxXeSUXxeNNEZZCJHrr1khhRM5LvgtDSAxM9tajdlrI57wCFNiioPxijiBos90A01LbinhcB2TavZ8k4QgyiK7nydCzSdSm6QTbwMsZteT/uTaMdkxFOme41DPauE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4W9BXll; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F721C433C7;
-	Mon, 29 Jan 2024 17:12:49 +0000 (UTC)
+	 MIME-Version; b=k1L25A2wWApjN8LqwtXLWZQuZqutkp0ZyA28LiY1RcvXA7KkNlC2vHkJNnSEzx3EflU54HyjlchGspPnJ2Pl7VHuw5J4BeyLK16RLOJkbkFCYu8t2TC942Fbari802IYG6b0XGLlB9KWeGIMvz/FEJE5o8oWB6eiPTF0f/cbV0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbQm4bRV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DC1C433F1;
+	Mon, 29 Jan 2024 17:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548369;
-	bh=15fiWpRmpKzFokUdTX76aQ2x+VsnsfxwmHRNqhrzC2o=;
+	s=korg; t=1706548296;
+	bh=zFsfY2XHV2sWTyIbxQfCbXNMZSJhBiUc4rwcR+heyfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L4W9BXllNikgUJNpcxf67HQ2anzRp/9lVoCWx/ORG2WLrv7Ao1YUeMXzIEM3o4BDU
-	 yiSBUQtaWkYxFbxEfmNdwFNr9GtnZZ4bEvlXFZF2Z429RI1NKE4HRcJekZC/n58R/S
-	 tNL9nEl906MwRCc5N0oOMSacSG4aY2rLlKWhmua8=
+	b=xbQm4bRVY/j9jTD72KS9oZBd8APfxdtHjWhRZOyC//x1kPQJjNcNOrWz+2C7m7DiA
+	 3ELFfZ30S7y4lv4q+j+UpENYCO12tKUmifkhjVqis+THFvbdxbj6iujffcrkpzLorj
+	 Hed42LDz2evnTLW2vUTg5pM5SyeEwMoliHghcxd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: [PATCH 6.1 135/185] drm/tidss: Fix atomic_flush check
+	Feifei Xu <Feifei.Xu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 304/346] drm/amdgpu/gfx10: set UNORD_DISPATCH in compute MQDs
 Date: Mon, 29 Jan 2024 09:05:35 -0800
-Message-ID: <20240129170002.928928337@linuxfoundation.org>
+Message-ID: <20240129170025.389157822@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 95d4b471953411854f9c80b568da7fcf753f3801 upstream.
+[ Upstream commit 03ff6d7238b77e5fb2b85dc5fe01d2db9eb893bd ]
 
-tidss_crtc_atomic_flush() checks if the crtc is enabled, and if not,
-returns immediately as there's no reason to do any register changes.
+This needs to be set to 1 to avoid a potential deadlock in
+the GC 10.x and newer.  On GC 9.x and older, this needs
+to be set to 0.  This can lead to hangs in some mixed
+graphics and compute workloads.  Updated firmware is also
+required for AQL.
 
-However, the code checks for 'crtc->state->enable', which does not
-reflect the actual HW state. We should instead look at the
-'crtc->state->active' flag.
-
-This causes the tidss_crtc_atomic_flush() to proceed with the flush even
-if the active state is false, which then causes us to hit the
-WARN_ON(!crtc->state->event) check.
-
-Fix this by checking the active flag, and while at it, fix the related
-debug print which had "active" and "needs modeset" wrong way.
-
-Cc:  <stable@vger.kernel.org>
-Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-10-ac91b5ea35c0@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_crtc.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c           | 2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/tidss/tidss_crtc.c
-+++ b/drivers/gpu/drm/tidss/tidss_crtc.c
-@@ -170,13 +170,13 @@ static void tidss_crtc_atomic_flush(stru
- 	struct tidss_device *tidss = to_tidss(ddev);
- 	unsigned long flags;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index d63cab294883..ecb622b7f970 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -6589,7 +6589,7 @@ static int gfx_v10_0_compute_mqd_init(struct amdgpu_device *adev, void *m,
+ #ifdef __BIG_ENDIAN
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, ENDIAN_SWAP, 1);
+ #endif
+-	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, UNORD_DISPATCH, 0);
++	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, UNORD_DISPATCH, 1);
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, TUNNEL_DISPATCH,
+ 			    prop->allow_tunneling);
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, PRIV_STATE, 1);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
+index 8b7fed913526..22cbfa1bdadd 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
+@@ -170,6 +170,7 @@ static void update_mqd(struct mqd_manager *mm, void *mqd,
+ 	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
+ 	m->cp_hqd_pq_control |=
+ 			ffs(q->queue_size / sizeof(unsigned int)) - 1 - 1;
++	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
+ 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
  
--	dev_dbg(ddev->dev,
--		"%s: %s enabled %d, needs modeset %d, event %p\n", __func__,
--		crtc->name, drm_atomic_crtc_needs_modeset(crtc->state),
--		crtc->state->enable, crtc->state->event);
-+	dev_dbg(ddev->dev, "%s: %s is %sactive, %s modeset, event %p\n",
-+		__func__, crtc->name, crtc->state->active ? "" : "not ",
-+		drm_atomic_crtc_needs_modeset(crtc->state) ? "needs" : "doesn't need",
-+		crtc->state->event);
- 
- 	/* There is nothing to do if CRTC is not going to be enabled. */
--	if (!crtc->state->enable)
-+	if (!crtc->state->active)
- 		return;
- 
- 	/*
+ 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
+-- 
+2.43.0
+
 
 
 
