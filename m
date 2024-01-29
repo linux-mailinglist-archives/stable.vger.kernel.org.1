@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE04841099
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC08A840F45
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DF351F24938
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63CB5B253F5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C501476C7F;
-	Mon, 29 Jan 2024 17:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980831641A7;
+	Mon, 29 Jan 2024 17:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J3EB1Rr7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8KTYV3X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8471276C74;
-	Mon, 29 Jan 2024 17:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5743615D5C8;
+	Mon, 29 Jan 2024 17:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548652; cv=none; b=CXj8EvkDROJExerjuvSc/tFX2CO6ebaCxyXtgch1PTUuIEfXHoolVEmpb27uGt3UZ6u/GhwhluwfgkMGi0LS5MaPpJLdWWKyveV2s1ipoBr93oSkhoRwnHWiQ8BMw0KB988AcompVxEtIieKD+kg3g5+Pgw9k7vv1/V6wPcYzKk=
+	t=1706548412; cv=none; b=IatYOWkaVmqzuw1aG+NiW+7UnO9hS3h01en9tNUt9B7y7+L7w4/4oKp8ayIsTD2BFEHI5G/aaPto/gTceJm7CUdYNDHBpOH976bBB6X1G2Oi6I4Lo8qFESJeqXT/MtcRZlKI2KtYVZdwK+X6l8cPfXWyT5BuezoBnrUCU1aBht4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548652; c=relaxed/simple;
-	bh=LI5ah4K2JsWLNQph7YzNqxiahWyjMVH5Y+i9njoH6h8=;
+	s=arc-20240116; t=1706548412; c=relaxed/simple;
+	bh=najQxOC9B98PNddNE5huASBMgtlor42ofo2JYgr01Ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e/skFYnPjrT2ceB05p3IWFFHJTSPv9YuYpBMxOHgj2b8loqRU2hqa87G2zLkJ2q9UyApZSsOEjPVDU9E9BInL8Oz1AHXfsJISi6E34CSgQLYcZSTEZKk36Kd/4Ts1QF/gvkrHEBrp/zCKUVAJ1cFepqZXdRQX0x6ZHywI2Hl7JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J3EB1Rr7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1DCC433F1;
-	Mon, 29 Jan 2024 17:17:32 +0000 (UTC)
+	 MIME-Version; b=o4pucMePIF1+DwBlnGVjt/9qsXpZqUD7YmWCPRJf31AEuUQNc22idrFXcLYfolQ8lr2u6qjwg8VotEp8oRkcx1xCGgv8lLmlqkqvhqfzsyk1q+V/Hr8d5+9OhdT16g9+Ch+p9jKyKrHsTT7+hJH/iMNlppjQ041DTI79Y3T3BAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8KTYV3X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F60EC433F1;
+	Mon, 29 Jan 2024 17:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548652;
-	bh=LI5ah4K2JsWLNQph7YzNqxiahWyjMVH5Y+i9njoH6h8=;
+	s=korg; t=1706548412;
+	bh=najQxOC9B98PNddNE5huASBMgtlor42ofo2JYgr01Ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J3EB1Rr7MQv7Sf2HJ1JcD0wtY4+a50ASn8LSPi9ZyUClLMX0Gnn2+Q9a2TLsvxHJO
-	 yqVpSIaY04D0/f9aWZf3n9EaM+491JuzdkfZizb56WVFc9kx3en5ZlGhEVc+nO64Qv
-	 0OGEwbmJCk3/Tlz1xm5h82btqEpF4J4wFExVKqOU=
+	b=t8KTYV3X3thAOFWOah5zNrOz+0Dz1ebZnHoV6IrmNtmFr/y3m+EXYyOw0p5RFBYcd
+	 xQslx2kkTaAojaoZbFIZCcWJ9/5H5LyP/R7IhqewQn6WlYhP0UOhvQEclP6XCFJgkF
+	 qZ8Cjz0JmTwoj3hYIoeukR5UZWMOTtTk2jJdXqhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Feifei Xu <Feifei.Xu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 298/331] drm/amdgpu/gfx10: set UNORD_DISPATCH in compute MQDs
-Date: Mon, 29 Jan 2024 09:06:02 -0800
-Message-ID: <20240129170023.590657617@linuxfoundation.org>
+Subject: [PATCH 6.1 163/185] btrfs: zoned: optimize hint byte for zoned allocator
+Date: Mon, 29 Jan 2024 09:06:03 -0800
+Message-ID: <20240129170003.830455559@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit 03ff6d7238b77e5fb2b85dc5fe01d2db9eb893bd ]
+[ Upstream commit 02444f2ac26eae6385a65fcd66915084d15dffba ]
 
-This needs to be set to 1 to avoid a potential deadlock in
-the GC 10.x and newer.  On GC 9.x and older, this needs
-to be set to 0.  This can lead to hangs in some mixed
-graphics and compute workloads.  Updated firmware is also
-required for AQL.
+Writing sequentially to a huge file on btrfs on a SMR HDD revealed a
+decline of the performance (220 MiB/s to 30 MiB/s after 500 minutes).
 
-Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+The performance goes down because of increased latency of the extent
+allocation, which is induced by a traversing of a lot of full block groups.
+
+So, this patch optimizes the ffe_ctl->hint_byte by choosing a block group
+with sufficient size from the active block group list, which does not
+contain full block groups.
+
+After applying the patch, the performance is maintained well.
+
+Fixes: 2eda57089ea3 ("btrfs: zoned: implement sequential extent allocation")
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c           | 2 +-
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/extent-tree.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 34dc3d5bbf35..c2b9dfc6451d 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -6572,7 +6572,7 @@ static int gfx_v10_0_compute_mqd_init(struct amdgpu_device *adev, void *m,
- #ifdef __BIG_ENDIAN
- 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, ENDIAN_SWAP, 1);
- #endif
--	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, UNORD_DISPATCH, 0);
-+	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, UNORD_DISPATCH, 1);
- 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, TUNNEL_DISPATCH, 0);
- 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, PRIV_STATE, 1);
- 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, KMD_QUEUE, 1);
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
-index 8b7fed913526..22cbfa1bdadd 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v10.c
-@@ -170,6 +170,7 @@ static void update_mqd(struct mqd_manager *mm, void *mqd,
- 	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
- 	m->cp_hqd_pq_control |=
- 			ffs(q->queue_size / sizeof(unsigned int)) - 1 - 1;
-+	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
- 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index 2832abe3a984..0d2cc186974d 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -4220,6 +4220,24 @@ static int prepare_allocation_zoned(struct btrfs_fs_info *fs_info,
+ 		if (fs_info->data_reloc_bg)
+ 			ffe_ctl->hint_byte = fs_info->data_reloc_bg;
+ 		spin_unlock(&fs_info->relocation_bg_lock);
++	} else if (ffe_ctl->flags & BTRFS_BLOCK_GROUP_DATA) {
++		struct btrfs_block_group *block_group;
++
++		spin_lock(&fs_info->zone_active_bgs_lock);
++		list_for_each_entry(block_group, &fs_info->zone_active_bgs, active_bg_list) {
++			/*
++			 * No lock is OK here because avail is monotinically
++			 * decreasing, and this is just a hint.
++			 */
++			u64 avail = block_group->zone_capacity - block_group->alloc_offset;
++
++			if (block_group_bits(block_group, ffe_ctl->flags) &&
++			    avail >= ffe_ctl->num_bytes) {
++				ffe_ctl->hint_byte = block_group->start;
++				break;
++			}
++		}
++		spin_unlock(&fs_info->zone_active_bgs_lock);
+ 	}
  
- 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
+ 	return 0;
 -- 
 2.43.0
 
