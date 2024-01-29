@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-17282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6E684108D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B01840F3A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA95E285C30
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F34821F26DE4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D004015B990;
-	Mon, 29 Jan 2024 17:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97542164199;
+	Mon, 29 Jan 2024 17:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6+Qufjz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IoM9DKAd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA8815B98E;
-	Mon, 29 Jan 2024 17:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4957015AAD4;
+	Mon, 29 Jan 2024 17:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548644; cv=none; b=BCxUzXgyIKVsfpToeKlq44vpXc7RDv9N6cQbZKnoJJ1XUS5xzdZLsfRWPVPsCBaE9B2ClYjIJyk3iQhvnvOq0j3mCfrqWv4DLHLmMcrmAWwufacjQVBa9AkZQiXljXQ4hkqw42zD+dbX2osP1GhDXFvumzZRlUD+ooLr+JUrUZE=
+	t=1706548406; cv=none; b=Dt6cWKGWGv0Bz5/LbONj92BwwFz6x4wtdZeJNzz6VCl8nXPGsrqwJe1DJHrcqcsesMuj1yxpsrWA0mHRDO/ABHgrR6JkaYCivlzmsppvdMJMqNCBMu6HxULD2AV5lCDv6lJfiv8fnSkdU2mJp8K94CW0MEDSkFPS7d8074OxIkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548644; c=relaxed/simple;
-	bh=1TMyFn1WBlPMIjgzSHb3G3p576sL4UOM8o+iGF6uVLU=;
+	s=arc-20240116; t=1706548406; c=relaxed/simple;
+	bh=7e3N5DPfHPvV6+tt33hTzbMGYZp9qo21S3nzaUHlU6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DTYEvI57qPoPM6TV4N0Q2jlYcpItt0Pu3lThoZ6wGQZfLRVeVF5jVaelb2RTK/ZuLMssPOtHkWxXgXLrOoIigk5JzLth2UfDlIV0Py7VYPKQSQPrvYWSu4Zb0DK5039PYVlxdsel8Oige6Z0+ZwJFC4rKKetXlzWueUA9uqbSg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6+Qufjz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C8DC433F1;
-	Mon, 29 Jan 2024 17:17:23 +0000 (UTC)
+	 MIME-Version; b=haMWS3Q1ui9H12Pxi/3b7o0kyxNQUHgwqKyLVG+Vy+9b9o9rfQB6MVi8MkufYiL/XznWgdw11cLcQ2qPE0DutAwNgTKWaMA/A8k5YxwceCzU1E9ge/8tpJ8CFlFvX/BHTAAU2plcxuh3x8W28HsiuqS3jQEvSZuNFrewjD6hK/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IoM9DKAd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E6F2C433F1;
+	Mon, 29 Jan 2024 17:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548644;
-	bh=1TMyFn1WBlPMIjgzSHb3G3p576sL4UOM8o+iGF6uVLU=;
+	s=korg; t=1706548406;
+	bh=7e3N5DPfHPvV6+tt33hTzbMGYZp9qo21S3nzaUHlU6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6+Qufjz4zFlIYFpBxNdWtweYsVxZaW+AhsD1mbASbDdTsGjGW2DANlwoViSM0P15
-	 M6wMfpJWittYnkxwzkIQsRmQDglBHXK9wm3d2WJc0fUMcQSAJeoOUC9XCzGX7KPpSs
-	 pjDxI6N3sHYHy8DTDEOdyK+VhCchkhQlaN1UkP5A=
+	b=IoM9DKAdoJMwBde+ybxlgIz7NhTFVAkHO9lJp14vISLrW7+Y0hBci1CHcpdeQzr1H
+	 cJzh9uvfYjo3IpmYaXIsrcswF7LHYvfOQ2XOFTQMv8rBImhConUcpcCHX2FqGlx/3e
+	 qYt6CQz/DgZU484zAmDJgVUrk4ZU+qIizPvffkdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 321/331] spi: fix finalize message on error return
+	Randy Dunlap <rdunlap@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	John Ogness <john.ogness@linutronix.de>,
+	linux-serial@vger.kernel.org,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH 6.1 185/185] serial: core: fix kernel-doc for uart_port_unlock_irqrestore()
 Date: Mon, 29 Jan 2024 09:06:25 -0800
-Message-ID: <20240129170024.272557504@linuxfoundation.org>
+Message-ID: <20240129170004.526571865@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 8c2ae772fe08e33f3d7a83849e85539320701abd ]
+commit 29bff582b74ed0bdb7e6986482ad9e6799ea4d2f upstream.
 
-In __spi_pump_transfer_message(), the message was not finalized in the
-first error return as it is in the other error return paths. Not
-finalizing the message could cause anything waiting on the message to
-complete to hang forever.
+Fix the function name to avoid a kernel-doc warning:
 
-This adds the missing call to spi_finalize_current_message().
+include/linux/serial_core.h:666: warning: expecting prototype for uart_port_lock_irqrestore(). Prototype was for uart_port_unlock_irqrestore() instead
 
-Fixes: ae7d2346dc89 ("spi: Don't use the message queue if possible in spi_sync")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://msgid.link/r/20240125205312.3458541-2-dlechner@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b0af4bcb4946 ("serial: core: Provide port lock wrappers")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: John Ogness <john.ogness@linutronix.de>
+Cc: linux-serial@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Link: https://lore.kernel.org/r/20230927044128.4748-1-rdunlap@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/serial_core.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 399e81d37b3b..1e08cd571d21 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1624,6 +1624,10 @@ static int __spi_pump_transfer_message(struct spi_controller *ctlr,
- 			pm_runtime_put_noidle(ctlr->dev.parent);
- 			dev_err(&ctlr->dev, "Failed to power device: %d\n",
- 				ret);
-+
-+			msg->status = ret;
-+			spi_finalize_current_message(ctlr);
-+
- 			return ret;
- 		}
- 	}
--- 
-2.43.0
-
+--- a/include/linux/serial_core.h
++++ b/include/linux/serial_core.h
+@@ -653,7 +653,7 @@ static inline void uart_port_unlock_irq(
+ }
+ 
+ /**
+- * uart_port_lock_irqrestore - Unlock the UART port, restore interrupts
++ * uart_port_unlock_irqrestore - Unlock the UART port, restore interrupts
+  * @up:		Pointer to UART port structure
+  * @flags:	The saved interrupt flags for restore
+  */
 
 
 
