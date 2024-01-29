@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-17139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F389A840FFC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77834840E3A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 325DF1C2366B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA9961C23A49
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0182F73756;
-	Mon, 29 Jan 2024 17:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B19A15B2F7;
+	Mon, 29 Jan 2024 17:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adPjDH0Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AU9pKqYl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B399673748;
-	Mon, 29 Jan 2024 17:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4E715703E;
+	Mon, 29 Jan 2024 17:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548539; cv=none; b=RFeYKbQy7sZZgCISXXNtZVPeIZYD5PYVQum/Dw3uV8J0YCXrxP0jGiAXAh1AAC3RtfGajRkR6twiXtICl2KDTe+wdUNYmfiwGeJASupdCSES37Fas5NzgBs6xNaJgfwCqrYfx1BwbA97V13+K0fxTHA2b7DVIfFT8oHiIZgiqoM=
+	t=1706548246; cv=none; b=QkeF3oJ+Uw20selTGrRD2WG6w2TK2QF1SRFvJS+YfQwl17JrtD/S4gJMbl6LhOjAz328/Jz6hJphrtWNVdEo4m+fZ97KuEYBA7Gm8/77Xm/LJgjQmquHHi4KecEx4zBYUlf+S0eIPJci8gk/4cN6ZBOg06bA5Gx1EQSzWKP3MZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548539; c=relaxed/simple;
-	bh=yIsfTkso4vuNqt+h1Eh7AYhI+4hTyX5ErHaKF+pqVnk=;
+	s=arc-20240116; t=1706548246; c=relaxed/simple;
+	bh=N6LKTa+7SYkLs3coFQ3qllUDvz6fJJXHpLYh6nsHJZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6NmI6LxqdwL79UkwprYMRnN4pmztdVeDtbXjIyuofvxiDW1fIHpcY2F6VFNTABtaSLWi4av2jH/68rIK5AxU78ZxnJdeKYqxdWNBRR6eOGxTnDlggM80Qiz6b8nRx3YhB68+8akS8yeQduUEFvyhFoZ8E2cfgf+OfZohOBYnL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adPjDH0Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD12C433C7;
-	Mon, 29 Jan 2024 17:15:39 +0000 (UTC)
+	 MIME-Version; b=swWvQCFKnMgzcNBO1P0hMR2X7q2dZ9yuBaqX3PF6Ka1aWFxVS5uLMhUK2rDkLqMQrP4in7v5EV+lcfd4YUz4V9h4dfgd8V3y4bctXzKW2aDspTxgI3E9x5y+sleB6292hS4DHNbpwdXsFskxQ7DIOTFMe3gGceWI36+G5tMqMyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AU9pKqYl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3003C433C7;
+	Mon, 29 Jan 2024 17:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548539;
-	bh=yIsfTkso4vuNqt+h1Eh7AYhI+4hTyX5ErHaKF+pqVnk=;
+	s=korg; t=1706548245;
+	bh=N6LKTa+7SYkLs3coFQ3qllUDvz6fJJXHpLYh6nsHJZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=adPjDH0ZVMfEKxlQkinl+iVbTzBsa63Ize8rD6w58iVgfShoPMgOZ7Z8OZ+yZDQPa
-	 TCmtaJPbJh0YOILkZfa4M2Utw8I7DquAIqtXR6Qx0BlW4OaMIzqLhtKStesQ5FLB5b
-	 6yOxefn7Q9ErEMKt90eZnSKnnoD55BNloQhDF4O8=
+	b=AU9pKqYlSv3bYYicxxoylw6qvnzpPXtUpLWK3yI9wZCbrMJAnA4vgm6DojqjSejWj
+	 qIod3rtbnV2GUuAAKMi6+PZI8LqYETIaAz/PW7Z8OrxwUvv3+lObA4tGbFPYVCq9oK
+	 rQZDbTeFpICsCkZ642mnHGfupk99WWZKv9vcBZtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunjian Wang <wangyunjian@huawei.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/331] tun: fix missing dropped counter in tun_xdp_act
+	stable@kernel.org,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.1 043/185] media: videobuf2-dma-sg: fix vmap callback
 Date: Mon, 29 Jan 2024 09:04:03 -0800
-Message-ID: <20240129170020.140209493@linuxfoundation.org>
+Message-ID: <20240129165959.967299461@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunjian Wang <wangyunjian@huawei.com>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-[ Upstream commit 5744ba05e7c4bff8fec133dd0f9e51ddffba92f5 ]
+commit 608ca5a60ee47b48fec210aeb7a795a64eb5dcee upstream.
 
-The commit 8ae1aff0b331 ("tuntap: split out XDP logic") includes
-dropped counter for XDP_DROP, XDP_ABORTED, and invalid XDP actions.
-Unfortunately, that commit missed the dropped counter when error
-occurs during XDP_TX and XDP_REDIRECT actions. This patch fixes
-this issue.
+For dmabuf import users to be able to use the vaddr from another
+videobuf2-dma-sg source, the exporter needs to set a proper vaddr on
+vb2_dma_sg_dmabuf_ops_vmap callback. This patch adds vmap on map if
+buf->vaddr was not set.
 
-Fixes: 8ae1aff0b331 ("tuntap: split out XDP logic")
-Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@kernel.org
+Fixes: 7938f4218168 ("dma-buf-map: Rename to iosys-map")
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Acked-by: Tomasz Figa <tfiga@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/tun.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/media/common/videobuf2/videobuf2-dma-sg.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index afa5497f7c35..237fef557ba5 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -1630,13 +1630,17 @@ static int tun_xdp_act(struct tun_struct *tun, struct bpf_prog *xdp_prog,
- 	switch (act) {
- 	case XDP_REDIRECT:
- 		err = xdp_do_redirect(tun->dev, xdp, xdp_prog);
--		if (err)
-+		if (err) {
-+			dev_core_stats_rx_dropped_inc(tun->dev);
- 			return err;
-+		}
- 		break;
- 	case XDP_TX:
- 		err = tun_xdp_tx(tun->dev, xdp);
--		if (err < 0)
-+		if (err < 0) {
-+			dev_core_stats_rx_dropped_inc(tun->dev);
- 			return err;
-+		}
- 		break;
- 	case XDP_PASS:
- 		break;
--- 
-2.43.0
-
+--- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
++++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
+@@ -494,9 +494,15 @@ vb2_dma_sg_dmabuf_ops_end_cpu_access(str
+ static int vb2_dma_sg_dmabuf_ops_vmap(struct dma_buf *dbuf,
+ 				      struct iosys_map *map)
+ {
+-	struct vb2_dma_sg_buf *buf = dbuf->priv;
++	struct vb2_dma_sg_buf *buf;
++	void *vaddr;
+ 
+-	iosys_map_set_vaddr(map, buf->vaddr);
++	buf = dbuf->priv;
++	vaddr = vb2_dma_sg_vaddr(buf->vb, buf);
++	if (!vaddr)
++		return -EINVAL;
++
++	iosys_map_set_vaddr(map, vaddr);
+ 
+ 	return 0;
+ }
 
 
 
