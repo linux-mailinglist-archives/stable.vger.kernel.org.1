@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78472840DB8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 012E4840FE7
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A315282A7E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 342D91C21999
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308BC15CD4F;
-	Mon, 29 Jan 2024 17:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF87F1586DC;
+	Mon, 29 Jan 2024 17:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xeWoXcx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKuumiCD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C59159560;
-	Mon, 29 Jan 2024 17:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD1A157E68;
+	Mon, 29 Jan 2024 17:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548154; cv=none; b=QpZD4xNdfPxBpdfyh4SG9SFfzFX5fx4bkJ3NYvKOjNRzX8UTFYWhhGPgLKBC13UT8v/Bf9YzKz6aNT8AhKqgAMCCdnoPj5E563WfqHegQhP/7L9RxBYMM0drBSvbd/KOgDn/PeNGI5UAk92BqqewV6HIsqejkWoPb3eTMwwPWXU=
+	t=1706548525; cv=none; b=jkB4VJhsB3rIGdmUxRl50QVf8mUi7gaAKT1ygt3up8VOVi1eakQAKy/C0bIAaL8jf2NtFftZzTxhDt3QQfTYg3ueVjFqHTrK6NI2u3IEuoJ3pBzSAcR0/PPCW2u6K0KTKZGRR2A7W7RM6csad2MGGNBI00OsYO6IZrJ4H6liLIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548154; c=relaxed/simple;
-	bh=GdQPhP4gXf70go/x2fTITEDndicuddtXGgVAFmXBuMM=;
+	s=arc-20240116; t=1706548525; c=relaxed/simple;
+	bh=uz4OrzLB8oitLLYtyJ5AEjflHDUdcmPYJaWEyIgJSa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E5h0mfeC/V5IA1VhnVLsYqE2alD0snx3kxij9txJGIV6ANVnKgOarl/jLgwwXty1WtiRHGtNTMTvBUq8xJVHtZrVXkfxQw6HmQNq+CPJW5kbchee+g638BQeaB3A981eUtq2xZctTJvO1aB1atUu2TkPEK4p7VLfJHkW3h1OudM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xeWoXcx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AADD7C433C7;
-	Mon, 29 Jan 2024 17:09:13 +0000 (UTC)
+	 MIME-Version; b=TmeG64VBH/mf/htfFVBe8XwmmIo5JTYnlCXc/+fS+Kv+QqwpfWpzlvQJruEe9tqvAVGTjAmtH+xp6zvvCw8hsTnI2krw3pgrc/by8dQ0lGQ/RkHTq80NdRv8tHzBL3Qj6LB0iP+rE6tBf91EIDa2Nps/MeKx46uWA/L9xKQGCfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKuumiCD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78893C433F1;
+	Mon, 29 Jan 2024 17:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548153;
-	bh=GdQPhP4gXf70go/x2fTITEDndicuddtXGgVAFmXBuMM=;
+	s=korg; t=1706548525;
+	bh=uz4OrzLB8oitLLYtyJ5AEjflHDUdcmPYJaWEyIgJSa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1xeWoXcxtAb3s1UwDxwLOAeioHAZKg+vSJvfNlajwDdt6ej2/GqYZOs5F9e6A2GYu
-	 VyyygSQN/Np0NxVLoixSRBxEaxjuyPwpcX7JCvBAJNHnjkEPJ4+/PUEw4M3+Xrz/h1
-	 tBQdynqRUP4skaPP1zrkReq2U9XI6IoNFx1AnyNY=
+	b=IKuumiCDvlK0m9Mqv2anQc9e9kq6BPqze+6KUexULcgW4Iv/hgaurS6F1L+hKk71e
+	 il/uSFK2fP2kMHjykemV8W8vhQBMzMLsKekoWJJItZUkKmysUX2lo2rFrI2ElzogPu
+	 UgL0VGTVBUNUWuAfy2mFL25MFZwdxyn6UlXj6WXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 191/346] net/mlx5: DR, Use the right GVMI number for drop action
-Date: Mon, 29 Jan 2024 09:03:42 -0800
-Message-ID: <20240129170022.019844979@linuxfoundation.org>
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 159/331] bpf: widening for callback iterators
+Date: Mon, 29 Jan 2024 09:03:43 -0800
+Message-ID: <20240129170019.584040644@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 5665954293f13642f9c052ead83c1e9d8cff186f ]
+commit cafe2c21508a38cdb3ed22708842e957b2572c3e upstream.
 
-When FW provides ICM addresses for drop RX/TX, the provided capability
-is 64 bits that contain its GVMI as well as the ICM address itself.
-In case of TX DROP this GVMI is different from the GVMI that the
-domain is operating on.
+Callbacks are similar to open coded iterators, so add imprecise
+widening logic for callback body processing. This makes callback based
+loops behave identically to open coded iterators, e.g. allowing to
+verify programs like below:
 
-This patch fixes the action to use these GVMI IDs, as provided by FW.
+  struct ctx { u32 i; };
+  int cb(u32 idx, struct ctx* ctx)
+  {
+          ++ctx->i;
+          return 0;
+  }
+  ...
+  struct ctx ctx = { .i = 0 };
+  bpf_loop(100, cb, &ctx, 0);
+  ...
 
-Fixes: 9db810ed2d37 ("net/mlx5: DR, Expose steering action functionality")
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20231121020701.26440-9-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/verifier.c |   24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
-index e3ec559369fa..74fc318b5027 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
-@@ -788,6 +788,7 @@ int mlx5dr_actions_build_ste_arr(struct mlx5dr_matcher *matcher,
- 		switch (action_type) {
- 		case DR_ACTION_TYP_DROP:
- 			attr.final_icm_addr = nic_dmn->drop_icm_addr;
-+			attr.hit_gvmi = nic_dmn->drop_icm_addr >> 48;
- 			break;
- 		case DR_ACTION_TYP_FT:
- 			dest_action = action;
--- 
-2.43.0
-
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -9595,9 +9595,10 @@ static bool in_rbtree_lock_required_cb(s
+ 
+ static int prepare_func_exit(struct bpf_verifier_env *env, int *insn_idx)
+ {
+-	struct bpf_verifier_state *state = env->cur_state;
++	struct bpf_verifier_state *state = env->cur_state, *prev_st;
+ 	struct bpf_func_state *caller, *callee;
+ 	struct bpf_reg_state *r0;
++	bool in_callback_fn;
+ 	int err;
+ 
+ 	callee = state->frame[state->curframe];
+@@ -9659,7 +9660,8 @@ static int prepare_func_exit(struct bpf_
+ 	 * there function call logic would reschedule callback visit. If iteration
+ 	 * converges is_state_visited() would prune that visit eventually.
+ 	 */
+-	if (callee->in_callback_fn)
++	in_callback_fn = callee->in_callback_fn;
++	if (in_callback_fn)
+ 		*insn_idx = callee->callsite;
+ 	else
+ 		*insn_idx = callee->callsite + 1;
+@@ -9673,6 +9675,24 @@ static int prepare_func_exit(struct bpf_
+ 	/* clear everything in the callee */
+ 	free_func_state(callee);
+ 	state->frame[state->curframe--] = NULL;
++
++	/* for callbacks widen imprecise scalars to make programs like below verify:
++	 *
++	 *   struct ctx { int i; }
++	 *   void cb(int idx, struct ctx *ctx) { ctx->i++; ... }
++	 *   ...
++	 *   struct ctx = { .i = 0; }
++	 *   bpf_loop(100, cb, &ctx, 0);
++	 *
++	 * This is similar to what is done in process_iter_next_call() for open
++	 * coded iterators.
++	 */
++	prev_st = in_callback_fn ? find_prev_entry(env, state, *insn_idx) : NULL;
++	if (prev_st) {
++		err = widen_imprecise_scalars(env, prev_st, state);
++		if (err)
++			return err;
++	}
+ 	return 0;
+ }
+ 
 
 
 
