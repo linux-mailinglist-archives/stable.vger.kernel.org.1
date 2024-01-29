@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-16583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44203840D92
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA07840FC3
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF54528D09B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72AE51C20ADD
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDCB615B97B;
-	Mon, 29 Jan 2024 17:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2892715DBDD;
+	Mon, 29 Jan 2024 17:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkc8gkXt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aW6KzP8f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7E415B96C;
-	Mon, 29 Jan 2024 17:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF83157E61;
+	Mon, 29 Jan 2024 17:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548127; cv=none; b=h6fNeE1gLFv4H70DAu7oIsV/dCTK48JoeO8ALgrJrJP1lcTOPFLPIEFw/q5FlV7IJRMoUWTeQ+YNB2hM7BqJmqvdL0if+w1qVDHqeOXP7bzqepC+mP71FOpQNux/n09ylQHWm71snR9PF2YC09A+5w7FRWtahtllUfqOMXfpq3U=
+	t=1706548497; cv=none; b=hD5zes/UYQyl/5wAGLazEuaBn4JlykBVGnZ1TMBdxUmB33CKLlQc2shX5/usIUWNKNswJZUI0U7CvorEY0c+umJ5KufYjZVEBvq2WXHq5Xrr+FfzqKKvzk7/lA0YFuixNazSpIU3hTOrSU3zKpUh0DHa9ujbEFLFz8Z+MKj/gD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548127; c=relaxed/simple;
-	bh=fZ+6iLCO4TgWlfRDO74m3xyJRTi9/eHSeWHXqZEOkFY=;
+	s=arc-20240116; t=1706548497; c=relaxed/simple;
+	bh=XwisTrm34uuJSgLy7TQNgnrR9duND0UFg0VxiwYKCXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKTaIkwm14SmVizFkRZRrLzKUflyUtU95WGv7kRucNG2b/r+MugKDknvpUUozjgJ1KkuIfP7wdo0I0KcTabBjIMYY7mavhCmtZGaR8qSi7vy4lBb7wcc65/bVJPmVMPxUp05aGSQLm+F2Qgsa72Xl8dwX74wQ/kdMXPlZWDOYN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkc8gkXt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AC7C433C7;
-	Mon, 29 Jan 2024 17:08:47 +0000 (UTC)
+	 MIME-Version; b=mAg0UwF+UKVDxy7jrZbLcFrO9RhkF0mBRpBB+lsgiQ4d678+GeSue96wnaIj+N5H5y4tvnDKypG7n7AdQHBPpiBLOoeOO4rU4cJpy6NmhSXmY5wba0gBhywY3NUinid0QZaSYRLmt4H7cbYrBywPKNGYA7BVQLmyKtjeY2UbrSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aW6KzP8f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C8EC433F1;
+	Mon, 29 Jan 2024 17:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548127;
-	bh=fZ+6iLCO4TgWlfRDO74m3xyJRTi9/eHSeWHXqZEOkFY=;
+	s=korg; t=1706548497;
+	bh=XwisTrm34uuJSgLy7TQNgnrR9duND0UFg0VxiwYKCXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zkc8gkXtFrITJai3nbVswIn89wsV91/fI3UeUTyDoND/9Ut/TGgdcWU3tzPDC8yBI
-	 PLw0XPcadwRgDEMTul8mrQ41hQK4Y+u1wrNnJ7gTNMupPN8SCz/QggkWDUT32bPlFV
-	 PrNdBtvwSybkP/Rha5gqaNECWf/hl+eT+uw7Dq/I=
+	b=aW6KzP8fefAMNl8MajvNZ6Z1d1+5Gsd+7YEV6hiFlrPyT5sYqL40fNlb+Driqy+FV
+	 NVK3ukEZgT/pYN2DDkmG0KoB5+i5bRzQFFGESBd0D6vhPczq/0D1EhwSEQ5uLRbDgK
+	 0z/EEnYw4WS3bmrktinDGS8czepU455z599xVdgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 156/346] udp: fix busy polling
-Date: Mon, 29 Jan 2024 09:03:07 -0800
-Message-ID: <20240129170020.995819337@linuxfoundation.org>
+	Donet Tom <donettom@linux.vnet.ibm.com>,
+	Geetika Moolchandani <geetika@linux.ibm.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 124/331] selftests: mm: hugepage-vmemmap fails on 64K page size systems
+Date: Mon, 29 Jan 2024 09:03:08 -0800
+Message-ID: <20240129170018.563707034@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,139 +63,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Donet Tom <donettom@linux.vnet.ibm.com>
 
-[ Upstream commit a54d51fb2dfb846aedf3751af501e9688db447f5 ]
+commit 00bcfcd47a52f50f07a2e88d730d7931384cb073 upstream.
 
-Generic sk_busy_loop_end() only looks at sk->sk_receive_queue
-for presence of packets.
+The kernel sefltest mm/hugepage-vmemmap fails on architectures which has
+different page size other than 4K.  In hugepage-vmemmap page size used is
+4k so the pfn calculation will go wrong on systems which has different
+page size .The length of MAP_HUGETLB memory must be hugepage aligned but
+in hugepage-vmemmap map length is 2M so this will not get aligned if the
+system has differnet hugepage size.
 
-Problem is that for UDP sockets after blamed commit, some packets
-could be present in another queue: udp_sk(sk)->reader_queue
+Added  psize() to get the page size and default_huge_page_size() to
+get the default hugepage size at run time, hugepage-vmemmap test pass
+on powerpc with 64K page size and x86 with 4K page size.
 
-In some cases, a busy poller could spin until timeout expiration,
-even if some packets are available in udp_sk(sk)->reader_queue.
+Result on powerpc without patch (page size 64K)
+*# ./hugepage-vmemmap
+Returned address is 0x7effff000000 whose pfn is 0
+Head page flags (100000000) is invalid
+check_page_flags: Invalid argument
+*#
 
-v3: - make sk_busy_loop_end() nicer (Willem)
+Result on powerpc with patch (page size 64K)
+*# ./hugepage-vmemmap
+Returned address is 0x7effff000000 whose pfn is 600
+*#
 
-v2: - add a READ_ONCE(sk->sk_family) in sk_is_inet() to avoid KCSAN splats.
-    - add a sk_is_inet() check in sk_is_udp() (Willem feedback)
-    - add a sk_is_inet() check in sk_is_tcp().
+Result on x86 with patch (page size 4K)
+*# ./hugepage-vmemmap
+Returned address is 0x7fc7c2c00000 whose pfn is 1dac00
+*#
 
-Fixes: 2276f58ac589 ("udp: use a separate rx queue for packet reception")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/3b3a3ae37ba21218481c482a872bbf7526031600.1704865754.git.donettom@linux.vnet.ibm.com
+Fixes: b147c89cd429 ("selftests: vm: add a hugetlb test case")
+Signed-off-by: Donet Tom <donettom@linux.vnet.ibm.com>
+Reported-by: Geetika Moolchandani <geetika@linux.ibm.com>
+Tested-by: Geetika Moolchandani <geetika@linux.ibm.com>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/skmsg.h   |  6 ------
- include/net/inet_sock.h |  5 -----
- include/net/sock.h      | 18 +++++++++++++++++-
- net/core/sock.c         | 11 +++++++++--
- 4 files changed, 26 insertions(+), 14 deletions(-)
+ tools/testing/selftests/mm/hugepage-vmemmap.c |   29 ++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
-index c953b8c0d2f4..bd4418377bac 100644
---- a/include/linux/skmsg.h
-+++ b/include/linux/skmsg.h
-@@ -500,12 +500,6 @@ static inline bool sk_psock_strp_enabled(struct sk_psock *psock)
- 	return !!psock->saved_data_ready;
- }
- 
--static inline bool sk_is_udp(const struct sock *sk)
--{
--	return sk->sk_type == SOCK_DGRAM &&
--	       sk->sk_protocol == IPPROTO_UDP;
--}
+--- a/tools/testing/selftests/mm/hugepage-vmemmap.c
++++ b/tools/testing/selftests/mm/hugepage-vmemmap.c
+@@ -10,10 +10,7 @@
+ #include <unistd.h>
+ #include <sys/mman.h>
+ #include <fcntl.h>
 -
- #if IS_ENABLED(CONFIG_NET_SOCK_MSG)
- 
- #define BPF_F_STRPARSER	(1UL << 1)
-diff --git a/include/net/inet_sock.h b/include/net/inet_sock.h
-index 74db6d97cae1..8d5fe15b0f6f 100644
---- a/include/net/inet_sock.h
-+++ b/include/net/inet_sock.h
-@@ -310,11 +310,6 @@ static inline unsigned long inet_cmsg_flags(const struct inet_sock *inet)
- #define inet_assign_bit(nr, sk, val)		\
- 	assign_bit(INET_FLAGS_##nr, &inet_sk(sk)->inet_flags, val)
- 
--static inline bool sk_is_inet(struct sock *sk)
--{
--	return sk->sk_family == AF_INET || sk->sk_family == AF_INET6;
--}
+-#define MAP_LENGTH		(2UL * 1024 * 1024)
 -
- /**
-  * sk_to_full_sk - Access to a full socket
-  * @sk: pointer to a socket
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 0201136b0b9c..f9a9f61fa122 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2794,9 +2794,25 @@ static inline void skb_setup_tx_timestamp(struct sk_buff *skb, __u16 tsflags)
- 			   &skb_shinfo(skb)->tskey);
- }
+-#define PAGE_SIZE		4096
++#include "vm_util.h"
  
-+static inline bool sk_is_inet(const struct sock *sk)
-+{
-+	int family = READ_ONCE(sk->sk_family);
+ #define PAGE_COMPOUND_HEAD	(1UL << 15)
+ #define PAGE_COMPOUND_TAIL	(1UL << 16)
+@@ -39,6 +36,9 @@
+ #define MAP_FLAGS		(MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB)
+ #endif
+ 
++static size_t pagesize;
++static size_t maplength;
 +
-+	return family == AF_INET || family == AF_INET6;
-+}
-+
- static inline bool sk_is_tcp(const struct sock *sk)
+ static void write_bytes(char *addr, size_t length)
  {
--	return sk->sk_type == SOCK_STREAM && sk->sk_protocol == IPPROTO_TCP;
-+	return sk_is_inet(sk) &&
-+	       sk->sk_type == SOCK_STREAM &&
-+	       sk->sk_protocol == IPPROTO_TCP;
-+}
-+
-+static inline bool sk_is_udp(const struct sock *sk)
-+{
-+	return sk_is_inet(sk) &&
-+	       sk->sk_type == SOCK_DGRAM &&
-+	       sk->sk_protocol == IPPROTO_UDP;
- }
+ 	unsigned long i;
+@@ -56,7 +56,7 @@ static unsigned long virt_to_pfn(void *a
+ 	if (fd < 0)
+ 		return -1UL;
  
- static inline bool sk_is_stream_unix(const struct sock *sk)
-diff --git a/net/core/sock.c b/net/core/sock.c
-index d02534c77413..e5d43a068f8e 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -107,6 +107,7 @@
- #include <linux/interrupt.h>
- #include <linux/poll.h>
- #include <linux/tcp.h>
-+#include <linux/udp.h>
- #include <linux/init.h>
- #include <linux/highmem.h>
- #include <linux/user_namespace.h>
-@@ -4148,8 +4149,14 @@ bool sk_busy_loop_end(void *p, unsigned long start_time)
- {
- 	struct sock *sk = p;
+-	lseek(fd, (unsigned long)addr / PAGE_SIZE * sizeof(pagemap), SEEK_SET);
++	lseek(fd, (unsigned long)addr / pagesize * sizeof(pagemap), SEEK_SET);
+ 	read(fd, &pagemap, sizeof(pagemap));
+ 	close(fd);
  
--	return !skb_queue_empty_lockless(&sk->sk_receive_queue) ||
--	       sk_busy_loop_timeout(sk, start_time);
-+	if (!skb_queue_empty_lockless(&sk->sk_receive_queue))
-+		return true;
+@@ -86,7 +86,7 @@ static int check_page_flags(unsigned lon
+ 	 * this also verifies kernel has correctly set the fake page_head to tail
+ 	 * while hugetlb_free_vmemmap is enabled.
+ 	 */
+-	for (i = 1; i < MAP_LENGTH / PAGE_SIZE; i++) {
++	for (i = 1; i < maplength / pagesize; i++) {
+ 		read(fd, &pageflags, sizeof(pageflags));
+ 		if ((pageflags & TAIL_PAGE_FLAGS) != TAIL_PAGE_FLAGS ||
+ 		    (pageflags & HEAD_PAGE_FLAGS) == HEAD_PAGE_FLAGS) {
+@@ -106,18 +106,25 @@ int main(int argc, char **argv)
+ 	void *addr;
+ 	unsigned long pfn;
+ 
+-	addr = mmap(MAP_ADDR, MAP_LENGTH, PROT_READ | PROT_WRITE, MAP_FLAGS, -1, 0);
++	pagesize  = psize();
++	maplength = default_huge_page_size();
++	if (!maplength) {
++		printf("Unable to determine huge page size\n");
++		exit(1);
++	}
 +
-+	if (sk_is_udp(sk) &&
-+	    !skb_queue_empty_lockless(&udp_sk(sk)->reader_queue))
-+		return true;
-+
-+	return sk_busy_loop_timeout(sk, start_time);
- }
- EXPORT_SYMBOL(sk_busy_loop_end);
- #endif /* CONFIG_NET_RX_BUSY_POLL */
--- 
-2.43.0
-
++	addr = mmap(MAP_ADDR, maplength, PROT_READ | PROT_WRITE, MAP_FLAGS, -1, 0);
+ 	if (addr == MAP_FAILED) {
+ 		perror("mmap");
+ 		exit(1);
+ 	}
+ 
+ 	/* Trigger allocation of HugeTLB page. */
+-	write_bytes(addr, MAP_LENGTH);
++	write_bytes(addr, maplength);
+ 
+ 	pfn = virt_to_pfn(addr);
+ 	if (pfn == -1UL) {
+-		munmap(addr, MAP_LENGTH);
++		munmap(addr, maplength);
+ 		perror("virt_to_pfn");
+ 		exit(1);
+ 	}
+@@ -125,13 +132,13 @@ int main(int argc, char **argv)
+ 	printf("Returned address is %p whose pfn is %lx\n", addr, pfn);
+ 
+ 	if (check_page_flags(pfn) < 0) {
+-		munmap(addr, MAP_LENGTH);
++		munmap(addr, maplength);
+ 		perror("check_page_flags");
+ 		exit(1);
+ 	}
+ 
+ 	/* munmap() length of MAP_HUGETLB memory must be hugepage aligned */
+-	if (munmap(addr, MAP_LENGTH)) {
++	if (munmap(addr, maplength)) {
+ 		perror("munmap");
+ 		exit(1);
+ 	}
 
 
 
