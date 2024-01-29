@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-17026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC2B840F87
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5E0840D56
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 007E6B231D0
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C6481F2C544
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377186F067;
-	Mon, 29 Jan 2024 17:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8221615B10B;
+	Mon, 29 Jan 2024 17:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFOyvqxX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ss96PoN6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E4A6F063;
-	Mon, 29 Jan 2024 17:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328C7159580;
+	Mon, 29 Jan 2024 17:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548455; cv=none; b=KL2eQrmrNAfYfzikToJoHMIRiq3YxerHVn71mC2Tqc1LOTjaNvlwaCo3XClHaH/W9xmAhzmrIxw3I9rV2mM57Dk7es5QLlMFt6RA+ZuyenRVbDlH0eO/JWBtur6j9PV3fovp8wxxg+LQbKd14Q1y3ph6sSExX+Q/XLwff7Zhe+0=
+	t=1706548086; cv=none; b=j7joW3Px7XSgNTecn1gNjDpRjdwH69ZwR4VD8w8RePwmh+Q2D1R3BoUkbw2IfdHE5mfA7pCTX15KqNR03TF1yuF8SwF6wCIsQaQUUvlNNDyXkLw/BaGV5ZUIcBTEX7dDebal6PVusDRhXniKVHTgD1Q9j/tVeFWgP4DN6QSeFKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548455; c=relaxed/simple;
-	bh=2nU97iMZ27ZGM2ZT3RYPPdIIi6IPN1ci7yfAiBDXR8E=;
+	s=arc-20240116; t=1706548086; c=relaxed/simple;
+	bh=Y3GDXyHc+4mF04UrLcWbKawKL0bneocYnVAnRpr1Eso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RV/d2wAsYjuUnGyWyMR34xS0Wk9Be6/juSa3+SabsFSjCmnlDrV6Mt/urvG3IK79limHEVItIH/ReSk+WWMYb9+5b95XtloMYNXF+dXNxf2UFhL/RjtHjZKGM6ORe56ifvA175qkvmKex3IVvLooJ7531bu/03OHoGaDQdTPSvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFOyvqxX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F43C433C7;
-	Mon, 29 Jan 2024 17:14:14 +0000 (UTC)
+	 MIME-Version; b=JTEy0W/zzDVbVibiki73CU0Xjyt9+ogHejrTp1Bc/LE6qfKOyLDqdG0GgvCqxDKoE7lGVYHlRwnrEkrNHJyd5Bh7nMxMEm+52+KWNH/uX2g5PbcjilctYXX6ClugxvgZTOMerRXh1KGLstu3wCY5zYSp8kELiWQo9KEQegsvRtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ss96PoN6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE393C43601;
+	Mon, 29 Jan 2024 17:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548454;
-	bh=2nU97iMZ27ZGM2ZT3RYPPdIIi6IPN1ci7yfAiBDXR8E=;
+	s=korg; t=1706548086;
+	bh=Y3GDXyHc+4mF04UrLcWbKawKL0bneocYnVAnRpr1Eso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TFOyvqxXIsWLzVUi9NCNErKz82mOSxZBH0U/3LLg8TwfgvL1whZ9K6QX8ZgD0VJqN
-	 TGI6aD5Oz2sS20l273kAhH94upxDWUXnQjq4euwF8BEGk5pRdn9GN/DjtvmMPbQRY5
-	 nAZT3ncsuPB3TqN5FLJANSu4X5ziobSo4Esu08jc=
+	b=ss96PoN6NB/wNWLccwBufgvqH4rDmo3GvwUd8B4SKwwDLOgFy1HT1je0G5SzsRpyZ
+	 i785mGjeGzSKmNjvJROgaTT35BNtHXhllVt5xCt2Fx6+2Sv/BkamgSLhLp/psnlEBr
+	 yTX6gRsqxIqJVfIP0PLzvQ5GhvdgnL5rAprNEJjo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.6 066/331] mips: Fix max_mapnr being uninitialized on early stages
-Date: Mon, 29 Jan 2024 09:02:10 -0800
-Message-ID: <20240129170016.861537133@linuxfoundation.org>
+	Zheng Wang <zyytlz.wz@163.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH 6.7 100/346] media: mtk-jpeg: Fix timeout schedule error in mtk_jpegdec_worker.
+Date: Mon, 29 Jan 2024 09:02:11 -0800
+Message-ID: <20240129170019.342163042@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Serge Semin <fancer.lancer@gmail.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-commit e1a9ae45736989c972a8d1c151bc390678ae6205 upstream.
+commit 38e1857933def4b3fafc28cc34ff3bbc84cad2c3 upstream.
 
-max_mapnr variable is utilized in the pfn_valid() method in order to
-determine the upper PFN space boundary. Having it uninitialized
-effectively makes any PFN passed to that method invalid. That in its turn
-causes the kernel mm-subsystem occasion malfunctions even after the
-max_mapnr variable is actually properly updated. For instance,
-pfn_valid() is called in the init_unavailable_range() method in the
-framework of the calls-chain on MIPS:
-setup_arch()
-+-> paging_init()
-    +-> free_area_init()
-        +-> memmap_init()
-            +-> memmap_init_zone_range()
-                +-> init_unavailable_range()
+In mtk_jpegdec_worker, if error occurs in mtk_jpeg_set_dec_dst, it
+will start the timeout worker and invoke v4l2_m2m_job_finish at
+the same time. This will break the logic of design for there should
+be only one function to call v4l2_m2m_job_finish. But now the timeout
+handler and mtk_jpegdec_worker will both invoke it.
 
-Since pfn_valid() always returns "false" value before max_mapnr is
-initialized in the mem_init() method, any flatmem page-holes will be left
-in the poisoned/uninitialized state including the IO-memory pages. Thus
-any further attempts to map/remap the IO-memory by using MMU may fail.
-In particular it happened in my case on attempt to map the SRAM region.
-The kernel bootup procedure just crashed on the unhandled unaligned access
-bug raised in the __update_cache() method:
+Fix it by start the worker only if mtk_jpeg_set_dec_dst successfully
+finished.
 
-> Unhandled kernel unaligned access[#1]:
-> CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc1-XXX-dirty #2056
-> ...
-> Call Trace:
-> [<8011ef9c>] __update_cache+0x88/0x1bc
-> [<80385944>] ioremap_page_range+0x110/0x2a4
-> [<80126948>] ioremap_prot+0x17c/0x1f4
-> [<80711b80>] __devm_ioremap+0x8c/0x120
-> [<80711e0c>] __devm_ioremap_resource+0xf4/0x218
-> [<808bf244>] sram_probe+0x4f4/0x930
-> [<80889d20>] platform_probe+0x68/0xec
-> ...
-
-Let's fix the problem by initializing the max_mapnr variable as soon as
-the required data is available. In particular it can be done right in the
-paging_init() method before free_area_init() is called since all the PFN
-zone boundaries have already been calculated by that time.
-
+Fixes: da4ede4b7fd6 ("media: mtk-jpeg: move data/code inside CONFIG_OF blocks")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/mm/init.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -422,7 +422,12 @@ void __init paging_init(void)
- 		       (highend_pfn - max_low_pfn) << (PAGE_SHIFT - 10));
- 		max_zone_pfns[ZONE_HIGHMEM] = max_low_pfn;
- 	}
-+
-+	max_mapnr = highend_pfn ? highend_pfn : max_low_pfn;
-+#else
-+	max_mapnr = max_low_pfn;
- #endif
-+	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
+--- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
++++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+@@ -1749,9 +1749,6 @@ retry_select:
+ 	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
+ 	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
  
- 	free_area_init(max_zone_pfns);
- }
-@@ -458,13 +463,6 @@ void __init mem_init(void)
- 	 */
- 	BUILD_BUG_ON(IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT));
- 
--#ifdef CONFIG_HIGHMEM
--	max_mapnr = highend_pfn ? highend_pfn : max_low_pfn;
--#else
--	max_mapnr = max_low_pfn;
--#endif
--	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
+-	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
+-			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
 -
- 	maar_init();
- 	memblock_free_all();
- 	setup_zero_pages();	/* Setup zeroed pages.  */
+ 	mtk_jpeg_set_dec_src(ctx, &src_buf->vb2_buf, &bs);
+ 	if (mtk_jpeg_set_dec_dst(ctx,
+ 				 &jpeg_src_buf->dec_param,
+@@ -1761,6 +1758,9 @@ retry_select:
+ 		goto setdst_end;
+ 	}
+ 
++	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
++			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
++
+ 	spin_lock_irqsave(&comp_jpeg[hw_id]->hw_lock, flags);
+ 	ctx->total_frame_num++;
+ 	mtk_jpeg_dec_reset(comp_jpeg[hw_id]->reg_base);
 
 
 
