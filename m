@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-16586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650D3840D95
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E0A840FB4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17F2B1F2CEFF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDCD71F212AC
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99A915B986;
-	Mon, 29 Jan 2024 17:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23DD3157059;
+	Mon, 29 Jan 2024 17:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzysQdo7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXx9FAWs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A801B15703D;
-	Mon, 29 Jan 2024 17:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FEC6FE01;
+	Mon, 29 Jan 2024 17:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548129; cv=none; b=UNeyA230iszm/73TTImokilKAsN9l03nuYNjCGuYmMrYtcFWkMLupdCrnb4xvwZ/fJr4jPwIZ0Pt7gJMuwtH3SSpgO5wNConD7ap/nqZ6hZhaA1Bc/p/4s9OJ+cnV5RqeshBV7pCtKDagJboTfq4pvGqfa64yxB43N/Rvc4QKi4=
+	t=1706548486; cv=none; b=GHFvIXRpWzMEPnga7oFVQrzL1+uWBAXMpSlZGDt7Ee/uRHFtGgsu6Z/jOcwjNtyUI5Yx8ZJLg1HsSpbdyZ4IWNjxMPaozrqxu4dNJF3M6k/Dkaa9mq83se2fOjpBikEYP8CKp4HgXrekRX/VcN9BmscMI+G7SRSSfEvoJ49JA7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548129; c=relaxed/simple;
-	bh=ksfPhhVaNGK/khoobvqi3NbeDFI/Mxc+M4Sk5BBz98c=;
+	s=arc-20240116; t=1706548486; c=relaxed/simple;
+	bh=qK8gZYjUjNvg0qSItyJnL9eOmJpQK0cEsgq5wnjiozA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Olm5vrshOmo+sZpWvE/Mfqx9+tlkAKqOu/dwF4FMa8WX6rn1rdiWQcw9omLlH7TWhPZa0kSp30oWtWt1yI97XXfqjht+Mz/sFTRkpAniPDb6arNp2K+F8qLTaEZrBg876S5/RoloxZWKQ6IX9/FXtH+OwfR8n5BG/t9fZyitUIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzysQdo7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700A8C433C7;
-	Mon, 29 Jan 2024 17:08:49 +0000 (UTC)
+	 MIME-Version; b=s4d3EPIoxDyuFx/sXUPsZVkopXpIK+teThj7J7MsgSbSsGq0qxKQERtRKAen/G+2brh2OkdJjomVsTBE4uwNMnqgqWvQi9VxJ2wtMRdy9QcuGKx1EWtRvRdtsX+dUdis3AB5ylQIG2EhVJd6tJmn/1ITowwZaoHVxzAj23lu4l4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXx9FAWs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F288C43390;
+	Mon, 29 Jan 2024 17:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548129;
-	bh=ksfPhhVaNGK/khoobvqi3NbeDFI/Mxc+M4Sk5BBz98c=;
+	s=korg; t=1706548486;
+	bh=qK8gZYjUjNvg0qSItyJnL9eOmJpQK0cEsgq5wnjiozA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DzysQdo73Xz2U7SbbPTIUUu1+zvohZXpOps/RrZES8piWQjnpuU8PI7UaDHAzfqL3
-	 RjH9nUqCCKrRZuGr8/XbSTdSdt2xCq71l+H2ZwFAhknltS3DbuJX1OtyGkBBmqGTdA
-	 Vf3qTjqMC+VNM9jDlYVJFlFZr4kIM8AByMbvIEeI=
+	b=TXx9FAWsukvOwe6Fy1RWoJ1EFE7jKMp8uA7ZHvayzx7qyn3Of0NwdP0Z4rRE6ELBT
+	 qYAwUYUAw1Uuy6Eku96qEyLBTt4i0srh1lc0xGWheRXTCdpwk8vl5fEHZb1SJEUdbN
+	 fu3555Z/nhHpCguw463j+Xgf9rvfWAhiR3cBw2Xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.7 141/346] ksmbd: fix potential circular locking issue in smb2_set_ea()
+	Zheng Wang <zyytlz.wz@163.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH 6.6 108/331] media: mtk-jpeg: Fix use after free bug due to error path handling in mtk_jpeg_dec_device_run
 Date: Mon, 29 Jan 2024 09:02:52 -0800
-Message-ID: <20240129170020.548624773@linuxfoundation.org>
+Message-ID: <20240129170018.089384719@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit 6fc0a265e1b932e5e97a038f99e29400a93baad0 ]
+commit 206c857dd17d4d026de85866f1b5f0969f2a109e upstream.
 
-smb2_set_ea() can be called in parent inode lock range.
-So add get_write argument to smb2_set_ea() not to call nested
-mnt_want_write().
+In mtk_jpeg_probe, &jpeg->job_timeout_work is bound with
+mtk_jpeg_job_timeout_work.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+In mtk_jpeg_dec_device_run, if error happens in
+mtk_jpeg_set_dec_dst, it will finally start the worker while
+mark the job as finished by invoking v4l2_m2m_job_finish.
+
+There are two methods to trigger the bug. If we remove the
+module, it which will call mtk_jpeg_remove to make cleanup.
+The possible sequence is as follows, which will cause a
+use-after-free bug.
+
+CPU0                  CPU1
+mtk_jpeg_dec_...    |
+  start worker	    |
+                    |mtk_jpeg_job_timeout_work
+mtk_jpeg_remove     |
+  v4l2_m2m_release  |
+    kfree(m2m_dev); |
+                    |
+                    | v4l2_m2m_get_curr_priv
+                    |   m2m_dev->curr_ctx //use
+
+If we close the file descriptor, which will call mtk_jpeg_release,
+it will have a similar sequence.
+
+Fix this bug by starting timeout worker only if started jpegdec worker
+successfully. Then v4l2_m2m_job_finish will only be called in
+either mtk_jpeg_job_timeout_work or mtk_jpeg_dec_device_run.
+
+Fixes: b2f0d2724ba4 ("[media] vcodec: mediatek: Add Mediatek JPEG Decoder Driver")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2323,11 +2323,12 @@ out:
-  * @eabuf:	set info command buffer
-  * @buf_len:	set info command buffer length
-  * @path:	dentry path for get ea
-+ * @get_write:	get write access to a mount
-  *
-  * Return:	0 on success, otherwise error
-  */
- static int smb2_set_ea(struct smb2_ea_info *eabuf, unsigned int buf_len,
--		       const struct path *path)
-+		       const struct path *path, bool get_write)
- {
- 	struct mnt_idmap *idmap = mnt_idmap(path->mnt);
- 	char *attr_name = NULL, *value;
-@@ -3015,7 +3016,7 @@ int smb2_open(struct ksmbd_work *work)
+--- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
++++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+@@ -1021,13 +1021,13 @@ static void mtk_jpeg_dec_device_run(void
+ 	if (ret < 0)
+ 		goto dec_end;
  
- 			rc = smb2_set_ea(&ea_buf->ea,
- 					 le32_to_cpu(ea_buf->ccontext.DataLength),
--					 &path);
-+					 &path, false);
- 			if (rc == -EOPNOTSUPP)
- 				rc = 0;
- 			else if (rc)
-@@ -5992,7 +5993,7 @@ static int smb2_set_info_file(struct ksm
- 			return -EINVAL;
+-	schedule_delayed_work(&jpeg->job_timeout_work,
+-			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
+-
+ 	mtk_jpeg_set_dec_src(ctx, &src_buf->vb2_buf, &bs);
+ 	if (mtk_jpeg_set_dec_dst(ctx, &jpeg_src_buf->dec_param, &dst_buf->vb2_buf, &fb))
+ 		goto dec_end;
  
- 		return smb2_set_ea((struct smb2_ea_info *)req->Buffer,
--				   buf_len, &fp->filp->f_path);
-+				   buf_len, &fp->filp->f_path, true);
- 	}
- 	case FILE_POSITION_INFORMATION:
- 	{
++	schedule_delayed_work(&jpeg->job_timeout_work,
++			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
++
+ 	spin_lock_irqsave(&jpeg->hw_lock, flags);
+ 	mtk_jpeg_dec_reset(jpeg->reg_base);
+ 	mtk_jpeg_dec_set_config(jpeg->reg_base,
 
 
 
