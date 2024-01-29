@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-17029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B740840F88
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8A94840D59
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B6981F22BA8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E91C41C23595
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77D7F6F071;
-	Mon, 29 Jan 2024 17:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91577159582;
+	Mon, 29 Jan 2024 17:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLP9LX3i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PK3KNN6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378E66F062;
-	Mon, 29 Jan 2024 17:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBF0157E92;
+	Mon, 29 Jan 2024 17:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548457; cv=none; b=klOeP83JmL7ybOSZTaR8qoXd7cMmc+LAZ+px3S0velSC0tXgN9/HCBl08Ls2OEvBRa8Jjzm6n2lByJl2ErU5ygPJFc743Rmj3Jv2HTF2zdYUMsZRx5zqXzSxyrsM46wp5eSD09BDVmql/eIN3zI2baAfRIAdmDm4FVZUiTbF8+Q=
+	t=1706548088; cv=none; b=JXE2AmrKHhyNP0zIQ8lon0xtiVQZKlMNNnYVuknntJ1pcPDGZvELkVEmV3Aq5RGsVX0LBzctrtZI+Kj16zVIfrJkhbFKEvgP2UCGs1YrYuEAFVm8mLWbtC4xZwukdB7nG+RbJCc2Sp7h48xQbc87YhO8pMiBwmXLw+TB8+/T1/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548457; c=relaxed/simple;
-	bh=/RVfp5prStTJF0adS/CjGVF1PJLp1AlpxJS7me7SVl4=;
+	s=arc-20240116; t=1706548088; c=relaxed/simple;
+	bh=mobdU4TYJDxEpGp+8Q7ELdXvvWT5znPiKiVA2jSUZlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQelEuoL+u3gL3OiMoKCafPJ8LP/vVaCMDBx+wPtOpBOa5EO/mDOSYLvx+SLMcpkAA5HWBX1SlZzAFw+g/ClgVeAXZti15jZFhh/9hSIW0ono8gakTJN4vMv3WjPOv/l+1U+wkmwSkZj9/ALCfGTDWVNRqTCH1ScAl+OGMO+g3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLP9LX3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26A6C433C7;
-	Mon, 29 Jan 2024 17:14:16 +0000 (UTC)
+	 MIME-Version; b=VO4pkIZw+VkqqjVhNkS93kJQibVXA+cIjq01mPMzdhvxxt74AY8ElxTbKB5mMNJSPxNt3397Y962IupYbFCIrzGXpwthoZqHUfmtT0NhSFDqG5UDYV62YnrUsxcjPeqchJ46elw+607um9dNGkwntxQGFqg15M3hrjmkzoIgGhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PK3KNN6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DB4C433C7;
+	Mon, 29 Jan 2024 17:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548457;
-	bh=/RVfp5prStTJF0adS/CjGVF1PJLp1AlpxJS7me7SVl4=;
+	s=korg; t=1706548088;
+	bh=mobdU4TYJDxEpGp+8Q7ELdXvvWT5znPiKiVA2jSUZlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jLP9LX3iqMz2K18TOiR/VxeE9voQ7zyprGtujir2BwiBwrChLc4+6CBNlQJgt2e/i
-	 yCyETzHLo3l9YuFtY3Lsf3xlWJimpb2nsQj6kX9sdFStSdJC9TCfKxPNNE3cidFe8Y
-	 ADv1ICaJOoeULSEnzm45fMF1GoP1VJSMdInjWqqE=
+	b=PK3KNN6syEXlyXfiJHD6zOAEYAa/mNwtUXL6oft1UX7Wrh8q/dPnlketxsVlHKdBH
+	 zs0dC0zIJxW6Z/KfLwMGAsM9SM7mDQQzelWD3lN1bPPsfDULKQ/3oa6AW3Bj7mOX9S
+	 c5wZpxxD5flfpmowRqiMOJPKqw8M+als119Kd5dY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bhaumik Bhatt <bbhatt@codeaurora.org>,
-	Qiang Yu <quic_qianyu@quicinc.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.6 069/331] bus: mhi: host: Add spinlock to protect WP access when queueing TREs
-Date: Mon, 29 Jan 2024 09:02:13 -0800
-Message-ID: <20240129170016.945886064@linuxfoundation.org>
+	Guo Ren <guoren@linux.alibaba.com>,
+	Guo Ren <guoren@kernel.org>,
+	Leonardo Bras <leobras@redhat.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.7 103/346] riscv: mm: Fixup compat mode boot failure
+Date: Mon, 29 Jan 2024 09:02:14 -0800
+Message-ID: <20240129170019.431552808@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bhaumik Bhatt <bbhatt@codeaurora.org>
+From: Guo Ren <guoren@linux.alibaba.com>
 
-commit b89b6a863dd53bc70d8e52d50f9cfaef8ef5e9c9 upstream.
+commit 5f449e245e5b0d9d63eef6c8968fbdc3a8594407 upstream.
 
-Protect WP accesses such that multiple threads queueing buffers for
-incoming data do not race.
+In COMPAT mode, the STACK_TOP is DEFAULT_MAP_WINDOW (0x80000000), but
+the TASK_SIZE is 0x7fff000. When the user stack is upon 0x7fff000, it
+will cause a user segment fault. Sometimes, it would cause boot
+failure when the whole rootfs is rv32.
 
-Meanwhile, if CONFIG_TRACE_IRQFLAGS is enabled, irq will be enabled once
-__local_bh_enable_ip is called as part of write_unlock_bh. Hence, let's
-take irqsave lock after TRE is generated to avoid running write_unlock_bh
-when irqsave lock is held.
+Freeing unused kernel image (initmem) memory: 2236K
+Run /sbin/init as init process
+Starting init: /sbin/init exists but couldn't execute it (error -14)
+Run /etc/init as init process
+...
+
+Increase the TASK_SIZE to cover STACK_TOP.
 
 Cc: stable@vger.kernel.org
-Fixes: 189ff97cca53 ("bus: mhi: core: Add support for data transfer")
-Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
-Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Tested-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/1702276972-41296-2-git-send-email-quic_qianyu@quicinc.com
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
+Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+Signed-off-by: Guo Ren <guoren@kernel.org>
+Reviewed-by: Leonardo Bras <leobras@redhat.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Link: https://lore.kernel.org/r/20231222115703.2404036-2-guoren@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/main.c |   22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ arch/riscv/include/asm/pgtable.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bus/mhi/host/main.c
-+++ b/drivers/bus/mhi/host/main.c
-@@ -1127,17 +1127,15 @@ static int mhi_queue(struct mhi_device *
- 	if (unlikely(MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state)))
- 		return -EIO;
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -881,7 +881,7 @@ static inline pte_t pte_swp_clear_exclus
+ #define TASK_SIZE_MIN	(PGDIR_SIZE_L3 * PTRS_PER_PGD / 2)
  
--	read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
--
- 	ret = mhi_is_ring_full(mhi_cntrl, tre_ring);
--	if (unlikely(ret)) {
--		ret = -EAGAIN;
--		goto exit_unlock;
--	}
-+	if (unlikely(ret))
-+		return -EAGAIN;
- 
- 	ret = mhi_gen_tre(mhi_cntrl, mhi_chan, buf_info, mflags);
- 	if (unlikely(ret))
--		goto exit_unlock;
-+		return ret;
-+
-+	read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
- 
- 	/* Packet is queued, take a usage ref to exit M3 if necessary
- 	 * for host->device buffer, balanced put is done on buffer completion
-@@ -1157,7 +1155,6 @@ static int mhi_queue(struct mhi_device *
- 	if (dir == DMA_FROM_DEVICE)
- 		mhi_cntrl->runtime_put(mhi_cntrl);
- 
--exit_unlock:
- 	read_unlock_irqrestore(&mhi_cntrl->pm_lock, flags);
- 
- 	return ret;
-@@ -1209,6 +1206,9 @@ int mhi_gen_tre(struct mhi_controller *m
- 	int eot, eob, chain, bei;
- 	int ret;
- 
-+	/* Protect accesses for reading and incrementing WP */
-+	write_lock_bh(&mhi_chan->lock);
-+
- 	buf_ring = &mhi_chan->buf_ring;
- 	tre_ring = &mhi_chan->tre_ring;
- 
-@@ -1226,8 +1226,10 @@ int mhi_gen_tre(struct mhi_controller *m
- 
- 	if (!info->pre_mapped) {
- 		ret = mhi_cntrl->map_single(mhi_cntrl, buf_info);
--		if (ret)
-+		if (ret) {
-+			write_unlock_bh(&mhi_chan->lock);
- 			return ret;
-+		}
- 	}
- 
- 	eob = !!(flags & MHI_EOB);
-@@ -1244,6 +1246,8 @@ int mhi_gen_tre(struct mhi_controller *m
- 	mhi_add_ring_element(mhi_cntrl, tre_ring);
- 	mhi_add_ring_element(mhi_cntrl, buf_ring);
- 
-+	write_unlock_bh(&mhi_chan->lock);
-+
- 	return 0;
- }
- 
+ #ifdef CONFIG_COMPAT
+-#define TASK_SIZE_32	(_AC(0x80000000, UL) - PAGE_SIZE)
++#define TASK_SIZE_32	(_AC(0x80000000, UL))
+ #define TASK_SIZE	(test_thread_flag(TIF_32BIT) ? \
+ 			 TASK_SIZE_32 : TASK_SIZE_64)
+ #else
 
 
 
