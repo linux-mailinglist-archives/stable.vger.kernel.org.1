@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-16898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A23840EF2
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67CCF840E67
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26C2C1F27857
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0CA11F233C2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14AAB16274B;
-	Mon, 29 Jan 2024 17:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F36415B970;
+	Mon, 29 Jan 2024 17:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Czitffac"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEgtFn7g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C462515AAA7;
-	Mon, 29 Jan 2024 17:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0682B15A499;
+	Mon, 29 Jan 2024 17:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548360; cv=none; b=dOfsGGoN3lPoekfdMGH+ZoHMBBlU357mA3TmnC8ARQM4TgNQgiQoy7t/PJbXeJWTuB0WwVUuMgA+R3y9rIH7uiB4qDIUN9koTN3Ix2r1ZyqqFLTCeJrCzRo8ZsrbdDM1mIONN8gfkw9CY1PgmnM5rthg0OF9FnEujKcGws8+3w0=
+	t=1706548279; cv=none; b=Ma3cuBEw0py8nrJ5BjsGi6UQIPcTaY0Ov0Do4humCrDIHJE3ACcJM26xXkA5TH0w3zZLl/JZiFo3Xs9c95RBHI6WVhDhQyRAiHou+HZDfLpFD4rvztRXBabCcdlddyk1cvWuLK46L42rNpVvXW7OFEKYLshlBGaIY1924LYnK7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548360; c=relaxed/simple;
-	bh=KflqDAZgJJmbNew8DcrpfHuPBgP7FfYHs6U1biyvTYM=;
+	s=arc-20240116; t=1706548279; c=relaxed/simple;
+	bh=TR0RFflYqDyk5YUSv/8aBa5ztuTLBK3QVoGEcdDxaZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZpzDngfYosBAM/vQyQ8yWCqQgW8FOCpkN2o8akZyKXf6vtY4dfM5+MXWaab8IVFpXGSZPZ/3X26sSyYjpP0Jv+UZb8bjf8C7CGdLZ+vCJ5nwHxdPqBeBsypPxyCU+Ez2XdjlLpy6Q0XT2dTjQkDJALUnSFo7pEhW5rTINpwgqU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Czitffac; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFC1C433C7;
-	Mon, 29 Jan 2024 17:12:40 +0000 (UTC)
+	 MIME-Version; b=sJqSONQET3XNuLDlHp61qa+N87oiyMJyF3yibrAP3TbXEgdxzoqxFah3GxHg9lZW3owCdkPTVTRFZyAXshTYTr/XZ0vr2yuMpxHQYJkGkNTycQRZfxyIlNevOOk47+Yn11SNd8713jyfEJd3/nF9wV0kz2sZALg1frzw2xOBko0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEgtFn7g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B5AC43390;
+	Mon, 29 Jan 2024 17:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548360;
-	bh=KflqDAZgJJmbNew8DcrpfHuPBgP7FfYHs6U1biyvTYM=;
+	s=korg; t=1706548278;
+	bh=TR0RFflYqDyk5YUSv/8aBa5ztuTLBK3QVoGEcdDxaZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CzitffacgjcDeafOo4U7qqiydp/H4Y9KZ1Maeb/SVX/zfPivkAMExIobUCk400Ukg
-	 FsEFwJqTHpJP+VwKKwMRqGQWOr+cNCrtBn4PDmecQptZVUgnLD/BDmvND97EnZ38ha
-	 RkMDJYng3BC/2GdjGiCjBjAeKHAKpGA2337i4B9U=
+	b=CEgtFn7gw88rIHN4FJt6ds6MXGSup5dj/X14NXCU7mP+Mx000Q+QsqKysM0/S4cOu
+	 63ve9VvrpdC0RTGcpH/J0ErQ7Y/TOhBT1X0Plz9wzBiEZC9rwOq8zF+HnCXYldMUP2
+	 SqmJW77buUO9tQjeyijf/8RTBZ64SNw5xQpzBq5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 124/185] hv_netvsc: Calculate correct ring size when PAGE_SIZE is not 4 Kbytes
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Taimur Hassan <syed.hassan@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 293/346] drm/amd/display: Fix conversions between bytes and KB
 Date: Mon, 29 Jan 2024 09:05:24 -0800
-Message-ID: <20240129170002.573953930@linuxfoundation.org>
+Message-ID: <20240129170025.021951005@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +64,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Taimur Hassan <syed.hassan@amd.com>
 
-commit 6941f67ad37d5465b75b9ffc498fcf6897a3c00e upstream.
+[ Upstream commit 22136ff27c4e01fae81f6588033363a46c72ed8c ]
 
-Current code in netvsc_drv_init() incorrectly assumes that PAGE_SIZE
-is 4 Kbytes, which is wrong on ARM64 with 16K or 64K page size. As a
-result, the default VMBus ring buffer size on ARM64 with 64K page size
-is 8 Mbytes instead of the expected 512 Kbytes. While this doesn't break
-anything, a typical VM with 8 vCPUs and 8 netvsc channels wastes 120
-Mbytes (8 channels * 2 ring buffers/channel * 7.5 Mbytes/ring buffer).
+[Why]
+There are a number of instances where we convert HostVMMinPageSize or
+GPUVMMinPageSize from bytes to KB by dividing (rather than multiplying) and
+vice versa.
+Additionally, in some cases, a parameter is passed through DML in KB but
+later checked as if it were in bytes.
 
-Unfortunately, the module parameter specifying the ring buffer size
-is in units of 4 Kbyte pages. Ideally, it should be in units that
-are independent of PAGE_SIZE, but backwards compatibility prevents
-changing that now.
-
-Fix this by having netvsc_drv_init() hardcode 4096 instead of using
-PAGE_SIZE when calculating the ring buffer size in bytes. Also
-use the VMBUS_RING_SIZE macro to ensure proper alignment when running
-with page size larger than 4K.
-
-Cc: <stable@vger.kernel.org> # 5.15.x
-Fixes: 7aff79e297ee ("Drivers: hv: Enable Hyper-V code to be built on ARM64")
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/20240122162028.348885-1-mhklinux@outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Taimur Hassan <syed.hassan@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/netvsc_drv.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../drm/amd/display/dc/dml2/display_mode_core.c  | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -44,7 +44,7 @@
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
+index 4899e9e8c163..62ce95bac8f2 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
+@@ -6329,7 +6329,7 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
+ 				mode_lib->ms.NoOfDPPThisState,
+ 				mode_lib->ms.dpte_group_bytes,
+ 				s->HostVMInefficiencyFactor,
+-				mode_lib->ms.soc.hostvm_min_page_size_kbytes,
++				mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024,
+ 				mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels);
  
- static unsigned int ring_size __ro_after_init = 128;
- module_param(ring_size, uint, 0444);
--MODULE_PARM_DESC(ring_size, "Ring buffer size (# of pages)");
-+MODULE_PARM_DESC(ring_size, "Ring buffer size (# of 4K pages)");
- unsigned int netvsc_ring_bytes __ro_after_init;
+ 		s->NextMaxVStartup = s->MaxVStartupAllPlanes[j];
+@@ -6542,7 +6542,7 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
+ 						mode_lib->ms.cache_display_cfg.plane.HostVMEnable,
+ 						mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels,
+ 						mode_lib->ms.cache_display_cfg.plane.GPUVMEnable,
+-						mode_lib->ms.soc.hostvm_min_page_size_kbytes,
++						mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024,
+ 						mode_lib->ms.PDEAndMetaPTEBytesPerFrame[j][k],
+ 						mode_lib->ms.MetaRowBytes[j][k],
+ 						mode_lib->ms.DPTEBytesPerRow[j][k],
+@@ -7687,7 +7687,7 @@ dml_bool_t dml_core_mode_support(struct display_mode_lib_st *mode_lib)
+ 		CalculateVMRowAndSwath_params->HostVMMaxNonCachedPageTableLevels = mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels;
+ 		CalculateVMRowAndSwath_params->GPUVMMaxPageTableLevels = mode_lib->ms.cache_display_cfg.plane.GPUVMMaxPageTableLevels;
+ 		CalculateVMRowAndSwath_params->GPUVMMinPageSizeKBytes = mode_lib->ms.cache_display_cfg.plane.GPUVMMinPageSizeKBytes;
+-		CalculateVMRowAndSwath_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes;
++		CalculateVMRowAndSwath_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024;
+ 		CalculateVMRowAndSwath_params->PTEBufferModeOverrideEn = mode_lib->ms.cache_display_cfg.plane.PTEBufferModeOverrideEn;
+ 		CalculateVMRowAndSwath_params->PTEBufferModeOverrideVal = mode_lib->ms.cache_display_cfg.plane.PTEBufferMode;
+ 		CalculateVMRowAndSwath_params->PTEBufferSizeNotExceeded = mode_lib->ms.PTEBufferSizeNotExceededPerState;
+@@ -7957,7 +7957,7 @@ dml_bool_t dml_core_mode_support(struct display_mode_lib_st *mode_lib)
+ 		UseMinimumDCFCLK_params->GPUVMMaxPageTableLevels = mode_lib->ms.cache_display_cfg.plane.GPUVMMaxPageTableLevels;
+ 		UseMinimumDCFCLK_params->HostVMEnable = mode_lib->ms.cache_display_cfg.plane.HostVMEnable;
+ 		UseMinimumDCFCLK_params->NumberOfActiveSurfaces = mode_lib->ms.num_active_planes;
+-		UseMinimumDCFCLK_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes;
++		UseMinimumDCFCLK_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024;
+ 		UseMinimumDCFCLK_params->HostVMMaxNonCachedPageTableLevels = mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels;
+ 		UseMinimumDCFCLK_params->DynamicMetadataVMEnabled = mode_lib->ms.ip.dynamic_metadata_vm_enabled;
+ 		UseMinimumDCFCLK_params->ImmediateFlipRequirement = s->ImmediateFlipRequiredFinal;
+@@ -8699,7 +8699,7 @@ void dml_core_mode_programming(struct display_mode_lib_st *mode_lib, const struc
+ 	CalculateVMRowAndSwath_params->HostVMMaxNonCachedPageTableLevels = mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels;
+ 	CalculateVMRowAndSwath_params->GPUVMMaxPageTableLevels = mode_lib->ms.cache_display_cfg.plane.GPUVMMaxPageTableLevels;
+ 	CalculateVMRowAndSwath_params->GPUVMMinPageSizeKBytes = mode_lib->ms.cache_display_cfg.plane.GPUVMMinPageSizeKBytes;
+-	CalculateVMRowAndSwath_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes;
++	CalculateVMRowAndSwath_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024;
+ 	CalculateVMRowAndSwath_params->PTEBufferModeOverrideEn = mode_lib->ms.cache_display_cfg.plane.PTEBufferModeOverrideEn;
+ 	CalculateVMRowAndSwath_params->PTEBufferModeOverrideVal = mode_lib->ms.cache_display_cfg.plane.PTEBufferMode;
+ 	CalculateVMRowAndSwath_params->PTEBufferSizeNotExceeded = s->dummy_boolean_array[0];
+@@ -8805,7 +8805,7 @@ void dml_core_mode_programming(struct display_mode_lib_st *mode_lib, const struc
+ 			mode_lib->ms.cache_display_cfg.hw.DPPPerSurface,
+ 			locals->dpte_group_bytes,
+ 			s->HostVMInefficiencyFactor,
+-			mode_lib->ms.soc.hostvm_min_page_size_kbytes,
++			mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024,
+ 			mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels);
  
- static const u32 default_msg = NETIF_MSG_DRV | NETIF_MSG_PROBE |
-@@ -2801,7 +2801,7 @@ static int __init netvsc_drv_init(void)
- 		pr_info("Increased ring_size to %u (min allowed)\n",
- 			ring_size);
- 	}
--	netvsc_ring_bytes = ring_size * PAGE_SIZE;
-+	netvsc_ring_bytes = VMBUS_RING_SIZE(ring_size * 4096);
- 
- 	register_netdevice_notifier(&netvsc_netdev_notifier);
- 
+ 	locals->TCalc = 24.0 / locals->DCFCLKDeepSleep;
+@@ -8995,7 +8995,7 @@ void dml_core_mode_programming(struct display_mode_lib_st *mode_lib, const struc
+ 			CalculatePrefetchSchedule_params->GPUVMEnable = mode_lib->ms.cache_display_cfg.plane.GPUVMEnable;
+ 			CalculatePrefetchSchedule_params->HostVMEnable = mode_lib->ms.cache_display_cfg.plane.HostVMEnable;
+ 			CalculatePrefetchSchedule_params->HostVMMaxNonCachedPageTableLevels = mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels;
+-			CalculatePrefetchSchedule_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes;
++			CalculatePrefetchSchedule_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024;
+ 			CalculatePrefetchSchedule_params->DynamicMetadataEnable = mode_lib->ms.cache_display_cfg.plane.DynamicMetadataEnable[k];
+ 			CalculatePrefetchSchedule_params->DynamicMetadataVMEnabled = mode_lib->ms.ip.dynamic_metadata_vm_enabled;
+ 			CalculatePrefetchSchedule_params->DynamicMetadataLinesBeforeActiveRequired = mode_lib->ms.cache_display_cfg.plane.DynamicMetadataLinesBeforeActiveRequired[k];
+@@ -9240,7 +9240,7 @@ void dml_core_mode_programming(struct display_mode_lib_st *mode_lib, const struc
+ 						mode_lib->ms.cache_display_cfg.plane.HostVMEnable,
+ 						mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels,
+ 						mode_lib->ms.cache_display_cfg.plane.GPUVMEnable,
+-						mode_lib->ms.soc.hostvm_min_page_size_kbytes,
++						mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024,
+ 						locals->PDEAndMetaPTEBytesFrame[k],
+ 						locals->MetaRowByte[k],
+ 						locals->PixelPTEBytesPerRow[k],
+-- 
+2.43.0
+
 
 
 
