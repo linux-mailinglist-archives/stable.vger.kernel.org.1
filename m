@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-16860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DE0840EB6
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05044840EB7
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0DD8B27BBA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5AC828325F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E8315A4BE;
-	Mon, 29 Jan 2024 17:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB42B16086C;
+	Mon, 29 Jan 2024 17:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQbl5LZP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzGKNXDK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA48415703F;
-	Mon, 29 Jan 2024 17:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7C9157053;
+	Mon, 29 Jan 2024 17:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548333; cv=none; b=hxl/Az6UyfwEfZ2z/czhRrk175KLQEAATSMHjAfhNbIW5KEcZqvYG8VRYm/dr8An//AF/XuadEaJIRPimQDoz2SweUJcUYecfPZmeMCsNUbdfT/it/kIPg+2kQky+IN8Z6ysfMvFf3Y4uHrdI1lwW6xRn1FlGFqymdPbl1FG0ak=
+	t=1706548334; cv=none; b=etSmE18/Z6znhX1geEAaTDqSA8G7XPOAwPvWjiKuA/bF5I7Ut1dIilqeTpCAdOxkBU+Hrr6QLexomIKlZqBug8uOssCwIoYWnfVNpmKO2/PK7F4EiLc2GAOZ0Q5XKIAluMXlMHZHyy/FdH35aS6EmYEnFK3mSGsuy12fjJVzrMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548333; c=relaxed/simple;
-	bh=Mb+iXT4E05LUFeryHqlBK3UI18IVpPDDE+QFZVl+DIg=;
+	s=arc-20240116; t=1706548334; c=relaxed/simple;
+	bh=KBRJkM3whjZnioPPguhPKC77DqjcGUrFWw0Qlmi0Ejg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s6pXLtN7T3Hezq19BAHkFSl5/fc6kd+r2hLr+nWWTlr/x8+UhbUPpoPt8G7+K2KqvjtsN2Mc0vZpfst43naW8alAOybQa6CpHUeUj8w3sqIolulL237N9tZ/yPnJmi+HBntUItsq1L4yXogAndrCjtoN5oiQEOjJ/arz2mHkIk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQbl5LZP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15DBC433F1;
-	Mon, 29 Jan 2024 17:12:12 +0000 (UTC)
+	 MIME-Version; b=UEt1F1tbPIt8FDYWAQmBzlB6IEvyu6r2rZjGCYT9jWFVaQT4tCeHrEJt/azV0POqGvIcjQ+Iww+M6vI2pBq13Ay2tTRopvDa3z/ZhFceL7by1Mu77VMB/mIw6ujvjT1M1VC5TntWmhj66t0r6sF7CLydn82g6ZZceH0PC/5bwP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzGKNXDK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DF4C433F1;
+	Mon, 29 Jan 2024 17:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548332;
-	bh=Mb+iXT4E05LUFeryHqlBK3UI18IVpPDDE+QFZVl+DIg=;
+	s=korg; t=1706548334;
+	bh=KBRJkM3whjZnioPPguhPKC77DqjcGUrFWw0Qlmi0Ejg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQbl5LZPSToCsXj6W5idsDcsPyqj6MUsCEYn6tS+vxrs0NwXxITopstaAcHDQd4YI
-	 ve70EvIo8S2PmNJsm34LRO6eLdx+wZP6E4VRysfpdRMSLqgRMpHO7A9WPI5CJri5dy
-	 CO2Pdwf0KUoxpxURFYsRTXLEB6xpNhCDnZQM3gU4=
+	b=zzGKNXDKVASTMa+xvM53VvDxew7nK36z8VwoeeGdtdtEey+cO6ygKJJ/DcLVCXlaB
+	 gJI69kMgmpX76bUO7lgKf15fwNRSNTWlT/F5tXfuzfzEgU8wTl3daeoYOKxVIepgJ2
+	 Rl39mGSmGI6s/ajT6QT5RscvV/YmSR6rYXNskLns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Yi Wang <hsinyi@chromium.org>,
-	Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>,
-	Pin-yen Lin <treapking@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Wyes Karny <wkarny@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 330/346] drm/bridge: anx7625: Ensure bridge is suspended in disable()
-Date: Mon, 29 Jan 2024 09:06:01 -0800
-Message-ID: <20240129170026.185206809@linuxfoundation.org>
+Subject: [PATCH 6.7 331/346] cpufreq/amd-pstate: Fix setting scaling max/min freq values
+Date: Mon, 29 Jan 2024 09:06:02 -0800
+Message-ID: <20240129170026.213252452@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -68,84 +67,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hsin-Yi Wang <hsinyi@chromium.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 4d5b7daa3c610af3f322ad1e91fc0c752ff32f0e ]
+[ Upstream commit 22fb4f041999f5f16ecbda15a2859b4ef4cbf47e ]
 
-Similar to commit 26db46bc9c67 ("drm/bridge: parade-ps8640: Ensure bridge
-is suspended in .post_disable()"). Add a mutex to ensure that aux transfer
-won't race with atomic_disable by holding the PM reference and prevent
-the bridge from suspend.
+Scaling min/max freq values were being cached and lagging a setting
+each time.  Fix the ordering of the clamp call to ensure they work.
 
-Also we need to use pm_runtime_put_sync_suspend() to suspend the bridge
-instead of idle with pm_runtime_put_sync().
-
-Fixes: 3203e497eb76 ("drm/bridge: anx7625: Synchronously run runtime suspend.")
-Fixes: adca62ec370c ("drm/bridge: anx7625: Support reading edid through aux channel")
-Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
-Tested-by: Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>
-Reviewed-by: Pin-yen Lin <treapking@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240118015916.2296741-1-hsinyi@chromium.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217931
+Fixes: febab20caeba ("cpufreq/amd-pstate: Fix scaling_min_freq and scaling_max_freq update")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Wyes Karny <wkarny@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/analogix/anx7625.c | 7 ++++++-
- drivers/gpu/drm/bridge/analogix/anx7625.h | 2 ++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/cpufreq/amd-pstate.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-index 51abe42c639e..5168628f11cf 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-@@ -1741,6 +1741,7 @@ static ssize_t anx7625_aux_transfer(struct drm_dp_aux *aux,
- 	u8 request = msg->request & ~DP_AUX_I2C_MOT;
- 	int ret = 0;
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index 1f6186475715..1791d37fbc53 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -1232,14 +1232,13 @@ static void amd_pstate_epp_update_limit(struct cpufreq_policy *policy)
+ 	max_limit_perf = div_u64(policy->max * cpudata->highest_perf, cpudata->max_freq);
+ 	min_limit_perf = div_u64(policy->min * cpudata->highest_perf, cpudata->max_freq);
  
-+	mutex_lock(&ctx->aux_lock);
- 	pm_runtime_get_sync(dev);
- 	msg->reply = 0;
- 	switch (request) {
-@@ -1757,6 +1758,7 @@ static ssize_t anx7625_aux_transfer(struct drm_dp_aux *aux,
- 					msg->size, msg->buffer);
- 	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
-+	mutex_unlock(&ctx->aux_lock);
++	WRITE_ONCE(cpudata->max_limit_perf, max_limit_perf);
++	WRITE_ONCE(cpudata->min_limit_perf, min_limit_perf);
++
+ 	max_perf = clamp_t(unsigned long, max_perf, cpudata->min_limit_perf,
+ 			cpudata->max_limit_perf);
+ 	min_perf = clamp_t(unsigned long, min_perf, cpudata->min_limit_perf,
+ 			cpudata->max_limit_perf);
+-
+-	WRITE_ONCE(cpudata->max_limit_perf, max_limit_perf);
+-	WRITE_ONCE(cpudata->min_limit_perf, min_limit_perf);
+-
+ 	value = READ_ONCE(cpudata->cppc_req_cached);
  
- 	return ret;
- }
-@@ -2453,7 +2455,9 @@ static void anx7625_bridge_atomic_disable(struct drm_bridge *bridge,
- 	ctx->connector = NULL;
- 	anx7625_dp_stop(ctx);
- 
--	pm_runtime_put_sync(dev);
-+	mutex_lock(&ctx->aux_lock);
-+	pm_runtime_put_sync_suspend(dev);
-+	mutex_unlock(&ctx->aux_lock);
- }
- 
- static enum drm_connector_status
-@@ -2647,6 +2651,7 @@ static int anx7625_i2c_probe(struct i2c_client *client)
- 
- 	mutex_init(&platform->lock);
- 	mutex_init(&platform->hdcp_wq_lock);
-+	mutex_init(&platform->aux_lock);
- 
- 	INIT_DELAYED_WORK(&platform->hdcp_work, hdcp_check_work_func);
- 	platform->hdcp_workqueue = create_workqueue("hdcp workqueue");
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.h b/drivers/gpu/drm/bridge/analogix/anx7625.h
-index 5af819611ebc..80d3fb4e985f 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.h
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.h
-@@ -471,6 +471,8 @@ struct anx7625_data {
- 	struct workqueue_struct *hdcp_workqueue;
- 	/* Lock for hdcp work queue */
- 	struct mutex hdcp_wq_lock;
-+	/* Lock for aux transfer and disable */
-+	struct mutex aux_lock;
- 	char edid_block;
- 	struct display_timing dt;
- 	u8 display_timing_valid;
+ 	if (cpudata->policy == CPUFREQ_POLICY_PERFORMANCE)
 -- 
 2.43.0
 
