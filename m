@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-16958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25628840F39
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E4E84108E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAFF1B20A8F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26F28B222C8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B3D15D5C3;
-	Mon, 29 Jan 2024 17:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545A9157E67;
+	Mon, 29 Jan 2024 17:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWLHbLE9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fdYfL1Nw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B289E15D5B3;
-	Mon, 29 Jan 2024 17:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12143157E6D;
+	Mon, 29 Jan 2024 17:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548404; cv=none; b=iYduyzR977qrctaaB5TYpsBxkZjP3NogN6UdWi53A9nCDk7FyqOwYGK2CwPuFx2jnRDdho6jGLJqTgZ4aDj6j5PxPynS2JLnLpZvL2h6d7SRrx2tzXBwZKBTLbaF3P2vekY1jcrJjnTCXidJjgBoYhDZKq6DYAhh6tYh3mCBY6k=
+	t=1706548643; cv=none; b=s5dYj2c7dNB5GU0CoSbHhka0Su2FlxQdZ/sZ/P6FeSnmQYFuichBfH7iCT4uSJbZYNbuhM6K2BBRW91DWKOWXkiJ2MkI6Euba8XgIGZ6Z7WeVMOV0/LVS2S32QjJmuNplVf9XjkOGxss2GB38vv9yC87QZjUKyXcOVfYgwERqqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548404; c=relaxed/simple;
-	bh=RKLhUkO3newr6w+eJkIyWF378Rjw1lzWUBhXaRfne8M=;
+	s=arc-20240116; t=1706548643; c=relaxed/simple;
+	bh=Pe4WkKYICVSEDScCYcpiV3kr+A/8GESJkgdbDBK6rjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eK2SrJdy/DXr5uPU2VvueWVmiLr4hwLZ8oFTq6hbqSTXE7qYPITP0sHICfwxEGB+cFwQasce//VHvi9QZW8lSvnR1c0AFV57+/HpTUxiyb9muG8w5qrilzBVHEFncGVklqezOdoGW/J+8wJOR8oFOVCqHKbHowkNrE4iHI0gO7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWLHbLE9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CA5C43399;
-	Mon, 29 Jan 2024 17:13:24 +0000 (UTC)
+	 MIME-Version; b=euv69xQNtXDDl7GROgcGw07J6WRrJ3WFKNPn9V30zplnlp+Brvmgut3PmW9y1vBcbBJxuNMJy5lWTJqO7m5CifJwgmT9QZ60c0wrjF1ShIcexluXJEH7swFmRL/5Z+w+213cTk5d2320qHE+tUOFZRalOyGuPqiEtgxpzjtjYVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fdYfL1Nw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A28C433C7;
+	Mon, 29 Jan 2024 17:17:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548404;
-	bh=RKLhUkO3newr6w+eJkIyWF378Rjw1lzWUBhXaRfne8M=;
+	s=korg; t=1706548642;
+	bh=Pe4WkKYICVSEDScCYcpiV3kr+A/8GESJkgdbDBK6rjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bWLHbLE9pnStny8zl6GqHlvHFpchYytm3XZw9SkpZWK/Xt1sCsbln5VBENKNHyJXU
-	 CS9e3ZRchiZI0cJ/X0CLfQ1E4UNXHKwiBSVuddwYF7NddoKPEVT13yG2a7fiQwuAlI
-	 hFGzsv8deitusgaCL059ZkV0q5B+us2a62hkl10Q=
+	b=fdYfL1Nw4WJbFv3xWkCBDUmnw4uI/ijOJNrdZIxIXH2SLGVIkvrtq+4wW60Fvoh8S
+	 wfy7jeG9kWxdw/uvvBw5UQEk/CmnUQG+WGQ0AhGA9OseWIAH76d3R8Neb/nQ8yS4lo
+	 h63HYi9g58kNVHphTDoBOzOj3ii8FEibpqGn28P0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.1 183/185] tick/sched: Preserve number of idle sleeps across CPU hotplug events
+	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 319/331] spi: spi-cadence: Reverse the order of interleaved write and read operations
 Date: Mon, 29 Jan 2024 09:06:23 -0800
-Message-ID: <20240129170004.462635902@linuxfoundation.org>
+Message-ID: <20240129170024.218573784@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Chen <tim.c.chen@linux.intel.com>
+From: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
 
-commit 9a574ea9069be30b835a3da772c039993c43369b upstream.
+[ Upstream commit 633cd6fe6e1993ba80e0954c2db127a0b1a3e66f ]
 
-Commit 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs
-CPU hotplug") preserved total idle sleep time and iowait sleeptime across
-CPU hotplug events.
+In the existing implementation, when executing interleaved write and read
+operations in the ISR for a transfer length greater than the FIFO size,
+the TXFIFO write precedes the RXFIFO read. Consequently, the initially
+received data in the RXFIFO is pushed out and lost, leading to a failure
+in data integrity. To address this issue, reverse the order of interleaved
+operations and conduct the RXFIFO read followed by the TXFIFO write.
 
-Similar reasoning applies to the number of idle calls and idle sleeps to
-get the proper average of sleep time per idle invocation.
-
-Preserve those fields too.
-
-Fixes: 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs CPU hotplug")
-Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240122233534.3094238-1-tim.c.chen@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6afe2ae8dc48 ("spi: spi-cadence: Interleave write of TX and read of RX FIFO")
+Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+Link: https://msgid.link/r/20231218090652.18403-1-amit.kumar-mahapatra@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-sched.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/spi/spi-cadence.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -1557,6 +1557,7 @@ void tick_cancel_sched_timer(int cpu)
- {
- 	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
- 	ktime_t idle_sleeptime, iowait_sleeptime;
-+	unsigned long idle_calls, idle_sleeps;
+diff --git a/drivers/spi/spi-cadence.c b/drivers/spi/spi-cadence.c
+index bd96d8b546cd..5cab7caf4658 100644
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -317,6 +317,15 @@ static void cdns_spi_process_fifo(struct cdns_spi *xspi, int ntx, int nrx)
+ 	xspi->rx_bytes -= nrx;
  
- # ifdef CONFIG_HIGH_RES_TIMERS
- 	if (ts->sched_timer.base)
-@@ -1565,9 +1566,13 @@ void tick_cancel_sched_timer(int cpu)
+ 	while (ntx || nrx) {
++		if (nrx) {
++			u8 data = cdns_spi_read(xspi, CDNS_SPI_RXD);
++
++			if (xspi->rxbuf)
++				*xspi->rxbuf++ = data;
++
++			nrx--;
++		}
++
+ 		if (ntx) {
+ 			if (xspi->txbuf)
+ 				cdns_spi_write(xspi, CDNS_SPI_TXD, *xspi->txbuf++);
+@@ -326,14 +335,6 @@ static void cdns_spi_process_fifo(struct cdns_spi *xspi, int ntx, int nrx)
+ 			ntx--;
+ 		}
  
- 	idle_sleeptime = ts->idle_sleeptime;
- 	iowait_sleeptime = ts->iowait_sleeptime;
-+	idle_calls = ts->idle_calls;
-+	idle_sleeps = ts->idle_sleeps;
- 	memset(ts, 0, sizeof(*ts));
- 	ts->idle_sleeptime = idle_sleeptime;
- 	ts->iowait_sleeptime = iowait_sleeptime;
-+	ts->idle_calls = idle_calls;
-+	ts->idle_sleeps = idle_sleeps;
+-		if (nrx) {
+-			u8 data = cdns_spi_read(xspi, CDNS_SPI_RXD);
+-
+-			if (xspi->rxbuf)
+-				*xspi->rxbuf++ = data;
+-
+-			nrx--;
+-		}
+ 	}
  }
- #endif
  
+-- 
+2.43.0
+
 
 
 
