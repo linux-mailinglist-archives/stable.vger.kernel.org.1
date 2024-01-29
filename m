@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-16599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A44BD840DA1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BADF4840DDF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D78E11C21793
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4369FB22DC1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D204F15A4B3;
-	Mon, 29 Jan 2024 17:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 632D715AAD9;
+	Mon, 29 Jan 2024 17:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIKlmXZF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wIfjW9BI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 277B3157048;
-	Mon, 29 Jan 2024 17:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2182715AAD7;
+	Mon, 29 Jan 2024 17:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548139; cv=none; b=FLw0Ak0t+qsCsYb/n3R0XeRKoV5Y8FR+O9QEv5aUgS+21+CB7KNcZFBX6pxtvG8SJfawiX6GtvDdaPgyaf35ZMh5M5RMZYGnIVGQr4+EH8WBx+h4SAvUevk2rhWWHC8QHjnCTyqxYKeGxI2cWNZolbbRZImZZGB4QEF5lgISd2Q=
+	t=1706548181; cv=none; b=glikUYCkqUOiOLjrTbgkhX1XBLG0pUnJc1DivQamfDlda/KsfP7GkxcaYJZaVguaQjPddGtMjItNtudXVWyG5DqxALgDW0iNhx9rF3XP8F/0tkZPzNvXXFhh9k1vIDhF5sXFbiDe6DLAokuC8dfbuC0UQXNHyBylKhqfXwYuXnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548139; c=relaxed/simple;
-	bh=AyEcydziGueM3qS3hftJr/1VEEBeT8f5KeEEbNCUe+c=;
+	s=arc-20240116; t=1706548181; c=relaxed/simple;
+	bh=i/L77O4AR806kyX4YLc0D2J05VhQWlkwHPQirAuC9aI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZDh54qtoJ+xd6UM9DkyBYiMBx1YO4N0m/tQdjuvD2GGDvTD6piccVbog2YrKM/pe+D4VjTjdq9V8V6J+3MXq0n/RYR1qaGquZbn60tgOcfbMYb2kbleQD1LyZf097edpJ0JlEoX2QnrbCDonGWH76uV1P67lnRlRx4IDbXPsJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIKlmXZF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE02BC433F1;
-	Mon, 29 Jan 2024 17:08:58 +0000 (UTC)
+	 MIME-Version; b=o7Uyj6bcWiCaTwdC+te82yy3suK982yRaE9KSINXbiIqYwc/xLiQge6noEh+FgbHjxS/ZgyX+snAI798d6fxk3a9CHFocC+AP06SHX3MAdzdDlciRJDtPxwuiwGa639veFiKDPQtumW4wHLhcvK9XUZKMMVcyn9LHbSnqIVdGg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wIfjW9BI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE943C433C7;
+	Mon, 29 Jan 2024 17:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548138;
-	bh=AyEcydziGueM3qS3hftJr/1VEEBeT8f5KeEEbNCUe+c=;
+	s=korg; t=1706548181;
+	bh=i/L77O4AR806kyX4YLc0D2J05VhQWlkwHPQirAuC9aI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SIKlmXZF+rTWV7m2BbFpp+w/LxtBL2I2/qnenGSUscvxnFd/JVDUAmZuz+0vy2HoX
-	 TyFlTg0Fe3P98TMFAlLkk6TwDU390Oyp0o2ABn8lDEqYhOBeXnw1ciZWZ+rXnjFn/+
-	 5rJeZTJ31Ur+y39lpSuInQfJis1/XJQCltbnIVg0=
+	b=wIfjW9BITZHoKCDlRV78gFFAJnK/0yoUWz+ZcSjzoUDWLgGjinzxNR/pon/zs+Jv/
+	 KSSS2PphTiD9oDW1gFACFWKOcqb1dOwBYJJr79/GwHLAx3zXAOai8qZCtc4JEJnRhp
+	 w6fTmDelVQHxZLKhd55aIW24Yf3QMtp8Zupk6qHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Wesley Cheng <quic_wcheng@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 170/346] afs: fix the usage of read_seqbegin_or_lock() in afs_find_server*()
+Subject: [PATCH 6.1 001/185] usb: dwc3: gadget: Refactor EP0 forced stall/restart into a separate API
 Date: Mon, 29 Jan 2024 09:03:21 -0800
-Message-ID: <20240129170021.398247570@linuxfoundation.org>
+Message-ID: <20240129165958.647131995@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,92 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit 1702e0654ca9a7bcd7c7619c8a5004db58945b71 ]
+[ Upstream commit 8f40fc0808137c157dd408d2632e63bfca2aecdb ]
 
-David Howells says:
+Several sequences utilize the same routine for forcing the control endpoint
+back into the SETUP phase.  This is required, because those operations need
+to ensure that EP0 is back in the default state.
 
- (5) afs_find_server().
-
-     There could be a lot of servers in the list and each server can have
-     multiple addresses, so I think this would be better with an exclusive
-     second pass.
-
-     The server list isn't likely to change all that often, but when it does
-     change, there's a good chance several servers are going to be
-     added/removed one after the other.  Further, this is only going to be
-     used for incoming cache management/callback requests from the server,
-     which hopefully aren't going to happen too often - but it is remotely
-     drivable.
-
- (6) afs_find_server_by_uuid().
-
-     Similarly to (5), there could be a lot of servers to search through, but
-     they are in a tree not a flat list, so it should be faster to process.
-     Again, it's not likely to change that often and, again, when it does
-     change it's likely to involve multiple changes.  This can be driven
-     remotely by an incoming cache management request but is mostly going to
-     be driven by setting up or reconfiguring a volume's server list -
-     something that also isn't likely to happen often.
-
-Make the "seq" counter odd on the 2nd pass, otherwise read_seqbegin_or_lock()
-never takes the lock.
-
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Link: https://lore.kernel.org/r/20231130115614.GA21581@redhat.com/
-Stable-dep-of: 17ba6f0bd14f ("afs: Fix error handling with lookup via FS.InlineBulkStatus")
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20230420212759.29429-3-quic_wcheng@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 3c7af52c7616 ("usb: dwc3: gadget: Queue PM runtime idle on disconnect event")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/server.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/usb/dwc3/gadget.c | 53 ++++++++++++++++-----------------------
+ 1 file changed, 21 insertions(+), 32 deletions(-)
 
-diff --git a/fs/afs/server.c b/fs/afs/server.c
-index b5237206eac3..0bd2f5ba6900 100644
---- a/fs/afs/server.c
-+++ b/fs/afs/server.c
-@@ -27,7 +27,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
- 	const struct afs_addr_list *alist;
- 	struct afs_server *server = NULL;
- 	unsigned int i;
--	int seq = 0, diff;
-+	int seq = 1, diff;
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 137602d9076f..339e8c3f7c50 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -139,6 +139,24 @@ int dwc3_gadget_set_link_state(struct dwc3 *dwc, enum dwc3_link_state state)
+ 	return -ETIMEDOUT;
+ }
  
- 	rcu_read_lock();
- 
-@@ -35,6 +35,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
- 		if (server)
- 			afs_unuse_server_notime(net, server, afs_server_trace_put_find_rsq);
- 		server = NULL;
-+		seq++; /* 2 on the 1st/lockless path, otherwise odd */
- 		read_seqbegin_or_lock(&net->fs_addr_lock, &seq);
- 
- 		if (srx->transport.family == AF_INET6) {
-@@ -90,7 +91,7 @@ struct afs_server *afs_find_server_by_uuid(struct afs_net *net, const uuid_t *uu
- {
- 	struct afs_server *server = NULL;
- 	struct rb_node *p;
--	int diff, seq = 0;
-+	int diff, seq = 1;
- 
- 	_enter("%pU", uuid);
- 
-@@ -102,7 +103,7 @@ struct afs_server *afs_find_server_by_uuid(struct afs_net *net, const uuid_t *uu
- 		if (server)
- 			afs_unuse_server(net, server, afs_server_trace_put_uuid_rsq);
- 		server = NULL;
++static void dwc3_ep0_reset_state(struct dwc3 *dwc)
++{
++	unsigned int	dir;
++
++	if (dwc->ep0state != EP0_SETUP_PHASE) {
++		dir = !!dwc->ep0_expect_in;
++		if (dwc->ep0state == EP0_DATA_PHASE)
++			dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
++		else
++			dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
++
++		dwc->eps[0]->trb_enqueue = 0;
++		dwc->eps[1]->trb_enqueue = 0;
++
++		dwc3_ep0_stall_and_restart(dwc);
++	}
++}
++
+ /**
+  * dwc3_ep_inc_trb - increment a trb index.
+  * @index: Pointer to the TRB index to increment.
+@@ -2552,16 +2570,9 @@ static int dwc3_gadget_soft_disconnect(struct dwc3 *dwc)
+ 		ret = wait_for_completion_timeout(&dwc->ep0_in_setup,
+ 				msecs_to_jiffies(DWC3_PULL_UP_TIMEOUT));
+ 		if (ret == 0) {
+-			unsigned int    dir;
 -
-+		seq++; /* 2 on the 1st/lockless path, otherwise odd */
- 		read_seqbegin_or_lock(&net->fs_lock, &seq);
+ 			dev_warn(dwc->dev, "wait for SETUP phase timed out\n");
+ 			spin_lock_irqsave(&dwc->lock, flags);
+-			dir = !!dwc->ep0_expect_in;
+-			if (dwc->ep0state == EP0_DATA_PHASE)
+-				dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
+-			else
+-				dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
+-			dwc3_ep0_stall_and_restart(dwc);
++			dwc3_ep0_reset_state(dwc);
+ 			spin_unlock_irqrestore(&dwc->lock, flags);
+ 		}
+ 	}
+@@ -3848,16 +3859,7 @@ static void dwc3_gadget_disconnect_interrupt(struct dwc3 *dwc)
+ 	dwc->setup_packet_pending = false;
+ 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
  
- 		p = net->fs_servers.rb_node;
+-	if (dwc->ep0state != EP0_SETUP_PHASE) {
+-		unsigned int    dir;
+-
+-		dir = !!dwc->ep0_expect_in;
+-		if (dwc->ep0state == EP0_DATA_PHASE)
+-			dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
+-		else
+-			dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
+-		dwc3_ep0_stall_and_restart(dwc);
+-	}
++	dwc3_ep0_reset_state(dwc);
+ }
+ 
+ static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
+@@ -3913,20 +3915,7 @@ static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
+ 	 * phase. So ensure that EP0 is in setup phase by issuing a stall
+ 	 * and restart if EP0 is not in setup phase.
+ 	 */
+-	if (dwc->ep0state != EP0_SETUP_PHASE) {
+-		unsigned int	dir;
+-
+-		dir = !!dwc->ep0_expect_in;
+-		if (dwc->ep0state == EP0_DATA_PHASE)
+-			dwc3_ep0_end_control_data(dwc, dwc->eps[dir]);
+-		else
+-			dwc3_ep0_end_control_data(dwc, dwc->eps[!dir]);
+-
+-		dwc->eps[0]->trb_enqueue = 0;
+-		dwc->eps[1]->trb_enqueue = 0;
+-
+-		dwc3_ep0_stall_and_restart(dwc);
+-	}
++	dwc3_ep0_reset_state(dwc);
+ 
+ 	/*
+ 	 * In the Synopsis DesignWare Cores USB3 Databook Rev. 3.30a
 -- 
 2.43.0
 
