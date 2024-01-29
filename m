@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2736F840E05
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8C3840FE2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA6DF1F2CFC9
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D9801F216E2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D3A15957A;
-	Mon, 29 Jan 2024 17:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F087225E;
+	Mon, 29 Jan 2024 17:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdnhomZp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbDaCrQz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC75C159580;
-	Mon, 29 Jan 2024 17:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A282A157E66;
+	Mon, 29 Jan 2024 17:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548208; cv=none; b=N95WpYzDZ+6hYwjOH1cWZKgWymcGTausiLuxBNTfgUExfsM0h0TDwn63FvUht0W1sIMUN+EN6lOxovBA55TEz+cszNgNQVvXmuUxZ4aXAZllU3bFBAPl89l5QxB2dckrOvCOq4Gd/NeYy0L7JJeP88tNMAYzXhhX+xYFfl0mteQ=
+	t=1706548522; cv=none; b=BDMU+/94NJsoIlGf+7TMci2W5LgHC+iubccS2lcQrp9Lbg1r3BJZtufwvC7p0QA60gk+IC77IQ9HArYqz16011nLJPT5WRcLiea1KbQsZPDVIs9JNOVPcSiAu67w1PLUjCQdb4gxi1SD/hVpZzWZlVKgjLKX9dXFDiH8lpxLk2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548208; c=relaxed/simple;
-	bh=d7cGkZS+1ZynxOdKL6antyxHIY9gM71QKmJrOh6GVF8=;
+	s=arc-20240116; t=1706548522; c=relaxed/simple;
+	bh=JbsjgUkfGrLCUpEDQfZbGGfB/27/vLolnQOTJEukm90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVG5YZbalW1Y7vthG/gSzjUAwZG7e3Vsjsao5iviAx+R4rvm2HZ6rHbZylaOvWuL/Kz/7I9bN7n9eIhhwIEKS6FXja1/itGWaG2pvSZoamuofMRmbhbks+MZKLZifMRTIOWRO/A+MFZ+d1VL3YOqADGW27+ejKXq51Dg1gIDEnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdnhomZp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B348EC433C7;
-	Mon, 29 Jan 2024 17:10:07 +0000 (UTC)
+	 MIME-Version; b=b0X9Rjl9Rz1y1Pv0Df+u4kMK4lq2HTB6kFh1H8kQbGb0FsCwXde/ypygnpZ318/pS+wcHTtj3SjvsWpPlOiMcv/3ahVjgb7RYmUfti90kM24U9N+4P2mAxORNgnKus7ZtS/RpoL9JsXX2fjkHttBCXDv4uIU1VeFG0lsKepJAJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbDaCrQz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16798C433F1;
+	Mon, 29 Jan 2024 17:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548207;
-	bh=d7cGkZS+1ZynxOdKL6antyxHIY9gM71QKmJrOh6GVF8=;
+	s=korg; t=1706548522;
+	bh=JbsjgUkfGrLCUpEDQfZbGGfB/27/vLolnQOTJEukm90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mdnhomZp4wdFq5AIswHzJeOVTsNukY96t6ikuMUOG3bNTA+UEwTgOHt6v8boo6ppa
-	 tcgOWfdgup5nsKhJerAI1Xvgo3+RXjmSFzDCmRCiGpX+SE+XWnk2HlBrXz3QpQIsIP
-	 Vnn35Ts+OBpQmrvJI3TQ9Z5F2hGcE6Kb9qza+oDc=
+	b=UbDaCrQzjd8YV1FQKzeL17gDvox4kYeSLZqz1cotIFNlrkGM0087k/hsU3H8DK4Bi
+	 eqC+s7tppLyWuXHOvI61cPu1JRH8yvu+cKdglhefsktBO9AZNrr+ol1AtfjcnJqdXL
+	 kAzNotEf3Hzk3ritm71oR3sjQWnQK7iy7X/qCORE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.1 019/185] media: ov9734: Enable runtime PM before registering async sub-device
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 155/331] bpf: extract __check_reg_arg() utility function
 Date: Mon, 29 Jan 2024 09:03:39 -0800
-Message-ID: <20240129165959.216541822@linuxfoundation.org>
+Message-ID: <20240129170019.455903780@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bingbu Cao <bingbu.cao@intel.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-commit e242e9c144050ed120cf666642ba96b7c4462a4c upstream.
+commit 683b96f9606ab7308ffb23c46ab43cecdef8a241 upstream.
 
-As the sensor device maybe accessible right after its async sub-device is
-registered, such as ipu-bridge will try to power up sensor by sensor's
-client device's runtime PM from the async notifier callback, if runtime PM
-is not enabled, it will fail.
+Split check_reg_arg() into two utility functions:
+- check_reg_arg() operating on registers from current verifier state;
+- __check_reg_arg() operating on a specific set of registers passed as
+  a parameter;
 
-So runtime PM should be ready before its async sub-device is registered
-and accessible by others.
+The __check_reg_arg() function would be used by a follow-up change for
+callbacks handling.
 
-Fixes: d3f863a63fe4 ("media: i2c: Add ov9734 image sensor driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20231121020701.26440-5-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov9734.c |   19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ kernel/bpf/verifier.c |   19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/media/i2c/ov9734.c
-+++ b/drivers/media/i2c/ov9734.c
-@@ -939,6 +939,7 @@ static void ov9734_remove(struct i2c_cli
- 	media_entity_cleanup(&sd->entity);
- 	v4l2_ctrl_handler_free(sd->ctrl_handler);
- 	pm_runtime_disable(&client->dev);
-+	pm_runtime_set_suspended(&client->dev);
- 	mutex_destroy(&ov9734->mutex);
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -3321,13 +3321,11 @@ static void mark_insn_zext(struct bpf_ve
+ 	reg->subreg_def = DEF_NOT_SUBREG;
  }
  
-@@ -984,13 +985,6 @@ static int ov9734_probe(struct i2c_clien
- 		goto probe_error_v4l2_ctrl_handler_free;
- 	}
+-static int check_reg_arg(struct bpf_verifier_env *env, u32 regno,
+-			 enum reg_arg_type t)
++static int __check_reg_arg(struct bpf_verifier_env *env, struct bpf_reg_state *regs, u32 regno,
++			   enum reg_arg_type t)
+ {
+-	struct bpf_verifier_state *vstate = env->cur_state;
+-	struct bpf_func_state *state = vstate->frame[vstate->curframe];
+ 	struct bpf_insn *insn = env->prog->insnsi + env->insn_idx;
+-	struct bpf_reg_state *reg, *regs = state->regs;
++	struct bpf_reg_state *reg;
+ 	bool rw64;
  
--	ret = v4l2_async_register_subdev_sensor(&ov9734->sd);
--	if (ret < 0) {
--		dev_err(&client->dev, "failed to register V4L2 subdev: %d",
--			ret);
--		goto probe_error_media_entity_cleanup;
--	}
--
- 	/*
- 	 * Device is already turned on by i2c-core with ACPI domain PM.
- 	 * Enable runtime PM and turn off the device.
-@@ -999,9 +993,18 @@ static int ov9734_probe(struct i2c_clien
- 	pm_runtime_enable(&client->dev);
- 	pm_runtime_idle(&client->dev);
- 
-+	ret = v4l2_async_register_subdev_sensor(&ov9734->sd);
-+	if (ret < 0) {
-+		dev_err(&client->dev, "failed to register V4L2 subdev: %d",
-+			ret);
-+		goto probe_error_media_entity_cleanup_pm;
-+	}
-+
+ 	if (regno >= MAX_BPF_REG) {
+@@ -3368,6 +3366,15 @@ static int check_reg_arg(struct bpf_veri
  	return 0;
+ }
  
--probe_error_media_entity_cleanup:
-+probe_error_media_entity_cleanup_pm:
-+	pm_runtime_disable(&client->dev);
-+	pm_runtime_set_suspended(&client->dev);
- 	media_entity_cleanup(&ov9734->sd.entity);
++static int check_reg_arg(struct bpf_verifier_env *env, u32 regno,
++			 enum reg_arg_type t)
++{
++	struct bpf_verifier_state *vstate = env->cur_state;
++	struct bpf_func_state *state = vstate->frame[vstate->curframe];
++
++	return __check_reg_arg(env, state->regs, regno, t);
++}
++
+ static void mark_jmp_point(struct bpf_verifier_env *env, int idx)
+ {
+ 	env->insn_aux_data[idx].jmp_point = true;
+@@ -9147,7 +9154,7 @@ static void clear_caller_saved_regs(stru
+ 	/* after the call registers r0 - r5 were scratched */
+ 	for (i = 0; i < CALLER_SAVED_REGS; i++) {
+ 		mark_reg_not_init(env, regs, caller_saved[i]);
+-		check_reg_arg(env, caller_saved[i], DST_OP_NO_MARK);
++		__check_reg_arg(env, regs, caller_saved[i], DST_OP_NO_MARK);
+ 	}
+ }
  
- probe_error_v4l2_ctrl_handler_free:
 
 
 
