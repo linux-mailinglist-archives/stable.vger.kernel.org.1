@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C7E840E29
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73AF5840DC0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4875B26FE2
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B13D1F2A728
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C4715B2E9;
-	Mon, 29 Jan 2024 17:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285D615CD64;
+	Mon, 29 Jan 2024 17:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/ihRw9T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecom0Uw0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CAC158D64;
-	Mon, 29 Jan 2024 17:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC2915AAA8;
+	Mon, 29 Jan 2024 17:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548233; cv=none; b=n9hZN/SIPqwVXZXAbvuswiV8uTIYwmMXc6jNRyzsXCZ95BNxiGR0Fh2PsOP5/ihWFu1pMP9Ci5CmuTPb8xO5yWhbsn5Nrvy4m56B3PqrwowbEwpH85IpBGNAaqOyIRxSZILWXYUruNeuVcA5G1sHpVGG13F8QYjty9GT8MxztrA=
+	t=1706548159; cv=none; b=X0w4l6KNQrYRp0X8FHdDQ3uKDGKZL9kNQhbvgg9ygJ5TH67WhZQAb1VAMY1Ax9Ga0LkxD2mybqpwJIC1f1usJf6szruEtGwK/bWgGPGfDf6c4Uey+d/fU3nO3DOrDyyDgvkMaSay0eklTmZnlQTVCTg0ndFymuOHyvBHg0VyeUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548233; c=relaxed/simple;
-	bh=bPnHeVED4NDG7OOJnTDPeXHBgTkYV68JRcBSHPwA65E=;
+	s=arc-20240116; t=1706548159; c=relaxed/simple;
+	bh=9dLS3l6JyYwur2YW7u4ICBNsURxX79X2iGOVAg92b4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ifAE6XczNoUuxyfxchj1ue0uhSauwc2A4ChMZtpovTEMSDw/jQ0GSufXoNMSInVpXz+4LZnDX+1gk07BO13KbQLSe2uzWT0xWe5skjM3loarxYxut7lBxuM/iU7TzyTn8TAeKTM1Xd7VoZHPYERuQCSfWIvM2yYPYfUsMj0W1oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/ihRw9T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F0A6C43390;
-	Mon, 29 Jan 2024 17:10:33 +0000 (UTC)
+	 MIME-Version; b=GdgSAY/FBhPAwi23XbQudKhfP9GLo10q1OmNzx0iguAvS2yNBMfWgD8XqUGC1lbntjcbjoy/PNubEBYVUUMOsM9hSxn8jLmatRqF/Q2iaDs/fuoT0KnQOsS23jEklV4BDpQBLKCJUtUnbOSCjTbOux7/3ZkM1pG82a0+AqZtB5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecom0Uw0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FDDC43394;
+	Mon, 29 Jan 2024 17:09:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548233;
-	bh=bPnHeVED4NDG7OOJnTDPeXHBgTkYV68JRcBSHPwA65E=;
+	s=korg; t=1706548159;
+	bh=9dLS3l6JyYwur2YW7u4ICBNsURxX79X2iGOVAg92b4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F/ihRw9Tg5NgdI1cB2o1XvAeXRNzue19SWcSLFdxYZzVUcNv+ENjmg/ci76hDpbst
-	 jlm1tFeqVtRMMNNaaAhbRtSuq+BmmnMO1u8Xd8OYnY+FeNV54krqpMNK0p50cw1UFG
-	 CkQrRdXoP4P5Oo0aFnQaRlIHyfl6uhEIbNJoAXXc=
+	b=ecom0Uw0HJbqpvNy0tRlGZBctB3jd5HgjvVK795rcDfaV8K0/VHryaUj1ztsM1bm7
+	 U8RWfflG7WAuZjDBerAQT7m6wlpwOS13DKOBvMdxKyQK3MjiCLUUl964wYF5KNfQYH
+	 YoSt0rRA6l4FLNozdoXfXR3tHNfkWMDwmlOAB1I4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/185] iio: adc: ad7091r: Set alert bit in config register
+Subject: [PATCH 6.7 174/346] afs: Handle the VIO and UAEIO aborts explicitly
 Date: Mon, 29 Jan 2024 09:03:25 -0800
-Message-ID: <20240129165958.774160746@linuxfoundation.org>
+Message-ID: <20240129170021.512927735@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 149694f5e79b0c7a36ceb76e7c0d590db8f151c1 ]
+[ Upstream commit eb8eae65f0c713bcef84b082aa919f72c3d83268 ]
 
-The ad7091r-base driver sets up an interrupt handler for firing events
-when inputs are either above or below a certain threshold.
-However, for the interrupt signal to come from the device it must be
-configured to enable the ALERT/BUSY/GPO pin to be used as ALERT, which
-was not being done until now.
-Enable interrupt signals on the ALERT/BUSY/GPO pin by setting the proper
-bit in the configuration register.
+When processing the result of a call, handle the VIO and UAEIO abort
+specifically rather than leaving it to a default case.  Rather than
+erroring out unconditionally, see if there's another server if the volume
+has more than one server available, otherwise return -EREMOTEIO.
 
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Link: https://lore.kernel.org/r/e8da2ee98d6df88318b14baf3dc9630e20218418.1702746240.git.marcelo.schmitt1@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 020e71c7ffc2 ("iio: adc: ad7091r: Allow users to configure device events")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Stable-dep-of: 17ba6f0bd14f ("afs: Fix error handling with lookup via FS.InlineBulkStatus")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7091r-base.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/afs/rotate.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-index 0e5d3d2e9c98..8aaa854f816f 100644
---- a/drivers/iio/adc/ad7091r-base.c
-+++ b/drivers/iio/adc/ad7091r-base.c
-@@ -28,6 +28,7 @@
- #define AD7091R_REG_RESULT_CONV_RESULT(x)   ((x) & 0xfff)
+diff --git a/fs/afs/rotate.c b/fs/afs/rotate.c
+index 59aed7a6dd11..a108cd55bb4e 100644
+--- a/fs/afs/rotate.c
++++ b/fs/afs/rotate.c
+@@ -330,6 +330,13 @@ bool afs_select_fileserver(struct afs_operation *op)
  
- /* AD7091R_REG_CONF */
-+#define AD7091R_REG_CONF_ALERT_EN   BIT(4)
- #define AD7091R_REG_CONF_AUTO   BIT(8)
- #define AD7091R_REG_CONF_CMD    BIT(10)
+ 			goto restart_from_beginning;
  
-@@ -232,6 +233,11 @@ int ad7091r_probe(struct device *dev, const char *name,
- 	iio_dev->channels = chip_info->channels;
- 
- 	if (irq) {
-+		ret = regmap_update_bits(st->map, AD7091R_REG_CONF,
-+					 AD7091R_REG_CONF_ALERT_EN, BIT(4));
-+		if (ret)
-+			return ret;
++		case UAEIO:
++		case VIO:
++			op->error = -EREMOTEIO;
++			if (op->volume->type != AFSVL_RWVOL)
++				goto next_server;
++			goto failed;
 +
- 		ret = devm_request_threaded_irq(dev, irq, NULL,
- 				ad7091r_event_handler,
- 				IRQF_TRIGGER_FALLING | IRQF_ONESHOT, name, iio_dev);
+ 		case VDISKFULL:
+ 		case UAENOSPC:
+ 			/* The partition is full.  Only applies to RWVOLs.
 -- 
 2.43.0
 
