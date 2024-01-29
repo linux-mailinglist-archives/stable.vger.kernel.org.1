@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-16523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A53FF840D51
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:09:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48898840F81
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 465DE1F2C2A3
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDBD01F22080
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C94F159576;
-	Mon, 29 Jan 2024 17:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D181115DBC6;
+	Mon, 29 Jan 2024 17:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w43l03HH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WfDRRuRL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2974915AADC;
-	Mon, 29 Jan 2024 17:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F78615B107;
+	Mon, 29 Jan 2024 17:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548083; cv=none; b=Gijdo+845gOwOPOu7CHV8t4qx/FEltycFTvzpJg/xm9vYpRT0GUKB2FZrvGYxWK2pu5diWYhKEK1LF3Nz+iVokSjNT76x4eTaOvgxyJDUvYLvBGQgIQtmL+O9XTDqgPdHL1gPJIeZFoBRiGAube+ANqew8MpbNZ7siH1qLKoS18=
+	t=1706548453; cv=none; b=U5f7IZaPzrrU/FTD1uDhHjd+rhbR2c3sxbUnuE8ZIFOU9Imxy42DtMNsxOnfvhOmLdCnSJlaOwKAG5MARcf4gt5wiMTmcs7nMoigG3JWG5sM4Yih/doykDIG+CO/KZMXRq27qjSlUwtHE/JS6B6ewITl/Nwzhh63J99a4YWB4M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548083; c=relaxed/simple;
-	bh=J8gVvFo0+78aXBG5r0SRDdfOEErPjIAwV3uqg0qWGoA=;
+	s=arc-20240116; t=1706548453; c=relaxed/simple;
+	bh=/0I9j1XNuaiRzDPCroyxRmiqGVEUKsriA5DIAuuF3no=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CXWWzmDBkgLxd6XCSou3HCk9Im41FEUzH5Eb5eYybdkcUPB7zfGOYlfzF5gVvtHGLqFHcbSLVJP+XB8/qHssucaLichBwFfpt4RECCaD+NifwgCUsM+llEurvACn26gWWap1/fZVqXOy3KrnFdr35tYtkpaT8qUvJLvtbj4EuaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w43l03HH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4BF2C433F1;
-	Mon, 29 Jan 2024 17:08:02 +0000 (UTC)
+	 MIME-Version; b=X28qNfKxffO8k/Oh3GgVN/lteTfOXkU8A1FA25vCxDLSoAgwr3PkEuBbxkOLdLoyzPI63z7V1byB2/l55b/IOyZqUKUEgTjb7qWMIUXP6qJqBtGh16MPFgroroFiEZYtQrn1lIjWIX3LnYosd4FDdJeG3xKJ5NoqTJ5B9e5bIQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WfDRRuRL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575D9C433C7;
+	Mon, 29 Jan 2024 17:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548083;
-	bh=J8gVvFo0+78aXBG5r0SRDdfOEErPjIAwV3uqg0qWGoA=;
+	s=korg; t=1706548453;
+	bh=/0I9j1XNuaiRzDPCroyxRmiqGVEUKsriA5DIAuuF3no=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w43l03HHRnOyZTgc8A4YwgUL62SRRKlG4qj9gJ55osQXroCMAcvwGTvG7cfpY9rVu
-	 DaH9uRc2sPNh9+iWhycCziX1pADAQHf3nivnofwtRsDImQnCJdjbG4HynFgVz3D/2S
-	 KvC0ipwBfc+BItbAmSMFZS7z/vDQMmudkefZoPEw=
+	b=WfDRRuRLr8gOMwRrrMVGHNM9w8uxqj8P6jgVElWTF15j+wclYDnZbwoFK5QAzmvTV
+	 1YO1iFJU0/MDXqNT9r2dNNVD0W2AUnmYthvWe6+1ztSgrbRWm7QA446qzh7Fm1kZHc
+	 uBimwi1lBoV4NXdvni4FyWEpp6S+Z8ObRjJOiMyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.7 096/346] media: videobuf2-dma-sg: fix vmap callback
-Date: Mon, 29 Jan 2024 09:02:07 -0800
-Message-ID: <20240129170019.226493743@linuxfoundation.org>
+	Tony Krowiak <akrowiak@linux.ibm.com>,
+	"Jason J. Herne" <jjherne@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.6 064/331] s390/vfio-ap: do not reset queue removed from host config
+Date: Mon, 29 Jan 2024 09:02:08 -0800
+Message-ID: <20240129170016.809170425@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Tony Krowiak <akrowiak@linux.ibm.com>
 
-commit 608ca5a60ee47b48fec210aeb7a795a64eb5dcee upstream.
+commit b9bd10c43456d16abd97b717446f51afb3b88411 upstream.
 
-For dmabuf import users to be able to use the vaddr from another
-videobuf2-dma-sg source, the exporter needs to set a proper vaddr on
-vb2_dma_sg_dmabuf_ops_vmap callback. This patch adds vmap on map if
-buf->vaddr was not set.
+When a queue is unbound from the vfio_ap device driver, it is reset to
+ensure its crypto data is not leaked when it is bound to another device
+driver. If the queue is unbound due to the fact that the adapter or domain
+was removed from the host's AP configuration, then attempting to reset it
+will fail with response code 01 (APID not valid) getting returned from the
+reset command. Let's ensure that the queue is assigned to the host's
+configuration before resetting it.
 
-Cc: stable@kernel.org
-Fixes: 7938f4218168 ("dma-buf-map: Rename to iosys-map")
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Acked-by: Tomasz Figa <tfiga@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
+Reviewed-by: "Jason J. Herne" <jjherne@linux.ibm.com>
+Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Fixes: eeb386aeb5b7 ("s390/vfio-ap: handle config changed and scan complete notification")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240115185441.31526-7-akrowiak@linux.ibm.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/common/videobuf2/videobuf2-dma-sg.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/s390/crypto/vfio_ap_ops.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-+++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-@@ -487,9 +487,15 @@ vb2_dma_sg_dmabuf_ops_end_cpu_access(str
- static int vb2_dma_sg_dmabuf_ops_vmap(struct dma_buf *dbuf,
- 				      struct iosys_map *map)
- {
--	struct vb2_dma_sg_buf *buf = dbuf->priv;
-+	struct vb2_dma_sg_buf *buf;
-+	void *vaddr;
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -2198,10 +2198,10 @@ void vfio_ap_mdev_remove_queue(struct ap
+ 	q = dev_get_drvdata(&apdev->device);
+ 	get_update_locks_for_queue(q);
+ 	matrix_mdev = q->matrix_mdev;
++	apid = AP_QID_CARD(q->apqn);
++	apqi = AP_QID_QUEUE(q->apqn);
  
--	iosys_map_set_vaddr(map, buf->vaddr);
-+	buf = dbuf->priv;
-+	vaddr = vb2_dma_sg_vaddr(buf->vb, buf);
-+	if (!vaddr)
-+		return -EINVAL;
-+
-+	iosys_map_set_vaddr(map, vaddr);
+ 	if (matrix_mdev) {
+-		apid = AP_QID_CARD(q->apqn);
+-		apqi = AP_QID_QUEUE(q->apqn);
+ 		/* If the queue is assigned to the guest's AP configuration */
+ 		if (test_bit_inv(apid, matrix_mdev->shadow_apcb.apm) &&
+ 		    test_bit_inv(apqi, matrix_mdev->shadow_apcb.aqm)) {
+@@ -2217,8 +2217,16 @@ void vfio_ap_mdev_remove_queue(struct ap
+ 		}
+ 	}
  
- 	return 0;
- }
+-	vfio_ap_mdev_reset_queue(q);
+-	flush_work(&q->reset_work);
++	/*
++	 * If the queue is not in the host's AP configuration, then resetting
++	 * it will fail with response code 01, (APQN not valid); so, let's make
++	 * sure it is in the host's config.
++	 */
++	if (test_bit_inv(apid, (unsigned long *)matrix_dev->info.apm) &&
++	    test_bit_inv(apqi, (unsigned long *)matrix_dev->info.aqm)) {
++		vfio_ap_mdev_reset_queue(q);
++		flush_work(&q->reset_work);
++	}
+ 
+ done:
+ 	if (matrix_mdev)
 
 
 
