@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-16763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8132D840E50
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64EB2840DD8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A64891C212F7
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 053AA1F2CFD3
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63BDF15B30D;
-	Mon, 29 Jan 2024 17:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F149715AAC4;
+	Mon, 29 Jan 2024 17:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fv+E1W8b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7ltQvYw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2172015B311;
-	Mon, 29 Jan 2024 17:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF152159570;
+	Mon, 29 Jan 2024 17:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548262; cv=none; b=nSh4ipchhEMZEekqpGzCK+ekUC82xGMdhF7B0xpq+BvVn5Ly8A+1v+mh2M1vKJAwuwqlwWbXKJdbZryudbUuHZ+6D3sAy7q+MENdH2axtlqdOA+85W/SbruDXnTi3B8V7B1rxxsgMbnX7N8kZUXcKPpfz9cpu+cwxN4m+ihXa3Q=
+	t=1706548176; cv=none; b=QnNR/1rZBhkL3qrM1RqexDI1NR3RFf19JU7Vc/Ke/UosXtL2RmL9Ke8GTNQ+yTrEVWhGnkSca/o+pFeG9KIMUBqPjTDwtxSAoBqmz4omJGsy6C8GZ6VM4jBVpZBCE8+E0RmkJ3glxaUtvF3bOlpbVIm0GwvOmDPOpd7WMfUfKa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548262; c=relaxed/simple;
-	bh=NrMam2QRf1DnjoQxYL9LneAZig8wyCDdEpnFLWM3S7E=;
+	s=arc-20240116; t=1706548176; c=relaxed/simple;
+	bh=+YicPiqY0Dm1JnjLD/huLSyYbyu2z6KVTYYsuVPNAqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mxs8a+dnlTGjWAWtb62pn+7koB5kCcmNa+DTGiESm2ZJE13AWclRQkK9OTbC7XcoZ5X2Ey24YW23tYmukV5SJ5XhXIs6TmGZXtaSsFxHHQjkZXA8YgX1iQxwPZHah9vr8YBGLFlZlzxhmkfC9lhPXpVWCnRBN4vicQkfaCP/R5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fv+E1W8b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AE5C433F1;
-	Mon, 29 Jan 2024 17:11:01 +0000 (UTC)
+	 MIME-Version; b=Rjnpx9pT7okmCHIx3ZtcGl/EPagZy5vlPE2aKzoMUDFGwLyN1Ln+NSLwUdrCc7tqlu+07XS30ZsWM0ht1v3VyzyZwE7m9ID7wSyTYhrvmLJmwqeqbWtN5btrdUn13cyYrjPm/w80inayWopJoulDOyiZ6LrTJ6vRAyQeReujBOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7ltQvYw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D6AC433C7;
+	Mon, 29 Jan 2024 17:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548261;
-	bh=NrMam2QRf1DnjoQxYL9LneAZig8wyCDdEpnFLWM3S7E=;
+	s=korg; t=1706548176;
+	bh=+YicPiqY0Dm1JnjLD/huLSyYbyu2z6KVTYYsuVPNAqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fv+E1W8b9hmpIfBm5v1f37fr1voe4XRO3+VXpWX8Mg4eEETeuCbI15g6KzLLsvqek
-	 aaNcb59HVRkZn/HDdw4sWIPnIo8WjXOIGCAIFgBeMRvdCgrY/kr2cQb9kG8AoCIj0N
-	 GUJc3czNHw0FDBCLgrzf4fjuBNV5A/ZtFmEqkjZQ=
+	b=V7ltQvYwQAhgD77x7BdEUaFajizp8h8qCHcrGcTwo0fRqLxOW+kAzvbIsT13ryS2t
+	 jXBIEMLO8qdT1X0zCMl4Gfj48+wPaigfl6A76CgMsC9JUPp2eBbNTxO/LtUA2NHteG
+	 SRC864nstbAELLA+4z6pRtk5upncOs06+SQ0pn3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Faith Ekstrand <faith.ekstrand@collabora.com>,
-	Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 6.1 053/185] nouveau/vmm: dont set addr on the fail path to avoid warning
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.7 222/346] btrfs: zoned: fix lock ordering in btrfs_zone_activate()
 Date: Mon, 29 Jan 2024 09:04:13 -0800
-Message-ID: <20240129170000.301368199@linuxfoundation.org>
+Message-ID: <20240129170022.913230594@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,121 +59,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-commit cacea81390fd8c8c85404e5eb2adeb83d87a912e upstream.
+commit b18f3b60b35a8c01c9a2a0f0d6424c6d73971dc3 upstream.
 
-nvif_vmm_put gets called if addr is set, but if the allocation
-fails we don't need to call put, otherwise we get a warning like
+The btrfs CI reported a lockdep warning as follows by running generic
+generic/129.
 
-[523232.435671] ------------[ cut here ]------------
-[523232.435674] WARNING: CPU: 8 PID: 1505697 at drivers/gpu/drm/nouveau/nvi=
-f/vmm.c:68 nvif_vmm_put+0x72/0x80 [nouveau]
-[523232.435795] Modules linked in: uinput rfcomm snd_seq_dummy snd_hrtimer =
-nf_conntrack_netbios_ns nf_conntrack_broadcast nft_fib_inet nft_fib_ipv4 nf=
-t_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject=
- nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_=
-set nf_tables nfnetlink qrtr bnep sunrpc binfmt_misc intel_rapl_msr intel_r=
-apl_common intel_uncore_frequency intel_uncore_frequency_common isst_if_com=
-mon iwlmvm nfit libnvdimm vfat fat x86_pkg_temp_thermal intel_powerclamp ma=
-c80211 snd_soc_avs snd_soc_hda_codec coretemp snd_hda_ext_core snd_soc_core=
- snd_hda_codec_realtek kvm_intel snd_hda_codec_hdmi snd_compress snd_hda_co=
-dec_generic ac97_bus snd_pcm_dmaengine snd_hda_intel libarc4 snd_intel_dspc=
-fg snd_intel_sdw_acpi snd_hda_codec kvm iwlwifi snd_hda_core btusb snd_hwde=
-p btrtl snd_seq btintel irqbypass btbcm rapl snd_seq_device eeepc_wmi btmtk=
- intel_cstate iTCO_wdt cfg80211 snd_pcm asus_wmi bluetooth intel_pmc_bxt iT=
-CO_vendor_support snd_timer ledtrig_audio pktcdvd snd mei_me
-[523232.435828]  sparse_keymap intel_uncore i2c_i801 platform_profile wmi_b=
-mof mei pcspkr ioatdma soundcore i2c_smbus rfkill idma64 dca joydev acpi_ta=
-d loop zram nouveau drm_ttm_helper ttm video drm_exec drm_gpuvm gpu_sched c=
-rct10dif_pclmul i2c_algo_bit nvme crc32_pclmul crc32c_intel drm_display_hel=
-per polyval_clmulni nvme_core polyval_generic e1000e mxm_wmi cec ghash_clmu=
-lni_intel r8169 sha512_ssse3 nvme_common wmi pinctrl_sunrisepoint uas usb_s=
-torage ip6_tables ip_tables fuse
-[523232.435849] CPU: 8 PID: 1505697 Comm: gnome-shell Tainted: G        W  =
-        6.6.0-rc7-nvk-uapi+ #12
-[523232.435851] Hardware name: System manufacturer System Product Name/ROG =
-STRIX X299-E GAMING II, BIOS 1301 09/24/2021
-[523232.435852] RIP: 0010:nvif_vmm_put+0x72/0x80 [nouveau]
-[523232.435934] Code: 00 00 48 89 e2 be 02 00 00 00 48 c7 04 24 00 00 00 00=
- 48 89 44 24 08 e8 fc bf ff ff 85
-c0 75 0a 48 c7 43 08 00 00 00 00 eb b3 <0f> 0b eb f2 e8 f5 c9 b2 e6 0f 1f 4=
-4 00 00 90 90 90 90 90 90 90 90
-[523232.435936] RSP: 0018:ffffc900077ffbd8 EFLAGS: 00010282
-[523232.435937] RAX: 00000000fffffffe RBX: ffffc900077ffc00 RCX: 0000000000=
-000010
-[523232.435938] RDX: 0000000000000010 RSI: ffffc900077ffb38 RDI: ffffc90007=
-7ffbd8
-[523232.435940] RBP: ffff888e1c4f2140 R08: 0000000000000000 R09: 0000000000=
-000000
-[523232.435940] R10: 0000000000000000 R11: 0000000000000000 R12: ffff888503=
-811800
-[523232.435941] R13: ffffc900077ffca0 R14: ffff888e1c4f2140 R15: ffff888103=
-17e1e0
-[523232.435942] FS:  00007f933a769640(0000) GS:ffff88905fa00000(0000) knlGS=
-:0000000000000000
-[523232.435943] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[523232.435944] CR2: 00007f930bef7000 CR3: 00000005d0322001 CR4: 0000000000=
-3706e0
-[523232.435945] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000=
-000000
-[523232.435946] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000=
-000400
-[523232.435964] Call Trace:
-[523232.435965]  <TASK>
-[523232.435966]  ? nvif_vmm_put+0x72/0x80 [nouveau]
-[523232.436051]  ? __warn+0x81/0x130
-[523232.436055]  ? nvif_vmm_put+0x72/0x80 [nouveau]
-[523232.436138]  ? report_bug+0x171/0x1a0
-[523232.436142]  ? handle_bug+0x3c/0x80
-[523232.436144]  ? exc_invalid_op+0x17/0x70
-[523232.436145]  ? asm_exc_invalid_op+0x1a/0x20
-[523232.436149]  ? nvif_vmm_put+0x72/0x80 [nouveau]
-[523232.436230]  ? nvif_vmm_put+0x64/0x80 [nouveau]
-[523232.436342]  nouveau_vma_del+0x80/0xd0 [nouveau]
-[523232.436506]  nouveau_vma_new+0x1a0/0x210 [nouveau]
-[523232.436671]  nouveau_gem_object_open+0x1d0/0x1f0 [nouveau]
-[523232.436835]  drm_gem_handle_create_tail+0xd1/0x180
-[523232.436840]  drm_prime_fd_to_handle_ioctl+0x12e/0x200
-[523232.436844]  ? __pfx_drm_prime_fd_to_handle_ioctl+0x10/0x10
-[523232.436847]  drm_ioctl_kernel+0xd3/0x180
-[523232.436849]  drm_ioctl+0x26d/0x4b0
-[523232.436851]  ? __pfx_drm_prime_fd_to_handle_ioctl+0x10/0x10
-[523232.436855]  nouveau_drm_ioctl+0x5a/0xb0 [nouveau]
-[523232.437032]  __x64_sys_ioctl+0x94/0xd0
-[523232.437036]  do_syscall_64+0x5d/0x90
-[523232.437040]  ? syscall_exit_to_user_mode+0x2b/0x40
-[523232.437044]  ? do_syscall_64+0x6c/0x90
-[523232.437046]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+   WARNING: possible circular locking dependency detected
+   6.7.0-rc5+ #1 Not tainted
+   ------------------------------------------------------
+   kworker/u5:5/793427 is trying to acquire lock:
+   ffff88813256d028 (&cache->lock){+.+.}-{2:2}, at: btrfs_zone_finish_one_bg+0x5e/0x130
+   but task is already holding lock:
+   ffff88810a23a318 (&fs_info->zone_active_bgs_lock){+.+.}-{2:2}, at: btrfs_zone_finish_one_bg+0x34/0x130
+   which lock already depends on the new lock.
 
-Reported-by: Faith Ekstrand <faith.ekstrand@collabora.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240117213852.295565-1=
--airlied@gmail.com
+   the existing dependency chain (in reverse order) is:
+   -> #1 (&fs_info->zone_active_bgs_lock){+.+.}-{2:2}:
+   ...
+   -> #0 (&cache->lock){+.+.}-{2:2}:
+   ...
+
+This is because we take fs_info->zone_active_bgs_lock after a block_group's
+lock in btrfs_zone_activate() while doing the opposite in other places.
+
+Fix the issue by expanding the fs_info->zone_active_bgs_lock's critical
+section and taking it before a block_group's lock.
+
+Fixes: a7e1ac7bdc5a ("btrfs: zoned: reserve zones for an active metadata/system block group")
+CC: stable@vger.kernel.org # 6.6
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_vmm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/zoned.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_vmm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_vmm.c
-@@ -108,6 +108,9 @@ nouveau_vma_new(struct nouveau_bo *nvbo,
- 	} else {
- 		ret =3D nvif_vmm_get(&vmm->vmm, PTES, false, mem->mem.page, 0,
- 				   mem->mem.size, &tmp);
-+		if (ret)
-+			goto done;
-+
- 		vma->addr =3D tmp.addr;
+--- a/fs/btrfs/zoned.c
++++ b/fs/btrfs/zoned.c
+@@ -2094,6 +2094,7 @@ bool btrfs_zone_activate(struct btrfs_bl
+ 
+ 	map = block_group->physical_map;
+ 
++	spin_lock(&fs_info->zone_active_bgs_lock);
+ 	spin_lock(&block_group->lock);
+ 	if (test_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE, &block_group->runtime_flags)) {
+ 		ret = true;
+@@ -2106,7 +2107,6 @@ bool btrfs_zone_activate(struct btrfs_bl
+ 		goto out_unlock;
  	}
-=20
+ 
+-	spin_lock(&fs_info->zone_active_bgs_lock);
+ 	for (i = 0; i < map->num_stripes; i++) {
+ 		struct btrfs_zoned_device_info *zinfo;
+ 		int reserved = 0;
+@@ -2126,20 +2126,17 @@ bool btrfs_zone_activate(struct btrfs_bl
+ 		 */
+ 		if (atomic_read(&zinfo->active_zones_left) <= reserved) {
+ 			ret = false;
+-			spin_unlock(&fs_info->zone_active_bgs_lock);
+ 			goto out_unlock;
+ 		}
+ 
+ 		if (!btrfs_dev_set_active_zone(device, physical)) {
+ 			/* Cannot activate the zone */
+ 			ret = false;
+-			spin_unlock(&fs_info->zone_active_bgs_lock);
+ 			goto out_unlock;
+ 		}
+ 		if (!is_data)
+ 			zinfo->reserved_active_zones--;
+ 	}
+-	spin_unlock(&fs_info->zone_active_bgs_lock);
+ 
+ 	/* Successfully activated all the zones */
+ 	set_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE, &block_group->runtime_flags);
+@@ -2147,8 +2144,6 @@ bool btrfs_zone_activate(struct btrfs_bl
+ 
+ 	/* For the active block group list */
+ 	btrfs_get_block_group(block_group);
+-
+-	spin_lock(&fs_info->zone_active_bgs_lock);
+ 	list_add_tail(&block_group->active_bg_list, &fs_info->zone_active_bgs);
+ 	spin_unlock(&fs_info->zone_active_bgs_lock);
+ 
+@@ -2156,6 +2151,7 @@ bool btrfs_zone_activate(struct btrfs_bl
+ 
+ out_unlock:
+ 	spin_unlock(&block_group->lock);
++	spin_unlock(&fs_info->zone_active_bgs_lock);
+ 	return ret;
+ }
+ 
 
 
 
