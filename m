@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4608841046
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00F89840EA1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9116E286C98
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1160284F71
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2EE755F9;
-	Mon, 29 Jan 2024 17:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642F9158D94;
+	Mon, 29 Jan 2024 17:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7cjzf+R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3O9R7X/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAB2755EF;
-	Mon, 29 Jan 2024 17:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2021F15FB2D;
+	Mon, 29 Jan 2024 17:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548594; cv=none; b=CAqqS1boLOimWOCVfGXNeOv7JUbRADtPZ8WuoJBR55AVRejhSJXlRHxpESDtazxK0uBOQw0vKO8qOwoScDEXSMDtDJFWIErsrLNZskYpnB9tUEcWHJHZ6VP8paCjDskuhQQS/soAyH2LH0qgBMsmXTklNAWpSamEwsw+kOG4Ah4=
+	t=1706548319; cv=none; b=OAt48Va0QmFtTiQG1QHZfXZGEu7VT5xshHOdMP2hncwBAZBdjsi1GAMcldNJA/hSCJJIkwd/U/MiEobUU4ja4OULVAoxpZaURRSRD7SexbFUkX/No5R2BKD9m+9IkqVLWHhpOdzKrk+HIzG6hWI1ZNcgtaF9Altuw/heIsyB5RU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548594; c=relaxed/simple;
-	bh=OPZNytY/7balN7G3JGLIDwRy1ALIsRTuZ/JXcbsPA/E=;
+	s=arc-20240116; t=1706548319; c=relaxed/simple;
+	bh=8sXKNHuIbm2mUQbtZSSBaGr9g9k5BGAPFi9vUreQKwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fRpOIm7IV+cYwNnSSHuQHcwvk0zomKn7ZouR6q34uXE6H+UTdDwKYilIyJRfCYAl2bCvaVh3i57RDN/K17AARX2Kc4cPfwOxfQiBFRNlyKGdzPPXA2owHZabI7UX369HC5t8SNwnuNGYZM3vapL0NWm1w1P55YS+oCwfeX5ctkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7cjzf+R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F5FC43390;
-	Mon, 29 Jan 2024 17:16:33 +0000 (UTC)
+	 MIME-Version; b=JTvrtO9wgRKN4vGsv6jOSSl6cnIlSRXjluK0Rb7xQp8raUby/osugBIlKTNRrpt64pekOeOfmOumIumZjANQjHQ/AiVS8W3knatVsSkP/8evOKldJJIyyCntJQ4wTEgSFS4bHzWzEAofL8L6Khn0nzK8Lf9LUCAZabFw+TubvtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3O9R7X/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFC7C43394;
+	Mon, 29 Jan 2024 17:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548593;
-	bh=OPZNytY/7balN7G3JGLIDwRy1ALIsRTuZ/JXcbsPA/E=;
+	s=korg; t=1706548318;
+	bh=8sXKNHuIbm2mUQbtZSSBaGr9g9k5BGAPFi9vUreQKwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T7cjzf+RO8e0rJI7454iWRNwQCtyTzYsT7T68uzx8GauZc4Vx6Ops6YSjRlWM7TEB
-	 VXUgB+9hoL//sdQTKOWlbxBAz7BVehLRDIHuswmHL9lqKJFebrv8aWp0NW6wbg98b9
-	 Cv30aTSAfFNrUUdDp3eEgMELrhMF9T9Yx2yCbfoY=
+	b=h3O9R7X/TSWIJQO5zE1GJ9YLlsCsrYgT32Hb9H73D1fRtUXl91rSIUkatDNMsbd+q
+	 16oMnZp2rViDZ3GyQ3i0UnmjbHwUAnA0LbKCM8X1KgfkCqSmoN/IiMawOJwRBi1K+d
+	 k58SI00jNFJPpODyhWnHTTok+/59XSJ7D4WeD6ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	Salvatore Dipietro <dipiets@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 228/331] tsnep: Remove FCS for XDP data path
+Subject: [PATCH 6.1 092/185] tcp: Add memory barrier to tcp_push()
 Date: Mon, 29 Jan 2024 09:04:52 -0800
-Message-ID: <20240129170021.553359401@linuxfoundation.org>
+Message-ID: <20240129170001.556077102@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
+From: Salvatore Dipietro <dipiets@amazon.com>
 
-[ Upstream commit 50bad6f797d4d501c5ef416a6f92e1912ab5aa8b ]
+[ Upstream commit 7267e8dcad6b2f9fce05a6a06335d7040acbc2b6 ]
 
-The RX data buffer includes the FCS. The FCS is already stripped for the
-normal data path. But for the XDP data path the FCS is included and
-acts like additional/useless data.
+On CPUs with weak memory models, reads and updates performed by tcp_push
+to the sk variables can get reordered leaving the socket throttled when
+it should not. The tasklet running tcp_wfree() may also not observe the
+memory updates in time and will skip flushing any packets throttled by
+tcp_push(), delaying the sending. This can pathologically cause 40ms
+extra latency due to bad interactions with delayed acks.
 
-Remove the FCS from the RX data buffer also for XDP.
+Adding a memory barrier in tcp_push removes the bug, similarly to the
+previous commit bf06200e732d ("tcp: tsq: fix nonagle handling").
+smp_mb__after_atomic() is used to not incur in unnecessary overhead
+on x86 since not affected.
 
-Fixes: 65b28c810035 ("tsnep: Add XDP RX support")
-Fixes: 3fc2333933fd ("tsnep: Add XDP socket zero-copy RX support")
-Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Patch has been tested using an AWS c7g.2xlarge instance with Ubuntu
+22.04 and Apache Tomcat 9.0.83 running the basic servlet below:
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class HelloWorldServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+        response.setContentType("text/html;charset=utf-8");
+        OutputStreamWriter osw = new OutputStreamWriter(response.getOutputStream(),"UTF-8");
+        String s = "a".repeat(3096);
+        osw.write(s,0,s.length());
+        osw.flush();
+    }
+}
+
+Load was applied using wrk2 (https://github.com/kinvolk/wrk2) from an AWS
+c6i.8xlarge instance. Before the patch an additional 40ms latency from P99.99+
+values is observed while, with the patch, the extra latency disappears.
+
+No patch and tcp_autocorking=1
+./wrk -t32 -c128 -d40s --latency -R10000  http://172.31.60.173:8080/hello/hello
+  ...
+ 50.000%    0.91ms
+ 75.000%    1.13ms
+ 90.000%    1.46ms
+ 99.000%    1.74ms
+ 99.900%    1.89ms
+ 99.990%   41.95ms  <<< 40+ ms extra latency
+ 99.999%   48.32ms
+100.000%   48.96ms
+
+With patch and tcp_autocorking=1
+./wrk -t32 -c128 -d40s --latency -R10000  http://172.31.60.173:8080/hello/hello
+  ...
+ 50.000%    0.90ms
+ 75.000%    1.13ms
+ 90.000%    1.45ms
+ 99.000%    1.72ms
+ 99.900%    1.83ms
+ 99.990%    2.11ms  <<< no 40+ ms extra latency
+ 99.999%    2.53ms
+100.000%    2.62ms
+
+Patch has been also tested on x86 (m7i.2xlarge instance) which it is not
+affected by this issue and the patch doesn't introduce any additional
+delay.
+
+Fixes: 7aa5470c2c09 ("tcp: tsq: move tsq_flags close to sk_wmem_alloc")
+Signed-off-by: Salvatore Dipietro <dipiets@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240119190133.43698-1-dipiets@amazon.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/engleder/tsnep_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/tcp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
-index 38da2d6c250e..9fea97671f4b 100644
---- a/drivers/net/ethernet/engleder/tsnep_main.c
-+++ b/drivers/net/ethernet/engleder/tsnep_main.c
-@@ -1434,7 +1434,7 @@ static int tsnep_rx_poll(struct tsnep_rx *rx, struct napi_struct *napi,
- 
- 			xdp_prepare_buff(&xdp, page_address(entry->page),
- 					 XDP_PACKET_HEADROOM + TSNEP_RX_INLINE_METADATA_SIZE,
--					 length, false);
-+					 length - ETH_FCS_LEN, false);
- 
- 			consume = tsnep_xdp_run_prog(rx, prog, &xdp,
- 						     &xdp_status, tx_nq, tx);
-@@ -1517,7 +1517,7 @@ static int tsnep_rx_poll_zc(struct tsnep_rx *rx, struct napi_struct *napi,
- 		prefetch(entry->xdp->data);
- 		length = __le32_to_cpu(entry->desc_wb->properties) &
- 			 TSNEP_DESC_LENGTH_MASK;
--		xsk_buff_set_size(entry->xdp, length);
-+		xsk_buff_set_size(entry->xdp, length - ETH_FCS_LEN);
- 		xsk_buff_dma_sync_for_cpu(entry->xdp, rx->xsk_pool);
- 
- 		/* RX metadata with timestamps is in front of actual data,
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 0b7844a8d571..90e24c3f6557 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -718,6 +718,7 @@ void tcp_push(struct sock *sk, int flags, int mss_now,
+ 		if (!test_bit(TSQ_THROTTLED, &sk->sk_tsq_flags)) {
+ 			NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPAUTOCORKING);
+ 			set_bit(TSQ_THROTTLED, &sk->sk_tsq_flags);
++			smp_mb__after_atomic();
+ 		}
+ 		/* It is possible TX completion already happened
+ 		 * before we set TSQ_THROTTLED.
 -- 
 2.43.0
 
