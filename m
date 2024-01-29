@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-16793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9DF3840E6E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABDB3840E71
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59C4E1F2793A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DCECB21D8D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FBB15B97E;
-	Mon, 29 Jan 2024 17:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA7F15F33A;
+	Mon, 29 Jan 2024 17:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+7L7uTZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgxZs7HB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A594F15A492;
-	Mon, 29 Jan 2024 17:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A80515F339;
+	Mon, 29 Jan 2024 17:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548283; cv=none; b=ny5nRFc/vTI3R/QE6YjS1E/q4chZ7imPM0ggySEGVpeN4jGgaPvFxn0xu0LM+BlfQh2rVaSpIwsxod+ZSaJNAWDUXbrdmNlh+14oH/uI6PI1NQPdx5OwQ9r1z59kofj6Wy8A9MoDXQiZDMckKcmYS4wHqUxQgGP1dRdZrGmhPTI=
+	t=1706548285; cv=none; b=GUXkiTizLwg5jGgv/9vyppw7TimkLhgRVDky6tTGkNmJvMYQE/LgalwIh1cxvYKZ4FgeTAwaWXPpQJLBKfnX7NfnCpnex9anI9xBaWHKZkX6OlZ6Hf+j3j1usesBrf+2NBVsGGq6NxUmjIDU+wEFmNXHAl7uzcKSztNFQps/ba8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548283; c=relaxed/simple;
-	bh=V988f7AC7PElDecn8iKzuPqEPcL6HHkXzR1GImjWy+0=;
+	s=arc-20240116; t=1706548285; c=relaxed/simple;
+	bh=kIQjJzqDnHyHIZn5u1Oo3TrFW7j/SlZBJAa29IeuPNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kXY3ZuasAekv1C7Ur3ThvOrdjVIojf2bFguUlXdcoQeL9wSIVbXGaC7iyZ3pPx9esoCp4ez3AWOdX8oSDz7IL/v4Rv9cUnju3R+1yZKCpybXk1f7pQgplJQCyem+V3mcFUqFJfIPHL1QqtI9KSM71Bhl+9tmG95n/p3Hq48KVME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+7L7uTZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BCC0C433C7;
-	Mon, 29 Jan 2024 17:11:23 +0000 (UTC)
+	 MIME-Version; b=ulT/sUGswSibLLnWmgH9zXWPwkWbxC3g3exc9dC8wjm9uytOtoSYD7FFazuYPY9GHqJPtQPIW3eDvaWKjlykx0ZJXHVN3JJ386NnclnzGARr2yijD6nVX/kvVNx8bumQqvi9QWJCs5VBxJK4jCURp/C97XTvNFMgFw2Vvh8ew/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgxZs7HB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8423C43390;
+	Mon, 29 Jan 2024 17:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548283;
-	bh=V988f7AC7PElDecn8iKzuPqEPcL6HHkXzR1GImjWy+0=;
+	s=korg; t=1706548284;
+	bh=kIQjJzqDnHyHIZn5u1Oo3TrFW7j/SlZBJAa29IeuPNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b+7L7uTZOH1iQAQWhbsUdhMi9YUF1UD0rnQ7QuUb4oIbdHpjhOaNE95iB/5pm6AQT
-	 vNC8bHGNx/euUeWnd3gGb/H7gwykF6ubdmXebF7NB53qo2S45d1LojZEvqEowBrUIt
-	 +cqbgjsvMLS5182znaPeFTs84A9QlbcN1u7dqT40=
+	b=CgxZs7HBPAkiRb8rOeTkCKglvokUdWjIH7ibLiFX6StG+Pu6+lHS7m9ONd/MxoBQA
+	 ke7UGM+G0eM2mNdr9jslgOYG668QrnwTLDl902suHtpVYKYhMVcxH7uXHd3GwVqfcr
+	 PlayGu6XAnd+MvoYFwxjeBUgOKt9kAsenAmTRy44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Yi Wang <hsinyi@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Maxime Ripard <mripard@kernel.org>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Ilya Bakoulin <ilya.bakoulin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 296/346] drm/panel-edp: drm/panel-edp: Fix AUO B116XTN02 name
-Date: Mon, 29 Jan 2024 09:05:27 -0800
-Message-ID: <20240129170025.119424467@linuxfoundation.org>
+Subject: [PATCH 6.7 297/346] drm/amd/display: Fix hang/underflow when transitioning to ODM4:1
+Date: Mon, 29 Jan 2024 09:05:28 -0800
+Message-ID: <20240129170025.152389120@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -67,37 +69,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hsin-Yi Wang <hsinyi@chromium.org>
+From: Ilya Bakoulin <ilya.bakoulin@amd.com>
 
-[ Upstream commit 962845c090c4f85fa4f6872a5b6c89ee61f53cc0 ]
+[ Upstream commit e7b2b108cdeab76a7e7324459e50b0c1214c0386 ]
 
-Rename AUO 0x235c B116XTN02 to B116XTN02.3 according to decoding edid.
+[Why]
+Under some circumstances, disabling an OPTC and attempting to reclaim
+its OPP(s) for a different OPTC could cause a hang/underflow due to OPPs
+not being properly disconnected from the disabled OPTC.
 
-Fixes: 3db2420422a5 ("drm/panel-edp: Add AUO B116XTN02, BOE NT116WHM-N21,836X2, NV116WHM-N49 V8.0")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231107204611.3082200-3-hsinyi@chromium.org
+[How]
+Ensure that all OPPs are unassigned from an OPTC when it gets disabled.
+
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Ilya Bakoulin <ilya.bakoulin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 3ba2a0bfd8cf ("drm/amd/display: Clear OPTC mem select on disable")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-edp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c | 7 +++++++
+ drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c | 7 +++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
-index e93e54a98260..7dc6fb7308ce 100644
---- a/drivers/gpu/drm/panel/panel-edp.c
-+++ b/drivers/gpu/drm/panel/panel-edp.c
-@@ -1842,7 +1842,7 @@ static const struct edp_panel_entry edp_panels[] = {
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x145c, &delay_200_500_e50, "B116XAB01.4"),
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1e9b, &delay_200_500_e50, "B133UAN02.1"),
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1ea5, &delay_200_500_e50, "B116XAK01.6"),
--	EDP_PANEL_ENTRY('A', 'U', 'O', 0x235c, &delay_200_500_e50, "B116XTN02"),
-+	EDP_PANEL_ENTRY('A', 'U', 'O', 0x235c, &delay_200_500_e50, "B116XTN02.3"),
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x405c, &auo_b116xak01.delay, "B116XAK01.0"),
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x582d, &delay_200_500_e50, "B133UAN01.0"),
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x615c, &delay_200_500_e50, "B116XAN06.1"),
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
+index a2c4db2cebdd..91ea0d4da06a 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
+@@ -172,6 +172,13 @@ static bool optc32_disable_crtc(struct timing_generator *optc)
+ 	REG_UPDATE(OTG_CONTROL,
+ 			OTG_MASTER_EN, 0);
+ 
++	REG_UPDATE_5(OPTC_DATA_SOURCE_SELECT,
++			OPTC_SEG0_SRC_SEL, 0xf,
++			OPTC_SEG1_SRC_SEL, 0xf,
++			OPTC_SEG2_SRC_SEL, 0xf,
++			OPTC_SEG3_SRC_SEL, 0xf,
++			OPTC_NUM_OF_INPUT_SEGMENT, 0);
++
+ 	REG_UPDATE(CONTROL,
+ 			VTG0_ENABLE, 0);
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c
+index a4a39f1638cf..08a59cf449ca 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c
+@@ -144,6 +144,13 @@ static bool optc35_disable_crtc(struct timing_generator *optc)
+ 	REG_UPDATE(OTG_CONTROL,
+ 			OTG_MASTER_EN, 0);
+ 
++	REG_UPDATE_5(OPTC_DATA_SOURCE_SELECT,
++			OPTC_SEG0_SRC_SEL, 0xf,
++			OPTC_SEG1_SRC_SEL, 0xf,
++			OPTC_SEG2_SRC_SEL, 0xf,
++			OPTC_SEG3_SRC_SEL, 0xf,
++			OPTC_NUM_OF_INPUT_SEGMENT, 0);
++
+ 	REG_UPDATE(CONTROL,
+ 			VTG0_ENABLE, 0);
+ 
 -- 
 2.43.0
 
