@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-17169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB0384101A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73358840E00
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BF9F282234
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFEEA287078
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95E374052;
-	Mon, 29 Jan 2024 17:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C9B15DBC6;
+	Mon, 29 Jan 2024 17:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XaoBdQtX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VJK9XsgG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BCB74040;
-	Mon, 29 Jan 2024 17:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241B015B0F0;
+	Mon, 29 Jan 2024 17:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548561; cv=none; b=KQfkyE4566Bp1LIZ7DAfKMhvFzVZlsp61HcwZPDsJMd2kknGcB0vXPldlZuzNjLZZQlOUYSOaGqm7g55leII8S8mrvsB4H6wXI0mOw3ruUR/h61jvHUN+uivHvMjrHasUpMCA9yVKWQiqaJhrKmptGsO/JN/SiXdOcy/UpTLkmA=
+	t=1706548204; cv=none; b=b3ZFmA8wWqBtTNJaoGT6Z572NIYiaQ4YUJs7m7pJG6GeAXXQRsaFDsUxxGoaem25lrRnx/FLNVO9zJqvFWj968dmGm1BWK0hm6I+tzPA67Cmq6FhBDHm8ji/EzCIxq+/SMyMMB9pS4Q9P+NzQOtAFtYrILJCp4brAFhs5dQkdLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548561; c=relaxed/simple;
-	bh=JLRB7+QJg+xGkqG2Cfem0VGDWqDa5OehiiQIkgEkABE=;
+	s=arc-20240116; t=1706548204; c=relaxed/simple;
+	bh=3qmFEvpa0vptYomk7Mgf114p/bfPV3zU+Pb3+0l7Tqo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ICwof5mXMTPxYaBVy6XCNvLQb4LQuEY77dp8s0azIePywhiV2rcj2b8C0PsDmLNoRg8E9qqjkCOOhGG4i2/KDF+8CBS82iZikpALrpfs2Bxq/XPvrxmuFu7x+UaXFJyyHqOUwk3vLyOXlGx/0e8QA1dmCUGKDmMtacWo8YAwoyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XaoBdQtX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F505C433C7;
-	Mon, 29 Jan 2024 17:16:01 +0000 (UTC)
+	 MIME-Version; b=Wk3mQwH2tHmVH1fcw0y1H7mxNAd1BLqNQqtAzoV5gkX/FNkscTpIlDDolKK+9jXc/JVw0U43dErnd/Ns6cZfGlqVBspWJ9cNoOtk061TUxZBEbIkAOoYARvJacKNMDPhMhRe13VI+oxOv2TZ5hI9j+q9xk8GGQGXg+mVN9yiB1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJK9XsgG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB26C43390;
+	Mon, 29 Jan 2024 17:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548561;
-	bh=JLRB7+QJg+xGkqG2Cfem0VGDWqDa5OehiiQIkgEkABE=;
+	s=korg; t=1706548204;
+	bh=3qmFEvpa0vptYomk7Mgf114p/bfPV3zU+Pb3+0l7Tqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XaoBdQtX+HuvGYRDPgheDxBdxAQVA5mrdp160r7QVyinwkVZV15o1Alf3/SxMbz99
-	 8HiCMw2wvnuXxY4XlMVb1/eWj4mqBnSqKemFICShFmjviNzmML1WlBHsaiLD+obojz
-	 5RBjc0RHwAWlQaVe345W8/Hy8yb+NinrG4lZO/Y4=
+	b=VJK9XsgGyxwNZdE6KqukKpUBQ+sQOtO9KpRwlWbelDZiQlFW+eSugf5qVQZiJ7kJJ
+	 3NugZm2rhXOVfgpJNoYGrrbUb0fpyO/B95E6jSW/wPFiZNSspEfT71JnVWlE9T3kSG
+	 yGQwsQ+CSFvyOw3LJp0ryes5w05kLniHAQIMX5E4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jenishkumar Maheshbhai Patel <jpatel2@marvell.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 209/331] net: mvpp2: clear BM pool before initialization
+	Ma Jun <Jun.Ma2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.7 242/346] drm/amdgpu: Fix the null pointer when load rlc firmware
 Date: Mon, 29 Jan 2024 09:04:33 -0800
-Message-ID: <20240129170020.996862086@linuxfoundation.org>
+Message-ID: <20240129170023.525824622@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenishkumar Maheshbhai Patel <jpatel2@marvell.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-[ Upstream commit 9f538b415db862e74b8c5d3abbccfc1b2b6caa38 ]
+commit bc03c02cc1991a066b23e69bbcc0f66e8f1f7453 upstream.
 
-Register value persist after booting the kernel using
-kexec which results in kernel panic. Thus clear the
-BM pool registers before initialisation to fix the issue.
+If the RLC firmware is invalid because of wrong header size,
+the pointer to the rlc firmware is released in function
+amdgpu_ucode_request. There will be a null pointer error
+in subsequent use. So skip validation to fix it.
 
-Fixes: 3f518509dedc ("ethernet: Add new driver for Marvell Armada 375 network unit")
-Signed-off-by: Jenishkumar Maheshbhai Patel <jpatel2@marvell.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://lore.kernel.org/r/20240119035914.2595665-1-jpatel2@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3da9b71563cb ("drm/amd: Use `amdgpu_ucode_*` helpers for GFX10")
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 27 ++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c |   15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index 21c3f9b015c8..aca17082b9ec 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -614,12 +614,38 @@ static void mvpp23_bm_set_8pool_mode(struct mvpp2 *priv)
- 	mvpp2_write(priv, MVPP22_BM_POOL_BASE_ADDR_HIGH_REG, val);
- }
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -3996,16 +3996,13 @@ static int gfx_v10_0_init_microcode(stru
  
-+/* Cleanup pool before actual initialization in the OS */
-+static void mvpp2_bm_pool_cleanup(struct mvpp2 *priv, int pool_id)
-+{
-+	unsigned int thread = mvpp2_cpu_to_thread(priv, get_cpu());
-+	u32 val;
-+	int i;
+ 	if (!amdgpu_sriov_vf(adev)) {
+ 		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_rlc.bin", ucode_prefix);
+-		err = amdgpu_ucode_request(adev, &adev->gfx.rlc_fw, fw_name);
+-		/* don't check this.  There are apparently firmwares in the wild with
+-		 * incorrect size in the header
+-		 */
+-		if (err == -ENODEV)
+-			goto out;
++		err = request_firmware(&adev->gfx.rlc_fw, fw_name, adev->dev);
+ 		if (err)
+-			dev_dbg(adev->dev,
+-				"gfx10: amdgpu_ucode_request() failed \"%s\"\n",
+-				fw_name);
++			goto out;
 +
-+	/* Drain the BM from all possible residues left by firmware */
-+	for (i = 0; i < MVPP2_BM_POOL_SIZE_MAX; i++)
-+		mvpp2_thread_read(priv, thread, MVPP2_BM_PHY_ALLOC_REG(pool_id));
-+
-+	put_cpu();
-+
-+	/* Stop the BM pool */
-+	val = mvpp2_read(priv, MVPP2_BM_POOL_CTRL_REG(pool_id));
-+	val |= MVPP2_BM_STOP_MASK;
-+	mvpp2_write(priv, MVPP2_BM_POOL_CTRL_REG(pool_id), val);
-+}
-+
- static int mvpp2_bm_init(struct device *dev, struct mvpp2 *priv)
- {
- 	enum dma_data_direction dma_dir = DMA_FROM_DEVICE;
- 	int i, err, poolnum = MVPP2_BM_POOLS_NUM;
- 	struct mvpp2_port *port;
- 
-+	if (priv->percpu_pools)
-+		poolnum = mvpp2_get_nrxqs(priv) * 2;
-+
-+	/* Clean up the pool state in case it contains stale state */
-+	for (i = 0; i < poolnum; i++)
-+		mvpp2_bm_pool_cleanup(priv, i);
-+
- 	if (priv->percpu_pools) {
- 		for (i = 0; i < priv->port_count; i++) {
- 			port = priv->port_list[i];
-@@ -629,7 +655,6 @@ static int mvpp2_bm_init(struct device *dev, struct mvpp2 *priv)
- 			}
- 		}
- 
--		poolnum = mvpp2_get_nrxqs(priv) * 2;
- 		for (i = 0; i < poolnum; i++) {
- 			/* the pool in use */
- 			int pn = i / (poolnum / 2);
--- 
-2.43.0
-
++		/* don't validate this firmware. There are apparently firmwares
++		 * in the wild with incorrect size in the header
++		 */
+ 		rlc_hdr = (const struct rlc_firmware_header_v2_0 *)adev->gfx.rlc_fw->data;
+ 		version_major = le16_to_cpu(rlc_hdr->header.header_version_major);
+ 		version_minor = le16_to_cpu(rlc_hdr->header.header_version_minor);
 
 
 
