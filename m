@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-17229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CB34841058
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F07E840E7B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EFF81C23A0B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99EA31F2731C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D904115B96B;
-	Mon, 29 Jan 2024 17:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0C515B987;
+	Mon, 29 Jan 2024 17:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJKf8G76"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlLEqEyL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D3B15705F;
-	Mon, 29 Jan 2024 17:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0EB15B984;
+	Mon, 29 Jan 2024 17:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548605; cv=none; b=kWztWppyoL8co4Uj3r//lCCFgK4ik8skbtyPmphPp4I9TmMyP37JID6bKnPXloETw4xfgPoK6eNjFusziYMocwe/so/aBH75yPkDRVrP4kSOMvn84ZxzdurKesrU0Vqq7e9/v/1ABePskJaQORUh1XLuYSKxrkpVBSlsTjuGuk0=
+	t=1706548291; cv=none; b=P8L0psYcPTt1yuJR7vdeg6uo+EuTwrqpD4aNt8RABPw6lTlDfMgeSqH8jZn8MBXZFB+oW3jMToE0Pf6kM9jKbZ7aZ4Wb69J/B13/AVckE1Juh2MuFTpN+LBw/kpOz9usNbQY/mTVwnRDir3NVlWLGiYnBEqw2DQ7yHCJAqdS3kA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548605; c=relaxed/simple;
-	bh=8qpbo3Mr2hL2ucD7EaNuzAEziLGcLWKIJbKZNmgOy0k=;
+	s=arc-20240116; t=1706548291; c=relaxed/simple;
+	bh=WzDKNl4EXX0ltNAQdQBTaF7TCkrJh7GeWswM6Jg8YCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H3KXW0uyuAtlR07OUJS7UtIiJWLTdJC47XHjE7hJFx3f+AN046hMtH4a/4kHvH9krGvO04hX4v8Hw9VO/uLt8VmuXzgZJEijj9HosNRovbU1+f95hchvIfqw2i4OBgsn4knCJjAupLXgypKGRVUoW0ckQJ7fIPwkKFkhaELe6Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJKf8G76; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6276DC43399;
-	Mon, 29 Jan 2024 17:16:45 +0000 (UTC)
+	 MIME-Version; b=SwpjwX0ZARRy36rCC4B9tXuvTOIzGaagPaiD3X8BYRZyl9uJcxN03PiWtip60EdBrnr/UH5EZ6xNZyXukUZMoejYvrdPak0ZfyT61wsrW4gRLUQ2t4JBbEOX9+g+r09Q3WwgUBOsyzlwfrB3ecMLhFkSwu1UVh2JjnwMug9lriw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlLEqEyL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F602C433F1;
+	Mon, 29 Jan 2024 17:11:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548605;
-	bh=8qpbo3Mr2hL2ucD7EaNuzAEziLGcLWKIJbKZNmgOy0k=;
+	s=korg; t=1706548291;
+	bh=WzDKNl4EXX0ltNAQdQBTaF7TCkrJh7GeWswM6Jg8YCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uJKf8G76alVX7JIjm+rxZ++k1ICgLOxZCFZH3sEzEl44MTOBcWi3K+92+RCVmk2On
-	 30EQ0GdMR6/iMdeg/TXbdrvq46zU0edULW8+ucG0h826pfNAX7A8Rq6BDWE8VJwhAj
-	 qkW0/5+Ie9hCI3nmQtpuxByKmLBgM26PWJXwzepE=
+	b=wlLEqEyLhs3S+YB/YWOQJWT2hMGaV3HYKEhOhRma8hBsmxeRfyW1/1cCVVSH87hQH
+	 YAmV658aNTm2EmBv0ILjA8gU34eUUZqN1BMkWTSfOPcXIXvUWzYZjKbDwkjhWF3DFz
+	 F/U5IKKZitQU47fWdelgnvlQcBfq0OqgmXgOfm7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Chaitanya Dhere <chaitanya.dhere@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.6 268/331] drm/amd/display: Port DENTIST hang and TDR fixes to OTG disable W/A
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 301/346] drm/amd/display: update pixel clock params after stream slice count change in context
 Date: Mon, 29 Jan 2024 09:05:32 -0800
-Message-ID: <20240129170022.708181941@linuxfoundation.org>
+Message-ID: <20240129170025.279030733@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +64,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Wenjing Liu <wenjing.liu@amd.com>
 
-commit 4b56f7d47be87cde5f368b67bc7fac53a2c3e8d2 upstream.
+[ Upstream commit cfab803884f426b36b58dbe1f86f99742767c208 ]
 
-[Why]
-We can experience DENTIST hangs during optimize_bandwidth or TDRs if
-FIFO is toggled and hangs.
+[why]
+When ODM slice count is changed, otg master pipe's pixel clock params is
+no longer valid as the value is dependent on ODM slice count.
 
-[How]
-Port the DCN35 fixes to DCN314.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: aa36d8971fcc ("drm/amd/display: Init link enc resources in dc_state only if res_pool presents")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c |   21 ++++------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ .../gpu/drm/amd/display/dc/core/dc_resource.c    |  9 ++++++---
+ .../drm/amd/display/dc/dcn20/dcn20_resource.c    | 16 ++++++++++------
+ .../drm/amd/display/dc/dcn20/dcn20_resource.h    |  1 +
+ .../drm/amd/display/dc/dcn32/dcn32_resource.c    |  1 +
+ .../drm/amd/display/dc/dcn321/dcn321_resource.c  |  1 +
+ .../gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c |  6 +-----
+ drivers/gpu/drm/amd/display/dc/inc/core_types.h  |  1 +
+ 7 files changed, 21 insertions(+), 14 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn314/dcn314_clk_mgr.c
-@@ -131,30 +131,27 @@ static int dcn314_get_active_display_cnt
- 	return display_count;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index ae275f1780d5..c16190a10883 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -2237,7 +2237,7 @@ static struct pipe_ctx *get_last_dpp_pipe_in_mpcc_combine(
  }
  
--static void dcn314_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *context, bool disable)
-+static void dcn314_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *context,
-+				  bool safe_to_lower, bool disable)
+ static bool update_pipe_params_after_odm_slice_count_change(
+-		const struct dc_stream_state *stream,
++		struct pipe_ctx *otg_master,
+ 		struct dc_state *context,
+ 		const struct resource_pool *pool)
  {
- 	struct dc *dc = clk_mgr_base->ctx->dc;
+@@ -2247,9 +2247,12 @@ static bool update_pipe_params_after_odm_slice_count_change(
+ 
+ 	for (i = 0; i < pool->pipe_count && result; i++) {
+ 		pipe = &context->res_ctx.pipe_ctx[i];
+-		if (pipe->stream == stream && pipe->plane_state)
++		if (pipe->stream == otg_master->stream && pipe->plane_state)
+ 			result = resource_build_scaling_params(pipe);
+ 	}
++
++	if (pool->funcs->build_pipe_pix_clk_params)
++		pool->funcs->build_pipe_pix_clk_params(otg_master);
+ 	return result;
+ }
+ 
+@@ -2932,7 +2935,7 @@ bool resource_update_pipes_for_stream_with_slice_count(
+ 					otg_master, new_ctx, pool);
+ 	if (result)
+ 		result = update_pipe_params_after_odm_slice_count_change(
+-				otg_master->stream, new_ctx, pool);
++				otg_master, new_ctx, pool);
+ 	return result;
+ }
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
+index 0a422fbb14bc..e73e59754837 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
+@@ -1273,15 +1273,19 @@ static void build_clamping_params(struct dc_stream_state *stream)
+ 	stream->clamping.pixel_encoding = stream->timing.pixel_encoding;
+ }
+ 
+-static enum dc_status build_pipe_hw_param(struct pipe_ctx *pipe_ctx)
++void dcn20_build_pipe_pix_clk_params(struct pipe_ctx *pipe_ctx)
+ {
+-
+ 	get_pixel_clock_parameters(pipe_ctx, &pipe_ctx->stream_res.pix_clk_params);
+-
+ 	pipe_ctx->clock_source->funcs->get_pix_clk_dividers(
+-		pipe_ctx->clock_source,
+-		&pipe_ctx->stream_res.pix_clk_params,
+-		&pipe_ctx->pll_settings);
++			pipe_ctx->clock_source,
++			&pipe_ctx->stream_res.pix_clk_params,
++			&pipe_ctx->pll_settings);
++}
++
++static enum dc_status build_pipe_hw_param(struct pipe_ctx *pipe_ctx)
++{
++
++	dcn20_build_pipe_pix_clk_params(pipe_ctx);
+ 
+ 	pipe_ctx->stream->clamping.pixel_encoding = pipe_ctx->stream->timing.pixel_encoding;
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.h b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.h
+index 37ecaccc5d12..4cee3fa11a7f 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.h
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.h
+@@ -165,6 +165,7 @@ enum dc_status dcn20_add_stream_to_ctx(struct dc *dc, struct dc_state *new_ctx,
+ enum dc_status dcn20_add_dsc_to_stream_resource(struct dc *dc, struct dc_state *dc_ctx, struct dc_stream_state *dc_stream);
+ enum dc_status dcn20_remove_stream_from_ctx(struct dc *dc, struct dc_state *new_ctx, struct dc_stream_state *dc_stream);
+ enum dc_status dcn20_patch_unknown_plane_state(struct dc_plane_state *plane_state);
++void dcn20_build_pipe_pix_clk_params(struct pipe_ctx *pipe_ctx);
+ 
+ #endif /* __DC_RESOURCE_DCN20_H__ */
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
+index 89b072447dba..e940dd0f92b7 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
+@@ -2041,6 +2041,7 @@ static struct resource_funcs dcn32_res_pool_funcs = {
+ 	.retain_phantom_pipes = dcn32_retain_phantom_pipes,
+ 	.save_mall_state = dcn32_save_mall_state,
+ 	.restore_mall_state = dcn32_restore_mall_state,
++	.build_pipe_pix_clk_params = dcn20_build_pipe_pix_clk_params,
+ };
+ 
+ static uint32_t read_pipe_fuses(struct dc_context *ctx)
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c b/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
+index f7de3eca1225..4156a8cc2bc7 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
+@@ -1609,6 +1609,7 @@ static struct resource_funcs dcn321_res_pool_funcs = {
+ 	.retain_phantom_pipes = dcn32_retain_phantom_pipes,
+ 	.save_mall_state = dcn32_save_mall_state,
+ 	.restore_mall_state = dcn32_restore_mall_state,
++	.build_pipe_pix_clk_params = dcn20_build_pipe_pix_clk_params,
+ };
+ 
+ static uint32_t read_pipe_fuses(struct dc_context *ctx)
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+index b46cde525066..92e2ddc9ab7e 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -1237,15 +1237,11 @@ static void update_pipes_with_slice_table(struct dc *dc, struct dc_state *contex
+ {
  	int i;
  
- 	for (i = 0; i < dc->res_pool->pipe_count; ++i) {
--		struct pipe_ctx *pipe = &dc->current_state->res_ctx.pipe_ctx[i];
-+		struct pipe_ctx *pipe = safe_to_lower
-+			? &context->res_ctx.pipe_ctx[i]
-+			: &dc->current_state->res_ctx.pipe_ctx[i];
+-	for (i = 0; i < table->odm_combine_count; i++) {
++	for (i = 0; i < table->odm_combine_count; i++)
+ 		resource_update_pipes_for_stream_with_slice_count(context,
+ 				dc->current_state, dc->res_pool,
+ 				table->odm_combines[i].stream,
+ 				table->odm_combines[i].slice_count);
+-		/* TODO: move this into the function above */
+-		dcn20_build_mapped_resource(dc, context,
+-				table->odm_combines[i].stream);
+-	}
  
- 		if (pipe->top_pipe || pipe->prev_odm_pipe)
- 			continue;
- 		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal))) {
--			struct stream_encoder *stream_enc = pipe->stream_res.stream_enc;
--
- 			if (disable) {
--				if (stream_enc && stream_enc->funcs->disable_fifo)
--					pipe->stream_res.stream_enc->funcs->disable_fifo(stream_enc);
-+				if (pipe->stream_res.tg && pipe->stream_res.tg->funcs->immediate_disable_crtc)
-+					pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
+ 	for (i = 0; i < table->mpc_combine_count; i++)
+ 		resource_update_pipes_for_plane_with_slice_count(context,
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/core_types.h b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
+index bac1420b1de8..10397d4dfb07 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/core_types.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
+@@ -205,6 +205,7 @@ struct resource_funcs {
+ 	void (*get_panel_config_defaults)(struct dc_panel_config *panel_config);
+ 	void (*save_mall_state)(struct dc *dc, struct dc_state *context, struct mall_temp_config *temp_config);
+ 	void (*restore_mall_state)(struct dc *dc, struct dc_state *context, struct mall_temp_config *temp_config);
++	void (*build_pipe_pix_clk_params)(struct pipe_ctx *pipe_ctx);
+ };
  
--				pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
- 				reset_sync_context_for_pipe(dc, context, i);
- 			} else {
- 				pipe->stream_res.tg->funcs->enable_crtc(pipe->stream_res.tg);
--
--				if (stream_enc && stream_enc->funcs->enable_fifo)
--					pipe->stream_res.stream_enc->funcs->enable_fifo(stream_enc);
- 			}
- 		}
- 	}
-@@ -252,11 +249,11 @@ void dcn314_update_clocks(struct clk_mgr
- 	}
- 
- 	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz)) {
--		dcn314_disable_otg_wa(clk_mgr_base, context, true);
-+		dcn314_disable_otg_wa(clk_mgr_base, context, safe_to_lower, true);
- 
- 		clk_mgr_base->clks.dispclk_khz = new_clocks->dispclk_khz;
- 		dcn314_smu_set_dispclk(clk_mgr, clk_mgr_base->clks.dispclk_khz);
--		dcn314_disable_otg_wa(clk_mgr_base, context, false);
-+		dcn314_disable_otg_wa(clk_mgr_base, context, safe_to_lower, false);
- 
- 		update_dispclk = true;
- 	}
+ struct audio_support{
+-- 
+2.43.0
+
 
 
 
