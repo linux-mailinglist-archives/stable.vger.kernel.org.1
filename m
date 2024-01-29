@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-16492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20507840D31
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A93E8840F7B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFFBB2882AF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 605D51F22EBF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CE7C157048;
-	Mon, 29 Jan 2024 17:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E1F3F9FB;
+	Mon, 29 Jan 2024 17:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smodkWWN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SD3F6JZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C98A15A49D;
-	Mon, 29 Jan 2024 17:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDA53F9EA;
+	Mon, 29 Jan 2024 17:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548060; cv=none; b=haWTZvKZPqJbZ2Wunf+gboVC6soI/mafioW4XO8hpjluGpttIv5bHSRKCfwoxC50SjEab8sgkrPK8qLIDQpGqTEkvDgZamEr2yYUB7zNgMKx/Ps1S0RI4J+K4IMbAFpw9RmDXFhF95lbdQewQEjZy7Ie8QkA9+34udDc/ktfcis=
+	t=1706548448; cv=none; b=rpNyez9fcwO5QBFOQEglb3paIvYbPgij0xJ8ot+1U00zgO0SuCcStqfbDMnf/VanOc+9ZEQruGAIIx9KEM8MUpTaxHDzjvPX3cKIk/8RGJayjf/KrNgRlVtOIFGCDKhT4AFeSddVtzurE1yv68JT6Faw0CWZXbv3faAOn95q5AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548060; c=relaxed/simple;
-	bh=QerjX+8U+TQ+031BP+KUla1r0fMTJSFcD5Nx2imwnNY=;
+	s=arc-20240116; t=1706548448; c=relaxed/simple;
+	bh=IJyP73m/EVLOA8uQfV/61laEnkLQ5TYnHoV3A8R8U+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=REmOAnpigCEiUC8zFdwFaIRFJQmMKCIWjjDnYIwx6mnikt+AHntJfZbI8Vsc7KyYAdSCWnStS5FDtGfrxJP1GlEnVQdEGrIf320OAXp15qx80NSwqnrKClwd2Q1zvZmCvuSkgyOCNK8CYEgW+tPA3NwwnKlZmWfXq7CH5M7pcA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smodkWWN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C91C43390;
-	Mon, 29 Jan 2024 17:07:39 +0000 (UTC)
+	 MIME-Version; b=rqbMQbneXR+vuZbDxtaQ6Tvt+iNenaDH0HjmjIWACa1Uw7osYr7QOZKQkqvG+C0INfvikalvbcXn0ixwHdxLQWNaZPm9/i9I/80lXSajqlHYF7EEKrm/O1OFg4Fne3X/A+X3FKheMMD+LsK8tnR1vx30yInOlfkkr14sUbLgqhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SD3F6JZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7723DC433F1;
+	Mon, 29 Jan 2024 17:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548059;
-	bh=QerjX+8U+TQ+031BP+KUla1r0fMTJSFcD5Nx2imwnNY=;
+	s=korg; t=1706548448;
+	bh=IJyP73m/EVLOA8uQfV/61laEnkLQ5TYnHoV3A8R8U+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=smodkWWN1NpypAHDvwY0b621vWX69Y18K6vPIUcC2nzBWpZ9hCO5dND3k32kDBmP7
-	 Rwna6V/Qaj4IfQ3sO9P3iim72B9N3mrtlWSfjeg/oHtkiC2F1Ka4itIg3WVVDyBz5D
-	 A0NYv6hAEl1PUHd5pobIldi6FUBejSNe/4KZT2sU=
+	b=SD3F6JZVOLOY6qNtCnt2NQSbX9WzZ2OTyqaQkBwaTwZKtsSAq1a5hBOIzC3L3L9NA
+	 jLViQy2ciBSfrDq4UaTdY4K4feICnA5+otttaKGv4VoO1rm4WWFJy2/l8ZKTlYdaQi
+	 X0o98M77mfHyIm20JV3LfyltLmpn21NgiN76tv2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrejs Cainikovs <andrejs.cainikovs@toradex.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.7 065/346] ARM: dts: imx6q-apalis: add can power-up delay on ixora board
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Youngmin Nam <youngmin.nam@samsung.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Subject: [PATCH 6.6 032/331] async: Introduce async_schedule_dev_nocall()
 Date: Mon, 29 Jan 2024 09:01:36 -0800
-Message-ID: <20240129170018.301662023@linuxfoundation.org>
+Message-ID: <20240129170015.889210767@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit b76bbf835d8945080b22b52fc1e6f41cde06865d upstream.
+commit 7d4b5d7a37bdd63a5a3371b988744b060d5bb86f upstream.
 
-Newer variants of Ixora boards require a power-up delay when powering up
-the CAN transceiver of up to 1ms.
+In preparation for subsequent changes, introduce a specialized variant
+of async_schedule_dev() that will not invoke the argument function
+synchronously when it cannot be scheduled for asynchronous execution.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+The new function, async_schedule_dev_nocall(), will be used for fixing
+possible deadlocks in the system-wide power management core code.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com> for the series.
+Tested-by: Youngmin Nam <youngmin.nam@samsung.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts |    2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/async.h |    2 ++
+ kernel/async.c        |   29 +++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
---- a/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-apalis-ixora-v1.2.dts
-@@ -76,6 +76,7 @@
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_enable_can1_power>;
- 		regulator-name = "can1_supply";
-+		startup-delay-us = <1000>;
- 	};
+--- a/include/linux/async.h
++++ b/include/linux/async.h
+@@ -90,6 +90,8 @@ async_schedule_dev(async_func_t func, st
+ 	return async_schedule_node(func, dev, dev_to_node(dev));
+ }
  
- 	reg_can2_supply: regulator-can2-supply {
-@@ -85,6 +86,7 @@
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_enable_can2_power>;
- 		regulator-name = "can2_supply";
-+		startup-delay-us = <1000>;
- 	};
- };
++bool async_schedule_dev_nocall(async_func_t func, struct device *dev);
++
+ /**
+  * async_schedule_dev_domain - A device specific version of async_schedule_domain
+  * @func: function to execute asynchronously
+--- a/kernel/async.c
++++ b/kernel/async.c
+@@ -244,6 +244,35 @@ async_cookie_t async_schedule_node(async
+ EXPORT_SYMBOL_GPL(async_schedule_node);
  
+ /**
++ * async_schedule_dev_nocall - A simplified variant of async_schedule_dev()
++ * @func: function to execute asynchronously
++ * @dev: device argument to be passed to function
++ *
++ * @dev is used as both the argument for the function and to provide NUMA
++ * context for where to run the function.
++ *
++ * If the asynchronous execution of @func is scheduled successfully, return
++ * true. Otherwise, do nothing and return false, unlike async_schedule_dev()
++ * that will run the function synchronously then.
++ */
++bool async_schedule_dev_nocall(async_func_t func, struct device *dev)
++{
++	struct async_entry *entry;
++
++	entry = kzalloc(sizeof(struct async_entry), GFP_KERNEL);
++
++	/* Give up if there is no memory or too much work. */
++	if (!entry || atomic_read(&entry_count) > MAX_WORK) {
++		kfree(entry);
++		return false;
++	}
++
++	__async_schedule_node_domain(func, dev, dev_to_node(dev),
++				     &async_dfl_domain, entry);
++	return true;
++}
++
++/**
+  * async_synchronize_full - synchronize all asynchronous function calls
+  *
+  * This function waits until all asynchronous function calls have been done.
 
 
 
