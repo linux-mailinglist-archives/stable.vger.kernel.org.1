@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-17005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D05A3840F6C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:23:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C379840F6F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:23:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FA391C23175
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:23:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C74F1F23492
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FEF1649CD;
-	Mon, 29 Jan 2024 17:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DE11649D7;
+	Mon, 29 Jan 2024 17:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uO6ozwb7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6WGAye4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 142591649B3;
-	Mon, 29 Jan 2024 17:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A3F15DBBC;
+	Mon, 29 Jan 2024 17:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548440; cv=none; b=l7OXLErQvRjj/iHXKZ69eJu7Zr62bvHNi8Qd5a0oEoe2WsOqrCmVB3sCuTzfIcvDTaqUmmmW1Ty/hbDx2lC9N4vlrPfIJZ1p8kOymntIzwEx5wtlzJgL0IaGcfMv4SQKXFYDmb2AdtGUnpfNQkIt1BuW8sHSTAA+PgTr8p3dhpI=
+	t=1706548441; cv=none; b=mu0wTEH8s+mmDE8Tg6Hrkji/xyvU1l6iMdMMeTcDTG9h3EPdWSsNlTwrWFeVZKmsXCZ1BWD+lyeIHlU8w4x/NeTRSUT51ueEmcDBNf3o3XnjdSOp9coNT14dAsrEVCsjQQXNjxm25cQwAjO1O8nW3f5xhekBtIdb5502mHlNWOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548440; c=relaxed/simple;
-	bh=uwdmQyn0LzrzE+i/QiFoas7FOnXQzk8MaZqYJA+RsQo=;
+	s=arc-20240116; t=1706548441; c=relaxed/simple;
+	bh=rBXweQMo8xHxZAGBRbiNU9+QMAb400XjENrjom3R1Hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h0K2NyrHEBy8CblajYAIqO5sCq/xEZ6gwRrd51XZV1JEFlLFoEGOlpju2AfN9S/UVo4Oxxna5Npfz0p+y4YHQmTZHm4fuZBhgeWVUU0+IvxLOnRB1nZzgXL+RQM0kGCw6fkBdQQ+g7nEeeJW/OP9Q91RLw7H4f72pnXK1YjbINs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uO6ozwb7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7E8C43399;
-	Mon, 29 Jan 2024 17:13:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZEVOD/sHgKx+sWgls1hNfv87Cl1HTsvmliIUYyqFmKlOSuvzvUkOUZ0BER6pZRtb3EoWlYpuumtfDZrcKf0pv+r93L37av/KwrvN6cXzE1FGNRs3pVfcxqhinfapc4i04vTWyG4PRDPcs0qXkkgaTfgefQB66bgIaDSIJDQXItk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6WGAye4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38501C43394;
+	Mon, 29 Jan 2024 17:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548439;
-	bh=uwdmQyn0LzrzE+i/QiFoas7FOnXQzk8MaZqYJA+RsQo=;
+	s=korg; t=1706548441;
+	bh=rBXweQMo8xHxZAGBRbiNU9+QMAb400XjENrjom3R1Hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uO6ozwb7uof4yRxfwzG557Jry+m+/alti4+pe3oqSwEacs5gcOOH04jAp9cnaNoCm
-	 XSxDUHWVCVYNRYjrhmscWySMbuS675uYWI/25zfGp68V1OdVqn6mlzn2MuUoLNaJGc
-	 gc5eP06G6bJkkorKpcEQXv00PhiH+z/fdpI7hVKQ=
+	b=i6WGAye4dDVHkadEZmNFIHp2J5YRCOdphrfNa1oDduQo+hcZ01J6o2qaPix4L8uQY
+	 gKJMfyOfvRfLBls7sa++2AFNdWlps32RngE3qqyyCtYR/m5LP+BeOtFlK14efYoTQM
+	 ERTg2OKOr8glAnGOZUWDUBhKC8TjXF+HV6iJm5as=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 045/331] mtd: maps: vmu-flash: Fix the (mtd core) switch to ref counters
-Date: Mon, 29 Jan 2024 09:01:49 -0800
-Message-ID: <20240129170016.255189593@linuxfoundation.org>
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	=?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>
+Subject: [PATCH 6.6 046/331] mtd: rawnand: Prevent crossing LUN boundaries during sequential reads
+Date: Mon, 29 Jan 2024 09:01:50 -0800
+Message-ID: <20240129170016.286290503@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
 References: <20240129170014.969142961@linuxfoundation.org>
@@ -59,6 +59,7 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
@@ -67,39 +68,122 @@ Content-Transfer-Encoding: 8bit
 
 From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit a7d84a2e7663bbe12394cc771107e04668ea313a upstream.
+commit bbcd80f53a5e8c27c2511f539fec8c373f500cf4 upstream.
 
-While switching to ref counters for track mtd devices use, the vmu-flash
-driver was forgotten. The reason for reading the ref counter seems
-debatable, but let's just fix the build for now.
+The ONFI specification states that devices do not need to support
+sequential reads across LUN boundaries. In order to prevent such event
+from happening and possibly failing, let's introduce the concept of
+"pause" in the sequential read to handle these cases. The first/last
+pages remain the same but any time we cross a LUN boundary we will end
+and restart (if relevant) the sequential read operation.
 
-Fixes: 19bfa9ebebb5 ("mtd: use refcount to prevent corruption")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312022315.79twVRZw-lkp@intel.com/
 Cc: stable@vger.kernel.org
+Fixes: 003fe4b9545b ("mtd: rawnand: Support for sequential cache reads")
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20231205075936.13831-1-miquel.raynal@bootlin.com
+Tested-by: Martin Hundebøll <martin@geanix.com>
+Link: https://lore.kernel.org/linux-mtd/20231215123208.516590-2-miquel.raynal@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/maps/vmu-flash.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mtd/nand/raw/nand_base.c |   43 +++++++++++++++++++++++++++++++++------
+ include/linux/mtd/rawnand.h      |    2 +
+ 2 files changed, 39 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mtd/maps/vmu-flash.c b/drivers/mtd/maps/vmu-flash.c
-index a7ec947a3ebb..53019d313db7 100644
---- a/drivers/mtd/maps/vmu-flash.c
-+++ b/drivers/mtd/maps/vmu-flash.c
-@@ -719,7 +719,7 @@ static int vmu_can_unload(struct maple_device *mdev)
- 	card = maple_get_drvdata(mdev);
- 	for (x = 0; x < card->partitions; x++) {
- 		mtd = &((card->mtd)[x]);
--		if (mtd->usecount > 0)
-+		if (kref_read(&mtd->refcnt))
- 			return 0;
+--- a/drivers/mtd/nand/raw/nand_base.c
++++ b/drivers/mtd/nand/raw/nand_base.c
+@@ -1208,6 +1208,23 @@ static int nand_lp_exec_read_page_op(str
+ 	return nand_exec_op(chip, &op);
+ }
+ 
++static void rawnand_cap_cont_reads(struct nand_chip *chip)
++{
++	struct nand_memory_organization *memorg;
++	unsigned int pages_per_lun, first_lun, last_lun;
++
++	memorg = nanddev_get_memorg(&chip->base);
++	pages_per_lun = memorg->pages_per_eraseblock * memorg->eraseblocks_per_lun;
++	first_lun = chip->cont_read.first_page / pages_per_lun;
++	last_lun = chip->cont_read.last_page / pages_per_lun;
++
++	/* Prevent sequential cache reads across LUN boundaries */
++	if (first_lun != last_lun)
++		chip->cont_read.pause_page = first_lun * pages_per_lun + pages_per_lun - 1;
++	else
++		chip->cont_read.pause_page = chip->cont_read.last_page;
++}
++
+ static int nand_lp_exec_cont_read_page_op(struct nand_chip *chip, unsigned int page,
+ 					  unsigned int offset_in_page, void *buf,
+ 					  unsigned int len, bool check_only)
+@@ -1226,7 +1243,7 @@ static int nand_lp_exec_cont_read_page_o
+ 		NAND_OP_DATA_IN(len, buf, 0),
+ 	};
+ 	struct nand_op_instr cont_instrs[] = {
+-		NAND_OP_CMD(page == chip->cont_read.last_page ?
++		NAND_OP_CMD(page == chip->cont_read.pause_page ?
+ 			    NAND_CMD_READCACHEEND : NAND_CMD_READCACHESEQ,
+ 			    NAND_COMMON_TIMING_NS(conf, tWB_max)),
+ 		NAND_OP_WAIT_RDY(NAND_COMMON_TIMING_MS(conf, tR_max),
+@@ -1263,16 +1280,29 @@ static int nand_lp_exec_cont_read_page_o
  	}
- 	return 1;
--- 
-2.43.0
-
+ 
+ 	if (page == chip->cont_read.first_page)
+-		return nand_exec_op(chip, &start_op);
++		ret = nand_exec_op(chip, &start_op);
+ 	else
+-		return nand_exec_op(chip, &cont_op);
++		ret = nand_exec_op(chip, &cont_op);
++	if (ret)
++		return ret;
++
++	if (!chip->cont_read.ongoing)
++		return 0;
++
++	if (page == chip->cont_read.pause_page &&
++	    page != chip->cont_read.last_page) {
++		chip->cont_read.first_page = chip->cont_read.pause_page + 1;
++		rawnand_cap_cont_reads(chip);
++	} else if (page == chip->cont_read.last_page) {
++		chip->cont_read.ongoing = false;
++	}
++
++	return 0;
+ }
+ 
+ static bool rawnand_cont_read_ongoing(struct nand_chip *chip, unsigned int page)
+ {
+-	return chip->cont_read.ongoing &&
+-		page >= chip->cont_read.first_page &&
+-		page <= chip->cont_read.last_page;
++	return chip->cont_read.ongoing && page >= chip->cont_read.first_page;
+ }
+ 
+ /**
+@@ -3446,6 +3476,7 @@ static void rawnand_enable_cont_reads(st
+ 	if (col)
+ 		chip->cont_read.first_page++;
+ 	chip->cont_read.last_page = page + ((readlen >> chip->page_shift) & chip->pagemask);
++	rawnand_cap_cont_reads(chip);
+ }
+ 
+ /**
+--- a/include/linux/mtd/rawnand.h
++++ b/include/linux/mtd/rawnand.h
+@@ -1265,6 +1265,7 @@ struct nand_secure_region {
+  * @cont_read: Sequential page read internals
+  * @cont_read.ongoing: Whether a continuous read is ongoing or not
+  * @cont_read.first_page: Start of the continuous read operation
++ * @cont_read.pause_page: End of the current sequential cache read operation
+  * @cont_read.last_page: End of the continuous read operation
+  * @controller: The hardware controller	structure which is shared among multiple
+  *              independent devices
+@@ -1321,6 +1322,7 @@ struct nand_chip {
+ 	struct {
+ 		bool ongoing;
+ 		unsigned int first_page;
++		unsigned int pause_page;
+ 		unsigned int last_page;
+ 	} cont_read;
+ 
 
 
 
