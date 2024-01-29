@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1D7841083
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52383840F01
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC7DB1C23087
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE8E81F24B9B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C56B15B96F;
-	Mon, 29 Jan 2024 17:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6F8162760;
+	Mon, 29 Jan 2024 17:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2o0/ReF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8lbSV1W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A10E15B317;
-	Mon, 29 Jan 2024 17:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689281586C5;
+	Mon, 29 Jan 2024 17:12:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548636; cv=none; b=or3VCzidnJ4h/OBAZbJ6DOfItKV9AoNfLXqOaer/+/pPMyC5dm9ruJckO5QBeQwhqr3BI5gQdglUCHImJ508Nm7gj/FworuphB0ZbfEeJ3Nq4scQDQCDu1sU8R8TSv4eoP5p0emM0hBisZFJzK+i1HE3cUlTQrjKygBFbIiY8aI=
+	t=1706548370; cv=none; b=kk4pHjL21PyknphZ42gHlseFA5sztER3ZhaAqjj0c8Iw9bsqIycZiY66P1kuGjbtGuW3g+xZTTDBRCQQSnV4D/YtFeKaxwHtta344rppcq4CRnYHMSN6G67ElDp1HuExYEU6WOOjw1NePVYIECqruV4pJQEGp9u2tRK+kDnAt8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548636; c=relaxed/simple;
-	bh=fTOEKKPxUnd2aYPyEm53SBhcdj7KpbxDeDX8CYjq88I=;
+	s=arc-20240116; t=1706548370; c=relaxed/simple;
+	bh=YwPyAC8thzWOc2+lqZjG0uuPMsQROEiA9AB52A70B1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PUYW2owphXa/x8an1cIj2A55cWxYQD5FLAS7vqz435DL0s5lTEtKfUK79i/0MeByLseM42k6yAKq9atqDIhQ8q5f8WkT22rwHVZa0I88xs8mwX1m7sAantqXWVpveidi36Rh1nKwFs71PLZto3i9LwKdzJsIZoFHjU+rOig3iAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2o0/ReF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C11C433F1;
-	Mon, 29 Jan 2024 17:17:15 +0000 (UTC)
+	 MIME-Version; b=GHeDHZ/KzwTyZl+DtqIM/GPGmBP/Y8bQEl2jSyLkHiuZUsvX7az+RmvoJZz/sn+QkcqRn/PCKk6NWOyhTW+4zMOsynbAxt4bkB1nh/3kcGxmqNMaIXhiLacr00S32ium27oKesYhUEVylCjzd8pFS9uh3fAWGFvbuArE1EmvDyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8lbSV1W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32490C433F1;
+	Mon, 29 Jan 2024 17:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548635;
-	bh=fTOEKKPxUnd2aYPyEm53SBhcdj7KpbxDeDX8CYjq88I=;
+	s=korg; t=1706548370;
+	bh=YwPyAC8thzWOc2+lqZjG0uuPMsQROEiA9AB52A70B1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P2o0/ReFi0wtOp1M9cCfI0AZVKSs/ng/k5ZjtXt/H+2ltbQZJxloTg2Z6wAnNsoLk
-	 ptEWFN0n7+FmRsG3r+pZRc0VWdK/GKTQyWaJ4b5OGGSEvwWs4YgACqtV+17KFPChLb
-	 ooS0x72eSSJ3KYPDPAb0FjDAYNWp9X8E7VKM7hyk=
+	b=x8lbSV1W46cXpcu2n7AfCDvAxkKsaDkSPtUNk9u726AQA+E9PH4062i6pz+SX0v4B
+	 8DNH0lwSW8u+cZreH90909wgZiNlauWB8G4mfb92FKUuTmI0HmVzC1gLmEaRtzGE/U
+	 7K1twrUi8Hh0AcszkIuWEmJwrpgzE/9Mw0UXJpyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 311/331] firmware: arm_scmi: Use xa_insert() when saving raw queues
+	Feng Tang <feng.tang@intel.com>,
+	Jiri Wiesner <jwiesner@suse.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>
+Subject: [PATCH 6.7 344/346] clocksource: Skip watchdog check for large watchdog intervals
 Date: Mon, 29 Jan 2024 09:06:15 -0800
-Message-ID: <20240129170023.983613572@linuxfoundation.org>
+Message-ID: <20240129170026.637266898@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Jiri Wiesner <jwiesner@suse.de>
 
-[ Upstream commit b5dc0ffd36560dbadaed9a3d9fd7838055d62d74 ]
+commit 644649553508b9bacf0fc7a5bdc4f9e0165576a5 upstream.
 
-Use xa_insert() when saving per-channel raw queues to better check for
-duplicates.
+There have been reports of the watchdog marking clocksources unstable on
+machines with 8 NUMA nodes:
 
-Fixes: 7860701d1e6e ("firmware: arm_scmi: Add per-channel raw injection support")
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Link: https://lore.kernel.org/r/20240108185050.1628687-2-cristian.marussi@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  clocksource: timekeeping watchdog on CPU373:
+  Marking clocksource 'tsc' as unstable because the skew is too large:
+  clocksource:   'hpet' wd_nsec: 14523447520
+  clocksource:   'tsc'  cs_nsec: 14524115132
+
+The measured clocksource skew - the absolute difference between cs_nsec
+and wd_nsec - was 668 microseconds:
+
+  cs_nsec - wd_nsec = 14524115132 - 14523447520 = 667612
+
+The kernel used 200 microseconds for the uncertainty_margin of both the
+clocksource and watchdog, resulting in a threshold of 400 microseconds (the
+md variable). Both the cs_nsec and the wd_nsec value indicate that the
+readout interval was circa 14.5 seconds.  The observed behaviour is that
+watchdog checks failed for large readout intervals on 8 NUMA node
+machines. This indicates that the size of the skew was directly proportinal
+to the length of the readout interval on those machines. The measured
+clocksource skew, 668 microseconds, was evaluated against a threshold (the
+md variable) that is suited for readout intervals of roughly
+WATCHDOG_INTERVAL, i.e. HZ >> 1, which is 0.5 second.
+
+The intention of 2e27e793e280 ("clocksource: Reduce clocksource-skew
+threshold") was to tighten the threshold for evaluating skew and set the
+lower bound for the uncertainty_margin of clocksources to twice
+WATCHDOG_MAX_SKEW. Later in c37e85c135ce ("clocksource: Loosen clocksource
+watchdog constraints"), the WATCHDOG_MAX_SKEW constant was increased to
+125 microseconds to fit the limit of NTP, which is able to use a
+clocksource that suffers from up to 500 microseconds of skew per second.
+Both the TSC and the HPET use default uncertainty_margin. When the
+readout interval gets stretched the default uncertainty_margin is no
+longer a suitable lower bound for evaluating skew - it imposes a limit
+that is far stricter than the skew with which NTP can deal.
+
+The root causes of the skew being directly proportinal to the length of
+the readout interval are:
+
+  * the inaccuracy of the shift/mult pairs of clocksources and the watchdog
+  * the conversion to nanoseconds is imprecise for large readout intervals
+
+Prevent this by skipping the current watchdog check if the readout
+interval exceeds 2 * WATCHDOG_INTERVAL. Considering the maximum readout
+interval of 2 * WATCHDOG_INTERVAL, the current default uncertainty margin
+(of the TSC and HPET) corresponds to a limit on clocksource skew of 250
+ppm (microseconds of skew per second).  To keep the limit imposed by NTP
+(500 microseconds of skew per second) for all possible readout intervals,
+the margins would have to be scaled so that the threshold value is
+proportional to the length of the actual readout interval.
+
+As for why the readout interval may get stretched: Since the watchdog is
+executed in softirq context the expiration of the watchdog timer can get
+severely delayed on account of a ksoftirqd thread not getting to run in a
+timely manner. Surely, a system with such belated softirq execution is not
+working well and the scheduling issue should be looked into but the
+clocksource watchdog should be able to deal with it accordingly.
+
+Fixes: 2e27e793e280 ("clocksource: Reduce clocksource-skew threshold")
+Suggested-by: Feng Tang <feng.tang@intel.com>
+Signed-off-by: Jiri Wiesner <jwiesner@suse.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Feng Tang <feng.tang@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240122172350.GA740@incl
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_scmi/raw_mode.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ kernel/time/clocksource.c |   25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_scmi/raw_mode.c b/drivers/firmware/arm_scmi/raw_mode.c
-index 0493aa3c12bf..350573518503 100644
---- a/drivers/firmware/arm_scmi/raw_mode.c
-+++ b/drivers/firmware/arm_scmi/raw_mode.c
-@@ -1111,7 +1111,6 @@ static int scmi_raw_mode_setup(struct scmi_raw_mode_info *raw,
- 		int i;
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -99,6 +99,7 @@ static u64 suspend_start;
+  * Interval: 0.5sec.
+  */
+ #define WATCHDOG_INTERVAL (HZ >> 1)
++#define WATCHDOG_INTERVAL_MAX_NS ((2 * WATCHDOG_INTERVAL) * (NSEC_PER_SEC / HZ))
  
- 		for (i = 0; i < num_chans; i++) {
--			void *xret;
- 			struct scmi_raw_queue *q;
+ /*
+  * Threshold: 0.0312s, when doubled: 0.0625s.
+@@ -134,6 +135,7 @@ static DECLARE_WORK(watchdog_work, clock
+ static DEFINE_SPINLOCK(watchdog_lock);
+ static int watchdog_running;
+ static atomic_t watchdog_reset_pending;
++static int64_t watchdog_max_interval;
  
- 			q = scmi_raw_queue_init(raw);
-@@ -1120,13 +1119,12 @@ static int scmi_raw_mode_setup(struct scmi_raw_mode_info *raw,
- 				goto err_xa;
- 			}
+ static inline void clocksource_watchdog_lock(unsigned long *flags)
+ {
+@@ -399,8 +401,8 @@ static inline void clocksource_reset_wat
+ static void clocksource_watchdog(struct timer_list *unused)
+ {
+ 	u64 csnow, wdnow, cslast, wdlast, delta;
++	int64_t wd_nsec, cs_nsec, interval;
+ 	int next_cpu, reset_pending;
+-	int64_t wd_nsec, cs_nsec;
+ 	struct clocksource *cs;
+ 	enum wd_read_status read_ret;
+ 	unsigned long extra_wait = 0;
+@@ -470,6 +472,27 @@ static void clocksource_watchdog(struct
+ 		if (atomic_read(&watchdog_reset_pending))
+ 			continue;
  
--			xret = xa_store(&raw->chans_q, channels[i], q,
-+			ret = xa_insert(&raw->chans_q, channels[i], q,
- 					GFP_KERNEL);
--			if (xa_err(xret)) {
-+			if (ret) {
- 				dev_err(dev,
- 					"Fail to allocate Raw queue 0x%02X\n",
- 					channels[i]);
--				ret = xa_err(xret);
- 				goto err_xa;
- 			}
- 		}
-@@ -1322,6 +1320,12 @@ void scmi_raw_message_report(void *r, struct scmi_xfer *xfer,
- 	dev = raw->handle->dev;
- 	q = scmi_raw_queue_select(raw, idx,
- 				  SCMI_XFER_IS_CHAN_SET(xfer) ? chan_id : 0);
-+	if (!q) {
-+		dev_warn(dev,
-+			 "RAW[%d] - NO queue for chan 0x%X. Dropping report.\n",
-+			 idx, chan_id);
-+		return;
-+	}
- 
- 	/*
- 	 * Grab the msg_q_lock upfront to avoid a possible race between
--- 
-2.43.0
-
++		/*
++		 * The processing of timer softirqs can get delayed (usually
++		 * on account of ksoftirqd not getting to run in a timely
++		 * manner), which causes the watchdog interval to stretch.
++		 * Skew detection may fail for longer watchdog intervals
++		 * on account of fixed margins being used.
++		 * Some clocksources, e.g. acpi_pm, cannot tolerate
++		 * watchdog intervals longer than a few seconds.
++		 */
++		interval = max(cs_nsec, wd_nsec);
++		if (unlikely(interval > WATCHDOG_INTERVAL_MAX_NS)) {
++			if (system_state > SYSTEM_SCHEDULING &&
++			    interval > 2 * watchdog_max_interval) {
++				watchdog_max_interval = interval;
++				pr_warn("Long readout interval, skipping watchdog check: cs_nsec: %lld wd_nsec: %lld\n",
++					cs_nsec, wd_nsec);
++			}
++			watchdog_timer.expires = jiffies;
++			continue;
++		}
++
+ 		/* Check the deviation from the watchdog clocksource. */
+ 		md = cs->uncertainty_margin + watchdog->uncertainty_margin;
+ 		if (abs(cs_nsec - wd_nsec) > md) {
 
 
 
