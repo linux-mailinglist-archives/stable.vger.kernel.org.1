@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-16876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DBAE840EC8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8720E840E4B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB8411F25242
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6C79B23D7D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF79615CD5E;
-	Mon, 29 Jan 2024 17:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB46615EAB8;
+	Mon, 29 Jan 2024 17:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9xzmPle"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ssNp7SDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7D016089C;
-	Mon, 29 Jan 2024 17:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADA4159591;
+	Mon, 29 Jan 2024 17:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548344; cv=none; b=ZVSeLNpN6GgY9H4VrrlQ/GJAigpxM8UmA+cy/QUwF5kSEtM4qkTvQS9xv0M+IwW9M8Si1huaR95oCOOTIV6R+qW5HfgPIhb3zdmfMd4ElsbKu/vZtVHpyqVNHcgB8ZJ/FWM1w9w024/nwW+rlox7aQwF8JuEmS6Y0PwYK29uRd0=
+	t=1706548257; cv=none; b=Vh2/psfPh3soqpe5NaRKM2fQfkjQMF8K71QjYZKHP9xZtxvV+iCPPRSLJVthEE89VdMJqh+5F/bOkkFEoqSPRXPIe8vlDWFf44nh5JlwXk9xJSeRDdExiC/aA9fjGjRQ3OCgF2X1TQdWj8yYumVz5bpaLq353VhFi100zdSLLs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548344; c=relaxed/simple;
-	bh=4oCgjzZy9sEn+1Tkb8uAQfA2mYuesOQHlDtrwa17wYE=;
+	s=arc-20240116; t=1706548257; c=relaxed/simple;
+	bh=qeu8Y1q6v0A6w2pRhYd2Nk6mgJLFKWcGB/36CeobX84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WW/hWKH/dQAL5q3IJ/WPb7ohu6rlM2+KgOUXGK1xiuXiEHcHqWWpiJh+X3A+J7/kfH1cPpjQZGOOBjh+EOWHDCRdI20t85K5FZhctGLaaXZkJZnZD8YkQrmNcCoc16+Gtc8C5LBnuDZyXbcY73ATPuSE53KpUv2pCQef1zs7600=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9xzmPle; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657FCC433C7;
-	Mon, 29 Jan 2024 17:12:24 +0000 (UTC)
+	 MIME-Version; b=K9jGKiNIaW3/USe9G0ZTiznuOM3vxAcWUTJJmj8M0zZas83cyckAtSIIJ8pZa2gaqt1PO2oN5CRrYrjn7i2auhD/sLUoMqxXNFw93ZkPbmd68LpNwvor2sLFmzxjjXAG4zluM0RWMRFtaa+BH6ScUhJ3K1l4itnp4d+QD4gK3as=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ssNp7SDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047E1C43390;
+	Mon, 29 Jan 2024 17:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548344;
-	bh=4oCgjzZy9sEn+1Tkb8uAQfA2mYuesOQHlDtrwa17wYE=;
+	s=korg; t=1706548257;
+	bh=qeu8Y1q6v0A6w2pRhYd2Nk6mgJLFKWcGB/36CeobX84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E9xzmPleiFS2xjGkQC66j88vFZyR3/Hg2L/2XM6FaBz8mJ0/Pr7vfAWhm9/l6ibN3
-	 zrwXS/6MMlEiLc9jeju2M/Rq7DewGzuM/btYnKcHHJ5eO9fA+x+14qSHzEMAkiCPis
-	 1tvQxX14GDRcfDPi2snbQPTvG49z8CFJZFuJKI1M=
+	b=ssNp7SDgngpum7gDAohSJXZbXyvfmks2Oo2rV8qttMUdIbFF9ot8Yd5gcNAcgo4wX
+	 nUx/GDuSvXciatJGABNYo6iEhLkSLyOhSyDUa/FfhMCbmWEMAyTYMa9G46hQZ7d+uX
+	 j5Lq+X84mrNZ5im59/cwmC0CCFT3K1YNhPD4Ko5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/185] netfilter: nf_tables: validate NFPROTO_* family
+	Kenneth Feng <kenneth.feng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.7 277/346] drm/amd/pm: update the power cap setting
 Date: Mon, 29 Jan 2024 09:05:08 -0800
-Message-ID: <20240129170002.062122251@linuxfoundation.org>
+Message-ID: <20240129170024.528836048@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,201 +61,195 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Kenneth Feng <kenneth.feng@amd.com>
 
-[ Upstream commit d0009effa8862c20a13af4cb7475d9771b905693 ]
+commit 30269954745c6cac730352829ac9850918457440 upstream.
 
-Several expressions explicitly refer to NF_INET_* hook definitions
-from expr->ops->validate, however, family is not validated.
+update the power cap setting for smu_v13.0.0/smu_v13.0.7
 
-Bail out with EOPNOTSUPP in case they are used from unsupported
-families.
-
-Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
-Fixes: a3c90f7a2323 ("netfilter: nf_tables: flow offload expression")
-Fixes: 2fa841938c64 ("netfilter: nf_tables: introduce routing expression")
-Fixes: 554ced0a6e29 ("netfilter: nf_tables: add support for native socket matching")
-Fixes: ad49d86e07a4 ("netfilter: nf_tables: Add synproxy support")
-Fixes: 4ed8eb6570a4 ("netfilter: nf_tables: Add native tproxy support")
-Fixes: 6c47260250fc ("netfilter: nf_tables: add xfrm expression")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2356
+Signed-off-by: Kenneth Feng <kenneth.feng@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_compat.c       | 12 ++++++++++++
- net/netfilter/nft_flow_offload.c |  5 +++++
- net/netfilter/nft_nat.c          |  5 +++++
- net/netfilter/nft_rt.c           |  5 +++++
- net/netfilter/nft_socket.c       |  5 +++++
- net/netfilter/nft_synproxy.c     |  7 +++++--
- net/netfilter/nft_tproxy.c       |  5 +++++
- net/netfilter/nft_xfrm.c         |  5 +++++
- 8 files changed, 47 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |   54 ++++++++++++++++++-
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c |   54 ++++++++++++++++++-
+ 2 files changed, 104 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
-index c16172427622..6952da7dfc02 100644
---- a/net/netfilter/nft_compat.c
-+++ b/net/netfilter/nft_compat.c
-@@ -349,6 +349,12 @@ static int nft_target_validate(const struct nft_ctx *ctx,
- 	unsigned int hook_mask = 0;
- 	int ret;
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2352,6 +2352,7 @@ static int smu_v13_0_0_get_power_limit(s
+ 	PPTable_t *pptable = table_context->driver_pptable;
+ 	SkuTable_t *skutable = &pptable->SkuTable;
+ 	uint32_t power_limit, od_percent_upper, od_percent_lower;
++	uint32_t msg_limit = skutable->MsgLimits.Power[PPT_THROTTLER_PPT0][POWER_SOURCE_AC];
  
-+	if (ctx->family != NFPROTO_IPV4 &&
-+	    ctx->family != NFPROTO_IPV6 &&
-+	    ctx->family != NFPROTO_BRIDGE &&
-+	    ctx->family != NFPROTO_ARP)
-+		return -EOPNOTSUPP;
-+
- 	if (nft_is_base_chain(ctx->chain)) {
- 		const struct nft_base_chain *basechain =
- 						nft_base_chain(ctx->chain);
-@@ -592,6 +598,12 @@ static int nft_match_validate(const struct nft_ctx *ctx,
- 	unsigned int hook_mask = 0;
- 	int ret;
+ 	if (smu_v13_0_get_current_power_limit(smu, &power_limit))
+ 		power_limit = smu->adev->pm.ac_power ?
+@@ -2375,7 +2376,7 @@ static int smu_v13_0_0_get_power_limit(s
+ 					od_percent_upper, od_percent_lower, power_limit);
  
-+	if (ctx->family != NFPROTO_IPV4 &&
-+	    ctx->family != NFPROTO_IPV6 &&
-+	    ctx->family != NFPROTO_BRIDGE &&
-+	    ctx->family != NFPROTO_ARP)
-+		return -EOPNOTSUPP;
-+
- 	if (nft_is_base_chain(ctx->chain)) {
- 		const struct nft_base_chain *basechain =
- 						nft_base_chain(ctx->chain);
-diff --git a/net/netfilter/nft_flow_offload.c b/net/netfilter/nft_flow_offload.c
-index 8a43f6f9c90b..3d9f6dda5aeb 100644
---- a/net/netfilter/nft_flow_offload.c
-+++ b/net/netfilter/nft_flow_offload.c
-@@ -380,6 +380,11 @@ static int nft_flow_offload_validate(const struct nft_ctx *ctx,
- {
- 	unsigned int hook_mask = (1 << NF_INET_FORWARD);
+ 	if (max_power_limit) {
+-		*max_power_limit = power_limit * (100 + od_percent_upper);
++		*max_power_limit = msg_limit * (100 + od_percent_upper);
+ 		*max_power_limit /= 100;
+ 	}
  
-+	if (ctx->family != NFPROTO_IPV4 &&
-+	    ctx->family != NFPROTO_IPV6 &&
-+	    ctx->family != NFPROTO_INET)
-+		return -EOPNOTSUPP;
-+
- 	return nft_chain_validate_hooks(ctx->chain, hook_mask);
+@@ -2970,6 +2971,55 @@ static ssize_t smu_v13_0_0_get_ecc_info(
+ 	return ret;
  }
  
-diff --git a/net/netfilter/nft_nat.c b/net/netfilter/nft_nat.c
-index 353c090f8891..ba7bcce724ef 100644
---- a/net/netfilter/nft_nat.c
-+++ b/net/netfilter/nft_nat.c
-@@ -142,6 +142,11 @@ static int nft_nat_validate(const struct nft_ctx *ctx,
- 	struct nft_nat *priv = nft_expr_priv(expr);
- 	int err;
++static int smu_v13_0_0_set_power_limit(struct smu_context *smu,
++				       enum smu_ppt_limit_type limit_type,
++				       uint32_t limit)
++{
++	PPTable_t *pptable = smu->smu_table.driver_pptable;
++	SkuTable_t *skutable = &pptable->SkuTable;
++	uint32_t msg_limit = skutable->MsgLimits.Power[PPT_THROTTLER_PPT0][POWER_SOURCE_AC];
++	struct smu_table_context *table_context = &smu->smu_table;
++	OverDriveTableExternal_t *od_table =
++		(OverDriveTableExternal_t *)table_context->overdrive_table;
++	int ret = 0;
++
++	if (limit_type != SMU_DEFAULT_PPT_LIMIT)
++		return -EINVAL;
++
++	if (limit <= msg_limit) {
++		if (smu->current_power_limit > msg_limit) {
++			od_table->OverDriveTable.Ppt = 0;
++			od_table->OverDriveTable.FeatureCtrlMask |= 1U << PP_OD_FEATURE_PPT_BIT;
++
++			ret = smu_v13_0_0_upload_overdrive_table(smu, od_table);
++			if (ret) {
++				dev_err(smu->adev->dev, "Failed to upload overdrive table!\n");
++				return ret;
++			}
++		}
++		return smu_v13_0_set_power_limit(smu, limit_type, limit);
++	} else if (smu->od_enabled) {
++		ret = smu_v13_0_set_power_limit(smu, limit_type, msg_limit);
++		if (ret)
++			return ret;
++
++		od_table->OverDriveTable.Ppt = (limit * 100) / msg_limit - 100;
++		od_table->OverDriveTable.FeatureCtrlMask |= 1U << PP_OD_FEATURE_PPT_BIT;
++
++		ret = smu_v13_0_0_upload_overdrive_table(smu, od_table);
++		if (ret) {
++		  dev_err(smu->adev->dev, "Failed to upload overdrive table!\n");
++		  return ret;
++		}
++
++		smu->current_power_limit = limit;
++	} else {
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static const struct pptable_funcs smu_v13_0_0_ppt_funcs = {
+ 	.get_allowed_feature_mask = smu_v13_0_0_get_allowed_feature_mask,
+ 	.set_default_dpm_table = smu_v13_0_0_set_default_dpm_table,
+@@ -3024,7 +3074,7 @@ static const struct pptable_funcs smu_v1
+ 	.set_fan_control_mode = smu_v13_0_set_fan_control_mode,
+ 	.enable_mgpu_fan_boost = smu_v13_0_0_enable_mgpu_fan_boost,
+ 	.get_power_limit = smu_v13_0_0_get_power_limit,
+-	.set_power_limit = smu_v13_0_set_power_limit,
++	.set_power_limit = smu_v13_0_0_set_power_limit,
+ 	.set_power_source = smu_v13_0_set_power_source,
+ 	.get_power_profile_mode = smu_v13_0_0_get_power_profile_mode,
+ 	.set_power_profile_mode = smu_v13_0_0_set_power_profile_mode,
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+@@ -2316,6 +2316,7 @@ static int smu_v13_0_7_get_power_limit(s
+ 	PPTable_t *pptable = table_context->driver_pptable;
+ 	SkuTable_t *skutable = &pptable->SkuTable;
+ 	uint32_t power_limit, od_percent_upper, od_percent_lower;
++	uint32_t msg_limit = skutable->MsgLimits.Power[PPT_THROTTLER_PPT0][POWER_SOURCE_AC];
  
-+	if (ctx->family != NFPROTO_IPV4 &&
-+	    ctx->family != NFPROTO_IPV6 &&
-+	    ctx->family != NFPROTO_INET)
-+		return -EOPNOTSUPP;
-+
- 	err = nft_chain_validate_dependency(ctx->chain, NFT_CHAIN_T_NAT);
- 	if (err < 0)
- 		return err;
-diff --git a/net/netfilter/nft_rt.c b/net/netfilter/nft_rt.c
-index 71931ec91721..7d21e16499bf 100644
---- a/net/netfilter/nft_rt.c
-+++ b/net/netfilter/nft_rt.c
-@@ -166,6 +166,11 @@ static int nft_rt_validate(const struct nft_ctx *ctx, const struct nft_expr *exp
- 	const struct nft_rt *priv = nft_expr_priv(expr);
- 	unsigned int hooks;
+ 	if (smu_v13_0_get_current_power_limit(smu, &power_limit))
+ 		power_limit = smu->adev->pm.ac_power ?
+@@ -2339,7 +2340,7 @@ static int smu_v13_0_7_get_power_limit(s
+ 					od_percent_upper, od_percent_lower, power_limit);
  
-+	if (ctx->family != NFPROTO_IPV4 &&
-+	    ctx->family != NFPROTO_IPV6 &&
-+	    ctx->family != NFPROTO_INET)
-+		return -EOPNOTSUPP;
-+
- 	switch (priv->key) {
- 	case NFT_RT_NEXTHOP4:
- 	case NFT_RT_NEXTHOP6:
-diff --git a/net/netfilter/nft_socket.c b/net/netfilter/nft_socket.c
-index 777561b71fcb..f28324fd8d71 100644
---- a/net/netfilter/nft_socket.c
-+++ b/net/netfilter/nft_socket.c
-@@ -242,6 +242,11 @@ static int nft_socket_validate(const struct nft_ctx *ctx,
- 			       const struct nft_expr *expr,
- 			       const struct nft_data **data)
- {
-+	if (ctx->family != NFPROTO_IPV4 &&
-+	    ctx->family != NFPROTO_IPV6 &&
-+	    ctx->family != NFPROTO_INET)
-+		return -EOPNOTSUPP;
-+
- 	return nft_chain_validate_hooks(ctx->chain,
- 					(1 << NF_INET_PRE_ROUTING) |
- 					(1 << NF_INET_LOCAL_IN) |
-diff --git a/net/netfilter/nft_synproxy.c b/net/netfilter/nft_synproxy.c
-index 6cf9a04fbfe2..a450f28a5ef6 100644
---- a/net/netfilter/nft_synproxy.c
-+++ b/net/netfilter/nft_synproxy.c
-@@ -186,7 +186,6 @@ static int nft_synproxy_do_init(const struct nft_ctx *ctx,
- 		break;
- #endif
- 	case NFPROTO_INET:
--	case NFPROTO_BRIDGE:
- 		err = nf_synproxy_ipv4_init(snet, ctx->net);
- 		if (err)
- 			goto nf_ct_failure;
-@@ -219,7 +218,6 @@ static void nft_synproxy_do_destroy(const struct nft_ctx *ctx)
- 		break;
- #endif
- 	case NFPROTO_INET:
--	case NFPROTO_BRIDGE:
- 		nf_synproxy_ipv4_fini(snet, ctx->net);
- 		nf_synproxy_ipv6_fini(snet, ctx->net);
- 		break;
-@@ -253,6 +251,11 @@ static int nft_synproxy_validate(const struct nft_ctx *ctx,
- 				 const struct nft_expr *expr,
- 				 const struct nft_data **data)
- {
-+	if (ctx->family != NFPROTO_IPV4 &&
-+	    ctx->family != NFPROTO_IPV6 &&
-+	    ctx->family != NFPROTO_INET)
-+		return -EOPNOTSUPP;
-+
- 	return nft_chain_validate_hooks(ctx->chain, (1 << NF_INET_LOCAL_IN) |
- 						    (1 << NF_INET_FORWARD));
- }
-diff --git a/net/netfilter/nft_tproxy.c b/net/netfilter/nft_tproxy.c
-index 62da25ad264b..adb50c39572e 100644
---- a/net/netfilter/nft_tproxy.c
-+++ b/net/netfilter/nft_tproxy.c
-@@ -316,6 +316,11 @@ static int nft_tproxy_validate(const struct nft_ctx *ctx,
- 			       const struct nft_expr *expr,
- 			       const struct nft_data **data)
- {
-+	if (ctx->family != NFPROTO_IPV4 &&
-+	    ctx->family != NFPROTO_IPV6 &&
-+	    ctx->family != NFPROTO_INET)
-+		return -EOPNOTSUPP;
-+
- 	return nft_chain_validate_hooks(ctx->chain, 1 << NF_INET_PRE_ROUTING);
+ 	if (max_power_limit) {
+-		*max_power_limit = power_limit * (100 + od_percent_upper);
++		*max_power_limit = msg_limit * (100 + od_percent_upper);
+ 		*max_power_limit /= 100;
+ 	}
+ 
+@@ -2567,6 +2568,55 @@ static int smu_v13_0_7_set_df_cstate(str
+ 					       NULL);
  }
  
-diff --git a/net/netfilter/nft_xfrm.c b/net/netfilter/nft_xfrm.c
-index 1c5343c936a8..30259846c352 100644
---- a/net/netfilter/nft_xfrm.c
-+++ b/net/netfilter/nft_xfrm.c
-@@ -235,6 +235,11 @@ static int nft_xfrm_validate(const struct nft_ctx *ctx, const struct nft_expr *e
- 	const struct nft_xfrm *priv = nft_expr_priv(expr);
- 	unsigned int hooks;
- 
-+	if (ctx->family != NFPROTO_IPV4 &&
-+	    ctx->family != NFPROTO_IPV6 &&
-+	    ctx->family != NFPROTO_INET)
-+		return -EOPNOTSUPP;
++static int smu_v13_0_7_set_power_limit(struct smu_context *smu,
++				       enum smu_ppt_limit_type limit_type,
++				       uint32_t limit)
++{
++	PPTable_t *pptable = smu->smu_table.driver_pptable;
++	SkuTable_t *skutable = &pptable->SkuTable;
++	uint32_t msg_limit = skutable->MsgLimits.Power[PPT_THROTTLER_PPT0][POWER_SOURCE_AC];
++	struct smu_table_context *table_context = &smu->smu_table;
++	OverDriveTableExternal_t *od_table =
++		(OverDriveTableExternal_t *)table_context->overdrive_table;
++	int ret = 0;
 +
- 	switch (priv->dir) {
- 	case XFRM_POLICY_IN:
- 		hooks = (1 << NF_INET_FORWARD) |
--- 
-2.43.0
-
++	if (limit_type != SMU_DEFAULT_PPT_LIMIT)
++		return -EINVAL;
++
++	if (limit <= msg_limit) {
++		if (smu->current_power_limit > msg_limit) {
++			od_table->OverDriveTable.Ppt = 0;
++			od_table->OverDriveTable.FeatureCtrlMask |= 1U << PP_OD_FEATURE_PPT_BIT;
++
++			ret = smu_v13_0_7_upload_overdrive_table(smu, od_table);
++			if (ret) {
++				dev_err(smu->adev->dev, "Failed to upload overdrive table!\n");
++				return ret;
++			}
++		}
++		return smu_v13_0_set_power_limit(smu, limit_type, limit);
++	} else if (smu->od_enabled) {
++		ret = smu_v13_0_set_power_limit(smu, limit_type, msg_limit);
++		if (ret)
++			return ret;
++
++		od_table->OverDriveTable.Ppt = (limit * 100) / msg_limit - 100;
++		od_table->OverDriveTable.FeatureCtrlMask |= 1U << PP_OD_FEATURE_PPT_BIT;
++
++		ret = smu_v13_0_7_upload_overdrive_table(smu, od_table);
++		if (ret) {
++		  dev_err(smu->adev->dev, "Failed to upload overdrive table!\n");
++		  return ret;
++		}
++
++		smu->current_power_limit = limit;
++	} else {
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static const struct pptable_funcs smu_v13_0_7_ppt_funcs = {
+ 	.get_allowed_feature_mask = smu_v13_0_7_get_allowed_feature_mask,
+ 	.set_default_dpm_table = smu_v13_0_7_set_default_dpm_table,
+@@ -2618,7 +2668,7 @@ static const struct pptable_funcs smu_v1
+ 	.set_fan_control_mode = smu_v13_0_set_fan_control_mode,
+ 	.enable_mgpu_fan_boost = smu_v13_0_7_enable_mgpu_fan_boost,
+ 	.get_power_limit = smu_v13_0_7_get_power_limit,
+-	.set_power_limit = smu_v13_0_set_power_limit,
++	.set_power_limit = smu_v13_0_7_set_power_limit,
+ 	.set_power_source = smu_v13_0_set_power_source,
+ 	.get_power_profile_mode = smu_v13_0_7_get_power_profile_mode,
+ 	.set_power_profile_mode = smu_v13_0_7_set_power_profile_mode,
 
 
 
