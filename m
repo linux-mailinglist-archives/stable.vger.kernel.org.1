@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-16828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52E2840E96
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27544841024
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E1C8B21852
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ACA21C203DE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A7415703D;
-	Mon, 29 Jan 2024 17:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D7E74072;
+	Mon, 29 Jan 2024 17:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9SjQFXJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="myAdPijO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FD815FB21;
-	Mon, 29 Jan 2024 17:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BEE47406A;
+	Mon, 29 Jan 2024 17:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548309; cv=none; b=GKhYFx90JFBKdFWxY/Qasc0rxjb0ModB6q/UVp5KmzWmXc4UyymjLTeA6sHGF56UmAy/2m5Pn2RpJmMYVQ7647YQ7SmsaPvofJIC02oR/Ru7YlHsV+byItVd9jNnalbktNLD2S9CbZQ7qUWG5MeBN2Ex9qQFn3NejNlAfPQZzKo=
+	t=1706548570; cv=none; b=psomskR2yhcjBzEf1oET+xvp06s5FODyTbpOyJmXX0P3NjEt4DLlJd//fJmfm1DRLY1Qj3pbYBwTBMTgZ+YW+13jLekp/PVoPK9Ymh8ZWLEuBDYvWj7jUb33RXFQI5AyHus/RZPEwclvfGLPxEkaneO1Kzt5AU65qDB72hd9PyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548309; c=relaxed/simple;
-	bh=Kw345+PTE0wUUEuSO08Y4GjYIp8WDKqYfPb9xpZIyn8=;
+	s=arc-20240116; t=1706548570; c=relaxed/simple;
+	bh=vUkwaF7q+WoAZQIdHS13NLr3/LHQYjUCHDTCjYiBliY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVxS/BB2Fd3bf5PIHjvmB8X9x+3thw+sx/4LzrfM/jOGkAjw37/RHywTZynj1Nw0m9pqkki/TrZzYPu7t8CrGqxMBliBms+xsLyr1xOggDAHUcWpFVBV28kFBwPQsBthJ1DS2Qpb7fUpbmiO7pNwU0/aAwrf1w9j9lZ5pxcrb/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9SjQFXJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDAF9C43394;
-	Mon, 29 Jan 2024 17:11:48 +0000 (UTC)
+	 MIME-Version; b=i81vpDvui6YghS5thRJfPNxoCINe11x9B+kRB0+JiAfXxFy44MR5fGxYLOZfNEZvVq7AblpzosMSHNdCHBOV4Ui4Kl8BNq1zwvIR6krgEaDef5Y/m9j+63+/qqPI8Av29ERSN0u9IC7kh0t1vwgDpGXySKtrzXppR13DVfeLIgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=myAdPijO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13391C43399;
+	Mon, 29 Jan 2024 17:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548309;
-	bh=Kw345+PTE0wUUEuSO08Y4GjYIp8WDKqYfPb9xpZIyn8=;
+	s=korg; t=1706548570;
+	bh=vUkwaF7q+WoAZQIdHS13NLr3/LHQYjUCHDTCjYiBliY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9SjQFXJZN8OGTgJ6yWoRug+DAKjNLmDyqvR5goVAMmyaxOgLyl3EjCg/SlKeeT6j
-	 r51dSScDshuOPeDhz6MsJPD4Ve07L58Ea6ahG5fnt2m3c8xYBW0n0cQkqe5I0W7ySY
-	 LKpXYM2KQZuaIzJASUUe0mpOcOZZo+3ZvOMwop4I=
+	b=myAdPijOZV8ETM/JEPePSNzhaLXqUgfWY3S607BlwusY3lJBjzZhYWTdK3RwO9YVb
+	 nbQKRvtrSLglRlpWsmSj1sxju/u5byotZ0Xu8QeEC9nfwyrLJ/JNlCzNiAaYFK5dP0
+	 Ae7tqIZUuJ3IF/WYuUqiSnA/J9XjEG1CvskS1Tuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.1 059/185] serial: sc16is7xx: remove wasteful static buffer in sc16is7xx_regmap_name()
+	Erez Shitrit <erezsh@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Vlad Buslov <vladbu@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 195/331] net/mlx5: Bridge, Enable mcast in smfs steering mode
 Date: Mon, 29 Jan 2024 09:04:19 -0800
-Message-ID: <20240129170000.503450377@linuxfoundation.org>
+Message-ID: <20240129170020.583247131@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Erez Shitrit <erezsh@nvidia.com>
 
-commit 6bcab3c8acc88e265c570dea969fd04f137c8a4c upstream.
+[ Upstream commit 653b7eb9d74426397c95061fd57da3063625af65 ]
 
-Using a static buffer inside sc16is7xx_regmap_name() was a convenient and
-simple way to set the regmap name without having to allocate and free a
-buffer each time it is called. The drawback is that the static buffer
-wastes memory for nothing once regmap is fully initialized.
+In order to have mcast offloads the driver needs the following:
+It should know if that mcast comes from wire port, in addition the flow
+should not be marked as any specific source, that way it will give the
+flexibility for the driver not to be depended on the way iterator
+implemented in the FW.
 
-Remove static buffer and use constant strings instead.
-
-This also avoids a truncation warning when using "%d" or "%u" in snprintf
-which was flagged by kernel test robot.
-
-Fixes: 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
-Cc:  <stable@vger.kernel.org> # 6.1.x: 3837a03 serial: sc16is7xx: improve regmap debugfs by using one regmap per port
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231211171353.2901416-2-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Erez Shitrit <erezsh@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: ec7cc38ef9f8 ("net/mlx5: Bridge, fix multicast packets sent to uplink")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ .../ethernet/mellanox/mlx5/core/esw/bridge_mcast.c    | 11 ++---------
+ include/linux/mlx5/fs.h                               |  1 +
+ 2 files changed, 3 insertions(+), 9 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1698,13 +1698,15 @@ static struct regmap_config regcfg = {
- 	.max_register = SC16IS7XX_EFCR_REG,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c
+index 7a01714b3780..a7ed87e9d842 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/bridge_mcast.c
+@@ -78,6 +78,8 @@ mlx5_esw_bridge_mdb_flow_create(u16 esw_owner_vhca_id, struct mlx5_esw_bridge_md
+ 	xa_for_each(&entry->ports, idx, port) {
+ 		dests[i].type = MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE;
+ 		dests[i].ft = port->mcast.ft;
++		if (port->vport_num == MLX5_VPORT_UPLINK)
++			dests[i].ft->flags |= MLX5_FLOW_TABLE_UPLINK_VPORT;
+ 		i++;
+ 	}
+ 
+@@ -585,10 +587,6 @@ mlx5_esw_bridge_mcast_vlan_flow_create(u16 vlan_proto, struct mlx5_esw_bridge_po
+ 	if (!rule_spec)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	if (MLX5_CAP_ESW_FLOWTABLE(bridge->br_offloads->esw->dev, flow_source) &&
+-	    port->vport_num == MLX5_VPORT_UPLINK)
+-		rule_spec->flow_context.flow_source =
+-			MLX5_FLOW_CONTEXT_FLOW_SOURCE_LOCAL_VPORT;
+ 	rule_spec->match_criteria_enable = MLX5_MATCH_OUTER_HEADERS;
+ 
+ 	flow_act.action |= MLX5_FLOW_CONTEXT_ACTION_PACKET_REFORMAT;
+@@ -660,11 +658,6 @@ mlx5_esw_bridge_mcast_fwd_flow_create(struct mlx5_esw_bridge_port *port)
+ 	if (!rule_spec)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	if (MLX5_CAP_ESW_FLOWTABLE(bridge->br_offloads->esw->dev, flow_source) &&
+-	    port->vport_num == MLX5_VPORT_UPLINK)
+-		rule_spec->flow_context.flow_source =
+-			MLX5_FLOW_CONTEXT_FLOW_SOURCE_LOCAL_VPORT;
+-
+ 	if (MLX5_CAP_ESW(bridge->br_offloads->esw->dev, merged_eswitch)) {
+ 		dest.vport.flags = MLX5_FLOW_DEST_VPORT_VHCA_ID;
+ 		dest.vport.vhca_id = port->esw_owner_vhca_id;
+diff --git a/include/linux/mlx5/fs.h b/include/linux/mlx5/fs.h
+index 1e00c2436377..6f7725238abc 100644
+--- a/include/linux/mlx5/fs.h
++++ b/include/linux/mlx5/fs.h
+@@ -67,6 +67,7 @@ enum {
+ 	MLX5_FLOW_TABLE_TERMINATION = BIT(2),
+ 	MLX5_FLOW_TABLE_UNMANAGED = BIT(3),
+ 	MLX5_FLOW_TABLE_OTHER_VPORT = BIT(4),
++	MLX5_FLOW_TABLE_UPLINK_VPORT = BIT(5),
  };
  
--static const char *sc16is7xx_regmap_name(unsigned int port_id)
-+static const char *sc16is7xx_regmap_name(u8 port_id)
- {
--	static char buf[6];
--
--	snprintf(buf, sizeof(buf), "port%d", port_id);
--
--	return buf;
-+	switch (port_id) {
-+	case 0:	return "port0";
-+	case 1:	return "port1";
-+	default:
-+		WARN_ON(true);
-+		return NULL;
-+	}
- }
- 
- static unsigned int sc16is7xx_regmap_port_mask(unsigned int port_id)
+ #define LEFTOVERS_RULE_NUM	 2
+-- 
+2.43.0
+
 
 
 
