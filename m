@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-16809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA901840E82
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 496D7840DE3
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CD3E1F27E6D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D20A1C22112
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD4315FB09;
-	Mon, 29 Jan 2024 17:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6849115D5C1;
+	Mon, 29 Jan 2024 17:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPwWA+rC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ia8UjsJj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C74315A49F;
-	Mon, 29 Jan 2024 17:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275ED15D5B3;
+	Mon, 29 Jan 2024 17:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548295; cv=none; b=o6fPMccYm6f8l1Mwphm1OEfRVWfLjkyw/Fse0p1X4l6uuI2yGgT+EAS75mBNuXIwnmXDgyf9zkKSzULciU2TULnPPR3AWHLW6Zo+P5Pxel+UICIipiEFpp/Zc4Yrp40XNXU4bzNZt/YXGtNXQ90fULrAjVzhxzatPmhNrY9AYO4=
+	t=1706548184; cv=none; b=YAvdqYq9Gnjkv2+ZISayMV0xabqTYQb7a5uN4OhOPiXF+BUnFyBhyqajQbK2LcrJBD28DyszF5rUHEyRaUC23oJkPjPWsGhM5T8jV3ujCXRdjn+P8sSRQSVoQ5YTChzy0aeVoM0kts3TsstkahXv3Iim2CB+FUsUjXEYn1UREps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548295; c=relaxed/simple;
-	bh=0d3yFoz3cfaGc1bO9TWezusZthC7aY9TbXwx+1EmFLQ=;
+	s=arc-20240116; t=1706548184; c=relaxed/simple;
+	bh=/9X5zQGYsmqdDuqF2GiymcJ5oXoYVqsi+F85ULQeelM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bidKDDZXDoO/E89Y6q7djuhH1rSWo1Kw8hQTV25fFWJMU5Ad55br2swzNPY7t0l2hiqs4qkX0XFnXSF1P/3+cjt05AzHtu9LXZxP0QTFEjaqSCJlo+Xbpaqv/6kzWVCRb8oFg5pLxYK/6vVvkQ4bIlO/IphqSUMUlKXPq2QPBUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPwWA+rC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C9AC433F1;
-	Mon, 29 Jan 2024 17:11:34 +0000 (UTC)
+	 MIME-Version; b=o6qQhQh/nnTKQQIo14Yn07rfhdbyRLO20k/AywTFKOg2ZDMqvh0mlPF7LMLUw3TvKbuHp/T7sjSzyeuONil/0GZy1XbYRXZynvpz/U+ItH5C1aAFl7wUl094IfMTkmG5ah+2jPlacm8hdKA7aEzfec9Xqq++oM1ddWcK1Tu2X/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ia8UjsJj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E46A5C43394;
+	Mon, 29 Jan 2024 17:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548295;
-	bh=0d3yFoz3cfaGc1bO9TWezusZthC7aY9TbXwx+1EmFLQ=;
+	s=korg; t=1706548184;
+	bh=/9X5zQGYsmqdDuqF2GiymcJ5oXoYVqsi+F85ULQeelM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SPwWA+rCoypbYS/t87S28Fj1ZasVnMu54YNQ3NeSd8w2AndGKDch4jen1adFED/VS
-	 SXB/giMcgwZAJU6MFxixJ6TJkrCUQ2Q+ogXdweGWhlbF4NMEkVQniG6+N84ebT2ydo
-	 SmjUq/P3LZ6brD63i69vu3gCED7OiKgA/5c0SL08=
+	b=ia8UjsJjW0m3XmddwNmoDg1ORLIRj+x8yoguoAnWlUpsi0jVGEti4085erhu2yPWr
+	 V++MnHyIwtGm949w/lxiq2UFnPYvNSav7ZezEgI3LMqqX231m3O5UV5vUr4urZ5kLj
+	 uAWzckLGziMX5IGab+YE2yuytdhT6Tude1ImVyJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.1 058/185] serial: sc16is7xx: improve regmap debugfs by using one regmap per port
-Date: Mon, 29 Jan 2024 09:04:18 -0800
-Message-ID: <20240129170000.466209246@linuxfoundation.org>
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Anand Jain <anand.jain@oracle.com>,
+	Omar Sandoval <osandov@fb.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.7 228/346] btrfs: dont abort filesystem when attempting to snapshot deleted subvolume
+Date: Mon, 29 Jan 2024 09:04:19 -0800
+Message-ID: <20240129170023.107065231@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,442 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Omar Sandoval <osandov@fb.com>
 
-commit 3837a0379533aabb9e4483677077479f7c6aa910 upstream.
+commit 7081929ab2572920e94d70be3d332e5c9f97095a upstream.
 
-With this current driver regmap implementation, it is hard to make sense
-of the register addresses displayed using the regmap debugfs interface,
-because they do not correspond to the actual register addresses documented
-in the datasheet. For example, register 1 is displayed as registers 04 thru
-07:
+If the source file descriptor to the snapshot ioctl refers to a deleted
+subvolume, we get the following abort:
 
-$ cat /sys/kernel/debug/regmap/spi0.0/registers
-  04: 10 -> Port 0, register offset 1
-  05: 10 -> Port 1, register offset 1
-  06: 00 -> Port 2, register offset 1 -> invalid
-  07: 00 -> port 3, register offset 1 -> invalid
-  ...
+  BTRFS: Transaction aborted (error -2)
+  WARNING: CPU: 0 PID: 833 at fs/btrfs/transaction.c:1875 create_pending_snapshot+0x1040/0x1190 [btrfs]
+  Modules linked in: pata_acpi btrfs ata_piix libata scsi_mod virtio_net blake2b_generic xor net_failover virtio_rng failover scsi_common rng_core raid6_pq libcrc32c
+  CPU: 0 PID: 833 Comm: t_snapshot_dele Not tainted 6.7.0-rc6 #2
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-1.fc39 04/01/2014
+  RIP: 0010:create_pending_snapshot+0x1040/0x1190 [btrfs]
+  RSP: 0018:ffffa09c01337af8 EFLAGS: 00010282
+  RAX: 0000000000000000 RBX: ffff9982053e7c78 RCX: 0000000000000027
+  RDX: ffff99827dc20848 RSI: 0000000000000001 RDI: ffff99827dc20840
+  RBP: ffffa09c01337c00 R08: 0000000000000000 R09: ffffa09c01337998
+  R10: 0000000000000003 R11: ffffffffb96da248 R12: fffffffffffffffe
+  R13: ffff99820535bb28 R14: ffff99820b7bd000 R15: ffff99820381ea80
+  FS:  00007fe20aadabc0(0000) GS:ffff99827dc00000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000559a120b502f CR3: 00000000055b6000 CR4: 00000000000006f0
+  Call Trace:
+   <TASK>
+   ? create_pending_snapshot+0x1040/0x1190 [btrfs]
+   ? __warn+0x81/0x130
+   ? create_pending_snapshot+0x1040/0x1190 [btrfs]
+   ? report_bug+0x171/0x1a0
+   ? handle_bug+0x3a/0x70
+   ? exc_invalid_op+0x17/0x70
+   ? asm_exc_invalid_op+0x1a/0x20
+   ? create_pending_snapshot+0x1040/0x1190 [btrfs]
+   ? create_pending_snapshot+0x1040/0x1190 [btrfs]
+   create_pending_snapshots+0x92/0xc0 [btrfs]
+   btrfs_commit_transaction+0x66b/0xf40 [btrfs]
+   btrfs_mksubvol+0x301/0x4d0 [btrfs]
+   btrfs_mksnapshot+0x80/0xb0 [btrfs]
+   __btrfs_ioctl_snap_create+0x1c2/0x1d0 [btrfs]
+   btrfs_ioctl_snap_create_v2+0xc4/0x150 [btrfs]
+   btrfs_ioctl+0x8a6/0x2650 [btrfs]
+   ? kmem_cache_free+0x22/0x340
+   ? do_sys_openat2+0x97/0xe0
+   __x64_sys_ioctl+0x97/0xd0
+   do_syscall_64+0x46/0xf0
+   entry_SYSCALL_64_after_hwframe+0x6e/0x76
+  RIP: 0033:0x7fe20abe83af
+  RSP: 002b:00007ffe6eff1360 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+  RAX: ffffffffffffffda RBX: 0000000000000004 RCX: 00007fe20abe83af
+  RDX: 00007ffe6eff23c0 RSI: 0000000050009417 RDI: 0000000000000003
+  RBP: 0000000000000003 R08: 0000000000000000 R09: 00007fe20ad16cd0
+  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+  R13: 00007ffe6eff13c0 R14: 00007fe20ad45000 R15: 0000559a120b6d58
+   </TASK>
+  ---[ end trace 0000000000000000 ]---
+  BTRFS: error (device vdc: state A) in create_pending_snapshot:1875: errno=-2 No such entry
+  BTRFS info (device vdc: state EA): forced readonly
+  BTRFS warning (device vdc: state EA): Skipping commit of aborted transaction.
+  BTRFS: error (device vdc: state EA) in cleanup_transaction:2055: errno=-2 No such entry
 
-The reason is that bits 0 and 1 of the register address correspond to the
-channel (port) bits, so the register address itself starts at bit 2, and we
-must 'mentally' shift each register address by 2 bits to get its real
-address/offset.
+This happens because create_pending_snapshot() initializes the new root
+item as a copy of the source root item. This includes the refs field,
+which is 0 for a deleted subvolume. The call to btrfs_insert_root()
+therefore inserts a root with refs == 0. btrfs_get_new_fs_root() then
+finds the root and returns -ENOENT if refs == 0, which causes
+create_pending_snapshot() to abort.
 
-Also, only channels 0 and 1 are supported by the chip, so channel mask
-combinations of 10b and 11b are invalid, and the display of these
-registers is useless.
+Fix it by checking the source root's refs before attempting the
+snapshot, but after locking subvol_sem to avoid racing with deletion.
 
-This patch adds a separate regmap configuration for each port, similar to
-what is done in the max310x driver, so that register addresses displayed
-match the register addresses in the chip datasheet. Also, each port now has
-its own debugfs entry.
-
-Example with new regmap implementation:
-
-$ cat /sys/kernel/debug/regmap/spi0.0-port0/registers
-1: 10
-2: 01
-3: 00
-...
-
-$ cat /sys/kernel/debug/regmap/spi0.0-port1/registers
-1: 10
-2: 01
-3: 00
-
-As an added bonus, this also simplifies some operations (read/write/modify)
-because it is no longer necessary to manually shift register addresses.
-
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231030211447.974779-1-hugo@hugovil.com
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Omar Sandoval <osandov@fb.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |  143 +++++++++++++++++++++++------------------
- 1 file changed, 81 insertions(+), 62 deletions(-)
+ fs/btrfs/ioctl.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -301,8 +301,8 @@
- 
- 
- /* Misc definitions */
-+#define SC16IS7XX_SPI_READ_BIT		BIT(7)
- #define SC16IS7XX_FIFO_SIZE		(64)
--#define SC16IS7XX_REG_SHIFT		2
- #define SC16IS7XX_GPIOS_PER_BANK	4
- 
- struct sc16is7xx_devtype {
-@@ -324,6 +324,7 @@ struct sc16is7xx_one_config {
- struct sc16is7xx_one {
- 	struct uart_port		port;
- 	u8				line;
-+	struct regmap			*regmap;
- 	struct kthread_work		tx_work;
- 	struct kthread_work		reg_work;
- 	struct kthread_delayed_work	ms_work;
-@@ -362,48 +363,37 @@ static void sc16is7xx_stop_tx(struct uar
- #define to_sc16is7xx_port(p,e)	((container_of((p), struct sc16is7xx_port, e)))
- #define to_sc16is7xx_one(p,e)	((container_of((p), struct sc16is7xx_one, e)))
- 
--static int sc16is7xx_line(struct uart_port *port)
--{
--	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
--
--	return one->line;
--}
--
- static u8 sc16is7xx_port_read(struct uart_port *port, u8 reg)
- {
--	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
-+	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
- 	unsigned int val = 0;
--	const u8 line = sc16is7xx_line(port);
- 
--	regmap_read(s->regmap, (reg << SC16IS7XX_REG_SHIFT) | line, &val);
-+	regmap_read(one->regmap, reg, &val);
- 
- 	return val;
- }
- 
- static void sc16is7xx_port_write(struct uart_port *port, u8 reg, u8 val)
- {
--	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
--	const u8 line = sc16is7xx_line(port);
-+	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
- 
--	regmap_write(s->regmap, (reg << SC16IS7XX_REG_SHIFT) | line, val);
-+	regmap_write(one->regmap, reg, val);
- }
- 
- static void sc16is7xx_fifo_read(struct uart_port *port, unsigned int rxlen)
- {
- 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
--	const u8 line = sc16is7xx_line(port);
--	u8 addr = (SC16IS7XX_RHR_REG << SC16IS7XX_REG_SHIFT) | line;
-+	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
- 
--	regcache_cache_bypass(s->regmap, true);
--	regmap_raw_read(s->regmap, addr, s->buf, rxlen);
--	regcache_cache_bypass(s->regmap, false);
-+	regcache_cache_bypass(one->regmap, true);
-+	regmap_raw_read(one->regmap, SC16IS7XX_RHR_REG, s->buf, rxlen);
-+	regcache_cache_bypass(one->regmap, false);
- }
- 
- static void sc16is7xx_fifo_write(struct uart_port *port, u8 to_send)
- {
- 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
--	const u8 line = sc16is7xx_line(port);
--	u8 addr = (SC16IS7XX_THR_REG << SC16IS7XX_REG_SHIFT) | line;
-+	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
- 
- 	/*
- 	 * Don't send zero-length data, at least on SPI it confuses the chip
-@@ -412,19 +402,17 @@ static void sc16is7xx_fifo_write(struct
- 	if (unlikely(!to_send))
- 		return;
- 
--	regcache_cache_bypass(s->regmap, true);
--	regmap_raw_write(s->regmap, addr, s->buf, to_send);
--	regcache_cache_bypass(s->regmap, false);
-+	regcache_cache_bypass(one->regmap, true);
-+	regmap_raw_write(one->regmap, SC16IS7XX_THR_REG, s->buf, to_send);
-+	regcache_cache_bypass(one->regmap, false);
- }
- 
- static void sc16is7xx_port_update(struct uart_port *port, u8 reg,
- 				  u8 mask, u8 val)
- {
--	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
--	const u8 line = sc16is7xx_line(port);
-+	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
- 
--	regmap_update_bits(s->regmap, (reg << SC16IS7XX_REG_SHIFT) | line,
--			   mask, val);
-+	regmap_update_bits(one->regmap, reg, mask, val);
- }
- 
- static int sc16is7xx_alloc_line(void)
-@@ -479,7 +467,7 @@ static const struct sc16is7xx_devtype sc
- 
- static bool sc16is7xx_regmap_volatile(struct device *dev, unsigned int reg)
- {
--	switch (reg >> SC16IS7XX_REG_SHIFT) {
-+	switch (reg) {
- 	case SC16IS7XX_RHR_REG:
- 	case SC16IS7XX_IIR_REG:
- 	case SC16IS7XX_LSR_REG:
-@@ -498,7 +486,7 @@ static bool sc16is7xx_regmap_volatile(st
- 
- static bool sc16is7xx_regmap_precious(struct device *dev, unsigned int reg)
- {
--	switch (reg >> SC16IS7XX_REG_SHIFT) {
-+	switch (reg) {
- 	case SC16IS7XX_RHR_REG:
- 		return true;
- 	default:
-@@ -511,6 +499,7 @@ static bool sc16is7xx_regmap_precious(st
- static int sc16is7xx_set_baud(struct uart_port *port, int baud)
- {
- 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
-+	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
- 	u8 lcr;
- 	u8 prescaler = 0;
- 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
-@@ -542,12 +531,12 @@ static int sc16is7xx_set_baud(struct uar
- 			     SC16IS7XX_LCR_CONF_MODE_B);
- 
- 	/* Enable enhanced features */
--	regcache_cache_bypass(s->regmap, true);
-+	regcache_cache_bypass(one->regmap, true);
- 	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
- 			      SC16IS7XX_EFR_ENABLE_BIT,
- 			      SC16IS7XX_EFR_ENABLE_BIT);
- 
--	regcache_cache_bypass(s->regmap, false);
-+	regcache_cache_bypass(one->regmap, false);
- 
- 	/* Put LCR back to the normal mode */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
-@@ -563,10 +552,10 @@ static int sc16is7xx_set_baud(struct uar
- 			     SC16IS7XX_LCR_CONF_MODE_A);
- 
- 	/* Write the new divisor */
--	regcache_cache_bypass(s->regmap, true);
-+	regcache_cache_bypass(one->regmap, true);
- 	sc16is7xx_port_write(port, SC16IS7XX_DLH_REG, div / 256);
- 	sc16is7xx_port_write(port, SC16IS7XX_DLL_REG, div % 256);
--	regcache_cache_bypass(s->regmap, false);
-+	regcache_cache_bypass(one->regmap, false);
- 
- 	/* Put LCR back to the normal mode */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
-@@ -1094,7 +1083,7 @@ static void sc16is7xx_set_termios(struct
- 			     SC16IS7XX_LCR_CONF_MODE_B);
- 
- 	/* Configure flow control */
--	regcache_cache_bypass(s->regmap, true);
-+	regcache_cache_bypass(one->regmap, true);
- 	sc16is7xx_port_write(port, SC16IS7XX_XON1_REG, termios->c_cc[VSTART]);
- 	sc16is7xx_port_write(port, SC16IS7XX_XOFF1_REG, termios->c_cc[VSTOP]);
- 
-@@ -1113,7 +1102,7 @@ static void sc16is7xx_set_termios(struct
- 			      SC16IS7XX_EFR_REG,
- 			      SC16IS7XX_EFR_FLOWCTRL_BITS,
- 			      flow);
--	regcache_cache_bypass(s->regmap, false);
-+	regcache_cache_bypass(one->regmap, false);
- 
- 	/* Update LCR register */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
-@@ -1164,7 +1153,6 @@ static int sc16is7xx_config_rs485(struct
- static int sc16is7xx_startup(struct uart_port *port)
- {
- 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
--	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
- 	unsigned int val;
- 	unsigned long flags;
- 
-@@ -1181,7 +1169,7 @@ static int sc16is7xx_startup(struct uart
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
- 			     SC16IS7XX_LCR_CONF_MODE_B);
- 
--	regcache_cache_bypass(s->regmap, true);
-+	regcache_cache_bypass(one->regmap, true);
- 
- 	/* Enable write access to enhanced features and internal clock div */
- 	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
-@@ -1199,7 +1187,7 @@ static int sc16is7xx_startup(struct uart
- 			     SC16IS7XX_TCR_RX_RESUME(24) |
- 			     SC16IS7XX_TCR_RX_HALT(48));
- 
--	regcache_cache_bypass(s->regmap, false);
-+	regcache_cache_bypass(one->regmap, false);
- 
- 	/* Now, initialize the UART */
- 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, SC16IS7XX_LCR_WORD_LEN_8);
-@@ -1457,7 +1445,7 @@ static int sc16is7xx_setup_mctrl_ports(s
- 	if (s->mctrl_mask)
- 		regmap_update_bits(
- 			s->regmap,
--			SC16IS7XX_IOCONTROL_REG << SC16IS7XX_REG_SHIFT,
-+			SC16IS7XX_IOCONTROL_REG,
- 			SC16IS7XX_IOCONTROL_MODEM_A_BIT |
- 			SC16IS7XX_IOCONTROL_MODEM_B_BIT, s->mctrl_mask);
- 
-@@ -1472,7 +1460,7 @@ static const struct serial_rs485 sc16is7
- 
- static int sc16is7xx_probe(struct device *dev,
- 			   const struct sc16is7xx_devtype *devtype,
--			   struct regmap *regmap, int irq)
-+			   struct regmap *regmaps[], int irq)
- {
- 	unsigned long freq = 0, *pfreq = dev_get_platdata(dev);
- 	unsigned int val;
-@@ -1480,16 +1468,16 @@ static int sc16is7xx_probe(struct device
- 	int i, ret;
- 	struct sc16is7xx_port *s;
- 
--	if (IS_ERR(regmap))
--		return PTR_ERR(regmap);
-+	for (i = 0; i < devtype->nr_uart; i++)
-+		if (IS_ERR(regmaps[i]))
-+			return PTR_ERR(regmaps[i]);
- 
- 	/*
- 	 * This device does not have an identification register that would
- 	 * tell us if we are really connected to the correct device.
- 	 * The best we can do is to check if communication is at all possible.
- 	 */
--	ret = regmap_read(regmap,
--			  SC16IS7XX_LSR_REG << SC16IS7XX_REG_SHIFT, &val);
-+	ret = regmap_read(regmaps[0], SC16IS7XX_LSR_REG, &val);
- 	if (ret < 0)
- 		return -EPROBE_DEFER;
- 
-@@ -1523,7 +1511,7 @@ static int sc16is7xx_probe(struct device
- 			return -EINVAL;
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -790,6 +790,9 @@ static int create_snapshot(struct btrfs_
+ 		return -EOPNOTSUPP;
  	}
  
--	s->regmap = regmap;
-+	s->regmap = regmaps[0];
- 	s->devtype = devtype;
- 	dev_set_drvdata(dev, s);
- 	mutex_init(&s->efr_lock);
-@@ -1538,8 +1526,8 @@ static int sc16is7xx_probe(struct device
- 	sched_set_fifo(s->kworker_task);
- 
- 	/* reset device, purging any pending irq / data */
--	regmap_write(s->regmap, SC16IS7XX_IOCONTROL_REG << SC16IS7XX_REG_SHIFT,
--			SC16IS7XX_IOCONTROL_SRESET_BIT);
-+	regmap_write(s->regmap, SC16IS7XX_IOCONTROL_REG,
-+		     SC16IS7XX_IOCONTROL_SRESET_BIT);
- 
- 	for (i = 0; i < devtype->nr_uart; ++i) {
- 		s->p[i].line		= i;
-@@ -1563,6 +1551,7 @@ static int sc16is7xx_probe(struct device
- 		s->p[i].port.ops	= &sc16is7xx_ops;
- 		s->p[i].old_mctrl	= 0;
- 		s->p[i].port.line	= sc16is7xx_alloc_line();
-+		s->p[i].regmap		= regmaps[i];
- 
- 		if (s->p[i].port.line >= SC16IS7XX_MAX_DEVS) {
- 			ret = -ENOMEM;
-@@ -1591,13 +1580,13 @@ static int sc16is7xx_probe(struct device
- 		sc16is7xx_port_write(&s->p[i].port, SC16IS7XX_LCR_REG,
- 				     SC16IS7XX_LCR_CONF_MODE_B);
- 
--		regcache_cache_bypass(s->regmap, true);
-+		regcache_cache_bypass(regmaps[i], true);
- 
- 		/* Enable write access to enhanced features */
- 		sc16is7xx_port_write(&s->p[i].port, SC16IS7XX_EFR_REG,
- 				     SC16IS7XX_EFR_ENABLE_BIT);
- 
--		regcache_cache_bypass(s->regmap, false);
-+		regcache_cache_bypass(regmaps[i], false);
- 
- 		/* Restore access to general registers */
- 		sc16is7xx_port_write(&s->p[i].port, SC16IS7XX_LCR_REG, 0x00);
-@@ -1700,19 +1689,36 @@ static const struct of_device_id __maybe
- MODULE_DEVICE_TABLE(of, sc16is7xx_dt_ids);
- 
- static struct regmap_config regcfg = {
--	.reg_bits = 7,
--	.pad_bits = 1,
-+	.reg_bits = 5,
-+	.pad_bits = 3,
- 	.val_bits = 8,
- 	.cache_type = REGCACHE_RBTREE,
- 	.volatile_reg = sc16is7xx_regmap_volatile,
- 	.precious_reg = sc16is7xx_regmap_precious,
-+	.max_register = SC16IS7XX_EFCR_REG,
- };
- 
-+static const char *sc16is7xx_regmap_name(unsigned int port_id)
-+{
-+	static char buf[6];
++	if (btrfs_root_refs(&root->root_item) == 0)
++		return -ENOENT;
 +
-+	snprintf(buf, sizeof(buf), "port%d", port_id);
-+
-+	return buf;
-+}
-+
-+static unsigned int sc16is7xx_regmap_port_mask(unsigned int port_id)
-+{
-+	/* CH1,CH0 are at bits 2:1. */
-+	return port_id << 1;
-+}
-+
- #ifdef CONFIG_SERIAL_SC16IS7XX_SPI
- static int sc16is7xx_spi_probe(struct spi_device *spi)
- {
- 	const struct sc16is7xx_devtype *devtype;
--	struct regmap *regmap;
-+	struct regmap *regmaps[2];
-+	unsigned int i;
- 	int ret;
+ 	if (!test_bit(BTRFS_ROOT_SHAREABLE, &root->state))
+ 		return -EINVAL;
  
- 	/* Setup SPI bus */
-@@ -1737,11 +1743,20 @@ static int sc16is7xx_spi_probe(struct sp
- 		devtype = (struct sc16is7xx_devtype *)id_entry->driver_data;
- 	}
- 
--	regcfg.max_register = (0xf << SC16IS7XX_REG_SHIFT) |
--			      (devtype->nr_uart - 1);
--	regmap = devm_regmap_init_spi(spi, &regcfg);
-+	for (i = 0; i < devtype->nr_uart; i++) {
-+		regcfg.name = sc16is7xx_regmap_name(i);
-+		/*
-+		 * If read_flag_mask is 0, the regmap code sets it to a default
-+		 * of 0x80. Since we specify our own mask, we must add the READ
-+		 * bit ourselves:
-+		 */
-+		regcfg.read_flag_mask = sc16is7xx_regmap_port_mask(i) |
-+			SC16IS7XX_SPI_READ_BIT;
-+		regcfg.write_flag_mask = sc16is7xx_regmap_port_mask(i);
-+		regmaps[i] = devm_regmap_init_spi(spi, &regcfg);
-+	}
- 
--	return sc16is7xx_probe(&spi->dev, devtype, regmap, spi->irq);
-+	return sc16is7xx_probe(&spi->dev, devtype, regmaps, spi->irq);
- }
- 
- static void sc16is7xx_spi_remove(struct spi_device *spi)
-@@ -1780,7 +1795,8 @@ static int sc16is7xx_i2c_probe(struct i2
- 			       const struct i2c_device_id *id)
- {
- 	const struct sc16is7xx_devtype *devtype;
--	struct regmap *regmap;
-+	struct regmap *regmaps[2];
-+	unsigned int i;
- 
- 	if (i2c->dev.of_node) {
- 		devtype = device_get_match_data(&i2c->dev);
-@@ -1790,11 +1806,14 @@ static int sc16is7xx_i2c_probe(struct i2
- 		devtype = (struct sc16is7xx_devtype *)id->driver_data;
- 	}
- 
--	regcfg.max_register = (0xf << SC16IS7XX_REG_SHIFT) |
--			      (devtype->nr_uart - 1);
--	regmap = devm_regmap_init_i2c(i2c, &regcfg);
-+	for (i = 0; i < devtype->nr_uart; i++) {
-+		regcfg.name = sc16is7xx_regmap_name(i);
-+		regcfg.read_flag_mask = sc16is7xx_regmap_port_mask(i);
-+		regcfg.write_flag_mask = sc16is7xx_regmap_port_mask(i);
-+		regmaps[i] = devm_regmap_init_i2c(i2c, &regcfg);
-+	}
- 
--	return sc16is7xx_probe(&i2c->dev, devtype, regmap, i2c->irq);
-+	return sc16is7xx_probe(&i2c->dev, devtype, regmaps, i2c->irq);
- }
- 
- static void sc16is7xx_i2c_remove(struct i2c_client *client)
 
 
 
