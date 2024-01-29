@@ -1,130 +1,235 @@
-Return-Path: <stable+bounces-16392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CFB183FE23
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 07:20:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05FF083FEA2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 07:45:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B11A21C21430
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 06:20:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FCC01F21B47
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 06:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2864B4C3C3;
-	Mon, 29 Jan 2024 06:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="kBA3GuXp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0EE84CDE0;
+	Mon, 29 Jan 2024 06:44:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F0C4CDE1;
-	Mon, 29 Jan 2024 06:20:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E674EB3D
+	for <stable@vger.kernel.org>; Mon, 29 Jan 2024 06:44:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706509202; cv=none; b=daEGcSef9uYQ03T9LPMCvWhyzMPcxw/hekYP4hgo7uMuKo9A1CF+Ymfngfh+uDSveTqIEKxTLQr3usRvccCrpFHcld3VkzrgZfubkKiyY6pdJVdKzNT3OhXoPppXHuxYUTWLW9lqc1bS0wuAMqkoI0421+aNHD6cR+pBI701F58=
+	t=1706510695; cv=none; b=i8XFEV4lHcfkAV6OOtf0NAwb3ZLuQHcEEER2moBypzP7mEbY15tJJB5eBGwzSEFd6pQwwESDyzPkfXEp5JIJ2lsnG6wJScCmNKcAZl4K4dix7ZaFi1WbVrwy1FBhwOp29oZuv4/ADfg9UX01QIQszygTmKWUEHxHlqO1OwnypsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706509202; c=relaxed/simple;
-	bh=WFrUlGyCYH1cPNQ795jmy4LwmAWrppI/AMvtGMgh634=;
-	h=Date:To:From:Subject:Message-Id; b=nK9On0pEqgSaB9trmqzcmsjMxAIy+aATX7BtjTkcmJ+4jI0EpzPlcxRQ5XtVUkUCQ5/r30nZ4pZz9DPRhCK8pW1AxOo4MhxkmjgG5KIDQyidxmO3om2dhn8sAJ66rH8PNbexkak9BJqj/pCdWqtnjgIRN5c718fd2jBUiqIoXac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=kBA3GuXp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B2EC433F1;
-	Mon, 29 Jan 2024 06:20:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1706509202;
-	bh=WFrUlGyCYH1cPNQ795jmy4LwmAWrppI/AMvtGMgh634=;
-	h=Date:To:From:Subject:From;
-	b=kBA3GuXphcDWfdeCVSnV+LskSlqYZKpQXNrQVwsBuVW+kISGXbL2N2QlEHQf1XtI2
-	 MJD4EEY9aODkL6fZ6XybFlCwzH1fmABmtEWCVn61poisy+oJUbJZHtcnyKQPbFVYC/
-	 7J5lH32vi/VUzqeFPl7PnZs8aAKhZJZWIeW/n1Do=
-Date: Sun, 28 Jan 2024 22:19:58 -0800
-To: mm-commits@vger.kernel.org,zhouchengming@bytedance.com,stable@vger.kernel.org,nphamcs@gmail.com,hannes@cmpxchg.org,cerasuolodomenico@gmail.com,yosryahmed@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-zswap-fix-missing-folio-cleanup-in-writeback-race-path.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240129062001.C3B2EC433F1@smtp.kernel.org>
+	s=arc-20240116; t=1706510695; c=relaxed/simple;
+	bh=wJJf+KFUMKaPushYnI0iEsDLec20GKo1a88Dd4q4xtY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HvUmcR+vtwFJgYAwHRkuhDS26RxhaGFz7/wu+7+L6RH9iiKHW7GS/M2bsm2+DWLQT8oFJSzyqoqHd5WtOKMctcIrAsSOQsLEzwLb59KPV80ra28bBWoUUs5CU/+501tK245aYufEdrbOkIN1xS0bR2oE5WhP7F7q1YLX+XoqfFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-33adec41b55so2470790f8f.0
+        for <stable@vger.kernel.org>; Sun, 28 Jan 2024 22:44:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706510692; x=1707115492;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eZRDgAq7BSDnYtXGdfWlVtUHvwFxKjEHyOIslyUr4/g=;
+        b=vP5DmkUWpK8qPkBad8ElTdm6q/DdVtIQYMb/dK/rmBEM8g8TEoy6t7qIjKHUJqf/0D
+         Dp89yVvbd83DZ55YeFkLQ1G1778USQxG3Z7jfHQH7FlTydKS8SRNk2CCn3JCf+FJVtkL
+         ALTUAjxf4RnGu/Ysbtaxf5ej6RtnT6JOgWbWWG4sIDDwEzYgOrIogdc9fMuACg24T2EB
+         5rlb3OeElDD0J6OeuvGWqbCOVFRrBo1Lo0V4H4JC4WI7BIuLE92+4ZsEZlMvVMcobLvH
+         SgUhJalLRZvqe84QOEpWp5p3e2gfeFfQfnUVHvFKR2jlmQN94qbXN5WE6mUez7Mn1z7R
+         hlhw==
+X-Gm-Message-State: AOJu0YxyyT6zwbW3eJdWRcSHVkP03FcjMrT9tRaEvHXQ13/cvBYvFIQW
+	deAFZpNFziQYWKRhi2KlsFbJbsAragkbevLz6AoBsAnD7OhAq/RV
+X-Google-Smtp-Source: AGHT+IE/n56O95sMjzT0zoeRu6FWBuxYMAw65pFymDFH4iXVYbIEDvM+/qZ+jXKU119w3vM1hMs4dA==
+X-Received: by 2002:adf:f8c5:0:b0:33a:f4b4:8013 with SMTP id f5-20020adff8c5000000b0033af4b48013mr59277wrq.36.1706510691695;
+        Sun, 28 Jan 2024 22:44:51 -0800 (PST)
+Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
+        by smtp.gmail.com with ESMTPSA id ba1-20020a0560001c0100b0033ae593e830sm4567733wrb.23.2024.01.28.22.44.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 28 Jan 2024 22:44:51 -0800 (PST)
+Message-ID: <9fc00f54-24d5-44a6-a690-d4f73c37caa1@kernel.org>
+Date: Mon, 29 Jan 2024 07:44:50 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.7 427/641] io_uring: dont check iopoll if request
+ completes
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>,
+ Jens Axboe <axboe@kernel.dk>
+References: <20240122235818.091081209@linuxfoundation.org>
+ <20240122235831.353232285@linuxfoundation.org>
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20240122235831.353232285@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+On 23. 01. 24, 0:55, Greg Kroah-Hartman wrote:
+> 6.7-stable review patch.  If anyone has any objections, please let me know.
+
+Hi,
+
+6.7.2 fails in liburing tests (both x64 and x86-32 lib on x64 kernel):
+[  115s] Tests failed (5): <fd-pass.t> <msg-ring-overflow.t> 
+<pipe-bug.t> <poll-race-mshot.t> <reg-hint.t>
+
+I cannot reproduce locally, that happens only in openSUSE build 
+machinery (the errors are transient, the links might not be valid in the 
+future):
+https://build.opensuse.org/package/live_build_log/openSUSE:Factory:Staging:H/liburing/standard/i586
+https://build.opensuse.org/package/live_build_log/openSUSE:Factory:Staging:H/liburing/standard/x86_64
+
+So I cannot tell if 6.8-rc is affected.
+
+I suspect one of the 6.7.2 uring changes:
+e24bf5b47a57 io_uring: adjust defer tw counting
+22eed9134509 io_uring: ensure local task_work is run on wait timeout
+ba8d8a8a36b2 io_uring/rw: ensure io->bytes_done is always initialized
+d413a342275d io_uring: don't check iopoll if request completes
+
+It looks like EINVAL is received unexpectedly (see below). Any ideas?
+
+The tests' failures:
+
+[   53s] Running test fd-pass.t 
+     msg_ring failed -22
+[   53s] test failed 0 2
+[   53s] msg_ring failed -22
+[   53s] test failed 1 1
+[   53s] msg_ring failed -22
+[   53s] test failed 1 0
+[   53s] io_uring_register_file_alloc_range -22
+[   53s] test failed 1 ALLOC
+[   53s] Test fd-pass.t failed with ret 1
 
 
-The patch titled
-     Subject: mm: zswap: fix missing folio cleanup in writeback race path
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-zswap-fix-missing-folio-cleanup-in-writeback-race-path.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-zswap-fix-missing-folio-cleanup-in-writeback-race-path.patch
+[   65s] Running test msg-ring-overflow.t 
+     Destination ring create failed -22
+[   65s] test defer failed
+[   65s] Test msg-ring-overflow.t failed with ret 1
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+[   75s] Running test pipe-bug.t 
+     pipe-bug.c:73 io_uring_wait_cqe_timeout(&ring, &cqe, &to) == 0 failed
+[   75s] Test pipe-bug.t failed with ret 1
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
 
-------------------------------------------------------
-From: Yosry Ahmed <yosryahmed@google.com>
-Subject: mm: zswap: fix missing folio cleanup in writeback race path
-Date: Thu, 25 Jan 2024 08:51:27 +0000
 
-In zswap_writeback_entry(), after we get a folio from
-__read_swap_cache_async(), we grab the tree lock again to check that the
-swap entry was not invalidated and recycled.  If it was, we delete the
-folio we just added to the swap cache and exit.
+[   76s] Running test poll-race-mshot.t 
+     Bad cqe res 0
+[   76s] Bad cqe res 0
+[   76s] Bad cqe res 0
+[   76s] Bad cqe res 0
+[   76s] Bad cqe res 0
+... a lot of these
+[   76s] Bad cqe res 0
+[   76s] Bad cqe res 0
+[   76s] Bad cqe res 0
+[   76s] Bad cqe res 0
+[   76s] Only got 1 requests
+[   76s] Test mshot failed loop 0
+[   76s] Test poll-race-mshot.t failed with ret 1
 
-However, __read_swap_cache_async() returns the folio locked when it is
-newly allocated, which is always true for this path, and the folio is
-ref'd.  Make sure to unlock and put the folio before returning.
 
-This was discovered by code inspection, probably because this path handles
-a race condition that should not happen often, and the bug would not crash
-the system, it will only strand the folio indefinitely.
 
-Link: https://lkml.kernel.org/r/20240125085127.1327013-1-yosryahmed@google.com
-Fixes: 04fc7816089c ("mm: fix zswap writeback race condition")
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-Reviewed-by: Chengming Zhou <zhouchengming@bytedance.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-Cc: Domenico Cerasuolo <cerasuolodomenico@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+[   84s] Running test reg-hint.t 
+     Bad CQE res: -22
+[   84s] Test reg-hint.t failed with ret 1
 
- mm/zswap.c |    2 ++
- 1 file changed, 2 insertions(+)
+> From: Pavel Begunkov <asml.silence@gmail.com>
+> 
+> commit 9b43ef3d52532a0175ed6654618f7db61d390d2e upstream.
+> 
+> IOPOLL request should never return IOU_OK, so the following iopoll
+> queueing check in io_issue_sqe() after getting IOU_OK doesn't make any
+> sense as would never turn true. Let's optimise on that and return a bit
+> earlier. It's also much more resilient to potential bugs from
+> mischieving iopoll implementations.
+> 
+> Cc:  <stable@vger.kernel.org>
+> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+> Link: https://lore.kernel.org/r/2f8690e2fa5213a2ff292fac29a7143c036cdd60.1701390926.git.asml.silence@gmail.com
+> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>   io_uring/io_uring.c |    6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> --- a/io_uring/io_uring.c
+> +++ b/io_uring/io_uring.c
+> @@ -1898,7 +1898,11 @@ static int io_issue_sqe(struct io_kiocb
+>   			io_req_complete_defer(req);
+>   		else
+>   			io_req_complete_post(req, issue_flags);
+> -	} else if (ret != IOU_ISSUE_SKIP_COMPLETE)
+> +
+> +		return 0;
+> +	}
+> +
+> +	if (ret != IOU_ISSUE_SKIP_COMPLETE)
+>   		return ret;
+>   
+>   	/* If the op doesn't have a file, we're not polling for it */
+> 
+> 
+> 
 
---- a/mm/zswap.c~mm-zswap-fix-missing-folio-cleanup-in-writeback-race-path
-+++ a/mm/zswap.c
-@@ -1442,6 +1442,8 @@ static int zswap_writeback_entry(struct
- 	if (zswap_rb_search(&tree->rbroot, swp_offset(entry->swpentry)) != entry) {
- 		spin_unlock(&tree->lock);
- 		delete_from_swap_cache(folio);
-+		folio_unlock(folio);
-+		folio_put(folio);
- 		return -ENOMEM;
- 	}
- 	spin_unlock(&tree->lock);
-_
-
-Patches currently in -mm which might be from yosryahmed@google.com are
-
-mm-memcg-optimize-parent-iteration-in-memcg_rstat_updated.patch
-mm-zswap-fix-missing-folio-cleanup-in-writeback-race-path.patch
-mm-swap-enforce-updating-inuse_pages-at-the-end-of-swap_range_free.patch
-mm-zswap-remove-unnecessary-trees-cleanups-in-zswap_swapoff.patch
-mm-zswap-remove-unused-tree-argument-in-zswap_entry_put.patch
-x86-mm-delete-unused-cpu-argument-to-leave_mm.patch
-x86-mm-clarify-prev-usage-in-switch_mm_irqs_off.patch
+-- 
+js
+suse labs
 
 
