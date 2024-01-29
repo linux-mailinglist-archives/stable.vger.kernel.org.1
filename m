@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-16851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F10B840EAC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D66840EAE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C42791F276AC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB8911F281F8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8779415FB3C;
-	Mon, 29 Jan 2024 17:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E803715FB3B;
+	Mon, 29 Jan 2024 17:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3klMUrs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBED6ni4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEA7157050;
-	Mon, 29 Jan 2024 17:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32E2157050;
+	Mon, 29 Jan 2024 17:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548326; cv=none; b=Hu7YwVzBEXnMhIXZ3+luYKQJxxwhZWBjBptJCmTM+I5aX5EW/WojG5q9AjCKfVbcRpNmINHb6gvq5jM9CthRMgTfUHnFxb3GmtPqDM3msiQiD16F71acTQ0ijA+k7bEzpTh5kSIGB9GfzIyMQoJpKbhxq53Uzx2IqjMEa2/not4=
+	t=1706548327; cv=none; b=A5egl1LjacLjSYZArafwlGskOQ/oiK63JcyLJSO6F417jjTiQlNQXrm71x1djAYjz54fxEq4oV6dBPLDF5bR2eUPqWFcWOThKRGnaNfyuXPVUOgIki8yLvUNX+adf25btdhjrx8OMgna6BwCMpqFM7uL192K1wQP9tVuoBMu+FM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548326; c=relaxed/simple;
-	bh=yKMNwnZ7gAFlGtaU7XttzNMbr+YVCktR4bCty6wYPcQ=;
+	s=arc-20240116; t=1706548327; c=relaxed/simple;
+	bh=Qh9rWMqoTt8AUEKp994S1ezu1S/kjr788/4kt1WRoAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NXxXRLnYy1Sar2Y8XxEzKE6bvkDh9M6+OUXv0tIzMR0QgAUvwPs3i+yfoi6H9MYKF/xtAiuuN/6eXkyXX2t95IwH7xFqIWB9HbkXeQfo2mbrm0ltmCB3W2mWJhgugYzPqqpSxF2eFUOooszZaoB+LpMQ+uUtwQYuel17w459YG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3klMUrs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077BCC433F1;
-	Mon, 29 Jan 2024 17:12:05 +0000 (UTC)
+	 MIME-Version; b=KHnyL6HeRVzd/ub/S5ClSjvM5MGfOIB1eJ57JSm4TRKBEdw2oMMbr9vgoY5Y5UoIecDxKDBNTOSs7DPbUj3oBDn/UXHwVtgjR7DRRHAu1v2+5bCwXwowcHdrNp0Goec0P4zmI9cH8fMlFAZis/f1xLKjUPYDMs9ue9G09Vj6UZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBED6ni4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A24AC43390;
+	Mon, 29 Jan 2024 17:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548326;
-	bh=yKMNwnZ7gAFlGtaU7XttzNMbr+YVCktR4bCty6wYPcQ=;
+	s=korg; t=1706548327;
+	bh=Qh9rWMqoTt8AUEKp994S1ezu1S/kjr788/4kt1WRoAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3klMUrsmTuokB2ykZexhgkhnUj2TPCmTPNFLcWJ9rIfnGKeZznlhSt9QMWUc1alV
-	 n22knuZW6I19AL/3gVcx/uJlWKS3kOrndnXZDTeVaVt9HQ8kWG37fUko61McLdUMVW
-	 gPLW1rNC/vRlZ2mnjCfg7oLzV3PtURm0//JrDM5U=
+	b=nBED6ni401bs0BtGRgHF02PZP4A+wGPoxYxLxtIBPmHjyXhnUufdUDET2gZqCvcOc
+	 yyXwycccW0xWmGTzt+cIzL/ogBYlCcnD5AHGtOodJ0ASsqQQe/6hIgSmqogR9poiQP
+	 mlxLVE7ib3phUxNsmoKTPB76ozga6ne54Le01FYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artur Weber <aweber.kernel@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Shravan Kumar Ramani <shravankr@nvidia.com>,
+	David Thompson <davthompson@nvidia.com>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 326/346] ARM: dts: exynos4212-tab3: add samsung,invert-vclk flag to fimd
-Date: Mon, 29 Jan 2024 09:05:57 -0800
-Message-ID: <20240129170026.065577702@linuxfoundation.org>
+Subject: [PATCH 6.7 327/346] platform/mellanox: mlxbf-pmc: Fix offset calculation for crspace events
+Date: Mon, 29 Jan 2024 09:05:58 -0800
+Message-ID: <20240129170026.094233353@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -66,38 +68,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: Shravan Kumar Ramani <shravankr@nvidia.com>
 
-[ Upstream commit eab4f56d3e75dad697acf8dc2c8be3c341d6c63e ]
+[ Upstream commit 732c35ce6d4892f7b07cc9aca61a6ad0fd400a26 ]
 
-After more investigation, I've found that it's not the panel driver
-config that needs to be modified to invert the data polarity, but
-the FIMD config.
+The event selector fields for 2 counters are contained in one
+32-bit register and the current logic does not account for this.
 
-Add the missing invert-vclk option that is required to get the display
-to work correctly.
-
-Fixes: ee37a457af1d ("ARM: dts: exynos: Add Samsung Galaxy Tab 3 8.0 boards")
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Link: https://lore.kernel.org/r/20240105-tab3-display-fixes-v2-1-904d1207bf6f@gmail.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 423c3361855c ("platform/mellanox: mlxbf-pmc: Add support for BlueField-3")
+Signed-off-by: Shravan Kumar Ramani <shravankr@nvidia.com>
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
+Link: https://lore.kernel.org/r/8834cfa496c97c7c2fcebcfca5a2aa007e20ae96.1705485095.git.shravankr@nvidia.com
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/mellanox/mlxbf-pmc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi b/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi
-index d7954ff466b4..e5254e32aa8f 100644
---- a/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi
-+++ b/arch/arm/boot/dts/samsung/exynos4212-tab3.dtsi
-@@ -434,6 +434,7 @@ &exynos_usbphy {
- };
+diff --git a/drivers/platform/mellanox/mlxbf-pmc.c b/drivers/platform/mellanox/mlxbf-pmc.c
+index 1dd84c7a79de..b1995ac268d7 100644
+--- a/drivers/platform/mellanox/mlxbf-pmc.c
++++ b/drivers/platform/mellanox/mlxbf-pmc.c
+@@ -1170,7 +1170,7 @@ static int mlxbf_pmc_program_crspace_counter(int blk_num, uint32_t cnt_num,
+ 	int ret;
  
- &fimd {
-+	samsung,invert-vclk;
- 	status = "okay";
- };
+ 	addr = pmc->block[blk_num].mmio_base +
+-		(rounddown(cnt_num, 2) * MLXBF_PMC_CRSPACE_PERFSEL_SZ);
++		((cnt_num / 2) * MLXBF_PMC_CRSPACE_PERFSEL_SZ);
+ 	ret = mlxbf_pmc_readl(addr, &word);
+ 	if (ret)
+ 		return ret;
+@@ -1413,7 +1413,7 @@ static int mlxbf_pmc_read_crspace_event(int blk_num, uint32_t cnt_num,
+ 	int ret;
  
+ 	addr = pmc->block[blk_num].mmio_base +
+-		(rounddown(cnt_num, 2) * MLXBF_PMC_CRSPACE_PERFSEL_SZ);
++		((cnt_num / 2) * MLXBF_PMC_CRSPACE_PERFSEL_SZ);
+ 	ret = mlxbf_pmc_readl(addr, &word);
+ 	if (ret)
+ 		return ret;
 -- 
 2.43.0
 
