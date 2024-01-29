@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-16685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C36840DFE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9747D841019
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A630286F49
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C670285232
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F21EF15AADC;
-	Mon, 29 Jan 2024 17:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19CDA74050;
+	Mon, 29 Jan 2024 17:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymE8POeW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKKLintG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B142E15705A;
-	Mon, 29 Jan 2024 17:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBD874040;
+	Mon, 29 Jan 2024 17:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548202; cv=none; b=KZhqPKwTUf4TKtCuWhLppHoT+f7zmb/9s39DhODnIZoYoMycfWpkkE/XuU+rNiGotSGkyhCFU0RvOEeqDJrqcm/osU8YMYKE/AUFfsTiy/Iud0TJ4JD6vCStZPT9AOFBN74YA1vqdEVV6PxHDXLW1c8NCPQBSaxPinxbobNa4Uc=
+	t=1706548560; cv=none; b=jDRqU9N9icbxgyNUja5R2USOh1nPrUl5b0oigVEoyowEnmzmVbiytRD+zVprXiaJlZEn+sZ6oX3XfJHIczrgQYEn9jicHuGgT638QsPq7QFhTVgjlFUd8F+uQ4apXzQHYB2uGxOoFm1A8BHYzw47XLBkYs4XUE0jO8Wws9oOPo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548202; c=relaxed/simple;
-	bh=mOrrg5+nIBo9LwECpOxAFYC/wjYbyUPSMt45soM5Uzc=;
+	s=arc-20240116; t=1706548560; c=relaxed/simple;
+	bh=weoyGB30w9dSK6uXcg1RhjyDOzgsT9YWLSeCagZctmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlUEWqme/vU63hW2zINz9Yak2A94ldHklAaiTr8+u4AQ0YYaaFzXv3vDVz2jkFTtvV7xE0M9kpiNgIwpNHabBbaxGUailS2bimPeszfHp9oTHw/r+gMD3K//fll72T/MDmGF19/4pp/3zauYTs3PzfWWCv4U8Llw0go2OEcUr8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymE8POeW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76648C433F1;
-	Mon, 29 Jan 2024 17:10:02 +0000 (UTC)
+	 MIME-Version; b=aGuTGR8vpsPUMpyI0PVr2jicEFsmOI89MBPMs4A6H2lkmtttBjtMNUxgPF7yEKHC32nFT8BxNllXn32fLdEnCqJoFvY4xOWVp86CExl2+vCPCxkjPOx1JolfZW9qhILMXH8Ex9W+eRA/nYjwrCsk6/1aJ4wwpM663Th53EKjsOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKKLintG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95F4BC433F1;
+	Mon, 29 Jan 2024 17:16:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548202;
-	bh=mOrrg5+nIBo9LwECpOxAFYC/wjYbyUPSMt45soM5Uzc=;
+	s=korg; t=1706548560;
+	bh=weoyGB30w9dSK6uXcg1RhjyDOzgsT9YWLSeCagZctmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ymE8POeWVrqUTjQmLJ0T4rsZEiHDjVl34MdJoKcLWCCLyPW7jO+Mw3dTuh5YCJGav
-	 a0Sd6wO3Qdy4RuhYqMxbM6iojIwkHd8duDB7WtMfmWen363pWSXZwRjjdtxlPQwqkH
-	 oDHvNXWFzpEIDPX899bZ9nq01nYhK1tZsZfwH9NQ=
+	b=XKKLintG3r8jFpu2KBzWs8lwWtKjJ+iLBK4lKlecjarYJqR+udkdrDqd2l132lqae
+	 1pcAtoIyQPCfgNIIlP7DELXw3jZjbHppeMWi5kYwgFBfv6Jgv7+4IYCecXwIiIb+TL
+	 SP++Raw3VVTO7svWQdu2QMDb9f9PwmBbxyVKrrGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaak Ristioja <jaak@ristioja.ee>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.7 241/346] Revert "drivers/firmware: Move sysfb_init() from device_initcall to subsys_initcall_sync"
+	Bernd Edlinger <bernd.edlinger@hotmail.de>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 208/331] net: stmmac: Wait a bit for the reset to take effect
 Date: Mon, 29 Jan 2024 09:04:32 -0800
-Message-ID: <20240129170023.494105695@linuxfoundation.org>
+Message-ID: <20240129170020.968806606@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,52 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Bernd Edlinger <bernd.edlinger@hotmail.de>
 
-commit d1b163aa0749706379055e40a52cf7a851abf9dc upstream.
+[ Upstream commit a5f5eee282a0aae80227697e1d9c811b1726d31d ]
 
-This reverts commit 60aebc9559492cea6a9625f514a8041717e3a2e4.
+otherwise the synopsys_id value may be read out wrong,
+because the GMAC_VERSION register might still be in reset
+state, for at least 1 us after the reset is de-asserted.
 
-Commit 60aebc9559492cea ("drivers/firmware: Move sysfb_init() from
-device_initcall to subsys_initcall_sync") messes up initialization order
-of the graphics drivers and leads to blank displays on some systems. So
-revert the commit.
+Add a wait for 10 us before continuing to be on the safe side.
 
-To make the display drivers fully independent from initialization
-order requires to track framebuffer memory by device and independently
-from the loaded drivers. The kernel currently lacks the infrastructure
-to do so.
+> From what have you got that delay value?
 
-Reported-by: Jaak Ristioja <jaak@ristioja.ee>
-Closes: https://lore.kernel.org/dri-devel/ZUnNi3q3yB3zZfTl@P70.localdomain/T/#t
-Reported-by: Huacai Chen <chenhuacai@loongson.cn>
-Closes: https://lore.kernel.org/dri-devel/20231108024613.2898921-1-chenhuacai@loongson.cn/
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10133
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: stable@vger.kernel.org # v6.5+
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Acked-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240123120937.27736-1-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Just try and error, with very old linux versions and old gcc versions
+the synopsys_id was read out correctly most of the time (but not always),
+with recent linux versions and recnet gcc versions it was read out
+wrongly most of the time, but again not always.
+I don't have access to the VHDL code in question, so I cannot
+tell why it takes so long to get the correct values, I also do not
+have more than a few hardware samples, so I cannot tell how long
+this timeout must be in worst case.
+Experimentally I can tell that the register is read several times
+as zero immediately after the reset is de-asserted, also adding several
+no-ops is not enough, adding a printk is enough, also udelay(1) seems to
+be enough but I tried that not very often, and I have not access to many
+hardware samples to be 100% sure about the necessary delay.
+And since the udelay here is only executed once per device instance,
+it seems acceptable to delay the boot for 10 us.
+
+BTW: my hardware's synopsys id is 0x37.
+
+Fixes: c5e4ddbdfa11 ("net: stmmac: Add support for optional reset control")
+Signed-off-by: Bernd Edlinger <bernd.edlinger@hotmail.de>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Link: https://lore.kernel.org/r/AS8P193MB1285A810BD78C111E7F6AA34E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/sysfb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/firmware/sysfb.c
-+++ b/drivers/firmware/sysfb.c
-@@ -128,4 +128,4 @@ unlock_mutex:
- }
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 684ec7058c82..292857c0e601 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -7441,6 +7441,9 @@ int stmmac_dvr_probe(struct device *device,
+ 		dev_err(priv->device, "unable to bring out of ahb reset: %pe\n",
+ 			ERR_PTR(ret));
  
- /* must execute after PCI subsystem for EFI quirks */
--subsys_initcall_sync(sysfb_init);
-+device_initcall(sysfb_init);
++	/* Wait a bit for the reset to take effect */
++	udelay(10);
++
+ 	/* Init MAC and get the capabilities */
+ 	ret = stmmac_hw_init(priv);
+ 	if (ret)
+-- 
+2.43.0
+
 
 
 
