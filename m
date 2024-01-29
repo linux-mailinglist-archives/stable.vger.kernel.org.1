@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-16436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18FC5840CF4
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:07:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7FFE840CFF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:07:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96E8C1F2ACB7
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:07:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DCE21F2AE65
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ADF9157048;
-	Mon, 29 Jan 2024 17:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D341586CE;
+	Mon, 29 Jan 2024 17:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/BKlFb9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwfrviYk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCADA15703C;
-	Mon, 29 Jan 2024 17:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF80157050;
+	Mon, 29 Jan 2024 17:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548017; cv=none; b=EALgHQJl1SVh7Lsc7VnubaPlGXHOylbB9XLdjQkvcMiudh/Eb64/tbMenEv6BaSaesBYqWXJbPGicIf8D+uQhvYYUlupDR69rmtdjoWLzfg4m7beVYc+3U13qTm/xzbhrDnNfmOyUqYlCNauHgZyZj2O4Lhsm60G4qoIaaS2qpA=
+	t=1706548026; cv=none; b=GZNl8CtVcyQYmRW7+Qk94ceeiiJhlRSmDUsD5pQ6ii1ogmYnToQlfFGNvEW+3T6kt/JRn/xZ5GoTLtbj8HW+5XUvRal8/nNRztmMbGcu7kFtuDpZXZCu6LfZqm7Dv5HLnrCwctlZEJuEsd+yMxs7lSDMg9B2jVEfpLNlJ95hM9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548017; c=relaxed/simple;
-	bh=EqBEn/SWq9K8p2ImqcV9BerZy0oTzSinLCUfEOXDQU4=;
+	s=arc-20240116; t=1706548026; c=relaxed/simple;
+	bh=FhHLgLumZjPvNC7o/VANQJQT5eOqOfZE4zLKB9xiTJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSFK7nJtLk/ceQTFibDleUaU0M5Q3SRzlGoCNVBDotSroPLlEqYojK/tqummPZnpilF31y+ioZsIpRl6FCi42ihaRVUEq35EIweB4Mde3SnR0o/tJVdVpH84e6DO5bCCQU+Vp4LmFCaEMpwxwWFtxULS2pDpWRXWg5JPfCkYQT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/BKlFb9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC98C433C7;
-	Mon, 29 Jan 2024 17:06:57 +0000 (UTC)
+	 MIME-Version; b=YdS0sK5/SN9sm+wHeePDkXyfjL9QDO2G5bIk5Aju5g3RjRPFbviJPioF2eEWckdpaG7K73aFB7IZZqWUMW2NH0EMfD8huT9whz0GcEyEUuMWOtjfnbIJkIeAe81KeIRZ4kE1NunQghBK7ABME0xwctNepOESK/+3BIsVonHATPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwfrviYk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C57D2C433C7;
+	Mon, 29 Jan 2024 17:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548017;
-	bh=EqBEn/SWq9K8p2ImqcV9BerZy0oTzSinLCUfEOXDQU4=;
+	s=korg; t=1706548025;
+	bh=FhHLgLumZjPvNC7o/VANQJQT5eOqOfZE4zLKB9xiTJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z/BKlFb9BTmrMYQjq2VFhb/Y70zxuU/1x0P0W7fmt3HpFQWFLe0I9trJZPrHEbFte
-	 sZoUEvd9n8nt2rj6bw95dmyWLZl4V9Urw6XOjRhvXZqgSH5BCBDqddu7hxquyXSAgJ
-	 Dw2j8S3QB6SMdutNX6wr2U/wSyFI7xYX6xNqCnr0=
+	b=MwfrviYkZKs2OjXMCOlv7RSqQm8AGIk7AFj03depHccCzZaPa5TxCkvnctVNxdxRe
+	 klGRnacpzFpUhmzs7a3+tym1YsBGJSLx0c7EwLJLa+bL9WTK8Yf9xTQE/bf4pFbBgl
+	 Umpbs1VioH2EmCFH5c7w/EPv1FpK7QSIu9yIaN+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,13 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
 	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 001/346] soundwire: bus: introduce controller_id
-Date: Mon, 29 Jan 2024 09:00:32 -0800
-Message-ID: <20240129170016.397787793@linuxfoundation.org>
+Subject: [PATCH 6.7 002/346] soundwire: fix initializing sysfs for same devices on different buses
+Date: Mon, 29 Jan 2024 09:00:33 -0800
+Message-ID: <20240129170016.423197694@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -70,160 +71,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 6543ac13c623f906200dfd3f1c407d8d333b6995 ]
+[ Upstream commit 8a8a9ac8a4972ee69d3dd3d1ae43963ae39cee18 ]
 
-The existing SoundWire support misses a clear Controller/Manager
-hiearchical definition to deal with all variants across SOC vendors.
+If same devices with same device IDs are present on different soundwire
+buses, the probe fails due to conflicting device names and sysfs
+entries:
 
-a) Intel platforms have one controller with 4 or more Managers.
-b) AMD platforms have two controllers with one Manager each, but due
-to BIOS issues use two different link_id values within the scope of a
-single controller.
-c) QCOM platforms have one or more controller with one Manager each.
+  sysfs: cannot create duplicate filename '/bus/soundwire/devices/sdw:0:0217:0204:00:0'
 
-This patch adds a 'controller_id' which can be set by higher
-levels. If assigned to -1, the controller_id will be set to the
-system-unique IDA-assigned bus->id.
+The link ID is 0 for both devices, so they should be differentiated by
+the controller ID. Add the controller ID so, the device names and sysfs entries look
+like:
 
-The main change is that the bus->id is no longer used for any device
-name, which makes the definition completely predictable and not
-dependent on any enumeration order. The bus->id is only used to insert
-the Managers in the stream rt context.
+  sdw:1:0:0217:0204:00:0 -> ../../../devices/platform/soc@0/6ab0000.soundwire-controller/sdw-master-1-0/sdw:1:0:0217:0204:00:0
+  sdw:3:0:0217:0204:00:0 -> ../../../devices/platform/soc@0/6b10000.soundwire-controller/sdw-master-3-0/sdw:3:0:0217:0204:00:0
 
+[PLB changes: use bus->controller_id instead of bus->id]
+
+Fixes: 7c3cd189b86d ("soundwire: Add Master registration")
+Cc: stable@vger.kernel.org
 Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
 Reviewed-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Co-developed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/stable/20231017160933.12624-2-pierre-louis.bossart%40linux.intel.com
+Acked-by: Mark Brown <broonie@kernel.org>
 Tested-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20231017160933.12624-2-pierre-louis.bossart@linux.intel.com
+Link: https://lore.kernel.org/r/20231017160933.12624-3-pierre-louis.bossart@linux.intel.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Stable-dep-of: 8a8a9ac8a497 ("soundwire: fix initializing sysfs for same devices on different buses")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/amd_manager.c     | 8 ++++++++
- drivers/soundwire/bus.c             | 4 ++++
- drivers/soundwire/debugfs.c         | 2 +-
- drivers/soundwire/intel_auxdevice.c | 3 +++
- drivers/soundwire/master.c          | 2 +-
- drivers/soundwire/qcom.c            | 3 +++
- include/linux/soundwire/sdw.h       | 4 +++-
- 7 files changed, 23 insertions(+), 3 deletions(-)
+ drivers/soundwire/slave.c        | 12 ++++++------
+ sound/soc/intel/boards/sof_sdw.c |  4 ++--
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/soundwire/amd_manager.c b/drivers/soundwire/amd_manager.c
-index 3a99f6dcdfaf..a3b1f4e6f0f9 100644
---- a/drivers/soundwire/amd_manager.c
-+++ b/drivers/soundwire/amd_manager.c
-@@ -927,6 +927,14 @@ static int amd_sdw_manager_probe(struct platform_device *pdev)
- 	amd_manager->bus.clk_stop_timeout = 200;
- 	amd_manager->bus.link_id = amd_manager->instance;
+diff --git a/drivers/soundwire/slave.c b/drivers/soundwire/slave.c
+index c1c1a2ac293a..060c2982e26b 100644
+--- a/drivers/soundwire/slave.c
++++ b/drivers/soundwire/slave.c
+@@ -39,14 +39,14 @@ int sdw_slave_add(struct sdw_bus *bus,
+ 	slave->dev.fwnode = fwnode;
  
-+	/*
-+	 * Due to BIOS compatibility, the two links are exposed within
-+	 * the scope of a single controller. If this changes, the
-+	 * controller_id will have to be updated with drv_data
-+	 * information.
-+	 */
-+	amd_manager->bus.controller_id = 0;
-+
- 	switch (amd_manager->instance) {
- 	case ACP_SDW0:
- 		amd_manager->num_dout_ports = AMD_SDW0_MAX_TX_PORTS;
-diff --git a/drivers/soundwire/bus.c b/drivers/soundwire/bus.c
-index 41b0d9adf68e..f3fec15c3112 100644
---- a/drivers/soundwire/bus.c
-+++ b/drivers/soundwire/bus.c
-@@ -22,6 +22,10 @@ static int sdw_get_id(struct sdw_bus *bus)
- 		return rc;
- 
- 	bus->id = rc;
-+
-+	if (bus->controller_id == -1)
-+		bus->controller_id = rc;
-+
- 	return 0;
- }
- 
-diff --git a/drivers/soundwire/debugfs.c b/drivers/soundwire/debugfs.c
-index d1553cb77187..67abd7e52f09 100644
---- a/drivers/soundwire/debugfs.c
-+++ b/drivers/soundwire/debugfs.c
-@@ -20,7 +20,7 @@ void sdw_bus_debugfs_init(struct sdw_bus *bus)
- 		return;
- 
- 	/* create the debugfs master-N */
--	snprintf(name, sizeof(name), "master-%d-%d", bus->id, bus->link_id);
-+	snprintf(name, sizeof(name), "master-%d-%d", bus->controller_id, bus->link_id);
- 	bus->debugfs = debugfs_create_dir(name, sdw_debugfs_root);
- }
- 
-diff --git a/drivers/soundwire/intel_auxdevice.c b/drivers/soundwire/intel_auxdevice.c
-index 7f15e3549e53..93698532deac 100644
---- a/drivers/soundwire/intel_auxdevice.c
-+++ b/drivers/soundwire/intel_auxdevice.c
-@@ -234,6 +234,9 @@ static int intel_link_probe(struct auxiliary_device *auxdev,
- 	cdns->instance = sdw->instance;
- 	cdns->msg_count = 0;
- 
-+	/* single controller for all SoundWire links */
-+	bus->controller_id = 0;
-+
- 	bus->link_id = auxdev->id;
- 	bus->clk_stop_timeout = 1;
- 
-diff --git a/drivers/soundwire/master.c b/drivers/soundwire/master.c
-index 9b05c9e25ebe..51abedbbaa66 100644
---- a/drivers/soundwire/master.c
-+++ b/drivers/soundwire/master.c
-@@ -145,7 +145,7 @@ int sdw_master_device_add(struct sdw_bus *bus, struct device *parent,
- 	md->dev.fwnode = fwnode;
- 	md->dev.dma_mask = parent->dma_mask;
- 
--	dev_set_name(&md->dev, "sdw-master-%d", bus->id);
-+	dev_set_name(&md->dev, "sdw-master-%d-%d", bus->controller_id, bus->link_id);
- 
- 	ret = device_register(&md->dev);
- 	if (ret) {
-diff --git a/drivers/soundwire/qcom.c b/drivers/soundwire/qcom.c
-index a1e2d6c98186..8e027eee8b73 100644
---- a/drivers/soundwire/qcom.c
-+++ b/drivers/soundwire/qcom.c
-@@ -1624,6 +1624,9 @@ static int qcom_swrm_probe(struct platform_device *pdev)
- 		}
+ 	if (id->unique_id == SDW_IGNORED_UNIQUE_ID) {
+-		/* name shall be sdw:link:mfg:part:class */
+-		dev_set_name(&slave->dev, "sdw:%01x:%04x:%04x:%02x",
+-			     bus->link_id, id->mfg_id, id->part_id,
++		/* name shall be sdw:ctrl:link:mfg:part:class */
++		dev_set_name(&slave->dev, "sdw:%01x:%01x:%04x:%04x:%02x",
++			     bus->controller_id, bus->link_id, id->mfg_id, id->part_id,
+ 			     id->class_id);
+ 	} else {
+-		/* name shall be sdw:link:mfg:part:class:unique */
+-		dev_set_name(&slave->dev, "sdw:%01x:%04x:%04x:%02x:%01x",
+-			     bus->link_id, id->mfg_id, id->part_id,
++		/* name shall be sdw:ctrl:link:mfg:part:class:unique */
++		dev_set_name(&slave->dev, "sdw:%01x:%01x:%04x:%04x:%02x:%01x",
++			     bus->controller_id, bus->link_id, id->mfg_id, id->part_id,
+ 			     id->class_id, id->unique_id);
  	}
  
-+	/* FIXME: is there a DT-defined value to use ? */
-+	ctrl->bus.controller_id = -1;
-+
- 	ret = sdw_bus_master_add(&ctrl->bus, dev, dev->fwnode);
- 	if (ret) {
- 		dev_err(dev, "Failed to register Soundwire controller (%d)\n",
-diff --git a/include/linux/soundwire/sdw.h b/include/linux/soundwire/sdw.h
-index 4f3d14bb1538..c383579a008b 100644
---- a/include/linux/soundwire/sdw.h
-+++ b/include/linux/soundwire/sdw.h
-@@ -886,7 +886,8 @@ struct sdw_master_ops {
-  * struct sdw_bus - SoundWire bus
-  * @dev: Shortcut to &bus->md->dev to avoid changing the entire code.
-  * @md: Master device
-- * @link_id: Link id number, can be 0 to N, unique for each Master
-+ * @controller_id: system-unique controller ID. If set to -1, the bus @id will be used.
-+ * @link_id: Link id number, can be 0 to N, unique for each Controller
-  * @id: bus system-wide unique id
-  * @slaves: list of Slaves on this bus
-  * @assigned: Bitmap for Slave device numbers.
-@@ -918,6 +919,7 @@ struct sdw_master_ops {
- struct sdw_bus {
- 	struct device *dev;
- 	struct sdw_master_device *md;
-+	int controller_id;
- 	unsigned int link_id;
- 	int id;
- 	struct list_head slaves;
+diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+index 4e4284729773..1e788859c863 100644
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -1232,11 +1232,11 @@ static int fill_sdw_codec_dlc(struct device *dev,
+ 	else if (is_unique_device(adr_link, sdw_version, mfg_id, part_id,
+ 				  class_id, adr_index))
+ 		codec->name = devm_kasprintf(dev, GFP_KERNEL,
+-					     "sdw:%01x:%04x:%04x:%02x", link_id,
++					     "sdw:0:%01x:%04x:%04x:%02x", link_id,
+ 					     mfg_id, part_id, class_id);
+ 	else
+ 		codec->name = devm_kasprintf(dev, GFP_KERNEL,
+-					     "sdw:%01x:%04x:%04x:%02x:%01x", link_id,
++					     "sdw:0:%01x:%04x:%04x:%02x:%01x", link_id,
+ 					     mfg_id, part_id, class_id, unique_id);
+ 
+ 	if (!codec->name)
 -- 
 2.43.0
 
