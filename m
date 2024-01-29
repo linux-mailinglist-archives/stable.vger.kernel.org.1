@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80466840E38
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC7A840DCD
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B25761C239ED
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57A9A2852C4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA44E15EAA0;
-	Mon, 29 Jan 2024 17:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1113115CD79;
+	Mon, 29 Jan 2024 17:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8yCckd9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFCtURAZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DB61586CF;
-	Mon, 29 Jan 2024 17:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFBF15AABF;
+	Mon, 29 Jan 2024 17:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548244; cv=none; b=EVTJQsqJFAsHNHzQOjzvuE2sOTv85WwfEUHyRqe4KxQITs0e/xW2LnSzf4nQDtdmQsEg3hKTA6ycIxlupX6eh/n/fC68lA5OSw0v1lQCqZaDym4Ug4stG3cSWb8+FT4gxTjGlDEQ7cu1VhMP8+Qp4/nLaxgarW3/oJJmzgws/5s=
+	t=1706548168; cv=none; b=A6fUCBKfPfXb0g9AhSJs+29YkMThBcZgpQ7ePhnsiO0Q1wJR8fh2q2YwfAa9Q69r6fuMeuif4MUN3be8V6b3vA8bQoRlCOT90yEpLnUmVztkdi/ZYMxFm3vVB1lBwRnkcZoIpNctQHGoR6HR3JIL7KdXTbgU5GJ9qYexGNT4wTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548244; c=relaxed/simple;
-	bh=3oV0z0oT38cjQMXrhAmnkuMo5dlOCSTLWwkweuXDbRA=;
+	s=arc-20240116; t=1706548168; c=relaxed/simple;
+	bh=4lGc4eff8RcJ/udBmK2LGPHNHDmKWAb+uSRtn2EPIXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U0MUZ9tpyLwhIIfGhiWcVjLxcUlCoYQvfcXWXKS0L37+3zfLph4SzFNhqFe+cW291Ol6hJFSkvozcQN0Cy2dHssYpf7bxLlXRbnOyQRYGb5BnYsAxToJxQtmTni8yNIDF8Kh040EWy0RA98mWzrglaA1YDSa8+4pU7OTEuSTY6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8yCckd9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4E4C43394;
-	Mon, 29 Jan 2024 17:10:44 +0000 (UTC)
+	 MIME-Version; b=dPgddfkgcNKc/drhBkerdBgaPqg/i4e3EVB+4Ko+kPlQW/ZIUr1a90Ftpbc3uVIjdqcQN93oJPnnOqGPQfZnQcgKZoxx4XrBSzkHLaQQLW9cGvslTJe4srqKsb4ZAHMLAGI4JbKQ2eARfncPakf2WcwpZLztu06MVcfNXBz+hP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFCtURAZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87409C433F1;
+	Mon, 29 Jan 2024 17:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548244;
-	bh=3oV0z0oT38cjQMXrhAmnkuMo5dlOCSTLWwkweuXDbRA=;
+	s=korg; t=1706548168;
+	bh=4lGc4eff8RcJ/udBmK2LGPHNHDmKWAb+uSRtn2EPIXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H8yCckd9TScvArvVPy71joJaBbY1SFK8tnSRw1q6Fy3yKpRmPh5rLk28fGSJwtLRz
-	 hroRg0hKo/25uJZi2Z36Ft8OzP+TIV0jrnkm2VHC7K3e5xydzjWBTv5zrGdJm82Tew
-	 ivixclMjbFlda2Mus4T40Q3Muj9e2CLGnnT0KX3s=
+	b=CFCtURAZw0f1M1+On+sJ9T36iTXKi7YhY9G/TXU6H5pe4muhQC9B3hSVf1VkGU0TJ
+	 oxbMWu2o4ep3atcmeyu17w7cIEFFogL+8atve19eBfCKsX/wN2LdHRKhXDIlj7CkWw
+	 pIbMFAxmCrJ8HE5jk6bqkrAdErIfsart+q/OA/ns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jani Nikula <jani.nikula@intel.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH 6.1 042/185] scripts/get_abi: fix source path leak
-Date: Mon, 29 Jan 2024 09:04:02 -0800
-Message-ID: <20240129165959.935363057@linuxfoundation.org>
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 212/346] intel: xsk: initialize skb_frag_t::bv_offset in ZC drivers
+Date: Mon, 29 Jan 2024 09:04:03 -0800
+Message-ID: <20240129170022.618945086@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vegard Nossum <vegard.nossum@oracle.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-commit 5889d6ede53bc17252f79c142387e007224aa554 upstream.
+[ Upstream commit 290779905d09d5fdf6caa4f58ddefc3f4db0c0a9 ]
 
-The code currently leaks the absolute path of the ABI files into the
-rendered documentation.
+Ice and i40e ZC drivers currently set offset of a frag within
+skb_shared_info to 0, which is incorrect. xdp_buffs that come from
+xsk_buff_pool always have 256 bytes of a headroom, so they need to be
+taken into account to retrieve xdp_buff::data via skb_frag_address().
+Otherwise, bpf_xdp_frags_increase_tail() would be starting its job from
+xdp_buff::data_hard_start which would result in overwriting existing
+payload.
 
-There exists code to prevent this, but it is not effective when an
-absolute path is passed, which it is when $srctree is used.
-
-I consider this to be a minimal, stop-gap fix; a better fix would strip
-off the actual prefix instead of hacking it off with a regex.
-
-Link: https://mastodon.social/@vegard/111677490643495163
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/20231231235959.3342928-1-vegard.nossum@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1c9ba9c14658 ("i40e: xsk: add RX multi-buffer support")
+Fixes: 1bbc04de607b ("ice: xsk: add RX multi-buffer support")
+Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/r/20240124191602.566724-8-maciej.fijalkowski@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/get_abi.pl |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_xsk.c | 3 ++-
+ drivers/net/ethernet/intel/ice/ice_xsk.c   | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/scripts/get_abi.pl
-+++ b/scripts/get_abi.pl
-@@ -98,7 +98,7 @@ sub parse_abi {
- 	$name =~ s,.*/,,;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_xsk.c b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+index fede0bb3e047..65f38a57b3df 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_xsk.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_xsk.c
+@@ -414,7 +414,8 @@ i40e_add_xsk_frag(struct i40e_ring *rx_ring, struct xdp_buff *first,
+ 	}
  
- 	my $fn = $file;
--	$fn =~ s,Documentation/ABI/,,;
-+	$fn =~ s,.*Documentation/ABI/,,;
+ 	__skb_fill_page_desc_noacc(sinfo, sinfo->nr_frags++,
+-				   virt_to_page(xdp->data_hard_start), 0, size);
++				   virt_to_page(xdp->data_hard_start),
++				   XDP_PACKET_HEADROOM, size);
+ 	sinfo->xdp_frags_size += size;
+ 	xsk_buff_add_frag(xdp);
  
- 	my $nametag = "File $fn";
- 	$data{$nametag}->{what} = "File $name";
+diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
+index 951f84bfdf2b..f3663b3f6390 100644
+--- a/drivers/net/ethernet/intel/ice/ice_xsk.c
++++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
+@@ -820,7 +820,8 @@ ice_add_xsk_frag(struct ice_rx_ring *rx_ring, struct xdp_buff *first,
+ 	}
+ 
+ 	__skb_fill_page_desc_noacc(sinfo, sinfo->nr_frags++,
+-				   virt_to_page(xdp->data_hard_start), 0, size);
++				   virt_to_page(xdp->data_hard_start),
++				   XDP_PACKET_HEADROOM, size);
+ 	sinfo->xdp_frags_size += size;
+ 	xsk_buff_add_frag(xdp);
+ 
+-- 
+2.43.0
+
 
 
 
