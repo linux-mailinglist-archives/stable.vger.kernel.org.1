@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F21840DD0
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B94840E41
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5057E285D69
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AE3228348B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4EC15AACA;
-	Mon, 29 Jan 2024 17:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6B715B302;
+	Mon, 29 Jan 2024 17:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVuOd9Je"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/tnNlIY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCDF158D76;
-	Mon, 29 Jan 2024 17:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE184157E62;
+	Mon, 29 Jan 2024 17:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548171; cv=none; b=b/S7v2U+TO/ov2pcL3rSty5p1LbHOXwgA4auZOeGsc9zKbPoqyzQvqFDHuv//7IU731LIe0MMs0p4iA2I62IPRujbstC6l6sHqm5dkZ9wKLTZ0cmK+GitNMJJcVaELXK2llfNMPYHDFnVK5jtQYaCHliQvG65v7YJrDjD4XkOKc=
+	t=1706548251; cv=none; b=esemAJtbkEdE+lHLzUB6sD4ezV8Vd1kdAC86ylE3XH3j791cimjZEDFzIcJL/lkTA4fDfNZqeIaTvJk2W5jf25GBpAVmoU7hJH29u+6kbqH9tQAJDJiTSbMVhku4VkIpNOxvK5SZAf4BxpWRJZTk7qE6CxqpyzAwY0Jz/eaCssI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548171; c=relaxed/simple;
-	bh=djZeChmOCINAlI0+Frk7G/5FHMbyWXjNFlCTe3ThTFU=;
+	s=arc-20240116; t=1706548251; c=relaxed/simple;
+	bh=Yn7ChgCOZLvUnf7bETd7/5Fd6gnbxnMRJy/nLyz8L0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jDsvA0bku2eZaVIuARnUuYEw7vEJ+oL6PGJy8C6IsqyMVysJN6ILmZepfbuRCtQ/7UnvMm+/OHPvnwZ3pOkOsplfdwpP4PzcjKnMuOvukjmEjCJAQVBx+5fLi9J1zNwIxTXMn2kpd0qvsGan0fuZZ5PKj+vg1/jdY0kXP1vdtb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVuOd9Je; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C52EEC43394;
-	Mon, 29 Jan 2024 17:09:30 +0000 (UTC)
+	 MIME-Version; b=CeBh//t6nfMqp7xwZAmzFDLHtOk7cy4/KTqg7kC/vcS+sh5GSh8gu3gGFh2DJBvWQa5k0oH+J/8yEhGY5oomLMjHam0wTnHQQ2i0ki/guH9JuWloTik6IqM8uus4eIYZx93Z9t3JZR0Lzt4POCtGflLehmopTt+0TTI1ER2aMKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/tnNlIY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CA5C43394;
+	Mon, 29 Jan 2024 17:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548170;
-	bh=djZeChmOCINAlI0+Frk7G/5FHMbyWXjNFlCTe3ThTFU=;
+	s=korg; t=1706548250;
+	bh=Yn7ChgCOZLvUnf7bETd7/5Fd6gnbxnMRJy/nLyz8L0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wVuOd9JeHxpAE0ZU/UXrPusSnBqdCBmLal03DRo+tZuwv5eysRX32xfUZ0VisQIDK
-	 owj4rk8PQSOmK+NlxZEeb5+ocNOV5GLjqlrEjNfBYjarJ3aRr5eG3DS+CZwMVtE6jV
-	 ReEZAuZCTHvTjMugmKy7dzcus9mQ+NGfXNIHARoc=
+	b=W/tnNlIYOjIHrMDL00iJHH3iQD0StPmWfbL5ig7R5IBiOMYQPC50tywtBiyRprBqr
+	 X3o5BhxWvUHqGVLGIMX5+ADE5rrJYf68nXcpx2MhZO05Db5GtvGaHHoSwwuKLU5YK3
+	 A3w2iCzi/COUn1kJxXPsqdHRJXGGaOCD+lKLMa8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 215/346] i40e: set xdp_rxq_info::frag_size
+	Zheng Wang <zyytlz.wz@163.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: [PATCH 6.1 046/185] media: mtk-jpeg: Fix use after free bug due to error path handling in mtk_jpeg_dec_device_run
 Date: Mon, 29 Jan 2024 09:04:06 -0800
-Message-ID: <20240129170022.704744579@linuxfoundation.org>
+Message-ID: <20240129170000.064916330@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,135 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-[ Upstream commit a045d2f2d03d23e7db6772dd83e0ba2705dfad93 ]
+commit 206c857dd17d4d026de85866f1b5f0969f2a109e upstream.
 
-i40e support XDP multi-buffer so it is supposed to use
-__xdp_rxq_info_reg() instead of xdp_rxq_info_reg() and set the
-frag_size. It can not be simply converted at existing callsite because
-rx_buf_len could be un-initialized, so let us register xdp_rxq_info
-within i40e_configure_rx_ring(), which happen to be called with already
-initialized rx_buf_len value.
+In mtk_jpeg_probe, &jpeg->job_timeout_work is bound with
+mtk_jpeg_job_timeout_work.
 
-Commit 5180ff1364bc ("i40e: use int for i40e_status") converted 'err' to
-int, so two variables to deal with return codes are not needed within
-i40e_configure_rx_ring(). Remove 'ret' and use 'err' to handle status
-from xdp_rxq_info registration.
+In mtk_jpeg_dec_device_run, if error happens in
+mtk_jpeg_set_dec_dst, it will finally start the worker while
+mark the job as finished by invoking v4l2_m2m_job_finish.
 
-Fixes: e213ced19bef ("i40e: add support for XDP multi-buffer Rx")
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/r/20240124191602.566724-11-maciej.fijalkowski@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+There are two methods to trigger the bug. If we remove the
+module, it which will call mtk_jpeg_remove to make cleanup.
+The possible sequence is as follows, which will cause a
+use-after-free bug.
+
+CPU0                  CPU1
+mtk_jpeg_dec_...    |
+  start worker	    |
+                    |mtk_jpeg_job_timeout_work
+mtk_jpeg_remove     |
+  v4l2_m2m_release  |
+    kfree(m2m_dev); |
+                    |
+                    | v4l2_m2m_get_curr_priv
+                    |   m2m_dev->curr_ctx //use
+
+If we close the file descriptor, which will call mtk_jpeg_release,
+it will have a similar sequence.
+
+Fix this bug by starting timeout worker only if started jpegdec worker
+successfully. Then v4l2_m2m_job_finish will only be called in
+either mtk_jpeg_job_timeout_work or mtk_jpeg_dec_device_run.
+
+Fixes: b2f0d2724ba4 ("[media] vcodec: mediatek: Add Mediatek JPEG Decoder Driver")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 40 ++++++++++++---------
- drivers/net/ethernet/intel/i40e/i40e_txrx.c |  9 -----
- 2 files changed, 24 insertions(+), 25 deletions(-)
+ drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index d5519af34657..f97a63812141 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -3588,40 +3588,48 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
- 	struct i40e_hmc_obj_rxq rx_ctx;
- 	int err = 0;
- 	bool ok;
--	int ret;
+--- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
++++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+@@ -974,13 +974,13 @@ static void mtk_jpeg_dec_device_run(void
+ 	if (ret < 0)
+ 		goto dec_end;
  
- 	bitmap_zero(ring->state, __I40E_RING_STATE_NBITS);
- 
- 	/* clear the context structure first */
- 	memset(&rx_ctx, 0, sizeof(rx_ctx));
- 
--	if (ring->vsi->type == I40E_VSI_MAIN)
--		xdp_rxq_info_unreg_mem_model(&ring->xdp_rxq);
-+	ring->rx_buf_len = vsi->rx_buf_len;
-+
-+	/* XDP RX-queue info only needed for RX rings exposed to XDP */
-+	if (ring->vsi->type != I40E_VSI_MAIN)
-+		goto skip;
-+
-+	if (!xdp_rxq_info_is_reg(&ring->xdp_rxq)) {
-+		err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
-+					 ring->queue_index,
-+					 ring->q_vector->napi.napi_id,
-+					 ring->rx_buf_len);
-+		if (err)
-+			return err;
-+	}
- 
- 	ring->xsk_pool = i40e_xsk_pool(ring);
- 	if (ring->xsk_pool) {
--		ring->rx_buf_len =
--		  xsk_pool_get_rx_frame_size(ring->xsk_pool);
--		ret = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
-+		ring->rx_buf_len = xsk_pool_get_rx_frame_size(ring->xsk_pool);
-+		err = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
- 						 MEM_TYPE_XSK_BUFF_POOL,
- 						 NULL);
--		if (ret)
--			return ret;
-+		if (err)
-+			return err;
- 		dev_info(&vsi->back->pdev->dev,
- 			 "Registered XDP mem model MEM_TYPE_XSK_BUFF_POOL on Rx ring %d\n",
- 			 ring->queue_index);
- 
- 	} else {
--		ring->rx_buf_len = vsi->rx_buf_len;
--		if (ring->vsi->type == I40E_VSI_MAIN) {
--			ret = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
--							 MEM_TYPE_PAGE_SHARED,
--							 NULL);
--			if (ret)
--				return ret;
--		}
-+		err = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
-+						 MEM_TYPE_PAGE_SHARED,
-+						 NULL);
-+		if (err)
-+			return err;
- 	}
- 
-+skip:
- 	xdp_init_buff(&ring->xdp, i40e_rx_pg_size(ring) / 2, &ring->xdp_rxq);
- 
- 	rx_ctx.dbuff = DIV_ROUND_UP(ring->rx_buf_len,
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-index 35e1bb6fe5e1..071ef309a3a4 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-@@ -1555,7 +1555,6 @@ void i40e_free_rx_resources(struct i40e_ring *rx_ring)
- int i40e_setup_rx_descriptors(struct i40e_ring *rx_ring)
- {
- 	struct device *dev = rx_ring->dev;
--	int err;
- 
- 	u64_stats_init(&rx_ring->syncp);
- 
-@@ -1576,14 +1575,6 @@ int i40e_setup_rx_descriptors(struct i40e_ring *rx_ring)
- 	rx_ring->next_to_process = 0;
- 	rx_ring->next_to_use = 0;
- 
--	/* XDP RX-queue info only needed for RX rings exposed to XDP */
--	if (rx_ring->vsi->type == I40E_VSI_MAIN) {
--		err = xdp_rxq_info_reg(&rx_ring->xdp_rxq, rx_ring->netdev,
--				       rx_ring->queue_index, rx_ring->q_vector->napi.napi_id);
--		if (err < 0)
--			return err;
--	}
+-	schedule_delayed_work(&jpeg->job_timeout_work,
+-			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
 -
- 	rx_ring->xdp_prog = rx_ring->vsi->xdp_prog;
+ 	mtk_jpeg_set_dec_src(ctx, &src_buf->vb2_buf, &bs);
+ 	if (mtk_jpeg_set_dec_dst(ctx, &jpeg_src_buf->dec_param, &dst_buf->vb2_buf, &fb))
+ 		goto dec_end;
  
- 	rx_ring->rx_bi =
--- 
-2.43.0
-
++	schedule_delayed_work(&jpeg->job_timeout_work,
++			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
++
+ 	spin_lock_irqsave(&jpeg->hw_lock, flags);
+ 	mtk_jpeg_dec_reset(jpeg->reg_base);
+ 	mtk_jpeg_dec_set_config(jpeg->reg_base,
 
 
 
