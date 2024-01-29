@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F45841055
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51BA1840F02
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 972F21C23B07
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E5662832C5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3407561D;
-	Mon, 29 Jan 2024 17:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D27162761;
+	Mon, 29 Jan 2024 17:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2OGu1TX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cVEneWdA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5BA75606;
-	Mon, 29 Jan 2024 17:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166FA1586C5;
+	Mon, 29 Jan 2024 17:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548603; cv=none; b=XVbEDTOisbWAL/TYrdyRU1hoQBv5s6FSJyj9rb7xC3QU2/pCkBDIeaoWfNeqEjCS5Rhp+l0BtxKquZSfV7Sa0Q2dEG/JR4Lyej/iYiYTQQWOkm/gd6FBPeT0QN6hr+yAOTteKCeCp0rEHZKPwirUTHwbTi3qnIPNGnjAHQiaP3w=
+	t=1706548371; cv=none; b=bbjY+tbNBcHD8HPjdrE3YanyoIuTPkhG6WQew3O4dtf90l+kYxie/9MN3Smlg0wCdng2Eu+UbohxqItvytGZfTTyFmTx1m1bKIuJej04XUrjQBzuuHFoEahQbbE7ixOWM5KMSFxhNOcpCZinHF9rt0F8E5WcrmAO0apGK/H3F4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548603; c=relaxed/simple;
-	bh=xPLYc6SIrDGnleZvc0kCRt7VMWPu555VyPn//4/Zm4I=;
+	s=arc-20240116; t=1706548371; c=relaxed/simple;
+	bh=MX5k1A79hIIa+/ZhQQJWdxWavyw5SdpdOKgMc5OHKAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gnKV4Uvc0IWmhEQTVFCiQmxMVEiSy+m87bLxuBG5idC3neDj2cZhp3TeRpl2Ht3C4nLPqLGxFYZd0MP/a6K935Q6bjfTTNK9Mm0i5mmkRRhbOfZ98lRsfO+Z4aqJSuJZgnkvL+zSBGXBJeS7JyZBW3o3W0l3I9pq1wgQU/33rvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2OGu1TX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25066C433C7;
-	Mon, 29 Jan 2024 17:16:43 +0000 (UTC)
+	 MIME-Version; b=pETmmDEKLQd5Vs0v700YWIZZT/miRO9zIlFal6ep/n1XY6sQ8yRNNnxq9MxMVBcjYd7Jvj67jCcom/Mw6/MSLq1X7cvknTk7DeLmnKVETnEZgVfYpcfv5+1a7SrN0OH6w1A4mnUd5BW9GBSKu8evPaAgPgfoJHOpLzKaYxPlT8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVEneWdA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3CB5C43394;
+	Mon, 29 Jan 2024 17:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548603;
-	bh=xPLYc6SIrDGnleZvc0kCRt7VMWPu555VyPn//4/Zm4I=;
+	s=korg; t=1706548370;
+	bh=MX5k1A79hIIa+/ZhQQJWdxWavyw5SdpdOKgMc5OHKAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K2OGu1TXk9uzUyARJaikvreoaQmV1jjepDpCHFdq0O7+aPd+D6Fzpd6jimkJdmkDD
-	 QnC27lpo1uFgZMWllMpoJ2jyJFs0+TGGhq2NxQOqPBbMczfJ1AjtMms2SNneoYxlwB
-	 ZzQoyj6KKztr09U4rRirGiCKk2s7fnKkALJjjDxY=
+	b=cVEneWdA/5NB40KEnWXpxlovdJWaK6wFljXyVlqh9ZTK8x4RIZPl9LBF48VI9UgM9
+	 0akZg9+pPHQ6ohUJ9gxDL7q+Uns77WdkPqxYcIQuljgJIza6oWO50IgiTqbmmE+RXO
+	 tkvQNakJF1FXy0a7Mz3pMuJ+PemoymiT/ze0ousc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xinglong Yang <xinglong.yang@cixtech.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 6.6 248/331] firmware: arm_scmi: Check mailbox/SMT channel for consistency
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 112/185] fjes: fix memleaks in fjes_hw_setup
 Date: Mon, 29 Jan 2024 09:05:12 -0800
-Message-ID: <20240129170022.143187528@linuxfoundation.org>
+Message-ID: <20240129170002.192387025@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-commit 437a310b22244d4e0b78665c3042e5d1c0f45306 upstream.
+[ Upstream commit f6cc4b6a3ae53df425771000e9c9540cce9b7bb1 ]
 
-On reception of a completion interrupt the shared memory area is accessed
-to retrieve the message header at first and then, if the message sequence
-number identifies a transaction which is still pending, the related
-payload is fetched too.
+In fjes_hw_setup, it allocates several memory and delay the deallocation
+to the fjes_hw_exit in fjes_probe through the following call chain:
 
-When an SCMI command times out the channel ownership remains with the
-platform until eventually a late reply is received and, as a consequence,
-any further transmission attempt remains pending, waiting for the channel
-to be relinquished by the platform.
+fjes_probe
+  |-> fjes_hw_init
+        |-> fjes_hw_setup
+  |-> fjes_hw_exit
 
-Once that late reply is received the channel ownership is given back
-to the agent and any pending request is then allowed to proceed and
-overwrite the SMT area of the just delivered late reply; then the wait
-for the reply to the new request starts.
+However, when fjes_hw_setup fails, fjes_hw_exit won't be called and thus
+all the resources allocated in fjes_hw_setup will be leaked. In this
+patch, we free those resources in fjes_hw_setup and prevents such leaks.
 
-It has been observed that the spurious IRQ related to the late reply can
-be wrongly associated with the freshly enqueued request: when that happens
-the SCMI stack in-flight lookup procedure is fooled by the fact that the
-message header now present in the SMT area is related to the new pending
-transaction, even though the real reply has still to arrive.
-
-This race-condition on the A2P channel can be detected by looking at the
-channel status bits: a genuine reply from the platform will have set the
-channel free bit before triggering the completion IRQ.
-
-Add a consistency check to validate such condition in the A2P ISR.
-
-Reported-by: Xinglong Yang <xinglong.yang@cixtech.com>
-Closes: https://lore.kernel.org/all/PUZPR06MB54981E6FA00D82BFDBB864FBF08DA@PUZPR06MB5498.apcprd06.prod.outlook.com/
-Fixes: 5c8a47a5a91d ("firmware: arm_scmi: Make scmi core independent of the transport type")
-Cc: stable@vger.kernel.org # 5.15+
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Tested-by: Xinglong Yang <xinglong.yang@cixtech.com>
-Link: https://lore.kernel.org/r/20231220172112.763539-1-cristian.marussi@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2fcbca687702 ("fjes: platform_driver's .probe and .remove routine")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240122172445.3841883-1-alexious@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/common.h  |    1 +
- drivers/firmware/arm_scmi/mailbox.c |   14 ++++++++++++++
- drivers/firmware/arm_scmi/shmem.c   |    6 ++++++
- 3 files changed, 21 insertions(+)
+ drivers/net/fjes/fjes_hw.c | 37 ++++++++++++++++++++++++++++++-------
+ 1 file changed, 30 insertions(+), 7 deletions(-)
 
---- a/drivers/firmware/arm_scmi/common.h
-+++ b/drivers/firmware/arm_scmi/common.h
-@@ -314,6 +314,7 @@ void shmem_fetch_notification(struct scm
- void shmem_clear_channel(struct scmi_shared_mem __iomem *shmem);
- bool shmem_poll_done(struct scmi_shared_mem __iomem *shmem,
- 		     struct scmi_xfer *xfer);
-+bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem);
+diff --git a/drivers/net/fjes/fjes_hw.c b/drivers/net/fjes/fjes_hw.c
+index 704e949484d0..b9b5554ea862 100644
+--- a/drivers/net/fjes/fjes_hw.c
++++ b/drivers/net/fjes/fjes_hw.c
+@@ -221,21 +221,25 @@ static int fjes_hw_setup(struct fjes_hw *hw)
  
- /* declarations for message passing transports */
- struct scmi_msg_payld;
---- a/drivers/firmware/arm_scmi/mailbox.c
-+++ b/drivers/firmware/arm_scmi/mailbox.c
-@@ -45,6 +45,20 @@ static void rx_callback(struct mbox_clie
- {
- 	struct scmi_mailbox *smbox = client_to_scmi_mailbox(cl);
- 
-+	/*
-+	 * An A2P IRQ is NOT valid when received while the platform still has
-+	 * the ownership of the channel, because the platform at first releases
-+	 * the SMT channel and then sends the completion interrupt.
-+	 *
-+	 * This addresses a possible race condition in which a spurious IRQ from
-+	 * a previous timed-out reply which arrived late could be wrongly
-+	 * associated with the next pending transaction.
-+	 */
-+	if (cl->knows_txdone && !shmem_channel_free(smbox->shmem)) {
-+		dev_warn(smbox->cinfo->dev, "Ignoring spurious A2P IRQ !\n");
-+		return;
+ 	mem_size = FJES_DEV_REQ_BUF_SIZE(hw->max_epid);
+ 	hw->hw_info.req_buf = kzalloc(mem_size, GFP_KERNEL);
+-	if (!(hw->hw_info.req_buf))
+-		return -ENOMEM;
++	if (!(hw->hw_info.req_buf)) {
++		result = -ENOMEM;
++		goto free_ep_info;
 +	}
+ 
+ 	hw->hw_info.req_buf_size = mem_size;
+ 
+ 	mem_size = FJES_DEV_RES_BUF_SIZE(hw->max_epid);
+ 	hw->hw_info.res_buf = kzalloc(mem_size, GFP_KERNEL);
+-	if (!(hw->hw_info.res_buf))
+-		return -ENOMEM;
++	if (!(hw->hw_info.res_buf)) {
++		result = -ENOMEM;
++		goto free_req_buf;
++	}
+ 
+ 	hw->hw_info.res_buf_size = mem_size;
+ 
+ 	result = fjes_hw_alloc_shared_status_region(hw);
+ 	if (result)
+-		return result;
++		goto free_res_buf;
+ 
+ 	hw->hw_info.buffer_share_bit = 0;
+ 	hw->hw_info.buffer_unshare_reserve_bit = 0;
+@@ -246,11 +250,11 @@ static int fjes_hw_setup(struct fjes_hw *hw)
+ 
+ 			result = fjes_hw_alloc_epbuf(&buf_pair->tx);
+ 			if (result)
+-				return result;
++				goto free_epbuf;
+ 
+ 			result = fjes_hw_alloc_epbuf(&buf_pair->rx);
+ 			if (result)
+-				return result;
++				goto free_epbuf;
+ 
+ 			spin_lock_irqsave(&hw->rx_status_lock, flags);
+ 			fjes_hw_setup_epbuf(&buf_pair->tx, mac,
+@@ -273,6 +277,25 @@ static int fjes_hw_setup(struct fjes_hw *hw)
+ 	fjes_hw_init_command_registers(hw, &param);
+ 
+ 	return 0;
 +
- 	scmi_rx_callback(smbox->cinfo, shmem_read_header(smbox->shmem), NULL);
++free_epbuf:
++	for (epidx = 0; epidx < hw->max_epid ; epidx++) {
++		if (epidx == hw->my_epid)
++			continue;
++		fjes_hw_free_epbuf(&hw->ep_shm_info[epidx].tx);
++		fjes_hw_free_epbuf(&hw->ep_shm_info[epidx].rx);
++	}
++	fjes_hw_free_shared_status_region(hw);
++free_res_buf:
++	kfree(hw->hw_info.res_buf);
++	hw->hw_info.res_buf = NULL;
++free_req_buf:
++	kfree(hw->hw_info.req_buf);
++	hw->hw_info.req_buf = NULL;
++free_ep_info:
++	kfree(hw->ep_shm_info);
++	hw->ep_shm_info = NULL;
++	return result;
  }
  
---- a/drivers/firmware/arm_scmi/shmem.c
-+++ b/drivers/firmware/arm_scmi/shmem.c
-@@ -122,3 +122,9 @@ bool shmem_poll_done(struct scmi_shared_
- 		(SCMI_SHMEM_CHAN_STAT_CHANNEL_ERROR |
- 		 SCMI_SHMEM_CHAN_STAT_CHANNEL_FREE);
- }
-+
-+bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem)
-+{
-+	return (ioread32(&shmem->channel_status) &
-+			SCMI_SHMEM_CHAN_STAT_CHANNEL_FREE);
-+}
+ static void fjes_hw_cleanup(struct fjes_hw *hw)
+-- 
+2.43.0
+
 
 
 
