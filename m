@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA829840EC3
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9327F840F3B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 808311F2AA1C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50A64283DB5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A055160891;
-	Mon, 29 Jan 2024 17:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B436616419B;
+	Mon, 29 Jan 2024 17:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i09xlhy4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="An48pbiE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08ECE16088C;
-	Mon, 29 Jan 2024 17:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7215E15AAD4;
+	Mon, 29 Jan 2024 17:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548341; cv=none; b=qM6oT3xkhEAjofIOlvFpDpy9HwEwJrWreNDweybkWVd8zQX/WI1K/+wfcAibbzE88ii47l0sgBQYnHskOUX269sUqReKwEtMqFjLGPVvN/he50ihPt0l4jllwoz4H7yJkIlRxxNK3rlabGyjINm+Nwvt0DO2CbiJxZ2HyP008a4=
+	t=1706548407; cv=none; b=Ua59Fin+wcQGkLCa0kHDQ0kVdPdaUwrBXIB1p5Dp6KGHoDVTbMtvKLxlCAa06zPVR2GEnQjD2Z28yxDl/Md098owKGlQb89pMUToXhsU0S9O2g9R8MKOc86aeh9GY6hidN+tsT/XCVZoHYF0n+SQx/vZfIV+Y7r7R0nJI4kksGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548341; c=relaxed/simple;
-	bh=xulY5m4TV4zJ1QAuo0miWp3VzAhbM9FbjUbjSzGVR+o=;
+	s=arc-20240116; t=1706548407; c=relaxed/simple;
+	bh=p4iMLZti5xz54qVS9Nb3HBGYTaXkPP+VAUjJkfqTKs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6z2B8WctujRxlsmP8DQjBnAvka/sf19FALGXmRnw7nHnDvuHTkoDys+P9cNCMhwyvfPCCNVl/AHyjQH26Y2L2Ed+mPBVGeXWdpP84vBHsUfkwQDHAUJoCw74b2sb7Aq554vjG2LdpvpYCNpi8mWFxbbFbJ2JUqRIJZnr9Xk/Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i09xlhy4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4091C433F1;
-	Mon, 29 Jan 2024 17:12:20 +0000 (UTC)
+	 MIME-Version; b=GbiF9Dp6mbcEqBoVjggxbEPF8PLwFeZBsq1oDAwW1PcSDZQ2TkUbPg36aQs5NX2qwRCQP7CgzauxsgSGo+wJn4FLqc2yqd3rye8Gt+sM6bGeTZTS4c7UhnY6QkHG3PaWTO4pLO0UV4zwFlAHkcnr2oHgKFIW9aQ05uEFDzjCcEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=An48pbiE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C56C433C7;
+	Mon, 29 Jan 2024 17:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548340;
-	bh=xulY5m4TV4zJ1QAuo0miWp3VzAhbM9FbjUbjSzGVR+o=;
+	s=korg; t=1706548406;
+	bh=p4iMLZti5xz54qVS9Nb3HBGYTaXkPP+VAUjJkfqTKs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i09xlhy4iRF3t/t9pFEb+9Ribfi9qHFmFRUWQvxR12iDYVSODiVDytjPDIhvTNLkz
-	 Tr9Za1hRnGqLeWFn9vM9y17EuAFDxHR07aq9LaTaUqhjw0z+cp44pP6QC46eNK8eZ8
-	 jn4Q5ZiZ2Mne6yP9FRddb3vTqvbNVESCrcS86Fyg=
+	b=An48pbiEbfCRyZmWs3+m7bcSosrrNGVVhTNU00mf3KXjUzFo8wTSh9qw/2wn3wTso
+	 fp++SfOqxtxIIZw/iBVlIIwzOEtYpBJkHgo4v7Dl8tRQd9ekaFsofPC9prGGmQNwpP
+	 JwH9xuI1K7WkPFOqc3oUBAfHOLOjWXtHLA2DubiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	Pin-yen Lin <treapking@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 335/346] spi: fix finalize message on error return
+Subject: [PATCH 6.1 166/185] drm/bridge: parade-ps8640: Wait for HPD when doing an AUX transfer
 Date: Mon, 29 Jan 2024 09:06:06 -0800
-Message-ID: <20240129170026.330618186@linuxfoundation.org>
+Message-ID: <20240129170003.925820990@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 8c2ae772fe08e33f3d7a83849e85539320701abd ]
+[ Upstream commit 024b32db43a359e0ded3fcc6cd86247cbbed4224 ]
 
-In __spi_pump_transfer_message(), the message was not finalized in the
-first error return as it is in the other error return paths. Not
-finalizing the message could cause anything waiting on the message to
-complete to hang forever.
+Unlike what is claimed in commit f5aa7d46b0ee ("drm/bridge:
+parade-ps8640: Provide wait_hpd_asserted() in struct drm_dp_aux"), if
+someone manually tries to do an AUX transfer (like via `i2cdump ${bus}
+0x50 i`) while the panel is off we don't just get a simple transfer
+error. Instead, the whole ps8640 gets thrown for a loop and goes into
+a bad state.
 
-This adds the missing call to spi_finalize_current_message().
+Let's put the function to wait for the HPD (and the magical 50 ms
+after first reset) back in when we're doing an AUX transfer. This
+shouldn't actually make things much slower (assuming the panel is on)
+because we should immediately poll and see the HPD high. Mostly this
+is just an extra i2c transfer to the bridge.
 
-Fixes: ae7d2346dc89 ("spi: Don't use the message queue if possible in spi_sync")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://msgid.link/r/20240125205312.3458541-2-dlechner@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: f5aa7d46b0ee ("drm/bridge: parade-ps8640: Provide wait_hpd_asserted() in struct drm_dp_aux")
+Tested-by: Pin-yen Lin <treapking@chromium.org>
+Reviewed-by: Pin-yen Lin <treapking@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231221135548.1.I10f326a9305d57ad32cee7f8d9c60518c8be20fb@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/bridge/parade-ps8640.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 8ead7acb99f3..4adc56dabf55 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -1624,6 +1624,10 @@ static int __spi_pump_transfer_message(struct spi_controller *ctlr,
- 			pm_runtime_put_noidle(ctlr->dev.parent);
- 			dev_err(&ctlr->dev, "Failed to power device: %d\n",
- 				ret);
-+
-+			msg->status = ret;
-+			spi_finalize_current_message(ctlr);
-+
- 			return ret;
- 		}
- 	}
+diff --git a/drivers/gpu/drm/bridge/parade-ps8640.c b/drivers/gpu/drm/bridge/parade-ps8640.c
+index 083337a27966..146e1ad76223 100644
+--- a/drivers/gpu/drm/bridge/parade-ps8640.c
++++ b/drivers/gpu/drm/bridge/parade-ps8640.c
+@@ -354,6 +354,11 @@ static ssize_t ps8640_aux_transfer(struct drm_dp_aux *aux,
+ 	int ret;
+ 
+ 	pm_runtime_get_sync(dev);
++	ret = _ps8640_wait_hpd_asserted(ps_bridge, 200 * 1000);
++	if (ret) {
++		pm_runtime_put_sync_suspend(dev);
++		return ret;
++	}
+ 	ret = ps8640_aux_transfer_msg(aux, msg);
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
 -- 
 2.43.0
 
