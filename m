@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32438840D4E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:09:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1630840F98
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56F4F1C22F1F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4E071C23057
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB42315957F;
-	Mon, 29 Jan 2024 17:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B60A6F097;
+	Mon, 29 Jan 2024 17:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6/EZ9Ra"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0LKwHGqA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0A5157041;
-	Mon, 29 Jan 2024 17:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2036F095;
+	Mon, 29 Jan 2024 17:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548081; cv=none; b=A+f2PTn2IUZptTm5ES8oViv3lWRu+OEiXGnfU13IZ595CH/KJb67td+5DbR2esfKkVoY38vjFzFqzIRW0wTERRIfhD8QVC9EHja+/8WGcdlVc3ne4RoVwcVcXaGjCsv4XpgKLOJXXR0AXd8JncfSd7fsRLr1Bh6Wb8pPruZkkbo=
+	t=1706548470; cv=none; b=etevWpFV5Gw0VhzvvEgW6LScjus46L4nTh8CTp8hv4DzCpxqNzWuzwD34ybpmZNOthJNKTrJl7cpyp90LHjOqTqp2hXF03vZqhIJFitJZz1gmxeQtXDGC6+3Syiub1kZ4ABrOlZvh9EbI6DpLnF9V+gyaZ6b3/b5RcEAYDgX9dQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548081; c=relaxed/simple;
-	bh=iUC5WTv9iKKn+NviX5xFovBwYVZBXOFLPeoLzeDqU+s=;
+	s=arc-20240116; t=1706548470; c=relaxed/simple;
+	bh=INgI1zFq8FuFLBz3iJcAZ6Wto4uqli+8c3W77McuwVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eL7QpuRtkJ4b4SIX+NMXcZOY8EIN1O1Zn+ndpfM2T//9NoUn+hctu0XzLZY7VuoPC4fgqaVFTLQjeBpezgvCqbuRhSMr9dGqGBKJOU/Rr7D9/OGfocLIPBr32vHgVZ+jFc8m8XOMRgYfCuardU8MOvAsD36pV1Pt+ENsFhEesu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6/EZ9Ra; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4A1C433C7;
-	Mon, 29 Jan 2024 17:08:01 +0000 (UTC)
+	 MIME-Version; b=o+i7PJDPVo8BrqzsHCzXcqU5Bn0+pymEWWR1aYVh5Su35rq9BXr91IWvnmtv/FTUOBXMw3Ik2RVX+9T2omS9hEa178r0vfRiEa5cjbJCxqV9Rc1MOfjrXhUDVdb7AcxN3shKXaV5hwUpg4gtb9Fw3+4N/mFHEj6HLL2JpxXzpjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0LKwHGqA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D2DC43390;
+	Mon, 29 Jan 2024 17:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548081;
-	bh=iUC5WTv9iKKn+NviX5xFovBwYVZBXOFLPeoLzeDqU+s=;
+	s=korg; t=1706548469;
+	bh=INgI1zFq8FuFLBz3iJcAZ6Wto4uqli+8c3W77McuwVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n6/EZ9RaP8hK6mQ+GW05cwMtwQwevVtAzSiDQPa6VBk5BV58Jd1NsT5CIl99LS5+T
-	 hBZoV/F7Sv+rOhcCTWYVCtkCa6E+MjtijUGFWa7/OSKH0isMsY0pwyoPbIAfWv1/Zs
-	 x9TMCDfpFlkqy60sWcr8pFfW+zIapQftt376UaXc=
+	b=0LKwHGqA1U2aJrcnXQUNIIFzCF13IlaXEVR0PF30W13fFM/BqDg1ddRflN7boxJS7
+	 b95xyFYFslZUYXmalgD2QOcTQBmhpJC6UaDszVpZNPpHG6QgbBKNNdQkVBN5mOxsu5
+	 3CERExBiK531lEGzeobiL+UauWPy9AHses8biEoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jani Nikula <jani.nikula@intel.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH 6.7 094/346] docs: kernel_abi.py: fix command injection
+	Tony Krowiak <akrowiak@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.6 061/331] s390/vfio-ap: let on_scan_complete() callback filter matrix and update guests APCB
 Date: Mon, 29 Jan 2024 09:02:05 -0800
-Message-ID: <20240129170019.169767059@linuxfoundation.org>
+Message-ID: <20240129170016.722407099@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,155 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vegard Nossum <vegard.nossum@oracle.com>
+From: Tony Krowiak <akrowiak@linux.ibm.com>
 
-commit 3231dd5862779c2e15633c96133a53205ad660ce upstream.
+commit 774d10196e648e2c0b78da817f631edfb3dfa557 upstream.
 
-The kernel-abi directive passes its argument straight to the shell.
-This is unfortunate and unnecessary.
+When adapters and/or domains are added to the host's AP configuration, this
+may result in multiple queue devices getting created and probed by the
+vfio_ap device driver. For each queue device probed, the matrix of adapters
+and domains assigned to a matrix mdev will be filtered to update the
+guest's APCB. If any adapters or domains get added to or removed from the
+APCB, the guest's AP configuration will be dynamically updated (i.e., hot
+plug/unplug). To dynamically update the guest's configuration, its VCPUs
+must be taken out of SIE for the period of time it takes to make the
+update. This is disruptive to the guest's operation and if there are many
+queues probed due to a change in the host's AP configuration, this could be
+troublesome. The problem is exacerbated by the fact that the
+'on_scan_complete' callback also filters the mdev's matrix and updates
+the guest's AP configuration.
 
-Let's always use paths relative to $srctree/Documentation/ and use
-subprocess.check_call() instead of subprocess.Popen(shell=True).
+In order to reduce the potential amount of disruption to the guest that may
+result from a change to the host's AP configuration, let's bypass the
+filtering of the matrix and updating of the guest's AP configuration in the
+probe callback - if due to a host config change - and defer it until the
+'on_scan_complete' callback is invoked after the AP bus finishes its device
+scan operation. This way the filtering and updating will be performed only
+once regardless of the number of queues added.
 
-This also makes the code shorter.
-
-Link: https://fosstodon.org/@jani/111676532203641247
-Reported-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
+Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Fixes: 48cae940c31d ("s390/vfio-ap: refresh guest's APCB by filtering AP resources assigned to mdev")
 Cc: stable@vger.kernel.org
-Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/20231231235959.3342928-2-vegard.nossum@oracle.com
+Link: https://lore.kernel.org/r/20240115185441.31526-4-akrowiak@linux.ibm.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/abi-obsolete.rst |    2 -
- Documentation/admin-guide/abi-removed.rst  |    2 -
- Documentation/admin-guide/abi-stable.rst   |    2 -
- Documentation/admin-guide/abi-testing.rst  |    2 -
- Documentation/sphinx/kernel_abi.py         |   56 +++++------------------------
- 5 files changed, 14 insertions(+), 50 deletions(-)
+ drivers/s390/crypto/vfio_ap_ops.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/Documentation/admin-guide/abi-obsolete.rst
-+++ b/Documentation/admin-guide/abi-obsolete.rst
-@@ -7,5 +7,5 @@ marked to be removed at some later point
- The description of the interface will document the reason why it is
- obsolete and when it can be expected to be removed.
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -2084,9 +2084,22 @@ int vfio_ap_mdev_probe_queue(struct ap_d
+ 	if (matrix_mdev) {
+ 		vfio_ap_mdev_link_queue(matrix_mdev, q);
  
--.. kernel-abi:: $srctree/Documentation/ABI/obsolete
-+.. kernel-abi:: ABI/obsolete
-    :rst:
---- a/Documentation/admin-guide/abi-removed.rst
-+++ b/Documentation/admin-guide/abi-removed.rst
-@@ -1,5 +1,5 @@
- ABI removed symbols
- ===================
++		/*
++		 * If we're in the process of handling the adding of adapters or
++		 * domains to the host's AP configuration, then let the
++		 * vfio_ap device driver's on_scan_complete callback filter the
++		 * matrix and update the guest's AP configuration after all of
++		 * the new queue devices are probed.
++		 */
++		if (!bitmap_empty(matrix_mdev->apm_add, AP_DEVICES) ||
++		    !bitmap_empty(matrix_mdev->aqm_add, AP_DOMAINS))
++			goto done;
++
+ 		if (vfio_ap_mdev_filter_matrix(matrix_mdev))
+ 			vfio_ap_mdev_update_guest_apcb(matrix_mdev);
+ 	}
++
++done:
+ 	dev_set_drvdata(&apdev->device, q);
+ 	release_update_locks_for_mdev(matrix_mdev);
  
--.. kernel-abi:: $srctree/Documentation/ABI/removed
-+.. kernel-abi:: ABI/removed
-    :rst:
---- a/Documentation/admin-guide/abi-stable.rst
-+++ b/Documentation/admin-guide/abi-stable.rst
-@@ -10,5 +10,5 @@ for at least 2 years.
- Most interfaces (like syscalls) are expected to never change and always
- be available.
- 
--.. kernel-abi:: $srctree/Documentation/ABI/stable
-+.. kernel-abi:: ABI/stable
-    :rst:
---- a/Documentation/admin-guide/abi-testing.rst
-+++ b/Documentation/admin-guide/abi-testing.rst
-@@ -16,5 +16,5 @@ Programs that use these interfaces are s
- name to the description of these interfaces, so that the kernel
- developers can easily notify them if any changes occur.
- 
--.. kernel-abi:: $srctree/Documentation/ABI/testing
-+.. kernel-abi:: ABI/testing
-    :rst:
---- a/Documentation/sphinx/kernel_abi.py
-+++ b/Documentation/sphinx/kernel_abi.py
-@@ -39,8 +39,6 @@ import sys
- import re
- import kernellog
- 
--from os import path
--
- from docutils import nodes, statemachine
- from docutils.statemachine import ViewList
- from docutils.parsers.rst import directives, Directive
-@@ -73,60 +71,26 @@ class KernelCmd(Directive):
-     }
- 
-     def run(self):
--
-         doc = self.state.document
-         if not doc.settings.file_insertion_enabled:
-             raise self.warning("docutils: file insertion disabled")
- 
--        env = doc.settings.env
--        cwd = path.dirname(doc.current_source)
--        cmd = "get_abi.pl rest --enable-lineno --dir "
--        cmd += self.arguments[0]
--
--        if 'rst' in self.options:
--            cmd += " --rst-source"
--
--        srctree = path.abspath(os.environ["srctree"])
-+        srctree = os.path.abspath(os.environ["srctree"])
- 
--        fname = cmd
-+        args = [
-+            os.path.join(srctree, 'scripts/get_abi.pl'),
-+            'rest',
-+            '--enable-lineno',
-+            '--dir', os.path.join(srctree, 'Documentation', self.arguments[0]),
-+        ]
- 
--        # extend PATH with $(srctree)/scripts
--        path_env = os.pathsep.join([
--            srctree + os.sep + "scripts",
--            os.environ["PATH"]
--        ])
--        shell_env = os.environ.copy()
--        shell_env["PATH"]    = path_env
--        shell_env["srctree"] = srctree
-+        if 'rst' in self.options:
-+            args.append('--rst-source')
- 
--        lines = self.runCmd(cmd, shell=True, cwd=cwd, env=shell_env)
-+        lines = subprocess.check_output(args, cwd=os.path.dirname(doc.current_source)).decode('utf-8')
-         nodeList = self.nestedParse(lines, self.arguments[0])
-         return nodeList
- 
--    def runCmd(self, cmd, **kwargs):
--        u"""Run command ``cmd`` and return its stdout as unicode."""
--
--        try:
--            proc = subprocess.Popen(
--                cmd
--                , stdout = subprocess.PIPE
--                , stderr = subprocess.PIPE
--                , **kwargs
--            )
--            out, err = proc.communicate()
--
--            out, err = codecs.decode(out, 'utf-8'), codecs.decode(err, 'utf-8')
--
--            if proc.returncode != 0:
--                raise self.severe(
--                    u"command '%s' failed with return code %d"
--                    % (cmd, proc.returncode)
--                )
--        except OSError as exc:
--            raise self.severe(u"problems with '%s' directive: %s."
--                              % (self.name, ErrorString(exc)))
--        return out
--
-     def nestedParse(self, lines, fname):
-         env = self.state.document.settings.env
-         content = ViewList()
 
 
 
