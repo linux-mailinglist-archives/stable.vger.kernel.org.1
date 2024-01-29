@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-16804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F07E840E7B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A255C840EFC
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99EA31F2731C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E0B71F2114F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0C515B987;
-	Mon, 29 Jan 2024 17:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D546F15956A;
+	Mon, 29 Jan 2024 17:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlLEqEyL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wmcOfbFE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A0EB15B984;
-	Mon, 29 Jan 2024 17:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933971586C5;
+	Mon, 29 Jan 2024 17:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548291; cv=none; b=P8L0psYcPTt1yuJR7vdeg6uo+EuTwrqpD4aNt8RABPw6lTlDfMgeSqH8jZn8MBXZFB+oW3jMToE0Pf6kM9jKbZ7aZ4Wb69J/B13/AVckE1Juh2MuFTpN+LBw/kpOz9usNbQY/mTVwnRDir3NVlWLGiYnBEqw2DQ7yHCJAqdS3kA=
+	t=1706548367; cv=none; b=fH1Tul42Tu2gJIrcKrXjGHsTR+iRYQPuw4FxRE/vt9cRYPOR+3pOu/efhPH6ghibEVp/JvBCT3kjvYzhEx3zNAhlyxuXGpoD0cMqW7SOqq6ybk1rznA2/SNBccWpAMNY8q1E85drwx3wOd3DT1xI6qSFNrloPMgfhahjgAWT1ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548291; c=relaxed/simple;
-	bh=WzDKNl4EXX0ltNAQdQBTaF7TCkrJh7GeWswM6Jg8YCs=;
+	s=arc-20240116; t=1706548367; c=relaxed/simple;
+	bh=EVVqZe3/6nkyQlgFROKNOmlWthGNbX3qk7yGwKmN6MY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwpjwX0ZARRy36rCC4B9tXuvTOIzGaagPaiD3X8BYRZyl9uJcxN03PiWtip60EdBrnr/UH5EZ6xNZyXukUZMoejYvrdPak0ZfyT61wsrW4gRLUQ2t4JBbEOX9+g+r09Q3WwgUBOsyzlwfrB3ecMLhFkSwu1UVh2JjnwMug9lriw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wlLEqEyL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F602C433F1;
-	Mon, 29 Jan 2024 17:11:31 +0000 (UTC)
+	 MIME-Version; b=CO+SvdDkoIk9KpcwH9EqGhRzuwS0nUsgqk2G7FQzLzezoSoWMz/jQcYQbpCXS2kXOUJegHKke9VBvLjwxVaUCILje7/Aha4uDygMZY6kiZsl//K9u4FuCCni0Ju0qr9q35jowD5fgRF+KpsMqjY2tBrQqtU/1FXUe7EwtPBk0eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wmcOfbFE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B18FC433C7;
+	Mon, 29 Jan 2024 17:12:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548291;
-	bh=WzDKNl4EXX0ltNAQdQBTaF7TCkrJh7GeWswM6Jg8YCs=;
+	s=korg; t=1706548367;
+	bh=EVVqZe3/6nkyQlgFROKNOmlWthGNbX3qk7yGwKmN6MY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wlLEqEyLhs3S+YB/YWOQJWT2hMGaV3HYKEhOhRma8hBsmxeRfyW1/1cCVVSH87hQH
-	 YAmV658aNTm2EmBv0ILjA8gU34eUUZqN1BMkWTSfOPcXIXvUWzYZjKbDwkjhWF3DFz
-	 F/U5IKKZitQU47fWdelgnvlQcBfq0OqgmXgOfm7A=
+	b=wmcOfbFEgqYsWWX1sbHDj0RJg58FVdNS1recyE3fePQl5w8AjGq2ou0SNTPYQjBfS
+	 tg+6fhZjxWSaUvhohXqHWoV1aF3208cQrX7+xHOl3Wlycihd0+6uK1X78evENuuK9v
+	 D+ABj7vqWn3ELnNkowxAUDfNNtv+4GbH2jLca8Pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chaitanya Dhere <chaitanya.dhere@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 301/346] drm/amd/display: update pixel clock params after stream slice count change in context
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 132/185] cpufreq: intel_pstate: Refine computation of P-state for given frequency
 Date: Mon, 29 Jan 2024 09:05:32 -0800
-Message-ID: <20240129170025.279030733@linuxfoundation.org>
+Message-ID: <20240129170002.829315084@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,172 +61,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenjing Liu <wenjing.liu@amd.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit cfab803884f426b36b58dbe1f86f99742767c208 ]
+commit 192cdb1c907fd8df2d764c5bb17496e415e59391 upstream.
 
-[why]
-When ODM slice count is changed, otg master pipe's pixel clock params is
-no longer valid as the value is dependent on ODM slice count.
+On systems using HWP, if a given frequency is equal to the maximum turbo
+frequency or the maximum non-turbo frequency, the HWP performance level
+corresponding to it is already known and can be used directly without
+any computation.
 
-Reviewed-by: Chaitanya Dhere <chaitanya.dhere@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Wenjing Liu <wenjing.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: aa36d8971fcc ("drm/amd/display: Init link enc resources in dc_state only if res_pool presents")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Accordingly, adjust the code to use the known HWP performance levels in
+the cases mentioned above.
+
+This also helps to avoid limiting CPU capacity artificially in some
+cases when the BIOS produces the HWP_CAP numbers using a different
+E-core-to-P-core performance scaling factor than expected by the kernel.
+
+Fixes: f5c8cf2a4992 ("cpufreq: intel_pstate: hybrid: Use known scaling factor for P-cores")
+Cc: 6.1+ <stable@vger.kernel.org> # 6.1+
+Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/amd/display/dc/core/dc_resource.c    |  9 ++++++---
- .../drm/amd/display/dc/dcn20/dcn20_resource.c    | 16 ++++++++++------
- .../drm/amd/display/dc/dcn20/dcn20_resource.h    |  1 +
- .../drm/amd/display/dc/dcn32/dcn32_resource.c    |  1 +
- .../drm/amd/display/dc/dcn321/dcn321_resource.c  |  1 +
- .../gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c |  6 +-----
- drivers/gpu/drm/amd/display/dc/inc/core_types.h  |  1 +
- 7 files changed, 21 insertions(+), 14 deletions(-)
+ drivers/cpufreq/intel_pstate.c |   55 +++++++++++++++++++++++++----------------
+ 1 file changed, 34 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index ae275f1780d5..c16190a10883 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -2237,7 +2237,7 @@ static struct pipe_ctx *get_last_dpp_pipe_in_mpcc_combine(
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -493,6 +493,30 @@ static inline int intel_pstate_get_cppc_
  }
+ #endif /* CONFIG_ACPI_CPPC_LIB */
  
- static bool update_pipe_params_after_odm_slice_count_change(
--		const struct dc_stream_state *stream,
-+		struct pipe_ctx *otg_master,
- 		struct dc_state *context,
- 		const struct resource_pool *pool)
- {
-@@ -2247,9 +2247,12 @@ static bool update_pipe_params_after_odm_slice_count_change(
- 
- 	for (i = 0; i < pool->pipe_count && result; i++) {
- 		pipe = &context->res_ctx.pipe_ctx[i];
--		if (pipe->stream == stream && pipe->plane_state)
-+		if (pipe->stream == otg_master->stream && pipe->plane_state)
- 			result = resource_build_scaling_params(pipe);
- 	}
++static int intel_pstate_freq_to_hwp_rel(struct cpudata *cpu, int freq,
++					unsigned int relation)
++{
++	if (freq == cpu->pstate.turbo_freq)
++		return cpu->pstate.turbo_pstate;
 +
-+	if (pool->funcs->build_pipe_pix_clk_params)
-+		pool->funcs->build_pipe_pix_clk_params(otg_master);
- 	return result;
- }
- 
-@@ -2932,7 +2935,7 @@ bool resource_update_pipes_for_stream_with_slice_count(
- 					otg_master, new_ctx, pool);
- 	if (result)
- 		result = update_pipe_params_after_odm_slice_count_change(
--				otg_master->stream, new_ctx, pool);
-+				otg_master, new_ctx, pool);
- 	return result;
- }
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
-index 0a422fbb14bc..e73e59754837 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
-@@ -1273,15 +1273,19 @@ static void build_clamping_params(struct dc_stream_state *stream)
- 	stream->clamping.pixel_encoding = stream->timing.pixel_encoding;
- }
- 
--static enum dc_status build_pipe_hw_param(struct pipe_ctx *pipe_ctx)
-+void dcn20_build_pipe_pix_clk_params(struct pipe_ctx *pipe_ctx)
- {
--
- 	get_pixel_clock_parameters(pipe_ctx, &pipe_ctx->stream_res.pix_clk_params);
--
- 	pipe_ctx->clock_source->funcs->get_pix_clk_dividers(
--		pipe_ctx->clock_source,
--		&pipe_ctx->stream_res.pix_clk_params,
--		&pipe_ctx->pll_settings);
-+			pipe_ctx->clock_source,
-+			&pipe_ctx->stream_res.pix_clk_params,
-+			&pipe_ctx->pll_settings);
++	if (freq == cpu->pstate.max_freq)
++		return cpu->pstate.max_pstate;
++
++	switch (relation) {
++	case CPUFREQ_RELATION_H:
++		return freq / cpu->pstate.scaling;
++	case CPUFREQ_RELATION_C:
++		return DIV_ROUND_CLOSEST(freq, cpu->pstate.scaling);
++	}
++
++	return DIV_ROUND_UP(freq, cpu->pstate.scaling);
 +}
 +
-+static enum dc_status build_pipe_hw_param(struct pipe_ctx *pipe_ctx)
++static int intel_pstate_freq_to_hwp(struct cpudata *cpu, int freq)
 +{
++	return intel_pstate_freq_to_hwp_rel(cpu, freq, CPUFREQ_RELATION_L);
++}
 +
-+	dcn20_build_pipe_pix_clk_params(pipe_ctx);
+ /**
+  * intel_pstate_hybrid_hwp_adjust - Calibrate HWP performance levels.
+  * @cpu: Target CPU.
+@@ -510,6 +534,7 @@ static void intel_pstate_hybrid_hwp_adju
+ 	int perf_ctl_scaling = cpu->pstate.perf_ctl_scaling;
+ 	int perf_ctl_turbo = pstate_funcs.get_turbo(cpu->cpu);
+ 	int scaling = cpu->pstate.scaling;
++	int freq;
  
- 	pipe_ctx->stream->clamping.pixel_encoding = pipe_ctx->stream->timing.pixel_encoding;
+ 	pr_debug("CPU%d: perf_ctl_max_phys = %d\n", cpu->cpu, perf_ctl_max_phys);
+ 	pr_debug("CPU%d: perf_ctl_turbo = %d\n", cpu->cpu, perf_ctl_turbo);
+@@ -523,16 +548,16 @@ static void intel_pstate_hybrid_hwp_adju
+ 	cpu->pstate.max_freq = rounddown(cpu->pstate.max_pstate * scaling,
+ 					 perf_ctl_scaling);
  
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.h b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.h
-index 37ecaccc5d12..4cee3fa11a7f 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.h
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.h
-@@ -165,6 +165,7 @@ enum dc_status dcn20_add_stream_to_ctx(struct dc *dc, struct dc_state *new_ctx,
- enum dc_status dcn20_add_dsc_to_stream_resource(struct dc *dc, struct dc_state *dc_ctx, struct dc_stream_state *dc_stream);
- enum dc_status dcn20_remove_stream_from_ctx(struct dc *dc, struct dc_state *new_ctx, struct dc_stream_state *dc_stream);
- enum dc_status dcn20_patch_unknown_plane_state(struct dc_plane_state *plane_state);
-+void dcn20_build_pipe_pix_clk_params(struct pipe_ctx *pipe_ctx);
+-	cpu->pstate.max_pstate_physical =
+-			DIV_ROUND_UP(perf_ctl_max_phys * perf_ctl_scaling,
+-				     scaling);
++	freq = perf_ctl_max_phys * perf_ctl_scaling;
++	cpu->pstate.max_pstate_physical = intel_pstate_freq_to_hwp(cpu, freq);
  
- #endif /* __DC_RESOURCE_DCN20_H__ */
+-	cpu->pstate.min_freq = cpu->pstate.min_pstate * perf_ctl_scaling;
++	freq = cpu->pstate.min_pstate * perf_ctl_scaling;
++	cpu->pstate.min_freq = freq;
+ 	/*
+ 	 * Cast the min P-state value retrieved via pstate_funcs.get_min() to
+ 	 * the effective range of HWP performance levels.
+ 	 */
+-	cpu->pstate.min_pstate = DIV_ROUND_UP(cpu->pstate.min_freq, scaling);
++	cpu->pstate.min_pstate = intel_pstate_freq_to_hwp(cpu, freq);
+ }
  
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
-index 89b072447dba..e940dd0f92b7 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_resource.c
-@@ -2041,6 +2041,7 @@ static struct resource_funcs dcn32_res_pool_funcs = {
- 	.retain_phantom_pipes = dcn32_retain_phantom_pipes,
- 	.save_mall_state = dcn32_save_mall_state,
- 	.restore_mall_state = dcn32_restore_mall_state,
-+	.build_pipe_pix_clk_params = dcn20_build_pipe_pix_clk_params,
- };
+ static inline void update_turbo_state(void)
+@@ -2493,13 +2518,12 @@ static void intel_pstate_update_perf_lim
+ 	 * abstract values to represent performance rather than pure ratios.
+ 	 */
+ 	if (hwp_active && cpu->pstate.scaling != perf_ctl_scaling) {
+-		int scaling = cpu->pstate.scaling;
+ 		int freq;
  
- static uint32_t read_pipe_fuses(struct dc_context *ctx)
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c b/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
-index f7de3eca1225..4156a8cc2bc7 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
-@@ -1609,6 +1609,7 @@ static struct resource_funcs dcn321_res_pool_funcs = {
- 	.retain_phantom_pipes = dcn32_retain_phantom_pipes,
- 	.save_mall_state = dcn32_save_mall_state,
- 	.restore_mall_state = dcn32_restore_mall_state,
-+	.build_pipe_pix_clk_params = dcn20_build_pipe_pix_clk_params,
- };
+ 		freq = max_policy_perf * perf_ctl_scaling;
+-		max_policy_perf = DIV_ROUND_UP(freq, scaling);
++		max_policy_perf = intel_pstate_freq_to_hwp(cpu, freq);
+ 		freq = min_policy_perf * perf_ctl_scaling;
+-		min_policy_perf = DIV_ROUND_UP(freq, scaling);
++		min_policy_perf = intel_pstate_freq_to_hwp(cpu, freq);
+ 	}
  
- static uint32_t read_pipe_fuses(struct dc_context *ctx)
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-index b46cde525066..92e2ddc9ab7e 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
-@@ -1237,15 +1237,11 @@ static void update_pipes_with_slice_table(struct dc *dc, struct dc_state *contex
- {
- 	int i;
+ 	pr_debug("cpu:%d min_policy_perf:%d max_policy_perf:%d\n",
+@@ -2873,18 +2897,7 @@ static int intel_cpufreq_target(struct c
  
--	for (i = 0; i < table->odm_combine_count; i++) {
-+	for (i = 0; i < table->odm_combine_count; i++)
- 		resource_update_pipes_for_stream_with_slice_count(context,
- 				dc->current_state, dc->res_pool,
- 				table->odm_combines[i].stream,
- 				table->odm_combines[i].slice_count);
--		/* TODO: move this into the function above */
--		dcn20_build_mapped_resource(dc, context,
--				table->odm_combines[i].stream);
+ 	cpufreq_freq_transition_begin(policy, &freqs);
+ 
+-	switch (relation) {
+-	case CPUFREQ_RELATION_L:
+-		target_pstate = DIV_ROUND_UP(freqs.new, cpu->pstate.scaling);
+-		break;
+-	case CPUFREQ_RELATION_H:
+-		target_pstate = freqs.new / cpu->pstate.scaling;
+-		break;
+-	default:
+-		target_pstate = DIV_ROUND_CLOSEST(freqs.new, cpu->pstate.scaling);
+-		break;
 -	}
+-
++	target_pstate = intel_pstate_freq_to_hwp_rel(cpu, freqs.new, relation);
+ 	target_pstate = intel_cpufreq_update_pstate(policy, target_pstate, false);
  
- 	for (i = 0; i < table->mpc_combine_count; i++)
- 		resource_update_pipes_for_plane_with_slice_count(context,
-diff --git a/drivers/gpu/drm/amd/display/dc/inc/core_types.h b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-index bac1420b1de8..10397d4dfb07 100644
---- a/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
-@@ -205,6 +205,7 @@ struct resource_funcs {
- 	void (*get_panel_config_defaults)(struct dc_panel_config *panel_config);
- 	void (*save_mall_state)(struct dc *dc, struct dc_state *context, struct mall_temp_config *temp_config);
- 	void (*restore_mall_state)(struct dc *dc, struct dc_state *context, struct mall_temp_config *temp_config);
-+	void (*build_pipe_pix_clk_params)(struct pipe_ctx *pipe_ctx);
- };
+ 	freqs.new = target_pstate * cpu->pstate.scaling;
+@@ -2902,7 +2915,7 @@ static unsigned int intel_cpufreq_fast_s
  
- struct audio_support{
--- 
-2.43.0
-
+ 	update_turbo_state();
+ 
+-	target_pstate = DIV_ROUND_UP(target_freq, cpu->pstate.scaling);
++	target_pstate = intel_pstate_freq_to_hwp(cpu, target_freq);
+ 
+ 	target_pstate = intel_cpufreq_update_pstate(policy, target_pstate, true);
+ 
 
 
 
