@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9327F840F3B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F9C841093
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50A64283DB5
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F5782879C3
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B436616419B;
-	Mon, 29 Jan 2024 17:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2772E76C6B;
+	Mon, 29 Jan 2024 17:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="An48pbiE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jk8qbBxg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7215E15AAD4;
-	Mon, 29 Jan 2024 17:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D795576C68;
+	Mon, 29 Jan 2024 17:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548407; cv=none; b=Ua59Fin+wcQGkLCa0kHDQ0kVdPdaUwrBXIB1p5Dp6KGHoDVTbMtvKLxlCAa06zPVR2GEnQjD2Z28yxDl/Md098owKGlQb89pMUToXhsU0S9O2g9R8MKOc86aeh9GY6hidN+tsT/XCVZoHYF0n+SQx/vZfIV+Y7r7R0nJI4kksGk=
+	t=1706548647; cv=none; b=i99NVq0n0KSKyjQwQHVAb0svwE4NY6CVPWRrJVuOLKHXaN1PTT6RV6XxyhRHuAhOMM8hX5jaEXr+3n8Pih8g8Jd71SZLvfWF0GuP+gSEGlLiyqbmz/r4tv8ri/v2a6v3yvkeuvONi4II9dzqOlu873mAjV+v/vFS4IfWq0jTvXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548407; c=relaxed/simple;
-	bh=p4iMLZti5xz54qVS9Nb3HBGYTaXkPP+VAUjJkfqTKs8=;
+	s=arc-20240116; t=1706548647; c=relaxed/simple;
+	bh=6rhfOhyKgu2rE7fiAmlSEUSr3Qjd58i0Dv+lUM0nnOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GbiF9Dp6mbcEqBoVjggxbEPF8PLwFeZBsq1oDAwW1PcSDZQ2TkUbPg36aQs5NX2qwRCQP7CgzauxsgSGo+wJn4FLqc2yqd3rye8Gt+sM6bGeTZTS4c7UhnY6QkHG3PaWTO4pLO0UV4zwFlAHkcnr2oHgKFIW9aQ05uEFDzjCcEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=An48pbiE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C56C433C7;
-	Mon, 29 Jan 2024 17:13:26 +0000 (UTC)
+	 MIME-Version; b=TXsLWUzZ2mCQGjYTA73YR5dj3hVTNyiZlftBmexboe5ED9dQxYfH9eBgIAryWhxnHWz/+x0e0P4FWHsaWt0IpAolT8m2SakLzh4JuqXkgiQeL59z4STWw+Ytcas6Uem2ef68X5WKBfS131hqCZPEPAvonl261bHz7ed8ADAkxPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jk8qbBxg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F201C433B2;
+	Mon, 29 Jan 2024 17:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548406;
-	bh=p4iMLZti5xz54qVS9Nb3HBGYTaXkPP+VAUjJkfqTKs8=;
+	s=korg; t=1706548647;
+	bh=6rhfOhyKgu2rE7fiAmlSEUSr3Qjd58i0Dv+lUM0nnOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=An48pbiEbfCRyZmWs3+m7bcSosrrNGVVhTNU00mf3KXjUzFo8wTSh9qw/2wn3wTso
-	 fp++SfOqxtxIIZw/iBVlIIwzOEtYpBJkHgo4v7Dl8tRQd9ekaFsofPC9prGGmQNwpP
-	 JwH9xuI1K7WkPFOqc3oUBAfHOLOjWXtHLA2DubiU=
+	b=jk8qbBxg3ZztBePQzL8ldU6clRhmz2jrIAW1W5ZM/0NTIvV2jgTtmvpJ/U3BBeMbb
+	 Dr1Vqz/XpFIGZb2JZE4h8NQhknO0wwQeDKNsGxg+QyBajwZeFMabOXFNiky7flElLA
+	 Yn2fZ0GDhv5tiZEdwhDn+CXC/ibO0qiy1unIhg/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pin-yen Lin <treapking@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 166/185] drm/bridge: parade-ps8640: Wait for HPD when doing an AUX transfer
+Subject: [PATCH 6.6 302/331] drm/panel: samsung-s6d7aa0: drop DRM_BUS_FLAG_DE_HIGH for lsl080al02
 Date: Mon, 29 Jan 2024 09:06:06 -0800
-Message-ID: <20240129170003.925820990@linuxfoundation.org>
+Message-ID: <20240129170023.708002175@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-[ Upstream commit 024b32db43a359e0ded3fcc6cd86247cbbed4224 ]
+[ Upstream commit 62b143b5ec4a14e1ae0dede5aabaf1832e3b0073 ]
 
-Unlike what is claimed in commit f5aa7d46b0ee ("drm/bridge:
-parade-ps8640: Provide wait_hpd_asserted() in struct drm_dp_aux"), if
-someone manually tries to do an AUX transfer (like via `i2cdump ${bus}
-0x50 i`) while the panel is off we don't just get a simple transfer
-error. Instead, the whole ps8640 gets thrown for a loop and goes into
-a bad state.
+It turns out that I had misconfigured the device I was using the panel
+with; the bus data polarity is not high for this panel, I had to change
+the config on the display controller's side.
 
-Let's put the function to wait for the HPD (and the magical 50 ms
-after first reset) back in when we're doing an AUX transfer. This
-shouldn't actually make things much slower (assuming the panel is on)
-because we should immediately poll and see the HPD high. Mostly this
-is just an extra i2c transfer to the bridge.
+Fix the panel config to properly reflect its accurate settings.
 
-Fixes: f5aa7d46b0ee ("drm/bridge: parade-ps8640: Provide wait_hpd_asserted() in struct drm_dp_aux")
-Tested-by: Pin-yen Lin <treapking@chromium.org>
-Reviewed-by: Pin-yen Lin <treapking@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231221135548.1.I10f326a9305d57ad32cee7f8d9c60518c8be20fb@changeid
+Fixes: 6810bb390282 ("drm/panel: Add Samsung S6D7AA0 panel controller driver")
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Link: https://lore.kernel.org/r/20240105-tab3-display-fixes-v2-2-904d1207bf6f@gmail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240105-tab3-display-fixes-v2-2-904d1207bf6f@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/parade-ps8640.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/panel/panel-samsung-s6d7aa0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/parade-ps8640.c b/drivers/gpu/drm/bridge/parade-ps8640.c
-index 083337a27966..146e1ad76223 100644
---- a/drivers/gpu/drm/bridge/parade-ps8640.c
-+++ b/drivers/gpu/drm/bridge/parade-ps8640.c
-@@ -354,6 +354,11 @@ static ssize_t ps8640_aux_transfer(struct drm_dp_aux *aux,
- 	int ret;
+diff --git a/drivers/gpu/drm/panel/panel-samsung-s6d7aa0.c b/drivers/gpu/drm/panel/panel-samsung-s6d7aa0.c
+index ea5a85779382..f23d8832a1ad 100644
+--- a/drivers/gpu/drm/panel/panel-samsung-s6d7aa0.c
++++ b/drivers/gpu/drm/panel/panel-samsung-s6d7aa0.c
+@@ -309,7 +309,7 @@ static const struct s6d7aa0_panel_desc s6d7aa0_lsl080al02_desc = {
+ 	.off_func = s6d7aa0_lsl080al02_off,
+ 	.drm_mode = &s6d7aa0_lsl080al02_mode,
+ 	.mode_flags = MIPI_DSI_MODE_VSYNC_FLUSH | MIPI_DSI_MODE_VIDEO_NO_HFP,
+-	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
++	.bus_flags = 0,
  
- 	pm_runtime_get_sync(dev);
-+	ret = _ps8640_wait_hpd_asserted(ps_bridge, 200 * 1000);
-+	if (ret) {
-+		pm_runtime_put_sync_suspend(dev);
-+		return ret;
-+	}
- 	ret = ps8640_aux_transfer_msg(aux, msg);
- 	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
+ 	.has_backlight = false,
+ 	.use_passwd3 = false,
 -- 
 2.43.0
 
