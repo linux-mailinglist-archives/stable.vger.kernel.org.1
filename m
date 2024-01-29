@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-16988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92250840F59
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AA5F840D2E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 486A61F27A94
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44E0A2842F0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD4915DBA3;
-	Mon, 29 Jan 2024 17:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5504A15A4A9;
+	Mon, 29 Jan 2024 17:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X054Oyw3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sv4DqdpK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B47515956B;
-	Mon, 29 Jan 2024 17:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F17B15A4A3;
+	Mon, 29 Jan 2024 17:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548427; cv=none; b=OnMVZlb6tc8tf3Q4ieV5SKE+fFlFSaFzYzACzJhzHhBDhyZ/uM/NWIaHqkuRiFGyGkSNEu+7B3F7cMBYJn16lOVmOb+AZ4CvyKwQNs2MNDLVI/QioOKcRPzRP2YmWfVhUPtzQ/Jh3mvcLydfQZ+AfTzrP+SBe8LT2TXIlqThaJs=
+	t=1706548058; cv=none; b=NsHO5mP3DdzO3/xm5XTNeX49mi/KXTQjdYcnqfbGI9vn/i+tnpXXKkaFbFX12MuDIQUIKoeklSreT718c2lcX7oy25Xvgqq3C9aISao5lkLYvFV5XHa4/JJEt15PTP97UIxDpH1/RiDxPFGT26FMzc+O6EouaNukvgn4ew2usZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548427; c=relaxed/simple;
-	bh=2IKtRSb8S1xpicig3AtGLudMCNrt0EfuochPviUyl00=;
+	s=arc-20240116; t=1706548058; c=relaxed/simple;
+	bh=WmtHhPx4MVzLreOqMslc/qGXOlPvtDeVJ6HKfNQXRFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cq6dQr1O8xZS0dqN+JMaJm+N3UEWHfQq05RrxdjXernRBGG6tJNIoptpBVNhHu0k4Eoxzq/tJKvN/Br69z6qnqsWY1V35F/brPGjhPBsdpvH1WIsjbVxv6vSYS+Xj0bXH0f06He4fmnP7Gh9QTvmL2qmv1+wXqFxvxD2NVSfITI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X054Oyw3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3222C433C7;
-	Mon, 29 Jan 2024 17:13:46 +0000 (UTC)
+	 MIME-Version; b=AG9o37n6C4wxnNAc+Iv0cttyS0Mqlwv1lN1+yXGWinVHgDzT1jgFpRbEA4ExCarOKbNLxiFEm3NU9QoYYkFkh2ZWanE0WOwW8QUaCD4PETWwTeAy2CDV1X8fSkQdN1wbCBjNQRLW2Cy5y+gd9i4IR1NWzyBj8jso9McCt+AiEnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sv4DqdpK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A6BDC43399;
+	Mon, 29 Jan 2024 17:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548427;
-	bh=2IKtRSb8S1xpicig3AtGLudMCNrt0EfuochPviUyl00=;
+	s=korg; t=1706548057;
+	bh=WmtHhPx4MVzLreOqMslc/qGXOlPvtDeVJ6HKfNQXRFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X054Oyw3Gd52GektU0Kdj4SlxJrOYzUK/gMm/amSsaVkflbmRRtuIvzIKjkVMyvSh
-	 eUgf4hV0WzOH15PtTGyuOFawQgVt3dav0P0CX8o38iYXoy7qYayJU7k0Mv7CElYa4o
-	 N44PgIX30IlMn9DM+yqq9AXMPYJcDYkAVxfed4m4=
+	b=Sv4DqdpKAageDZ5+stULUccjzZrjC0JamUKA0GrfWs+axHq1vJLgHw4KIztBcCZ3/
+	 HWVE71LtGl18zye+RHhvITh94nmfetmSwFl8QHCikv4yUEE+GpHGPHslL92vsXBMgv
+	 wZBeS0jK10PIUAL0C7Rb4cBu3pO7FTeVE6VZO/5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 004/331] serial: core: Simplify uart_get_rs485_mode()
+	Tony Krowiak <akrowiak@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.7 037/346] s390/vfio-ap: loop over the shadow APCB when filtering guests AP configuration
 Date: Mon, 29 Jan 2024 09:01:08 -0800
-Message-ID: <20240129170015.093132204@linuxfoundation.org>
+Message-ID: <20240129170017.477748271@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Tony Krowiak <akrowiak@linux.ibm.com>
 
-[ Upstream commit 7cda0b9eb6eb9e761f452e2ef4e81eca20b19938 ]
+commit 16fb78cbf56e42b8efb2682a4444ab59e32e7959 upstream.
 
-Simplify uart_get_rs485_mode() by using temporary variable for
-the GPIO descriptor. With that, use proper type for the flags
-of the GPIO descriptor.
+While filtering the mdev matrix, it doesn't make sense - and will have
+unexpected results - to filter an APID from the matrix if the APID or one
+of the associated APQIs is not in the host's AP configuration. There are
+two reasons for this:
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20231003142346.3072929-1-andriy.shevchenko@linux.intel.com
+1. An adapter or domain that is not in the host's AP configuration can be
+   assigned to the matrix; this is known as over-provisioning. Queue
+   devices, however, are only created for adapters and domains in the
+   host's AP configuration, so there will be no queues associated with an
+   over-provisioned adapter or domain to filter.
+
+2. The adapter or domain may have been externally removed from the host's
+   configuration via an SE or HMC attached to a DPM enabled LPAR. In this
+   case, the vfio_ap device driver would have been notified by the AP bus
+   via the on_config_changed callback and the adapter or domain would
+   have already been filtered.
+
+Since the matrix_mdev->shadow_apcb.apm and matrix_mdev->shadow_apcb.aqm are
+copied from the mdev matrix sans the APIDs and APQIs not in the host's AP
+configuration, let's loop over those bitmaps instead of those assigned to
+the matrix.
+
+Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
+Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Fixes: 48cae940c31d ("s390/vfio-ap: refresh guest's APCB by filtering AP resources assigned to mdev")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240115185441.31526-3-akrowiak@linux.ibm.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 1a33e33ca0e8 ("serial: core: set missing supported flag for RX during TX GPIO")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_core.c | 30 ++++++++++++------------------
- 1 file changed, 12 insertions(+), 18 deletions(-)
+ drivers/s390/crypto/vfio_ap_ops.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-index 18b49b1439a5..021e096bc4ed 100644
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -3572,9 +3572,10 @@ int uart_get_rs485_mode(struct uart_port *port)
- {
- 	struct serial_rs485 *rs485conf = &port->rs485;
- 	struct device *dev = port->dev;
-+	enum gpiod_flags dflags;
-+	struct gpio_desc *desc;
- 	u32 rs485_delay[2];
- 	int ret;
--	int rx_during_tx_gpio_flag;
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -692,8 +692,9 @@ static bool vfio_ap_mdev_filter_matrix(s
+ 	bitmap_and(matrix_mdev->shadow_apcb.aqm, matrix_mdev->matrix.aqm,
+ 		   (unsigned long *)matrix_dev->info.aqm, AP_DOMAINS);
  
- 	if (!(port->rs485_supported.flags & SER_RS485_ENABLED))
- 		return 0;
-@@ -3616,26 +3617,19 @@ int uart_get_rs485_mode(struct uart_port *port)
- 	 * bus participants enable it, no communication is possible at all.
- 	 * Works fine for short cables and users may enable for longer cables.
- 	 */
--	port->rs485_term_gpio = devm_gpiod_get_optional(dev, "rs485-term",
--							GPIOD_OUT_LOW);
--	if (IS_ERR(port->rs485_term_gpio)) {
--		ret = PTR_ERR(port->rs485_term_gpio);
--		port->rs485_term_gpio = NULL;
--		return dev_err_probe(dev, ret, "Cannot get rs485-term-gpios\n");
--	}
-+	desc = devm_gpiod_get_optional(dev, "rs485-term", GPIOD_OUT_LOW);
-+	if (IS_ERR(desc))
-+		return dev_err_probe(dev, PTR_ERR(desc), "Cannot get rs485-term-gpios\n");
-+	port->rs485_term_gpio = desc;
- 	if (port->rs485_term_gpio)
- 		port->rs485_supported.flags |= SER_RS485_TERMINATE_BUS;
- 
--	rx_during_tx_gpio_flag = (rs485conf->flags & SER_RS485_RX_DURING_TX) ?
--				 GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
--	port->rs485_rx_during_tx_gpio = devm_gpiod_get_optional(dev,
--								"rs485-rx-during-tx",
--								rx_during_tx_gpio_flag);
--	if (IS_ERR(port->rs485_rx_during_tx_gpio)) {
--		ret = PTR_ERR(port->rs485_rx_during_tx_gpio);
--		port->rs485_rx_during_tx_gpio = NULL;
--		return dev_err_probe(dev, ret, "Cannot get rs485-rx-during-tx-gpios\n");
--	}
-+	dflags = (rs485conf->flags & SER_RS485_RX_DURING_TX) ?
-+		 GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
-+	desc = devm_gpiod_get_optional(dev, "rs485-rx-during-tx", dflags);
-+	if (IS_ERR(desc))
-+		return dev_err_probe(dev, PTR_ERR(desc), "Cannot get rs485-rx-during-tx-gpios\n");
-+	port->rs485_rx_during_tx_gpio = desc;
- 
- 	return 0;
- }
--- 
-2.43.0
-
+-	for_each_set_bit_inv(apid, matrix_mdev->matrix.apm, AP_DEVICES) {
+-		for_each_set_bit_inv(apqi, matrix_mdev->matrix.aqm, AP_DOMAINS) {
++	for_each_set_bit_inv(apid, matrix_mdev->shadow_apcb.apm, AP_DEVICES) {
++		for_each_set_bit_inv(apqi, matrix_mdev->shadow_apcb.aqm,
++				     AP_DOMAINS) {
+ 			/*
+ 			 * If the APQN is not bound to the vfio_ap device
+ 			 * driver, then we can't assign it to the guest's
 
 
 
