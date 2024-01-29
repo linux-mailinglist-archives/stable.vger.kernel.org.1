@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-16890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AFFA840EDA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF0E784105F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2E56B23217
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DA501C23ACD
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F70161B69;
-	Mon, 29 Jan 2024 17:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEFA15B961;
+	Mon, 29 Jan 2024 17:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjqUu4yu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSJflQlG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBC8161B63;
-	Mon, 29 Jan 2024 17:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5DB15F31A;
+	Mon, 29 Jan 2024 17:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548355; cv=none; b=KhZrPdpCBtQn+SK2wj1AMn9SQt3nwiroLa7ssjQ/s2mlXjYwvO+h2H4D5YLHOT6sMYwrJ3RqGgPe2N3QPg6PV3Hu8MAn2vf6RqR8kGFScYsl74S95Kazt6UPx/TRdRwTZvzCWT/F2wvXt3ncylWZ6exE/2lRPEYQLMIGEfjQStM=
+	t=1706548610; cv=none; b=NtZbTmbdH9+B0cGHmBIuBzYLGjsZmHvjQOci9TPRIxIERd+tMNL6hJTxr/wRJEE1l2Y1xuMh9x59m3wFKJZdQ5zQjkrMdDlgauN3Jk4NOsHdbBgFsFAAbsnDpa25LM0CGYqoe+397P3M94RRSoQqnq8er3zqj5gUx0nZSC/dK4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548355; c=relaxed/simple;
-	bh=8adTff1bp46qknfGYkDavytLZvJUhpVH7Fl21OW6jh4=;
+	s=arc-20240116; t=1706548610; c=relaxed/simple;
+	bh=7M5iQbblwsTFo7lfyCZR+z+xqrMfkeAzpTtULYzY5K0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQQ5SLrsGa/e63jubkUlr/GBigtliw8GvBLIJlfA9ay17wrGUYA6NPXQCFR9Olb5GaCX351SW1Ulng9oEpvW/35mGUX0UDu9zxcFqL2koXR6uV6ziO7fUtzksLTg/Z2JEaxpb2EG1o85LSJLv2NSWOwq2DNREHlX5OhB3XqMJw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjqUu4yu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2208C433F1;
-	Mon, 29 Jan 2024 17:12:34 +0000 (UTC)
+	 MIME-Version; b=H3B46I4Zeu6GbXpy5ZDL9HEcirVEDq7x+zKyqocsHj2gge8lJnFIV+zIFMCevJTSzNi7KnQd6m7xEnDqNYtiTKCV13JSnwGFKwj9xFuCa/KNQI48Oo1Pa9WzKJl9z3JgsBRLi6jYAeHOMiiV3DhN2E9pYommVeUYpG3FAaEXA1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSJflQlG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43FDAC433C7;
+	Mon, 29 Jan 2024 17:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548354;
-	bh=8adTff1bp46qknfGYkDavytLZvJUhpVH7Fl21OW6jh4=;
+	s=korg; t=1706548610;
+	bh=7M5iQbblwsTFo7lfyCZR+z+xqrMfkeAzpTtULYzY5K0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DjqUu4yuy7are70TyI+z2KR96PTgqRE2DfBd/n4CkHNHaP6acdk7zw61bzYEchF3Y
-	 8Cc+mfmRPNHIlG8duRxSoEThWk6jQgDWIyaL3OB33DKBCpl5y7H2wwjOI2LQLUyR5+
-	 7q6mb9nXw728HyymxSAmo0Hljjd9z+9DWR7BvcfA=
+	b=MSJflQlGwE64HpMwvoZNtEOmp4mD12/5Lz2+tOLWtPm3VT2hdqUjotgVDYvkZjXgw
+	 dBUGH9GrosU758e1PhD6wt+1Hi9tXQVE68H8Oj2pZLo+MoBPZP4jRkdSMcXHcDn6ZP
+	 Wy4d4p4akF2QH1BiGDVqCSlpHuc07H8KsK7wk9Po=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+be14ed7728594dc8bd42@syzkaller.appspotmail.com,
-	syzbot+c563a3c79927971f950f@syzkaller.appspotmail.com,
-	Anand Jain <anand.jain@oracle.com>,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 116/185] btrfs: ref-verify: free ref cache before clearing mount opt
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	George Melikov <mail@gmelikov.ru>
+Subject: [PATCH 6.6 252/331] gpiolib: acpi: Ignore touchpad wakeup on GPD G1619-04
 Date: Mon, 29 Jan 2024 09:05:16 -0800
-Message-ID: <20240129170002.324860441@linuxfoundation.org>
+Message-ID: <20240129170022.256172457@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit f03e274a8b29d1d1c1bbd7f764766cb5ca537ab7 upstream.
+commit 805c74eac8cb306dc69b87b6b066ab4da77ceaf1 upstream.
 
-As clearing REF_VERIFY mount option indicates there were some errors in a
-ref-verify process, a ref cache is not relevant anymore and should be
-freed.
+Spurious wakeups are reported on the GPD G1619-04 which
+can be absolved by programming the GPIO to ignore wakeups.
 
-btrfs_free_ref_cache() requires REF_VERIFY option being set so call
-it just before clearing the mount option.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Reported-by: syzbot+be14ed7728594dc8bd42@syzkaller.appspotmail.com
-Fixes: fd708b81d972 ("Btrfs: add a extent ref verify tool")
-CC: stable@vger.kernel.org # 5.4+
-Closes: https://lore.kernel.org/lkml/000000000000e5a65c05ee832054@google.com/
-Reported-by: syzbot+c563a3c79927971f950f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/lkml/0000000000007fe09705fdc6086c@google.com/
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Reported-and-tested-by: George Melikov <mail@gmelikov.ru>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3073
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ref-verify.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpio/gpiolib-acpi.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/fs/btrfs/ref-verify.c
-+++ b/fs/btrfs/ref-verify.c
-@@ -883,8 +883,10 @@ int btrfs_ref_tree_mod(struct btrfs_fs_i
- out_unlock:
- 	spin_unlock(&fs_info->ref_verify_lock);
- out:
--	if (ret)
-+	if (ret) {
-+		btrfs_free_ref_cache(fs_info);
- 		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
-+	}
- 	return ret;
- }
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -1675,6 +1675,20 @@ static const struct dmi_system_id gpioli
+ 			.ignore_interrupt = "INT33FC:00@3",
+ 		},
+ 	},
++	{
++		/*
++		 * Spurious wakeups from TP_ATTN# pin
++		 * Found in BIOS 0.35
++		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3073
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "GPD"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "G1619-04"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_wake = "PNP0C50:00@8",
++		},
++	},
+ 	{} /* Terminating entry */
+ };
  
-@@ -1015,8 +1017,8 @@ int btrfs_build_ref_tree(struct btrfs_fs
- 		}
- 	}
- 	if (ret) {
--		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
- 		btrfs_free_ref_cache(fs_info);
-+		btrfs_clear_opt(fs_info->mount_opt, REF_VERIFY);
- 	}
- 	btrfs_free_path(path);
- 	return ret;
 
 
 
