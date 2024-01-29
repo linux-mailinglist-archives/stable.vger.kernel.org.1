@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26685840F08
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14AA084105E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 928C71F237A6
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3E58287CF8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07F015CD78;
-	Mon, 29 Jan 2024 17:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C66715B970;
+	Mon, 29 Jan 2024 17:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bm60t5DV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TryT6FHo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC867157E8F;
-	Mon, 29 Jan 2024 17:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9F715B961;
+	Mon, 29 Jan 2024 17:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548374; cv=none; b=kZjS/gP5NtZskss9RHfS4WViYxJBLLugHQ2fQD2mT7Km46cWnpvSZNbTHYDVTO26GrDzAuodT1Hp/nlDB+ahPSg/5NvsvQkQenGauRe7hx8QxclPyF1vxovCwkHrXreP2hDBuGodZgGKelGRpH/3G8P4dvr5sg+iZRJoYgp2Xrg=
+	t=1706548609; cv=none; b=grCl/7PC/HPTVOQM4iPQRrwjuTZFOF1RcS/x+JYg0wvRngxLLIMKPuHGB/g30BkCQ+ivdYZ59AzmkrXUzJT0Sb3kR9ru5xnnjGfdxD9WJFrCVi3b4cNFh9jBPakt7KC+QRnUBtmST+VY2xEfRR/01f93EJptaIN7pzTKNWCvREU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548374; c=relaxed/simple;
-	bh=KiNyiMxqhyQQv+/3152hs+nyYeMrwyPUIeBgvNq1DMU=;
+	s=arc-20240116; t=1706548609; c=relaxed/simple;
+	bh=p9P39ACpHVNxeUNfGN7TGSbQTyKkYgAxKQIFb91eNDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gy+S4fPa636WyQ2296fDQqcO9otHIKtIXEcPejq3kmTIYj7ROzEDDZE8brLKxaEb/NRJJdyf5ZJ6NoFneO/UALkH1nMHEGQrcxJSbICQddpedkxsSQBZi5Ii4f1JjRVvH8LDikEi1Pc2UgkKjIhMkiiVhmc9r16FjuwsZwEOUyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bm60t5DV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75761C433F1;
-	Mon, 29 Jan 2024 17:12:54 +0000 (UTC)
+	 MIME-Version; b=QD0j9lZuifqFWZW0ineKhyz6G9DP6vgCbZh4cW9qXPeLkpzmhsm70JcxvLAboa3zzhx9dLcuV9j10sAgADggRVWIuI0ga1YQGAOT8ImzwufXy3LH17lneWfrkWTDti8mrMuwQxm4ofFEeLkGudN9tlyribHDrwsaggey9F1/GAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TryT6FHo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86984C433C7;
+	Mon, 29 Jan 2024 17:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548374;
-	bh=KiNyiMxqhyQQv+/3152hs+nyYeMrwyPUIeBgvNq1DMU=;
+	s=korg; t=1706548609;
+	bh=p9P39ACpHVNxeUNfGN7TGSbQTyKkYgAxKQIFb91eNDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bm60t5DVXLDcT20FutmtkXHK5D65vkqGH6HHwM6dxahrzVDzYNLU0KRT/pBvHIalV
-	 3Qe+gOzjqOKYOvkuEtzdnk1X+IL+PAI0rwPvVZNitJ4f2b5ltC2+KI8U0I9Z0WZ29c
-	 fdmNfSLApygv9rAeIYMlRNmG75tBsyDzve7pSAlk=
+	b=TryT6FHor0LI9jEWmgI+idCg8PUJdAAvXqgE9+Tjw/a0imVchVO2WkNNyJ6XIoZsU
+	 72IxxipDmbZe2ob9dxETcWKFDWOHXsOASspg7VXJpDpUEpYiFwlKjfTIYtAQFhmfUO
+	 ogm2M2VdgmRUrIjPFomFJl04Bub1t2O5PLx3i704=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-	Anand Jain <anand.jain@oracle.com>,
-	Omar Sandoval <osandov@fb.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 115/185] btrfs: avoid copying BTRFS_ROOT_SUBVOL_DEAD flag to snapshot of subvolume being deleted
+	Dave Chinner <dchinner@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chandan Babu R <chandanbabu@kernel.org>
+Subject: [PATCH 6.6 251/331] xfs: read only mounts with fsopen mount API are busted
 Date: Mon, 29 Jan 2024 09:05:15 -0800
-Message-ID: <20240129170002.292630459@linuxfoundation.org>
+Message-ID: <20240129170022.224984412@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +62,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Omar Sandoval <osandov@fb.com>
+From: Dave Chinner <dchinner@redhat.com>
 
-commit 3324d0547861b16cf436d54abba7052e0c8aa9de upstream.
+commit d8d222e09dab84a17bb65dda4b94d01c565f5327 upstream.
 
-Sweet Tea spotted a race between subvolume deletion and snapshotting
-that can result in the root item for the snapshot having the
-BTRFS_ROOT_SUBVOL_DEAD flag set. The race is:
+Recently xfs/513 started failing on my test machines testing "-o
+ro,norecovery" mount options. This was being emitted in dmesg:
 
-Thread 1                                      | Thread 2
-----------------------------------------------|----------
-btrfs_delete_subvolume                        |
-  btrfs_set_root_flags(BTRFS_ROOT_SUBVOL_DEAD)|
-                                              |btrfs_mksubvol
-                                              |  down_read(subvol_sem)
-                                              |  create_snapshot
-                                              |    ...
-                                              |    create_pending_snapshot
-                                              |      copy root item from source
-  down_write(subvol_sem)                      |
+[ 9906.932724] XFS (pmem0): no-recovery mounts must be read-only.
 
-This flag is only checked in send and swap activate, which this would
-cause to fail mysteriously.
+Turns out, readonly mounts with the fsopen()/fsconfig() mount API
+have been busted since day zero. It's only taken 5 years for debian
+unstable to start using this "new" mount API, and shortly after this
+I noticed xfs/513 had started to fail as per above.
 
-create_snapshot() now checks the root refs to reject a deleted
-subvolume, so we can fix this by locking subvol_sem earlier so that the
-BTRFS_ROOT_SUBVOL_DEAD flag and the root refs are updated atomically.
+The syscall trace is:
 
-CC: stable@vger.kernel.org # 4.14+
-Reported-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Reviewed-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Omar Sandoval <osandov@fb.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+fsopen("xfs", FSOPEN_CLOEXEC)           = 3
+mount_setattr(-1, NULL, 0, NULL, 0)     = -1 EINVAL (Invalid argument)
+.....
+fsconfig(3, FSCONFIG_SET_STRING, "source", "/dev/pmem0", 0) = 0
+fsconfig(3, FSCONFIG_SET_FLAG, "ro", NULL, 0) = 0
+fsconfig(3, FSCONFIG_SET_FLAG, "norecovery", NULL, 0) = 0
+fsconfig(3, FSCONFIG_CMD_CREATE, NULL, NULL, 0) = -1 EINVAL (Invalid argument)
+close(3)                                = 0
+
+Showing that the actual mount instantiation (FSCONFIG_CMD_CREATE) is
+what threw out the error.
+
+During mount instantiation, we call xfs_fs_validate_params() which
+does:
+
+        /* No recovery flag requires a read-only mount */
+        if (xfs_has_norecovery(mp) && !xfs_is_readonly(mp)) {
+                xfs_warn(mp, "no-recovery mounts must be read-only.");
+                return -EINVAL;
+        }
+
+and xfs_is_readonly() checks internal mount flags for read only
+state. This state is set in xfs_init_fs_context() from the
+context superblock flag state:
+
+        /*
+         * Copy binary VFS mount flags we are interested in.
+         */
+        if (fc->sb_flags & SB_RDONLY)
+                set_bit(XFS_OPSTATE_READONLY, &mp->m_opstate);
+
+With the old mount API, all of the VFS specific superblock flags
+had already been parsed and set before xfs_init_fs_context() is
+called, so this all works fine.
+
+However, in the brave new fsopen/fsconfig world,
+xfs_init_fs_context() is called from fsopen() context, before any
+VFS superblock have been set or parsed. Hence if we use fsopen(),
+the internal XFS readonly state is *never set*. Hence anything that
+depends on xfs_is_readonly() actually returning true for read only
+mounts is broken if fsopen() has been used to mount the filesystem.
+
+Fix this by moving this internal state initialisation to
+xfs_fs_fill_super() before we attempt to validate the parameters
+that have been set prior to the FSCONFIG_CMD_CREATE call being made.
+
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Fixes: 73e5fff98b64 ("xfs: switch to use the new mount-api")
+cc: stable@vger.kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c |   22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ fs/xfs/xfs_super.c |   27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4689,6 +4689,8 @@ int btrfs_delete_subvolume(struct inode
- 	u64 root_flags;
- 	int ret;
+--- a/fs/xfs/xfs_super.c
++++ b/fs/xfs/xfs_super.c
+@@ -1503,6 +1503,18 @@ xfs_fs_fill_super(
  
-+	down_write(&fs_info->subvol_sem);
+ 	mp->m_super = sb;
+ 
++	/*
++	 * Copy VFS mount flags from the context now that all parameter parsing
++	 * is guaranteed to have been completed by either the old mount API or
++	 * the newer fsopen/fsconfig API.
++	 */
++	if (fc->sb_flags & SB_RDONLY)
++		set_bit(XFS_OPSTATE_READONLY, &mp->m_opstate);
++	if (fc->sb_flags & SB_DIRSYNC)
++		mp->m_features |= XFS_FEAT_DIRSYNC;
++	if (fc->sb_flags & SB_SYNCHRONOUS)
++		mp->m_features |= XFS_FEAT_WSYNC;
 +
- 	/*
- 	 * Don't allow to delete a subvolume with send in progress. This is
- 	 * inside the inode lock so the error handling that has to drop the bit
-@@ -4700,25 +4702,25 @@ int btrfs_delete_subvolume(struct inode
- 		btrfs_warn(fs_info,
- 			   "attempt to delete subvolume %llu during send",
- 			   dest->root_key.objectid);
--		return -EPERM;
-+		ret = -EPERM;
-+		goto out_up_write;
- 	}
- 	if (atomic_read(&dest->nr_swapfiles)) {
- 		spin_unlock(&dest->root_item_lock);
- 		btrfs_warn(fs_info,
- 			   "attempt to delete subvolume %llu with active swapfile",
- 			   root->root_key.objectid);
--		return -EPERM;
-+		ret = -EPERM;
-+		goto out_up_write;
- 	}
- 	root_flags = btrfs_root_flags(&dest->root_item);
- 	btrfs_set_root_flags(&dest->root_item,
- 			     root_flags | BTRFS_ROOT_SUBVOL_DEAD);
- 	spin_unlock(&dest->root_item_lock);
+ 	error = xfs_fs_validate_params(mp);
+ 	if (error)
+ 		return error;
+@@ -1972,6 +1984,11 @@ static const struct fs_context_operation
+ 	.free        = xfs_fs_free,
+ };
  
--	down_write(&fs_info->subvol_sem);
++/*
++ * WARNING: do not initialise any parameters in this function that depend on
++ * mount option parsing having already been performed as this can be called from
++ * fsopen() before any parameters have been set.
++ */
+ static int xfs_init_fs_context(
+ 	struct fs_context	*fc)
+ {
+@@ -2003,16 +2020,6 @@ static int xfs_init_fs_context(
+ 	mp->m_logbsize = -1;
+ 	mp->m_allocsize_log = 16; /* 64k */
+ 
+-	/*
+-	 * Copy binary VFS mount flags we are interested in.
+-	 */
+-	if (fc->sb_flags & SB_RDONLY)
+-		set_bit(XFS_OPSTATE_READONLY, &mp->m_opstate);
+-	if (fc->sb_flags & SB_DIRSYNC)
+-		mp->m_features |= XFS_FEAT_DIRSYNC;
+-	if (fc->sb_flags & SB_SYNCHRONOUS)
+-		mp->m_features |= XFS_FEAT_WSYNC;
 -
- 	ret = may_destroy_subvol(dest);
- 	if (ret)
--		goto out_up_write;
-+		goto out_undead;
+ 	fc->s_fs_info = mp;
+ 	fc->ops = &xfs_context_ops;
  
- 	btrfs_init_block_rsv(&block_rsv, BTRFS_BLOCK_RSV_TEMP);
- 	/*
-@@ -4728,7 +4730,7 @@ int btrfs_delete_subvolume(struct inode
- 	 */
- 	ret = btrfs_subvolume_reserve_metadata(root, &block_rsv, 5, true);
- 	if (ret)
--		goto out_up_write;
-+		goto out_undead;
- 
- 	trans = btrfs_start_transaction(root, 0);
- 	if (IS_ERR(trans)) {
-@@ -4794,15 +4796,17 @@ out_end_trans:
- 	inode->i_flags |= S_DEAD;
- out_release:
- 	btrfs_subvolume_release_metadata(root, &block_rsv);
--out_up_write:
--	up_write(&fs_info->subvol_sem);
-+out_undead:
- 	if (ret) {
- 		spin_lock(&dest->root_item_lock);
- 		root_flags = btrfs_root_flags(&dest->root_item);
- 		btrfs_set_root_flags(&dest->root_item,
- 				root_flags & ~BTRFS_ROOT_SUBVOL_DEAD);
- 		spin_unlock(&dest->root_item_lock);
--	} else {
-+	}
-+out_up_write:
-+	up_write(&fs_info->subvol_sem);
-+	if (!ret) {
- 		d_invalidate(dentry);
- 		btrfs_prune_dentries(dest);
- 		ASSERT(dest->send_in_progress == 0);
 
 
 
