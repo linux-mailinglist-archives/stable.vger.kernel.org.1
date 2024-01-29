@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-17070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6D4840FB5
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E63840D80
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96E1428336C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BB471F2CBCE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5BC6FE18;
-	Mon, 29 Jan 2024 17:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41F115B300;
+	Mon, 29 Jan 2024 17:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UR7Xk7xI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gG19gV8q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06DF6FDE1;
-	Mon, 29 Jan 2024 17:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8223C1586D6;
+	Mon, 29 Jan 2024 17:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548488; cv=none; b=VtPrrpv2KQm9VsAOzfjkJaDKAvOTB5LAQhrWTZr/lfCL+nQu+OBNIzm2gxwIEWE/VRuoJNdDQ17hE9V35tGYeA5nyhJOdaOdPlsEcNyIKQTEUfBX15MiZIeAr2aczLYdmD7GWNS+jPlRCs+82NH36CdQeJq06y52m6qyr+k1pe0=
+	t=1706548116; cv=none; b=cif4eHFVeHsLaC0evBzY80CJRg6ghcUzhRKmLNThIyUjSkhNeG5i/q/qCHInD/oRR2WJKu5TyySOC8TW00v5d+jAMeacXYKEtEPk04B0bdi919Z/Nb9RcUNFsI2//3V8zVZeM0pYrywm6jXglWKF4OwVHq19WE90FYCPJBgQw8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548488; c=relaxed/simple;
-	bh=UAEljXYAKIUGv92ea0PV6H2s8jUCJ8TG6X5fY1kBwHY=;
+	s=arc-20240116; t=1706548116; c=relaxed/simple;
+	bh=YWPH44guJVNUtyT8XkxbC3KjneDARdh91KetVQ67CBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IBhK0NqmLEUhUdxe2sd7zxwxhNJi9t/cDFk+9ySoGmOgTiFu8xzfkj+lltWf7eGcJqNN7lhdt03SOGi1l1AP1BR3HVkyr7IqGlPT+++qH6uauA0XvUClepa8CjYvxsJODinNYhx2s33lVj3EYOTj14nmLOTRDA9c/l9cNVR8DHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UR7Xk7xI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6189EC433C7;
-	Mon, 29 Jan 2024 17:14:47 +0000 (UTC)
+	 MIME-Version; b=F9SCr5/Gtcl0XqbDZ0/8Dvdur3z6xLa0m8Sm5WQ1sq5qiEGBsJNcbP1cDjBVNlC2r79ytjo3Qu8Je0SkkJ1lCM23UTA9FYYShi/ECa8PnqAw9fx2NQbJzk3+NJeKt4iL4zVi5CYl0/eVBzzX6ESbZfKo7PakSgpMoyS8H5NKB9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gG19gV8q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF24C43390;
+	Mon, 29 Jan 2024 17:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548487;
-	bh=UAEljXYAKIUGv92ea0PV6H2s8jUCJ8TG6X5fY1kBwHY=;
+	s=korg; t=1706548116;
+	bh=YWPH44guJVNUtyT8XkxbC3KjneDARdh91KetVQ67CBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UR7Xk7xIwpD4Wi6g592AFAIrPANIdR4ygdIGjREk8g7/rVx/okgX3jESr7KYUY6Th
-	 FJNh92jp0W6G8pKZggrcJC0zZMA49FhF2rL1gDrvQiSgnyq0KaGISpPQNtmTXso5/3
-	 oel9iiW6iSDHEJkYltlpAO5yi197pgsKaaGp/0YU=
+	b=gG19gV8q2yijR1/AYNHxJKU6iO664kZzJdcIHxmm8nQH1eXUX2MNxw12rCIuIdpCP
+	 QlPQRc27+fsYXmk1mG3Jmr1PctNx7/UB11dk1JnDWdmMrVOvtGgYZDICm92FzM6KW6
+	 M/uNrjp/LOCZa1FzIvoezaDoXVLCbfBPm7oLRuGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 083/331] arm64: dts: qcom: sdm845: fix USB wakeup interrupt types
+	Ma Wupeng <mawupeng1@huawei.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.7 116/346] efi: disable mirror feature during crashkernel
 Date: Mon, 29 Jan 2024 09:02:27 -0800
-Message-ID: <20240129170017.359380919@linuxfoundation.org>
+Message-ID: <20240129170019.804079935@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Ma Wupeng <mawupeng1@huawei.com>
 
-commit 84ad9ac8d9ca29033d589e79a991866b38e23b85 upstream.
+commit 7ea6ec4c25294e8bc8788148ef854df92ee8dc5e upstream.
 
-The DP/DM wakeup interrupts are edge triggered and which edge to trigger
-on depends on use-case and whether a Low speed or Full/High speed device
-is connected.
+If the system has no mirrored memory or uses crashkernel.high while
+kernelcore=mirror is enabled on the command line then during crashkernel,
+there will be limited mirrored memory and this usually leads to OOM.
 
-Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
-Cc: stable@vger.kernel.org      # 4.20
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231120164331.8116-9-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+To solve this problem, disable the mirror feature during crashkernel.
+
+Link: https://lkml.kernel.org/r/20240109041536.3903042-1-mawupeng1@huawei.com
+Signed-off-by: Ma Wupeng <mawupeng1@huawei.com>
+Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/mm_init.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -4086,8 +4086,8 @@
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -26,6 +26,7 @@
+ #include <linux/pgtable.h>
+ #include <linux/swap.h>
+ #include <linux/cma.h>
++#include <linux/crash_dump.h>
+ #include "internal.h"
+ #include "slab.h"
+ #include "shuffle.h"
+@@ -381,6 +382,11 @@ static void __init find_zone_movable_pfn
+ 			goto out;
+ 		}
  
- 			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 488 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 489 IRQ_TYPE_LEVEL_HIGH>;
-+				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
-+				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
- 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
- 
-@@ -4137,8 +4137,8 @@
- 
- 			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 490 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 491 IRQ_TYPE_LEVEL_HIGH>;
-+				     <GIC_SPI 490 IRQ_TYPE_EDGE_BOTH>,
-+				     <GIC_SPI 491 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
- 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
- 
++		if (is_kdump_kernel()) {
++			pr_warn("The system is under kdump, ignore kernelcore=mirror.\n");
++			goto out;
++		}
++
+ 		for_each_mem_region(r) {
+ 			if (memblock_is_mirror(r))
+ 				continue;
 
 
 
