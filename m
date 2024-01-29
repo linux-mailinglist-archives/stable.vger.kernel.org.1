@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-16748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28B94840E41
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A483840FFF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AE3228348B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ADCC1F23A32
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6B715B302;
-	Mon, 29 Jan 2024 17:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FD17375D;
+	Mon, 29 Jan 2024 17:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/tnNlIY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Drsm4PE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE184157E62;
-	Mon, 29 Jan 2024 17:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078F173722;
+	Mon, 29 Jan 2024 17:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548251; cv=none; b=esemAJtbkEdE+lHLzUB6sD4ezV8Vd1kdAC86ylE3XH3j791cimjZEDFzIcJL/lkTA4fDfNZqeIaTvJk2W5jf25GBpAVmoU7hJH29u+6kbqH9tQAJDJiTSbMVhku4VkIpNOxvK5SZAf4BxpWRJZTk7qE6CxqpyzAwY0Jz/eaCssI=
+	t=1706548542; cv=none; b=Ddq+KEDuc+WxQ+SOnWf4/+Y6qyLKrmNP41XFWNCvVhdjRw5ygT0zlGUPP4cp9+DmggmfpBWF2oxysb3WMpEqmOBqp37zU8lFOtbreFIMe8UAwCBMCPt2tzkZsSi8qYLM0veqYHxWRaSSD5Qso5JDgwwSVGSmB2utWusGFfnGvXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548251; c=relaxed/simple;
-	bh=Yn7ChgCOZLvUnf7bETd7/5Fd6gnbxnMRJy/nLyz8L0E=;
+	s=arc-20240116; t=1706548542; c=relaxed/simple;
+	bh=Ro3ezqEO/v4qh6u1z0ccaa14AwRwwAUoHB4VGrAiCkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CeBh//t6nfMqp7xwZAmzFDLHtOk7cy4/KTqg7kC/vcS+sh5GSh8gu3gGFh2DJBvWQa5k0oH+J/8yEhGY5oomLMjHam0wTnHQQ2i0ki/guH9JuWloTik6IqM8uus4eIYZx93Z9t3JZR0Lzt4POCtGflLehmopTt+0TTI1ER2aMKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/tnNlIY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CA5C43394;
-	Mon, 29 Jan 2024 17:10:50 +0000 (UTC)
+	 MIME-Version; b=Bu3ULXpF+4gaXYWeZSJQRUmIXoQ77ELvXe0/4bRBvyTIDlxWFxaATo3Ve5JFfCi7TCsGoAC7A6Iz55HwVP7+c6cPiPv95YeamX/Gd7auR7YrLWOcswFeeA5oipizmM7TB4TxlBYP98PAtohzWvXwGcR4zVwm61uwQAczuyUKFec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Drsm4PE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1FFBC433F1;
+	Mon, 29 Jan 2024 17:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548250;
-	bh=Yn7ChgCOZLvUnf7bETd7/5Fd6gnbxnMRJy/nLyz8L0E=;
+	s=korg; t=1706548541;
+	bh=Ro3ezqEO/v4qh6u1z0ccaa14AwRwwAUoHB4VGrAiCkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W/tnNlIYOjIHrMDL00iJHH3iQD0StPmWfbL5ig7R5IBiOMYQPC50tywtBiyRprBqr
-	 X3o5BhxWvUHqGVLGIMX5+ADE5rrJYf68nXcpx2MhZO05Db5GtvGaHHoSwwuKLU5YK3
-	 A3w2iCzi/COUn1kJxXPsqdHRJXGGaOCD+lKLMa8o=
+	b=Drsm4PE7HnJQVrfB9m4Ww+QAFmpN0SgymOgyxIFzhMDa8rsmXM5sEn/xHfgmOgbNw
+	 ojQVAg0O3Va7ptgUUK4MiKP3du0YJVNikFZumbyMEp7maGUGZwLuwb5Pt+c06iOJeC
+	 CqszRURyO5FcE+sTwnZ9iPfcdhbN9vYUp0JBgWTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH 6.1 046/185] media: mtk-jpeg: Fix use after free bug due to error path handling in mtk_jpeg_dec_device_run
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 182/331] net/rds: Fix UBSAN: array-index-out-of-bounds in rds_cmsg_recv
 Date: Mon, 29 Jan 2024 09:04:06 -0800
-Message-ID: <20240129170000.064916330@linuxfoundation.org>
+Message-ID: <20240129170020.228683626@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Sharath Srinivasan <sharath.srinivasan@oracle.com>
 
-commit 206c857dd17d4d026de85866f1b5f0969f2a109e upstream.
+[ Upstream commit 13e788deb7348cc88df34bed736c3b3b9927ea52 ]
 
-In mtk_jpeg_probe, &jpeg->job_timeout_work is bound with
-mtk_jpeg_job_timeout_work.
+Syzcaller UBSAN crash occurs in rds_cmsg_recv(),
+which reads inc->i_rx_lat_trace[j + 1] with index 4 (3 + 1),
+but with array size of 4 (RDS_RX_MAX_TRACES).
+Here 'j' is assigned from rs->rs_rx_trace[i] and in-turn from
+trace.rx_trace_pos[i] in rds_recv_track_latency(),
+with both arrays sized 3 (RDS_MSG_RX_DGRAM_TRACE_MAX). So fix the
+off-by-one bounds check in rds_recv_track_latency() to prevent
+a potential crash in rds_cmsg_recv().
 
-In mtk_jpeg_dec_device_run, if error happens in
-mtk_jpeg_set_dec_dst, it will finally start the worker while
-mark the job as finished by invoking v4l2_m2m_job_finish.
+Found by syzcaller:
+=================================================================
+UBSAN: array-index-out-of-bounds in net/rds/recv.c:585:39
+index 4 is out of range for type 'u64 [4]'
+CPU: 1 PID: 8058 Comm: syz-executor228 Not tainted 6.6.0-gd2f51b3516da #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+BIOS 1.15.0-1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x136/0x150 lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:217 [inline]
+ __ubsan_handle_out_of_bounds+0xd5/0x130 lib/ubsan.c:348
+ rds_cmsg_recv+0x60d/0x700 net/rds/recv.c:585
+ rds_recvmsg+0x3fb/0x1610 net/rds/recv.c:716
+ sock_recvmsg_nosec net/socket.c:1044 [inline]
+ sock_recvmsg+0xe2/0x160 net/socket.c:1066
+ __sys_recvfrom+0x1b6/0x2f0 net/socket.c:2246
+ __do_sys_recvfrom net/socket.c:2264 [inline]
+ __se_sys_recvfrom net/socket.c:2260 [inline]
+ __x64_sys_recvfrom+0xe0/0x1b0 net/socket.c:2260
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x40/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+==================================================================
 
-There are two methods to trigger the bug. If we remove the
-module, it which will call mtk_jpeg_remove to make cleanup.
-The possible sequence is as follows, which will cause a
-use-after-free bug.
-
-CPU0                  CPU1
-mtk_jpeg_dec_...    |
-  start worker	    |
-                    |mtk_jpeg_job_timeout_work
-mtk_jpeg_remove     |
-  v4l2_m2m_release  |
-    kfree(m2m_dev); |
-                    |
-                    | v4l2_m2m_get_curr_priv
-                    |   m2m_dev->curr_ctx //use
-
-If we close the file descriptor, which will call mtk_jpeg_release,
-it will have a similar sequence.
-
-Fix this bug by starting timeout worker only if started jpegdec worker
-successfully. Then v4l2_m2m_job_finish will only be called in
-either mtk_jpeg_job_timeout_work or mtk_jpeg_dec_device_run.
-
-Fixes: b2f0d2724ba4 ("[media] vcodec: mediatek: Add Mediatek JPEG Decoder Driver")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3289025aedc0 ("RDS: add receive message trace used by application")
+Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Closes: https://lore.kernel.org/linux-rdma/CALGdzuoVdq-wtQ4Az9iottBqC5cv9ZhcE5q8N7LfYFvkRsOVcw@mail.gmail.com/
+Signed-off-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/rds/af_rds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-@@ -974,13 +974,13 @@ static void mtk_jpeg_dec_device_run(void
- 	if (ret < 0)
- 		goto dec_end;
+diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
+index 01c4cdfef45d..8435a20968ef 100644
+--- a/net/rds/af_rds.c
++++ b/net/rds/af_rds.c
+@@ -419,7 +419,7 @@ static int rds_recv_track_latency(struct rds_sock *rs, sockptr_t optval,
  
--	schedule_delayed_work(&jpeg->job_timeout_work,
--			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
--
- 	mtk_jpeg_set_dec_src(ctx, &src_buf->vb2_buf, &bs);
- 	if (mtk_jpeg_set_dec_dst(ctx, &jpeg_src_buf->dec_param, &dst_buf->vb2_buf, &fb))
- 		goto dec_end;
- 
-+	schedule_delayed_work(&jpeg->job_timeout_work,
-+			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
-+
- 	spin_lock_irqsave(&jpeg->hw_lock, flags);
- 	mtk_jpeg_dec_reset(jpeg->reg_base);
- 	mtk_jpeg_dec_set_config(jpeg->reg_base,
+ 	rs->rs_rx_traces = trace.rx_traces;
+ 	for (i = 0; i < rs->rs_rx_traces; i++) {
+-		if (trace.rx_trace_pos[i] > RDS_MSG_RX_DGRAM_TRACE_MAX) {
++		if (trace.rx_trace_pos[i] >= RDS_MSG_RX_DGRAM_TRACE_MAX) {
+ 			rs->rs_rx_traces = 0;
+ 			return -EFAULT;
+ 		}
+-- 
+2.43.0
+
 
 
 
