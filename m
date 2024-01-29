@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-16584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF49840D94
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D99E840FC4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95C3BB263CC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AA1F28320C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7926215A49E;
-	Mon, 29 Jan 2024 17:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D547315EA80;
+	Mon, 29 Jan 2024 17:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5KZlUOq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BjMGqtKo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F7615A48D;
-	Mon, 29 Jan 2024 17:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9478D157E61;
+	Mon, 29 Jan 2024 17:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548128; cv=none; b=YOLMBo3OC/SuD30IoG0usGOrmUmrXEPlytFaQUih9UP4WtQ5pOYvyO+etFh4c+srIZNiG5aeQDfV48vteZFk/bxNP2WdpJaddW4GlwmfSDzxKisvFT0LnUxY/qTSQJndolDQCf2gjrLS7nq7Jtf2Zds2TD0uTe6elvU6Ak+PVeY=
+	t=1706548498; cv=none; b=IgcQqU5mZFzU8/+WvO6Tjvu45oqqly6EK5rACKD3JReugVSZ1ujSXjv+ex4gbzii7FZ21Kj4MEINJ7ji2U62LTNO74B78UUER2ELVXLzt8GoSqeGgz+jNft88q2NwfA3O6hwWReNPEnI4QpgI7w/Ur4OWi9e6LG3JPwwHX1GNes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548128; c=relaxed/simple;
-	bh=kJ/W6XWY64Ng0EMP+F9FlVB4A8754ZF0XVMUzAOaCOs=;
+	s=arc-20240116; t=1706548498; c=relaxed/simple;
+	bh=bwFl4hcqTGuoAKvE9+ldnMspZbXmTu5rLx25zgLGPD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G4QPqrQKilcITYod5YSqL87nEWgztrT5ddJduyjSRS3JSQ8wVWVC6n40Ke+hlqmfVc13/yVOawUFIm0lES6hdmYXz0/dQkDF2apzsWqDgY3WhQkUz53d3ng0Rpiobn95wftFvGJ7vrkxnsN0WvO2KKUHhgNMrMZ8h2E+UabM0BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5KZlUOq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FC1C43601;
-	Mon, 29 Jan 2024 17:08:47 +0000 (UTC)
+	 MIME-Version; b=TSV6/ZTgIrfijxsysbxETeIpcz+To7l8djk/KPqdwnwghnm6K8CEtl+3yx1n9Ib2btT49EH+1h+osjSCHZ3KFy+WVhmGC40ApuhNv15uKQMOaEN699WuF2qW6XWd9xKJ466v8NpH+veYXAoJYC1O45Lpx50qu5zMzh2fm0Atuec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BjMGqtKo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA49C433F1;
+	Mon, 29 Jan 2024 17:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548128;
-	bh=kJ/W6XWY64Ng0EMP+F9FlVB4A8754ZF0XVMUzAOaCOs=;
+	s=korg; t=1706548498;
+	bh=bwFl4hcqTGuoAKvE9+ldnMspZbXmTu5rLx25zgLGPD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5KZlUOqA1EQjlUHqWjk030U1T4tUwnU82ty9h0yrVHw6n7dcHZEfnSgKtZAULd+l
-	 jNYO1D0b0Fk/NL+4W7cds8yVXzYwaRbYequYdgrnHLf+MPcE7XpLp6iit/Ukn1Pg4a
-	 fwVCFfx9XR7yTzcuwNW890roYzt+t5d9mDtPwEh8=
+	b=BjMGqtKov9vn1fcsOz8dprLjPRPxT9cPD7HVjeIUn7MUJ6F0hRHxOXTi/7FS37iFN
+	 dU9F9zprwalrp7h5nS3apKVRyNZxxsyhm9zX6+8PO1epG3PxLtqgwSn/3uGD42TOqm
+	 +hvq+Z4ofT8rQZC0JgrI97oRLWhDoCjES8pU+nnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Jesse Brandeburg <jesse.brandeburg@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 157/346] idpf: distinguish vports by the dev_port attribute
-Date: Mon, 29 Jan 2024 09:03:08 -0800
-Message-ID: <20240129170021.029359026@linuxfoundation.org>
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 125/331] mm/rmap: fix misplaced parenthesis of a likely()
+Date: Mon, 29 Jan 2024 09:03:09 -0800
+Message-ID: <20240129170018.593253783@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 359724fa3ab79fbe9f42c6263cddc2afae32eef3 ]
+commit f67f8d4a8c1e1ebc85a6cbdb9a7266f14863461c upstream.
 
-idpf registers multiple netdevs (virtual ports) for one PCI function,
-but it does not provide a way for userspace to distinguish them with
-sysfs attributes. Per Documentation/ABI/testing/sysfs-class-net, it is
-a bug not to set dev_port for independent ports on the same PCI bus,
-device and function.
+Running my yearly branch profiler to see where likely/unlikely annotation
+may be added or removed, I discovered this:
 
-Without dev_port set, systemd-udevd's default naming policy attempts
-to assign the same name ("ens2f0") to all four idpf netdevs on my test
-system and obviously fails, leaving three of them with the initial
-eth<N> name.
+correct incorrect  %        Function                  File              Line
+ ------- ---------  -        --------                  ----              ----
+       0   457918 100 page_try_dup_anon_rmap         rmap.h               264
+[..]
+  458021        0   0 page_try_dup_anon_rmap         rmap.h               265
 
-With this patch, systemd-udevd is able to assign unique names to the
-netdevs (e.g. "ens2f0", "ens2f0d1", "ens2f0d2", "ens2f0d3").
+I thought it was interesting that line 264 of rmap.h had a 100% incorrect
+annotation, but the line directly below it was 100% correct. Looking at the
+code:
 
-The Intel-provided out-of-tree idpf driver already sets dev_port. In
-this patch I chose to do it in the same place in the idpf_cfg_netdev
-function.
+	if (likely(!is_device_private_page(page) &&
+	    unlikely(page_needs_cow_for_dma(vma, page))))
 
-Fixes: 0fe45467a104 ("idpf: add create vport and netdev configuration")
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
-Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It didn't make sense. The "likely()" was around the entire if statement
+(not just the "!is_device_private_page(page)"), which also included the
+"unlikely()" portion of that if condition.
+
+If the unlikely portion is unlikely to be true, that would make the entire
+if condition unlikely to be true, so it made no sense at all to say the
+entire if condition is true.
+
+What is more likely to be likely is just the first part of the if statement
+before the && operation. It's likely to be a misplaced parenthesis. And
+after making the if condition broken into a likely() && unlikely(), both
+now appear to be correct!
+
+Link: https://lkml.kernel.org/r/20231201145936.5ddfdb50@gandalf.local.home
+Fixes:fb3d824d1a46c ("mm/rmap: split page_dup_rmap() into page_dup_file_rmap() and page_try_dup_anon_rmap()")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_lib.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/linux/rmap.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index 19809b0ddcd9..0241e498cc20 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -783,6 +783,8 @@ static int idpf_cfg_netdev(struct idpf_vport *vport)
- 	/* setup watchdog timeout value to be 5 second */
- 	netdev->watchdog_timeo = 5 * HZ;
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -261,8 +261,8 @@ static inline int page_try_dup_anon_rmap
+ 	 * guarantee the pinned page won't be randomly replaced in the
+ 	 * future on write faults.
+ 	 */
+-	if (likely(!is_device_private_page(page) &&
+-	    unlikely(page_needs_cow_for_dma(vma, page))))
++	if (likely(!is_device_private_page(page)) &&
++	    unlikely(page_needs_cow_for_dma(vma, page)))
+ 		return -EBUSY;
  
-+	netdev->dev_port = idx;
-+
- 	/* configure default MTU size */
- 	netdev->min_mtu = ETH_MIN_MTU;
- 	netdev->max_mtu = vport->max_mtu;
--- 
-2.43.0
-
+ 	ClearPageAnonExclusive(page);
 
 
 
