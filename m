@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-17225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30F7A841053
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F502840EF9
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 642111C23A63
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4D5E1F2212F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE717561A;
-	Mon, 29 Jan 2024 17:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E9015CD79;
+	Mon, 29 Jan 2024 17:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bcOJ2bbz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNe5Qfqd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F63755F1;
-	Mon, 29 Jan 2024 17:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FCE1586C5;
+	Mon, 29 Jan 2024 17:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548602; cv=none; b=rFcmPBi9OT5S5uFWiGZ4HH+z7nnWhF50BFzcuySU8p3D/MvIWeLDC80xHYNdRLGW4Ff4I3bKeOeF1KwIhiBc4mVXhgyukfiVahCjHFn5jjtEJlTrFNsJshgYETmHjlIsLK/d8xOLl7dKLIUGRTO5qR2txIo28vRS25YQtQPedB4=
+	t=1706548365; cv=none; b=PN1QUk2I1mKMdQgc9bsweaUP9BcrLHLjNFYGQxCUVstSKuKOE342SCwMfhcwGnPP4tzQx9DQi/LSLCtRGz6wrHGvxV6LC4zjr8sb7UjIoAc8Jz/91TQWPYHEruXrh5rMVTEmru2Ocbh6G8pofi79fAYGcYibQvFpVUlXoD+TSSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548602; c=relaxed/simple;
-	bh=MpelEEXapeUJWGM2dzKa6l2kTgwm5fMgd/D/ji9toVU=;
+	s=arc-20240116; t=1706548365; c=relaxed/simple;
+	bh=MlUiS0xK7u6PqzLH936oVRlvPzK9G85j64ZH4PfRAiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oPuUnGv5Lz6+y2bT2P63sDjLX1BuuIGVqW/Zc3aeZgOSxpNBcyAN9IbdXMdu+7T38FZYbHDmMeZgNc7SvxYXrcSafZ9V8rgI+W4YHIv4nafzRKIkGfkOUKjb+MvydR+ghEX/j5pAuIcBVZyicWxhCLMkKmmh2td/l1T1i0tZe5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcOJ2bbz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F36DC43390;
-	Mon, 29 Jan 2024 17:16:42 +0000 (UTC)
+	 MIME-Version; b=sYn9JbpTzRukMRYs5wQOGizCOujA8t6Z/8YAOEj7hfJevvjmwkZn58G8V53TtFnV+wjRID98u1stQR9qk5fr6LTN9y3McJaZjsee+UorlZ14MQV9YsDxj6ikgWROklqExgwAl7qYEsanShv0r1JOLUM6KauLnVBpeJpKnD5E1po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aNe5Qfqd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A8CC43394;
+	Mon, 29 Jan 2024 17:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548602;
-	bh=MpelEEXapeUJWGM2dzKa6l2kTgwm5fMgd/D/ji9toVU=;
+	s=korg; t=1706548365;
+	bh=MlUiS0xK7u6PqzLH936oVRlvPzK9G85j64ZH4PfRAiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bcOJ2bbzGYiN1uho/KPpuc4/olackbWVOTjKPupyZ5UtaTbNpYSczhuw/1EHY4O2m
-	 UHHa4+pkDDBvxSI5emBdikDezpthDFlXJe/5kJ30hBKfxLzeW8a03b9aK3gSQT/LIe
-	 Cmz3/dfzhg/XaJ/LYbBpf4Dia9FDFAtE4wmRil5Q=
+	b=aNe5QfqdnCqHJsfM6S/g2JyC9RBieFwsPq7vO81t/9nvkLtuncGSs3PkE7epBPWh+
+	 WsrE0/iwgBv3fIVZWxrjL84fBI44wSJ5hfhFu2Mgnx3GtOUGJmSCiOgXSUnvnpO8Pm
+	 aj3ZBwgBfymAG9Bw2L6n+3Wa+9KLqy0Joo/0DyuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Robert Foss <rfoss@kernel.org>
-Subject: [PATCH 6.6 265/331] drm/bridge: nxp-ptn3460: simplify some error checking
+	Xinglong Yang <xinglong.yang@cixtech.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 6.1 129/185] firmware: arm_scmi: Check mailbox/SMT channel for consistency
 Date: Mon, 29 Jan 2024 09:05:29 -0800
-Message-ID: <20240129170022.619408075@linuxfoundation.org>
+Message-ID: <20240129170002.727685897@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-commit 28d3d0696688154cc04983f343011d07bf0508e4 upstream.
+commit 437a310b22244d4e0b78665c3042e5d1c0f45306 upstream.
 
-The i2c_master_send/recv() functions return negative error codes or
-they return "len" on success.  So the error handling here can be written
-as just normal checks for "if (ret < 0) return ret;".  No need to
-complicate things.
+On reception of a completion interrupt the shared memory area is accessed
+to retrieve the message header at first and then, if the message sequence
+number identifies a transaction which is still pending, the related
+payload is fetched too.
 
-Btw, in this code the "len" parameter can never be zero, but even if
-it were, then I feel like this would still be the best way to write it.
+When an SCMI command times out the channel ownership remains with the
+platform until eventually a late reply is received and, as a consequence,
+any further transmission attempt remains pending, waiting for the channel
+to be relinquished by the platform.
 
-Fixes: 914437992876 ("drm/bridge: nxp-ptn3460: fix i2c_master_send() error checking")
-Suggested-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/04242630-42d8-4920-8c67-24ac9db6b3c9@moroto.mountain
+Once that late reply is received the channel ownership is given back
+to the agent and any pending request is then allowed to proceed and
+overwrite the SMT area of the just delivered late reply; then the wait
+for the reply to the new request starts.
+
+It has been observed that the spurious IRQ related to the late reply can
+be wrongly associated with the freshly enqueued request: when that happens
+the SCMI stack in-flight lookup procedure is fooled by the fact that the
+message header now present in the SMT area is related to the new pending
+transaction, even though the real reply has still to arrive.
+
+This race-condition on the A2P channel can be detected by looking at the
+channel status bits: a genuine reply from the platform will have set the
+channel free bit before triggering the completion IRQ.
+
+Add a consistency check to validate such condition in the A2P ISR.
+
+Reported-by: Xinglong Yang <xinglong.yang@cixtech.com>
+Closes: https://lore.kernel.org/all/PUZPR06MB54981E6FA00D82BFDBB864FBF08DA@PUZPR06MB5498.apcprd06.prod.outlook.com/
+Fixes: 5c8a47a5a91d ("firmware: arm_scmi: Make scmi core independent of the transport type")
+Cc: stable@vger.kernel.org # 5.15+
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Tested-by: Xinglong Yang <xinglong.yang@cixtech.com>
+Link: https://lore.kernel.org/r/20231220172112.763539-1-cristian.marussi@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/nxp-ptn3460.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/firmware/arm_scmi/common.h  |    1 +
+ drivers/firmware/arm_scmi/mailbox.c |   14 ++++++++++++++
+ drivers/firmware/arm_scmi/shmem.c   |    6 ++++++
+ 3 files changed, 21 insertions(+)
 
---- a/drivers/gpu/drm/bridge/nxp-ptn3460.c
-+++ b/drivers/gpu/drm/bridge/nxp-ptn3460.c
-@@ -54,15 +54,15 @@ static int ptn3460_read_bytes(struct ptn
- 	int ret;
+--- a/drivers/firmware/arm_scmi/common.h
++++ b/drivers/firmware/arm_scmi/common.h
+@@ -244,6 +244,7 @@ void shmem_fetch_notification(struct scm
+ void shmem_clear_channel(struct scmi_shared_mem __iomem *shmem);
+ bool shmem_poll_done(struct scmi_shared_mem __iomem *shmem,
+ 		     struct scmi_xfer *xfer);
++bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem);
  
- 	ret = i2c_master_send(ptn_bridge->client, &addr, 1);
--	if (ret <= 0) {
-+	if (ret < 0) {
- 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
--		return ret ?: -EIO;
-+		return ret;
- 	}
+ /* declarations for message passing transports */
+ struct scmi_msg_payld;
+--- a/drivers/firmware/arm_scmi/mailbox.c
++++ b/drivers/firmware/arm_scmi/mailbox.c
+@@ -43,6 +43,20 @@ static void rx_callback(struct mbox_clie
+ {
+ 	struct scmi_mailbox *smbox = client_to_scmi_mailbox(cl);
  
- 	ret = i2c_master_recv(ptn_bridge->client, buf, len);
--	if (ret != len) {
-+	if (ret < 0) {
- 		DRM_ERROR("Failed to recv i2c data, ret=%d\n", ret);
--		return ret < 0 ? ret : -EIO;
-+		return ret;
- 	}
++	/*
++	 * An A2P IRQ is NOT valid when received while the platform still has
++	 * the ownership of the channel, because the platform at first releases
++	 * the SMT channel and then sends the completion interrupt.
++	 *
++	 * This addresses a possible race condition in which a spurious IRQ from
++	 * a previous timed-out reply which arrived late could be wrongly
++	 * associated with the next pending transaction.
++	 */
++	if (cl->knows_txdone && !shmem_channel_free(smbox->shmem)) {
++		dev_warn(smbox->cinfo->dev, "Ignoring spurious A2P IRQ !\n");
++		return;
++	}
++
+ 	scmi_rx_callback(smbox->cinfo, shmem_read_header(smbox->shmem), NULL);
+ }
  
- 	return 0;
-@@ -78,9 +78,9 @@ static int ptn3460_write_byte(struct ptn
- 	buf[1] = val;
- 
- 	ret = i2c_master_send(ptn_bridge->client, buf, ARRAY_SIZE(buf));
--	if (ret != ARRAY_SIZE(buf)) {
-+	if (ret < 0) {
- 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
--		return ret < 0 ? ret : -EIO;
-+		return ret;
- 	}
- 
- 	return 0;
+--- a/drivers/firmware/arm_scmi/shmem.c
++++ b/drivers/firmware/arm_scmi/shmem.c
+@@ -122,3 +122,9 @@ bool shmem_poll_done(struct scmi_shared_
+ 		(SCMI_SHMEM_CHAN_STAT_CHANNEL_ERROR |
+ 		 SCMI_SHMEM_CHAN_STAT_CHANNEL_FREE);
+ }
++
++bool shmem_channel_free(struct scmi_shared_mem __iomem *shmem)
++{
++	return (ioread32(&shmem->channel_status) &
++			SCMI_SHMEM_CHAN_STAT_CHANNEL_FREE);
++}
 
 
 
