@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-16892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777D4840EE1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42BBF841062
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 609801C2356C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74FF81C23B1C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD205161B7D;
-	Mon, 29 Jan 2024 17:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB5415A491;
+	Mon, 29 Jan 2024 17:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Cblnt2U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSX3mWm7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7817C15AAB0;
-	Mon, 29 Jan 2024 17:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED7515B974;
+	Mon, 29 Jan 2024 17:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548356; cv=none; b=I9zuq4kuyPRMXNbhFxiZ7qyMxb3sHMBYMtFNUPWCMu65wGpjMwKxnM8E+oYiVdlIYaBOE8Vi5P6j9GVOEoM0S3oIM79Lvb/BeMQQ0plqP42VkWyIN31A1QMDBQKWTZJkCCYqv3M7JaGsP2vduSNuqDoSpUUeTGe6Lp1v8Q4ysEg=
+	t=1706548612; cv=none; b=R0HE2zcjV+vIfoigrBArQEz6jgF1nEtRbZB5QH4faChmP2nwtVCLg+q5LcztWEpd2YRDTzpZ7gyTjyfk9C8ntkhUiwz+wUlGvU+yvv4QsBzQd+meV6P1ioXeMbV/WRTxTX6LKJz05dM3TUc5QpH4Wpid6GE5uE0z1Q5zCFTkd0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548356; c=relaxed/simple;
-	bh=DwqmDAiRQkErtXhGHO4WkjJmGZpANnHBQ8cqDwwWcTQ=;
+	s=arc-20240116; t=1706548612; c=relaxed/simple;
+	bh=bYxXDj7S1FmjMk1BWlSuCanWSO4C1Nb1YzzYMC/Dmfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pZ/FbmHGrYVtN7LkFf5ElJDOq58KHhIOjqiVMIelHRKjthbRyKUlk0D3gjJK5bggWDkF1FezYoc6kJV/Sh7ocbpIDq48aDRdMTmLq7WABPkOk5BUg5ox6EHA6Zc+hH1/kSI6Q1TN/SfRuqI49rt8qBCRTAyDDTRo3R/zvJCtJjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Cblnt2U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425E9C433C7;
-	Mon, 29 Jan 2024 17:12:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CkOHVp7O5gOHeZQiInUlmUX1+t+eAWfyhFqRZCDOvlX7kGY/yI5bJUXrx8UrgDczJ7UNZ+InksuN14Ipf0MaAqQXZHpju3TOW7KisQZ8fMFOWSgomrDkyKGCMom9MBp5+dAVnppPBxaLYlrzlxO2JX225Gq5DIML6ohUYSOrScM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSX3mWm7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86BE3C43390;
+	Mon, 29 Jan 2024 17:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548356;
-	bh=DwqmDAiRQkErtXhGHO4WkjJmGZpANnHBQ8cqDwwWcTQ=;
+	s=korg; t=1706548612;
+	bh=bYxXDj7S1FmjMk1BWlSuCanWSO4C1Nb1YzzYMC/Dmfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Cblnt2UnyARTfXoeZaGFDJJeTYtiMFjYrmvUvAgdFbdv4EB0ySYBJfPQ9rqTAz4C
-	 /sHZCUdMBZCrl/dm7qLiCbcapQPkoObISPRo2Fhc7r21CFFL0Xx3iw56R33EaJzYuu
-	 snIBhd7slq5srOzoZ7OyZ1EQEiuxNZFkya/BmU9E=
+	b=zSX3mWm7ElwjfUt8vctXEWTOgjsCGSxiJBGuy4/8g0oD2Vj9p6fUh6ZYEhgOLmOa9
+	 qB1gxEZ4pTs9EWCuTB3aleXfBQpAdwQjav8tvmjnItLh6aH9K548usU25j+g/o3syC
+	 gOVc3TSR8NagFeJTfhJUM2/ZevZ1Pg+++MuHHDA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 118/185] btrfs: dont warn if discard range is not aligned to sector
-Date: Mon, 29 Jan 2024 09:05:18 -0800
-Message-ID: <20240129170002.387127904@linuxfoundation.org>
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Javier Martinez Canillas <javierm@redhat.com>
+Subject: [PATCH 6.6 255/331] drm: Dont unref the same fb many times by mistake due to deadlock handling
+Date: Mon, 29 Jan 2024 09:05:19 -0800
+Message-ID: <20240129170022.351080707@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-commit a208b3f132b48e1f94f620024e66fea635925877 upstream.
+commit cb4daf271302d71a6b9a7c01bd0b6d76febd8f0c upstream.
 
-There's a warning in btrfs_issue_discard() when the range is not aligned
-to 512 bytes, originally added in 4d89d377bbb0 ("btrfs:
-btrfs_issue_discard ensure offset/length are aligned to sector
-boundaries"). We can't do sub-sector writes anyway so the adjustment is
-the only thing that we can do and the warning is unnecessary.
+If we get a deadlock after the fb lookup in drm_mode_page_flip_ioctl()
+we proceed to unref the fb and then retry the whole thing from the top.
+But we forget to reset the fb pointer back to NULL, and so if we then
+get another error during the retry, before the fb lookup, we proceed
+the unref the same fb again without having gotten another reference.
+The end result is that the fb will (eventually) end up being freed
+while it's still in use.
 
-CC: stable@vger.kernel.org # 4.19+
-Reported-by: syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reset fb to NULL once we've unreffed it to avoid doing it again
+until we've done another fb lookup.
+
+This turned out to be pretty easy to hit on a DG2 when doing async
+flips (and CONFIG_DEBUG_WW_MUTEX_SLOWPATH=y). The first symptom I
+saw that drm_closefb() simply got stuck in a busy loop while walking
+the framebuffer list. Fortunately I was able to convince it to oops
+instead, and from there it was easier to track down the culprit.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231211081625.25704-1-ville.syrjala@linux.intel.com
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent-tree.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/drm_plane.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -1209,7 +1209,8 @@ static int btrfs_issue_discard(struct bl
- 	u64 bytes_left, end;
- 	u64 aligned_start = ALIGN(start, 1 << 9);
- 
--	if (WARN_ON(start != aligned_start)) {
-+	/* Adjust the range to be aligned to 512B sectors if necessary. */
-+	if (start != aligned_start) {
- 		len -= aligned_start - start;
- 		len = round_down(len, 1 << 9);
- 		start = aligned_start;
+--- a/drivers/gpu/drm/drm_plane.c
++++ b/drivers/gpu/drm/drm_plane.c
+@@ -1387,6 +1387,7 @@ retry:
+ out:
+ 	if (fb)
+ 		drm_framebuffer_put(fb);
++	fb = NULL;
+ 	if (plane->old_fb)
+ 		drm_framebuffer_put(plane->old_fb);
+ 	plane->old_fb = NULL;
 
 
 
