@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-16659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A154840DE2
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF13840DC9
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF22A1F2CFE1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84BB8B2037F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C7515D5BC;
-	Mon, 29 Jan 2024 17:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5653E15CD70;
+	Mon, 29 Jan 2024 17:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQFcjUlA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofmQ+eLg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60228159574;
-	Mon, 29 Jan 2024 17:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152F4157E8F;
+	Mon, 29 Jan 2024 17:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548183; cv=none; b=WOu+U0BgxDO2SUZKufZELMHoWRzFrA4S4DC4uAzcy1TagwOXK7g+BnX3xOc+93W0X6jDJjHfM1KfCq5whNB+V4Oar6n/9VzZMGY6JiW+Pi0g5b6f2eyI93Y/miDXuelvJCSchzemW67OYu1ptanCTbyMpKxnyKgs2v2j6EAkCd0=
+	t=1706548165; cv=none; b=VrCvPWjJfIifiUP+Qn8I9CPjyRHxdzVN3Iq292iNl3B2pbV1IlVkeHBepoI65ysH9jIwbopULi3ffdpRfbmeb6+GQdAgqdlib/wtZv6zdB2wufJtytpejQpmVVqt2+ETA4RsZMxmxmN8RqH6pD/rPbPwVaQ+JyRCdOmZsL7H6zo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548183; c=relaxed/simple;
-	bh=JisxY2D1/KZVAK9OWXdGAI8RzVvTwCryJlwEokh79X4=;
+	s=arc-20240116; t=1706548165; c=relaxed/simple;
+	bh=2032Vw62K/UAZLiuzO/Y34o7hZNcJZkNq3uNlI2G7WQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nv3EshmtO0ehJhj6Sbf/KqcTiDOXGK389z5TGDkL16k2J0YNakK3YuygmvURvS/6OKgZZBwPDNGubR1Wuo5XWmW/HFv5h9W0OmtEaIk5k/j9RlnJPbbon6kTuUFvu0rr1lM51rzbmao71SPAVjoQYK27e2rO2o503K8j1ztZwyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQFcjUlA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CBFC433A6;
-	Mon, 29 Jan 2024 17:09:43 +0000 (UTC)
+	 MIME-Version; b=f+7Oel5eMCU1+KwZtqj9vCJOh6LxaeoPmTIK8B+6Kr7Gitd34LLhek6ylYSI9pmuVBpXyG8i2pcCeNbamvl3Au8qpk0WTEX5I5QLbHw0mMB3f64/HlDzsvIcg19ZprOxd+aitAI7/gfyCwYTcvdM2jBBECk3KQjWfgmV8KSzXLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofmQ+eLg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D22E4C433A6;
+	Mon, 29 Jan 2024 17:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548183;
-	bh=JisxY2D1/KZVAK9OWXdGAI8RzVvTwCryJlwEokh79X4=;
+	s=korg; t=1706548164;
+	bh=2032Vw62K/UAZLiuzO/Y34o7hZNcJZkNq3uNlI2G7WQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EQFcjUlAjT2+CBpS/ijksB4+Td9z4VI6xlcEEGqxsQ4FtlMIEQBXNIOMluvJafdND
-	 XGB6eEgpM8EVMg5UoLfqGcAquE8501cJ+5r7aLqHmAwtkpoVxu+r3dDuYImOcAEUpO
-	 dMhcu9bhfyx/cwcVeRB5S7jSJhm9izJBMtRnOjtw=
+	b=ofmQ+eLgWvihuhhTxWzYCjb+nJ9T2lw8M8D0B1+iq2RAn395lRA7vtYHXWfuD3KBt
+	 273mTgLLEfgN3h/o5z4/uKvjtrcS5nfOj6jWWXpSUab7meZlFsMWUMgdute/nQhbZl
+	 t/MGALFeTZ4mysMdzmbYAgoEzbJVBRnFzSpHKRPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Jeffrey E Altman <jaltman@auristor.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/185] usb: dwc3: gadget: Queue PM runtime idle on disconnect event
+Subject: [PATCH 6.7 171/346] afs: Add comments on abort handling
 Date: Mon, 29 Jan 2024 09:03:22 -0800
-Message-ID: <20240129165958.678243194@linuxfoundation.org>
+Message-ID: <20240129170021.428540835@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +64,191 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 3c7af52c7616c3aa6dacd2336ec748d4a65df8f4 ]
+[ Upstream commit fe245c8fcdac339e6b42076c828a6bede3a5e948 ]
 
-There is a scenario where DWC3 runtime suspend is blocked due to the
-dwc->connected flag still being true while PM usage_count is zero after
-DWC3 giveback is completed and the USB gadget session is being terminated.
-This leads to a case where nothing schedules a PM runtime idle for the
-device.
+Add some comments on AFS abort code handling in the rotation algorithm and
+adjust the errors produced to match.
 
-The exact condition is seen with the following sequence:
-  1.  USB bus reset is issued by the host
-  2.  Shortly after, or concurrently, a USB PD DR SWAP request is received
-      (sink->source)
-  3.  USB bus reset event handler runs and issues
-      dwc3_stop_active_transfers(), and pending transfer are stopped
-  4.  DWC3 usage_count decremented to 0, and runtime idle occurs while
-      dwc->connected == true, returns -EBUSY
-  5.  DWC3 disconnect event seen, dwc->connected set to false due to DR
-      swap handling
-  6.  No runtime idle after this point
-
-Address this by issuing an asynchronous PM runtime idle call after the
-disconnect event is completed, as it modifies the dwc->connected flag,
-which is what blocks the initial runtime idle.
-
-Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Link: https://lore.kernel.org/r/20240103214946.2596-1-quic_wcheng@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Jeffrey E Altman <jaltman@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Stable-dep-of: 17ba6f0bd14f ("afs: Fix error handling with lookup via FS.InlineBulkStatus")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/afs/rotate.c | 101 ++++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 90 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 339e8c3f7c50..5617a75b0d74 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -3860,6 +3860,13 @@ static void dwc3_gadget_disconnect_interrupt(struct dwc3 *dwc)
- 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
+diff --git a/fs/afs/rotate.c b/fs/afs/rotate.c
+index a840c3588ebb..a3d127953ac6 100644
+--- a/fs/afs/rotate.c
++++ b/fs/afs/rotate.c
+@@ -13,6 +13,7 @@
+ #include <linux/sched/signal.h>
+ #include "internal.h"
+ #include "afs_fs.h"
++#include "protocol_uae.h"
  
- 	dwc3_ep0_reset_state(dwc);
+ /*
+  * Begin iteration through a server list, starting with the vnode's last used
+@@ -143,6 +144,11 @@ bool afs_select_fileserver(struct afs_operation *op)
+ 	case -ECONNABORTED:
+ 		/* The far side rejected the operation on some grounds.  This
+ 		 * might involve the server being busy or the volume having been moved.
++		 *
++		 * Note that various V* errors should not be sent to a cache manager
++		 * by a fileserver as they should be translated to more modern UAE*
++		 * errors instead.  IBM AFS and OpenAFS fileservers, however, do leak
++		 * these abort codes.
+ 		 */
+ 		switch (op->ac.abort_code) {
+ 		case VNOVOL:
+@@ -150,6 +156,11 @@ bool afs_select_fileserver(struct afs_operation *op)
+ 			 * - May indicate that the VL is wrong - retry once and compare
+ 			 *   the results.
+ 			 * - May indicate that the fileserver couldn't attach to the vol.
++			 * - The volume might have been temporarily removed so that it can
++			 *   be replaced by a volume restore.  "vos" might have ended one
++			 *   transaction and has yet to create the next.
++			 * - The volume might not be blessed or might not be in-service
++			 *   (administrative action).
+ 			 */
+ 			if (op->flags & AFS_OPERATION_VNOVOL) {
+ 				op->error = -EREMOTEIO;
+@@ -183,16 +194,56 @@ bool afs_select_fileserver(struct afs_operation *op)
+ 			_leave(" = t [vnovol]");
+ 			return true;
+ 
+-		case VSALVAGE: /* TODO: Should this return an error or iterate? */
+ 		case VVOLEXISTS:
+-		case VNOSERVICE:
+ 		case VONLINE:
+-		case VDISKFULL:
+-		case VOVERQUOTA:
+-			op->error = afs_abort_to_error(op->ac.abort_code);
++			/* These should not be returned from the fileserver. */
++			pr_warn("Fileserver returned unexpected abort %d\n",
++				op->ac.abort_code);
++			op->error = -EREMOTEIO;
++			goto next_server;
 +
-+	/*
-+	 * Request PM idle to address condition where usage count is
-+	 * already decremented to zero, but waiting for the disconnect
-+	 * interrupt to set dwc->connected to FALSE.
-+	 */
-+	pm_request_idle(dwc->dev);
- }
++		case VNOSERVICE:
++			/* Prior to AFS 3.2 VNOSERVICE was returned from the fileserver
++			 * if the volume was neither in-service nor administratively
++			 * blessed.  All usage was replaced by VNOVOL because AFS 3.1 and
++			 * earlier cache managers did not handle VNOSERVICE and assumed
++			 * it was the client OSes errno 105.
++			 *
++			 * Starting with OpenAFS 1.4.8 VNOSERVICE was repurposed as the
++			 * fileserver idle dead time error which was sent in place of
++			 * RX_CALL_TIMEOUT (-3).  The error was intended to be sent if the
++			 * fileserver took too long to send a reply to the client.
++			 * RX_CALL_TIMEOUT would have caused the cache manager to mark the
++			 * server down whereas VNOSERVICE since AFS 3.2 would cause cache
++			 * manager to temporarily (up to 15 minutes) mark the volume
++			 * instance as unusable.
++			 *
++			 * The idle dead logic resulted in cache inconsistency since a
++			 * state changing call that the cache manager assumed was dead
++			 * could still be processed to completion by the fileserver.  This
++			 * logic was removed in OpenAFS 1.8.0 and VNOSERVICE is no longer
++			 * returned.  However, many 1.4.8 through 1.6.24 fileservers are
++			 * still in existence.
++			 *
++			 * AuriStorFS fileservers have never returned VNOSERVICE.
++			 *
++			 * VNOSERVICE should be treated as an alias for RX_CALL_TIMEOUT.
++			 */
++		case RX_CALL_TIMEOUT:
++			op->error = -ETIMEDOUT;
+ 			goto next_server;
  
- static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
++		case VSALVAGING: /* This error should not be leaked to cache managers
++				  * but is from OpenAFS demand attach fileservers.
++				  * It should be treated as an alias for VOFFLINE.
++				  */
++		case VSALVAGE: /* VSALVAGE should be treated as a synonym of VOFFLINE */
+ 		case VOFFLINE:
++			/* The volume is in use by the volserver or another volume utility
++			 * for an operation that might alter the contents.  The volume is
++			 * expected to come back but it might take a long time (could be
++			 * days).
++			 */
+ 			if (!test_and_set_bit(AFS_VOLUME_OFFLINE, &op->volume->flags)) {
+ 				afs_busy(op->volume, op->ac.abort_code);
+ 				clear_bit(AFS_VOLUME_BUSY, &op->volume->flags);
+@@ -207,11 +258,20 @@ bool afs_select_fileserver(struct afs_operation *op)
+ 			}
+ 			goto busy;
+ 
+-		case VSALVAGING:
+-		case VRESTARTING:
++		case VRESTARTING: /* The fileserver is either shutting down or starting up. */
+ 		case VBUSY:
+-			/* Retry after going round all the servers unless we
+-			 * have a file lock we need to maintain.
++			/* The volume is in use by the volserver or another volume
++			 * utility for an operation that is not expected to alter the
++			 * contents of the volume.  VBUSY does not need to be returned
++			 * for a ROVOL or BACKVOL bound to an ITBusy volserver
++			 * transaction.  The fileserver is permitted to continue serving
++			 * content from ROVOLs and BACKVOLs during an ITBusy transaction
++			 * because the content will not change.  However, many fileserver
++			 * releases do return VBUSY for ROVOL and BACKVOL instances under
++			 * many circumstances.
++			 *
++			 * Retry after going round all the servers unless we have a file
++			 * lock we need to maintain.
+ 			 */
+ 			if (op->flags & AFS_OPERATION_NO_VSLEEP) {
+ 				op->error = -EBUSY;
+@@ -226,7 +286,7 @@ bool afs_select_fileserver(struct afs_operation *op)
+ 				if (!afs_sleep_and_retry(op))
+ 					goto failed;
+ 
+-				 /* Retry with same server & address */
++				/* Retry with same server & address */
+ 				_leave(" = t [vbusy]");
+ 				return true;
+ 			}
+@@ -270,10 +330,29 @@ bool afs_select_fileserver(struct afs_operation *op)
+ 
+ 			goto restart_from_beginning;
+ 
++		case VDISKFULL:
++		case UAENOSPC:
++			/* The partition is full.  Only applies to RWVOLs.
++			 * Translate locally and return ENOSPC.
++			 * No replicas to failover to.
++			 */
++			op->error = -ENOSPC;
++			goto failed_but_online;
++
++		case VOVERQUOTA:
++		case UAEDQUOT:
++			/* Volume is full.  Only applies to RWVOLs.
++			 * Translate locally and return EDQUOT.
++			 * No replicas to failover to.
++			 */
++			op->error = -EDQUOT;
++			goto failed_but_online;
++
+ 		default:
++			op->error = afs_abort_to_error(op->ac.abort_code);
++		failed_but_online:
+ 			clear_bit(AFS_VOLUME_OFFLINE, &op->volume->flags);
+ 			clear_bit(AFS_VOLUME_BUSY, &op->volume->flags);
+-			op->error = afs_abort_to_error(op->ac.abort_code);
+ 			goto failed;
+ 		}
+ 
 -- 
 2.43.0
 
