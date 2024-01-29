@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C18840E21
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 865DE841009
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 483441C23721
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B94911C235CF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A6115EA84;
-	Mon, 29 Jan 2024 17:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFDB15B304;
+	Mon, 29 Jan 2024 17:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnPXoODA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="02Y7mnRV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942D6157052;
-	Mon, 29 Jan 2024 17:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0BB7375F;
+	Mon, 29 Jan 2024 17:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548229; cv=none; b=IGsxX4nBPpW0hJkUvb7Sm1fb6bF5M4LBT4PMGxXRKMZAFhrirJOC1/GlVYw0Yr3AP80hn5MHCDTVFc2B96gg4cO2EehSwq8GxeIu9bf9Gxl1xbB0RCcf67BOGB3Gp+UxBSxeof/YQiZDO1gIvyBKN1R9CeNeCFbLiS0XOHHACC4=
+	t=1706548549; cv=none; b=eb15PF/FDquGzB1gkaQUgL1DD3V2e+apLtxq5/+1/H1uGDpoHzcxtKzhZ1rEacN8Egs8k6jUDgSu/9drzyK3P91Pz3+lJhfxOlu6HVW3FcTY0vPSWR67E6zseFZwOeNR97BoEFa+GC4klQ5Dwmv1Fy+wREj3L1tc/ueebPXFI88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548229; c=relaxed/simple;
-	bh=AXFHR1qRjmZ+ouIhlpAsy6c5KB6RBbM0Zkb4y+Nu2K8=;
+	s=arc-20240116; t=1706548549; c=relaxed/simple;
+	bh=2LWEzyWVA5Igj/JsCANDi27/ujQqQ9Jcf/nC2PiBAF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/1vA3KA++dZ1LQCntwrwvdEgrmISVhReUij7L0GnJY1Q6dfTOmC1CpC/LwGcxe2noOoy/mkiqI8gmqS3ufX2ivKlbT7/UpUB9+eor94vQzu5rhR+3T22Po1DRcwvbgGnsp3+LENBEYsfl4CjhGXp6tJBDcX9+/mO70T4v1kDe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnPXoODA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D06DC433C7;
-	Mon, 29 Jan 2024 17:10:29 +0000 (UTC)
+	 MIME-Version; b=k6zSKkeEsOpxFLO6S7PzbUiddcLWnWJ/rR0I84K82B5NsrNSFfox+ZGIxiZFivw/yBTuxGr1F+Fsd0M7IYy4kBkAUzXo7+hhqUzxsa/8vcCNfnBpEVedmROZe7Jam/eYd7pRFOtvn+5wESzhcfszBHY4rMUWCi0vM0tFhoUYJp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=02Y7mnRV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006DCC43394;
+	Mon, 29 Jan 2024 17:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548229;
-	bh=AXFHR1qRjmZ+ouIhlpAsy6c5KB6RBbM0Zkb4y+Nu2K8=;
+	s=korg; t=1706548549;
+	bh=2LWEzyWVA5Igj/JsCANDi27/ujQqQ9Jcf/nC2PiBAF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bnPXoODAxhzwtfw+tEei2MYYfxJg+uHYbazBOZzJzxI04sJG5kmxOMGi1Mc/coOuV
-	 6cC/RumOPnPUArNo+EVYRfLAjJcT5Ahf3BJ6WMOz+aiJstKfSvGXCp70sr3YV66F7R
-	 d3R7X2s1vAqYmmT64HbX8t1RgH8UNZZfj0QXc5KE=
+	b=02Y7mnRVPMJoVSRzvG5LQtB5RnhLHhpvkp82pV3jWqmMNJD9a6l4R/j+cAdQtXxb9
+	 RtZtcWXGfusfWnZ9UmmvilZVA6mvs2TgcXl3QIJ3vB5c740Rlv8W0rVmI7I88nmfAa
+	 wL4Dgao7xLM0fJRKiZLo0HJMB+iL3Ej7hiwme7eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 031/185] iio: adc: ad7091r: Enable internal vref if external vref is not supplied
+Subject: [PATCH 6.6 167/331] SUNRPC: use request size to initialize bio_vec in svc_udp_sendto()
 Date: Mon, 29 Jan 2024 09:03:51 -0800
-Message-ID: <20240129165959.597494127@linuxfoundation.org>
+Message-ID: <20240129170019.805577606@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+From: Lucas Stach <l.stach@pengutronix.de>
 
-[ Upstream commit e71c5c89bcb165a02df35325aa13d1ee40112401 ]
+[ Upstream commit 1d9cabe2817edd215779dc9c2fe5e7ab9aac0704 ]
 
-The ADC needs a voltage reference to work correctly.
-Users can provide an external voltage reference or use the chip internal
-reference to operate the ADC.
-The availability of an in chip reference for the ADC saves the user from
-having to supply an external voltage reference, which makes the external
-reference an optional property as described in the device tree
-documentation.
-Though, to use the internal reference, it must be enabled by writing to
-the configuration register.
-Enable AD7091R internal voltage reference if no external vref is supplied.
+Use the proper size when setting up the bio_vec, as otherwise only
+zero-length UDP packets will be sent.
 
-Fixes: 260442cc5be4 ("iio: adc: ad7091r5: Add scale and external VREF support")
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Link: https://lore.kernel.org/r/b865033fa6a4fc4bf2b4a98ec51a6144e0f64f77.1703013352.git.marcelo.schmitt1@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: baabf59c2414 ("SUNRPC: Convert svc_udp_sendto() to use the per-socket bio_vec array")
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7091r-base.c | 7 +++++++
- drivers/iio/adc/ad7091r-base.h | 2 ++
- 2 files changed, 9 insertions(+)
+ net/sunrpc/svcsock.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-index 3d36bcd26b0c..76002b91c86a 100644
---- a/drivers/iio/adc/ad7091r-base.c
-+++ b/drivers/iio/adc/ad7091r-base.c
-@@ -405,7 +405,14 @@ int ad7091r_probe(struct device *dev, const char *name,
- 	if (IS_ERR(st->vref)) {
- 		if (PTR_ERR(st->vref) == -EPROBE_DEFER)
- 			return -EPROBE_DEFER;
-+
- 		st->vref = NULL;
-+		/* Enable internal vref */
-+		ret = regmap_set_bits(st->map, AD7091R_REG_CONF,
-+				      AD7091R_REG_CONF_INT_VREF);
-+		if (ret)
-+			return dev_err_probe(st->dev, ret,
-+					     "Error on enable internal reference\n");
- 	} else {
- 		ret = regulator_enable(st->vref);
- 		if (ret)
-diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
-index 7a78976a2f80..b9e1c8bf3440 100644
---- a/drivers/iio/adc/ad7091r-base.h
-+++ b/drivers/iio/adc/ad7091r-base.h
-@@ -8,6 +8,8 @@
- #ifndef __DRIVERS_IIO_ADC_AD7091R_BASE_H__
- #define __DRIVERS_IIO_ADC_AD7091R_BASE_H__
+diff --git a/net/sunrpc/svcsock.c b/net/sunrpc/svcsock.c
+index 998687421fa6..e0ce4276274b 100644
+--- a/net/sunrpc/svcsock.c
++++ b/net/sunrpc/svcsock.c
+@@ -717,12 +717,12 @@ static int svc_udp_sendto(struct svc_rqst *rqstp)
+ 				ARRAY_SIZE(rqstp->rq_bvec), xdr);
  
-+#define AD7091R_REG_CONF_INT_VREF	BIT(0)
-+
- /* AD7091R_REG_CH_LIMIT */
- #define AD7091R_HIGH_LIMIT		0xFFF
- #define AD7091R_LOW_LIMIT		0x0
+ 	iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, rqstp->rq_bvec,
+-		      count, 0);
++		      count, rqstp->rq_res.len);
+ 	err = sock_sendmsg(svsk->sk_sock, &msg);
+ 	if (err == -ECONNREFUSED) {
+ 		/* ICMP error on earlier request. */
+ 		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, rqstp->rq_bvec,
+-			      count, 0);
++			      count, rqstp->rq_res.len);
+ 		err = sock_sendmsg(svsk->sk_sock, &msg);
+ 	}
+ 
 -- 
 2.43.0
 
