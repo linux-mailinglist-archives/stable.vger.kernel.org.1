@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51BA1840F02
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3791E840E53
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E5662832C5
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E88B62845B0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D27162761;
-	Mon, 29 Jan 2024 17:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EFEC15F302;
+	Mon, 29 Jan 2024 17:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cVEneWdA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6yXDd/Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166FA1586C5;
-	Mon, 29 Jan 2024 17:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A8415B313;
+	Mon, 29 Jan 2024 17:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548371; cv=none; b=bbjY+tbNBcHD8HPjdrE3YanyoIuTPkhG6WQew3O4dtf90l+kYxie/9MN3Smlg0wCdng2Eu+UbohxqItvytGZfTTyFmTx1m1bKIuJej04XUrjQBzuuHFoEahQbbE7ixOWM5KMSFxhNOcpCZinHF9rt0F8E5WcrmAO0apGK/H3F4o=
+	t=1706548264; cv=none; b=Hv3Xj4X/ADh8vjdN48AWoWqFwCd2mKVlUjPiYJSBBEMua2J5tR5tZ/2juF3HLI7Cu4bZe2lvRMD5wLCLp198WnYuPr9f1kiqrbqQ2QeIkqH8pyHaWG+WoEs7tVqoTLyKpi2MpiRSBROHATpHoxEuIFmGgMlpLh33UbRJOOksc6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548371; c=relaxed/simple;
-	bh=MX5k1A79hIIa+/ZhQQJWdxWavyw5SdpdOKgMc5OHKAE=;
+	s=arc-20240116; t=1706548264; c=relaxed/simple;
+	bh=soTI/TfVbsA34OUhn0ktYBAKkgQRcB6lzcS10rhRlb4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pETmmDEKLQd5Vs0v700YWIZZT/miRO9zIlFal6ep/n1XY6sQ8yRNNnxq9MxMVBcjYd7Jvj67jCcom/Mw6/MSLq1X7cvknTk7DeLmnKVETnEZgVfYpcfv5+1a7SrN0OH6w1A4mnUd5BW9GBSKu8evPaAgPgfoJHOpLzKaYxPlT8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVEneWdA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3CB5C43394;
-	Mon, 29 Jan 2024 17:12:50 +0000 (UTC)
+	 MIME-Version; b=RoChiFt6UMaY2tm6gAeRpbWMtGxNvBAbe70LR5Lp/yO3yTWUSi8tFM2G04S49Ms7xhYLlZO7M/shqRa9Muqfkk1g0s0bG5sq0h6nGMQNL0eydwUk3+v1bgPOZ+rCwRwAzu+GHPwyHN3j0eKUy1P0fU/kaS39P37jODn1lfZsWp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6yXDd/Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8677C433A6;
+	Mon, 29 Jan 2024 17:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548370;
-	bh=MX5k1A79hIIa+/ZhQQJWdxWavyw5SdpdOKgMc5OHKAE=;
+	s=korg; t=1706548263;
+	bh=soTI/TfVbsA34OUhn0ktYBAKkgQRcB6lzcS10rhRlb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cVEneWdA/5NB40KEnWXpxlovdJWaK6wFljXyVlqh9ZTK8x4RIZPl9LBF48VI9UgM9
-	 0akZg9+pPHQ6ohUJ9gxDL7q+Uns77WdkPqxYcIQuljgJIza6oWO50IgiTqbmmE+RXO
-	 tkvQNakJF1FXy0a7Mz3pMuJ+PemoymiT/ze0ousc=
+	b=E6yXDd/ZOTYlHBfchNh9ZZzgAvM/3tv53xw3aZXH0aHas+CbUejqBS69swpb+g7uR
+	 lba9xTBb87yZ/pbH+XmnUMvpAI4CtYJ4ELuE9JYWi68N5hZstmPUEgjHYyTSu+UfcG
+	 kPMCQYX99WwPRkLHbOJiEqD+vucG3fVHhWCnALxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/185] fjes: fix memleaks in fjes_hw_setup
+Subject: [PATCH 6.7 281/346] thermal: intel: hfi: Disable an HFI instance when all its CPUs go offline
 Date: Mon, 29 Jan 2024 09:05:12 -0800
-Message-ID: <20240129170002.192387025@linuxfoundation.org>
+Message-ID: <20240129170024.641904657@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,111 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 
-[ Upstream commit f6cc4b6a3ae53df425771000e9c9540cce9b7bb1 ]
+[ Upstream commit 1c53081d773c2cb4461636559b0d55b46559ceec ]
 
-In fjes_hw_setup, it allocates several memory and delay the deallocation
-to the fjes_hw_exit in fjes_probe through the following call chain:
+In preparation to support hibernation, add functionality to disable an HFI
+instance during CPU offline. The last CPU of an instance that goes offline
+will disable such instance.
 
-fjes_probe
-  |-> fjes_hw_init
-        |-> fjes_hw_setup
-  |-> fjes_hw_exit
+The Intel Software Development Manual states that the operating system must
+wait for the hardware to set MSR_IA32_PACKAGE_THERM_STATUS[26] after
+disabling an HFI instance to ensure that it will no longer write on the HFI
+memory. Some processors, however, do not ever set such bit. Wait a minimum
+of 2ms to give time hardware to complete any pending memory writes.
 
-However, when fjes_hw_setup fails, fjes_hw_exit won't be called and thus
-all the resources allocated in fjes_hw_setup will be leaked. In this
-patch, we free those resources in fjes_hw_setup and prevents such leaks.
-
-Fixes: 2fcbca687702 ("fjes: platform_driver's .probe and .remove routine")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240122172445.3841883-1-alexious@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 97566d09fd02 ("thermal: intel: hfi: Add syscore callbacks for system-wide PM")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/fjes/fjes_hw.c | 37 ++++++++++++++++++++++++++++++-------
- 1 file changed, 30 insertions(+), 7 deletions(-)
+ drivers/thermal/intel/intel_hfi.c | 35 +++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/drivers/net/fjes/fjes_hw.c b/drivers/net/fjes/fjes_hw.c
-index 704e949484d0..b9b5554ea862 100644
---- a/drivers/net/fjes/fjes_hw.c
-+++ b/drivers/net/fjes/fjes_hw.c
-@@ -221,21 +221,25 @@ static int fjes_hw_setup(struct fjes_hw *hw)
- 
- 	mem_size = FJES_DEV_REQ_BUF_SIZE(hw->max_epid);
- 	hw->hw_info.req_buf = kzalloc(mem_size, GFP_KERNEL);
--	if (!(hw->hw_info.req_buf))
--		return -ENOMEM;
-+	if (!(hw->hw_info.req_buf)) {
-+		result = -ENOMEM;
-+		goto free_ep_info;
-+	}
- 
- 	hw->hw_info.req_buf_size = mem_size;
- 
- 	mem_size = FJES_DEV_RES_BUF_SIZE(hw->max_epid);
- 	hw->hw_info.res_buf = kzalloc(mem_size, GFP_KERNEL);
--	if (!(hw->hw_info.res_buf))
--		return -ENOMEM;
-+	if (!(hw->hw_info.res_buf)) {
-+		result = -ENOMEM;
-+		goto free_req_buf;
-+	}
- 
- 	hw->hw_info.res_buf_size = mem_size;
- 
- 	result = fjes_hw_alloc_shared_status_region(hw);
- 	if (result)
--		return result;
-+		goto free_res_buf;
- 
- 	hw->hw_info.buffer_share_bit = 0;
- 	hw->hw_info.buffer_unshare_reserve_bit = 0;
-@@ -246,11 +250,11 @@ static int fjes_hw_setup(struct fjes_hw *hw)
- 
- 			result = fjes_hw_alloc_epbuf(&buf_pair->tx);
- 			if (result)
--				return result;
-+				goto free_epbuf;
- 
- 			result = fjes_hw_alloc_epbuf(&buf_pair->rx);
- 			if (result)
--				return result;
-+				goto free_epbuf;
- 
- 			spin_lock_irqsave(&hw->rx_status_lock, flags);
- 			fjes_hw_setup_epbuf(&buf_pair->tx, mac,
-@@ -273,6 +277,25 @@ static int fjes_hw_setup(struct fjes_hw *hw)
- 	fjes_hw_init_command_registers(hw, &param);
- 
- 	return 0;
-+
-+free_epbuf:
-+	for (epidx = 0; epidx < hw->max_epid ; epidx++) {
-+		if (epidx == hw->my_epid)
-+			continue;
-+		fjes_hw_free_epbuf(&hw->ep_shm_info[epidx].tx);
-+		fjes_hw_free_epbuf(&hw->ep_shm_info[epidx].rx);
-+	}
-+	fjes_hw_free_shared_status_region(hw);
-+free_res_buf:
-+	kfree(hw->hw_info.res_buf);
-+	hw->hw_info.res_buf = NULL;
-+free_req_buf:
-+	kfree(hw->hw_info.req_buf);
-+	hw->hw_info.req_buf = NULL;
-+free_ep_info:
-+	kfree(hw->ep_shm_info);
-+	hw->ep_shm_info = NULL;
-+	return result;
+diff --git a/drivers/thermal/intel/intel_hfi.c b/drivers/thermal/intel/intel_hfi.c
+index 820613e293cd..bb25c75acd45 100644
+--- a/drivers/thermal/intel/intel_hfi.c
++++ b/drivers/thermal/intel/intel_hfi.c
+@@ -24,6 +24,7 @@
+ #include <linux/bitops.h>
+ #include <linux/cpufeature.h>
+ #include <linux/cpumask.h>
++#include <linux/delay.h>
+ #include <linux/gfp.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+@@ -367,6 +368,32 @@ static void hfi_set_hw_table(struct hfi_instance *hfi_instance)
+ 	wrmsrl(MSR_IA32_HW_FEEDBACK_PTR, msr_val);
  }
  
- static void fjes_hw_cleanup(struct fjes_hw *hw)
++/* Caller must hold hfi_instance_lock. */
++static void hfi_disable(void)
++{
++	u64 msr_val;
++	int i;
++
++	rdmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
++	msr_val &= ~HW_FEEDBACK_CONFIG_HFI_ENABLE_BIT;
++	wrmsrl(MSR_IA32_HW_FEEDBACK_CONFIG, msr_val);
++
++	/*
++	 * Wait for hardware to acknowledge the disabling of HFI. Some
++	 * processors may not do it. Wait for ~2ms. This is a reasonable
++	 * time for hardware to complete any pending actions on the HFI
++	 * memory.
++	 */
++	for (i = 0; i < 2000; i++) {
++		rdmsrl(MSR_IA32_PACKAGE_THERM_STATUS, msr_val);
++		if (msr_val & PACKAGE_THERM_STATUS_HFI_UPDATED)
++			break;
++
++		udelay(1);
++		cpu_relax();
++	}
++}
++
+ /**
+  * intel_hfi_online() - Enable HFI on @cpu
+  * @cpu:	CPU in which the HFI will be enabled
+@@ -421,6 +448,10 @@ void intel_hfi_online(unsigned int cpu)
+ 	/*
+ 	 * Hardware is programmed with the physical address of the first page
+ 	 * frame of the table. Hence, the allocated memory must be page-aligned.
++	 *
++	 * Some processors do not forget the initial address of the HFI table
++	 * even after having been reprogrammed. Keep using the same pages. Do
++	 * not free them.
+ 	 */
+ 	hfi_instance->hw_table = alloc_pages_exact(hfi_features.nr_table_pages,
+ 						   GFP_KERNEL | __GFP_ZERO);
+@@ -485,6 +516,10 @@ void intel_hfi_offline(unsigned int cpu)
+ 
+ 	mutex_lock(&hfi_instance_lock);
+ 	cpumask_clear_cpu(cpu, hfi_instance->cpus);
++
++	if (!cpumask_weight(hfi_instance->cpus))
++		hfi_disable();
++
+ 	mutex_unlock(&hfi_instance_lock);
+ }
+ 
 -- 
 2.43.0
 
