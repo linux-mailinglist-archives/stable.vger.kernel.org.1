@@ -1,113 +1,143 @@
-Return-Path: <stable+bounces-17345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC7B841291
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 19:47:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1F23841360
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 20:26:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E1521C21BD1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:47:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E57A2888BD
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 19:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F192163AA2;
-	Mon, 29 Jan 2024 18:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F3A5644E;
+	Mon, 29 Jan 2024 19:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vPN5xLNO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cmzLN0ts"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34F2163A8C;
-	Mon, 29 Jan 2024 18:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3990F48790;
+	Mon, 29 Jan 2024 19:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706553399; cv=none; b=QtdNcVAn3EQuwSd00vbjzVEYR2cS1fDzpc6MVXckTzUnmsLURHHSlZiPqBE03NXhpkIxW/VUjA+jO32CoZVC413wdq1mLIG/Y34I9No0claLoTcTeC1OXK+YCfTFx2zlAOsc0UWOdkNPYERRe+LehYk2beZC6oLTgrYFBtGQrEE=
+	t=1706556405; cv=none; b=svGhejJsaCYXTeFcMUPX+a17CDPkZ/dXslpVLgfg+Ypxi+xapECYJVwbrJRDcLNd1/ExEK+uccYfaRxqzOhkA6mfqbUV0yeKDfnl3mb6coDyP1O4AvHvuPMqjmtlJ/JC32iHKoiFVi79YK/VuON5LOQ5QjMK4CUxl7xXF8alF8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706553399; c=relaxed/simple;
-	bh=IJj+o+sqNxtyfAHUVNauVEUUerzlkQDRMA0j72uWKmI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N9lJDgtB5JplnRIY0hoHUkD3+pA9QteJ/R/umizaIfLPRmpwW+f5/VCYEhe08R4TygXP547T8/S7vhLIC0vREl2hejhSbA2+PsT+4rb/uZkAhma6hi5XZBk7AnN6ldI6qWwp9jCA1UyvM3uxFNcgDBEPk/wZ8ayuclGAFFiNiyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vPN5xLNO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C27C43390;
-	Mon, 29 Jan 2024 18:36:38 +0000 (UTC)
+	s=arc-20240116; t=1706556405; c=relaxed/simple;
+	bh=plWbGUJOEIziFL6QefrbA/05MPFIS6W43Vymo6o2EG4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=IsLdzd/67Zt/Hen9Mq98mQlK5pMdPXMHcUAtefKwucyFHw3ct9pQiMwSSyC5SXAL/6WpGel6GFEeFy8YEpuZ1P53/skIK0Merzl8lVPOFL2ZQBJyfhTQZJQYUWgu0VXhZjAHJ5a1N2vbUmcWJtDJndpmSpcS/ImIM7+k+aPhzI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cmzLN0ts; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56363C433F1;
+	Mon, 29 Jan 2024 19:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706553399;
-	bh=IJj+o+sqNxtyfAHUVNauVEUUerzlkQDRMA0j72uWKmI=;
+	s=k20201202; t=1706556404;
+	bh=plWbGUJOEIziFL6QefrbA/05MPFIS6W43Vymo6o2EG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vPN5xLNOpOpRlkUog7YHfMKMO6iZF+vOs831QFi6dVHLUFEXwWXBwlty5hJDCq02s
-	 T2HlFCogdYR6VkZqBIsAoqgPO0+NZzghhJ6OE0tglHAUQ2I0GpTKQ7UVWnnxW+F0VS
-	 wD3uh7mqtTIfjYjmyQYySAEBao8vX4nlSglejW2ROg50mtetNMo3twpwLWCHpKb+DE
-	 M/YFrtjhFFZi8ud2ND0qM/pb/gqptks9QyaLtvg+GcjCns1rrh1nB+SU4HGErUJrcz
-	 2lnKf6KEC2/qTrN5G92H9XM4Rmou+e1OndATke8ouPAOgUZ5NR5iYTsTvGwRU1M3mj
-	 akgjZKeOSlHGA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	dmaengine@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 2/2] dmaengine: shdma: increase size of 'dev_id'
-Date: Mon, 29 Jan 2024 13:36:31 -0500
-Message-ID: <20240129183633.464847-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129183633.464847-1-sashal@kernel.org>
-References: <20240129183633.464847-1-sashal@kernel.org>
+	b=cmzLN0tsnpXU4hUKsliFbl6vkJVhomHNBXIzdgwVfiqAJi10Mf+o9OFhnqNegfqqg
+	 3VLrHPEeG1N/wvbjjQuGHlN3deSbGZjJyxON4iV0hwvousWqPe3e2v0jqxRLN5uZEI
+	 Fdz9ZlKkhuXn5DaB2qfgIJfP5kDjJKbPQH7N9is2xppcAc0Qqz3NeoIbARoeTdeo/g
+	 0wVL6lE3QONsdbKin2GpDmiLPYfle+9JRUz6WuZwGRzRAzv9j41dyxuFZb+rr6ltJs
+	 OCTKjy1A4jxvD2y4nDdGyupRreHnKFRBR74A7wfY0rSbdfBtPJssrDXtq/LHClibuu
+	 gUXz1zQ3hDIrQ==
+From: SeongJae Park <sj@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	damon@lists.linux.dev,
+	SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH 6.6 000/331] 6.6.15-rc1 review
+Date: Mon, 29 Jan 2024 11:26:41 -0800
+Message-Id: <20240129192641.129294-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.306
 Content-Transfer-Encoding: 8bit
 
-From: Vinod Koul <vkoul@kernel.org>
+Hello,
 
-[ Upstream commit 404290240827c3bb5c4e195174a8854eef2f89ac ]
+On Mon, 29 Jan 2024 09:01:04 -0800 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-We seem to have hit warnings of 'output may be truncated' which is fixed
-by increasing the size of 'dev_id'
+> This is the start of the stable review cycle for the 6.6.15 release.
+> There are 331 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 31 Jan 2024 16:59:28 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.15-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
 
-drivers/dma/sh/shdmac.c: In function ‘sh_dmae_probe’:
-drivers/dma/sh/shdmac.c:541:34: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 9 [-Werror=format-truncation=]
-  541 |                          "sh-dmae%d.%d", pdev->id, id);
-      |                                  ^~
-In function ‘sh_dmae_chan_probe’,
-    inlined from ‘sh_dmae_probe’ at drivers/dma/sh/shdmac.c:845:9:
-drivers/dma/sh/shdmac.c:541:26: note: directive argument in the range [0, 2147483647]
-  541 |                          "sh-dmae%d.%d", pdev->id, id);
-      |                          ^~~~~~~~~~~~~~
-drivers/dma/sh/shdmac.c:541:26: note: directive argument in the range [0, 19]
-drivers/dma/sh/shdmac.c:540:17: note: ‘snprintf’ output between 11 and 21 bytes into a destination of size 16
-  540 |                 snprintf(sh_chan->dev_id, sizeof(sh_chan->dev_id),
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  541 |                          "sh-dmae%d.%d", pdev->id, id);
-      |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
 
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested-by: SeongJae Park <sj@kernel.org>
+
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] 1ff49073b88b ("Linux 6.6.15-rc1")
+
+Thanks,
+SJ
+
+[...]
+
 ---
- drivers/dma/sh/shdma.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/sh/shdma.h b/drivers/dma/sh/shdma.h
-index 2c0a969adc9f..35987a35a848 100644
---- a/drivers/dma/sh/shdma.h
-+++ b/drivers/dma/sh/shdma.h
-@@ -29,7 +29,7 @@ struct sh_dmae_chan {
- 	const struct sh_dmae_slave_config *config; /* Slave DMA configuration */
- 	int xmit_shift;			/* log_2(bytes_per_xfer) */
- 	void __iomem *base;
--	char dev_id[16];		/* unique name per DMAC of channel */
-+	char dev_id[32];		/* unique name per DMAC of channel */
- 	int pm_error;
- 	dma_addr_t slave_addr;
- };
--- 
-2.43.0
-
+ [32m
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 2 selftests: damon: debugfs_schemes.sh
+ok 3 selftests: damon: debugfs_target_ids.sh
+ok 4 selftests: damon: debugfs_empty_targets.sh
+ok 5 selftests: damon: debugfs_huge_count_read_write.sh
+ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
+ok 7 selftests: damon: debugfs_rm_non_contexts.sh
+ok 8 selftests: damon: sysfs.sh
+ok 9 selftests: damon: sysfs_update_removed_scheme_dir.sh
+ok 10 selftests: damon: reclaim.sh
+ok 11 selftests: damon: lru_sort.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_arm64.sh
+ok 12 selftests: damon-tests: build_m68k.sh
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
+ [33m
+ [92mPASS [39m
+_remote_run_corr.sh SUCCESS
 
