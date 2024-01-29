@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-17220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA7B784104E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A23840EF2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 292C71C23987
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26C2C1F27857
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64CA275613;
-	Mon, 29 Jan 2024 17:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14AAB16274B;
+	Mon, 29 Jan 2024 17:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHW0R1bB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Czitffac"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248F8755F1;
-	Mon, 29 Jan 2024 17:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C462515AAA7;
+	Mon, 29 Jan 2024 17:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548599; cv=none; b=Et/9L9krZjXoStlnFpijOZfT83TW/SmxGQOhto+tmswLBo1QjWT4dgSIqgB5m9xCjKnqx57g9uIE+WjQSU9VC3JhC+217F7uxGgtu1bQm+6glofzfbeondwRMrNL7uVWu2yij6EfipdUCgJzKPRJPafBnGaO4S90aNYq2Nm2I5s=
+	t=1706548360; cv=none; b=dOfsGGoN3lPoekfdMGH+ZoHMBBlU357mA3TmnC8ARQM4TgNQgiQoy7t/PJbXeJWTuB0WwVUuMgA+R3y9rIH7uiB4qDIUN9koTN3Ix2r1ZyqqFLTCeJrCzRo8ZsrbdDM1mIONN8gfkw9CY1PgmnM5rthg0OF9FnEujKcGws8+3w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548599; c=relaxed/simple;
-	bh=iNFrxNfVKFZJ6HhXRKnLssqZ+FX5sfnTAKP/Us06rs8=;
+	s=arc-20240116; t=1706548360; c=relaxed/simple;
+	bh=KflqDAZgJJmbNew8DcrpfHuPBgP7FfYHs6U1biyvTYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WJcBDszwlGRjEfxGIe5U7xvuQ4wUjASBWeBHoKXXhcq5BjTSlK7jvbtNqFmI0TS8hUwxIAcKb2/UBXvR7guM7yylOcOySECk40/Tpd3iFVOmOYiAhkn0IZFX1U4nA84YRDV1an+uhI7f2mr/Cp1YAJlYnEgj4OtInGIg1TGRq4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHW0R1bB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2EBAC433C7;
-	Mon, 29 Jan 2024 17:16:38 +0000 (UTC)
+	 MIME-Version; b=ZpzDngfYosBAM/vQyQ8yWCqQgW8FOCpkN2o8akZyKXf6vtY4dfM5+MXWaab8IVFpXGSZPZ/3X26sSyYjpP0Jv+UZb8bjf8C7CGdLZ+vCJ5nwHxdPqBeBsypPxyCU+Ez2XdjlLpy6Q0XT2dTjQkDJALUnSFo7pEhW5rTINpwgqU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Czitffac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFC1C433C7;
+	Mon, 29 Jan 2024 17:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548599;
-	bh=iNFrxNfVKFZJ6HhXRKnLssqZ+FX5sfnTAKP/Us06rs8=;
+	s=korg; t=1706548360;
+	bh=KflqDAZgJJmbNew8DcrpfHuPBgP7FfYHs6U1biyvTYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nHW0R1bBCh3pbfwq7GGjv38WpRVwzzSAbTquRewNmVAUmEIwJnG6EWhuwQyhNpPfu
-	 nBZZD9dlzB7Zphi0i2tSiiIMf4uZu7Ar9oGL9ATGO9o9IqJmZUo9xINpcVoAhfOlOn
-	 sPA5bCLbBPNvWEXU9vsezrklDMKzb5lTBhvQN5JE=
+	b=CzitffacgjcDeafOo4U7qqiydp/H4Y9KZ1Maeb/SVX/zfPivkAMExIobUCk400Ukg
+	 FsEFwJqTHpJP+VwKKwMRqGQWOr+cNCrtBn4PDmecQptZVUgnLD/BDmvND97EnZ38ha
+	 RkMDJYng3BC/2GdjGiCjBjAeKHAKpGA2337i4B9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	nerdopolis <bluescreen_avenger@verizon.net>,
-	Sima Vetter <daniel.vetter@ffwll.ch>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Zack Rusin <zackr@vmware.com>
-Subject: [PATCH 6.6 260/331] drm/virtio: Disable damage clipping if FB changed since last page-flip
+	Michael Kelley <mhklinux@outlook.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 124/185] hv_netvsc: Calculate correct ring size when PAGE_SIZE is not 4 Kbytes
 Date: Mon, 29 Jan 2024 09:05:24 -0800
-Message-ID: <20240129170022.489276047@linuxfoundation.org>
+Message-ID: <20240129170002.573953930@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Martinez Canillas <javierm@redhat.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-commit 0240db231dfe5ee5b7a3a03cba96f0844b7a673d upstream.
+commit 6941f67ad37d5465b75b9ffc498fcf6897a3c00e upstream.
 
-The driver does per-buffer uploads and needs to force a full plane update
-if the plane's attached framebuffer has change since the last page-flip.
+Current code in netvsc_drv_init() incorrectly assumes that PAGE_SIZE
+is 4 Kbytes, which is wrong on ARM64 with 16K or 64K page size. As a
+result, the default VMBus ring buffer size on ARM64 with 64K page size
+is 8 Mbytes instead of the expected 512 Kbytes. While this doesn't break
+anything, a typical VM with 8 vCPUs and 8 netvsc channels wastes 120
+Mbytes (8 channels * 2 ring buffers/channel * 7.5 Mbytes/ring buffer).
 
-Fixes: 01f05940a9a7 ("drm/virtio: Enable fb damage clips property for the primary plane")
-Cc: <stable@vger.kernel.org> # v6.4+
-Reported-by: nerdopolis <bluescreen_avenger@verizon.net>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218115
-Suggested-by: Sima Vetter <daniel.vetter@ffwll.ch>
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Zack Rusin <zackr@vmware.com>
-Acked-by: Sima Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231123221315.3579454-3-javierm@redhat.com
+Unfortunately, the module parameter specifying the ring buffer size
+is in units of 4 Kbyte pages. Ideally, it should be in units that
+are independent of PAGE_SIZE, but backwards compatibility prevents
+changing that now.
+
+Fix this by having netvsc_drv_init() hardcode 4096 instead of using
+PAGE_SIZE when calculating the ring buffer size in bytes. Also
+use the VMBUS_RING_SIZE macro to ensure proper alignment when running
+with page size larger than 4K.
+
+Cc: <stable@vger.kernel.org> # 5.15.x
+Fixes: 7aff79e297ee ("Drivers: hv: Enable Hyper-V code to be built on ARM64")
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/20240122162028.348885-1-mhklinux@outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/virtio/virtgpu_plane.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/hyperv/netvsc_drv.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/virtio/virtgpu_plane.c b/drivers/gpu/drm/virtio/virtgpu_plane.c
-index 20de599658c1..a72a2dbda031 100644
---- a/drivers/gpu/drm/virtio/virtgpu_plane.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_plane.c
-@@ -79,6 +79,8 @@ static int virtio_gpu_plane_atomic_check(struct drm_plane *plane,
- {
- 	struct drm_plane_state *new_plane_state = drm_atomic_get_new_plane_state(state,
- 										 plane);
-+	struct drm_plane_state *old_plane_state = drm_atomic_get_old_plane_state(state,
-+										 plane);
- 	bool is_cursor = plane->type == DRM_PLANE_TYPE_CURSOR;
- 	struct drm_crtc_state *crtc_state;
- 	int ret;
-@@ -86,6 +88,14 @@ static int virtio_gpu_plane_atomic_check(struct drm_plane *plane,
- 	if (!new_plane_state->fb || WARN_ON(!new_plane_state->crtc))
- 		return 0;
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -44,7 +44,7 @@
  
-+	/*
-+	 * Ignore damage clips if the framebuffer attached to the plane's state
-+	 * has changed since the last plane update (page-flip). In this case, a
-+	 * full plane update should happen because uploads are done per-buffer.
-+	 */
-+	if (old_plane_state->fb != new_plane_state->fb)
-+		new_plane_state->ignore_damage_clips = true;
-+
- 	crtc_state = drm_atomic_get_crtc_state(state,
- 					       new_plane_state->crtc);
- 	if (IS_ERR(crtc_state))
--- 
-2.43.0
-
+ static unsigned int ring_size __ro_after_init = 128;
+ module_param(ring_size, uint, 0444);
+-MODULE_PARM_DESC(ring_size, "Ring buffer size (# of pages)");
++MODULE_PARM_DESC(ring_size, "Ring buffer size (# of 4K pages)");
+ unsigned int netvsc_ring_bytes __ro_after_init;
+ 
+ static const u32 default_msg = NETIF_MSG_DRV | NETIF_MSG_PROBE |
+@@ -2801,7 +2801,7 @@ static int __init netvsc_drv_init(void)
+ 		pr_info("Increased ring_size to %u (min allowed)\n",
+ 			ring_size);
+ 	}
+-	netvsc_ring_bytes = ring_size * PAGE_SIZE;
++	netvsc_ring_bytes = VMBUS_RING_SIZE(ring_size * 4096);
+ 
+ 	register_netdevice_notifier(&netvsc_netdev_notifier);
+ 
 
 
 
