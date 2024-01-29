@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAF0B841082
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F27BB840F2F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87182286BFF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85DEAB251A5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D5515B987;
-	Mon, 29 Jan 2024 17:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8CC164186;
+	Mon, 29 Jan 2024 17:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0KosvWFI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwu8R+/m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A6715A493;
-	Mon, 29 Jan 2024 17:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0AB15AAD9;
+	Mon, 29 Jan 2024 17:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548635; cv=none; b=V5ejCxV2RnUyMdZwxhPTqNvnrl9NFH8mmsVreE4SfzHUch1ZR8rIGO3Ly5CHIV+TBhREVg7WZOdBZE21g7SxlNPD3trq3pJgz51vnUe9S2CYiipYjab6gs4QG4ncWEbBOSJG3XL9HMk8sM/aETzKfsUGO9zemaXEiOwtO5QZxAY=
+	t=1706548397; cv=none; b=eHG1SpnCCH/WyWuLOgaiOzSNICT7eS7gFwOwE90Ye8UZwLiVBoQP+/oNQLYc1VT0HZcTmpxsl0JNJS37cDen0R/8euGCDmfHOEfellTXOuilXtedZFyCtEdLE7l196yfA3zf+U3gkSvCj9oRF+/gu5LptBaWprNUBsgO+ntP/ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548635; c=relaxed/simple;
-	bh=Xf6ns8vRCpjhGi24XbVeybunRxrVYseBySXW2rNEhFU=;
+	s=arc-20240116; t=1706548397; c=relaxed/simple;
+	bh=LxfZnP+0GWyY1lI8azeZE0E3Hh0WTx+wAA69PkiuIvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/waLcyqT1ohFZUQaq/9QcJ7VlmIqJYyGZAYH+09jUovV2BiSNhnxhgYH2YYvffKntIOx4Wn5du7+qVEqP5h12wj0pG2TjA7YtNjvUgCuyQT1VQh3yMKr4F0+7A5+hi2CPg6bREuMo+9HNcCNjkZplJ+a6ASFtFo+HeYodUE0b8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0KosvWFI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A843C433C7;
-	Mon, 29 Jan 2024 17:17:15 +0000 (UTC)
+	 MIME-Version; b=IyWpenNNCc5vzVQH97zn8GLs6KxPzj0/4C/TBTxG55ikGrAHm/Az+WXwab01qbSgM3XaOaNeLuUmNC+7s8voqHtsWhACYD7efzSz6PgzUtkIUGs1nYnwbreA+qpagN0LJBIbHFQpE5ju9jeA5UIJDNHOQJrVAuT0LxhWlNrIjrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jwu8R+/m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01ABDC433C7;
+	Mon, 29 Jan 2024 17:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548635;
-	bh=Xf6ns8vRCpjhGi24XbVeybunRxrVYseBySXW2rNEhFU=;
+	s=korg; t=1706548397;
+	bh=LxfZnP+0GWyY1lI8azeZE0E3Hh0WTx+wAA69PkiuIvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0KosvWFI4iWMQVCyIzaGXMx0EkdP8FvB4qSdam0fpG7UfgdXyIjY11z/xbIXGS51v
-	 QdF2aB6xqyytvjCjyBSAGJM5etIKgmDIxSC44E7qcIEBcHNka3YIm5Z3l1ov+7Zg3m
-	 Bkheag8R+raEoCSgebC0HMFiuSibEqqPUy9RLuJU=
+	b=jwu8R+/mhA8MNv9y26+vHLQO05iJOM2HY57PFL+SmFCuop1kf6YixAecRd/sjF/2/
+	 lwn6v8eCN/FKmDEf/aYpYbpD/w1f0qP8uzu6Vpp7EcZt8gwQa9B+ssG/E6pWvVt6SZ
+	 xh2dpHLXc8D7glGRDO0YY570NxFlIU9ihwyp5i0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 310/331] firmware: arm_scmi: Use xa_insert() to store opps
+Subject: [PATCH 6.1 174/185] drm/exynos: gsc: minor fix for loop iteration in gsc_runtime_resume
 Date: Mon, 29 Jan 2024 09:06:14 -0800
-Message-ID: <20240129170023.950516817@linuxfoundation.org>
+Message-ID: <20240129170004.177122972@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit e8ef4bbe39b9576a73f104f6af743fb9c7b624ba ]
+[ Upstream commit 4050957c7c2c14aa795dbf423b4180d5ac04e113 ]
 
-When storing opps by level or index use xa_insert() instead of xa_store()
-and add error-checking to spot bad duplicates indexes possibly wrongly
-provided by the platform firmware.
+Do not forget to call clk_disable_unprepare() on the first element of
+ctx->clocks array.
 
-Fixes: 31c7c1397a33 ("firmware: arm_scmi: Add v3.2 perf level indexing mode support")
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Link: https://lore.kernel.org/r/20240108185050.1628687-1-cristian.marussi@arm.com
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 8b7d3ec83aba ("drm/exynos: gsc: Convert driver to IPP v2 core API")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/perf.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_gsc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_scmi/perf.c b/drivers/firmware/arm_scmi/perf.c
-index e887fd169043..dd344506b0a3 100644
---- a/drivers/firmware/arm_scmi/perf.c
-+++ b/drivers/firmware/arm_scmi/perf.c
-@@ -347,8 +347,8 @@ process_response_opp(struct scmi_opp *opp, unsigned int loop_idx,
- }
- 
- static inline void
--process_response_opp_v4(struct perf_dom_info *dom, struct scmi_opp *opp,
--			unsigned int loop_idx,
-+process_response_opp_v4(struct device *dev, struct perf_dom_info *dom,
-+			struct scmi_opp *opp, unsigned int loop_idx,
- 			const struct scmi_msg_resp_perf_describe_levels_v4 *r)
- {
- 	opp->perf = le32_to_cpu(r->opp[loop_idx].perf_val);
-@@ -359,10 +359,23 @@ process_response_opp_v4(struct perf_dom_info *dom, struct scmi_opp *opp,
- 	/* Note that PERF v4 reports always five 32-bit words */
- 	opp->indicative_freq = le32_to_cpu(r->opp[loop_idx].indicative_freq);
- 	if (dom->level_indexing_mode) {
-+		int ret;
-+
- 		opp->level_index = le32_to_cpu(r->opp[loop_idx].level_index);
- 
--		xa_store(&dom->opps_by_idx, opp->level_index, opp, GFP_KERNEL);
--		xa_store(&dom->opps_by_lvl, opp->perf, opp, GFP_KERNEL);
-+		ret = xa_insert(&dom->opps_by_idx, opp->level_index, opp,
-+				GFP_KERNEL);
-+		if (ret)
-+			dev_warn(dev,
-+				 "Failed to add opps_by_idx at %d - ret:%d\n",
-+				 opp->level_index, ret);
-+
-+		ret = xa_insert(&dom->opps_by_lvl, opp->perf, opp, GFP_KERNEL);
-+		if (ret)
-+			dev_warn(dev,
-+				 "Failed to add opps_by_lvl at %d - ret:%d\n",
-+				 opp->perf, ret);
-+
- 		hash_add(dom->opps_by_freq, &opp->hash, opp->indicative_freq);
- 	}
- }
-@@ -379,7 +392,7 @@ iter_perf_levels_process_response(const struct scmi_protocol_handle *ph,
- 	if (PROTOCOL_REV_MAJOR(p->version) <= 0x3)
- 		process_response_opp(opp, st->loop_idx, response);
- 	else
--		process_response_opp_v4(p->perf_dom, opp, st->loop_idx,
-+		process_response_opp_v4(ph->dev, p->perf_dom, opp, st->loop_idx,
- 					response);
- 	p->perf_dom->opp_count++;
- 
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_gsc.c b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
+index 964dceb28c1e..68ea92742b06 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_gsc.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
+@@ -1342,7 +1342,7 @@ static int __maybe_unused gsc_runtime_resume(struct device *dev)
+ 	for (i = 0; i < ctx->num_clocks; i++) {
+ 		ret = clk_prepare_enable(ctx->clocks[i]);
+ 		if (ret) {
+-			while (--i > 0)
++			while (--i >= 0)
+ 				clk_disable_unprepare(ctx->clocks[i]);
+ 			return ret;
+ 		}
 -- 
 2.43.0
 
