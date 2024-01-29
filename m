@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-17275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82742841087
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA9BF840F33
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36BE21F24456
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 802441F23B9A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4A815F334;
-	Mon, 29 Jan 2024 17:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3497615D5B9;
+	Mon, 29 Jan 2024 17:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z4EuLr0c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IA5luMPf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2A415A493;
-	Mon, 29 Jan 2024 17:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E029315D5C1;
+	Mon, 29 Jan 2024 17:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548639; cv=none; b=S5iXE8cPOeajvw6wZB6qt0xkUQDMwKzgyEZ1/4UdGQzUD4mMBQRf6OI8dOT8hqbtW0S25pZaxp+4yTUf/XdlemVlHUQadE+g4Gb5M4W1svohfP56+fOO6RMMQox4VcNsSNNztgJrbUTgGwfUlZd4H2t8vUBX/vfft2Yj+inZs50=
+	t=1706548401; cv=none; b=mJTMkGZ3KmKnD1hbJ8KeE1eshYdEshs8soN7071DYtPwgDuGg9tI3WjVN7WZ9PRfGEmLE4reWSFBss1QPdZbX1ZG8WPMxwBCfhVJBAuhqP+Rg06/MNwcnx8R2UUN4yTxarkWYe+VqAN7DVNWlC7zJQwWYsc8pGG6NHnRBV5/p2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548639; c=relaxed/simple;
-	bh=r3gUyyrBWGbgD400DRqJZKOFE2/qmGi9zaBsu2hmIYw=;
+	s=arc-20240116; t=1706548401; c=relaxed/simple;
+	bh=v1WQJkUf+O+sJ525P+we064tSRGyNWwBzmi44FHJyjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OSn4UZ/EvYt4ddnQyUZFCN2Ysxp+WR5jeXqrj5RleiYWZ6FwOGN2sk4Jd7I/XH28vUY7CKqgeU5uD/73MQmR0Wc/dqq1oyOm4kCR8ESFB1RqZDNfpx5NajT1N94701wMAlhHTSlgyoPE+Eyudebd3vcvWR3kdhwakAQ/43uI9S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z4EuLr0c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E379BC433F1;
-	Mon, 29 Jan 2024 17:17:18 +0000 (UTC)
+	 MIME-Version; b=WoYUGAZCABW67Wzus352g7jLB/8mdHvkfVlWlR3SZH38IsTuDju8kU/EA3LOvzqkLm4aeJC91Y4eQyu1gpITpqRiJR4gzU5xOaHBfVN6J/HNJ8GffFySCPsvJeRrI6C3i636qU53S9zWWIh4ZpaET+sT9yFYIjxpLXHiNNg3+N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IA5luMPf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FB0AC43390;
+	Mon, 29 Jan 2024 17:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548639;
-	bh=r3gUyyrBWGbgD400DRqJZKOFE2/qmGi9zaBsu2hmIYw=;
+	s=korg; t=1706548400;
+	bh=v1WQJkUf+O+sJ525P+we064tSRGyNWwBzmi44FHJyjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z4EuLr0c9ch5xnQ2KeOrhIoXq8WeHrS5hIouGQ8Qhb4dJkxOvCv1BCmFXLJ4mBZ3E
-	 NQcnKp3xRnHcddkNuWs+yJbj2Wi0tcYwb4I3MbQDKooAsM+PLhn8pxncEc6UyOWykd
-	 BsrKdSqh6U1axio+Z/U+2fi2u/40VyAMPMdG3940=
+	b=IA5luMPfyJ4yri/Yc9uXsnCkXA9ry0S76DvSdRbkS6hHnrijmnjNGJO5SIDD4mlsD
+	 zduIAD7V7GFrXZ/kU478AF8lgJSxJGvdNN7BVRH9l0eBwt+T16eUXcmOB9Oq9O7YQI
+	 zGjDiukPJ2YJ28BC7/s+q/uIP2mT0FNpLuicG1OI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Allison Karlitskaya <allison.karlitskaya@redhat.com>,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	David Lechner <dlechner@baylibre.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 315/331] block: Move checking GENHD_FL_NO_PART to bdev_add_partition()
+Subject: [PATCH 6.1 179/185] spi: fix finalize message on error return
 Date: Mon, 29 Jan 2024 09:06:19 -0800
-Message-ID: <20240129170024.103558219@linuxfoundation.org>
+Message-ID: <20240129170004.343415047@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 7777f47f2ea64efd1016262e7b59fab34adfb869 ]
+[ Upstream commit 8c2ae772fe08e33f3d7a83849e85539320701abd ]
 
-Commit 1a721de8489f ("block: don't add or resize partition on the disk
-with GENHD_FL_NO_PART") prevented all operations about partitions on disks
-with GENHD_FL_NO_PART in blkpg_do_ioctl() since they are meaningless.
-However, it changed error code in some scenarios. So move checking
-GENHD_FL_NO_PART to bdev_add_partition() to eliminate impact.
+In __spi_pump_transfer_message(), the message was not finalized in the
+first error return as it is in the other error return paths. Not
+finalizing the message could cause anything waiting on the message to
+complete to hang forever.
 
-Fixes: 1a721de8489f ("block: don't add or resize partition on the disk with GENHD_FL_NO_PART")
-Reported-by: Allison Karlitskaya <allison.karlitskaya@redhat.com>
-Closes: https://lore.kernel.org/all/CAOYeF9VsmqKMcQjo1k6YkGNujwN-nzfxY17N3F-CMikE1tYp+w@mail.gmail.com/
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240118130401.792757-1-lilingfeng@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This adds the missing call to spi_finalize_current_message().
+
+Fixes: ae7d2346dc89 ("spi: Don't use the message queue if possible in spi_sync")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://msgid.link/r/20240125205312.3458541-2-dlechner@baylibre.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/ioctl.c           | 2 --
- block/partitions/core.c | 5 +++++
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/spi/spi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/block/ioctl.c b/block/ioctl.c
-index a74ef911e279..d1d8e8391279 100644
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -20,8 +20,6 @@ static int blkpg_do_ioctl(struct block_device *bdev,
- 	struct blkpg_partition p;
- 	sector_t start, length;
- 
--	if (disk->flags & GENHD_FL_NO_PART)
--		return -EINVAL;
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EACCES;
- 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
-diff --git a/block/partitions/core.c b/block/partitions/core.c
-index e137a87f4db0..e58c8b50350b 100644
---- a/block/partitions/core.c
-+++ b/block/partitions/core.c
-@@ -458,6 +458,11 @@ int bdev_add_partition(struct gendisk *disk, int partno, sector_t start,
- 		goto out;
- 	}
- 
-+	if (disk->flags & GENHD_FL_NO_PART) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 22d227878bc4..19688f333e0b 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -1636,6 +1636,10 @@ static int __spi_pump_transfer_message(struct spi_controller *ctlr,
+ 			pm_runtime_put_noidle(ctlr->dev.parent);
+ 			dev_err(&ctlr->dev, "Failed to power device: %d\n",
+ 				ret);
 +
- 	if (partition_overlaps(disk, start, length, -1)) {
- 		ret = -EBUSY;
- 		goto out;
++			msg->status = ret;
++			spi_finalize_current_message(ctlr);
++
+ 			return ret;
+ 		}
+ 	}
 -- 
 2.43.0
 
