@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-16672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1215840DF1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22B3C840E07
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ACE5286A6C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74733B26C0D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBC015B0ED;
-	Mon, 29 Jan 2024 17:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C4C15DBCB;
+	Mon, 29 Jan 2024 17:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QreZF35q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hS4VQePA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F040515957C;
-	Mon, 29 Jan 2024 17:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77577159580;
+	Mon, 29 Jan 2024 17:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548193; cv=none; b=K+vk1eYnr75j9m5ueEDmFXb9wZRn53ffuo5+Jz1EfVDuQbfOkr+gP2am+fXp4NA3KGMDIXoI8aSA8qQz7CZDYW0TS3hra3KfWnMLuDz3JUEeHWLOtYz+7/q3+7ESNJ2jmzrx5DG/OUCTZifPgcbqJt9tNT8AyIrMnlq5lVPirwc=
+	t=1706548209; cv=none; b=rJlaS1YQUHQfFsMVXJY4fyU+ICZmGccW4r4xQ04CgxO3G3IMruUhr6y97QtK+gB8MhBAzNLMLNo4bmrBCKPtrPgz/IV72vmLlalJ8vrqBuXvNDiuw/D0ovLf+ZQGzJ5jykloH9mYawIMMuHgPk8kPJNDiChpWBt751BwBJsLCmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548193; c=relaxed/simple;
-	bh=UqSHOyHyrUSX5WJ2x37aMfX+Cg2OioofkXaPtKb1wz8=;
+	s=arc-20240116; t=1706548209; c=relaxed/simple;
+	bh=Xqtw+/DL7AjrcNvbqIc5XUln/PiwORrjmJGQHoTJahU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rABmafYtM4OG6Kab95KGUDfTvU0MOqGd/+xR4JRozGeLifg+CB2KpdgB1rzlUjNWW+4LtnUN9zbhCeHQcpgxFqjFvZ59akLZu8bhx9ZKSrBy2jyHYtS2kegx8TynrRFFmS5CRastS1lYnxHwWM8QUQ02Nc25TUoqKbQZbaEaXBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QreZF35q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92E2C433C7;
-	Mon, 29 Jan 2024 17:09:52 +0000 (UTC)
+	 MIME-Version; b=YLU/g91dskro2CJ2CY7sD9cS9gEk2DSLbY8Xm2PJuhwEqQ2hIPk1ZsZ7Cww2GWqoogws6v4CAels0PZAWQlTnHquCUcrTvS7euIXQotK+95JSEquzyT/hYaYOIzldCPrjqe2zo8Bw+mZ+ks19i0InBiH2paziqUvmtHRwYZNsz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hS4VQePA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F14C433C7;
+	Mon, 29 Jan 2024 17:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548192;
-	bh=UqSHOyHyrUSX5WJ2x37aMfX+Cg2OioofkXaPtKb1wz8=;
+	s=korg; t=1706548209;
+	bh=Xqtw+/DL7AjrcNvbqIc5XUln/PiwORrjmJGQHoTJahU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QreZF35qqmKVJOovrMFjAe3rU8xxyUZ2W1MnU68YTFw2UZik4SyidBhJOyxU+bRTB
-	 dArnaAVcPS+ie7FSCLX+c1vSZwJa5dLJKmbwIljXvlJXNHD2aRo16QaD7CFDVPWsTn
-	 TYmjJSVZTS85/3McCvD9AzbF+lkXRj6gyXXZB6uo=
+	b=hS4VQePAzYaLKOHGDZiZ8WfVXsLYMvbNqzSAr2bgVqMjS6NJO0uUkMC7m4vXwTZcq
+	 n986T7XzicgcazuzK4/Uw6sOclOXzk33gDkgLAwzEhI14SEnf05nD2lV1uEufbx+Cd
+	 VzCCbIJK18n28vf6G9HoXBYRll5kwp3qu/7fuD3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.7 231/346] wifi: iwlwifi: fix a memory corruption
-Date: Mon, 29 Jan 2024 09:04:22 -0800
-Message-ID: <20240129170023.192079405@linuxfoundation.org>
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.7 232/346] nfsd: fix RELEASE_LOCKOWNER
+Date: Mon, 29 Jan 2024 09:04:23 -0800
+Message-ID: <20240129170023.221842028@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -66,45 +66,145 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: NeilBrown <neilb@suse.de>
 
-commit cf4a0d840ecc72fcf16198d5e9c505ab7d5a5e4d upstream.
+commit edcf9725150e42beeca42d085149f4c88fa97afd upstream.
 
-iwl_fw_ini_trigger_tlv::data is a pointer to a __le32, which means that
-if we copy to iwl_fw_ini_trigger_tlv::data + offset while offset is in
-bytes, we'll write past the buffer.
+The test on so_count in nfsd4_release_lockowner() is nonsense and
+harmful.  Revert to using check_for_locks(), changing that to not sleep.
 
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218233
-Fixes: cf29c5b66b9f ("iwlwifi: dbg_ini: implement time point handling")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240111150610.2d2b8b870194.I14ed76505a5cf87304e0c9cc05cc0ae85ed3bf91@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+First: harmful.
+As is documented in the kdoc comment for nfsd4_release_lockowner(), the
+test on so_count can transiently return a false positive resulting in a
+return of NFS4ERR_LOCKS_HELD when in fact no locks are held.  This is
+clearly a protocol violation and with the Linux NFS client it can cause
+incorrect behaviour.
+
+If RELEASE_LOCKOWNER is sent while some other thread is still
+processing a LOCK request which failed because, at the time that request
+was received, the given owner held a conflicting lock, then the nfsd
+thread processing that LOCK request can hold a reference (conflock) to
+the lock owner that causes nfsd4_release_lockowner() to return an
+incorrect error.
+
+The Linux NFS client ignores that NFS4ERR_LOCKS_HELD error because it
+never sends NFS4_RELEASE_LOCKOWNER without first releasing any locks, so
+it knows that the error is impossible.  It assumes the lock owner was in
+fact released so it feels free to use the same lock owner identifier in
+some later locking request.
+
+When it does reuse a lock owner identifier for which a previous RELEASE
+failed, it will naturally use a lock_seqid of zero.  However the server,
+which didn't release the lock owner, will expect a larger lock_seqid and
+so will respond with NFS4ERR_BAD_SEQID.
+
+So clearly it is harmful to allow a false positive, which testing
+so_count allows.
+
+The test is nonsense because ... well... it doesn't mean anything.
+
+so_count is the sum of three different counts.
+1/ the set of states listed on so_stateids
+2/ the set of active vfs locks owned by any of those states
+3/ various transient counts such as for conflicting locks.
+
+When it is tested against '2' it is clear that one of these is the
+transient reference obtained by find_lockowner_str_locked().  It is not
+clear what the other one is expected to be.
+
+In practice, the count is often 2 because there is precisely one state
+on so_stateids.  If there were more, this would fail.
+
+In my testing I see two circumstances when RELEASE_LOCKOWNER is called.
+In one case, CLOSE is called before RELEASE_LOCKOWNER.  That results in
+all the lock states being removed, and so the lockowner being discarded
+(it is removed when there are no more references which usually happens
+when the lock state is discarded).  When nfsd4_release_lockowner() finds
+that the lock owner doesn't exist, it returns success.
+
+The other case shows an so_count of '2' and precisely one state listed
+in so_stateid.  It appears that the Linux client uses a separate lock
+owner for each file resulting in one lock state per lock owner, so this
+test on '2' is safe.  For another client it might not be safe.
+
+So this patch changes check_for_locks() to use the (newish)
+find_any_file_locked() so that it doesn't take a reference on the
+nfs4_file and so never calls nfsd_file_put(), and so never sleeps.  With
+this check is it safe to restore the use of check_for_locks() rather
+than testing so_count against the mysterious '2'.
+
+Fixes: ce3c4ad7f4ce ("NFSD: Fix possible sleep during nfsd4_release_lockowner()")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Cc: stable@vger.kernel.org # v6.2+
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4state.c |   26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2018-2023 Intel Corporation
-+ * Copyright (C) 2018-2024 Intel Corporation
-  */
- #include <linux/firmware.h>
- #include "iwl-drv.h"
-@@ -1096,7 +1096,7 @@ static int iwl_dbg_tlv_override_trig_nod
- 		node_trig = (void *)node_tlv->data;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -7911,14 +7911,16 @@ check_for_locks(struct nfs4_file *fp, st
+ {
+ 	struct file_lock *fl;
+ 	int status = false;
+-	struct nfsd_file *nf = find_any_file(fp);
++	struct nfsd_file *nf;
+ 	struct inode *inode;
+ 	struct file_lock_context *flctx;
+ 
++	spin_lock(&fp->fi_lock);
++	nf = find_any_file_locked(fp);
+ 	if (!nf) {
+ 		/* Any valid lock stateid should have some sort of access */
+ 		WARN_ON_ONCE(1);
+-		return status;
++		goto out;
  	}
  
--	memcpy(node_trig->data + offset, trig->data, trig_data_len);
-+	memcpy((u8 *)node_trig->data + offset, trig->data, trig_data_len);
- 	node_tlv->length = cpu_to_le32(size);
+ 	inode = file_inode(nf->nf_file);
+@@ -7934,7 +7936,8 @@ check_for_locks(struct nfs4_file *fp, st
+ 		}
+ 		spin_unlock(&flctx->flc_lock);
+ 	}
+-	nfsd_file_put(nf);
++out:
++	spin_unlock(&fp->fi_lock);
+ 	return status;
+ }
  
- 	if (policy & IWL_FW_INI_APPLY_POLICY_OVERRIDE_CFG) {
+@@ -7944,10 +7947,8 @@ check_for_locks(struct nfs4_file *fp, st
+  * @cstate: NFSv4 COMPOUND state
+  * @u: RELEASE_LOCKOWNER arguments
+  *
+- * The lockowner's so_count is bumped when a lock record is added
+- * or when copying a conflicting lock. The latter case is brief,
+- * but can lead to fleeting false positives when looking for
+- * locks-in-use.
++ * Check if theree are any locks still held and if not - free the lockowner
++ * and any lock state that is owned.
+  *
+  * Return values:
+  *   %nfs_ok: lockowner released or not found
+@@ -7983,10 +7984,13 @@ nfsd4_release_lockowner(struct svc_rqst
+ 		spin_unlock(&clp->cl_lock);
+ 		return nfs_ok;
+ 	}
+-	if (atomic_read(&lo->lo_owner.so_count) != 2) {
+-		spin_unlock(&clp->cl_lock);
+-		nfs4_put_stateowner(&lo->lo_owner);
+-		return nfserr_locks_held;
++
++	list_for_each_entry(stp, &lo->lo_owner.so_stateids, st_perstateowner) {
++		if (check_for_locks(stp->st_stid.sc_file, lo)) {
++			spin_unlock(&clp->cl_lock);
++			nfs4_put_stateowner(&lo->lo_owner);
++			return nfserr_locks_held;
++		}
+ 	}
+ 	unhash_lockowner_locked(lo);
+ 	while (!list_empty(&lo->lo_owner.so_stateids)) {
 
 
 
