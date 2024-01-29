@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8255C840D1D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BF51840F4C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E72C1F2B462
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DCFCB25492
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1425157055;
-	Mon, 29 Jan 2024 17:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2F0157054;
+	Mon, 29 Jan 2024 17:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UuMXPy/w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLg4ZJUr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0A815956E;
-	Mon, 29 Jan 2024 17:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6201641AE;
+	Mon, 29 Jan 2024 17:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548046; cv=none; b=VKV9RDYXMCNGMC0jOpm/Od+MeIEin/9jyPyT3Q9F26Y9OpEVEccBJWdegH1xXLP14SGz7GQMDynPEoi9ato3Ft9RAFe/5dtWU3QUKigR2zDFxwaca25A87ZEiCfRgu96gxK11k3XNTaIbQ/fE70tnalUeqJ/XReDYUsSpMmpjHQ=
+	t=1706548416; cv=none; b=YXvqPeHnR1cQGIiLfc/91Yn4fB3WslYFh68mhP7pVemBUighLdpb+0gqJ71y52fYB8pt4bC33n0mbzP/GlsfAEjKogpp6G+dB0QJFR+2b00JYOJN+/wjb3kgeqsqwzLo5ldaJDc6VNYyJZ1SAEgbdfq5pyHcZB1T2Pi7hzgb2ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548046; c=relaxed/simple;
-	bh=pyA3grc2RMvyOktQjP8TrjJEEYEjLg2zDkuFXqq6FOg=;
+	s=arc-20240116; t=1706548416; c=relaxed/simple;
+	bh=MA+smWX36Cj0dYSbxB7dem9AhN0pLwHzw51cWraTJ0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/LXwKhG/PaimiBwCC0sTWBw3o35mJ6MTCMqTzAZ4fNKKyMYxKbHO/MuqRfi7nugIHNiFOvxVSQEgMO+m5W0ZXnOuXEYib75AaMf5P97KtJSLkNc/g8LvqZTl0TErilkDCfKt+O+dK9dlw/NlWksGetez1uMb4iO3TBgWtOLq1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UuMXPy/w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45556C433F1;
-	Mon, 29 Jan 2024 17:07:25 +0000 (UTC)
+	 MIME-Version; b=gxahIIqEHH59iut3GoKqFbvizWkpPdjDmdqHJ16pldGRssm/nSI7qOoXOk2SgcVeSUvanMzrjFFXUcHC/7LjG2e+ZnCzDrV+gP8WzV0AsexBV2FZX1J48iTOWnuv2tOD8vxEo6d1wNhmSt9YiTXJfokT5+UC/GG6clOYuDJYhXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLg4ZJUr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649FEC43390;
+	Mon, 29 Jan 2024 17:13:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548045;
-	bh=pyA3grc2RMvyOktQjP8TrjJEEYEjLg2zDkuFXqq6FOg=;
+	s=korg; t=1706548416;
+	bh=MA+smWX36Cj0dYSbxB7dem9AhN0pLwHzw51cWraTJ0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UuMXPy/w4ThpaYthn72/tVKwhk3EVi8dysK+87m6GKc3vZSpMsZtaZUZ5jKI2AobY
-	 HQ5CMc74ar81SPg8ZcKGrlbfBhpMFQH9hFqxFfgeUdx/hSp5BIdY0nl1/9TQSMhPoe
-	 EJo09AT9bPNsfRGpJIm+qsclb5f+kNrsFUaY82hA=
+	b=PLg4ZJUrZ5EEUSMxZC9iPzCI350v64XfLF1NeIxqXyPB9lg8i2AOCmpy1HCIX+PI7
+	 6uXvr0aXdZdyFMZivYVpl0Woa6kvTHTsgWoee+cORtXG/HtW9HxyPD/ojHa6z+SIeA
+	 qVP6ywGgNwa/OKbT1+xko+UgF1oONarCXeetkD98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Yu <quic_qianyu@quicinc.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.7 046/346] bus: mhi: host: Drop chan lock before queuing buffers
-Date: Mon, 29 Jan 2024 09:01:17 -0800
-Message-ID: <20240129170017.742553486@linuxfoundation.org>
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 014/331] dmaengine: fix NULL pointer in channel unregistration function
+Date: Mon, 29 Jan 2024 09:01:18 -0800
+Message-ID: <20240129170015.382016015@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiang Yu <quic_qianyu@quicinc.com>
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
 
-commit 01bd694ac2f682fb8017e16148b928482bc8fa4b upstream.
+[ Upstream commit f5c24d94512f1b288262beda4d3dcb9629222fc7 ]
 
-Ensure read and write locks for the channel are not taken in succession by
-dropping the read lock from parse_xfer_event() such that a callback given
-to client can potentially queue buffers and acquire the write lock in that
-process. Any queueing of buffers should be done without channel read lock
-acquired as it can result in multiple locks and a soft lockup.
+__dma_async_device_channel_register() can fail. In case of failure,
+chan->local is freed (with free_percpu()), and chan->local is nullified.
+When dma_async_device_unregister() is called (because of managed API or
+intentionally by DMA controller driver), channels are unconditionally
+unregistered, leading to this NULL pointer:
+[    1.318693] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000d0
+[...]
+[    1.484499] Call trace:
+[    1.486930]  device_del+0x40/0x394
+[    1.490314]  device_unregister+0x20/0x7c
+[    1.494220]  __dma_async_device_channel_unregister+0x68/0xc0
 
-Cc: <stable@vger.kernel.org> # 5.7
-Fixes: 1d3173a3bae7 ("bus: mhi: core: Add support for processing events from client device")
-Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Tested-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/1702276972-41296-3-git-send-email-quic_qianyu@quicinc.com
-[mani: added fixes tag and cc'ed stable]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Look at dma_async_device_register() function error path, channel device
+unregistration is done only if chan->local is not NULL.
+
+Then add the same condition at the beginning of
+__dma_async_device_channel_unregister() function, to avoid NULL pointer
+issue whatever the API used to reach this function.
+
+Fixes: d2fb0a043838 ("dmaengine: break out channel registration")
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20231213160452.2598073-1-amelie.delaunay@foss.st.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/main.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/dma/dmaengine.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/bus/mhi/host/main.c
-+++ b/drivers/bus/mhi/host/main.c
-@@ -643,6 +643,8 @@ static int parse_xfer_event(struct mhi_c
- 			mhi_del_ring_element(mhi_cntrl, tre_ring);
- 			local_rp = tre_ring->rp;
- 
-+			read_unlock_bh(&mhi_chan->lock);
+diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+index b7388ae62d7f..491b22240221 100644
+--- a/drivers/dma/dmaengine.c
++++ b/drivers/dma/dmaengine.c
+@@ -1103,6 +1103,9 @@ EXPORT_SYMBOL_GPL(dma_async_device_channel_register);
+ static void __dma_async_device_channel_unregister(struct dma_device *device,
+ 						  struct dma_chan *chan)
+ {
++	if (chan->local == NULL)
++		return;
 +
- 			/* notify client */
- 			mhi_chan->xfer_cb(mhi_chan->mhi_dev, &result);
- 
-@@ -668,6 +670,8 @@ static int parse_xfer_event(struct mhi_c
- 					kfree(buf_info->cb_buf);
- 				}
- 			}
-+
-+			read_lock_bh(&mhi_chan->lock);
- 		}
- 		break;
- 	} /* CC_EOT */
+ 	WARN_ONCE(!device->device_release && chan->client_count,
+ 		  "%s called while %d clients hold a reference\n",
+ 		  __func__, chan->client_count);
+-- 
+2.43.0
+
 
 
 
