@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D98840DAE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 998EA840DF7
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EF49283445
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A4E51F2D07A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E753615CD44;
-	Mon, 29 Jan 2024 17:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F09815DBBB;
+	Mon, 29 Jan 2024 17:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zkz8tIe0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="paAT8ljP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CCD157053;
-	Mon, 29 Jan 2024 17:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2978015B0FC;
+	Mon, 29 Jan 2024 17:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548146; cv=none; b=jyVYmrddlTgh3P+xbj81JvPq7lHREdue1Ngl83dxsIoHYdKcQfIucV1a48HxLlI8V2KrDySg7XRr7KwPnzR5gxLcrP62CX8+WbASzXGLWCC16tmCkD+fWWeDSu4rsc1Vd45n8J7b6BQP9xkz+QoFCCljgyPJ/PWXxkxw19ILvjw=
+	t=1706548198; cv=none; b=rA5/OKZ0KJyH5UtgS7TLSeFQa7JxqosXW4AIC5Dcr84NZN1urzL/f0QIulCuAF/KZM2N8neITI9U7kfTvjsYvSPBPSblxZ/nX7tJ3oSPwmS7a9ya4ulNjXfEvjRnyyKhHR0kUwkNPvnZpAoimjcy5vM8SRFVQQWnsYhS9a8uB+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548146; c=relaxed/simple;
-	bh=kRNDf6Rjc+PTKpCrqHDBBJGxkUd6srWSN7odisJ7G14=;
+	s=arc-20240116; t=1706548198; c=relaxed/simple;
+	bh=+13LCaXo7WdDWgAXDfTe6wz9cfBm0laoFobFC2JXbKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JFMluyGEcz0PXkS4vGeHaa6+k14CtJjztts6O5ofWu+IkAUz0xwOfiGo+0D4LspWlwn81kYNYG3af56Img+m7vmgZ3/KeTGjX3waAuNJxtBtuddGK6PUtdf9Emjy7ugcWKqIAqibFZog1YyWn9VVKJk5ioFwBFN5b+uPYz5R788=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zkz8tIe0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F53FC43390;
-	Mon, 29 Jan 2024 17:09:06 +0000 (UTC)
+	 MIME-Version; b=atFBtqSvvE3LWY8klolPeLRL8smHfi6CmLu782O/FMsJE2XehMQflR59jIjs5OucPtpsPyTWBUYdIephN9AlH15QlSHbyYP2cYGmuFxw/9h4nDC73HmsUWatcun5U3S3NEhhn2wKIHL5ZuEAG8g0wWcMSU6uwMatc1Z10sJjo/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=paAT8ljP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3267C43394;
+	Mon, 29 Jan 2024 17:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548146;
-	bh=kRNDf6Rjc+PTKpCrqHDBBJGxkUd6srWSN7odisJ7G14=;
+	s=korg; t=1706548198;
+	bh=+13LCaXo7WdDWgAXDfTe6wz9cfBm0laoFobFC2JXbKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zkz8tIe0eoKMSdIAsZ2OQQBisKqlgizS065po7JF66nwX+gxJRNSkapQUlxpJCT9i
-	 cM2/zsbb3JZ/pD0dV+RKrb1g6Lws002MvWKnlEBLfpv77tgyDEfImZ6OcbziZVGmzV
-	 oovXQlXChyoCaiTQBtgfUW3zco9ITm//1qutLrFg=
+	b=paAT8ljP9pt+FMfNoya+VRoDCvMUVMPqZ/MRzRo8vPiYRnvYs3FtyF+hiM/BbSgy0
+	 dMR3RSAToAplsKAkXBPdx7kgvDdrSYIkYg7hTt1Tp4yR1UZZBIS3+nNpuHRY12m8r3
+	 a4hbTi3Hd3TTDTFKF67aD8qQR1gutuf0NNpzPBiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 182/346] netlink: fix potential sleeping issue in mqueue_flush_file
+	Edward Adam Davis <eadavis@qq.com>,
+	syzbot+c52ab18308964d248092@syzkaller.appspotmail.com,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.1 013/185] hwrng: core - Fix page fault dead lock on mmap-ed hwrng
 Date: Mon, 29 Jan 2024 09:03:33 -0800
-Message-ID: <20240129170021.750248565@linuxfoundation.org>
+Message-ID: <20240129165959.023463426@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 234ec0b6034b16869d45128b8cd2dc6ffe596f04 ]
+commit 78aafb3884f6bc6636efcc1760c891c8500b9922 upstream.
 
-I analyze the potential sleeping issue of the following processes:
-Thread A                                Thread B
-...                                     netlink_create  //ref = 1
-do_mq_notify                            ...
-  sock = netlink_getsockbyfilp          ...     //ref = 2
-  info->notify_sock = sock;             ...
-...                                     netlink_sendmsg
-...                                       skb = netlink_alloc_large_skb  //skb->head is vmalloced
-...                                       netlink_unicast
-...                                         sk = netlink_getsockbyportid //ref = 3
-...                                         netlink_sendskb
-...                                           __netlink_sendskb
-...                                             skb_queue_tail //put skb to sk_receive_queue
-...                                         sock_put //ref = 2
-...                                     ...
-...                                     netlink_release
-...                                       deferred_put_nlk_sk //ref = 1
-mqueue_flush_file
-  spin_lock
-  remove_notification
-    netlink_sendskb
-      sock_put  //ref = 0
-        sk_free
-          ...
-          __sk_destruct
-            netlink_sock_destruct
-              skb_queue_purge  //get skb from sk_receive_queue
-                ...
-                __skb_queue_purge_reason
-                  kfree_skb_reason
-                    __kfree_skb
-                    ...
-                    skb_release_all
-                      skb_release_head_state
-                        netlink_skb_destructor
-                          vfree(skb->head)  //sleeping while holding spinlock
+There is a dead-lock in the hwrng device read path.  This triggers
+when the user reads from /dev/hwrng into memory also mmap-ed from
+/dev/hwrng.  The resulting page fault triggers a recursive read
+which then dead-locks.
 
-In netlink_sendmsg, if the memory pointed to by skb->head is allocated by
-vmalloc, and is put to sk_receive_queue queue, also the skb is not freed.
-When the mqueue executes flush, the sleeping bug will occur. Use
-vfree_atomic instead of vfree in netlink_skb_destructor to solve the issue.
+Fix this by using a stack buffer when calling copy_to_user.
 
-Fixes: c05cdb1b864f ("netlink: allow large data transfers from user-space")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Link: https://lore.kernel.org/r/20240122011807.2110357-1-shaozhengchao@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Edward Adam Davis <eadavis@qq.com>
+Reported-by: syzbot+c52ab18308964d248092@syzkaller.appspotmail.com
+Fixes: 9996508b3353 ("hwrng: core - Replace u32 in driver API with byte array")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netlink/af_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/char/hw_random/core.c |   34 +++++++++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 13 deletions(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index eb086b06d60d..d9107b545d36 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -374,7 +374,7 @@ static void netlink_skb_destructor(struct sk_buff *skb)
- 	if (is_vmalloc_addr(skb->head)) {
- 		if (!skb->cloned ||
- 		    !atomic_dec_return(&(skb_shinfo(skb)->dataref)))
--			vfree(skb->head);
-+			vfree_atomic(skb->head);
+--- a/drivers/char/hw_random/core.c
++++ b/drivers/char/hw_random/core.c
+@@ -24,10 +24,13 @@
+ #include <linux/random.h>
+ #include <linux/sched.h>
+ #include <linux/slab.h>
++#include <linux/string.h>
+ #include <linux/uaccess.h>
  
- 		skb->head = NULL;
+ #define RNG_MODULE_NAME		"hw_random"
+ 
++#define RNG_BUFFER_SIZE (SMP_CACHE_BYTES < 32 ? 32 : SMP_CACHE_BYTES)
++
+ static struct hwrng *current_rng;
+ /* the current rng has been explicitly chosen by user via sysfs */
+ static int cur_rng_set_by_user;
+@@ -59,7 +62,7 @@ static inline int rng_get_data(struct hw
+ 
+ static size_t rng_buffer_size(void)
+ {
+-	return SMP_CACHE_BYTES < 32 ? 32 : SMP_CACHE_BYTES;
++	return RNG_BUFFER_SIZE;
+ }
+ 
+ static void add_early_randomness(struct hwrng *rng)
+@@ -211,6 +214,7 @@ static inline int rng_get_data(struct hw
+ static ssize_t rng_dev_read(struct file *filp, char __user *buf,
+ 			    size_t size, loff_t *offp)
+ {
++	u8 buffer[RNG_BUFFER_SIZE];
+ 	ssize_t ret = 0;
+ 	int err = 0;
+ 	int bytes_read, len;
+@@ -238,34 +242,37 @@ static ssize_t rng_dev_read(struct file
+ 			if (bytes_read < 0) {
+ 				err = bytes_read;
+ 				goto out_unlock_reading;
++			} else if (bytes_read == 0 &&
++				   (filp->f_flags & O_NONBLOCK)) {
++				err = -EAGAIN;
++				goto out_unlock_reading;
+ 			}
++
+ 			data_avail = bytes_read;
+ 		}
+ 
+-		if (!data_avail) {
+-			if (filp->f_flags & O_NONBLOCK) {
+-				err = -EAGAIN;
+-				goto out_unlock_reading;
+-			}
+-		} else {
+-			len = data_avail;
++		len = data_avail;
++		if (len) {
+ 			if (len > size)
+ 				len = size;
+ 
+ 			data_avail -= len;
+ 
+-			if (copy_to_user(buf + ret, rng_buffer + data_avail,
+-								len)) {
++			memcpy(buffer, rng_buffer + data_avail, len);
++		}
++		mutex_unlock(&reading_mutex);
++		put_rng(rng);
++
++		if (len) {
++			if (copy_to_user(buf + ret, buffer, len)) {
+ 				err = -EFAULT;
+-				goto out_unlock_reading;
++				goto out;
+ 			}
+ 
+ 			size -= len;
+ 			ret += len;
+ 		}
+ 
+-		mutex_unlock(&reading_mutex);
+-		put_rng(rng);
+ 
+ 		if (need_resched())
+ 			schedule_timeout_interruptible(1);
+@@ -276,6 +283,7 @@ static ssize_t rng_dev_read(struct file
+ 		}
  	}
--- 
-2.43.0
-
+ out:
++	memzero_explicit(buffer, sizeof(buffer));
+ 	return ret ? : err;
+ 
+ out_unlock_reading:
 
 
 
