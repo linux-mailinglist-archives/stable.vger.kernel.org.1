@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-16693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D89840E06
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2808840E85
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 141F6B26C3D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8C321F27FD0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3FBC15DBC0;
-	Mon, 29 Jan 2024 17:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A250015B988;
+	Mon, 29 Jan 2024 17:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eiu4DEGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEIYzhhu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B345615AAD5;
-	Mon, 29 Jan 2024 17:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D4A15A49E;
+	Mon, 29 Jan 2024 17:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548208; cv=none; b=uElPaApC0TFbE6Si9MGFLhbyZllWdiwTOywJlRWZIb5m30yM7Qd04G4BkrtPp2sihdExraBZ9+OW/9MyH0JdTRRAdApJ2b8OrBEw+PfWP8Y8GSMr3aGGr0/BX/2ojE+FfGi9DQj0EGARD/kmC3ka33UbK1pBoSuMJPGRv/SOejQ=
+	t=1706548297; cv=none; b=IgEo02B/vyxZoAE9UjHfU2Jt4OyS5TVvspxYl7BvSNFVAQaCeoE+s9xqh4a7QTetUERNF37VThluDhB6QhiYRTwPmaKydyD0JDxSQ/2KYOzq6aWFVXXhODa7+qsHQABt8XAbqwHh3QK6aNYABbQz+b4agJJBhKP2YSbdXZKuRqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548208; c=relaxed/simple;
-	bh=bvP2n3k09C6bAeaP1b3ctn2pnaioUx/a2snHqw0S69M=;
+	s=arc-20240116; t=1706548297; c=relaxed/simple;
+	bh=keEZ6RkiIvnUS2isTSZ5L0EkfEbVIzO2MF/XvsNqVL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CMfEG0MGEaTsxy38VUWZxKy/bgTLZ0h05Y4XvW2Fb/2Dsb0SmlmyDK3EO6WkGytpMs9nGhsnB8qfgJKi14k6nFmT3qFCdF0XGfUoF27hBJynOQDw2/IlG0T5tECL22lf/zuHul/VduP//Tl4tT/IzAsXPXecErEwKk4cgkILzOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eiu4DEGx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2F8C433C7;
-	Mon, 29 Jan 2024 17:10:08 +0000 (UTC)
+	 MIME-Version; b=L8RlmiUnJaNNEgXdloYpmFreKu+xKuMDTgamD3VX3E9NxkzdVF3xFkhDeOeVNViGKMn9l3+AphsSDX+ZkBewguCVA7xyMDFGcCffLCqVVasX+eDJoSKIuzCxvC0n5X4bdtazLeGP6pkTXiDi5oHAAUTcpLIfCqWFMgAxqAJ23zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEIYzhhu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2922EC433C7;
+	Mon, 29 Jan 2024 17:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548208;
-	bh=bvP2n3k09C6bAeaP1b3ctn2pnaioUx/a2snHqw0S69M=;
+	s=korg; t=1706548297;
+	bh=keEZ6RkiIvnUS2isTSZ5L0EkfEbVIzO2MF/XvsNqVL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eiu4DEGxKNe1Rsn7TbkOnQBRCz8bxBSEDLOp5pl+ZzaS3AjvDEE1o6yQHwsUlcBZY
-	 lFjXF9LkTfHBaELwH6GhLXg9+f3R/bJNa1nwzLOHFe1Y+yfUbQ3YeaRDUMv97YFC7U
-	 nQ2lyQo0rqx5X5DS71VXjFh9eRGCkCPL5F/elmJE=
+	b=EEIYzhhuTd+RcPK1s5/i/jzOn/aQljyu1Fcw88CIeYMGJnWrJHuQg2hgg3q6UOuBM
+	 VfBGGfQ1Tvz5XOdRJc6TC1CoObxS7SgvIs3atdNv5WWKxFRnl3eLJYaXwCRGR67Fzy
+	 4RhDzCGDHRrMND5blRRyZTnHB4EPrfPM5btWxFbY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.7 245/346] cpufreq: intel_pstate: Refine computation of P-state for given frequency
-Date: Mon, 29 Jan 2024 09:04:36 -0800
-Message-ID: <20240129170023.626234944@linuxfoundation.org>
+	Wen Gu <guwen@linux.alibaba.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 077/185] net/smc: fix illegal rmb_desc access in SMC-D connection dump
+Date: Mon, 29 Jan 2024 09:04:37 -0800
+Message-ID: <20240129170001.078129579@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,143 +64,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Wen Gu <guwen@linux.alibaba.com>
 
-commit 192cdb1c907fd8df2d764c5bb17496e415e59391 upstream.
+[ Upstream commit dbc153fd3c142909e564bb256da087e13fbf239c ]
 
-On systems using HWP, if a given frequency is equal to the maximum turbo
-frequency or the maximum non-turbo frequency, the HWP performance level
-corresponding to it is already known and can be used directly without
-any computation.
+A crash was found when dumping SMC-D connections. It can be reproduced
+by following steps:
 
-Accordingly, adjust the code to use the known HWP performance levels in
-the cases mentioned above.
+- run nginx/wrk test:
+  smc_run nginx
+  smc_run wrk -t 16 -c 1000 -d <duration> -H 'Connection: Close' <URL>
 
-This also helps to avoid limiting CPU capacity artificially in some
-cases when the BIOS produces the HWP_CAP numbers using a different
-E-core-to-P-core performance scaling factor than expected by the kernel.
+- continuously dump SMC-D connections in parallel:
+  watch -n 1 'smcss -D'
 
-Fixes: f5c8cf2a4992 ("cpufreq: intel_pstate: hybrid: Use known scaling factor for P-cores")
-Cc: 6.1+ <stable@vger.kernel.org> # 6.1+
-Tested-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ BUG: kernel NULL pointer dereference, address: 0000000000000030
+ CPU: 2 PID: 7204 Comm: smcss Kdump: loaded Tainted: G	E      6.7.0+ #55
+ RIP: 0010:__smc_diag_dump.constprop.0+0x5e5/0x620 [smc_diag]
+ Call Trace:
+  <TASK>
+  ? __die+0x24/0x70
+  ? page_fault_oops+0x66/0x150
+  ? exc_page_fault+0x69/0x140
+  ? asm_exc_page_fault+0x26/0x30
+  ? __smc_diag_dump.constprop.0+0x5e5/0x620 [smc_diag]
+  ? __kmalloc_node_track_caller+0x35d/0x430
+  ? __alloc_skb+0x77/0x170
+  smc_diag_dump_proto+0xd0/0xf0 [smc_diag]
+  smc_diag_dump+0x26/0x60 [smc_diag]
+  netlink_dump+0x19f/0x320
+  __netlink_dump_start+0x1dc/0x300
+  smc_diag_handler_dump+0x6a/0x80 [smc_diag]
+  ? __pfx_smc_diag_dump+0x10/0x10 [smc_diag]
+  sock_diag_rcv_msg+0x121/0x140
+  ? __pfx_sock_diag_rcv_msg+0x10/0x10
+  netlink_rcv_skb+0x5a/0x110
+  sock_diag_rcv+0x28/0x40
+  netlink_unicast+0x22a/0x330
+  netlink_sendmsg+0x1f8/0x420
+  __sock_sendmsg+0xb0/0xc0
+  ____sys_sendmsg+0x24e/0x300
+  ? copy_msghdr_from_user+0x62/0x80
+  ___sys_sendmsg+0x7c/0xd0
+  ? __do_fault+0x34/0x160
+  ? do_read_fault+0x5f/0x100
+  ? do_fault+0xb0/0x110
+  ? __handle_mm_fault+0x2b0/0x6c0
+  __sys_sendmsg+0x4d/0x80
+  do_syscall_64+0x69/0x180
+  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+
+It is possible that the connection is in process of being established
+when we dump it. Assumed that the connection has been registered in a
+link group by smc_conn_create() but the rmb_desc has not yet been
+initialized by smc_buf_create(), thus causing the illegal access to
+conn->rmb_desc. So fix it by checking before dump.
+
+Fixes: 4b1b7d3b30a6 ("net/smc: add SMC-D diag support")
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c |   55 +++++++++++++++++++++++++----------------
- 1 file changed, 34 insertions(+), 21 deletions(-)
+ net/smc/smc_diag.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -526,6 +526,30 @@ static int intel_pstate_cppc_get_scaling
- }
- #endif /* CONFIG_ACPI_CPPC_LIB */
- 
-+static int intel_pstate_freq_to_hwp_rel(struct cpudata *cpu, int freq,
-+					unsigned int relation)
-+{
-+	if (freq == cpu->pstate.turbo_freq)
-+		return cpu->pstate.turbo_pstate;
-+
-+	if (freq == cpu->pstate.max_freq)
-+		return cpu->pstate.max_pstate;
-+
-+	switch (relation) {
-+	case CPUFREQ_RELATION_H:
-+		return freq / cpu->pstate.scaling;
-+	case CPUFREQ_RELATION_C:
-+		return DIV_ROUND_CLOSEST(freq, cpu->pstate.scaling);
-+	}
-+
-+	return DIV_ROUND_UP(freq, cpu->pstate.scaling);
-+}
-+
-+static int intel_pstate_freq_to_hwp(struct cpudata *cpu, int freq)
-+{
-+	return intel_pstate_freq_to_hwp_rel(cpu, freq, CPUFREQ_RELATION_L);
-+}
-+
- /**
-  * intel_pstate_hybrid_hwp_adjust - Calibrate HWP performance levels.
-  * @cpu: Target CPU.
-@@ -543,6 +567,7 @@ static void intel_pstate_hybrid_hwp_adju
- 	int perf_ctl_scaling = cpu->pstate.perf_ctl_scaling;
- 	int perf_ctl_turbo = pstate_funcs.get_turbo(cpu->cpu);
- 	int scaling = cpu->pstate.scaling;
-+	int freq;
- 
- 	pr_debug("CPU%d: perf_ctl_max_phys = %d\n", cpu->cpu, perf_ctl_max_phys);
- 	pr_debug("CPU%d: perf_ctl_turbo = %d\n", cpu->cpu, perf_ctl_turbo);
-@@ -556,16 +581,16 @@ static void intel_pstate_hybrid_hwp_adju
- 	cpu->pstate.max_freq = rounddown(cpu->pstate.max_pstate * scaling,
- 					 perf_ctl_scaling);
- 
--	cpu->pstate.max_pstate_physical =
--			DIV_ROUND_UP(perf_ctl_max_phys * perf_ctl_scaling,
--				     scaling);
-+	freq = perf_ctl_max_phys * perf_ctl_scaling;
-+	cpu->pstate.max_pstate_physical = intel_pstate_freq_to_hwp(cpu, freq);
- 
--	cpu->pstate.min_freq = cpu->pstate.min_pstate * perf_ctl_scaling;
-+	freq = cpu->pstate.min_pstate * perf_ctl_scaling;
-+	cpu->pstate.min_freq = freq;
- 	/*
- 	 * Cast the min P-state value retrieved via pstate_funcs.get_min() to
- 	 * the effective range of HWP performance levels.
- 	 */
--	cpu->pstate.min_pstate = DIV_ROUND_UP(cpu->pstate.min_freq, scaling);
-+	cpu->pstate.min_pstate = intel_pstate_freq_to_hwp(cpu, freq);
- }
- 
- static inline void update_turbo_state(void)
-@@ -2524,13 +2549,12 @@ static void intel_pstate_update_perf_lim
- 	 * abstract values to represent performance rather than pure ratios.
- 	 */
- 	if (hwp_active && cpu->pstate.scaling != perf_ctl_scaling) {
--		int scaling = cpu->pstate.scaling;
- 		int freq;
- 
- 		freq = max_policy_perf * perf_ctl_scaling;
--		max_policy_perf = DIV_ROUND_UP(freq, scaling);
-+		max_policy_perf = intel_pstate_freq_to_hwp(cpu, freq);
- 		freq = min_policy_perf * perf_ctl_scaling;
--		min_policy_perf = DIV_ROUND_UP(freq, scaling);
-+		min_policy_perf = intel_pstate_freq_to_hwp(cpu, freq);
+diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
+index 801044e7d194..7a907186a33a 100644
+--- a/net/smc/smc_diag.c
++++ b/net/smc/smc_diag.c
+@@ -163,7 +163,7 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
  	}
+ 	if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd &&
+ 	    (req->diag_ext & (1 << (SMC_DIAG_DMBINFO - 1))) &&
+-	    !list_empty(&smc->conn.lgr->list)) {
++	    !list_empty(&smc->conn.lgr->list) && smc->conn.rmb_desc) {
+ 		struct smc_connection *conn = &smc->conn;
+ 		struct smcd_diag_dmbinfo dinfo;
  
- 	pr_debug("cpu:%d min_policy_perf:%d max_policy_perf:%d\n",
-@@ -2904,18 +2928,7 @@ static int intel_cpufreq_target(struct c
- 
- 	cpufreq_freq_transition_begin(policy, &freqs);
- 
--	switch (relation) {
--	case CPUFREQ_RELATION_L:
--		target_pstate = DIV_ROUND_UP(freqs.new, cpu->pstate.scaling);
--		break;
--	case CPUFREQ_RELATION_H:
--		target_pstate = freqs.new / cpu->pstate.scaling;
--		break;
--	default:
--		target_pstate = DIV_ROUND_CLOSEST(freqs.new, cpu->pstate.scaling);
--		break;
--	}
--
-+	target_pstate = intel_pstate_freq_to_hwp_rel(cpu, freqs.new, relation);
- 	target_pstate = intel_cpufreq_update_pstate(policy, target_pstate, false);
- 
- 	freqs.new = target_pstate * cpu->pstate.scaling;
-@@ -2933,7 +2946,7 @@ static unsigned int intel_cpufreq_fast_s
- 
- 	update_turbo_state();
- 
--	target_pstate = DIV_ROUND_UP(target_freq, cpu->pstate.scaling);
-+	target_pstate = intel_pstate_freq_to_hwp(cpu, target_freq);
- 
- 	target_pstate = intel_cpufreq_update_pstate(policy, target_pstate, true);
- 
+-- 
+2.43.0
+
 
 
 
