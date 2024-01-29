@@ -1,117 +1,132 @@
-Return-Path: <stable+bounces-16431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9403C840BD1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:40:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A805840BE2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:42:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 452FA1F25085
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 16:40:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B19451C22EEE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 16:42:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67470159568;
-	Mon, 29 Jan 2024 16:35:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF6F15B0F0;
+	Mon, 29 Jan 2024 16:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LSTjNExZ"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="JjvqFJt5";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="WnB77zbp"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wnew4-smtp.messagingengine.com (wnew4-smtp.messagingengine.com [64.147.123.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3CB1586CF;
-	Mon, 29 Jan 2024 16:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61E815B0F1;
+	Mon, 29 Jan 2024 16:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706546100; cv=none; b=mpepAgmGw+md2U0J7F8Wi/jG2WI3aaV0lqkET5gXKITANzE9hWpcHsJkYb9pemL9mQFlxErY043266tkW2PNUHC8+E7KTX/51eLo9CXKcB4OpV7md9XUmnXEJ2IvYY8kNX5ZglLceiaNco6WfyeFTIEKXZZdQpHj45G4q5K6/1c=
+	t=1706546284; cv=none; b=a7Q43NiRESp0fZ+FYb0dC9hUECTSlLocOymc5hHqlG4T7R5FFcVTYfjhyrh1ZcBOiP94QcXXFRxJqHQX+4yZpABWwVY9JzVOJPgceE0wYn0nZeldqpa/p7U4gI4LbS7IsLpHTy8BlZRsRqoG3lDnaXdc0wGs+O6u3V4KsRQQlkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706546100; c=relaxed/simple;
-	bh=Wu1OKNYbCiYgPJM2i8fejz4JjG575xDKZoC5YQd9GYg=;
+	s=arc-20240116; t=1706546284; c=relaxed/simple;
+	bh=dQViXVuYwfG1UHvOQUJkJhLMqB07gLLRE+0McGKbePI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eudzmVFysv38Jc10RFyz1J2AnrSugqppmil5Yi/S+c5BFLzTlkaw/nC51eqcgQAxE60xeChEpcdMaxmeW4kZuXVSQfom2Fw/hNoXsk2XHiBd5OG8BbC5fgPHWIStV+rXUnvhGD0oo/SGWJokmqx1uYNB2J8+2ueMPexOqw1kd8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LSTjNExZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF00AC433C7;
-	Mon, 29 Jan 2024 16:34:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706546099;
-	bh=Wu1OKNYbCiYgPJM2i8fejz4JjG575xDKZoC5YQd9GYg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LSTjNExZ95GXA7MF8Qf06BC+taxVtRXstLf/pOMlFzsSrlrCKGGQ3wWZKvTOXYiTi
-	 G2/MzX75J3zo3CU/uGFbipfqdho7oJMAvDlkgXtlM1qrEhAznZeDaJB8nIgSV5CnCw
-	 1bIukPbM9um+u4MIAVn1r5grxaETugls45qtHsFCF3baMCYjRUWPG5MoO0F6Xcc74r
-	 mKy3aNE14JemgVSKQ/yx74ftaH/rfMwRNbDCbn5Cpg438yvrnc1r1Lpi8n7HjJfm2Y
-	 wcsB5e84HNCJsKCr6v9mfLhAWCDlYf6EeSLD0LJXGUcfMsCIVPIyEPK8zZyjvIdot7
-	 6GlZMQnQVQqQA==
-Date: Mon, 29 Jan 2024 16:34:54 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
-	masahiroy@kernel.org, nicolas@fjasle.eu, andy.chiu@sifive.com,
-	conor.dooley@microchip.com, linux-riscv@lists.infradead.org,
-	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev,
-	patches@lists.linux.dev, stable@vger.kernel.org,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: Re: [PATCH 0/2] RISC-V: Fix CONFIG_AS_HAS_OPTION_ARCH with tip of
- tree LLVM
-Message-ID: <20240129-unripe-pleading-d2753b766e88@spud>
-References: <20240125-fix-riscv-option-arch-llvm-18-v1-0-390ac9cc3cd0@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=b1g34mfJCpD/9nvqlMhqF5QNLyU0C0TQqCRyLrXkfPbWmEFkD0zeLqzBlDVS1cgelhvtTuEAhYaYz7pifRUzTa4YYNQQ6g3MLN6ye+lOKT5YCTticHKdtk8pHrzL5Umv2UkDL7d3fIULeMpA7knSTzsV3r7Vnn+5mi/TFgBvBbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=JjvqFJt5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=WnB77zbp; arc=none smtp.client-ip=64.147.123.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailnew.west.internal (Postfix) with ESMTP id 1859E2B00081;
+	Mon, 29 Jan 2024 11:38:00 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Mon, 29 Jan 2024 11:38:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1706546279; x=1706553479; bh=nuyfZlUL4h
+	kiP3h4HZf25tany1co6wSc8y7HvJ5lgE0=; b=JjvqFJt5kxJ+pQMTX2NSmRZKQF
+	adqThmCySF9wLHy6wDqbimCRvetQG8pqO3LH2xV2zmhR6DXnpDQTx/TWZ6GyykF8
+	WdKXVsF6moFKtIWY81yqhpjhD+0J6OaxHMsgqGY3/KvS8rPM07uz/smoZJSrGjKa
+	6x/cMIgMTYD7EXazVpKNgxXVWs1KDlckv6K0G5moRV5X+//HExpG1i4v9HNoYvmF
+	ql3BTFhM9+Ng0elxGKLpQAxrZCN//4iTnsbKGD7teG20hjYu5mq09dVvuvZw1iYh
+	ThzBdmxhlpJRk2StH/yYGUrFVxrGMtSrZnzyqsGC09PkP8iyotbuZAvRGzBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1706546279; x=1706553479; bh=nuyfZlUL4hkiP3h4HZf25tany1co
+	6wSc8y7HvJ5lgE0=; b=WnB77zbpAIIEvO5TF07+Ff3pAr2Uvp2i1EV2lJuTk22N
+	oDJdOIo2lA2BbTA8BKuXqnvkqN2kBJrallACoHPa/LrnxM6CeH9GUbsLuXkDbsat
+	4pnXY8Z+KhiYLqc53sN6Wk+S1uJJtDjPjV2vDCVMzVRtwgGCYXSBcrlF8oG3Dvlg
+	/SziH1kk4mzavMExRH2zbTrPxiQA9kGDFVIqOGUk/KZDxreRnuapFC0iRSrdh9SO
+	FU8NXWjJr5cWxQmFoI4Cvwg/ikKURUEvZpugbGIOD6BtvN6m02cojPgbwJzwePTD
+	YbZ3aog2hh2kFDeslyqyMZholDUhH1MTcYVTabV/MA==
+X-ME-Sender: <xms:Z9S3ZYThQmmcEfL_jc2PP81MuCviDVTC2si9G96cS4AqP8gPpOWZaQ>
+    <xme:Z9S3ZVy5vI0x_GtJKf7mmPNlnnLaizYhxYCDEfWW-oE9W2C99VeZ4XDbO7mkPcF5v
+    nCAn6qXdcmn4A>
+X-ME-Received: <xmr:Z9S3ZV3sE4hSINij6ZV0qH5JSNCvMgfmQ5RKG3LsFOZkfoGa_J8pAz2zwwtr>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrfedtgedgkedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehue
+    ehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgr
+    ihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
+    epmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:Z9S3ZcCddqeNlzJ7mvKdXCT3mo1wQMFlCEJdm4cPvbgDKmf1_Tq6XQ>
+    <xmx:Z9S3ZRhvfwiG1tSBSGZNX4QyNVCypV0lRHh1CMhRB6HUVXki4WIMag>
+    <xmx:Z9S3ZYp5GNdjB-_C_woq_GcexuluCep0PiTQ2zhfB812DpOdicRLdQ>
+    <xmx:Z9S3ZSbfNwsrNWvq3FASXKBZNwdHksAQctD3lFOrUC7Nx8podxswiVD2aAk>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 29 Jan 2024 11:37:58 -0500 (EST)
+Date: Mon, 29 Jan 2024 08:37:57 -0800
+From: Greg KH <greg@kroah.com>
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: kovalev@altlinux.org, stable@vger.kernel.org, abuehaze@amazon.com,
+	smfrench@gmail.com, linux-cifs@vger.kernel.org,
+	keescook@chromium.org, darren.kenny@oracle.com, pc@manguebit.com,
+	nspmangalore@gmail.com, vegard.nossum@oracle.com
+Subject: Re: [PATCH 5.10.y] cifs: fix off-by-one in SMB2_query_info_init()
+Message-ID: <2024012916-dictator-wrangle-e90c@gregkh>
+References: <20240129054342.2472454-1-harshit.m.mogalapalli@oracle.com>
+ <06bddf4e-a15f-bf1b-b9e5-d173cdacf4d0@basealt.ru>
+ <88f25b32-033c-4e1c-b1d5-18bbc2ec91c9@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="1q3FkTd2sMJG0Xcz"
-Content-Disposition: inline
-In-Reply-To: <20240125-fix-riscv-option-arch-llvm-18-v1-0-390ac9cc3cd0@kernel.org>
-
-
---1q3FkTd2sMJG0Xcz
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <88f25b32-033c-4e1c-b1d5-18bbc2ec91c9@oracle.com>
 
-On Thu, Jan 25, 2024 at 10:32:10AM -0700, Nathan Chancellor wrote:
-> Hi all,
->=20
-> Eric reported that builds of LLVM with [1] (close to tip of tree) have
-> CONFIG_AS_HAS_OPTION_ARCH=3Dn because the test for expected failure on
-> invalid input has started succeeding.
->=20
-> This Kconfig test was added because '.option arch' only causes an
-> assembler warning when it is unsupported, rather than a hard error,
-> which is what users of as-instr expect when something is unsupported.
->=20
-> This can be resolved by turning assembler warnings into errors with
-> '-Wa,--fatal-warnings' like we do with the compiler with '-Werror',
-> which is what the first patch does. The second patch removes the invalid
-> test, as the valid test is good enough with fatal warnings.
->=20
-> I have diffed several configurations for the different architectures
-> that use as-instr and I have found no issues.
->=20
-> I think this could go in through either the kbuild or RISC-V tree with
-> sufficient acks but I will let them fight over who takes it :)
+On Mon, Jan 29, 2024 at 09:57:40PM +0530, Harshit Mogalapalli wrote:
+> Hi Kovalev,
+> 
+> On 29/01/24 1:49 pm, kovalev@altlinux.org wrote:
+> > 29.01.2024 08:43, Harshit Mogalapalli wrote:
+> > > This patch is only for v5.10.y stable kernel.
+> > > I have tested the patched kernel, after mounting it doesn't become
+> > > unavailable.
+> > > 
+> > > Context:
+> > > [1] https://lore.kernel.org/all/CAH2r5mv2ipr4KJfMDXwHgq9L+kGdnRd1C2svcM=PCoDjA7uALA@mail.gmail.com/#t
+> > > 
+> > > Note to Greg: This is alternative way to fix by not taking commit
+> > > eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with
+> > > flex-arrays").
+> > > before applying this patch a patch in the queue needs to be removed: https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-5.10/smb3-replace-smb2pdu-1-element-arrays-with-flex-arrays.patch
+> > Maybe I don't understand something, but isn't there a goal when fixing
+> > bugs to keep the code of stable branches with upstream code as much as
+> > possible? Otherwise, the following fixes will not be compatible..
+> 
+> I agree, but at the same time we also should observe this:
+> eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays") is
+> not in 5.15.y so we probably shouldn't queue it up for 5.10.y.
 
-I think RISC-V would be good, since building the vector crypto stuff
-also needs this fix.
+It is queued up for 5.10, but not 5.15 for some reason?
 
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+confused,
 
-Cheers,
-Conor.
-
---1q3FkTd2sMJG0Xcz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZbfTrgAKCRB4tDGHoIJi
-0ob+AQDBwkCVj1DkP4muPEw8AsT7KZJY94Op0baq5wXjGDRNTAD/RCCqOlvMAubB
-5ztb++AITl6EoOWcpOAJltxBK/wv2AQ=
-=cmxz
------END PGP SIGNATURE-----
-
---1q3FkTd2sMJG0Xcz--
+greg k-h
 
