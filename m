@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-16755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B51B840E48
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60DA184103D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01101B23897
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93C2A1C239E3
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296F715B305;
-	Mon, 29 Jan 2024 17:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85C0C15F314;
+	Mon, 29 Jan 2024 17:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2RoDbD3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+3D1O6S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA107159591;
-	Mon, 29 Jan 2024 17:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4386715F309;
+	Mon, 29 Jan 2024 17:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548255; cv=none; b=uk1XD1xQSPk971Dhgrk9Q64Sz6C5R2lAhjqPBE7ATnv4DeZW8WWGQMBaPz+PnVTra1W1nTDdjflOGKdgfrZUE0Yx+LFF0rYjCsAd6EWkIsLDu34FDD2QR+P752y99hL5DMroPXGc2VXdERR7JOuwBVoVt56pwF9+X5VZY6UuVrk=
+	t=1706548587; cv=none; b=b9WtWE5NQ36xxIJ4eQS3AeWe/qdmPCkBKAQgCMbWiigt9Tp6hFouLszBf4sfDXyAPP2eLPqUFYi8f3oca/CfYXHt6qwLnE3LJgQZPmaJFBCln75yySmPPt3az/ESG3TX79Vjhy0GZTSuRFktxyg/9EaiNKm1QqOrY2eJEeyrWdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548255; c=relaxed/simple;
-	bh=gpbMNiQRhelBtM9j+XLO7h4w75nQOFQZsm7fq2ilgvc=;
+	s=arc-20240116; t=1706548587; c=relaxed/simple;
+	bh=DYqpSKV9/UAiuEpg5VPsG7UXSGpG04dgF64SbvfSrqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uK3/OESfys/J8tPm24m2+VyRc/J8KTMBiizd2mqlUNcl+pigWn+dQxumLa9oUe709FwA8oLXCfquTVkOMYXb2V8aaqkM84AE5FCBnnt4jg8gVU44D5jRmrA1RyBGxCq2tjHJwMfGanVVB6jPDBR0wgSxLJsaA0ILupZ5OeFpQX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2RoDbD3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25B0C433C7;
-	Mon, 29 Jan 2024 17:10:55 +0000 (UTC)
+	 MIME-Version; b=f4SW3WEjmyvGYHe70jX1y35aG+ywyL+5ThrTadn9W4QZVUSL/e4SR2Pl53mLUlAlJeUXgV9oq0DEBZheAFgLZP/VYHTXDHrrGdrnvoSF3/41YaDeN0UR/2lbLX9L1FOrLDriPZ+sOaOUeeYqklMXWwutQSMBgo3iu1zwFVFZrxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+3D1O6S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAC1C433C7;
+	Mon, 29 Jan 2024 17:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548255;
-	bh=gpbMNiQRhelBtM9j+XLO7h4w75nQOFQZsm7fq2ilgvc=;
+	s=korg; t=1706548587;
+	bh=DYqpSKV9/UAiuEpg5VPsG7UXSGpG04dgF64SbvfSrqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x2RoDbD3i0VCpF80Eb9iDa8k8igngMstA08RU8vP80ISFBatLNjTZycGjenkTwdb1
-	 lqZh0KDo86HCcAakn8z+8qxW80dDUZcNKMjElBTuH8z2dZhisQRBzeG/m0GRmoqTvS
-	 4VslCQhMSeX3SBsnnDMjvsq9AiGb1zZf1rkQ1JYs=
+	b=p+3D1O6SsrWzHBKFMvYWpYoMii1/evXw6mb1OSLgMct/3WfqMmeM0kEc0UU2QhzPK
+	 jm4ZGXfFYMSR9ppVWejmAeNleaThtnvobubh+osriRXNF9DtGJLEuTHs08wdQYIi7e
+	 r0PyEELHmEEHtWVk49AiqybJ/2XeAfESswX63ZaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.7 276/346] drm/amdgpu: Show vram vendor only if available
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.6 243/331] netfilter: nft_chain_filter: handle NETDEV_UNREGISTER for inet/ingress basechain
 Date: Mon, 29 Jan 2024 09:05:07 -0800
-Message-ID: <20240129170024.498791838@linuxfoundation.org>
+Message-ID: <20240129170021.992261767@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 89a7c0bd74918f723c94c10452265e25063cba9b upstream.
+commit 01acb2e8666a6529697141a6017edbf206921913 upstream.
 
-Ony if vram vendor info is available, show in sysfs.
+Remove netdevice from inet/ingress basechain in case NETDEV_UNREGISTER
+event is reported, otherwise a stale reference to netdevice remains in
+the hook list.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.7.x
+Fixes: 60a3815da702 ("netfilter: add inet ingress support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ net/netfilter/nft_chain_filter.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-index 08916538a615..8db880244324 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.c
-@@ -221,8 +221,23 @@ static struct attribute *amdgpu_vram_mgr_attributes[] = {
- 	NULL
- };
+--- a/net/netfilter/nft_chain_filter.c
++++ b/net/netfilter/nft_chain_filter.c
+@@ -357,9 +357,10 @@ static int nf_tables_netdev_event(struct
+ 				  unsigned long event, void *ptr)
+ {
+ 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
++	struct nft_base_chain *basechain;
+ 	struct nftables_pernet *nft_net;
+-	struct nft_table *table;
+ 	struct nft_chain *chain, *nr;
++	struct nft_table *table;
+ 	struct nft_ctx ctx = {
+ 		.net	= dev_net(dev),
+ 	};
+@@ -371,7 +372,8 @@ static int nf_tables_netdev_event(struct
+ 	nft_net = nft_pernet(ctx.net);
+ 	mutex_lock(&nft_net->commit_mutex);
+ 	list_for_each_entry(table, &nft_net->tables, list) {
+-		if (table->family != NFPROTO_NETDEV)
++		if (table->family != NFPROTO_NETDEV &&
++		    table->family != NFPROTO_INET)
+ 			continue;
  
-+static umode_t amdgpu_vram_attrs_is_visible(struct kobject *kobj,
-+					    struct attribute *attr, int i)
-+{
-+	struct device *dev = kobj_to_dev(kobj);
-+	struct drm_device *ddev = dev_get_drvdata(dev);
-+	struct amdgpu_device *adev = drm_to_adev(ddev);
-+
-+	if (attr == &dev_attr_mem_info_vram_vendor.attr &&
-+	    !adev->gmc.vram_vendor)
-+		return 0;
-+
-+	return attr->mode;
-+}
-+
- const struct attribute_group amdgpu_vram_mgr_attr_group = {
--	.attrs = amdgpu_vram_mgr_attributes
-+	.attrs = amdgpu_vram_mgr_attributes,
-+	.is_visible = amdgpu_vram_attrs_is_visible
- };
+ 		ctx.family = table->family;
+@@ -380,6 +382,11 @@ static int nf_tables_netdev_event(struct
+ 			if (!nft_is_base_chain(chain))
+ 				continue;
  
- /**
--- 
-2.43.0
-
++			basechain = nft_base_chain(chain);
++			if (table->family == NFPROTO_INET &&
++			    basechain->ops.hooknum != NF_INET_INGRESS)
++				continue;
++
+ 			ctx.chain = chain;
+ 			nft_netdev_event(event, dev, &ctx);
+ 		}
 
 
 
