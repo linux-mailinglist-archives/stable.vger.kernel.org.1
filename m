@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C25840E46
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E896840EC7
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 468221F2D11B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4AD21F2AA9F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A4115EAB6;
-	Mon, 29 Jan 2024 17:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE0515CD5D;
+	Mon, 29 Jan 2024 17:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p3lmZg7i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOxWcw3G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8896D15959E;
-	Mon, 29 Jan 2024 17:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6E260EFF;
+	Mon, 29 Jan 2024 17:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548254; cv=none; b=S+MKhnqkG9U1FeukpI++o6CI1AF2or5ugfEt3KcTEs7OkrOOY4rI8kalpzn26l6dUAa9CSjUqfYNnR+5kG+XMOy0yNQFUpA5Qug+14ANYcJsZ86ErFGVuvVycg5ve+8pLl51ojbIZJCk5ZxHiIaFDgLZUIT31GJKK4tlJEuT9cM=
+	t=1706548343; cv=none; b=YfQomwBbKrQkueSbN7NtnoKnXSaOapaluJJN7lmlW6VF/gsVO5/RyzSmz9XB9aTROVMWN6tbUdDYMgmbBC+ftOaEdfXzhmC3CAdYi0RLASo4f2hl0ws4oqUF3bmiCyYLUbkbrqYKKxhH2+2unjIdwRL9VlcfRG0EggJmccgOcOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548254; c=relaxed/simple;
-	bh=ArOMi9pI4jw31vdVNK4IkilqKB5Au/PsWMFAazJPfq4=;
+	s=arc-20240116; t=1706548343; c=relaxed/simple;
+	bh=NWCjt8vwDHDdXIbrsjuyyPuS4LOiANtPRaDD0yvbQI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h6cg+d49zPSWwCc+YKxESS9o9iz3w8BfBfuGVY37huS8ECtYNefVtisbO5sG6FVjgMkiyGuUgIJWP91TzEqxyiDaAlgRFuXTjGhTSGeGG7P7FXByf9osbKh2B1FUBkmOju6cLZheOcKTQJAS2v/pCLuAuSEf/PWfUd0jYLQyX1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p3lmZg7i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D043C433B1;
-	Mon, 29 Jan 2024 17:10:54 +0000 (UTC)
+	 MIME-Version; b=A4/lHueQ8R4v7SednRyI99TTiagOojBHObf9QBihsJJ/Z1YiGvJpxwo+EvuXzLcm1RQ8gmuzA1O/RQ2qLqx/ETlZuAFAcwTJVtpL3AlCF8NaH2e8plnRHjzPg56ZqM7do0/yWkENzjA1MmfyVp8PxpsbYiHsgPbjd4BXuYQg4I0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOxWcw3G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E8CC433F1;
+	Mon, 29 Jan 2024 17:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548254;
-	bh=ArOMi9pI4jw31vdVNK4IkilqKB5Au/PsWMFAazJPfq4=;
+	s=korg; t=1706548343;
+	bh=NWCjt8vwDHDdXIbrsjuyyPuS4LOiANtPRaDD0yvbQI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p3lmZg7iRFgs/45pnbmPvdLuVZ6sv26eEAHg5yCGgBTT5qJdnOLP+UGpUqR4fGwFo
-	 VCX2Ai8rs/d00fkJdn/6JxAXYcUgUoigORMSzukiLCrU2AxeDqBqwZ51SWbOoRCjyQ
-	 wWBskxgY7vsmlrnemxr2XtUOk86dYvxlyOT6TSQs=
+	b=eOxWcw3GHl+oirimj6oH+ShMgKN55oLKoM2oA9l8em1WhdCfbIlmP9brv1qmQDYLV
+	 SeXU8v7Eic9Kb++KZjQrTgIA8YoC0eupo5mO/7mAVjS3cOSrTejrr0J7hpUy8cw2Pw
+	 U0lvbLPJ92dsWtRacqVP3sYDYbWDFXhyz8K/ZrY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.7 275/346] drm/amdgpu: Avoid fetching vram vendor information
-Date: Mon, 29 Jan 2024 09:05:06 -0800
-Message-ID: <20240129170024.469366833@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 107/185] netfilter: nf_tables: restrict anonymous set and map names to 16 bytes
+Date: Mon, 29 Jan 2024 09:05:07 -0800
+Message-ID: <20240129170002.031175013@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 90751bdeee4e3ac87ebf814bf282b0fa97edfeab upstream.
+[ Upstream commit b462579b2b86a8f5230543cadd3a4836be27baf7 ]
 
-For GFX 9.4.3 APUs, the current method of fetching vram vendor
-information is not reliable. Avoid fetching the information.
+nftables has two types of sets/maps, one where userspace defines the
+name, and anonymous sets/maps, where userspace defines a template name.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.7.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For the latter, kernel requires presence of exactly one "%d".
+nftables uses "__set%d" and "__map%d" for this.  The kernel will
+expand the format specifier and replaces it with the smallest unused
+number.
+
+As-is, userspace could define a template name that allows to move
+the set name past the 256 bytes upperlimit (post-expansion).
+
+I don't see how this could be a problem, but I would prefer if userspace
+cannot do this, so add a limit of 16 bytes for the '%d' template name.
+
+16 bytes is the old total upper limit for set names that existed when
+nf_tables was merged initially.
+
+Fixes: 387454901bd6 ("netfilter: nf_tables: Allow set names of up to 255 chars")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-@@ -1950,7 +1950,8 @@ static void gmc_v9_4_3_init_vram_info(st
- 	static const u32 regBIF_BIOS_SCRATCH_4 = 0x50;
- 	u32 vram_info;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 2702294ac46c..75b21cd1b2c9 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -24,6 +24,7 @@
+ #include <net/sock.h>
  
--	if (!amdgpu_sriov_vf(adev)) {
-+	/* Only for dGPU, vendor informaton is reliable */
-+	if (!amdgpu_sriov_vf(adev) && !(adev->flags & AMD_IS_APU)) {
- 		vram_info = RREG32(regBIF_BIOS_SCRATCH_4);
- 		adev->gmc.vram_vendor = vram_info & 0xF;
- 	}
+ #define NFT_MODULE_AUTOLOAD_LIMIT (MODULE_NAME_LEN - sizeof("nft-expr-255-"))
++#define NFT_SET_MAX_ANONLEN 16
+ 
+ unsigned int nf_tables_net_id __read_mostly;
+ 
+@@ -4127,6 +4128,9 @@ static int nf_tables_set_alloc_name(struct nft_ctx *ctx, struct nft_set *set,
+ 		if (p[1] != 'd' || strchr(p + 2, '%'))
+ 			return -EINVAL;
+ 
++		if (strnlen(name, NFT_SET_MAX_ANONLEN) >= NFT_SET_MAX_ANONLEN)
++			return -EINVAL;
++
+ 		inuse = (unsigned long *)get_zeroed_page(GFP_KERNEL);
+ 		if (inuse == NULL)
+ 			return -ENOMEM;
+-- 
+2.43.0
+
 
 
 
