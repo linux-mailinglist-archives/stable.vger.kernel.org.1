@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5924841065
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F6D9840ED1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 729B82825AE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B40671F25DDE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE8A15F32E;
-	Mon, 29 Jan 2024 17:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2B315CD66;
+	Mon, 29 Jan 2024 17:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1cIO2Bq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZcvwiGu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA55D15705F;
-	Mon, 29 Jan 2024 17:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68409158D87;
+	Mon, 29 Jan 2024 17:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548615; cv=none; b=WIzaaF+f8Z11rggJ3mbbg8l6fepObcTgehNZnX6yHTHSqnZuVFO9hSf0pA89qMsmMINdNe7MXMg7uDZikvuDcMUdrqNuk/MvCjA+IkGh6IPf8j6l4xlkb26XbelzsrkrlNrMELWtUSSMER25bnKxW9WA04XHXwtMEixZ7P4rxBU=
+	t=1706548350; cv=none; b=kSKbd2E5G4zX3nRJzDY0v3gUMNt0Ym0k07rPtpViweF1XUCxWQ2CyAjGoZYFFQSgtzSSll+MslNs4hoVIvtCx8b/2nSM4TVkAjYaniY24mHtZivvOUsxJwrVaAbQKkuP3knjWB1sNFTtaxYdZpdRK/aoG5O6eUplcvMOqeUgpis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548615; c=relaxed/simple;
-	bh=F9rRV1AUe2m9u7P7X+n0gj6EQ8YasPWLoaCxJHdrTvQ=;
+	s=arc-20240116; t=1706548350; c=relaxed/simple;
+	bh=+LLXGb74FTQaNQ6p+YrV8uw3w4m6xz8ZCTqtEOUyOJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GVGUz9tYswZmehvDv2k1LiQNvHxQOPuhtGpRsB+CjpWB37NvB7+hYsYEzBOGdVweX1NXMKgyJmf6kXXBZ0RmJFteXirAt+MbGKzfwwyrxZrPLgGivIeLsiVCnf5cWw8X8xs2ttTOrexaYBKpSfZqxfnGulDtqBY1onaME3L4Cvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1cIO2Bq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A12C433C7;
-	Mon, 29 Jan 2024 17:16:55 +0000 (UTC)
+	 MIME-Version; b=eHk0ccvz3gjfS9phzM6aGockJ3nU3gvcqtDg/m/3xLQrilz+qANkTt2Oa0iRmQpVe6iXRk2XGImhUFWWqcrXLdPw6gbvu9YhpCc80lEqvH+Jl1WddbQEIgsSnUgon/nh6+xPHlXvGDSDa1tAiDOl8aYWpzsYx3qtdHATJt5S7Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZcvwiGu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E87C433F1;
+	Mon, 29 Jan 2024 17:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548615;
-	bh=F9rRV1AUe2m9u7P7X+n0gj6EQ8YasPWLoaCxJHdrTvQ=;
+	s=korg; t=1706548350;
+	bh=+LLXGb74FTQaNQ6p+YrV8uw3w4m6xz8ZCTqtEOUyOJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b1cIO2BqzHduq47+T++tQ3HNJSxrg31MP4G92P5gdH/xxyndZ/JiykvLQAshAs/+9
-	 IqUm9vrSR2uPNKt2lbDb3OZ1ukc+TUAHBuXTnyMLpQEQLoPkoM2XpIXXso2C3tu65x
-	 u2VnbMU8Vf9QlWgkMLLKwsIwHnxPgAno4MaAD7Zg=
+	b=MZcvwiGujsw5ysykcfNfhq1joCfvzfpCHu/VRBdSMdrhmkUIP6Cgylw5wW6A8RP9s
+	 CmwmG3oZeoSyJiNOm0Ro9hGtyC0gFMgMSW7Xt5lkkbUTFPwn77dtNZK3rWH+ZjmIOQ
+	 NpNjMiLKqP23EyUjzfD8OB0TTiHZSN1a3z8Gtj18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 283/331] thermal: trip: Drop redundant trips check from for_each_thermal_trip()
+Subject: [PATCH 6.7 316/346] drm/exynos: fix accidental on-stack copy of exynos_drm_plane
 Date: Mon, 29 Jan 2024 09:05:47 -0800
-Message-ID: <20240129170023.140354963@linuxfoundation.org>
+Message-ID: <20240129170025.770258957@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit a15ffa783ea4210877886c59566a0d20f6b2bc09 ]
+[ Upstream commit 960b537e91725bcb17dd1b19e48950e62d134078 ]
 
-It is invalid to call for_each_thermal_trip() on an unregistered thermal
-zone anyway, and as per thermal_zone_device_register_with_trips(), the
-trips[] table must be present if num_trips is greater than zero for the
-given thermal zone.
+gcc rightfully complains about excessive stack usage in the fimd_win_set_pixfmt()
+function:
 
-Hence, the trips check in for_each_thermal_trip() is redundant and so it
-can be dropped.
+drivers/gpu/drm/exynos/exynos_drm_fimd.c: In function 'fimd_win_set_pixfmt':
+drivers/gpu/drm/exynos/exynos_drm_fimd.c:750:1: error: the frame size of 1032 bytes is larger than 1024 byte
+drivers/gpu/drm/exynos/exynos5433_drm_decon.c: In function 'decon_win_set_pixfmt':
+drivers/gpu/drm/exynos/exynos5433_drm_decon.c:381:1: error: the frame size of 1032 bytes is larger than 1024 bytes
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Stable-dep-of: e95fa7404716 ("thermal: gov_power_allocator: avoid inability to reset a cdev")
+There is really no reason to copy the large exynos_drm_plane
+structure to the stack before using one of its members, so just
+use a pointer instead.
+
+Fixes: 6f8ee5c21722 ("drm/exynos: fimd: Make plane alpha configurable")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_trip.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpu/drm/exynos/exynos5433_drm_decon.c | 4 ++--
+ drivers/gpu/drm/exynos/exynos_drm_fimd.c      | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/thermal/thermal_trip.c b/drivers/thermal/thermal_trip.c
-index 597ac4144e33..4b3a9e77c039 100644
---- a/drivers/thermal/thermal_trip.c
-+++ b/drivers/thermal/thermal_trip.c
-@@ -17,9 +17,6 @@ int for_each_thermal_trip(struct thermal_zone_device *tz,
- 
- 	lockdep_assert_held(&tz->lock);
- 
--	if (!tz->trips)
--		return -ENODATA;
--
- 	for (i = 0; i < tz->num_trips; i++) {
- 		ret = cb(&tz->trips[i], data);
- 		if (ret)
+diff --git a/drivers/gpu/drm/exynos/exynos5433_drm_decon.c b/drivers/gpu/drm/exynos/exynos5433_drm_decon.c
+index 4d986077738b..bce027552474 100644
+--- a/drivers/gpu/drm/exynos/exynos5433_drm_decon.c
++++ b/drivers/gpu/drm/exynos/exynos5433_drm_decon.c
+@@ -319,9 +319,9 @@ static void decon_win_set_bldmod(struct decon_context *ctx, unsigned int win,
+ static void decon_win_set_pixfmt(struct decon_context *ctx, unsigned int win,
+ 				 struct drm_framebuffer *fb)
+ {
+-	struct exynos_drm_plane plane = ctx->planes[win];
++	struct exynos_drm_plane *plane = &ctx->planes[win];
+ 	struct exynos_drm_plane_state *state =
+-		to_exynos_plane_state(plane.base.state);
++		to_exynos_plane_state(plane->base.state);
+ 	unsigned int alpha = state->base.alpha;
+ 	unsigned int pixel_alpha;
+ 	unsigned long val;
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_fimd.c b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
+index 8dde7b1e9b35..5bdc246f5fad 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_fimd.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_fimd.c
+@@ -661,9 +661,9 @@ static void fimd_win_set_bldmod(struct fimd_context *ctx, unsigned int win,
+ static void fimd_win_set_pixfmt(struct fimd_context *ctx, unsigned int win,
+ 				struct drm_framebuffer *fb, int width)
+ {
+-	struct exynos_drm_plane plane = ctx->planes[win];
++	struct exynos_drm_plane *plane = &ctx->planes[win];
+ 	struct exynos_drm_plane_state *state =
+-		to_exynos_plane_state(plane.base.state);
++		to_exynos_plane_state(plane->base.state);
+ 	uint32_t pixel_format = fb->format->format;
+ 	unsigned int alpha = state->base.alpha;
+ 	u32 val = WINCONx_ENWIN;
 -- 
 2.43.0
 
