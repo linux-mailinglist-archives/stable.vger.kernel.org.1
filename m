@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-17159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A42F841010
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCDD840E1A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB2BE28449B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EE051C235CF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A318A15A48A;
-	Mon, 29 Jan 2024 17:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D537C15DBDF;
+	Mon, 29 Jan 2024 17:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tlnlQSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g43Nm26F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627E17375F;
-	Mon, 29 Jan 2024 17:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F156159578;
+	Mon, 29 Jan 2024 17:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548554; cv=none; b=hlubwPz8jbsxV6w15YbqyLbv5C8f7k+OVRTnU6X02kSy4pVu37cfwo+x42p/DZUsO6kdCcdez4Vom7BEWRTzm46f+xXa1SsmWMld/uLT5Cjh344t7vvHNXUxDpx7Vm408y09RU7+8srxugPyIVz+qpOE5IshGAR4YLoBHMh1R7s=
+	t=1706548224; cv=none; b=a8xan+OlAYLdgD3nI6lcFXe/7kCzTXObaIfWcavCKyktJXnYiUYWV02GUL3iqVrW/a1sr4ggGowY+bvEWrMgL9pEmrV6ZgkqResWsyT+hh1YfL/AV0rkY5eRUyju+7Q9Zk5vF+3tYHmjAU4VCdv5cQKeDilibaOliXuI0SJ/7P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548554; c=relaxed/simple;
-	bh=iAi2Z8L3YzHBchvN8Gt3FekIeKC/RucG4yVej5ZjT8w=;
+	s=arc-20240116; t=1706548224; c=relaxed/simple;
+	bh=DSdeYg336qI8kFMZDowYSB6HLCXjsS23D/ca3AJQ58g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gnY2kFExTZNbV5+gOOTpVoV113eIzly8JaTXdOSyqW22s5kOSNOoMQU/iGbyYSayeUDmS44U5NuDgaYhH7iiSHEsyU9rv6IgHBARo+0RxhnzgYZEytSiOjFdJ0iSk45Fo3fRFdn+vxN9jM3flCdRtycUJ4jDAet9n/+GqwrKIgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tlnlQSJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2966EC43394;
-	Mon, 29 Jan 2024 17:15:54 +0000 (UTC)
+	 MIME-Version; b=fe9PqMVsvWPtsDzngSIE2ldPPVHDvXfZp8S5kLUQZJZoSyIX2u5mbfElbxpS/0bh+ydgLlhGqOhqlV6meg3M8IsVlmz4bLZPXr2ovCNeNbJZjf4n/doOChUFq9xltNS7iZuWCZW/6sD0d8cidFKMcKDW1E+XJRZG9pPZkTVNWTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g43Nm26F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C2CC43390;
+	Mon, 29 Jan 2024 17:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548554;
-	bh=iAi2Z8L3YzHBchvN8Gt3FekIeKC/RucG4yVej5ZjT8w=;
+	s=korg; t=1706548224;
+	bh=DSdeYg336qI8kFMZDowYSB6HLCXjsS23D/ca3AJQ58g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0tlnlQSJeiEiGn/J+s6928NSr2gUjNBdo8uPettDhZZxBrugd3/AflR09ltROEn7V
-	 tmR5/70W+pVSU4d+lQLNzvDMVuA8Ajx0mOSxfSEGi/yct525J2cIue+rjIzQYa/6Cq
-	 HxUt7pIMXJMO9Irp/qvRxNS/XJRyUfhPxOyf1Dq8=
+	b=g43Nm26Fz1eZ61FMlXt/vSKMZnvpG6hE2lalr+8UbxPJeYKiOW5bBwVNxwOiVKFJx
+	 piqsy9HcTtgCe1zCjSv92+nDaDRTC576iHXeXYHwKUap9X81jvXkTKbFHnux6pADz1
+	 mQSE8ytCF/IwPMMSJAW+hI92drQSEzojO8SZODlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 164/331] cifs: fix lock ordering while disabling multichannel
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 028/185] parisc/power: Fix power soft-off button emulation on qemu
 Date: Mon, 29 Jan 2024 09:03:48 -0800
-Message-ID: <20240129170019.726573280@linuxfoundation.org>
+Message-ID: <20240129165959.504611507@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +60,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Helge Deller <deller@gmx.de>
 
-commit 5eef12c4e3230f2025dc46ad8c4a3bc19978e5d7 upstream.
+commit 6472036581f947109b20664121db1d143e916f0b upstream.
 
-The code to handle the case of server disabling multichannel
-was picking iface_lock with chan_lock held. This goes against
-the lock ordering rules, as iface_lock is a higher order lock
-(even if it isn't so obvious).
+Make sure to start the kthread to check the power button on qemu as
+well if the power button address was provided.
+This fixes the qemu built-in system_powerdown runtime command.
 
-This change fixes the lock ordering by doing the following in
-that order for each secondary channel:
-1. store iface and server pointers in local variable
-2. remove references to iface and server in channels
-3. unlock chan_lock
-4. lock iface_lock
-5. dec ref count for iface
-6. unlock iface_lock
-7. dec ref count for server
-8. lock chan_lock again
-
-Since this function can only be called in smb2_reconnect, and
-that cannot be called by two parallel processes, we should not
-have races due to dropping chan_lock between steps 3 and 8.
-
-Fixes: ee1d21794e55 ("cifs: handle when server stops supporting multichannel")
-Reported-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: d0c219472980 ("parisc/power: Add power soft-off when running on qemu")
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v6.0+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/sess.c |   22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/parisc/power.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -316,28 +316,32 @@ cifs_disable_secondary_channels(struct c
- 		iface = ses->chans[i].iface;
- 		server = ses->chans[i].server;
- 
-+		/*
-+		 * remove these references first, since we need to unlock
-+		 * the chan_lock here, since iface_lock is a higher lock
-+		 */
-+		ses->chans[i].iface = NULL;
-+		ses->chans[i].server = NULL;
-+		spin_unlock(&ses->chan_lock);
-+
- 		if (iface) {
- 			spin_lock(&ses->iface_lock);
- 			kref_put(&iface->refcount, release_iface);
--			ses->chans[i].iface = NULL;
- 			iface->num_channels--;
- 			if (iface->weight_fulfilled)
- 				iface->weight_fulfilled--;
- 			spin_unlock(&ses->iface_lock);
- 		}
- 
--		spin_unlock(&ses->chan_lock);
--		if (server && !server->terminate) {
--			server->terminate = true;
--			cifs_signal_cifsd_for_reconnect(server, false);
--		}
--		spin_lock(&ses->chan_lock);
--
- 		if (server) {
--			ses->chans[i].server = NULL;
-+			if (!server->terminate) {
-+				server->terminate = true;
-+				cifs_signal_cifsd_for_reconnect(server, false);
-+			}
- 			cifs_put_tcp_session(server, false);
- 		}
- 
-+		spin_lock(&ses->chan_lock);
- 	}
- 
- done:
+--- a/drivers/parisc/power.c
++++ b/drivers/parisc/power.c
+@@ -238,7 +238,7 @@ static int __init power_init(void)
+ 	if (running_on_qemu && soft_power_reg)
+ 		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF, SYS_OFF_PRIO_DEFAULT,
+ 					qemu_power_off, (void *)soft_power_reg);
+-	else
++	if (!running_on_qemu || soft_power_reg)
+ 		power_task = kthread_run(kpowerswd, (void*)soft_power_reg,
+ 					KTHREAD_NAME);
+ 	if (IS_ERR(power_task)) {
 
 
 
