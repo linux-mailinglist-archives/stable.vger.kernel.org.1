@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-16925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E40840F10
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFE6584106A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35E1D1C230CC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7CD72823FA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F2715AAD0;
-	Mon, 29 Jan 2024 17:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D320276031;
+	Mon, 29 Jan 2024 17:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ex7CQM0V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEBhrU7b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB7E15AAC4;
-	Mon, 29 Jan 2024 17:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9262876029;
+	Mon, 29 Jan 2024 17:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548380; cv=none; b=oOXNr4J9tnMwl+XvTSD3ShE9agEJE6fvd1vFMUVM20SVesPncW2GGvQC5szx5vldI046aiCZuRFedwzIaJ16j6domWpfFP+AsRFI+tyj8ghMp4O1AjXw7/aIF8txYKLi4rxGWLE0QkLyxst9WT23ncnburZTjCJH3uWIfMN2jIw=
+	t=1706548618; cv=none; b=r1V/bqf2mCZ3Dg1J6JxzNQ7jbwBLI0WwgWlysRmqFru/I5I8b0ZAGHRwC+yn43CDg1jCWTg/RHSmx5rjPamsYBmbf/6IyYKsaXhrT0BC+XcgyP0yHJE5mZidFIpw6mG/RHedSHKSNTq67XVfwKE2f9fBaOsglGyz+NL4jlYVp9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548380; c=relaxed/simple;
-	bh=XWhkfZ+mq65ja5o57tU1juVQHZrfe/mNazKb/TS/1Ag=;
+	s=arc-20240116; t=1706548618; c=relaxed/simple;
+	bh=Yh+ouFxk4S9dRFs/2X0YlnoY+nWofTRe6rzRJgNmE6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lpmoy/nkZ6uPgZnVPFVl74quIw+zdd/eNAhC6Ujb/TOu2XS3vrprXj3w8hdF3gU25uIbJps1346sbczvMi7FcTyUKi2w8fLqZqnJpVySYmDt7iW6Fr14Dl7iK+fxfdx1Ap23Dd3RD1laJcazbq3CIARXTNe//9dlL5UHBX/MVpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ex7CQM0V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA8BC43394;
-	Mon, 29 Jan 2024 17:13:00 +0000 (UTC)
+	 MIME-Version; b=GhnITQIFaXvVgb8cd2zXvedk218h9BK0EwIAhieg9KRm0IGRlBCXhOvL32aNRijlhxwqj+aPT4ba/prP1ZPRgmhNRv7SW8jKlfhqEf6iDhUb624T9cr61eRPz6UOoiAECZ+ZUsO5/3cn5l+DKpz+enCdijis/h76oSsZpN+qMMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEBhrU7b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CA4C433F1;
+	Mon, 29 Jan 2024 17:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548380;
-	bh=XWhkfZ+mq65ja5o57tU1juVQHZrfe/mNazKb/TS/1Ag=;
+	s=korg; t=1706548618;
+	bh=Yh+ouFxk4S9dRFs/2X0YlnoY+nWofTRe6rzRJgNmE6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ex7CQM0VFmRJMrGGsQPv56V3+DL/jDCh/gKGxu4BiXFKH6OWQ8WHOAwT0+tkTClD2
-	 Ctpg62wa/e4kj6YiLmxTVqM9COc0arA266gI+NduXu+PtdSAuwsNJ0bWgeBQ3le6gV
-	 kT8es/EzNILWuEGU5hT/28KTAipWbGOOFWMpc62U=
+	b=sEBhrU7bftY6VFtinhaldIgB2CIH/XL3RFtLU6FHyGWKn8bet0jCPxaBzK0PAfAGJ
+	 smwZDHC1+pUDXkif5ZdbktvRlFQSBXzJ8gxuEv4C0dFSq8gC9N55Jzyd2WvTf5iDHM
+	 YfJmDZzO/xXiJ0cPvls+WHEzM/Rzj3uIXi/D8QCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	David Hildenbrand <david@redhat.com>,
+	Xu Yu <xuyu@linux.alibaba.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 151/185] fs/pipe: move check to pipe_has_watch_queue()
+Subject: [PATCH 6.6 287/331] mm: migrate: fix getting incorrect page mapping during page migration
 Date: Mon, 29 Jan 2024 09:05:51 -0800
-Message-ID: <20240129170003.439219599@linuxfoundation.org>
+Message-ID: <20240129170023.256597812@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +67,136 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-[ Upstream commit b4bd6b4bac8edd61eb8f7b836969d12c0c6af165 ]
+[ Upstream commit d1adb25df7111de83b64655a80b5a135adbded61 ]
 
-This declutters the code by reducing the number of #ifdefs and makes
-the watch_queue checks simpler.  This has no runtime effect; the
-machine code is identical.
+When running stress-ng testing, we found below kernel crash after a few hours:
 
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Message-Id: <20230921075755.1378787-2-max.kellermann@ionos.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: e95aada4cb93 ("pipe: wakeup wr_wait after setting max_usage")
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+pc : dentry_name+0xd8/0x224
+lr : pointer+0x22c/0x370
+sp : ffff800025f134c0
+......
+Call trace:
+  dentry_name+0xd8/0x224
+  pointer+0x22c/0x370
+  vsnprintf+0x1ec/0x730
+  vscnprintf+0x2c/0x60
+  vprintk_store+0x70/0x234
+  vprintk_emit+0xe0/0x24c
+  vprintk_default+0x3c/0x44
+  vprintk_func+0x84/0x2d0
+  printk+0x64/0x88
+  __dump_page+0x52c/0x530
+  dump_page+0x14/0x20
+  set_migratetype_isolate+0x110/0x224
+  start_isolate_page_range+0xc4/0x20c
+  offline_pages+0x124/0x474
+  memory_block_offline+0x44/0xf4
+  memory_subsys_offline+0x3c/0x70
+  device_offline+0xf0/0x120
+  ......
+
+After analyzing the vmcore, I found this issue is caused by page migration.
+The scenario is that, one thread is doing page migration, and we will use the
+target page's ->mapping field to save 'anon_vma' pointer between page unmap and
+page move, and now the target page is locked and refcount is 1.
+
+Currently, there is another stress-ng thread performing memory hotplug,
+attempting to offline the target page that is being migrated. It discovers that
+the refcount of this target page is 1, preventing the offline operation, thus
+proceeding to dump the page. However, page_mapping() of the target page may
+return an incorrect file mapping to crash the system in dump_mapping(), since
+the target page->mapping only saves 'anon_vma' pointer without setting
+PAGE_MAPPING_ANON flag.
+
+There are seveval ways to fix this issue:
+(1) Setting the PAGE_MAPPING_ANON flag for target page's ->mapping when saving
+'anon_vma', but this can confuse PageAnon() for PFN walkers, since the target
+page has not built mappings yet.
+(2) Getting the page lock to call page_mapping() in __dump_page() to avoid crashing
+the system, however, there are still some PFN walkers that call page_mapping()
+without holding the page lock, such as compaction.
+(3) Using target page->private field to save the 'anon_vma' pointer and 2 bits
+page state, just as page->mapping records an anonymous page, which can remove
+the page_mapping() impact for PFN walkers and also seems a simple way.
+
+So I choose option 3 to fix this issue, and this can also fix other potential
+issues for PFN walkers, such as compaction.
+
+Link: https://lkml.kernel.org/r/e60b17a88afc38cb32f84c3e30837ec70b343d2b.1702641709.git.baolin.wang@linux.alibaba.com
+Fixes: 64c8902ed441 ("migrate_pages: split unmap_and_move() to _unmap() and _move()")
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Xu Yu <xuyu@linux.alibaba.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pipe.c                 | 12 +++---------
- include/linux/pipe_fs_i.h | 16 ++++++++++++++++
- 2 files changed, 19 insertions(+), 9 deletions(-)
+ mm/migrate.c | 27 ++++++++++-----------------
+ 1 file changed, 10 insertions(+), 17 deletions(-)
 
-diff --git a/fs/pipe.c b/fs/pipe.c
-index 42c7ff41c2db..e8082ffe5171 100644
---- a/fs/pipe.c
-+++ b/fs/pipe.c
-@@ -436,12 +436,10 @@ pipe_write(struct kiocb *iocb, struct iov_iter *from)
- 		goto out;
- 	}
- 
--#ifdef CONFIG_WATCH_QUEUE
--	if (pipe->watch_queue) {
-+	if (pipe_has_watch_queue(pipe)) {
- 		ret = -EXDEV;
- 		goto out;
- 	}
--#endif
- 
- 	/*
- 	 * If it wasn't empty we try to merge new data into
-@@ -1320,10 +1318,8 @@ static long pipe_set_size(struct pipe_inode_info *pipe, unsigned long arg)
- 	unsigned int nr_slots, size;
- 	long ret = 0;
- 
--#ifdef CONFIG_WATCH_QUEUE
--	if (pipe->watch_queue)
-+	if (pipe_has_watch_queue(pipe))
- 		return -EBUSY;
--#endif
- 
- 	size = round_pipe_size(arg);
- 	nr_slots = size >> PAGE_SHIFT;
-@@ -1375,10 +1371,8 @@ struct pipe_inode_info *get_pipe_info(struct file *file, bool for_splice)
- 
- 	if (file->f_op != &pipefifo_fops || !pipe)
- 		return NULL;
--#ifdef CONFIG_WATCH_QUEUE
--	if (for_splice && pipe->watch_queue)
-+	if (for_splice && pipe_has_watch_queue(pipe))
- 		return NULL;
--#endif
- 	return pipe;
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 3373fc1c2d0f..b4d972d80b10 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1026,38 +1026,31 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
  }
  
-diff --git a/include/linux/pipe_fs_i.h b/include/linux/pipe_fs_i.h
-index 28b3c6a67397..1f1e7ae95320 100644
---- a/include/linux/pipe_fs_i.h
-+++ b/include/linux/pipe_fs_i.h
-@@ -124,6 +124,22 @@ struct pipe_buf_operations {
- 	bool (*get)(struct pipe_inode_info *, struct pipe_buffer *);
+ /*
+- * To record some information during migration, we use some unused
+- * fields (mapping and private) of struct folio of the newly allocated
+- * destination folio.  This is safe because nobody is using them
+- * except us.
++ * To record some information during migration, we use unused private
++ * field of struct folio of the newly allocated destination folio.
++ * This is safe because nobody is using it except us.
+  */
+-union migration_ptr {
+-	struct anon_vma *anon_vma;
+-	struct address_space *mapping;
+-};
+-
+ enum {
+ 	PAGE_WAS_MAPPED = BIT(0),
+ 	PAGE_WAS_MLOCKED = BIT(1),
++	PAGE_OLD_STATES = PAGE_WAS_MAPPED | PAGE_WAS_MLOCKED,
  };
  
-+/**
-+ * pipe_has_watch_queue - Check whether the pipe is a watch_queue,
-+ * i.e. it was created with O_NOTIFICATION_PIPE
-+ * @pipe: The pipe to check
-+ *
-+ * Return: true if pipe is a watch queue, false otherwise.
-+ */
-+static inline bool pipe_has_watch_queue(const struct pipe_inode_info *pipe)
-+{
-+#ifdef CONFIG_WATCH_QUEUE
-+	return pipe->watch_queue != NULL;
-+#else
-+	return false;
-+#endif
-+}
+ static void __migrate_folio_record(struct folio *dst,
+-				   unsigned long old_page_state,
++				   int old_page_state,
+ 				   struct anon_vma *anon_vma)
+ {
+-	union migration_ptr ptr = { .anon_vma = anon_vma };
+-	dst->mapping = ptr.mapping;
+-	dst->private = (void *)old_page_state;
++	dst->private = (void *)anon_vma + old_page_state;
+ }
+ 
+ static void __migrate_folio_extract(struct folio *dst,
+ 				   int *old_page_state,
+ 				   struct anon_vma **anon_vmap)
+ {
+-	union migration_ptr ptr = { .mapping = dst->mapping };
+-	*anon_vmap = ptr.anon_vma;
+-	*old_page_state = (unsigned long)dst->private;
+-	dst->mapping = NULL;
++	unsigned long private = (unsigned long)dst->private;
 +
- /**
-  * pipe_empty - Return true if the pipe is empty
-  * @head: The pipe ring head pointer
++	*anon_vmap = (struct anon_vma *)(private & ~PAGE_OLD_STATES);
++	*old_page_state = private & PAGE_OLD_STATES;
+ 	dst->private = NULL;
+ }
+ 
 -- 
 2.43.0
 
