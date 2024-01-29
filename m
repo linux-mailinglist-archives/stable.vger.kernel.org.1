@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 012E4840FE7
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84F94840DB9
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 342D91C21999
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7C841C21793
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF87F1586DC;
-	Mon, 29 Jan 2024 17:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4C015CD57;
+	Mon, 29 Jan 2024 17:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKuumiCD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+rRk4J/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD1A157E68;
-	Mon, 29 Jan 2024 17:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB22157031;
+	Mon, 29 Jan 2024 17:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548525; cv=none; b=jkB4VJhsB3rIGdmUxRl50QVf8mUi7gaAKT1ygt3up8VOVi1eakQAKy/C0bIAaL8jf2NtFftZzTxhDt3QQfTYg3ueVjFqHTrK6NI2u3IEuoJ3pBzSAcR0/PPCW2u6K0KTKZGRR2A7W7RM6csad2MGGNBI00OsYO6IZrJ4H6liLIU=
+	t=1706548154; cv=none; b=RCPBWlg0tqV8M/zi1Sszx7xhs1HBYKHt/wUg2Gz072J91Bo0dMo0wA9ahTxgdGIIGeUUydwQSSiXjvNILwVFoGImmdR+NrNR3b3+PzNQ6frFqYR4sfuCuDtVRO7XZcg93le9N1x8yfDYnwHBUVjyVNJa3rMB0EHCb3LjSOrgZy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548525; c=relaxed/simple;
-	bh=uz4OrzLB8oitLLYtyJ5AEjflHDUdcmPYJaWEyIgJSa4=;
+	s=arc-20240116; t=1706548154; c=relaxed/simple;
+	bh=bjZ2zgupQrXT0xdlFR7tABmQeLFKsRUKscZ2mKcSAFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TmeG64VBH/mf/htfFVBe8XwmmIo5JTYnlCXc/+fS+Kv+QqwpfWpzlvQJruEe9tqvAVGTjAmtH+xp6zvvCw8hsTnI2krw3pgrc/by8dQ0lGQ/RkHTq80NdRv8tHzBL3Qj6LB0iP+rE6tBf91EIDa2Nps/MeKx46uWA/L9xKQGCfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKuumiCD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78893C433F1;
-	Mon, 29 Jan 2024 17:15:25 +0000 (UTC)
+	 MIME-Version; b=HFOguUqWkSTmCP6sfP5hH97BIgpTgTqnlLg6ybXMI+TkEFO3MSqTENchDeceVYXWCnqFygKDoOChnv4JeDkRIJBnTIbiup/9V++psttlvHqf9dzzgqIYnVA1bKlYDcoFIoO48LmzB+UDRNUt4BYVGzAezDAICd67H0jf4r4S7yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+rRk4J/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 745C0C433F1;
+	Mon, 29 Jan 2024 17:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548525;
-	bh=uz4OrzLB8oitLLYtyJ5AEjflHDUdcmPYJaWEyIgJSa4=;
+	s=korg; t=1706548154;
+	bh=bjZ2zgupQrXT0xdlFR7tABmQeLFKsRUKscZ2mKcSAFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IKuumiCDvlK0m9Mqv2anQc9e9kq6BPqze+6KUexULcgW4Iv/hgaurS6F1L+hKk71e
-	 il/uSFK2fP2kMHjykemV8W8vhQBMzMLsKekoWJJItZUkKmysUX2lo2rFrI2ElzogPu
-	 UgL0VGTVBUNUWuAfy2mFL25MFZwdxyn6UlXj6WXc=
+	b=k+rRk4J/sSgRcfInhg4MW5dTMCgov7X+0D02cBNCJBulESvc9FbTgZgQidF97rZDm
+	 bPpt4vcFgpO88WvLpFqGQWa1IBsOUQsfRxhYO/babU/1/z9GXMQEYlIX7ZXgGQB+lf
+	 GQ27uvzvkBtVnBj66WkB6vcKGhGSXXK1f+40PuQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.6 159/331] bpf: widening for callback iterators
+	Yevgeny Kliteynik <kliteyn@nvidia.com>,
+	Erez Shitrit <erezsh@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 192/346] net/mlx5: DR, Cant go to uplink vport on RX rule
 Date: Mon, 29 Jan 2024 09:03:43 -0800
-Message-ID: <20240129170019.584040644@linuxfoundation.org>
+Message-ID: <20240129170022.051511082@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Yevgeny Kliteynik <kliteyn@nvidia.com>
 
-commit cafe2c21508a38cdb3ed22708842e957b2572c3e upstream.
+[ Upstream commit 5b2a2523eeea5f03d39a9d1ff1bad2e9f8eb98d2 ]
 
-Callbacks are similar to open coded iterators, so add imprecise
-widening logic for callback body processing. This makes callback based
-loops behave identically to open coded iterators, e.g. allowing to
-verify programs like below:
+Go-To-Vport action on RX is not allowed when the vport is uplink.
+In such case, the packet should be dropped.
 
-  struct ctx { u32 i; };
-  int cb(u32 idx, struct ctx* ctx)
-  {
-          ++ctx->i;
-          return 0;
-  }
-  ...
-  struct ctx ctx = { .i = 0 };
-  bpf_loop(100, cb, &ctx, 0);
-  ...
-
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20231121020701.26440-9-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9db810ed2d37 ("net/mlx5: DR, Expose steering action functionality")
+Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+Reviewed-by: Erez Shitrit <erezsh@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c |   24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ .../mellanox/mlx5/core/steering/dr_action.c      | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -9595,9 +9595,10 @@ static bool in_rbtree_lock_required_cb(s
- 
- static int prepare_func_exit(struct bpf_verifier_env *env, int *insn_idx)
- {
--	struct bpf_verifier_state *state = env->cur_state;
-+	struct bpf_verifier_state *state = env->cur_state, *prev_st;
- 	struct bpf_func_state *caller, *callee;
- 	struct bpf_reg_state *r0;
-+	bool in_callback_fn;
- 	int err;
- 
- 	callee = state->frame[state->curframe];
-@@ -9659,7 +9660,8 @@ static int prepare_func_exit(struct bpf_
- 	 * there function call logic would reschedule callback visit. If iteration
- 	 * converges is_state_visited() would prune that visit eventually.
- 	 */
--	if (callee->in_callback_fn)
-+	in_callback_fn = callee->in_callback_fn;
-+	if (in_callback_fn)
- 		*insn_idx = callee->callsite;
- 	else
- 		*insn_idx = callee->callsite + 1;
-@@ -9673,6 +9675,24 @@ static int prepare_func_exit(struct bpf_
- 	/* clear everything in the callee */
- 	free_func_state(callee);
- 	state->frame[state->curframe--] = NULL;
-+
-+	/* for callbacks widen imprecise scalars to make programs like below verify:
-+	 *
-+	 *   struct ctx { int i; }
-+	 *   void cb(int idx, struct ctx *ctx) { ctx->i++; ... }
-+	 *   ...
-+	 *   struct ctx = { .i = 0; }
-+	 *   bpf_loop(100, cb, &ctx, 0);
-+	 *
-+	 * This is similar to what is done in process_iter_next_call() for open
-+	 * coded iterators.
-+	 */
-+	prev_st = in_callback_fn ? find_prev_entry(env, state, *insn_idx) : NULL;
-+	if (prev_st) {
-+		err = widen_imprecise_scalars(env, prev_st, state);
-+		if (err)
-+			return err;
-+	}
- 	return 0;
- }
- 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
+index 74fc318b5027..d2b65a0ce47b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
+@@ -874,11 +874,17 @@ int mlx5dr_actions_build_ste_arr(struct mlx5dr_matcher *matcher,
+ 							action->sampler->tx_icm_addr;
+ 			break;
+ 		case DR_ACTION_TYP_VPORT:
+-			attr.hit_gvmi = action->vport->caps->vhca_gvmi;
+-			dest_action = action;
+-			attr.final_icm_addr = rx_rule ?
+-				action->vport->caps->icm_address_rx :
+-				action->vport->caps->icm_address_tx;
++			if (unlikely(rx_rule && action->vport->caps->num == MLX5_VPORT_UPLINK)) {
++				/* can't go to uplink on RX rule - dropping instead */
++				attr.final_icm_addr = nic_dmn->drop_icm_addr;
++				attr.hit_gvmi = nic_dmn->drop_icm_addr >> 48;
++			} else {
++				attr.hit_gvmi = action->vport->caps->vhca_gvmi;
++				dest_action = action;
++				attr.final_icm_addr = rx_rule ?
++						      action->vport->caps->icm_address_rx :
++						      action->vport->caps->icm_address_tx;
++			}
+ 			break;
+ 		case DR_ACTION_TYP_POP_VLAN:
+ 			if (!rx_rule && !(dmn->ste_ctx->actions_caps &
+-- 
+2.43.0
+
 
 
 
