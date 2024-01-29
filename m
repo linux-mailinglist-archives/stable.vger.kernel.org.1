@@ -1,235 +1,164 @@
-Return-Path: <stable+bounces-16393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05FF083FEA2
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 07:45:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2131783FF2F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 08:42:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FCC01F21B47
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 06:45:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A04EC284CC0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 07:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0EE84CDE0;
-	Mon, 29 Jan 2024 06:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA16F4F1E7;
+	Mon, 29 Jan 2024 07:42:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2045.outbound.protection.partner.outlook.cn [139.219.17.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E674EB3D
-	for <stable@vger.kernel.org>; Mon, 29 Jan 2024 06:44:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706510695; cv=none; b=i8XFEV4lHcfkAV6OOtf0NAwb3ZLuQHcEEER2moBypzP7mEbY15tJJB5eBGwzSEFd6pQwwESDyzPkfXEp5JIJ2lsnG6wJScCmNKcAZl4K4dix7ZaFi1WbVrwy1FBhwOp29oZuv4/ADfg9UX01QIQszygTmKWUEHxHlqO1OwnypsA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706510695; c=relaxed/simple;
-	bh=wJJf+KFUMKaPushYnI0iEsDLec20GKo1a88Dd4q4xtY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HvUmcR+vtwFJgYAwHRkuhDS26RxhaGFz7/wu+7+L6RH9iiKHW7GS/M2bsm2+DWLQT8oFJSzyqoqHd5WtOKMctcIrAsSOQsLEzwLb59KPV80ra28bBWoUUs5CU/+501tK245aYufEdrbOkIN1xS0bR2oE5WhP7F7q1YLX+XoqfFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-33adec41b55so2470790f8f.0
-        for <stable@vger.kernel.org>; Sun, 28 Jan 2024 22:44:53 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706510692; x=1707115492;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eZRDgAq7BSDnYtXGdfWlVtUHvwFxKjEHyOIslyUr4/g=;
-        b=vP5DmkUWpK8qPkBad8ElTdm6q/DdVtIQYMb/dK/rmBEM8g8TEoy6t7qIjKHUJqf/0D
-         Dp89yVvbd83DZ55YeFkLQ1G1778USQxG3Z7jfHQH7FlTydKS8SRNk2CCn3JCf+FJVtkL
-         ALTUAjxf4RnGu/Ysbtaxf5ej6RtnT6JOgWbWWG4sIDDwEzYgOrIogdc9fMuACg24T2EB
-         5rlb3OeElDD0J6OeuvGWqbCOVFRrBo1Lo0V4H4JC4WI7BIuLE92+4ZsEZlMvVMcobLvH
-         SgUhJalLRZvqe84QOEpWp5p3e2gfeFfQfnUVHvFKR2jlmQN94qbXN5WE6mUez7Mn1z7R
-         hlhw==
-X-Gm-Message-State: AOJu0YxyyT6zwbW3eJdWRcSHVkP03FcjMrT9tRaEvHXQ13/cvBYvFIQW
-	deAFZpNFziQYWKRhi2KlsFbJbsAragkbevLz6AoBsAnD7OhAq/RV
-X-Google-Smtp-Source: AGHT+IE/n56O95sMjzT0zoeRu6FWBuxYMAw65pFymDFH4iXVYbIEDvM+/qZ+jXKU119w3vM1hMs4dA==
-X-Received: by 2002:adf:f8c5:0:b0:33a:f4b4:8013 with SMTP id f5-20020adff8c5000000b0033af4b48013mr59277wrq.36.1706510691695;
-        Sun, 28 Jan 2024 22:44:51 -0800 (PST)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
-        by smtp.gmail.com with ESMTPSA id ba1-20020a0560001c0100b0033ae593e830sm4567733wrb.23.2024.01.28.22.44.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 28 Jan 2024 22:44:51 -0800 (PST)
-Message-ID: <9fc00f54-24d5-44a6-a690-d4f73c37caa1@kernel.org>
-Date: Mon, 29 Jan 2024 07:44:50 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698074E1CF;
+	Mon, 29 Jan 2024 07:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.17.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706514135; cv=fail; b=lJRbJnRDPcV5FRFkC5xjwCJNt8OWzxgG5hgNomsSU2zGLA4JzehTUxpGip+yufivi/7iUHJr05y1Z3R20rVjMig6ANrviOrcpIVfGvmX3mvcBhkHUJ8BMEUeqm72OXmzKwddfknqw3A248ieG6VPMYwhaJsAlv1Weyr/p+msSBA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706514135; c=relaxed/simple;
+	bh=ZeLWf+MseEMrBo0u8Hp2vx5PONt+Xl710Asasp5NQ6k=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=LkTaFDYV2gQptZ+QMbfS2B5xKZ8NP6Ietfmiol71rPCz9LcOqRBivLgJbCzAHajq3O5J/jdlywf2+pZq2PdH+B6S2v5AUw5OcStimCyLlFtkKSJJL/8/5xQIr5NF7EJe5J49iW0oqVUyQzaT7b4lo9OAXx0ZzSvRVOpbSwK6LmI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.17.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TuaV4vIfwDSJnmDFFEYcuotpnEdkShU0mLX+Jo1kM5zKtr+qsV5ZJYRpU0SnX4DBEqtdv2NOzntqR417gpZMEe2JWJRBJ2aX7oqaisG6in6mO+4oEj1NtG/WNuf+J/WmZ1NB3TiedI3Mw/49On4sp4SJhsB9Nz2TCUgOlVtrXRRNUk/9n4BV+3lA7eyQTsKsjgH5kSlRcHevHXJJNhEtasA3yL7C5Ma7iFW0v1D2CnrzL159Ln0qtcA5l+VkjmFfnyI/HwufCrLd5EYlVm/CeH38Y8lVB8+cxnGwDsbGC3wnJxmugy3riivS5vC93Rgsu7mY/I9yLOEpm+m4fbfKJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3g4WEAn0rY0ZEVQhmkCuqGfcNcmqR2OyJY4LtQfJRiU=;
+ b=FB61Tsm6xRAptWay4tLpUrdv3iLt7deQ8anXkOfnHo88a/a8yNjpuXTMQVi+DnnNymyvR9+voOY7vBUcn51CYCTqZ//UEguyfuKSwh70TLECEJXaYpqaAnA8Yb1I9emk9PBIPFrKWExHnv01UiNz8QocgrXJie5LdQu/sTRBKqqL7O4uZ6rGsN7jchp7SESYOfTE8B/EnmOUVwUorjHjxoKAgIb7f/J8HR3mit7zAR2ZSj2PVzqZ8lZ3Ei+jgZXTHaYzBNnWRSlxT1W6wcL+WOirPOk+vHQkBp9u+L07I+dababC2ntdDECE3V5tahRIB8TVXzm0s/hup5D0BYT14Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=starfivetech.com; dmarc=pass action=none
+ header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=starfivetech.com;
+Received: from ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:f::12) by ZQZPR01MB0961.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:9::10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7228.22; Mon, 29 Jan
+ 2024 07:26:42 +0000
+Received: from ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
+ ([fe80::8de6:348f:764f:293d]) by
+ ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn ([fe80::8de6:348f:764f:293d%4])
+ with mapi id 15.20.7249.015; Mon, 29 Jan 2024 07:26:42 +0000
+From: Ley Foon Tan <leyfoon.tan@starfivetech.com>
+To: Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Albert Ou <aou@eecs.berkeley.edu>
+Cc: atishp@rivosinc.com,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Ley Foon Tan <lftan.linux@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] clocksource: timer-riscv: Clear timer interrupt on timer initialization
+Date: Mon, 29 Jan 2024 15:26:25 +0800
+Message-ID: <20240129072625.2837771-1-leyfoon.tan@starfivetech.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SH0PR01CA0007.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c311:5::19) To ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
+ (2406:e500:c550:f::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.7 427/641] io_uring: dont check iopoll if request
- completes
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>,
- Jens Axboe <axboe@kernel.dk>
-References: <20240122235818.091081209@linuxfoundation.org>
- <20240122235831.353232285@linuxfoundation.org>
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20240122235831.353232285@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: ZQZPR01MB0979:EE_|ZQZPR01MB0961:EE_
+X-MS-Office365-Filtering-Correlation-Id: ef82b62c-f28c-4d35-f8a4-08dc209ba3e6
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	23f87SfYaZN0HTGagOZJc3C9bxGrnmlkq8tGkDnetsxuPyWHi8YFuPRk97gh+jbph21f5Va7rT/LQNM3hWTW2GtwspKVrF8Y8AsSjyYn4d4dpdSnhpr5L4JEFtW6uYoCvETCrPmvmDi5WLb5p9Pd7a20wYULWhay+u9l1Z+WcloLULDkUKSWBvz+XYH01uoXzbkc0tdkSunXBlnw9c9Q0HFMSLu6Mzk+DpKWWLLTZbt2F9U00hmGdNNceUfLJRJZilRlTpTxbcgvl7XntmSCLpThfdRSILcv9SZrs6H1ENFegeNCSNiNP0sPOncySRPNbDV0MCZy7frh+yAnPkNZ/KGfs3GNYxInWUHbRAssM5/pFePr7dk1sRTbsY8LCsFAtKV3Iz9TuupJcneXtqEJh5AIdRXnXuVbJMGzv8Rk41W7erbmcRJXGm8fjXJretlBU5HOXN4FGy3qgqbhfT3vZMgKpzaW1VLETwi84rIDQPnd3mrzSgQiSYn51Mdap8WsMCSHpTxTEJqDT6uFZ+3XvHqHHcfUlrlxlawetcIEfinZImidJUhPDB+FT1Uusp/F
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230031)(136003)(396003)(366004)(346002)(39830400003)(230922051799003)(186009)(1800799012)(64100799003)(451199024)(2906002)(7416002)(8936002)(5660300002)(4326008)(8676002)(110136005)(66946007)(66556008)(66476007)(38350700005)(1076003)(508600001)(6666004)(41320700001)(36756003)(52116002)(2616005)(38100700002)(26005)(41300700001)(40160700002)(83380400001)(40180700001)(86362001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?VxA/akfTFG2gJZ91gWxUibmFZuGeBVlna4EeTxeStJpMqrBfo5/9yadSQZjT?=
+ =?us-ascii?Q?3lq+Do6sXup+/UodeScWAHvteXsjZpqLm/YfX8c+lnQzJQlcgheM0NVtlO6S?=
+ =?us-ascii?Q?fOrQ0d+U3eOUUG6IfP7aY3KomLYVxajmA85dVfMIDR+lpXGqrsnWeTN1sgZM?=
+ =?us-ascii?Q?5oITezSYxJKTFoL+ndFnFDEC3a5h0YvUVfA0uOdSZsodlM0dLEJ+nQO7VS1Y?=
+ =?us-ascii?Q?kWor2HRKsnW79bp+1X9nZMEcJwyuX27beCSY7R8cCiKPZmUpKeqerU8o+GiU?=
+ =?us-ascii?Q?7F4LYv8tM2+b5CUFvzByJ6GVNxWLJ9Z7ZDkvgDY5ZWFmZGoJN1gd5I0zxwY7?=
+ =?us-ascii?Q?uq9KAtKBRxLXW6kSg31/Vn9STUNDUJAsEsssrr3bsU13y7Y0rhvjlnH9JxT/?=
+ =?us-ascii?Q?qLQPNKdrYLW42RaPIqIEwxAixZigBqjqr2IEhTultBsmJZQWr/Y2rENdOdpH?=
+ =?us-ascii?Q?2s/+yCK/cyk3SbIUX1blfvyxCuIG6w0t5LV53gngEwl1iMXehGXuJP2XvQ/c?=
+ =?us-ascii?Q?XaTrGZkJchsSH32dC0s2XblZM7y6c8dPcZ/ghXC+GirXCj8RhaAOoJNusyAr?=
+ =?us-ascii?Q?+BjhIrZwTfHc390hUHk60Dr49kLCDFYugN4yuVfuDOzlcbfnJa4CXP4S5/y8?=
+ =?us-ascii?Q?N1GoHZbVRyfSqeeIIlBPE637/Skep45yZMWpWxuL/NjngAZWtQyUIfQNIOcF?=
+ =?us-ascii?Q?OKGXtYXN1hOjqzGJQdE9lgtgM1GWr91sHGkv9QfhKlAOSgDzOV4SQm9hFGu/?=
+ =?us-ascii?Q?PfL4WkaLcEt7N/XBVyYsPeYyH/iCTgOO8wK5SzUmLPXTC6ER3/2fh34IS1PB?=
+ =?us-ascii?Q?CLyrN+tqOju6m7nUe4TKBtvQJ3BX4p2PykAeIm1AAFLrMvhRsi9ylgQZOmw3?=
+ =?us-ascii?Q?vwSJa1GFcz4ileU2gWFlY71qxYvApY5nsNwENTSJzrS6DK8dm9wmeDl002CM?=
+ =?us-ascii?Q?jbNFowqpZEGiIsCfKwGavcbkGvJbOw4rXUcPsA/ECNti17AHmTdp3R/Cl4G9?=
+ =?us-ascii?Q?a7yPsrYIC3YNsJAJLe0pcTKrGENa37W3918e4UJHoy46I+4l8Bj3QPAHtp/H?=
+ =?us-ascii?Q?JniAts8H8G0HNqumHaAgFFVDkxZthirGdEAvBiMIBk4LcBReqcGGaR+pkDaa?=
+ =?us-ascii?Q?pd6tMAWU9UOUCiaQFy4VwbiXs26G9K55qTzS6sg8yuchk2iPZzvAOWkKnGzu?=
+ =?us-ascii?Q?AH49DQlZO6gUTFy2nnPfgDHWBTdR/lZbLHoyqBmMgBdEqS4GZfbgmlfWlILj?=
+ =?us-ascii?Q?hH9YkMdcq8tZLbBQr+i6ktbvK05eWWw2s6qfjN9mCMwcX9v02/6tCEJukBfi?=
+ =?us-ascii?Q?gqrqftmqO8FuLBLnt8grvYnwwyQi9qwlcblGZsa/9nuoCydl3SHe1QkBsago?=
+ =?us-ascii?Q?+BWNiyirdPOPzr4CZnIccnWj2CM/7ZTQfOyRI6Qw4O5zMklKz6Alo3H1mwvO?=
+ =?us-ascii?Q?8q5/WgvZ4ORktlkI4KVN2OUyRNGe3mxAu0D3Zad85NEGfBFpJxOD7QmuK6lz?=
+ =?us-ascii?Q?WR3OxkQ3pNVdY9kSY2C4VkXmczim1Ixx+GsCgPSQn0jq6YzQd6glrnBYFxRi?=
+ =?us-ascii?Q?XTrYwaU4Lkf8lOa0UIhzIw8pdpHTFzlESYAlH9MfT/pXs4HY/hX5rFukv0WO?=
+ =?us-ascii?Q?Gg=3D=3D?=
+X-OriginatorOrg: starfivetech.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef82b62c-f28c-4d35-f8a4-08dc209ba3e6
+X-MS-Exchange-CrossTenant-AuthSource: ZQZPR01MB0979.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2024 07:26:42.3768
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: aMWsN2HzEIvVH0pfhL7tA+rQ9PEL4apunBOpuWkY7SMPA6dYZ26UpWBMD8/YaWMCeATMxVwkhPuQ3LVdqvdiHdpXS+h1zXPXhmq+cOyldrI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZQZPR01MB0961
 
-On 23. 01. 24, 0:55, Greg Kroah-Hartman wrote:
-> 6.7-stable review patch.  If anyone has any objections, please let me know.
+In the RISC-V specification, the stimecmp register doesn't have a default
+value. To prevent the timer interrupt from being triggered during timer
+initialization, clear the timer interrupt by writing stimecmp with a
+maximum value.
 
-Hi,
+Fixes: 9f7a8ff6391f ("RISC-V: Prefer sstc extension if available")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
 
-6.7.2 fails in liburing tests (both x64 and x86-32 lib on x64 kernel):
-[  115s] Tests failed (5): <fd-pass.t> <msg-ring-overflow.t> 
-<pipe-bug.t> <poll-race-mshot.t> <reg-hint.t>
+---
+v2:
+Resolved comments from Anup.
+- Moved riscv_clock_event_stop() to riscv_timer_starting_cpu().
+- Added Fixes tag
+---
+ drivers/clocksource/timer-riscv.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-I cannot reproduce locally, that happens only in openSUSE build 
-machinery (the errors are transient, the links might not be valid in the 
-future):
-https://build.opensuse.org/package/live_build_log/openSUSE:Factory:Staging:H/liburing/standard/i586
-https://build.opensuse.org/package/live_build_log/openSUSE:Factory:Staging:H/liburing/standard/x86_64
-
-So I cannot tell if 6.8-rc is affected.
-
-I suspect one of the 6.7.2 uring changes:
-e24bf5b47a57 io_uring: adjust defer tw counting
-22eed9134509 io_uring: ensure local task_work is run on wait timeout
-ba8d8a8a36b2 io_uring/rw: ensure io->bytes_done is always initialized
-d413a342275d io_uring: don't check iopoll if request completes
-
-It looks like EINVAL is received unexpectedly (see below). Any ideas?
-
-The tests' failures:
-
-[   53s] Running test fd-pass.t 
-     msg_ring failed -22
-[   53s] test failed 0 2
-[   53s] msg_ring failed -22
-[   53s] test failed 1 1
-[   53s] msg_ring failed -22
-[   53s] test failed 1 0
-[   53s] io_uring_register_file_alloc_range -22
-[   53s] test failed 1 ALLOC
-[   53s] Test fd-pass.t failed with ret 1
-
-
-
-[   65s] Running test msg-ring-overflow.t 
-     Destination ring create failed -22
-[   65s] test defer failed
-[   65s] Test msg-ring-overflow.t failed with ret 1
-
-
-
-[   75s] Running test pipe-bug.t 
-     pipe-bug.c:73 io_uring_wait_cqe_timeout(&ring, &cqe, &to) == 0 failed
-[   75s] Test pipe-bug.t failed with ret 1
-
-
-
-[   76s] Running test poll-race-mshot.t 
-     Bad cqe res 0
-[   76s] Bad cqe res 0
-[   76s] Bad cqe res 0
-[   76s] Bad cqe res 0
-[   76s] Bad cqe res 0
-... a lot of these
-[   76s] Bad cqe res 0
-[   76s] Bad cqe res 0
-[   76s] Bad cqe res 0
-[   76s] Bad cqe res 0
-[   76s] Only got 1 requests
-[   76s] Test mshot failed loop 0
-[   76s] Test poll-race-mshot.t failed with ret 1
-
-
-
-[   84s] Running test reg-hint.t 
-     Bad CQE res: -22
-[   84s] Test reg-hint.t failed with ret 1
-
-> From: Pavel Begunkov <asml.silence@gmail.com>
-> 
-> commit 9b43ef3d52532a0175ed6654618f7db61d390d2e upstream.
-> 
-> IOPOLL request should never return IOU_OK, so the following iopoll
-> queueing check in io_issue_sqe() after getting IOU_OK doesn't make any
-> sense as would never turn true. Let's optimise on that and return a bit
-> earlier. It's also much more resilient to potential bugs from
-> mischieving iopoll implementations.
-> 
-> Cc:  <stable@vger.kernel.org>
-> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-> Link: https://lore.kernel.org/r/2f8690e2fa5213a2ff292fac29a7143c036cdd60.1701390926.git.asml.silence@gmail.com
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->   io_uring/io_uring.c |    6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> --- a/io_uring/io_uring.c
-> +++ b/io_uring/io_uring.c
-> @@ -1898,7 +1898,11 @@ static int io_issue_sqe(struct io_kiocb
->   			io_req_complete_defer(req);
->   		else
->   			io_req_complete_post(req, issue_flags);
-> -	} else if (ret != IOU_ISSUE_SKIP_COMPLETE)
-> +
-> +		return 0;
-> +	}
-> +
-> +	if (ret != IOU_ISSUE_SKIP_COMPLETE)
->   		return ret;
->   
->   	/* If the op doesn't have a file, we're not polling for it */
-> 
-> 
-> 
-
+diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/timer-riscv.c
+index e66dcbd66566..672669eb7281 100644
+--- a/drivers/clocksource/timer-riscv.c
++++ b/drivers/clocksource/timer-riscv.c
+@@ -116,6 +116,9 @@ static int riscv_timer_starting_cpu(unsigned int cpu)
+ 		ce->rating = 450;
+ 	clockevents_config_and_register(ce, riscv_timebase, 100, 0x7fffffff);
+ 
++	/* Clear timer interrupt */
++	riscv_clock_event_stop();
++
+ 	enable_percpu_irq(riscv_clock_event_irq,
+ 			  irq_get_trigger_type(riscv_clock_event_irq));
+ 	return 0;
 -- 
-js
-suse labs
+2.43.0
 
 
