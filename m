@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-16821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EF51840E8E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE63841025
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCB3D1F28126
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF5F0B21E7C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C00015FB17;
-	Mon, 29 Jan 2024 17:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC8B7406C;
+	Mon, 29 Jan 2024 17:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6B3/xX/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HFsz9E0b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C1915A4A6;
-	Mon, 29 Jan 2024 17:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7D574046;
+	Mon, 29 Jan 2024 17:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548304; cv=none; b=DMpteMX1WQs59eqGXsXn8R4DSutg9xe5iwpQnmU3Bodviuo/wKU7QApcSNdW6xBUlvXawlmphfmuq8vyw4MVuWwFmWbLuQz+tpHZL4EevCGzOMET/TXLao+Kt7T2eVWnco+cMDhW6XPvnb4lFu7RcnDPKoXbw56N+UBLBWpJ6/M=
+	t=1706548568; cv=none; b=pSnqC9hbggFPndX7iNJbPv1AcD+AP+P4R5nfHwtgokkeoSDAiCGcxhEVMcpTJj2mNR3aIxYX9J3M+V0mqHudmYO6BtfshGd77IiN8/JdWfjmRrGLy/qT7RtDzUy+yhzQwvPmmjjRuSzE3bUkbLCvHlOq17mcYEhp2dKH30ka2dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548304; c=relaxed/simple;
-	bh=MCd7HVfqVXVctoZKtaCqUHCVHVqdYFsZLvkYcyHgzjQ=;
+	s=arc-20240116; t=1706548568; c=relaxed/simple;
+	bh=OFVitt8zd7r5sZ6fiJ/BlhfYgEYDFRpx40BV0WkGL84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLZ/3mMcm3OhR02hTiFZY8x0XgqLgFpHroXVPr4eyf9QqWMGfbgmXqD07zuql+nog6SuEwvV8aaGCgaK7REc2UWH0LIK7UCC+Op/ZBgtmkHBqUagTlubuL4SO3WyiHUYa5c0zEnC3IWsrEG2HHZthcXsai5LUIhBiwBxF36w38k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6B3/xX/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1365C433F1;
-	Mon, 29 Jan 2024 17:11:43 +0000 (UTC)
+	 MIME-Version; b=kGeb9AyfU3xmKhPdQ2CobZDqLlnxC/sWleoeuXRvaXel+cJyddqQzrdlV2Fv1NYjnhSotyM3sxtxHRganewKq7Uk6GaqZOBQlwzfM53Uo3/M6EnuYiYrLc5BwV76ki5sabhxc/TZF5dNAN0oCaiLFVuTk8DpFp/JBQbGJS2lbL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HFsz9E0b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFAB3C43394;
+	Mon, 29 Jan 2024 17:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548304;
-	bh=MCd7HVfqVXVctoZKtaCqUHCVHVqdYFsZLvkYcyHgzjQ=;
+	s=korg; t=1706548568;
+	bh=OFVitt8zd7r5sZ6fiJ/BlhfYgEYDFRpx40BV0WkGL84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O6B3/xX/kRP2/u5/H4M+6KU4Y2Bqe8CCOL4kCQ7t6mcq/KjmrRF+B63wp+0MUD4K+
-	 /fs4YCItJuC5SnX9PEjp52LhM0RmH4QeTBXx0xwxHdh3g/R+UU/pkdrzLiaNyWTe3u
-	 NoPHJNP+eq8r8m02kQExDBkevLLTY3B2/R0xquMY=
+	b=HFsz9E0bTpq35+7hL7fcxVOaNw6SGzM4wO29xwmURm0RgIjmjxPfKNE0FTN2lCvAP
+	 p4IukfkI/rr+7ZB3rrfsDcKT9UShqxUQNJUfUXtWXHeqwmi6Ij+kPglefvSMfkN9Xx
+	 XR20XMGHFy3SD98HJi0Y8YWfuh4bDyni/wGteGEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+2a7024e9502df538e8ef@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 081/185] llc: make llc_ui_sendmsg() more robust against bonding changes
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 217/331] ice: work on pre-XDP prog frag count
 Date: Mon, 29 Jan 2024 09:04:41 -0800
-Message-ID: <20240129170001.204521857@linuxfoundation.org>
+Message-ID: <20240129170021.224346859@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,156 +63,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit dad555c816a50c6a6a8a86be1f9177673918c647 ]
+[ Upstream commit ad2047cf5d9313200e308612aed516548873d124 ]
 
-syzbot was able to trick llc_ui_sendmsg(), allocating an skb with no
-headroom, but subsequently trying to push 14 bytes of Ethernet header [1]
+Fix an OOM panic in XDP_DRV mode when a XDP program shrinks a
+multi-buffer packet by 4k bytes and then redirects it to an AF_XDP
+socket.
 
-Like some others, llc_ui_sendmsg() releases the socket lock before
-calling sock_alloc_send_skb().
-Then it acquires it again, but does not redo all the sanity checks
-that were performed.
+Since support for handling multi-buffer frames was added to XDP, usage
+of bpf_xdp_adjust_tail() helper within XDP program can free the page
+that given fragment occupies and in turn decrease the fragment count
+within skb_shared_info that is embedded in xdp_buff struct. In current
+ice driver codebase, it can become problematic when page recycling logic
+decides not to reuse the page. In such case, __page_frag_cache_drain()
+is used with ice_rx_buf::pagecnt_bias that was not adjusted after
+refcount of page was changed by XDP prog which in turn does not drain
+the refcount to 0 and page is never freed.
 
-This fix:
+To address this, let us store the count of frags before the XDP program
+was executed on Rx ring struct. This will be used to compare with
+current frag count from skb_shared_info embedded in xdp_buff. A smaller
+value in the latter indicates that XDP prog freed frag(s). Then, for
+given delta decrement pagecnt_bias for XDP_DROP verdict.
 
-- Uses LL_RESERVED_SPACE() to reserve space.
-- Check all conditions again after socket lock is held again.
-- Do not account Ethernet header for mtu limitation.
+While at it, let us also handle the EOP frag within
+ice_set_rx_bufs_act() to make our life easier, so all of the adjustments
+needed to be applied against freed frags are performed in the single
+place.
 
-[1]
-
-skbuff: skb_under_panic: text:ffff800088baa334 len:1514 put:14 head:ffff0000c9c37000 data:ffff0000c9c36ff2 tail:0x5dc end:0x6c0 dev:bond0
-
- kernel BUG at net/core/skbuff.c:193 !
-Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-Modules linked in:
-CPU: 0 PID: 6875 Comm: syz-executor.0 Not tainted 6.7.0-rc8-syzkaller-00101-g0802e17d9aca-dirty #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : skb_panic net/core/skbuff.c:189 [inline]
- pc : skb_under_panic+0x13c/0x140 net/core/skbuff.c:203
- lr : skb_panic net/core/skbuff.c:189 [inline]
- lr : skb_under_panic+0x13c/0x140 net/core/skbuff.c:203
-sp : ffff800096f97000
-x29: ffff800096f97010 x28: ffff80008cc8d668 x27: dfff800000000000
-x26: ffff0000cb970c90 x25: 00000000000005dc x24: ffff0000c9c36ff2
-x23: ffff0000c9c37000 x22: 00000000000005ea x21: 00000000000006c0
-x20: 000000000000000e x19: ffff800088baa334 x18: 1fffe000368261ce
-x17: ffff80008e4ed000 x16: ffff80008a8310f8 x15: 0000000000000001
-x14: 1ffff00012df2d58 x13: 0000000000000000 x12: 0000000000000000
-x11: 0000000000000001 x10: 0000000000ff0100 x9 : e28a51f1087e8400
-x8 : e28a51f1087e8400 x7 : ffff80008028f8d0 x6 : 0000000000000000
-x5 : 0000000000000001 x4 : 0000000000000001 x3 : ffff800082b78714
-x2 : 0000000000000001 x1 : 0000000100000000 x0 : 0000000000000089
-Call trace:
-  skb_panic net/core/skbuff.c:189 [inline]
-  skb_under_panic+0x13c/0x140 net/core/skbuff.c:203
-  skb_push+0xf0/0x108 net/core/skbuff.c:2451
-  eth_header+0x44/0x1f8 net/ethernet/eth.c:83
-  dev_hard_header include/linux/netdevice.h:3188 [inline]
-  llc_mac_hdr_init+0x110/0x17c net/llc/llc_output.c:33
-  llc_sap_action_send_xid_c+0x170/0x344 net/llc/llc_s_ac.c:85
-  llc_exec_sap_trans_actions net/llc/llc_sap.c:153 [inline]
-  llc_sap_next_state net/llc/llc_sap.c:182 [inline]
-  llc_sap_state_process+0x1ec/0x774 net/llc/llc_sap.c:209
-  llc_build_and_send_xid_pkt+0x12c/0x1c0 net/llc/llc_sap.c:270
-  llc_ui_sendmsg+0x7bc/0xb1c net/llc/af_llc.c:997
-  sock_sendmsg_nosec net/socket.c:730 [inline]
-  __sock_sendmsg net/socket.c:745 [inline]
-  sock_sendmsg+0x194/0x274 net/socket.c:767
-  splice_to_socket+0x7cc/0xd58 fs/splice.c:881
-  do_splice_from fs/splice.c:933 [inline]
-  direct_splice_actor+0xe4/0x1c0 fs/splice.c:1142
-  splice_direct_to_actor+0x2a0/0x7e4 fs/splice.c:1088
-  do_splice_direct+0x20c/0x348 fs/splice.c:1194
-  do_sendfile+0x4bc/0xc70 fs/read_write.c:1254
-  __do_sys_sendfile64 fs/read_write.c:1322 [inline]
-  __se_sys_sendfile64 fs/read_write.c:1308 [inline]
-  __arm64_sys_sendfile64+0x160/0x3b4 fs/read_write.c:1308
-  __invoke_syscall arch/arm64/kernel/syscall.c:37 [inline]
-  invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:51
-  el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:136
-  do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:155
-  el0_svc+0x54/0x158 arch/arm64/kernel/entry-common.c:678
-  el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:696
-  el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:595
-Code: aa1803e6 aa1903e7 a90023f5 94792f6a (d4210000)
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-and-tested-by: syzbot+2a7024e9502df538e8ef@syzkaller.appspotmail.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240118183625.4007013-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2fba7dc5157b ("ice: Add support for XDP multi-buffer on Rx side")
+Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/r/20240124191602.566724-5-maciej.fijalkowski@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/llc/af_llc.c | 24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_txrx.c     | 14 ++++++---
+ drivers/net/ethernet/intel/ice/ice_txrx.h     |  1 +
+ drivers/net/ethernet/intel/ice/ice_txrx_lib.h | 31 +++++++++++++------
+ 3 files changed, 32 insertions(+), 14 deletions(-)
 
-diff --git a/net/llc/af_llc.c b/net/llc/af_llc.c
-index 9ffbc667be6c..19c478bd85bd 100644
---- a/net/llc/af_llc.c
-+++ b/net/llc/af_llc.c
-@@ -928,14 +928,15 @@ static int llc_ui_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
-  */
- static int llc_ui_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- {
-+	DECLARE_SOCKADDR(struct sockaddr_llc *, addr, msg->msg_name);
- 	struct sock *sk = sock->sk;
- 	struct llc_sock *llc = llc_sk(sk);
--	DECLARE_SOCKADDR(struct sockaddr_llc *, addr, msg->msg_name);
- 	int flags = msg->msg_flags;
- 	int noblock = flags & MSG_DONTWAIT;
-+	int rc = -EINVAL, copied = 0, hdrlen, hh_len;
- 	struct sk_buff *skb = NULL;
-+	struct net_device *dev;
- 	size_t size = 0;
--	int rc = -EINVAL, copied = 0, hdrlen;
- 
- 	dprintk("%s: sending from %02X to %02X\n", __func__,
- 		llc->laddr.lsap, llc->daddr.lsap);
-@@ -955,22 +956,29 @@ static int llc_ui_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- 		if (rc)
- 			goto out;
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index 52d0a126eb61..5b0f9e53f6b4 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -600,9 +600,7 @@ ice_run_xdp(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
+ 		ret = ICE_XDP_CONSUMED;
  	}
--	hdrlen = llc->dev->hard_header_len + llc_ui_header_len(sk, addr);
-+	dev = llc->dev;
-+	hh_len = LL_RESERVED_SPACE(dev);
-+	hdrlen = llc_ui_header_len(sk, addr);
- 	size = hdrlen + len;
--	if (size > llc->dev->mtu)
--		size = llc->dev->mtu;
-+	size = min_t(size_t, size, READ_ONCE(dev->mtu));
- 	copied = size - hdrlen;
- 	rc = -EINVAL;
- 	if (copied < 0)
- 		goto out;
- 	release_sock(sk);
--	skb = sock_alloc_send_skb(sk, size, noblock, &rc);
-+	skb = sock_alloc_send_skb(sk, hh_len + size, noblock, &rc);
- 	lock_sock(sk);
- 	if (!skb)
- 		goto out;
--	skb->dev      = llc->dev;
-+	if (sock_flag(sk, SOCK_ZAPPED) ||
-+	    llc->dev != dev ||
-+	    hdrlen != llc_ui_header_len(sk, addr) ||
-+	    hh_len != LL_RESERVED_SPACE(dev) ||
-+	    size > READ_ONCE(dev->mtu))
-+		goto out;
-+	skb->dev      = dev;
- 	skb->protocol = llc_proto_type(addr->sllc_arphrd);
--	skb_reserve(skb, hdrlen);
-+	skb_reserve(skb, hh_len + hdrlen);
- 	rc = memcpy_from_msg(skb_put(skb, copied), msg, copied);
- 	if (rc)
- 		goto out;
+ exit:
+-	rx_buf->act = ret;
+-	if (unlikely(xdp_buff_has_frags(xdp)))
+-		ice_set_rx_bufs_act(xdp, rx_ring, ret);
++	ice_set_rx_bufs_act(xdp, rx_ring, ret);
+ }
+ 
+ /**
+@@ -890,14 +888,17 @@ ice_add_xdp_frag(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
+ 	}
+ 
+ 	if (unlikely(sinfo->nr_frags == MAX_SKB_FRAGS)) {
+-		if (unlikely(xdp_buff_has_frags(xdp)))
+-			ice_set_rx_bufs_act(xdp, rx_ring, ICE_XDP_CONSUMED);
++		ice_set_rx_bufs_act(xdp, rx_ring, ICE_XDP_CONSUMED);
+ 		return -ENOMEM;
+ 	}
+ 
+ 	__skb_fill_page_desc_noacc(sinfo, sinfo->nr_frags++, rx_buf->page,
+ 				   rx_buf->page_offset, size);
+ 	sinfo->xdp_frags_size += size;
++	/* remember frag count before XDP prog execution; bpf_xdp_adjust_tail()
++	 * can pop off frags but driver has to handle it on its own
++	 */
++	rx_ring->nr_frags = sinfo->nr_frags;
+ 
+ 	if (page_is_pfmemalloc(rx_buf->page))
+ 		xdp_buff_set_frag_pfmemalloc(xdp);
+@@ -1249,6 +1250,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 
+ 		xdp->data = NULL;
+ 		rx_ring->first_desc = ntc;
++		rx_ring->nr_frags = 0;
+ 		continue;
+ construct_skb:
+ 		if (likely(ice_ring_uses_build_skb(rx_ring)))
+@@ -1264,10 +1266,12 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 						    ICE_XDP_CONSUMED);
+ 			xdp->data = NULL;
+ 			rx_ring->first_desc = ntc;
++			rx_ring->nr_frags = 0;
+ 			break;
+ 		}
+ 		xdp->data = NULL;
+ 		rx_ring->first_desc = ntc;
++		rx_ring->nr_frags = 0;
+ 
+ 		stat_err_bits = BIT(ICE_RX_FLEX_DESC_STATUS0_RXE_S);
+ 		if (unlikely(ice_test_staterr(rx_desc->wb.status_error0,
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.h b/drivers/net/ethernet/intel/ice/ice_txrx.h
+index 166413fc33f4..407d4c320097 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.h
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.h
+@@ -333,6 +333,7 @@ struct ice_rx_ring {
+ 	struct ice_channel *ch;
+ 	struct ice_tx_ring *xdp_ring;
+ 	struct xsk_buff_pool *xsk_pool;
++	u32 nr_frags;
+ 	dma_addr_t dma;			/* physical address of ring */
+ 	u64 cached_phctime;
+ 	u16 rx_buf_len;
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx_lib.h b/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
+index 115969ecdf7b..b0e56675f98b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
++++ b/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
+@@ -12,26 +12,39 @@
+  * act: action to store onto Rx buffers related to XDP buffer parts
+  *
+  * Set action that should be taken before putting Rx buffer from first frag
+- * to one before last. Last one is handled by caller of this function as it
+- * is the EOP frag that is currently being processed. This function is
+- * supposed to be called only when XDP buffer contains frags.
++ * to the last.
+  */
+ static inline void
+ ice_set_rx_bufs_act(struct xdp_buff *xdp, const struct ice_rx_ring *rx_ring,
+ 		    const unsigned int act)
+ {
+-	const struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
+-	u32 first = rx_ring->first_desc;
+-	u32 nr_frags = sinfo->nr_frags;
++	u32 sinfo_frags = xdp_get_shared_info_from_buff(xdp)->nr_frags;
++	u32 nr_frags = rx_ring->nr_frags + 1;
++	u32 idx = rx_ring->first_desc;
+ 	u32 cnt = rx_ring->count;
+ 	struct ice_rx_buf *buf;
+ 
+ 	for (int i = 0; i < nr_frags; i++) {
+-		buf = &rx_ring->rx_buf[first];
++		buf = &rx_ring->rx_buf[idx];
+ 		buf->act = act;
+ 
+-		if (++first == cnt)
+-			first = 0;
++		if (++idx == cnt)
++			idx = 0;
++	}
++
++	/* adjust pagecnt_bias on frags freed by XDP prog */
++	if (sinfo_frags < rx_ring->nr_frags && act == ICE_XDP_CONSUMED) {
++		u32 delta = rx_ring->nr_frags - sinfo_frags;
++
++		while (delta) {
++			if (idx == 0)
++				idx = cnt - 1;
++			else
++				idx--;
++			buf = &rx_ring->rx_buf[idx];
++			buf->pagecnt_bias--;
++			delta--;
++		}
+ 	}
+ }
+ 
 -- 
 2.43.0
 
