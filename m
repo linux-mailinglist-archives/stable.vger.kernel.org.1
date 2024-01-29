@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-16788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06994840E6A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 292C3840E26
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2E16282EEA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE0E61F2CC6F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4270315F32A;
-	Mon, 29 Jan 2024 17:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2083115EA8D;
+	Mon, 29 Jan 2024 17:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2KIddLu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NoFV/ORv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E3415B96E;
-	Mon, 29 Jan 2024 17:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44DA159577;
+	Mon, 29 Jan 2024 17:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548280; cv=none; b=hy6R6jhw0/tjKISi9ZF9Gx5Xy/1sYItBFwqGl6PlefCCtCPHAc75qNhdghTcz4Txv2ehQxNTY5TqIKSi7C1Nu1RBmOJF0TtFL/5K73Vm6BwOeSY4xqLiD+xypYx+wg9+62pXQH651C0FSmEdZvPc+rSRE81P4W3xJQxI6MtffR0=
+	t=1706548232; cv=none; b=gez61IgY4PVDBX93WaWqts6z6v/4vQzC+sI3UGgDapSS8Os/Z0vmIRciFz+FRJvt5phxRW2KlZSzU7JxWWMEyqAWrNPm/vUMjhxb0TaF2WW3vuJ/WQEvI2wawNXeAjNdKkVzNftSCVaXEJQ4D2Z6Dser5THtm7MkCdmNSwFyiNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548280; c=relaxed/simple;
-	bh=YBYldfPdDPwiYRZOjKikI8iQN+XQcrCf993wYqkB190=;
+	s=arc-20240116; t=1706548232; c=relaxed/simple;
+	bh=Ob17j2weYREMFvuYl1CpcaXXbgy3Y0upbNfijM0m/Es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jOcVGFXQ0Xh2ZZ8C2xkt2ll9MJcHJoBnMl3Vc+HuufvIQ6j+1E5R5HaSInNXIrsJos8/144BtZ9bvPXDekIpZ4amUqHZ/RjfQSTW89nXYIp5zPSe4FXF1bY6Ke62sERODcaCVVGvLWgf+1KTBJ53CMgvgMd3hwuitGD8w7b4MTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2KIddLu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD93FC433F1;
-	Mon, 29 Jan 2024 17:11:19 +0000 (UTC)
+	 MIME-Version; b=ZQ+tiqffgXLWTLf7JeP3e+CIPDBcy+cvRxej1i01quMS9CVDWJnyToimjO/4MBxlWIPLSujpnc6WxKeb4rN4JJqD9mFwDv/EINBxz1W+RgMCH9sMf4hbehVkXUXzrRhWCrcOjL95BwcC/TaIEcWc3HLnJZHKLcDXDZPt/7TOcqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NoFV/ORv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B189C43390;
+	Mon, 29 Jan 2024 17:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548279;
-	bh=YBYldfPdDPwiYRZOjKikI8iQN+XQcrCf993wYqkB190=;
+	s=korg; t=1706548232;
+	bh=Ob17j2weYREMFvuYl1CpcaXXbgy3Y0upbNfijM0m/Es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2KIddLuRv86UaAUHeLfKnZz5s5MjLfRu6cWoijIA4qFV4+YHzLDsi8UwSaUnZQ1K
-	 HU/nl3p8G0as21oiUrYHzLKdztpFqTaivZGWm0NXuokijocIEnhzL8TKmgPHEChkwF
-	 BH3/8lgpH3mqQngYP2kI6UI1LbHcJuO7J7Vy9ROg=
+	b=NoFV/ORv4bjHuzl5fWs84u1hL606m0spy5pznTrL1LSdCqcvJtZQYGP3OulplMrNS
+	 o33BmDiMkX/5LneEBljZnHGC0yOpCHHpTZ8qRuf17CiGqd6Cwhh0lrE54MOh0v5/wY
+	 Pkxnr4izFpNvVoeqPxRmuaqpfrmledHTh6+iO+Pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.1 066/185] serial: sc16is7xx: improve do/while loop in sc16is7xx_irq()
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.7 235/346] netfilter: nft_chain_filter: handle NETDEV_UNREGISTER for inet/ingress basechain
 Date: Mon, 29 Jan 2024 09:04:26 -0800
-Message-ID: <20240129170000.727001003@linuxfoundation.org>
+Message-ID: <20240129170023.313982554@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit d5078509c8b06c5c472a60232815e41af81c6446 upstream.
+commit 01acb2e8666a6529697141a6017edbf206921913 upstream.
 
-Simplify and improve readability by replacing while(1) loop with
-do {} while, and by using the keep_polling variable as the exit
-condition, making it more explicit.
+Remove netdevice from inet/ingress basechain in case NETDEV_UNREGISTER
+event is reported, otherwise a stale reference to netdevice remains in
+the hook list.
 
-Fixes: 834449872105 ("sc16is7xx: Fix for multi-channel stall")
-Cc:  <stable@vger.kernel.org>
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-6-hugo@hugovil.com
+Fixes: 60a3815da702 ("netfilter: add inet ingress support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ net/netfilter/nft_chain_filter.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -784,17 +784,18 @@ out_port_irq:
- 
- static irqreturn_t sc16is7xx_irq(int irq, void *dev_id)
+--- a/net/netfilter/nft_chain_filter.c
++++ b/net/netfilter/nft_chain_filter.c
+@@ -357,9 +357,10 @@ static int nf_tables_netdev_event(struct
+ 				  unsigned long event, void *ptr)
  {
-+	bool keep_polling;
+ 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
++	struct nft_base_chain *basechain;
+ 	struct nftables_pernet *nft_net;
+-	struct nft_table *table;
+ 	struct nft_chain *chain, *nr;
++	struct nft_table *table;
+ 	struct nft_ctx ctx = {
+ 		.net	= dev_net(dev),
+ 	};
+@@ -371,7 +372,8 @@ static int nf_tables_netdev_event(struct
+ 	nft_net = nft_pernet(ctx.net);
+ 	mutex_lock(&nft_net->commit_mutex);
+ 	list_for_each_entry(table, &nft_net->tables, list) {
+-		if (table->family != NFPROTO_NETDEV)
++		if (table->family != NFPROTO_NETDEV &&
++		    table->family != NFPROTO_INET)
+ 			continue;
+ 
+ 		ctx.family = table->family;
+@@ -380,6 +382,11 @@ static int nf_tables_netdev_event(struct
+ 			if (!nft_is_base_chain(chain))
+ 				continue;
+ 
++			basechain = nft_base_chain(chain);
++			if (table->family == NFPROTO_INET &&
++			    basechain->ops.hooknum != NF_INET_INGRESS)
++				continue;
 +
- 	struct sc16is7xx_port *s = (struct sc16is7xx_port *)dev_id;
- 
--	while (1) {
--		bool keep_polling = false;
-+	do {
- 		int i;
- 
-+		keep_polling = false;
-+
- 		for (i = 0; i < s->devtype->nr_uart; ++i)
- 			keep_polling |= sc16is7xx_port_irq(s, i);
--		if (!keep_polling)
--			break;
--	}
-+	} while (keep_polling);
- 
- 	return IRQ_HANDLED;
- }
+ 			ctx.chain = chain;
+ 			nft_netdev_event(event, dev, &ctx);
+ 		}
 
 
 
