@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-16771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9D6840E57
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C12E84100C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C30728473B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F5281F23B59
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB57C15F310;
-	Mon, 29 Jan 2024 17:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B289073722;
+	Mon, 29 Jan 2024 17:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuNiExuh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTN8sqh0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4CE15A497;
-	Mon, 29 Jan 2024 17:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717D87375F;
+	Mon, 29 Jan 2024 17:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548267; cv=none; b=GLrtHrq53v5a1nbIo2gU2KWsnCphIcZfP1q5a9L17pyYjCTj4e/yBX8QvTJ1l8FTWbvKborDtMTyC5qHFyKmh2z6vOCkpOnfudGKSkjGDvrrQYzzUbYX9a/viZGkvOOghuw6xcg5UJdn2XEnrwNYLydlxcstHc93Vkk+ttWGDsY=
+	t=1706548551; cv=none; b=ahj/ULQg/Ubvuwe9iLMkRBmzdj37sGqqERp5iUGjUxsHOPG2sl2y74YxJxsCywg3Gjqa2jZdqvOR2Ot7FlPHmV67s4nJkpe5CkDjM/F0AQjzxjm8BByoV67/JzOYkIqBqp56QZhXRjdSA97wVbTB+ZJhMQIysnpgIF/WltMTR5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548267; c=relaxed/simple;
-	bh=9LKy4wShUo3Qykac4DJxUfuckb7Kdy5g7SFGiACevwE=;
+	s=arc-20240116; t=1706548551; c=relaxed/simple;
+	bh=yqK/5eH6klddMnko0IUGRKQTJoV/p0oI6V5IjLJpNaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eoOwYJUplC/1FLqUSH1X5kuX95ipS+27MruYnZf0b55j8bbJL3kPEnAvGWdZqKi+su1q5qqLVpvJytxAuBWFmLefMyXiRIJbV+iFGOS3BEWz1VftIhXV30pgZR500Gjsm93Fp0eCK/2SEW7zer7T49GqaWIpWO2ZWek8Ch+vyTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuNiExuh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCB3C43390;
-	Mon, 29 Jan 2024 17:11:07 +0000 (UTC)
+	 MIME-Version; b=cZOgU2EN+M4rMtV+LlDvYf5shhrNK/9+7wo2b8NKc+1Y+H3wgxwaFprg5tnKQ+SHMEVNk3qKjBSCoYtPtPPZ4Eor6DNFN0ZCrdTMSFhmGne5k1YIRLfTUZqmdwV7ui2y3VsvyhCRJmeHxmAGzsFfwlwK3ewZCAJtzB6N/7KX3Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTN8sqh0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C55DC433F1;
+	Mon, 29 Jan 2024 17:15:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548267;
-	bh=9LKy4wShUo3Qykac4DJxUfuckb7Kdy5g7SFGiACevwE=;
+	s=korg; t=1706548551;
+	bh=yqK/5eH6klddMnko0IUGRKQTJoV/p0oI6V5IjLJpNaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nuNiExuh3ZwL/jg+w+/HiyCDgb77jOVAMN7NLGy66PYjU46ZmoecVnMc3BPj77y2o
-	 nehjeBu8clMw/kG3BQCUUkWBfE//Jts8iW+iD51QDnR5AZG1ppnB6gCkTblt0+jnJe
-	 TUIx2y5DrBslw5HaRj7aI9Wcw8UHxwyviKUdj+UM=
+	b=pTN8sqh0Vie1wd5V8kDf+AUtxtaccWZKzGMCuikHL3f0LzXkZxdfDO8ULyIDFAkcV
+	 0yz6WU166qva46ykjtax8qrl31lSq5c/w8//i8wUcboRA1pqUbhAaaDQaOPMq2t3Ql
+	 T7okmU2Gd6ofYP4ckz/kS0RuYPeZMLCjOZH8CVeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.1 034/185] arm64: dts: qcom: sc7180: fix USB wakeup interrupt types
+	Jakub Kicinski <kuba@kernel.org>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 170/331] selftests: bonding: Increase timeout to 1200s
 Date: Mon, 29 Jan 2024 09:03:54 -0800
-Message-ID: <20240129165959.691872567@linuxfoundation.org>
+Message-ID: <20240129170019.889525256@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Benjamin Poirier <bpoirier@nvidia.com>
 
-commit 9b956999bf725fd62613f719c3178fdbee6e5f47 upstream.
+[ Upstream commit b01f15a7571b7aa222458bc9bf26ab59bd84e384 ]
 
-The DP/DM wakeup interrupts are edge triggered and which edge to trigger
-on depends on use-case and whether a Low speed or Full/High speed device
-is connected.
+When tests are run by runner.sh, bond_options.sh gets killed before
+it can complete:
 
-Fixes: 0b766e7fe5a2 ("arm64: dts: qcom: sc7180: Add USB related nodes")
-Cc: stable@vger.kernel.org      # 5.10
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231120164331.8116-4-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+make -C tools/testing/selftests run_tests TARGETS="drivers/net/bonding"
+	[...]
+	# timeout set to 120
+	# selftests: drivers/net/bonding: bond_options.sh
+	# TEST: prio (active-backup miimon primary_reselect 0)                [ OK ]
+	# TEST: prio (active-backup miimon primary_reselect 1)                [ OK ]
+	# TEST: prio (active-backup miimon primary_reselect 2)                [ OK ]
+	# TEST: prio (active-backup arp_ip_target primary_reselect 0)         [ OK ]
+	# TEST: prio (active-backup arp_ip_target primary_reselect 1)         [ OK ]
+	# TEST: prio (active-backup arp_ip_target primary_reselect 2)         [ OK ]
+	#
+	not ok 7 selftests: drivers/net/bonding: bond_options.sh # TIMEOUT 120 seconds
+
+This test includes many sleep statements, at least some of which are
+related to timers in the operation of the bonding driver itself. Increase
+the test timeout to allow the test to complete.
+
+I ran the test in slightly different VMs (including one without HW
+virtualization support) and got runtimes of 13m39.760s, 13m31.238s, and
+13m2.956s. Use a ~1.5x "safety factor" and set the timeout to 1200s.
+
+Fixes: 42a8d4aaea84 ("selftests: bonding: add bonding prio option test")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/netdev/20240116104402.1203850a@kernel.org/#t
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20240118001233.304759-1-bpoirier@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/drivers/net/bonding/settings | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-@@ -2769,8 +2769,8 @@
- 
- 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
--					      <&pdc 8 IRQ_TYPE_LEVEL_HIGH>,
--					      <&pdc 9 IRQ_TYPE_LEVEL_HIGH>;
-+					      <&pdc 8 IRQ_TYPE_EDGE_BOTH>,
-+					      <&pdc 9 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
- 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
- 
+diff --git a/tools/testing/selftests/drivers/net/bonding/settings b/tools/testing/selftests/drivers/net/bonding/settings
+index 6091b45d226b..79b65bdf05db 100644
+--- a/tools/testing/selftests/drivers/net/bonding/settings
++++ b/tools/testing/selftests/drivers/net/bonding/settings
+@@ -1 +1 @@
+-timeout=120
++timeout=1200
+-- 
+2.43.0
+
 
 
 
