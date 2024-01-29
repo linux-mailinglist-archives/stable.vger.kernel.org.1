@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-16549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3830840D6C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D60CF840FBB
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EC1428AD10
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 157F11C21D34
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B58615B2ED;
-	Mon, 29 Jan 2024 17:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A2715B2E2;
+	Mon, 29 Jan 2024 17:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slwDapLM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIPeFwLv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3833715B2E7;
-	Mon, 29 Jan 2024 17:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3681E15957B;
+	Mon, 29 Jan 2024 17:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548102; cv=none; b=TR8eKK/WGxuQskgROj5e+C+pj0TBMnwpCZa/pZHVgMMiZCztADqDo8UsH2YAv8vPT50DOLlKriCEvFWkyFTAerhWf9RHbOWhy8y62NKntYsA6qaD/GlrtC7q/JEMWuzoLhjMJIrVhU4Vtg5SLiFM6/M6buPtba/jkTnzZPVhcsQ=
+	t=1706548492; cv=none; b=Rc9wO8KyIryDMchNWHN8uknfY89SqqIBZg/k/C06bLcbf5BuRzOg6fN1KnBBT22XT8sgzcdMlQo0Ss35bs8Wi55/RdXeqHXHsO0tnHK3JPBcWm7fM6mfnI7FXo2QBD1Q8C0ggCDU2F4KEpVH++32bWnTlWzxxeEM3NxNMzgzTeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548102; c=relaxed/simple;
-	bh=eAHotu6Tuz9BPkLQNBLMNrvBI0selQF4wq1mDqy8RhE=;
+	s=arc-20240116; t=1706548492; c=relaxed/simple;
+	bh=XViz8YZ+PRZ5prrtgcnx6Clu72LzoTYlsErAnAX/0y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HTsnaDk1UJZy84/sFoCbnBRXjmSePESc7TGf+apVMEUDUcWaS6Xs/rEXc5+lwTMgzL4d3v2MxMeAup36ptVYYhxlkP2SImlJkCag1bSz3/9Jl7UWLJxZedbe4p7FBXABcr7n205vOlTFFT2revVhhl7nfwOEQ6rV02GRV26RUNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slwDapLM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F323BC433C7;
-	Mon, 29 Jan 2024 17:08:21 +0000 (UTC)
+	 MIME-Version; b=tzLD5Sk+bZLeGqRa7OqpFCq4Px6iF1oQ8gqkjQtL3OZsGeIk9Ys939isg3PIVp+AbKwkmOyf4PyhHKQ40UFsZ2b50wVilS+X/m1gy6lDCGFshX2HCkaSL0NC3iVvF78dnaJp7negebdzSU+vzdBDUJUu9ORQysEid7h3BOwvkQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIPeFwLv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F008EC43394;
+	Mon, 29 Jan 2024 17:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548102;
-	bh=eAHotu6Tuz9BPkLQNBLMNrvBI0selQF4wq1mDqy8RhE=;
+	s=korg; t=1706548492;
+	bh=XViz8YZ+PRZ5prrtgcnx6Clu72LzoTYlsErAnAX/0y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=slwDapLMIFtxG69h6hk6GZXsqTlXfmC2cq779yuu078L+yC+G5zxvA1y/hEg4El5X
-	 ShwRv06NPU8TmOEXpJ7pbTL5KstF+t69QomE3fgWGZSntg10CPD8MNpv2Wi0TzllRO
-	 jJNGcn4va4TfQEd9Cg0oqRQ64DDM4fLw79a2S5PM=
+	b=qIPeFwLv6F4jEQrfGSE9m3lxh7xUtNc2NajnRVU6WnT1vRmCggesZ6tAPsDBjqJOX
+	 glGkS51BQFrcV3DE7TDTtptRAOr+cRS5knIAltDWPUBssaIfMk1PJpV1TlyNZGFQQn
+	 BnZx30KYxLfDwaq6ZOGYMIbG5mc4TgzZmydai2EQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donet Tom <donettom@linux.vnet.ibm.com>,
-	Geetika Moolchandani <geetika@linux.ibm.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 122/346] selftests: mm: hugepage-vmemmap fails on 64K page size systems
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 089/331] ARM: dts: qcom: sdx55: fix USB DP/DM HS PHY interrupts
 Date: Mon, 29 Jan 2024 09:02:33 -0800
-Message-ID: <20240129170019.975923041@linuxfoundation.org>
+Message-ID: <20240129170017.533956563@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,142 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donet Tom <donettom@linux.vnet.ibm.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 00bcfcd47a52f50f07a2e88d730d7931384cb073 upstream.
+commit de95f139394a5ed82270f005bc441d2e7c1e51b7 upstream.
 
-The kernel sefltest mm/hugepage-vmemmap fails on architectures which has
-different page size other than 4K.  In hugepage-vmemmap page size used is
-4k so the pfn calculation will go wrong on systems which has different
-page size .The length of MAP_HUGETLB memory must be hugepage aligned but
-in hugepage-vmemmap map length is 2M so this will not get aligned if the
-system has differnet hugepage size.
+The USB DP/DM HS PHY interrupts need to be provided by the PDC interrupt
+controller in order to be able to wake the system up from low-power
+states and to be able to detect disconnect events, which requires
+triggering on falling edges.
 
-Added  psize() to get the page size and default_huge_page_size() to
-get the default hugepage size at run time, hugepage-vmemmap test pass
-on powerpc with 64K page size and x86 with 4K page size.
+A recent commit updated the trigger type but failed to change the
+interrupt provider as required. This leads to the current Linux driver
+failing to probe instead of printing an error during suspend and USB
+wakeup not working as intended.
 
-Result on powerpc without patch (page size 64K)
-*# ./hugepage-vmemmap
-Returned address is 0x7effff000000 whose pfn is 0
-Head page flags (100000000) is invalid
-check_page_flags: Invalid argument
-*#
-
-Result on powerpc with patch (page size 64K)
-*# ./hugepage-vmemmap
-Returned address is 0x7effff000000 whose pfn is 600
-*#
-
-Result on x86 with patch (page size 4K)
-*# ./hugepage-vmemmap
-Returned address is 0x7fc7c2c00000 whose pfn is 1dac00
-*#
-
-Link: https://lkml.kernel.org/r/3b3a3ae37ba21218481c482a872bbf7526031600.1704865754.git.donettom@linux.vnet.ibm.com
-Fixes: b147c89cd429 ("selftests: vm: add a hugetlb test case")
-Signed-off-by: Donet Tom <donettom@linux.vnet.ibm.com>
-Reported-by: Geetika Moolchandani <geetika@linux.ibm.com>
-Tested-by: Geetika Moolchandani <geetika@linux.ibm.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: d0ec3c4c11c3 ("ARM: dts: qcom: sdx55: fix USB wakeup interrupt types")
+Fixes: fea4b41022f3 ("ARM: dts: qcom: sdx55: Add USB3 and PHY support")
+Cc: stable@vger.kernel.org	# 5.12
+Cc: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20231213173131.29436-3-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/mm/hugepage-vmemmap.c |   29 ++++++++++++++++----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+ arch/arm/boot/dts/qcom/qcom-sdx55.dtsi |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/tools/testing/selftests/mm/hugepage-vmemmap.c
-+++ b/tools/testing/selftests/mm/hugepage-vmemmap.c
-@@ -10,10 +10,7 @@
- #include <unistd.h>
- #include <sys/mman.h>
- #include <fcntl.h>
--
--#define MAP_LENGTH		(2UL * 1024 * 1024)
--
--#define PAGE_SIZE		4096
-+#include "vm_util.h"
+--- a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
+@@ -592,10 +592,10 @@
+ 					  <&gcc GCC_USB30_MASTER_CLK>;
+ 			assigned-clock-rates = <19200000>, <200000000>;
  
- #define PAGE_COMPOUND_HEAD	(1UL << 15)
- #define PAGE_COMPOUND_TAIL	(1UL << 16)
-@@ -39,6 +36,9 @@
- #define MAP_FLAGS		(MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB)
- #endif
+-			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 198 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 158 IRQ_TYPE_EDGE_BOTH>,
+-				     <GIC_SPI 157 IRQ_TYPE_EDGE_BOTH>;
++			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
++					      <&intc GIC_SPI 198 IRQ_TYPE_LEVEL_HIGH>,
++					      <&pdc 11 IRQ_TYPE_EDGE_BOTH>,
++					      <&pdc 10 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
  
-+static size_t pagesize;
-+static size_t maplength;
-+
- static void write_bytes(char *addr, size_t length)
- {
- 	unsigned long i;
-@@ -56,7 +56,7 @@ static unsigned long virt_to_pfn(void *a
- 	if (fd < 0)
- 		return -1UL;
- 
--	lseek(fd, (unsigned long)addr / PAGE_SIZE * sizeof(pagemap), SEEK_SET);
-+	lseek(fd, (unsigned long)addr / pagesize * sizeof(pagemap), SEEK_SET);
- 	read(fd, &pagemap, sizeof(pagemap));
- 	close(fd);
- 
-@@ -86,7 +86,7 @@ static int check_page_flags(unsigned lon
- 	 * this also verifies kernel has correctly set the fake page_head to tail
- 	 * while hugetlb_free_vmemmap is enabled.
- 	 */
--	for (i = 1; i < MAP_LENGTH / PAGE_SIZE; i++) {
-+	for (i = 1; i < maplength / pagesize; i++) {
- 		read(fd, &pageflags, sizeof(pageflags));
- 		if ((pageflags & TAIL_PAGE_FLAGS) != TAIL_PAGE_FLAGS ||
- 		    (pageflags & HEAD_PAGE_FLAGS) == HEAD_PAGE_FLAGS) {
-@@ -106,18 +106,25 @@ int main(int argc, char **argv)
- 	void *addr;
- 	unsigned long pfn;
- 
--	addr = mmap(MAP_ADDR, MAP_LENGTH, PROT_READ | PROT_WRITE, MAP_FLAGS, -1, 0);
-+	pagesize  = psize();
-+	maplength = default_huge_page_size();
-+	if (!maplength) {
-+		printf("Unable to determine huge page size\n");
-+		exit(1);
-+	}
-+
-+	addr = mmap(MAP_ADDR, maplength, PROT_READ | PROT_WRITE, MAP_FLAGS, -1, 0);
- 	if (addr == MAP_FAILED) {
- 		perror("mmap");
- 		exit(1);
- 	}
- 
- 	/* Trigger allocation of HugeTLB page. */
--	write_bytes(addr, MAP_LENGTH);
-+	write_bytes(addr, maplength);
- 
- 	pfn = virt_to_pfn(addr);
- 	if (pfn == -1UL) {
--		munmap(addr, MAP_LENGTH);
-+		munmap(addr, maplength);
- 		perror("virt_to_pfn");
- 		exit(1);
- 	}
-@@ -125,13 +132,13 @@ int main(int argc, char **argv)
- 	printf("Returned address is %p whose pfn is %lx\n", addr, pfn);
- 
- 	if (check_page_flags(pfn) < 0) {
--		munmap(addr, MAP_LENGTH);
-+		munmap(addr, maplength);
- 		perror("check_page_flags");
- 		exit(1);
- 	}
- 
- 	/* munmap() length of MAP_HUGETLB memory must be hugepage aligned */
--	if (munmap(addr, MAP_LENGTH)) {
-+	if (munmap(addr, maplength)) {
- 		perror("munmap");
- 		exit(1);
- 	}
 
 
 
