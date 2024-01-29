@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-16645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED8F2840DD3
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E59841003
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CFAD1F2CFCD
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43F121C23814
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B2F15AACC;
-	Mon, 29 Jan 2024 17:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188E715A486;
+	Mon, 29 Jan 2024 17:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfrjRrNG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMe7WH8n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256C315AABD;
-	Mon, 29 Jan 2024 17:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC43C73748;
+	Mon, 29 Jan 2024 17:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548173; cv=none; b=bwNlDgEAojaorv0PK48keMpCmqHojuCYl53X8sch7XmBHVJ9+gfqQw0onNmUFOACM8bpG0h+gtEvpxnF9Kce+75ap5iFmj/SdzSy9g4nIKnyq/400rwF2RTd+79aGl/kjrnj3FRI/nfybC7/tf3cKP26IEILAxaLbdnnGpH5fws=
+	t=1706548544; cv=none; b=EWPLp1XnL2sOyWL9At/pMahLO6oyrqji4DNAThro/86tNSkDD7buuSs+WwMVGJl6QYDvMulYqf0Qjw6YfEw44cI982iEGV8NQX92XqPFPsKg99XLRrpYi6Sqi0O3qiqZ0Vbq5cG2SLUQ/seJpzgJt27ECg5PG1uC3xOo4GK2/4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548173; c=relaxed/simple;
-	bh=R0bfVzJ9DDHV+x0EtenezfwUfh9Hbsbv/dQxVQ48bOY=;
+	s=arc-20240116; t=1706548544; c=relaxed/simple;
+	bh=jBqss7iu/jhCtOyIAseF2CobNIz8KwdTtnWLKosznQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B0UaGgfMGhvIXY1qOQyiqVU+UgdhWc7Z4ZbhCtamBnsRV7o9cpnbdkqo4w/zJsI96e2dFqgi+GNHW4+HP7AUKmBXM4At4ajD/g8b3qWIsDJaAhC3IDIBFVpYu6dNyNvw9yRe4XjW3KR9oVjISaqcd36F7TKqTM9jGR6ftuSGExs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfrjRrNG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DA1C433F1;
-	Mon, 29 Jan 2024 17:09:32 +0000 (UTC)
+	 MIME-Version; b=RuGoQk/HJLh2vJoYMiL/6RDiAKeDxhsvHEePQ/jfiZ/Kw/dUnJflHdHUnJItYR9Za+eu8qkSMGdwxIwk3Qy6W/DQV28HfYhhW3xTh+lnZY7NaeXWHIswMe+9l7ocLQFe1oZsm7odMZqLOvfTl8QwYfd95aPA82z+ijuFk6nQiN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMe7WH8n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9588EC433C7;
+	Mon, 29 Jan 2024 17:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548173;
-	bh=R0bfVzJ9DDHV+x0EtenezfwUfh9Hbsbv/dQxVQ48bOY=;
+	s=korg; t=1706548544;
+	bh=jBqss7iu/jhCtOyIAseF2CobNIz8KwdTtnWLKosznQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SfrjRrNGGXjufF9QuHJ2KhQUiRA9ZhGwvH+RqiQVi0iX5BOZ4P2Cte7tVR0ESyHa5
-	 CdWFdkLBBswd7QfqTI4P+8bQK9mjChd1YSD9Tsb74SIZX6jC4zIbgwPGtgGH9LS1vL
-	 FnOpgy1dBDMtzT4xUhGp57bqpc+VN2JMagrn9QDw=
+	b=gMe7WH8nzlhywScJC0EmsBTAGmMnTVNRCoAiW9wKLYbJBG8DqEsYZKiu6E3E5yptw
+	 aR7TTdlw5hdsnlztfsVSVqBQL/Wfvda0Y6I+SZ7cpQ/9bO1NS0painzkkovuQXt1+X
+	 r6jcjSYNZWUZhOcmq+zExmYNMduHrUxASMEkt+8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Vosburgh <jay.vosburgh@canonical.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 218/346] selftests: bonding: do not test arp/ns target with mode balance-alb/tlb
+Subject: [PATCH 6.6 185/331] afs: Hide silly-rename files from userspace
 Date: Mon, 29 Jan 2024 09:04:09 -0800
-Message-ID: <20240129170022.805094413@linuxfoundation.org>
+Message-ID: <20240129170020.311981607@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit a2933a8759a62269754e54733d993b19de870e84 ]
+[ Upstream commit 57e9d49c54528c49b8bffe6d99d782ea051ea534 ]
 
-The prio_arp/ns tests hard code the mode to active-backup. At the same
-time, The balance-alb/tlb modes do not support arp/ns target. So remove
-the prio_arp/ns tests from the loop and only test active-backup mode.
+There appears to be a race between silly-rename files being created/removed
+and various userspace tools iterating over the contents of a directory,
+leading to such errors as:
 
-Fixes: 481b56e0391e ("selftests: bonding: re-format bond option tests")
-Reported-by: Jay Vosburgh <jay.vosburgh@canonical.com>
-Closes: https://lore.kernel.org/netdev/17415.1705965957@famine/
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
-Link: https://lore.kernel.org/r/20240123075917.1576360-1-liuhangbin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+	find: './kernel/.tmp_cpio_dir/include/dt-bindings/reset/.__afs2080': No such file or directory
+	tar: ./include/linux/greybus/.__afs3C95: File removed before we read it
+
+when building a kernel.
+
+Fix afs_readdir() so that it doesn't return .__afsXXXX silly-rename files
+to userspace.  This doesn't stop them being looked up directly by name as
+we need to be able to look them up from within the kernel as part of the
+silly-rename algorithm.
+
+Fixes: 79ddbfa500b3 ("afs: Implement sillyrename for unlink and rename")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/drivers/net/bonding/bond_options.sh | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/afs/dir.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/tools/testing/selftests/drivers/net/bonding/bond_options.sh b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-index c54d1697f439..d508486cc0bd 100755
---- a/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-+++ b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
-@@ -162,7 +162,7 @@ prio_arp()
- 	local mode=$1
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index 5219182e52e1..2df2e9ee130d 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -474,6 +474,14 @@ static int afs_dir_iterate_block(struct afs_vnode *dvnode,
+ 			continue;
+ 		}
  
- 	for primary_reselect in 0 1 2; do
--		prio_test "mode active-backup arp_interval 100 arp_ip_target ${g_ip4} primary eth1 primary_reselect $primary_reselect"
-+		prio_test "mode $mode arp_interval 100 arp_ip_target ${g_ip4} primary eth1 primary_reselect $primary_reselect"
- 		log_test "prio" "$mode arp_ip_target primary_reselect $primary_reselect"
- 	done
- }
-@@ -178,7 +178,7 @@ prio_ns()
- 	fi
- 
- 	for primary_reselect in 0 1 2; do
--		prio_test "mode active-backup arp_interval 100 ns_ip6_target ${g_ip6} primary eth1 primary_reselect $primary_reselect"
-+		prio_test "mode $mode arp_interval 100 ns_ip6_target ${g_ip6} primary eth1 primary_reselect $primary_reselect"
- 		log_test "prio" "$mode ns_ip6_target primary_reselect $primary_reselect"
- 	done
- }
-@@ -194,9 +194,9 @@ prio()
- 
- 	for mode in $modes; do
- 		prio_miimon $mode
--		prio_arp $mode
--		prio_ns $mode
- 	done
-+	prio_arp "active-backup"
-+	prio_ns "active-backup"
- }
- 
- arp_validate_test()
++		/* Don't expose silly rename entries to userspace. */
++		if (nlen > 6 &&
++		    dire->u.name[0] == '.' &&
++		    ctx->actor != afs_lookup_filldir &&
++		    ctx->actor != afs_lookup_one_filldir &&
++		    memcmp(dire->u.name, ".__afs", 6) == 0)
++			continue;
++
+ 		/* found the next entry */
+ 		if (!dir_emit(ctx, dire->u.name, nlen,
+ 			      ntohl(dire->u.vnode),
 -- 
 2.43.0
 
