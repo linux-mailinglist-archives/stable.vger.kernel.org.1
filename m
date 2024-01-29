@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-16899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840E5840EF4
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3266840E6B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B31321C23909
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66973B21451
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE0116274F;
-	Mon, 29 Jan 2024 17:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0BD15F32D;
+	Mon, 29 Jan 2024 17:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgj+2GJ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQ/LZe1t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9BF15CD75;
-	Mon, 29 Jan 2024 17:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74C715B96E;
+	Mon, 29 Jan 2024 17:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548361; cv=none; b=aQHSF74Z8VHhco+e9CAMfqazR+OVM7y3vXYn1t9HWVaBjMlO8/vQfsepoeetL56TVWW337G05ZVse5CmCFtvedWvZaJxc35s3+W+hyDrX5w8bh1C/U9UQZlyjw/Y6udXVLrVDjeS+Ev4UTtlaPy/TAjb3qNV9ZE0Svb8hAYYWIw=
+	t=1706548280; cv=none; b=h9D+Dlj8l5BJW9L3Ajw1iB7e7OmA6o01wah05djpxO02Lp4To41LsdCdCpRKh/P/o0laUtBfxImbSYWC8B3OlAas/C6iXcsftLIbHNDYbfyQnszGyxzKTJrsbnTddvwR+uXWCs08TX0ViTUF4l3Td2cQry95LE4iiPoGrqcm8SI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548361; c=relaxed/simple;
-	bh=fEYWoC5uaxjtMVnpvsruXIJ/G+Hxw4qQZL9bahTbL6o=;
+	s=arc-20240116; t=1706548280; c=relaxed/simple;
+	bh=CV7vFUfagWlpFJSJAgSyWNFaTD+XRWDsIbkWQYNUUbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KlA0kCM6hAv2Y2ocjRkmcO3yhP7tBiLoMuuoLg6ici/xq9FjyHbS8NkIjfRfF7Rl0lr0WWeq7AdqZZsixz0Ff8P4mikGijJ+bqAzPWfDqKOuNhSXkmIOAWUp1YvToTlUFVbQCNxxzIfSZ6MMMjDOYTkpF+GPQv1GruxcsfwoM6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgj+2GJ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46933C433F1;
-	Mon, 29 Jan 2024 17:12:41 +0000 (UTC)
+	 MIME-Version; b=fRSD3p5faYFgkAgEF2JOdqY/R5PQganz0nIoJATcZxQox35WXbifb/qdXVAyni2TT7XOSChvp4/LECMPoos4dA1kzT528XZnNW8UV7s+1DFljdmGmMi9hwrSQuXkwPalLy44ID4pNTWbxqyDj6N+iSH2B7C+RlmrHQdF3ntJdLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQ/LZe1t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2C2C43390;
+	Mon, 29 Jan 2024 17:11:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548361;
-	bh=fEYWoC5uaxjtMVnpvsruXIJ/G+Hxw4qQZL9bahTbL6o=;
+	s=korg; t=1706548280;
+	bh=CV7vFUfagWlpFJSJAgSyWNFaTD+XRWDsIbkWQYNUUbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bgj+2GJ2hTSCCQHq/u3rXU5eQzFepDgxoIv7A4XXG1Q17VbnbgNyXZgOAJgpg4jUu
-	 miFuXaUYj9D/Lt9UEo+nNY1yTnn2AYOsvU7433LPfPU6z9DVbx5X5dbZwgdmxAz49i
-	 /TEiNokqBBftauqklDI0qiGcEpyBJpBjKCajD2kA=
+	b=DQ/LZe1tYvFiZDdg+e5zU1XhJQdjRAZha54W9CT0+B90BToyDKY2978G9zuKlJmaz
+	 2qJaKALzSGdvajgJNOHem92bCSAjIuDSGLqu5TAHgklh2NaMHqF75kMrn2O/ucaurx
+	 Sppo0acZuXi9rz53esHNcQUw6AjxEl2RSSdpGlKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.1 125/185] netfilter: nft_chain_filter: handle NETDEV_UNREGISTER for inet/ingress basechain
+	Sheng-Liang Pan <sheng-liang.pan@quanta.corp-partner.google.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 294/346] drm/panel-edp: Add AUO B116XTN02, BOE NT116WHM-N21,836X2, NV116WHM-N49 V8.0
 Date: Mon, 29 Jan 2024 09:05:25 -0800
-Message-ID: <20240129170002.606213632@linuxfoundation.org>
+Message-ID: <20240129170025.056825668@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Sheng-Liang Pan <sheng-liang.pan@quanta.corp-partner.google.com>
 
-commit 01acb2e8666a6529697141a6017edbf206921913 upstream.
+[ Upstream commit 3db2420422a5912d97966e0176050bb0fc9aa63e ]
 
-Remove netdevice from inet/ingress basechain in case NETDEV_UNREGISTER
-event is reported, otherwise a stale reference to netdevice remains in
-the hook list.
+Add panel identification entry for
+- AUO B116XTN02 family (product ID:0x235c)
+- BOE NT116WHM-N21,836X2 (product ID:0x09c3)
+- BOE NV116WHM-N49 V8.0 (product ID:0x0979)
 
-Fixes: 60a3815da702 ("netfilter: add inet ingress support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sheng-Liang Pan <sheng-liang.pan@quanta.corp-partner.google.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231027110435.1.Ia01fe9ec1c0953e0050a232eaa782fef2c037516@changeid
+Stable-dep-of: fc6e76792965 ("drm/panel-edp: drm/panel-edp: Fix AUO B116XAK01 name and timing")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_chain_filter.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-edp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/netfilter/nft_chain_filter.c
-+++ b/net/netfilter/nft_chain_filter.c
-@@ -357,9 +357,10 @@ static int nf_tables_netdev_event(struct
- 				  unsigned long event, void *ptr)
- {
- 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
-+	struct nft_base_chain *basechain;
- 	struct nftables_pernet *nft_net;
--	struct nft_table *table;
- 	struct nft_chain *chain, *nr;
-+	struct nft_table *table;
- 	struct nft_ctx ctx = {
- 		.net	= dev_net(dev),
- 	};
-@@ -371,7 +372,8 @@ static int nf_tables_netdev_event(struct
- 	nft_net = nft_pernet(ctx.net);
- 	mutex_lock(&nft_net->commit_mutex);
- 	list_for_each_entry(table, &nft_net->tables, list) {
--		if (table->family != NFPROTO_NETDEV)
-+		if (table->family != NFPROTO_NETDEV &&
-+		    table->family != NFPROTO_INET)
- 			continue;
- 
- 		ctx.family = table->family;
-@@ -380,6 +382,11 @@ static int nf_tables_netdev_event(struct
- 			if (!nft_is_base_chain(chain))
- 				continue;
- 
-+			basechain = nft_base_chain(chain);
-+			if (table->family == NFPROTO_INET &&
-+			    basechain->ops.hooknum != NF_INET_INGRESS)
-+				continue;
-+
- 			ctx.chain = chain;
- 			nft_netdev_event(event, dev, &ctx);
- 		}
+diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
+index 95c8472d878a..5bf28c8443ef 100644
+--- a/drivers/gpu/drm/panel/panel-edp.c
++++ b/drivers/gpu/drm/panel/panel-edp.c
+@@ -1840,6 +1840,7 @@ static const struct edp_panel_entry edp_panels[] = {
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x145c, &delay_200_500_e50, "B116XAB01.4"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1e9b, &delay_200_500_e50, "B133UAN02.1"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1ea5, &delay_200_500_e50, "B116XAK01.6"),
++	EDP_PANEL_ENTRY('A', 'U', 'O', 0x235c, &delay_200_500_e50, "B116XTN02"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x405c, &auo_b116xak01.delay, "B116XAK01"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x582d, &delay_200_500_e50, "B133UAN01.0"),
+ 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x615c, &delay_200_500_e50, "B116XAN06.1"),
+@@ -1848,8 +1849,10 @@ static const struct edp_panel_entry edp_panels[] = {
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0786, &delay_200_500_p2e80, "NV116WHM-T01"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x07d1, &boe_nv133fhm_n61.delay, "NV133FHM-N61"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x082d, &boe_nv133fhm_n61.delay, "NV133FHM-N62"),
++	EDP_PANEL_ENTRY('B', 'O', 'E', 0x09c3, &delay_200_500_e50, "NT116WHM-N21,836X2"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x094b, &delay_200_500_e50, "NT116WHM-N21"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x095f, &delay_200_500_e50, "NE135FBM-N41 v8.1"),
++	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0979, &delay_200_500_e50, "NV116WHM-N49 V8.0"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x098d, &boe_nv110wtm_n61.delay, "NV110WTM-N61"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x09dd, &delay_200_500_e50, "NT116WHM-N21"),
+ 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0a5d, &delay_200_500_e50, "NV116WHM-N45"),
+-- 
+2.43.0
+
 
 
 
