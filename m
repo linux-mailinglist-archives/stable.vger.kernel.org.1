@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-17218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E88B784104C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F165840E66
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3A3D286FD4
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3682B277D3
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007F27560D;
-	Mon, 29 Jan 2024 17:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A508115F322;
+	Mon, 29 Jan 2024 17:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQNHDLKO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQ9HTtSV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F68755FB;
-	Mon, 29 Jan 2024 17:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6342215B965;
+	Mon, 29 Jan 2024 17:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548597; cv=none; b=LZLxFITmfeM/mfsZo1dvV5Z6hwJ/NzUv+QLxYPi/2iPjGSlDyzfu343tm7a9yAblmsuw4WeEQMgglGOGRS31NpjjrQT9wppdS4WMIc/LOOU6Sm8alwU3RGWa4IG0f6qT9xvACkhWacR7r95dVCL6sqtDpTHqnOQ/6G0QDEUewvI=
+	t=1706548277; cv=none; b=mL8ZSnpRvZeRtzxDB1tYM+Tzi08WN9x8lvEr9JMLdyuvuduYP6S0x54AYoh770PVVOJRzVG7puSndpB6NSU5NQovdS2CWjd6heq4++4GF05wPd3RENESGPmCPz5XNwHiLBXJbW5vuGh+Vy2y+hlBJqLDWGwfMJwMZec9nfc2de0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548597; c=relaxed/simple;
-	bh=iV4VGCs3nDenNB51F+alsaJfB9G61M4YFmRKLubP2/0=;
+	s=arc-20240116; t=1706548277; c=relaxed/simple;
+	bh=hPw+HxSrx+S8E1imjRhRsxg757fV6it2Vi0Dkq/bZvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EKUbDTEbgvB7mm5a16CLVOdtzOc7wKqblZ2p+sF4qUzs0sCuDdSdaCwdLfDaNroOsNnhllrvAgfcTct+xGHBo20PPYiCleDwWIeSmzTz1FS5ovJ5bW0tgfPEA5dhQllJLl1X+qixw2dBGN8KSK20jg49xzzvyzr9Ta+WI8znvp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQNHDLKO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB99C433F1;
-	Mon, 29 Jan 2024 17:16:37 +0000 (UTC)
+	 MIME-Version; b=XVSj600AhGAYsdugVpa771seyP4tpR1AQB0oQAZEISFe6AzDzNqXf+U1gc0KxWqPKSffCqKhxIriapmBiEAZU+K/MT93aXAgdpvVopb6u2Y207s5POGra4wx4LDcB0JqWLg6M41TmSfntSBOgVJLnvko6vB0ZIlRisjIw0hAh34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQ9HTtSV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC211C433C7;
+	Mon, 29 Jan 2024 17:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548597;
-	bh=iV4VGCs3nDenNB51F+alsaJfB9G61M4YFmRKLubP2/0=;
+	s=korg; t=1706548277;
+	bh=hPw+HxSrx+S8E1imjRhRsxg757fV6it2Vi0Dkq/bZvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQNHDLKOfaNXBLeeUPHXk6jEziM9SQxVuRLRKvmWbdd1/Krl+JS+PlmccpDK3tU6y
-	 vagGtXUMt6LEX/DuTAGrT+ZgNntOKNmCHAHQnov2nCSuAbnSX8rWajO6szWzFqFY5e
-	 yotP5Xv78JK1FWoEGEzy5hTW0mhfFLGqkAv8kWbM=
+	b=sQ9HTtSVV69mUSTfNR8gxSZQDWvgM1r9A6gPrf9aMwUXDkjUN2xyVO9RHT+1/Fvp6
+	 d657IlDe5Q/CaWc7PgoTrxXVAM0ccF0ZdCAwyxMd/WEkCI2+tfGp2jqigHhcayP8h5
+	 f5k/bMu3LkwdaFe+LnUkqcWQAhYb9CdqCVX01E6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Subject: [PATCH 6.6 258/331] drm/tidss: Fix atomic_flush check
-Date: Mon, 29 Jan 2024 09:05:22 -0800
-Message-ID: <20240129170022.434289682@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Hansen Dsouza <hansen.dsouza@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 292/346] drm/amd/display: Wake DMCUB before executing GPINT commands
+Date: Mon, 29 Jan 2024 09:05:23 -0800
+Message-ID: <20240129170024.991178668@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +66,221 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-commit 95d4b471953411854f9c80b568da7fcf753f3801 upstream.
+[ Upstream commit e5ffd1263dd5b44929c676171802e7b6af483f21 ]
 
-tidss_crtc_atomic_flush() checks if the crtc is enabled, and if not,
-returns immediately as there's no reason to do any register changes.
+[Why]
+DMCUB can be in idle when we attempt to interface with the HW through
+the GPINT mailbox resulting in a system hang.
 
-However, the code checks for 'crtc->state->enable', which does not
-reflect the actual HW state. We should instead look at the
-'crtc->state->active' flag.
+[How]
+Add dc_wake_and_execute_gpint() to wrap the wake, execute, sleep
+sequence.
 
-This causes the tidss_crtc_atomic_flush() to proceed with the flush even
-if the active state is false, which then causes us to hit the
-WARN_ON(!crtc->state->event) check.
+If the GPINT executes successfully then DMCUB will be put back into
+sleep after the optional response is returned.
 
-Fix this by checking the active flag, and while at it, fix the related
-debug print which had "active" and "needs modeset" wrong way.
+It functions similar to the inbox command interface.
 
-Cc:  <stable@vger.kernel.org>
-Fixes: 32a1795f57ee ("drm/tidss: New driver for TI Keystone platform Display SubSystem")
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-10-ac91b5ea35c0@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Hansen Dsouza <hansen.dsouza@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_crtc.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c  | 72 ++++++++++++++-----
+ drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h  | 11 +++
+ drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c | 19 ++---
+ 3 files changed, 72 insertions(+), 30 deletions(-)
 
---- a/drivers/gpu/drm/tidss/tidss_crtc.c
-+++ b/drivers/gpu/drm/tidss/tidss_crtc.c
-@@ -169,13 +169,13 @@ static void tidss_crtc_atomic_flush(stru
- 	struct tidss_device *tidss = to_tidss(ddev);
- 	unsigned long flags;
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+index 50f1e6d5321e..61d1b4eadbee 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
++++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+@@ -282,17 +282,11 @@ bool dc_dmub_srv_optimized_init_done(struct dc_dmub_srv *dc_dmub_srv)
+ bool dc_dmub_srv_notify_stream_mask(struct dc_dmub_srv *dc_dmub_srv,
+ 				    unsigned int stream_mask)
+ {
+-	struct dmub_srv *dmub;
+-	const uint32_t timeout = 30;
+-
+ 	if (!dc_dmub_srv || !dc_dmub_srv->dmub)
+ 		return false;
  
--	dev_dbg(ddev->dev,
--		"%s: %s enabled %d, needs modeset %d, event %p\n", __func__,
--		crtc->name, drm_atomic_crtc_needs_modeset(crtc->state),
--		crtc->state->enable, crtc->state->event);
-+	dev_dbg(ddev->dev, "%s: %s is %sactive, %s modeset, event %p\n",
-+		__func__, crtc->name, crtc->state->active ? "" : "not ",
-+		drm_atomic_crtc_needs_modeset(crtc->state) ? "needs" : "doesn't need",
-+		crtc->state->event);
+-	dmub = dc_dmub_srv->dmub;
+-
+-	return dmub_srv_send_gpint_command(
+-		       dmub, DMUB_GPINT__IDLE_OPT_NOTIFY_STREAM_MASK,
+-		       stream_mask, timeout) == DMUB_STATUS_OK;
++	return dc_wake_and_execute_gpint(dc_dmub_srv->ctx, DMUB_GPINT__IDLE_OPT_NOTIFY_STREAM_MASK,
++					 stream_mask, NULL, DM_DMUB_WAIT_TYPE_WAIT);
+ }
  
- 	/* There is nothing to do if CRTC is not going to be enabled. */
--	if (!crtc->state->enable)
-+	if (!crtc->state->active)
+ bool dc_dmub_srv_is_restore_required(struct dc_dmub_srv *dc_dmub_srv)
+@@ -1107,25 +1101,20 @@ bool dc_dmub_check_min_version(struct dmub_srv *srv)
+ void dc_dmub_srv_enable_dpia_trace(const struct dc *dc)
+ {
+ 	struct dc_dmub_srv *dc_dmub_srv = dc->ctx->dmub_srv;
+-	struct dmub_srv *dmub;
+-	enum dmub_status status;
+-	static const uint32_t timeout_us = 30;
+ 
+ 	if (!dc_dmub_srv || !dc_dmub_srv->dmub) {
+ 		DC_LOG_ERROR("%s: invalid parameters.", __func__);
  		return;
+ 	}
  
- 	/*
+-	dmub = dc_dmub_srv->dmub;
+-
+-	status = dmub_srv_send_gpint_command(dmub, DMUB_GPINT__SET_TRACE_BUFFER_MASK_WORD1, 0x0010, timeout_us);
+-	if (status != DMUB_STATUS_OK) {
++	if (!dc_wake_and_execute_gpint(dc->ctx, DMUB_GPINT__SET_TRACE_BUFFER_MASK_WORD1,
++				       0x0010, NULL, DM_DMUB_WAIT_TYPE_WAIT)) {
+ 		DC_LOG_ERROR("timeout updating trace buffer mask word\n");
+ 		return;
+ 	}
+ 
+-	status = dmub_srv_send_gpint_command(dmub, DMUB_GPINT__UPDATE_TRACE_BUFFER_MASK, 0x0000, timeout_us);
+-	if (status != DMUB_STATUS_OK) {
++	if (!dc_wake_and_execute_gpint(dc->ctx, DMUB_GPINT__UPDATE_TRACE_BUFFER_MASK,
++				       0x0000, NULL, DM_DMUB_WAIT_TYPE_WAIT)) {
+ 		DC_LOG_ERROR("timeout updating trace buffer mask word\n");
+ 		return;
+ 	}
+@@ -1337,3 +1326,52 @@ bool dc_wake_and_execute_dmub_cmd_list(const struct dc_context *ctx, unsigned in
+ 
+ 	return result;
+ }
++
++static bool dc_dmub_execute_gpint(const struct dc_context *ctx, enum dmub_gpint_command command_code,
++				  uint16_t param, uint32_t *response, enum dm_dmub_wait_type wait_type)
++{
++	struct dc_dmub_srv *dc_dmub_srv = ctx->dmub_srv;
++	const uint32_t wait_us = wait_type == DM_DMUB_WAIT_TYPE_NO_WAIT ? 0 : 30;
++	enum dmub_status status;
++
++	if (response)
++		*response = 0;
++
++	if (!dc_dmub_srv || !dc_dmub_srv->dmub)
++		return false;
++
++	status = dmub_srv_send_gpint_command(dc_dmub_srv->dmub, command_code, param, wait_us);
++	if (status != DMUB_STATUS_OK) {
++		if (status == DMUB_STATUS_TIMEOUT && wait_type == DM_DMUB_WAIT_TYPE_NO_WAIT)
++			return true;
++
++		return false;
++	}
++
++	if (response && wait_type == DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY)
++		dmub_srv_get_gpint_response(dc_dmub_srv->dmub, response);
++
++	return true;
++}
++
++bool dc_wake_and_execute_gpint(const struct dc_context *ctx, enum dmub_gpint_command command_code,
++			       uint16_t param, uint32_t *response, enum dm_dmub_wait_type wait_type)
++{
++	struct dc_dmub_srv *dc_dmub_srv = ctx->dmub_srv;
++	bool result = false, reallow_idle = false;
++
++	if (!dc_dmub_srv || !dc_dmub_srv->dmub)
++		return false;
++
++	if (dc_dmub_srv->idle_allowed) {
++		dc_dmub_srv_apply_idle_power_optimizations(ctx->dc, false);
++		reallow_idle = true;
++	}
++
++	result = dc_dmub_execute_gpint(ctx, command_code, param, response, wait_type);
++
++	if (result && reallow_idle)
++		dc_dmub_srv_apply_idle_power_optimizations(ctx->dc, true);
++
++	return result;
++}
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h
+index 784ca3e44414..952bfb368886 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.h
+@@ -145,5 +145,16 @@ bool dc_wake_and_execute_dmub_cmd(const struct dc_context *ctx, union dmub_rb_cm
+ bool dc_wake_and_execute_dmub_cmd_list(const struct dc_context *ctx, unsigned int count,
+ 				       union dmub_rb_cmd *cmd, enum dm_dmub_wait_type wait_type);
+ 
++/**
++ * dc_wake_and_execute_gpint()
++ *
++ * @ctx: DC context
++ * @command_code: The command ID to send to DMCUB
++ * @param: The parameter to message DMCUB
++ * @response: Optional response out value - may be NULL.
++ * @wait_type: The wait behavior for the execution
++ */
++bool dc_wake_and_execute_gpint(const struct dc_context *ctx, enum dmub_gpint_command command_code,
++			       uint16_t param, uint32_t *response, enum dm_dmub_wait_type wait_type);
+ 
+ #endif /* _DMUB_DC_SRV_H_ */
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c b/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
+index 3d7cef17f881..3e243e407bb8 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dmub_psr.c
+@@ -105,23 +105,18 @@ static enum dc_psr_state convert_psr_state(uint32_t raw_state)
+  */
+ static void dmub_psr_get_state(struct dmub_psr *dmub, enum dc_psr_state *state, uint8_t panel_inst)
+ {
+-	struct dmub_srv *srv = dmub->ctx->dmub_srv->dmub;
+ 	uint32_t raw_state = 0;
+ 	uint32_t retry_count = 0;
+-	enum dmub_status status;
+ 
+ 	do {
+ 		// Send gpint command and wait for ack
+-		status = dmub_srv_send_gpint_command(srv, DMUB_GPINT__GET_PSR_STATE, panel_inst, 30);
+-
+-		if (status == DMUB_STATUS_OK) {
+-			// GPINT was executed, get response
+-			dmub_srv_get_gpint_response(srv, &raw_state);
++		if (dc_wake_and_execute_gpint(dmub->ctx, DMUB_GPINT__GET_PSR_STATE, panel_inst, &raw_state,
++					      DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY)) {
+ 			*state = convert_psr_state(raw_state);
+-		} else
++		} else {
+ 			// Return invalid state when GPINT times out
+ 			*state = PSR_STATE_INVALID;
+-
++		}
+ 	} while (++retry_count <= 1000 && *state == PSR_STATE_INVALID);
+ 
+ 	// Assert if max retry hit
+@@ -452,13 +447,11 @@ static void dmub_psr_force_static(struct dmub_psr *dmub, uint8_t panel_inst)
+  */
+ static void dmub_psr_get_residency(struct dmub_psr *dmub, uint32_t *residency, uint8_t panel_inst)
+ {
+-	struct dmub_srv *srv = dmub->ctx->dmub_srv->dmub;
+ 	uint16_t param = (uint16_t)(panel_inst << 8);
+ 
+ 	/* Send gpint command and wait for ack */
+-	dmub_srv_send_gpint_command(srv, DMUB_GPINT__PSR_RESIDENCY, param, 30);
+-
+-	dmub_srv_get_gpint_response(srv, residency);
++	dc_wake_and_execute_gpint(dmub->ctx, DMUB_GPINT__PSR_RESIDENCY, param, residency,
++				  DM_DMUB_WAIT_TYPE_WAIT_WITH_REPLY);
+ }
+ 
+ static const struct dmub_psr_funcs psr_funcs = {
+-- 
+2.43.0
+
 
 
 
