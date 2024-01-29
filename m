@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-16723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 292C3840E26
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E55F841014
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE0E61F2CC6F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 335941F23D3A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2083115EA8D;
-	Mon, 29 Jan 2024 17:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8480E15EAAE;
+	Mon, 29 Jan 2024 17:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NoFV/ORv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1C/0OKO/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44DA159577;
-	Mon, 29 Jan 2024 17:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4416815A490;
+	Mon, 29 Jan 2024 17:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548232; cv=none; b=gez61IgY4PVDBX93WaWqts6z6v/4vQzC+sI3UGgDapSS8Os/Z0vmIRciFz+FRJvt5phxRW2KlZSzU7JxWWMEyqAWrNPm/vUMjhxb0TaF2WW3vuJ/WQEvI2wawNXeAjNdKkVzNftSCVaXEJQ4D2Z6Dser5THtm7MkCdmNSwFyiNY=
+	t=1706548557; cv=none; b=DwYUjoW0c2Ie78a/ku61inpPkBSusu4jS8JOhSgHwFD6wMRQ0H7bO+aZKDrOvrS6Y4FD6r3vkjXgoOL9pzkMChWzx0maNe6z581RAIWCIPsbt4W0Rg8hvIo95X4jrFBpxVEtqgRU1g70B2wzdCq0ZwJksiftqXwjwlq5f+IUMYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548232; c=relaxed/simple;
-	bh=Ob17j2weYREMFvuYl1CpcaXXbgy3Y0upbNfijM0m/Es=;
+	s=arc-20240116; t=1706548557; c=relaxed/simple;
+	bh=O4cso+Bsc18niQiKycDIWI13NXSdrpUVhqqKTpDtwaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQ+tiqffgXLWTLf7JeP3e+CIPDBcy+cvRxej1i01quMS9CVDWJnyToimjO/4MBxlWIPLSujpnc6WxKeb4rN4JJqD9mFwDv/EINBxz1W+RgMCH9sMf4hbehVkXUXzrRhWCrcOjL95BwcC/TaIEcWc3HLnJZHKLcDXDZPt/7TOcqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NoFV/ORv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B189C43390;
-	Mon, 29 Jan 2024 17:10:32 +0000 (UTC)
+	 MIME-Version; b=FjGwAwgTIxd1HqTrTq0+tBKHjvYfKZaMGytBXmzKqVWTNXIHaUqcax49SgQbUDKrjIZJOpo710c1JoaS6+RxZNcTodz3Mrj4vfs7HQ8gwgSuUEHQe3Tmaou7Efp6AOHbyVPO0uOOZJNFqS/2D2PxW8nFRNAidw9RPu9NSW4rKaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1C/0OKO/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C80CC433F1;
+	Mon, 29 Jan 2024 17:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548232;
-	bh=Ob17j2weYREMFvuYl1CpcaXXbgy3Y0upbNfijM0m/Es=;
+	s=korg; t=1706548557;
+	bh=O4cso+Bsc18niQiKycDIWI13NXSdrpUVhqqKTpDtwaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NoFV/ORv4bjHuzl5fWs84u1hL606m0spy5pznTrL1LSdCqcvJtZQYGP3OulplMrNS
-	 o33BmDiMkX/5LneEBljZnHGC0yOpCHHpTZ8qRuf17CiGqd6Cwhh0lrE54MOh0v5/wY
-	 Pkxnr4izFpNvVoeqPxRmuaqpfrmledHTh6+iO+Pc=
+	b=1C/0OKO/mDt2ET3ebm/bJTP8tV5bIGwxSL+XhiwCGne+8XLqWniWvUdR41b8Bzez8
+	 eA0lKHdQ2rOLtUmr1BofhJ48raaXVwrbjHvINByClwAspLxi1hF1woRN0qQ59oIyJp
+	 23SW1m/rAWI86L4v5Sb5PS4BsVFtw6F8t4TGnPTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.7 235/346] netfilter: nft_chain_filter: handle NETDEV_UNREGISTER for inet/ingress basechain
-Date: Mon, 29 Jan 2024 09:04:26 -0800
-Message-ID: <20240129170023.313982554@linuxfoundation.org>
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 203/331] net/mlx5e: fix a potential double-free in fs_any_create_groups
+Date: Mon, 29 Jan 2024 09:04:27 -0800
+Message-ID: <20240129170020.818667805@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-commit 01acb2e8666a6529697141a6017edbf206921913 upstream.
+[ Upstream commit aef855df7e1bbd5aa4484851561211500b22707e ]
 
-Remove netdevice from inet/ingress basechain in case NETDEV_UNREGISTER
-event is reported, otherwise a stale reference to netdevice remains in
-the hook list.
+When kcalloc() for ft->g succeeds but kvzalloc() for in fails,
+fs_any_create_groups() will free ft->g. However, its caller
+fs_any_create_table() will free ft->g again through calling
+mlx5e_destroy_flow_table(), which will lead to a double-free.
+Fix this by setting ft->g to NULL in fs_any_create_groups().
 
-Fixes: 60a3815da702 ("netfilter: add inet ingress support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0f575c20bf06 ("net/mlx5e: Introduce Flow Steering ANY API")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_chain_filter.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/netfilter/nft_chain_filter.c
-+++ b/net/netfilter/nft_chain_filter.c
-@@ -357,9 +357,10 @@ static int nf_tables_netdev_event(struct
- 				  unsigned long event, void *ptr)
- {
- 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
-+	struct nft_base_chain *basechain;
- 	struct nftables_pernet *nft_net;
--	struct nft_table *table;
- 	struct nft_chain *chain, *nr;
-+	struct nft_table *table;
- 	struct nft_ctx ctx = {
- 		.net	= dev_net(dev),
- 	};
-@@ -371,7 +372,8 @@ static int nf_tables_netdev_event(struct
- 	nft_net = nft_pernet(ctx.net);
- 	mutex_lock(&nft_net->commit_mutex);
- 	list_for_each_entry(table, &nft_net->tables, list) {
--		if (table->family != NFPROTO_NETDEV)
-+		if (table->family != NFPROTO_NETDEV &&
-+		    table->family != NFPROTO_INET)
- 			continue;
- 
- 		ctx.family = table->family;
-@@ -380,6 +382,11 @@ static int nf_tables_netdev_event(struct
- 			if (!nft_is_base_chain(chain))
- 				continue;
- 
-+			basechain = nft_base_chain(chain);
-+			if (table->family == NFPROTO_INET &&
-+			    basechain->ops.hooknum != NF_INET_INGRESS)
-+				continue;
-+
- 			ctx.chain = chain;
- 			nft_netdev_event(event, dev, &ctx);
- 		}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c b/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c
+index e1283531e0b8..671adbad0a40 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/fs_tt_redirect.c
+@@ -436,6 +436,7 @@ static int fs_any_create_groups(struct mlx5e_flow_table *ft)
+ 	in = kvzalloc(inlen, GFP_KERNEL);
+ 	if  (!in || !ft->g) {
+ 		kfree(ft->g);
++		ft->g = NULL;
+ 		kvfree(in);
+ 		return -ENOMEM;
+ 	}
+-- 
+2.43.0
+
 
 
 
