@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 293D8840F4E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C6B2840D22
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59D8D1C2111B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBCFF287228
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389011641B8;
-	Mon, 29 Jan 2024 17:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C6E15958C;
+	Mon, 29 Jan 2024 17:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrXYNrnv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="srAPt7Jd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB30615D5D4;
-	Mon, 29 Jan 2024 17:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67098157052;
+	Mon, 29 Jan 2024 17:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548419; cv=none; b=sfdcWlsKquf3SCC68aIAqBAEVSM3pwkteYx+2fYn35gyAzrp2W6nyCYELeVCTgaMlP+/WmUcbvaBnBpc/M9645YFlXvwEwK+44DD42AuOZF0kWg9KbHxtq659M+bZyYKlB8ficfNwFPpwUh8pVfWS/r/tP57atVipZ+y+nj50JE=
+	t=1706548050; cv=none; b=XCuFGrhGet4TjiFvjoyglWeCGMeQxRoIkCjHEKkEjIqpgzoQT66X8VJdNioxGUWaYfU+YlQhb5id08t9aOAslSYjJQxWqnnFFkLU2PKue76patJJWSMTnPZbmRtW9HeNHssgtitVoX1NIW/Mje6p7iTtdtPXlzCRqFyu91qRBzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548419; c=relaxed/simple;
-	bh=ArysNrgm586c0bdfiOy9gNJW+G5/rSoWZ76DfkHz6YY=;
+	s=arc-20240116; t=1706548050; c=relaxed/simple;
+	bh=RDdTbajtQ7EgfgvGuYq4mrrd2mOmbERjn+8MRNIJ/7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHFbf5v7ColddzNF/uPZ7NKodyPLQ2hObVbkozYPBxHepQqbujmABwT/S1bUz4m2xynC7Uhf0dU+s+JJ3Ab94jalotoAhrJ6ZNQmjUzjWyjzilHt6JOYWOk7ebbpbm+27LNf+LiBcvXLstzzZWWFpzwe328dEbY5mEewmgKC2Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrXYNrnv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FDBC433F1;
-	Mon, 29 Jan 2024 17:13:38 +0000 (UTC)
+	 MIME-Version; b=NdrJtKqwywwe8Ft5bM2j2ypukXXhQEfC+GSf16jq9ZD7tHt4noKAR8kumg7p7lexE33X96jl6l7EITcHUjAjq9AFPWR2f9L6p4U09XCoMqjf14VGHTqr+dRL5n3jNoqPy0qZRf9A+X9zBcbMo8JTc0qnMmpDaCbcXIEX/UXrr+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=srAPt7Jd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1C6C43390;
+	Mon, 29 Jan 2024 17:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548418;
-	bh=ArysNrgm586c0bdfiOy9gNJW+G5/rSoWZ76DfkHz6YY=;
+	s=korg; t=1706548049;
+	bh=RDdTbajtQ7EgfgvGuYq4mrrd2mOmbERjn+8MRNIJ/7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrXYNrnvpE49XcZ97vWBuurK+SW4dB3+7V6doN13687x8blWnDqxi/Mb+rI6UwLoL
-	 9I1YvpEb5UPzuGDA3ltkvsKdrfCWnJnCzWjjuFuHlIn1322NuunLxmp7MNdoGuv5Dd
-	 fYneh9hcEl8hyTcO9h+v8bkGRTddyF0BgkkLhfSU=
+	b=srAPt7Jdxr4txxEXau+PokuHuVD2MHsZp9I44FJWNj9y1LYQLO/S1tivIOIHvKumF
+	 odaYal0moTdtP8F/UupznugoAeycPRIOmEkuCgxn8M99kBcrvhTaxmYARWT+YPfHYF
+	 WKGtCFqt3/mVxMCRAlPDp3QbG4MfItOVu+Xokv8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/331] riscv: Fix an off-by-one in get_early_cmdline()
-Date: Mon, 29 Jan 2024 09:01:21 -0800
-Message-ID: <20240129170015.467440724@linuxfoundation.org>
+Subject: [PATCH 6.7 051/346] dmaengine: fsl-edma: fix eDMAv4 channel allocation issue
+Date: Mon, 29 Jan 2024 09:01:22 -0800
+Message-ID: <20240129170017.891119801@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit adb1f95d388a43c4c564ef3e436f18900dde978e ]
+[ Upstream commit dc51b4442dd94ab12c146c1897bbdb40e16d5636 ]
 
-The ending NULL is not taken into account by strncat(), so switch to
-strlcat() to correctly compute the size of the available memory when
-appending CONFIG_CMDLINE to 'early_cmdline'.
+The eDMAv4 channel mux has a limitation where certain requests must use
+even channels, while others must use odd numbers.
 
-Fixes: 26e7aacb83df ("riscv: Allow to downgrade paging mode from the command line")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/9f66d2b58c8052d4055e90b8477ee55d9a0914f9.1698564026.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Add two flags (ARGS_EVEN_CH and ARGS_ODD_CH) to reflect this limitation.
+The device tree source (dts) files need to be updated accordingly.
+
+This issue was identified by the following commit:
+commit a725990557e7 ("arm64: dts: imx93: Fix the dmas entries order")
+
+Reverting channel orders triggered this problem.
+
+Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231114154824.3617255-2-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/pi/cmdline_early.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/dma/fsl-edma-main.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/riscv/kernel/pi/cmdline_early.c b/arch/riscv/kernel/pi/cmdline_early.c
-index 68e786c84c94..f6d4dedffb84 100644
---- a/arch/riscv/kernel/pi/cmdline_early.c
-+++ b/arch/riscv/kernel/pi/cmdline_early.c
-@@ -38,8 +38,7 @@ static char *get_early_cmdline(uintptr_t dtb_pa)
- 	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) ||
- 	    IS_ENABLED(CONFIG_CMDLINE_FORCE) ||
- 	    fdt_cmdline_size == 0 /* CONFIG_CMDLINE_FALLBACK */) {
--		strncat(early_cmdline, CONFIG_CMDLINE,
--			COMMAND_LINE_SIZE - fdt_cmdline_size);
-+		strlcat(early_cmdline, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
- 	}
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index 238a69bd0d6f..75cae7ccae27 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -24,6 +24,8 @@
+ #define ARGS_RX                         BIT(0)
+ #define ARGS_REMOTE                     BIT(1)
+ #define ARGS_MULTI_FIFO                 BIT(2)
++#define ARGS_EVEN_CH                    BIT(3)
++#define ARGS_ODD_CH                     BIT(4)
  
- 	return early_cmdline;
+ static void fsl_edma_synchronize(struct dma_chan *chan)
+ {
+@@ -157,6 +159,12 @@ static struct dma_chan *fsl_edma3_xlate(struct of_phandle_args *dma_spec,
+ 		fsl_chan->is_remote = dma_spec->args[2] & ARGS_REMOTE;
+ 		fsl_chan->is_multi_fifo = dma_spec->args[2] & ARGS_MULTI_FIFO;
+ 
++		if ((dma_spec->args[2] & ARGS_EVEN_CH) && (i & 0x1))
++			continue;
++
++		if ((dma_spec->args[2] & ARGS_ODD_CH) && !(i & 0x1))
++			continue;
++
+ 		if (!b_chmux && i == dma_spec->args[0]) {
+ 			chan = dma_get_slave_channel(chan);
+ 			chan->device->privatecnt++;
 -- 
 2.43.0
 
