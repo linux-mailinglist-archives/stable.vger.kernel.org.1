@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-16747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A54CB840E40
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ECA0840E56
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C9601F2D140
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A19E7B274EA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AA4B15EAAF;
-	Mon, 29 Jan 2024 17:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6418215F30C;
+	Mon, 29 Jan 2024 17:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQha1ACe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSBOWmhO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C8815EAA8;
-	Mon, 29 Jan 2024 17:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F0515A48F;
+	Mon, 29 Jan 2024 17:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548250; cv=none; b=i/0giDPnQcVhetrV5OvANQG/cKoXsH86b+AEccpaQvV8Nt4Uo/+XIHtFguDMd1B9ZO4kR0R0s+RajZ6geBGYacIalQW/IkHvp7f/AnKfS/MlXakgraByUWVJb3iGjw6MpfFDiN+7+rYKu/sv23ZUjsguf6JRSO5Gq+a0LQiBQ3I=
+	t=1706548266; cv=none; b=XR1rw14Sn50XlMP76dliJ0n9Ubc15hZwBHpX1F0YzixvXFLjfgTXODmIMp7jKpICa6q3y+ljBiQyWQNVr91DNVaCiqxgCy5D3hCTRKoJx1OriYKJEhpdEurTfQS9Li4SMffoXNdMU2vAHHhA/vi2EvTG953Omc/dfMRMI2djRfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548250; c=relaxed/simple;
-	bh=xiXIT7IOwOGH5YIZ+5QB4OyvPFDYi2HGrrqZU3aVs/Y=;
+	s=arc-20240116; t=1706548266; c=relaxed/simple;
+	bh=9mUctPfTMI7KNnDCHXWdzLFR8DlJP0W6Gs44Xqp9cH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NS9RxThIN2rKFr8haOhO87svM5XPVbbgffdPtu2tMVFt3evEFko1BwB8qnbAGH8GidGqClt2R1/Sb4LtPxidZS5o/n/E2NQvavH98vAPGovp50pM+3Ameyvm/3/dLV7bLVj8cthd43XgTjGrn4NdbsvWH2NnhQqyDi8Ya9gBiOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQha1ACe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD75C43390;
-	Mon, 29 Jan 2024 17:10:50 +0000 (UTC)
+	 MIME-Version; b=K9V0QFRlgJJOFxqxYaeCWRI2h53txLsLSBxrqtJVJSKF9QeTtkfTsRf6rLDA1huCd3KHhlC03N/yV87QSYbjmCajdsCmP9cCMlPZ/eL/y+39wDgLqcRn/sgHoz1HQL2ByHEPjmOrG4GCllzsosYE2Uz30cqnPfqVx8uWRBybPc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSBOWmhO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0DE0C433C7;
+	Mon, 29 Jan 2024 17:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548250;
-	bh=xiXIT7IOwOGH5YIZ+5QB4OyvPFDYi2HGrrqZU3aVs/Y=;
+	s=korg; t=1706548266;
+	bh=9mUctPfTMI7KNnDCHXWdzLFR8DlJP0W6Gs44Xqp9cH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kQha1ACeVW1sbrV5i38yW6U+3j8sM1IRXrYj0GVSuV9ndThszUWuhj2MkVusShmhT
-	 oqgW6Gu40V8Ax43daIojUs0zsOL6EB5TvAixTIYD/MLXlQbGnuJOD3G7WbfrHdfERy
-	 iRWMMCDs3Y6Si97qjK32nnGtZMg/q6vPiaL2cYmQ=
+	b=jSBOWmhORh1hFexCHR8LD4+ToOA5LGPEhWG5hzBRm228LH0XPBP0VHQHeo3PYZ0eQ
+	 fBPlgecypLdaAVxOw4YPouycGV7PgWhlM3UgQo8AV4yBEMkwYa7nVJKWsgd7sHw3CU
+	 70UHduO1GyFUiWbnmZhVVkPdWwjsSll+GEkjwkYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Robert Foss <rfoss@kernel.org>
-Subject: [PATCH 6.7 259/346] drm/bridge: nxp-ptn3460: simplify some error checking
-Date: Mon, 29 Jan 2024 09:04:50 -0800
-Message-ID: <20240129170024.010040313@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.7 260/346] drm/amd/display: Fix a debugfs null pointer error
+Date: Mon, 29 Jan 2024 09:04:51 -0800
+Message-ID: <20240129170024.044151445@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -66,63 +68,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 
-commit 28d3d0696688154cc04983f343011d07bf0508e4 upstream.
+commit efb91fea652a42fcc037d2a9ef4ecd1ffc5ff4b7 upstream.
 
-The i2c_master_send/recv() functions return negative error codes or
-they return "len" on success.  So the error handling here can be written
-as just normal checks for "if (ret < 0) return ret;".  No need to
-complicate things.
+[WHY & HOW]
+Check whether get_subvp_en() callback exists before calling it.
 
-Btw, in this code the "len" parameter can never be zero, but even if
-it were, then I feel like this would still be the best way to write it.
-
-Fixes: 914437992876 ("drm/bridge: nxp-ptn3460: fix i2c_master_send() error checking")
-Suggested-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/04242630-42d8-4920-8c67-24ac9db6b3c9@moroto.mountain
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/nxp-ptn3460.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/bridge/nxp-ptn3460.c
-+++ b/drivers/gpu/drm/bridge/nxp-ptn3460.c
-@@ -54,15 +54,15 @@ static int ptn3460_read_bytes(struct ptn
- 	int ret;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+@@ -3647,12 +3647,16 @@ static int capabilities_show(struct seq_
+ 	bool mall_supported = dc->caps.mall_size_total;
+ 	bool subvp_supported = dc->caps.subvp_fw_processing_delay_us;
+ 	unsigned int mall_in_use = false;
+-	unsigned int subvp_in_use = dc->cap_funcs.get_subvp_en(dc, dc->current_state);
++	unsigned int subvp_in_use = false;
++
+ 	struct hubbub *hubbub = dc->res_pool->hubbub;
  
- 	ret = i2c_master_send(ptn_bridge->client, &addr, 1);
--	if (ret <= 0) {
-+	if (ret < 0) {
- 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
--		return ret ?: -EIO;
-+		return ret;
- 	}
+ 	if (hubbub->funcs->get_mall_en)
+ 		hubbub->funcs->get_mall_en(hubbub, &mall_in_use);
  
- 	ret = i2c_master_recv(ptn_bridge->client, buf, len);
--	if (ret != len) {
-+	if (ret < 0) {
- 		DRM_ERROR("Failed to recv i2c data, ret=%d\n", ret);
--		return ret < 0 ? ret : -EIO;
-+		return ret;
- 	}
- 
- 	return 0;
-@@ -78,9 +78,9 @@ static int ptn3460_write_byte(struct ptn
- 	buf[1] = val;
- 
- 	ret = i2c_master_send(ptn_bridge->client, buf, ARRAY_SIZE(buf));
--	if (ret != ARRAY_SIZE(buf)) {
-+	if (ret < 0) {
- 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
--		return ret < 0 ? ret : -EIO;
-+		return ret;
- 	}
- 
- 	return 0;
++	if (dc->cap_funcs.get_subvp_en)
++		subvp_in_use = dc->cap_funcs.get_subvp_en(dc, dc->current_state);
++
+ 	seq_printf(m, "mall supported: %s, enabled: %s\n",
+ 			   mall_supported ? "yes" : "no", mall_in_use ? "yes" : "no");
+ 	seq_printf(m, "sub-viewport supported: %s, enabled: %s\n",
 
 
 
