@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-17002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870C2840F68
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:23:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93577840D3D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:09:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9C991C23191
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:23:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F4EA2844D1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173DB1649C5;
-	Mon, 29 Jan 2024 17:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C4F215A4BA;
+	Mon, 29 Jan 2024 17:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eiFzEYLf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vgqj3Svq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D7E1649C3;
-	Mon, 29 Jan 2024 17:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F083E157E79;
+	Mon, 29 Jan 2024 17:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548437; cv=none; b=SAHIsJ37pvG5IygYyz1treLOMnFJ2c8utTyFviDlfI2nrCV1zE43BcBCzkst/d/f2vHNYfTtsaTUeUkbdWY7LGwcSK8GgYXX2F4lTom94akEXr1mqrRqjFZ7w3rMojmqFJIHro9OkYEUnDMUhPRfED2r2lgrdr9Ajkh3FU64yJU=
+	t=1706548069; cv=none; b=aTMTcnIuuHYsw4FgnVEV2APoKfxVhfAQo1ExD0wudjV1IwfRqZktzvc4i+WC17wO0R3NxYEwu/QRwnpE1UqGKRiLBoB31N44WY5f+CMs3MeVCJcX+ZtqdNR7gMfxA/CG8WhX+e1RZJGqPuIR07Q7SW44OpFJPFus2wDFNXbQxFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548437; c=relaxed/simple;
-	bh=cDOK/pmUtlICXxkVCUWcOmewXtZDLl260RCcmOI/2ks=;
+	s=arc-20240116; t=1706548069; c=relaxed/simple;
+	bh=bA2zMd/dbeYAk5NqZ/B3bMknuPW4lL7aypwHkEcBc80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XD4p72pMFv+I6wqRwt+YK60VH2twZcPrcLaO4HoranEpKJkGx2y2v7ABOl9Ww0oVig6qvPBVlJmyh5q3gU5OJpWadBnRJ4ybb/LGtlBviB2CUhXy0gcz+uFLTgulNPypvJyrwiFDYuZ2Ys/vHYD4A8KfUTNhTAizE4SXPiFJo5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eiFzEYLf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F410C43390;
-	Mon, 29 Jan 2024 17:13:57 +0000 (UTC)
+	 MIME-Version; b=tN3roFk3d5d9G1Qdk4zsdKI2o4wfohoqU5GKMAT6ECXJeapNJoaAFi/kSOw0aDI2LWbYhwlnU16nmHJeB7ZvRhFFjxRqf+AXUDIeoB8BPPF9eCl70Qjpot+cQ1ife94/kXZmDJbWxq3JOUh1yt7e0deJukUqt1yEcSgkDW2jJEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vgqj3Svq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9503C433F1;
+	Mon, 29 Jan 2024 17:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548437;
-	bh=cDOK/pmUtlICXxkVCUWcOmewXtZDLl260RCcmOI/2ks=;
+	s=korg; t=1706548068;
+	bh=bA2zMd/dbeYAk5NqZ/B3bMknuPW4lL7aypwHkEcBc80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eiFzEYLf/KolYJMo7Y/g4vlRWMWqX0rWJEbJ9AVG2hCmeh+K6GnuKcV7hasQHZWll
-	 8IYNOhyt1oSCs+XsMFL3meAXgTWAtHe3tc31AZWkzLtK6+EdmIl5XUmq1QQGZER0f0
-	 M3wPeSTFGPvjQ+7wwegsIBzD5g70EydH/QYREWHA=
+	b=Vgqj3SvqAD3Zx3qSupEoeKq48Tu5d2mzZkDDKK2w/pMlNjvSOqxQvMN3DoZmR8q83
+	 XLmyiIlYKBJDjov9xeTcYHtV+SxoOTepe7NFuaZVdAWAF0sh1EUgnnj9uNDWVoRT7L
+	 3i1QdcmMTvPNBaLCk5RsT7T2yyJdKNh9IQlucxug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangwu Zhang <guazhang@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Harald Freudenberger <freude@de.ibm.com>
-Subject: [PATCH 6.6 042/331] crypto: s390/aes - Fix buffer overread in CTR mode
-Date: Mon, 29 Jan 2024 09:01:46 -0800
-Message-ID: <20240129170016.171477207@linuxfoundation.org>
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.7 076/346] arm64: dts: qcom: sdm845: fix USB wakeup interrupt types
+Date: Mon, 29 Jan 2024 09:01:47 -0800
+Message-ID: <20240129170018.622903935@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit d07f951903fa9922c375b8ab1ce81b18a0034e3b upstream.
+commit 84ad9ac8d9ca29033d589e79a991866b38e23b85 upstream.
 
-When processing the last block, the s390 ctr code will always read
-a whole block, even if there isn't a whole block of data left.  Fix
-this by using the actual length left and copy it into a buffer first
-for processing.
+The DP/DM wakeup interrupts are edge triggered and which edge to trigger
+on depends on use-case and whether a Low speed or Full/High speed device
+is connected.
 
-Fixes: 0200f3ecc196 ("crypto: s390 - add System z hardware support for CTR mode")
-Cc: <stable@vger.kernel.org>
-Reported-by: Guangwu Zhang <guazhang@redhat.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewd-by: Harald Freudenberger <freude@de.ibm.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
+Cc: stable@vger.kernel.org      # 4.20
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231120164331.8116-9-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/crypto/aes_s390.c  |    4 +++-
- arch/s390/crypto/paes_s390.c |    4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/s390/crypto/aes_s390.c
-+++ b/arch/s390/crypto/aes_s390.c
-@@ -597,7 +597,9 @@ static int ctr_aes_crypt(struct skcipher
- 	 * final block may be < AES_BLOCK_SIZE, copy only nbytes
- 	 */
- 	if (nbytes) {
--		cpacf_kmctr(sctx->fc, sctx->key, buf, walk.src.virt.addr,
-+		memset(buf, 0, AES_BLOCK_SIZE);
-+		memcpy(buf, walk.src.virt.addr, nbytes);
-+		cpacf_kmctr(sctx->fc, sctx->key, buf, buf,
- 			    AES_BLOCK_SIZE, walk.iv);
- 		memcpy(walk.dst.virt.addr, buf, nbytes);
- 		crypto_inc(walk.iv, AES_BLOCK_SIZE);
---- a/arch/s390/crypto/paes_s390.c
-+++ b/arch/s390/crypto/paes_s390.c
-@@ -693,9 +693,11 @@ static int ctr_paes_crypt(struct skciphe
- 	 * final block may be < AES_BLOCK_SIZE, copy only nbytes
- 	 */
- 	if (nbytes) {
-+		memset(buf, 0, AES_BLOCK_SIZE);
-+		memcpy(buf, walk.src.virt.addr, nbytes);
- 		while (1) {
- 			if (cpacf_kmctr(ctx->fc, &param, buf,
--					walk.src.virt.addr, AES_BLOCK_SIZE,
-+					buf, AES_BLOCK_SIZE,
- 					walk.iv) == AES_BLOCK_SIZE)
- 				break;
- 			if (__paes_convert_key(ctx))
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -4055,8 +4055,8 @@
+ 
+ 			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 488 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 489 IRQ_TYPE_LEVEL_HIGH>;
++				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
++				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
+ 
+@@ -4106,8 +4106,8 @@
+ 
+ 			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 490 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 491 IRQ_TYPE_LEVEL_HIGH>;
++				     <GIC_SPI 490 IRQ_TYPE_EDGE_BOTH>,
++				     <GIC_SPI 491 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
+ 
 
 
 
