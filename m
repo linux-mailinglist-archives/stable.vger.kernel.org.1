@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-17276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF81B841088
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA123840F35
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EA941C23BDA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 793851F2659C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC0B76058;
-	Mon, 29 Jan 2024 17:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D09164191;
+	Mon, 29 Jan 2024 17:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oT4mD5h3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fni6bqGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEAC115A493;
-	Mon, 29 Jan 2024 17:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753DB1586C1;
+	Mon, 29 Jan 2024 17:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548640; cv=none; b=VAWHBdH4TsEpOXIStFVaseUQDDgjFJY+D/y5B1/O+OVnZz/FHrfoK0I5n5xH6TMi6fTTCoWoGgM1tw+NO5MMhDjIw8DiZwoUwOVaKaJU8MJP09vjelhylVzhK5uxpWz2uMzqCkStm+XCFS+8/TqGR3lC5b3QFD+8IMq+Lb8sWVQ=
+	t=1706548402; cv=none; b=jizV7VGHLpw/axktINSacaV9jpOIxlHhfMo2riNoL9P5k9BknZFjEH6KOEt/j+dz2SRd97FxgNfagsC+haScht3GLfxtUBBHVNBlXE4sImK4XwAvuRgKwJoQ4KgzNgu41DbBukgoJIT6g7ut++YreiV2VtGx0fBR84Lr5CcyBRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548640; c=relaxed/simple;
-	bh=dseahJJlHRqxTydhXbihIB0tXmiFhUUS3NJ6/5NMLCA=;
+	s=arc-20240116; t=1706548402; c=relaxed/simple;
+	bh=rkgh9KKWIv73zJCUGbW5pxnmnio5InbZcaZHDZx2BsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jeyKQk3qxjMPht6NEie7x5kvZoTHMekotVveHqMTw2AtyaY+jvxPNYulwbwzB660jZXZtzp5tiKlukjK3IEevRxS+8ny3bKlZ8ilYKnKW3aEzd4uVHQWrHJqr957Cvc6cUgA5cFHsJJ79eYs8zXXVFsbNpDMl9wMAOgbsyyrkZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oT4mD5h3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CC8C43390;
-	Mon, 29 Jan 2024 17:17:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TBmDaClzpOAr+VZ+vnadmU8QN5tJ/dAk6MyxJFLBmbHIu2L5Y8sOZK2sWdCwVrzrDS5CmiB2yFADm1JcajtlqKp14e8Nkzm85UugjLgU2JvQZebN1U1US/JapLF0yJcQeP7GRFsp531v52qwz6MuGbhGivHxMKaXWMqJ8GSpn0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fni6bqGs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF0FC433C7;
+	Mon, 29 Jan 2024 17:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548639;
-	bh=dseahJJlHRqxTydhXbihIB0tXmiFhUUS3NJ6/5NMLCA=;
+	s=korg; t=1706548402;
+	bh=rkgh9KKWIv73zJCUGbW5pxnmnio5InbZcaZHDZx2BsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oT4mD5h3Mu8dNhJ3qhVffl9JEuhjH9qeFohb2+Y0dopM4WcM0DNNfdnpOKyq0Be/x
-	 wYPxz/jNz5f/eoxpOWa8ezWUI24BUe7ejG4t5Z/T5aT+HU+YrOIKXiKKnMFluVEF8M
-	 eFEGdUq314g3yE9jy3e9mKSMMnsm1ibVMqbpMie4=
+	b=fni6bqGsSPtCRSBBUat03nol3VQj0DGi1O0pOYy9C3TOAIO+oGEsicYSGZ81xyxXK
+	 eXvXPCILw/ZvK2yw3KLAVF03JVDPquhFVQjGvSgcKlk++z5nNAgZaMp1A4yPU7n8B7
+	 aYIsSAz2jaFhn1RrA9daJEwuX6c1GfZDUysRYB0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Yi Wang <hsinyi@chromium.org>,
-	Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>,
-	Pin-yen Lin <treapking@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 316/331] drm/bridge: anx7625: Ensure bridge is suspended in disable()
-Date: Mon, 29 Jan 2024 09:06:20 -0800
-Message-ID: <20240129170024.131303443@linuxfoundation.org>
+	Quanquan Cao <caoqq@fujitsu.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: =?UTF-8?q?=5BPATCH=206=2E1=20181/185=5D=20cxl/region=EF=BC=9AFix=20overflow=20issue=20in=20alloc=5Fhpa=28=29?=
+Date: Mon, 29 Jan 2024 09:06:21 -0800
+Message-ID: <20240129170004.405700024@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Yi Wang <hsinyi@chromium.org>
+From: Quanquan Cao <caoqq@fujitsu.com>
 
-[ Upstream commit 4d5b7daa3c610af3f322ad1e91fc0c752ff32f0e ]
+commit d76779dd3681c01a4c6c3cae4d0627c9083e0ee6 upstream.
 
-Similar to commit 26db46bc9c67 ("drm/bridge: parade-ps8640: Ensure bridge
-is suspended in .post_disable()"). Add a mutex to ensure that aux transfer
-won't race with atomic_disable by holding the PM reference and prevent
-the bridge from suspend.
+Creating a region with 16 memory devices caused a problem. The div_u64_rem
+function, used for dividing an unsigned 64-bit number by a 32-bit one,
+faced an issue when SZ_256M * p->interleave_ways. The result surpassed
+the maximum limit of the 32-bit divisor (4G), leading to an overflow
+and a remainder of 0.
+note: At this point, p->interleave_ways is 16, meaning 16 * 256M = 4G
 
-Also we need to use pm_runtime_put_sync_suspend() to suspend the bridge
-instead of idle with pm_runtime_put_sync().
+To fix this issue, I replaced the div_u64_rem function with div64_u64_rem
+and adjusted the type of the remainder.
 
-Fixes: 3203e497eb76 ("drm/bridge: anx7625: Synchronously run runtime suspend.")
-Fixes: adca62ec370c ("drm/bridge: anx7625: Support reading edid through aux channel")
-Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
-Tested-by: Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>
-Reviewed-by: Pin-yen Lin <treapking@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240118015916.2296741-1-hsinyi@chromium.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Quanquan Cao <caoqq@fujitsu.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: 23a22cd1c98b ("cxl/region: Allocate HPA capacity to regions")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/analogix/anx7625.c | 7 ++++++-
- drivers/gpu/drm/bridge/analogix/anx7625.h | 2 ++
- 2 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/cxl/core/region.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-index 51abe42c639e..5168628f11cf 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-@@ -1741,6 +1741,7 @@ static ssize_t anx7625_aux_transfer(struct drm_dp_aux *aux,
- 	u8 request = msg->request & ~DP_AUX_I2C_MOT;
- 	int ret = 0;
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -450,7 +450,7 @@ static int alloc_hpa(struct cxl_region *
+ 	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(cxlr->dev.parent);
+ 	struct cxl_region_params *p = &cxlr->params;
+ 	struct resource *res;
+-	u32 remainder = 0;
++	u64 remainder = 0;
  
-+	mutex_lock(&ctx->aux_lock);
- 	pm_runtime_get_sync(dev);
- 	msg->reply = 0;
- 	switch (request) {
-@@ -1757,6 +1758,7 @@ static ssize_t anx7625_aux_transfer(struct drm_dp_aux *aux,
- 					msg->size, msg->buffer);
- 	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
-+	mutex_unlock(&ctx->aux_lock);
+ 	lockdep_assert_held_write(&cxl_region_rwsem);
  
- 	return ret;
- }
-@@ -2453,7 +2455,9 @@ static void anx7625_bridge_atomic_disable(struct drm_bridge *bridge,
- 	ctx->connector = NULL;
- 	anx7625_dp_stop(ctx);
+@@ -470,7 +470,7 @@ static int alloc_hpa(struct cxl_region *
+ 	    (cxlr->mode == CXL_DECODER_PMEM && uuid_is_null(&p->uuid)))
+ 		return -ENXIO;
  
--	pm_runtime_put_sync(dev);
-+	mutex_lock(&ctx->aux_lock);
-+	pm_runtime_put_sync_suspend(dev);
-+	mutex_unlock(&ctx->aux_lock);
- }
+-	div_u64_rem(size, SZ_256M * p->interleave_ways, &remainder);
++	div64_u64_rem(size, (u64)SZ_256M * p->interleave_ways, &remainder);
+ 	if (remainder)
+ 		return -EINVAL;
  
- static enum drm_connector_status
-@@ -2647,6 +2651,7 @@ static int anx7625_i2c_probe(struct i2c_client *client)
- 
- 	mutex_init(&platform->lock);
- 	mutex_init(&platform->hdcp_wq_lock);
-+	mutex_init(&platform->aux_lock);
- 
- 	INIT_DELAYED_WORK(&platform->hdcp_work, hdcp_check_work_func);
- 	platform->hdcp_workqueue = create_workqueue("hdcp workqueue");
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.h b/drivers/gpu/drm/bridge/analogix/anx7625.h
-index 5af819611ebc..80d3fb4e985f 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.h
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.h
-@@ -471,6 +471,8 @@ struct anx7625_data {
- 	struct workqueue_struct *hdcp_workqueue;
- 	/* Lock for hdcp work queue */
- 	struct mutex hdcp_wq_lock;
-+	/* Lock for aux transfer and disable */
-+	struct mutex aux_lock;
- 	char edid_block;
- 	struct display_timing dt;
- 	u8 display_timing_valid;
--- 
-2.43.0
-
 
 
 
