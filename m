@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F397840DCA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4BE840E35
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74BB91C22742
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6AE73282C25
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D073515CD75;
-	Mon, 29 Jan 2024 17:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E41615EAA3;
+	Mon, 29 Jan 2024 17:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ycqvQvuh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sKE098TZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F827157E8F;
-	Mon, 29 Jan 2024 17:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF29115703E;
+	Mon, 29 Jan 2024 17:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548166; cv=none; b=LyI3w7+2ogga58MtnR8aLGNq3fBsz82wfuRVzwjhJ1fGoEOHKBWlnx5Lt0sLprx+ai9KVr2o1rVQH54GzTCYjq9y+U9vowLcxyurajVtTafq/5Mv9x/P82WBsOUScUeOSnKjWvLkR17aZataYKCNEUEPDhYRwb2NaAhsM30bE3c=
+	t=1706548243; cv=none; b=kOmTnBhuda+3tp3rYC786FwGJ5juLDRC8VFjenrkGyxyq3VdVm+e4L+VuYc1i2rvqLgoNEki9n9n3cMX4ZzjSNGv51UWpK1AxU2bBYPauvqmaOTSxtd/mZJox4Wy3xgGTlC74PxkhXeh0Pn8vCvLu9l5kcq+qabTdcGYWx4fGyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548166; c=relaxed/simple;
-	bh=6Z7IujUaYLaVjroqKm+Rw5AKvgtnMMt1lZBEjCQFXcM=;
+	s=arc-20240116; t=1706548243; c=relaxed/simple;
+	bh=k0WzprU15Vn9Yy1394DQXc6kSui0yyADBOgjXCm5vO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vDVjmfrXMOGP9JaKr7vxnfx+k7B/ZcD3ETeqg23vzzNNSifnPzsdbJEAXmZsRFsRE+C0uHKa1JusdURfgyCezgaVkwR+Ap8JXmYKVjVB2A8bhQEpVtnRP9wNpIeeE72i/RkV/S3aHhuVcS5LtM3m4KJ0rwgg9K4M+ovnf4n4yLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ycqvQvuh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5661EC433C7;
-	Mon, 29 Jan 2024 17:09:26 +0000 (UTC)
+	 MIME-Version; b=D7oR8Kc6tA2+yzZG6W/aCJwbIiXGHS7e87ciLwlG63KHVNJn3ZxwHfyCVbVY6SnZaD3Ss1UwhaWNdDwc9if5/KUboiGDWNHYzhRAxrOYi482vMKLMYju0DRHs0UOtkKlzlamsgHyQtH0rPJ5dw7Nv+gbN2Dg0BmJeynArfHB8ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sKE098TZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70A9C43390;
+	Mon, 29 Jan 2024 17:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548166;
-	bh=6Z7IujUaYLaVjroqKm+Rw5AKvgtnMMt1lZBEjCQFXcM=;
+	s=korg; t=1706548242;
+	bh=k0WzprU15Vn9Yy1394DQXc6kSui0yyADBOgjXCm5vO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ycqvQvuhCJmQuKbRb0adCDRE4zMlw5FlGYFph8P55jzKVoFNiwas95kVydqmpH1+h
-	 9HVoU6ZP30mdxhZJ9L+YfHuyWo6NQp0/tic1n/DzWw2ylaa+S/eD+YkE7fgpvIV7o/
-	 +3UPBgODyBqwgZXFRnENmqWgvqWf2xku4VgB9FOw=
+	b=sKE098TZ0BblSBFyKJFaxnhnUKX6VAyMhgHt3Ey9lcXEHAMusN9b+aoZLaq/iJuWV
+	 kxL7uIQKeCXF0zwAxYFRwVwb4PSYNJD9AhtaVQx/RnUbDSGKOZ2Vxqwc1Al13VakZX
+	 cWfw0dd79HW/0o1HhodvEszYzjqyqkcWz1KBOyIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 209/346] ice: work on pre-XDP prog frag count
-Date: Mon, 29 Jan 2024 09:04:00 -0800
-Message-ID: <20240129170022.532227937@linuxfoundation.org>
+	Jani Nikula <jani.nikula@intel.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: [PATCH 6.1 041/185] docs: kernel_abi.py: fix command injection
+Date: Mon, 29 Jan 2024 09:04:01 -0800
+Message-ID: <20240129165959.902472047@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,175 +62,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Vegard Nossum <vegard.nossum@oracle.com>
 
-[ Upstream commit ad2047cf5d9313200e308612aed516548873d124 ]
+commit 3231dd5862779c2e15633c96133a53205ad660ce upstream.
 
-Fix an OOM panic in XDP_DRV mode when a XDP program shrinks a
-multi-buffer packet by 4k bytes and then redirects it to an AF_XDP
-socket.
+The kernel-abi directive passes its argument straight to the shell.
+This is unfortunate and unnecessary.
 
-Since support for handling multi-buffer frames was added to XDP, usage
-of bpf_xdp_adjust_tail() helper within XDP program can free the page
-that given fragment occupies and in turn decrease the fragment count
-within skb_shared_info that is embedded in xdp_buff struct. In current
-ice driver codebase, it can become problematic when page recycling logic
-decides not to reuse the page. In such case, __page_frag_cache_drain()
-is used with ice_rx_buf::pagecnt_bias that was not adjusted after
-refcount of page was changed by XDP prog which in turn does not drain
-the refcount to 0 and page is never freed.
+Let's always use paths relative to $srctree/Documentation/ and use
+subprocess.check_call() instead of subprocess.Popen(shell=True).
 
-To address this, let us store the count of frags before the XDP program
-was executed on Rx ring struct. This will be used to compare with
-current frag count from skb_shared_info embedded in xdp_buff. A smaller
-value in the latter indicates that XDP prog freed frag(s). Then, for
-given delta decrement pagecnt_bias for XDP_DROP verdict.
+This also makes the code shorter.
 
-While at it, let us also handle the EOP frag within
-ice_set_rx_bufs_act() to make our life easier, so all of the adjustments
-needed to be applied against freed frags are performed in the single
-place.
-
-Fixes: 2fba7dc5157b ("ice: Add support for XDP multi-buffer on Rx side")
-Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/r/20240124191602.566724-5-maciej.fijalkowski@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://fosstodon.org/@jani/111676532203641247
+Reported-by: Jani Nikula <jani.nikula@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Link: https://lore.kernel.org/r/20231231235959.3342928-2-vegard.nossum@oracle.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.c     | 14 ++++++---
- drivers/net/ethernet/intel/ice/ice_txrx.h     |  1 +
- drivers/net/ethernet/intel/ice/ice_txrx_lib.h | 31 +++++++++++++------
- 3 files changed, 32 insertions(+), 14 deletions(-)
+ Documentation/admin-guide/abi-obsolete.rst |    2 -
+ Documentation/admin-guide/abi-removed.rst  |    2 -
+ Documentation/admin-guide/abi-stable.rst   |    2 -
+ Documentation/admin-guide/abi-testing.rst  |    2 -
+ Documentation/sphinx/kernel_abi.py         |   56 +++++------------------------
+ 5 files changed, 14 insertions(+), 50 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index 9e97ea863068..6878448ba112 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -600,9 +600,7 @@ ice_run_xdp(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
- 		ret = ICE_XDP_CONSUMED;
- 	}
- exit:
--	rx_buf->act = ret;
--	if (unlikely(xdp_buff_has_frags(xdp)))
--		ice_set_rx_bufs_act(xdp, rx_ring, ret);
-+	ice_set_rx_bufs_act(xdp, rx_ring, ret);
- }
+--- a/Documentation/admin-guide/abi-obsolete.rst
++++ b/Documentation/admin-guide/abi-obsolete.rst
+@@ -7,5 +7,5 @@ marked to be removed at some later point
+ The description of the interface will document the reason why it is
+ obsolete and when it can be expected to be removed.
  
- /**
-@@ -890,14 +888,17 @@ ice_add_xdp_frag(struct ice_rx_ring *rx_ring, struct xdp_buff *xdp,
- 	}
+-.. kernel-abi:: $srctree/Documentation/ABI/obsolete
++.. kernel-abi:: ABI/obsolete
+    :rst:
+--- a/Documentation/admin-guide/abi-removed.rst
++++ b/Documentation/admin-guide/abi-removed.rst
+@@ -1,5 +1,5 @@
+ ABI removed symbols
+ ===================
  
- 	if (unlikely(sinfo->nr_frags == MAX_SKB_FRAGS)) {
--		if (unlikely(xdp_buff_has_frags(xdp)))
--			ice_set_rx_bufs_act(xdp, rx_ring, ICE_XDP_CONSUMED);
-+		ice_set_rx_bufs_act(xdp, rx_ring, ICE_XDP_CONSUMED);
- 		return -ENOMEM;
- 	}
+-.. kernel-abi:: $srctree/Documentation/ABI/removed
++.. kernel-abi:: ABI/removed
+    :rst:
+--- a/Documentation/admin-guide/abi-stable.rst
++++ b/Documentation/admin-guide/abi-stable.rst
+@@ -10,5 +10,5 @@ for at least 2 years.
+ Most interfaces (like syscalls) are expected to never change and always
+ be available.
  
- 	__skb_fill_page_desc_noacc(sinfo, sinfo->nr_frags++, rx_buf->page,
- 				   rx_buf->page_offset, size);
- 	sinfo->xdp_frags_size += size;
-+	/* remember frag count before XDP prog execution; bpf_xdp_adjust_tail()
-+	 * can pop off frags but driver has to handle it on its own
-+	 */
-+	rx_ring->nr_frags = sinfo->nr_frags;
+-.. kernel-abi:: $srctree/Documentation/ABI/stable
++.. kernel-abi:: ABI/stable
+    :rst:
+--- a/Documentation/admin-guide/abi-testing.rst
++++ b/Documentation/admin-guide/abi-testing.rst
+@@ -16,5 +16,5 @@ Programs that use these interfaces are s
+ name to the description of these interfaces, so that the kernel
+ developers can easily notify them if any changes occur.
  
- 	if (page_is_pfmemalloc(rx_buf->page))
- 		xdp_buff_set_frag_pfmemalloc(xdp);
-@@ -1249,6 +1250,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+-.. kernel-abi:: $srctree/Documentation/ABI/testing
++.. kernel-abi:: ABI/testing
+    :rst:
+--- a/Documentation/sphinx/kernel_abi.py
++++ b/Documentation/sphinx/kernel_abi.py
+@@ -39,8 +39,6 @@ import sys
+ import re
+ import kernellog
  
- 		xdp->data = NULL;
- 		rx_ring->first_desc = ntc;
-+		rx_ring->nr_frags = 0;
- 		continue;
- construct_skb:
- 		if (likely(ice_ring_uses_build_skb(rx_ring)))
-@@ -1264,10 +1266,12 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 						    ICE_XDP_CONSUMED);
- 			xdp->data = NULL;
- 			rx_ring->first_desc = ntc;
-+			rx_ring->nr_frags = 0;
- 			break;
- 		}
- 		xdp->data = NULL;
- 		rx_ring->first_desc = ntc;
-+		rx_ring->nr_frags = 0;
+-from os import path
+-
+ from docutils import nodes, statemachine
+ from docutils.statemachine import ViewList
+ from docutils.parsers.rst import directives, Directive
+@@ -73,60 +71,26 @@ class KernelCmd(Directive):
+     }
  
- 		stat_err_bits = BIT(ICE_RX_FLEX_DESC_STATUS0_RXE_S);
- 		if (unlikely(ice_test_staterr(rx_desc->wb.status_error0,
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.h b/drivers/net/ethernet/intel/ice/ice_txrx.h
-index daf7b9dbb143..b28b9826bbcd 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.h
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.h
-@@ -333,6 +333,7 @@ struct ice_rx_ring {
- 	struct ice_channel *ch;
- 	struct ice_tx_ring *xdp_ring;
- 	struct xsk_buff_pool *xsk_pool;
-+	u32 nr_frags;
- 	dma_addr_t dma;			/* physical address of ring */
- 	u64 cached_phctime;
- 	u16 rx_buf_len;
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx_lib.h b/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
-index 115969ecdf7b..b0e56675f98b 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx_lib.h
-@@ -12,26 +12,39 @@
-  * act: action to store onto Rx buffers related to XDP buffer parts
-  *
-  * Set action that should be taken before putting Rx buffer from first frag
-- * to one before last. Last one is handled by caller of this function as it
-- * is the EOP frag that is currently being processed. This function is
-- * supposed to be called only when XDP buffer contains frags.
-+ * to the last.
-  */
- static inline void
- ice_set_rx_bufs_act(struct xdp_buff *xdp, const struct ice_rx_ring *rx_ring,
- 		    const unsigned int act)
- {
--	const struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
--	u32 first = rx_ring->first_desc;
--	u32 nr_frags = sinfo->nr_frags;
-+	u32 sinfo_frags = xdp_get_shared_info_from_buff(xdp)->nr_frags;
-+	u32 nr_frags = rx_ring->nr_frags + 1;
-+	u32 idx = rx_ring->first_desc;
- 	u32 cnt = rx_ring->count;
- 	struct ice_rx_buf *buf;
+     def run(self):
+-
+         doc = self.state.document
+         if not doc.settings.file_insertion_enabled:
+             raise self.warning("docutils: file insertion disabled")
  
- 	for (int i = 0; i < nr_frags; i++) {
--		buf = &rx_ring->rx_buf[first];
-+		buf = &rx_ring->rx_buf[idx];
- 		buf->act = act;
+-        env = doc.settings.env
+-        cwd = path.dirname(doc.current_source)
+-        cmd = "get_abi.pl rest --enable-lineno --dir "
+-        cmd += self.arguments[0]
+-
+-        if 'rst' in self.options:
+-            cmd += " --rst-source"
+-
+-        srctree = path.abspath(os.environ["srctree"])
++        srctree = os.path.abspath(os.environ["srctree"])
  
--		if (++first == cnt)
--			first = 0;
-+		if (++idx == cnt)
-+			idx = 0;
-+	}
-+
-+	/* adjust pagecnt_bias on frags freed by XDP prog */
-+	if (sinfo_frags < rx_ring->nr_frags && act == ICE_XDP_CONSUMED) {
-+		u32 delta = rx_ring->nr_frags - sinfo_frags;
-+
-+		while (delta) {
-+			if (idx == 0)
-+				idx = cnt - 1;
-+			else
-+				idx--;
-+			buf = &rx_ring->rx_buf[idx];
-+			buf->pagecnt_bias--;
-+			delta--;
-+		}
- 	}
- }
+-        fname = cmd
++        args = [
++            os.path.join(srctree, 'scripts/get_abi.pl'),
++            'rest',
++            '--enable-lineno',
++            '--dir', os.path.join(srctree, 'Documentation', self.arguments[0]),
++        ]
  
--- 
-2.43.0
-
+-        # extend PATH with $(srctree)/scripts
+-        path_env = os.pathsep.join([
+-            srctree + os.sep + "scripts",
+-            os.environ["PATH"]
+-        ])
+-        shell_env = os.environ.copy()
+-        shell_env["PATH"]    = path_env
+-        shell_env["srctree"] = srctree
++        if 'rst' in self.options:
++            args.append('--rst-source')
+ 
+-        lines = self.runCmd(cmd, shell=True, cwd=cwd, env=shell_env)
++        lines = subprocess.check_output(args, cwd=os.path.dirname(doc.current_source)).decode('utf-8')
+         nodeList = self.nestedParse(lines, self.arguments[0])
+         return nodeList
+ 
+-    def runCmd(self, cmd, **kwargs):
+-        u"""Run command ``cmd`` and return its stdout as unicode."""
+-
+-        try:
+-            proc = subprocess.Popen(
+-                cmd
+-                , stdout = subprocess.PIPE
+-                , stderr = subprocess.PIPE
+-                , **kwargs
+-            )
+-            out, err = proc.communicate()
+-
+-            out, err = codecs.decode(out, 'utf-8'), codecs.decode(err, 'utf-8')
+-
+-            if proc.returncode != 0:
+-                raise self.severe(
+-                    u"command '%s' failed with return code %d"
+-                    % (cmd, proc.returncode)
+-                )
+-        except OSError as exc:
+-            raise self.severe(u"problems with '%s' directive: %s."
+-                              % (self.name, ErrorString(exc)))
+-        return out
+-
+     def nestedParse(self, lines, fname):
+         env = self.state.document.settings.env
+         content = ViewList()
 
 
 
