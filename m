@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-16813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79B8840E87
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A7D84107E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 364ECB24179
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB1281F23F70
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FAE15FB07;
-	Mon, 29 Jan 2024 17:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B440615B97C;
+	Mon, 29 Jan 2024 17:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0MqXLHsi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eQuMxoKA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7425B15703D;
-	Mon, 29 Jan 2024 17:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7094B76051;
+	Mon, 29 Jan 2024 17:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548298; cv=none; b=ErzdpmdnLFptX5yz7+Ds7xu8H2E1UMzhRaJWBReQpHqT2N0BiL11bY5Q5Hh6SNiMnlIkdd88uDxvStEsTtqeRTehEihkm8kLPntFZEdB2W9ln/n105Af0wHko87OtGTJLuDTETIcqu1ZcuoEBOPwjAC0IYIutu/adAP+UU5XFHQ=
+	t=1706548632; cv=none; b=fT4kyPMDpzqTjUYMqPf/K7gqOWMoyVCIHjFWeRsNpjNwSNLHBJNONQRpS4XsxaLaCvJ5cw8vdAqm91j7UpkMGiRlj6ZLaLT2pkmWAQLy+w595gQ9pmFRmWFZTz45gFQva+63BJ+4C9d43QvMUwMuToAfiuXHLtRX6nrbTqiYwww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548298; c=relaxed/simple;
-	bh=N2mqsFgHH3MqWsOZO3X2wMA18BrG+l0cA5lSUdHVGm8=;
+	s=arc-20240116; t=1706548632; c=relaxed/simple;
+	bh=YQyhMyeEMHnSsZcIMYHYvErFBUHwaedmZw9HjloZEVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxR9Kn7U3oXTKvAW15X6oTmkvYXTODN1Iu2n6Ha/4RNtBVZzdhZXhrCt/p/1hwT2jH+PHC3P0wfM3jOcaNh8yjHwn9NPZulT9Vb2/eUWjRWWmWR5WOtO81rIaFJgEcVqGr/s2qCelhgcIkt0pE/OEi1qp9cEhETmYf/dP1kCCsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0MqXLHsi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BF9C43390;
-	Mon, 29 Jan 2024 17:11:37 +0000 (UTC)
+	 MIME-Version; b=mtWQph5cELOEljytWYt3XnWJW7Dm/NNMvqhcYFfNMN3xNLoMpdN5+9YyDZCDT0iNKgMbRuqwaOMH0cf2DHfHRlRPoKMrMeXeBfiKllT+MQzJseEAD1Lc55VnibCaaFIlfu9Jv2GpNF1HlfvH+E2E/viJxyJFtbM+VG67a55o+vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eQuMxoKA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A77FC433C7;
+	Mon, 29 Jan 2024 17:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548297;
-	bh=N2mqsFgHH3MqWsOZO3X2wMA18BrG+l0cA5lSUdHVGm8=;
+	s=korg; t=1706548632;
+	bh=YQyhMyeEMHnSsZcIMYHYvErFBUHwaedmZw9HjloZEVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0MqXLHsi0V//0KmbW8Q7jwGiarxPR6/ibIta8KTGTBQ9/S+YeM3/yMSZWJSgDQWKX
-	 m2I8+FL5/u0oXwLmhLia+E1VBLsWB33OjyJs1hyK8oVlzgfSFQ+Fg5coxRpzVUKbHP
-	 DjkYf1jJkDaJozXkMPId+64Esr6Ci24SuK+nmS1U=
+	b=eQuMxoKAwiI4scFr+YCtHogzif3INRiTZoSA6y1za7OS9mDz6HfmnHUBOvXkv7SXs
+	 YONOaAsh1u+KgbgAhuZo/+u6vARkM2ko2+DjQdQ4EOY7aIAgS330U9cSan94QqjTjD
+	 mcLhz/uajlZjNWfiQUSEZnb8Sq4N9uhHlQtySDCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Feifei Xu <Feifei.Xu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 305/346] drm/amdgpu/gfx11: set UNORD_DISPATCH in compute MQDs
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Jun Lei <Jun.Lei@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 272/331] drm/amd/display: Fix uninitialized variable usage in core_link_ read_dpcd() & write_dpcd() functions
 Date: Mon, 29 Jan 2024 09:05:36 -0800
-Message-ID: <20240129170025.427425125@linuxfoundation.org>
+Message-ID: <20240129170022.824973145@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +67,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 3380fcad2c906872110d31ddf7aa1fdea57f9df6 ]
+commit a58371d632ebab9ea63f10893a6b6731196b6f8d upstream.
 
-This needs to be set to 1 to avoid a potential deadlock in
-the GC 10.x and newer.  On GC 9.x and older, this needs
-to be set to 0. This can lead to hangs in some mixed
-graphics and compute workloads. Updated firmware is also
-required for AQL.
+The 'status' variable in 'core_link_read_dpcd()' &
+'core_link_write_dpcd()' was uninitialized.
 
-Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Thus, initializing 'status' variable to 'DC_ERROR_UNEXPECTED' by default.
+
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_dpcd.c:226 core_link_read_dpcd() error: uninitialized symbol 'status'.
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_dpcd.c:248 core_link_write_dpcd() error: uninitialized symbol 'status'.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Jerry Zuo <jerry.zuo@amd.com>
+Cc: Jun Lei <Jun.Lei@amd.com>
+Cc: Wayne Lin <Wayne.Lin@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c           | 2 +-
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/link/protocols/link_dpcd.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index 4824a4c04d35..806a8cf90487 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -3838,7 +3838,7 @@ static int gfx_v11_0_compute_mqd_init(struct amdgpu_device *adev, void *m,
- 			    (order_base_2(prop->queue_size / 4) - 1));
- 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, RPTR_BLOCK_SIZE,
- 			    (order_base_2(AMDGPU_GPU_PAGE_SIZE / 4) - 1));
--	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, UNORD_DISPATCH, 0);
-+	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, UNORD_DISPATCH, 1);
- 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, TUNNEL_DISPATCH,
- 			    prop->allow_tunneling);
- 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, PRIV_STATE, 1);
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-index 15277f1d5cf0..d722cbd31783 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-@@ -224,6 +224,7 @@ static void update_mqd(struct mqd_manager *mm, void *mqd,
- 	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
- 	m->cp_hqd_pq_control |=
- 			ffs(q->queue_size / sizeof(unsigned int)) - 1 - 1;
-+	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
- 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dpcd.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dpcd.c
+@@ -205,7 +205,7 @@ enum dc_status core_link_read_dpcd(
+ 	uint32_t extended_size;
+ 	/* size of the remaining partitioned address space */
+ 	uint32_t size_left_to_read;
+-	enum dc_status status;
++	enum dc_status status = DC_ERROR_UNEXPECTED;
+ 	/* size of the next partition to be read from */
+ 	uint32_t partition_size;
+ 	uint32_t data_index = 0;
+@@ -234,7 +234,7 @@ enum dc_status core_link_write_dpcd(
+ {
+ 	uint32_t partition_size;
+ 	uint32_t data_index = 0;
+-	enum dc_status status;
++	enum dc_status status = DC_ERROR_UNEXPECTED;
  
- 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
--- 
-2.43.0
-
+ 	while (size) {
+ 		partition_size = dpcd_get_next_partition_size(address, size);
 
 
 
