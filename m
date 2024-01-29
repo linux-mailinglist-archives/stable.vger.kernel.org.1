@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-17090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A15840FC9
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD2F840D99
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70570282D5A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9F5A28D36E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D5372220;
-	Mon, 29 Jan 2024 17:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1EDD15A4A6;
+	Mon, 29 Jan 2024 17:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2HlzATm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzjm8OpV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35125157052;
-	Mon, 29 Jan 2024 17:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90158158D68;
+	Mon, 29 Jan 2024 17:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548502; cv=none; b=ZVx4aoZYoKpIEM9DD+NnWBQBPkIPRjahUVK81rEt9mE/zU0qwCbD49Z7Klou0sOtmrimv1ey0pKYvJPY9RF5sMW4aLmazL513Kel9X+zhMGDjTIJJ2XW3KzhKgIUPLzKo1P0D1yd/DO9GrvSAvzUwKPgnU6erVJ96ElwJpmlgBI=
+	t=1706548132; cv=none; b=V5BA9tTEajAaOYvEvw/YEpyLwl5nNHF6Kf3t7ZrL0v+4AWzmL9irho85kzK2XmZGoFQjHPcvLHJMr+dTHNsBliZ9DNm2lNOxzWLsUxZ7OkO6Eq7wjekhBX5/QNhuUgh6PkShgzgGI0Xi9SDb/Du1aGknv9+EC7uzwdmOGztE78A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548502; c=relaxed/simple;
-	bh=usbm3fwtz6GignOAD3MxlIZbkMLChih6DbmDzBLur40=;
+	s=arc-20240116; t=1706548132; c=relaxed/simple;
+	bh=UB2p1bkx4sXs4IhvzczBn+1t1b8Mb31gPumLPKAtALQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RdMYU46yEzEb48NE8aRTLZhGZ/CJqKKhxoV2db/0sM6/YvBuBWyfggb9Z4SBFrEdrL+9o43jwTpezosBsbUfU4vSgLRUYXj+al0/SbPzQJR5dLxiBZymqzb6kUsmOTbXKG7Rh3CZCNfwDdFt/w3VI9dXwMfDZNnfNxR1DGfvnB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2HlzATm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F223FC433F1;
-	Mon, 29 Jan 2024 17:15:01 +0000 (UTC)
+	 MIME-Version; b=UHcUztrr1nbAtPxtOyRafu0j2l0UZTxN/bcIObrQFjEtgtuXw28+12FAGAn3QuDos32uKpIrLdaAm5yHT+cWs1WdMYVMyPCxVofxLrPRAUDCbWZVX9mItu4yV4UNO/0xZ4lQmxy7fBp4z5mD7iMSdOKHLn7dGznVz00SiFM1CKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzjm8OpV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570C8C433F1;
+	Mon, 29 Jan 2024 17:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548502;
-	bh=usbm3fwtz6GignOAD3MxlIZbkMLChih6DbmDzBLur40=;
+	s=korg; t=1706548132;
+	bh=UB2p1bkx4sXs4IhvzczBn+1t1b8Mb31gPumLPKAtALQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v2HlzATmToEMEMOwqWw3ciBRXgzRmbc5ym/sch993WtlsYUWTRlcTRr1r+SZcsU6O
-	 GcUO/9prksYvsv8c8tUH7O0WQfbr3DDuzq0Y2C9yg3a73DxifRzTOL22rqFydxEdhd
-	 MFmH5qW2bbV6Xz3FWXjKFjHqkqQ2wKz7PIW1kqNs=
+	b=qzjm8OpVM22SEeRrXVwlMtQ3xaa+xSxeq/0eMGbNVEmTgN/RP2iPDqI580VTsd8zx
+	 /OeXH/JF1kOM9wkXNfRVkpFTLCPekBwxvsUqFV55JcHk/qCmSav6Z45K5UrMFNCHgP
+	 HSxtY8CvsVw+6GcJ2AMkbbaG/pcWpAW1tFYJGGwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.6 129/331] serial: sc16is7xx: remove wasteful static buffer in sc16is7xx_regmap_name()
+	Jan Glaza <jan.glaza@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 162/346] dpll: fix pin dump crash for rebound module
 Date: Mon, 29 Jan 2024 09:03:13 -0800
-Message-ID: <20240129170018.714581556@linuxfoundation.org>
+Message-ID: <20240129170021.163252458@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +65,263 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
 
-commit 6bcab3c8acc88e265c570dea969fd04f137c8a4c upstream.
+[ Upstream commit 830ead5fb0c5855ce4d70ba2ed4a673b5f1e7d9b ]
 
-Using a static buffer inside sc16is7xx_regmap_name() was a convenient and
-simple way to set the regmap name without having to allocate and free a
-buffer each time it is called. The drawback is that the static buffer
-wastes memory for nothing once regmap is fully initialized.
+When a kernel module is unbound but the pin resources were not entirely
+freed (other kernel module instance of the same PCI device have had kept
+the reference to that pin), and kernel module is again bound, the pin
+properties would not be updated (the properties are only assigned when
+memory for the pin is allocated), prop pointer still points to the
+kernel module memory of the kernel module which was deallocated on the
+unbind.
 
-Remove static buffer and use constant strings instead.
+If the pin dump is invoked in this state, the result is a kernel crash.
+Prevent the crash by storing persistent pin properties in dpll subsystem,
+copy the content from the kernel module when pin is allocated, instead of
+using memory of the kernel module.
 
-This also avoids a truncation warning when using "%d" or "%u" in snprintf
-which was flagged by kernel test robot.
-
-Fixes: 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
-Cc:  <stable@vger.kernel.org> # 6.1.x: 3837a03 serial: sc16is7xx: improve regmap debugfs by using one regmap per port
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231211171353.2901416-2-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9431063ad323 ("dpll: core: Add DPLL framework base functions")
+Fixes: 9d71b54b65b1 ("dpll: netlink: Add DPLL framework base functions")
+Reviewed-by: Jan Glaza <jan.glaza@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/dpll/dpll_core.c    | 55 +++++++++++++++++++++++++++++++++++--
+ drivers/dpll/dpll_core.h    |  4 +--
+ drivers/dpll/dpll_netlink.c | 28 +++++++++----------
+ 3 files changed, 69 insertions(+), 18 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1696,13 +1696,15 @@ static struct regmap_config regcfg = {
- 	.max_register = SC16IS7XX_EFCR_REG,
+diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
+index 36f5c0eaf604..5e3b9b5679f9 100644
+--- a/drivers/dpll/dpll_core.c
++++ b/drivers/dpll/dpll_core.c
+@@ -424,6 +424,53 @@ void dpll_device_unregister(struct dpll_device *dpll,
+ }
+ EXPORT_SYMBOL_GPL(dpll_device_unregister);
+ 
++static void dpll_pin_prop_free(struct dpll_pin_properties *prop)
++{
++	kfree(prop->package_label);
++	kfree(prop->panel_label);
++	kfree(prop->board_label);
++	kfree(prop->freq_supported);
++}
++
++static int dpll_pin_prop_dup(const struct dpll_pin_properties *src,
++			     struct dpll_pin_properties *dst)
++{
++	memcpy(dst, src, sizeof(*dst));
++	if (src->freq_supported && src->freq_supported_num) {
++		size_t freq_size = src->freq_supported_num *
++				   sizeof(*src->freq_supported);
++		dst->freq_supported = kmemdup(src->freq_supported,
++					      freq_size, GFP_KERNEL);
++		if (!src->freq_supported)
++			return -ENOMEM;
++	}
++	if (src->board_label) {
++		dst->board_label = kstrdup(src->board_label, GFP_KERNEL);
++		if (!dst->board_label)
++			goto err_board_label;
++	}
++	if (src->panel_label) {
++		dst->panel_label = kstrdup(src->panel_label, GFP_KERNEL);
++		if (!dst->panel_label)
++			goto err_panel_label;
++	}
++	if (src->package_label) {
++		dst->package_label = kstrdup(src->package_label, GFP_KERNEL);
++		if (!dst->package_label)
++			goto err_package_label;
++	}
++
++	return 0;
++
++err_package_label:
++	kfree(dst->panel_label);
++err_panel_label:
++	kfree(dst->board_label);
++err_board_label:
++	kfree(dst->freq_supported);
++	return -ENOMEM;
++}
++
+ static struct dpll_pin *
+ dpll_pin_alloc(u64 clock_id, u32 pin_idx, struct module *module,
+ 	       const struct dpll_pin_properties *prop)
+@@ -442,7 +489,9 @@ dpll_pin_alloc(u64 clock_id, u32 pin_idx, struct module *module,
+ 		ret = -EINVAL;
+ 		goto err_pin_prop;
+ 	}
+-	pin->prop = prop;
++	ret = dpll_pin_prop_dup(prop, &pin->prop);
++	if (ret)
++		goto err_pin_prop;
+ 	refcount_set(&pin->refcount, 1);
+ 	xa_init_flags(&pin->dpll_refs, XA_FLAGS_ALLOC);
+ 	xa_init_flags(&pin->parent_refs, XA_FLAGS_ALLOC);
+@@ -453,6 +502,7 @@ dpll_pin_alloc(u64 clock_id, u32 pin_idx, struct module *module,
+ err_xa_alloc:
+ 	xa_destroy(&pin->dpll_refs);
+ 	xa_destroy(&pin->parent_refs);
++	dpll_pin_prop_free(&pin->prop);
+ err_pin_prop:
+ 	kfree(pin);
+ 	return ERR_PTR(ret);
+@@ -513,6 +563,7 @@ void dpll_pin_put(struct dpll_pin *pin)
+ 		xa_destroy(&pin->dpll_refs);
+ 		xa_destroy(&pin->parent_refs);
+ 		xa_erase(&dpll_pin_xa, pin->id);
++		dpll_pin_prop_free(&pin->prop);
+ 		kfree(pin);
+ 	}
+ 	mutex_unlock(&dpll_lock);
+@@ -635,7 +686,7 @@ int dpll_pin_on_pin_register(struct dpll_pin *parent, struct dpll_pin *pin,
+ 	unsigned long i, stop;
+ 	int ret;
+ 
+-	if (WARN_ON(parent->prop->type != DPLL_PIN_TYPE_MUX))
++	if (WARN_ON(parent->prop.type != DPLL_PIN_TYPE_MUX))
+ 		return -EINVAL;
+ 
+ 	if (WARN_ON(!ops) ||
+diff --git a/drivers/dpll/dpll_core.h b/drivers/dpll/dpll_core.h
+index 5585873c5c1b..717f715015c7 100644
+--- a/drivers/dpll/dpll_core.h
++++ b/drivers/dpll/dpll_core.h
+@@ -44,7 +44,7 @@ struct dpll_device {
+  * @module:		module of creator
+  * @dpll_refs:		hold referencees to dplls pin was registered with
+  * @parent_refs:	hold references to parent pins pin was registered with
+- * @prop:		pointer to pin properties given by registerer
++ * @prop:		pin properties copied from the registerer
+  * @rclk_dev_name:	holds name of device when pin can recover clock from it
+  * @refcount:		refcount
+  **/
+@@ -55,7 +55,7 @@ struct dpll_pin {
+ 	struct module *module;
+ 	struct xarray dpll_refs;
+ 	struct xarray parent_refs;
+-	const struct dpll_pin_properties *prop;
++	struct dpll_pin_properties prop;
+ 	refcount_t refcount;
  };
  
--static const char *sc16is7xx_regmap_name(unsigned int port_id)
-+static const char *sc16is7xx_regmap_name(u8 port_id)
+diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
+index ce7cf736f020..4c64611d32ac 100644
+--- a/drivers/dpll/dpll_netlink.c
++++ b/drivers/dpll/dpll_netlink.c
+@@ -278,17 +278,17 @@ dpll_msg_add_pin_freq(struct sk_buff *msg, struct dpll_pin *pin,
+ 	if (nla_put_64bit(msg, DPLL_A_PIN_FREQUENCY, sizeof(freq), &freq,
+ 			  DPLL_A_PIN_PAD))
+ 		return -EMSGSIZE;
+-	for (fs = 0; fs < pin->prop->freq_supported_num; fs++) {
++	for (fs = 0; fs < pin->prop.freq_supported_num; fs++) {
+ 		nest = nla_nest_start(msg, DPLL_A_PIN_FREQUENCY_SUPPORTED);
+ 		if (!nest)
+ 			return -EMSGSIZE;
+-		freq = pin->prop->freq_supported[fs].min;
++		freq = pin->prop.freq_supported[fs].min;
+ 		if (nla_put_64bit(msg, DPLL_A_PIN_FREQUENCY_MIN, sizeof(freq),
+ 				  &freq, DPLL_A_PIN_PAD)) {
+ 			nla_nest_cancel(msg, nest);
+ 			return -EMSGSIZE;
+ 		}
+-		freq = pin->prop->freq_supported[fs].max;
++		freq = pin->prop.freq_supported[fs].max;
+ 		if (nla_put_64bit(msg, DPLL_A_PIN_FREQUENCY_MAX, sizeof(freq),
+ 				  &freq, DPLL_A_PIN_PAD)) {
+ 			nla_nest_cancel(msg, nest);
+@@ -304,9 +304,9 @@ static bool dpll_pin_is_freq_supported(struct dpll_pin *pin, u32 freq)
  {
--	static char buf[6];
--
--	snprintf(buf, sizeof(buf), "port%d", port_id);
--
--	return buf;
-+	switch (port_id) {
-+	case 0:	return "port0";
-+	case 1:	return "port1";
-+	default:
-+		WARN_ON(true);
-+		return NULL;
-+	}
- }
+ 	int fs;
  
- static unsigned int sc16is7xx_regmap_port_mask(unsigned int port_id)
+-	for (fs = 0; fs < pin->prop->freq_supported_num; fs++)
+-		if (freq >= pin->prop->freq_supported[fs].min &&
+-		    freq <= pin->prop->freq_supported[fs].max)
++	for (fs = 0; fs < pin->prop.freq_supported_num; fs++)
++		if (freq >= pin->prop.freq_supported[fs].min &&
++		    freq <= pin->prop.freq_supported[fs].max)
+ 			return true;
+ 	return false;
+ }
+@@ -396,7 +396,7 @@ static int
+ dpll_cmd_pin_get_one(struct sk_buff *msg, struct dpll_pin *pin,
+ 		     struct netlink_ext_ack *extack)
+ {
+-	const struct dpll_pin_properties *prop = pin->prop;
++	const struct dpll_pin_properties *prop = &pin->prop;
+ 	struct dpll_pin_ref *ref;
+ 	int ret;
+ 
+@@ -689,7 +689,7 @@ dpll_pin_on_pin_state_set(struct dpll_pin *pin, u32 parent_idx,
+ 	int ret;
+ 
+ 	if (!(DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE &
+-	      pin->prop->capabilities)) {
++	      pin->prop.capabilities)) {
+ 		NL_SET_ERR_MSG(extack, "state changing is not allowed");
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -725,7 +725,7 @@ dpll_pin_state_set(struct dpll_device *dpll, struct dpll_pin *pin,
+ 	int ret;
+ 
+ 	if (!(DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE &
+-	      pin->prop->capabilities)) {
++	      pin->prop.capabilities)) {
+ 		NL_SET_ERR_MSG(extack, "state changing is not allowed");
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -752,7 +752,7 @@ dpll_pin_prio_set(struct dpll_device *dpll, struct dpll_pin *pin,
+ 	int ret;
+ 
+ 	if (!(DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE &
+-	      pin->prop->capabilities)) {
++	      pin->prop.capabilities)) {
+ 		NL_SET_ERR_MSG(extack, "prio changing is not allowed");
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -780,7 +780,7 @@ dpll_pin_direction_set(struct dpll_pin *pin, struct dpll_device *dpll,
+ 	int ret;
+ 
+ 	if (!(DPLL_PIN_CAPABILITIES_DIRECTION_CAN_CHANGE &
+-	      pin->prop->capabilities)) {
++	      pin->prop.capabilities)) {
+ 		NL_SET_ERR_MSG(extack, "direction changing is not allowed");
+ 		return -EOPNOTSUPP;
+ 	}
+@@ -810,8 +810,8 @@ dpll_pin_phase_adj_set(struct dpll_pin *pin, struct nlattr *phase_adj_attr,
+ 	int ret;
+ 
+ 	phase_adj = nla_get_s32(phase_adj_attr);
+-	if (phase_adj > pin->prop->phase_range.max ||
+-	    phase_adj < pin->prop->phase_range.min) {
++	if (phase_adj > pin->prop.phase_range.max ||
++	    phase_adj < pin->prop.phase_range.min) {
+ 		NL_SET_ERR_MSG_ATTR(extack, phase_adj_attr,
+ 				    "phase adjust value not supported");
+ 		return -EINVAL;
+@@ -995,7 +995,7 @@ dpll_pin_find(u64 clock_id, struct nlattr *mod_name_attr,
+ 	unsigned long i;
+ 
+ 	xa_for_each_marked(&dpll_pin_xa, i, pin, DPLL_REGISTERED) {
+-		prop = pin->prop;
++		prop = &pin->prop;
+ 		cid_match = clock_id ? pin->clock_id == clock_id : true;
+ 		mod_match = mod_name_attr && module_name(pin->module) ?
+ 			!nla_strcmp(mod_name_attr,
+-- 
+2.43.0
+
 
 
 
