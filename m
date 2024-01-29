@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-16909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B24840EFE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B12A840E80
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B199B2834DF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BC951F27E32
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D44B16275C;
-	Mon, 29 Jan 2024 17:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6A315B984;
+	Mon, 29 Jan 2024 17:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibldvs+0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nmTV1kNj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED92F157E8F;
-	Mon, 29 Jan 2024 17:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91D9157E6A;
+	Mon, 29 Jan 2024 17:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548369; cv=none; b=fb3QPJei3Fc0VkSXLIWqBYjkfAVDUS23nTF6gbqDq9GVg2xi7c/kT0u7SwIN/5FS6lhcneGdDc4DXnEDK2If25/bTPYuBrPymc+aZYhHcgexMA7w58Tiif/Dzz7weVkxGLs2ct5W4pw+Cm3dVOZQoy8ZyLgoRMXKc7QbuJLL7ZI=
+	t=1706548294; cv=none; b=pc4oaRzv3cjrLVgUl33HJkr72O9MDaUZVOkudIVsoeqFXpCA/upNEYJkRHV6ds1oLF7U9ydbQpyJ7BxZQY+g+mcaHZTx1+zO/hIlSlnHDNALZertLjLa5wueN6LrzNeb+DOe0QRSEADI2G1xaHa2bd4+M/E8INfey51JTmzwiCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548369; c=relaxed/simple;
-	bh=6Z04K6aHUKd3bZVwHEnwzXd3hJiCzgcXazFzucZPU/w=;
+	s=arc-20240116; t=1706548294; c=relaxed/simple;
+	bh=jDCUVccF1iV0M7lBuUHA6loaBrn6Qjekmqj8+Ab7J9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZx0oMD9XghpQL7H9BmygPKyDWddo6Q3TWMmTYwcSXCxZlPNZZEOIpV7k8E4B/CLZZMa4lhz0VqDAUfFx4LM3u3b1HtAPl1KNmsQ9eG77QSI6dAVb3JyEHPpMTmcbXcrEjsyx+2wyNccoX+5ZjfsKPL+UcNIqBYdXVRZ4sdkUBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibldvs+0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5410C43390;
-	Mon, 29 Jan 2024 17:12:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ap5v8v8UUsEFkrkVQ+bozSPBpzYTYfLpRFVkoDhd3AInzRwtfxO+TcD9SbeXGTwBiRqoWtiqi5TXR3yhsBpJmw/BWydz/0spC0y6TjPJuLb90Cb1DfhnpSzdIlEu8lqMpAGexAoFlIojYV4m9kqk6jLO/1yh1bPl6a417QDU++U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nmTV1kNj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F516C43390;
+	Mon, 29 Jan 2024 17:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548368;
-	bh=6Z04K6aHUKd3bZVwHEnwzXd3hJiCzgcXazFzucZPU/w=;
+	s=korg; t=1706548294;
+	bh=jDCUVccF1iV0M7lBuUHA6loaBrn6Qjekmqj8+Ab7J9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ibldvs+0ZixRVPuaFxXryubRiJf2hKOsSgRiV4ZJkj8X/9CiZ2xZhCrhcM80+dNq0
-	 3PJzsrghBICFZNDYj5ZZhbiHtpp+EEDOs+fzdaeKrRGyEZpi1Yj/xeXbqhNNjQ0e4a
-	 TLMwDRFQaqX2+YzzvTEAnYOeuXJRzour3B77wQaY=
+	b=nmTV1kNjunQoWto7utt+Ua0f66blCG0hepH+BjivWc+OeMSN+kmc+/ShOPpeRFr7I
+	 JgdizTu1qq2q/+Q5rdqdfo300pCwH88WV/hpWPSp+FemKDjNM0zj33JQCcq4QgMsrR
+	 r2hI1zcdN/comaidf9yn+ZF/tPmLrynrWenrBGNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Robert Foss <rfoss@kernel.org>
-Subject: [PATCH 6.1 134/185] drm/bridge: nxp-ptn3460: fix i2c_master_send() error checking
+	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
+	Friedrich Vock <friedrich.vock@gmx.de>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 303/346] drm/amdgpu: Enable tunneling on high-priority compute queues
 Date: Mon, 29 Jan 2024 09:05:34 -0800
-Message-ID: <20240129170002.896582027@linuxfoundation.org>
+Message-ID: <20240129170025.354073776@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,65 +61,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Friedrich Vock <friedrich.vock@gmx.de>
 
-commit 914437992876838662c968cb416f832110fb1093 upstream.
+[ Upstream commit 91963397c49aa2907aeafa52d929555dcbc9cd07 ]
 
-The i2c_master_send/recv() functions return negative error codes or the
-number of bytes that were able to be sent/received.  This code has
-two problems.  1)  Instead of checking if all the bytes were sent or
-received, it checks that at least one byte was sent or received.
-2) If there was a partial send/receive then we should return a negative
-error code but this code returns success.
+This improves latency if the GPU is already busy with other work.
+This is useful for VR compositors that submit highly latency-sensitive
+compositing work on high-priority compute queues while the GPU is busy
+rendering the next frame.
 
-Fixes: a9fe713d7d45 ("drm/bridge: Add PTN3460 bridge driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/0cdc2dce-ca89-451a-9774-1482ab2f4762@moroto.mountain
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Userspace merge request:
+https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/26462
+
+v2: bump driver version (Alex)
+
+Reviewed-by: Marek Olšák <marek.olsak@amd.com>
+Signed-off-by: Friedrich Vock <friedrich.vock@gmx.de>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 03ff6d7238b7 ("drm/amdgpu/gfx10: set UNORD_DISPATCH in compute MQDs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/nxp-ptn3460.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h      |  1 +
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c  |  3 ++-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 10 ++++++----
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c   |  3 ++-
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c   |  3 ++-
+ 5 files changed, 13 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/bridge/nxp-ptn3460.c
-+++ b/drivers/gpu/drm/bridge/nxp-ptn3460.c
-@@ -56,13 +56,13 @@ static int ptn3460_read_bytes(struct ptn
- 	ret = i2c_master_send(ptn_bridge->client, &addr, 1);
- 	if (ret <= 0) {
- 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
--		return ret;
-+		return ret ?: -EIO;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu.h b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+index 9d92ca157677..50f57d4dfd8f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -757,6 +757,7 @@ struct amdgpu_mqd_prop {
+ 	uint64_t eop_gpu_addr;
+ 	uint32_t hqd_pipe_priority;
+ 	uint32_t hqd_queue_priority;
++	bool allow_tunneling;
+ 	bool hqd_active;
+ };
+ 
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index c0e8e030b96f..a7ad77ed09ca 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -115,9 +115,10 @@
+  *   3.54.0 - Add AMDGPU_CTX_QUERY2_FLAGS_RESET_IN_PROGRESS support
+  * - 3.55.0 - Add AMDGPU_INFO_GPUVM_FAULT query
+  * - 3.56.0 - Update IB start address and size alignment for decode and encode
++ * - 3.57.0 - Compute tunneling on GFX10+
+  */
+ #define KMS_DRIVER_MAJOR	3
+-#define KMS_DRIVER_MINOR	56
++#define KMS_DRIVER_MINOR	57
+ #define KMS_DRIVER_PATCHLEVEL	0
+ 
+ /*
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+index 6a80d3ec887e..45424ebf9681 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+@@ -642,6 +642,10 @@ static void amdgpu_ring_to_mqd_prop(struct amdgpu_ring *ring,
+ 				    struct amdgpu_mqd_prop *prop)
+ {
+ 	struct amdgpu_device *adev = ring->adev;
++	bool is_high_prio_compute = ring->funcs->type == AMDGPU_RING_TYPE_COMPUTE &&
++				    amdgpu_gfx_is_high_priority_compute_queue(adev, ring);
++	bool is_high_prio_gfx = ring->funcs->type == AMDGPU_RING_TYPE_GFX &&
++				amdgpu_gfx_is_high_priority_graphics_queue(adev, ring);
+ 
+ 	memset(prop, 0, sizeof(*prop));
+ 
+@@ -659,10 +663,8 @@ static void amdgpu_ring_to_mqd_prop(struct amdgpu_ring *ring,
+ 	 */
+ 	prop->hqd_active = ring->funcs->type == AMDGPU_RING_TYPE_KIQ;
+ 
+-	if ((ring->funcs->type == AMDGPU_RING_TYPE_COMPUTE &&
+-	     amdgpu_gfx_is_high_priority_compute_queue(adev, ring)) ||
+-	    (ring->funcs->type == AMDGPU_RING_TYPE_GFX &&
+-	     amdgpu_gfx_is_high_priority_graphics_queue(adev, ring))) {
++	prop->allow_tunneling = is_high_prio_compute;
++	if (is_high_prio_compute || is_high_prio_gfx) {
+ 		prop->hqd_pipe_priority = AMDGPU_GFX_PIPE_PRIO_HIGH;
+ 		prop->hqd_queue_priority = AMDGPU_GFX_QUEUE_PRIORITY_MAXIMUM;
  	}
- 
- 	ret = i2c_master_recv(ptn_bridge->client, buf, len);
--	if (ret <= 0) {
-+	if (ret != len) {
- 		DRM_ERROR("Failed to recv i2c data, ret=%d\n", ret);
--		return ret;
-+		return ret < 0 ? ret : -EIO;
- 	}
- 
- 	return 0;
-@@ -78,9 +78,9 @@ static int ptn3460_write_byte(struct ptn
- 	buf[1] = val;
- 
- 	ret = i2c_master_send(ptn_bridge->client, buf, ARRAY_SIZE(buf));
--	if (ret <= 0) {
-+	if (ret != ARRAY_SIZE(buf)) {
- 		DRM_ERROR("Failed to send i2c command, ret=%d\n", ret);
--		return ret;
-+		return ret < 0 ? ret : -EIO;
- 	}
- 
- 	return 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index 67c198ea8211..d63cab294883 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -6590,7 +6590,8 @@ static int gfx_v10_0_compute_mqd_init(struct amdgpu_device *adev, void *m,
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, ENDIAN_SWAP, 1);
+ #endif
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, UNORD_DISPATCH, 0);
+-	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, TUNNEL_DISPATCH, 0);
++	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, TUNNEL_DISPATCH,
++			    prop->allow_tunneling);
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, PRIV_STATE, 1);
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, KMD_QUEUE, 1);
+ 	mqd->cp_hqd_pq_control = tmp;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+index cddf3737e8a3..4824a4c04d35 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+@@ -3839,7 +3839,8 @@ static int gfx_v11_0_compute_mqd_init(struct amdgpu_device *adev, void *m,
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, RPTR_BLOCK_SIZE,
+ 			    (order_base_2(AMDGPU_GPU_PAGE_SIZE / 4) - 1));
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, UNORD_DISPATCH, 0);
+-	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, TUNNEL_DISPATCH, 0);
++	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, TUNNEL_DISPATCH,
++			    prop->allow_tunneling);
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, PRIV_STATE, 1);
+ 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, KMD_QUEUE, 1);
+ 	mqd->cp_hqd_pq_control = tmp;
+-- 
+2.43.0
+
 
 
 
