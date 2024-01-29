@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79FAD840ECD
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB191841048
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35E7028254E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1ADF286D2D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9070E15CD62;
-	Mon, 29 Jan 2024 17:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B3B75604;
+	Mon, 29 Jan 2024 17:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHIJeJs2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzCwwpXt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5CE157E79;
-	Mon, 29 Jan 2024 17:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863BB755FB;
+	Mon, 29 Jan 2024 17:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548348; cv=none; b=VQ4OofQ4BLDnIQYXdadqFsdhi1CCdoFIpgOPAINNuMdnSWNmDGU3Yxj4tH2xNYeht61V35wsPiWoXwd1CdqgaG2UIhI+CARDewizuBHZtzx80hWrDUt50fLsKgKuP4vBuRPdNEBSA8522DNzBX6ii+AngFbJc0zryr2zjYAraUE=
+	t=1706548595; cv=none; b=Peyu1blXfxuJAP7XXoWNLDuKeVXKXkPtvvnc7ccfofafyO7vf9Up6+vdQ/6RkJov1ZxOUCC5dzx8MLvSCYuQlEdaKEMP2d3x0EMRLkHgbpg66WTjTpKzNDmbdo5XdWnFETlj0NhO0Dhlxgio1dZKjAqIPY8PnuurU8MUqXAibcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548348; c=relaxed/simple;
-	bh=kuu1kE6xyH+YxxBw/bB+HNHWJP+ua2qBYBCtN47Isns=;
+	s=arc-20240116; t=1706548595; c=relaxed/simple;
+	bh=Y3+B9BvVvzehcbjEdxkem0J6K2/gelV5+Jl7m44F8p4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uMYjIh9yliu9xIgi2e/P9xv8BtUwzD/lVPcU5z71BZhepXE0Z+/3HU6asm1/BVeStJw7yPbJTxO58IN/UnG1bQ1mOjeQQY+WrgUjWQ0Dx8uMp091RhoJu0X8dpSC60GBQpPetZrw5JGczMcm4ZjWr9l/Mpby5fHZ9BE0pBu+MpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHIJeJs2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F3EC43394;
-	Mon, 29 Jan 2024 17:12:28 +0000 (UTC)
+	 MIME-Version; b=rLvuJvtqjZA92ByhtoojAocj/LK7LwsJtWxed4k0n3rkB+5JwTAWza8c8acutS+2lztCwudh7P30D6loSWNI9YrixxjvtAav7YcPP6LLzWf7yzdolV/Ihz5FGh/UGSY42s5ZW0O1KAQtKmtC28Z4t+USAYwopzzw0B40gmi8kho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzCwwpXt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE93C433F1;
+	Mon, 29 Jan 2024 17:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548348;
-	bh=kuu1kE6xyH+YxxBw/bB+HNHWJP+ua2qBYBCtN47Isns=;
+	s=korg; t=1706548595;
+	bh=Y3+B9BvVvzehcbjEdxkem0J6K2/gelV5+Jl7m44F8p4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sHIJeJs25Lmu2N1ACQdhh2IfsY+E8ufBPLIAni0hFtzDvzLujZbvP0fFHlX7Thakr
-	 lqHrbettg1KTNwOsfj0pA3lTc6J4+jj5oarchAXsnOh8imCO9Q2uPAV1uRl4CzgZaV
-	 1JfucT1LJEM6Su8FzPiWwWqaQDZAbEA5rkSru878=
+	b=YzCwwpXtuQvLZiI4yFOUz6Mc6kKKWf7bLWjgGGCePLVDwyeJqjgjyDTIxIr1tkePp
+	 dvP1mMySJYJYTbH60NRd1PU7H14NIfKiad2Lkkvoz0jatv36VLOPiAglBSeUSWr3oy
+	 BekRn4xCbrABJpcSKEHP+owGvPw3fk7P3lnFWL4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jenishkumar Maheshbhai Patel <jpatel2@marvell.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 110/185] net: mvpp2: clear BM pool before initialization
-Date: Mon, 29 Jan 2024 09:05:10 -0800
-Message-ID: <20240129170002.124467440@linuxfoundation.org>
+	Lin Ma <linma@zju.edu.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 247/331] ksmbd: fix global oob in ksmbd_nl_policy
+Date: Mon, 29 Jan 2024 09:05:11 -0800
+Message-ID: <20240129170022.108534222@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenishkumar Maheshbhai Patel <jpatel2@marvell.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 9f538b415db862e74b8c5d3abbccfc1b2b6caa38 ]
+commit ebeae8adf89d9a82359f6659b1663d09beec2faa upstream.
 
-Register value persist after booting the kernel using
-kexec which results in kernel panic. Thus clear the
-BM pool registers before initialisation to fix the issue.
+Similar to a reported issue (check the commit b33fb5b801c6 ("net:
+qualcomm: rmnet: fix global oob in rmnet_policy"), my local fuzzer finds
+another global out-of-bounds read for policy ksmbd_nl_policy. See bug
+trace below:
 
-Fixes: 3f518509dedc ("ethernet: Add new driver for Marvell Armada 375 network unit")
-Signed-off-by: Jenishkumar Maheshbhai Patel <jpatel2@marvell.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Link: https://lore.kernel.org/r/20240119035914.2595665-1-jpatel2@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+==================================================================
+BUG: KASAN: global-out-of-bounds in validate_nla lib/nlattr.c:386 [inline]
+BUG: KASAN: global-out-of-bounds in __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
+Read of size 1 at addr ffffffff8f24b100 by task syz-executor.1/62810
+
+CPU: 0 PID: 62810 Comm: syz-executor.1 Tainted: G                 N 6.1.0 #3
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x8b/0xb3 lib/dump_stack.c:106
+ print_address_description mm/kasan/report.c:284 [inline]
+ print_report+0x172/0x475 mm/kasan/report.c:395
+ kasan_report+0xbb/0x1c0 mm/kasan/report.c:495
+ validate_nla lib/nlattr.c:386 [inline]
+ __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
+ __nla_parse+0x3e/0x50 lib/nlattr.c:697
+ __nlmsg_parse include/net/netlink.h:748 [inline]
+ genl_family_rcv_msg_attrs_parse.constprop.0+0x1b0/0x290 net/netlink/genetlink.c:565
+ genl_family_rcv_msg_doit+0xda/0x330 net/netlink/genetlink.c:734
+ genl_family_rcv_msg net/netlink/genetlink.c:833 [inline]
+ genl_rcv_msg+0x441/0x780 net/netlink/genetlink.c:850
+ netlink_rcv_skb+0x14f/0x410 net/netlink/af_netlink.c:2540
+ genl_rcv+0x24/0x40 net/netlink/genetlink.c:861
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x54e/0x800 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x930/0xe50 net/netlink/af_netlink.c:1921
+ sock_sendmsg_nosec net/socket.c:714 [inline]
+ sock_sendmsg+0x154/0x190 net/socket.c:734
+ ____sys_sendmsg+0x6df/0x840 net/socket.c:2482
+ ___sys_sendmsg+0x110/0x1b0 net/socket.c:2536
+ __sys_sendmsg+0xf3/0x1c0 net/socket.c:2565
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fdd66a8f359
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fdd65e00168 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007fdd66bbcf80 RCX: 00007fdd66a8f359
+RDX: 0000000000000000 RSI: 0000000020000500 RDI: 0000000000000003
+RBP: 00007fdd66ada493 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffc84b81aff R14: 00007fdd65e00300 R15: 0000000000022000
+ </TASK>
+
+The buggy address belongs to the variable:
+ ksmbd_nl_policy+0x100/0xa80
+
+The buggy address belongs to the physical page:
+page:0000000034f47940 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1ccc4b
+flags: 0x200000000001000(reserved|node=0|zone=2)
+raw: 0200000000001000 ffffea00073312c8 ffffea00073312c8 0000000000000000
+raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffffffff8f24b000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffffffff8f24b080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffffffff8f24b100: f9 f9 f9 f9 00 00 f9 f9 f9 f9 f9 f9 00 00 07 f9
+                   ^
+ ffffffff8f24b180: f9 f9 f9 f9 00 05 f9 f9 f9 f9 f9 f9 00 00 00 05
+ ffffffff8f24b200: f9 f9 f9 f9 00 00 03 f9 f9 f9 f9 f9 00 00 04 f9
+==================================================================
+
+To fix it, add a placeholder named __KSMBD_EVENT_MAX and let
+KSMBD_EVENT_MAX to be its original value - 1 according to what other
+netlink families do. Also change two sites that refer the
+KSMBD_EVENT_MAX to correct value.
+
+Cc: stable@vger.kernel.org
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 27 ++++++++++++++++++-
- 1 file changed, 26 insertions(+), 1 deletion(-)
+ fs/smb/server/ksmbd_netlink.h |    3 ++-
+ fs/smb/server/transport_ipc.c |    4 ++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index f936640cca4e..2f80ee84c7ec 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -614,12 +614,38 @@ static void mvpp23_bm_set_8pool_mode(struct mvpp2 *priv)
- 	mvpp2_write(priv, MVPP22_BM_POOL_BASE_ADDR_HIGH_REG, val);
- }
+--- a/fs/smb/server/ksmbd_netlink.h
++++ b/fs/smb/server/ksmbd_netlink.h
+@@ -304,7 +304,8 @@ enum ksmbd_event {
+ 	KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST,
+ 	KSMBD_EVENT_SPNEGO_AUTHEN_RESPONSE	= 15,
  
-+/* Cleanup pool before actual initialization in the OS */
-+static void mvpp2_bm_pool_cleanup(struct mvpp2 *priv, int pool_id)
-+{
-+	unsigned int thread = mvpp2_cpu_to_thread(priv, get_cpu());
-+	u32 val;
-+	int i;
-+
-+	/* Drain the BM from all possible residues left by firmware */
-+	for (i = 0; i < MVPP2_BM_POOL_SIZE_MAX; i++)
-+		mvpp2_thread_read(priv, thread, MVPP2_BM_PHY_ALLOC_REG(pool_id));
-+
-+	put_cpu();
-+
-+	/* Stop the BM pool */
-+	val = mvpp2_read(priv, MVPP2_BM_POOL_CTRL_REG(pool_id));
-+	val |= MVPP2_BM_STOP_MASK;
-+	mvpp2_write(priv, MVPP2_BM_POOL_CTRL_REG(pool_id), val);
-+}
-+
- static int mvpp2_bm_init(struct device *dev, struct mvpp2 *priv)
- {
- 	enum dma_data_direction dma_dir = DMA_FROM_DEVICE;
- 	int i, err, poolnum = MVPP2_BM_POOLS_NUM;
- 	struct mvpp2_port *port;
+-	KSMBD_EVENT_MAX
++	__KSMBD_EVENT_MAX,
++	KSMBD_EVENT_MAX = __KSMBD_EVENT_MAX - 1
+ };
  
-+	if (priv->percpu_pools)
-+		poolnum = mvpp2_get_nrxqs(priv) * 2;
-+
-+	/* Clean up the pool state in case it contains stale state */
-+	for (i = 0; i < poolnum; i++)
-+		mvpp2_bm_pool_cleanup(priv, i);
-+
- 	if (priv->percpu_pools) {
- 		for (i = 0; i < priv->port_count; i++) {
- 			port = priv->port_list[i];
-@@ -629,7 +655,6 @@ static int mvpp2_bm_init(struct device *dev, struct mvpp2 *priv)
- 			}
- 		}
+ /*
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -74,7 +74,7 @@ static int handle_unsupported_event(stru
+ static int handle_generic_event(struct sk_buff *skb, struct genl_info *info);
+ static int ksmbd_ipc_heartbeat_request(void);
  
--		poolnum = mvpp2_get_nrxqs(priv) * 2;
- 		for (i = 0; i < poolnum; i++) {
- 			/* the pool in use */
- 			int pn = i / (poolnum / 2);
--- 
-2.43.0
-
+-static const struct nla_policy ksmbd_nl_policy[KSMBD_EVENT_MAX] = {
++static const struct nla_policy ksmbd_nl_policy[KSMBD_EVENT_MAX + 1] = {
+ 	[KSMBD_EVENT_UNSPEC] = {
+ 		.len = 0,
+ 	},
+@@ -403,7 +403,7 @@ static int handle_generic_event(struct s
+ 		return -EPERM;
+ #endif
+ 
+-	if (type >= KSMBD_EVENT_MAX) {
++	if (type > KSMBD_EVENT_MAX) {
+ 		WARN_ON(1);
+ 		return -EINVAL;
+ 	}
 
 
 
