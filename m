@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-17228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF2F841057
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2E1C840E79
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0EC81C237CD
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FC042810E4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7C515B966;
-	Mon, 29 Jan 2024 17:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D23B15A492;
+	Mon, 29 Jan 2024 17:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSzg1JbX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bElnlC5t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D040815705F;
-	Mon, 29 Jan 2024 17:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2FE15FB01;
+	Mon, 29 Jan 2024 17:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548604; cv=none; b=B2wgZKr6i9grj+6q4Sa8xefl5p7GoL7ZfyrkJQwoOXB3yp77Ucx+daiIdSO+1j+ZRayKyi8TsUkOKyUJ73UV0YPQe7WDXrt/CwLFO04GfMPOrVPrfvzH9t6PgdI5F1XGj6R9wyqIAJU38VD+1ucsw2Qe64I1F/0s1NUUi6bQuvM=
+	t=1706548290; cv=none; b=tGxRqVdickPWI86JiKrVmfRdxdaGw/N1Z86xcP0+tgKlph6rKOnpcHtdlhFoI/jOTckkZmWTpQPDiGsMVMyW3owp+dcU+tsqp4UjP6pWppDiEA309MKZ9lCoM6W+DnYBBi++Fni0CSKzFnb387lapTIK2IDNABl+t4UyNSqFPrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548604; c=relaxed/simple;
-	bh=WJ1+mg6t5U12o8eDCmA16M6dQgqDPZ4JvxsYRUrDBO8=;
+	s=arc-20240116; t=1706548290; c=relaxed/simple;
+	bh=awA2mJlBXok56fs7e+XgK3H8KrDU0i/Lw0Ae3j0YfE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nNFT+y1AXd02UKX+C8eJJxIZFhsfPFdMwIQTTf1ao1oWgBdZF7mKicvyEtzJBYs/nSSCKsrXdnMVkRFkdX8kLfnjq7Jr6MG12EWgd9ehbikLGk9m4b6aFvaOZOx3hTc0WF/Zz38HzfS1QyIjs3++k9Tl2XJAK0AzuzR+AmplQ64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSzg1JbX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B9CC433F1;
-	Mon, 29 Jan 2024 17:16:44 +0000 (UTC)
+	 MIME-Version; b=rBwsPdFwiQ7UTQIBAQbgqJeLW983CR08swI++afzosDwbcuhJt4CZ4m0oc1oN8pSvCrRy0TcQ6gp4IrUh0S4bvYZ+oO7iXrWS87eVJH0azwZu99osC++wbliuF1Qy26Q8p+ePSt3RjC8VZZ9p+QJ4gAAEzkew64bdOcWXd4wLZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bElnlC5t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D725EC43394;
+	Mon, 29 Jan 2024 17:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548604;
-	bh=WJ1+mg6t5U12o8eDCmA16M6dQgqDPZ4JvxsYRUrDBO8=;
+	s=korg; t=1706548289;
+	bh=awA2mJlBXok56fs7e+XgK3H8KrDU0i/Lw0Ae3j0YfE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fSzg1JbXfz3PsMEabQfEG85+FK8tOsBf8xPmL8M4Li/ZbuGrBI4lqr8fLdxVwGnzG
-	 S4b+Iww4vUnXhGGm4voxKC6MJTkAtVwXWc/5n4vy8HwUfv9Qo+mlMzhvs5KDZwf7u/
-	 ZPbEB+tpyS/DaMSJsJiBXM/z3IYQ4kLANokU0Pj4=
+	b=bElnlC5tYvj4+RTogWGw49d3nBMkxE8ofyxvnmRqhsJVz6TLKpQo6qs/b/AVRMZ/r
+	 3mS0foDGoV6Hzi6DD/cRWrDk85QvEzkKgWTAvPfKr2//PcThyhgKvqMtzQC83qW1w4
+	 HXUAGN6sDwXgGrd+WuMyr4ek5UJvxuUHdySj7fqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Subject: [PATCH 6.6 267/331] drm/amd/display: Fix variable deferencing before NULL check in edp_setup_replay()
+	Sung joon Kim <sungjoon.kim@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 300/346] drm/amd/display: Add logging resource checks
 Date: Mon, 29 Jan 2024 09:05:31 -0800
-Message-ID: <20240129170022.676909340@linuxfoundation.org>
+Message-ID: <20240129170025.245874161@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +66,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Charlene Liu <charlene.liu@amd.com>
 
-commit 7073934f5d73f8b53308963cee36f0d389ea857c upstream.
+[ Upstream commit 8a51cc097dd590a86e8eec5398934ef389ff9a7b ]
 
-In edp_setup_replay(), 'struct dc *dc' & 'struct dmub_replay *replay'
-was dereferenced before the pointer 'link' & 'replay' NULL check.
+[Why]
+When mapping resources, resources could be unavailable.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/../display/dc/link/protocols/link_edp_panel_control.c:947 edp_setup_replay() warn: variable dereferenced before check 'link' (see line 933)
-
-Cc: stable@vger.kernel.org
-Cc: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Sung joon Kim <sungjoon.kim@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Charlene Liu <charlene.liu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c |   11 ++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c          | 4 +++-
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 7 ++++++-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
-@@ -920,8 +920,8 @@ bool edp_get_replay_state(const struct d
- bool edp_setup_replay(struct dc_link *link, const struct dc_stream_state *stream)
- {
- 	/* To-do: Setup Replay */
--	struct dc *dc = link->ctx->dc;
--	struct dmub_replay *replay = dc->res_pool->replay;
-+	struct dc *dc;
-+	struct dmub_replay *replay;
- 	int i;
- 	unsigned int panel_inst;
- 	struct replay_context replay_context = { 0 };
-@@ -937,6 +937,10 @@ bool edp_setup_replay(struct dc_link *li
- 	if (!link)
- 		return false;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index c535ddb45a36..bc098098345c 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -3626,7 +3626,7 @@ static void commit_planes_for_stream(struct dc *dc,
+ 	top_pipe_to_program = resource_get_otg_master_for_stream(
+ 				&context->res_ctx,
+ 				stream);
+-
++	ASSERT(top_pipe_to_program != NULL);
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+ 		struct pipe_ctx *old_pipe = &dc->current_state->res_ctx.pipe_ctx[i];
  
-+	dc = link->ctx->dc;
-+
-+	replay = dc->res_pool->replay;
-+
- 	if (!replay)
- 		return false;
+@@ -4457,6 +4457,8 @@ static bool should_commit_minimal_transition_for_windowed_mpo_odm(struct dc *dc,
  
-@@ -965,8 +969,7 @@ bool edp_setup_replay(struct dc_link *li
+ 	cur_pipe = resource_get_otg_master_for_stream(&dc->current_state->res_ctx, stream);
+ 	new_pipe = resource_get_otg_master_for_stream(&context->res_ctx, stream);
++	if (!cur_pipe || !new_pipe)
++		return false;
+ 	cur_is_odm_in_use = resource_get_odm_slice_count(cur_pipe) > 1;
+ 	new_is_odm_in_use = resource_get_odm_slice_count(new_pipe) > 1;
+ 	if (cur_is_odm_in_use == new_is_odm_in_use)
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index e4bb1e25ee3b..ae275f1780d5 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -2170,6 +2170,10 @@ void resource_log_pipe_topology_update(struct dc *dc, struct dc_state *state)
+ 	for (stream_idx = 0; stream_idx < state->stream_count; stream_idx++) {
+ 		otg_master = resource_get_otg_master_for_stream(
+ 				&state->res_ctx, state->streams[stream_idx]);
++		if (!otg_master	|| otg_master->stream_res.tg == NULL) {
++			DC_LOG_DC("topology update: otg_master NULL stream_idx %d!\n", stream_idx);
++			return;
++		}
+ 		slice_count = resource_get_opp_heads_for_otg_master(otg_master,
+ 				&state->res_ctx, opp_heads);
+ 		for (slice_idx = 0; slice_idx < slice_count; slice_idx++) {
+@@ -2990,7 +2994,8 @@ bool dc_add_plane_to_context(
  
- 	replay_context.line_time_in_ns = lineTimeInNs;
+ 	otg_master_pipe = resource_get_otg_master_for_stream(
+ 			&context->res_ctx, stream);
+-	added = resource_append_dpp_pipes_for_plane_composition(context,
++	if (otg_master_pipe)
++		added = resource_append_dpp_pipes_for_plane_composition(context,
+ 			dc->current_state, pool, otg_master_pipe, plane_state);
  
--	if (replay)
--		link->replay_settings.replay_feature_enabled =
-+	link->replay_settings.replay_feature_enabled =
- 			replay->funcs->replay_copy_settings(replay, link, &replay_context, panel_inst);
- 	if (link->replay_settings.replay_feature_enabled) {
- 
+ 	if (added) {
+-- 
+2.43.0
+
 
 
 
