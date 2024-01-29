@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1276C840DB2
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2736F840E05
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB90E283A09
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA6DF1F2CFC9
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7677B15AAA1;
-	Mon, 29 Jan 2024 17:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D3A15957A;
+	Mon, 29 Jan 2024 17:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lK6ODHcm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdnhomZp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35651157053;
-	Mon, 29 Jan 2024 17:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC75C159580;
+	Mon, 29 Jan 2024 17:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548150; cv=none; b=SL/A3yciLqtkddQ2dlqYaucYRip0fYANQIjbQ4dS4Er8JFb+K5WJICq6BxN46jtRHDOiMLtwyPOX84ocbh3FcYxpAjD+Y6/s6AQTfwGptHHIMdm5Awek05gr27HWdg63Lj/GYigshqiIrizaJc5O2WirkY6LBpgYof+NgVeLPk8=
+	t=1706548208; cv=none; b=N95WpYzDZ+6hYwjOH1cWZKgWymcGTausiLuxBNTfgUExfsM0h0TDwn63FvUht0W1sIMUN+EN6lOxovBA55TEz+cszNgNQVvXmuUxZ4aXAZllU3bFBAPl89l5QxB2dckrOvCOq4Gd/NeYy0L7JJeP88tNMAYzXhhX+xYFfl0mteQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548150; c=relaxed/simple;
-	bh=4uaMkEWHMUUrSc5rZsdn5XaX3GFSFiXUdWYO4g7kijU=;
+	s=arc-20240116; t=1706548208; c=relaxed/simple;
+	bh=d7cGkZS+1ZynxOdKL6antyxHIY9gM71QKmJrOh6GVF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HaCrVFmGsFWJ8GyFKwC9BnY616wuHk4BUM+lFLyBfnc4GFSADEgfwY97U6uWs1sBwI5yc2xpDrNpT4q7iib+9YiyD4BJG3Pdqti+uKq9aBjsGZTPLy2B9fQdDPTxPL0UmXcFJ6J2FqlCDPTwETPTLgtL9+QFQUt4F1SCA+Nbl/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lK6ODHcm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35A8C433F1;
-	Mon, 29 Jan 2024 17:09:09 +0000 (UTC)
+	 MIME-Version; b=DVG5YZbalW1Y7vthG/gSzjUAwZG7e3Vsjsao5iviAx+R4rvm2HZ6rHbZylaOvWuL/Kz/7I9bN7n9eIhhwIEKS6FXja1/itGWaG2pvSZoamuofMRmbhbks+MZKLZifMRTIOWRO/A+MFZ+d1VL3YOqADGW27+ejKXq51Dg1gIDEnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdnhomZp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B348EC433C7;
+	Mon, 29 Jan 2024 17:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548150;
-	bh=4uaMkEWHMUUrSc5rZsdn5XaX3GFSFiXUdWYO4g7kijU=;
+	s=korg; t=1706548207;
+	bh=d7cGkZS+1ZynxOdKL6antyxHIY9gM71QKmJrOh6GVF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lK6ODHcmLTiXD+ZJW2dodrCOM544325q+Jnw8zYpNYSYEUxWaeFBG7Dw43d0sAuTx
-	 TZRPv5RtG6g7N0fydeDR0WpJcsynkmoHdKjHsIOsuVfnBQcSURo45F7N+OBBLBLu1z
-	 telU9pFfxUYSxbK5tFaTE2pPMIeqXS1FfuWHvWqk=
+	b=mdnhomZp4wdFq5AIswHzJeOVTsNukY96t6ikuMUOG3bNTA+UEwTgOHt6v8boo6ppa
+	 tcgOWfdgup5nsKhJerAI1Xvgo3+RXjmSFzDCmRCiGpX+SE+XWnk2HlBrXz3QpQIsIP
+	 Vnn35Ts+OBpQmrvJI3TQ9Z5F2hGcE6Kb9qza+oDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 187/346] net/mlx5e: Fix inconsistent hairpin RQT sizes
-Date: Mon, 29 Jan 2024 09:03:38 -0800
-Message-ID: <20240129170021.896819207@linuxfoundation.org>
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.1 019/185] media: ov9734: Enable runtime PM before registering async sub-device
+Date: Mon, 29 Jan 2024 09:03:39 -0800
+Message-ID: <20240129165959.216541822@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tariq Toukan <tariqt@nvidia.com>
+From: Bingbu Cao <bingbu.cao@intel.com>
 
-[ Upstream commit c20767fd45e82d64352db82d4fc8d281a43e4783 ]
+commit e242e9c144050ed120cf666642ba96b7c4462a4c upstream.
 
-The processing of traffic in hairpin queues occurs in HW/FW and does not
-involve the cpus, hence the upper bound on max num channels does not
-apply to them.  Using this bound for the hairpin RQT max_table_size is
-wrong.  It could be too small, and cause the error below [1].  As the
-RQT size provided on init does not get modified later, use the same
-value for both actual and max table sizes.
+As the sensor device maybe accessible right after its async sub-device is
+registered, such as ipu-bridge will try to power up sensor by sensor's
+client device's runtime PM from the async notifier callback, if runtime PM
+is not enabled, it will fail.
 
-[1]
-mlx5_core 0000:08:00.1: mlx5_cmd_out_err:805:(pid 1200): CREATE_RQT(0x916) op_mod(0x0) failed, status bad parameter(0x3), syndrome (0x538faf), err(-22)
+So runtime PM should be ready before its async sub-device is registered
+and accessible by others.
 
-Fixes: 74a8dadac17e ("net/mlx5e: Preparations for supporting larger number of channels")
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d3f863a63fe4 ("media: i2c: Add ov9734 image sensor driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ov9734.c |   19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index 96af9e2ab1d8..b61d82f08e65 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -761,7 +761,7 @@ static int mlx5e_hairpin_create_indirect_rqt(struct mlx5e_hairpin *hp)
+--- a/drivers/media/i2c/ov9734.c
++++ b/drivers/media/i2c/ov9734.c
+@@ -939,6 +939,7 @@ static void ov9734_remove(struct i2c_cli
+ 	media_entity_cleanup(&sd->entity);
+ 	v4l2_ctrl_handler_free(sd->ctrl_handler);
+ 	pm_runtime_disable(&client->dev);
++	pm_runtime_set_suspended(&client->dev);
+ 	mutex_destroy(&ov9734->mutex);
+ }
  
- 	err = mlx5e_rss_params_indir_init(&indir, mdev,
- 					  mlx5e_rqt_size(mdev, hp->num_channels),
--					  mlx5e_rqt_size(mdev, priv->max_nch));
-+					  mlx5e_rqt_size(mdev, hp->num_channels));
- 	if (err)
- 		return err;
+@@ -984,13 +985,6 @@ static int ov9734_probe(struct i2c_clien
+ 		goto probe_error_v4l2_ctrl_handler_free;
+ 	}
  
--- 
-2.43.0
-
+-	ret = v4l2_async_register_subdev_sensor(&ov9734->sd);
+-	if (ret < 0) {
+-		dev_err(&client->dev, "failed to register V4L2 subdev: %d",
+-			ret);
+-		goto probe_error_media_entity_cleanup;
+-	}
+-
+ 	/*
+ 	 * Device is already turned on by i2c-core with ACPI domain PM.
+ 	 * Enable runtime PM and turn off the device.
+@@ -999,9 +993,18 @@ static int ov9734_probe(struct i2c_clien
+ 	pm_runtime_enable(&client->dev);
+ 	pm_runtime_idle(&client->dev);
+ 
++	ret = v4l2_async_register_subdev_sensor(&ov9734->sd);
++	if (ret < 0) {
++		dev_err(&client->dev, "failed to register V4L2 subdev: %d",
++			ret);
++		goto probe_error_media_entity_cleanup_pm;
++	}
++
+ 	return 0;
+ 
+-probe_error_media_entity_cleanup:
++probe_error_media_entity_cleanup_pm:
++	pm_runtime_disable(&client->dev);
++	pm_runtime_set_suspended(&client->dev);
+ 	media_entity_cleanup(&ov9734->sd.entity);
+ 
+ probe_error_v4l2_ctrl_handler_free:
 
 
 
