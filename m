@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-16670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 234E5840DEF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72744840FF8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 893BD1F2D050
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF0631F20FE5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9AC215B0E8;
-	Mon, 29 Jan 2024 17:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073267374A;
+	Mon, 29 Jan 2024 17:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vet3jp9t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seaBe88m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8908615B0ED;
-	Mon, 29 Jan 2024 17:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B482573722;
+	Mon, 29 Jan 2024 17:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548191; cv=none; b=KyBrzcss6BjEFQQxJunBA39et43pSveqC9xODYletluf+fDoaNly5bchya2p/My/LGuHM1ATyklovgLP7Or7geJBDR318CqK672qKFu8EMRdd8hTi1y33/lTVB7fg+Jhpg19TMIdtoLEjGoQo2dj8kjUbT+y6mTs6ShXNl8gn2U=
+	t=1706548536; cv=none; b=jSf67GuPhuH9Whfb5Ecic2mzvE+y4JhrfLMzwrqxg8qo/cgQT1SIKHzYyNjkxr7sH4fGXMJJAz5xxhQr9bYgQSskKoeM8V7tATbND0C2m7BSmmDNlP9NxCrEgKi5fVV8G4mkJXtKF+yENWpW5EqXOMhKFUH+I2KY8yxNVIjLvrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548191; c=relaxed/simple;
-	bh=TtmsMRFE28YU+QaOhyTgl5c1/M0BgHmZJnJa3+XJzSQ=;
+	s=arc-20240116; t=1706548536; c=relaxed/simple;
+	bh=oqOIrX8EaA7cdMROhoYtWogxra2l1DIJqEyK2Uk/NAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XAMFLVoI9lh+Fc7ende29taQrqIZkvsg+xFhvI8QN29cKpbjn3pj/qkezbw6YmCdEhTo0ACxsk16iQtXt/xroyesVa4NNQ5ie1pzxj1Fk+lgfn9Y5KYx6CKIn0qciCBj/o5xch/JbqmffX3yYsmC3773UucrNHNkN6rg0lfVzKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vet3jp9t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51155C433F1;
-	Mon, 29 Jan 2024 17:09:51 +0000 (UTC)
+	 MIME-Version; b=Vzkup71c+x8jeLhA3NsCR0D/Pku71TygiKqgN05d3zQGWNj72xqhuPjcx1HS+c5VQA/hrt0IrV5JqiHVxgZMaN1qJJc3w/mzINHSgcdgzBrbG+L+SfAsGfCXMSpX6h1/q87qJgiHuA/U7OIem6izEVi+BzmFbJXV5tHtgXi8b9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seaBe88m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D781C433F1;
+	Mon, 29 Jan 2024 17:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548191;
-	bh=TtmsMRFE28YU+QaOhyTgl5c1/M0BgHmZJnJa3+XJzSQ=;
+	s=korg; t=1706548536;
+	bh=oqOIrX8EaA7cdMROhoYtWogxra2l1DIJqEyK2Uk/NAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vet3jp9tcAseDlpXPvjGTDcte0KFfOv68NorLD0FsYliPfBbQk7q8Qh2DxmFjlPt5
-	 RSBgsKoaZknbGojxcYVk0xVNQza+03bt6F4ISKQkmZ8AnQ6WgNMEUPfvM1nbIy7Zl6
-	 TmORNr7y1E7d4oGTNbIDBGQRKi5axc2rbaruyW1E=
+	b=seaBe88m9y7DUC86HjoPtXraqVKQ+JWLu7KW7ZhC49yPgtmhw49i/cfBLJK3YhfRg
+	 VtSMvE/UbhBRWmt3Z5DZT6872KXppEp8oZQvjA1gvwmyF4a18y+7UVJ3YFEWwWF5hk
+	 WAZAhAgh57lIC7MjaCpP496WQDPCbm0zcHS48Yco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	Magnus Karlsson <magnus.karlsson@intel.com>
-Subject: [PATCH 6.7 208/346] xsk: fix usage of multi-buffer BPF helpers for ZC XDP
+	syzbot+2a7024e9502df538e8ef@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 175/331] llc: make llc_ui_sendmsg() more robust against bonding changes
 Date: Mon, 29 Jan 2024 09:03:59 -0800
-Message-ID: <20240129170022.503233556@linuxfoundation.org>
+Message-ID: <20240129170020.037726338@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,197 +64,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit c5114710c8ce86b8317e9b448f4fd15c711c2a82 ]
+[ Upstream commit dad555c816a50c6a6a8a86be1f9177673918c647 ]
 
-Currently when packet is shrunk via bpf_xdp_adjust_tail() and memory
-type is set to MEM_TYPE_XSK_BUFF_POOL, null ptr dereference happens:
+syzbot was able to trick llc_ui_sendmsg(), allocating an skb with no
+headroom, but subsequently trying to push 14 bytes of Ethernet header [1]
 
-[1136314.192256] BUG: kernel NULL pointer dereference, address:
-0000000000000034
-[1136314.203943] #PF: supervisor read access in kernel mode
-[1136314.213768] #PF: error_code(0x0000) - not-present page
-[1136314.223550] PGD 0 P4D 0
-[1136314.230684] Oops: 0000 [#1] PREEMPT SMP NOPTI
-[1136314.239621] CPU: 8 PID: 54203 Comm: xdpsock Not tainted 6.6.0+ #257
-[1136314.250469] Hardware name: Intel Corporation S2600WFT/S2600WFT,
-BIOS SE5C620.86B.02.01.0008.031920191559 03/19/2019
-[1136314.265615] RIP: 0010:__xdp_return+0x6c/0x210
-[1136314.274653] Code: ad 00 48 8b 47 08 49 89 f8 a8 01 0f 85 9b 01 00 00 0f 1f 44 00 00 f0 41 ff 48 34 75 32 4c 89 c7 e9 79 cd 80 ff 83 fe 03 75 17 <f6> 41 34 01 0f 85 02 01 00 00 48 89 cf e9 22 cc 1e 00 e9 3d d2 86
-[1136314.302907] RSP: 0018:ffffc900089f8db0 EFLAGS: 00010246
-[1136314.312967] RAX: ffffc9003168aed0 RBX: ffff8881c3300000 RCX:
-0000000000000000
-[1136314.324953] RDX: 0000000000000000 RSI: 0000000000000003 RDI:
-ffffc9003168c000
-[1136314.336929] RBP: 0000000000000ae0 R08: 0000000000000002 R09:
-0000000000010000
-[1136314.348844] R10: ffffc9000e495000 R11: 0000000000000040 R12:
-0000000000000001
-[1136314.360706] R13: 0000000000000524 R14: ffffc9003168aec0 R15:
-0000000000000001
-[1136314.373298] FS:  00007f8df8bbcb80(0000) GS:ffff8897e0e00000(0000)
-knlGS:0000000000000000
-[1136314.386105] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[1136314.396532] CR2: 0000000000000034 CR3: 00000001aa912002 CR4:
-00000000007706f0
-[1136314.408377] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
-0000000000000000
-[1136314.420173] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7:
-0000000000000400
-[1136314.431890] PKRU: 55555554
-[1136314.439143] Call Trace:
-[1136314.446058]  <IRQ>
-[1136314.452465]  ? __die+0x20/0x70
-[1136314.459881]  ? page_fault_oops+0x15b/0x440
-[1136314.468305]  ? exc_page_fault+0x6a/0x150
-[1136314.476491]  ? asm_exc_page_fault+0x22/0x30
-[1136314.484927]  ? __xdp_return+0x6c/0x210
-[1136314.492863]  bpf_xdp_adjust_tail+0x155/0x1d0
-[1136314.501269]  bpf_prog_ccc47ae29d3b6570_xdp_sock_prog+0x15/0x60
-[1136314.511263]  ice_clean_rx_irq_zc+0x206/0xc60 [ice]
-[1136314.520222]  ? ice_xmit_zc+0x6e/0x150 [ice]
-[1136314.528506]  ice_napi_poll+0x467/0x670 [ice]
-[1136314.536858]  ? ttwu_do_activate.constprop.0+0x8f/0x1a0
-[1136314.546010]  __napi_poll+0x29/0x1b0
-[1136314.553462]  net_rx_action+0x133/0x270
-[1136314.561619]  __do_softirq+0xbe/0x28e
-[1136314.569303]  do_softirq+0x3f/0x60
+Like some others, llc_ui_sendmsg() releases the socket lock before
+calling sock_alloc_send_skb().
+Then it acquires it again, but does not redo all the sanity checks
+that were performed.
 
-This comes from __xdp_return() call with xdp_buff argument passed as
-NULL which is supposed to be consumed by xsk_buff_free() call.
+This fix:
 
-To address this properly, in ZC case, a node that represents the frag
-being removed has to be pulled out of xskb_list. Introduce
-appropriate xsk helpers to do such node operation and use them
-accordingly within bpf_xdp_adjust_tail().
+- Uses LL_RESERVED_SPACE() to reserve space.
+- Check all conditions again after socket lock is held again.
+- Do not account Ethernet header for mtu limitation.
 
-Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
-Acked-by: Magnus Karlsson <magnus.karlsson@intel.com> # For the xsk header part
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/r/20240124191602.566724-4-maciej.fijalkowski@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[1]
+
+skbuff: skb_under_panic: text:ffff800088baa334 len:1514 put:14 head:ffff0000c9c37000 data:ffff0000c9c36ff2 tail:0x5dc end:0x6c0 dev:bond0
+
+ kernel BUG at net/core/skbuff.c:193 !
+Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 0 PID: 6875 Comm: syz-executor.0 Not tainted 6.7.0-rc8-syzkaller-00101-g0802e17d9aca-dirty #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
+pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : skb_panic net/core/skbuff.c:189 [inline]
+ pc : skb_under_panic+0x13c/0x140 net/core/skbuff.c:203
+ lr : skb_panic net/core/skbuff.c:189 [inline]
+ lr : skb_under_panic+0x13c/0x140 net/core/skbuff.c:203
+sp : ffff800096f97000
+x29: ffff800096f97010 x28: ffff80008cc8d668 x27: dfff800000000000
+x26: ffff0000cb970c90 x25: 00000000000005dc x24: ffff0000c9c36ff2
+x23: ffff0000c9c37000 x22: 00000000000005ea x21: 00000000000006c0
+x20: 000000000000000e x19: ffff800088baa334 x18: 1fffe000368261ce
+x17: ffff80008e4ed000 x16: ffff80008a8310f8 x15: 0000000000000001
+x14: 1ffff00012df2d58 x13: 0000000000000000 x12: 0000000000000000
+x11: 0000000000000001 x10: 0000000000ff0100 x9 : e28a51f1087e8400
+x8 : e28a51f1087e8400 x7 : ffff80008028f8d0 x6 : 0000000000000000
+x5 : 0000000000000001 x4 : 0000000000000001 x3 : ffff800082b78714
+x2 : 0000000000000001 x1 : 0000000100000000 x0 : 0000000000000089
+Call trace:
+  skb_panic net/core/skbuff.c:189 [inline]
+  skb_under_panic+0x13c/0x140 net/core/skbuff.c:203
+  skb_push+0xf0/0x108 net/core/skbuff.c:2451
+  eth_header+0x44/0x1f8 net/ethernet/eth.c:83
+  dev_hard_header include/linux/netdevice.h:3188 [inline]
+  llc_mac_hdr_init+0x110/0x17c net/llc/llc_output.c:33
+  llc_sap_action_send_xid_c+0x170/0x344 net/llc/llc_s_ac.c:85
+  llc_exec_sap_trans_actions net/llc/llc_sap.c:153 [inline]
+  llc_sap_next_state net/llc/llc_sap.c:182 [inline]
+  llc_sap_state_process+0x1ec/0x774 net/llc/llc_sap.c:209
+  llc_build_and_send_xid_pkt+0x12c/0x1c0 net/llc/llc_sap.c:270
+  llc_ui_sendmsg+0x7bc/0xb1c net/llc/af_llc.c:997
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg net/socket.c:745 [inline]
+  sock_sendmsg+0x194/0x274 net/socket.c:767
+  splice_to_socket+0x7cc/0xd58 fs/splice.c:881
+  do_splice_from fs/splice.c:933 [inline]
+  direct_splice_actor+0xe4/0x1c0 fs/splice.c:1142
+  splice_direct_to_actor+0x2a0/0x7e4 fs/splice.c:1088
+  do_splice_direct+0x20c/0x348 fs/splice.c:1194
+  do_sendfile+0x4bc/0xc70 fs/read_write.c:1254
+  __do_sys_sendfile64 fs/read_write.c:1322 [inline]
+  __se_sys_sendfile64 fs/read_write.c:1308 [inline]
+  __arm64_sys_sendfile64+0x160/0x3b4 fs/read_write.c:1308
+  __invoke_syscall arch/arm64/kernel/syscall.c:37 [inline]
+  invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:51
+  el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:136
+  do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:155
+  el0_svc+0x54/0x158 arch/arm64/kernel/entry-common.c:678
+  el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:696
+  el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:595
+Code: aa1803e6 aa1903e7 a90023f5 94792f6a (d4210000)
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-and-tested-by: syzbot+2a7024e9502df538e8ef@syzkaller.appspotmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240118183625.4007013-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xdp_sock_drv.h | 26 +++++++++++++++++++++++
- net/core/filter.c          | 42 ++++++++++++++++++++++++++++++++------
- 2 files changed, 62 insertions(+), 6 deletions(-)
+ net/llc/af_llc.c | 24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
-index 7290eb721c07..5425f7ad5ebd 100644
---- a/include/net/xdp_sock_drv.h
-+++ b/include/net/xdp_sock_drv.h
-@@ -147,6 +147,23 @@ static inline struct xdp_buff *xsk_buff_get_frag(struct xdp_buff *first)
- 	return ret;
- }
- 
-+static inline void xsk_buff_del_tail(struct xdp_buff *tail)
-+{
-+	struct xdp_buff_xsk *xskb = container_of(tail, struct xdp_buff_xsk, xdp);
-+
-+	list_del(&xskb->xskb_list_node);
-+}
-+
-+static inline struct xdp_buff *xsk_buff_get_tail(struct xdp_buff *first)
-+{
-+	struct xdp_buff_xsk *xskb = container_of(first, struct xdp_buff_xsk, xdp);
-+	struct xdp_buff_xsk *frag;
-+
-+	frag = list_last_entry(&xskb->pool->xskb_list, struct xdp_buff_xsk,
-+			       xskb_list_node);
-+	return &frag->xdp;
-+}
-+
- static inline void xsk_buff_set_size(struct xdp_buff *xdp, u32 size)
+diff --git a/net/llc/af_llc.c b/net/llc/af_llc.c
+index 9b06c380866b..20551cfb7da6 100644
+--- a/net/llc/af_llc.c
++++ b/net/llc/af_llc.c
+@@ -928,14 +928,15 @@ static int llc_ui_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+  */
+ static int llc_ui_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
  {
- 	xdp->data = xdp->data_hard_start + XDP_PACKET_HEADROOM;
-@@ -310,6 +327,15 @@ static inline struct xdp_buff *xsk_buff_get_frag(struct xdp_buff *first)
- 	return NULL;
- }
++	DECLARE_SOCKADDR(struct sockaddr_llc *, addr, msg->msg_name);
+ 	struct sock *sk = sock->sk;
+ 	struct llc_sock *llc = llc_sk(sk);
+-	DECLARE_SOCKADDR(struct sockaddr_llc *, addr, msg->msg_name);
+ 	int flags = msg->msg_flags;
+ 	int noblock = flags & MSG_DONTWAIT;
++	int rc = -EINVAL, copied = 0, hdrlen, hh_len;
+ 	struct sk_buff *skb = NULL;
++	struct net_device *dev;
+ 	size_t size = 0;
+-	int rc = -EINVAL, copied = 0, hdrlen;
  
-+static inline void xsk_buff_del_tail(struct xdp_buff *tail)
-+{
-+}
-+
-+static inline struct xdp_buff *xsk_buff_get_tail(struct xdp_buff *first)
-+{
-+	return NULL;
-+}
-+
- static inline void xsk_buff_set_size(struct xdp_buff *xdp, u32 size)
- {
- }
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 1737884be52f..6575288b8580 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -83,6 +83,7 @@
- #include <net/netfilter/nf_conntrack_bpf.h>
- #include <net/netkit.h>
- #include <linux/un.h>
-+#include <net/xdp_sock_drv.h>
- 
- #include "dev.h"
- 
-@@ -4094,6 +4095,40 @@ static int bpf_xdp_frags_increase_tail(struct xdp_buff *xdp, int offset)
- 	return 0;
- }
- 
-+static void bpf_xdp_shrink_data_zc(struct xdp_buff *xdp, int shrink,
-+				   struct xdp_mem_info *mem_info, bool release)
-+{
-+	struct xdp_buff *zc_frag = xsk_buff_get_tail(xdp);
-+
-+	if (release) {
-+		xsk_buff_del_tail(zc_frag);
-+		__xdp_return(NULL, mem_info, false, zc_frag);
-+	} else {
-+		zc_frag->data_end -= shrink;
-+	}
-+}
-+
-+static bool bpf_xdp_shrink_data(struct xdp_buff *xdp, skb_frag_t *frag,
-+				int shrink)
-+{
-+	struct xdp_mem_info *mem_info = &xdp->rxq->mem;
-+	bool release = skb_frag_size(frag) == shrink;
-+
-+	if (mem_info->type == MEM_TYPE_XSK_BUFF_POOL) {
-+		bpf_xdp_shrink_data_zc(xdp, shrink, mem_info, release);
+ 	dprintk("%s: sending from %02X to %02X\n", __func__,
+ 		llc->laddr.lsap, llc->daddr.lsap);
+@@ -955,22 +956,29 @@ static int llc_ui_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
+ 		if (rc)
+ 			goto out;
+ 	}
+-	hdrlen = llc->dev->hard_header_len + llc_ui_header_len(sk, addr);
++	dev = llc->dev;
++	hh_len = LL_RESERVED_SPACE(dev);
++	hdrlen = llc_ui_header_len(sk, addr);
+ 	size = hdrlen + len;
+-	if (size > llc->dev->mtu)
+-		size = llc->dev->mtu;
++	size = min_t(size_t, size, READ_ONCE(dev->mtu));
+ 	copied = size - hdrlen;
+ 	rc = -EINVAL;
+ 	if (copied < 0)
+ 		goto out;
+ 	release_sock(sk);
+-	skb = sock_alloc_send_skb(sk, size, noblock, &rc);
++	skb = sock_alloc_send_skb(sk, hh_len + size, noblock, &rc);
+ 	lock_sock(sk);
+ 	if (!skb)
+ 		goto out;
+-	skb->dev      = llc->dev;
++	if (sock_flag(sk, SOCK_ZAPPED) ||
++	    llc->dev != dev ||
++	    hdrlen != llc_ui_header_len(sk, addr) ||
++	    hh_len != LL_RESERVED_SPACE(dev) ||
++	    size > READ_ONCE(dev->mtu))
 +		goto out;
-+	}
-+
-+	if (release) {
-+		struct page *page = skb_frag_page(frag);
-+
-+		__xdp_return(page_address(page), mem_info, false, NULL);
-+	}
-+
-+out:
-+	return release;
-+}
-+
- static int bpf_xdp_frags_shrink_tail(struct xdp_buff *xdp, int offset)
- {
- 	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
-@@ -4108,12 +4143,7 @@ static int bpf_xdp_frags_shrink_tail(struct xdp_buff *xdp, int offset)
- 
- 		len_free += shrink;
- 		offset -= shrink;
--
--		if (skb_frag_size(frag) == shrink) {
--			struct page *page = skb_frag_page(frag);
--
--			__xdp_return(page_address(page), &xdp->rxq->mem,
--				     false, NULL);
-+		if (bpf_xdp_shrink_data(xdp, frag, shrink)) {
- 			n_frags_free++;
- 		} else {
- 			skb_frag_size_sub(frag, shrink);
++	skb->dev      = dev;
+ 	skb->protocol = llc_proto_type(addr->sllc_arphrd);
+-	skb_reserve(skb, hdrlen);
++	skb_reserve(skb, hh_len + hdrlen);
+ 	rc = memcpy_from_msg(skb_put(skb, copied), msg, copied);
+ 	if (rc)
+ 		goto out;
 -- 
 2.43.0
 
