@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-17182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0BB7841027
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4786B840DE9
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2EC31C20A30
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E92561F2D04D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEFC37407D;
-	Mon, 29 Jan 2024 17:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D7615D5DC;
+	Mon, 29 Jan 2024 17:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSenVJTV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IEtY/iYx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB5B7405B;
-	Mon, 29 Jan 2024 17:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133ED15AADF;
+	Mon, 29 Jan 2024 17:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548571; cv=none; b=E+p5mt6EtbOT97ipkhBvVdFfSTmSnOEPqKpH3CvwsSpQDPMLOGTorLfZG6a9QfqkDEZgxDT6CZ+D11mjIQPA8wnnCiJ2L1aKyU13QQzwWeJb/v2ehCbQxBLXYt7nIYWVHBqMS2fJ9ZKjEMeejjq8vCTbNXHhJ+gJY/s7eKSbiz4=
+	t=1706548187; cv=none; b=tcNJID7V+XZ3Y7TNWyRAyfQx9gSwvvLX7otk+lDvYj4qsjdkVN8oJH+LNIPgL3/KVkL3qy4iQ8tO63A/pLfRf9cGCeq1BqQyoIs3GQtO1eqPxKYwUXpxrHMe4JSrX+/G66FKNqmgRQCOcMWy7i80AIYCxLuL0faUszAxl5WG5Ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548571; c=relaxed/simple;
-	bh=QRKeo1VQc6OEZ79D+xRWLocc3GD6Yp1vK53uocWsSGk=;
+	s=arc-20240116; t=1706548187; c=relaxed/simple;
+	bh=yzsPJbtDIVkEhjOi70nFFtR3Es8tRPNtkK3RoND000w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RUFtvVBC9kwtJpcllhjCbKeprB2tqW7g41Q5WkRWAefYnwAhyOyJGYsSHq1n/x5xncAB0QYj3tUSkaR8Y3qyWtMet2U9TQXYYVu/Xgj2n50w8TOPQmGlYcrQUjEg0Yl4JGCpllIECdGPwPK5doISs/ppRdxtUQBHaWpakMrxzIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSenVJTV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69574C43394;
-	Mon, 29 Jan 2024 17:16:11 +0000 (UTC)
+	 MIME-Version; b=jpyGmMYgQcwsIQKzvveBADeePOWAIBnwZBUw9IjxffXk601/QucBP3ATrOsNNWmqIceemh8GYWvs+K29PYosUOUwQT7KOpp3hzQTCKTHyrxD6Y5btRrWfaIEkjdaAcCf4zXp4pjXmxVIw4zFJe4ZbFrdF7uusCxM8cVE58zPJTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IEtY/iYx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF863C43394;
+	Mon, 29 Jan 2024 17:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548571;
-	bh=QRKeo1VQc6OEZ79D+xRWLocc3GD6Yp1vK53uocWsSGk=;
+	s=korg; t=1706548186;
+	bh=yzsPJbtDIVkEhjOi70nFFtR3Es8tRPNtkK3RoND000w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSenVJTV3QhzjS2mRwzgZwYZ5l37ajC7IJ9YhAAa53D0D8vpGlt9YCMgC64EkNGSZ
-	 m/WZfldz3PU9iAdSlJyeUwBOMT8Vew4DmNIKEnat0j4lUu2auN4gxIkVonVSv2Hvh9
-	 l/DgoAR0dkDUD1wWlZOdTu1cYrGV+OtJNAdCaXCg=
+	b=IEtY/iYxIMY8/GLWffXmSdB7uK9YT9J7TSU+8bSntI4S7lYI9tgB13TkODVrGv76k
+	 oWZwbxIQsXUe879JOCvy67m7Hd2YP6RheFEsvO52pdmHncroEDo7h5k+/Dgrq0seQ8
+	 8Nsl60RC//nJK1/ELP2v9Bm/YILGWKg8idQTKUag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 197/331] net/mlx5: DR, Use the right GVMI number for drop action
+	Bernd Edlinger <bernd.edlinger@hotmail.de>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 6.7 230/346] exec: Fix error handling in begin_new_exec()
 Date: Mon, 29 Jan 2024 09:04:21 -0800
-Message-ID: <20240129170020.639990980@linuxfoundation.org>
+Message-ID: <20240129170023.159783482@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Bernd Edlinger <bernd.edlinger@hotmail.de>
 
-[ Upstream commit 5665954293f13642f9c052ead83c1e9d8cff186f ]
+commit 84c39ec57d409e803a9bb6e4e85daf1243e0e80b upstream.
 
-When FW provides ICM addresses for drop RX/TX, the provided capability
-is 64 bits that contain its GVMI as well as the ICM address itself.
-In case of TX DROP this GVMI is different from the GVMI that the
-domain is operating on.
+If get_unused_fd_flags() fails, the error handling is incomplete because
+bprm->cred is already set to NULL, and therefore free_bprm will not
+unlock the cred_guard_mutex. Note there are two error conditions which
+end up here, one before and one after bprm->cred is cleared.
 
-This patch fixes the action to use these GVMI IDs, as provided by FW.
-
-Fixes: 9db810ed2d37 ("net/mlx5: DR, Expose steering action functionality")
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b8a61c9e7b4a ("exec: Generic execfd support")
+Signed-off-by: Bernd Edlinger <bernd.edlinger@hotmail.de>
+Acked-by: Eric W. Biederman <ebiederm@xmission.com>
+Link: https://lore.kernel.org/r/AS8P193MB128517ADB5EFF29E04389EDAE4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM
+Cc: stable@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/exec.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
-index 5b83da08692d..1a5aee8a7f13 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/dr_action.c
-@@ -781,6 +781,7 @@ int mlx5dr_actions_build_ste_arr(struct mlx5dr_matcher *matcher,
- 		switch (action_type) {
- 		case DR_ACTION_TYP_DROP:
- 			attr.final_icm_addr = nic_dmn->drop_icm_addr;
-+			attr.hit_gvmi = nic_dmn->drop_icm_addr >> 48;
- 			break;
- 		case DR_ACTION_TYP_FT:
- 			dest_action = action;
--- 
-2.43.0
-
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1408,6 +1408,9 @@ int begin_new_exec(struct linux_binprm *
+ 
+ out_unlock:
+ 	up_write(&me->signal->exec_update_lock);
++	if (!bprm->cred)
++		mutex_unlock(&me->signal->cred_guard_mutex);
++
+ out:
+ 	return retval;
+ }
 
 
 
