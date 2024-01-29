@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-16853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D66840EAE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8196840F1C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB8911F281F8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AE05B250D4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E803715FB3B;
-	Mon, 29 Jan 2024 17:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB89A163A9D;
+	Mon, 29 Jan 2024 17:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBED6ni4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BoSgmEbj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A32E2157050;
-	Mon, 29 Jan 2024 17:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A394163A99;
+	Mon, 29 Jan 2024 17:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548327; cv=none; b=A5egl1LjacLjSYZArafwlGskOQ/oiK63JcyLJSO6F417jjTiQlNQXrm71x1djAYjz54fxEq4oV6dBPLDF5bR2eUPqWFcWOThKRGnaNfyuXPVUOgIki8yLvUNX+adf25btdhjrx8OMgna6BwCMpqFM7uL192K1wQP9tVuoBMu+FM=
+	t=1706548386; cv=none; b=mbxp/vBgd+u9cFd01CPfLDaBqLqkkGb09LnfE5jOti9uL7EYusDeTolAkiUDcgXtnzPx3eZr/POIIq6XIJ28TgvW/CSYokwbBM9DDAlAcR6B39JZjlHzvbup0dgnyZR9EBVq14sfHONslHEEOgBRbs9nBS8F2lJKNhzUiTuNMbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548327; c=relaxed/simple;
-	bh=Qh9rWMqoTt8AUEKp994S1ezu1S/kjr788/4kt1WRoAE=;
+	s=arc-20240116; t=1706548386; c=relaxed/simple;
+	bh=Q9sDwpuvKN6dOiDOlgEN9raylULXuaFs8EcztNQvvlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHnyL6HeRVzd/ub/S5ClSjvM5MGfOIB1eJ57JSm4TRKBEdw2oMMbr9vgoY5Y5UoIecDxKDBNTOSs7DPbUj3oBDn/UXHwVtgjR7DRRHAu1v2+5bCwXwowcHdrNp0Goec0P4zmI9cH8fMlFAZis/f1xLKjUPYDMs9ue9G09Vj6UZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBED6ni4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A24AC43390;
-	Mon, 29 Jan 2024 17:12:07 +0000 (UTC)
+	 MIME-Version; b=g7OX/H0DlN6SDwCtMCVWlwy6HHo5MCEsKuZHL9TRyh8ehkm3Qd6ttlgXagNZKWbgUOlktpZhwsgumy9koJGGu5GDqtNl3mXJV/uIbjf/Tya0Bw7XN7ZRg1sMgFgfBIxSyiZ+mRufDAsbXzdNLkjeVEKv1mEqC/BzAERQ8v91SVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BoSgmEbj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2B2C433C7;
+	Mon, 29 Jan 2024 17:13:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548327;
-	bh=Qh9rWMqoTt8AUEKp994S1ezu1S/kjr788/4kt1WRoAE=;
+	s=korg; t=1706548386;
+	bh=Q9sDwpuvKN6dOiDOlgEN9raylULXuaFs8EcztNQvvlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nBED6ni401bs0BtGRgHF02PZP4A+wGPoxYxLxtIBPmHjyXhnUufdUDET2gZqCvcOc
-	 yyXwycccW0xWmGTzt+cIzL/ogBYlCcnD5AHGtOodJ0ASsqQQe/6hIgSmqogR9poiQP
-	 mlxLVE7ib3phUxNsmoKTPB76ozga6ne54Le01FYw=
+	b=BoSgmEbjFIz+URyH1vrw4v/qDq5X9NKqj5dkjYCRXI4TvjsanPuMSUoXR0mlXFTiR
+	 xOAECt/qbcouiGy2g3uvkMknI+8OWKxId09wY5BDOLmLB61L+OTXLARrfDEi2ksLxh
+	 4TgT+lhHXO9PsFxipg2XdVEVOHXQkb5lrypde8cY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shravan Kumar Ramani <shravankr@nvidia.com>,
-	David Thompson <davthompson@nvidia.com>,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Jordan Rife <jrife@google.com>,
+	David Teigland <teigland@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 327/346] platform/mellanox: mlxbf-pmc: Fix offset calculation for crspace events
+Subject: [PATCH 6.1 158/185] dlm: use kernel_connect() and kernel_bind()
 Date: Mon, 29 Jan 2024 09:05:58 -0800
-Message-ID: <20240129170026.094233353@linuxfoundation.org>
+Message-ID: <20240129170003.673304142@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shravan Kumar Ramani <shravankr@nvidia.com>
+From: Jordan Rife <jrife@google.com>
 
-[ Upstream commit 732c35ce6d4892f7b07cc9aca61a6ad0fd400a26 ]
+[ Upstream commit e9cdebbe23f1aa9a1caea169862f479ab3fa2773 ]
 
-The event selector fields for 2 counters are contained in one
-32-bit register and the current logic does not account for this.
+Recent changes to kernel_connect() and kernel_bind() ensure that
+callers are insulated from changes to the address parameter made by BPF
+SOCK_ADDR hooks. This patch wraps direct calls to ops->connect() and
+ops->bind() with kernel_connect() and kernel_bind() to protect callers
+in such cases.
 
-Fixes: 423c3361855c ("platform/mellanox: mlxbf-pmc: Add support for BlueField-3")
-Signed-off-by: Shravan Kumar Ramani <shravankr@nvidia.com>
-Reviewed-by: David Thompson <davthompson@nvidia.com>
-Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
-Link: https://lore.kernel.org/r/8834cfa496c97c7c2fcebcfca5a2aa007e20ae96.1705485095.git.shravankr@nvidia.com
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/netdev/9944248dba1bce861375fcce9de663934d933ba9.camel@redhat.com/
+Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
+Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jordan Rife <jrife@google.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/mellanox/mlxbf-pmc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/dlm/lowcomms.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/platform/mellanox/mlxbf-pmc.c b/drivers/platform/mellanox/mlxbf-pmc.c
-index 1dd84c7a79de..b1995ac268d7 100644
---- a/drivers/platform/mellanox/mlxbf-pmc.c
-+++ b/drivers/platform/mellanox/mlxbf-pmc.c
-@@ -1170,7 +1170,7 @@ static int mlxbf_pmc_program_crspace_counter(int blk_num, uint32_t cnt_num,
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 6ed09edabea0..72f34f96d015 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -1845,8 +1845,8 @@ static int dlm_tcp_bind(struct socket *sock)
+ 	memcpy(&src_addr, dlm_local_addr[0], sizeof(src_addr));
+ 	make_sockaddr(&src_addr, 0, &addr_len);
+ 
+-	result = sock->ops->bind(sock, (struct sockaddr *)&src_addr,
+-				 addr_len);
++	result = kernel_bind(sock, (struct sockaddr *)&src_addr,
++			     addr_len);
+ 	if (result < 0) {
+ 		/* This *may* not indicate a critical error */
+ 		log_print("could not bind for connect: %d", result);
+@@ -1860,7 +1860,7 @@ static int dlm_tcp_connect(struct connection *con, struct socket *sock,
+ {
  	int ret;
  
- 	addr = pmc->block[blk_num].mmio_base +
--		(rounddown(cnt_num, 2) * MLXBF_PMC_CRSPACE_PERFSEL_SZ);
-+		((cnt_num / 2) * MLXBF_PMC_CRSPACE_PERFSEL_SZ);
- 	ret = mlxbf_pmc_readl(addr, &word);
- 	if (ret)
- 		return ret;
-@@ -1413,7 +1413,7 @@ static int mlxbf_pmc_read_crspace_event(int blk_num, uint32_t cnt_num,
+-	ret = sock->ops->connect(sock, addr, addr_len, O_NONBLOCK);
++	ret = kernel_connect(sock, addr, addr_len, O_NONBLOCK);
+ 	switch (ret) {
+ 	case -EINPROGRESS:
+ 		fallthrough;
+@@ -1900,8 +1900,8 @@ static int dlm_tcp_listen_bind(struct socket *sock)
+ 
+ 	/* Bind to our port */
+ 	make_sockaddr(dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
+-	return sock->ops->bind(sock, (struct sockaddr *)dlm_local_addr[0],
+-			       addr_len);
++	return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
++			   addr_len);
+ }
+ 
+ static const struct dlm_proto_ops dlm_tcp_ops = {
+@@ -1928,12 +1928,12 @@ static int dlm_sctp_connect(struct connection *con, struct socket *sock,
  	int ret;
  
- 	addr = pmc->block[blk_num].mmio_base +
--		(rounddown(cnt_num, 2) * MLXBF_PMC_CRSPACE_PERFSEL_SZ);
-+		((cnt_num / 2) * MLXBF_PMC_CRSPACE_PERFSEL_SZ);
- 	ret = mlxbf_pmc_readl(addr, &word);
- 	if (ret)
+ 	/*
+-	 * Make sock->ops->connect() function return in specified time,
++	 * Make kernel_connect() function return in specified time,
+ 	 * since O_NONBLOCK argument in connect() function does not work here,
+ 	 * then, we should restore the default value of this attribute.
+ 	 */
+ 	sock_set_sndtimeo(sock->sk, 5);
+-	ret = sock->ops->connect(sock, addr, addr_len, 0);
++	ret = kernel_connect(sock, addr, addr_len, 0);
+ 	sock_set_sndtimeo(sock->sk, 0);
+ 	if (ret < 0)
  		return ret;
 -- 
 2.43.0
