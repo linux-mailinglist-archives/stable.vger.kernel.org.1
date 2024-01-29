@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-16497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF2ED840D38
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:09:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF8F840F61
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57DDBB21D1F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F21AB1F27C43
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD39158D71;
-	Mon, 29 Jan 2024 17:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8221649B4;
+	Mon, 29 Jan 2024 17:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/VtyY9S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJB6A+N8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CDB915703C;
-	Mon, 29 Jan 2024 17:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A82F15DBA5;
+	Mon, 29 Jan 2024 17:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548064; cv=none; b=i5LpmARdHb167bjOtrGrjKVNj/BJ+MTVPPahvNgt43SE4c4ux5QdPge/5FhnjQkmo4F1GXjjjn0ziKp/im80pDJCs2x/O/LP5NTHV387WHGH7VT5x810Mj/fopCU8yutITpxEs8ePWk91nhfCWWB0+x2KlpZSPJr0Y3NForVfhg=
+	t=1706548434; cv=none; b=JQDGqNrqz+Wac2vIy0hIcLrSa8Uhkry30CHCtvsJgfoJcq/3BZW0cor5n/X34DWV6Jeifo+y0rTieEm7bsU3OhImrNhdeBJIVsU1zONv2vjCJzrDuOX/QsvABPBt2hXqzXc2w4SRkVBfeU6PSKsvsr0XI+D8ZIC5uo/MUpjFOSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548064; c=relaxed/simple;
-	bh=24OHfNmjq72p4JymnyT3z8IOhm9D+/ARnclOEXhLyqY=;
+	s=arc-20240116; t=1706548434; c=relaxed/simple;
+	bh=1/eSwRFe90CpA8IO2LFN+w93HB8LjUqNg7zmfeLlG/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQ8R83xI92fvL/t5vtP3AMEyhFJllal7njsPOtgl4FeXFYUScua5572GIcvjh2DrLiqsKEevuZ1W0XSGAmof2tpUlvBzrxle6+vMHf1s/9j4t+XkTw+Lv8B0sqD5DsjPjlCZH3y6ELfL8Gk/MZF85NpAxZv3O2QdITL2bmbcM78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/VtyY9S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F38C43390;
-	Mon, 29 Jan 2024 17:07:43 +0000 (UTC)
+	 MIME-Version; b=mbapo5/nETIcz64XiiB+sNpBIn31XtSLXT8jfeFRptId6Jj2tErx/SKvtK1GzVmQ3bykV4IF5fQMlrYKYnWJflBsY1oWVhDb81nYGzbmi8IdwDqu4KkMO9CvH0ycPILzL2KumJcb0uj0/cxSJftIvuTl3aThNq0pGSPrqhQhJu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJB6A+N8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D843BC433F1;
+	Mon, 29 Jan 2024 17:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548063;
-	bh=24OHfNmjq72p4JymnyT3z8IOhm9D+/ARnclOEXhLyqY=;
+	s=korg; t=1706548433;
+	bh=1/eSwRFe90CpA8IO2LFN+w93HB8LjUqNg7zmfeLlG/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K/VtyY9Su8IRlWkQnJiuOCMqwpI6y/z1l8e0dGDj+pDBmWt3wualBEt2pTkaYPXGm
-	 LKupx0NVLK6S8vMDiMjvrb3eZDG6GYPOlDwZJmbV9LW+84ukBKY5iWea4gJsBZRJnc
-	 4BqGNw/Y8CPTu2JBNmQWWJ7EdlKO1xnBszVXeEdc=
+	b=JJB6A+N8n4uyYK+qTX34sOFl+KkUUhT1JpxeCjlqC5mWvf/pIpdalSZsvPLPiucf2
+	 nvfHlbAeA7TFoBjd+1/fjJve8yNf6n8zUCcyYXVku9P1WeRiZXzuc5ltvrDzUVRCln
+	 xrQ2NLYMmcuM8SRsusKscp9mmvwTWNJyBNkxqOP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cixi Geng <cixi.geng1@unisoc.com>,
-	Chunyan Zhang <chunyan.zhang@unisoc.com>
-Subject: [PATCH 6.7 070/346] arm64: dts: sprd: fix the cpu node for UMS512
+	Tianjia Zhang <tianjia.zhang@linux.alibaba.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 037/331] crypto: lib/mpi - Fix unexpected pointer access in mpi_ec_init
 Date: Mon, 29 Jan 2024 09:01:41 -0800
-Message-ID: <20240129170018.446182489@linuxfoundation.org>
+Message-ID: <20240129170016.024465853@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cixi Geng <cixi.geng1@unisoc.com>
+From: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
 
-commit 2da4f4a7b003441b80f0f12d8a216590f652a40f upstream.
+commit ba3c5574203034781ac4231acf117da917efcd2a upstream.
 
-The UMS512 Socs have 8 cores contains 6 a55 and 2 a75.
-modify the cpu nodes to correct information.
+When the mpi_ec_ctx structure is initialized, some fields are not
+cleared, causing a crash when referencing the field when the
+structure was released. Initially, this issue was ignored because
+memory for mpi_ec_ctx is allocated with the __GFP_ZERO flag.
+For example, this error will be triggered when calculating the
+Za value for SM2 separately.
 
-Fixes: 2b4881839a39 ("arm64: dts: sprd: Add support for Unisoc's UMS512")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cixi Geng <cixi.geng1@unisoc.com>
-Link: https://lore.kernel.org/r/20230711162346.5978-1-cixi.geng@linux.dev
-Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
+Fixes: d58bb7e55a8a ("lib/mpi: Introduce ec implementation to MPI library")
+Cc: stable@vger.kernel.org # v6.5
+Signed-off-by: Tianjia Zhang <tianjia.zhang@linux.alibaba.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/sprd/ums512.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/crypto/mpi/ec.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/arm64/boot/dts/sprd/ums512.dtsi
-+++ b/arch/arm64/boot/dts/sprd/ums512.dtsi
-@@ -96,7 +96,7 @@
+diff --git a/lib/crypto/mpi/ec.c b/lib/crypto/mpi/ec.c
+index 40f5908e57a4..e16dca1e23d5 100644
+--- a/lib/crypto/mpi/ec.c
++++ b/lib/crypto/mpi/ec.c
+@@ -584,6 +584,9 @@ void mpi_ec_init(struct mpi_ec_ctx *ctx, enum gcry_mpi_ec_models model,
+ 	ctx->a = mpi_copy(a);
+ 	ctx->b = mpi_copy(b);
  
- 		CPU6: cpu@600 {
- 			device_type = "cpu";
--			compatible = "arm,cortex-a55";
-+			compatible = "arm,cortex-a75";
- 			reg = <0x0 0x600>;
- 			enable-method = "psci";
- 			cpu-idle-states = <&CORE_PD>;
-@@ -104,7 +104,7 @@
++	ctx->d = NULL;
++	ctx->t.two_inv_p = NULL;
++
+ 	ctx->t.p_barrett = use_barrett > 0 ? mpi_barrett_init(ctx->p, 0) : NULL;
  
- 		CPU7: cpu@700 {
- 			device_type = "cpu";
--			compatible = "arm,cortex-a55";
-+			compatible = "arm,cortex-a75";
- 			reg = <0x0 0x700>;
- 			enable-method = "psci";
- 			cpu-idle-states = <&CORE_PD>;
+ 	mpi_ec_get_reset(ctx);
+-- 
+2.43.0
+
 
 
 
