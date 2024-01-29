@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-16687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73358840E00
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B401884101B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFEEA287078
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ADFE1F238E5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C9B15DBC6;
-	Mon, 29 Jan 2024 17:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF1F74056;
+	Mon, 29 Jan 2024 17:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VJK9XsgG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQDqMKni"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241B015B0F0;
-	Mon, 29 Jan 2024 17:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D5274040;
+	Mon, 29 Jan 2024 17:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548204; cv=none; b=b3ZFmA8wWqBtTNJaoGT6Z572NIYiaQ4YUJs7m7pJG6GeAXXQRsaFDsUxxGoaem25lrRnx/FLNVO9zJqvFWj968dmGm1BWK0hm6I+tzPA67Cmq6FhBDHm8ji/EzCIxq+/SMyMMB9pS4Q9P+NzQOtAFtYrILJCp4brAFhs5dQkdLs=
+	t=1706548562; cv=none; b=MKCO0rPm9qV8qmGBCs593yeoEIsnjcIt2dUC923sgMAjSDg70MPEkhJMMQSCdBzIYdQ2ifmRHMuqIGhoY341zCYIMF3rZcJo5paiEF65jajCyBp+AAEgNWzY2maL4fHuweQ0JAokV1bhdg1U2vbZRTPNGAPwJqsQVZ0wiPK3wQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548204; c=relaxed/simple;
-	bh=3qmFEvpa0vptYomk7Mgf114p/bfPV3zU+Pb3+0l7Tqo=;
+	s=arc-20240116; t=1706548562; c=relaxed/simple;
+	bh=6ipth1cxi4cY7Xe0kSkKVEA930IPaQ/B8JZxd+KDV7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wk3mQwH2tHmVH1fcw0y1H7mxNAd1BLqNQqtAzoV5gkX/FNkscTpIlDDolKK+9jXc/JVw0U43dErnd/Ns6cZfGlqVBspWJ9cNoOtk061TUxZBEbIkAOoYARvJacKNMDPhMhRe13VI+oxOv2TZ5hI9j+q9xk8GGQGXg+mVN9yiB1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VJK9XsgG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB26C43390;
-	Mon, 29 Jan 2024 17:10:03 +0000 (UTC)
+	 MIME-Version; b=Ndp1zN4NQMiodYr7BWxW8/tW9iKlfKaa6Ow0kANf1jq1QJyEi3eINseP9TEbrRR8SpKh2wHQxEjQnSWpwGevCZnvktyHSQNcs6oJeMQ8rVXRzvnQUnVP56gw/mWP/zdeFkoWNIsV7Oj6KX3sPGsLGyR/Q2DA5Ovl2+imEqsiESI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQDqMKni; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0045BC433C7;
+	Mon, 29 Jan 2024 17:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548204;
-	bh=3qmFEvpa0vptYomk7Mgf114p/bfPV3zU+Pb3+0l7Tqo=;
+	s=korg; t=1706548562;
+	bh=6ipth1cxi4cY7Xe0kSkKVEA930IPaQ/B8JZxd+KDV7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VJK9XsgGyxwNZdE6KqukKpUBQ+sQOtO9KpRwlWbelDZiQlFW+eSugf5qVQZiJ7kJJ
-	 3NugZm2rhXOVfgpJNoYGrrbUb0fpyO/B95E6jSW/wPFiZNSspEfT71JnVWlE9T3kSG
-	 yGQwsQ+CSFvyOw3LJp0ryes5w05kLniHAQIMX5E4=
+	b=bQDqMKnihzYK1AUn+ebI9a0uWdi0x9JcdO3fpoWOjhsw3CtciuFQdE3K7yIX6u1VQ
+	 ZCF6gHwiZs70ttClvc8zXSZL1CMazk3MknhQUX0rZN2jNIimNnp4jcYn1R5ist0+fw
+	 foLpPIOUT0aQGT370G8eGz1Fqq8LEGYNsnIaX2wU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.7 242/346] drm/amdgpu: Fix the null pointer when load rlc firmware
-Date: Mon, 29 Jan 2024 09:04:33 -0800
-Message-ID: <20240129170023.525824622@linuxfoundation.org>
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 210/331] selftests: net: fix rps_default_mask with >32 CPUs
+Date: Mon, 29 Jan 2024 09:04:34 -0800
+Message-ID: <20240129170021.023356634@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit bc03c02cc1991a066b23e69bbcc0f66e8f1f7453 upstream.
+[ Upstream commit 0719b5338a0cbe80d1637a5fb03d8141b5bfc7a1 ]
 
-If the RLC firmware is invalid because of wrong header size,
-the pointer to the rlc firmware is released in function
-amdgpu_ucode_request. There will be a null pointer error
-in subsequent use. So skip validation to fix it.
+If there is more than 32 cpus the bitmask will start to contain
+commas, leading to:
 
-Fixes: 3da9b71563cb ("drm/amd: Use `amdgpu_ucode_*` helpers for GFX10")
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+./rps_default_mask.sh: line 36: [: 00000000,00000000: integer expression expected
+
+Remove the commas, bash doesn't interpret leading zeroes as oct
+so that should be good enough. Switch to bash, Simon reports that
+not all shells support this type of substitution.
+
+Fixes: c12e0d5f267d ("self-tests: introduce self-tests for RPS default mask")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240122195815.638997-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c |   15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ tools/testing/selftests/net/rps_default_mask.sh | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -3996,16 +3996,13 @@ static int gfx_v10_0_init_microcode(stru
+diff --git a/tools/testing/selftests/net/rps_default_mask.sh b/tools/testing/selftests/net/rps_default_mask.sh
+index a26c5624429f..4287a8529890 100755
+--- a/tools/testing/selftests/net/rps_default_mask.sh
++++ b/tools/testing/selftests/net/rps_default_mask.sh
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ # SPDX-License-Identifier: GPL-2.0
  
- 	if (!amdgpu_sriov_vf(adev)) {
- 		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_rlc.bin", ucode_prefix);
--		err = amdgpu_ucode_request(adev, &adev->gfx.rlc_fw, fw_name);
--		/* don't check this.  There are apparently firmwares in the wild with
--		 * incorrect size in the header
--		 */
--		if (err == -ENODEV)
--			goto out;
-+		err = request_firmware(&adev->gfx.rlc_fw, fw_name, adev->dev);
- 		if (err)
--			dev_dbg(adev->dev,
--				"gfx10: amdgpu_ucode_request() failed \"%s\"\n",
--				fw_name);
-+			goto out;
+ readonly ksft_skip=4
+@@ -33,6 +33,10 @@ chk_rps() {
+ 
+ 	rps_mask=$($cmd /sys/class/net/$dev_name/queues/rx-0/rps_cpus)
+ 	printf "%-60s" "$msg"
 +
-+		/* don't validate this firmware. There are apparently firmwares
-+		 * in the wild with incorrect size in the header
-+		 */
- 		rlc_hdr = (const struct rlc_firmware_header_v2_0 *)adev->gfx.rlc_fw->data;
- 		version_major = le16_to_cpu(rlc_hdr->header.header_version_major);
- 		version_minor = le16_to_cpu(rlc_hdr->header.header_version_minor);
++	# In case there is more than 32 CPUs we need to remove commas from masks
++	rps_mask=${rps_mask//,}
++	expected_rps_mask=${expected_rps_mask//,}
+ 	if [ $rps_mask -eq $expected_rps_mask ]; then
+ 		echo "[ ok ]"
+ 	else
+-- 
+2.43.0
+
 
 
 
