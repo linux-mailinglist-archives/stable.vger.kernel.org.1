@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22B3C840E07
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93629841029
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74733B26C0D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CC0E28465F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C4C15DBCB;
-	Mon, 29 Jan 2024 17:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F9274078;
+	Mon, 29 Jan 2024 17:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hS4VQePA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zlJMmpJi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77577159580;
-	Mon, 29 Jan 2024 17:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FF17406A;
+	Mon, 29 Jan 2024 17:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548209; cv=none; b=rJlaS1YQUHQfFsMVXJY4fyU+ICZmGccW4r4xQ04CgxO3G3IMruUhr6y97QtK+gB8MhBAzNLMLNo4bmrBCKPtrPgz/IV72vmLlalJ8vrqBuXvNDiuw/D0ovLf+ZQGzJ5jykloH9mYawIMMuHgPk8kPJNDiChpWBt751BwBJsLCmg=
+	t=1706548573; cv=none; b=gMKw7IGXfC/bJaHkFCMIzmOdbZICPXEGzz0eLGfsD5KjsLgiDOyJVyU0Nec6TEP/ONg6sX0+xwaZbc/359wn1V55P7wK6Ng2lkO/wSmV/9QyJZoTPaUwHO1lEwqnltB3xDTngQqU1VScxZvOnubyC0hhFTuiSrGcem4wsdETYp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548209; c=relaxed/simple;
-	bh=Xqtw+/DL7AjrcNvbqIc5XUln/PiwORrjmJGQHoTJahU=;
+	s=arc-20240116; t=1706548573; c=relaxed/simple;
+	bh=TYO5jOz4O3xTfTO5SXyq6ZxvSiAZSv3mU7EQtPknC/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YLU/g91dskro2CJ2CY7sD9cS9gEk2DSLbY8Xm2PJuhwEqQ2hIPk1ZsZ7Cww2GWqoogws6v4CAels0PZAWQlTnHquCUcrTvS7euIXQotK+95JSEquzyT/hYaYOIzldCPrjqe2zo8Bw+mZ+ks19i0InBiH2paziqUvmtHRwYZNsz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hS4VQePA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F14C433C7;
-	Mon, 29 Jan 2024 17:10:09 +0000 (UTC)
+	 MIME-Version; b=dZuh+CHWh32vQ9dohfAmtMhgZ1hI9zo5o/6lpY34h56/B9WaHEXRcDu6oQJhEISnJG51zOudNdIO8fWGYxVakOvttK0kdVoinswccMXnJMFJqMHL9C3/vulJQ/ybXWFRDCYLTFPIXeksb9IWrA4gKb9vqObKuOFHlDxBnCDsF3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zlJMmpJi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DE3C43390;
+	Mon, 29 Jan 2024 17:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548209;
-	bh=Xqtw+/DL7AjrcNvbqIc5XUln/PiwORrjmJGQHoTJahU=;
+	s=korg; t=1706548573;
+	bh=TYO5jOz4O3xTfTO5SXyq6ZxvSiAZSv3mU7EQtPknC/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hS4VQePAzYaLKOHGDZiZ8WfVXsLYMvbNqzSAr2bgVqMjS6NJO0uUkMC7m4vXwTZcq
-	 n986T7XzicgcazuzK4/Uw6sOclOXzk33gDkgLAwzEhI14SEnf05nD2lV1uEufbx+Cd
-	 VzCCbIJK18n28vf6G9HoXBYRll5kwp3qu/7fuD3s=
+	b=zlJMmpJiS97hE5HXZuGGLVv1c+SBCKpmCfrRMZiTYiSVglPXqAdRf4LpG7xu0eq7+
+	 ARsyFJMfiraIRWqMW+cvJQTj/33jsAsuuVii79SfdkMvQZGzx77HPJKHtVCCf+Mfor
+	 4Pz1mmL1XmrGi49ka9syUMRoyd7fJ+tGtoD0Zdz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.7 232/346] nfsd: fix RELEASE_LOCKOWNER
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 199/331] net/mlx5: Use mlx5 device constant for selecting CQ period mode for ASO
 Date: Mon, 29 Jan 2024 09:04:23 -0800
-Message-ID: <20240129170023.221842028@linuxfoundation.org>
+Message-ID: <20240129170020.702299377@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,149 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-commit edcf9725150e42beeca42d085149f4c88fa97afd upstream.
+[ Upstream commit 20cbf8cbb827094197f3b17db60d71449415db1e ]
 
-The test on so_count in nfsd4_release_lockowner() is nonsense and
-harmful.  Revert to using check_for_locks(), changing that to not sleep.
+mlx5 devices have specific constants for choosing the CQ period mode. These
+constants do not have to match the constants used by the kernel software
+API for DIM period mode selection.
 
-First: harmful.
-As is documented in the kdoc comment for nfsd4_release_lockowner(), the
-test on so_count can transiently return a false positive resulting in a
-return of NFS4ERR_LOCKS_HELD when in fact no locks are held.  This is
-clearly a protocol violation and with the Linux NFS client it can cause
-incorrect behaviour.
-
-If RELEASE_LOCKOWNER is sent while some other thread is still
-processing a LOCK request which failed because, at the time that request
-was received, the given owner held a conflicting lock, then the nfsd
-thread processing that LOCK request can hold a reference (conflock) to
-the lock owner that causes nfsd4_release_lockowner() to return an
-incorrect error.
-
-The Linux NFS client ignores that NFS4ERR_LOCKS_HELD error because it
-never sends NFS4_RELEASE_LOCKOWNER without first releasing any locks, so
-it knows that the error is impossible.  It assumes the lock owner was in
-fact released so it feels free to use the same lock owner identifier in
-some later locking request.
-
-When it does reuse a lock owner identifier for which a previous RELEASE
-failed, it will naturally use a lock_seqid of zero.  However the server,
-which didn't release the lock owner, will expect a larger lock_seqid and
-so will respond with NFS4ERR_BAD_SEQID.
-
-So clearly it is harmful to allow a false positive, which testing
-so_count allows.
-
-The test is nonsense because ... well... it doesn't mean anything.
-
-so_count is the sum of three different counts.
-1/ the set of states listed on so_stateids
-2/ the set of active vfs locks owned by any of those states
-3/ various transient counts such as for conflicting locks.
-
-When it is tested against '2' it is clear that one of these is the
-transient reference obtained by find_lockowner_str_locked().  It is not
-clear what the other one is expected to be.
-
-In practice, the count is often 2 because there is precisely one state
-on so_stateids.  If there were more, this would fail.
-
-In my testing I see two circumstances when RELEASE_LOCKOWNER is called.
-In one case, CLOSE is called before RELEASE_LOCKOWNER.  That results in
-all the lock states being removed, and so the lockowner being discarded
-(it is removed when there are no more references which usually happens
-when the lock state is discarded).  When nfsd4_release_lockowner() finds
-that the lock owner doesn't exist, it returns success.
-
-The other case shows an so_count of '2' and precisely one state listed
-in so_stateid.  It appears that the Linux client uses a separate lock
-owner for each file resulting in one lock state per lock owner, so this
-test on '2' is safe.  For another client it might not be safe.
-
-So this patch changes check_for_locks() to use the (newish)
-find_any_file_locked() so that it doesn't take a reference on the
-nfs4_file and so never calls nfsd_file_put(), and so never sleeps.  With
-this check is it safe to restore the use of check_for_locks() rather
-than testing so_count against the mysterious '2'.
-
-Fixes: ce3c4ad7f4ce ("NFSD: Fix possible sleep during nfsd4_release_lockowner()")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Cc: stable@vger.kernel.org # v6.2+
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cdd04f4d4d71 ("net/mlx5: Add support to create SQ and CQ for ASO")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |   26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -7911,14 +7911,16 @@ check_for_locks(struct nfs4_file *fp, st
- {
- 	struct file_lock *fl;
- 	int status = false;
--	struct nfsd_file *nf = find_any_file(fp);
-+	struct nfsd_file *nf;
- 	struct inode *inode;
- 	struct file_lock_context *flctx;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c
+index 40c7be124041..58bd749b5e4d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/aso.c
+@@ -98,7 +98,7 @@ static int create_aso_cq(struct mlx5_aso_cq *cq, void *cqc_data)
+ 	mlx5_fill_page_frag_array(&cq->wq_ctrl.buf,
+ 				  (__be64 *)MLX5_ADDR_OF(create_cq_in, in, pas));
  
-+	spin_lock(&fp->fi_lock);
-+	nf = find_any_file_locked(fp);
- 	if (!nf) {
- 		/* Any valid lock stateid should have some sort of access */
- 		WARN_ON_ONCE(1);
--		return status;
-+		goto out;
- 	}
- 
- 	inode = file_inode(nf->nf_file);
-@@ -7934,7 +7936,8 @@ check_for_locks(struct nfs4_file *fp, st
- 		}
- 		spin_unlock(&flctx->flc_lock);
- 	}
--	nfsd_file_put(nf);
-+out:
-+	spin_unlock(&fp->fi_lock);
- 	return status;
- }
- 
-@@ -7944,10 +7947,8 @@ check_for_locks(struct nfs4_file *fp, st
-  * @cstate: NFSv4 COMPOUND state
-  * @u: RELEASE_LOCKOWNER arguments
-  *
-- * The lockowner's so_count is bumped when a lock record is added
-- * or when copying a conflicting lock. The latter case is brief,
-- * but can lead to fleeting false positives when looking for
-- * locks-in-use.
-+ * Check if theree are any locks still held and if not - free the lockowner
-+ * and any lock state that is owned.
-  *
-  * Return values:
-  *   %nfs_ok: lockowner released or not found
-@@ -7983,10 +7984,13 @@ nfsd4_release_lockowner(struct svc_rqst
- 		spin_unlock(&clp->cl_lock);
- 		return nfs_ok;
- 	}
--	if (atomic_read(&lo->lo_owner.so_count) != 2) {
--		spin_unlock(&clp->cl_lock);
--		nfs4_put_stateowner(&lo->lo_owner);
--		return nfserr_locks_held;
-+
-+	list_for_each_entry(stp, &lo->lo_owner.so_stateids, st_perstateowner) {
-+		if (check_for_locks(stp->st_stid.sc_file, lo)) {
-+			spin_unlock(&clp->cl_lock);
-+			nfs4_put_stateowner(&lo->lo_owner);
-+			return nfserr_locks_held;
-+		}
- 	}
- 	unhash_lockowner_locked(lo);
- 	while (!list_empty(&lo->lo_owner.so_stateids)) {
+-	MLX5_SET(cqc,   cqc, cq_period_mode, DIM_CQ_PERIOD_MODE_START_FROM_EQE);
++	MLX5_SET(cqc,   cqc, cq_period_mode, MLX5_CQ_PERIOD_MODE_START_FROM_EQE);
+ 	MLX5_SET(cqc,   cqc, c_eqn_or_apu_element, eqn);
+ 	MLX5_SET(cqc,   cqc, uar_page,      mdev->priv.uar->index);
+ 	MLX5_SET(cqc,   cqc, log_page_size, cq->wq_ctrl.buf.page_shift -
+-- 
+2.43.0
+
 
 
 
