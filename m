@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF15840EBE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6781284103B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC48EB27D02
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E37B285FD4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A3AB16087E;
-	Mon, 29 Jan 2024 17:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE7615B963;
+	Mon, 29 Jan 2024 17:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M5mEIV3I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSkd3vuZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D728115703F;
-	Mon, 29 Jan 2024 17:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9B015B962;
+	Mon, 29 Jan 2024 17:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548339; cv=none; b=Dib6YpJKI8hUcNYgAxOBM8PiPJ+zWKJyxxjbV4LtgLl6hlIgd0GXlGeNmHHvqk22MNpFGbRE+nsVUaSNyoQguyAX2nzQjRUgduAUFxWY1OfuIE2LMdNV8qgB5MLj85QWgbT8c01f/uBfSjBbVF2TX8Ptq1bN30rra/Y2s3AZUWY=
+	t=1706548585; cv=none; b=tr27ZzTG0y103ZPCmX/9Utv7kEZwI60la5EY1UOpVRYInY+OF+11J/SD4GxAg5T/HRFZzhSYraJaY4bct2IYbs1Tgi40SUrfIdqcKcI35/Kv5qKi7YsItjHT7JNlr6BUpsUog1WYSS5IVc+wvo3v3doeuAzifVJsaSEJ20u40sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548339; c=relaxed/simple;
-	bh=EDZzqiUwWxx9kAeKt5Ob0yqoj6SyPBOyVlBIgbX+nus=;
+	s=arc-20240116; t=1706548585; c=relaxed/simple;
+	bh=LFLcsm1kiGLRAJfCYArJGwrqAFs4RTGTrX3V6pbs/IY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oiHovT4OIPKRR/Hk3NjlSSdMKk5ym7HBVFbwRwvkzD8cF556jyMxSf3yaepBFVQFHGotlua3nW5WeqUuuqlGkfvZ03mQ8vHja9bnQjpIO2l3mzVQVU8gPVCBMefj48SHfuK6roWtbcHpMBPwo5A6FooL1GkBitoqnduAEJl8ju8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M5mEIV3I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ECBEC433C7;
-	Mon, 29 Jan 2024 17:12:18 +0000 (UTC)
+	 MIME-Version; b=rSCWtNID7Ik9y90LtuOri4Ct535JwMAZpOhseRcq1IbvmZB/phEpCh1QLk715LFzGymqe4Mid5eLEuJ1R4AFYFgxiJQ8hos/c55sKeI/5UmZiu5ranN7RWPxUbL6bnjqHIaOV5//3ZxvUeziVxbub3WLiSda8iGKuDEa6B4Gisw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSkd3vuZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85873C433F1;
+	Mon, 29 Jan 2024 17:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548338;
-	bh=EDZzqiUwWxx9kAeKt5Ob0yqoj6SyPBOyVlBIgbX+nus=;
+	s=korg; t=1706548585;
+	bh=LFLcsm1kiGLRAJfCYArJGwrqAFs4RTGTrX3V6pbs/IY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M5mEIV3IG8QWRF0KaRr8qGd5iolqKD78HE7SKobQBaEXSiaBtVy9mwL420f0ue0Lg
-	 +Q2uolYKMZARhtVhz7ZtQzth7VIoTbHbHpe/Pmbb50cEg36CrHE12wWUsEXUFe5XWp
-	 6J91Di7h77MeOb3LZsG1ZBAIFSYZ3YvziXc2iMU8=
+	b=tSkd3vuZkTkL3vBBCghalD85682/acsOn/AAKw9hCN0sYpVmQpvMyjD+uMhGS23c/
+	 xT/6UHcuv6BFfFxpv+UX02+05bok8/LAw9NzNogQFcW6bxG0evpnVfkge5w2drIVlt
+	 bDWPsyXEO9TISKnqBhHDJtgFIrXtlI0gr6evRdRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	linux-btrfs@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 104/185] btrfs: set last dir index to the current last index when opening dir
-Date: Mon, 29 Jan 2024 09:05:04 -0800
-Message-ID: <20240129170001.933489913@linuxfoundation.org>
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 241/331] nfsd: fix RELEASE_LOCKOWNER
+Date: Mon, 29 Jan 2024 09:05:05 -0800
+Message-ID: <20240129170021.928913463@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +62,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: NeilBrown <neilb@suse.de>
 
-commit 357950361cbc6d54fb68ed878265c647384684ae upstream.
+commit edcf9725150e42beeca42d085149f4c88fa97afd upstream.
 
-When opening a directory for reading it, we set the last index where we
-stop iteration to the value in struct btrfs_inode::index_cnt. That value
-does not match the index of the most recently added directory entry but
-it's instead the index number that will be assigned the next directory
-entry.
+The test on so_count in nfsd4_release_lockowner() is nonsense and
+harmful.  Revert to using check_for_locks(), changing that to not sleep.
 
-This means that if after the call to opendir(3) new directory entries are
-added, a readdir(3) call will return the first new directory entry. This
-is fine because POSIX says the following [1]:
+First: harmful.
+As is documented in the kdoc comment for nfsd4_release_lockowner(), the
+test on so_count can transiently return a false positive resulting in a
+return of NFS4ERR_LOCKS_HELD when in fact no locks are held.  This is
+clearly a protocol violation and with the Linux NFS client it can cause
+incorrect behaviour.
 
-  "If a file is removed from or added to the directory after the most
-   recent call to opendir() or rewinddir(), whether a subsequent call to
-   readdir() returns an entry for that file is unspecified."
+If RELEASE_LOCKOWNER is sent while some other thread is still
+processing a LOCK request which failed because, at the time that request
+was received, the given owner held a conflicting lock, then the nfsd
+thread processing that LOCK request can hold a reference (conflock) to
+the lock owner that causes nfsd4_release_lockowner() to return an
+incorrect error.
 
-For example for the test script from commit 9b378f6ad48c ("btrfs: fix
-infinite directory reads"), where we have 2000 files in a directory, ext4
-doesn't return any new directory entry after opendir(3), while xfs returns
-the first 13 new directory entries added after the opendir(3) call.
+The Linux NFS client ignores that NFS4ERR_LOCKS_HELD error because it
+never sends NFS4_RELEASE_LOCKOWNER without first releasing any locks, so
+it knows that the error is impossible.  It assumes the lock owner was in
+fact released so it feels free to use the same lock owner identifier in
+some later locking request.
 
-If we move to a shorter example with an empty directory when opendir(3) is
-called, and 2 files added to the directory after the opendir(3) call, then
-readdir(3) on btrfs will return the first file, ext4 and xfs return the 2
-files (but in a different order). A test program for this, reported by
-Ian Johnson, is the following:
+When it does reuse a lock owner identifier for which a previous RELEASE
+failed, it will naturally use a lock_seqid of zero.  However the server,
+which didn't release the lock owner, will expect a larger lock_seqid and
+so will respond with NFS4ERR_BAD_SEQID.
 
-   #include <dirent.h>
-   #include <stdio.h>
+So clearly it is harmful to allow a false positive, which testing
+so_count allows.
 
-   int main(void) {
-     DIR *dir = opendir("test");
+The test is nonsense because ... well... it doesn't mean anything.
 
-     FILE *file;
-     file = fopen("test/1", "w");
-     fwrite("1", 1, 1, file);
-     fclose(file);
+so_count is the sum of three different counts.
+1/ the set of states listed on so_stateids
+2/ the set of active vfs locks owned by any of those states
+3/ various transient counts such as for conflicting locks.
 
-     file = fopen("test/2", "w");
-     fwrite("2", 1, 1, file);
-     fclose(file);
+When it is tested against '2' it is clear that one of these is the
+transient reference obtained by find_lockowner_str_locked().  It is not
+clear what the other one is expected to be.
 
-     struct dirent *entry;
-     while ((entry = readdir(dir))) {
-        printf("%s\n", entry->d_name);
-     }
-     closedir(dir);
-     return 0;
-   }
+In practice, the count is often 2 because there is precisely one state
+on so_stateids.  If there were more, this would fail.
 
-To make this less odd, change the behaviour to never return new entries
-that were added after the opendir(3) call. This is done by setting the
-last_index field of the struct btrfs_file_private attached to the
-directory's file handle with a value matching btrfs_inode::index_cnt
-minus 1, since that value always matches the index of the next new
-directory entry and not the index of the most recently added entry.
+In my testing I see two circumstances when RELEASE_LOCKOWNER is called.
+In one case, CLOSE is called before RELEASE_LOCKOWNER.  That results in
+all the lock states being removed, and so the lockowner being discarded
+(it is removed when there are no more references which usually happens
+when the lock state is discarded).  When nfsd4_release_lockowner() finds
+that the lock owner doesn't exist, it returns success.
 
-[1] https://pubs.opengroup.org/onlinepubs/007904875/functions/readdir_r.html
+The other case shows an so_count of '2' and precisely one state listed
+in so_stateid.  It appears that the Linux client uses a separate lock
+owner for each file resulting in one lock state per lock owner, so this
+test on '2' is safe.  For another client it might not be safe.
 
-Link: https://lore.kernel.org/linux-btrfs/YR1P0S.NGASEG570GJ8@ianjohnson.dev/
-CC: stable@vger.kernel.org # 6.5+
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+So this patch changes check_for_locks() to use the (newish)
+find_any_file_locked() so that it doesn't take a reference on the
+nfs4_file and so never calls nfsd_file_put(), and so never sleeps.  With
+this check is it safe to restore the use of check_for_locks() rather
+than testing so_count against the mysterious '2'.
+
+Fixes: ce3c4ad7f4ce ("NFSD: Fix possible sleep during nfsd4_release_lockowner()")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Cc: stable@vger.kernel.org # v6.2+
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs4state.c |   26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -6011,7 +6011,8 @@ static int btrfs_get_dir_last_index(stru
- 		}
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -7890,14 +7890,16 @@ check_for_locks(struct nfs4_file *fp, st
+ {
+ 	struct file_lock *fl;
+ 	int status = false;
+-	struct nfsd_file *nf = find_any_file(fp);
++	struct nfsd_file *nf;
+ 	struct inode *inode;
+ 	struct file_lock_context *flctx;
+ 
++	spin_lock(&fp->fi_lock);
++	nf = find_any_file_locked(fp);
+ 	if (!nf) {
+ 		/* Any valid lock stateid should have some sort of access */
+ 		WARN_ON_ONCE(1);
+-		return status;
++		goto out;
  	}
  
--	*index = dir->index_cnt;
-+	/* index_cnt is the index number of next new entry, so decrement it. */
-+	*index = dir->index_cnt - 1;
- 
- 	return 0;
+ 	inode = file_inode(nf->nf_file);
+@@ -7913,7 +7915,8 @@ check_for_locks(struct nfs4_file *fp, st
+ 		}
+ 		spin_unlock(&flctx->flc_lock);
+ 	}
+-	nfsd_file_put(nf);
++out:
++	spin_unlock(&fp->fi_lock);
+ 	return status;
  }
+ 
+@@ -7923,10 +7926,8 @@ check_for_locks(struct nfs4_file *fp, st
+  * @cstate: NFSv4 COMPOUND state
+  * @u: RELEASE_LOCKOWNER arguments
+  *
+- * The lockowner's so_count is bumped when a lock record is added
+- * or when copying a conflicting lock. The latter case is brief,
+- * but can lead to fleeting false positives when looking for
+- * locks-in-use.
++ * Check if theree are any locks still held and if not - free the lockowner
++ * and any lock state that is owned.
+  *
+  * Return values:
+  *   %nfs_ok: lockowner released or not found
+@@ -7962,10 +7963,13 @@ nfsd4_release_lockowner(struct svc_rqst
+ 		spin_unlock(&clp->cl_lock);
+ 		return nfs_ok;
+ 	}
+-	if (atomic_read(&lo->lo_owner.so_count) != 2) {
+-		spin_unlock(&clp->cl_lock);
+-		nfs4_put_stateowner(&lo->lo_owner);
+-		return nfserr_locks_held;
++
++	list_for_each_entry(stp, &lo->lo_owner.so_stateids, st_perstateowner) {
++		if (check_for_locks(stp->st_stid.sc_file, lo)) {
++			spin_unlock(&clp->cl_lock);
++			nfs4_put_stateowner(&lo->lo_owner);
++			return nfserr_locks_held;
++		}
+ 	}
+ 	unhash_lockowner_locked(lo);
+ 	while (!list_empty(&lo->lo_owner.so_stateids)) {
 
 
 
