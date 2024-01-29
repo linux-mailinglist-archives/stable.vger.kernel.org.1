@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-17039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E2F840F92
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8096840D61
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C9751C23214
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8442F2854DF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2BCF6F08F;
-	Mon, 29 Jan 2024 17:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F88115B116;
+	Mon, 29 Jan 2024 17:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PiJJgX3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ue1yAV5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A746F079;
-	Mon, 29 Jan 2024 17:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1008155A2A;
+	Mon, 29 Jan 2024 17:08:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548464; cv=none; b=cL4ccSyuwlsCYsQ+s27bzuds3+caU7dtiwOLTjsoNQlYwRyKKrS6AIovRBxvKj7oxQO7C/BLAhEq0+jVn3zLItXmMnWQBSDE+Hwgj/QKHTadsOahsvmf7CywUGK3GYl089UlzScAIghpliJh3+ft483LI8YXVU9NXJJlbXMekSU=
+	t=1706548094; cv=none; b=WE2KwTeYzNdxK/1oEYxQVSHSYYesQbmK5T7Ppa8iV1xODrKxByJpv3TlTNDrFxGqTOVzQ/AoIZyzMxROgZXUJ70MNvEVlfDK20x2PexU5BW+tgnkNhzQJmSzWlrLKWYd4ceeu+aNjr3Jm9XjSphA8tyBu2dOoNWv4s3kPfinWOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548464; c=relaxed/simple;
-	bh=izmW7QZI9JrUGTmjnYxAv0pi8B3HW8UYiRXpPzwCqK0=;
+	s=arc-20240116; t=1706548094; c=relaxed/simple;
+	bh=9tcaFuliCZk2PZdj0n+d7K+FAr1nB52ql/AGhdESwN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m0ecE7bcF8x/T8MagWrn9ytrfKLlkgT7kHGFYb0frBH1k7bQzIBvBUJv09WIMUWMStQ+YCUNsVZ7fyLgYsyt6qJseXtV2EdEpdEmJqG6StU+L/Cik/lgCIC0kr7PNuKIZzVwMWoEa7mlE/pifrPXkLY2zNbZwEkgNSSu+33A9rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PiJJgX3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43304C433F1;
-	Mon, 29 Jan 2024 17:14:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HVGGFwaXFthotZ/tfm/cthMFMicJZ22vW0zD6TiZ04DI6YOrPyXrDdpHWLM6AdIBqW4tQ1UWiUxvep7LH8Ny2ClRmJ5GHM4a8I78z72IJNx7RvXUnoWu1PkfwTx/s5nlnwkqsxpRfxfbjSe3CAGi2eDH5jyZQnsVy+CwLWVSByI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ue1yAV5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D56C433C7;
+	Mon, 29 Jan 2024 17:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548464;
-	bh=izmW7QZI9JrUGTmjnYxAv0pi8B3HW8UYiRXpPzwCqK0=;
+	s=korg; t=1706548094;
+	bh=9tcaFuliCZk2PZdj0n+d7K+FAr1nB52ql/AGhdESwN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PiJJgX3uNB8+scyPW92sL2hAdjols8TD1xq6WqIEBkILeR1gOAODSoy+9MgO0o0H4
-	 XgO0ZHRnbKlxkytwpDTgxTjQMSl15hhYa2hxbgWc7gfDVd3ww2Sl02JE59fzI+lcM/
-	 S2S7eajjMxqcjxnn3WNL7BLbmPPh8h2BVJrvYGrc=
+	b=2ue1yAV587XbDyFtrEh9yjbfwTITCTOOyhr4sSJDG6QnhrMndlTNOfNN8AvORhAvB
+	 o4hSfYffk4rZOoKFGoeLBWuSX39DwSgsGCAK8Ueo+Y/OIhL5AkLJb2f/1/tAUjQiuj
+	 OOzmNl5KAVkIu/DL/jkpFv4IIPtd7fyCPbutG8Wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianling Shen <cnsztl@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.6 078/331] arm64: dts: rockchip: configure eth pad driver strength for orangepi r1 plus lts
+	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.7 111/346] rtc: mc146818-lib: Adjust failure return code for mc146818_get_time()
 Date: Mon, 29 Jan 2024 09:02:22 -0800
-Message-ID: <20240129170017.207123169@linuxfoundation.org>
+Message-ID: <20240129170019.656756309@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianling Shen <cnsztl@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit fc5a80a432607d05e85bba37971712405f75c546 upstream.
+commit af838635a3eb9b1bc0d98599c101ebca98f31311 upstream.
 
-The default strength is not enough to provide stable connection
-under 3.3v LDO voltage.
+mc146818_get_time() calls mc146818_avoid_UIP() to avoid fetching the
+time while RTC update is in progress (UIP). When this fails, the return
+code is -EIO, but actually there was no IO failure.
 
-Fixes: 387b3bbac5ea ("arm64: dts: rockchip: Add Xunlong OrangePi R1 Plus LTS")
-Cc: stable@vger.kernel.org # 6.6+
-Signed-off-by: Tianling Shen <cnsztl@gmail.com>
-Link: https://lore.kernel.org/r/20231216040723.17864-1-cnsztl@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+The reason for the return from mc146818_avoid_UIP() is that the UIP
+wasn't cleared in the time period. Adjust the return code to -ETIMEDOUT
+to match the behavior.
+
+Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Reviewed-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Acked-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Cc:  <stable@vger.kernel.org>
+Fixes: 2a61b0ac5493 ("rtc: mc146818-lib: refactor mc146818_get_time")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20231128053653.101798-2-mario.limonciello@amd.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/rtc/rtc-mc146818-lib.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
-index 5d7d567283e5..4237f2ee8fee 100644
---- a/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3328-orangepi-r1-plus-lts.dts
-@@ -26,9 +26,11 @@ yt8531c: ethernet-phy@0 {
- 			compatible = "ethernet-phy-ieee802.3-c22";
- 			reg = <0>;
+--- a/drivers/rtc/rtc-mc146818-lib.c
++++ b/drivers/rtc/rtc-mc146818-lib.c
+@@ -138,7 +138,7 @@ int mc146818_get_time(struct rtc_time *t
  
-+			motorcomm,auto-sleep-disabled;
- 			motorcomm,clk-out-frequency-hz = <125000000>;
- 			motorcomm,keep-pll-enabled;
--			motorcomm,auto-sleep-disabled;
-+			motorcomm,rx-clk-drv-microamp = <5020>;
-+			motorcomm,rx-data-drv-microamp = <5020>;
+ 	if (!mc146818_avoid_UIP(mc146818_get_time_callback, &p)) {
+ 		memset(time, 0, sizeof(*time));
+-		return -EIO;
++		return -ETIMEDOUT;
+ 	}
  
- 			pinctrl-0 = <&eth_phy_reset_pin>;
- 			pinctrl-names = "default";
--- 
-2.43.0
-
+ 	if (!(p.ctrl & RTC_DM_BINARY) || RTC_ALWAYS_BCD)
 
 
 
