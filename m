@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C31840F48
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A31840D1B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DEF4282310
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6B6B1C2323D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0A31641B0;
-	Mon, 29 Jan 2024 17:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBD715957C;
+	Mon, 29 Jan 2024 17:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4Kmg9W5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2M3rHDRu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D1D1641AE;
-	Mon, 29 Jan 2024 17:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95EF15957A;
+	Mon, 29 Jan 2024 17:07:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548415; cv=none; b=AsbKJa1rO0HAPnb9ytt+fEhRJXGWcvydvV4BTle+IbpB9iFYFWA7XhrSOqUWQ+Wv0WE4SW5mNEDzmyBEbPTXb0oLXAZU0uOhZlqUqFeqgOGxgff1HY2cnp91Qs9VGkwq+1W4R0E1ByBYo8kQL/AlLlpM96zsnEVK2V1RI7GN0Yg=
+	t=1706548044; cv=none; b=SFEcciLfpZKXMbJ6Ix/me77g/ardYr585sPa8fpkEyshZD+UDVbOowzYY8y76nTBzWuNzA6vUA0/FqZe8cM+UILiS9Xae9cnVW3uMh1R3LG50+i0gWre1LPEVEaQMGNFdUAlYbyoRgSlaReThugSv2gu1AztXhu3y2Gz1BWi3k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548415; c=relaxed/simple;
-	bh=PIKBVe29BY8RgF/eS8XVXhkHAHWKFsKE5wMnvABHkA0=;
+	s=arc-20240116; t=1706548044; c=relaxed/simple;
+	bh=DZ19t269uGMIVetrgdqMyIlnHQhH4PywPeOwcUEJQuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hLXAJkua+nyD0tM8roWrSRM82TFWaEaJQXUQFdfj0Ee2htNZOrb3ObcPeklLpYGyms3dxrpfAw1vMkOKl5mMxXzDw4uJE3ineH+tluaYi5aaJWCNXpVMTUM5SUf+qukTnoyyxGPhMOqE0YTX8XMPrr9OzYIKicsSMpRwVk1MEtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4Kmg9W5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E42E0C433C7;
-	Mon, 29 Jan 2024 17:13:34 +0000 (UTC)
+	 MIME-Version; b=PHMa6rThlc4Qrm1Vv+kQLAKJvcwxPY8xcJdA21ECPF1iXTL1nt3Ls7SpaV/exV6GPd/UD5XlrLhSn1bbZ1qYMS4f9O8cmxz/ceLhaPRC5QLaODUS8EW8Fl4tnfKhqlBrUcEnnUCYGjyK4dFhV+mm8/icDglA3RHkkGKXHEfUUgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2M3rHDRu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71667C43394;
+	Mon, 29 Jan 2024 17:07:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548415;
-	bh=PIKBVe29BY8RgF/eS8XVXhkHAHWKFsKE5wMnvABHkA0=;
+	s=korg; t=1706548044;
+	bh=DZ19t269uGMIVetrgdqMyIlnHQhH4PywPeOwcUEJQuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y4Kmg9W5btVgdheJn0rPQkrF/6J483tlqwbSWaB949PZGSTdft0sWjU972AlgF2vK
-	 dqXOJXqLGT7uqYnerbSIGMgsmPp3xsKNHuAU+qaaZsRC/1aM7yrTs8mcaLT+OJzzOV
-	 25N5EIvrDW9zILGcdP5B93JTJBFFhRieA4pLlc8k=
+	b=2M3rHDRu2Jj/7pAjtczjpnFPhGxLdXGbT2MwwKPPaxl/4TJy5y2UDqWq8Huloknf0
+	 LqbRe9NLbO13RE2Zt/g4APTrIGujwTizwRU65n/Kmx0cJlUhSFuWGgc8vdmU0nkySA
+	 cQaXi0ZzCfN113tZw7tkJd/lG0llahP2y7IiM4XY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/331] iio: adc: ad7091r: Enable internal vref if external vref is not supplied
+	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.7 045/346] bus: mhi: host: Add alignment check for event ring read pointer
 Date: Mon, 29 Jan 2024 09:01:16 -0800
-Message-ID: <20240129170015.321658410@linuxfoundation.org>
+Message-ID: <20240129170017.712534280@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+From: Krishna chaitanya chundru <quic_krichai@quicinc.com>
 
-[ Upstream commit e71c5c89bcb165a02df35325aa13d1ee40112401 ]
+commit eff9704f5332a13b08fbdbe0f84059c9e7051d5f upstream.
 
-The ADC needs a voltage reference to work correctly.
-Users can provide an external voltage reference or use the chip internal
-reference to operate the ADC.
-The availability of an in chip reference for the ADC saves the user from
-having to supply an external voltage reference, which makes the external
-reference an optional property as described in the device tree
-documentation.
-Though, to use the internal reference, it must be enabled by writing to
-the configuration register.
-Enable AD7091R internal voltage reference if no external vref is supplied.
+Though we do check the event ring read pointer by "is_valid_ring_ptr"
+to make sure it is in the buffer range, but there is another risk the
+pointer may be not aligned.  Since we are expecting event ring elements
+are 128 bits(struct mhi_ring_element) aligned, an unaligned read pointer
+could lead to multiple issues like DoS or ring buffer memory corruption.
 
-Fixes: 260442cc5be4 ("iio: adc: ad7091r5: Add scale and external VREF support")
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Link: https://lore.kernel.org/r/b865033fa6a4fc4bf2b4a98ec51a6144e0f64f77.1703013352.git.marcelo.schmitt1@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So add a alignment check for event ring read pointer.
+
+Fixes: ec32332df764 ("bus: mhi: core: Sanity check values from remote device before use")
+cc: stable@vger.kernel.org
+Signed-off-by: Krishna chaitanya chundru <quic_krichai@quicinc.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20231031-alignment_check-v2-1-1441db7c5efd@quicinc.com
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7091r-base.c | 7 +++++++
- drivers/iio/adc/ad7091r-base.h | 2 ++
- 2 files changed, 9 insertions(+)
+ drivers/bus/mhi/host/main.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-index 3d36bcd26b0c..76002b91c86a 100644
---- a/drivers/iio/adc/ad7091r-base.c
-+++ b/drivers/iio/adc/ad7091r-base.c
-@@ -405,7 +405,14 @@ int ad7091r_probe(struct device *dev, const char *name,
- 	if (IS_ERR(st->vref)) {
- 		if (PTR_ERR(st->vref) == -EPROBE_DEFER)
- 			return -EPROBE_DEFER;
-+
- 		st->vref = NULL;
-+		/* Enable internal vref */
-+		ret = regmap_set_bits(st->map, AD7091R_REG_CONF,
-+				      AD7091R_REG_CONF_INT_VREF);
-+		if (ret)
-+			return dev_err_probe(st->dev, ret,
-+					     "Error on enable internal reference\n");
- 	} else {
- 		ret = regulator_enable(st->vref);
- 		if (ret)
-diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
-index 7a78976a2f80..b9e1c8bf3440 100644
---- a/drivers/iio/adc/ad7091r-base.h
-+++ b/drivers/iio/adc/ad7091r-base.h
-@@ -8,6 +8,8 @@
- #ifndef __DRIVERS_IIO_ADC_AD7091R_BASE_H__
- #define __DRIVERS_IIO_ADC_AD7091R_BASE_H__
+--- a/drivers/bus/mhi/host/main.c
++++ b/drivers/bus/mhi/host/main.c
+@@ -268,7 +268,8 @@ static void mhi_del_ring_element(struct
  
-+#define AD7091R_REG_CONF_INT_VREF	BIT(0)
-+
- /* AD7091R_REG_CH_LIMIT */
- #define AD7091R_HIGH_LIMIT		0xFFF
- #define AD7091R_LOW_LIMIT		0x0
--- 
-2.43.0
-
+ static bool is_valid_ring_ptr(struct mhi_ring *ring, dma_addr_t addr)
+ {
+-	return addr >= ring->iommu_base && addr < ring->iommu_base + ring->len;
++	return addr >= ring->iommu_base && addr < ring->iommu_base + ring->len &&
++			!(addr & (sizeof(struct mhi_ring_element) - 1));
+ }
+ 
+ int mhi_destroy_device(struct device *dev, void *data)
 
 
 
