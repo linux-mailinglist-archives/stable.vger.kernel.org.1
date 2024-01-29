@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-16414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 238BC8405E8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 14:03:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF828405F8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 14:04:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7BD41F22405
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 13:03:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B18481C22779
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 13:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C0D627EE;
-	Mon, 29 Jan 2024 13:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18674629F0;
+	Mon, 29 Jan 2024 13:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="euLWzzu0"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="G02VFL5d"
 X-Original-To: stable@vger.kernel.org
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C4C66168A;
-	Mon, 29 Jan 2024 13:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05866627F6;
+	Mon, 29 Jan 2024 13:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706533398; cv=none; b=VQdinqyBD/XHTQK552xe8oyBHTzTWjbclCHc6pqWVyDZEGrp4iGlPS6zZAHp7BXTO2MbsaGkhRPpfHQYXC5cI7sJrIl7AjGiA6ZBXRa/IljUtP5DNJHcaHSFNmK0M5un+a2URTNLD8R4biB/l4DE9uvTHuQtN1fk1rAGS4CN5hs=
+	t=1706533446; cv=none; b=lEYtt80EXAPS2Mm35ErG3vwRSun005YuY6Hl1kz6WE8X0xZ0WvNaaKbG0h38OY0Jl5TcxrB8fXv6knpLgsZDugk+UV0o2JSUOg1sSCqdqNa3BqUdFa4jb2QuXMZH1I77CAzZ5vwREL2P92wr01FjmXJG6kYNeGw/5VhBHEs95tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706533398; c=relaxed/simple;
-	bh=En+o/ta0oprAiI0bv2E8pNpWVrmO8oSUm1ARJDHKlQw=;
+	s=arc-20240116; t=1706533446; c=relaxed/simple;
+	bh=27JOn8pMPLxrkKswcEytxNvifYEawTPWb/P+SH4Wzlw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cc15PRWFAR5GNiL/lF/gDxQuZoJmdVyhXFCE9qsItQQ93JPrXK7k9td6pjhrhSluwxo+5EEdoSsjQFaSgWdkcckqctYg0t/zCnO1aao9smjx5jj+Odv8eBJYXyec0KOnO5DFFaMLOjEebIS0rm2B6gD8khWr1F/cNr7VkvRJmIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=euLWzzu0; arc=none smtp.client-ip=46.235.227.194
+	 Content-Type:Content-Disposition:In-Reply-To; b=gaswHZia6DGSUPDTg4+AXnTbE3I3FWEssOaxUTdtwngTA9cagwA4HKfG0QeX9uKRO5ZAzGHHXCImFHkuyTtd5KH9bFfcWt42y+V8V8Tx4xLmKO7Nh++N2frZgH5eLorv/dJapZwCppFHXsxu7Wsiu2Xy6pQvMzYzhVKVwCWhO/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=G02VFL5d; arc=none smtp.client-ip=46.235.227.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1706533394;
-	bh=En+o/ta0oprAiI0bv2E8pNpWVrmO8oSUm1ARJDHKlQw=;
+	s=mail; t=1706533443;
+	bh=27JOn8pMPLxrkKswcEytxNvifYEawTPWb/P+SH4Wzlw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=euLWzzu0h9883PFM9+Z7VZSJVKTi0XUrhG47g3Cf6xKbrRrt2dUIFBGfzb11aH4Gw
-	 Tb+RCmfX6qrSi2d+e4ZX12cFt+igISObDjGihrKyu7LA+bX0fY0fhOVn++irF0MnG8
-	 nwFpIaZ/DZCMcWNaoF7RLTSAV0Xb831OgxYy+pa32eRNvW0F8lIQsbLQGWQY+JLnVu
-	 EtWimpSorwB9TNmoqIU5JSVA2koGxQnwEM1+gjOJ9QQFvc3dlPXivvn5+zOcADZnd8
-	 QfSLCfUzadmIO7Sswa/5qmYerDMHr3RR7WL0Ga42W3HQFb3Mn1LG6tTETeRb85g+DF
-	 uqsa5IHj4ZzkQ==
+	b=G02VFL5dsxDBMfml0ydsZpY7Kk9QshJxGmTO7apRcr+KB5hSL5GNDSk9+ZudJXzOH
+	 bQS7M2E0uW0QVNbB8MdOvWe6wQO1dLhPrLEPTcV1pZfjr0OMfWU3wtGRtwBdndNXSE
+	 7i0Z6dEJBkaiaVydPd8rR8u0a7C5F4yCHX1u4HYH2IWOQAUpJX/ScvMWbH5RKJBHnJ
+	 HJWGNPzDTjj6Po/NJFOD6S5APQat0FBc+6xxOWd0051Mf0/SyB4Lc68lhAXanD4JB1
+	 Y+T4xYC8DlYDDMSzsNrpQMlFV45UI0HkRQcWr8zYOgrBs4Qw0o+qcG8F7G/xoIv6/D
+	 4eYlGWDVH/sGA==
 Received: from mercury (cola.collaboradmins.com [195.201.22.229])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
 	(No client certificate requested)
 	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 8DEA0378003D;
-	Mon, 29 Jan 2024 13:03:14 +0000 (UTC)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 5D030378003D;
+	Mon, 29 Jan 2024 13:04:03 +0000 (UTC)
 Received: by mercury (Postfix, from userid 1000)
-	id 28A471063ADA; Mon, 29 Jan 2024 14:03:14 +0100 (CET)
-Date: Mon, 29 Jan 2024 14:03:14 +0100
+	id 081221063ADA; Mon, 29 Jan 2024 14:04:02 +0100 (CET)
+Date: Mon, 29 Jan 2024 14:04:02 +0100
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
 	Konrad Dybcio <konrad.dybcio@linaro.org>, Luca Weiss <luca.weiss@fairphone.com>, andersson@kernel.org, 
 	linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org, Johan Hovold <johan+linaro@kernel.org>
-Subject: Re: [PATCH AUTOSEL 6.7 15/39] power: supply: qcom_battmgr: Register
+Subject: Re: [PATCH AUTOSEL 6.6 12/31] power: supply: qcom_battmgr: Register
  the power supplies after PDR is up
-Message-ID: <rtghydsz532x6atjeshexkgevqlfxmw5owjexmnczwepeefvlb@gxinnf23tzij>
-References: <20240128161130.200783-1-sashal@kernel.org>
- <20240128161130.200783-15-sashal@kernel.org>
+Message-ID: <wqq4ga5m5qvhvzebdl5p7ecwhhbtgyil4isjx7htq6zto3yoex@dqi75okjckob>
+References: <20240128161315.201999-1-sashal@kernel.org>
+ <20240128161315.201999-12-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,19 +68,19 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mqekvd7hqabcdj2t"
+	protocol="application/pgp-signature"; boundary="ejjavpsvnbuzsgx4"
 Content-Disposition: inline
-In-Reply-To: <20240128161130.200783-15-sashal@kernel.org>
+In-Reply-To: <20240128161315.201999-12-sashal@kernel.org>
 
 
---mqekvd7hqabcdj2t
+--ejjavpsvnbuzsgx4
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Sun, Jan 28, 2024 at 11:10:35AM -0500, Sasha Levin wrote:
+On Sun, Jan 28, 2024 at 11:12:42AM -0500, Sasha Levin wrote:
 > From: Konrad Dybcio <konrad.dybcio@linaro.org>
 >=20
 > [ Upstream commit b43f7ddc2b7a5a90447d96cb4d3c6d142dd4a810 ]
@@ -104,7 +104,7 @@ On Sun, Jan 28, 2024 at 11:10:35AM -0500, Sasha Levin wrote:
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
 
-Please drop it, I have a patch queued reverting this patch.=20
+Please drop. I have a patch queued reverting this patch.
 
 -- Sebastian
 
@@ -292,25 +292,25 @@ esc, &psy_cfg_supply);
 > 2.43.0
 >=20
 
---mqekvd7hqabcdj2t
+--ejjavpsvnbuzsgx4
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmW3ogoACgkQ2O7X88g7
-+pr3VhAAoFg3dDtbbHT5MDapdkU7KcQ+brvQC+RcR+iftwUusNtNBZaqhatssI6q
-silJgqzKQyHJGMsWyY4vnz9J1ukcvtt1ydQc5J80AEPogFUdOdu2Sm5uyUc3pVHg
-cW5bwZK/Y3Hnzn5n2vyKstLBwM8XtZf38hIZ75+5VtUxnrfrETAAwmCXe2/5qCeO
-55bRNOoiylfqjGDXDTIU9xR2e1LIqneq+PFWeYR333fXcdQ2+dTRGiL6qeP6MtsT
-FtKvr+PcYlgLwX+AtQS2/GF6W7WTmN3ldYCbGlY07pfptfmAdE38p5FOvZM88aZb
-7Lt1qKpwl3hZ2CJiV0r0SDbnMyPsPoQ8RyFoIzuqYPiVeJBw2sBAa1Ax65//po0I
-JCgsv6Xilxt6sPr5SdXMqJ7EaNeqqS7wcsUosUq5aLx+/y1rEZluZC/Q9qB9nswT
-+L758Nvyk444LmNOvS3OmmPGW5VPuGl3EpBAsmFJm3OHLSfwrpFZ9wyPQEck+mPG
-b+ov0rqU89+5WpDQR2KML1aGzLNULisGO+F95vtYgWABFChJ+quFe6XlmIyxKomA
-XSHIVerxec78nqTxybcnoP4TG97psejfcSs1T90efIR6i8O5PlEF82azHScTbO56
-ygKk5RM7oCJw3ifhzg7U0SMzkgA4dz9wZnZ7lSJrjTAiRKbRRkA=
-=Ik1F
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmW3okIACgkQ2O7X88g7
++poDwA/9GUhI/yZTzwvrtYOc5qnHAJvS+H8dTwX/Qp5VHVUxpBLeVuqyg1jqh4a+
+b5ji6+2LsZCWiJ/EJPcNp3Xviv/5lf0KWkuOCKA/4skWwvR7Aw3kdRUVcRD3LHUJ
+jh6ZjTh1nzbIY72z8x846KKHX3G+EXjVcikgdh52L/CQbOt/pN+teK3YctHqSBfd
+8Lpo5ZzhDi+P3ki9vNtn9MY7bQx/mLbO669TY6cDa7OvYH55sZ8G6ICeyeR0X0oF
+oi8ZsH2S7tj0JiQX40Ku9VxiuM+ONelqqr2SGiErcLYICRwNDe+OTJp8yJVAoMiV
+HXk1I2oxiEeG8so3sH+9C7CHR6xqcZS3bNhff9SxWx9SROtmOZFwhmuchefoV+gt
+s/xkh0zpL9r0Iuq5eECnoaLNbRd7TGGVeseZZ6qqMb/fPKO49diI5zFSHGRlwgWv
+CyzBql0gvm8ZRrkcLEH2ggqP8uwrTJF4VWjsPZE6d0ldc2Ckigj1GnY0S6kbChtH
+vDwOhwSLzNcrK4KsgGsq4mkFC4Ezitg+TJ5INcxf8PGhruIQO5k+5HWEwhgZCox2
+gQM0qlNwW5CE9HAb/EpxjSCouceklITmu7kVCbA6cvubnyTpZX/eOCyMmYqhB3C+
+jlxZ9fEcRqdWvm7xu6IkgSk/KVBldINRZR+aWW2hSzVLfg48NsA=
+=O+nP
 -----END PGP SIGNATURE-----
 
---mqekvd7hqabcdj2t--
+--ejjavpsvnbuzsgx4--
 
