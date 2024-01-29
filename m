@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-17196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2375F841035
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2D53840E3B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56C1C1C239B4
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21ECB1C23A6C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B9215F302;
-	Mon, 29 Jan 2024 17:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E1715A481;
+	Mon, 29 Jan 2024 17:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aWZ8nN2+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJwYZ1Y9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5307B15B30B;
-	Mon, 29 Jan 2024 17:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B238815703E;
+	Mon, 29 Jan 2024 17:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548581; cv=none; b=r0uh5kBnClc8zIT4/TofBmirqN0FUpTxfaeJZQJK57HijPqx50YaqtGZz+DydG+bRnNPk/eF1McnoKRijhG52KpXaQxx7HfSFgwqVYF8xMwy7u42JqsbEy58I6WyKwxMamn515FhEDJkrLXKm6uHo3oqNRxQ43T/u04Z4RtllYI=
+	t=1706548246; cv=none; b=IqeHS7qmdvwNPi7BAf/+YIoKml/dKek2qMgNrf46fSImga3FO6O5WcrbYbm3fp/RQFiDe8/XOn86STtbr77rU2EOJSj12iezTbJ3S8+v+OTZ+IfsGz+wlNXvqvNXmbA6U5P5nVINdwv+evbhaDpJuBQSj6gUhZJ3iFU0BrVfYII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548581; c=relaxed/simple;
-	bh=VbdtgJ+Q0X/5gHhLBOF3sMoOYkcxaDv3uSJAexAS9wk=;
+	s=arc-20240116; t=1706548246; c=relaxed/simple;
+	bh=zvIrtF2iMfx4CmaA7XxKrMZEq22VTcZ2B4+h4CivGmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pnAK7GWrETslsUZPwKiwyPDinuDoPQ3YaZ0QHXFbSOXJwf1SFd94kxeDNry5GI6qRwBn+D1xEKmjsP+Uz4pC3hlc92QNM3So04iBV6YILcAb/ZyqncZVLZqREuZ5tGWUpbmp2w16ELX8C50Faxjw2WTnEzndEQurK/qQsdMcUcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aWZ8nN2+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A6ECC433C7;
-	Mon, 29 Jan 2024 17:16:21 +0000 (UTC)
+	 MIME-Version; b=N5VWluxrzYZOj1F1P9sakV75GYhnPFY0f8yEm6Cw5BfpJlx/mshD6BubjDT2kcSTPVEgvU0g+KivAil2ynO8G6N2wwiKSfpDlFjCyxjzQ4ascO6TpiM5Rs22WmbnkapfKA573jvHX6cgLi5lO8p7iPF9mwMYZ3wZ3bYZXT/8R3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJwYZ1Y9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFE8C43390;
+	Mon, 29 Jan 2024 17:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548581;
-	bh=VbdtgJ+Q0X/5gHhLBOF3sMoOYkcxaDv3uSJAexAS9wk=;
+	s=korg; t=1706548246;
+	bh=zvIrtF2iMfx4CmaA7XxKrMZEq22VTcZ2B4+h4CivGmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aWZ8nN2+/4FKrpdPLj/AoY2ieq5l5yOZsxiTccPA0t1Y79a5xLQQYcvQty9cAJXFL
-	 OxNIyex7BAh4wv09/Ut7ploK//+pokiFYZWopo4iFvv5CwIse+XRlWyRwDCaOSIvb1
-	 6VzaS6FT/8/fG3NZctWqbKjd4ORaKFFmvl9dyrY0=
+	b=SJwYZ1Y97vbIbr6fjC62DyYvozKvej3i3dvP01MlSbDvDFPx/llW4GLzq7GURNSZC
+	 RCvgLeA4NPvAjGv/CfD98xxsOBLIKEOtyWaiRlwZ19Xj8J6qusdFMLxe48DwY5XVH0
+	 znPQ4V1Y0f2P8Qq07WMCrtKQYUK4G8benvDKqRFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 236/331] btrfs: defrag: reject unknown flags of btrfs_ioctl_defrag_range_args
-Date: Mon, 29 Jan 2024 09:05:00 -0800
-Message-ID: <20240129170021.784905021@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.7 270/346] drm/amd/display: Align the returned error code with legacy DP
+Date: Mon, 29 Jan 2024 09:05:01 -0800
+Message-ID: <20240129170024.328377743@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-commit 173431b274a9a54fc10b273b46e67f46bcf62d2e upstream.
+commit bfe79f5fff1300d96203383582b078c7b0aec80a upstream.
 
-Add extra sanity check for btrfs_ioctl_defrag_range_args::flags.
+[Why]
+For usb4 connector, AUX transaction is handled by dmub utilizing a differnt
+code path comparing to legacy DP connector. If the usb4 DP connector is
+disconnected, AUX access will report EBUSY and cause igt@kms_dp_aux_dev
+fail.
 
-This is not really to enhance fuzzing tests, but as a preparation for
-future expansion on btrfs_ioctl_defrag_range_args.
+[How]
+Align the error code with the one reported by legacy DP as EIO.
 
-In the future we're going to add new members, allowing more fine tuning
-for btrfs defrag.  Without the -ENONOTSUPP error, there would be no way
-to detect if the kernel supports those new defrag features.
-
-CC: stable@vger.kernel.org # 4.14+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ioctl.c           |    4 ++++
- include/uapi/linux/btrfs.h |    3 +++
- 2 files changed, 7 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -2608,6 +2608,10 @@ static int btrfs_ioctl_defrag(struct fil
- 				ret = -EFAULT;
- 				goto out;
- 			}
-+			if (range.flags & ~BTRFS_DEFRAG_RANGE_FLAGS_SUPP) {
-+				ret = -EOPNOTSUPP;
-+				goto out;
-+			}
- 			/* compression requires us to start the IO */
- 			if ((range.flags & BTRFS_DEFRAG_RANGE_COMPRESS)) {
- 				range.flags |= BTRFS_DEFRAG_RANGE_START_IO;
---- a/include/uapi/linux/btrfs.h
-+++ b/include/uapi/linux/btrfs.h
-@@ -612,6 +612,9 @@ struct btrfs_ioctl_clone_range_args {
-  */
- #define BTRFS_DEFRAG_RANGE_COMPRESS 1
- #define BTRFS_DEFRAG_RANGE_START_IO 2
-+#define BTRFS_DEFRAG_RANGE_FLAGS_SUPP	(BTRFS_DEFRAG_RANGE_COMPRESS |		\
-+					 BTRFS_DEFRAG_RANGE_START_IO)
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+@@ -965,6 +965,11 @@ int dm_helper_dmub_aux_transfer_sync(
+ 		struct aux_payload *payload,
+ 		enum aux_return_code_type *operation_result)
+ {
++	if (!link->hpd_status) {
++		*operation_result = AUX_RET_ERROR_HPD_DISCON;
++		return -1;
++	}
 +
- struct btrfs_ioctl_defrag_range_args {
- 	/* start of the defrag operation */
- 	__u64 start;
+ 	return amdgpu_dm_process_dmub_aux_transfer_sync(ctx, link->link_index, payload,
+ 			operation_result);
+ }
 
 
 
