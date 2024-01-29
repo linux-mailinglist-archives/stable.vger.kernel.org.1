@@ -1,58 +1,53 @@
-Return-Path: <stable+bounces-16447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7FFE840CFF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:07:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF2E840D08
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:07:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DCE21F2AE65
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:07:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B97F1F2AF99
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D341586CE;
-	Mon, 29 Jan 2024 17:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0101586D9;
+	Mon, 29 Jan 2024 17:07:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwfrviYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2PbHjAEZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF80157050;
-	Mon, 29 Jan 2024 17:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE41D157048;
+	Mon, 29 Jan 2024 17:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548026; cv=none; b=GZNl8CtVcyQYmRW7+Qk94ceeiiJhlRSmDUsD5pQ6ii1ogmYnToQlfFGNvEW+3T6kt/JRn/xZ5GoTLtbj8HW+5XUvRal8/nNRztmMbGcu7kFtuDpZXZCu6LfZqm7Dv5HLnrCwctlZEJuEsd+yMxs7lSDMg9B2jVEfpLNlJ95hM9A=
+	t=1706548032; cv=none; b=WD3wOPxdEyrajRLunMETYG6d7Kmzb896sQS/o4A0NIhVJ+zlLzYC77Xyzv7GvnpKBYbd1LPXJHLW70HXRIT0hQTjH+/JDOXs+lnkQRnTj2xYZpyzny85UIyRi3cF7G+U5DA5unrvmmVs9w+AMt7DRz2lX/nNUhLhFa/VJJIcSIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548026; c=relaxed/simple;
-	bh=FhHLgLumZjPvNC7o/VANQJQT5eOqOfZE4zLKB9xiTJY=;
+	s=arc-20240116; t=1706548032; c=relaxed/simple;
+	bh=zSQBInqCxFWub5Imve7YZSLMdN7lZiBWnTC8tMQl58w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YdS0sK5/SN9sm+wHeePDkXyfjL9QDO2G5bIk5Aju5g3RjRPFbviJPioF2eEWckdpaG7K73aFB7IZZqWUMW2NH0EMfD8huT9whz0GcEyEUuMWOtjfnbIJkIeAe81KeIRZ4kE1NunQghBK7ABME0xwctNepOESK/+3BIsVonHATPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwfrviYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C57D2C433C7;
-	Mon, 29 Jan 2024 17:07:05 +0000 (UTC)
+	 MIME-Version; b=FSMoyHphei+IPOucihpBs7Q49ApVsZQeuGTu3yaVOqvIE4WLtKlJBMAaedE17SZR0uKj2/ABGqYYk2PdpwUu/xM8pYe22+4rli9Pq6kSxSt8+MQWE1CjOWx4qZZOFmn5Tn6KaK7uRugTJ+yFVMGHHHy+BlK0F7Czul3244g58Ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2PbHjAEZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61103C43390;
+	Mon, 29 Jan 2024 17:07:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548025;
-	bh=FhHLgLumZjPvNC7o/VANQJQT5eOqOfZE4zLKB9xiTJY=;
+	s=korg; t=1706548032;
+	bh=zSQBInqCxFWub5Imve7YZSLMdN7lZiBWnTC8tMQl58w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MwfrviYkZKs2OjXMCOlv7RSqQm8AGIk7AFj03depHccCzZaPa5TxCkvnctVNxdxRe
-	 klGRnacpzFpUhmzs7a3+tym1YsBGJSLx0c7EwLJLa+bL9WTK8Yf9xTQE/bf4pFbBgl
-	 Umpbs1VioH2EmCFH5c7w/EPv1FpK7QSIu9yIaN+Q=
+	b=2PbHjAEZBDN0ADYYFLZBgsE5lzc6d/0JacYZYkFWnFhNciAe8ZhRfdeHkzSRKuCgQ
+	 ER9PwA2d/jSYahKYWE094gw5eTTGZa6sO3dGLdyHPxMQgcM6SIhk34h9ZqRr1Q2FKh
+	 txODHJl2hehPotPnRVu7/iX51V4hMcLas9Rh3MfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 002/346] soundwire: fix initializing sysfs for same devices on different buses
-Date: Mon, 29 Jan 2024 09:00:33 -0800
-Message-ID: <20240129170016.423197694@linuxfoundation.org>
+Subject: [PATCH 6.7 003/346] iio: adc: ad7091r: Set alert bit in config register
+Date: Mon, 29 Jan 2024 09:00:34 -0800
+Message-ID: <20240129170016.453163856@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -71,87 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 
-[ Upstream commit 8a8a9ac8a4972ee69d3dd3d1ae43963ae39cee18 ]
+[ Upstream commit 149694f5e79b0c7a36ceb76e7c0d590db8f151c1 ]
 
-If same devices with same device IDs are present on different soundwire
-buses, the probe fails due to conflicting device names and sysfs
-entries:
+The ad7091r-base driver sets up an interrupt handler for firing events
+when inputs are either above or below a certain threshold.
+However, for the interrupt signal to come from the device it must be
+configured to enable the ALERT/BUSY/GPO pin to be used as ALERT, which
+was not being done until now.
+Enable interrupt signals on the ALERT/BUSY/GPO pin by setting the proper
+bit in the configuration register.
 
-  sysfs: cannot create duplicate filename '/bus/soundwire/devices/sdw:0:0217:0204:00:0'
-
-The link ID is 0 for both devices, so they should be differentiated by
-the controller ID. Add the controller ID so, the device names and sysfs entries look
-like:
-
-  sdw:1:0:0217:0204:00:0 -> ../../../devices/platform/soc@0/6ab0000.soundwire-controller/sdw-master-1-0/sdw:1:0:0217:0204:00:0
-  sdw:3:0:0217:0204:00:0 -> ../../../devices/platform/soc@0/6b10000.soundwire-controller/sdw-master-3-0/sdw:3:0:0217:0204:00:0
-
-[PLB changes: use bus->controller_id instead of bus->id]
-
-Fixes: 7c3cd189b86d ("soundwire: Add Master registration")
-Cc: stable@vger.kernel.org
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Co-developed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Mark Brown <broonie@kernel.org>
-Tested-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20231017160933.12624-3-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Link: https://lore.kernel.org/r/e8da2ee98d6df88318b14baf3dc9630e20218418.1702746240.git.marcelo.schmitt1@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 020e71c7ffc2 ("iio: adc: ad7091r: Allow users to configure device events")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/slave.c        | 12 ++++++------
- sound/soc/intel/boards/sof_sdw.c |  4 ++--
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/iio/adc/ad7091r-base.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/soundwire/slave.c b/drivers/soundwire/slave.c
-index c1c1a2ac293a..060c2982e26b 100644
---- a/drivers/soundwire/slave.c
-+++ b/drivers/soundwire/slave.c
-@@ -39,14 +39,14 @@ int sdw_slave_add(struct sdw_bus *bus,
- 	slave->dev.fwnode = fwnode;
+diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
+index 0e5d3d2e9c98..8aaa854f816f 100644
+--- a/drivers/iio/adc/ad7091r-base.c
++++ b/drivers/iio/adc/ad7091r-base.c
+@@ -28,6 +28,7 @@
+ #define AD7091R_REG_RESULT_CONV_RESULT(x)   ((x) & 0xfff)
  
- 	if (id->unique_id == SDW_IGNORED_UNIQUE_ID) {
--		/* name shall be sdw:link:mfg:part:class */
--		dev_set_name(&slave->dev, "sdw:%01x:%04x:%04x:%02x",
--			     bus->link_id, id->mfg_id, id->part_id,
-+		/* name shall be sdw:ctrl:link:mfg:part:class */
-+		dev_set_name(&slave->dev, "sdw:%01x:%01x:%04x:%04x:%02x",
-+			     bus->controller_id, bus->link_id, id->mfg_id, id->part_id,
- 			     id->class_id);
- 	} else {
--		/* name shall be sdw:link:mfg:part:class:unique */
--		dev_set_name(&slave->dev, "sdw:%01x:%04x:%04x:%02x:%01x",
--			     bus->link_id, id->mfg_id, id->part_id,
-+		/* name shall be sdw:ctrl:link:mfg:part:class:unique */
-+		dev_set_name(&slave->dev, "sdw:%01x:%01x:%04x:%04x:%02x:%01x",
-+			     bus->controller_id, bus->link_id, id->mfg_id, id->part_id,
- 			     id->class_id, id->unique_id);
- 	}
+ /* AD7091R_REG_CONF */
++#define AD7091R_REG_CONF_ALERT_EN   BIT(4)
+ #define AD7091R_REG_CONF_AUTO   BIT(8)
+ #define AD7091R_REG_CONF_CMD    BIT(10)
  
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 4e4284729773..1e788859c863 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -1232,11 +1232,11 @@ static int fill_sdw_codec_dlc(struct device *dev,
- 	else if (is_unique_device(adr_link, sdw_version, mfg_id, part_id,
- 				  class_id, adr_index))
- 		codec->name = devm_kasprintf(dev, GFP_KERNEL,
--					     "sdw:%01x:%04x:%04x:%02x", link_id,
-+					     "sdw:0:%01x:%04x:%04x:%02x", link_id,
- 					     mfg_id, part_id, class_id);
- 	else
- 		codec->name = devm_kasprintf(dev, GFP_KERNEL,
--					     "sdw:%01x:%04x:%04x:%02x:%01x", link_id,
-+					     "sdw:0:%01x:%04x:%04x:%02x:%01x", link_id,
- 					     mfg_id, part_id, class_id, unique_id);
+@@ -232,6 +233,11 @@ int ad7091r_probe(struct device *dev, const char *name,
+ 	iio_dev->channels = chip_info->channels;
  
- 	if (!codec->name)
+ 	if (irq) {
++		ret = regmap_update_bits(st->map, AD7091R_REG_CONF,
++					 AD7091R_REG_CONF_ALERT_EN, BIT(4));
++		if (ret)
++			return ret;
++
+ 		ret = devm_request_threaded_irq(dev, irq, NULL,
+ 				ad7091r_event_handler,
+ 				IRQF_TRIGGER_FALLING | IRQF_ONESHOT, name, iio_dev);
 -- 
 2.43.0
 
