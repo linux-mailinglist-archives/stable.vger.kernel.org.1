@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-16651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C9F840DD9
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93BD9840E52
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74C501F2D017
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5EE41C20FEC
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5FF157E75;
-	Mon, 29 Jan 2024 17:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73840159591;
+	Mon, 29 Jan 2024 17:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5aXWLyu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fa2wmpid"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6834215956D;
-	Mon, 29 Jan 2024 17:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3257515B313;
+	Mon, 29 Jan 2024 17:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548177; cv=none; b=ndi3CPmC3lhnMuo9q2mS8izymj/xDXGpI8ittH8GbeWX/MVUpWZ6xZEehraoPyPEe6mE2qFQpD9BaGYtNDXstJTdJ5vUct0z5IiA71WgS+wWW+G9I4wnFZzYMMO6cTBiN8BUz0zkPdgmpGFFKKwVactDoelf73iAnuGvYKVCX80=
+	t=1706548263; cv=none; b=Ed+6joIkUHTh1bu3OjhitaYlagLLGieGG3JqPdphORmB9FEmR5GvsC+U7yK5Pnwwv05jIEa6OBFmR3tw7YwXPVA3JJx4O1nmkqYWwVv1+IWz71rCTkrUeAn1qKdw7eHweEHoRewFXqYotn4aVNLqOkhMuHOG+cUzjZdFIsf3tM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548177; c=relaxed/simple;
-	bh=WIK6Yv4m+6bjfti8JQUSmf0HznD7BsA3s0QonZHUauQ=;
+	s=arc-20240116; t=1706548263; c=relaxed/simple;
+	bh=cPp9vWuKaqEfixUC5wo/H99866uCU2hrQnYeQasaTTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nAEYFzqU6cj/bdNIFaprcdlAL371o6wB8SESd71tvzuJMSpFSw2qod/OIXLZymJQd3zwIeNczlZLCpWSl7TST880gaShdnXKq5MxS8w+lfSu2gtBJPWWlke2UskOCbUJ2zU7QF8IiuHZuT7eXz878fgyCKvUmPDc/LINTlUeFsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5aXWLyu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD61C433F1;
-	Mon, 29 Jan 2024 17:09:37 +0000 (UTC)
+	 MIME-Version; b=Z58jPE1Pqm/r35onJuFp3sySfWpt8gxfQbTX9zMyWzttC/zcEVunpB5kwjPvtgEKdpbncxEt+Db5Bb+WkV3jKLAp4k543sdIVHGIZdvckjCy9I8Q77sIo3aE/87WUN/oFjsrwlbDHmL9+j2GspIim43sA9Rcjdz07Ommccgak3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fa2wmpid; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00F0C43399;
+	Mon, 29 Jan 2024 17:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548177;
-	bh=WIK6Yv4m+6bjfti8JQUSmf0HznD7BsA3s0QonZHUauQ=;
+	s=korg; t=1706548263;
+	bh=cPp9vWuKaqEfixUC5wo/H99866uCU2hrQnYeQasaTTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5aXWLyuj+sk1rZIvH+YHca0kmUsJWMTZHDG2LYilxDn4wOVZ6rpU4vwgf14WOfAG
-	 EIKeq3Z0j8te/cEUuEdOeF7srNSOdhidSD3jPKLcZY2jNEnLqKMiMgndHLgopc+NxA
-	 Bc+NePli6JQvcLEAZ7KGOB9hRr3SxyohzbtIas3Q=
+	b=fa2wmpid9PJBTg0MH5J0DmEy46XSYlntlUmwDCHq5SnPWNR2ZPBvTQ3FC/xg62/8Q
+	 KQu5OItkd6YcVMz+Ssa8lEZIzauNHSkLZJJb9YL32kQYJbDloixrqxFEArPwVgWBtZ
+	 lCwVP/RqH3S9drG0Y+Dyl+bjt+JYyL+c00rKlCfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
-	Anand Jain <anand.jain@oracle.com>,
-	Omar Sandoval <osandov@fb.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.7 223/346] btrfs: avoid copying BTRFS_ROOT_SUBVOL_DEAD flag to snapshot of subvolume being deleted
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Eric Biggers <ebiggers@google.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 6.1 054/185] ubifs: ubifs_symlink: Fix memleak of inode->i_link in error path
 Date: Mon, 29 Jan 2024 09:04:14 -0800
-Message-ID: <20240129170022.950114557@linuxfoundation.org>
+Message-ID: <20240129170000.329138944@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Omar Sandoval <osandov@fb.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit 3324d0547861b16cf436d54abba7052e0c8aa9de upstream.
+commit 1e022216dcd248326a5bb95609d12a6815bca4e2 upstream.
 
-Sweet Tea spotted a race between subvolume deletion and snapshotting
-that can result in the root item for the snapshot having the
-BTRFS_ROOT_SUBVOL_DEAD flag set. The race is:
+For error handling path in ubifs_symlink(), inode will be marked as
+bad first, then iput() is invoked. If inode->i_link is initialized by
+fscrypt_encrypt_symlink() in encryption scenario, inode->i_link won't
+be freed by callchain ubifs_free_inode -> fscrypt_free_inode in error
+handling path, because make_bad_inode() has changed 'inode->i_mode' as
+'S_IFREG'.
+Following kmemleak is easy to be reproduced by injecting error in
+ubifs_jnl_update() when doing symlink in encryption scenario:
+ unreferenced object 0xffff888103da3d98 (size 8):
+  comm "ln", pid 1692, jiffies 4294914701 (age 12.045s)
+  backtrace:
+   kmemdup+0x32/0x70
+   __fscrypt_encrypt_symlink+0xed/0x1c0
+   ubifs_symlink+0x210/0x300 [ubifs]
+   vfs_symlink+0x216/0x360
+   do_symlinkat+0x11a/0x190
+   do_syscall_64+0x3b/0xe0
+There are two ways fixing it:
+ 1. Remove make_bad_inode() in error handling path. We can do that
+    because ubifs_evict_inode() will do same processes for good
+    symlink inode and bad symlink inode, for inode->i_nlink checking
+    is before is_bad_inode().
+ 2. Free inode->i_link before marking inode bad.
+Method 2 is picked, it has less influence, personally, I think.
 
-Thread 1                                      | Thread 2
-----------------------------------------------|----------
-btrfs_delete_subvolume                        |
-  btrfs_set_root_flags(BTRFS_ROOT_SUBVOL_DEAD)|
-                                              |btrfs_mksubvol
-                                              |  down_read(subvol_sem)
-                                              |  create_snapshot
-                                              |    ...
-                                              |    create_pending_snapshot
-                                              |      copy root item from source
-  down_write(subvol_sem)                      |
-
-This flag is only checked in send and swap activate, which this would
-cause to fail mysteriously.
-
-create_snapshot() now checks the root refs to reject a deleted
-subvolume, so we can fix this by locking subvol_sem earlier so that the
-BTRFS_ROOT_SUBVOL_DEAD flag and the root refs are updated atomically.
-
-CC: stable@vger.kernel.org # 4.14+
-Reported-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Reviewed-by: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Omar Sandoval <osandov@fb.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: 2c58d548f570 ("fscrypt: cache decrypted symlink target in ->i_link")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Suggested-by: Eric Biggers <ebiggers@kernel.org>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c |   22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ fs/ubifs/dir.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4449,6 +4449,8 @@ int btrfs_delete_subvolume(struct btrfs_
- 	u64 root_flags;
- 	int ret;
- 
-+	down_write(&fs_info->subvol_sem);
-+
- 	/*
- 	 * Don't allow to delete a subvolume with send in progress. This is
- 	 * inside the inode lock so the error handling that has to drop the bit
-@@ -4460,25 +4462,25 @@ int btrfs_delete_subvolume(struct btrfs_
- 		btrfs_warn(fs_info,
- 			   "attempt to delete subvolume %llu during send",
- 			   dest->root_key.objectid);
--		return -EPERM;
-+		ret = -EPERM;
-+		goto out_up_write;
- 	}
- 	if (atomic_read(&dest->nr_swapfiles)) {
- 		spin_unlock(&dest->root_item_lock);
- 		btrfs_warn(fs_info,
- 			   "attempt to delete subvolume %llu with active swapfile",
- 			   root->root_key.objectid);
--		return -EPERM;
-+		ret = -EPERM;
-+		goto out_up_write;
- 	}
- 	root_flags = btrfs_root_flags(&dest->root_item);
- 	btrfs_set_root_flags(&dest->root_item,
- 			     root_flags | BTRFS_ROOT_SUBVOL_DEAD);
- 	spin_unlock(&dest->root_item_lock);
- 
--	down_write(&fs_info->subvol_sem);
--
- 	ret = may_destroy_subvol(dest);
- 	if (ret)
--		goto out_up_write;
-+		goto out_undead;
- 
- 	btrfs_init_block_rsv(&block_rsv, BTRFS_BLOCK_RSV_TEMP);
- 	/*
-@@ -4488,7 +4490,7 @@ int btrfs_delete_subvolume(struct btrfs_
- 	 */
- 	ret = btrfs_subvolume_reserve_metadata(root, &block_rsv, 5, true);
- 	if (ret)
--		goto out_up_write;
-+		goto out_undead;
- 
- 	trans = btrfs_start_transaction(root, 0);
- 	if (IS_ERR(trans)) {
-@@ -4554,15 +4556,17 @@ out_end_trans:
- 	inode->i_flags |= S_DEAD;
- out_release:
- 	btrfs_subvolume_release_metadata(root, &block_rsv);
--out_up_write:
--	up_write(&fs_info->subvol_sem);
-+out_undead:
- 	if (ret) {
- 		spin_lock(&dest->root_item_lock);
- 		root_flags = btrfs_root_flags(&dest->root_item);
- 		btrfs_set_root_flags(&dest->root_item,
- 				root_flags & ~BTRFS_ROOT_SUBVOL_DEAD);
- 		spin_unlock(&dest->root_item_lock);
--	} else {
-+	}
-+out_up_write:
-+	up_write(&fs_info->subvol_sem);
-+	if (!ret) {
- 		d_invalidate(dentry);
- 		btrfs_prune_dentries(dest);
- 		ASSERT(dest->send_in_progress == 0);
+--- a/fs/ubifs/dir.c
++++ b/fs/ubifs/dir.c
+@@ -1226,6 +1226,8 @@ out_cancel:
+ 	dir_ui->ui_size = dir->i_size;
+ 	mutex_unlock(&dir_ui->ui_mutex);
+ out_inode:
++	/* Free inode->i_link before inode is marked as bad. */
++	fscrypt_free_inode(inode);
+ 	make_bad_inode(inode);
+ 	iput(inode);
+ out_fname:
 
 
 
