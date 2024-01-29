@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8196840F1C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99AFA841073
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AE05B250D4
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5401E284F92
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB89A163A9D;
-	Mon, 29 Jan 2024 17:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A65D37602D;
+	Mon, 29 Jan 2024 17:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BoSgmEbj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BotWhavY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A394163A99;
-	Mon, 29 Jan 2024 17:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CB876041;
+	Mon, 29 Jan 2024 17:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548386; cv=none; b=mbxp/vBgd+u9cFd01CPfLDaBqLqkkGb09LnfE5jOti9uL7EYusDeTolAkiUDcgXtnzPx3eZr/POIIq6XIJ28TgvW/CSYokwbBM9DDAlAcR6B39JZjlHzvbup0dgnyZR9EBVq14sfHONslHEEOgBRbs9nBS8F2lJKNhzUiTuNMbw=
+	t=1706548624; cv=none; b=MIcVQ4mfO822zMZYVYMzV+wX2yownYUTNtWQlQfsKlE6A22qPypGGau8rDbNcDf6b3fRRhOQlnl4WTp/7UsVTwBFvm8Avyy2o5ow6Qk+W+ofCFJGtwsofLgXIq5QxgfXvLcBASeqerHqAbcfUNYJJ7f79+MWRZiUpn3EVxzDy8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548386; c=relaxed/simple;
-	bh=Q9sDwpuvKN6dOiDOlgEN9raylULXuaFs8EcztNQvvlo=;
+	s=arc-20240116; t=1706548624; c=relaxed/simple;
+	bh=vWJ2LI8KhpVZquFwPe3PHOI7+GCWFfMyCTAHKS5bYWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g7OX/H0DlN6SDwCtMCVWlwy6HHo5MCEsKuZHL9TRyh8ehkm3Qd6ttlgXagNZKWbgUOlktpZhwsgumy9koJGGu5GDqtNl3mXJV/uIbjf/Tya0Bw7XN7ZRg1sMgFgfBIxSyiZ+mRufDAsbXzdNLkjeVEKv1mEqC/BzAERQ8v91SVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BoSgmEbj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2B2C433C7;
-	Mon, 29 Jan 2024 17:13:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cjjUchUp4uKw40ePuurj1PLEkGisRSjXwy4659jVk5KWBLkHlZqVda0j/1SiW6h1SwtwbOH7KBiDKftVIfyYpg0gf6umbchXdNsQ27lh0nySBgOzxNPm6N5xfzUxxgYZjSI3ivnBOQKswZe9tXQ5F5IFjRxc2gXRi7ny3Sv9y6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BotWhavY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1A5C433F1;
+	Mon, 29 Jan 2024 17:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548386;
-	bh=Q9sDwpuvKN6dOiDOlgEN9raylULXuaFs8EcztNQvvlo=;
+	s=korg; t=1706548624;
+	bh=vWJ2LI8KhpVZquFwPe3PHOI7+GCWFfMyCTAHKS5bYWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BoSgmEbjFIz+URyH1vrw4v/qDq5X9NKqj5dkjYCRXI4TvjsanPuMSUoXR0mlXFTiR
-	 xOAECt/qbcouiGy2g3uvkMknI+8OWKxId09wY5BDOLmLB61L+OTXLARrfDEi2ksLxh
-	 4TgT+lhHXO9PsFxipg2XdVEVOHXQkb5lrypde8cY=
+	b=BotWhavYRwcqnyEBTU5UF7EZE8EbmCrZxEqvhd/A7Y9esKMbsda+gF5Q1wckHiemF
+	 d8Q5xuEU2jPQaTiNVm/7+duxBRoc4psgP1LF80IqPRXtPQOLWClixmIZCewt4bsOYU
+	 gif67WemhdjYGOpXrwJxj4ZhMgJdcAQ3rb8ghnng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordan Rife <jrife@google.com>,
-	David Teigland <teigland@redhat.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 158/185] dlm: use kernel_connect() and kernel_bind()
+Subject: [PATCH 6.6 294/331] drm/i915/psr: Only allow PSR in LPSP mode on HSW non-ULT
 Date: Mon, 29 Jan 2024 09:05:58 -0800
-Message-ID: <20240129170003.673304142@linuxfoundation.org>
+Message-ID: <20240129170023.467844144@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rife <jrife@google.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit e9cdebbe23f1aa9a1caea169862f479ab3fa2773 ]
+[ Upstream commit f9f031dd21a7ce13a13862fa5281d32e1029c70f ]
 
-Recent changes to kernel_connect() and kernel_bind() ensure that
-callers are insulated from changes to the address parameter made by BPF
-SOCK_ADDR hooks. This patch wraps direct calls to ops->connect() and
-ops->bind() with kernel_connect() and kernel_bind() to protect callers
-in such cases.
+On HSW non-ULT (or at least on Dell Latitude E6540) external displays
+start to flicker when we enable PSR on the eDP. We observe a much higher
+SR and PC6 residency than should be possible with an external display,
+and indeen much higher than what we observe with eDP disabled and
+only the external display enabled. Looks like the hardware is somehow
+ignoring the fact that the external display is active during PSR.
 
-Link: https://lore.kernel.org/netdev/9944248dba1bce861375fcce9de663934d933ba9.camel@redhat.com/
-Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
-Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
+I wasn't able to redproduce this on my HSW ULT machine, or BDW.
+So either there's something specific about this particular laptop
+(eg. some unknown firmware thing) or the issue is limited to just
+non-ULT HSW systems. All known registers that could affect this
+look perfectly reasonable on the affected machine.
+
+As a workaround let's unmask the LPSP event to prevent PSR entry
+except while in LPSP mode (only pipe A + eDP active). This
+will prevent PSR entry entirely when multiple pipes are active.
+The one slight downside is that we now also prevent PSR entry
+when driving eDP with pipe B or C, but I think that's a reasonable
+tradeoff to avoid having to implement a more complex workaround.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Jordan Rife <jrife@google.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Fixes: 783d8b80871f ("drm/i915/psr: Re-enable PSR1 on hsw/bdw")
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10092
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240118212131.31868-1-ville.syrjala@linux.intel.com
+Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
+(cherry picked from commit 94501c3ca6400e463ff6cc0c9cf4a2feb6a9205d)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/lowcomms.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/i915/display/intel_psr.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
-index 6ed09edabea0..72f34f96d015 100644
---- a/fs/dlm/lowcomms.c
-+++ b/fs/dlm/lowcomms.c
-@@ -1845,8 +1845,8 @@ static int dlm_tcp_bind(struct socket *sock)
- 	memcpy(&src_addr, dlm_local_addr[0], sizeof(src_addr));
- 	make_sockaddr(&src_addr, 0, &addr_len);
- 
--	result = sock->ops->bind(sock, (struct sockaddr *)&src_addr,
--				 addr_len);
-+	result = kernel_bind(sock, (struct sockaddr *)&src_addr,
-+			     addr_len);
- 	if (result < 0) {
- 		/* This *may* not indicate a critical error */
- 		log_print("could not bind for connect: %d", result);
-@@ -1860,7 +1860,7 @@ static int dlm_tcp_connect(struct connection *con, struct socket *sock,
- {
- 	int ret;
- 
--	ret = sock->ops->connect(sock, addr, addr_len, O_NONBLOCK);
-+	ret = kernel_connect(sock, addr, addr_len, O_NONBLOCK);
- 	switch (ret) {
- 	case -EINPROGRESS:
- 		fallthrough;
-@@ -1900,8 +1900,8 @@ static int dlm_tcp_listen_bind(struct socket *sock)
- 
- 	/* Bind to our port */
- 	make_sockaddr(dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
--	return sock->ops->bind(sock, (struct sockaddr *)dlm_local_addr[0],
--			       addr_len);
-+	return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
-+			   addr_len);
- }
- 
- static const struct dlm_proto_ops dlm_tcp_ops = {
-@@ -1928,12 +1928,12 @@ static int dlm_sctp_connect(struct connection *con, struct socket *sock,
- 	int ret;
- 
- 	/*
--	 * Make sock->ops->connect() function return in specified time,
-+	 * Make kernel_connect() function return in specified time,
- 	 * since O_NONBLOCK argument in connect() function does not work here,
- 	 * then, we should restore the default value of this attribute.
+diff --git a/drivers/gpu/drm/i915/display/intel_psr.c b/drivers/gpu/drm/i915/display/intel_psr.c
+index 848ac483259b..5cf3db7058b9 100644
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -1400,8 +1400,18 @@ static void intel_psr_enable_source(struct intel_dp *intel_dp,
+ 	 * can rely on frontbuffer tracking.
  	 */
- 	sock_set_sndtimeo(sock->sk, 5);
--	ret = sock->ops->connect(sock, addr, addr_len, 0);
-+	ret = kernel_connect(sock, addr, addr_len, 0);
- 	sock_set_sndtimeo(sock->sk, 0);
- 	if (ret < 0)
- 		return ret;
+ 	mask = EDP_PSR_DEBUG_MASK_MEMUP |
+-	       EDP_PSR_DEBUG_MASK_HPD |
+-	       EDP_PSR_DEBUG_MASK_LPSP;
++	       EDP_PSR_DEBUG_MASK_HPD;
++
++	/*
++	 * For some unknown reason on HSW non-ULT (or at least on
++	 * Dell Latitude E6540) external displays start to flicker
++	 * when PSR is enabled on the eDP. SR/PC6 residency is much
++	 * higher than should be possible with an external display.
++	 * As a workaround leave LPSP unmasked to prevent PSR entry
++	 * when external displays are active.
++	 */
++	if (DISPLAY_VER(dev_priv) >= 8 || IS_HASWELL_ULT(dev_priv))
++		mask |= EDP_PSR_DEBUG_MASK_LPSP;
+ 
+ 	if (DISPLAY_VER(dev_priv) < 20)
+ 		mask |= EDP_PSR_DEBUG_MASK_MAX_SLEEP;
 -- 
 2.43.0
 
