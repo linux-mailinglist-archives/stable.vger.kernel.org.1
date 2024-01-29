@@ -1,58 +1,73 @@
-Return-Path: <stable+bounces-16581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3329F840D90
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF29840FC2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6CAC1F2CEDE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 590751F2368A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DB815A49C;
-	Mon, 29 Jan 2024 17:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72CC715DBDB;
+	Mon, 29 Jan 2024 17:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqkPo3L/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9GQyh3g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C826D15B96C;
-	Mon, 29 Jan 2024 17:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297A515DBD1;
+	Mon, 29 Jan 2024 17:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548126; cv=none; b=NUv8WXoYCtdu8JX31O527/Yg6mqxdU0hv3dsXb1klzXHEIBi5Wp7kCySSI3DmI3ADvYRMRQXoEHLsJbhIp4rt9mnXc90e8ut8r3nDDoN3UXq+3fhivtYCb3RnExG0McvJMOF0iqjnwEtNpKe13cSYA3f75xtFuQFaZoms0yJvYo=
+	t=1706548497; cv=none; b=DQvjbfwsQTWLDTIdlnhgO+YT/5rEJbxWnFsOzFvzY8mdDlhmNWyfXAV2XnEma7yY+JWcZzTI4DEgb5hpjDWLxfuwBWM/tqgnljx9SSHkhy2Zdh8a0LR9X7Nj4FQn2InH9A+kDsgb3umV9i90UEO+digQBXBIo3NyLY6K0NahUjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548126; c=relaxed/simple;
-	bh=daNRoYJbxqqygMuOc6+dRN2xqZb1JfnIwQKvZnBMFm0=;
+	s=arc-20240116; t=1706548497; c=relaxed/simple;
+	bh=JRrRnuNxny7jBJbe4Thdj1Qj752VgTeJXI3OBWt4E9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M6UF0HC1zPv1CjPCf/l4oLu1S51Ikqfh+1TlZUBeCfgpQ3lHcHRekDGeFluJh3ERRz9VvLu+s7ucGaSkCpjkcukBSU0+98HlF8NZmH3h6TxMSQTFJk5z/V/3tJwTsFo9j3sEezETqZdeMOCuvIgcrho4WhW96rz2HArRYFCFWqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqkPo3L/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91ABAC43390;
-	Mon, 29 Jan 2024 17:08:46 +0000 (UTC)
+	 MIME-Version; b=Xnc2KLJplN98UdqGYJ414XLX6ScqsfmSfMhp/XDZKFfExonXMVBpZE1VhghjPWWesBGT+FVF8UnuPU1GR6fW2v6CvprECY9j2AoKR5lwECrRvAcS8C7Met1suPRDX/LMdIeA+sgBd8v5zgvOiEsSgnQPkeBajWV3b1QkAL5Knfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q9GQyh3g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D8BC433C7;
+	Mon, 29 Jan 2024 17:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548126;
-	bh=daNRoYJbxqqygMuOc6+dRN2xqZb1JfnIwQKvZnBMFm0=;
+	s=korg; t=1706548497;
+	bh=JRrRnuNxny7jBJbe4Thdj1Qj752VgTeJXI3OBWt4E9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wqkPo3L/Ut7FJcqjn4n6EahB0pWMXqyuKfUFPKSaN+jRhjWJj5BFMPHkUmLosrwQf
-	 ISb60bKuTnBniRKjdcByNDe4Nyt0OwRKMuXYSEyNLqVMwL1nxmbplnLdTgqJAU55Dz
-	 IK4wH+gzV3QdA2igOdXosqIX++A3fvulIFr83V/k=
+	b=q9GQyh3gS6ZL/5d6Y54moFFkMNDPDJekRlM0dvr8E3wGL9inHa6ss5uLAZesKWbrX
+	 XMH1tNw+BgJO+o3HVXnxHhEwgjhtFSUgMkZNecc5Q/clCU4zLS8iv6rt5nhsgDct/7
+	 /TqdtI5LEwWilwrEkxwujQjhJGGLOKYr2DzfKjxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b5ad66046b913bc04c6f@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 155/346] llc: Drop support for ETH_P_TR_802_2.
-Date: Mon, 29 Jan 2024 09:03:06 -0800
-Message-ID: <20240129170020.970641275@linuxfoundation.org>
+	James Gowans <jgowans@amazon.com>,
+	Baoquan He <bhe@redhat.com>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Tony Luck <tony.luck@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	Pavel Machek <pavel@ucw.cz>,
+	Sebastian Reichel <sre@kernel.org>,
+	Orson Zhai <orsonzhai@gmail.com>,
+	Alexander Graf <graf@amazon.de>,
+	"Jan H. Schoenherr" <jschoenh@amazon.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 123/331] kexec: do syscore_shutdown() in kernel_kexec
+Date: Mon, 29 Jan 2024 09:03:07 -0800
+Message-ID: <20240129170018.532428723@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,135 +79,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: James Gowans <jgowans@amazon.com>
 
-[ Upstream commit e3f9bed9bee261e3347131764e42aeedf1ffea61 ]
+commit 7bb943806ff61e83ae4cceef8906b7fe52453e8a upstream.
 
-syzbot reported an uninit-value bug below. [0]
+syscore_shutdown() runs driver and module callbacks to get the system into
+a state where it can be correctly shut down.  In commit 6f389a8f1dd2 ("PM
+/ reboot: call syscore_shutdown() after disable_nonboot_cpus()")
+syscore_shutdown() was removed from kernel_restart_prepare() and hence got
+(incorrectly?) removed from the kexec flow.  This was innocuous until
+commit 6735150b6997 ("KVM: Use syscore_ops instead of reboot_notifier to
+hook restart/shutdown") changed the way that KVM registered its shutdown
+callbacks, switching from reboot notifiers to syscore_ops.shutdown.  As
+syscore_shutdown() is missing from kexec, KVM's shutdown hook is not run
+and virtualisation is left enabled on the boot CPU which results in triple
+faults when switching to the new kernel on Intel x86 VT-x with VMXE
+enabled.
 
-llc supports ETH_P_802_2 (0x0004) and used to support ETH_P_TR_802_2
-(0x0011), and syzbot abused the latter to trigger the bug.
+Fix this by adding syscore_shutdown() to the kexec sequence.  In terms of
+where to add it, it is being added after migrating the kexec task to the
+boot CPU, but before APs are shut down.  It is not totally clear if this
+is the best place: in commit 6f389a8f1dd2 ("PM / reboot: call
+syscore_shutdown() after disable_nonboot_cpus()") it is stated that
+"syscore_ops operations should be carried with one CPU on-line and
+interrupts disabled." APs are only offlined later in machine_shutdown(),
+so this syscore_shutdown() is being run while APs are still online.  This
+seems to be the correct place as it matches where syscore_shutdown() is
+run in the reboot and halt flows - they also run it before APs are shut
+down.  The assumption is that the commit message in commit 6f389a8f1dd2
+("PM / reboot: call syscore_shutdown() after disable_nonboot_cpus()") is
+no longer valid.
 
-  write$tun(r0, &(0x7f0000000040)={@val={0x0, 0x11}, @val, @mpls={[], @llc={@snap={0xaa, 0x1, ')', "90e5dd"}}}}, 0x16)
+KVM has been discussed here as it is what broke loudly by not having
+syscore_shutdown() in kexec, but this change impacts more than just KVM;
+all drivers/modules which register a syscore_ops.shutdown callback will
+now be invoked in the kexec flow.  Looking at some of them like x86 MCE it
+is probably more correct to also shut these down during kexec.
+Maintainers of all drivers which use syscore_ops.shutdown are added on CC
+for visibility.  They are:
 
-llc_conn_handler() initialises local variables {saddr,daddr}.mac
-based on skb in llc_pdu_decode_sa()/llc_pdu_decode_da() and passes
-them to __llc_lookup().
+arch/powerpc/platforms/cell/spu_base.c  .shutdown = spu_shutdown,
+arch/x86/kernel/cpu/mce/core.c	        .shutdown = mce_syscore_shutdown,
+arch/x86/kernel/i8259.c                 .shutdown = i8259A_shutdown,
+drivers/irqchip/irq-i8259.c	        .shutdown = i8259A_shutdown,
+drivers/irqchip/irq-sun6i-r.c	        .shutdown = sun6i_r_intc_shutdown,
+drivers/leds/trigger/ledtrig-cpu.c	.shutdown = ledtrig_cpu_syscore_shutdown,
+drivers/power/reset/sc27xx-poweroff.c	.shutdown = sc27xx_poweroff_shutdown,
+kernel/irq/generic-chip.c	        .shutdown = irq_gc_shutdown,
+virt/kvm/kvm_main.c	                .shutdown = kvm_shutdown,
 
-However, the initialisation is done only when skb->protocol is
-htons(ETH_P_802_2), otherwise, __llc_lookup_established() and
-__llc_lookup_listener() will read garbage.
+This has been tested by doing a kexec on x86_64 and aarch64.
 
-The missing initialisation existed prior to commit 211ed865108e
-("net: delete all instances of special processing for token ring").
-
-It removed the part to kick out the token ring stuff but forgot to
-close the door allowing ETH_P_TR_802_2 packets to sneak into llc_rcv().
-
-Let's remove llc_tr_packet_type and complete the deprecation.
-
-[0]:
-BUG: KMSAN: uninit-value in __llc_lookup_established+0xe9d/0xf90
- __llc_lookup_established+0xe9d/0xf90
- __llc_lookup net/llc/llc_conn.c:611 [inline]
- llc_conn_handler+0x4bd/0x1360 net/llc/llc_conn.c:791
- llc_rcv+0xfbb/0x14a0 net/llc/llc_input.c:206
- __netif_receive_skb_one_core net/core/dev.c:5527 [inline]
- __netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5641
- netif_receive_skb_internal net/core/dev.c:5727 [inline]
- netif_receive_skb+0x58/0x660 net/core/dev.c:5786
- tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1555
- tun_get_user+0x53af/0x66d0 drivers/net/tun.c:2002
- tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
- call_write_iter include/linux/fs.h:2020 [inline]
- new_sync_write fs/read_write.c:491 [inline]
- vfs_write+0x8ef/0x1490 fs/read_write.c:584
- ksys_write+0x20f/0x4c0 fs/read_write.c:637
- __do_sys_write fs/read_write.c:649 [inline]
- __se_sys_write fs/read_write.c:646 [inline]
- __x64_sys_write+0x93/0xd0 fs/read_write.c:646
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Local variable daddr created at:
- llc_conn_handler+0x53/0x1360 net/llc/llc_conn.c:783
- llc_rcv+0xfbb/0x14a0 net/llc/llc_input.c:206
-
-CPU: 1 PID: 5004 Comm: syz-executor994 Not tainted 6.6.0-syzkaller-14500-g1c41041124bd #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/09/2023
-
-Fixes: 211ed865108e ("net: delete all instances of special processing for token ring")
-Reported-by: syzbot+b5ad66046b913bc04c6f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b5ad66046b913bc04c6f
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240119015515.61898-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20231213064004.2419447-1-jgowans@amazon.com
+Fixes: 6735150b6997 ("KVM: Use syscore_ops instead of reboot_notifier to hook restart/shutdown")
+Signed-off-by: James Gowans <jgowans@amazon.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Chen-Yu Tsai <wens@csie.org>
+Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+Cc: Samuel Holland <samuel@sholland.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Sebastian Reichel <sre@kernel.org>
+Cc: Orson Zhai <orsonzhai@gmail.com>
+Cc: Alexander Graf <graf@amazon.de>
+Cc: Jan H. Schoenherr <jschoenh@amazon.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/llc_pdu.h | 6 ++----
- net/llc/llc_core.c    | 7 -------
- 2 files changed, 2 insertions(+), 11 deletions(-)
+ kernel/kexec_core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/llc_pdu.h b/include/net/llc_pdu.h
-index 7e73f8e5e497..1d55ba7c45be 100644
---- a/include/net/llc_pdu.h
-+++ b/include/net/llc_pdu.h
-@@ -262,8 +262,7 @@ static inline void llc_pdu_header_init(struct sk_buff *skb, u8 type,
-  */
- static inline void llc_pdu_decode_sa(struct sk_buff *skb, u8 *sa)
- {
--	if (skb->protocol == htons(ETH_P_802_2))
--		memcpy(sa, eth_hdr(skb)->h_source, ETH_ALEN);
-+	memcpy(sa, eth_hdr(skb)->h_source, ETH_ALEN);
- }
+--- a/kernel/kexec_core.c
++++ b/kernel/kexec_core.c
+@@ -1271,6 +1271,7 @@ int kernel_kexec(void)
+ 		kexec_in_progress = true;
+ 		kernel_restart_prepare("kexec reboot");
+ 		migrate_to_reboot_cpu();
++		syscore_shutdown();
  
- /**
-@@ -275,8 +274,7 @@ static inline void llc_pdu_decode_sa(struct sk_buff *skb, u8 *sa)
-  */
- static inline void llc_pdu_decode_da(struct sk_buff *skb, u8 *da)
- {
--	if (skb->protocol == htons(ETH_P_802_2))
--		memcpy(da, eth_hdr(skb)->h_dest, ETH_ALEN);
-+	memcpy(da, eth_hdr(skb)->h_dest, ETH_ALEN);
- }
- 
- /**
-diff --git a/net/llc/llc_core.c b/net/llc/llc_core.c
-index 6e387aadffce..4f16d9c88350 100644
---- a/net/llc/llc_core.c
-+++ b/net/llc/llc_core.c
-@@ -135,22 +135,15 @@ static struct packet_type llc_packet_type __read_mostly = {
- 	.func = llc_rcv,
- };
- 
--static struct packet_type llc_tr_packet_type __read_mostly = {
--	.type = cpu_to_be16(ETH_P_TR_802_2),
--	.func = llc_rcv,
--};
--
- static int __init llc_init(void)
- {
- 	dev_add_pack(&llc_packet_type);
--	dev_add_pack(&llc_tr_packet_type);
- 	return 0;
- }
- 
- static void __exit llc_exit(void)
- {
- 	dev_remove_pack(&llc_packet_type);
--	dev_remove_pack(&llc_tr_packet_type);
- }
- 
- module_init(llc_init);
--- 
-2.43.0
-
+ 		/*
+ 		 * migrate_to_reboot_cpu() disables CPU hotplug assuming that
 
 
 
