@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-17284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F59841090
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EDDA8410A1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDBA71F24B57
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71E7E1C23BBF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83BC15FB11;
-	Mon, 29 Jan 2024 17:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A0476C89;
+	Mon, 29 Jan 2024 17:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D7QNkumI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5TRqGSX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668DB157E6D;
-	Mon, 29 Jan 2024 17:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD7976C7E;
+	Mon, 29 Jan 2024 17:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548646; cv=none; b=I6ci9sxpyp5CAGhvZ73xLqedMvnkYZLMGoNf/4mMlriRqrlrPBRw6ZaRIMptyMEiol82Bv3bK5187x56hBxnWYi1AfRfo268Mko0DiaipKjXR1kYnsmwg92DjG2SudJUOBCLXJ5MYDUs0qY7Ditt0GalNIBVWh2whQHtM8r2XOk=
+	t=1706548658; cv=none; b=JTce51+Z5SZBeYFLWheBWM8rqTuITksQ+l3EzPCRTxyYb8ISSL/rx5VhTqkhqaTxwdExBst+1Jl5oza74Hkog+E9qOp22xAhc9HXQ082MpD62E7vLHKx6YGgK6xfSkw4KwY37oPU1muynm3eQ775O5gM9e0qrtzklCfmpKfsU+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548646; c=relaxed/simple;
-	bh=BQjaGSxxkCHW9AAzIsNxqkjSOfw8MicwapnSNt/PWRQ=;
+	s=arc-20240116; t=1706548658; c=relaxed/simple;
+	bh=uhkc5FLLi/QhBY0cHFq1wW3ffbBG2o3zHPKC4Nkysc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uFhydxroSwhlnAgc9v1ZGuJw4HH0410dC89dSIPTy5Sxik+Cdmo7Urn+rlcXMViupO/BnEq7K4K/TV5zkA0bQ/CQKdJBTZ9FpNX8wlDp5GJ60gPH4FBuCBfoJgIjzJYOuP/lWXqRl2Db70FKggqxKuYoQ4Ap7qknJ/12tIy4DrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D7QNkumI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F6F8C43394;
-	Mon, 29 Jan 2024 17:17:26 +0000 (UTC)
+	 MIME-Version; b=AFRLPYcucSXWA5pjSrYcbh6DviB1WYjh95ECA3DxbjhIoalvgQn7zFgLQMuhaOVqBEv6b2g/D8BJVNxRDRjzIM92hrwiUjKvnxkfb5BRVtQb6uZxH2mfxIoKnvpbiZRRT8FT7PsV23vYNi7fDC9vpA3eGKJdh8t9ab9OerkU010=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5TRqGSX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A316AC433C7;
+	Mon, 29 Jan 2024 17:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548646;
-	bh=BQjaGSxxkCHW9AAzIsNxqkjSOfw8MicwapnSNt/PWRQ=;
+	s=korg; t=1706548657;
+	bh=uhkc5FLLi/QhBY0cHFq1wW3ffbBG2o3zHPKC4Nkysc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D7QNkumIJuEP/0IOkar+bk5PO0+B2kQcov/R0oERYVLozm6kpxOwLsO/ZS+Vvp+71
-	 8Go7x061YhcuG8tGvWKBbsViV11hx6YpT+nnxrW7wHjpm4LGoQkZZps+jvl0prW1zq
-	 T28LhD2h7qiUeTSt2BY7ASPfEHbOXNyH+nSUXj9Y=
+	b=A5TRqGSXDE1vpG2Sw0IuFqN+NxUVD2SORgwmdi570kES42mVb4Ko4B61R2P4p+Ipu
+	 Z5P62V3v7kKdBoIsA3Q39Zy4g/K0WmytGelikumx7vHXi1kIXP8eRpO/ZLi0yj6PlA
+	 rXalU/KdMTVLQCxEWFr1HIAL6r+xYSi/5IDEvfiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quanquan Cao <caoqq@fujitsu.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>
-Subject: =?UTF-8?q?=5BPATCH=206=2E6=20324/331=5D=20cxl/region=EF=BC=9AFix=20overflow=20issue=20in=20alloc=5Fhpa=28=29?=
-Date: Mon, 29 Jan 2024 09:06:28 -0800
-Message-ID: <20240129170024.352499471@linuxfoundation.org>
+	Xi Ruoyao <xry111@xry111.site>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.6 325/331] mips: Call lose_fpu(0) before initializing fcr31 in mips_set_personality_nan
+Date: Mon, 29 Jan 2024 09:06:29 -0800
+Message-ID: <20240129170024.386363192@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
 References: <20240129170014.969142961@linuxfoundation.org>
@@ -60,57 +59,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quanquan Cao <caoqq@fujitsu.com>
+From: Xi Ruoyao <xry111@xry111.site>
 
-commit d76779dd3681c01a4c6c3cae4d0627c9083e0ee6 upstream.
+commit 59be5c35850171e307ca5d3d703ee9ff4096b948 upstream.
 
-Creating a region with 16 memory devices caused a problem. The div_u64_rem
-function, used for dividing an unsigned 64-bit number by a 32-bit one,
-faced an issue when SZ_256M * p->interleave_ways. The result surpassed
-the maximum limit of the 32-bit divisor (4G), leading to an overflow
-and a remainder of 0.
-note: At this point, p->interleave_ways is 16, meaning 16 * 256M = 4G
+If we still own the FPU after initializing fcr31, when we are preempted
+the dirty value in the FPU will be read out and stored into fcr31,
+clobbering our setting.  This can cause an improper floating-point
+environment after execve().  For example:
 
-To fix this issue, I replaced the div_u64_rem function with div64_u64_rem
-and adjusted the type of the remainder.
+    zsh% cat measure.c
+    #include <fenv.h>
+    int main() { return fetestexcept(FE_INEXACT); }
+    zsh% cc measure.c -o measure -lm
+    zsh% echo $((1.0/3)) # raising FE_INEXACT
+    0.33333333333333331
+    zsh% while ./measure; do ; done
+    (stopped in seconds)
 
-Signed-off-by: Quanquan Cao <caoqq@fujitsu.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Fixes: 23a22cd1c98b ("cxl/region: Allocate HPA capacity to regions")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Call lose_fpu(0) before setting fcr31 to prevent this.
+
+Closes: https://lore.kernel.org/linux-mips/7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site/
+Fixes: 9b26616c8d9d ("MIPS: Respect the ISA level in FCSR handling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/region.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/kernel/elf.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -525,7 +525,7 @@ static int alloc_hpa(struct cxl_region *
- 	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(cxlr->dev.parent);
- 	struct cxl_region_params *p = &cxlr->params;
- 	struct resource *res;
--	u32 remainder = 0;
-+	u64 remainder = 0;
+--- a/arch/mips/kernel/elf.c
++++ b/arch/mips/kernel/elf.c
+@@ -11,6 +11,7 @@
  
- 	lockdep_assert_held_write(&cxl_region_rwsem);
+ #include <asm/cpu-features.h>
+ #include <asm/cpu-info.h>
++#include <asm/fpu.h>
  
-@@ -545,7 +545,7 @@ static int alloc_hpa(struct cxl_region *
- 	    (cxlr->mode == CXL_DECODER_PMEM && uuid_is_null(&p->uuid)))
- 		return -ENXIO;
+ #ifdef CONFIG_MIPS_FP_SUPPORT
  
--	div_u64_rem(size, SZ_256M * p->interleave_ways, &remainder);
-+	div64_u64_rem(size, (u64)SZ_256M * p->interleave_ways, &remainder);
- 	if (remainder)
- 		return -EINVAL;
+@@ -309,6 +310,11 @@ void mips_set_personality_nan(struct arc
+ 	struct cpuinfo_mips *c = &boot_cpu_data;
+ 	struct task_struct *t = current;
  
++	/* Do this early so t->thread.fpu.fcr31 won't be clobbered in case
++	 * we are preempted before the lose_fpu(0) in start_thread.
++	 */
++	lose_fpu(0);
++
+ 	t->thread.fpu.fcr31 = c->fpu_csr31;
+ 	switch (state->nan_2008) {
+ 	case 0:
 
 
 
