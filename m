@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-16526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59695840D55
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC2B840F87
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C4241C228BB
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 007E6B231D0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA9A15B0FB;
-	Mon, 29 Jan 2024 17:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377186F067;
+	Mon, 29 Jan 2024 17:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E2Ode3LG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFOyvqxX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6961515B0F0;
-	Mon, 29 Jan 2024 17:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9E4A6F063;
+	Mon, 29 Jan 2024 17:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548085; cv=none; b=Uu+fiDvJNTtllqZc0MVQXSu0UU4g/LOi8y77SaGt118an+tKOvAiNu+xoyl+bIr69fyrLbPopFItX+BkYDSL0fgmbJpOPas2zxoIfZGPpfKvk5/x9FCTaaLflHgx4gy8+lnk45ZcairMSBswZiqe5d6ujlflMK+6wm5Zjn7aGzY=
+	t=1706548455; cv=none; b=KL2eQrmrNAfYfzikToJoHMIRiq3YxerHVn71mC2Tqc1LOTjaNvlwaCo3XClHaH/W9xmAhzmrIxw3I9rV2mM57Dk7es5QLlMFt6RA+ZuyenRVbDlH0eO/JWBtur6j9PV3fovp8wxxg+LQbKd14Q1y3ph6sSExX+Q/XLwff7Zhe+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548085; c=relaxed/simple;
-	bh=VIf2A1pAPoqtg/jycnIEaclb+Kd60KNQXRFJe1yEsbo=;
+	s=arc-20240116; t=1706548455; c=relaxed/simple;
+	bh=2nU97iMZ27ZGM2ZT3RYPPdIIi6IPN1ci7yfAiBDXR8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSCUfuzS4tBpEJedQzhRqV8ycOgnUKyfIbaF0as1TCETTUf/zsyw69cUYCy6CjihsMTQf6n2y5aOY+ZggY8llT7L9rGJfvGvQpfzB22Qt5RBFgw5mQUg/9QYQKN7SzUYoRXwXvp7OvwQ9c0QxiLpQmqukmyPVuYw07vxoFFPuY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E2Ode3LG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D30C43390;
-	Mon, 29 Jan 2024 17:08:05 +0000 (UTC)
+	 MIME-Version; b=RV/d2wAsYjuUnGyWyMR34xS0Wk9Be6/juSa3+SabsFSjCmnlDrV6Mt/urvG3IK79limHEVItIH/ReSk+WWMYb9+5b95XtloMYNXF+dXNxf2UFhL/RjtHjZKGM6ORe56ifvA175qkvmKex3IVvLooJ7531bu/03OHoGaDQdTPSvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFOyvqxX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F43C433C7;
+	Mon, 29 Jan 2024 17:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548085;
-	bh=VIf2A1pAPoqtg/jycnIEaclb+Kd60KNQXRFJe1yEsbo=;
+	s=korg; t=1706548454;
+	bh=2nU97iMZ27ZGM2ZT3RYPPdIIi6IPN1ci7yfAiBDXR8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E2Ode3LGc57Okg4qRGkns4A2dL2qfYDJe9pj7swD/cnyp6RvIh6Wp6bKwazRgCxoq
-	 RdUeu/0dJXFBE9PF9FnXiXKdc3MACQO4Lpfs0zlZ8C70Toh+ZJcnBQyEv7WEUm6F/z
-	 uIzyyMBfGx12Jfm27NlS6N9su+Maqh2MG6uOzLyI=
+	b=TFOyvqxXIsWLzVUi9NCNErKz82mOSxZBH0U/3LLg8TwfgvL1whZ9K6QX8ZgD0VJqN
+	 TGI6aD5Oz2sS20l273kAhH94upxDWUXnQjq4euwF8BEGk5pRdn9GN/DjtvmMPbQRY5
+	 nAZT3ncsuPB3TqN5FLJANSu4X5ziobSo4Esu08jc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	Benjamin Mugnier <benjamin.mugnier@foss.st.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.7 099/346] media: i2c: st-mipid02: correct format propagation
+	Serge Semin <fancer.lancer@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.6 066/331] mips: Fix max_mapnr being uninitialized on early stages
 Date: Mon, 29 Jan 2024 09:02:10 -0800
-Message-ID: <20240129170019.309310951@linuxfoundation.org>
+Message-ID: <20240129170016.861537133@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alain Volmat <alain.volmat@foss.st.com>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-commit b33cb0cbe2893b96ecbfa16254407153f4b55d16 upstream.
+commit e1a9ae45736989c972a8d1c151bc390678ae6205 upstream.
 
-Use a copy of the struct v4l2_subdev_format when propagating
-format from the sink to source pad in order to avoid impacting the
-sink format returned to the application.
+max_mapnr variable is utilized in the pfn_valid() method in order to
+determine the upper PFN space boundary. Having it uninitialized
+effectively makes any PFN passed to that method invalid. That in its turn
+causes the kernel mm-subsystem occasion malfunctions even after the
+max_mapnr variable is actually properly updated. For instance,
+pfn_valid() is called in the init_unavailable_range() method in the
+framework of the calls-chain on MIPS:
+setup_arch()
++-> paging_init()
+    +-> free_area_init()
+        +-> memmap_init()
+            +-> memmap_init_zone_range()
+                +-> init_unavailable_range()
 
-Thanks to Jacopo Mondi for pointing the issue.
+Since pfn_valid() always returns "false" value before max_mapnr is
+initialized in the mem_init() method, any flatmem page-holes will be left
+in the poisoned/uninitialized state including the IO-memory pages. Thus
+any further attempts to map/remap the IO-memory by using MMU may fail.
+In particular it happened in my case on attempt to map the SRAM region.
+The kernel bootup procedure just crashed on the unhandled unaligned access
+bug raised in the __update_cache() method:
 
-Fixes: 6c01e6f3f27b ("media: st-mipid02: Propagate format from sink to source pad")
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+> Unhandled kernel unaligned access[#1]:
+> CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc1-XXX-dirty #2056
+> ...
+> Call Trace:
+> [<8011ef9c>] __update_cache+0x88/0x1bc
+> [<80385944>] ioremap_page_range+0x110/0x2a4
+> [<80126948>] ioremap_prot+0x17c/0x1f4
+> [<80711b80>] __devm_ioremap+0x8c/0x120
+> [<80711e0c>] __devm_ioremap_resource+0xf4/0x218
+> [<808bf244>] sram_probe+0x4f4/0x930
+> [<80889d20>] platform_probe+0x68/0xec
+> ...
+
+Let's fix the problem by initializing the max_mapnr variable as soon as
+the required data is available. In particular it can be done right in the
+paging_init() method before free_area_init() is called since all the PFN
+zone boundaries have already been calculated by that time.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Reviewed-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/st-mipid02.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/mips/mm/init.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/media/i2c/st-mipid02.c
-+++ b/drivers/media/i2c/st-mipid02.c
-@@ -770,6 +770,7 @@ static void mipid02_set_fmt_sink(struct
- 				 struct v4l2_subdev_format *format)
- {
- 	struct mipid02_dev *bridge = to_mipid02_dev(sd);
-+	struct v4l2_subdev_format source_fmt;
- 	struct v4l2_mbus_framefmt *fmt;
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -422,7 +422,12 @@ void __init paging_init(void)
+ 		       (highend_pfn - max_low_pfn) << (PAGE_SHIFT - 10));
+ 		max_zone_pfns[ZONE_HIGHMEM] = max_low_pfn;
+ 	}
++
++	max_mapnr = highend_pfn ? highend_pfn : max_low_pfn;
++#else
++	max_mapnr = max_low_pfn;
+ #endif
++	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
  
- 	format->format.code = get_fmt_code(format->format.code);
-@@ -781,8 +782,12 @@ static void mipid02_set_fmt_sink(struct
- 
- 	*fmt = format->format;
- 
--	/* Propagate the format change to the source pad */
--	mipid02_set_fmt_source(sd, sd_state, format);
-+	/*
-+	 * Propagate the format change to the source pad, taking
-+	 * care not to update the format pointer given back to user
-+	 */
-+	source_fmt = *format;
-+	mipid02_set_fmt_source(sd, sd_state, &source_fmt);
+ 	free_area_init(max_zone_pfns);
  }
+@@ -458,13 +463,6 @@ void __init mem_init(void)
+ 	 */
+ 	BUILD_BUG_ON(IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT));
  
- static int mipid02_set_fmt(struct v4l2_subdev *sd,
+-#ifdef CONFIG_HIGHMEM
+-	max_mapnr = highend_pfn ? highend_pfn : max_low_pfn;
+-#else
+-	max_mapnr = max_low_pfn;
+-#endif
+-	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
+-
+ 	maar_init();
+ 	memblock_free_all();
+ 	setup_zero_pages();	/* Setup zeroed pages.  */
 
 
 
