@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-16479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C6B2840D22
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8142C840F4F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBCFF287228
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1A721C22EE0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C6E15958C;
-	Mon, 29 Jan 2024 17:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0626515D5D4;
+	Mon, 29 Jan 2024 17:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="srAPt7Jd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGmGzNAT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67098157052;
-	Mon, 29 Jan 2024 17:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B677B15D5DF;
+	Mon, 29 Jan 2024 17:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548050; cv=none; b=XCuFGrhGet4TjiFvjoyglWeCGMeQxRoIkCjHEKkEjIqpgzoQT66X8VJdNioxGUWaYfU+YlQhb5id08t9aOAslSYjJQxWqnnFFkLU2PKue76patJJWSMTnPZbmRtW9HeNHssgtitVoX1NIW/Mje6p7iTtdtPXlzCRqFyu91qRBzI=
+	t=1706548419; cv=none; b=BJlHurMgL5zeqAWI8rDgfGyZa1ebw6KJg6edaltSM53zan87oFhhLyprrtUzLPbR4uu+hC2zJDUpO5By1jt5Utq5fVDZpAsTmZF3ej/zUy3Cw+oHmrJEZwDlRPSsLNSqiQyq2mKONNLt+rRXpZXII2AKrCWzatqOCS/oZAytzaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548050; c=relaxed/simple;
-	bh=RDdTbajtQ7EgfgvGuYq4mrrd2mOmbERjn+8MRNIJ/7Y=;
+	s=arc-20240116; t=1706548419; c=relaxed/simple;
+	bh=hkzKeQ1tjW2PZS8Ky8VB6e4TKwuwtDKl3LT/8Ru9Opc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NdrJtKqwywwe8Ft5bM2j2ypukXXhQEfC+GSf16jq9ZD7tHt4noKAR8kumg7p7lexE33X96jl6l7EITcHUjAjq9AFPWR2f9L6p4U09XCoMqjf14VGHTqr+dRL5n3jNoqPy0qZRf9A+X9zBcbMo8JTc0qnMmpDaCbcXIEX/UXrr+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=srAPt7Jd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB1C6C43390;
-	Mon, 29 Jan 2024 17:07:29 +0000 (UTC)
+	 MIME-Version; b=dH+LVVrO+xrMSlVlhlDolRBp34tMAkas4OzVjcf7g2TVQuwk7bCekxyOpsz8pZB7c29B6sniu4+SN/iJHJpNRdtC3QqyBmk2w//C1Df6uMxyvA8ohb68j0HI85E/Dphw3DaemuVdskJ0nT3uQX262o8PiIAM5wI0ym2gplx/R9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGmGzNAT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CAFEC43394;
+	Mon, 29 Jan 2024 17:13:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548049;
-	bh=RDdTbajtQ7EgfgvGuYq4mrrd2mOmbERjn+8MRNIJ/7Y=;
+	s=korg; t=1706548419;
+	bh=hkzKeQ1tjW2PZS8Ky8VB6e4TKwuwtDKl3LT/8Ru9Opc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=srAPt7Jdxr4txxEXau+PokuHuVD2MHsZp9I44FJWNj9y1LYQLO/S1tivIOIHvKumF
-	 odaYal0moTdtP8F/UupznugoAeycPRIOmEkuCgxn8M99kBcrvhTaxmYARWT+YPfHYF
-	 WKGtCFqt3/mVxMCRAlPDp3QbG4MfItOVu+Xokv8o=
+	b=oGmGzNATii1oZ2it+po1njx1Opdo3OjkGdxkds25FYMf9EeXAjNMY7stZRV25sXbz
+	 wrtUe1EZDf/vFGFz83h4u3HAqzOLYzy19yIosdi/VO9MKyboMz78dByPtrftXAY4Kn
+	 LsNaq2L/VBC8dylmBz7ui7St8QoYzwkz21Kj1fTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Kevin Locke <kevin@kevinlocke.name>,
+	Niklas Cassel <cassel@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 051/346] dmaengine: fsl-edma: fix eDMAv4 channel allocation issue
+Subject: [PATCH 6.6 018/331] scsi: core: Kick the requeue list after inserting when flushing
 Date: Mon, 29 Jan 2024 09:01:22 -0800
-Message-ID: <20240129170017.891119801@linuxfoundation.org>
+Message-ID: <20240129170015.495240571@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +65,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit dc51b4442dd94ab12c146c1897bbdb40e16d5636 ]
+[ Upstream commit 6df0e077d76bd144c533b61d6182676aae6b0a85 ]
 
-The eDMAv4 channel mux has a limitation where certain requests must use
-even channels, while others must use odd numbers.
+When libata calls ata_link_abort() to abort all ata queued commands, it
+calls blk_abort_request() on the SCSI command representing each QC.
 
-Add two flags (ARGS_EVEN_CH and ARGS_ODD_CH) to reflect this limitation.
-The device tree source (dts) files need to be updated accordingly.
+This causes scsi_timeout() to be called, which calls scsi_eh_scmd_add() for
+each SCSI command.
 
-This issue was identified by the following commit:
-commit a725990557e7 ("arm64: dts: imx93: Fix the dmas entries order")
+scsi_eh_scmd_add() sets the SCSI host to state recovery, and then adds the
+command to shost->eh_cmd_q.
 
-Reverting channel orders triggered this problem.
+This will wake up the SCSI EH, and eventually the libata EH strategy
+handler will be called, which calls scsi_eh_flush_done_q() to either flush
+retry or flush finish each failed command.
 
-Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231114154824.3617255-2-Frank.Li@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+The commands that are flush retried by scsi_eh_flush_done_q() are done so
+using scsi_queue_insert().
+
+Before commit 8b566edbdbfb ("scsi: core: Only kick the requeue list if
+necessary"), __scsi_queue_insert() called blk_mq_requeue_request() with the
+second argument set to true, indicating that it should always kick/run the
+requeue list after inserting.
+
+After commit 8b566edbdbfb ("scsi: core: Only kick the requeue list if
+necessary"), __scsi_queue_insert() does not kick/run the requeue list after
+inserting, if the current SCSI host state is recovery (which is the case in
+the libata example above).
+
+This optimization is probably fine in most cases, as I can only assume that
+most often someone will eventually kick/run the queues.
+
+However, that is not the case for scsi_eh_flush_done_q(), where we can see
+that the request gets inserted to the requeue list, but the queue is never
+started after the request has been inserted, leading to the block layer
+waiting for the completion of command that never gets to run.
+
+Since scsi_eh_flush_done_q() is called by SCSI EH context, the SCSI host
+state is most likely always in recovery when this function is called.
+
+Thus, let scsi_eh_flush_done_q() explicitly kick the requeue list after
+inserting a flush retry command, so that scsi_eh_flush_done_q() keeps the
+same behavior as before commit 8b566edbdbfb ("scsi: core: Only kick the
+requeue list if necessary").
+
+Simple reproducer for the libata example above:
+$ hdparm -Y /dev/sda
+$ echo 1 > /sys/class/scsi_device/0\:0\:0\:0/device/delete
+
+Fixes: 8b566edbdbfb ("scsi: core: Only kick the requeue list if necessary")
+Reported-by: Kevin Locke <kevin@kevinlocke.name>
+Closes: https://lore.kernel.org/linux-scsi/ZZw3Th70wUUvCiCY@kevinlocke.name/
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Link: https://lore.kernel.org/r/20240111120533.3612509-1-cassel@kernel.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-edma-main.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/scsi/scsi_error.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
-index 238a69bd0d6f..75cae7ccae27 100644
---- a/drivers/dma/fsl-edma-main.c
-+++ b/drivers/dma/fsl-edma-main.c
-@@ -24,6 +24,8 @@
- #define ARGS_RX                         BIT(0)
- #define ARGS_REMOTE                     BIT(1)
- #define ARGS_MULTI_FIFO                 BIT(2)
-+#define ARGS_EVEN_CH                    BIT(3)
-+#define ARGS_ODD_CH                     BIT(4)
+diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
+index 1223d34c04da..d983f4a0e9f1 100644
+--- a/drivers/scsi/scsi_error.c
++++ b/drivers/scsi/scsi_error.c
+@@ -2196,15 +2196,18 @@ void scsi_eh_flush_done_q(struct list_head *done_q)
+ 	struct scsi_cmnd *scmd, *next;
  
- static void fsl_edma_synchronize(struct dma_chan *chan)
- {
-@@ -157,6 +159,12 @@ static struct dma_chan *fsl_edma3_xlate(struct of_phandle_args *dma_spec,
- 		fsl_chan->is_remote = dma_spec->args[2] & ARGS_REMOTE;
- 		fsl_chan->is_multi_fifo = dma_spec->args[2] & ARGS_MULTI_FIFO;
- 
-+		if ((dma_spec->args[2] & ARGS_EVEN_CH) && (i & 0x1))
-+			continue;
+ 	list_for_each_entry_safe(scmd, next, done_q, eh_entry) {
++		struct scsi_device *sdev = scmd->device;
 +
-+		if ((dma_spec->args[2] & ARGS_ODD_CH) && !(i & 0x1))
-+			continue;
-+
- 		if (!b_chmux && i == dma_spec->args[0]) {
- 			chan = dma_get_slave_channel(chan);
- 			chan->device->privatecnt++;
+ 		list_del_init(&scmd->eh_entry);
+-		if (scsi_device_online(scmd->device) &&
+-		    !scsi_noretry_cmd(scmd) && scsi_cmd_retry_allowed(scmd) &&
+-			scsi_eh_should_retry_cmd(scmd)) {
++		if (scsi_device_online(sdev) && !scsi_noretry_cmd(scmd) &&
++		    scsi_cmd_retry_allowed(scmd) &&
++		    scsi_eh_should_retry_cmd(scmd)) {
+ 			SCSI_LOG_ERROR_RECOVERY(3,
+ 				scmd_printk(KERN_INFO, scmd,
+ 					     "%s: flush retry cmd\n",
+ 					     current->comm));
+ 				scsi_queue_insert(scmd, SCSI_MLQUEUE_EH_RETRY);
++				blk_mq_kick_requeue_list(sdev->request_queue);
+ 		} else {
+ 			/*
+ 			 * If just we got sense for the device (called
 -- 
 2.43.0
 
