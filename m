@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-17111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39FCA840FDE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86FA9840DB0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E7CD1C23815
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F27C81F2CFB0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906D015B2F2;
-	Mon, 29 Jan 2024 17:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A35515A4B7;
+	Mon, 29 Jan 2024 17:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lb8H0ex6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uy7SvUHN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA817225E;
-	Mon, 29 Jan 2024 17:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286B3158D9C;
+	Mon, 29 Jan 2024 17:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548518; cv=none; b=UcN31nJCKWSXnS51pe0dFcJqjkC5TybN+wKAc9LfJrt+M7cRZ7eRARlwOmyCb52mFolxEmECxx2aSHx8+0Z3bGG+ZcoK+y5AR9DF7YeDdWV41tXJaFnCo5nEo6bmPKA2DwOVBZKKuCdm3aKLrGw/j9wYApw59ZWNhNveHDMlHrA=
+	t=1706548148; cv=none; b=R0Nxk3d544JfNuhbnhFreWE9GsVbQ4IUNAelr8P9OcByWFtEsbNppG4M6lAaQmSP756VQKZT+R+v8OLfOb1EvRmMv/U6Vzn+7xSbHP6qAAnwgLQHa/256I4/b72tDAHKdW99cK37lB1StPQtnQnaHNg2JqqFJtyANea1vdssoJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548518; c=relaxed/simple;
-	bh=jOCa2rJ2FNwL3fD2IqAZ14JtthV5B3gUeP+/8e7fCCA=;
+	s=arc-20240116; t=1706548148; c=relaxed/simple;
+	bh=9Vm/M11261Vp0lVlmffKd83uBy3s1s1iQc3QRNrn6tA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JfS18/ZPsah5yZ01YtQi+9wUqOKdS9zyERCVMQYiQpG4qQbZ5dPfPGXdEatzhpGHbI29HvL+CTrYFmS4C/EmJFU/J3T50ZSqynlqqYeFpme5bR6AzjJPkFEGYl5xOGYOiPQxprQhNrZ7iphBUIRJs0jCsQZcNYpm0vCsjYU1Dgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lb8H0ex6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB22C433F1;
-	Mon, 29 Jan 2024 17:15:17 +0000 (UTC)
+	 MIME-Version; b=kKTmLj1PmPtlW+ducPcG8S4GDN3HNuY5BRM5Z8FF8cjRVSJ71Ilf7qhxjjxNrJZTFegUD9YNlpW5alDL57uMHrfrzPQXistgkwsrDP2MzqKvNzOBDqMfuQL/zoYnokn6VTk8Hc3G+pe/2b4mlMGO/97yWoE1X7Ayxhv7w8+2mRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uy7SvUHN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4182C43394;
+	Mon, 29 Jan 2024 17:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548518;
-	bh=jOCa2rJ2FNwL3fD2IqAZ14JtthV5B3gUeP+/8e7fCCA=;
+	s=korg; t=1706548148;
+	bh=9Vm/M11261Vp0lVlmffKd83uBy3s1s1iQc3QRNrn6tA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lb8H0ex6QqSisiGNvXLjfCl2TwONzrmhb8+4XZo1E6GZaOXoUh0FDIDYuOUbPovV2
-	 EKoQe8Ap3tHTWGF3neviGR0HUsKCflXgh4SLkx5sDuJlCWY54/2wzNAGCwQUM5QfdX
-	 riak++kl0QrTPcbr4BjJIX3dvjEAEVvVbhQeze/A=
+	b=Uy7SvUHNmAIDgl/Xr4ax3kGVBBdRA9KP3qvrLksPmDf4RrOCbTQt2tZ8wJ4cVj445
+	 YiCkK32peJxmwCpbpekYCCYo5Vgr1V8dAQMz/Ueejk8eU/tCQVyguEfT8sImmO85Cc
+	 IPHPBHGmPE+jNGr8OPdxq5oWtolKQttuA2oZ9bkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.6 151/331] selftests/bpf: test if state loops are detected in a tricky case
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 184/346] selftests: fill in some missing configs for net
 Date: Mon, 29 Jan 2024 09:03:35 -0800
-Message-ID: <20240129170019.341695011@linuxfoundation.org>
+Message-ID: <20240129170021.808286495@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,233 +61,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 64870feebecb7130291a55caf0ce839a87405a70 upstream.
+[ Upstream commit 04fe7c5029cbdbcdb28917f09a958d939a8f19f7 ]
 
-A convoluted test case for iterators convergence logic that
-demonstrates that states with branch count equal to 0 might still be
-a part of not completely explored loop.
+We are missing a lot of config options from net selftests,
+it seems:
 
-E.g. consider the following state diagram:
+tun/tap:     CONFIG_TUN, CONFIG_MACVLAN, CONFIG_MACVTAP
+fib_tests:   CONFIG_NET_SCH_FQ_CODEL
+l2tp:        CONFIG_L2TP, CONFIG_L2TP_V3, CONFIG_L2TP_IP, CONFIG_L2TP_ETH
+sctp-vrf:    CONFIG_INET_DIAG
+txtimestamp: CONFIG_NET_CLS_U32
+vxlan_mdb:   CONFIG_BRIDGE_VLAN_FILTERING
+gre_gso:     CONFIG_NET_IPGRE_DEMUX, CONFIG_IP_GRE, CONFIG_IPV6_GRE
+srv6_end_dt*_l3vpn:   CONFIG_IPV6_SEG6_LWTUNNEL
+ip_local_port_range:  CONFIG_MPTCP
+fib_test:    CONFIG_NET_CLS_BASIC
+rtnetlink:   CONFIG_MACSEC, CONFIG_NET_SCH_HTB, CONFIG_XFRM_INTERFACE
+             CONFIG_NET_IPGRE, CONFIG_BONDING
+fib_nexthops: CONFIG_MPLS, CONFIG_MPLS_ROUTING
+vxlan_mdb:   CONFIG_NET_ACT_GACT
+tls:         CONFIG_TLS, CONFIG_CRYPTO_CHACHA20POLY1305
+psample:     CONFIG_PSAMPLE
+fcnal:       CONFIG_TCP_MD5SIG
 
-               initial     Here state 'succ' was processed first,
-                 |         it was eventually tracked to produce a
-                 V         state identical to 'hdr'.
-    .---------> hdr        All branches from 'succ' had been explored
-    |            |         and thus 'succ' has its .branches == 0.
-    |            V
-    |    .------...        Suppose states 'cur' and 'succ' correspond
-    |    |       |         to the same instruction + callsites.
-    |    V       V         In such case it is necessary to check
-    |   ...     ...        whether 'succ' and 'cur' are identical.
-    |    |       |         If 'succ' and 'cur' are a part of the same loop
-    |    V       V         they have to be compared exactly.
-    |   succ <- cur
-    |    |
-    |    V
-    |   ...
-    |    |
-    '----'
+Try to add them in a semi-alphabetical order.
 
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20231024000917.12153-7-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 62199e3f1658 ("selftests: net: Add VXLAN MDB test")
+Fixes: c12e0d5f267d ("self-tests: introduce self-tests for RPS default mask")
+Fixes: 122db5e3634b ("selftests/net: add MPTCP coverage for IP_LOCAL_PORT_RANGE")
+Link: https://lore.kernel.org/r/20240122203528.672004-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/iters.c |  177 ++++++++++++++++++++++++++++++
- 1 file changed, 177 insertions(+)
+ tools/testing/selftests/net/config | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
---- a/tools/testing/selftests/bpf/progs/iters.c
-+++ b/tools/testing/selftests/bpf/progs/iters.c
-@@ -999,6 +999,183 @@ __naked int loop_state_deps1(void)
- }
- 
- SEC("?raw_tp")
-+__failure
-+__msg("math between fp pointer and register with unbounded")
-+__flag(BPF_F_TEST_STATE_FREQ)
-+__naked int loop_state_deps2(void)
-+{
-+	/* This is equivalent to C program below.
-+	 *
-+	 * The case turns out to be tricky in a sense that:
-+	 * - states with read+precise mark on c are explored only on a second
-+	 *   iteration of the first inner loop and in a state which is pushed to
-+	 *   states stack first.
-+	 * - states with c=-25 are explored only on a second iteration of the
-+	 *   second inner loop and in a state which is pushed to states stack
-+	 *   first.
-+	 *
-+	 * Depending on the details of iterator convergence logic
-+	 * verifier might stop states traversal too early and miss
-+	 * unsafe c=-25 memory access.
-+	 *
-+	 *   j = iter_new();             // fp[-16]
-+	 *   a = 0;                      // r6
-+	 *   b = 0;                      // r7
-+	 *   c = -24;                    // r8
-+	 *   while (iter_next(j)) {
-+	 *     i = iter_new();           // fp[-8]
-+	 *     a = 0;                    // r6
-+	 *     b = 0;                    // r7
-+	 *     while (iter_next(i)) {
-+	 *       if (a == 1) {
-+	 *         a = 0;
-+	 *         b = 1;
-+	 *       } else if (a == 0) {
-+	 *         a = 1;
-+	 *         if (random() == 42)
-+	 *           continue;
-+	 *         if (b == 1) {
-+	 *           *(r10 + c) = 7;     // this is not safe
-+	 *           iter_destroy(i);
-+	 *           iter_destroy(j);
-+	 *           return;
-+	 *         }
-+	 *       }
-+	 *     }
-+	 *     iter_destroy(i);
-+	 *     i = iter_new();           // fp[-8]
-+	 *     a = 0;                    // r6
-+	 *     b = 0;                    // r7
-+	 *     while (iter_next(i)) {
-+	 *       if (a == 1) {
-+	 *         a = 0;
-+	 *         b = 1;
-+	 *       } else if (a == 0) {
-+	 *         a = 1;
-+	 *         if (random() == 42)
-+	 *           continue;
-+	 *         if (b == 1) {
-+	 *           a = 0;
-+	 *           c = -25;
-+	 *         }
-+	 *       }
-+	 *     }
-+	 *     iter_destroy(i);
-+	 *   }
-+	 *   iter_destroy(j);
-+	 *   return;
-+	 */
-+	asm volatile (
-+		"r1 = r10;"
-+		"r1 += -16;"
-+		"r2 = 0;"
-+		"r3 = 10;"
-+		"call %[bpf_iter_num_new];"
-+		"r6 = 0;"
-+		"r7 = 0;"
-+		"r8 = -24;"
-+	"j_loop_%=:"
-+		"r1 = r10;"
-+		"r1 += -16;"
-+		"call %[bpf_iter_num_next];"
-+		"if r0 == 0 goto j_loop_end_%=;"
-+
-+		/* first inner loop */
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"r2 = 0;"
-+		"r3 = 10;"
-+		"call %[bpf_iter_num_new];"
-+		"r6 = 0;"
-+		"r7 = 0;"
-+	"i_loop_%=:"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_next];"
-+		"if r0 == 0 goto i_loop_end_%=;"
-+	"check_one_r6_%=:"
-+		"if r6 != 1 goto check_zero_r6_%=;"
-+		"r6 = 0;"
-+		"r7 = 1;"
-+		"goto i_loop_%=;"
-+	"check_zero_r6_%=:"
-+		"if r6 != 0 goto i_loop_%=;"
-+		"r6 = 1;"
-+		"call %[bpf_get_prandom_u32];"
-+		"if r0 != 42 goto check_one_r7_%=;"
-+		"goto i_loop_%=;"
-+	"check_one_r7_%=:"
-+		"if r7 != 1 goto i_loop_%=;"
-+		"r0 = r10;"
-+		"r0 += r8;"
-+		"r1 = 7;"
-+		"*(u64 *)(r0 + 0) = r1;"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_destroy];"
-+		"r1 = r10;"
-+		"r1 += -16;"
-+		"call %[bpf_iter_num_destroy];"
-+		"r0 = 0;"
-+		"exit;"
-+	"i_loop_end_%=:"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_destroy];"
-+
-+		/* second inner loop */
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"r2 = 0;"
-+		"r3 = 10;"
-+		"call %[bpf_iter_num_new];"
-+		"r6 = 0;"
-+		"r7 = 0;"
-+	"i2_loop_%=:"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_next];"
-+		"if r0 == 0 goto i2_loop_end_%=;"
-+	"check2_one_r6_%=:"
-+		"if r6 != 1 goto check2_zero_r6_%=;"
-+		"r6 = 0;"
-+		"r7 = 1;"
-+		"goto i2_loop_%=;"
-+	"check2_zero_r6_%=:"
-+		"if r6 != 0 goto i2_loop_%=;"
-+		"r6 = 1;"
-+		"call %[bpf_get_prandom_u32];"
-+		"if r0 != 42 goto check2_one_r7_%=;"
-+		"goto i2_loop_%=;"
-+	"check2_one_r7_%=:"
-+		"if r7 != 1 goto i2_loop_%=;"
-+		"r6 = 0;"
-+		"r8 = -25;"
-+		"goto i2_loop_%=;"
-+	"i2_loop_end_%=:"
-+		"r1 = r10;"
-+		"r1 += -8;"
-+		"call %[bpf_iter_num_destroy];"
-+
-+		"r6 = 0;"
-+		"r7 = 0;"
-+		"goto j_loop_%=;"
-+	"j_loop_end_%=:"
-+		"r1 = r10;"
-+		"r1 += -16;"
-+		"call %[bpf_iter_num_destroy];"
-+		"r0 = 0;"
-+		"exit;"
-+		:
-+		: __imm(bpf_get_prandom_u32),
-+		  __imm(bpf_iter_num_new),
-+		  __imm(bpf_iter_num_next),
-+		  __imm(bpf_iter_num_destroy)
-+		: __clobber_all
-+	);
-+}
-+
-+SEC("?raw_tp")
- __success
- __naked int triple_continue(void)
- {
+diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
+index 8da562a9ae87..19ff75051660 100644
+--- a/tools/testing/selftests/net/config
++++ b/tools/testing/selftests/net/config
+@@ -1,5 +1,6 @@
+ CONFIG_USER_NS=y
+ CONFIG_NET_NS=y
++CONFIG_BONDING=m
+ CONFIG_BPF_SYSCALL=y
+ CONFIG_TEST_BPF=m
+ CONFIG_NUMA=y
+@@ -14,9 +15,13 @@ CONFIG_VETH=y
+ CONFIG_NET_IPVTI=y
+ CONFIG_IPV6_VTI=y
+ CONFIG_DUMMY=y
++CONFIG_BRIDGE_VLAN_FILTERING=y
+ CONFIG_BRIDGE=y
++CONFIG_CRYPTO_CHACHA20POLY1305=m
+ CONFIG_VLAN_8021Q=y
+ CONFIG_IFB=y
++CONFIG_INET_DIAG=y
++CONFIG_IP_GRE=m
+ CONFIG_NETFILTER=y
+ CONFIG_NETFILTER_ADVANCED=y
+ CONFIG_NF_CONNTRACK=m
+@@ -25,15 +30,36 @@ CONFIG_IP6_NF_IPTABLES=m
+ CONFIG_IP_NF_IPTABLES=m
+ CONFIG_IP6_NF_NAT=m
+ CONFIG_IP_NF_NAT=m
++CONFIG_IPV6_GRE=m
++CONFIG_IPV6_SEG6_LWTUNNEL=y
++CONFIG_L2TP_ETH=m
++CONFIG_L2TP_IP=m
++CONFIG_L2TP=m
++CONFIG_L2TP_V3=y
++CONFIG_MACSEC=m
++CONFIG_MACVLAN=y
++CONFIG_MACVTAP=y
++CONFIG_MPLS=y
++CONFIG_MPTCP=y
+ CONFIG_NF_TABLES=m
+ CONFIG_NF_TABLES_IPV6=y
+ CONFIG_NF_TABLES_IPV4=y
+ CONFIG_NFT_NAT=m
++CONFIG_NET_ACT_GACT=m
++CONFIG_NET_CLS_BASIC=m
++CONFIG_NET_CLS_U32=m
++CONFIG_NET_IPGRE_DEMUX=m
++CONFIG_NET_IPGRE=m
++CONFIG_NET_SCH_FQ_CODEL=m
++CONFIG_NET_SCH_HTB=m
+ CONFIG_NET_SCH_FQ=m
+ CONFIG_NET_SCH_ETF=m
+ CONFIG_NET_SCH_NETEM=y
++CONFIG_PSAMPLE=m
++CONFIG_TCP_MD5SIG=y
+ CONFIG_TEST_BLACKHOLE_DEV=m
+ CONFIG_KALLSYMS=y
++CONFIG_TLS=m
+ CONFIG_TRACEPOINTS=y
+ CONFIG_NET_DROP_MONITOR=m
+ CONFIG_NETDEVSIM=m
+@@ -48,7 +74,9 @@ CONFIG_BAREUDP=m
+ CONFIG_IPV6_IOAM6_LWTUNNEL=y
+ CONFIG_CRYPTO_SM4_GENERIC=y
+ CONFIG_AMT=m
++CONFIG_TUN=y
+ CONFIG_VXLAN=m
+ CONFIG_IP_SCTP=m
+ CONFIG_NETFILTER_XT_MATCH_POLICY=m
+ CONFIG_CRYPTO_ARIA=y
++CONFIG_XFRM_INTERFACE=m
+-- 
+2.43.0
+
 
 
 
