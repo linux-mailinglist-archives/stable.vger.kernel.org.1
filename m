@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-17161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B69841012
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD7D840E23
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E92372846BF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71E561F2D096
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA5C15EAB4;
-	Mon, 29 Jan 2024 17:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7BC15EA8A;
+	Mon, 29 Jan 2024 17:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0sGHEUy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W38FEI2b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E9D15B305;
-	Mon, 29 Jan 2024 17:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6A415B2E9;
+	Mon, 29 Jan 2024 17:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548555; cv=none; b=IMblKDptktZfqmZPJSOseFXt7cyva7gJRSbs+F1xadQ0xyz/Xbdpxeitsc4xAsuYjDcPBFdU+buiUyIuwhDqXRH7yUceme0n4hw7YjO6IUAqgekn6EEan3NKFz2XpTHgipmR8VAyi5fMzojE5xS990ZZctjra+dx6xxVFGEKUUM=
+	t=1706548231; cv=none; b=DRXhp+tqvKq2qzDpd73E8MB+4zT0x5uiCbpk/G6hwDCQbeYcrtuqkPwxDvU1JjcDBS5iCmTuplslycHtHerU+eoTK1J04thKPCLbj5OY1RT9ygp2jYNO94eLGE4LoJngI3a62BYUK4zmemiZHE000X616PZo3dzXz/bzLmCISRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548555; c=relaxed/simple;
-	bh=yib4CQtk1uY7o5B1xbJQNgPuSkfNkscq9QHG0VzeNl8=;
+	s=arc-20240116; t=1706548231; c=relaxed/simple;
+	bh=OmMktoRcYxEhir6eFTetgo4LVFCh1hjtczzWVNM5J0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZJMun06IK5hiPdVA2I3FaWpCPmMkXxcslDMASP6JsXzoIzH8RJObTqltgMaBeiTg4QqJu5+GOf0s1jMl38sdJ3VwB0XOsP+mRxjaQlCB+K4aPWSVWWEk+PduW+WkR88AyTPr3jn0KHDYfDgKwUZctP0nEKvkIiSDPukT+RMK2Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0sGHEUy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9A1C433C7;
-	Mon, 29 Jan 2024 17:15:55 +0000 (UTC)
+	 MIME-Version; b=QZfcPqT1SdRpIXC6iVGf8wT3+6XnuWnwwZYI6s07/NKsqOBCQtEftVhZrctBnH5rkFWIsOhqd7f4g5fRpTZSvp048nFczK5/BgEOZjbIq5TIyxMRagLPPaxCoeAJRxmfp/VtboJZ9/fiNoyJjfHsfv8lEEBpiNlySulFDWanyJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W38FEI2b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253A0C43390;
+	Mon, 29 Jan 2024 17:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548555;
-	bh=yib4CQtk1uY7o5B1xbJQNgPuSkfNkscq9QHG0VzeNl8=;
+	s=korg; t=1706548231;
+	bh=OmMktoRcYxEhir6eFTetgo4LVFCh1hjtczzWVNM5J0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l0sGHEUyyV0ErXP4dh1UzgYuaSt9U06YmaXmXuZ7JYEu2h4OrM/Mz+AGy4MuZQgK7
-	 lOTwVP4HkfL4IGfzLi7T0xMjZJ4JwHF0RFer+WUA6+O/1oCw61/g6P/OXgk5OYeTBg
-	 dC1QkTLfe0xWhuVIf9ux0AcMXlF2I4LrRiiIQfAE=
+	b=W38FEI2bNqHWcOuzltYp3FzMiZDBV1Ch9gXL4P5khi+1P0O/65k75ILhLbVNjMhAY
+	 o2bpD9z5LCpsjSicgDESm+w2p+4utcnQqIYdHSeeWmneNOD6QsRL8KDfIXMDpCFtP3
+	 EhLt8gI3KOfAw4Nt3VxWeJAZnmi0w5StHGC1lziw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aya Levin <ayal@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 201/331] net/mlx5e: Ignore IPsec replay window values on sender side
+	Michael Kelley <mhklinux@outlook.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.7 234/346] hv_netvsc: Calculate correct ring size when PAGE_SIZE is not 4 Kbytes
 Date: Mon, 29 Jan 2024 09:04:25 -0800
-Message-ID: <20240129170020.761984522@linuxfoundation.org>
+Message-ID: <20240129170023.287091557@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit 315a597f9bcfe7fe9980985031413457bee95510 ]
+commit 6941f67ad37d5465b75b9ffc498fcf6897a3c00e upstream.
 
-XFRM stack doesn't prevent from users to configure replay window
-in TX side and strongswan sets replay_window to be 1. It causes
-to failures in validation logic when trying to offload the SA.
+Current code in netvsc_drv_init() incorrectly assumes that PAGE_SIZE
+is 4 Kbytes, which is wrong on ARM64 with 16K or 64K page size. As a
+result, the default VMBus ring buffer size on ARM64 with 64K page size
+is 8 Mbytes instead of the expected 512 Kbytes. While this doesn't break
+anything, a typical VM with 8 vCPUs and 8 netvsc channels wastes 120
+Mbytes (8 channels * 2 ring buffers/channel * 7.5 Mbytes/ring buffer).
 
-Replay window is not relevant in TX side and should be ignored.
+Unfortunately, the module parameter specifying the ring buffer size
+is in units of 4 Kbyte pages. Ideally, it should be in units that
+are independent of PAGE_SIZE, but backwards compatibility prevents
+changing that now.
 
-Fixes: cded6d80129b ("net/mlx5e: Store replay window in XFRM attributes")
-Signed-off-by: Aya Levin <ayal@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by having netvsc_drv_init() hardcode 4096 instead of using
+PAGE_SIZE when calculating the ring buffer size in bytes. Also
+use the VMBUS_RING_SIZE macro to ensure proper alignment when running
+with page size larger than 4K.
+
+Cc: <stable@vger.kernel.org> # 5.15.x
+Fixes: 7aff79e297ee ("Drivers: hv: Enable Hyper-V code to be built on ARM64")
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/20240122162028.348885-1-mhklinux@outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c   | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/hyperv/netvsc_drv.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-index 5834e47e72d8..e2ffc572de18 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
-@@ -336,12 +336,17 @@ void mlx5e_ipsec_build_accel_xfrm_attrs(struct mlx5e_ipsec_sa_entry *sa_entry,
- 	/* iv len */
- 	aes_gcm->icv_len = x->aead->alg_icv_len;
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -44,7 +44,7 @@
  
-+	attrs->dir = x->xso.dir;
-+
- 	/* esn */
- 	if (x->props.flags & XFRM_STATE_ESN) {
- 		attrs->replay_esn.trigger = true;
- 		attrs->replay_esn.esn = sa_entry->esn_state.esn;
- 		attrs->replay_esn.esn_msb = sa_entry->esn_state.esn_msb;
- 		attrs->replay_esn.overlap = sa_entry->esn_state.overlap;
-+		if (attrs->dir == XFRM_DEV_OFFLOAD_OUT)
-+			goto skip_replay_window;
-+
- 		switch (x->replay_esn->replay_window) {
- 		case 32:
- 			attrs->replay_esn.replay_window =
-@@ -365,7 +370,7 @@ void mlx5e_ipsec_build_accel_xfrm_attrs(struct mlx5e_ipsec_sa_entry *sa_entry,
- 		}
+ static unsigned int ring_size __ro_after_init = 128;
+ module_param(ring_size, uint, 0444);
+-MODULE_PARM_DESC(ring_size, "Ring buffer size (# of pages)");
++MODULE_PARM_DESC(ring_size, "Ring buffer size (# of 4K pages)");
+ unsigned int netvsc_ring_bytes __ro_after_init;
+ 
+ static const u32 default_msg = NETIF_MSG_DRV | NETIF_MSG_PROBE |
+@@ -2805,7 +2805,7 @@ static int __init netvsc_drv_init(void)
+ 		pr_info("Increased ring_size to %u (min allowed)\n",
+ 			ring_size);
  	}
+-	netvsc_ring_bytes = ring_size * PAGE_SIZE;
++	netvsc_ring_bytes = VMBUS_RING_SIZE(ring_size * 4096);
  
--	attrs->dir = x->xso.dir;
-+skip_replay_window:
- 	/* spi */
- 	attrs->spi = be32_to_cpu(x->id.spi);
+ 	register_netdevice_notifier(&netvsc_netdev_notifier);
  
-@@ -501,7 +506,8 @@ static int mlx5e_xfrm_validate_state(struct mlx5_core_dev *mdev,
- 			return -EINVAL;
- 		}
- 
--		if (x->replay_esn && x->replay_esn->replay_window != 32 &&
-+		if (x->replay_esn && x->xso.dir == XFRM_DEV_OFFLOAD_IN &&
-+		    x->replay_esn->replay_window != 32 &&
- 		    x->replay_esn->replay_window != 64 &&
- 		    x->replay_esn->replay_window != 128 &&
- 		    x->replay_esn->replay_window != 256) {
--- 
-2.43.0
-
 
 
 
