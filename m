@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-17256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EC7E841074
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E002E840EB2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6EAD1C23B1B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E3EDB27B8C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF5276048;
-	Mon, 29 Jan 2024 17:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38496160864;
+	Mon, 29 Jan 2024 17:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqy59mlz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEbiD324"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2B576041;
-	Mon, 29 Jan 2024 17:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E629A15CD49;
+	Mon, 29 Jan 2024 17:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548625; cv=none; b=IdDUT0beDLDWLXzIoF43gCQTUTmaRVFLIXo+/YyeusjyR2XWWAD3bXDictV7Sigg8AjLQ8O+Qh22IaDJ2sDTy2pNnu2aD3ka4ii8iF12L5GMCBmCiCOr8223nrwC3xMw95LRXzlE+C0ZE4m6f71gyXkKvLVDv6w2vADyDQ+ha0U=
+	t=1706548330; cv=none; b=cI66a2nR73aerI8Q/dJBLa4U4tLK9/GVblvxt29rIXV5mVYf5e1jP9TvzhgNHRvaOJpxVIs5HNO5MZ3QvH57zUUl2jWvgrsYj1q4J7IL3bA4a9yldO4R6+Ro1gwMgyN2iN76T1mEP0x9g2TsvlGKSr4wyNc16lZDSF/ETjyFFZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548625; c=relaxed/simple;
-	bh=QNnEyYqKHwtLOP7kpBH0aAZMjN3+Se8I4IsJghwjb+Q=;
+	s=arc-20240116; t=1706548330; c=relaxed/simple;
+	bh=Ae+4I5OJfiada0mo9SsyU9A2w2Pithzv/laXhHorNXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OMGGeKkJxP2lJdtuhuRsNluf7U+hTj2k7TNjYPsZQvXf1yb4ptHfpqQ9u77SIEQXNrdyulnFOPETe6VoVQybxjI8w4A1O0bcLeOn0Pw0BOfCavWuJ3kiFwxwDyqF7T6e47TPkXXKBP4CADgCq4M29Tr30QP7TVGiEyoSo0ep7S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqy59mlz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60A9C433F1;
-	Mon, 29 Jan 2024 17:17:04 +0000 (UTC)
+	 MIME-Version; b=b7tCzGRIXT8lFGm6CYSoLJGfHoBYLxZG75bzqWXVfGK/YyGAlWL4VYXtCBZHgFX/0XbHLqos54X+7K6GMAW8A7IJzrqDQvoE4fkVr11BStYdweBS2hWrhPmjdCnzRpnN+cKPA+HqWOkf71V3faZAha6u7rgYvbjbgvOfW23kVrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEbiD324; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB34DC433C7;
+	Mon, 29 Jan 2024 17:12:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548624;
-	bh=QNnEyYqKHwtLOP7kpBH0aAZMjN3+Se8I4IsJghwjb+Q=;
+	s=korg; t=1706548329;
+	bh=Ae+4I5OJfiada0mo9SsyU9A2w2Pithzv/laXhHorNXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wqy59mlzhaLwiZPFteTg23y7iXnhncoLLZkJ1W7+GdUnZ4Wu0ZH9R5cSOgbfJaTOx
-	 s0cwpz3hcOS5cc2kPxgC3xeqdU1k4Ks1yuU+jOHIh1L5jgXHhJhIewSi3aMqXsH0zc
-	 Ol7vnFIYoCKElzBjK8fEGkc8PH7lIy9mxEgIJDKU=
+	b=bEbiD3242qiQS4/9BThgV0+m5YFsbuCMRDRNJBpcZdVSZBFAMwMLzFVfKJyaATMr+
+	 EndXwcCY3SoP0VTqICqD5HsNXp05cooz8MLRpyR2CW33yRGrMr3hjx7uom2uRMIsRh
+	 VO6EoZ+5+2gdhQeZjOAQdOnDmwSGXk+HRKA0/DDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheng-Liang Pan <sheng-liang.pan@quanta.corp-partner.google.com>,
-	Douglas Anderson <dianders@chromium.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 295/331] drm/panel-edp: Add AUO B116XTN02, BOE NT116WHM-N21,836X2, NV116WHM-N49 V8.0
+Subject: [PATCH 6.7 328/346] spi: intel-pci: Remove Meteor Lake-S SoC PCI ID from the list
 Date: Mon, 29 Jan 2024 09:05:59 -0800
-Message-ID: <20240129170023.496914794@linuxfoundation.org>
+Message-ID: <20240129170026.125038316@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheng-Liang Pan <sheng-liang.pan@quanta.corp-partner.google.com>
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-[ Upstream commit 3db2420422a5912d97966e0176050bb0fc9aa63e ]
+[ Upstream commit 6c314425b9ef6b247cefd0903e287eb072580c3b ]
 
-Add panel identification entry for
-- AUO B116XTN02 family (product ID:0x235c)
-- BOE NT116WHM-N21,836X2 (product ID:0x09c3)
-- BOE NV116WHM-N49 V8.0 (product ID:0x0979)
+Turns out this "SoC" side controller does not support certain commands,
+such as reading chip JEDEC ID, so the controller is pretty much unusable
+in Linux. We should be using the "PCH" side controller instead. For this
+reason remove this PCI ID from the list.
 
-Signed-off-by: Sheng-Liang Pan <sheng-liang.pan@quanta.corp-partner.google.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231027110435.1.Ia01fe9ec1c0953e0050a232eaa782fef2c037516@changeid
-Stable-dep-of: fc6e76792965 ("drm/panel-edp: drm/panel-edp: Fix AUO B116XAK01 name and timing")
+Fixes: c2912d42e86e ("spi: intel-pci: Add support for Meteor Lake-S SPI serial flash")
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Link: https://msgid.link/r/20240122120034.2664812-2-mika.westerberg@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-edp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-intel-pci.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
-index 95c8472d878a..5bf28c8443ef 100644
---- a/drivers/gpu/drm/panel/panel-edp.c
-+++ b/drivers/gpu/drm/panel/panel-edp.c
-@@ -1840,6 +1840,7 @@ static const struct edp_panel_entry edp_panels[] = {
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x145c, &delay_200_500_e50, "B116XAB01.4"),
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1e9b, &delay_200_500_e50, "B133UAN02.1"),
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1ea5, &delay_200_500_e50, "B116XAK01.6"),
-+	EDP_PANEL_ENTRY('A', 'U', 'O', 0x235c, &delay_200_500_e50, "B116XTN02"),
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x405c, &auo_b116xak01.delay, "B116XAK01"),
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x582d, &delay_200_500_e50, "B133UAN01.0"),
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x615c, &delay_200_500_e50, "B116XAN06.1"),
-@@ -1848,8 +1849,10 @@ static const struct edp_panel_entry edp_panels[] = {
- 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0786, &delay_200_500_p2e80, "NV116WHM-T01"),
- 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x07d1, &boe_nv133fhm_n61.delay, "NV133FHM-N61"),
- 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x082d, &boe_nv133fhm_n61.delay, "NV133FHM-N62"),
-+	EDP_PANEL_ENTRY('B', 'O', 'E', 0x09c3, &delay_200_500_e50, "NT116WHM-N21,836X2"),
- 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x094b, &delay_200_500_e50, "NT116WHM-N21"),
- 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x095f, &delay_200_500_e50, "NE135FBM-N41 v8.1"),
-+	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0979, &delay_200_500_e50, "NV116WHM-N49 V8.0"),
- 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x098d, &boe_nv110wtm_n61.delay, "NV110WTM-N61"),
- 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x09dd, &delay_200_500_e50, "NT116WHM-N21"),
- 	EDP_PANEL_ENTRY('B', 'O', 'E', 0x0a5d, &delay_200_500_e50, "NV116WHM-N45"),
+diff --git a/drivers/spi/spi-intel-pci.c b/drivers/spi/spi-intel-pci.c
+index 57d767a68e7b..b9918dcc3802 100644
+--- a/drivers/spi/spi-intel-pci.c
++++ b/drivers/spi/spi-intel-pci.c
+@@ -84,7 +84,6 @@ static const struct pci_device_id intel_spi_pci_ids[] = {
+ 	{ PCI_VDEVICE(INTEL, 0xa2a4), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0xa324), (unsigned long)&cnl_info },
+ 	{ PCI_VDEVICE(INTEL, 0xa3a4), (unsigned long)&cnl_info },
+-	{ PCI_VDEVICE(INTEL, 0xae23), (unsigned long)&cnl_info },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(pci, intel_spi_pci_ids);
 -- 
 2.43.0
 
