@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-17128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A55F8840FF1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8CB9840DC1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7E1F1C23814
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E8661F2CF29
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D174B73733;
-	Mon, 29 Jan 2024 17:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82F915CD67;
+	Mon, 29 Jan 2024 17:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKRcsgMI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mt7cIZea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9079D73722;
-	Mon, 29 Jan 2024 17:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A693115AAA8;
+	Mon, 29 Jan 2024 17:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548531; cv=none; b=OJuqmrf82kAJOWlOBo9hhz8cMQCMuALeWMv4Orq+SskdH4BxmUlRQ+qsf9b+4GYf2J4Tn/Wvbi7ihvGPM4ythWPCbK9B0y91U0PWeJ8VG1Rn5LImx6KOpRQSE0tLbylZOqj3Vd/x+9BnY10b3OhmOiMCWGl0g+9o9+qc1PgHf24=
+	t=1706548160; cv=none; b=syktQkajsDULBivRd6Y82PiEx6rw9Z2KBTVjQo0PnuCGwWELoGjHsgi2kQ9OwSMzxE+5EBRo30vSzKmiy+eKAuvE20nbZVbWaXEhc7udPn4OBBdv7XK21kGDzTewNcXcuyeb8qXAjULdDaHqvhZAS1TOX7MKq0Gx/LNmxWaQPYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548531; c=relaxed/simple;
-	bh=SGxoO/ABwdhLgekDRkf/k5a39GrUXmbynH7ix7FpBTs=;
+	s=arc-20240116; t=1706548160; c=relaxed/simple;
+	bh=AyK80NAhJZ1ONJaH8PiWbiwEiD1uGo8+wYHJJUNh4fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lgn4n7MSQoRXQnbo4HjrxZ42G1cmFw76iXe3v4ggW150tmsfuPwd6rQB7dCyo6dGgdzSlzc12DiLq7mTby4gYxTb6q7+zeHdWBEDkVeKzOHDQfjKgNOKGCp1kfsCQBTE8V2on/16EZThOw1/dIJdybnZ7yQC7h/wVPcKuJagwHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yKRcsgMI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA0BC433F1;
-	Mon, 29 Jan 2024 17:15:31 +0000 (UTC)
+	 MIME-Version; b=Gth7ne5tNH7eStt9zjg/rSJjr2Fd3RGP2/Qz30HCwp6eEC3J5CXSg+uBWpN63J0U5oaJzq1SXVh1h2ovhH7U/6ir0yfPuXMVVvBLhkC/QA113bbgNFu5kPsiIFeogcQ5AsvBhvLTxg6PPyfMvPD+4PI6v8X9Cm8k/+FHcJIuOug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mt7cIZea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F7D5C433C7;
+	Mon, 29 Jan 2024 17:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548531;
-	bh=SGxoO/ABwdhLgekDRkf/k5a39GrUXmbynH7ix7FpBTs=;
+	s=korg; t=1706548160;
+	bh=AyK80NAhJZ1ONJaH8PiWbiwEiD1uGo8+wYHJJUNh4fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yKRcsgMIqbsYhwYTsdw94qTouyDWlP7RHY3eHbhIs++KRKBu2N5z0mLaa0Prd7YIG
-	 Tuh+uEejOi8egwqFz8h98OlwetMFhpB0K/XsHApHH7KyGaqUx22szNLQJS39/7fJmb
-	 EMzyTa2meNKWY1GkgH+89FrB3GA4V5kjCSt6ugK0=
+	b=Mt7cIZeahBVpatjqQ0rPKKMfC39VmgfALYdXPAHq+ANSv394ua3/SVU3R/zVHRwIl
+	 3Xd6e/ITCa7gEJLKkvZjjWnFBC8Ghkd1oXhhENTZVRK2+QjpeTSidpA7sBshRKnvwc
+	 yiqAceQQcWg5O2njzAMpNht+jD7S7S5Actr+nPIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 142/331] ksmbd: dont increment epoch if current state and request state are same
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 175/346] afs: Use op->nr_iterations=-1 to indicate to begin fileserver iteration
 Date: Mon, 29 Jan 2024 09:03:26 -0800
-Message-ID: <20240129170019.096418330@linuxfoundation.org>
+Message-ID: <20240129170021.544860751@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit b6e9a44e99603fe10e1d78901fdd97681a539612 ]
+[ Upstream commit 075171fd22be33acf4ab354814bfa6de1c3412ce ]
 
-If existing lease state and request state are same, don't increment
-epoch in create context.
+Set op->nr_iterations to -1 to indicate that we need to begin fileserver
+iteration rather than setting error to SHRT_MAX.  This makes it easier to
+eliminate the address cursor.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Stable-dep-of: 17ba6f0bd14f ("afs: Fix error handling with lookup via FS.InlineBulkStatus")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/oplock.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/afs/fs_operation.c |  2 +-
+ fs/afs/internal.h     |  2 +-
+ fs/afs/rotate.c       | 11 ++++++-----
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -105,7 +105,7 @@ static int alloc_lease(struct oplock_inf
- 	lease->is_dir = lctx->is_dir;
- 	memcpy(lease->parent_lease_key, lctx->parent_lease_key, SMB2_LEASE_KEY_SIZE);
- 	lease->version = lctx->version;
--	lease->epoch = le16_to_cpu(lctx->epoch);
-+	lease->epoch = le16_to_cpu(lctx->epoch) + 1;
- 	INIT_LIST_HEAD(&opinfo->lease_entry);
- 	opinfo->o_lease = lease;
+diff --git a/fs/afs/fs_operation.c b/fs/afs/fs_operation.c
+index 7a3803ce3a22..3e31fae9a149 100644
+--- a/fs/afs/fs_operation.c
++++ b/fs/afs/fs_operation.c
+@@ -41,7 +41,7 @@ struct afs_operation *afs_alloc_operation(struct key *key, struct afs_volume *vo
+ 	op->cb_v_break	= volume->cb_v_break;
+ 	op->debug_id	= atomic_inc_return(&afs_operation_debug_counter);
+ 	op->error	= -EDESTADDRREQ;
+-	op->ac.error	= SHRT_MAX;
++	op->nr_iterations = -1;
  
-@@ -541,6 +541,9 @@ static struct oplock_info *same_client_h
- 				continue;
- 			}
+ 	_leave(" = [op=%08x]", op->debug_id);
+ 	return op;
+diff --git a/fs/afs/internal.h b/fs/afs/internal.h
+index ec08b4a7e499..88381935bd66 100644
+--- a/fs/afs/internal.h
++++ b/fs/afs/internal.h
+@@ -859,7 +859,7 @@ struct afs_operation {
+ 	struct afs_call		*call;
+ 	unsigned long		untried;	/* Bitmask of untried servers */
+ 	short			index;		/* Current server */
+-	unsigned short		nr_iterations;	/* Number of server iterations */
++	short			nr_iterations;	/* Number of server iterations */
  
-+			if (lctx->req_state != lease->state)
-+				lease->epoch++;
+ 	unsigned int		flags;
+ #define AFS_OPERATION_STOP		0x0001	/* Set to cease iteration */
+diff --git a/fs/afs/rotate.c b/fs/afs/rotate.c
+index a108cd55bb4e..4084e023ff43 100644
+--- a/fs/afs/rotate.c
++++ b/fs/afs/rotate.c
+@@ -116,7 +116,10 @@ bool afs_select_fileserver(struct afs_operation *op)
+ 	unsigned int rtt;
+ 	int error = op->ac.error, i;
+ 
+-	_enter("%lx[%d],%lx[%d],%d,%d",
++	op->nr_iterations++;
 +
- 			/* upgrading lease */
- 			if ((atomic_read(&ci->op_count) +
- 			     atomic_read(&ci->sop_count)) == 1) {
-@@ -1035,7 +1038,7 @@ static void copy_lease(struct oplock_inf
- 	       SMB2_LEASE_KEY_SIZE);
- 	lease2->duration = lease1->duration;
- 	lease2->flags = lease1->flags;
--	lease2->epoch = lease1->epoch++;
-+	lease2->epoch = lease1->epoch;
- 	lease2->version = lease1->version;
- }
++	_enter("OP=%x+%x,%llx,%lx[%d],%lx[%d],%d,%d",
++	       op->debug_id, op->nr_iterations, op->volume->vid,
+ 	       op->untried, op->index,
+ 	       op->ac.tried, op->ac.index,
+ 	       error, op->ac.abort_code);
+@@ -126,13 +129,11 @@ bool afs_select_fileserver(struct afs_operation *op)
+ 		return false;
+ 	}
  
-@@ -1454,7 +1457,7 @@ void create_lease_buf(u8 *rbuf, struct l
- 		memcpy(buf->lcontext.LeaseKey, lease->lease_key,
- 		       SMB2_LEASE_KEY_SIZE);
- 		buf->lcontext.LeaseFlags = lease->flags;
--		buf->lcontext.Epoch = cpu_to_le16(++lease->epoch);
-+		buf->lcontext.Epoch = cpu_to_le16(lease->epoch);
- 		buf->lcontext.LeaseState = lease->state;
- 		memcpy(buf->lcontext.ParentLeaseKey, lease->parent_lease_key,
- 		       SMB2_LEASE_KEY_SIZE);
+-	op->nr_iterations++;
++	if (op->nr_iterations == 0)
++		goto start;
+ 
+ 	/* Evaluate the result of the previous operation, if there was one. */
+ 	switch (error) {
+-	case SHRT_MAX:
+-		goto start;
+-
+ 	case 0:
+ 	default:
+ 		/* Success or local failure.  Stop. */
+-- 
+2.43.0
+
 
 
 
