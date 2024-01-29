@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-16975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D195840F4B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F644840D1F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 906E91C22EA8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 826321C22B5E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF7F1641B3;
-	Mon, 29 Jan 2024 17:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B793155A2A;
+	Mon, 29 Jan 2024 17:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZG71Nl7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzGv843e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF1C15B0E3;
-	Mon, 29 Jan 2024 17:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0FA159577;
+	Mon, 29 Jan 2024 17:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548417; cv=none; b=eF7WUtJNgE9C3sAdSXMdMzvShJ02W3tHdmbjM4f9kWCh177H1nkENBMhmpCuauPQ22D9YQVGaqeVagY7S0BAe7SPpyb0/5lHQIQRQuTq6zF/iQxlubg5/U1Uu4FK8Z0MU6OPc4B1i6twEtkYO+T5ss+aVLwZyJsGwGv3y0zDwWs=
+	t=1706548047; cv=none; b=aDL4rmt5O+VrHKeNLwJOfWUWDacqFEKdaYNuyDoHy0Wz949uEXm/0D2IfMXZwUubjvW+Jh7y8VYv2rrbC8HTY8+DvSFpd4pWPkNg0spSiUbkPu3RCz5+u+q2Y7bw3DWrhKrRqukZZXFt8vXH7r5nS19zU9MESdmw18+4lPsRzg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548417; c=relaxed/simple;
-	bh=SWLEkjEcUFjDrGp59Nff1uyKMFsMrjDtYO/j/pck3OQ=;
+	s=arc-20240116; t=1706548047; c=relaxed/simple;
+	bh=e6PT/FroryESztMATKRH3R6+1NJFb+ZPTZNOVLFUNQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G58x3OdASiqPTWYWtWfdrtYt9tYmbQGhgkswQO1Y4M6df0qKG6KnW2PIkzGrStGCxWu5yjcfQdA3RyT07VZr90XM2BqIBJ1CMWQAxA4RxWd4b3ikgv/3TATdS84LJbD9mUbNTBJMDs2QziLpRCiBUZ7hrVbungJdm3yvSQOITv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZG71Nl7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3838EC433C7;
-	Mon, 29 Jan 2024 17:13:37 +0000 (UTC)
+	 MIME-Version; b=clFyn0G9Ad5UuOrD5ViuGm/7xrZ/cltr/vE4ywlrOwZbUeew8KiCawsdkogUZ4V9p50GxgG6lFL3b/o3ZpCTmYAxwnRhdL5zoxpmUnetIoDOHOMpo4jYvkPJjkP05vtaQgn9su1s4sqhZCTnwFjJ4sBfF45JL/tppf2yQFON2pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzGv843e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C623C43390;
+	Mon, 29 Jan 2024 17:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548417;
-	bh=SWLEkjEcUFjDrGp59Nff1uyKMFsMrjDtYO/j/pck3OQ=;
+	s=korg; t=1706548047;
+	bh=e6PT/FroryESztMATKRH3R6+1NJFb+ZPTZNOVLFUNQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BZG71Nl7P2Xz7P+OaOTPClcqThXLLB7jUXHdkyzsyBJVB5l8wWT8kVL2xKHVTtV6/
-	 cdiAoKrSxKIcBfwdDKmp3qwR1jGDaWI2BN9L+c6rV9ehSBOdetsgN8Wb176ZB3TE5I
-	 CG/VzvbFF0a74dl1J2WcWfTiVNp78CBa3t3rNqf8=
+	b=mzGv843egzZ2VFoMksmO744TftMZBeyGkYtdBB/RtRjmfpwmzzYP9/MWtQ26Vv3/v
+	 CBbPzzk59r19Cwk4ccKchKYSnhjjtYTwz+gbCQ0ggEyJEx7aACOKKOa/5Hj2u5x8n1
+	 yWjnwsdctahy/QReAuhUjng0IzJ7xjt1Y3OFkJsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rex Zhang <rex.zhang@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/331] dmaengine: idxd: Move dma_free_coherent() out of spinlocked context
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.7 048/346] parisc/firmware: Fix F-extend for PDC addresses
 Date: Mon, 29 Jan 2024 09:01:19 -0800
-Message-ID: <20240129170015.411134778@linuxfoundation.org>
+Message-ID: <20240129170017.799050555@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +60,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rex Zhang <rex.zhang@intel.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit e271c0ba3f919c48e90c64b703538fbb7865cb63 ]
+commit 735ae74f73e55c191d48689bd11ff4a06ea0508f upstream.
 
-Task may be rescheduled within dma_free_coherent(). So dma_free_coherent()
-can't be called between spin_lock() and spin_unlock() to avoid Call Trace:
-    Call Trace:
-    <TASK>
-    dump_stack_lvl+0x37/0x50
-    __might_resched+0x16a/0x1c0
-    vunmap+0x2c/0x70
-    __iommu_dma_free+0x96/0x100
-    idxd_device_evl_free+0xd5/0x100 [idxd]
-    device_release_driver_internal+0x197/0x200
-    unbind_store+0xa1/0xb0
-    kernfs_fop_write_iter+0x120/0x1c0
-    vfs_write+0x2d3/0x400
-    ksys_write+0x63/0xe0
-    do_syscall_64+0x44/0xa0
-    entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-Move it out of the context.
+When running with narrow firmware (64-bit kernel using a 32-bit
+firmware), extend PDC addresses into the 0xfffffff0.00000000
+region instead of the 0xf0f0f0f0.00000000 region.
 
-Fixes: 244da66cda35 ("dmaengine: idxd: setup event log configuration")
-Signed-off-by: Rex Zhang <rex.zhang@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Fenghua Yu <fenghua.yu@intel.com>
-Link: https://lore.kernel.org/r/20231212022158.358619-2-rex.zhang@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes the power button on the C3700 machine in qemu (64-bit CPU
+with 32-bit firmware), and my assumption is that the previous code was
+really never used (because most 64-bit machines have a 64-bit firmware),
+or it just worked on very old machines because they may only decode
+40-bit of virtual addresses.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/idxd/device.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ arch/parisc/kernel/firmware.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/idxd/device.c b/drivers/dma/idxd/device.c
-index 8f754f922217..fa0f880beae6 100644
---- a/drivers/dma/idxd/device.c
-+++ b/drivers/dma/idxd/device.c
-@@ -802,6 +802,9 @@ static int idxd_device_evl_setup(struct idxd_device *idxd)
+--- a/arch/parisc/kernel/firmware.c
++++ b/arch/parisc/kernel/firmware.c
+@@ -123,10 +123,10 @@ static unsigned long f_extend(unsigned l
+ #ifdef CONFIG_64BIT
+ 	if(unlikely(parisc_narrow_firmware)) {
+ 		if((address & 0xff000000) == 0xf0000000)
+-			return 0xf0f0f0f000000000UL | (u32)address;
++			return (0xfffffff0UL << 32) | (u32)address;
  
- static void idxd_device_evl_free(struct idxd_device *idxd)
- {
-+	void *evl_log;
-+	unsigned int evl_log_size;
-+	dma_addr_t evl_dma;
- 	union gencfg_reg gencfg;
- 	union genctrl_reg genctrl;
- 	struct device *dev = &idxd->pdev->dev;
-@@ -822,11 +825,15 @@ static void idxd_device_evl_free(struct idxd_device *idxd)
- 	iowrite64(0, idxd->reg_base + IDXD_EVLCFG_OFFSET);
- 	iowrite64(0, idxd->reg_base + IDXD_EVLCFG_OFFSET + 8);
- 
--	dma_free_coherent(dev, evl->log_size, evl->log, evl->dma);
- 	bitmap_free(evl->bmap);
-+	evl_log = evl->log;
-+	evl_log_size = evl->log_size;
-+	evl_dma = evl->dma;
- 	evl->log = NULL;
- 	evl->size = IDXD_EVL_SIZE_MIN;
- 	spin_unlock(&evl->lock);
-+
-+	dma_free_coherent(dev, evl_log_size, evl_log, evl_dma);
- }
- 
- static void idxd_group_config_write(struct idxd_group *group)
--- 
-2.43.0
-
+ 		if((address & 0xf0000000) == 0xf0000000)
+-			return 0xffffffff00000000UL | (u32)address;
++			return (0xffffffffUL << 32) | (u32)address;
+ 	}
+ #endif
+ 	return address;
 
 
 
