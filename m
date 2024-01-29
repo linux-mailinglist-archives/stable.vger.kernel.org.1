@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-16718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C602840E20
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9360F840ED2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFA111C23577
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37B0FB2186B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1719B157E61;
-	Mon, 29 Jan 2024 17:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755B1161B4E;
+	Mon, 29 Jan 2024 17:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLUrHx+/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6tS3nk6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC2D159578;
-	Mon, 29 Jan 2024 17:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333B915AAA8;
+	Mon, 29 Jan 2024 17:12:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548228; cv=none; b=NygmXTdInZMhfKwnqC/CQVC3FqH4C7Dxzyc8cKEHCw9VY1v38BGEeT5sCNuXCSx7HF18fwMRmTttUuavsGA2E6LzkKjuppYk1+sNgocAjD4FNR4Ta94liH9Y8LXcpQS9vuFObfECm01pVbxqU5Q+ZYRSOmWJN7P7UayMyq1/rOw=
+	t=1706548351; cv=none; b=YDp7KDFslrWaELDkqE8vToBmO7OhIGdYHBgCu8sfprdtiDhksQbJg5/TqPY6MyWoyYUoq9cKCJVNMkQZ3jZT6H2qMkjFq+pyLhu9r8h4ClHoE8BLsv82/WZ4U7DDoKSE7oNnlwMjnI/tC54MKa3wKlaHCWYO/IntAYBQy0VRGF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548228; c=relaxed/simple;
-	bh=/k2dAEFEi1m9U6XRKMKnqf8Gkarm5Xy00V0jWUAtOms=;
+	s=arc-20240116; t=1706548351; c=relaxed/simple;
+	bh=wvpxdsKXfXsKXg2v8fwu65Is2UHqCfZXnaziK827dP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W+z+Z+9/HqUk1v7IKcjsFODejj3ivGjy5qCnrw/zA/mgpQo57ff52KE2NK/68guW75ZVZqxHBYhLR3AfZBRt5/8YgVb1uyYsvYgwv6YAF5dKzA494gjRAxh7GdqHrPkrvKujGLcdLDXudFq04nt4cCqKlcuZxGz8dNtrEHaWc8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLUrHx+/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94195C43390;
-	Mon, 29 Jan 2024 17:10:28 +0000 (UTC)
+	 MIME-Version; b=KqsJCjNP8HH4eG7b5TosrFmPzZwVoSfjYokc98psP7XFrjAOODSiuBD+PynTk9Tn7goB5dE53/04bC+g9jfrQfkjCMXLTBTqoay6vFVeaACq4d0kFfdp4CW3yb874AdNJtgXU+S4ke6SQYGhOS3zIVGA3qlTHe+PaWZELGBPoRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6tS3nk6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF281C43394;
+	Mon, 29 Jan 2024 17:12:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548228;
-	bh=/k2dAEFEi1m9U6XRKMKnqf8Gkarm5Xy00V0jWUAtOms=;
+	s=korg; t=1706548351;
+	bh=wvpxdsKXfXsKXg2v8fwu65Is2UHqCfZXnaziK827dP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TLUrHx+/cBpvvuVPB/3ERIHuF1W5/tCnmMdljsbIRpthVypUSlNQHgrnEvwcmeooN
-	 F30nP22IeljPPhav7ELtJjni7bXxtQKWDe3ZI0kUqyv2KVwDyGtraPCvrhkCKbJpEF
-	 D337cITWY5gaGWgQ7y1DCm1btbU+5+/vvs/1ki/k=
+	b=j6tS3nk6m24fERLpLYw7JY8JI5FluhwhXMmKZAwbTXynps42GIOXxbwZuY5CXt9qD
+	 e+kHCSFA1ZxQa665p1kPq/Fya8MYcTlFmvCMsGF81z1GR3dBVDkS5OXMtoizP7jMcL
+	 zsL3cLdaPsmCNSk5wQJ5CIae5u5TrUs88dHiFKKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Melissa Wen <mwen@igalia.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.7 256/346] drm/amd/display: fix bandwidth validation failure on DCN 2.1
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Divya Koppera <divya.koppera@microchip.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 087/185] net: micrel: Fix PTP frame parsing for lan8814
 Date: Mon, 29 Jan 2024 09:04:47 -0800
-Message-ID: <20240129170023.927555704@linuxfoundation.org>
+Message-ID: <20240129170001.397202044@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Melissa Wen <mwen@igalia.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-commit 3a0fa3bc245ef92838a8296e0055569b8dff94c4 upstream.
+[ Upstream commit aaf632f7ab6dec57bc9329a438f94504fe8034b9 ]
 
-IGT `amdgpu/amd_color/crtc-lut-accuracy` fails right at the beginning of
-the test execution, during atomic check, because DC rejects the
-bandwidth state for a fb sizing 64x64. The test was previously working
-with the deprecated dc_commit_state(). Now using
-dc_validate_with_context() approach, the atomic check needs to perform a
-full state validation. Therefore, set fast_validation to false in the
-dc_validate_global_state call for atomic check.
+The HW has the capability to check each frame if it is a PTP frame,
+which domain it is, which ptp frame type it is, different ip address in
+the frame. And if one of these checks fail then the frame is not
+timestamp. Most of these checks were disabled except checking the field
+minorVersionPTP inside the PTP header. Meaning that once a partner sends
+a frame compliant to 8021AS which has minorVersionPTP set to 1, then the
+frame was not timestamp because the HW expected by default a value of 0
+in minorVersionPTP. This is exactly the same issue as on lan8841.
+Fix this issue by removing this check so the userspace can decide on this.
 
-Cc: stable@vger.kernel.org
-Fixes: b8272241ff9d ("drm/amd/display: Drop dc_commit_state in favor of dc_commit_streams")
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ece19502834d ("net: phy: micrel: 1588 support for LAN8814 phy")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Divya Koppera <divya.koppera@microchip.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/micrel.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -10479,7 +10479,7 @@ static int amdgpu_dm_atomic_check(struct
- 			DRM_DEBUG_DRIVER("drm_dp_mst_atomic_check() failed\n");
- 			goto fail;
- 		}
--		status = dc_validate_global_state(dc, dm_state->context, true);
-+		status = dc_validate_global_state(dc, dm_state->context, false);
- 		if (status != DC_OK) {
- 			DRM_DEBUG_DRIVER("DC global validation failure: %s (%d)",
- 				       dc_status_to_str(status), status);
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 7cbcf51bae92..9481f172830f 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -120,6 +120,11 @@
+  */
+ #define LAN8814_1PPM_FORMAT			17179
+ 
++#define PTP_RX_VERSION				0x0248
++#define PTP_TX_VERSION				0x0288
++#define PTP_MAX_VERSION(x)			(((x) & GENMASK(7, 0)) << 8)
++#define PTP_MIN_VERSION(x)			((x) & GENMASK(7, 0))
++
+ #define PTP_RX_MOD				0x024F
+ #define PTP_RX_MOD_BAD_UDPV4_CHKSUM_FORCE_FCS_DIS_ BIT(3)
+ #define PTP_RX_TIMESTAMP_EN			0x024D
+@@ -2922,6 +2927,12 @@ static void lan8814_ptp_init(struct phy_device *phydev)
+ 	lanphy_write_page_reg(phydev, 5, PTP_TX_PARSE_IP_ADDR_EN, 0);
+ 	lanphy_write_page_reg(phydev, 5, PTP_RX_PARSE_IP_ADDR_EN, 0);
+ 
++	/* Disable checking for minorVersionPTP field */
++	lanphy_write_page_reg(phydev, 5, PTP_RX_VERSION,
++			      PTP_MAX_VERSION(0xff) | PTP_MIN_VERSION(0x0));
++	lanphy_write_page_reg(phydev, 5, PTP_TX_VERSION,
++			      PTP_MAX_VERSION(0xff) | PTP_MIN_VERSION(0x0));
++
+ 	skb_queue_head_init(&ptp_priv->tx_queue);
+ 	skb_queue_head_init(&ptp_priv->rx_queue);
+ 	INIT_LIST_HEAD(&ptp_priv->rx_ts_list);
+-- 
+2.43.0
+
 
 
 
