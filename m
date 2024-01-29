@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-17191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE5184102F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE09840E2F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E956F1F240A1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 735F51F2D0BA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F286915B319;
-	Mon, 29 Jan 2024 17:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE4051586DB;
+	Mon, 29 Jan 2024 17:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMNPm/G7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oAe2jrFF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC6B15B30B;
-	Mon, 29 Jan 2024 17:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4DF1586DC;
+	Mon, 29 Jan 2024 17:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548577; cv=none; b=nx7JYiZnrennR3YlU+9U0IqG48caEenb/zc+B5GUvyqbQTOM18oW78C333QkKz8tReoOkvNcibsW6QYuEQG+xtEDnChibSaQDnIq37UXmUWhC05ApVYd/W8oi9oS1YerO2TgcDPQNCkP9STp3er+xqy41Nmus7tHd4XDMvYAIPg=
+	t=1706548238; cv=none; b=Hcxt1BdRjJTXlLh9lfsiyp7t/+jTgJP/14511X6FgV7jEkzqmER6wBTyNY8eb4rGebI28HmpxTLojKjzq5o693/xkNV0gS4J7sQRQXE9TLvGl0jok5GxphYruMF3pEmtS8sRW3wJWHv1440HwMKVkOlIRVcHW2EHSPlvi5E5hB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548577; c=relaxed/simple;
-	bh=QFx7fYET+7bKWz5GvU/ECdiWTP1YxjU4IqApbtIjHyQ=;
+	s=arc-20240116; t=1706548238; c=relaxed/simple;
+	bh=BYyebpNM/4fD9MH0MXdhMwR73YnAWpH+a4WrbayOkFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ca55AiCYEdvnz1YNwfczFyFfcDt4mOHKsluZIB2L4IyxndeI35EWy926V8vH6DBg0mSd2ILPpGIYb8gpp5rJoNckRNBLnULsMIBfetUmIZFZrc7BKDBPFs7z2tvL6qK2Khu7Hwb06fMKsG9VHNaqz9QcTW7s+UcPZdvKe4dCFkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMNPm/G7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73641C43390;
-	Mon, 29 Jan 2024 17:16:17 +0000 (UTC)
+	 MIME-Version; b=QN072jnQ81oVc56ZqActgd4DOuHZokeIg4nUIPP2Qp0hN5CQz2tRW7DgEjBDStDX/YidnfWs93k/P7wI1wpotLyOC7G5GQ6qa+SU36Qlyjl2RXB6UF4r6KDfa3ErR5XVq95KTcqB2M/qscT+CeSBFbNtavPBkffczLPboOxwHtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oAe2jrFF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67E84C43390;
+	Mon, 29 Jan 2024 17:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548577;
-	bh=QFx7fYET+7bKWz5GvU/ECdiWTP1YxjU4IqApbtIjHyQ=;
+	s=korg; t=1706548238;
+	bh=BYyebpNM/4fD9MH0MXdhMwR73YnAWpH+a4WrbayOkFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qMNPm/G7+ewwlyo/8468DdKhea7mSVWF6v/VQh9UKfj/ixQ14i5GOZr5wCmVQIETl
-	 MS1tte7ZgjaJu/ORC2Tx/6zcSkANA6DwmflLg47E1qk78Dwxvcpgvcfq/Z2bVWokLL
-	 PhqD4bW1mAg3hdBR/sUfRN/uGusURtJjFdR3U+t4=
+	b=oAe2jrFFbOfmVtyd38LSwE9T20i8ZsirZEWYwLSsi/dIMkl/CLSVHJOAcMhn1OYDH
+	 aaDu6Gcsz+rCopAOebFZ3/lgzkQJOs8nF+pKhwDgMWtbVUWt//zltBIwAJ5fDQv7df
+	 s81I/FYwjcyKd8IQypCY+VEq0yXtzfVn6HEpISXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 231/331] btrfs: zoned: fix lock ordering in btrfs_zone_activate()
-Date: Mon, 29 Jan 2024 09:04:55 -0800
-Message-ID: <20240129170021.636912706@linuxfoundation.org>
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.7 265/346] drm/amd/pm: Fix smuv13.0.6 current clock reporting
+Date: Mon, 29 Jan 2024 09:04:56 -0800
+Message-ID: <20240129170024.184200374@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-commit b18f3b60b35a8c01c9a2a0f0d6424c6d73971dc3 upstream.
+commit a992c90d8ed3929b70ae815ce21ca5651cc0a692 upstream.
 
-The btrfs CI reported a lockdep warning as follows by running generic
-generic/129.
+When current clock is equal to max dpm level clock, the level is not
+indicated correctly with *. Fix by comparing current clock against dpm
+level value.
 
-   WARNING: possible circular locking dependency detected
-   6.7.0-rc5+ #1 Not tainted
-   ------------------------------------------------------
-   kworker/u5:5/793427 is trying to acquire lock:
-   ffff88813256d028 (&cache->lock){+.+.}-{2:2}, at: btrfs_zone_finish_one_bg+0x5e/0x130
-   but task is already holding lock:
-   ffff88810a23a318 (&fs_info->zone_active_bgs_lock){+.+.}-{2:2}, at: btrfs_zone_finish_one_bg+0x34/0x130
-   which lock already depends on the new lock.
-
-   the existing dependency chain (in reverse order) is:
-   -> #1 (&fs_info->zone_active_bgs_lock){+.+.}-{2:2}:
-   ...
-   -> #0 (&cache->lock){+.+.}-{2:2}:
-   ...
-
-This is because we take fs_info->zone_active_bgs_lock after a block_group's
-lock in btrfs_zone_activate() while doing the opposite in other places.
-
-Fix the issue by expanding the fs_info->zone_active_bgs_lock's critical
-section and taking it before a block_group's lock.
-
-Fixes: a7e1ac7bdc5a ("btrfs: zoned: reserve zones for an active metadata/system block group")
-CC: stable@vger.kernel.org # 6.6
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.7.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/zoned.c |    8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -1975,6 +1975,7 @@ bool btrfs_zone_activate(struct btrfs_bl
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_6_ppt.c
+@@ -924,7 +924,9 @@ static int smu_v13_0_6_print_clks(struct
+ 			if (i < (clocks.num_levels - 1))
+ 				clk2 = clocks.data[i + 1].clocks_in_khz / 1000;
  
- 	map = block_group->physical_map;
- 
-+	spin_lock(&fs_info->zone_active_bgs_lock);
- 	spin_lock(&block_group->lock);
- 	if (test_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE, &block_group->runtime_flags)) {
- 		ret = true;
-@@ -1987,7 +1988,6 @@ bool btrfs_zone_activate(struct btrfs_bl
- 		goto out_unlock;
- 	}
- 
--	spin_lock(&fs_info->zone_active_bgs_lock);
- 	for (i = 0; i < map->num_stripes; i++) {
- 		struct btrfs_zoned_device_info *zinfo;
- 		int reserved = 0;
-@@ -2007,20 +2007,17 @@ bool btrfs_zone_activate(struct btrfs_bl
- 		 */
- 		if (atomic_read(&zinfo->active_zones_left) <= reserved) {
- 			ret = false;
--			spin_unlock(&fs_info->zone_active_bgs_lock);
- 			goto out_unlock;
- 		}
- 
- 		if (!btrfs_dev_set_active_zone(device, physical)) {
- 			/* Cannot activate the zone */
- 			ret = false;
--			spin_unlock(&fs_info->zone_active_bgs_lock);
- 			goto out_unlock;
- 		}
- 		if (!is_data)
- 			zinfo->reserved_active_zones--;
- 	}
--	spin_unlock(&fs_info->zone_active_bgs_lock);
- 
- 	/* Successfully activated all the zones */
- 	set_bit(BLOCK_GROUP_FLAG_ZONE_IS_ACTIVE, &block_group->runtime_flags);
-@@ -2028,8 +2025,6 @@ bool btrfs_zone_activate(struct btrfs_bl
- 
- 	/* For the active block group list */
- 	btrfs_get_block_group(block_group);
--
--	spin_lock(&fs_info->zone_active_bgs_lock);
- 	list_add_tail(&block_group->active_bg_list, &fs_info->zone_active_bgs);
- 	spin_unlock(&fs_info->zone_active_bgs_lock);
- 
-@@ -2037,6 +2032,7 @@ bool btrfs_zone_activate(struct btrfs_bl
- 
- out_unlock:
- 	spin_unlock(&block_group->lock);
-+	spin_unlock(&fs_info->zone_active_bgs_lock);
- 	return ret;
- }
- 
+-			if (curr_clk >= clk1 && curr_clk < clk2) {
++			if (curr_clk == clk1) {
++				level = i;
++			} else if (curr_clk >= clk1 && curr_clk < clk2) {
+ 				level = (curr_clk - clk1) <= (clk2 - curr_clk) ?
+ 						i :
+ 						i + 1;
 
 
 
