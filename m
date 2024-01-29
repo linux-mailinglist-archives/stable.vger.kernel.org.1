@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-16816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01614840E89
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED59840E0C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88A0EB2426E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91F2C1C235F7
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89F0415B992;
-	Mon, 29 Jan 2024 17:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9005159586;
+	Mon, 29 Jan 2024 17:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPv06/GA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tSNMiz2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A0815B972;
-	Mon, 29 Jan 2024 17:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6C5157059;
+	Mon, 29 Jan 2024 17:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548300; cv=none; b=gDnPwdBJLbcNRlNj2M/x8lv89fjpatZcJSV62hHroxOHbpMkokjfNKf8jStfySZV9KadyzOxrgL7jcJaCFdbnmG2Wvqd5c1COugE320qZ0b8GDu71sMOzIra162fBRUhl/aixlufyyLAgxnxOiu/7DQ6r0OijNRdnsAaXomdB5Q=
+	t=1706548215; cv=none; b=a8TCF0XUTXSDDfjwCzN9RsUqP9Q5DvmxB/8APlAl05kxX4PbMjr0J09rGFNFDUVM6vv+7xfP03BE2ivhyz/S3YzAcjr9/aO1+CdukFh6TDWj2tYvgOze0h/THF571Zf2sL92NHqsTxql//oDx3wS59mCaw67SGKsRfI4F673PDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548300; c=relaxed/simple;
-	bh=6AFnBTd4+ZE0EiydpQHYiEq1QzwTinJhforlaBahY6k=;
+	s=arc-20240116; t=1706548215; c=relaxed/simple;
+	bh=FRGSJbIylJZVF/UeThVFneSWLW9OTs/c7xWOYpEAiEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gc0dclgoYk0zBHCCRNoVhMGf++YUu92vOlNuG+w8kShu+3VYzWlM2Oigcu0qUFCEguboQzrTgsvUzVEU60+gCZzNe5OMdQiRy6an5IAg2GmKpfqpkI2PZR5Uo9CzKLDbqEGY5AAUaCHmTakahm6PAEHdgZg4/gmJRSVlJZD05EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPv06/GA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB3AC433F1;
-	Mon, 29 Jan 2024 17:11:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fa40qPAHnbnDZxNpR8ITWWcTuUZQJiQc6hADbP3bjVEXrxtB/hV7SaIE7OR8i1vF0g1CGEO2QAQFln6OyDrAlqjYHwi0pIHXZ5sVZnsVBLFCvZJCXij0flKueKBcKx3h3OaoZmtfdLF/3hF2XVZ4TKFL66CRbT6DTT7w3p+LAA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tSNMiz2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13259C43390;
+	Mon, 29 Jan 2024 17:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548300;
-	bh=6AFnBTd4+ZE0EiydpQHYiEq1QzwTinJhforlaBahY6k=;
+	s=korg; t=1706548215;
+	bh=FRGSJbIylJZVF/UeThVFneSWLW9OTs/c7xWOYpEAiEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NPv06/GAxCx/epfuMYQkocIDsZAIWlYCg+82pzbzyf5E0a03o1U6/B9d5WlxK1vtg
-	 iAuC2BnAvwq3VHjwW6eTAts7gzELZFf+ds95GPb8H/AseeoJyIOz+r9+Cot1kfoD0h
-	 31Z9djZE0EJcN/ZM3oXGPnojV7/h7jMmrjxhL9Ic=
+	b=0tSNMiz2Uh0HkopF/oQiNhXoTMEzsTvLjJWzUf8oRFoPUMPWbYyI2wkbeBkWQo8CK
+	 bEGhmMfgtJphnXKLH4excCi8umwsd5dNQT5qM6K6EGMSWIOGkB0KsolmDWJSOVgtXL
+	 ITNnF8ZUpEzbMSZgjDu60STsksLafnLWtquJ+Co8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/185] bnxt_en: Wait for FLR to complete during probe
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Javier Martinez Canillas <javierm@redhat.com>
+Subject: [PATCH 6.7 248/346] drm: Dont unref the same fb many times by mistake due to deadlock handling
 Date: Mon, 29 Jan 2024 09:04:39 -0800
-Message-ID: <20240129170001.140299094@linuxfoundation.org>
+Message-ID: <20240129170023.713863277@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-[ Upstream commit 3c1069fa42872f95cf3c6fedf80723d391e12d57 ]
+commit cb4daf271302d71a6b9a7c01bd0b6d76febd8f0c upstream.
 
-The first message to firmware may fail if the device is undergoing FLR.
-The driver has some recovery logic for this failure scenario but we must
-wait 100 msec for FLR to complete before proceeding.  Otherwise the
-recovery will always fail.
+If we get a deadlock after the fb lookup in drm_mode_page_flip_ioctl()
+we proceed to unref the fb and then retry the whole thing from the top.
+But we forget to reset the fb pointer back to NULL, and so if we then
+get another error during the retry, before the fb lookup, we proceed
+the unref the same fb again without having gotten another reference.
+The end result is that the fb will (eventually) end up being freed
+while it's still in use.
 
-Fixes: ba02629ff6cb ("bnxt_en: log firmware status on firmware init failure")
-Reviewed-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://lore.kernel.org/r/20240117234515.226944-2-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reset fb to NULL once we've unreffed it to avoid doing it again
+until we've done another fb lookup.
+
+This turned out to be pretty easy to hit on a DG2 when doing async
+flips (and CONFIG_DEBUG_WW_MUTEX_SLOWPATH=y). The first symptom I
+saw that drm_closefb() simply got stuck in a busy loop while walking
+the framebuffer list. Fortunately I was able to convince it to oops
+instead, and from there it was easier to track down the culprit.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231211081625.25704-1-ville.syrjala@linux.intel.com
+Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/drm_plane.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index df4d88d35701..f810b5dc25f0 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -12269,6 +12269,11 @@ static int bnxt_fw_init_one_p1(struct bnxt *bp)
- 
- 	bp->fw_cap = 0;
- 	rc = bnxt_hwrm_ver_get(bp);
-+	/* FW may be unresponsive after FLR. FLR must complete within 100 msec
-+	 * so wait before continuing with recovery.
-+	 */
-+	if (rc)
-+		msleep(100);
- 	bnxt_try_map_fw_health_reg(bp);
- 	if (rc) {
- 		rc = bnxt_try_recover_fw(bp);
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/drm_plane.c
++++ b/drivers/gpu/drm/drm_plane.c
+@@ -1387,6 +1387,7 @@ retry:
+ out:
+ 	if (fb)
+ 		drm_framebuffer_put(fb);
++	fb = NULL;
+ 	if (plane->old_fb)
+ 		drm_framebuffer_put(plane->old_fb);
+ 	plane->old_fb = NULL;
 
 
 
