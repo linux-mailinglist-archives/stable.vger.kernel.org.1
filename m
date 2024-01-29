@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360D3840F0F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5DE3840E9D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA2C91F22E32
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BCE41F24375
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186EC158D9B;
-	Mon, 29 Jan 2024 17:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939DF15FB25;
+	Mon, 29 Jan 2024 17:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNBbp6CM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L01oyacw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC61B15704D;
-	Mon, 29 Jan 2024 17:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EED15B998;
+	Mon, 29 Jan 2024 17:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548379; cv=none; b=nhMH7V84k7JBPfxf5/EOoSZXdHoMKzbVX0Fsfnc+v0roDIETWrIN6XPzvjMqrixwbH5JcYqHd+LKfyUYt6X0hGNFU8x35ybpp/9hu3zBjP4vIHqn09Qe0T5UDk3lD2RpPeKhrE4Bt3dPWtGFub7M5TcRvQRVu2ze7uvG9zpA91g=
+	t=1706548315; cv=none; b=nnk4E3lWRgR3C7K0gcDVeGNgKbo1Jt9AIzbJq98NZvJ4sK24mTd/T9Qi7i5i7FpxFsT9xpiHIPOe/GwW8yzEQW4ggMp/pLzH3SqhVdn2DMqa5BvFHJJgsiysBASNy2YqCJ45dXpXR8P+xV9vTMG1cxHaqIpEx0Uq7RsJCIO/XUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548379; c=relaxed/simple;
-	bh=hqwHO7pyQXdncXk8W6mRNYaMWZCGxS+3Jk0uupmr25M=;
+	s=arc-20240116; t=1706548315; c=relaxed/simple;
+	bh=9c2fAlKnUvkzbBCq0eGrcp148UU6dNCatzl8kg2hG/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PtIaj8btvyEz5ZZfGRm5ma3N0oKTjwlLAO0jVHYfXrd8s4CkQp45lwqIjvDhdkcJ2RuDaEsNLEriIrF//ZJMWSUxg300KwMedolKDF/iD07Cr+M3LZNnuCv+gce6qachuznL97kIjHpvxYHsuyYQFTgsAEs9H5VU19I9qYUF9Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNBbp6CM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955D7C43390;
-	Mon, 29 Jan 2024 17:12:59 +0000 (UTC)
+	 MIME-Version; b=stXLom3nGy5tUw0WJ8OVsZnh/yHwIAHigF0xZ0V6NdnY4jI2vvTs3AAwLRTaznJnqkCVNp8teDJT/8I/yfgZbluBI4ZsMd4dH7rDspagDMTFYP2zSnUk9Qk0QWzK4hgPBWqAw8kSb83dY0i64kIe/ueWBuz7FHe5v+jTCSPCcPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L01oyacw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DCFBC433F1;
+	Mon, 29 Jan 2024 17:11:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548379;
-	bh=hqwHO7pyQXdncXk8W6mRNYaMWZCGxS+3Jk0uupmr25M=;
+	s=korg; t=1706548315;
+	bh=9c2fAlKnUvkzbBCq0eGrcp148UU6dNCatzl8kg2hG/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LNBbp6CMCuLYn0VQz5Sx4X5dJI0YSmR2R0s2TgLuCn7osdtgQjtRUUAcGLdIJY9Sa
-	 TMcpen1E6uyj/FP1jxB1KXvxDC70y8HrKM3zg069ugWT1glqo09LiUDru+Jx1Pia8A
-	 M1/dudX5cq1/7NfiroRzlsG23tDkqqX17Y8DXGPg=
+	b=L01oyacwlEJDhNPEcWH+KAlPewt12APcOkSyB4Kvzlnq2mskCDQeF9E+9MR5VGuah
+	 Bj2+RX+SckyW8SOGrFOR8jJuGBRhQXn7+NqBe2xMh2TAt6VjWi0jMyQuYlwj7LEFRA
+	 qP42oZJUw70eJDgBEoX8MUC5Fpk/3SeJcAkBssl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 150/185] thermal: intel: hfi: Add syscore callbacks for system-wide PM
+Subject: [PATCH 6.7 319/346] firmware: arm_scmi: Use xa_insert() when saving raw queues
 Date: Mon, 29 Jan 2024 09:05:50 -0800
-Message-ID: <20240129170003.405217131@linuxfoundation.org>
+Message-ID: <20240129170025.861445382@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit 97566d09fd02d2ab329774bb89a2cdf2267e86d9 ]
+[ Upstream commit b5dc0ffd36560dbadaed9a3d9fd7838055d62d74 ]
 
-The kernel allocates a memory buffer and provides its location to the
-hardware, which uses it to update the HFI table. This allocation occurs
-during boot and remains constant throughout runtime.
+Use xa_insert() when saving per-channel raw queues to better check for
+duplicates.
 
-When resuming from hibernation, the restore kernel allocates a second
-memory buffer and reprograms the HFI hardware with the new location as
-part of a normal boot. The location of the second memory buffer may
-differ from the one allocated by the image kernel.
-
-When the restore kernel transfers control to the image kernel, its HFI
-buffer becomes invalid, potentially leading to memory corruption if the
-hardware writes to it (the hardware continues to use the buffer from the
-restore kernel).
-
-It is also possible that the hardware "forgets" the address of the memory
-buffer when resuming from "deep" suspend. Memory corruption may also occur
-in such a scenario.
-
-To prevent the described memory corruption, disable HFI when preparing to
-suspend or hibernate. Enable it when resuming.
-
-Add syscore callbacks to handle the package of the boot CPU (packages of
-non-boot CPUs are handled via CPU offline). Syscore ops always run on the
-boot CPU. Additionally, HFI only needs to be disabled during "deep" suspend
-and hibernation. Syscore ops only run in these cases.
-
-Cc: 6.1+ <stable@vger.kernel.org> # 6.1+
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-[ rjw: Comment adjustment, subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 7860701d1e6e ("firmware: arm_scmi: Add per-channel raw injection support")
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Link: https://lore.kernel.org/r/20240108185050.1628687-2-cristian.marussi@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/intel/intel_hfi.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/firmware/arm_scmi/raw_mode.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/thermal/intel/intel_hfi.c b/drivers/thermal/intel/intel_hfi.c
-index 5352fcb72ea3..750dab3f259e 100644
---- a/drivers/thermal/intel/intel_hfi.c
-+++ b/drivers/thermal/intel/intel_hfi.c
-@@ -35,7 +35,9 @@
- #include <linux/processor.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-+#include <linux/suspend.h>
- #include <linux/string.h>
-+#include <linux/syscore_ops.h>
- #include <linux/topology.h>
- #include <linux/workqueue.h>
+diff --git a/drivers/firmware/arm_scmi/raw_mode.c b/drivers/firmware/arm_scmi/raw_mode.c
+index 0493aa3c12bf..350573518503 100644
+--- a/drivers/firmware/arm_scmi/raw_mode.c
++++ b/drivers/firmware/arm_scmi/raw_mode.c
+@@ -1111,7 +1111,6 @@ static int scmi_raw_mode_setup(struct scmi_raw_mode_info *raw,
+ 		int i;
  
-@@ -559,6 +561,30 @@ static __init int hfi_parse_features(void)
- 	return 0;
- }
+ 		for (i = 0; i < num_chans; i++) {
+-			void *xret;
+ 			struct scmi_raw_queue *q;
  
-+static void hfi_do_enable(void)
-+{
-+	/* This code runs only on the boot CPU. */
-+	struct hfi_cpu_info *info = &per_cpu(hfi_cpu_info, 0);
-+	struct hfi_instance *hfi_instance = info->hfi_instance;
-+
-+	/* No locking needed. There is no concurrency with CPU online. */
-+	hfi_set_hw_table(hfi_instance);
-+	hfi_enable();
-+}
-+
-+static int hfi_do_disable(void)
-+{
-+	/* No locking needed. There is no concurrency with CPU offline. */
-+	hfi_disable();
-+
-+	return 0;
-+}
-+
-+static struct syscore_ops hfi_pm_ops = {
-+	.resume = hfi_do_enable,
-+	.suspend = hfi_do_disable,
-+};
-+
- void __init intel_hfi_init(void)
- {
- 	struct hfi_instance *hfi_instance;
-@@ -590,6 +616,8 @@ void __init intel_hfi_init(void)
- 	if (!hfi_updates_wq)
- 		goto err_nomem;
+ 			q = scmi_raw_queue_init(raw);
+@@ -1120,13 +1119,12 @@ static int scmi_raw_mode_setup(struct scmi_raw_mode_info *raw,
+ 				goto err_xa;
+ 			}
  
-+	register_syscore_ops(&hfi_pm_ops);
-+
- 	return;
+-			xret = xa_store(&raw->chans_q, channels[i], q,
++			ret = xa_insert(&raw->chans_q, channels[i], q,
+ 					GFP_KERNEL);
+-			if (xa_err(xret)) {
++			if (ret) {
+ 				dev_err(dev,
+ 					"Fail to allocate Raw queue 0x%02X\n",
+ 					channels[i]);
+-				ret = xa_err(xret);
+ 				goto err_xa;
+ 			}
+ 		}
+@@ -1322,6 +1320,12 @@ void scmi_raw_message_report(void *r, struct scmi_xfer *xfer,
+ 	dev = raw->handle->dev;
+ 	q = scmi_raw_queue_select(raw, idx,
+ 				  SCMI_XFER_IS_CHAN_SET(xfer) ? chan_id : 0);
++	if (!q) {
++		dev_warn(dev,
++			 "RAW[%d] - NO queue for chan 0x%X. Dropping report.\n",
++			 idx, chan_id);
++		return;
++	}
  
- err_nomem:
+ 	/*
+ 	 * Grab the msg_q_lock upfront to avoid a possible race between
 -- 
 2.43.0
 
