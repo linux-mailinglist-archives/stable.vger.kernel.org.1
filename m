@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-16774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 345F2840E5B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 851BC840EA7
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E53A5284870
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B2E01F27C3E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14EFE15F314;
-	Mon, 29 Jan 2024 17:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D0C15FB36;
+	Mon, 29 Jan 2024 17:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R6F+upcB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqOBg1Zo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A0115A48F;
-	Mon, 29 Jan 2024 17:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B320C15B96D;
+	Mon, 29 Jan 2024 17:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548269; cv=none; b=piQTlsd73d/f45kQG0PmkSk3463Ry+326x1KFXnSpySQoPvgL6l+c5atjCpPsBcETkhRPwAUM9orFNOb8KIt0CNEvk+1OIwUUhYSWZHVKpKc1+T9+XvHr0uxQzTn1jR/W0WGYcgoe/58GFo8nsroNAWVZJ+3a5ncw5tV0Wdv9fg=
+	t=1706548322; cv=none; b=s1bk1ZZcOn/9HtEBeAt3chjsTGORJnUvg3aGnf8LtG6S9Ny0BJoIOh9+f3idZ+9dfYrvX3Ijt4jhOE2Ylq56Qp0tTFrnuOaxO9mDWE7fC6aIo7ae7+tU5VOTlL4j/ta4/HpVuV3D/gDr3WoBLc4oy0FncgVxPDDDmrSFbD27d7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548269; c=relaxed/simple;
-	bh=gFUp3Z9x/Ndha8oFOOlh4Ba+5E8QjoxImCoXAkHoRWk=;
+	s=arc-20240116; t=1706548322; c=relaxed/simple;
+	bh=4Gdm2Si3TxHB2ouC/8Y8Fi88e4eQgO0Ezzrfmj0Dx/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFIoUm8vwolTXIzz79cppc4mPiIqhLsb4ID3wwtDYDdTCLGk+9h+B4YiRe7KwR84jNuum3DgkSiXIFgetF1ZpMgvnk0cshmBf7Y/xY/7P7qkAQilTccfcjhw2YdsYsoNNJJU0FgVfvi3J++WWP+uG2pM3MKXn0FBfjHFnOHo444=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R6F+upcB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2F0C43390;
-	Mon, 29 Jan 2024 17:11:09 +0000 (UTC)
+	 MIME-Version; b=gZiHPpa17XRsVLoPqZZQCiC0JFrD9oxF8JiaVVETRHpSXglfSq2WJwf3QPdlO2Ja/stTuYL1XtNs4CGhONoV/3wwoLUvL/xFVo4GzZcXisXCczp1LLd4+Fs3D8mE4kvhPwuYOzJmVk64kjtmaHmlEIxKFP/qCbbsheoTRaru2lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqOBg1Zo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B31FC43394;
+	Mon, 29 Jan 2024 17:12:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548269;
-	bh=gFUp3Z9x/Ndha8oFOOlh4Ba+5E8QjoxImCoXAkHoRWk=;
+	s=korg; t=1706548322;
+	bh=4Gdm2Si3TxHB2ouC/8Y8Fi88e4eQgO0Ezzrfmj0Dx/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R6F+upcBVDgnFhHaXDEChcVGuArECpGV544t5wtczFdtBBhkHFesbAM8N8juwrVVI
-	 5Xt4oUNDuNQ50lw8TxBmgZ+f/zECx144r0vDQ1TE25Dn+ar4uSqw3x7GzljKRaL6cS
-	 +JDQjpQWeo5gXhwmYIow9H7wyfWUgNgf3BGE63SA=
+	b=uqOBg1ZoK4nJXfwKO1QYk3KQN1ivfiaTZVliO7Fk7P2HrnR9vC3Inddim4FCkoHh+
+	 Z02g/wJ8m9UTCDQf6pVblD98SjfD8goRWdQcLAXrGRkSIdAhXlyjzpwvSMwXgoSmlJ
+	 9rLOt9a47g0tYFaSC+k3NCoA358FOYj0wY/ox4iI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.7 262/346] drm/amdgpu: drop exp hw support check for GC 9.4.3
-Date: Mon, 29 Jan 2024 09:04:53 -0800
-Message-ID: <20240129170024.096741944@linuxfoundation.org>
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 094/185] ipv6: init the accept_queues spinlocks in inet6_create
+Date: Mon, 29 Jan 2024 09:04:54 -0800
+Message-ID: <20240129170001.614910383@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-commit c3d5e297dcae88274dc6924db337a2159279eced upstream.
+[ Upstream commit 435e202d645c197dcfd39d7372eb2a56529b6640 ]
 
-No longer needed.
+In commit 198bc90e0e73("tcp: make sure init the accept_queue's spinlocks
+once"), the spinlocks of accept_queue are initialized only when socket is
+created in the inet4 scenario. The locks are not initialized when socket
+is created in the inet6 scenario. The kernel reports the following error:
+INFO: trying to register non-static key.
+The code is fine but needs lockdep annotation, or maybe
+you didn't initialize this object before use?
+turning off the locking correctness validator.
+Hardware name: Red Hat KVM, BIOS 0.5.1 01/01/2011
+Call Trace:
+<TASK>
+	dump_stack_lvl (lib/dump_stack.c:107)
+	register_lock_class (kernel/locking/lockdep.c:1289)
+	__lock_acquire (kernel/locking/lockdep.c:5015)
+	lock_acquire.part.0 (kernel/locking/lockdep.c:5756)
+	_raw_spin_lock_bh (kernel/locking/spinlock.c:178)
+	inet_csk_listen_stop (net/ipv4/inet_connection_sock.c:1386)
+	tcp_disconnect (net/ipv4/tcp.c:2981)
+	inet_shutdown (net/ipv4/af_inet.c:935)
+	__sys_shutdown (./include/linux/file.h:32 net/socket.c:2438)
+	__x64_sys_shutdown (net/socket.c:2445)
+	do_syscall_64 (arch/x86/entry/common.c:52)
+	entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:129)
+RIP: 0033:0x7f52ecd05a3d
+Code: 5b 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7
+48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff
+ff 73 01 c3 48 8b 0d ab a3 0e 00 f7 d8 64 89 01 48
+RSP: 002b:00007f52ecf5dde8 EFLAGS: 00000293 ORIG_RAX: 0000000000000030
+RAX: ffffffffffffffda RBX: 00007f52ecf5e640 RCX: 00007f52ecd05a3d
+RDX: 00007f52ecc8b188 RSI: 0000000000000000 RDI: 0000000000000004
+RBP: 00007f52ecf5de20 R08: 00007ffdae45c69f R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000293 R12: 00007f52ecf5e640
+R13: 0000000000000000 R14: 00007f52ecc8b060 R15: 00007ffdae45c6e0
 
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.7.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 198bc90e0e73 ("tcp: make sure init the accept_queue's spinlocks once")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240122102001.2851701-1-shaozhengchao@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c |    2 --
- 1 file changed, 2 deletions(-)
+ net/ipv6/af_inet6.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -1963,8 +1963,6 @@ static int amdgpu_discovery_set_gc_ip_bl
- 		amdgpu_device_ip_block_add(adev, &gfx_v9_0_ip_block);
- 		break;
- 	case IP_VERSION(9, 4, 3):
--		if (!amdgpu_exp_hw_support)
--			return -EINVAL;
- 		amdgpu_device_ip_block_add(adev, &gfx_v9_4_3_ip_block);
- 		break;
- 	case IP_VERSION(10, 1, 10):
+diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
+index a2f29ca51600..0b42eb8c55aa 100644
+--- a/net/ipv6/af_inet6.c
++++ b/net/ipv6/af_inet6.c
+@@ -199,6 +199,9 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
+ 	if (INET_PROTOSW_REUSE & answer_flags)
+ 		sk->sk_reuse = SK_CAN_REUSE;
+ 
++	if (INET_PROTOSW_ICSK & answer_flags)
++		inet_init_csk_locks(sk);
++
+ 	inet = inet_sk(sk);
+ 	inet->is_icsk = (INET_PROTOSW_ICSK & answer_flags) != 0;
+ 
+-- 
+2.43.0
+
 
 
 
