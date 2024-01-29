@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-16974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF51840F4C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBECE840D1C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DCFCB25492
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 299AB1C22C7F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2F0157054;
-	Mon, 29 Jan 2024 17:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C4215957A;
+	Mon, 29 Jan 2024 17:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLg4ZJUr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEgQL3xJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6201641AE;
-	Mon, 29 Jan 2024 17:13:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493561586D6;
+	Mon, 29 Jan 2024 17:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548416; cv=none; b=YXvqPeHnR1cQGIiLfc/91Yn4fB3WslYFh68mhP7pVemBUighLdpb+0gqJ71y52fYB8pt4bC33n0mbzP/GlsfAEjKogpp6G+dB0QJFR+2b00JYOJN+/wjb3kgeqsqwzLo5ldaJDc6VNYyJZ1SAEgbdfq5pyHcZB1T2Pi7hzgb2ho=
+	t=1706548046; cv=none; b=O6bAaHbUBupS4sjR2DXc3L8mWsP/JbWQ+cAINo/1ujEIblWcMwW0xUF6EPxy6AbDUS+ecMNGbIhb33NXD1hu55tVOJT3b7XDMxAOpRDz860DacLxMP8eLGUWpBmZ5P33VOeQ6R893yPZfx/A11st+ERUuXcgiHrvvkaRwSL9OiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548416; c=relaxed/simple;
-	bh=MA+smWX36Cj0dYSbxB7dem9AhN0pLwHzw51cWraTJ0E=;
+	s=arc-20240116; t=1706548046; c=relaxed/simple;
+	bh=1Q25JZncQZgywpybxlx3Rkz434cAyzeNQGkZM6htvtY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxahIIqEHH59iut3GoKqFbvizWkpPdjDmdqHJ16pldGRssm/nSI7qOoXOk2SgcVeSUvanMzrjFFXUcHC/7LjG2e+ZnCzDrV+gP8WzV0AsexBV2FZX1J48iTOWnuv2tOD8vxEo6d1wNhmSt9YiTXJfokT5+UC/GG6clOYuDJYhXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLg4ZJUr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649FEC43390;
-	Mon, 29 Jan 2024 17:13:36 +0000 (UTC)
+	 MIME-Version; b=bICNHCk0hwiG3eLKhAUdOgZhZc9U21heOTwM38LqHUJ1fq3q1XyFr8KJwsWkyZIFCMJ0MuAqVm4t3SdvyIsf8WlPd4DJdk4JVGEjILwGVzdtbp/xqEoJTxHvlCbZ4hl4fbp8siYhov4BE8scmdx8L54yhYwdoqhO+VAwCt4xh/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEgQL3xJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 118D0C43390;
+	Mon, 29 Jan 2024 17:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548416;
-	bh=MA+smWX36Cj0dYSbxB7dem9AhN0pLwHzw51cWraTJ0E=;
+	s=korg; t=1706548046;
+	bh=1Q25JZncQZgywpybxlx3Rkz434cAyzeNQGkZM6htvtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PLg4ZJUrZ5EEUSMxZC9iPzCI350v64XfLF1NeIxqXyPB9lg8i2AOCmpy1HCIX+PI7
-	 6uXvr0aXdZdyFMZivYVpl0Woa6kvTHTsgWoee+cORtXG/HtW9HxyPD/ojHa6z+SIeA
-	 qVP6ywGgNwa/OKbT1+xko+UgF1oONarCXeetkD98=
+	b=VEgQL3xJrcgsBuC909HQw2cw9b6nKrrnNEuyL9JjyZ6fYakH92Ww3uaPOXn6y3xEC
+	 vq4XgOvvp0vyDng5cwQfnKqH0FQI11cU97+XumKgFQnHHns2yz9KNcQJh/BRpJJIp/
+	 40I8VxpbuaqNRU3jrEqqXw6NNXthCspyu1aZfgbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/331] dmaengine: fix NULL pointer in channel unregistration function
+	Bhaumik Bhatt <bbhatt@codeaurora.org>,
+	Qiang Yu <quic_qianyu@quicinc.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.7 047/346] bus: mhi: host: Add spinlock to protect WP access when queueing TREs
 Date: Mon, 29 Jan 2024 09:01:18 -0800
-Message-ID: <20240129170015.382016015@linuxfoundation.org>
+Message-ID: <20240129170017.773855249@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+From: Bhaumik Bhatt <bbhatt@codeaurora.org>
 
-[ Upstream commit f5c24d94512f1b288262beda4d3dcb9629222fc7 ]
+commit b89b6a863dd53bc70d8e52d50f9cfaef8ef5e9c9 upstream.
 
-__dma_async_device_channel_register() can fail. In case of failure,
-chan->local is freed (with free_percpu()), and chan->local is nullified.
-When dma_async_device_unregister() is called (because of managed API or
-intentionally by DMA controller driver), channels are unconditionally
-unregistered, leading to this NULL pointer:
-[    1.318693] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000d0
-[...]
-[    1.484499] Call trace:
-[    1.486930]  device_del+0x40/0x394
-[    1.490314]  device_unregister+0x20/0x7c
-[    1.494220]  __dma_async_device_channel_unregister+0x68/0xc0
+Protect WP accesses such that multiple threads queueing buffers for
+incoming data do not race.
 
-Look at dma_async_device_register() function error path, channel device
-unregistration is done only if chan->local is not NULL.
+Meanwhile, if CONFIG_TRACE_IRQFLAGS is enabled, irq will be enabled once
+__local_bh_enable_ip is called as part of write_unlock_bh. Hence, let's
+take irqsave lock after TRE is generated to avoid running write_unlock_bh
+when irqsave lock is held.
 
-Then add the same condition at the beginning of
-__dma_async_device_channel_unregister() function, to avoid NULL pointer
-issue whatever the API used to reach this function.
-
-Fixes: d2fb0a043838 ("dmaengine: break out channel registration")
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20231213160452.2598073-1-amelie.delaunay@foss.st.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 189ff97cca53 ("bus: mhi: core: Add support for data transfer")
+Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
+Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Tested-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/1702276972-41296-2-git-send-email-quic_qianyu@quicinc.com
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/dmaengine.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/bus/mhi/host/main.c |   22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
-index b7388ae62d7f..491b22240221 100644
---- a/drivers/dma/dmaengine.c
-+++ b/drivers/dma/dmaengine.c
-@@ -1103,6 +1103,9 @@ EXPORT_SYMBOL_GPL(dma_async_device_channel_register);
- static void __dma_async_device_channel_unregister(struct dma_device *device,
- 						  struct dma_chan *chan)
- {
-+	if (chan->local == NULL)
-+		return;
+--- a/drivers/bus/mhi/host/main.c
++++ b/drivers/bus/mhi/host/main.c
+@@ -1127,17 +1127,15 @@ static int mhi_queue(struct mhi_device *
+ 	if (unlikely(MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state)))
+ 		return -EIO;
+ 
+-	read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
+-
+ 	ret = mhi_is_ring_full(mhi_cntrl, tre_ring);
+-	if (unlikely(ret)) {
+-		ret = -EAGAIN;
+-		goto exit_unlock;
+-	}
++	if (unlikely(ret))
++		return -EAGAIN;
+ 
+ 	ret = mhi_gen_tre(mhi_cntrl, mhi_chan, buf_info, mflags);
+ 	if (unlikely(ret))
+-		goto exit_unlock;
++		return ret;
 +
- 	WARN_ONCE(!device->device_release && chan->client_count,
- 		  "%s called while %d clients hold a reference\n",
- 		  __func__, chan->client_count);
--- 
-2.43.0
-
++	read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
+ 
+ 	/* Packet is queued, take a usage ref to exit M3 if necessary
+ 	 * for host->device buffer, balanced put is done on buffer completion
+@@ -1157,7 +1155,6 @@ static int mhi_queue(struct mhi_device *
+ 	if (dir == DMA_FROM_DEVICE)
+ 		mhi_cntrl->runtime_put(mhi_cntrl);
+ 
+-exit_unlock:
+ 	read_unlock_irqrestore(&mhi_cntrl->pm_lock, flags);
+ 
+ 	return ret;
+@@ -1209,6 +1206,9 @@ int mhi_gen_tre(struct mhi_controller *m
+ 	int eot, eob, chain, bei;
+ 	int ret;
+ 
++	/* Protect accesses for reading and incrementing WP */
++	write_lock_bh(&mhi_chan->lock);
++
+ 	buf_ring = &mhi_chan->buf_ring;
+ 	tre_ring = &mhi_chan->tre_ring;
+ 
+@@ -1226,8 +1226,10 @@ int mhi_gen_tre(struct mhi_controller *m
+ 
+ 	if (!info->pre_mapped) {
+ 		ret = mhi_cntrl->map_single(mhi_cntrl, buf_info);
+-		if (ret)
++		if (ret) {
++			write_unlock_bh(&mhi_chan->lock);
+ 			return ret;
++		}
+ 	}
+ 
+ 	eob = !!(flags & MHI_EOB);
+@@ -1244,6 +1246,8 @@ int mhi_gen_tre(struct mhi_controller *m
+ 	mhi_add_ring_element(mhi_cntrl, tre_ring);
+ 	mhi_add_ring_element(mhi_cntrl, buf_ring);
+ 
++	write_unlock_bh(&mhi_chan->lock);
++
+ 	return 0;
+ }
+ 
 
 
 
