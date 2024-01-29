@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-16886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32E0E840ED4
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B92C2841068
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFD6BB227C6
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB3F41C23AA5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6EA161B4D;
-	Mon, 29 Jan 2024 17:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB057602A;
+	Mon, 29 Jan 2024 17:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Pp+9HSB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYNyhsQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A3015AAB1;
-	Mon, 29 Jan 2024 17:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E36976021;
+	Mon, 29 Jan 2024 17:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548352; cv=none; b=q387/xTAOv130eUjkJQmrTjnVog3hfPCj6GqdGEayqGD1ed0mHb63YZURhOq0JBjITJtmhvqQGuXbgGWBZb7ZumRqagG5BrteGoEpkCK9QLw1m3AQzykTzI8Qb0SYsoegh/CcDTR9qSD0Al/pkbsBdoL66CYABfEbd2ljrnIU5k=
+	t=1706548617; cv=none; b=LFB9MISrdt6TADXVYYGepa40wSD+b9Yl7Sgsry8ypSZznCChLERP+a1Su6sIz9DbV/TefozhsccUImlNorMqwEGsHX9TwEqoBaYWdgl1A78TywloLxgd0P6vPTi6W4420ikSbJz5FrmE0BoNamcA50UsueXskHRgIT/f3R/YzuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548352; c=relaxed/simple;
-	bh=+HKOR7pne07O1ACbCe/dlZBHX8DkdTMYHu5xGiihD7k=;
+	s=arc-20240116; t=1706548617; c=relaxed/simple;
+	bh=3fTA6jl+Iucv4EFkHMTJS9gI30EdzQZ/O2kK6Jd/9GY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aRPqNKabWcVNRI5wPGY9/VHpm8fdyaISB4JJUtBdUGtB9JPOiNDdZsmkmVT3/V9MK/wB22NHYADQbewdEN5N57HqFxJCEKKCes2enltXh72m8CmpufrCl9U4OFhZOC+Mg1z8/4sPjGMJy3KXL9kNTRxbWyzqaaQONymbFY0P9Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Pp+9HSB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F5EC433C7;
-	Mon, 29 Jan 2024 17:12:31 +0000 (UTC)
+	 MIME-Version; b=GvKIc4I1LjxqzBbxAF92Kv34cVQLyikh1oWMrvM+A5mvnyfj1XisBx2R59ADUTSdzrRPVyE4JUwpSuaOpyfwLuWLa1E63ezyBCE60KtGyKSFytS3vF57A4vZHU6l7dIg3X1GvQ4o9ZRiQoKWy988ESIptfZ3vX87aT6MjR3nI3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYNyhsQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB7B5C433F1;
+	Mon, 29 Jan 2024 17:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548351;
-	bh=+HKOR7pne07O1ACbCe/dlZBHX8DkdTMYHu5xGiihD7k=;
+	s=korg; t=1706548617;
+	bh=3fTA6jl+Iucv4EFkHMTJS9gI30EdzQZ/O2kK6Jd/9GY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Pp+9HSBcCbpVrE+B8dhSLgovKDl2gMauel9DXgDYPGk+O9eMSTYTe8jz/oBqRybt
-	 /yNOPJCZGFpU4roGSVPUjybNhvGaVF2adoNrEHaKWhHet0We06NogA9rSlBW46xW/6
-	 MTGnMgVdVySnunNP5oIJTN3YgnZXxqSHL6jgqbEo=
+	b=vYNyhsQ5ujw++c8G7r92IUMzTWRMPhV9A1Qifa0mOATXVW27fJMDPopN9cCaBmUPh
+	 ArMtEGGSyYNnel/CRJs7Dfowbpr/LLlkWz9/Qo7sRRW742WK2p+1pZPklwP7UjbZ7+
+	 PNs/GsV9XK1g4uuipRwk/YWnPAs6zOxlQMsr1L4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Inki Dae <inki.dae@samsung.com>,
+	Wei Wang <wvw@google.com>,
+	Di Shen <di.shen@unisoc.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 317/346] drm/exynos: gsc: minor fix for loop iteration in gsc_runtime_resume
-Date: Mon, 29 Jan 2024 09:05:48 -0800
-Message-ID: <20240129170025.801150400@linuxfoundation.org>
+Subject: [PATCH 6.6 285/331] thermal: gov_power_allocator: avoid inability to reset a cdev
+Date: Mon, 29 Jan 2024 09:05:49 -0800
+Message-ID: <20240129170023.201884204@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Di Shen <di.shen@unisoc.com>
 
-[ Upstream commit 4050957c7c2c14aa795dbf423b4180d5ac04e113 ]
+[ Upstream commit e95fa7404716f6e25021e66067271a4ad8eb1486 ]
 
-Do not forget to call clk_disable_unprepare() on the first element of
-ctx->clocks array.
+Commit 0952177f2a1f ("thermal/core/power_allocator: Update once
+cooling devices when temp is low") adds an update flag to avoid
+triggering a thermal event when there is no need, and the thermal
+cdev is updated once when the temperature is low.
 
-Found by Linux Verification Center (linuxtesting.org).
+But when the trips are writable, and switch_on_temp is set to be a
+higher value, the cooling device state may not be reset to 0,
+because last_temperature is smaller than switch_on_temp.
 
-Fixes: 8b7d3ec83aba ("drm/exynos: gsc: Convert driver to IPP v2 core API")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+For example:
+First:
+switch_on_temp=70 control_temp=85;
+Then userspace change the trip_temp:
+switch_on_temp=45 control_temp=55 cur_temp=54
+
+Then userspace reset the trip_temp:
+switch_on_temp=70 control_temp=85 cur_temp=57 last_temp=54
+
+At this time, the cooling device state should be reset to 0.
+However, because cur_temp(57) < switch_on_temp(70)
+last_temp(54) < switch_on_temp(70)  ---->  update = false,
+update is false, the cooling device state can not be reset.
+
+Using the observation that tz->passive can also be regarded as the
+temperature status, set the update flag to the tz->passive value.
+
+When the temperature drops below switch_on for the first time, the
+states of cooling devices can be reset once, and tz->passive is updated
+to 0. In the next round, because tz->passive is 0, cdev->state will not
+be updated.
+
+By using the tz->passive value as the "update" flag, the issue above
+can be solved, and the cooling devices can be updated only once when the
+temperature is low.
+
+Fixes: 0952177f2a1f ("thermal/core/power_allocator: Update once cooling devices when temp is low")
+Cc: 5.13+ <stable@vger.kernel.org> # 5.13+
+Suggested-by: Wei Wang <wvw@google.com>
+Signed-off-by: Di Shen <di.shen@unisoc.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_gsc.c | 2 +-
+ drivers/thermal/gov_power_allocator.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_gsc.c b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-index 34cdabc30b4f..5302bebbe38c 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_gsc.c
-@@ -1342,7 +1342,7 @@ static int __maybe_unused gsc_runtime_resume(struct device *dev)
- 	for (i = 0; i < ctx->num_clocks; i++) {
- 		ret = clk_prepare_enable(ctx->clocks[i]);
- 		if (ret) {
--			while (--i > 0)
-+			while (--i >= 0)
- 				clk_disable_unprepare(ctx->clocks[i]);
- 			return ret;
- 		}
+diff --git a/drivers/thermal/gov_power_allocator.c b/drivers/thermal/gov_power_allocator.c
+index 1faf55446ba2..fc969642f70b 100644
+--- a/drivers/thermal/gov_power_allocator.c
++++ b/drivers/thermal/gov_power_allocator.c
+@@ -715,7 +715,7 @@ static int power_allocator_throttle(struct thermal_zone_device *tz, int trip_id)
+ 
+ 	ret = __thermal_zone_get_trip(tz, params->trip_switch_on, &trip);
+ 	if (!ret && (tz->temperature < trip.temperature)) {
+-		update = (tz->last_temperature >= trip.temperature);
++		update = tz->passive;
+ 		tz->passive = 0;
+ 		reset_pid_controller(params);
+ 		allow_maximum_power(tz, update);
 -- 
 2.43.0
 
