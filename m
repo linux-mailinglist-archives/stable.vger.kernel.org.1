@@ -1,125 +1,95 @@
-Return-Path: <stable+bounces-17421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE7184273C
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 15:54:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA84842963
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 17:35:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86590B2A1B4
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 14:53:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E48F1F29B80
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 16:35:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825627CF35;
-	Tue, 30 Jan 2024 14:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D665B38DD9;
+	Tue, 30 Jan 2024 16:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jy0O/93W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxANwIZD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403DD7E573;
-	Tue, 30 Jan 2024 14:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4FA27458
+	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 16:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706626430; cv=none; b=qp5jytaKTesCZ/b3I/veSTn5ksvrQoQ3LhnJ3RM+Z8YUicj9iFAZX3w1+WHFF9FUcecaGgncWeGnTGo9aDtPPH4H8B5UeSEZorPb+RmRlvTrRJkKr4xBJU1oepmmoOJN7nMa5Iu2A13u3PGdnl3jIDLs2KtmWeacG2OpwAsvQQQ=
+	t=1706632515; cv=none; b=Tj+8g5Qg/8K0ou0g/hCmtG39NE4/IueZTA6BpFnlXHuxjdhhfBy83lyITm1mvrha7XTNFzX/gqx/qqW1jGzVOMGhm7rQg3GIpvvvKxMymmWnH7hy62gpe1Y5YsaK/VbNrtAJtLZOhV/lMrk349/5i7dBUn3LPQUnQPYOqqj04k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706626430; c=relaxed/simple;
-	bh=N0iog0ijV4doQ+YIYxF95qcClBn/v7yYTr77/Hyg/Cc=;
+	s=arc-20240116; t=1706632515; c=relaxed/simple;
+	bh=XuQsHtrhaHSAdWgRys1SfzqmTtbp2ymx/dNPoxHHWL0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tLAay4EX3ylu6GVGWRTyFe9PaN2EI6Dx82kjRgZ2Gn4WxeZ9vQITuzJV57ikOpTt9mn45TQtxy6qniuwhOJwvYkvZqcDI1N7Yw06fE0PsKzu4ZymoxfQ5KjEkoF8zAF5PYkw9i1pjRyPQcLUUMQrGXoEWTLE1Iz9ePSjXZN+2d4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jy0O/93W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C6BEC433A6;
-	Tue, 30 Jan 2024 14:53:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706626429;
-	bh=N0iog0ijV4doQ+YIYxF95qcClBn/v7yYTr77/Hyg/Cc=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=rkFLSa22oquxgIatxm2Zp69lEmPZtPgHILwR+o0V3TeCsj3oTzT/O/QoJ8xlxWSCASpNzNrOt4bBiGY687WTwyKsNw/4edvEtvpa6ixTr19l4cExce2ryIyspFGUcakNiQH+xzY2dcINWryaSsTxTnn6nQKA3F1lKkMueMu25m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxANwIZD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D308DC433C7;
+	Tue, 30 Jan 2024 16:35:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1706632515;
+	bh=XuQsHtrhaHSAdWgRys1SfzqmTtbp2ymx/dNPoxHHWL0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Jy0O/93WzYQo2pGkM8n7++wg0eclSkOqdwO9rrwaziGZW5CosXPumVpSamhyU7n/+
-	 f4XflTKAxKDN1cLHYJng3AQmdbaUXgcAEhBzwjsEsnZm5Z170gQi+YiTnsoTxffDOh
-	 w54exNU6K8YaUbBE1l+XXmnyp4MRDtFJ5e/QJOOyAoD7F+WLsIiPCPUfcLG6YtBW5m
-	 PPkd+QznI9O9km7Y9NIMTtmj0B2w94VUejpaNwW/hnS5S+Z856APRIcO103cG0PPnc
-	 IcJixesAfg9hsqTzFbGkOl5gN1ehloWlziAvWB5mNh8S5LpbarFD7N2WFnCa6Defy1
-	 L4WHi1gmzcqeQ==
-Date: Tue, 30 Jan 2024 14:53:45 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Dave Martin <Dave.Martin@arm.com>
-Cc: Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] arm64/signal: Don't assume that TIF_SVE means we saved
- SVE state
-Message-ID: <7027bd80-1fea-493a-83d7-ffef4e548f08@sirena.org.uk>
-References: <20240119-arm64-sve-signal-regs-v1-1-b9fd61b0289a@kernel.org>
- <20240130115107.GB13551@willie-the-truck>
- <b0ed6698-bc65-48fb-96b8-0cd077448196@sirena.org.uk>
- <ZbkLY+gz7Az1OgNK@e133380.arm.com>
+	b=TxANwIZDiD9GbT0TbEVvfli0hqWElhiB3DyQOHCQ/0ZTWges1bp0QlhBnX7n376kY
+	 5Dbe5jjyX+6D/qPLVc4cPBn3m27jIcESB0pFBPm8qcpS+OKpKiIpaW11xa+o8ZNce7
+	 6HuUxHPunAxQEk85qvQTVQ4X+luaZ5tV6c0Xujpg=
+Date: Mon, 29 Jan 2024 09:42:57 -0800
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Amit Pundir <amit.pundir@linaro.org>
+Cc: Stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>
+Subject: Re: [PATCH for-5.4.y 0/3] db845c(sdm845) PM runtime fixes
+Message-ID: <2024012940-lumping-lunchroom-98e6@gregkh>
+References: <20240129103902.3239531-1-amit.pundir@linaro.org>
+ <2024012936-disabled-yesterday-91bb@gregkh>
+ <CAMi1Hd19ox3b__mUk=VTxj_eRuzGYhzECTQ3sCrAzcpiQDJe5Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="W+TBP/Hhe0/VKR6a"
-Content-Disposition: inline
-In-Reply-To: <ZbkLY+gz7Az1OgNK@e133380.arm.com>
-X-Cookie: 1 bulls, 3 cows.
-
-
---W+TBP/Hhe0/VKR6a
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <CAMi1Hd19ox3b__mUk=VTxj_eRuzGYhzECTQ3sCrAzcpiQDJe5Q@mail.gmail.com>
 
-On Tue, Jan 30, 2024 at 02:44:51PM +0000, Dave Martin wrote:
-> On Tue, Jan 30, 2024 at 02:09:34PM +0000, Mark Brown wrote:
+On Mon, Jan 29, 2024 at 10:59:53PM +0530, Amit Pundir wrote:
+> On Mon, 29 Jan 2024 at 21:51, Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Mon, Jan 29, 2024 at 04:08:59PM +0530, Amit Pundir wrote:
+> > > Hi,
+> > >
+> > > v5.4.y commit 31b169a8bed7 ("drm/msm/dsi: Use pm_runtime_resume_and_get
+> > > to prevent refcnt leaks"), which is commit 3d07a411b4fa upstream, broke
+> > > display on Dragonboard 845c(sdm845). Cherry-picking commit 6ab502bc1cf3
+> > > ("drm/msm/dsi: Enable runtime PM") from the original patch series
+> > > https://patchwork.freedesktop.org/series/119583/
+> > > and it's dependent runtime PM helper routines as suggested by Dmitry
+> > > https://lore.kernel.org/stable/CAA8EJpo7q9qZbgXHWe7SuQFh0EWW0ZxGL5xYX4nckoFGoGAtPw@mail.gmail.com
+> > > fixes that display regression on DB845c.
+> >
+> > We need fixes for all of the newer stable trees too, you can't fix an
+> > issue in an old tree and then if you upgraded, you would run into that
+> > issue again.
+> >
+> > So please, resend this series as a set of series for all active lts
+> > kernels, and we will be glad to queue them up.
+> 
+> Ack. I'll send the patch series for all the active LTS kernels
+> tomorrow after build/boot testing them locally. Meanwhile please
+> consider this patch series for v5.4.y anyway.
 
-> > That said if this is preempted ptrace *could* come in and rewrite the
-> > data or at worst change the vector length (which could leave us with
-> > sve_state deallocated or a different size, possibly while we're in the
-> > middle of accessing it).  This could also happen with the existing check
-> > for TIF_SVE so I don't think there's anything new here - AFAICT this has
-> > always been an issue with the vector code, unless I'm missing some
-> > bigger thing which excludes ptrace.  I think any change that's needed
-> > there won't overlap with this one, I'm looking.
+Nope, I have to wait until the newer changes show up, for obvious
+reasonse.
 
-> I'm pretty sure that terrible things will happen treewide if ptrace can
-> ever access or manipulate the internal state of a _running_ task.
+thanks,
 
-> I think the logic is that any ptrace call that can access or manipulate
-> the state of a task is gated on the task being ptrace-stopped.  Once we
-
-...
-
-> I haven't tracked down the smokeproof gun in the code yet, though.
-
-Yes, exactly - this feels like something that surely must be handled
-already with exclusion along the lines that you're describing but I
-didn't yet spot exactly what the mechanism is.
-
-> From memory, I think that the above forced flush was there to protect
-> against the context switch code rather than ptrace, and guarantees that
-> any change that ctxsw _might_ spontaneously make to the task state has
-> already been done and dusted before we do the actual signal delivery.
-> This may be a red herring so far as ptrace hazards are concerned.
-
-Indeed, it's all about the current task and won't help at for ptrace.
-
---W+TBP/Hhe0/VKR6a
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmW5DXgACgkQJNaLcl1U
-h9B8Jwf/bbGTk8dY3wv6i5yLgXvA8OX0zJOWfZewnjQeBtwiZSZLA7nl0VKHB4u1
-B3ZpNoFsiFy3mrLJnR3yRXZj8UttcAuGEYM4YqYXik8h0Xcx44kIjlX93iANunfp
-X1+WyrOXFaY9DYv3IOnn2YdBb8ssafW3CDTTs7F5MHwf4biheXe1CuGipJHGv2nb
-DH2tlhGWKszWBl6tY0bl905s0Wvw2ggNM0lsFFheBb8IPd+idcNSldYMNU09yIae
-9kIgQ6XgCSQLasL5PUhBBz1T1QDnY0+8iqkZceEcYqUYZjWM+v/cBJnlrR1m3C09
-1YGX+yP+cL8f25SHy4eHhcbUDFN2jw==
-=eCS8
------END PGP SIGNATURE-----
-
---W+TBP/Hhe0/VKR6a--
+greg k-h
 
