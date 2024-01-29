@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-17078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71661840FBE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED87A840DA3
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1214BB21FFB
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CCAA1C23433
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A6515B2E5;
-	Mon, 29 Jan 2024 17:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8883715CD50;
+	Mon, 29 Jan 2024 17:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cr5dMz3I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="joYFqf/x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CA66FDE1;
-	Mon, 29 Jan 2024 17:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF9B15A49D;
+	Mon, 29 Jan 2024 17:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548493; cv=none; b=GrhRNBe3EMJYvlwNY4q4r29FNZohhHDCPCW6WwbIG8PnkeRRbYHTu03+5iTY72ofUNtWk2UPqPfZN6d4FqQ/hMbpLnrH+GW66SZNsH5zi+Dywk2OntUB/4POgXOanN0L6OjZP48dEXXeTr6LVOoce4cpMhEHz5aqzhnLifFCkec=
+	t=1706548140; cv=none; b=idgjptAEFYYjNktP75lXEtBKmwuojWu0LkgMXCcLE50rzjzjywUliYkEBEr/hD/yJFpFanSJeti1hq44QsZZ248qEovEvEo7Nbnind3F3IBaNyHEQ6gtADL7Ksx2Lskcqb4Z8fDvjtWoVhL3HzNLQ8h3tGJQ1fGY4pDbHGF/qww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548493; c=relaxed/simple;
-	bh=dQXpXEHJnmkDiowLvtxSMbAyhE+7AlOX7wWuGNQQ+1o=;
+	s=arc-20240116; t=1706548140; c=relaxed/simple;
+	bh=mF16jjaHWiOUopknw9nP5lC4W2leOF3vn7pnr0+Bs+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AroxB4v/XlkpnmMF1CPMCt53Z6ZEEoPewS/3VEFPYe1mrWV8vMpYPsKkrjFMiZFviNrE5vDjjFjKvfh3V48lcoEt2J8bagGb6ae2eLmK77n5szKFF+PlxnRez0rJi2xwWWsr0OVPr7QlUvQi5Ng2WA/r39XoxDsdxbGzrBzGgYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cr5dMz3I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BEEC43390;
-	Mon, 29 Jan 2024 17:14:53 +0000 (UTC)
+	 MIME-Version; b=ZVhWSgYDqNXoAVDdSvHEnQKXFREkUl7jClnDjSPMTNjKqffsH5hsOKdBG3lPGnub7SuGUggDFLebBrxYE9OTwlNlkNfNUuVI6/R6BAfzEDPLXh2oRNX158dHNFtFyZY2rxWym5sSSEXXIjrLZI0GIGzgp82Mebocl3d5gN7xLS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=joYFqf/x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF34C43394;
+	Mon, 29 Jan 2024 17:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548493;
-	bh=dQXpXEHJnmkDiowLvtxSMbAyhE+7AlOX7wWuGNQQ+1o=;
+	s=korg; t=1706548139;
+	bh=mF16jjaHWiOUopknw9nP5lC4W2leOF3vn7pnr0+Bs+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cr5dMz3IUh95yK1IgCrCV8724j0ftfAA1ZOCSLGFx545PYJ5L2vlHsgjr+Tl4EFWK
-	 AMYVIJHndEMjW/tWWYTqNnxDlt46tcIWJP5V0chPpJH89gcUD5HTmwvIgQ98cdC3hj
-	 Ga6KL+0Fwg5f7GrDT1JZH/zpQuDqWj90M+q92lyU=
+	b=joYFqf/xDY1EOjgbqA374R1TL4nL2bFLiqKAGhyloigPKxm1piYBJ12scVwUG2T0x
+	 hpgvwo16AsAoUtQtHmI4UaibHPXHnnTBo7rNlVO8MHxgwQ7+cBTbCZMEEJ9EJK7go/
+	 mvctNB+fZcccuXb8/C3Zw4HNESSOfyeejxQEfZVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guo Ren <guoren@linux.alibaba.com>,
-	Guo Ren <guoren@kernel.org>,
-	Leonardo Bras <leobras@redhat.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 110/331] riscv: mm: Fixup compat mode boot failure
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.7 143/346] ksmbd: send lease break notification on FILE_RENAME_INFORMATION
 Date: Mon, 29 Jan 2024 09:02:54 -0800
-Message-ID: <20240129170018.140746268@linuxfoundation.org>
+Message-ID: <20240129170020.607492867@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guo Ren <guoren@linux.alibaba.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 5f449e245e5b0d9d63eef6c8968fbdc3a8594407 upstream.
+[ Upstream commit 3fc74c65b367476874da5fe6f633398674b78e5a ]
 
-In COMPAT mode, the STACK_TOP is DEFAULT_MAP_WINDOW (0x80000000), but
-the TASK_SIZE is 0x7fff000. When the user stack is upon 0x7fff000, it
-will cause a user segment fault. Sometimes, it would cause boot
-failure when the whole rootfs is rv32.
+Send lease break notification on FILE_RENAME_INFORMATION request.
+This patch fix smb2.lease.v2_epoch2 test failure.
 
-Freeing unused kernel image (initmem) memory: 2236K
-Run /sbin/init as init process
-Starting init: /sbin/init exists but couldn't execute it (error -14)
-Run /etc/init as init process
-...
-
-Increase the TASK_SIZE to cover STACK_TOP.
-
-Cc: stable@vger.kernel.org
-Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
-Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
-Signed-off-by: Guo Ren <guoren@kernel.org>
-Reviewed-by: Leonardo Bras <leobras@redhat.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Link: https://lore.kernel.org/r/20231222115703.2404036-2-guoren@kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/pgtable.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/oplock.c  |   12 +++++++-----
+ fs/smb/server/smb2pdu.c |    1 +
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -880,7 +880,7 @@ static inline pte_t pte_swp_clear_exclus
- #define TASK_SIZE_MIN	(PGDIR_SIZE_L3 * PTRS_PER_PGD / 2)
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -541,14 +541,12 @@ static struct oplock_info *same_client_h
+ 				continue;
+ 			}
  
- #ifdef CONFIG_COMPAT
--#define TASK_SIZE_32	(_AC(0x80000000, UL) - PAGE_SIZE)
-+#define TASK_SIZE_32	(_AC(0x80000000, UL))
- #define TASK_SIZE	(test_thread_flag(TIF_32BIT) ? \
- 			 TASK_SIZE_32 : TASK_SIZE_64)
- #else
+-			if (lctx->req_state != lease->state)
+-				lease->epoch++;
+-
+ 			/* upgrading lease */
+ 			if ((atomic_read(&ci->op_count) +
+ 			     atomic_read(&ci->sop_count)) == 1) {
+ 				if (lease->state != SMB2_LEASE_NONE_LE &&
+ 				    lease->state == (lctx->req_state & lease->state)) {
++					lease->epoch++;
+ 					lease->state |= lctx->req_state;
+ 					if (lctx->req_state &
+ 						SMB2_LEASE_WRITE_CACHING_LE)
+@@ -559,13 +557,17 @@ static struct oplock_info *same_client_h
+ 				    atomic_read(&ci->sop_count)) > 1) {
+ 				if (lctx->req_state ==
+ 				    (SMB2_LEASE_READ_CACHING_LE |
+-				     SMB2_LEASE_HANDLE_CACHING_LE))
++				     SMB2_LEASE_HANDLE_CACHING_LE)) {
++					lease->epoch++;
+ 					lease->state = lctx->req_state;
++				}
+ 			}
+ 
+ 			if (lctx->req_state && lease->state ==
+-			    SMB2_LEASE_NONE_LE)
++			    SMB2_LEASE_NONE_LE) {
++				lease->epoch++;
+ 				lease_none_upgrade(opinfo, lctx->req_state);
++			}
+ 		}
+ 		read_lock(&ci->m_lock);
+ 	}
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -5581,6 +5581,7 @@ static int smb2_rename(struct ksmbd_work
+ 	if (!file_info->ReplaceIfExists)
+ 		flags = RENAME_NOREPLACE;
+ 
++	smb_break_all_levII_oplock(work, fp, 0);
+ 	rc = ksmbd_vfs_rename(work, &fp->filp->f_path, new_name, flags);
+ out:
+ 	kfree(new_name);
 
 
 
