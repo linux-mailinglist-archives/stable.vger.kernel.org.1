@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5E0840D56
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DBFE840F85
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C6481F2C544
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EBE11F211A2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8221615B10B;
-	Mon, 29 Jan 2024 17:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A916F06A;
+	Mon, 29 Jan 2024 17:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ss96PoN6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEpojmzU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328C7159580;
-	Mon, 29 Jan 2024 17:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03556F063;
+	Mon, 29 Jan 2024 17:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548086; cv=none; b=j7joW3Px7XSgNTecn1gNjDpRjdwH69ZwR4VD8w8RePwmh+Q2D1R3BoUkbw2IfdHE5mfA7pCTX15KqNR03TF1yuF8SwF6wCIsQaQUUvlNNDyXkLw/BaGV5ZUIcBTEX7dDebal6PVusDRhXniKVHTgD1Q9j/tVeFWgP4DN6QSeFKY=
+	t=1706548455; cv=none; b=clYKWBVBZxUhx7YDyvVhBftIOyAirKiaXirS+B7EY1ln6pbTWHzpKXV5HAOlmXyTi//wwq2Yw5H+pX1JfbtIDzRwAN7jekOmWcYs3BPHEvBf1FMrRYBsp9BdenefQbmeWYOn0jHoJNOAZS0HCSd3DOT6HjvysW1tnnB1quYfwp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548086; c=relaxed/simple;
-	bh=Y3GDXyHc+4mF04UrLcWbKawKL0bneocYnVAnRpr1Eso=;
+	s=arc-20240116; t=1706548455; c=relaxed/simple;
+	bh=R55As2AcTkSCB41KxvHfhH9YtKphN7StdpSXCHYrewU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JTEy0W/zzDVbVibiki73CU0Xjyt9+ogHejrTp1Bc/LE6qfKOyLDqdG0GgvCqxDKoE7lGVYHlRwnrEkrNHJyd5Bh7nMxMEm+52+KWNH/uX2g5PbcjilctYXX6ClugxvgZTOMerRXh1KGLstu3wCY5zYSp8kELiWQo9KEQegsvRtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ss96PoN6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE393C43601;
-	Mon, 29 Jan 2024 17:08:05 +0000 (UTC)
+	 MIME-Version; b=W2vxeUOnWmFXOqeB6jbMfh0y+yO1MG5MseD5ZNh4Bfe8jeR+Ym9XtQR/4sDc7HQ97pcW613Rzn9B7wsXWKeagPr2kqPVgEqfotiHRQ1Qqu7653y6X6SM3G/VPZPR/wNnLx0eXO4ykB/s7TX/hVch4KbYvciLBzzjCAT2t+I3fcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEpojmzU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BE2C433F1;
+	Mon, 29 Jan 2024 17:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548086;
-	bh=Y3GDXyHc+4mF04UrLcWbKawKL0bneocYnVAnRpr1Eso=;
+	s=korg; t=1706548455;
+	bh=R55As2AcTkSCB41KxvHfhH9YtKphN7StdpSXCHYrewU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ss96PoN6NB/wNWLccwBufgvqH4rDmo3GvwUd8B4SKwwDLOgFy1HT1je0G5SzsRpyZ
-	 i785mGjeGzSKmNjvJROgaTT35BNtHXhllVt5xCt2Fx6+2Sv/BkamgSLhLp/psnlEBr
-	 yTX6gRsqxIqJVfIP0PLzvQ5GhvdgnL5rAprNEJjo=
+	b=BEpojmzUp0O6nCqV475nDX57P4p1/o0aIdKbNScEABByhbgYkqOrVKRSxdB1lVK51
+	 cgKhscaNnygGA214hebUtrmOciOK6ax3EE+aUva4WLTkrU8ji5FCnlo47kmMX1ArTl
+	 /b71JBWLDeuMPep6oSf33iPrrY2X6wWaqzmeAUtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: [PATCH 6.7 100/346] media: mtk-jpeg: Fix timeout schedule error in mtk_jpegdec_worker.
+	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.6 067/331] bus: mhi: host: Add alignment check for event ring read pointer
 Date: Mon, 29 Jan 2024 09:02:11 -0800
-Message-ID: <20240129170019.342163042@linuxfoundation.org>
+Message-ID: <20240129170016.889846235@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Krishna chaitanya chundru <quic_krichai@quicinc.com>
 
-commit 38e1857933def4b3fafc28cc34ff3bbc84cad2c3 upstream.
+commit eff9704f5332a13b08fbdbe0f84059c9e7051d5f upstream.
 
-In mtk_jpegdec_worker, if error occurs in mtk_jpeg_set_dec_dst, it
-will start the timeout worker and invoke v4l2_m2m_job_finish at
-the same time. This will break the logic of design for there should
-be only one function to call v4l2_m2m_job_finish. But now the timeout
-handler and mtk_jpegdec_worker will both invoke it.
+Though we do check the event ring read pointer by "is_valid_ring_ptr"
+to make sure it is in the buffer range, but there is another risk the
+pointer may be not aligned.  Since we are expecting event ring elements
+are 128 bits(struct mhi_ring_element) aligned, an unaligned read pointer
+could lead to multiple issues like DoS or ring buffer memory corruption.
 
-Fix it by start the worker only if mtk_jpeg_set_dec_dst successfully
-finished.
+So add a alignment check for event ring read pointer.
 
-Fixes: da4ede4b7fd6 ("media: mtk-jpeg: move data/code inside CONFIG_OF blocks")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: ec32332df764 ("bus: mhi: core: Sanity check values from remote device before use")
+cc: stable@vger.kernel.org
+Signed-off-by: Krishna chaitanya chundru <quic_krichai@quicinc.com>
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20231031-alignment_check-v2-1-1441db7c5efd@quicinc.com
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/bus/mhi/host/main.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-+++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
-@@ -1749,9 +1749,6 @@ retry_select:
- 	v4l2_m2m_src_buf_remove(ctx->fh.m2m_ctx);
- 	v4l2_m2m_dst_buf_remove(ctx->fh.m2m_ctx);
+--- a/drivers/bus/mhi/host/main.c
++++ b/drivers/bus/mhi/host/main.c
+@@ -268,7 +268,8 @@ static void mhi_del_ring_element(struct
  
--	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
--			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
--
- 	mtk_jpeg_set_dec_src(ctx, &src_buf->vb2_buf, &bs);
- 	if (mtk_jpeg_set_dec_dst(ctx,
- 				 &jpeg_src_buf->dec_param,
-@@ -1761,6 +1758,9 @@ retry_select:
- 		goto setdst_end;
- 	}
+ static bool is_valid_ring_ptr(struct mhi_ring *ring, dma_addr_t addr)
+ {
+-	return addr >= ring->iommu_base && addr < ring->iommu_base + ring->len;
++	return addr >= ring->iommu_base && addr < ring->iommu_base + ring->len &&
++			!(addr & (sizeof(struct mhi_ring_element) - 1));
+ }
  
-+	schedule_delayed_work(&comp_jpeg[hw_id]->job_timeout_work,
-+			      msecs_to_jiffies(MTK_JPEG_HW_TIMEOUT_MSEC));
-+
- 	spin_lock_irqsave(&comp_jpeg[hw_id]->hw_lock, flags);
- 	ctx->total_frame_num++;
- 	mtk_jpeg_dec_reset(comp_jpeg[hw_id]->reg_base);
+ int mhi_destroy_device(struct device *dev, void *data)
 
 
 
