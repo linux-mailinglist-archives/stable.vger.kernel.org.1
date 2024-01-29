@@ -1,52 +1,94 @@
-Return-Path: <stable+bounces-16425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0919C840B22
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A05EA840B2E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87761B26EAC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 16:18:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6A97B24CED
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 16:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A30B155A5D;
-	Mon, 29 Jan 2024 16:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278B3156963;
+	Mon, 29 Jan 2024 16:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKX6THEw"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="AOIBDNBF";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DLIMfYnj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wnew4-smtp.messagingengine.com (wnew4-smtp.messagingengine.com [64.147.123.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EBA155A57;
-	Mon, 29 Jan 2024 16:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F084F156965;
+	Mon, 29 Jan 2024 16:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706545116; cv=none; b=gKHoUq3hVVdVIgPxl5Y1Z5SfLvK5kZOMTnmeOECQSXoDm4WCAPC8G03hH3Yzqv4Rm02rd7Wh/heYUKJKIscaztix5IocvhH2dqORYjFIA9azrsxbAmnZYQnx8KQYjEqvBL6YLUkrwc0dSoTOdq75tW0WpGHvQMkR9RzLRSu73wc=
+	t=1706545223; cv=none; b=miDnoCy9hXJUByMvMDSErK9FK/2ljK14qlaoVn8wWq4QqCv2guq10kaG+MIJFeX0BktnhQpw/KXTzv5XqYdAkApuaogcOHfSBWi8jKLIKFmBfd14qwOfr2BkSm8gjTXeA9g2X2WTA5dJSNzXeWDcu6O7ZsWDjoqTxyF96Tlzs6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706545116; c=relaxed/simple;
-	bh=nOB10xYZrV+PiFOQMdDmiDQG6/6o2auBVDVT16MLekA=;
+	s=arc-20240116; t=1706545223; c=relaxed/simple;
+	bh=BbiOjaQjR81atd78vrcTcqLaYowNtytz0WXZxbsW5mM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QBTiq5FNJlPxrx01DMlHBaF20l8z5pdy/xvyUQUxlc+9pi9Kh4JE1dHcY4/N1u0l5jN6iKGBhPdCWeFTNNhtckHaJbliHh2Erb3h4a81Qlnp7oP3VO8p88F0fY0Y7mt9/oNMNSiiZt3N4x+MOAl2+skZIha2wzbTniF4hoj5+WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKX6THEw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE66BC433F1;
-	Mon, 29 Jan 2024 16:18:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706545115;
-	bh=nOB10xYZrV+PiFOQMdDmiDQG6/6o2auBVDVT16MLekA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kKX6THEwtNjv0HzzEdOoHqdYLF8BDliGT8sVgvWTgLwKR1rZMRyMDoZ3GnMZDPIYy
-	 0hu2OzldvJ1S3/qxUOb25er74gtquJVq/3uiSt49eFvfKvenFyGi2jrzTuOin//qhK
-	 +hOopY9ziOo3X2elpe6m7h8VT1VRfSW3pipwBnAI=
-Date: Mon, 29 Jan 2024 08:18:35 -0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable-commits@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: Patch "driver core: Annotate dev_err_probe() with __must_check"
- has been added to the 4.19-stable tree
-Message-ID: <2024012909-slit-heaviness-a5ef@gregkh>
-References: <2024012619-spider-attempt-7896@gregkh>
- <ZbZZIGcUSOK8pPSQ@smile.fi.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ga+d2hOyBYBogx9wurkNvY4MT41JGnVHL5+FiC/M3KiTD6LrS90kLWHeaRwL7k6U5vcW+bjroyC8Kzk3eZUQ/mdr6o3qhqfVEVfppQXQDKeR+alLzR4h6ca+/Ut5sbr7URlMwpnCB0nnsJ2uPc/S/2c3DZJigiBPueB5ZQDcx/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=AOIBDNBF; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DLIMfYnj; arc=none smtp.client-ip=64.147.123.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
+	by mailnew.west.internal (Postfix) with ESMTP id 55E442B000F8;
+	Mon, 29 Jan 2024 11:20:18 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute7.internal (MEProxy); Mon, 29 Jan 2024 11:20:21 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1706545217; x=1706552417; bh=7QfGVHifGs
+	lR1SerCkhqtcaKsdMNoiD/zP22/k+FdEs=; b=AOIBDNBFvhk+n+UKxo6wRSPUCp
+	njIg2rXPJ3QXkPHk6GlgoZxe54zp/S/CWOHFjIwEj58/fBsMzFmvmyyonwXA02Lm
+	Vg0FsaCWG9B91FRDFGZO+lUU1emzRB45Ugwt6RrZcqzo5DDbj/yC9RXdokPCBehV
+	7q/QqjqogKh4f7W8v8j+xyCBEiFoSOYYm77lPdSKDCM1u5n5ouxIDcmqFl/OqeEo
+	A0uqhMZqyLbIvhxTaCQrWNW89lpd+N3dKMprM+MSi4JuYHlcEGf0mb+qVp6T55xn
+	zi74EbAJNBtuqQPdxiQ1nNSfUhljumdCVWSzWUlofGpcdjtC8W+fQdYHsfGw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1706545217; x=1706552417; bh=7QfGVHifGslR1SerCkhqtcaKsdMN
+	oiD/zP22/k+FdEs=; b=DLIMfYnjKKHDuT14W0FlOrXs9qPxCqwJTH8EEuXk/rzm
+	b6J0e4wTswKHL18Svl9I2rQKf4dDIoRP0R56eSXmZIpZ8DYgDpZh15YYHddn9C4A
+	uSbHkUKNorC37mZAJO95chaSLhaxF6j0QrK6cAYKzKNnV370hPu/rtI4YCATewli
+	Ik55t85aHRhsxte1x4M+lBmw3XoV4TRJBHHtNgKT6qLmK88a8PVOWPaG3fbkk/rL
+	hhPNRk57bWSzuBZG5mQ7AosUvJzarZb7nY7oe3Z9f3eYejxCKQ7LzdP96FNQqvt6
+	vvid9f7WzwXYBovzl4mcdV2AZ9bciz/NV8KoiLS27w==
+X-ME-Sender: <xms:QdC3ZcSuDz2NtuI0JK0o6jpn8XhsnOuHddoKQ3fN0VXxKpxATHojcg>
+    <xme:QdC3ZZydV3NhcNh-WXd3FDRxLzGsLQmXmaZMaOiTWI7N_WK9mphiGx6SgoyB10vVN
+    q7jOMeY_HaERw>
+X-ME-Received: <xmr:QdC3ZZ2bGF_Fw_Sc7pGRBZuBsdObqo2g02jI2knQZKJHomePH_LisSmW0vyB>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrfedtgedgjeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttd
+    ertddttddvnecuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhm
+    qeenucggtffrrghtthgvrhhnpeehgedvvedvleejuefgtdduudfhkeeltdeihfevjeekje
+    euhfdtueefhffgheekteenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
+    ihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomh
+X-ME-Proxy: <xmx:QdC3ZQC86Hi21A8TLNKvQJQW5VErLCQ4T7ROkBNj0ZxYXJaPy4xmOg>
+    <xmx:QdC3ZVjQQyCexkkxbiWSdIzuaDV9wmP-xkuW27wWDRXEHYnVWWk0bA>
+    <xmx:QdC3ZcphFYzTS3_zpyU30cGjAY81XIsBLXlAWfWSAgGC1OMO6y28Ng>
+    <xmx:QdC3ZQOkZutcalxELbXB97LsWJZbxfY-Egxr6Gwp9pEdLN0HQ-SlwD4brBA>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 29 Jan 2024 11:20:15 -0500 (EST)
+Date: Mon, 29 Jan 2024 08:20:14 -0800
+From: Greg KH <greg@kroah.com>
+To: kovalev@altlinux.org
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org, netdev@vger.kernel.org, kpsingh@kernel.org,
+	john.fastabend@gmail.com, yhs@fb.com, songliubraving@fb.com,
+	kafai@fb.com, andrii@kernel.org, daniel@iogearbox.net,
+	ast@kernel.org, nickel@altlinux.org, oficerovas@altlinux.org,
+	dutyrok@altlinux.org
+Subject: Re: [PATCH 5.10.y 0/1] bpf: fix warning ftrace_verify_code
+Message-ID: <2024012954-disfigure-barbell-21b9@gregkh>
+References: <20240129091746.260538-1-kovalev@altlinux.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,29 +97,18 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZbZZIGcUSOK8pPSQ@smile.fi.intel.com>
+In-Reply-To: <20240129091746.260538-1-kovalev@altlinux.org>
 
-On Sun, Jan 28, 2024 at 03:39:44PM +0200, Andy Shevchenko wrote:
-> On Fri, Jan 26, 2024 at 05:33:20PM -0800, gregkh@linuxfoundation.org wrote:
-> > 
-> > This is a note to let you know that I've just added the patch titled
-> > 
-> >     driver core: Annotate dev_err_probe() with __must_check
-> > 
-> > to the 4.19-stable tree which can be found at:
-> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> > 
-> > The filename of the patch is:
-> >      driver-core-annotate-dev_err_probe-with-__must_check.patch
-> > and it can be found in the queue-4.19 subdirectory.
-> > 
-> > If you, or anyone else, feels it should not be added to the stable tree,
-> > please let <stable@vger.kernel.org> know about it.
+On Mon, Jan 29, 2024 at 12:17:45PM +0300, kovalev@altlinux.org wrote:
+> Syzkaller hit 'WARNING in ftrace_verify_code' bug.
 > 
-> But it got reverted, no need to have it in any stable kernels.
+> This bug is not a vulnerability and is reproduced only when running
+> with root privileges on stable 5.10 kernel.
 
-Thanks for reminding me, I hadn't run the "find the fixes for commits in
-the queue" script yet, that just got caught and I've queued it up now.
+What about 5.15.y?  We can't take a patch for older kernels and not for
+newer ones, right?
+
+thanks,
 
 greg k-h
 
