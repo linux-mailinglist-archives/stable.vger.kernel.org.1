@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-17142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A483840FFF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F61840E43
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ADCC1F23A32
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E12F28359A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FD17375D;
-	Mon, 29 Jan 2024 17:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AC115EAA8;
+	Mon, 29 Jan 2024 17:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Drsm4PE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dH7westV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078F173722;
-	Mon, 29 Jan 2024 17:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FBE15B2FA;
+	Mon, 29 Jan 2024 17:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548542; cv=none; b=Ddq+KEDuc+WxQ+SOnWf4/+Y6qyLKrmNP41XFWNCvVhdjRw5ygT0zlGUPP4cp9+DmggmfpBWF2oxysb3WMpEqmOBqp37zU8lFOtbreFIMe8UAwCBMCPt2tzkZsSi8qYLM0veqYHxWRaSSD5Qso5JDgwwSVGSmB2utWusGFfnGvXg=
+	t=1706548252; cv=none; b=qKyRUjG9fnbiu4Yn858mNpo4LRHXUb+iVFmB/kNzZvnowTxTSBxf20Hfg1Wn5Y9Uyvp7WgPu94aQcInSZqoW5vFkBXfAm+imXw5KUMsoJZKyfc5fu4etjGi2IEFK29foJ1hvBHedW6VEf3q0XE3t9HQLvFVRE8m0+B8DE+0f8Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548542; c=relaxed/simple;
-	bh=Ro3ezqEO/v4qh6u1z0ccaa14AwRwwAUoHB4VGrAiCkM=;
+	s=arc-20240116; t=1706548252; c=relaxed/simple;
+	bh=QFvhgMdhNAg4c09MDhcOLnlmmJn6jW2ZD1KLN2kSKGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bu3ULXpF+4gaXYWeZSJQRUmIXoQ77ELvXe0/4bRBvyTIDlxWFxaATo3Ve5JFfCi7TCsGoAC7A6Iz55HwVP7+c6cPiPv95YeamX/Gd7auR7YrLWOcswFeeA5oipizmM7TB4TxlBYP98PAtohzWvXwGcR4zVwm61uwQAczuyUKFec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Drsm4PE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1FFBC433F1;
-	Mon, 29 Jan 2024 17:15:41 +0000 (UTC)
+	 MIME-Version; b=UWMYlBZ6myB9h0FUlC5r5aHt4tHAU/F7WSX8aIJW8VaIgn0XTymz+aXc2RdRnO8VP7vLwm/Ji4MB+UwW9MVfy7aKaqkhZM63ajOtJKmy7oLOuSOi84RXheyGLn5O+HXNViMlROZYA0oduujxo+Dc2vMIOXbYFlZDrXzLeqpggaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dH7westV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA0DC43390;
+	Mon, 29 Jan 2024 17:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548541;
-	bh=Ro3ezqEO/v4qh6u1z0ccaa14AwRwwAUoHB4VGrAiCkM=;
+	s=korg; t=1706548252;
+	bh=QFvhgMdhNAg4c09MDhcOLnlmmJn6jW2ZD1KLN2kSKGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Drsm4PE7HnJQVrfB9m4Ww+QAFmpN0SgymOgyxIFzhMDa8rsmXM5sEn/xHfgmOgbNw
-	 ojQVAg0O3Va7ptgUUK4MiKP3du0YJVNikFZumbyMEp7maGUGZwLuwb5Pt+c06iOJeC
-	 CqszRURyO5FcE+sTwnZ9iPfcdhbN9vYUp0JBgWTo=
+	b=dH7westVPZqVDMUpsFsJS6AUDPvl/Lx+lbboPnPPEvGSIOLMQYkMq3cS9l3u3FVl6
+	 0kM14GMFkfzmcYpQHilAX9Z72JSyNFkoV6miA7CkJUs8yUuLOUA8ZpaMC9d0+MZyu3
+	 QRddZqvYcIAA1gXt8qjYcw9M/nH16HRf9vkcgy8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/331] net/rds: Fix UBSAN: array-index-out-of-bounds in rds_cmsg_recv
-Date: Mon, 29 Jan 2024 09:04:06 -0800
-Message-ID: <20240129170020.228683626@linuxfoundation.org>
+	Rob Herring <robh@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.1 047/185] arm64: Rename ARM64_WORKAROUND_2966298
+Date: Mon, 29 Jan 2024 09:04:07 -0800
+Message-ID: <20240129170000.100100939@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit 13e788deb7348cc88df34bed736c3b3b9927ea52 ]
+commit 546b7cde9b1dd36089649101b75266564600ffe5 upstream.
 
-Syzcaller UBSAN crash occurs in rds_cmsg_recv(),
-which reads inc->i_rx_lat_trace[j + 1] with index 4 (3 + 1),
-but with array size of 4 (RDS_RX_MAX_TRACES).
-Here 'j' is assigned from rs->rs_rx_trace[i] and in-turn from
-trace.rx_trace_pos[i] in rds_recv_track_latency(),
-with both arrays sized 3 (RDS_MSG_RX_DGRAM_TRACE_MAX). So fix the
-off-by-one bounds check in rds_recv_track_latency() to prevent
-a potential crash in rds_cmsg_recv().
+In preparation to apply ARM64_WORKAROUND_2966298 for multiple errata,
+rename the kconfig and capability. No functional change.
 
-Found by syzcaller:
-=================================================================
-UBSAN: array-index-out-of-bounds in net/rds/recv.c:585:39
-index 4 is out of range for type 'u64 [4]'
-CPU: 1 PID: 8058 Comm: syz-executor228 Not tainted 6.6.0-gd2f51b3516da #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
-BIOS 1.15.0-1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x136/0x150 lib/dump_stack.c:106
- ubsan_epilogue lib/ubsan.c:217 [inline]
- __ubsan_handle_out_of_bounds+0xd5/0x130 lib/ubsan.c:348
- rds_cmsg_recv+0x60d/0x700 net/rds/recv.c:585
- rds_recvmsg+0x3fb/0x1610 net/rds/recv.c:716
- sock_recvmsg_nosec net/socket.c:1044 [inline]
- sock_recvmsg+0xe2/0x160 net/socket.c:1066
- __sys_recvfrom+0x1b6/0x2f0 net/socket.c:2246
- __do_sys_recvfrom net/socket.c:2264 [inline]
- __se_sys_recvfrom net/socket.c:2260 [inline]
- __x64_sys_recvfrom+0xe0/0x1b0 net/socket.c:2260
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x40/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-==================================================================
-
-Fixes: 3289025aedc0 ("RDS: add receive message trace used by application")
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Closes: https://lore.kernel.org/linux-rdma/CALGdzuoVdq-wtQ4Az9iottBqC5cv9ZhcE5q8N7LfYFvkRsOVcw@mail.gmail.com/
-Signed-off-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20240110-arm-errata-a510-v1-1-d02bc51aeeee@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rds/af_rds.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/Kconfig             |    4 ++++
+ arch/arm64/kernel/cpu_errata.c |    4 ++--
+ arch/arm64/kernel/entry.S      |    2 +-
+ arch/arm64/tools/cpucaps       |    2 +-
+ 4 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
-index 01c4cdfef45d..8435a20968ef 100644
---- a/net/rds/af_rds.c
-+++ b/net/rds/af_rds.c
-@@ -419,7 +419,7 @@ static int rds_recv_track_latency(struct rds_sock *rs, sockptr_t optval,
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -983,8 +983,12 @@ config ARM64_ERRATUM_2457168
  
- 	rs->rs_rx_traces = trace.rx_traces;
- 	for (i = 0; i < rs->rs_rx_traces; i++) {
--		if (trace.rx_trace_pos[i] > RDS_MSG_RX_DGRAM_TRACE_MAX) {
-+		if (trace.rx_trace_pos[i] >= RDS_MSG_RX_DGRAM_TRACE_MAX) {
- 			rs->rs_rx_traces = 0;
- 			return -EFAULT;
- 		}
--- 
-2.43.0
-
+ 	  If unsure, say Y.
+ 
++config ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
++	bool
++
+ config ARM64_ERRATUM_2966298
+ 	bool "Cortex-A520: 2966298: workaround for speculatively executed unprivileged load"
++	select ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
+ 	default y
+ 	help
+ 	  This option adds the workaround for ARM Cortex-A520 erratum 2966298.
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -723,10 +723,10 @@ const struct arm64_cpu_capabilities arm6
+ 		.cpu_enable = cpu_clear_bf16_from_user_emulation,
+ 	},
+ #endif
+-#ifdef CONFIG_ARM64_ERRATUM_2966298
++#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
+ 	{
+ 		.desc = "ARM erratum 2966298",
+-		.capability = ARM64_WORKAROUND_2966298,
++		.capability = ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD,
+ 		/* Cortex-A520 r0p0 - r0p1 */
+ 		ERRATA_MIDR_REV_RANGE(MIDR_CORTEX_A520, 0, 0, 1),
+ 	},
+--- a/arch/arm64/kernel/entry.S
++++ b/arch/arm64/kernel/entry.S
+@@ -419,7 +419,7 @@ alternative_else_nop_endif
+ 	ldp	x28, x29, [sp, #16 * 14]
+ 
+ 	.if	\el == 0
+-alternative_if ARM64_WORKAROUND_2966298
++alternative_if ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
+ 	tlbi	vale1, xzr
+ 	dsb	nsh
+ alternative_else_nop_endif
+--- a/arch/arm64/tools/cpucaps
++++ b/arch/arm64/tools/cpucaps
+@@ -71,7 +71,6 @@ WORKAROUND_2064142
+ WORKAROUND_2077057
+ WORKAROUND_2457168
+ WORKAROUND_2658417
+-WORKAROUND_2966298
+ WORKAROUND_AMPERE_AC03_CPU_38
+ WORKAROUND_TRBE_OVERWRITE_FILL_MODE
+ WORKAROUND_TSB_FLUSH_FAILURE
+@@ -87,3 +86,4 @@ WORKAROUND_NVIDIA_CARMEL_CNP
+ WORKAROUND_QCOM_FALKOR_E1003
+ WORKAROUND_REPEAT_TLBI
+ WORKAROUND_SPECULATIVE_AT
++WORKAROUND_SPECULATIVE_UNPRIV_LOAD
 
 
 
