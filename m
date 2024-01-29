@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-17141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31765840FFE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2160E840DCF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2CF92821AF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 547321C210EE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7812B7374D;
-	Mon, 29 Jan 2024 17:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E49A15AAC9;
+	Mon, 29 Jan 2024 17:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PK+VHq5k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GpBIP9Zy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3807373722;
-	Mon, 29 Jan 2024 17:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B103158D76;
+	Mon, 29 Jan 2024 17:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548541; cv=none; b=eXD/tloaL0BvhIMYXNaxwSc8rxGmdrJobd3uJ3/M/lLjVuMTXo75zrVBLiiN8uR9fHCnmu/SFN9Z5LNHehBXMawJBOBBsvDF3YnJrgyANshuNLHxGkoD4HcS+qtiY/Iq/GHW9jWDq7QFDMnsQHYaQVf8Icaa/adrr59RC127eRU=
+	t=1706548170; cv=none; b=T75eXH8I40Q7tnmrPlM7bKEZsSInUZowrSqxBzVsziBolHZfFFzyO/nhaMgSmOXL65p/wNiaGBi7+S3mza2GEovKm5pwJiiipBCQSKuKFL9EF5k9aCQWO7CxeFy5OncJAxT9uk/1LITC1FB3/rlHFRSYRCjyU4H7uOZTvPbdd1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548541; c=relaxed/simple;
-	bh=3ZTIC8O0dJyu7DdrswS8e7zoo1/LgCQ5LJ0fBrJWI/A=;
+	s=arc-20240116; t=1706548170; c=relaxed/simple;
+	bh=2dPwPnwI+7yLNtBgKS/KTqDzS423Tuf8VYN+hJqMzIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IG+13p2Sx+jtWYwWusLtc9ecf3i2Daa2A8Ufw4mkk82vnQMoyJHvAcbnWuCyk895NUvPM0TXya6zleeMFwnyF3O2ZhEaWe8RpDxarZFXntxxvZ3BbmpqWKAdsrCsBGOWhRqeKBz0bMyQvj4n5Hl3K5lkBvZRJXxlBRci5DVpl1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PK+VHq5k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F419DC433F1;
-	Mon, 29 Jan 2024 17:15:40 +0000 (UTC)
+	 MIME-Version; b=MCykl1bH4UFvey8pAF/GJrP5oACRLdbI+nnrcuQJuiKIc/GkFSXWzIcgK4L6Gme5tqXDFtUUoK9dP7SLWDns3l47X4IZLDWcz6p5UWx1XujWdvfFXPeFrq3q150v8UzF2XlwMILLn/SvQbY7gMFuJzQORoeukXYkUR2p2XFtKiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GpBIP9Zy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012F8C43390;
+	Mon, 29 Jan 2024 17:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548541;
-	bh=3ZTIC8O0dJyu7DdrswS8e7zoo1/LgCQ5LJ0fBrJWI/A=;
+	s=korg; t=1706548170;
+	bh=2dPwPnwI+7yLNtBgKS/KTqDzS423Tuf8VYN+hJqMzIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PK+VHq5kqctOeT0+mp5Dd5nYazgc8KyLbmFpsmdC6Hl5Os3+v9bGnACNKfECJ7d3l
-	 FivRWmMuJcSLDRRWA5EgSABqNLKVsOHChuY6Rv0nyVcOiH9L6qejwyNxeTNwVKXVH3
-	 9iiImlSygYkTSBUywXXVBcAtgNtbP2Zj7RDA5hk8=
+	b=GpBIP9ZyIl1W8lv05mqcwz2j+dGHSDV0HG7Zhd//Rbk5SFNbAgcFruVdhri9ZmqJ0
+	 wSQdXna08lo8YS73lp1nIIrdX3KmeMwnK+1dHSTNfiNX2RWwInRyQWSwjXFSumrbZ9
+	 SFnG1Oo8U84Tg3Ds5tgClxqkaTnmXSIckMbqh0xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Divya Koppera <divya.koppera@microchip.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 181/331] net: micrel: Fix PTP frame parsing for lan8814
+Subject: [PATCH 6.7 214/346] xdp: reflect tail increase for MEM_TYPE_XSK_BUFF_POOL
 Date: Mon, 29 Jan 2024 09:04:05 -0800
-Message-ID: <20240129170020.200123690@linuxfoundation.org>
+Message-ID: <20240129170022.677920456@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit aaf632f7ab6dec57bc9329a438f94504fe8034b9 ]
+[ Upstream commit fbadd83a612c3b7aad2987893faca6bd24aaebb3 ]
 
-The HW has the capability to check each frame if it is a PTP frame,
-which domain it is, which ptp frame type it is, different ip address in
-the frame. And if one of these checks fail then the frame is not
-timestamp. Most of these checks were disabled except checking the field
-minorVersionPTP inside the PTP header. Meaning that once a partner sends
-a frame compliant to 8021AS which has minorVersionPTP set to 1, then the
-frame was not timestamp because the HW expected by default a value of 0
-in minorVersionPTP. This is exactly the same issue as on lan8841.
-Fix this issue by removing this check so the userspace can decide on this.
+XSK ZC Rx path calculates the size of data that will be posted to XSK Rx
+queue via subtracting xdp_buff::data_end from xdp_buff::data.
 
-Fixes: ece19502834d ("net: phy: micrel: 1588 support for LAN8814 phy")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Divya Koppera <divya.koppera@microchip.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+In bpf_xdp_frags_increase_tail(), when underlying memory type of
+xdp_rxq_info is MEM_TYPE_XSK_BUFF_POOL, add offset to data_end in tail
+fragment, so that later on user space will be able to take into account
+the amount of bytes added by XDP program.
+
+Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/r/20240124191602.566724-10-maciej.fijalkowski@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/core/filter.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index dfd5f8e78e29..27ca25bbd141 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -120,6 +120,11 @@
-  */
- #define LAN8814_1PPM_FORMAT			17179
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 6575288b8580..cee53838310f 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -4091,6 +4091,8 @@ static int bpf_xdp_frags_increase_tail(struct xdp_buff *xdp, int offset)
+ 	memset(skb_frag_address(frag) + skb_frag_size(frag), 0, offset);
+ 	skb_frag_size_add(frag, offset);
+ 	sinfo->xdp_frags_size += offset;
++	if (rxq->mem.type == MEM_TYPE_XSK_BUFF_POOL)
++		xsk_buff_get_tail(xdp)->data_end += offset;
  
-+#define PTP_RX_VERSION				0x0248
-+#define PTP_TX_VERSION				0x0288
-+#define PTP_MAX_VERSION(x)			(((x) & GENMASK(7, 0)) << 8)
-+#define PTP_MIN_VERSION(x)			((x) & GENMASK(7, 0))
-+
- #define PTP_RX_MOD				0x024F
- #define PTP_RX_MOD_BAD_UDPV4_CHKSUM_FORCE_FCS_DIS_ BIT(3)
- #define PTP_RX_TIMESTAMP_EN			0x024D
-@@ -3125,6 +3130,12 @@ static void lan8814_ptp_init(struct phy_device *phydev)
- 	lanphy_write_page_reg(phydev, 5, PTP_TX_PARSE_IP_ADDR_EN, 0);
- 	lanphy_write_page_reg(phydev, 5, PTP_RX_PARSE_IP_ADDR_EN, 0);
- 
-+	/* Disable checking for minorVersionPTP field */
-+	lanphy_write_page_reg(phydev, 5, PTP_RX_VERSION,
-+			      PTP_MAX_VERSION(0xff) | PTP_MIN_VERSION(0x0));
-+	lanphy_write_page_reg(phydev, 5, PTP_TX_VERSION,
-+			      PTP_MAX_VERSION(0xff) | PTP_MIN_VERSION(0x0));
-+
- 	skb_queue_head_init(&ptp_priv->tx_queue);
- 	skb_queue_head_init(&ptp_priv->rx_queue);
- 	INIT_LIST_HEAD(&ptp_priv->rx_ts_list);
+ 	return 0;
+ }
 -- 
 2.43.0
 
