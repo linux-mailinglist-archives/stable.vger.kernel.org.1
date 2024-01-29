@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B9A3840EBC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5CAE840F0B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DFDD1C2361F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24F571C23DF1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B338116087D;
-	Mon, 29 Jan 2024 17:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F30115D5A3;
+	Mon, 29 Jan 2024 17:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWQP9ubB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QGfaoPs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713F5160874;
-	Mon, 29 Jan 2024 17:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BC8157E8F;
+	Mon, 29 Jan 2024 17:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548337; cv=none; b=f6TSe4gAwJZO9SXlGouOTP14NXZ1ToYOoL8YusZEf9O/4yZhuTse7GZXhKyhQap1b8/nSXEjqL5vRtaUwFLcOorgMUdqW8oYaROQkaga4DIlGUYzFbBRuKvDZsrwIn1ewGPho3XBpKriEvN5DIPzXfywLLzWRjiJ1NDN3Xn8MZE=
+	t=1706548376; cv=none; b=kim4xGj2VG5e6Ho/82QJcgwkx+JMfUwBZ62G/zF3jDUvdk/5mgNTHjDCMZDFxxs1zD1FAGGbcOaW9oTvyoGSZVssMU8GhC68+bOP6ueScWWmLHS+jnl0MEvqBHI7oR1ZqF2xLYCOFWr7ZxoyxXsvevCVu6d89q2EXN4Otc8kL8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548337; c=relaxed/simple;
-	bh=bicDTt5IRCg1YzurvHjqrBqCGF85xq8KYFfMxNKhG9E=;
+	s=arc-20240116; t=1706548376; c=relaxed/simple;
+	bh=bnnDrXZY31fnYyyPVNMXqFZdrx+biwiyE92xUUvuizA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JJ+8mJGmQM29PbMAw+eOhsab+/kT/KmPl54BjhFR+zxb/lD4la5KMgX9I6RX/3BpzloR5OSe+tgxTYlnsJZM4ZmPe0F7U3vhVw9fqcj91ubvylJdXbKFso9qH/KOi4c4+s5V8pRv9QccmmaWfs5KhN6McQLixwlfN2khbms4UCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWQP9ubB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DE5C433C7;
-	Mon, 29 Jan 2024 17:12:17 +0000 (UTC)
+	 MIME-Version; b=V7yvHyZHwTRFrDbRr612j+9N4NqOJhqVyYmb7u8Jd5B5fo0xCJJqL1Xq3UShD2qAh7E+ngPoqB2GNbtp0st86kE/MIsWgAJzz7ciY8nNCUhlihUOckedat6DiNOAdubwmJPtEvA4UN5Hh71nljR1+yOzcd0Ky+Sk2oCs1aWPNMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QGfaoPs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD82C43399;
+	Mon, 29 Jan 2024 17:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548337;
-	bh=bicDTt5IRCg1YzurvHjqrBqCGF85xq8KYFfMxNKhG9E=;
+	s=korg; t=1706548376;
+	bh=bnnDrXZY31fnYyyPVNMXqFZdrx+biwiyE92xUUvuizA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bWQP9ubBA8He0DSkkfOAELcLLkZSF7l+Z+Uq/stTtznw+IhEX+Gflq5iEACfRaEXJ
-	 pNQdhePslCbBM/083JjGKG+dHGj2NxkYtZPyEz7KUCty1LEgr5Ux+UveVxX61EGEcG
-	 t22f5ErlcsYP0C/TWiqt18x8KMEBU22kNRTDYBTg=
+	b=1QGfaoPsmvj3lnsj/b8ZL9zRI62kFGKW1RajJWp7XBWDsCbMncRkmwO8aV4DkVqOw
+	 FXlofzeEW6WZx8Uu3VV3mbXjRnfbzaOkLOp3UUWN0q3ZfD6T0rWjYJ1PFahhCkdT39
+	 uUDsW+N6RZyN3rpyV5+KZ5/l7EBZ3fRau8a7f4MI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Li zeming <zeming@nfschina.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 315/346] futex: Prevent the reuse of stale pi_state
+Subject: [PATCH 6.1 146/185] PM: core: Remove unnecessary (void *) conversions
 Date: Mon, 29 Jan 2024 09:05:46 -0800
-Message-ID: <20240129170025.738516998@linuxfoundation.org>
+Message-ID: <20240129170003.274558916@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,138 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Li zeming <zeming@nfschina.com>
 
-[ Upstream commit e626cb02ee8399fd42c415e542d031d185783903 ]
+[ Upstream commit 73d73f5ee7fb0c42ff87091d105bee720a9565f1 ]
 
-Jiri Slaby reported a futex state inconsistency resulting in -EINVAL during
-a lock operation for a PI futex. It requires that the a lock process is
-interrupted by a timeout or signal:
+Assignments from pointer variables of type (void *) do not require
+explicit type casts, so remove such type cases from the code in
+drivers/base/power/main.c where applicable.
 
-  T1 Owns the futex in user space.
-
-  T2 Tries to acquire the futex in kernel (futex_lock_pi()). Allocates a
-     pi_state and attaches itself to it.
-
-  T2 Times out and removes its rt_waiter from the rt_mutex. Drops the
-     rtmutex lock and tries to acquire the hash bucket lock to remove
-     the futex_q. The lock is contended and T2 schedules out.
-
-  T1 Unlocks the futex (futex_unlock_pi()). Finds a futex_q but no
-     rt_waiter. Unlocks the futex (do_uncontended) and makes it available
-     to user space.
-
-  T3 Acquires the futex in user space.
-
-  T4 Tries to acquire the futex in kernel (futex_lock_pi()). Finds the
-     existing futex_q of T2 and tries to attach itself to the existing
-     pi_state.  This (attach_to_pi_state()) fails with -EINVAL because uval
-     contains the TID of T3 but pi_state points to T1.
-
-It's incorrect to unlock the futex and make it available for user space to
-acquire as long as there is still an existing state attached to it in the
-kernel.
-
-T1 cannot hand over the futex to T2 because T2 already gave up and started
-to clean up and is blocked on the hash bucket lock, so T2's futex_q with
-the pi_state pointing to T1 is still queued.
-
-T2 observes the futex_q, but ignores it as there is no waiter on the
-corresponding rt_mutex and takes the uncontended path which allows the
-subsequent caller of futex_lock_pi() (T4) to observe that stale state.
-
-To prevent this the unlock path must dequeue all futex_q entries which
-point to the same pi_state when there is no waiter on the rt mutex. This
-requires obviously to make the dequeue conditional in the locking path to
-prevent a double dequeue. With that it's guaranteed that user space cannot
-observe an uncontended futex which has kernel state attached.
-
-Fixes: fbeb558b0dd0d ("futex/pi: Fix recursive rt_mutex waiter state")
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20240118115451.0TkD_ZhB@linutronix.de
-Closes: https://lore.kernel.org/all/4611bcf2-44d0-4c34-9b84-17406f881003@kernel.org
+Signed-off-by: Li zeming <zeming@nfschina.com>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 7839d0078e0d ("PM: sleep: Fix possible deadlocks in core system-wide PM code")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/futex/core.c | 15 ++++++++++++---
- kernel/futex/pi.c   | 11 ++++++++---
- 2 files changed, 20 insertions(+), 6 deletions(-)
+ drivers/base/power/main.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/futex/core.c b/kernel/futex/core.c
-index dad981a865b8..52d0bf67e715 100644
---- a/kernel/futex/core.c
-+++ b/kernel/futex/core.c
-@@ -626,12 +626,21 @@ int futex_unqueue(struct futex_q *q)
- }
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index c50139207794..f85f3515c258 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -679,7 +679,7 @@ static bool dpm_async_fn(struct device *dev, async_func_t func)
  
- /*
-- * PI futexes can not be requeued and must remove themselves from the
-- * hash bucket. The hash bucket lock (i.e. lock_ptr) is held.
-+ * PI futexes can not be requeued and must remove themselves from the hash
-+ * bucket. The hash bucket lock (i.e. lock_ptr) is held.
-  */
- void futex_unqueue_pi(struct futex_q *q)
+ static void async_resume_noirq(void *data, async_cookie_t cookie)
  {
--	__futex_unqueue(q);
-+	/*
-+	 * If the lock was not acquired (due to timeout or signal) then the
-+	 * rt_waiter is removed before futex_q is. If this is observed by
-+	 * an unlocker after dropping the rtmutex wait lock and before
-+	 * acquiring the hash bucket lock, then the unlocker dequeues the
-+	 * futex_q from the hash bucket list to guarantee consistent state
-+	 * vs. userspace. Therefore the dequeue here must be conditional.
-+	 */
-+	if (!plist_node_empty(&q->list))
-+		__futex_unqueue(q);
+-	struct device *dev = (struct device *)data;
++	struct device *dev = data;
+ 	int error;
  
- 	BUG_ON(!q->pi_state);
- 	put_pi_state(q->pi_state);
-diff --git a/kernel/futex/pi.c b/kernel/futex/pi.c
-index 90e5197f4e56..5722467f2737 100644
---- a/kernel/futex/pi.c
-+++ b/kernel/futex/pi.c
-@@ -1135,6 +1135,7 @@ int futex_unlock_pi(u32 __user *uaddr, unsigned int flags)
+ 	error = device_resume_noirq(dev, pm_transition, true);
+@@ -816,7 +816,7 @@ static int device_resume_early(struct device *dev, pm_message_t state, bool asyn
  
- 	hb = futex_hash(&key);
- 	spin_lock(&hb->lock);
-+retry_hb:
+ static void async_resume_early(void *data, async_cookie_t cookie)
+ {
+-	struct device *dev = (struct device *)data;
++	struct device *dev = data;
+ 	int error;
  
- 	/*
- 	 * Check waiters first. We do not trust user space values at
-@@ -1177,12 +1178,17 @@ int futex_unlock_pi(u32 __user *uaddr, unsigned int flags)
- 		/*
- 		 * Futex vs rt_mutex waiter state -- if there are no rt_mutex
- 		 * waiters even though futex thinks there are, then the waiter
--		 * is leaving and the uncontended path is safe to take.
-+		 * is leaving. The entry needs to be removed from the list so a
-+		 * new futex_lock_pi() is not using this stale PI-state while
-+		 * the futex is available in user space again.
-+		 * There can be more than one task on its way out so it needs
-+		 * to retry.
- 		 */
- 		rt_waiter = rt_mutex_top_waiter(&pi_state->pi_mutex);
- 		if (!rt_waiter) {
-+			__futex_unqueue(top_waiter);
- 			raw_spin_unlock_irq(&pi_state->pi_mutex.wait_lock);
--			goto do_uncontended;
-+			goto retry_hb;
- 		}
+ 	error = device_resume_early(dev, pm_transition, true);
+@@ -980,7 +980,7 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
  
- 		get_pi_state(pi_state);
-@@ -1217,7 +1223,6 @@ int futex_unlock_pi(u32 __user *uaddr, unsigned int flags)
- 		return ret;
- 	}
+ static void async_resume(void *data, async_cookie_t cookie)
+ {
+-	struct device *dev = (struct device *)data;
++	struct device *dev = data;
+ 	int error;
  
--do_uncontended:
- 	/*
- 	 * We have no kernel internal state, i.e. no waiters in the
- 	 * kernel. Waiters which are about to queue themselves are stuck
+ 	error = device_resume(dev, pm_transition, true);
+@@ -1269,7 +1269,7 @@ static int __device_suspend_noirq(struct device *dev, pm_message_t state, bool a
+ 
+ static void async_suspend_noirq(void *data, async_cookie_t cookie)
+ {
+-	struct device *dev = (struct device *)data;
++	struct device *dev = data;
+ 	int error;
+ 
+ 	error = __device_suspend_noirq(dev, pm_transition, true);
+@@ -1450,7 +1450,7 @@ static int __device_suspend_late(struct device *dev, pm_message_t state, bool as
+ 
+ static void async_suspend_late(void *data, async_cookie_t cookie)
+ {
+-	struct device *dev = (struct device *)data;
++	struct device *dev = data;
+ 	int error;
+ 
+ 	error = __device_suspend_late(dev, pm_transition, true);
+@@ -1727,7 +1727,7 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
+ 
+ static void async_suspend(void *data, async_cookie_t cookie)
+ {
+-	struct device *dev = (struct device *)data;
++	struct device *dev = data;
+ 	int error;
+ 
+ 	error = __device_suspend(dev, pm_transition, true);
 -- 
 2.43.0
 
