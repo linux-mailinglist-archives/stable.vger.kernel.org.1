@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD651840DBE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C2C840FF6
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F320D1C234EC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DD362842EA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA5215AAAF;
-	Mon, 29 Jan 2024 17:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE157373A;
+	Mon, 29 Jan 2024 17:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNslL1EA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MN0fLxEI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C66315AAA8;
-	Mon, 29 Jan 2024 17:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3DC73722;
+	Mon, 29 Jan 2024 17:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548159; cv=none; b=rulFEJTfOHkgWLxNw+EPftZ1Nu3UZwqJfkb0vetRefquxqud/xJqbhg5smRHSWOADMkFlssWj83GK2tldQsuSVjQ/84foCwJL6kzaYDWyK4qng95/ww2j1Q6Qo9ZzzLHFx3Z3A17ssWmbL7MHkWZPrbQ/v0m8C1tS0QYDiWb9dY=
+	t=1706548535; cv=none; b=KcAtqziNmcfhfLhmaJ8hozRuuvt0A0SYrl/E5Tly0uNXncM6WcwYJfTVYbmsHh/vyJad7JVgc29p1iuyiazetL3HdD57rZe2vC+dZQAl5i40//pIexsbFTA4iIIlMmFhG2Zkl9w3WH4C8o323uH8wcZkrwfPQOSdUEw+FrDZiFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548159; c=relaxed/simple;
-	bh=h0TXZGT++1VJ6unMYuCME4Yru9drFqJoVje+tYYF9BE=;
+	s=arc-20240116; t=1706548535; c=relaxed/simple;
+	bh=EI0HpUdBF3PsnXJZFtOKP0A8P3Z2BRM5MRQMEjvAzJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RF1pybXephroouhRcz5un+h91MhaUTQ5ATn2lOaF9pqgLLb6gbFvar46/Ausf9rgfz8X93xTom+NcpgeYyjancP3a1o3mhhWtcjeA9iAm3mRdbZuST+rchirt6XWq7h6mpOrTrUj+HP+onA8L7t8THhjaAzsHid1HCu6C9JwRNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNslL1EA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC3DFC43394;
-	Mon, 29 Jan 2024 17:09:18 +0000 (UTC)
+	 MIME-Version; b=c3X4vPdVAnFkB37b78LhyPMIxbqKO+VjVF8k/zEMTnHnDOVSnCWS9RmFaORW/sktAX1h1nDxRH89NRK+I66w/4Vd51QgXeezZ9CwsDfg3dT8U7iUsvafywn1SnLpkHeJTAWIjy8eu1g4hadSi52qyogdeX/YDG5KfOXOGMAwNKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MN0fLxEI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F46C433F1;
+	Mon, 29 Jan 2024 17:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548159;
-	bh=h0TXZGT++1VJ6unMYuCME4Yru9drFqJoVje+tYYF9BE=;
+	s=korg; t=1706548535;
+	bh=EI0HpUdBF3PsnXJZFtOKP0A8P3Z2BRM5MRQMEjvAzJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zNslL1EAhN8IW+duM6XD9/P0BJVcq4gpN4YrnsP0E1c2Q2HZyd4JfU8iquEkAayFL
-	 myJM18W9zLu7mYtn3i+5USPLMxO4p0yXF4gocLFJUMLmX30f/lrQzKwQc+QITmnUZk
-	 UyO9fWC7e0/U6nf8kE/xchrFq/Qo6ai6IbgUJQQ4=
+	b=MN0fLxEIqG910JLPf+gOIc56MBcbgxJ+/oVeRpsSgpLWi5mgh01RqTA4bVgkpb1QX
+	 G+kHAc8BhwLAGYVFoQnAVPeEW7E5jL2yRVqMUB3UXavRyIhE7dFJdbaff2uJoqyTxz
+	 Y6FWToBtYJ4AP9CyAh9xr+IRV99AX8fO/sd4aX0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Neeraj Upadhyay (AMD)" <neeraj.iitr10@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 198/346] rcu: Defer RCU kthreads wakeup when CPU is dying
+	Robert Morris <rtm@csail.mit.edu>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 165/331] cifs: fix a pending undercount of srv_count
 Date: Mon, 29 Jan 2024 09:03:49 -0800
-Message-ID: <20240129170022.225858624@linuxfoundation.org>
+Message-ID: <20240129170019.752153622@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit e787644caf7628ad3269c1fbd321c3255cf51710 ]
+commit f30bbc38704e279c06d073ecb18fea376791ecab upstream.
 
-When the CPU goes idle for the last time during the CPU down hotplug
-process, RCU reports a final quiescent state for the current CPU. If
-this quiescent state propagates up to the top, some tasks may then be
-woken up to complete the grace period: the main grace period kthread
-and/or the expedited main workqueue (or kworker).
+The following commit reverted the changes to ref count
+the server struct while scheduling a reconnect work:
+823342524868 Revert "cifs: reconnect work should have reference on server struct"
 
-If those kthreads have a SCHED_FIFO policy, the wake up can indirectly
-arm the RT bandwith timer to the local offline CPU. Since this happens
-after hrtimers have been migrated at CPUHP_AP_HRTIMERS_DYING stage, the
-timer gets ignored. Therefore if the RCU kthreads are waiting for RT
-bandwidth to be available, they may never be actually scheduled.
+However, a following change also introduced scheduling
+of reconnect work, and assumed ref counting. This change
+fixes that as well.
 
-This triggers TREE03 rcutorture hangs:
+Fixes umount problems like:
 
-	 rcu: INFO: rcu_preempt self-detected stall on CPU
-	 rcu:     4-...!: (1 GPs behind) idle=9874/1/0x4000000000000000 softirq=0/0 fqs=20 rcuc=21071 jiffies(starved)
-	 rcu:     (t=21035 jiffies g=938281 q=40787 ncpus=6)
-	 rcu: rcu_preempt kthread starved for 20964 jiffies! g938281 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=0
-	 rcu:     Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-	 rcu: RCU grace-period kthread stack dump:
-	 task:rcu_preempt     state:R  running task     stack:14896 pid:14    tgid:14    ppid:2      flags:0x00004000
-	 Call Trace:
-	  <TASK>
-	  __schedule+0x2eb/0xa80
-	  schedule+0x1f/0x90
-	  schedule_timeout+0x163/0x270
-	  ? __pfx_process_timeout+0x10/0x10
-	  rcu_gp_fqs_loop+0x37c/0x5b0
-	  ? __pfx_rcu_gp_kthread+0x10/0x10
-	  rcu_gp_kthread+0x17c/0x200
-	  kthread+0xde/0x110
-	  ? __pfx_kthread+0x10/0x10
-	  ret_from_fork+0x2b/0x40
-	  ? __pfx_kthread+0x10/0x10
-	  ret_from_fork_asm+0x1b/0x30
-	  </TASK>
+[73496.157838] CPU: 5 PID: 1321389 Comm: umount Tainted: G        W  OE      6.7.0-060700rc6-generic #202312172332
+[73496.157841] Hardware name: LENOVO 20MAS08500/20MAS08500, BIOS N2CET67W (1.50 ) 12/15/2022
+[73496.157843] RIP: 0010:cifs_put_tcp_session+0x17d/0x190 [cifs]
+[73496.157906] Code: 5d 31 c0 31 d2 31 f6 31 ff c3 cc cc cc cc e8 4a 6e 14 e6 e9 f6 fe ff ff be 03 00 00 00 48 89 d7 e8 78 26 b3 e5 e9 e4 fe ff ff <0f> 0b e9 b1 fe ff ff 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90
+[73496.157908] RSP: 0018:ffffc90003bcbcb8 EFLAGS: 00010286
+[73496.157911] RAX: 00000000ffffffff RBX: ffff8885830fa800 RCX: 0000000000000000
+[73496.157913] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[73496.157915] RBP: ffffc90003bcbcc8 R08: 0000000000000000 R09: 0000000000000000
+[73496.157917] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+[73496.157918] R13: ffff8887d56ba800 R14: 00000000ffffffff R15: ffff8885830fa800
+[73496.157920] FS:  00007f1ff0e33800(0000) GS:ffff88887ba80000(0000) knlGS:0000000000000000
+[73496.157922] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[73496.157924] CR2: 0000115f002e2010 CR3: 00000003d1e24005 CR4: 00000000003706f0
+[73496.157926] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[73496.157928] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[73496.157929] Call Trace:
+[73496.157931]  <TASK>
+[73496.157933]  ? show_regs+0x6d/0x80
+[73496.157936]  ? __warn+0x89/0x160
+[73496.157939]  ? cifs_put_tcp_session+0x17d/0x190 [cifs]
+[73496.157976]  ? report_bug+0x17e/0x1b0
+[73496.157980]  ? handle_bug+0x51/0xa0
+[73496.157983]  ? exc_invalid_op+0x18/0x80
+[73496.157985]  ? asm_exc_invalid_op+0x1b/0x20
+[73496.157989]  ? cifs_put_tcp_session+0x17d/0x190 [cifs]
+[73496.158023]  ? cifs_put_tcp_session+0x1e/0x190 [cifs]
+[73496.158057]  __cifs_put_smb_ses+0x2b5/0x540 [cifs]
+[73496.158090]  ? tconInfoFree+0xc2/0x120 [cifs]
+[73496.158130]  cifs_put_tcon.part.0+0x108/0x2b0 [cifs]
+[73496.158173]  cifs_put_tlink+0x49/0x90 [cifs]
+[73496.158220]  cifs_umount+0x56/0xb0 [cifs]
+[73496.158258]  cifs_kill_sb+0x52/0x60 [cifs]
+[73496.158306]  deactivate_locked_super+0x32/0xc0
+[73496.158309]  deactivate_super+0x46/0x60
+[73496.158311]  cleanup_mnt+0xc3/0x170
+[73496.158314]  __cleanup_mnt+0x12/0x20
+[73496.158330]  task_work_run+0x5e/0xa0
+[73496.158333]  exit_to_user_mode_loop+0x105/0x130
+[73496.158336]  exit_to_user_mode_prepare+0xa5/0xb0
+[73496.158338]  syscall_exit_to_user_mode+0x29/0x60
+[73496.158341]  do_syscall_64+0x6c/0xf0
+[73496.158344]  ? syscall_exit_to_user_mode+0x37/0x60
+[73496.158346]  ? do_syscall_64+0x6c/0xf0
+[73496.158349]  ? exit_to_user_mode_prepare+0x30/0xb0
+[73496.158353]  ? syscall_exit_to_user_mode+0x37/0x60
+[73496.158355]  ? do_syscall_64+0x6c/0xf0
 
-The situation can't be solved with just unpinning the timer. The hrtimer
-infrastructure and the nohz heuristics involved in finding the best
-remote target for an unpinned timer would then also need to handle
-enqueues from an offline CPU in the most horrendous way.
-
-So fix this on the RCU side instead and defer the wake up to an online
-CPU if it's too late for the local one.
-
-Reported-by: Paul E. McKenney <paulmck@kernel.org>
-Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.iitr10@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Robert Morris <rtm@csail.mit.edu>
+Fixes: 705fc522fe9d ("cifs: handle when server starts supporting multichannel")
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/rcu/tree.c     | 34 +++++++++++++++++++++++++++++++++-
- kernel/rcu/tree_exp.h |  3 +--
- 2 files changed, 34 insertions(+), 3 deletions(-)
+ fs/smb/client/smb2pdu.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 3ac3c846105f..157f3ca2a9b5 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -1013,6 +1013,38 @@ static bool rcu_future_gp_cleanup(struct rcu_node *rnp)
- 	return needmore;
- }
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -440,8 +440,7 @@ skip_sess_setup:
+ skip_add_channels:
  
-+static void swake_up_one_online_ipi(void *arg)
-+{
-+	struct swait_queue_head *wqh = arg;
-+
-+	swake_up_one(wqh);
-+}
-+
-+static void swake_up_one_online(struct swait_queue_head *wqh)
-+{
-+	int cpu = get_cpu();
-+
-+	/*
-+	 * If called from rcutree_report_cpu_starting(), wake up
-+	 * is dangerous that late in the CPU-down hotplug process. The
-+	 * scheduler might queue an ignored hrtimer. Defer the wake up
-+	 * to an online CPU instead.
-+	 */
-+	if (unlikely(cpu_is_offline(cpu))) {
-+		int target;
-+
-+		target = cpumask_any_and(housekeeping_cpumask(HK_TYPE_RCU),
-+					 cpu_online_mask);
-+
-+		smp_call_function_single(target, swake_up_one_online_ipi,
-+					 wqh, 0);
-+		put_cpu();
-+	} else {
-+		put_cpu();
-+		swake_up_one(wqh);
-+	}
-+}
-+
- /*
-  * Awaken the grace-period kthread.  Don't do a self-awaken (unless in an
-  * interrupt or softirq handler, in which case we just might immediately
-@@ -1037,7 +1069,7 @@ static void rcu_gp_kthread_wake(void)
- 		return;
- 	WRITE_ONCE(rcu_state.gp_wake_time, jiffies);
- 	WRITE_ONCE(rcu_state.gp_wake_seq, READ_ONCE(rcu_state.gp_seq));
--	swake_up_one(&rcu_state.gp_wq);
-+	swake_up_one_online(&rcu_state.gp_wq);
- }
+ 	if (smb2_command != SMB2_INTERNAL_CMD)
+-		if (mod_delayed_work(cifsiod_wq, &server->reconnect, 0))
+-			cifs_put_tcp_session(server, false);
++		mod_delayed_work(cifsiod_wq, &server->reconnect, 0);
  
- /*
-diff --git a/kernel/rcu/tree_exp.h b/kernel/rcu/tree_exp.h
-index 6d7cea5d591f..2ac440bc7e10 100644
---- a/kernel/rcu/tree_exp.h
-+++ b/kernel/rcu/tree_exp.h
-@@ -173,7 +173,6 @@ static bool sync_rcu_exp_done_unlocked(struct rcu_node *rnp)
- 	return ret;
- }
- 
--
- /*
-  * Report the exit from RCU read-side critical section for the last task
-  * that queued itself during or before the current expedited preemptible-RCU
-@@ -201,7 +200,7 @@ static void __rcu_report_exp_rnp(struct rcu_node *rnp,
- 			raw_spin_unlock_irqrestore_rcu_node(rnp, flags);
- 			if (wake) {
- 				smp_mb(); /* EGP done before wake_up(). */
--				swake_up_one(&rcu_state.expedited_wq);
-+				swake_up_one_online(&rcu_state.expedited_wq);
- 			}
- 			break;
- 		}
--- 
-2.43.0
-
+ 	atomic_inc(&tconInfoReconnectCount);
+ out:
 
 
 
