@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-16713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D5B9840E1B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4502F841038
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1E621F2CC6F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 019A9285D8F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87BC115EA81;
-	Mon, 29 Jan 2024 17:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5DCC15F301;
+	Mon, 29 Jan 2024 17:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7VO84dd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ab4KezEd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476A215958B;
-	Mon, 29 Jan 2024 17:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879CC15F309;
+	Mon, 29 Jan 2024 17:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548225; cv=none; b=RwKWJCtfd0eA44Qwhv8dAunnyxwIvGP3XsB8zv4vWHnBjQP0eTy9esFzbBi92iFLZqTDZj5tlI2AslaR+hAfwn7hFFKoIK1x2+tUU/Yrtq/zqtMal6CDC+hmOMhGGETQlDyVmtNMt7OH/cpQVxKdCArTAHIRqXT5db7on4oBEL4=
+	t=1706548583; cv=none; b=eIlwzb8dt1iWw1hl/jUKDO+gp3tYwMR2sWzwZd9scnmhoKyoOzf2se9tJMa4fNg7PHYV274DPKtar6O3IwDfoVoLEO/aFPEkHQnUg4BjpjAMkeXRzZpuEE0melsvdiSeEamwc4/zYkxOa5jr3c0eK9HI9vo7kRyZS6Naw+AGJnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548225; c=relaxed/simple;
-	bh=U6o4GeNTq92S6/US8We+m4WfkA0VVzDdHz+iQPHoEf8=;
+	s=arc-20240116; t=1706548583; c=relaxed/simple;
+	bh=zWfIxBqn1SDlravTzIhnpZhH9CxQGgVDjYgLM1JEQ2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1KqWRX3GomnX9HzAvq6u3e2d5NcpdylFH26+zq4x875HG4zy8Z4UlBh/VHMytKncfcQ+2zAI+nZQ1jlM+HFI11U0LIRHqXd2dW3HRtNdliEmxdBV38+sdnJl2OPOAYw3tJcFoSkhR4j2vhAwW/IUCXTcEaGhr6R6+o9ZACmRDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7VO84dd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C98DC433F1;
-	Mon, 29 Jan 2024 17:10:25 +0000 (UTC)
+	 MIME-Version; b=BYlmDRlgUfl7efire0KAD8Z0bq2CQ5Npw63yumjVHymt/PGRqBAtMzL4h8Lfk4FkB7Y8BHBqbdQxk0HT8ECpHg0etwUcp0xmKQPtZsmQyZOXiZQze7zEAkv3K/QUUEwh+xEY2b0exrswoTnlbURLqctebUnCuvXV0UipWj/JMOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ab4KezEd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F62C433C7;
+	Mon, 29 Jan 2024 17:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548225;
-	bh=U6o4GeNTq92S6/US8We+m4WfkA0VVzDdHz+iQPHoEf8=;
+	s=korg; t=1706548583;
+	bh=zWfIxBqn1SDlravTzIhnpZhH9CxQGgVDjYgLM1JEQ2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O7VO84ddYDoDDParvznk1S8Sxdppi9FjHcnQuqEpfCYuNCUB/9iqmPGALL8/gF6iq
-	 H/NQEqI/xDbuilyMHq9ctPuQ5SRtmvIlsf3Iy74COfQagceGT8dN2U3/C1EGzy1zuT
-	 JaKDgkMtaiBpUYv+pVSThdurChi6gYpRX73svBMM=
+	b=Ab4KezEdqlnjVQu2qQwwAys5MZ6JWOO6qh1r7Ed8dHcO+LGwrWQSZxtlGJB4i5so3
+	 PYpBEvv4akbiYn/3DmWRMNuEDqLD9dDBPvGxPnhKgchURncR99hzU6fqtt6Xk/ir9v
+	 yFc7Cc0EU5X67OxPQl/TUoI5mAIPzes/jO1R983c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	nerdopolis <bluescreen_avenger@verizon.net>,
-	Sima Vetter <daniel.vetter@ffwll.ch>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Zack Rusin <zackr@vmware.com>
-Subject: [PATCH 6.7 254/346] drm/virtio: Disable damage clipping if FB changed since last page-flip
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 221/331] ice: update xdp_rxq_info::frag_size for ZC enabled Rx queue
 Date: Mon, 29 Jan 2024 09:04:45 -0800
-Message-ID: <20240129170023.876417834@linuxfoundation.org>
+Message-ID: <20240129170021.340798129@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Martinez Canillas <javierm@redhat.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-commit 0240db231dfe5ee5b7a3a03cba96f0844b7a673d upstream.
+[ Upstream commit 3de38c87174225487fc93befeea7d380db80aef6 ]
 
-The driver does per-buffer uploads and needs to force a full plane update
-if the plane's attached framebuffer has change since the last page-flip.
+Now that ice driver correctly sets up frag_size in xdp_rxq_info, let us
+make it work for ZC multi-buffer as well. ice_rx_ring::rx_buf_len for ZC
+is being set via xsk_pool_get_rx_frame_size() and this needs to be
+propagated up to xdp_rxq_info.
 
-Fixes: 01f05940a9a7 ("drm/virtio: Enable fb damage clips property for the primary plane")
-Cc: <stable@vger.kernel.org> # v6.4+
-Reported-by: nerdopolis <bluescreen_avenger@verizon.net>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218115
-Suggested-by: Sima Vetter <daniel.vetter@ffwll.ch>
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Zack Rusin <zackr@vmware.com>
-Acked-by: Sima Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231123221315.3579454-3-javierm@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use a bigger hammer and instead of unregistering only xdp_rxq_info's
+memory model, unregister it altogether and register it again and have
+xdp_rxq_info with correct frag_size value.
+
+Fixes: 1bbc04de607b ("ice: xsk: add RX multi-buffer support")
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/r/20240124191602.566724-9-maciej.fijalkowski@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/virtio/virtgpu_plane.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_base.c | 37 ++++++++++++++---------
+ 1 file changed, 23 insertions(+), 14 deletions(-)
 
---- a/drivers/gpu/drm/virtio/virtgpu_plane.c
-+++ b/drivers/gpu/drm/virtio/virtgpu_plane.c
-@@ -79,6 +79,8 @@ static int virtio_gpu_plane_atomic_check
- {
- 	struct drm_plane_state *new_plane_state = drm_atomic_get_new_plane_state(state,
- 										 plane);
-+	struct drm_plane_state *old_plane_state = drm_atomic_get_old_plane_state(state,
-+										 plane);
- 	bool is_cursor = plane->type == DRM_PLANE_TYPE_CURSOR;
- 	struct drm_crtc_state *crtc_state;
- 	int ret;
-@@ -86,6 +88,14 @@ static int virtio_gpu_plane_atomic_check
- 	if (!new_plane_state->fb || WARN_ON(!new_plane_state->crtc))
- 		return 0;
+diff --git a/drivers/net/ethernet/intel/ice/ice_base.c b/drivers/net/ethernet/intel/ice/ice_base.c
+index 7fa43827a3f0..4f3e65b47cdc 100644
+--- a/drivers/net/ethernet/intel/ice/ice_base.c
++++ b/drivers/net/ethernet/intel/ice/ice_base.c
+@@ -534,19 +534,27 @@ int ice_vsi_cfg_rxq(struct ice_rx_ring *ring)
+ 	ring->rx_buf_len = ring->vsi->rx_buf_len;
  
-+	/*
-+	 * Ignore damage clips if the framebuffer attached to the plane's state
-+	 * has changed since the last plane update (page-flip). In this case, a
-+	 * full plane update should happen because uploads are done per-buffer.
-+	 */
-+	if (old_plane_state->fb != new_plane_state->fb)
-+		new_plane_state->ignore_damage_clips = true;
-+
- 	crtc_state = drm_atomic_get_crtc_state(state,
- 					       new_plane_state->crtc);
- 	if (IS_ERR(crtc_state))
+ 	if (ring->vsi->type == ICE_VSI_PF) {
+-		if (!xdp_rxq_info_is_reg(&ring->xdp_rxq))
+-			/* coverity[check_return] */
+-			__xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
+-					   ring->q_index,
+-					   ring->q_vector->napi.napi_id,
+-					   ring->vsi->rx_buf_len);
++		if (!xdp_rxq_info_is_reg(&ring->xdp_rxq)) {
++			err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
++						 ring->q_index,
++						 ring->q_vector->napi.napi_id,
++						 ring->rx_buf_len);
++			if (err)
++				return err;
++		}
+ 
+ 		ring->xsk_pool = ice_xsk_pool(ring);
+ 		if (ring->xsk_pool) {
+-			xdp_rxq_info_unreg_mem_model(&ring->xdp_rxq);
++			xdp_rxq_info_unreg(&ring->xdp_rxq);
+ 
+ 			ring->rx_buf_len =
+ 				xsk_pool_get_rx_frame_size(ring->xsk_pool);
++			err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
++						 ring->q_index,
++						 ring->q_vector->napi.napi_id,
++						 ring->rx_buf_len);
++			if (err)
++				return err;
+ 			err = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
+ 							 MEM_TYPE_XSK_BUFF_POOL,
+ 							 NULL);
+@@ -557,13 +565,14 @@ int ice_vsi_cfg_rxq(struct ice_rx_ring *ring)
+ 			dev_info(dev, "Registered XDP mem model MEM_TYPE_XSK_BUFF_POOL on Rx ring %d\n",
+ 				 ring->q_index);
+ 		} else {
+-			if (!xdp_rxq_info_is_reg(&ring->xdp_rxq))
+-				/* coverity[check_return] */
+-				__xdp_rxq_info_reg(&ring->xdp_rxq,
+-						   ring->netdev,
+-						   ring->q_index,
+-						   ring->q_vector->napi.napi_id,
+-						   ring->vsi->rx_buf_len);
++			if (!xdp_rxq_info_is_reg(&ring->xdp_rxq)) {
++				err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
++							 ring->q_index,
++							 ring->q_vector->napi.napi_id,
++							 ring->rx_buf_len);
++				if (err)
++					return err;
++			}
+ 
+ 			err = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
+ 							 MEM_TYPE_PAGE_SHARED,
+-- 
+2.43.0
+
 
 
 
