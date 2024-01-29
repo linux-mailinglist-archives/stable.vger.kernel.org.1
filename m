@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-16944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85165840F2A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BCFA84107D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E4D2B24BCC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1B4A1C23AFF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E111164181;
-	Mon, 29 Jan 2024 17:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8077605E;
+	Mon, 29 Jan 2024 17:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7/p72Qr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXCTYOXh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C76015956D;
-	Mon, 29 Jan 2024 17:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE2A76051;
+	Mon, 29 Jan 2024 17:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548394; cv=none; b=se1vkX2NNz6DAsIKOflHiyYzH09btedDcPUUFnHJXTnwe4ZuxDObqXr8UTJ+jtrNdVr+PEILbfzEfm3zly9NMadNg99/LqNKhOScb4styEq2tQNqythpR4/7TJLM3z0q3ALlZJigs1SiskmBPS+IHvGC/dtOpwGmD8sjexBFJ1s=
+	t=1706548631; cv=none; b=r/ddzw5mMBVPgkwbnmbhrM3IdW9KDlXMpLSsM5bgUutcKmVyoKlqhDWRDRy293GZbVRxp8HG9dXF108TMs2DGRVvJuSe1bogq/SfJgZuX+O275qkTqevJQN5nDOgktErwi5VYXLinP8tLF5lIWUdjpO+yWXB3fGmsgKm/jd83ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548394; c=relaxed/simple;
-	bh=c+ceS5WwQfohiufiToqDdokE5xUCX94L4hTIEQDXXY0=;
+	s=arc-20240116; t=1706548631; c=relaxed/simple;
+	bh=kxVlRXH695/kWNjoA6YV4SmZLVpC6IELHiVp8GF2WMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cxiqN9NnEm0htsGFO8DK1w+6QqmS97ea5VfB385ZqgQMIZEJXfl+PvKFBlRfv8tSNIpF3rX/zrvTS08oO1LDssrZNi5/Alc+necFKoAdOXmuDk4oFT8/v0q58uYPaHiLdrsLQiV6fmYPE8UrDv/l3MFIIGycpvPXjF/SLE0gSWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7/p72Qr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14649C433F1;
-	Mon, 29 Jan 2024 17:13:14 +0000 (UTC)
+	 MIME-Version; b=fC40j/5frPbPfhzgKHAEZVSwukroANdbYzcOzWcRLyrSRmmna7k7Qjyvxw1cZO+LX6FfFxU/j1H4GpqzVMTy69P/Xb4S8NL2bljPWLXSPB70JmSxRtt05GSpmkN1JItLFQQ4yu9NSQYm74+xm6OUUppAx1cKR5cstRNtF3yOAa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXCTYOXh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE89C43390;
+	Mon, 29 Jan 2024 17:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548394;
-	bh=c+ceS5WwQfohiufiToqDdokE5xUCX94L4hTIEQDXXY0=;
+	s=korg; t=1706548631;
+	bh=kxVlRXH695/kWNjoA6YV4SmZLVpC6IELHiVp8GF2WMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7/p72QrCtjrXpoEajC5ei7HE+WiLMtvIMvKN9YCKjIJDldJlfU/3s+BxzfzgDNEl
-	 Nn5IAnLH4izrBo7GApMZxWU32qZpIQhKijuqbR5uiSTn66dGnQuA507KkKeVAzWtRr
-	 vb30iqyQmewM0QwF2bk7Zg/034RpAcoax7/4ljm4=
+	b=CXCTYOXhbBt0qjf0249YX+jU6KT17E+MnpJiNbJurC5jG8kCjg443J+73k+hiD2eH
+	 EC1JoPAIfs0sXwHrSWe2OoC965mm4PQEGS/815yYOvPi5sN4U5F/SDYkM8TygTHRSL
+	 MgZtw6HofkCnMeA8H/mqrPFaQkGLBD8MNZpH/wds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 145/185] bus: mhi: ep: Do not allocate event ring element on stack
+Subject: [PATCH 6.6 281/331] media: v4l2-cci: Add support for little-endian encoded registers
 Date: Mon, 29 Jan 2024 09:05:45 -0800
-Message-ID: <20240129170003.245087417@linuxfoundation.org>
+Message-ID: <20240129170023.084693224@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,127 +65,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 987fdb5a43a66764808371b54e6047834170d565 ]
+[ Upstream commit d92e7a013ff33f4e0b31bbf768d0c85a8acefebf ]
 
-It is possible that the host controller driver would use DMA framework to
-write the event ring element. So avoid allocating event ring element on the
-stack as DMA cannot work on vmalloc memory.
+Some sensors, e.g. Sony IMX290, are using little-endian registers. Add
+support for those by encoding the endianness into Bit 20 of the register
+address.
 
+Fixes: af73323b9770 ("media: imx290: Convert to new CCI register access helpers")
 Cc: stable@vger.kernel.org
-Fixes: 961aeb689224 ("bus: mhi: ep: Add support for sending events to the host")
-Link: https://lore.kernel.org/r/20230901073502.69385-1-manivannan.sadhasivam@linaro.org
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+[Sakari Ailus: Fixed commit message.]
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/ep/main.c | 68 ++++++++++++++++++++++++++++-----------
- 1 file changed, 50 insertions(+), 18 deletions(-)
+ drivers/media/v4l2-core/v4l2-cci.c | 44 ++++++++++++++++++++++++------
+ include/media/v4l2-cci.h           |  5 ++++
+ 2 files changed, 41 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
-index edd153dda40c..34e0ba6f52d0 100644
---- a/drivers/bus/mhi/ep/main.c
-+++ b/drivers/bus/mhi/ep/main.c
-@@ -71,45 +71,77 @@ static int mhi_ep_send_event(struct mhi_ep_cntrl *mhi_cntrl, u32 ring_idx,
- static int mhi_ep_send_completion_event(struct mhi_ep_cntrl *mhi_cntrl, struct mhi_ep_ring *ring,
- 					struct mhi_ring_element *tre, u32 len, enum mhi_ev_ccs code)
+diff --git a/drivers/media/v4l2-core/v4l2-cci.c b/drivers/media/v4l2-core/v4l2-cci.c
+index 3179160abde3..10005c80f43b 100644
+--- a/drivers/media/v4l2-core/v4l2-cci.c
++++ b/drivers/media/v4l2-core/v4l2-cci.c
+@@ -18,6 +18,7 @@
+ 
+ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
  {
--	struct mhi_ring_element event = {};
-+	struct mhi_ring_element *event;
-+	int ret;
-+
-+	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
-+	if (!event)
-+		return -ENOMEM;
++	bool little_endian;
+ 	unsigned int len;
+ 	u8 buf[8];
+ 	int ret;
+@@ -25,6 +26,7 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+ 	if (err && *err)
+ 		return *err;
  
--	event.ptr = cpu_to_le64(ring->rbase + ring->rd_offset * sizeof(*tre));
--	event.dword[0] = MHI_TRE_EV_DWORD0(code, len);
--	event.dword[1] = MHI_TRE_EV_DWORD1(ring->ch_id, MHI_PKT_TYPE_TX_EVENT);
-+	event->ptr = cpu_to_le64(ring->rbase + ring->rd_offset * sizeof(*tre));
-+	event->dword[0] = MHI_TRE_EV_DWORD0(code, len);
-+	event->dword[1] = MHI_TRE_EV_DWORD1(ring->ch_id, MHI_PKT_TYPE_TX_EVENT);
++	little_endian = reg & CCI_REG_LE;
+ 	len = CCI_REG_WIDTH_BYTES(reg);
+ 	reg = CCI_REG_ADDR(reg);
  
--	return mhi_ep_send_event(mhi_cntrl, ring->er_index, &event, MHI_TRE_DATA_GET_BEI(tre));
-+	ret = mhi_ep_send_event(mhi_cntrl, ring->er_index, event, MHI_TRE_DATA_GET_BEI(tre));
-+	kfree(event);
-+
-+	return ret;
- }
+@@ -40,16 +42,28 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
+ 		*val = buf[0];
+ 		break;
+ 	case 2:
+-		*val = get_unaligned_be16(buf);
++		if (little_endian)
++			*val = get_unaligned_le16(buf);
++		else
++			*val = get_unaligned_be16(buf);
+ 		break;
+ 	case 3:
+-		*val = get_unaligned_be24(buf);
++		if (little_endian)
++			*val = get_unaligned_le24(buf);
++		else
++			*val = get_unaligned_be24(buf);
+ 		break;
+ 	case 4:
+-		*val = get_unaligned_be32(buf);
++		if (little_endian)
++			*val = get_unaligned_le32(buf);
++		else
++			*val = get_unaligned_be32(buf);
+ 		break;
+ 	case 8:
+-		*val = get_unaligned_be64(buf);
++		if (little_endian)
++			*val = get_unaligned_le64(buf);
++		else
++			*val = get_unaligned_be64(buf);
+ 		break;
+ 	default:
+ 		dev_err(regmap_get_device(map), "Error invalid reg-width %u for reg 0x%04x\n",
+@@ -68,6 +82,7 @@ EXPORT_SYMBOL_GPL(cci_read);
  
- int mhi_ep_send_state_change_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_state state)
+ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
  {
--	struct mhi_ring_element event = {};
-+	struct mhi_ring_element *event;
-+	int ret;
-+
-+	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
-+	if (!event)
-+		return -ENOMEM;
++	bool little_endian;
+ 	unsigned int len;
+ 	u8 buf[8];
+ 	int ret;
+@@ -75,6 +90,7 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
+ 	if (err && *err)
+ 		return *err;
  
--	event.dword[0] = MHI_SC_EV_DWORD0(state);
--	event.dword[1] = MHI_SC_EV_DWORD1(MHI_PKT_TYPE_STATE_CHANGE_EVENT);
-+	event->dword[0] = MHI_SC_EV_DWORD0(state);
-+	event->dword[1] = MHI_SC_EV_DWORD1(MHI_PKT_TYPE_STATE_CHANGE_EVENT);
++	little_endian = reg & CCI_REG_LE;
+ 	len = CCI_REG_WIDTH_BYTES(reg);
+ 	reg = CCI_REG_ADDR(reg);
  
--	return mhi_ep_send_event(mhi_cntrl, 0, &event, 0);
-+	ret = mhi_ep_send_event(mhi_cntrl, 0, event, 0);
-+	kfree(event);
-+
-+	return ret;
- }
+@@ -83,16 +99,28 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
+ 		buf[0] = val;
+ 		break;
+ 	case 2:
+-		put_unaligned_be16(val, buf);
++		if (little_endian)
++			put_unaligned_le16(val, buf);
++		else
++			put_unaligned_be16(val, buf);
+ 		break;
+ 	case 3:
+-		put_unaligned_be24(val, buf);
++		if (little_endian)
++			put_unaligned_le24(val, buf);
++		else
++			put_unaligned_be24(val, buf);
+ 		break;
+ 	case 4:
+-		put_unaligned_be32(val, buf);
++		if (little_endian)
++			put_unaligned_le32(val, buf);
++		else
++			put_unaligned_be32(val, buf);
+ 		break;
+ 	case 8:
+-		put_unaligned_be64(val, buf);
++		if (little_endian)
++			put_unaligned_le64(val, buf);
++		else
++			put_unaligned_be64(val, buf);
+ 		break;
+ 	default:
+ 		dev_err(regmap_get_device(map), "Error invalid reg-width %u for reg 0x%04x\n",
+diff --git a/include/media/v4l2-cci.h b/include/media/v4l2-cci.h
+index a2835a663df5..8b0b361b464c 100644
+--- a/include/media/v4l2-cci.h
++++ b/include/media/v4l2-cci.h
+@@ -38,12 +38,17 @@ struct cci_reg_sequence {
+ #define CCI_REG_WIDTH_BYTES(x)		FIELD_GET(CCI_REG_WIDTH_MASK, x)
+ #define CCI_REG_WIDTH(x)		(CCI_REG_WIDTH_BYTES(x) << 3)
+ #define CCI_REG_ADDR(x)			FIELD_GET(CCI_REG_ADDR_MASK, x)
++#define CCI_REG_LE			BIT(20)
  
- int mhi_ep_send_ee_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_ee_type exec_env)
- {
--	struct mhi_ring_element event = {};
-+	struct mhi_ring_element *event;
-+	int ret;
-+
-+	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
-+	if (!event)
-+		return -ENOMEM;
+ #define CCI_REG8(x)			((1 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG16(x)			((2 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG24(x)			((3 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG32(x)			((4 << CCI_REG_WIDTH_SHIFT) | (x))
+ #define CCI_REG64(x)			((8 << CCI_REG_WIDTH_SHIFT) | (x))
++#define CCI_REG16_LE(x)			(CCI_REG_LE | (2U << CCI_REG_WIDTH_SHIFT) | (x))
++#define CCI_REG24_LE(x)			(CCI_REG_LE | (3U << CCI_REG_WIDTH_SHIFT) | (x))
++#define CCI_REG32_LE(x)			(CCI_REG_LE | (4U << CCI_REG_WIDTH_SHIFT) | (x))
++#define CCI_REG64_LE(x)			(CCI_REG_LE | (8U << CCI_REG_WIDTH_SHIFT) | (x))
  
--	event.dword[0] = MHI_EE_EV_DWORD0(exec_env);
--	event.dword[1] = MHI_SC_EV_DWORD1(MHI_PKT_TYPE_EE_EVENT);
-+	event->dword[0] = MHI_EE_EV_DWORD0(exec_env);
-+	event->dword[1] = MHI_SC_EV_DWORD1(MHI_PKT_TYPE_EE_EVENT);
- 
--	return mhi_ep_send_event(mhi_cntrl, 0, &event, 0);
-+	ret = mhi_ep_send_event(mhi_cntrl, 0, event, 0);
-+	kfree(event);
-+
-+	return ret;
- }
- 
- static int mhi_ep_send_cmd_comp_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_ev_ccs code)
- {
- 	struct mhi_ep_ring *ring = &mhi_cntrl->mhi_cmd->ring;
--	struct mhi_ring_element event = {};
-+	struct mhi_ring_element *event;
-+	int ret;
-+
-+	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
-+	if (!event)
-+		return -ENOMEM;
- 
--	event.ptr = cpu_to_le64(ring->rbase + ring->rd_offset * sizeof(struct mhi_ring_element));
--	event.dword[0] = MHI_CC_EV_DWORD0(code);
--	event.dword[1] = MHI_CC_EV_DWORD1(MHI_PKT_TYPE_CMD_COMPLETION_EVENT);
-+	event->ptr = cpu_to_le64(ring->rbase + ring->rd_offset * sizeof(struct mhi_ring_element));
-+	event->dword[0] = MHI_CC_EV_DWORD0(code);
-+	event->dword[1] = MHI_CC_EV_DWORD1(MHI_PKT_TYPE_CMD_COMPLETION_EVENT);
- 
--	return mhi_ep_send_event(mhi_cntrl, 0, &event, 0);
-+	ret = mhi_ep_send_event(mhi_cntrl, 0, event, 0);
-+	kfree(event);
-+
-+	return ret;
- }
- 
- static int mhi_ep_process_cmd_ring(struct mhi_ep_ring *ring, struct mhi_ring_element *el)
+ /**
+  * cci_read() - Read a value from a single CCI register
 -- 
 2.43.0
 
