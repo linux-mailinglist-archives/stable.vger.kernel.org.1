@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-16471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F440840D1A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FFAE840F49
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D83D61F2B381
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C022FB251E5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190A51586C7;
-	Mon, 29 Jan 2024 17:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B615316419C;
+	Mon, 29 Jan 2024 17:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmISt1qv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QW0OhrQY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCF8159563;
-	Mon, 29 Jan 2024 17:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7671315D5CF;
+	Mon, 29 Jan 2024 17:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548043; cv=none; b=GACg0BkgTR2ZVZuMv+Cav+k+EILOYWXLYNxJrdVI2P9n/QvwGkwn4wbhl8Gk1f0xWyywj1xGDuxrUmJV+2j5xASqf5yE2JtbBNDc0+SjXw78/rzosSRG9YmBxp5fFKuwBnp1I55TitZuMo8zRLE9YS4L1eQIBqngIqovuwfdths=
+	t=1706548414; cv=none; b=p1GAsFliv5T8CqBvu+/HUDCZPSw2JPSgtLMonXdtUIkHAZMFkwDsLzVoyUT0FC8ufzAvhHDp5/cdVsAt4mumlre7HEv0iaVa3/9XZNd9Ku7rFGpar7lsObItvwoZBru7cL1/zYicd7rIZi7ADRHg1fmO/oWyNhanD5n0wHHF1dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548043; c=relaxed/simple;
-	bh=+hUWxm4qOKew7axXRnKyDNd3yYfdPABqR2tpM3TgXt0=;
+	s=arc-20240116; t=1706548414; c=relaxed/simple;
+	bh=/irNzkOpJPED8UnYE4LwnnvY6RF/xgfuXzR1UUBSGeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oxMoL7HdLMeF1cu2HU2nBvF8hJGrmw0Pnj0iGOzizCLTvMym0DbOO5XCjc+dgR8wP1/o84NaqjA8D6/bdU1fjJ/fRO4Jrymo0B7paS7RMZ82NdYnspUwfodX5Svw+czjSQy+PHfXzre+xxpNOvaQVZ9gElm0EvQj1Hecco1Ao2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmISt1qv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96520C433F1;
-	Mon, 29 Jan 2024 17:07:23 +0000 (UTC)
+	 MIME-Version; b=fa2NWnEMd9eO0J2k4rsFXs0MiZ3yz9uFjJWLQTSZPBClI3E/96/dBz/gBPx8ToMXtQbvaZmmUn8wVVWgG+Ms4xzRaZk6tai95x0NwIIph/tIaTZwKpKNENL+q6stjQhkjBBZClf7xt6ohBvMHAPdmB9s+5HzVpx/KnNFdGgrKig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QW0OhrQY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D21AC43390;
+	Mon, 29 Jan 2024 17:13:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548043;
-	bh=+hUWxm4qOKew7axXRnKyDNd3yYfdPABqR2tpM3TgXt0=;
+	s=korg; t=1706548414;
+	bh=/irNzkOpJPED8UnYE4LwnnvY6RF/xgfuXzR1UUBSGeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HmISt1qvYDnevKVopvJgi8zIN7SWfwCFvgM1+jrOBQIPSzGwn8qFX/T0gRWZhgls8
-	 WPCsQpnonUSFBdyXMWOWlNSN11R4FdEeBZ4/Y50zQeNrY36DeOFx2roDbgeyoUAc1v
-	 qpIjs3ThT7WhV5W9t/BW641DLgSVfn3BypuFZSwU=
+	b=QW0OhrQYcRYgmzv9iKPK/Rw53PncbaHq0CjMwVoKIi70ibmNuW5CTBhUm0wCZonFD
+	 eMt+uYl6uGZXPkXR1m3wq+f7Wlq6t2FiAs4/JjUMpiUzYolLn+Wv9Mm374j1BOrS4Q
+	 O7KVnkUNPo7mhhqcmutlQwDzdKE5UdkWF7bX0Tb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.7 044/346] mips: Fix max_mapnr being uninitialized on early stages
+	David Lechner <dlechner@baylibre.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 011/331] iio: adc: ad7091r: Allow users to configure device events
 Date: Mon, 29 Jan 2024 09:01:15 -0800
-Message-ID: <20240129170017.681111175@linuxfoundation.org>
+Message-ID: <20240129170015.291659211@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +64,300 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Serge Semin <fancer.lancer@gmail.com>
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 
-commit e1a9ae45736989c972a8d1c151bc390678ae6205 upstream.
+[ Upstream commit 020e71c7ffc25dfe29ed9be6c2d39af7bd7f661f ]
 
-max_mapnr variable is utilized in the pfn_valid() method in order to
-determine the upper PFN space boundary. Having it uninitialized
-effectively makes any PFN passed to that method invalid. That in its turn
-causes the kernel mm-subsystem occasion malfunctions even after the
-max_mapnr variable is actually properly updated. For instance,
-pfn_valid() is called in the init_unavailable_range() method in the
-framework of the calls-chain on MIPS:
-setup_arch()
-+-> paging_init()
-    +-> free_area_init()
-        +-> memmap_init()
-            +-> memmap_init_zone_range()
-                +-> init_unavailable_range()
+AD7091R-5 devices are supported by the ad7091r-5 driver together with
+the ad7091r-base driver. Those drivers declared iio events for notifying
+user space when ADC readings fall bellow the thresholds of low limit
+registers or above the values set in high limit registers.
+However, to configure iio events and their thresholds, a set of callback
+functions must be implemented and those were not present until now.
+The consequence of trying to configure ad7091r-5 events without the
+proper callback functions was a null pointer dereference in the kernel
+because the pointers to the callback functions were not set.
 
-Since pfn_valid() always returns "false" value before max_mapnr is
-initialized in the mem_init() method, any flatmem page-holes will be left
-in the poisoned/uninitialized state including the IO-memory pages. Thus
-any further attempts to map/remap the IO-memory by using MMU may fail.
-In particular it happened in my case on attempt to map the SRAM region.
-The kernel bootup procedure just crashed on the unhandled unaligned access
-bug raised in the __update_cache() method:
+Implement event configuration callbacks allowing users to read/write
+event thresholds and enable/disable event generation.
 
-> Unhandled kernel unaligned access[#1]:
-> CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc1-XXX-dirty #2056
-> ...
-> Call Trace:
-> [<8011ef9c>] __update_cache+0x88/0x1bc
-> [<80385944>] ioremap_page_range+0x110/0x2a4
-> [<80126948>] ioremap_prot+0x17c/0x1f4
-> [<80711b80>] __devm_ioremap+0x8c/0x120
-> [<80711e0c>] __devm_ioremap_resource+0xf4/0x218
-> [<808bf244>] sram_probe+0x4f4/0x930
-> [<80889d20>] platform_probe+0x68/0xec
-> ...
+Since the event spec structs are generic to AD7091R devices, also move
+those from the ad7091r-5 driver the base driver so they can be reused
+when support for ad7091r-2/-4/-8 be added.
 
-Let's fix the problem by initializing the max_mapnr variable as soon as
-the required data is available. In particular it can be done right in the
-paging_init() method before free_area_init() is called since all the PFN
-zone boundaries have already been calculated by that time.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ca69300173b6 ("iio: adc: Add support for AD7091R5 ADC")
+Suggested-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Link: https://lore.kernel.org/r/59552d3548dabd56adc3107b7b4869afee2b0c3c.1703013352.git.marcelo.schmitt1@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/mm/init.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/iio/adc/ad7091r-base.c | 156 +++++++++++++++++++++++++++++++++
+ drivers/iio/adc/ad7091r-base.h |   6 ++
+ drivers/iio/adc/ad7091r5.c     |  28 +-----
+ 3 files changed, 166 insertions(+), 24 deletions(-)
 
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -422,7 +422,12 @@ void __init paging_init(void)
- 		       (highend_pfn - max_low_pfn) << (PAGE_SHIFT - 10));
- 		max_zone_pfns[ZONE_HIGHMEM] = max_low_pfn;
- 	}
+diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
+index 8aaa854f816f..3d36bcd26b0c 100644
+--- a/drivers/iio/adc/ad7091r-base.c
++++ b/drivers/iio/adc/ad7091r-base.c
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <linux/bitops.h>
++#include <linux/bitfield.h>
+ #include <linux/iio/events.h>
+ #include <linux/iio/iio.h>
+ #include <linux/interrupt.h>
+@@ -50,6 +51,27 @@ struct ad7091r_state {
+ 	struct mutex lock; /*lock to prevent concurent reads */
+ };
+ 
++const struct iio_event_spec ad7091r_events[] = {
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_RISING,
++		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
++				 BIT(IIO_EV_INFO_ENABLE),
++	},
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_FALLING,
++		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
++				 BIT(IIO_EV_INFO_ENABLE),
++	},
++	{
++		.type = IIO_EV_TYPE_THRESH,
++		.dir = IIO_EV_DIR_EITHER,
++		.mask_separate = BIT(IIO_EV_INFO_HYSTERESIS),
++	},
++};
++EXPORT_SYMBOL_NS_GPL(ad7091r_events, IIO_AD7091R);
 +
-+	max_mapnr = highend_pfn ? highend_pfn : max_low_pfn;
-+#else
-+	max_mapnr = max_low_pfn;
- #endif
-+	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
- 
- 	free_area_init(max_zone_pfns);
+ static int ad7091r_set_mode(struct ad7091r_state *st, enum ad7091r_mode mode)
+ {
+ 	int ret, conf;
+@@ -169,8 +191,142 @@ static int ad7091r_read_raw(struct iio_dev *iio_dev,
+ 	return ret;
  }
-@@ -458,13 +463,6 @@ void __init mem_init(void)
- 	 */
- 	BUILD_BUG_ON(IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT));
  
--#ifdef CONFIG_HIGHMEM
--	max_mapnr = highend_pfn ? highend_pfn : max_low_pfn;
--#else
--	max_mapnr = max_low_pfn;
--#endif
--	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
++static int ad7091r_read_event_config(struct iio_dev *indio_dev,
++				     const struct iio_chan_spec *chan,
++				     enum iio_event_type type,
++				     enum iio_event_direction dir)
++{
++	struct ad7091r_state *st = iio_priv(indio_dev);
++	int val, ret;
++
++	switch (dir) {
++	case IIO_EV_DIR_RISING:
++		ret = regmap_read(st->map,
++				  AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
++				  &val);
++		if (ret)
++			return ret;
++		return val != AD7091R_HIGH_LIMIT;
++	case IIO_EV_DIR_FALLING:
++		ret = regmap_read(st->map,
++				  AD7091R_REG_CH_LOW_LIMIT(chan->channel),
++				  &val);
++		if (ret)
++			return ret;
++		return val != AD7091R_LOW_LIMIT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad7091r_write_event_config(struct iio_dev *indio_dev,
++				      const struct iio_chan_spec *chan,
++				      enum iio_event_type type,
++				      enum iio_event_direction dir, int state)
++{
++	struct ad7091r_state *st = iio_priv(indio_dev);
++
++	if (state) {
++		return regmap_set_bits(st->map, AD7091R_REG_CONF,
++				       AD7091R_REG_CONF_ALERT_EN);
++	} else {
++		/*
++		 * Set thresholds either to 0 or to 2^12 - 1 as appropriate to
++		 * prevent alerts and thus disable event generation.
++		 */
++		switch (dir) {
++		case IIO_EV_DIR_RISING:
++			return regmap_write(st->map,
++					    AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
++					    AD7091R_HIGH_LIMIT);
++		case IIO_EV_DIR_FALLING:
++			return regmap_write(st->map,
++					    AD7091R_REG_CH_LOW_LIMIT(chan->channel),
++					    AD7091R_LOW_LIMIT);
++		default:
++			return -EINVAL;
++		}
++	}
++}
++
++static int ad7091r_read_event_value(struct iio_dev *indio_dev,
++				    const struct iio_chan_spec *chan,
++				    enum iio_event_type type,
++				    enum iio_event_direction dir,
++				    enum iio_event_info info, int *val, int *val2)
++{
++	struct ad7091r_state *st = iio_priv(indio_dev);
++	int ret;
++
++	switch (info) {
++	case IIO_EV_INFO_VALUE:
++		switch (dir) {
++		case IIO_EV_DIR_RISING:
++			ret = regmap_read(st->map,
++					  AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
++					  val);
++			if (ret)
++				return ret;
++			return IIO_VAL_INT;
++		case IIO_EV_DIR_FALLING:
++			ret = regmap_read(st->map,
++					  AD7091R_REG_CH_LOW_LIMIT(chan->channel),
++					  val);
++			if (ret)
++				return ret;
++			return IIO_VAL_INT;
++		default:
++			return -EINVAL;
++		}
++	case IIO_EV_INFO_HYSTERESIS:
++		ret = regmap_read(st->map,
++				  AD7091R_REG_CH_HYSTERESIS(chan->channel),
++				  val);
++		if (ret)
++			return ret;
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad7091r_write_event_value(struct iio_dev *indio_dev,
++				     const struct iio_chan_spec *chan,
++				     enum iio_event_type type,
++				     enum iio_event_direction dir,
++				     enum iio_event_info info, int val, int val2)
++{
++	struct ad7091r_state *st = iio_priv(indio_dev);
++
++	switch (info) {
++	case IIO_EV_INFO_VALUE:
++		switch (dir) {
++		case IIO_EV_DIR_RISING:
++			return regmap_write(st->map,
++					    AD7091R_REG_CH_HIGH_LIMIT(chan->channel),
++					    val);
++		case IIO_EV_DIR_FALLING:
++			return regmap_write(st->map,
++					    AD7091R_REG_CH_LOW_LIMIT(chan->channel),
++					    val);
++		default:
++			return -EINVAL;
++		}
++	case IIO_EV_INFO_HYSTERESIS:
++		return regmap_write(st->map,
++				    AD7091R_REG_CH_HYSTERESIS(chan->channel),
++				    val);
++	default:
++		return -EINVAL;
++	}
++}
++
+ static const struct iio_info ad7091r_info = {
+ 	.read_raw = ad7091r_read_raw,
++	.read_event_config = &ad7091r_read_event_config,
++	.write_event_config = &ad7091r_write_event_config,
++	.read_event_value = &ad7091r_read_event_value,
++	.write_event_value = &ad7091r_write_event_value,
+ };
+ 
+ static irqreturn_t ad7091r_event_handler(int irq, void *private)
+diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
+index 509748aef9b1..7a78976a2f80 100644
+--- a/drivers/iio/adc/ad7091r-base.h
++++ b/drivers/iio/adc/ad7091r-base.h
+@@ -8,6 +8,10 @@
+ #ifndef __DRIVERS_IIO_ADC_AD7091R_BASE_H__
+ #define __DRIVERS_IIO_ADC_AD7091R_BASE_H__
+ 
++/* AD7091R_REG_CH_LIMIT */
++#define AD7091R_HIGH_LIMIT		0xFFF
++#define AD7091R_LOW_LIMIT		0x0
++
+ struct device;
+ struct ad7091r_state;
+ 
+@@ -17,6 +21,8 @@ struct ad7091r_chip_info {
+ 	unsigned int vref_mV;
+ };
+ 
++extern const struct iio_event_spec ad7091r_events[3];
++
+ extern const struct regmap_config ad7091r_regmap_config;
+ 
+ int ad7091r_probe(struct device *dev, const char *name,
+diff --git a/drivers/iio/adc/ad7091r5.c b/drivers/iio/adc/ad7091r5.c
+index 2f048527b7b7..dae98c95ebb8 100644
+--- a/drivers/iio/adc/ad7091r5.c
++++ b/drivers/iio/adc/ad7091r5.c
+@@ -12,26 +12,6 @@
+ 
+ #include "ad7091r-base.h"
+ 
+-static const struct iio_event_spec ad7091r5_events[] = {
+-	{
+-		.type = IIO_EV_TYPE_THRESH,
+-		.dir = IIO_EV_DIR_RISING,
+-		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
+-				 BIT(IIO_EV_INFO_ENABLE),
+-	},
+-	{
+-		.type = IIO_EV_TYPE_THRESH,
+-		.dir = IIO_EV_DIR_FALLING,
+-		.mask_separate = BIT(IIO_EV_INFO_VALUE) |
+-				 BIT(IIO_EV_INFO_ENABLE),
+-	},
+-	{
+-		.type = IIO_EV_TYPE_THRESH,
+-		.dir = IIO_EV_DIR_EITHER,
+-		.mask_separate = BIT(IIO_EV_INFO_HYSTERESIS),
+-	},
+-};
 -
- 	maar_init();
- 	memblock_free_all();
- 	setup_zero_pages();	/* Setup zeroed pages.  */
+ #define AD7091R_CHANNEL(idx, bits, ev, num_ev) { \
+ 	.type = IIO_VOLTAGE, \
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW), \
+@@ -44,10 +24,10 @@ static const struct iio_event_spec ad7091r5_events[] = {
+ 	.scan_type.realbits = bits, \
+ }
+ static const struct iio_chan_spec ad7091r5_channels_irq[] = {
+-	AD7091R_CHANNEL(0, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
+-	AD7091R_CHANNEL(1, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
+-	AD7091R_CHANNEL(2, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
+-	AD7091R_CHANNEL(3, 12, ad7091r5_events, ARRAY_SIZE(ad7091r5_events)),
++	AD7091R_CHANNEL(0, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
++	AD7091R_CHANNEL(1, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
++	AD7091R_CHANNEL(2, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
++	AD7091R_CHANNEL(3, 12, ad7091r_events, ARRAY_SIZE(ad7091r_events)),
+ };
+ 
+ static const struct iio_chan_spec ad7091r5_channels_noirq[] = {
+-- 
+2.43.0
+
 
 
 
