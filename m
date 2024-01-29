@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-17172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F9E84101D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 709E5840E7F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FD88285026
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10B401F27CB8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E635174053;
-	Mon, 29 Jan 2024 17:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D5A915B98B;
+	Mon, 29 Jan 2024 17:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+Q8/XJA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xA8XlH4O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D3B7404A;
-	Mon, 29 Jan 2024 17:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF730157E6A;
+	Mon, 29 Jan 2024 17:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548563; cv=none; b=uzZUiZ6rBxIo71Zmz5EQZ/gZEmb/yygt82yp/1DGGE5ihIpdBfb3nIrkLJ3NPB8YQS10hJFFst9tU9l/VHpsMWYzsqZsRYfNMXnfuFkIGn2LArPXPo9h2jhOb0mj4QtBqE3bO7rGkCmy1qpFg02fkFswuTL0wR7yMPkDRgAmq74=
+	t=1706548293; cv=none; b=ns4m8yn7FkrEBjHawVKRfQOaZFMQz091LlfIglGEGIaqSa8vNsvr9MVpi/Y1MqPjN+q2/MlGaI6nwzO2xFQms/AjOi/dRsF+U+i3OcNwy5OTlioqfUOFaRzKQJpkz1FtHETxM4rgauGvMgJA+HLWeq0w+g0UrAL6nOlKeGCtn4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548563; c=relaxed/simple;
-	bh=JFYORdmLtLfr7Dmw9m2AB8ezM1n3zvPv2jbHzwdnDvc=;
+	s=arc-20240116; t=1706548293; c=relaxed/simple;
+	bh=zcf5lCtaWQz/HFDhvJJ97VH2N25ohuJzxjLjYCdxJas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a7m+5XjTHpckPw1TB/Fjl1GN3s27WBvW2i5n0Mc8Ums/aPkUek4jKaMXf26SMn/Zi7XaqECpqkKGnVCH9183pqxzi2j0I13g0GRg/smFdgYOfnr4wk/wUP0D1/goB+J7mhd4Jf4wU5gaP9d1GaZ/Y3ZV5AwSB0jBtfXtrhzXLBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+Q8/XJA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69DA8C433C7;
-	Mon, 29 Jan 2024 17:16:03 +0000 (UTC)
+	 MIME-Version; b=rxd3nYsswhUxM5neFLq6LcJQXVAjHelh69UGlbyE+kJUakAzd6ap9itwccSpLEyngaLByp/4NK5djbVeSCgbucfpCTRGFJxIEQKvM0n9iK2FtmOOlb73hlglFiS8L8S9m2PINGryTyXuQWCVOlBtEIpmtyN71GsRw1ohxzAf7yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xA8XlH4O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A86C433A6;
+	Mon, 29 Jan 2024 17:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548563;
-	bh=JFYORdmLtLfr7Dmw9m2AB8ezM1n3zvPv2jbHzwdnDvc=;
+	s=korg; t=1706548293;
+	bh=zcf5lCtaWQz/HFDhvJJ97VH2N25ohuJzxjLjYCdxJas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n+Q8/XJAinSZ6NzevKIQuSOpxqPCdgmCSGFt0aITYlvgIbnIk2QVe/HGAKOEctCfI
-	 6BqJ5FtlpRVaIeqW8EK8YxJhj0IZnS4KJ8OTcwILwYXZ9+q/etqQtt9xriDZNn9rUL
-	 5TOkfHX3WLNejGLrDdLAXIdE6xrq0XWnbrHpWHNU=
+	b=xA8XlH4O9SlfwmOOHri4V781sVJRhoAMsL3zuLiyZmwaMl4SgAmGEkpFQuuYpkahf
+	 cBiOBlUhL8zG4cUKpl295uzRJmNxqVuxpAzMEkpKwR+C0eIEudWnDOWVh1bSfL04Ca
+	 WOQZLKhPB0nxyvlXaYWX2l5OZicHQEmu24MnUwxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 211/331] selftests: netdevsim: fix the udp_tunnel_nic test
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Wade Wang <wade.wang@hp.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 075/185] drm/amd/display: pbn_div need be updated for hotplug event
 Date: Mon, 29 Jan 2024 09:04:35 -0800
-Message-ID: <20240129170021.051869213@linuxfoundation.org>
+Message-ID: <20240129170001.013123430@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Wayne Lin <wayne.lin@amd.com>
 
-[ Upstream commit 0879020a7817e7ce636372c016b4528f541c9f4d ]
+commit 9cdef4f720376ef0fb0febce1ed2377c19e531f9 upstream.
 
-This test is missing a whole bunch of checks for interface
-renaming and one ifup. Presumably it was only used on a system
-with renaming disabled and NetworkManager running.
+link_rate sometime will be changed when DP MST connector hotplug, so
+pbn_div also need be updated; otherwise, it will mismatch with
+link_rate, causes no output in external monitor.
 
-Fixes: 91f430b2c49d ("selftests: net: add a test for UDP tunnel info infra")
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240123060529.1033912-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is a backport to 6.7 and older.
+
+Cc: stable@vger.kernel.org
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Wade Wang <wade.wang@hp.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../selftests/drivers/net/netdevsim/udp_tunnel_nic.sh    | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh b/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh
-index 1b08e042cf94..185b02d2d4cd 100755
---- a/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh
-+++ b/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh
-@@ -269,6 +269,7 @@ for port in 0 1; do
- 	echo 1 > $NSIM_DEV_SYS/new_port
-     fi
-     NSIM_NETDEV=`get_netdev_name old_netdevs`
-+    ifconfig $NSIM_NETDEV up
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6677,8 +6677,7 @@ static int dm_encoder_helper_atomic_chec
+ 	if (IS_ERR(mst_state))
+ 		return PTR_ERR(mst_state);
  
-     msg="new NIC device created"
-     exp0=( 0 0 0 0 )
-@@ -430,6 +431,7 @@ for port in 0 1; do
-     fi
+-	if (!mst_state->pbn_div)
+-		mst_state->pbn_div = dm_mst_get_pbn_divider(aconnector->mst_port->dc_link);
++	mst_state->pbn_div = dm_mst_get_pbn_divider(aconnector->mst_port->dc_link);
  
-     echo $port > $NSIM_DEV_SYS/new_port
-+    NSIM_NETDEV=`get_netdev_name old_netdevs`
-     ifconfig $NSIM_NETDEV up
- 
-     overflow_table0 "overflow NIC table"
-@@ -487,6 +489,7 @@ for port in 0 1; do
-     fi
- 
-     echo $port > $NSIM_DEV_SYS/new_port
-+    NSIM_NETDEV=`get_netdev_name old_netdevs`
-     ifconfig $NSIM_NETDEV up
- 
-     overflow_table0 "overflow NIC table"
-@@ -543,6 +546,7 @@ for port in 0 1; do
-     fi
- 
-     echo $port > $NSIM_DEV_SYS/new_port
-+    NSIM_NETDEV=`get_netdev_name old_netdevs`
-     ifconfig $NSIM_NETDEV up
- 
-     overflow_table0 "destroy NIC"
-@@ -572,6 +576,7 @@ for port in 0 1; do
-     fi
- 
-     echo $port > $NSIM_DEV_SYS/new_port
-+    NSIM_NETDEV=`get_netdev_name old_netdevs`
-     ifconfig $NSIM_NETDEV up
- 
-     msg="create VxLANs v6"
-@@ -632,6 +637,7 @@ for port in 0 1; do
-     fi
- 
-     echo $port > $NSIM_DEV_SYS/new_port
-+    NSIM_NETDEV=`get_netdev_name old_netdevs`
-     ifconfig $NSIM_NETDEV up
- 
-     echo 110 > $NSIM_DEV_DFS/ports/$port/udp_ports_inject_error
-@@ -687,6 +693,7 @@ for port in 0 1; do
-     fi
- 
-     echo $port > $NSIM_DEV_SYS/new_port
-+    NSIM_NETDEV=`get_netdev_name old_netdevs`
-     ifconfig $NSIM_NETDEV up
- 
-     msg="create VxLANs v6"
-@@ -746,6 +753,7 @@ for port in 0 1; do
-     fi
- 
-     echo $port > $NSIM_DEV_SYS/new_port
-+    NSIM_NETDEV=`get_netdev_name old_netdevs`
-     ifconfig $NSIM_NETDEV up
- 
-     msg="create VxLANs v6"
-@@ -876,6 +884,7 @@ msg="re-add a port"
- 
- echo 2 > $NSIM_DEV_SYS/del_port
- echo 2 > $NSIM_DEV_SYS/new_port
-+NSIM_NETDEV=`get_netdev_name old_netdevs`
- check_tables
- 
- msg="replace VxLAN in overflow table"
--- 
-2.43.0
-
+ 	if (!state->duplicated) {
+ 		int max_bpc = conn_state->max_requested_bpc;
 
 
 
