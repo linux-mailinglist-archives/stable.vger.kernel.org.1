@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F87E840E0B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D06DF840FE6
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 527CC1C23255
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00A451C2384F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97C615956E;
-	Mon, 29 Jan 2024 17:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5175B15EA97;
+	Mon, 29 Jan 2024 17:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMsJXGg+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUaPR9fi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787B5157059;
-	Mon, 29 Jan 2024 17:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED76157E68;
+	Mon, 29 Jan 2024 17:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548214; cv=none; b=Sk5AirfJQcvxgAm2hSU9E6l2JromKPxqGV6Z0U2YPjXCKfe4FdscSwbm4/OjFE7DeH+LtxUzjYgJnys3QYepiCleWQ6rwYHwYCPbKHfI/JdjY194UMbQZ3pIr/LUuzPfoueIaHd+5un/r0XIssova8V4HTGIhr/wAKqGEt5tV1g=
+	t=1706548525; cv=none; b=qmhqzCJCfAsjZGMke3dBSEn2vWT66HXMlgA4Wiu2HgYo8WEVkMT1cC7IhUwRq2cO7xZ+odfR2OfJzRcO/FM4C1SLmLJFVTTyrt3d2kf2toQfVB494W/PSQ9w17J2afVbnNL/1KkSmBAZ7N02HB2y6tRFvWY/jfMh2OWnO1pq3YE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548214; c=relaxed/simple;
-	bh=DEZVA2uvW8GfGFyuFmZJc6hF7MtAhZSlRq2zqjPq7Wo=;
+	s=arc-20240116; t=1706548525; c=relaxed/simple;
+	bh=NxRIi5YIFEgVAMyjXYZWW2ZCBfJUgAdu7BLHC9ZdMOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WduUEhpzCwXNRWPmhALZdYt2bhanCPGkvIlwuwhXmStKKIAoEGiQgGEwQH55wrpEk4nfIgUyd0jAZvtqycuCEzeE2rS/OS/SKUc0GF8VUzLnaNizcp7LzKBaB/PghFzk/9HHJRwOYrm/ci9PgbTe04heuIGxm9c85hAmuf3bAuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMsJXGg+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC738C43390;
-	Mon, 29 Jan 2024 17:10:13 +0000 (UTC)
+	 MIME-Version; b=Z2yCHkq3BpBI6ButJHOsc96w6hjlMGtaNBLVlndrS4NIqRWxvDpP4DCfc2BBXTbEXeEscvd8VLhN0rzxE4AFScmBtKv0frEt2Iwxbk9enOVdiZlTh/g7GyuRfo/6ejswKbs0zjbRLAIsrhZ/2nGTGj///YXLzX8o0/DScKfV39E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUaPR9fi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC50FC433C7;
+	Mon, 29 Jan 2024 17:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548214;
-	bh=DEZVA2uvW8GfGFyuFmZJc6hF7MtAhZSlRq2zqjPq7Wo=;
+	s=korg; t=1706548524;
+	bh=NxRIi5YIFEgVAMyjXYZWW2ZCBfJUgAdu7BLHC9ZdMOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMsJXGg+V9Lkak8BUF07n6enQSZdbnH8WjeTe++EW+ZpOMK+/OsLa5I2imVLTtddU
-	 25kNw4UI7lug5H4Ok+NRhFBofejDLGK9/SNvoe+pywJZIIlW5uq/9LYDHEDpQnWKy3
-	 DIsUDGrk8uWGq9f3Z+jwo+8udd+lB1tnteVGIs/4=
+	b=sUaPR9fi5iEW/ip7ESp7srC2H5ErWyavp9qvx76vqZLPCe/QEJCotejuuiAfSBaXU
+	 gWPMBHxbX2ke39DYml9hbZcNRgnoSzPpuYBRWNfN/9QTD2IvUnPid0t0XdIU3l4yoN
+	 qr5P1Nxz21tscfMDVaVwSqdyqAec+EpRyaj3QZS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Krowiak <akrowiak@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>
-Subject: [PATCH 6.1 022/185] s390/vfio-ap: let on_scan_complete() callback filter matrix and update guests APCB
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 158/331] selftests/bpf: tests for iterating callbacks
 Date: Mon, 29 Jan 2024 09:03:42 -0800
-Message-ID: <20240129165959.314836069@linuxfoundation.org>
+Message-ID: <20240129170019.550683381@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,202 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Krowiak <akrowiak@linux.ibm.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-commit 774d10196e648e2c0b78da817f631edfb3dfa557 upstream.
+commit 958465e217dbf5fc6677d42d8827fb3073d86afd upstream.
 
-When adapters and/or domains are added to the host's AP configuration, this
-may result in multiple queue devices getting created and probed by the
-vfio_ap device driver. For each queue device probed, the matrix of adapters
-and domains assigned to a matrix mdev will be filtered to update the
-guest's APCB. If any adapters or domains get added to or removed from the
-APCB, the guest's AP configuration will be dynamically updated (i.e., hot
-plug/unplug). To dynamically update the guest's configuration, its VCPUs
-must be taken out of SIE for the period of time it takes to make the
-update. This is disruptive to the guest's operation and if there are many
-queues probed due to a change in the host's AP configuration, this could be
-troublesome. The problem is exacerbated by the fact that the
-'on_scan_complete' callback also filters the mdev's matrix and updates
-the guest's AP configuration.
+A set of test cases to check behavior of callback handling logic,
+check if verifier catches the following situations:
+- program not safe on second callback iteration;
+- program not safe on zero callback iterations;
+- infinite loop inside a callback.
 
-In order to reduce the potential amount of disruption to the guest that may
-result from a change to the host's AP configuration, let's bypass the
-filtering of the matrix and updating of the guest's AP configuration in the
-probe callback - if due to a host config change - and defer it until the
-'on_scan_complete' callback is invoked after the AP bus finishes its device
-scan operation. This way the filtering and updating will be performed only
-once regardless of the number of queues added.
+Verify that callback logic works for bpf_loop, bpf_for_each_map_elem,
+bpf_user_ringbuf_drain, bpf_find_vma.
 
-Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
-Fixes: 48cae940c31d ("s390/vfio-ap: refresh guest's APCB by filtering AP resources assigned to mdev")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240115185441.31526-4-akrowiak@linux.ibm.com
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20231121020701.26440-8-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/crypto/vfio_ap_ops.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tools/testing/selftests/bpf/prog_tests/verifier.c                |    2 
+ tools/testing/selftests/bpf/progs/verifier_iterating_callbacks.c |  147 ++++++++++
+ 2 files changed, 149 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/progs/verifier_iterating_callbacks.c
 
---- a/drivers/s390/crypto/vfio_ap_ops.c
-+++ b/drivers/s390/crypto/vfio_ap_ops.c
-@@ -1851,9 +1851,22 @@ int vfio_ap_mdev_probe_queue(struct ap_d
- 	if (matrix_mdev) {
- 		vfio_ap_mdev_link_queue(matrix_mdev, q);
- 
-+		/*
-+		 * If we're in the process of handling the adding of adapters or
-+		 * domains to the host's AP configuration, then let the
-+		 * vfio_ap device driver's on_scan_complete callback filter the
-+		 * matrix and update the guest's AP configuration after all of
-+		 * the new queue devices are probed.
-+		 */
-+		if (!bitmap_empty(matrix_mdev->apm_add, AP_DEVICES) ||
-+		    !bitmap_empty(matrix_mdev->aqm_add, AP_DOMAINS))
-+			goto done;
+--- a/tools/testing/selftests/bpf/prog_tests/verifier.c
++++ b/tools/testing/selftests/bpf/prog_tests/verifier.c
+@@ -31,6 +31,7 @@
+ #include "verifier_helper_restricted.skel.h"
+ #include "verifier_helper_value_access.skel.h"
+ #include "verifier_int_ptr.skel.h"
++#include "verifier_iterating_callbacks.skel.h"
+ #include "verifier_jeq_infer_not_null.skel.h"
+ #include "verifier_ld_ind.skel.h"
+ #include "verifier_ldsx.skel.h"
+@@ -138,6 +139,7 @@ void test_verifier_helper_packet_access(
+ void test_verifier_helper_restricted(void)    { RUN(verifier_helper_restricted); }
+ void test_verifier_helper_value_access(void)  { RUN(verifier_helper_value_access); }
+ void test_verifier_int_ptr(void)              { RUN(verifier_int_ptr); }
++void test_verifier_iterating_callbacks(void)  { RUN(verifier_iterating_callbacks); }
+ void test_verifier_jeq_infer_not_null(void)   { RUN(verifier_jeq_infer_not_null); }
+ void test_verifier_ld_ind(void)               { RUN(verifier_ld_ind); }
+ void test_verifier_ldsx(void)                  { RUN(verifier_ldsx); }
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/verifier_iterating_callbacks.c
+@@ -0,0 +1,147 @@
++// SPDX-License-Identifier: GPL-2.0
 +
- 		if (vfio_ap_mdev_filter_matrix(matrix_mdev))
- 			vfio_ap_mdev_update_guest_apcb(matrix_mdev);
- 	}
++#include <linux/bpf.h>
++#include <bpf/bpf_helpers.h>
++#include "bpf_misc.h"
 +
-+done:
- 	dev_set_drvdata(&apdev->device, q);
- 	release_update_locks_for_mdev(matrix_mdev);
- 
++struct {
++	__uint(type, BPF_MAP_TYPE_ARRAY);
++	__uint(max_entries, 8);
++	__type(key, __u32);
++	__type(value, __u64);
++} map SEC(".maps");
++
++struct {
++	__uint(type, BPF_MAP_TYPE_USER_RINGBUF);
++	__uint(max_entries, 8);
++} ringbuf SEC(".maps");
++
++struct vm_area_struct;
++struct bpf_map;
++
++struct buf_context {
++	char *buf;
++};
++
++struct num_context {
++	__u64 i;
++};
++
++__u8 choice_arr[2] = { 0, 1 };
++
++static int unsafe_on_2nd_iter_cb(__u32 idx, struct buf_context *ctx)
++{
++	if (idx == 0) {
++		ctx->buf = (char *)(0xDEAD);
++		return 0;
++	}
++
++	if (bpf_probe_read_user(ctx->buf, 8, (void *)(0xBADC0FFEE)))
++		return 1;
++
++	return 0;
++}
++
++SEC("?raw_tp")
++__failure __msg("R1 type=scalar expected=fp")
++int unsafe_on_2nd_iter(void *unused)
++{
++	char buf[4];
++	struct buf_context loop_ctx = { .buf = buf };
++
++	bpf_loop(100, unsafe_on_2nd_iter_cb, &loop_ctx, 0);
++	return 0;
++}
++
++static int unsafe_on_zero_iter_cb(__u32 idx, struct num_context *ctx)
++{
++	ctx->i = 0;
++	return 0;
++}
++
++SEC("?raw_tp")
++__failure __msg("invalid access to map value, value_size=2 off=32 size=1")
++int unsafe_on_zero_iter(void *unused)
++{
++	struct num_context loop_ctx = { .i = 32 };
++
++	bpf_loop(100, unsafe_on_zero_iter_cb, &loop_ctx, 0);
++	return choice_arr[loop_ctx.i];
++}
++
++static int loop_detection_cb(__u32 idx, struct num_context *ctx)
++{
++	for (;;) {}
++	return 0;
++}
++
++SEC("?raw_tp")
++__failure __msg("infinite loop detected")
++int loop_detection(void *unused)
++{
++	struct num_context loop_ctx = { .i = 0 };
++
++	bpf_loop(100, loop_detection_cb, &loop_ctx, 0);
++	return 0;
++}
++
++static __always_inline __u64 oob_state_machine(struct num_context *ctx)
++{
++	switch (ctx->i) {
++	case 0:
++		ctx->i = 1;
++		break;
++	case 1:
++		ctx->i = 32;
++		break;
++	}
++	return 0;
++}
++
++static __u64 for_each_map_elem_cb(struct bpf_map *map, __u32 *key, __u64 *val, void *data)
++{
++	return oob_state_machine(data);
++}
++
++SEC("?raw_tp")
++__failure __msg("invalid access to map value, value_size=2 off=32 size=1")
++int unsafe_for_each_map_elem(void *unused)
++{
++	struct num_context loop_ctx = { .i = 0 };
++
++	bpf_for_each_map_elem(&map, for_each_map_elem_cb, &loop_ctx, 0);
++	return choice_arr[loop_ctx.i];
++}
++
++static __u64 ringbuf_drain_cb(struct bpf_dynptr *dynptr, void *data)
++{
++	return oob_state_machine(data);
++}
++
++SEC("?raw_tp")
++__failure __msg("invalid access to map value, value_size=2 off=32 size=1")
++int unsafe_ringbuf_drain(void *unused)
++{
++	struct num_context loop_ctx = { .i = 0 };
++
++	bpf_user_ringbuf_drain(&ringbuf, ringbuf_drain_cb, &loop_ctx, 0);
++	return choice_arr[loop_ctx.i];
++}
++
++static __u64 find_vma_cb(struct task_struct *task, struct vm_area_struct *vma, void *data)
++{
++	return oob_state_machine(data);
++}
++
++SEC("?raw_tp")
++__failure __msg("invalid access to map value, value_size=2 off=32 size=1")
++int unsafe_find_vma(void *unused)
++{
++	struct task_struct *task = bpf_get_current_task_btf();
++	struct num_context loop_ctx = { .i = 0 };
++
++	bpf_find_vma(task, 0, find_vma_cb, &loop_ctx, 0);
++	return choice_arr[loop_ctx.i];
++}
++
++char _license[] SEC("license") = "GPL";
 
 
 
