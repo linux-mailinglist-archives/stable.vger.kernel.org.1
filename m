@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-16679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 998EA840DF7
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24713840DFA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A4E51F2D07A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D02291F2CFC9
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F09815DBBB;
-	Mon, 29 Jan 2024 17:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1B315DBBD;
+	Mon, 29 Jan 2024 17:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="paAT8ljP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vHW/vCLj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2978015B0FC;
-	Mon, 29 Jan 2024 17:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DBD15705A;
+	Mon, 29 Jan 2024 17:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548198; cv=none; b=rA5/OKZ0KJyH5UtgS7TLSeFQa7JxqosXW4AIC5Dcr84NZN1urzL/f0QIulCuAF/KZM2N8neITI9U7kfTvjsYvSPBPSblxZ/nX7tJ3oSPwmS7a9ya4ulNjXfEvjRnyyKhHR0kUwkNPvnZpAoimjcy5vM8SRFVQQWnsYhS9a8uB+I=
+	t=1706548199; cv=none; b=OnATDxGkWWZu0BWdjjK3KlxtQPdBb7jGvSKJWLatLUOluYOG6Ker1YT1yxR0FMuh9ubB0jdjzrRMaPKt/98KVXu+yIInnkcv9zcAKaXt8Tvzlg0oezQnxndbXdwFapYId8ebgQsMIK+pHL6r8arHeM+yru6xPxZSTDWgsCPzI+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548198; c=relaxed/simple;
-	bh=+13LCaXo7WdDWgAXDfTe6wz9cfBm0laoFobFC2JXbKU=;
+	s=arc-20240116; t=1706548199; c=relaxed/simple;
+	bh=X5QEOE8q+TTqsLw/xbKhC7WvWbhqDGI2td27MbsmKU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atFBtqSvvE3LWY8klolPeLRL8smHfi6CmLu782O/FMsJE2XehMQflR59jIjs5OucPtpsPyTWBUYdIephN9AlH15QlSHbyYP2cYGmuFxw/9h4nDC73HmsUWatcun5U3S3NEhhn2wKIHL5ZuEAG8g0wWcMSU6uwMatc1Z10sJjo/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=paAT8ljP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3267C43394;
-	Mon, 29 Jan 2024 17:09:57 +0000 (UTC)
+	 MIME-Version; b=Qd38cBms0qXbDQLaUnhtGBNLpAmJlg9yKPwZG98XoEcvzFoUEUNyJi2TyILXXs1hi6fRoZNYFjUIT2AN5iYM5+Bj5eTrVFSp+3RJUOBOMllcmhs8nxx2mZyrSW+mfTfE59FHy5hpkwm6zfouIQHmWk02zxZ0yS4gDPR1GY+sKuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vHW/vCLj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A98C433C7;
+	Mon, 29 Jan 2024 17:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548198;
-	bh=+13LCaXo7WdDWgAXDfTe6wz9cfBm0laoFobFC2JXbKU=;
+	s=korg; t=1706548199;
+	bh=X5QEOE8q+TTqsLw/xbKhC7WvWbhqDGI2td27MbsmKU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=paAT8ljP9pt+FMfNoya+VRoDCvMUVMPqZ/MRzRo8vPiYRnvYs3FtyF+hiM/BbSgy0
-	 dMR3RSAToAplsKAkXBPdx7kgvDdrSYIkYg7hTt1Tp4yR1UZZBIS3+nNpuHRY12m8r3
-	 a4hbTi3Hd3TTDTFKF67aD8qQR1gutuf0NNpzPBiw=
+	b=vHW/vCLjvTXKykRYzr8Mu/X1CzJOjRMw8AjfEi5p1LcMr9o4xbLw6SD1lCeH4JKHp
+	 4MvQbHwEfA0Q6A2Zn7OPOH7wKIADYj9K9K2YGkAUrbKJP2PAR3nLipaYPAFLJB4Vlt
+	 /UYHXtRgF4Jvq4AjcWocTbonczCARm1/LfzvPwb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	syzbot+c52ab18308964d248092@syzkaller.appspotmail.com,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.1 013/185] hwrng: core - Fix page fault dead lock on mmap-ed hwrng
-Date: Mon, 29 Jan 2024 09:03:33 -0800
-Message-ID: <20240129165959.023463426@linuxfoundation.org>
+	Guangwu Zhang <guazhang@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Harald Freudenberger <freude@de.ibm.com>
+Subject: [PATCH 6.1 014/185] crypto: s390/aes - Fix buffer overread in CTR mode
+Date: Mon, 29 Jan 2024 09:03:34 -0800
+Message-ID: <20240129165959.053106544@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
 References: <20240129165958.589924174@linuxfoundation.org>
@@ -68,116 +68,53 @@ Content-Transfer-Encoding: 8bit
 
 From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 78aafb3884f6bc6636efcc1760c891c8500b9922 upstream.
+commit d07f951903fa9922c375b8ab1ce81b18a0034e3b upstream.
 
-There is a dead-lock in the hwrng device read path.  This triggers
-when the user reads from /dev/hwrng into memory also mmap-ed from
-/dev/hwrng.  The resulting page fault triggers a recursive read
-which then dead-locks.
+When processing the last block, the s390 ctr code will always read
+a whole block, even if there isn't a whole block of data left.  Fix
+this by using the actual length left and copy it into a buffer first
+for processing.
 
-Fix this by using a stack buffer when calling copy_to_user.
-
-Reported-by: Edward Adam Davis <eadavis@qq.com>
-Reported-by: syzbot+c52ab18308964d248092@syzkaller.appspotmail.com
-Fixes: 9996508b3353 ("hwrng: core - Replace u32 in driver API with byte array")
+Fixes: 0200f3ecc196 ("crypto: s390 - add System z hardware support for CTR mode")
 Cc: <stable@vger.kernel.org>
+Reported-by: Guangwu Zhang <guazhang@redhat.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reviewd-by: Harald Freudenberger <freude@de.ibm.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/hw_random/core.c |   34 +++++++++++++++++++++-------------
- 1 file changed, 21 insertions(+), 13 deletions(-)
+ arch/s390/crypto/aes_s390.c  |    4 +++-
+ arch/s390/crypto/paes_s390.c |    4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/char/hw_random/core.c
-+++ b/drivers/char/hw_random/core.c
-@@ -24,10 +24,13 @@
- #include <linux/random.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-+#include <linux/string.h>
- #include <linux/uaccess.h>
- 
- #define RNG_MODULE_NAME		"hw_random"
- 
-+#define RNG_BUFFER_SIZE (SMP_CACHE_BYTES < 32 ? 32 : SMP_CACHE_BYTES)
-+
- static struct hwrng *current_rng;
- /* the current rng has been explicitly chosen by user via sysfs */
- static int cur_rng_set_by_user;
-@@ -59,7 +62,7 @@ static inline int rng_get_data(struct hw
- 
- static size_t rng_buffer_size(void)
- {
--	return SMP_CACHE_BYTES < 32 ? 32 : SMP_CACHE_BYTES;
-+	return RNG_BUFFER_SIZE;
- }
- 
- static void add_early_randomness(struct hwrng *rng)
-@@ -211,6 +214,7 @@ static inline int rng_get_data(struct hw
- static ssize_t rng_dev_read(struct file *filp, char __user *buf,
- 			    size_t size, loff_t *offp)
- {
-+	u8 buffer[RNG_BUFFER_SIZE];
- 	ssize_t ret = 0;
- 	int err = 0;
- 	int bytes_read, len;
-@@ -238,34 +242,37 @@ static ssize_t rng_dev_read(struct file
- 			if (bytes_read < 0) {
- 				err = bytes_read;
- 				goto out_unlock_reading;
-+			} else if (bytes_read == 0 &&
-+				   (filp->f_flags & O_NONBLOCK)) {
-+				err = -EAGAIN;
-+				goto out_unlock_reading;
- 			}
-+
- 			data_avail = bytes_read;
- 		}
- 
--		if (!data_avail) {
--			if (filp->f_flags & O_NONBLOCK) {
--				err = -EAGAIN;
--				goto out_unlock_reading;
--			}
--		} else {
--			len = data_avail;
-+		len = data_avail;
-+		if (len) {
- 			if (len > size)
- 				len = size;
- 
- 			data_avail -= len;
- 
--			if (copy_to_user(buf + ret, rng_buffer + data_avail,
--								len)) {
-+			memcpy(buffer, rng_buffer + data_avail, len);
-+		}
-+		mutex_unlock(&reading_mutex);
-+		put_rng(rng);
-+
-+		if (len) {
-+			if (copy_to_user(buf + ret, buffer, len)) {
- 				err = -EFAULT;
--				goto out_unlock_reading;
-+				goto out;
- 			}
- 
- 			size -= len;
- 			ret += len;
- 		}
- 
--		mutex_unlock(&reading_mutex);
--		put_rng(rng);
- 
- 		if (need_resched())
- 			schedule_timeout_interruptible(1);
-@@ -276,6 +283,7 @@ static ssize_t rng_dev_read(struct file
- 		}
- 	}
- out:
-+	memzero_explicit(buffer, sizeof(buffer));
- 	return ret ? : err;
- 
- out_unlock_reading:
+--- a/arch/s390/crypto/aes_s390.c
++++ b/arch/s390/crypto/aes_s390.c
+@@ -601,7 +601,9 @@ static int ctr_aes_crypt(struct skcipher
+ 	 * final block may be < AES_BLOCK_SIZE, copy only nbytes
+ 	 */
+ 	if (nbytes) {
+-		cpacf_kmctr(sctx->fc, sctx->key, buf, walk.src.virt.addr,
++		memset(buf, 0, AES_BLOCK_SIZE);
++		memcpy(buf, walk.src.virt.addr, nbytes);
++		cpacf_kmctr(sctx->fc, sctx->key, buf, buf,
+ 			    AES_BLOCK_SIZE, walk.iv);
+ 		memcpy(walk.dst.virt.addr, buf, nbytes);
+ 		crypto_inc(walk.iv, AES_BLOCK_SIZE);
+--- a/arch/s390/crypto/paes_s390.c
++++ b/arch/s390/crypto/paes_s390.c
+@@ -688,9 +688,11 @@ static int ctr_paes_crypt(struct skciphe
+ 	 * final block may be < AES_BLOCK_SIZE, copy only nbytes
+ 	 */
+ 	if (nbytes) {
++		memset(buf, 0, AES_BLOCK_SIZE);
++		memcpy(buf, walk.src.virt.addr, nbytes);
+ 		while (1) {
+ 			if (cpacf_kmctr(ctx->fc, &param, buf,
+-					walk.src.virt.addr, AES_BLOCK_SIZE,
++					buf, AES_BLOCK_SIZE,
+ 					walk.iv) == AES_BLOCK_SIZE)
+ 				break;
+ 			if (__paes_convert_key(ctx))
 
 
 
