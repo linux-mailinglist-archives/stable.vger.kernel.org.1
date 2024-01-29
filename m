@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC2B840DB5
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 331F7840FE4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 936221C23549
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C26351F23E0E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59B0158D9C;
-	Mon, 29 Jan 2024 17:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB2D15EA8B;
+	Mon, 29 Jan 2024 17:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TI5v3XM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lilumy1K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933A8158D96;
-	Mon, 29 Jan 2024 17:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBE415EA91;
+	Mon, 29 Jan 2024 17:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548151; cv=none; b=m07WI2UaK1lpSl69rYp22thjNLbOEWKnyzg2PJYeadykA8AKkyncWZK6r4VMoyddFTTKDyiFbX5TTxatxbLtzlmBJ87aBrHiwbJumyCB9w9xv5HpFd2wr3FR5LJXFdhod2shMMHAzEEieJWBDZffjJ2vJKaCOjkKuJVvovG+64M=
+	t=1706548523; cv=none; b=NBdhbvp8Ik2ods7g3W93ZSyyQTwOxM7bVCwvfMc10llCHresfS6yChszmRj09U+H0Hzq70r2HUsk/FnkXoVUL5uVYDE8Ej5TCeUtp3QwDqwwfVVqpXuMdBSdyaNCsuCZGcQmoUZAVdjJB7pKS+j0tNn9U2jcwbrAjIvHI9iG6ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548151; c=relaxed/simple;
-	bh=y1k0HCN5Gp4urLt42KvAu1VEIhS57J7aVrI8d9TALp0=;
+	s=arc-20240116; t=1706548523; c=relaxed/simple;
+	bh=WUJpd1kurrM9HFBxho0gnOxtDuGjtEHzbi6gBFuRupY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBGH8jtgyAhL4gkiCtpaDb+TWrv6brw7RY04SQ+/vFmX7+XfptlIx8o4T8T3f6XfIxCGZiauNCUVtXetyoGBcus4X+C8f1e1xaXul0xwmUwv/E9HySnv7QYRT9IIc+toilCwjYoJs6dwCwClywe+5wot4Iy0iSBhzI1w+tggcaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TI5v3XM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D371C43399;
-	Mon, 29 Jan 2024 17:09:11 +0000 (UTC)
+	 MIME-Version; b=sBJr+EZRI02gyvxcI6CI1c60wHUNJuo3FTbt6J85z0KGJ+8pnDKlg7IOv7QT4yRL4UCTyp3IA650RaTGjTJJSegGv7VCANo0w+WfcFXYZdY+svMfdTN87PBZtjYBVZvUUH/tpEdBUEEXdgJdYlatdiV/izucD7BjF4oVtMapbMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lilumy1K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680E3C43390;
+	Mon, 29 Jan 2024 17:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548151;
-	bh=y1k0HCN5Gp4urLt42KvAu1VEIhS57J7aVrI8d9TALp0=;
+	s=korg; t=1706548523;
+	bh=WUJpd1kurrM9HFBxho0gnOxtDuGjtEHzbi6gBFuRupY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0TI5v3XM9Y4TF6XMeC5V4Vm8eNbfkvkQtrb9wyIR3zJrCWPH9aJFg+oJt7mIIbQat
-	 +v0qRkbEGwPXNq8vL+wqIborKST++ftoUgThCQbr1viAEdeEMQbJk6LfWC2XWQrxtq
-	 /dHjaF0K/6DnImxp3y/iSAJqB6u3apWQKCnn8wXk=
+	b=Lilumy1KrZCgw6lT0meeTxueYYwsMW5hnIXVP6KQjw0V6qkq6MBXI3JNSE3FBdyNU
+	 O7MbOLetKpIwbcL1hNCCDjAXVxufxSk/m/hrloIXF5C5+nKNtGz5/SFbpHezrq7t70
+	 67p7CN55NNuAlNq4+UVaSid6qttvt0y/85po2Qo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 189/346] net/mlx5: Fix a WARN upon a callback command failure
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 156/331] bpf: extract setup_func_entry() utility function
 Date: Mon, 29 Jan 2024 09:03:40 -0800
-Message-ID: <20240129170021.960346018@linuxfoundation.org>
+Message-ID: <20240129170019.484882412@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,154 +62,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yishai Hadas <yishaih@nvidia.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit cc8091587779cfaddb6b29c9e9edb9079a282cad ]
+commit 58124a98cb8eda69d248d7f1de954c8b2767c945 upstream.
 
-The below WARN [1] is reported once a callback command failed.
+Move code for simulated stack frame creation to a separate utility
+function. This function would be used in the follow-up change for
+callbacks handling.
 
-As a callback runs under an interrupt context, needs to use the IRQ
-save/restore variant.
-
-[1]
-DEBUG_LOCKS_WARN_ON(lockdep_hardirq_context())
-WARNING: CPU: 15 PID: 0 at kernel/locking/lockdep.c:4353
-              lockdep_hardirqs_on_prepare+0x11b/0x180
-Modules linked in: vhost_net vhost tap mlx5_vfio_pci
-vfio_pci vfio_pci_core vfio_iommu_type1 vfio mlx5_vdpa vringh
-vhost_iotlb vdpa nfnetlink_cttimeout openvswitch nsh ip6table_mangle
-ip6table_nat ip6table_filter ip6_tables iptable_mangle
-xt_conntrackxt_MASQUERADE nf_conntrack_netlink nfnetlink
-xt_addrtype iptable_nat nf_nat br_netfilter rpcsec_gss_krb5
-auth_rpcgss oid_registry overlay rpcrdma rdma_ucm ib_iser libiscsi
-scsi_transport_iscsi rdma_cm iw_cm ib_umad ib_ipoib ib_cm
-mlx5_ib ib_uverbs ib_core fuse mlx5_core
-CPU: 15 PID: 0 Comm: swapper/15 Tainted: G        W 6.7.0-rc4+ #1587
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-RIP: 0010:lockdep_hardirqs_on_prepare+0x11b/0x180
-Code: 00 5b c3 c3 e8 e6 0d 58 00 85 c0 74 d6 8b 15 f0 c3
-      76 01 85 d2 75 cc 48 c7 c6 04 a5 3b 82 48 c7 c7 f1
-      e9 39 82 e8 95 12 f9 ff <0f> 0b 5b c3 e8 bc 0d 58 00
-      85 c0 74 ac 8b 3d c6 c3 76 01 85 ff 75
-RSP: 0018:ffffc900003ecd18 EFLAGS: 00010086
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000027
-RDX: 0000000000000000 RSI: ffff88885fbdb880 RDI: ffff88885fbdb888
-RBP: 00000000ffffff87 R08: 0000000000000000 R09: 0000000000000001
-R10: 0000000000000000 R11: 284e4f5f4e524157 R12: 00000000002c9aa1
-R13: ffff88810aace980 R14: ffff88810aace9b8 R15: 0000000000000003
-FS:  0000000000000000(0000) GS:ffff88885fbc0000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f731436f4c8 CR3: 000000010aae6001 CR4: 0000000000372eb0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <IRQ>
-? __warn+0x81/0x170
-? lockdep_hardirqs_on_prepare+0x11b/0x180
-? report_bug+0xf8/0x1c0
-? handle_bug+0x3f/0x70
-? exc_invalid_op+0x13/0x60
-? asm_exc_invalid_op+0x16/0x20
-? lockdep_hardirqs_on_prepare+0x11b/0x180
-? lockdep_hardirqs_on_prepare+0x11b/0x180
-trace_hardirqs_on+0x4a/0xa0
-raw_spin_unlock_irq+0x24/0x30
-cmd_status_err+0xc0/0x1a0 [mlx5_core]
-cmd_status_err+0x1a0/0x1a0 [mlx5_core]
-mlx5_cmd_exec_cb_handler+0x24/0x40 [mlx5_core]
-mlx5_cmd_comp_handler+0x129/0x4b0 [mlx5_core]
-cmd_comp_notifier+0x1a/0x20 [mlx5_core]
-notifier_call_chain+0x3e/0xe0
-atomic_notifier_call_chain+0x5f/0x130
-mlx5_eq_async_int+0xe7/0x200 [mlx5_core]
-notifier_call_chain+0x3e/0xe0
-atomic_notifier_call_chain+0x5f/0x130
-irq_int_handler+0x11/0x20 [mlx5_core]
-__handle_irq_event_percpu+0x99/0x220
-? tick_irq_enter+0x5d/0x80
-handle_irq_event_percpu+0xf/0x40
-handle_irq_event+0x3a/0x60
-handle_edge_irq+0xa2/0x1c0
-__common_interrupt+0x55/0x140
-common_interrupt+0x7d/0xa0
-</IRQ>
-<TASK>
-asm_common_interrupt+0x22/0x40
-RIP: 0010:default_idle+0x13/0x20
-Code: c0 08 00 00 00 4d 29 c8 4c 01 c7 4c 29 c2 e9 72 ff
-ff ff cc cc cc cc 8b 05 ea 08 25 01 85 c0 7e 07 0f 00 2d 7f b0 26 00 fb
-f4 <fa> c3 90 66 2e 0f 1f 84 00 00 00 00 00 65 48 8b 04 25 80 d0 02 00
-RSP: 0018:ffffc9000010fec8 EFLAGS: 00000242
-RAX: 0000000000000001 RBX: 000000000000000f RCX: 4000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff811c410c
-RBP: ffffffff829478c0 R08: 0000000000000001 R09: 0000000000000001
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-? do_idle+0x1ec/0x210
-default_idle_call+0x6c/0x90
-do_idle+0x1ec/0x210
-cpu_startup_entry+0x26/0x30
-start_secondary+0x11b/0x150
-secondary_startup_64_no_verify+0x165/0x16b
-</TASK>
-irq event stamp: 833284
-hardirqs last  enabled at (833283): [<ffffffff811c410c>]
-do_idle+0x1ec/0x210
-hardirqs last disabled at (833284): [<ffffffff81daf9ef>]
-common_interrupt+0xf/0xa0
-softirqs last  enabled at (833224): [<ffffffff81dc199f>]
-__do_softirq+0x2bf/0x40e
-softirqs last disabled at (833177): [<ffffffff81178ddf>]
-irq_exit_rcu+0x7f/0xa0
-
-Fixes: 34f46ae0d4b3 ("net/mlx5: Add command failures data to debugfs")
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20231121020701.26440-6-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/bpf/verifier.c |   84 ++++++++++++++++++++++++++++----------------------
+ 1 file changed, 48 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-index a7b1f9686c09..4957412ff1f6 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -1923,6 +1923,7 @@ static void cmd_status_log(struct mlx5_core_dev *dev, u16 opcode, u8 status,
- {
- 	const char *namep = mlx5_command_str(opcode);
- 	struct mlx5_cmd_stats *stats;
-+	unsigned long flags;
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -9167,11 +9167,10 @@ static int set_callee_state(struct bpf_v
+ 			    struct bpf_func_state *caller,
+ 			    struct bpf_func_state *callee, int insn_idx);
  
- 	if (!err || !(strcmp(namep, "unknown command opcode")))
- 		return;
-@@ -1930,7 +1931,7 @@ static void cmd_status_log(struct mlx5_core_dev *dev, u16 opcode, u8 status,
- 	stats = xa_load(&dev->cmd.stats, opcode);
- 	if (!stats)
- 		return;
--	spin_lock_irq(&stats->lock);
-+	spin_lock_irqsave(&stats->lock, flags);
- 	stats->failed++;
- 	if (err < 0)
- 		stats->last_failed_errno = -err;
-@@ -1939,7 +1940,7 @@ static void cmd_status_log(struct mlx5_core_dev *dev, u16 opcode, u8 status,
- 		stats->last_failed_mbox_status = status;
- 		stats->last_failed_syndrome = syndrome;
+-static int __check_func_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
+-			     int *insn_idx, int subprog,
+-			     set_callee_state_fn set_callee_state_cb)
++static int setup_func_entry(struct bpf_verifier_env *env, int subprog, int callsite,
++			    set_callee_state_fn set_callee_state_cb,
++			    struct bpf_verifier_state *state)
+ {
+-	struct bpf_verifier_state *state = env->cur_state;
+ 	struct bpf_func_state *caller, *callee;
+ 	int err;
+ 
+@@ -9181,13 +9180,53 @@ static int __check_func_call(struct bpf_
+ 		return -E2BIG;
  	}
--	spin_unlock_irq(&stats->lock);
-+	spin_unlock_irqrestore(&stats->lock, flags);
+ 
+-	caller = state->frame[state->curframe];
+ 	if (state->frame[state->curframe + 1]) {
+ 		verbose(env, "verifier bug. Frame %d already allocated\n",
+ 			state->curframe + 1);
+ 		return -EFAULT;
+ 	}
+ 
++	caller = state->frame[state->curframe];
++	callee = kzalloc(sizeof(*callee), GFP_KERNEL);
++	if (!callee)
++		return -ENOMEM;
++	state->frame[state->curframe + 1] = callee;
++
++	/* callee cannot access r0, r6 - r9 for reading and has to write
++	 * into its own stack before reading from it.
++	 * callee can read/write into caller's stack
++	 */
++	init_func_state(env, callee,
++			/* remember the callsite, it will be used by bpf_exit */
++			callsite,
++			state->curframe + 1 /* frameno within this callchain */,
++			subprog /* subprog number within this prog */);
++	/* Transfer references to the callee */
++	err = copy_reference_state(callee, caller);
++	err = err ?: set_callee_state_cb(env, caller, callee, callsite);
++	if (err)
++		goto err_out;
++
++	/* only increment it after check_reg_arg() finished */
++	state->curframe++;
++
++	return 0;
++
++err_out:
++	free_func_state(callee);
++	state->frame[state->curframe + 1] = NULL;
++	return err;
++}
++
++static int __check_func_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
++			     int *insn_idx, int subprog,
++			     set_callee_state_fn set_callee_state_cb)
++{
++	struct bpf_verifier_state *state = env->cur_state;
++	struct bpf_func_state *caller, *callee;
++	int err;
++
++	caller = state->frame[state->curframe];
+ 	err = btf_check_subprog_call(env, subprog, caller->regs);
+ 	if (err == -EFAULT)
+ 		return err;
+@@ -9256,35 +9295,12 @@ static int __check_func_call(struct bpf_
+ 		return 0;
+ 	}
+ 
+-	callee = kzalloc(sizeof(*callee), GFP_KERNEL);
+-	if (!callee)
+-		return -ENOMEM;
+-	state->frame[state->curframe + 1] = callee;
+-
+-	/* callee cannot access r0, r6 - r9 for reading and has to write
+-	 * into its own stack before reading from it.
+-	 * callee can read/write into caller's stack
+-	 */
+-	init_func_state(env, callee,
+-			/* remember the callsite, it will be used by bpf_exit */
+-			*insn_idx /* callsite */,
+-			state->curframe + 1 /* frameno within this callchain */,
+-			subprog /* subprog number within this prog */);
+-
+-	/* Transfer references to the callee */
+-	err = copy_reference_state(callee, caller);
++	err = setup_func_entry(env, subprog, *insn_idx, set_callee_state_cb, state);
+ 	if (err)
+-		goto err_out;
+-
+-	err = set_callee_state_cb(env, caller, callee, *insn_idx);
+-	if (err)
+-		goto err_out;
++		return err;
+ 
+ 	clear_caller_saved_regs(env, caller->regs);
+ 
+-	/* only increment it after check_reg_arg() finished */
+-	state->curframe++;
+-
+ 	/* and go analyze first insn of the callee */
+ 	*insn_idx = env->subprog_info[subprog].start - 1;
+ 
+@@ -9292,14 +9308,10 @@ static int __check_func_call(struct bpf_
+ 		verbose(env, "caller:\n");
+ 		print_verifier_state(env, caller, true);
+ 		verbose(env, "callee:\n");
+-		print_verifier_state(env, callee, true);
++		print_verifier_state(env, state->frame[state->curframe], true);
+ 	}
+-	return 0;
+ 
+-err_out:
+-	free_func_state(callee);
+-	state->frame[state->curframe + 1] = NULL;
+-	return err;
++	return 0;
  }
  
- /* preserve -EREMOTEIO for outbox.status != OK, otherwise return err as is */
--- 
-2.43.0
-
+ int map_set_for_each_callback_args(struct bpf_verifier_env *env,
 
 
 
