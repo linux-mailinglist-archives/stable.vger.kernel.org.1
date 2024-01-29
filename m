@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-17106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 437FC840FD9
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A35840DC5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74BE91C2160C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C69F21C23254
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E8872257;
-	Mon, 29 Jan 2024 17:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3899815AAB8;
+	Mon, 29 Jan 2024 17:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RugLGk9w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N0aBzFUZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4C77222D;
-	Mon, 29 Jan 2024 17:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD76157031;
+	Mon, 29 Jan 2024 17:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548513; cv=none; b=oB0jXfncMwJx8G112lUBIwC+uZIkEER35+wWWfn0+fRurCkIF8kLHwTTlKQbyZIWdINgj8i8+QKTd/1Ft9CikJ2uZIHk7vrbfQnvgVUv+9kzoAZ/I0KPWsIi0lYEBRIy24ctShAes2GKXxKEjdPDP3XEIqmhrS64SY9b50rxQ2Q=
+	t=1706548164; cv=none; b=rEL2St6ptR4/LPTmc/WR1vtUl9W2cXcEnpkWqh54bt9cD+A6Y6xUwLWMg9hHTQoEleEKsRSsJJqA9ChkxrQxcIrZjx1nZRUMY/5e5D0PoPZ4YB+2gRYa6f4RkTVnQuxHoVtOXnJEizumiumJbKDwvtsuGa563amGurw/HjEAuek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548513; c=relaxed/simple;
-	bh=cXjzHb379PvadLdZ9PEf7vYrvjnZdqn5GZT/42CdOtI=;
+	s=arc-20240116; t=1706548164; c=relaxed/simple;
+	bh=VIzH6X+C0jx5piuMgkuYhLB/A1kDDhKfNTYq8x+/B2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iGhhjTtBhdFHLA8e1Gq3qdiD6itR/2TiVBNzTR5Q/H+e/J6ppVh44fhCzHVsJI5xKicNhO8afX2vC8iZD66mdSPgd6x76plHuS5nNvTRSapdhN2XA66jNtcZaPbSWFTYIJxFqa/8+pdzy0pYhoU8YmUDj19Mb6cIOAe/AZ1GwYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RugLGk9w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979F5C433C7;
-	Mon, 29 Jan 2024 17:15:13 +0000 (UTC)
+	 MIME-Version; b=RqKCfhka4Kq3wp45KwLs4YmvSQXtBeMpoD/fI08tM0Fav0du5zOv8A+Qr+heVXEPagklT5DsqROX8dNWUApZeiGkVn7E/PmiomEclEf2kpbQWMFL9yzJeFyUlmdIMoYF8KUh2Ux/KG1OXrsGQcY0mR8FM7uKKkakgD3RKOgo/Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N0aBzFUZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66FC4C43394;
+	Mon, 29 Jan 2024 17:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548513;
-	bh=cXjzHb379PvadLdZ9PEf7vYrvjnZdqn5GZT/42CdOtI=;
+	s=korg; t=1706548163;
+	bh=VIzH6X+C0jx5piuMgkuYhLB/A1kDDhKfNTYq8x+/B2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RugLGk9whmSR+lA1kDZoO/Kx/Z4R3UGVvtpF2cGaFMDTOKyAbwApSJ6/cx6ndiVGP
-	 rZs0K7TJlxEdvthb+mua5s9rd+xHJVdZ8PCiW1grZUzweT3v0vHKxbMe864Mk9Py5X
-	 SR9v5kBx7o6Jz/L9FZVCaFDDSyiqz8BST4QFKOwE=
+	b=N0aBzFUZt64NpTfk2POqFx2v7olqaxeto32mRuv9VRW+2KmY2kkHvqCW66zcoC3kX
+	 /F6Ufk7MFVqvC75UcmGhKNdeRIDCh1mTllYkDAPWluruYdCFrZx41/CD3KuTK/crPC
+	 zojfjSf//JriV9WqdEZ5RFWdaqvKCAwBNebobMiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.6 146/331] bpf: move explored_state() closer to the beginning of verifier.c
+	Jeffrey Altman <jaltman@auristor.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 179/346] afs: Fix error handling with lookup via FS.InlineBulkStatus
 Date: Mon, 29 Jan 2024 09:03:30 -0800
-Message-ID: <20240129170019.203990614@linuxfoundation.org>
+Message-ID: <20240129170021.658741926@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +64,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 3c4e420cb6536026ddd50eaaff5f30e4f144200d upstream.
+[ Upstream commit 17ba6f0bd14fe3ac606aac6bebe5e69bdaad8ba1 ]
 
-Subsequent patches would make use of explored_state() function.
-Move it up to avoid adding unnecessary prototype.
+When afs does a lookup, it tries to use FS.InlineBulkStatus to preemptively
+look up a bunch of files in the parent directory and cache this locally, on
+the basis that we might want to look at them too (for example if someone
+does an ls on a directory, they may want want to then stat every file
+listed).
 
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20231024000917.12153-2-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+FS.InlineBulkStatus can be considered a compound op with the normal abort
+code applying to the compound as a whole.  Each status fetch within the
+compound is then given its own individual abort code - but assuming no
+error that prevents the bulk fetch from returning the compound result will
+be 0, even if all the constituent status fetches failed.
+
+At the conclusion of afs_do_lookup(), we should use the abort code from the
+appropriate status to determine the error to return, if any - but instead
+it is assumed that we were successful if the op as a whole succeeded and we
+return an incompletely initialised inode, resulting in ENOENT, no matter
+the actual reason.  In the particular instance reported, a vnode with no
+permission granted to be accessed is being given a UAEACCES abort code
+which should be reported as EACCES, but is instead being reported as
+ENOENT.
+
+Fix this by abandoning the inode (which will be cleaned up with the op) if
+file[1] has an abort code indicated and turn that abort code into an error
+instead.
+
+Whilst we're at it, add a tracepoint so that the abort codes of the
+individual subrequests of FS.InlineBulkStatus can be logged.  At the moment
+only the container abort code can be 0.
+
+Fixes: e49c7b2f6de7 ("afs: Build an abstraction around an "operation" concept")
+Reported-by: Jeffrey Altman <jaltman@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c |   28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ fs/afs/dir.c               | 12 +++++++++---
+ include/trace/events/afs.h | 25 +++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+), 3 deletions(-)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -1786,6 +1786,19 @@ static int copy_verifier_state(struct bp
- 	return 0;
- }
+diff --git a/fs/afs/dir.c b/fs/afs/dir.c
+index 75896a677b96..9140780be5a4 100644
+--- a/fs/afs/dir.c
++++ b/fs/afs/dir.c
+@@ -716,6 +716,8 @@ static void afs_do_lookup_success(struct afs_operation *op)
+ 			break;
+ 		}
  
-+static u32 state_htab_size(struct bpf_verifier_env *env)
-+{
-+	return env->prog->len;
-+}
-+
-+static struct bpf_verifier_state_list **explored_state(struct bpf_verifier_env *env, int idx)
-+{
-+	struct bpf_verifier_state *cur = env->cur_state;
-+	struct bpf_func_state *state = cur->frame[cur->curframe];
-+
-+	return &env->explored_states[(idx ^ state->callsite) % state_htab_size(env)];
-+}
-+
- static void update_branch_counts(struct bpf_verifier_env *env, struct bpf_verifier_state *st)
- {
- 	while (st) {
-@@ -14702,21 +14715,6 @@ enum {
- 	BRANCH = 2,
- };
++		if (vp->scb.status.abort_code)
++			trace_afs_bulkstat_error(op, &vp->fid, i, vp->scb.status.abort_code);
+ 		if (!vp->scb.have_status && !vp->scb.have_error)
+ 			continue;
  
--static u32 state_htab_size(struct bpf_verifier_env *env)
--{
--	return env->prog->len;
--}
--
--static struct bpf_verifier_state_list **explored_state(
--					struct bpf_verifier_env *env,
--					int idx)
--{
--	struct bpf_verifier_state *cur = env->cur_state;
--	struct bpf_func_state *state = cur->frame[cur->curframe];
--
--	return &env->explored_states[(idx ^ state->callsite) % state_htab_size(env)];
--}
--
- static void mark_prune_point(struct bpf_verifier_env *env, int idx)
- {
- 	env->insn_aux_data[idx].prune_point = true;
+@@ -905,12 +907,16 @@ static struct inode *afs_do_lookup(struct inode *dir, struct dentry *dentry,
+ 		afs_begin_vnode_operation(op);
+ 		afs_wait_for_operation(op);
+ 	}
+-	inode = ERR_PTR(afs_op_error(op));
+ 
+ out_op:
+ 	if (!afs_op_error(op)) {
+-		inode = &op->file[1].vnode->netfs.inode;
+-		op->file[1].vnode = NULL;
++		if (op->file[1].scb.status.abort_code) {
++			afs_op_accumulate_error(op, -ECONNABORTED,
++						op->file[1].scb.status.abort_code);
++		} else {
++			inode = &op->file[1].vnode->netfs.inode;
++			op->file[1].vnode = NULL;
++		}
+ 	}
+ 
+ 	if (op->file[0].scb.have_status)
+diff --git a/include/trace/events/afs.h b/include/trace/events/afs.h
+index e9d412d19dbb..caec276515dc 100644
+--- a/include/trace/events/afs.h
++++ b/include/trace/events/afs.h
+@@ -1216,6 +1216,31 @@ TRACE_EVENT(afs_file_error,
+ 		      __print_symbolic(__entry->where, afs_file_errors))
+ 	    );
+ 
++TRACE_EVENT(afs_bulkstat_error,
++	    TP_PROTO(struct afs_operation *op, struct afs_fid *fid, unsigned int index, s32 abort),
++
++	    TP_ARGS(op, fid, index, abort),
++
++	    TP_STRUCT__entry(
++		    __field_struct(struct afs_fid,	fid)
++		    __field(unsigned int,		op)
++		    __field(unsigned int,		index)
++		    __field(s32,			abort)
++			     ),
++
++	    TP_fast_assign(
++		    __entry->op = op->debug_id;
++		    __entry->fid = *fid;
++		    __entry->index = index;
++		    __entry->abort = abort;
++			   ),
++
++	    TP_printk("OP=%08x[%02x] %llx:%llx:%x a=%d",
++		      __entry->op, __entry->index,
++		      __entry->fid.vid, __entry->fid.vnode, __entry->fid.unique,
++		      __entry->abort)
++	    );
++
+ TRACE_EVENT(afs_cm_no_server,
+ 	    TP_PROTO(struct afs_call *call, struct sockaddr_rxrpc *srx),
+ 
+-- 
+2.43.0
+
 
 
 
