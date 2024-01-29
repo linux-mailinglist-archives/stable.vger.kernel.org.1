@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1C47840E92
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB71840E93
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CED7283E29
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F97D1C2349E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A62815A4A6;
-	Mon, 29 Jan 2024 17:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96F815A4A3;
+	Mon, 29 Jan 2024 17:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="raCAn+/G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MkXdWI2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE02A15703D;
-	Mon, 29 Jan 2024 17:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6836F15703D;
+	Mon, 29 Jan 2024 17:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548307; cv=none; b=QhDvhRutWe6oyy+UvtfUs1WVceUMPLCwQizIKthzldXDbwZUe3lGI/otb1RKsSI7A+AWhKrUQ/5tDBmLUkhiOd82VbB3On8mgFLQQAPqDOP44s+rkSh4QxmUF60sq1dKfQQB0N5Uhp5W2BJ6I6icIRQ+nDNuarrkbresLsmIMWQ=
+	t=1706548308; cv=none; b=kKSQE0p4f4obaipOYjVCX82Av+79wPQsGocHguZTizaVLxmhY1/fr3wYT/uRN/efJK7uvA4LHXPz1Tzmb/aU7wJIlXO8SeFpGOyEejunklc/fJ0PtFjM9Z0wTIi5GxFtT8MPVtGVym2W+RJKZLF37ajBuRXw6KlfxelCSznOYpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548307; c=relaxed/simple;
-	bh=DTrcmHk3baqMVCFjzAOnvpl6yLAnm91wl/OnO+a5ofk=;
+	s=arc-20240116; t=1706548308; c=relaxed/simple;
+	bh=CQxMez5WEmzXKaPJIjiHDnmr0EjxEMnq4u3IT1KpvGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntQ1wZ9o/fzrFVEpXZM+DSjQCxRNel+OfAKtcliNR7cDCRFImV6FsF26ugCVMSj34gwZnB0BLjBE2KSQ6geaiSA9BhP0KzT0Jz7zsDCq2AEGdaHnmrEG1RU3EIPCafKzWl1Yg9sEefl8hO5MrDcH9sIbzk0CN+o4wqsk5iZHT5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=raCAn+/G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64BEC433F1;
-	Mon, 29 Jan 2024 17:11:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FK78efx40wSgZiexrIvVRm+ubxcrZdZLIu6waYzh58VaxvrFAOD9o4BluqG9YxJqzsTrDOPgSBmH+qjK7krKgRhdgzwohEfgFdFKuISvpLRX8hHuwZF53G5ghSzpYUHTv6vbY9Q9RVZmiJ7qkvRlp3hNyNhHNQeqIJt/X/9lRPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MkXdWI2F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 310C1C433C7;
+	Mon, 29 Jan 2024 17:11:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548306;
-	bh=DTrcmHk3baqMVCFjzAOnvpl6yLAnm91wl/OnO+a5ofk=;
+	s=korg; t=1706548308;
+	bh=CQxMez5WEmzXKaPJIjiHDnmr0EjxEMnq4u3IT1KpvGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=raCAn+/GHjxinlm8LZqY+H6t03e7Nd7RUt+N9lOYeMnFiUmHcYwfIEI7BHe4zqs5a
-	 DulPCysr17yChTpDcMneZimmYEI4D4VKcTvuJlv3DK4ZkQMUI+REgEnyrFWGU7F+kK
-	 Pb5ZGObYrwO0S9MI/QporhmR10Me6yb78bV5O2h8=
+	b=MkXdWI2F5tbvS7EtnbY1jKCCAbONHkFwVBLRTMhWX4ZiIPHqEAfXd0aLwXDllJWx5
+	 Swn05Brs4ZMg0jItfRVeGHbMnHVf/m5z8ZLxiZvsarDredfz/HLJPXmgJIqa3XyPUH
+	 3W4Kp3OXZssV6dRt64N7MljK4VCSXwHjdbYLgYPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	=?UTF-8?q?=D0=9C=D0=B0=D1=80=D0=BA=20=D0=9A=D0=BE=D1=80=D0=B5=D0=BD=D0=B1=D0=B5=D1=80=D0=B3?= <socketpair@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Xin Long <lucien.xin@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/185] udp: fix busy polling
-Date: Mon, 29 Jan 2024 09:04:43 -0800
-Message-ID: <20240129170001.267320680@linuxfoundation.org>
+Subject: [PATCH 6.1 084/185] net: fix removing a namespace with conflicting altnames
+Date: Mon, 29 Jan 2024 09:04:44 -0800
+Message-ID: <20240129170001.300768409@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
 References: <20240129165958.589924174@linuxfoundation.org>
@@ -63,138 +64,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit a54d51fb2dfb846aedf3751af501e9688db447f5 ]
+[ Upstream commit d09486a04f5da0a812c26217213b89a3b1acf836 ]
 
-Generic sk_busy_loop_end() only looks at sk->sk_receive_queue
-for presence of packets.
+Mark reports a BUG() when a net namespace is removed.
 
-Problem is that for UDP sockets after blamed commit, some packets
-could be present in another queue: udp_sk(sk)->reader_queue
+    kernel BUG at net/core/dev.c:11520!
 
-In some cases, a busy poller could spin until timeout expiration,
-even if some packets are available in udp_sk(sk)->reader_queue.
+Physical interfaces moved outside of init_net get "refunded"
+to init_net when that namespace disappears. The main interface
+name may get overwritten in the process if it would have
+conflicted. We need to also discard all conflicting altnames.
+Recent fixes addressed ensuring that altnames get moved
+with the main interface, which surfaced this problem.
 
-v3: - make sk_busy_loop_end() nicer (Willem)
-
-v2: - add a READ_ONCE(sk->sk_family) in sk_is_inet() to avoid KCSAN splats.
-    - add a sk_is_inet() check in sk_is_udp() (Willem feedback)
-    - add a sk_is_inet() check in sk_is_tcp().
-
-Fixes: 2276f58ac589 ("udp: use a separate rx queue for packet reception")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reported-by: Марк Коренберг <socketpair@gmail.com>
+Link: https://lore.kernel.org/all/CAEmTpZFZ4Sv3KwqFOY2WKDHeZYdi0O7N5H1nTvcGp=SAEavtDg@mail.gmail.com/
+Fixes: 7663d522099e ("net: check for altname conflicts when changing netdev's netns")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Xin Long <lucien.xin@gmail.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/skmsg.h   |  6 ------
- include/net/inet_sock.h |  5 -----
- include/net/sock.h      | 18 +++++++++++++++++-
- net/core/sock.c         | 11 +++++++++--
- 4 files changed, 26 insertions(+), 14 deletions(-)
+ net/core/dev.c | 9 +++++++++
+ net/core/dev.h | 3 +++
+ 2 files changed, 12 insertions(+)
 
-diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
-index c953b8c0d2f4..bd4418377bac 100644
---- a/include/linux/skmsg.h
-+++ b/include/linux/skmsg.h
-@@ -500,12 +500,6 @@ static inline bool sk_psock_strp_enabled(struct sk_psock *psock)
- 	return !!psock->saved_data_ready;
- }
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 0a5566b6f8a2..1ba3662faf0a 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -11323,6 +11323,7 @@ static struct pernet_operations __net_initdata netdev_net_ops = {
  
--static inline bool sk_is_udp(const struct sock *sk)
--{
--	return sk->sk_type == SOCK_DGRAM &&
--	       sk->sk_protocol == IPPROTO_UDP;
--}
--
- #if IS_ENABLED(CONFIG_NET_SOCK_MSG)
- 
- #define BPF_F_STRPARSER	(1UL << 1)
-diff --git a/include/net/inet_sock.h b/include/net/inet_sock.h
-index c2432c2addc8..c98890e21401 100644
---- a/include/net/inet_sock.h
-+++ b/include/net/inet_sock.h
-@@ -270,11 +270,6 @@ struct inet_sock {
- #define IP_CMSG_CHECKSUM	BIT(7)
- #define IP_CMSG_RECVFRAGSIZE	BIT(8)
- 
--static inline bool sk_is_inet(struct sock *sk)
--{
--	return sk->sk_family == AF_INET || sk->sk_family == AF_INET6;
--}
--
- /**
-  * sk_to_full_sk - Access to a full socket
-  * @sk: pointer to a socket
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 6b51e85ae69e..579732d47dfc 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2824,9 +2824,25 @@ static inline void skb_setup_tx_timestamp(struct sk_buff *skb, __u16 tsflags)
- 			   &skb_shinfo(skb)->tskey);
- }
- 
-+static inline bool sk_is_inet(const struct sock *sk)
-+{
-+	int family = READ_ONCE(sk->sk_family);
-+
-+	return family == AF_INET || family == AF_INET6;
-+}
-+
- static inline bool sk_is_tcp(const struct sock *sk)
+ static void __net_exit default_device_exit_net(struct net *net)
  {
--	return sk->sk_type == SOCK_STREAM && sk->sk_protocol == IPPROTO_TCP;
-+	return sk_is_inet(sk) &&
-+	       sk->sk_type == SOCK_STREAM &&
-+	       sk->sk_protocol == IPPROTO_TCP;
-+}
++	struct netdev_name_node *name_node, *tmp;
+ 	struct net_device *dev, *aux;
+ 	/*
+ 	 * Push all migratable network devices back to the
+@@ -11345,6 +11346,14 @@ static void __net_exit default_device_exit_net(struct net *net)
+ 		snprintf(fb_name, IFNAMSIZ, "dev%d", dev->ifindex);
+ 		if (netdev_name_in_use(&init_net, fb_name))
+ 			snprintf(fb_name, IFNAMSIZ, "dev%%d");
 +
-+static inline bool sk_is_udp(const struct sock *sk)
-+{
-+	return sk_is_inet(sk) &&
-+	       sk->sk_type == SOCK_DGRAM &&
-+	       sk->sk_protocol == IPPROTO_UDP;
- }
++		netdev_for_each_altname_safe(dev, name_node, tmp)
++			if (netdev_name_in_use(&init_net, name_node->name)) {
++				netdev_name_node_del(name_node);
++				synchronize_rcu();
++				__netdev_name_node_alt_destroy(name_node);
++			}
++
+ 		err = dev_change_net_namespace(dev, &init_net, fb_name);
+ 		if (err) {
+ 			pr_emerg("%s: failed to move %s to init_net: %d\n",
+diff --git a/net/core/dev.h b/net/core/dev.h
+index 9ca91457c197..db9ff8cd8d46 100644
+--- a/net/core/dev.h
++++ b/net/core/dev.h
+@@ -63,6 +63,9 @@ int dev_change_name(struct net_device *dev, const char *newname);
  
- static inline bool sk_is_stream_unix(const struct sock *sk)
-diff --git a/net/core/sock.c b/net/core/sock.c
-index c50a14a02edd..c8803b95ea0d 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -107,6 +107,7 @@
- #include <linux/interrupt.h>
- #include <linux/poll.h>
- #include <linux/tcp.h>
-+#include <linux/udp.h>
- #include <linux/init.h>
- #include <linux/highmem.h>
- #include <linux/user_namespace.h>
-@@ -4109,8 +4110,14 @@ bool sk_busy_loop_end(void *p, unsigned long start_time)
- {
- 	struct sock *sk = p;
+ #define netdev_for_each_altname(dev, namenode)				\
+ 	list_for_each_entry((namenode), &(dev)->name_node->list, list)
++#define netdev_for_each_altname_safe(dev, namenode, next)		\
++	list_for_each_entry_safe((namenode), (next), &(dev)->name_node->list, \
++				 list)
  
--	return !skb_queue_empty_lockless(&sk->sk_receive_queue) ||
--	       sk_busy_loop_timeout(sk, start_time);
-+	if (!skb_queue_empty_lockless(&sk->sk_receive_queue))
-+		return true;
-+
-+	if (sk_is_udp(sk) &&
-+	    !skb_queue_empty_lockless(&udp_sk(sk)->reader_queue))
-+		return true;
-+
-+	return sk_busy_loop_timeout(sk, start_time);
- }
- EXPORT_SYMBOL(sk_busy_loop_end);
- #endif /* CONFIG_NET_RX_BUSY_POLL */
+ int netdev_name_node_alt_create(struct net_device *dev, const char *name);
+ int netdev_name_node_alt_destroy(struct net_device *dev, const char *name);
 -- 
 2.43.0
 
