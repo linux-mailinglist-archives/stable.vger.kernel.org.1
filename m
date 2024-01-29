@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-16765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93BD9840E52
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA77841008
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5EE41C20FEC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DCE71C23900
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73840159591;
-	Mon, 29 Jan 2024 17:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB9E15B303;
+	Mon, 29 Jan 2024 17:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fa2wmpid"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+Il3DPq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3257515B313;
-	Mon, 29 Jan 2024 17:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF2915703E;
+	Mon, 29 Jan 2024 17:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548263; cv=none; b=Ed+6joIkUHTh1bu3OjhitaYlagLLGieGG3JqPdphORmB9FEmR5GvsC+U7yK5Pnwwv05jIEa6OBFmR3tw7YwXPVA3JJx4O1nmkqYWwVv1+IWz71rCTkrUeAn1qKdw7eHweEHoRewFXqYotn4aVNLqOkhMuHOG+cUzjZdFIsf3tM4=
+	t=1706548548; cv=none; b=a3NdPo6KbmGrGkktpYhQedP6KfbBwZmSgeh1BbNFE/CHjfxsCCDUJbf3VRXCGPZkoZ47Quzoe/cQOfhq+4vKv1RhkXv9qWxGrnAY4Yf/pfPfWHAiANwNMxM1MB3w6/rHiLLhv8q+vbNDtHD4B6cheDCiB7BuW5mebFr5e5Eb+Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548263; c=relaxed/simple;
-	bh=cPp9vWuKaqEfixUC5wo/H99866uCU2hrQnYeQasaTTM=;
+	s=arc-20240116; t=1706548548; c=relaxed/simple;
+	bh=1iE5O1sbpwzIWTn7OjeL32x/8oXLZq4cQF0dvOHrclM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z58jPE1Pqm/r35onJuFp3sySfWpt8gxfQbTX9zMyWzttC/zcEVunpB5kwjPvtgEKdpbncxEt+Db5Bb+WkV3jKLAp4k543sdIVHGIZdvckjCy9I8Q77sIo3aE/87WUN/oFjsrwlbDHmL9+j2GspIim43sA9Rcjdz07Ommccgak3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fa2wmpid; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00F0C43399;
-	Mon, 29 Jan 2024 17:11:02 +0000 (UTC)
+	 MIME-Version; b=AtJXFBRa23aHfVcqiW7HJm09TUYZzgiWIfFpqlYXecoqgY7fpxi4SrSl1yVlNMVhFb1LfVnDHjviJkS16+CxpkgzmQeZA3LilCGf9HAxGMKJpu3Yavakvy6eqEbE6w36CG21jhiAZNus0yR6UghMRWv46SQNnDROVNnRFbpY4s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+Il3DPq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33094C433F1;
+	Mon, 29 Jan 2024 17:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548263;
-	bh=cPp9vWuKaqEfixUC5wo/H99866uCU2hrQnYeQasaTTM=;
+	s=korg; t=1706548548;
+	bh=1iE5O1sbpwzIWTn7OjeL32x/8oXLZq4cQF0dvOHrclM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fa2wmpid9PJBTg0MH5J0DmEy46XSYlntlUmwDCHq5SnPWNR2ZPBvTQ3FC/xg62/8Q
-	 KQu5OItkd6YcVMz+Ssa8lEZIzauNHSkLZJJb9YL32kQYJbDloixrqxFEArPwVgWBtZ
-	 lCwVP/RqH3S9drG0Y+Dyl+bjt+JYyL+c00rKlCfU=
+	b=t+Il3DPqW/R9fussq7QaWo7iFyRaUyqbRUOFf+CU+rQWZOzQAx1gE7VBSsjITcO4J
+	 sJr1UTQK4bLodjSYV5Hed6nN1yXzo/sg+wYIT+BVldsIi7xY+5z1NWB9Ec8GXG/qQL
+	 3N7mJEUG/hfVpdUbKEnoSVK0zRLoug74Ohnp7+qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Eric Biggers <ebiggers@google.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 6.1 054/185] ubifs: ubifs_symlink: Fix memleak of inode->i_link in error path
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 190/331] selftests: fill in some missing configs for net
 Date: Mon, 29 Jan 2024 09:04:14 -0800
-Message-ID: <20240129170000.329138944@linuxfoundation.org>
+Message-ID: <20240129170020.449111716@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 1e022216dcd248326a5bb95609d12a6815bca4e2 upstream.
+[ Upstream commit 04fe7c5029cbdbcdb28917f09a958d939a8f19f7 ]
 
-For error handling path in ubifs_symlink(), inode will be marked as
-bad first, then iput() is invoked. If inode->i_link is initialized by
-fscrypt_encrypt_symlink() in encryption scenario, inode->i_link won't
-be freed by callchain ubifs_free_inode -> fscrypt_free_inode in error
-handling path, because make_bad_inode() has changed 'inode->i_mode' as
-'S_IFREG'.
-Following kmemleak is easy to be reproduced by injecting error in
-ubifs_jnl_update() when doing symlink in encryption scenario:
- unreferenced object 0xffff888103da3d98 (size 8):
-  comm "ln", pid 1692, jiffies 4294914701 (age 12.045s)
-  backtrace:
-   kmemdup+0x32/0x70
-   __fscrypt_encrypt_symlink+0xed/0x1c0
-   ubifs_symlink+0x210/0x300 [ubifs]
-   vfs_symlink+0x216/0x360
-   do_symlinkat+0x11a/0x190
-   do_syscall_64+0x3b/0xe0
-There are two ways fixing it:
- 1. Remove make_bad_inode() in error handling path. We can do that
-    because ubifs_evict_inode() will do same processes for good
-    symlink inode and bad symlink inode, for inode->i_nlink checking
-    is before is_bad_inode().
- 2. Free inode->i_link before marking inode bad.
-Method 2 is picked, it has less influence, personally, I think.
+We are missing a lot of config options from net selftests,
+it seems:
 
-Cc: stable@vger.kernel.org
-Fixes: 2c58d548f570 ("fscrypt: cache decrypted symlink target in ->i_link")
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Suggested-by: Eric Biggers <ebiggers@kernel.org>
-Reviewed-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+tun/tap:     CONFIG_TUN, CONFIG_MACVLAN, CONFIG_MACVTAP
+fib_tests:   CONFIG_NET_SCH_FQ_CODEL
+l2tp:        CONFIG_L2TP, CONFIG_L2TP_V3, CONFIG_L2TP_IP, CONFIG_L2TP_ETH
+sctp-vrf:    CONFIG_INET_DIAG
+txtimestamp: CONFIG_NET_CLS_U32
+vxlan_mdb:   CONFIG_BRIDGE_VLAN_FILTERING
+gre_gso:     CONFIG_NET_IPGRE_DEMUX, CONFIG_IP_GRE, CONFIG_IPV6_GRE
+srv6_end_dt*_l3vpn:   CONFIG_IPV6_SEG6_LWTUNNEL
+ip_local_port_range:  CONFIG_MPTCP
+fib_test:    CONFIG_NET_CLS_BASIC
+rtnetlink:   CONFIG_MACSEC, CONFIG_NET_SCH_HTB, CONFIG_XFRM_INTERFACE
+             CONFIG_NET_IPGRE, CONFIG_BONDING
+fib_nexthops: CONFIG_MPLS, CONFIG_MPLS_ROUTING
+vxlan_mdb:   CONFIG_NET_ACT_GACT
+tls:         CONFIG_TLS, CONFIG_CRYPTO_CHACHA20POLY1305
+psample:     CONFIG_PSAMPLE
+fcnal:       CONFIG_TCP_MD5SIG
+
+Try to add them in a semi-alphabetical order.
+
+Fixes: 62199e3f1658 ("selftests: net: Add VXLAN MDB test")
+Fixes: c12e0d5f267d ("self-tests: introduce self-tests for RPS default mask")
+Fixes: 122db5e3634b ("selftests/net: add MPTCP coverage for IP_LOCAL_PORT_RANGE")
+Link: https://lore.kernel.org/r/20240122203528.672004-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ubifs/dir.c |    2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/net/config | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
---- a/fs/ubifs/dir.c
-+++ b/fs/ubifs/dir.c
-@@ -1226,6 +1226,8 @@ out_cancel:
- 	dir_ui->ui_size = dir->i_size;
- 	mutex_unlock(&dir_ui->ui_mutex);
- out_inode:
-+	/* Free inode->i_link before inode is marked as bad. */
-+	fscrypt_free_inode(inode);
- 	make_bad_inode(inode);
- 	iput(inode);
- out_fname:
+diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
+index 8da562a9ae87..19ff75051660 100644
+--- a/tools/testing/selftests/net/config
++++ b/tools/testing/selftests/net/config
+@@ -1,5 +1,6 @@
+ CONFIG_USER_NS=y
+ CONFIG_NET_NS=y
++CONFIG_BONDING=m
+ CONFIG_BPF_SYSCALL=y
+ CONFIG_TEST_BPF=m
+ CONFIG_NUMA=y
+@@ -14,9 +15,13 @@ CONFIG_VETH=y
+ CONFIG_NET_IPVTI=y
+ CONFIG_IPV6_VTI=y
+ CONFIG_DUMMY=y
++CONFIG_BRIDGE_VLAN_FILTERING=y
+ CONFIG_BRIDGE=y
++CONFIG_CRYPTO_CHACHA20POLY1305=m
+ CONFIG_VLAN_8021Q=y
+ CONFIG_IFB=y
++CONFIG_INET_DIAG=y
++CONFIG_IP_GRE=m
+ CONFIG_NETFILTER=y
+ CONFIG_NETFILTER_ADVANCED=y
+ CONFIG_NF_CONNTRACK=m
+@@ -25,15 +30,36 @@ CONFIG_IP6_NF_IPTABLES=m
+ CONFIG_IP_NF_IPTABLES=m
+ CONFIG_IP6_NF_NAT=m
+ CONFIG_IP_NF_NAT=m
++CONFIG_IPV6_GRE=m
++CONFIG_IPV6_SEG6_LWTUNNEL=y
++CONFIG_L2TP_ETH=m
++CONFIG_L2TP_IP=m
++CONFIG_L2TP=m
++CONFIG_L2TP_V3=y
++CONFIG_MACSEC=m
++CONFIG_MACVLAN=y
++CONFIG_MACVTAP=y
++CONFIG_MPLS=y
++CONFIG_MPTCP=y
+ CONFIG_NF_TABLES=m
+ CONFIG_NF_TABLES_IPV6=y
+ CONFIG_NF_TABLES_IPV4=y
+ CONFIG_NFT_NAT=m
++CONFIG_NET_ACT_GACT=m
++CONFIG_NET_CLS_BASIC=m
++CONFIG_NET_CLS_U32=m
++CONFIG_NET_IPGRE_DEMUX=m
++CONFIG_NET_IPGRE=m
++CONFIG_NET_SCH_FQ_CODEL=m
++CONFIG_NET_SCH_HTB=m
+ CONFIG_NET_SCH_FQ=m
+ CONFIG_NET_SCH_ETF=m
+ CONFIG_NET_SCH_NETEM=y
++CONFIG_PSAMPLE=m
++CONFIG_TCP_MD5SIG=y
+ CONFIG_TEST_BLACKHOLE_DEV=m
+ CONFIG_KALLSYMS=y
++CONFIG_TLS=m
+ CONFIG_TRACEPOINTS=y
+ CONFIG_NET_DROP_MONITOR=m
+ CONFIG_NETDEVSIM=m
+@@ -48,7 +74,9 @@ CONFIG_BAREUDP=m
+ CONFIG_IPV6_IOAM6_LWTUNNEL=y
+ CONFIG_CRYPTO_SM4_GENERIC=y
+ CONFIG_AMT=m
++CONFIG_TUN=y
+ CONFIG_VXLAN=m
+ CONFIG_IP_SCTP=m
+ CONFIG_NETFILTER_XT_MATCH_POLICY=m
+ CONFIG_CRYPTO_ARIA=y
++CONFIG_XFRM_INTERFACE=m
+-- 
+2.43.0
+
 
 
 
