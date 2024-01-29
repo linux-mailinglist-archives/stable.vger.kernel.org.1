@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FB10840E7A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EB0384101A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 239DF1F27B94
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BF9F282234
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8A215B97C;
-	Mon, 29 Jan 2024 17:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95E374052;
+	Mon, 29 Jan 2024 17:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnglTbw0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XaoBdQtX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A63157E6A;
-	Mon, 29 Jan 2024 17:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BCB74040;
+	Mon, 29 Jan 2024 17:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548290; cv=none; b=nag5sA9h6cRuqsBCeV8YDOTsYy10gf9qlMeQ9BCS7cx80SMpk2NvI70DvyP0VPjbk2GhqMQi9Qmxctwfl/EMn05CDI1KODWO6g4GkhKt52kcjjFkZ1cad44Xuvv3zv4LyR++OJ9QYPPElxHvKWWTocg+VM9gRFF1pL/B+22+hHM=
+	t=1706548561; cv=none; b=KQfkyE4566Bp1LIZ7DAfKMhvFzVZlsp61HcwZPDsJMd2kknGcB0vXPldlZuzNjLZZQlOUYSOaGqm7g55leII8S8mrvsB4H6wXI0mOw3ruUR/h61jvHUN+uivHvMjrHasUpMCA9yVKWQiqaJhrKmptGsO/JN/SiXdOcy/UpTLkmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548290; c=relaxed/simple;
-	bh=I7IkWwIcoy6xGwtkVi4Wnq8jSgZ+k1/qXfwJbD81WOE=;
+	s=arc-20240116; t=1706548561; c=relaxed/simple;
+	bh=JLRB7+QJg+xGkqG2Cfem0VGDWqDa5OehiiQIkgEkABE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CnJxbSxzljaU67iGvwKucF9u1N9uQQsiHSjV8RqibmT30rvXEonjeRreHeA72OSFLVTrkhxop9Ad/lcQgKn9gZu1HBqt81N2cr5OHINopKi0/toC/qqRwcZ7YdUBcrsR1bgFzrV7+3g6uOJvS+Msd1lv8n7vyRIcR711Li6X3Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnglTbw0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988D6C43390;
-	Mon, 29 Jan 2024 17:11:30 +0000 (UTC)
+	 MIME-Version; b=ICwof5mXMTPxYaBVy6XCNvLQb4LQuEY77dp8s0azIePywhiV2rcj2b8C0PsDmLNoRg8E9qqjkCOOhGG4i2/KDF+8CBS82iZikpALrpfs2Bxq/XPvrxmuFu7x+UaXFJyyHqOUwk3vLyOXlGx/0e8QA1dmCUGKDmMtacWo8YAwoyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XaoBdQtX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F505C433C7;
+	Mon, 29 Jan 2024 17:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548290;
-	bh=I7IkWwIcoy6xGwtkVi4Wnq8jSgZ+k1/qXfwJbD81WOE=;
+	s=korg; t=1706548561;
+	bh=JLRB7+QJg+xGkqG2Cfem0VGDWqDa5OehiiQIkgEkABE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XnglTbw0dBQ7ylkqnS1Bp94S4RAAyJXxOASOOiTbEDupgTJsbwUQth+bC5S6k6jki
-	 15/rBLcfeC4K3YsYKFwEVYBXJ/3u8e6nqXaHl4Ov2EgFLBVZGnhGh5R2Xs7JkoyWXI
-	 7uInZtyDz531238D1+fuu9Go6hppn6Inr+Sd35g0=
+	b=XaoBdQtX+HuvGYRDPgheDxBdxAQVA5mrdp160r7QVyinwkVZV15o1Alf3/SxMbz99
+	 8HiCMw2wvnuXxY4XlMVb1/eWj4mqBnSqKemFICShFmjviNzmML1WlBHsaiLD+obojz
+	 5RBjc0RHwAWlQaVe345W8/Hy8yb+NinrG4lZO/Y4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Hao <haokexin@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 073/185] ksmbd: Add missing set_freezable() for freezable kthread
+	Jenishkumar Maheshbhai Patel <jpatel2@marvell.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 209/331] net: mvpp2: clear BM pool before initialization
 Date: Mon, 29 Jan 2024 09:04:33 -0800
-Message-ID: <20240129170000.953663782@linuxfoundation.org>
+Message-ID: <20240129170020.996862086@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Jenishkumar Maheshbhai Patel <jpatel2@marvell.com>
 
-From: Kevin Hao <haokexin@gmail.com>
+[ Upstream commit 9f538b415db862e74b8c5d3abbccfc1b2b6caa38 ]
 
-[ Upstream commit 8fb7b723924cc9306bc161f45496497aec733904 ]
+Register value persist after booting the kernel using
+kexec which results in kernel panic. Thus clear the
+BM pool registers before initialisation to fix the issue.
 
-The kernel thread function ksmbd_conn_handler_loop() invokes
-the try_to_freeze() in its loop. But all the kernel threads are
-non-freezable by default. So if we want to make a kernel thread to be
-freezable, we have to invoke set_freezable() explicitly.
-
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3f518509dedc ("ethernet: Add new driver for Marvell Armada 375 network unit")
+Signed-off-by: Jenishkumar Maheshbhai Patel <jpatel2@marvell.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://lore.kernel.org/r/20240119035914.2595665-1-jpatel2@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/connection.c |    1 +
- 1 file changed, 1 insertion(+)
+ .../net/ethernet/marvell/mvpp2/mvpp2_main.c   | 27 ++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -284,6 +284,7 @@ int ksmbd_conn_handler_loop(void *p)
- 		goto out;
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index 21c3f9b015c8..aca17082b9ec 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -614,12 +614,38 @@ static void mvpp23_bm_set_8pool_mode(struct mvpp2 *priv)
+ 	mvpp2_write(priv, MVPP22_BM_POOL_BASE_ADDR_HIGH_REG, val);
+ }
  
- 	conn->last_active = jiffies;
-+	set_freezable();
- 	while (ksmbd_conn_alive(conn)) {
- 		if (try_to_freeze())
- 			continue;
++/* Cleanup pool before actual initialization in the OS */
++static void mvpp2_bm_pool_cleanup(struct mvpp2 *priv, int pool_id)
++{
++	unsigned int thread = mvpp2_cpu_to_thread(priv, get_cpu());
++	u32 val;
++	int i;
++
++	/* Drain the BM from all possible residues left by firmware */
++	for (i = 0; i < MVPP2_BM_POOL_SIZE_MAX; i++)
++		mvpp2_thread_read(priv, thread, MVPP2_BM_PHY_ALLOC_REG(pool_id));
++
++	put_cpu();
++
++	/* Stop the BM pool */
++	val = mvpp2_read(priv, MVPP2_BM_POOL_CTRL_REG(pool_id));
++	val |= MVPP2_BM_STOP_MASK;
++	mvpp2_write(priv, MVPP2_BM_POOL_CTRL_REG(pool_id), val);
++}
++
+ static int mvpp2_bm_init(struct device *dev, struct mvpp2 *priv)
+ {
+ 	enum dma_data_direction dma_dir = DMA_FROM_DEVICE;
+ 	int i, err, poolnum = MVPP2_BM_POOLS_NUM;
+ 	struct mvpp2_port *port;
+ 
++	if (priv->percpu_pools)
++		poolnum = mvpp2_get_nrxqs(priv) * 2;
++
++	/* Clean up the pool state in case it contains stale state */
++	for (i = 0; i < poolnum; i++)
++		mvpp2_bm_pool_cleanup(priv, i);
++
+ 	if (priv->percpu_pools) {
+ 		for (i = 0; i < priv->port_count; i++) {
+ 			port = priv->port_list[i];
+@@ -629,7 +655,6 @@ static int mvpp2_bm_init(struct device *dev, struct mvpp2 *priv)
+ 			}
+ 		}
+ 
+-		poolnum = mvpp2_get_nrxqs(priv) * 2;
+ 		for (i = 0; i < poolnum; i++) {
+ 			/* the pool in use */
+ 			int pn = i / (poolnum / 2);
+-- 
+2.43.0
+
 
 
 
