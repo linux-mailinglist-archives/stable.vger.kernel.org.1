@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-17239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42BBF841062
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76758840EED
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74FF81C23B1C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6E1B1C232C3
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB5415A491;
-	Mon, 29 Jan 2024 17:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65120162743;
+	Mon, 29 Jan 2024 17:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSX3mWm7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/qortU5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED7515B974;
-	Mon, 29 Jan 2024 17:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24988161B65;
+	Mon, 29 Jan 2024 17:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548612; cv=none; b=R0HE2zcjV+vIfoigrBArQEz6jgF1nEtRbZB5QH4faChmP2nwtVCLg+q5LcztWEpd2YRDTzpZ7gyTjyfk9C8ntkhUiwz+wUlGvU+yvv4QsBzQd+meV6P1ioXeMbV/WRTxTX6LKJz05dM3TUc5QpH4Wpid6GE5uE0z1Q5zCFTkd0c=
+	t=1706548357; cv=none; b=b++M6qMwOaCyrdObq9+LM7YVWv0aNsv6btPZArHal8iHppueG6bbOG0OSRuoqND3VrWLdOZVzbn2jw0xe5P4DvHDue+Dl+6Yca3VSt7Nkem1KJHHmoagY+Du7Mo4t9c9hmAJrXQpEigKSnnqEWVG6uSiJ/K/GRzT4D9FkwQp//U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548612; c=relaxed/simple;
-	bh=bYxXDj7S1FmjMk1BWlSuCanWSO4C1Nb1YzzYMC/Dmfk=;
+	s=arc-20240116; t=1706548357; c=relaxed/simple;
+	bh=GEWEQAZGwtdUEpe3umJfVPJNz+SZa+7l0zDc8a1/v+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CkOHVp7O5gOHeZQiInUlmUX1+t+eAWfyhFqRZCDOvlX7kGY/yI5bJUXrx8UrgDczJ7UNZ+InksuN14Ipf0MaAqQXZHpju3TOW7KisQZ8fMFOWSgomrDkyKGCMom9MBp5+dAVnppPBxaLYlrzlxO2JX225Gq5DIML6ohUYSOrScM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSX3mWm7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86BE3C43390;
-	Mon, 29 Jan 2024 17:16:52 +0000 (UTC)
+	 MIME-Version; b=QpN7901Tg+bnNVHEqdrvntY/B99PHn7No+MApfZbR8EzvOpeSuwFEYd0ZzjxQM+HoiQLdUaSRUoyfyGDsO5+1xcLR9SiG+icXSKhwmi59Kd5AQWO+V/1qCbH9NYbdbHx0msCr08lrtrW8lrSqxIxPY3AIBbFOurRNiFey8mfhos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/qortU5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E376DC433F1;
+	Mon, 29 Jan 2024 17:12:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548612;
-	bh=bYxXDj7S1FmjMk1BWlSuCanWSO4C1Nb1YzzYMC/Dmfk=;
+	s=korg; t=1706548357;
+	bh=GEWEQAZGwtdUEpe3umJfVPJNz+SZa+7l0zDc8a1/v+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zSX3mWm7ElwjfUt8vctXEWTOgjsCGSxiJBGuy4/8g0oD2Vj9p6fUh6ZYEhgOLmOa9
-	 qB1gxEZ4pTs9EWCuTB3aleXfBQpAdwQjav8tvmjnItLh6aH9K548usU25j+g/o3syC
-	 gOVc3TSR8NagFeJTfhJUM2/ZevZ1Pg+++MuHHDA0=
+	b=O/qortU5ciwN9yRiOhywGdI7lX32Z8FQ+Eomix9Nchot020LUC0WlfbzBuH9mty6X
+	 A2lk568GJq1KfuLaWkANmgEs07MAeABy5UHQABQlcrYDLKdzOaDP+8K7S3sKIz8Mgx
+	 I6a27jiQEI6o5P478qWtQScQMNeZTEKwRWODVzP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Javier Martinez Canillas <javierm@redhat.com>
-Subject: [PATCH 6.6 255/331] drm: Dont unref the same fb many times by mistake due to deadlock handling
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 119/185] btrfs: defrag: reject unknown flags of btrfs_ioctl_defrag_range_args
 Date: Mon, 29 Jan 2024 09:05:19 -0800
-Message-ID: <20240129170022.351080707@linuxfoundation.org>
+Message-ID: <20240129170002.417682118@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit cb4daf271302d71a6b9a7c01bd0b6d76febd8f0c upstream.
+commit 173431b274a9a54fc10b273b46e67f46bcf62d2e upstream.
 
-If we get a deadlock after the fb lookup in drm_mode_page_flip_ioctl()
-we proceed to unref the fb and then retry the whole thing from the top.
-But we forget to reset the fb pointer back to NULL, and so if we then
-get another error during the retry, before the fb lookup, we proceed
-the unref the same fb again without having gotten another reference.
-The end result is that the fb will (eventually) end up being freed
-while it's still in use.
+Add extra sanity check for btrfs_ioctl_defrag_range_args::flags.
 
-Reset fb to NULL once we've unreffed it to avoid doing it again
-until we've done another fb lookup.
+This is not really to enhance fuzzing tests, but as a preparation for
+future expansion on btrfs_ioctl_defrag_range_args.
 
-This turned out to be pretty easy to hit on a DG2 when doing async
-flips (and CONFIG_DEBUG_WW_MUTEX_SLOWPATH=y). The first symptom I
-saw that drm_closefb() simply got stuck in a busy loop while walking
-the framebuffer list. Fortunately I was able to convince it to oops
-instead, and from there it was easier to track down the culprit.
+In the future we're going to add new members, allowing more fine tuning
+for btrfs defrag.  Without the -ENONOTSUPP error, there would be no way
+to detect if the kernel supports those new defrag features.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231211081625.25704-1-ville.syrjala@linux.intel.com
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_plane.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/ioctl.c           |    4 ++++
+ include/uapi/linux/btrfs.h |    3 +++
+ 2 files changed, 7 insertions(+)
 
---- a/drivers/gpu/drm/drm_plane.c
-+++ b/drivers/gpu/drm/drm_plane.c
-@@ -1387,6 +1387,7 @@ retry:
- out:
- 	if (fb)
- 		drm_framebuffer_put(fb);
-+	fb = NULL;
- 	if (plane->old_fb)
- 		drm_framebuffer_put(plane->old_fb);
- 	plane->old_fb = NULL;
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -3500,6 +3500,10 @@ static int btrfs_ioctl_defrag(struct fil
+ 				ret = -EFAULT;
+ 				goto out;
+ 			}
++			if (range.flags & ~BTRFS_DEFRAG_RANGE_FLAGS_SUPP) {
++				ret = -EOPNOTSUPP;
++				goto out;
++			}
+ 			/* compression requires us to start the IO */
+ 			if ((range.flags & BTRFS_DEFRAG_RANGE_COMPRESS)) {
+ 				range.flags |= BTRFS_DEFRAG_RANGE_START_IO;
+--- a/include/uapi/linux/btrfs.h
++++ b/include/uapi/linux/btrfs.h
+@@ -585,6 +585,9 @@ struct btrfs_ioctl_clone_range_args {
+  */
+ #define BTRFS_DEFRAG_RANGE_COMPRESS 1
+ #define BTRFS_DEFRAG_RANGE_START_IO 2
++#define BTRFS_DEFRAG_RANGE_FLAGS_SUPP	(BTRFS_DEFRAG_RANGE_COMPRESS |		\
++					 BTRFS_DEFRAG_RANGE_START_IO)
++
+ struct btrfs_ioctl_defrag_range_args {
+ 	/* start of the defrag operation */
+ 	__u64 start;
 
 
 
