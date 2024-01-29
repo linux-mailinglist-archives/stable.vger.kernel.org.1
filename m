@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B52840E59
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B0C840EA5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47B011C21633
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB76BB2446E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C82915F311;
-	Mon, 29 Jan 2024 17:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12DA15FB33;
+	Mon, 29 Jan 2024 17:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B1fVmHIt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZwcVj7m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC4215F30A;
-	Mon, 29 Jan 2024 17:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9D315FB30;
+	Mon, 29 Jan 2024 17:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548268; cv=none; b=A/uHjdBFZVGJU1trNHBD994myjpfAm9NgMG+JEkw3IoVWMo9Sb4n7xVcRu2a5TRWzEATtKubLvIKUmuKxK9wA2Ewsd4iqJ3zYcLLYtywEo6dvk1QKIwoWm+ckzCAfsrprwukpfVYpC9zPmAwZDHhDwWFoq/B4yJ3Gt+ysvMjy5o=
+	t=1706548320; cv=none; b=TkmK2tUTDPQPmDOuRlHaKMA95OfH1/DGrdkKPH/1A5IseGpx6juZVN5onsNXfIPyft/17CCk4Kl0DWIAksVtc1nQZH0QZl+HAABV1X4JwuX+pjNvS/Nvu/NxPJ+Y3P9bWTBkSF+PpTdSkhE+d3oCtuYWCZeqEsnNPFPF/D9J0TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548268; c=relaxed/simple;
-	bh=RSK6uK/kxQkvrwwabzl4ZkS4NjD58Ampi+zsVwGFGug=;
+	s=arc-20240116; t=1706548320; c=relaxed/simple;
+	bh=Y8wPl9RxiTKOOGg+0dDUKTrHLMhiWSQzEHJjnDAp+qc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lxBVzH5ALwV036EJm4x0TihVt41bR0rLxEhn2WLnNwD/a77l+iLGFarRlu+7GIqfeKKzoXtmfUkd9+ozPpzxMlcV+X+VFVdCcrAE/B79VZM9U7jCE710ybpzk2dk36v0r/LZQNjH7ccCnrPKYfQe+uzPW5+QwG4CuULLDlvZsGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B1fVmHIt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250A5C43390;
-	Mon, 29 Jan 2024 17:11:08 +0000 (UTC)
+	 MIME-Version; b=cnfDYuDllBKauJ6yI7bZIn21WQ31rz9h6ERIEJDN4t96KvJS7KcpKf11pVGHQ822k8IThgwStXf66gE0aleG4QrJ9HUcB8q5d3xLEzEs7mb0H9FQGOOxhKXUe1Sh80thvxxIs0rwlSkvbH88qy96gC00UXHxB5PI/sG0WfTClDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZwcVj7m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DDFEC43390;
+	Mon, 29 Jan 2024 17:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548268;
-	bh=RSK6uK/kxQkvrwwabzl4ZkS4NjD58Ampi+zsVwGFGug=;
+	s=korg; t=1706548320;
+	bh=Y8wPl9RxiTKOOGg+0dDUKTrHLMhiWSQzEHJjnDAp+qc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B1fVmHIt6OuEyQY1JkMKws9zGLz9b0sH8dGO6Ra6VLXlcrbF4nOddpQhtBKryCp/N
-	 e7M6MurQzU8U2Jcez3T0KqnK4t0gmwxLMo/4lc0YfFbUiOejnzXZl404eTFixWOJgk
-	 +fyMISAQQzRgNtoCVx8ruMhaBWvD+JQ8UBp51gM8=
+	b=lZwcVj7mdhrhFSE8CzHCjSo2eXxoeChtyi7h7gBD0HOj52NvMOHeYN9pSjE0BSQsy
+	 v60x2IikK1cGuPIfEmeNxZ1ZjaUPnDLiL3iLxRNhZRAQ6roph9oGV4hEzLK+ztRNV3
+	 55UTGbZ7iUwK8Xnue5CN6GpnocE+U0DmKKypnTCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ori Messinger <Ori.Messinger@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Subject: [PATCH 6.7 261/346] drm/amdgpu: Enable GFXOFF for Compute on GFX11
-Date: Mon, 29 Jan 2024 09:04:52 -0800
-Message-ID: <20240129170024.069572435@linuxfoundation.org>
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 093/185] netlink: fix potential sleeping issue in mqueue_flush_file
+Date: Mon, 29 Jan 2024 09:04:53 -0800
+Message-ID: <20240129170001.582195527@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ori Messinger <Ori.Messinger@amd.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-commit aa0901a9008eeb2710292aff94e615adf7884d5f upstream.
+[ Upstream commit 234ec0b6034b16869d45128b8cd2dc6ffe596f04 ]
 
-On GFX version 11, GFXOFF was disabled due to a MES KIQ firmware
-issue, which has since been fixed after version 64.
-This patch only re-enables GFXOFF for GFX version 11 if the GPU's
-MES KIQ firmware version is newer than version 64.
+I analyze the potential sleeping issue of the following processes:
+Thread A                                Thread B
+...                                     netlink_create  //ref = 1
+do_mq_notify                            ...
+  sock = netlink_getsockbyfilp          ...     //ref = 2
+  info->notify_sock = sock;             ...
+...                                     netlink_sendmsg
+...                                       skb = netlink_alloc_large_skb  //skb->head is vmalloced
+...                                       netlink_unicast
+...                                         sk = netlink_getsockbyportid //ref = 3
+...                                         netlink_sendskb
+...                                           __netlink_sendskb
+...                                             skb_queue_tail //put skb to sk_receive_queue
+...                                         sock_put //ref = 2
+...                                     ...
+...                                     netlink_release
+...                                       deferred_put_nlk_sk //ref = 1
+mqueue_flush_file
+  spin_lock
+  remove_notification
+    netlink_sendskb
+      sock_put  //ref = 0
+        sk_free
+          ...
+          __sk_destruct
+            netlink_sock_destruct
+              skb_queue_purge  //get skb from sk_receive_queue
+                ...
+                __skb_queue_purge_reason
+                  kfree_skb_reason
+                    __kfree_skb
+                    ...
+                    skb_release_all
+                      skb_release_head_state
+                        netlink_skb_destructor
+                          vfree(skb->head)  //sleeping while holding spinlock
 
-V2: Keep GFXOFF disabled on GFX11 if MES KIQ is below version 64.
-V3: Add parentheses to avoid GCC warning for parentheses:
-"suggest parentheses around comparison in operand of ‘&’"
-V4: Remove "V3" from commit title
-V5: Change commit description and insert 'Acked-by'
+In netlink_sendmsg, if the memory pointed to by skb->head is allocated by
+vmalloc, and is put to sk_receive_queue queue, also the skb is not freed.
+When the mqueue executes flush, the sleeping bug will occur. Use
+vfree_atomic instead of vfree in netlink_skb_destructor to solve the issue.
 
-Signed-off-by: Ori Messinger <Ori.Messinger@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Harish Kasiviswanathan <Harish.Kasiviswanathan@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c05cdb1b864f ("netlink: allow large data transfers from user-space")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Link: https://lore.kernel.org/r/20240122011807.2110357-1-shaozhengchao@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/netlink/af_netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.c
-@@ -684,10 +684,8 @@ err:
- void amdgpu_amdkfd_set_compute_idle(struct amdgpu_device *adev, bool idle)
- {
- 	enum amd_powergating_state state = idle ? AMD_PG_STATE_GATE : AMD_PG_STATE_UNGATE;
--	/* Temporary workaround to fix issues observed in some
--	 * compute applications when GFXOFF is enabled on GFX11.
--	 */
--	if (IP_VERSION_MAJ(amdgpu_ip_version(adev, GC_HWIP, 0)) == 11) {
-+	if (IP_VERSION_MAJ(amdgpu_ip_version(adev, GC_HWIP, 0)) == 11 &&
-+	    ((adev->mes.kiq_version & AMDGPU_MES_VERSION_MASK) <= 64)) {
- 		pr_debug("GFXOFF is %s\n", idle ? "enabled" : "disabled");
- 		amdgpu_gfx_off_ctrl(adev, idle);
- 	} else if ((IP_VERSION_MAJ(amdgpu_ip_version(adev, GC_HWIP, 0)) == 9) &&
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index cb833302270a..6857a4965fe8 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -374,7 +374,7 @@ static void netlink_skb_destructor(struct sk_buff *skb)
+ 	if (is_vmalloc_addr(skb->head)) {
+ 		if (!skb->cloned ||
+ 		    !atomic_dec_return(&(skb_shinfo(skb)->dataref)))
+-			vfree(skb->head);
++			vfree_atomic(skb->head);
+ 
+ 		skb->head = NULL;
+ 	}
+-- 
+2.43.0
+
 
 
 
