@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-16547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC94840D6A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD032840F76
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:23:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 704D01C23AD0
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E04BC1C21784
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3DB9156967;
-	Mon, 29 Jan 2024 17:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBE73F9EC;
+	Mon, 29 Jan 2024 17:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqQlts2W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDdBjHZY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B246815958C;
-	Mon, 29 Jan 2024 17:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1932B3F9E7;
+	Mon, 29 Jan 2024 17:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548100; cv=none; b=h52Z43waelPYxrOD7Ng0SlCuo6aVKCmp4nwuS6foYnvPCoXnzocwEQM04rUyJqs3wycJM/i0jf+xGEN6+wGNEHt/mu2FpdtsrKvAI8qW4YjNv9xTXKsOBY8U83xSrcaz5L30kxzCcj8Og48Pzj+K/TDwE47YfDq4Omdecc+74pI=
+	t=1706548445; cv=none; b=Du8z8JUOgyF+QMLbU2ex2TxNNCfjMxOA3J4AKXVVTfEEyfvqZLn/fmtxrI426QX/Zi4pAJru8JJK6UUdLx7PPJOQYPoi4Z/If/sAvC11eMSJdwTgAx7mI1epF9dkZd1PR7l82YNsQJhoAxSLN2kCfnwpjiJ90gSlBYAOtz0CNqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548100; c=relaxed/simple;
-	bh=t2M72Uco+pqkTrATZADnM94gP9fkpEzmuS3iUiaT7xY=;
+	s=arc-20240116; t=1706548445; c=relaxed/simple;
+	bh=9Cdx1thBw7NyqIzPK97ZDEMPZxYC1efRmFKahtpzLm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F6FaYiPCTrmD1YoRm1Tp1L/FNqFgnn4eyIKjqU2/Dv4F2D/+v6YCSUt1fOkM0HyOcrD8sWs31zuIrTBURsqpX3MX7p1va+KqdJvIFaKGwICzHGusKleW4TUNXVBOdaSQP42XGmiCj0BiIcfa0GNwcyvIH9FeLvXSxGcL5w08sQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqQlts2W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B327C433C7;
-	Mon, 29 Jan 2024 17:08:20 +0000 (UTC)
+	 MIME-Version; b=MPUJD0o7ccwI43JGwebg0A3YgvEQQLM4oLq18hrqc5EruVaFsouOxzV8XuzZvxBmeMsa25O0JRbaPMdSnR1xLMvLTlnFUyXKoxbBKJeNXFxtWdSE++GKRZIYwOrPKDt6AATGmPpCezFHd2DKQIgjufmeAy5phjVC0dJ4GdfAVZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDdBjHZY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D47C2C433F1;
+	Mon, 29 Jan 2024 17:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548100;
-	bh=t2M72Uco+pqkTrATZADnM94gP9fkpEzmuS3iUiaT7xY=;
+	s=korg; t=1706548444;
+	bh=9Cdx1thBw7NyqIzPK97ZDEMPZxYC1efRmFKahtpzLm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fqQlts2WMcEbgivc/5mmuX19qZAfx0tsM2topFv8rO5IHsNfow9qzEaRKDjqUdKcN
-	 rU92UaPmErDIyRJ5hdQujE3Mh4szLpz6/BGPK9KLsySjl1BJcNwkqJkmUEEYRSoS8i
-	 axHApAVmtwqZXCGzBhdV5te6cOlZ7reCa2GS4kbc=
+	b=dDdBjHZY0h9l8jS86lY0D01dgupI/uVQEiyqVQcQA8P+cFNQLAyUgoFHzD4qYZ7Nn
+	 4DE6xmhYVLsXEUwTQPXgPXjNC2J5ORCzQj8t+h0i8+Mf3K1BGNCVwD7UlaCTn+wYZ6
+	 gMUwhFWRJGg/BX1dFxWxTWNZ5Ds1AGxMb8q6WFmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.7 084/346] arm64: dts: qcom: sdm845: fix USB SS wakeup
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 051/331] media: imx355: Enable runtime PM before registering async sub-device
 Date: Mon, 29 Jan 2024 09:01:55 -0800
-Message-ID: <20240129170018.864776400@linuxfoundation.org>
+Message-ID: <20240129170016.429401648@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Bingbu Cao <bingbu.cao@intel.com>
 
-commit 971f5d8b0618d09db75184ddd8cca0767514db5d upstream.
+commit efa5fe19c0a9199f49e36e1f5242ed5c88da617d upstream.
 
-The USB SS PHY interrupts need to be provided by the PDC interrupt
-controller in order to be able to wake the system up from low-power
-states.
+As the sensor device maybe accessible right after its async sub-device is
+registered, such as ipu-bridge will try to power up sensor by sensor's
+client device's runtime PM from the async notifier callback, if runtime PM
+is not enabled, it will fail.
 
-Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
-Cc: stable@vger.kernel.org	# 4.20
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231213173403.29544-4-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+So runtime PM should be ready before its async sub-device is registered
+and accessible by others.
+
+Fixes: df0b5c4a7ddd ("media: add imx355 camera sensor driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/i2c/imx355.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -4054,7 +4054,7 @@
- 			assigned-clock-rates = <19200000>, <150000000>;
+--- a/drivers/media/i2c/imx355.c
++++ b/drivers/media/i2c/imx355.c
+@@ -1788,10 +1788,6 @@ static int imx355_probe(struct i2c_clien
+ 		goto error_handler_free;
+ 	}
  
- 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
--					      <&intc GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc_intc 6 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc_intc 8 IRQ_TYPE_EDGE_BOTH>,
- 					      <&pdc_intc 9 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
-@@ -4105,7 +4105,7 @@
- 			assigned-clock-rates = <19200000>, <150000000>;
+-	ret = v4l2_async_register_subdev_sensor(&imx355->sd);
+-	if (ret < 0)
+-		goto error_media_entity;
+-
+ 	/*
+ 	 * Device is already turned on by i2c-core with ACPI domain PM.
+ 	 * Enable runtime PM and turn off the device.
+@@ -1800,9 +1796,15 @@ static int imx355_probe(struct i2c_clien
+ 	pm_runtime_enable(&client->dev);
+ 	pm_runtime_idle(&client->dev);
  
- 			interrupts-extended = <&intc GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
--					      <&intc GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc_intc 7 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc_intc 10 IRQ_TYPE_EDGE_BOTH>,
- 					      <&pdc_intc 11 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
++	ret = v4l2_async_register_subdev_sensor(&imx355->sd);
++	if (ret < 0)
++		goto error_media_entity_runtime_pm;
++
+ 	return 0;
+ 
+-error_media_entity:
++error_media_entity_runtime_pm:
++	pm_runtime_disable(&client->dev);
++	pm_runtime_set_suspended(&client->dev);
+ 	media_entity_cleanup(&imx355->sd.entity);
+ 
+ error_handler_free:
 
 
 
