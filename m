@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-17140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 162DA840FFD
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26661840E3C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C12DD284BFE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 909731F2D121
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB78273759;
-	Mon, 29 Jan 2024 17:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D2C15959D;
+	Mon, 29 Jan 2024 17:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfxLNXL9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqYzt+dC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9D473722;
-	Mon, 29 Jan 2024 17:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CA115B2FA;
+	Mon, 29 Jan 2024 17:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548540; cv=none; b=XU6hAFw7s480QQDAv+Fs5Uu+G0WhG+aIG7hoqCIZnePJ+9ZBF8VCtjtzw47RhWVS8nBtoMWpOCRBSzS8sT6WWhWShf0O9I5RBcJl/Ckl2LUMOqMjkOzwY9WP2DnfS97WOLUYjc7OFaiKIlIOPgLTlzbcvw2LPSabst9sRBeMA9o=
+	t=1706548247; cv=none; b=iDsUWkG7R9FlO/IEJVktNNnir/CNRzWR4ZcEkXuC0RqQmdOtvU5CQNNqJQtRlYEn4z6ZEpdCXaWDdkq9P5eOHdJGkaxr5v6Y9et3+DOKAjWOw4ebNpprBEXn+N/As//8lUtB5wB6QTiQxaLctuwRvEMpVQMLyeyCTH9cjQhqYN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548540; c=relaxed/simple;
-	bh=RbGb1vLYZKe071E6Qiu/1NM4eUggNxHloA1YwZsTddU=;
+	s=arc-20240116; t=1706548247; c=relaxed/simple;
+	bh=uP8cnfbKS0CIn0gD2HBcuQ9pk/nI6O1u8Fgqg+s3w3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PDlErc1RhqDp0TfDWwZN4C8iBRfh7j5HO6NJak51rdHfaxDqHF5rottwBLpdKjeo6Nk66QEtXzfVqDM0cVrxgSgSWVcXwwczOCuEV2F9YBHUZVmmLPKb5kM7cd4Iz+j+opsGdg1S8Gr9MKxlI4Yc0qvULy7fZRlB+aVRv8fMqic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfxLNXL9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EB4C43394;
-	Mon, 29 Jan 2024 17:15:40 +0000 (UTC)
+	 MIME-Version; b=AgF6UPU4V7tL8VsqHQCLJ8aNFGJpIRxiIUZ0KISWX7nUz0mXsBxKtgVLOm+OdUyp0QaQ7CiAwAwOyOtAy4k+EBytU8uXfxnTKfW6jW1fZj8OrxJ7EO4QMyzsCFK5YW25Lfdd5Im1qw1PDWOsdozRJpbUDCkpwxbGPP+y8uRXq4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqYzt+dC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C1A7C433C7;
+	Mon, 29 Jan 2024 17:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548540;
-	bh=RbGb1vLYZKe071E6Qiu/1NM4eUggNxHloA1YwZsTddU=;
+	s=korg; t=1706548247;
+	bh=uP8cnfbKS0CIn0gD2HBcuQ9pk/nI6O1u8Fgqg+s3w3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CfxLNXL9GqDh+Xbj/xlzqQnM0sAkuX+FFZQIMq6ogpTatjpQiv4YKN5BNlCnMRoD5
-	 fymxKh1DjyZmYQgMvq2zO4wdGHPXVr6vKNNfENiJbHqYRajDdW8jjUthEJILuaGpeO
-	 fsdXxtZzbkewhI8XlotPeFNrKpyb93sAwLKsdZdc=
+	b=gqYzt+dClJeGqivhJnwt7IdTitpkBZVnZXrTi4JSzO9x9VqiW0XTMqLRKZ5R2W85p
+	 V+/E4aowa/w42h5upYTxSevtMtwv8GA60IMBV4zAp+ztxkRiHLAS5zQx70TzZ1c18s
+	 U9tpqtA+gJCNoHr+eRMABLjPBp2/UCX2e7+MgL+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunjian Wang <wangyunjian@huawei.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 180/331] tun: add missing rx stats accounting in tun_xdp_act
+	Avri Altman <avri.altman@wdc.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 044/185] mmc: core: Use mrq.sbc in close-ended ffu
 Date: Mon, 29 Jan 2024 09:04:04 -0800
-Message-ID: <20240129170020.170437129@linuxfoundation.org>
+Message-ID: <20240129170000.001056186@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunjian Wang <wangyunjian@huawei.com>
+From: Avri Altman <avri.altman@wdc.com>
 
-[ Upstream commit f1084c427f55d573fcd5688d9ba7b31b78019716 ]
+commit 4d0c8d0aef6355660b6775d57ccd5d4ea2e15802 upstream.
 
-The TUN can be used as vhost-net backend, and it is necessary to
-count the packets transmitted from TUN to vhost-net/virtio-net.
-However, there are some places in the receive path that were not
-taken into account when using XDP. It would be beneficial to also
-include new accounting for successfully received bytes using
-dev_sw_netstats_rx_add.
+Field Firmware Update (ffu) may use close-ended or open ended sequence.
+Each such sequence is comprised of a write commands enclosed between 2
+switch commands - to and from ffu mode. So for the close-ended case, it
+will be: cmd6->cmd23-cmd25-cmd6.
 
-Fixes: 761876c857cb ("tap: XDP support")
-Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Some host controllers however, get confused when multi-block rw is sent
+without sbc, and may generate auto-cmd12 which breaks the ffu sequence.
+I encountered  this issue while testing fwupd (github.com/fwupd/fwupd)
+on HP Chromebook x2, a qualcomm based QC-7c, code name - strongbad.
+
+Instead of a quirk, or hooking the request function of the msm ops,
+it would be better to fix the ioctl handling and make it use mrq.sbc
+instead of issuing SET_BLOCK_COUNT separately.
+
+Signed-off-by: Avri Altman <avri.altman@wdc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231129092535.3278-1-avri.altman@wdc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/tun.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mmc/core/block.c |   46 +++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 43 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index 237fef557ba5..4a4f8c8e79fa 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -1634,6 +1634,7 @@ static int tun_xdp_act(struct tun_struct *tun, struct bpf_prog *xdp_prog,
- 			dev_core_stats_rx_dropped_inc(tun->dev);
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -402,6 +402,10 @@ struct mmc_blk_ioc_data {
+ 	struct mmc_ioc_cmd ic;
+ 	unsigned char *buf;
+ 	u64 buf_bytes;
++	unsigned int flags;
++#define MMC_BLK_IOC_DROP	BIT(0)	/* drop this mrq */
++#define MMC_BLK_IOC_SBC	BIT(1)	/* use mrq.sbc */
++
+ 	struct mmc_rpmb_data *rpmb;
+ };
+ 
+@@ -467,7 +471,7 @@ static int mmc_blk_ioctl_copy_to_user(st
+ }
+ 
+ static int __mmc_blk_ioctl_cmd(struct mmc_card *card, struct mmc_blk_data *md,
+-			       struct mmc_blk_ioc_data *idata)
++			       struct mmc_blk_ioc_data **idatas, int i)
+ {
+ 	struct mmc_command cmd = {}, sbc = {};
+ 	struct mmc_data data = {};
+@@ -477,10 +481,18 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 	unsigned int busy_timeout_ms;
+ 	int err;
+ 	unsigned int target_part;
++	struct mmc_blk_ioc_data *idata = idatas[i];
++	struct mmc_blk_ioc_data *prev_idata = NULL;
+ 
+ 	if (!card || !md || !idata)
+ 		return -EINVAL;
+ 
++	if (idata->flags & MMC_BLK_IOC_DROP)
++		return 0;
++
++	if (idata->flags & MMC_BLK_IOC_SBC)
++		prev_idata = idatas[i - 1];
++
+ 	/*
+ 	 * The RPMB accesses comes in from the character device, so we
+ 	 * need to target these explicitly. Else we just target the
+@@ -547,7 +559,7 @@ static int __mmc_blk_ioctl_cmd(struct mm
  			return err;
+ 	}
+ 
+-	if (idata->rpmb) {
++	if (idata->rpmb || prev_idata) {
+ 		sbc.opcode = MMC_SET_BLOCK_COUNT;
+ 		/*
+ 		 * We don't do any blockcount validation because the max size
+@@ -555,6 +567,8 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 		 * 'Reliable Write' bit here.
+ 		 */
+ 		sbc.arg = data.blocks | (idata->ic.write_flag & BIT(31));
++		if (prev_idata)
++			sbc.arg = prev_idata->ic.arg;
+ 		sbc.flags = MMC_RSP_R1 | MMC_CMD_AC;
+ 		mrq.sbc = &sbc;
+ 	}
+@@ -572,6 +586,15 @@ static int __mmc_blk_ioctl_cmd(struct mm
+ 	mmc_wait_for_req(card->host, &mrq);
+ 	memcpy(&idata->ic.response, cmd.resp, sizeof(cmd.resp));
+ 
++	if (prev_idata) {
++		memcpy(&prev_idata->ic.response, sbc.resp, sizeof(sbc.resp));
++		if (sbc.error) {
++			dev_err(mmc_dev(card->host), "%s: sbc error %d\n",
++							__func__, sbc.error);
++			return sbc.error;
++		}
++	}
++
+ 	if (cmd.error) {
+ 		dev_err(mmc_dev(card->host), "%s: cmd error %d\n",
+ 						__func__, cmd.error);
+@@ -1057,6 +1080,20 @@ static inline void mmc_blk_reset_success
+ 	md->reset_done &= ~type;
+ }
+ 
++static void mmc_blk_check_sbc(struct mmc_queue_req *mq_rq)
++{
++	struct mmc_blk_ioc_data **idata = mq_rq->drv_op_data;
++	int i;
++
++	for (i = 1; i < mq_rq->ioc_count; i++) {
++		if (idata[i - 1]->ic.opcode == MMC_SET_BLOCK_COUNT &&
++		    mmc_op_multi(idata[i]->ic.opcode)) {
++			idata[i - 1]->flags |= MMC_BLK_IOC_DROP;
++			idata[i]->flags |= MMC_BLK_IOC_SBC;
++		}
++	}
++}
++
+ /*
+  * The non-block commands come back from the block layer after it queued it and
+  * processed it with all other requests and then they get issued in this
+@@ -1084,11 +1121,14 @@ static void mmc_blk_issue_drv_op(struct
+ 			if (ret)
+ 				break;
  		}
-+		dev_sw_netstats_rx_add(tun->dev, xdp->data_end - xdp->data);
- 		break;
- 	case XDP_TX:
- 		err = tun_xdp_tx(tun->dev, xdp);
-@@ -1641,6 +1642,7 @@ static int tun_xdp_act(struct tun_struct *tun, struct bpf_prog *xdp_prog,
- 			dev_core_stats_rx_dropped_inc(tun->dev);
- 			return err;
++
++		mmc_blk_check_sbc(mq_rq);
++
+ 		fallthrough;
+ 	case MMC_DRV_OP_IOCTL_RPMB:
+ 		idata = mq_rq->drv_op_data;
+ 		for (i = 0, ret = 0; i < mq_rq->ioc_count; i++) {
+-			ret = __mmc_blk_ioctl_cmd(card, md, idata[i]);
++			ret = __mmc_blk_ioctl_cmd(card, md, idata, i);
+ 			if (ret)
+ 				break;
  		}
-+		dev_sw_netstats_rx_add(tun->dev, xdp->data_end - xdp->data);
- 		break;
- 	case XDP_PASS:
- 		break;
--- 
-2.43.0
-
 
 
 
