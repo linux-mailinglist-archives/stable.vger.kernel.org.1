@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-16978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8142C840F4F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAA46840D23
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1A721C22EE0
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC8031C22C33
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0626515D5D4;
-	Mon, 29 Jan 2024 17:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA78156967;
+	Mon, 29 Jan 2024 17:07:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGmGzNAT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPBVKyMb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B677B15D5DF;
-	Mon, 29 Jan 2024 17:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE4D1586DC;
+	Mon, 29 Jan 2024 17:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548419; cv=none; b=BJlHurMgL5zeqAWI8rDgfGyZa1ebw6KJg6edaltSM53zan87oFhhLyprrtUzLPbR4uu+hC2zJDUpO5By1jt5Utq5fVDZpAsTmZF3ej/zUy3Cw+oHmrJEZwDlRPSsLNSqiQyq2mKONNLt+rRXpZXII2AKrCWzatqOCS/oZAytzaA=
+	t=1706548050; cv=none; b=saM7o9rnUSzgkFYrvOgEEoOYEp+Z1uzh2gXUXpEOpod6eCPND/niRLWCW6JDtHIRHkTFlx3j/toQGb2YUl3XqEZGQH2DUYwo/tMW7vXREzl19WOhIZAsbawZj9KdXRBwxer1+yYVtgKDuc2kQOQrhlksei/Uyr7oHkuMEn4Jb30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548419; c=relaxed/simple;
-	bh=hkzKeQ1tjW2PZS8Ky8VB6e4TKwuwtDKl3LT/8Ru9Opc=;
+	s=arc-20240116; t=1706548050; c=relaxed/simple;
+	bh=XrDsMqoVnQxTnOllqqzKKlehP3InEVnXsb8nLZVe4Rs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dH+LVVrO+xrMSlVlhlDolRBp34tMAkas4OzVjcf7g2TVQuwk7bCekxyOpsz8pZB7c29B6sniu4+SN/iJHJpNRdtC3QqyBmk2w//C1Df6uMxyvA8ohb68j0HI85E/Dphw3DaemuVdskJ0nT3uQX262o8PiIAM5wI0ym2gplx/R9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGmGzNAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CAFEC43394;
-	Mon, 29 Jan 2024 17:13:39 +0000 (UTC)
+	 MIME-Version; b=cBaZ1xPR3rYWLKJsfdK6BDwcHchnpO1/KjlPMLEAwHjxt/5BQ3edTRxCHwPVezEyx6udK05cb2WJvn7f+otMlzNbJoA+xzxJDfKBIFUeeZIah0Xcs3HfVDLw+mun5zVHkBWYFQ60pzzQRl5scAZy2hEUn19sAGsD8xGS/A6P62w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPBVKyMb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E97C43394;
+	Mon, 29 Jan 2024 17:07:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548419;
-	bh=hkzKeQ1tjW2PZS8Ky8VB6e4TKwuwtDKl3LT/8Ru9Opc=;
+	s=korg; t=1706548050;
+	bh=XrDsMqoVnQxTnOllqqzKKlehP3InEVnXsb8nLZVe4Rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oGmGzNATii1oZ2it+po1njx1Opdo3OjkGdxkds25FYMf9EeXAjNMY7stZRV25sXbz
-	 wrtUe1EZDf/vFGFz83h4u3HAqzOLYzy19yIosdi/VO9MKyboMz78dByPtrftXAY4Kn
-	 LsNaq2L/VBC8dylmBz7ui7St8QoYzwkz21Kj1fTw=
+	b=jPBVKyMbw5iXXmGMN7DzYye1bBDY6pIs/4aCgvlPGp2lVtPLtIGnATK9AjQG/3dgG
+	 0lE3YCzqW9s5Q5rIJfZaKctbbqfuE8idauwfqoC1FfmWDc7f5uS8owFk/f9/di4Tjg
+	 ryXlLdPC9BMgJUcB2Q9eY2thqqBnJQFMb+EIoe98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Locke <kevin@kevinlocke.name>,
-	Niklas Cassel <cassel@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/331] scsi: core: Kick the requeue list after inserting when flushing
-Date: Mon, 29 Jan 2024 09:01:22 -0800
-Message-ID: <20240129170015.495240571@linuxfoundation.org>
+Subject: [PATCH 6.7 052/346] dmaengine: fix NULL pointer in channel unregistration function
+Date: Mon, 29 Jan 2024 09:01:23 -0800
+Message-ID: <20240129170017.918693757@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,99 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Amelie Delaunay <amelie.delaunay@foss.st.com>
 
-[ Upstream commit 6df0e077d76bd144c533b61d6182676aae6b0a85 ]
+[ Upstream commit f5c24d94512f1b288262beda4d3dcb9629222fc7 ]
 
-When libata calls ata_link_abort() to abort all ata queued commands, it
-calls blk_abort_request() on the SCSI command representing each QC.
+__dma_async_device_channel_register() can fail. In case of failure,
+chan->local is freed (with free_percpu()), and chan->local is nullified.
+When dma_async_device_unregister() is called (because of managed API or
+intentionally by DMA controller driver), channels are unconditionally
+unregistered, leading to this NULL pointer:
+[    1.318693] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000d0
+[...]
+[    1.484499] Call trace:
+[    1.486930]  device_del+0x40/0x394
+[    1.490314]  device_unregister+0x20/0x7c
+[    1.494220]  __dma_async_device_channel_unregister+0x68/0xc0
 
-This causes scsi_timeout() to be called, which calls scsi_eh_scmd_add() for
-each SCSI command.
+Look at dma_async_device_register() function error path, channel device
+unregistration is done only if chan->local is not NULL.
 
-scsi_eh_scmd_add() sets the SCSI host to state recovery, and then adds the
-command to shost->eh_cmd_q.
+Then add the same condition at the beginning of
+__dma_async_device_channel_unregister() function, to avoid NULL pointer
+issue whatever the API used to reach this function.
 
-This will wake up the SCSI EH, and eventually the libata EH strategy
-handler will be called, which calls scsi_eh_flush_done_q() to either flush
-retry or flush finish each failed command.
-
-The commands that are flush retried by scsi_eh_flush_done_q() are done so
-using scsi_queue_insert().
-
-Before commit 8b566edbdbfb ("scsi: core: Only kick the requeue list if
-necessary"), __scsi_queue_insert() called blk_mq_requeue_request() with the
-second argument set to true, indicating that it should always kick/run the
-requeue list after inserting.
-
-After commit 8b566edbdbfb ("scsi: core: Only kick the requeue list if
-necessary"), __scsi_queue_insert() does not kick/run the requeue list after
-inserting, if the current SCSI host state is recovery (which is the case in
-the libata example above).
-
-This optimization is probably fine in most cases, as I can only assume that
-most often someone will eventually kick/run the queues.
-
-However, that is not the case for scsi_eh_flush_done_q(), where we can see
-that the request gets inserted to the requeue list, but the queue is never
-started after the request has been inserted, leading to the block layer
-waiting for the completion of command that never gets to run.
-
-Since scsi_eh_flush_done_q() is called by SCSI EH context, the SCSI host
-state is most likely always in recovery when this function is called.
-
-Thus, let scsi_eh_flush_done_q() explicitly kick the requeue list after
-inserting a flush retry command, so that scsi_eh_flush_done_q() keeps the
-same behavior as before commit 8b566edbdbfb ("scsi: core: Only kick the
-requeue list if necessary").
-
-Simple reproducer for the libata example above:
-$ hdparm -Y /dev/sda
-$ echo 1 > /sys/class/scsi_device/0\:0\:0\:0/device/delete
-
-Fixes: 8b566edbdbfb ("scsi: core: Only kick the requeue list if necessary")
-Reported-by: Kevin Locke <kevin@kevinlocke.name>
-Closes: https://lore.kernel.org/linux-scsi/ZZw3Th70wUUvCiCY@kevinlocke.name/
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Link: https://lore.kernel.org/r/20240111120533.3612509-1-cassel@kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: d2fb0a043838 ("dmaengine: break out channel registration")
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20231213160452.2598073-1-amelie.delaunay@foss.st.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_error.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/dma/dmaengine.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
-index 1223d34c04da..d983f4a0e9f1 100644
---- a/drivers/scsi/scsi_error.c
-+++ b/drivers/scsi/scsi_error.c
-@@ -2196,15 +2196,18 @@ void scsi_eh_flush_done_q(struct list_head *done_q)
- 	struct scsi_cmnd *scmd, *next;
- 
- 	list_for_each_entry_safe(scmd, next, done_q, eh_entry) {
-+		struct scsi_device *sdev = scmd->device;
+diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
+index b7388ae62d7f..491b22240221 100644
+--- a/drivers/dma/dmaengine.c
++++ b/drivers/dma/dmaengine.c
+@@ -1103,6 +1103,9 @@ EXPORT_SYMBOL_GPL(dma_async_device_channel_register);
+ static void __dma_async_device_channel_unregister(struct dma_device *device,
+ 						  struct dma_chan *chan)
+ {
++	if (chan->local == NULL)
++		return;
 +
- 		list_del_init(&scmd->eh_entry);
--		if (scsi_device_online(scmd->device) &&
--		    !scsi_noretry_cmd(scmd) && scsi_cmd_retry_allowed(scmd) &&
--			scsi_eh_should_retry_cmd(scmd)) {
-+		if (scsi_device_online(sdev) && !scsi_noretry_cmd(scmd) &&
-+		    scsi_cmd_retry_allowed(scmd) &&
-+		    scsi_eh_should_retry_cmd(scmd)) {
- 			SCSI_LOG_ERROR_RECOVERY(3,
- 				scmd_printk(KERN_INFO, scmd,
- 					     "%s: flush retry cmd\n",
- 					     current->comm));
- 				scsi_queue_insert(scmd, SCSI_MLQUEUE_EH_RETRY);
-+				blk_mq_kick_requeue_list(sdev->request_queue);
- 		} else {
- 			/*
- 			 * If just we got sense for the device (called
+ 	WARN_ONCE(!device->device_release && chan->client_count,
+ 		  "%s called while %d clients hold a reference\n",
+ 		  __func__, chan->client_count);
 -- 
 2.43.0
 
