@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-17060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56176840FAB
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA68840D7F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB7891F22CF3
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29C7428C38F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B382C6FE04;
-	Mon, 29 Jan 2024 17:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1999215A485;
+	Mon, 29 Jan 2024 17:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUY6jKh8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DB1TWtaC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D63F6FE01;
-	Mon, 29 Jan 2024 17:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD28615705F;
+	Mon, 29 Jan 2024 17:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548480; cv=none; b=n09DCg6DE7iWziLhIYlfxaZKNxYEIcwoEsIKaz/kYUMRzR7+AUCUr9H4OVbLpYym6bJh2zO0YKMzgzuYwjGA6pZwfIZ+z0FJnX7Y9wlqAVNW0+ssqvvbyE+bYI74/1GBrszD6all1XCDnpdJn73cG0oXy91bADjkcujXT+c0J0o=
+	t=1706548115; cv=none; b=IjTcXXnmK0ah6ASqbsVzvFcoRMG1UZY8TbcdWEtrX03GBrvL3FIIgfajOeWzS6NsR8ISTyXfrF1cmtkGwaEXaBra+XMBg3TszCh4jC9WwsBAexYjTNq3BAOs/NsW4H3wOOCqc7Bx4+hYlTAZs62DHuCvNylDbgKscW4If116RAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548480; c=relaxed/simple;
-	bh=0ArKEyKmwl/3hCYPLkt7/2g6qa9G6DKvWKlhhN+OhAQ=;
+	s=arc-20240116; t=1706548115; c=relaxed/simple;
+	bh=gP2RTNUMNQfqtnptNOen7KX8URKhB9Q0tRDguy0VZ9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EmQSPgg3yLaxQfI8ZrH3aM+CTPT+T7xLLvRCuLM4LzGiEtS/wOBUsKzOUM5VBH+8sT0zJf8ucXqEyjVkVZbIT5koQsBRX9OskV4Z81UxBnXmqqdzD23qN+W4qEgbHLdxfjkDSIvNxCM9LWLYw4PrwGY/VYyqSZNTRjZEUBswmzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUY6jKh8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D1AC433F1;
-	Mon, 29 Jan 2024 17:14:40 +0000 (UTC)
+	 MIME-Version; b=DpT9R7eeY9JQ0Juu0nBKWT3YmJrwjbW9fw0q8/FUvlQgz7EksJSr9fm3HdjU/e0JQyPUi8UsxtL+X2KVRMhLqk8gxr44xYp+h31tMKLnaCOMlKHzSLUcorAkdT2OhrCBc7nHyQsCfLSvFXXkXlMN3FsBDm50u75E8Kz8yex9n5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DB1TWtaC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9229DC43390;
+	Mon, 29 Jan 2024 17:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548480;
-	bh=0ArKEyKmwl/3hCYPLkt7/2g6qa9G6DKvWKlhhN+OhAQ=;
+	s=korg; t=1706548115;
+	bh=gP2RTNUMNQfqtnptNOen7KX8URKhB9Q0tRDguy0VZ9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tUY6jKh8NANksDLsBQqJpw3v0i5lNCAkxCqES6oMRQVqM8/UmIFCoKgz721qrM4P8
-	 O/1GpbX64ri/p7cbd3KBD/EY1nTJ+Td5anlmnlyHBnmHWu+9ql3Orq8xWszMT+k4xw
-	 uhNYYyXHyZ02HxdgoFyrRAplH6owuI7zhNuQmkg0=
+	b=DB1TWtaCHQhdRwIUQRcdNmWWw6uaWAJhxGUtCdaCZZR1G1x3GPATKZhVr4VyenB8P
+	 yLuuYrSlV5OjtDdMK9b3cuBzmkGRKtDXefGLwQimpaUTGN+cy8UHTTajc/cZb3xzTf
+	 E9bHm+S+cY+1i6NN/kTGkeZKts4DsFkmDeaah03w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 082/331] arm64: dts: qcom: sc7180: fix USB wakeup interrupt types
+	Dave Airlie <airlied@redhat.com>
+Subject: [PATCH 6.7 115/346] nouveau/gsp: handle engines in runl without nonstall interrupts.
 Date: Mon, 29 Jan 2024 09:02:26 -0800
-Message-ID: <20240129170017.333632252@linuxfoundation.org>
+Message-ID: <20240129170019.774382896@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +60,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Dave Airlie <airlied@redhat.com>
 
-commit 9b956999bf725fd62613f719c3178fdbee6e5f47 upstream.
+commit 205e18c13545ab43cc4fe4930732b4feef551198 upstream.
 
-The DP/DM wakeup interrupts are edge triggered and which edge to trigger
-on depends on use-case and whether a Low speed or Full/High speed device
-is connected.
+It appears on TU106 GPUs (2070), that some of the nvdec engines
+are in the runlist but have no valid nonstall interrupt, nouveau
+didn't handle that too well.
 
-Fixes: 0b766e7fe5a2 ("arm64: dts: qcom: sc7180: Add USB related nodes")
-Cc: stable@vger.kernel.org      # 5.10
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231120164331.8116-4-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This should let nouveau/gsp work on those.
+
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://lore.kernel.org/all/20240110011826.3996289-1-airlied@gmail.com/
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sc7180.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga100.c |    4 ++++
+ drivers/gpu/drm/nouveau/nvkm/engine/fifo/r535.c  |    2 +-
+ drivers/gpu/drm/nouveau/nvkm/subdev/gsp/base.c   |    8 ++------
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
-@@ -2978,8 +2978,8 @@
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga100.c
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/ga100.c
+@@ -550,6 +550,10 @@ ga100_fifo_nonstall_ctor(struct nvkm_fif
+ 		struct nvkm_engn *engn = list_first_entry(&runl->engns, typeof(*engn), head);
  
- 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
--					      <&pdc 8 IRQ_TYPE_LEVEL_HIGH>,
--					      <&pdc 9 IRQ_TYPE_LEVEL_HIGH>;
-+					      <&pdc 8 IRQ_TYPE_EDGE_BOTH>,
-+					      <&pdc 9 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
- 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
+ 		runl->nonstall.vector = engn->func->nonstall(engn);
++
++		/* if no nonstall vector just keep going */
++		if (runl->nonstall.vector == -1)
++			continue;
+ 		if (runl->nonstall.vector < 0) {
+ 			RUNL_ERROR(runl, "nonstall %d", runl->nonstall.vector);
+ 			return runl->nonstall.vector;
+--- a/drivers/gpu/drm/nouveau/nvkm/engine/fifo/r535.c
++++ b/drivers/gpu/drm/nouveau/nvkm/engine/fifo/r535.c
+@@ -351,7 +351,7 @@ r535_engn_nonstall(struct nvkm_engn *eng
+ 	int ret;
  
+ 	ret = nvkm_gsp_intr_nonstall(subdev->device->gsp, subdev->type, subdev->inst);
+-	WARN_ON(ret < 0);
++	WARN_ON(ret == -ENOENT);
+ 	return ret;
+ }
+ 
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/base.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/base.c
+@@ -25,12 +25,8 @@ int
+ nvkm_gsp_intr_nonstall(struct nvkm_gsp *gsp, enum nvkm_subdev_type type, int inst)
+ {
+ 	for (int i = 0; i < gsp->intr_nr; i++) {
+-		if (gsp->intr[i].type == type && gsp->intr[i].inst == inst) {
+-			if (gsp->intr[i].nonstall != ~0)
+-				return gsp->intr[i].nonstall;
+-
+-			return -EINVAL;
+-		}
++		if (gsp->intr[i].type == type && gsp->intr[i].inst == inst)
++			return gsp->intr[i].nonstall;
+ 	}
+ 
+ 	return -ENOENT;
 
 
 
