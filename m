@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99836841004
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C636A840E49
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B4321F23B1C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 689C7B20AA5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB87A15B2F4;
-	Mon, 29 Jan 2024 17:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5464157056;
+	Mon, 29 Jan 2024 17:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sc681aKL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x12Gie37"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4CD73722;
-	Mon, 29 Jan 2024 17:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85090159591;
+	Mon, 29 Jan 2024 17:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548545; cv=none; b=LOERqzV9AvBXXgVsAn7qBRxKTendoi9xEyEhEqnBIkDqoLSsEzNQFTdKRnapM+ehCJL6M7nmaX19+0lOFe+5CF3VIprVRo+d0L6LFbN45E7sjSF4idXyhy3jJHSFlUkmpMPyrFC/7xuV9XE7rR7jggZqHo+gPKNE5fY+43S3A+I=
+	t=1706548256; cv=none; b=HOO6VJq+OIa/9aSEKoUX0+bV0F4RYW4A3wo9IzB+9l+CC9G9dgpHWvMKb5uICeRS82S7LzVsWhgkKd6Xw7PlOxeYa2pIHc/GXj+qiChI1/j6FFbi2fvCBg/hIw/8p7eTKFKoTljdu2/Blvsb5fSpTU4kQfvBrisiR7u/QL2t2jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548545; c=relaxed/simple;
-	bh=vkvosLEfMqqJu6FXmkbRvLp0kBANhob8UiQS6l0fyv4=;
+	s=arc-20240116; t=1706548256; c=relaxed/simple;
+	bh=XNgvlxoqmVzkSXUjRF4cof8bG1XWvHYDhcfnjmhgInc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3lI/Pjbty8L/1ylIl8n9hVjXvP/ESkJp3akB1C13ix+6mO6n/biuoO+vDOUqBDu0jcRjL+AfkBPLO5POUl2/W9q1qVamDoqsn6uhb1A6HfuzG2OQqx8kF977tUcF57krt7da/FRKeac2Dq+68xVt3fMyqYNzGUCJi0Hme27O4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sc681aKL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63452C433C7;
-	Mon, 29 Jan 2024 17:15:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JzkEQgT4c7VizI79cnDOdLvb7KkAxLScRp5DbJhVKJqRjoaeeagb4CarcI67r4LzsVHqgnJtyAI85btHJusQS+Wr0qde3lzvHQYasIesIbmLzryz/CYjfXOwvejtUiUXCCWhiFF4N8xeyymJtyJ7XMbh69l05BckrqQSOfkVcQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x12Gie37; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4EEC433F1;
+	Mon, 29 Jan 2024 17:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548545;
-	bh=vkvosLEfMqqJu6FXmkbRvLp0kBANhob8UiQS6l0fyv4=;
+	s=korg; t=1706548256;
+	bh=XNgvlxoqmVzkSXUjRF4cof8bG1XWvHYDhcfnjmhgInc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sc681aKLJ6TPfTyi6p5DkBFlB2VQe+UYt/NFcZBlZEuF4D70Vb2aKvLlNImjWcvhK
-	 heNF7u+UFY8I6rhOf7f9i3TO+vuq15UUe7q2KAe0i9eJWgIN1UArDYpP27Zngc1t3F
-	 bldO7Q4VJ+vjrEsV+PEoAcNey5XP4pwffGzaElDM=
+	b=x12Gie37CA9hRsWq9WN2g7eiCCvREQclVAIXoegVHwpTZZmmiscq3KVWuyBxn9DUk
+	 +xnQIPZr4bWnNjA/SCLwgJIWW4mLibVvmtoKEVB1KIBEFx4e+xQQujwARch6dFUAT5
+	 mg6Fxahoj3hOFZed8BbXm1tZv/C3Lt2kNxgQ18/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salvatore Dipietro <dipiets@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 186/331] tcp: Add memory barrier to tcp_push()
+	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.1 050/185] rtc: mc146818-lib: Adjust failure return code for mc146818_get_time()
 Date: Mon, 29 Jan 2024 09:04:10 -0800
-Message-ID: <20240129170020.338578602@linuxfoundation.org>
+Message-ID: <20240129170000.204120398@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salvatore Dipietro <dipiets@amazon.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 7267e8dcad6b2f9fce05a6a06335d7040acbc2b6 ]
+commit af838635a3eb9b1bc0d98599c101ebca98f31311 upstream.
 
-On CPUs with weak memory models, reads and updates performed by tcp_push
-to the sk variables can get reordered leaving the socket throttled when
-it should not. The tasklet running tcp_wfree() may also not observe the
-memory updates in time and will skip flushing any packets throttled by
-tcp_push(), delaying the sending. This can pathologically cause 40ms
-extra latency due to bad interactions with delayed acks.
+mc146818_get_time() calls mc146818_avoid_UIP() to avoid fetching the
+time while RTC update is in progress (UIP). When this fails, the return
+code is -EIO, but actually there was no IO failure.
 
-Adding a memory barrier in tcp_push removes the bug, similarly to the
-previous commit bf06200e732d ("tcp: tsq: fix nonagle handling").
-smp_mb__after_atomic() is used to not incur in unnecessary overhead
-on x86 since not affected.
+The reason for the return from mc146818_avoid_UIP() is that the UIP
+wasn't cleared in the time period. Adjust the return code to -ETIMEDOUT
+to match the behavior.
 
-Patch has been tested using an AWS c7g.2xlarge instance with Ubuntu
-22.04 and Apache Tomcat 9.0.83 running the basic servlet below:
-
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class HelloWorldServlet extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-      throws ServletException, IOException {
-        response.setContentType("text/html;charset=utf-8");
-        OutputStreamWriter osw = new OutputStreamWriter(response.getOutputStream(),"UTF-8");
-        String s = "a".repeat(3096);
-        osw.write(s,0,s.length());
-        osw.flush();
-    }
-}
-
-Load was applied using wrk2 (https://github.com/kinvolk/wrk2) from an AWS
-c6i.8xlarge instance. Before the patch an additional 40ms latency from P99.99+
-values is observed while, with the patch, the extra latency disappears.
-
-No patch and tcp_autocorking=1
-./wrk -t32 -c128 -d40s --latency -R10000  http://172.31.60.173:8080/hello/hello
-  ...
- 50.000%    0.91ms
- 75.000%    1.13ms
- 90.000%    1.46ms
- 99.000%    1.74ms
- 99.900%    1.89ms
- 99.990%   41.95ms  <<< 40+ ms extra latency
- 99.999%   48.32ms
-100.000%   48.96ms
-
-With patch and tcp_autocorking=1
-./wrk -t32 -c128 -d40s --latency -R10000  http://172.31.60.173:8080/hello/hello
-  ...
- 50.000%    0.90ms
- 75.000%    1.13ms
- 90.000%    1.45ms
- 99.000%    1.72ms
- 99.900%    1.83ms
- 99.990%    2.11ms  <<< no 40+ ms extra latency
- 99.999%    2.53ms
-100.000%    2.62ms
-
-Patch has been also tested on x86 (m7i.2xlarge instance) which it is not
-affected by this issue and the patch doesn't introduce any additional
-delay.
-
-Fixes: 7aa5470c2c09 ("tcp: tsq: move tsq_flags close to sk_wmem_alloc")
-Signed-off-by: Salvatore Dipietro <dipiets@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240119190133.43698-1-dipiets@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Reviewed-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Acked-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
+Cc:  <stable@vger.kernel.org>
+Fixes: 2a61b0ac5493 ("rtc: mc146818-lib: refactor mc146818_get_time")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20231128053653.101798-2-mario.limonciello@amd.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/rtc/rtc-mc146818-lib.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index f124f6c63915..fb417aee86e6 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -722,6 +722,7 @@ void tcp_push(struct sock *sk, int flags, int mss_now,
- 		if (!test_bit(TSQ_THROTTLED, &sk->sk_tsq_flags)) {
- 			NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPAUTOCORKING);
- 			set_bit(TSQ_THROTTLED, &sk->sk_tsq_flags);
-+			smp_mb__after_atomic();
- 		}
- 		/* It is possible TX completion already happened
- 		 * before we set TSQ_THROTTLED.
--- 
-2.43.0
-
+--- a/drivers/rtc/rtc-mc146818-lib.c
++++ b/drivers/rtc/rtc-mc146818-lib.c
+@@ -138,7 +138,7 @@ int mc146818_get_time(struct rtc_time *t
+ 
+ 	if (!mc146818_avoid_UIP(mc146818_get_time_callback, &p)) {
+ 		memset(time, 0, sizeof(*time));
+-		return -EIO;
++		return -ETIMEDOUT;
+ 	}
+ 
+ 	if (!(p.ctrl & RTC_DM_BINARY) || RTC_ALWAYS_BCD)
 
 
 
