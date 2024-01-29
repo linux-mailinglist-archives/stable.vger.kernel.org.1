@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-16736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A16FC840E34
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BFC884100A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 416811F2D0A8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59569284A35
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9981715EAA1;
-	Mon, 29 Jan 2024 17:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46FAC15EAA5;
+	Mon, 29 Jan 2024 17:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/uQ0a9+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qg/PAdFA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A62C15703E;
-	Mon, 29 Jan 2024 17:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047F67375F;
+	Mon, 29 Jan 2024 17:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548242; cv=none; b=LRxm8pskLEXPxeqFSkkCPngbSDbK1oQFKswvHiJaM0WlxRoENBO79Y+zJbIBOdOdjcFjXFk8on8BjBh1pJbdVoOGnLEVKASB9X0oJNupA4h7yh1oOBZJyaMDMO8uSdTofPoAux3C7eBlgjeO6rNyXJvXVggKSg5u1zZcGEdOtRU=
+	t=1706548550; cv=none; b=Y7dzgXS22ndw5gWRI23ZBa4NLFLd8kQw38mOWCSgS7eofKr6IToGrulN2nKwyaiGKLh02b4ENeVsKq/6nZrqddsgPyY0NCi8WCK9K/tBptKWSITIFPDH9C0keDQ+UR0P0etRczBSkS/qnyWY/2AOlUrjhxF1nzgbN6keZlyrstg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548242; c=relaxed/simple;
-	bh=5obUmovnegDPzmi3ytJQbQnaIjhUXCRdsehg6h5WvGU=;
+	s=arc-20240116; t=1706548550; c=relaxed/simple;
+	bh=EWbQYV4YLoI0U0/9fUUsOmvCmShMSqOU2+URcBe/WtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/zvy2ehCgDNy2HvHpY7fZxtDGrECMfbXrSQz/ZW3k4Iqy6lV0PEVuRSXpCStSffezs+oYrUG6HQsbOk/5xUbg1rlnNwqrQMUqAdrQcorFyShw8u1xh6gt7jpgbD9pqnKID/yujl4P//F9F6uu0ccW9S2lBs9r55X3YW6Mmj0H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/uQ0a9+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4EBC433C7;
-	Mon, 29 Jan 2024 17:10:42 +0000 (UTC)
+	 MIME-Version; b=bmqDMM6X7IcCVWL60bjZZw65sRDG/jtUYQsKhGOhomxyJox/e2gf/6mMMG0tIDYpwZXOlT3aDbh6NjTgcpE/qwafhMkxHkrbRJ3rMvUJbwRIS1d72SiCAeAEdyrepchMNP9QaeJWRxAm3+CSXBwXh76GZTa9jMacVxHICZ/gElg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qg/PAdFA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05C3C43390;
+	Mon, 29 Jan 2024 17:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548242;
-	bh=5obUmovnegDPzmi3ytJQbQnaIjhUXCRdsehg6h5WvGU=;
+	s=korg; t=1706548549;
+	bh=EWbQYV4YLoI0U0/9fUUsOmvCmShMSqOU2+URcBe/WtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i/uQ0a9+VRJ/J1YREneuG3MC7PWBnCmnvfPjGTXX64HZcja2lojYnX83ru78Jyzy8
-	 NALj8kIpUEcSQou0WbMycpZAXk0uNTegbVWrX3993+8pw1VpZlUwrHwq+zzB9PZrk0
-	 KSWP/rELMBrOV2XkA3REaZW9wnUyJsTU5m7Bx7II=
+	b=qg/PAdFAaayQvictiC0VAihO8QMRQbs9BE0xNEcx9nasd+HdgzRLvqRCtN06zgYve
+	 2D+6JrUcowackWDnpXuUp09HQHdWBmdPGjLO9WmJvUk+OOz033AofOa4ctUg5R3xfp
+	 MG/5nbjEdLLeAvc3oVXxHq3ZS+E3JmJl9lGyNlPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/185] dmaengine: fix NULL pointer in channel unregistration function
+Subject: [PATCH 6.6 168/331] wifi: mac80211: fix potential sta-link leak
 Date: Mon, 29 Jan 2024 09:03:52 -0800
-Message-ID: <20240129165959.629150949@linuxfoundation.org>
+Message-ID: <20240129170019.832876029@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amelie Delaunay <amelie.delaunay@foss.st.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit f5c24d94512f1b288262beda4d3dcb9629222fc7 ]
+[ Upstream commit b01a74b3ca6fd51b62c67733ba7c3280fa6c5d26 ]
 
-__dma_async_device_channel_register() can fail. In case of failure,
-chan->local is freed (with free_percpu()), and chan->local is nullified.
-When dma_async_device_unregister() is called (because of managed API or
-intentionally by DMA controller driver), channels are unconditionally
-unregistered, leading to this NULL pointer:
-[    1.318693] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000d0
-[...]
-[    1.484499] Call trace:
-[    1.486930]  device_del+0x40/0x394
-[    1.490314]  device_unregister+0x20/0x7c
-[    1.494220]  __dma_async_device_channel_unregister+0x68/0xc0
+When a station is allocated, links are added but not
+set to valid yet (e.g. during connection to an AP MLD),
+we might remove the station without ever marking links
+valid, and leak them. Fix that.
 
-Look at dma_async_device_register() function error path, channel device
-unregistration is done only if chan->local is not NULL.
-
-Then add the same condition at the beginning of
-__dma_async_device_channel_unregister() function, to avoid NULL pointer
-issue whatever the API used to reach this function.
-
-Fixes: d2fb0a043838 ("dmaengine: break out channel registration")
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20231213160452.2598073-1-amelie.delaunay@foss.st.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: cb71f1d136a6 ("wifi: mac80211: add sta link addition/removal")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240111181514.6573998beaf8.I09ac2e1d41c80f82a5a616b8bd1d9d8dd709a6a6@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/dmaengine.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/sta_info.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/dma/dmaengine.c b/drivers/dma/dmaengine.c
-index 8a6e6b60d66f..892e8389232e 100644
---- a/drivers/dma/dmaengine.c
-+++ b/drivers/dma/dmaengine.c
-@@ -1103,6 +1103,9 @@ EXPORT_SYMBOL_GPL(dma_async_device_channel_register);
- static void __dma_async_device_channel_unregister(struct dma_device *device,
- 						  struct dma_chan *chan)
- {
-+	if (chan->local == NULL)
-+		return;
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 0c5cc75857e4..e112300caaf7 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -398,7 +398,10 @@ void sta_info_free(struct ieee80211_local *local, struct sta_info *sta)
+ 	int i;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(sta->link); i++) {
+-		if (!(sta->sta.valid_links & BIT(i)))
++		struct link_sta_info *link_sta;
 +
- 	WARN_ONCE(!device->device_release && chan->client_count,
- 		  "%s called while %d clients hold a reference\n",
- 		  __func__, chan->client_count);
++		link_sta = rcu_access_pointer(sta->link[i]);
++		if (!link_sta)
+ 			continue;
+ 
+ 		sta_remove_link(sta, i, false);
 -- 
 2.43.0
 
