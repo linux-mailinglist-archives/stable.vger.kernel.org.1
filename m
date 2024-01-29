@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-16663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBDE5840DE8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC163840FF0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A13AB218D4
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF2231C238F1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A044615D5CF;
-	Mon, 29 Jan 2024 17:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FE1E73730;
+	Mon, 29 Jan 2024 17:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lW+QbCFx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QtsIrYNN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBB4157054;
-	Mon, 29 Jan 2024 17:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D257C73728;
+	Mon, 29 Jan 2024 17:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548186; cv=none; b=lmTLQsJUcihe2SbAoc1a06eN9GXdjSfbBKDudV5D8Zt+XJr42zcpOkUrpJCPLQjsHwIy9MAA6mxJBrUyoiv24rhJPjQv+YeQJylO5ckilYdGTuZYOisumJSEAjSdwtJL2dGUAToYib7H9kI+/Ky/WjG59xRDTrKdtrUTP3bozvs=
+	t=1706548530; cv=none; b=egbJCUMVMmILDET4xNDBg8s4jREolvQZ73MDhfMom6l3cQM72buCRCvByxXfjteKLTPusqWYx3KxS8LJC6c/TXlv6AGVt2NdBck78iArLr8p7g8FVtTaHOhTCNG4m0UYrV3tzMyENcMbVWmhuQCxZkUtwByytFNPHHzPyhJtyPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548186; c=relaxed/simple;
-	bh=+4sy0+1+Sd6OkJJ1LTjwxAFbbHHykwc5yzw3KUNoFDM=;
+	s=arc-20240116; t=1706548530; c=relaxed/simple;
+	bh=8VwUWIy5XSCgzsBkHxPN/nk/Xr8jpNmISHAI+BYgdSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O9oXUhS7Xj/XjkD2OAGsqvtQj2ArLKu9nc5ZEzJzlqHyiCUHcWf4OLyDdbAIJe1iE4EuOR5LVbij/ao9njLIuuUvxgk5n8efx4vcXNQbWBW6YIkyndaJxPnxwVWFuyQ3BQ8+BNkDRSHrwDCQj2WQK2EONIMjz8ZB0WbdaI4ML8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lW+QbCFx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AE85C43390;
-	Mon, 29 Jan 2024 17:09:46 +0000 (UTC)
+	 MIME-Version; b=iKxFgU98VLJPPspv1fRvKP6YbVk5mDkozpab/4/6zkVwgLakbeGJcFchLAk7xKQsDWx9w47eIEOnFsaLiPZh3lJ4jX11iMvF7tDTUHriiEA29B+rn/JDTPHyX5uw80+iXL9dCGOsRbZw9Gx6spNXVH5/imPIM5L7/EMx4yldeR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QtsIrYNN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F6FC433F1;
+	Mon, 29 Jan 2024 17:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548186;
-	bh=+4sy0+1+Sd6OkJJ1LTjwxAFbbHHykwc5yzw3KUNoFDM=;
+	s=korg; t=1706548530;
+	bh=8VwUWIy5XSCgzsBkHxPN/nk/Xr8jpNmISHAI+BYgdSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lW+QbCFxZ7jb8OY02f/ecH/H56ZjIv62T+z9evcoggMbp8rHisocQBfAu47L//UaJ
-	 batF8iuL8Cm/LeT+pvEM55/LHvZQlcpzYvQ4nodRQGsu82kb6KIpuFMcFxDPfdIsLV
-	 Q1PwHAV1MZ6zegtNbug79u+hk1mfE8zDY+9g4WpA=
+	b=QtsIrYNNRm7uX6GKPS5pWe9lSJkLvNUXpNRavG1mreoFUpCCC4IfSz4AhZVo5o8qL
+	 gfHUmZcAgaWTJ2tH+Da1PQ085JN9vcuk7VgRZ5ueZPV53vXC8ReI7ykCKNrfTXtwWJ
+	 HQhAYo86USGG/Ek1PwUaNv7kbVJEDkFFGA590y7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Sterz <s.sterz@proxmox.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/185] Revert "nSVM: Check for reserved encodings of TLB_CONTROL in nested VMCB"
-Date: Mon, 29 Jan 2024 09:03:24 -0800
-Message-ID: <20240129165958.738514951@linuxfoundation.org>
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 141/331] ksmbd: fix potential circular locking issue in smb2_set_ea()
+Date: Mon, 29 Jan 2024 09:03:25 -0800
+Message-ID: <20240129170019.066496520@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit a484755ab2526ebdbe042397cdd6e427eb4b1a68 ]
+[ Upstream commit 6fc0a265e1b932e5e97a038f99e29400a93baad0 ]
 
-Revert KVM's made-up consistency check on SVM's TLB control.  The APM says
-that unsupported encodings are reserved, but the APM doesn't state that
-VMRUN checks for a supported encoding.  Unless something is called out
-in "Canonicalization and Consistency Checks" or listed as MBZ (Must Be
-Zero), AMD behavior is typically to let software shoot itself in the foot.
+smb2_set_ea() can be called in parent inode lock range.
+So add get_write argument to smb2_set_ea() not to call nested
+mnt_want_write().
 
-This reverts commit 174a921b6975ef959dd82ee9e8844067a62e3ec1.
-
-Fixes: 174a921b6975 ("nSVM: Check for reserved encodings of TLB_CONTROL in nested VMCB")
-Reported-by: Stefan Sterz <s.sterz@proxmox.com>
-Closes: https://lkml.kernel.org/r/b9915c9c-4cf6-051a-2d91-44cc6380f455%40proxmox.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
-Link: https://lore.kernel.org/r/20231018194104.1896415-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ fs/smb/server/smb2pdu.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index bc288e6bde64..5d4d78c9a787 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -239,18 +239,6 @@ static bool nested_svm_check_bitmap_pa(struct kvm_vcpu *vcpu, u64 pa, u32 size)
- 	    kvm_vcpu_is_legal_gpa(vcpu, addr + size - 1);
- }
- 
--static bool nested_svm_check_tlb_ctl(struct kvm_vcpu *vcpu, u8 tlb_ctl)
--{
--	/* Nested FLUSHBYASID is not supported yet.  */
--	switch(tlb_ctl) {
--		case TLB_CONTROL_DO_NOTHING:
--		case TLB_CONTROL_FLUSH_ALL_ASID:
--			return true;
--		default:
--			return false;
--	}
--}
--
- static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
- 					 struct vmcb_ctrl_area_cached *control)
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2323,11 +2323,12 @@ out:
+  * @eabuf:	set info command buffer
+  * @buf_len:	set info command buffer length
+  * @path:	dentry path for get ea
++ * @get_write:	get write access to a mount
+  *
+  * Return:	0 on success, otherwise error
+  */
+ static int smb2_set_ea(struct smb2_ea_info *eabuf, unsigned int buf_len,
+-		       const struct path *path)
++		       const struct path *path, bool get_write)
  {
-@@ -270,8 +258,6 @@ static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
- 					   IOPM_SIZE)))
- 		return false;
+ 	struct mnt_idmap *idmap = mnt_idmap(path->mnt);
+ 	char *attr_name = NULL, *value;
+@@ -3015,7 +3016,7 @@ int smb2_open(struct ksmbd_work *work)
  
--	if (CC(!nested_svm_check_tlb_ctl(vcpu, control->tlb_ctl)))
--		return false;
+ 			rc = smb2_set_ea(&ea_buf->ea,
+ 					 le32_to_cpu(ea_buf->ccontext.DataLength),
+-					 &path);
++					 &path, false);
+ 			if (rc == -EOPNOTSUPP)
+ 				rc = 0;
+ 			else if (rc)
+@@ -5992,7 +5993,7 @@ static int smb2_set_info_file(struct ksm
+ 			return -EINVAL;
  
- 	return true;
- }
--- 
-2.43.0
-
+ 		return smb2_set_ea((struct smb2_ea_info *)req->Buffer,
+-				   buf_len, &fp->filp->f_path);
++				   buf_len, &fp->filp->f_path, true);
+ 	}
+ 	case FILE_POSITION_INFORMATION:
+ 	{
 
 
 
