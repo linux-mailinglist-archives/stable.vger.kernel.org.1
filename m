@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-17247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFE6584106A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13BCE840EA2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7CD72823FA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D2C6B24E22
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D320276031;
-	Mon, 29 Jan 2024 17:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030B615A4B6;
+	Mon, 29 Jan 2024 17:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEBhrU7b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pAGta8oZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9262876029;
-	Mon, 29 Jan 2024 17:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6958158D71;
+	Mon, 29 Jan 2024 17:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548618; cv=none; b=r1V/bqf2mCZ3Dg1J6JxzNQ7jbwBLI0WwgWlysRmqFru/I5I8b0ZAGHRwC+yn43CDg1jCWTg/RHSmx5rjPamsYBmbf/6IyYKsaXhrT0BC+XcgyP0yHJE5mZidFIpw6mG/RHedSHKSNTq67XVfwKE2f9fBaOsglGyz+NL4jlYVp9Y=
+	t=1706548318; cv=none; b=K8248JibuyU9QUF9GlgL980TMcpkKmL5t8EP1erf0j3oZF5fb8pmzfi8YpWATlIIm/KziofB6F37mIzhmQU1Fbl5LYyxrb0ija9C977k7Yk3noxuCk+z7+RfbSwKJuvAI/Fd3rpRUapvXiL2c7ld9RUPkQEiqVMleNDroD7Ooac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548618; c=relaxed/simple;
-	bh=Yh+ouFxk4S9dRFs/2X0YlnoY+nWofTRe6rzRJgNmE6c=;
+	s=arc-20240116; t=1706548318; c=relaxed/simple;
+	bh=F9YcEt0nqGCqf04bm98MkUmxciGSdGZ9aDyouSkpX94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GhnITQIFaXvVgb8cd2zXvedk218h9BK0EwIAhieg9KRm0IGRlBCXhOvL32aNRijlhxwqj+aPT4ba/prP1ZPRgmhNRv7SW8jKlfhqEf6iDhUb624T9cr61eRPz6UOoiAECZ+ZUsO5/3cn5l+DKpz+enCdijis/h76oSsZpN+qMMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEBhrU7b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CA4C433F1;
-	Mon, 29 Jan 2024 17:16:58 +0000 (UTC)
+	 MIME-Version; b=sKACcFdXpSI++fpqiT57u0wRtxJYmswBXm8ca2dZYlh5tjEx0PTP7J82ZD/jTerX77r47d4HwiJHSKuarr5kgf2Bz9vueMuUsKWpNKImRh1OyQE3qKfFBU8OXyElrWJm3Nrz3wNn90hcs9ijSFGtERqjk0lsqWgtgdyYiAopt6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pAGta8oZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 206B5C43390;
+	Mon, 29 Jan 2024 17:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548618;
-	bh=Yh+ouFxk4S9dRFs/2X0YlnoY+nWofTRe6rzRJgNmE6c=;
+	s=korg; t=1706548318;
+	bh=F9YcEt0nqGCqf04bm98MkUmxciGSdGZ9aDyouSkpX94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sEBhrU7bftY6VFtinhaldIgB2CIH/XL3RFtLU6FHyGWKn8bet0jCPxaBzK0PAfAGJ
-	 smwZDHC1+pUDXkif5ZdbktvRlFQSBXzJ8gxuEv4C0dFSq8gC9N55Jzyd2WvTf5iDHM
-	 YfJmDZzO/xXiJ0cPvls+WHEzM/Rzj3uIXi/D8QCs=
+	b=pAGta8oZGwmW996NPhiNvQp/zI0CSv+a24/N3HVWHE+5wXngFAt79tMogq6LD62C4
+	 WFCvn4a3lhi0E0JtYMqPi85jsqZZa3actfy3+XxIsKDKjo7+FfKEbqdfR/Owfl8bFt
+	 osw3vDUJS5cXlBzFCh9lXLoluhe+m8vtbD6Txq4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	David Hildenbrand <david@redhat.com>,
-	Xu Yu <xuyu@linux.alibaba.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 287/331] mm: migrate: fix getting incorrect page mapping during page migration
-Date: Mon, 29 Jan 2024 09:05:51 -0800
-Message-ID: <20240129170023.256597812@linuxfoundation.org>
+Subject: [PATCH 6.7 321/346] firmware: arm_ffa: Add missing rwlock_init() in ffa_setup_partitions()
+Date: Mon, 29 Jan 2024 09:05:52 -0800
+Message-ID: <20240129170025.918914934@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,136 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit d1adb25df7111de83b64655a80b5a135adbded61 ]
+[ Upstream commit 59b2e242b13192e50bf47df3780bf8a7e2260e98 ]
 
-When running stress-ng testing, we found below kernel crash after a few hours:
+Add the missing rwlock initialization for the individual FF-A partition
+information in ffa_setup_partitions().
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-pc : dentry_name+0xd8/0x224
-lr : pointer+0x22c/0x370
-sp : ffff800025f134c0
-......
-Call trace:
-  dentry_name+0xd8/0x224
-  pointer+0x22c/0x370
-  vsnprintf+0x1ec/0x730
-  vscnprintf+0x2c/0x60
-  vprintk_store+0x70/0x234
-  vprintk_emit+0xe0/0x24c
-  vprintk_default+0x3c/0x44
-  vprintk_func+0x84/0x2d0
-  printk+0x64/0x88
-  __dump_page+0x52c/0x530
-  dump_page+0x14/0x20
-  set_migratetype_isolate+0x110/0x224
-  start_isolate_page_range+0xc4/0x20c
-  offline_pages+0x124/0x474
-  memory_block_offline+0x44/0xf4
-  memory_subsys_offline+0x3c/0x70
-  device_offline+0xf0/0x120
-  ......
-
-After analyzing the vmcore, I found this issue is caused by page migration.
-The scenario is that, one thread is doing page migration, and we will use the
-target page's ->mapping field to save 'anon_vma' pointer between page unmap and
-page move, and now the target page is locked and refcount is 1.
-
-Currently, there is another stress-ng thread performing memory hotplug,
-attempting to offline the target page that is being migrated. It discovers that
-the refcount of this target page is 1, preventing the offline operation, thus
-proceeding to dump the page. However, page_mapping() of the target page may
-return an incorrect file mapping to crash the system in dump_mapping(), since
-the target page->mapping only saves 'anon_vma' pointer without setting
-PAGE_MAPPING_ANON flag.
-
-There are seveval ways to fix this issue:
-(1) Setting the PAGE_MAPPING_ANON flag for target page's ->mapping when saving
-'anon_vma', but this can confuse PageAnon() for PFN walkers, since the target
-page has not built mappings yet.
-(2) Getting the page lock to call page_mapping() in __dump_page() to avoid crashing
-the system, however, there are still some PFN walkers that call page_mapping()
-without holding the page lock, such as compaction.
-(3) Using target page->private field to save the 'anon_vma' pointer and 2 bits
-page state, just as page->mapping records an anonymous page, which can remove
-the page_mapping() impact for PFN walkers and also seems a simple way.
-
-So I choose option 3 to fix this issue, and this can also fix other potential
-issues for PFN walkers, such as compaction.
-
-Link: https://lkml.kernel.org/r/e60b17a88afc38cb32f84c3e30837ec70b343d2b.1702641709.git.baolin.wang@linux.alibaba.com
-Fixes: 64c8902ed441 ("migrate_pages: split unmap_and_move() to _unmap() and _move()")
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Xu Yu <xuyu@linux.alibaba.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 0184450b8b1e ("firmware: arm_ffa: Add schedule receiver callback mechanism")
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Link: https://lore.kernel.org/r/20240108-ffa_fixes_6-8-v1-1-75bf7035bc50@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/migrate.c | 27 ++++++++++-----------------
- 1 file changed, 10 insertions(+), 17 deletions(-)
+ drivers/firmware/arm_ffa/driver.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 3373fc1c2d0f..b4d972d80b10 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1026,38 +1026,31 @@ static int move_to_new_folio(struct folio *dst, struct folio *src,
- }
- 
- /*
-- * To record some information during migration, we use some unused
-- * fields (mapping and private) of struct folio of the newly allocated
-- * destination folio.  This is safe because nobody is using them
-- * except us.
-+ * To record some information during migration, we use unused private
-+ * field of struct folio of the newly allocated destination folio.
-+ * This is safe because nobody is using it except us.
-  */
--union migration_ptr {
--	struct anon_vma *anon_vma;
--	struct address_space *mapping;
--};
--
- enum {
- 	PAGE_WAS_MAPPED = BIT(0),
- 	PAGE_WAS_MLOCKED = BIT(1),
-+	PAGE_OLD_STATES = PAGE_WAS_MAPPED | PAGE_WAS_MLOCKED,
- };
- 
- static void __migrate_folio_record(struct folio *dst,
--				   unsigned long old_page_state,
-+				   int old_page_state,
- 				   struct anon_vma *anon_vma)
- {
--	union migration_ptr ptr = { .anon_vma = anon_vma };
--	dst->mapping = ptr.mapping;
--	dst->private = (void *)old_page_state;
-+	dst->private = (void *)anon_vma + old_page_state;
- }
- 
- static void __migrate_folio_extract(struct folio *dst,
- 				   int *old_page_state,
- 				   struct anon_vma **anon_vmap)
- {
--	union migration_ptr ptr = { .mapping = dst->mapping };
--	*anon_vmap = ptr.anon_vma;
--	*old_page_state = (unsigned long)dst->private;
--	dst->mapping = NULL;
-+	unsigned long private = (unsigned long)dst->private;
-+
-+	*anon_vmap = (struct anon_vma *)(private & ~PAGE_OLD_STATES);
-+	*old_page_state = private & PAGE_OLD_STATES;
- 	dst->private = NULL;
- }
- 
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 6146b2927d5c..ed1d6a24934e 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -1226,6 +1226,7 @@ static void ffa_setup_partitions(void)
+ 			ffa_device_unregister(ffa_dev);
+ 			continue;
+ 		}
++		rwlock_init(&info->rw_lock);
+ 		xa_store(&drv_info->partition_info, tpbuf->id, info, GFP_KERNEL);
+ 	}
+ 	drv_info->partition_count = count;
 -- 
 2.43.0
 
