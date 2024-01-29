@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-16446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B258840CFE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:07:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57444840D00
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:07:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 402AC1F2AE40
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:07:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A4481C233F5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76B61586C7;
-	Mon, 29 Jan 2024 17:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A801586D6;
+	Mon, 29 Jan 2024 17:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WXgue7b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgH5H/Mn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9768D157050;
-	Mon, 29 Jan 2024 17:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A4A157052;
+	Mon, 29 Jan 2024 17:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548025; cv=none; b=nNRWb2U2qoyzXtSby3IEJr0l7BfP9+F4ofUeovGhMKvV8Y+nzEB99E+LdReM6d+jVq6e3UWVxv6vla51pbUV1LyCmAJaXRii2/yUIvyHiBz6DaDth8gh401lVljJ59WpF7bxNVrVF+jReQplHBY0Xei2Jxa8mZ4xXosYBUx5Lm0=
+	t=1706548027; cv=none; b=BzK1VPnfyhvCfjVz4XnbsaM1cPh6EMmYxwZXLmA2glsUaVD/+PXTp83o2Q1T7v8ybmRGuzwpfCkuFZgLqTwHvdPJR74KNGbkHdrWMTpEkuLxREOEnCv7Qez5v46wpL+dgJV4yoK0iOLeSBTpPj+m/LcM8cAGCOTvj7Gz/Cd8tCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548025; c=relaxed/simple;
-	bh=rpWXpcbCfyzNy6S0xVLb4pox1ahm5L0ywZckjd9SBhI=;
+	s=arc-20240116; t=1706548027; c=relaxed/simple;
+	bh=crUoKidwCIzUjXDeqwz/jtpV2y4jV0iO0JlLeDX3Ugs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GXBojeBCbiTQWW2rfOf1dKNg5D0nmvyk6rNZozgC6XUEMMbo92OjMTh/zgOQBM3ERIewqNlhb83pySPUO2U7oPxlSBn1Vc+WuvH1YmgMKmV/co0gD453yFiyEeVjAkFiqH/C/eu/9UOhEmUGlBgG/5yGy88lQ2fzwlNjfmOq0kU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WXgue7b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09331C433F1;
-	Mon, 29 Jan 2024 17:07:05 +0000 (UTC)
+	 MIME-Version; b=G5etfr0ou7xOgkIrp77P2x+PyxhLoAJoRHcVUmEZsXXm0d1/ObYWiLf/pxkIlRQVpIILJkopSLhqa3UrJ+wPsoE21gEwLTNgI0Wf8IYGzLdQ+6OE3StuBhGVDfaPBwz5hP0dO7jxI6euHt6YmlZh7kxD9UOhZQqcPvxpVkNbvyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgH5H/Mn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C186C43394;
+	Mon, 29 Jan 2024 17:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548025;
-	bh=rpWXpcbCfyzNy6S0xVLb4pox1ahm5L0ywZckjd9SBhI=;
+	s=korg; t=1706548026;
+	bh=crUoKidwCIzUjXDeqwz/jtpV2y4jV0iO0JlLeDX3Ugs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2WXgue7bYaaLE25s4P5k3T731GuS0b7ieGLx/0fvVHwFyyKsZ2iEP948HEHZHm5Sl
-	 oZqF3zxTzL20VyTlHzt5fg58SZNVFTRbAeDh1S4Gy0fHZjskomCYeBES1DUF5I/Emw
-	 WodNRugb5/rSZP1AnhdqAUBZ1u0UF8HAM2Czmhdk=
+	b=xgH5H/MnPLLkskfB2+FhX34aWDQ9fBwCj1vfkSWX9+OU0FPOQiTyFOXAda5dSTrhm
+	 gNU1ddAYjsFCUEQbMbO0tHr+7AOk3T06E0UYJWf438e4hqd+ehLTjfzQUHpwu1aa2o
+	 I51wLEk3aKf3PbNeSX88DDhSIzM7eLBaE0pahPAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangwu Zhang <guazhang@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Harald Freudenberger <freude@de.ibm.com>
-Subject: [PATCH 6.7 019/346] crypto: s390/aes - Fix buffer overread in CTR mode
-Date: Mon, 29 Jan 2024 09:00:50 -0800
-Message-ID: <20240129170016.935800433@linuxfoundation.org>
+	Janosch Frank <frankja@linux.ibm.com>,
+	Anthony Krowiak <akrowiak@linux.ibm.com>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>
+Subject: [PATCH 6.7 020/346] s390/vfio-ap: unpin pages on gisc registration failure
+Date: Mon, 29 Jan 2024 09:00:51 -0800
+Message-ID: <20240129170016.965392342@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -66,55 +67,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Anthony Krowiak <akrowiak@linux.ibm.com>
 
-commit d07f951903fa9922c375b8ab1ce81b18a0034e3b upstream.
+commit 7b2d039da622daa9ba259ac6f38701d542b237c3 upstream.
 
-When processing the last block, the s390 ctr code will always read
-a whole block, even if there isn't a whole block of data left.  Fix
-this by using the actual length left and copy it into a buffer first
-for processing.
+In the vfio_ap_irq_enable function, after the page containing the
+notification indicator byte (NIB) is pinned, the function attempts
+to register the guest ISC. If registration fails, the function sets the
+status response code and returns without unpinning the page containing
+the NIB. In order to avoid a memory leak, the NIB should be unpinned before
+returning from the vfio_ap_irq_enable function.
 
-Fixes: 0200f3ecc196 ("crypto: s390 - add System z hardware support for CTR mode")
+Co-developed-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Fixes: 783f0a3ccd79 ("s390/vfio-ap: add s390dbf logging to the vfio_ap_irq_enable function")
 Cc: <stable@vger.kernel.org>
-Reported-by: Guangwu Zhang <guazhang@redhat.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Reviewd-by: Harald Freudenberger <freude@de.ibm.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Link: https://lore.kernel.org/r/20231109164427.460493-2-akrowiak@linux.ibm.com
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/crypto/aes_s390.c  |    4 +++-
- arch/s390/crypto/paes_s390.c |    4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/s390/crypto/vfio_ap_ops.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/s390/crypto/aes_s390.c
-+++ b/arch/s390/crypto/aes_s390.c
-@@ -597,7 +597,9 @@ static int ctr_aes_crypt(struct skcipher
- 	 * final block may be < AES_BLOCK_SIZE, copy only nbytes
- 	 */
- 	if (nbytes) {
--		cpacf_kmctr(sctx->fc, sctx->key, buf, walk.src.virt.addr,
-+		memset(buf, 0, AES_BLOCK_SIZE);
-+		memcpy(buf, walk.src.virt.addr, nbytes);
-+		cpacf_kmctr(sctx->fc, sctx->key, buf, buf,
- 			    AES_BLOCK_SIZE, walk.iv);
- 		memcpy(walk.dst.virt.addr, buf, nbytes);
- 		crypto_inc(walk.iv, AES_BLOCK_SIZE);
---- a/arch/s390/crypto/paes_s390.c
-+++ b/arch/s390/crypto/paes_s390.c
-@@ -693,9 +693,11 @@ static int ctr_paes_crypt(struct skciphe
- 	 * final block may be < AES_BLOCK_SIZE, copy only nbytes
- 	 */
- 	if (nbytes) {
-+		memset(buf, 0, AES_BLOCK_SIZE);
-+		memcpy(buf, walk.src.virt.addr, nbytes);
- 		while (1) {
- 			if (cpacf_kmctr(ctx->fc, &param, buf,
--					walk.src.virt.addr, AES_BLOCK_SIZE,
-+					buf, AES_BLOCK_SIZE,
- 					walk.iv) == AES_BLOCK_SIZE)
- 				break;
- 			if (__paes_convert_key(ctx))
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -457,6 +457,7 @@ static struct ap_queue_status vfio_ap_ir
+ 		VFIO_AP_DBF_WARN("%s: gisc registration failed: nisc=%d, isc=%d, apqn=%#04x\n",
+ 				 __func__, nisc, isc, q->apqn);
+ 
++		vfio_unpin_pages(&q->matrix_mdev->vdev, nib, 1);
+ 		status.response_code = AP_RESPONSE_INVALID_GISA;
+ 		return status;
+ 	}
 
 
 
