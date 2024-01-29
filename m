@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-17257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F73841075
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C34D840EB3
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A52CF1F2490D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 119AE1F2830F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC057604C;
-	Mon, 29 Jan 2024 17:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C529A15CD4B;
+	Mon, 29 Jan 2024 17:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8GwIVEE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mo7rxV3G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3467603A;
-	Mon, 29 Jan 2024 17:17:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E5F15CD49;
+	Mon, 29 Jan 2024 17:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548626; cv=none; b=INYe00T0dclBx4qg7tVhyoYTahyNj5OxtNYmljSP6MfHehzLRlbNiqUUMcPfGcJlbfe5gSx8OJnPiEtYYLkOeVzFjdAf802hcmg22aRGLIFMqpXg+Ps4c1HhsYRkzTqvW994AP+ZTBz/YUbOd4wUl528IxyeQFLcWRpksMaZMyk=
+	t=1706548331; cv=none; b=X2Syx8e2kpOV1xWEQ3YvJ3rcnSFN95hRmZRurjg/sz3j/DgV0yBKJNTgQ0Cft3vhAo7SBh/+g5R0PGAUYREC3N100EPbqHDKdEGOgdeUAs2LUD/vr14EctGFCgsH5lxqzlHCV9owrXNbTM3F9s27Xqx5SNdM6Wxx6Duj/IlzDMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548626; c=relaxed/simple;
-	bh=dtFSRvyX7HVLPqgdHxE/7UGT8IM9mqDLcTDjDs46Fx4=;
+	s=arc-20240116; t=1706548331; c=relaxed/simple;
+	bh=TmsxVF/uYqxsg8V8ckbVnBt0alSsBkpJvYdNMCa7Brc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g3/tMV+J96GK3H6uwQNPRS5mC8KEsamUw/2LIaWBRmbxrEg1De0ros/L7B2hzgM1HIsatO7xOZJTns/GWnP72K+ufi6d8bBLMGk74O6HiiX0B1R7LAjM7f+yXx+824sCcdUgZ1PaLUg1kLDupf5Mlq6QdsNPaE/dirpu/tPwS5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x8GwIVEE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C27C433C7;
-	Mon, 29 Jan 2024 17:17:05 +0000 (UTC)
+	 MIME-Version; b=e7aLoHhju2i5fX7sbUUhj+7SYgYMuoLbAxgnPr1HytSoq0cdArHJ/YIRCbr0MOyvfd6AtO8BhtAS4qp7HBrcfubzQ+d15gNDOuxm/BlbO2k2SrVCbxIfLItwmsths9h6AxIQmanTFFRs0OqT++HMPF9MoBHA3ejv8NX7jadfC/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mo7rxV3G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B89C43394;
+	Mon, 29 Jan 2024 17:12:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548625;
-	bh=dtFSRvyX7HVLPqgdHxE/7UGT8IM9mqDLcTDjDs46Fx4=;
+	s=korg; t=1706548331;
+	bh=TmsxVF/uYqxsg8V8ckbVnBt0alSsBkpJvYdNMCa7Brc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x8GwIVEEg8oiJmcMxQZgYH2K7kXceiFHeDCZ5mjJrpvKXC1jKSmRIEOx2yIdsQAA7
-	 uA/kJH2t254AdVIAWkYeJ/Sm3rmXCfmbG4YPUhWEApE7G0dngxFRqul5QY85LmEtrn
-	 PV4Yioe0cgu4i8d9PzAl+QtY63nwjAzlgoLd+ZeQ=
+	b=mo7rxV3GAVq+hWIwTeaoONLqSvGxKN/wLcg9QyutMqokfAhDKVlaNcZ/n1CL1nntr
+	 +xiK7jdTV2FFZcUhHCzzlHiAdVBIJ+3jAfyBMT9mD7L1U77flWj4+n0lQkrXBwZFro
+	 4dfSi0/lBXa5ig9Fo0b5aSUXZiPwOOIl2a0YWCGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Yi Wang <hsinyi@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Maxime Ripard <mripard@kernel.org>,
+	Allison Karlitskaya <allison.karlitskaya@redhat.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 296/331] drm/panel-edp: drm/panel-edp: Fix AUO B116XAK01 name and timing
+Subject: [PATCH 6.7 329/346] block: Move checking GENHD_FL_NO_PART to bdev_add_partition()
 Date: Mon, 29 Jan 2024 09:06:00 -0800
-Message-ID: <20240129170023.523204140@linuxfoundation.org>
+Message-ID: <20240129170026.158425808@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Yi Wang <hsinyi@chromium.org>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit fc6e7679296530106ee0954e8ddef1aa58b2e0b5 ]
+[ Upstream commit 7777f47f2ea64efd1016262e7b59fab34adfb869 ]
 
-Rename AUO 0x405c B116XAK01 to B116XAK01.0 and adjust the timing of
-auo_b116xak01: T3=200, T12=500, T7_max = 50 according to decoding edid
-and datasheet.
+Commit 1a721de8489f ("block: don't add or resize partition on the disk
+with GENHD_FL_NO_PART") prevented all operations about partitions on disks
+with GENHD_FL_NO_PART in blkpg_do_ioctl() since they are meaningless.
+However, it changed error code in some scenarios. So move checking
+GENHD_FL_NO_PART to bdev_add_partition() to eliminate impact.
 
-Fixes: da458286a5e2 ("drm/panel: Add support for AUO B116XAK01 panel")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231107204611.3082200-2-hsinyi@chromium.org
+Fixes: 1a721de8489f ("block: don't add or resize partition on the disk with GENHD_FL_NO_PART")
+Reported-by: Allison Karlitskaya <allison.karlitskaya@redhat.com>
+Closes: https://lore.kernel.org/all/CAOYeF9VsmqKMcQjo1k6YkGNujwN-nzfxY17N3F-CMikE1tYp+w@mail.gmail.com/
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240118130401.792757-1-lilingfeng@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-edp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ block/ioctl.c           | 2 --
+ block/partitions/core.c | 5 +++++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
-index 5bf28c8443ef..e93e54a98260 100644
---- a/drivers/gpu/drm/panel/panel-edp.c
-+++ b/drivers/gpu/drm/panel/panel-edp.c
-@@ -973,6 +973,8 @@ static const struct panel_desc auo_b116xak01 = {
- 	},
- 	.delay = {
- 		.hpd_absent = 200,
-+		.unprepare = 500,
-+		.enable = 50,
- 	},
- };
+diff --git a/block/ioctl.c b/block/ioctl.c
+index 9c73a763ef88..438f79c564cf 100644
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -20,8 +20,6 @@ static int blkpg_do_ioctl(struct block_device *bdev,
+ 	struct blkpg_partition p;
+ 	sector_t start, length;
  
-@@ -1841,7 +1843,7 @@ static const struct edp_panel_entry edp_panels[] = {
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1e9b, &delay_200_500_e50, "B133UAN02.1"),
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x1ea5, &delay_200_500_e50, "B116XAK01.6"),
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x235c, &delay_200_500_e50, "B116XTN02"),
--	EDP_PANEL_ENTRY('A', 'U', 'O', 0x405c, &auo_b116xak01.delay, "B116XAK01"),
-+	EDP_PANEL_ENTRY('A', 'U', 'O', 0x405c, &auo_b116xak01.delay, "B116XAK01.0"),
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x582d, &delay_200_500_e50, "B133UAN01.0"),
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x615c, &delay_200_500_e50, "B116XAN06.1"),
- 	EDP_PANEL_ENTRY('A', 'U', 'O', 0x8594, &delay_200_500_e50, "B133UAN01.0"),
+-	if (disk->flags & GENHD_FL_NO_PART)
+-		return -EINVAL;
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EACCES;
+ 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
+diff --git a/block/partitions/core.c b/block/partitions/core.c
+index f47ffcfdfcec..f14602022c5e 100644
+--- a/block/partitions/core.c
++++ b/block/partitions/core.c
+@@ -447,6 +447,11 @@ int bdev_add_partition(struct gendisk *disk, int partno, sector_t start,
+ 		goto out;
+ 	}
+ 
++	if (disk->flags & GENHD_FL_NO_PART) {
++		ret = -EINVAL;
++		goto out;
++	}
++
+ 	if (partition_overlaps(disk, start, length, -1)) {
+ 		ret = -EBUSY;
+ 		goto out;
 -- 
 2.43.0
 
