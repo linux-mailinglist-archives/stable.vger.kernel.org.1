@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-16564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A21840D7C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE260840FAF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 729B128BFAC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FB7C1F2345D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F3A1586D0;
-	Mon, 29 Jan 2024 17:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2E66FE10;
+	Mon, 29 Jan 2024 17:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BHW3FeV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="woHqWWmp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956FD15705F;
-	Mon, 29 Jan 2024 17:08:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B9A6FDF8;
+	Mon, 29 Jan 2024 17:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548113; cv=none; b=cjnlU7Zhsf0wsRiFteNSJvgYFd62aSRMF4BSjsmfIyBwmSN9XG6lj3msica/w2/WMWX+IWbW55/+XcZ6x3XK9Wl3QtIUmWIf5pfQ8hUoLV0ovqo3J+H1SzVYYYWz88qYs7r0lod9Q9H7oA70w5DU7K53J4Ch8fDMHS9x93ifs+c=
+	t=1706548483; cv=none; b=IqSe7m3YYV6c04S4QfYMq60ORYdxUFH/71Jtdy04vHx0/Po0jaQnGGjjMxp6YSzo1Y4+vjZK8BfDBR8tCJ13r/1t+Z4wKwyF+9sqViRCfsfz6foxVSyyxOAkfte4c/27Y6HaRfq3WalQ7tcMVrNfkUXT9XpGzWb9uTLGS+b3RSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548113; c=relaxed/simple;
-	bh=rkcqpn/ssF1lr+3a5Lnq0zGOUKIm0EXUbmAOjHAVxrA=;
+	s=arc-20240116; t=1706548483; c=relaxed/simple;
+	bh=kSPfkoGpoTHCjVq6jogB+IiEDz6ls1TNjX7CrAWhJpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E7zrcFrzq/MTcmcQ3ePxgacvyFQ9ZvU/vqc/cBzeJ+XeEwbZxHWwEjXoI1akj2rOnWl9dEt6Ax0TS8OauRaxYjrCLqAjwBQiMc9YwbXxDBy94R5iuEH0WVwIxDOySyUURTwYlSUBEed5QD2vKZO0MSenrDLS5NrICS9l+t5O2aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BHW3FeV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6EBC433C7;
-	Mon, 29 Jan 2024 17:08:33 +0000 (UTC)
+	 MIME-Version; b=hdwceB23thrCZf6lk9JMARrZsWXJOWTyVWtuZr4hnDYtiqWUJY6hV1narFnUspD2uInGtjCDABGgDCFK1LEEC1pMVaNPefjyULwRfKVF0qgMdmWeP937T1ANk7SBG5RkVOa07g2lKex8Bd3kok07eC4v6ZLqGQUNYq9Q6yJU63w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=woHqWWmp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BF9C43390;
+	Mon, 29 Jan 2024 17:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548113;
-	bh=rkcqpn/ssF1lr+3a5Lnq0zGOUKIm0EXUbmAOjHAVxrA=;
+	s=korg; t=1706548483;
+	bh=kSPfkoGpoTHCjVq6jogB+IiEDz6ls1TNjX7CrAWhJpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2BHW3FeVSy+JNT5R/OObaJrWc37i6esbxchkWhNOAg+VpVPJRy99oqtZ0eAV5Skaj
-	 UBzPtWtfC7TIJ9DGOwswY3KnJror+JXnkKsaoUCUVTU+6hpSkrS00j1eGtr0yWvq+k
-	 dTLdTFCFZ8UbQzOAHbYfae3KNVLyfsRz87mG9Y6c=
+	b=woHqWWmpnDlfEKFqYzsxcqlPoTaGrjg7OlXsBUCU3vRUZJr/b0tX/agLawSAGZQme
+	 qIwtpho7CkbB8iiAj9dlc+TS5cDz4uyQ3zCicOAjK4prmpU5svtdZchtWfYEPgMkZx
+	 FCqAv+k0U68FtZPz57rR83TOob8c9Lw8bJ3OlqRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.7 136/346] serial: sc16is7xx: improve do/while loop in sc16is7xx_irq()
+	stable@kernel.org,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 103/331] media: videobuf2-dma-sg: fix vmap callback
 Date: Mon, 29 Jan 2024 09:02:47 -0800
-Message-ID: <20240129170020.386471292@linuxfoundation.org>
+Message-ID: <20240129170017.950165654@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-commit d5078509c8b06c5c472a60232815e41af81c6446 upstream.
+commit 608ca5a60ee47b48fec210aeb7a795a64eb5dcee upstream.
 
-Simplify and improve readability by replacing while(1) loop with
-do {} while, and by using the keep_polling variable as the exit
-condition, making it more explicit.
+For dmabuf import users to be able to use the vaddr from another
+videobuf2-dma-sg source, the exporter needs to set a proper vaddr on
+vb2_dma_sg_dmabuf_ops_vmap callback. This patch adds vmap on map if
+buf->vaddr was not set.
 
-Fixes: 834449872105 ("sc16is7xx: Fix for multi-channel stall")
-Cc:  <stable@vger.kernel.org>
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-6-hugo@hugovil.com
+Cc: stable@kernel.org
+Fixes: 7938f4218168 ("dma-buf-map: Rename to iosys-map")
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Acked-by: Tomasz Figa <tfiga@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/media/common/videobuf2/videobuf2-dma-sg.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -783,17 +783,18 @@ out_port_irq:
- 
- static irqreturn_t sc16is7xx_irq(int irq, void *dev_id)
+--- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
++++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
+@@ -487,9 +487,15 @@ vb2_dma_sg_dmabuf_ops_end_cpu_access(str
+ static int vb2_dma_sg_dmabuf_ops_vmap(struct dma_buf *dbuf,
+ 				      struct iosys_map *map)
  {
-+	bool keep_polling;
+-	struct vb2_dma_sg_buf *buf = dbuf->priv;
++	struct vb2_dma_sg_buf *buf;
++	void *vaddr;
+ 
+-	iosys_map_set_vaddr(map, buf->vaddr);
++	buf = dbuf->priv;
++	vaddr = vb2_dma_sg_vaddr(buf->vb, buf);
++	if (!vaddr)
++		return -EINVAL;
 +
- 	struct sc16is7xx_port *s = (struct sc16is7xx_port *)dev_id;
++	iosys_map_set_vaddr(map, vaddr);
  
--	while (1) {
--		bool keep_polling = false;
-+	do {
- 		int i;
- 
-+		keep_polling = false;
-+
- 		for (i = 0; i < s->devtype->nr_uart; ++i)
- 			keep_polling |= sc16is7xx_port_irq(s, i);
--		if (!keep_polling)
--			break;
--	}
-+	} while (keep_polling);
- 
- 	return IRQ_HANDLED;
+ 	return 0;
  }
 
 
