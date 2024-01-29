@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-17199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4502F841038
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAFF8840ECA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 019A9285D8F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9062A1F25260
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5DCC15F301;
-	Mon, 29 Jan 2024 17:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9387660EFF;
+	Mon, 29 Jan 2024 17:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ab4KezEd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/gZw3O/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879CC15F309;
-	Mon, 29 Jan 2024 17:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F2F3157E79;
+	Mon, 29 Jan 2024 17:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548583; cv=none; b=eIlwzb8dt1iWw1hl/jUKDO+gp3tYwMR2sWzwZd9scnmhoKyoOzf2se9tJMa4fNg7PHYV274DPKtar6O3IwDfoVoLEO/aFPEkHQnUg4BjpjAMkeXRzZpuEE0melsvdiSeEamwc4/zYkxOa5jr3c0eK9HI9vo7kRyZS6Naw+AGJnw=
+	t=1706548345; cv=none; b=NMDV2KbwQWhCEF5WPZt7TihHw+rRoVkUVOznhpmTxywSTo+O/cC5rm72vsexdvB4MFOkgZEEmryBpCzB/iuepUme71uDKd8GjHBpMLhELgG9U8bG69owDcqrk/NJ6Gq8DVBIgvI5c58hDI/azOWmd22wYf8f83X8MwrGtGd9BKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548583; c=relaxed/simple;
-	bh=zWfIxBqn1SDlravTzIhnpZhH9CxQGgVDjYgLM1JEQ2I=;
+	s=arc-20240116; t=1706548345; c=relaxed/simple;
+	bh=EFZXoQ7Fk/pwg+e0dBl3xXRLVuQ3cCVI3gRxf8GZRsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BYlmDRlgUfl7efire0KAD8Z0bq2CQ5Npw63yumjVHymt/PGRqBAtMzL4h8Lfk4FkB7Y8BHBqbdQxk0HT8ECpHg0etwUcp0xmKQPtZsmQyZOXiZQze7zEAkv3K/QUUEwh+xEY2b0exrswoTnlbURLqctebUnCuvXV0UipWj/JMOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ab4KezEd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F62C433C7;
-	Mon, 29 Jan 2024 17:16:23 +0000 (UTC)
+	 MIME-Version; b=UEQOVgjxQcMo3/shSdFCqU/8iT30eHEXpSLlZyrndv+j0Fr9WSmvc10AtQ7Qxzik94M9pz5Cr9QNE0P2z14QlIoV30hMbqI4XPtOHv2Bd9ZroobtpldBRFFkWxMwfBGQw7099wUtJQ+zV8N4r9SexNw5fhyzcYwV1KOfGhvK3jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/gZw3O/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D44C43390;
+	Mon, 29 Jan 2024 17:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548583;
-	bh=zWfIxBqn1SDlravTzIhnpZhH9CxQGgVDjYgLM1JEQ2I=;
+	s=korg; t=1706548345;
+	bh=EFZXoQ7Fk/pwg+e0dBl3xXRLVuQ3cCVI3gRxf8GZRsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ab4KezEdqlnjVQu2qQwwAys5MZ6JWOO6qh1r7Ed8dHcO+LGwrWQSZxtlGJB4i5so3
-	 PYpBEvv4akbiYn/3DmWRMNuEDqLD9dDBPvGxPnhKgchURncR99hzU6fqtt6Xk/ir9v
-	 yFc7Cc0EU5X67OxPQl/TUoI5mAIPzes/jO1R983c=
+	b=U/gZw3O/6omzJCJ/IedRDBdT14Xki8GLdLSAK3ioA+WgKJ1Njho0JuG5MHG+o60uF
+	 l6Kv8B+8RqzzSaryyKOTA2jEaVJjprL/fGVd4iC9GY5Nf9Q/1aNkbQUoOG1a/kKkVG
+	 voPvOnyoew92eMDsjRFmLWNF8IWE4AYsTrebyEAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Yunjian Wang <wangyunjian@huawei.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 221/331] ice: update xdp_rxq_info::frag_size for ZC enabled Rx queue
-Date: Mon, 29 Jan 2024 09:04:45 -0800
-Message-ID: <20240129170021.340798129@linuxfoundation.org>
+Subject: [PATCH 6.1 086/185] tun: add missing rx stats accounting in tun_xdp_act
+Date: Mon, 29 Jan 2024 09:04:46 -0800
+Message-ID: <20240129170001.367943860@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Yunjian Wang <wangyunjian@huawei.com>
 
-[ Upstream commit 3de38c87174225487fc93befeea7d380db80aef6 ]
+[ Upstream commit f1084c427f55d573fcd5688d9ba7b31b78019716 ]
 
-Now that ice driver correctly sets up frag_size in xdp_rxq_info, let us
-make it work for ZC multi-buffer as well. ice_rx_ring::rx_buf_len for ZC
-is being set via xsk_pool_get_rx_frame_size() and this needs to be
-propagated up to xdp_rxq_info.
+The TUN can be used as vhost-net backend, and it is necessary to
+count the packets transmitted from TUN to vhost-net/virtio-net.
+However, there are some places in the receive path that were not
+taken into account when using XDP. It would be beneficial to also
+include new accounting for successfully received bytes using
+dev_sw_netstats_rx_add.
 
-Use a bigger hammer and instead of unregistering only xdp_rxq_info's
-memory model, unregister it altogether and register it again and have
-xdp_rxq_info with correct frag_size value.
-
-Fixes: 1bbc04de607b ("ice: xsk: add RX multi-buffer support")
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/r/20240124191602.566724-9-maciej.fijalkowski@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 761876c857cb ("tap: XDP support")
+Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_base.c | 37 ++++++++++++++---------
- 1 file changed, 23 insertions(+), 14 deletions(-)
+ drivers/net/tun.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_base.c b/drivers/net/ethernet/intel/ice/ice_base.c
-index 7fa43827a3f0..4f3e65b47cdc 100644
---- a/drivers/net/ethernet/intel/ice/ice_base.c
-+++ b/drivers/net/ethernet/intel/ice/ice_base.c
-@@ -534,19 +534,27 @@ int ice_vsi_cfg_rxq(struct ice_rx_ring *ring)
- 	ring->rx_buf_len = ring->vsi->rx_buf_len;
- 
- 	if (ring->vsi->type == ICE_VSI_PF) {
--		if (!xdp_rxq_info_is_reg(&ring->xdp_rxq))
--			/* coverity[check_return] */
--			__xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
--					   ring->q_index,
--					   ring->q_vector->napi.napi_id,
--					   ring->vsi->rx_buf_len);
-+		if (!xdp_rxq_info_is_reg(&ring->xdp_rxq)) {
-+			err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
-+						 ring->q_index,
-+						 ring->q_vector->napi.napi_id,
-+						 ring->rx_buf_len);
-+			if (err)
-+				return err;
-+		}
- 
- 		ring->xsk_pool = ice_xsk_pool(ring);
- 		if (ring->xsk_pool) {
--			xdp_rxq_info_unreg_mem_model(&ring->xdp_rxq);
-+			xdp_rxq_info_unreg(&ring->xdp_rxq);
- 
- 			ring->rx_buf_len =
- 				xsk_pool_get_rx_frame_size(ring->xsk_pool);
-+			err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
-+						 ring->q_index,
-+						 ring->q_vector->napi.napi_id,
-+						 ring->rx_buf_len);
-+			if (err)
-+				return err;
- 			err = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
- 							 MEM_TYPE_XSK_BUFF_POOL,
- 							 NULL);
-@@ -557,13 +565,14 @@ int ice_vsi_cfg_rxq(struct ice_rx_ring *ring)
- 			dev_info(dev, "Registered XDP mem model MEM_TYPE_XSK_BUFF_POOL on Rx ring %d\n",
- 				 ring->q_index);
- 		} else {
--			if (!xdp_rxq_info_is_reg(&ring->xdp_rxq))
--				/* coverity[check_return] */
--				__xdp_rxq_info_reg(&ring->xdp_rxq,
--						   ring->netdev,
--						   ring->q_index,
--						   ring->q_vector->napi.napi_id,
--						   ring->vsi->rx_buf_len);
-+			if (!xdp_rxq_info_is_reg(&ring->xdp_rxq)) {
-+				err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
-+							 ring->q_index,
-+							 ring->q_vector->napi.napi_id,
-+							 ring->rx_buf_len);
-+				if (err)
-+					return err;
-+			}
- 
- 			err = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
- 							 MEM_TYPE_PAGE_SHARED,
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index af32aa599278..367255bb44cd 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -1626,6 +1626,7 @@ static int tun_xdp_act(struct tun_struct *tun, struct bpf_prog *xdp_prog,
+ 			dev_core_stats_rx_dropped_inc(tun->dev);
+ 			return err;
+ 		}
++		dev_sw_netstats_rx_add(tun->dev, xdp->data_end - xdp->data);
+ 		break;
+ 	case XDP_TX:
+ 		err = tun_xdp_tx(tun->dev, xdp);
+@@ -1633,6 +1634,7 @@ static int tun_xdp_act(struct tun_struct *tun, struct bpf_prog *xdp_prog,
+ 			dev_core_stats_rx_dropped_inc(tun->dev);
+ 			return err;
+ 		}
++		dev_sw_netstats_rx_add(tun->dev, xdp->data_end - xdp->data);
+ 		break;
+ 	case XDP_PASS:
+ 		break;
 -- 
 2.43.0
 
