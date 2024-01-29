@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-16929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 798B9840F14
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5240384106E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABA7C1C23792
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 858691C23872
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A86BC163A84;
-	Mon, 29 Jan 2024 17:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEED87603B;
+	Mon, 29 Jan 2024 17:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n49aWVCd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pENj1vJO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666A8157E75;
-	Mon, 29 Jan 2024 17:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBC776037;
+	Mon, 29 Jan 2024 17:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548383; cv=none; b=e16ZpCsY2Ha6QXB+FwnSrupzCuJbMEyx0Sbn42YuxbrFeOC+2FbV7EIzn/VK0PHFaXZ6wX5Ot6c0JXGq7t6l4BNp7bLvhb7x5EqPipUdLZNkM1nDCbSAoF4GBDZr85Jz7XycExz01sfr2j33B1+oSyjWHhcAY6DZ5PXvQzt+FkI=
+	t=1706548621; cv=none; b=VGjedv7Wm4d30K/RQZufR512KVVwOvF4h+Vdc0iAIYIKV+UxuUWyioX/TIaljoCqQcYc8JwKOvMZCMGZwVHUrY3Wq/1u1bkJiIFjFWAkMdye5PUbOf0fe4kdXJzXPhyJz34ZZG09ccZGBGoKc4GWBx3+hGqnGNErFLyZyZ2b+d0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548383; c=relaxed/simple;
-	bh=zYBSK6JSFoWgH58Qo/D9U7o9jt+mmckZh0XuRg2icAA=;
+	s=arc-20240116; t=1706548621; c=relaxed/simple;
+	bh=TWAZc+xEwsZvokyEKTmx1oWh60patQ/CHySeFkVqp5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQmAze6P9Q2iXfR96TMdBrmRy9GOPt78onKz/nWugkVlzg7SoDkyBrF/qaqzx1BPIlNgdYNaBI1Bx9ziQ87UeSjnbGzOrQ4P8XiPnx0jfKm1T/By8VOpSR2bIt/W2DnQdGLKA3O5dc6f5255aRBZhf3f6IGl6BBEwU3Rio+UvrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n49aWVCd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E038C43390;
-	Mon, 29 Jan 2024 17:13:03 +0000 (UTC)
+	 MIME-Version; b=gWO58AKgmjYXYgMYc8z5m5Uku1DZf/QI2DSCxYhqiJlIlfB3yxIuX2bX87xuBodM+0XWJ3ENV2ugNBgTx6f6B8tdmWs9RQhsACur9Xs5dWK9MayzxHqYFbG2I5MSrm9CC54Acr9o6Wdh8N9jJZnx9qpJhvomg2dowJF/SkZGt84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pENj1vJO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3520EC43399;
+	Mon, 29 Jan 2024 17:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548383;
-	bh=zYBSK6JSFoWgH58Qo/D9U7o9jt+mmckZh0XuRg2icAA=;
+	s=korg; t=1706548621;
+	bh=TWAZc+xEwsZvokyEKTmx1oWh60patQ/CHySeFkVqp5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n49aWVCdR4csnHzTGUSFCprjM4BQLz2nz998yQ9v0+iuE+O2BI1GPTrl7e3o9IJ+F
-	 dtZ6weNogvhAE6W9VogKYyLOsqqgCmbF55mwbfVcVHDCrQEDDKMwY7duuLf8RXuNH4
-	 6/3dNpd8YVmM6O5yNMjc5QB3q12HNAhOKaQZ4Zmg=
+	b=pENj1vJOMgk2rSAcW38ZyBnk2skEtZEiG4YOMWSGKGUuPSA/3bzqVnlpf/o+esyFe
+	 IW86g7u+U1TndiadI2WDpVroMqnTW8G70urOf5iaGVq6c747P6AIt2y1wvqtzcAVhO
+	 p0029Dkqn+aqwXLcD7u49l58pWsugjI1La6aUyOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Naohiro Aota <naohiro.aota@wdc.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 155/185] ARM: dts: qcom: sdx55: fix pdc #interrupt-cells
+Subject: [PATCH 6.6 291/331] btrfs: zoned: factor out prepare_allocation_zoned()
 Date: Mon, 29 Jan 2024 09:05:55 -0800
-Message-ID: <20240129170003.576747095@linuxfoundation.org>
+Message-ID: <20240129170023.371627498@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Naohiro Aota <naohiro.aota@wdc.com>
 
-[ Upstream commit cc25bd06c16aa582596a058d375b2e3133f79b93 ]
+[ Upstream commit b271fee9a41ca1474d30639fd6cc912c9901d0f8 ]
 
-The Qualcomm PDC interrupt controller binding expects two cells in
-interrupt specifiers.
+Factor out prepare_allocation_zoned() for further extension. While at
+it, optimize the if-branch a bit.
 
-Fixes: 9d038b2e62de ("ARM: dts: qcom: Add SDX55 platform and MTP board support")
-Cc: stable@vger.kernel.org      # 5.12
-Cc: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20231213173131.29436-2-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 02444f2ac26e ("btrfs: zoned: optimize hint byte for zoned allocator")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-sdx55.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/extent-tree.c | 32 +++++++++++++++++++-------------
+ 1 file changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom-sdx55.dtsi b/arch/arm/boot/dts/qcom-sdx55.dtsi
-index eb1db01031b2..7bb2f41049d9 100644
---- a/arch/arm/boot/dts/qcom-sdx55.dtsi
-+++ b/arch/arm/boot/dts/qcom-sdx55.dtsi
-@@ -522,7 +522,7 @@ pdc: interrupt-controller@b210000 {
- 			compatible = "qcom,sdx55-pdc", "qcom,pdc";
- 			reg = <0x0b210000 0x30000>;
- 			qcom,pdc-ranges = <0 179 52>;
--			#interrupt-cells = <3>;
-+			#interrupt-cells = <2>;
- 			interrupt-parent = <&intc>;
- 			interrupt-controller;
- 		};
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index d421e289dc73..69abb6eb81df 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -4139,6 +4139,24 @@ static int prepare_allocation_clustered(struct btrfs_fs_info *fs_info,
+ 	return 0;
+ }
+ 
++static int prepare_allocation_zoned(struct btrfs_fs_info *fs_info,
++				    struct find_free_extent_ctl *ffe_ctl)
++{
++	if (ffe_ctl->for_treelog) {
++		spin_lock(&fs_info->treelog_bg_lock);
++		if (fs_info->treelog_bg)
++			ffe_ctl->hint_byte = fs_info->treelog_bg;
++		spin_unlock(&fs_info->treelog_bg_lock);
++	} else if (ffe_ctl->for_data_reloc) {
++		spin_lock(&fs_info->relocation_bg_lock);
++		if (fs_info->data_reloc_bg)
++			ffe_ctl->hint_byte = fs_info->data_reloc_bg;
++		spin_unlock(&fs_info->relocation_bg_lock);
++	}
++
++	return 0;
++}
++
+ static int prepare_allocation(struct btrfs_fs_info *fs_info,
+ 			      struct find_free_extent_ctl *ffe_ctl,
+ 			      struct btrfs_space_info *space_info,
+@@ -4149,19 +4167,7 @@ static int prepare_allocation(struct btrfs_fs_info *fs_info,
+ 		return prepare_allocation_clustered(fs_info, ffe_ctl,
+ 						    space_info, ins);
+ 	case BTRFS_EXTENT_ALLOC_ZONED:
+-		if (ffe_ctl->for_treelog) {
+-			spin_lock(&fs_info->treelog_bg_lock);
+-			if (fs_info->treelog_bg)
+-				ffe_ctl->hint_byte = fs_info->treelog_bg;
+-			spin_unlock(&fs_info->treelog_bg_lock);
+-		}
+-		if (ffe_ctl->for_data_reloc) {
+-			spin_lock(&fs_info->relocation_bg_lock);
+-			if (fs_info->data_reloc_bg)
+-				ffe_ctl->hint_byte = fs_info->data_reloc_bg;
+-			spin_unlock(&fs_info->relocation_bg_lock);
+-		}
+-		return 0;
++		return prepare_allocation_zoned(fs_info, ffe_ctl);
+ 	default:
+ 		BUG();
+ 	}
 -- 
 2.43.0
 
