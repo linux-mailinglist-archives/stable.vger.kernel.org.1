@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-16571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC9C840D83
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D720E840FB8
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBEA428C60E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 160A01C2137D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E045615A489;
-	Mon, 29 Jan 2024 17:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255B815958A;
+	Mon, 29 Jan 2024 17:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TII8O07F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9QA2kqZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EAB71586D7;
-	Mon, 29 Jan 2024 17:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D807F6FDE1;
+	Mon, 29 Jan 2024 17:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548118; cv=none; b=rvZAOS6fGezFt59gBw9rtLTbvuwi/FZKbkHbJLAhLkK2KtRCOLF98zj6fIYZo2FndkXgpWlnK606haj8JF7Qj7ujVDvNa4yl6ZRAsyOc05aRnfEqkQYyeFxvT0P18/qrzCW4vF5dwyCpn7oSlDtcWCwWL21b/eR4E+0j4hfhFOk=
+	t=1706548489; cv=none; b=hF8rw6nm7MHcfahWgcL0awImOCR0MzhedxAh48GSSUj71wmIim1Wd86rSwPl2+fc3ziPXr6ksao5vb+rKU3P8qUjlrfno73buCWTMTJgH3lhtHxDFrIR/OQ13FU9pvWlVsn6mceakBQWSzBmG0JOsFcvHq+zBXSVlXLLDPq6/vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548118; c=relaxed/simple;
-	bh=H+4aWzEl4Vbm+oFoQOfsIawjk2k3cdEUbPkjRKNYG1M=;
+	s=arc-20240116; t=1706548489; c=relaxed/simple;
+	bh=rr4zxNfWhYmwViLeGQ5EZ05BUnX7DrpfjFQSk1vkNSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ck3qubBrTR6w4Pov2m/P0EfwiJVjuabE2sc0XWrlZUmeCM/Yj25lNIviG7cGCI3KAs9t0GW1R+gqXak7yf9UrUiJp6JgFf7hZDCf5FlhShBLeX9+lAw+jn0LWTo0MIpfzlIb0/g2C48+CCYBVqYb/Ih+pinQJu481GiTCfk371s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TII8O07F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64EFFC433C7;
-	Mon, 29 Jan 2024 17:08:38 +0000 (UTC)
+	 MIME-Version; b=LORJnwjax6Ew4ji5CJaAY+6XCLnSgR2ufVglpB6zd9bXv7J5HFbXahJLAwFOtD8D+HgWzl17f2m10hm4jJk4VQoYpsZ5s2xoAd7m2zrK6BfsAGQDFNFkkn6lbK7a3Nj9e9Ji70NJ973rc6l35Ury19Wu/o6j0KsmbRwyWMnHoFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9QA2kqZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A299DC43390;
+	Mon, 29 Jan 2024 17:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548118;
-	bh=H+4aWzEl4Vbm+oFoQOfsIawjk2k3cdEUbPkjRKNYG1M=;
+	s=korg; t=1706548489;
+	bh=rr4zxNfWhYmwViLeGQ5EZ05BUnX7DrpfjFQSk1vkNSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TII8O07FoFbQ1YhVFP2ps+w90Aa760oU7uC06zWkBLsAEu1PKx3kM7PG6/ng39ioF
-	 IIsZSutFViHCU+jl5iz5q9GnGcY8Punkrtg8FU0zJGPLiuGbM61POMAY55V9cVZLcy
-	 K6MG9zvLj8rSVfESBmd/BHrYf2qu/ckChsmy7UuY=
+	b=v9QA2kqZf8yRaDq7EC+//iXuiKAcRoCWgGGzE0C6wPzmo2pm8jVn12VwQs99L3+iX
+	 rJvns4ui97LTJjCb1UaL1O490cuzJtZjcMfXKYuj4SbKCfCgE8bodADohAWIZ4apKO
+	 n04qPPsxX7VcJSxlgVZLVHNhlnzjr9FEiL4F0sjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Wang <wvw@google.com>,
-	Di Shen <di.shen@unisoc.com>,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.7 119/346] thermal: gov_power_allocator: avoid inability to reset a cdev
+	Vinod Koul <vkoul@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 086/331] arm64: dts: qcom: sc8180x: fix USB wakeup interrupt types
 Date: Mon, 29 Jan 2024 09:02:30 -0800
-Message-ID: <20240129170019.885253012@linuxfoundation.org>
+Message-ID: <20240129170017.450885022@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Di Shen <di.shen@unisoc.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit e95fa7404716f6e25021e66067271a4ad8eb1486 upstream.
+commit 0dc0f6da3d43da8d2297105663e51ecb01b6f790 upstream.
 
-Commit 0952177f2a1f ("thermal/core/power_allocator: Update once
-cooling devices when temp is low") adds an update flag to avoid
-triggering a thermal event when there is no need, and the thermal
-cdev is updated once when the temperature is low.
+The DP/DM wakeup interrupts are edge triggered and which edge to trigger
+on depends on use-case and whether a Low speed or Full/High speed device
+is connected.
 
-But when the trips are writable, and switch_on_temp is set to be a
-higher value, the cooling device state may not be reset to 0,
-because last_temperature is smaller than switch_on_temp.
-
-For example:
-First:
-switch_on_temp=70 control_temp=85;
-Then userspace change the trip_temp:
-switch_on_temp=45 control_temp=55 cur_temp=54
-
-Then userspace reset the trip_temp:
-switch_on_temp=70 control_temp=85 cur_temp=57 last_temp=54
-
-At this time, the cooling device state should be reset to 0.
-However, because cur_temp(57) < switch_on_temp(70)
-last_temp(54) < switch_on_temp(70)  ---->  update = false,
-update is false, the cooling device state can not be reset.
-
-Using the observation that tz->passive can also be regarded as the
-temperature status, set the update flag to the tz->passive value.
-
-When the temperature drops below switch_on for the first time, the
-states of cooling devices can be reset once, and tz->passive is updated
-to 0. In the next round, because tz->passive is 0, cdev->state will not
-be updated.
-
-By using the tz->passive value as the "update" flag, the issue above
-can be solved, and the cooling devices can be updated only once when the
-temperature is low.
-
-Fixes: 0952177f2a1f ("thermal/core/power_allocator: Update once cooling devices when temp is low")
-Cc: 5.13+ <stable@vger.kernel.org> # 5.13+
-Suggested-by: Wei Wang <wvw@google.com>
-Signed-off-by: Di Shen <di.shen@unisoc.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: b080f53a8f44 ("arm64: dts: qcom: sc8180x: Add remoteprocs, wifi and usb nodes")
+Cc: stable@vger.kernel.org      # 6.5
+Cc: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231120164331.8116-7-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/gov_power_allocator.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sc8180x.dtsi |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/thermal/gov_power_allocator.c
-+++ b/drivers/thermal/gov_power_allocator.c
-@@ -693,7 +693,7 @@ static int power_allocator_throttle(stru
+--- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
+@@ -2562,8 +2562,8 @@
+ 			reg = <0 0x0a6f8800 0 0x400>;
+ 			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 488 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 489 IRQ_TYPE_LEVEL_HIGH>;
++				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
++				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq",
+ 					  "ss_phy_irq",
+ 					  "dm_hs_phy_irq",
+@@ -2636,8 +2636,8 @@
+ 			power-domains = <&gcc USB30_SEC_GDSC>;
+ 			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 490 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 491 IRQ_TYPE_LEVEL_HIGH>;
++				     <GIC_SPI 490 IRQ_TYPE_EDGE_BOTH>,
++				     <GIC_SPI 491 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
  
- 	trip = params->trip_switch_on;
- 	if (trip && tz->temperature < trip->temperature) {
--		update = tz->last_temperature >= trip->temperature;
-+		update = tz->passive;
- 		tz->passive = 0;
- 		reset_pid_controller(params);
- 		allow_maximum_power(tz, update);
 
 
 
