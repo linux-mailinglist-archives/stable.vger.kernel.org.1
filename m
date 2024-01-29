@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-16916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2C1840F07
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A86F84105D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EE971C23DE1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E05951F24617
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FBA15AABD;
-	Mon, 29 Jan 2024 17:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60BC615B979;
+	Mon, 29 Jan 2024 17:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZiyJuN2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HS+qW9li"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8672157E8F;
-	Mon, 29 Jan 2024 17:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF5015B970;
+	Mon, 29 Jan 2024 17:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548374; cv=none; b=ukDcoOzpB6pT9Bjle09vQ+eoKMRDLg9Uyj3w0R1qV7eiyP3iMd8fq6Go6zlZiNpJ/XJWnfFHD8HcSxurGMZ4cf5EB0HGr1WiasXxD6qnnuF/uEAQ5z5vC68w2QC/k5Ay7P5JHuMSJHJc2Gas/skcOGVyLyWh1rLoK+KEjhLgJ0E=
+	t=1706548609; cv=none; b=E/gSlgoO1t2Jz3C2qn9cffwhlE7/yJzKh09eqDHfZCuLXw3LPQkDyeBYat/0ZxzKt59jRYnoSD4gzUJokD9J7mBtjGZMUdXyHJifNChPJNRK3uQpQO+FRCKXoGCBXdPM5+lWVpQqD8ll44SmuHvENDJoKRGoO/kS1y69do07boU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548374; c=relaxed/simple;
-	bh=bu6ITFeX4H3xnn8T4N9IfQ1WlQczDz+JxDyvEH+Rslk=;
+	s=arc-20240116; t=1706548609; c=relaxed/simple;
+	bh=/LJhbeep0+ODPDl2d3t+m8GOLjUNiCvRaqd18JWskjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=csKIlvIDBZcs9Q5s4PDbBFYg0z4pHpEiRnkO8/5pX+YyMhnW3UYH2yNMSIuhdsmi32yxppyZPISz7hEYMSkVNvRtvc61Doto8pVQnl3b+oyeIYn69K6YdqRqQ1V7Dy6HHSBpZCK8Ss8KM5a397YTmalC2yhl9MAvWcRU7/Fu5xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZiyJuN2y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35E3C43390;
-	Mon, 29 Jan 2024 17:12:53 +0000 (UTC)
+	 MIME-Version; b=Qylh325lX06GW7aEc55xDAO5EsoD532OogzXepptj/r2YWi0b3njovK132N+xjJqnd0dZ9h1R8T+9Br68SW8ISzFbaNZKejga0q+h9wMP/iVwwhvxmpf+8YEdQqw3yqNJDHxm32gwgteQQykkstEd+n3yjJE9OyCau+oOi2QpOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HS+qW9li; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D908BC433F1;
+	Mon, 29 Jan 2024 17:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548373;
-	bh=bu6ITFeX4H3xnn8T4N9IfQ1WlQczDz+JxDyvEH+Rslk=;
+	s=korg; t=1706548608;
+	bh=/LJhbeep0+ODPDl2d3t+m8GOLjUNiCvRaqd18JWskjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZiyJuN2ytXgWaCOGSRYCD8OSZDpmySgFkMlluDEMR4qKmhtiDV+GMwe2fHtDGYc8c
-	 irzT6MRX7BdhnZsGVv9uy0hy98eFX03wb05P68rBlHBa+kvVHfMkhcoBg1qXg8dDNj
-	 mJZhYked3ksCZi3ddRjpNuT5ef3JRgbeZ9MVWFyI=
+	b=HS+qW9lirAzXtVH2a0LtFifJ6pw0IsFF/Rx8qBnMlMx+USzGm9Jon7M2B26+LDf4D
+	 s4+Ws39SDQQR162t/vtiUtFJZVswVI7qFs3Et51wrs+iSe5kMCvRe824GBTZ+/i1r5
+	 FORnATgafTWfhqfcGdlav/xTu6B8DVqvvY++kZiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org,
-	nbd@other.debian.org,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH 6.1 114/185] nbd: always initialize struct msghdr completely
+	Ma Jun <Jun.Ma2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 250/331] drm/amdgpu: Fix the null pointer when load rlc firmware
 Date: Mon, 29 Jan 2024 09:05:14 -0800
-Message-ID: <20240129170002.256421367@linuxfoundation.org>
+Message-ID: <20240129170022.199564740@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-commit 78fbb92af27d0982634116c7a31065f24d092826 upstream.
+commit bc03c02cc1991a066b23e69bbcc0f66e8f1f7453 upstream.
 
-syzbot complains that msg->msg_get_inq value can be uninitialized [1]
+If the RLC firmware is invalid because of wrong header size,
+the pointer to the rlc firmware is released in function
+amdgpu_ucode_request. There will be a null pointer error
+in subsequent use. So skip validation to fix it.
 
-struct msghdr got many new fields recently, we should always make
-sure their values is zero by default.
-
-[1]
- BUG: KMSAN: uninit-value in tcp_recvmsg+0x686/0xac0 net/ipv4/tcp.c:2571
-  tcp_recvmsg+0x686/0xac0 net/ipv4/tcp.c:2571
-  inet_recvmsg+0x131/0x580 net/ipv4/af_inet.c:879
-  sock_recvmsg_nosec net/socket.c:1044 [inline]
-  sock_recvmsg+0x12b/0x1e0 net/socket.c:1066
-  __sock_xmit+0x236/0x5c0 drivers/block/nbd.c:538
-  nbd_read_reply drivers/block/nbd.c:732 [inline]
-  recv_work+0x262/0x3100 drivers/block/nbd.c:863
-  process_one_work kernel/workqueue.c:2627 [inline]
-  process_scheduled_works+0x104e/0x1e70 kernel/workqueue.c:2700
-  worker_thread+0xf45/0x1490 kernel/workqueue.c:2781
-  kthread+0x3ed/0x540 kernel/kthread.c:388
-  ret_from_fork+0x66/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
-
-Local variable msg created at:
-  __sock_xmit+0x4c/0x5c0 drivers/block/nbd.c:513
-  nbd_read_reply drivers/block/nbd.c:732 [inline]
-  recv_work+0x262/0x3100 drivers/block/nbd.c:863
-
-CPU: 1 PID: 7465 Comm: kworker/u5:1 Not tainted 6.7.0-rc7-syzkaller-00041-gf016f7547aee #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-Workqueue: nbd5-recv recv_work
-
-Fixes: f94fd25cb0aa ("tcp: pass back data left in socket after receive")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Fixes: 3da9b71563cb ("drm/amd: Use `amdgpu_ucode_*` helpers for GFX10")
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Cc: Josef Bacik <josef@toxicpanda.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org
-Cc: nbd@other.debian.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240112132657.647112-1-edumazet@google.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/nbd.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c |   15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -494,7 +494,7 @@ static int __sock_xmit(struct nbd_device
- 		       struct iov_iter *iter, int msg_flags, int *sent)
- {
- 	int result;
--	struct msghdr msg;
-+	struct msghdr msg = { };
- 	unsigned int noreclaim_flag;
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -3989,16 +3989,13 @@ static int gfx_v10_0_init_microcode(stru
  
- 	if (unlikely(!sock)) {
-@@ -509,10 +509,6 @@ static int __sock_xmit(struct nbd_device
- 	noreclaim_flag = memalloc_noreclaim_save();
- 	do {
- 		sock->sk->sk_allocation = GFP_NOIO | __GFP_MEMALLOC;
--		msg.msg_name = NULL;
--		msg.msg_namelen = 0;
--		msg.msg_control = NULL;
--		msg.msg_controllen = 0;
- 		msg.msg_flags = msg_flags | MSG_NOSIGNAL;
- 
- 		if (send)
+ 	if (!amdgpu_sriov_vf(adev)) {
+ 		snprintf(fw_name, sizeof(fw_name), "amdgpu/%s_rlc.bin", ucode_prefix);
+-		err = amdgpu_ucode_request(adev, &adev->gfx.rlc_fw, fw_name);
+-		/* don't check this.  There are apparently firmwares in the wild with
+-		 * incorrect size in the header
+-		 */
+-		if (err == -ENODEV)
+-			goto out;
++		err = request_firmware(&adev->gfx.rlc_fw, fw_name, adev->dev);
+ 		if (err)
+-			dev_dbg(adev->dev,
+-				"gfx10: amdgpu_ucode_request() failed \"%s\"\n",
+-				fw_name);
++			goto out;
++
++		/* don't validate this firmware. There are apparently firmwares
++		 * in the wild with incorrect size in the header
++		 */
+ 		rlc_hdr = (const struct rlc_firmware_header_v2_0 *)adev->gfx.rlc_fw->data;
+ 		version_major = le16_to_cpu(rlc_hdr->header.header_version_major);
+ 		version_minor = le16_to_cpu(rlc_hdr->header.header_version_minor);
 
 
 
