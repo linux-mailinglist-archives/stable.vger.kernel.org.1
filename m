@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-16514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90EEE840D48
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:09:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D73840F60
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3B9B1C234F1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DB4F1C22F48
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A736015AACF;
-	Mon, 29 Jan 2024 17:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F1515B0EF;
+	Mon, 29 Jan 2024 17:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rTgCmU5j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0MfO0vV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6471C15AACD;
-	Mon, 29 Jan 2024 17:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BC2C15DBB0;
+	Mon, 29 Jan 2024 17:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548076; cv=none; b=Lv2vWA0wkii4qvz1p22FOAKre66WKRf7BlfYbi0QhKS6JM7IEX7lnFsyS+8nXec9Gq9Fg6VVOomLqkC+AzFyoU8j80ZiHQH+NSBhxCFe2Alzrd9TLKpzeLzOf3L2ZlANQol4q2PW0iLZEJ+5lkSClNmLxI7LKwoAsnpnISZJ53A=
+	t=1706548432; cv=none; b=FG/JyXiZHY+hzRs9wwTiLbNr7ca9Fe0vXoraQtm7LYyH6u6Q9UdBUWxogj//ugLhltdvmWkyGVRNfU0po096JfuS/iSIyoXQc2fuXIp+WsxlhZvxWl+xBFNBMwiS7ys1Z5kf/GgqQVPIu4OZ73uvfOkqFfROaL4RRdW3hpWJ1/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548076; c=relaxed/simple;
-	bh=R+JNocAtCOz2yX7F83lEbI67+dlwZ1s/fpuZSD9Hjbk=;
+	s=arc-20240116; t=1706548432; c=relaxed/simple;
+	bh=NpA3x1lf3ir7T3W9gJm75dnGAqDooGZPqU8NVKivijQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vo8B+l6wwvklKmQWw6JqGF37RycdmKk4EsDDPqjcxVfcM69m1YTnmW69P8+qvScJB7OqyXpCU49wMzyDOQF3cN92+Xx6BvGAqMSGY9uCLRsebEt47F73GFKBDCEsnmgZ/XygxMFqdWpE1ChGDKfnWaatnIVd5br26ro1aqKLWQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rTgCmU5j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB59C43390;
-	Mon, 29 Jan 2024 17:07:56 +0000 (UTC)
+	 MIME-Version; b=aPLJH7+C7s3J8C302HGC+HBI5lqyxDVa2mydQbZDgh+yb056JekUyJLP8tghkWCbpSll0IXO4QoKUG/9KVsfvu2TW49/p6IgpH0el3C8so0RzN4a8cJ4LX1Zgf7Kn1RIyixpJY/GxoM6/XAXt9cSX83870wYpJJvEzobU4PjoWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0MfO0vV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618AAC433C7;
+	Mon, 29 Jan 2024 17:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548076;
-	bh=R+JNocAtCOz2yX7F83lEbI67+dlwZ1s/fpuZSD9Hjbk=;
+	s=korg; t=1706548432;
+	bh=NpA3x1lf3ir7T3W9gJm75dnGAqDooGZPqU8NVKivijQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rTgCmU5jPyThANuUTOzCXyZC7NivOKJBVWlv3qkJ+F1rNkVRtM/V4Ycb4R+Macy8t
-	 O2axH+PFUY3EX1WQ5eeuPRLpGReWY2jQOXV9N+31w/0YxTffxyInorIIg/fZQ7CkHC
-	 LItAHsXOQrtWTxb7ahLU87sLwJcWVtobALE7Zgb0=
+	b=s0MfO0vVXw2hT3q+3IfM/HAiCkFNtkYwp3ZebPbqKVRiBxY5CfAROVauqNL8p9La0
+	 myf+YGN68E87Qfe6b2sLZFpflRQpaDNIN5kTHUfimV2KBG3L5FW9bpnwBmVzitNjIT
+	 97nm+4pFVH6T42zYUg/DANq2z6BWU8nUkl9+apz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Locke <kevin@kevinlocke.name>,
-	Niklas Cassel <cassel@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 060/346] scsi: core: Kick the requeue list after inserting when flushing
+Subject: [PATCH 6.6 027/331] cifs: handle servers that still advertise multichannel after disabling
 Date: Mon, 29 Jan 2024 09:01:31 -0800
-Message-ID: <20240129170018.161681059@linuxfoundation.org>
+Message-ID: <20240129170015.754571368@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,99 +62,222 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 6df0e077d76bd144c533b61d6182676aae6b0a85 ]
+[ Upstream commit f591062bdbf4742b7f1622173017f19e927057b0 ]
 
-When libata calls ata_link_abort() to abort all ata queued commands, it
-calls blk_abort_request() on the SCSI command representing each QC.
+Some servers like Azure SMB servers always advertise multichannel
+capability in server capabilities list. Such servers return error
+STATUS_NOT_IMPLEMENTED for ioctl calls to query server interfaces,
+and expect clients to consider that as a sign that they do not support
+multichannel.
 
-This causes scsi_timeout() to be called, which calls scsi_eh_scmd_add() for
-each SCSI command.
+We already handled this at mount time. Soon after the tree connect,
+we query server interfaces. And when server returned STATUS_NOT_IMPLEMENTED,
+we kept interface list as empty. When cifs_try_adding_channels gets
+called, it would not find any interfaces, so will not add channels.
 
-scsi_eh_scmd_add() sets the SCSI host to state recovery, and then adds the
-command to shost->eh_cmd_q.
+For the case where an active multichannel mount exists, and multichannel
+is disabled by such a server, this change will now allow the client
+to disable secondary channels on the mount. It will check the return
+status of query server interfaces call soon after a tree reconnect.
+If the return status is EOPNOTSUPP, then instead of the check to add
+more channels, we'll disable the secondary channels instead.
 
-This will wake up the SCSI EH, and eventually the libata EH strategy
-handler will be called, which calls scsi_eh_flush_done_q() to either flush
-retry or flush finish each failed command.
+For better code reuse, this change also moves the common code for
+disabling multichannel to a helper function.
 
-The commands that are flush retried by scsi_eh_flush_done_q() are done so
-using scsi_queue_insert().
-
-Before commit 8b566edbdbfb ("scsi: core: Only kick the requeue list if
-necessary"), __scsi_queue_insert() called blk_mq_requeue_request() with the
-second argument set to true, indicating that it should always kick/run the
-requeue list after inserting.
-
-After commit 8b566edbdbfb ("scsi: core: Only kick the requeue list if
-necessary"), __scsi_queue_insert() does not kick/run the requeue list after
-inserting, if the current SCSI host state is recovery (which is the case in
-the libata example above).
-
-This optimization is probably fine in most cases, as I can only assume that
-most often someone will eventually kick/run the queues.
-
-However, that is not the case for scsi_eh_flush_done_q(), where we can see
-that the request gets inserted to the requeue list, but the queue is never
-started after the request has been inserted, leading to the block layer
-waiting for the completion of command that never gets to run.
-
-Since scsi_eh_flush_done_q() is called by SCSI EH context, the SCSI host
-state is most likely always in recovery when this function is called.
-
-Thus, let scsi_eh_flush_done_q() explicitly kick the requeue list after
-inserting a flush retry command, so that scsi_eh_flush_done_q() keeps the
-same behavior as before commit 8b566edbdbfb ("scsi: core: Only kick the
-requeue list if necessary").
-
-Simple reproducer for the libata example above:
-$ hdparm -Y /dev/sda
-$ echo 1 > /sys/class/scsi_device/0\:0\:0\:0/device/delete
-
-Fixes: 8b566edbdbfb ("scsi: core: Only kick the requeue list if necessary")
-Reported-by: Kevin Locke <kevin@kevinlocke.name>
-Closes: https://lore.kernel.org/linux-scsi/ZZw3Th70wUUvCiCY@kevinlocke.name/
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Link: https://lore.kernel.org/r/20240111120533.3612509-1-cassel@kernel.org
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: 78e727e58e54 ("cifs: update iface_last_update on each query-and-update")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_error.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/smb/client/smb2ops.c |   8 +--
+ fs/smb/client/smb2pdu.c | 107 +++++++++++++++++++++++++---------------
+ 2 files changed, 69 insertions(+), 46 deletions(-)
 
-diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
-index 1223d34c04da..d983f4a0e9f1 100644
---- a/drivers/scsi/scsi_error.c
-+++ b/drivers/scsi/scsi_error.c
-@@ -2196,15 +2196,18 @@ void scsi_eh_flush_done_q(struct list_head *done_q)
- 	struct scsi_cmnd *scmd, *next;
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 0604696f59c1..8caf2cefc8a7 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -614,7 +614,7 @@ parse_server_interfaces(struct network_interface_info_ioctl_rsp *buf,
+ 				 "multichannel not available\n"
+ 				 "Empty network interface list returned by server %s\n",
+ 				 ses->server->hostname);
+-		rc = -EINVAL;
++		rc = -EOPNOTSUPP;
+ 		goto out;
+ 	}
  
- 	list_for_each_entry_safe(scmd, next, done_q, eh_entry) {
-+		struct scsi_device *sdev = scmd->device;
+@@ -734,12 +734,6 @@ parse_server_interfaces(struct network_interface_info_ioctl_rsp *buf,
+ 	if ((bytes_left > 8) || p->Next)
+ 		cifs_dbg(VFS, "%s: incomplete interface info\n", __func__);
+ 
+-
+-	if (!ses->iface_count) {
+-		rc = -EINVAL;
+-		goto out;
+-	}
+-
+ out:
+ 	/*
+ 	 * Go through the list again and put the inactive entries
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index a3995c6dc1ad..d846c238b7dd 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -156,6 +156,57 @@ smb2_hdr_assemble(struct smb2_hdr *shdr, __le16 smb2_cmd,
+ 	return;
+ }
+ 
++/* helper function for code reuse */
++static int
++cifs_chan_skip_or_disable(struct cifs_ses *ses,
++			  struct TCP_Server_Info *server,
++			  bool from_reconnect)
++{
++	struct TCP_Server_Info *pserver;
++	unsigned int chan_index;
 +
- 		list_del_init(&scmd->eh_entry);
--		if (scsi_device_online(scmd->device) &&
--		    !scsi_noretry_cmd(scmd) && scsi_cmd_retry_allowed(scmd) &&
--			scsi_eh_should_retry_cmd(scmd)) {
-+		if (scsi_device_online(sdev) && !scsi_noretry_cmd(scmd) &&
-+		    scsi_cmd_retry_allowed(scmd) &&
-+		    scsi_eh_should_retry_cmd(scmd)) {
- 			SCSI_LOG_ERROR_RECOVERY(3,
- 				scmd_printk(KERN_INFO, scmd,
- 					     "%s: flush retry cmd\n",
- 					     current->comm));
- 				scsi_queue_insert(scmd, SCSI_MLQUEUE_EH_RETRY);
-+				blk_mq_kick_requeue_list(sdev->request_queue);
- 		} else {
- 			/*
- 			 * If just we got sense for the device (called
++	if (SERVER_IS_CHAN(server)) {
++		cifs_dbg(VFS,
++			"server %s does not support multichannel anymore. Skip secondary channel\n",
++			 ses->server->hostname);
++
++		spin_lock(&ses->chan_lock);
++		chan_index = cifs_ses_get_chan_index(ses, server);
++		if (chan_index == CIFS_INVAL_CHAN_INDEX) {
++			spin_unlock(&ses->chan_lock);
++			goto skip_terminate;
++		}
++
++		ses->chans[chan_index].server = NULL;
++		spin_unlock(&ses->chan_lock);
++
++		/*
++		 * the above reference of server by channel
++		 * needs to be dropped without holding chan_lock
++		 * as cifs_put_tcp_session takes a higher lock
++		 * i.e. cifs_tcp_ses_lock
++		 */
++		cifs_put_tcp_session(server, from_reconnect);
++
++		server->terminate = true;
++		cifs_signal_cifsd_for_reconnect(server, false);
++
++		/* mark primary server as needing reconnect */
++		pserver = server->primary_server;
++		cifs_signal_cifsd_for_reconnect(pserver, false);
++skip_terminate:
++		mutex_unlock(&ses->session_mutex);
++		return -EHOSTDOWN;
++	}
++
++	cifs_server_dbg(VFS,
++		"server does not support multichannel anymore. Disable all other channels\n");
++	cifs_disable_secondary_channels(ses);
++
++
++	return 0;
++}
++
+ static int
+ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 	       struct TCP_Server_Info *server, bool from_reconnect)
+@@ -164,8 +215,6 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 	struct nls_table *nls_codepage = NULL;
+ 	struct cifs_ses *ses;
+ 	int xid;
+-	struct TCP_Server_Info *pserver;
+-	unsigned int chan_index;
+ 
+ 	/*
+ 	 * SMB2s NegProt, SessSetup, Logoff do not have tcon yet so
+@@ -310,44 +359,11 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 		 */
+ 		if (ses->chan_count > 1 &&
+ 		    !(server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
+-			if (SERVER_IS_CHAN(server)) {
+-				cifs_dbg(VFS, "server %s does not support " \
+-					 "multichannel anymore. skipping secondary channel\n",
+-					 ses->server->hostname);
+-
+-				spin_lock(&ses->chan_lock);
+-				chan_index = cifs_ses_get_chan_index(ses, server);
+-				if (chan_index == CIFS_INVAL_CHAN_INDEX) {
+-					spin_unlock(&ses->chan_lock);
+-					goto skip_terminate;
+-				}
+-
+-				ses->chans[chan_index].server = NULL;
+-				spin_unlock(&ses->chan_lock);
+-
+-				/*
+-				 * the above reference of server by channel
+-				 * needs to be dropped without holding chan_lock
+-				 * as cifs_put_tcp_session takes a higher lock
+-				 * i.e. cifs_tcp_ses_lock
+-				 */
+-				cifs_put_tcp_session(server, from_reconnect);
+-
+-				server->terminate = true;
+-				cifs_signal_cifsd_for_reconnect(server, false);
+-
+-				/* mark primary server as needing reconnect */
+-				pserver = server->primary_server;
+-				cifs_signal_cifsd_for_reconnect(pserver, false);
+-
+-skip_terminate:
++			rc = cifs_chan_skip_or_disable(ses, server,
++						       from_reconnect);
++			if (rc) {
+ 				mutex_unlock(&ses->session_mutex);
+-				rc = -EHOSTDOWN;
+ 				goto out;
+-			} else {
+-				cifs_server_dbg(VFS, "does not support " \
+-					 "multichannel anymore. disabling all other channels\n");
+-				cifs_disable_secondary_channels(ses);
+ 			}
+ 		}
+ 
+@@ -395,11 +411,23 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 		rc = SMB3_request_interfaces(xid, tcon, false);
+ 		free_xid(xid);
+ 
+-		if (rc)
++		if (rc == -EOPNOTSUPP) {
++			/*
++			 * some servers like Azure SMB server do not advertise
++			 * that multichannel has been disabled with server
++			 * capabilities, rather return STATUS_NOT_IMPLEMENTED.
++			 * treat this as server not supporting multichannel
++			 */
++
++			rc = cifs_chan_skip_or_disable(ses, server,
++						       from_reconnect);
++			goto skip_add_channels;
++		} else if (rc)
+ 			cifs_dbg(FYI, "%s: failed to query server interfaces: %d\n",
+ 				 __func__, rc);
+ 
+ 		if (ses->chan_max > ses->chan_count &&
++		    ses->iface_count &&
+ 		    !SERVER_IS_CHAN(server)) {
+ 			if (ses->chan_count == 1)
+ 				cifs_server_dbg(VFS, "supports multichannel now\n");
+@@ -409,6 +437,7 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 	} else {
+ 		mutex_unlock(&ses->session_mutex);
+ 	}
++skip_add_channels:
+ 
+ 	if (smb2_command != SMB2_INTERNAL_CMD)
+ 		if (mod_delayed_work(cifsiod_wq, &server->reconnect, 0))
 -- 
 2.43.0
 
