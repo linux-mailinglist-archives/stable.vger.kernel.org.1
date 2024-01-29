@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-17209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34ECF841042
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F39A840ED3
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9B4B1F240A1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 344D61F26D1E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37230755ED;
-	Mon, 29 Jan 2024 17:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 091AE15AAB3;
+	Mon, 29 Jan 2024 17:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJD0i1wZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ja5sING+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96BE755E3;
-	Mon, 29 Jan 2024 17:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D4C161B4C;
+	Mon, 29 Jan 2024 17:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548591; cv=none; b=if9ueo68Bh8Kgt/yYmHMVyyi/Gb1EGSHMUdn/dPAAZ+X2sJuZeJWOw0XlaEzbUU2d/oULkjwH1c7pdW+MAp7Gx4CTQdgxThlQbFVAqtIbqny4RaXMVWTEc3c6dQNIyijuQUUEb7wlLRCSxI+VjrK27XzA/mADMYSJPA891wX3A4=
+	t=1706548352; cv=none; b=hrdDBAVUvcjiOYaRkFXJ2u1pH0iHPCLyMGWjenbU+3h7dE1oDfGV53kJkG5JdzTnLwlf1Y3eLcY53y0d5LjZf09hphyfRFq4fdB3d2UzLDe0g9AVuO189Jq3s1u4rAf/tS7W/C6/UhIkTKDuAEvyKQmUnNDnEa8we1VlZiiczwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548591; c=relaxed/simple;
-	bh=CJgNPEAX1+NOcvuGLMZv1saz72Wrt4JkEumEv+Fcyeg=;
+	s=arc-20240116; t=1706548352; c=relaxed/simple;
+	bh=a4t0NzY4EK+ctzOABWuk+haaWbx6eIN6fSdVxUsdifQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ltsUiPkieZmVO0/rNwmKqr0NOo+Z53hYob89H/KzSsBl/CU273OtWd4msXCimpVeAtMBstSU7hrifZyuKw0YpXNJiORw4ydC2WNwQMEYekJuIah4xfK+BBk5C2dEiTaIACjBdlRa4eRtd5mHh4OIOYf55PRYgQEguVbis8XZqnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJD0i1wZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8F1C433F1;
-	Mon, 29 Jan 2024 17:16:30 +0000 (UTC)
+	 MIME-Version; b=InLuIxy/y7jqK+8+Wc0Cdz/Eyv49nuuzwIWh7mnTpE6jl3RrKpuqW8jioDVZDArmhOyU74o6csZKvcda6W3O/Gw4fgvSleURT88ZdbD2Qq1Cb41K3vgDWlidsvunlTzjMyBVgUhhr1S5/yS0f85b/9sJGWcClP0ufVq8CEfIv4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ja5sING+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED21C433C7;
+	Mon, 29 Jan 2024 17:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548590;
-	bh=CJgNPEAX1+NOcvuGLMZv1saz72Wrt4JkEumEv+Fcyeg=;
+	s=korg; t=1706548352;
+	bh=a4t0NzY4EK+ctzOABWuk+haaWbx6eIN6fSdVxUsdifQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JJD0i1wZwWAg9GOa31JV+pI6pWtl6QNfVm2LZ0v3LXXlAzYSOlUkLOhTJlL+w/73m
-	 T5daxTbhXCdBNEJotcvQQacE+ExuOXFan0R/FvDnb/bh51c/xM1LL9mTkKhPsyd/KW
-	 AydUe0oQ2UfqWs+f8JXOG/nJByp+1m8u4W7aZukg=
+	b=Ja5sING+2fgpYuWm+3OUQ1j2q0kRYa2mA+Lniw4bQD6nwzW2hbreStRZbLwy63aNv
+	 9nagEgw6KMNxgShCokn1bjSgQZTRCP6ZoZI2DYjREu1NGclDuH24ejZep6t7LM3pmx
+	 XI9knDQadV7POaR0ts3VmrDPk53/wO//WqMN5XqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 224/331] i40e: update xdp_rxq_info::frag_size for ZC enabled Rx queue
+Subject: [PATCH 6.1 088/185] net/rds: Fix UBSAN: array-index-out-of-bounds in rds_cmsg_recv
 Date: Mon, 29 Jan 2024 09:04:48 -0800
-Message-ID: <20240129170021.426036863@linuxfoundation.org>
+Message-ID: <20240129170001.430823134@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Sharath Srinivasan <sharath.srinivasan@oracle.com>
 
-[ Upstream commit 0cbb08707c932b3f004bc1a8ec6200ef572c1f5f ]
+[ Upstream commit 13e788deb7348cc88df34bed736c3b3b9927ea52 ]
 
-Now that i40e driver correctly sets up frag_size in xdp_rxq_info, let us
-make it work for ZC multi-buffer as well. i40e_ring::rx_buf_len for ZC
-is being set via xsk_pool_get_rx_frame_size() and this needs to be
-propagated up to xdp_rxq_info.
+Syzcaller UBSAN crash occurs in rds_cmsg_recv(),
+which reads inc->i_rx_lat_trace[j + 1] with index 4 (3 + 1),
+but with array size of 4 (RDS_RX_MAX_TRACES).
+Here 'j' is assigned from rs->rs_rx_trace[i] and in-turn from
+trace.rx_trace_pos[i] in rds_recv_track_latency(),
+with both arrays sized 3 (RDS_MSG_RX_DGRAM_TRACE_MAX). So fix the
+off-by-one bounds check in rds_recv_track_latency() to prevent
+a potential crash in rds_cmsg_recv().
 
-Fixes: 1c9ba9c14658 ("i40e: xsk: add RX multi-buffer support")
-Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/r/20240124191602.566724-12-maciej.fijalkowski@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Found by syzcaller:
+=================================================================
+UBSAN: array-index-out-of-bounds in net/rds/recv.c:585:39
+index 4 is out of range for type 'u64 [4]'
+CPU: 1 PID: 8058 Comm: syz-executor228 Not tainted 6.6.0-gd2f51b3516da #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+BIOS 1.15.0-1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x136/0x150 lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:217 [inline]
+ __ubsan_handle_out_of_bounds+0xd5/0x130 lib/ubsan.c:348
+ rds_cmsg_recv+0x60d/0x700 net/rds/recv.c:585
+ rds_recvmsg+0x3fb/0x1610 net/rds/recv.c:716
+ sock_recvmsg_nosec net/socket.c:1044 [inline]
+ sock_recvmsg+0xe2/0x160 net/socket.c:1066
+ __sys_recvfrom+0x1b6/0x2f0 net/socket.c:2246
+ __do_sys_recvfrom net/socket.c:2264 [inline]
+ __se_sys_recvfrom net/socket.c:2260 [inline]
+ __x64_sys_recvfrom+0xe0/0x1b0 net/socket.c:2260
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x40/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+==================================================================
+
+Fixes: 3289025aedc0 ("RDS: add receive message trace used by application")
+Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Closes: https://lore.kernel.org/linux-rdma/CALGdzuoVdq-wtQ4Az9iottBqC5cv9ZhcE5q8N7LfYFvkRsOVcw@mail.gmail.com/
+Signed-off-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/rds/af_rds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index aadca7b3443c..aad39ebff4ab 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -3601,7 +3601,14 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
+diff --git a/net/rds/af_rds.c b/net/rds/af_rds.c
+index 3ff6995244e5..d107f7605db4 100644
+--- a/net/rds/af_rds.c
++++ b/net/rds/af_rds.c
+@@ -419,7 +419,7 @@ static int rds_recv_track_latency(struct rds_sock *rs, sockptr_t optval,
  
- 	ring->xsk_pool = i40e_xsk_pool(ring);
- 	if (ring->xsk_pool) {
-+		xdp_rxq_info_unreg(&ring->xdp_rxq);
- 		ring->rx_buf_len = xsk_pool_get_rx_frame_size(ring->xsk_pool);
-+		err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
-+					 ring->queue_index,
-+					 ring->q_vector->napi.napi_id,
-+					 ring->rx_buf_len);
-+		if (err)
-+			return err;
- 		err = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
- 						 MEM_TYPE_XSK_BUFF_POOL,
- 						 NULL);
+ 	rs->rs_rx_traces = trace.rx_traces;
+ 	for (i = 0; i < rs->rs_rx_traces; i++) {
+-		if (trace.rx_trace_pos[i] > RDS_MSG_RX_DGRAM_TRACE_MAX) {
++		if (trace.rx_trace_pos[i] >= RDS_MSG_RX_DGRAM_TRACE_MAX) {
+ 			rs->rs_rx_traces = 0;
+ 			return -EFAULT;
+ 		}
 -- 
 2.43.0
 
