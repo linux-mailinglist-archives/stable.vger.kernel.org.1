@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-16889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73309840ED7
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF0B841082
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16960B23044
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87182286BFF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710A815CD63;
-	Mon, 29 Jan 2024 17:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D5515B987;
+	Mon, 29 Jan 2024 17:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guR+4ylE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0KosvWFI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6AF161B54;
-	Mon, 29 Jan 2024 17:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A6715A493;
+	Mon, 29 Jan 2024 17:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548354; cv=none; b=TByEVdZlZ6BB9RZSlKo7pIRRo5qpPt4kQXG2+h18nRyfY15v19TtagUDk6ypgX10nUBj6dUFH884nPYmSgrOA0MzYzn42Pi3VkeE7eVmNY2g71+xFPvh5Bw1OCgezfvQ5BpKaHDkkEmf7oSgXdZElP5DsNcDS7HjKileFfQFgFo=
+	t=1706548635; cv=none; b=V5ejCxV2RnUyMdZwxhPTqNvnrl9NFH8mmsVreE4SfzHUch1ZR8rIGO3Ly5CHIV+TBhREVg7WZOdBZE21g7SxlNPD3trq3pJgz51vnUe9S2CYiipYjab6gs4QG4ncWEbBOSJG3XL9HMk8sM/aETzKfsUGO9zemaXEiOwtO5QZxAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548354; c=relaxed/simple;
-	bh=jItDdHDuYmcp6LcWaQXCyDiQl6Rsg0y0LzPLlUUI/xE=;
+	s=arc-20240116; t=1706548635; c=relaxed/simple;
+	bh=Xf6ns8vRCpjhGi24XbVeybunRxrVYseBySXW2rNEhFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lmGDwwDylZ7aYt04u05dW3rmnJ7ZpYATctYiTEeTYYIqx5tvYyZ7z7x8pv4KwsfUXKiGNkzfW31KWFeNKHGahI0JxAOw4IV8dmCi3U0PpKUuRWNK8qKU4BQJUWyhXsXvXsrhIJzmLBIjwv4yVVNeyjFIIU+XlmaagG9UMsDOKLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guR+4ylE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E948FC433F1;
-	Mon, 29 Jan 2024 17:12:33 +0000 (UTC)
+	 MIME-Version; b=A/waLcyqT1ohFZUQaq/9QcJ7VlmIqJYyGZAYH+09jUovV2BiSNhnxhgYH2YYvffKntIOx4Wn5du7+qVEqP5h12wj0pG2TjA7YtNjvUgCuyQT1VQh3yMKr4F0+7A5+hi2CPg6bREuMo+9HNcCNjkZplJ+a6ASFtFo+HeYodUE0b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0KosvWFI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A843C433C7;
+	Mon, 29 Jan 2024 17:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548354;
-	bh=jItDdHDuYmcp6LcWaQXCyDiQl6Rsg0y0LzPLlUUI/xE=;
+	s=korg; t=1706548635;
+	bh=Xf6ns8vRCpjhGi24XbVeybunRxrVYseBySXW2rNEhFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=guR+4ylEfG0Ls/asTAIrfCs5ccRPknOAqkH3TlGCyru39lxgTUDVOnlT3xXBvX9op
-	 TIBnW0l48n2CxbVrEjNyrPgS/+YvN+3ZvFm72VZSoJHUTa/zECt1afasD5XxQdCTsa
-	 9GuaPZJw2MUk+wXDgYr3uzlZ2cTZrTQ0R509UQE0=
+	b=0KosvWFI4iWMQVCyIzaGXMx0EkdP8FvB4qSdam0fpG7UfgdXyIjY11z/xbIXGS51v
+	 QdF2aB6xqyytvjCjyBSAGJM5etIKgmDIxSC44E7qcIEBcHNka3YIm5Z3l1ov+7Zg3m
+	 Bkheag8R+raEoCSgebC0HMFiuSibEqqPUy9RLuJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xi Ruoyao <xry111@xry111.site>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.7 342/346] mips: Call lose_fpu(0) before initializing fcr31 in mips_set_personality_nan
-Date: Mon, 29 Jan 2024 09:06:13 -0800
-Message-ID: <20240129170026.566969298@linuxfoundation.org>
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 310/331] firmware: arm_scmi: Use xa_insert() to store opps
+Date: Mon, 29 Jan 2024 09:06:14 -0800
+Message-ID: <20240129170023.950516817@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xi Ruoyao <xry111@xry111.site>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-commit 59be5c35850171e307ca5d3d703ee9ff4096b948 upstream.
+[ Upstream commit e8ef4bbe39b9576a73f104f6af743fb9c7b624ba ]
 
-If we still own the FPU after initializing fcr31, when we are preempted
-the dirty value in the FPU will be read out and stored into fcr31,
-clobbering our setting.  This can cause an improper floating-point
-environment after execve().  For example:
+When storing opps by level or index use xa_insert() instead of xa_store()
+and add error-checking to spot bad duplicates indexes possibly wrongly
+provided by the platform firmware.
 
-    zsh% cat measure.c
-    #include <fenv.h>
-    int main() { return fetestexcept(FE_INEXACT); }
-    zsh% cc measure.c -o measure -lm
-    zsh% echo $((1.0/3)) # raising FE_INEXACT
-    0.33333333333333331
-    zsh% while ./measure; do ; done
-    (stopped in seconds)
-
-Call lose_fpu(0) before setting fcr31 to prevent this.
-
-Closes: https://lore.kernel.org/linux-mips/7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site/
-Fixes: 9b26616c8d9d ("MIPS: Respect the ISA level in FCSR handling")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 31c7c1397a33 ("firmware: arm_scmi: Add v3.2 perf level indexing mode support")
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Link: https://lore.kernel.org/r/20240108185050.1628687-1-cristian.marussi@arm.com
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/elf.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/firmware/arm_scmi/perf.c | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
---- a/arch/mips/kernel/elf.c
-+++ b/arch/mips/kernel/elf.c
-@@ -11,6 +11,7 @@
+diff --git a/drivers/firmware/arm_scmi/perf.c b/drivers/firmware/arm_scmi/perf.c
+index e887fd169043..dd344506b0a3 100644
+--- a/drivers/firmware/arm_scmi/perf.c
++++ b/drivers/firmware/arm_scmi/perf.c
+@@ -347,8 +347,8 @@ process_response_opp(struct scmi_opp *opp, unsigned int loop_idx,
+ }
  
- #include <asm/cpu-features.h>
- #include <asm/cpu-info.h>
-+#include <asm/fpu.h>
- 
- #ifdef CONFIG_MIPS_FP_SUPPORT
- 
-@@ -309,6 +310,11 @@ void mips_set_personality_nan(struct arc
- 	struct cpuinfo_mips *c = &boot_cpu_data;
- 	struct task_struct *t = current;
- 
-+	/* Do this early so t->thread.fpu.fcr31 won't be clobbered in case
-+	 * we are preempted before the lose_fpu(0) in start_thread.
-+	 */
-+	lose_fpu(0);
+ static inline void
+-process_response_opp_v4(struct perf_dom_info *dom, struct scmi_opp *opp,
+-			unsigned int loop_idx,
++process_response_opp_v4(struct device *dev, struct perf_dom_info *dom,
++			struct scmi_opp *opp, unsigned int loop_idx,
+ 			const struct scmi_msg_resp_perf_describe_levels_v4 *r)
+ {
+ 	opp->perf = le32_to_cpu(r->opp[loop_idx].perf_val);
+@@ -359,10 +359,23 @@ process_response_opp_v4(struct perf_dom_info *dom, struct scmi_opp *opp,
+ 	/* Note that PERF v4 reports always five 32-bit words */
+ 	opp->indicative_freq = le32_to_cpu(r->opp[loop_idx].indicative_freq);
+ 	if (dom->level_indexing_mode) {
++		int ret;
 +
- 	t->thread.fpu.fcr31 = c->fpu_csr31;
- 	switch (state->nan_2008) {
- 	case 0:
+ 		opp->level_index = le32_to_cpu(r->opp[loop_idx].level_index);
+ 
+-		xa_store(&dom->opps_by_idx, opp->level_index, opp, GFP_KERNEL);
+-		xa_store(&dom->opps_by_lvl, opp->perf, opp, GFP_KERNEL);
++		ret = xa_insert(&dom->opps_by_idx, opp->level_index, opp,
++				GFP_KERNEL);
++		if (ret)
++			dev_warn(dev,
++				 "Failed to add opps_by_idx at %d - ret:%d\n",
++				 opp->level_index, ret);
++
++		ret = xa_insert(&dom->opps_by_lvl, opp->perf, opp, GFP_KERNEL);
++		if (ret)
++			dev_warn(dev,
++				 "Failed to add opps_by_lvl at %d - ret:%d\n",
++				 opp->perf, ret);
++
+ 		hash_add(dom->opps_by_freq, &opp->hash, opp->indicative_freq);
+ 	}
+ }
+@@ -379,7 +392,7 @@ iter_perf_levels_process_response(const struct scmi_protocol_handle *ph,
+ 	if (PROTOCOL_REV_MAJOR(p->version) <= 0x3)
+ 		process_response_opp(opp, st->loop_idx, response);
+ 	else
+-		process_response_opp_v4(p->perf_dom, opp, st->loop_idx,
++		process_response_opp_v4(ph->dev, p->perf_dom, opp, st->loop_idx,
+ 					response);
+ 	p->perf_dom->opp_count++;
+ 
+-- 
+2.43.0
+
 
 
 
