@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-17063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AD18840FAE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2956A840D7A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D13D1C23025
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CAF51C235E4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2916FE0E;
-	Mon, 29 Jan 2024 17:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09AE215A488;
+	Mon, 29 Jan 2024 17:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZJFv//o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPwCKIbI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6286FE0B;
-	Mon, 29 Jan 2024 17:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6FF15A486;
+	Mon, 29 Jan 2024 17:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548482; cv=none; b=mXAwqw5CQdwlvSqdO5Ve5T7cdC8FIBcsVr4YXqu+sBciX/CfiIh2k3Xy0G7VF1ReF8fSX8LNWFKFCst43B2AWazqcqiU+9vvYnRnFGpEG4qbSJjyGYcEtYAL1weUac4mKuzJTlhy8WSqFv/yPmU3p4WAl8vshj6ibONT0Z9B1aw=
+	t=1706548112; cv=none; b=N117ceCduqwhtqQW7+f4s3dHW4f8Ucf4EWTlyuCb3S2+FJDBCb+q+llL1bbk0FoE61BCLX+iL3tFOEkUu9BbAyh2p3/k1BbFvZfX40OamlJv9zVPOrAqIs8iIxon3Gw8g+4LkBqZwXGkb3tEh5nZnEGPccH5Ua2SXYCGm9aIyD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548482; c=relaxed/simple;
-	bh=7/zTl4Dh0Hg3DvFu3e/3xrDv6eiv4I4kpPiDIBouxRM=;
+	s=arc-20240116; t=1706548112; c=relaxed/simple;
+	bh=v7QbMVmwAntzizzXso422Yj5ZOxTG8SRFEXL8gdO6nI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jiNTzp5YmhrsINinffBfDGExG/zsBYo/WxpwZAtx3nkU3Pv63sdhE5xHR/spdkznDo1X3Y6WUg5yp1PSFhE77pf/+cBZIjcLqDsrKJ84RjKccLzL7SSWjH8YAeuKS1N9o8ocrBatqppXg0UW0jXmnBCePfeSX7yFjEZXi/OdsVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZJFv//o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588D8C43394;
-	Mon, 29 Jan 2024 17:14:42 +0000 (UTC)
+	 MIME-Version; b=VvPZhZKd86SGBc85VwckiAk1oXN+GMWB5WDvezo4yyQhYDB+IoLwObEO0x/9OKUBJepvZ0LFSfq4YtUDVIR5rLgrBkWwse9afzEU/vnyugAWecr69yXcGhu13hBgSYvlPIehbNU4HGmFe/v/RKhixE4Jmj32p0BGXoKaKc19gUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPwCKIbI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DF4C43399;
+	Mon, 29 Jan 2024 17:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548482;
-	bh=7/zTl4Dh0Hg3DvFu3e/3xrDv6eiv4I4kpPiDIBouxRM=;
+	s=korg; t=1706548112;
+	bh=v7QbMVmwAntzizzXso422Yj5ZOxTG8SRFEXL8gdO6nI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZJFv//o1AeKYXmGRgnf/IU1bX6NYWE21R71dDn1UUMsYpS/JRUfz6CcFTE1nEiO2
-	 dokO5dLlkMWJewZIaM6/7fHNFWnWIKzP+lkkm36LaAVqdavDIFyd5Lm0kzDs7CSuxy
-	 d1macy0H3QHnJumJZzOsmBK7ziGYIhMEyMXfYjeI=
+	b=MPwCKIbIBw6YUtPKvxKUoLH0canJwXhUK5kgN5VC/Vxd9bf5dCUhc0VMFyYbLjwsX
+	 nUDcn33IYbWS89K5DQy1j03F+69X+IQ3661m3f6t9+FTO1Alu4esScC/kmst3NCVLH
+	 8GI1snP/0PvxDkwx2WEXFyd5kuhCL56BUR5BssCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jani Nikula <jani.nikula@intel.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH 6.6 102/331] scripts/get_abi: fix source path leak
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.7 135/346] serial: sc16is7xx: remove obsolete loop in sc16is7xx_port_irq()
 Date: Mon, 29 Jan 2024 09:02:46 -0800
-Message-ID: <20240129170017.916513094@linuxfoundation.org>
+Message-ID: <20240129170020.356564493@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vegard Nossum <vegard.nossum@oracle.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit 5889d6ede53bc17252f79c142387e007224aa554 upstream.
+commit ed647256e8f226241ecff7baaecdb8632ffc7ec1 upstream.
 
-The code currently leaks the absolute path of the ABI files into the
-rendered documentation.
+Commit 834449872105 ("sc16is7xx: Fix for multi-channel stall") changed
+sc16is7xx_port_irq() from looping multiple times when there was still
+interrupts to serve. It simply changed the do {} while(1) loop to a
+do {} while(0) loop, which makes the loop itself now obsolete.
 
-There exists code to prevent this, but it is not effective when an
-absolute path is passed, which it is when $srctree is used.
+Clean the code by removing this obsolete do {} while(0) loop.
 
-I consider this to be a minimal, stop-gap fix; a better fix would strip
-off the actual prefix instead of hacking it off with a regex.
-
-Link: https://mastodon.social/@vegard/111677490643495163
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Link: https://lore.kernel.org/r/20231231235959.3342928-1-vegard.nossum@oracle.com
+Fixes: 834449872105 ("sc16is7xx: Fix for multi-channel stall")
+Cc:  <stable@vger.kernel.org>
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231221231823.2327894-5-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/get_abi.pl |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/sc16is7xx.c |   89 +++++++++++++++++++----------------------
+ 1 file changed, 43 insertions(+), 46 deletions(-)
 
---- a/scripts/get_abi.pl
-+++ b/scripts/get_abi.pl
-@@ -98,7 +98,7 @@ sub parse_abi {
- 	$name =~ s,.*/,,;
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -725,58 +725,55 @@ static void sc16is7xx_update_mlines(stru
+ static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
+ {
+ 	bool rc = true;
++	unsigned int iir, rxlen;
+ 	struct uart_port *port = &s->p[portno].port;
+ 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
  
- 	my $fn = $file;
--	$fn =~ s,Documentation/ABI/,,;
-+	$fn =~ s,.*Documentation/ABI/,,;
+ 	mutex_lock(&one->efr_lock);
  
- 	my $nametag = "File $fn";
- 	$data{$nametag}->{what} = "File $name";
+-	do {
+-		unsigned int iir, rxlen;
+-
+-		iir = sc16is7xx_port_read(port, SC16IS7XX_IIR_REG);
+-		if (iir & SC16IS7XX_IIR_NO_INT_BIT) {
+-			rc = false;
+-			goto out_port_irq;
+-		}
+-
+-		iir &= SC16IS7XX_IIR_ID_MASK;
+-
+-		switch (iir) {
+-		case SC16IS7XX_IIR_RDI_SRC:
+-		case SC16IS7XX_IIR_RLSE_SRC:
+-		case SC16IS7XX_IIR_RTOI_SRC:
+-		case SC16IS7XX_IIR_XOFFI_SRC:
+-			rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
+-
+-			/*
+-			 * There is a silicon bug that makes the chip report a
+-			 * time-out interrupt but no data in the FIFO. This is
+-			 * described in errata section 18.1.4.
+-			 *
+-			 * When this happens, read one byte from the FIFO to
+-			 * clear the interrupt.
+-			 */
+-			if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
+-				rxlen = 1;
+-
+-			if (rxlen)
+-				sc16is7xx_handle_rx(port, rxlen, iir);
+-			break;
++	iir = sc16is7xx_port_read(port, SC16IS7XX_IIR_REG);
++	if (iir & SC16IS7XX_IIR_NO_INT_BIT) {
++		rc = false;
++		goto out_port_irq;
++	}
++
++	iir &= SC16IS7XX_IIR_ID_MASK;
++
++	switch (iir) {
++	case SC16IS7XX_IIR_RDI_SRC:
++	case SC16IS7XX_IIR_RLSE_SRC:
++	case SC16IS7XX_IIR_RTOI_SRC:
++	case SC16IS7XX_IIR_XOFFI_SRC:
++		rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
++
++		/*
++		 * There is a silicon bug that makes the chip report a
++		 * time-out interrupt but no data in the FIFO. This is
++		 * described in errata section 18.1.4.
++		 *
++		 * When this happens, read one byte from the FIFO to
++		 * clear the interrupt.
++		 */
++		if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
++			rxlen = 1;
++
++		if (rxlen)
++			sc16is7xx_handle_rx(port, rxlen, iir);
++		break;
+ 		/* CTSRTS interrupt comes only when CTS goes inactive */
+-		case SC16IS7XX_IIR_CTSRTS_SRC:
+-		case SC16IS7XX_IIR_MSI_SRC:
+-			sc16is7xx_update_mlines(one);
+-			break;
+-		case SC16IS7XX_IIR_THRI_SRC:
+-			sc16is7xx_handle_tx(port);
+-			break;
+-		default:
+-			dev_err_ratelimited(port->dev,
+-					    "ttySC%i: Unexpected interrupt: %x",
+-					    port->line, iir);
+-			break;
+-		}
+-	} while (0);
++	case SC16IS7XX_IIR_CTSRTS_SRC:
++	case SC16IS7XX_IIR_MSI_SRC:
++		sc16is7xx_update_mlines(one);
++		break;
++	case SC16IS7XX_IIR_THRI_SRC:
++		sc16is7xx_handle_tx(port);
++		break;
++	default:
++		dev_err_ratelimited(port->dev,
++				    "ttySC%i: Unexpected interrupt: %x",
++				    port->line, iir);
++		break;
++	}
+ 
+ out_port_irq:
+ 	mutex_unlock(&one->efr_lock);
 
 
 
