@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-16686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C418840DFF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5583E840FE0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFA791F2D077
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 791371C23792
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BDC15DBC1;
-	Mon, 29 Jan 2024 17:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A9715B2EA;
+	Mon, 29 Jan 2024 17:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gEckTleE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rit92GBS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6682E15DBB7;
-	Mon, 29 Jan 2024 17:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E1B15B2F1;
+	Mon, 29 Jan 2024 17:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548203; cv=none; b=LNXnUvkjMmpWHzP1HawvOlxfLycSvMgyKxxw19NpQApnTlZL4qOXS/gT7HXF/gpxZKZb5bnnXdLAY+Z7FtYlThniVih2dUT3RnI3/4K4Qgg7I6TTcw2nd2LsrQUhZTNWskVQbT6Q7OjcRlFR99lL/5bR72LDkzShkeTRxMrUZy4=
+	t=1706548520; cv=none; b=al04wICAj8vqKMHxEFdafzeY0cwj336Q2Bcba9tC7NE6bVgWM7StYqBoM2Iw1opYzqfz9ZIn9jFebZRCxHN7MKYdDizW7xwnGa6ueq7yDLNMztIs15U3IB/IVXYGytwW/ch4KDeYzbMudi7gP9Z75jDkk5HLcTyOyJXag8GzbUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548203; c=relaxed/simple;
-	bh=6qh3cqAQ08nQQ3h+KSu59fjENCUWDPVGPqvhYbDFY2E=;
+	s=arc-20240116; t=1706548520; c=relaxed/simple;
+	bh=vq56qmr9qvM3SodYMyhrkc7c+eToWl4Z92S5KKCCuZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pdphKe+dE/T3iE2KrxktvfAkm+jtgBaaSx3q44JwissxfVFuj+BcUYq98gVtvrz3SxSfHG1uxxsxrPC6WJnOlid61oQ9j3zrYOAieIEmCK4P49nibH0kxyzmEVs3ZyGHGzNtomXLXBllimKaXHDIyUmm1zRrY90nToe4PtqP3wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gEckTleE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE2FC433F1;
-	Mon, 29 Jan 2024 17:10:03 +0000 (UTC)
+	 MIME-Version; b=e4jqZGasEsYTQLG4beFbUfMO3Y+MPyjnCdkwFrUBNqWvihtZR8blxOH8eYcBLGM5z4q32FnCoqcpI8Y2fw3RGPnqpS5RbT8QhYG2gE4sL0ViPMl41ri4TwyxauNxzsfCshwiVNs+2bmr129k6CR95PgmBCWvN/VQdV3ypCIn5Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rit92GBS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE95C433C7;
+	Mon, 29 Jan 2024 17:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548203;
-	bh=6qh3cqAQ08nQQ3h+KSu59fjENCUWDPVGPqvhYbDFY2E=;
+	s=korg; t=1706548520;
+	bh=vq56qmr9qvM3SodYMyhrkc7c+eToWl4Z92S5KKCCuZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gEckTleEd74MJsnwVQLOQekAFEJ3uV5itTQ412HXYPl9WaZQ2HNpzyQSpA1ihJCZb
-	 6CS2nmj5ynFGzV0Rsm3ZA21DXhSM7A9Hh7fdI40Fh+O540An/FRGGsqMM4s/ZwyVRJ
-	 NSwdOkhTeKoFWLmZ77pBPgyyixsDqQGLL5OQbiL0=
+	b=rit92GBSxRWmG3WPdCBpCLAv2INN8nGDsanjy4KHhvoXthn7mQnpzlfq3dyPP9HPE
+	 yFw43cMQhFRdWYkJY0QLEc7W8GycmsLEc0OZSA+2cyjs3l7KMdy10POFxpmEcwyHwO
+	 zOCUrq/wCLiCPyrXnooGFSkMe8OnUxyNAhgGMKOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>
-Subject: [PATCH 6.1 016/185] PM / devfreq: Fix buffer overflow in trans_stat_show
-Date: Mon, 29 Jan 2024 09:03:36 -0800
-Message-ID: <20240129165959.119733146@linuxfoundation.org>
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 153/331] selftests/bpf: track tcp payload offset as scalar in xdp_synproxy
+Date: Mon, 29 Jan 2024 09:03:37 -0800
+Message-ID: <20240129170019.399602225@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,142 +62,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-commit 08e23d05fa6dc4fc13da0ccf09defdd4bbc92ff4 upstream.
+commit 977bc146d4eb7070118d8a974919b33bb52732b4 upstream.
 
-Fix buffer overflow in trans_stat_show().
+This change prepares syncookie_{tc,xdp} for update in callbakcs
+verification logic. To allow bpf_loop() verification converge when
+multiple callback itreations are considered:
+- track offset inside TCP payload explicitly, not as a part of the
+  pointer;
+- make sure that offset does not exceed MAX_PACKET_OFF enforced by
+  verifier;
+- make sure that offset is tracked as unbound scalar between
+  iterations, otherwise verifier won't be able infer that bpf_loop
+  callback reaches identical states.
 
-Convert simple snprintf to the more secure scnprintf with size of
-PAGE_SIZE.
-
-Add condition checking if we are exceeding PAGE_SIZE and exit early from
-loop. Also add at the end a warning that we exceeded PAGE_SIZE and that
-stats is disabled.
-
-Return -EFBIG in the case where we don't have enough space to write the
-full transition table.
-
-Also document in the ABI that this function can return -EFBIG error.
-
-Link: https://lore.kernel.org/all/20231024183016.14648-2-ansuelsmth@gmail.com/
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218041
-Fixes: e552bbaf5b98 ("PM / devfreq: Add sysfs node for representing frequency transition information.")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20231121020701.26440-2-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/ABI/testing/sysfs-class-devfreq |    3 +
- drivers/devfreq/devfreq.c                     |   59 +++++++++++++++++---------
- 2 files changed, 43 insertions(+), 19 deletions(-)
+ tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c |   84 +++++++++++-------
+ 1 file changed, 52 insertions(+), 32 deletions(-)
 
---- a/Documentation/ABI/testing/sysfs-class-devfreq
-+++ b/Documentation/ABI/testing/sysfs-class-devfreq
-@@ -52,6 +52,9 @@ Description:
+--- a/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
++++ b/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
+@@ -53,6 +53,8 @@
+ #define DEFAULT_TTL 64
+ #define MAX_ALLOWED_PORTS 8
  
- 			echo 0 > /sys/class/devfreq/.../trans_stat
- 
-+		If the transition table is bigger than PAGE_SIZE, reading
-+		this will return an -EFBIG error.
++#define MAX_PACKET_OFF 0xffff
 +
- What:		/sys/class/devfreq/.../available_frequencies
- Date:		October 2012
- Contact:	Nishanth Menon <nm@ti.com>
---- a/drivers/devfreq/devfreq.c
-+++ b/drivers/devfreq/devfreq.c
-@@ -1687,7 +1687,7 @@ static ssize_t trans_stat_show(struct de
- 			       struct device_attribute *attr, char *buf)
- {
- 	struct devfreq *df = to_devfreq(dev);
--	ssize_t len;
-+	ssize_t len = 0;
- 	int i, j;
- 	unsigned int max_state;
+ #define swap(a, b) \
+ 	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
  
-@@ -1696,7 +1696,7 @@ static ssize_t trans_stat_show(struct de
- 	max_state = df->max_state;
- 
- 	if (max_state == 0)
--		return sprintf(buf, "Not Supported.\n");
-+		return scnprintf(buf, PAGE_SIZE, "Not Supported.\n");
- 
- 	mutex_lock(&df->lock);
- 	if (!df->stop_polling &&
-@@ -1706,31 +1706,52 @@ static ssize_t trans_stat_show(struct de
- 	}
- 	mutex_unlock(&df->lock);
- 
--	len = sprintf(buf, "     From  :   To\n");
--	len += sprintf(buf + len, "           :");
--	for (i = 0; i < max_state; i++)
--		len += sprintf(buf + len, "%10lu",
--				df->freq_table[i]);
-+	len += scnprintf(buf + len, PAGE_SIZE - len, "     From  :   To\n");
-+	len += scnprintf(buf + len, PAGE_SIZE - len, "           :");
-+	for (i = 0; i < max_state; i++) {
-+		if (len >= PAGE_SIZE - 1)
-+			break;
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "%10lu",
-+				 df->freq_table[i]);
-+	}
-+	if (len >= PAGE_SIZE - 1)
-+		return PAGE_SIZE - 1;
- 
--	len += sprintf(buf + len, "   time(ms)\n");
-+	len += scnprintf(buf + len, PAGE_SIZE - len, "   time(ms)\n");
- 
- 	for (i = 0; i < max_state; i++) {
-+		if (len >= PAGE_SIZE - 1)
-+			break;
- 		if (df->freq_table[i] == df->previous_freq)
--			len += sprintf(buf + len, "*");
-+			len += scnprintf(buf + len, PAGE_SIZE - len, "*");
- 		else
--			len += sprintf(buf + len, " ");
--
--		len += sprintf(buf + len, "%10lu:", df->freq_table[i]);
--		for (j = 0; j < max_state; j++)
--			len += sprintf(buf + len, "%10u",
--				df->stats.trans_table[(i * max_state) + j]);
-+			len += scnprintf(buf + len, PAGE_SIZE - len, " ");
-+		if (len >= PAGE_SIZE - 1)
-+			break;
-+
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "%10lu:",
-+				 df->freq_table[i]);
-+		for (j = 0; j < max_state; j++) {
-+			if (len >= PAGE_SIZE - 1)
-+				break;
-+			len += scnprintf(buf + len, PAGE_SIZE - len, "%10u",
-+					 df->stats.trans_table[(i * max_state) + j]);
-+		}
-+		if (len >= PAGE_SIZE - 1)
-+			break;
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "%10llu\n", (u64)
-+				 jiffies64_to_msecs(df->stats.time_in_state[i]));
-+	}
- 
--		len += sprintf(buf + len, "%10llu\n", (u64)
--			jiffies64_to_msecs(df->stats.time_in_state[i]));
-+	if (len < PAGE_SIZE - 1)
-+		len += scnprintf(buf + len, PAGE_SIZE - len, "Total transition : %u\n",
-+				 df->stats.total_trans);
-+
-+	if (len >= PAGE_SIZE - 1) {
-+		pr_warn_once("devfreq transition table exceeds PAGE_SIZE. Disabling\n");
-+		return -EFBIG;
- 	}
- 
--	len += sprintf(buf + len, "Total transition : %u\n",
--					df->stats.total_trans);
- 	return len;
+@@ -183,63 +185,76 @@ static __always_inline __u32 tcp_time_st
  }
  
+ struct tcpopt_context {
+-	__u8 *ptr;
+-	__u8 *end;
++	void *data;
+ 	void *data_end;
+ 	__be32 *tsecr;
+ 	__u8 wscale;
+ 	bool option_timestamp;
+ 	bool option_sack;
++	__u32 off;
+ };
+ 
+-static int tscookie_tcpopt_parse(struct tcpopt_context *ctx)
++static __always_inline u8 *next(struct tcpopt_context *ctx, __u32 sz)
+ {
+-	__u8 opcode, opsize;
++	__u64 off = ctx->off;
++	__u8 *data;
+ 
+-	if (ctx->ptr >= ctx->end)
+-		return 1;
+-	if (ctx->ptr >= ctx->data_end)
+-		return 1;
++	/* Verifier forbids access to packet when offset exceeds MAX_PACKET_OFF */
++	if (off > MAX_PACKET_OFF - sz)
++		return NULL;
++
++	data = ctx->data + off;
++	barrier_var(data);
++	if (data + sz >= ctx->data_end)
++		return NULL;
+ 
+-	opcode = ctx->ptr[0];
++	ctx->off += sz;
++	return data;
++}
+ 
+-	if (opcode == TCPOPT_EOL)
+-		return 1;
+-	if (opcode == TCPOPT_NOP) {
+-		++ctx->ptr;
+-		return 0;
+-	}
++static int tscookie_tcpopt_parse(struct tcpopt_context *ctx)
++{
++	__u8 *opcode, *opsize, *wscale, *tsecr;
++	__u32 off = ctx->off;
+ 
+-	if (ctx->ptr + 1 >= ctx->end)
++	opcode = next(ctx, 1);
++	if (!opcode)
+ 		return 1;
+-	if (ctx->ptr + 1 >= ctx->data_end)
+-		return 1;
+-	opsize = ctx->ptr[1];
+-	if (opsize < 2)
++
++	if (*opcode == TCPOPT_EOL)
+ 		return 1;
++	if (*opcode == TCPOPT_NOP)
++		return 0;
+ 
+-	if (ctx->ptr + opsize > ctx->end)
++	opsize = next(ctx, 1);
++	if (!opsize || *opsize < 2)
+ 		return 1;
+ 
+-	switch (opcode) {
++	switch (*opcode) {
+ 	case TCPOPT_WINDOW:
+-		if (opsize == TCPOLEN_WINDOW && ctx->ptr + TCPOLEN_WINDOW <= ctx->data_end)
+-			ctx->wscale = ctx->ptr[2] < TCP_MAX_WSCALE ? ctx->ptr[2] : TCP_MAX_WSCALE;
++		wscale = next(ctx, 1);
++		if (!wscale)
++			return 1;
++		if (*opsize == TCPOLEN_WINDOW)
++			ctx->wscale = *wscale < TCP_MAX_WSCALE ? *wscale : TCP_MAX_WSCALE;
+ 		break;
+ 	case TCPOPT_TIMESTAMP:
+-		if (opsize == TCPOLEN_TIMESTAMP && ctx->ptr + TCPOLEN_TIMESTAMP <= ctx->data_end) {
++		tsecr = next(ctx, 4);
++		if (!tsecr)
++			return 1;
++		if (*opsize == TCPOLEN_TIMESTAMP) {
+ 			ctx->option_timestamp = true;
+ 			/* Client's tsval becomes our tsecr. */
+-			*ctx->tsecr = get_unaligned((__be32 *)(ctx->ptr + 2));
++			*ctx->tsecr = get_unaligned((__be32 *)tsecr);
+ 		}
+ 		break;
+ 	case TCPOPT_SACK_PERM:
+-		if (opsize == TCPOLEN_SACK_PERM)
++		if (*opsize == TCPOLEN_SACK_PERM)
+ 			ctx->option_sack = true;
+ 		break;
+ 	}
+ 
+-	ctx->ptr += opsize;
++	ctx->off = off + *opsize;
+ 
+ 	return 0;
+ }
+@@ -256,16 +271,21 @@ static int tscookie_tcpopt_parse_batch(_
+ 
+ static __always_inline bool tscookie_init(struct tcphdr *tcp_header,
+ 					  __u16 tcp_len, __be32 *tsval,
+-					  __be32 *tsecr, void *data_end)
++					  __be32 *tsecr, void *data, void *data_end)
+ {
+ 	struct tcpopt_context loop_ctx = {
+-		.ptr = (__u8 *)(tcp_header + 1),
+-		.end = (__u8 *)tcp_header + tcp_len,
++		.data = data,
+ 		.data_end = data_end,
+ 		.tsecr = tsecr,
+ 		.wscale = TS_OPT_WSCALE_MASK,
+ 		.option_timestamp = false,
+ 		.option_sack = false,
++		/* Note: currently verifier would track .off as unbound scalar.
++		 *       In case if verifier would at some point get smarter and
++		 *       compute bounded value for this var, beware that it might
++		 *       hinder bpf_loop() convergence validation.
++		 */
++		.off = (__u8 *)(tcp_header + 1) - (__u8 *)data,
+ 	};
+ 	u32 cookie;
+ 
+@@ -635,7 +655,7 @@ static __always_inline int syncookie_han
+ 	cookie = (__u32)value;
+ 
+ 	if (tscookie_init((void *)hdr->tcp, hdr->tcp_len,
+-			  &tsopt_buf[0], &tsopt_buf[1], data_end))
++			  &tsopt_buf[0], &tsopt_buf[1], data, data_end))
+ 		tsopt = tsopt_buf;
+ 
+ 	/* Check that there is enough space for a SYNACK. It also covers
 
 
 
