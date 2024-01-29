@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-16722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BE4840E24
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 437FC840FD9
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAD07B26F4E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74BE91C2160C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B11515EA85;
-	Mon, 29 Jan 2024 17:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E8872257;
+	Mon, 29 Jan 2024 17:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZyU/7kD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RugLGk9w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FF715B2E9;
-	Mon, 29 Jan 2024 17:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4C77222D;
+	Mon, 29 Jan 2024 17:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548232; cv=none; b=Pw+eKAi/6mLQUyDO0YTSywOtfCzZkc3dDkSE7nDCXcmsaODHb0MlfqtSMbeBvwwExt23TUMhLO0B/2uiPw0p2gdkGrSrDbfisxAZK97/X9vVAMKy5g4IuYvocPjv8YPKEREy0385WvEhL5o2FTlIj2VIsx+gSNIQRrXMehyBXiY=
+	t=1706548513; cv=none; b=oB0jXfncMwJx8G112lUBIwC+uZIkEER35+wWWfn0+fRurCkIF8kLHwTTlKQbyZIWdINgj8i8+QKTd/1Ft9CikJ2uZIHk7vrbfQnvgVUv+9kzoAZ/I0KPWsIi0lYEBRIy24ctShAes2GKXxKEjdPDP3XEIqmhrS64SY9b50rxQ2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548232; c=relaxed/simple;
-	bh=fRY7N6DxOiCaYYcJCtQb8oOOcSba8s6gxm0MEFVQphs=;
+	s=arc-20240116; t=1706548513; c=relaxed/simple;
+	bh=cXjzHb379PvadLdZ9PEf7vYrvjnZdqn5GZT/42CdOtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8t50T7P/+RvXkyMeD0Yy9w1xMuS/OXq6dsLB5FcFBfhQPQXWE/TWWy4KdTj/sqT5C2NUbC2LfWnCggCBl+njq5hy8ZhMBkLZh52sEwPhZ6FT/p27OAPJhY8+QaIqd4/1+/x5BmB/93olr+skCV9nyP4j3UC5xmPD8UWxM2KoFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZyU/7kD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E367FC43399;
-	Mon, 29 Jan 2024 17:10:31 +0000 (UTC)
+	 MIME-Version; b=iGhhjTtBhdFHLA8e1Gq3qdiD6itR/2TiVBNzTR5Q/H+e/J6ppVh44fhCzHVsJI5xKicNhO8afX2vC8iZD66mdSPgd6x76plHuS5nNvTRSapdhN2XA66jNtcZaPbSWFTYIJxFqa/8+pdzy0pYhoU8YmUDj19Mb6cIOAe/AZ1GwYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RugLGk9w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979F5C433C7;
+	Mon, 29 Jan 2024 17:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548232;
-	bh=fRY7N6DxOiCaYYcJCtQb8oOOcSba8s6gxm0MEFVQphs=;
+	s=korg; t=1706548513;
+	bh=cXjzHb379PvadLdZ9PEf7vYrvjnZdqn5GZT/42CdOtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LZyU/7kDV9HTID+DBh9Q0yW/EOH7OhhuSqdcwqPemOisNo3fFUxB+zmzy9qtj7KIt
-	 NcWPlnxEuLZDSz0gkDLhWmZLsk93+QBSsMxOMABYGo1ZMNeLlwTq2hjRHG0p6UDysa
-	 RpndsVMD+K1KYtRwAiMmHz3SKoxnuJMlmnb/s64I=
+	b=RugLGk9whmSR+lA1kDZoO/Kx/Z4R3UGVvtpF2cGaFMDTOKyAbwApSJ6/cx6ndiVGP
+	 rZs0K7TJlxEdvthb+mua5s9rd+xHJVdZ8PCiW1grZUzweT3v0vHKxbMe864Mk9Py5X
+	 SR9v5kBx7o6Jz/L9FZVCaFDDSyiqz8BST4QFKOwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.1 009/185] OPP: Pass rounded rate to _set_opp()
-Date: Mon, 29 Jan 2024 09:03:29 -0800
-Message-ID: <20240129165958.888770304@linuxfoundation.org>
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 146/331] bpf: move explored_state() closer to the beginning of verifier.c
+Date: Mon, 29 Jan 2024 09:03:30 -0800
+Message-ID: <20240129170019.203990614@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-commit 7269c250db1b89cda72ca419b7bd5e37997309d6 upstream.
+commit 3c4e420cb6536026ddd50eaaff5f30e4f144200d upstream.
 
-The OPP core finds the eventual frequency to set with the help of
-clk_round_rate() and the same was earlier getting passed to _set_opp()
-and that's what would get configured.
+Subsequent patches would make use of explored_state() function.
+Move it up to avoid adding unnecessary prototype.
 
-The commit 1efae8d2e777 ("OPP: Make dev_pm_opp_set_opp() independent of
-frequency") mistakenly changed that. Fix it.
-
-Fixes: 1efae8d2e777 ("OPP: Make dev_pm_opp_set_opp() independent of frequency")
-Cc: v5.18+ <stable@vger.kernel.org> # v6.0+
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20231024000917.12153-2-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/opp/core.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/bpf/verifier.c |   28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
---- a/drivers/opp/core.c
-+++ b/drivers/opp/core.c
-@@ -1226,12 +1226,12 @@ int dev_pm_opp_set_rate(struct device *d
- 		 * value of the frequency. In such a case, do not abort but
- 		 * configure the hardware to the desired frequency forcefully.
- 		 */
--		forced = opp_table->rate_clk_single != target_freq;
-+		forced = opp_table->rate_clk_single != freq;
- 	}
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -1786,6 +1786,19 @@ static int copy_verifier_state(struct bp
+ 	return 0;
+ }
  
--	ret = _set_opp(dev, opp_table, opp, &target_freq, forced);
-+	ret = _set_opp(dev, opp_table, opp, &freq, forced);
++static u32 state_htab_size(struct bpf_verifier_env *env)
++{
++	return env->prog->len;
++}
++
++static struct bpf_verifier_state_list **explored_state(struct bpf_verifier_env *env, int idx)
++{
++	struct bpf_verifier_state *cur = env->cur_state;
++	struct bpf_func_state *state = cur->frame[cur->curframe];
++
++	return &env->explored_states[(idx ^ state->callsite) % state_htab_size(env)];
++}
++
+ static void update_branch_counts(struct bpf_verifier_env *env, struct bpf_verifier_state *st)
+ {
+ 	while (st) {
+@@ -14702,21 +14715,6 @@ enum {
+ 	BRANCH = 2,
+ };
  
--	if (target_freq)
-+	if (freq)
- 		dev_pm_opp_put(opp);
- 
- put_opp_table:
+-static u32 state_htab_size(struct bpf_verifier_env *env)
+-{
+-	return env->prog->len;
+-}
+-
+-static struct bpf_verifier_state_list **explored_state(
+-					struct bpf_verifier_env *env,
+-					int idx)
+-{
+-	struct bpf_verifier_state *cur = env->cur_state;
+-	struct bpf_func_state *state = cur->frame[cur->curframe];
+-
+-	return &env->explored_states[(idx ^ state->callsite) % state_htab_size(env)];
+-}
+-
+ static void mark_prune_point(struct bpf_verifier_env *env, int idx)
+ {
+ 	env->insn_aux_data[idx].prune_point = true;
 
 
 
