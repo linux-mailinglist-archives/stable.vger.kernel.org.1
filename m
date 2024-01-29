@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40512840FA1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:24:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF781840D6F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F049A2838F8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:24:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DABCB25F57
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A19915DBBF;
-	Mon, 29 Jan 2024 17:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D23C159592;
+	Mon, 29 Jan 2024 17:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCGdr3Nu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="isgpKiUr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFD215B117;
-	Mon, 29 Jan 2024 17:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2071586DB;
+	Mon, 29 Jan 2024 17:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548473; cv=none; b=H9fYXsNnBlSreJxbQY6y97gQE2Sw2hBXmjXRBOwRffrPD6xvFuyAfG6NJ9xjLnj997UykdH+whtISzOXPWuPjpidq5se/mjWWzzLPKv7iBu3WCJJ+96Lh+OBSJjDeKY3audvkSBJtx8RzmyFc8yG/938YgGp0P0zXRsQBbJNilM=
+	t=1706548103; cv=none; b=W40yOwPjRxWZchozr825Tdd1vmo2wavNv0g9RsTn2/bGJbryJQ638r9LsO1+fNegMguz3JqsA4RWrAB9jLR9Y0lYk+jBVpSt9FrDpy4ZFrtWso9vWX31Qzb/mUaAdPI+/2rMGluEhNtpaYkl8p1J0pMzaeLwu7cf/bVW18U5mKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548473; c=relaxed/simple;
-	bh=0AUViJD7EIpU4mdqxwnFiBxwoqnsiMU5GhIP29uasR4=;
+	s=arc-20240116; t=1706548103; c=relaxed/simple;
+	bh=skXB954ua4guKFPw2bIvMOvGDO9Nkpf7iRgAkFew5jE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JO3hr7FSwO2rXtQcprQKHA7reMQz1sXQoqwkW44OoQccOyYUI1Xyv8vLXQ6tQXrF8JrJMabtsZaSQUWc3QRp0AfsEvy+GFMQaKRrMA0YN3M64jA3NHsdomFN4thffnN7IrN0Xjri6DgwMV2mbxHuvno6IB8j/h4VQp6nHX4pHTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCGdr3Nu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B9CC433F1;
-	Mon, 29 Jan 2024 17:14:32 +0000 (UTC)
+	 MIME-Version; b=sQCh0+uGvkpV9n+goDPmSzh7v8hu1Z3bbOSPtRIlOM7SIV1EShqS9ZlOEMB0wvZiM+qEG3N8j1N7lm0by/NV/C7LQF+Ij0YdgsE2b5n8B//lilWddrrrvGD7KxGuMu4Qh6P/Ux+JID6Mt8HSLhPhQovYYCnQ6qMSpU/QjQG69XA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=isgpKiUr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5EC4C43394;
+	Mon, 29 Jan 2024 17:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548472;
-	bh=0AUViJD7EIpU4mdqxwnFiBxwoqnsiMU5GhIP29uasR4=;
+	s=korg; t=1706548102;
+	bh=skXB954ua4guKFPw2bIvMOvGDO9Nkpf7iRgAkFew5jE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XCGdr3Nu6cROkPcKEWfoOYS5lvbwouY0Nm2chXZhKkmwowLynzJ8ghFgJDnli9e4f
-	 FVdPd8vUN0vzHZYPubP/ELHujVuaYPuBOPz17IDirCeHmp8FKoJhzD7sBsklkNMihc
-	 +aeu0nRm+hjX0h9Jx0h0K9wx9HNQY+al9Q7h1R14=
+	b=isgpKiUrs0tt4SBk3hegJPGIPzHlEL13m7RBdSDopfJ/FxaN0w09TQv7nNY4oXXog
+	 YKGehMEi9KWH46w7TEQUO7MJmKnIe/Muizz17H4QVTSsOP+kVsoJMCZbeNIr8x3ujP
+	 Z8PS4Kf1y7FmmzXcQ9Rw6tjnQp/WllOEf2CzTsiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 090/331] arm64: dts: qcom: sdm845: fix USB DP/DM HS PHY interrupts
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.7 123/346] mm/rmap: fix misplaced parenthesis of a likely()
 Date: Mon, 29 Jan 2024 09:02:34 -0800
-Message-ID: <20240129170017.561358198@linuxfoundation.org>
+Message-ID: <20240129170020.002597077@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 204f9ed4bad6293933179517624143b8f412347c upstream.
+commit f67f8d4a8c1e1ebc85a6cbdb9a7266f14863461c upstream.
 
-The USB DP/DM HS PHY interrupts need to be provided by the PDC interrupt
-controller in order to be able to wake the system up from low-power
-states and to be able to detect disconnect events, which requires
-triggering on falling edges.
+Running my yearly branch profiler to see where likely/unlikely annotation
+may be added or removed, I discovered this:
 
-A recent commit updated the trigger type but failed to change the
-interrupt provider as required. This leads to the current Linux driver
-failing to probe instead of printing an error during suspend and USB
-wakeup not working as intended.
+correct incorrect  %        Function                  File              Line
+ ------- ---------  -        --------                  ----              ----
+       0   457918 100 page_try_dup_anon_rmap         rmap.h               264
+[..]
+  458021        0   0 page_try_dup_anon_rmap         rmap.h               265
 
-Fixes: 84ad9ac8d9ca ("arm64: dts: qcom: sdm845: fix USB wakeup interrupt types")
-Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
-Cc: stable@vger.kernel.org      # 4.20
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231213173403.29544-3-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+I thought it was interesting that line 264 of rmap.h had a 100% incorrect
+annotation, but the line directly below it was 100% correct. Looking at the
+code:
+
+	if (likely(!is_device_private_page(page) &&
+	    unlikely(page_needs_cow_for_dma(vma, page))))
+
+It didn't make sense. The "likely()" was around the entire if statement
+(not just the "!is_device_private_page(page)"), which also included the
+"unlikely()" portion of that if condition.
+
+If the unlikely portion is unlikely to be true, that would make the entire
+if condition unlikely to be true, so it made no sense at all to say the
+entire if condition is true.
+
+What is more likely to be likely is just the first part of the if statement
+before the && operation. It's likely to be a misplaced parenthesis. And
+after making the if condition broken into a likely() && unlikely(), both
+now appear to be correct!
+
+Link: https://lkml.kernel.org/r/20231201145936.5ddfdb50@gandalf.local.home
+Fixes:fb3d824d1a46c ("mm/rmap: split page_dup_rmap() into page_dup_file_rmap() and page_try_dup_anon_rmap()")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ include/linux/rmap.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -4084,10 +4084,10 @@
- 					  <&gcc GCC_USB30_PRIM_MASTER_CLK>;
- 			assigned-clock-rates = <19200000>, <150000000>;
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -261,8 +261,8 @@ static inline int page_try_dup_anon_rmap
+ 	 * guarantee the pinned page won't be randomly replaced in the
+ 	 * future on write faults.
+ 	 */
+-	if (likely(!is_device_private_page(page) &&
+-	    unlikely(page_needs_cow_for_dma(vma, page))))
++	if (likely(!is_device_private_page(page)) &&
++	    unlikely(page_needs_cow_for_dma(vma, page)))
+ 		return -EBUSY;
  
--			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
--				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
-+			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&intc GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc_intc 8 IRQ_TYPE_EDGE_BOTH>,
-+					      <&pdc_intc 9 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
- 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
- 
-@@ -4135,10 +4135,10 @@
- 					  <&gcc GCC_USB30_SEC_MASTER_CLK>;
- 			assigned-clock-rates = <19200000>, <150000000>;
- 
--			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
--				     <GIC_SPI 490 IRQ_TYPE_EDGE_BOTH>,
--				     <GIC_SPI 491 IRQ_TYPE_EDGE_BOTH>;
-+			interrupts-extended = <&intc GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&intc GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc_intc 10 IRQ_TYPE_EDGE_BOTH>,
-+					      <&pdc_intc 11 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
- 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
- 
+ 	ClearPageAnonExclusive(page);
 
 
 
