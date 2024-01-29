@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-16993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61DE8840F5E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3380840D17
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:07:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 028F51F27A98
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D29031C22F7F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4036A1649A9;
-	Mon, 29 Jan 2024 17:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE4515705B;
+	Mon, 29 Jan 2024 17:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mV4E8mO2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdgc+Mp0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41B115DBAD;
-	Mon, 29 Jan 2024 17:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3B6157E70;
+	Mon, 29 Jan 2024 17:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548431; cv=none; b=g5DAdznmrth/gxBMmwy1RbqrGfBbMQi2WSaMHafmL1dpBe/MMDlOiH9p2U1QJInipRNjuTQ65zgWBm4bu92njTMjXvscIk+SCC9OUipRn9V2UPZdJdK2R8x51yH77Xg1/4BUkM+2Rx+BZ7tK8Smh9knsWKDD3U3sA6S1HwrRCoM=
+	t=1706548042; cv=none; b=HKiKF0yYOHLMQFirtbzvY+lcpWPsKymhWn+X5SuLftkmJXjfEgitBpHIEkBW2IERrLMprZw5mf6RygwmpQ5xK0QZD0Di/NgOpooMQSRWyOPMeFeA/u2X1m2G0oK/xsOKZTgdgDRxe9wgxv/wgBxgM2r7tyEieiv/habA71wFVq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548431; c=relaxed/simple;
-	bh=IKYQ0nUkgwiE+y0mUqyyesMWPGQwq85ALly18YK6QW0=;
+	s=arc-20240116; t=1706548042; c=relaxed/simple;
+	bh=iN/Bj+/EGuiRtmjK/XxQjnRxz7d7qQ6WbHG7sx1jHNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cwUvsXCvCkpbKuiL3KC2qT/HEJC6+8BQRGwk/auM1liB2zvAkiMu0qLB/cidS+4+j8+c6kgGSvTD14av/znO3bcAR1Lzp7JVzwqwP3luDuEpN8O1VgBj00E16BQxclla+E8hAgiwHaabn2bHyf2JkXxzGGqaewiM8oNRoNirZuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mV4E8mO2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC3CC433C7;
-	Mon, 29 Jan 2024 17:13:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=muX5v4XMmCsnktKXG6VSLVI9nFN/mpvjIrz+AScQ8rP9pg6axMX/RtDojid//dSiK7ZJzFQ9BQElSE6XLDA5ByA9gpAP7TA8+BlRh50QcnX66qVnBk1jHk2sPccNxa2pH6X8jawlmkQZijoHCdTmWSgvcpasEaOTX6ucKCIJHmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdgc+Mp0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A29AC433C7;
+	Mon, 29 Jan 2024 17:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548430;
-	bh=IKYQ0nUkgwiE+y0mUqyyesMWPGQwq85ALly18YK6QW0=;
+	s=korg; t=1706548042;
+	bh=iN/Bj+/EGuiRtmjK/XxQjnRxz7d7qQ6WbHG7sx1jHNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mV4E8mO24BPRUrcFC9C2+6xmOXFp/TgACGfT3W4vSyJCWJ7rS9qg6zSwOt7RcFShe
-	 qTvnW0zsKnr/ZEnd1Nw6w+OwB3o+wrDRA2bwG3ZmhMbWOrWuJ9pbAhI5nunisvnuPS
-	 JvUtxrT1/uuVTckvdnB9Tf9l1UflD5Eb4/GJAsJ0=
+	b=qdgc+Mp07mXLUlbF+Echr3/N+f5AIg0iDx8EmA/bJ2MfYdyd1TrPVhgnautKPsqgM
+	 5hWCrhWLTvUfmNVd8rz1pkUX8NXmerafHey4wyzU7dpFb6i4u5mjNrPCeS/uNzv7co
+	 HsxOe0In7pJzay/V3bl8GLKLpBxFee0TGmUlIXm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Tresidder <rtresidd@electromag.com.au>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/331] net: stmmac: Prevent DSA tags from breaking COE
+	Kees Cook <keescook@chromium.org>,
+	Nathan Lynch <nathanl@linux.ibm.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.7 042/346] seq_buf: Make DECLARE_SEQ_BUF() usable
 Date: Mon, 29 Jan 2024 09:01:13 -0800
-Message-ID: <20240129170015.238137986@linuxfoundation.org>
+Message-ID: <20240129170017.620912193@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,113 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Romain Gantois <romain.gantois@bootlin.com>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-[ Upstream commit c2945c435c999c63e47f337bc7c13c98c21d0bcc ]
+commit 7a8e9cdf9405819105ae7405cd91e482bf574b01 upstream.
 
-Some DSA tagging protocols change the EtherType field in the MAC header
-e.g.  DSA_TAG_PROTO_(DSA/EDSA/BRCM/MTK/RTL4C_A/SJA1105). On TX these tagged
-frames are ignored by the checksum offload engine and IP header checker of
-some stmmac cores.
+Using the address operator on the array doesn't work:
 
-On RX, the stmmac driver wrongly assumes that checksums have been computed
-for these tagged packets, and sets CHECKSUM_UNNECESSARY.
+./include/linux/seq_buf.h:27:27: error: initialization of ‘char *’
+  from incompatible pointer type ‘char (*)[128]’
+  [-Werror=incompatible-pointer-types]
+   27 |                 .buffer = &__ ## NAME ## _buffer,       \
+      |                           ^
 
-Add an additional check in the stmmac TX and RX hotpaths so that COE is
-deactivated for packets with ethertypes that will not trigger the COE and
-IP header checks.
+Apart from fixing that, we can improve DECLARE_SEQ_BUF() by using a
+compound literal to define the buffer array without attaching a name
+to it. This makes the macro a single statement, allowing constructs
+such as:
 
-Fixes: 6b2c6e4a938f ("net: stmmac: propagate feature flags to vlan")
-Cc:  <stable@vger.kernel.org>
-Reported-by: Richard Tresidder <rtresidd@electromag.com.au>
-Link: https://lore.kernel.org/netdev/e5c6c75f-2dfa-4e50-a1fb-6bf4cdb617c2@electromag.com.au/
-Reported-by: Romain Gantois <romain.gantois@bootlin.com>
-Link: https://lore.kernel.org/netdev/c57283ed-6b9b-b0e6-ee12-5655c1c54495@bootlin.com/
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  static DECLARE_SEQ_BUF(my_seq_buf, MYSB_SIZE);
+
+to work as intended.
+
+Link: https://lkml.kernel.org/r/20240116-declare-seq-buf-fix-v1-1-915db4692f32@linux.ibm.com
+
+Cc: stable@vger.kernel.org
+Acked-by: Kees Cook <keescook@chromium.org>
+Fixes: dcc4e5728eea ("seq_buf: Introduce DECLARE_SEQ_BUF and seq_buf_str()")
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 32 +++++++++++++++++--
- 1 file changed, 29 insertions(+), 3 deletions(-)
+ include/linux/seq_buf.h |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 59e07efe08c9..684ec7058c82 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4356,6 +4356,28 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 	return NETDEV_TX_OK;
- }
+--- a/include/linux/seq_buf.h
++++ b/include/linux/seq_buf.h
+@@ -22,9 +22,8 @@ struct seq_buf {
+ };
  
-+/**
-+ * stmmac_has_ip_ethertype() - Check if packet has IP ethertype
-+ * @skb: socket buffer to check
-+ *
-+ * Check if a packet has an ethertype that will trigger the IP header checks
-+ * and IP/TCP checksum engine of the stmmac core.
-+ *
-+ * Return: true if the ethertype can trigger the checksum engine, false
-+ * otherwise
-+ */
-+static bool stmmac_has_ip_ethertype(struct sk_buff *skb)
-+{
-+	int depth = 0;
-+	__be16 proto;
-+
-+	proto = __vlan_get_protocol(skb, eth_header_parse_protocol(skb),
-+				    &depth);
-+
-+	return (depth <= ETH_HLEN) &&
-+		(proto == htons(ETH_P_IP) || proto == htons(ETH_P_IPV6));
-+}
-+
- /**
-  *  stmmac_xmit - Tx entry point of the driver
-  *  @skb : the socket buffer
-@@ -4420,9 +4442,13 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
- 	/* DWMAC IPs can be synthesized to support tx coe only for a few tx
- 	 * queues. In that case, checksum offloading for those queues that don't
- 	 * support tx coe needs to fallback to software checksum calculation.
-+	 *
-+	 * Packets that won't trigger the COE e.g. most DSA-tagged packets will
-+	 * also have to be checksummed in software.
- 	 */
- 	if (csum_insertion &&
--	    priv->plat->tx_queues_cfg[queue].coe_unsupported) {
-+	    (priv->plat->tx_queues_cfg[queue].coe_unsupported ||
-+	     !stmmac_has_ip_ethertype(skb))) {
- 		if (unlikely(skb_checksum_help(skb)))
- 			goto dma_map_err;
- 		csum_insertion = !csum_insertion;
-@@ -4982,7 +5008,7 @@ static void stmmac_dispatch_skb_zc(struct stmmac_priv *priv, u32 queue,
- 	stmmac_rx_vlan(priv->dev, skb);
- 	skb->protocol = eth_type_trans(skb, priv->dev);
+ #define DECLARE_SEQ_BUF(NAME, SIZE)			\
+-	char __ ## NAME ## _buffer[SIZE] = "";		\
+ 	struct seq_buf NAME = {				\
+-		.buffer = &__ ## NAME ## _buffer,	\
++		.buffer = (char[SIZE]) { 0 },		\
+ 		.size = SIZE,				\
+ 	}
  
--	if (unlikely(!coe))
-+	if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
- 		skb_checksum_none_assert(skb);
- 	else
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
-@@ -5498,7 +5524,7 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
- 		stmmac_rx_vlan(priv->dev, skb);
- 		skb->protocol = eth_type_trans(skb, priv->dev);
- 
--		if (unlikely(!coe))
-+		if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
- 			skb_checksum_none_assert(skb);
- 		else
- 			skb->ip_summed = CHECKSUM_UNNECESSARY;
--- 
-2.43.0
-
 
 
 
