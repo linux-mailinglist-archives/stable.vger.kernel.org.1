@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-16478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C742840D21
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 293D8840F4E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 277E9286FC4
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59D8D1C2111B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094C7159583;
-	Mon, 29 Jan 2024 17:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389011641B8;
+	Mon, 29 Jan 2024 17:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jo91UIDN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrXYNrnv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B201586E9;
-	Mon, 29 Jan 2024 17:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB30615D5D4;
+	Mon, 29 Jan 2024 17:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548049; cv=none; b=qZCzXbcW0G69ezl+6+jK3vGeINa8L4cBxHf+lNyVKRxjxPPHcJr5EuvKwun+gIDsyBzTMgshVNVpCsipyeYl5G9YF7JU2U6TaxClvRCqMRmnb08ueTkNozcfQEbPkOp8LqYmo6HQXJ6vVVWFlxJjpUkRWc6Y1FS80mcolT4S8nc=
+	t=1706548419; cv=none; b=sfdcWlsKquf3SCC68aIAqBAEVSM3pwkteYx+2fYn35gyAzrp2W6nyCYELeVCTgaMlP+/WmUcbvaBnBpc/M9645YFlXvwEwK+44DD42AuOZF0kWg9KbHxtq659M+bZyYKlB8ficfNwFPpwUh8pVfWS/r/tP57atVipZ+y+nj50JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548049; c=relaxed/simple;
-	bh=s0oiVPHsF+cQcF1PyTib/LNbHH3w7ZyIvkCGoc48DJg=;
+	s=arc-20240116; t=1706548419; c=relaxed/simple;
+	bh=ArysNrgm586c0bdfiOy9gNJW+G5/rSoWZ76DfkHz6YY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=THoBwnOI1tsOmQ+aHYcmzsaLqfz65Fwpq05D20C6G0E8tgLC7WBbS3BBQf7EOSSxrNDoCUY5s0f0NcGvDmtl8brdSECALykqv7EOoHykoFVjC9hgwmXDvGCKhkdcw2R0qcjLSgQzK8Bn8dNv0f/jczDwcnSXYetmat0GL34PCjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jo91UIDN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2217AC433F1;
-	Mon, 29 Jan 2024 17:07:29 +0000 (UTC)
+	 MIME-Version; b=qHFbf5v7ColddzNF/uPZ7NKodyPLQ2hObVbkozYPBxHepQqbujmABwT/S1bUz4m2xynC7Uhf0dU+s+JJ3Ab94jalotoAhrJ6ZNQmjUzjWyjzilHt6JOYWOk7ebbpbm+27LNf+LiBcvXLstzzZWWFpzwe328dEbY5mEewmgKC2Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrXYNrnv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FDBC433F1;
+	Mon, 29 Jan 2024 17:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548049;
-	bh=s0oiVPHsF+cQcF1PyTib/LNbHH3w7ZyIvkCGoc48DJg=;
+	s=korg; t=1706548418;
+	bh=ArysNrgm586c0bdfiOy9gNJW+G5/rSoWZ76DfkHz6YY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jo91UIDN/jdNk2UkzrT4dNDZWa+8dMUO6Od4jphE6YlkRdISb4cqNmREESzVLQaEj
-	 3R4yTuqEU3eryjp79IOgksvRdzSwflH04OfD4ywb4JdvBjfKtX1UY96OuHPqpnqqe+
-	 AZt8krm/SaFWwy4pS2bJUf5VLPf6r7e4t29afXyM=
+	b=lrXYNrnvpE49XcZ97vWBuurK+SW4dB3+7V6doN13687x8blWnDqxi/Mb+rI6UwLoL
+	 9I1YvpEb5UPzuGDA3ltkvsKdrfCWnJnCzWjjuFuHlIn1322NuunLxmp7MNdoGuv5Dd
+	 fYneh9hcEl8hyTcO9h+v8bkGRTddyF0BgkkLhfSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 050/346] iio: adc: ad7091r: Enable internal vref if external vref is not supplied
+Subject: [PATCH 6.6 017/331] riscv: Fix an off-by-one in get_early_cmdline()
 Date: Mon, 29 Jan 2024 09:01:21 -0800
-Message-ID: <20240129170017.857890899@linuxfoundation.org>
+Message-ID: <20240129170015.467440724@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit e71c5c89bcb165a02df35325aa13d1ee40112401 ]
+[ Upstream commit adb1f95d388a43c4c564ef3e436f18900dde978e ]
 
-The ADC needs a voltage reference to work correctly.
-Users can provide an external voltage reference or use the chip internal
-reference to operate the ADC.
-The availability of an in chip reference for the ADC saves the user from
-having to supply an external voltage reference, which makes the external
-reference an optional property as described in the device tree
-documentation.
-Though, to use the internal reference, it must be enabled by writing to
-the configuration register.
-Enable AD7091R internal voltage reference if no external vref is supplied.
+The ending NULL is not taken into account by strncat(), so switch to
+strlcat() to correctly compute the size of the available memory when
+appending CONFIG_CMDLINE to 'early_cmdline'.
 
-Fixes: 260442cc5be4 ("iio: adc: ad7091r5: Add scale and external VREF support")
-Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Link: https://lore.kernel.org/r/b865033fa6a4fc4bf2b4a98ec51a6144e0f64f77.1703013352.git.marcelo.schmitt1@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 26e7aacb83df ("riscv: Allow to downgrade paging mode from the command line")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/9f66d2b58c8052d4055e90b8477ee55d9a0914f9.1698564026.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7091r-base.c | 7 +++++++
- drivers/iio/adc/ad7091r-base.h | 2 ++
- 2 files changed, 9 insertions(+)
+ arch/riscv/kernel/pi/cmdline_early.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7091r-base.c b/drivers/iio/adc/ad7091r-base.c
-index 3d36bcd26b0c..76002b91c86a 100644
---- a/drivers/iio/adc/ad7091r-base.c
-+++ b/drivers/iio/adc/ad7091r-base.c
-@@ -405,7 +405,14 @@ int ad7091r_probe(struct device *dev, const char *name,
- 	if (IS_ERR(st->vref)) {
- 		if (PTR_ERR(st->vref) == -EPROBE_DEFER)
- 			return -EPROBE_DEFER;
-+
- 		st->vref = NULL;
-+		/* Enable internal vref */
-+		ret = regmap_set_bits(st->map, AD7091R_REG_CONF,
-+				      AD7091R_REG_CONF_INT_VREF);
-+		if (ret)
-+			return dev_err_probe(st->dev, ret,
-+					     "Error on enable internal reference\n");
- 	} else {
- 		ret = regulator_enable(st->vref);
- 		if (ret)
-diff --git a/drivers/iio/adc/ad7091r-base.h b/drivers/iio/adc/ad7091r-base.h
-index 7a78976a2f80..b9e1c8bf3440 100644
---- a/drivers/iio/adc/ad7091r-base.h
-+++ b/drivers/iio/adc/ad7091r-base.h
-@@ -8,6 +8,8 @@
- #ifndef __DRIVERS_IIO_ADC_AD7091R_BASE_H__
- #define __DRIVERS_IIO_ADC_AD7091R_BASE_H__
+diff --git a/arch/riscv/kernel/pi/cmdline_early.c b/arch/riscv/kernel/pi/cmdline_early.c
+index 68e786c84c94..f6d4dedffb84 100644
+--- a/arch/riscv/kernel/pi/cmdline_early.c
++++ b/arch/riscv/kernel/pi/cmdline_early.c
+@@ -38,8 +38,7 @@ static char *get_early_cmdline(uintptr_t dtb_pa)
+ 	if (IS_ENABLED(CONFIG_CMDLINE_EXTEND) ||
+ 	    IS_ENABLED(CONFIG_CMDLINE_FORCE) ||
+ 	    fdt_cmdline_size == 0 /* CONFIG_CMDLINE_FALLBACK */) {
+-		strncat(early_cmdline, CONFIG_CMDLINE,
+-			COMMAND_LINE_SIZE - fdt_cmdline_size);
++		strlcat(early_cmdline, CONFIG_CMDLINE, COMMAND_LINE_SIZE);
+ 	}
  
-+#define AD7091R_REG_CONF_INT_VREF	BIT(0)
-+
- /* AD7091R_REG_CH_LIMIT */
- #define AD7091R_HIGH_LIMIT		0xFFF
- #define AD7091R_LOW_LIMIT		0x0
+ 	return early_cmdline;
 -- 
 2.43.0
 
