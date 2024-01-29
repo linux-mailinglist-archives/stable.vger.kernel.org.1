@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2085284107F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0B2840EB9
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C98AA1F23DB1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F04C4B27B67
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7223F15A495;
-	Mon, 29 Jan 2024 17:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE1C15CD51;
+	Mon, 29 Jan 2024 17:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkajlNj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgRasUGb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6B576058;
-	Mon, 29 Jan 2024 17:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DCD157053;
+	Mon, 29 Jan 2024 17:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548633; cv=none; b=KDvB6LsTDkksJR9BSMjbqzjhySM3zX6PnhTfz0isTGILH1ByY5n8to8JjQT1HhoIEW9M8aa6+hmlEG5sBsda0ondL3cigQyNj2FQrW5hQQfOzAqIshza4yAM4p6mzwJZgr8qr3pRYeETW8XuFGyFP590WvT5g4D2pUiXwnPXVhk=
+	t=1706548336; cv=none; b=G2NY5YucSTMhme6Lq9w2c2MFlqE+gj7wmkB00oRXj0aPXqj3U8zzJg0Le+Rp2ysRZzLsxruff83A+P8e6rT0WNFCK4uAQe5T8KSAUQ+hPH67fGaB4ObHCKSUJKIgh8Nzza6BBPojtoBHk3kybornByvZytCfFVLNY4xssdhG7es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548633; c=relaxed/simple;
-	bh=Isl5y1q60aRo3jJeqnSWSQyo2ep5FblIfXAcCS1m6bk=;
+	s=arc-20240116; t=1706548336; c=relaxed/simple;
+	bh=0iwIHB0f2rc+w7oyboJfa59V0on82SRquNv5Bkhjeh8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3Qi0AK/vkHxLJs8mmAojDKu0qCN/wD+diQuyB2gapxwziOvDM4Zts/apUV7E7Jcz6bHcXLUpA7F/ceol5FA+F9ASICcfSPoZSE4szJfPmgp+SXmkT/A1dXMHXE2uhsImYJUBAcmOaJms0+mikm8BwtLjHvtOD4Jlc/GzekK7do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkajlNj/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC31AC43390;
-	Mon, 29 Jan 2024 17:17:12 +0000 (UTC)
+	 MIME-Version; b=Ed3EX8r4zpQuR0aOEs0q4BT4sJg7qddzA4SRyZrNX79jFOMycKf5U3kM3nsCX6GPGWIsLHws6aKh2+Dy0x1fL4uvnWwEYYig9nQbLsY0Ys5pgPuu6oCfxVIXCa8wtGiqgxq98DhHhKyuQX4mxExKOQqYENMFuXRotDVWXk524Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgRasUGb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A865FC43390;
+	Mon, 29 Jan 2024 17:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548633;
-	bh=Isl5y1q60aRo3jJeqnSWSQyo2ep5FblIfXAcCS1m6bk=;
+	s=korg; t=1706548335;
+	bh=0iwIHB0f2rc+w7oyboJfa59V0on82SRquNv5Bkhjeh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hkajlNj/+Qujk5NL4EjUDN8haTXCqTACCIybrhTFSICSzYusyIP+W1+FSog10JA7o
-	 bJvPASYz6JARji5mV7xORiMR+U9dHKIra5FxTQJGA0UE+nHvWZaTc0J30Wo1zCKf9p
-	 s75bMjk4i3+Ov+f2tDn2D6ZhbqQzkzzi2vdk6mJY=
+	b=RgRasUGbLSyTIUesZFOF6Lr2oBM0eLXxc0/CRM7RIccY3k7zBHhJJK8wha41d89sF
+	 HXdEGqM7yxeGqz1zEaX9hRjYTgNZCP6+aaMJjPlS8J3PMIWwyntK135BlXGXlMyiYx
+	 nZxZiBNDkbal/TqbIoNA0sDugYJcv6cr19kxC8L4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Feifei Xu <Feifei.Xu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 299/331] drm/amdgpu/gfx11: set UNORD_DISPATCH in compute MQDs
+Subject: [PATCH 6.7 332/346] spi: bcm-qspi: fix SFDP BFPT read by usig mspi read
 Date: Mon, 29 Jan 2024 09:06:03 -0800
-Message-ID: <20240129170023.620773265@linuxfoundation.org>
+Message-ID: <20240129170026.242997547@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Kamal Dasu <kamal.dasu@broadcom.com>
 
-[ Upstream commit 3380fcad2c906872110d31ddf7aa1fdea57f9df6 ]
+[ Upstream commit 574bf7bbe83794a902679846770f75a9b7f28176 ]
 
-This needs to be set to 1 to avoid a potential deadlock in
-the GC 10.x and newer.  On GC 9.x and older, this needs
-to be set to 0. This can lead to hangs in some mixed
-graphics and compute workloads. Updated firmware is also
-required for AQL.
+SFDP read shall use the mspi reads when using the bcm_qspi_exec_mem_op()
+call. This fixes SFDP parameter page read failures seen with parts that
+now use SFDP protocol to read the basic flash parameter table.
 
-Reviewed-by: Feifei Xu <Feifei.Xu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Fixes: 5f195ee7d830 ("spi: bcm-qspi: Implement the spi_mem interface")
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://msgid.link/r/20240109210033.43249-1-kamal.dasu@broadcom.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c           | 2 +-
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-bcm-qspi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index 59efd4ece92d..d0c3ec9f4fb6 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -3807,7 +3807,7 @@ static int gfx_v11_0_compute_mqd_init(struct amdgpu_device *adev, void *m,
- 			    (order_base_2(prop->queue_size / 4) - 1));
- 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, RPTR_BLOCK_SIZE,
- 			    (order_base_2(AMDGPU_GPU_PAGE_SIZE / 4) - 1));
--	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, UNORD_DISPATCH, 0);
-+	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, UNORD_DISPATCH, 1);
- 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, TUNNEL_DISPATCH, 0);
- 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, PRIV_STATE, 1);
- 	tmp = REG_SET_FIELD(tmp, CP_HQD_PQ_CONTROL, KMD_QUEUE, 1);
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-index 15277f1d5cf0..d722cbd31783 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v11.c
-@@ -224,6 +224,7 @@ static void update_mqd(struct mqd_manager *mm, void *mqd,
- 	m->cp_hqd_pq_control = 5 << CP_HQD_PQ_CONTROL__RPTR_BLOCK_SIZE__SHIFT;
- 	m->cp_hqd_pq_control |=
- 			ffs(q->queue_size / sizeof(unsigned int)) - 1 - 1;
-+	m->cp_hqd_pq_control |= CP_HQD_PQ_CONTROL__UNORD_DISPATCH_MASK;
- 	pr_debug("cp_hqd_pq_control 0x%x\n", m->cp_hqd_pq_control);
+diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
+index ef08fcac2f6d..0407b91183ca 100644
+--- a/drivers/spi/spi-bcm-qspi.c
++++ b/drivers/spi/spi-bcm-qspi.c
+@@ -19,7 +19,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/slab.h>
+ #include <linux/spi/spi.h>
+-#include <linux/spi/spi-mem.h>
++#include <linux/mtd/spi-nor.h>
+ #include <linux/sysfs.h>
+ #include <linux/types.h>
+ #include "spi-bcm-qspi.h"
+@@ -1221,7 +1221,7 @@ static int bcm_qspi_exec_mem_op(struct spi_mem *mem,
  
- 	m->cp_hqd_pq_base_lo = lower_32_bits((uint64_t)q->queue_address >> 8);
+ 	/* non-aligned and very short transfers are handled by MSPI */
+ 	if (!IS_ALIGNED((uintptr_t)addr, 4) || !IS_ALIGNED((uintptr_t)buf, 4) ||
+-	    len < 4)
++	    len < 4 || op->cmd.opcode == SPINOR_OP_RDSFDP)
+ 		mspi_read = true;
+ 
+ 	if (!has_bspi(qspi) || mspi_read)
 -- 
 2.43.0
 
