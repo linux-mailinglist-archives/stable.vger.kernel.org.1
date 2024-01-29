@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-17055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A247840FA6
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BCF4840D73
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 578A1282764
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF0711C23B98
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3B56FDF7;
-	Mon, 29 Jan 2024 17:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78BA157E66;
+	Mon, 29 Jan 2024 17:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHPnVrCH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dj5Bi81t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC9E6FDE1;
-	Mon, 29 Jan 2024 17:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9489215959B;
+	Mon, 29 Jan 2024 17:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548476; cv=none; b=JkkhzE9yvqTjhoqJ8vBeaVeBXPkJ3vlo3FrAN23Bq50CeaceI+l5q43oX1sCWDDBO+0O/E9PRzlvu2pzhp/tFSOUQEGVZMg6GLB1ZYF08nJtxG0k3EmoH3kMHT6uW2Hv/uz8UA9YebdbSkr7ke5Phq6/PGdwBVUfxajBx0rLcyo=
+	t=1706548106; cv=none; b=aRSifcduJpDSbvBX4+VhB+Q9YiF1Yscdad1pr+5NF4ASVeeXtY4s+xUfXWJQY3HJYrTX7kC4cmntYFdEX66q1MRn4OiDLlCQhyukNpTk4GBILVFhK1s2CpdPnrzQHJXDTrBGGGYcj4O8NQoK+Aco3i/aiWRAtnnrJqaoUNhRJYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548476; c=relaxed/simple;
-	bh=UCNjLijOSKyLSt2yGlkNvOo/seJzYpMAGRd7BqbTxII=;
+	s=arc-20240116; t=1706548106; c=relaxed/simple;
+	bh=wFVlpXk44urZs/fWTGzSMKcaVsK2bS05ntZlvKPvVCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EGJYrKgi3HNzG6aasdXYOGbjqNsEFqEFWL3uFfCnJWQVhuQnRl7brlkQ952xJ3DKP81dsoHOpOH1BrMYBnAArTmRLNAysEpaLuzYQBmsgUySrIysnocqn1UxUEzWf0tt+T9QpsPDYDXvU+PuH+vdeSw94y5YoWWgrHozwGciTmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHPnVrCH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 843F7C433F1;
-	Mon, 29 Jan 2024 17:14:36 +0000 (UTC)
+	 MIME-Version; b=GNE06l/6I+d1GvXAlJxD5s4Wo84BeeKuyNFV1d1QazZ7+SNVsVUJdsoguPpX0HEn5xcmMmeGCas+okuLQ5uiXLAuVdZW2eaw2T/ZsJ77qczDMCgqyT5ovfAFyzKwhhJUAMh941kQhDeesv3XUaYuB4DyI60gmnao0zTPk9Wma0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dj5Bi81t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1A6C43399;
+	Mon, 29 Jan 2024 17:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548476;
-	bh=UCNjLijOSKyLSt2yGlkNvOo/seJzYpMAGRd7BqbTxII=;
+	s=korg; t=1706548106;
+	bh=wFVlpXk44urZs/fWTGzSMKcaVsK2bS05ntZlvKPvVCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iHPnVrCHJvl6ORWQOI2VRrfC6GoRiFtdW8sxETM/6EZXQscr/6q+PJPyDFEF7yDCo
-	 /KFNGaziFge1KMS+XLs7vesFQ352+l8hPjJ8l5QIJexGfWkRrAFuCuKlmIWoM2OSBk
-	 xC6ceDf6NCbFnQ7YrulIBjf7IU61H7t0XcodzZWg=
+	b=Dj5Bi81ts3LDLLmISs24w5KyWAewvgHAQo1mp8xrAgQ70VZ6kNNIIQGiKd6y1XaTy
+	 y5zV9RE6WawSU4+nF1BAWksnHLXQ/9myVTYa7hXLB+aY0xnX+0bJfqFvgpYvPD/uV8
+	 18qNqOV+sxd0hzaEXXc93rF98EBsz0x6PNvVO6qE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinod Koul <vkoul@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 095/331] arm64: dts: qcom: sc8180x: fix USB SS wakeup
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.7 128/346] serial: sc16is7xx: remove wasteful static buffer in sc16is7xx_regmap_name()
 Date: Mon, 29 Jan 2024 09:02:39 -0800
-Message-ID: <20240129170017.711917271@linuxfoundation.org>
+Message-ID: <20240129170020.145795715@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit 0afa885d42d05d30161ab8eab1ebacd993edb82b upstream.
+commit 6bcab3c8acc88e265c570dea969fd04f137c8a4c upstream.
 
-The USB SS PHY interrupt needs to be provided by the PDC interrupt
-controller in order to be able to wake the system up from low-power
-states.
+Using a static buffer inside sc16is7xx_regmap_name() was a convenient and
+simple way to set the regmap name without having to allocate and free a
+buffer each time it is called. The drawback is that the static buffer
+wastes memory for nothing once regmap is fully initialized.
 
-Fixes: b080f53a8f44 ("arm64: dts: qcom: sc8180x: Add remoteprocs, wifi and usb nodes")
-Cc: stable@vger.kernel.org      # 6.5
-Cc: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231214074319.11023-4-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Remove static buffer and use constant strings instead.
+
+This also avoids a truncation warning when using "%d" or "%u" in snprintf
+which was flagged by kernel test robot.
+
+Fixes: 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
+Cc:  <stable@vger.kernel.org> # 6.1.x: 3837a03 serial: sc16is7xx: improve regmap debugfs by using one regmap per port
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231211171353.2901416-2-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sc8180x.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-@@ -2561,7 +2561,7 @@
- 			compatible = "qcom,sc8180x-dwc3", "qcom,dwc3";
- 			reg = <0 0x0a6f8800 0 0x400>;
- 			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
--					      <&intc GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc 8 IRQ_TYPE_EDGE_BOTH>,
- 					      <&pdc 9 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq",
-@@ -2635,7 +2635,7 @@
- 			resets = <&gcc GCC_USB30_SEC_BCR>;
- 			power-domains = <&gcc USB30_SEC_GDSC>;
- 			interrupts-extended = <&intc GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
--					      <&intc GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&pdc 7 IRQ_TYPE_LEVEL_HIGH>,
- 					      <&pdc 10 IRQ_TYPE_EDGE_BOTH>,
- 					      <&pdc 11 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1709,13 +1709,15 @@ static struct regmap_config regcfg = {
+ 	.max_register = SC16IS7XX_EFCR_REG,
+ };
+ 
+-static const char *sc16is7xx_regmap_name(unsigned int port_id)
++static const char *sc16is7xx_regmap_name(u8 port_id)
+ {
+-	static char buf[6];
+-
+-	snprintf(buf, sizeof(buf), "port%d", port_id);
+-
+-	return buf;
++	switch (port_id) {
++	case 0:	return "port0";
++	case 1:	return "port1";
++	default:
++		WARN_ON(true);
++		return NULL;
++	}
+ }
+ 
+ static unsigned int sc16is7xx_regmap_port_mask(unsigned int port_id)
 
 
 
