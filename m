@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-17278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E3C984108A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25514840F37
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:21:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE972286B85
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5845C1C225B7
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF4015B986;
-	Mon, 29 Jan 2024 17:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31082164194;
+	Mon, 29 Jan 2024 17:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEUIIufN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0FH7Fnj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D14B157E6D;
-	Mon, 29 Jan 2024 17:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E428D15D5B3;
+	Mon, 29 Jan 2024 17:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548641; cv=none; b=b2LUsIYX8c1Mje3CH2pkely5EnFC+eNPCCFdz0XdTYPqXs9hZQlC48w2NRvYrjIYCMdo+zmQwJnzNs5k2UGYB4+4fSsj1IDunGf+wTJh7PPCP8fPMUFwuRPHbzW3TGKB5AQREGAwzoLHPqF0hfrX2+7ORoKasZjoCZKEoK7Zg6M=
+	t=1706548404; cv=none; b=E0Ug3KBUogs206ma31sYbt/NqUKzqb3R8DyU9bCMcKF9Xd2X9lMkJ/9g3PbCFCdmlTMQ5QdI4Quu7Yyd8VhHsFr7h0YoNoNn//MBGN1xLdd5hpiVSBJnVmEkQCAlCpuTZSAgDS2aJiPKDCkk0ds2M+OJsnkUN4qTQbr/HDZ9Ti0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548641; c=relaxed/simple;
-	bh=Y5CW5M5jxbwXYd1gBZyuUh4Us+RwupiFMh9EKpnP3ZU=;
+	s=arc-20240116; t=1706548404; c=relaxed/simple;
+	bh=hJZreGN6t4ekz6AWVu9mBbN9ommLfV9ayhopMB+aTi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rprJYnrHCOExGWXlSJnzG0D0Dw5rY7Nq5aQZawMg1sPZmGUqJBB8NvlU0V67duKfknQRK0Gj1pBUYTjjem8JlJgDPHO+OP7aojIAwzzIQ5/Gm/S2ZdnxZbC1RNzG9XX+1SlZwipARl60VUJdjwDJDlJD3JX5jEzWB/V1RM62aoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEUIIufN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23DBBC433F1;
-	Mon, 29 Jan 2024 17:17:21 +0000 (UTC)
+	 MIME-Version; b=l0aWwX8RLdep+1uRP4NM4u5RlSiykYdVstH8EjhpK4YqrMkqDhG+WWTEuIxTAwSN2fGf/O42vQKbj/Mr/3RIcnLNJsMNA1jhDZH54+wulFsdVnTtsPWfzscHJCZ3Rrr/mC0UkHshEn3sgCCI2nUFAqghnRt/vXmqTnFU8ty+HpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0FH7Fnj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCA1C433C7;
+	Mon, 29 Jan 2024 17:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548641;
-	bh=Y5CW5M5jxbwXYd1gBZyuUh4Us+RwupiFMh9EKpnP3ZU=;
+	s=korg; t=1706548403;
+	bh=hJZreGN6t4ekz6AWVu9mBbN9ommLfV9ayhopMB+aTi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qEUIIufN5Opt2zM/8O9REIRG9BJ6FEd7kK78Z9VShZQUQUe6YsyI0ra7oyyaAL+lC
-	 NBjAbh0A/X7wlM88DyJZXXXfMMcqzM+Rbhg/GfXbdeIN/BJfwon6PpjEFJ6bk0Qujm
-	 hSveq5Y2XVi8KvkZVNRBStoym3L7leKVXOtyZEn0=
+	b=H0FH7Fnj36AtHcxaRoju2sj2DkjRvQ/Qgje1GxKkQ4i5AK8VY+tW5rFFGY0k87IHX
+	 1XBnG2u5tbG7WiIjmuSERBQ4tpAGddoFpcbcrj8l1QyKPkGcRg93Zq1B9AZrorEaYg
+	 BH4DH9gSSbZuWlxDEvyG0lG+mF4VYKqL+Ne6sWKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pin-yen Lin <treapking@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 300/331] drm/bridge: parade-ps8640: Wait for HPD when doing an AUX transfer
-Date: Mon, 29 Jan 2024 09:06:04 -0800
-Message-ID: <20240129170023.649095371@linuxfoundation.org>
+Subject: [PATCH 6.1 165/185] Revert "powerpc/64s: Increase default stack size to 32KB"
+Date: Mon, 29 Jan 2024 09:06:05 -0800
+Message-ID: <20240129170003.894415139@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +60,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+This reverts commit 9ccf64e763aca088b0d25c1274af42b1a6a45135 which is
+upstream commit 18f14afe281648e31ed35c9ad2fcb724c4838ad9.
 
-[ Upstream commit 024b32db43a359e0ded3fcc6cd86247cbbed4224 ]
+Breaks the build:
 
-Unlike what is claimed in commit f5aa7d46b0ee ("drm/bridge:
-parade-ps8640: Provide wait_hpd_asserted() in struct drm_dp_aux"), if
-someone manually tries to do an AUX transfer (like via `i2cdump ${bus}
-0x50 i`) while the panel is off we don't just get a simple transfer
-error. Instead, the whole ps8640 gets thrown for a loop and goes into
-a bad state.
+arch/powerpc/kvm/book3s_hv_rmhandlers.S:2689: Error: operand out of range (0x0000000000008310 is not between 0xffffffffffff8001 and 0x0000000000008000)
+make[3]: *** [scripts/Makefile.build:382: arch/powerpc/kvm/book3s_hv_rmhandlers.o] Error 1
 
-Let's put the function to wait for the HPD (and the magical 50 ms
-after first reset) back in when we're doing an AUX transfer. This
-shouldn't actually make things much slower (assuming the panel is on)
-because we should immediately poll and see the HPD high. Mostly this
-is just an extra i2c transfer to the bridge.
-
-Fixes: f5aa7d46b0ee ("drm/bridge: parade-ps8640: Provide wait_hpd_asserted() in struct drm_dp_aux")
-Tested-by: Pin-yen Lin <treapking@chromium.org>
-Reviewed-by: Pin-yen Lin <treapking@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231221135548.1.I10f326a9305d57ad32cee7f8d9c60518c8be20fb@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/parade-ps8640.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/powerpc/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/parade-ps8640.c b/drivers/gpu/drm/bridge/parade-ps8640.c
-index 541e4f5afc4c..fb5e9ae9ad81 100644
---- a/drivers/gpu/drm/bridge/parade-ps8640.c
-+++ b/drivers/gpu/drm/bridge/parade-ps8640.c
-@@ -346,6 +346,11 @@ static ssize_t ps8640_aux_transfer(struct drm_dp_aux *aux,
- 	int ret;
- 
- 	pm_runtime_get_sync(dev);
-+	ret = _ps8640_wait_hpd_asserted(ps_bridge, 200 * 1000);
-+	if (ret) {
-+		pm_runtime_put_sync_suspend(dev);
-+		return ret;
-+	}
- 	ret = ps8640_aux_transfer_msg(aux, msg);
- 	pm_runtime_mark_last_busy(dev);
- 	pm_runtime_put_autosuspend(dev);
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 2c94f9cf1ce0..6050e6e10d32 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -806,7 +806,6 @@ config THREAD_SHIFT
+ 	int "Thread shift" if EXPERT
+ 	range 13 15
+ 	default "15" if PPC_256K_PAGES
+-	default "15" if PPC_PSERIES || PPC_POWERNV
+ 	default "14" if PPC64
+ 	default "13"
+ 	help
 -- 
 2.43.0
 
