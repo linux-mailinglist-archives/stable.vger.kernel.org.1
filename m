@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-17279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0530784108B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25628840F39
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38BAA1C23A54
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAFF1B20A8F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572BB15F339;
-	Mon, 29 Jan 2024 17:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B3D15D5C3;
+	Mon, 29 Jan 2024 17:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Uk2FlY8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bWLHbLE9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BC7157E6D;
-	Mon, 29 Jan 2024 17:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B289E15D5B3;
+	Mon, 29 Jan 2024 17:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548642; cv=none; b=aOP0EaBscOb5GvtjweOuWg/rYuRd/9FbVibfZQDSvSmqWUdzqPc0WZxhhlVDVPBamQ/VI6OpvW06Ss9/8BCJa4I1oLbZVRclVKUfOvck8s3G75SJ4vqDVcsUgfAb5Eu0L15dzFVzMG+mseegbZqe/Zeer3ps2cu2/9YVZs1cgng=
+	t=1706548404; cv=none; b=iYduyzR977qrctaaB5TYpsBxkZjP3NogN6UdWi53A9nCDk7FyqOwYGK2CwPuFx2jnRDdho6jGLJqTgZ4aDj6j5PxPynS2JLnLpZvL2h6d7SRrx2tzXBwZKBTLbaF3P2vekY1jcrJjnTCXidJjgBoYhDZKq6DYAhh6tYh3mCBY6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548642; c=relaxed/simple;
-	bh=jm8wAoEuzoOzDNcTEbxURuzBNPl+2CfNh2xU8v0Afns=;
+	s=arc-20240116; t=1706548404; c=relaxed/simple;
+	bh=RKLhUkO3newr6w+eJkIyWF378Rjw1lzWUBhXaRfne8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i54f7pnXTpuwzEhco67v7VU2gCTamtvlygKLjVEEgdWt5tk5wAnUJhxfmnBDQyiJnz5pFF923RQswTRDdiRjstccr4lhwu6ShrPnuRB8Oi6Q5ZY1OnORzK6C0DK3BgtdhL6rq4Hf7Cb7Y6sJwBsAI6rw2VTbkIbj0PBWMIL2MlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Uk2FlY8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECF2C43390;
-	Mon, 29 Jan 2024 17:17:21 +0000 (UTC)
+	 MIME-Version; b=eK2SrJdy/DXr5uPU2VvueWVmiLr4hwLZ8oFTq6hbqSTXE7qYPITP0sHICfwxEGB+cFwQasce//VHvi9QZW8lSvnR1c0AFV57+/HpTUxiyb9muG8w5qrilzBVHEFncGVklqezOdoGW/J+8wJOR8oFOVCqHKbHowkNrE4iHI0gO7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bWLHbLE9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CA5C43399;
+	Mon, 29 Jan 2024 17:13:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548641;
-	bh=jm8wAoEuzoOzDNcTEbxURuzBNPl+2CfNh2xU8v0Afns=;
+	s=korg; t=1706548404;
+	bh=RKLhUkO3newr6w+eJkIyWF378Rjw1lzWUBhXaRfne8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Uk2FlY8pKHE6JYHbV2gdByoYNgtcoGuh0Ula39M4UtAnlBNC7qC6KqlBtCKk8prG
-	 TtBM1S8ZFr5mCPBgB/7FhZLi79ajWotAaFteFfE+rXKBX5jrwLb+6lQn/X5Jf83ksM
-	 GofpmUC3y5Mwh9/OtzHSUYnTvZkbVjCTyotFkrWs=
+	b=bWLHbLE9pnStny8zl6GqHlvHFpchYytm3XZw9SkpZWK/Xt1sCsbln5VBENKNHyJXU
+	 CS9e3ZRchiZI0cJ/X0CLfQ1E4UNXHKwiBSVuddwYF7NddoKPEVT13yG2a7fiQwuAlI
+	 hFGzsv8deitusgaCL059ZkV0q5B+us2a62hkl10Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamal Dasu <kamal.dasu@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 318/331] spi: bcm-qspi: fix SFDP BFPT read by usig mspi read
-Date: Mon, 29 Jan 2024 09:06:22 -0800
-Message-ID: <20240129170024.189702384@linuxfoundation.org>
+	Tim Chen <tim.c.chen@linux.intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.1 183/185] tick/sched: Preserve number of idle sleeps across CPU hotplug events
+Date: Mon, 29 Jan 2024 09:06:23 -0800
+Message-ID: <20240129170004.462635902@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamal Dasu <kamal.dasu@broadcom.com>
+From: Tim Chen <tim.c.chen@linux.intel.com>
 
-[ Upstream commit 574bf7bbe83794a902679846770f75a9b7f28176 ]
+commit 9a574ea9069be30b835a3da772c039993c43369b upstream.
 
-SFDP read shall use the mspi reads when using the bcm_qspi_exec_mem_op()
-call. This fixes SFDP parameter page read failures seen with parts that
-now use SFDP protocol to read the basic flash parameter table.
+Commit 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs
+CPU hotplug") preserved total idle sleep time and iowait sleeptime across
+CPU hotplug events.
 
-Fixes: 5f195ee7d830 ("spi: bcm-qspi: Implement the spi_mem interface")
-Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://msgid.link/r/20240109210033.43249-1-kamal.dasu@broadcom.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Similar reasoning applies to the number of idle calls and idle sleeps to
+get the proper average of sleep time per idle invocation.
+
+Preserve those fields too.
+
+Fixes: 71fee48f ("tick-sched: Fix idle and iowait sleeptime accounting vs CPU hotplug")
+Signed-off-by: Tim Chen <tim.c.chen@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240122233534.3094238-1-tim.c.chen@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-bcm-qspi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/time/tick-sched.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/spi/spi-bcm-qspi.c b/drivers/spi/spi-bcm-qspi.c
-index ef08fcac2f6d..0407b91183ca 100644
---- a/drivers/spi/spi-bcm-qspi.c
-+++ b/drivers/spi/spi-bcm-qspi.c
-@@ -19,7 +19,7 @@
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/spi/spi.h>
--#include <linux/spi/spi-mem.h>
-+#include <linux/mtd/spi-nor.h>
- #include <linux/sysfs.h>
- #include <linux/types.h>
- #include "spi-bcm-qspi.h"
-@@ -1221,7 +1221,7 @@ static int bcm_qspi_exec_mem_op(struct spi_mem *mem,
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -1557,6 +1557,7 @@ void tick_cancel_sched_timer(int cpu)
+ {
+ 	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
+ 	ktime_t idle_sleeptime, iowait_sleeptime;
++	unsigned long idle_calls, idle_sleeps;
  
- 	/* non-aligned and very short transfers are handled by MSPI */
- 	if (!IS_ALIGNED((uintptr_t)addr, 4) || !IS_ALIGNED((uintptr_t)buf, 4) ||
--	    len < 4)
-+	    len < 4 || op->cmd.opcode == SPINOR_OP_RDSFDP)
- 		mspi_read = true;
+ # ifdef CONFIG_HIGH_RES_TIMERS
+ 	if (ts->sched_timer.base)
+@@ -1565,9 +1566,13 @@ void tick_cancel_sched_timer(int cpu)
  
- 	if (!has_bspi(qspi) || mspi_read)
--- 
-2.43.0
-
+ 	idle_sleeptime = ts->idle_sleeptime;
+ 	iowait_sleeptime = ts->iowait_sleeptime;
++	idle_calls = ts->idle_calls;
++	idle_sleeps = ts->idle_sleeps;
+ 	memset(ts, 0, sizeof(*ts));
+ 	ts->idle_sleeptime = idle_sleeptime;
+ 	ts->iowait_sleeptime = iowait_sleeptime;
++	ts->idle_calls = idle_calls;
++	ts->idle_sleeps = idle_sleeps;
+ }
+ #endif
+ 
 
 
 
