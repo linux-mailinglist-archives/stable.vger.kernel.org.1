@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-17010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F74A840F74
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:23:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1AAA840D44
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:09:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 059A61F23D67
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:23:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F08F285ED9
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54793F9DC;
-	Mon, 29 Jan 2024 17:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2EF15AAB4;
+	Mon, 29 Jan 2024 17:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/0X27RT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZXbcMm4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43633F9D9;
-	Mon, 29 Jan 2024 17:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A50915AAB0;
+	Mon, 29 Jan 2024 17:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548443; cv=none; b=uNiT5dOdA0ycE6CArT0JALcFxDp4gYWuYFSVXMs5M3K6c7zfZ8oIl/pYpe2dMSfcbvRKIB0obsGQ/5a3KIsi4DLFSh5Sx297BC2aoyd3ZxJhUy6MJMwCO2FF4qZOuL4l8L5hMddbMIt0AFkNJn4qtDzpObjByIpKlyendgjkK/k=
+	t=1706548073; cv=none; b=tUpeex7SAhz9QHm22fLy5hnapUZYWTHsqgtDPl8MJl7oY52Rftulb5nRMpZnKlwzxyaruFBxjBWwnCO6f/9afEiuZi+WIeYyzu1Nxvx4GoMd5KSZPwjbKn4u47yguWYRPPoHWY9nZiHRTqwfEfd9w4Ks5BYUGGoVjqcQkD+5qzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548443; c=relaxed/simple;
-	bh=8l0xOgh8wXIbn2gF4TxHVK3yaL6kQJPQoHxjULxgZ5U=;
+	s=arc-20240116; t=1706548073; c=relaxed/simple;
+	bh=xMka4iGTZwcz4RGkHjjJ/AiAxDEJucA58bVMs2u5GSw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dHHkiQchiIhfqgN9sw2Ij1gAbsH9G/nVbGCukfhS3ccaoV3By+5KmbdOqoxbqTxZamtTSFPr7CxcBH4h9CoHA1xnRJ4udBEekLJGabNWYlOOwmeh8LOU+Kprh13AMbj5xlXjYw/kGh/PkUKNKggW9nJv9EDqSKBkVHuYkyx2T0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/0X27RT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C717C43390;
-	Mon, 29 Jan 2024 17:14:03 +0000 (UTC)
+	 MIME-Version; b=cXU4j9EPOzvDYRhuYWoCeF3jyI/9gLF67sdmLEQoXuHkXPtRq0PKxKIGz8uotI1WJ9D45iF5OJJv2hd92LUAdEdZgYkcAhDW2mpk8s7bqeL+q82dDrb8f9xq658o3vM488b4lgme2BLd2GKFkTQK859NjEeB3YgeKnUbLJ49HBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZXbcMm4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3471EC43399;
+	Mon, 29 Jan 2024 17:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548443;
-	bh=8l0xOgh8wXIbn2gF4TxHVK3yaL6kQJPQoHxjULxgZ5U=;
+	s=korg; t=1706548073;
+	bh=xMka4iGTZwcz4RGkHjjJ/AiAxDEJucA58bVMs2u5GSw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y/0X27RTOpO8hqt4vL4+pd8Ny93kz4ZdYqjvzWurbesmAm4PM3DdWrMG4rrCTHphT
-	 rLpK7eNQrrgxvz7pl23NGod1cHBqjS1OGA68cMZVcCivW62y6ymhgYjEhO7FfgIx8/
-	 8/7KIsBgYSvupwUql2remXrZdu25cIMmDK+45HnE=
+	b=SZXbcMm4KwMhZzeVQA/JmLVIkCiq8huiWjgjyP7BIQ+N24uX+6zLsIF4cWrd7oW5E
+	 t3viAKWjhzUjrOYag3+qQx16xNf5UcHUJAxT+qKb9kFEYqoX3h3ZsVt2KZqqGgHR0c
+	 boFYgJwzrWxhkqHav5BWlk6QNUJmpx4yIUhK+NMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	=?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>
-Subject: [PATCH 6.6 049/331] mtd: rawnand: Clarify conditions to enable continuous reads
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.7 082/346] ARM: dts: qcom: sdx55: fix USB DP/DM HS PHY interrupts
 Date: Mon, 29 Jan 2024 09:01:53 -0800
-Message-ID: <20240129170016.367435357@linuxfoundation.org>
+Message-ID: <20240129170018.806795424@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 828f6df1bcba7f64729166efc7086ea657070445 upstream.
+commit de95f139394a5ed82270f005bc441d2e7c1e51b7 upstream.
 
-The current logic is probably fine but is a bit convoluted. Plus, we
-don't want partial pages to be part of the sequential operation just in
-case the core would optimize the page read with a subpage read (which
-would break the sequence). This may happen on the first and last page
-only, so if the start offset or the end offset is not aligned with a
-page boundary, better avoid them to prevent any risk.
+The USB DP/DM HS PHY interrupts need to be provided by the PDC interrupt
+controller in order to be able to wake the system up from low-power
+states and to be able to detect disconnect events, which requires
+triggering on falling edges.
 
-Cc: stable@vger.kernel.org
-Fixes: 003fe4b9545b ("mtd: rawnand: Support for sequential cache reads")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Tested-by: Martin Hundebøll <martin@geanix.com>
-Link: https://lore.kernel.org/linux-mtd/20231215123208.516590-5-miquel.raynal@bootlin.com
+A recent commit updated the trigger type but failed to change the
+interrupt provider as required. This leads to the current Linux driver
+failing to probe instead of printing an error during suspend and USB
+wakeup not working as intended.
+
+Fixes: d0ec3c4c11c3 ("ARM: dts: qcom: sdx55: fix USB wakeup interrupt types")
+Fixes: fea4b41022f3 ("ARM: dts: qcom: sdx55: Add USB3 and PHY support")
+Cc: stable@vger.kernel.org	# 5.12
+Cc: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20231213173131.29436-3-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/nand_base.c |   24 ++++++++++++++++--------
- 1 file changed, 16 insertions(+), 8 deletions(-)
+ arch/arm/boot/dts/qcom/qcom-sdx55.dtsi |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -3461,21 +3461,29 @@ static void rawnand_enable_cont_reads(st
- 				      u32 readlen, int col)
- {
- 	struct mtd_info *mtd = nand_to_mtd(chip);
-+	unsigned int end_page, end_col;
-+
-+	chip->cont_read.ongoing = false;
+--- a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
+@@ -585,10 +585,10 @@
+ 					  <&gcc GCC_USB30_MASTER_CLK>;
+ 			assigned-clock-rates = <19200000>, <200000000>;
  
- 	if (!chip->controller->supported_op.cont_read)
- 		return;
- 
--	if ((col && col + readlen < (3 * mtd->writesize)) ||
--	    (!col && readlen < (2 * mtd->writesize))) {
--		chip->cont_read.ongoing = false;
-+	end_page = DIV_ROUND_UP(col + readlen, mtd->writesize);
-+	end_col = (col + readlen) % mtd->writesize;
-+
-+	if (col)
-+		page++;
-+
-+	if (end_col && end_page)
-+		end_page--;
-+
-+	if (page + 1 > end_page)
- 		return;
--	}
- 
--	chip->cont_read.ongoing = true;
- 	chip->cont_read.first_page = page;
--	if (col)
--		chip->cont_read.first_page++;
--	chip->cont_read.last_page = page + ((readlen >> chip->page_shift) & chip->pagemask);
-+	chip->cont_read.last_page = end_page;
-+	chip->cont_read.ongoing = true;
-+
- 	rawnand_cap_cont_reads(chip);
- }
+-			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 198 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 158 IRQ_TYPE_EDGE_BOTH>,
+-				     <GIC_SPI 157 IRQ_TYPE_EDGE_BOTH>;
++			interrupts-extended = <&intc GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
++					      <&intc GIC_SPI 198 IRQ_TYPE_LEVEL_HIGH>,
++					      <&pdc 11 IRQ_TYPE_EDGE_BOTH>,
++					      <&pdc 10 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
  
 
 
