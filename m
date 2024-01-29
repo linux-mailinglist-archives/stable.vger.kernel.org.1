@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-16785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDED3840E68
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C7D841013
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 708E2B277CD
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 341D81F21537
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA3215A482;
-	Mon, 29 Jan 2024 17:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3D415EAB7;
+	Mon, 29 Jan 2024 17:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1W9op/w9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y/4pufRX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F06E15B964;
-	Mon, 29 Jan 2024 17:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D32C15B305;
+	Mon, 29 Jan 2024 17:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548278; cv=none; b=chc6tgqjUmALNbRQTOlUbe7ZYTX8mY/DmQJwKJZJPWKZLv629ioAK7ayCtrzmxmnu1vQ59Dl8uAr/Y6OW9DJgMqXEe1ge+E/Mipdi1hkqXl8S822ktDhNb6IPSpPajDNA+cYWyvXEHriVBCOLAemjrhVBDwy3lPZ3bO7LMQTsSQ=
+	t=1706548556; cv=none; b=vDY1WgxCL0TkyiR63dwaSA5YZoU0vayk4uGsTNPHx2a2vjG81AX+emUpUrIr3u/zJvRMo3lzn/3t3kWmNkQK/j9ZHkmIhlmECbxkSXnoJ3FfxcuPQaHHx6pcZPzemMjqTFRJKbLKGzPGLfZv/2AkvuEH6tGeamPpd9rksjYefSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548278; c=relaxed/simple;
-	bh=ERVERd5MZylJ1Ne6qFrR4JhFhV64ZoABhujrxegD8ng=;
+	s=arc-20240116; t=1706548556; c=relaxed/simple;
+	bh=aDtB0gWN9n8TLkSDJjIvJgaB7xTiFHh5OzsYsuY62aQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dW5rlHTmVUCsJKy7+Q1t/x5KEjc61qHVfhqrKPVL72NEctxW+O1Xeb9aZQdcBCNTsTy0soNR/V61gUXPPrZKKkxmcIZ6DU2khQGAxHpV21KaiPQ1Oc6c/g0Rj8QQGGoVQrZSJDTWkGgRyoJl9P9sGHWNKxMjj5cYI34Sd+kNg0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1W9op/w9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99E64C43390;
-	Mon, 29 Jan 2024 17:11:17 +0000 (UTC)
+	 MIME-Version; b=sB5E8sTcQjxq3f0G8oYUtHCOEuzL3uI7BnzEv0y93uj7naDUPi/2SH6dOl0aoj38tmhKbCK87qRVZ9cxwtyJJRhE2BVymvX3+NVnaIGn+v5sjFo9cMu05ulEYINTIaX9hfxkSG+9UaA77r/s1BmctM0WGHjGuwknvTh82uJHkps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y/4pufRX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F20C433C7;
+	Mon, 29 Jan 2024 17:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548277;
-	bh=ERVERd5MZylJ1Ne6qFrR4JhFhV64ZoABhujrxegD8ng=;
+	s=korg; t=1706548556;
+	bh=aDtB0gWN9n8TLkSDJjIvJgaB7xTiFHh5OzsYsuY62aQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1W9op/w9R5FGmfZjzjMhIetBLTMYPUeoz1KtROAt8qSAzBrx5yr8elgPtrFJOcFZp
-	 6rP3dzkOehYYpr1eu/8b8Wbrq8w9Y2X02lg2zFpcyRSAAmIwRFCrWK2uvlPG8JDdeW
-	 AejZZJVLuSKD3Jywa4nQO3ps2FP/kRofcVSawg/0=
+	b=Y/4pufRXlKzpHPtyhCO1xG2gVjvNWd8OHlaTV/TCv0bWdAFo2eAcJY16t6LzTmLNW
+	 LRxIDOwJIfKKQx7VKkJBacZNZ/fs3A1K9m7S361rRmsxug/RgLwvxdD3s1EK7UT7b9
+	 s8Af8evwVdZPwS2kKDDfv9qTP4ValXQYKORXFIpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.1 065/185] serial: sc16is7xx: remove obsolete loop in sc16is7xx_port_irq()
-Date: Mon, 29 Jan 2024 09:04:25 -0800
-Message-ID: <20240129170000.693671980@linuxfoundation.org>
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 202/331] net/mlx5e: fix a double-free in arfs_create_groups
+Date: Mon, 29 Jan 2024 09:04:26 -0800
+Message-ID: <20240129170020.788635118@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,135 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-commit ed647256e8f226241ecff7baaecdb8632ffc7ec1 upstream.
+[ Upstream commit 3c6d5189246f590e4e1f167991558bdb72a4738b ]
 
-Commit 834449872105 ("sc16is7xx: Fix for multi-channel stall") changed
-sc16is7xx_port_irq() from looping multiple times when there was still
-interrupts to serve. It simply changed the do {} while(1) loop to a
-do {} while(0) loop, which makes the loop itself now obsolete.
+When `in` allocated by kvzalloc fails, arfs_create_groups will free
+ft->g and return an error. However, arfs_create_table, the only caller of
+arfs_create_groups, will hold this error and call to
+mlx5e_destroy_flow_table, in which the ft->g will be freed again.
 
-Clean the code by removing this obsolete do {} while(0) loop.
-
-Fixes: 834449872105 ("sc16is7xx: Fix for multi-channel stall")
-Cc:  <stable@vger.kernel.org>
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-5-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1cabe6b0965e ("net/mlx5e: Create aRFS flow tables")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   89 +++++++++++++++++++----------------------
- 1 file changed, 43 insertions(+), 46 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/en_arfs.c | 26 +++++++++++--------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -726,58 +726,55 @@ static void sc16is7xx_update_mlines(stru
- static bool sc16is7xx_port_irq(struct sc16is7xx_port *s, int portno)
- {
- 	bool rc = true;
-+	unsigned int iir, rxlen;
- 	struct uart_port *port = &s->p[portno].port;
- 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
+index bb7f86c993e5..e66f486faafe 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_arfs.c
+@@ -254,11 +254,13 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
  
- 	mutex_lock(&one->efr_lock);
+ 	ft->g = kcalloc(MLX5E_ARFS_NUM_GROUPS,
+ 			sizeof(*ft->g), GFP_KERNEL);
+-	in = kvzalloc(inlen, GFP_KERNEL);
+-	if  (!in || !ft->g) {
+-		kfree(ft->g);
+-		kvfree(in);
++	if (!ft->g)
+ 		return -ENOMEM;
++
++	in = kvzalloc(inlen, GFP_KERNEL);
++	if (!in) {
++		err = -ENOMEM;
++		goto err_free_g;
+ 	}
  
--	do {
--		unsigned int iir, rxlen;
--
--		iir = sc16is7xx_port_read(port, SC16IS7XX_IIR_REG);
--		if (iir & SC16IS7XX_IIR_NO_INT_BIT) {
--			rc = false;
--			goto out_port_irq;
--		}
--
--		iir &= SC16IS7XX_IIR_ID_MASK;
--
--		switch (iir) {
--		case SC16IS7XX_IIR_RDI_SRC:
--		case SC16IS7XX_IIR_RLSE_SRC:
--		case SC16IS7XX_IIR_RTOI_SRC:
--		case SC16IS7XX_IIR_XOFFI_SRC:
--			rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
--
--			/*
--			 * There is a silicon bug that makes the chip report a
--			 * time-out interrupt but no data in the FIFO. This is
--			 * described in errata section 18.1.4.
--			 *
--			 * When this happens, read one byte from the FIFO to
--			 * clear the interrupt.
--			 */
--			if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
--				rxlen = 1;
--
--			if (rxlen)
--				sc16is7xx_handle_rx(port, rxlen, iir);
--			break;
-+	iir = sc16is7xx_port_read(port, SC16IS7XX_IIR_REG);
-+	if (iir & SC16IS7XX_IIR_NO_INT_BIT) {
-+		rc = false;
-+		goto out_port_irq;
-+	}
-+
-+	iir &= SC16IS7XX_IIR_ID_MASK;
-+
-+	switch (iir) {
-+	case SC16IS7XX_IIR_RDI_SRC:
-+	case SC16IS7XX_IIR_RLSE_SRC:
-+	case SC16IS7XX_IIR_RTOI_SRC:
-+	case SC16IS7XX_IIR_XOFFI_SRC:
-+		rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
-+
-+		/*
-+		 * There is a silicon bug that makes the chip report a
-+		 * time-out interrupt but no data in the FIFO. This is
-+		 * described in errata section 18.1.4.
-+		 *
-+		 * When this happens, read one byte from the FIFO to
-+		 * clear the interrupt.
-+		 */
-+		if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
-+			rxlen = 1;
-+
-+		if (rxlen)
-+			sc16is7xx_handle_rx(port, rxlen, iir);
-+		break;
- 		/* CTSRTS interrupt comes only when CTS goes inactive */
--		case SC16IS7XX_IIR_CTSRTS_SRC:
--		case SC16IS7XX_IIR_MSI_SRC:
--			sc16is7xx_update_mlines(one);
--			break;
--		case SC16IS7XX_IIR_THRI_SRC:
--			sc16is7xx_handle_tx(port);
--			break;
--		default:
--			dev_err_ratelimited(port->dev,
--					    "ttySC%i: Unexpected interrupt: %x",
--					    port->line, iir);
--			break;
--		}
--	} while (0);
-+	case SC16IS7XX_IIR_CTSRTS_SRC:
-+	case SC16IS7XX_IIR_MSI_SRC:
-+		sc16is7xx_update_mlines(one);
-+		break;
-+	case SC16IS7XX_IIR_THRI_SRC:
-+		sc16is7xx_handle_tx(port);
-+		break;
-+	default:
-+		dev_err_ratelimited(port->dev,
-+				    "ttySC%i: Unexpected interrupt: %x",
-+				    port->line, iir);
-+		break;
-+	}
+ 	mc = MLX5_ADDR_OF(create_flow_group_in, in, match_criteria);
+@@ -278,7 +280,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
+ 		break;
+ 	default:
+ 		err = -EINVAL;
+-		goto out;
++		goto err_free_in;
+ 	}
  
- out_port_irq:
- 	mutex_unlock(&one->efr_lock);
+ 	switch (type) {
+@@ -300,7 +302,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
+ 		break;
+ 	default:
+ 		err = -EINVAL;
+-		goto out;
++		goto err_free_in;
+ 	}
+ 
+ 	MLX5_SET_CFG(in, match_criteria_enable, MLX5_MATCH_OUTER_HEADERS);
+@@ -309,7 +311,7 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
+ 	MLX5_SET_CFG(in, end_flow_index, ix - 1);
+ 	ft->g[ft->num_groups] = mlx5_create_flow_group(ft->t, in);
+ 	if (IS_ERR(ft->g[ft->num_groups]))
+-		goto err;
++		goto err_clean_group;
+ 	ft->num_groups++;
+ 
+ 	memset(in, 0, inlen);
+@@ -318,18 +320,20 @@ static int arfs_create_groups(struct mlx5e_flow_table *ft,
+ 	MLX5_SET_CFG(in, end_flow_index, ix - 1);
+ 	ft->g[ft->num_groups] = mlx5_create_flow_group(ft->t, in);
+ 	if (IS_ERR(ft->g[ft->num_groups]))
+-		goto err;
++		goto err_clean_group;
+ 	ft->num_groups++;
+ 
+ 	kvfree(in);
+ 	return 0;
+ 
+-err:
++err_clean_group:
+ 	err = PTR_ERR(ft->g[ft->num_groups]);
+ 	ft->g[ft->num_groups] = NULL;
+-out:
++err_free_in:
+ 	kvfree(in);
+-
++err_free_g:
++	kfree(ft->g);
++	ft->g = NULL;
+ 	return err;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
