@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-17181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5AAA841026
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA901840E82
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BD171F23BCB
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CD3E1F27E6D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD1D7404E;
-	Mon, 29 Jan 2024 17:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD4315FB09;
+	Mon, 29 Jan 2024 17:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulF8TjGF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPwWA+rC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7917406A;
-	Mon, 29 Jan 2024 17:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C74315A49F;
+	Mon, 29 Jan 2024 17:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548571; cv=none; b=OXYbKJdoEUisltGpfwOu6KmymdbW6xViNQq8xRatCLLTlxFe+qi5L4sFDT3umvks1nFgUeCjgYowkfmjVbI1T9i6yOWeaUB9tfW2EY+Nw+lhkE3EiVh1aGuwD6Je2MSdJNQAc4W+yUOfqC5Ww3SbBS1eskDfeYCjELfzagkWmtE=
+	t=1706548295; cv=none; b=o6fPMccYm6f8l1Mwphm1OEfRVWfLjkyw/Fse0p1X4l6uuI2yGgT+EAS75mBNuXIwnmXDgyf9zkKSzULciU2TULnPPR3AWHLW6Zo+P5Pxel+UICIipiEFpp/Zc4Yrp40XNXU4bzNZt/YXGtNXQ90fULrAjVzhxzatPmhNrY9AYO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548571; c=relaxed/simple;
-	bh=DAl0qj9U05bf7LSd3/qBf9AMoTCO/zQon/phXFdXylE=;
+	s=arc-20240116; t=1706548295; c=relaxed/simple;
+	bh=0d3yFoz3cfaGc1bO9TWezusZthC7aY9TbXwx+1EmFLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M7SC/rtnHtlkh9ZkH662956jxJXXN3Exj7xNG+FRgCrqLCzR44o/2i175dPrqlSeF4VIQCe+4HciHoRTuk5WlR9KZwh6fTNFT/p4KWB3q9W6hu54040Z4QMKw5nFqJ2FtQJ5DSKPT4rQhYObW0LomlZd3DjZIdFvZowWH5T1kt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ulF8TjGF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC6FC43390;
-	Mon, 29 Jan 2024 17:16:09 +0000 (UTC)
+	 MIME-Version; b=bidKDDZXDoO/E89Y6q7djuhH1rSWo1Kw8hQTV25fFWJMU5Ad55br2swzNPY7t0l2hiqs4qkX0XFnXSF1P/3+cjt05AzHtu9LXZxP0QTFEjaqSCJlo+Xbpaqv/6kzWVCRb8oFg5pLxYK/6vVvkQ4bIlO/IphqSUMUlKXPq2QPBUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPwWA+rC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C9AC433F1;
+	Mon, 29 Jan 2024 17:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548569;
-	bh=DAl0qj9U05bf7LSd3/qBf9AMoTCO/zQon/phXFdXylE=;
+	s=korg; t=1706548295;
+	bh=0d3yFoz3cfaGc1bO9TWezusZthC7aY9TbXwx+1EmFLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ulF8TjGF1n41ODjk8eTf+Z7Y1nb81sIQURceqI4QhQ8kZ0deEpNoDcrf070EMAe4A
-	 WTVISnolGP8FFWkz3imHqUCTx9Qu+sTaKiXtPx9+fkOSu3O2vREwu9N2KiEdjwEdnR
-	 20m3LucyvHpaOpvj0qfWQ7HCtZjVHwOgdDcZB4jw=
+	b=SPwWA+rCoypbYS/t87S28Fj1ZasVnMu54YNQ3NeSd8w2AndGKDch4jen1adFED/VS
+	 SXB/giMcgwZAJU6MFxixJ6TJkrCUQ2Q+ogXdweGWhlbF4NMEkVQniG6+N84ebT2ydo
+	 SmjUq/P3LZ6brD63i69vu3gCED7OiKgA/5c0SL08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 194/331] net/mlx5: Fix a WARN upon a callback command failure
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.1 058/185] serial: sc16is7xx: improve regmap debugfs by using one regmap per port
 Date: Mon, 29 Jan 2024 09:04:18 -0800
-Message-ID: <20240129170020.559933821@linuxfoundation.org>
+Message-ID: <20240129170000.466209246@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,154 +60,442 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yishai Hadas <yishaih@nvidia.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit cc8091587779cfaddb6b29c9e9edb9079a282cad ]
+commit 3837a0379533aabb9e4483677077479f7c6aa910 upstream.
 
-The below WARN [1] is reported once a callback command failed.
+With this current driver regmap implementation, it is hard to make sense
+of the register addresses displayed using the regmap debugfs interface,
+because they do not correspond to the actual register addresses documented
+in the datasheet. For example, register 1 is displayed as registers 04 thru
+07:
 
-As a callback runs under an interrupt context, needs to use the IRQ
-save/restore variant.
+$ cat /sys/kernel/debug/regmap/spi0.0/registers
+  04: 10 -> Port 0, register offset 1
+  05: 10 -> Port 1, register offset 1
+  06: 00 -> Port 2, register offset 1 -> invalid
+  07: 00 -> port 3, register offset 1 -> invalid
+  ...
 
-[1]
-DEBUG_LOCKS_WARN_ON(lockdep_hardirq_context())
-WARNING: CPU: 15 PID: 0 at kernel/locking/lockdep.c:4353
-              lockdep_hardirqs_on_prepare+0x11b/0x180
-Modules linked in: vhost_net vhost tap mlx5_vfio_pci
-vfio_pci vfio_pci_core vfio_iommu_type1 vfio mlx5_vdpa vringh
-vhost_iotlb vdpa nfnetlink_cttimeout openvswitch nsh ip6table_mangle
-ip6table_nat ip6table_filter ip6_tables iptable_mangle
-xt_conntrackxt_MASQUERADE nf_conntrack_netlink nfnetlink
-xt_addrtype iptable_nat nf_nat br_netfilter rpcsec_gss_krb5
-auth_rpcgss oid_registry overlay rpcrdma rdma_ucm ib_iser libiscsi
-scsi_transport_iscsi rdma_cm iw_cm ib_umad ib_ipoib ib_cm
-mlx5_ib ib_uverbs ib_core fuse mlx5_core
-CPU: 15 PID: 0 Comm: swapper/15 Tainted: G        W 6.7.0-rc4+ #1587
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-RIP: 0010:lockdep_hardirqs_on_prepare+0x11b/0x180
-Code: 00 5b c3 c3 e8 e6 0d 58 00 85 c0 74 d6 8b 15 f0 c3
-      76 01 85 d2 75 cc 48 c7 c6 04 a5 3b 82 48 c7 c7 f1
-      e9 39 82 e8 95 12 f9 ff <0f> 0b 5b c3 e8 bc 0d 58 00
-      85 c0 74 ac 8b 3d c6 c3 76 01 85 ff 75
-RSP: 0018:ffffc900003ecd18 EFLAGS: 00010086
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000027
-RDX: 0000000000000000 RSI: ffff88885fbdb880 RDI: ffff88885fbdb888
-RBP: 00000000ffffff87 R08: 0000000000000000 R09: 0000000000000001
-R10: 0000000000000000 R11: 284e4f5f4e524157 R12: 00000000002c9aa1
-R13: ffff88810aace980 R14: ffff88810aace9b8 R15: 0000000000000003
-FS:  0000000000000000(0000) GS:ffff88885fbc0000(0000)
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f731436f4c8 CR3: 000000010aae6001 CR4: 0000000000372eb0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <IRQ>
-? __warn+0x81/0x170
-? lockdep_hardirqs_on_prepare+0x11b/0x180
-? report_bug+0xf8/0x1c0
-? handle_bug+0x3f/0x70
-? exc_invalid_op+0x13/0x60
-? asm_exc_invalid_op+0x16/0x20
-? lockdep_hardirqs_on_prepare+0x11b/0x180
-? lockdep_hardirqs_on_prepare+0x11b/0x180
-trace_hardirqs_on+0x4a/0xa0
-raw_spin_unlock_irq+0x24/0x30
-cmd_status_err+0xc0/0x1a0 [mlx5_core]
-cmd_status_err+0x1a0/0x1a0 [mlx5_core]
-mlx5_cmd_exec_cb_handler+0x24/0x40 [mlx5_core]
-mlx5_cmd_comp_handler+0x129/0x4b0 [mlx5_core]
-cmd_comp_notifier+0x1a/0x20 [mlx5_core]
-notifier_call_chain+0x3e/0xe0
-atomic_notifier_call_chain+0x5f/0x130
-mlx5_eq_async_int+0xe7/0x200 [mlx5_core]
-notifier_call_chain+0x3e/0xe0
-atomic_notifier_call_chain+0x5f/0x130
-irq_int_handler+0x11/0x20 [mlx5_core]
-__handle_irq_event_percpu+0x99/0x220
-? tick_irq_enter+0x5d/0x80
-handle_irq_event_percpu+0xf/0x40
-handle_irq_event+0x3a/0x60
-handle_edge_irq+0xa2/0x1c0
-__common_interrupt+0x55/0x140
-common_interrupt+0x7d/0xa0
-</IRQ>
-<TASK>
-asm_common_interrupt+0x22/0x40
-RIP: 0010:default_idle+0x13/0x20
-Code: c0 08 00 00 00 4d 29 c8 4c 01 c7 4c 29 c2 e9 72 ff
-ff ff cc cc cc cc 8b 05 ea 08 25 01 85 c0 7e 07 0f 00 2d 7f b0 26 00 fb
-f4 <fa> c3 90 66 2e 0f 1f 84 00 00 00 00 00 65 48 8b 04 25 80 d0 02 00
-RSP: 0018:ffffc9000010fec8 EFLAGS: 00000242
-RAX: 0000000000000001 RBX: 000000000000000f RCX: 4000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffffff811c410c
-RBP: ffffffff829478c0 R08: 0000000000000001 R09: 0000000000000001
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
-? do_idle+0x1ec/0x210
-default_idle_call+0x6c/0x90
-do_idle+0x1ec/0x210
-cpu_startup_entry+0x26/0x30
-start_secondary+0x11b/0x150
-secondary_startup_64_no_verify+0x165/0x16b
-</TASK>
-irq event stamp: 833284
-hardirqs last  enabled at (833283): [<ffffffff811c410c>]
-do_idle+0x1ec/0x210
-hardirqs last disabled at (833284): [<ffffffff81daf9ef>]
-common_interrupt+0xf/0xa0
-softirqs last  enabled at (833224): [<ffffffff81dc199f>]
-__do_softirq+0x2bf/0x40e
-softirqs last disabled at (833177): [<ffffffff81178ddf>]
-irq_exit_rcu+0x7f/0xa0
+The reason is that bits 0 and 1 of the register address correspond to the
+channel (port) bits, so the register address itself starts at bit 2, and we
+must 'mentally' shift each register address by 2 bits to get its real
+address/offset.
 
-Fixes: 34f46ae0d4b3 ("net/mlx5: Add command failures data to debugfs")
-Signed-off-by: Yishai Hadas <yishaih@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also, only channels 0 and 1 are supported by the chip, so channel mask
+combinations of 10b and 11b are invalid, and the display of these
+registers is useless.
+
+This patch adds a separate regmap configuration for each port, similar to
+what is done in the max310x driver, so that register addresses displayed
+match the register addresses in the chip datasheet. Also, each port now has
+its own debugfs entry.
+
+Example with new regmap implementation:
+
+$ cat /sys/kernel/debug/regmap/spi0.0-port0/registers
+1: 10
+2: 01
+3: 00
+...
+
+$ cat /sys/kernel/debug/regmap/spi0.0-port1/registers
+1: 10
+2: 01
+3: 00
+
+As an added bonus, this also simplifies some operations (read/write/modify)
+because it is no longer necessary to manually shift register addresses.
+
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231030211447.974779-1-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/cmd.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |  143 +++++++++++++++++++++++------------------
+ 1 file changed, 81 insertions(+), 62 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-index 7013e1c8741a..55efb932ab2c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
-@@ -1921,6 +1921,7 @@ static void cmd_status_log(struct mlx5_core_dev *dev, u16 opcode, u8 status,
- {
- 	const char *namep = mlx5_command_str(opcode);
- 	struct mlx5_cmd_stats *stats;
-+	unsigned long flags;
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -301,8 +301,8 @@
  
- 	if (!err || !(strcmp(namep, "unknown command opcode")))
- 		return;
-@@ -1928,7 +1929,7 @@ static void cmd_status_log(struct mlx5_core_dev *dev, u16 opcode, u8 status,
- 	stats = xa_load(&dev->cmd.stats, opcode);
- 	if (!stats)
- 		return;
--	spin_lock_irq(&stats->lock);
-+	spin_lock_irqsave(&stats->lock, flags);
- 	stats->failed++;
- 	if (err < 0)
- 		stats->last_failed_errno = -err;
-@@ -1937,7 +1938,7 @@ static void cmd_status_log(struct mlx5_core_dev *dev, u16 opcode, u8 status,
- 		stats->last_failed_mbox_status = status;
- 		stats->last_failed_syndrome = syndrome;
- 	}
--	spin_unlock_irq(&stats->lock);
-+	spin_unlock_irqrestore(&stats->lock, flags);
+ 
+ /* Misc definitions */
++#define SC16IS7XX_SPI_READ_BIT		BIT(7)
+ #define SC16IS7XX_FIFO_SIZE		(64)
+-#define SC16IS7XX_REG_SHIFT		2
+ #define SC16IS7XX_GPIOS_PER_BANK	4
+ 
+ struct sc16is7xx_devtype {
+@@ -324,6 +324,7 @@ struct sc16is7xx_one_config {
+ struct sc16is7xx_one {
+ 	struct uart_port		port;
+ 	u8				line;
++	struct regmap			*regmap;
+ 	struct kthread_work		tx_work;
+ 	struct kthread_work		reg_work;
+ 	struct kthread_delayed_work	ms_work;
+@@ -362,48 +363,37 @@ static void sc16is7xx_stop_tx(struct uar
+ #define to_sc16is7xx_port(p,e)	((container_of((p), struct sc16is7xx_port, e)))
+ #define to_sc16is7xx_one(p,e)	((container_of((p), struct sc16is7xx_one, e)))
+ 
+-static int sc16is7xx_line(struct uart_port *port)
+-{
+-	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+-
+-	return one->line;
+-}
+-
+ static u8 sc16is7xx_port_read(struct uart_port *port, u8 reg)
+ {
+-	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
++	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+ 	unsigned int val = 0;
+-	const u8 line = sc16is7xx_line(port);
+ 
+-	regmap_read(s->regmap, (reg << SC16IS7XX_REG_SHIFT) | line, &val);
++	regmap_read(one->regmap, reg, &val);
+ 
+ 	return val;
  }
  
- /* preserve -EREMOTEIO for outbox.status != OK, otherwise return err as is */
--- 
-2.43.0
-
+ static void sc16is7xx_port_write(struct uart_port *port, u8 reg, u8 val)
+ {
+-	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+-	const u8 line = sc16is7xx_line(port);
++	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+ 
+-	regmap_write(s->regmap, (reg << SC16IS7XX_REG_SHIFT) | line, val);
++	regmap_write(one->regmap, reg, val);
+ }
+ 
+ static void sc16is7xx_fifo_read(struct uart_port *port, unsigned int rxlen)
+ {
+ 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+-	const u8 line = sc16is7xx_line(port);
+-	u8 addr = (SC16IS7XX_RHR_REG << SC16IS7XX_REG_SHIFT) | line;
++	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+ 
+-	regcache_cache_bypass(s->regmap, true);
+-	regmap_raw_read(s->regmap, addr, s->buf, rxlen);
+-	regcache_cache_bypass(s->regmap, false);
++	regcache_cache_bypass(one->regmap, true);
++	regmap_raw_read(one->regmap, SC16IS7XX_RHR_REG, s->buf, rxlen);
++	regcache_cache_bypass(one->regmap, false);
+ }
+ 
+ static void sc16is7xx_fifo_write(struct uart_port *port, u8 to_send)
+ {
+ 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+-	const u8 line = sc16is7xx_line(port);
+-	u8 addr = (SC16IS7XX_THR_REG << SC16IS7XX_REG_SHIFT) | line;
++	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+ 
+ 	/*
+ 	 * Don't send zero-length data, at least on SPI it confuses the chip
+@@ -412,19 +402,17 @@ static void sc16is7xx_fifo_write(struct
+ 	if (unlikely(!to_send))
+ 		return;
+ 
+-	regcache_cache_bypass(s->regmap, true);
+-	regmap_raw_write(s->regmap, addr, s->buf, to_send);
+-	regcache_cache_bypass(s->regmap, false);
++	regcache_cache_bypass(one->regmap, true);
++	regmap_raw_write(one->regmap, SC16IS7XX_THR_REG, s->buf, to_send);
++	regcache_cache_bypass(one->regmap, false);
+ }
+ 
+ static void sc16is7xx_port_update(struct uart_port *port, u8 reg,
+ 				  u8 mask, u8 val)
+ {
+-	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+-	const u8 line = sc16is7xx_line(port);
++	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+ 
+-	regmap_update_bits(s->regmap, (reg << SC16IS7XX_REG_SHIFT) | line,
+-			   mask, val);
++	regmap_update_bits(one->regmap, reg, mask, val);
+ }
+ 
+ static int sc16is7xx_alloc_line(void)
+@@ -479,7 +467,7 @@ static const struct sc16is7xx_devtype sc
+ 
+ static bool sc16is7xx_regmap_volatile(struct device *dev, unsigned int reg)
+ {
+-	switch (reg >> SC16IS7XX_REG_SHIFT) {
++	switch (reg) {
+ 	case SC16IS7XX_RHR_REG:
+ 	case SC16IS7XX_IIR_REG:
+ 	case SC16IS7XX_LSR_REG:
+@@ -498,7 +486,7 @@ static bool sc16is7xx_regmap_volatile(st
+ 
+ static bool sc16is7xx_regmap_precious(struct device *dev, unsigned int reg)
+ {
+-	switch (reg >> SC16IS7XX_REG_SHIFT) {
++	switch (reg) {
+ 	case SC16IS7XX_RHR_REG:
+ 		return true;
+ 	default:
+@@ -511,6 +499,7 @@ static bool sc16is7xx_regmap_precious(st
+ static int sc16is7xx_set_baud(struct uart_port *port, int baud)
+ {
+ 	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
++	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+ 	u8 lcr;
+ 	u8 prescaler = 0;
+ 	unsigned long clk = port->uartclk, div = clk / 16 / baud;
+@@ -542,12 +531,12 @@ static int sc16is7xx_set_baud(struct uar
+ 			     SC16IS7XX_LCR_CONF_MODE_B);
+ 
+ 	/* Enable enhanced features */
+-	regcache_cache_bypass(s->regmap, true);
++	regcache_cache_bypass(one->regmap, true);
+ 	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
+ 			      SC16IS7XX_EFR_ENABLE_BIT,
+ 			      SC16IS7XX_EFR_ENABLE_BIT);
+ 
+-	regcache_cache_bypass(s->regmap, false);
++	regcache_cache_bypass(one->regmap, false);
+ 
+ 	/* Put LCR back to the normal mode */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
+@@ -563,10 +552,10 @@ static int sc16is7xx_set_baud(struct uar
+ 			     SC16IS7XX_LCR_CONF_MODE_A);
+ 
+ 	/* Write the new divisor */
+-	regcache_cache_bypass(s->regmap, true);
++	regcache_cache_bypass(one->regmap, true);
+ 	sc16is7xx_port_write(port, SC16IS7XX_DLH_REG, div / 256);
+ 	sc16is7xx_port_write(port, SC16IS7XX_DLL_REG, div % 256);
+-	regcache_cache_bypass(s->regmap, false);
++	regcache_cache_bypass(one->regmap, false);
+ 
+ 	/* Put LCR back to the normal mode */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
+@@ -1094,7 +1083,7 @@ static void sc16is7xx_set_termios(struct
+ 			     SC16IS7XX_LCR_CONF_MODE_B);
+ 
+ 	/* Configure flow control */
+-	regcache_cache_bypass(s->regmap, true);
++	regcache_cache_bypass(one->regmap, true);
+ 	sc16is7xx_port_write(port, SC16IS7XX_XON1_REG, termios->c_cc[VSTART]);
+ 	sc16is7xx_port_write(port, SC16IS7XX_XOFF1_REG, termios->c_cc[VSTOP]);
+ 
+@@ -1113,7 +1102,7 @@ static void sc16is7xx_set_termios(struct
+ 			      SC16IS7XX_EFR_REG,
+ 			      SC16IS7XX_EFR_FLOWCTRL_BITS,
+ 			      flow);
+-	regcache_cache_bypass(s->regmap, false);
++	regcache_cache_bypass(one->regmap, false);
+ 
+ 	/* Update LCR register */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, lcr);
+@@ -1164,7 +1153,6 @@ static int sc16is7xx_config_rs485(struct
+ static int sc16is7xx_startup(struct uart_port *port)
+ {
+ 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
+-	struct sc16is7xx_port *s = dev_get_drvdata(port->dev);
+ 	unsigned int val;
+ 	unsigned long flags;
+ 
+@@ -1181,7 +1169,7 @@ static int sc16is7xx_startup(struct uart
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG,
+ 			     SC16IS7XX_LCR_CONF_MODE_B);
+ 
+-	regcache_cache_bypass(s->regmap, true);
++	regcache_cache_bypass(one->regmap, true);
+ 
+ 	/* Enable write access to enhanced features and internal clock div */
+ 	sc16is7xx_port_update(port, SC16IS7XX_EFR_REG,
+@@ -1199,7 +1187,7 @@ static int sc16is7xx_startup(struct uart
+ 			     SC16IS7XX_TCR_RX_RESUME(24) |
+ 			     SC16IS7XX_TCR_RX_HALT(48));
+ 
+-	regcache_cache_bypass(s->regmap, false);
++	regcache_cache_bypass(one->regmap, false);
+ 
+ 	/* Now, initialize the UART */
+ 	sc16is7xx_port_write(port, SC16IS7XX_LCR_REG, SC16IS7XX_LCR_WORD_LEN_8);
+@@ -1457,7 +1445,7 @@ static int sc16is7xx_setup_mctrl_ports(s
+ 	if (s->mctrl_mask)
+ 		regmap_update_bits(
+ 			s->regmap,
+-			SC16IS7XX_IOCONTROL_REG << SC16IS7XX_REG_SHIFT,
++			SC16IS7XX_IOCONTROL_REG,
+ 			SC16IS7XX_IOCONTROL_MODEM_A_BIT |
+ 			SC16IS7XX_IOCONTROL_MODEM_B_BIT, s->mctrl_mask);
+ 
+@@ -1472,7 +1460,7 @@ static const struct serial_rs485 sc16is7
+ 
+ static int sc16is7xx_probe(struct device *dev,
+ 			   const struct sc16is7xx_devtype *devtype,
+-			   struct regmap *regmap, int irq)
++			   struct regmap *regmaps[], int irq)
+ {
+ 	unsigned long freq = 0, *pfreq = dev_get_platdata(dev);
+ 	unsigned int val;
+@@ -1480,16 +1468,16 @@ static int sc16is7xx_probe(struct device
+ 	int i, ret;
+ 	struct sc16is7xx_port *s;
+ 
+-	if (IS_ERR(regmap))
+-		return PTR_ERR(regmap);
++	for (i = 0; i < devtype->nr_uart; i++)
++		if (IS_ERR(regmaps[i]))
++			return PTR_ERR(regmaps[i]);
+ 
+ 	/*
+ 	 * This device does not have an identification register that would
+ 	 * tell us if we are really connected to the correct device.
+ 	 * The best we can do is to check if communication is at all possible.
+ 	 */
+-	ret = regmap_read(regmap,
+-			  SC16IS7XX_LSR_REG << SC16IS7XX_REG_SHIFT, &val);
++	ret = regmap_read(regmaps[0], SC16IS7XX_LSR_REG, &val);
+ 	if (ret < 0)
+ 		return -EPROBE_DEFER;
+ 
+@@ -1523,7 +1511,7 @@ static int sc16is7xx_probe(struct device
+ 			return -EINVAL;
+ 	}
+ 
+-	s->regmap = regmap;
++	s->regmap = regmaps[0];
+ 	s->devtype = devtype;
+ 	dev_set_drvdata(dev, s);
+ 	mutex_init(&s->efr_lock);
+@@ -1538,8 +1526,8 @@ static int sc16is7xx_probe(struct device
+ 	sched_set_fifo(s->kworker_task);
+ 
+ 	/* reset device, purging any pending irq / data */
+-	regmap_write(s->regmap, SC16IS7XX_IOCONTROL_REG << SC16IS7XX_REG_SHIFT,
+-			SC16IS7XX_IOCONTROL_SRESET_BIT);
++	regmap_write(s->regmap, SC16IS7XX_IOCONTROL_REG,
++		     SC16IS7XX_IOCONTROL_SRESET_BIT);
+ 
+ 	for (i = 0; i < devtype->nr_uart; ++i) {
+ 		s->p[i].line		= i;
+@@ -1563,6 +1551,7 @@ static int sc16is7xx_probe(struct device
+ 		s->p[i].port.ops	= &sc16is7xx_ops;
+ 		s->p[i].old_mctrl	= 0;
+ 		s->p[i].port.line	= sc16is7xx_alloc_line();
++		s->p[i].regmap		= regmaps[i];
+ 
+ 		if (s->p[i].port.line >= SC16IS7XX_MAX_DEVS) {
+ 			ret = -ENOMEM;
+@@ -1591,13 +1580,13 @@ static int sc16is7xx_probe(struct device
+ 		sc16is7xx_port_write(&s->p[i].port, SC16IS7XX_LCR_REG,
+ 				     SC16IS7XX_LCR_CONF_MODE_B);
+ 
+-		regcache_cache_bypass(s->regmap, true);
++		regcache_cache_bypass(regmaps[i], true);
+ 
+ 		/* Enable write access to enhanced features */
+ 		sc16is7xx_port_write(&s->p[i].port, SC16IS7XX_EFR_REG,
+ 				     SC16IS7XX_EFR_ENABLE_BIT);
+ 
+-		regcache_cache_bypass(s->regmap, false);
++		regcache_cache_bypass(regmaps[i], false);
+ 
+ 		/* Restore access to general registers */
+ 		sc16is7xx_port_write(&s->p[i].port, SC16IS7XX_LCR_REG, 0x00);
+@@ -1700,19 +1689,36 @@ static const struct of_device_id __maybe
+ MODULE_DEVICE_TABLE(of, sc16is7xx_dt_ids);
+ 
+ static struct regmap_config regcfg = {
+-	.reg_bits = 7,
+-	.pad_bits = 1,
++	.reg_bits = 5,
++	.pad_bits = 3,
+ 	.val_bits = 8,
+ 	.cache_type = REGCACHE_RBTREE,
+ 	.volatile_reg = sc16is7xx_regmap_volatile,
+ 	.precious_reg = sc16is7xx_regmap_precious,
++	.max_register = SC16IS7XX_EFCR_REG,
+ };
+ 
++static const char *sc16is7xx_regmap_name(unsigned int port_id)
++{
++	static char buf[6];
++
++	snprintf(buf, sizeof(buf), "port%d", port_id);
++
++	return buf;
++}
++
++static unsigned int sc16is7xx_regmap_port_mask(unsigned int port_id)
++{
++	/* CH1,CH0 are at bits 2:1. */
++	return port_id << 1;
++}
++
+ #ifdef CONFIG_SERIAL_SC16IS7XX_SPI
+ static int sc16is7xx_spi_probe(struct spi_device *spi)
+ {
+ 	const struct sc16is7xx_devtype *devtype;
+-	struct regmap *regmap;
++	struct regmap *regmaps[2];
++	unsigned int i;
+ 	int ret;
+ 
+ 	/* Setup SPI bus */
+@@ -1737,11 +1743,20 @@ static int sc16is7xx_spi_probe(struct sp
+ 		devtype = (struct sc16is7xx_devtype *)id_entry->driver_data;
+ 	}
+ 
+-	regcfg.max_register = (0xf << SC16IS7XX_REG_SHIFT) |
+-			      (devtype->nr_uart - 1);
+-	regmap = devm_regmap_init_spi(spi, &regcfg);
++	for (i = 0; i < devtype->nr_uart; i++) {
++		regcfg.name = sc16is7xx_regmap_name(i);
++		/*
++		 * If read_flag_mask is 0, the regmap code sets it to a default
++		 * of 0x80. Since we specify our own mask, we must add the READ
++		 * bit ourselves:
++		 */
++		regcfg.read_flag_mask = sc16is7xx_regmap_port_mask(i) |
++			SC16IS7XX_SPI_READ_BIT;
++		regcfg.write_flag_mask = sc16is7xx_regmap_port_mask(i);
++		regmaps[i] = devm_regmap_init_spi(spi, &regcfg);
++	}
+ 
+-	return sc16is7xx_probe(&spi->dev, devtype, regmap, spi->irq);
++	return sc16is7xx_probe(&spi->dev, devtype, regmaps, spi->irq);
+ }
+ 
+ static void sc16is7xx_spi_remove(struct spi_device *spi)
+@@ -1780,7 +1795,8 @@ static int sc16is7xx_i2c_probe(struct i2
+ 			       const struct i2c_device_id *id)
+ {
+ 	const struct sc16is7xx_devtype *devtype;
+-	struct regmap *regmap;
++	struct regmap *regmaps[2];
++	unsigned int i;
+ 
+ 	if (i2c->dev.of_node) {
+ 		devtype = device_get_match_data(&i2c->dev);
+@@ -1790,11 +1806,14 @@ static int sc16is7xx_i2c_probe(struct i2
+ 		devtype = (struct sc16is7xx_devtype *)id->driver_data;
+ 	}
+ 
+-	regcfg.max_register = (0xf << SC16IS7XX_REG_SHIFT) |
+-			      (devtype->nr_uart - 1);
+-	regmap = devm_regmap_init_i2c(i2c, &regcfg);
++	for (i = 0; i < devtype->nr_uart; i++) {
++		regcfg.name = sc16is7xx_regmap_name(i);
++		regcfg.read_flag_mask = sc16is7xx_regmap_port_mask(i);
++		regcfg.write_flag_mask = sc16is7xx_regmap_port_mask(i);
++		regmaps[i] = devm_regmap_init_i2c(i2c, &regcfg);
++	}
+ 
+-	return sc16is7xx_probe(&i2c->dev, devtype, regmap, i2c->irq);
++	return sc16is7xx_probe(&i2c->dev, devtype, regmaps, i2c->irq);
+ }
+ 
+ static void sc16is7xx_i2c_remove(struct i2c_client *client)
 
 
 
