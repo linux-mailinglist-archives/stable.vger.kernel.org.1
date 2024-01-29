@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-16752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82415840E45
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8F2840DD3
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4A8A1C23C51
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CFAD1F2CFCD
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E2815B2FD;
-	Mon, 29 Jan 2024 17:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B2F15AACC;
+	Mon, 29 Jan 2024 17:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g7S5ADTn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfrjRrNG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B1C15959E;
-	Mon, 29 Jan 2024 17:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256C315AABD;
+	Mon, 29 Jan 2024 17:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548253; cv=none; b=kpvBEVEKN57Kpxn7gLeuLHFXQ/kZcCcohptIlrgM6lVDrQ5sKE8cZSuY4j7nGSsnRCqt9kR5QuugfZnAUXHEnPbLQMZFU3yMy2ryG02qS0ozfpcR0i8QhmJwI258nJrXTp64uqez0e4DvKozXPAIEaLg95q3A0u36StSyBrl1uA=
+	t=1706548173; cv=none; b=bwNlDgEAojaorv0PK48keMpCmqHojuCYl53X8sch7XmBHVJ9+gfqQw0onNmUFOACM8bpG0h+gtEvpxnF9Kce+75ap5iFmj/SdzSy9g4nIKnyq/400rwF2RTd+79aGl/kjrnj3FRI/nfybC7/tf3cKP26IEILAxaLbdnnGpH5fws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548253; c=relaxed/simple;
-	bh=FzHtAgobPaKKjnOTX+v7bS7F/tAsufJwsSOaDYbKN2E=;
+	s=arc-20240116; t=1706548173; c=relaxed/simple;
+	bh=R0bfVzJ9DDHV+x0EtenezfwUfh9Hbsbv/dQxVQ48bOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBqBtIb6nn2skz/sqDdArggwROtBhh4nLhbYcd7+uEteYHxWoT2KZFnWQASHJePvLkZOhTiugt78Qd/oWi1SqoHi4WthmRoNGy7ghvU2NbxtVWOZiHJsu5UXGrmGuvxt1KoTNSg8jLfrb7gIdy01nu5ZuO+o6ZHGDZH1VeLdBY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g7S5ADTn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE8AC43390;
-	Mon, 29 Jan 2024 17:10:53 +0000 (UTC)
+	 MIME-Version; b=B0UaGgfMGhvIXY1qOQyiqVU+UgdhWc7Z4ZbhCtamBnsRV7o9cpnbdkqo4w/zJsI96e2dFqgi+GNHW4+HP7AUKmBXM4At4ajD/g8b3qWIsDJaAhC3IDIBFVpYu6dNyNvw9yRe4XjW3KR9oVjISaqcd36F7TKqTM9jGR6ftuSGExs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfrjRrNG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DA1C433F1;
+	Mon, 29 Jan 2024 17:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548253;
-	bh=FzHtAgobPaKKjnOTX+v7bS7F/tAsufJwsSOaDYbKN2E=;
+	s=korg; t=1706548173;
+	bh=R0bfVzJ9DDHV+x0EtenezfwUfh9Hbsbv/dQxVQ48bOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g7S5ADTn6vv6WoVjystXiEREx+2kc6UbNLU1lFH8IBLbQyz6gHrJUz0ke6prjXX7q
-	 XRpqqIHaktGyRKYqbxtHkFYUmJpJ22sspjfZhIMek5LFBWgkxNLpZtrVNdeRNYD44x
-	 qR2wSiTBDZ4YjsIQ0pmQ/hW4uzCAVe138b1icIRs=
+	b=SfrjRrNGGXjufF9QuHJ2KhQUiRA9ZhGwvH+RqiQVi0iX5BOZ4P2Cte7tVR0ESyHa5
+	 CdWFdkLBBswd7QfqTI4P+8bQK9mjChd1YSD9Tsb74SIZX6jC4zIbgwPGtgGH9LS1vL
+	 FnOpgy1dBDMtzT4xUhGp57bqpc+VN2JMagrn9QDw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	alvin.zhuge@gmail.com,
-	renzhamin@gmail.com,
-	Kelvie Wong <kelvie@kelvie.ca>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.1 048/185] rtc: cmos: Use ACPI alarm for non-Intel x86 systems too
-Date: Mon, 29 Jan 2024 09:04:08 -0800
-Message-ID: <20240129170000.133905518@linuxfoundation.org>
+	Jay Vosburgh <jay.vosburgh@canonical.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 218/346] selftests: bonding: do not test arp/ns target with mode balance-alb/tlb
+Date: Mon, 29 Jan 2024 09:04:09 -0800
+Message-ID: <20240129170022.805094413@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit 3d762e21d56370a43478b55e604b4a83dd85aafc upstream.
+[ Upstream commit a2933a8759a62269754e54733d993b19de870e84 ]
 
-Intel systems > 2015 have been configured to use ACPI alarm instead
-of HPET to avoid s2idle issues.
+The prio_arp/ns tests hard code the mode to active-backup. At the same
+time, The balance-alb/tlb modes do not support arp/ns target. So remove
+the prio_arp/ns tests from the loop and only test active-backup mode.
 
-Having HPET programmed for wakeup causes problems on AMD systems with
-s2idle as well.
-
-One particular case is that the systemd "SuspendThenHibernate" feature
-doesn't work properly on the Framework 13" AMD model. Switching to
-using ACPI alarm fixes the issue.
-
-Adjust the quirk to apply to AMD/Hygon systems from 2021 onwards.
-This matches what has been tested and is specifically to avoid potential
-risk to older systems.
-
-Cc:  <stable@vger.kernel.org> # 6.1+
-Reported-by:  <alvin.zhuge@gmail.com>
-Reported-by:  <renzhamin@gmail.com>
-Closes: https://github.com/systemd/systemd/issues/24279
-Reported-by: Kelvie Wong <kelvie@kelvie.ca>
-Closes: https://community.frame.work/t/systemd-suspend-then-hibernate-wakes-up-after-5-minutes/39392
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20231106162310.85711-1-mario.limonciello@amd.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 481b56e0391e ("selftests: bonding: re-format bond option tests")
+Reported-by: Jay Vosburgh <jay.vosburgh@canonical.com>
+Closes: https://lore.kernel.org/netdev/17415.1705965957@famine/
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
+Link: https://lore.kernel.org/r/20240123075917.1576360-1-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-cmos.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ .../testing/selftests/drivers/net/bonding/bond_options.sh | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/rtc/rtc-cmos.c b/drivers/rtc/rtc-cmos.c
-index 228fb2d11c70..696cfa7025de 100644
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -818,18 +818,24 @@ static void rtc_wake_off(struct device *dev)
+diff --git a/tools/testing/selftests/drivers/net/bonding/bond_options.sh b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
+index c54d1697f439..d508486cc0bd 100755
+--- a/tools/testing/selftests/drivers/net/bonding/bond_options.sh
++++ b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
+@@ -162,7 +162,7 @@ prio_arp()
+ 	local mode=$1
+ 
+ 	for primary_reselect in 0 1 2; do
+-		prio_test "mode active-backup arp_interval 100 arp_ip_target ${g_ip4} primary eth1 primary_reselect $primary_reselect"
++		prio_test "mode $mode arp_interval 100 arp_ip_target ${g_ip4} primary eth1 primary_reselect $primary_reselect"
+ 		log_test "prio" "$mode arp_ip_target primary_reselect $primary_reselect"
+ 	done
+ }
+@@ -178,7 +178,7 @@ prio_ns()
+ 	fi
+ 
+ 	for primary_reselect in 0 1 2; do
+-		prio_test "mode active-backup arp_interval 100 ns_ip6_target ${g_ip6} primary eth1 primary_reselect $primary_reselect"
++		prio_test "mode $mode arp_interval 100 ns_ip6_target ${g_ip6} primary eth1 primary_reselect $primary_reselect"
+ 		log_test "prio" "$mode ns_ip6_target primary_reselect $primary_reselect"
+ 	done
+ }
+@@ -194,9 +194,9 @@ prio()
+ 
+ 	for mode in $modes; do
+ 		prio_miimon $mode
+-		prio_arp $mode
+-		prio_ns $mode
+ 	done
++	prio_arp "active-backup"
++	prio_ns "active-backup"
  }
  
- #ifdef CONFIG_X86
--/* Enable use_acpi_alarm mode for Intel platforms no earlier than 2015 */
- static void use_acpi_alarm_quirks(void)
- {
--	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
-+	switch (boot_cpu_data.x86_vendor) {
-+	case X86_VENDOR_INTEL:
-+		if (dmi_get_bios_year() < 2015)
-+			return;
-+		break;
-+	case X86_VENDOR_AMD:
-+	case X86_VENDOR_HYGON:
-+		if (dmi_get_bios_year() < 2021)
-+			return;
-+		break;
-+	default:
- 		return;
--
-+	}
- 	if (!is_hpet_enabled())
- 		return;
- 
--	if (dmi_get_bios_year() < 2015)
--		return;
--
- 	use_acpi_alarm = true;
- }
- #else
+ arp_validate_test()
 -- 
 2.43.0
 
