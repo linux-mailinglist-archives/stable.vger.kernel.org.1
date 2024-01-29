@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-16666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51116840DEB
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AB9D840E5A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E625DB2690E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE3FF1F24C82
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D070015D5D3;
-	Mon, 29 Jan 2024 17:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593A215F313;
+	Mon, 29 Jan 2024 17:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dk52yIoM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qO1c2nI9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F90115B0E4;
-	Mon, 29 Jan 2024 17:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DBF15A48F;
+	Mon, 29 Jan 2024 17:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548188; cv=none; b=uykV6GdrpfDZCUBsw/KyamgpVrMKN5crfMfvUrh1HZj9hcjuiCk3rmjP4EURp76+Z03dT0Emy2fpLLbO+Sdgy9tJh43yJpv92H6E9JbRNdj3G/oKOyWE9pm7ygO+7QQBMrY2oAFdpviJ7rzfVbrLk46hP9lt0dNcDe06gb/WfSA=
+	t=1706548269; cv=none; b=nMo+24HZgPkkU8XuIU5XpkBunLXE1pZR2D7tKjjsOl53bcUn9lrmemDP25q6L+2Zb0B5v0YS6dlHUfp24SIR3u3pnP4GBp6XDXRo3cPpYcU8lYrXAKfaYWG9KAihR+K+DBJPZAToS9iOj7vg0HQgrpg7tetByJpJGJaC/pr+P5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548188; c=relaxed/simple;
-	bh=5ptod3yk5QVtkIx1RiJLRU4aGgXXTPBt93lvmrN05vk=;
+	s=arc-20240116; t=1706548269; c=relaxed/simple;
+	bh=9SZ0XjusaAVJoITwCUoRMs5qGhE/g279549RDm8Jw5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tr2PJ3aBVomy/Gyx1D1ewcenKTEst7Qxfy1YgF0O6TgUWFhFZGTbWhHKebN7GbR6ffc/KeUor0hKP9BWdCL2oXaVHMuhvD68whssL7eCvuhDrecdXeV6IYhLuwZbJn/yl3EG8QUPW6dq+ASDsFbb98puMcfk0F2lfiTjHhjL59g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dk52yIoM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 588CFC433C7;
-	Mon, 29 Jan 2024 17:09:48 +0000 (UTC)
+	 MIME-Version; b=YchW7ZeNzy5f90IwvwUXuAp+lCH89KObljRjHhuBH7x8d5sh8mqoTJgHG6eRFis+F8wJfd2qsiMC434XiCxQeVisVnScW44wpWBxyaM3r1aRQoONHlEa6i4IB5znirHN7X3a6ai0N9kjLkdG4FaYsaIHpmyOIOwYgQFv9cOQ1XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qO1c2nI9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3030C433F1;
+	Mon, 29 Jan 2024 17:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548188;
-	bh=5ptod3yk5QVtkIx1RiJLRU4aGgXXTPBt93lvmrN05vk=;
+	s=korg; t=1706548268;
+	bh=9SZ0XjusaAVJoITwCUoRMs5qGhE/g279549RDm8Jw5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dk52yIoM4uLKk8YC9VSZIej6m9mr3ogGY8s36YAGB4UTRdDPrYJi8CE1SvPvsesmJ
-	 EOf5IFHi4xDROaTbJeoTZwatJmcxlEq/Gj7EgtvKDIWkYwxizyRkcCo+6o1VxrKySJ
-	 7pIDVlhXpoWW1CuV1kS6yhmLj35BEWYZrgXs1unw=
+	b=qO1c2nI9EzPMmp1wQMHr+m3QR4GN4hjStkv1ZDG7nsPlCvfmvcnjITekJXTb44i6B
+	 lJTuucxJqggix2bznXurbgvky6eFc3BBUg4KwU/c+uvyXPuUc2t0Tf2JIUSCKbtNjX
+	 NEBA/jDun6MGXeIMOyI/FQYLVZeKAkYc48pm0dqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 204/346] selftests: net: fix rps_default_mask with >32 CPUs
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 035/185] arm64: dts: qcom: sdm845: fix USB wakeup interrupt types
 Date: Mon, 29 Jan 2024 09:03:55 -0800
-Message-ID: <20240129170022.396419133@linuxfoundation.org>
+Message-ID: <20240129165959.720872122@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 0719b5338a0cbe80d1637a5fb03d8141b5bfc7a1 ]
+commit 84ad9ac8d9ca29033d589e79a991866b38e23b85 upstream.
 
-If there is more than 32 cpus the bitmask will start to contain
-commas, leading to:
+The DP/DM wakeup interrupts are edge triggered and which edge to trigger
+on depends on use-case and whether a Low speed or Full/High speed device
+is connected.
 
-./rps_default_mask.sh: line 36: [: 00000000,00000000: integer expression expected
-
-Remove the commas, bash doesn't interpret leading zeroes as oct
-so that should be good enough. Switch to bash, Simon reports that
-not all shells support this type of substitution.
-
-Fixes: c12e0d5f267d ("self-tests: introduce self-tests for RPS default mask")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240122195815.638997-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ca4db2b538a1 ("arm64: dts: qcom: sdm845: Add USB-related nodes")
+Cc: stable@vger.kernel.org      # 4.20
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231120164331.8116-9-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/rps_default_mask.sh | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/net/rps_default_mask.sh b/tools/testing/selftests/net/rps_default_mask.sh
-index a26c5624429f..4287a8529890 100755
---- a/tools/testing/selftests/net/rps_default_mask.sh
-+++ b/tools/testing/selftests/net/rps_default_mask.sh
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -4050,8 +4050,8 @@
  
- readonly ksft_skip=4
-@@ -33,6 +33,10 @@ chk_rps() {
+ 			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 488 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 489 IRQ_TYPE_LEVEL_HIGH>;
++				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
++				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
  
- 	rps_mask=$($cmd /sys/class/net/$dev_name/queues/rx-0/rps_cpus)
- 	printf "%-60s" "$msg"
-+
-+	# In case there is more than 32 CPUs we need to remove commas from masks
-+	rps_mask=${rps_mask//,}
-+	expected_rps_mask=${expected_rps_mask//,}
- 	if [ $rps_mask -eq $expected_rps_mask ]; then
- 		echo "[ ok ]"
- 	else
--- 
-2.43.0
-
+@@ -4101,8 +4101,8 @@
+ 
+ 			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 490 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 491 IRQ_TYPE_LEVEL_HIGH>;
++				     <GIC_SPI 490 IRQ_TYPE_EDGE_BOTH>,
++				     <GIC_SPI 491 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
+ 
 
 
 
