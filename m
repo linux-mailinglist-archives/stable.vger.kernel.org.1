@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-17265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCFA84107D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:28:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ECA3840EA4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1B4A1C23AFF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:28:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 464E61F286A1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8077605E;
-	Mon, 29 Jan 2024 17:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BF3157E65;
+	Mon, 29 Jan 2024 17:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXCTYOXh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzgSn2y/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE2A76051;
-	Mon, 29 Jan 2024 17:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AD415A49D;
+	Mon, 29 Jan 2024 17:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548631; cv=none; b=r/ddzw5mMBVPgkwbnmbhrM3IdW9KDlXMpLSsM5bgUutcKmVyoKlqhDWRDRy293GZbVRxp8HG9dXF108TMs2DGRVvJuSe1bogq/SfJgZuX+O275qkTqevJQN5nDOgktErwi5VYXLinP8tLF5lIWUdjpO+yWXB3fGmsgKm/jd83ag=
+	t=1706548321; cv=none; b=qdqzGCghUWkA9GYdL3B3lCTOWJdEJCSQT2WotQyZ4orF2fB5G0p9pZZYr5hESTgUtATFf4lD/wta8YXIPlCyB107BE5qVoGQTIBPuVX815XRV8LRGQIqiSrXOy+QUBqZHWRLD2cjm8KaFsn76i9xEVU23fDr22xui1UMIvdjCGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548631; c=relaxed/simple;
-	bh=kxVlRXH695/kWNjoA6YV4SmZLVpC6IELHiVp8GF2WMA=;
+	s=arc-20240116; t=1706548321; c=relaxed/simple;
+	bh=q1qCLBm8DeZg7Nqrk7KLFX4CTAfyYDrD+7gn2P3ks+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fC40j/5frPbPfhzgKHAEZVSwukroANdbYzcOzWcRLyrSRmmna7k7Qjyvxw1cZO+LX6FfFxU/j1H4GpqzVMTy69P/Xb4S8NL2bljPWLXSPB70JmSxRtt05GSpmkN1JItLFQQ4yu9NSQYm74+xm6OUUppAx1cKR5cstRNtF3yOAa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXCTYOXh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FE89C43390;
-	Mon, 29 Jan 2024 17:17:11 +0000 (UTC)
+	 MIME-Version; b=Z+DqIBojtMv86xWKvuPQWjUuUMBPrhQMRzZo3tsm7WdJTnyRm2d/oivL7BdDOHx0G2VYMFE0IE2FMSKGKpy98pYJXvfgd+Vn/FJEmZlUbIO3LUmKyBEwZ1+gpbvrXPfZgMPPOKsUuEjAPRhzToosY7GxuzzimAYbacfpD3wnFS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzgSn2y/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 201F3C433F1;
+	Mon, 29 Jan 2024 17:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548631;
-	bh=kxVlRXH695/kWNjoA6YV4SmZLVpC6IELHiVp8GF2WMA=;
+	s=korg; t=1706548321;
+	bh=q1qCLBm8DeZg7Nqrk7KLFX4CTAfyYDrD+7gn2P3ks+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CXCTYOXhbBt0qjf0249YX+jU6KT17E+MnpJiNbJurC5jG8kCjg443J+73k+hiD2eH
-	 EC1JoPAIfs0sXwHrSWe2OoC965mm4PQEGS/815yYOvPi5sN4U5F/SDYkM8TygTHRSL
-	 MgZtw6HofkCnMeA8H/mqrPFaQkGLBD8MNZpH/wds=
+	b=qzgSn2y/PO4mmqwacyr7+zMYzOgIr+VR0V1oe7e8GSHE7MxpZlqsqymEfQT1PIPG4
+	 wlv52ATJJZ461WqhXBKaDR0eIDWbHP09HfJaxgKs1E/LTsGzuP1VDYep1GaeqjFFro
+	 sZLuf/FSnLT3Mwg5EWz7pzMc4n0TuDINbGQykkjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Yajun Deng <yajun.deng@linux.dev>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 281/331] media: v4l2-cci: Add support for little-endian encoded registers
+Subject: [PATCH 6.7 314/346] memblock: fix crash when reserved memory is not added to memory
 Date: Mon, 29 Jan 2024 09:05:45 -0800
-Message-ID: <20240129170023.084693224@linuxfoundation.org>
+Message-ID: <20240129170025.709965392@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,156 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Yajun Deng <yajun.deng@linux.dev>
 
-[ Upstream commit d92e7a013ff33f4e0b31bbf768d0c85a8acefebf ]
+[ Upstream commit 6a9531c3a88096a26cf3ac582f7ec44f94a7dcb2 ]
 
-Some sensors, e.g. Sony IMX290, are using little-endian registers. Add
-support for those by encoding the endianness into Bit 20 of the register
-address.
+After commit 61167ad5fecd ("mm: pass nid to reserve_bootmem_region()")
+nid of a reserved region is used by init_reserved_page() (with
+CONFIG_DEFERRED_STRUCT_PAGE_INIT=y) to access node strucure.
+In many cases the nid of the reserved memory is not set and this causes
+a crash.
 
-Fixes: af73323b9770 ("media: imx290: Convert to new CCI register access helpers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-[Sakari Ailus: Fixed commit message.]
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+When the nid of a reserved region is not set, fall back to
+early_pfn_to_nid(), so that nid of the first_online_node will be passed
+to init_reserved_page().
+
+Fixes: 61167ad5fecd ("mm: pass nid to reserve_bootmem_region()")
+Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
+Link: https://lore.kernel.org/r/20240118061853.2652295-1-yajun.deng@linux.dev
+[rppt: massaged the commit message]
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-cci.c | 44 ++++++++++++++++++++++++------
- include/media/v4l2-cci.h           |  5 ++++
- 2 files changed, 41 insertions(+), 8 deletions(-)
+ mm/memblock.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/v4l2-core/v4l2-cci.c b/drivers/media/v4l2-core/v4l2-cci.c
-index 3179160abde3..10005c80f43b 100644
---- a/drivers/media/v4l2-core/v4l2-cci.c
-+++ b/drivers/media/v4l2-core/v4l2-cci.c
-@@ -18,6 +18,7 @@
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 5a88d6d24d79..4823ad979b72 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2141,6 +2141,9 @@ static void __init memmap_init_reserved_pages(void)
+ 			start = region->base;
+ 			end = start + region->size;
  
- int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
- {
-+	bool little_endian;
- 	unsigned int len;
- 	u8 buf[8];
- 	int ret;
-@@ -25,6 +26,7 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
- 	if (err && *err)
- 		return *err;
- 
-+	little_endian = reg & CCI_REG_LE;
- 	len = CCI_REG_WIDTH_BYTES(reg);
- 	reg = CCI_REG_ADDR(reg);
- 
-@@ -40,16 +42,28 @@ int cci_read(struct regmap *map, u32 reg, u64 *val, int *err)
- 		*val = buf[0];
- 		break;
- 	case 2:
--		*val = get_unaligned_be16(buf);
-+		if (little_endian)
-+			*val = get_unaligned_le16(buf);
-+		else
-+			*val = get_unaligned_be16(buf);
- 		break;
- 	case 3:
--		*val = get_unaligned_be24(buf);
-+		if (little_endian)
-+			*val = get_unaligned_le24(buf);
-+		else
-+			*val = get_unaligned_be24(buf);
- 		break;
- 	case 4:
--		*val = get_unaligned_be32(buf);
-+		if (little_endian)
-+			*val = get_unaligned_le32(buf);
-+		else
-+			*val = get_unaligned_be32(buf);
- 		break;
- 	case 8:
--		*val = get_unaligned_be64(buf);
-+		if (little_endian)
-+			*val = get_unaligned_le64(buf);
-+		else
-+			*val = get_unaligned_be64(buf);
- 		break;
- 	default:
- 		dev_err(regmap_get_device(map), "Error invalid reg-width %u for reg 0x%04x\n",
-@@ -68,6 +82,7 @@ EXPORT_SYMBOL_GPL(cci_read);
- 
- int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
- {
-+	bool little_endian;
- 	unsigned int len;
- 	u8 buf[8];
- 	int ret;
-@@ -75,6 +90,7 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
- 	if (err && *err)
- 		return *err;
- 
-+	little_endian = reg & CCI_REG_LE;
- 	len = CCI_REG_WIDTH_BYTES(reg);
- 	reg = CCI_REG_ADDR(reg);
- 
-@@ -83,16 +99,28 @@ int cci_write(struct regmap *map, u32 reg, u64 val, int *err)
- 		buf[0] = val;
- 		break;
- 	case 2:
--		put_unaligned_be16(val, buf);
-+		if (little_endian)
-+			put_unaligned_le16(val, buf);
-+		else
-+			put_unaligned_be16(val, buf);
- 		break;
- 	case 3:
--		put_unaligned_be24(val, buf);
-+		if (little_endian)
-+			put_unaligned_le24(val, buf);
-+		else
-+			put_unaligned_be24(val, buf);
- 		break;
- 	case 4:
--		put_unaligned_be32(val, buf);
-+		if (little_endian)
-+			put_unaligned_le32(val, buf);
-+		else
-+			put_unaligned_be32(val, buf);
- 		break;
- 	case 8:
--		put_unaligned_be64(val, buf);
-+		if (little_endian)
-+			put_unaligned_le64(val, buf);
-+		else
-+			put_unaligned_be64(val, buf);
- 		break;
- 	default:
- 		dev_err(regmap_get_device(map), "Error invalid reg-width %u for reg 0x%04x\n",
-diff --git a/include/media/v4l2-cci.h b/include/media/v4l2-cci.h
-index a2835a663df5..8b0b361b464c 100644
---- a/include/media/v4l2-cci.h
-+++ b/include/media/v4l2-cci.h
-@@ -38,12 +38,17 @@ struct cci_reg_sequence {
- #define CCI_REG_WIDTH_BYTES(x)		FIELD_GET(CCI_REG_WIDTH_MASK, x)
- #define CCI_REG_WIDTH(x)		(CCI_REG_WIDTH_BYTES(x) << 3)
- #define CCI_REG_ADDR(x)			FIELD_GET(CCI_REG_ADDR_MASK, x)
-+#define CCI_REG_LE			BIT(20)
- 
- #define CCI_REG8(x)			((1 << CCI_REG_WIDTH_SHIFT) | (x))
- #define CCI_REG16(x)			((2 << CCI_REG_WIDTH_SHIFT) | (x))
- #define CCI_REG24(x)			((3 << CCI_REG_WIDTH_SHIFT) | (x))
- #define CCI_REG32(x)			((4 << CCI_REG_WIDTH_SHIFT) | (x))
- #define CCI_REG64(x)			((8 << CCI_REG_WIDTH_SHIFT) | (x))
-+#define CCI_REG16_LE(x)			(CCI_REG_LE | (2U << CCI_REG_WIDTH_SHIFT) | (x))
-+#define CCI_REG24_LE(x)			(CCI_REG_LE | (3U << CCI_REG_WIDTH_SHIFT) | (x))
-+#define CCI_REG32_LE(x)			(CCI_REG_LE | (4U << CCI_REG_WIDTH_SHIFT) | (x))
-+#define CCI_REG64_LE(x)			(CCI_REG_LE | (8U << CCI_REG_WIDTH_SHIFT) | (x))
- 
- /**
-  * cci_read() - Read a value from a single CCI register
++			if (nid == NUMA_NO_NODE || nid >= MAX_NUMNODES)
++				nid = early_pfn_to_nid(PFN_DOWN(start));
++
+ 			reserve_bootmem_region(start, end, nid);
+ 		}
+ 	}
 -- 
 2.43.0
 
