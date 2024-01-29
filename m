@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-17154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96AE584100B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 837B1840E4A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA0FA1C238B4
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28488283A05
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DBAA15EAA6;
-	Mon, 29 Jan 2024 17:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363BB15EABC;
+	Mon, 29 Jan 2024 17:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WX98Rnr7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q9EP9Ky4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E3B7375F;
-	Mon, 29 Jan 2024 17:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FA515A483;
+	Mon, 29 Jan 2024 17:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548550; cv=none; b=Evzle1Ol1CygoNMyF7dS3m39nK/yHbbJjdBMWdS9s382lwzouFeWp/jO29JiN9V9qKlr5F8kBa4YkCTBZRF4TkiISPfcDq8TZPFqG0n/jRn2b6INCw/Md5vLGLFmIZDEM4dcRqIXdOv51cBO3GPXXUymrDQ/pIntg3koqBw8jcM=
+	t=1706548258; cv=none; b=RMOePy88MquzLe1v8jcjAmxh0MnkvXohe6g9wkMDKe+v/ZQMBLQ3vuqn4i2UJ3pLZrRuzNc51R3TnQdhLQeW6KacJfrIoJwzyhTbQdWFHd2Ov4uV5WZrWiZwvzYGpjAEFwQORF3OBNUbUjV5UdKOlIf78+oq8ewf1ERlOflHDQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548550; c=relaxed/simple;
-	bh=F3Ln/ovEzh+pFNwyIaq7UXdlx1IkbZ3E3LG1fdbDayE=;
+	s=arc-20240116; t=1706548258; c=relaxed/simple;
+	bh=NiqQCDuVxY7wK1+qZi6RtKcEjN9Y6YwA5L4Z8pz+QF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dk99ZJVURU6ICwWhiXU0g3wmbHOUrwfLK7yUM0+G/nLTXMm8cies1aB1LHZk+qu/lYrstmFpvv866s++GvqE83TqkcM6CYKZ2ozaJCIiFLCHGOELJCb5u4ocQvKTfxoDfduFCCE5a8eeTQ5WKiH1cIiHg49Hv91dltv4f+ZiLhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WX98Rnr7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8976CC433C7;
-	Mon, 29 Jan 2024 17:15:50 +0000 (UTC)
+	 MIME-Version; b=T+RyPF4tvtywgv+DQHqVa0aYYAvnZFkO0hBajyXAmhjePS+1OJrYKxNsy5cNZ+fbH0psku0bL3paY+12hOdbtsY6DDoQwOIexx5drM0rof1uXXnSuR9+G1wlpVuNu3bJDIWa45M3N+QsKKEMrlbVmNK/sxy6eHBpf4QuOPFpJD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q9EP9Ky4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B161CC433C7;
+	Mon, 29 Jan 2024 17:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548550;
-	bh=F3Ln/ovEzh+pFNwyIaq7UXdlx1IkbZ3E3LG1fdbDayE=;
+	s=korg; t=1706548257;
+	bh=NiqQCDuVxY7wK1+qZi6RtKcEjN9Y6YwA5L4Z8pz+QF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WX98Rnr7onBHjgzJ8BI6hdLQbhfz74bKYMPJRBRCzH0ODoGUdirUd8uzd6+3UbN2w
-	 3eqlnoHQolg/vIy0BmMOnoaFlHCyyiDpq2rF9RGIu5XQ74wOv7vWZMQQ1jetlqk0L6
-	 eXx9X47l83G4kCWhEYvVGwEsWjL7qLmUrV2w7xt8=
+	b=Q9EP9Ky4wMVuAKmGysoEktc5lNfeGgG1Eu8x2j5besh8PGOkDzOcx+qOTXhjY+jtV
+	 Za3kdXNSCwNFPHme78HmH0nxu20IKSPlhOSnojTiCteuu3aNErTsx1D4FAhiN32dFO
+	 xBfbCsrSHNpk12LXyD2KFVt10yMiq6RLjCr+x6uU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Daniel Mentz <danielmentz@google.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 169/331] net/smc: fix illegal rmb_desc access in SMC-D connection dump
+Subject: [PATCH 6.1 033/185] scsi: ufs: core: Remove the ufshcd_hba_exit() call from ufshcd_async_scan()
 Date: Mon, 29 Jan 2024 09:03:53 -0800
-Message-ID: <20240129170019.861355171@linuxfoundation.org>
+Message-ID: <20240129165959.662373614@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wen Gu <guwen@linux.alibaba.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit dbc153fd3c142909e564bb256da087e13fbf239c ]
+[ Upstream commit ee36710912b2075c417100a8acc642c9c6496501 ]
 
-A crash was found when dumping SMC-D connections. It can be reproduced
-by following steps:
+Calling ufshcd_hba_exit() from a function that is called asynchronously
+from ufshcd_init() is wrong because this triggers multiple race
+conditions. Instead of calling ufshcd_hba_exit(), log an error message.
 
-- run nginx/wrk test:
-  smc_run nginx
-  smc_run wrk -t 16 -c 1000 -d <duration> -H 'Connection: Close' <URL>
-
-- continuously dump SMC-D connections in parallel:
-  watch -n 1 'smcss -D'
-
- BUG: kernel NULL pointer dereference, address: 0000000000000030
- CPU: 2 PID: 7204 Comm: smcss Kdump: loaded Tainted: G	E      6.7.0+ #55
- RIP: 0010:__smc_diag_dump.constprop.0+0x5e5/0x620 [smc_diag]
- Call Trace:
-  <TASK>
-  ? __die+0x24/0x70
-  ? page_fault_oops+0x66/0x150
-  ? exc_page_fault+0x69/0x140
-  ? asm_exc_page_fault+0x26/0x30
-  ? __smc_diag_dump.constprop.0+0x5e5/0x620 [smc_diag]
-  ? __kmalloc_node_track_caller+0x35d/0x430
-  ? __alloc_skb+0x77/0x170
-  smc_diag_dump_proto+0xd0/0xf0 [smc_diag]
-  smc_diag_dump+0x26/0x60 [smc_diag]
-  netlink_dump+0x19f/0x320
-  __netlink_dump_start+0x1dc/0x300
-  smc_diag_handler_dump+0x6a/0x80 [smc_diag]
-  ? __pfx_smc_diag_dump+0x10/0x10 [smc_diag]
-  sock_diag_rcv_msg+0x121/0x140
-  ? __pfx_sock_diag_rcv_msg+0x10/0x10
-  netlink_rcv_skb+0x5a/0x110
-  sock_diag_rcv+0x28/0x40
-  netlink_unicast+0x22a/0x330
-  netlink_sendmsg+0x1f8/0x420
-  __sock_sendmsg+0xb0/0xc0
-  ____sys_sendmsg+0x24e/0x300
-  ? copy_msghdr_from_user+0x62/0x80
-  ___sys_sendmsg+0x7c/0xd0
-  ? __do_fault+0x34/0x160
-  ? do_read_fault+0x5f/0x100
-  ? do_fault+0xb0/0x110
-  ? __handle_mm_fault+0x2b0/0x6c0
-  __sys_sendmsg+0x4d/0x80
-  do_syscall_64+0x69/0x180
-  entry_SYSCALL_64_after_hwframe+0x6e/0x76
-
-It is possible that the connection is in process of being established
-when we dump it. Assumed that the connection has been registered in a
-link group by smc_conn_create() but the rmb_desc has not yet been
-initialized by smc_buf_create(), thus causing the illegal access to
-conn->rmb_desc. So fix it by checking before dump.
-
-Fixes: 4b1b7d3b30a6 ("net/smc: add SMC-D diag support")
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: Daniel Mentz <danielmentz@google.com>
+Fixes: 1d337ec2f35e ("ufs: improve init sequence")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20231218225229.2542156-3-bvanassche@acm.org
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_diag.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ufs/core/ufshcd.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/net/smc/smc_diag.c b/net/smc/smc_diag.c
-index 2c464d76b06c..37833b96b508 100644
---- a/net/smc/smc_diag.c
-+++ b/net/smc/smc_diag.c
-@@ -163,7 +163,7 @@ static int __smc_diag_dump(struct sock *sk, struct sk_buff *skb,
- 	}
- 	if (smc_conn_lgr_valid(&smc->conn) && smc->conn.lgr->is_smcd &&
- 	    (req->diag_ext & (1 << (SMC_DIAG_DMBINFO - 1))) &&
--	    !list_empty(&smc->conn.lgr->list)) {
-+	    !list_empty(&smc->conn.lgr->list) && smc->conn.rmb_desc) {
- 		struct smc_connection *conn = &smc->conn;
- 		struct smcd_diag_dmbinfo dinfo;
- 		struct smcd_dev *smcd = conn->lgr->smcd;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 474e94a69b18..9fd4e9ed93b8 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -8333,12 +8333,9 @@ static void ufshcd_async_scan(void *data, async_cookie_t cookie)
+ 
+ out:
+ 	pm_runtime_put_sync(hba->dev);
+-	/*
+-	 * If we failed to initialize the device or the device is not
+-	 * present, turn off the power/clocks etc.
+-	 */
++
+ 	if (ret)
+-		ufshcd_hba_exit(hba);
++		dev_err(hba->dev, "%s failed: %d\n", __func__, ret);
+ }
+ 
+ static const struct attribute_group *ufshcd_driver_groups[] = {
 -- 
 2.43.0
 
