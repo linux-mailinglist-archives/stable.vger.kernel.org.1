@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CA6841000
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A40840DD1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 204DF1C2398B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0019C1C234BC
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060A71586CF;
-	Mon, 29 Jan 2024 17:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0063915AACB;
+	Mon, 29 Jan 2024 17:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SQF8oAp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HzqBXaPq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F0D73722;
-	Mon, 29 Jan 2024 17:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2DAA15AABD;
+	Mon, 29 Jan 2024 17:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548542; cv=none; b=t6J2ekUd7r6a0EZQlLPqesvX4YuGOWNqio0LR1SWPDeN6k5vt0dCj1CiwKeJ1WVY0ywXU0vQR344lVXBHSX0vTzI5iP6IMYQdw+FuwJ4ZMPbqrs1l5qBF0KxUBjSWrxplYG4WwjoOMuHkswE6S7MbyVxtb7eKmERyDiUqn180x8=
+	t=1706548171; cv=none; b=giT2QiWaPo8QsH2BBKl4uy68tuUQIBSuKwcFpnu8FbxmUO1yyurQNzVghS6cufSff/mGwZhUqKNY9XnIOUa2CwkqZzhnvCzb1Llfut8SZcUdvz41DYRJV/NtJ38YvWWFbOjO3iHzpr+DHVTEyW82plCuw9Do/q1pGspraYa4htM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548542; c=relaxed/simple;
-	bh=FshGyPnN7aErYl27bI5K9dYuHZFSRpTDvLMp3IR9vGk=;
+	s=arc-20240116; t=1706548171; c=relaxed/simple;
+	bh=LibS7/XAMj7RxhP6DOMEvfMHpAdRBX2Zg8+SHMY3Ukw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SFj4FZiwIpX5FD7rDa9xf+ZIvf+KU4jy97SXNxukcX9ZSLocjxtTfsw3FM5xvGhT0nD0AFL8TuczLBsIE7EjabQofEmOY0l3m7d9SVVvP/g0we99tUeknKKdyM6oJ2IKA1/knZG+jWl2Chgpc7NI2GctILVEuDUiZuLEArOjJ0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SQF8oAp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BB35C433C7;
-	Mon, 29 Jan 2024 17:15:42 +0000 (UTC)
+	 MIME-Version; b=c4mNsucPf4rJG4tNsAljkcHN0yVUmE2nK/dsaolNYxdgabi0WqWo9aguTo4FzqT+8/6AnBNEFG+MTJtlksoms71S2omjvJNDTGV8fer9oxwCemVwF1QO9fkIvzW1iiX8zu0LROieWCb9tVkdu+fxfMDlMUy0S/XmcmOPWrL7j50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HzqBXaPq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783E9C433F1;
+	Mon, 29 Jan 2024 17:09:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548542;
-	bh=FshGyPnN7aErYl27bI5K9dYuHZFSRpTDvLMp3IR9vGk=;
+	s=korg; t=1706548171;
+	bh=LibS7/XAMj7RxhP6DOMEvfMHpAdRBX2Zg8+SHMY3Ukw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2SQF8oAp6Zjtuls/T67OBjCCRPEVUM0vSVIA7ZNcka9QCu79VOjoXWsFbrIjjtval
-	 DvWI/a8DEjU367TIz9y7TWmcFbpnX8ZpeG1MdbeYT/jtWt5y/pHzZwTQhClE2kbR36
-	 6Qg3dktOw9AvTlQkL6UDg6fzi1SMnHVAUJrySnd4=
+	b=HzqBXaPqNZOuz9njFSrKNDNf6GFol91bLU47+/wZ7wKgwUCN75Whwaz8vPv7CXKpv
+	 vONKdqPvlSCLrCzjbl1oY/Z5jVK1/HlCa14RmtvRLOFtDB1QO48McNJIdxXaBxgjA/
+	 FfA4dOTGtqIYUx3l9hBvxfM7/aHjPxipVp3+dcFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	David Howells <dhowells@redhat.com>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 183/331] netfs, fscache: Prevent Oops in fscache_put_cache()
+Subject: [PATCH 6.7 216/346] i40e: update xdp_rxq_info::frag_size for ZC enabled Rx queue
 Date: Mon, 29 Jan 2024 09:04:07 -0800
-Message-ID: <20240129170020.252484948@linuxfoundation.org>
+Message-ID: <20240129170022.737221829@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit 3be0b3ed1d76c6703b9ee482b55f7e01c369cc68 ]
+[ Upstream commit 0cbb08707c932b3f004bc1a8ec6200ef572c1f5f ]
 
-This function dereferences "cache" and then checks if it's
-IS_ERR_OR_NULL().  Check first, then dereference.
+Now that i40e driver correctly sets up frag_size in xdp_rxq_info, let us
+make it work for ZC multi-buffer as well. i40e_ring::rx_buf_len for ZC
+is being set via xsk_pool_get_rx_frame_size() and this needs to be
+propagated up to xdp_rxq_info.
 
-Fixes: 9549332df4ed ("fscache: Implement cache registration")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/e84bc740-3502-4f16-982a-a40d5676615c@moroto.mountain/ # v2
+Fixes: 1c9ba9c14658 ("i40e: xsk: add RX multi-buffer support")
+Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/r/20240124191602.566724-12-maciej.fijalkowski@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fscache/cache.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/fscache/cache.c b/fs/fscache/cache.c
-index d645f8b302a2..9397ed39b0b4 100644
---- a/fs/fscache/cache.c
-+++ b/fs/fscache/cache.c
-@@ -179,13 +179,14 @@ EXPORT_SYMBOL(fscache_acquire_cache);
- void fscache_put_cache(struct fscache_cache *cache,
- 		       enum fscache_cache_trace where)
- {
--	unsigned int debug_id = cache->debug_id;
-+	unsigned int debug_id;
- 	bool zero;
- 	int ref;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index f97a63812141..2bd7b29fb251 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -3611,7 +3611,14 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
  
- 	if (IS_ERR_OR_NULL(cache))
- 		return;
- 
-+	debug_id = cache->debug_id;
- 	zero = __refcount_dec_and_test(&cache->ref, &ref);
- 	trace_fscache_cache(debug_id, ref - 1, where);
- 
+ 	ring->xsk_pool = i40e_xsk_pool(ring);
+ 	if (ring->xsk_pool) {
++		xdp_rxq_info_unreg(&ring->xdp_rxq);
+ 		ring->rx_buf_len = xsk_pool_get_rx_frame_size(ring->xsk_pool);
++		err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
++					 ring->queue_index,
++					 ring->q_vector->napi.napi_id,
++					 ring->rx_buf_len);
++		if (err)
++			return err;
+ 		err = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
+ 						 MEM_TYPE_XSK_BUFF_POOL,
+ 						 NULL);
 -- 
 2.43.0
 
