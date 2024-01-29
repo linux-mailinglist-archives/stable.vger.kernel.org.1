@@ -1,232 +1,212 @@
-Return-Path: <stable+bounces-16421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E746840ADA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC79840AFB
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF01B1F22287
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 16:10:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCBF81C20E87
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 16:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19EA6155A3A;
-	Mon, 29 Jan 2024 16:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A30C155A2B;
+	Mon, 29 Jan 2024 16:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="XEmM3qYl";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="pHOAXzVZ";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="v0bghz1e";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="o2TK9+Jj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0WZPHhc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD764155A28;
-	Mon, 29 Jan 2024 16:09:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE967155A22
+	for <stable@vger.kernel.org>; Mon, 29 Jan 2024 16:12:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706544586; cv=none; b=ZQWSodWlVuwPIjs1DnpOoDuKdALpB09Y7bgGwhqpCEt5ErGb+eWL4u85ooZhIuImqDJMPIBXDrJ1vD9kfxIQp/vJP4Kj2aoRmo7jYlzV9K35ivJ7uzUzMuRy1qfq28iocVsoiRY07h0sxsz0PWEKRGsg95DpqBbFKFykdXSX1Sw=
+	t=1706544726; cv=none; b=r8CQzALTwrR3m9xdL4PCEbhrAsaNvWzOib86Uxag/i4McpOytDv7fNDBi9Xp3ltPrA40/sAYKz8gIUFzqJVwQcrOnpb5vpL3v0PGbnSaiIoatZjKOXj1BAFK6xuzLPdAw4x7APBNNf5VatSyG6rqyOmjr5Z358Kri6mvxQHPIIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706544586; c=relaxed/simple;
-	bh=hNsaj1rxxwQWYa7Z7f8gZ5X4GBVhrlEGD+oqwl6NJL8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NDDnbf61n0w46pMCWsNAhngSgrKuqoxhJtEEZXsS1hfL1dQlNrNZgOehLZsGP5NBc1Xytr0TnGYFV+XhsSnh8FmtoFTfx8LxAfFPpLaAtlwadR4ubQQLHXWEDVr3oyrWzVcNxaYTLg7Lj3nlx/HoGm96YyuoGkcKfWULgTHYgJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=XEmM3qYl; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=pHOAXzVZ; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=v0bghz1e; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=o2TK9+Jj; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id BD34C1F7F6;
-	Mon, 29 Jan 2024 16:09:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1706544582; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0q2MLUrv1k7d9D5+/BdCoPmlbiZZ17Ok8bpHpkSmRSY=;
-	b=XEmM3qYlI0CUrEqb7kPUhszOWOQHrlokbHhrZc7EGwa2SHsGXXDHs28Y1liMhb8eVSRDeO
-	zatQeIr5WQa7C018hiHg56nH3gGKBWdULRUkIytPR2X8MllN8+cuqIC1jlmM9H7jAE4AEK
-	FizcKVhqgW1iD6E/ABYBy/eaXsx6HxA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1706544582;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0q2MLUrv1k7d9D5+/BdCoPmlbiZZ17Ok8bpHpkSmRSY=;
-	b=pHOAXzVZkyeIJmcfgNypcReo3Jf9iwdmiAJjbf9PZXcOsFH1rsl1yy9JI5Ch2qME7PBVfo
-	x7CM5qd5SElWPxDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1706544580; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0q2MLUrv1k7d9D5+/BdCoPmlbiZZ17Ok8bpHpkSmRSY=;
-	b=v0bghz1eqSg+/3eBpgiT5psyrda9f5aC+lV5JzdkYb2pQcpf8whF4MwtOFF1+nwpPoZfYI
-	KbB9mB8y4ZcLBV2pgYTRKbwoZe9O2ilikNY2Mtihm1Zz592TvhQ+xEEVq0S1ExdH7wUPkL
-	uuMBhbM3mblZ9tOrhFRxTnLP+JkzkKU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1706544580;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0q2MLUrv1k7d9D5+/BdCoPmlbiZZ17Ok8bpHpkSmRSY=;
-	b=o2TK9+JjZ+NMF9RV1bTujh4tyCF2Ql59qLB7eN/Mzp3OOKiLYgY59GiPARiAgNiFdm1hIV
-	MtBKvHGUbHtJZeBA==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id ACF4D132FA;
-	Mon, 29 Jan 2024 16:09:40 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id v5ItKsTNt2V/JAAAn2gu4w
-	(envelope-from <jack@suse.cz>); Mon, 29 Jan 2024 16:09:40 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 1B926A0807; Mon, 29 Jan 2024 17:09:39 +0100 (CET)
-Date: Mon, 29 Jan 2024 17:09:39 +0100
-From: Jan Kara <jack@suse.cz>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Jan Kara <jack@suse.cz>, Roman Smirnov <r.smirnov@omp.ru>,
-	stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Karina Yankevich <k.yankevich@omp.ru>, lvc-project@linuxtesting.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-ext4@vger.kernel.org,
-	Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>
-Subject: Re: [PATCH 5.10/5.15 v2 0/1 RFC] mm/truncate: fix WARNING in
- ext4_set_page_dirty()
-Message-ID: <20240129160939.jgrhzrh5l2paezvp@quack3>
-References: <20240125130947.600632-1-r.smirnov@omp.ru>
- <ZbJrAvCIufx1K2PU@casper.infradead.org>
- <20240129091124.vbyohvklcfkrpbyp@quack3>
- <Zbe5NBKrugBpRpM-@casper.infradead.org>
+	s=arc-20240116; t=1706544726; c=relaxed/simple;
+	bh=NnfYnZtQjtHjosq2GDDfECTPDfv/b1zE0aS+uS0KxoM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hO8wEH4qeWDDMCc82QvstxJHMnsLhQ/71LbC3j9ggMEbP6nqDCbwsEBMiDysTwj3umBUL3CwocdIIwUZDlf+03+wxFNfBbVUrkZJRfJRyvA6DkBqVsZxKV2sm2RJg6/rpzdSKfyutRLkT+i3LNCBzDPblsFDpiThbxTzRxCIjZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0WZPHhc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6DBC433C7;
+	Mon, 29 Jan 2024 16:12:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1706544726;
+	bh=NnfYnZtQjtHjosq2GDDfECTPDfv/b1zE0aS+uS0KxoM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=U0WZPHhcdx4FsNZV6lihu7SNKpCh8SD4hp2KGKOge8im+lte0YoVfv8fM3pUHJ8DG
+	 /D/pVYTxZD3ywzAtkW4DS+TDy/Fh41y/5I7VSlHYdIaLQOODjkGbAESFTO/Eo0hse9
+	 Lp3a1ViX3qT7ts+dx7eS59yM8NXwNkUMIAWJ6RgU=
+Subject: FAILED: patch "[PATCH] clocksource: Skip watchdog check for large watchdog intervals" failed to apply to 6.1-stable tree
+To: jwiesner@suse.de,feng.tang@intel.com,paulmck@kernel.org,tglx@linutronix.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 29 Jan 2024 08:12:05 -0800
+Message-ID: <2024012905-carry-revolt-b8d5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zbe5NBKrugBpRpM-@casper.infradead.org>
-X-Spam-Level: 
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=v0bghz1e;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=o2TK9+Jj
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.cz:+];
-	 MX_GOOD(-0.01)[];
-	 RCPT_COUNT_TWELVE(0.00)[17];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.com:email,syzkaller.appspot.com:url,bootlin.com:url];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 MID_RHS_NOT_FQDN(0.50)[];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%]
-X-Spam-Score: -4.01
-X-Rspamd-Queue-Id: BD34C1F7F6
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon 29-01-24 14:41:56, Matthew Wilcox wrote:
-> On Mon, Jan 29, 2024 at 10:11:24AM +0100, Jan Kara wrote:
-> > On Thu 25-01-24 14:06:58, Matthew Wilcox wrote:
-> > > On Thu, Jan 25, 2024 at 01:09:46PM +0000, Roman Smirnov wrote:
-> > > > Syzkaller reports warning in ext4_set_page_dirty() in 5.10 and 5.15
-> > > > stable releases. It happens because invalidate_inode_page() frees pages
-> > > > that are needed for the system. To fix this we need to add additional
-> > > > checks to the function. page_mapped() checks if a page exists in the 
-> > > > page tables, but this is not enough. The page can be used in other places:
-> > > > https://elixir.bootlin.com/linux/v6.8-rc1/source/include/linux/page_ref.h#L71
-> > > > 
-> > > > Kernel outputs an error line related to direct I/O:
-> > > > https://syzkaller.appspot.com/text?tag=CrashLog&x=14ab52dac80000
-> > > 
-> > > OK, this is making a lot more sense.
-> > > 
-> > > The invalidate_inode_page() path (after the page_mapped check) calls
-> > > try_to_release_page() which strips the buffers from the page.
-> > > __remove_mapping() tries to freeze the page and presuambly fails.
-> > 
-> > Yep, likely.
-> > 
-> > > ext4 is checking there are still buffer heads attached to the page.
-> > > I'm not sure why it's doing that; it's legitimate to strip the
-> > > bufferheads from a page and then reattach them later (if they're
-> > > attached to a dirty page, they are created dirty).
-> > 
-> > Well, we really need to track dirtiness on per fs-block basis in ext4
-> > (which makes a difference when blocksize < page size). For example for
-> > delayed block allocation we reserve exactly as many blocks as we need
-> > (which need not be all the blocks in the page e.g. when writing just one
-> > block in the middle of a large hole). So when all buffers would be marked
-> > as dirty we would overrun our reservation. Hence at the moment of dirtying
-> > we really need buffers to be attached to the page and stay there until the
-> > page is written back.
-> 
-> Thanks for the clear explanation!
-> 
-> Isn't the correct place to ensure that this is true in
-> ext4_release_folio()?  I think all paths to remove buffer_heads from a
-> folio go through ext4_release_folio() and so it can be prohibited here
-> if the folio is part of a delalloc extent?
 
-OK, I tried to keep it simple but now I have to go into more intricate
-details of GUP and the IO path so please bear with me. Normally, how things
-happen on write or page_mkwrite time is:
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-lock_page(page)
-check we have buffers, create if not
-do stuff with page
-mark appropriate buffers (and thus the page) dirty
-unlock_page(page)
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Now the page and buffers are dirty so nothing can be freed as reclaim
-doesn't touch such pages (and neither does try_to_free_buffers()). So we
-are safe until page writeback time.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 644649553508b9bacf0fc7a5bdc4f9e0165576a5
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012905-carry-revolt-b8d5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-But GUP users such as direct IO are different. They do the page_mkwrite()
-dance at GUP time so we are fine at that moment. But on direct IO
-completion they recheck page dirty bits and call set_page_dirty() *again*
-if they find the page has been cleaned in the mean time. And this is where
-the problem really happens. If writeback of the pages serving as direct IO
-buffer happen while the IO is running, buffers get cleaned, and can be
-reclaimed, and we then hit the warning in ext4_set_page_dirty().
+Possible dependencies:
 
-So what we really need is "don't reclaim page buffers if the page is pinned
-by GUP". This is what MM checks in recent kernels (since d824ec2a15467 "mm:
-do not reclaim private data from pinned page") and the patch discussed here
-is effectively an equivalent of it for stable. So AFAICT it really closes
-all the problematic paths. Sure we could implement that check in
-ext4_release_folio() but I don't think there's a great reason for that.
+644649553508 ("clocksource: Skip watchdog check for large watchdog intervals")
+c37e85c135ce ("clocksource: Loosen clocksource watchdog constraints")
 
-And yes, technically I assume we could reconstruct the buffer state from
-other data structures if we find the buffers are missing. But in
-ext4_set_page_dirty() that is not easily possible as it may be called in
-softirq context. And elsewhere it is prone to hiding other bugs we may
-introduce. So just not stripping the buffer heads when the page is pinned
-is by far the easiest solution for ext4, in particular for stable...
+thanks,
 
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 644649553508b9bacf0fc7a5bdc4f9e0165576a5 Mon Sep 17 00:00:00 2001
+From: Jiri Wiesner <jwiesner@suse.de>
+Date: Mon, 22 Jan 2024 18:23:50 +0100
+Subject: [PATCH] clocksource: Skip watchdog check for large watchdog intervals
+
+There have been reports of the watchdog marking clocksources unstable on
+machines with 8 NUMA nodes:
+
+  clocksource: timekeeping watchdog on CPU373:
+  Marking clocksource 'tsc' as unstable because the skew is too large:
+  clocksource:   'hpet' wd_nsec: 14523447520
+  clocksource:   'tsc'  cs_nsec: 14524115132
+
+The measured clocksource skew - the absolute difference between cs_nsec
+and wd_nsec - was 668 microseconds:
+
+  cs_nsec - wd_nsec = 14524115132 - 14523447520 = 667612
+
+The kernel used 200 microseconds for the uncertainty_margin of both the
+clocksource and watchdog, resulting in a threshold of 400 microseconds (the
+md variable). Both the cs_nsec and the wd_nsec value indicate that the
+readout interval was circa 14.5 seconds.  The observed behaviour is that
+watchdog checks failed for large readout intervals on 8 NUMA node
+machines. This indicates that the size of the skew was directly proportinal
+to the length of the readout interval on those machines. The measured
+clocksource skew, 668 microseconds, was evaluated against a threshold (the
+md variable) that is suited for readout intervals of roughly
+WATCHDOG_INTERVAL, i.e. HZ >> 1, which is 0.5 second.
+
+The intention of 2e27e793e280 ("clocksource: Reduce clocksource-skew
+threshold") was to tighten the threshold for evaluating skew and set the
+lower bound for the uncertainty_margin of clocksources to twice
+WATCHDOG_MAX_SKEW. Later in c37e85c135ce ("clocksource: Loosen clocksource
+watchdog constraints"), the WATCHDOG_MAX_SKEW constant was increased to
+125 microseconds to fit the limit of NTP, which is able to use a
+clocksource that suffers from up to 500 microseconds of skew per second.
+Both the TSC and the HPET use default uncertainty_margin. When the
+readout interval gets stretched the default uncertainty_margin is no
+longer a suitable lower bound for evaluating skew - it imposes a limit
+that is far stricter than the skew with which NTP can deal.
+
+The root causes of the skew being directly proportinal to the length of
+the readout interval are:
+
+  * the inaccuracy of the shift/mult pairs of clocksources and the watchdog
+  * the conversion to nanoseconds is imprecise for large readout intervals
+
+Prevent this by skipping the current watchdog check if the readout
+interval exceeds 2 * WATCHDOG_INTERVAL. Considering the maximum readout
+interval of 2 * WATCHDOG_INTERVAL, the current default uncertainty margin
+(of the TSC and HPET) corresponds to a limit on clocksource skew of 250
+ppm (microseconds of skew per second).  To keep the limit imposed by NTP
+(500 microseconds of skew per second) for all possible readout intervals,
+the margins would have to be scaled so that the threshold value is
+proportional to the length of the actual readout interval.
+
+As for why the readout interval may get stretched: Since the watchdog is
+executed in softirq context the expiration of the watchdog timer can get
+severely delayed on account of a ksoftirqd thread not getting to run in a
+timely manner. Surely, a system with such belated softirq execution is not
+working well and the scheduling issue should be looked into but the
+clocksource watchdog should be able to deal with it accordingly.
+
+Fixes: 2e27e793e280 ("clocksource: Reduce clocksource-skew threshold")
+Suggested-by: Feng Tang <feng.tang@intel.com>
+Signed-off-by: Jiri Wiesner <jwiesner@suse.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Feng Tang <feng.tang@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240122172350.GA740@incl
+
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index c108ed8a9804..3052b1f1168e 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -99,6 +99,7 @@ static u64 suspend_start;
+  * Interval: 0.5sec.
+  */
+ #define WATCHDOG_INTERVAL (HZ >> 1)
++#define WATCHDOG_INTERVAL_MAX_NS ((2 * WATCHDOG_INTERVAL) * (NSEC_PER_SEC / HZ))
+ 
+ /*
+  * Threshold: 0.0312s, when doubled: 0.0625s.
+@@ -134,6 +135,7 @@ static DECLARE_WORK(watchdog_work, clocksource_watchdog_work);
+ static DEFINE_SPINLOCK(watchdog_lock);
+ static int watchdog_running;
+ static atomic_t watchdog_reset_pending;
++static int64_t watchdog_max_interval;
+ 
+ static inline void clocksource_watchdog_lock(unsigned long *flags)
+ {
+@@ -399,8 +401,8 @@ static inline void clocksource_reset_watchdog(void)
+ static void clocksource_watchdog(struct timer_list *unused)
+ {
+ 	u64 csnow, wdnow, cslast, wdlast, delta;
++	int64_t wd_nsec, cs_nsec, interval;
+ 	int next_cpu, reset_pending;
+-	int64_t wd_nsec, cs_nsec;
+ 	struct clocksource *cs;
+ 	enum wd_read_status read_ret;
+ 	unsigned long extra_wait = 0;
+@@ -470,6 +472,27 @@ static void clocksource_watchdog(struct timer_list *unused)
+ 		if (atomic_read(&watchdog_reset_pending))
+ 			continue;
+ 
++		/*
++		 * The processing of timer softirqs can get delayed (usually
++		 * on account of ksoftirqd not getting to run in a timely
++		 * manner), which causes the watchdog interval to stretch.
++		 * Skew detection may fail for longer watchdog intervals
++		 * on account of fixed margins being used.
++		 * Some clocksources, e.g. acpi_pm, cannot tolerate
++		 * watchdog intervals longer than a few seconds.
++		 */
++		interval = max(cs_nsec, wd_nsec);
++		if (unlikely(interval > WATCHDOG_INTERVAL_MAX_NS)) {
++			if (system_state > SYSTEM_SCHEDULING &&
++			    interval > 2 * watchdog_max_interval) {
++				watchdog_max_interval = interval;
++				pr_warn("Long readout interval, skipping watchdog check: cs_nsec: %lld wd_nsec: %lld\n",
++					cs_nsec, wd_nsec);
++			}
++			watchdog_timer.expires = jiffies;
++			continue;
++		}
++
+ 		/* Check the deviation from the watchdog clocksource. */
+ 		md = cs->uncertainty_margin + watchdog->uncertainty_margin;
+ 		if (abs(cs_nsec - wd_nsec) > md) {
+
 
