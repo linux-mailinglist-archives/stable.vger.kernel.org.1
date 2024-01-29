@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-16908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0CEF840EFD
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C49840E7E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DD9728336E
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C15511F27C02
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1A915AAC7;
-	Mon, 29 Jan 2024 17:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5841515FB00;
+	Mon, 29 Jan 2024 17:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hK6Gkqlm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jJpKS3M+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C3115AAC9;
-	Mon, 29 Jan 2024 17:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DEB157E6A;
+	Mon, 29 Jan 2024 17:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548368; cv=none; b=QSL+dk19a7s0RofnAH1F0RZ+FxPedWcfgh141S9ymC9to4FXjDbVeFBG6dzpDSm6Hp3OGWSUSl1+LvHYAefO/XoU/tZE8ZK/eM5sURjUS/YXgw5npD+CHNH4StTdLHZGBFab7nTZfXZNPwNHN9jc7oZJHINuS53Z8lOUOT8Z03M=
+	t=1706548293; cv=none; b=YiMsxBUX6XEJ3nggDt5eXf7O1RH/IFx4S1iUu3QVHc8bSdZxPFZcvRfkaNqvvxwEnx4WowxUQVaKy/aIN60qCBQ+Di9S+l4GRnt9IBcitC3X9DFlHNCyek8lOkWmPm7dNSsPxuPz/WxfOhbUNvfc0qYmdGQVaGsG4XlQr2VsgJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548368; c=relaxed/simple;
-	bh=KLPBhn68Eq/UvmaCbFo34rzVsavxmtfa5bE8ahD/eQs=;
+	s=arc-20240116; t=1706548293; c=relaxed/simple;
+	bh=cbpVvNjll1xR8gD/GM9XSQvECkCSUzXLfzP1sB5vZ44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tx/1VWBTL3SRYJrEGjBGdqs99Ru2Ufp2w5RV9KR6gHtth6qU3h8+r57vkJgt4HSdIBufcM1evSjeDbFu3XOFYOlYEh8lYt6lCdYn8cCMucfEib3XTdIZWJaKNVrHBaIUK1WbTXN2syKj+36avt25WOnu2HkGL3DkwxGjAfrhBxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hK6Gkqlm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED5CC433C7;
-	Mon, 29 Jan 2024 17:12:48 +0000 (UTC)
+	 MIME-Version; b=s8CqcoUVYJd5Si6hGEkqt0rr2Bx+QT3QTOUoaPq0a9lcEVIMbBudoyNg9nG5Lb46JjWmwreJKjtSxdjHtAGTDhAept63nTopxyhAAkpOLema0eApLhfG6hICT0YviAFR5dnA8K8BK9+REdPXB6HdYM+TJKl1l6ISrPbbTKvxPEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jJpKS3M+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DD3C43399;
+	Mon, 29 Jan 2024 17:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548368;
-	bh=KLPBhn68Eq/UvmaCbFo34rzVsavxmtfa5bE8ahD/eQs=;
+	s=korg; t=1706548292;
+	bh=cbpVvNjll1xR8gD/GM9XSQvECkCSUzXLfzP1sB5vZ44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hK6Gkqlmh2qc7xRnjC1JFEMVPs2EvanAcQmH6mXnF6WoxAkshwFbcHloQ7/6/Z5NX
-	 bubvenp0BcazA1blyyZTaHT+HwDnrZXE3gX/6LTdPTnic/Zr7mrx9L/eQfYOPxmHTt
-	 LlJce2huyWnrOLlyKz5+Cabaiv0t9GdAl3ib0dqw=
+	b=jJpKS3M+iZ0OIgVwaeKBkwI/b4A4OyjdPsPejZtiBFCqSaCZhdYcj2m2iYQoCbntO
+	 t57tAHM71LD+Cy+BNrME2dAQJURZXbUUy39ZisgfcJSAShjUGAwB2JOBiGWjTTsH9f
+	 DQc8ouLXAJORbOL6appIvsdbadUzboWCujTgOpJY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Javier Martinez Canillas <javierm@redhat.com>
-Subject: [PATCH 6.1 133/185] drm: Dont unref the same fb many times by mistake due to deadlock handling
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Martin Leung <martin.leung@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Dillon Varone <dillon.varone@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 302/346] drm/amd/display: Init link enc resources in dc_state only if res_pool presents
 Date: Mon, 29 Jan 2024 09:05:33 -0800
-Message-ID: <20240129170002.862270474@linuxfoundation.org>
+Message-ID: <20240129170025.316787670@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +64,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Dillon Varone <dillon.varone@amd.com>
 
-commit cb4daf271302d71a6b9a7c01bd0b6d76febd8f0c upstream.
+[ Upstream commit aa36d8971fccb55ef3241cbfff9d1799e31d8628 ]
 
-If we get a deadlock after the fb lookup in drm_mode_page_flip_ioctl()
-we proceed to unref the fb and then retry the whole thing from the top.
-But we forget to reset the fb pointer back to NULL, and so if we then
-get another error during the retry, before the fb lookup, we proceed
-the unref the same fb again without having gotten another reference.
-The end result is that the fb will (eventually) end up being freed
-while it's still in use.
+[Why & How]
+res_pool is not initialized in all situations such as virtual
+environments, and therefore link encoder resources should not be
+initialized if res_pool is NULL.
 
-Reset fb to NULL once we've unreffed it to avoid doing it again
-until we've done another fb lookup.
-
-This turned out to be pretty easy to hit on a DG2 when doing async
-flips (and CONFIG_DEBUG_WW_MUTEX_SLOWPATH=y). The first symptom I
-saw that drm_closefb() simply got stuck in a busy loop while walking
-the framebuffer list. Fortunately I was able to convince it to oops
-instead, and from there it was easier to track down the culprit.
-
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231211081625.25704-1-ville.syrjala@linux.intel.com
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Martin Leung <martin.leung@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Dillon Varone <dillon.varone@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_plane.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_plane.c
-+++ b/drivers/gpu/drm/drm_plane.c
-@@ -1382,6 +1382,7 @@ retry:
- out:
- 	if (fb)
- 		drm_framebuffer_put(fb);
-+	fb = NULL;
- 	if (plane->old_fb)
- 		drm_framebuffer_put(plane->old_fb);
- 	plane->old_fb = NULL;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index c16190a10883..990d775e4cea 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -3774,7 +3774,8 @@ void dc_resource_state_construct(
+ 	dst_ctx->clk_mgr = dc->clk_mgr;
+ 
+ 	/* Initialise DIG link encoder resource tracking variables. */
+-	link_enc_cfg_init(dc, dst_ctx);
++	if (dc->res_pool)
++		link_enc_cfg_init(dc, dst_ctx);
+ }
+ 
+ 
+-- 
+2.43.0
+
 
 
 
