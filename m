@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-16585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF036840D93
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 978ED840D96
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E127E1C23299
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38E581F2CF10
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E65315A494;
-	Mon, 29 Jan 2024 17:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FCAB15703D;
+	Mon, 29 Jan 2024 17:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8TU0Yrk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXyolMCT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CE715703D;
-	Mon, 29 Jan 2024 17:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1A415A4A4;
+	Mon, 29 Jan 2024 17:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548129; cv=none; b=NRtY8OCuYDGpomKxv4sD5nMuhKG6FSs/gJhdOvvZzWRIzwbT2KX1hNk0voAt+3Szazr2tIwOBdt2HdxS/AEoi4UhwRziUvEtEcwwpBk4RaYbdkxHbzqkYloBEVitYvoloiVOtFy8/xrlzQw5mBIcnss5uyUJ/ZUkPhKQYzjB28Y=
+	t=1706548130; cv=none; b=GGSkqaw/q35plg21ZnZrWUEuAI+5Ur3DPPgfVzQUjjmLCkOK6Ccy3Xh5fvYx7wsay5j25Syw3TKIQt+Ex5T/YSYX2Sn0jIDUPUl/ew5EU0hgWOpfu4y+Ml/0kemLu2/aIBm65n/lLAc+A3BPTB0EM/ZCqhDgqRNalZzoNfdmfLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548129; c=relaxed/simple;
-	bh=AKuETfpHDXWuJK57rocxksFBEbSAcfoA9fSuqyIC+e8=;
+	s=arc-20240116; t=1706548130; c=relaxed/simple;
+	bh=f5T0R6MulC3tIeIRPEZthtDkT/o5kpf0tZ4UzEawFnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QDN67d/3OzLIMWzbvkYz/xbM7yE0TQ8UAh+d1Q/RZQvrYCn+AiVTMbNsaUytUBvKtoKP2vmnDiB/xEp9Mx4X6Dx8TKR/URHcB2vRZgqu67MtUKrzgPGCdtMsUjQmnEviPQaS10h3AOMAsLeBMJxweem+e3z4kCafQusRrutKlN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8TU0Yrk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA73CC433F1;
-	Mon, 29 Jan 2024 17:08:48 +0000 (UTC)
+	 MIME-Version; b=ABBlDP1dNuV3yPhch9QzQMhldUA95Qi3hZXI6eGIBoFTiEuDZp+Q37eauExwJEMY+PlIuYlTd+LKeMd8XyhjDZ84f679rb6UPH22wo1MbQ+a28OjnIqv64F3BoPOWosobgWBaDvtcTMCIYysjSHNEWFDF20gWEXz19z6KHKWn1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXyolMCT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262A2C43390;
+	Mon, 29 Jan 2024 17:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548128;
-	bh=AKuETfpHDXWuJK57rocxksFBEbSAcfoA9fSuqyIC+e8=;
+	s=korg; t=1706548130;
+	bh=f5T0R6MulC3tIeIRPEZthtDkT/o5kpf0tZ4UzEawFnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A8TU0YrkJm+jFlFzxPN7Mj/mC54XgOMMQZUNLTKxo0VuwrJTYYrcJB6JJbDqquGD2
-	 LdukR7sLpGrND4rxvErQ9o5qToEa9FzuTJxddG6tMy38yF+TNIQqYTKyHKf3lP+cGW
-	 PoEFq76eIrAF/9jb9ej4t28jMl/+U1pyYTZgt0O0=
+	b=YXyolMCTdh5hIdi96n0OErG91B2JrjxhnGUP3xQ2Kb+X+g0fOgbnfC4in0qPMMiup
+	 L0ycAm6qIsBG4qpCdGxkRAvNUIdRmQ4gFY9NmrgpQCHwHkN0+7m41MhK5+/IrTNhRG
+	 LRZiMh/G4YEprI8C+l+yRoT5VE5RJpHFIE5v+oF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=D0=9C=D0=B0=D1=80=D0=BA=20=D0=9A=D0=BE=D1=80=D0=B5=D0=BD=D0=B1=D0=B5=D1=80=D0=B3?= <socketpair@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Xin Long <lucien.xin@gmail.com>,
+	Yunjian Wang <wangyunjian@huawei.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 158/346] net: fix removing a namespace with conflicting altnames
-Date: Mon, 29 Jan 2024 09:03:09 -0800
-Message-ID: <20240129170021.053405993@linuxfoundation.org>
+Subject: [PATCH 6.7 159/346] tun: fix missing dropped counter in tun_xdp_act
+Date: Mon, 29 Jan 2024 09:03:10 -0800
+Message-ID: <20240129170021.079151906@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -64,83 +62,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Yunjian Wang <wangyunjian@huawei.com>
 
-[ Upstream commit d09486a04f5da0a812c26217213b89a3b1acf836 ]
+[ Upstream commit 5744ba05e7c4bff8fec133dd0f9e51ddffba92f5 ]
 
-Mark reports a BUG() when a net namespace is removed.
+The commit 8ae1aff0b331 ("tuntap: split out XDP logic") includes
+dropped counter for XDP_DROP, XDP_ABORTED, and invalid XDP actions.
+Unfortunately, that commit missed the dropped counter when error
+occurs during XDP_TX and XDP_REDIRECT actions. This patch fixes
+this issue.
 
-    kernel BUG at net/core/dev.c:11520!
-
-Physical interfaces moved outside of init_net get "refunded"
-to init_net when that namespace disappears. The main interface
-name may get overwritten in the process if it would have
-conflicted. We need to also discard all conflicting altnames.
-Recent fixes addressed ensuring that altnames get moved
-with the main interface, which surfaced this problem.
-
-Reported-by: Марк Коренберг <socketpair@gmail.com>
-Link: https://lore.kernel.org/all/CAEmTpZFZ4Sv3KwqFOY2WKDHeZYdi0O7N5H1nTvcGp=SAEavtDg@mail.gmail.com/
-Fixes: 7663d522099e ("net: check for altname conflicts when changing netdev's netns")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Xin Long <lucien.xin@gmail.com>
+Fixes: 8ae1aff0b331 ("tuntap: split out XDP logic")
+Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 9 +++++++++
- net/core/dev.h | 3 +++
- 2 files changed, 12 insertions(+)
+ drivers/net/tun.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index ad20bebe153f..add22ca0dff9 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -11509,6 +11509,7 @@ static struct pernet_operations __net_initdata netdev_net_ops = {
- 
- static void __net_exit default_device_exit_net(struct net *net)
- {
-+	struct netdev_name_node *name_node, *tmp;
- 	struct net_device *dev, *aux;
- 	/*
- 	 * Push all migratable network devices back to the
-@@ -11531,6 +11532,14 @@ static void __net_exit default_device_exit_net(struct net *net)
- 		snprintf(fb_name, IFNAMSIZ, "dev%d", dev->ifindex);
- 		if (netdev_name_in_use(&init_net, fb_name))
- 			snprintf(fb_name, IFNAMSIZ, "dev%%d");
-+
-+		netdev_for_each_altname_safe(dev, name_node, tmp)
-+			if (netdev_name_in_use(&init_net, name_node->name)) {
-+				netdev_name_node_del(name_node);
-+				synchronize_rcu();
-+				__netdev_name_node_alt_destroy(name_node);
-+			}
-+
- 		err = dev_change_net_namespace(dev, &init_net, fb_name);
- 		if (err) {
- 			pr_emerg("%s: failed to move %s to init_net: %d\n",
-diff --git a/net/core/dev.h b/net/core/dev.h
-index 5aa45f0fd4ae..3f5eb92396b6 100644
---- a/net/core/dev.h
-+++ b/net/core/dev.h
-@@ -64,6 +64,9 @@ int dev_change_name(struct net_device *dev, const char *newname);
- 
- #define netdev_for_each_altname(dev, namenode)				\
- 	list_for_each_entry((namenode), &(dev)->name_node->list, list)
-+#define netdev_for_each_altname_safe(dev, namenode, next)		\
-+	list_for_each_entry_safe((namenode), (next), &(dev)->name_node->list, \
-+				 list)
- 
- int netdev_name_node_alt_create(struct net_device *dev, const char *name);
- int netdev_name_node_alt_destroy(struct net_device *dev, const char *name);
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index afa5497f7c35..237fef557ba5 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -1630,13 +1630,17 @@ static int tun_xdp_act(struct tun_struct *tun, struct bpf_prog *xdp_prog,
+ 	switch (act) {
+ 	case XDP_REDIRECT:
+ 		err = xdp_do_redirect(tun->dev, xdp, xdp_prog);
+-		if (err)
++		if (err) {
++			dev_core_stats_rx_dropped_inc(tun->dev);
+ 			return err;
++		}
+ 		break;
+ 	case XDP_TX:
+ 		err = tun_xdp_tx(tun->dev, xdp);
+-		if (err < 0)
++		if (err < 0) {
++			dev_core_stats_rx_dropped_inc(tun->dev);
+ 			return err;
++		}
+ 		break;
+ 	case XDP_PASS:
+ 		break;
 -- 
 2.43.0
 
