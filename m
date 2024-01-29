@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-16797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D79840E72
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:16:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C428840EFA
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A9B71F27A76
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:16:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D0F81C23A3C
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6EF715B969;
-	Mon, 29 Jan 2024 17:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1B815AABB;
+	Mon, 29 Jan 2024 17:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rC7+tJQY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/RGWDIf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F09157E6A;
-	Mon, 29 Jan 2024 17:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192921586C5;
+	Mon, 29 Jan 2024 17:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548286; cv=none; b=CzyIv8sWtk7MO6PYUA4nGzevAXOhn4xz+WJtUNw5nZwCyVY/NYnhO3XC+YZ0FuZGYBpCa53UqpDRfalO2OUA85bCwr974pfuxree2Pri7U93SRaN2VsP2nynRX03ByqB1wuV1QOtQHQ/i2DbLjs2n9J4caoAvFNNJJRLPcxlapM=
+	t=1706548366; cv=none; b=uIdvbCcafYWleMDUWCCVpu0EkGdgKL+fGBpzp6FgDtDlmImbKmYpWR/fBjRKpBc4CmgyB3aTfn6c7uaOQHLSgn+AF2hXKmrxhk3CZ9xyW7+GHYAf+MtTX0Tp6wX++ytThAXGovkq2whr0b1902uddmvpPIXiKcM3pw21EXENMQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548286; c=relaxed/simple;
-	bh=TxcpqFbfbTPuzJpH7Oeu9gt6+a5sRyKJk96GTguBTL8=;
+	s=arc-20240116; t=1706548366; c=relaxed/simple;
+	bh=XFapekQ43DAthUNUnxOegI0tayr+f+HosV4dlAYXbHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CT8FZgwKAjeXMhnDBMYE1SIKhc2UuloejrtQ3U/13KzUhfQj7LkqG9dquN+Sw5ql1rddjQt7+DaKIdyVVqUEFO1wMnJC0Q8OKg5FawB7CGOPcbD34oZsQRugit5kxLHk00YcBSkkL7DeKqt/Ctfc8fMJffjLxeXs9aNFjZ6svlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rC7+tJQY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD7EC433C7;
-	Mon, 29 Jan 2024 17:11:26 +0000 (UTC)
+	 MIME-Version; b=I57Y/PeJ+i5ItxSzkL5Aw5DgJPN0oZ0uNSahKnLj1hUX13TWbmg/X/4vEwkz2A1ri1GV9ZQFW426j9CJgoXzKSvij9s3BKzGhvkbXSWVogC106IzL7ymPqfpMseHTfVuPxushvF19KZBotcvzIn2slhfEkJJX89Ee3kz4GNtkHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/RGWDIf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A76C433F1;
+	Mon, 29 Jan 2024 17:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548286;
-	bh=TxcpqFbfbTPuzJpH7Oeu9gt6+a5sRyKJk96GTguBTL8=;
+	s=korg; t=1706548365;
+	bh=XFapekQ43DAthUNUnxOegI0tayr+f+HosV4dlAYXbHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rC7+tJQYL784vUQy0GMG3eTVTYKmdPq0uaTszOOhYyTX/ZjJ0i2FxnhPP4cpB/qwP
-	 u8NsuRnR9guxP5tb7H59S6jjvZ8rVF70I1f94L+OsA3NsFPx+kC0ifgsabuO9fSSy3
-	 lKuV5BZl4xSV3YkoP6cucSE508tfK9gyOu6BmNjU=
+	b=h/RGWDIfSTeGT1d3sDTOL45SspUP9Y2Dkf2Oqs6gIuNCdZK5FIQp3lZNAhk0Xkj9U
+	 A5UALdcfd1lhq1ZEj/4Ar17MCO8JCcxfpHef+K0psRF41bPfyUPpL0i0I7S227kbro
+	 jsyiDkPqmBD7lGqQjq/L63tvyOzOLlDABi0x2EzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dillon Varone <dillon.varone@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	George Shen <george.shen@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 298/346] drm/amd/display: Disconnect phantom pipe OPP from OPTC being disabled
-Date: Mon, 29 Jan 2024 09:05:29 -0800
-Message-ID: <20240129170025.185481862@linuxfoundation.org>
+	Dave Chinner <dchinner@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Chandan Babu R <chandanbabu@kernel.org>
+Subject: [PATCH 6.1 130/185] xfs: read only mounts with fsopen mount API are busted
+Date: Mon, 29 Jan 2024 09:05:30 -0800
+Message-ID: <20240129170002.762272573@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +62,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Shen <george.shen@amd.com>
+From: Dave Chinner <dchinner@redhat.com>
 
-[ Upstream commit 7bdbfb4e36e34eb788e44f27666bf0a2b3b90803 ]
+commit d8d222e09dab84a17bb65dda4b94d01c565f5327 upstream.
 
-[Why]
-If an OPP is used for a different OPTC without first being disconnected
-from the previous OPTC, unexpected behaviour can occur. This also
-applies to phantom pipes, which is what the current logic missed.
+Recently xfs/513 started failing on my test machines testing "-o
+ro,norecovery" mount options. This was being emitted in dmesg:
 
-[How]
-Disconnect OPPs from OPTC for phantom pipes before disabling OTG master.
+[ 9906.932724] XFS (pmem0): no-recovery mounts must be read-only.
 
-Also move the disconnection to before the OTG master disable, since the
-register is double buffered.
+Turns out, readonly mounts with the fsopen()/fsconfig() mount API
+have been busted since day zero. It's only taken 5 years for debian
+unstable to start using this "new" mount API, and shortly after this
+I noticed xfs/513 had started to fail as per above.
 
-Reviewed-by: Dillon Varone <dillon.varone@amd.com>
-Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: George Shen <george.shen@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 3ba2a0bfd8cf ("drm/amd/display: Clear OPTC mem select on disable")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The syscall trace is:
+
+fsopen("xfs", FSOPEN_CLOEXEC)           = 3
+mount_setattr(-1, NULL, 0, NULL, 0)     = -1 EINVAL (Invalid argument)
+.....
+fsconfig(3, FSCONFIG_SET_STRING, "source", "/dev/pmem0", 0) = 0
+fsconfig(3, FSCONFIG_SET_FLAG, "ro", NULL, 0) = 0
+fsconfig(3, FSCONFIG_SET_FLAG, "norecovery", NULL, 0) = 0
+fsconfig(3, FSCONFIG_CMD_CREATE, NULL, NULL, 0) = -1 EINVAL (Invalid argument)
+close(3)                                = 0
+
+Showing that the actual mount instantiation (FSCONFIG_CMD_CREATE) is
+what threw out the error.
+
+During mount instantiation, we call xfs_fs_validate_params() which
+does:
+
+        /* No recovery flag requires a read-only mount */
+        if (xfs_has_norecovery(mp) && !xfs_is_readonly(mp)) {
+                xfs_warn(mp, "no-recovery mounts must be read-only.");
+                return -EINVAL;
+        }
+
+and xfs_is_readonly() checks internal mount flags for read only
+state. This state is set in xfs_init_fs_context() from the
+context superblock flag state:
+
+        /*
+         * Copy binary VFS mount flags we are interested in.
+         */
+        if (fc->sb_flags & SB_RDONLY)
+                set_bit(XFS_OPSTATE_READONLY, &mp->m_opstate);
+
+With the old mount API, all of the VFS specific superblock flags
+had already been parsed and set before xfs_init_fs_context() is
+called, so this all works fine.
+
+However, in the brave new fsopen/fsconfig world,
+xfs_init_fs_context() is called from fsopen() context, before any
+VFS superblock have been set or parsed. Hence if we use fsopen(),
+the internal XFS readonly state is *never set*. Hence anything that
+depends on xfs_is_readonly() actually returning true for read only
+mounts is broken if fsopen() has been used to mount the filesystem.
+
+Fix this by moving this internal state initialisation to
+xfs_fs_fill_super() before we attempt to validate the parameters
+that have been set prior to the FSCONFIG_CMD_CREATE call being made.
+
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Fixes: 73e5fff98b64 ("xfs: switch to use the new mount-api")
+cc: stable@vger.kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/amd/display/dc/dcn32/dcn32_optc.c | 19 +++++++++++++------
- .../gpu/drm/amd/display/dc/dcn35/dcn35_optc.c | 12 ++++++------
- 2 files changed, 19 insertions(+), 12 deletions(-)
+ fs/xfs/xfs_super.c |   27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
-index 91ea0d4da06a..1788eb29474b 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_optc.c
-@@ -166,12 +166,6 @@ static bool optc32_disable_crtc(struct timing_generator *optc)
- {
- 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
+--- a/fs/xfs/xfs_super.c
++++ b/fs/xfs/xfs_super.c
+@@ -1458,6 +1458,18 @@ xfs_fs_fill_super(
  
--	/* disable otg request until end of the first line
--	 * in the vertical blank region
--	 */
--	REG_UPDATE(OTG_CONTROL,
--			OTG_MASTER_EN, 0);
--
- 	REG_UPDATE_5(OPTC_DATA_SOURCE_SELECT,
- 			OPTC_SEG0_SRC_SEL, 0xf,
- 			OPTC_SEG1_SRC_SEL, 0xf,
-@@ -179,6 +173,12 @@ static bool optc32_disable_crtc(struct timing_generator *optc)
- 			OPTC_SEG3_SRC_SEL, 0xf,
- 			OPTC_NUM_OF_INPUT_SEGMENT, 0);
+ 	mp->m_super = sb;
  
-+	/* disable otg request until end of the first line
-+	 * in the vertical blank region
++	/*
++	 * Copy VFS mount flags from the context now that all parameter parsing
++	 * is guaranteed to have been completed by either the old mount API or
++	 * the newer fsopen/fsconfig API.
 +	 */
-+	REG_UPDATE(OTG_CONTROL,
-+			OTG_MASTER_EN, 0);
++	if (fc->sb_flags & SB_RDONLY)
++		set_bit(XFS_OPSTATE_READONLY, &mp->m_opstate);
++	if (fc->sb_flags & SB_DIRSYNC)
++		mp->m_features |= XFS_FEAT_DIRSYNC;
++	if (fc->sb_flags & SB_SYNCHRONOUS)
++		mp->m_features |= XFS_FEAT_WSYNC;
 +
- 	REG_UPDATE(CONTROL,
- 			VTG0_ENABLE, 0);
+ 	error = xfs_fs_validate_params(mp);
+ 	if (error)
+ 		goto out_free_names;
+@@ -1915,6 +1927,11 @@ static const struct fs_context_operation
+ 	.free        = xfs_fs_free,
+ };
  
-@@ -205,6 +205,13 @@ static void optc32_disable_phantom_otg(struct timing_generator *optc)
++/*
++ * WARNING: do not initialise any parameters in this function that depend on
++ * mount option parsing having already been performed as this can be called from
++ * fsopen() before any parameters have been set.
++ */
+ static int xfs_init_fs_context(
+ 	struct fs_context	*fc)
  {
- 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
+@@ -1947,16 +1964,6 @@ static int xfs_init_fs_context(
+ 	mp->m_logbsize = -1;
+ 	mp->m_allocsize_log = 16; /* 64k */
  
-+	REG_UPDATE_5(OPTC_DATA_SOURCE_SELECT,
-+			OPTC_SEG0_SRC_SEL, 0xf,
-+			OPTC_SEG1_SRC_SEL, 0xf,
-+			OPTC_SEG2_SRC_SEL, 0xf,
-+			OPTC_SEG3_SRC_SEL, 0xf,
-+			OPTC_NUM_OF_INPUT_SEGMENT, 0);
-+
- 	REG_UPDATE(OTG_CONTROL, OTG_MASTER_EN, 0);
- }
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c
-index 08a59cf449ca..3d6c1b2c2b4d 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_optc.c
-@@ -138,12 +138,6 @@ static bool optc35_disable_crtc(struct timing_generator *optc)
- {
- 	struct optc *optc1 = DCN10TG_FROM_TG(optc);
- 
--	/* disable otg request until end of the first line
--	 * in the vertical blank region
+-	/*
+-	 * Copy binary VFS mount flags we are interested in.
 -	 */
--	REG_UPDATE(OTG_CONTROL,
--			OTG_MASTER_EN, 0);
+-	if (fc->sb_flags & SB_RDONLY)
+-		set_bit(XFS_OPSTATE_READONLY, &mp->m_opstate);
+-	if (fc->sb_flags & SB_DIRSYNC)
+-		mp->m_features |= XFS_FEAT_DIRSYNC;
+-	if (fc->sb_flags & SB_SYNCHRONOUS)
+-		mp->m_features |= XFS_FEAT_WSYNC;
 -
- 	REG_UPDATE_5(OPTC_DATA_SOURCE_SELECT,
- 			OPTC_SEG0_SRC_SEL, 0xf,
- 			OPTC_SEG1_SRC_SEL, 0xf,
-@@ -151,6 +145,12 @@ static bool optc35_disable_crtc(struct timing_generator *optc)
- 			OPTC_SEG3_SRC_SEL, 0xf,
- 			OPTC_NUM_OF_INPUT_SEGMENT, 0);
+ 	fc->s_fs_info = mp;
+ 	fc->ops = &xfs_context_ops;
  
-+	/* disable otg request until end of the first line
-+	 * in the vertical blank region
-+	 */
-+	REG_UPDATE(OTG_CONTROL,
-+			OTG_MASTER_EN, 0);
-+
- 	REG_UPDATE(CONTROL,
- 			VTG0_ENABLE, 0);
- 
--- 
-2.43.0
-
 
 
 
