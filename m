@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-16878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB31840ECB
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5348D841096
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBA331F241C9
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86FF21C23ADC
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C3D161B43;
-	Mon, 29 Jan 2024 17:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707B976C76;
+	Mon, 29 Jan 2024 17:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjngMHuT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqcMiOKR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093D7157E79;
-	Mon, 29 Jan 2024 17:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE8C76C75;
+	Mon, 29 Jan 2024 17:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548346; cv=none; b=bW917lffk/smTv5sdzqFF5ElIOA4TwM+psbe8fisUToTIWCZ8z8dPWCNrQE6NX0Cumx0WezsY00fa9n3bCq+si3gytPuzmoBcvkhpxQOA4Kqqc/TFvL+J6aFTIXF3jFp6zMzMl0x16+bdRPb9zb6IbKethR/eHBp4v67eat1BFQ=
+	t=1706548650; cv=none; b=VgGmaZO7NndMQTbu8oprFc6hJaCEVgz2eElWBI/RbE67fzzee0nEvdyCbY7rjZeFNhkrxaP5LUCUM4Te5NAuGomDY9lBs7s4n4dikzSxh5mYsQzsfvFqbFv7y46bKjZCcmN0uCfFo9RKqPcJNkRanb1l6ldCebFQG8AR3fiU2pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548346; c=relaxed/simple;
-	bh=egtSJf4C6qp3uuubr42Idl8apH9lacCoJBSM2jKDByw=;
+	s=arc-20240116; t=1706548650; c=relaxed/simple;
+	bh=U916XlJBu83nDQvwfRJzoVmy3rP0baImjNQfzwRSskM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MJHfpagfjaqq+DOZzBJRJVCgsPcUo9a6tLuUjxcQUtrQeRGckTtYWVF9X63F1kzRsisQ8MQNzTKce/xQLRWkkAsgVDaTKM4jwAoztujvGXZQtL46UFm0i6BNh66r4sWJ1envi/Q3s+/bB9mMrojbTD1ICXvaa7rIiHkgHiXQHJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjngMHuT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5041C433F1;
-	Mon, 29 Jan 2024 17:12:25 +0000 (UTC)
+	 MIME-Version; b=msXSGsJLMJvzA7FEHhKZWV2UFiHT43Pmr+qRZYIWf7d+rsqUktCJ+IaxzzUNJHZWij7WLC1+yjMTSDxl28hPeofF0PnsRCHFfa0/dgzmcVDRsgg/qQaOdfhuMAFAMw/zrKGnsN7WIg4u0lPQpUdqp6aU0kOHSn2WUZ8AU5QIxbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqcMiOKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC02CC433C7;
+	Mon, 29 Jan 2024 17:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548345;
-	bh=egtSJf4C6qp3uuubr42Idl8apH9lacCoJBSM2jKDByw=;
+	s=korg; t=1706548650;
+	bh=U916XlJBu83nDQvwfRJzoVmy3rP0baImjNQfzwRSskM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjngMHuTBFkuLCG1nvKAUZKAkFFatP92lLy9b8M0r7xB6wDk7xkGadTGL0nY/71l7
-	 XnOrULBhCd+czzmYN4ZaBb3puPoMW8Ybae4ZRp16m0HxjdnoYzUiPZAt7jTFi9vCdw
-	 4VZLXa0ewgQYyPAFrCFNYom+Wi5elLzw2YhJxce0=
+	b=KqcMiOKRfmYoq8TuW0kwM6JSJw/e4DIjRdQmbGft0euuuOXZ1g5bJZ+loS42fi938
+	 L3Z8+60iKaDCB9lHdtu/pa9T+eY7yzghFCyt+aDrlYPNrnFxRKpWc/PgGbEIpE+HNa
+	 4XTDAKCBZyAvlIF879UVJxSwxAxnwZP7gSLGrMEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Wang <unicorn_wang@outlook.com>,
-	Guo Ren <guoren@kernel.org>,
-	Inochi Amaoto <inochiama@outlook.com>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Pin-yen Lin <treapking@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 338/346] riscv: dts: sophgo: separate sg2042 mtime and mtimecmp to fit aclint format
+Subject: [PATCH 6.6 305/331] drm/bridge: parade-ps8640: Ensure bridge is suspended in .post_disable()
 Date: Mon, 29 Jan 2024 09:06:09 -0800
-Message-ID: <20240129170026.428277668@linuxfoundation.org>
+Message-ID: <20240129170023.802553078@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,225 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inochi Amaoto <inochiama@outlook.com>
+From: Pin-yen Lin <treapking@chromium.org>
 
-[ Upstream commit 1f4a994be2c3d13852fd5c1054f292bd303352cc ]
+[ Upstream commit 26db46bc9c675e43230cc6accd110110a7654299 ]
 
-Change the timer layout in the dtb to fit the format that needed by
-the SBI.
+The ps8640 bridge seems to expect everything to be power cycled at the
+disable process, but sometimes ps8640_aux_transfer() holds the runtime
+PM reference and prevents the bridge from suspend.
 
-Fixes: 967a94a92aaa ("riscv: dts: add initial Sophgo SG2042 SoC device tree")
-Reviewed-by: Chen Wang <unicorn_wang@outlook.com>
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Signed-off-by: Inochi Amaoto <inochiama@outlook.com>
-Signed-off-by: Chen Wang <unicorn_wang@outlook.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Prevent that by introducing a mutex lock between ps8640_aux_transfer()
+and .post_disable() to make sure the bridge is really powered off.
+
+Fixes: 826cff3f7ebb ("drm/bridge: parade-ps8640: Enable runtime power management")
+Signed-off-by: Pin-yen Lin <treapking@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240109120528.1292601-1-treapking@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/boot/dts/sophgo/sg2042.dtsi | 80 +++++++++++++++-----------
- 1 file changed, 48 insertions(+), 32 deletions(-)
+ drivers/gpu/drm/bridge/parade-ps8640.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/riscv/boot/dts/sophgo/sg2042.dtsi b/arch/riscv/boot/dts/sophgo/sg2042.dtsi
-index 93256540d078..ead1cc35d88b 100644
---- a/arch/riscv/boot/dts/sophgo/sg2042.dtsi
-+++ b/arch/riscv/boot/dts/sophgo/sg2042.dtsi
-@@ -93,144 +93,160 @@ clint_mswi: interrupt-controller@7094000000 {
- 					      <&cpu63_intc 3>;
- 		};
+diff --git a/drivers/gpu/drm/bridge/parade-ps8640.c b/drivers/gpu/drm/bridge/parade-ps8640.c
+index fb5e9ae9ad81..166bfc725ef4 100644
+--- a/drivers/gpu/drm/bridge/parade-ps8640.c
++++ b/drivers/gpu/drm/bridge/parade-ps8640.c
+@@ -107,6 +107,7 @@ struct ps8640 {
+ 	struct device_link *link;
+ 	bool pre_enabled;
+ 	bool need_post_hpd_delay;
++	struct mutex aux_lock;
+ };
  
--		clint_mtimer0: timer@70ac000000 {
-+		clint_mtimer0: timer@70ac004000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac000000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac004000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu0_intc 7>,
- 					      <&cpu1_intc 7>,
- 					      <&cpu2_intc 7>,
- 					      <&cpu3_intc 7>;
- 		};
+ static const struct regmap_config ps8640_regmap_config[] = {
+@@ -345,6 +346,7 @@ static ssize_t ps8640_aux_transfer(struct drm_dp_aux *aux,
+ 	struct device *dev = &ps_bridge->page[PAGE0_DP_CNTL]->dev;
+ 	int ret;
  
--		clint_mtimer1: timer@70ac010000 {
-+		clint_mtimer1: timer@70ac014000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac010000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac014000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu4_intc 7>,
- 					      <&cpu5_intc 7>,
- 					      <&cpu6_intc 7>,
- 					      <&cpu7_intc 7>;
- 		};
++	mutex_lock(&ps_bridge->aux_lock);
+ 	pm_runtime_get_sync(dev);
+ 	ret = _ps8640_wait_hpd_asserted(ps_bridge, 200 * 1000);
+ 	if (ret) {
+@@ -354,6 +356,7 @@ static ssize_t ps8640_aux_transfer(struct drm_dp_aux *aux,
+ 	ret = ps8640_aux_transfer_msg(aux, msg);
+ 	pm_runtime_mark_last_busy(dev);
+ 	pm_runtime_put_autosuspend(dev);
++	mutex_unlock(&ps_bridge->aux_lock);
  
--		clint_mtimer2: timer@70ac020000 {
-+		clint_mtimer2: timer@70ac024000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac020000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac024000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu8_intc 7>,
- 					      <&cpu9_intc 7>,
- 					      <&cpu10_intc 7>,
- 					      <&cpu11_intc 7>;
- 		};
+ 	return ret;
+ }
+@@ -475,7 +478,18 @@ static void ps8640_atomic_post_disable(struct drm_bridge *bridge,
+ 	ps_bridge->pre_enabled = false;
  
--		clint_mtimer3: timer@70ac030000 {
-+		clint_mtimer3: timer@70ac034000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac030000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac034000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu12_intc 7>,
- 					      <&cpu13_intc 7>,
- 					      <&cpu14_intc 7>,
- 					      <&cpu15_intc 7>;
- 		};
+ 	ps8640_bridge_vdo_control(ps_bridge, DISABLE);
++
++	/*
++	 * The bridge seems to expect everything to be power cycled at the
++	 * disable process, so grab a lock here to make sure
++	 * ps8640_aux_transfer() is not holding a runtime PM reference and
++	 * preventing the bridge from suspend.
++	 */
++	mutex_lock(&ps_bridge->aux_lock);
++
+ 	pm_runtime_put_sync_suspend(&ps_bridge->page[PAGE0_DP_CNTL]->dev);
++
++	mutex_unlock(&ps_bridge->aux_lock);
+ }
  
--		clint_mtimer4: timer@70ac040000 {
-+		clint_mtimer4: timer@70ac044000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac040000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac044000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu16_intc 7>,
- 					      <&cpu17_intc 7>,
- 					      <&cpu18_intc 7>,
- 					      <&cpu19_intc 7>;
- 		};
+ static int ps8640_bridge_attach(struct drm_bridge *bridge,
+@@ -624,6 +638,8 @@ static int ps8640_probe(struct i2c_client *client)
+ 	if (!ps_bridge)
+ 		return -ENOMEM;
  
--		clint_mtimer5: timer@70ac050000 {
-+		clint_mtimer5: timer@70ac054000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac050000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac054000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu20_intc 7>,
- 					      <&cpu21_intc 7>,
- 					      <&cpu22_intc 7>,
- 					      <&cpu23_intc 7>;
- 		};
- 
--		clint_mtimer6: timer@70ac060000 {
-+		clint_mtimer6: timer@70ac064000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac060000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac064000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu24_intc 7>,
- 					      <&cpu25_intc 7>,
- 					      <&cpu26_intc 7>,
- 					      <&cpu27_intc 7>;
- 		};
- 
--		clint_mtimer7: timer@70ac070000 {
-+		clint_mtimer7: timer@70ac074000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac070000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac074000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu28_intc 7>,
- 					      <&cpu29_intc 7>,
- 					      <&cpu30_intc 7>,
- 					      <&cpu31_intc 7>;
- 		};
- 
--		clint_mtimer8: timer@70ac080000 {
-+		clint_mtimer8: timer@70ac084000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac080000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac084000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu32_intc 7>,
- 					      <&cpu33_intc 7>,
- 					      <&cpu34_intc 7>,
- 					      <&cpu35_intc 7>;
- 		};
- 
--		clint_mtimer9: timer@70ac090000 {
-+		clint_mtimer9: timer@70ac094000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac090000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac094000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu36_intc 7>,
- 					      <&cpu37_intc 7>,
- 					      <&cpu38_intc 7>,
- 					      <&cpu39_intc 7>;
- 		};
- 
--		clint_mtimer10: timer@70ac0a0000 {
-+		clint_mtimer10: timer@70ac0a4000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac0a0000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac0a4000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu40_intc 7>,
- 					      <&cpu41_intc 7>,
- 					      <&cpu42_intc 7>,
- 					      <&cpu43_intc 7>;
- 		};
- 
--		clint_mtimer11: timer@70ac0b0000 {
-+		clint_mtimer11: timer@70ac0b4000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac0b0000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac0b4000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu44_intc 7>,
- 					      <&cpu45_intc 7>,
- 					      <&cpu46_intc 7>,
- 					      <&cpu47_intc 7>;
- 		};
- 
--		clint_mtimer12: timer@70ac0c0000 {
-+		clint_mtimer12: timer@70ac0c4000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac0c0000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac0c4000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu48_intc 7>,
- 					      <&cpu49_intc 7>,
- 					      <&cpu50_intc 7>,
- 					      <&cpu51_intc 7>;
- 		};
- 
--		clint_mtimer13: timer@70ac0d0000 {
-+		clint_mtimer13: timer@70ac0d4000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac0d0000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac0d4000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu52_intc 7>,
- 					      <&cpu53_intc 7>,
- 					      <&cpu54_intc 7>,
- 					      <&cpu55_intc 7>;
- 		};
- 
--		clint_mtimer14: timer@70ac0e0000 {
-+		clint_mtimer14: timer@70ac0e4000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac0e0000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac0e4000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu56_intc 7>,
- 					      <&cpu57_intc 7>,
- 					      <&cpu58_intc 7>,
- 					      <&cpu59_intc 7>;
- 		};
- 
--		clint_mtimer15: timer@70ac0f0000 {
-+		clint_mtimer15: timer@70ac0f4000 {
- 			compatible = "sophgo,sg2042-aclint-mtimer", "thead,c900-aclint-mtimer";
--			reg = <0x00000070 0xac0f0000 0x00000000 0x00007ff8>;
-+			reg = <0x00000070 0xac0f4000 0x00000000 0x0000c000>;
-+			reg-names = "mtimecmp";
- 			interrupts-extended = <&cpu60_intc 7>,
- 					      <&cpu61_intc 7>,
- 					      <&cpu62_intc 7>,
++	mutex_init(&ps_bridge->aux_lock);
++
+ 	ps_bridge->supplies[0].supply = "vdd12";
+ 	ps_bridge->supplies[1].supply = "vdd33";
+ 	ret = devm_regulator_bulk_get(dev, ARRAY_SIZE(ps_bridge->supplies),
 -- 
 2.43.0
 
