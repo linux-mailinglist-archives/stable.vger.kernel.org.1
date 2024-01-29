@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-16983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13CFC840F53
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:22:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C01AC840D30
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:08:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4644D1C221C6
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:22:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F25261C22F1F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1770E15D5D3;
-	Mon, 29 Jan 2024 17:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049D215A48E;
+	Mon, 29 Jan 2024 17:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPMO3jEK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjQbqNwn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3AC15B0E2;
-	Mon, 29 Jan 2024 17:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F00157048;
+	Mon, 29 Jan 2024 17:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548423; cv=none; b=I+Tfk777rV9LOLA/cZ1oLby6FBGt7U0bOXm2PE0PVRHxXq5aYD0okbTnDV+YGq559xNvhgNVza4Q8VelaHFpblE/d0i1L2pg3rPmPGNHq5eBwI3mGJI3otrFb3GLMLjHcKvZ+cS3SZBcEkoHUSDuSzmcwSTcsl6ZEdPL9fTQSXY=
+	t=1706548059; cv=none; b=SRqQIci3ypuSDVqjlMAcse8bzCjOqoSNqG9Kk4xb3bK3F9iD58tTBWE6rJXZR+kaAYjPjXkG7D/7x+uFF0T3b/G39lFXhNhJtC5OSNk5qaIsJPR9a8UX2gfH3o/7pavkBAPWXuo2VKoDiRtZQCed5CTS/Cu1tvSMHI4WKij34fI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548423; c=relaxed/simple;
-	bh=rvuqNt+MugQYTKnWyR2Uv/ZxzKMJo9jy4efE0BmDDpI=;
+	s=arc-20240116; t=1706548059; c=relaxed/simple;
+	bh=H8fNHJC+rmHUwlMZKM/2xasJ0KE+azG82AQ1uw6GeDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ch1ty6AOxLBqSGSr0rqlxxNYFYuzYdHo9s4CUhzAiCFf5qdWHz2nZ79UmN6lCtnSXyxFt/6Qfj/fSVwqd0EK/6nUCCBpXjEi7Niegl53O0trA8bgdcDKR0kmJBNxNJLcAoYhelFHtJ1/mbTzJ37txfkKvzQT1H37jvI+CyF9YxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPMO3jEK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F84EC43390;
-	Mon, 29 Jan 2024 17:13:43 +0000 (UTC)
+	 MIME-Version; b=Ffc5gPQKIZuwzdt5p5Knr7t+1sS3rIdFHpVD5zGrPw+vUz/7GAO27aHkyo/1XlfV0ZvzJ/7zgDamO3NyCY7c8Q6EXxUCOLpBFxuHvuS2vI+HwZvnkH4wZW0Bmy+XcIAYyzGPjpb/HeJ8QmeBi3UOMs7v3w0JpENGRHc5w7BotzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjQbqNwn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E24BC433C7;
+	Mon, 29 Jan 2024 17:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548423;
-	bh=rvuqNt+MugQYTKnWyR2Uv/ZxzKMJo9jy4efE0BmDDpI=;
+	s=korg; t=1706548059;
+	bh=H8fNHJC+rmHUwlMZKM/2xasJ0KE+azG82AQ1uw6GeDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bPMO3jEK95vIYuT3sq82dE1A+vF+BkK5BplyY5yhFB1Tlq8qXIWjAvq4MMpME+cSe
-	 MgpzHMUgiqyWTLiImJKEeWX70sxfkqOqzXaEfbdFOecBkdXtXhfI8UVyEbV3f6wVxP
-	 bVVc1fITBWRBQwTGEJSOlvV5v8JnSjhIgpeIlIqE=
+	b=XjQbqNwnVp+7ahon9ngRMBk5RTeMY3utjHvdR6f36ElrGS2Xk7eprYDCSEl4qPxwL
+	 liBlL7YWV2yvigNafqRK9zkN4rlHkzv7OF0F8mhmcDeHdxYpaInufXu19XlmhWcV4M
+	 hWRrK1uCwvdny8H1k0JuL2cudNAmW608jEWy9dhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/331] cifs: reconnect work should have reference on server struct
-Date: Mon, 29 Jan 2024 09:01:26 -0800
-Message-ID: <20240129170015.606409392@linuxfoundation.org>
+Subject: [PATCH 6.7 056/346] riscv: Fix module loading free order
+Date: Mon, 29 Jan 2024 09:01:27 -0800
+Message-ID: <20240129170018.043387164@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,148 +66,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Charlie Jenkins <charlie@rivosinc.com>
 
-[ Upstream commit 19a4b9d6c372cab6a3b2c9a061a236136fe95274 ]
+[ Upstream commit 78996eee79ebdfe8b6f0e54cb6dcc792d5129291 ]
 
-The delayed work for reconnect takes server struct
-as a parameter. But it does so without holding a ref
-to it. Normally, this may not show a problem as
-the reconnect work is only cancelled on umount.
+Reverse order of kfree calls to resolve use-after-free error.
 
-However, since we now plan to support scaling down of
-channels, and the scale down can happen from reconnect
-work itself, we need to fix it.
-
-This change takes a reference on the server struct
-before it is passed to the delayed work. And drops
-the reference in the delayed work itself. Or if
-the delayed work is successfully cancelled, by the
-process that cancels it.
-
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: 78e727e58e54 ("cifs: update iface_last_update on each query-and-update")
+Signed-off-by: Charlie Jenkins <charlie@rivosinc.com>
+Fixes: d8792a5734b0 ("riscv: Safely remove entries from relocation list")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202312132019.iYGTwW0L-lkp@intel.com/
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Julia Lawall <julia.lawall@inria.fr>
+Closes: https://lore.kernel.org/r/202312120044.wTI1Uyaa-lkp@intel.com/
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20240104-module_loading_fix-v3-1-a71f8de6ce0f@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c | 27 +++++++++++++++++++++------
- fs/smb/client/smb2pdu.c | 23 +++++++++++++----------
- 2 files changed, 34 insertions(+), 16 deletions(-)
+ arch/riscv/kernel/module.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index a482afa3fa42..2f5be7dcd1f9 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -388,7 +388,13 @@ static int __cifs_reconnect(struct TCP_Server_Info *server,
- 			spin_unlock(&server->srv_lock);
- 			cifs_swn_reset_server_dstaddr(server);
- 			cifs_server_unlock(server);
--			mod_delayed_work(cifsiod_wq, &server->reconnect, 0);
-+
-+			/* increase ref count which reconnect work will drop */
-+			spin_lock(&cifs_tcp_ses_lock);
-+			server->srv_count++;
-+			spin_unlock(&cifs_tcp_ses_lock);
-+			if (mod_delayed_work(cifsiod_wq, &server->reconnect, 0))
-+				cifs_put_tcp_session(server, false);
- 		}
- 	} while (server->tcpStatus == CifsNeedReconnect);
+diff --git a/arch/riscv/kernel/module.c b/arch/riscv/kernel/module.c
+index 862834bb1d64..5cf3a693482d 100644
+--- a/arch/riscv/kernel/module.c
++++ b/arch/riscv/kernel/module.c
+@@ -723,8 +723,8 @@ static int add_relocation_to_accumulate(struct module *me, int type,
  
-@@ -518,7 +524,13 @@ static int reconnect_dfs_server(struct TCP_Server_Info *server)
- 		spin_unlock(&server->srv_lock);
- 		cifs_swn_reset_server_dstaddr(server);
- 		cifs_server_unlock(server);
--		mod_delayed_work(cifsiod_wq, &server->reconnect, 0);
-+
-+		/* increase ref count which reconnect work will drop */
-+		spin_lock(&cifs_tcp_ses_lock);
-+		server->srv_count++;
-+		spin_unlock(&cifs_tcp_ses_lock);
-+		if (mod_delayed_work(cifsiod_wq, &server->reconnect, 0))
-+			cifs_put_tcp_session(server, false);
- 	} while (server->tcpStatus == CifsNeedReconnect);
+ 			if (!bucket) {
+ 				kfree(entry);
+-				kfree(rel_head);
+ 				kfree(rel_head->rel_entry);
++				kfree(rel_head);
+ 				return -ENOMEM;
+ 			}
  
- 	mutex_lock(&server->refpath_lock);
-@@ -1605,16 +1617,19 @@ cifs_put_tcp_session(struct TCP_Server_Info *server, int from_reconnect)
- 
- 	cancel_delayed_work_sync(&server->echo);
- 
--	if (from_reconnect)
-+	if (from_reconnect) {
- 		/*
- 		 * Avoid deadlock here: reconnect work calls
- 		 * cifs_put_tcp_session() at its end. Need to be sure
- 		 * that reconnect work does nothing with server pointer after
- 		 * that step.
- 		 */
--		cancel_delayed_work(&server->reconnect);
--	else
--		cancel_delayed_work_sync(&server->reconnect);
-+		if (cancel_delayed_work(&server->reconnect))
-+			cifs_put_tcp_session(server, from_reconnect);
-+	} else {
-+		if (cancel_delayed_work_sync(&server->reconnect))
-+			cifs_put_tcp_session(server, from_reconnect);
-+	}
- 
- 	spin_lock(&server->srv_lock);
- 	server->tcpStatus = CifsExiting;
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 888eb59ad86f..0274ef67457b 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -3879,12 +3879,6 @@ void smb2_reconnect_server(struct work_struct *work)
- 		}
- 		spin_unlock(&ses->chan_lock);
- 	}
--	/*
--	 * Get the reference to server struct to be sure that the last call of
--	 * cifs_put_tcon() in the loop below won't release the server pointer.
--	 */
--	if (tcon_exist || ses_exist)
--		server->srv_count++;
- 
- 	spin_unlock(&cifs_tcp_ses_lock);
- 
-@@ -3932,13 +3926,17 @@ void smb2_reconnect_server(struct work_struct *work)
- 
- done:
- 	cifs_dbg(FYI, "Reconnecting tcons and channels finished\n");
--	if (resched)
-+	if (resched) {
- 		queue_delayed_work(cifsiod_wq, &server->reconnect, 2 * HZ);
-+		mutex_unlock(&pserver->reconnect_mutex);
-+
-+		/* no need to put tcp session as we're retrying */
-+		return;
-+	}
- 	mutex_unlock(&pserver->reconnect_mutex);
- 
- 	/* now we can safely release srv struct */
--	if (tcon_exist || ses_exist)
--		cifs_put_tcp_session(server, 1);
-+	cifs_put_tcp_session(server, true);
- }
- 
- int
-@@ -3958,7 +3956,12 @@ SMB2_echo(struct TCP_Server_Info *server)
- 	    server->ops->need_neg(server)) {
- 		spin_unlock(&server->srv_lock);
- 		/* No need to send echo on newly established connections */
--		mod_delayed_work(cifsiod_wq, &server->reconnect, 0);
-+		spin_lock(&cifs_tcp_ses_lock);
-+		server->srv_count++;
-+		spin_unlock(&cifs_tcp_ses_lock);
-+		if (mod_delayed_work(cifsiod_wq, &server->reconnect, 0))
-+			cifs_put_tcp_session(server, false);
-+
- 		return rc;
- 	}
- 	spin_unlock(&server->srv_lock);
 -- 
 2.43.0
 
