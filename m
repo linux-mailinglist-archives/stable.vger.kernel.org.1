@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-16597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F76E840DA0
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:11:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71661840FBE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2E9D1C22E01
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:11:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1214BB21FFB
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2E215A4A8;
-	Mon, 29 Jan 2024 17:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A6515B2E5;
+	Mon, 29 Jan 2024 17:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRHMfWZh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cr5dMz3I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF6A157048;
-	Mon, 29 Jan 2024 17:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9CA66FDE1;
+	Mon, 29 Jan 2024 17:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548137; cv=none; b=Bt9GwHE+uMDVc4XC5/zpUH9+iy6IJKORhmpsXkRk+ECrTFJkCl/Jl2pX53vmcC3GoyxPi18nk8YnATQ90qVP0DDfF+Lc9btLuhRwyKmgHctad9y/AYuiQxlW7OZJZRGk3iAegVMEpGd0jf5gbNN7+sTCtppTk60weEyMI0PKxow=
+	t=1706548493; cv=none; b=GrhRNBe3EMJYvlwNY4q4r29FNZohhHDCPCW6WwbIG8PnkeRRbYHTu03+5iTY72ofUNtWk2UPqPfZN6d4FqQ/hMbpLnrH+GW66SZNsH5zi+Dywk2OntUB/4POgXOanN0L6OjZP48dEXXeTr6LVOoce4cpMhEHz5aqzhnLifFCkec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548137; c=relaxed/simple;
-	bh=9e78tw+dtAJeVCx0gOfJD7D45SR9cOa6EZY5AFCfQqw=;
+	s=arc-20240116; t=1706548493; c=relaxed/simple;
+	bh=dQXpXEHJnmkDiowLvtxSMbAyhE+7AlOX7wWuGNQQ+1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqYld7+CpW0N5UQ+pk+cscxRKQpyhkpHOOinoP3mBzEk8wnFIkAOs8MWerJBqBt06PQ2/ZwdFPvbwmikVkS5nB2DauHXbMTzRb+LyTONMMZivcdsGBMGhnS2gWM+RniKExM50QwFp1tueWCre6j9avht/5AXGXi7bLXO2s2oAL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRHMfWZh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A846C43394;
-	Mon, 29 Jan 2024 17:08:57 +0000 (UTC)
+	 MIME-Version; b=AroxB4v/XlkpnmMF1CPMCt53Z6ZEEoPewS/3VEFPYe1mrWV8vMpYPsKkrjFMiZFviNrE5vDjjFjKvfh3V48lcoEt2J8bagGb6ae2eLmK77n5szKFF+PlxnRez0rJi2xwWWsr0OVPr7QlUvQi5Ng2WA/r39XoxDsdxbGzrBzGgYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cr5dMz3I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BEEC43390;
+	Mon, 29 Jan 2024 17:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548137;
-	bh=9e78tw+dtAJeVCx0gOfJD7D45SR9cOa6EZY5AFCfQqw=;
+	s=korg; t=1706548493;
+	bh=dQXpXEHJnmkDiowLvtxSMbAyhE+7AlOX7wWuGNQQ+1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LRHMfWZhY2QL2okI3Ivjn81zwGonDLQtt6RsOMJ7y5DVTawStTh9mmwcMzLlW80AX
-	 vsvH/+jYfgve+6GZSJjGaweY/AWZsz2e5mk8h/BiN3NMBmx5VjoqbvxD6v1lMF/Vw+
-	 3m9Sh/h18kXPGtjyjGgpyBxGwY8z+a7qPfuwRdB8=
+	b=cr5dMz3IUh95yK1IgCrCV8724j0ftfAA1ZOCSLGFx545PYJ5L2vlHsgjr+Tl4EFWK
+	 AMYVIJHndEMjW/tWWYTqNnxDlt46tcIWJP5V0chPpJH89gcUD5HTmwvIgQ98cdC3hj
+	 Ga6KL+0Fwg5f7GrDT1JZH/zpQuDqWj90M+q92lyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.7 142/346] ksmbd: dont increment epoch if current state and request state are same
-Date: Mon, 29 Jan 2024 09:02:53 -0800
-Message-ID: <20240129170020.579560216@linuxfoundation.org>
+	Guo Ren <guoren@linux.alibaba.com>,
+	Guo Ren <guoren@kernel.org>,
+	Leonardo Bras <leobras@redhat.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6 110/331] riscv: mm: Fixup compat mode boot failure
+Date: Mon, 29 Jan 2024 09:02:54 -0800
+Message-ID: <20240129170018.140746268@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Guo Ren <guoren@linux.alibaba.com>
 
-[ Upstream commit b6e9a44e99603fe10e1d78901fdd97681a539612 ]
+commit 5f449e245e5b0d9d63eef6c8968fbdc3a8594407 upstream.
 
-If existing lease state and request state are same, don't increment
-epoch in create context.
+In COMPAT mode, the STACK_TOP is DEFAULT_MAP_WINDOW (0x80000000), but
+the TASK_SIZE is 0x7fff000. When the user stack is upon 0x7fff000, it
+will cause a user segment fault. Sometimes, it would cause boot
+failure when the whole rootfs is rv32.
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Freeing unused kernel image (initmem) memory: 2236K
+Run /sbin/init as init process
+Starting init: /sbin/init exists but couldn't execute it (error -14)
+Run /etc/init as init process
+...
+
+Increase the TASK_SIZE to cover STACK_TOP.
+
+Cc: stable@vger.kernel.org
+Fixes: add2cc6b6515 ("RISC-V: mm: Restrict address space for sv39,sv48,sv57")
+Signed-off-by: Guo Ren <guoren@linux.alibaba.com>
+Signed-off-by: Guo Ren <guoren@kernel.org>
+Reviewed-by: Leonardo Bras <leobras@redhat.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Link: https://lore.kernel.org/r/20231222115703.2404036-2-guoren@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/oplock.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/riscv/include/asm/pgtable.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -105,7 +105,7 @@ static int alloc_lease(struct oplock_inf
- 	lease->is_dir = lctx->is_dir;
- 	memcpy(lease->parent_lease_key, lctx->parent_lease_key, SMB2_LEASE_KEY_SIZE);
- 	lease->version = lctx->version;
--	lease->epoch = le16_to_cpu(lctx->epoch);
-+	lease->epoch = le16_to_cpu(lctx->epoch) + 1;
- 	INIT_LIST_HEAD(&opinfo->lease_entry);
- 	opinfo->o_lease = lease;
+--- a/arch/riscv/include/asm/pgtable.h
++++ b/arch/riscv/include/asm/pgtable.h
+@@ -880,7 +880,7 @@ static inline pte_t pte_swp_clear_exclus
+ #define TASK_SIZE_MIN	(PGDIR_SIZE_L3 * PTRS_PER_PGD / 2)
  
-@@ -541,6 +541,9 @@ static struct oplock_info *same_client_h
- 				continue;
- 			}
- 
-+			if (lctx->req_state != lease->state)
-+				lease->epoch++;
-+
- 			/* upgrading lease */
- 			if ((atomic_read(&ci->op_count) +
- 			     atomic_read(&ci->sop_count)) == 1) {
-@@ -1035,7 +1038,7 @@ static void copy_lease(struct oplock_inf
- 	       SMB2_LEASE_KEY_SIZE);
- 	lease2->duration = lease1->duration;
- 	lease2->flags = lease1->flags;
--	lease2->epoch = lease1->epoch++;
-+	lease2->epoch = lease1->epoch;
- 	lease2->version = lease1->version;
- }
- 
-@@ -1454,7 +1457,7 @@ void create_lease_buf(u8 *rbuf, struct l
- 		memcpy(buf->lcontext.LeaseKey, lease->lease_key,
- 		       SMB2_LEASE_KEY_SIZE);
- 		buf->lcontext.LeaseFlags = lease->flags;
--		buf->lcontext.Epoch = cpu_to_le16(++lease->epoch);
-+		buf->lcontext.Epoch = cpu_to_le16(lease->epoch);
- 		buf->lcontext.LeaseState = lease->state;
- 		memcpy(buf->lcontext.ParentLeaseKey, lease->parent_lease_key,
- 		       SMB2_LEASE_KEY_SIZE);
+ #ifdef CONFIG_COMPAT
+-#define TASK_SIZE_32	(_AC(0x80000000, UL) - PAGE_SIZE)
++#define TASK_SIZE_32	(_AC(0x80000000, UL))
+ #define TASK_SIZE	(test_thread_flag(TIF_32BIT) ? \
+ 			 TASK_SIZE_32 : TASK_SIZE_64)
+ #else
 
 
 
