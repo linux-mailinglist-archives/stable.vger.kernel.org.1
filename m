@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-17292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 592F8841098
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:29:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A88840F0A
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:20:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C60A1C23C3D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:29:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 075DBB24BF2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0881B76C7A;
-	Mon, 29 Jan 2024 17:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8EA516276F;
+	Mon, 29 Jan 2024 17:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zy8lIyYM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HU6RsCUh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA52E76C74;
-	Mon, 29 Jan 2024 17:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AF0157E8F;
+	Mon, 29 Jan 2024 17:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548651; cv=none; b=CRJc9ZklYPOFJ1OeAA6R8jDYmSEU8H791UGXN26DjPhSOCngO2QPHSAKQF3Dl/RM5ONjtptfk2W1G858naBX045QH2QeVxGZlZuHTqz6JY9rHjJM2sBOigbvG81v/sK0tri7rzdE6VrxPLmBPYPLUIRFeqfFtqJHlp/vTQD8azw=
+	t=1706548375; cv=none; b=XT1OMuHwK9DNDbriRJbXtJerG9LEn8rpC2nkNMEu8+lshKMlohqKSNTZVeCVG536c2CIS11IGpF7C7dzSFVBVhcf3WmUDX9P1V0M8/M6jbyJIRc9sxC3p/tQlrw8iu9Tu9RPnRVrVRpaVIdw/YANzOkCgNyTs/X2LT8swTer70E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548651; c=relaxed/simple;
-	bh=ydoCGOxFdPWf6peYEuI+pRRoMHUmqSOw8yGNWcLwQ6s=;
+	s=arc-20240116; t=1706548375; c=relaxed/simple;
+	bh=ajb/bUZpSlwo1T3F7uN/BCcZ7ixiliZOP1u4SomNMoE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l/OtESu5UaVsK6UBVpVmWvfKTH7qYDQuy8/Q3yRKubjaNCMmfU203WLYUhodjYesMJyrqh0dvb7AWz9AbQUNKeVVzZ6jeNB7K40lQ5yxJSVhJOKskIarxqFYL00g7CdaMtqXwZ6xNgSkn5eaUGsIewk9UOLd4P1Yz6SC+ZmQt+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zy8lIyYM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB08C43399;
-	Mon, 29 Jan 2024 17:17:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d7cLLEy2XxlGHmuMkn7HHjdbTY57okVzZ0JgH5Iu9sYWB7Wlmg93X3o4YflOWMMyj0/+TXTqic/GxRLLfDSspAVaCYF3WIRxe58EjIr0kmoYkOs+HWG0r+urJygLjlEsOPDgh+dF6Rd/1+hbuf2gm8kvc0emXVf19fFig/CbrZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HU6RsCUh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C607C433F1;
+	Mon, 29 Jan 2024 17:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548651;
-	bh=ydoCGOxFdPWf6peYEuI+pRRoMHUmqSOw8yGNWcLwQ6s=;
+	s=korg; t=1706548375;
+	bh=ajb/bUZpSlwo1T3F7uN/BCcZ7ixiliZOP1u4SomNMoE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zy8lIyYMhQ/BVgVh0IZPHDggwVVpFIijb0BNGgVgDXtYjd2s56t0Xo7iK9Bu00obc
-	 xq++YicuDzQ6eD1XPjMHDhXuo6+QWPLoLFYbHv1upDn0xIPmVTarn00vGqfRjnUKDC
-	 yLxLWLhS0JX966gwmmrnAhVM5ppfuuVqKKRpcvT8=
+	b=HU6RsCUhRItfFV8qc+EiaYY6dzag7ZmWAu9gf/hEa1uwx0i0vt7XmnkhhyXUotAFP
+	 54X6bbuzjvcN4DmK0LRzpKHf7dyz3nFrv7ya1wGnPoc/lCgrxhuhjbbBLNa9aXbKwF
+	 oaxHShVUunHGIjpFMULaDHcnN8CK+QE+L2tBVaRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yajun Deng <yajun.deng@linux.dev>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 307/331] memblock: fix crash when reserved memory is not added to memory
-Date: Mon, 29 Jan 2024 09:06:11 -0800
-Message-ID: <20240129170023.866484375@linuxfoundation.org>
+	Quanquan Cao <caoqq@fujitsu.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: =?UTF-8?q?=5BPATCH=206=2E7=20341/346=5D=20cxl/region=EF=BC=9AFix=20overflow=20issue=20in=20alloc=5Fhpa=28=29?=
+Date: Mon, 29 Jan 2024 09:06:12 -0800
+Message-ID: <20240129170026.532306927@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yajun Deng <yajun.deng@linux.dev>
+From: Quanquan Cao <caoqq@fujitsu.com>
 
-[ Upstream commit 6a9531c3a88096a26cf3ac582f7ec44f94a7dcb2 ]
+commit d76779dd3681c01a4c6c3cae4d0627c9083e0ee6 upstream.
 
-After commit 61167ad5fecd ("mm: pass nid to reserve_bootmem_region()")
-nid of a reserved region is used by init_reserved_page() (with
-CONFIG_DEFERRED_STRUCT_PAGE_INIT=y) to access node strucure.
-In many cases the nid of the reserved memory is not set and this causes
-a crash.
+Creating a region with 16 memory devices caused a problem. The div_u64_rem
+function, used for dividing an unsigned 64-bit number by a 32-bit one,
+faced an issue when SZ_256M * p->interleave_ways. The result surpassed
+the maximum limit of the 32-bit divisor (4G), leading to an overflow
+and a remainder of 0.
+note: At this point, p->interleave_ways is 16, meaning 16 * 256M = 4G
 
-When the nid of a reserved region is not set, fall back to
-early_pfn_to_nid(), so that nid of the first_online_node will be passed
-to init_reserved_page().
+To fix this issue, I replaced the div_u64_rem function with div64_u64_rem
+and adjusted the type of the remainder.
 
-Fixes: 61167ad5fecd ("mm: pass nid to reserve_bootmem_region()")
-Signed-off-by: Yajun Deng <yajun.deng@linux.dev>
-Link: https://lore.kernel.org/r/20240118061853.2652295-1-yajun.deng@linux.dev
-[rppt: massaged the commit message]
-Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Quanquan Cao <caoqq@fujitsu.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: 23a22cd1c98b ("cxl/region: Allocate HPA capacity to regions")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memblock.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/cxl/core/region.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/memblock.c b/mm/memblock.c
-index 913b2520a9a0..6d18485571b4 100644
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -2119,6 +2119,9 @@ static void __init memmap_init_reserved_pages(void)
- 		start = region->base;
- 		end = start + region->size;
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -525,7 +525,7 @@ static int alloc_hpa(struct cxl_region *
+ 	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(cxlr->dev.parent);
+ 	struct cxl_region_params *p = &cxlr->params;
+ 	struct resource *res;
+-	u32 remainder = 0;
++	u64 remainder = 0;
  
-+		if (nid == NUMA_NO_NODE || nid >= MAX_NUMNODES)
-+			nid = early_pfn_to_nid(PFN_DOWN(start));
-+
- 		reserve_bootmem_region(start, end, nid);
- 	}
- }
--- 
-2.43.0
-
+ 	lockdep_assert_held_write(&cxl_region_rwsem);
+ 
+@@ -545,7 +545,7 @@ static int alloc_hpa(struct cxl_region *
+ 	    (cxlr->mode == CXL_DECODER_PMEM && uuid_is_null(&p->uuid)))
+ 		return -ENXIO;
+ 
+-	div_u64_rem(size, SZ_256M * p->interleave_ways, &remainder);
++	div64_u64_rem(size, (u64)SZ_256M * p->interleave_ways, &remainder);
+ 	if (remainder)
+ 		return -EINVAL;
+ 
 
 
 
