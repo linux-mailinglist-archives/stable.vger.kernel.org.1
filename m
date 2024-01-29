@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-16634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF13840DC9
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E09A0840DAB
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84BB8B2037F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92CA3282642
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5653E15CD70;
-	Mon, 29 Jan 2024 17:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FFE15A4B8;
+	Mon, 29 Jan 2024 17:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofmQ+eLg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPDgg2AK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152F4157E8F;
-	Mon, 29 Jan 2024 17:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3328A15703F;
+	Mon, 29 Jan 2024 17:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548165; cv=none; b=VrCvPWjJfIifiUP+Qn8I9CPjyRHxdzVN3Iq292iNl3B2pbV1IlVkeHBepoI65ysH9jIwbopULi3ffdpRfbmeb6+GQdAgqdlib/wtZv6zdB2wufJtytpejQpmVVqt2+ETA4RsZMxmxmN8RqH6pD/rPbPwVaQ+JyRCdOmZsL7H6zo=
+	t=1706548145; cv=none; b=heVe7QvBsWpMZmUGNxOz6nXsTsNDOlTqjmsMrrEA7J/vyFEPoDH8iMpRCXOoeGqkcng32xVqkPo7ZsU1NzzI9FZfEo1fZxi541uPmpE312M5vpkwohZUZvOrZborGxnDq0uvClXZRlssRU2/3nk8UMsyDWLDOeTirseokFFz8X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548165; c=relaxed/simple;
-	bh=2032Vw62K/UAZLiuzO/Y34o7hZNcJZkNq3uNlI2G7WQ=;
+	s=arc-20240116; t=1706548145; c=relaxed/simple;
+	bh=bnbsVjxoSkMP4evzVChNkyoisFZbLtb0U8CDkFGDq2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f+7Oel5eMCU1+KwZtqj9vCJOh6LxaeoPmTIK8B+6Kr7Gitd34LLhek6ylYSI9pmuVBpXyG8i2pcCeNbamvl3Au8qpk0WTEX5I5QLbHw0mMB3f64/HlDzsvIcg19ZprOxd+aitAI7/gfyCwYTcvdM2jBBECk3KQjWfgmV8KSzXLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofmQ+eLg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D22E4C433A6;
-	Mon, 29 Jan 2024 17:09:24 +0000 (UTC)
+	 MIME-Version; b=Uevex6XSnnujpaz/TlKsy99CCMNsOaiZVtu3ati6CDzt7kpfC8c7yqekFiqX8V1aMMcyN+JcQ3ety7gQHWDVozbOTnWU7tb+S70QSdDvt3qKeUcmvrQjVgtiCA1s3Ylg6uOeZdP5RAa36hkYekNP3Aoq094ltgxPhan3Z0O01hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IPDgg2AK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1AAC43390;
+	Mon, 29 Jan 2024 17:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548164;
-	bh=2032Vw62K/UAZLiuzO/Y34o7hZNcJZkNq3uNlI2G7WQ=;
+	s=korg; t=1706548145;
+	bh=bnbsVjxoSkMP4evzVChNkyoisFZbLtb0U8CDkFGDq2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ofmQ+eLgWvihuhhTxWzYCjb+nJ9T2lw8M8D0B1+iq2RAn395lRA7vtYHXWfuD3KBt
-	 273mTgLLEfgN3h/o5z4/uKvjtrcS5nfOj6jWWXpSUab7meZlFsMWUMgdute/nQhbZl
-	 t/MGALFeTZ4mysMdzmbYAgoEzbJVBRnFzSpHKRPE=
+	b=IPDgg2AK0S9ga/4afnDUDr6EsPhTqfmZzq6Xt4ZyenkYT+5dHzqE+Aq/xhk5F7C0q
+	 1OKHP/jA4L1m/ZvrxeDUdsvotrdR9HJu4sB10HnaN3eOxgGOfwu4f5S7XDqvs13sVv
+	 4VDLVjZVhb91nAM5fEU+fDqqtQdlxgCsvQsQxoMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeffrey E Altman <jaltman@auristor.com>,
 	David Howells <dhowells@redhat.com>,
 	Marc Dionne <marc.dionne@auristor.com>,
 	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 171/346] afs: Add comments on abort handling
-Date: Mon, 29 Jan 2024 09:03:22 -0800
-Message-ID: <20240129170021.428540835@linuxfoundation.org>
+Subject: [PATCH 6.7 172/346] afs: Turn the afs_addr_list address array into an array of structs
+Date: Mon, 29 Jan 2024 09:03:23 -0800
+Message-ID: <20240129170021.456318061@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -70,185 +69,265 @@ Content-Transfer-Encoding: 8bit
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit fe245c8fcdac339e6b42076c828a6bede3a5e948 ]
+[ Upstream commit 07f3502b33a260f873e35708d2fa693eb52225cb ]
 
-Add some comments on AFS abort code handling in the rotation algorithm and
-adjust the errors produced to match.
+Turn the afs_addr_list address array into an array of structs, thereby
+allowing per-address (such as RTT) info to be added.
 
-Reported-by: Jeffrey E Altman <jaltman@auristor.com>
 Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
 cc: Marc Dionne <marc.dionne@auristor.com>
 cc: linux-afs@lists.infradead.org
 Stable-dep-of: 17ba6f0bd14f ("afs: Fix error handling with lookup via FS.InlineBulkStatus")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/rotate.c | 101 ++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 90 insertions(+), 11 deletions(-)
+ fs/afs/addr_list.c | 10 +++++-----
+ fs/afs/fs_probe.c  |  6 +++---
+ fs/afs/internal.h  |  6 +++++-
+ fs/afs/proc.c      |  4 ++--
+ fs/afs/rotate.c    |  2 +-
+ fs/afs/rxrpc.c     |  4 ++--
+ fs/afs/server.c    |  4 ++--
+ fs/afs/vl_alias.c  |  4 ++--
+ fs/afs/vl_probe.c  |  6 +++---
+ fs/afs/vl_rotate.c |  2 +-
+ 10 files changed, 26 insertions(+), 22 deletions(-)
 
+diff --git a/fs/afs/addr_list.c b/fs/afs/addr_list.c
+index de1ae0bead3b..ac05a59e9d46 100644
+--- a/fs/afs/addr_list.c
++++ b/fs/afs/addr_list.c
+@@ -45,7 +45,7 @@ struct afs_addr_list *afs_alloc_addrlist(unsigned int nr,
+ 	alist->max_addrs = nr;
+ 
+ 	for (i = 0; i < nr; i++) {
+-		struct sockaddr_rxrpc *srx = &alist->addrs[i];
++		struct sockaddr_rxrpc *srx = &alist->addrs[i].srx;
+ 		srx->srx_family			= AF_RXRPC;
+ 		srx->srx_service		= service;
+ 		srx->transport_type		= SOCK_DGRAM;
+@@ -281,7 +281,7 @@ void afs_merge_fs_addr4(struct afs_addr_list *alist, __be32 xdr, u16 port)
+ 		return;
+ 
+ 	for (i = 0; i < alist->nr_ipv4; i++) {
+-		struct sockaddr_in *a = &alist->addrs[i].transport.sin;
++		struct sockaddr_in *a = &alist->addrs[i].srx.transport.sin;
+ 		u32 a_addr = ntohl(a->sin_addr.s_addr);
+ 		u16 a_port = ntohs(a->sin_port);
+ 
+@@ -298,7 +298,7 @@ void afs_merge_fs_addr4(struct afs_addr_list *alist, __be32 xdr, u16 port)
+ 			alist->addrs + i,
+ 			sizeof(alist->addrs[0]) * (alist->nr_addrs - i));
+ 
+-	srx = &alist->addrs[i];
++	srx = &alist->addrs[i].srx;
+ 	srx->srx_family = AF_RXRPC;
+ 	srx->transport_type = SOCK_DGRAM;
+ 	srx->transport_len = sizeof(srx->transport.sin);
+@@ -321,7 +321,7 @@ void afs_merge_fs_addr6(struct afs_addr_list *alist, __be32 *xdr, u16 port)
+ 		return;
+ 
+ 	for (i = alist->nr_ipv4; i < alist->nr_addrs; i++) {
+-		struct sockaddr_in6 *a = &alist->addrs[i].transport.sin6;
++		struct sockaddr_in6 *a = &alist->addrs[i].srx.transport.sin6;
+ 		u16 a_port = ntohs(a->sin6_port);
+ 
+ 		diff = memcmp(xdr, &a->sin6_addr, 16);
+@@ -338,7 +338,7 @@ void afs_merge_fs_addr6(struct afs_addr_list *alist, __be32 *xdr, u16 port)
+ 			alist->addrs + i,
+ 			sizeof(alist->addrs[0]) * (alist->nr_addrs - i));
+ 
+-	srx = &alist->addrs[i];
++	srx = &alist->addrs[i].srx;
+ 	srx->srx_family = AF_RXRPC;
+ 	srx->transport_type = SOCK_DGRAM;
+ 	srx->transport_len = sizeof(srx->transport.sin6);
+diff --git a/fs/afs/fs_probe.c b/fs/afs/fs_probe.c
+index daaf3810cc92..3dd24842f277 100644
+--- a/fs/afs/fs_probe.c
++++ b/fs/afs/fs_probe.c
+@@ -153,12 +153,12 @@ void afs_fileserver_probe_result(struct afs_call *call)
+ 	if (call->service_id == YFS_FS_SERVICE) {
+ 		server->probe.is_yfs = true;
+ 		set_bit(AFS_SERVER_FL_IS_YFS, &server->flags);
+-		alist->addrs[index].srx_service = call->service_id;
++		alist->addrs[index].srx.srx_service = call->service_id;
+ 	} else {
+ 		server->probe.not_yfs = true;
+ 		if (!server->probe.is_yfs) {
+ 			clear_bit(AFS_SERVER_FL_IS_YFS, &server->flags);
+-			alist->addrs[index].srx_service = call->service_id;
++			alist->addrs[index].srx.srx_service = call->service_id;
+ 		}
+ 		cap0 = ntohl(call->tmp);
+ 		if (cap0 & AFS3_VICED_CAPABILITY_64BITFILES)
+@@ -182,7 +182,7 @@ void afs_fileserver_probe_result(struct afs_call *call)
+ 	spin_unlock(&server->probe_lock);
+ 
+ 	_debug("probe %pU [%u] %pISpc rtt=%u ret=%d",
+-	       &server->uuid, index, &alist->addrs[index].transport,
++	       &server->uuid, index, &alist->addrs[index].srx.transport,
+ 	       rtt_us, ret);
+ 
+ 	return afs_done_one_fs_probe(call->net, server);
+diff --git a/fs/afs/internal.h b/fs/afs/internal.h
+index 7385d62c8cf5..e2adb314ab6a 100644
+--- a/fs/afs/internal.h
++++ b/fs/afs/internal.h
+@@ -87,7 +87,9 @@ struct afs_addr_list {
+ 	enum dns_lookup_status	status:8;
+ 	unsigned long		failed;		/* Mask of addrs that failed locally/ICMP */
+ 	unsigned long		responded;	/* Mask of addrs that responded */
+-	struct sockaddr_rxrpc	addrs[] __counted_by(max_addrs);
++	struct {
++		struct sockaddr_rxrpc	srx;
++	} addrs[] __counted_by(max_addrs);
+ #define AFS_MAX_ADDRESSES ((unsigned int)(sizeof(unsigned long) * 8))
+ };
+ 
+@@ -969,6 +971,8 @@ extern void afs_put_addrlist(struct afs_addr_list *);
+ extern struct afs_vlserver_list *afs_parse_text_addrs(struct afs_net *,
+ 						      const char *, size_t, char,
+ 						      unsigned short, unsigned short);
++bool afs_addr_list_same(const struct afs_addr_list *a,
++			const struct afs_addr_list *b);
+ extern struct afs_vlserver_list *afs_dns_query(struct afs_cell *, time64_t *);
+ extern bool afs_iterate_addresses(struct afs_addr_cursor *);
+ extern int afs_end_cursor(struct afs_addr_cursor *);
+diff --git a/fs/afs/proc.c b/fs/afs/proc.c
+index 2a0c83d71565..ab9cd986cfd9 100644
+--- a/fs/afs/proc.c
++++ b/fs/afs/proc.c
+@@ -307,7 +307,7 @@ static int afs_proc_cell_vlservers_show(struct seq_file *m, void *v)
+ 		for (i = 0; i < alist->nr_addrs; i++)
+ 			seq_printf(m, " %c %pISpc\n",
+ 				   alist->preferred == i ? '>' : '-',
+-				   &alist->addrs[i].transport);
++				   &alist->addrs[i].srx.transport);
+ 	}
+ 	seq_printf(m, " info: fl=%lx rtt=%d\n", vlserver->flags, vlserver->rtt);
+ 	seq_printf(m, " probe: fl=%x e=%d ac=%d out=%d\n",
+@@ -399,7 +399,7 @@ static int afs_proc_servers_show(struct seq_file *m, void *v)
+ 		   alist->version, alist->responded, alist->failed);
+ 	for (i = 0; i < alist->nr_addrs; i++)
+ 		seq_printf(m, "    [%x] %pISpc%s\n",
+-			   i, &alist->addrs[i].transport,
++			   i, &alist->addrs[i].srx.transport,
+ 			   alist->preferred == i ? "*" : "");
+ 	return 0;
+ }
 diff --git a/fs/afs/rotate.c b/fs/afs/rotate.c
-index a840c3588ebb..a3d127953ac6 100644
+index a3d127953ac6..46081e5da6f5 100644
 --- a/fs/afs/rotate.c
 +++ b/fs/afs/rotate.c
-@@ -13,6 +13,7 @@
- #include <linux/sched/signal.h>
- #include "internal.h"
- #include "afs_fs.h"
-+#include "protocol_uae.h"
+@@ -488,7 +488,7 @@ bool afs_select_fileserver(struct afs_operation *op)
  
- /*
-  * Begin iteration through a server list, starting with the vnode's last used
-@@ -143,6 +144,11 @@ bool afs_select_fileserver(struct afs_operation *op)
- 	case -ECONNABORTED:
- 		/* The far side rejected the operation on some grounds.  This
- 		 * might involve the server being busy or the volume having been moved.
-+		 *
-+		 * Note that various V* errors should not be sent to a cache manager
-+		 * by a fileserver as they should be translated to more modern UAE*
-+		 * errors instead.  IBM AFS and OpenAFS fileservers, however, do leak
-+		 * these abort codes.
- 		 */
- 		switch (op->ac.abort_code) {
- 		case VNOVOL:
-@@ -150,6 +156,11 @@ bool afs_select_fileserver(struct afs_operation *op)
- 			 * - May indicate that the VL is wrong - retry once and compare
- 			 *   the results.
- 			 * - May indicate that the fileserver couldn't attach to the vol.
-+			 * - The volume might have been temporarily removed so that it can
-+			 *   be replaced by a volume restore.  "vos" might have ended one
-+			 *   transaction and has yet to create the next.
-+			 * - The volume might not be blessed or might not be in-service
-+			 *   (administrative action).
- 			 */
- 			if (op->flags & AFS_OPERATION_VNOVOL) {
- 				op->error = -EREMOTEIO;
-@@ -183,16 +194,56 @@ bool afs_select_fileserver(struct afs_operation *op)
- 			_leave(" = t [vnovol]");
- 			return true;
+ 	_debug("address [%u] %u/%u %pISp",
+ 	       op->index, op->ac.index, op->ac.alist->nr_addrs,
+-	       &op->ac.alist->addrs[op->ac.index].transport);
++	       &op->ac.alist->addrs[op->ac.index].srx.transport);
  
--		case VSALVAGE: /* TODO: Should this return an error or iterate? */
- 		case VVOLEXISTS:
--		case VNOSERVICE:
- 		case VONLINE:
--		case VDISKFULL:
--		case VOVERQUOTA:
--			op->error = afs_abort_to_error(op->ac.abort_code);
-+			/* These should not be returned from the fileserver. */
-+			pr_warn("Fileserver returned unexpected abort %d\n",
-+				op->ac.abort_code);
-+			op->error = -EREMOTEIO;
-+			goto next_server;
-+
-+		case VNOSERVICE:
-+			/* Prior to AFS 3.2 VNOSERVICE was returned from the fileserver
-+			 * if the volume was neither in-service nor administratively
-+			 * blessed.  All usage was replaced by VNOVOL because AFS 3.1 and
-+			 * earlier cache managers did not handle VNOSERVICE and assumed
-+			 * it was the client OSes errno 105.
-+			 *
-+			 * Starting with OpenAFS 1.4.8 VNOSERVICE was repurposed as the
-+			 * fileserver idle dead time error which was sent in place of
-+			 * RX_CALL_TIMEOUT (-3).  The error was intended to be sent if the
-+			 * fileserver took too long to send a reply to the client.
-+			 * RX_CALL_TIMEOUT would have caused the cache manager to mark the
-+			 * server down whereas VNOSERVICE since AFS 3.2 would cause cache
-+			 * manager to temporarily (up to 15 minutes) mark the volume
-+			 * instance as unusable.
-+			 *
-+			 * The idle dead logic resulted in cache inconsistency since a
-+			 * state changing call that the cache manager assumed was dead
-+			 * could still be processed to completion by the fileserver.  This
-+			 * logic was removed in OpenAFS 1.8.0 and VNOSERVICE is no longer
-+			 * returned.  However, many 1.4.8 through 1.6.24 fileservers are
-+			 * still in existence.
-+			 *
-+			 * AuriStorFS fileservers have never returned VNOSERVICE.
-+			 *
-+			 * VNOSERVICE should be treated as an alias for RX_CALL_TIMEOUT.
-+			 */
-+		case RX_CALL_TIMEOUT:
-+			op->error = -ETIMEDOUT;
- 			goto next_server;
+ 	_leave(" = t");
+ 	return true;
+diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
+index d642d06a453b..181317126e43 100644
+--- a/fs/afs/rxrpc.c
++++ b/fs/afs/rxrpc.c
+@@ -296,7 +296,7 @@ static void afs_notify_end_request_tx(struct sock *sock,
+  */
+ void afs_make_call(struct afs_addr_cursor *ac, struct afs_call *call, gfp_t gfp)
+ {
+-	struct sockaddr_rxrpc *srx = &ac->alist->addrs[ac->index];
++	struct sockaddr_rxrpc *srx = &ac->alist->addrs[ac->index].srx;
+ 	struct rxrpc_call *rxcall;
+ 	struct msghdr msg;
+ 	struct kvec iov[1];
+@@ -461,7 +461,7 @@ static void afs_log_error(struct afs_call *call, s32 remote_abort)
+ 		max = m + 1;
+ 		pr_notice("kAFS: Peer reported %s failure on %s [%pISp]\n",
+ 			  msg, call->type->name,
+-			  &call->alist->addrs[call->addr_ix].transport);
++			  &call->alist->addrs[call->addr_ix].srx.transport);
+ 	}
+ }
  
-+		case VSALVAGING: /* This error should not be leaked to cache managers
-+				  * but is from OpenAFS demand attach fileservers.
-+				  * It should be treated as an alias for VOFFLINE.
-+				  */
-+		case VSALVAGE: /* VSALVAGE should be treated as a synonym of VOFFLINE */
- 		case VOFFLINE:
-+			/* The volume is in use by the volserver or another volume utility
-+			 * for an operation that might alter the contents.  The volume is
-+			 * expected to come back but it might take a long time (could be
-+			 * days).
-+			 */
- 			if (!test_and_set_bit(AFS_VOLUME_OFFLINE, &op->volume->flags)) {
- 				afs_busy(op->volume, op->ac.abort_code);
- 				clear_bit(AFS_VOLUME_BUSY, &op->volume->flags);
-@@ -207,11 +258,20 @@ bool afs_select_fileserver(struct afs_operation *op)
- 			}
- 			goto busy;
+diff --git a/fs/afs/server.c b/fs/afs/server.c
+index 0bd2f5ba6900..b8e2d211d4a1 100644
+--- a/fs/afs/server.c
++++ b/fs/afs/server.c
+@@ -43,7 +43,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
+ 			hlist_for_each_entry_rcu(server, &net->fs_addresses6, addr6_link) {
+ 				alist = rcu_dereference(server->addresses);
+ 				for (i = alist->nr_ipv4; i < alist->nr_addrs; i++) {
+-					b = &alist->addrs[i].transport.sin6;
++					b = &alist->addrs[i].srx.transport.sin6;
+ 					diff = ((u16 __force)a->sin6_port -
+ 						(u16 __force)b->sin6_port);
+ 					if (diff == 0)
+@@ -59,7 +59,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
+ 			hlist_for_each_entry_rcu(server, &net->fs_addresses4, addr4_link) {
+ 				alist = rcu_dereference(server->addresses);
+ 				for (i = 0; i < alist->nr_ipv4; i++) {
+-					b = &alist->addrs[i].transport.sin;
++					b = &alist->addrs[i].srx.transport.sin;
+ 					diff = ((u16 __force)a->sin_port -
+ 						(u16 __force)b->sin_port);
+ 					if (diff == 0)
+diff --git a/fs/afs/vl_alias.c b/fs/afs/vl_alias.c
+index f04a80e4f5c3..d3c0df70a1a5 100644
+--- a/fs/afs/vl_alias.c
++++ b/fs/afs/vl_alias.c
+@@ -94,8 +94,8 @@ static int afs_compare_fs_alists(const struct afs_server *server_a,
+ 	lb = rcu_dereference(server_b->addresses);
  
--		case VSALVAGING:
--		case VRESTARTING:
-+		case VRESTARTING: /* The fileserver is either shutting down or starting up. */
- 		case VBUSY:
--			/* Retry after going round all the servers unless we
--			 * have a file lock we need to maintain.
-+			/* The volume is in use by the volserver or another volume
-+			 * utility for an operation that is not expected to alter the
-+			 * contents of the volume.  VBUSY does not need to be returned
-+			 * for a ROVOL or BACKVOL bound to an ITBusy volserver
-+			 * transaction.  The fileserver is permitted to continue serving
-+			 * content from ROVOLs and BACKVOLs during an ITBusy transaction
-+			 * because the content will not change.  However, many fileserver
-+			 * releases do return VBUSY for ROVOL and BACKVOL instances under
-+			 * many circumstances.
-+			 *
-+			 * Retry after going round all the servers unless we have a file
-+			 * lock we need to maintain.
- 			 */
- 			if (op->flags & AFS_OPERATION_NO_VSLEEP) {
- 				op->error = -EBUSY;
-@@ -226,7 +286,7 @@ bool afs_select_fileserver(struct afs_operation *op)
- 				if (!afs_sleep_and_retry(op))
- 					goto failed;
+ 	while (a < la->nr_addrs && b < lb->nr_addrs) {
+-		const struct sockaddr_rxrpc *srx_a = &la->addrs[a];
+-		const struct sockaddr_rxrpc *srx_b = &lb->addrs[b];
++		const struct sockaddr_rxrpc *srx_a = &la->addrs[a].srx;
++		const struct sockaddr_rxrpc *srx_b = &lb->addrs[b].srx;
+ 		int diff = afs_compare_addrs(srx_a, srx_b);
  
--				 /* Retry with same server & address */
-+				/* Retry with same server & address */
- 				_leave(" = t [vbusy]");
- 				return true;
- 			}
-@@ -270,10 +330,29 @@ bool afs_select_fileserver(struct afs_operation *op)
- 
- 			goto restart_from_beginning;
- 
-+		case VDISKFULL:
-+		case UAENOSPC:
-+			/* The partition is full.  Only applies to RWVOLs.
-+			 * Translate locally and return ENOSPC.
-+			 * No replicas to failover to.
-+			 */
-+			op->error = -ENOSPC;
-+			goto failed_but_online;
-+
-+		case VOVERQUOTA:
-+		case UAEDQUOT:
-+			/* Volume is full.  Only applies to RWVOLs.
-+			 * Translate locally and return EDQUOT.
-+			 * No replicas to failover to.
-+			 */
-+			op->error = -EDQUOT;
-+			goto failed_but_online;
-+
- 		default:
-+			op->error = afs_abort_to_error(op->ac.abort_code);
-+		failed_but_online:
- 			clear_bit(AFS_VOLUME_OFFLINE, &op->volume->flags);
- 			clear_bit(AFS_VOLUME_BUSY, &op->volume->flags);
--			op->error = afs_abort_to_error(op->ac.abort_code);
- 			goto failed;
+ 		if (diff < 0) {
+diff --git a/fs/afs/vl_probe.c b/fs/afs/vl_probe.c
+index 58452b86e672..bdd9372e3fb2 100644
+--- a/fs/afs/vl_probe.c
++++ b/fs/afs/vl_probe.c
+@@ -106,12 +106,12 @@ void afs_vlserver_probe_result(struct afs_call *call)
+ 	if (call->service_id == YFS_VL_SERVICE) {
+ 		server->probe.flags |= AFS_VLSERVER_PROBE_IS_YFS;
+ 		set_bit(AFS_VLSERVER_FL_IS_YFS, &server->flags);
+-		alist->addrs[index].srx_service = call->service_id;
++		alist->addrs[index].srx.srx_service = call->service_id;
+ 	} else {
+ 		server->probe.flags |= AFS_VLSERVER_PROBE_NOT_YFS;
+ 		if (!(server->probe.flags & AFS_VLSERVER_PROBE_IS_YFS)) {
+ 			clear_bit(AFS_VLSERVER_FL_IS_YFS, &server->flags);
+-			alist->addrs[index].srx_service = call->service_id;
++			alist->addrs[index].srx.srx_service = call->service_id;
  		}
+ 	}
  
+@@ -131,7 +131,7 @@ void afs_vlserver_probe_result(struct afs_call *call)
+ 	spin_unlock(&server->probe_lock);
+ 
+ 	_debug("probe [%u][%u] %pISpc rtt=%u ret=%d",
+-	       server_index, index, &alist->addrs[index].transport, rtt_us, ret);
++	       server_index, index, &alist->addrs[index].srx.transport, rtt_us, ret);
+ 
+ 	afs_done_one_vl_probe(server, have_result);
+ }
+diff --git a/fs/afs/vl_rotate.c b/fs/afs/vl_rotate.c
+index eb415ce56360..e52b9d4c8a0a 100644
+--- a/fs/afs/vl_rotate.c
++++ b/fs/afs/vl_rotate.c
+@@ -249,7 +249,7 @@ bool afs_select_vlserver(struct afs_vl_cursor *vc)
+ 
+ 	_debug("VL address %d/%d", vc->ac.index, vc->ac.alist->nr_addrs);
+ 
+-	_leave(" = t %pISpc", &vc->ac.alist->addrs[vc->ac.index].transport);
++	_leave(" = t %pISpc", &vc->ac.alist->addrs[vc->ac.index].srx.transport);
+ 	return true;
+ 
+ next_server:
 -- 
 2.43.0
 
