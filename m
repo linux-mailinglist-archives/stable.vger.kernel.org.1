@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-16863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEC0F840EB8
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:18:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90C26840E3E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71713B215B1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:18:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 150B0B20FA2
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7610416086F;
-	Mon, 29 Jan 2024 17:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6468C15B2FC;
+	Mon, 29 Jan 2024 17:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXk1Bwa9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcF9/IxC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3201415CD51;
-	Mon, 29 Jan 2024 17:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B9415A488;
+	Mon, 29 Jan 2024 17:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548335; cv=none; b=ne2Nj5qUHxDKLpCFlh2w8QhxoA7Y9fSjsShvoa4hvg5ooZ/EwGtB+BKckKzcR9TrQPxeVwtRH0e69onx/57dXd875LlkSXdLojKd1ELuIrdfqadZfxNX08Dj9NldodDwz6kYCdWqJMq5i1Giak3FuL25XbKj4md1C4VtwK1j2HE=
+	t=1706548248; cv=none; b=l9khw6IbUgEFzrJylNNFSUAGDEVJucLZpQtu0t8dr98oxwmmoF2dPI9wvCJ/f+9GPy0re+FlzYU27ftosd3/bMPbHCBSxIlP9bzkcq0D4FvgY/seXgNHheDu1JJVS1kUxUe73KVLUFvtQ9+xOOHBWKBGKdxMwaw1sovFiu8RtsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548335; c=relaxed/simple;
-	bh=sU4auR5kxT9OYoJCxq35FEliNhTPiJtJwMYWo+QG36U=;
+	s=arc-20240116; t=1706548248; c=relaxed/simple;
+	bh=tLD2maDb2/ZKIzza1ESYZiazXiJYWfDW2MWJhH1Rtkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5isMqq8OMP6njEXGF3f9r3KbCXUUQ/MIBsdkdAoce3Q/2pDfhWVlQhtohkrnKFaH/ziuQJ4NQ8V5XPw0L1Pv2PXJRDDnDnHk15xpTLqrKjKiMlCXmnrnveQjTeY4VDCloLd0UR7okK7E7FIEupbl6JZTgtLlG2nGqDH2fX0Qd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXk1Bwa9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB89FC433C7;
-	Mon, 29 Jan 2024 17:12:14 +0000 (UTC)
+	 MIME-Version; b=ly85N1zwntsEeeEWv+mKRdY4aTfXApUC+fQYdiONlr3O2C9MiLsL9LmQ4GCry72RQWrgmSez33+qwYR3/Fq24eRoyogSZBxUJIUw9CpZEYxv6uAOo1u1O3poiGevG/RvBWTJFM06z80DVgJmD4xXK0F1lxqtfKJIwI3+aBFvCoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcF9/IxC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD72C433C7;
+	Mon, 29 Jan 2024 17:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548335;
-	bh=sU4auR5kxT9OYoJCxq35FEliNhTPiJtJwMYWo+QG36U=;
+	s=korg; t=1706548248;
+	bh=tLD2maDb2/ZKIzza1ESYZiazXiJYWfDW2MWJhH1Rtkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JXk1Bwa970OrkeiDXTxpTQZ5Ts4ur5USsPT0qaCUpnnbg8y6bH8jfWn02ipZA4OEx
-	 FTZBvqoJu1lY+7BhGsMnXQXSuuJ6nKSWteCF3dkZkzjl5eCnVwkAh6A1auHLrkXeVW
-	 Q4mLfyj/0JE0xYk7UtsFYomRCjBWrETvwE0FV5h0=
+	b=hcF9/IxCs4stcM97nvHrYlGpiJnMqeLHoJJtgfdcjC0U6yruMw1Ei3vDOk69/aQc4
+	 rHjuN1dBpb7K0HnOjeIBzzIzlcZIdYoJ+zvQ0bCiVH+oPpVAJEHLR8PT7IvFWijHi6
+	 5KT4uOVzYO312rHjJQa4znNfHE6vD7jzSRFmX1Pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/185] netfilter: nft_limit: reject configurations that cause integer overflow
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Qingqing Zhuo <qingqing.zhuo@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.7 271/346] drm/amd/display: Fix late derefrence dsc check in link_set_dsc_pps_packet()
 Date: Mon, 29 Jan 2024 09:05:02 -0800
-Message-ID: <20240129170001.869146318@linuxfoundation.org>
+Message-ID: <20240129170024.353423360@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit c9d9eb9c53d37cdebbad56b91e40baf42d5a97aa ]
+commit 3bb9b1f958c3d986ed90a3ff009f1e77e9553207 upstream.
 
-Reject bogus configs where internal token counter wraps around.
-This only occurs with very very large requests, such as 17gbyte/s.
+In link_set_dsc_pps_packet(), 'struct display_stream_compressor *dsc'
+was dereferenced in a DC_LOGGER_INIT(dsc->ctx->logger); before the 'dsc'
+NULL pointer check.
 
-Its better to reject this rather than having incorrect ratelimit.
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_dpms.c:905 link_set_dsc_pps_packet() warn: variable dereferenced before check 'dsc' (see line 903)
 
-Fixes: d2168e849ebf ("netfilter: nft_limit: add per-byte limiting")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Cc: Wenjing Liu <wenjing.liu@amd.com>
+Cc: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_limit.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/display/dc/link/link_dpms.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_limit.c b/net/netfilter/nft_limit.c
-index 75c05ef885a9..36ded7d43262 100644
---- a/net/netfilter/nft_limit.c
-+++ b/net/netfilter/nft_limit.c
-@@ -58,17 +58,19 @@ static inline bool nft_limit_eval(struct nft_limit_priv *priv, u64 cost)
- static int nft_limit_init(struct nft_limit_priv *priv,
- 			  const struct nlattr * const tb[], bool pkts)
+--- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+@@ -875,11 +875,15 @@ bool link_set_dsc_pps_packet(struct pipe
  {
-+	u64 unit, tokens, rate_with_burst;
- 	bool invert = false;
--	u64 unit, tokens;
+ 	struct display_stream_compressor *dsc = pipe_ctx->stream_res.dsc;
+ 	struct dc_stream_state *stream = pipe_ctx->stream;
+-	DC_LOGGER_INIT(dsc->ctx->logger);
  
- 	if (tb[NFTA_LIMIT_RATE] == NULL ||
- 	    tb[NFTA_LIMIT_UNIT] == NULL)
- 		return -EINVAL;
- 
- 	priv->rate = be64_to_cpu(nla_get_be64(tb[NFTA_LIMIT_RATE]));
-+	if (priv->rate == 0)
-+		return -EINVAL;
+-	if (!pipe_ctx->stream->timing.flags.DSC || !dsc)
++	if (!pipe_ctx->stream->timing.flags.DSC)
++		return false;
 +
- 	unit = be64_to_cpu(nla_get_be64(tb[NFTA_LIMIT_UNIT]));
--	priv->nsecs = unit * NSEC_PER_SEC;
--	if (priv->rate == 0 || priv->nsecs < unit)
-+	if (check_mul_overflow(unit, NSEC_PER_SEC, &priv->nsecs))
- 		return -EOVERFLOW;
++	if (!dsc)
+ 		return false;
  
- 	if (tb[NFTA_LIMIT_BURST])
-@@ -77,18 +79,25 @@ static int nft_limit_init(struct nft_limit_priv *priv,
- 	if (pkts && priv->burst == 0)
- 		priv->burst = NFT_LIMIT_PKT_BURST_DEFAULT;
- 
--	if (priv->rate + priv->burst < priv->rate)
-+	if (check_add_overflow(priv->rate, priv->burst, &rate_with_burst))
- 		return -EOVERFLOW;
- 
- 	if (pkts) {
--		tokens = div64_u64(priv->nsecs, priv->rate) * priv->burst;
-+		u64 tmp = div64_u64(priv->nsecs, priv->rate);
++	DC_LOGGER_INIT(dsc->ctx->logger);
 +
-+		if (check_mul_overflow(tmp, priv->burst, &tokens))
-+			return -EOVERFLOW;
- 	} else {
-+		u64 tmp;
-+
- 		/* The token bucket size limits the number of tokens can be
- 		 * accumulated. tokens_max specifies the bucket size.
- 		 * tokens_max = unit * (rate + burst) / rate.
- 		 */
--		tokens = div64_u64(priv->nsecs * (priv->rate + priv->burst),
--				 priv->rate);
-+		if (check_mul_overflow(priv->nsecs, rate_with_burst, &tmp))
-+			return -EOVERFLOW;
-+
-+		tokens = div64_u64(tmp, priv->rate);
- 	}
- 
- 	if (tb[NFTA_LIMIT_FLAGS]) {
--- 
-2.43.0
-
+ 	if (enable) {
+ 		struct dsc_config dsc_cfg;
+ 		uint8_t dsc_packed_pps[128];
 
 
 
