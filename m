@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-17207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88EC9841040
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEE58840E1E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:14:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBDCC1C239BF
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01B92B26DBF
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:14:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924B2755E7;
-	Mon, 29 Jan 2024 17:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4F715B2E3;
+	Mon, 29 Jan 2024 17:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N2+lHYPO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7eJl3cZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523BC755E3;
-	Mon, 29 Jan 2024 17:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF79159578;
+	Mon, 29 Jan 2024 17:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548589; cv=none; b=o6XzcukZg0AEwlHt4Wez2QJWFJlH767Y1H0liq/3yJI5MhXOs2YvegU0QJ8KI6zPxd4Z3f9+kLGCaefStxYFECP99Lic6XreJweP59xp/0cXoHZTVgLzrpfDxvTl+QbxM6e47sSYvgBR9VQPNmAcJx3ZZKqZja0shQ7O4Y1mtmg=
+	t=1706548226; cv=none; b=KJyAA8i58oKpx+8+ZXJJEr6NNLyiYfPmzM2ehcwZLF6mOjtr5GvvhHb91O99F4aj6NRBLHeGsNhG0myDtspabR3lzAj00I6EWXbbHUri4cqwaaDPWB4LHyI0/zxnzqjwJgwT6NgY93BwxHl11HG9Gkz6SoyXFbYc2VqNGpfYsdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548589; c=relaxed/simple;
-	bh=mrRnQhfxFySq5ND6SIVHPy9Yx309WGd6GynzO3B4Uzc=;
+	s=arc-20240116; t=1706548226; c=relaxed/simple;
+	bh=9z7x+2vECbG647dsEXztqifsd1ouFgVS/QXp7GF1/UA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YTDvDI2nqUJDHoTOg1qECGEHwa4NaZ4ufoapxYERnUiL9bONn2pYmd05UbPnPI8PASB4gvHhIZgwc/94SDou6BoyGehN7uXZDjFyAJfeaEZNfYeAaRzOjaue2JE/SxZ+kRIwTiYyKXkgs/R9CgYDZhXQ9VojXxW/JZ8GYuznoJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N2+lHYPO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19848C433C7;
-	Mon, 29 Jan 2024 17:16:29 +0000 (UTC)
+	 MIME-Version; b=mBuSsUGepnN9OTtRBZPJgalkECH1xrMwXV40vmq78xzEf7DuqxVEa7mBpx/9laoGHiz0riXCPQN+ohZdCSv6RPgQT8rIMcwtCPoyJHosnvAgVdw+fUnC4FPvrMkeJU3Yo127VwRo8uwkZdd7lPPpHBYE1TlDlM8LBHP3DpdYpBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7eJl3cZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74427C43394;
+	Mon, 29 Jan 2024 17:10:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548589;
-	bh=mrRnQhfxFySq5ND6SIVHPy9Yx309WGd6GynzO3B4Uzc=;
+	s=korg; t=1706548226;
+	bh=9z7x+2vECbG647dsEXztqifsd1ouFgVS/QXp7GF1/UA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N2+lHYPO22pqoOWCnctI6IC3a38zNCwJolIYn93B/kUwrf1hetpwTEyuLsIlaR0Y2
-	 LA7StBTK+CDR6FoMXUlJk4cM0l1zcQWwbr5yUtn/yQZdoDc2TLl4MEzKXatR2LYufo
-	 v1g3gVES/d/hB7Jt56v0QAq+CNeX4kAcuL72LyvE=
+	b=k7eJl3cZx7dQCIyWcl1/pqkKdrSVTaOodP9w47pHI9btboXryXB8jcx4JN8qwAKvD
+	 uabMHWsKKS5FkSwppp1wTzd5rR3vjyPJ5YoqS2nT2oScaWtd0780OG2QXWuhTXIjfo
+	 oK48QBYUoO6h/5cGCdFhjKE3DJw1vlRgrntLbXh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 222/331] xdp: reflect tail increase for MEM_TYPE_XSK_BUFF_POOL
+	nerdopolis <bluescreen_avenger@verizon.net>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Zack Rusin <zackr@vmware.com>,
+	Sima Vetter <daniel.vetter@ffwll.ch>
+Subject: [PATCH 6.7 255/346] drm: Allow drivers to indicate the damage helpers to ignore damage clips
 Date: Mon, 29 Jan 2024 09:04:46 -0800
-Message-ID: <20240129170021.368127902@linuxfoundation.org>
+Message-ID: <20240129170023.901848154@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Javier Martinez Canillas <javierm@redhat.com>
 
-[ Upstream commit fbadd83a612c3b7aad2987893faca6bd24aaebb3 ]
+commit 35ed38d58257336c1df26b14fd5110b026e2adde upstream.
 
-XSK ZC Rx path calculates the size of data that will be posted to XSK Rx
-queue via subtracting xdp_buff::data_end from xdp_buff::data.
+It allows drivers to set a struct drm_plane_state .ignore_damage_clips in
+their plane's .atomic_check callback, as an indication to damage helpers
+such as drm_atomic_helper_damage_iter_init() that the damage clips should
+be ignored.
 
-In bpf_xdp_frags_increase_tail(), when underlying memory type of
-xdp_rxq_info is MEM_TYPE_XSK_BUFF_POOL, add offset to data_end in tail
-fragment, so that later on user space will be able to take into account
-the amount of bytes added by XDP program.
+To be used by drivers that do per-buffer (e.g: virtio-gpu) uploads (rather
+than per-plane uploads), since these type of drivers need to handle buffer
+damages instead of frame damages.
 
-Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Link: https://lore.kernel.org/r/20240124191602.566724-10-maciej.fijalkowski@intel.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That way, these drivers could force a full plane update if the framebuffer
+attached to a plane's state has changed since the last update (page-flip).
+
+Fixes: 01f05940a9a7 ("drm/virtio: Enable fb damage clips property for the primary plane")
+Cc: <stable@vger.kernel.org> # v6.4+
+Reported-by: nerdopolis <bluescreen_avenger@verizon.net>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218115
+Suggested-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Zack Rusin <zackr@vmware.com>
+Acked-by: Sima Vetter <daniel.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231123221315.3579454-2-javierm@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c | 2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/gpu/drm-kms.rst       |    2 ++
+ drivers/gpu/drm/drm_damage_helper.c |    3 ++-
+ include/drm/drm_plane.h             |   10 ++++++++++
+ 3 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 46ee0f5433e3..01f2417deef2 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -4081,6 +4081,8 @@ static int bpf_xdp_frags_increase_tail(struct xdp_buff *xdp, int offset)
- 	memset(skb_frag_address(frag) + skb_frag_size(frag), 0, offset);
- 	skb_frag_size_add(frag, offset);
- 	sinfo->xdp_frags_size += offset;
-+	if (rxq->mem.type == MEM_TYPE_XSK_BUFF_POOL)
-+		xsk_buff_get_tail(xdp)->data_end += offset;
+--- a/Documentation/gpu/drm-kms.rst
++++ b/Documentation/gpu/drm-kms.rst
+@@ -548,6 +548,8 @@ Plane Composition Properties
+ .. kernel-doc:: drivers/gpu/drm/drm_blend.c
+    :doc: overview
  
- 	return 0;
- }
--- 
-2.43.0
-
++.. _damage_tracking_properties:
++
+ Damage Tracking Properties
+ --------------------------
+ 
+--- a/drivers/gpu/drm/drm_damage_helper.c
++++ b/drivers/gpu/drm/drm_damage_helper.c
+@@ -241,7 +241,8 @@ drm_atomic_helper_damage_iter_init(struc
+ 	iter->plane_src.x2 = (src.x2 >> 16) + !!(src.x2 & 0xFFFF);
+ 	iter->plane_src.y2 = (src.y2 >> 16) + !!(src.y2 & 0xFFFF);
+ 
+-	if (!iter->clips || !drm_rect_equals(&state->src, &old_state->src)) {
++	if (!iter->clips || state->ignore_damage_clips ||
++	    !drm_rect_equals(&state->src, &old_state->src)) {
+ 		iter->clips = NULL;
+ 		iter->num_clips = 0;
+ 		iter->full_update = true;
+--- a/include/drm/drm_plane.h
++++ b/include/drm/drm_plane.h
+@@ -191,6 +191,16 @@ struct drm_plane_state {
+ 	struct drm_property_blob *fb_damage_clips;
+ 
+ 	/**
++	 * @ignore_damage_clips:
++	 *
++	 * Set by drivers to indicate the drm_atomic_helper_damage_iter_init()
++	 * helper that the @fb_damage_clips blob property should be ignored.
++	 *
++	 * See :ref:`damage_tracking_properties` for more information.
++	 */
++	bool ignore_damage_clips;
++
++	/**
+ 	 * @src:
+ 	 *
+ 	 * source coordinates of the plane (in 16.16).
 
 
 
