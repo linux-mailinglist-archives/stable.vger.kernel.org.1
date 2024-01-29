@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-16653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 267BF840DDB
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17A7A841011
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC757283787
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3397B1C21119
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD3515D5A2;
-	Mon, 29 Jan 2024 17:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A93415959E;
+	Mon, 29 Jan 2024 17:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJ+bkDh/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YwVB3vql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE3215AAC0;
-	Mon, 29 Jan 2024 17:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A26A15B305;
+	Mon, 29 Jan 2024 17:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548179; cv=none; b=NEwTgiks90U+yCBsOI3C1vLzKhjquos1/x/F0GNRPuTxbRW25DRCvNeldOZ4PCf8pqCNtRh/TCCZA2+DA5WlTmiURBIy1wI2nZvFp5RAtGMTzyYbVqQasmiv2WJtft3tdJ7ze6roMsvlKJz5rqthUnp4WsihT0Cd9Wm4jcV028E=
+	t=1706548555; cv=none; b=PHSOPdCh3LxCXQdAWT3iPC9+DA9qX3Gdad5X9/KIc/URKBtK9BNaT87hn2OHlqhwGLp5qa/Ee6SdgG8+98xAbgkEPVCM0VW2Dl+DePf78HLLdjmeMjyCh1s+bb0AlQPgWmpONM7W3jfqy0lyXVrr2m5U7sekGkMWJoqZu0jSi1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548179; c=relaxed/simple;
-	bh=bK0la6wljkP+zxkssvTdeyjFoGqEG41A1GCRiSrhBLo=;
+	s=arc-20240116; t=1706548555; c=relaxed/simple;
+	bh=CILSxdoAov4LB+Tu4wmgAcD0E9hu3Vv9KfZjNbFmuTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M0V3414IGwsUQsX3gYQPARS908UOsb46AcIHdhyyADr+OUUvkM/gKh70iCUjDJGcwl8O1UvWoECUFcdEruwW0woy/21O8RQcsoO7Wz1vxCDQRfRvKQ8GCwirC5WhzBRxE7XZRTs1WY5ogFfO3KUUX5js9r1U3NfL5Bvei4RG9zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJ+bkDh/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92E0C433F1;
-	Mon, 29 Jan 2024 17:09:38 +0000 (UTC)
+	 MIME-Version; b=QtjsPXIKJpUDxqcPyz01nW80DMj2Oxh9Lbg6z8yPGruRQcXAmqjHF9aKyxpNq7RD9ZGTX9WyxfMsk7C/c1q+or5z6jHhgdNP0xlbOGDQ+b2ZOfioNoqJbACHCkK6yLyvwbgNF8S2xmuzUq4OXY+UEttKMEAgqwNgpa93tdmEIg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YwVB3vql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7052C433C7;
+	Mon, 29 Jan 2024 17:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548178;
-	bh=bK0la6wljkP+zxkssvTdeyjFoGqEG41A1GCRiSrhBLo=;
+	s=korg; t=1706548554;
+	bh=CILSxdoAov4LB+Tu4wmgAcD0E9hu3Vv9KfZjNbFmuTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJ+bkDh/DFCFIFJLe9xpJVPEBxealr+Ol/5LtQHL2369+lLFkJK4kajid+iNMqs7F
-	 d4SiK5kfB2ACXzCRwn+GGhFkDPlv1MUFGnp9vO5fuPS682IHR3qmR5a4DBfUI1X7wU
-	 JdX84KbQUuJBOMhjZ48lH2Lf45D92PKfxXW5MlMM=
+	b=YwVB3vqlcZhfzYLP2+7ZpCRKjI6GnCV7lzr3+3dIVadiKZ7Ym3zj8q/Tf2HhiR7+x
+	 1ffYE/g4vEoRMvIKkqdxrX6jBo5nK9u2OjAqoXuuiNmT0CvJm0nFRU5f/lbbAq8yE2
+	 moCJaq42ehDcN37KF7zoSKQLTD5/fR5ywSItHp9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	Chung-Chiang Cheng <cccheng@synology.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.7 225/346] btrfs: tree-checker: fix inline ref size in error messages
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 192/331] net/mlx5e: Fix operation precedence bug in port timestamping napi_poll context
 Date: Mon, 29 Jan 2024 09:04:16 -0800
-Message-ID: <20240129170023.013011431@linuxfoundation.org>
+Message-ID: <20240129170020.505309821@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chung-Chiang Cheng <cccheng@synology.com>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-commit f398e70dd69e6ceea71463a5380e6118f219197e upstream.
+[ Upstream commit 3876638b2c7ebb2c9d181de1191db0de8cac143a ]
 
-The error message should accurately reflect the size rather than the
-type.
+Indirection (*) is of lower precedence than postfix increment (++). Logic
+in napi_poll context would cause an out-of-bound read by first increment
+the pointer address by byte address space and then dereference the value.
+Rather, the intended logic was to dereference first and then increment the
+underlying value.
 
-Fixes: f82d1c7ca8ae ("btrfs: tree-checker: Add EXTENT_ITEM and METADATA_ITEM check")
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Chung-Chiang Cheng <cccheng@synology.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 92214be5979c ("net/mlx5e: Update doorbell for port timestamping CQ before the software counter")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-checker.c |    2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1436,7 +1436,7 @@ static int check_extent_item(struct exte
- 		if (unlikely(ptr + btrfs_extent_inline_ref_size(inline_type) > end)) {
- 			extent_err(leaf, slot,
- "inline ref item overflows extent item, ptr %lu iref size %u end %lu",
--				   ptr, inline_type, end);
-+				   ptr, btrfs_extent_inline_ref_size(inline_type), end);
- 			return -EUCLEAN;
- 		}
- 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
+index af3928eddafd..803035d4e597 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
+@@ -213,7 +213,7 @@ static void mlx5e_ptp_handle_ts_cqe(struct mlx5e_ptpsq *ptpsq,
+ 	mlx5e_ptpsq_mark_ts_cqes_undelivered(ptpsq, hwtstamp);
+ out:
+ 	napi_consume_skb(skb, budget);
+-	md_buff[*md_buff_sz++] = metadata_id;
++	md_buff[(*md_buff_sz)++] = metadata_id;
+ 	if (unlikely(mlx5e_ptp_metadata_map_unhealthy(&ptpsq->metadata_map)) &&
+ 	    !test_and_set_bit(MLX5E_SQ_STATE_RECOVERING, &sq->state))
+ 		queue_work(ptpsq->txqsq.priv->wq, &ptpsq->report_unhealthy_work);
+-- 
+2.43.0
+
 
 
 
