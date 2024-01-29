@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECD4840E9C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:17:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C98F9841044
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F21E1F285EA
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:17:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08ABF1C23A1F
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5DA815B999;
-	Mon, 29 Jan 2024 17:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5758755EC;
+	Mon, 29 Jan 2024 17:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mC9RjHFX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vLvZHqZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942A4157E6B;
-	Mon, 29 Jan 2024 17:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B0A755F2;
+	Mon, 29 Jan 2024 17:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548314; cv=none; b=GQvxv9VsLr15kAjCf3VGRrGL0OPIu6iOiHdnHhMp+SJVI6s8DyjeYo2DBBPWgSRii1Np6QNJDjPRoPswRpd768L/QeFhyYMHipLjbAz5Rh5mup70yokuVYtPV4bm3WkOB/zpysqivFy7cxKnLjTC0MbpXy1myJeWYDGq7IHgUrA=
+	t=1706548592; cv=none; b=JXsKr7NG/oRLfCPb0S2ZGm59KoC/czzmEV9zevxws68GkmjH//536VsEgBX/GnZoMyYkkqOfxtrsFPFdkfM2CHW0Sk2g8emdspJUc6Hhb0GCTYWkGuzH+WOUMIN7Jsc4venSbcX2j45M1xYJ3cPIAcN6eHZoJtJRuSMyNAP5bxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548314; c=relaxed/simple;
-	bh=St5nbuI+758iCPvqIIPRdG1f6Q9W2snBwWY3GOyVGqs=;
+	s=arc-20240116; t=1706548592; c=relaxed/simple;
+	bh=5lw1bceprDtNgPw4q7rZUTNh4kM/eQs1x47QEh2KvWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CJOyq7cJ5FaCIDH7zjmtekPH1/6t+KOn+XWif8Cpnmf5R7eVcZZ8UsJOX50aeWpO9XlznZqwaArlWGKRjH1fA0zXXOqxjhUpc31edGd+mJQph0NHTp8Znw7hRrLUizOJcU5R3GNQmGrBRjZ9StzQkW3SDUyoPh1Jexery9kzAc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mC9RjHFX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 593C5C433C7;
-	Mon, 29 Jan 2024 17:11:54 +0000 (UTC)
+	 MIME-Version; b=UuB4YRqzeaN2IAGBShDFHdVnKkl9eBOWsrM32b4xyZ220TH9Z2DtjjL3t21ssybQVCcVgw0B37mnr0iBUG8qgoEhJF8PZ6FlH8jyAoFVy6+Tnmgc/JyQrJXIpZUvdf4+Qc9eTnfdYxLbo7vjaePKi8B+tvznoBOcgFU5ZpMLtks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vLvZHqZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA3CC433C7;
+	Mon, 29 Jan 2024 17:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548314;
-	bh=St5nbuI+758iCPvqIIPRdG1f6Q9W2snBwWY3GOyVGqs=;
+	s=korg; t=1706548592;
+	bh=5lw1bceprDtNgPw4q7rZUTNh4kM/eQs1x47QEh2KvWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mC9RjHFXfEQnfOzYE27a4oPaFXQ4j1OHW0IyUVnLH12f0B4CYZUWFjbDjZt1BhoAv
-	 dFcgCpkDcWS7Sn2mmeKmIEqlkMM10fP9+bpTJO/lWVBeNF9E0CAXLVFDZASpaTdd3Y
-	 t3gXyMh6hu/fTx7xPpyDLg2fzGcUBWvxNhVExtq4=
+	b=1vLvZHqZXACUNw23smEVLMxSfgJJ4lSEo+qYeePlwtDJMFalbgbC6baN6yMfMVJO9
+	 NRZYvhhG8pzuu5XwY/bMIRhjL9Zv/X69vxmC/Xue+Heojfkcplo6yWAJ3i6X2L4VqQ
+	 YA61A/m6iG1Xm1Vp5H/v5/W2AmQHDXOw2CvKvsAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	David Howells <dhowells@redhat.com>,
+	Jay Vosburgh <jay.vosburgh@canonical.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/185] netfs, fscache: Prevent Oops in fscache_put_cache()
-Date: Mon, 29 Jan 2024 09:04:49 -0800
-Message-ID: <20240129170001.457463655@linuxfoundation.org>
+Subject: [PATCH 6.6 226/331] selftests: bonding: do not test arp/ns target with mode balance-alb/tlb
+Date: Mon, 29 Jan 2024 09:04:50 -0800
+Message-ID: <20240129170021.485548372@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 3be0b3ed1d76c6703b9ee482b55f7e01c369cc68 ]
+[ Upstream commit a2933a8759a62269754e54733d993b19de870e84 ]
 
-This function dereferences "cache" and then checks if it's
-IS_ERR_OR_NULL().  Check first, then dereference.
+The prio_arp/ns tests hard code the mode to active-backup. At the same
+time, The balance-alb/tlb modes do not support arp/ns target. So remove
+the prio_arp/ns tests from the loop and only test active-backup mode.
 
-Fixes: 9549332df4ed ("fscache: Implement cache registration")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/e84bc740-3502-4f16-982a-a40d5676615c@moroto.mountain/ # v2
+Fixes: 481b56e0391e ("selftests: bonding: re-format bond option tests")
+Reported-by: Jay Vosburgh <jay.vosburgh@canonical.com>
+Closes: https://lore.kernel.org/netdev/17415.1705965957@famine/
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
+Link: https://lore.kernel.org/r/20240123075917.1576360-1-liuhangbin@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fscache/cache.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../testing/selftests/drivers/net/bonding/bond_options.sh | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/fscache/cache.c b/fs/fscache/cache.c
-index d645f8b302a2..9397ed39b0b4 100644
---- a/fs/fscache/cache.c
-+++ b/fs/fscache/cache.c
-@@ -179,13 +179,14 @@ EXPORT_SYMBOL(fscache_acquire_cache);
- void fscache_put_cache(struct fscache_cache *cache,
- 		       enum fscache_cache_trace where)
- {
--	unsigned int debug_id = cache->debug_id;
-+	unsigned int debug_id;
- 	bool zero;
- 	int ref;
+diff --git a/tools/testing/selftests/drivers/net/bonding/bond_options.sh b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
+index c54d1697f439..d508486cc0bd 100755
+--- a/tools/testing/selftests/drivers/net/bonding/bond_options.sh
++++ b/tools/testing/selftests/drivers/net/bonding/bond_options.sh
+@@ -162,7 +162,7 @@ prio_arp()
+ 	local mode=$1
  
- 	if (IS_ERR_OR_NULL(cache))
- 		return;
+ 	for primary_reselect in 0 1 2; do
+-		prio_test "mode active-backup arp_interval 100 arp_ip_target ${g_ip4} primary eth1 primary_reselect $primary_reselect"
++		prio_test "mode $mode arp_interval 100 arp_ip_target ${g_ip4} primary eth1 primary_reselect $primary_reselect"
+ 		log_test "prio" "$mode arp_ip_target primary_reselect $primary_reselect"
+ 	done
+ }
+@@ -178,7 +178,7 @@ prio_ns()
+ 	fi
  
-+	debug_id = cache->debug_id;
- 	zero = __refcount_dec_and_test(&cache->ref, &ref);
- 	trace_fscache_cache(debug_id, ref - 1, where);
+ 	for primary_reselect in 0 1 2; do
+-		prio_test "mode active-backup arp_interval 100 ns_ip6_target ${g_ip6} primary eth1 primary_reselect $primary_reselect"
++		prio_test "mode $mode arp_interval 100 ns_ip6_target ${g_ip6} primary eth1 primary_reselect $primary_reselect"
+ 		log_test "prio" "$mode ns_ip6_target primary_reselect $primary_reselect"
+ 	done
+ }
+@@ -194,9 +194,9 @@ prio()
  
+ 	for mode in $modes; do
+ 		prio_miimon $mode
+-		prio_arp $mode
+-		prio_ns $mode
+ 	done
++	prio_arp "active-backup"
++	prio_ns "active-backup"
+ }
+ 
+ arp_validate_test()
 -- 
 2.43.0
 
