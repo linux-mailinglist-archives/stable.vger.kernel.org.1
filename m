@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB191841048
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C64840ED0
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1ADF286D2D
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 663C01C236E4
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B3B75604;
-	Mon, 29 Jan 2024 17:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E2A161B45;
+	Mon, 29 Jan 2024 17:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzCwwpXt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cI0FrmQ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863BB755FB;
-	Mon, 29 Jan 2024 17:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24CD158D87;
+	Mon, 29 Jan 2024 17:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548595; cv=none; b=Peyu1blXfxuJAP7XXoWNLDuKeVXKXkPtvvnc7ccfofafyO7vf9Up6+vdQ/6RkJov1ZxOUCC5dzx8MLvSCYuQlEdaKEMP2d3x0EMRLkHgbpg66WTjTpKzNDmbdo5XdWnFETlj0NhO0Dhlxgio1dZKjAqIPY8PnuurU8MUqXAibcY=
+	t=1706548349; cv=none; b=OTgZX6TDIarKRU5XnaYVqtYSi7L9UGP4RUnJFtIRTOZSGiYOYMlijAATK+sF+Hxqa3U5fBlvnXANL6o+fbT2uOTpIoqLkm75XM865TdZ4M/MHG//4Q0fflRYUt+PJz/zxEODO0rfwBgpWLUHKBz+r62aX4W38/d6kTjC4h7kQeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548595; c=relaxed/simple;
-	bh=Y3+B9BvVvzehcbjEdxkem0J6K2/gelV5+Jl7m44F8p4=;
+	s=arc-20240116; t=1706548349; c=relaxed/simple;
+	bh=B/fZ65QlOhf0z9FJ339V54/SpwpyvKDKoxe+7Ckefog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rLvuJvtqjZA92ByhtoojAocj/LK7LwsJtWxed4k0n3rkB+5JwTAWza8c8acutS+2lztCwudh7P30D6loSWNI9YrixxjvtAav7YcPP6LLzWf7yzdolV/Ihz5FGh/UGSY42s5ZW0O1KAQtKmtC28Z4t+USAYwopzzw0B40gmi8kho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzCwwpXt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE93C433F1;
-	Mon, 29 Jan 2024 17:16:35 +0000 (UTC)
+	 MIME-Version; b=ngvZVkAX6cTqVLt2YKl91RDmPcX0Ugw1PSThtA1sSM2Dn9OEVCk3+Z+sBFdth3rR7D1KfHwb8bZgTpAaKn/yYdyf5dcpmlmqOywUFdVbfHNTaUPIGvhcGSAQqw24xqd8ALsZNCF6lnLbG5JOWffOCxiKkK+QAkuqShREoARj7v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cI0FrmQ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7930FC433C7;
+	Mon, 29 Jan 2024 17:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548595;
-	bh=Y3+B9BvVvzehcbjEdxkem0J6K2/gelV5+Jl7m44F8p4=;
+	s=korg; t=1706548349;
+	bh=B/fZ65QlOhf0z9FJ339V54/SpwpyvKDKoxe+7Ckefog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YzCwwpXtuQvLZiI4yFOUz6Mc6kKKWf7bLWjgGGCePLVDwyeJqjgjyDTIxIr1tkePp
-	 dvP1mMySJYJYTbH60NRd1PU7H14NIfKiad2Lkkvoz0jatv36VLOPiAglBSeUSWr3oy
-	 BekRn4xCbrABJpcSKEHP+owGvPw3fk7P3lnFWL4k=
+	b=cI0FrmQ+1a2FXo0cM3KDyGIdyoWhm0F9g13wz0SCGEtt/VjSwARfjGI9rKxuogzNV
+	 WEm5hhejUO+NddnEKI2ZSz36C9Va6EktQuOVaetQ120+WaDvSLAKjyUfS8pw9C7+bJ
+	 h4T7yK0TbqDsD6m4vzajVK+eaOewYYnKSKYbwTo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 247/331] ksmbd: fix global oob in ksmbd_nl_policy
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 111/185] selftests: netdevsim: fix the udp_tunnel_nic test
 Date: Mon, 29 Jan 2024 09:05:11 -0800
-Message-ID: <20240129170022.108534222@linuxfoundation.org>
+Message-ID: <20240129170002.157111982@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,131 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit ebeae8adf89d9a82359f6659b1663d09beec2faa upstream.
+[ Upstream commit 0879020a7817e7ce636372c016b4528f541c9f4d ]
 
-Similar to a reported issue (check the commit b33fb5b801c6 ("net:
-qualcomm: rmnet: fix global oob in rmnet_policy"), my local fuzzer finds
-another global out-of-bounds read for policy ksmbd_nl_policy. See bug
-trace below:
+This test is missing a whole bunch of checks for interface
+renaming and one ifup. Presumably it was only used on a system
+with renaming disabled and NetworkManager running.
 
-==================================================================
-BUG: KASAN: global-out-of-bounds in validate_nla lib/nlattr.c:386 [inline]
-BUG: KASAN: global-out-of-bounds in __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
-Read of size 1 at addr ffffffff8f24b100 by task syz-executor.1/62810
-
-CPU: 0 PID: 62810 Comm: syz-executor.1 Tainted: G                 N 6.1.0 #3
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x8b/0xb3 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:284 [inline]
- print_report+0x172/0x475 mm/kasan/report.c:395
- kasan_report+0xbb/0x1c0 mm/kasan/report.c:495
- validate_nla lib/nlattr.c:386 [inline]
- __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
- __nla_parse+0x3e/0x50 lib/nlattr.c:697
- __nlmsg_parse include/net/netlink.h:748 [inline]
- genl_family_rcv_msg_attrs_parse.constprop.0+0x1b0/0x290 net/netlink/genetlink.c:565
- genl_family_rcv_msg_doit+0xda/0x330 net/netlink/genetlink.c:734
- genl_family_rcv_msg net/netlink/genetlink.c:833 [inline]
- genl_rcv_msg+0x441/0x780 net/netlink/genetlink.c:850
- netlink_rcv_skb+0x14f/0x410 net/netlink/af_netlink.c:2540
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:861
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x54e/0x800 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x930/0xe50 net/netlink/af_netlink.c:1921
- sock_sendmsg_nosec net/socket.c:714 [inline]
- sock_sendmsg+0x154/0x190 net/socket.c:734
- ____sys_sendmsg+0x6df/0x840 net/socket.c:2482
- ___sys_sendmsg+0x110/0x1b0 net/socket.c:2536
- __sys_sendmsg+0xf3/0x1c0 net/socket.c:2565
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7fdd66a8f359
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fdd65e00168 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007fdd66bbcf80 RCX: 00007fdd66a8f359
-RDX: 0000000000000000 RSI: 0000000020000500 RDI: 0000000000000003
-RBP: 00007fdd66ada493 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ffc84b81aff R14: 00007fdd65e00300 R15: 0000000000022000
- </TASK>
-
-The buggy address belongs to the variable:
- ksmbd_nl_policy+0x100/0xa80
-
-The buggy address belongs to the physical page:
-page:0000000034f47940 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1ccc4b
-flags: 0x200000000001000(reserved|node=0|zone=2)
-raw: 0200000000001000 ffffea00073312c8 ffffea00073312c8 0000000000000000
-raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffffffff8f24b000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffffffff8f24b080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffffffff8f24b100: f9 f9 f9 f9 00 00 f9 f9 f9 f9 f9 f9 00 00 07 f9
-                   ^
- ffffffff8f24b180: f9 f9 f9 f9 00 05 f9 f9 f9 f9 f9 f9 00 00 00 05
- ffffffff8f24b200: f9 f9 f9 f9 00 00 03 f9 f9 f9 f9 f9 00 00 04 f9
-==================================================================
-
-To fix it, add a placeholder named __KSMBD_EVENT_MAX and let
-KSMBD_EVENT_MAX to be its original value - 1 according to what other
-netlink families do. Also change two sites that refer the
-KSMBD_EVENT_MAX to correct value.
-
-Cc: stable@vger.kernel.org
-Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 91f430b2c49d ("selftests: net: add a test for UDP tunnel info infra")
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240123060529.1033912-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/ksmbd_netlink.h |    3 ++-
- fs/smb/server/transport_ipc.c |    4 ++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ .../selftests/drivers/net/netdevsim/udp_tunnel_nic.sh    | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/fs/smb/server/ksmbd_netlink.h
-+++ b/fs/smb/server/ksmbd_netlink.h
-@@ -304,7 +304,8 @@ enum ksmbd_event {
- 	KSMBD_EVENT_SPNEGO_AUTHEN_REQUEST,
- 	KSMBD_EVENT_SPNEGO_AUTHEN_RESPONSE	= 15,
+diff --git a/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh b/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh
+index 1b08e042cf94..185b02d2d4cd 100755
+--- a/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh
++++ b/tools/testing/selftests/drivers/net/netdevsim/udp_tunnel_nic.sh
+@@ -269,6 +269,7 @@ for port in 0 1; do
+ 	echo 1 > $NSIM_DEV_SYS/new_port
+     fi
+     NSIM_NETDEV=`get_netdev_name old_netdevs`
++    ifconfig $NSIM_NETDEV up
  
--	KSMBD_EVENT_MAX
-+	__KSMBD_EVENT_MAX,
-+	KSMBD_EVENT_MAX = __KSMBD_EVENT_MAX - 1
- };
+     msg="new NIC device created"
+     exp0=( 0 0 0 0 )
+@@ -430,6 +431,7 @@ for port in 0 1; do
+     fi
  
- /*
---- a/fs/smb/server/transport_ipc.c
-+++ b/fs/smb/server/transport_ipc.c
-@@ -74,7 +74,7 @@ static int handle_unsupported_event(stru
- static int handle_generic_event(struct sk_buff *skb, struct genl_info *info);
- static int ksmbd_ipc_heartbeat_request(void);
+     echo $port > $NSIM_DEV_SYS/new_port
++    NSIM_NETDEV=`get_netdev_name old_netdevs`
+     ifconfig $NSIM_NETDEV up
  
--static const struct nla_policy ksmbd_nl_policy[KSMBD_EVENT_MAX] = {
-+static const struct nla_policy ksmbd_nl_policy[KSMBD_EVENT_MAX + 1] = {
- 	[KSMBD_EVENT_UNSPEC] = {
- 		.len = 0,
- 	},
-@@ -403,7 +403,7 @@ static int handle_generic_event(struct s
- 		return -EPERM;
- #endif
+     overflow_table0 "overflow NIC table"
+@@ -487,6 +489,7 @@ for port in 0 1; do
+     fi
  
--	if (type >= KSMBD_EVENT_MAX) {
-+	if (type > KSMBD_EVENT_MAX) {
- 		WARN_ON(1);
- 		return -EINVAL;
- 	}
+     echo $port > $NSIM_DEV_SYS/new_port
++    NSIM_NETDEV=`get_netdev_name old_netdevs`
+     ifconfig $NSIM_NETDEV up
+ 
+     overflow_table0 "overflow NIC table"
+@@ -543,6 +546,7 @@ for port in 0 1; do
+     fi
+ 
+     echo $port > $NSIM_DEV_SYS/new_port
++    NSIM_NETDEV=`get_netdev_name old_netdevs`
+     ifconfig $NSIM_NETDEV up
+ 
+     overflow_table0 "destroy NIC"
+@@ -572,6 +576,7 @@ for port in 0 1; do
+     fi
+ 
+     echo $port > $NSIM_DEV_SYS/new_port
++    NSIM_NETDEV=`get_netdev_name old_netdevs`
+     ifconfig $NSIM_NETDEV up
+ 
+     msg="create VxLANs v6"
+@@ -632,6 +637,7 @@ for port in 0 1; do
+     fi
+ 
+     echo $port > $NSIM_DEV_SYS/new_port
++    NSIM_NETDEV=`get_netdev_name old_netdevs`
+     ifconfig $NSIM_NETDEV up
+ 
+     echo 110 > $NSIM_DEV_DFS/ports/$port/udp_ports_inject_error
+@@ -687,6 +693,7 @@ for port in 0 1; do
+     fi
+ 
+     echo $port > $NSIM_DEV_SYS/new_port
++    NSIM_NETDEV=`get_netdev_name old_netdevs`
+     ifconfig $NSIM_NETDEV up
+ 
+     msg="create VxLANs v6"
+@@ -746,6 +753,7 @@ for port in 0 1; do
+     fi
+ 
+     echo $port > $NSIM_DEV_SYS/new_port
++    NSIM_NETDEV=`get_netdev_name old_netdevs`
+     ifconfig $NSIM_NETDEV up
+ 
+     msg="create VxLANs v6"
+@@ -876,6 +884,7 @@ msg="re-add a port"
+ 
+ echo 2 > $NSIM_DEV_SYS/del_port
+ echo 2 > $NSIM_DEV_SYS/new_port
++NSIM_NETDEV=`get_netdev_name old_netdevs`
+ check_tables
+ 
+ msg="replace VxLAN in overflow table"
+-- 
+2.43.0
+
 
 
 
