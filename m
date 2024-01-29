@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-16885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9360F840ED2
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:19:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34ECF841042
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:27:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37B0FB2186B
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:19:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9B4B1F240A1
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755B1161B4E;
-	Mon, 29 Jan 2024 17:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37230755ED;
+	Mon, 29 Jan 2024 17:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6tS3nk6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJD0i1wZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333B915AAA8;
-	Mon, 29 Jan 2024 17:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96BE755E3;
+	Mon, 29 Jan 2024 17:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548351; cv=none; b=YDp7KDFslrWaELDkqE8vToBmO7OhIGdYHBgCu8sfprdtiDhksQbJg5/TqPY6MyWoyYUoq9cKCJVNMkQZ3jZT6H2qMkjFq+pyLhu9r8h4ClHoE8BLsv82/WZ4U7DDoKSE7oNnlwMjnI/tC54MKa3wKlaHCWYO/IntAYBQy0VRGF4=
+	t=1706548591; cv=none; b=if9ueo68Bh8Kgt/yYmHMVyyi/Gb1EGSHMUdn/dPAAZ+X2sJuZeJWOw0XlaEzbUU2d/oULkjwH1c7pdW+MAp7Gx4CTQdgxThlQbFVAqtIbqny4RaXMVWTEc3c6dQNIyijuQUUEb7wlLRCSxI+VjrK27XzA/mADMYSJPA891wX3A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548351; c=relaxed/simple;
-	bh=wvpxdsKXfXsKXg2v8fwu65Is2UHqCfZXnaziK827dP4=;
+	s=arc-20240116; t=1706548591; c=relaxed/simple;
+	bh=CJgNPEAX1+NOcvuGLMZv1saz72Wrt4JkEumEv+Fcyeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KqsJCjNP8HH4eG7b5TosrFmPzZwVoSfjYokc98psP7XFrjAOODSiuBD+PynTk9Tn7goB5dE53/04bC+g9jfrQfkjCMXLTBTqoay6vFVeaACq4d0kFfdp4CW3yb874AdNJtgXU+S4ke6SQYGhOS3zIVGA3qlTHe+PaWZELGBPoRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6tS3nk6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF281C43394;
-	Mon, 29 Jan 2024 17:12:30 +0000 (UTC)
+	 MIME-Version; b=ltsUiPkieZmVO0/rNwmKqr0NOo+Z53hYob89H/KzSsBl/CU273OtWd4msXCimpVeAtMBstSU7hrifZyuKw0YpXNJiORw4ydC2WNwQMEYekJuIah4xfK+BBk5C2dEiTaIACjBdlRa4eRtd5mHh4OIOYf55PRYgQEguVbis8XZqnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJD0i1wZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8F1C433F1;
+	Mon, 29 Jan 2024 17:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548351;
-	bh=wvpxdsKXfXsKXg2v8fwu65Is2UHqCfZXnaziK827dP4=;
+	s=korg; t=1706548590;
+	bh=CJgNPEAX1+NOcvuGLMZv1saz72Wrt4JkEumEv+Fcyeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6tS3nk6m24fERLpLYw7JY8JI5FluhwhXMmKZAwbTXynps42GIOXxbwZuY5CXt9qD
-	 e+kHCSFA1ZxQa665p1kPq/Fya8MYcTlFmvCMsGF81z1GR3dBVDkS5OXMtoizP7jMcL
-	 zsL3cLdaPsmCNSk5wQJ5CIae5u5TrUs88dHiFKKE=
+	b=JJD0i1wZwWAg9GOa31JV+pI6pWtl6QNfVm2LZ0v3LXXlAzYSOlUkLOhTJlL+w/73m
+	 T5daxTbhXCdBNEJotcvQQacE+ExuOXFan0R/FvDnb/bh51c/xM1LL9mTkKhPsyd/KW
+	 AydUe0oQ2UfqWs+f8JXOG/nJByp+1m8u4W7aZukg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Divya Koppera <divya.koppera@microchip.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/185] net: micrel: Fix PTP frame parsing for lan8814
-Date: Mon, 29 Jan 2024 09:04:47 -0800
-Message-ID: <20240129170001.397202044@linuxfoundation.org>
+Subject: [PATCH 6.6 224/331] i40e: update xdp_rxq_info::frag_size for ZC enabled Rx queue
+Date: Mon, 29 Jan 2024 09:04:48 -0800
+Message-ID: <20240129170021.426036863@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit aaf632f7ab6dec57bc9329a438f94504fe8034b9 ]
+[ Upstream commit 0cbb08707c932b3f004bc1a8ec6200ef572c1f5f ]
 
-The HW has the capability to check each frame if it is a PTP frame,
-which domain it is, which ptp frame type it is, different ip address in
-the frame. And if one of these checks fail then the frame is not
-timestamp. Most of these checks were disabled except checking the field
-minorVersionPTP inside the PTP header. Meaning that once a partner sends
-a frame compliant to 8021AS which has minorVersionPTP set to 1, then the
-frame was not timestamp because the HW expected by default a value of 0
-in minorVersionPTP. This is exactly the same issue as on lan8841.
-Fix this issue by removing this check so the userspace can decide on this.
+Now that i40e driver correctly sets up frag_size in xdp_rxq_info, let us
+make it work for ZC multi-buffer as well. i40e_ring::rx_buf_len for ZC
+is being set via xsk_pool_get_rx_frame_size() and this needs to be
+propagated up to xdp_rxq_info.
 
-Fixes: ece19502834d ("net: phy: micrel: 1588 support for LAN8814 phy")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Divya Koppera <divya.koppera@microchip.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 1c9ba9c14658 ("i40e: xsk: add RX multi-buffer support")
+Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Link: https://lore.kernel.org/r/20240124191602.566724-12-maciej.fijalkowski@intel.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 7cbcf51bae92..9481f172830f 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -120,6 +120,11 @@
-  */
- #define LAN8814_1PPM_FORMAT			17179
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index aadca7b3443c..aad39ebff4ab 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -3601,7 +3601,14 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
  
-+#define PTP_RX_VERSION				0x0248
-+#define PTP_TX_VERSION				0x0288
-+#define PTP_MAX_VERSION(x)			(((x) & GENMASK(7, 0)) << 8)
-+#define PTP_MIN_VERSION(x)			((x) & GENMASK(7, 0))
-+
- #define PTP_RX_MOD				0x024F
- #define PTP_RX_MOD_BAD_UDPV4_CHKSUM_FORCE_FCS_DIS_ BIT(3)
- #define PTP_RX_TIMESTAMP_EN			0x024D
-@@ -2922,6 +2927,12 @@ static void lan8814_ptp_init(struct phy_device *phydev)
- 	lanphy_write_page_reg(phydev, 5, PTP_TX_PARSE_IP_ADDR_EN, 0);
- 	lanphy_write_page_reg(phydev, 5, PTP_RX_PARSE_IP_ADDR_EN, 0);
- 
-+	/* Disable checking for minorVersionPTP field */
-+	lanphy_write_page_reg(phydev, 5, PTP_RX_VERSION,
-+			      PTP_MAX_VERSION(0xff) | PTP_MIN_VERSION(0x0));
-+	lanphy_write_page_reg(phydev, 5, PTP_TX_VERSION,
-+			      PTP_MAX_VERSION(0xff) | PTP_MIN_VERSION(0x0));
-+
- 	skb_queue_head_init(&ptp_priv->tx_queue);
- 	skb_queue_head_init(&ptp_priv->rx_queue);
- 	INIT_LIST_HEAD(&ptp_priv->rx_ts_list);
+ 	ring->xsk_pool = i40e_xsk_pool(ring);
+ 	if (ring->xsk_pool) {
++		xdp_rxq_info_unreg(&ring->xdp_rxq);
+ 		ring->rx_buf_len = xsk_pool_get_rx_frame_size(ring->xsk_pool);
++		err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
++					 ring->queue_index,
++					 ring->q_vector->napi.napi_id,
++					 ring->rx_buf_len);
++		if (err)
++			return err;
+ 		err = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
+ 						 MEM_TYPE_XSK_BUFF_POOL,
+ 						 NULL);
 -- 
 2.43.0
 
