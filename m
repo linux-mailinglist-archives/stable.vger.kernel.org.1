@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-16607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E09A0840DAB
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD9B840DE5
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:13:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92CA3282642
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4184B1C2336D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FFE15A4B8;
-	Mon, 29 Jan 2024 17:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A9A1586C7;
+	Mon, 29 Jan 2024 17:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IPDgg2AK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpNplrFq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3328A15703F;
-	Mon, 29 Jan 2024 17:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68F515D5B8;
+	Mon, 29 Jan 2024 17:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548145; cv=none; b=heVe7QvBsWpMZmUGNxOz6nXsTsNDOlTqjmsMrrEA7J/vyFEPoDH8iMpRCXOoeGqkcng32xVqkPo7ZsU1NzzI9FZfEo1fZxi541uPmpE312M5vpkwohZUZvOrZborGxnDq0uvClXZRlssRU2/3nk8UMsyDWLDOeTirseokFFz8X0=
+	t=1706548184; cv=none; b=XQfKOLFX7+ytvzvSieWBN+rUXmgIsuPIM1VV+yL+ZYsOFaYBfR7hJlkpXz6t8FFpxm6S8dUGiAdSuro1jwwGpyKRvQPB43TJahBLs9brNC4D9BHalVk+c5VLTSFTK11PnFRxMB+fyobL/s+5SjIoPnN49x7CTfIvWufaKaWP1KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548145; c=relaxed/simple;
-	bh=bnbsVjxoSkMP4evzVChNkyoisFZbLtb0U8CDkFGDq2o=;
+	s=arc-20240116; t=1706548184; c=relaxed/simple;
+	bh=497iyW7Us0Pbt6F1NdTHw6vOiB8O3LxipqKiuqZjlIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uevex6XSnnujpaz/TlKsy99CCMNsOaiZVtu3ati6CDzt7kpfC8c7yqekFiqX8V1aMMcyN+JcQ3ety7gQHWDVozbOTnWU7tb+S70QSdDvt3qKeUcmvrQjVgtiCA1s3Ylg6uOeZdP5RAa36hkYekNP3Aoq094ltgxPhan3Z0O01hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IPDgg2AK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB1AAC43390;
-	Mon, 29 Jan 2024 17:09:04 +0000 (UTC)
+	 MIME-Version; b=Q8Rb6h9p6N1tohBPOvC+KSne3i7Me3VcKF2nQk5T4AZsOWT87AvK1U+p56md8Pw4QlY4EILsqHAiv3KPAVLph7TO9L2XaGeJJo9sy9xkb4vGm3J02O3xso4qT1HQ8iZ1PP9CAGN3bop66iPNWUhhFPf88rv/ig05Azdg2FtM+jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpNplrFq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EFD2C433F1;
+	Mon, 29 Jan 2024 17:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548145;
-	bh=bnbsVjxoSkMP4evzVChNkyoisFZbLtb0U8CDkFGDq2o=;
+	s=korg; t=1706548184;
+	bh=497iyW7Us0Pbt6F1NdTHw6vOiB8O3LxipqKiuqZjlIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IPDgg2AK0S9ga/4afnDUDr6EsPhTqfmZzq6Xt4ZyenkYT+5dHzqE+Aq/xhk5F7C0q
-	 1OKHP/jA4L1m/ZvrxeDUdsvotrdR9HJu4sB10HnaN3eOxgGOfwu4f5S7XDqvs13sVv
-	 4VDLVjZVhb91nAM5fEU+fDqqtQdlxgCsvQsQxoMQ=
+	b=lpNplrFqlR+eSGnk8cq/1I9C9HdED48pBzJZuiAzyPZMorko334FV3/bYQHl31bJ2
+	 h31JAhRB/plJN+5b97wRmJcpnJYVbS3bMe4sOV7C2xIcrLE6W6mt5YJEnVWkUe47aC
+	 W+EoqdzTtT9ayDWioP+9t08C1qu/I93HDZOExBV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	stable <stable@kernel.org>,
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 172/346] afs: Turn the afs_addr_list address array into an array of structs
+Subject: [PATCH 6.1 003/185] usb: dwc3: gadget: Handle EP0 request dequeuing properly
 Date: Mon, 29 Jan 2024 09:03:23 -0800
-Message-ID: <20240129170021.456318061@linuxfoundation.org>
+Message-ID: <20240129165958.712827183@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+References: <20240129165958.589924174@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,271 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit 07f3502b33a260f873e35708d2fa693eb52225cb ]
+[ Upstream commit 730e12fbec53ab59dd807d981a204258a4cfb29a ]
 
-Turn the afs_addr_list address array into an array of structs, thereby
-allowing per-address (such as RTT) info to be added.
+Current EP0 dequeue path will share the same as other EPs.  However, there
+are some special considerations that need to be made for EP0 transfers:
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Stable-dep-of: 17ba6f0bd14f ("afs: Fix error handling with lookup via FS.InlineBulkStatus")
+  - EP0 transfers never transition into the started_list
+  - EP0 only has one active request at a time
+
+In case there is a vendor specific control message for a function over USB
+FFS, then there is no guarantee on the timeline which the DATA/STATUS stage
+is responded to.  While this occurs, any attempt to end transfers on
+non-control EPs will end up having the DWC3_EP_DELAY_STOP flag set, and
+defer issuing of the end transfer command.  If the USB FFS application
+decides to timeout the control transfer, or if USB FFS AIO path exits, the
+USB FFS driver will issue a call to usb_ep_dequeue() for the ep0 request.
+
+In case of the AIO exit path, the AIO FS blocks until all pending USB
+requests utilizing the AIO path is completed.  However, since the dequeue
+of ep0 req does not happen properly, all non-control EPs with the
+DWC3_EP_DELAY_STOP flag set will not be handled, and the AIO exit path will
+be stuck waiting for the USB FFS data endpoints to receive a completion
+callback.
+
+Fix is to utilize dwc3_ep0_reset_state() in the dequeue API to ensure EP0
+is brought back to the SETUP state, and ensures that any deferred end
+transfer commands are handled.  This also will end any active transfers
+on EP0, compared to the previous implementation which directly called
+giveback only.
+
+Fixes: fcd2def66392 ("usb: dwc3: gadget: Refactor dwc3_gadget_ep_dequeue")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20231206201814.32664-1-quic_wcheng@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/addr_list.c | 10 +++++-----
- fs/afs/fs_probe.c  |  6 +++---
- fs/afs/internal.h  |  6 +++++-
- fs/afs/proc.c      |  4 ++--
- fs/afs/rotate.c    |  2 +-
- fs/afs/rxrpc.c     |  4 ++--
- fs/afs/server.c    |  4 ++--
- fs/afs/vl_alias.c  |  4 ++--
- fs/afs/vl_probe.c  |  6 +++---
- fs/afs/vl_rotate.c |  2 +-
- 10 files changed, 26 insertions(+), 22 deletions(-)
+ drivers/usb/dwc3/gadget.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/fs/afs/addr_list.c b/fs/afs/addr_list.c
-index de1ae0bead3b..ac05a59e9d46 100644
---- a/fs/afs/addr_list.c
-+++ b/fs/afs/addr_list.c
-@@ -45,7 +45,7 @@ struct afs_addr_list *afs_alloc_addrlist(unsigned int nr,
- 	alist->max_addrs = nr;
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 5617a75b0d74..c4703f6b2089 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2093,7 +2093,17 @@ static int dwc3_gadget_ep_dequeue(struct usb_ep *ep,
  
- 	for (i = 0; i < nr; i++) {
--		struct sockaddr_rxrpc *srx = &alist->addrs[i];
-+		struct sockaddr_rxrpc *srx = &alist->addrs[i].srx;
- 		srx->srx_family			= AF_RXRPC;
- 		srx->srx_service		= service;
- 		srx->transport_type		= SOCK_DGRAM;
-@@ -281,7 +281,7 @@ void afs_merge_fs_addr4(struct afs_addr_list *alist, __be32 xdr, u16 port)
- 		return;
- 
- 	for (i = 0; i < alist->nr_ipv4; i++) {
--		struct sockaddr_in *a = &alist->addrs[i].transport.sin;
-+		struct sockaddr_in *a = &alist->addrs[i].srx.transport.sin;
- 		u32 a_addr = ntohl(a->sin_addr.s_addr);
- 		u16 a_port = ntohs(a->sin_port);
- 
-@@ -298,7 +298,7 @@ void afs_merge_fs_addr4(struct afs_addr_list *alist, __be32 xdr, u16 port)
- 			alist->addrs + i,
- 			sizeof(alist->addrs[0]) * (alist->nr_addrs - i));
- 
--	srx = &alist->addrs[i];
-+	srx = &alist->addrs[i].srx;
- 	srx->srx_family = AF_RXRPC;
- 	srx->transport_type = SOCK_DGRAM;
- 	srx->transport_len = sizeof(srx->transport.sin);
-@@ -321,7 +321,7 @@ void afs_merge_fs_addr6(struct afs_addr_list *alist, __be32 *xdr, u16 port)
- 		return;
- 
- 	for (i = alist->nr_ipv4; i < alist->nr_addrs; i++) {
--		struct sockaddr_in6 *a = &alist->addrs[i].transport.sin6;
-+		struct sockaddr_in6 *a = &alist->addrs[i].srx.transport.sin6;
- 		u16 a_port = ntohs(a->sin6_port);
- 
- 		diff = memcmp(xdr, &a->sin6_addr, 16);
-@@ -338,7 +338,7 @@ void afs_merge_fs_addr6(struct afs_addr_list *alist, __be32 *xdr, u16 port)
- 			alist->addrs + i,
- 			sizeof(alist->addrs[0]) * (alist->nr_addrs - i));
- 
--	srx = &alist->addrs[i];
-+	srx = &alist->addrs[i].srx;
- 	srx->srx_family = AF_RXRPC;
- 	srx->transport_type = SOCK_DGRAM;
- 	srx->transport_len = sizeof(srx->transport.sin6);
-diff --git a/fs/afs/fs_probe.c b/fs/afs/fs_probe.c
-index daaf3810cc92..3dd24842f277 100644
---- a/fs/afs/fs_probe.c
-+++ b/fs/afs/fs_probe.c
-@@ -153,12 +153,12 @@ void afs_fileserver_probe_result(struct afs_call *call)
- 	if (call->service_id == YFS_FS_SERVICE) {
- 		server->probe.is_yfs = true;
- 		set_bit(AFS_SERVER_FL_IS_YFS, &server->flags);
--		alist->addrs[index].srx_service = call->service_id;
-+		alist->addrs[index].srx.srx_service = call->service_id;
- 	} else {
- 		server->probe.not_yfs = true;
- 		if (!server->probe.is_yfs) {
- 			clear_bit(AFS_SERVER_FL_IS_YFS, &server->flags);
--			alist->addrs[index].srx_service = call->service_id;
-+			alist->addrs[index].srx.srx_service = call->service_id;
- 		}
- 		cap0 = ntohl(call->tmp);
- 		if (cap0 & AFS3_VICED_CAPABILITY_64BITFILES)
-@@ -182,7 +182,7 @@ void afs_fileserver_probe_result(struct afs_call *call)
- 	spin_unlock(&server->probe_lock);
- 
- 	_debug("probe %pU [%u] %pISpc rtt=%u ret=%d",
--	       &server->uuid, index, &alist->addrs[index].transport,
-+	       &server->uuid, index, &alist->addrs[index].srx.transport,
- 	       rtt_us, ret);
- 
- 	return afs_done_one_fs_probe(call->net, server);
-diff --git a/fs/afs/internal.h b/fs/afs/internal.h
-index 7385d62c8cf5..e2adb314ab6a 100644
---- a/fs/afs/internal.h
-+++ b/fs/afs/internal.h
-@@ -87,7 +87,9 @@ struct afs_addr_list {
- 	enum dns_lookup_status	status:8;
- 	unsigned long		failed;		/* Mask of addrs that failed locally/ICMP */
- 	unsigned long		responded;	/* Mask of addrs that responded */
--	struct sockaddr_rxrpc	addrs[] __counted_by(max_addrs);
-+	struct {
-+		struct sockaddr_rxrpc	srx;
-+	} addrs[] __counted_by(max_addrs);
- #define AFS_MAX_ADDRESSES ((unsigned int)(sizeof(unsigned long) * 8))
- };
- 
-@@ -969,6 +971,8 @@ extern void afs_put_addrlist(struct afs_addr_list *);
- extern struct afs_vlserver_list *afs_parse_text_addrs(struct afs_net *,
- 						      const char *, size_t, char,
- 						      unsigned short, unsigned short);
-+bool afs_addr_list_same(const struct afs_addr_list *a,
-+			const struct afs_addr_list *b);
- extern struct afs_vlserver_list *afs_dns_query(struct afs_cell *, time64_t *);
- extern bool afs_iterate_addresses(struct afs_addr_cursor *);
- extern int afs_end_cursor(struct afs_addr_cursor *);
-diff --git a/fs/afs/proc.c b/fs/afs/proc.c
-index 2a0c83d71565..ab9cd986cfd9 100644
---- a/fs/afs/proc.c
-+++ b/fs/afs/proc.c
-@@ -307,7 +307,7 @@ static int afs_proc_cell_vlservers_show(struct seq_file *m, void *v)
- 		for (i = 0; i < alist->nr_addrs; i++)
- 			seq_printf(m, " %c %pISpc\n",
- 				   alist->preferred == i ? '>' : '-',
--				   &alist->addrs[i].transport);
-+				   &alist->addrs[i].srx.transport);
- 	}
- 	seq_printf(m, " info: fl=%lx rtt=%d\n", vlserver->flags, vlserver->rtt);
- 	seq_printf(m, " probe: fl=%x e=%d ac=%d out=%d\n",
-@@ -399,7 +399,7 @@ static int afs_proc_servers_show(struct seq_file *m, void *v)
- 		   alist->version, alist->responded, alist->failed);
- 	for (i = 0; i < alist->nr_addrs; i++)
- 		seq_printf(m, "    [%x] %pISpc%s\n",
--			   i, &alist->addrs[i].transport,
-+			   i, &alist->addrs[i].srx.transport,
- 			   alist->preferred == i ? "*" : "");
- 	return 0;
- }
-diff --git a/fs/afs/rotate.c b/fs/afs/rotate.c
-index a3d127953ac6..46081e5da6f5 100644
---- a/fs/afs/rotate.c
-+++ b/fs/afs/rotate.c
-@@ -488,7 +488,7 @@ bool afs_select_fileserver(struct afs_operation *op)
- 
- 	_debug("address [%u] %u/%u %pISp",
- 	       op->index, op->ac.index, op->ac.alist->nr_addrs,
--	       &op->ac.alist->addrs[op->ac.index].transport);
-+	       &op->ac.alist->addrs[op->ac.index].srx.transport);
- 
- 	_leave(" = t");
- 	return true;
-diff --git a/fs/afs/rxrpc.c b/fs/afs/rxrpc.c
-index d642d06a453b..181317126e43 100644
---- a/fs/afs/rxrpc.c
-+++ b/fs/afs/rxrpc.c
-@@ -296,7 +296,7 @@ static void afs_notify_end_request_tx(struct sock *sock,
-  */
- void afs_make_call(struct afs_addr_cursor *ac, struct afs_call *call, gfp_t gfp)
- {
--	struct sockaddr_rxrpc *srx = &ac->alist->addrs[ac->index];
-+	struct sockaddr_rxrpc *srx = &ac->alist->addrs[ac->index].srx;
- 	struct rxrpc_call *rxcall;
- 	struct msghdr msg;
- 	struct kvec iov[1];
-@@ -461,7 +461,7 @@ static void afs_log_error(struct afs_call *call, s32 remote_abort)
- 		max = m + 1;
- 		pr_notice("kAFS: Peer reported %s failure on %s [%pISp]\n",
- 			  msg, call->type->name,
--			  &call->alist->addrs[call->addr_ix].transport);
-+			  &call->alist->addrs[call->addr_ix].srx.transport);
- 	}
- }
- 
-diff --git a/fs/afs/server.c b/fs/afs/server.c
-index 0bd2f5ba6900..b8e2d211d4a1 100644
---- a/fs/afs/server.c
-+++ b/fs/afs/server.c
-@@ -43,7 +43,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
- 			hlist_for_each_entry_rcu(server, &net->fs_addresses6, addr6_link) {
- 				alist = rcu_dereference(server->addresses);
- 				for (i = alist->nr_ipv4; i < alist->nr_addrs; i++) {
--					b = &alist->addrs[i].transport.sin6;
-+					b = &alist->addrs[i].srx.transport.sin6;
- 					diff = ((u16 __force)a->sin6_port -
- 						(u16 __force)b->sin6_port);
- 					if (diff == 0)
-@@ -59,7 +59,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
- 			hlist_for_each_entry_rcu(server, &net->fs_addresses4, addr4_link) {
- 				alist = rcu_dereference(server->addresses);
- 				for (i = 0; i < alist->nr_ipv4; i++) {
--					b = &alist->addrs[i].transport.sin;
-+					b = &alist->addrs[i].srx.transport.sin;
- 					diff = ((u16 __force)a->sin_port -
- 						(u16 __force)b->sin_port);
- 					if (diff == 0)
-diff --git a/fs/afs/vl_alias.c b/fs/afs/vl_alias.c
-index f04a80e4f5c3..d3c0df70a1a5 100644
---- a/fs/afs/vl_alias.c
-+++ b/fs/afs/vl_alias.c
-@@ -94,8 +94,8 @@ static int afs_compare_fs_alists(const struct afs_server *server_a,
- 	lb = rcu_dereference(server_b->addresses);
- 
- 	while (a < la->nr_addrs && b < lb->nr_addrs) {
--		const struct sockaddr_rxrpc *srx_a = &la->addrs[a];
--		const struct sockaddr_rxrpc *srx_b = &lb->addrs[b];
-+		const struct sockaddr_rxrpc *srx_a = &la->addrs[a].srx;
-+		const struct sockaddr_rxrpc *srx_b = &lb->addrs[b].srx;
- 		int diff = afs_compare_addrs(srx_a, srx_b);
- 
- 		if (diff < 0) {
-diff --git a/fs/afs/vl_probe.c b/fs/afs/vl_probe.c
-index 58452b86e672..bdd9372e3fb2 100644
---- a/fs/afs/vl_probe.c
-+++ b/fs/afs/vl_probe.c
-@@ -106,12 +106,12 @@ void afs_vlserver_probe_result(struct afs_call *call)
- 	if (call->service_id == YFS_VL_SERVICE) {
- 		server->probe.flags |= AFS_VLSERVER_PROBE_IS_YFS;
- 		set_bit(AFS_VLSERVER_FL_IS_YFS, &server->flags);
--		alist->addrs[index].srx_service = call->service_id;
-+		alist->addrs[index].srx.srx_service = call->service_id;
- 	} else {
- 		server->probe.flags |= AFS_VLSERVER_PROBE_NOT_YFS;
- 		if (!(server->probe.flags & AFS_VLSERVER_PROBE_IS_YFS)) {
- 			clear_bit(AFS_VLSERVER_FL_IS_YFS, &server->flags);
--			alist->addrs[index].srx_service = call->service_id;
-+			alist->addrs[index].srx.srx_service = call->service_id;
+ 	list_for_each_entry(r, &dep->pending_list, list) {
+ 		if (r == req) {
+-			dwc3_gadget_giveback(dep, req, -ECONNRESET);
++			/*
++			 * Explicitly check for EP0/1 as dequeue for those
++			 * EPs need to be handled differently.  Control EP
++			 * only deals with one USB req, and giveback will
++			 * occur during dwc3_ep0_stall_and_restart().  EP0
++			 * requests are never added to started_list.
++			 */
++			if (dep->number > 1)
++				dwc3_gadget_giveback(dep, req, -ECONNRESET);
++			else
++				dwc3_ep0_reset_state(dwc);
+ 			goto out;
  		}
  	}
- 
-@@ -131,7 +131,7 @@ void afs_vlserver_probe_result(struct afs_call *call)
- 	spin_unlock(&server->probe_lock);
- 
- 	_debug("probe [%u][%u] %pISpc rtt=%u ret=%d",
--	       server_index, index, &alist->addrs[index].transport, rtt_us, ret);
-+	       server_index, index, &alist->addrs[index].srx.transport, rtt_us, ret);
- 
- 	afs_done_one_vl_probe(server, have_result);
- }
-diff --git a/fs/afs/vl_rotate.c b/fs/afs/vl_rotate.c
-index eb415ce56360..e52b9d4c8a0a 100644
---- a/fs/afs/vl_rotate.c
-+++ b/fs/afs/vl_rotate.c
-@@ -249,7 +249,7 @@ bool afs_select_vlserver(struct afs_vl_cursor *vc)
- 
- 	_debug("VL address %d/%d", vc->ac.index, vc->ac.alist->nr_addrs);
- 
--	_leave(" = t %pISpc", &vc->ac.alist->addrs[vc->ac.index].transport);
-+	_leave(" = t %pISpc", &vc->ac.alist->addrs[vc->ac.index].srx.transport);
- 	return true;
- 
- next_server:
 -- 
 2.43.0
 
