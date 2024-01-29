@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-16759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B213C840E4C
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C25841005
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D65EA1C23787
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A8D41F23B34
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EFED15B30B;
-	Mon, 29 Jan 2024 17:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D23D159560;
+	Mon, 29 Jan 2024 17:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e84godhL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBc/Q8tu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA7B15705C;
-	Mon, 29 Jan 2024 17:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C16473722;
+	Mon, 29 Jan 2024 17:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548259; cv=none; b=utf/HftJZyJ7+32Mc8/aJC/CkyzRNd+M/Br9EQCqUVUFfrFj9DY6BQX/mDX206CPJtjJuuSx9ZQhnrl5QdJPlrmcyc02+KY7L0iOR8EMz2Y5VdxAchW5IaNNSSpDqqz0gcPV6KkuetEV81A2W1w0ORllEmjA+SGlBczo58mydAo=
+	t=1706548546; cv=none; b=iduqxYJMWJtseFYLSFLpgx0oWz3pA2T5Lg3nZFesuAyfTCmkzhRtYV3PdzyRMcFCM5bR15+5lJNhoMFY7FIHE4i1l6k6RFvI9VyAyH+Zrv2yMV6vBff6s3c3pEViyByzqPWnke8qIz8RZNkZN7JM6iLy2o97hvXKGBPfKwF5NtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548259; c=relaxed/simple;
-	bh=OqFd5Ge5GF5Wuu8io5f504XNczKP2K+Ad626Ew2P7UY=;
+	s=arc-20240116; t=1706548546; c=relaxed/simple;
+	bh=2W2orXROQgKlapPxSF0JA7LgsMmFt+2nkfqkTmKfjPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N3Y+fxw8UxE8Vuct04oX/jB3TdXFNwBSotohqvIjTGHf9CiAmJrGuuHEH3g/n0hgGVZ635LQoYYmWxGGUxtIkxHfN9918wvhulBTOMKrJe7rHrCoqbhEloWP0VW2qzpOciAWZQYP3NysbSjdKOrCd+4GvaJZJ8XA5VTti6MvTu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e84godhL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1DBC433C7;
-	Mon, 29 Jan 2024 17:10:58 +0000 (UTC)
+	 MIME-Version; b=pWR9xhXCtC/iDMvneiqyWLAWZXv8qRwljbJA5boCGAbhOSMKyTtvXHP5LXR06NzoGdUbV0CqxVROiRWLYFJb01hr5qK6FsIEv7nHrVGh/smE9ODZ+wyikdMDocewDDMjZptvtq3iugeWIWBSk9HyyZSMa5njkutm12wVGKWPqnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBc/Q8tu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15152C433F1;
+	Mon, 29 Jan 2024 17:15:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548258;
-	bh=OqFd5Ge5GF5Wuu8io5f504XNczKP2K+Ad626Ew2P7UY=;
+	s=korg; t=1706548546;
+	bh=2W2orXROQgKlapPxSF0JA7LgsMmFt+2nkfqkTmKfjPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e84godhLaEVE4dkZFx9RQzjk0jXJ6lGvkkeAuI0+QZlBC4/dyPEwBDPVsmGPSW3Qn
-	 kZnf+Fp2TX3IDLZEcZbeo4d4tWtxztu59PRETD4+xQSSloYI0VAOtSqyIVfVZysEHY
-	 NpjKtvmYy9pJT7ISMEbK6QhR16NQXGS6KQ9eipMo=
+	b=SBc/Q8tuHW/sZPFNvU/8I/vQNPBAPFkpxdZ/6EyCyTkP2lACIf8hMedY2HpzguE3O
+	 xev8ldwIgRvHs2FpKgr/l/fPaaFvqc9JVjz0oDhjGWaUjVVYLsiBrG7OLlV9mJVMEE
+	 K0mlVNUqvT5UFPty1kVF9uK90YdEaL5oKeNCxcCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Mateusz=20Jo=C5=84czyk?= <mat.jonczyk@o2.pl>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.1 051/185] rtc: Add support for configuring the UIP timeout for RTC reads
+	Jakub Kicinski <kuba@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 187/331] selftest: Dont reuse port for SO_INCOMING_CPU test.
 Date: Mon, 29 Jan 2024 09:04:11 -0800
-Message-ID: <20240129170000.235519470@linuxfoundation.org>
+Message-ID: <20240129170020.362202292@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,236 +61,238 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit 120931db07b49252aba2073096b595482d71857c upstream.
+[ Upstream commit 97de5a15edf2d22184f5ff588656030bbb7fa358 ]
 
-The UIP timeout is hardcoded to 10ms for all RTC reads, but in some
-contexts this might not be enough time. Add a timeout parameter to
-mc146818_get_time() and mc146818_get_time_callback().
+Jakub reported that ASSERT_EQ(cpu, i) in so_incoming_cpu.c seems to
+fire somewhat randomly.
 
-If UIP timeout is configured by caller to be >=100 ms and a call
-takes this long, log a warning.
+  # #  RUN           so_incoming_cpu.before_reuseport.test3 ...
+  # # so_incoming_cpu.c:191:test3:Expected cpu (32) == i (0)
+  # # test3: Test terminated by assertion
+  # #          FAIL  so_incoming_cpu.before_reuseport.test3
+  # not ok 3 so_incoming_cpu.before_reuseport.test3
 
-Make all callers use 10ms to ensure no functional changes.
+When the test failed, not-yet-accepted CLOSE_WAIT sockets received
+SYN with a "challenging" SEQ number, which was sent from an unexpected
+CPU that did not create the receiver.
 
-Cc:  <stable@vger.kernel.org> # 6.1.y
-Fixes: ec5895c0f2d8 ("rtc: mc146818-lib: extract mc146818_avoid_UIP")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Tested-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Reviewed-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Acked-by: Mateusz Jończyk <mat.jonczyk@o2.pl>
-Link: https://lore.kernel.org/r/20231128053653.101798-4-mario.limonciello@amd.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The test basically does:
+
+  1. for each cpu:
+    1-1. create a server
+    1-2. set SO_INCOMING_CPU
+
+  2. for each cpu:
+    2-1. set cpu affinity
+    2-2. create some clients
+    2-3. let clients connect() to the server on the same cpu
+    2-4. close() clients
+
+  3. for each server:
+    3-1. accept() all child sockets
+    3-2. check if all children have the same SO_INCOMING_CPU with the server
+
+The root cause was the close() in 2-4. and net.ipv4.tcp_tw_reuse.
+
+In a loop of 2., close() changed the client state to FIN_WAIT_2, and
+the peer transitioned to CLOSE_WAIT.
+
+In another loop of 2., connect() happened to select the same port of
+the FIN_WAIT_2 socket, and it was reused as the default value of
+net.ipv4.tcp_tw_reuse is 2.
+
+As a result, the new client sent SYN to the CLOSE_WAIT socket from
+a different CPU, and the receiver's sk_incoming_cpu was overwritten
+with unexpected CPU ID.
+
+Also, the SYN had a different SEQ number, so the CLOSE_WAIT socket
+responded with Challenge ACK.  The new client properly returned RST
+and effectively killed the CLOSE_WAIT socket.
+
+This way, all clients were created successfully, but the error was
+detected later by 3-2., ASSERT_EQ(cpu, i).
+
+To avoid the failure, let's make sure that (i) the number of clients
+is less than the number of available ports and (ii) such reuse never
+happens.
+
+Fixes: 6df96146b202 ("selftest: Add test for SO_INCOMING_CPU.")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Tested-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20240120031642.67014-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/alpha/kernel/rtc.c        |    2 +-
- arch/x86/kernel/hpet.c         |    2 +-
- arch/x86/kernel/rtc.c          |    2 +-
- drivers/base/power/trace.c     |    2 +-
- drivers/rtc/rtc-cmos.c         |    6 +++---
- drivers/rtc/rtc-mc146818-lib.c |   37 +++++++++++++++++++++++++++++--------
- include/linux/mc146818rtc.h    |    3 ++-
- 7 files changed, 38 insertions(+), 16 deletions(-)
+ tools/testing/selftests/net/so_incoming_cpu.c | 68 ++++++++++++++-----
+ 1 file changed, 50 insertions(+), 18 deletions(-)
 
---- a/arch/alpha/kernel/rtc.c
-+++ b/arch/alpha/kernel/rtc.c
-@@ -80,7 +80,7 @@ init_rtc_epoch(void)
- static int
- alpha_rtc_read_time(struct device *dev, struct rtc_time *tm)
- {
--	int ret = mc146818_get_time(tm);
-+	int ret = mc146818_get_time(tm, 10);
+diff --git a/tools/testing/selftests/net/so_incoming_cpu.c b/tools/testing/selftests/net/so_incoming_cpu.c
+index a14818164102..e9fa14e10732 100644
+--- a/tools/testing/selftests/net/so_incoming_cpu.c
++++ b/tools/testing/selftests/net/so_incoming_cpu.c
+@@ -3,19 +3,16 @@
+ #define _GNU_SOURCE
+ #include <sched.h>
  
- 	if (ret < 0) {
- 		dev_err_ratelimited(dev, "unable to read current time\n");
---- a/arch/x86/kernel/hpet.c
-+++ b/arch/x86/kernel/hpet.c
-@@ -1436,7 +1436,7 @@ irqreturn_t hpet_rtc_interrupt(int irq,
- 	memset(&curr_time, 0, sizeof(struct rtc_time));
- 
- 	if (hpet_rtc_flags & (RTC_UIE | RTC_AIE)) {
--		if (unlikely(mc146818_get_time(&curr_time) < 0)) {
-+		if (unlikely(mc146818_get_time(&curr_time, 10) < 0)) {
- 			pr_err_ratelimited("unable to read current time from RTC\n");
- 			return IRQ_HANDLED;
- 		}
---- a/arch/x86/kernel/rtc.c
-+++ b/arch/x86/kernel/rtc.c
-@@ -67,7 +67,7 @@ void mach_get_cmos_time(struct timespec6
- 		return;
- 	}
- 
--	if (mc146818_get_time(&tm)) {
-+	if (mc146818_get_time(&tm, 10)) {
- 		pr_err("Unable to read current time from RTC\n");
- 		now->tv_sec = now->tv_nsec = 0;
- 		return;
---- a/drivers/base/power/trace.c
-+++ b/drivers/base/power/trace.c
-@@ -120,7 +120,7 @@ static unsigned int read_magic_time(void
- 	struct rtc_time time;
- 	unsigned int val;
- 
--	if (mc146818_get_time(&time) < 0) {
-+	if (mc146818_get_time(&time, 10) < 0) {
- 		pr_err("Unable to read current time from RTC\n");
- 		return 0;
- 	}
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -231,7 +231,7 @@ static int cmos_read_time(struct device
- 	if (!pm_trace_rtc_valid())
- 		return -EIO;
- 
--	ret = mc146818_get_time(t);
-+	ret = mc146818_get_time(t, 10);
- 	if (ret < 0) {
- 		dev_err_ratelimited(dev, "unable to read current time\n");
- 		return ret;
-@@ -307,7 +307,7 @@ static int cmos_read_alarm(struct device
- 	 *
- 	 * Use the mc146818_avoid_UIP() function to avoid this.
- 	 */
--	if (!mc146818_avoid_UIP(cmos_read_alarm_callback, &p))
-+	if (!mc146818_avoid_UIP(cmos_read_alarm_callback, 10, &p))
- 		return -EIO;
- 
- 	if (!(p.rtc_control & RTC_DM_BINARY) || RTC_ALWAYS_BCD) {
-@@ -556,7 +556,7 @@ static int cmos_set_alarm(struct device
- 	 *
- 	 * Use mc146818_avoid_UIP() to avoid this.
- 	 */
--	if (!mc146818_avoid_UIP(cmos_set_alarm_callback, &p))
-+	if (!mc146818_avoid_UIP(cmos_set_alarm_callback, 10, &p))
- 		return -ETIMEDOUT;
- 
- 	cmos->alarm_expires = rtc_tm_to_time64(&t->time);
---- a/drivers/rtc/rtc-mc146818-lib.c
-+++ b/drivers/rtc/rtc-mc146818-lib.c
-@@ -8,26 +8,31 @@
- #include <linux/acpi.h>
- #endif
- 
-+#define UIP_RECHECK_DELAY		100	/* usec */
-+#define UIP_RECHECK_DELAY_MS		(USEC_PER_MSEC / UIP_RECHECK_DELAY)
-+#define UIP_RECHECK_LOOPS_MS(x)		(x / UIP_RECHECK_DELAY_MS)
++#include <fcntl.h>
 +
- /*
-  * Execute a function while the UIP (Update-in-progress) bit of the RTC is
-- * unset.
-+ * unset. The timeout is configurable by the caller in ms.
-  *
-  * Warning: callback may be executed more then once.
-  */
- bool mc146818_avoid_UIP(void (*callback)(unsigned char seconds, void *param),
-+			int timeout,
- 			void *param)
+ #include <netinet/in.h>
+ #include <sys/socket.h>
+ #include <sys/sysinfo.h>
+ 
+ #include "../kselftest_harness.h"
+ 
+-#define CLIENT_PER_SERVER	32 /* More sockets, more reliable */
+-#define NR_SERVER		self->nproc
+-#define NR_CLIENT		(CLIENT_PER_SERVER * NR_SERVER)
+-
+ FIXTURE(so_incoming_cpu)
+ {
+-	int nproc;
+ 	int *servers;
+ 	union {
+ 		struct sockaddr addr;
+@@ -56,12 +53,47 @@ FIXTURE_VARIANT_ADD(so_incoming_cpu, after_all_listen)
+ 	.when_to_set = AFTER_ALL_LISTEN,
+ };
+ 
++static void write_sysctl(struct __test_metadata *_metadata,
++			 char *filename, char *string)
++{
++	int fd, len, ret;
++
++	fd = open(filename, O_WRONLY);
++	ASSERT_NE(fd, -1);
++
++	len = strlen(string);
++	ret = write(fd, string, len);
++	ASSERT_EQ(ret, len);
++}
++
++static void setup_netns(struct __test_metadata *_metadata)
++{
++	ASSERT_EQ(unshare(CLONE_NEWNET), 0);
++	ASSERT_EQ(system("ip link set lo up"), 0);
++
++	write_sysctl(_metadata, "/proc/sys/net/ipv4/ip_local_port_range", "10000 60001");
++	write_sysctl(_metadata, "/proc/sys/net/ipv4/tcp_tw_reuse", "0");
++}
++
++#define NR_PORT				(60001 - 10000 - 1)
++#define NR_CLIENT_PER_SERVER_DEFAULT	32
++static int nr_client_per_server, nr_server, nr_client;
++
+ FIXTURE_SETUP(so_incoming_cpu)
+ {
+-	self->nproc = get_nprocs();
+-	ASSERT_LE(2, self->nproc);
++	setup_netns(_metadata);
++
++	nr_server = get_nprocs();
++	ASSERT_LE(2, nr_server);
++
++	if (NR_CLIENT_PER_SERVER_DEFAULT * nr_server < NR_PORT)
++		nr_client_per_server = NR_CLIENT_PER_SERVER_DEFAULT;
++	else
++		nr_client_per_server = NR_PORT / nr_server;
++
++	nr_client = nr_client_per_server * nr_server;
+ 
+-	self->servers = malloc(sizeof(int) * NR_SERVER);
++	self->servers = malloc(sizeof(int) * nr_server);
+ 	ASSERT_NE(self->servers, NULL);
+ 
+ 	self->in_addr.sin_family = AF_INET;
+@@ -74,7 +106,7 @@ FIXTURE_TEARDOWN(so_incoming_cpu)
  {
  	int i;
- 	unsigned long flags;
- 	unsigned char seconds;
  
--	for (i = 0; i < 100; i++) {
-+	for (i = 0; UIP_RECHECK_LOOPS_MS(i) < timeout; i++) {
- 		spin_lock_irqsave(&rtc_lock, flags);
+-	for (i = 0; i < NR_SERVER; i++)
++	for (i = 0; i < nr_server; i++)
+ 		close(self->servers[i]);
  
- 		/*
- 		 * Check whether there is an update in progress during which the
- 		 * readout is unspecified. The maximum update time is ~2ms. Poll
--		 * every 100 usec for completion.
-+		 * for completion.
- 		 *
- 		 * Store the second value before checking UIP so a long lasting
- 		 * NMI which happens to hit after the UIP check cannot make
-@@ -37,7 +42,7 @@ bool mc146818_avoid_UIP(void (*callback)
+ 	free(self->servers);
+@@ -110,10 +142,10 @@ int create_server(struct __test_metadata *_metadata,
+ 	if (variant->when_to_set == BEFORE_LISTEN)
+ 		set_so_incoming_cpu(_metadata, fd, cpu);
  
- 		if (CMOS_READ(RTC_FREQ_SELECT) & RTC_UIP) {
- 			spin_unlock_irqrestore(&rtc_lock, flags);
--			udelay(100);
-+			udelay(UIP_RECHECK_DELAY);
- 			continue;
- 		}
+-	/* We don't use CLIENT_PER_SERVER here not to block
++	/* We don't use nr_client_per_server here not to block
+ 	 * this test at connect() if SO_INCOMING_CPU is broken.
+ 	 */
+-	ret = listen(fd, NR_CLIENT);
++	ret = listen(fd, nr_client);
+ 	ASSERT_EQ(ret, 0);
  
-@@ -56,7 +61,7 @@ bool mc146818_avoid_UIP(void (*callback)
- 		 */
- 		if (CMOS_READ(RTC_FREQ_SELECT) & RTC_UIP) {
- 			spin_unlock_irqrestore(&rtc_lock, flags);
--			udelay(100);
-+			udelay(UIP_RECHECK_DELAY);
- 			continue;
- 		}
- 
-@@ -72,6 +77,10 @@ bool mc146818_avoid_UIP(void (*callback)
- 		}
- 		spin_unlock_irqrestore(&rtc_lock, flags);
- 
-+		if (UIP_RECHECK_LOOPS_MS(i) >= 100)
-+			pr_warn("Reading current time from RTC took around %li ms\n",
-+				UIP_RECHECK_LOOPS_MS(i));
-+
- 		return true;
- 	}
- 	return false;
-@@ -84,7 +93,7 @@ EXPORT_SYMBOL_GPL(mc146818_avoid_UIP);
-  */
- bool mc146818_does_rtc_work(void)
+ 	if (variant->when_to_set == AFTER_LISTEN)
+@@ -128,7 +160,7 @@ void create_servers(struct __test_metadata *_metadata,
  {
--	return mc146818_avoid_UIP(NULL, NULL);
-+	return mc146818_avoid_UIP(NULL, 10, NULL);
- }
- EXPORT_SYMBOL_GPL(mc146818_does_rtc_work);
+ 	int i, ret;
  
-@@ -130,13 +139,25 @@ static void mc146818_get_time_callback(u
- 	p->ctrl = CMOS_READ(RTC_CONTROL);
- }
+-	for (i = 0; i < NR_SERVER; i++) {
++	for (i = 0; i < nr_server; i++) {
+ 		self->servers[i] = create_server(_metadata, self, variant, i);
  
--int mc146818_get_time(struct rtc_time *time)
-+/**
-+ * mc146818_get_time - Get the current time from the RTC
-+ * @time: pointer to struct rtc_time to store the current time
-+ * @timeout: timeout value in ms
-+ *
-+ * This function reads the current time from the RTC and stores it in the
-+ * provided struct rtc_time. The timeout parameter specifies the maximum
-+ * time to wait for the RTC to become ready.
-+ *
-+ * Return: 0 on success, -ETIMEDOUT if the RTC did not become ready within
-+ * the specified timeout, or another error code if an error occurred.
-+ */
-+int mc146818_get_time(struct rtc_time *time, int timeout)
- {
- 	struct mc146818_get_time_callback_param p = {
- 		.time = time
- 	};
- 
--	if (!mc146818_avoid_UIP(mc146818_get_time_callback, &p)) {
-+	if (!mc146818_avoid_UIP(mc146818_get_time_callback, timeout, &p)) {
- 		memset(time, 0, sizeof(*time));
- 		return -ETIMEDOUT;
+ 		if (i == 0) {
+@@ -138,7 +170,7 @@ void create_servers(struct __test_metadata *_metadata,
  	}
---- a/include/linux/mc146818rtc.h
-+++ b/include/linux/mc146818rtc.h
-@@ -126,10 +126,11 @@ struct cmos_rtc_board_info {
- #endif /* ARCH_RTC_LOCATION */
  
- bool mc146818_does_rtc_work(void);
--int mc146818_get_time(struct rtc_time *time);
-+int mc146818_get_time(struct rtc_time *time, int timeout);
- int mc146818_set_time(struct rtc_time *time);
+ 	if (variant->when_to_set == AFTER_ALL_LISTEN) {
+-		for (i = 0; i < NR_SERVER; i++)
++		for (i = 0; i < nr_server; i++)
+ 			set_so_incoming_cpu(_metadata, self->servers[i], i);
+ 	}
+ }
+@@ -149,7 +181,7 @@ void create_clients(struct __test_metadata *_metadata,
+ 	cpu_set_t cpu_set;
+ 	int i, j, fd, ret;
  
- bool mc146818_avoid_UIP(void (*callback)(unsigned char seconds, void *param),
-+			int timeout,
- 			void *param);
+-	for (i = 0; i < NR_SERVER; i++) {
++	for (i = 0; i < nr_server; i++) {
+ 		CPU_ZERO(&cpu_set);
  
- #endif /* _MC146818RTC_H */
+ 		CPU_SET(i, &cpu_set);
+@@ -162,7 +194,7 @@ void create_clients(struct __test_metadata *_metadata,
+ 		ret = sched_setaffinity(0, sizeof(cpu_set), &cpu_set);
+ 		ASSERT_EQ(ret, 0);
+ 
+-		for (j = 0; j < CLIENT_PER_SERVER; j++) {
++		for (j = 0; j < nr_client_per_server; j++) {
+ 			fd  = socket(AF_INET, SOCK_STREAM, 0);
+ 			ASSERT_NE(fd, -1);
+ 
+@@ -180,8 +212,8 @@ void verify_incoming_cpu(struct __test_metadata *_metadata,
+ 	int i, j, fd, cpu, ret, total = 0;
+ 	socklen_t len = sizeof(int);
+ 
+-	for (i = 0; i < NR_SERVER; i++) {
+-		for (j = 0; j < CLIENT_PER_SERVER; j++) {
++	for (i = 0; i < nr_server; i++) {
++		for (j = 0; j < nr_client_per_server; j++) {
+ 			/* If we see -EAGAIN here, SO_INCOMING_CPU is broken */
+ 			fd = accept(self->servers[i], &self->addr, &self->addrlen);
+ 			ASSERT_NE(fd, -1);
+@@ -195,7 +227,7 @@ void verify_incoming_cpu(struct __test_metadata *_metadata,
+ 		}
+ 	}
+ 
+-	ASSERT_EQ(total, NR_CLIENT);
++	ASSERT_EQ(total, nr_client);
+ 	TH_LOG("SO_INCOMING_CPU is very likely to be "
+ 	       "working correctly with %d sockets.", total);
+ }
+-- 
+2.43.0
+
 
 
 
