@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-16561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F394840D79
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B11840D7B
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:10:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D028E28BAD1
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A9381F2CB2D
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:10:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822D215A481;
-	Mon, 29 Jan 2024 17:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883D515B2FE;
+	Mon, 29 Jan 2024 17:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ui9SdVzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UjE8aJIF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E74B1586D0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 467B515A486;
 	Mon, 29 Jan 2024 17:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548111; cv=none; b=dRxIyaGbjBZld0yWyVwY+3HzkeJfRipN6B4mSfBhzOnV7YVl2mfFTCmKiOJjqicUkRzjrochh/BtLadyN9iBAy+31Gx0iDIpCg7Phe67EPTLf+cWvm9hWUV8akKHESJLj3FSQANjbmmnaxlMB4U4RTC4wcg+nmKlhxEXiNwWppw=
+	t=1706548113; cv=none; b=qox6WekTzWJiV8ItCxP74T/TokyxgzgL5Y9FSHkKI4PzkgdN5gUcTyNNL6qiBfYB6vzc7n3Ny8FbGJYZABJiCFuWWxnTu7/LWQEzmuTlACPwupPugn+00mxSoTE03dTr+JN9l5duUeYMb9hz/Ub41IptwpFOOZi0yESgURrRGGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548111; c=relaxed/simple;
-	bh=j3ylthreD+8oBIMO0r8E17nyLbHGLxLihNjw64+PeB4=;
+	s=arc-20240116; t=1706548113; c=relaxed/simple;
+	bh=dP07iAzgHR0tatzzJuez4YsORbW1UPjPtsVJP4ILxUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Am637QMcVajuJwRkL7rwgETgR84szHMB2VKu9ryefyk5UYxQexnkB85nHcH7bIGxPexotpKg7xIfuzY9ZZB3UiCnByPpuyAJ6hyotmQ/MCczabQSmHY/UfruotvZwk0DCY+ZWe0sKi+wAigLTu5Q2f7LBFJGy7otwg/lKXvS0SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ui9SdVzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0794CC43394;
-	Mon, 29 Jan 2024 17:08:30 +0000 (UTC)
+	 MIME-Version; b=pVwvehbKkskBI/jxoF2bOUSnUjB2oTtQt4Kx7osnQCAZyMKCU3bYHFW58d4q19J+QFDkzlBJPHnykrpjRZx1QvrPdPU1MUcyBl41abs7rdRW/RSEPVGF3+/wrkTc8f8mn4/xN2N8sd+ZtLYbH/B6oske1/t3lDESNB4VhdlU134=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UjE8aJIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA83C433F1;
+	Mon, 29 Jan 2024 17:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
 	s=korg; t=1706548111;
-	bh=j3ylthreD+8oBIMO0r8E17nyLbHGLxLihNjw64+PeB4=;
+	bh=dP07iAzgHR0tatzzJuez4YsORbW1UPjPtsVJP4ILxUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ui9SdVzQbj4TQ6bDXs3y5DOmbgAswqlaU5lwHh+DA0OvvmlDBfQCCDmrQY8mGKoYu
-	 7lnB3S7s/xHEFIGGx5KfJT007QZ2kQQT330n9VJq1ceYgdxBxOESRmLmjiZSKUL+l/
-	 B1T4DxLvplv7+PTFPz/xFodegx5Q7iG5/Y08DAt8=
+	b=UjE8aJIFc4W6QpiwFw1keOUFMG+MMbRm55OZUqyczNmj/WEldiPsGTkX0LI1z7muD
+	 rPZm7DNrAh6eTaI6VRgkzJu4RAnS/VS/oAh8yEdiitBx1kmCKwtKRqrpHCCGKca7jw
+	 3gy8lziQWpsJ6yVgwDGYKasyx/zz8nsWCNeoX7bI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Yury Norov <yury.norov@gmail.com>,
 	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.7 133/346] serial: sc16is7xx: fix unconditional activation of THRI interrupt
-Date: Mon, 29 Jan 2024 09:02:44 -0800
-Message-ID: <20240129170020.296337779@linuxfoundation.org>
+Subject: [PATCH 6.7 134/346] serial: sc16is7xx: fix invalid sc16is7xx_lines bitfield in case of probe error
+Date: Mon, 29 Jan 2024 09:02:45 -0800
+Message-ID: <20240129170020.329767435@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 References: <20240129170016.356158639@linuxfoundation.org>
@@ -66,69 +67,127 @@ Content-Transfer-Encoding: 8bit
 
 From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit 9915753037eba7135b209fef4f2afeca841af816 upstream.
+commit 8a1060ce974919f2a79807527ad82ac39336eda2 upstream.
 
-Commit cc4c1d05eb10 ("sc16is7xx: Properly resume TX after stop") changed
-behavior to unconditionnaly set the THRI interrupt in sc16is7xx_tx_proc().
+If an error occurs during probing, the sc16is7xx_lines bitfield may be left
+in a state that doesn't represent the correct state of lines allocation.
 
-For example when sending a 65 bytes message, and assuming the Tx FIFO is
-initially empty, sc16is7xx_handle_tx() will write the first 64 bytes of the
-message to the FIFO and sc16is7xx_tx_proc() will then activate THRI. When
-the THRI IRQ is fired, the driver will write the remaining byte of the
-message to the FIFO, and disable THRI by calling sc16is7xx_stop_tx().
+For example, in a system with two SC16 devices, if an error occurs only
+during probing of channel (port) B of the second device, sc16is7xx_lines
+final state will be 00001011b instead of the expected 00000011b.
 
-When sending a 2 bytes message, sc16is7xx_handle_tx() will write the 2
-bytes of the message to the FIFO and call sc16is7xx_stop_tx(), disabling
-THRI. After sc16is7xx_handle_tx() exits, control returns to
-sc16is7xx_tx_proc() which will unconditionally set THRI. When the THRI IRQ
-is fired, the driver simply acknowledges the interrupt and does nothing
-more, since all the data has already been written to the FIFO. This results
-in 2 register writes and 4 register reads all for nothing and taking
-precious cycles from the I2C/SPI bus.
+This is caused in part because of the "i--" in the for/loop located in
+the out_ports: error path.
 
-Fix this by enabling the THRI interrupt only when we fill the Tx FIFO to
-its maximum capacity and there are remaining bytes to send in the message.
+Fix this by checking the return value of uart_add_one_port() and set line
+allocation bit only if this was successful. This allows the refactor of
+the obfuscated for(i--...) loop in the error path, and properly call
+uart_remove_one_port() only when needed, and properly unset line allocation
+bits.
 
-Fixes: cc4c1d05eb10 ("sc16is7xx: Properly resume TX after stop")
+Also use same mechanism in remove() when calling uart_remove_one_port().
+
+Fixes: c64349722d14 ("sc16is7xx: support multiple devices")
 Cc:  <stable@vger.kernel.org>
+Cc: Yury Norov <yury.norov@gmail.com>
 Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231211171353.2901416-7-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20231221231823.2327894-2-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |    7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |   44 ++++++++++++++++-------------------------
+ 1 file changed, 18 insertions(+), 26 deletions(-)
 
 --- a/drivers/tty/serial/sc16is7xx.c
 +++ b/drivers/tty/serial/sc16is7xx.c
-@@ -688,6 +688,8 @@ static void sc16is7xx_handle_tx(struct u
- 
- 	if (uart_circ_empty(xmit))
- 		sc16is7xx_stop_tx(port);
-+	else
-+		sc16is7xx_ier_set(port, SC16IS7XX_IER_THRI_BIT);
- 	uart_port_unlock_irqrestore(port, flags);
+@@ -408,19 +408,6 @@ static void sc16is7xx_port_update(struct
+ 	regmap_update_bits(one->regmap, reg, mask, val);
  }
  
-@@ -816,7 +818,6 @@ static void sc16is7xx_tx_proc(struct kth
- {
- 	struct uart_port *port = &(to_sc16is7xx_one(ws, tx_work)->port);
- 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
--	unsigned long flags;
- 
- 	if ((port->rs485.flags & SER_RS485_ENABLED) &&
- 	    (port->rs485.delay_rts_before_send > 0))
-@@ -825,10 +826,6 @@ static void sc16is7xx_tx_proc(struct kth
- 	mutex_lock(&one->efr_lock);
- 	sc16is7xx_handle_tx(port);
- 	mutex_unlock(&one->efr_lock);
+-static int sc16is7xx_alloc_line(void)
+-{
+-	int i;
 -
--	uart_port_lock_irqsave(port, &flags);
--	sc16is7xx_ier_set(port, SC16IS7XX_IER_THRI_BIT);
--	uart_port_unlock_irqrestore(port, flags);
- }
+-	BUILD_BUG_ON(SC16IS7XX_MAX_DEVS > BITS_PER_LONG);
+-
+-	for (i = 0; i < SC16IS7XX_MAX_DEVS; i++)
+-		if (!test_and_set_bit(i, &sc16is7xx_lines))
+-			break;
+-
+-	return i;
+-}
+-
+ static void sc16is7xx_power(struct uart_port *port, int on)
+ {
+ 	sc16is7xx_port_update(port, SC16IS7XX_IER_REG,
+@@ -1551,6 +1538,13 @@ static int sc16is7xx_probe(struct device
+ 		     SC16IS7XX_IOCONTROL_SRESET_BIT);
  
- static void sc16is7xx_reconf_rs485(struct uart_port *port)
+ 	for (i = 0; i < devtype->nr_uart; ++i) {
++		s->p[i].port.line = find_first_zero_bit(&sc16is7xx_lines,
++							SC16IS7XX_MAX_DEVS);
++		if (s->p[i].port.line >= SC16IS7XX_MAX_DEVS) {
++			ret = -ERANGE;
++			goto out_ports;
++		}
++
+ 		/* Initialize port data */
+ 		s->p[i].port.dev	= dev;
+ 		s->p[i].port.irq	= irq;
+@@ -1570,14 +1564,8 @@ static int sc16is7xx_probe(struct device
+ 		s->p[i].port.rs485_supported = sc16is7xx_rs485_supported;
+ 		s->p[i].port.ops	= &sc16is7xx_ops;
+ 		s->p[i].old_mctrl	= 0;
+-		s->p[i].port.line	= sc16is7xx_alloc_line();
+ 		s->p[i].regmap		= regmaps[i];
+ 
+-		if (s->p[i].port.line >= SC16IS7XX_MAX_DEVS) {
+-			ret = -ENOMEM;
+-			goto out_ports;
+-		}
+-
+ 		mutex_init(&s->p[i].efr_lock);
+ 
+ 		ret = uart_get_rs485_mode(&s->p[i].port);
+@@ -1595,8 +1583,13 @@ static int sc16is7xx_probe(struct device
+ 		kthread_init_work(&s->p[i].tx_work, sc16is7xx_tx_proc);
+ 		kthread_init_work(&s->p[i].reg_work, sc16is7xx_reg_proc);
+ 		kthread_init_delayed_work(&s->p[i].ms_work, sc16is7xx_ms_proc);
++
+ 		/* Register port */
+-		uart_add_one_port(&sc16is7xx_uart, &s->p[i].port);
++		ret = uart_add_one_port(&sc16is7xx_uart, &s->p[i].port);
++		if (ret)
++			goto out_ports;
++
++		set_bit(s->p[i].port.line, &sc16is7xx_lines);
+ 
+ 		/* Enable EFR */
+ 		sc16is7xx_port_write(&s->p[i].port, SC16IS7XX_LCR_REG,
+@@ -1654,10 +1647,9 @@ static int sc16is7xx_probe(struct device
+ #endif
+ 
+ out_ports:
+-	for (i--; i >= 0; i--) {
+-		uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
+-		clear_bit(s->p[i].port.line, &sc16is7xx_lines);
+-	}
++	for (i = 0; i < devtype->nr_uart; i++)
++		if (test_and_clear_bit(s->p[i].port.line, &sc16is7xx_lines))
++			uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
+ 
+ 	kthread_stop(s->kworker_task);
+ 
+@@ -1679,8 +1671,8 @@ static void sc16is7xx_remove(struct devi
+ 
+ 	for (i = 0; i < s->devtype->nr_uart; i++) {
+ 		kthread_cancel_delayed_work_sync(&s->p[i].ms_work);
+-		uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
+-		clear_bit(s->p[i].port.line, &sc16is7xx_lines);
++		if (test_and_clear_bit(s->p[i].port.line, &sc16is7xx_lines))
++			uart_remove_one_port(&sc16is7xx_uart, &s->p[i].port);
+ 		sc16is7xx_power(&s->p[i].port, 0);
+ 	}
+ 
 
 
 
