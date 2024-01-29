@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-16608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B3B840DAC
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:12:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79635840FDB
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:25:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 395A71C210EE
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:12:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E0B31C22138
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCAD15B99E;
-	Mon, 29 Jan 2024 17:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07CA7225B;
+	Mon, 29 Jan 2024 17:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJ/xi8wl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjZsJrej"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C8C15A4B9;
-	Mon, 29 Jan 2024 17:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8D672244;
+	Mon, 29 Jan 2024 17:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548146; cv=none; b=lzQhwG396xQ8hqABejWNtvMs7nDn6PWsUCk7nDC2fw1Mz1MvjyXWpBMKUo68W/VMN0oiOxWzOkjUocx7tfwYTxjDd9eMSIfoKf8ZGEwlYOnCAfvKD/ihKFNBFhgwYU91LN35W1yTCLpXgs1CnZV1ZBejWRveuyWMQrgSlA7M03g=
+	t=1706548515; cv=none; b=CZJWbEtUKRpifSCd7D6iIFrhJCfPwJw67Yx4Rs0OPicxqHl1mi5biHJ9FFPmoRG33Up+6eDrPK1yYRTsL4Un5ZCphtz49oLxgJLEw3qxWP3lJW0Q0AmsVZVS1FEWJj7NKDMRM3gAdnXxXYuCJX/LjrLScW9bq9D/Mit51zJI/Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548146; c=relaxed/simple;
-	bh=k2NZX2q+6f0ywMU+LhI/6/GT7i76Wf2TkDKHQr5jLLs=;
+	s=arc-20240116; t=1706548515; c=relaxed/simple;
+	bh=kxmKYB9RJa3M1gQnTpKHRjf50pErGxR69P8uyvr7tPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j/y5n+WEq7JIrdXRxWlqIzBJ33YLIlF5uQqoYPrq24tfEo4PVIFNoK80cR3af4O8SRAnVquZ4jpKNd+0RnZQGsZyPJASqEdxW/BQrO0m9mIBrtYU+ZeAqVBudA/fMwKROM/NxwMDgEFe94YFy864GKn0Qyxmaa5TOxpdQ1FMzk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJ/xi8wl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A13C433F1;
-	Mon, 29 Jan 2024 17:09:05 +0000 (UTC)
+	 MIME-Version; b=CcvsypO+QnmXwWsClBjj00F5a8bnvKvq1NF53m0tRR7BW2NTe45vUGgyr2t2tN02J/n0jwoNVbcCqLhU3JSUPXRDyLI47A6pJ6KSC2QKestb80wZDez7npmgntUm9mozKaFq0E//oLRMldPM45UCk4/DoGjM+Xr6+SLPPYlBvmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjZsJrej; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231FDC433C7;
+	Mon, 29 Jan 2024 17:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548145;
-	bh=k2NZX2q+6f0ywMU+LhI/6/GT7i76Wf2TkDKHQr5jLLs=;
+	s=korg; t=1706548515;
+	bh=kxmKYB9RJa3M1gQnTpKHRjf50pErGxR69P8uyvr7tPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kJ/xi8wlI3en4gliSgs0c5h5lSECqHUjVkzvdT0/bwBiwNJF/agS0cnNdA0/Cox6F
-	 JZgxDSbZTiAfsJONhpBWDLe4Dzq5J4uUeLATLsEaRe7tlDdsilTPihX4Sg0MdTzLPX
-	 SCrACzbil014CY/sWDe0RffCYFcMwSva4q6ME3qw=
+	b=xjZsJrejMkqBnqzyxAZ1PQDFflgoBndZZBu+KrXa/hZWhvzOUTx3gZIUkrozaDd6z
+	 UMMhxxKjl2eFh02AFjmdzZ+NYmgoZsDzFQQV+NZoDMkm+Y6f/L4RHElcLQCRHHMtWd
+	 AQP40VnavGnhtf2l1jQvLb5C+AD+N9/5oYPMuNKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 181/346] selftest: Dont reuse port for SO_INCOMING_CPU test.
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Subject: [PATCH 6.6 148/331] bpf: exact states comparison for iterator convergence checks
 Date: Mon, 29 Jan 2024 09:03:32 -0800
-Message-ID: <20240129170021.717034075@linuxfoundation.org>
+Message-ID: <20240129170019.258289579@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
-References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,236 +63,499 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 97de5a15edf2d22184f5ff588656030bbb7fa358 ]
+commit 2793a8b015f7f1caadb9bce9c63dc659f7522676 upstream.
 
-Jakub reported that ASSERT_EQ(cpu, i) in so_incoming_cpu.c seems to
-fire somewhat randomly.
+Convergence for open coded iterators is computed in is_state_visited()
+by examining states with branches count > 1 and using states_equal().
+states_equal() computes sub-state relation using read and precision marks.
+Read and precision marks are propagated from children states,
+thus are not guaranteed to be complete inside a loop when branches
+count > 1. This could be demonstrated using the following unsafe program:
 
-  # #  RUN           so_incoming_cpu.before_reuseport.test3 ...
-  # # so_incoming_cpu.c:191:test3:Expected cpu (32) == i (0)
-  # # test3: Test terminated by assertion
-  # #          FAIL  so_incoming_cpu.before_reuseport.test3
-  # not ok 3 so_incoming_cpu.before_reuseport.test3
+     1. r7 = -16
+     2. r6 = bpf_get_prandom_u32()
+     3. while (bpf_iter_num_next(&fp[-8])) {
+     4.   if (r6 != 42) {
+     5.     r7 = -32
+     6.     r6 = bpf_get_prandom_u32()
+     7.     continue
+     8.   }
+     9.   r0 = r10
+    10.   r0 += r7
+    11.   r8 = *(u64 *)(r0 + 0)
+    12.   r6 = bpf_get_prandom_u32()
+    13. }
 
-When the test failed, not-yet-accepted CLOSE_WAIT sockets received
-SYN with a "challenging" SEQ number, which was sent from an unexpected
-CPU that did not create the receiver.
+Here verifier would first visit path 1-3, create a checkpoint at 3
+with r7=-16, continue to 4-7,3 with r7=-32.
 
-The test basically does:
+Because instructions at 9-12 had not been visitied yet existing
+checkpoint at 3 does not have read or precision mark for r7.
+Thus states_equal() would return true and verifier would discard
+current state, thus unsafe memory access at 11 would not be caught.
 
-  1. for each cpu:
-    1-1. create a server
-    1-2. set SO_INCOMING_CPU
+This commit fixes this loophole by introducing exact state comparisons
+for iterator convergence logic:
+- registers are compared using regs_exact() regardless of read or
+  precision marks;
+- stack slots have to have identical type.
 
-  2. for each cpu:
-    2-1. set cpu affinity
-    2-2. create some clients
-    2-3. let clients connect() to the server on the same cpu
-    2-4. close() clients
+Unfortunately, this is too strict even for simple programs like below:
 
-  3. for each server:
-    3-1. accept() all child sockets
-    3-2. check if all children have the same SO_INCOMING_CPU with the server
+    i = 0;
+    while(iter_next(&it))
+      i++;
 
-The root cause was the close() in 2-4. and net.ipv4.tcp_tw_reuse.
+At each iteration step i++ would produce a new distinct state and
+eventually instruction processing limit would be reached.
 
-In a loop of 2., close() changed the client state to FIN_WAIT_2, and
-the peer transitioned to CLOSE_WAIT.
+To avoid such behavior speculatively forget (widen) range for
+imprecise scalar registers, if those registers were not precise at the
+end of the previous iteration and do not match exactly.
 
-In another loop of 2., connect() happened to select the same port of
-the FIN_WAIT_2 socket, and it was reused as the default value of
-net.ipv4.tcp_tw_reuse is 2.
+This a conservative heuristic that allows to verify wide range of
+programs, however it precludes verification of programs that conjure
+an imprecise value on the first loop iteration and use it as precise
+on the second.
 
-As a result, the new client sent SYN to the CLOSE_WAIT socket from
-a different CPU, and the receiver's sk_incoming_cpu was overwritten
-with unexpected CPU ID.
+Test case iter_task_vma_for_each() presents one of such cases:
 
-Also, the SYN had a different SEQ number, so the CLOSE_WAIT socket
-responded with Challenge ACK.  The new client properly returned RST
-and effectively killed the CLOSE_WAIT socket.
+        unsigned int seen = 0;
+        ...
+        bpf_for_each(task_vma, vma, task, 0) {
+                if (seen >= 1000)
+                        break;
+                ...
+                seen++;
+        }
 
-This way, all clients were created successfully, but the error was
-detected later by 3-2., ASSERT_EQ(cpu, i).
+Here clang generates the following code:
 
-To avoid the failure, let's make sure that (i) the number of clients
-is less than the number of available ports and (ii) such reuse never
-happens.
+<LBB0_4>:
+      24:       r8 = r6                          ; stash current value of
+                ... body ...                       'seen'
+      29:       r1 = r10
+      30:       r1 += -0x8
+      31:       call bpf_iter_task_vma_next
+      32:       r6 += 0x1                        ; seen++;
+      33:       if r0 == 0x0 goto +0x2 <LBB0_6>  ; exit on next() == NULL
+      34:       r7 += 0x10
+      35:       if r8 < 0x3e7 goto -0xc <LBB0_4> ; loop on seen < 1000
 
-Fixes: 6df96146b202 ("selftest: Add test for SO_INCOMING_CPU.")
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Tested-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/r/20240120031642.67014-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+<LBB0_6>:
+      ... exit ...
+
+Note that counter in r6 is copied to r8 and then incremented,
+conditional jump is done using r8. Because of this precision mark for
+r6 lags one state behind of precision mark on r8 and widening logic
+kicks in.
+
+Adding barrier_var(seen) after conditional is sufficient to force
+clang use the same register for both counting and conditional jump.
+
+This issue was discussed in the thread [1] which was started by
+Andrew Werner <awerner32@gmail.com> demonstrating a similar bug
+in callback functions handling. The callbacks would be addressed
+in a followup patch.
+
+[1] https://lore.kernel.org/bpf/97a90da09404c65c8e810cf83c94ac703705dc0e.camel@gmail.com/
+
+Co-developed-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Co-developed-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20231024000917.12153-4-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/so_incoming_cpu.c | 68 ++++++++++++++-----
- 1 file changed, 50 insertions(+), 18 deletions(-)
+ include/linux/bpf_verifier.h |    1 
+ kernel/bpf/verifier.c        |  218 ++++++++++++++++++++++++++++++++++++-------
+ 2 files changed, 188 insertions(+), 31 deletions(-)
 
-diff --git a/tools/testing/selftests/net/so_incoming_cpu.c b/tools/testing/selftests/net/so_incoming_cpu.c
-index a14818164102..e9fa14e10732 100644
---- a/tools/testing/selftests/net/so_incoming_cpu.c
-+++ b/tools/testing/selftests/net/so_incoming_cpu.c
-@@ -3,19 +3,16 @@
- #define _GNU_SOURCE
- #include <sched.h>
- 
-+#include <fcntl.h>
-+
- #include <netinet/in.h>
- #include <sys/socket.h>
- #include <sys/sysinfo.h>
- 
- #include "../kselftest_harness.h"
- 
--#define CLIENT_PER_SERVER	32 /* More sockets, more reliable */
--#define NR_SERVER		self->nproc
--#define NR_CLIENT		(CLIENT_PER_SERVER * NR_SERVER)
--
- FIXTURE(so_incoming_cpu)
- {
--	int nproc;
- 	int *servers;
- 	union {
- 		struct sockaddr addr;
-@@ -56,12 +53,47 @@ FIXTURE_VARIANT_ADD(so_incoming_cpu, after_all_listen)
- 	.when_to_set = AFTER_ALL_LISTEN,
+--- a/include/linux/bpf_verifier.h
++++ b/include/linux/bpf_verifier.h
+@@ -383,6 +383,7 @@ struct bpf_verifier_state {
+ 	 */
+ 	struct bpf_idx_pair *jmp_history;
+ 	u32 jmp_history_cnt;
++	u32 dfs_depth;
  };
  
-+static void write_sysctl(struct __test_metadata *_metadata,
-+			 char *filename, char *string)
+ #define bpf_get_spilled_reg(slot, frame)				\
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -1771,6 +1771,7 @@ static int copy_verifier_state(struct bp
+ 	dst_state->parent = src->parent;
+ 	dst_state->first_insn_idx = src->first_insn_idx;
+ 	dst_state->last_insn_idx = src->last_insn_idx;
++	dst_state->dfs_depth = src->dfs_depth;
+ 	for (i = 0; i <= src->curframe; i++) {
+ 		dst = dst_state->frame[i];
+ 		if (!dst) {
+@@ -7554,6 +7555,81 @@ static int process_iter_arg(struct bpf_v
+ 	return 0;
+ }
+ 
++/* Look for a previous loop entry at insn_idx: nearest parent state
++ * stopped at insn_idx with callsites matching those in cur->frame.
++ */
++static struct bpf_verifier_state *find_prev_entry(struct bpf_verifier_env *env,
++						  struct bpf_verifier_state *cur,
++						  int insn_idx)
 +{
-+	int fd, len, ret;
++	struct bpf_verifier_state_list *sl;
++	struct bpf_verifier_state *st;
 +
-+	fd = open(filename, O_WRONLY);
-+	ASSERT_NE(fd, -1);
++	/* Explored states are pushed in stack order, most recent states come first */
++	sl = *explored_state(env, insn_idx);
++	for (; sl; sl = sl->next) {
++		/* If st->branches != 0 state is a part of current DFS verification path,
++		 * hence cur & st for a loop.
++		 */
++		st = &sl->state;
++		if (st->insn_idx == insn_idx && st->branches && same_callsites(st, cur) &&
++		    st->dfs_depth < cur->dfs_depth)
++			return st;
++	}
 +
-+	len = strlen(string);
-+	ret = write(fd, string, len);
-+	ASSERT_EQ(ret, len);
++	return NULL;
 +}
 +
-+static void setup_netns(struct __test_metadata *_metadata)
-+{
-+	ASSERT_EQ(unshare(CLONE_NEWNET), 0);
-+	ASSERT_EQ(system("ip link set lo up"), 0);
++static void reset_idmap_scratch(struct bpf_verifier_env *env);
++static bool regs_exact(const struct bpf_reg_state *rold,
++		       const struct bpf_reg_state *rcur,
++		       struct bpf_idmap *idmap);
 +
-+	write_sysctl(_metadata, "/proc/sys/net/ipv4/ip_local_port_range", "10000 60001");
-+	write_sysctl(_metadata, "/proc/sys/net/ipv4/tcp_tw_reuse", "0");
++static void maybe_widen_reg(struct bpf_verifier_env *env,
++			    struct bpf_reg_state *rold, struct bpf_reg_state *rcur,
++			    struct bpf_idmap *idmap)
++{
++	if (rold->type != SCALAR_VALUE)
++		return;
++	if (rold->type != rcur->type)
++		return;
++	if (rold->precise || rcur->precise || regs_exact(rold, rcur, idmap))
++		return;
++	__mark_reg_unknown(env, rcur);
 +}
 +
-+#define NR_PORT				(60001 - 10000 - 1)
-+#define NR_CLIENT_PER_SERVER_DEFAULT	32
-+static int nr_client_per_server, nr_server, nr_client;
++static int widen_imprecise_scalars(struct bpf_verifier_env *env,
++				   struct bpf_verifier_state *old,
++				   struct bpf_verifier_state *cur)
++{
++	struct bpf_func_state *fold, *fcur;
++	int i, fr;
 +
- FIXTURE_SETUP(so_incoming_cpu)
++	reset_idmap_scratch(env);
++	for (fr = old->curframe; fr >= 0; fr--) {
++		fold = old->frame[fr];
++		fcur = cur->frame[fr];
++
++		for (i = 0; i < MAX_BPF_REG; i++)
++			maybe_widen_reg(env,
++					&fold->regs[i],
++					&fcur->regs[i],
++					&env->idmap_scratch);
++
++		for (i = 0; i < fold->allocated_stack / BPF_REG_SIZE; i++) {
++			if (!is_spilled_reg(&fold->stack[i]) ||
++			    !is_spilled_reg(&fcur->stack[i]))
++				continue;
++
++			maybe_widen_reg(env,
++					&fold->stack[i].spilled_ptr,
++					&fcur->stack[i].spilled_ptr,
++					&env->idmap_scratch);
++		}
++	}
++	return 0;
++}
++
+ /* process_iter_next_call() is called when verifier gets to iterator's next
+  * "method" (e.g., bpf_iter_num_next() for numbers iterator) call. We'll refer
+  * to it as just "iter_next()" in comments below.
+@@ -7595,25 +7671,47 @@ static int process_iter_arg(struct bpf_v
+  * is some statically known limit on number of iterations (e.g., if there is
+  * an explicit `if n > 100 then break;` statement somewhere in the loop).
+  *
+- * One very subtle but very important aspect is that we *always* simulate NULL
+- * condition first (as the current state) before we simulate non-NULL case.
+- * This has to do with intricacies of scalar precision tracking. By simulating
+- * "exit condition" of iter_next() returning NULL first, we make sure all the
+- * relevant precision marks *that will be set **after** we exit iterator loop*
+- * are propagated backwards to common parent state of NULL and non-NULL
+- * branches. Thanks to that, state equivalence checks done later in forked
+- * state, when reaching iter_next() for ACTIVE iterator, can assume that
+- * precision marks are finalized and won't change. Because simulating another
+- * ACTIVE iterator iteration won't change them (because given same input
+- * states we'll end up with exactly same output states which we are currently
+- * comparing; and verification after the loop already propagated back what
+- * needs to be **additionally** tracked as precise). It's subtle, grok
+- * precision tracking for more intuitive understanding.
++ * Iteration convergence logic in is_state_visited() relies on exact
++ * states comparison, which ignores read and precision marks.
++ * This is necessary because read and precision marks are not finalized
++ * while in the loop. Exact comparison might preclude convergence for
++ * simple programs like below:
++ *
++ *     i = 0;
++ *     while(iter_next(&it))
++ *       i++;
++ *
++ * At each iteration step i++ would produce a new distinct state and
++ * eventually instruction processing limit would be reached.
++ *
++ * To avoid such behavior speculatively forget (widen) range for
++ * imprecise scalar registers, if those registers were not precise at the
++ * end of the previous iteration and do not match exactly.
++ *
++ * This is a conservative heuristic that allows to verify wide range of programs,
++ * however it precludes verification of programs that conjure an
++ * imprecise value on the first loop iteration and use it as precise on a second.
++ * For example, the following safe program would fail to verify:
++ *
++ *     struct bpf_num_iter it;
++ *     int arr[10];
++ *     int i = 0, a = 0;
++ *     bpf_iter_num_new(&it, 0, 10);
++ *     while (bpf_iter_num_next(&it)) {
++ *       if (a == 0) {
++ *         a = 1;
++ *         i = 7; // Because i changed verifier would forget
++ *                // it's range on second loop entry.
++ *       } else {
++ *         arr[i] = 42; // This would fail to verify.
++ *       }
++ *     }
++ *     bpf_iter_num_destroy(&it);
+  */
+ static int process_iter_next_call(struct bpf_verifier_env *env, int insn_idx,
+ 				  struct bpf_kfunc_call_arg_meta *meta)
  {
--	self->nproc = get_nprocs();
--	ASSERT_LE(2, self->nproc);
-+	setup_netns(_metadata);
-+
-+	nr_server = get_nprocs();
-+	ASSERT_LE(2, nr_server);
-+
-+	if (NR_CLIENT_PER_SERVER_DEFAULT * nr_server < NR_PORT)
-+		nr_client_per_server = NR_CLIENT_PER_SERVER_DEFAULT;
-+	else
-+		nr_client_per_server = NR_PORT / nr_server;
-+
-+	nr_client = nr_client_per_server * nr_server;
+-	struct bpf_verifier_state *cur_st = env->cur_state, *queued_st;
++	struct bpf_verifier_state *cur_st = env->cur_state, *queued_st, *prev_st;
+ 	struct bpf_func_state *cur_fr = cur_st->frame[cur_st->curframe], *queued_fr;
+ 	struct bpf_reg_state *cur_iter, *queued_iter;
+ 	int iter_frameno = meta->iter.frameno;
+@@ -7631,6 +7729,19 @@ static int process_iter_next_call(struct
+ 	}
  
--	self->servers = malloc(sizeof(int) * NR_SERVER);
-+	self->servers = malloc(sizeof(int) * nr_server);
- 	ASSERT_NE(self->servers, NULL);
+ 	if (cur_iter->iter.state == BPF_ITER_STATE_ACTIVE) {
++		/* Because iter_next() call is a checkpoint is_state_visitied()
++		 * should guarantee parent state with same call sites and insn_idx.
++		 */
++		if (!cur_st->parent || cur_st->parent->insn_idx != insn_idx ||
++		    !same_callsites(cur_st->parent, cur_st)) {
++			verbose(env, "bug: bad parent state for iter next call");
++			return -EFAULT;
++		}
++		/* Note cur_st->parent in the call below, it is necessary to skip
++		 * checkpoint created for cur_st by is_state_visited()
++		 * right at this instruction.
++		 */
++		prev_st = find_prev_entry(env, cur_st->parent, insn_idx);
+ 		/* branch out active iter state */
+ 		queued_st = push_stack(env, insn_idx + 1, insn_idx, false);
+ 		if (!queued_st)
+@@ -7639,6 +7750,8 @@ static int process_iter_next_call(struct
+ 		queued_iter = &queued_st->frame[iter_frameno]->stack[iter_spi].spilled_ptr;
+ 		queued_iter->iter.state = BPF_ITER_STATE_ACTIVE;
+ 		queued_iter->iter.depth++;
++		if (prev_st)
++			widen_imprecise_scalars(env, prev_st, queued_st);
  
- 	self->in_addr.sin_family = AF_INET;
-@@ -74,7 +106,7 @@ FIXTURE_TEARDOWN(so_incoming_cpu)
+ 		queued_fr = queued_st->frame[queued_st->curframe];
+ 		mark_ptr_not_null_reg(&queued_fr->regs[BPF_REG_0]);
+@@ -15560,8 +15673,11 @@ static bool regs_exact(const struct bpf_
+ 
+ /* Returns true if (rold safe implies rcur safe) */
+ static bool regsafe(struct bpf_verifier_env *env, struct bpf_reg_state *rold,
+-		    struct bpf_reg_state *rcur, struct bpf_idmap *idmap)
++		    struct bpf_reg_state *rcur, struct bpf_idmap *idmap, bool exact)
+ {
++	if (exact)
++		return regs_exact(rold, rcur, idmap);
++
+ 	if (!(rold->live & REG_LIVE_READ))
+ 		/* explored state didn't use this */
+ 		return true;
+@@ -15678,7 +15794,7 @@ static bool regsafe(struct bpf_verifier_
+ }
+ 
+ static bool stacksafe(struct bpf_verifier_env *env, struct bpf_func_state *old,
+-		      struct bpf_func_state *cur, struct bpf_idmap *idmap)
++		      struct bpf_func_state *cur, struct bpf_idmap *idmap, bool exact)
+ {
+ 	int i, spi;
+ 
+@@ -15691,7 +15807,12 @@ static bool stacksafe(struct bpf_verifie
+ 
+ 		spi = i / BPF_REG_SIZE;
+ 
+-		if (!(old->stack[spi].spilled_ptr.live & REG_LIVE_READ)) {
++		if (exact &&
++		    old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
++		    cur->stack[spi].slot_type[i % BPF_REG_SIZE])
++			return false;
++
++		if (!(old->stack[spi].spilled_ptr.live & REG_LIVE_READ) && !exact) {
+ 			i += BPF_REG_SIZE - 1;
+ 			/* explored state didn't use this */
+ 			continue;
+@@ -15741,7 +15862,7 @@ static bool stacksafe(struct bpf_verifie
+ 			 * return false to continue verification of this path
+ 			 */
+ 			if (!regsafe(env, &old->stack[spi].spilled_ptr,
+-				     &cur->stack[spi].spilled_ptr, idmap))
++				     &cur->stack[spi].spilled_ptr, idmap, exact))
+ 				return false;
+ 			break;
+ 		case STACK_DYNPTR:
+@@ -15823,16 +15944,16 @@ static bool refsafe(struct bpf_func_stat
+  * the current state will reach 'bpf_exit' instruction safely
+  */
+ static bool func_states_equal(struct bpf_verifier_env *env, struct bpf_func_state *old,
+-			      struct bpf_func_state *cur)
++			      struct bpf_func_state *cur, bool exact)
  {
  	int i;
  
--	for (i = 0; i < NR_SERVER; i++)
-+	for (i = 0; i < nr_server; i++)
- 		close(self->servers[i]);
+ 	for (i = 0; i < MAX_BPF_REG; i++)
+ 		if (!regsafe(env, &old->regs[i], &cur->regs[i],
+-			     &env->idmap_scratch))
++			     &env->idmap_scratch, exact))
+ 			return false;
  
- 	free(self->servers);
-@@ -110,10 +142,10 @@ int create_server(struct __test_metadata *_metadata,
- 	if (variant->when_to_set == BEFORE_LISTEN)
- 		set_so_incoming_cpu(_metadata, fd, cpu);
+-	if (!stacksafe(env, old, cur, &env->idmap_scratch))
++	if (!stacksafe(env, old, cur, &env->idmap_scratch, exact))
+ 		return false;
  
--	/* We don't use CLIENT_PER_SERVER here not to block
-+	/* We don't use nr_client_per_server here not to block
- 	 * this test at connect() if SO_INCOMING_CPU is broken.
- 	 */
--	ret = listen(fd, NR_CLIENT);
-+	ret = listen(fd, nr_client);
- 	ASSERT_EQ(ret, 0);
+ 	if (!refsafe(old, cur, &env->idmap_scratch))
+@@ -15841,17 +15962,23 @@ static bool func_states_equal(struct bpf
+ 	return true;
+ }
  
- 	if (variant->when_to_set == AFTER_LISTEN)
-@@ -128,7 +160,7 @@ void create_servers(struct __test_metadata *_metadata,
++static void reset_idmap_scratch(struct bpf_verifier_env *env)
++{
++	env->idmap_scratch.tmp_id_gen = env->id_gen;
++	memset(&env->idmap_scratch.map, 0, sizeof(env->idmap_scratch.map));
++}
++
+ static bool states_equal(struct bpf_verifier_env *env,
+ 			 struct bpf_verifier_state *old,
+-			 struct bpf_verifier_state *cur)
++			 struct bpf_verifier_state *cur,
++			 bool exact)
  {
- 	int i, ret;
+ 	int i;
  
--	for (i = 0; i < NR_SERVER; i++) {
-+	for (i = 0; i < nr_server; i++) {
- 		self->servers[i] = create_server(_metadata, self, variant, i);
+ 	if (old->curframe != cur->curframe)
+ 		return false;
  
- 		if (i == 0) {
-@@ -138,7 +170,7 @@ void create_servers(struct __test_metadata *_metadata,
+-	env->idmap_scratch.tmp_id_gen = env->id_gen;
+-	memset(&env->idmap_scratch.map, 0, sizeof(env->idmap_scratch.map));
++	reset_idmap_scratch(env);
+ 
+ 	/* Verification state from speculative execution simulation
+ 	 * must never prune a non-speculative execution one.
+@@ -15881,7 +16008,7 @@ static bool states_equal(struct bpf_veri
+ 	for (i = 0; i <= old->curframe; i++) {
+ 		if (old->frame[i]->callsite != cur->frame[i]->callsite)
+ 			return false;
+-		if (!func_states_equal(env, old->frame[i], cur->frame[i]))
++		if (!func_states_equal(env, old->frame[i], cur->frame[i], exact))
+ 			return false;
  	}
+ 	return true;
+@@ -16136,7 +16263,7 @@ static int is_state_visited(struct bpf_v
+ 	struct bpf_verifier_state_list *new_sl;
+ 	struct bpf_verifier_state_list *sl, **pprev;
+ 	struct bpf_verifier_state *cur = env->cur_state, *new;
+-	int i, j, err, states_cnt = 0;
++	int i, j, n, err, states_cnt = 0;
+ 	bool force_new_state = env->test_state_freq || is_force_checkpoint(env, insn_idx);
+ 	bool add_new_state = force_new_state;
  
- 	if (variant->when_to_set == AFTER_ALL_LISTEN) {
--		for (i = 0; i < NR_SERVER; i++)
-+		for (i = 0; i < nr_server; i++)
- 			set_so_incoming_cpu(_metadata, self->servers[i], i);
- 	}
- }
-@@ -149,7 +181,7 @@ void create_clients(struct __test_metadata *_metadata,
- 	cpu_set_t cpu_set;
- 	int i, j, fd, ret;
- 
--	for (i = 0; i < NR_SERVER; i++) {
-+	for (i = 0; i < nr_server; i++) {
- 		CPU_ZERO(&cpu_set);
- 
- 		CPU_SET(i, &cpu_set);
-@@ -162,7 +194,7 @@ void create_clients(struct __test_metadata *_metadata,
- 		ret = sched_setaffinity(0, sizeof(cpu_set), &cpu_set);
- 		ASSERT_EQ(ret, 0);
- 
--		for (j = 0; j < CLIENT_PER_SERVER; j++) {
-+		for (j = 0; j < nr_client_per_server; j++) {
- 			fd  = socket(AF_INET, SOCK_STREAM, 0);
- 			ASSERT_NE(fd, -1);
- 
-@@ -180,8 +212,8 @@ void verify_incoming_cpu(struct __test_metadata *_metadata,
- 	int i, j, fd, cpu, ret, total = 0;
- 	socklen_t len = sizeof(int);
- 
--	for (i = 0; i < NR_SERVER; i++) {
--		for (j = 0; j < CLIENT_PER_SERVER; j++) {
-+	for (i = 0; i < nr_server; i++) {
-+		for (j = 0; j < nr_client_per_server; j++) {
- 			/* If we see -EAGAIN here, SO_INCOMING_CPU is broken */
- 			fd = accept(self->servers[i], &self->addr, &self->addrlen);
- 			ASSERT_NE(fd, -1);
-@@ -195,7 +227,7 @@ void verify_incoming_cpu(struct __test_metadata *_metadata,
+@@ -16191,9 +16318,33 @@ static int is_state_visited(struct bpf_v
+ 			 * It's safe to assume that iterator loop will finish, taking into
+ 			 * account iter_next() contract of eventually returning
+ 			 * sticky NULL result.
++			 *
++			 * Note, that states have to be compared exactly in this case because
++			 * read and precision marks might not be finalized inside the loop.
++			 * E.g. as in the program below:
++			 *
++			 *     1. r7 = -16
++			 *     2. r6 = bpf_get_prandom_u32()
++			 *     3. while (bpf_iter_num_next(&fp[-8])) {
++			 *     4.   if (r6 != 42) {
++			 *     5.     r7 = -32
++			 *     6.     r6 = bpf_get_prandom_u32()
++			 *     7.     continue
++			 *     8.   }
++			 *     9.   r0 = r10
++			 *    10.   r0 += r7
++			 *    11.   r8 = *(u64 *)(r0 + 0)
++			 *    12.   r6 = bpf_get_prandom_u32()
++			 *    13. }
++			 *
++			 * Here verifier would first visit path 1-3, create a checkpoint at 3
++			 * with r7=-16, continue to 4-7,3. Existing checkpoint at 3 does
++			 * not have read or precision mark for r7 yet, thus inexact states
++			 * comparison would discard current state with r7=-32
++			 * => unsafe memory access at 11 would not be caught.
+ 			 */
+ 			if (is_iter_next_insn(env, insn_idx)) {
+-				if (states_equal(env, &sl->state, cur)) {
++				if (states_equal(env, &sl->state, cur, true)) {
+ 					struct bpf_func_state *cur_frame;
+ 					struct bpf_reg_state *iter_state, *iter_reg;
+ 					int spi;
+@@ -16216,7 +16367,7 @@ static int is_state_visited(struct bpf_v
+ 			}
+ 			/* attempt to detect infinite loop to avoid unnecessary doomed work */
+ 			if (states_maybe_looping(&sl->state, cur) &&
+-			    states_equal(env, &sl->state, cur) &&
++			    states_equal(env, &sl->state, cur, false) &&
+ 			    !iter_active_depths_differ(&sl->state, cur)) {
+ 				verbose_linfo(env, insn_idx, "; ");
+ 				verbose(env, "infinite loop detected at insn %d\n", insn_idx);
+@@ -16241,7 +16392,7 @@ skip_inf_loop_check:
+ 				add_new_state = false;
+ 			goto miss;
  		}
- 	}
+-		if (states_equal(env, &sl->state, cur)) {
++		if (states_equal(env, &sl->state, cur, false)) {
+ hit:
+ 			sl->hit_cnt++;
+ 			/* reached equivalent register/stack state,
+@@ -16280,8 +16431,12 @@ miss:
+ 		 * to keep checking from state equivalence point of view.
+ 		 * Higher numbers increase max_states_per_insn and verification time,
+ 		 * but do not meaningfully decrease insn_processed.
++		 * 'n' controls how many times state could miss before eviction.
++		 * Use bigger 'n' for checkpoints because evicting checkpoint states
++		 * too early would hinder iterator convergence.
+ 		 */
+-		if (sl->miss_cnt > sl->hit_cnt * 3 + 3) {
++		n = is_force_checkpoint(env, insn_idx) && sl->state.branches > 0 ? 64 : 3;
++		if (sl->miss_cnt > sl->hit_cnt * n + n) {
+ 			/* the state is unlikely to be useful. Remove it to
+ 			 * speed up verification
+ 			 */
+@@ -16355,6 +16510,7 @@ next:
  
--	ASSERT_EQ(total, NR_CLIENT);
-+	ASSERT_EQ(total, nr_client);
- 	TH_LOG("SO_INCOMING_CPU is very likely to be "
- 	       "working correctly with %d sockets.", total);
- }
--- 
-2.43.0
-
+ 	cur->parent = new;
+ 	cur->first_insn_idx = insn_idx;
++	cur->dfs_depth = new->dfs_depth + 1;
+ 	clear_jmp_history(cur);
+ 	new_sl->next = *explored_state(env, insn_idx);
+ 	*explored_state(env, insn_idx) = new_sl;
 
 
 
