@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-17007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-16507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C379840F6F
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:23:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D82C5840D40
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:09:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C74F1F23492
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:23:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 160B61C2310E
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DE11649D7;
-	Mon, 29 Jan 2024 17:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70CB215AAA4;
+	Mon, 29 Jan 2024 17:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6WGAye4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzLZ+3tA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A3F15DBBC;
-	Mon, 29 Jan 2024 17:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4C2159560;
+	Mon, 29 Jan 2024 17:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548441; cv=none; b=mu0wTEH8s+mmDE8Tg6Hrkji/xyvU1l6iMdMMeTcDTG9h3EPdWSsNlTwrWFeVZKmsXCZ1BWD+lyeIHlU8w4x/NeTRSUT51ueEmcDBNf3o3XnjdSOp9coNT14dAsrEVCsjQQXNjxm25cQwAjO1O8nW3f5xhekBtIdb5502mHlNWOQ=
+	t=1706548071; cv=none; b=cfURnXx1O9cA+dIdhBmztz8EWXExK8h2AUwbFkesldIixxpsbphcPL+oa8be7ZX24k34hj8yON3UJJCXNPMTearqE873S1b+0neVwbAKasQxE9V+8ivZQXR1pHHmosX/0AQgvnDtQU4Dvrovp1x5wGxsAo0H5trnaVhiVUpsbXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548441; c=relaxed/simple;
-	bh=rBXweQMo8xHxZAGBRbiNU9+QMAb400XjENrjom3R1Hc=;
+	s=arc-20240116; t=1706548071; c=relaxed/simple;
+	bh=/0gNNni+X2VA1cndng8HNRslr5L81TYn/XjGp1sSgZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZEVOD/sHgKx+sWgls1hNfv87Cl1HTsvmliIUYyqFmKlOSuvzvUkOUZ0BER6pZRtb3EoWlYpuumtfDZrcKf0pv+r93L37av/KwrvN6cXzE1FGNRs3pVfcxqhinfapc4i04vTWyG4PRDPcs0qXkkgaTfgefQB66bgIaDSIJDQXItk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6WGAye4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38501C43394;
-	Mon, 29 Jan 2024 17:14:01 +0000 (UTC)
+	 MIME-Version; b=sBSyV50pjfKNHq/BZvK9uol8hTqssPSLot76J/QLlfaTRp1zjydN0LA3931/QLBleFsIOqHMTqWXZACBxXpIlMApEU5vK5NpwZrMQ7Y2lBUbdQKfhkPZyhUXefNcqZ/K/IiDcflZBIksMLg0DJra6690DnvqflPjhG0z1bdEWuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzLZ+3tA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C20C433C7;
+	Mon, 29 Jan 2024 17:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548441;
-	bh=rBXweQMo8xHxZAGBRbiNU9+QMAb400XjENrjom3R1Hc=;
+	s=korg; t=1706548071;
+	bh=/0gNNni+X2VA1cndng8HNRslr5L81TYn/XjGp1sSgZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i6WGAye4dDVHkadEZmNFIHp2J5YRCOdphrfNa1oDduQo+hcZ01J6o2qaPix4L8uQY
-	 gKJMfyOfvRfLBls7sa++2AFNdWlps32RngE3qqyyCtYR/m5LP+BeOtFlK14efYoTQM
-	 ERTg2OKOr8glAnGOZUWDUBhKC8TjXF+HV6iJm5as=
+	b=qzLZ+3tA3wIKrDVfIezeTtiJxnVn4ZDXaZxpSGKb8lBikbbK0DQrJU1pa7yGAi8ro
+	 fmANAED0NqQ3J+fMabdyZto5H7vJcun3rNIsoYOMPvNMWOSuzcxGsh0h0S2C4lJ6Jf
+	 V6aXOniSuNPB0eTh2dlY94WfHhC3AAhvT1rAZ2rc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	=?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>
-Subject: [PATCH 6.6 046/331] mtd: rawnand: Prevent crossing LUN boundaries during sequential reads
+	Vinod Koul <vkoul@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.7 079/346] arm64: dts: qcom: sc8180x: fix USB wakeup interrupt types
 Date: Mon, 29 Jan 2024 09:01:50 -0800
-Message-ID: <20240129170016.286290503@linuxfoundation.org>
+Message-ID: <20240129170018.710115944@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+References: <20240129170016.356158639@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,130 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit bbcd80f53a5e8c27c2511f539fec8c373f500cf4 upstream.
+commit 0dc0f6da3d43da8d2297105663e51ecb01b6f790 upstream.
 
-The ONFI specification states that devices do not need to support
-sequential reads across LUN boundaries. In order to prevent such event
-from happening and possibly failing, let's introduce the concept of
-"pause" in the sequential read to handle these cases. The first/last
-pages remain the same but any time we cross a LUN boundary we will end
-and restart (if relevant) the sequential read operation.
+The DP/DM wakeup interrupts are edge triggered and which edge to trigger
+on depends on use-case and whether a Low speed or Full/High speed device
+is connected.
 
-Cc: stable@vger.kernel.org
-Fixes: 003fe4b9545b ("mtd: rawnand: Support for sequential cache reads")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Tested-by: Martin Hundebøll <martin@geanix.com>
-Link: https://lore.kernel.org/linux-mtd/20231215123208.516590-2-miquel.raynal@bootlin.com
+Fixes: b080f53a8f44 ("arm64: dts: qcom: sc8180x: Add remoteprocs, wifi and usb nodes")
+Cc: stable@vger.kernel.org      # 6.5
+Cc: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231120164331.8116-7-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/nand_base.c |   43 +++++++++++++++++++++++++++++++++------
- include/linux/mtd/rawnand.h      |    2 +
- 2 files changed, 39 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8180x.dtsi |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -1208,6 +1208,23 @@ static int nand_lp_exec_read_page_op(str
- 	return nand_exec_op(chip, &op);
- }
- 
-+static void rawnand_cap_cont_reads(struct nand_chip *chip)
-+{
-+	struct nand_memory_organization *memorg;
-+	unsigned int pages_per_lun, first_lun, last_lun;
-+
-+	memorg = nanddev_get_memorg(&chip->base);
-+	pages_per_lun = memorg->pages_per_eraseblock * memorg->eraseblocks_per_lun;
-+	first_lun = chip->cont_read.first_page / pages_per_lun;
-+	last_lun = chip->cont_read.last_page / pages_per_lun;
-+
-+	/* Prevent sequential cache reads across LUN boundaries */
-+	if (first_lun != last_lun)
-+		chip->cont_read.pause_page = first_lun * pages_per_lun + pages_per_lun - 1;
-+	else
-+		chip->cont_read.pause_page = chip->cont_read.last_page;
-+}
-+
- static int nand_lp_exec_cont_read_page_op(struct nand_chip *chip, unsigned int page,
- 					  unsigned int offset_in_page, void *buf,
- 					  unsigned int len, bool check_only)
-@@ -1226,7 +1243,7 @@ static int nand_lp_exec_cont_read_page_o
- 		NAND_OP_DATA_IN(len, buf, 0),
- 	};
- 	struct nand_op_instr cont_instrs[] = {
--		NAND_OP_CMD(page == chip->cont_read.last_page ?
-+		NAND_OP_CMD(page == chip->cont_read.pause_page ?
- 			    NAND_CMD_READCACHEEND : NAND_CMD_READCACHESEQ,
- 			    NAND_COMMON_TIMING_NS(conf, tWB_max)),
- 		NAND_OP_WAIT_RDY(NAND_COMMON_TIMING_MS(conf, tR_max),
-@@ -1263,16 +1280,29 @@ static int nand_lp_exec_cont_read_page_o
- 	}
- 
- 	if (page == chip->cont_read.first_page)
--		return nand_exec_op(chip, &start_op);
-+		ret = nand_exec_op(chip, &start_op);
- 	else
--		return nand_exec_op(chip, &cont_op);
-+		ret = nand_exec_op(chip, &cont_op);
-+	if (ret)
-+		return ret;
-+
-+	if (!chip->cont_read.ongoing)
-+		return 0;
-+
-+	if (page == chip->cont_read.pause_page &&
-+	    page != chip->cont_read.last_page) {
-+		chip->cont_read.first_page = chip->cont_read.pause_page + 1;
-+		rawnand_cap_cont_reads(chip);
-+	} else if (page == chip->cont_read.last_page) {
-+		chip->cont_read.ongoing = false;
-+	}
-+
-+	return 0;
- }
- 
- static bool rawnand_cont_read_ongoing(struct nand_chip *chip, unsigned int page)
- {
--	return chip->cont_read.ongoing &&
--		page >= chip->cont_read.first_page &&
--		page <= chip->cont_read.last_page;
-+	return chip->cont_read.ongoing && page >= chip->cont_read.first_page;
- }
- 
- /**
-@@ -3446,6 +3476,7 @@ static void rawnand_enable_cont_reads(st
- 	if (col)
- 		chip->cont_read.first_page++;
- 	chip->cont_read.last_page = page + ((readlen >> chip->page_shift) & chip->pagemask);
-+	rawnand_cap_cont_reads(chip);
- }
- 
- /**
---- a/include/linux/mtd/rawnand.h
-+++ b/include/linux/mtd/rawnand.h
-@@ -1265,6 +1265,7 @@ struct nand_secure_region {
-  * @cont_read: Sequential page read internals
-  * @cont_read.ongoing: Whether a continuous read is ongoing or not
-  * @cont_read.first_page: Start of the continuous read operation
-+ * @cont_read.pause_page: End of the current sequential cache read operation
-  * @cont_read.last_page: End of the continuous read operation
-  * @controller: The hardware controller	structure which is shared among multiple
-  *              independent devices
-@@ -1321,6 +1322,7 @@ struct nand_chip {
- 	struct {
- 		bool ongoing;
- 		unsigned int first_page;
-+		unsigned int pause_page;
- 		unsigned int last_page;
- 	} cont_read;
+--- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
+@@ -2554,8 +2554,8 @@
+ 			reg = <0 0x0a6f8800 0 0x400>;
+ 			interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 486 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 488 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 489 IRQ_TYPE_LEVEL_HIGH>;
++				     <GIC_SPI 488 IRQ_TYPE_EDGE_BOTH>,
++				     <GIC_SPI 489 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq",
+ 					  "ss_phy_irq",
+ 					  "dm_hs_phy_irq",
+@@ -2628,8 +2628,8 @@
+ 			power-domains = <&gcc USB30_SEC_GDSC>;
+ 			interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>,
+ 				     <GIC_SPI 487 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 490 IRQ_TYPE_LEVEL_HIGH>,
+-				     <GIC_SPI 491 IRQ_TYPE_LEVEL_HIGH>;
++				     <GIC_SPI 490 IRQ_TYPE_EDGE_BOTH>,
++				     <GIC_SPI 491 IRQ_TYPE_EDGE_BOTH>;
+ 			interrupt-names = "hs_phy_irq", "ss_phy_irq",
+ 					  "dm_hs_phy_irq", "dp_hs_phy_irq";
  
 
 
