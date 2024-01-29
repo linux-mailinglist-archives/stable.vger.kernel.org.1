@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-16741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77834840E3A
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:15:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 162DA840FFD
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 18:26:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA9961C23A49
-	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:15:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C12DD284BFE
+	for <lists+stable@lfdr.de>; Mon, 29 Jan 2024 17:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B19A15B2F7;
-	Mon, 29 Jan 2024 17:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB78273759;
+	Mon, 29 Jan 2024 17:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AU9pKqYl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfxLNXL9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4E715703E;
-	Mon, 29 Jan 2024 17:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9D473722;
+	Mon, 29 Jan 2024 17:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706548246; cv=none; b=QkeF3oJ+Uw20selTGrRD2WG6w2TK2QF1SRFvJS+YfQwl17JrtD/S4gJMbl6LhOjAz328/Jz6hJphrtWNVdEo4m+fZ97KuEYBA7Gm8/77Xm/LJgjQmquHHi4KecEx4zBYUlf+S0eIPJci8gk/4cN6ZBOg06bA5Gx1EQSzWKP3MZM=
+	t=1706548540; cv=none; b=XU6hAFw7s480QQDAv+Fs5Uu+G0WhG+aIG7hoqCIZnePJ+9ZBF8VCtjtzw47RhWVS8nBtoMWpOCRBSzS8sT6WWhWShf0O9I5RBcJl/Ckl2LUMOqMjkOzwY9WP2DnfS97WOLUYjc7OFaiKIlIOPgLTlzbcvw2LPSabst9sRBeMA9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706548246; c=relaxed/simple;
-	bh=N6LKTa+7SYkLs3coFQ3qllUDvz6fJJXHpLYh6nsHJZs=;
+	s=arc-20240116; t=1706548540; c=relaxed/simple;
+	bh=RbGb1vLYZKe071E6Qiu/1NM4eUggNxHloA1YwZsTddU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swWvQCFKnMgzcNBO1P0hMR2X7q2dZ9yuBaqX3PF6Ka1aWFxVS5uLMhUK2rDkLqMQrP4in7v5EV+lcfd4YUz4V9h4dfgd8V3y4bctXzKW2aDspTxgI3E9x5y+sleB6292hS4DHNbpwdXsFskxQ7DIOTFMe3gGceWI36+G5tMqMyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AU9pKqYl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3003C433C7;
-	Mon, 29 Jan 2024 17:10:45 +0000 (UTC)
+	 MIME-Version; b=PDlErc1RhqDp0TfDWwZN4C8iBRfh7j5HO6NJak51rdHfaxDqHF5rottwBLpdKjeo6Nk66QEtXzfVqDM0cVrxgSgSWVcXwwczOCuEV2F9YBHUZVmmLPKb5kM7cd4Iz+j+opsGdg1S8Gr9MKxlI4Yc0qvULy7fZRlB+aVRv8fMqic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfxLNXL9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EB4C43394;
+	Mon, 29 Jan 2024 17:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706548245;
-	bh=N6LKTa+7SYkLs3coFQ3qllUDvz6fJJXHpLYh6nsHJZs=;
+	s=korg; t=1706548540;
+	bh=RbGb1vLYZKe071E6Qiu/1NM4eUggNxHloA1YwZsTddU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AU9pKqYlSv3bYYicxxoylw6qvnzpPXtUpLWK3yI9wZCbrMJAnA4vgm6DojqjSejWj
-	 qIod3rtbnV2GUuAAKMi6+PZI8LqYETIaAz/PW7Z8OrxwUvv3+lObA4tGbFPYVCq9oK
-	 rQZDbTeFpICsCkZ642mnHGfupk99WWZKv9vcBZtU=
+	b=CfxLNXL9GqDh+Xbj/xlzqQnM0sAkuX+FFZQIMq6ogpTatjpQiv4YKN5BNlCnMRoD5
+	 fymxKh1DjyZmYQgMvq2zO4wdGHPXVr6vKNNfENiJbHqYRajDdW8jjUthEJILuaGpeO
+	 fsdXxtZzbkewhI8XlotPeFNrKpyb93sAwLKsdZdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.1 043/185] media: videobuf2-dma-sg: fix vmap callback
-Date: Mon, 29 Jan 2024 09:04:03 -0800
-Message-ID: <20240129165959.967299461@linuxfoundation.org>
+	Yunjian Wang <wangyunjian@huawei.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 180/331] tun: add missing rx stats accounting in tun_xdp_act
+Date: Mon, 29 Jan 2024 09:04:04 -0800
+Message-ID: <20240129170020.170437129@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
-References: <20240129165958.589924174@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+References: <20240129170014.969142961@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Yunjian Wang <wangyunjian@huawei.com>
 
-commit 608ca5a60ee47b48fec210aeb7a795a64eb5dcee upstream.
+[ Upstream commit f1084c427f55d573fcd5688d9ba7b31b78019716 ]
 
-For dmabuf import users to be able to use the vaddr from another
-videobuf2-dma-sg source, the exporter needs to set a proper vaddr on
-vb2_dma_sg_dmabuf_ops_vmap callback. This patch adds vmap on map if
-buf->vaddr was not set.
+The TUN can be used as vhost-net backend, and it is necessary to
+count the packets transmitted from TUN to vhost-net/virtio-net.
+However, there are some places in the receive path that were not
+taken into account when using XDP. It would be beneficial to also
+include new accounting for successfully received bytes using
+dev_sw_netstats_rx_add.
 
-Cc: stable@kernel.org
-Fixes: 7938f4218168 ("dma-buf-map: Rename to iosys-map")
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Acked-by: Tomasz Figa <tfiga@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 761876c857cb ("tap: XDP support")
+Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/common/videobuf2/videobuf2-dma-sg.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/tun.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-+++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-@@ -494,9 +494,15 @@ vb2_dma_sg_dmabuf_ops_end_cpu_access(str
- static int vb2_dma_sg_dmabuf_ops_vmap(struct dma_buf *dbuf,
- 				      struct iosys_map *map)
- {
--	struct vb2_dma_sg_buf *buf = dbuf->priv;
-+	struct vb2_dma_sg_buf *buf;
-+	void *vaddr;
- 
--	iosys_map_set_vaddr(map, buf->vaddr);
-+	buf = dbuf->priv;
-+	vaddr = vb2_dma_sg_vaddr(buf->vb, buf);
-+	if (!vaddr)
-+		return -EINVAL;
-+
-+	iosys_map_set_vaddr(map, vaddr);
- 
- 	return 0;
- }
+diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+index 237fef557ba5..4a4f8c8e79fa 100644
+--- a/drivers/net/tun.c
++++ b/drivers/net/tun.c
+@@ -1634,6 +1634,7 @@ static int tun_xdp_act(struct tun_struct *tun, struct bpf_prog *xdp_prog,
+ 			dev_core_stats_rx_dropped_inc(tun->dev);
+ 			return err;
+ 		}
++		dev_sw_netstats_rx_add(tun->dev, xdp->data_end - xdp->data);
+ 		break;
+ 	case XDP_TX:
+ 		err = tun_xdp_tx(tun->dev, xdp);
+@@ -1641,6 +1642,7 @@ static int tun_xdp_act(struct tun_struct *tun, struct bpf_prog *xdp_prog,
+ 			dev_core_stats_rx_dropped_inc(tun->dev);
+ 			return err;
+ 		}
++		dev_sw_netstats_rx_add(tun->dev, xdp->data_end - xdp->data);
+ 		break;
+ 	case XDP_PASS:
+ 		break;
+-- 
+2.43.0
+
 
 
 
