@@ -1,102 +1,131 @@
-Return-Path: <stable+bounces-17394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275E08420BC
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 11:08:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0901584210C
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 11:20:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB17D1F2D212
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 10:08:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 723711F249D9
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 10:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D04060896;
-	Tue, 30 Jan 2024 10:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE85260ECB;
+	Tue, 30 Jan 2024 10:20:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXjU7ZJV"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="joRP6Hu5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BCC60869;
-	Tue, 30 Jan 2024 10:07:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066EA60B9F
+	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 10:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706609271; cv=none; b=ScLQTSvX3hDJJ7l8sX/W8IhZ0YjnVw5Vg+TsmU/3yOREB+z0IMzfyt7oTu01Oe8l5CDj6Gku0HfP8VqRErbgnb3DouiNt5dWNPD72CAj+t0HeZIkLyX2bQ0rtF0NdZVXVlZx7MmqMvAHkg7L8G/e4qSyC8ca4Oq+9v8vj67N7/8=
+	t=1706610022; cv=none; b=cKxS1DH+pBDVeyzsKaDVQ+d91tXVxCm2/t88x9gDu53pzKJmdyHZ1vRt9lNh5FLuqss8cH7iI5++UYtx6taMaHDPtuqOGkeFCl/OI2Of0UaO0q9Hj25KMw7gLEzqxYfWGBGhhMb36JEKjxsOo4uiOwUNynaujjKFO0setBJxmlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706609271; c=relaxed/simple;
-	bh=8CKJrkkGZM/Di0WcrrdDLyXgOONeUOLpOJVPXsgvDfc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gHuYMJoh8CaV/ZfSDlaiVZ23rAc3ek/kxbQBaShDvmqjCg6lbEIGQV7h4P9dci5dZsLECvfJ2PCeTUiIGaNgvS4wrHBg6PycCgXuNH6QkMi5PfWHfnvFS27hR9Bn1UKTMSzd1n8zfT+x7j8+ljFmE/c79hNpKvIvPV7oQYFldGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXjU7ZJV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A63C43394;
-	Tue, 30 Jan 2024 10:07:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706609270;
-	bh=8CKJrkkGZM/Di0WcrrdDLyXgOONeUOLpOJVPXsgvDfc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oXjU7ZJVNQetTKK+iu7bcpvfWtFQHKDYE888Y16U4NH5V/n7E9rrIu1Ei+fhqxJ1C
-	 aTJ/Hl/ukgxMj9wx17vqA7bZiJvKh131t5jj5sRt/z5PFd41VoUVWGO6YColmMbyMh
-	 GBPJ3XabbpiUYPRbKUPm5eh/XYRMpDk6JSGHWcZRpOYSA9pXVf8Yp1a7JPCoJKK9tc
-	 j011Q3TokZY8sC5v0t+K0Y3vc204C5daTI/DJ+S0FMqtS2yhNr6f2/ba4Rk9gBruif
-	 jxzuBfQ2wkaSrugKhbz0XIhldCgUmbqRTF6UzbTO0rjUaHZahAB6kg3FsMd5qnrp+T
-	 rSSlSOaf6POow==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rUl1u-000000002uC-18CJ;
-	Tue, 30 Jan 2024 11:07:46 +0100
-Date: Tue, 30 Jan 2024 11:07:46 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Michael Schaller <michael@5challer.de>,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev,
-	"Maciej W . Rozycki" <macro@orcam.me.uk>,
-	Ajay Agarwal <ajayagarwal@google.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org,
-	regressions@leemhuis.info
-Subject: Re: PCI/ASPM locking regression in 6.7-final (was: Re: [PATCH]
- Revert "PCI/ASPM: Remove pcie_aspm_pm_state_change()")
-Message-ID: <ZbjKci6GuWVrpbri@hovoldconsulting.com>
-References: <Za_2oKTUksw8Di5E@hovoldconsulting.com>
- <20240123223648.GA331671@bhelgaas>
- <ZbDHZtR8Tg1hWAzc@hovoldconsulting.com>
+	s=arc-20240116; t=1706610022; c=relaxed/simple;
+	bh=iHbQQ3MLCCcjMAInoY2a1a8pyT2oDcS0vQnY2cfXPv4=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=mcD/n2zZGaPdjhWrB1wM1e5aTU0LJJ5ZoxBv9/rVDhYwYFskrhFx3pkGQq4AhNADCsKT84SocOwjsN/uI0dVglEOVgr7zua4vD05eJ6Djj+iaTrqHU6OorO5h2U4NChp4Bmhu/wMYFE2LMWPR8JyjY2EtxlvsLiD+q23HLsWopc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=joRP6Hu5; arc=none smtp.client-ip=44.202.169.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6005a.ext.cloudfilter.net ([10.0.30.201])
+	by cmsmtp with ESMTPS
+	id UbXorR6hyTHHuUlDxrod28; Tue, 30 Jan 2024 10:20:13 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id UlDwrVsi71UTRUlDwr7OK9; Tue, 30 Jan 2024 10:20:12 +0000
+X-Authority-Analysis: v=2.4 cv=ZOXEJF3b c=1 sm=1 tr=0 ts=65b8cd5c
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=dEuoMetlWLkA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=QDmJc+5Q+8ZglzAdl2BcnLkXPCIgoF/fTkzgIRxIZk4=; b=joRP6Hu54MNNifryzWu3Xy4rOi
+	XQQUmYkYX36/zGnAiAXN+joan8AbUP7d/TLcT7iGP6AKz6Ohi9Jkml6K9Xnp5VsbsViDkkUwVtsQo
+	4dnIFm4Ry5vRAoiqkUHIrzsLaKV44kTZ6KcN047a1j2+2/agGw1G+V7A7aOEtZQmZYcKGC2zU4072
+	JzxH7zIS5BDPCWzPceeeqaKsXx0K7xeiQrhuDqdwWUuxNlM5LbKn7hblFccNAcubLytXWXgPm0e1+
+	P7bt5wfmgPj2luTquSn+EBgrhmrR/h9JbeWzUjW+ClNaFIMgvSFP+NR+lkZWvkZUkxnPPciPIYDYy
+	lq5Z9yOA==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:37536 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rUlDt-001IsC-2q;
+	Tue, 30 Jan 2024 03:20:09 -0700
+Subject: Re: [PATCH 6.7 000/346] 6.7.3-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <180be0f0-7b95-73e0-45a4-0c5fec11b487@w6rz.net>
+Date: Tue, 30 Jan 2024 02:20:07 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZbDHZtR8Tg1hWAzc@hovoldconsulting.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rUlDt-001IsC-2q
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:37536
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfJTNVOKLI4GawUVtYcvMxno4B6BsDwATEE9MqgywJc30pEFdajHUO84Zu1Wl6n92nl2xrEf0bMHaomsFfxjh0rcMB+eA5fcrSTawc422EvLKITOSXAAA
+ 7WshXOwRqMF2P76bKuJo8lnDN0WKXLHbxz6vw7agwLeZQQ2/MpmwitH/X5SOWTgoURjaBQLOx40d7Q==
 
-On Wed, Jan 24, 2024 at 09:16:38AM +0100, Johan Hovold wrote:
-> On Tue, Jan 23, 2024 at 04:36:48PM -0600, Bjorn Helgaas wrote:
+On 1/29/24 9:00 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.7.3 release.
+> There are 346 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 31 Jan 2024 16:59:28 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.3-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-> > I don't quite follow.  By simply reverting, do you mean to revert
-> > f93e71aea6c6 ("Revert "PCI/ASPM: Remove
-> > pcie_aspm_pm_state_change()"")?  IIUC that would break Michael's
-> > machine again.
-> 
-> Right, at least until that issue is fully understood and alternative
-> fixes have been considered.
-> 
-> If that's not an option, we need to rework core to pass a flag through
-> more than one layer to indicate whether pcie_aspm_pm_state_change()
-> should take the bus semaphore or not. I'd rather not do that if it can
-> be avoided.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-As a revert appears unlikely to happen, let's fix the regression by
-adding a new helper pci_set_power_state_locked() that can be called
-with the bus lock held:
+Tested-by: Ron Economos <re@w6rz.net>
 
-	https://lore.kernel.org/lkml/20240130100243.11011-1-johan+linaro@kernel.org/
-
-Johan
 
