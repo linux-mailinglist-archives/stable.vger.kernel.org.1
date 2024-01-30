@@ -1,132 +1,141 @@
-Return-Path: <stable+bounces-17439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC8FD842BCA
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 19:30:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3446842BCC
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 19:31:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 051691C2341B
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 18:30:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 887D01F2BE58
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 18:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB75157E7D;
-	Tue, 30 Jan 2024 18:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF569157E6C;
+	Tue, 30 Jan 2024 18:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDqkAWHp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpKNAf9a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24F114E2D3;
-	Tue, 30 Jan 2024 18:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A897138396;
+	Tue, 30 Jan 2024 18:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706639441; cv=none; b=Q52gbO6jQhmhpJwxRu+tvHe4X5Ja2HrVZLgyb2P+KPCy5kE8i/7wLc2TjQrRj6duyW7Kpiau/dcagjsBLmT/hUgbNgGt3ibfxzyuNfrwBqCTNb7DlFH/xHPXlK5TNZXZHJt0UtAsUZHLn9yYtWMI2aP0DNkr2B1jpzlvDdxxCnk=
+	t=1706639460; cv=none; b=Pd6mVqhOmVlnT9Z072ym9I9WXQSaUotW32iX9+W9jKKBE+KnSi8dcOMMb8iEcLYWtUigUILEZycdt3KHNl6dWPytwcOeSmAGkrtb2AkZaMlgTSCeUU+L2EjoC9wA4nsGbRDM7vgk7KAQyFsIECN9h2ODKVftgSLVu0AxUWIwli8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706639441; c=relaxed/simple;
-	bh=tA4/1H6w8n1bCK32kU8GUndlSG44o2ZLxb5ueu19rFA=;
+	s=arc-20240116; t=1706639460; c=relaxed/simple;
+	bh=yXRHpPWjbIqLBdFygaO0W/CCcsE2dbh4TwuuoX/lkoE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=czHl7+dGrG8p6DAcvQn96GtiEgL1rMl1TrxMGiyXNPthj7vfLpNzbdv4M4qvntxao3xdRIngcgkuPAI335W2Fa/hUNU18TUvXXM2i+ei7BR1+pfCqbxHsSJXzMEhGozgUXrgIyHt50Co2LhdwjfjI2F1nVgFjPJ4azi+DbGclT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDqkAWHp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF6F0C433C7;
-	Tue, 30 Jan 2024 18:30:40 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xkh74gXIGsewl1w7bMAOBey2f7x53kZNTESdSbJBveSg6/gkOJ5PhKQxXGCQh4GetxGkl5Le52cQ8TMdiot/daK0Pk77TcRKA98JnPJJN7WI5vj+TEIYqAoiEb5qsSUWo9slH2tFoFIwUE6pDshpiIj28bQRla5CurGahGAbKBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpKNAf9a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32371C433C7;
+	Tue, 30 Jan 2024 18:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706639441;
-	bh=tA4/1H6w8n1bCK32kU8GUndlSG44o2ZLxb5ueu19rFA=;
+	s=korg; t=1706639460;
+	bh=yXRHpPWjbIqLBdFygaO0W/CCcsE2dbh4TwuuoX/lkoE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iDqkAWHpt+bMTji+PSVRO3xNPVEYmK4jZisDaTBLo7yQF43AqYNI3vr6KCaUXhZka
-	 77ntzIA6dKwZ0hrhryhEMoWbroufblQamp6kO3ceTiowU1UK4uFuOtg19Ck6kNk1rG
-	 tbaBDWmc3jREiB0ckBU3/y0FJGV3b55ON1T8VRmk=
-Date: Tue, 30 Jan 2024 10:30:40 -0800
+	b=KpKNAf9aNrQa9cN/CMUnGxUgbGNquLtW2GvQkPKL+cbqRmyVCm8aObKci8hsivx6p
+	 TM0VB5G99gaF0UXpc0JXpQAguAib7KD4CLdzFwtVFeqZEVhXo8KDs2cg51xAjCLI8X
+	 vyjfSEEhijgQUyJNCFFQct8qPlyda/pRyj8y+Y4c=
+Date: Tue, 30 Jan 2024 10:30:59 -0800
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Leon Romanovsky <leonro@nvidia.com>
-Cc: Florian Fainelli <f.fainelli@gmail.com>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	linux-stable <stable@vger.kernel.org>,
-	Netdev <netdev@vger.kernel.org>, linux-rdma@vger.kernel.org,
-	lkft-triage@lists.linaro.org, Sasha Levin <sashal@kernel.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: Re: stable-rc: 6.1: mlx5: params.c:994:53: error:
- 'MLX5_IPSEC_CAP_CRYPTO' undeclared (first use in this function)
-Message-ID: <2024013024-overripe-serve-4e45@gregkh>
-References: <CA+G9fYvYQRnBbZhHknSKbwYiCr_3vPwC5zPz2NsV9_1F7=paQQ@mail.gmail.com>
- <2024012915-enlighten-dreadlock-54e9@gregkh>
- <CA+G9fYs3_M9E3w+uWky5X1hEgoJU4e92ECqSywerqSkF8KVGvA@mail.gmail.com>
- <8c178bd1-e0c9-4e29-9b63-dd298298bc7b@gmail.com>
- <20240130071434.GA7169@unreal>
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>, Sasha Levin <sashal@kernel.org>,
+	Florian Fainelli <f.fainelli@gmail.com>
+Subject: Re: [PATCH 6.1 098/185] net/mlx5e: Allow software parsing when IPsec
+ crypto is enabled
+Message-ID: <2024013046-tying-unranked-f1f9@gregkh>
+References: <20240129165958.589924174@linuxfoundation.org>
+ <20240129170001.745906693@linuxfoundation.org>
+ <ZbgFoW5DV4dQxliM@eldamar.lan>
+ <ZbgGrgeP_Wwrrb7C@eldamar.lan>
+ <2024012926-dagger-bazooka-b7da@gregkh>
+ <ZbktcnbWiq14DiSX@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240130071434.GA7169@unreal>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZbktcnbWiq14DiSX@eldamar.lan>
 
-On Tue, Jan 30, 2024 at 09:14:34AM +0200, Leon Romanovsky wrote:
-> On Mon, Jan 29, 2024 at 08:25:42PM -0800, Florian Fainelli wrote:
-> > 
-> > 
-> > On 1/29/2024 6:52 PM, Naresh Kamboju wrote:
-> > > On Mon, 29 Jan 2024 at 21:58, Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:
-> > > > 
-> > > > On Mon, Jan 29, 2024 at 09:17:31PM +0530, Naresh Kamboju wrote:
-> > > > > Following build errors noticed on stable-rc linux-6.1.y for arm64.
-> > > > > 
-> > > > > arm64:
-> > > > > --------
-> > > > >    * build/gcc-13-lkftconfig
-> > > > >    * build/gcc-13-lkftconfig-kunit
-> > > > >    * build/clang-nightly-lkftconfig
-> > > > >    * build/clang-17-lkftconfig-no-kselftest-frag
-> > > > >    * build/gcc-13-lkftconfig-devicetree
-> > > > >    * build/clang-lkftconfig
-> > > > >    * build/gcc-13-lkftconfig-perf
-> > > > > 
-> > > > > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > > > > 
-> > > > > Build errors:
-> > > > > ------
-> > > > > drivers/net/ethernet/mellanox/mlx5/core/en/params.c: In function
-> > > > > 'mlx5e_build_sq_param':
-> > > > > drivers/net/ethernet/mellanox/mlx5/core/en/params.c:994:53: error:
-> > > > > 'MLX5_IPSEC_CAP_CRYPTO' undeclared (first use in this function)
-> > > > >    994 |                     (mlx5_ipsec_device_caps(mdev) &
-> > > > > MLX5_IPSEC_CAP_CRYPTO);
-> > > > >        |
-> > > > > ^~~~~~~~~~~~~~~~~~~~~
-> > > > > 
-> > > > > Suspecting commit:
-> > > > >    net/mlx5e: Allow software parsing when IPsec crypto is enabled
-> > > > >    [ Upstream commit 20f5468a7988dedd94a57ba8acd65ebda6a59723 ]
-> > > > 
-> > > > Something looks very odd here, as the proper .h file is being included,
-> > > > AND this isn't a build failure on x86, so why is this only arm64 having
-> > > > problems?  What's causing this not to show up?
-> > > 
-> > > As per the Daniel report on stable-rc review on 6.1, these build failures also
-> > > reported on System/390.
-> > 
-> > The build failure is legitimate here since
-> > drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h guards all of the
-> > definitions and enumerations under a CONFIG_MLX5_EN_IPSEC which is not
-> > enabled in the build configuration that failed.
-> > 
-> > This is implicitly fixed upstream with
-> > 8c582ddfbb473c1d799c40b5140aed81278e2837 ("net/mlx5e: Handle hardware IPsec
-> > limits events") which relocates the #ifdef CONFIG_MLX5_EN_IPSEC below and
-> > allows the MLX5_IPSEC_CAP_CRYPTO enum value, amongst others to be visible to
-> > code that is not guarded with CONFIG_MLX5_EN_IPSEC. This specific commit
-> > does not apply cleanly to the stable-6.1 branch, so maybe the best we can
-> > come up with is this targeted change that does the same thing against 6.1:
+On Tue, Jan 30, 2024 at 06:10:10PM +0100, Salvatore Bonaccorso wrote:
+> Hi Greg,
 > 
-> Thanks for taking look into it. This fix looks as a best solution for me.
+> On Mon, Jan 29, 2024 at 12:43:05PM -0800, Greg Kroah-Hartman wrote:
+> > On Mon, Jan 29, 2024 at 09:12:30PM +0100, Salvatore Bonaccorso wrote:
+> > > Hi,
+> > > 
+> > > On Mon, Jan 29, 2024 at 09:08:02PM +0100, Salvatore Bonaccorso wrote:
+> > > > Hi Greg,
+> > > > 
+> > > > On Mon, Jan 29, 2024 at 09:04:58AM -0800, Greg Kroah-Hartman wrote:
+> > > > > 6.1-stable review patch.  If anyone has any objections, please let me know.
+> > > > > 
+> > > > > ------------------
+> > > > > 
+> > > > > From: Leon Romanovsky <leonro@nvidia.com>
+> > > > > 
+> > > > > [ Upstream commit 20f5468a7988dedd94a57ba8acd65ebda6a59723 ]
+> > > > > 
+> > > > > All ConnectX devices have software parsing capability enabled, but it is
+> > > > > more correct to set allow_swp only if capability exists, which for IPsec
+> > > > > means that crypto offload is supported.
+> > > > > 
+> > > > > Fixes: 2451da081a34 ("net/mlx5: Unify device IPsec capabilities check")
+> > > > > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> > > > > Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+> > > > > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > > > > ---
+> > > > >  drivers/net/ethernet/mellanox/mlx5/core/en/params.c | 4 ++--
+> > > > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > > > 
+> > > > > diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+> > > > > index 29dd3a04c154..d3de1b7a80bf 100644
+> > > > > --- a/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+> > > > > +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/params.c
+> > > > > @@ -990,8 +990,8 @@ void mlx5e_build_sq_param(struct mlx5_core_dev *mdev,
+> > > > >  	void *wq = MLX5_ADDR_OF(sqc, sqc, wq);
+> > > > >  	bool allow_swp;
+> > > > >  
+> > > > > -	allow_swp =
+> > > > > -		mlx5_geneve_tx_allowed(mdev) || !!mlx5_ipsec_device_caps(mdev);
+> > > > > +	allow_swp = mlx5_geneve_tx_allowed(mdev) ||
+> > > > > +		    (mlx5_ipsec_device_caps(mdev) & MLX5_IPSEC_CAP_CRYPTO);
+> > > > >  	mlx5e_build_sq_param_common(mdev, param);
+> > > > >  	MLX5_SET(wq, wq, log_wq_sz, params->log_sq_size);
+> > > > >  	MLX5_SET(sqc, sqc, allow_swp, allow_swp);
+> > > > 
+> > > > When compiling 6.1.76-rc1 this commit causes the following build
+> > > > failure:
+> > > > 
+> > > > drivers/net/ethernet/mellanox/mlx5/core/en/params.c: In function ‘mlx5e_build_sq_param’:
+> > > > drivers/net/ethernet/mellanox/mlx5/core/en/params.c:994:53: error: ‘MLX5_IPSEC_CAP_CRYPTO’ undeclared (first use in this function)
+> > > >   994 |                     (mlx5_ipsec_device_caps(mdev) & MLX5_IPSEC_CAP_CRYPTO);
+> > > >       |                                                     ^~~~~~~~~~~~~~~~~~~~~
+> > > > drivers/net/ethernet/mellanox/mlx5/core/en/params.c:994:53: note: each undeclared identifier is reported only once for each function it appears in
+> > > > 
+> > > > Attached the used config.
+> > > 
+> > > Mailserver from leonro@nvidia.com, saeedm@nvidia.com rejected the
+> > > message due to the attached test.config.xz . Resending this here again
+> > > without attachment so that might reach Leon and Saeed as well.
+> > 
+> > This works for me, I don't know why it's failing elsewhere.  I'd like to
+> > drop it but I really don't want to unless we can figure it out.
+> 
+> There is an explanation and a proposed fix by Florian Fainelli
+> <f.fainelli@gmail.com> in https://lore.kernel.org/stable/8c178bd1-e0c9-4e29-9b63-dd298298bc7b@gmail.com/
+> 
+> Hope this helps!
 
-Thanks, will queue this up now and push out a new -rc
+Yup, that looks good, I'll push out a new -rc2 with it, thanks!
+
+greg k-h
 
