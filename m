@@ -1,116 +1,102 @@
-Return-Path: <stable+bounces-17452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F3F842E8C
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 22:16:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C934842EBC
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 22:40:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C744D1C239D5
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 21:16:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00C8F287EBE
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 21:40:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E6B762CF;
-	Tue, 30 Jan 2024 21:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BF5978B5E;
+	Tue, 30 Jan 2024 21:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tQoCLCiI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PS5LsMnj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E46762C3;
-	Tue, 30 Jan 2024 21:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3187678B52;
+	Tue, 30 Jan 2024 21:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706649371; cv=none; b=uaG/VsIZXuTVa1YSUQx7xDE9xzq6qQxsaiK5hcpy+/tbZSCuEETek7yRZDiNT8IMzgCvSzAs5JzfksJrHOVkIpckXBN34RYCKGlTSohcUa0AYZ2iYYBi9UFlOVCqUrxmqIxQoZqW4fi5iWmifmkQy4J8wcEGlk+DLVZqnj09PGE=
+	t=1706650850; cv=none; b=TJo3QyfBWGfV8E1jJGoItEA2IiyAqBgzJgqvL0Zv6E61UILTLyr0WKU/me4yK9Pt0UubbBl87N9yvpXLNJImEyWfaeYDLE2+h4wkb9vcFCW5mLNfqesF8fzjdec0LYzvBsumMw3AZdjR6KHBrk1Z/THM72TcFqpGCrY5C4B797w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706649371; c=relaxed/simple;
-	bh=QEITiAA4fWnHv2p/4qhjdzmkLWUAM9VU7hpD8HwJ/Jo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IhaVly2g1hVoA/yk8xDj0Mv5atmRQOVsAuJQrnTpYqG8KhmdVvMcW0/w0Sj3n7ccco/Fu5JekNv2354iIQoKqm0hOxqhR8A8u4oYvGrdA4jRBdOVVyIvJObSYtxZBVg/IPAMsqB2AEAjG1BbsxzsLcHDHlWdDwv4fD0VR076ywQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tQoCLCiI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69782C433C7;
-	Tue, 30 Jan 2024 21:16:10 +0000 (UTC)
+	s=arc-20240116; t=1706650850; c=relaxed/simple;
+	bh=pnAGIah8tDwiGmWDjULK1v1d3MLSt9GYUDCogaBsWHo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CaDucR3yaUa70qNOj1zYTmb4/MV07Z5UEaUU9ugHf/xdoUvjr6xa8/JT1YGLgXpfpGzRpOFt3H+nBFb39l5az6/f5M7G/rPrH8/vPMnWRlFbyLY8iyjqjV2hCNo6DrFFwZstAPZPiG3wq0lmUUIUeVl66HA8hAJS6BD6W+ECbM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PS5LsMnj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA7A1C433C7;
+	Tue, 30 Jan 2024 21:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706649370;
-	bh=QEITiAA4fWnHv2p/4qhjdzmkLWUAM9VU7hpD8HwJ/Jo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tQoCLCiIRs0madwA6Bf1jlvV8wCtLFch0d00Z3zjj5Yl+IERbCzF6BKSAZWlaWonK
-	 7PPEqqo1zhdR1soCXIjN3+KCJ84LZHdxRg/TqvAgNtMf4XCnRRAflYAyiT2cDyTE74
-	 gknj7zAUVf5DXtz0prmR2p+Jk/MUTLuCpjznRk7hM8yhl0ugvL8Ye0x9IUdwjydBBx
-	 0zVcnzjm3huFtRFAsaX/F4xIr4Zs/8p9/MW79STbUGNHjja5GiahUSsEiGyhoJIs8w
-	 NdzHjYI++eZTdqj7mP3CQO3QtE2VTQ8FPURdfxbI3jMco9mMlrZa7JGJn1h+nMkxlh
-	 0ZZCkTVmTXUsg==
-Date: Tue, 30 Jan 2024 16:16:09 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Pavel Machek <pavel@denx.de>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, gfs2@lists.linux.dev
-Subject: Re: [PATCH AUTOSEL 4.19 11/12] gfs2: Refcounting fix in
- gfs2_thaw_super
-Message-ID: <ZblnGTNLbufz4gZx@sashalap>
-References: <20240116002817.216837-1-sashal@kernel.org>
- <20240116002817.216837-11-sashal@kernel.org>
- <ZabrPnsVr6WHz2lM@duo.ucw.cz>
- <CAHc6FU70RD8fktBp=Srv6xeq3qXoLCdT8pi6y=1Y7bMHFK-mtQ@mail.gmail.com>
+	s=k20201202; t=1706650849;
+	bh=pnAGIah8tDwiGmWDjULK1v1d3MLSt9GYUDCogaBsWHo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PS5LsMnjn7Mbhs/Ij/7IDcnvl7UE3Kc9Cd4jIBG41zOwUg5pRGa8B/NQym6H4+J53
+	 zzTfwxKRGuOtwlBEm8UhSzwuEr1bbZmt/S5IcXEMAafUoliin1pyE6PH0jTH/KB3Ui
+	 nO3pvM6w0m6sKxodc2DogEdVlNta7XMT+zj0V4hoY+60mItBtiX6YOrmeccXs63c3m
+	 Pk29OiSeYXfO5yQhNrign4ozByI9vlJtxiakBeyec2hJ53DULGUE/VYtKokpgysX27
+	 djt8hj1WwehzMmQo4b2joiZ6fMajmpRNUDCHySxyaQjzQ8vYurH6iZZcU23i60PPP9
+	 QsVqPZfGNC2Wg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1rUvqZ-00GOhj-Hv;
+	Tue, 30 Jan 2024 21:40:47 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Sebastian Ene <sebastianene@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>
+Cc: kvmarm@lists.linux.dev,
+	kernel-team@android.com,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v2] KVM: arm64: Fix circular locking dependency
+Date: Tue, 30 Jan 2024 21:40:43 +0000
+Message-Id: <170665083753.694736.5736115942255110234.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240124091027.1477174-2-sebastianene@google.com>
+References: <20240124091027.1477174-2-sebastianene@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHc6FU70RD8fktBp=Srv6xeq3qXoLCdT8pi6y=1Y7bMHFK-mtQ@mail.gmail.com>
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: suzuki.poulose@arm.com, oliver.upton@linux.dev, sebastianene@google.com, catalin.marinas@arm.com, yuzenghui@huawei.com, will@kernel.org, james.morse@arm.com, kvmarm@lists.linux.dev, kernel-team@android.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Thu, Jan 18, 2024 at 12:50:37PM +0100, Andreas Gruenbacher wrote:
->On Tue, Jan 16, 2024 at 9:53 PM Pavel Machek <pavel@denx.de> wrote:
->> Hi!
->>
->> > From: Andreas Gruenbacher <agruenba@redhat.com>
->> >
->> > [ Upstream commit 4e58543e7da4859c4ba61d15493e3522b6ad71fd ]
->> >
->> > It turns out that the .freeze_super and .thaw_super operations require
->> > the filesystem to manage the superblock refcount itself.  We are using
->> > the freeze_super() and thaw_super() helpers to mostly take care of that
->> > for us, but this means that the superblock may no longer be around by
->> > when thaw_super() returns, and gfs2_thaw_super() will then access freed
->> > memory.  Take an extra superblock reference in gfs2_thaw_super() to fix
->> > that.
->>
->> Patch was broken during backport.
->>
->> > +++ b/fs/gfs2/super.c
->> > @@ -1013,6 +1013,7 @@ static int gfs2_freeze(struct super_block *sb)
->> >               goto out;
->> >       }
->> >
->> > +     atomic_inc(&sb->s_active);
->> >       for (;;) {
->> >               error = gfs2_lock_fs_check_clean(sdp, &sdp->sd_freeze_gh);
->> >               if (!error)
->> > @@ -1034,6 +1035,7 @@ static int gfs2_freeze(struct super_block *sb)
->> >       error = 0;
->> >  out:
->> >       mutex_unlock(&sdp->sd_freeze_mutex);
->> > +     deactivate_super(sb);
->> >       return error;
->> >  }
->>
->> Notice the goto out? That now jumps around the atomic_inc, but we
->> still do decrease. This will break 4.19, please fix or drop.
->
->Thanks, Pavel.
->
->Sasha, you don't want that fix without "gfs2: Rework freeze / thaw
->logic" and the follow-up fixes, and backporting that probably isn't
->going to be worth it.
+On Wed, 24 Jan 2024 09:10:28 +0000, Sebastian Ene wrote:
+> The rule inside kvm enforces that the vcpu->mutex is taken *inside*
+> kvm->lock. The rule is violated by the pkvm_create_hyp_vm() which acquires
+> the kvm->lock while already holding the vcpu->mutex lock from
+> kvm_vcpu_ioctl(). Avoid the circular locking dependency altogether by
+> protecting the hyp vm handle with the config_lock, much like we already
+> do for other forms of VM-scoped data.
 
-I'll drop it, thanks!
+Applied to fixes, thanks!
 
+[1/1] KVM: arm64: Fix circular locking dependency
+      commit: 10c02aad111df02088d1a81792a709f6a7eca6cc
+
+Cheers,
+
+	M.
 -- 
-Thanks,
-Sasha
+Without deviation from the norm, progress is not possible.
+
+
 
