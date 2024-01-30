@@ -1,132 +1,115 @@
-Return-Path: <stable+bounces-17399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DBF184242C
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 12:55:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E886842542
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 13:47:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7257E1C262F3
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 11:55:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45FFEB2864A
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 12:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC32D67751;
-	Tue, 30 Jan 2024 11:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3226A036;
+	Tue, 30 Jan 2024 12:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="ItHmt0V5"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zcX9W1ss"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9BF67E69
-	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 11:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF814C66
+	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 12:46:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706615682; cv=none; b=OBIQ6cGKohklH1FRC4n/grdCc9khO9UP/rCXVTiaFm3hKUQxgQZcH/CMMNhku13WkAYM8rOZWIHOtbRiIC7RSVnczHcN0jZDpPojQjvogObP/71E/9XeoWYjZfAFFXrHe6p4xiw6jTCfp34N/3N8DK3jEqkMtGqS62EBzpN1Szk=
+	t=1706618798; cv=none; b=pGE0//L4k/M5Mbmc03DJL54zBEjVdwn1mOvXcDAJgiy1HBcOBbzFr15HO5FrJikfmU9jRonKHhST6pSx7pbm4TCjwhcXwpaEhdtpMPD3i3zwM+U3H5W2depgz4/8h5BgFviS5rpW7NiC768B1CLguOjRdhAITyG/bu+NjqqhdBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706615682; c=relaxed/simple;
-	bh=vNdnIux1xX62xc2eKT/WMUKc9JQEqx7tiep7+FUX95I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TLMPIgb8DnRg/Z2gJMqMatmJD55cMU7jasz4SZGeW3tQfTeW630NCIhyCBRPxLQ87C7fJsRvWpJO3C5yMhJxXqM0C0rCtkF9gqG+3O2T7/Sj0UFwIeiw2qWTUkifpA5c6EgTkJzOdKFPnzmyjaz5RVjIVFztyla8J/ZgQGSvFf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=ItHmt0V5; arc=none smtp.client-ip=209.85.216.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-290ec261a61so2149635a91.0
-        for <stable@vger.kernel.org>; Tue, 30 Jan 2024 03:54:40 -0800 (PST)
+	s=arc-20240116; t=1706618798; c=relaxed/simple;
+	bh=tCXOAZ9RKaXG7Z9PuK7V3A133Zg8GcPDYyQVzl3FRNY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=i00j/Dxzbf3YmZi7ENOe4amLi4br5P6b9Gz+gUziIIgjQPgrFodsPBA0LiLsKxOA0TzA9tuo/TKu2WvkSJg4fFmf5REFIUWBOPavFMa+fua0jIrFQ+A7qmfb98gpHmo3KyZp2dbHdeTaLGz1OID3FmPC+CV5oqdqViOlJACSMSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zcX9W1ss; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6ddb1115e82so2555819b3a.0
+        for <stable@vger.kernel.org>; Tue, 30 Jan 2024 04:46:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1706615680; x=1707220480; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DWvxEqM2sAiMA41B2v7Y3h0SQJvpGs9/4DqAKQgags4=;
-        b=ItHmt0V5q7JLG9KagljCoZK0mymRJXBl0424EjvO5JWt5Ubif18K182kpm6L4J6uGH
-         2dltNAhjmv/P70t/WpIOfq0hWsKp5iR249LfpOz3bPQuZDvGHYzZdtI1eFkvas6FzZEv
-         wiPcTsfHK7JTbmk9jJCzsmOF77vgEV1EBiIOlwMXNIWYQclqZbVgXPNliScg8iRa1hbz
-         m83HOkioD8LdGD4JFTEugogf0ebWYwffI4tAFU57wWaCDq9G5I0WRxo4owhWx0kigDF/
-         s3H9uR5ATp39n/txt9K0npUASQpQw04W4cH4yKJMF3XEkK/QVfIWpFJAA30EdLSvnGXm
-         2wpA==
+        d=linaro.org; s=google; t=1706618796; x=1707223596; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X4PtQqAEVn6EHAEZyxwnwW9gwR0IeNJ+8H+/wVoTsRE=;
+        b=zcX9W1ssN09aDZMXYgvyezcfmx9s5Zt7OWBcqzcfNFW6+vQGX+tiNAAzavOsCJLpiu
+         Q8mlTYtD2RTpSSDFjDYWNf+FdyVUZUJVq5daui6/P4et4aDVczC+RQgTBnnfqMjCbKOa
+         jkT2yJfaf2Th60ZC3Qjm52JA6XjwnH7uMVKOjrhpMzHXC6A7P2vvXLyZQdRUXLLEHEqW
+         BGWbnSi5nvYjF9cGT7v+vMh8BeP/e8197YS5w3I69/6lVYDkjQrjt+w+y5euCC3xJo0Y
+         Xt5pzoRuGNC2zRCD/qLVuz6eDJQhOPy4iVhoPuHcV2cHBGjT0g6DCdOxBGYW0RTt3Rtj
+         Zkcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706615680; x=1707220480;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DWvxEqM2sAiMA41B2v7Y3h0SQJvpGs9/4DqAKQgags4=;
-        b=tcdkGxO3I3ZMaUhDqKWxgFd5CVQsLoYeMaef17rUzJ2i9bnpbCWVK7fRHXaPk/uB6c
-         d9XXhakiwhb/2+k/x8l7seoFofBsxucBXSY+N3xjaauBu04Bjs8Sr/kTAekWeSYYpmTq
-         oc7gGGFcnZkJR3Ydqc55fkilTuiy9ybbApWodRdIn3d1wW9WSVDqVBcgzk+1HM5pSHP9
-         OGT2Hr3jBtkEf/KSMJ/ilinljxTWQMC9bV8plCrkHCC1bDkcTYNqKLkat/pIDIuVsHFj
-         UnElYVrIjAkziNMo8AhQKsM4Spnp9p7+jus8AyUl9nGSWidqeTP2k76bZSKJ5g1kGg/H
-         OlZw==
-X-Gm-Message-State: AOJu0Yz8nIG0VHaRQ8vYw6hj5rk5fItwE5xlFTAjvjpCeKY5Qz0/IGS7
-	fVzZg9k60qmquGXN8XRwgJR5To3FGG1hWioce7hx6JzWWf0ruGI5EhKTLW2ewgUHobzOZtBu5NB
-	Lx7VbnGJT5dsZsVZcNhUJQw+0b4YsXDYfVlcaAA==
-X-Google-Smtp-Source: AGHT+IH9c3sIo7Ld5jc0z4sK97HzRMshtPUDQAZ0vZw+NLsRxgD8BOaqACZQUS5hFwA6GvRwGajwBgs7ZIKruDMHNBQ=
-X-Received: by 2002:a17:90a:bb12:b0:290:304f:e651 with SMTP id
- u18-20020a17090abb1200b00290304fe651mr4886258pjr.39.1706615680339; Tue, 30
- Jan 2024 03:54:40 -0800 (PST)
+        d=1e100.net; s=20230601; t=1706618796; x=1707223596;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=X4PtQqAEVn6EHAEZyxwnwW9gwR0IeNJ+8H+/wVoTsRE=;
+        b=jL9UfsLgSBcimAfgVrhdSnvTaC800dll8+9T9A509VGKG7qBiMvqa0CnVVGF6Ufmb1
+         aD349ZRavNrl84oEd6X11ghUyvywZRDfEwR+rSBZCnsfLHGYQ2rTAFvyHw5suHo1Okgb
+         2PD8ANZZN66US7AgT7Om3Us2Ixs0RDMDVO39NGALeYqbWFTGkKvJjX7deVEOt8thJE5E
+         TdOvnxq+JHdLv66asVkV8cJTIpHPKJsBK14qxKqCM0jiOlCXry57LVuls7EG3ISsWX78
+         +XYT3UuOpUp5+ik4Z3VpavZw+bCYVL612+lsk/gkqgsUkgGG9Te2xtjSZL/+xBCGSDaS
+         xEig==
+X-Gm-Message-State: AOJu0YxsvA/7RDe+xH8HWMuu6aa9LOxdc3L7NdqTfx2jSa0FthNMasFY
+	iJvfAMWKYzUUAYTolzhMPL8eYU7TW82SMgKkj3lPJGtgV8nv2EfsBwfbs6vVRyU=
+X-Google-Smtp-Source: AGHT+IEur06OLNwUUAXrGoZqZHky3QnDwF6ybo2usl7ip7EaML8Zc4Gcznbj/Tf6fyT7//j61zxKMA==
+X-Received: by 2002:aa7:8b8a:0:b0:6dd:839a:b070 with SMTP id r10-20020aa78b8a000000b006dd839ab070mr6367289pfd.34.1706618795817;
+        Tue, 30 Jan 2024 04:46:35 -0800 (PST)
+Received: from x-wing.lan ([106.51.161.37])
+        by smtp.gmail.com with ESMTPSA id p3-20020aa79e83000000b006dddd3e31a8sm7658788pfq.219.2024.01.30.04.46.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jan 2024 04:46:35 -0800 (PST)
+From: Amit Pundir <amit.pundir@linaro.org>
+To: Greg KH <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Douglas Anderson <dianders@chromium.org>
+Cc: Stable <stable@vger.kernel.org>
+Subject: [PATCH for-v5.10.y 0/3] db845c(sdm845) PM runtime fixes
+Date: Tue, 30 Jan 2024 18:16:27 +0530
+Message-Id: <20240130124630.3867218-1-amit.pundir@linaro.org>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240129170014.969142961@linuxfoundation.org>
-In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Tue, 30 Jan 2024 20:54:29 +0900
-Message-ID: <CAKL4bV6poHN0WqBN7Z=TZ9E3uaLz=h=5Ovn9xHm8y6E-mabKfA@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/331] 6.6.15-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Greg
+Hi,
 
-On Tue, Jan 30, 2024 at 2:22=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.15 release.
-> There are 331 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 31 Jan 2024 16:59:28 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.15-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+v5.10.y commit da5e0feb12f2 ("drm/msm/dsi: Use pm_runtime_resume_and_get
+to prevent refcnt leaks"), which is commit 3d07a411b4fa upstream, broke
+display on Dragonboard 845c(sdm845). Cherry-picking commit 6ab502bc1cf3
+("drm/msm/dsi: Enable runtime PM") from the original patch series
+https://patchwork.freedesktop.org/series/119583/
+and it's dependent runtime PM helper routines as suggested by Dmitry
+https://lore.kernel.org/stable/CAA8EJpo7q9qZbgXHWe7SuQFh0EWW0ZxGL5xYX4nckoFGoGAtPw@mail.gmail.com
+fixes that display regression on DB845c.
 
-6.6.15-rc1 tested.
+Dmitry Baryshkov (1):
+  PM: runtime: add devm_pm_runtime_enable helper
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+Douglas Anderson (1):
+  PM: runtime: Have devm_pm_runtime_enable() handle
+    pm_runtime_dont_use_autosuspend()
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+Konrad Dybcio (1):
+  drm/msm/dsi: Enable runtime PM
 
-[    0.000000] Linux version 6.6.15-rc1rv
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 13.2.1 20230801, GNU ld (GNU
-Binutils) 2.41.0) #1 SMP PREEMPT_DYNAMIC Tue Jan 30 20:22:49 JST 2024
+ drivers/base/power/runtime.c          | 22 ++++++++++++++++++++++
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy.c |  4 ++++
+ include/linux/pm_runtime.h            |  8 ++++++++
+ 3 files changed, 34 insertions(+)
 
-Thanks
+-- 
+2.25.1
 
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
 
