@@ -1,101 +1,112 @@
-Return-Path: <stable+bounces-17466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3FC68430E4
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 00:08:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 915C28430E8
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 00:13:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45548B22E85
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 23:08:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48C9A2862B4
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 23:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F66A7EF1E;
-	Tue, 30 Jan 2024 23:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D547EF14;
+	Tue, 30 Jan 2024 23:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvUXX6Zx"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="opV4NaYl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4709E383BA;
-	Tue, 30 Jan 2024 23:08:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB8E7EF1C
+	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 23:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706656127; cv=none; b=YlAdIW0Brwq/tebSbS+bdG2o2NpUHP1lhmykmZFjJ0IUEwhjAuyGSsTYB1DLN8/DuSPQtzCrjLvjRu0Ez2E4wg6PEDjksh3S2zNqXGQYNpbqqQJI2Op8P7bEwhExpr5ykZNWcEIoqSZHRiW/sdmEVOOcm2n7WuNs4QV8JxS8HSo=
+	t=1706656433; cv=none; b=fhGnp0aO0CfS7iXm9uVifYOaXj6kCDuoCJFl1YzQbkHA36a9RjvJ032LWfC/h9EKu/UX21mSdjVS3NRODAiSQeljy31L5XY5j4ri0i0O04b5noW4ykeDpncZwdBR8KpkaLZfvff3Nq77javQW3FhHW64xyvKSTcxdLVirFaL3fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706656127; c=relaxed/simple;
-	bh=ZuQDweNpKH6gLGI/RyP5iCz3jdyHptIwQkI1NjhPexA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q0998wpS6D3KEOVETT78fz3HN4DD1vAW7+rxmAEE0adLYtLGRPpgqUlpMZ5Tf+NmWsN9GldTJkW2P0iHt1ufi47tGBrmsOd/fPGOZCdxIXWhhzuZHpsa7GxkyhyftfzCY/qbOTTdxj6ztx1G9ePw5R1gDVblJlr2xl2VN3tb7NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvUXX6Zx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34DDC433F1;
-	Tue, 30 Jan 2024 23:08:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706656126;
-	bh=ZuQDweNpKH6gLGI/RyP5iCz3jdyHptIwQkI1NjhPexA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QvUXX6ZxDC+UENo5Yrq+HW6yTcoIkn5tHxkqZfvZrWNroIs366EOc66JjBuVfVbWQ
-	 aZX8rg62qgwete7aAblzwe7ZKg9JIqnSgf8jpXZx/fr2GrR8WfyjIGXk/cDaF3HQFI
-	 OPrvaTmjAQ6QNLt/ou5Jhq5Kt+o+dRA7ua0n8UaY=
-Date: Tue, 30 Jan 2024 15:08:45 -0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: RD Babiera <rdbabiera@google.com>
-Cc: heikki.krogerus@linux.intel.com, badhri@google.com,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v1] usb: typec: altmodes/displayport: add null pointer
- check for sysfs nodes
-Message-ID: <2024013021-fetal-nifty-38d4@gregkh>
-References: <20240130192638.3557409-2-rdbabiera@google.com>
+	s=arc-20240116; t=1706656433; c=relaxed/simple;
+	bh=aCglTAeVcM0PfMd5hwBjAlJh3ooM/5RsDnU91GWahMA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=X/5IjFLudO5XAJuv632clZvgouBrEJ2vIrwQTpohxjrnS6ULwiv7nkxRy2TpKIZWLzkv1RLc3rOhk9Wtn06LutPHzIjtWjJqIDAb+VYEHvqJwySqnEJNwOV++VX9ox7k7Dpa6ZCV1LIxb6XWBnhHlrlAmyHPl9tHX/nuyLjzNUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=opV4NaYl; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-6de0f53f8e8so266424b3a.0
+        for <stable@vger.kernel.org>; Tue, 30 Jan 2024 15:13:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706656431; x=1707261231; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aCglTAeVcM0PfMd5hwBjAlJh3ooM/5RsDnU91GWahMA=;
+        b=opV4NaYlwKKIDdO7mZG0r2sxBLQJ9TWN+8Mw59h4LKHsxarYux4eMRUM96W2EmdVYb
+         FynTt/wATDjIALtgIy8ed160jWjRGB+BT6ylFxkKeZNY85zv5krcKEpGUanEqrAneXEK
+         U1/nVm1qGU5UV0xZG7w4q0k4KL/nrDPkVsXknBRDD+Nfh90pnQ2qMPIh6FIHrUI5tPok
+         W3eQmKe+ksoqd8JKJjdkTiKiXzOGq+Fxx5Wx6rnRywjyzjUMPhv9qdmZ4Lcm6vTdOUh8
+         WliSvNkW/lUy8g8qYoKlGTTKyFVS/nGB2uNBVKKrMOeveLwop4LW0lQpxxjcvc0Gpzbx
+         gATA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706656431; x=1707261231;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aCglTAeVcM0PfMd5hwBjAlJh3ooM/5RsDnU91GWahMA=;
+        b=Q2rIO8bDbfY/hFzS8OVOhR+CFw1xlTryxU6SJcHo2gD/1/UTb7CGDf9tMvbbDsqH9S
+         7HefLMYNVdP63K+PJkRcp9e5Bek5tSrvc9N28JOn4i3y0BIPTU4GvUPS84KkKEPz4mo/
+         fdLeuE2a8FkscZyEUmUcCnztvtlBvsmEX9Usw3+5InbWHdgyMSl+1o0WhgvHQ38QdH5T
+         4oqSzgA7N4dyzvAKESyUjvMxot/MMZJ648YDu9Ajl8pJKUWZpJftnYBM57UHGVux94FE
+         rWSiAY3JOWQncTAz0bpDxhHsG+Orm9UOw4CmH/s+UHMU7QDMNBIz5lj+xzYyxFhBM7Ol
+         0xlQ==
+X-Gm-Message-State: AOJu0YxoLCCualobCJbnq0knFQx5ueqyM4VSHWbZgqDsyhLhQgGmuwaY
+	hTYx7Qk3fHs+w0sXqYPd/ho/GSQD069ybZYN7p4SW1+K/AhxnqNtov/8mq1RbFnSsTABKw8A92m
+	9ofHtWpVEI+IB57d6tvOIcvid2As9poXkJ0aXFw==
+X-Google-Smtp-Source: AGHT+IHQAahjrMg9Y0dWXqUUXGOGOSgWGyqO+PDriasAlruF7X/96XL4KAI6X8n/QyRmm5M2vm1fvk6Mz+jrJ7j0344=
+X-Received: by 2002:a05:6a20:9f06:b0:19a:5257:9828 with SMTP id
+ mk6-20020a056a209f0600b0019a52579828mr3198323pzb.22.1706656431461; Tue, 30
+ Jan 2024 15:13:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240130192638.3557409-2-rdbabiera@google.com>
+References: <CA+G9fYtEGe_DhY2Ms7+L7NKsLYUomGsgqpdBj+QwDLeSg=JhGg@mail.gmail.com>
+ <ad5b7442-385d-41db-9202-a36414460610@sirena.org.uk> <CA+G9fYsbwWpDVR9KJXx8UO5MXsYT81uAJbLLNDnLianr8jmXUA@mail.gmail.com>
+ <63e92a6a-9cb7-4272-b524-ccaf997aceb3@sirena.org.uk> <CAEUSe7_9tE5K7NpsmaG_v_bTJaMGhVVSDRhMn1QYnr2z4vSg8w@mail.gmail.com>
+ <20231221093442.3c4b84f0d39350f9deb4e51f@kernel.org>
+In-Reply-To: <20231221093442.3c4b84f0d39350f9deb4e51f@kernel.org>
+From: =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
+Date: Tue, 30 Jan 2024 17:13:40 -0600
+Message-ID: <CAEUSe7-q2byVG=qM-uw-oe+aRb=wbDzAc8JMJQdUCFbqJMwyeg@mail.gmail.com>
+Subject: Re: selftests: ftrace: Internal error: Oops: sve_save_state
+To: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Naresh Kamboju <naresh.kamboju@linaro.org>, 
+	Linux ARM <linux-arm-kernel@lists.infradead.org>, 
+	open list <linux-kernel@vger.kernel.org>, lkft-triage@lists.linaro.org, 
+	linux-stable <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Marc Zyngier <maz@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 30, 2024 at 07:26:39PM +0000, RD Babiera wrote:
-> The DisplayPort driver's sysfs nodes may be present to the userspace before
-> typec_altmode_set_drvdata() completes in dp_altmode_probe. This means that
-> a sysfs read can trigger a NULL pointer error by deferencing dp->hpd in
-> hpd_show or dp->lock in pin_assignment_show, as dev_get_drvdata() returns
-> NULL in those cases.
-> 
-> Verify dp drvdata is present in sysfs reads and writes before proceeding.
+Hello, Masami-san!
 
-Why not populate the sysfs nodes after the assigment happens?  That's
-the normal way to do this, otherwise your change looks odd because:
+Sorry for the late reply -- winter break, expired artifacts, life, etc.
 
-> 
-> Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: RD Babiera <rdbabiera@google.com>
-> ---
->  drivers/usb/typec/altmodes/displayport.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-> index 5a80776c7255..0423326219d8 100644
-> --- a/drivers/usb/typec/altmodes/displayport.c
-> +++ b/drivers/usb/typec/altmodes/displayport.c
-> @@ -518,6 +518,9 @@ configuration_store(struct device *dev, struct device_attribute *attr,
->  	int con;
->  	int ret = 0;
->  
-> +	if (!dp)
-> +		return -ENODEV;
-> +
->  	con = sysfs_match_string(configurations, buf);
+On Wed, 20 Dec 2023 at 18:34, Masami Hiramatsu <mhiramat@kernel.org> wrote:
+> Hi Daniel,
+> Would you know what ftrace selftest testcase script is running when
+> this crash happened? I think it depends on the selftest version but
+> I don't know which one you run.
 
-there's nothing keeping dp from being an invalid pointer right after you
-check it.  Really that might not happen, but it's hard to tell that
-here.
+If I remember correctly, that actually happened during LTP testing. I
+found a new instance on 6.1 today, on ltp-controllers, so there were
+no kselftests involved.
 
-thanks,
+I'll share more details in a bit.
 
-greg k-h
+Greetings!
+
+Daniel D=C3=ADaz
+daniel.diaz@linaro.org
 
