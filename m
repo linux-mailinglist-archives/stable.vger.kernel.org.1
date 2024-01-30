@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-17450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7F0842E58
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 22:04:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058A6842E5B
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 22:05:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08B8C1C24517
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 21:04:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3DC21F2458D
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 21:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A76771B5F;
-	Tue, 30 Jan 2024 21:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B0C71B56;
+	Tue, 30 Jan 2024 21:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lm1Gu+Zq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EgAo6Y9+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64A76A02A;
-	Tue, 30 Jan 2024 21:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA2355E57;
+	Tue, 30 Jan 2024 21:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706648651; cv=none; b=vCZRelUm7+SzzgPzOMmF61tTcdCMTeVguVt+WUEqyJbIuDvgJ7ko90DKqCjk2Elh3dYj+bz9ILhQ4BdvKbptbXbT2Trc/HLHylK+Wa3GCP3W7VZEq6maPoJ72IUCiY4UaS7DGKr6sxUCXyKCFPpxJ7UjNfEXIpZzWWkfPRP/Ixw=
+	t=1706648738; cv=none; b=qsmTW3mNVXH0raYDw5UweA5wIYuQstqZfp6OTzqOdxXLMtDcxctUvp+KZ333zt2wzL6CUhkFmenokjLUkiT/EBANTO+QW9i3NNBuktRFUZcwPXVshoZ8jVL3SDIREOJRSyTCPjkUuLwAL3oJsY7mcBbhQwFyh3ebVl5xBFzSTfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706648651; c=relaxed/simple;
-	bh=L7g7Xr6LSWiL/PufA+EKv8CV+udPLfTQfGO5ji9xvhQ=;
+	s=arc-20240116; t=1706648738; c=relaxed/simple;
+	bh=ZOjytVEzrFk2XHjiQxQdUmGqDFYMmh735tgNNxhSuio=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DTMXMc0KHnNbojlgJX0qbGOrORVddPJNsRIkZYJbBnKYQd/Q2pLfX5Ae8N3k7ENJk3oxED2VcOe6C4PDYF65L3yWO7+zoYnug2WLrfGidyfLIzOgJuCKQH1NlUYNXP/TUrs3rAXjy+0AXiGVNM3+ctQ5596YhtErtjGB1vIwOuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lm1Gu+Zq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4DFC433F1;
-	Tue, 30 Jan 2024 21:04:11 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=O2JZdKXmnynUFDegouBwu9obCYUUWHg2EObpMtUiu3O+auY6+lBGsf2OPRpfYf1HUdLRCvHU8NgOB9aDOj/+1RDwRUb4wZt+uikDWSL4mlgWkT2tdMiiUnO2Z8jKnkV/1skDXkKkAvxx1ImpZZaqWFqFH9werwrOE4mKtRAvQWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EgAo6Y9+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A468C433F1;
+	Tue, 30 Jan 2024 21:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706648651;
-	bh=L7g7Xr6LSWiL/PufA+EKv8CV+udPLfTQfGO5ji9xvhQ=;
+	s=k20201202; t=1706648737;
+	bh=ZOjytVEzrFk2XHjiQxQdUmGqDFYMmh735tgNNxhSuio=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Lm1Gu+Zqb98HKjzLlciqyq1GrY+Q6mevlVV7Robs3PtFrGibOksONsnFlaSnU5iyI
-	 TqZRAX120B8ZRlO2EKcpOj/b66OHIMtjYZhY1ngFpvyPTN8xe9Fbuhklliv+ShJR1m
-	 X3XM5Xan/rPgqO3h8M/Q6KHTPd8BeORfF2LC4wWvX1U5zqWaZB68MeYJHhJ4HDIax2
-	 j6w03tlpUwK+9MqIiZuCU8cSajwEhBa3lhcHVz4YuOUzFrVGnZoWdrBIaEB+no4AR4
-	 DScq9sU1vWT8Xp6aNr54wpUBhfMu/1sz/REIwspQ8Fgo8gugizSYkSMxMadrzrHYkb
-	 AB++3/d8nyenQ==
-Date: Tue, 30 Jan 2024 16:04:10 -0500
+	b=EgAo6Y9+sFPZbz49IZLliTD2XE69WII7s9CMV1loCchBHzoiH81ChCJi6WIPT8ck/
+	 hCn566bWXCYhpbPbqNJcyrUduS2720oJxLMDTxU3Y1f/mjGn5lrYpf6CuRygTcjOKC
+	 2R2b3iuIb+aDcn2BHTMUOvX2yBF/ncjE4TZ4uE2f/ctnn+DcqBfeRMs8M8p8+MPbxA
+	 MD7ts8l8X60CdWK5mGtQdJfjmJNJrm3unOsHtQDiPLEJlVf6AwYwYE6OTprBOnQpFb
+	 azg16I12z4ayETCtrBHWj9wbCRV6OVD6/EtH4TLWcDTMhZHY7EWTNvEA+Ql8xrQzRE
+	 PcwG3kSwUTkVQ==
+Date: Tue, 30 Jan 2024 16:05:35 -0500
 From: Sasha Levin <sashal@kernel.org>
-To: Armin Wolf <W_Armin@gmx.de>
+To: Pavel Machek <pavel@denx.de>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Hans de Goede <hdegoede@redhat.com>, ilpo.jarvinen@linux.intel.com,
-	platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.7 15/18] platform/x86: wmi: Remove ACPI
- handlers after WMI devices
-Message-ID: <ZblkSguc70hT8puW@sashalap>
-References: <20240116001308.212917-1-sashal@kernel.org>
- <20240116001308.212917-15-sashal@kernel.org>
- <0d179914-5912-46ee-9c10-50b9bbcac718@gmx.de>
+	Avadhut Naik <Avadhut.Naik@amd.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tony Luck <tony.luck@intel.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	bleung@chromium.org, tzungbi@kernel.org,
+	chrome-platform@lists.linux.dev
+Subject: Re: [PATCH AUTOSEL 5.10 3/8] platform/chrome: cros_ec_debugfs: Fix
+ permissions for panicinfo
+Message-ID: <Zblkn9lNZXQUQQuc@sashalap>
+References: <20240116001457.214018-1-sashal@kernel.org>
+ <20240116001457.214018-3-sashal@kernel.org>
+ <Zabq2PKJwsllm9zk@duo.ucw.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,33 +65,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <0d179914-5912-46ee-9c10-50b9bbcac718@gmx.de>
+In-Reply-To: <Zabq2PKJwsllm9zk@duo.ucw.cz>
 
-On Tue, Jan 16, 2024 at 12:53:46PM +0100, Armin Wolf wrote:
->Am 16.01.24 um 01:12 schrieb Sasha Levin:
+On Tue, Jan 16, 2024 at 09:45:12PM +0100, Pavel Machek wrote:
+>Hi!
 >
->>From: Armin Wolf <W_Armin@gmx.de>
+>> From: Avadhut Naik <Avadhut.Naik@amd.com>
 >>
->>[ Upstream commit 22574e17626391ad969af9a13aaa58a1b37ad384 ]
+>> [ Upstream commit 0706526ec7704dcd046239078ac175d11a88a95e ]
 >>
->>When removing the ACPI notify/address space handlers, the WMI devices
->>are still active and might still depend on ACPI EC access or
->>WMI events.
->>Fix this by removing the ACPI handlers after all WMI devices
->>associated with an ACPI device have been removed.
+>> The debugfs_create_blob() function has been used to create read-only binary
+>> blobs in debugfs. The function filters out permissions, other than S_IRUSR,
+>> S_IRGRP and S_IROTH, provided while creating the blobs.
+>>
+>> The very behavior though is being changed through previous patch in the
+>> series (fs: debugfs: Add write functionality to debugfs blobs) which makes
+>> the binary blobs writable by owners. Thus, all permissions provided while
+>> creating the blobs, except S_IRUSR,S_IWUSR, S_IRGRP, S_IROTH, will be
+>> filtered by debugfs_create_blob().
 >
->Hello,
->
->i would advise against including this patch in the next stable kernels.
->
->The WMI ACPI notify handler is still using list_for_each_entry() which is
->not safe when the WMI devices are removed before the ACPI notify handler.
->
->This issue existed inside the WMI code for a long time, but this patch might
->trigger it. Since no users reported any issues regarding ACPI errors during
->WMI removal, i would drop this patch.
+>This needs previous patch to make sense (according to changelog), and
+>we don't have that. Please drop.
 
-Ack, I'll drop it.
+Dropped, thanks!
 
 -- 
 Thanks,
