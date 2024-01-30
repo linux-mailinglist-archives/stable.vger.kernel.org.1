@@ -1,257 +1,118 @@
-Return-Path: <stable+bounces-17445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97966842D89
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 21:13:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE79842D8E
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 21:15:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 113EC1F22232
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 20:13:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42ACA1C22AF6
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 20:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C4D71B41;
-	Tue, 30 Jan 2024 20:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD8871B45;
+	Tue, 30 Jan 2024 20:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="ZuwS+t4W"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=svenjoac@gmx.de header.b="uWMEorml"
 X-Original-To: stable@vger.kernel.org
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11020003.outbound.protection.outlook.com [40.93.193.3])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E1F71B34;
-	Tue, 30 Jan 2024 20:13:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.193.3
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706645606; cv=fail; b=eSlDjzOp5WFKobrRWmfAIJ2j0Go3q8xvuw6JzOcOU7SGwAxckDlpqItJshFBkCHfMBf2OiAM8IpQ5HF9tA4AmqOfiertTADccbiimvPKPVh1I5CML6MSAV98EOemzYb/H9JZnBufKrKX2a6mqgtAlLREg1sVfkA+YbBcxySK67E=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706645606; c=relaxed/simple;
-	bh=AULLZhCRHkkVKrSvDX3AH7+0zbY2g7qyw+zizy/he6k=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=tkNHkLfogQmseEEIeRPySNNkvzlR0vXnR/8dMozjjtB0iVamUegMWrasMsGFsnQlhYTYJ9NUkl5NOiTgrCuCcPzUEkUfxwsiNDoH0/FPqXYKf3uM4Bdw46tjLSnkFaYbUJtnZXkvHp7buJhvAwnx8IuAzweOrwfLyf1YEFZ/Rfo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=ZuwS+t4W; arc=fail smtp.client-ip=40.93.193.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ezMXLheCwbyiCwOTjoAx7L6p0tBgOy2nUIXfkT5d8HhIRGiI7ewdiYyWVSfJwpL4BWVO7aUa5EZe4sgQcl054L+SWhnzcKLDj7gJEpVzF2g4oBHViYLPNqmsLWd3VidTkxteW9mVMdKjKfEwT3vmkscwC0MPxYpQUgv2Guhnj9d3HyiVVVX2hk8BtK61lenME662ACSax6cVQbbj5HCNu2tMwDb5ca2NHNc6fp6OsOaG+Z/twmszVg191vGcDlNhPXe5FKL8RbNjOQcgq1jh7njBcAXODUo/WPP1jGnUB/Fhx77VszeicRNWgdYvjiIrKQLitgBKGQj1Mc1tnDtCKw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sv3/sgFIpLkJFvF9I39vYkQvhh2UyQHO+UI8athqv88=;
- b=lnjS2wy8AcQzB0Ls3DBr7UlIovbQBAmpiNG7vV8wrF8FfvUr2pa5UtoHoTWU9kisVoQ6X7qFVO8xzlvLhvi701CIe/fcyQHuLv5xaLLw4QNmrOVb+yQATkBOR98PHOUswMDSF0mkKTqcJeh2sWA4KOlzKzO02uKDkL0/Fn5/MpECFWv/venRnGH1PFkdnoOcamn61/rJgWV2zFFluDXPJ4EEo1YDeKP5gSUvn3YRfsrl/YHk3NGi/iOcjZErw7yYsffO9nXsao6zmVQ6qWK/RdzHQsvsMOLPyrM67w9hL2GaXlLVfYJD+nqSaEb5FXaA2e9k0p2IRM6npBlDurC2VA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sv3/sgFIpLkJFvF9I39vYkQvhh2UyQHO+UI8athqv88=;
- b=ZuwS+t4WfQmeYOehJBNJkZ+VkADtTjhhUkr2dPlFUTJxyNIjAP+urMR+Qakeuo1ndVSl+X68sI/0VHdhYblcWoq+rrpNQifmYDKp6oTVOSdtt9nNQUsfigz1gg2VoBG3kNpEESw3HcIy+qkdx4rcHGhAMe5321MFE+LeBLoZlNo=
-Received: from SA1PR21MB1335.namprd21.prod.outlook.com (2603:10b6:806:1f2::11)
- by CY8PR21MB4061.namprd21.prod.outlook.com (2603:10b6:930:5d::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.8; Tue, 30 Jan
- 2024 20:13:21 +0000
-Received: from SA1PR21MB1335.namprd21.prod.outlook.com
- ([fe80::5d07:5716:225f:f717]) by SA1PR21MB1335.namprd21.prod.outlook.com
- ([fe80::5d07:5716:225f:f717%4]) with mapi id 15.20.7270.007; Tue, 30 Jan 2024
- 20:13:21 +0000
-From: Dexuan Cui <decui@microsoft.com>
-To: Shradha Gupta <shradhagupta@linux.microsoft.com>, KY Srinivasan
-	<kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
-	<wei.liu@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Wojciech Drewek <wojciech.drewek@intel.com>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC: Shradha Gupta <shradhagupta@microsoft.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH] hv_netvsc:Register VF in netvsc_probe if
- NET_DEVICE_REGISTER missed
-Thread-Topic: [PATCH] hv_netvsc:Register VF in netvsc_probe if
- NET_DEVICE_REGISTER missed
-Thread-Index: AQHaU0yZPmSUZITQDkq6vegFrHdKtbDyrTeg
-Date: Tue, 30 Jan 2024 20:13:21 +0000
-Message-ID:
- <SA1PR21MB1335C5554F769454AAEDE1C8BF7D2@SA1PR21MB1335.namprd21.prod.outlook.com>
-References:
- <1706599135-12651-1-git-send-email-shradhagupta@linux.microsoft.com>
-In-Reply-To:
- <1706599135-12651-1-git-send-email-shradhagupta@linux.microsoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=beac0a21-5dac-4c54-8eec-76ca3372c098;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2024-01-30T18:26:57Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR21MB1335:EE_|CY8PR21MB4061:EE_
-x-ms-office365-filtering-correlation-id: 947d65b7-1a81-41cc-ea7f-08dc21cfe7d5
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:
- MF1ETwzxTD5oBDh+Gc+Hei0Tus1AiRNKNTpmvsSOYMXv+3mUa0SNksf84yCczuDT1RUWgzvJSkO49f/MpzmEGkPv3KSmeTWIEoFLW8JlsSJliOMxf4e62Rp74sz/HScXmTAg1jAwgaiWPTvHCI6Oo8UwmhkYmI7gyHvsNHi8NtG4LFqgmfidqGiWI9Cd9oUZMfZz9Brh+VOniJyAG+vLKHCS/trKnZJAHlYEB/B0622ESuo3KmEjYDAPLDmrVLJter/bLEjlJKwIjqMT2w91YU+le9u4X2ZjbrcDWEpiZwuPl4eUM/cI61HpIkGfA6mKNL0gGinEkEXOqFP7uB6Z44fi/aSuyy6f++TsyHjORpqDtUxnHRYQE8+olgf9c/jxJj9q0yoL8qg6Lk5ImGXGF+Ys1JBUWWTRxJyUFpkE952SkTzl672ljEQGN9TaVD/mxCeS/9/mxB+7ota/vYK1pp/j08awK8iTUfdaJ/2VGlxGi8aENZ21Tzp1lnroH0uKK9CNfmzNdyAp8Uh4TzyqkCVJBjaimI1BjoU/VLiPmb9j3pegCax7co3oX6PMUrxTBYWcCyFvbu289RZWNcmlPT1y7YBrUygJJubzfo8LIY4DJaXOR3A52nqbpxdyn/XBWKJpOy+XqjR2FHzupEHAdw==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB1335.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(366004)(136003)(396003)(376002)(230922051799003)(64100799003)(451199024)(186009)(1800799012)(55016003)(41300700001)(921011)(26005)(38070700009)(7696005)(8990500004)(478600001)(9686003)(10290500003)(6506007)(83380400001)(71200400001)(82950400001)(82960400001)(38100700002)(122000001)(2906002)(86362001)(7416002)(66446008)(5660300002)(64756008)(54906003)(76116006)(66556008)(66946007)(66476007)(316002)(110136005)(8676002)(8936002)(4326008)(52536014)(33656002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?ikVS0r+VYoJH8LLcFlr2OxUYCkYXZkSV7MGnUWqBroXUVrAeAckg9d9YXFFa?=
- =?us-ascii?Q?EqDmYUv3YuXXn44AQ+/twyDmB5NpKYHCInilceOPj7STcRG3Wrpp5MTmkjGp?=
- =?us-ascii?Q?QCQLZxpUcfHGal3vkuaIAfWzPaZv05n1D6uR5Kgr1yHvU4BNamFko8SFBlRE?=
- =?us-ascii?Q?ktbZouOWE4NprGjVJfk1nsXxUhvH8oKoC6o809hYRsmohKMwvdlzqI30bZ8p?=
- =?us-ascii?Q?aYRXqf0zQooUiw6WWuE411i0JX2p4F8uQei3XsAHfx0VKzNBO56iHgpdwkjY?=
- =?us-ascii?Q?29ZDtBtrnD25wI0W2ciOS1JXeHn8oMaBZwn19XjrtNy2+zRIWPw3j55eyAcm?=
- =?us-ascii?Q?Phu9EdmU5aUpp8+WonHR6l7Q1ujYd5yhU2acg4rsiBHprupICYC732YSgehA?=
- =?us-ascii?Q?5y+TyBJMUc+yypLe5h2obfJ7pBmz/2q71re0vPPQSGKyT9fgkZPlrHd6GrJG?=
- =?us-ascii?Q?gBtBtIaam0uij3XIgU97xhNqW8/lpis5080GN4M67h/A+69jlHFHHLKAzdnd?=
- =?us-ascii?Q?9o36epFQqpcf4gAwBkIB8tWf9B8vFR43telTC+KVqh4e+4s/t0hdCEC5CDda?=
- =?us-ascii?Q?v4lLOpTEOIUCV4RQ9LLu/irF0eKL9ytCuTFacGBq+T+aTfw9ZDCdCEwVMgQZ?=
- =?us-ascii?Q?JU2Szm7Am/Z8kFqLRCwt0cpS5GMtxry4u31i4h3sV3U66weqahQ4/B5RfV45?=
- =?us-ascii?Q?LBkpFF6RoRmOWJ5sBjWMHUlZTsXf0ouHQjaxgf9QrE9cn3OvW3TmrsN0TeJo?=
- =?us-ascii?Q?lQuOiB2WNRXrf+cFHmj5fPLgCcUgEXf/iMD7he+AP9QPzS+88Ax4DkCWLeTX?=
- =?us-ascii?Q?0HGtYqjsiNGJxRj09BCR+d+suXJWPbOh+ojEZMtLsYRkLiWw5vyBRky7wZ1b?=
- =?us-ascii?Q?l7LCPfG4dP/NWzTgla6oF2VQMBCpj0pIDcPH2k/EAX0rZZcn3hNRHuwQI4M+?=
- =?us-ascii?Q?U85ul2gudo4BoAY6N3GrqXo85jARJQ9FuXjeSZ6T4BKdhlfDXMWzS6quZVp0?=
- =?us-ascii?Q?GHYKdjqki2pl/H/+N1QHawSJ5D/Dz6sfxBVsn8FG+XDz0h5QWyFwK37gICLL?=
- =?us-ascii?Q?jCbZUwMhCjJtW8Bd2nnTkVIyH8qxqPZ1FcYuaA9Cjl8kyJqP3bqpOYmuDOxy?=
- =?us-ascii?Q?AXERm78lxVy1nFHutSBDI/D8FtGaP63LaXqmo8DC5iEATreMJ3Bf8SK9Q1B6?=
- =?us-ascii?Q?BDqUSf+ztloOoSu3VywrWnf9MNlsSA5t6wpytQmKTX07vcPh0TSMZmBqgMrA?=
- =?us-ascii?Q?VLeL1ndocGYTRHiAm0x5DidCH3yNivNYZkODvgIfqdbt0PBXUjuGxogwnFGE?=
- =?us-ascii?Q?Joobdm2C7MFoVhK1ixYjtRLxFHetCd+l1CAYvU74gbGJVfMUTKVgytfIOQsl?=
- =?us-ascii?Q?/W1lszv4HvvAZdoAVunTwU3HkBnkKIzV0WODFQyoEqT2UFUBMP2wXdzF0p08?=
- =?us-ascii?Q?mb2ni3uXzUMXKwvMa71Gfh5dWWe5BsVwgvoxyhwn8vaFd318dwBS93d7OgCZ?=
- =?us-ascii?Q?oaqrhS74pHzB9s3Ug3uf8/GJPFXEz6mjQdrSjg/xb/IOppTqWJUq/3sBuKhq?=
- =?us-ascii?Q?xFqcKc9DBaYruMoVdDA=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5689771B32;
+	Tue, 30 Jan 2024 20:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706645741; cv=none; b=KR4BxtDRsAXoduea7gzME2PmICNhpnk0nb+FjHllF6lpbNV8EZGgPlB/R+OkaOONXi7KGt/4FUtXsTL+8dK2lxp9ugE6xDHZLo/mIEpSEtRuGEhbli6hsNSN9JVAKbdVD7pSViKNCg/HYgQ4wEQVHKVF/GDumcL06fw4O/7l+x8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706645741; c=relaxed/simple;
+	bh=qF0LHiAbtVxxFWy/i7EP+gADimSNgL/R6tCnG0ux6K8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=B+44SipOfY8YjqyivHyb6SZSN+fa2WasI7SAMe/kzElWFw8bhZPZx+U+Ln6W9z03ECtT0s7TiIvmKbXlo0jNRnxl1QTwCTp43Fjnh2N+0DsQt4JcNfZbdRQi+SSaR6ZSdrZm9KqsSCxuQwBlzG3ivk1A5nmpJfusX9dgT7GGswE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=svenjoac@gmx.de header.b=uWMEorml; arc=none smtp.client-ip=212.227.17.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1706645714; x=1707250514; i=svenjoac@gmx.de;
+	bh=qF0LHiAbtVxxFWy/i7EP+gADimSNgL/R6tCnG0ux6K8=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:In-Reply-To:References:
+	 Date;
+	b=uWMEormlo9y5Z9yrFtScMh04LDQAUJr92eA1YfUDG0PnpYd7CkF3tTj3h3XgUbw7
+	 IZS3xGwEZyoDYbOjQ8mXr+5aNNQSWFIH0B3QzApqjqWUC1CF0KZplKz9GkQeWvryF
+	 TSDdPZjB3AYjW57F6rOz10V51XwDkMule/oiV35cB8/RZdzBh6f6ZX+jk08RfgJqj
+	 fgTdps0O5o/xXP2aTFrw9asEYRGzodZOpOsxhZ1dRYp3G5T6d6OmgF8JAvsU3jSPU
+	 u7HR8MjgvsG4p03K1ao4pwsfPWXwp8EcxfXfoFq0FZEA71wUtqYaxO3zpCyOuGmvV
+	 /RRgqlqmT5He9/7VtQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from localhost.localdomain ([79.203.86.131]) by mail.gmx.net
+ (mrgmx105 [212.227.17.168]) with ESMTPSA (Nemesis) id
+ 1MBDnC-1rLarE0cEo-00CeKc; Tue, 30 Jan 2024 21:15:14 +0100
+Received: by localhost.localdomain (Postfix, from userid 1000)
+	id 9A91D80110; Tue, 30 Jan 2024 21:15:11 +0100 (CET)
+From: Sven Joachim <svenjoac@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,  patches@lists.linux.dev,
+  linux-kernel@vger.kernel.org,  torvalds@linux-foundation.org,
+  akpm@linux-foundation.org,  linux@roeck-us.net,  shuah@kernel.org,
+  patches@kernelci.org,  lkft-triage@lists.linaro.org,  pavel@denx.de,
+  jonathanh@nvidia.com,  f.fainelli@gmail.com,  sudipm.mukherjee@gmail.com,
+  srw@sladewatkins.net,  rwarsow@gmx.de,  conor@kernel.org,
+  allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 000/185] 6.1.76-rc1 review
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org> (Greg
+	Kroah-Hartman's message of "Mon, 29 Jan 2024 09:03:20 -0800")
+References: <20240129165958.589924174@linuxfoundation.org>
+Date: Tue, 30 Jan 2024 21:15:11 +0100
+Message-ID: <87cyti4lyo.fsf@turtle.gmx.de>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB1335.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 947d65b7-1a81-41cc-ea7f-08dc21cfe7d5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jan 2024 20:13:21.0904
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: gqBS1aXbPAH4RuvUP27nZW8lA4qAjwlE4MsrEBnBo/us7aJ5ZoH5r2seQjqHqRhe974PujXhZbtejmsPM81tiA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR21MB4061
+Content-Type: text/plain
+X-Provags-ID: V03:K1:QcvQmzEyCles02lS8o7pqH6JGpABMgHLojmyeXih92ZDAoTm0B3
+ fAPfWXwWdVYDlk6FsPBsF+yo+PDARFfTwpnaZSh/sA3VrTOnFRod0V7FVJR2Ep2yenioGjn
+ PdZWX7puK/YYpQJ/N5ERhuqNYxDExIV9aYYLZzAWG+wOowBAtMuiU8ml2qOCdkF2CTp9Wm7
+ C+xeBuLm0voXzjd5cpBgg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:h6Gspw9SZOo=;tbWGYlzFam6OQQvyxCWTuzFzAHw
+ SiiKYT4Hc2m9P/hmkAWj1E7hjxOoYDkcJYsgHkhbrSL2PbKdH2YT4h95r+tQFT6RqrhHZxetF
+ NeG1j+faKnLl/Pwpb2KIwNrKS01B2IYFekX7bfC/GvqT3W0wmjYyTEAKgVECwPQv4C+FjsY1x
+ kuda4aXd3VdQPiLPb1YHkAIm3nI/iZIEy37X6eSZO6OPS+X/4NcLPF+CrzL7rMclfesotJY7K
+ +O06/lTsaO0DkBmNcgsueFCVk9YMlker3rAD1gZ4BDYfMUdFp+y0bzzl3B9YgwjlwTKMAvlXt
+ QPnHIfybTOVjHFLg0noxXsRSDWpDno8ZRvZRXq27H9lam4899fHNs0U1T0hAiAcgj3jFS/jFK
+ m0B/BxS7/LzuKrQFIRCHmKFjemiPqlsQFJoQgKBxVF45ivtOrk0eOXZ8BJBHna4V6JNxyihYQ
+ oyQ/mOJevqtr2O1OJYe3qIv8eYGpTOhNIaBI/VyYq17QDyqwhQ2jqmYuPu3adDAFWfSga+gMD
+ 0FkgxixmWes5hesJiIcRysq2jtr+sswuL2CNxgOwHKDn2gHKp+7FaQ31t47o5hKEbtx5muRI7
+ 4z5t9KbiCkm+nzK+qRibYqma8uV+wt/BKPk3maPft3WJXgZYx3R0rmXITT+hqsOtYLq5NSR1P
+ UgNYAUaD/260NHVPJDfp4ntPOwypIo1sXjbTs0eg7aIzNbNfGtboZa5Edw2SyVlgR1Id2Bp/p
+ M0ZbhrZpb8A90Vx91MQqbfsks66/aB9Bcypls7JkN1yevtOgG5E0Or56O5Fekrs9aQKYXza6f
+ bWNfwYgF2lGjmJepvh7NJ83VLMXbI9EG6M4eIjRbnr/rh7DY5TNwPjp6zzItRm8W57kPj1KfR
+ ncTezcT+z7/UY3LWOUffDdOR+SnDcv7qGlxKyu3+/N9cXcNSD0j6XQuDToQWrMNkhHGFJVxK7
+ vQT23v/sLjotewPGlC48hWIbOxU=
 
-> From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-> Sent: Monday, January 29, 2024 11:19 PM
->  [...]
-> If hv_netvsc driver is removed and reloaded, the NET_DEVICE_REGISTER
+On 2024-01-29 09:03 -0800, Greg Kroah-Hartman wrote:
 
-s/removed/unloaded/
-unloaded looks more accurate to me :-)
+> This is the start of the stable review cycle for the 6.1.76 release.
+> There are 185 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 31 Jan 2024 16:59:28 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.76-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
 
-> [...]
-> Tested-on: Ubuntu22
-> Testcases: LISA testsuites
-> 	   verify_reload_hyperv_modules, perf_tcp_ntttcp_sriov
-IMO the 3 lines can be removed: this bug is not specific to Ubuntu, and the
-test case names don't provide extra value to help understand the issue
-here and they might cause more questions unnecessarily, e.g. what's LISA,
-what exactly do the test cases do.
+Works fine here on x86_64.  No Mellanox hardware, so I was not affected
+by the build failures which lead to -rc2.
 
-> +/* Macros to define the context of vf registration */
-> +#define VF_REG_IN_PROBE		1
-> +#define VF_REG_IN_RECV_CBACK	2
+Tested-by: Sven Joachim <svenjoac@gmx.de>
 
-I think VF_REG_IN_NOTIFIER is a better name?
-RECV_CBALL looks inaccurate to me.
-
-> @@ -2205,8 +2209,11 @@ static int netvsc_vf_join(struct net_device
-> *vf_netdev,
->  			   ndev->name, ret);
->  		goto upper_link_failed;
->  	}
-> -
-> -	schedule_delayed_work(&ndev_ctx->vf_takeover,
-> VF_TAKEOVER_INT);
-> +	/* If this registration is called from probe context vf_takeover
-> +	 * is taken care of later in probe itself.
-I suspect "later in probe itself" is not accurate.
-If 'context' is VF_REG_IN_PROBE, I suppose what happens here is:
-after netvsc_probe() finishes, the netvsc interface becomes available,
-so the user space will ifup it, and netvsc_open() will UP the VF interface,
-and netvsc_netdev_event() is called for the VF with event =3D=3D
-NETDEV_POST_INIT (?) and NETDEV_CHANGE, and the data path is
-switched to the VF.
-
-If my understanding is correct, I think in the case of 'context' =3D=3D
-VF_REG_IN_PROBE, I suspect the "Align MTU of VF with master"
-and the "sync address list from ndev to VF" in __netvsc_vf_setup() are
-omitted? If so, should this be fixed? e.g. Not sure if the below is an issu=
-e or not:
-1) a VF is bound to a NetVSC interface, and a user sets the MTUs to 1024.
-2) rmmod hv_netvsc
-3) modprobe hv_netvsc
-4) the netvsc interface uses MTU=3D1500 (the default), and the VF still use=
-s 1024.
-
-> @@ -2597,6 +2604,34 @@ static int netvsc_probe(struct hv_device *dev,
->  	}
->=20
->  	list_add(&net_device_ctx->list, &netvsc_dev_list);
-> +
-> +	/* When the hv_netvsc driver is removed and readded, the
-
-s/removed and readded/unloaded and reloaded/
-
-> +	 * NET_DEVICE_REGISTER for the vf device is replayed before
-> probe
-> +	 * is complete. This is because register_netdevice_notifier() gets
-> +	 * registered before vmbus_driver_register() so that callback func
-> +	 * is set before probe and we don't miss events like
-> NETDEV_POST_INIT
-> +	 * So, in this section we try to register each matching
-
-Looks like there are spaces at the end of the line. We can move up a few wo=
-rds
-from the next line :-)
-
-s/each matching/the matching/
-A NetVSC interface has only 1 matching VF device.
-
-> +	 * vf device that is present as a netdevice, knowing that it's register
-
-s/it's/its/
-
-> +	 * call is not processed in the netvsc_netdev_notifier(as probing is
-> +	 * progress and get_netvsc_byslot fails).
-> +	 */
-> +	for_each_netdev(dev_net(net), vf_netdev) {
-> +		if (vf_netdev->netdev_ops =3D=3D &device_ops)
-> +			continue;
-> +
-> +		if (vf_netdev->type !=3D ARPHRD_ETHER)
-> +			continue;
-> +
-> +		if (is_vlan_dev(vf_netdev))
-> +			continue;
-> +
-> +		if (netif_is_bond_master(vf_netdev))
-> +			continue;
-
-The code above is duplicated from netvsc_netdev_event().
-Can we add a new helper function is_matching_vf() to avoid the duplication?
-
-> +		netvsc_prepare_bonding(vf_netdev);
-> +		netvsc_register_vf(vf_netdev, VF_REG_IN_PROBE);
-> +		__netvsc_vf_setup(net, vf_netdev);
-
-add a "break;' ?
-
-> +	}
->  	rtnl_unlock();
-
+Cheers,
+       Sven
 
