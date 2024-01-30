@@ -1,126 +1,112 @@
-Return-Path: <stable+bounces-17358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D1384173E
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 01:03:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD62841756
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 01:12:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A03F41F23BE1
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 00:03:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D2A81C23401
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 00:12:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88CB6125CA;
-	Tue, 30 Jan 2024 00:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5C8111E;
+	Tue, 30 Jan 2024 00:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PpF3aWz1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H+GWtsjO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3862AD16;
-	Tue, 30 Jan 2024 00:03:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F9DDF51;
+	Tue, 30 Jan 2024 00:12:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706573009; cv=none; b=CWpK9P7AmKBTPlVGY0ysy/UI5PRfrkZ9E/ztOfSPhSeD0BaZSDBYLm1dsPB3ykHNzhAf+/dPEt9IjRau7RdYHK3tIBz1sWGzh+FvmX5saqS3RFhC6N4RzzvvTzou+K38+DmSdbc21WlH2PKNa/5Ah4bgHOnrSCloKJHn/VqhbPg=
+	t=1706573527; cv=none; b=LbKYEmkBrOWt9I1+Hh0c1SSx5LlMVXGcTt1ULmq1H21dsosQBRhx+2AYxDQT0AnxZ9S4B6z3Q+r1kJqL4l34RAr+8m+XLPHBuxjEn6U6IIYBDOCPwU+of/t7DqX7X3seEDicB0lO+ODXwso0rlmf2wY83q36XtBtsSgJk7ksIRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706573009; c=relaxed/simple;
-	bh=aKmREnzFzgaG1OovRPdN20/tIbKem5GExczkraauNtg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=noBWqZlIaR1M7PpiIZj7XpAxk7treqiTVNddQK9G/q2ubMiHDiWWiMrN6G8inrl2KRzKqvGU6tTxaEdZ2igdVdxNLrXVTR/gqhJ5Ml9/G2GIRghy3Zsq9cGmnSAso+ECLyfsaXPj8bUCG7BmKfBfGw5Y9/Ni9l1MuA+sQmY69aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PpF3aWz1; arc=none smtp.client-ip=209.85.210.169
+	s=arc-20240116; t=1706573527; c=relaxed/simple;
+	bh=7WwhF69nuEoT6qM+4Qh4Ybkyowgs8m887Z2Bc/TwfB4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jB0f+A8i6kNal0mDIr6KEGTz5apioot518k3/jkn4NXXiHXaHDXOnKGuhnB9n/8Vz3Wv+KEeHFVpvQh4UdZJUmqyzHUt9SzsZ8tNmvyKCl11IVIWcBsQugulrJSAn5HsM/9Y6Gs/3Wch2+VQipQZu2eM8yY+4PnWw0+1ttsaUc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H+GWtsjO; arc=none smtp.client-ip=209.85.221.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-6ddcfbc569dso1487448b3a.3;
-        Mon, 29 Jan 2024 16:03:27 -0800 (PST)
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-4bd9b71456fso579297e0c.2;
+        Mon, 29 Jan 2024 16:12:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706573007; x=1707177807; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=x6AX2tmKlQJuH5vaoUXClrVktpvQ77kaUr8lCS+lqF8=;
-        b=PpF3aWz1Xw2L/YZRUzh/wtreNZMgeTCw+O/RTnKE2JZJCJhs1yLSF0UvGgxaCrHnmY
-         mWPYGPTw1nXv9ZM6mVfb5R1vbtPYOq2xEgXlLXPcGlzbpj6uKoRVCXDerUyR9ZSYDI4b
-         nIq63A9e0F3zv4S2xmVktNfsAfmI9LOzcMllKRV0GGkJhaboFKPXxX574J9oHgDT3spt
-         TvpM5a6fBJDMwhrEXEH7i0RwVP8xA+ZKS2BF0qAXCnv1XBdAtKk1i52/mpPv37tDCxbQ
-         AOLzW8TS3z8kdNkg2GVoJSHTK4OdoiTX6zkEDqdyn1BZM0cktr41hzwbarlFCaHGiWFg
-         dMNw==
+        d=gmail.com; s=20230601; t=1706573525; x=1707178325; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=hpc64mlk1JrWp3Y7/cRi9mFL822Vughz3f3V+hqyd1I=;
+        b=H+GWtsjOvYMR9CTzvjw1CpO47nBDOEIRaLan9kNSHHmh3eU/ubYISTDoSGZjMTSHzD
+         1m3zST6QFWP6OZqtbjnmKwJStX8MatXJPP1WcedFpG6wnuzBP7klI4Tv5+3QBTMsSDBL
+         UGW6TDjGrcX+TXMS78KcZpoZ49jR+kF2wXk/pjmcW1kHPYUmRlari+hRXgyH4Bt5njx+
+         2ZwgwpCCgh1Ch6nGef/EzfkoRi0jKu61QtztHrAmpXxPyQd9bnCI/fkKh6Dzwas+/UjP
+         PsGJg6ME8m2lvShd3u2EnEue+1Mk0ElrbJL+BTajo6Ssz1hgj4+Fzw+PktOfVl304WXD
+         1kiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706573007; x=1707177807;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=x6AX2tmKlQJuH5vaoUXClrVktpvQ77kaUr8lCS+lqF8=;
-        b=A4rdz5syOz6AfOq+bvXpZCTm7GZGkmDnshyEEYq34rZnpe7jNJwDvLv3j8TmFo4irZ
-         RnDUKdfQkMjiBxgG8i0jMvY3TSiGD99dXsi6y0zLFPaR/7fBKFO4cddu+ttRL/Uruidm
-         ce7mY7hHdqh1XDz9rOj5/5FwRdN4YuW7ZQQXgPitpuy8+Qo6zrHT7yqAtTSdRr2oAts2
-         bKaw2chE5zCNQR942VlUPgtAg8dw9LGQrFuuFNert0i3oupiBGP0ZCXpE8u3j5rfF5Fb
-         feULLbKHfWlfq/pIc26onvpsPbHTr+9tZ1gVRwKYA1WXddoG6W55tUz+UZDTYMZ/HEn2
-         EtIg==
-X-Gm-Message-State: AOJu0YzcPoxGr7BF1yxSKt2y8M0l2e+0QCCtxe900AWjGTtSTh+v0k4D
-	i53s0HhCx/wfQ3jRYEzhCmrenAxs8gozLvu1hEOtvzA4UqBtnT2TG0NHzvyl
-X-Google-Smtp-Source: AGHT+IExGftfV1j0UJC6kyaBYy7ZOgbGgH97rcjMAGxmtr9pN9htLL/UJWJQ2w/csFcwubQKRKCLNw==
-X-Received: by 2002:aa7:9823:0:b0:6db:be80:cad5 with SMTP id q3-20020aa79823000000b006dbbe80cad5mr3516819pfl.20.1706573006984;
-        Mon, 29 Jan 2024 16:03:26 -0800 (PST)
-Received: from google.com ([2620:15c:9d:2:d8dd:9292:9e40:5ce5])
-        by smtp.gmail.com with ESMTPSA id lo1-20020a056a003d0100b006d9b2694b0csm6310115pfb.200.2024.01.29.16.03.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Jan 2024 16:03:26 -0800 (PST)
-Date: Mon, 29 Jan 2024 16:03:23 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: "Gerecke, Jason" <killertofu@gmail.com>
-Cc: linux-input@vger.kernel.org, Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-	Ping Cheng <pinglinux@gmail.com>,
-	Joshua Dickens <Joshua@joshua-dickens.com>,
-	Aaron Armstrong Skomra <skomra@gmail.com>,
-	"Tobita, Tatsunosuke" <tatsunosuke.tobita@wacom.com>,
-	stable@vger.kernel.org, Jason Gerecke <jason.gerecke@wacom.com>
-Subject: Re: [PATCH] HID: wacom: Do not register input devices until after
- hid_hw_start
-Message-ID: <Zbg8yxO91S9_DZl9@google.com>
-References: <20240129223545.219878-1-jason.gerecke@wacom.com>
+        d=1e100.net; s=20230601; t=1706573525; x=1707178325;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hpc64mlk1JrWp3Y7/cRi9mFL822Vughz3f3V+hqyd1I=;
+        b=BgAQ//ljmi6YkoLwi7ZI7CWWpq873RJQoo9vt4ZOwWQDkXex7nMbmM9bCIemIexNWb
+         L0q4MYO4rYXcoDObfjnQ5BoqOPVcgR5NAXUtSPkwaz3HLATrbBTuKda8GpH+tvLP6v+K
+         rpR4Vl3Q/zfB9EeazuEaOG241I6nkZt1VJYBXChnGJE6zRhTXyVImg2vWClGwaPOWvbC
+         eQ9hAl8Yo5V6WYq3Mi/4xYbR4d+ixxfoRCSDTWvGU1TLRX9XNRgqQMkzKWk6iFkLS2dl
+         bx380KzZxxNR1kccOJWzeSQ94QweJPcRq2E68+4zpoliGbVPPaMTA4W9MO8p9xEognZd
+         URbg==
+X-Gm-Message-State: AOJu0YxmftXp1Mxa1EtTI0jR1wKVg/i/atNcEjZUjYbGtWXIGtBrsbbg
+	fLER+JqYfEtL+Q1zBiLtq47ELGhrN1ASIeZLQr46ox7T772eZ9xHRTNdWNb1GQWm9a1gzg56geb
+	GzB/C9pjNU84ulAbd2AieyMyuuWc=
+X-Google-Smtp-Source: AGHT+IGlL28pYh80/KwcIcMBVX9zNyBUInjdWBaZ3cuQcc5GdxPBPTdE5IqnPapj1z6H3+Pjw7JcvPYT45mtaOt3/co=
+X-Received: by 2002:ac5:ca07:0:b0:4b7:363d:89fd with SMTP id
+ c7-20020ac5ca07000000b004b7363d89fdmr2438034vkm.33.1706573525227; Mon, 29 Jan
+ 2024 16:12:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240129223545.219878-1-jason.gerecke@wacom.com>
+References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+From: Allen <allen.lkml@gmail.com>
+Date: Mon, 29 Jan 2024 16:11:53 -0800
+Message-ID: <CAOMdWSL3K6JQKCvY-jmkfLuNgDhetLYShdgoTPnJOuBzbQUOuQ@mail.gmail.com>
+Subject: Re: [PATCH 6.7 000/346] 6.7.3-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Jan 29, 2024 at 02:35:45PM -0800, Gerecke, Jason wrote:
-> From: Jason Gerecke <killertofu@gmail.com>
-> 
-> If a input device is opened before hid_hw_start is called, events may
-> not be received from the hardware. In the case of USB-backed devices,
-> for example, the hid_hw_start function is responsible for filling in
-> the URB which is submitted when the input device is opened. If a device
-> is opened prematurely, polling will never start because the device will
-> not have been in the correct state to send the URB.
-> 
-> Because the wacom driver registers its input devices before calling
-> hid_hw_start, there is a window of time where a device can be opened
-> and end up in an inoperable state. Some ARM-based Chromebooks in particular
-> reliably trigger this bug.
-> 
-> This commit splits the wacom_register_inputs function into two pieces.
-> One which is responsible for setting up the allocated inputs (and runs
-> prior to hid_hw_start so that devices are ready for any input events
-> they may end up receiving) and another which only registers the devices
-> (and runs after hid_hw_start to ensure devices can be immediately opened
-> without issue). Note that the functions to initialize the LEDs and remotes
-> are also moved after hid_hw_start to maintain their own dependency chains.
-> 
-> Fixes: 7704ac937345 ("HID: wacom: implement generic HID handling for pen generic devices")
-> Cc: stable@vger.kernel.org # v3.18+
-> Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+> This is the start of the stable review cycle for the 6.7.3 release.
+> There are 346 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 31 Jan 2024 16:59:28 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.3-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-Tested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
+
+Tested-by: Allen Pais <apais@linux.microsoft.com>
 
 Thanks.
-
--- 
-Dmitry
 
