@@ -1,143 +1,175 @@
-Return-Path: <stable+bounces-17422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FF658427AF
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 16:10:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A862B842827
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 16:36:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E95321F2282B
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 15:10:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB5F31C252A2
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 15:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34F37E761;
-	Tue, 30 Jan 2024 15:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418AD82D74;
+	Tue, 30 Jan 2024 15:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="M+R2/Vo5";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="i+/eHCyE"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C923F6D1A2;
-	Tue, 30 Jan 2024 15:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F28C823D6;
+	Tue, 30 Jan 2024 15:36:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706627433; cv=none; b=H0aY6OMYKfTzICNeKsQ1vaWbwL6Cnn0GftmCzVFkhJsS4C2XQk9kc3lcRePzoO4a+NrhZi7pOcoc59YZtipUZhjSZ3Pnkjd7TjHyjlZ4AgTaN3p2tt+yJ6FbdDmdz30dmb7LBhuO2TpiJ3RXfmW0KgyJlwMjBuTSKRhF/hjbGXQ=
+	t=1706628968; cv=none; b=THbTZZejWUs5DDyqc04IznX3WzvaEID+AyZC2MvRZ36mrgpOsr4tjsYOYnJXJEgjniVOOxNkp1ZDB1MheklSTj6bwfR5/a5zYDklgeagce0P+tetWz1rAwwSykmZH7HeFJRhvMbjX+SmJqdKsOLbLbR+uIZJnsq/q459fZFHMmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706627433; c=relaxed/simple;
-	bh=N+91WuIbVPKKtrDN8Fd3GIxb3rJSRpc+7YddCGYHRWc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Em4nSWKyLirNXQ4e9saX/8ffHQ+bBtw0NyoEFS9J7iTVxGQv3bf/jxSUjKH5lg0WKXElG+j9PCPKQDw7Po55lJM5yFuSSAgv0j9HWKCYBg9dQ9wFMg9AmsLK8wy+5gNmFKidAPu47IfuBPqjv0biJKtOEhNuizSoTEztxV8Zsk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 78C0B1C006B; Tue, 30 Jan 2024 16:10:23 +0100 (CET)
-Date: Tue, 30 Jan 2024 16:10:22 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: Re: [PATCH 6.1 000/185] 6.1.76-rc1 review
-Message-ID: <ZbkRXhphCMholpON@duo.ucw.cz>
-References: <20240129165958.589924174@linuxfoundation.org>
- <4a2b55da-ee57-4fca-bb7b-240792b25460@linaro.org>
+	s=arc-20240116; t=1706628968; c=relaxed/simple;
+	bh=2EGzl7M/FHI7zqdg7ywE9XuWh5LgpwPnBVChHVQOHUw=;
+	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=ElI/snunWSpnqTZgZFvD9nEp5U7vpPiZ+1prN1HuqcUl5+WOUiW1pozAS3G4lbjcjOrc5ZwMIh6bgsWILL2gJtDLqqZUzi5ASnXkA62T4oNoma4Qg1yTSt181sxeUT/zrRQ+VLmNC/JbOLe/HyizhA+Oj6xA4xbQ7dY8fRiopF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=M+R2/Vo5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=i+/eHCyE; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 30 Jan 2024 15:36:02 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1706628964;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=KNY97KZhyunhlbOQUhYIMP68InPWjUlWLM1nd+NbATY=;
+	b=M+R2/Vo5i/tS5qB0nz+flCPn4WK66PWkRPzXADc6omcE+z2cINlRPsVNPzomTZvGUuyXkO
+	O0i3bw7q+haUJqMU1BbDBpZcCcG+BrHOjt5fEXng8k1+QR7kUmxUxvOc+aUb5a1bAgaMBr
+	XadZ9OOn458o30XFPKdoauCmK/OhSk3EPOWWfzjGRJswaHMPrZyA5mVfZ834mslfbTVJoo
+	RhBzyg53ucpkhazcL9SdD59rY7vPzVONt1bSG2TTdDfXxpck0uTXvJ08A5frzH9o268fhD
+	JpnPS79daVhtyjdI7UxdpsXGJAJfzbA7S83FauRmveHbT9I1kixyISCJ8cGg6A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1706628964;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=KNY97KZhyunhlbOQUhYIMP68InPWjUlWLM1nd+NbATY=;
+	b=i+/eHCyE6RnR5wxNMXXw7Z0h6sU6/EO3gaA8r6J9AiZkiWX7d65EwFu6UiZHBbbm4nhvSN
+	X+52vrEKLRzw/dDw==
+From: "tip-bot2 for Andrei Vagin" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] x86/fpu: Stop relying on userspace for info to
+ fault in xsave buffer
+Cc: Konstantin Bogomolov <bogomolov@google.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Andrei Vagin <avagin@google.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ogro3/H/WwEjjmKs"
-Content-Disposition: inline
-In-Reply-To: <4a2b55da-ee57-4fca-bb7b-240792b25460@linaro.org>
+Message-ID: <170662896219.398.13546791060751128593.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
+The following commit has been merged into the x86/urgent branch of tip:
 
---ogro3/H/WwEjjmKs
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Commit-ID:     d877550eaf2dc9090d782864c96939397a3c6835
+Gitweb:        https://git.kernel.org/tip/d877550eaf2dc9090d782864c96939397a3c6835
+Author:        Andrei Vagin <avagin@google.com>
+AuthorDate:    Mon, 29 Jan 2024 22:36:03 -08:00
+Committer:     Dave Hansen <dave.hansen@linux.intel.com>
+CommitterDate: Tue, 30 Jan 2024 07:25:48 -08:00
 
-Hi!
+x86/fpu: Stop relying on userspace for info to fault in xsave buffer
 
-> > This is the start of the stable review cycle for the 6.1.76 release.
-> > There are 185 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >=20
-> > Responses should be made by Wed, 31 Jan 2024 16:59:28 +0000.
-> > Anything received after that time might be too late.
-> >=20
-> > The whole patch series can be found in one patch at:
-> > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.7=
-6-rc1.gz
-> > or in the git tree and branch at:
-> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.g=
-it linux-6.1.y
-> > and the diffstat can be found below.
-> >=20
-> > thanks,
-> >=20
-> > greg k-h
->=20
-> We see build regressions on Arm64, as reported by Naresh earlier, and Sys=
-tem/390:
->=20
-> -----8<-----
->   /builds/linux/drivers/net/ethernet/mellanox/mlx5/core/en/params.c: In f=
-unction 'mlx5e_build_sq_param':
->   /builds/linux/drivers/net/ethernet/mellanox/mlx5/core/en/params.c:994:5=
-3: error: 'MLX5_IPSEC_CAP_CRYPTO' undeclared (first use in this function)
->     994 |                     (mlx5_ipsec_device_caps(mdev) & MLX5_IPSEC_=
-CAP_CRYPTO);
->         |                                                     ^~~~~~~~~~~=
-~~~~~~~~~~
->   /builds/linux/drivers/net/ethernet/mellanox/mlx5/core/en/params.c:994:5=
-3: note: each undeclared identifier is reported only once for each function=
- it appears in
->   make[7]: *** [/builds/linux/scripts/Makefile.build:250: drivers/net/eth=
-ernet/mellanox/mlx5/core/en/params.o] Error 1
-> ----->8-----
->
+Before this change, the expected size of the user space buffer was
+taken from fx_sw->xstate_size. fx_sw->xstate_size can be changed
+from user-space, so it is possible construct a sigreturn frame where:
 
-We see the same problem in -cip builds:
+ * fx_sw->xstate_size is smaller than the size required by valid bits in
+   fx_sw->xfeatures.
+ * user-space unmaps parts of the sigrame fpu buffer so that not all of
+   the buffer required by xrstor is accessible.
 
-drivers/net/ethernet/mellanox/mlx5/core/en/params.c: In function 'mlx5e_bui=
-ld_sq_param':
-7942drivers/net/ethernet/mellanox/mlx5/core/en/params.c:994:53: error: 'MLX=
-5_IPSEC_CAP_CRYPTO' undeclared (first use in this function)
-7943  994 |                     (mlx5_ipsec_device_caps(mdev) & MLX5_IPSEC_=
-CAP_CRYPTO);
-7944      |                                                     ^~~~~~~~~~~=
-~~~~~~~~~~
-7945drivers/net/ethernet/mellanox/mlx5/core/en/params.c:994:53: note: each =
-undeclared identifier is reported only once for each function it appears in
-7946  CC [M]  drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.o
-7947make[6]: *** [scripts/Makefile.build:250: drivers/net/ethernet/mellanox=
-/mlx5/core/en/params.o] Error 1
-7948make[6]: *** Waiting for unfinished jobs....
-7949
+In this case, xrstor tries to restore and accesses the unmapped area
+which results in a fault. But fault_in_readable succeeds because buf +
+fx_sw->xstate_size is within the still mapped area, so it goes back and
+tries xrstor again. It will spin in this loop forever.
 
-Best regards,
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Instead, fault in the maximum size which can be touched by XRSTOR (taken
+from fpstate->user_size).
 
---ogro3/H/WwEjjmKs
-Content-Type: application/pgp-signature; name="signature.asc"
+[ dhansen: tweak subject / changelog ]
 
------BEGIN PGP SIGNATURE-----
+Fixes: fcb3635f5018 ("x86/fpu/signal: Handle #PF in the direct restore path")
+Reported-by: Konstantin Bogomolov <bogomolov@google.com>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Andrei Vagin <avagin@google.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240130063603.3392627-1-avagin%40google.com
+---
+ arch/x86/kernel/fpu/signal.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZbkRXgAKCRAw5/Bqldv6
-8tnNAKC/7x8lVoo0Le26A45kEmutMXHk+ACeJWAIYPUjnnQM/iDgsXE2I2+YJHw=
-=UXjh
------END PGP SIGNATURE-----
-
---ogro3/H/WwEjjmKs--
+diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
+index 558076d..247f222 100644
+--- a/arch/x86/kernel/fpu/signal.c
++++ b/arch/x86/kernel/fpu/signal.c
+@@ -274,12 +274,13 @@ static int __restore_fpregs_from_user(void __user *buf, u64 ufeatures,
+  * Attempt to restore the FPU registers directly from user memory.
+  * Pagefaults are handled and any errors returned are fatal.
+  */
+-static bool restore_fpregs_from_user(void __user *buf, u64 xrestore,
+-				     bool fx_only, unsigned int size)
++static bool restore_fpregs_from_user(void __user *buf, u64 xrestore, bool fx_only)
+ {
+ 	struct fpu *fpu = &current->thread.fpu;
+ 	int ret;
+ 
++	/* Restore enabled features only. */
++	xrestore &= fpu->fpstate->user_xfeatures;
+ retry:
+ 	fpregs_lock();
+ 	/* Ensure that XFD is up to date */
+@@ -309,7 +310,7 @@ retry:
+ 		if (ret != X86_TRAP_PF)
+ 			return false;
+ 
+-		if (!fault_in_readable(buf, size))
++		if (!fault_in_readable(buf, fpu->fpstate->user_size))
+ 			goto retry;
+ 		return false;
+ 	}
+@@ -339,7 +340,6 @@ static bool __fpu_restore_sig(void __user *buf, void __user *buf_fx,
+ 	struct user_i387_ia32_struct env;
+ 	bool success, fx_only = false;
+ 	union fpregs_state *fpregs;
+-	unsigned int state_size;
+ 	u64 user_xfeatures = 0;
+ 
+ 	if (use_xsave()) {
+@@ -349,17 +349,14 @@ static bool __fpu_restore_sig(void __user *buf, void __user *buf_fx,
+ 			return false;
+ 
+ 		fx_only = !fx_sw_user.magic1;
+-		state_size = fx_sw_user.xstate_size;
+ 		user_xfeatures = fx_sw_user.xfeatures;
+ 	} else {
+ 		user_xfeatures = XFEATURE_MASK_FPSSE;
+-		state_size = fpu->fpstate->user_size;
+ 	}
+ 
+ 	if (likely(!ia32_fxstate)) {
+ 		/* Restore the FPU registers directly from user memory. */
+-		return restore_fpregs_from_user(buf_fx, user_xfeatures, fx_only,
+-						state_size);
++		return restore_fpregs_from_user(buf_fx, user_xfeatures, fx_only);
+ 	}
+ 
+ 	/*
 
