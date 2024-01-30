@@ -1,123 +1,90 @@
-Return-Path: <stable+bounces-17412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0AF842662
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 14:47:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8921784266A
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 14:48:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D2BFB21C19
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 13:46:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38AE4B2331B
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 13:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591326D1A0;
-	Tue, 30 Jan 2024 13:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3FC6D1C1;
+	Tue, 30 Jan 2024 13:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NvdNVU8W"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0EyaNAy3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDA267E7E
-	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 13:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37376D1B5;
+	Tue, 30 Jan 2024 13:48:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706622414; cv=none; b=BAMbUMzrmiDijIUrXBf5OGeN0zGA5nzYR9JrnPPtuDwRew+cB9qY3RcTmhwURK9jREo1bjBBcKRNUpkUYaxByFJXkvgjQ2oTG3jTgazFLqLmxjyOb7xYeZniWHG4ktnic9pdfWoUUGtU76xoyw+Bf9kAuMeTKDXdTpsuQuULaIA=
+	t=1706622523; cv=none; b=O6BNzHKvnPKm5ffaXIWSHgl2tmd3cWujsPqK4pIfhtqF69W9C8sDFu8BDzJgVbwolNILylywzCgrADwC+nwAPgMQ96vG9p5uxU746nJwCX4Tf4i6FsNpIJeSMhQeIDww9IJ3pJxF0indGyG6HyhA1TLCeMOdmPmEsd4RukkdF+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706622414; c=relaxed/simple;
-	bh=ZuLTTgFIf5+iGBZWyZmE5mFU45E3RnYRYRQMQ27U7YE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XedmCjNqNxxD1gOhN2zN0bHXM4D2rWXSudrDZwAu2RtwmAUjquSIl1saeUMWQfDBWlWZbmUsuZsqB2L5kx0CSO04DhtvUvMq7dy8qpCAPBnTus6Q/AjzgstU7zl64pZw+uzUE+A8pdcyLrLu7iq7b32ePXx174hqlZhXnyDvV1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NvdNVU8W; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-5d8b276979aso1654688a12.2
-        for <stable@vger.kernel.org>; Tue, 30 Jan 2024 05:46:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706622412; x=1707227212; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=e38PpRHFwrCymOCw2tkq2NUVZlw0XHHcvxGW2aYg4YE=;
-        b=NvdNVU8Wbb4gaGk77/EA4FYNkf0WUCFbBniqbRd1auN0mCZvdyqtw3zwCkYM2kAi66
-         zOc4v5lFAobLM8PK8yZmWvZ5OuhcjFwAuYnJcpx0sykn3U13OhfhIa7QRMt0/MYUACYr
-         nPghSbPsP2S9dU24NIc9doAAkayv4xSUMWtzgjgkYVqXmcbpPN7eV5bnBwE5spI7XK5+
-         /35PaCP+WhMudocwSKMAWvDCTTs2I3FIhWQPxkkRv+jjTnVxz/U/J84k5qd3D2KU9muD
-         EetjvInRWBkNnhNFHeZ1MxhGX8JIMNmEo7jrTdMXnFkJO2FKGEz96E0FIHDxoFtr/OyQ
-         IeAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706622412; x=1707227212;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=e38PpRHFwrCymOCw2tkq2NUVZlw0XHHcvxGW2aYg4YE=;
-        b=B9lZRytdzpZHKsNojVfb+OGzpSOpWLArIkQCGpDd5BZp29bKZrLbug2/vDUB1W9CnW
-         O1K0pkMv7FiLzftf/upJ0A8RRBnHEjfLyL/ehsy06rhMKbs79YE4dJsmsUFjLDtdZo2I
-         M+pEJUNCNgtLdL5Op8dOAV+z63S8ASVS28ORdoZdTD1hrD0CynfQM5bLYKEUax6iCeB4
-         fpQlOl89BeTv5DyLUYRc+YxY6HPXFlYWVB7Aj/LX2O9hswvAhpfx22fZEBNdyRUDQHlq
-         sTy8JMBEId1HRNzDQhS5NVxgdwxk8YXeTxYnZTw5JQiy39q+Ib1xqU0kH062Di3hPCJe
-         NQwg==
-X-Gm-Message-State: AOJu0YzjeHMGW1vrnJtl7lJgteB/53RMI1vcWyDYpw9foYUubXycG+5x
-	auOTvBFqWgecVuJhfXrhx91Umxq7tQqBwHogGfhp+z5fL8h/Nmb/tLPvJK5X6Tc=
-X-Google-Smtp-Source: AGHT+IGw0J66ds12idcP+W/YayjJ6BXaiPDAA9XO34h0iCLL8kayxoPOOo2yV5Qp9k2GXKGBbe+XLA==
-X-Received: by 2002:a05:6a20:4388:b0:19e:2e62:58df with SMTP id i8-20020a056a20438800b0019e2e6258dfmr540049pzl.34.1706622411959;
-        Tue, 30 Jan 2024 05:46:51 -0800 (PST)
-Received: from x-wing.lan ([106.51.161.37])
-        by smtp.gmail.com with ESMTPSA id o194-20020a62cdcb000000b006dab0d72cd0sm8080435pfg.214.2024.01.30.05.46.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jan 2024 05:46:51 -0800 (PST)
-From: Amit Pundir <amit.pundir@linaro.org>
-To: Greg KH <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Stable <stable@vger.kernel.org>
-Subject: [PATCH for-v6.1.y+] drm/msm/dsi: Enable runtime PM
-Date: Tue, 30 Jan 2024 19:16:47 +0530
-Message-Id: <20240130134647.58630-1-amit.pundir@linaro.org>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1706622523; c=relaxed/simple;
+	bh=LX2Fic2UMf7KjX8p2W2+sSCjFDYmcP3OxJ1aZl3nnnY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M0rAoKME5hVKoCoJirZswaCkp01Ozw8hfJxZQcqUxIcA20jIEmg30BchSq4qRMuJhP+j7I0drH8qa/0jz+rx60rYNgQRKkyL5k2cg2wpyX7Ahei8bqA262dBsWzJatpL3tPWdPPE9IuejT/S0qhxAQ6AJXX+lLIXpLjpX13AgSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0EyaNAy3; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=vd//V4XYtNdO2bVzPimQHhpuzy1TW7+TDVfUFwizcWs=; b=0EyaNAy3PN3WNXOZkObkKOnf7m
+	l+LjuYFxeSmhk3U5RzxxGCO0Ob/JJ5phV2UidjoFY6TDp/w1VAOw5GU0j/6w7dWlLI65z+naIqFmw
+	nV0n25zGIlwSGH0LXks3/JplBRPXEwI4GX7pzoZ7e+w37JMlEZfKniz/sYw3x4tI8BxM=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1rUoTM-006UoM-Ti; Tue, 30 Jan 2024 14:48:20 +0100
+Date: Tue, 30 Jan 2024 14:48:20 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jisheng Zhang <jszhang@kernel.org>
+Cc: Petr Tesarik <petr@tesarici.cz>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Samuel Holland <samuel@sholland.org>,
+	"open list:STMMAC ETHERNET DRIVER" <netdev@vger.kernel.org>,
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
+	Marc Haber <mh+netdev@zugschlus.de>,
+	Florian Fainelli <f.fainelli@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net: stmmac: protect updates of 64-bit statistics
+ counters
+Message-ID: <cd9ce78c-2761-4b87-af87-ed6ccb1206bb@lunn.ch>
+References: <20240128193529.24677-1-petr@tesarici.cz>
+ <ZbiCWtY8ODrroHIq@xhacker>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZbiCWtY8ODrroHIq@xhacker>
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+> PS: when I sent the above "net: stmmac: use per-queue 64 bit statistics
+> where necessary", I had an impression: there are too much statistics in
+> stmmac driver, I didn't see so many statistics in other eth drivers, is
+> it possible to remove some useless or not that useful statistic members?
 
-[ Upstream commit 6ab502bc1cf3147ea1d8540d04b83a7a4cb6d1f1 ]
+These counters might be considered ABI. We don't want to cause
+regressions in somebodies testing, or even billing scripts because we
+remove a counter which somebody is using.
 
-Some devices power the DSI PHY/PLL through a power rail that we model
-as a GENPD. Enable runtime PM to make it suspendable.
-
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/543352/
-Link: https://lore.kernel.org/r/20230620-topic-dsiphy_rpm-v2-2-a11a751f34f0@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Stable-dep-of: 3d07a411b4fa ("drm/msm/dsi: Use pm_runtime_resume_and_get to prevent refcnt leaks")
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
----
-Fixes display regression on DB845c running v6.1.75, v6.6.14 and v6.7.2.
-
- drivers/gpu/drm/msm/dsi/phy/dsi_phy.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-index 62bc3756f2e2..c0bcf020ef66 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-@@ -673,6 +673,10 @@ static int dsi_phy_driver_probe(struct platform_device *pdev)
- 		return dev_err_probe(dev, PTR_ERR(phy->ahb_clk),
- 				     "Unable to get ahb clk\n");
- 
-+	ret = devm_pm_runtime_enable(&pdev->dev);
-+	if (ret)
-+		return ret;
-+
- 	/* PLL init will call into clk_register which requires
- 	 * register access, so we need to enable power and ahb clock.
- 	 */
--- 
-2.25.1
-
+       Andrew
 
