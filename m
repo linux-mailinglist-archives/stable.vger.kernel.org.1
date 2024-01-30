@@ -1,155 +1,119 @@
-Return-Path: <stable+bounces-17460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A50A84305B
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 23:44:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 119C384305D
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 23:49:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A88D31C25545
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 22:44:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8CE6286525
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 22:49:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F077EEE2;
-	Tue, 30 Jan 2024 22:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01FB7EEF4;
+	Tue, 30 Jan 2024 22:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nWAz4G0f"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kOvtW1oa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C567AE5B;
-	Tue, 30 Jan 2024 22:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439117EEEE;
+	Tue, 30 Jan 2024 22:49:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706654638; cv=none; b=Ecy64gabtzxOwCAfFWWTK/w26OYWAGCJualp7wS8ajXW4jNytwezNVrRnmJHUUmNBr+ieRQHeVOnURvivc0PGv1qwWtd9AAYj2eL3F89Roy8QU5bdNhvOIQFpUPR91cxFQyOvx7YBVN0WZMgszDdm9aboomnSe+sDMz6wWjPHeI=
+	t=1706654958; cv=none; b=RjX4ikTXbDYyeU79tDBssHBA0y4fLqm37f3Thsomz5gwMHv6ROhrInDD67Z0iyijqqjvAkVl8Eqdvh+XcvNBYq7SPWZpo8Pib9+dZHp3NxxlaZ/2kdXM3f5ar3n9oPf3idRcBwmh/tgVBiey9+XjzLfc9fBFbFINsKFRjxk3r+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706654638; c=relaxed/simple;
-	bh=JsQhwuGrZMtViDvxvJKfJkvE2n8Ybw7wD1zinEFujmE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MDhL7FB0WnzXHzw8YAKLZaSJBX2jGCwWu/aiiQu+TxPmXtP7UafZ8TdzgJXnyNQ6+zCh4PcNzBSHpwCBhxm17xo8tsOKgPuaiSbNwCb1Zy07nEVrUY3dwRzU6CZTka4ylv/JiHKAVFzu8cmQhR93n9OZjxmHHik4Q8efC4jw8oM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nWAz4G0f; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+	s=arc-20240116; t=1706654958; c=relaxed/simple;
+	bh=5PEbedCvlPcPx2iTY5riTWdi4LRY/hHKOrHNlonDI+k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KgTx1ylJwbG3O/5oLqLD8PhwPaFOST7miqNcqdBKhRSDNCcUvbdQHZOgyOpv6TTZ8byWlM4IJxER2+xxbg0G5SBfdKP44kzKdv5hDtGwW9xH+6ovVz6/y9gm7NgECJh8EyeTig7/JkTGPtMXRppSgYSdLNWoWiJWD0puVbyZidw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kOvtW1oa; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a3604697d63so271540066b.3;
-        Tue, 30 Jan 2024 14:43:56 -0800 (PST)
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-5ceb3fe708eso2792214a12.3;
+        Tue, 30 Jan 2024 14:49:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706654635; x=1707259435; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZRDK+Smf4I0g9+6IXWqW+oV9u9CZnWJjpwATTXUI1t0=;
-        b=nWAz4G0fQrpG90d5/OVWD5dXs0BdqybVqzfTDT9XXW96u+83pTSUT+UYGWrQOGyJ/t
-         Nj80JwOfDQ0cSYbEvjdihgr9tkU1MwxB2p9zXLfYwo2ILWutZSrJlpY7XFQRgvhQGgFK
-         S8YwrqfgiyQFNMSWly7ARjJKyMyF3UVqSVhwcifc2mf9WYvDmT1BBFto/MlzWmV8ZepI
-         4AvYw70tiDIEu7Pr9L5fjsXPSJkfDUV9VNUE/b522BLsvs9CVxXeQX32HuRg6dDNgojQ
-         j5vNqluixuY8wPBeth0NVWEmggZT67dheAHLmc/ddom9bc9tkbmQ+HpB601tZE1xtSHJ
-         tOFQ==
+        d=gmail.com; s=20230601; t=1706654956; x=1707259756; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bq2zWShlBmwvfZivQBNk/q3mwb4pxGumX5VXlkn+VXo=;
+        b=kOvtW1oawDr4l76aip3RWBvTDZcK278ujp15UtciV8tpbwhmclC06DE3Hrx6idH533
+         MmYlooqe1JoToKjmyKRQ1lnbUVM4KFzhjOKAjZP8zHXzjl2DhSe4VlaQ1Q3MS4RlWFG9
+         TmDf/VKJBy0e2/2lopaPWfBM8XX0IGKM7EpGSmpydRgnFMPMzEwmZkzzBeVON+Uo4qZO
+         UBX8n7/0kwsYM2kROUqurz3z2nkMGHe6bBGp8V0uzt6JUkWi0GyO/RBN8pvPWtf+sTUE
+         W1Os5BmqH6L2B9U7qqzsl48AAgUeVUpcU6ITk1KgQNOF65yvOT+B1Ba2fv/kMpNbx99W
+         tSDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706654635; x=1707259435;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZRDK+Smf4I0g9+6IXWqW+oV9u9CZnWJjpwATTXUI1t0=;
-        b=joyVSav04czjpava3h9jCOOuOK9Daa/MapXLeMQZtoMQPkVG0i584dUZWKRamqejTJ
-         heAh5x2YEPHGhWQvq1k0+z5RRbbdDnmyvISM+Mq89U8TLPC0VSuBuVY/bOZ8vk2JUshe
-         M5rqt6zuSmmkDNWPPWYNbboQqIE4omC7q+OEm0nwODGIwWe5xGfuun88uFplnepvr9D1
-         t7IdjVqJKwJDO1B/loo3Cpwpo0X0wq3NkLXCIZp+rUa48I1PDQdR8TcR/sOzRi056a3Q
-         tRNUq1N+fGK1aATmdqh22q1UDEE9vzVka5tkvSZ4rtb2JIYDYyNqWSRFvyYO35nrL7ox
-         oNdA==
-X-Gm-Message-State: AOJu0YxADbN259HD++j674AYDjkyYYmUYbRZLC5nYr7OEhwGnyJrfn3E
-	61XibxLd/7PINAeMGvR4zKp5LIuZ7Q5suaJ1V/jq5YgxhVpBCv3z
-X-Google-Smtp-Source: AGHT+IF+RaRMKzBQZlFwM6GHJmfferHLON2cUoM1E2WHuZ6IZDm7V++xNRPxts7v/4Go0Wog5nmWPg==
-X-Received: by 2002:a17:906:46d9:b0:a36:63d6:1861 with SMTP id k25-20020a17090646d900b00a3663d61861mr354282ejs.35.1706654635067;
-        Tue, 30 Jan 2024 14:43:55 -0800 (PST)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id vu2-20020a170907a64200b00a35a9745910sm3015892ejc.137.2024.01.30.14.43.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jan 2024 14:43:53 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 1C74CBE2DE0; Tue, 30 Jan 2024 23:43:52 +0100 (CET)
-Date: Tue, 30 Jan 2024 23:43:52 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Paulo Alcantara <pc@manguebit.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jan =?utf-8?B?xIxlcm3DoWs=?= <sairon@sairon.cz>,
-	Leonardo Brondani Schenkel <leonardo@schenkel.net>,
-	stable@vger.kernel.org, regressions@lists.linux.dev,
-	linux-cifs@vger.kernel.org,
-	Mathias =?iso-8859-1?Q?Wei=DFbach?= <m.weissbach@info-gate.de>
-Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with
- "Resource temporarily unavailable"
-Message-ID: <Zbl7qIcpekgPmLDP@eldamar.lan>
-References: <8ad7c20e-0645-40f3-96e6-75257b4bd31a@schenkel.net>
- <7425b05a-d9a1-4c06-89a2-575504e132c3@sairon.cz>
- <446860c571d0699ed664175262a9e84b@manguebit.com>
- <2024010846-hefty-program-09c0@gregkh>
- <88a9efbd0718039e6214fd23978250d1@manguebit.com>
+        d=1e100.net; s=20230601; t=1706654956; x=1707259756;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bq2zWShlBmwvfZivQBNk/q3mwb4pxGumX5VXlkn+VXo=;
+        b=AEVi/i/gcTudEXjccqFunyMH7DKcwyWUYBa4NLggSa72i5NVbyYvOiihxnva2jAcxX
+         EtR510HOddUapZAsEy3RnZgZw2eGdyHC1DIlHWzPlCGItO0AfFHk45nxI/iI0RQlx3++
+         OQN2GU2u8H1s7MhjzX5nHes2lFHU+LkD7ASm/1P7wut0DENbsmaveBEqUr0pHeBk02gp
+         qt/Hwn/liXyqqhPddY5bIFVVPvjuXddikMcy7qyWGt5gvufYr6hHg7C6bI5VjTyyfzUu
+         JeTQ6ybPRHdnqciudYJvLti9jMd7AyAz6L1DuPyxcb45Rh3BI4vRMYcb0V/2q1oHzgYD
+         gnkw==
+X-Gm-Message-State: AOJu0Yy5vV0IBwaSZKGrDMA0MwLZLjInJ5xS7Y1lOo7FkHKR/xGq96sr
+	xsOucDPCzFsxMfe1atBxrkTkPqEA9cE4s3+WVaavt9ELkigfyZex8yYYGNg3
+X-Google-Smtp-Source: AGHT+IE5nbC8dbVwlBAa6gngPdGysmSFzxXCWusY8Ypyqkcrhf5f3HuNcFbRnl7n3o/Ym1zWisMCAA==
+X-Received: by 2002:a17:90b:e8a:b0:293:f625:1b0b with SMTP id fv10-20020a17090b0e8a00b00293f6251b0bmr63974pjb.5.1706654956398;
+        Tue, 30 Jan 2024 14:49:16 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id e16-20020a17090ac21000b00290071b5a93sm1064161pjt.0.2024.01.30.14.49.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jan 2024 14:49:15 -0800 (PST)
+Message-ID: <f681ef24-b854-40b5-8179-eadf69e63a62@gmail.com>
+Date: Tue, 30 Jan 2024 14:49:13 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <88a9efbd0718039e6214fd23978250d1@manguebit.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/186] 6.1.76-rc2 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20240130183318.454044155@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240130183318.454044155@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Paulo, hi Greg,
-
-Note this is about the 5.10.y backports of the cifs issue, were system
-calls fail with "Resource temporarily unavailable".
-
-On Mon, Jan 08, 2024 at 12:58:49PM -0300, Paulo Alcantara wrote:
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+On 1/30/24 10:47, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.76 release.
+> There are 186 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> > Why can't we just include eb3e28c1e89b ("smb3: Replace smb2pdu 1-element
-> > arrays with flex-arrays") to resolve this?
+> Responses should be made by Thu, 01 Feb 2024 18:32:32 +0000.
+> Anything received after that time might be too late.
 > 
-> Yep, this is the right way to go.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.76-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
 > 
-> > I've queued it up now.
+> thanks,
 > 
-> Thanks!
+> greg k-h
 
-Is the underlying issue by picking the three commits:
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-3080ea5553cc ("stddef: Introduce DECLARE_FLEX_ARRAY() helper")
-eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
-and the last commit in linux-stable-rc for 5.10.y:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit?id=a280ecca48beb40ca6c0fc20dd5a7fdd9b3ee0b7
-
-really fixing the issue?
-
-Since we need to release a new update in Debian, I picked those three
-for testing on top of the 5.10.209-1 and while testing explicitly a
-cifs mount, I still get:
-
-statfs(".", 0x7ffd809d5a70)             = -1 EAGAIN (Resource temporarily unavailable)
-
-The same happens if I build
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit?id=a280ecca48beb40ca6c0fc20dd5a7fdd9b3ee0b7
-(knowing that it is not yet ready for review).
-
-I'm slight confused as a280ecca48be ("cifs: fix off-by-one in
-SMB2_query_info_init()") says in the commit message:
-
-[...]
-	v5.10.y doesn't have
-
-        eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
-
-	and the commit does
-[...]
-
-and in meanwhile though the eb3e28c1e89b was picked (in a backported
-version). As 6.1.75-rc2 itself does not show the same problem, might
-there be a prerequisite missing in the backports for 5.10.y or a
-backport being wrong?
-
-Regards,
-Salvatore
 
