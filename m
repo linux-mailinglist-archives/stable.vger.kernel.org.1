@@ -1,53 +1,81 @@
-Return-Path: <stable+bounces-17425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B84A842855
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 16:47:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A59E8428CD
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 17:09:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDD381C22EFD
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 15:47:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4D51B22E1A
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 16:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A60B823A7;
-	Tue, 30 Jan 2024 15:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C98718613F;
+	Tue, 30 Jan 2024 16:09:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="Dtf/6xrx"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55D3EAC7;
-	Tue, 30 Jan 2024 15:47:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09621272B4
+	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 16:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706629657; cv=none; b=PNMgIUkk6X08U6EN1HFrJCn38tKcwDw9QwHcdDkPZhEfphrInFurKVWa6hfGqFozUyp9M9yY9vIf5llnmRhSKlOKYJ1rntimlE+uSMf5kHSX38ZJdDh5zwrzjAP6k8mlDaThsKShu4P4I/WdWnFBpiPlZwwN/htFHE47UZ4Gnk8=
+	t=1706630943; cv=none; b=IizG9Ti3Q4E2Vn3wz9I1YvKbHR6ooarE1fV5kIgbZp1orHEPN++t3g/xBlxEREtmBHhrKGv77bCXwbpD0sO/VppLTj4e5Vis97f8BOUL8N9bz5IaPTTQM0qhJ9wQxpHkjWOXBRUHn4neTD6x8XuSmSEaMRmi3G754D49xa8SKB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706629657; c=relaxed/simple;
-	bh=i90vzquGaAgEgkVRLiIGQT0UuPWTjwtk15FaHVx8JBs=;
+	s=arc-20240116; t=1706630943; c=relaxed/simple;
+	bh=+QvIc4Z1UoL6JdvZ3iGRTPT0MU1bmVcGBhyue7B95UA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NoI9Q+7nfP4NLR8dNEiDc0D2cU/hHY9RbSYtyZJS12jqH1P8Ac/sqIOT8V+voe0OuLrxoFjGPMxThf6dBIeAfGRLTy93iTeoFFDrLc68cBmXNS+mcWWT8ZFNsKzDqK9NicrxY4MLGWqOVo12jKgLf0FQPt2wSoFS2SxdtQ/BGBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B2701DA7;
-	Tue, 30 Jan 2024 07:48:15 -0800 (PST)
-Received: from e133380.arm.com (e133380.arm.com [10.1.197.58])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6B3513F762;
-	Tue, 30 Jan 2024 07:47:30 -0800 (PST)
-Date: Tue, 30 Jan 2024 15:47:26 +0000
-From: Dave Martin <Dave.Martin@arm.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] arm64/signal: Don't assume that TIF_SVE means we saved
- SVE state
-Message-ID: <ZbkaDjyuYVEct+kl@e133380.arm.com>
-References: <20240119-arm64-sve-signal-regs-v1-1-b9fd61b0289a@kernel.org>
- <20240130115107.GB13551@willie-the-truck>
- <b0ed6698-bc65-48fb-96b8-0cd077448196@sirena.org.uk>
- <ZbkLY+gz7Az1OgNK@e133380.arm.com>
- <7027bd80-1fea-493a-83d7-ffef4e548f08@sirena.org.uk>
+	 Content-Type:Content-Disposition:In-Reply-To; b=CwmjskyQ3uaRS6/hzuiC3eBCXroAi7zGFgXRDr3MbpqBIzjt/TsGu77FAqIFaqqRAquen036fyBYnsWL47L0wWPixYJrQWFilBRV6A54VV3uhjFMNWYElO6WMV8TP2YvqAI5kOY6P5khtefqAltjZE1OjXJjYVmIiFVDOSjEPT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=Dtf/6xrx; arc=none smtp.client-ip=209.85.161.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-595d24ad466so2766963eaf.0
+        for <stable@vger.kernel.org>; Tue, 30 Jan 2024 08:09:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1706630940; x=1707235740; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=n46xbHZiZrs5l9dNaQX2aITyBLQAoYywh4YkaSlR7UI=;
+        b=Dtf/6xrxwNSggm0oI4AmK78AUX9JRPYfzPIRJ777oYWvibDxPdSwgtr6CW8g2tIaiO
+         +dML2ylPvyN/m5jzo/G7jU3TMNyGUr2HvfAsIF8/CmePeLP9k5RXcgsp0ttqsvIuQihp
+         Zy5B7omQ2u/LgbeR8Uz6LCszvpOzV5m5cXfck=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706630940; x=1707235740;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n46xbHZiZrs5l9dNaQX2aITyBLQAoYywh4YkaSlR7UI=;
+        b=pTNyZdzeDpuDAUgq4wV15JbGtSIEptx8TnjR+o4ULYNahErino6YFpy5rk4MyZIPVT
+         ZZrU73F07K9N28dAXI4XHskpwiFfP9Atd8E4+AQByBiLj1AKwVubeUtQIIMF7pIEgP9P
+         gVh3vtP9AEdTmwoZp5vO8xDoPvAgmzgZb+W6JYBCA4CbhfkjRy5OetNAOgPh7oTgdk+6
+         24QE9SGlyIdgzSBKHscYXSKXRBRCcAGcV1VLOX6lyBjmia4P+KXiHHL+rincb+w/MH0/
+         PisfD7ub/ekivWuGbaWHuFtN8mVzk466rBCqMzQjO6xWXRaIwdm65Kc1o9TREL5MOo45
+         OHBQ==
+X-Gm-Message-State: AOJu0YxQ2VQXsmfzH9eMsySjfqt2Y+1DKgg1wTGdy//EVTuKJ1/sWD0B
+	dxQCu9Bq5Vu0XlkAaz5JP1yCQP5MBAdADsit2+33ZpyMY/7PkZCkw+nU4Uu/nw==
+X-Google-Smtp-Source: AGHT+IEu0+K/Oojbff9apgYluaQt3t98C1oqPRPT4DG1CrCd7aseQ7XBLqMgZkkswDUs6Y8mnY6Ovw==
+X-Received: by 2002:a4a:e9f7:0:b0:59a:1536:67f5 with SMTP id w23-20020a4ae9f7000000b0059a153667f5mr5936431ooc.7.1706630940670;
+        Tue, 30 Jan 2024 08:09:00 -0800 (PST)
+Received: from fedora64.linuxtx.org ([99.47.93.78])
+        by smtp.gmail.com with ESMTPSA id k2-20020a4ae282000000b00594ee4b4339sm1908393oot.28.2024.01.30.08.08.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jan 2024 08:09:00 -0800 (PST)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Tue, 30 Jan 2024 10:08:58 -0600
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Jani Nikula <jani.nikula@intel.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Jonathan Corbet <corbet@lwn.net>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 003/331] docs: kernel_feat.py: fix potential command
+ injection
+Message-ID: <ZbkfGst991YHqJHK@fedora64.linuxtx.org>
+References: <20240129170014.969142961@linuxfoundation.org>
+ <20240129170015.067909940@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,56 +84,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7027bd80-1fea-493a-83d7-ffef4e548f08@sirena.org.uk>
+In-Reply-To: <20240129170015.067909940@linuxfoundation.org>
 
-On Tue, Jan 30, 2024 at 02:53:45PM +0000, Mark Brown wrote:
-> On Tue, Jan 30, 2024 at 02:44:51PM +0000, Dave Martin wrote:
-> > On Tue, Jan 30, 2024 at 02:09:34PM +0000, Mark Brown wrote:
+On Mon, Jan 29, 2024 at 09:01:07AM -0800, Greg Kroah-Hartman wrote:
+> 6.6-stable review patch.  If anyone has any objections, please let me know.
 > 
-> > > That said if this is preempted ptrace *could* come in and rewrite the
-> > > data or at worst change the vector length (which could leave us with
-> > > sve_state deallocated or a different size, possibly while we're in the
-> > > middle of accessing it).  This could also happen with the existing check
-> > > for TIF_SVE so I don't think there's anything new here - AFAICT this has
-> > > always been an issue with the vector code, unless I'm missing some
-> > > bigger thing which excludes ptrace.  I think any change that's needed
-> > > there won't overlap with this one, I'm looking.
+> ------------------
 > 
-> > I'm pretty sure that terrible things will happen treewide if ptrace can
-> > ever access or manipulate the internal state of a _running_ task.
+> From: Vegard Nossum <vegard.nossum@oracle.com>
 > 
-> > I think the logic is that any ptrace call that can access or manipulate
-> > the state of a task is gated on the task being ptrace-stopped.  Once we
+> [ Upstream commit c48a7c44a1d02516309015b6134c9bb982e17008 ]
 > 
-> ...
+> The kernel-feat directive passes its argument straight to the shell.
+> This is unfortunate and unnecessary.
 > 
-> > I haven't tracked down the smokeproof gun in the code yet, though.
+> Let's always use paths relative to $srctree/Documentation/ and use
+> subprocess.check_call() instead of subprocess.Popen(shell=True).
 > 
-> Yes, exactly - this feels like something that surely must be handled
-> already with exclusion along the lines that you're describing but I
-> didn't yet spot exactly what the mechanism is.
+> This also makes the code shorter.
+> 
+> This is analogous to commit 3231dd586277 ("docs: kernel_abi.py: fix
+> command injection") where we did exactly the same thing for
+> kernel_abi.py, somehow I completely missed this one.
+> 
+> Link: https://fosstodon.org/@jani/111676532203641247
+> Reported-by: Jani Nikula <jani.nikula@intel.com>
+> Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+> Link: https://lore.kernel.org/r/20240110174758.3680506-1-vegard.nossum@oracle.com
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-I think the critical thing is the task_is_traced() check in
-kernel/ptrace.c.  This seems to be what gates every ptrace call that
-requires a traced task (i.e., stopped under ptrace).
+This patch seems to be missing something. In 6.6.15-rc1 I get a doc
+build failure with:
 
-So long as nothing during the delivery of a single signal can trigger a
-ptrace-stop itself, I think ptrace can't get in the middle of it.  This
-would imply calling the signal delivery code recursively (not just
-raising one signal while delivering another).  I'd be pretty confident
-that this is meant to be impossible from a design standpoint.
+/builddir/build/BUILD/kernel-6.6.14-332-g1ff49073b88b/linux-6.6.15-0.rc1.1ff49073b88b.200.fc39.noarch/Documentation/sphinx/kerneldoc.py:133: SyntaxWarning: invalid escape sequence '\.'
+  line_regex = re.compile("^\.\. LINENO ([0-9]+)$")
+/builddir/build/BUILD/kernel-6.6.14-332-g1ff49073b88b/linux-6.6.15-0.rc1.1ff49073b88b.200.fc39.noarch/Documentation/sphinx/maintainers_include.py:80: SyntaxWarning: invalid escape sequence '\s'
+  pat = '(Documentation/([^\s\?\*]*)\.rst)'
+/builddir/build/BUILD/kernel-6.6.14-332-g1ff49073b88b/linux-6.6.15-0.rc1.1ff49073b88b.200.fc39.noarch/Documentation/sphinx/maintainers_include.py:93: SyntaxWarning: invalid escape sequence '\s'
+  m = re.search("\s(\S):\s", line)
+/builddir/build/BUILD/kernel-6.6.14-332-g1ff49073b88b/linux-6.6.15-0.rc1.1ff49073b88b.200.fc39.noarch/Documentation/sphinx/maintainers_include.py:97: SyntaxWarning: invalid escape sequence '\*'
+  m = re.search("\*([^\*]+)\*", line)
+/builddir/build/BUILD/kernel-6.6.14-332-g1ff49073b88b/linux-6.6.15-0.rc1.1ff49073b88b.200.fc39.noarch/Documentation/sphinx/maintainers_include.py:115: SyntaxWarning: invalid escape sequence '\s'
+  heading = re.sub("\s+", " ", line)
+/builddir/build/BUILD/kernel-6.6.14-332-g1ff49073b88b/linux-6.6.15-0.rc1.1ff49073b88b.200.fc39.noarch/Documentation/sphinx/kernel_abi.py:105: SyntaxWarning: invalid escape sequence '\.'
+  line_regex = re.compile("^\.\. LINENO (\S+)\#([0-9]+)$")
+/builddir/build/BUILD/kernel-6.6.14-332-g1ff49073b88b/linux-6.6.15-0.rc1.1ff49073b88b.200.fc39.noarch/Documentation/sphinx/kernel_feat.py:98: SyntaxWarning: invalid escape sequence '\.'
+  line_regex = re.compile("^\.\. FILE (\S+)$")
+Sphinx parallel build error:
+UnboundLocalError: cannot access local variable 'fname' where it is not associated with a value
+make[2]: *** [Documentation/Makefile:102: htmldocs] Error 2
+make[1]: *** [/builddir/build/BUILD/kernel-6.6.14-332-g1ff49073b88b/linux-6.6.15-0.rc1.1ff49073b88b.200.fc39.noarch/Makefile:1715: htmldocs] Error 2
 
+Reverting this patch allows docs to build.
 
-> > From memory, I think that the above forced flush was there to protect
-> > against the context switch code rather than ptrace, and guarantees that
-> > any change that ctxsw _might_ spontaneously make to the task state has
-> > already been done and dusted before we do the actual signal delivery.
-> > This may be a red herring so far as ptrace hazards are concerned.
-> 
-> Indeed, it's all about the current task and won't help at for ptrace.
-
-Agreed
-
-Cheers
----Dave
+Thanks,
+Justin
 
