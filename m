@@ -1,137 +1,212 @@
-Return-Path: <stable+bounces-17447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD03842D97
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 21:19:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F54842DAB
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 21:21:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E92B0B22C77
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 20:19:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8651B255DD
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 20:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6B671B46;
-	Tue, 30 Jan 2024 20:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9F571B51;
+	Tue, 30 Jan 2024 20:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z+W9xHNX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Box42nac"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72A569E1E;
-	Tue, 30 Jan 2024 20:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953AC71B4C;
+	Tue, 30 Jan 2024 20:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706645969; cv=none; b=hUuw9ODs6CbJ16zrFiGvaKNs0XXfAdD+RwqRbh2FnSUVnztDgYW1DlveVrl67icVdSStsd+dyrUXYpb8XSM0QbqygOXVKgJpCRfH5jCRWy4B2q0oyduI8eqRGdhDaYug1MpPhVlaplAsDgSCmO6iIQL6T+cP+5+KiwRx6RdbbGc=
+	t=1706646091; cv=none; b=ezZabuNz1aFE4OffxIHbD9od7UGvj92gTcHzYuTzHQcAcN7sulM34npiYka7ABeYhiUN5Ph6Qax57EPzKoWIgtDpfyuWoIMH8qWvJNIEWjevXeqBolUrH21l/NEjuSacqVVUXqf0CrtizZqyrY4/eaSTrxmo6AMaYcLcbQB6j2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706645969; c=relaxed/simple;
-	bh=nu45nRqzigmHcqbdARLL2KtDJB21XLNBDYQYq4LnuvE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oDgbMRD4s9IN3ayJ9B3DTXqOpECs2Bi6lgforbhBwHyRX0/E/x8/Q3DFWy/L4136WJP2sgfLBPCpg1/7Sb+bBCyrr+tNSd8Z6IR4wh/bbz5NEmV4A89c9FlCZiuO4xV++1eK5M81JdGX3gTFIt3vSPN3DnMQEbVPM+6k8+83ob0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z+W9xHNX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E65B0C433C7;
-	Tue, 30 Jan 2024 20:19:26 +0000 (UTC)
+	s=arc-20240116; t=1706646091; c=relaxed/simple;
+	bh=K1dqR4VR58Lvh/54G+9Wzu18PKLLsr0ACThJ+ZITAuE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OCHwwovnntTCRxayMU2hmt+ATZKHGjsHs8DPEbsPtkXXjp3LmyvKo3nv3bqE5sVEgx0AQQxd9s8lld1Vpkte/dnca5Wnmtz0Rw1HznJrV2CX2gOplaPaEq6n52ioL4ZynmjKtHsJ9FXhVPlgfCOsdDnpj8kWm6cNfsd4ExiVEGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Box42nac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F41C433C7;
+	Tue, 30 Jan 2024 20:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706645968;
-	bh=nu45nRqzigmHcqbdARLL2KtDJB21XLNBDYQYq4LnuvE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z+W9xHNXk3uukHMUq4Us9fIyCX/gCmOgkLZnjq/VWz85CVyNHJ6NmzJ9+UgaR+ZFU
-	 PggCQ/DZOZXIXeK3sV+/31DcHabZCws6P+aMwJEbyLp/iO3qOisZZ6zcyrZP7CZKjR
-	 0ZGEryHpI5NXbS34kDQt8TGgoUf4rsdvdMVLm5EIn45KXw2/HwXZJkQHNIFoyfqHAc
-	 KlXE6Q0MSEq+vn3XZgmQX+LRL9lt5km5bTr+ex4zXqsVVRYqio6xQy1cQADRVjTuHZ
-	 WbvUGc28DEEz8Jgjvy5wCeLgqgipSUXYM5NewKVHJkr3uhukuniDg7MJna+RhTB75X
-	 h9yW9W/infDoQ==
-From: SeongJae Park <sj@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	damon@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH 6.1 000/186] 6.1.76-rc2 review
-Date: Tue, 30 Jan 2024 12:19:25 -0800
-Message-Id: <20240130201925.109728-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240130183318.454044155@linuxfoundation.org>
-References: 
+	s=k20201202; t=1706646091;
+	bh=K1dqR4VR58Lvh/54G+9Wzu18PKLLsr0ACThJ+ZITAuE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Box42nacqJdXum86Z1u5OSSAv/IWNwJ2icIEoz/9i9KYIZvWaexZtcnvQmSyzWt7B
+	 m9xMLQBUrsQm1f/kbw7xfrzjwRQxXJsZMZvR1/AgA321SOPe9eBdkYjzhms4S6R/d/
+	 hkjGgK4obeZhQ2IPmuQIvgNB21m9Qxbtj+SK4cq7nhe/aF824OMRVPuYSXgh4huVFt
+	 SPKv4OizdRCLoojT+faLul06649fptrj9FFPA7DaHmadpQLpyJ4ZFSyGnQud68eEev
+	 zytfXhHhpjOpIR2Gs4dpbb+bPNWKSxhTv5DBAh7Qo92oBlLbC3jVJDPYauMHOLaibO
+	 BhjoqorDKZvKg==
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5100cb238bcso8002022e87.3;
+        Tue, 30 Jan 2024 12:21:31 -0800 (PST)
+X-Gm-Message-State: AOJu0YyxoeyikDecGhWTYrWannpZMML6ZrN8JV3poA2Fbg7FJdrNPL6+
+	mMU5waLVt6XoUIll/yfpx/Ei2EQoDxBkVIMgAB+ZVbalvSlPCtouKHGzlYC4seZ4aE82NnSgyYL
+	EaKVW6ulLXgiAi748phdAqrfNs4U=
+X-Google-Smtp-Source: AGHT+IGIzSOPTAgcoO+x3nc9NOI8WGDTHOwXIPN+/lnKknFfbutL9Bs2LEKaBRqOFvD9QJOYTyerSYTK8fmlH/try2U=
+X-Received: by 2002:a05:6512:2256:b0:510:28a9:9b27 with SMTP id
+ i22-20020a056512225600b0051028a99b27mr7493631lfu.66.1706646089208; Tue, 30
+ Jan 2024 12:21:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <ZbMnZnvyIyoWeIro@fisica.ufpr.br> <20240126154610.24755-1-dan@danm.net>
+ <20240130172524.0000417b@linux.intel.com>
+In-Reply-To: <20240130172524.0000417b@linux.intel.com>
+From: Song Liu <song@kernel.org>
+Date: Tue, 30 Jan 2024 12:21:16 -0800
+X-Gmail-Original-Message-ID: <CAPhsuW7jtQP+qsWYE4Nt3bA7P4SvUjGr9L0orrPY5rYWFW=jPw@mail.gmail.com>
+Message-ID: <CAPhsuW7jtQP+qsWYE4Nt3bA7P4SvUjGr9L0orrPY5rYWFW=jPw@mail.gmail.com>
+Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system;
+ successfully bisected
+To: Blazej Kucman <blazej.kucman@linux.intel.com>
+Cc: Dan Moulding <dan@danm.net>, carlos@fisica.ufpr.br, gregkh@linuxfoundation.org, 
+	junxiao.bi@oracle.com, linux-kernel@vger.kernel.org, 
+	linux-raid@vger.kernel.org, regressions@lists.linux.dev, 
+	stable@vger.kernel.org, yukuai1@huaweicloud.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+Hi Blazej,
 
-On Tue, 30 Jan 2024 10:47:38 -0800 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On Tue, Jan 30, 2024 at 8:27=E2=80=AFAM Blazej Kucman
+<blazej.kucman@linux.intel.com> wrote:
+>
+> Hi,
+>
+> On Fri, 26 Jan 2024 08:46:10 -0700
+> Dan Moulding <dan@danm.net> wrote:
+> >
+> > That's a good suggestion, so I switched it to use XFS. It can still
+> > reproduce the hang. Sounds like this is probably a different problem
+> > than the known ext4 one.
+> >
+>
+> Our daily tests directed at mdadm/md also detected a problem with
+> identical symptoms as described in the thread.
+>
+> Issue detected with IMSM metadata but it also reproduces with native
+> metadata.
+> NVMe disks under VMD controller were used.
+>
+> Scenario:
+> 1. Create raid10:
+> mdadm --create /dev/md/r10d4s128-15_A --level=3D10 --chunk=3D128
+> --raid-devices=3D4 /dev/nvme6n1 /dev/nvme2n1 /dev/nvme3n1 /dev/nvme0n1
+> --size=3D7864320 --run
+> 2. Create FS
+> mkfs.ext4 /dev/md/r10d4s128-15_A
+> 3. Set faulty one raid member:
+> mdadm --set-faulty /dev/md/r10d4s128-15_A /dev/nvme3n1
+> 4. Stop raid devies:
+> mdadm -Ss
 
-> This is the start of the stable review cycle for the 6.1.76 release.
-> There are 186 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 01 Feb 2024 18:32:32 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.76-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+Thanks for the report. I can reproduce the issue locally.
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
+The revert [1] cannot fix this one, because the revert is for raid5 (and
+the repro is on raid10). I will look into this.
 
-Tested-by: SeongJae Park <sj@kernel.org>
+Thanks again!
 
-[1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] ce3f6cd9e4cd ("Linux 6.1.76-rc2")
+Song
 
-Thanks,
-SJ
 
-[...]
+[1] https://lore.kernel.org/linux-raid/20240125082131.788600-1-song@kernel.=
+org/
 
----
 
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 2 selftests: damon: debugfs_schemes.sh
-ok 3 selftests: damon: debugfs_target_ids.sh
-ok 4 selftests: damon: debugfs_empty_targets.sh
-ok 5 selftests: damon: debugfs_huge_count_read_write.sh
-ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
-ok 7 selftests: damon: sysfs.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_arm64.sh
-ok 12 selftests: damon-tests: build_m68k.sh
-ok 13 selftests: damon-tests: build_i386_idle_flag.sh
-ok 14 selftests: damon-tests: build_i386_highpte.sh
-ok 15 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
+>
+> Expected result:
+> The raid stops without kernel hangs and errors.
+>
+> Actual result:
+> command "mdadm -Ss" hangs,
+> hung_task occurs in OS.
+>
+> [   62.770472] md: resync of RAID array md127
+> [  140.893329] md: md127: resync done.
+> [  204.100490] md/raid10:md127: Disk failure on nvme3n1, disabling
+> device. md/raid10:md127: Operation continuing on 3 devices.
+> [  244.625393] INFO: task kworker/48:1:755 blocked for more than 30
+> seconds. [  244.632294]       Tainted: G S
+> 6.8.0-rc1-20240129.intel.13479453+ #1 [  244.640157] "echo 0 >
+> /proc/sys/kernel/hung_task_timeout_secs" disables this message. [
+> 244.648105] task:kworker/48:1    state:D stack:14592 pid:755   tgid:755
+>   ppid:2      flags:0x00004000 [  244.657552] Workqueue: md_misc
+> md_start_sync [md_mod] [  244.662688] Call Trace: [  244.665176]  <TASK>
+> [  244.667316]  __schedule+0x2f0/0x9c0
+> [  244.670868]  ? sched_clock+0x10/0x20
+> [  244.674510]  schedule+0x28/0x90
+> [  244.677703]  mddev_suspend+0x11d/0x1e0 [md_mod]
+> [  244.682313]  ? __update_idle_core+0x29/0xc0
+> [  244.686574]  ? swake_up_all+0xe0/0xe0
+> [  244.690302]  md_start_sync+0x3c/0x280 [md_mod]
+> [  244.694825]  process_scheduled_works+0x87/0x320
+> [  244.699427]  worker_thread+0x147/0x2a0
+> [  244.703237]  ? rescuer_thread+0x2d0/0x2d0
+> [  244.707313]  kthread+0xe5/0x120
+> [  244.710504]  ? kthread_complete_and_exit+0x20/0x20
+> [  244.715370]  ret_from_fork+0x31/0x40
+> [  244.719007]  ? kthread_complete_and_exit+0x20/0x20
+> [  244.723879]  ret_from_fork_asm+0x11/0x20
+> [  244.727872]  </TASK>
+> [  244.730117] INFO: task mdadm:8457 blocked for more than 30 seconds.
+> [  244.736486]       Tainted: G S
+> 6.8.0-rc1-20240129.intel.13479453+ #1 [  244.744345] "echo 0 >
+> /proc/sys/kernel/hung_task_timeout_secs" disables this message. [
+> 244.752293] task:mdadm           state:D stack:13512 pid:8457
+> tgid:8457  ppid:8276   flags:0x00000000 [  244.761736] Call Trace: [
+> 244.764241]  <TASK> [  244.766389]  __schedule+0x2f0/0x9c0
+> [  244.773224]  schedule+0x28/0x90
+> [  244.779690]  stop_sync_thread+0xfa/0x170 [md_mod]
+> [  244.787737]  ? swake_up_all+0xe0/0xe0
+> [  244.794705]  do_md_stop+0x51/0x4c0 [md_mod]
+> [  244.802166]  md_ioctl+0x59d/0x10a0 [md_mod]
+> [  244.809567]  blkdev_ioctl+0x1bb/0x270
+> [  244.816417]  __x64_sys_ioctl+0x7a/0xb0
+> [  244.823720]  do_syscall_64+0x4e/0x110
+> [  244.830481]  entry_SYSCALL_64_after_hwframe+0x63/0x6b
+> [  244.838700] RIP: 0033:0x7f2c540c97cb
+> [  244.845457] RSP: 002b:00007fff4ad6a8f8 EFLAGS: 00000246 ORIG_RAX:
+> 0000000000000010 [  244.856265] RAX: ffffffffffffffda RBX:
+> 0000000000000003 RCX: 00007f2c540c97cb [  244.866659] RDX:
+> 0000000000000000 RSI: 0000000000000932 RDI: 0000000000000003 [
+> 244.877031] RBP: 0000000000000019 R08: 0000000000200000 R09:
+> 00007fff4ad6a4c5 [  244.887382] R10: 0000000000000000 R11:
+> 0000000000000246 R12: 00007fff4ad6a9c0 [  244.897723] R13:
+> 00007fff4ad6a9a0 R14: 000055724d0990e0 R15: 000055724efaa780 [
+> 244.908018]  </TASK> [  275.345375] INFO: task kworker/48:1:755 blocked
+> for more than 60 seconds. [  275.355363]       Tainted: G S
+>     6.8.0-rc1-20240129.intel.13479453+ #1 [  275.366306] "echo 0 >
+> /proc/sys/kernel/hung_task_timeout_secs" disables this message. [
+> 275.377334] task:kworker/48:1    state:D stack:14592 pid:755   tgid:755
+>   ppid:2      flags:0x00004000 [  275.389863] Workqueue: md_misc
+> md_start_sync [md_mod] [  275.398102] Call Trace: [  275.403673]  <TASK>
+>
+>
+> Also reproduces with XFS FS, does not reproduce when there is no FS on
+> RAID.
+>
+> Repository used for testing:
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/
+> Branch: master
+>
+> Last working build: kernel branch HEAD: acc657692aed ("keys, dns: Fix
+> size check of V1 server-list header")
+>
+> I see one merge commit touching md after the above one:
+> 01d550f0fcc0 ("Merge tag 'for-6.8/block-2024-01-08' of
+> git://git.kernel.dk/linux")
+>
+> I hope these additional logs will help find the cause.
+>
+> Thanks,
+> Blazej
+>
 
