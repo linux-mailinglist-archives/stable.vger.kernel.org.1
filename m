@@ -1,268 +1,105 @@
-Return-Path: <stable+bounces-17384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD6084200F
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 10:49:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF53484202F
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 10:55:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0C9AB2D1B4
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 09:48:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 289D91C2702F
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 09:55:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F100657C0;
-	Tue, 30 Jan 2024 09:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E786C657DC;
+	Tue, 30 Jan 2024 09:52:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F47A605BE;
-	Tue, 30 Jan 2024 09:47:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5311060DF9;
+	Tue, 30 Jan 2024 09:52:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706608048; cv=none; b=K0deZ8W9cJaT6qWXS6BGwYLwNwX85OlPfjPWZilnT8B2CqUVOx02xWgaWZAIXQr5QRFQaSk1Eho0oh7wb2fKyUdoWpl+9N9ELqn8kqC/0/55BzGM7S6sQm/Taa0BfVEDsQVVjmGxFIqYL0q3pNNT9vVuuRRwjIhFS3bf5lPegAk=
+	t=1706608328; cv=none; b=B+7o2WFk3DGxMr5Er2fVvdEMZzYVOlFrAFuWrHPtAdgMOMY7xp+t015CbNHGYLCnxLvYz4F6Ef16rCK7PLCdKNPuI9Qjuh5xrWx+kdnNu5DayXw2Ix79mTkO/hLLLc26yPRQB5wncz+HuTP6QuseFDWXv1wklAd2MKf5/qYfHaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706608048; c=relaxed/simple;
-	bh=YRuXpTlWCvDvTGIvkGPSYfFYrkfWJfwNqa9QpXr7Ef8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bhXwoNv+QG1ezaVJkbtnePDgyxlPUp4Jy7YxdLEcZ3D15fum2JnBky6nVxAce3yJCe1fFikoYYv+ftns2YyO5CV4ftrUOpq8dccDfGSNH9YaI/uiiyxQh/kWKKUGRiytPllDBN+lPAwKESwQSColmiqFrY9FpUmNYKMKGU9TfEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: by air.basealt.ru (Postfix, from userid 490)
-	id 59C362F2024B; Tue, 30 Jan 2024 09:47:19 +0000 (UTC)
-X-Spam-Level: 
-Received: from altlinux.malta.altlinux.ru (obninsk.basealt.ru [217.15.195.17])
-	by air.basealt.ru (Postfix) with ESMTPSA id 7B81C2F2022A;
-	Tue, 30 Jan 2024 09:47:15 +0000 (UTC)
-From: kovalev@altlinux.org
-To: stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	alsa-devel@alsa-project.org,
-	u.kleine-koenig@pengutronix.de,
-	a.firago@yadro.com,
-	sashal@kernel.org,
-	zhuning0077@gmail.com,
-	tiwai@suse.com,
-	perex@perex.cz,
-	broonie@kernel.org,
-	lgirdwood@gmail.com,
-	kovalev@altlinux.org
-Subject: [PATCH 6.1.y 7/7] ASoC: codecs: ES8326: Update jact detection function
-Date: Tue, 30 Jan 2024 12:47:08 +0300
-Message-Id: <20240130094708.290485-8-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
-In-Reply-To: <20240130094708.290485-1-kovalev@altlinux.org>
-References: <20240130094708.290485-1-kovalev@altlinux.org>
+	s=arc-20240116; t=1706608328; c=relaxed/simple;
+	bh=nAmpW4z3loSWjgIoJ07UdUFNgOk6yJCSDOgKJ/GTdq8=;
+	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
+	 Message-ID:Subject; b=RGwl3owoArM+4qxRVH67D23xc8Hh/60LdnBiobD1MxKtZ/HrthOPIbm9tjmGOAVThB0CI8KlLj7mPZLiXMSv75Y1WI5JD+WWID42E+dCb09I8NwNDXVVnVhT5NiILPveRxqF38q1UAvIFE16Kz2DVfrYzHfwuFOrX/XXLZ4uoDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Received: from hamburger.collabora.co.uk (hamburger.collabora.co.uk [IPv6:2a01:4f8:1c1b:c794::1])
+	by madrid.collaboradmins.com (Postfix) with ESMTP id 046A037809D0;
+	Tue, 30 Jan 2024 09:52:01 +0000 (UTC)
+From: "Shreeya Patel" <shreeya.patel@collabora.com>
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+Content-Type: text/plain; charset="utf-8"
+X-Forward: 127.0.0.1
+References: <20240129165958.589924174@linuxfoundation.org>
+Date: Tue, 30 Jan 2024 09:52:01 +0000
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, "Gustavo Padovan" <gustavo.padovan@collabora.com>, "kernelci-regressions mailing list" <kernelci-regressions@lists.collabora.co.uk>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <65ea-65b8c700-1-50c62b00@100317325>
+Subject: =?utf-8?q?Re=3A?= [PATCH =?utf-8?q?6=2E1?= 000/185] 
+ =?utf-8?q?6=2E1=2E76-rc1?= review
+User-Agent: SOGoMail 5.9.1
+Content-Transfer-Encoding: quoted-printable
 
-From: Zhu Ning <zhuning0077@gmail.com>
+On Monday, January 29, 2024 22:33 IST, Greg Kroah-Hartman <gregkh@linux=
+foundation.org> wrote:
 
-Commit 04f96c9340463aae20d2511a3d6cb0b005b07d24 upstream.
+> This is the start of the stable review cycle for the 6.1.76 release.
+> There are 185 patches in this series, all will be posted as a respons=
+e
+> to this one.  If anyone has any issues with these being applied, plea=
+se
+> let me know.
+>=20
+> Responses should be made by Wed, 31 Jan 2024 16:59:28 +0000.
+> Anything received after that time might be too late.
+>=20
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1=
+.76-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc=
+.git linux-6.1.y
+> and the diffstat can be found below.
+>=20
 
-The old jack detection function only supports fixed OMTP/CTIA
-hardware connection. The new one supports auto OMTP/CTIA
-headset detection
+KernelCI report for stable-rc/linux-6.1.y for this week :-
 
-Signed-off-by: Zhu Ning <zhuning0077@gmail.com>
-Link: https://lore.kernel.org/r/20230717033223.42506-5-zhuning0077@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
----
- sound/soc/codecs/es8326.c | 109 +++++++++++++++++++++++++++++++-------
- 1 file changed, 89 insertions(+), 20 deletions(-)
+## stable-rc HEAD for linux-6.1.y:
+Date: 2024-01-30
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.=
+git/log/?h=3D1f00d9fd963ebf5b448c0a5666c4e83ac97d8f03
 
-diff --git a/sound/soc/codecs/es8326.c b/sound/soc/codecs/es8326.c
-index 50b13296e246e1..74c03d151005d3 100644
---- a/sound/soc/codecs/es8326.c
-+++ b/sound/soc/codecs/es8326.c
-@@ -41,6 +41,8 @@ struct es8326_priv {
- 
- 	bool calibrated;
- 	int version;
-+	int hp;
-+	int jack_remove_retry;
- };
- 
- static const SNDRV_CTL_TLVD_DECLARE_DB_SCALE(dac_vol_tlv, -9550, 50, 0);
-@@ -535,6 +537,7 @@ static void es8326_jack_button_handler(struct work_struct *work)
- 		cur_button = SND_JACK_BTN_0;
- 		break;
- 	case 0x6f:
-+	case 0x4b:
- 		/* button volume up */
- 		cur_button = SND_JACK_BTN_1;
- 		break;
-@@ -543,6 +546,7 @@ static void es8326_jack_button_handler(struct work_struct *work)
- 		cur_button = SND_JACK_BTN_2;
- 		break;
- 	case 0x1e:
-+	case 0xe2:
- 		/* button released or not pressed */
- 		cur_button = 0;
- 		break;
-@@ -552,20 +556,20 @@ static void es8326_jack_button_handler(struct work_struct *work)
- 
- 	if ((prev_button == cur_button) && (cur_button != 0)) {
- 		press_count++;
--		if (press_count > 10) {
--			/* report a press every 500ms */
-+		if (press_count > 3) {
-+			/* report a press every 120ms */
- 			snd_soc_jack_report(es8326->jack, cur_button,
- 					SND_JACK_BTN_0 | SND_JACK_BTN_1 | SND_JACK_BTN_2);
- 			press_count = 0;
- 		}
- 		button_to_report = cur_button;
- 		queue_delayed_work(system_wq, &es8326->button_press_work,
--				   msecs_to_jiffies(50));
-+				   msecs_to_jiffies(35));
- 	} else if (prev_button != cur_button) {
- 		/* mismatch, detect again */
- 		prev_button = cur_button;
- 		queue_delayed_work(system_wq, &es8326->button_press_work,
--				   msecs_to_jiffies(50));
-+				   msecs_to_jiffies(35));
- 	} else {
- 		/* released or no pressed */
- 		if (button_to_report != 0) {
-@@ -589,32 +593,96 @@ static void es8326_jack_detect_handler(struct work_struct *work)
- 	mutex_lock(&es8326->lock);
- 	iface = snd_soc_component_read(comp, ES8326_HPDET_STA);
- 	dev_dbg(comp->dev, "gpio flag %#04x", iface);
-+
-+	if (es8326->jack_remove_retry == 1) {
-+		if (iface & ES8326_HPINSERT_FLAG)
-+			es8326->jack_remove_retry = 2;
-+		else
-+			es8326->jack_remove_retry = 0;
-+
-+		dev_dbg(comp->dev, "remove event check, set HPJACK_POL normal, cnt = %d\n",
-+				es8326->jack_remove_retry);
-+		/*
-+		 * Inverted HPJACK_POL bit to trigger one IRQ to double check HP Removal event
-+		 */
-+		regmap_update_bits(es8326->regmap, ES8326_HPDET_TYPE,
-+					ES8326_HP_DET_JACK_POL, (es8326->jd_inverted ?
-+					~es8326->jack_pol : es8326->jack_pol));
-+		goto exit;
-+	}
-+
- 	if ((iface & ES8326_HPINSERT_FLAG) == 0) {
- 		/* Jack unplugged or spurious IRQ */
--		dev_dbg(comp->dev, "No headset detected");
-+		dev_dbg(comp->dev, "No headset detected\n");
-+		es8326_disable_micbias(es8326->component);
- 		if (es8326->jack->status & SND_JACK_HEADPHONE) {
-+			dev_dbg(comp->dev, "Report hp remove event\n");
- 			snd_soc_jack_report(es8326->jack, 0, SND_JACK_HEADSET);
--			snd_soc_component_write(comp, ES8326_ADC1_SRC, es8326->mic2_src);
--			es8326_disable_micbias(comp);
-+			/* mute adc when mic path switch */
-+			regmap_write(es8326->regmap, ES8326_ADC_SCALE, 0x33);
-+			regmap_write(es8326->regmap, ES8326_ADC1_SRC, 0x44);
-+			regmap_write(es8326->regmap, ES8326_ADC2_SRC, 0x66);
-+			es8326->hp = 0;
-+		}
-+		regmap_update_bits(es8326->regmap, ES8326_HPDET_TYPE, 0x03, 0x01);
-+		/*
-+		 * Inverted HPJACK_POL bit to trigger one IRQ to double check HP Removal event
-+		 */
-+		if (es8326->jack_remove_retry == 0) {
-+			es8326->jack_remove_retry = 1;
-+			dev_dbg(comp->dev, "remove event check, invert HPJACK_POL, cnt = %d\n",
-+					es8326->jack_remove_retry);
-+			regmap_update_bits(es8326->regmap, ES8326_HPDET_TYPE,
-+					ES8326_HP_DET_JACK_POL, (es8326->jd_inverted ?
-+					es8326->jack_pol : ~es8326->jack_pol));
-+
-+		} else {
-+			es8326->jack_remove_retry = 0;
- 		}
- 	} else if ((iface & ES8326_HPINSERT_FLAG) == ES8326_HPINSERT_FLAG) {
-+		es8326->jack_remove_retry = 0;
-+		if (es8326->hp == 0) {
-+			dev_dbg(comp->dev, "First insert, start OMTP/CTIA type check\n");
-+			/*
-+			 * set auto-check mode, then restart jack_detect_work after 100ms.
-+			 * Don't report jack status.
-+			 */
-+			regmap_update_bits(es8326->regmap, ES8326_HPDET_TYPE, 0x03, 0x01);
-+			usleep_range(50000, 70000);
-+			regmap_update_bits(es8326->regmap, ES8326_HPDET_TYPE, 0x03, 0x00);
-+			queue_delayed_work(system_wq, &es8326->jack_detect_work,
-+					msecs_to_jiffies(100));
-+			es8326->hp = 1;
-+			goto exit;
-+		}
- 		if (es8326->jack->status & SND_JACK_HEADSET) {
- 			/* detect button */
-+			dev_dbg(comp->dev, "button pressed\n");
- 			queue_delayed_work(system_wq, &es8326->button_press_work, 10);
-+			goto exit;
-+		}
-+		if ((iface & ES8326_HPBUTTON_FLAG) == 0x01) {
-+			dev_dbg(comp->dev, "Headphone detected\n");
-+			snd_soc_jack_report(es8326->jack,
-+					SND_JACK_HEADPHONE, SND_JACK_HEADSET);
- 		} else {
--			if ((iface & ES8326_HPBUTTON_FLAG) == 0x00) {
--				dev_dbg(comp->dev, "Headset detected");
--				snd_soc_jack_report(es8326->jack,
--						    SND_JACK_HEADSET, SND_JACK_HEADSET);
--				snd_soc_component_write(comp,
--							ES8326_ADC1_SRC, es8326->mic1_src);
--			} else {
--				dev_dbg(comp->dev, "Headphone detected");
--				snd_soc_jack_report(es8326->jack,
--						    SND_JACK_HEADPHONE, SND_JACK_HEADSET);
--			}
-+			dev_dbg(comp->dev, "Headset detected\n");
-+			snd_soc_jack_report(es8326->jack,
-+					SND_JACK_HEADSET, SND_JACK_HEADSET);
-+
-+			regmap_write(es8326->regmap, ES8326_ADC_SCALE, 0x33);
-+			regmap_update_bits(es8326->regmap, ES8326_PGA_PDN,
-+					0x08, 0x08);
-+			regmap_update_bits(es8326->regmap, ES8326_PGAGAIN,
-+					0x80, 0x80);
-+			regmap_write(es8326->regmap, ES8326_ADC1_SRC, 0x00);
-+			regmap_write(es8326->regmap, ES8326_ADC2_SRC, 0x00);
-+			regmap_update_bits(es8326->regmap, ES8326_PGA_PDN,
-+					0x08, 0x00);
-+			usleep_range(10000, 15000);
- 		}
- 	}
-+exit:
- 	mutex_unlock(&es8326->lock);
- }
- 
-@@ -633,7 +701,7 @@ static irqreturn_t es8326_irq(int irq, void *dev_id)
- 				   msecs_to_jiffies(10));
- 	else
- 		queue_delayed_work(system_wq, &es8326->jack_detect_work,
--				   msecs_to_jiffies(300));
-+				   msecs_to_jiffies(600));
- 
- out:
- 	return IRQ_HANDLED;
-@@ -763,7 +831,8 @@ static int es8326_resume(struct snd_soc_component *component)
- 			(ES8326_HP_DET_SRC_PIN9 | es8326->jack_pol) :
- 			(ES8326_HP_DET_SRC_PIN9 | es8326->jack_pol | 0x04)));
- 
--	es8326_irq(es8326->irq, es8326);
-+	es8326->jack_remove_retry = 0;
-+	es8326->hp = 0;
- 	return 0;
- }
- 
--- 
-2.33.8
+## Build failures:
+
+arm64:
+    - defconfig (gcc-10) and defconfig+arm64-chromebook (gcc-10)
+    - Build details :- https://linux.kernelci.org/build/stable-rc/branc=
+h/linux-6.1.y/kernel/v6.1.75-186-g1f00d9fd963eb/
+    - Errors :-=20
+    drivers/net/ethernet/mellanox/mlx5/core/en/params.c:994:39: error: =
+=E2=80=98MLX5=5FIPSEC=5FCAP=5FCRYPTO=E2=80=99
+    undeclared (first use in this function)
+
+## Boot failures:
+
+No **new** boot failures seen for the stable-rc/linux-6.1.y commit head=
+ \o/
+
+Tested-by: kernelci.org bot <bot@kernelci.org>
+
+Thanks,
+Shreeya Patel
 
 
