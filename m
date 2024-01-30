@@ -1,129 +1,153 @@
-Return-Path: <stable+bounces-17364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527C38419A3
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 03:53:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03AC1841AAD
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 04:49:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84A701C22403
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 02:53:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E2901F25008
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 03:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D9136B01;
-	Tue, 30 Jan 2024 02:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886CF376E9;
+	Tue, 30 Jan 2024 03:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rUCjDFcT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="moub1Ye5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8337036AE5
-	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 02:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC41374F8;
+	Tue, 30 Jan 2024 03:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706583192; cv=none; b=X5Q6KUkV7pgs+PXF42i3YutbrhzRoKN0Tid5FD+5phS/QqocGMkv3891FaWPYtM2M50e+yd69xTQLBOecKGZOow1twFLQnVLu9ARlmEXJjxvJvgTQqx5+s2jEPV8OIkujvXhMDQODo22RfnUSWiBLSNDHtpkEnfEQdBEqhWWBuY=
+	t=1706586575; cv=none; b=LOsi5OGQrSK9R29n/kYNGjLzijZd+Dls4mR2sXRZpQ/M9qEeTrnUqQHxfSmOeyi7gzWEnp9jAotiBDOeZpXgZIdjAmjNpXM1J09wA5Y+cVtTP0HAjJNo1NCLNta+uGKgsKONN2FZunLsV61TPAgMi0AnDSk/DarJdQKCIF7KRAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706583192; c=relaxed/simple;
-	bh=OOF/JDmoqHvxt3xDStMdND3Dl+I0UaElu3NVskxz6QI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iaLaBlzPemAhO8ggpyL2ELDyWeYVYu1PIw+lSIjfQMTdu/xMVtr+/0+SAS07lvQznvLRhLnQH0aUmV/uycb/29hM6ca1MhjCNPBmzxjGYNp+COxXoCpjmQ0FZdakNE1VoBlXN25m4vOgT7I5NCTy5ylDxh5pll1lC2k1yczWSBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rUCjDFcT; arc=none smtp.client-ip=209.85.221.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-4bfdedd2833so122656e0c.3
-        for <stable@vger.kernel.org>; Mon, 29 Jan 2024 18:53:10 -0800 (PST)
+	s=arc-20240116; t=1706586575; c=relaxed/simple;
+	bh=k5FKcViiW1KVZ/iqqnhvzAZzYcYxnU21fb3SEdDolM8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LJZ9CV6vgCGc6iNOD60R6Pm4G0HEPOTO207GVMamxN6tAyAVnsiVxxTBE1QRDb0lnIw0erBrlpzZ26v6QhIUgbQdmLEPZrM8oq9C5W+9lB/8/8Di+A1LmlQzy7zL6bXHK+S81E1TPcm//ElEySd7KbxxOOL3xkqdxO1O0xHh3uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=moub1Ye5; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-42aabb1cdaaso10800741cf.2;
+        Mon, 29 Jan 2024 19:49:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706583189; x=1707187989; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=57LE80XzKkgz02q7vJPpQ7bcLsrc6ltxHobo6paNwmk=;
-        b=rUCjDFcTCg+BfuzSHV0N88CKReKiYRpF1kdOUGx0toW5+M+XmZ7Gmhw02fSHY/kvOn
-         b5909k6zYnPFcyXnwPe7dC/Mz+GE3imEwB4TrDo3NZ4KMEvA1XCfwQcih85h/vf7JkBA
-         qMgaIr7DSsPuFzSugqiBjNNREUKYcTTgyWCC80QGPv70q4zELYhMTHgyh5aH9l14+4CK
-         jj0mlmbIMqwOOBIJEzFz6AVcbZF4dtwsSsB7Zh1Repf9XLHUNq0MLbCHqEyZyvnZZDbE
-         nkdbKcntVXOICuVNrMFWeT3vVoQkZ6dQvetir7spAvQC3kd2IQeMdQAM+wfuxpOxawBD
-         F/8A==
+        d=gmail.com; s=20230601; t=1706586573; x=1707191373; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0wqDIIGKeMd5Md178sCLoAs7RDnwq5OUMAf2FUqS9M0=;
+        b=moub1Ye5frCuM7IH15lj1A873drHX5aUPEuE96z6WgCWHr4RRzW1HHvXsdKV8CoOKt
+         sXZ+24nu7s5xFejH/rj3rDIVfydU//hbyYIJo5k97VFBS6W6gXcyJfKq3LhOPI4R8PPL
+         7eJcrHShBNtOu7U4oc+mgt17xgocYVvW5wev8jX30x6inFM7fLi4E8NrhAZ4FxxLheZy
+         50ucEoXnjrDYk/2rebTye773sOIL+7gvzPfOhwGGm1p43DgRS3l0M9h9SooQ0rAgnOHS
+         jjQksgoYydOSOQFvFXlvfmRAYTFip1hs7My8act460LKuaK+Ud+OLMipKZnIzJ3WLf9b
+         ytwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706583189; x=1707187989;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=57LE80XzKkgz02q7vJPpQ7bcLsrc6ltxHobo6paNwmk=;
-        b=iKwdky1srM8KgLDqt4tjDZ8pMD1MDIjc2A38bifImiXmElq0Vd5o9QgNjYk7p7xenE
-         daTr1tWt3ghuzmPg7T/eVPBmP47JaoltPR1OWGip63/UHHb4Oj8bCZt3NRf0pBVMArGU
-         CMhhMzwpCtx6nwBhKapDlRUyirbKJFT7VODJw3BzqOQUxqEF6trGnTGl2gBVwK1Cx3Mr
-         iY2fseHFYr9KvKVSEpcYJrY/Ixiv9rrCEs0byYjlyqEgyVEgb9L/QXFI4Fih4G6k+yQC
-         M6GZ9UQewJdWzWm2dmGlznD6FesMUreQS9v2ICVwXS4/vAfLo3eUf+u+PorqKrzwWse6
-         Hdug==
-X-Gm-Message-State: AOJu0YwmaxLXTpGURuJJVozW17sIYkdeoEj5RYurWVNv1KlcHrOlK7iV
-	fvDX7BTHjIh8l5IqVTSWYzfvUVWaom/8eN7AgkBqUF4mr6JRxHssGmnNQAFuoaEJuDk4eG0HZV6
-	p1v7CfLv7ZaCW+WubzN1KmghkkAaJp5yLhCixGQ==
-X-Google-Smtp-Source: AGHT+IFPagv02V2zOXAR72eV7Vs2i0Z8fygeiffO01wqRFPgeSauIELXHJpdbzeVRYwyL5VmLdct4Vw6DioyPFoo6Q8=
-X-Received: by 2002:a05:6122:288b:b0:4bd:73cb:e6d1 with SMTP id
- fl11-20020a056122288b00b004bd73cbe6d1mr3120076vkb.15.1706583189172; Mon, 29
- Jan 2024 18:53:09 -0800 (PST)
+        d=1e100.net; s=20230601; t=1706586573; x=1707191373;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0wqDIIGKeMd5Md178sCLoAs7RDnwq5OUMAf2FUqS9M0=;
+        b=ffb4EzWiG2xS02tPYVgZrLAASoZfXfG7N0PAxCsafV+ks/naWU2N6SNOuVusp9kANr
+         EVHHzcpr535YVyJRMcyKeSno0ufDil//nnI6T5vM6NAUNUuWcL4/JLxfMTn/JA7NB8Sy
+         dLjSFqIYcHjAHj/IsFHq7QQOyZUnlXLOPiDA9CoQrs0wkOWF+rXkLUSosZJcPWEST8z/
+         GuTBnCnUFa0J+eb3Lv1k9BVuS/LQNCwfhDWUnYjtJ1+YzG2roWmuXZTi0krRXWf0wY/k
+         6cWrPFn2E6p5xA25hSWN0a08kny56ciQnt7y9blxb+7xVB2qcscyri1MM+RayQnmN3nQ
+         NtZw==
+X-Gm-Message-State: AOJu0Yw8WpwGYupwX3Xz4Ldn8SCO9g2eBWbr2nE3PgQnRp85I1wAfFaa
+	1qTCx42EfK4zWuIJHhC1cECzQuUPQIBM18aDULxcyEKM24z66po9
+X-Google-Smtp-Source: AGHT+IFrOLVASNDSFiBUO0ZTs78ql3AcvGGz5d4Y/A3E4+9XyAw8C0CikLM7+9AIpmTDYRuMUeAWmA==
+X-Received: by 2002:a05:6214:c4d:b0:686:aa92:1e5 with SMTP id r13-20020a0562140c4d00b00686aa9201e5mr7339200qvj.5.1706586572687;
+        Mon, 29 Jan 2024 19:49:32 -0800 (PST)
+Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
+        by smtp.gmail.com with ESMTPSA id kv2-20020a056214534200b00684d2729709sm4068667qvb.85.2024.01.29.19.49.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 29 Jan 2024 19:49:32 -0800 (PST)
+Message-ID: <7388e3c0-32bc-424b-9693-5059ddc9f826@gmail.com>
+Date: Mon, 29 Jan 2024 19:49:29 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+G9fYvYQRnBbZhHknSKbwYiCr_3vPwC5zPz2NsV9_1F7=paQQ@mail.gmail.com>
- <2024012915-enlighten-dreadlock-54e9@gregkh>
-In-Reply-To: <2024012915-enlighten-dreadlock-54e9@gregkh>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 30 Jan 2024 08:22:57 +0530
-Message-ID: <CA+G9fYs3_M9E3w+uWky5X1hEgoJU4e92ECqSywerqSkF8KVGvA@mail.gmail.com>
-Subject: Re: stable-rc: 6.1: mlx5: params.c:994:53: error: 'MLX5_IPSEC_CAP_CRYPTO'
- undeclared (first use in this function)
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-stable <stable@vger.kernel.org>, Netdev <netdev@vger.kernel.org>, 
-	linux-rdma@vger.kernel.org, lkft-triage@lists.linaro.org, 
-	Sasha Levin <sashal@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, "David S. Miller" <davem@davemloft.net>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/185] 6.1.76-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20240129165958.589924174@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ HGuUuzv+GKZ6nsysJw==
+In-Reply-To: <20240129165958.589924174@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, 29 Jan 2024 at 21:58, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Mon, Jan 29, 2024 at 09:17:31PM +0530, Naresh Kamboju wrote:
-> > Following build errors noticed on stable-rc linux-6.1.y for arm64.
-> >
-> > arm64:
-> > --------
-> >   * build/gcc-13-lkftconfig
-> >   * build/gcc-13-lkftconfig-kunit
-> >   * build/clang-nightly-lkftconfig
-> >   * build/clang-17-lkftconfig-no-kselftest-frag
-> >   * build/gcc-13-lkftconfig-devicetree
-> >   * build/clang-lkftconfig
-> >   * build/gcc-13-lkftconfig-perf
-> >
-> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> >
-> > Build errors:
-> > ------
-> > drivers/net/ethernet/mellanox/mlx5/core/en/params.c: In function
-> > 'mlx5e_build_sq_param':
-> > drivers/net/ethernet/mellanox/mlx5/core/en/params.c:994:53: error:
-> > 'MLX5_IPSEC_CAP_CRYPTO' undeclared (first use in this function)
-> >   994 |                     (mlx5_ipsec_device_caps(mdev) &
-> > MLX5_IPSEC_CAP_CRYPTO);
-> >       |
-> > ^~~~~~~~~~~~~~~~~~~~~
-> >
-> > Suspecting commit:
-> >   net/mlx5e: Allow software parsing when IPsec crypto is enabled
-> >   [ Upstream commit 20f5468a7988dedd94a57ba8acd65ebda6a59723 ]
->
-> Something looks very odd here, as the proper .h file is being included,
-> AND this isn't a build failure on x86, so why is this only arm64 having
-> problems?  What's causing this not to show up?
 
-As per the Daniel report on stable-rc review on 6.1, these build failures also
-reported on System/390.
 
-- Naresh
+On 1/29/2024 9:03 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.76 release.
+> There are 185 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 31 Jan 2024 16:59:28 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.76-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
