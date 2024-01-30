@@ -1,88 +1,107 @@
-Return-Path: <stable+bounces-17432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F9284296B
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 17:35:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9789584296C
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 17:35:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9017293C87
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 16:35:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4495DB29F77
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 16:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01DD1128368;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A7112838B;
 	Tue, 30 Jan 2024 16:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRJ4p2zZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmV1osKl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B548F1272C9
-	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 16:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F62128378;
+	Tue, 30 Jan 2024 16:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706632531; cv=none; b=qbjqPPboxTFWsQ4VOH5CTosn+FWnfWQTFSDGh6G5ys3pwCkFZljYAphhzoz6310KZEUgufBRI30sVzN0SZTV54G3UAX4Cm6u2zx1FV4HmAMZbemi9n5IF3F3egZOWD5OXkjgetYShnieXqgIY4nhxfrCSOK1QoNPZ/5fgXpQolI=
+	t=1706632532; cv=none; b=EPs+nGYY1Qqc67HQlv6NExB+xcaByHQkuIM6ERTH52SoiAVFFEFSYdOWNunqrjk7KNR2iLZyaqFjsfQvEEFW4cLIHPuTfrBxPAX7XJitXfDAqtzZp1IUw/dSaaXtxer9Knyf9CT5oJv8hTHo1c7ZLMKfKtNZ153ATXu6V128Krk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706632531; c=relaxed/simple;
-	bh=tVf+49okM2QfeL4HQDZ800cuVpe2pXTZNuGrFvkGIrk=;
+	s=arc-20240116; t=1706632532; c=relaxed/simple;
+	bh=VzF6pgl3cBvoSdippxVco5i9J4H7GF91CCbu75befoc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IdT/fqopNUu8ASWq50YlGPqmKsHooJz0nYaY74xoPenw/soukBN0Fuyhbb8zNKq7rE6vZEduBKFKbe1IgDXjVa/4Y2jinN2VFmz770PwWDU0Vf+RT1g36/IBUH6BBRExYRqEjn9jqLSVTWDeEMiLwVdQK0MeGqGCmF8hADW9eNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRJ4p2zZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E3DC43390;
-	Tue, 30 Jan 2024 16:35:31 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=csQwYw2S9a9RV6fyfbXasXTv5W40V4nIkGxoFnOZtdxKDOGiWLaK1524HROLdTLzCUea6+oFM490thr9OlOW11NZ8zBbUgcRY4sRR0NZ7KvGa4n6YFeAHIyWkRsVyG4u3AIv8NoXcFpSM2pBAT41IbeTg+wWwg2NlRQUL3joG1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmV1osKl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18707C433C7;
+	Tue, 30 Jan 2024 16:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706632531;
-	bh=tVf+49okM2QfeL4HQDZ800cuVpe2pXTZNuGrFvkGIrk=;
+	s=korg; t=1706632532;
+	bh=VzF6pgl3cBvoSdippxVco5i9J4H7GF91CCbu75befoc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pRJ4p2zZ29T8dVfIMfq/MAozNOWG/xEC8PsWs65FU3uaw7PRZgCzwfcS1utOuwJYw
-	 kl4wIrC2aGwWhMitCSjiUiSX5kFsYAjeqKXDGJzmlDbArlWQzirBH0ppEY91GArTXq
-	 eBuF5J4yeGwpVUhFdA9GybrTK5OUUx6SOxD040mw=
-Date: Mon, 29 Jan 2024 19:06:42 -0800
+	b=rmV1osKlts6fNfbt2Gqcb87x/cxVsBDXDLihZNSueL4wrvx6U10lWgZaJDAe3Z6VZ
+	 xFeX6auKGBkN4J2tRse+GFUfLGhaO84V4KpPSR2bUKEuN3wRWF/f6qMgLrXJc2WL7D
+	 OAGX7o6Jzj9GNAm1/L2xMT5w6Ce7EuQWwjdUv7FA=
+Date: Tue, 30 Jan 2024 06:04:17 -0800
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: chenhuacai@loongson.cn, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] LoongArch/smp: Call
- rcutree_report_cpu_starting() at" failed to apply to 6.1-stable tree
-Message-ID: <2024012932-share-rendering-96e1@gregkh>
-References: <2024012911-outright-violin-e677@gregkh>
- <CAAhV-H44QUho8cq4cG6rpovboBH_28vfiw-akMWoLMLR6Qgu1w@mail.gmail.com>
+To: Dawei Li <dawei.li@shingroup.cn>
+Cc: arnd@arndb.de, fancer.lancer@gmail.com, lkp@intel.com,
+	linux-kernel@vger.kernel.org, set_pte_at@outlook.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] misc: eeprom/idt_89hpesx: Convert data structures to LE
+ explicitly
+Message-ID: <2024013039-asleep-rally-39c0@gregkh>
+References: <20240130040632.3039911-1-dawei.li@shingroup.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAhV-H44QUho8cq4cG6rpovboBH_28vfiw-akMWoLMLR6Qgu1w@mail.gmail.com>
+In-Reply-To: <20240130040632.3039911-1-dawei.li@shingroup.cn>
 
-On Tue, Jan 30, 2024 at 10:25:18AM +0800, Huacai Chen wrote:
-> Hi, Greg,
+On Tue, Jan 30, 2024 at 12:06:32PM +0800, Dawei Li wrote:
+> For data structures needs cpu_to_le* conversion, its prototype needs to
+> be declared with __le* explicitly.
 > 
-> On Tue, Jan 30, 2024 at 12:53 AM <gregkh@linuxfoundation.org> wrote:
-> >
-> >
-> > The patch below does not apply to the 6.1-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> >
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> >
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x 5056c596c3d1848021a4eaa76ee42f4c05c50346
-> > # <resolve conflicts, build, test, etc.>
-> > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012911-outright-violin-e677@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-> >
-> > Possible dependencies:
-> >
-> > 5056c596c3d1 ("LoongArch/smp: Call rcutree_report_cpu_starting() at tlb_init()")
-> Similar to the commit which it fixes, please change
-> rcutree_report_cpu_starting() to rcu_cpu_starting() in the code.
+> Fixes: cfad6425382e ("eeprom: Add IDT 89HPESx EEPROM/CSR driver")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202401261250.b07Yt30Z-lkp@intel.com/
+> Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
+> Cc: <stable@vger.kernel.org>
+> ---
+>  drivers/misc/eeprom/idt_89hpesx.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/misc/eeprom/idt_89hpesx.c b/drivers/misc/eeprom/idt_89hpesx.c
+> index d807d08e2614..327afb866b21 100644
+> --- a/drivers/misc/eeprom/idt_89hpesx.c
+> +++ b/drivers/misc/eeprom/idt_89hpesx.c
+> @@ -129,7 +129,7 @@ struct idt_smb_seq {
+>  struct idt_eeprom_seq {
+>  	u8 cmd;
+>  	u8 eeaddr;
+> -	u16 memaddr;
+> +	__le16 memaddr;
+>  	u8 data;
+>  } __packed;
+>  
+> @@ -141,8 +141,8 @@ struct idt_eeprom_seq {
+>   */
+>  struct idt_csr_seq {
+>  	u8 cmd;
+> -	u16 csraddr;
+> -	u32 data;
+> +	__le16 csraddr;
+> +	__le32 data;
+>  } __packed;
+>  
+>  /*
 
-I need a backported patch for that please :)
+Declaring them this way is nice, but this doesn't actually "fix"
+anything at all as no code is actually changed.
+
+So how is ths a bugfix?  How does this patch do anything?
+
+confused,
+
+greg k-h
 
