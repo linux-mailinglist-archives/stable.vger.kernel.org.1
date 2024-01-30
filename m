@@ -1,107 +1,143 @@
-Return-Path: <stable+bounces-17433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9789584296C
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 17:35:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FF658427AF
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 16:10:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4495DB29F77
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 16:35:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E95321F2282B
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 15:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A7112838B;
-	Tue, 30 Jan 2024 16:35:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmV1osKl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34F37E761;
+	Tue, 30 Jan 2024 15:10:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F62128378;
-	Tue, 30 Jan 2024 16:35:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C923F6D1A2;
+	Tue, 30 Jan 2024 15:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706632532; cv=none; b=EPs+nGYY1Qqc67HQlv6NExB+xcaByHQkuIM6ERTH52SoiAVFFEFSYdOWNunqrjk7KNR2iLZyaqFjsfQvEEFW4cLIHPuTfrBxPAX7XJitXfDAqtzZp1IUw/dSaaXtxer9Knyf9CT5oJv8hTHo1c7ZLMKfKtNZ153ATXu6V128Krk=
+	t=1706627433; cv=none; b=H0aY6OMYKfTzICNeKsQ1vaWbwL6Cnn0GftmCzVFkhJsS4C2XQk9kc3lcRePzoO4a+NrhZi7pOcoc59YZtipUZhjSZ3Pnkjd7TjHyjlZ4AgTaN3p2tt+yJ6FbdDmdz30dmb7LBhuO2TpiJ3RXfmW0KgyJlwMjBuTSKRhF/hjbGXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706632532; c=relaxed/simple;
-	bh=VzF6pgl3cBvoSdippxVco5i9J4H7GF91CCbu75befoc=;
+	s=arc-20240116; t=1706627433; c=relaxed/simple;
+	bh=N+91WuIbVPKKtrDN8Fd3GIxb3rJSRpc+7YddCGYHRWc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=csQwYw2S9a9RV6fyfbXasXTv5W40V4nIkGxoFnOZtdxKDOGiWLaK1524HROLdTLzCUea6+oFM490thr9OlOW11NZ8zBbUgcRY4sRR0NZ7KvGa4n6YFeAHIyWkRsVyG4u3AIv8NoXcFpSM2pBAT41IbeTg+wWwg2NlRQUL3joG1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rmV1osKl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18707C433C7;
-	Tue, 30 Jan 2024 16:35:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706632532;
-	bh=VzF6pgl3cBvoSdippxVco5i9J4H7GF91CCbu75befoc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rmV1osKlts6fNfbt2Gqcb87x/cxVsBDXDLihZNSueL4wrvx6U10lWgZaJDAe3Z6VZ
-	 xFeX6auKGBkN4J2tRse+GFUfLGhaO84V4KpPSR2bUKEuN3wRWF/f6qMgLrXJc2WL7D
-	 OAGX7o6Jzj9GNAm1/L2xMT5w6Ce7EuQWwjdUv7FA=
-Date: Tue, 30 Jan 2024 06:04:17 -0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Dawei Li <dawei.li@shingroup.cn>
-Cc: arnd@arndb.de, fancer.lancer@gmail.com, lkp@intel.com,
-	linux-kernel@vger.kernel.org, set_pte_at@outlook.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] misc: eeprom/idt_89hpesx: Convert data structures to LE
- explicitly
-Message-ID: <2024013039-asleep-rally-39c0@gregkh>
-References: <20240130040632.3039911-1-dawei.li@shingroup.cn>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Em4nSWKyLirNXQ4e9saX/8ffHQ+bBtw0NyoEFS9J7iTVxGQv3bf/jxSUjKH5lg0WKXElG+j9PCPKQDw7Po55lJM5yFuSSAgv0j9HWKCYBg9dQ9wFMg9AmsLK8wy+5gNmFKidAPu47IfuBPqjv0biJKtOEhNuizSoTEztxV8Zsk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 78C0B1C006B; Tue, 30 Jan 2024 16:10:23 +0100 (CET)
+Date: Tue, 30 Jan 2024 16:10:22 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 000/185] 6.1.76-rc1 review
+Message-ID: <ZbkRXhphCMholpON@duo.ucw.cz>
+References: <20240129165958.589924174@linuxfoundation.org>
+ <4a2b55da-ee57-4fca-bb7b-240792b25460@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="ogro3/H/WwEjjmKs"
+Content-Disposition: inline
+In-Reply-To: <4a2b55da-ee57-4fca-bb7b-240792b25460@linaro.org>
+
+
+--ogro3/H/WwEjjmKs
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240130040632.3039911-1-dawei.li@shingroup.cn>
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 30, 2024 at 12:06:32PM +0800, Dawei Li wrote:
-> For data structures needs cpu_to_le* conversion, its prototype needs to
-> be declared with __le* explicitly.
-> 
-> Fixes: cfad6425382e ("eeprom: Add IDT 89HPESx EEPROM/CSR driver")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202401261250.b07Yt30Z-lkp@intel.com/
-> Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
-> Cc: <stable@vger.kernel.org>
-> ---
->  drivers/misc/eeprom/idt_89hpesx.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/misc/eeprom/idt_89hpesx.c b/drivers/misc/eeprom/idt_89hpesx.c
-> index d807d08e2614..327afb866b21 100644
-> --- a/drivers/misc/eeprom/idt_89hpesx.c
-> +++ b/drivers/misc/eeprom/idt_89hpesx.c
-> @@ -129,7 +129,7 @@ struct idt_smb_seq {
->  struct idt_eeprom_seq {
->  	u8 cmd;
->  	u8 eeaddr;
-> -	u16 memaddr;
-> +	__le16 memaddr;
->  	u8 data;
->  } __packed;
->  
-> @@ -141,8 +141,8 @@ struct idt_eeprom_seq {
->   */
->  struct idt_csr_seq {
->  	u8 cmd;
-> -	u16 csraddr;
-> -	u32 data;
-> +	__le16 csraddr;
-> +	__le32 data;
->  } __packed;
->  
->  /*
+Hi!
 
-Declaring them this way is nice, but this doesn't actually "fix"
-anything at all as no code is actually changed.
+> > This is the start of the stable review cycle for the 6.1.76 release.
+> > There are 185 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >=20
+> > Responses should be made by Wed, 31 Jan 2024 16:59:28 +0000.
+> > Anything received after that time might be too late.
+> >=20
+> > The whole patch series can be found in one patch at:
+> > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.7=
+6-rc1.gz
+> > or in the git tree and branch at:
+> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.g=
+it linux-6.1.y
+> > and the diffstat can be found below.
+> >=20
+> > thanks,
+> >=20
+> > greg k-h
+>=20
+> We see build regressions on Arm64, as reported by Naresh earlier, and Sys=
+tem/390:
+>=20
+> -----8<-----
+>   /builds/linux/drivers/net/ethernet/mellanox/mlx5/core/en/params.c: In f=
+unction 'mlx5e_build_sq_param':
+>   /builds/linux/drivers/net/ethernet/mellanox/mlx5/core/en/params.c:994:5=
+3: error: 'MLX5_IPSEC_CAP_CRYPTO' undeclared (first use in this function)
+>     994 |                     (mlx5_ipsec_device_caps(mdev) & MLX5_IPSEC_=
+CAP_CRYPTO);
+>         |                                                     ^~~~~~~~~~~=
+~~~~~~~~~~
+>   /builds/linux/drivers/net/ethernet/mellanox/mlx5/core/en/params.c:994:5=
+3: note: each undeclared identifier is reported only once for each function=
+ it appears in
+>   make[7]: *** [/builds/linux/scripts/Makefile.build:250: drivers/net/eth=
+ernet/mellanox/mlx5/core/en/params.o] Error 1
+> ----->8-----
+>
 
-So how is ths a bugfix?  How does this patch do anything?
+We see the same problem in -cip builds:
 
-confused,
+drivers/net/ethernet/mellanox/mlx5/core/en/params.c: In function 'mlx5e_bui=
+ld_sq_param':
+7942drivers/net/ethernet/mellanox/mlx5/core/en/params.c:994:53: error: 'MLX=
+5_IPSEC_CAP_CRYPTO' undeclared (first use in this function)
+7943  994 |                     (mlx5_ipsec_device_caps(mdev) & MLX5_IPSEC_=
+CAP_CRYPTO);
+7944      |                                                     ^~~~~~~~~~~=
+~~~~~~~~~~
+7945drivers/net/ethernet/mellanox/mlx5/core/en/params.c:994:53: note: each =
+undeclared identifier is reported only once for each function it appears in
+7946  CC [M]  drivers/net/ethernet/stmicro/stmmac/stmmac_xdp.o
+7947make[6]: *** [scripts/Makefile.build:250: drivers/net/ethernet/mellanox=
+/mlx5/core/en/params.o] Error 1
+7948make[6]: *** Waiting for unfinished jobs....
+7949
 
-greg k-h
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--ogro3/H/WwEjjmKs
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZbkRXgAKCRAw5/Bqldv6
+8tnNAKC/7x8lVoo0Le26A45kEmutMXHk+ACeJWAIYPUjnnQM/iDgsXE2I2+YJHw=
+=UXjh
+-----END PGP SIGNATURE-----
+
+--ogro3/H/WwEjjmKs--
 
