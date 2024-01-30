@@ -1,119 +1,151 @@
-Return-Path: <stable+bounces-17461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119C384305D
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 23:49:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C25843064
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 23:49:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8CE6286525
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 22:49:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25945B243B8
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 22:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01FB7EEF4;
-	Tue, 30 Jan 2024 22:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0827EEF2;
+	Tue, 30 Jan 2024 22:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kOvtW1oa"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="PL0mbISt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 439117EEEE;
-	Tue, 30 Jan 2024 22:49:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0A27EEEC;
+	Tue, 30 Jan 2024 22:49:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706654958; cv=none; b=RjX4ikTXbDYyeU79tDBssHBA0y4fLqm37f3Thsomz5gwMHv6ROhrInDD67Z0iyijqqjvAkVl8Eqdvh+XcvNBYq7SPWZpo8Pib9+dZHp3NxxlaZ/2kdXM3f5ar3n9oPf3idRcBwmh/tgVBiey9+XjzLfc9fBFbFINsKFRjxk3r+s=
+	t=1706654975; cv=none; b=a58ZXQcarW+CGfich/iQSQ0ae9mEvUjSaAXrVxwr6/qTLapgmOoG02+UkKU76A6Gz2jXj7GP58rJM1p6xjMMjVMDRISE6ZLbV9zJ1s2vCH8Bc/M8UJH0jW4X891+ijb9eXdY+WXwyjRYeCv0S9FYvz7MoXWTKT1ge11Z158VFo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706654958; c=relaxed/simple;
-	bh=5PEbedCvlPcPx2iTY5riTWdi4LRY/hHKOrHNlonDI+k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KgTx1ylJwbG3O/5oLqLD8PhwPaFOST7miqNcqdBKhRSDNCcUvbdQHZOgyOpv6TTZ8byWlM4IJxER2+xxbg0G5SBfdKP44kzKdv5hDtGwW9xH+6ovVz6/y9gm7NgECJh8EyeTig7/JkTGPtMXRppSgYSdLNWoWiJWD0puVbyZidw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kOvtW1oa; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-5ceb3fe708eso2792214a12.3;
-        Tue, 30 Jan 2024 14:49:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706654956; x=1707259756; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bq2zWShlBmwvfZivQBNk/q3mwb4pxGumX5VXlkn+VXo=;
-        b=kOvtW1oawDr4l76aip3RWBvTDZcK278ujp15UtciV8tpbwhmclC06DE3Hrx6idH533
-         MmYlooqe1JoToKjmyKRQ1lnbUVM4KFzhjOKAjZP8zHXzjl2DhSe4VlaQ1Q3MS4RlWFG9
-         TmDf/VKJBy0e2/2lopaPWfBM8XX0IGKM7EpGSmpydRgnFMPMzEwmZkzzBeVON+Uo4qZO
-         UBX8n7/0kwsYM2kROUqurz3z2nkMGHe6bBGp8V0uzt6JUkWi0GyO/RBN8pvPWtf+sTUE
-         W1Os5BmqH6L2B9U7qqzsl48AAgUeVUpcU6ITk1KgQNOF65yvOT+B1Ba2fv/kMpNbx99W
-         tSDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706654956; x=1707259756;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bq2zWShlBmwvfZivQBNk/q3mwb4pxGumX5VXlkn+VXo=;
-        b=AEVi/i/gcTudEXjccqFunyMH7DKcwyWUYBa4NLggSa72i5NVbyYvOiihxnva2jAcxX
-         EtR510HOddUapZAsEy3RnZgZw2eGdyHC1DIlHWzPlCGItO0AfFHk45nxI/iI0RQlx3++
-         OQN2GU2u8H1s7MhjzX5nHes2lFHU+LkD7ASm/1P7wut0DENbsmaveBEqUr0pHeBk02gp
-         qt/Hwn/liXyqqhPddY5bIFVVPvjuXddikMcy7qyWGt5gvufYr6hHg7C6bI5VjTyyfzUu
-         JeTQ6ybPRHdnqciudYJvLti9jMd7AyAz6L1DuPyxcb45Rh3BI4vRMYcb0V/2q1oHzgYD
-         gnkw==
-X-Gm-Message-State: AOJu0Yy5vV0IBwaSZKGrDMA0MwLZLjInJ5xS7Y1lOo7FkHKR/xGq96sr
-	xsOucDPCzFsxMfe1atBxrkTkPqEA9cE4s3+WVaavt9ELkigfyZex8yYYGNg3
-X-Google-Smtp-Source: AGHT+IE5nbC8dbVwlBAa6gngPdGysmSFzxXCWusY8Ypyqkcrhf5f3HuNcFbRnl7n3o/Ym1zWisMCAA==
-X-Received: by 2002:a17:90b:e8a:b0:293:f625:1b0b with SMTP id fv10-20020a17090b0e8a00b00293f6251b0bmr63974pjb.5.1706654956398;
-        Tue, 30 Jan 2024 14:49:16 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id e16-20020a17090ac21000b00290071b5a93sm1064161pjt.0.2024.01.30.14.49.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jan 2024 14:49:15 -0800 (PST)
-Message-ID: <f681ef24-b854-40b5-8179-eadf69e63a62@gmail.com>
-Date: Tue, 30 Jan 2024 14:49:13 -0800
+	s=arc-20240116; t=1706654975; c=relaxed/simple;
+	bh=SfTsQHUzwYOw6tm15w1BnAL1U6wbM5O1XydpH8hAt6c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a87T3Hpbah/Zk99sWOdZYLW0Ntic8LtQ9F14n68b8rz03+ZjNW/RShpMKwebWhGfoIKOLAxX+6cdcIKNukpn6mBPN3pg3t3ts5oqk/oe3Cl1Fc/KLE7Rbq9Mflpj9iNm4utqZQ5SyWHcTzGaff/Ice6gLGkr5CTmjE/wIu8TWr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=PL0mbISt; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=WEOMV/N84hcohRbOjwt+Vy6+eT6U/+PkTZW1Mypb99k=; b=PL0mbIStanoePOnz0peeH4kIAN
+	FyiEBY3Eh5jFJ21PabLv4AV2LCFoTeMtJrh8ykxNUggQUstaPdADobls39RjCsV4ekzI6Bp2n+9RW
+	HwbJn8hhGpwC10RlMDp5g3G5gY1Yv6BFT3qYMBygbEwCRKeyY4n2iWofQUGEVN1FzQ1MKS+f56p9X
+	oesl88+epQm07BfW/oO6h7kLnLSmbNnItjw3a9cdKkjp+vRHC7VmD6W+cc7EL3jwwCoWDN08z0bSU
+	QdhaRjgCAUKpNGsrZ8frSWLJSFj2c0BhUHlkZv0skL8DA8WifRTYn6dxfWZyHL6DIDyvjDMtd5nrX
+	yakVGTNg==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <carnil@debian.org>)
+	id 1rUwuz-006Vho-80; Tue, 30 Jan 2024 22:49:25 +0000
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 7C2CCBE2DE0; Tue, 30 Jan 2024 23:49:23 +0100 (CET)
+Date: Tue, 30 Jan 2024 23:49:23 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Paulo Alcantara <pc@manguebit.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jan =?utf-8?B?xIxlcm3DoWs=?= <sairon@sairon.cz>,
+	Leonardo Brondani Schenkel <leonardo@schenkel.net>,
+	stable@vger.kernel.org, regressions@lists.linux.dev,
+	linux-cifs@vger.kernel.org,
+	Mathias =?iso-8859-1?Q?Wei=DFbach?= <m.weissbach@info-gate.de>
+Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with
+ "Resource temporarily unavailable"
+Message-ID: <Zbl881W5S-nL7iof@eldamar.lan>
+References: <8ad7c20e-0645-40f3-96e6-75257b4bd31a@schenkel.net>
+ <7425b05a-d9a1-4c06-89a2-575504e132c3@sairon.cz>
+ <446860c571d0699ed664175262a9e84b@manguebit.com>
+ <2024010846-hefty-program-09c0@gregkh>
+ <88a9efbd0718039e6214fd23978250d1@manguebit.com>
+ <Zbl7qIcpekgPmLDP@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/186] 6.1.76-rc2 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com
-References: <20240130183318.454044155@linuxfoundation.org>
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240130183318.454044155@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zbl7qIcpekgPmLDP@eldamar.lan>
+X-Debian-User: carnil
 
-On 1/30/24 10:47, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.76 release.
-> There are 186 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 01 Feb 2024 18:32:32 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.76-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Hi Paulo, hi Greg,
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+On Tue, Jan 30, 2024 at 11:43:52PM +0100, Salvatore Bonaccorso wrote:
+> Hi Paulo, hi Greg,
+> 
+> Note this is about the 5.10.y backports of the cifs issue, were system
+> calls fail with "Resource temporarily unavailable".
+> 
+> On Mon, Jan 08, 2024 at 12:58:49PM -0300, Paulo Alcantara wrote:
+> > Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
+> > 
+> > > Why can't we just include eb3e28c1e89b ("smb3: Replace smb2pdu 1-element
+> > > arrays with flex-arrays") to resolve this?
+> > 
+> > Yep, this is the right way to go.
+> > 
+> > > I've queued it up now.
+> > 
+> > Thanks!
+> 
+> Is the underlying issue by picking the three commits:
+> 
+> 3080ea5553cc ("stddef: Introduce DECLARE_FLEX_ARRAY() helper")
+> eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
+> 
+> and the last commit in linux-stable-rc for 5.10.y:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit?id=a280ecca48beb40ca6c0fc20dd5a7fdd9b3ee0b7
+> 
+> really fixing the issue?
+> 
+> Since we need to release a new update in Debian, I picked those three
+> for testing on top of the 5.10.209-1 and while testing explicitly a
+> cifs mount, I still get:
+> 
+> statfs(".", 0x7ffd809d5a70)             = -1 EAGAIN (Resource temporarily unavailable)
+> 
+> The same happens if I build
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit?id=a280ecca48beb40ca6c0fc20dd5a7fdd9b3ee0b7
+> (knowing that it is not yet ready for review).
+> 
+> I'm slight confused as a280ecca48be ("cifs: fix off-by-one in
+> SMB2_query_info_init()") says in the commit message:
+> 
+> [...]
+> 	v5.10.y doesn't have
+> 
+>         eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
+> 
+> 	and the commit does
+> [...]
+> 
+> and in meanwhile though the eb3e28c1e89b was picked (in a backported
+> version). As 6.1.75-rc2 itself does not show the same problem, might
+> there be a prerequisite missing in the backports for 5.10.y or a
+> backport being wrong?
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+The problem seems to be that we are picking the backport for
+eb3e28c1e89b, but then still applying 
 
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit?id=a280ecca48beb40ca6c0fc20dd5
+
+which was made for the case in 5.10.y where eb3e28c1e89b is not
+present.
+
+I reverted a280ecca48beb40ca6c0fc20dd5 and now:
+
+statfs(".", {f_type=SMB2_MAGIC_NUMBER, f_bsize=4096, f_blocks=2189197, f_bfree=593878, f_bavail=593878, f_files=0, f_ffree=0, f_fsid={val=[2004816114, 0]}, f_namelen=255, f_frsize=4096, f_flags=ST_VALID|ST_RELATIME}) = 0
+
+Regards,
+Salvatore
 
