@@ -1,90 +1,225 @@
-Return-Path: <stable+bounces-17413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8921784266A
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 14:48:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83334842670
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 14:50:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38AE4B2331B
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 13:48:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5D6C1C26112
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 13:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3FC6D1C1;
-	Tue, 30 Jan 2024 13:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DB66D1C4;
+	Tue, 30 Jan 2024 13:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0EyaNAy3"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Q6T+k91V"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37376D1B5;
-	Tue, 30 Jan 2024 13:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7699D6D1B3
+	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 13:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706622523; cv=none; b=O6BNzHKvnPKm5ffaXIWSHgl2tmd3cWujsPqK4pIfhtqF69W9C8sDFu8BDzJgVbwolNILylywzCgrADwC+nwAPgMQ96vG9p5uxU746nJwCX4Tf4i6FsNpIJeSMhQeIDww9IJ3pJxF0indGyG6HyhA1TLCeMOdmPmEsd4RukkdF+8=
+	t=1706622624; cv=none; b=Lq5KkkLpZpZ4aFyVdacni2r/pP2CwAqPPCWA5i0C4FRQoT8z/oRS1zH0t/qxMLCIMYBjnR4Oi4Ih6ia22FKcJi0alhRKMTxWjQ14bSrp+pWC6BInTiUapxOPcPdbUNZ/mwgU0HGHPGiCd8K9rTx4fUdK6Urme2HhPaezz3M+s4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706622523; c=relaxed/simple;
-	bh=LX2Fic2UMf7KjX8p2W2+sSCjFDYmcP3OxJ1aZl3nnnY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M0rAoKME5hVKoCoJirZswaCkp01Ozw8hfJxZQcqUxIcA20jIEmg30BchSq4qRMuJhP+j7I0drH8qa/0jz+rx60rYNgQRKkyL5k2cg2wpyX7Ahei8bqA262dBsWzJatpL3tPWdPPE9IuejT/S0qhxAQ6AJXX+lLIXpLjpX13AgSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0EyaNAy3; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=vd//V4XYtNdO2bVzPimQHhpuzy1TW7+TDVfUFwizcWs=; b=0EyaNAy3PN3WNXOZkObkKOnf7m
-	l+LjuYFxeSmhk3U5RzxxGCO0Ob/JJ5phV2UidjoFY6TDp/w1VAOw5GU0j/6w7dWlLI65z+naIqFmw
-	nV0n25zGIlwSGH0LXks3/JplBRPXEwI4GX7pzoZ7e+w37JMlEZfKniz/sYw3x4tI8BxM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1rUoTM-006UoM-Ti; Tue, 30 Jan 2024 14:48:20 +0100
-Date: Tue, 30 Jan 2024 14:48:20 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jisheng Zhang <jszhang@kernel.org>
-Cc: Petr Tesarik <petr@tesarici.cz>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	"open list:STMMAC ETHERNET DRIVER" <netdev@vger.kernel.org>,
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
-	Marc Haber <mh+netdev@zugschlus.de>,
-	Florian Fainelli <f.fainelli@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: stmmac: protect updates of 64-bit statistics
- counters
-Message-ID: <cd9ce78c-2761-4b87-af87-ed6ccb1206bb@lunn.ch>
-References: <20240128193529.24677-1-petr@tesarici.cz>
- <ZbiCWtY8ODrroHIq@xhacker>
+	s=arc-20240116; t=1706622624; c=relaxed/simple;
+	bh=S8UoD6Ta1gehN3pZq3TClOoAdLVOWvyfsPQVhm3ikJk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pnW/und5fBAd0JLW2RgwiYC8FyajI47f4V8NkbzZGZvgy6Z470ThAnTRG/lOoXniiFDXvdD5T4B82AgI3nwBpihhCDJMtbMSquwOvzLKxr9orj3yL5ws7d8rtV8bpdDz5qr5w1/TyLasmt4HUM0LUBmWreoHOkFGFqBzZ11Zzg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Q6T+k91V; arc=none smtp.client-ip=209.85.222.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-7d2df857929so1723038241.3
+        for <stable@vger.kernel.org>; Tue, 30 Jan 2024 05:50:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706622621; x=1707227421; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oqRuopth+NFROAnnx4PTjC3pCFiYr+Y26i/bHfvDIrs=;
+        b=Q6T+k91VAeEB08zyE6TCdez6/gkHnxOiSH90SRvPFcS4QHsbEJ61wqX094VQAQl/n9
+         XTq0Gqs4s0P6iWVc8dbGrT/II/wyAVf08SaE7P8b816KDdXlerYXuaM561rcNu9Q431B
+         jU9pZwcxOqsDnLoIdMEG/rhgto/nK9Hu4RqKGjKjdN8Ox9Y8HWvx8aOPqAqh/IJgtb/R
+         TOOAXKb6qcTmnJHDJVqK9IRcvqxsDI2KRfQkEyXQDnES2xAk/gzyuC10ecmZbihrAtBe
+         K6EjKXZ2Jr8i8U8fUMMvcZZEJoAYt1BaBnDna0evY912/K3YAxcgWXYjZ6uB2G0/ivTK
+         ZsTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706622621; x=1707227421;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oqRuopth+NFROAnnx4PTjC3pCFiYr+Y26i/bHfvDIrs=;
+        b=L0ElVfOUWUTG9uBDkEqLUsMWWfOYZcZEfgNaMzVS3dP6S9pV75TN7Sm19Ve9FY1ZSA
+         0yUNOZU/f3Ou2iuUTl+L4paqzEkFWeZKnw7z4iEA1CuaalTOVlrWem8npx+9gfXCW1yM
+         sv2SH7E00CB3DpNYmCeJCjMC5n5umMbWikrlegGApafATGxQM02T/2BKEFBSQQ84AVFN
+         bhNJT6on3jAj2KiGENzx2chdwSu/Agh7BpBrKWfQt49T6eXZAlqxoUnWdbbfPuX1C03R
+         01IOLsHrqIusGuAZ5FZjh1O8G7431zd5Pz9cB8Gu4FJlzrQGSENiHipIdqo08YkYC5Mw
+         whgQ==
+X-Gm-Message-State: AOJu0YxeVfRKgxtBDryj9zOOO8omhowBJduJNruJzSQcVJuNHnilIzD/
+	gDEU7xPyWNs5mZkAM5yVNw3Z9B+U3YFipKIKA0Xh2OX4raG+A2hswXt4Dlxo4EL9kMUaYDl6GGB
+	6r0wp7Nq6h/AXNzbWtXT8vSPZ3yGi0cYokErSiA==
+X-Google-Smtp-Source: AGHT+IE2NzLxDFSGj5n1fVpRkjkZIulZhy16OZlANragEXfj90Y18vilUxLyU4CKO4r4rgr1zbWvnLR3XGyNXMLS7hc=
+X-Received: by 2002:a05:6102:1242:b0:469:a69e:70c4 with SMTP id
+ p2-20020a056102124200b00469a69e70c4mr3590245vsg.37.1706622621209; Tue, 30 Jan
+ 2024 05:50:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZbiCWtY8ODrroHIq@xhacker>
+References: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 30 Jan 2024 19:20:09 +0530
+Message-ID: <CA+G9fYsT0kWty=aRATVCT1KzMBmbo0_LidV2=b7U+6f+=Sbd6A@mail.gmail.com>
+Subject: Re: [PATCH 6.7 000/346] 6.7.3-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> PS: when I sent the above "net: stmmac: use per-queue 64 bit statistics
-> where necessary", I had an impression: there are too much statistics in
-> stmmac driver, I didn't see so many statistics in other eth drivers, is
-> it possible to remove some useless or not that useful statistic members?
+On Mon, 29 Jan 2024 at 22:37, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.7.3 release.
+> There are 346 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 31 Jan 2024 16:59:28 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.7.3-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.7.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-These counters might be considered ABI. We don't want to cause
-regressions in somebodies testing, or even billing scripts because we
-remove a counter which somebody is using.
 
-       Andrew
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
+
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 6.7.3-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.7.y
+* git commit: 7c05c677b6ca67bd17cb1606e63c1962e0c2e2a2
+* git describe: v6.7.2-347-g7c05c677b6ca
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.7.y/build/v6.7.2=
+-347-g7c05c677b6ca
+
+## Test Regressions (compared to v6.7.1-639-g2320541f64ba)
+
+## Metric Regressions (compared to v6.7.1-639-g2320541f64ba)
+
+## Test Fixes (compared to v6.7.1-639-g2320541f64ba)
+
+## Metric Fixes (compared to v6.7.1-639-g2320541f64ba)
+
+## Test result summary
+total: 142243, pass: 124118, fail: 1075, skip: 16831, xfail: 219
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 145 total, 143 passed, 2 failed
+* arm64: 52 total, 50 passed, 2 failed
+* i386: 41 total, 38 passed, 3 failed
+* mips: 26 total, 26 passed, 0 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 36 passed, 0 failed
+* riscv: 25 total, 24 passed, 1 failed
+* s390: 13 total, 13 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 45 passed, 1 failed
+
+## Test suites summary
+* boot
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-exec
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-kcmp
+* kselftest-membarrier
+* kselftest-mincore
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-mptcp
+* kselftest-openat2
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-x86
+* kunit
+* kvm-unit-tests
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
