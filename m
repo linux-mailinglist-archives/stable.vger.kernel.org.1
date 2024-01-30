@@ -1,73 +1,73 @@
-Return-Path: <stable+bounces-17368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C6F841AF4
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 05:20:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91117841AFA
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 05:25:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69A871F262B9
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 04:20:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE90EB23E35
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 04:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 390BF37710;
-	Tue, 30 Jan 2024 04:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53753770F;
+	Tue, 30 Jan 2024 04:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fCy8npqt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="joL9zUif"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CCE537704;
-	Tue, 30 Jan 2024 04:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF62374E9;
+	Tue, 30 Jan 2024 04:25:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706588405; cv=none; b=FgN4krA1AFwIZFIPBhVwGZISGxj7Vi2H9XQhI4qXFWIxgymx5Bg8Ca238YVtt2lhslu2s+qJUJ1UbGI4lFDSdf8VzVVpJZoroVAbGbOoNX/fYNiSG9BY9iXJoVnA94+OfueArVdYXSfI+m8JB1IS+tIi7AmCGPlgpVXY+fuwGjA=
+	t=1706588748; cv=none; b=Op1P+1SQJMtV33e5p9bTwgfXjkKaSy9legfAONrn0ckHHoXWWJ9MXuO6eabHI2tZ2Jp6ol+Aup7AkNKLdWRh41s9Hd5Tj915ua3A5/3I7gsXiznBs7TcioQAd4+ih61/QAi60zLgHocWzkyoCvRgxYyEYpWQA63JwcMgZgNcnQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706588405; c=relaxed/simple;
-	bh=742/VpGYjp7JHCIumTanXkUEoDBtsIXsCzNYoB5RPbQ=;
+	s=arc-20240116; t=1706588748; c=relaxed/simple;
+	bh=XICM0oAtdISW5wifA2LPI0rqIpUaKmfx63mDyMRbC4Y=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MCVGRQ4JfFH2EA0XlnHunehPaRFJnVJoSCc2x4SX3HmYdb/JKmviizTptcF+I3Eayjywxe9HSkQ7y7ps/fzqdf6yfXxjmgvzFi8jRiYW/Sp1XLYVOZxuhWSqX3McJAF51hCzKCcHHOhYR6MXsHTLTBSCYHe5cpheKIlC0G4ARjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fCy8npqt; arc=none smtp.client-ip=209.85.215.178
+	 In-Reply-To:Content-Type; b=ETw9xbt/KwxUDqoMtLwB65f2LEwgcpotNYs0mpczW5YvSCNzsvLytQWnwD2oG0YL5S+TDDPeImNdjI4CvFuDGOoxK4TGmrLTO+ZvwV5+A9cfvjI3H+u+DagEQ4efrcUnHJN3l4aTtLvpQYd0rHVzBGRP4/Bhb4rPFzqt+mKsARM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=joL9zUif; arc=none smtp.client-ip=209.85.219.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-5ce07cf1e5dso1511488a12.2;
-        Mon, 29 Jan 2024 20:20:03 -0800 (PST)
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-68c444f9272so14927056d6.3;
+        Mon, 29 Jan 2024 20:25:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706588403; x=1707193203; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1706588746; x=1707193546; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=gnk/T6fiYHvs+VQBGe7jQK5hs2AXrNttF5s8SmZgcU0=;
-        b=fCy8npqtsLOZx7/5FwA7ysRf1yUcVvQnzO5LK5MJPd+ac4oeGaZzNH4nVAYF7M823I
-         c3jqPB0EJc3pRYCkoTZcd/F2UpkSD42zaLxKbXxj2zr4XoEVBQvDKqDokQie9vwMsuyq
-         uvn2co18HfdscJfwcRlvBRVzjsw1h8nPgLTa21kxmSeyND2Zbl+ujAb4Q3gsYpaBai3U
-         Bx2C8Fw3aejNg96MX7hK66QXTZk7sZHj9mIKSn8C00d2iTcwWeQI/VoLid0oB1BhkEfZ
-         9CmxmhX/lIp5Vxz7ZXkJ781R1c86+d7dFYRXapZgKhBIjL7VGog4l90zQeKaGCMjhJPr
-         d3MA==
+        bh=6AHazMTJo3ftxGOybhu8r+ldeS3EjtdJgqSS2/cHkgQ=;
+        b=joL9zUiflWneT1GhTnsIpdPa2cmMPAmWsnPotRMd1eAgOa/Gx3lU2q1ZPJorrOpLtB
+         Y+9LYZsvoagpd0Mud1E2kJd4eEvfRdzD9FEriVqGeyg1tA4MsudwJJciqRM0SETJGyQa
+         kVJW73SArG7wL5VJ8ZnoJwMk5UFaZgs2D/S1JQ+eDQA9YosPMFrsifElez26GNHDHi9p
+         kX14e9B/BZwOaRdqZ/c23f6NKWDYwdAqH6Ruq1e/4b5Ohfx7h02MGGrD6nzo41ubdbar
+         NYne2lwMRgy7TUV1sqanRC3DAH1otZhL/fsE36VJRfIEEwEkaKaTXmof6LgdXP97H8ZZ
+         huQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706588403; x=1707193203;
+        d=1e100.net; s=20230601; t=1706588746; x=1707193546;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gnk/T6fiYHvs+VQBGe7jQK5hs2AXrNttF5s8SmZgcU0=;
-        b=j+qFh6dK1xVDdVYCYmePYCbSfTSjZRY3Ru6ZHx7Gu1QyS2vL2jpE5/KzfszYRAbOLU
-         QxMOxBhD8dQTrAn/pFB7fkkkeyG66gvFA5ebQIW3RLUl89rdzrnER14jKiKf4KkNCIK2
-         NdjPSOrfBEH2aiJ2DzIeMiOoenaIvqrcSstG45hO70YuBvuESyj8WHsOUOu/eyDkBl96
-         ol2PkoMnrSaXBVQGsmsmZymRCnhs2FNG3NiBCAC5rnHMurxfn5S4z4DsSSX3b9youKNm
-         LZBIHngvitzTjKGsaxU+ZOx/ptsHvbC9L8eG5Sc7OZIv3uHZXkZeBQ3pdn7XP7M1cUdP
-         kcDQ==
-X-Gm-Message-State: AOJu0YwSOXbxKIEcJ56uFBdCM9hqHwNgSLvgGqMfaQqfNFK+qhAuVZGH
-	KUQdnI4M0g1F77M+v+U31+yVe2uZUwMko2HgZV4HxJLVsy/g2NlZ
-X-Google-Smtp-Source: AGHT+IEwCyP6BTwXAzKfR4p+e3++knD9hZ78q911dW4yV2i+Op16X/Mq6ifBw0z686XC0X/VcWARqg==
-X-Received: by 2002:a05:6a20:d390:b0:19c:a3a9:c317 with SMTP id iq16-20020a056a20d39000b0019ca3a9c317mr3801411pzb.15.1706588402758;
-        Mon, 29 Jan 2024 20:20:02 -0800 (PST)
+        bh=6AHazMTJo3ftxGOybhu8r+ldeS3EjtdJgqSS2/cHkgQ=;
+        b=d5AXHf86IEz18DGtfFdu69fpZHRalFaH4OtfIJ2Tgq7YFmvFvieUVUnyKJ3NRQedZ2
+         Ev+VlG85gq9jiyNgO8Edeo/hjwH7Uitz+jv/urK9z7c6xIiqNP3wmBcvtbpWuaLH4/jv
+         hb4sFL3Z4u8L7V3CO4Rzkt0mccO78hhd/6C/PCHMJxLRPlM6FLIAU4aGnoxOICsnnOQg
+         2PaAITUCCVpzt6A0Ic0isYdXpVEwjNYawTc01ywoTIfZn3cPPAghjtr1biEQFgbIleUW
+         DTcwhR1xx83I1817bPQJNVrCGQIX7n81YkzhFXFA6b5G+R/L5LnzmMzhwUM4oKn6tMz4
+         WzZA==
+X-Gm-Message-State: AOJu0YxUIRknYIJJXXqtonVZqN/hcxT2BgDv8G1/QCE1r+0lg7vSLIXM
+	BtQX3FkDKupFng1B9QztQO54/f9oUAZ5W4Vpun0a4tSMvywa0EHO
+X-Google-Smtp-Source: AGHT+IGy9UUdmNDz4l38U/OoB7UBhcXnjASGv2Y2KlMX0Ay6yVuxW3W+63dk5v8No/mNIN7kt1bguA==
+X-Received: by 2002:a05:6214:491:b0:683:d9df:ca5a with SMTP id pt17-20020a056214049100b00683d9dfca5amr9750417qvb.108.1706588745707;
+        Mon, 29 Jan 2024 20:25:45 -0800 (PST)
 Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
-        by smtp.gmail.com with ESMTPSA id jd20-20020a170903261400b001d8f6b95dcbsm1607715plb.20.2024.01.29.20.20.01
+        by smtp.gmail.com with ESMTPSA id d7-20020a05620a166700b00783da2644besm3320146qko.136.2024.01.29.20.25.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jan 2024 20:20:02 -0800 (PST)
-Message-ID: <1a82d534-0518-4a70-88b9-0a7313e693aa@gmail.com>
-Date: Mon, 29 Jan 2024 20:20:00 -0800
+        Mon, 29 Jan 2024 20:25:45 -0800 (PST)
+Message-ID: <8c178bd1-e0c9-4e29-9b63-dd298298bc7b@gmail.com>
+Date: Mon, 29 Jan 2024 20:25:42 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,16 +75,19 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.7 000/346] 6.7.3-rc1 review
+Subject: Re: stable-rc: 6.1: mlx5: params.c:994:53: error:
+ 'MLX5_IPSEC_CAP_CRYPTO' undeclared (first use in this function)
 Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com
-References: <20240129170016.356158639@linuxfoundation.org>
+To: Naresh Kamboju <naresh.kamboju@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-stable <stable@vger.kernel.org>, Netdev <netdev@vger.kernel.org>,
+ linux-rdma@vger.kernel.org, lkft-triage@lists.linaro.org,
+ Sasha Levin <sashal@kernel.org>, Leon Romanovsky <leonro@nvidia.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, "David S. Miller" <davem@davemloft.net>,
+ Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>
+References: <CA+G9fYvYQRnBbZhHknSKbwYiCr_3vPwC5zPz2NsV9_1F7=paQQ@mail.gmail.com>
+ <2024012915-enlighten-dreadlock-54e9@gregkh>
+ <CA+G9fYs3_M9E3w+uWky5X1hEgoJU4e92ECqSywerqSkF8KVGvA@mail.gmail.com>
 From: Florian Fainelli <f.fainelli@gmail.com>
 Autocrypt: addr=f.fainelli@gmail.com; keydata=
  xsDiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
@@ -119,35 +122,88 @@ Autocrypt: addr=f.fainelli@gmail.com; keydata=
  y5arMQorqTFWlEOgRA8OP47L9knl9i4xuR0euV6DChDrguup2aJVU8JPBBgRAgAPAhsMBQJU
  X9LxBQkeXB3fAAoJEGFXmRW1Y3YOj4UAn3nrFLPZekMeqX5aD/aq/dsbXSfyAKC45Go0YyxV
  HGuUuzv+GKZ6nsysJw==
-In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
+In-Reply-To: <CA+G9fYs3_M9E3w+uWky5X1hEgoJU4e92ECqSywerqSkF8KVGvA@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
-On 1/29/2024 9:00 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.7.3 release.
-> There are 346 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 1/29/2024 6:52 PM, Naresh Kamboju wrote:
+> On Mon, 29 Jan 2024 at 21:58, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+>>
+>> On Mon, Jan 29, 2024 at 09:17:31PM +0530, Naresh Kamboju wrote:
+>>> Following build errors noticed on stable-rc linux-6.1.y for arm64.
+>>>
+>>> arm64:
+>>> --------
+>>>    * build/gcc-13-lkftconfig
+>>>    * build/gcc-13-lkftconfig-kunit
+>>>    * build/clang-nightly-lkftconfig
+>>>    * build/clang-17-lkftconfig-no-kselftest-frag
+>>>    * build/gcc-13-lkftconfig-devicetree
+>>>    * build/clang-lkftconfig
+>>>    * build/gcc-13-lkftconfig-perf
+>>>
+>>> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>>>
+>>> Build errors:
+>>> ------
+>>> drivers/net/ethernet/mellanox/mlx5/core/en/params.c: In function
+>>> 'mlx5e_build_sq_param':
+>>> drivers/net/ethernet/mellanox/mlx5/core/en/params.c:994:53: error:
+>>> 'MLX5_IPSEC_CAP_CRYPTO' undeclared (first use in this function)
+>>>    994 |                     (mlx5_ipsec_device_caps(mdev) &
+>>> MLX5_IPSEC_CAP_CRYPTO);
+>>>        |
+>>> ^~~~~~~~~~~~~~~~~~~~~
+>>>
+>>> Suspecting commit:
+>>>    net/mlx5e: Allow software parsing when IPsec crypto is enabled
+>>>    [ Upstream commit 20f5468a7988dedd94a57ba8acd65ebda6a59723 ]
+>>
+>> Something looks very odd here, as the proper .h file is being included,
+>> AND this isn't a build failure on x86, so why is this only arm64 having
+>> problems?  What's causing this not to show up?
 > 
-> Responses should be made by Wed, 31 Jan 2024 16:59:28 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.3-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> As per the Daniel report on stable-rc review on 6.1, these build failures also
+> reported on System/390.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+The build failure is legitimate here since 
+drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h guards all of 
+the definitions and enumerations under a CONFIG_MLX5_EN_IPSEC which is 
+not enabled in the build configuration that failed.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+This is implicitly fixed upstream with 
+8c582ddfbb473c1d799c40b5140aed81278e2837 ("net/mlx5e: Handle hardware 
+IPsec limits events") which relocates the #ifdef CONFIG_MLX5_EN_IPSEC 
+below and allows the MLX5_IPSEC_CAP_CRYPTO enum value, amongst others to 
+be visible to code that is not guarded with CONFIG_MLX5_EN_IPSEC. This 
+specific commit does not apply cleanly to the stable-6.1 branch, so 
+maybe the best we can come up with is this targeted change that does the 
+same thing against 6.1:
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h 
+b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
+index 16bcceec16c4..785f188148d8 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
+@@ -34,7 +34,6 @@
+  #ifndef __MLX5E_IPSEC_H__
+  #define __MLX5E_IPSEC_H__
+
+-#ifdef CONFIG_MLX5_EN_IPSEC
+
+  #include <linux/mlx5/device.h>
+  #include <net/xfrm.h>
+@@ -146,6 +145,7 @@ struct mlx5e_ipsec_sa_entry {
+         struct mlx5e_ipsec_modify_state_work modify_work;
+  };
+
++#ifdef CONFIG_MLX5_EN_IPSEC
+  int mlx5e_ipsec_init(struct mlx5e_priv *priv);
+  void mlx5e_ipsec_cleanup(struct mlx5e_priv *priv);
+  void mlx5e_ipsec_build_netdev(struct mlx5e_priv *priv);
 -- 
 Florian
 
