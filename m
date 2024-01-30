@@ -1,70 +1,84 @@
-Return-Path: <stable+bounces-17418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2952A8426C2
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 15:18:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A76128426FD
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 15:33:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5320FB25ADC
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 14:18:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E36DE1C25597
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 14:33:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292926DD00;
-	Tue, 30 Jan 2024 14:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EDA754F94;
+	Tue, 30 Jan 2024 14:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XNfZKvm+"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=marliere.net header.i=@marliere.net header.b="hOx88CkY"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4746D1CB;
-	Tue, 30 Jan 2024 14:18:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272B474E17;
+	Tue, 30 Jan 2024 14:32:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706624308; cv=none; b=r20I7HJgnkSbjV7dK6hZ/9so6tLPcsE2oiaR+qQl2LfVaDIPgu04DV77qud8wqKw/LT+jS/Y+EOjbv35JJL12vPNqp05T7DUIVXP/xZCQdMKkcNJJgvNTZrt7ZHc7iesCrbHr/crvghVY+tp4lJOrhamslXW5xnyAVb1gF9lShU=
+	t=1706625164; cv=none; b=bFNgB7tU3BXJzNvLnPPJ9Yt3swioCHI/Be28Nck7feRYsml99Uj8HRRvNNDZxe3b2MU0YrMyegd0mv2R4It+cWqCuCF/PLndM06pB1XrP/uQ0zZWY1Gg8xzifX89JjCaDGjn4DoiRXWTn+XLe39x/q7aXArpz+RMtfw/+VUrd8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706624308; c=relaxed/simple;
-	bh=q0WEDdDgkh1ySBxXkcgnRrKlAyINrxCu6xtYMLDmiS0=;
+	s=arc-20240116; t=1706625164; c=relaxed/simple;
+	bh=nuQGv1Jds4FtXlqqQLPGMEKmNz6TXTY7xb77Rn4Uis0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jEbstrNT4xIhqzkeQxxENd00KIMxAR2Vi9mm9JeHvr+UIJQOIeqmu8v8W7MIZOg9BOe1mw5nl+Od6FP3kvTJJnSPNk4lqZLm3SgavZ/jIkfaorbeDjtzvd7o7vPOIMgsVruJA6eWATh5CaIE9n+FH4h2Ag3LnFx7Krp9TmyuV7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XNfZKvm+; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706624308; x=1738160308;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=q0WEDdDgkh1ySBxXkcgnRrKlAyINrxCu6xtYMLDmiS0=;
-  b=XNfZKvm+wiUlyCTbpiFyen/a+r8YmlKfHGALd7IsbFJKKSZsbAiQ53lp
-   pkK1JHgqNIsjccYVkQg0KSgsK+SYxdnsMtZFTcL/hO5dtsVs7+djiw9zk
-   DEplvl25R8oZUSem7RaKBZE3t6JOPn4OxPlMnImfCDRxT0OH7Q0bFkljZ
-   r2SyGn+PqnaO6kfj/2DtEU5r/Br6vDGG1WlFXVMeGrGqYw9JJa6YkdNR3
-   t31dcnCwgYFAO8VcJ/wrV4T57FRx/EBJsaxosymNIB//TAZUEbXCwrU0Z
-   dVvxNM4AdyX+vN+Y2+XymnBiNLhW71Eojw1fPXrZgcpSkVzdCWE0sUBKA
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="21809643"
-X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
-   d="scan'208";a="21809643"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2024 06:18:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10968"; a="931464088"
-X-IronPort-AV: E=Sophos;i="6.05,707,1701158400"; 
-   d="scan'208";a="931464088"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga001.fm.intel.com with SMTP; 30 Jan 2024 06:18:24 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 30 Jan 2024 16:18:23 +0200
-Date: Tue, 30 Jan 2024 16:18:23 +0200
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Sean Anderson <sean.anderson@seco.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] usb: ulpi: Fix debugfs directory leak
-Message-ID: <ZbkFL53fU+q7FHEU@kuha.fi.intel.com>
-References: <20240126223800.2864613-1-sean.anderson@seco.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=kK3sv2na5MkndJ/NgostJXD3Ih6xmg7HzaKWLGNkzg3fK3BlPBaKMwMqCWsxxPJdpJbYCC0MNaxfj1okwJX1to6X7knUDLLgW5MeNJDS8h4wv8TENxwzcNSvL2+v0uSJd4OkM93LwUeYx9b59NAhKAyW2Wy2aNGq21p/oylhcSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marliere.net; spf=pass smtp.mailfrom=gmail.com; dkim=fail (0-bit key) header.d=marliere.net header.i=@marliere.net header.b=hOx88CkY reason="key not found in DNS"; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marliere.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-5d4a1e66750so2137961a12.0;
+        Tue, 30 Jan 2024 06:32:41 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706625161; x=1707229961;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:dkim-signature:date:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=n1bRZI/oUopCNXOjXdeojE7GQGN2Uu9IDwrj3sROkxw=;
+        b=uDvRruN2hmj14UiOj9wn2SENQBCunpUvvuAPkPtj+QR7tUHB7MuEd63cWIQ92a9RtI
+         wXVsM4xJSNwdmOhS7cKSOuHgbUQ/3H0AxDu9j3SYrjtCObVk8tdCNEfA69KZUGHkbHVF
+         FZ2usNnPssIyZGP+llP6C0CwbD97VeTTzIGxsQ2pGs/no94TNiB0Gj/g8X5/ZIUVGwRg
+         xBnFsRLZHz61zXXScZ1Rzo5uJQcpUzcIpT1bCh5VLUR4KvegYBDkq0Ija8qDJ46lLJWW
+         FSgKuySRJLSOA7bsQ4afqcFZUC5xwahS3VvSFwv70WGBF/Mtzec7VEUlXlhgFfbz7ZDi
+         GkJA==
+X-Gm-Message-State: AOJu0Yx5ALVgnWHMY+CR0eHVN2wkmnaqhMBaYzoyH4kJSHmlkxnxKaGJ
+	+gs6h2G+4TXLqkJwO6+eCT5LiVf2yFRCiOkSwDmaG2jBhoEsHSJ2
+X-Google-Smtp-Source: AGHT+IFiv7dYpDESmpNj9u3X8FlcxqrpBMcMuVqkQU4azqWhgsppFKd2Eu2fF4hLHtoNgEOAQcofDQ==
+X-Received: by 2002:a05:6a20:6d91:b0:19c:7e49:495a with SMTP id gl17-20020a056a206d9100b0019c7e49495amr4123145pzb.57.1706625161337;
+        Tue, 30 Jan 2024 06:32:41 -0800 (PST)
+Received: from mail.marliere.net ([24.199.118.162])
+        by smtp.gmail.com with ESMTPSA id a8-20020a62d408000000b006dbdac1595esm8469877pfh.141.2024.01.30.06.32.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jan 2024 06:32:40 -0800 (PST)
+Date: Tue, 30 Jan 2024 11:33:01 -0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
+	s=2023; t=1706625158;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n1bRZI/oUopCNXOjXdeojE7GQGN2Uu9IDwrj3sROkxw=;
+	b=hOx88CkYwmXA3RcMYHBDx+Zk6hEYtjKrKCCssw5Xw2NpUTGcVyGUl4Zm0c9U+9o9m+Xzf2
+	c5gLOskrGzneBORNFPToP+UcrXO4GYW5htTamgBgThdQdxYmY3QNX2GB5VGVcGPdVyNboB
+	hFp9tCXH9Clkx/swjh/olFBhA3wB7luaqeUxkyjdg0C/rwyJl2cPp2+plVTvQ77ob6mAcc
+	DPR9aqkkFsr71u0p1FYrrA8kdCmWtIMVWVEgzdZ1QK7hoAoboo90j2vHAnAOfBgb1O3mnk
+	SvT8bsdZH7j+ZOz+W9IL94QzWAeOh/BgB8vwaMjLUBFyGejuGmY2YwwDifbcJg==
+Authentication-Results: ORIGINATING;
+	auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
+From: "Ricardo B. Marliere" <ricardo@marliere.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.7 000/346] 6.7.3-rc1 review
+Message-ID: <pivme2beq4h7wrbmjt7s6s4jgihyh5y2tt5rjt3c2flvtto4ao@y5iflivhyz6u>
+References: <20240129170016.356158639@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,42 +87,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240126223800.2864613-1-sean.anderson@seco.com>
+In-Reply-To: <20240129170016.356158639@linuxfoundation.org>
 
-On Fri, Jan 26, 2024 at 05:38:00PM -0500, Sean Anderson wrote:
-> The ULPI per-device debugfs root is named after the ulpi device's
-> parent, but ulpi_unregister_interface tries to remove a debugfs
-> directory named after the ulpi device itself. This results in the
-> directory sticking around and preventing subsequent (deferred) probes
-> from succeeding. Change the directory name to match the ulpi device.
+On 29 Jan 09:00, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.7.3 release.
+> There are 346 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Fixes: bd0a0a024f2a ("usb: ulpi: Add debugfs support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sean Anderson <sean.anderson@seco.com>
-
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
-> ---
+> Responses should be made by Wed, 31 Jan 2024 16:59:28 +0000.
+> Anything received after that time might be too late.
 > 
->  drivers/usb/common/ulpi.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.3-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
+> and the diffstat can be found below.
 > 
-> diff --git a/drivers/usb/common/ulpi.c b/drivers/usb/common/ulpi.c
-> index 84d91b1c1eed..0886b19d2e1c 100644
-> --- a/drivers/usb/common/ulpi.c
-> +++ b/drivers/usb/common/ulpi.c
-> @@ -301,7 +301,7 @@ static int ulpi_register(struct device *dev, struct ulpi *ulpi)
->  		return ret;
->  	}
->  
-> -	root = debugfs_create_dir(dev_name(dev), ulpi_root);
-> +	root = debugfs_create_dir(dev_name(&ulpi->dev), ulpi_root);
->  	debugfs_create_file("regs", 0444, root, ulpi, &ulpi_regs_fops);
->  
->  	dev_dbg(&ulpi->dev, "registered ULPI PHY: vendor %04x, product %04x\n",
-> -- 
-> 2.35.1.1320.gc452695387.dirty
+> thanks,
 
--- 
-heikki
+Hi Greg,
+
+No noticeable regressions on my system.
+[    0.000000] Linux version 6.7.3-rc1-ktest-g7c05c677b6ca (rbmarliere@debian) (gcc (Debian 13.2.0-12) 13.2.0, GNU ld (GNU Binutils for Debian) 2.42) #2 SMP PREEMPT_DYNAMIC Mon Jan 29 22:13:17 -03 2024
+
+Tested-by: Ricardo B. Marliere <ricardo@marliere.net>
+
+
+Thank you,
+-	Ricardo.
+
 
