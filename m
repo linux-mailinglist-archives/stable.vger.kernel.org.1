@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-17401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC8F984253E
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 13:46:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C470784253F
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 13:46:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73C96282086
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 12:46:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A4A41F2428C
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 12:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A396267E79;
-	Tue, 30 Jan 2024 12:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5DB46A03C;
+	Tue, 30 Jan 2024 12:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iBf7hWOn"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tUwrHZXR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB08845BE7
-	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 12:46:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB6945BE7
+	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 12:46:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706618801; cv=none; b=b4S2jBMygagwP28mWOGmM6kAJCyY6yhqtV/TUzKJRiKA33xQcpNdk/HxHSAWm58T86BhmaPNqhfxjVq11BXZ/EdX1ul7wmnKaW9m6DboM8z25+2aB7kQUgfZEdxFvtIDFIH2mPEDHEvDvdj40Sd/EpIDHMHW3FuyfiWY+n8fUmw=
+	t=1706618804; cv=none; b=fCxmkyU2r6w/jtSXyO+shiJAdVZ1gxk+sgkpC/ZoAMEeFTyVnFouvkEcNdTVR48SThQ1X/S3+acfJBKF3nmyOwEt+9VJKVPkbCkUwHwLKuAwjuwj+5Iphp3Xlvghwqo2PPYpLWYfnv4CJh/Fue1kSohkrn8xVdSEWELkuuejhFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706618801; c=relaxed/simple;
-	bh=eLO79UZmB14OMR3v4JQd0Uq0Bn9Kgn/+RfqFHbzgIZk=;
+	s=arc-20240116; t=1706618804; c=relaxed/simple;
+	bh=pPOLdBHtBk+XdayC4UT9iaM1+kY10UjwrRfCbJE3mTw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VZ7I2AaDJ5rnXiKeal5YWBr7h6LAGUiN/UwmsEuY5C7ovwvBdujPAVJlJT0ihklZ/w21yZ0jr79Wp5DE1U0VhsdjCTOLWVasmBnKv/cobfeoLVu8r3tKEr7ei/VtIUzMOCFVU7X8ItGoa87emEez2Dl26DB/Ms++V9Jwd0ziOwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iBf7hWOn; arc=none smtp.client-ip=209.85.161.46
+	 MIME-Version; b=NntHJNJEekZbO8m7WBcuG0o8Pu01iJKVEwEYsQHb5UczrSorcyKDv0bX3T+beNNJkatqRI2rW+z68hNm162gGnk86qgmk5AqGZ46twyAjqWg0MYheTt8MEJav2fk4Vuo3jEtI+vVp0aA284iU1Q6pGZg5RIlgJzNFIgscdB/UwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tUwrHZXR; arc=none smtp.client-ip=209.85.167.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-599f5e71d85so2510128eaf.3
-        for <stable@vger.kernel.org>; Tue, 30 Jan 2024 04:46:39 -0800 (PST)
+Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3beab443a63so4001b6e.3
+        for <stable@vger.kernel.org>; Tue, 30 Jan 2024 04:46:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1706618799; x=1707223599; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1706618802; x=1707223602; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fyAgvnQ0mmKiKYxS/FoZ0JqdZh7W1foioMnyXirIDbU=;
-        b=iBf7hWOnzHlkzSk+FT5zujAgv1wtih3VdXIOodWkCbCVnG6MqZsW4eb3biuvm1GPoP
-         zgUFOPuNvFiy/2ZUKFTVbizHhfNScHibb62Xx5nzZIXUFVGq1MOr5diHCxlt5sVzk9lF
-         Yta9ONt6KQdlR1DK/mMKdAUjXNKu6k1CHeTwp0rbO5iiJtz9i/S+ODSk7rL8vEYGmHyS
-         tQPElriYnmkQOhgsBYOxCFy1gZbtLfKkbBJVWW19QVQ1ak71kme82fDWrTFD25s6Y1XS
-         /+372tZecio1LUkJsQtdOEPjfgyHehdEcaOeHL3EySHZow3PyRot8k0biYSkJRmel4je
-         K2Fw==
+        bh=Z8KWuN6H6OrLde6TdH8mqi4mgaKUUFr1u6xRlsaINZQ=;
+        b=tUwrHZXRUNbaoNLW0URjxFPNYviUepdaKwzSC/pn7O3l9ZDMhmxbeWONYtSqDqxMYu
+         1OKIPkQlWVeiPmStV3HVB/WHKw8nIpUbGLy8RqpFqd05NwvFWHPhUkDD94KetL8oaawT
+         Sfk4Gko7iUb1cge61W47N63wJ7O5RMaY4OwBqF3H4DBTlb9Nm/zPKQD2DH51+3jvsSEZ
+         WRiLjhiI0vLk4xo2HA3G5dTVrdzvO+lHj0HUdQBOdomd/lGGNcWHxobiGUzsIjnfz5D9
+         y8O688QYkdiKa7s7pC80LZHD0Rl4mPEjPOBoohRJs2UjRrCaloKq8ZrYgJTv4Iiff+CW
+         afig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706618799; x=1707223599;
+        d=1e100.net; s=20230601; t=1706618802; x=1707223602;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fyAgvnQ0mmKiKYxS/FoZ0JqdZh7W1foioMnyXirIDbU=;
-        b=l/qlGvpk7H4dtO4NL0J3Kj1vnV0nvbZ8codirP7b4wgcD7eAGKpWW6vM0cvVMEgLLE
-         xCkbUTviQld8yFoEgx2J813/q7COuF3N9e3Zs4Ri0mzlXMqS21Nd8Gp0tQC/kQvXwLoZ
-         pGIVIEs9OQ8hG4lw0PKiRwKnoC8q4QFOlxMKEgT/99FhQwE3K7szeUvB562YRea4irAT
-         eiS/dkxKk1BtTw0I2UKj9g7aSGBbi3Ac1QUospx53QdfNTji6X8poDkuIoWVsv0CmrQ0
-         F41U2gAMXb0/UjssQy7Azx26pg0DfIEnwpOfBnErrfp06wSjHnrhBCJKqjBubAqn4psa
-         L7gg==
-X-Gm-Message-State: AOJu0YzoZJcH2M6fVLPbyBrISzq8queEmx6eCWpaAB+FLgR0qGwJpcyO
-	WlmPkXKOG8Xhuj/kjKMuYWKCP6Fi5SAIEUi4VknctwkJCFKfhH/5AAIjcHqIpwM=
-X-Google-Smtp-Source: AGHT+IGDL9d8h5bfcGpHkiGfVgRu0ZRR3+X35YG3/3wJ0b+6OgpEPuHb1grFM5/PNV396MRqwne/mA==
-X-Received: by 2002:a05:6358:2783:b0:178:76f8:e626 with SMTP id l3-20020a056358278300b0017876f8e626mr4010923rwb.6.1706618798853;
-        Tue, 30 Jan 2024 04:46:38 -0800 (PST)
+        bh=Z8KWuN6H6OrLde6TdH8mqi4mgaKUUFr1u6xRlsaINZQ=;
+        b=t5TET1r2QWXji4cS1oEp4BH3LTuCglAN6AfkTfMrA+toML7y/9ZU+uwnMw+A7t19cR
+         UCXJkuxV/uvFpskM/WWbfmGxytX8gFp1dxBjVGrPTtDqowBSAUOBXW2+vu3F5YY1hp2G
+         1dTbz6RjPLipt4ijoXCr5CIhhQpqOixSvS1+MulhTrKRAq4++cdgxsmHyCfNq6LWPeLL
+         tS43+9VCr7cedK+wNwiCtxZjYV2nuLoRuTGjIeO60P/s0xctih1zpjA8Ty4fW6KXo3Br
+         pcbiMI0tl8WsPQ9EOrotXByL5mHVmV1gab6lr9j0cn6Ju76PbBgtsojDWiDntJHju5yV
+         P0aw==
+X-Gm-Message-State: AOJu0YwAKHRmyOtMdabc75BotZWuD2FIx2nqUkETnQ7ge0eZw3TSMbYf
+	cnXH0pFLIQ+Lb1g/8ZiQBzS840qK83m9bydvp9F3iLXMPsZTq2Drm3MiwY1gTWg=
+X-Google-Smtp-Source: AGHT+IH58S4JEM1q9O9TRYyhe9tJdiJV5LhsiJtki/jB+Nj7Or6xV8x0SNFd4THIl4qPZKieesB5ow==
+X-Received: by 2002:a05:6808:2014:b0:3be:a57f:9f0d with SMTP id q20-20020a056808201400b003bea57f9f0dmr386807oiw.11.1706618802136;
+        Tue, 30 Jan 2024 04:46:42 -0800 (PST)
 Received: from x-wing.lan ([106.51.161.37])
-        by smtp.gmail.com with ESMTPSA id p3-20020aa79e83000000b006dddd3e31a8sm7658788pfq.219.2024.01.30.04.46.36
+        by smtp.gmail.com with ESMTPSA id p3-20020aa79e83000000b006dddd3e31a8sm7658788pfq.219.2024.01.30.04.46.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jan 2024 04:46:38 -0800 (PST)
+        Tue, 30 Jan 2024 04:46:41 -0800 (PST)
 From: Amit Pundir <amit.pundir@linaro.org>
 To: Greg KH <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
@@ -73,11 +73,12 @@ To: Greg KH <gregkh@linuxfoundation.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Douglas Anderson <dianders@chromium.org>
 Cc: Stable <stable@vger.kernel.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH for-v5.10.y 1/3] PM: runtime: add devm_pm_runtime_enable helper
-Date: Tue, 30 Jan 2024 18:16:28 +0530
-Message-Id: <20240130124630.3867218-2-amit.pundir@linaro.org>
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH for-v5.10.y 2/3] PM: runtime: Have devm_pm_runtime_enable() handle pm_runtime_dont_use_autosuspend()
+Date: Tue, 30 Jan 2024 18:16:29 +0530
+Message-Id: <20240130124630.3867218-3-amit.pundir@linaro.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240130124630.3867218-1-amit.pundir@linaro.org>
 References: <20240130124630.3867218-1-amit.pundir@linaro.org>
@@ -89,81 +90,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit b3636a3a2c51715736d3ec45f635ed03191962ce ]
+[ Upstream commit b4060db9251f919506e4d672737c6b8ab9a84701 ]
 
-A typical code pattern for pm_runtime_enable() call is to call it in the
-_probe function and to call pm_runtime_disable() both from _probe error
-path and from _remove function. For some drivers the whole remove
-function would consist of the call to pm_remove_disable().
+The PM Runtime docs say:
 
-Add helper function to replace this bolierplate piece of code. Calling
-devm_pm_runtime_enable() removes the need for calling
-pm_runtime_disable() both in the probe()'s error path and in the
-remove() function.
+  Drivers in ->remove() callback should undo the runtime PM changes done
+  in ->probe(). Usually this means calling pm_runtime_disable(),
+  pm_runtime_dont_use_autosuspend() etc.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20210731195034.979084-2-dmitry.baryshkov@linaro.org
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+From grepping code, it's clear that many people aren't aware of the
+need to call pm_runtime_dont_use_autosuspend().
+
+When brainstorming solutions, one idea that came up was to leverage
+the new-ish devm_pm_runtime_enable() function. The idea here is that:
+
+ * When the devm action is called we know that the driver is being
+   removed. It's the perfect time to undo the use_autosuspend.
+
+ * The code of pm_runtime_dont_use_autosuspend() already handles the
+   case of being called when autosuspend wasn't enabled.
+
+Suggested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Stable-dep-of: 3d07a411b4fa ("drm/msm/dsi: Use pm_runtime_resume_and_get to prevent refcnt leaks")
 Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
 ---
- drivers/base/power/runtime.c | 17 +++++++++++++++++
- include/linux/pm_runtime.h   |  4 ++++
- 2 files changed, 21 insertions(+)
+ drivers/base/power/runtime.c | 5 +++++
+ include/linux/pm_runtime.h   | 4 ++++
+ 2 files changed, 9 insertions(+)
 
 diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index fbbc3ed143f2..9d0865cbf913 100644
+index 9d0865cbf913..f5c9e6629f0c 100644
 --- a/drivers/base/power/runtime.c
 +++ b/drivers/base/power/runtime.c
-@@ -1479,6 +1479,23 @@ void pm_runtime_enable(struct device *dev)
- }
- EXPORT_SYMBOL_GPL(pm_runtime_enable);
+@@ -1481,11 +1481,16 @@ EXPORT_SYMBOL_GPL(pm_runtime_enable);
  
-+static void pm_runtime_disable_action(void *data)
-+{
-+	pm_runtime_disable(data);
-+}
-+
-+/**
-+ * devm_pm_runtime_enable - devres-enabled version of pm_runtime_enable.
-+ * @dev: Device to handle.
-+ */
-+int devm_pm_runtime_enable(struct device *dev)
-+{
-+	pm_runtime_enable(dev);
-+
-+	return devm_add_action_or_reset(dev, pm_runtime_disable_action, dev);
-+}
-+EXPORT_SYMBOL_GPL(devm_pm_runtime_enable);
-+
+ static void pm_runtime_disable_action(void *data)
+ {
++	pm_runtime_dont_use_autosuspend(data);
+ 	pm_runtime_disable(data);
+ }
+ 
  /**
-  * pm_runtime_forbid - Block runtime PM of a device.
+  * devm_pm_runtime_enable - devres-enabled version of pm_runtime_enable.
++ *
++ * NOTE: this will also handle calling pm_runtime_dont_use_autosuspend() for
++ * you at driver exit time if needed.
++ *
   * @dev: Device to handle.
+  */
+ int devm_pm_runtime_enable(struct device *dev)
 diff --git a/include/linux/pm_runtime.h b/include/linux/pm_runtime.h
-index 718600e83020..b33d26ed7a1b 100644
+index b33d26ed7a1b..ca856e582914 100644
 --- a/include/linux/pm_runtime.h
 +++ b/include/linux/pm_runtime.h
-@@ -60,6 +60,8 @@ extern void pm_runtime_new_link(struct device *dev);
- extern void pm_runtime_drop_link(struct device_link *link);
- extern void pm_runtime_release_supplier(struct device_link *link);
- 
-+extern int devm_pm_runtime_enable(struct device *dev);
-+
- /**
-  * pm_runtime_get_if_in_use - Conditionally bump up runtime PM usage counter.
-  * @dev: Target device.
-@@ -254,6 +256,8 @@ static inline void __pm_runtime_disable(struct device *dev, bool c) {}
- static inline void pm_runtime_allow(struct device *dev) {}
- static inline void pm_runtime_forbid(struct device *dev) {}
- 
-+static inline int devm_pm_runtime_enable(struct device *dev) { return 0; }
-+
- static inline void pm_suspend_ignore_children(struct device *dev, bool enable) {}
- static inline void pm_runtime_get_noresume(struct device *dev) {}
- static inline void pm_runtime_put_noidle(struct device *dev) {}
+@@ -539,6 +539,10 @@ static inline void pm_runtime_disable(struct device *dev)
+  * Allow the runtime PM autosuspend mechanism to be used for @dev whenever
+  * requested (or "autosuspend" will be handled as direct runtime-suspend for
+  * it).
++ *
++ * NOTE: It's important to undo this with pm_runtime_dont_use_autosuspend()
++ * at driver exit time unless your driver initially enabled pm_runtime
++ * with devm_pm_runtime_enable() (which handles it for you).
+  */
+ static inline void pm_runtime_use_autosuspend(struct device *dev)
+ {
 -- 
 2.25.1
 
