@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-17449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 271DD842E46
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 21:58:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA7F0842E58
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 22:04:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D6781C249D8
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 20:58:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08B8C1C24517
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 21:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A7B71B48;
-	Tue, 30 Jan 2024 20:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A76771B5F;
+	Tue, 30 Jan 2024 21:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bnt6HHBr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lm1Gu+Zq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FB06E2AA;
-	Tue, 30 Jan 2024 20:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64A76A02A;
+	Tue, 30 Jan 2024 21:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706648304; cv=none; b=GnZzj2kJju1vYclrOdHMzbjEYWgPCrc5QfDwIvctujB6E7qXet9+HvgMOKI+7ht+tbQYhkWv9w8fUUseVz74xGdyOmZtG8bLFFkmE68Ht/EUgehVuf52lGtsStKBGHbK/MaSUVuKRndEwIp4Tz17mlDdb4TcFcargAFDtPhfdII=
+	t=1706648651; cv=none; b=vCZRelUm7+SzzgPzOMmF61tTcdCMTeVguVt+WUEqyJbIuDvgJ7ko90DKqCjk2Elh3dYj+bz9ILhQ4BdvKbptbXbT2Trc/HLHylK+Wa3GCP3W7VZEq6maPoJ72IUCiY4UaS7DGKr6sxUCXyKCFPpxJ7UjNfEXIpZzWWkfPRP/Ixw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706648304; c=relaxed/simple;
-	bh=9UZiNX1ogTG54dY4oqALo68Do/m+ZrjV3ORgvb9uQPQ=;
+	s=arc-20240116; t=1706648651; c=relaxed/simple;
+	bh=L7g7Xr6LSWiL/PufA+EKv8CV+udPLfTQfGO5ji9xvhQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oNM47rFg/rqg2gvVzf4cTOsMycXYsOAg7AohW/eHjURs5sg9zFB+mfm58Wvr1d4knb9bgkpyO00tl7OAKUNHVX9JBZ/kj1ROE14ibPL1Q+7K4WW0Nb44TjZu7HVVe9Mb3qlSGkOujmd97IJVXPJpdLLOBYVy6PoQmJJuk1aNFZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bnt6HHBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4885BC433C7;
-	Tue, 30 Jan 2024 20:58:23 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=DTMXMc0KHnNbojlgJX0qbGOrORVddPJNsRIkZYJbBnKYQd/Q2pLfX5Ae8N3k7ENJk3oxED2VcOe6C4PDYF65L3yWO7+zoYnug2WLrfGidyfLIzOgJuCKQH1NlUYNXP/TUrs3rAXjy+0AXiGVNM3+ctQ5596YhtErtjGB1vIwOuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lm1Gu+Zq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4DFC433F1;
+	Tue, 30 Jan 2024 21:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706648303;
-	bh=9UZiNX1ogTG54dY4oqALo68Do/m+ZrjV3ORgvb9uQPQ=;
+	s=k20201202; t=1706648651;
+	bh=L7g7Xr6LSWiL/PufA+EKv8CV+udPLfTQfGO5ji9xvhQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Bnt6HHBr3uaRcd2uD017LUys7iMuT7ppaB00f9hdAngoF+PngNrGy2AZGWc4KiJ6M
-	 PBmjVSlO+FUFdM//y2hJUS/OjO+CgnAbrjfURH1vc0DQStBxRgTtIHL+i/NV3KFgvO
-	 /XNIgarGOXDR9U1ts/51mq5hGn9A699RDjsXG4U6QzFAzKvQ49ZxYzsI5PorYykCma
-	 qKbQp9mfDEU+a7C+r/yVYhe4TTWfuVkdsXen7Bi/xdyAN3D55L11ewcyTINZ+OuGV/
-	 O7fqlGp0t8aWK1AOq7WMLOl/leM5AyokOshYcD8BtINCxYZO7Jqid+bW4XQXDIfSIf
-	 MyrEq0xvnsRaw==
-Date: Tue, 30 Jan 2024 15:58:21 -0500
+	b=Lm1Gu+Zqb98HKjzLlciqyq1GrY+Q6mevlVV7Robs3PtFrGibOksONsnFlaSnU5iyI
+	 TqZRAX120B8ZRlO2EKcpOj/b66OHIMtjYZhY1ngFpvyPTN8xe9Fbuhklliv+ShJR1m
+	 X3XM5Xan/rPgqO3h8M/Q6KHTPd8BeORfF2LC4wWvX1U5zqWaZB68MeYJHhJ4HDIax2
+	 j6w03tlpUwK+9MqIiZuCU8cSajwEhBa3lhcHVz4YuOUzFrVGnZoWdrBIaEB+no4AR4
+	 DScq9sU1vWT8Xp6aNr54wpUBhfMu/1sz/REIwspQ8Fgo8gugizSYkSMxMadrzrHYkb
+	 AB++3/d8nyenQ==
+Date: Tue, 30 Jan 2024 16:04:10 -0500
 From: Sasha Levin <sashal@kernel.org>
-To: Pavel Machek <pavel@denx.de>
+To: Armin Wolf <W_Armin@gmx.de>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	"Borislav Petkov (AMD)" <bp@alien8.de>, tglx@linutronix.de,
-	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
-	puwen@hygon.cn, seanjc@google.com, kim.phillips@amd.com,
-	reinette.chatre@intel.com, babu.moger@amd.com, jmattson@google.com,
-	peterz@infradead.org, ashok.raj@intel.com,
-	rick.p.edgecombe@intel.com, brgerst@gmail.com, mjguzik@gmail.com,
-	jpoimboe@kernel.org, nik.borisov@suse.com, aik@amd.com,
-	vegard.nossum@oracle.com, daniel.sneddon@linux.intel.com,
-	acdunlap@google.com
-Subject: Re: [PATCH AUTOSEL 5.10 09/10] x86/barrier: Do not serialize MSR
- accesses on AMD
-Message-ID: <Zbli7QIGVFT8EtO4@sashalap>
-References: <20240115232818.210010-1-sashal@kernel.org>
- <20240115232818.210010-9-sashal@kernel.org>
- <ZabqkZ2vXaicy3pZ@duo.ucw.cz>
+	Hans de Goede <hdegoede@redhat.com>, ilpo.jarvinen@linux.intel.com,
+	platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.7 15/18] platform/x86: wmi: Remove ACPI
+ handlers after WMI devices
+Message-ID: <ZblkSguc70hT8puW@sashalap>
+References: <20240116001308.212917-1-sashal@kernel.org>
+ <20240116001308.212917-15-sashal@kernel.org>
+ <0d179914-5912-46ee-9c10-50b9bbcac718@gmx.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,35 +61,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <ZabqkZ2vXaicy3pZ@duo.ucw.cz>
+In-Reply-To: <0d179914-5912-46ee-9c10-50b9bbcac718@gmx.de>
 
-On Tue, Jan 16, 2024 at 09:44:01PM +0100, Pavel Machek wrote:
->Hi!
+On Tue, Jan 16, 2024 at 12:53:46PM +0100, Armin Wolf wrote:
+>Am 16.01.24 um 01:12 schrieb Sasha Levin:
 >
->> From: "Borislav Petkov (AMD)" <bp@alien8.de>
+>>From: Armin Wolf <W_Armin@gmx.de>
 >>
->> [ Upstream commit 04c3024560d3a14acd18d0a51a1d0a89d29b7eb5 ]
+>>[ Upstream commit 22574e17626391ad969af9a13aaa58a1b37ad384 ]
 >>
->> AMD does not have the requirement for a synchronization barrier when
->> acccessing a certain group of MSRs. Do not incur that unnecessary
->> penalty there.
->...
->> Performance captured using an unmodified ipi-bench using the 'mesh-ipi' option
->> with and without weak_wrmsr_fence() on a Zen4 system also showed significant
->> performance improvement without weak_wrmsr_fence(). The 'mesh-ipi' option ignores
->> CCX or CCD and just picks random vCPU.
->>
->>   Average throughput (10 iterations) with weak_wrmsr_fence(),
->>         Cumulative throughput: 4933374 IPI/s
->>
->>   Average throughput (10 iterations) without weak_wrmsr_fence(),
->>         Cumulative throughput: 6355156 IPI/s
->>
->> [1] https://github.com/bytedance/kvm-utils/tree/master/microbenchmark/ipi-bench
+>>When removing the ACPI notify/address space handlers, the WMI devices
+>>are still active and might still depend on ACPI EC access or
+>>WMI events.
+>>Fix this by removing the ACPI handlers after all WMI devices
+>>associated with an ACPI device have been removed.
 >
->Speed improvement, not a bugfix. Please drop.
+>Hello,
+>
+>i would advise against including this patch in the next stable kernels.
+>
+>The WMI ACPI notify handler is still using list_for_each_entry() which is
+>not safe when the WMI devices are removed before the ACPI notify handler.
+>
+>This issue existed inside the WMI code for a long time, but this patch might
+>trigger it. Since no users reported any issues regarding ACPI errors during
+>WMI removal, i would drop this patch.
 
-Dropped, thanks!
+Ack, I'll drop it.
 
 -- 
 Thanks,
