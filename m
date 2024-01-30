@@ -1,174 +1,127 @@
-Return-Path: <stable+bounces-17372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6CE841BFE
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 07:36:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 880F2841C01
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 07:37:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 391A2283952
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 06:36:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 294981F2481E
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 06:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC37B381C7;
-	Tue, 30 Jan 2024 06:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE17F37707;
+	Tue, 30 Jan 2024 06:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2r8m4z+s"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SsXxe9om"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A181E87C
-	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 06:36:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AC1383A2;
+	Tue, 30 Jan 2024 06:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706596569; cv=none; b=Vg4cMUbsZri+OGt803fXRkdYDlGScKIW/n/MdlUC/e+fzefs0NWqFX923MwOSXy0pGqDbju/meC8lwoka4P1YEsE+7XRe3fchY+U8CfeydoXEP5LBlaHb0tmkqecREMhv/qx1s6BTKyMc14K/LE8YMEm/FwpaqiAVcHf/0rSjRo=
+	t=1706596631; cv=none; b=RVNFdvRHI/ZohpkAGgfEgoV6DVr57NZ/FHzRT2Dt8vxpMnbgZR0ALGoLk9CU+s1nDs7LovgJ9gaIz1qGtg7P7KVIOJ66gbG8APIV+++6acs8psx+qZSdsUUBL7mw8ZKkr01XN4CgyPoazEPAPe5gqwAXrvjdpksaZLyKpPXKVXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706596569; c=relaxed/simple;
-	bh=LGFgozpDpNff0v5K6NHEQYxTIsH7ytp7gB/Q2V+8pwE=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=kdBfuBehwWIUcC5kDXFEKoYrZuleUIKEMk66ucXUDtZu3I/dXUeGpkwVTnCqQqkImI54hzkTHErOmNJIxPjeWCLPfPQ0pW2NmJwlulg5O6uLMlyEx0kfKlkAWX8EQTnaAn6X9E1BHovvLbLFLl+UToz7LxF3ciUNXNZ86xWKHtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--avagin.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2r8m4z+s; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--avagin.bounces.google.com
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-1d8d19f2132so10001055ad.0
-        for <stable@vger.kernel.org>; Mon, 29 Jan 2024 22:36:07 -0800 (PST)
+	s=arc-20240116; t=1706596631; c=relaxed/simple;
+	bh=Pt0LMo6SGcA34xoqbjesioYU0CcVX1I7PW/asESQ0j0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZH+nT7WWVFc5taVDNcZGmAinhMlwMGUnEfBgO2QGP77hvPCHwVC0BDdtKGZRf5KIYm7VaoUeJXdjzaH221RCoF0TsQa4sVYJfxv1/H4i90lTB5Jtv+v9jkJ2NT4Pnx4rG+PM1/2EBvHGJP53nruI8rBcCTJMAg/sYSgpa1wA+bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SsXxe9om; arc=none smtp.client-ip=209.85.210.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6e133d5271cso594460a34.0;
+        Mon, 29 Jan 2024 22:37:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706596567; x=1707201367; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MVXjYaU74UNiN/jcBg4R2XESl1frZVjMD5rXT/kNyBk=;
-        b=2r8m4z+skAST6nLMEa3E3j7igjK5/Q83MopXuF+KxO5a26+yU8a4hfODeYTP4NeSEV
-         C0MdHbOhkT+o1kH7bTeujhSES6x2t99Qb4m5tuTcc/v7ezCxFZ1rTB7dzCGz2wlniGI0
-         HyWAIl/MhMnUieLpEv2RABIiKAajMX6IMzL4hny9QbtFWGJYL7R/AQ9v6SIN2v4JaH+f
-         BWIpP+08uuJEBvCJoC9p1zB3805vJdYhRTjH9Ohq5cddG1mbOUzkY5OJJnRXUlcZhCvz
-         MFB1wEebGrr8meQzPo2V2hHV4NO5/QZ8fECG+0maR1ZbAHbYwG7F9PyUmrCwwq1cOtl6
-         v4Lw==
+        d=gmail.com; s=20230601; t=1706596629; x=1707201429; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=HIcCz0Mzc9BxMF6SwHpcNCpuboJRjlo/WiVPsfyzt7k=;
+        b=SsXxe9omBDzPDJ6sAw2Y3HKmb+A9cxacHXmt3x0plaZo/3mduP/l2QxZs/6N0Qafrn
+         3JRR+9ACpsAwZOocM2kK35nJqNYZHy4KE+XGMzLv6qqQHXaOe51cm9555DI6s584i+Yp
+         4uI+/Y4C03ry93VcZQTB1/d/7okVw6Qg9WAI1fIU24OQvgZ2ZtWneBTAMtNO7MMmTpYU
+         i/3zR54N4G+U3b9rfXaiBtvFIKtitshn80gAljY3++jq0j0b6N5tl4feoq80tbRQ9Zu/
+         ad1/rPhT94eIontJ0FyULgC9/aUJGzIv9h3KAhz+g5DRniilCi68c9vilKq8njORatiT
+         LBlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706596567; x=1707201367;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MVXjYaU74UNiN/jcBg4R2XESl1frZVjMD5rXT/kNyBk=;
-        b=F9mXw2hWW/QtumcJR0sjMxVRd0ks/8SmQt6wDL8whA1vSnkQAV3rgxKDpfH/6KBenH
-         T3LJfLpg6zGZ8rrbkCq9tXRXW0qrfYw8WxJ+uslWuwEBT5ZqWieSJwsQLoyaFyN2cvwM
-         Spbh3xiJEpmXNHkQFyKJS01YAAblsa51kFcWgXlgATOADZKm+mGdKlpOSusA9dICvq7m
-         jdUPnJLMu5fS1xjnZJR2rt1yYA5oHQDRaXeFPGbNn5bmsVntZQFZ+FDkDY2Nb9X2wuGU
-         zWMNgfcDHCiuNC0Dn0TPIZQaVcOiANQ2Otz4I06sx/v4gvDeHBcaEzp1dqmtgB1lERJ3
-         8e9A==
-X-Gm-Message-State: AOJu0YwWygv0TpfL3Ke9bAAZzEXsfxxafm+5x0E6OR9SAbNptT4skiId
-	ohvgEBnUO1M+Wfx27cPAhHnSJc1fOLCubKt36Ilg5WO+kmQ9wqYktiVC7AM6D6h2QEiC3Eazb9J
-	2hQ==
-X-Google-Smtp-Source: AGHT+IH9QsHcLju9rhS/Xko7JDx+IZhdnG6BOk+xYLW5y+ECXV/nzPwAk88jdBnoKJzXf4+k6aXBpVi7ouM=
-X-Received: from avagin.kir.corp.google.com ([2620:0:1008:10:512c:bd37:9d9b:405e])
- (user=avagin job=sendgmr) by 2002:a17:903:34c6:b0:1d8:fb04:ac78 with SMTP id
- ml6-20020a17090334c600b001d8fb04ac78mr7357plb.10.1706596567301; Mon, 29 Jan
- 2024 22:36:07 -0800 (PST)
-Date: Mon, 29 Jan 2024 22:36:03 -0800
+        d=1e100.net; s=20230601; t=1706596629; x=1707201429;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HIcCz0Mzc9BxMF6SwHpcNCpuboJRjlo/WiVPsfyzt7k=;
+        b=fRwA7rPGHgrw99zVimTfETMGE1TzgBfyeL0C6NOaVtIVPZhVM1cLTMb8jyFhrIAg5u
+         iFOLgokWNWYH5op1R57JwLfQHxSqy3+etkCoyKdDUo4pPRGKXhnsOqPWBdWzwBI0/pRT
+         Y5p813L1ZFsvAw41oJ2abss4mzF4UNRD96EOrsT+G9x4PdvRXbnm5VAddfgxlHAdc487
+         HNezjBvNkt+hm38ZHK/BCA2Fy7U2NRhpp4hpePDwU7+TPVFa1dKG4YK6CJMKcNsZlejU
+         4Vlmy5cm3D21Xi3bI2xxDYuhyQlm8wa4ws1eYgn00L5nPI/JrQHFCQSPLLihttxT6e0B
+         0/hQ==
+X-Gm-Message-State: AOJu0Yxa21j16qRUd0fJGmhN/YzHsRZkkrr27aqoX+mq1764uAEbqNMo
+	AprjQAUfzwdSC8OI8E3owAFtxE2n07F48Crx5gZRbJqNRhWPK5B1
+X-Google-Smtp-Source: AGHT+IHt+p2OeOZfz041Va/zrBEWGNjlvIjR4t7egPI3rb02vl1yaX30F3AJ1JTs3GFQKicjjvyPSw==
+X-Received: by 2002:a05:6358:524b:b0:176:569f:8921 with SMTP id c11-20020a056358524b00b00176569f8921mr8351321rwa.56.1706596629107;
+        Mon, 29 Jan 2024 22:37:09 -0800 (PST)
+Received: from archie.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id m1-20020a634c41000000b005cfd70edc1bsm7297503pgl.7.2024.01.29.22.37.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Jan 2024 22:37:08 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id 08C3D1866A4D6; Tue, 30 Jan 2024 13:37:04 +0700 (WIB)
+Date: Tue, 30 Jan 2024 13:37:04 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.6 000/331] 6.6.15-rc1 review
+Message-ID: <ZbiZEIGny2PIuF_c@archie.me>
+References: <20240129170014.969142961@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
-Message-ID: <20240130063603.3392627-1-avagin@google.com>
-Subject: [PATCH v2 RESEND] x86/fpu: call fault_in_readable() for the entire
- xsave buffer
-From: Andrei Vagin <avagin@google.com>
-To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andrei Vagin <avagin@google.com>, Dave Hansen <dave.hansen@intel.com>, 
-	stable@vger.kernel.org, Konstantin Bogomolov <bogomolov@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="/mVOV2Mmh6IDwzHM"
+Content-Disposition: inline
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
 
-Before this change, the expected size of the user space buffer was
-taken from fx_sw->xstate_size. fx_sw->xstate_size can be changed
-from user-space, so it is possible construct a sigreturn frame where:
 
- * fx_sw->xstate_size is smaller than the size required by valid bits in
-   fx_sw->xfeatures.
- * user-space unmaps parts of the sigrame fpu buffer so that not all of
-   the buffer required by xrstor is accessible.
+--/mVOV2Mmh6IDwzHM
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-In this case, xrstor tries to restore and accesses the unmaped area
-which results in a fault. But fault_in_readable succeeds because buf +
-fx_sw->xstate_size is within the still mapped area, so it goes back and
-tries xrstor again. It will spin in this loop forever.
+On Mon, Jan 29, 2024 at 09:01:04AM -0800, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.15 release.
+> There are 331 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-Thomas suggested to pass fpstate->user_size into fault_in_readable,
-because it is the maximum size which can be touched by XRSTOR.
+Successfully compiled and installed the kernel on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
-Cc: Dave Hansen <dave.hansen@intel.com>
-Cc: stable@vger.kernel.org
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Reported-by: Konstantin Bogomolov <bogomolov@google.com>
-Fixes: fcb3635f5018 ("x86/fpu/signal: Handle #PF in the direct restore path")
-Signed-off-by: Andrei Vagin <avagin@google.com>
----
-v2: use fpstate->user_size instead of calculating a size of xstate
-buffer.
-resend: add stable@ and lkml@ to CC
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
- arch/x86/kernel/fpu/signal.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+--=20
+An old man doll... just what I always wanted! - Clara
 
-diff --git a/arch/x86/kernel/fpu/signal.c b/arch/x86/kernel/fpu/signal.c
-index 558076dbde5b..247f2225aa9f 100644
---- a/arch/x86/kernel/fpu/signal.c
-+++ b/arch/x86/kernel/fpu/signal.c
-@@ -274,12 +274,13 @@ static int __restore_fpregs_from_user(void __user *buf, u64 ufeatures,
-  * Attempt to restore the FPU registers directly from user memory.
-  * Pagefaults are handled and any errors returned are fatal.
-  */
--static bool restore_fpregs_from_user(void __user *buf, u64 xrestore,
--				     bool fx_only, unsigned int size)
-+static bool restore_fpregs_from_user(void __user *buf, u64 xrestore, bool fx_only)
- {
- 	struct fpu *fpu = &current->thread.fpu;
- 	int ret;
- 
-+	/* Restore enabled features only. */
-+	xrestore &= fpu->fpstate->user_xfeatures;
- retry:
- 	fpregs_lock();
- 	/* Ensure that XFD is up to date */
-@@ -309,7 +310,7 @@ static bool restore_fpregs_from_user(void __user *buf, u64 xrestore,
- 		if (ret != X86_TRAP_PF)
- 			return false;
- 
--		if (!fault_in_readable(buf, size))
-+		if (!fault_in_readable(buf, fpu->fpstate->user_size))
- 			goto retry;
- 		return false;
- 	}
-@@ -339,7 +340,6 @@ static bool __fpu_restore_sig(void __user *buf, void __user *buf_fx,
- 	struct user_i387_ia32_struct env;
- 	bool success, fx_only = false;
- 	union fpregs_state *fpregs;
--	unsigned int state_size;
- 	u64 user_xfeatures = 0;
- 
- 	if (use_xsave()) {
-@@ -349,17 +349,14 @@ static bool __fpu_restore_sig(void __user *buf, void __user *buf_fx,
- 			return false;
- 
- 		fx_only = !fx_sw_user.magic1;
--		state_size = fx_sw_user.xstate_size;
- 		user_xfeatures = fx_sw_user.xfeatures;
- 	} else {
- 		user_xfeatures = XFEATURE_MASK_FPSSE;
--		state_size = fpu->fpstate->user_size;
- 	}
- 
- 	if (likely(!ia32_fxstate)) {
- 		/* Restore the FPU registers directly from user memory. */
--		return restore_fpregs_from_user(buf_fx, user_xfeatures, fx_only,
--						state_size);
-+		return restore_fpregs_from_user(buf_fx, user_xfeatures, fx_only);
- 	}
- 
- 	/*
--- 
-2.43.0.429.g432eaa2c6b-goog
+--/mVOV2Mmh6IDwzHM
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZbiZCQAKCRD2uYlJVVFO
+owWXAQDXCSKB363QnUJTRrC3odrGNWpQBwmy8Fb1hlkF1p+ejQEA5kXnB5jF4Sio
+96MJmP35mKDfdQ/N2NrkdGb9EBACZQk=
+=A1hq
+-----END PGP SIGNATURE-----
+
+--/mVOV2Mmh6IDwzHM--
 
