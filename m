@@ -1,186 +1,129 @@
-Return-Path: <stable+bounces-17363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46A22841937
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 03:28:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 527C38419A3
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 03:53:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 027B0288CB5
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 02:28:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84A701C22403
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 02:53:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BDB374F0;
-	Tue, 30 Jan 2024 02:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D9136B01;
+	Tue, 30 Jan 2024 02:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WsT8H/pL"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rUCjDFcT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD72364CF
-	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 02:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8337036AE5
+	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 02:53:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706581531; cv=none; b=av/11X9G6spGXHob6WhgNnMdvNGjSHfe8WwcqcOIWA6g31lC6dN+6HDhlFXYWj89aWizVjpspVrGrgvWyOpQ0SsaONK9YvLCO4R8gH2oZLA6eYycn1CQEsW4Fy3c2nvHF6iqElXlPG3bmMI+chy/fS5VI+qKdqdpFRuLeRNNA5k=
+	t=1706583192; cv=none; b=X5Q6KUkV7pgs+PXF42i3YutbrhzRoKN0Tid5FD+5phS/QqocGMkv3891FaWPYtM2M50e+yd69xTQLBOecKGZOow1twFLQnVLu9ARlmEXJjxvJvgTQqx5+s2jEPV8OIkujvXhMDQODo22RfnUSWiBLSNDHtpkEnfEQdBEqhWWBuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706581531; c=relaxed/simple;
-	bh=F/O8O2rczfooHHfnmMLVEVLbZjrq+rG8HdgnVzx/KfA=;
+	s=arc-20240116; t=1706583192; c=relaxed/simple;
+	bh=OOF/JDmoqHvxt3xDStMdND3Dl+I0UaElu3NVskxz6QI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZGitjV7Obf7Etd6rJpc678wt481E7BJmd6c74hmag2Sk6ynzaWwzGsKX6ZQjDNWcV8w88j2Ps+ftoZPaTCrQ0fCAq0SQp80BsVlmdlk9SOwdvyK7M/rM0tEimoOH8+ZTEd9viHKcthgzL2MLoYzCgPwYuHgiXHbPGYl7M7aGJIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WsT8H/pL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35446C433F1
-	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 02:25:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706581531;
-	bh=F/O8O2rczfooHHfnmMLVEVLbZjrq+rG8HdgnVzx/KfA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=WsT8H/pLkwD7Yjh+CPbFHsa2mJb8U94JqTFuFYNtM1WfusqyFyAw0ZCtYtJZ+R9fd
-	 15T9GJ4W2CyLAcWXY1tHLqFWK/l9EW0t04XOXQaza3aXOCPZc3qvivpwqydLonGQN9
-	 OnJMQke46nRyIK5nBO6n8T65Zh6DugSe6nUqIfp8aUngpV6HhDlK7bgnFmj9jgoxpy
-	 BQt0H9+fgcKljOolba9p46FQC8Sdaxn2e67pWSObbJKdnwvFA+01iLJyi6Xnw9ZOIQ
-	 uD5D+yZLYtRH12kxmUoAKJxgHedW5uoSFjNF4kYcr5c/0s+khXaGe0S/u5b+Fqm3qp
-	 IFDj1AWJC/Bhw==
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-55cca88b6a5so3139721a12.1
-        for <stable@vger.kernel.org>; Mon, 29 Jan 2024 18:25:31 -0800 (PST)
-X-Gm-Message-State: AOJu0YxlqsvLS5trY5jA+3qJpc0s34yemwa0ljRzbdU8QjfMPPj3smwK
-	9d44XpPR5kPf9TIYmeKYKRQAU239Jtjy2Vi9zsI8jMRrjRG0g/VMlhq4wE8On5QyiQNFj6vjz2k
-	mvWm1ScQqWxIGVTadCyhwS/w7r0I=
-X-Google-Smtp-Source: AGHT+IG07a4S+5y5xeslAFyOzS2VSxigZaMo4XVziP4t0XryUCZaNoE0NnGnMULSCNPLV9lQ4VKuxMtNpL4gbGu7HEk=
-X-Received: by 2002:a05:6402:60f:b0:55f:27ee:d52d with SMTP id
- n15-20020a056402060f00b0055f27eed52dmr1206918edv.42.1706581529619; Mon, 29
- Jan 2024 18:25:29 -0800 (PST)
+	 To:Cc:Content-Type; b=iaLaBlzPemAhO8ggpyL2ELDyWeYVYu1PIw+lSIjfQMTdu/xMVtr+/0+SAS07lvQznvLRhLnQH0aUmV/uycb/29hM6ca1MhjCNPBmzxjGYNp+COxXoCpjmQ0FZdakNE1VoBlXN25m4vOgT7I5NCTy5ylDxh5pll1lC2k1yczWSBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rUCjDFcT; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-4bfdedd2833so122656e0c.3
+        for <stable@vger.kernel.org>; Mon, 29 Jan 2024 18:53:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706583189; x=1707187989; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=57LE80XzKkgz02q7vJPpQ7bcLsrc6ltxHobo6paNwmk=;
+        b=rUCjDFcTCg+BfuzSHV0N88CKReKiYRpF1kdOUGx0toW5+M+XmZ7Gmhw02fSHY/kvOn
+         b5909k6zYnPFcyXnwPe7dC/Mz+GE3imEwB4TrDo3NZ4KMEvA1XCfwQcih85h/vf7JkBA
+         qMgaIr7DSsPuFzSugqiBjNNREUKYcTTgyWCC80QGPv70q4zELYhMTHgyh5aH9l14+4CK
+         jj0mlmbIMqwOOBIJEzFz6AVcbZF4dtwsSsB7Zh1Repf9XLHUNq0MLbCHqEyZyvnZZDbE
+         nkdbKcntVXOICuVNrMFWeT3vVoQkZ6dQvetir7spAvQC3kd2IQeMdQAM+wfuxpOxawBD
+         F/8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706583189; x=1707187989;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=57LE80XzKkgz02q7vJPpQ7bcLsrc6ltxHobo6paNwmk=;
+        b=iKwdky1srM8KgLDqt4tjDZ8pMD1MDIjc2A38bifImiXmElq0Vd5o9QgNjYk7p7xenE
+         daTr1tWt3ghuzmPg7T/eVPBmP47JaoltPR1OWGip63/UHHb4Oj8bCZt3NRf0pBVMArGU
+         CMhhMzwpCtx6nwBhKapDlRUyirbKJFT7VODJw3BzqOQUxqEF6trGnTGl2gBVwK1Cx3Mr
+         iY2fseHFYr9KvKVSEpcYJrY/Ixiv9rrCEs0byYjlyqEgyVEgb9L/QXFI4Fih4G6k+yQC
+         M6GZ9UQewJdWzWm2dmGlznD6FesMUreQS9v2ICVwXS4/vAfLo3eUf+u+PorqKrzwWse6
+         Hdug==
+X-Gm-Message-State: AOJu0YwmaxLXTpGURuJJVozW17sIYkdeoEj5RYurWVNv1KlcHrOlK7iV
+	fvDX7BTHjIh8l5IqVTSWYzfvUVWaom/8eN7AgkBqUF4mr6JRxHssGmnNQAFuoaEJuDk4eG0HZV6
+	p1v7CfLv7ZaCW+WubzN1KmghkkAaJp5yLhCixGQ==
+X-Google-Smtp-Source: AGHT+IFPagv02V2zOXAR72eV7Vs2i0Z8fygeiffO01wqRFPgeSauIELXHJpdbzeVRYwyL5VmLdct4Vw6DioyPFoo6Q8=
+X-Received: by 2002:a05:6122:288b:b0:4bd:73cb:e6d1 with SMTP id
+ fl11-20020a056122288b00b004bd73cbe6d1mr3120076vkb.15.1706583189172; Mon, 29
+ Jan 2024 18:53:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2024012911-outright-violin-e677@gregkh>
-In-Reply-To: <2024012911-outright-violin-e677@gregkh>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Tue, 30 Jan 2024 10:25:18 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H44QUho8cq4cG6rpovboBH_28vfiw-akMWoLMLR6Qgu1w@mail.gmail.com>
-Message-ID: <CAAhV-H44QUho8cq4cG6rpovboBH_28vfiw-akMWoLMLR6Qgu1w@mail.gmail.com>
-Subject: Re: FAILED: patch "[PATCH] LoongArch/smp: Call rcutree_report_cpu_starting()
- at" failed to apply to 6.1-stable tree
-To: gregkh@linuxfoundation.org
-Cc: chenhuacai@loongson.cn, stable@vger.kernel.org
+References: <CA+G9fYvYQRnBbZhHknSKbwYiCr_3vPwC5zPz2NsV9_1F7=paQQ@mail.gmail.com>
+ <2024012915-enlighten-dreadlock-54e9@gregkh>
+In-Reply-To: <2024012915-enlighten-dreadlock-54e9@gregkh>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 30 Jan 2024 08:22:57 +0530
+Message-ID: <CA+G9fYs3_M9E3w+uWky5X1hEgoJU4e92ECqSywerqSkF8KVGvA@mail.gmail.com>
+Subject: Re: stable-rc: 6.1: mlx5: params.c:994:53: error: 'MLX5_IPSEC_CAP_CRYPTO'
+ undeclared (first use in this function)
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-stable <stable@vger.kernel.org>, Netdev <netdev@vger.kernel.org>, 
+	linux-rdma@vger.kernel.org, lkft-triage@lists.linaro.org, 
+	Sasha Levin <sashal@kernel.org>, Leon Romanovsky <leonro@nvidia.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, "David S. Miller" <davem@davemloft.net>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Arnd Bergmann <arnd@arndb.de>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi, Greg,
+On Mon, 29 Jan 2024 at 21:58, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Mon, Jan 29, 2024 at 09:17:31PM +0530, Naresh Kamboju wrote:
+> > Following build errors noticed on stable-rc linux-6.1.y for arm64.
+> >
+> > arm64:
+> > --------
+> >   * build/gcc-13-lkftconfig
+> >   * build/gcc-13-lkftconfig-kunit
+> >   * build/clang-nightly-lkftconfig
+> >   * build/clang-17-lkftconfig-no-kselftest-frag
+> >   * build/gcc-13-lkftconfig-devicetree
+> >   * build/clang-lkftconfig
+> >   * build/gcc-13-lkftconfig-perf
+> >
+> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> >
+> > Build errors:
+> > ------
+> > drivers/net/ethernet/mellanox/mlx5/core/en/params.c: In function
+> > 'mlx5e_build_sq_param':
+> > drivers/net/ethernet/mellanox/mlx5/core/en/params.c:994:53: error:
+> > 'MLX5_IPSEC_CAP_CRYPTO' undeclared (first use in this function)
+> >   994 |                     (mlx5_ipsec_device_caps(mdev) &
+> > MLX5_IPSEC_CAP_CRYPTO);
+> >       |
+> > ^~~~~~~~~~~~~~~~~~~~~
+> >
+> > Suspecting commit:
+> >   net/mlx5e: Allow software parsing when IPsec crypto is enabled
+> >   [ Upstream commit 20f5468a7988dedd94a57ba8acd65ebda6a59723 ]
+>
+> Something looks very odd here, as the proper .h file is being included,
+> AND this isn't a build failure on x86, so why is this only arm64 having
+> problems?  What's causing this not to show up?
 
-On Tue, Jan 30, 2024 at 12:53=E2=80=AFAM <gregkh@linuxfoundation.org> wrote=
-:
->
->
-> The patch below does not apply to the 6.1-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
->
-> To reproduce the conflict and resubmit, you may use the following command=
-s:
->
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
-t/ linux-6.1.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 5056c596c3d1848021a4eaa76ee42f4c05c50346
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012911-=
-outright-violin-e677@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
->
-> Possible dependencies:
->
-> 5056c596c3d1 ("LoongArch/smp: Call rcutree_report_cpu_starting() at tlb_i=
-nit()")
-Similar to the commit which it fixes, please change
-rcutree_report_cpu_starting() to rcu_cpu_starting() in the code.
+As per the Daniel report on stable-rc review on 6.1, these build failures also
+reported on System/390.
 
-Huacai
-
->
-> thanks,
->
-> greg k-h
->
-> ------------------ original commit in Linus's tree ------------------
->
-> From 5056c596c3d1848021a4eaa76ee42f4c05c50346 Mon Sep 17 00:00:00 2001
-> From: Huacai Chen <chenhuacai@kernel.org>
-> Date: Fri, 26 Jan 2024 16:22:07 +0800
-> Subject: [PATCH] LoongArch/smp: Call rcutree_report_cpu_starting() at
->  tlb_init()
->
-> Machines which have more than 8 nodes fail to boot SMP after commit
-> a2ccf46333d7b2cf96 ("LoongArch/smp: Call rcutree_report_cpu_starting()
-> earlier"). Because such machines use tlb-based per-cpu base address
-> rather than dmw-based per-cpu base address, resulting per-cpu variables
-> can only be accessed after tlb_init(). But rcutree_report_cpu_starting()
-> is now called before tlb_init() and accesses per-cpu variables indeed.
->
-> Since the original patch want to avoid the lockdep warning caused by
-> page allocation in tlb_init(), we can move rcutree_report_cpu_starting()
-> to tlb_init() where after tlb exception configuration but before page
-> allocation.
->
-> Fixes: a2ccf46333d7b2cf96 ("LoongArch/smp: Call rcutree_report_cpu_starti=
-ng() earlier")
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
->
-> diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
-> index a16e3dbe9f09..2b49d30eb7c0 100644
-> --- a/arch/loongarch/kernel/smp.c
-> +++ b/arch/loongarch/kernel/smp.c
-> @@ -509,7 +509,6 @@ asmlinkage void start_secondary(void)
->         sync_counter();
->         cpu =3D raw_smp_processor_id();
->         set_my_cpu_offset(per_cpu_offset(cpu));
-> -       rcutree_report_cpu_starting(cpu);
->
->         cpu_probe();
->         constant_clockevent_init();
-> diff --git a/arch/loongarch/mm/tlb.c b/arch/loongarch/mm/tlb.c
-> index 2c0a411f23aa..0b95d32b30c9 100644
-> --- a/arch/loongarch/mm/tlb.c
-> +++ b/arch/loongarch/mm/tlb.c
-> @@ -284,12 +284,16 @@ static void setup_tlb_handler(int cpu)
->                 set_handler(EXCCODE_TLBNR * VECSIZE, handle_tlb_protect, =
-VECSIZE);
->                 set_handler(EXCCODE_TLBNX * VECSIZE, handle_tlb_protect, =
-VECSIZE);
->                 set_handler(EXCCODE_TLBPE * VECSIZE, handle_tlb_protect, =
-VECSIZE);
-> -       }
-> +       } else {
-> +               int vec_sz __maybe_unused;
-> +               void *addr __maybe_unused;
-> +               struct page *page __maybe_unused;
-> +
-> +               /* Avoid lockdep warning */
-> +               rcutree_report_cpu_starting(cpu);
-> +
->  #ifdef CONFIG_NUMA
-> -       else {
-> -               void *addr;
-> -               struct page *page;
-> -               const int vec_sz =3D sizeof(exception_handlers);
-> +               vec_sz =3D sizeof(exception_handlers);
->
->                 if (pcpu_handlers[cpu])
->                         return;
-> @@ -305,8 +309,8 @@ static void setup_tlb_handler(int cpu)
->                 csr_write64(pcpu_handlers[cpu], LOONGARCH_CSR_EENTRY);
->                 csr_write64(pcpu_handlers[cpu], LOONGARCH_CSR_MERRENTRY);
->                 csr_write64(pcpu_handlers[cpu] + 80*VECSIZE, LOONGARCH_CS=
-R_TLBRENTRY);
-> -       }
->  #endif
-> +       }
->  }
->
->  void tlb_init(int cpu)
->
+- Naresh
 
