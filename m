@@ -1,84 +1,80 @@
-Return-Path: <stable+bounces-17463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C5C843066
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 23:51:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B905F8430BF
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 00:00:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7492228661F
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 22:51:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB1E21C2430C
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 23:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D5EC7EEF1;
-	Tue, 30 Jan 2024 22:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2927EF04;
+	Tue, 30 Jan 2024 23:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ns9OFMOM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qMXR+ZX0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454FC7EEE3;
-	Tue, 30 Jan 2024 22:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0537EEFE;
+	Tue, 30 Jan 2024 23:00:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706655066; cv=none; b=dNotqgnFc+m6RcUv0/41feeHr+C99fIl5ehGTQCm7Jt1zHAjAPGvsgCihEUmaTdFi/DqFG70/OlhRmX6HpXkEIcP7PLVlZQIfkNr5VWnJaSzhikuV4RRU4BZ9jyazvENdP9umoa5A39kBIxvCPeIx0LAhAJcewClhFcsw+RSlP0=
+	t=1706655620; cv=none; b=nIJ87WCfiKOiyLUVFUqq33IQmQjLeTk3XfxC8bOVqKpra0tPchGaOHqNlLQim4+VqQq1dfJgjBXcoI9TZw6fcf1S9RKlelU2KfAqiJU/hk9JWdsLLtaa6AuxbAdteE1VVxtS7RYpZ66XijGP74r7Ay7Qc8DagoxW6Ru5SpS3R+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706655066; c=relaxed/simple;
-	bh=bIrBrbX48HIWDuxq8XoOFI3Dqwa8CFXd3p8UGpUs+hQ=;
+	s=arc-20240116; t=1706655620; c=relaxed/simple;
+	bh=SRp2QhaE8on2XaoCyowQ38M3H5KYB1hkQPVd3UamK+A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WDJMMH8YC1a2u5uC6wQu9vO31Te3UDXDRaDgkZtVE3yUq83SipY2LhlVxx23S2Pzivg/TOm51dRXEdIxFjqn3AcCG9bnBOkEQKwcDDM+abDk8kH+OWXl20XMlhFz8q9UDau3jyIgxHBFvi0Wq1FphUnJYROKt4Q/o23ExPwDsvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ns9OFMOM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB1DC433C7;
-	Tue, 30 Jan 2024 22:51:05 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=sFGkQnaTSeudo5mqERpLqEKrG76Raz4BUPl3hZMgcDSotoSLI1RIG7HX/pJ4+3N9HyThWEDkwGZNF4TTXpDnEv6HxWKPKPTym6IEMTcHHjyJ2k9/SCa7WH13gTdOufMK5AVXEguy07KvadS4a1crp8f//f3jHPd3/qycjmbP/hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qMXR+ZX0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00FD6C433F1;
+	Tue, 30 Jan 2024 23:00:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706655065;
-	bh=bIrBrbX48HIWDuxq8XoOFI3Dqwa8CFXd3p8UGpUs+hQ=;
+	s=k20201202; t=1706655620;
+	bh=SRp2QhaE8on2XaoCyowQ38M3H5KYB1hkQPVd3UamK+A=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ns9OFMOMvY4m35RdXyZZwO5clfUmNSQQD/3O7Gn7YKHhGxm9ANHX2Fy4MKhPosx+d
-	 DCdL+z/O5vcvwWiKWOd0IZSVU4T2Zv80+lfnEDuIXeOfGGu1DS0Hq0GSIHd/mq5Yyx
-	 d4CXaYcheXxYhOKHRQOlzt4mT0C3ZAgLl1yK7oF407NxGoufqRfX4pUXlXDc+bLhhm
-	 j6WLCH82X4Nxw13/73+o+bYO7ViW249SAckIGkF0YH9FKdqgNeKqcuKVPUx2cit0Ji
-	 6WLz8Tdz6sOxVVIi6l2D58JGDVvKK3/1nm2Mx5Bq/ldj5Wnbno/pBlt+88atebJZC/
-	 53FOgkz6Eno6w==
-Date: Tue, 30 Jan 2024 17:51:04 -0500
+	b=qMXR+ZX0tD5ef1wxtXFwrUJAurXEDgYXnZ83TqywafSRnoPNXRygiPEXziixp1Lht
+	 lpdyAgumsDb9mQZc3Y8AohdddD++6V+JPobFmYKYgFJDVqcIyqtLATx40K6nFOX4QE
+	 heW9WceZsILUAtYrswnl0fOCNC8rc+ddPJ4OcqzdqazoJECJkMOQzE9pzKcot1WCIY
+	 7+jLnAvx76bJp5GvIt6pHCGJzDs8vIziYkpL4SnClMVUh/UN/FJ6e7jCZpVjbyPhT8
+	 xouIcgVJjdY1wtXrlrpg2dnPCsBSwZ/dGbVvbY3Mji6hPcII9Fk+JfSnx685Fs7BbG
+	 h9mT+IhNUI6HA==
+Date: Tue, 30 Jan 2024 18:00:18 -0500
 From: Sasha Levin <sashal@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
+To: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	duanqiangwen <duanqiangwen@net-swift.com>, jiawenwu@trustnetic.com,
-	mengyuanlou@net-swift.com, davem@davemloft.net, edumazet@google.com,
-	pabeni@redhat.com, andrew@lunn.ch, bhelgaas@google.com,
-	maciej.fijalkowski@intel.com, horms@kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.7 050/108] net: wangxun: fix changing mac
- failed when running
-Message-ID: <Zbl9WNs5qfcRD3nK@sashalap>
-References: <20240116194225.250921-1-sashal@kernel.org>
- <20240116194225.250921-50-sashal@kernel.org>
- <20240116173955.57ba27f3@kernel.org>
+	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
+	airlied@gmail.com, daniel@ffwll.ch, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH AUTOSEL 6.1 04/53] drm: Fix color LUT rounding
+Message-ID: <Zbl_gq9FhTICi4FS@sashalap>
+References: <20240122150949.994249-1-sashal@kernel.org>
+ <20240122150949.994249-4-sashal@kernel.org>
+ <Za6ano6dg0Mau7OI@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20240116173955.57ba27f3@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Za6ano6dg0Mau7OI@intel.com>
 
-On Tue, Jan 16, 2024 at 05:39:55PM -0800, Jakub Kicinski wrote:
->On Tue, 16 Jan 2024 14:39:16 -0500 Sasha Levin wrote:
->> in some bonding mode, service need to change mac when
->> netif is running. Wangxun netdev add IFF_LIVE_ADDR_CHANGE
->> priv_flag to support it.
+On Mon, Jan 22, 2024 at 06:50:00PM +0200, Ville Syrjälä wrote:
+>On Mon, Jan 22, 2024 at 10:08:05AM -0500, Sasha Levin wrote:
+>> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+>>
+>> [ Upstream commit c6fbb6bca10838485b820e8a26c23996f77ce580 ]
 >
->Not really a fix, more of a feature ennoblement.
->Let's drop it, we don't know what it may uncover.
->
->We should probably start complaining when people use
->the word "fix" for non-fixes :(
+>Why is this being backported?
 
-I'll drop it :)
+Is this not a fix for an issue?
 
 -- 
 Thanks,
