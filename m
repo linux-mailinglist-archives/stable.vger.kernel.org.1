@@ -1,135 +1,102 @@
-Return-Path: <stable+bounces-17393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A83EE842092
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 11:06:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 275E08420BC
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 11:08:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAC371C26A50
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 10:06:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB17D1F2D212
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 10:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7BA60B81;
-	Tue, 30 Jan 2024 10:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D04060896;
+	Tue, 30 Jan 2024 10:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b="BlnoyXUn";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="a2I/+iWE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXjU7ZJV"
 X-Original-To: stable@vger.kernel.org
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9B760869;
-	Tue, 30 Jan 2024 10:04:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BCC60869;
+	Tue, 30 Jan 2024 10:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706609061; cv=none; b=goSrOvHZK3xvTqPQhlE2zoA96pPBp4s9RrOC0i88y+U4n7zugGrAPZfhZAM9A8O7e1uzHXjnAI8+EAwKOR0WpZhI9S3fwDdHW9vQHZS3NIIXWiIgrvHxZszbMxd+x9M+L38ZxrokpKOn1+P625tManLLUZJlPmRBQEcM2gMrJzs=
+	t=1706609271; cv=none; b=ScLQTSvX3hDJJ7l8sX/W8IhZ0YjnVw5Vg+TsmU/3yOREB+z0IMzfyt7oTu01Oe8l5CDj6Gku0HfP8VqRErbgnb3DouiNt5dWNPD72CAj+t0HeZIkLyX2bQ0rtF0NdZVXVlZx7MmqMvAHkg7L8G/e4qSyC8ca4Oq+9v8vj67N7/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706609061; c=relaxed/simple;
-	bh=m/LkcmZBG8maNXM0EK5iOQtsBNk2ELexmrMHxsIeoBc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=c8FCY811SD390Cm9haVbAwzdjwR5hFS8kYRFu3DhCjXFrkx1kLnK6PASnxJGiOEN1Hf9igP0QvDVgL6h8ufw/BGMwRAgwU68FmorgzLhhpd46PfunUiesK3oZEshMlqMio10/JgbA1ssDlCq9Gz0L9rMnM/8u32l0L94rCSX57c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp; spf=pass smtp.mailfrom=sakamocchi.jp; dkim=pass (2048-bit key) header.d=sakamocchi.jp header.i=@sakamocchi.jp header.b=BlnoyXUn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=a2I/+iWE; arc=none smtp.client-ip=64.147.123.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sakamocchi.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sakamocchi.jp
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-	by mailout.west.internal (Postfix) with ESMTP id 4DA973200B44;
-	Tue, 30 Jan 2024 05:04:18 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute7.internal (MEProxy); Tue, 30 Jan 2024 05:04:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sakamocchi.jp;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1706609057; x=
-	1706695457; bh=MOp/NPYsM+2ldtCEODCGojul6SWgm505LlBTScMMddk=; b=B
-	lnoyXUnB1EVXKFwwzZevYYGTDkRAco1bAjBdrpyuGemnCRCYTRCwHbfhmqU+LN0p
-	kU8BFlr/4CAVwhk5BEpFoJP9r9J7Acv5Nv3lN+M5PLlEIINmbD84eW85WJ7cs5Eu
-	NFV3AsMI/+4+fDCXQzUcYCfaaIfyBpESpFddWoqZeu3n+TTr88J/bU+ZcVC99Qir
-	p0lQGv11XW79m71IHlHndONB4Uww1XA2QoAuDdHpnx+3JE8CBsPWU6oGFooSNk6Y
-	1VIGhJz3ZFklghDBsBKcxXdaQX9j/8HaMBkBZyYHsHj2lV07jL8kKcqCmVwReDgD
-	9snneCvz1OR2i/+/dOAyQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1706609057; x=
-	1706695457; bh=MOp/NPYsM+2ldtCEODCGojul6SWgm505LlBTScMMddk=; b=a
-	2I/+iWEmMJuG4igywhCqlfSw0tG9cJs00z5KuHQhakW8JFmw0kEzkWa/kcnYi5+r
-	WDqCbwIDgWB+QPG5z4cscv8yHNy/UFUmPp5js5vW7SAjUN8C+M2wiiPNCN0JrS6c
-	cHzePfquNR408yCW4riQxwmQakoGeC9ywDvaxcnLbTgIddYPRq0NhijaZxp5PckL
-	UVIJWARcPQJUm8bytlTEXFpvG6wmcgFs7omwR+mn8+xMcc2wDE5fTHb59g0RNS9o
-	tzEyw6xdzO09LkxYpipb4UDR8ijpxNxhUgasUTz0VqQgEXAzKvFeTyihOIhErWMN
-	iJWmJb5BAeOXZfgLNPdHQ==
-X-ME-Sender: <xms:ocm4Za6nNUN_3c1CF5KNldJKpCPm71cX9OMvqTUAwZrrhhKHRzGvvQ>
-    <xme:ocm4ZT7V3JIiRGsJDKMf9VDv6PLybrPX3m80jq1IP_DoINHWtcEK1NT4iAV6Pslsh
-    2FZElUJght7WnLZOoc>
-X-ME-Received: <xmr:ocm4ZZfXJED85smwRPFrD_xjKUkOyMBTQc9F8ay8AzW5zxZnXlSvNpYlztdw4IvcKBE1LSxjIC4GBhBHMq7Al2AJsdMx8DL8Lx52eAgyVrjD>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrfedtiedgudduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffojghfggfgsedtke
-    ertdertddtnecuhfhrohhmpefvrghkrghshhhiucfurghkrghmohhtohcuoehoqdhtrghk
-    rghshhhisehsrghkrghmohgttghhihdrjhhpqeenucggtffrrghtthgvrhhnpedvjefgje
-    euvdfguddukeelveetgfdtvefhtdfffeeigfevueetffeivdffkedvtdenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehoqdhtrghkrghshhhise
-    hsrghkrghmohgttghhihdrjhhp
-X-ME-Proxy: <xmx:ocm4ZXLheF95n5djwWER7IOgxcwvsj9RFuvW_XSkMV4H26pTt3NpEQ>
-    <xmx:ocm4ZeItYC4f6FlZ3Px5WXxVWM5XKdC98YE3cwe7Q8PjtqGsZ8W3_Q>
-    <xmx:ocm4ZYwxa_FpvyCPavxQJKhPlU765Nbvn0Hwq-qsyHNKCCXwK7ZWYA>
-    <xmx:ocm4ZVVVWnOOmxd2y46WHz5OnLQ7GaA-AJaJF0OUp6rlplwsQKipoA>
-Feedback-ID: ie8e14432:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 30 Jan 2024 05:04:16 -0500 (EST)
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-To: linux1394-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org
-Cc: adamg@pobox.com,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] firewire: core: correct documentation of fw_csr_string() kernel API
-Date: Tue, 30 Jan 2024 19:04:08 +0900
-Message-Id: <20240130100409.30128-2-o-takashi@sakamocchi.jp>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240130100409.30128-1-o-takashi@sakamocchi.jp>
-References: <20240130100409.30128-1-o-takashi@sakamocchi.jp>
+	s=arc-20240116; t=1706609271; c=relaxed/simple;
+	bh=8CKJrkkGZM/Di0WcrrdDLyXgOONeUOLpOJVPXsgvDfc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gHuYMJoh8CaV/ZfSDlaiVZ23rAc3ek/kxbQBaShDvmqjCg6lbEIGQV7h4P9dci5dZsLECvfJ2PCeTUiIGaNgvS4wrHBg6PycCgXuNH6QkMi5PfWHfnvFS27hR9Bn1UKTMSzd1n8zfT+x7j8+ljFmE/c79hNpKvIvPV7oQYFldGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXjU7ZJV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A63C43394;
+	Tue, 30 Jan 2024 10:07:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706609270;
+	bh=8CKJrkkGZM/Di0WcrrdDLyXgOONeUOLpOJVPXsgvDfc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=oXjU7ZJVNQetTKK+iu7bcpvfWtFQHKDYE888Y16U4NH5V/n7E9rrIu1Ei+fhqxJ1C
+	 aTJ/Hl/ukgxMj9wx17vqA7bZiJvKh131t5jj5sRt/z5PFd41VoUVWGO6YColmMbyMh
+	 GBPJ3XabbpiUYPRbKUPm5eh/XYRMpDk6JSGHWcZRpOYSA9pXVf8Yp1a7JPCoJKK9tc
+	 j011Q3TokZY8sC5v0t+K0Y3vc204C5daTI/DJ+S0FMqtS2yhNr6f2/ba4Rk9gBruif
+	 jxzuBfQ2wkaSrugKhbz0XIhldCgUmbqRTF6UzbTO0rjUaHZahAB6kg3FsMd5qnrp+T
+	 rSSlSOaf6POow==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rUl1u-000000002uC-18CJ;
+	Tue, 30 Jan 2024 11:07:46 +0100
+Date: Tue, 30 Jan 2024 11:07:46 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Michael Schaller <michael@5challer.de>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev,
+	"Maciej W . Rozycki" <macro@orcam.me.uk>,
+	Ajay Agarwal <ajayagarwal@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org,
+	regressions@leemhuis.info
+Subject: Re: PCI/ASPM locking regression in 6.7-final (was: Re: [PATCH]
+ Revert "PCI/ASPM: Remove pcie_aspm_pm_state_change()")
+Message-ID: <ZbjKci6GuWVrpbri@hovoldconsulting.com>
+References: <Za_2oKTUksw8Di5E@hovoldconsulting.com>
+ <20240123223648.GA331671@bhelgaas>
+ <ZbDHZtR8Tg1hWAzc@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZbDHZtR8Tg1hWAzc@hovoldconsulting.com>
 
-Against its current description, the kernel API can accepts all types of
-directory entries.
+On Wed, Jan 24, 2024 at 09:16:38AM +0100, Johan Hovold wrote:
+> On Tue, Jan 23, 2024 at 04:36:48PM -0600, Bjorn Helgaas wrote:
 
-This commit corrects the documentation.
+> > I don't quite follow.  By simply reverting, do you mean to revert
+> > f93e71aea6c6 ("Revert "PCI/ASPM: Remove
+> > pcie_aspm_pm_state_change()"")?  IIUC that would break Michael's
+> > machine again.
+> 
+> Right, at least until that issue is fully understood and alternative
+> fixes have been considered.
+> 
+> If that's not an option, we need to rework core to pass a flag through
+> more than one layer to indicate whether pcie_aspm_pm_state_change()
+> should take the bus semaphore or not. I'd rather not do that if it can
+> be avoided.
 
-Cc: stable@vger.kernel.org
-Fixes: 3c2c58cb33b3 ("firewire: core: fw_csr_string addendum")
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
----
- drivers/firewire/core-device.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+As a revert appears unlikely to happen, let's fix the regression by
+adding a new helper pci_set_power_state_locked() that can be called
+with the bus lock held:
 
-diff --git a/drivers/firewire/core-device.c b/drivers/firewire/core-device.c
-index 0547253d16fe..e4cb5106fb7d 100644
---- a/drivers/firewire/core-device.c
-+++ b/drivers/firewire/core-device.c
-@@ -118,10 +118,9 @@ static int textual_leaf_to_string(const u32 *block, char *buf, size_t size)
-  * @buf:	where to put the string
-  * @size:	size of @buf, in bytes
-  *
-- * The string is taken from a minimal ASCII text descriptor leaf after
-- * the immediate entry with @key.  The string is zero-terminated.
-- * An overlong string is silently truncated such that it and the
-- * zero byte fit into @size.
-+ * The string is taken from a minimal ASCII text descriptor leaf just after the entry with the
-+ * @key. The string is zero-terminated. An overlong string is silently truncated such that it
-+ * and the zero byte fit into @size.
-  *
-  * Returns strlen(buf) or a negative error code.
-  */
--- 
-2.40.1
+	https://lore.kernel.org/lkml/20240130100243.11011-1-johan+linaro@kernel.org/
 
+Johan
 
