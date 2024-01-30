@@ -1,116 +1,102 @@
-Return-Path: <stable+bounces-17428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36808428FE
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 17:21:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8514842973
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 17:36:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6C1C1C258BA
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 16:21:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68EA41F2ABC2
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 16:36:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080AF86AF3;
-	Tue, 30 Jan 2024 16:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129C412BEBA;
+	Tue, 30 Jan 2024 16:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="ns1ujTi+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AC9pzC/T"
 X-Original-To: stable@vger.kernel.org
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CDD86AF1
-	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 16:21:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22B0129A9B;
+	Tue, 30 Jan 2024 16:35:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706631669; cv=none; b=NsMRK68iA+n0Zjd1vx2IbRA3pSZ6IEni54JczASO+Ib5f2lRHnchKS4etpJ1R/DzAUMt1idPyopjCqU8PVDvNSpudHriuMJU9n+qB3bfA1CzPJgmatYhAQJ+bWzwZi6FAUa+1U51OwPkExc1Zn9sf4DZYyuqzACbW+Dg1DnQUnM=
+	t=1706632534; cv=none; b=hMFasV3o479GaJEyXLQoQgGpoctLBj+xtm1fLcsef3d1/IdTNG0iQFyKU9MT/SmiFTIoe+XBMncRkkvrwNPs3rSjn+LNTMnV5WvOkXZdyMP/iot1XARZu5si6T3td/k+6I0IsY9qexjj/Aq2WAply/uncDoPuLl8Wuu3JOVI/KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706631669; c=relaxed/simple;
-	bh=OwcGd6pgEB8M1Rd0VLxKoDA7ulpg30L8inV7kIdkz24=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=un6QGEUvWyLyxJ7NAenBrOd5x/4R9DjmR9MeG+BfiZlvGD4WUOLQ70Bat49i8obKuXu9BrFXhO5NiGkcCv8IZEOFhiUwqzE80APVzwaW0cF1hnNY4cYtaoW6Ghnjx0lgL+PYN2P1HPdlDy4Mn2j4SpKjFCCqCMO2gwBKBnesT84=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=ns1ujTi+; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net A97F747AA8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1706631665; bh=ilVz9ATi/E1XgwoOUQj0B/KNO6tp3Ig21nSWwn56D44=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ns1ujTi+q5TrNzZMVfBmprl7dUkGteNZZ+8xO85YjXlomNZn2phSfp/9/0H+iyMt3
-	 7tjoqkjhIPD6igwjWmZQMQKTV8rYJcubFc4kjM178nJ4H1sW2ZmVLXFVIvLapHBx6t
-	 QXkt8fqs5rcojYlUixKPx1C+x47ecX/so0qI2dDjCRzl4Rz/ZwS+jmrBS7rUl6q8CT
-	 KDdCxFeDjjlGCCT4IkynDHfrCThvcrQTZkuJkjcgZw46cxFHuJEOZQ7W44L/UDriMq
-	 qD8NtoL7IgFiVFiZxTyPdxzdYhsHNf1Hvu5awJRxTdzOqfPtYBBE/C9T6F50sRNiTK
-	 0kelI1mrIxdpQ==
-Received: from localhost (unknown [IPv6:2601:280:5e00:7e19::646])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id A97F747AA8;
-	Tue, 30 Jan 2024 16:21:05 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Justin Forbes <jforbes@fedoraproject.org>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, Jani Nikula
- <jani.nikula@intel.com>, Vegard Nossum <vegard.nossum@oracle.com>, Sasha
- Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 003/331] docs: kernel_feat.py: fix potential command
- injection
-In-Reply-To: <ZbkfGst991YHqJHK@fedora64.linuxtx.org>
-References: <20240129170014.969142961@linuxfoundation.org>
- <20240129170015.067909940@linuxfoundation.org>
- <ZbkfGst991YHqJHK@fedora64.linuxtx.org>
-Date: Tue, 30 Jan 2024 09:21:04 -0700
-Message-ID: <87h6iudc7j.fsf@meer.lwn.net>
+	s=arc-20240116; t=1706632534; c=relaxed/simple;
+	bh=PKiVkrb8gj474ShKj8vG0TUwph6AYc1yEkyAji/63Aw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JcY5AedJjxndfHel7pEkEfn4HDWkdSPTY1ZQssNoZGzUqmhSQGKh3LnES47WZivr8U7Iykva/y1d1TMFgMYSNdDO4LIW4WIT7JwAAAT3YGqqZOVOGp/a9LFMqJ+ege+LIVFfyWmh3mi8AjEzUMSJ0lG7BXnCJ85Vch5eSJXNMws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AC9pzC/T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A92CC43330;
+	Tue, 30 Jan 2024 16:35:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1706632534;
+	bh=PKiVkrb8gj474ShKj8vG0TUwph6AYc1yEkyAji/63Aw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AC9pzC/TqRyZjLc/gLjxnkZqoWyuvwWRFbcoy7o+tBbFK0E5u3sXGsezyf/X/E/yp
+	 agNtx9h/6/9mLPkiN9ontmqPq+VZMTpVM3rmi+5L7WvOjlEXjMTQhgrdZFyyEC54fN
+	 pQ6oJ6TqoCCNFDGTXfUvJ98yVIFNVCLnAaf0Nw6Q=
+Date: Tue, 30 Jan 2024 08:21:46 -0800
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.7 125/346] mm/sparsemem: fix race in accessing
+ memory_section->usage
+Message-ID: <2024013044-snowiness-abreast-2a47@gregkh>
+References: <20240129170016.356158639@linuxfoundation.org>
+ <20240129170020.057681007@linuxfoundation.org>
+ <81752462-c6c7-4a65-b9f2-371573e15499@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <81752462-c6c7-4a65-b9f2-371573e15499@kernel.org>
 
-Justin Forbes <jforbes@fedoraproject.org> writes:
+On Tue, Jan 30, 2024 at 07:00:36AM +0100, Jiri Slaby wrote:
+> On 29. 01. 24, 18:02, Greg Kroah-Hartman wrote:
+> > 6.7-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Charan Teja Kalla <quic_charante@quicinc.com>
+> > 
+> > commit 5ec8e8ea8b7783fab150cf86404fc38cb4db8800 upstream.
+> 
+> Hi,
+> 
+> our machinery (git-fixes) says, this is needed as a fix:
+> commit f6564fce256a3944aa1bc76cb3c40e792d97c1eb
+> Author: Marco Elver <elver@google.com>
+> Date:   Thu Jan 18 11:59:14 2024 +0100
+> 
+>     mm, kmsan: fix infinite recursion due to RCU critical section
+> 
+> 
+> Leaving up to the recipients to decide, as I have no idea…
 
-> On Mon, Jan 29, 2024 at 09:01:07AM -0800, Greg Kroah-Hartman wrote:
->> 6.6-stable review patch.  If anyone has any objections, please let me know.
->> 
->> ------------------
->> 
->> From: Vegard Nossum <vegard.nossum@oracle.com>
->> 
->> [ Upstream commit c48a7c44a1d02516309015b6134c9bb982e17008 ]
->> 
->> The kernel-feat directive passes its argument straight to the shell.
->> This is unfortunate and unnecessary.
->> 
->> Let's always use paths relative to $srctree/Documentation/ and use
->> subprocess.check_call() instead of subprocess.Popen(shell=True).
->> 
->> This also makes the code shorter.
->> 
->> This is analogous to commit 3231dd586277 ("docs: kernel_abi.py: fix
->> command injection") where we did exactly the same thing for
->> kernel_abi.py, somehow I completely missed this one.
->> 
->> Link: https://fosstodon.org/@jani/111676532203641247
->> Reported-by: Jani Nikula <jani.nikula@intel.com>
->> Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Jonathan Corbet <corbet@lwn.net>
->> Link: https://lore.kernel.org/r/20240110174758.3680506-1-vegard.nossum@oracle.com
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->
-> This patch seems to be missing something. In 6.6.15-rc1 I get a doc
-> build failure with:
->
-> /builddir/build/BUILD/kernel-6.6.14-332-g1ff49073b88b/linux-6.6.15-0.rc1.1ff49073b88b.200.fc39.noarch/Documentation/sphinx/kerneldoc.py:133: SyntaxWarning: invalid escape sequence '\.'
->   line_regex = re.compile("^\.\. LINENO ([0-9]+)$")
+That commit just got merged into Linus's tree, AND it is not marked for
+stable, which is worrying as I have to get the developers's approval to
+add any non-cc-stable mm patch to the tree because they said they would
+always mark them properly :)
 
-Ah ... you're missing 86a0adc029d3 (Documentation/sphinx: fix Python
-string escapes).  That is not a problem with this patch, though; I would
-expect you to get the same error (with Python 3.12) without.
+So I can't take it just yet...
 
-Thanks,
+thanks,
 
-jon
+greg k-h
 
