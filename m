@@ -1,147 +1,124 @@
-Return-Path: <stable+bounces-17398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 885D3842422
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 12:52:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5369B84241C
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 12:51:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B161EB2512C
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 11:52:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF3F91F221F7
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 11:51:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3185D679E1;
-	Tue, 30 Jan 2024 11:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44080679E4;
+	Tue, 30 Jan 2024 11:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tLd3MiRr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bU/5/7L5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BCA679E4;
-	Tue, 30 Jan 2024 11:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41B46773C;
+	Tue, 30 Jan 2024 11:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706615552; cv=none; b=twrCa2Woe02fqTrpcNeEAore2k6/mAWhbGp8bs/e0o7CqcKMKgQeFJdUM3SkeW5WpSArhUHYiAMPTYBQOQONN8Vx5CaQDefXxahoKksPo39hxexemYpYcOPanot8xZfNVH+H2Xx+ewVw9J319iCt67Mwad2424cdgDIXUIN9ZwI=
+	t=1706615473; cv=none; b=n27x13tc7+wGm5lS11v5pcQh1Vs1INAlea0pbsf34gOw6Tp+r1L/Q8ErfNMAKJOYVOKQbQaAmQDjN+znnzZkq3FewEQJ0Tyd2NraOvUwDDco5nI055vGOpDy5+533CdjHiWstwwEbka60TB+fvT0wgtBdCvQ009ZuYuw+Bk6Ivc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706615552; c=relaxed/simple;
-	bh=DMspNHe+PyuwZG/IydiW/Wdtvh3uR5JF2oe/i9uuk5Y=;
+	s=arc-20240116; t=1706615473; c=relaxed/simple;
+	bh=GzyZ6i9wOU8mgt3dmogPm1nmvgCFBIMDOc3j03O/1Fc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q6veGF+Xb+q5G1IsBvw+qQndDBnTwhcIcQSBAKBAZkKar9JeyAo+YWe9guO+dvxSLwEbWelE3UlBiC4ewSn6ec7B55ncQ8Da9JPZGNdgvWzsJvfGJXo8RHMUS89RhGHTGMxc4n9Qz5x62tBAVpwzPhLBdSMd+Sr6HROk5v8Rrk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tLd3MiRr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD77C433F1;
-	Tue, 30 Jan 2024 11:52:27 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=FRZNIMdCRqpLmwbxygbEVAIIIK/7+l2949z9C+WT0z54LpBEPt740iaV1Op0gD1xTrYP/m82T8xrR1sAKkNMEcAiAVFMRxhFWh95XjS/eJVAtKvfJi84vjyx45iYJ1ul6/HAmWZi93J8IlndykCJ1IixrcxOlPdmBcqZeF0IQL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bU/5/7L5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4DCC433F1;
+	Tue, 30 Jan 2024 11:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706615551;
-	bh=DMspNHe+PyuwZG/IydiW/Wdtvh3uR5JF2oe/i9uuk5Y=;
+	s=k20201202; t=1706615472;
+	bh=GzyZ6i9wOU8mgt3dmogPm1nmvgCFBIMDOc3j03O/1Fc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tLd3MiRrPCcMgjVjHBWZko6Az5rZSFR1TS04dBkF6SIlhgzavZ2stqYFKUjlYdcgz
-	 CUm7cZDSLxFrXzePWm05avfoOHKiqK3DWlv/ZpMl4Fbk24sTIvCe9Ad7MmJZ7Huvvi
-	 JK1VLQEXMckAltshWu+H0x/ncIpjIlmb5TTFb6OVzHS8xm9VPhnBxdPSJwFZ7kx29b
-	 O4hDrkrHy1F2o3o8FdBROYbPGiljw4vd+CDssP8WvjexD/SSs6VTTDk/bMsGGQ/WhM
-	 +yAfrdEE4Gke6UPP5de/5dsmvbanSxCQT9o+813w0EqxCvGItuM9kUDGYXnlZQog6a
-	 j5Pwxm/sKwtkg==
-Date: Tue, 30 Jan 2024 19:39:35 +0800
-From: Jisheng Zhang <jszhang@kernel.org>
-To: Petr =?utf-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Samuel Holland <samuel@sholland.org>,
-	"open list:STMMAC ETHERNET DRIVER" <netdev@vger.kernel.org>,
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>,
-	Marc Haber <mh+netdev@zugschlus.de>, Andrew Lunn <andrew@lunn.ch>,
-	Florian Fainelli <f.fainelli@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH net v2] net: stmmac: protect updates of 64-bit statistics
- counters
-Message-ID: <Zbjf9yQRV26EO7le@xhacker>
-References: <20240128193529.24677-1-petr@tesarici.cz>
- <ZbiCWtY8ODrroHIq@xhacker>
- <20240130083539.4ea26a8d@meshulam.tesarici.cz>
+	b=bU/5/7L5ypIxbzkvi0inJ1C5X4qPFJfwKdrZzUOJji+S1+afxqmJzhU4alZpNhViW
+	 FcA5tW2WIhot2EU6cKqqW+U/rTk4XWia54IOfaTJXPgendq7QPWuAV4i9fBee3vwJ8
+	 VjE2oW6jtOXTklX7ZHhERJb1NnVLqYM6kct0RlkNogydWacV0R9q1Ulirb6JmyJbGK
+	 d3EBfIklvWgqtfTKbVNS320tT1QMzDfq/apJBsmTTUZz6mBC8wP24+LDCMtgvcUtrm
+	 ChoGH0Ra9h/O3vYbakSoQM6jbj+MXLxQKmMK1so6JoXR1qy53kBwuZy8x+8duGQMeq
+	 t3jaw7+3NrlkA==
+Date: Tue, 30 Jan 2024 11:51:07 +0000
+From: Will Deacon <will@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Martin <dave.martin@arm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] arm64/signal: Don't assume that TIF_SVE means we saved
+ SVE state
+Message-ID: <20240130115107.GB13551@willie-the-truck>
+References: <20240119-arm64-sve-signal-regs-v1-1-b9fd61b0289a@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240130083539.4ea26a8d@meshulam.tesarici.cz>
+In-Reply-To: <20240119-arm64-sve-signal-regs-v1-1-b9fd61b0289a@kernel.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Tue, Jan 30, 2024 at 08:35:39AM +0100, Petr Tesařík wrote:
-> On Tue, 30 Jan 2024 13:00:10 +0800
-> Jisheng Zhang <jszhang@kernel.org> wrote:
+On Fri, Jan 19, 2024 at 12:29:13PM +0000, Mark Brown wrote:
+> When we are in a syscall we will only save the FPSIMD subset even though
+> the task still has access to the full register set, and on context switch
+> we will only remove TIF_SVE when loading the register state. This means
+> that the signal handling code should not assume that TIF_SVE means that
+> the register state is stored in SVE format, it should instead check the
+> format that was recorded during save.
 > 
-> > On Sun, Jan 28, 2024 at 08:35:29PM +0100, Petr Tesarik wrote:
-> > > As explained by a comment in <linux/u64_stats_sync.h>, write side of struct
-> > > u64_stats_sync must ensure mutual exclusion, or one seqcount update could
-> > > be lost on 32-bit platforms, thus blocking readers forever. Such lockups
-> > > have been observed in real world after stmmac_xmit() on one CPU raced with
-> > > stmmac_napi_poll_tx() on another CPU.
-> > > 
-> > > To fix the issue without introducing a new lock, split the statics into
-> > > three parts:
-> > > 
-> > > 1. fields updated only under the tx queue lock,
-> > > 2. fields updated only during NAPI poll,
-> > > 3. fields updated only from interrupt context,
-> > > 
-> > > Updates to fields in the first two groups are already serialized through
-> > > other locks. It is sufficient to split the existing struct u64_stats_sync
-> > > so that each group has its own.
-> > > 
-> > > Note that tx_set_ic_bit is updated from both contexts. Split this counter
-> > > so that each context gets its own, and calculate their sum to get the total
-> > > value in stmmac_get_ethtool_stats().
-> > > 
-> > > For the third group, multiple interrupts may be processed by different CPUs
-> > > at the same time, but interrupts on the same CPU will not nest. Move fields
-> > > from this group to a newly created per-cpu struct stmmac_pcpu_stats.
-> > > 
-> > > Fixes: 133466c3bbe1 ("net: stmmac: use per-queue 64 bit statistics where necessary")
-> > > Link: https://lore.kernel.org/netdev/Za173PhviYg-1qIn@torres.zugschlus.de/t/
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Petr Tesarik <petr@tesarici.cz>  
-> > 
-> > Thanks for the fix patch. One trivial improviement below
-> > s/netdev_alloc_pcpu_stats/devm_netdev_alloc_pcpu_stats to simplify
-> > error and exit code path.
+> Fixes: 8c845e273104 ("arm64/sve: Leave SVE enabled on syscall if we don't context switch")
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Cc:  <stable@vger.kernel.org>
+> ---
+>  arch/arm64/kernel/fpsimd.c | 2 +-
+>  arch/arm64/kernel/signal.c | 4 ++--
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 > 
-> Thanks for your review.
-> 
-> In fact, many other allocations in stmmac could be converted to devm_*.
-> I wanted to stay consistent with the existing code, but hey, you're
+> diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+> index 1559c706d32d..80133c190136 100644
+> --- a/arch/arm64/kernel/fpsimd.c
+> +++ b/arch/arm64/kernel/fpsimd.c
+> @@ -1626,7 +1626,7 @@ void fpsimd_preserve_current_state(void)
+>  void fpsimd_signal_preserve_current_state(void)
+>  {
+>  	fpsimd_preserve_current_state();
+> -	if (test_thread_flag(TIF_SVE))
+> +	if (current->thread.fp_type == FP_STATE_SVE)
+>  		sve_to_fpsimd(current);
+>  }
 
-there's already devm_* usage in stmmac_dvr_probe(), eg. devm_alloc_etherdev_mqs
-I believe other parts are from the old days when there's no devm_* APIs
+I don't think this hunk applies on -rc2 ^^.
 
-> right there's no good reason for it.
-> 
-> Plus, I can send convert the other places with another patch.
-> 
-> > With that:
-> > Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
-> > 
-> > PS: when I sent the above "net: stmmac: use per-queue 64 bit statistics
-> > where necessary", I had an impression: there are too much statistics in
-> > stmmac driver, I didn't see so many statistics in other eth drivers, is
-> > it possible to remove some useless or not that useful statistic members?
-> 
-> I don't feel authorized to make the decision. But I also wonder about
-> some counters. For example, why is there tx_packets and tx_pkt_n? The
-> former is shown as RX packets by "ip stats show dev end0", the latter
-> is shown by as tx_pkt_n by "ethtools -S end0". The values do differ,
-> but I have no clue why, and if they are even expected to be different
-> or if it's a bug.
-> 
-> Petr T
+> diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
+> index 0e8beb3349ea..425b1bc17a3f 100644
+> --- a/arch/arm64/kernel/signal.c
+> +++ b/arch/arm64/kernel/signal.c
+> @@ -242,7 +242,7 @@ static int preserve_sve_context(struct sve_context __user *ctx)
+>  		vl = task_get_sme_vl(current);
+>  		vq = sve_vq_from_vl(vl);
+>  		flags |= SVE_SIG_FLAG_SM;
+> -	} else if (test_thread_flag(TIF_SVE)) {
+> +	} else if (current->thread.fp_type == FP_STATE_SVE) {
+>  		vq = sve_vq_from_vl(vl);
+>  	}
+>  
+> @@ -878,7 +878,7 @@ static int setup_sigframe_layout(struct rt_sigframe_user_layout *user,
+>  	if (system_supports_sve() || system_supports_sme()) {
+>  		unsigned int vq = 0;
+>  
+> -		if (add_all || test_thread_flag(TIF_SVE) ||
+> +		if (add_all || current->thread.fp_type == FP_STATE_SVE ||
+>  		    thread_sm_enabled(&current->thread)) {
+>  			int vl = max(sve_max_vl(), sme_max_vl());
+
+I think this code is preemptible, so I'm struggling to understand what
+happens if the fp_type changes under our feet as a result of a context
+switch.
+
+Will
 
