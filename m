@@ -1,163 +1,131 @@
-Return-Path: <stable+bounces-17442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A46842CBC
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 20:28:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F669842D02
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 20:37:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7DBE1F26472
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 19:28:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49F8AB26CB1
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 19:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA88762E3;
-	Tue, 30 Jan 2024 19:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF467B3F1;
+	Tue, 30 Jan 2024 19:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jQz7ksEt"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="GSlmp0QG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876687B3DE
-	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 19:26:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B38187B3EF
+	for <stable@vger.kernel.org>; Tue, 30 Jan 2024 19:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706642813; cv=none; b=lKUqf1MesbNjeeL5ouBJqCrE7u2hlY6qDVUW7ZPhFJJzhCOGevTlaiPqtO4pxpsOd4YX9vaspFDuqHEC2DbyGJ6cT8YwMXevJStzw56ONUXcvpNpv0ekE8xwViTo0TiuTi+00M5NrfHZzms+IwqXeltakKL9XoEs7RhtdiSXWKo=
+	t=1706643428; cv=none; b=T89tw95C2JsWMK7HISNEn+NMdoHldZwBRc+Ht3lweZXvF5hbD4vnMIKxywjW6mUrvSFUSCyrbaNnZE9gweYnJn7y73FoI1Ji2lvdSYFXIisPDpkuO3Xid9/UqAnrHQSHaBBg07y3CFS24HlfZML+AP6f1BC5SJccuVkIbxlJ+5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706642813; c=relaxed/simple;
-	bh=B2kjYhFbSp4GX9YZwdN8eIiOyb3LTIyipZNOAiaztKA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=D4X2RQ8nTQl/SQH9McXRtUbN5io6fodVuR+Z5l3ThSKiMxdJBQ2o+Qnh23ysqCnn53mrNmD6OlVsLKNAU1x7tX3wOW0V//H8x+24nRbFCJLFo0+FaKmyENMsKiMgvxKj8R0d6aEsWq3eg8xKDMiD94IWHBH4XvwBKbKwq8dkXBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rdbabiera.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jQz7ksEt; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rdbabiera.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-6dde04e1c79so3234617b3a.0
-        for <stable@vger.kernel.org>; Tue, 30 Jan 2024 11:26:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1706642811; x=1707247611; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=DLNcddy21SBz7KyeQPUGhNdRXI+N/Fl5AuS+wQy0vi4=;
-        b=jQz7ksEt62MNFesKRuKqre79VxAZ5IqSVefXUflsI0dF+mUKo14pysm0PCMhWz41gk
-         Bf0ikAaY9aMTKH/RFMENn5QICy0EGS62Qzd0djEBZb00zwRGaPYxgtxhIdxPN5fU7SMu
-         bi7qnyxnbAMpz7JT7HBAKRMdFGcvhjOW+HR0DZsbdXjiO+Qydl6f7QbTCasxGkXzxCOz
-         FRYYOY05/YHFfwwNv9o98CRh1cIHK5Bi9PXB4Y5OysEq2ypzMPfv+HjMFXghgD6GN2Dd
-         ZXWQYE4R3R/690hPPGUtbjeaz/RLdcjhKeFGCODI+yLlrWolvwIxHm14poCPBUA6DePf
-         SIrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706642811; x=1707247611;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=DLNcddy21SBz7KyeQPUGhNdRXI+N/Fl5AuS+wQy0vi4=;
-        b=OapIC5t+ugIOd10pu5U3UgKYfEFFnV+HuyEmi23JTcQ72fYSIgHca9/UICWQPDa53c
-         NvB2K4/o1GQt4B96cvlIfH6sqbL4f7JXbHzLPPG9kbiIGqjGYhN0roPH/9epRuXb2F5k
-         qgb/Eo5Yt7LAC4FwQ/MN0ln4/76H8VVYRXPhXf+fox7VEWJyavQzVLuu0TaSWem8hPFQ
-         uciPT8TYRHBD2eIKBJrkXaD3EWU9oJvVeUYczNVJTI/dXFB2pysfn2LecbwwxuGvYFxX
-         yVoA1FyAr0HZhKnAYpSGZmjKUKWnVff4YRGSe97w1EEfLJDd0jTV8xWwhw/ZQ3Dt9vZG
-         3MZQ==
-X-Gm-Message-State: AOJu0YyLABb6V9+LriCDW8wudOYSRjv7T8F6vdAvm2nwX24VfdZnbH32
-	sxz3JIsS5JN+wN1QQtO1Nq5xdd20o+mr7tF7ZCPZGqb1VRXMJ/7IuGTo4Z6zy1WUvn1KQVVIdt/
-	ThJm7RV31d9ot0g==
-X-Google-Smtp-Source: AGHT+IGzyqpHDnMzaRV+nS2+r1StE8p1R6XAs2/YV+zXv2KaMvdh3kwztGtHSqhYXdO4zpbBnD2dX6We83IfeZ0=
-X-Received: from rdbabiera.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:18a8])
- (user=rdbabiera job=sendgmr) by 2002:a05:6a00:4503:b0:6db:c6a5:da3e with SMTP
- id cw3-20020a056a00450300b006dbc6a5da3emr1109506pfb.5.1706642810832; Tue, 30
- Jan 2024 11:26:50 -0800 (PST)
-Date: Tue, 30 Jan 2024 19:26:39 +0000
+	s=arc-20240116; t=1706643428; c=relaxed/simple;
+	bh=z7e0oDXwsPNLDHSaB2dgT/ViOWFl8x0haXBLj3tiw7s=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=WCqSSjx3jy+0wx+tNAcX4uY7k7yiFeDoUDA/WRRl36UQLPi06c3L+vQyfjQjLRXiczy4LxfO4K9jFABaVfnUqGiPT9T8TuhgYlULQyn7v1PJDbTViernVGjto0bo7k7JlKwc1ON06N8ZiSslSzuqIXJcRcdpMHn2HxZivLpq3kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=GSlmp0QG; arc=none smtp.client-ip=44.202.169.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5001a.ext.cloudfilter.net ([10.0.29.139])
+	by cmsmtp with ESMTPS
+	id UsJJrTTie9gG6UttJrPkWx; Tue, 30 Jan 2024 19:35:29 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id UttIrVhz5JLOTUttJrBDws; Tue, 30 Jan 2024 19:35:29 +0000
+X-Authority-Analysis: v=2.4 cv=SNhR6cjH c=1 sm=1 tr=0 ts=65b94f81
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=dEuoMetlWLkA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=AQD6Ng23BqyD0esAEoD4EqxZkZYqG4sWmfNes1vPuI8=; b=GSlmp0QGd3yPl80AiGn2W7G/uw
+	zwDPJqWPTM2t5+WtIrQaZCOKobH8GsDaqyzVwmwISzghJ1x0jBxSusWy5VdY6KeVzh5X0XlkgrOgb
+	k7MxKUZjU1aX/5ioSAa0j1jfGvQ568lGwolKC4y9ayHe2XDbvanze8x55GFHddsDKLgsUvDJlItz7
+	FYHnz9AeACCujy9wvmEV3W7ZCRJL6GKBavwEdksubk9Co2Lr/EojCeSsr+016jLj/td3DRKKJOUAc
+	prOUycwMwtIAtWI9OnAcIdQD/EcNvT/NePoRNouCYtcYn0dqVWzCx5tZOm87Dhv3b4k95vGcQcxDd
+	ry/VXgkA==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:37610 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rUttG-000EDS-0E;
+	Tue, 30 Jan 2024 12:35:26 -0700
+Subject: Re: [PATCH 6.6 000/331] 6.6.15-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20240129170014.969142961@linuxfoundation.org>
+In-Reply-To: <20240129170014.969142961@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <7e9cd7e6-af54-5c1b-ef36-d14aedf13194@w6rz.net>
+Date: Tue, 30 Jan 2024 11:35:23 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=rdbabiera@google.com; a=openpgp; fpr=639A331F1A21D691815CE090416E17CA2BBBD5C8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2174; i=rdbabiera@google.com;
- h=from:subject; bh=B2kjYhFbSp4GX9YZwdN8eIiOyb3LTIyipZNOAiaztKA=;
- b=owGbwMvMwCFW0bfok0KS4TbG02pJDKk7ffM60yYd+Lhl7s6oww+lN4scPhCRv2uN2+mdVaHLu
- PJ04l7O7ChlYRDjYJAVU2TR9c8zuHEldcsczhpjmDmsTCBDGLg4BWAin98wMvyM+/HxveTGZr7Z
- eyfIn1z480L5hIvGsScvC7ZJfWF9X/eIkWGRTL7e9FreQ1I5WwubPlhl6tTz7xXsPbjTsi0ze9b XSbwA
-X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
-Message-ID: <20240130192638.3557409-2-rdbabiera@google.com>
-Subject: [PATCH v1] usb: typec: altmodes/displayport: add null pointer check
- for sysfs nodes
-From: RD Babiera <rdbabiera@google.com>
-To: rdbabiera@google.com, heikki.krogerus@linux.intel.com, 
-	gregkh@linuxfoundation.org
-Cc: badhri@google.com, linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rUttG-000EDS-0E
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:37610
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfCzD1N4hp/+I8TsNnEHpLauZakyNR/f3jbqYkNFU9pRRm62ZMYg57zT3IoLz0SYCGGV77omGFCdupzWhvNOFDLbm9eK8wPwcJYP/EdgGEk4CXZH9aYGK
+ Y3YVDu38g9koX65gacRbruZ8q1K4dqgYxGwW1zojRW1vbajIWSs32WvMQDTVGbnFPDcVAMtJgJKZEA==
 
-The DisplayPort driver's sysfs nodes may be present to the userspace before
-typec_altmode_set_drvdata() completes in dp_altmode_probe. This means that
-a sysfs read can trigger a NULL pointer error by deferencing dp->hpd in
-hpd_show or dp->lock in pin_assignment_show, as dev_get_drvdata() returns
-NULL in those cases.
+On 1/29/24 9:01 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.15 release.
+> There are 331 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 31 Jan 2024 16:59:28 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.15-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Verify dp drvdata is present in sysfs reads and writes before proceeding.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
----
- drivers/usb/typec/altmodes/displayport.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
-index 5a80776c7255..0423326219d8 100644
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -518,6 +518,9 @@ configuration_store(struct device *dev, struct device_attribute *attr,
- 	int con;
- 	int ret = 0;
- 
-+	if (!dp)
-+		return -ENODEV;
-+
- 	con = sysfs_match_string(configurations, buf);
- 	if (con < 0)
- 		return con;
-@@ -563,6 +566,9 @@ static ssize_t configuration_show(struct device *dev,
- 	u8 cur;
- 	int i;
- 
-+	if (!dp)
-+		return -ENODEV;
-+
- 	mutex_lock(&dp->lock);
- 
- 	cap = DP_CAP_CAPABILITY(dp->alt->vdo);
-@@ -615,6 +621,9 @@ pin_assignment_store(struct device *dev, struct device_attribute *attr,
- 	u32 conf;
- 	int ret;
- 
-+	if (!dp)
-+		return -ENODEV;
-+
- 	ret = sysfs_match_string(pin_assignments, buf);
- 	if (ret < 0)
- 		return ret;
-@@ -666,6 +675,9 @@ static ssize_t pin_assignment_show(struct device *dev,
- 	u8 cur;
- 	int i;
- 
-+	if (!dp)
-+		return -ENODEV;
-+
- 	mutex_lock(&dp->lock);
- 
- 	cur = get_count_order(DP_CONF_GET_PIN_ASSIGN(dp->data.conf));
-@@ -698,6 +710,9 @@ static ssize_t hpd_show(struct device *dev, struct device_attribute *attr, char
- {
- 	struct dp_altmode *dp = dev_get_drvdata(dev);
- 
-+	if (!dp)
-+		return -ENODEV;
-+
- 	return sysfs_emit(buf, "%d\n", dp->hpd);
- }
- static DEVICE_ATTR_RO(hpd);
-
-base-commit: f1a27f081c1fa1eeebf38406e45f29636114470f
--- 
-2.43.0.429.g432eaa2c6b-goog
+Tested-by: Ron Economos <re@w6rz.net>
 
 
