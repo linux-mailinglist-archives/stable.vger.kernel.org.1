@@ -1,101 +1,101 @@
-Return-Path: <stable+bounces-17465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3988430CA
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 00:01:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FC68430E4
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 00:08:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE8A61C2430C
-	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 23:01:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45548B22E85
+	for <lists+stable@lfdr.de>; Tue, 30 Jan 2024 23:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73AC37EF0E;
-	Tue, 30 Jan 2024 23:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F66A7EF1E;
+	Tue, 30 Jan 2024 23:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D/4bDsru"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvUXX6Zx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26DB77EF06;
-	Tue, 30 Jan 2024 23:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4709E383BA;
+	Tue, 30 Jan 2024 23:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706655693; cv=none; b=O2p8wKuQsIBEbglnWyhtTaTr2l65jvfdeZB/1xeMuSn/ttExredTjEM5b4oO5If91IVvWRV8dNd2CoPCXTKdq7HSB99XLSyrsbn/3mZwJezhnY7iiOjSab0MUIDRte3TjRd5/a2l5OlIk6qkOsfSwHJlcDI2wlH14MaNR7y8zeI=
+	t=1706656127; cv=none; b=YlAdIW0Brwq/tebSbS+bdG2o2NpUHP1lhmykmZFjJ0IUEwhjAuyGSsTYB1DLN8/DuSPQtzCrjLvjRu0Ez2E4wg6PEDjksh3S2zNqXGQYNpbqqQJI2Op8P7bEwhExpr5ykZNWcEIoqSZHRiW/sdmEVOOcm2n7WuNs4QV8JxS8HSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706655693; c=relaxed/simple;
-	bh=ku1C/ZkbKX+29BRUe76r+E2vI8ZO7+6hPMyFCOiFLQQ=;
+	s=arc-20240116; t=1706656127; c=relaxed/simple;
+	bh=ZuQDweNpKH6gLGI/RyP5iCz3jdyHptIwQkI1NjhPexA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FiizZ2rotWRU+zfJ/KgqSuBZ1NSw+erq9SNQtm/OY0aYGZ1RokU0ENAeZ16REWD5kVooijriEEhAsDQkHoPCFQcc4NqCdLj8Z1ntNhHVfRj0agvFrLmPlj3Zw7lA2nZkvjmAkNTJSTF5PMhapEjYzL5RIQrI/YyvRywluXqF5eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D/4bDsru; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673B8C433C7;
-	Tue, 30 Jan 2024 23:01:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706655692;
-	bh=ku1C/ZkbKX+29BRUe76r+E2vI8ZO7+6hPMyFCOiFLQQ=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=q0998wpS6D3KEOVETT78fz3HN4DD1vAW7+rxmAEE0adLYtLGRPpgqUlpMZ5Tf+NmWsN9GldTJkW2P0iHt1ufi47tGBrmsOd/fPGOZCdxIXWhhzuZHpsa7GxkyhyftfzCY/qbOTTdxj6ztx1G9ePw5R1gDVblJlr2xl2VN3tb7NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvUXX6Zx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34DDC433F1;
+	Tue, 30 Jan 2024 23:08:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1706656126;
+	bh=ZuQDweNpKH6gLGI/RyP5iCz3jdyHptIwQkI1NjhPexA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=D/4bDsruR054m2eZrmHx9bopxrE7FZ6qZLIETLGBtVSr1Klv3+vKCOGaLfD09IpK0
-	 QLusj9nMEU2zhFJOCloZsME3p6H6Spz5WOKFVCxl3P3/ZD2H9x12Tqj3rTiVKWKRd8
-	 lZcWgUru/vix1hPpGdIJ8NB73EQt/naxYOkPhg9bAhHsCXkCvNvQE0rhZ42ClEKlc/
-	 Lu1RKry+swCBJqxifi5fcxiNo+WLIg57pt+r1SmviioOBT8i+25XBxjwyYctAkG/1q
-	 HxUkrLvVa5R9Yv6kyWTpej5genuaZfEIr/1QucvIONqt0EouWdoMwzyDTFRJFrK2ac
-	 6OCK/MK1Kl7YQ==
-Date: Tue, 30 Jan 2024 18:01:31 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Luca Weiss <luca.weiss@fairphone.com>, andersson@kernel.org,
-	linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>
-Subject: Re: [PATCH AUTOSEL 6.7 15/39] power: supply: qcom_battmgr: Register
- the power supplies after PDR is up
-Message-ID: <Zbl_y-KmQhCnN7Tu@sashalap>
-References: <20240128161130.200783-1-sashal@kernel.org>
- <20240128161130.200783-15-sashal@kernel.org>
- <rtghydsz532x6atjeshexkgevqlfxmw5owjexmnczwepeefvlb@gxinnf23tzij>
+	b=QvUXX6ZxDC+UENo5Yrq+HW6yTcoIkn5tHxkqZfvZrWNroIs366EOc66JjBuVfVbWQ
+	 aZX8rg62qgwete7aAblzwe7ZKg9JIqnSgf8jpXZx/fr2GrR8WfyjIGXk/cDaF3HQFI
+	 OPrvaTmjAQ6QNLt/ou5Jhq5Kt+o+dRA7ua0n8UaY=
+Date: Tue, 30 Jan 2024 15:08:45 -0800
+From: Greg KH <gregkh@linuxfoundation.org>
+To: RD Babiera <rdbabiera@google.com>
+Cc: heikki.krogerus@linux.intel.com, badhri@google.com,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1] usb: typec: altmodes/displayport: add null pointer
+ check for sysfs nodes
+Message-ID: <2024013021-fetal-nifty-38d4@gregkh>
+References: <20240130192638.3557409-2-rdbabiera@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <rtghydsz532x6atjeshexkgevqlfxmw5owjexmnczwepeefvlb@gxinnf23tzij>
+In-Reply-To: <20240130192638.3557409-2-rdbabiera@google.com>
 
-On Mon, Jan 29, 2024 at 02:03:14PM +0100, Sebastian Reichel wrote:
->Hi,
->
->On Sun, Jan 28, 2024 at 11:10:35AM -0500, Sasha Levin wrote:
->> From: Konrad Dybcio <konrad.dybcio@linaro.org>
->>
->> [ Upstream commit b43f7ddc2b7a5a90447d96cb4d3c6d142dd4a810 ]
->>
->> Currently, a not-yet-entirely-initialized battmgr (e.g. with pd-mapper
->> not having yet started or ADSP not being up etc.) results in a couple of
->> zombie power supply devices hanging around.
->>
->> This is particularly noticeable when trying to suspend the device (even
->> s2idle): the PSY-internal thermal zone is inaccessible and returns
->> -ENODEV, which causes log spam.
->>
->> Register the power supplies only after we received some notification
->> indicating battmgr is ready to take off.
->>
->> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
->> Tested-by: Luca Weiss <luca.weiss@fairphone.com>
->> Link: https://lore.kernel.org/r/20231218-topic-battmgr_fixture_attempt-v1-1-6145745f34fe@linaro.org
->> Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->
->Please drop it, I have a patch queued reverting this patch.
+On Tue, Jan 30, 2024 at 07:26:39PM +0000, RD Babiera wrote:
+> The DisplayPort driver's sysfs nodes may be present to the userspace before
+> typec_altmode_set_drvdata() completes in dp_altmode_probe. This means that
+> a sysfs read can trigger a NULL pointer error by deferencing dp->hpd in
+> hpd_show or dp->lock in pin_assignment_show, as dev_get_drvdata() returns
+> NULL in those cases.
+> 
+> Verify dp drvdata is present in sysfs reads and writes before proceeding.
 
-Dropped, thanks!
+Why not populate the sysfs nodes after the assigment happens?  That's
+the normal way to do this, otherwise your change looks odd because:
 
--- 
-Thanks,
-Sasha
+> 
+> Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: RD Babiera <rdbabiera@google.com>
+> ---
+>  drivers/usb/typec/altmodes/displayport.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+> 
+> diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+> index 5a80776c7255..0423326219d8 100644
+> --- a/drivers/usb/typec/altmodes/displayport.c
+> +++ b/drivers/usb/typec/altmodes/displayport.c
+> @@ -518,6 +518,9 @@ configuration_store(struct device *dev, struct device_attribute *attr,
+>  	int con;
+>  	int ret = 0;
+>  
+> +	if (!dp)
+> +		return -ENODEV;
+> +
+>  	con = sysfs_match_string(configurations, buf);
+
+there's nothing keeping dp from being an invalid pointer right after you
+check it.  Really that might not happen, but it's hard to tell that
+here.
+
+thanks,
+
+greg k-h
 
