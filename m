@@ -1,115 +1,113 @@
-Return-Path: <stable+bounces-17529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D928448A9
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 21:20:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8124B844975
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 22:08:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E6BA284251
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 20:20:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC6101F294AE
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 21:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD213F8F9;
-	Wed, 31 Jan 2024 20:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9AA38FB9;
+	Wed, 31 Jan 2024 21:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b="4STUOJTs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IAmnWm2K"
 X-Original-To: stable@vger.kernel.org
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91CA3FE23
-	for <stable@vger.kernel.org>; Wed, 31 Jan 2024 20:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51AD208C1;
+	Wed, 31 Jan 2024 21:08:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706732411; cv=none; b=XxPsTs/5e/cTTAMn+zXtMK7ZwT7oJwo/2fuL36LXATFbqONc+bsn08xuH0+Qi2x/PoWK0Sx5iKNnr3qBBoyJjTAcCzUlMToxJAj28QFMKYB6aBxLXPoK+CeK8Gf1c0noMaglcM1Ch6dixk2gZY0LaNzaiW2Sir/YnmDxel3Y33M=
+	t=1706735324; cv=none; b=K0laPuR+1fEVR48DacFtYSuUj69R36r85FSVMdX6YaUv9DIocNGeDgQN6wOv+9kVnBuqyhucRKVTCAmFaKEZw/ViPYRkew35tOKm7XSPXGPUeAGO+FsqY8S4NVScX8pF2aOcX0rKk1z8NfwtMp6n8f3PdBfhcBXgplN23GTk1Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706732411; c=relaxed/simple;
-	bh=dVJ8ry9WN65F1aQ7ut6opxkgd1LGVMmXdqh/2UX7xmQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=At7r2qaWXtmxFV0fes5eRLufyfXVwxzh8ZHHRrRKg9JschJcdX8JQj5PBaXFiiWWV/ybshwGwCcEV4G2ppO5MmghFuEjgIysCMEdS6WnLxiUhwEqm3S9dN6kTeORt2JfS0Cx0XF65/uKVf6lYZPqkWpMsXn2XBEZNMD6vBDYWlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu; spf=pass smtp.mailfrom=lucaweiss.eu; dkim=pass (1024-bit key) header.d=lucaweiss.eu header.i=@lucaweiss.eu header.b=4STUOJTs; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=lucaweiss.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lucaweiss.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lucaweiss.eu; s=s1;
-	t=1706732400; bh=dVJ8ry9WN65F1aQ7ut6opxkgd1LGVMmXdqh/2UX7xmQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=4STUOJTsTK9Q12gce336MWuNNGCBlhVE1+/WNi2aKmVfPFpHVOXpuRgXCOmUF/DvQ
-	 Si+sGvtDKS35ZFcJbOM0SSd7581kaELsyZQj5oQR6gu8uZMlPfQepc1W7T8L40/0D6
-	 tKPn6V0YhKPcZafMAEkzKEBDxKsHE3UjPkdcRTbA=
-From: Luca Weiss <luca@lucaweiss.eu>
-To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Amit Pundir <amit.pundir@linaro.org>
-Cc: Stable <stable@vger.kernel.org>
-Subject: Re: [PATCH for-v6.1.y+] drm/msm/dsi: Enable runtime PM
-Date: Wed, 31 Jan 2024 21:19:59 +0100
-Message-ID: <12452267.O9o76ZdvQC@z3ntu.xyz>
-In-Reply-To: <20240130134647.58630-1-amit.pundir@linaro.org>
-References: <20240130134647.58630-1-amit.pundir@linaro.org>
+	s=arc-20240116; t=1706735324; c=relaxed/simple;
+	bh=mPdxKMA4TO8+Xlg5A+CwfU4Swk6EiBQt8M+MwAE+A9o=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=mz6xenj5MtIgRZhNMwxaI2ugppveAfK4At/jQ5Y6PlRus4jypgBSY81iN3ScIm9emzD10s8jP3vPqZLYGFUrWUNt2xJ2FIhKrt2CbXEdYpyVoyD7GBSpGQvH2KOJqRCWDXTDgQ9Oxm69HefmJxZtEmzYBWP3Kf0MXvEzzDcuhqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IAmnWm2K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C105C433C7;
+	Wed, 31 Jan 2024 21:08:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706735324;
+	bh=mPdxKMA4TO8+Xlg5A+CwfU4Swk6EiBQt8M+MwAE+A9o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=IAmnWm2Khijpnkr6+s7eGe7eKAY9kr9n65yeY4+GU1D2/Waw3scOm98jGXxSqIVcB
+	 mJhI8uigahJTRcPJ55ywp+eCcK+NNsqA1FX+DvCoW1ASny01qN6+s+ojH2qt2jBJXk
+	 WUqomUxeDgp92F7cIZDY4q5Aa37xRgLxWY/4AAlWgRFMIscK7eKP7EPWRs6P58rOvD
+	 RU9cXdhVOSKqtLUNy/so4ROd77BJTh7+f/8ewTx2suyTei6oZ8xH2z4KkeQiX4J48J
+	 h/0Dxtr067sUwkqspHjIq0wR4EUT4Q/FuDO+bdccXugBMFpoPla+qb62iJBVJaVB4P
+	 JpSs40a0FSALw==
+Date: Wed, 31 Jan 2024 15:08:42 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Randy Dunlap <rdunlap@infradead.org>, NeilBrown <neilb@suse.de>,
+	John Sanpe <sanpeqf@gmail.com>,
+	Kent Overstreet <kent.overstreet@gmail.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Uladzislau Koshchanka <koshchanka@gmail.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	David Gow <davidgow@google.com>, Kees Cook <keescook@chromium.org>,
+	Rae Moar <rmoar@google.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	"wuqiang.matt" <wuqiang.matt@bytedance.com>,
+	Yury Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ben Dooks <ben.dooks@codethink.co.uk>, dakr@redhat.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arch@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v6 0/4] Regather scattered PCI-Code
+Message-ID: <20240131210842.GA599075@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240131090023.12331-1-pstanner@redhat.com>
 
-On Dienstag, 30. J=E4nner 2024 14:46:47 CET Amit Pundir wrote:
-> From: Konrad Dybcio <konrad.dybcio@linaro.org>
->=20
-> [ Upstream commit 6ab502bc1cf3147ea1d8540d04b83a7a4cb6d1f1 ]
->=20
-> Some devices power the DSI PHY/PLL through a power rail that we model
-> as a GENPD. Enable runtime PM to make it suspendable.
->=20
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Patchwork: https://patchwork.freedesktop.org/patch/543352/
-> Link:
-> https://lore.kernel.org/r/20230620-topic-dsiphy_rpm-v2-2-a11a751f34f0@lin=
-ar
-> o.org Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Stable-dep-of: 3d07a411b4fa ("drm/msm/dsi: Use pm_runtime_resume_and_get =
-to
-> prevent refcnt leaks") Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-> ---
-> Fixes display regression on DB845c running v6.1.75, v6.6.14 and v6.7.2.
+On Wed, Jan 31, 2024 at 10:00:19AM +0100, Philipp Stanner wrote:
+> @Bjorn:
+> I decided that it's now actually possible to just embed the docu updates
+> to the respective patches, instead of a separate patch.
+> Also dropped the ioport_unmap() for now.
 
-Can confirm this fixes display on qcom-msm8226 on v6.7.2.
+Thanks.  I didn't see any documentation updates (other than those
+related to the changed path names) in this series, so I assume the
+updates you mention would be in a future series.
 
-Not sure if it's appropriate for -stable but:
+> ...
+> Philipp Stanner (4):
+>   lib/pci_iomap.c: fix cleanup bug in pci_iounmap()
+>   lib: move pci_iomap.c to drivers/pci/
+>   lib: move pci-specific devres code to drivers/pci/
+>   PCI: Move devres code from pci.c to devres.c
+> 
+>  Documentation/driver-api/device-io.rst |   2 +-
+>  Documentation/driver-api/pci/pci.rst   |   6 +
+>  MAINTAINERS                            |   1 -
+>  drivers/pci/Kconfig                    |   5 +
+>  drivers/pci/Makefile                   |   3 +-
+>  drivers/pci/devres.c                   | 450 +++++++++++++++++++++++++
+>  lib/pci_iomap.c => drivers/pci/iomap.c |   5 +-
+>  drivers/pci/pci.c                      | 249 --------------
+>  drivers/pci/pci.h                      |  24 ++
+>  lib/Kconfig                            |   3 -
+>  lib/Makefile                           |   1 -
+>  lib/devres.c                           | 208 +-----------
+>  12 files changed, 490 insertions(+), 467 deletions(-)
+>  create mode 100644 drivers/pci/devres.c
+>  rename lib/pci_iomap.c => drivers/pci/iomap.c (99%)
 
-Tested-by: Luca Weiss <luca@z3ntu.xyz>
-
-Regards
-Luca
-
->=20
->  drivers/gpu/drm/msm/dsi/phy/dsi_phy.c | 4 ++++
->  1 file changed, 4 insertions(+)
->=20
-> diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-> b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c index 62bc3756f2e2..c0bcf020ef66
-> 100644
-> --- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-> +++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-> @@ -673,6 +673,10 @@ static int dsi_phy_driver_probe(struct platform_devi=
-ce
-> *pdev) return dev_err_probe(dev, PTR_ERR(phy->ahb_clk),
->  				     "Unable to get ahb clk\n");
->=20
-> +	ret =3D devm_pm_runtime_enable(&pdev->dev);
-> +	if (ret)
-> +		return ret;
-> +
->  	/* PLL init will call into clk_register which requires
->  	 * register access, so we need to enable power and ahb clock.
->  	 */
-
-
-
-
+Applied to pci/devres for v6.9, thanks!
 
