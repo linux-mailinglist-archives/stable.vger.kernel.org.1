@@ -1,179 +1,83 @@
-Return-Path: <stable+bounces-17474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F838433C0
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 03:25:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6E108433EC
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 03:29:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A9451C21548
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 02:25:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3750D28D2D2
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 02:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703761F5E6;
-	Wed, 31 Jan 2024 02:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD995C99;
+	Wed, 31 Jan 2024 02:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HLurfqV3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C48210FB;
-	Wed, 31 Jan 2024 02:19:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E21A566B;
+	Wed, 31 Jan 2024 02:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706667606; cv=none; b=HqKSD/e1iNKoS3irshjlyyA6GfkPXys9tnRq6OREfW1qCQhQYnjidH2eH7vP3g9h5r4zmPQBeLicw2GFcNnCE0j4SYZCUV3hE/WeiKnSnpPK5+poM9ywkXIJNd18X2TcnMslE69zexclF3RHelT3pVzwXun/TCguARuFW0yT2hM=
+	t=1706668160; cv=none; b=IjL156YLHjoonktwONE0asgCrBKA4J1dU5gq03Ml4Gq4ovUAtB9i5T4jRU1z2DK75phL75SXWBHU+J1spHk+5QycSk9KOI65IKW3utT8yHK3bwS0Yc8pZob//tFv1/nhFcbRGCh9a3RAwb5YpBDyLhlP5M5TU332G/lTv310KfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706667606; c=relaxed/simple;
-	bh=Ajpwnv0gwKbippqNfFMTevv6la3TWLEQs6Y9B4054dI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DILQNV52ErddbF6KbwRfXRnA+TO504LL7huk5E7Nms52a5MbTsS3cLq2S7ozMUdWTaikEcAmVC4q6uCGAN4BK8QSzyMUeHlUC1Iv4aFCrVUjugx37uVXZlHAEPDH7zQzCGj4PsE3b1n0UwZE4ooWN6FU4FTikSd8ONblM9Ii91k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass smtp.mailfrom=shingroup.cn; arc=none smtp.client-ip=54.207.22.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shingroup.cn
-X-QQ-mid: bizesmtp71t1706667564tuzayzwi
-X-QQ-Originating-IP: QNMkXqcPISn2NlShiBY6BqGXBtpTFbQCDuaw0bcBF6o=
-Received: from localhost ( [183.209.108.228])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 31 Jan 2024 10:19:22 +0800 (CST)
-X-QQ-SSF: 01400000000000504000000A0000000
-X-QQ-FEAT: q+EIYT+FhZoIfcWF+K44PK3gx7w0YKb+bngT1uWGc5zMecqNLQEwFwxc1UdT7
-	tUijgknzZ7XPnlPNZZp1yqLZSzaRPLgow+TVY0+4nbZN6IJzOjHZ9zv0ATAvwbNI7vI9Ea1
-	CkG7jIFx06ChP/VItidltlMAPbyJ1EYJQgBf1KpYXKYw4+2pcb/+bK4oudMiIhGRAtKDo2I
-	86UVzoltJ8sgEpv5SCg9iVG3FVU9MkSOyJKbDfcyDZArCn0gr/xY6D/VLUVbLqAxDtll6K9
-	XTMgEXAhnPrPQ+jjvTxEc6ttM+6rqJuwmOX2v15ky+XN45ketNBsK8Tr3eHbnyAB8FIBRvR
-	H0ySlloZo0A2GeE8pLEK57LjUkvLRxgECg9eurv3RZ3/w84h5mym/iTw7NWT8ZgqW+vndov
-	0WcA2ZB9fdk=
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 7977306663875139372
-Date: Wed, 31 Jan 2024 10:19:22 +0800
-From: Dawei Li <dawei.li@shingroup.cn>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: arnd@arndb.de, fancer.lancer@gmail.com, lkp@intel.com,
-	linux-kernel@vger.kernel.org, set_pte_at@outlook.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] misc: eeprom/idt_89hpesx: Convert data structures to LE
- explicitly
-Message-ID: <3A58BAAB108DEC6B+ZbmuKg9jkVmHHN0Y@centos8>
-References: <20240130040632.3039911-1-dawei.li@shingroup.cn>
- <2024013039-asleep-rally-39c0@gregkh>
- <03B279416A25E958+ZbmjvFafk44HBl4b@centos8>
- <2024013030-paternal-robotics-7fdf@gregkh>
+	s=arc-20240116; t=1706668160; c=relaxed/simple;
+	bh=910yomUN6JMNLUnTqhPO0ELsf6H1TuwMgNISeOv85TQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TbhrWNTkLcRFgcGXGUuNLvMOibuUev9ZWjhug+GBSRUSo9Li6guKjbuVMgx4Rt8UU7z0vlDxJAogIyNm2OG1DcbxD5q0W7oGrR1VAzVZmyPC42Iw0h/DlImRrAXhs4WhQKCqH0R6S+9oyA9dN3wen3q1MrUPHuEcBliwAoE5Ls4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HLurfqV3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F628C433C7;
+	Wed, 31 Jan 2024 02:29:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706668159;
+	bh=910yomUN6JMNLUnTqhPO0ELsf6H1TuwMgNISeOv85TQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HLurfqV3AipRAOjQ/059RQFQH/vQgAGmjPNBiIMB7Na59959hxOqppqrYqm4ZS/BA
+	 JtD09BAIkJs4QpDrzx4DW5v3MK93BKgRaS4aXNlr4FMNB3GTWpNVgOU1zFITj48lO7
+	 rQClZxN4fYz1zvTVZ3Uc9DpkGHOx6f8jytvpv+CZtptKylgVx7G6pf82VtpF7O9sgE
+	 YlhsZLE4v+nPowLxAl0tmRPsvfmPk9KJRSyWusy8KqFOfR5vkvpfzV0qoqTscqbA0J
+	 CuqObP3HXjyDDDuTDsX95oSkhtU3v7uRQD9G/39+0srswqjQzIgcBr1Lmny/zD0LOl
+	 eO73fcf+Ypg8A==
+Date: Tue, 30 Jan 2024 18:29:14 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Shradha Gupta <shradhagupta@linux.microsoft.com>
+Cc: "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang
+ <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
+ <decui@microsoft.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Wojciech
+ Drewek <wojciech.drewek@intel.com>, linux-hyperv@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ shradhagupta@microsoft.com, stable@vger.kernel.org
+Subject: Re: [PATCH] hv_netvsc:Register VF in netvsc_probe if
+ NET_DEVICE_REGISTER missed
+Message-ID: <20240130182914.25df5128@kernel.org>
+In-Reply-To: <1706599135-12651-1-git-send-email-shradhagupta@linux.microsoft.com>
+References: <1706599135-12651-1-git-send-email-shradhagupta@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024013030-paternal-robotics-7fdf@gregkh>
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-1
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Greg,
-
-On Tue, Jan 30, 2024 at 06:07:18PM -0800, Greg KH wrote:
-> On Wed, Jan 31, 2024 at 09:34:52AM +0800, Dawei Li wrote:
-> > Hi Greg,
-> > 
-> > Thanks for reviewing.
-> > 
-> > On Tue, Jan 30, 2024 at 06:04:17AM -0800, Greg KH wrote:
-> > > On Tue, Jan 30, 2024 at 12:06:32PM +0800, Dawei Li wrote:
-> > > > For data structures needs cpu_to_le* conversion, its prototype needs to
-> > > > be declared with __le* explicitly.
-> > > > 
-> > > > Fixes: cfad6425382e ("eeprom: Add IDT 89HPESx EEPROM/CSR driver")
-> > > > Reported-by: kernel test robot <lkp@intel.com>
-> > > > Closes: https://lore.kernel.org/oe-kbuild-all/202401261250.b07Yt30Z-lkp@intel.com/
-> > > > Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
-> > > > Cc: <stable@vger.kernel.org>
-> > > > ---
-> > > >  drivers/misc/eeprom/idt_89hpesx.c | 6 +++---
-> > > >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/misc/eeprom/idt_89hpesx.c b/drivers/misc/eeprom/idt_89hpesx.c
-> > > > index d807d08e2614..327afb866b21 100644
-> > > > --- a/drivers/misc/eeprom/idt_89hpesx.c
-> > > > +++ b/drivers/misc/eeprom/idt_89hpesx.c
-> > > > @@ -129,7 +129,7 @@ struct idt_smb_seq {
-> > > >  struct idt_eeprom_seq {
-> > > >  	u8 cmd;
-> > > >  	u8 eeaddr;
-> > > > -	u16 memaddr;
-> > > > +	__le16 memaddr;
-> > > >  	u8 data;
-> > > >  } __packed;
-> > > >  
-> > > > @@ -141,8 +141,8 @@ struct idt_eeprom_seq {
-> > > >   */
-> > > >  struct idt_csr_seq {
-> > > >  	u8 cmd;
-> > > > -	u16 csraddr;
-> > > > -	u32 data;
-> > > > +	__le16 csraddr;
-> > > > +	__le32 data;
-> > > >  } __packed;
-> > > >  
-> > > >  /*
-> > > 
-> > > Declaring them this way is nice, but this doesn't actually "fix"
-> > > anything at all as no code is actually changed.
-> > > 
-> > > So how is ths a bugfix?  How does this patch do anything?
-> > > 
-> > > confused,
-> > 
-> > Sorry for the confuson.
-> > 
-> > This commit is to address the issue reported by kernel test rebot[1].
-> > 
-> > Partially quoted from it:
-> > 
-> > sparse warnings: (new ones prefixed by >>)
-> > >> drivers/misc/eeprom/idt_89hpesx.c:599:31: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned short [addressable] [assigned] [usertype] memaddr @@     got restricted __le16 [usertype] @@
-> >    drivers/misc/eeprom/idt_89hpesx.c:599:31: sparse:     expected unsigned short [addressable] [assigned] [usertype] memaddr
-> >    drivers/misc/eeprom/idt_89hpesx.c:599:31: sparse:     got restricted __le16 [usertype]
-> >    drivers/misc/eeprom/idt_89hpesx.c:671:31: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned short [addressable] [assigned] [usertype] memaddr @@     got restricted __le16 [usertype] @@
-> >    drivers/misc/eeprom/idt_89hpesx.c:671:31: sparse:     expected unsigned short [addressable] [assigned] [usertype] memaddr
-> >    drivers/misc/eeprom/idt_89hpesx.c:671:31: sparse:     got restricted __le16 [usertype]
-> > >> drivers/misc/eeprom/idt_89hpesx.c:769:24: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned short [addressable] [assigned] [usertype] csraddr @@     got restricted __le16 [usertype] @@
-> >    drivers/misc/eeprom/idt_89hpesx.c:769:24: sparse:     expected unsigned short [addressable] [assigned] [usertype] csraddr
-> >    drivers/misc/eeprom/idt_89hpesx.c:769:24: sparse:     got restricted __le16 [usertype]
-> > >> drivers/misc/eeprom/idt_89hpesx.c:770:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned int [addressable] [assigned] [usertype] data @@     got restricted __le32 [usertype] @@
-> >    drivers/misc/eeprom/idt_89hpesx.c:770:21: sparse:     expected unsigned int [addressable] [assigned] [usertype] data
-> >    drivers/misc/eeprom/idt_89hpesx.c:770:21: sparse:     got restricted __le32 [usertype]
-> >    drivers/misc/eeprom/idt_89hpesx.c:834:24: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned short [addressable] [assigned] [usertype] csraddr @@     got restricted __le16 [usertype] @@
-> >    drivers/misc/eeprom/idt_89hpesx.c:834:24: sparse:     expected unsigned short [addressable] [assigned] [usertype] csraddr
-> >    drivers/misc/eeprom/idt_89hpesx.c:834:24: sparse:     got restricted __le16 [usertype]
-> > >> drivers/misc/eeprom/idt_89hpesx.c:859:17: sparse: sparse: cast to restricted __le32
-> > >> drivers/misc/eeprom/idt_89hpesx.c:859:17: sparse: sparse: cast to restricted __le32
-> > >> drivers/misc/eeprom/idt_89hpesx.c:859:17: sparse: sparse: cast to restricted __le32
-> > >> drivers/misc/eeprom/idt_89hpesx.c:859:17: sparse: sparse: cast to restricted __le32
-> > >> drivers/misc/eeprom/idt_89hpesx.c:859:17: sparse: sparse: cast to restricted __le32
-> > >> drivers/misc/eeprom/idt_89hpesx.c:859:17: sparse: sparse: cast to restricted __le32
-> > 
-> > [1] https://lore.kernel.org/oe-kbuild-all/202401261250.b07Yt30Z-lkp@intel.com/
+On Mon, 29 Jan 2024 23:18:55 -0800 Shradha Gupta wrote:
+> If hv_netvsc driver is removed and reloaded, the NET_DEVICE_REGISTER
+> handler cannot perform VF register successfully as the register call
+> is received before netvsc_probe is finished. This is because we
+> register register_netdevice_notifier() very early(even before
+> vmbus_driver_register()).
+> To fix this, we try to register each such matching VF( if it is visible
+> as a netdevice) at the end of netvsc_probe.
 > 
-> Ok, so this fixes a sparse issue, how is that needed for stable kernels?
-> 
-> Please be more explicit about what you are "fixing" in the changelog
-> please, as-is this didn't make any sense to me.
+> Cc: stable@vger.kernel.org
+> Fixes: 85520856466e ("hv_netvsc: Fix race of register_netdevice_notifier and VF register")
+> Suggested-by: Dexuan Cui <decui@microsoft.com>
+> Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
 
-Yes, it's my fault not making it clear in commit message. Sorry for
-that.
-
-> 
-> Please fix up and send a v2.
-
-Will do that.
-
-> 
-> thanks,
-> 
-> greg k-h
-> 
-
-Thanks,
-
-    Dawei
+Does not seem to apply to net/main, please respin
 
