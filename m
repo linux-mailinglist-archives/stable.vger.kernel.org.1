@@ -1,61 +1,92 @@
-Return-Path: <stable+bounces-17481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E068843670
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 07:10:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41D098436CF
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 07:30:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EC6FB2188A
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 06:10:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66F971C20BBF
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 06:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF0E3E47B;
-	Wed, 31 Jan 2024 06:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D35481DE;
+	Wed, 31 Jan 2024 06:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="K2T7mqJc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F01jTKNW"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA123E46B;
-	Wed, 31 Jan 2024 06:09:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5B347F7B;
+	Wed, 31 Jan 2024 06:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706681399; cv=none; b=jWgNraJ/2Sw9knZTP7jsfHIcN6QgzBsAm6TXHFwpemW8/VzgRBS2wcRHOE6oG3VwlfOJMQmIfd6QhzE6E+D3Ld4IedJTCGIKLjKLZxQU7D5DcpDB3KaXBjil9DilXtUTdooGGDi01Lyc8Oa42lhBc93p/Wk1h/MMoN9EkYy6xcU=
+	t=1706682645; cv=none; b=sbHeByrhgw4oIu/WnKmZrQi/KrHrdn1bihWrpxoq00yRk5y6Oer10QIbgcIDeZ7+W1FlZVilSHXxKG9EZMpCB2nohVuDIx22tNCbegwThwvFOolGLVpiA/ei1vnsv9Fe74aoPKAJ6c1q7UyNg8BkzusKwUXbZkIAF4Mr2yiutEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706681399; c=relaxed/simple;
-	bh=xUlblym0tJsdi+bNCvzWtxF6YMnO9/+z+WSb3s72Nl8=;
+	s=arc-20240116; t=1706682645; c=relaxed/simple;
+	bh=HDBr9vOZxFay+edDsZgAptwCJ/oKKwkEzYfcKNkxY3c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cR4FGq5mWkKetTnO4idGS6LVilGOwJ1Iso6MR6253rxbhyv9g742lmulcTKUwEc5uPS2QvKeF3FoKV7l7ClIGhdseLiVO9CRjmyoN31Ar0p119UnVAE2iZqIQtUI2xCBTAKGFOkIKYdwFrwUfKLCd85qNCaGbZYSsRq7fKGnSFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=K2T7mqJc; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1134)
-	id A96E32057C14; Tue, 30 Jan 2024 22:09:57 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A96E32057C14
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1706681397;
-	bh=yg+VJO0K+0/jLaTvRKDfXImeE8FTSu6c4RAr38E++AI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K2T7mqJcI3CDBQ69l4jhStujPhYFfTIlKTpyTqQKKQwHNbyoRLjUDvkEEHh9lwcGy
-	 p7ogwcmO5gPvaH7vvrGp1+h8grCN77aaKMGQztN3X/jbPw2jugZlbSj6MHX5123aZO
-	 spFj/giH4uzoa5A3dIBwetLsr680eMjv7D9dCPeQ=
-Date: Tue, 30 Jan 2024 22:09:57 -0800
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: "K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, shradhagupta@microsoft.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] hv_netvsc:Register VF in netvsc_probe if
- NET_DEVICE_REGISTER missed
-Message-ID: <20240131060957.GA15733@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <1706599135-12651-1-git-send-email-shradhagupta@linux.microsoft.com>
- <20240130182914.25df5128@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=IEFCBvjHlWbkL41+930YlJ2Ti+9SiAQtxe76pZ+4wK1hkLLeeG3nbDsPs+wutcsxonC8E0hc37nb3lOWgQid6Nh14L9K6Ijt5n5zkElrjpQCFh6alFg0vHQc1sO6Ut2v2DV3bBqFkh2iY2ViT0ar+fzvT2BWn0nhdMJ7IayYcBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F01jTKNW; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-55f0367b15fso3688167a12.0;
+        Tue, 30 Jan 2024 22:30:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706682641; x=1707287441; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IEwg9afw4u1sOTeb8Gs+nYWC/t/ruyXWb+PKAxK3AR0=;
+        b=F01jTKNWN3NLc3BvDAOsJhCh5whNp7Yz4KJgsFwqgINj7HkRi6svzLnPrrd1ilDNS8
+         B01luMSLAOaUNteaXotOEBLhtRM5TcDZFcabDQ7nqzkLvn1smAdmJ3AJFS1NXmWb+TlY
+         Lbxw/+ALg1Ojx0DKn4HaTGh6s+W7ivmXJF83xcJ7c/3sc8DopjQ1FtuTPN/xw+l1C0jT
+         fRIPQNxprpWvIIgbkhU5aUDUcakJ4MZAYfOSq+LoXuXPlsZWQ5QhWw9nu8v5Kumar+bg
+         ru+E4xUtRA5+8AVi7CLRVRjOTFzPs+TfXJ7o84XI4HetM+Ev2gymQodBMp+mOPEouQ7M
+         qQXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706682641; x=1707287441;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IEwg9afw4u1sOTeb8Gs+nYWC/t/ruyXWb+PKAxK3AR0=;
+        b=TeufJbKWgpL8Zy+RVqWw7mscXZsCU0VARWKnS1FCzdMkyBuiz/BQm1+/hY2ASoNHue
+         A0ZK4JT4HJ0s4VtzO+BNzBRsGlg+2d+gdWrIcdNd9nYUg1p2npKkoWAd+YNCSOy2oKZH
+         /v5M7/xHaAyt4dyTD5NHetgAdQ/bI9Oyo5S0WA34tHIn7QHok9u2Hf2q+JOV3o4A+4CD
+         uZzZUvN9d7MRljlcicmxaedCFVOnx2yPC67xNRX7lXwpxF1NzeCsEOZ0zKKIcma6IsJs
+         bCRIKgJ0EduGpWQ+Xla11almUphVC4nJxiOblXHME7h45jGoJKbd/PZjj/lo89Xtv1gq
+         4w+A==
+X-Gm-Message-State: AOJu0YxXUZv6ixKd95vCRoVnA7abcT2J+ygHe8K08haW+yzpQqe8dqce
+	RlFimmjW+FkPlPjQOz2evcpXmtSE9StLwB7ilPLDfJxYcknwo96n
+X-Google-Smtp-Source: AGHT+IFk1qhBrpfQXnqfbsB1jZHkXsEX9haNcgmHftxJjglWVgEW9wTSF+vKlynagor381APN8AosQ==
+X-Received: by 2002:a17:906:d0c9:b0:a36:6c96:3161 with SMTP id bq9-20020a170906d0c900b00a366c963161mr417340ejb.32.1706682641212;
+        Tue, 30 Jan 2024 22:30:41 -0800 (PST)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id ig8-20020a1709072e0800b00a366406772dsm491691ejc.29.2024.01.30.22.30.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jan 2024 22:30:38 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id B0105BE2DE0; Wed, 31 Jan 2024 07:30:37 +0100 (CET)
+Date: Wed, 31 Jan 2024 07:30:37 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>
+Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"pc@manguebit.com" <pc@manguebit.com>,
+	"leonardo@schenkel.net" <leonardo@schenkel.net>,
+	"linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>,
+	"m.weissbach@info-gate.de" <m.weissbach@info-gate.de>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	"sairon@sairon.cz" <sairon@sairon.cz>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with
+ "Resource temporarily unavailable"
+Message-ID: <ZbnpDbgV7ZCRy3TT@eldamar.lan>
+References: <53F11617-D406-47C6-8CA7-5BE26EB042BE@amazon.com>
+ <9B20AAD6-2C27-4791-8CA9-D7DB912EDC86@amazon.com>
+ <2024011521-feed-vanish-5626@gregkh>
+ <716A5E86-9D25-4729-BF65-90AC2A335301@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,24 +95,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240130182914.25df5128@kernel.org>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+In-Reply-To: <716A5E86-9D25-4729-BF65-90AC2A335301@amazon.com>
 
-On Tue, Jan 30, 2024 at 06:29:14PM -0800, Jakub Kicinski wrote:
-> On Mon, 29 Jan 2024 23:18:55 -0800 Shradha Gupta wrote:
-> > If hv_netvsc driver is removed and reloaded, the NET_DEVICE_REGISTER
-> > handler cannot perform VF register successfully as the register call
-> > is received before netvsc_probe is finished. This is because we
-> > register register_netdevice_notifier() very early(even before
-> > vmbus_driver_register()).
-> > To fix this, we try to register each such matching VF( if it is visible
-> > as a netdevice) at the end of netvsc_probe.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: 85520856466e ("hv_netvsc: Fix race of register_netdevice_notifier and VF register")
-> > Suggested-by: Dexuan Cui <decui@microsoft.com>
-> > Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-> 
-> Does not seem to apply to net/main, please respin
-This patch applies to net, which is missed in the subject. I will fix this in the new version of the patch. Thanks
+Hi,
+
+On Mon, Jan 15, 2024 at 03:30:46PM +0000, Mohamed Abuelfotoh, Hazem wrote:
+> Thanks Greg, I will submit separate patch inclusion requests for 
+> fixing this on 5.15 and 5.10.
+
+Note, my reply in the secondary thread:
+https://lore.kernel.org/stable/Zbl881W5S-nL7iof@eldamar.lan/T/#mb9a9a012adde1c5c6e9d3daa1d8dce2c9b5cc78f
+
+Now
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit?id=a280ecca48beb40ca6c0fc20dd5a7fdd9b3ee0b7
+was applied, but equally the backport
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?id=06aa6eff7b243891c631b40852a0c453e274955d
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?id=ef8316e0e29e98d9cf7e0689ddffa37e79d33736
+
+So I guess
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit?id=a280ecca48beb40ca6c0fc20dd5a7fdd9b3ee0b7
+should be dropped again.
+
+Regards,
+Salvatore
 
