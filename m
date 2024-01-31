@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-17517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740A58446DA
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 19:11:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A2E84478A
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 19:55:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20E331F231F6
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 18:11:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ADDE1F278DE
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 18:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480A013D4E9;
-	Wed, 31 Jan 2024 18:09:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bens.haus header.i=@bens.haus header.b="xowoJAbK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A773A1A5;
+	Wed, 31 Jan 2024 18:54:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from w4.tutanota.de (w4.tutanota.de [81.3.6.165])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2347713BEBB;
-	Wed, 31 Jan 2024 18:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.3.6.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79D938FA1;
+	Wed, 31 Jan 2024 18:54:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706724590; cv=none; b=sTz0Qk0FYuSuCdG4fWYTCeXxtAIq7qlS5BUpRaI3Ez+q67QAkt4+1skVaBWj9bwdfegfDRMdj+59c2i8wkxQmWXIWMe/NZXpXN9jJQvGIPzwPRbyUm7qxx+SKWht7kOQ9ZmQjbRT+626P8lJDFUkckVxrblLRL3IWImdsBrvlDo=
+	t=1706727297; cv=none; b=VmkwwH+MDQoSEsw7ZnFrsyp0lsfw7PKc3U0IQkmTBPDAteA8ky815gfdDfO0xie6MUbUH0PUIug14czJvIeGyK9mLaXbErtkx1rCFdtZFPluNPC3//upCW2OIruXifMpZImTe3ORMOgaIOLFPWkQlK2vm9dvGPMj1xFyoA1ntc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706724590; c=relaxed/simple;
-	bh=Jbg1khAPXAP0D0M33pUw4sbIH9nPHijOll31hgqZvY4=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=IScdhvBMi0TNfASjF8T6uB8VEW8zncT1C4PnGIrSoswGC81eACXbhtDyqPvZH2sVrizv8W7Wx4PW99yh3v/dgajFvjFyrNErSKXVQPrqM+uJurpDOnO/U8rxEghN5PP7AWg74Ff9cgqpIOoIigxgXxKJfWEVUqmbMvZQBqiYyrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bens.haus; spf=pass smtp.mailfrom=bens.haus; dkim=pass (2048-bit key) header.d=bens.haus header.i=@bens.haus header.b=xowoJAbK; arc=none smtp.client-ip=81.3.6.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bens.haus
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bens.haus
-Received: from tutadb.w10.tutanota.de (unknown [192.168.1.10])
-	by w4.tutanota.de (Postfix) with ESMTP id 8C40A1060358;
-	Wed, 31 Jan 2024 18:00:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1706724059;
-	s=s1; d=bens.haus;
-	h=From:From:To:To:Subject:Subject:Content-Description:Content-ID:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Cc:Cc:Date:Date:In-Reply-To:In-Reply-To:MIME-Version:MIME-Version:Message-ID:Message-ID:Reply-To:References:References:Sender;
-	bh=Txe3rfKMnaACBeFH2ZoYxnvtSXDloicSWeBPN5RquaM=;
-	b=xowoJAbKaR9TPnzwVz02oy9hFwfY4irSWY4WW3K6/3nCf36HxWOx+/f/CWb/bW/H
-	TFZv2L9G5EUuIDUy7MYMFFMZ6s+taAgEoOyaP5pWuihIyQtXpy0BWQALWdGcctRceXX
-	D0ivNf43ob42weic5QOUMciALY05UfcmFpKn+4umJrObl5+QaSsjzhYHcl0Kwybk+zF
-	D3vLLPg819cN4nnCaKTQlilQiIvMzyYJ6/kYdHnFpo3SY9XEn9A7b4NskwDSGQjs6ea
-	oihUe2/rXpI6669dZCt8RwjNE+z76GkcGz+cTmT9LDpRYXqsBwK3+ULC3fmT7xaAuWc
-	uUJfys9J5w==
-Date: Wed, 31 Jan 2024 19:00:59 +0100 (CET)
-From: Ben Schneider <ben@bens.haus>
-To: Heinrich Schuchardt <heinrich.schuchardt@canonical.com>
-Cc: Regressions <regressions@lists.linux.dev>,
-	Linux Efi <linux-efi@vger.kernel.org>,
-	Stable <stable@vger.kernel.org>, Ard Biesheuvel <ardb@kernel.org>
-Message-ID: <NpVfaMj--3-9@bens.haus>
-In-Reply-To: <817366c2-33e0-4908-90ec-57c63e3eb471@canonical.com>
-References: <Nh-DzlX--3-9@bens.haus> <CAMj1kXFKe6piagNLdSUhxUhwLB+RfNHqjNWt8-r2CNS-rBdJKA@mail.gmail.com> <817366c2-33e0-4908-90ec-57c63e3eb471@canonical.com>
-Subject: Re: [REGRESSION] boot fails for EFI boot stub loaded by u-boot
+	s=arc-20240116; t=1706727297; c=relaxed/simple;
+	bh=pfpMUH3tWGcM1lGwQK3NyStqZwiqHr8qawaLbZJl8tw=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=T6AxM+xZwbHEwWwMTbX//V46Ogcnw9Rcs58K0Ere9mGIo046PaIMN36JPk+Cxnzf9ZCCNYXZuOf9KzU4PgzSqFN/P1NVQc2xXuE2c0k4l6LK3iQW0wZ21GvAwr46TCfL+i0wnto4wal8o5/l7s8QLehvkfQkAsByVY30nbhmTMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C98CC433F1;
+	Wed, 31 Jan 2024 18:54:57 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.97)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1rVFjs-000000055Ps-1v8J;
+	Wed, 31 Jan 2024 13:55:12 -0500
+Message-ID: <20240131185512.315825944@goodmis.org>
+User-Agent: quilt/0.67
+Date: Wed, 31 Jan 2024 13:49:19 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Christian Brauner <brauner@kernel.org>,
+ Al Viro <viro@ZenIV.linux.org.uk>,
+ Ajay Kaher <ajay.kaher@broadcom.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ stable@vger.kernel.org,
+ kernel test robot <oliver.sang@intel.com>
+Subject: [PATCH v2 1/7] tracefs: Zero out the tracefs_inode when allocating it
+References: <20240131184918.945345370@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,44 +59,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+
+eventfs uses the tracefs_inode and assumes that it's already initialized
+to zero. That is, it doesn't set fields to zero (like ti->private) after
+getting its tracefs_inode. This causes bugs due to stale values.
+
+Just initialize the entire structure to zero on allocation so there isn't
+any more surprises.
+
+This is a partial fix to access to ti->private. The assignment still needs
+to be made before the dentry is instantiated.
+
+Cc: stable@vger.kernel.org
+Fixes: 5790b1fb3d672 ("eventfs: Remove eventfs_file and just use eventfs_inode")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202401291043.e62e89dc-oliver.sang@intel.com
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+Changes since last version: https://lore.kernel.org/all/20240130230612.377a1933@gandalf.local.home/
+
+- Moved vfs_inode to top of tracefs_inode structure so that the rest can
+  be initialized with memset_after() as the vfs_inode portion is already
+  cleared with a memset() itself in inode_init_once().
+
+ fs/tracefs/inode.c    | 6 ++++--
+ fs/tracefs/internal.h | 3 ++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
+index e1b172c0e091..888e42087847 100644
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -38,8 +38,6 @@ static struct inode *tracefs_alloc_inode(struct super_block *sb)
+ 	if (!ti)
+ 		return NULL;
+ 
+-	ti->flags = 0;
+-
+ 	return &ti->vfs_inode;
+ }
+ 
+@@ -779,7 +777,11 @@ static void init_once(void *foo)
+ {
+ 	struct tracefs_inode *ti = (struct tracefs_inode *) foo;
+ 
++	/* inode_init_once() calls memset() on the vfs_inode portion */
+ 	inode_init_once(&ti->vfs_inode);
++
++	/* Zero out the rest */
++	memset_after(ti, 0, vfs_inode);
+ }
+ 
+ static int __init tracefs_init(void)
+diff --git a/fs/tracefs/internal.h b/fs/tracefs/internal.h
+index 91c2bf0b91d9..7d84349ade87 100644
+--- a/fs/tracefs/internal.h
++++ b/fs/tracefs/internal.h
+@@ -11,9 +11,10 @@ enum {
+ };
+ 
+ struct tracefs_inode {
++	struct inode            vfs_inode;
++	/* The below gets initialized with memset_after(ti, 0, vfs_inode) */
+ 	unsigned long           flags;
+ 	void                    *private;
+-	struct inode            vfs_inode;
+ };
+ 
+ /*
+-- 
+2.43.0
 
 
-Oct 18, 2023, 09:17 by heinrich.schuchardt@canonical.com:
-
-> On 10/18/23 10:34, Ard Biesheuvel wrote:
->
->> (cc Heinrich)
->>
->> Hello Ben,
->>
->> Thanks for the report.
->>
->> On Wed, 18 Oct 2023 at 03:19, Ben Schneider <ben@bens.haus> wrote:
->>
->>>
->>> Hi Ard,
->>>
->>> I have an ESPRESSObin Ultra (aarch64) that uses U-Boot as its bootloader. It shipped from the manufacturer with with v5.10, and I've been trying to upgrade. U-Boot supports booting Image directly via EFI (https://u-boot.readthedocs.io/en/latest/usage/cmd/bootefi.html), and I have been using it that way to successfully boot the system up to and including v6.0.19. However, v6.1 and v6.5 kernels fail to boot.
->>>
->>> When booting successfully, the following messages are displayed:
->>>
->>> EFI stub: Booting Linux Kernel...EFI stub: ERROR: FIRMWARE BUG: efi_loaded_image_t::image_base has bogus value
->>> EFI stub: ERROR: FIRMWARE BUG: kernel image not aligned on 64k boundary
->>> EFI stub: Using DTB from configuration table
->>> EFI stub: ERROR: Failed to install memreserve config table!
->>> EFI stub: Exiting boot services...
->>> [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x410fd034]
->>>
->>> I suspect many of the above error messages are simply attributable to using U-Boot to load an EFI stub and can be safely ignored given that the system boots and runs fine.
->>>
->
-> These messages are not typical for launching a kernel via the EFI stub from U-Boot. It should look like this:
->
-
-All, I can confirm that this issue is not present using upstream U-Boot (v2024.01). That is, EFI stub booting works as expected and does not display any error messages. Thanks!
-
-Ben
-
-#regzbot invalid: issue is with device firmware (u-boot)
 
