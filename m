@@ -1,166 +1,204 @@
-Return-Path: <stable+bounces-17509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77038843FA4
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 13:50:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3330B843FA9
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 13:50:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63CD0B2DA4A
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 12:50:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC9651F28795
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 12:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7428C79DD1;
-	Wed, 31 Jan 2024 12:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B877AE40;
+	Wed, 31 Jan 2024 12:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b="N9bQTgtU";
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b="JFT+D5/A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tZpnI/Px"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout143.security-mail.net (smtpout143.security-mail.net [85.31.212.143])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B3679DDF
-	for <stable@vger.kernel.org>; Wed, 31 Jan 2024 12:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=85.31.212.143
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706705406; cv=fail; b=NVvBtAQadpqhqNHsBg5/GUoEz6De6uI7z8Z0ihzfix16O96ccjZH6KbfDX0AYqp5F9qX6z4sXE/I4t1Npi0kmeJFSpJJhvYZGDSzvtVQd0VCzgtrVKnAdIJQB0UpaQ1ADatpEKujGiYGmavO1bHItoR1iIPmmmvALKjO4g7DhJg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706705406; c=relaxed/simple;
-	bh=dqrLgQ69Fk4P4iNXoImTxM27nbtBc2Y6b5KLKfpXyOM=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=a/fSSpfdxJczuzCUEYAuY6li5b8TNdX8wwsAEvY4u/bpfPoBpm6VF7UfZOUq4fYp8wQ5o8LgiIULb5kYpnjGKA5tJRgP42Bl192kZhc2MnxJxr4cUxtyk/++9N1E5AeH9CkrYQlRKrf4xBFzelhnZjPhf2w5qW1mMxet60gEkeU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com; spf=pass smtp.mailfrom=kalrayinc.com; dkim=pass (1024-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b=N9bQTgtU; dkim=fail (2048-bit key) header.d=kalrayinc.com header.i=@kalrayinc.com header.b=JFT+D5/A reason="signature verification failed"; arc=fail smtp.client-ip=85.31.212.143
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=kalrayinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kalrayinc.com
-Received: from localhost (localhost [127.0.0.1])
-	by fx403.security-mail.net (Postfix) with ESMTP id 43C686959CE
-	for <stable@vger.kernel.org>; Wed, 31 Jan 2024 13:48:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalrayinc.com;
-	s=sec-sig-email; t=1706705291;
-	bh=dqrLgQ69Fk4P4iNXoImTxM27nbtBc2Y6b5KLKfpXyOM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=N9bQTgtUNcg7UWJNFiTEeVTyDGsg9yLN5OtbpB+VHz8SQTVCWCda6vkJkJjsvIB++
-	 9Qg+JCYE64tFVeWf/mzl9O8sxO6AXPNV3tp0MKmC4B/xSZgXocX4LoV744MpQbU3e0
-	 DGTFYLetfjfxn7BVNzBDyYhZIkG3P8NZ3+pE4AOw=
-Received: from fx403 (localhost [127.0.0.1]) by fx403.security-mail.net
- (Postfix) with ESMTP id 0005F696735; Wed, 31 Jan 2024 13:48:10 +0100 (CET)
-Received: from FRA01-MR2-obe.outbound.protection.outlook.com
- (mail-mr2fra01on0100.outbound.protection.outlook.com [104.47.25.100]) by
- fx403.security-mail.net (Postfix) with ESMTPS id 5812B69614C; Wed, 31 Jan
- 2024 13:48:10 +0100 (CET)
-Received: from MR1P264MB1890.FRAP264.PROD.OUTLOOK.COM (2603:10a6:501:13::5)
- by PAZP264MB2991.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1f5::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.24; Wed, 31 Jan
- 2024 12:48:09 +0000
-Received: from MR1P264MB1890.FRAP264.PROD.OUTLOOK.COM
- ([fe80::1300:32a9:2172:a2a]) by MR1P264MB1890.FRAP264.PROD.OUTLOOK.COM
- ([fe80::1300:32a9:2172:a2a%7]) with mapi id 15.20.7249.024; Wed, 31 Jan 2024
- 12:48:09 +0000
-X-Virus-Scanned: E-securemail
-Secumail-id: <124e7.65ba418a.56c1d.0>
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=F1tAWbFeBomG6oSvGEiSsqCvNePtsLazTgzJAW9UUnIdxa8TxOsXML0rJP5Xz0ARYmPuEPOb6MuNW3pzVD16c5orucm8igZiEQHI3suNNZ4xLJ2MsDThTEJ8oWddHRQw7rWXQUQymJOohl1Imxy1IGo3T4209dOhkUnmk1Gl2qEvRdeZ4s/xfo8TJeq6BFUJAq4IA5VbHhMecSEZUS2Gxr5MfdcQQfzOv0DswQw5gIsc7tlXSNZYMsPPRo6rAr5jCUaGMXDWZ9qjl81WOTomfoYk1DmXz9Mlozqkj8/EoytQaS82EG5y7Z+p6TOb16GP8eVEVG1cQ2WLRmBCtZcojw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=microsoft.com; s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NpcjZwta/o2mhWR48G4l0vCj9gvj+fTP2B/n9T17UvU=;
- b=f+jZ72QrrghWUqYWmgMIDbDVgEsdL9+oFgglHcXFfU8pOKJAUNn7+DWPfyLDR9ihmTUGhvK9AfI1JdJ9ahoan0kOUnLgtd9Mil26iUiuKgeqzvG6F1g09nL7ZtEqZi9RrHZpk458l/sW048Pv7riQ1LKxBUga9G4J4VKSLg5zusxOhfo7NzjVvUjd2G4RXo6wVKsxULOwNkXzefhE7ys11XrEXroXLA7/xv9CFbIJ6GQo1wiq03P31PMLas/bXgP/aiI3fgSgtB3Wy8RlolCbRTHC75DQNnG23bONRJ0Xf01fbARaAlhGNXk8KsbXHV1Uo9lRyBzvy4uENyXI8LaNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kalrayinc.com; dmarc=pass action=none
- header.from=kalrayinc.com; dkim=pass header.d=kalrayinc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalrayinc.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NpcjZwta/o2mhWR48G4l0vCj9gvj+fTP2B/n9T17UvU=;
- b=JFT+D5/Aa/lCFfWfgZCQ5jjz4V7QZeX1zLXYKv1NImUFDJGbtCgp6kl11d8L3PBppFAtuz0Msr5x8HQRKBcN/SUa6mAn87PwhFJ0l0OuzmzufZbJURH3hGVX4nyIbym6ft/3xo3YqTtuOx/EZAu0juxh9wmWzF3WM2K9Wyj7SSu+/kHzdnMmFfGa6DBG92oMOiZCjrHxQOiMQNrqsyt4W19OkI1OUQqHL46mMducS8xFeErL/HtJI4mRL0j5+KxFoOn7pIHZSC0sF2sGU3Q9SGfOYGQa35asWHwv9JsJoHCOzcvz6eBCBvmRtYDHCjKBi5OS4Wp1upf0KOUcG7HeXw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=kalrayinc.com;
-Message-ID: <0e198b3a-d05b-45d7-9603-bee6a234fb80@kalrayinc.com>
-Date: Wed, 31 Jan 2024 13:48:07 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/186] 6.1.76-rc2 review
-Content-Language: en-us, fr
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20240130183318.454044155@linuxfoundation.org>
-From: Yann Sionneau <ysionneau@kalrayinc.com>
-In-Reply-To: <20240130183318.454044155@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: PR1P264CA0140.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:2ce::8) To MR1P264MB1890.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:501:13::5)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF46C79DDF;
+	Wed, 31 Jan 2024 12:50:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706705442; cv=none; b=iAymcL6wsyk7ldgCvhWnGoxif28pk/T7VbLHiiW11+Hq1l4ix3ew5fdP3W4UmUkeiOuN2OWuah84jMlaLt/WrxOCgiZTZv7fM5XDCRX9L7eA/I7GpeI9l3Q1QHk6BX1KZwguNByjNAJL9NzQdP12bYYlCyejNPjJWBLbg10LLUA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706705442; c=relaxed/simple;
+	bh=RHrTYtjNRuLO1M8OAwEXyjHhu2rKdRpSTOU9mSp3TKE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hpZv0Suls9CIyXihoubtaAfUWGeNchmMo8pyNT1eppokbnIb2+vf/WAGevxsI3OLeqg8ecMMTDQf5QXd3mZFvZetOc3kLCpt36ONlL4vuE+DjJA2fA4B/hY4urQDnqUbYFhFAdpI0dXKjHvtIqBtL+IeOZk49FE3lKS8px04C7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tZpnI/Px; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1ACDC433C7;
+	Wed, 31 Jan 2024 12:50:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706705442;
+	bh=RHrTYtjNRuLO1M8OAwEXyjHhu2rKdRpSTOU9mSp3TKE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tZpnI/Pxr/BNixfR5YQwEkVC0VCJn/HgEAYGry3QuEGwjEJ9lyN2a0DVxcMq7TcmU
+	 zF3tosaaYGdAfDUQmR0UuBqASgJfh5G5NhLfuuX2m4z4qLi4QgApzFLXa6BRtCwqBR
+	 UV+76I6uHWU5I2T7A6JOuHPtRbb43+eW7tV3n7XPMJrC9mws5C697YKBATsXUbF8Bs
+	 Znn6/jbmeLEUie68X6VLT+ILwWrMc4JSEsbH6gjkyg/jjHsJoQgeguP+4h6me0vXPu
+	 oW5TjgEMafJYGAJVKwG1v5lSpZRDdvz7Y9NDLBa8CqsXnaupLpvUMEv/GBBhzG04Em
+	 +cZ+xZ5G9vRqg==
+Date: Wed, 31 Jan 2024 14:50:37 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Daniel Vacek <neelx@redhat.com>
+Cc: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Brendan Cunningham <bcunningham@cornelisnetworks.com>,
+	Patrick Kelsey <pat.kelsey@cornelisnetworks.com>,
+	stable@vger.kernel.org, Mats Kronberg <kronberg@nsc.liu.se>,
+	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] IB/hfi1: Fix sdma.h tx->num_descs off-by-one error (take
+ two)
+Message-ID: <20240131125037.GF71813@unreal>
+References: <20240126152125.869509-1-neelx@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MR1P264MB1890:EE_|PAZP264MB2991:EE_
-X-MS-Office365-Filtering-Correlation-Id: 07fb4b14-6d94-4762-e838-08dc225ae046
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: LPNPbWYCvOMD9jaoGVUalL/zuG8ikmV3tiPWcRTYh5zZXM/PRYJTrL5KX7cbAe2UhuLj66bAZMXsOVNTCZ400BiZ+wK33KVLpNhD1pnd9bblWF9fQu/O04W5k6k6yIKf7cbq/zrF1UKLQptqojd22e4laDu/mNxUnkJ7Wo5DktevJVD3nchXUYNxUofVJvTCFZ6oT3eScujAUFk3SbwIxrwVOdXIzcEhH6p8YY0T0/5ceG4IYIFvuE1EHSzaCi6Mie+SQaH+PgUbQ62kxt7r995KaW3N1STF6q/C98gfblAGX7rP75pz3q3WHmcuyBb6F8kadPJfJlMP3MiqSYkHP3HcPqyPZ91ghCU/KCnVbjuL9HpW2uw1mMCs187eJVly7x9H3OEbyUldfYisDr5QbwFJOkuBsE5GgfLj74GjSHwSzA8ayB3Jfo0mvOYDGrFRKIc+Bd4dSW/W7QKV78scaIlvzRy2ry+3uD5oihIKWKAD+szbW2TdEbOlgo8ZP7CfYNKMkGL+D5cVd0rsIbUIZbsrXLNKMTiu3DYp7hk46ANZMYmHMo/3T9DF5AeW+OEpwdo5ve1YI/TbBOh8/zHGUyLphFPFU9jepyChLqPUpSBRghhxzbX1WfQkFGLCdLIr2hVNkwaA3IH6CiPomQQLrA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MR1P264MB1890.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(346002)(136003)(39850400004)(366004)(396003)(376002)(230922051799003)(186009)(64100799003)(451199024)(1800799012)(31686004)(2616005)(41300700001)(966005)(316002)(66556008)(66476007)(478600001)(36756003)(6512007)(53546011)(6506007)(6486002)(38100700002)(66946007)(31696002)(5660300002)(8936002)(2906002)(7416002)(86362001)(8676002)(4326008)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: WDWRAgI+FXIpecdJUqGx1M/eNvOksbbDVmQtEPc54RmaZfkaQZM7kP0wKZShjNP0bq0bYDHcxQz3Qw2rfmsSwWKFJt05D3hzd61aBtpSAV9hHFUYD3cB/E4WEFF4fOgHGuKSBe2sxnGL4zYw7l3wzJK+EMrQQN84U1kLSWNnKoIwQ9tqinRpPOJjBLE7e+SYKDHV1TP0qbMKOGOCK6gjF3vq15Is1EGBkOCOvrFHQvQQhPNsj+YKOAWmSfOPszCWT6PxMr9HmRDAoqb0v6NWslvV6YBkuWza9J31EA8lTPPfdUbhxgTr94d5QYn/p7sBQiMvrVXA99v9LCFxiaTnEQa8yDpCI78ma081WyY9dniLmGm27hmlMJEWZd+RFygTNODTB8qTB03wM9vtjEl6+I3hM8bjkojPyn5RS0WEPEdV9TncFm6asQSI+DL0ptwDCaDx/B0+SfhkYWLXWbS3rU57g24S73SZutVfHmjcaT8G29WEgP/kPNXQeJPF1ttaTopoLFeIPfDYd8SgujS9dOWTNovIxiw6OagWNW+qdnqUBE1455SPoZMRjxR0lbMpXvauriA6ZeF+h3LedmIFQzv2o0/bQzwvcuuH8zF0cKM5XVaSJF2uZ0u62qVu+n5D5/3YhOFQibuD8oas04G0q1QP5Zs/W3MEk+KP3vsgsMNBDx/rpE1mgbf7S6CRjHFBIlokHxmvmOigOanl9BIEyckns377GKMKZQ7hDM4VI9QpP4VNzVgH1ZLFLxqKrDqe7X8puYHrf/f7EKQwy5ItfKu/B2RXzBqoeXaZZCOGCwSr1u8Rz3DpBZQTFrvKIY+Cyi+XiZPVGfqhrHJIlogWO3FdK+jFV8wYkhqq3ta76CFxqTnmPdrxqRz0IVu43pOcnKdDR02S7GdRhHOrFvPARDmmuMbJhwmj5p/sNrpJQSBNA29DK1GI+YgtnRMkoqp0
- Hd5mzxu/Wtnu+flDyUbBiV1Kg6ZnkcK14awD/LrwOD6kVuKXGqtztplOT2R6GiH2FwWcE3CFRvRvtwapx8OZBKpywhfg6LTGVznrjv4JwznJOpkYPO+iUNb2iI4B56urHSnEiX2ZcVCWDg8oY8KHELj5eYg/sluQxQIuaUBGbGhJZPRqc3yGCg+YvfDAkRaiduePG0tKtj01gnsY6ugAKHfk5tqpxv0uLebd1d+UsoYHN1bHYf8JN8e0uvwtOCmbrs40Mof9LbjgJSlJnlWDqm3IpxNqpdXSFodRcaKtmV8otecZmxcOw8RxfdfWB+jJH08Y2qdKCz8z17aSXVBbxS1a6yf8+ttULGsd+nAYpjmYRZO9SwKB9E342k7LzSU9DDNEICvbzsKovAW/e/LK051FcbixbPCMIl1oohF3vw3zr3+TwSb8yszBE4ziUVx35iIgDpbohfBFfnti9nK1jVkXAoLdvmZW1CdRK6VPwFeh/b71gIv+6uFnV9ohvW/hMW884lQI2Wv3MN1P8SHK3sT/3SQW+ktxeiRsmvwugJjcyJ11gQ+E72nd0j/T/QpgEcI9+6qC68uTAiQn+W2sBzWPKzBpLnRuPvtYoYn/6efGQ2zDMMH/QdhfVt+GFo7U+LWH8N9cQ3jIkCqOttUub7xkJvyqNmWkyCRyJ6QoFcFkocFBraMXFqTzhIVMxa4U
-X-OriginatorOrg: kalrayinc.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 07fb4b14-6d94-4762-e838-08dc225ae046
-X-MS-Exchange-CrossTenant-AuthSource: MR1P264MB1890.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jan 2024 12:48:08.8972
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8931925d-7620-4a64-b7fe-20afd86363d3
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: HkV4LgGbmnVfkSHTRt/ZnxuMyBfQR0dfP3zUQI9RusdncDnDvwqYqbGut3jmfM58lFfWP4HWirSj8m8uTEc4tg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAZP264MB2991
-X-ALTERMIMEV2_out: done
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240126152125.869509-1-neelx@redhat.com>
 
-Hi Greg,
+On Fri, Jan 26, 2024 at 04:21:23PM +0100, Daniel Vacek wrote:
+> Unfortunately the commit `fd8958efe877` introduced another error
+> causing the `descs` array to overflow. This reults in further crashes
+> easily reproducible by `sendmsg` system call.
+> 
+> [ 1080.836473] general protection fault, probably for non-canonical address 0x400300015528b00a: 0000 [#1] PREEMPT SMP PTI
+> [ 1080.869326] RIP: 0010:hfi1_ipoib_build_ib_tx_headers.constprop.0+0xe1/0x2b0 [hfi1]
+> --
+> [ 1080.974535] Call Trace:
+> [ 1080.976990]  <TASK>
+> [ 1081.021929]  hfi1_ipoib_send_dma_common+0x7a/0x2e0 [hfi1]
+> [ 1081.027364]  hfi1_ipoib_send_dma_list+0x62/0x270 [hfi1]
+> [ 1081.032633]  hfi1_ipoib_send+0x112/0x300 [hfi1]
+> [ 1081.042001]  ipoib_start_xmit+0x2a9/0x2d0 [ib_ipoib]
+> [ 1081.046978]  dev_hard_start_xmit+0xc4/0x210
+> --
+> [ 1081.148347]  __sys_sendmsg+0x59/0xa0
+> 
+> crash> ipoib_txreq 0xffff9cfeba229f00
+> struct ipoib_txreq {
+>   txreq = {
+>     list = {
+>       next = 0xffff9cfeba229f00,
+>       prev = 0xffff9cfeba229f00
+>     },
+>     descp = 0xffff9cfeba229f40,
+>     coalesce_buf = 0x0,
+>     wait = 0xffff9cfea4e69a48,
+>     complete = 0xffffffffc0fe0760 <hfi1_ipoib_sdma_complete>,
+>     packet_len = 0x46d,
+>     tlen = 0x0,
+>     num_desc = 0x0,
+>     desc_limit = 0x6,
+>     next_descq_idx = 0x45c,
+>     coalesce_idx = 0x0,
+>     flags = 0x0,
+>     descs = {{
+>         qw = {0x8024000120dffb00, 0x4}  # SDMA_DESC0_FIRST_DESC_FLAG (bit 63)
+>       }, {
+>         qw = {  0x3800014231b108, 0x4}
+>       }, {
+>         qw = { 0x310000e4ee0fcf0, 0x8}
+>       }, {
+>         qw = {  0x3000012e9f8000, 0x8}
+>       }, {
+>         qw = {  0x59000dfb9d0000, 0x8}
+>       }, {
+>         qw = {  0x78000e02e40000, 0x8}
+>       }}
+>   },
+>   sdma_hdr =  0x400300015528b000,  <<< invalid pointer in the tx request structure
+>   sdma_status = 0x0,                   SDMA_DESC0_LAST_DESC_FLAG (bit 62)
+>   complete = 0x0,
+>   priv = 0x0,
+>   txq = 0xffff9cfea4e69880,
+>   skb = 0xffff9d099809f400
+> }
+> 
+> With this patch the crashes are no longer reproducible and the machine is stable.
+> 
+> Note, the header file changes are just an unrelated clean-up while I was looking
+> around trying to find the bug.
+> 
+> Fixes: fd8958efe877 ("IB/hfi1: Fix sdma.h tx->num_descs off-by-one errors")
+> Cc: stable@vger.kernel.org
+> Reported-by: Mats Kronberg <kronberg@nsc.liu.se>
+> Tested-by: Mats Kronberg <kronberg@nsc.liu.se>
+> Signed-off-by: Daniel Vacek <neelx@redhat.com>
+> ---
+>  drivers/infiniband/hw/hfi1/sdma.c |  2 +-
+>  drivers/infiniband/hw/hfi1/sdma.h | 17 +++++++----------
+>  2 files changed, 8 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/infiniband/hw/hfi1/sdma.c b/drivers/infiniband/hw/hfi1/sdma.c
+> index 6e5ac2023328a..b67d23b1f2862 100644
+> --- a/drivers/infiniband/hw/hfi1/sdma.c
+> +++ b/drivers/infiniband/hw/hfi1/sdma.c
+> @@ -3158,7 +3158,7 @@ int _pad_sdma_tx_descs(struct hfi1_devdata *dd, struct sdma_txreq *tx)
+>  {
+>  	int rval = 0;
+>  
+> -	if ((unlikely(tx->num_desc + 1 == tx->desc_limit))) {
+> +	if ((unlikely(tx->num_desc == tx->desc_limit))) {
 
-On 30/01/2024 19:47, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.76 release.
-> There are 186 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 01 Feb 2024 18:32:32 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.76-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+Maybe, Dennis?
 
-I tested 6.1.76-rc2 (ce3f6cd9e4cd) on Kalray kvx arch (not upstream yet), just to let you know everything works in our CI.
+>  		rval = _extend_sdma_tx_descs(dd, tx);
+>  		if (rval) {
+>  			__sdma_txclean(dd, tx);
+> diff --git a/drivers/infiniband/hw/hfi1/sdma.h b/drivers/infiniband/hw/hfi1/sdma.h
+> index d77246b48434f..362815a8da267 100644
+> --- a/drivers/infiniband/hw/hfi1/sdma.h
+> +++ b/drivers/infiniband/hw/hfi1/sdma.h
+> @@ -639,13 +639,13 @@ static inline void sdma_txclean(struct hfi1_devdata *dd, struct sdma_txreq *tx)
+>  static inline void _sdma_close_tx(struct hfi1_devdata *dd,
+>  				  struct sdma_txreq *tx)
+>  {
+> -	u16 last_desc = tx->num_desc - 1;
+> +	struct sdma_desc *desc = &tx->descp[tx->num_desc - 1];
+>  
+> -	tx->descp[last_desc].qw[0] |= SDMA_DESC0_LAST_DESC_FLAG;
+> -	tx->descp[last_desc].qw[1] |= dd->default_desc1;
+> +	desc->qw[0] |= SDMA_DESC0_LAST_DESC_FLAG;
+> +	desc->qw[1] |= dd->default_desc1;
+>  	if (tx->flags & SDMA_TXREQ_F_URGENT)
+> -		tx->descp[last_desc].qw[1] |= (SDMA_DESC1_HEAD_TO_HOST_FLAG |
+> -					       SDMA_DESC1_INT_REQ_FLAG);
+> +		desc->qw[1] |= (SDMA_DESC1_HEAD_TO_HOST_FLAG |
+> +				SDMA_DESC1_INT_REQ_FLAG);
 
-It ran on real hw (k200, k200lp and k300 boards), on qemu as well as on our internal instruction set simulator (ISS).
+Unrelated change which doesn't change anything.
 
-Tests were run on several interfaces/drivers (usb, qsfp ethernet, eMMC, PCIe endpoint+RC, SPI, remoteproc, uart, iommu). LTP and uClibc-ng testsuites are also run without any regression.
+>  }
+>  
+>  static inline int _sdma_txadd_daddr(
+> @@ -670,13 +670,10 @@ static inline int _sdma_txadd_daddr(
+>  	tx->tlen -= len;
+>  	/* special cases for last */
+>  	if (!tx->tlen) {
+> -		if (tx->packet_len & (sizeof(u32) - 1)) {
+> +		if (tx->packet_len & (sizeof(u32) - 1))
+>  			rval = _pad_sdma_tx_descs(dd, tx);
+> -			if (rval)
+> -				return rval;
+> -		} else {
+> +		else
+>  			_sdma_close_tx(dd, tx);
+> -		}
 
-Everything looks fine to us.
+Same as before, unrelated change.
 
-Tested-by: Yann Sionneau <ysionneau@kalrayinc.com>
-
-Thanks a lot!
-
--- 
-
-Yann
-
-
-
-
-
+>  	}
+>  	return rval;
+>  }
+> -- 
+> 2.43.0
+> 
 
