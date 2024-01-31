@@ -1,149 +1,131 @@
-Return-Path: <stable+bounces-17478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A578434E6
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 05:56:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 060A28435E0
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 06:10:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A4DEB25802
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 04:56:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DE1AB26FF1
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 05:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949953D0AF;
-	Wed, 31 Jan 2024 04:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04823E48F;
+	Wed, 31 Jan 2024 05:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qifMW2hE"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="r1P7AIJI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FE73D0A1;
-	Wed, 31 Jan 2024 04:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FB53E496
+	for <stable@vger.kernel.org>; Wed, 31 Jan 2024 05:08:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706676953; cv=none; b=Di8VDHwv6p7kJwy7imJvfVUwfTRABvD7L3njrXJrfeKXjjAu1Oovkx+ud25VE32VyW/WcaMuW3aLLQyuAiTeYbZaVJMOknTSjJ3ydThf7groSno5LM6X57dzCuYIA6Kat01U1w8cDAxHxhwzqcrAfBPgk6wS3yRwfgaarcvOi2U=
+	t=1706677723; cv=none; b=PR1m4rWilEAY1bncLYY7l/OVJI/q43Q7CjATWUj3XfgNAKvutdAd5yObyckg0e9VqjcCM1y6HS2DSMHJi89H3CVPqobkYeLpc0Fcc1IS/CkCzKL0eHRXEYLCAwVgFSD8xbyJM6wERyTflp+kWRgA6Ts+dOCA+hkfwAI6iJvz7ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706676953; c=relaxed/simple;
-	bh=UAcaG1XK5qRhb1eEHIUDL8EenSrO063sixI2jRRZVqg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Dr32f47V2FMit7Va1YfzXnIVN7BXb1WDUoxPj8ct+a32IoW9YCv5OMC0vkwFqHOJynrIGqR4Gys0flwsOkmCDlMf0LwowoTKg8uSD7mo/cHNMjEor+2dHHzaekzipx60hE9E3BejRdg1RfAEeiTOaUAjrYQ9W60TQh8ZKZ0kdp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qifMW2hE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D7AC43390;
-	Wed, 31 Jan 2024 04:55:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706676952;
-	bh=UAcaG1XK5qRhb1eEHIUDL8EenSrO063sixI2jRRZVqg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qifMW2hExigqDc9NNIfpRl3LgWBwoXismg+Zf4JIj0mWtWM6/4/jOi9m1y4LG0+IV
-	 98+JGAytF44SDjGpfvQnk4f5AnjwqjAlugoWEzjwrqhuSyZa/FgHosLfTXp7QT5cmS
-	 kbUwjDSsrpzZIjTmFYK1cgm4CGxbWrtoNsCHOI1R6gcX/GuWSkQICpabKwqBOAUs1m
-	 D28cpiVZjJ1vTH9uaDhZh59tHLFl8IIeO2BPYFft5v/o+C+jnUOMseMvoikPXr+5eU
-	 e+QZVT00u+FP1pQz4U3Hs3JUNyJaSEn65JPnQKDMZGpKK3D7e+ohO9IqZ4Jt7Ror+d
-	 One20Hed4NEiA==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5110fae7af5so3489629e87.0;
-        Tue, 30 Jan 2024 20:55:52 -0800 (PST)
-X-Gm-Message-State: AOJu0YxtEjBT/b+a5V+/cdxpcaORYpQqqkDxrPVjQ+50/r8X4WAoo8qD
-	0cGpk2ixacxLt7AtpZo4xJg8wauiGNzJ3g+Z5W0rrigceCI9U6FAvMGP+ts9nQbgE7kgNJO03vG
-	UDCuXT1P/HxcpERVakOZsaCbtFRE=
-X-Google-Smtp-Source: AGHT+IG2pk+OgJ/SA4zOiQYsteh2+uWiGgm5RzgPyiaXhKOriI6X38evAsmx1xw+J07cYAoMgGbF6x2vH5KfZbzfAKE=
-X-Received: by 2002:a05:6512:3ec:b0:510:1a32:6298 with SMTP id
- n12-20020a05651203ec00b005101a326298mr398529lfq.56.1706676950941; Tue, 30 Jan
- 2024 20:55:50 -0800 (PST)
+	s=arc-20240116; t=1706677723; c=relaxed/simple;
+	bh=xlVDI89mtI52l3zzcIoMCJsnh1RwAgEG5xXnohHifd8=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=E8TnIGd7NzKXgvuliL5mG389geIROYrK2JiA8I8MBPi6C4vPMKHrEK9sxpTMsgpn/ztNKHcCp5MSZWVzio9YI8wS8CK959iJSWen2dBRD1p4P7+ew1izpkBrqiysgaAl2KvUzFr5jCm3WdF9hHHvTPdPx2w0nEVnlvIJ0POZ2Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=r1P7AIJI; arc=none smtp.client-ip=35.89.44.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
+	by cmsmtp with ESMTPS
+	id V0U3rlYnPrh9zV2pzrUbNF; Wed, 31 Jan 2024 05:08:39 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id V2pyr62e555BJV2pyrml8C; Wed, 31 Jan 2024 05:08:38 +0000
+X-Authority-Analysis: v=2.4 cv=QcR1A+Xv c=1 sm=1 tr=0 ts=65b9d5d6
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=dEuoMetlWLkA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=fgkVngnsqUz9it14FVEA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=RuA7V1Oi0UgNsRmBDWdWdoNNiAoNLAqu1nIXFx2hl+4=; b=r1P7AIJIA97RqC7as2xjyf+CRr
+	1O+2exuiBaYT3dn5WZHIkQeWzJ4lZ56c2AXIv2Z6xUvopL1ATjCbZaAqJDgsqR/33v55/1a/btiNA
+	Hy+VwiAbPzd4ipt0WWhLDU+ixSeehuyRfMo+MMzroOi5U931mysHZef5/1eUeqTJiRYYIpBpgS29U
+	PmknaE/EnV+F05NBfKoH5KVdwj8jDT+mYiM9PXYKaQ0aV2NSdVus+YC2v54T1AfSVeLNrTuWPU1bB
+	ZNJwenkyDhEZLBmVIwOJnjm6CV5eBGzErjdlXb+jyeiCVZSvOKrwaP1GdSnlBsKOc/kXujgrO9RWn
+	Z0efiDbA==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:37676 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rV2pv-003Tdm-0U;
+	Tue, 30 Jan 2024 22:08:35 -0700
+Subject: Re: [PATCH 6.1 000/186] 6.1.76-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20240130183318.454044155@linuxfoundation.org>
+In-Reply-To: <20240130183318.454044155@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <57f991b5-df2f-8aa3-99df-de84eafd3153@w6rz.net>
+Date: Tue, 30 Jan 2024 21:08:32 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <ZbMnZnvyIyoWeIro@fisica.ufpr.br> <20240126154610.24755-1-dan@danm.net>
- <20240130172524.0000417b@linux.intel.com> <95f2e08e-2daf-e298-e696-42ebfa7b9bbf@huaweicloud.com>
-In-Reply-To: <95f2e08e-2daf-e298-e696-42ebfa7b9bbf@huaweicloud.com>
-From: Song Liu <song@kernel.org>
-Date: Tue, 30 Jan 2024 20:55:39 -0800
-X-Gmail-Original-Message-ID: <CAPhsuW7QHq4e+cHvZcw8c=ePpeSM69UKTEi8P40=-jOZn+YyyA@mail.gmail.com>
-Message-ID: <CAPhsuW7QHq4e+cHvZcw8c=ePpeSM69UKTEi8P40=-jOZn+YyyA@mail.gmail.com>
-Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system;
- successfully bisected
-To: Yu Kuai <yukuai1@huaweicloud.com>
-Cc: Blazej Kucman <blazej.kucman@linux.intel.com>, Dan Moulding <dan@danm.net>, carlos@fisica.ufpr.br, 
-	gregkh@linuxfoundation.org, junxiao.bi@oracle.com, 
-	linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org, 
-	regressions@lists.linux.dev, stable@vger.kernel.org, 
-	"yukuai (C)" <yukuai3@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rV2pv-003Tdm-0U
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:37676
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfAeZJH2ndlkLPbiijtOaJWuMtsk6G+cZRZgHUmEuhngGUNaIufNixwsH/9v92RM/G1AW0ICDYgwhF0YR6qKhqKVHVLyPoiZrbZQVFg3D7REyWA9PzY/Y
+ DEya72VXImUJw8FTZwXC/d/fArUFujUK37mLfmXmN9oIfRvhuLZVtmSoMSx3DR0wnSu9nUJRuJOcxw==
 
-On Tue, Jan 30, 2024 at 6:41=E2=80=AFPM Yu Kuai <yukuai1@huaweicloud.com> w=
-rote:
+On 1/30/24 10:47 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.76 release.
+> There are 186 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> Hi, Blazej!
+> Responses should be made by Thu, 01 Feb 2024 18:32:32 +0000.
+> Anything received after that time might be too late.
 >
-> =E5=9C=A8 2024/01/31 0:26, Blazej Kucman =E5=86=99=E9=81=93:
-> > Hi,
-> >
-> > On Fri, 26 Jan 2024 08:46:10 -0700
-> > Dan Moulding <dan@danm.net> wrote:
-> >>
-> >> That's a good suggestion, so I switched it to use XFS. It can still
-> >> reproduce the hang. Sounds like this is probably a different problem
-> >> than the known ext4 one.
-> >>
-> >
-> > Our daily tests directed at mdadm/md also detected a problem with
-> > identical symptoms as described in the thread.
-> >
-> > Issue detected with IMSM metadata but it also reproduces with native
-> > metadata.
-> > NVMe disks under VMD controller were used.
-> >
-> > Scenario:
-> > 1. Create raid10:
-> > mdadm --create /dev/md/r10d4s128-15_A --level=3D10 --chunk=3D128
-> > --raid-devices=3D4 /dev/nvme6n1 /dev/nvme2n1 /dev/nvme3n1 /dev/nvme0n1
-> > --size=3D7864320 --run
-> > 2. Create FS
-> > mkfs.ext4 /dev/md/r10d4s128-15_A
-> > 3. Set faulty one raid member:
-> > mdadm --set-faulty /dev/md/r10d4s128-15_A /dev/nvme3n1
-> > 4. Stop raid devies:
-> > mdadm -Ss
-> >
-> > Expected result:
-> > The raid stops without kernel hangs and errors.
-> >
-> > Actual result:
-> > command "mdadm -Ss" hangs,
-> > hung_task occurs in OS.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.76-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
 >
-> Can you test the following patch?
+> thanks,
 >
-> Thanks!
-> Kuai
->
-> diff --git a/drivers/md/md.c b/drivers/md/md.c
-> index e3a56a958b47..a8db84c200fe 100644
-> --- a/drivers/md/md.c
-> +++ b/drivers/md/md.c
-> @@ -578,8 +578,12 @@ static void submit_flushes(struct work_struct *ws)
->                          rcu_read_lock();
->                  }
->          rcu_read_unlock();
-> -       if (atomic_dec_and_test(&mddev->flush_pending))
-> +       if (atomic_dec_and_test(&mddev->flush_pending)) {
-> +               /* The pair is percpu_ref_get() from md_flush_request() *=
-/
-> +               percpu_ref_put(&mddev->active_io);
-> +
->                  queue_work(md_wq, &mddev->flush_work);
-> +       }
->   }
->
->   static void md_submit_flush_data(struct work_struct *ws)
+> greg k-h
 
-This fixes the issue in my tests. Please submit the official patch.
-Also, we should add a test in mdadm/tests to cover this case.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-Thanks,
-Song
+Tested-by: Ron Economos <re@w6rz.net>
+
 
