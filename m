@@ -1,183 +1,134 @@
-Return-Path: <stable+bounces-17487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03498843856
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 08:54:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0753D843887
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 09:09:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F863B21831
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 07:54:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B14621F28F25
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 08:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43ACC55E72;
-	Wed, 31 Jan 2024 07:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD845BAD1;
+	Wed, 31 Jan 2024 08:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="gfXKsrrg"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bG0fXmC4"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC755B1FD;
-	Wed, 31 Jan 2024 07:54:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD94F5810C
+	for <stable@vger.kernel.org>; Wed, 31 Jan 2024 08:08:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706687650; cv=none; b=fF33IFaYH1o3z/a0zwfCQOC+PPv2T7wJ+xjVZ9NENSbrzqguNc3yuB6SxSowkFjb14TI05Z18nRRnDNxakjOeDQ0kAKyYpi82n48qOfGjqyivEKV+kMzLMhFjcHUSu/gnrcF/Rg4a23AiCPcvMj/dCTpgH8eM/IqGZV7CpuAnC0=
+	t=1706688518; cv=none; b=eTdRVmkn08Uxm5Zmbwzoz6e3lwtxy7SfCG/w69JALHHdZMlTjcUKBlMTGbmfpsHarGcOiwt62LtXVHStVcot/3Nr7OxQgfkWCAA5CQyJY4kTMZ5qJWO54vLjoaNCIbF8Z0pnojJD6uLXyVMaQyVbOjnSHYJAIvKAdZwimZmms1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706687650; c=relaxed/simple;
-	bh=m6C4Ku8bvmkbexxJOJ7sBnHQ+qywQOk01yROQJjxJrE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z8JV+BPbaSYUQIrWBaX/Brb3JtJryOqRCqjXUxAa85AztGifCH59xzLDjyM/RrYDciNH+A80QATgpX+pvnd0nlt6+wInS2FDM6hCOH9GABAt3cwKa0vwVNrZ7I6mVVX3/5x+Ru5tu4rlcxU1x5s+//Pemjtjb6qPyvvo3W069rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=gfXKsrrg; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1134)
-	id BE57E20B2000; Tue, 30 Jan 2024 23:54:04 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BE57E20B2000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1706687644;
-	bh=7DgOp55USUCAv7zrw7ngdlEyvKDTOomQA+HSmXHyj7A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gfXKsrrgRkpo0YCzOcCl1PnELBK0m/Vgxdtv6pLH9mgn4Hy8r8xsiAUioe3Qb1U5S
-	 sDseMiQeaGw9F7S/iwBcz8NxDyjRm5Ih/iS65S8qI4xZsgiVxJBP94Vsq8ACZUmJbh
-	 CaP57jfT5YDpHZ8PT/0ls0aYwoL/rnArELGVh4+Y=
-Date: Tue, 30 Jan 2024 23:54:04 -0800
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-To: Dexuan Cui <decui@microsoft.com>
-Cc: KY Srinivasan <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Shradha Gupta <shradhagupta@microsoft.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] hv_netvsc:Register VF in netvsc_probe if
- NET_DEVICE_REGISTER missed
-Message-ID: <20240131075404.GA18190@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <1706599135-12651-1-git-send-email-shradhagupta@linux.microsoft.com>
- <SA1PR21MB1335C5554F769454AAEDE1C8BF7D2@SA1PR21MB1335.namprd21.prod.outlook.com>
+	s=arc-20240116; t=1706688518; c=relaxed/simple;
+	bh=lx4FD9Ff2keMEQ0jbaHwSc5jk9qWZ2oAmEPHSTeAEL4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DsGsxaldZ88PRbJbO9xMIpOnBXjECnsP3e0WJlx4ahijuS7mC82vlvn9RoWYr985UFZMAzutO9KvfAFASrXkMkKmuIoPdD79ep08GeOdeTgqn8pMvCEsmu85d9suB6gX1PNeZyfRqmBZzxrE0WRs3khyUbeYGUEQnJJ+AnhosrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bG0fXmC4; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-33ae3154cf8so2523479f8f.3
+        for <stable@vger.kernel.org>; Wed, 31 Jan 2024 00:08:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706688515; x=1707293315; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PoLOhMfUIiPj96gmfLJQxWR6opE2jRYSksRV3iTYsaI=;
+        b=bG0fXmC46TBAqQzPVQzUNYJLvpERNm7xkVKyNrf3FPK1oYbd9AhpxO/i4TJm8fLYXh
+         yJktbycb3OJqWLXkOjH9tEAEBTB3g6MUpFo2ehXW05mbhw6tUWreGEertp1S4+85L08V
+         1OcOPbng11aD8vA3A+zzKy7vsH2y7oi9SY0VioIYofwNhI+xD9fEVZlfd9jGIh/k6GFs
+         RqpZL0vh8Qy704G1Qz1JVdmaGU1IvbOkHiXoZijoF3HzpwWWE0KvUbtn2Ey6Q6wHkwCF
+         oMz3RfoT5DZgHhjYRbyFrkInYGbu2XnHdxl7FB+If6NfUzjc0zMRLrc+6qEReXRQwgGd
+         tpTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706688515; x=1707293315;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PoLOhMfUIiPj96gmfLJQxWR6opE2jRYSksRV3iTYsaI=;
+        b=wUuyJiH4eRVQVDgeIt/oE5wN2nCkKXOs0cih+ZkX060twVWfMdQWjCnES4ClhcbY+/
+         lt3ZAU7fXr6+o/WELfk6EnoyOwP5ugww+RafULrBHGQMtrElNyTmnIJnUPohG+W3/gru
+         QTnSTn088Q4Ec6TZI/gYTODY61NoLoFV4I3DHTLUBtQobgKoPfJkvqTZR3LiZLhfVFjv
+         0x3KI4vhmhkSabDFtf2q0AMMrIFCA0vQR7HWgUDWgFFOgWkbP6hyptX00hzsIOeJuyFI
+         sYZcvaubOi7XPny2JDWU9eI9aYVLPurEU1mQQ5whg2O9avCZ07nMUfE9Y0FyU4VEsRcv
+         GA/g==
+X-Gm-Message-State: AOJu0YymjcNBxn6DzFFdAGTHPD5+2So43XZwGx1GmLw6pjJA6KV+Qa6x
+	IQU5dYT9tyEiXRK8AfOYkGp+Apl3HrLscxaof6kogpb86XZ7ZPLYjQl5eWAu3Bc=
+X-Google-Smtp-Source: AGHT+IEQSijfWrnfE1x/IhmGOIujlR21eS/1lucETA1cYhPCNsT1emGpr4CSNSjix7aPPjNS9CpWsA==
+X-Received: by 2002:a05:6000:1143:b0:33a:fe54:4367 with SMTP id d3-20020a056000114300b0033afe544367mr541995wrx.33.1706688515023;
+        Wed, 31 Jan 2024 00:08:35 -0800 (PST)
+Received: from [192.168.10.46] (146725694.box.freepro.com. [130.180.211.218])
+        by smtp.googlemail.com with ESMTPSA id bv11-20020a0560001f0b00b0033b0558c5f0sm660263wrb.95.2024.01.31.00.08.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 Jan 2024 00:08:34 -0800 (PST)
+Message-ID: <73bb55f6-4753-4bfb-99f4-75d06d1f772c@linaro.org>
+Date: Wed, 31 Jan 2024 09:08:33 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SA1PR21MB1335C5554F769454AAEDE1C8BF7D2@SA1PR21MB1335.namprd21.prod.outlook.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] thermal/drivers/mediatek: Fix control buffer enablement
+ on MT7896
+Content-Language: en-US
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Frank Wunderlich <linux@fw-web.de>,
+ Markus Schneider-Pargmann <msp@baylibre.com>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org,
+ Amit Kucheria <amitk@kernel.org>, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
+ Matthias Brugger <matthias.bgg@gmail.com>, Zhang Rui <rui.zhang@intel.com>,
+ linux-arm-kernel@lists.infradead.org,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+References: <20230907112018.52811-1-linux@fw-web.de>
+ <20230913083529.3bgjl6rvfmixgjnd@blmsp> <ZbnX2vfcalNL3yRV@makrotopia.org>
+From: Daniel Lezcano <daniel.lezcano@linaro.org>
+In-Reply-To: <ZbnX2vfcalNL3yRV@makrotopia.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 30, 2024 at 08:13:21PM +0000, Dexuan Cui wrote:
-> > From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-> > Sent: Monday, January 29, 2024 11:19 PM
-> >  [...]
-> > If hv_netvsc driver is removed and reloaded, the NET_DEVICE_REGISTER
+On 31/01/2024 06:17, Daniel Golle wrote:
+> Hi everyone!
 > 
-> s/removed/unloaded/
-> unloaded looks more accurate to me :-)
+> On Wed, Sep 13, 2023 at 10:35:29AM +0200, Markus Schneider-Pargmann wrote:
+>> On Thu, Sep 07, 2023 at 01:20:18PM +0200, Frank Wunderlich wrote:
+>>> From: Frank Wunderlich <frank-w@public-files.de>
+>>>
+>>> Reading thermal sensor on mt7986 devices returns invalid temperature:
+>>>
+>>> bpi-r3 ~ # cat /sys/class/thermal/thermal_zone0/temp
+>>>   -274000
+>>>
+>>> Fix this by adding missing members in mtk_thermal_data struct which were
+>>> used in mtk_thermal_turn_on_buffer after commit 33140e668b10.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: 33140e668b10 ("thermal/drivers/mediatek: Control buffer enablement tweaks")
+>>> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+>>
+>> Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
 > 
-> > [...]
-> > Tested-on: Ubuntu22
-> > Testcases: LISA testsuites
-> > 	   verify_reload_hyperv_modules, perf_tcp_ntttcp_sriov
-> IMO the 3 lines can be removed: this bug is not specific to Ubuntu, and the
-> test case names don't provide extra value to help understand the issue
-> here and they might cause more questions unnecessarily, e.g. what's LISA,
-> what exactly do the test cases do.
+> Reviewed-by: Daniel Golle <daniel@makrotopia.org>
+> Tested-by: Daniel Golle <daniel@makrotopia.org>
 > 
-> > +/* Macros to define the context of vf registration */
-> > +#define VF_REG_IN_PROBE		1
-> > +#define VF_REG_IN_RECV_CBACK	2
-> 
-> I think VF_REG_IN_NOTIFIER is a better name?
-> RECV_CBALL looks inaccurate to me.
-> 
-> > @@ -2205,8 +2209,11 @@ static int netvsc_vf_join(struct net_device
-> > *vf_netdev,
-> >  			   ndev->name, ret);
-> >  		goto upper_link_failed;
-> >  	}
-> > -
-> > -	schedule_delayed_work(&ndev_ctx->vf_takeover,
-> > VF_TAKEOVER_INT);
-> > +	/* If this registration is called from probe context vf_takeover
-> > +	 * is taken care of later in probe itself.
-> I suspect "later in probe itself" is not accurate.
-> If 'context' is VF_REG_IN_PROBE, I suppose what happens here is:
-> after netvsc_probe() finishes, the netvsc interface becomes available,
-> so the user space will ifup it, and netvsc_open() will UP the VF interface,
-> and netvsc_netdev_event() is called for the VF with event ==
-> NETDEV_POST_INIT (?) and NETDEV_CHANGE, and the data path is
-> switched to the VF.
-> 
-> If my understanding is correct, I think in the case of 'context' ==
-> VF_REG_IN_PROBE, I suspect the "Align MTU of VF with master"
-> and the "sync address list from ndev to VF" in __netvsc_vf_setup() are
-> omitted? If so, should this be fixed? e.g. Not sure if the below is an issue or not:
-> 1) a VF is bound to a NetVSC interface, and a user sets the MTUs to 1024.
-> 2) rmmod hv_netvsc
-> 3) modprobe hv_netvsc
-> 4) the netvsc interface uses MTU=1500 (the default), and the VF still uses 1024.
-> 
-> > @@ -2597,6 +2604,34 @@ static int netvsc_probe(struct hv_device *dev,
-> >  	}
-> > 
-> >  	list_add(&net_device_ctx->list, &netvsc_dev_list);
-> > +
-> > +	/* When the hv_netvsc driver is removed and readded, the
-> 
-> s/removed and readded/unloaded and reloaded/
-> 
-> > +	 * NET_DEVICE_REGISTER for the vf device is replayed before
-> > probe
-> > +	 * is complete. This is because register_netdevice_notifier() gets
-> > +	 * registered before vmbus_driver_register() so that callback func
-> > +	 * is set before probe and we don't miss events like
-> > NETDEV_POST_INIT
-> > +	 * So, in this section we try to register each matching
-> 
-> Looks like there are spaces at the end of the line. We can move up a few words
-> from the next line :-)
-> 
-> s/each matching/the matching/
-> A NetVSC interface has only 1 matching VF device.
-> 
-> > +	 * vf device that is present as a netdevice, knowing that it's register
-> 
-> s/it's/its/
-> 
-> > +	 * call is not processed in the netvsc_netdev_notifier(as probing is
-> > +	 * progress and get_netvsc_byslot fails).
-> > +	 */
-> > +	for_each_netdev(dev_net(net), vf_netdev) {
-> > +		if (vf_netdev->netdev_ops == &device_ops)
-> > +			continue;
-> > +
-> > +		if (vf_netdev->type != ARPHRD_ETHER)
-> > +			continue;
-> > +
-> > +		if (is_vlan_dev(vf_netdev))
-> > +			continue;
-> > +
-> > +		if (netif_is_bond_master(vf_netdev))
-> > +			continue;
-> 
-> The code above is duplicated from netvsc_netdev_event().
-> Can we add a new helper function is_matching_vf() to avoid the duplication?
-Sure, I will do that. Thanks
-> 
-> > +		netvsc_prepare_bonding(vf_netdev);
-> > +		netvsc_register_vf(vf_netdev, VF_REG_IN_PROBE);
-> > +		__netvsc_vf_setup(net, vf_netdev);
-> 
-> add a "break;' ?
-With MANA devices and multiport support there, the individual ports are also net_devices.
-Wouldn't this be needed for such scenario(where we have multiple mana port net devices) to
-register them all?
-> 
-> > +	}
-> >  	rtnl_unlock();
+> Kind ping to thermal and mediatek maintainers, please merge this patch.
+
+Applied with master pong
+
+Thanks!
+
+-- 
+<http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+
+Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
+<http://twitter.com/#!/linaroorg> Twitter |
+<http://www.linaro.org/linaro-blog/> Blog
+
 
