@@ -1,195 +1,134 @@
-Return-Path: <stable+bounces-17542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5281D844A93
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 22:55:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBAC7844A98
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 22:56:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D11AB2331A
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 21:55:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEFD01C2396E
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 21:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC528405D4;
-	Wed, 31 Jan 2024 21:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D1139FC6;
+	Wed, 31 Jan 2024 21:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M9daojn3"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ts7Dp+dE"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E21445C14;
-	Wed, 31 Jan 2024 21:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2DAD39AC7
+	for <stable@vger.kernel.org>; Wed, 31 Jan 2024 21:53:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706737855; cv=none; b=r7rc6AmH3ibMcWPeD6yLPvzAaf91Oah23SLDNHF4rqZOthVFfLo2bmAT1XAp830il3nvXsRumit4WF3NLZjsU11tdmS+dupWYFYMbA0laIHi4IVtRor09CcPHAywcOzxvcESnNMCNF9Jgm9vxMIUZyHv2xdATbVt6Ia6e6/LYXU=
+	t=1706738034; cv=none; b=iUL1jr9UQPlI0Ub3T7il29P1BbqfiDEvxwteanQA+L9fo7WE0JuA50rTGSE2qplxY+lfSZZNvyVXGPo11zwokOxnj8C2uqvjf4RORopLQL8egPSV7bJyYIss5j9LXQx8rrTJPuNRBFXhU4TvpE5Mq8tke/8w2/FoFu15VdAS2eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706737855; c=relaxed/simple;
-	bh=dx7wRnDCqrDJsKtDK7xNZDoVY35TSIKa32jxbefvqs8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rC+MMUVSNmEmmcmB2nTnqp7hY/fNCPtm5mO2ABI3edLAN1N9U1sb7zDrKXp7Fll7R8dNNBTq+5tBxs6Z4UiaBtqPSESlPGh+rl5cbyUhDuFSvfjufBrJp7aHlgeJrF3Jmk0iTXGJfUduTbBgGHJI2VBse5xYLqb/yzS+dzlI8kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M9daojn3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F93C43142;
-	Wed, 31 Jan 2024 21:50:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706737855;
-	bh=dx7wRnDCqrDJsKtDK7xNZDoVY35TSIKa32jxbefvqs8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=M9daojn3WbUrsdJtg1dQ9fqgqRcCQUGre2GSemGntl5aSWpQU5Cg6olIjoyK6BM+l
-	 5c165+TnyQslNZaV7+qDdLAmgj2ywWw7UcLy+sOsyOUGY3zq/RUjjP0slIdtkw7VQi
-	 G4tf8pcPIuZhWNfxqF+9RVVtJwqZ5W2WZGaqscjp5I+987xwjPXVUbyFD41ysnxGqw
-	 P1DPLbzEoleACw1NAMJb4hnbfpszLvuS8PKZJGMPJHHROB3QhrXK7ea6Pgx/9OCfD1
-	 UdSYUNHrsFurJIZtai8xrRNA7TsopgEi7VvakM01qEA73vOd0NLDz8uCuBW374Put2
-	 lacjjKtO7sdqQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Wed, 31 Jan 2024 22:49:54 +0100
-Subject: [PATCH net 9/9] selftests: mptcp: join: stop transfer when check
- is done (part 2)
+	s=arc-20240116; t=1706738034; c=relaxed/simple;
+	bh=4xLkjEkNsl/vSzQQL56AarzQ/fTqiFXmSV0hiQdMmlk=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=St6Mtq1yusDQ7PU7+ZYiCBVsplk6Al1OFaZmkkikcJSgDv+vB58DH8MjotfXD9G9M42e7aTZ5Ua8bjHzCRxQXrYLZcwiYvpzeV7Rd5aoDhj0h8aO8dc92bRYFh4r/fQ3ZbOnIFkVqU6RM8SL7azWgYex2cj0Ck7xg61HCkbZUpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ts7Dp+dE; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-5d8bdadc79cso292103a12.2
+        for <stable@vger.kernel.org>; Wed, 31 Jan 2024 13:53:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706738032; x=1707342832; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AnAFDV1t3aX3RqRk7DxFRUBw8cn5gMxBfRf2X8ihrDQ=;
+        b=ts7Dp+dEbWqxSHWt3fm+nmu7jkU4nnsqztFMCRfiJ1+VDtrh1TGu/9f4BAt+BTuJfR
+         tfdarsz1Gr2RZ4bbH8yoRSNoxKLOqz0XzwEmpALjOHHg6lhDR/HMR1w9q9bphBFdWdFO
+         H+AuEdPA0ZWdVEVTNUN4LwFNDBlOTH+jpfmMFxDd38rNsFkq0tEWl4kKDoCIXJHETA+Q
+         axfBK+z7jhOIp/QBKGcumzrkxGPadja3c9+xI11Shf279v60pkNcmwyi4UbM3BEorqhD
+         +kxgCst6bTAvbOi2pcY52txZN4qGOpCvl2CBZGmdhXGhUFek2VIPNC+d7CGR8jY+JTiG
+         ZKMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706738032; x=1707342832;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AnAFDV1t3aX3RqRk7DxFRUBw8cn5gMxBfRf2X8ihrDQ=;
+        b=kc+bQ/2IZAgbkKpbRrqyinpkoE/0OKegwTr1qrNQn2uo7hvJD3bhSztkrNjSEHhq8M
+         bQ/yWvkEydY7u/4tC4h7bPK6n9H2FpQpC7EefviaAnzGYuNVc9xYdAmpH5lVQb6i1q+R
+         8DIpAQvwBgSo54BHvTJRtBKvSWqLNXWqaI8t6UMje8xMJ5CTCPkqOYUjmn+Hm0nBYRlF
+         1aJKzpYD3982WZWFJJ9FVxXZwyTLQuNtJwZ0+6S0dYSyQZR2ij54bvasrW/uSC3e6b2X
+         4ZhFbgXKZDgocp0CrrQJqGz5h5X0SMKohO8A0BeXzCYg78TceSLSJtf3dtyH5Z4RXTDT
+         egZA==
+X-Gm-Message-State: AOJu0YyvFfoKgYUtgfXQbQCtkbKhFu50q1UtVGeWJI7Hqjg1OY9fuw8A
+	e+0O0xnncQs74O374SL1q11hsMYlaTaTynfPuFHo/vhzwjAEb7n80bBLb9AjoiYwv3j/OX29c5z
+	w0i6QO6eiTw==
+X-Google-Smtp-Source: AGHT+IFw6WY4nDhnNbNIWITwqwDxfY1lJTf1DEXlQdSElsdLgqA96aMQvdRmrPsG2L2Y4tLmcXzdBHByoz4zCA==
+X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
+ (user=cmllamas job=sendgmr) by 2002:a65:68c5:0:b0:5d8:51e2:c8ca with SMTP id
+ k5-20020a6568c5000000b005d851e2c8camr636pgt.2.1706738032095; Wed, 31 Jan 2024
+ 13:53:52 -0800 (PST)
+Date: Wed, 31 Jan 2024 21:53:46 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240131-upstream-net-20240131-mptcp-ci-issues-v1-9-4c1c11e571ff@kernel.org>
-References: <20240131-upstream-net-20240131-mptcp-ci-issues-v1-0-4c1c11e571ff@kernel.org>
-In-Reply-To: <20240131-upstream-net-20240131-mptcp-ci-issues-v1-0-4c1c11e571ff@kernel.org>
-To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
- Geliang Tang <geliang.tang@linux.dev>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org, 
- Geliang Tang <geliang@kernel.org>
-X-Mailer: b4 0.12.4
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3349; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=dx7wRnDCqrDJsKtDK7xNZDoVY35TSIKa32jxbefvqs8=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBlusCg8SsXtieygSIwUgQbQ/KEVDAVd9jBEbaTy
- 8Ttrh5Cuf6JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZbrAoAAKCRD2t4JPQmmg
- c2qWD/sHFGNL8EnWdDMRDcbajqT+mC1/pA+MR1y08Rcc5IrWGV4a36pl0oPJx5GSSsi7WQVReJc
- PtpFb/fS3hK2n5yE6dFvLPCIrUUeEpSQqxkmk/NDrDLyqA3E2Wrz038AxVMdL/POsunfqWsLu/E
- VBH6Wg1SoQ2IgEpU8vnyvgSeybuCIabbIfE1sVYmcKqXVstCTnbrT3CSH7PM3prdPlmxZzMX/r1
- X2+9purLs4XA7Bovfk1gE5velSO/fYCQ590la+fE0XKZatDojZRTXK7WfAWAieeDy/Fo/JRh1jX
- pSq0aOMBBAK4HRJjc5wFERRj+E0BoRLM/ql+sioT2SJTTjbuUonF/44+rG9yk7MpRRcjIN/PDb5
- xUYndv/WmkSvUph2Cl+8kp2hShWtMkgCe7FVodmz3+ZkZ6EXZiXLM8WffRT2N0gidXRHTBDx9at
- gNi6n1En3iqG4edgR9umbcffTADzZimiGZkSboMm1TVDRnMSTZQpRW0pP/jFNrXCRLblpun8wjQ
- q5LUZaxRYiPFnsZRTjBUD5cBgF0IfjezSEOXzE/gjOUVi4x4isI9GO7sZ5aN/7z/mlvKIqjaH0h
- Rf7j8BmGWMqEbt2Gsittp6wMXyOc42/W30j8UPS/f/5UY9pH35Ue+ONoOas9Jj4w/5EGb6Ew/8p
- vzmCCRJFxSng30g==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.594.gd9cf4e227d-goog
+Message-ID: <20240131215347.1808751-1-cmllamas@google.com>
+Subject: [PATCH] binder: signal epoll threads of self-work
+From: Carlos Llamas <cmllamas@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Brian Swetland <swetland@google.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@android.com, 
+	Alice Ryhl <aliceryhl@google.com>, Steven Moreland <smoreland@google.com>, stable@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Since the "Fixes" commits mentioned below, the newly added "userspace
-pm" subtests of mptcp_join selftests are launching the whole transfer in
-the background, do the required checks, then wait for the end of
-transfer.
+In (e)poll mode, threads often depend on I/O events to determine when
+data is ready for consumption. Within binder, a thread may initiate a
+command via BINDER_WRITE_READ without a read buffer and then make use
+of epoll_wait() or similar to consume any responses afterwards.
 
-There is no need to wait longer, especially because the checks at the
-end of the transfer are ignored (which is fine). This saves quite a few
-seconds on slow environments.
+It is then crucial that epoll threads are signaled via wakeup when they
+queue their own work. Otherwise, they risk waiting indefinitely for an
+event leaving their work unhandled. What is worse, subsequent commands
+won't trigger a wakeup either as the thread has pending work.
 
-While at it, use 'mptcp_lib_kill_wait()' helper everywhere, instead of
-on a specific one with 'kill_tests_wait()'.
-
-Fixes: b2e2248f365a ("selftests: mptcp: userspace pm create id 0 subflow")
-Fixes: e3b47e460b4b ("selftests: mptcp: userspace pm remove initial subflow")
-Fixes: b9fb176081fb ("selftests: mptcp: userspace pm send RM_ADDR for ID 0")
-Cc: stable@vger.kernel.org
-Reviewed-and-tested-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
+Cc: Arve Hj=C3=B8nnev=C3=A5g <arve@android.com>
+Cc: Martijn Coenen <maco@android.com>
+Cc: Alice Ryhl <aliceryhl@google.com>
+Cc: Steven Moreland <smoreland@google.com>
+Cc: <stable@vger.kernel.org> # v4.19+
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ drivers/android/binder.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 85bcc95f4ede..c07386e21e0a 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -643,13 +643,6 @@ kill_events_pids()
- 	mptcp_lib_kill_wait $evts_ns2_pid
- }
- 
--kill_tests_wait()
--{
--	#shellcheck disable=SC2046
--	kill -SIGUSR1 $(ip netns pids $ns2) $(ip netns pids $ns1)
--	wait
--}
--
- pm_nl_set_limits()
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index 8dd23b19e997..eca24f41556d 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -478,6 +478,16 @@ binder_enqueue_thread_work_ilocked(struct binder_threa=
+d *thread,
  {
- 	local ns=$1
-@@ -3494,7 +3487,7 @@ userspace_tests()
- 		chk_mptcp_info subflows 1 subflows 1
- 		chk_subflows_total 2 2
- 		kill_events_pids
--		wait $tests_pid
-+		mptcp_lib_kill_wait $tests_pid
- 	fi
- 
- 	# userspace pm remove initial subflow
-@@ -3518,7 +3511,7 @@ userspace_tests()
- 		chk_mptcp_info subflows 1 subflows 1
- 		chk_subflows_total 1 1
- 		kill_events_pids
--		wait $tests_pid
-+		mptcp_lib_kill_wait $tests_pid
- 	fi
- 
- 	# userspace pm send RM_ADDR for ID 0
-@@ -3544,7 +3537,7 @@ userspace_tests()
- 		chk_mptcp_info subflows 1 subflows 1
- 		chk_subflows_total 1 1
- 		kill_events_pids
--		wait $tests_pid
-+		mptcp_lib_kill_wait $tests_pid
- 	fi
+ 	WARN_ON(!list_empty(&thread->waiting_thread_node));
+ 	binder_enqueue_work_ilocked(work, &thread->todo);
++
++	/* (e)poll-based threads require an explicit wakeup signal when
++	 * queuing their own work; they rely on these events to consume
++	 * messages without I/O block. Without it, threads risk waiting
++	 * indefinitely without handling the work.
++	 */
++	if (thread->looper & BINDER_LOOPER_STATE_POLL &&
++	    thread->pid =3D=3D current->pid && !thread->process_todo)
++		wake_up_interruptible_sync(&thread->wait);
++
+ 	thread->process_todo =3D true;
  }
- 
-@@ -3558,7 +3551,8 @@ endpoint_tests()
- 		pm_nl_set_limits $ns2 2 2
- 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
- 		speed=slow \
--			run_tests $ns1 $ns2 10.0.1.1 2>/dev/null &
-+			run_tests $ns1 $ns2 10.0.1.1 &
-+		local tests_pid=$!
- 
- 		wait_mpj $ns1
- 		pm_nl_check_endpoint "creation" \
-@@ -3573,7 +3567,7 @@ endpoint_tests()
- 		pm_nl_add_endpoint $ns2 10.0.2.2 flags signal
- 		pm_nl_check_endpoint "modif is allowed" \
- 			$ns2 10.0.2.2 id 1 flags signal
--		kill_tests_wait
-+		mptcp_lib_kill_wait $tests_pid
- 	fi
- 
- 	if reset "delete and re-add" &&
-@@ -3582,7 +3576,8 @@ endpoint_tests()
- 		pm_nl_set_limits $ns2 1 1
- 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
- 		test_linkfail=4 speed=20 \
--			run_tests $ns1 $ns2 10.0.1.1 2>/dev/null &
-+			run_tests $ns1 $ns2 10.0.1.1 &
-+		local tests_pid=$!
- 
- 		wait_mpj $ns2
- 		chk_subflow_nr "before delete" 2
-@@ -3597,7 +3592,7 @@ endpoint_tests()
- 		wait_mpj $ns2
- 		chk_subflow_nr "after re-add" 2
- 		chk_mptcp_info subflows 1 subflows 1
--		kill_tests_wait
-+		mptcp_lib_kill_wait $tests_pid
- 	fi
- }
- 
-
--- 
-2.43.0
+=20
+--=20
+2.43.0.594.gd9cf4e227d-goog
 
 
