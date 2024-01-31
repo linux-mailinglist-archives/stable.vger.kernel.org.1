@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-17480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE8F38435F3
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 06:17:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E068843670
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 07:10:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B1F41F24EAA
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 05:17:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EC6FB2188A
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 06:10:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2343D99C;
-	Wed, 31 Jan 2024 05:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF0E3E47B;
+	Wed, 31 Jan 2024 06:09:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="K2T7mqJc"
 X-Original-To: stable@vger.kernel.org
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D073DB92;
-	Wed, 31 Jan 2024 05:17:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA123E46B;
+	Wed, 31 Jan 2024 06:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706678251; cv=none; b=ScZI5rwhpqSq6+1bAvk12Kn1RGv8hyX92Nyzc3FkFIJATWH7WTUwhrdh7Zfzmd1WWVKNJ9SFIYWHeeA2kJG/wb2HL3W15K3za1pu4GdrQxjcyOM3Folc3kKXzPj+8BAFmI1k9UFYtl04nTzmApIfIXGuHSJoj6oNLEWWAFh8G+E=
+	t=1706681399; cv=none; b=jWgNraJ/2Sw9knZTP7jsfHIcN6QgzBsAm6TXHFwpemW8/VzgRBS2wcRHOE6oG3VwlfOJMQmIfd6QhzE6E+D3Ld4IedJTCGIKLjKLZxQU7D5DcpDB3KaXBjil9DilXtUTdooGGDi01Lyc8Oa42lhBc93p/Wk1h/MMoN9EkYy6xcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706678251; c=relaxed/simple;
-	bh=gxAtGaUULQtWAZGfYG0oHdCtKw5TMqoELHvZxCqaRyg=;
+	s=arc-20240116; t=1706681399; c=relaxed/simple;
+	bh=xUlblym0tJsdi+bNCvzWtxF6YMnO9/+z+WSb3s72Nl8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ArNadrt0jnv7nayYqhYZbE2uV0NY+rvwaX8q8BYeoAUoSBpbeIVM2upHBEA/73TqKxPWsMNqr8hEk5lpKQSX1q4rDlwOcchcXFpkfN7X3+cygLmfuWXBWKMuo55sCaT01gzI4q+Je5ReNmqnKKEbwCzB3hA2EdyNTtmuORJ+1HE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.96.2)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1rV2yM-0001i0-0l;
-	Wed, 31 Jan 2024 05:17:18 +0000
-Date: Wed, 31 Jan 2024 05:17:14 +0000
-From: Daniel Golle <daniel@makrotopia.org>
-To: Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: Frank Wunderlich <linux@fw-web.de>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org,
-	Amit Kucheria <amitk@kernel.org>, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	linux-arm-kernel@lists.infradead.org,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: Re: [PATCH] thermal/drivers/mediatek: Fix control buffer enablement
- on MT7896
-Message-ID: <ZbnX2vfcalNL3yRV@makrotopia.org>
-References: <20230907112018.52811-1-linux@fw-web.de>
- <20230913083529.3bgjl6rvfmixgjnd@blmsp>
+	 Content-Type:Content-Disposition:In-Reply-To; b=cR4FGq5mWkKetTnO4idGS6LVilGOwJ1Iso6MR6253rxbhyv9g742lmulcTKUwEc5uPS2QvKeF3FoKV7l7ClIGhdseLiVO9CRjmyoN31Ar0p119UnVAE2iZqIQtUI2xCBTAKGFOkIKYdwFrwUfKLCd85qNCaGbZYSsRq7fKGnSFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=K2T7mqJc; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id A96E32057C14; Tue, 30 Jan 2024 22:09:57 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A96E32057C14
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1706681397;
+	bh=yg+VJO0K+0/jLaTvRKDfXImeE8FTSu6c4RAr38E++AI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=K2T7mqJcI3CDBQ69l4jhStujPhYFfTIlKTpyTqQKKQwHNbyoRLjUDvkEEHh9lwcGy
+	 p7ogwcmO5gPvaH7vvrGp1+h8grCN77aaKMGQztN3X/jbPw2jugZlbSj6MHX5123aZO
+	 spFj/giH4uzoa5A3dIBwetLsr680eMjv7D9dCPeQ=
+Date: Tue, 30 Jan 2024 22:09:57 -0800
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, shradhagupta@microsoft.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] hv_netvsc:Register VF in netvsc_probe if
+ NET_DEVICE_REGISTER missed
+Message-ID: <20240131060957.GA15733@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <1706599135-12651-1-git-send-email-shradhagupta@linux.microsoft.com>
+ <20240130182914.25df5128@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,68 +64,24 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230913083529.3bgjl6rvfmixgjnd@blmsp>
+In-Reply-To: <20240130182914.25df5128@kernel.org>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-Hi everyone!
-
-On Wed, Sep 13, 2023 at 10:35:29AM +0200, Markus Schneider-Pargmann wrote:
-> On Thu, Sep 07, 2023 at 01:20:18PM +0200, Frank Wunderlich wrote:
-> > From: Frank Wunderlich <frank-w@public-files.de>
-> > 
-> > Reading thermal sensor on mt7986 devices returns invalid temperature:
-> > 
-> > bpi-r3 ~ # cat /sys/class/thermal/thermal_zone0/temp
-> >  -274000
-> > 
-> > Fix this by adding missing members in mtk_thermal_data struct which were
-> > used in mtk_thermal_turn_on_buffer after commit 33140e668b10.
+On Tue, Jan 30, 2024 at 06:29:14PM -0800, Jakub Kicinski wrote:
+> On Mon, 29 Jan 2024 23:18:55 -0800 Shradha Gupta wrote:
+> > If hv_netvsc driver is removed and reloaded, the NET_DEVICE_REGISTER
+> > handler cannot perform VF register successfully as the register call
+> > is received before netvsc_probe is finished. This is because we
+> > register register_netdevice_notifier() very early(even before
+> > vmbus_driver_register()).
+> > To fix this, we try to register each such matching VF( if it is visible
+> > as a netdevice) at the end of netvsc_probe.
 > > 
 > > Cc: stable@vger.kernel.org
-> > Fixes: 33140e668b10 ("thermal/drivers/mediatek: Control buffer enablement tweaks")
-> > Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+> > Fixes: 85520856466e ("hv_netvsc: Fix race of register_netdevice_notifier and VF register")
+> > Suggested-by: Dexuan Cui <decui@microsoft.com>
+> > Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
 > 
-> Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
-
-Reviewed-by: Daniel Golle <daniel@makrotopia.org>
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-
-Kind ping to thermal and mediatek maintainers, please merge this patch.
-
-https://patchwork.kernel.org/project/linux-pm/patch/20230907112018.52811-1-linux@fw-web.de/
-
-https://patchwork.kernel.org/project/linux-mediatek/patch/20230907112018.52811-1-linux@fw-web.de/
-
-> 
-> Thanks for fixing!
-> 
-> Best,
-> Markus
-> 
-> > ---
-> >  drivers/thermal/mediatek/auxadc_thermal.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> > 
-> > diff --git a/drivers/thermal/mediatek/auxadc_thermal.c b/drivers/thermal/mediatek/auxadc_thermal.c
-> > index 843214d30bd8..967b9a1aead4 100644
-> > --- a/drivers/thermal/mediatek/auxadc_thermal.c
-> > +++ b/drivers/thermal/mediatek/auxadc_thermal.c
-> > @@ -690,6 +690,9 @@ static const struct mtk_thermal_data mt7986_thermal_data = {
-> >  	.adcpnp = mt7986_adcpnp,
-> >  	.sensor_mux_values = mt7986_mux_values,
-> >  	.version = MTK_THERMAL_V3,
-> > +	.apmixed_buffer_ctl_reg = APMIXED_SYS_TS_CON1,
-> > +	.apmixed_buffer_ctl_mask = GENMASK(31, 6) | BIT(3),
-> > +	.apmixed_buffer_ctl_set = BIT(0),
-> >  };
-> >  
-> >  static bool mtk_thermal_temp_is_valid(int temp)
-> > -- 
-> > 2.34.1
-> > 
-> > 
-> > _______________________________________________
-> > linux-arm-kernel mailing list
-> > linux-arm-kernel@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-> 
+> Does not seem to apply to net/main, please respin
+This patch applies to net, which is missed in the subject. I will fix this in the new version of the patch. Thanks
 
