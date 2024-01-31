@@ -1,77 +1,77 @@
-Return-Path: <stable+bounces-17545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5376E844CB4
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 00:26:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83CC0844CB6
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 00:27:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0830F1F272AB
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 23:26:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39081283159
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 23:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2D0A3B795;
-	Wed, 31 Jan 2024 23:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F2E47F76;
+	Wed, 31 Jan 2024 23:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SS0x9QY3"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ILjcVmBi"
 X-Original-To: stable@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA213B793
-	for <stable@vger.kernel.org>; Wed, 31 Jan 2024 23:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B335947F4B
+	for <stable@vger.kernel.org>; Wed, 31 Jan 2024 23:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706742552; cv=none; b=JxCxirvWtEZWnBhUOpG6RYkqYGJUu9EmEepvUD4TfJuxx8oo9NgIfKH5buj+eecquvWc/Ex1tQ2LsaoRUykYGXPujNyIoaXBydJVcyvvx4oTBZtBkr23Y0amQdxZctHxe5d2y2GzNQKqkZPE4w7MgDtm+gyZCVQMugH+hjQnWV8=
+	t=1706742555; cv=none; b=PyNVROv3FdDL7wYsyy5YFz5y4r79qINusQ5hT0F4Ko40i2ZSKgChhNkqa0vnV+uIV6ymTOwq+RRsTsaqMwhQ/l+d3axcxpMxMx9MbooE6t5moeLM/iQTWjp/fst1wbR7QNb/ym4eRKQrfceIgen8J3nwPsla3NqPiWZxnmgVcrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706742552; c=relaxed/simple;
-	bh=AITC0g6KpE00MHHi4gqzkoS6GaRfFWD8G+vwLdrjOPo=;
+	s=arc-20240116; t=1706742555; c=relaxed/simple;
+	bh=4IzgUiiLC2xdXeX/Q2WgpODnZbuMlaMcucIkHRMpcVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HXwid+GAMqCcXcEbAe93VXAer6jiuLJ5PVjruqHQyemi6WaDpEWUhbdRJkOdjL/U6QxvIUqiUS6X/r9tNqCdIy/HF/TThTj8S+B7NWkPDVO9W4Q0hOz12ybnwL3Y+xCsshmC6r1TfphoitMHw63XYfVTPSxU5sM+NwZ5baRcpkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SS0x9QY3; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=oL+f63E3e8AC6mgtDJrpGEP4fckTahDwbCylmxE8at3oifassNq/5XXjz3fropOHXCF3ifG5PKlZniIFmFLFk59xgFwabPrjaF0PaOHswrx+GrzzKVjK4jHW/5h2tynnsJnFLFJ5rKxJ5cEaen+9IwxIp+O1oJ1uNDDxjXrikyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ILjcVmBi; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706742549;
+	s=mimecast20190719; t=1706742552;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6tcUd6aqQBTGujreDUlh09+Wd/lkDDTLdTqmcFaCI+4=;
-	b=SS0x9QY3wFco+YJWHeBeN78CIfWxhigd/5bJrMKItiaClLP3fAOnyjvECQ2f2TrkY/PgQr
-	xmf7V/yErX5p+7B1TcEsoD/gz80Hjsd8xANwgdQcaMeKJ/A8eM3y/eb5rC2wuNqmtw8whz
-	WAH68Xnsla9J25SaXMNmwXV2AgzOE9g=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=AVF+MMqBraYuLEZ3nz+rh5hR3QYgKQlXNiv3cB3L9Yk=;
+	b=ILjcVmBiDZ2k2kqg9fe1VzZNf5TXYg3pPbwYwAtve9tHPUcj55eToz7htFphsZQKpMtlbd
+	+OgDF6ghGc9BU/Xn3Fylh1OydelHn+fA1M2988BYrzkNEf52KLrPwrzG0yhPfs1Kh1Iv7C
+	CsAfzvyk7TRgBggOzxMjI9DZY7E4BBM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-631-FldhzK4TNN6cFb-drxH6zQ-1; Wed, 31 Jan 2024 18:09:08 -0500
-X-MC-Unique: FldhzK4TNN6cFb-drxH6zQ-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-33afcf2acc8so133909f8f.1
-        for <stable@vger.kernel.org>; Wed, 31 Jan 2024 15:09:08 -0800 (PST)
+ us-mta-615-YWNEn3ShO-yxFSi-dlOC5A-1; Wed, 31 Jan 2024 18:09:10 -0500
+X-MC-Unique: YWNEn3ShO-yxFSi-dlOC5A-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-40f993e4000so2294335e9.0
+        for <stable@vger.kernel.org>; Wed, 31 Jan 2024 15:09:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706742547; x=1707347347;
+        d=1e100.net; s=20230601; t=1706742549; x=1707347349;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6tcUd6aqQBTGujreDUlh09+Wd/lkDDTLdTqmcFaCI+4=;
-        b=KT7fMUFD85o3AE5Di+1dy2NEJHfz3yw5wLxJHY/aQrSvcfVLPqIs1eGsNamCOdcS1z
-         e1Wi36okhS9G60LAspk4a9nKdO6RJQU0gK320XSf12QEcQlLYQosaI4Pg4UtKLPsbuPS
-         AgptG3JJJSUEC03B9YvnIcTOSKHKBchrQ+I6PI5fIm+tthSiDul/gFCFIWQAfx2vDHha
-         aSXjYmNVU4QNPu/cPipnMqOKeH4r6KTYjNr5hpbHY/BsdH4Il8ycMOBRp1D8gfRvAf9J
-         /OyPk7BaYoeN/oe99l5VjTu+D6IIjqchoVoryWRNXVJg4HhpkNVRC0P2vD5t4sZ5dRpu
-         XQLw==
-X-Gm-Message-State: AOJu0YxmwDJjtByKj8J1M2bOrDR8MBrXNFppQmrwXpXZWvhP27t8TTS8
-	H8Ut9HHmfZ3j+ElGP+SXxQ8w7y8/VsWxZcENQeI5/EuBoB4G5uEXb8rw5mVB6r9oFa7ChjqrOFy
-	qm5+vh3MwLK0P6Imob0155MDgAI2b5StzhiEt5EqRmLaxaSIvJwtZYA==
-X-Received: by 2002:adf:e2c5:0:b0:33a:fe3b:b2ae with SMTP id d5-20020adfe2c5000000b0033afe3bb2aemr1897578wrj.66.1706742547303;
-        Wed, 31 Jan 2024 15:09:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHAzHcFMYzZ1Fjt1TKLWmURRBot7v+72esHPyNaiZPiNsBBgagAdfrkSX8NfQy6730BbzqiyA==
-X-Received: by 2002:adf:e2c5:0:b0:33a:fe3b:b2ae with SMTP id d5-20020adfe2c5000000b0033afe3bb2aemr1897565wrj.66.1706742547097;
-        Wed, 31 Jan 2024 15:09:07 -0800 (PST)
+        bh=AVF+MMqBraYuLEZ3nz+rh5hR3QYgKQlXNiv3cB3L9Yk=;
+        b=CvameAkVTlJBFRcgTzpBCJgIQoZgVPyDhmGxS7u18rIBSMMbd/9UuBXIsAFeYotpY7
+         IW9PEGM+N3xyVDp5BShZfR3NTKIb+lbkMSKTEdEKamwUem6V3/DUgq0SLJ266OJUEWop
+         YQWh49hGKL3euWPlZBNSVdDybyTXtcg73/tpFypS1DjAn1oyBi3/95+0mvYqqmsToPpf
+         Dikf3vU4p64dK3Y+SKXeerrwgdkeO7iC//TYdvTybfGkbsFQyVjwtd1P3LVay/2mU/KJ
+         XCGA40UXnP0nVxGmInLJLx8TgqGO5LiK/S4+pWa/fcpedq/QN1P0XV3manVQoMvq6ls2
+         Vkow==
+X-Gm-Message-State: AOJu0YydNL4fX21cKepoPQ8n8ADzsl3sL/tJ5CTxNdyBAaNEx2mdW9mx
+	i0ZTd45Wx2HBv8ZgEeX+xRWjkf+R0gLaC/laF+Q2nkukP5nVoLrSZ6JQi7l62hWWntgdNUlKPP2
+	gXxVvFlNFPAcxmeizT1tlIjg2SLLeeV42S3lHPFT69fkNYN6wvNB1CQ==
+X-Received: by 2002:a05:600c:1989:b0:40f:b37a:a7ee with SMTP id t9-20020a05600c198900b0040fb37aa7eemr2466364wmq.41.1706742549762;
+        Wed, 31 Jan 2024 15:09:09 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFVVX+eJzIZ1rcHabnbK/RdP5/f3ptR0xndS6nc7kr0gOert0V15YKgSvtOIlcXhh3txHCawg==
+X-Received: by 2002:a05:600c:1989:b0:40f:b37a:a7ee with SMTP id t9-20020a05600c198900b0040fb37aa7eemr2466349wmq.41.1706742549449;
+        Wed, 31 Jan 2024 15:09:09 -0800 (PST)
 Received: from [10.10.0.32] ([213.214.41.32])
-        by smtp.gmail.com with ESMTPSA id a2-20020a5d4d42000000b0033afe816977sm3900965wru.66.2024.01.31.15.09.04
+        by smtp.gmail.com with ESMTPSA id fa6-20020a05600c518600b0040efb445698sm2718989wmb.5.2024.01.31.15.09.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jan 2024 15:09:05 -0800 (PST)
+        Wed, 31 Jan 2024 15:09:07 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -85,9 +85,9 @@ Cc: Zixi Chen <zixchen@redhat.com>,
 	Ingo Molnar <mingo@kernel.org>,
 	x86@kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v2 1/2] x86/cpu: allow reducing x86_phys_bits during early_identify_cpu()
-Date: Thu,  1 Feb 2024 00:09:01 +0100
-Message-ID: <20240131230902.1867092-2-pbonzini@redhat.com>
+Subject: [PATCH v2 2/2] x86/cpu/intel: Detect TME keyid bits before setting MTRR mask registers
+Date: Thu,  1 Feb 2024 00:09:02 +0100
+Message-ID: <20240131230902.1867092-3-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240131230902.1867092-1-pbonzini@redhat.com>
 References: <20240131230902.1867092-1-pbonzini@redhat.com>
@@ -100,21 +100,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-In commit fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct
-value straight away, instead of a two-phase approach"), the initialization
-of c->x86_phys_bits was moved after this_cpu->c_early_init(c).  This is
-incorrect because early_init_amd() expected to be able to reduce the
-value according to the contents of CPUID leaf 0x8000001f.
+MKTME repurposes the high bit of physical address to key id for encryption
+key and, even though MAXPHYADDR in CPUID[0x80000008] remains the same,
+the valid bits in the MTRR mask register are based on the reduced number
+of physical address bits.
 
-Fortunately, the bug was negated by init_amd()'s call to early_init_amd(),
-which does reduce x86_phys_bits in the end.  However, this is very
-late in the boot process and, most notably, the wrong value is used for
-x86_phys_bits when setting up MTRRs.
+detect_tme() in arch/x86/kernel/cpu/intel.c detects TME and subtracts
+it from the total usable physical bits, but it is called too late.
+Move the call to early_init_intel() so that it is called in setup_arch(),
+before MTRRs are setup.
 
-To fix this, call get_cpu_address_sizes() as soon as X86_FEATURE_CPUID is
-set/cleared, and c->extended_cpuid_level is retrieved.
+This fixes boot on TDX-enabled systems, which until now only worked with
+"disable_mtrr_cleanup".  Without the patch, the values written to the
+MTRRs mask registers were 52-bit wide (e.g. 0x000fffff_80000800) and
+the writes failed; with the patch, the values are 46-bit wide, which
+matches the reduced MAXPHYADDR that is shown in /proc/cpuinfo.
 
-Fixes: fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct value straight away, instead of a two-phase approach")
+Reported-by: Zixi Chen <zixchen@redhat.com>
 Cc: Adam Dunlap <acdunlap@google.com>
 Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 Cc: Xiaoyao Li <xiaoyao.li@intel.com>
@@ -126,33 +128,219 @@ Cc: x86@kernel.org
 Cc: stable@vger.kernel.org
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kernel/cpu/common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/intel.c | 178 ++++++++++++++++++------------------
+ 1 file changed, 91 insertions(+), 87 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 0b97bcde70c6..fbc4e60d027c 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1589,6 +1589,7 @@ static void __init early_identify_cpu(struct cpuinfo_x86 *c)
- 		get_cpu_vendor(c);
- 		get_cpu_cap(c);
- 		setup_force_cpu_cap(X86_FEATURE_CPUID);
-+		get_cpu_address_sizes(c);
- 		cpu_parse_early_param();
+diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
+index a927a8fc9624..40dec9b56f87 100644
+--- a/arch/x86/kernel/cpu/intel.c
++++ b/arch/x86/kernel/cpu/intel.c
+@@ -184,6 +184,90 @@ static bool bad_spectre_microcode(struct cpuinfo_x86 *c)
+ 	return false;
+ }
  
- 		if (this_cpu->c_early_init)
-@@ -1601,10 +1602,9 @@ static void __init early_identify_cpu(struct cpuinfo_x86 *c)
- 			this_cpu->c_bsp_init(c);
- 	} else {
- 		setup_clear_cpu_cap(X86_FEATURE_CPUID);
-+		get_cpu_address_sizes(c);
- 	}
++#define MSR_IA32_TME_ACTIVATE		0x982
++
++/* Helpers to access TME_ACTIVATE MSR */
++#define TME_ACTIVATE_LOCKED(x)		(x & 0x1)
++#define TME_ACTIVATE_ENABLED(x)		(x & 0x2)
++
++#define TME_ACTIVATE_POLICY(x)		((x >> 4) & 0xf)	/* Bits 7:4 */
++#define TME_ACTIVATE_POLICY_AES_XTS_128	0
++
++#define TME_ACTIVATE_KEYID_BITS(x)	((x >> 32) & 0xf)	/* Bits 35:32 */
++
++#define TME_ACTIVATE_CRYPTO_ALGS(x)	((x >> 48) & 0xffff)	/* Bits 63:48 */
++#define TME_ACTIVATE_CRYPTO_AES_XTS_128	1
++
++/* Values for mktme_status (SW only construct) */
++#define MKTME_ENABLED			0
++#define MKTME_DISABLED			1
++#define MKTME_UNINITIALIZED		2
++static int mktme_status = MKTME_UNINITIALIZED;
++
++static void detect_tme_early(struct cpuinfo_x86 *c)
++{
++	u64 tme_activate, tme_policy, tme_crypto_algs;
++	int keyid_bits = 0, nr_keyids = 0;
++	static u64 tme_activate_cpu0 = 0;
++
++	rdmsrl(MSR_IA32_TME_ACTIVATE, tme_activate);
++
++	if (mktme_status != MKTME_UNINITIALIZED) {
++		if (tme_activate != tme_activate_cpu0) {
++			/* Broken BIOS? */
++			pr_err_once("x86/tme: configuration is inconsistent between CPUs\n");
++			pr_err_once("x86/tme: MKTME is not usable\n");
++			mktme_status = MKTME_DISABLED;
++
++			/* Proceed. We may need to exclude bits from x86_phys_bits. */
++		}
++	} else {
++		tme_activate_cpu0 = tme_activate;
++	}
++
++	if (!TME_ACTIVATE_LOCKED(tme_activate) || !TME_ACTIVATE_ENABLED(tme_activate)) {
++		pr_info_once("x86/tme: not enabled by BIOS\n");
++		mktme_status = MKTME_DISABLED;
++		return;
++	}
++
++	if (mktme_status != MKTME_UNINITIALIZED)
++		goto detect_keyid_bits;
++
++	pr_info("x86/tme: enabled by BIOS\n");
++
++	tme_policy = TME_ACTIVATE_POLICY(tme_activate);
++	if (tme_policy != TME_ACTIVATE_POLICY_AES_XTS_128)
++		pr_warn("x86/tme: Unknown policy is active: %#llx\n", tme_policy);
++
++	tme_crypto_algs = TME_ACTIVATE_CRYPTO_ALGS(tme_activate);
++	if (!(tme_crypto_algs & TME_ACTIVATE_CRYPTO_AES_XTS_128)) {
++		pr_err("x86/mktme: No known encryption algorithm is supported: %#llx\n",
++				tme_crypto_algs);
++		mktme_status = MKTME_DISABLED;
++	}
++detect_keyid_bits:
++	keyid_bits = TME_ACTIVATE_KEYID_BITS(tme_activate);
++	nr_keyids = (1UL << keyid_bits) - 1;
++	if (nr_keyids) {
++		pr_info_once("x86/mktme: enabled by BIOS\n");
++		pr_info_once("x86/mktme: %d KeyIDs available\n", nr_keyids);
++	} else {
++		pr_info_once("x86/mktme: disabled by BIOS\n");
++	}
++
++	if (mktme_status == MKTME_UNINITIALIZED) {
++		/* MKTME is usable */
++		mktme_status = MKTME_ENABLED;
++	}
++
++	/*
++	 * KeyID bits effectively lower the number of physical address
++	 * bits.  Update cpuinfo_x86::x86_phys_bits accordingly.
++	 */
++	c->x86_phys_bits -= keyid_bits;
++}
++
+ static void early_init_intel(struct cpuinfo_x86 *c)
+ {
+ 	u64 misc_enable;
+@@ -322,6 +406,13 @@ static void early_init_intel(struct cpuinfo_x86 *c)
+ 	 */
+ 	if (detect_extended_topology_early(c) < 0)
+ 		detect_ht_early(c);
++
++	/*
++	 * Adjust the number of physical bits early because it affects the
++	 * valid bits of the MTRR mask registers.
++	 */
++	if (cpu_has(c, X86_FEATURE_TME))
++		detect_tme_early(c);
+ }
  
--	get_cpu_address_sizes(c);
+ static void bsp_init_intel(struct cpuinfo_x86 *c)
+@@ -482,90 +573,6 @@ static void srat_detect_node(struct cpuinfo_x86 *c)
+ #endif
+ }
+ 
+-#define MSR_IA32_TME_ACTIVATE		0x982
 -
- 	setup_force_cpu_cap(X86_FEATURE_ALWAYS);
+-/* Helpers to access TME_ACTIVATE MSR */
+-#define TME_ACTIVATE_LOCKED(x)		(x & 0x1)
+-#define TME_ACTIVATE_ENABLED(x)		(x & 0x2)
+-
+-#define TME_ACTIVATE_POLICY(x)		((x >> 4) & 0xf)	/* Bits 7:4 */
+-#define TME_ACTIVATE_POLICY_AES_XTS_128	0
+-
+-#define TME_ACTIVATE_KEYID_BITS(x)	((x >> 32) & 0xf)	/* Bits 35:32 */
+-
+-#define TME_ACTIVATE_CRYPTO_ALGS(x)	((x >> 48) & 0xffff)	/* Bits 63:48 */
+-#define TME_ACTIVATE_CRYPTO_AES_XTS_128	1
+-
+-/* Values for mktme_status (SW only construct) */
+-#define MKTME_ENABLED			0
+-#define MKTME_DISABLED			1
+-#define MKTME_UNINITIALIZED		2
+-static int mktme_status = MKTME_UNINITIALIZED;
+-
+-static void detect_tme(struct cpuinfo_x86 *c)
+-{
+-	u64 tme_activate, tme_policy, tme_crypto_algs;
+-	int keyid_bits = 0, nr_keyids = 0;
+-	static u64 tme_activate_cpu0 = 0;
+-
+-	rdmsrl(MSR_IA32_TME_ACTIVATE, tme_activate);
+-
+-	if (mktme_status != MKTME_UNINITIALIZED) {
+-		if (tme_activate != tme_activate_cpu0) {
+-			/* Broken BIOS? */
+-			pr_err_once("x86/tme: configuration is inconsistent between CPUs\n");
+-			pr_err_once("x86/tme: MKTME is not usable\n");
+-			mktme_status = MKTME_DISABLED;
+-
+-			/* Proceed. We may need to exclude bits from x86_phys_bits. */
+-		}
+-	} else {
+-		tme_activate_cpu0 = tme_activate;
+-	}
+-
+-	if (!TME_ACTIVATE_LOCKED(tme_activate) || !TME_ACTIVATE_ENABLED(tme_activate)) {
+-		pr_info_once("x86/tme: not enabled by BIOS\n");
+-		mktme_status = MKTME_DISABLED;
+-		return;
+-	}
+-
+-	if (mktme_status != MKTME_UNINITIALIZED)
+-		goto detect_keyid_bits;
+-
+-	pr_info("x86/tme: enabled by BIOS\n");
+-
+-	tme_policy = TME_ACTIVATE_POLICY(tme_activate);
+-	if (tme_policy != TME_ACTIVATE_POLICY_AES_XTS_128)
+-		pr_warn("x86/tme: Unknown policy is active: %#llx\n", tme_policy);
+-
+-	tme_crypto_algs = TME_ACTIVATE_CRYPTO_ALGS(tme_activate);
+-	if (!(tme_crypto_algs & TME_ACTIVATE_CRYPTO_AES_XTS_128)) {
+-		pr_err("x86/mktme: No known encryption algorithm is supported: %#llx\n",
+-				tme_crypto_algs);
+-		mktme_status = MKTME_DISABLED;
+-	}
+-detect_keyid_bits:
+-	keyid_bits = TME_ACTIVATE_KEYID_BITS(tme_activate);
+-	nr_keyids = (1UL << keyid_bits) - 1;
+-	if (nr_keyids) {
+-		pr_info_once("x86/mktme: enabled by BIOS\n");
+-		pr_info_once("x86/mktme: %d KeyIDs available\n", nr_keyids);
+-	} else {
+-		pr_info_once("x86/mktme: disabled by BIOS\n");
+-	}
+-
+-	if (mktme_status == MKTME_UNINITIALIZED) {
+-		/* MKTME is usable */
+-		mktme_status = MKTME_ENABLED;
+-	}
+-
+-	/*
+-	 * KeyID bits effectively lower the number of physical address
+-	 * bits.  Update cpuinfo_x86::x86_phys_bits accordingly.
+-	 */
+-	c->x86_phys_bits -= keyid_bits;
+-}
+-
+ static void init_cpuid_fault(struct cpuinfo_x86 *c)
+ {
+ 	u64 msr;
+@@ -702,9 +709,6 @@ static void init_intel(struct cpuinfo_x86 *c)
  
- 	cpu_set_bug_bits(c);
+ 	init_ia32_feat_ctl(c);
+ 
+-	if (cpu_has(c, X86_FEATURE_TME))
+-		detect_tme(c);
+-
+ 	init_intel_misc_features(c);
+ 
+ 	split_lock_init();
 -- 
 2.43.0
 
