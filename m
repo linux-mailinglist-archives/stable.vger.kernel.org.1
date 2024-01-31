@@ -1,124 +1,114 @@
-Return-Path: <stable+bounces-17484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CBF98437D3
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 08:27:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D71758437DE
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 08:28:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6F0A1F2522E
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 07:27:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 169CD1C26CE5
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 07:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6005D55E72;
-	Wed, 31 Jan 2024 07:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82F251013;
+	Wed, 31 Jan 2024 07:25:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M+PPRZDF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A03656479;
-	Wed, 31 Jan 2024 07:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945035DF0F
+	for <stable@vger.kernel.org>; Wed, 31 Jan 2024 07:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706685725; cv=none; b=AItS0LPlBLO3jOcMNXhV+3Wa1qPxBiZTBoiMM6cimyHvEQ8e+v0BUr8xBaey1vgNFXHDF0+pK1PWujGmQLbWHYyoPQasU5bTVV9wM4qw1T+o5vYoaCj4qBwhdliDXFLkje95LSH840Krd77hJxs2WkrBjOPhSmHgYijgSDwAE4o=
+	t=1706685931; cv=none; b=tApgpRF+v8YnW2hdRI+nxqr2BkSWDhk9qavgXE4DMRRBQFjW6ysnaj6mNWiS9mCtMtUe1SWbhkB+pRzHIDhDFYujai3X2lnYbJi6utKos6RRah1fbgdU1DR5BXtSRtfjD/dVhjtwaTmWGJfWkJkrd/7ywqknlHj12BZnniE+iSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706685725; c=relaxed/simple;
-	bh=VSPOIQIi1SFSb7BcOqd2hNNK1gD3mDXV74OKv3NfOM4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y4PH8T7zZZW/eVZpmaN/fu2cQE4ZO2cUvotkHqCCzDe3RVY7zOrH3/qk99Go9I1RQnmuIZaoEMBG5m0hTCqYlYuXuCwd5bnzUi1Cj7c4lnvKXpZhSpMxY6EI0dJmnhmEpp+SMbs2NY7iYnTDJ4AUGr7KZTFMucysv0JlvaiQCqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2FEC433F1;
-	Wed, 31 Jan 2024 07:22:01 +0000 (UTC)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: gregkh@linuxfoundation.org,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: loongarch@lists.linux.dev,
-	stable@vger.kernel.org,
-	Xuefeng Li <lixuefeng@loongson.cn>,
-	Guo Ren <guoren@kernel.org>,
-	Xuerui Wang <kernel@xen0n.name>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	linux-kernel@vger.kernel.org,
-	loongson-kernel@lists.loongnix.cn,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1.y and 6.6.y] LoongArch/smp: Call rcutree_report_cpu_starting() at tlb_init()
-Date: Wed, 31 Jan 2024 15:21:51 +0800
-Message-Id: <20240131072151.1023985-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.39.3
+	s=arc-20240116; t=1706685931; c=relaxed/simple;
+	bh=EDeaiVO2K2Ts63Y/UKcw0nogMvaq0i4jVu6msmflVt8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QkYFEPBeROyHSS117JbN5CggcQgR2hLllUZ9fSGeFgrHHabj6FSXpSgc+6rTOPYF7PSmgwDHCVovx4fxaHn3xsH611grcengKVsinzq3ZzTQqRINEHWX+XpfliYEim5j4BoLGZ/DYkEMw1hiirDIA5VCvTdQt+K0SaMSiVjsW5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M+PPRZDF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FFAC43390
+	for <stable@vger.kernel.org>; Wed, 31 Jan 2024 07:25:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706685930;
+	bh=EDeaiVO2K2Ts63Y/UKcw0nogMvaq0i4jVu6msmflVt8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=M+PPRZDFMtntYucTN/GPR9e/CVSC7S9VGN2Qq6s90NYY9FA8T53YmpDTAXvb4bZpT
+	 3MsmQemzp/cF+6MhzcVwypd8so1v710p0ocLQ8y7jzs9zEVFB36vJkflpn8Py/TKix
+	 TKQ5Mjnp2i71vFNxOu3Lu9gGwGkp8Sln0V9La1Kqt/iUiqYcJEIFtS63ZMcc8zOm0Z
+	 v2hEVR6QeR6FC8tFLwvj5koAaesEZDFve5CocE+xjfMZvd4cTv3y+sVT0PuQI8qu+n
+	 34lcK1ZXUMmXFInINgZVqV92J5rEPJkNK/vY2HsQFrVWoz6R2VX0boD00cs3/rqpfW
+	 qWfFMN5w3aQ7Q==
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-55f03ede12cso3680673a12.0
+        for <stable@vger.kernel.org>; Tue, 30 Jan 2024 23:25:30 -0800 (PST)
+X-Gm-Message-State: AOJu0YyZWTZ0p9HaV4hSEFe2qQGYWmjl/r3LvO1sXa8w9hM5ZIWyTC0n
+	mWu5lH3OhFrj7HdvUqyISG+b4XAf8eOk3h0sFrC/6pt2A/uvqg/vC8Z/lUgW38d8C54X+e2THsB
+	vKUhJfO/H2YdoSqb3MxJO1+L39TA=
+X-Google-Smtp-Source: AGHT+IG2BMxTj8FeGJpc516OHDPB+t8Zvw2ufQ88Krn/HAivqr3u2M5pHxX0/wJyCYZ7GkINjTnavbpUuE5KRMsGdMw=
+X-Received: by 2002:a05:6402:1751:b0:55f:3f35:32c0 with SMTP id
+ v17-20020a056402175100b0055f3f3532c0mr447055edx.4.1706685928645; Tue, 30 Jan
+ 2024 23:25:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <2024012911-outright-violin-e677@gregkh> <CAAhV-H44QUho8cq4cG6rpovboBH_28vfiw-akMWoLMLR6Qgu1w@mail.gmail.com>
+ <2024012932-share-rendering-96e1@gregkh>
+In-Reply-To: <2024012932-share-rendering-96e1@gregkh>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Wed, 31 Jan 2024 15:25:16 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4zODB93deM_vzoy+GGX7iYtDxXtgsDLUg0QXXQGqdQEw@mail.gmail.com>
+Message-ID: <CAAhV-H4zODB93deM_vzoy+GGX7iYtDxXtgsDLUg0QXXQGqdQEw@mail.gmail.com>
+Subject: Re: FAILED: patch "[PATCH] LoongArch/smp: Call rcutree_report_cpu_starting()
+ at" failed to apply to 6.1-stable tree
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: chenhuacai@loongson.cn, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Machines which have more than 8 nodes fail to boot SMP after commit
-a2ccf46333d7b2cf96 ("LoongArch/smp: Call rcutree_report_cpu_starting()
-earlier"). Because such machines use tlb-based per-cpu base address
-rather than dmw-based per-cpu base address, resulting per-cpu variables
-can only be accessed after tlb_init(). But rcutree_report_cpu_starting()
-is now called before tlb_init() and accesses per-cpu variables indeed.
+On Wed, Jan 31, 2024 at 12:35=E2=80=AFAM Greg KH <gregkh@linuxfoundation.or=
+g> wrote:
+>
+> On Tue, Jan 30, 2024 at 10:25:18AM +0800, Huacai Chen wrote:
+> > Hi, Greg,
+> >
+> > On Tue, Jan 30, 2024 at 12:53=E2=80=AFAM <gregkh@linuxfoundation.org> w=
+rote:
+> > >
+> > >
+> > > The patch below does not apply to the 6.1-stable tree.
+> > > If someone wants it applied there, or to any other stable or longterm
+> > > tree, then please email the backport, including the original git comm=
+it
+> > > id to <stable@vger.kernel.org>.
+> > >
+> > > To reproduce the conflict and resubmit, you may use the following com=
+mands:
+> > >
+> > > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linu=
+x.git/ linux-6.1.y
+> > > git checkout FETCH_HEAD
+> > > git cherry-pick -x 5056c596c3d1848021a4eaa76ee42f4c05c50346
+> > > # <resolve conflicts, build, test, etc.>
+> > > git commit -s
+> > > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012=
+911-outright-violin-e677@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+> > >
+> > > Possible dependencies:
+> > >
+> > > 5056c596c3d1 ("LoongArch/smp: Call rcutree_report_cpu_starting() at t=
+lb_init()")
+> > Similar to the commit which it fixes, please change
+> > rcutree_report_cpu_starting() to rcu_cpu_starting() in the code.
+>
+> I need a backported patch for that please :)
+OK, wait a minute.
+https://lore.kernel.org/loongarch/20240131072151.1023985-1-chenhuacai@loong=
+son.cn/T/#u
 
-Since the original patch want to avoid the lockdep warning caused by
-page allocation in tlb_init(), we can move rcutree_report_cpu_starting()
-to tlb_init() where after tlb exception configuration but before page
-allocation.
-
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- arch/loongarch/kernel/smp.c |  1 -
- arch/loongarch/mm/tlb.c     | 16 ++++++++++------
- 2 files changed, 10 insertions(+), 7 deletions(-)
-
-diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
-index 3f3cdc7ffe7a..4b4ba3f9335d 100644
---- a/arch/loongarch/kernel/smp.c
-+++ b/arch/loongarch/kernel/smp.c
-@@ -506,7 +506,6 @@ asmlinkage void start_secondary(void)
- 	sync_counter();
- 	cpu = raw_smp_processor_id();
- 	set_my_cpu_offset(per_cpu_offset(cpu));
--	rcu_cpu_starting(cpu);
- 
- 	cpu_probe();
- 	constant_clockevent_init();
-diff --git a/arch/loongarch/mm/tlb.c b/arch/loongarch/mm/tlb.c
-index 2c51d755fbbc..e71150dd7f4b 100644
---- a/arch/loongarch/mm/tlb.c
-+++ b/arch/loongarch/mm/tlb.c
-@@ -284,12 +284,16 @@ static void setup_tlb_handler(int cpu)
- 		set_handler(EXCCODE_TLBNR * VECSIZE, handle_tlb_protect, VECSIZE);
- 		set_handler(EXCCODE_TLBNX * VECSIZE, handle_tlb_protect, VECSIZE);
- 		set_handler(EXCCODE_TLBPE * VECSIZE, handle_tlb_protect, VECSIZE);
--	}
-+	} else {
-+		int vec_sz __maybe_unused;
-+		void *addr __maybe_unused;
-+		struct page *page __maybe_unused;
-+
-+		/* Avoid lockdep warning */
-+		rcu_cpu_starting(cpu);
-+
- #ifdef CONFIG_NUMA
--	else {
--		void *addr;
--		struct page *page;
--		const int vec_sz = sizeof(exception_handlers);
-+		vec_sz = sizeof(exception_handlers);
- 
- 		if (pcpu_handlers[cpu])
- 			return;
-@@ -305,8 +309,8 @@ static void setup_tlb_handler(int cpu)
- 		csr_write64(pcpu_handlers[cpu], LOONGARCH_CSR_EENTRY);
- 		csr_write64(pcpu_handlers[cpu], LOONGARCH_CSR_MERRENTRY);
- 		csr_write64(pcpu_handlers[cpu] + 80*VECSIZE, LOONGARCH_CSR_TLBRENTRY);
--	}
- #endif
-+	}
- }
- 
- void tlb_init(int cpu)
--- 
-2.39.3
-
+Huacai
 
