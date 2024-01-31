@@ -1,121 +1,106 @@
-Return-Path: <stable+bounces-17496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF387843A6B
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 10:11:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9F1843A2B
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 10:06:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAFE52942CB
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 09:11:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E8031F2F865
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 09:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4231160885;
-	Wed, 31 Jan 2024 09:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75C106DD18;
+	Wed, 31 Jan 2024 09:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h7/3s84I"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Q+Fa4+xk"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D836027F;
-	Wed, 31 Jan 2024 09:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDEA26E2A5
+	for <stable@vger.kernel.org>; Wed, 31 Jan 2024 09:00:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706692136; cv=none; b=hOrIp/H/q506mmfiQSM7eXBkTSG6U7s8OhfbmX2HRkr8ZUDY9SGJksjR4V/oB45cQPlmAPefunybst3/xhoVINiiJX5WMPhtqmYBKpR037RhBBz7UwJ9Gjp94ELuxbKSEXiULn1VjE7xFW+sTNC5GnsfcR597dMDELlgz7BosuQ=
+	t=1706691619; cv=none; b=VO5MuyFuBMMLG85eyC2IrptVQqiquhA6+j/NuPaXc8KGInLfwqX3YQGiGuL2acsOUmK1RCnLBFvwLFOmez80HJBfdqu/9aRYNfArLvdu02YYE9ouGsbs0VwgXWJ8KZBHOClTStsfjIW+TTVSHdN8MDyaix2LofnUpJEo9kuMGLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706692136; c=relaxed/simple;
-	bh=hxzRTdZxJSt3TvyZe6HqJcBulFzOOA/CYDt4I8ip2l4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ARCZzxtjh+d6DApGWw/i2EYl8aCiZSw++c2iGcdONKkW6ezMVQNV3CfuurlcvKuC3TUkJeHQqeXlukLePH4oOPGB22OJZ1SOqaY3/F66/cd/B9uS1TqjZkwFODcMtXPn1RJT1oIkkP1jcdnNsT+aAYuGoF9eUHYPiUk5FO2TSGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h7/3s84I; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706692133; x=1738228133;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hxzRTdZxJSt3TvyZe6HqJcBulFzOOA/CYDt4I8ip2l4=;
-  b=h7/3s84IVSjc+w194EUXLr+YHeSzxAiiAHK3kCg7koKWHy0r4qI/07Vo
-   v6PrCPbVM4BwAXKmNm3tyE6ziJWidZWqbMaRTV0i5SF6y7lX6qufGUW88
-   kksp8ERcwA4Q7nn4ttc+G1ELFXCBpoczJSgcOqSKdG6GM3I/fMP+t8ovT
-   3S5ldHEATqN9TidCzxR3U17CTSOY0mn/tSYRnTgSL/rjOUqeqWS2kPCye
-   vQzokjEjka2cx+7b9Nqk9NN0M3tYB03M/b0yaFK6OzhahXb2SyF0oVdxB
-   1uFK99Xegf7vwGONvLA0Y5SVDbJyArMxOp+P0Tg1EKQ/oBHD6T7FbnM4R
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="10207460"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
-   d="scan'208";a="10207460"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 01:08:52 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="931776091"
-X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
-   d="scan'208";a="931776091"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 31 Jan 2024 01:08:49 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 7A2316E4; Wed, 31 Jan 2024 10:39:14 +0200 (EET)
-Date: Wed, 31 Jan 2024 10:39:14 +0200
-From: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Zixi Chen <zixchen@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Kai Huang <kai.huang@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>, x86@kernel.org, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] x86/cpu/intel: Detect TME keyid bits before setting MTRR
- mask registers
-Message-ID: <bf3ptwhblztmal3c5b7jhjpohizw7q64th76pzit6rpgnewmo5@atq3oy6sp5vn>
-References: <20240130180400.1698136-1-pbonzini@redhat.com>
+	s=arc-20240116; t=1706691619; c=relaxed/simple;
+	bh=4P30cDZJoK8lB7gKvnrdCDa1fyR371TkfVJY5FVRBso=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WE09jEDJMvddECEHROJXDizZJVviDQrQypgHRkG0A/aWf97DoIVewP89bOFOGzCbqDyc5V7WpAM7augJNUQBzDBNwSBX26eVm4BJ9EQrWtb6do1diXeOuTg4r+LYIAyFclWAiBvnQsVQRwbHdfXq8hrfUdvOYI7zAnPGoW+kRYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Q+Fa4+xk; arc=none smtp.client-ip=209.85.128.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-602ab446cd8so47964177b3.1
+        for <stable@vger.kernel.org>; Wed, 31 Jan 2024 01:00:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1706691616; x=1707296416; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4P30cDZJoK8lB7gKvnrdCDa1fyR371TkfVJY5FVRBso=;
+        b=Q+Fa4+xknqGuZ1jER6gHM0aX/zbkOIh0YiJ+8zfTalq208itEMP9X2/C53ym14Owmn
+         qcfYTBF1sSYpBR1fcivEyZVD2k4QoDWK8mJAgGiNkUNmxdg88wz1l3tvSJy0uW8T3uq+
+         L2yB/lpLwjGc48eD9ExRg9UMnbZfJqydDoTLHyRB5L6MUI5QVNgNO6/VFOs4qdU5Hlyo
+         VUGZeOC7GnOaLcJRQdlR/Pm5LcgH2LcE8KGlXGhzO+bBYtz9KUl1cy2gjtWkjC3LHyrO
+         brGFTg1rsnZQiSgoNlOejRqpLExbszszXpoBd/lQW0R4INJrrWK9gMflsOe6I0s0/DSI
+         vwyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706691616; x=1707296416;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4P30cDZJoK8lB7gKvnrdCDa1fyR371TkfVJY5FVRBso=;
+        b=daoz9NlhOkhyY/T1y7NmUomIrQ5HOpd/G3ZCnMY1Wgpfh5UlkVlaWMaini86sPmIYO
+         P8t7RGJrYS1OtCXN4Ti89DcFUr5gyKNkaf4YP5TDsQlO31gfl7lkxjK4SSYcRrJljPgn
+         HB+IL2ikFlsIUo3ViLLpiToIxvj/L4OEQKzd+05PtcXOdy7vSeEyA/SBsjO4wSI/CwGp
+         dLGI62ChI6v7RJ5kcMg+EIKIVBtLwlK6WBtlFgJ3TGgA81Hevh/dE1MyR9E929H4F3B7
+         OAQL+4kcUQDtvUldWe/VNWj1+jKV+uAQpmk9F/eJBAb+aW3SJXnZ2DbXyrc/7lB/bshC
+         09Qw==
+X-Gm-Message-State: AOJu0YwpQsLh1IXrQlAYyORjZ2Y+cmGooOhp0NJ1q46feQs8SoLK6hsu
+	ykqFXgEOAB7iIjuocUn8P4O/HDl/dU+N8ChvOU/CZPd4QKaGRLzFY9a9ilTP4dZ9ROzGuQ7XLwT
+	vZrKLxAQmA2b2tCxfn83xeKWXlsuAgIYfOErIsw==
+X-Google-Smtp-Source: AGHT+IEvB7JEzDy/bd9wdN/APqpYnJcD2om3sihib43VyDrw9Rp4bAVf9j6uDJjuR1z5asPY3/CLOdSDCQOVGQayMGA=
+X-Received: by 2002:a0d:eb16:0:b0:603:fd33:8b81 with SMTP id
+ u22-20020a0deb16000000b00603fd338b81mr708880ywe.21.1706691616679; Wed, 31 Jan
+ 2024 01:00:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240130180400.1698136-1-pbonzini@redhat.com>
+References: <20240125081601.118051-1-krzysztof.kozlowski@linaro.org>
+ <CAMRc=MesG1nYSxx0osmQEEXCvs-6B4s4=TFYW5wD8pOXpV+OcQ@mail.gmail.com> <a3d24e7d-404e-4c02-99a2-8838ee7028c9@linaro.org>
+In-Reply-To: <a3d24e7d-404e-4c02-99a2-8838ee7028c9@linaro.org>
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Wed, 31 Jan 2024 10:00:05 +0100
+Message-ID: <CACRpkdaus1oRCiafiJjqTkARcKBuxvNfeqDrve7ZdG4UqnNX5A@mail.gmail.com>
+Subject: Re: [PATCH 1/3] gpiolib: add gpiod_to_gpio_device() stub for !GPIOLIB
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, Peter Rosin <peda@axentia.se>, linux-gpio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Philipp Zabel <p.zabel@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 30, 2024 at 07:04:00PM +0100, Paolo Bonzini wrote:
-> MKTME repurposes the high bit of physical address to key id for encryption
-> key and, even though MAXPHYADDR in CPUID[0x80000008] remains the same,
-> the valid bits in the MTRR mask register are based on the reduced number
-> of physical address bits.
-> 
-> detect_tme() in arch/x86/kernel/cpu/intel.c detects TME and subtracts
-> it from the total usable physical bits, but it is called too late.
-> Move the call to early_init_intel() so that it is called in setup_arch(),
-> before MTRRs are setup.
-> 
-> This fixes boot on some TDX-enabled systems which until now only worked
-> with "disable_mtrr_cleanup".  Without the patch, the values written to
-> the MTRRs mask registers were 52-bit wide (e.g. 0x000fffff_80000800)
-> and the writes failed; with the patch, the values are 46-bit wide,
-> which matches the reduced MAXPHYADDR that is shown in /proc/cpuinfo.
-> 
-> Fixes: cb06d8e3d020 ("x86/tme: Detect if TME and MKTME is activated by BIOS", 2018-03-12)
-> Reported-by: Zixi Chen <zixchen@redhat.com>
-> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-> Cc: Kai Huang <kai.huang@linux.intel.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: x86@kernel.org
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+On Thu, Jan 25, 2024 at 9:59=E2=80=AFAM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
 
-I've seen the patch before, although by different author and with
-different commit message, not sure what is going on.
+> [Bart]
+> > Why is this needed? Users of gpio/driver.h should select GPIOLIB.
+>
+> The third patch shows you the user which will not select GPIOLIB. Why?
+> Because there is no hard dependency between one core framework (RESET)
+> on other core framework (GPIOLIB).
+>
+> The first two patches are added for the same purpose, even though there
+> is no need currently.
 
-I had concern about that patch and I don't think it was addressed.
-See the thread:
+That reset driver implementing a GPIO chip has not been reviewed by the
+GPIO maintainers so I looked up the patch and replied, we have
+review comments.
 
-https://lore.kernel.org/all/20231002224752.33qa2lq7q2w4nqws@box
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Yours,
+Linus Walleij
 
