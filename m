@@ -1,156 +1,155 @@
-Return-Path: <stable+bounces-17471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8744F8432FD
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 02:49:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E78584331B
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 03:07:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B98D21C258A7
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 01:49:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34B082840FA
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 02:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65F2A4C9D;
-	Wed, 31 Jan 2024 01:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99AD65224;
+	Wed, 31 Jan 2024 02:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iEA6xl2P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGirAuWh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C0A4C6F;
-	Wed, 31 Jan 2024 01:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566FA4C98;
+	Wed, 31 Jan 2024 02:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706665759; cv=none; b=r3w/9889qpyX85BIjJ/ckkWalyCCiqkqGAVbOOWnNMx/EmuJf+qldol8a5Xbj7lGvQdha7aYgJQeTWeLc2dQBjhHsH8d7qDwhSs4RXVuOV7GU+CvV1hUSjJzh5S55L/xfTMarDkv+Scf9CBBoyaQotzPezfvrj05M9F37IXg20c=
+	t=1706666840; cv=none; b=totEpOyow/qowSurvM/A34/Fnynek0EQulSTU+5ZSotpzwR/nyIdjPJul0XCdiMDoUqN8Yza8WwQbWEQrAKsqVNSMc03/9RvIhARpO0L5h/2M8hoLocWvIPwLwH4vNK4WacnZagm61Yv7nvjBn+zy7cNDxfeizQUanNPEg73JwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706665759; c=relaxed/simple;
-	bh=OiYv3On7yu88BBgxRxAAeYrIOf05OpfHEFuw9vndegM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RxYTF96bmvn18pv8HwbMHcQE8oaDse/SvpBxeN1HnBwvGw2fYfp6f6nIQc4ecYItnIkcre2DYFqH/QevxZ+5u3ccorswuNMxCaoJD3uokoEwr/ZsgNHC/BRCXucnMxvFlCBbEEKkhzsKOoFHS/+1dQK2vyzqE0kE/W/yYp2OKX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iEA6xl2P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E43C43394;
-	Wed, 31 Jan 2024 01:49:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706665758;
-	bh=OiYv3On7yu88BBgxRxAAeYrIOf05OpfHEFuw9vndegM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iEA6xl2PnIIlpuw8QfpVTRon0X5gwefCfa8AEzfKcuSn/3qNFqMRbUxcW2EBhzi4H
-	 cyA6C0CPShEgXuCnb96WbeV7vyjLoJqZsOXn9Bn3CQnxAfto8yNSx3NoXWV69rPHgD
-	 gnKXgc+SZQ86tHcfrCn9ykqcaiuNYCRzGtdQ1B9bkMtp/X8J6FrKqakQc/BkrupU0r
-	 tlKXWZXspR1Bq9XbIjccSU01DqiAtb5wdhL9d0JjfZh2VnGIyuMJ28dSUrWDaCN9SV
-	 jvkB0T40viZ0Oxq65uALy+UAwfTtWUkQHPXrBb0xH21qee6gCbDmX5jncSlrDSycEh
-	 b5Ny+c4hZlx/g==
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-20503dc09adso3091298fac.2;
-        Tue, 30 Jan 2024 17:49:18 -0800 (PST)
-X-Gm-Message-State: AOJu0YxIgBuhhqkmAxU+07Yw81OZCigT0T6QVLlKBvh4LG8NK1a3O+T4
-	MunX5tGb4NQNgE6hIfd2KiyoyO80pIhq+waHpWbyaq+GIP/j/qvaN0lAlejIq3Y2LsGH/Phu4J6
-	anHxyMRAQKYAq3unsXtWJ1Q6QLPQ=
-X-Google-Smtp-Source: AGHT+IFwvJciBWAf8OLEoVPFOvkG6OiHeqt3VCmVBqCCwH5l8In8IYspitAp1nikFxF8+s9FJW1jLVcoiSvNv2eouLY=
-X-Received: by 2002:a05:6871:7a11:b0:210:d74e:9d0d with SMTP id
- pc17-20020a0568717a1100b00210d74e9d0dmr473202oac.57.1706665757880; Tue, 30
- Jan 2024 17:49:17 -0800 (PST)
+	s=arc-20240116; t=1706666840; c=relaxed/simple;
+	bh=a84fhSd5NWwuU528F2aAkVgPYAT/j+h1xrXm8mMAM4M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aUD9X0RoJI/UVXHOsoBoNpzbfAa9dtzFfUt1Xf7f2nLA8c6FaNF+4fUDLoe3USpqM4V47R3j6XrfCYxqRw8UWmbjIbNU/jm174wUFC+8hS+mvTOxR0Rhqw3sNCOoNv6SrWXYJASBIzpAlGJMhK0RJ589uUBwHCbHePuvbxn7M0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGirAuWh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924B3C433C7;
+	Wed, 31 Jan 2024 02:07:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1706666839;
+	bh=a84fhSd5NWwuU528F2aAkVgPYAT/j+h1xrXm8mMAM4M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mGirAuWh9b+91QHJz+wOG3Zbxa5ebhd2TM34ES7jIXe/6+U6Hq4o1IyANwKO9d/si
+	 9JZR6ys4q5eQJ1wsm+jxlBHK24UXgjkHC8uyBuf3ERx0jYznsUZsSMU8seMSJH/R3d
+	 S70YJONkgHJX+CHh+s2He9fBS52P12a3r+F44oHE=
+Date: Tue, 30 Jan 2024 18:07:18 -0800
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Dawei Li <dawei.li@shingroup.cn>
+Cc: arnd@arndb.de, fancer.lancer@gmail.com, lkp@intel.com,
+	linux-kernel@vger.kernel.org, set_pte_at@outlook.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] misc: eeprom/idt_89hpesx: Convert data structures to LE
+ explicitly
+Message-ID: <2024013030-paternal-robotics-7fdf@gregkh>
+References: <20240130040632.3039911-1-dawei.li@shingroup.cn>
+ <2024013039-asleep-rally-39c0@gregkh>
+ <03B279416A25E958+ZbmjvFafk44HBl4b@centos8>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAK7LNAR2xDjbn+BZqUrgbDxPJUyQBULFB51kTiN8Nc78DXVyEw@mail.gmail.com>
- <20240129092819.10088-1-jtornosm@redhat.com>
-In-Reply-To: <20240129092819.10088-1-jtornosm@redhat.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 31 Jan 2024 10:48:41 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAT2gA_B_SR87GdSL1itToM3nJi2iBiwBkrnk5zGwcfifA@mail.gmail.com>
-Message-ID: <CAK7LNAT2gA_B_SR87GdSL1itToM3nJi2iBiwBkrnk5zGwcfifA@mail.gmail.com>
-Subject: Re: [PATCH v7] rpm-pkg: simplify installkernel %post
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Cc: dcavalca@meta.com, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, nathan@kernel.org, ndesaulniers@google.com, 
-	nicolas@fjasle.eu, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <03B279416A25E958+ZbmjvFafk44HBl4b@centos8>
 
-On Mon, Jan 29, 2024 at 6:28=E2=80=AFPM Jose Ignacio Tornos Martinez
-<jtornosm@redhat.com> wrote:
->
-> The new installkernel application that is now included in systemd-udev
-> package allows installation although destination files are already presen=
-t
-> in the boot directory of the kernel package, but is failing with the
-> implemented workaround for the old installkernel application from grubby
-> package.
->
-> For the new installkernel application, as Davide says:
-> <<The %post currently does a shuffling dance before calling installkernel=
-.
-> This isn't actually necessary afaict, and the current implementation
-> ends up triggering downstream issues such as
-> https://github.com/systemd/systemd/issues/29568
-> This commit simplifies the logic to remove the shuffling. For reference,
-> the original logic was added in commit 3c9c7a14b627("rpm-pkg: add %post
-> section to create initramfs and grub hooks").>>
->
-> But we need to keep the old behavior as well, because the old installkern=
-el
-> application from grubby package, does not allow this simplification and
-> we need to be backward compatible to avoid issues with the different
-> packages.
->
-> Mimic Fedora shipping process and store vmlinuz, config amd System.map
-> in the module directory instead of the boot directory. In this way, we wi=
-ll
-> avoid the commented problem for all the cases, because the new destinatio=
-n
-> files are not going to exist in the boot directory of the kernel package.
->
-> Replace installkernel tool with kernel-install tool, because the latter i=
-s
-> more complete.
->
-> Besides, after installkernel tool execution, check to complete if the
-> correct package files vmlinuz, System.map and config files are present
-> in /boot directory, and if necessary, copy manually for install operation=
-.
-> In this way, take into account if  files were not previously copied from
-> /usr/lib/kernel/install.d/* scripts and if the suitable files for the
-> requested package are present (it could be others if the rpm files were
-> replace with a new pacakge with the same release and a different build).
->
-> Tested with Fedora 38, Fedora 39, RHEL 9, Oracle Linux 9.3,
-> openSUSE Tumbleweed and openMandrive ROME, using dnf/zypper and rpm tools=
-.
->
-> cc: stable@vger.kernel.org
-> Co-Developed-by: Davide Cavalca <dcavalca@meta.com>
-> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-> ---
-> V1 -> V2:
-> - Complete to be backward compatible with the previous installkernel
-> application.
-> V2 -> V3:
-> - Follow the suggestions from Masahiro Yamada and change the installation
-> destination to avoid problems instead of checking the package.
-> V3 -> V4:
-> - Make the patch applicable to linux-kbuild/for-next (ia64 support was
-> already removed).
-> V4 -> V5:
-> - Complete for other Linux distributions.
-> V5 -> V6
-> - Simplify and do more compatible checks when copied files wants to be
->   replaced.
-> - Remove %preun because it will be better done with another patch.
-> - Add indentation and quotation.
-> V6 -> V7
-> - Simplify check to copy (cpm --silent return error if file doesn't exist=
-).
-> - Limit indientation to modifications.
+On Wed, Jan 31, 2024 at 09:34:52AM +0800, Dawei Li wrote:
+> Hi Greg,
+> 
+> Thanks for reviewing.
+> 
+> On Tue, Jan 30, 2024 at 06:04:17AM -0800, Greg KH wrote:
+> > On Tue, Jan 30, 2024 at 12:06:32PM +0800, Dawei Li wrote:
+> > > For data structures needs cpu_to_le* conversion, its prototype needs to
+> > > be declared with __le* explicitly.
+> > > 
+> > > Fixes: cfad6425382e ("eeprom: Add IDT 89HPESx EEPROM/CSR driver")
+> > > Reported-by: kernel test robot <lkp@intel.com>
+> > > Closes: https://lore.kernel.org/oe-kbuild-all/202401261250.b07Yt30Z-lkp@intel.com/
+> > > Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
+> > > Cc: <stable@vger.kernel.org>
+> > > ---
+> > >  drivers/misc/eeprom/idt_89hpesx.c | 6 +++---
+> > >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > > 
+> > > diff --git a/drivers/misc/eeprom/idt_89hpesx.c b/drivers/misc/eeprom/idt_89hpesx.c
+> > > index d807d08e2614..327afb866b21 100644
+> > > --- a/drivers/misc/eeprom/idt_89hpesx.c
+> > > +++ b/drivers/misc/eeprom/idt_89hpesx.c
+> > > @@ -129,7 +129,7 @@ struct idt_smb_seq {
+> > >  struct idt_eeprom_seq {
+> > >  	u8 cmd;
+> > >  	u8 eeaddr;
+> > > -	u16 memaddr;
+> > > +	__le16 memaddr;
+> > >  	u8 data;
+> > >  } __packed;
+> > >  
+> > > @@ -141,8 +141,8 @@ struct idt_eeprom_seq {
+> > >   */
+> > >  struct idt_csr_seq {
+> > >  	u8 cmd;
+> > > -	u16 csraddr;
+> > > -	u32 data;
+> > > +	__le16 csraddr;
+> > > +	__le32 data;
+> > >  } __packed;
+> > >  
+> > >  /*
+> > 
+> > Declaring them this way is nice, but this doesn't actually "fix"
+> > anything at all as no code is actually changed.
+> > 
+> > So how is ths a bugfix?  How does this patch do anything?
+> > 
+> > confused,
+> 
+> Sorry for the confuson.
+> 
+> This commit is to address the issue reported by kernel test rebot[1].
+> 
+> Partially quoted from it:
+> 
+> sparse warnings: (new ones prefixed by >>)
+> >> drivers/misc/eeprom/idt_89hpesx.c:599:31: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned short [addressable] [assigned] [usertype] memaddr @@     got restricted __le16 [usertype] @@
+>    drivers/misc/eeprom/idt_89hpesx.c:599:31: sparse:     expected unsigned short [addressable] [assigned] [usertype] memaddr
+>    drivers/misc/eeprom/idt_89hpesx.c:599:31: sparse:     got restricted __le16 [usertype]
+>    drivers/misc/eeprom/idt_89hpesx.c:671:31: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned short [addressable] [assigned] [usertype] memaddr @@     got restricted __le16 [usertype] @@
+>    drivers/misc/eeprom/idt_89hpesx.c:671:31: sparse:     expected unsigned short [addressable] [assigned] [usertype] memaddr
+>    drivers/misc/eeprom/idt_89hpesx.c:671:31: sparse:     got restricted __le16 [usertype]
+> >> drivers/misc/eeprom/idt_89hpesx.c:769:24: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned short [addressable] [assigned] [usertype] csraddr @@     got restricted __le16 [usertype] @@
+>    drivers/misc/eeprom/idt_89hpesx.c:769:24: sparse:     expected unsigned short [addressable] [assigned] [usertype] csraddr
+>    drivers/misc/eeprom/idt_89hpesx.c:769:24: sparse:     got restricted __le16 [usertype]
+> >> drivers/misc/eeprom/idt_89hpesx.c:770:21: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned int [addressable] [assigned] [usertype] data @@     got restricted __le32 [usertype] @@
+>    drivers/misc/eeprom/idt_89hpesx.c:770:21: sparse:     expected unsigned int [addressable] [assigned] [usertype] data
+>    drivers/misc/eeprom/idt_89hpesx.c:770:21: sparse:     got restricted __le32 [usertype]
+>    drivers/misc/eeprom/idt_89hpesx.c:834:24: sparse: sparse: incorrect type in assignment (different base types) @@     expected unsigned short [addressable] [assigned] [usertype] csraddr @@     got restricted __le16 [usertype] @@
+>    drivers/misc/eeprom/idt_89hpesx.c:834:24: sparse:     expected unsigned short [addressable] [assigned] [usertype] csraddr
+>    drivers/misc/eeprom/idt_89hpesx.c:834:24: sparse:     got restricted __le16 [usertype]
+> >> drivers/misc/eeprom/idt_89hpesx.c:859:17: sparse: sparse: cast to restricted __le32
+> >> drivers/misc/eeprom/idt_89hpesx.c:859:17: sparse: sparse: cast to restricted __le32
+> >> drivers/misc/eeprom/idt_89hpesx.c:859:17: sparse: sparse: cast to restricted __le32
+> >> drivers/misc/eeprom/idt_89hpesx.c:859:17: sparse: sparse: cast to restricted __le32
+> >> drivers/misc/eeprom/idt_89hpesx.c:859:17: sparse: sparse: cast to restricted __le32
+> >> drivers/misc/eeprom/idt_89hpesx.c:859:17: sparse: sparse: cast to restricted __le32
+> 
+> [1] https://lore.kernel.org/oe-kbuild-all/202401261250.b07Yt30Z-lkp@intel.com/
 
+Ok, so this fixes a sparse issue, how is that needed for stable kernels?
 
-Applied to linux-kbuild/fixes. Thanks.
+Please be more explicit about what you are "fixing" in the changelog
+please, as-is this didn't make any sense to me.
 
+Please fix up and send a v2.
 
---=20
-Best Regards
-Masahiro Yamada
+thanks,
+
+greg k-h
 
