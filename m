@@ -1,121 +1,233 @@
-Return-Path: <stable+bounces-17482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D098436CF
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 07:30:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A85A88436E2
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 07:34:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66F971C20BBF
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 06:30:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCBB21C20AD2
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 06:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D35481DE;
-	Wed, 31 Jan 2024 06:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3CE12E5B;
+	Wed, 31 Jan 2024 06:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F01jTKNW"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mZ0Au4oU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5B347F7B;
-	Wed, 31 Jan 2024 06:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D040125CA;
+	Wed, 31 Jan 2024 06:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706682645; cv=none; b=sbHeByrhgw4oIu/WnKmZrQi/KrHrdn1bihWrpxoq00yRk5y6Oer10QIbgcIDeZ7+W1FlZVilSHXxKG9EZMpCB2nohVuDIx22tNCbegwThwvFOolGLVpiA/ei1vnsv9Fe74aoPKAJ6c1q7UyNg8BkzusKwUXbZkIAF4Mr2yiutEw=
+	t=1706682860; cv=none; b=IU8arWAZYEmi7YFcXFqGC4Rf3Mt0y6I3/BW7H9jv5cGX79oB8saMTG9BAEi6KYzzlXmsxW1PoPsu0LkJY9EciSaWmJyiQ5K30ZbvvgW4j0KRP+AXDRF2+wt+3+SYQA0JWmXZsZAzmsEDU0fI4H1PUCtSObFgVe7ZZh8Pn7dxlLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706682645; c=relaxed/simple;
-	bh=HDBr9vOZxFay+edDsZgAptwCJ/oKKwkEzYfcKNkxY3c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IEFCBvjHlWbkL41+930YlJ2Ti+9SiAQtxe76pZ+4wK1hkLLeeG3nbDsPs+wutcsxonC8E0hc37nb3lOWgQid6Nh14L9K6Ijt5n5zkElrjpQCFh6alFg0vHQc1sO6Ut2v2DV3bBqFkh2iY2ViT0ar+fzvT2BWn0nhdMJ7IayYcBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F01jTKNW; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-55f0367b15fso3688167a12.0;
-        Tue, 30 Jan 2024 22:30:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706682641; x=1707287441; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IEwg9afw4u1sOTeb8Gs+nYWC/t/ruyXWb+PKAxK3AR0=;
-        b=F01jTKNWN3NLc3BvDAOsJhCh5whNp7Yz4KJgsFwqgINj7HkRi6svzLnPrrd1ilDNS8
-         B01luMSLAOaUNteaXotOEBLhtRM5TcDZFcabDQ7nqzkLvn1smAdmJ3AJFS1NXmWb+TlY
-         Lbxw/+ALg1Ojx0DKn4HaTGh6s+W7ivmXJF83xcJ7c/3sc8DopjQ1FtuTPN/xw+l1C0jT
-         fRIPQNxprpWvIIgbkhU5aUDUcakJ4MZAYfOSq+LoXuXPlsZWQ5QhWw9nu8v5Kumar+bg
-         ru+E4xUtRA5+8AVi7CLRVRjOTFzPs+TfXJ7o84XI4HetM+Ev2gymQodBMp+mOPEouQ7M
-         qQXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706682641; x=1707287441;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IEwg9afw4u1sOTeb8Gs+nYWC/t/ruyXWb+PKAxK3AR0=;
-        b=TeufJbKWgpL8Zy+RVqWw7mscXZsCU0VARWKnS1FCzdMkyBuiz/BQm1+/hY2ASoNHue
-         A0ZK4JT4HJ0s4VtzO+BNzBRsGlg+2d+gdWrIcdNd9nYUg1p2npKkoWAd+YNCSOy2oKZH
-         /v5M7/xHaAyt4dyTD5NHetgAdQ/bI9Oyo5S0WA34tHIn7QHok9u2Hf2q+JOV3o4A+4CD
-         uZzZUvN9d7MRljlcicmxaedCFVOnx2yPC67xNRX7lXwpxF1NzeCsEOZ0zKKIcma6IsJs
-         bCRIKgJ0EduGpWQ+Xla11almUphVC4nJxiOblXHME7h45jGoJKbd/PZjj/lo89Xtv1gq
-         4w+A==
-X-Gm-Message-State: AOJu0YxXUZv6ixKd95vCRoVnA7abcT2J+ygHe8K08haW+yzpQqe8dqce
-	RlFimmjW+FkPlPjQOz2evcpXmtSE9StLwB7ilPLDfJxYcknwo96n
-X-Google-Smtp-Source: AGHT+IFk1qhBrpfQXnqfbsB1jZHkXsEX9haNcgmHftxJjglWVgEW9wTSF+vKlynagor381APN8AosQ==
-X-Received: by 2002:a17:906:d0c9:b0:a36:6c96:3161 with SMTP id bq9-20020a170906d0c900b00a366c963161mr417340ejb.32.1706682641212;
-        Tue, 30 Jan 2024 22:30:41 -0800 (PST)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id ig8-20020a1709072e0800b00a366406772dsm491691ejc.29.2024.01.30.22.30.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jan 2024 22:30:38 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id B0105BE2DE0; Wed, 31 Jan 2024 07:30:37 +0100 (CET)
-Date: Wed, 31 Jan 2024 07:30:37 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"pc@manguebit.com" <pc@manguebit.com>,
-	"leonardo@schenkel.net" <leonardo@schenkel.net>,
-	"linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>,
-	"m.weissbach@info-gate.de" <m.weissbach@info-gate.de>,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-	"sairon@sairon.cz" <sairon@sairon.cz>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with
- "Resource temporarily unavailable"
-Message-ID: <ZbnpDbgV7ZCRy3TT@eldamar.lan>
-References: <53F11617-D406-47C6-8CA7-5BE26EB042BE@amazon.com>
- <9B20AAD6-2C27-4791-8CA9-D7DB912EDC86@amazon.com>
- <2024011521-feed-vanish-5626@gregkh>
- <716A5E86-9D25-4729-BF65-90AC2A335301@amazon.com>
+	s=arc-20240116; t=1706682860; c=relaxed/simple;
+	bh=ehq65ndJGtloeHTvQfQCXcmECBoC1XmpYdscZETAkLw=;
+	h=Date:To:From:Subject:Message-Id; b=NNR6XjxIXqB1UlbTuViM1628fgxZfOcBEYTIC5hpghCx8B4KYuMRSXfqkjViy+ciC637yVQfzLOuJv/PR2Lgc93J4GFEVBLvgMspNgHWOr7Y/34lLTzIcc+rkcrh1P1rYkA4MLdArjwAhB8whHQKzQEb33qSResl+StsUd1tRjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mZ0Au4oU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EEE3C433C7;
+	Wed, 31 Jan 2024 06:34:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1706682859;
+	bh=ehq65ndJGtloeHTvQfQCXcmECBoC1XmpYdscZETAkLw=;
+	h=Date:To:From:Subject:From;
+	b=mZ0Au4oUq3sOGWvQGK2T4aqrbKB232dMRWnsA67REziUE/72WP7TSPIwwiNgU0cdj
+	 tRVX+fqlOK2hBw6w1sxujmMnYfysuoD3DPn16oY/vhCGMvEuUkMcIpZNev1TcaxWBq
+	 ND5oPQtXBGxOjve96nAZ/iKLopUxQACwKExh5Wgc=
+Date: Tue, 30 Jan 2024 22:34:05 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,muchun.song@linux.dev,mhocko@suse.com,osalvador@suse.de,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + fshugetlb-fix-null-pointer-dereference-in-hugetlbs_fill_super.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240131063417.9EEE3C433C7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <716A5E86-9D25-4729-BF65-90AC2A335301@amazon.com>
 
-Hi,
 
-On Mon, Jan 15, 2024 at 03:30:46PM +0000, Mohamed Abuelfotoh, Hazem wrote:
-> Thanks Greg, I will submit separate patch inclusion requests for 
-> fixing this on 5.15 and 5.10.
+The patch titled
+     Subject: fs,hugetlb: fix NULL pointer dereference in hugetlbs_fill_super
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     fshugetlb-fix-null-pointer-dereference-in-hugetlbs_fill_super.patch
 
-Note, my reply in the secondary thread:
-https://lore.kernel.org/stable/Zbl881W5S-nL7iof@eldamar.lan/T/#mb9a9a012adde1c5c6e9d3daa1d8dce2c9b5cc78f
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fshugetlb-fix-null-pointer-dereference-in-hugetlbs_fill_super.patch
 
-Now
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit?id=a280ecca48beb40ca6c0fc20dd5a7fdd9b3ee0b7
-was applied, but equally the backport
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?id=06aa6eff7b243891c631b40852a0c453e274955d
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit/?id=ef8316e0e29e98d9cf7e0689ddffa37e79d33736
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-So I guess
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git/commit?id=a280ecca48beb40ca6c0fc20dd5a7fdd9b3ee0b7
-should be dropped again.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Regards,
-Salvatore
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Oscar Salvador <osalvador@suse.de>
+Subject: fs,hugetlb: fix NULL pointer dereference in hugetlbs_fill_super
+Date: Tue, 30 Jan 2024 22:04:18 +0100
+
+When configuring a hugetlb filesystem via the fsconfig() syscall, there is
+a possible NULL dereference in hugetlbfs_fill_super() caused by assigning
+NULL to ctx->hstate in hugetlbfs_parse_param() when the requested pagesize
+is non valid.
+
+E.g: Taking the following steps:
+
+     fd = fsopen("hugetlbfs", FSOPEN_CLOEXEC);
+     fsconfig(fd, FSCONFIG_SET_STRING, "pagesize", "1024", 0);
+     fsconfig(fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
+
+Given that the requested "pagesize" is invalid, ctxt->hstate will be replaced
+with NULL, losing its previous value, and we will print an error:
+
+ ...
+ ...
+ case Opt_pagesize:
+ ps = memparse(param->string, &rest);
+ ctx->hstate = h;
+ if (!ctx->hstate) {
+         pr_err("Unsupported page size %lu MB\n", ps / SZ_1M);
+         return -EINVAL;
+ }
+ return 0;
+ ...
+ ...
+
+This is a problem because later on, we will dereference ctxt->hstate in
+hugetlbfs_fill_super()
+
+ ...
+ ...
+ sb->s_blocksize = huge_page_size(ctx->hstate);
+ ...
+ ...
+
+Causing below Oops.
+
+Fix this by replacing cxt->hstate value only when then pagesize is known
+to be valid.
+
+ kernel: hugetlbfs: Unsupported page size 0 MB
+ kernel: BUG: kernel NULL pointer dereference, address: 0000000000000028
+ kernel: #PF: supervisor read access in kernel mode
+ kernel: #PF: error_code(0x0000) - not-present page
+ kernel: PGD 800000010f66c067 P4D 800000010f66c067 PUD 1b22f8067 PMD 0
+ kernel: Oops: 0000 [#1] PREEMPT SMP PTI
+ kernel: CPU: 4 PID: 5659 Comm: syscall Tainted: G            E      6.8.0-rc2-default+ #22 5a47c3fef76212addcc6eb71344aabc35190ae8f
+ kernel: Hardware name: Intel Corp. GROVEPORT/GROVEPORT, BIOS GVPRCRB1.86B.0016.D04.1705030402 05/03/2017
+ kernel: RIP: 0010:hugetlbfs_fill_super+0xb4/0x1a0
+ kernel: Code: 48 8b 3b e8 3e c6 ed ff 48 85 c0 48 89 45 20 0f 84 d6 00 00 00 48 b8 ff ff ff ff ff ff ff 7f 4c 89 e7 49 89 44 24 20 48 8b 03 <8b> 48 28 b8 00 10 00 00 48 d3 e0 49 89 44 24 18 48 8b 03 8b 40 28
+ kernel: RSP: 0018:ffffbe9960fcbd48 EFLAGS: 00010246
+ kernel: RAX: 0000000000000000 RBX: ffff9af5272ae780 RCX: 0000000000372004
+ kernel: RDX: ffffffffffffffff RSI: ffffffffffffffff RDI: ffff9af555e9b000
+ kernel: RBP: ffff9af52ee66b00 R08: 0000000000000040 R09: 0000000000370004
+ kernel: R10: ffffbe9960fcbd48 R11: 0000000000000040 R12: ffff9af555e9b000
+ kernel: R13: ffffffffa66b86c0 R14: ffff9af507d2f400 R15: ffff9af507d2f400
+ kernel: FS:  00007ffbc0ba4740(0000) GS:ffff9b0bd7000000(0000) knlGS:0000000000000000
+ kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ kernel: CR2: 0000000000000028 CR3: 00000001b1ee0000 CR4: 00000000001506f0
+ kernel: Call Trace:
+ kernel:  <TASK>
+ kernel:  ? __die_body+0x1a/0x60
+ kernel:  ? page_fault_oops+0x16f/0x4a0
+ kernel:  ? search_bpf_extables+0x65/0x70
+ kernel:  ? fixup_exception+0x22/0x310
+ kernel:  ? exc_page_fault+0x69/0x150
+ kernel:  ? asm_exc_page_fault+0x22/0x30
+ kernel:  ? __pfx_hugetlbfs_fill_super+0x10/0x10
+ kernel:  ? hugetlbfs_fill_super+0xb4/0x1a0
+ kernel:  ? hugetlbfs_fill_super+0x28/0x1a0
+ kernel:  ? __pfx_hugetlbfs_fill_super+0x10/0x10
+ kernel:  vfs_get_super+0x40/0xa0
+ kernel:  ? __pfx_bpf_lsm_capable+0x10/0x10
+ kernel:  vfs_get_tree+0x25/0xd0
+ kernel:  vfs_cmd_create+0x64/0xe0
+ kernel:  __x64_sys_fsconfig+0x395/0x410
+ kernel:  do_syscall_64+0x80/0x160
+ kernel:  ? syscall_exit_to_user_mode+0x82/0x240
+ kernel:  ? do_syscall_64+0x8d/0x160
+ kernel:  ? syscall_exit_to_user_mode+0x82/0x240
+ kernel:  ? do_syscall_64+0x8d/0x160
+ kernel:  ? exc_page_fault+0x69/0x150
+ kernel:  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+ kernel: RIP: 0033:0x7ffbc0cb87c9
+ kernel: Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 97 96 0d 00 f7 d8 64 89 01 48
+ kernel: RSP: 002b:00007ffc29d2f388 EFLAGS: 00000206 ORIG_RAX: 00000000000001af
+ kernel: RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffbc0cb87c9
+ kernel: RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
+ kernel: RBP: 00007ffc29d2f3b0 R08: 0000000000000000 R09: 0000000000000000
+ kernel: R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
+ kernel: R13: 00007ffc29d2f4c0 R14: 0000000000000000 R15: 0000000000000000
+ kernel:  </TASK>
+ kernel: Modules linked in: rpcsec_gss_krb5(E) auth_rpcgss(E) nfsv4(E) dns_resolver(E) nfs(E) lockd(E) grace(E) sunrpc(E) netfs(E) af_packet(E) bridge(E) stp(E) llc(E) iscsi_ibft(E) iscsi_boot_sysfs(E) intel_rapl_msr(E) intel_rapl_common(E) iTCO_wdt(E) intel_pmc_bxt(E) sb_edac(E) iTCO_vendor_support(E) x86_pkg_temp_thermal(E) intel_powerclamp(E) coretemp(E) kvm_intel(E) rfkill(E) ipmi_ssif(E) kvm(E) acpi_ipmi(E) irqbypass(E) pcspkr(E) igb(E) ipmi_si(E) mei_me(E) i2c_i801(E) joydev(E) intel_pch_thermal(E) i2c_smbus(E) dca(E) lpc_ich(E) mei(E) ipmi_devintf(E) ipmi_msghandler(E) acpi_pad(E) tiny_power_button(E) button(E) fuse(E) efi_pstore(E) configfs(E) ip_tables(E) x_tables(E) ext4(E) mbcache(E) jbd2(E) hid_generic(E) usbhid(E) sd_mod(E) t10_pi(E) crct10dif_pclmul(E) crc32_pclmul(E) crc32c_intel(E) polyval_clmulni(E) ahci(E) xhci_pci(E) polyval_generic(E) gf128mul(E) ghash_clmulni_intel(E) sha512_ssse3(E) sha256_ssse3(E) xhci_pci_renesas(E) libahci(E) ehci_pci(E) sha1_ssse3(E) xhci_hc
+ d(E) ehci_hcd(E) libata(E)
+ kernel:  mgag200(E) i2c_algo_bit(E) usbcore(E) wmi(E) sg(E) dm_multipath(E) dm_mod(E) scsi_dh_rdac(E) scsi_dh_emc(E) scsi_dh_alua(E) scsi_mod(E) scsi_common(E) aesni_intel(E) crypto_simd(E) cryptd(E)
+ kernel: Unloaded tainted modules: acpi_cpufreq(E):1 fjes(E):1
+ kernel: CR2: 0000000000000028
+ kernel: ---[ end trace 0000000000000000 ]---
+ kernel: RIP: 0010:hugetlbfs_fill_super+0xb4/0x1a0
+ kernel: Code: 48 8b 3b e8 3e c6 ed ff 48 85 c0 48 89 45 20 0f 84 d6 00 00 00 48 b8 ff ff ff ff ff ff ff 7f 4c 89 e7 49 89 44 24 20 48 8b 03 <8b> 48 28 b8 00 10 00 00 48 d3 e0 49 89 44 24 18 48 8b 03 8b 40 28
+ kernel: RSP: 0018:ffffbe9960fcbd48 EFLAGS: 00010246
+ kernel: RAX: 0000000000000000 RBX: ffff9af5272ae780 RCX: 0000000000372004
+ kernel: RDX: ffffffffffffffff RSI: ffffffffffffffff RDI: ffff9af555e9b000
+ kernel: RBP: ffff9af52ee66b00 R08: 0000000000000040 R09: 0000000000370004
+ kernel: R10: ffffbe9960fcbd48 R11: 0000000000000040 R12: ffff9af555e9b000
+ kernel: R13: ffffffffa66b86c0 R14: ffff9af507d2f400 R15: ffff9af507d2f400
+ kernel: FS:  00007ffbc0ba4740(0000) GS:ffff9b0bd7000000(0000) knlGS:0000000000000000
+ kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ kernel: CR2: 0000000000000028 CR3: 00000001b1ee0000 CR4: 00000000001506f0
+
+Link: https://lkml.kernel.org/r/20240130210418.3771-1-osalvador@suse.de
+Signed-off-by: Michal Hocko <mhocko@suse.com>
+Signed-off-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/hugetlbfs/inode.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+--- a/fs/hugetlbfs/inode.c~fshugetlb-fix-null-pointer-dereference-in-hugetlbs_fill_super
++++ a/fs/hugetlbfs/inode.c
+@@ -1365,6 +1365,7 @@ static int hugetlbfs_parse_param(struct
+ {
+ 	struct hugetlbfs_fs_context *ctx = fc->fs_private;
+ 	struct fs_parse_result result;
++	struct hstate *h;
+ 	char *rest;
+ 	unsigned long ps;
+ 	int opt;
+@@ -1409,11 +1410,12 @@ static int hugetlbfs_parse_param(struct
+ 
+ 	case Opt_pagesize:
+ 		ps = memparse(param->string, &rest);
+-		ctx->hstate = size_to_hstate(ps);
+-		if (!ctx->hstate) {
++		h = size_to_hstate(ps);
++		if (!h) {
+ 			pr_err("Unsupported page size %lu MB\n", ps / SZ_1M);
+ 			return -EINVAL;
+ 		}
++		ctx->hstate = h;
+ 		return 0;
+ 
+ 	case Opt_min_size:
+_
+
+Patches currently in -mm which might be from osalvador@suse.de are
+
+fshugetlb-fix-null-pointer-dereference-in-hugetlbs_fill_super.patch
+
 
