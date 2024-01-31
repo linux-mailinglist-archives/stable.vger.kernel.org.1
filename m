@@ -1,98 +1,106 @@
-Return-Path: <stable+bounces-17505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8065C843DA1
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 12:04:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 130CF843DB0
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 12:05:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44B81B2FB06
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 10:55:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C072D28EB0F
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 11:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF65C69D39;
-	Wed, 31 Jan 2024 10:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E295E69DED;
+	Wed, 31 Jan 2024 11:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LWCfUDrJ"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B387AE40;
-	Wed, 31 Jan 2024 10:54:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E807AE71;
+	Wed, 31 Jan 2024 11:03:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706698498; cv=none; b=prYMB+IKFvTWDPWdglpKcwazhHoLff1eSB/qC2m+AV1VjilHluTWe/XUG0nWS7pV/2EnT3pbmx1rgzPalIObND6mZO991I3WbyiMhZW47owQMo7IW7MBJiZdI/hu/8E6/RQ8KqlkZrsnbgj7cvg6KurH/WQY7TA3uvw3fdaKVAU=
+	t=1706699038; cv=none; b=N8MNhuK/OZW8YJshudKaIi7m7F6En8EL9PL2R4dQJaKRH+IG198sAk6wW5E0R/rW8I0kiw3RqQlhVnRqPQGixFJBHQfAlaDNS2In4cNePeqCov8KChpk9wI0JTLHvc17wgKsqlWxWQfKNbcf0orhI3lkw6BT+MyD/UUj3qek3Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706698498; c=relaxed/simple;
-	bh=r8Wx/oQPjcA/lfeAL78zy/yacxpWCalvIEbrmbWXG5Y=;
+	s=arc-20240116; t=1706699038; c=relaxed/simple;
+	bh=l97JaM/WxbJ3cuZRvKI3tEr4j0C+sm43YPiTF6kpOBQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T2qTBRHbeGJpnxAWQd/EwQZWlZ77V7E/PEpihAADC1oKOR2/oPa6+9OTuBhNXGgWGr3jXdxUcSXydvbEMvOiNvEZQAUZClENarrbGuljcV8FQhgQexDoRQYnI1sSZZ2QLQyQURUL9/HT4pPtNnueLzaWygjkFnCKglDB3dpkkL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 738871C0079; Wed, 31 Jan 2024 11:54:54 +0100 (CET)
-Date: Wed, 31 Jan 2024 11:54:53 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.1 000/186] 6.1.76-rc2 review
-Message-ID: <Zbom/Y4vjjZrKBn5@duo.ucw.cz>
-References: <20240130183318.454044155@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=IeRIUDng4QJn2/DmfVRaEXBqzzzIhAGkXQBo6EeNHK8fAiHd5arIj/zHU6RAl63Oh3vs7wytXReSj3BYVvFj7INMFMCijjqrNCRTp3Ego7t/BTO2+HlqgN6TtBHDEXO5PrxAReCU24w3XqGmjG1tTLdO+6dGMlwdHUrAYcdTK7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LWCfUDrJ; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706699037; x=1738235037;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=l97JaM/WxbJ3cuZRvKI3tEr4j0C+sm43YPiTF6kpOBQ=;
+  b=LWCfUDrJwxLresBSRIAXce4TjnDiuRGPyliEjO+yZ/79aq0lp9oBv9cp
+   VymN2fwp3MKLB+LuQuH6DhauGmQ3H5TSqSS9XtF7E4lJwKKfUWeEq5hWd
+   oQcwAV9X6pXaGtbNzEdsY86kLIWpFHbQUM3XoXaIeYPZYEwTxKYfqm1SR
+   9ATuGb1qYsCVNqOTypl986N1irPms5LFKg3q7p1u1tlZ/RxLYs/13oglG
+   +11ef0wTcc2wwl9J47j8ndYUIM0Ncj4m1MyY/0e9nlN2ZAR9Amg/XPsm3
+   ELpWWXOG47Wd1r754PlHA499xw9GMka8+BTBNM67sy6SvkGjsXIJmiJPI
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="2508381"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="2508381"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 03:03:56 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="822533447"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="822533447"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by orsmga001.jf.intel.com with SMTP; 31 Jan 2024 03:03:51 -0800
+Received: by stinkbox (sSMTP sendmail emulation); Wed, 31 Jan 2024 13:03:50 +0200
+Date: Wed, 31 Jan 2024 13:03:50 +0200
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	maarten.lankhorst@linux.intel.com, tzimmermann@suse.de,
+	airlied@gmail.com, daniel@ffwll.ch, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH AUTOSEL 6.1 04/53] drm: Fix color LUT rounding
+Message-ID: <ZbopFnfEwETj0mlx@intel.com>
+References: <20240122150949.994249-1-sashal@kernel.org>
+ <20240122150949.994249-4-sashal@kernel.org>
+ <Za6ano6dg0Mau7OI@intel.com>
+ <Zbl_gq9FhTICi4FS@sashalap>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="1WdMPOtP07DzbyGD"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240130183318.454044155@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zbl_gq9FhTICi4FS@sashalap>
+X-Patchwork-Hint: comment
 
+On Tue, Jan 30, 2024 at 06:00:18PM -0500, Sasha Levin wrote:
+> On Mon, Jan 22, 2024 at 06:50:00PM +0200, Ville Syrjälä wrote:
+> >On Mon, Jan 22, 2024 at 10:08:05AM -0500, Sasha Levin wrote:
+> >> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> >>
+> >> [ Upstream commit c6fbb6bca10838485b820e8a26c23996f77ce580 ]
+> >
+> >Why is this being backported?
+> 
+> Is this not a fix for an issue?
 
---1WdMPOtP07DzbyGD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+It is, for a very minor one that's not really going to hurt
+anyone. But it doesn't exist in a vacuum so backprting it
+alone can introduce other issues that people will actually
+notice. If I wanted it backported I would have have
+tagged it as such.
 
-Hi!
-
-> This is the start of the stable review cycle for the 6.1.76 release.
-> There are 186 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
-> Responses should be made by Thu, 01 Feb 2024 18:32:32 +0000.
-> Anything received after that time might be too late.
-
-CIP testing did not find any problems here:
-
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.1.y
-
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-
-Best regards,
-                                                                Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---1WdMPOtP07DzbyGD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZbom/QAKCRAw5/Bqldv6
-8vd0AJ9iDHOPh0yZfdI1TyWEicvCDkOU6QCfWUr3uIYsE5cxmDEY6NZta0hFCpk=
-=RvJa
------END PGP SIGNATURE-----
-
---1WdMPOtP07DzbyGD--
+-- 
+Ville Syrjälä
+Intel
 
