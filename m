@@ -1,233 +1,124 @@
-Return-Path: <stable+bounces-17483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A85A88436E2
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 07:34:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CBF98437D3
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 08:27:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCBB21C20AD2
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 06:34:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6F0A1F2522E
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 07:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3CE12E5B;
-	Wed, 31 Jan 2024 06:34:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mZ0Au4oU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6005D55E72;
+	Wed, 31 Jan 2024 07:22:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D040125CA;
-	Wed, 31 Jan 2024 06:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A03656479;
+	Wed, 31 Jan 2024 07:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706682860; cv=none; b=IU8arWAZYEmi7YFcXFqGC4Rf3Mt0y6I3/BW7H9jv5cGX79oB8saMTG9BAEi6KYzzlXmsxW1PoPsu0LkJY9EciSaWmJyiQ5K30ZbvvgW4j0KRP+AXDRF2+wt+3+SYQA0JWmXZsZAzmsEDU0fI4H1PUCtSObFgVe7ZZh8Pn7dxlLY=
+	t=1706685725; cv=none; b=AItS0LPlBLO3jOcMNXhV+3Wa1qPxBiZTBoiMM6cimyHvEQ8e+v0BUr8xBaey1vgNFXHDF0+pK1PWujGmQLbWHYyoPQasU5bTVV9wM4qw1T+o5vYoaCj4qBwhdliDXFLkje95LSH840Krd77hJxs2WkrBjOPhSmHgYijgSDwAE4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706682860; c=relaxed/simple;
-	bh=ehq65ndJGtloeHTvQfQCXcmECBoC1XmpYdscZETAkLw=;
-	h=Date:To:From:Subject:Message-Id; b=NNR6XjxIXqB1UlbTuViM1628fgxZfOcBEYTIC5hpghCx8B4KYuMRSXfqkjViy+ciC637yVQfzLOuJv/PR2Lgc93J4GFEVBLvgMspNgHWOr7Y/34lLTzIcc+rkcrh1P1rYkA4MLdArjwAhB8whHQKzQEb33qSResl+StsUd1tRjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mZ0Au4oU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EEE3C433C7;
-	Wed, 31 Jan 2024 06:34:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1706682859;
-	bh=ehq65ndJGtloeHTvQfQCXcmECBoC1XmpYdscZETAkLw=;
-	h=Date:To:From:Subject:From;
-	b=mZ0Au4oUq3sOGWvQGK2T4aqrbKB232dMRWnsA67REziUE/72WP7TSPIwwiNgU0cdj
-	 tRVX+fqlOK2hBw6w1sxujmMnYfysuoD3DPn16oY/vhCGMvEuUkMcIpZNev1TcaxWBq
-	 ND5oPQtXBGxOjve96nAZ/iKLopUxQACwKExh5Wgc=
-Date: Tue, 30 Jan 2024 22:34:05 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,muchun.song@linux.dev,mhocko@suse.com,osalvador@suse.de,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + fshugetlb-fix-null-pointer-dereference-in-hugetlbs_fill_super.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240131063417.9EEE3C433C7@smtp.kernel.org>
+	s=arc-20240116; t=1706685725; c=relaxed/simple;
+	bh=VSPOIQIi1SFSb7BcOqd2hNNK1gD3mDXV74OKv3NfOM4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y4PH8T7zZZW/eVZpmaN/fu2cQE4ZO2cUvotkHqCCzDe3RVY7zOrH3/qk99Go9I1RQnmuIZaoEMBG5m0hTCqYlYuXuCwd5bnzUi1Cj7c4lnvKXpZhSpMxY6EI0dJmnhmEpp+SMbs2NY7iYnTDJ4AUGr7KZTFMucysv0JlvaiQCqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC2FEC433F1;
+	Wed, 31 Jan 2024 07:22:01 +0000 (UTC)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: gregkh@linuxfoundation.org,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: loongarch@lists.linux.dev,
+	stable@vger.kernel.org,
+	Xuefeng Li <lixuefeng@loongson.cn>,
+	Guo Ren <guoren@kernel.org>,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	linux-kernel@vger.kernel.org,
+	loongson-kernel@lists.loongnix.cn,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1.y and 6.6.y] LoongArch/smp: Call rcutree_report_cpu_starting() at tlb_init()
+Date: Wed, 31 Jan 2024 15:21:51 +0800
+Message-Id: <20240131072151.1023985-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+Machines which have more than 8 nodes fail to boot SMP after commit
+a2ccf46333d7b2cf96 ("LoongArch/smp: Call rcutree_report_cpu_starting()
+earlier"). Because such machines use tlb-based per-cpu base address
+rather than dmw-based per-cpu base address, resulting per-cpu variables
+can only be accessed after tlb_init(). But rcutree_report_cpu_starting()
+is now called before tlb_init() and accesses per-cpu variables indeed.
 
-The patch titled
-     Subject: fs,hugetlb: fix NULL pointer dereference in hugetlbs_fill_super
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     fshugetlb-fix-null-pointer-dereference-in-hugetlbs_fill_super.patch
+Since the original patch want to avoid the lockdep warning caused by
+page allocation in tlb_init(), we can move rcutree_report_cpu_starting()
+to tlb_init() where after tlb exception configuration but before page
+allocation.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fshugetlb-fix-null-pointer-dereference-in-hugetlbs_fill_super.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Oscar Salvador <osalvador@suse.de>
-Subject: fs,hugetlb: fix NULL pointer dereference in hugetlbs_fill_super
-Date: Tue, 30 Jan 2024 22:04:18 +0100
-
-When configuring a hugetlb filesystem via the fsconfig() syscall, there is
-a possible NULL dereference in hugetlbfs_fill_super() caused by assigning
-NULL to ctx->hstate in hugetlbfs_parse_param() when the requested pagesize
-is non valid.
-
-E.g: Taking the following steps:
-
-     fd = fsopen("hugetlbfs", FSOPEN_CLOEXEC);
-     fsconfig(fd, FSCONFIG_SET_STRING, "pagesize", "1024", 0);
-     fsconfig(fd, FSCONFIG_CMD_CREATE, NULL, NULL, 0);
-
-Given that the requested "pagesize" is invalid, ctxt->hstate will be replaced
-with NULL, losing its previous value, and we will print an error:
-
- ...
- ...
- case Opt_pagesize:
- ps = memparse(param->string, &rest);
- ctx->hstate = h;
- if (!ctx->hstate) {
-         pr_err("Unsupported page size %lu MB\n", ps / SZ_1M);
-         return -EINVAL;
- }
- return 0;
- ...
- ...
-
-This is a problem because later on, we will dereference ctxt->hstate in
-hugetlbfs_fill_super()
-
- ...
- ...
- sb->s_blocksize = huge_page_size(ctx->hstate);
- ...
- ...
-
-Causing below Oops.
-
-Fix this by replacing cxt->hstate value only when then pagesize is known
-to be valid.
-
- kernel: hugetlbfs: Unsupported page size 0 MB
- kernel: BUG: kernel NULL pointer dereference, address: 0000000000000028
- kernel: #PF: supervisor read access in kernel mode
- kernel: #PF: error_code(0x0000) - not-present page
- kernel: PGD 800000010f66c067 P4D 800000010f66c067 PUD 1b22f8067 PMD 0
- kernel: Oops: 0000 [#1] PREEMPT SMP PTI
- kernel: CPU: 4 PID: 5659 Comm: syscall Tainted: G            E      6.8.0-rc2-default+ #22 5a47c3fef76212addcc6eb71344aabc35190ae8f
- kernel: Hardware name: Intel Corp. GROVEPORT/GROVEPORT, BIOS GVPRCRB1.86B.0016.D04.1705030402 05/03/2017
- kernel: RIP: 0010:hugetlbfs_fill_super+0xb4/0x1a0
- kernel: Code: 48 8b 3b e8 3e c6 ed ff 48 85 c0 48 89 45 20 0f 84 d6 00 00 00 48 b8 ff ff ff ff ff ff ff 7f 4c 89 e7 49 89 44 24 20 48 8b 03 <8b> 48 28 b8 00 10 00 00 48 d3 e0 49 89 44 24 18 48 8b 03 8b 40 28
- kernel: RSP: 0018:ffffbe9960fcbd48 EFLAGS: 00010246
- kernel: RAX: 0000000000000000 RBX: ffff9af5272ae780 RCX: 0000000000372004
- kernel: RDX: ffffffffffffffff RSI: ffffffffffffffff RDI: ffff9af555e9b000
- kernel: RBP: ffff9af52ee66b00 R08: 0000000000000040 R09: 0000000000370004
- kernel: R10: ffffbe9960fcbd48 R11: 0000000000000040 R12: ffff9af555e9b000
- kernel: R13: ffffffffa66b86c0 R14: ffff9af507d2f400 R15: ffff9af507d2f400
- kernel: FS:  00007ffbc0ba4740(0000) GS:ffff9b0bd7000000(0000) knlGS:0000000000000000
- kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- kernel: CR2: 0000000000000028 CR3: 00000001b1ee0000 CR4: 00000000001506f0
- kernel: Call Trace:
- kernel:  <TASK>
- kernel:  ? __die_body+0x1a/0x60
- kernel:  ? page_fault_oops+0x16f/0x4a0
- kernel:  ? search_bpf_extables+0x65/0x70
- kernel:  ? fixup_exception+0x22/0x310
- kernel:  ? exc_page_fault+0x69/0x150
- kernel:  ? asm_exc_page_fault+0x22/0x30
- kernel:  ? __pfx_hugetlbfs_fill_super+0x10/0x10
- kernel:  ? hugetlbfs_fill_super+0xb4/0x1a0
- kernel:  ? hugetlbfs_fill_super+0x28/0x1a0
- kernel:  ? __pfx_hugetlbfs_fill_super+0x10/0x10
- kernel:  vfs_get_super+0x40/0xa0
- kernel:  ? __pfx_bpf_lsm_capable+0x10/0x10
- kernel:  vfs_get_tree+0x25/0xd0
- kernel:  vfs_cmd_create+0x64/0xe0
- kernel:  __x64_sys_fsconfig+0x395/0x410
- kernel:  do_syscall_64+0x80/0x160
- kernel:  ? syscall_exit_to_user_mode+0x82/0x240
- kernel:  ? do_syscall_64+0x8d/0x160
- kernel:  ? syscall_exit_to_user_mode+0x82/0x240
- kernel:  ? do_syscall_64+0x8d/0x160
- kernel:  ? exc_page_fault+0x69/0x150
- kernel:  entry_SYSCALL_64_after_hwframe+0x6e/0x76
- kernel: RIP: 0033:0x7ffbc0cb87c9
- kernel: Code: 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 97 96 0d 00 f7 d8 64 89 01 48
- kernel: RSP: 002b:00007ffc29d2f388 EFLAGS: 00000206 ORIG_RAX: 00000000000001af
- kernel: RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffbc0cb87c9
- kernel: RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
- kernel: RBP: 00007ffc29d2f3b0 R08: 0000000000000000 R09: 0000000000000000
- kernel: R10: 0000000000000000 R11: 0000000000000206 R12: 0000000000000000
- kernel: R13: 00007ffc29d2f4c0 R14: 0000000000000000 R15: 0000000000000000
- kernel:  </TASK>
- kernel: Modules linked in: rpcsec_gss_krb5(E) auth_rpcgss(E) nfsv4(E) dns_resolver(E) nfs(E) lockd(E) grace(E) sunrpc(E) netfs(E) af_packet(E) bridge(E) stp(E) llc(E) iscsi_ibft(E) iscsi_boot_sysfs(E) intel_rapl_msr(E) intel_rapl_common(E) iTCO_wdt(E) intel_pmc_bxt(E) sb_edac(E) iTCO_vendor_support(E) x86_pkg_temp_thermal(E) intel_powerclamp(E) coretemp(E) kvm_intel(E) rfkill(E) ipmi_ssif(E) kvm(E) acpi_ipmi(E) irqbypass(E) pcspkr(E) igb(E) ipmi_si(E) mei_me(E) i2c_i801(E) joydev(E) intel_pch_thermal(E) i2c_smbus(E) dca(E) lpc_ich(E) mei(E) ipmi_devintf(E) ipmi_msghandler(E) acpi_pad(E) tiny_power_button(E) button(E) fuse(E) efi_pstore(E) configfs(E) ip_tables(E) x_tables(E) ext4(E) mbcache(E) jbd2(E) hid_generic(E) usbhid(E) sd_mod(E) t10_pi(E) crct10dif_pclmul(E) crc32_pclmul(E) crc32c_intel(E) polyval_clmulni(E) ahci(E) xhci_pci(E) polyval_generic(E) gf128mul(E) ghash_clmulni_intel(E) sha512_ssse3(E) sha256_ssse3(E) xhci_pci_renesas(E) libahci(E) ehci_pci(E) sha1_ssse3(E) xhci_hc
- d(E) ehci_hcd(E) libata(E)
- kernel:  mgag200(E) i2c_algo_bit(E) usbcore(E) wmi(E) sg(E) dm_multipath(E) dm_mod(E) scsi_dh_rdac(E) scsi_dh_emc(E) scsi_dh_alua(E) scsi_mod(E) scsi_common(E) aesni_intel(E) crypto_simd(E) cryptd(E)
- kernel: Unloaded tainted modules: acpi_cpufreq(E):1 fjes(E):1
- kernel: CR2: 0000000000000028
- kernel: ---[ end trace 0000000000000000 ]---
- kernel: RIP: 0010:hugetlbfs_fill_super+0xb4/0x1a0
- kernel: Code: 48 8b 3b e8 3e c6 ed ff 48 85 c0 48 89 45 20 0f 84 d6 00 00 00 48 b8 ff ff ff ff ff ff ff 7f 4c 89 e7 49 89 44 24 20 48 8b 03 <8b> 48 28 b8 00 10 00 00 48 d3 e0 49 89 44 24 18 48 8b 03 8b 40 28
- kernel: RSP: 0018:ffffbe9960fcbd48 EFLAGS: 00010246
- kernel: RAX: 0000000000000000 RBX: ffff9af5272ae780 RCX: 0000000000372004
- kernel: RDX: ffffffffffffffff RSI: ffffffffffffffff RDI: ffff9af555e9b000
- kernel: RBP: ffff9af52ee66b00 R08: 0000000000000040 R09: 0000000000370004
- kernel: R10: ffffbe9960fcbd48 R11: 0000000000000040 R12: ffff9af555e9b000
- kernel: R13: ffffffffa66b86c0 R14: ffff9af507d2f400 R15: ffff9af507d2f400
- kernel: FS:  00007ffbc0ba4740(0000) GS:ffff9b0bd7000000(0000) knlGS:0000000000000000
- kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- kernel: CR2: 0000000000000028 CR3: 00000001b1ee0000 CR4: 00000000001506f0
-
-Link: https://lkml.kernel.org/r/20240130210418.3771-1-osalvador@suse.de
-Signed-off-by: Michal Hocko <mhocko@suse.com>
-Signed-off-by: Oscar Salvador <osalvador@suse.de>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
+ arch/loongarch/kernel/smp.c |  1 -
+ arch/loongarch/mm/tlb.c     | 16 ++++++++++------
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
- fs/hugetlbfs/inode.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
---- a/fs/hugetlbfs/inode.c~fshugetlb-fix-null-pointer-dereference-in-hugetlbs_fill_super
-+++ a/fs/hugetlbfs/inode.c
-@@ -1365,6 +1365,7 @@ static int hugetlbfs_parse_param(struct
- {
- 	struct hugetlbfs_fs_context *ctx = fc->fs_private;
- 	struct fs_parse_result result;
-+	struct hstate *h;
- 	char *rest;
- 	unsigned long ps;
- 	int opt;
-@@ -1409,11 +1410,12 @@ static int hugetlbfs_parse_param(struct
+diff --git a/arch/loongarch/kernel/smp.c b/arch/loongarch/kernel/smp.c
+index 3f3cdc7ffe7a..4b4ba3f9335d 100644
+--- a/arch/loongarch/kernel/smp.c
++++ b/arch/loongarch/kernel/smp.c
+@@ -506,7 +506,6 @@ asmlinkage void start_secondary(void)
+ 	sync_counter();
+ 	cpu = raw_smp_processor_id();
+ 	set_my_cpu_offset(per_cpu_offset(cpu));
+-	rcu_cpu_starting(cpu);
  
- 	case Opt_pagesize:
- 		ps = memparse(param->string, &rest);
--		ctx->hstate = size_to_hstate(ps);
--		if (!ctx->hstate) {
-+		h = size_to_hstate(ps);
-+		if (!h) {
- 			pr_err("Unsupported page size %lu MB\n", ps / SZ_1M);
- 			return -EINVAL;
- 		}
-+		ctx->hstate = h;
- 		return 0;
+ 	cpu_probe();
+ 	constant_clockevent_init();
+diff --git a/arch/loongarch/mm/tlb.c b/arch/loongarch/mm/tlb.c
+index 2c51d755fbbc..e71150dd7f4b 100644
+--- a/arch/loongarch/mm/tlb.c
++++ b/arch/loongarch/mm/tlb.c
+@@ -284,12 +284,16 @@ static void setup_tlb_handler(int cpu)
+ 		set_handler(EXCCODE_TLBNR * VECSIZE, handle_tlb_protect, VECSIZE);
+ 		set_handler(EXCCODE_TLBNX * VECSIZE, handle_tlb_protect, VECSIZE);
+ 		set_handler(EXCCODE_TLBPE * VECSIZE, handle_tlb_protect, VECSIZE);
+-	}
++	} else {
++		int vec_sz __maybe_unused;
++		void *addr __maybe_unused;
++		struct page *page __maybe_unused;
++
++		/* Avoid lockdep warning */
++		rcu_cpu_starting(cpu);
++
+ #ifdef CONFIG_NUMA
+-	else {
+-		void *addr;
+-		struct page *page;
+-		const int vec_sz = sizeof(exception_handlers);
++		vec_sz = sizeof(exception_handlers);
  
- 	case Opt_min_size:
-_
-
-Patches currently in -mm which might be from osalvador@suse.de are
-
-fshugetlb-fix-null-pointer-dereference-in-hugetlbs_fill_super.patch
+ 		if (pcpu_handlers[cpu])
+ 			return;
+@@ -305,8 +309,8 @@ static void setup_tlb_handler(int cpu)
+ 		csr_write64(pcpu_handlers[cpu], LOONGARCH_CSR_EENTRY);
+ 		csr_write64(pcpu_handlers[cpu], LOONGARCH_CSR_MERRENTRY);
+ 		csr_write64(pcpu_handlers[cpu] + 80*VECSIZE, LOONGARCH_CSR_TLBRENTRY);
+-	}
+ #endif
++	}
+ }
+ 
+ void tlb_init(int cpu)
+-- 
+2.39.3
 
 
