@@ -1,204 +1,131 @@
-Return-Path: <stable+bounces-17510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3330B843FA9
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 13:50:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C55D78440B4
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 14:37:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC9651F28795
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 12:50:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2FA01C29F37
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 13:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B877AE40;
-	Wed, 31 Jan 2024 12:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924227F489;
+	Wed, 31 Jan 2024 13:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tZpnI/Px"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VrqadjBR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF46C79DDF;
-	Wed, 31 Jan 2024 12:50:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A9279DB2;
+	Wed, 31 Jan 2024 13:36:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706705442; cv=none; b=iAymcL6wsyk7ldgCvhWnGoxif28pk/T7VbLHiiW11+Hq1l4ix3ew5fdP3W4UmUkeiOuN2OWuah84jMlaLt/WrxOCgiZTZv7fM5XDCRX9L7eA/I7GpeI9l3Q1QHk6BX1KZwguNByjNAJL9NzQdP12bYYlCyejNPjJWBLbg10LLUA=
+	t=1706708216; cv=none; b=W09WisMduquRfW3u84waGlaQO+6geTiGQdzmr6AqttpIIzFUQbs2P8hcyydWl6x1CKx0rZvkKqx8LCKcBRWx3EhLjHGsXxKwyZTSEcZJnD1prD4RyyW5ZS8Bq88O+O68oBCTuktrq+l1IQLAwKF4NUmLatMBy+dVmL9jwiFIG8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706705442; c=relaxed/simple;
-	bh=RHrTYtjNRuLO1M8OAwEXyjHhu2rKdRpSTOU9mSp3TKE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hpZv0Suls9CIyXihoubtaAfUWGeNchmMo8pyNT1eppokbnIb2+vf/WAGevxsI3OLeqg8ecMMTDQf5QXd3mZFvZetOc3kLCpt36ONlL4vuE+DjJA2fA4B/hY4urQDnqUbYFhFAdpI0dXKjHvtIqBtL+IeOZk49FE3lKS8px04C7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tZpnI/Px; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1ACDC433C7;
-	Wed, 31 Jan 2024 12:50:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706705442;
-	bh=RHrTYtjNRuLO1M8OAwEXyjHhu2rKdRpSTOU9mSp3TKE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tZpnI/Pxr/BNixfR5YQwEkVC0VCJn/HgEAYGry3QuEGwjEJ9lyN2a0DVxcMq7TcmU
-	 zF3tosaaYGdAfDUQmR0UuBqASgJfh5G5NhLfuuX2m4z4qLi4QgApzFLXa6BRtCwqBR
-	 UV+76I6uHWU5I2T7A6JOuHPtRbb43+eW7tV3n7XPMJrC9mws5C697YKBATsXUbF8Bs
-	 Znn6/jbmeLEUie68X6VLT+ILwWrMc4JSEsbH6gjkyg/jjHsJoQgeguP+4h6me0vXPu
-	 oW5TjgEMafJYGAJVKwG1v5lSpZRDdvz7Y9NDLBa8CqsXnaupLpvUMEv/GBBhzG04Em
-	 +cZ+xZ5G9vRqg==
-Date: Wed, 31 Jan 2024 14:50:37 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Daniel Vacek <neelx@redhat.com>
-Cc: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Brendan Cunningham <bcunningham@cornelisnetworks.com>,
-	Patrick Kelsey <pat.kelsey@cornelisnetworks.com>,
-	stable@vger.kernel.org, Mats Kronberg <kronberg@nsc.liu.se>,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] IB/hfi1: Fix sdma.h tx->num_descs off-by-one error (take
- two)
-Message-ID: <20240131125037.GF71813@unreal>
-References: <20240126152125.869509-1-neelx@redhat.com>
+	s=arc-20240116; t=1706708216; c=relaxed/simple;
+	bh=nadzkVbnmNxY4/DIbqPxR5fBiBmBnpW4pu3x3zRyu6Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KB3QkOHEVAE3ljF41VAgdtqQ2TxXVFiYBq/YH9z/+m1EWIk3oDqXWZTr8Nw5jz5VFeIpmys/24VGCFEuU9WfJUHm0mZDib1k3MWx0j4+dp5bvsTBvU092nvKxDJ4zRrIOPlfW9z21UxJcdMf9WoqDVRrUPiRPq7Is7Bfh6wkwYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VrqadjBR; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706708215; x=1738244215;
+  h=date:from:to:cc:subject:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=nadzkVbnmNxY4/DIbqPxR5fBiBmBnpW4pu3x3zRyu6Q=;
+  b=VrqadjBROnOxb+p/n3GyqoaHD0ogjSSu/2ET2575jX4J6tK1PQFZtB4I
+   l/C4c+f2OkeGHWaATC4DGq82NvzCHxTCPdPU+EoVjv+ocCejTYpaMcc79
+   N7DpShqX5mLjsE6M8D/HbngHhUUusq44yivKf8l38rEY7K5JTaz3953+q
+   ODiiOQqX+WSUp/q54ZUffcgYyjnEnUQJBByDcx5KTfbWbKVKNF0O4muUb
+   ZTUhY/aNeoET+W4T91JBSz4nF86KNPKOP6As8n3fHrtrWJfh+A77/lizH
+   d4rfT07Du8Iu8ygA0OEz06WZiIuAUg1HsRXmY9ruqagHVd7LfKVMoz0zh
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="2540746"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="2540746"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 05:36:54 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="4164782"
+Received: from bkucman-mobl1.ger.corp.intel.com (HELO localhost) ([10.246.48.222])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 05:36:51 -0800
+Date: Wed, 31 Jan 2024 14:36:40 +0100
+From: Blazej Kucman <blazej.kucman@linux.intel.com>
+To: Song Liu <song@kernel.org>
+Cc: Yu Kuai <yukuai1@huaweicloud.com>, Dan Moulding <dan@danm.net>,
+ carlos@fisica.ufpr.br, gregkh@linuxfoundation.org, junxiao.bi@oracle.com,
+ linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org,
+ regressions@lists.linux.dev, stable@vger.kernel.org, "yukuai (C)"
+ <yukuai3@huawei.com>
+Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system;
+ successfully bisected
+Message-ID: <20240131143640.00003296@linux.intel.com>
+In-Reply-To: <CAPhsuW7QHq4e+cHvZcw8c=ePpeSM69UKTEi8P40=-jOZn+YyyA@mail.gmail.com>
+References: <ZbMnZnvyIyoWeIro@fisica.ufpr.br>
+	<20240126154610.24755-1-dan@danm.net>
+	<20240130172524.0000417b@linux.intel.com>
+	<95f2e08e-2daf-e298-e696-42ebfa7b9bbf@huaweicloud.com>
+	<CAPhsuW7QHq4e+cHvZcw8c=ePpeSM69UKTEi8P40=-jOZn+YyyA@mail.gmail.com>
+Organization: intel
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240126152125.869509-1-neelx@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 26, 2024 at 04:21:23PM +0100, Daniel Vacek wrote:
-> Unfortunately the commit `fd8958efe877` introduced another error
-> causing the `descs` array to overflow. This reults in further crashes
-> easily reproducible by `sendmsg` system call.
-> 
-> [ 1080.836473] general protection fault, probably for non-canonical address 0x400300015528b00a: 0000 [#1] PREEMPT SMP PTI
-> [ 1080.869326] RIP: 0010:hfi1_ipoib_build_ib_tx_headers.constprop.0+0xe1/0x2b0 [hfi1]
-> --
-> [ 1080.974535] Call Trace:
-> [ 1080.976990]  <TASK>
-> [ 1081.021929]  hfi1_ipoib_send_dma_common+0x7a/0x2e0 [hfi1]
-> [ 1081.027364]  hfi1_ipoib_send_dma_list+0x62/0x270 [hfi1]
-> [ 1081.032633]  hfi1_ipoib_send+0x112/0x300 [hfi1]
-> [ 1081.042001]  ipoib_start_xmit+0x2a9/0x2d0 [ib_ipoib]
-> [ 1081.046978]  dev_hard_start_xmit+0xc4/0x210
-> --
-> [ 1081.148347]  __sys_sendmsg+0x59/0xa0
-> 
-> crash> ipoib_txreq 0xffff9cfeba229f00
-> struct ipoib_txreq {
->   txreq = {
->     list = {
->       next = 0xffff9cfeba229f00,
->       prev = 0xffff9cfeba229f00
->     },
->     descp = 0xffff9cfeba229f40,
->     coalesce_buf = 0x0,
->     wait = 0xffff9cfea4e69a48,
->     complete = 0xffffffffc0fe0760 <hfi1_ipoib_sdma_complete>,
->     packet_len = 0x46d,
->     tlen = 0x0,
->     num_desc = 0x0,
->     desc_limit = 0x6,
->     next_descq_idx = 0x45c,
->     coalesce_idx = 0x0,
->     flags = 0x0,
->     descs = {{
->         qw = {0x8024000120dffb00, 0x4}  # SDMA_DESC0_FIRST_DESC_FLAG (bit 63)
->       }, {
->         qw = {  0x3800014231b108, 0x4}
->       }, {
->         qw = { 0x310000e4ee0fcf0, 0x8}
->       }, {
->         qw = {  0x3000012e9f8000, 0x8}
->       }, {
->         qw = {  0x59000dfb9d0000, 0x8}
->       }, {
->         qw = {  0x78000e02e40000, 0x8}
->       }}
->   },
->   sdma_hdr =  0x400300015528b000,  <<< invalid pointer in the tx request structure
->   sdma_status = 0x0,                   SDMA_DESC0_LAST_DESC_FLAG (bit 62)
->   complete = 0x0,
->   priv = 0x0,
->   txq = 0xffff9cfea4e69880,
->   skb = 0xffff9d099809f400
-> }
-> 
-> With this patch the crashes are no longer reproducible and the machine is stable.
-> 
-> Note, the header file changes are just an unrelated clean-up while I was looking
-> around trying to find the bug.
-> 
-> Fixes: fd8958efe877 ("IB/hfi1: Fix sdma.h tx->num_descs off-by-one errors")
-> Cc: stable@vger.kernel.org
-> Reported-by: Mats Kronberg <kronberg@nsc.liu.se>
-> Tested-by: Mats Kronberg <kronberg@nsc.liu.se>
-> Signed-off-by: Daniel Vacek <neelx@redhat.com>
-> ---
->  drivers/infiniband/hw/hfi1/sdma.c |  2 +-
->  drivers/infiniband/hw/hfi1/sdma.h | 17 +++++++----------
->  2 files changed, 8 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/infiniband/hw/hfi1/sdma.c b/drivers/infiniband/hw/hfi1/sdma.c
-> index 6e5ac2023328a..b67d23b1f2862 100644
-> --- a/drivers/infiniband/hw/hfi1/sdma.c
-> +++ b/drivers/infiniband/hw/hfi1/sdma.c
-> @@ -3158,7 +3158,7 @@ int _pad_sdma_tx_descs(struct hfi1_devdata *dd, struct sdma_txreq *tx)
->  {
->  	int rval = 0;
->  
-> -	if ((unlikely(tx->num_desc + 1 == tx->desc_limit))) {
-> +	if ((unlikely(tx->num_desc == tx->desc_limit))) {
+On Tue, 30 Jan 2024 20:55:39 -0800
+Song Liu <song@kernel.org> wrote:
 
-Maybe, Dennis?
+> On Tue, Jan 30, 2024 at 6:41=E2=80=AFPM Yu Kuai <yukuai1@huaweicloud.com>
+> >
+> > Can you test the following patch?
+> >
+> > diff --git a/drivers/md/md.c b/drivers/md/md.c
+> > index e3a56a958b47..a8db84c200fe 100644
+> > --- a/drivers/md/md.c
+> > +++ b/drivers/md/md.c
+> > @@ -578,8 +578,12 @@ static void submit_flushes(struct work_struct
+> > *ws) rcu_read_lock();
+> >                  }
+> >          rcu_read_unlock();
+> > -       if (atomic_dec_and_test(&mddev->flush_pending))
+> > +       if (atomic_dec_and_test(&mddev->flush_pending)) {
+> > +               /* The pair is percpu_ref_get() from
+> > md_flush_request() */
+> > +               percpu_ref_put(&mddev->active_io);
+> > +
+> >                  queue_work(md_wq, &mddev->flush_work);
+> > +       }
+> >   }
+> >
+> >   static void md_submit_flush_data(struct work_struct *ws) =20
+>=20
+> This fixes the issue in my tests. Please submit the official patch.
+> Also, we should add a test in mdadm/tests to cover this case.
+>=20
+> Thanks,
+> Song
+>=20
 
->  		rval = _extend_sdma_tx_descs(dd, tx);
->  		if (rval) {
->  			__sdma_txclean(dd, tx);
-> diff --git a/drivers/infiniband/hw/hfi1/sdma.h b/drivers/infiniband/hw/hfi1/sdma.h
-> index d77246b48434f..362815a8da267 100644
-> --- a/drivers/infiniband/hw/hfi1/sdma.h
-> +++ b/drivers/infiniband/hw/hfi1/sdma.h
-> @@ -639,13 +639,13 @@ static inline void sdma_txclean(struct hfi1_devdata *dd, struct sdma_txreq *tx)
->  static inline void _sdma_close_tx(struct hfi1_devdata *dd,
->  				  struct sdma_txreq *tx)
->  {
-> -	u16 last_desc = tx->num_desc - 1;
-> +	struct sdma_desc *desc = &tx->descp[tx->num_desc - 1];
->  
-> -	tx->descp[last_desc].qw[0] |= SDMA_DESC0_LAST_DESC_FLAG;
-> -	tx->descp[last_desc].qw[1] |= dd->default_desc1;
-> +	desc->qw[0] |= SDMA_DESC0_LAST_DESC_FLAG;
-> +	desc->qw[1] |= dd->default_desc1;
->  	if (tx->flags & SDMA_TXREQ_F_URGENT)
-> -		tx->descp[last_desc].qw[1] |= (SDMA_DESC1_HEAD_TO_HOST_FLAG |
-> -					       SDMA_DESC1_INT_REQ_FLAG);
-> +		desc->qw[1] |= (SDMA_DESC1_HEAD_TO_HOST_FLAG |
-> +				SDMA_DESC1_INT_REQ_FLAG);
+Hi Kuai,
 
-Unrelated change which doesn't change anything.
+On my hardware issue also stopped reproducing with this fix.=20
 
->  }
->  
->  static inline int _sdma_txadd_daddr(
-> @@ -670,13 +670,10 @@ static inline int _sdma_txadd_daddr(
->  	tx->tlen -= len;
->  	/* special cases for last */
->  	if (!tx->tlen) {
-> -		if (tx->packet_len & (sizeof(u32) - 1)) {
-> +		if (tx->packet_len & (sizeof(u32) - 1))
->  			rval = _pad_sdma_tx_descs(dd, tx);
-> -			if (rval)
-> -				return rval;
-> -		} else {
-> +		else
->  			_sdma_close_tx(dd, tx);
-> -		}
+I applied the fix on current HEAD of master
+branch in kernel/git/torvalds/linux.git repo.
 
-Same as before, unrelated change.
+Thansk,
+Blazej
 
->  	}
->  	return rval;
->  }
-> -- 
-> 2.43.0
-> 
+
+
 
