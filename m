@@ -1,135 +1,121 @@
-Return-Path: <stable+bounces-17489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59EEC8438AA
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 09:20:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF387843A6B
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 10:11:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1534F283CF8
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 08:20:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAFE52942CB
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 09:11:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E62795788C;
-	Wed, 31 Jan 2024 08:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4231160885;
+	Wed, 31 Jan 2024 09:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BF39uFbj";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="+szjX1SI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h7/3s84I"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A415810E;
-	Wed, 31 Jan 2024 08:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D836027F;
+	Wed, 31 Jan 2024 09:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706689227; cv=none; b=LsYB01II6iGBpIVx23tRdjcnFWsWtr+Ys4Kb/WJpV3xt9yJ4koDiBwD34VzNzqhIy7U6sAbCbaudC/oPBayrmSJW7cGCuUs0GHoavvl4zdBkj/QBWRGhofmzIzzR0mr64XlfUr3NZXRX2vmoyosK8sqzMztYeXBbWhBhHAFkycg=
+	t=1706692136; cv=none; b=hOrIp/H/q506mmfiQSM7eXBkTSG6U7s8OhfbmX2HRkr8ZUDY9SGJksjR4V/oB45cQPlmAPefunybst3/xhoVINiiJX5WMPhtqmYBKpR037RhBBz7UwJ9Gjp94ELuxbKSEXiULn1VjE7xFW+sTNC5GnsfcR597dMDELlgz7BosuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706689227; c=relaxed/simple;
-	bh=RW9cv7toZnF6LEuYZzxkXycyW8t3NCYo9rT737UUGSk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qeAa1f8X2ENvqnQ2DmC6QKpa17SuZpvojwVH4FT1yyhl2YU/JWDmG9JrUN7WhJoDRxnIZz48L02CU+TTaVymWxbC/RzBb7yhraoDxn4BRD4WaUysZyflQlVveC2oecrJJ/mIjPC8QT3hkzr2SdWJ5I3hVkaUFc+qmaJntQd144M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BF39uFbj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=+szjX1SI; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1706689224;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=w8HpHV0x1fENAzE/fQpwHsbHa7p7cxsO49CTT+C0rLw=;
-	b=BF39uFbjNsmkux2PvO6mYxHtzNyyH1IobjCeqy+pT88EE4kYmF/uj2F6wNtsfNvuDXme94
-	MFOoi2nFs/dZsB0b8H4+arNJ9qWwirkF2xZGxPgkgih5NhkgLQ5BFgzsES4xsVrvXGP7jI
-	zWDM3gu9LaTJbpAR4Y+EA9IEEoPQJa7KPiUP0pRiGdD/+kEGRh4SNjdkt7Vonj58BFxYYH
-	WcVrZbUuBOmtQMb6dDWq1eOd269vzAvxi/VDp2Q0aPwcCZdDhrLyBP6Jyga8H2gRN+5O5x
-	A88RBpmMtRjd3LFB/nnD0NhcPKtnUFKq0k7zOXnuFtvXW50HUCqCUQz/cH+I+A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1706689224;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=w8HpHV0x1fENAzE/fQpwHsbHa7p7cxsO49CTT+C0rLw=;
-	b=+szjX1SI5t1MyKsWanFvac6dZS4L+0EVLC1N3HAKrYGepum1PrI36nKXIG5xYU90olsKy3
-	gGtmx59GsHAqH0Ag==
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Samuel Holland <samuel@sholland.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Guo Ren <guoren@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Cc: Nam Cao <namcao@linutronix.de>,
+	s=arc-20240116; t=1706692136; c=relaxed/simple;
+	bh=hxzRTdZxJSt3TvyZe6HqJcBulFzOOA/CYDt4I8ip2l4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ARCZzxtjh+d6DApGWw/i2EYl8aCiZSw++c2iGcdONKkW6ezMVQNV3CfuurlcvKuC3TUkJeHQqeXlukLePH4oOPGB22OJZ1SOqaY3/F66/cd/B9uS1TqjZkwFODcMtXPn1RJT1oIkkP1jcdnNsT+aAYuGoF9eUHYPiUk5FO2TSGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h7/3s84I; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706692133; x=1738228133;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hxzRTdZxJSt3TvyZe6HqJcBulFzOOA/CYDt4I8ip2l4=;
+  b=h7/3s84IVSjc+w194EUXLr+YHeSzxAiiAHK3kCg7koKWHy0r4qI/07Vo
+   v6PrCPbVM4BwAXKmNm3tyE6ziJWidZWqbMaRTV0i5SF6y7lX6qufGUW88
+   kksp8ERcwA4Q7nn4ttc+G1ELFXCBpoczJSgcOqSKdG6GM3I/fMP+t8ovT
+   3S5ldHEATqN9TidCzxR3U17CTSOY0mn/tSYRnTgSL/rjOUqeqWS2kPCye
+   vQzokjEjka2cx+7b9Nqk9NN0M3tYB03M/b0yaFK6OzhahXb2SyF0oVdxB
+   1uFK99Xegf7vwGONvLA0Y5SVDbJyArMxOp+P0Tg1EKQ/oBHD6T7FbnM4R
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="10207460"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="10207460"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jan 2024 01:08:52 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="931776091"
+X-IronPort-AV: E=Sophos;i="6.05,231,1701158400"; 
+   d="scan'208";a="931776091"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 31 Jan 2024 01:08:49 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 7A2316E4; Wed, 31 Jan 2024 10:39:14 +0200 (EET)
+Date: Wed, 31 Jan 2024 10:39:14 +0200
+From: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Zixi Chen <zixchen@redhat.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Kai Huang <kai.huang@linux.intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>, x86@kernel.org, 
 	stable@vger.kernel.org
-Subject: [PATCH v2] irqchip/sifive-plic: enable interrupt if needed before EOI
-Date: Wed, 31 Jan 2024 09:19:33 +0100
-Message-Id: <20240131081933.144512-1-namcao@linutronix.de>
+Subject: Re: [PATCH] x86/cpu/intel: Detect TME keyid bits before setting MTRR
+ mask registers
+Message-ID: <bf3ptwhblztmal3c5b7jhjpohizw7q64th76pzit6rpgnewmo5@atq3oy6sp5vn>
+References: <20240130180400.1698136-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240130180400.1698136-1-pbonzini@redhat.com>
 
-RISC-V PLIC cannot "end-of-interrupt" (EOI) disabled interrupts, as
-explained in the description of Interrupt Completion in the PLIC spec:
+On Tue, Jan 30, 2024 at 07:04:00PM +0100, Paolo Bonzini wrote:
+> MKTME repurposes the high bit of physical address to key id for encryption
+> key and, even though MAXPHYADDR in CPUID[0x80000008] remains the same,
+> the valid bits in the MTRR mask register are based on the reduced number
+> of physical address bits.
+> 
+> detect_tme() in arch/x86/kernel/cpu/intel.c detects TME and subtracts
+> it from the total usable physical bits, but it is called too late.
+> Move the call to early_init_intel() so that it is called in setup_arch(),
+> before MTRRs are setup.
+> 
+> This fixes boot on some TDX-enabled systems which until now only worked
+> with "disable_mtrr_cleanup".  Without the patch, the values written to
+> the MTRRs mask registers were 52-bit wide (e.g. 0x000fffff_80000800)
+> and the writes failed; with the patch, the values are 46-bit wide,
+> which matches the reduced MAXPHYADDR that is shown in /proc/cpuinfo.
+> 
+> Fixes: cb06d8e3d020 ("x86/tme: Detect if TME and MKTME is activated by BIOS", 2018-03-12)
+> Reported-by: Zixi Chen <zixchen@redhat.com>
+> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+> Cc: Kai Huang <kai.huang@linux.intel.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: x86@kernel.org
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-"The PLIC signals it has completed executing an interrupt handler by
-writing the interrupt ID it received from the claim to the claim/complete
-register. The PLIC does not check whether the completion ID is the same
-as the last claim ID for that target. If the completion ID does not match
-an interrupt source that *is currently enabled* for the target, the
-completion is silently ignored."
+I've seen the patch before, although by different author and with
+different commit message, not sure what is going on.
 
-Commit 69ea463021be ("irqchip/sifive-plic: Fixup EOI failed when masked")
-ensured that EOI is successful by enabling interrupt first, before EOI.
+I had concern about that patch and I don't think it was addressed.
+See the thread:
 
-Commit a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask
-operations") removed the interrupt enabling code from the previous
-commit, because it assumes that interrupt should already be enabled at the
-point of EOI. However, this is incorrect: there is a window after a hart
-claiming an interrupt and before irq_desc->lock getting acquired,
-interrupt can be disabled during this window. Thus, EOI can be invoked
-while the interrupt is disabled, effectively nullify this EOI. This
-results in the interrupt never gets asserted again, and the device who
-uses this interrupt appears frozen.
+https://lore.kernel.org/all/20231002224752.33qa2lq7q2w4nqws@box
 
-Make sure that interrupt is really enabled before EOI.
-
-Fixes: a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask ope=
-rations")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Nam Cao <namcao@linutronix.de>
----
-v2:
-  - add unlikely() for optimization
-  - re-word commit message to make it clearer
-
- drivers/irqchip/irq-sifive-plic.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive=
--plic.c
-index e1484905b7bd..0a233e9d9607 100644
---- a/drivers/irqchip/irq-sifive-plic.c
-+++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -148,7 +148,13 @@ static void plic_irq_eoi(struct irq_data *d)
- {
- 	struct plic_handler *handler =3D this_cpu_ptr(&plic_handlers);
-=20
--	writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
-+	if (unlikely(irqd_irq_disabled(d))) {
-+		plic_toggle(handler, d->hwirq, 1);
-+		writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
-+		plic_toggle(handler, d->hwirq, 0);
-+	} else {
-+		writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
-+	}
- }
-=20
- #ifdef CONFIG_SMP
---=20
-2.39.2
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
