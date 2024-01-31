@@ -1,96 +1,98 @@
-Return-Path: <stable+bounces-17504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63CB8843CEE
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 11:38:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8065C843DA1
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 12:04:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8771CB2B043
-	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 10:38:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44B81B2FB06
+	for <lists+stable@lfdr.de>; Wed, 31 Jan 2024 10:55:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C831569D33;
-	Wed, 31 Jan 2024 10:38:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fac5OTkB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF65C69D39;
+	Wed, 31 Jan 2024 10:54:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7939F69D0B;
-	Wed, 31 Jan 2024 10:38:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B387AE40;
+	Wed, 31 Jan 2024 10:54:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706697507; cv=none; b=nwszzqrUdQpJMOj/Nh4mutYbdYykB4aN+oxC9yXHueO/JWbZdB5qiGJo0DHiC7l9oWbSlhhTHkZACPbxaJ75BIXpT1j2mhiz3y6EJmOFE4R5GFlGpcztAWwsNSHlf51wThuNye2nUk6lYN3HdRH4rxs+jUSOouO0W3rMkDUO9/w=
+	t=1706698498; cv=none; b=prYMB+IKFvTWDPWdglpKcwazhHoLff1eSB/qC2m+AV1VjilHluTWe/XUG0nWS7pV/2EnT3pbmx1rgzPalIObND6mZO991I3WbyiMhZW47owQMo7IW7MBJiZdI/hu/8E6/RQ8KqlkZrsnbgj7cvg6KurH/WQY7TA3uvw3fdaKVAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706697507; c=relaxed/simple;
-	bh=G1xb+7GcuqoR3Hpne3zc8YgCg5SYmrqCTtVXVrZG2fU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=GKVi2uzth66Y48lpOrs2HhSlpdmCLeGeO/E3piEg4NeH5SzPfDaywY6hCdTitxM7eHBjBFjyJnXm6n5k8wNVdrh8yLuKHI50QmIo3LJt2C+ne9yVCG8w46ISX28ybzloZuWBEgd8GhoL+O5dSbPzyi+USLPyspP5lMC0Pa1XXKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fac5OTkB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 098B5C433F1;
-	Wed, 31 Jan 2024 10:38:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706697507;
-	bh=G1xb+7GcuqoR3Hpne3zc8YgCg5SYmrqCTtVXVrZG2fU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Fac5OTkBkRLA1DX3YIghuHVctzb5epHMKkDNS7/diRvKR/BH9srNwyhkx0/srNYGG
-	 9PxW0AupX9Wa5lwUZegOvAvz0y1h+cBbPBhwlbu2IwX+jJP8Z0tJd/OYvqmnKiPYHc
-	 t5/vCrZgAtB1guCN76Xw2MJrnkhUT55lUamWj8yu0kRBhYTA01ylcq8iRqBoj5n6ey
-	 M/sqzrRKCNXO45Dpv/aCKTjpNE3KALzNxY5Ec/LT2G4GiXX2gNOMHFkmltEYVLoJBb
-	 5YcUmaFEs+Ls3Z1X6UIsxeBx0VXk1cceWkYjUUsZ9UC/fy7vgLCBsVcrMESA/0liT5
-	 T+8wXiqUCuxWw==
-From: Benjamin Tissoires <bentiss@kernel.org>
-To: Jiri Kosina <jikos@kernel.org>, 
- Benjamin Tissoires <benjamin.tissoires@redhat.com>, 
- Dan Carpenter <dan.carpenter@linaro.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Andrii Nakryiko <andrii.nakryiko@gmail.com>, 
- Benjamin Tissoires <bentiss@kernel.org>
-Cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
- bpf@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20240124-b4-hid-bpf-fixes-v2-0-052520b1e5e6@kernel.org>
-References: <20240124-b4-hid-bpf-fixes-v2-0-052520b1e5e6@kernel.org>
-Subject: Re: [PATCH v2 0/3] HID: bpf: couple of upstream fixes
-Message-Id: <170669750476.304575.17277174965193688582.b4-ty@kernel.org>
-Date: Wed, 31 Jan 2024 11:38:24 +0100
+	s=arc-20240116; t=1706698498; c=relaxed/simple;
+	bh=r8Wx/oQPjcA/lfeAL78zy/yacxpWCalvIEbrmbWXG5Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T2qTBRHbeGJpnxAWQd/EwQZWlZ77V7E/PEpihAADC1oKOR2/oPa6+9OTuBhNXGgWGr3jXdxUcSXydvbEMvOiNvEZQAUZClENarrbGuljcV8FQhgQexDoRQYnI1sSZZ2QLQyQURUL9/HT4pPtNnueLzaWygjkFnCKglDB3dpkkL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 738871C0079; Wed, 31 Jan 2024 11:54:54 +0100 (CET)
+Date: Wed, 31 Jan 2024 11:54:53 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 000/186] 6.1.76-rc2 review
+Message-ID: <Zbom/Y4vjjZrKBn5@duo.ucw.cz>
+References: <20240130183318.454044155@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.4
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="1WdMPOtP07DzbyGD"
+Content-Disposition: inline
+In-Reply-To: <20240130183318.454044155@linuxfoundation.org>
 
-On Wed, 24 Jan 2024 12:26:56 +0100, Benjamin Tissoires wrote:
-> This is the v2 of this series of HID-BPF fixes.
-> I have forgotten to include a Fixes tag in the first patch
-> and got a review from Andrii on patch 2.
-> 
-> And this first patch made me realize that something was fishy
-> in the refcount of the hid devices. I was not crashing the system
-> even if I accessed the struct hid_device after hid_destroy_device()
-> was called, which was suspicious to say the least. So after some
-> debugging I found the culprit and realized that I had a pretty
-> nice memleak as soon as one HID-BPF program was attached to a HID
-> device.
-> 
-> [...]
 
-Applied to https://git.kernel.org/pub/scm/linux/kernel/git/hid/hid.git (for-6.8/upstream-fixes), thanks!
+--1WdMPOtP07DzbyGD
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[1/3] HID: bpf: remove double fdget()
-      https://git.kernel.org/hid/hid/c/7cdd2108903a
-[2/3] HID: bpf: actually free hdev memory after attaching a HID-BPF program
-      https://git.kernel.org/hid/hid/c/89be8aa5b0ec
-[3/3] HID: bpf: use __bpf_kfunc instead of noinline
-      https://git.kernel.org/hid/hid/c/764ad6b02777
+Hi!
 
-Cheers,
--- 
-Benjamin Tissoires <bentiss@kernel.org>
+> This is the start of the stable review cycle for the 6.1.76 release.
+> There are 186 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+> Responses should be made by Thu, 01 Feb 2024 18:32:32 +0000.
+> Anything received after that time might be too late.
 
+CIP testing did not find any problems here:
+
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.1.y
+
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
+
+Best regards,
+                                                                Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--1WdMPOtP07DzbyGD
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZbom/QAKCRAw5/Bqldv6
+8vd0AJ9iDHOPh0yZfdI1TyWEicvCDkOU6QCfWUr3uIYsE5cxmDEY6NZta0hFCpk=
+=RvJa
+-----END PGP SIGNATURE-----
+
+--1WdMPOtP07DzbyGD--
 
