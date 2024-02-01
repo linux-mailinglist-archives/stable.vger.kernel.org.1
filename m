@@ -1,135 +1,102 @@
-Return-Path: <stable+bounces-17602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63C14845B89
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 16:29:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F1D845CFA
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 17:19:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F698291C2A
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 15:29:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E97E91F22E40
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 16:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0E1626AF;
-	Thu,  1 Feb 2024 15:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UysrzrXq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3381161B60;
+	Thu,  1 Feb 2024 16:16:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2F962166;
-	Thu,  1 Feb 2024 15:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F29160895;
+	Thu,  1 Feb 2024 16:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706801246; cv=none; b=IPxDOGoztjPqLAgrkcblUUOMnE0MSTkn5J6+ddIRdCDnWSZb6qbzdtqLU46Tbdz2jq79SPwaINXoZbAgK3Qcfruhdgb8L2He0o1fukPmfeXNL2FfvI6hEBGQGWmblo5agHUDl911ab40r/GQNXTu2hlZJypnsJttO/61ynj9u6E=
+	t=1706804160; cv=none; b=S0JyU8S9o6z6tPLawayfje7KS9T8ZDoEekuyrq1mlON/7bmTUdT59N7Xvda+IkbcMFaq0H3UwbbzWRwZm1pQxRRrP6GShoDLEQnUqMYeqdf9k/Uc6qx+ZVBlKsN8rpcRIoQmDftff2xOZhkBE5v1IaQz935c2Ed1VZtyWQ4mm0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706801246; c=relaxed/simple;
-	bh=J4oACJ7K02dl5yARmR3wThXfdDqsUmklZwHWhRZPSAQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=to88ZmmDc6xUPHZuKpKaEYx7IknfqCwKpa8nENhESH4PVhg63EEFpx6ZPmouECITU2pNg5vemj6JY5MnBX1uMOKBAqHd5jk7FAEcumxsiimxgekosyGhHTu+XiXprWWHHWlkJAP0sTvTIx7n96Mbjo+oEh5bcEUFMz0+N3XsEEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UysrzrXq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFDE5C433C7;
-	Thu,  1 Feb 2024 15:27:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706801246;
-	bh=J4oACJ7K02dl5yARmR3wThXfdDqsUmklZwHWhRZPSAQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UysrzrXqbkN/eYckVeuBK8QLFf3oKCyaE5jk5aKqffI5wKVIHHGZYq7HdvPfkt9HP
-	 TrHxL8Q7SmNs8sVFV8HmLJVGfHgE0G4E1mpRc6GWGveRktupuD4fUAl0jo+VrH36Wn
-	 uD6vNQ/BzHFBwz31OKvv7SbNgL+j8DKLYAfOahQ4FsZh6TmWa9xixHW1lEaQdlmmuL
-	 yvRqCWTymTvXjQB6Q42UCQ1Y4MKMscptPFzyDiNM7htsgKKimeG1u5IaeQ9Sa2ZKrB
-	 kzcUKuqq4a3Y1r0Nr/rx3fSPtIL4WH30ScoiXxxXfLaubFQht9JU/4RI5S6w+uS6HH
-	 Q8ulzLDRWjDSQ==
-Message-ID: <88ffd0ec-ef43-4b26-9314-207606291af3@kernel.org>
-Date: Thu, 1 Feb 2024 16:27:22 +0100
+	s=arc-20240116; t=1706804160; c=relaxed/simple;
+	bh=lNtIhhFDOlXg3opQxPWZoYHwa0F4HyqlbB3ETO/rgP4=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=aBEJMUw4SW44XD7MVs2b6xj4GJUq4mL+NiGGs6jimyT1mJBEXwTLCNmwj2jm+SbbqX4wuBXbY4mWAiF2jENI2l5ekdKYenxSck7bwCTNQpwGqZcQEYtupiwKF5FcuGWWbt51y4LvXNTqpWkg7Xtz8IGBHzC9J34/kq5M3HvnhHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B97EC43390;
+	Thu,  1 Feb 2024 16:16:00 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.97)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1rVZjd-00000005Tji-1JJ6;
+	Thu, 01 Feb 2024 11:16:17 -0500
+Message-ID: <20240201161617.166973329@goodmis.org>
+User-Agent: quilt/0.67
+Date: Thu, 01 Feb 2024 10:34:49 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Christian Brauner <brauner@kernel.org>,
+ Al Viro <viro@ZenIV.linux.org.uk>,
+ Ajay Kaher <ajay.kaher@broadcom.com>,
+ stable@vger.kernel.org,
+ Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 3/6] eventfs: Remove fsnotify*() functions from lookup()
+References: <20240201153446.138990674@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tracing/timerlat: Move hrtimer_init to timerlat_fd open()
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <7324dd3fc0035658c99b825204a66049389c56e3.1706798888.git.bristot@kernel.org>
- <20240201102526.755de868@gandalf.local.home>
-Content-Language: en-US, pt-BR, it-IT
-From: Daniel Bristot de Oliveira <bristot@kernel.org>
-In-Reply-To: <20240201102526.755de868@gandalf.local.home>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 2/1/24 16:25, Steven Rostedt wrote:
-> On Thu,  1 Feb 2024 16:13:39 +0100
-> Daniel Bristot de Oliveira <bristot@kernel.org> wrote:
-> 
->> Currently, the timerlat's hrtimer is initialized at the first read of
->> timerlat_fd, and destroyed at close(). It works, but it causes an error
->> if the user program open() and close() the file without reading.
->>
->> Move hrtimer_init to timerlat_fd open() to avoid this problem.
->>
->> No functional changes.
-> 
-> It can't be fixing something and not have any functional changes.
-> 
-> No functional changes means the code is restructured but the resulting
-> assembly would be the same.
-> 
-> Like moving functions around in a file so that you don't need extra
-> prototype declarations.
-> 
-> Please only add "No functional changes" if the function's assembly would be
-> the same.
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-ok
+The dentries and inodes are created when referenced in the lookup code.
+There's no reason to call fsnotify_*() functions when they are created by
+a reference. It doesn't make any sense.
 
->>
->> Fixes: e88ed227f639 ("tracing/timerlat: Add user-space interface")
-> 
-> With a fixes tag, I'm assuming his should go into v6.8 with a Cc stable?
+Link: https://lore.kernel.org/linux-trace-kernel/20240201002719.GS2087318@ZenIV/
 
-right, I added it on Cc, but did not include the Cc:.. tag. It seems that I should have.
+Cc: stable@vger.kernel.org
+Fixes: a376007917776 ("eventfs: Implement functions to create files and dirs when accessed");
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ fs/tracefs/event_inode.c | 2 --
+ 1 file changed, 2 deletions(-)
 
--- Daniel
+diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
+index ca7daee7c811..9e031e5a2713 100644
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -366,7 +366,6 @@ static struct dentry *lookup_file(struct eventfs_inode *parent_ei,
+ 	dentry->d_fsdata = get_ei(parent_ei);
+ 
+ 	d_add(dentry, inode);
+-	fsnotify_create(dentry->d_parent->d_inode, dentry);
+ 	return NULL;
+ };
+ 
+@@ -408,7 +407,6 @@ static struct dentry *lookup_dir_entry(struct dentry *dentry,
+ 	inc_nlink(inode);
+ 	d_add(dentry, inode);
+ 	inc_nlink(dentry->d_parent->d_inode);
+-	fsnotify_mkdir(dentry->d_parent->d_inode, dentry);
+ 	return NULL;
+ }
+ 
+-- 
+2.43.0
 
-> -- Steve
-> 
-> 
->> Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
->> ---
->>  kernel/trace/trace_osnoise.c | 6 +++---
->>  1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> diff --git a/kernel/trace/trace_osnoise.c b/kernel/trace/trace_osnoise.c
->> index bd0d01d00fb9..a8e28f9b9271 100644
->> --- a/kernel/trace/trace_osnoise.c
->> +++ b/kernel/trace/trace_osnoise.c
->> @@ -2444,6 +2444,9 @@ static int timerlat_fd_open(struct inode *inode, struct file *file)
->>  	tlat = this_cpu_tmr_var();
->>  	tlat->count = 0;
->>  
->> +	hrtimer_init(&tlat->timer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
->> +	tlat->timer.function = timerlat_irq;
->> +
->>  	migrate_enable();
->>  	return 0;
->>  };
->> @@ -2526,9 +2529,6 @@ timerlat_fd_read(struct file *file, char __user *ubuf, size_t count,
->>  		tlat->tracing_thread = false;
->>  		tlat->kthread = current;
->>  
->> -		hrtimer_init(&tlat->timer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
->> -		tlat->timer.function = timerlat_irq;
->> -
->>  		/* Annotate now to drift new period */
->>  		tlat->abs_period = hrtimer_cb_get_time(&tlat->timer);
->>  
-> 
 
 
