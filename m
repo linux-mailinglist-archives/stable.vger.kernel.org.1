@@ -1,174 +1,96 @@
-Return-Path: <stable+bounces-19031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D73184C2DD
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 03:59:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C894884C398
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 05:28:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B0E7B2B6F0
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 02:59:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 076D11C25526
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 04:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E895F9C3;
-	Wed,  7 Feb 2024 02:58:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="q7G7j77C"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91F710A20;
+	Wed,  7 Feb 2024 04:28:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264F614A81
-	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 02:58:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C6E15E8B
+	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 04:28:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707274728; cv=none; b=jxxOClQS7UkB8KH7vm/7LvO9K8Bgz+Mc7TgcD48M3OmidYeIwXhsTzHmcjj4RGZSM/1mLDbzFLSgAjTHkEK2bcN5AmwWaQcwK+TNP9zA7FIRqGx96mr575x9f7EOiyUBTV8wtbKqliBhxh46nb/i8TdajvY7HmpRZPkTTvBZUZM=
+	t=1707280083; cv=none; b=YffGwlwX5shXQC5fjmb11IqnrIXnqBAlUsi9kVKe2uoidiAPJap/f6NtANRc13BXHhWqEw+5YjB/xKKrZsMriWNcZJoV2Jhuqmg42QztC7Bw4frIod3BzxBW0DKc16t0XRGnpugqpKGDfL9wQQNlSBzypb2b+3A11GxmDrUYlh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707274728; c=relaxed/simple;
-	bh=GssavB2eBu3MCykfKG7uDgs+4Abjn9OOgra4EZk4ZRI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Fi1QxarIKg8s59frV4dp3VIXQOba7OgKAC451zfOQALMidBFsKZVdiTqhBsFdKNhKgsGSDZURL2pYi7aMd5kq1V9MmdJ7Ca0tviBYLlnr/COaDpETzrR7NDwKGjg7aEKukgNyaOUaE97l+m2OMo9CUkqVuX1Ge1e1N4YQJoG0QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=q7G7j77C; arc=none smtp.client-ip=91.218.175.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1707274725;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=YdTolOktysfsfJtvyDb6Ex+kid808dGZqD8vDTLFsAI=;
-	b=q7G7j77CtIpEYihaJPQD5FrbBwFuoFV3H4fjX/HELJ4abMv+2lreF8Kj5Du1EbcV+t5GOE
-	Z+jUosaM3kuUumKWYypEFJcBX9rx/Y0mJbs2C9+CAPG0yFxrPKwQ59CODm6Gh38wwNhcdX
-	n+5PRk20yQ/4NS2e4y/WopprGTOCuAU=
-From: chengming.zhou@linux.dev
-To: hannes@cmpxchg.org,
-	yosryahmed@google.com,
-	nphamcs@gmail.com,
-	akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	chengming.zhou@linux.dev,
-	Chengming Zhou <zhouchengming@bytedance.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] mm/zswap: invalidate old entry when store fail or !zswap_enabled
-Date: Wed,  7 Feb 2024 02:58:27 +0000
-Message-Id: <20240207025827.3819141-1-chengming.zhou@linux.dev>
+	s=arc-20240116; t=1707280083; c=relaxed/simple;
+	bh=TZP3e5q0xkTb4dHdmoaGAsHjV0MPkKU0QyCFSryNmTw=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=rkbIOzxMqa3Gpje/erN8MXor+wjj7YcoAvwrZproobPv74Ayeyn1447Lv1gyHP5WuR6KvuMK2VdK5qtdn5YP24UdqHaiHv7Id9SHb9rIZrPxvw9REhl2+WgQO89ixJzCLj+Z9pzJhwOcBEuWCbaz0+grCeA7rbuuUPuVvzFndm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
+Received: from mchehab by linuxtv.org with local (Exim 4.96)
+	(envelope-from <mchehab@linuxtv.org>)
+	id 1rXZXV-0006qA-18;
+	Wed, 07 Feb 2024 04:28:01 +0000
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Date: Thu, 01 Feb 2024 12:20:40 +0000
+Subject: [git:media_tree/master] media: tc358743: register v4l2 async device only after successful setup
+To: linuxtv-commits@linuxtv.org
+Cc: stable@vger.kernel.org, Robert Foss <rfoss@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, Alexander Stein <alexander.stein@ew.tq-group.com>
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1rXZXV-0006qA-18@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-From: Chengming Zhou <zhouchengming@bytedance.com>
+This is an automatic generated email to let you know that the following patch were queued:
 
-We may encounter duplicate entry in the zswap_store():
+Subject: media: tc358743: register v4l2 async device only after successful setup
+Author:  Alexander Stein <alexander.stein@ew.tq-group.com>
+Date:    Wed Jan 10 10:01:11 2024 +0100
 
-1. swap slot that freed to per-cpu swap cache, doesn't invalidate
-   the zswap entry, then got reused. This has been fixed.
+Ensure the device has been setup correctly before registering the v4l2
+async device, thus allowing userspace to access.
 
-2. !exclusive load mode, swapin folio will leave its zswap entry
-   on the tree, then swapout again. This has been removed.
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Fixes: 4c5211a10039 ("[media] tc358743: register v4l2 asynchronous subdevice")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-3. one folio can be dirtied again after zswap_store(), so need to
-   zswap_store() again. This should be handled correctly.
+ drivers/media/i2c/tc358743.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-So we must invalidate the old duplicate entry before insert the
-new one, which actually doesn't have to be done at the beginning
-of zswap_store(). And this is a normal situation, we shouldn't
-WARN_ON(1) in this case, so delete it. (The WARN_ON(1) seems want
-to detect swap entry UAF problem? But not very necessary here.)
-
-The good point is that we don't need to lock tree twice in the
-store success path.
-
-Note we still need to invalidate the old duplicate entry in the
-store failure path, otherwise the new data in swapfile could be
-overwrite by the old data in zswap pool when lru writeback.
-
-We have to do this even when !zswap_enabled since zswap can be
-disabled anytime. If the folio store success before, then got
-dirtied again but zswap disabled, we won't invalidate the old
-duplicate entry in the zswap_store(). So later lru writeback
-may overwrite the new data in swapfile.
-
-Fixes: 42c06a0e8ebe ("mm: kill frontswap")
-Cc: <stable@vger.kernel.org>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
 ---
-v2:
- - Change the duplicate entry invalidation loop to if, since we hold
-   the lock, we won't find it once we invalidate it, per Yosry.
- - Add Fixes tag.
----
- mm/zswap.c | 33 ++++++++++++++++-----------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index cd67f7f6b302..6c1466633274 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1518,18 +1518,8 @@ bool zswap_store(struct folio *folio)
- 		return false;
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index 2785935da497..558152575d10 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -2091,9 +2091,6 @@ static int tc358743_probe(struct i2c_client *client)
+ 	state->mbus_fmt_code = MEDIA_BUS_FMT_RGB888_1X24;
  
- 	if (!zswap_enabled)
--		return false;
-+		goto check_old;
+ 	sd->dev = &client->dev;
+-	err = v4l2_async_register_subdev(sd);
+-	if (err < 0)
+-		goto err_hdl;
  
--	/*
--	 * If this is a duplicate, it must be removed before attempting to store
--	 * it, otherwise, if the store fails the old page won't be removed from
--	 * the tree, and it might be written back overriding the new data.
--	 */
--	spin_lock(&tree->lock);
--	entry = zswap_rb_search(&tree->rbroot, offset);
--	if (entry)
--		zswap_invalidate_entry(tree, entry);
--	spin_unlock(&tree->lock);
- 	objcg = get_obj_cgroup_from_folio(folio);
- 	if (objcg && !obj_cgroup_may_zswap(objcg)) {
- 		memcg = get_mem_cgroup_from_objcg(objcg);
-@@ -1608,14 +1598,12 @@ bool zswap_store(struct folio *folio)
- 	/* map */
- 	spin_lock(&tree->lock);
- 	/*
--	 * A duplicate entry should have been removed at the beginning of this
--	 * function. Since the swap entry should be pinned, if a duplicate is
--	 * found again here it means that something went wrong in the swap
--	 * cache.
-+	 * The folio could be dirtied again, invalidate the possible old entry
-+	 * before insert this new entry.
- 	 */
--	while (zswap_rb_insert(&tree->rbroot, entry, &dupentry) == -EEXIST) {
--		WARN_ON(1);
-+	if (zswap_rb_insert(&tree->rbroot, entry, &dupentry) == -EEXIST) {
- 		zswap_invalidate_entry(tree, dupentry);
-+		VM_WARN_ON(zswap_rb_insert(&tree->rbroot, entry, &dupentry));
- 	}
- 	if (entry->length) {
- 		INIT_LIST_HEAD(&entry->lru);
-@@ -1638,6 +1626,17 @@ bool zswap_store(struct folio *folio)
- reject:
- 	if (objcg)
- 		obj_cgroup_put(objcg);
-+check_old:
-+	/*
-+	 * If zswap store fail or zswap disabled, we must invalidate possible
-+	 * old entry which previously stored by this folio. Otherwise, later
-+	 * writeback could overwrite the new data in swapfile.
-+	 */
-+	spin_lock(&tree->lock);
-+	entry = zswap_rb_search(&tree->rbroot, offset);
-+	if (entry)
-+		zswap_invalidate_entry(tree, entry);
-+	spin_unlock(&tree->lock);
- 	return false;
+ 	mutex_init(&state->confctl_mutex);
  
- shrink:
--- 
-2.40.1
-
+@@ -2151,6 +2148,10 @@ static int tc358743_probe(struct i2c_client *client)
+ 	if (err)
+ 		goto err_work_queues;
+ 
++	err = v4l2_async_register_subdev(sd);
++	if (err < 0)
++		goto err_work_queues;
++
+ 	v4l2_info(sd, "%s found @ 0x%x (%s)\n", client->name,
+ 		  client->addr << 1, client->adapter->name);
+ 
 
