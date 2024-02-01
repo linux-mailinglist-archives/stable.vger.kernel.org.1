@@ -1,50 +1,82 @@
-Return-Path: <stable+bounces-17620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1A3845E5F
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 18:20:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 885C3845F0F
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 19:01:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EECC41F25FF6
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 17:20:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F11601F291F4
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 18:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D09C1649DF;
-	Thu,  1 Feb 2024 17:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FCE684FA5;
+	Thu,  1 Feb 2024 18:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Txv4arnq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GdN3piP4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D86F1649A7;
-	Thu,  1 Feb 2024 17:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC7984FA7
+	for <stable@vger.kernel.org>; Thu,  1 Feb 2024 18:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706808028; cv=none; b=si2INydRqWg4fW1NXetxKo/fVBIxxYmgfxj7C5zanuCM+X/m70p3QVM5wUzVO8rZcirSIfipcbzL0inBdStOAAWL02tDtQ0cvZOyPM+zY9EWV5RzovdNNqHeL5p6URR6hf+APFNqkt+3RS7MmYX/je4KLpMFtMfTCbn4W7PBLIg=
+	t=1706810464; cv=none; b=VXAqrFsWVur8pE+GtdQMA5yALGCNhM+/iLbSlruoCg2kEqX0g6DyLZ63oLoIZYSeG8hHBwSXGuokvdiiIxgzoYHZ0K+UB52n0bwIhQqDfxYWo15ryAY8TQANtGwNAhbwD2o2QrILebUUoBEbA+dvg2qbmYFbNmi8cYqprZuE7Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706808028; c=relaxed/simple;
-	bh=pxNxp2jInNaPMPU2mt5mwA5Yn1hERV9B5vHmU6y78cw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=GNrzR+wjU+cBdIHJY2Tw1g1J/bNx8YRy7myeyWP1+tjs7gQRFQQJixA7OF7vaCRonI4/LuXkC4kgFpEPggCkK1sg3JFwDsWfi6H012Y2uSsJuXOsO4IbbOwpogxVAxxHb/kb6AaOJca+uF9xm7HFlXv8Axve+v7+mn0KH6CMBRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Txv4arnq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 01FE3C43394;
-	Thu,  1 Feb 2024 17:20:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706808028;
-	bh=pxNxp2jInNaPMPU2mt5mwA5Yn1hERV9B5vHmU6y78cw=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Txv4arnq5wa9wJ+pWoG2Dr0OS7TPVffhW1PLyUO0eNDFSgmDM14vZCJ2554f1g2lO
-	 iF+o53AhSB3TAkhVeNfffg7T4nRAKxnW8MhjFhs3NqHta2guik0wPr9hCsAJz7uKH2
-	 0VyBOx56/LRJSzNGUMOjw3+Erjx6dVMx4UGpl/hZ1DFjVvf6C0btl1etZUx+DBnSWi
-	 J5ejAcwWADKgVR8kyZ2u8nFuo9A4FkfpPW2D2NG3xRojuET0rAlTfGRnRKaxM7lvpH
-	 jQqPLW7YGWs8lnjyWqV3kqLxJ8chB0RO1nnflm0zZKnDEGJbKVEGelopWBQ75gRBjD
-	 iUDI963VPRrGw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id DDEF8D8C978;
-	Thu,  1 Feb 2024 17:20:27 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1706810464; c=relaxed/simple;
+	bh=oSa6ZDNvV33EJ7VE68enRAj3m4o9UAc2377tfNBC5pU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=q7+lcMzrd2ZcMCopBdgy9Ve0GN/FCoeo/HJjgCmqZVJorQKIDCl37L4GUagKm6Q4C5omDRKBF5egPJWYLpq/Hc6vJ0S6Cr40Qx1uhnlg2znV4FA2Xi0zz0xShIv6aHiTJPBJCrZ67rw/4T8ijLu+5uNlUxIqIBZ3ruI7nAE0hho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GdN3piP4; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1d8b2f392b3so1036965ad.1
+        for <stable@vger.kernel.org>; Thu, 01 Feb 2024 10:01:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706810462; x=1707415262; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=L8AtnYKuWwLvOFGHJm4I7X5AjAku8k1q8BzaAoKy0qw=;
+        b=GdN3piP40WBs6Ska1VXIkYF1bK/jxRc6VKNY2vViWJ3DieWRNEEblyFELOKepGajFu
+         xbHfebCFiWFHgy2Ql7K3pk1NqIfCekzgyiM4gG2X4D7ORdcfgC/8A6Bmox0t19rhPc2A
+         e1Kqj1s2S6wiEImIUy8LeMK183v+xMtwpX5t1caYbM8GtGvNr0MCneriIUrotgMOAD0y
+         C2qqHqQZVU5ur0qtTYZbsbshRpfk8HM1Wamxop5YKweodepfAh1VukZx0rTmxij0SmMf
+         PYUxGWTpEmbAFP1zHbPdIPfoxBfGMcv53xrkr+TOZXoRY+x3MctpteK0X4ZUHaUtUPha
+         1n8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706810462; x=1707415262;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=L8AtnYKuWwLvOFGHJm4I7X5AjAku8k1q8BzaAoKy0qw=;
+        b=WZdVwd8IH7KxellFrQZGthoXouFfaBR2c8Kq9mrfZ2sZzJwq5YlCE7grJFYs9USBoT
+         keIndw6D7L80262cY0BA58PEsDfvQoSwY0DP+yf6YHrINM4qabqnFA/MYn60deoM0jlM
+         z3a9chcYBj7v9kBUi2Glacfqemq5qH0pVGAVfQ5paDT/BEA/miUzRcNMgoeUoPdBkdJ/
+         XHqEj2BmGBwOAlnVpp90N57X2V/plIh/Hr63Orz8DK8fIb273dnSZWAxyXpePFJzltXP
+         uhmVpNfQBp9Lx8jiU1uCRMGux6A2plkXecu/igFRgemn8wZyQk8rGAI24kiGMfihwttO
+         /9cA==
+X-Forwarded-Encrypted: i=0; AJvYcCVgaZuQ42sIpVs6V+5W7kfFe6fT7LDuOjNkk+DanepdNnk6qGXWFFQSISmAzYQo1qWV8fuvZpT9ixnG6oFJtLE+em2MAyi4
+X-Gm-Message-State: AOJu0YxTeVWOe4gnIHnhDdutQiSORvYgfp4b7Jpr0eHnUPW3OkeVlWTA
+	3sIpncOQvDjOsVsFjPoFREtEM2okc/POaZT3IRnP0T/SGTzUke7d
+X-Google-Smtp-Source: AGHT+IHx1EIhl8h8vbGB6p8xSNyMSmc3qM5MwaM7Obgq8/QtT62P2MLyObE3z6Mk5o8+/Q8AbLiUwA==
+X-Received: by 2002:a17:902:7289:b0:1d7:1480:6538 with SMTP id d9-20020a170902728900b001d714806538mr3535586pll.1.1706810462023;
+        Thu, 01 Feb 2024 10:01:02 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCX0MMgsJpPaOMaYRm/POZ6AOIchflU+XXc1d7NO68ALh9eqRsQM6ULJnsje9kS20Svo7FEUn7wRteIt71cSHlIKcJYORTJy3if/2FC8ddVj4/Zz7ABsq0o6ejnn1BOT/CDcGWy1TmNnq9RAtkg4BrfZyGbfhlSLtLLhtkY14ffnKIrUSWBQ40fvS/J9MD4bgYkR
+Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:8e7a:352d:b9a0:297a])
+        by smtp.gmail.com with ESMTPSA id jb18-20020a170903259200b001d8a93fa5b1sm93518plb.131.2024.02.01.10.00.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Feb 2024 10:01:01 -0800 (PST)
+From: Fabio Estevam <festevam@gmail.com>
+To: shawnguo@kernel.org
+Cc: kernel@pengutronix.de,
+	linux-imx@nxp.com,
+	linux-arm-kernel@lists.infradead.org,
+	Fabio Estevam <festevam@denx.de>,
+	stable@vger.kernel.org
+Subject: [PATCH] ARM: imx_v6_v7_defconfig: Restore CONFIG_BACKLIGHT_CLASS_DEVICE
+Date: Thu,  1 Feb 2024 15:00:54 -0300
+Message-Id: <20240201180054.3869350-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,60 +84,41 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/9] mptcp: fixes for recent issues reported by CI's
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <170680802790.24895.13487831241333435786.git-patchwork-notify@kernel.org>
-Date: Thu, 01 Feb 2024 17:20:27 +0000
-References: <20240131-upstream-net-20240131-mptcp-ci-issues-v1-0-4c1c11e571ff@kernel.org>
-In-Reply-To: <20240131-upstream-net-20240131-mptcp-ci-issues-v1-0-4c1c11e571ff@kernel.org>
-To: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang.tang@linux.dev,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- shuah@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, stable@vger.kernel.org, geliang@kernel.org
 
-Hello:
+From: Fabio Estevam <festevam@denx.de>
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Since commit bfac19e239a7 ("fbdev: mx3fb: Remove the driver") backlight
+is no longer functional.
 
-On Wed, 31 Jan 2024 22:49:45 +0100 you wrote:
-> This series of 9 patches fixes issues mostly identified by CI's not
-> managed by the MPTCP maintainers. Thank you Linero (LKFT) and Netdev
-> maintainers (NIPA) for running our kunit and selftests tests!
-> 
-> For the first patch, it took a bit of time to identify the root cause.
-> Some MPTCP Join selftest subtests have been "flaky", mostly in slow
-> environments. It appears to be due to the use of a TCP-specific helper
-> on an MPTCP socket. A fix for kernels >= v5.15.
-> 
-> [...]
+The fbdev mx3fb driver used to automatically select 
+CONFIG_BACKLIGHT_CLASS_DEVICE.
 
-Here is the summary with links:
-  - [net,1/9] mptcp: fix data re-injection from stale subflow
-    https://git.kernel.org/netdev/net/c/b6c620dc43cc
-  - [net,2/9] selftests: mptcp: add missing kconfig for NF Filter
-    https://git.kernel.org/netdev/net/c/3645c844902b
-  - [net,3/9] selftests: mptcp: add missing kconfig for NF Filter in v6
-    https://git.kernel.org/netdev/net/c/8c86fad2cecd
-  - [net,4/9] selftests: mptcp: add missing kconfig for NF Mangle
-    https://git.kernel.org/netdev/net/c/2d41f10fa497
-  - [net,5/9] selftests: mptcp: increase timeout to 30 min
-    https://git.kernel.org/netdev/net/c/4d4dfb2019d7
-  - [net,6/9] selftests: mptcp: decrease BW in simult flows
-    https://git.kernel.org/netdev/net/c/5e2f3c65af47
-  - [net,7/9] selftests: mptcp: allow changing subtests prefix
-    https://git.kernel.org/netdev/net/c/de46d138e773
-  - [net,8/9] selftests: mptcp: join: stop transfer when check is done (part 1)
-    https://git.kernel.org/netdev/net/c/31ee4ad86afd
-  - [net,9/9] selftests: mptcp: join: stop transfer when check is done (part 2)
-    https://git.kernel.org/netdev/net/c/04b57c9e096a
+Now that the mx3fb driver has been removed, enable the
+CONFIG_BACKLIGHT_CLASS_DEVICE option so that backlight can still work
+by default.
 
-You are awesome, thank you!
+Tested on a imx6dl-sabresd board.
+
+Cc: stable@vger.kernel.org
+Fixes: bfac19e239a7 ("fbdev: mx3fb: Remove the driver")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+---
+ arch/arm/configs/imx_v6_v7_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/configs/imx_v6_v7_defconfig b/arch/arm/configs/imx_v6_v7_defconfig
+index 0a90583f9f01..8f9dbe8d9029 100644
+--- a/arch/arm/configs/imx_v6_v7_defconfig
++++ b/arch/arm/configs/imx_v6_v7_defconfig
+@@ -297,6 +297,7 @@ CONFIG_FB_MODE_HELPERS=y
+ CONFIG_LCD_CLASS_DEVICE=y
+ CONFIG_LCD_L4F00242T03=y
+ CONFIG_LCD_PLATFORM=y
++CONFIG_BACKLIGHT_CLASS_DEVICE=y
+ CONFIG_BACKLIGHT_PWM=y
+ CONFIG_BACKLIGHT_GPIO=y
+ CONFIG_FRAMEBUFFER_CONSOLE=y
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.34.1
 
 
