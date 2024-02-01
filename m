@@ -1,110 +1,103 @@
-Return-Path: <stable+bounces-17559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34CED844F4A
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 04:02:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ECF9844F99
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 04:22:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7DDF1F26681
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 03:02:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8CD629525D
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 03:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48B039FD8;
-	Thu,  1 Feb 2024 03:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="amh3vtnC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99E13A8E9;
+	Thu,  1 Feb 2024 03:21:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3FF3A8C5;
-	Thu,  1 Feb 2024 03:02:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A5333DF;
+	Thu,  1 Feb 2024 03:21:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706756535; cv=none; b=UEeuW7nhYi0QJbAsNWTDVEPPiSK6+6jb+Wyjc8aoXLIYFXMFL0wbiafyiMJYxW5gQsTHLTJBdr3aqOd+KW/obTawTTjsivzB8jBsbPb4r6SFo4+ZSelRhcFmJMMRJcQlQDWoAe6N2tZbEWGs/++j5U8NBMbDJuEImB78RWiRlns=
+	t=1706757674; cv=none; b=dX++stocZKYr92U7CL/wnD/fzqvjaqbf/5A1jH++Kd9Tu7zjszVjGp+xS/GYDY3uRy8XkBgodZaPrxgyj91MAKOWRROg8VXX1Jf5iwO/3B7mIGRj6KUn/xnnlvr0JyJapC4iZtonM3xzjSRfaPH1US/rKz9iEF5P7ZnwqcuLa4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706756535; c=relaxed/simple;
-	bh=R+QsqpdTX1sY9S+UwIGf0BPhr4noXICmiQinzkSiegE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L8RTTVRTR4sYEY98s8vFRlx0l8s14fCNiAiJ6BummRLMOxmRwWhOgZ354XzwsmRkVh+bSyaN1TXrK4WtpuHi3xFqrKwRectBo/PDsSmUlHwgsjmUCxeBoRx6hTpJtUTCHZUUY9D49n3mD8tFxliuB7yCFAyRL44OEhSnYZ61hao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=amh3vtnC; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=nMcVHbq/MOi0e8w8BPhjM3V1acBbj0Azdv/NIoV0FxY=; b=amh3vtnCwTf6LtO9i4uFr/ipV7
-	kGvaers485QV7vDl4MLKa+a/t0Juu4UDIAhkYMIXxw0slTsDAYHkuyNivNrSY+1/Y+wGHZYwSHS+3
-	CXTADfo6pTqNe9/Fe4N0TqFWunq9sSlcIUcfJiLn4XGK9daDqlz8oD1Yybwi8U4HuzraGCV3fxsTB
-	QI1ZBB9P65NiIBMUBifUmV3HT6kat644IaZUNguJSk22mpISizaCXt/bThRXZmiI6qymsbLBCq3b+
-	ZM9sKzOsAhYMpWQBqxf61p7SzZh5rVSarfn6fIB+xqecuSCGluGaptXaxC4KSJKVRxeGZzypRULKF
-	6wwGJSVw==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
-	id 1rVNL3-002jgw-1z;
-	Thu, 01 Feb 2024 03:02:05 +0000
-Date: Thu, 1 Feb 2024 03:02:05 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Steven Rostedt <rostedt@goodmis.org>
+	s=arc-20240116; t=1706757674; c=relaxed/simple;
+	bh=Ot3wgC0bxq6Jp7mJAxkZM9efe6ruj/cl2hI17BeFrn4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AJAQpdOXBhKjc0chYMFhyJtEJ0tBoLjSgF2afN6WK/JlRFL94nrgSR3CwLCCq1PR5ofaaLVsAoWxPmVlqTeFLtsJJrQoqGlAyut1MeCTzytKTyfKmRGxj0tRD00wDz+ETXm6dGeanh/kDsdYqJtZ8UnVreo4kPI2ldyfswhtCYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92F0C433F1;
+	Thu,  1 Feb 2024 03:21:12 +0000 (UTC)
+Date: Wed, 31 Jan 2024 22:21:27 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Al Viro <viro@zeniv.linux.org.uk>
 Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org
+ linux-fsdevel@vger.kernel.org, Linus Torvalds
+ <torvalds@linux-foundation.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Christian Brauner <brauner@kernel.org>,
+ Ajay Kaher <ajay.kaher@broadcom.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Subject: Re: [PATCH v2 4/7] tracefs: dentry lookup crapectomy
-Message-ID: <20240201030205.GT2087318@ZenIV>
+Message-ID: <20240131222127.15b2731b@gandalf.local.home>
+In-Reply-To: <20240201030205.GT2087318@ZenIV>
 References: <20240131184918.945345370@goodmis.org>
- <20240131185512.799813912@goodmis.org>
- <20240201002719.GS2087318@ZenIV>
- <20240131212642.2e384250@gandalf.local.home>
+	<20240131185512.799813912@goodmis.org>
+	<20240201002719.GS2087318@ZenIV>
+	<20240131212642.2e384250@gandalf.local.home>
+	<20240201030205.GT2087318@ZenIV>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240131212642.2e384250@gandalf.local.home>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 31, 2024 at 09:26:42PM -0500, Steven Rostedt wrote:
+On Thu, 1 Feb 2024 03:02:05 +0000
+Al Viro <viro@zeniv.linux.org.uk> wrote:
 
-> > Huh?  Just return NULL and be done with that - you'll get an
-> > unhashed negative dentry and let the caller turn that into
-> > -ENOENT...
+> > We had a problem here with just returning NULL. It leaves the negative
+> > dentry around and doesn't get refreshed.  
 > 
-> We had a problem here with just returning NULL. It leaves the negative
-> dentry around and doesn't get refreshed.
+> Why would that dentry stick around?  And how would anyone find
+> it, anyway, when it's not hashed?
 
-Why would that dentry stick around?  And how would anyone find
-it, anyway, when it's not hashed?
+We (Linus and I) got it wrong. It originally had:
 
-> I did this:
-> 
->  # cd /sys/kernel/tracing
->  # ls events/kprobes/sched/
-> ls: cannot access 'events/kprobes/sched/': No such file or directory
->  # echo 'p:sched schedule' >> kprobe_events
->  # ls events/kprobes/sched/
-> ls: cannot access 'events/kprobes/sched/': No such file or directory
-> 
-> When it should have been:
-> 
->  # ls events/kprobes/sched/
-> enable  filter  format  hist  hist_debug  id  inject  trigger
-> 
-> Leaving the negative dentry there will have it fail when the directory
-> exists the next time.
+	d_add(dentry, NULL);
+	[..]
+	return NULL;
 
-Then you have something very deeply fucked up.  NULL or ERR_PTR(-ENOENT)
-from ->lookup() in the last component of open() would do exactly the
-same thing: dput() whatever had been passed to ->lookup() and fail
-open(2) with -ENOENT.
+and it caused the:
+
+
+  # ls events/kprobes/sched/
+ls: cannot access 'events/kprobes/sched/': No such file or directory
+
+  # echo 'p:sched schedule' >> /sys/kernel/tracing/kprobe_events 
+  # ls events/kprobes/sched/
+ls: cannot access 'events/kprobes/sched/': No such file or directory
+
+I just changed the code to simply return NULL, and it had no issues:
+
+  # ls events/kprobes/sched/
+ls: cannot access 'events/kprobes/sched/': No such file or directory
+
+  # echo 'p:sched schedule' >> /sys/kernel/tracing/kprobe_events 
+  # ls events/kprobes/sched/
+enable  filter  format  hist  hist_debug  id  inject  trigger
+
+But then I added the: d_add(dentry, NULL); that we originally had, and then
+it caused the issue again.
+
+So it wasn't the returning NULL that was causing a problem, it was calling
+the d_add(dentry, NULL); that was.
+
+I'll update the patch.
+
+-- Steve
 
