@@ -1,117 +1,204 @@
-Return-Path: <stable+bounces-17579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A069845853
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 13:58:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F0A8459F0
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 15:19:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D1D01C211FC
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 12:58:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 082631C2439E
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 14:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF62986654;
-	Thu,  1 Feb 2024 12:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D2C5D479;
+	Thu,  1 Feb 2024 14:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="q88rvNhv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q2CIht5Y"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52005.amazon.com (smtp-fw-52005.amazon.com [52.119.213.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113A853362;
-	Thu,  1 Feb 2024 12:58:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16F05337E
+	for <stable@vger.kernel.org>; Thu,  1 Feb 2024 14:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706792320; cv=none; b=QiiQ61zsdVscBO7bH7+9Q7z+Pl/LUCiT+wAZC+cJZ1xH4VxM3Fs6VjtBzFEmesjdK/0gEJmhar9VQNBMsVNaBxdP71voU3Izsq8lGOot95Xek17CmLSch+GRqvZtH7k8H2of7RwW6VYMpPmjKUq9lmIC4KiM1Ft7LU/ORxWgWFg=
+	t=1706797172; cv=none; b=JatKluvO3JeV4ftPDovIAMJRzKQNMRV0d6Au5eZz5cZxvQmL3VkkkslYCPrNxrLtq0yH5Foq3npMiFfJaChoeP5iQCFtIwtNBJXFAIX2JgDa6HIjZv6eb245ZgixIoZC60YgeQ/cSAdb7ufwqNK5o/HoCsDn1UYoc/UIeeqYSHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706792320; c=relaxed/simple;
-	bh=MHDfNdMw12sIWRU7RfM/N1sTc3Fx1OjZKgjklgYHhcE=;
-	h=Subject:Message-ID:Date:MIME-Version:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Ycg8M5W6BNRz6QYDnH+4nxl8wFmgieBN0o+vN7zM002/QNgJoX1q5n1hpwOIUwlRR7U1eQrwDNn3nI8mWPKzvKBtB6q9i/frcrBQ545QauEea5qjBHNAbvvHwoKo10ZhGC//DMKI3ScwCT0wv16wfQqUh7vCED5ATD8L+nlB0Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=q88rvNhv; arc=none smtp.client-ip=52.119.213.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1706792319; x=1738328319;
-  h=message-id:date:mime-version:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:subject;
-  bh=waFRF+K7gEDtO0MzxpQ/w+uoFORktzAU96B8ZA3JvFs=;
-  b=q88rvNhvS4MoTgje1wHxIokNCfIkfzgzb252WDU70XxgYuE/lQPiQxd6
-   Fr4kV44tsWtJHrEuTJMWylaQG2qZuXW/CEkf883mZKTfX3KgJ34+TdeZ4
-   36+0BBAdfBEemQ4jylUylHqOwjtqlx/62soVTdUMIP1RfybSctl98T6xw
-   4=;
-X-IronPort-AV: E=Sophos;i="6.05,234,1701129600"; 
-   d="scan'208";a="631327036"
-Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with "Resource
- temporarily unavailable"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52005.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 12:58:37 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [10.0.43.254:53331]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.14.233:2525] with esmtp (Farcaster)
- id c4031593-8aa9-42fd-b6fc-de37a98e7084; Thu, 1 Feb 2024 12:58:35 +0000 (UTC)
-X-Farcaster-Flow-ID: c4031593-8aa9-42fd-b6fc-de37a98e7084
-Received: from EX19D018EUA004.ant.amazon.com (10.252.50.85) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.59) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 1 Feb 2024 12:58:35 +0000
-Received: from [192.168.7.223] (10.106.82.33) by EX19D018EUA004.ant.amazon.com
- (10.252.50.85) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 1 Feb
- 2024 12:58:32 +0000
-Message-ID: <3bfc7bc4-05cd-4353-8fca-a391d6cb9bf4@amazon.com>
-Date: Thu, 1 Feb 2024 12:58:28 +0000
+	s=arc-20240116; t=1706797172; c=relaxed/simple;
+	bh=uxgbGZQyn/u5Kgjm4h7zKbSbJpcMbY8+HjqS5ygUfvc=;
+	h=Subject:From:To:Date:Message-ID:MIME-Version:Content-Type; b=GHTtMkk9fy08+g0QnM/OvI2rE7U3yEthfMmrFbwWM5L/XcsGXPwAU4O0G03EETJGxuT9f268hjh2Ww++Qn9DMk+5yu7PrA5viMnzuxrIycPZu+Uvjm1Uc+9WMVIteA6cs0BX4dDoO3NlBm9xs6jRpSA1ja6OfgV8+Eq5iHYqtS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q2CIht5Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18285C433C7
+	for <stable@vger.kernel.org>; Thu,  1 Feb 2024 14:19:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706797172;
+	bh=uxgbGZQyn/u5Kgjm4h7zKbSbJpcMbY8+HjqS5ygUfvc=;
+	h=Subject:From:To:Date:From;
+	b=q2CIht5YL3sWbRe9O++ZMElWNIxdQiN1fALmECDZfasM0RZVRolccum1bEI1g83XC
+	 4LpIfqMpZ793J284/3LbkAhlXAXz0lCLRxXxtWWxB2PhODfrR9VIW9Um1grSJDn/tp
+	 adn14RrNl02TaRRkJQ0fwYkelTCmtqvQtTkpFISOwhOERvVkTmOE0EEJdfQJ3czDri
+	 A+y/fFQbp06EAgBTIZBDvTB9tur286gBKXlgi0rVyNhbMfEAki50E12B2QPP4OEECv
+	 lLicoYQe4cr0Stn2a7AXN3OvUTV9E8qfXHPR6RCkje4yO7yQciCtUhequXCfLrxJCr
+	 lp6nl5Mi5qBvg==
+Subject: [PATCH] nfsd: fix RELEASE_LOCKOWNER
+From: Chuck Lever <cel@kernel.org>
+To: stable@vger.kernel.org
+Date: Thu, 01 Feb 2024 09:19:31 -0500
+Message-ID: 
+ <170679716505.13743.16856969957511111004.stgit@klimt.1015granger.net>
+User-Agent: StGit/1.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Paulo Alcantara <pc@manguebit.com>, Salvatore Bonaccorso
-	<carnil@debian.org>
-CC: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"leonardo@schenkel.net" <leonardo@schenkel.net>, "linux-cifs@vger.kernel.org"
-	<linux-cifs@vger.kernel.org>, "m.weissbach@info-gate.de"
-	<m.weissbach@info-gate.de>, "regressions@lists.linux.dev"
-	<regressions@lists.linux.dev>, "sairon@sairon.cz" <sairon@sairon.cz>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <53F11617-D406-47C6-8CA7-5BE26EB042BE@amazon.com>
- <9B20AAD6-2C27-4791-8CA9-D7DB912EDC86@amazon.com>
- <2024011521-feed-vanish-5626@gregkh>
- <716A5E86-9D25-4729-BF65-90AC2A335301@amazon.com>
- <ZbnpDbgV7ZCRy3TT@eldamar.lan>
- <848c0723a10638fcf293514fab8cfa2e@manguebit.com>
-Content-Language: en-US
-From: "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>
-In-Reply-To: <848c0723a10638fcf293514fab8cfa2e@manguebit.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: EX19D042UWB004.ant.amazon.com (10.13.139.150) To
- EX19D018EUA004.ant.amazon.com (10.252.50.85)
 
+From: NeilBrown <neilb@suse.de>
 
-On 31/01/2024 17:19, Paulo Alcantara wrote:
-> Greg, could you please drop
-> 
->          b3632baa5045 ("cifs: fix off-by-one in SMB2_query_info_init()")
-> 
-> from v5.10.y as suggested by Salvatore?
-> 
-> Thanks.
+[ Upstream commit edcf9725150e42beeca42d085149f4c88fa97afd ]
 
-Are we dropping b3632baa5045 ("cifs: fix off-by-one in 
-SMB2_query_info_init()") from v5.10.y while keeping it on v5.15.y? if we 
-are dropping it from v5.15.y as well then we should backport 06aa6eff7b 
-smb3: Replace smb2pdu 1-element arrays with flex-arrays to v5.15.y I 
-remember trying to backport this patch on v5.15.y but there were some 
-merge conflicts there.
+The test on so_count in nfsd4_release_lockowner() is nonsense and
+harmful.  Revert to using check_for_locks(), changing that to not sleep.
 
-06aa6eff7b smb3: Replace smb2pdu 1-element arrays with flex-arrays
+First: harmful.
+As is documented in the kdoc comment for nfsd4_release_lockowner(), the
+test on so_count can transiently return a false positive resulting in a
+return of NFS4ERR_LOCKS_HELD when in fact no locks are held.  This is
+clearly a protocol violation and with the Linux NFS client it can cause
+incorrect behaviour.
 
+If RELEASE_LOCKOWNER is sent while some other thread is still
+processing a LOCK request which failed because, at the time that request
+was received, the given owner held a conflicting lock, then the nfsd
+thread processing that LOCK request can hold a reference (conflock) to
+the lock owner that causes nfsd4_release_lockowner() to return an
+incorrect error.
 
-Thank you.
+The Linux NFS client ignores that NFS4ERR_LOCKS_HELD error because it
+never sends NFS4_RELEASE_LOCKOWNER without first releasing any locks, so
+it knows that the error is impossible.  It assumes the lock owner was in
+fact released so it feels free to use the same lock owner identifier in
+some later locking request.
 
-Hazem
+When it does reuse a lock owner identifier for which a previous RELEASE
+failed, it will naturally use a lock_seqid of zero.  However the server,
+which didn't release the lock owner, will expect a larger lock_seqid and
+so will respond with NFS4ERR_BAD_SEQID.
+
+So clearly it is harmful to allow a false positive, which testing
+so_count allows.
+
+The test is nonsense because ... well... it doesn't mean anything.
+
+so_count is the sum of three different counts.
+1/ the set of states listed on so_stateids
+2/ the set of active vfs locks owned by any of those states
+3/ various transient counts such as for conflicting locks.
+
+When it is tested against '2' it is clear that one of these is the
+transient reference obtained by find_lockowner_str_locked().  It is not
+clear what the other one is expected to be.
+
+In practice, the count is often 2 because there is precisely one state
+on so_stateids.  If there were more, this would fail.
+
+In my testing I see two circumstances when RELEASE_LOCKOWNER is called.
+In one case, CLOSE is called before RELEASE_LOCKOWNER.  That results in
+all the lock states being removed, and so the lockowner being discarded
+(it is removed when there are no more references which usually happens
+when the lock state is discarded).  When nfsd4_release_lockowner() finds
+that the lock owner doesn't exist, it returns success.
+
+The other case shows an so_count of '2' and precisely one state listed
+in so_stateid.  It appears that the Linux client uses a separate lock
+owner for each file resulting in one lock state per lock owner, so this
+test on '2' is safe.  For another client it might not be safe.
+
+So this patch changes check_for_locks() to use the (newish)
+find_any_file_locked() so that it doesn't take a reference on the
+nfs4_file and so never calls nfsd_file_put(), and so never sleeps.  With
+this check is it safe to restore the use of check_for_locks() rather
+than testing so_count against the mysterious '2'.
+
+Fixes: ce3c4ad7f4ce ("NFSD: Fix possible sleep during nfsd4_release_lockowner()")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Cc: stable@vger.kernel.org # v6.2+
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+---
+ fs/nfsd/nfs4state.c |   26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
+
+Passes pynfs, fstests, and the git regression suite. Please apply to
+origin/linux-6.1.y.
+
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index faecdbfa01a2..0443fe4e29e1 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -7736,14 +7736,16 @@ check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner)
+ {
+ 	struct file_lock *fl;
+ 	int status = false;
+-	struct nfsd_file *nf = find_any_file(fp);
++	struct nfsd_file *nf;
+ 	struct inode *inode;
+ 	struct file_lock_context *flctx;
+ 
++	spin_lock(&fp->fi_lock);
++	nf = find_any_file_locked(fp);
+ 	if (!nf) {
+ 		/* Any valid lock stateid should have some sort of access */
+ 		WARN_ON_ONCE(1);
+-		return status;
++		goto out;
+ 	}
+ 
+ 	inode = locks_inode(nf->nf_file);
+@@ -7759,7 +7761,8 @@ check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner)
+ 		}
+ 		spin_unlock(&flctx->flc_lock);
+ 	}
+-	nfsd_file_put(nf);
++out:
++	spin_unlock(&fp->fi_lock);
+ 	return status;
+ }
+ 
+@@ -7769,10 +7772,8 @@ check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner)
+  * @cstate: NFSv4 COMPOUND state
+  * @u: RELEASE_LOCKOWNER arguments
+  *
+- * The lockowner's so_count is bumped when a lock record is added
+- * or when copying a conflicting lock. The latter case is brief,
+- * but can lead to fleeting false positives when looking for
+- * locks-in-use.
++ * Check if theree are any locks still held and if not - free the lockowner
++ * and any lock state that is owned.
+  *
+  * Return values:
+  *   %nfs_ok: lockowner released or not found
+@@ -7808,10 +7809,13 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
+ 		spin_unlock(&clp->cl_lock);
+ 		return nfs_ok;
+ 	}
+-	if (atomic_read(&lo->lo_owner.so_count) != 2) {
+-		spin_unlock(&clp->cl_lock);
+-		nfs4_put_stateowner(&lo->lo_owner);
+-		return nfserr_locks_held;
++
++	list_for_each_entry(stp, &lo->lo_owner.so_stateids, st_perstateowner) {
++		if (check_for_locks(stp->st_stid.sc_file, lo)) {
++			spin_unlock(&clp->cl_lock);
++			nfs4_put_stateowner(&lo->lo_owner);
++			return nfserr_locks_held;
++		}
+ 	}
+ 	unhash_lockowner_locked(lo);
+ 	while (!list_empty(&lo->lo_owner.so_stateids)) {
+
 
 
