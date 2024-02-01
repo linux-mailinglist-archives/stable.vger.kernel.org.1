@@ -1,181 +1,114 @@
-Return-Path: <stable+bounces-17566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75E8845273
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 09:11:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A07C08452EE
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 09:41:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D95E41C22C93
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 08:11:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4300D1F290FE
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 08:41:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700A7158D81;
-	Thu,  1 Feb 2024 08:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BABDA15A4B2;
+	Thu,  1 Feb 2024 08:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dKt79wKY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jgnklMa2"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832C61586EF
-	for <stable@vger.kernel.org>; Thu,  1 Feb 2024 08:11:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91A52E3FE;
+	Thu,  1 Feb 2024 08:41:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.115
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706775081; cv=none; b=rUq8oRyXrJALQraJYIPGexRYb9fIvmf8ag0FGjNfQtP+VTqxX723kzAX1mTOKiVJcyT612gwVRjF6FIzaI6X2Sn5ZLxoCi2hb9UYcWAdyXXFCxru6pGcTSdp4+BlD81yQ18WeimjddLJvaivtgWmdfJ44ObgedcSbZ2VhEoIZrU=
+	t=1706776905; cv=none; b=Fm2XbmSKBP5CQU0RdizUe4rRpLfO1PdlwvYUbBBN2zJpbIOn1n+CH9dXZCXNB+DmjIsPF+kc1RG7zD1Cjp+M3O18d1O/zV4OQr4q2j7eOBTEF/9lqRVzjOjz3Iop4UWVVpinip7DQEqhENXFR5uk6avS76e9rV0CdKu+6TOQHR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706775081; c=relaxed/simple;
-	bh=y1w5sJ8ktbHEe0F3UYcqGu1KS6iUPE0CBc0UPiD+WCw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V3M1MhwxPKSQ4nxjpGkC7jTGDEDnMwP+e2YVZFh9Pj306KUfL7A41lEsfWlWHlx3Ku9gE2fF8mgk5JfMJtfqZuuT8GfueApNXaLouWBAod9iLBWTVlSOlj6ilLCPQ8x9B73ARBlBrCHl8MG6j4+k+UTq2VNPuSQmuyepwdXFfsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dKt79wKY; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1706775078;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=TQDdRV2tMPG+6nfJCtzHbTe1EEi3qaM2yI8qVm5kEZY=;
-	b=dKt79wKYCl07e88ZaAF1/pyG9ACIW7CMk9Qy+sWukC1pqUbxVpePp51AeYPTSwI6cSy8ka
-	EApWS+f2B2/otll8DHgumz3q+XSsWZ6/5zmtvaajXM/t/R4AEUPgqMj7CNFyTtsCdujLJs
-	rc8kI9+2QOJ2ijq6xtBIQV5hdyNoBw0=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-XHBq3RvKOoKY9F01Y5fe4w-1; Thu,
- 01 Feb 2024 03:11:14 -0500
-X-MC-Unique: XHBq3RvKOoKY9F01Y5fe4w-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 09E542932486;
-	Thu,  1 Feb 2024 08:11:14 +0000 (UTC)
-Received: from metal.redhat.com (unknown [10.45.224.66])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 22FDE492BE2;
-	Thu,  1 Feb 2024 08:11:11 +0000 (UTC)
-From: Daniel Vacek <neelx@redhat.com>
-To: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Patrick Kelsey <pat.kelsey@cornelisnetworks.com>,
-	Brendan Cunningham <bcunningham@cornelisnetworks.com>
-Cc: Daniel Vacek <neelx@redhat.com>,
-	stable@vger.kernel.org,
-	Mats Kronberg <kronberg@nsc.liu.se>,
-	linux-rdma@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] IB/hfi1: Fix sdma.h tx->num_descs off-by-one error (take two)
-Date: Thu,  1 Feb 2024 09:10:08 +0100
-Message-ID: <20240201081009.1109442-1-neelx@redhat.com>
-In-Reply-To: <20240126152125.869509-1-neelx@redhat.com>
-References: <20240126152125.869509-1-neelx@redhat.com>
+	s=arc-20240116; t=1706776905; c=relaxed/simple;
+	bh=VTaH4OKD+0kQFzbSZV77olKsxgKVO4SzwSYHx1uKUlQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HRyQ/OMsjdLduDZcvH8KNSuCEGjIX7QHJPAj1QoWCh/SesPwbzascxbAnXqXd1o5+s9hkHGxeJkoA3f4HjA06nTwTF8xhmsjAaKs+50SS1fVFteOSKzXqagrUmgVoPbGmY9AWBQjkCfqR/RMu4K1ZC9AOnLy1nKa7TZSNwSPTpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jgnklMa2; arc=none smtp.client-ip=192.55.52.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706776903; x=1738312903;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VTaH4OKD+0kQFzbSZV77olKsxgKVO4SzwSYHx1uKUlQ=;
+  b=jgnklMa2AYkv0SLg+wedUt9MYG5O3nME/8tdi3C9USx9F/UCSnULR7aR
+   X2s+Xv+zaPAm8n7+l7I5jGhdhDBxR2fTZqaqABipejFNnpiLsbNmbCGfX
+   G8PgIKWST+dYyzDYuYRfTRU3qkzlTObj2fruzNi4JHHijMP+VCEr5ZZIr
+   gAtOAnjUAeWGKrbY/womhz8T77f22A/45zdikZ03CI8fewwUL2NK7iygp
+   AWC8h6P6mIg2laD9DjX1Ei4FXBlPlL8W6jw0zR34g/zZJ8xed30PCWVkY
+   2SOuqvB9JTrPJzJKsTo4k9yvLTOTIHcw0dLFqr1rjyYxY6Eq97/nVS8Ku
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="403457233"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
+   d="scan'208";a="403457233"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 00:41:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="879052024"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
+   d="scan'208";a="879052024"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by FMSMGA003.fm.intel.com with ESMTP; 01 Feb 2024 00:41:40 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 49F0E789; Thu,  1 Feb 2024 10:33:55 +0200 (EET)
+Date: Thu, 1 Feb 2024 10:33:55 +0200
+From: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Zixi Chen <zixchen@redhat.com>, Adam Dunlap <acdunlap@google.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@kernel.org>, x86@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] x86/cpu: allow reducing x86_phys_bits during
+ early_identify_cpu()
+Message-ID: <hhzgb6ymqhba3snzk5zjorxr57h6jykaedqftgm2veapsazfnd@ldwehefzpkfx>
+References: <20240131230902.1867092-1-pbonzini@redhat.com>
+ <20240131230902.1867092-2-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240131230902.1867092-2-pbonzini@redhat.com>
 
-Unfortunately the commit `fd8958efe877` introduced another error
-causing the `descs` array to overflow. This reults in further crashes
-easily reproducible by `sendmsg` system call.
+On Thu, Feb 01, 2024 at 12:09:01AM +0100, Paolo Bonzini wrote:
+> In commit fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct
+> value straight away, instead of a two-phase approach"), the initialization
+> of c->x86_phys_bits was moved after this_cpu->c_early_init(c).  This is
+> incorrect because early_init_amd() expected to be able to reduce the
+> value according to the contents of CPUID leaf 0x8000001f.
+> 
+> Fortunately, the bug was negated by init_amd()'s call to early_init_amd(),
+> which does reduce x86_phys_bits in the end.  However, this is very
+> late in the boot process and, most notably, the wrong value is used for
+> x86_phys_bits when setting up MTRRs.
+> 
+> To fix this, call get_cpu_address_sizes() as soon as X86_FEATURE_CPUID is
+> set/cleared, and c->extended_cpuid_level is retrieved.
+> 
+> Fixes: fbf6449f84bf ("x86/sev-es: Set x86_virt_bits to the correct value straight away, instead of a two-phase approach")
+> Cc: Adam Dunlap <acdunlap@google.com>
+> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
+> Cc: Kai Huang <kai.huang@intel.com>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: x86@kernel.org
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 
-[ 1080.836473] general protection fault, probably for non-canonical address 0x400300015528b00a: 0000 [#1] PREEMPT SMP PTI
-[ 1080.869326] RIP: 0010:hfi1_ipoib_build_ib_tx_headers.constprop.0+0xe1/0x2b0 [hfi1]
---
-[ 1080.974535] Call Trace:
-[ 1080.976990]  <TASK>
-[ 1081.021929]  hfi1_ipoib_send_dma_common+0x7a/0x2e0 [hfi1]
-[ 1081.027364]  hfi1_ipoib_send_dma_list+0x62/0x270 [hfi1]
-[ 1081.032633]  hfi1_ipoib_send+0x112/0x300 [hfi1]
-[ 1081.042001]  ipoib_start_xmit+0x2a9/0x2d0 [ib_ipoib]
-[ 1081.046978]  dev_hard_start_xmit+0xc4/0x210
---
-[ 1081.148347]  __sys_sendmsg+0x59/0xa0
+Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-crash> ipoib_txreq 0xffff9cfeba229f00
-struct ipoib_txreq {
-  txreq = {
-    list = {
-      next = 0xffff9cfeba229f00,
-      prev = 0xffff9cfeba229f00
-    },
-    descp = 0xffff9cfeba229f40,
-    coalesce_buf = 0x0,
-    wait = 0xffff9cfea4e69a48,
-    complete = 0xffffffffc0fe0760 <hfi1_ipoib_sdma_complete>,
-    packet_len = 0x46d,
-    tlen = 0x0,
-    num_desc = 0x0,
-    desc_limit = 0x6,
-    next_descq_idx = 0x45c,
-    coalesce_idx = 0x0,
-    flags = 0x0,
-    descs = {{
-        qw = {0x8024000120dffb00, 0x4}  # SDMA_DESC0_FIRST_DESC_FLAG (bit 63)
-      }, {
-        qw = {  0x3800014231b108, 0x4}
-      }, {
-        qw = { 0x310000e4ee0fcf0, 0x8}
-      }, {
-        qw = {  0x3000012e9f8000, 0x8}
-      }, {
-        qw = {  0x59000dfb9d0000, 0x8}
-      }, {
-        qw = {  0x78000e02e40000, 0x8}
-      }}
-  },
-  sdma_hdr =  0x400300015528b000,  <<< invalid pointer in the tx request structure
-  sdma_status = 0x0,                   SDMA_DESC0_LAST_DESC_FLAG (bit 62)
-  complete = 0x0,
-  priv = 0x0,
-  txq = 0xffff9cfea4e69880,
-  skb = 0xffff9d099809f400
-}
-
-If an SDMA send consists of exactly 6 descriptors and requires dword
-padding (in the 7th descriptor), the sdma_txreq descriptor array
-is not properly expanded and the packet will overflow into the
-container structure. This results in a panic when the send completion
-runs. The exact panic varies depending on what elements of the
-container structure get corrupted. The fix is to use the correct
-expression in _pad_sdma_tx_descs() to test the need to expand the
-descriptor array.
-
-With this patch the crashes are no longer reproducible and the machine is stable.
-
-Fixes: fd8958efe877 ("IB/hfi1: Fix sdma.h tx->num_descs off-by-one errors")
-Cc: stable@vger.kernel.org
-Reported-by: Mats Kronberg <kronberg@nsc.liu.se>
-Tested-by: Mats Kronberg <kronberg@nsc.liu.se>
-Signed-off-by: Daniel Vacek <neelx@redhat.com>
----
-
-Changes in v2:
- - Dropped the unrelated cleanups.
- - Improved commit message as suggested by Dennis Dalessandro
-
- drivers/infiniband/hw/hfi1/sdma.c |  2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/infiniband/hw/hfi1/sdma.c b/drivers/infiniband/hw/hfi1/sdma.c
-index 6e5ac2023328a..b67d23b1f2862 100644
---- a/drivers/infiniband/hw/hfi1/sdma.c
-+++ b/drivers/infiniband/hw/hfi1/sdma.c
-@@ -3158,7 +3158,7 @@ int _pad_sdma_tx_descs(struct hfi1_devdata *dd, struct sdma_txreq *tx)
- {
- 	int rval = 0;
- 
--	if ((unlikely(tx->num_desc + 1 == tx->desc_limit))) {
-+	if ((unlikely(tx->num_desc == tx->desc_limit))) {
- 		rval = _extend_sdma_tx_descs(dd, tx);
- 		if (rval) {
- 			__sdma_txclean(dd, tx);
 -- 
-2.43.0
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
