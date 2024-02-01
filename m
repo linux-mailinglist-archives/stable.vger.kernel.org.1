@@ -1,124 +1,118 @@
-Return-Path: <stable+bounces-17608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C46EE845C12
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 16:49:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 271AA845C15
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 16:50:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 188F7B2A0C2
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 15:48:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6F6029A8A8
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 15:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B77626C6;
-	Thu,  1 Feb 2024 15:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F570626B6;
+	Thu,  1 Feb 2024 15:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JhWSB1Ee"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D5R878vL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A19862179;
-	Thu,  1 Feb 2024 15:48:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5E762179;
+	Thu,  1 Feb 2024 15:49:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706802521; cv=none; b=fdEjNU3Z2sx88BOP1csuxn6k5ZYYhYQu2FXgku1xgYYZtyuV0e63IdBssq367D2o/7x8beTMcuREfxGIklWsxam8hYHZqWGtvS11EscJygQecJ80k1yIudU1wIOQF6P45Tcd+Ylz3tlZIwvCkmSbSkdv1mHQYM10OIt5hkakYnE=
+	t=1706802593; cv=none; b=S3bviHYw9djl7w+eUzo/njOaiqlQpszHzSdE9H/gabzsqil21ZbOhdAg/cug3fU4oMxOjPFIM+PuqxCImNXQ4//Lkp5I4XQu3UHA7Zqxrs8KhmHQ7WlDCQLnNV+zo2o4SDRQQBooVCLSfZ5kErGkmqy+TKGmRmSY+AG0/9B0C68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706802521; c=relaxed/simple;
-	bh=kth9kYZka9fDewdHa5KdV4hECkieaPMD8kH0gX5ECBg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jT1CwtjOTJl6bs16lkH92Z+0QRHVufsXHE6cPZ6yfSlMWtVEmxpeJVhKdzvXkIV3nCwOIatx0guekLdyFvtDH4vpiRQA4f0qja7lf5GUMTkJ1zSsT1s/inAtt1FWyeeqwvGxN3IVOBI4/oRNutkEvMPu/RqOnCwYN566aKqFpEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JhWSB1Ee; arc=none smtp.client-ip=209.85.221.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-4bdc96cfe21so370680e0c.0;
-        Thu, 01 Feb 2024 07:48:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706802519; x=1707407319; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q1MxZQMO2vhw+OhMM7RCS7rHhxtW/Ys96YZbWutf5/I=;
-        b=JhWSB1EeYRcNgCl4oWJekFQt05iMUhhL7v3QbuBcBCGXXwm6oj9iBsfJLpNzOL2ZTO
-         Vdujd1cduyA54DiswxiKHBOYbrvh4BqXlEWBuPZubp2kF63HcRCTiw8uZr9O/u4SntLK
-         KimfGIPm5l6s+90c4CAN4CCi4iD7hfyphc3GEciKBAVDzX+5COs+iJhAnIh8MOiov8Bf
-         TMUSPTcCthmdgSor9oj5wEThvDVHpQ79V1E9Kho9FzqKF9GINZmWc2D/pzBE4eF0Rk9H
-         xoxgNKZ9MRDt70RyyAIHUEgmO7czQ6Wdt2hb9u5zhiUqTcN3M38GaZwPK+N6S+6EPxgi
-         bQ7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706802519; x=1707407319;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=q1MxZQMO2vhw+OhMM7RCS7rHhxtW/Ys96YZbWutf5/I=;
-        b=dACj+mXDJ5qSWAp0udwKVSHbj3PNNNHldrVbQ7iuLBNSjIJMerA8O9Sq2Ll6PBtQfa
-         UCohYNaQifIXnu5u9qs71FhNqZ1kIk5WX56ViIUo6/RD3CdcBCwVSG2gCa/jAVNWnS6k
-         TPWqZZ9f7cNYiTQHm4I5saimqdJQkTNs2QQOrjtveoNMX/gyOgnpKOtv/t2fX62ycpiv
-         KqQ2+Obm4W/o3YcptIRgdgCUXJmXVLhD/qte5GdnErAV7ELp3C22Xrn6UnvtRZ/2ppKw
-         tRqthrl4698ZN4dZw0/sla8mrjBHYUw6LVjg/gDr9l4kzyXe4SzJCNotUTWgKLrI2ZHY
-         ZZJQ==
-X-Gm-Message-State: AOJu0Yzi5H4e/SunAxMRaEsK+plFrP7G2FAO68Z+sbmaZOMg4XwjPYjl
-	CJQk9Z5JNf8e4OejqHkhxVWMXoJI7xyidpcyK+4UaM18FsQDQEEus0Ba7L6Smmr57GeQQRPkNbm
-	J+vz04UPTYxmSUCQxwiShD+KwM4o=
-X-Google-Smtp-Source: AGHT+IEtDAQaQeAzokMzWuQpMOulT26BLy0xfyj9kdSOWS8YtM2Glz6RyzYB/T0y+qVa4jWMD+F5G3VRETwSSxUg1yw=
-X-Received: by 2002:a05:6122:2086:b0:4bd:3cb2:88bb with SMTP id
- i6-20020a056122208600b004bd3cb288bbmr2765574vkd.12.1706802518709; Thu, 01 Feb
- 2024 07:48:38 -0800 (PST)
+	s=arc-20240116; t=1706802593; c=relaxed/simple;
+	bh=yyG+tXwMfUAMz3ARIk0tUpjcZeb5q7dyZl3guKF9XEI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KgqkK9iJ1q0u9l4EEUFePCRy4x/k9HZOspVlZV1zmykWabBWvm3Jo579rP5LQRH7oUnASR9d5TFYuFHNnjVyintuTnFPhX2srRMsCvRPPutU1lwGzUOKaNMOvrlS86SrwVVkHqgRKrB4z5j9qUHzxtGYhq65WiUGza0xn+q0rZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D5R878vL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4578CC433F1;
+	Thu,  1 Feb 2024 15:49:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706802593;
+	bh=yyG+tXwMfUAMz3ARIk0tUpjcZeb5q7dyZl3guKF9XEI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D5R878vLpp+NEpb12DzhTaXiVuha7CUkYaNGVUv4HFeSDPDHQwIZJPMu6bS+/ov/u
+	 W0I3xHDNHJ1I7+jUfB0OPmO80Km5O8eRExbsn/LLkytdUHQY0SxKimRQYvxrHiIksl
+	 9l/KCxMV06+LvGm/VEVnI1vCOipD8duidStMHMTculmhtdoPDYgBUCN22PDZMQSvQ4
+	 ZK38poOGk2Anq8mZ4w+g7d8xLK//MOvO7OAgpUKuHmnBkqwLuf617V1jTVNjpv3coj
+	 dXd454290CsnfBqsmdVRHewoj3XSx4nFQvHCMLvsoqIfUdqZHHzwBAa+DuZbiTYGpJ
+	 vtS2mBiIppf4w==
+Date: Thu, 1 Feb 2024 16:49:45 +0100
+From: Simon Horman <horms@kernel.org>
+To: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, longli@microsoft.com,
+	yury.norov@gmail.com, leon@kernel.org, cai.huoqing@linux.dev,
+	ssengar@linux.microsoft.com, vkuznets@redhat.com,
+	tglx@linutronix.de, linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org, schakrabarti@microsoft.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH V2 net] hv_netvsc: Fix race condition between
+ netvsc_probe and netvsc_remove
+Message-ID: <20240201154945.GH530335@kernel.org>
+References: <1706686551-28510-1-git-send-email-schakrabarti@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240131230827.207552-1-bschubert@ddn.com> <20240131230827.207552-2-bschubert@ddn.com>
- <CAJfpegsU25pNx9KA0+9HiVLzd2NeSLvzfbXjcFNxT9gpfogjjg@mail.gmail.com>
- <0d74c391-895c-4481-8f95-8411c706be83@fastmail.fm> <CAJfpegvRcpJCqMXpqdW5FtAtgO0_YTgbEkYYRHwSfH+7MxpmJA@mail.gmail.com>
- <95baad1f-c4d3-4c7c-a842-2b51e7351ca1@ddn.com> <CAJfpegtd1WehXkvLWfbBvFLVYO2nBgWSoq=3Zp-Kmr0spus4zQ@mail.gmail.com>
-In-Reply-To: <CAJfpegtd1WehXkvLWfbBvFLVYO2nBgWSoq=3Zp-Kmr0spus4zQ@mail.gmail.com>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Thu, 1 Feb 2024 17:48:26 +0200
-Message-ID: <CAOQ4uxi-iptWYOqmsDZFkhPG03Uf=2bHqL_0570cmVOUyhtT-Q@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] fuse: Fix VM_MAYSHARE and direct_io_allow_mmap
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Bernd Schubert <bschubert@ddn.com>, Bernd Schubert <bernd.schubert@fastmail.fm>, 
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Dharmendra Singh <dsingh@ddn.com>, 
-	Hao Xu <howeyxu@tencent.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1706686551-28510-1-git-send-email-schakrabarti@linux.microsoft.com>
 
-On Thu, Feb 1, 2024 at 5:43=E2=80=AFPM Miklos Szeredi <miklos@szeredi.hu> w=
-rote:
->
-> On Thu, 1 Feb 2024 at 16:40, Bernd Schubert <bschubert@ddn.com> wrote:
->
-> > Given
-> > -N numops: total # operations to do (default infinity)
-> >
-> > How long do you think I should run it? Maybe something like 3 hours
-> > (--duration=3D$(3 * 60 * 60))?
->
-> I used -N1000000.  If there were any issues they usually triggered much e=
-arlier.
->
+On Tue, Jan 30, 2024 at 11:35:51PM -0800, Souradeep Chakrabarti wrote:
+> In commit ac5047671758 ("hv_netvsc: Disable NAPI before closing the
+> VMBus channel"), napi_disable was getting called for all channels,
+> including all subchannels without confirming if they are enabled or not.
+> 
+> This caused hv_netvsc getting hung at napi_disable, when netvsc_probe()
+> has finished running but nvdev->subchan_work has not started yet.
+> netvsc_subchan_work() -> rndis_set_subchannel() has not created the
+> sub-channels and because of that netvsc_sc_open() is not running.
+> netvsc_remove() calls cancel_work_sync(&nvdev->subchan_work), for which
+> netvsc_subchan_work did not run.
+> 
+> netif_napi_add() sets the bit NAPI_STATE_SCHED because it ensures NAPI
+> cannot be scheduled. Then netvsc_sc_open() -> napi_enable will clear the
+> NAPIF_STATE_SCHED bit, so it can be scheduled. napi_disable() does the
+> opposite.
+> 
+> Now during netvsc_device_remove(), when napi_disable is called for those
+> subchannels, napi_disable gets stuck on infinite msleep.
+> 
+> This fix addresses this problem by ensuring that napi_disable() is not
+> getting called for non-enabled NAPI struct.
+> But netif_napi_del() is still necessary for these non-enabled NAPI struct
+> for cleanup purpose.
+> 
+> Call trace:
+> [  654.559417] task:modprobe        state:D stack:    0 pid: 2321 ppid:  1091 flags:0x00004002
+> [  654.568030] Call Trace:
+> [  654.571221]  <TASK>
+> [  654.573790]  __schedule+0x2d6/0x960
+> [  654.577733]  schedule+0x69/0xf0
+> [  654.581214]  schedule_timeout+0x87/0x140
+> [  654.585463]  ? __bpf_trace_tick_stop+0x20/0x20
+> [  654.590291]  msleep+0x2d/0x40
+> [  654.593625]  napi_disable+0x2b/0x80
+> [  654.597437]  netvsc_device_remove+0x8a/0x1f0 [hv_netvsc]
+> [  654.603935]  rndis_filter_device_remove+0x194/0x1c0 [hv_netvsc]
+> [  654.611101]  ? do_wait_intr+0xb0/0xb0
+> [  654.615753]  netvsc_remove+0x7c/0x120 [hv_netvsc]
+> [  654.621675]  vmbus_remove+0x27/0x40 [hv_vmbus]
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: ac5047671758 ("hv_netvsc: Disable NAPI before closing the VMBus channel")
+> Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+> Reviewed-by: Dexuan Cui <decui@microsoft.com>
+> Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
 
-Note that at least these fstests run fsx in several configurations:
-
-$ grep begin `git grep -l run_fsx tests/generic/`
-tests/generic/091:_begin_fstest rw auto quick
-tests/generic/263:_begin_fstest rw auto quick
-tests/generic/469:_begin_fstest auto quick punch zero prealloc
-tests/generic/521:_begin_fstest soak long_rw smoketest
-tests/generic/522:_begin_fstest soak long_rw smoketest
-tests/generic/616:_begin_fstest auto rw io_uring stress soak
-tests/generic/617:_begin_fstest auto rw io_uring stress soak
-
-Bernd, you've probably already ran them if you are running auto, quick
-or rw test groups.
-
-Possibly you want to try and run also the -g soak.long_rw tests.
-
-They use nr_ops=3D$((1000000 * TIME_FACTOR))
-
-Thanks,
-Amir.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
