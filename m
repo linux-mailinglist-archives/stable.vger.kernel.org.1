@@ -1,104 +1,95 @@
-Return-Path: <stable+bounces-17599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE5E7845B03
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 16:13:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F50845B53
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 16:23:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7052028CD8E
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 15:13:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11894291CD9
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 15:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7204D6214A;
-	Thu,  1 Feb 2024 15:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E3362141;
+	Thu,  1 Feb 2024 15:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WwRdsEgn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CnXgDL55"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A43E5F49E;
-	Thu,  1 Feb 2024 15:13:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FB162160
+	for <stable@vger.kernel.org>; Thu,  1 Feb 2024 15:21:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706800430; cv=none; b=fFWik2sO5Ogu1H7jwMJKSNdUQu9p3/NFL68P0WfyREhIk1+tkmQV5G1y0tJwL16+N9z/HOUB8Ci7Ht/YuGTig/bHyqbhZGSWpX86Op0QdkAutWB6sshOkrBNwWCk5c5bIfiygQbXBSMRLVHQk9tot67msBDH+3bdfxKg2P514l4=
+	t=1706800896; cv=none; b=sQcU/kei9ZH0yz2uJwaenctSy7TN++y7GiUJabAZ0C++gzRVpoST2Tn4EEHbEdmVF3pSghdYMb3uW9jr0vGWwSLUB0DSqnxis88ZXWaZg4TuUHQRQMouXaCz+Le8plBNRLY+wJkyL1s6rO4XcWXtouDhxhphYS7n6ZSfSgpgG2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706800430; c=relaxed/simple;
-	bh=J25LSF02c3Gihi6ywJToP8/0dpuIX20uFfdRTlYxyRg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Giya0wkA4NM5SBmK7pVoD+r/vzGsxxAsMEqCA0OV+241RwzkKQdtEsgwoLPYw9IK5kTdaugCAdatSqjr4odZWRMma9ajh4/t9q+5xHHoKAyM9mrtaHVDTer7UykelmbE2iHNTXPmlYgIe0We8F4nyxaP4Tq5COt1w21bW3yZUfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WwRdsEgn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F423DC433F1;
-	Thu,  1 Feb 2024 15:13:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706800429;
-	bh=J25LSF02c3Gihi6ywJToP8/0dpuIX20uFfdRTlYxyRg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=WwRdsEgnfVREwIGEX7L2Y0qvFc4a+QOfttbXdf6t8ZoZNJqEAF6ntKisAF9lamz/c
-	 CKCOXaJCB1NwUOAuFSWq5OWNXl4pXVdZJnYhNcZuW8JGTQ8u0Z4Sosso2c5GgnCgPB
-	 7dR5pfRAW6HrAqvmWuJCBnh6Y5X0kIVJ/KhHUPFuPT9K03GqVRjJtfGP6m6hNgbZP2
-	 X3Sn7bLvYa98cxeGVu0bS+gecxyjnBFLZlorUBZQDP2GS/v+EMk8hjl0Evn3X1dB5N
-	 EIKY1bGR+sRwskTDZMEvuuAvwRImAxta9NDT3WI6wbIW8tPUXCNpYlze1Q51t/tRyl
-	 8tmRRAUrucKXg==
-From: Daniel Bristot de Oliveira <bristot@kernel.org>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: Daniel Bristot de Oliveira <bristot@kernel.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] tracing/timerlat: Move hrtimer_init to timerlat_fd open()
-Date: Thu,  1 Feb 2024 16:13:39 +0100
-Message-ID: <7324dd3fc0035658c99b825204a66049389c56e3.1706798888.git.bristot@kernel.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1706800896; c=relaxed/simple;
+	bh=Rz1ISlQvXK7se5VfKnwD+BIm7CixEnvyuGtUH8hcAuo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=M0CflkFA40bTjqsCAgMifbDTqmzXPc/PcyrPEc7MosHGybLl93wCb07eK3TBFKQoXYHUZqcb6nZqGshGWOgQpXr1YIPwJ3J5qPoAcUbc4pMTpse6qd6N36fgVC3GQLjMsNBiSjZo/CrIUdMCEkYiXFZ40eRnmiYjpgDgKdQ6124=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CnXgDL55; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1706800895; x=1738336895;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=Rz1ISlQvXK7se5VfKnwD+BIm7CixEnvyuGtUH8hcAuo=;
+  b=CnXgDL55PeD005usg1a20QYkyR217rU7VxakI8ESAIiFxl1701OyQET4
+   dd7M/rVnilNwsvrZs32K0Lq/0CFsd2WF4lb3tnGkE1RkO2ytadOQzEUCW
+   NXvm7of1SjBRlUw70KXyPXXmA7S+jy2yzSKjVK+WmynMN4ag3rqKynuPB
+   w/ijGt26O28pgoUe1dzIy+ca6b/d2Tu35bXowBTkKgvvvnIf44BNf688X
+   sSE+Y+yZsKp9K4ghW3Z9OWzIerc+QlwbSx2kyzLZozbjt7ezGI2U99Mcr
+   DYZl5llicSNNiuYKy3hixyPGL1e9PorOd4zHj2Gs++9O2dcqXS86FFLE1
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="3784544"
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
+   d="scan'208";a="3784544"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 07:21:34 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
+   d="scan'208";a="23122079"
+Received: from lkp-server02.sh.intel.com (HELO 59f4f4cd5935) ([10.239.97.151])
+  by fmviesa002.fm.intel.com with ESMTP; 01 Feb 2024 07:21:32 -0800
+Received: from kbuild by 59f4f4cd5935 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rVYsc-0002tW-0a;
+	Thu, 01 Feb 2024 15:21:30 +0000
+Date: Thu, 1 Feb 2024 23:20:37 +0800
+From: kernel test robot <lkp@intel.com>
+To: Daniel Bristot de Oliveira <bristot@kernel.org>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] tracing/timerlat: Move hrtimer_init to timerlat_fd open()
+Message-ID: <Zbu2xc_hrGtyPwRe@ad1fec2ed832>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7324dd3fc0035658c99b825204a66049389c56e3.1706798888.git.bristot@kernel.org>
 
-Currently, the timerlat's hrtimer is initialized at the first read of
-timerlat_fd, and destroyed at close(). It works, but it causes an error
-if the user program open() and close() the file without reading.
+Hi,
 
-Move hrtimer_init to timerlat_fd open() to avoid this problem.
+Thanks for your patch.
 
-No functional changes.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Fixes: e88ed227f639 ("tracing/timerlat: Add user-space interface")
-Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
----
- kernel/trace/trace_osnoise.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-diff --git a/kernel/trace/trace_osnoise.c b/kernel/trace/trace_osnoise.c
-index bd0d01d00fb9..a8e28f9b9271 100644
---- a/kernel/trace/trace_osnoise.c
-+++ b/kernel/trace/trace_osnoise.c
-@@ -2444,6 +2444,9 @@ static int timerlat_fd_open(struct inode *inode, struct file *file)
- 	tlat = this_cpu_tmr_var();
- 	tlat->count = 0;
- 
-+	hrtimer_init(&tlat->timer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
-+	tlat->timer.function = timerlat_irq;
-+
- 	migrate_enable();
- 	return 0;
- };
-@@ -2526,9 +2529,6 @@ timerlat_fd_read(struct file *file, char __user *ubuf, size_t count,
- 		tlat->tracing_thread = false;
- 		tlat->kthread = current;
- 
--		hrtimer_init(&tlat->timer, CLOCK_MONOTONIC, HRTIMER_MODE_ABS_PINNED_HARD);
--		tlat->timer.function = timerlat_irq;
--
- 		/* Annotate now to drift new period */
- 		tlat->abs_period = hrtimer_cb_get_time(&tlat->timer);
- 
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] tracing/timerlat: Move hrtimer_init to timerlat_fd open()
+Link: https://lore.kernel.org/stable/7324dd3fc0035658c99b825204a66049389c56e3.1706798888.git.bristot%40kernel.org
+
 -- 
-2.43.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
