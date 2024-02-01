@@ -1,116 +1,94 @@
-Return-Path: <stable+bounces-17570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05410845373
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 10:11:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D61845495
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 10:55:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABD281F28BBD
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 09:11:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BEDD1F2B20A
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 09:55:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BDFD15AAD1;
-	Thu,  1 Feb 2024 09:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121644DA0F;
+	Thu,  1 Feb 2024 09:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gYphGDPP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udU+noJs"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F9A15B0E2;
-	Thu,  1 Feb 2024 09:11:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA07B4D9F1;
+	Thu,  1 Feb 2024 09:55:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706778706; cv=none; b=hgwLTfzG7i/MOuENYeeJO0mqo6XwZf7v6TdqFa2WaLa3S6sKkxEJ1EAt0fEi5DjJ5giZkaxDc4qTvN7i1MSahzD6CvBQAH9StNkmHvMbVTEIpp7fu1R06w7shscGzI0Gk8jsk9i8m7pK/0Kd6qa30VDbeOIMWwCRb7T/cLtLnAc=
+	t=1706781350; cv=none; b=aW4IJoTqVhJ9XdOPSanFGcj/l0kKX97al8zM6KiWRnH+rRoKBzh+mgb5sn96eZFeq5FGuUpjkqez7OdPYZlA5arIAAI+TzuCAns3s/EwRs4KsuTt3uGvT5h3iiRTZXQYQCvv0Roc6MimaTtg0W/YmzCcaiWnw0jTA5xZ7XIiNM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706778706; c=relaxed/simple;
-	bh=d0QUE64pt164Gb922DtwPyKlQyM7T2wpfLolXVuFrVk=;
+	s=arc-20240116; t=1706781350; c=relaxed/simple;
+	bh=vJ1BkR2GfCGMDVdnAPNTubCrwkh1sWpvq2C/V4sxRlw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GyUWj6V7xk488MWEfEsYvdEbj7W1qpifSqmyaZG2MOnL3ZjyDmZj2/aDfu7E0CP3RBVSKybGAsFRee3+Op94DdIc6fUXzv+b4RN2pTX1+y9lt2zhz/wkcG/5TLFNTCwp1azzCAoNOer0k9rCL2wZWQuizHtpa6Z5e+xtx4w0gds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gYphGDPP; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706778704; x=1738314704;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=d0QUE64pt164Gb922DtwPyKlQyM7T2wpfLolXVuFrVk=;
-  b=gYphGDPPNcBTKGk5usgi+ZEV9J/LOq04Z5XX6SJ21D++N5bY6A++5iAD
-   engs6rVkYkV32TGt+daTknu2VbbuBGOa9D0TvmqKcq/K4ecbC20bQgp1O
-   0D1gnMtfJlsuTLFR7QynLWf2odavd+MJi+YZCbWBh1X6XGCWOW2mjBZnZ
-   2f4t4zCuIksF4Oh52xZtjzSsy/XZZ+98k2WPZijoDvaxcgRzL7KrM9/et
-   5p68b6jdQXW0jT6ImfGknonLzfZ3FbUvAePLzlq0FLDuQvNI7DmDCL7LR
-   QiiiMLDWlmtgoxVHAYVjSwsoewPPvVSMdjRlYsrFlHtP13dQj0/QPdObk
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="2785324"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="2785324"
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 01:11:43 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="879056989"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="879056989"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by FMSMGA003.fm.intel.com with ESMTP; 01 Feb 2024 01:11:40 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1000)
-	id 0363E8EA; Thu,  1 Feb 2024 10:34:48 +0200 (EET)
-Date: Thu, 1 Feb 2024 10:34:48 +0200
-From: "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Zixi Chen <zixchen@redhat.com>, Adam Dunlap <acdunlap@google.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Kai Huang <kai.huang@intel.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@kernel.org>, x86@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] x86/cpu/intel: Detect TME keyid bits before
- setting MTRR mask registers
-Message-ID: <qtzc3jejjsvxpa6sz3zgoelf77ejr7fioxdaw2o5ezuxevetks@kcwjgzp2gi2u>
-References: <20240131230902.1867092-1-pbonzini@redhat.com>
- <20240131230902.1867092-3-pbonzini@redhat.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ftDsPLa7x1iaAVBCKqoOGyHGoDZlfa0Xaq0cq0Flvvn4VTOc4ghHwhPeYztN7Sa/ZZpf8nSAl3ND56Com3PnuM3RFBNQ8maJnKexYCUN2LjdNlWlgRRagNYfO9l12PRYwbC2RmRa7Bttoi8uAmQHL9gSfh2PSMoWaPrDTPjcuwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udU+noJs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD99C43394;
+	Thu,  1 Feb 2024 09:55:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706781350;
+	bh=vJ1BkR2GfCGMDVdnAPNTubCrwkh1sWpvq2C/V4sxRlw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=udU+noJs3w5E5ck/mdeMWLhTqvrzTumyFgYCEg16WRSyWn0uAvjMDBnR+Cf2YT19f
+	 Oky6gZw+fSKadzmpuH2b704oVqsnIkl+eGZVYWkw9gz4CZZhe8aEU4Ozo6a2uK5XEI
+	 +5FyIOFhEyX3BKdfkHi9FiQwWdstJCtJ5dCD76mYcl63T+Jq7rK53AlYEqQGKhGOn2
+	 4q3ScG3RDRZHOIg8isVdYgToSQMSTyiafCADkCrm9Pk5/NuvZrg2VNNtBA6DyZin28
+	 u7ZOsNX5BTN/QidK6xJ4VVS91u/naiOUjvw7FTexORi8n3cFkAst70UZhAkiQyZJW+
+	 qOBQpuhQ4X1wg==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rVTnT-0000000069s-1XJ5;
+	Thu, 01 Feb 2024 10:55:52 +0100
+Date: Thu, 1 Feb 2024 10:55:51 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Doug Anderson <dianders@chromium.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>, Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] HID: i2c-hid-of: fix NULL-deref on failed power up
+Message-ID: <Zbtqp1wgHI0LSSaE@hovoldconsulting.com>
+References: <20240126170901.893-1-johan+linaro@kernel.org>
+ <CAD=FV=UzGcneoL1d-DDXVugAeq2+YLCKrq8-5B7TfVAAKgF=SQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240131230902.1867092-3-pbonzini@redhat.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD=FV=UzGcneoL1d-DDXVugAeq2+YLCKrq8-5B7TfVAAKgF=SQ@mail.gmail.com>
 
-On Thu, Feb 01, 2024 at 12:09:02AM +0100, Paolo Bonzini wrote:
-> MKTME repurposes the high bit of physical address to key id for encryption
-> key and, even though MAXPHYADDR in CPUID[0x80000008] remains the same,
-> the valid bits in the MTRR mask register are based on the reduced number
-> of physical address bits.
-> 
-> detect_tme() in arch/x86/kernel/cpu/intel.c detects TME and subtracts
-> it from the total usable physical bits, but it is called too late.
-> Move the call to early_init_intel() so that it is called in setup_arch(),
-> before MTRRs are setup.
-> 
-> This fixes boot on TDX-enabled systems, which until now only worked with
-> "disable_mtrr_cleanup".  Without the patch, the values written to the
-> MTRRs mask registers were 52-bit wide (e.g. 0x000fffff_80000800) and
-> the writes failed; with the patch, the values are 46-bit wide, which
-> matches the reduced MAXPHYADDR that is shown in /proc/cpuinfo.
-> 
-> Reported-by: Zixi Chen <zixchen@redhat.com>
-> Cc: Adam Dunlap <acdunlap@google.com>
-> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Cc: Xiaoyao Li <xiaoyao.li@intel.com>
-> Cc: Kai Huang <kai.huang@intel.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@kernel.org>
-> Cc: x86@kernel.org
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+On Fri, Jan 26, 2024 at 09:47:23AM -0800, Doug Anderson wrote:
+> On Fri, Jan 26, 2024 at 9:10 AM Johan Hovold <johan+linaro@kernel.org> wrote:
 
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > A while back the I2C HID implementation was split in an ACPI and OF
+> > part, but the new OF driver never initialises the client pointer which
+> > is dereferenced on power-up failures.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> Good catch and thanks for the fix. FWIW, I'd be OK w/
+> 
+> Reviewed-by: Douglas Anderson <dianders@chromium.org>
+> 
+> That being said, I'd be even happier if you simply removed the
+> "client" from the structure and removed the error printout.
+> regulator_bulk_enable() already prints error messages when a failure
+> happens and thus the error printout is redundant and wastes space.
+
+True, but that error message does not include the device that tried to
+use the regulator.
+
+I actually hit this when adding dev_dbg() to the function in question.
+For such cases, it's also convenient to have struct device easily
+accessible so I think it should be ok to just leave this pointer in.
+
+Johan
 
