@@ -1,161 +1,211 @@
-Return-Path: <stable+bounces-17611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4B6A845C89
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 17:10:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C786845D5A
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 17:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 571A81F2C72B
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 16:10:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 304C0B2DF17
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 16:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26243626CD;
-	Thu,  1 Feb 2024 16:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECC315F33C;
+	Thu,  1 Feb 2024 16:17:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ddn.com header.i=@ddn.com header.b="y5Rg0K8g"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outbound-ip191b.ess.barracuda.com (outbound-ip191b.ess.barracuda.com [209.222.82.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAE2626C3;
-	Thu,  1 Feb 2024 16:10:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706803828; cv=none; b=Gh1PfOy0VcU1Mk5OU6KT7refl8XXlZVAv0FHhlcV3l9cRZwHJf0tv1wAM86cObrKfPE0QqIy6Ioxh3QOSUoPoCUyBYSvvAo6TVe2E3O/Dsnq+0uVGfY3iv2a+AWDJuAK/YDlRhTSQ8o8IfwL6DJULEOd3MXEh+Rn6Zys7cu+YEc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706803828; c=relaxed/simple;
-	bh=/ZG0ehtuMNnNxihYcBVpjgZFD86ewUhnPYNdeA/+8/c=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=axZVAJBaD2gIKoXtbyIIabHb38csX/I9luUtQZ/XLFf25lrLgsumpsKfo4gZB66fjuDqkkMCrufQO04wBN5hZpIh7y6wi6N+m9zFVsMGJjyo6Y/m9DdOGUaYx7QhE3CR/mBnCNZJu1SFJzCau43YyA9Fj9ZjbOP6QXC/+2dYrJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06273C433F1;
-	Thu,  1 Feb 2024 16:10:26 +0000 (UTC)
-Date: Thu, 1 Feb 2024 11:10:43 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Daniel Bristot de Oliveira <bristot@kernel.org>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] tracing/timerlat: Move hrtimer_init to timerlat_fd
- open()
-Message-ID: <20240201111043.3213bf7c@gandalf.local.home>
-In-Reply-To: <05c12163-d348-4615-a9e3-f36787629e0e@kernel.org>
-References: <7324dd3fc0035658c99b825204a66049389c56e3.1706798888.git.bristot@kernel.org>
-	<2024020109-duffel-finally-4f0b@gregkh>
-	<05c12163-d348-4615-a9e3-f36787629e0e@kernel.org>
-X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503A815F30B;
+	Thu,  1 Feb 2024 16:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=209.222.82.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706804271; cv=fail; b=MUgaml+9r1HDU02Kmd6Vysxlm9ngzPMNRSIlKbHF2nvi9vV9VnTqQJrbSmb/nRWk6Kt7R+xEkfbBvinUGHJbiNf8SlVUHU4c3IuTqdscfFBe8FfIZyhYSYtR92TPQoaTztMzTB3fucam/FFum20XfcW3nLXbpUv2Tz7nTCcKAiY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706804271; c=relaxed/simple;
+	bh=WRGKb5PkE/vxgyBWS4nR5ySH7KrFZuFAG5RZ7Xr5dQY=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Q8wIcl6m+/gPRWlP5IHIfTk2dMnHLEkFlJNWGwNOuepiqXD8i0q9hPQLrVnoJY+1i4WI4H8iXu+upVHGyv/NNfBKbdg+IG2S7a5SjGNUT47LJUbh92okDbXjVFw28zY5a3D3i9j/kFJG7FZoOzggm1h331g/dJo9eSDmsFgK1Qc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ddn.com; spf=pass smtp.mailfrom=ddn.com; dkim=pass (1024-bit key) header.d=ddn.com header.i=@ddn.com header.b=y5Rg0K8g; arc=fail smtp.client-ip=209.222.82.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ddn.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ddn.com
+Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02lp2041.outbound.protection.outlook.com [104.47.56.41]) by mx-outbound20-53.us-east-2b.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Thu, 01 Feb 2024 16:16:40 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EmIAGdlN5pBsm44OfF/ZkgiKuHMwtIH1LfNtmalzKsH9YjV3PavCd9GJf8P2V54RJLmNwdM6SYhPybJFGSCfznzR5vGa1NRRzuKMFXU5JJSYmt7rVHHtQ48GzKWHZUOTzp5pG/6ZbKLXNuvCmMHtf/R7jTBtyR4UIrnRK/301DTfgYWTkioPB7sxGV0Xv/U/qeBdoT/VXqe0uFT54aRVTohLfTN8U/EDuUeiXAKJfmrQwq/ZX3eDgQK7xieVZ1B0HmJXeoeA9lyfgRmhp/t8WXrGBJit05C8gsLm2A1ub4832d6D23aaH1C1/wTeJjZV8+D0UBpd3wx852G2+c3wZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WRGKb5PkE/vxgyBWS4nR5ySH7KrFZuFAG5RZ7Xr5dQY=;
+ b=hstfsmTdxcX+GKFxwuhc1Vus4WMuihhtO4rdd5b+e5AlBcWxdIps5oaO4VOOf9/hMk8gcemllWHxnF1H/QIy9pM7SCL3R8zszJQM418XM2TTFFT7vvykXDTTcYrBsnBa0v7USu+/5hV1244YNZJoPEkonIYdsQiWjA32D95yFdDrVqwHH6z8mV98MbkKJ2B6jyjhHfqrRtP70sNcwWoL73Gdj1R2kc8sf9JRsT8LO2LgWAwqG3BGsSN28m8jSj980rNRd5PjfJBI6Qz6Ko6ejzyXfi+UFKFF5HQT4sw3TMIVMFMrGJBYABw0jlGqLs/HpqNcoeP/af52lmswSblDww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=ddn.com; dmarc=pass action=none header.from=ddn.com; dkim=pass
+ header.d=ddn.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ddn.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WRGKb5PkE/vxgyBWS4nR5ySH7KrFZuFAG5RZ7Xr5dQY=;
+ b=y5Rg0K8g5nzfDuQyvrN0bAPBvlTqgxcsOaBZqN3h1MPfgjYC9Hb9znjTDkInXWXc7ASngygSljgD6ZPkuHuaPRzDwg4pvIxcrVFG4BO6xgdRuRm4wnyilpU/W1UuWn6obSSrGh5yyiwJNnKvyVpvkYR3N0koJOflCGYzdp0keyE=
+Received: from SJ2PR19MB7577.namprd19.prod.outlook.com (2603:10b6:a03:4d2::17)
+ by MN2PR19MB3855.namprd19.prod.outlook.com (2603:10b6:208:1e8::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.24; Thu, 1 Feb
+ 2024 16:16:38 +0000
+Received: from SJ2PR19MB7577.namprd19.prod.outlook.com
+ ([fe80::9270:8260:3771:ff45]) by SJ2PR19MB7577.namprd19.prod.outlook.com
+ ([fe80::9270:8260:3771:ff45%4]) with mapi id 15.20.7249.025; Thu, 1 Feb 2024
+ 16:16:38 +0000
+From: Bernd Schubert <bschubert@ddn.com>
+To: Amir Goldstein <amir73il@gmail.com>, Miklos Szeredi <miklos@szeredi.hu>
+CC: Bernd Schubert <bernd.schubert@fastmail.fm>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, Dharmendra
+ Singh <dsingh@ddn.com>, Hao Xu <howeyxu@tencent.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v2 1/5] fuse: Fix VM_MAYSHARE and direct_io_allow_mmap
+Thread-Topic: [PATCH v2 1/5] fuse: Fix VM_MAYSHARE and direct_io_allow_mmap
+Thread-Index:
+ AQHaVJp6pCpUGVTRIEOO0QTX1flKZ7D1LPKAgABh1QCAAASIgIAADU4AgAAA2QCAAAGEAIAAB+CA
+Date: Thu, 1 Feb 2024 16:16:37 +0000
+Message-ID: <d6322d14-9981-440d-9b93-b3e443536b9f@ddn.com>
+References: <20240131230827.207552-1-bschubert@ddn.com>
+ <20240131230827.207552-2-bschubert@ddn.com>
+ <CAJfpegsU25pNx9KA0+9HiVLzd2NeSLvzfbXjcFNxT9gpfogjjg@mail.gmail.com>
+ <0d74c391-895c-4481-8f95-8411c706be83@fastmail.fm>
+ <CAJfpegvRcpJCqMXpqdW5FtAtgO0_YTgbEkYYRHwSfH+7MxpmJA@mail.gmail.com>
+ <95baad1f-c4d3-4c7c-a842-2b51e7351ca1@ddn.com>
+ <CAJfpegtd1WehXkvLWfbBvFLVYO2nBgWSoq=3Zp-Kmr0spus4zQ@mail.gmail.com>
+ <CAOQ4uxi-iptWYOqmsDZFkhPG03Uf=2bHqL_0570cmVOUyhtT-Q@mail.gmail.com>
+In-Reply-To:
+ <CAOQ4uxi-iptWYOqmsDZFkhPG03Uf=2bHqL_0570cmVOUyhtT-Q@mail.gmail.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-GB
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Mozilla Thunderbird
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=ddn.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ2PR19MB7577:EE_|MN2PR19MB3855:EE_
+x-ms-office365-filtering-correlation-id: 3ffcdaf3-cb88-46ee-8aad-08dc23412aef
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ H5YKHsHqLZyHzjb5kwv0LsWY3L8VUMxRb/CL3yD9qWECPQcV67bT/TPTa2a3DEZmAkLZt55Z8wT4MIjFSMPLuRYag4/5CtxBvL4lrhy//yNSgTyb3xmH6cfInMA2/OJSn/zWTewxSsISj4onswcTFGrkFnO7BvrsWNGefFSX4TMa7EGkZVMl0Hh9n5rYzyzKJ9J6CtoNWETSnrwBVlr1qvgRpnW8VLi/VojH5K6SIF2Udr7SQatJ2fvZONmn8is5JXKaneNC3Uc6VAi/urLHqd3Ef/W488iMr2lnuk34aKQuzXTm+Fy6CM9mDZW9wQe6fPSrnUIvGyegN/bZdttGn8P6RMv5BizS5RSDbE8uJdYzCBA0X1evciTvqVL1kiTaq2VflqLWdqy1COxE14HmQ7DCZZQoynr6qsGu96p5CA13jQv9NhslONg9OAiJNBiR+IJ8KWvOawNXz3Nsj2YuulD6E28mBFHLY50jkQcnWvAhWeOzsJ2zx9ZFBI3neDQds6bSLDyhdhYS0TxYoBASYPkn+Q2gMr4CZ6PQKF+OR6g7HrbCgpHkV9ZOWnxyB6eAKrO3z2ytc3iKKSY6b55DDs/u7s2kbjX69PGq/riEkAqAkWs0NPia1dK8v5TYAAKCLNNHz6yaxtCc1KdAg0h33PjbPVc3wj6lQDEhvtPR62c5AU3zjAhatfzZ6HG+rsaH
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR19MB7577.namprd19.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(366004)(39850400004)(396003)(376002)(136003)(230922051799003)(451199024)(64100799003)(186009)(1800799012)(26005)(2616005)(478600001)(71200400001)(6512007)(4326008)(6506007)(41300700001)(8676002)(6486002)(38100700002)(122000001)(36756003)(8936002)(316002)(66946007)(66446008)(66476007)(64756008)(66556008)(54906003)(2906002)(31686004)(5660300002)(53546011)(38070700009)(86362001)(110136005)(91956017)(76116006)(31696002)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?U1Z4WWFTTkJxazZhZVBYM0YzWlVuMVB4dXh4T0FFUU1ta3Y4OEJXSS9Pd2VV?=
+ =?utf-8?B?ZEFqQlhCUkFXSThFN0FoY3lkclI1L3hOdFJQelRKUmo4dGN5V3hlOVNkU2h2?=
+ =?utf-8?B?dDRDcE1EQTdBVUZFSkNqZ2JVazNrbkRyZWRFOVNvbHdCWktOeUNtcjR5M3dK?=
+ =?utf-8?B?VHdSUHRCQnprUHVPZ0NUT29yR2NzanpBOUdFRUdKL2RETnZUckNmaWwvYURJ?=
+ =?utf-8?B?eDZQTzZwbjRBaWZXN3dTc0RXN3BieG9sRHh3eDdjZTBrb3dhemRtWTdDKzY3?=
+ =?utf-8?B?czhpaXkxcUNjUDdmdFdHUEN5S1luVmJsNWZ0bVBYZzNHWXYvMkVrTWxLZGNR?=
+ =?utf-8?B?K1FiSHlMY3RXMnRGVGowTHp1L1lKdUJrKzRYNWZ2eUIwSnNEN3pmeTEwUVAr?=
+ =?utf-8?B?TmVDYWZqVXRISUtYRTFqekZ6ZmFpQ0U5RFdoVzRXL3dqVFcyV3E1ajRRS3hO?=
+ =?utf-8?B?a3lPc0JIVy9ZWnBkNzJ5aWRXTUoxaHh5V245ckZJcTlqUEJtVDRiMVJjSWZp?=
+ =?utf-8?B?RTBiaW15aEFDWmxSUkFXU0tySkd3NXBXdCt0azFZb1JWZSthR1JTaTEyZVM0?=
+ =?utf-8?B?NWxwVDFXRjhuQ0Yxd0cxdWh4emRGYXFmbklnUElCQTlmUnlqWkx1Z0UySE4r?=
+ =?utf-8?B?Zy9adjZTY0ZQcy9TQ3NqWDZvclJ1NXBacDZFRFZiYnVINk9nZXN6SmxRUVow?=
+ =?utf-8?B?d2tTeVF3UlYyMmluRGk0OTV2RWxXTDZINXRXRE9BMEVYT2RNMzJHckFtQ3JR?=
+ =?utf-8?B?TGorQyttRkk0ZnNqTm5rY3Q5ajQ2L3Y5dVJoZVBDdy96TUxUTG81dTk3cFlZ?=
+ =?utf-8?B?NHpZQlBndnEzM3NySy9KbXNieXpjMFUrdHAzQ2pFdDBXZXdhTDJJSzdOelZ0?=
+ =?utf-8?B?R2N4TEIvczQ3cG05bnVzU25Tc1FzaXJvd0FoYW1RYkxQQUYva1I3VUpya0xN?=
+ =?utf-8?B?TVY3M1ZxM20vV2xRZjhkeTJGQ1YwUGxvdzZmUDdkOW5mNmxZVkxlL29NWTdo?=
+ =?utf-8?B?cFhqeU9VZDFMT2dxTDBhUEg4MUJtYW4zOVFzT2Z6a3kybUJvRy9nWlp6Ni91?=
+ =?utf-8?B?SVNKUjIyWitNcnRDeUY5ZVREWVFiYlhrMEprQWxlL2RneTZKbG5xMSsva3g0?=
+ =?utf-8?B?OSt4NmNZSGRURFo5MGNiTHhVaEF6WS8xbFBjNFF6dzNxZmZZU3QxanF6MnBG?=
+ =?utf-8?B?M0ZGbnVaWnJUMGVRcHZKaHVXQ21NM3dkUk9FR0RLUXpMRWxtZy91WHdzYlht?=
+ =?utf-8?B?SUNBajhTUzkxR2ZHU0tuVDV6Ujc2R0tjdm85cWVhcUxvaEF2U0VTemJVSTZr?=
+ =?utf-8?B?aWpTVjRQU29GZGhVUEpxQmdxUnlMdGgyMHZjQW52L21hZ25scERWb0poNGp6?=
+ =?utf-8?B?cngyMEhOUjNQVmRtazJpSGhyUHB2RGdxVGN3SnF0aHZCcnNxRkxVVkJEMVp3?=
+ =?utf-8?B?WDF0Z21LTUhjUGVZREtEallmR20xa1gyaERmWEo1V2RPR2xzNTIrVzVnQWJB?=
+ =?utf-8?B?Yks4blFVTWFaQlR1MHR3N1llV1BUdnloV0lvYVJCQ3U5WjlKS1dma1BDb3Rv?=
+ =?utf-8?B?ZmF1NGozQ2thUk52SFNHRlZwWTZiaUFpcXpMcmFRZDRsSFBIT2Rjek1OMG4w?=
+ =?utf-8?B?a3lzQjNITTd5WDl1UGFYYmQrcHgwNStMeUJDTmx3RTRlMy9CT1EvRCtsWVFr?=
+ =?utf-8?B?YklRalhEcnZhS2JoaFBqMVZMMU11REUzeWg4M09DTzdub2xjMDEwcUJRbGgw?=
+ =?utf-8?B?VXhmY3ZCTFJRQXJHQmFqQnFCc0FYb0grVS9vZGJhZ3pnMnFmZStJYU1lekpJ?=
+ =?utf-8?B?SW9ua1BTYUFVa01aUTJMOFYvSExDbGJWL1NwVHJmQ3ltRks0R3NLbXNHS1Fm?=
+ =?utf-8?B?WkZsdlpOenRPUlo0WXNRYU5Qa3dGWDI2ZVg2ckhxWG1uTnhaNXZIeFQ5em5Q?=
+ =?utf-8?B?OVByd3hPbXRlVE9QaWYwdE51R3RVb0NvNVFJL3FvY1ljVTFUcnRCQ0VVMnN3?=
+ =?utf-8?B?ekVORS8xY2p0RFg5dHdnZnJwK1p0b2FsK0tUMGx6S1o4YjFkZ21vZ3FWTWI0?=
+ =?utf-8?B?d05maXlrMDMwUFFWV2gvOWNIbXRONGxuRVFpdVg4bEMzeVdFWDBSNEQ3Sm16?=
+ =?utf-8?Q?OUNg=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D4641CE1347DC94F996CB8F19B9BE371@namprd19.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	sLUfLdw1DyzirD7oSMQVmZx/uRE98RYDauYVb8jctWXuLQSPG4LJrDwu/cGWvLdin8i4AX+MKp2d8y7mdtxcNxmLI4hXEd+37VaES9lgqp9WklRI18WmrEcQHoC1gtPobBXZp3I8bhDUI78zjEvKjcuU4PkfN+Km/iV9uTGykZugJZzlPOcpP0lbrrKjngNXj6dM4gyBC8GPi+iIsp3NY9MMvP0sI+zXYawBlFr10OUHyBVAdnkJxkPGEZnONomMgX3yeIXKFhHBJJeM3jFowO4Ut6VC0Mk6jHoDwl0E3m+VgrGbl66MOciWxR20ZfbxQ8VPrIF5ojXkKqn612KHYimj+e/CBWa98CSuypQocAWhaYge2jUHAMcThILpzdvJMIlAvftWzr4r10XTq9mnvw225kdc8cp+ysdfJo0JIJ0CFiVo/IaeJwSilBtIUonYWk7J5UxMVGfpn+hVKB0lIaJtBTFywwc7u9dyf68F5a0OMq+9f1gm4FK7oWK95oNBNDv97gzXwz4K1QUNxmgklHGCFcmzNuD5DMJM8huivVbCSJLlAqG8Kc5tVuXHZP1dvJn1IlN7LZaHuhnrr5f6mxFxW5RtQBOtto02GWRkHhACkenLVlAzpgFRFkIdM77dMEc2klJUrhJ0LWzxTD7HJQ==
+X-OriginatorOrg: ddn.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR19MB7577.namprd19.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ffcdaf3-cb88-46ee-8aad-08dc23412aef
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Feb 2024 16:16:37.9611
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 753b6e26-6fd3-43e6-8248-3f1735d59bb4
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: QIuuFzMj8iVdnn0yFKUt2wMAZT9fDBRPkypaBuFKRDFgvn8Wh/PgEsldgFyYGCf/0Aq5uhUI1s35Zhxd9q6Tfg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR19MB3855
+X-BESS-ID: 1706804200-105173-12450-32274-1
+X-BESS-VER: 2019.1_20240130.2130
+X-BESS-Apparent-Source-IP: 104.47.56.41
+X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUioBkjpK+cVKVkYGpoZAVgZQMDnVMinV1NzczN
+	zCMtHIwMDMLDHN1DTZ0CIFyDU1NFCqjQUAn1jVqEEAAAA=
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.253914 [from 
+	cloudscan12-33.us-east-2a.ess.aws.cudaops.com]
+	Rule breakdown below
+	 pts rule name              description
+	---- ---------------------- --------------------------------
+	0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS124931 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND
+X-BESS-BRTS-Status:1
 
-On Thu, 1 Feb 2024 17:02:56 +0100
-Daniel Bristot de Oliveira <bristot@kernel.org> wrote:
-
-> On 2/1/24 16:44, Greg KH wrote:
-> > On Thu, Feb 01, 2024 at 04:13:39PM +0100, Daniel Bristot de Oliveira wrote:  
-> >> Currently, the timerlat's hrtimer is initialized at the first read of
-> >> timerlat_fd, and destroyed at close(). It works, but it causes an error
-> >> if the user program open() and close() the file without reading.  
-> > 
-> > What error exactly happens?  Userspace, or the kernel crashes?  
-> 
-> sorry, kernel crash:
-> 
-> # echo NO_OSNOISE_WORKLOAD > /sys/kernel/debug/tracing/osnoise/options
-> # echo timerlat > /sys/kernel/debug/tracing/current_tracer
-> 
-> # cat ./timerlat_load.py
-> #!/usr/bin/env python3
-> 
-> timerlat_fd = open("/sys/kernel/tracing/osnoise/per_cpu/cpu0/timerlat_fd", 'r')
-> timerlat_fd.close();
-> 
-> # ./taskset -c 0 ./timerlat_load.py
-> <BOOM>
-> 
-> [ 6401.611374] BUG: kernel NULL pointer dereference, address: 0000000000000010
-> [ 6401.611786] #PF: supervisor read access in kernel mode
-> [ 6401.612081] #PF: error_code(0x0000) - not-present page
-> [ 6401.612376] PGD 0 P4D 0
-> [ 6401.612495] Oops: 0000 [#1] PREEMPT SMP NOPTI
-> [ 6401.612690] CPU: 1 PID: 2673 Comm: python3 Not tainted 6.6.13-200.fc39.x86_64 #1
-> [ 6401.613011] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-1.fc39 04/01/2014
-> [ 6401.613379] RIP: 0010:hrtimer_active+0xd/0x50
-> [ 6401.613577] Code: 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 48 8b 57 30 <8b> 42 10 a8 01 74 09 f3 90 8b 42 10 a8 01 75 f7 80 7f 38 00 75 1d
-> [ 6401.614374] RSP: 0018:ffffb031009b7e10 EFLAGS: 00010286
-> [ 6401.614604] RAX: 000000000002db00 RBX: ffff9118f786db08 RCX: 0000000000000000
-> [ 6401.614914] RDX: 0000000000000000 RSI: ffff9117a0e64400 RDI: ffff9118f786db08
-> [ 6401.615225] RBP: ffff9118f786db80 R08: ffff9117a0ddd420 R09: ffff9117804d4f70
-> [ 6401.615534] R10: 0000000000000000 R11: 0000000000000000 R12: ffff9118f786db08
-> [ 6401.615846] R13: ffff91178fdd5e20 R14: ffff9117840978c0 R15: 0000000000000000
-> [ 6401.616157] FS:  00007f2ffbab1740(0000) GS:ffff9118f7840000(0000) knlGS:0000000000000000
-> [ 6401.616508] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [ 6401.616765] CR2: 0000000000000010 CR3: 00000001b402e000 CR4: 0000000000750ee0
-> [ 6401.617075] PKRU: 55555554
-> [ 6401.617197] Call Trace:
-> [ 6401.617309]  <TASK>
-> [ 6401.617407]  ? __die+0x23/0x70
-> [ 6401.617548]  ? page_fault_oops+0x171/0x4e0
-> [ 6401.617983]  ? srso_alias_return_thunk+0x5/0x7f
-> [ 6401.618389]  ? avc_has_extended_perms+0x237/0x520
-> [ 6401.618800]  ? exc_page_fault+0x7f/0x180
-> [ 6401.619176]  ? asm_exc_page_fault+0x26/0x30
-> [ 6401.619563]  ? hrtimer_active+0xd/0x50
-> [ 6401.619926]  hrtimer_cancel+0x15/0x40
-> [ 6401.620286]  timerlat_fd_release+0x48/0xe0
-> [ 6401.620666]  __fput+0xf5/0x290
-> [ 6401.621004]  __x64_sys_close+0x3d/0x80
-> [ 6401.621370]  do_syscall_64+0x60/0x90
-> [ 6401.621730]  ? srso_alias_return_thunk+0x5/0x7f
-> [ 6401.622129]  ? __x64_sys_ioctl+0x72/0xd0
-> [ 6401.622503]  ? srso_alias_return_thunk+0x5/0x7f
-> [ 6401.622902]  ? syscall_exit_to_user_mode+0x2b/0x40
-> [ 6401.623309]  ? srso_alias_return_thunk+0x5/0x7f
-> [ 6401.623703]  ? do_syscall_64+0x6c/0x90
-> [ 6401.624063]  ? srso_alias_return_thunk+0x5/0x7f
-> [ 6401.624457]  ? exit_to_user_mode_prepare+0x142/0x1f0
-> [ 6401.624868]  ? srso_alias_return_thunk+0x5/0x7f
-> [ 6401.625262]  ? syscall_exit_to_user_mode+0x2b/0x40
-> [ 6401.625663]  ? srso_alias_return_thunk+0x5/0x7f
-> [ 6401.626051]  ? do_syscall_64+0x6c/0x90
-> [ 6401.626404]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-> [ 6401.626810] RIP: 0033:0x7f2ffb321594
-> [ 6401.627164] Code: 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 80 3d d5 cd 0d 00 00 74 13 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 3c c3 0f 1f 00 55 48 89 e5 48 83 ec 10 89 7d
-> [ 6401.628345] RSP: 002b:00007ffe8d8eef18 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
-> [ 6401.628867] RAX: ffffffffffffffda RBX: 00007f2ffba4e668 RCX: 00007f2ffb321594
-> [ 6401.629372] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000003
-> [ 6401.629879] RBP: 00007ffe8d8eef40 R08: 0000000000000000 R09: 0000000000000000
-> [ 6401.630384] R10: 55c926e3167eae79 R11: 0000000000000202 R12: 0000000000000003
-> [ 6401.630889] R13: 00007ffe8d8ef030 R14: 0000000000000000 R15: 00007f2ffba4e668
-> [ 6401.631394]  </TASK>
-> [ 6401.631691] Modules linked in: tls nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 rfkill ip_set nf_tables nfnetlink qrtr sunrpc pktcdvd intel_rapl_msr snd_hda_codec_generic intel_rapl_common ledtrig_audio snd_hda_intel snd_intel_dspcfg snd_intel_sdw_acpi snd_hda_codec snd_hda_core snd_hwdep snd_pcm kvm_amd iTCO_wdt snd_timer intel_pmc_bxt ccp joydev iTCO_vendor_support kvm irqbypass i2c_i801 snd i2c_smbus soundcore lpc_ich virtio_balloon loop zram crct10dif_pclmul crc32_pclmul crc32c_intel polyval_clmulni polyval_generic ghash_clmulni_intel sha512_ssse3 sha256_ssse3 sha1_ssse3 virtio_net virtio_gpu virtio_console virtio_blk net_failover failover virtio_dma_buf serio_raw scsi_dh_rdac scsi_dh_emc scsi_dh_alua fuse dm_multipath qemu_fw_cfg
-> [ 6401.636126] CR2: 0000000000000010
-> [ 6401.636482] ---[ end trace 0000000000000000 ]---
-> [ 6401.636891] RIP: 0010:hrtimer_active+0xd/0x50
-> [ 6401.637288] Code: 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 48 8b 57 30 <8b> 42 10 a8 01 74 09 f3 90 8b 42 10 a8 01 75 f7 80 7f 38 00 75 1d
-> [ 6401.638507] RSP: 0018:ffffb031009b7e10 EFLAGS: 00010286
-> [ 6401.638951] RAX: 000000000002db00 RBX: ffff9118f786db08 RCX: 0000000000000000
-> [ 6401.639478] RDX: 0000000000000000 RSI: ffff9117a0e64400 RDI: ffff9118f786db08
-> [ 6401.640005] RBP: ffff9118f786db80 R08: ffff9117a0ddd420 R09: ffff9117804d4f70
-> [ 6401.640535] R10: 0000000000000000 R11: 0000000000000000 R12: ffff9118f786db08
-> [ 6401.641067] R13: ffff91178fdd5e20 R14: ffff9117840978c0 R15: 0000000000000000
-> [ 6401.641601] FS:  00007f2ffbab1740(0000) GS:ffff9118f7840000(0000) knlGS:0000000000000000
-> [ 6401.642174] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [ 6401.642653] CR2: 0000000000000010 CR3: 00000001b402e000 CR4: 0000000000750ee0
-> [ 6401.643193] PKRU: 55555554
-> [ 6401.643548] note: python3[2673] exited with irqs disabled
-> 
-
-I usually include crash data like the above in the change log too. But
-clean it up a little. At least strip the timestamps. (Note, I do that with
-emacs, by cut and pasting the dump in a scratch buffer and then using
-vertical cut with "Ctrl-X r-k").
-
--- Steve
-
+T24gMi8xLzI0IDE2OjQ4LCBBbWlyIEdvbGRzdGVpbiB3cm90ZToNCj4gT24gVGh1LCBGZWIgMSwg
+MjAyNCBhdCA1OjQz4oCvUE0gTWlrbG9zIFN6ZXJlZGkgPG1pa2xvc0BzemVyZWRpLmh1PiB3cm90
+ZToNCj4+DQo+PiBPbiBUaHUsIDEgRmViIDIwMjQgYXQgMTY6NDAsIEJlcm5kIFNjaHViZXJ0IDxi
+c2NodWJlcnRAZGRuLmNvbT4gd3JvdGU6DQo+Pg0KPj4+IEdpdmVuDQo+Pj4gLU4gbnVtb3BzOiB0
+b3RhbCAjIG9wZXJhdGlvbnMgdG8gZG8gKGRlZmF1bHQgaW5maW5pdHkpDQo+Pj4NCj4+PiBIb3cg
+bG9uZyBkbyB5b3UgdGhpbmsgSSBzaG91bGQgcnVuIGl0PyBNYXliZSBzb21ldGhpbmcgbGlrZSAz
+IGhvdXJzDQo+Pj4gKC0tZHVyYXRpb249JCgzICogNjAgKiA2MCkpPw0KPj4NCj4+IEkgdXNlZCAt
+TjEwMDAwMDAuICBJZiB0aGVyZSB3ZXJlIGFueSBpc3N1ZXMgdGhleSB1c3VhbGx5IHRyaWdnZXJl
+ZCBtdWNoIGVhcmxpZXIuDQo+Pg0KPiANCj4gTm90ZSB0aGF0IGF0IGxlYXN0IHRoZXNlIGZzdGVz
+dHMgcnVuIGZzeCBpbiBzZXZlcmFsIGNvbmZpZ3VyYXRpb25zOg0KPiANCj4gJCBncmVwIGJlZ2lu
+IGBnaXQgZ3JlcCAtbCBydW5fZnN4IHRlc3RzL2dlbmVyaWMvYA0KPiB0ZXN0cy9nZW5lcmljLzA5
+MTpfYmVnaW5fZnN0ZXN0IHJ3IGF1dG8gcXVpY2sNCj4gdGVzdHMvZ2VuZXJpYy8yNjM6X2JlZ2lu
+X2ZzdGVzdCBydyBhdXRvIHF1aWNrDQo+IHRlc3RzL2dlbmVyaWMvNDY5Ol9iZWdpbl9mc3Rlc3Qg
+YXV0byBxdWljayBwdW5jaCB6ZXJvIHByZWFsbG9jDQo+IHRlc3RzL2dlbmVyaWMvNTIxOl9iZWdp
+bl9mc3Rlc3Qgc29hayBsb25nX3J3IHNtb2tldGVzdA0KPiB0ZXN0cy9nZW5lcmljLzUyMjpfYmVn
+aW5fZnN0ZXN0IHNvYWsgbG9uZ19ydyBzbW9rZXRlc3QNCj4gdGVzdHMvZ2VuZXJpYy82MTY6X2Jl
+Z2luX2ZzdGVzdCBhdXRvIHJ3IGlvX3VyaW5nIHN0cmVzcyBzb2FrDQo+IHRlc3RzL2dlbmVyaWMv
+NjE3Ol9iZWdpbl9mc3Rlc3QgYXV0byBydyBpb191cmluZyBzdHJlc3Mgc29haw0KPiANCj4gQmVy
+bmQsIHlvdSd2ZSBwcm9iYWJseSBhbHJlYWR5IHJhbiB0aGVtIGlmIHlvdSBhcmUgcnVubmluZyBh
+dXRvLCBxdWljaw0KPiBvciBydyB0ZXN0IGdyb3Vwcy4NCj4gDQo+IFBvc3NpYmx5IHlvdSB3YW50
+IHRvIHRyeSBhbmQgcnVuIGFsc28gdGhlIC1nIHNvYWsubG9uZ19ydyB0ZXN0cy4NCj4gDQo+IFRo
+ZXkgdXNlIG5yX29wcz0kKCgxMDAwMDAwICogVElNRV9GQUNUT1IpKQ0KDQoNCkkgZGlkbid0IGNo
+ZWNrIHlldCB3aGF0IGlzIHRoZSBhY3R1YWwgdmFsdWUsIGJ1dCBUSU1FX0ZBQ1RPUiBtdXN0IGJl
+IA0Kc21hbGxlciB0aGFuIDEgLSB1c2luZyAiLU4xMDAwMDAwIiBpcyB0YWtpbmcgcXVpdGUgc29t
+ZSB0aW1lLiBJIHNob3VsZCANCmhhdmUgc3RhcnRlZCBpbiBzY3JlZW4uIFNvbWUgb2YgdGhlIHRl
+c3RzIGFyZSBtYXJrZWQgYXMgZmFpbGVkLCBsaWtlDQoNCmdlbmVyaWMvMjYzOg0KICAgICArbWFp
+bjogZmlsZXN5c3RlbSBkb2VzIG5vdCBzdXBwb3J0IGZhbGxvY2F0ZSBtb2RlIA0KRkFMTE9DX0ZM
+X0tFRVBfU0laRSwgZGlzYWJsaW5nIQ0KICAgICArbWFpbjogZmlsZXN5c3RlbSBkb2VzIG5vdCBz
+dXBwb3J0IGZhbGxvY2F0ZSBtb2RlIA0KRkFMTE9DX0ZMX1BVTkNIX0hPTEUgfCBGQUxMT0NfRkxf
+S0VFUF9TSVpFLCBkaXNhYmxpbmchDQogICAgICttYWluOiBmaWxlc3lzdGVtIGRvZXMgbm90IHN1
+cHBvcnQgZmFsbG9jYXRlIG1vZGUgDQpGQUxMT0NfRkxfWkVST19SQU5HRSwgZGlzYWJsaW5nIQ0K
+DQoNCkFsdGhvdWdoIHRoZSB0ZXN0IHJ1bnMNCg0KZ2VuZXJpYy80NjkgN3MgLi4uIFtub3QgcnVu
+XSB4ZnNfaW8gZmFsbG9jIC1rIGZhaWxlZCAob2xkIGtlcm5lbC93cm9uZyBmcz8pDQoNCg0KZ2Vu
+ZXJpYy81MjENCmdlbmVyaWMvNTIyDQotLT4gU29tZWhvdyBub3QgaW4gdGhlIG91dHB1dCBsaXN0
+IGF0IGFsbC4gQWggSSBzZWUsIHRoYXQgbmVlZHMgIi1nIA0Kc29hay5sb25nX3J3Ig0KDQoNCg0K
+R29pbmcgdG8gYWRkIHRoZSB0aGUgc29hay5sb25nIG9wdGlvbiB0byB0aGUgdGVzdHMgYW5kIHdp
+bGwgcnVuIGFnYWluLCANCm9uY2UgY3VycmVudCBmc3ggaXMgb3Zlci4NCg0KDQpUaGFua3MsDQpC
+ZXJuZA0K
 
