@@ -1,113 +1,131 @@
-Return-Path: <stable+bounces-17592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C67BA845A40
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 15:25:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E8C845A3E
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 15:25:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6473A1F29ECE
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 14:25:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5700295580
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 14:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FB95B66E;
-	Thu,  1 Feb 2024 14:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7AED5F462;
+	Thu,  1 Feb 2024 14:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="Y12xKooR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9U4L6Fk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E35C5B69B;
-	Thu,  1 Feb 2024 14:25:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1A35D499;
+	Thu,  1 Feb 2024 14:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706797537; cv=none; b=qGMtbYcuLbX6sd0qlD4tprmyXg6UUr94e6uaxdECILVr5gHDtwAl+PYWY8h9zufcheVSDwmsHvSE7vdqstEsUldRladlvhv9cX3YEznAFvoqE40atoO2M0x1jcxckayehTYyEL1bhrVPH1TzD3z6Up1lS/rBBCDiwXvjKnXkAtk=
+	t=1706797530; cv=none; b=eFVJ8p2pMuEOMJnV6KZCboBPEqVIDXeGZhtkMIzEWAI4CG+eo/xlxzSsQlrdV/Glrk8AJgbd5/jiPZcb7Npen/6qJiLpPRZJlqWiXQNRZEThQzwFogb7mNQgdWMLrRAOhowK8OYq934+/hZ6yBskaevlLthCpVhaQ1RqbOpBjsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706797537; c=relaxed/simple;
-	bh=sF+G8ac5rJ6GBWZ7UGnOBa+TCEI+k8Sh7jK8bcRdt4A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lr24SnGcDCo2tBCZ2DuD+TUIcT1xLMgyl4oLwGnEq4kvk+hudFBthSHzV6Oq30qKbU+U4LtrbqL3BF+5evF8LzACDb+0KynhAgyGdDYE/imwfA6KcOb31D7udZKIF0nNVYeK9kIhlBWRV/6uMNBMXNWmR7YdG4G+kuFLXYnqej8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=Y12xKooR; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from localhost.localdomain (unknown [46.242.8.170])
-	by mail.ispras.ru (Postfix) with ESMTPSA id A966D40737B5;
-	Thu,  1 Feb 2024 14:25:23 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru A966D40737B5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1706797524;
-	bh=EfXwutwttYNswqPhr1DI1HL9a39mqxWde2M9ylas6wE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Y12xKooRC1gohuym47VGPE7BZOR5fJOk4yOt3snNMmweJ0+EwkyTkgaBaAM0zbVUo
-	 rLyykzqzbSrlb1JoW8+DDaVSYeUbNS4SNvfleXDxv2muqqTC7dVUMG7kTMChJqX1ox
-	 8GUdYYj5E4KwthHbuLZW0+lOAcl2V95PFhXRu+Ko=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: John Johansen <john.johansen@canonical.com>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	William Hua <william.hua@canonical.com>,
-	apparmor@lists.ubuntu.com,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	stable@vger.kernel.org
-Subject: [PATCH] apparmor: use kvfree_sensitive to free data->data
-Date: Thu,  1 Feb 2024 17:24:48 +0300
-Message-ID: <20240201142450.30510-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1706797530; c=relaxed/simple;
+	bh=Tc1q8mjPtCgOSh78OFaiCgOqBeN67OIG9tH1WHRKm4g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WVhUz4rWPxnbJgKVrRbjGBCZveAgZjBwCOrZDx02Ec9vaPm3ZrD0K2sWePHh+yHKrdYMEcgAHn3Qh4lzVX/pwbtqb1BP8KyvrWL7HzL0bJxwcCDs/qKulBOybjkpid6aGfkEDD9q+aB0IRZ7OnDphdHDuxwx8iAWXffo7WxREn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9U4L6Fk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95E2C433C7;
+	Thu,  1 Feb 2024 14:25:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1706797530;
+	bh=Tc1q8mjPtCgOSh78OFaiCgOqBeN67OIG9tH1WHRKm4g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=o9U4L6Fko7zdTZUOWhSC6Dujducx5fzwDJUVwEh20p0ehXwrhj4+owPy+cFFv/LiZ
+	 k0MJ5vC7AmmSfSYH4xk/sBGpt4ar7YCLz1z0ET2lYtNTmFcuyvVyWXtQK4YXAm9nbV
+	 h9SFMlTq4ZY/Giy0uyOcUWZAY+KTDZ+aP1TFOmuA=
+Date: Thu, 1 Feb 2024 06:25:28 -0800
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Justin Forbes <jforbes@fedoraproject.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Jani Nikula <jani.nikula@intel.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 003/331] docs: kernel_feat.py: fix potential command
+ injection
+Message-ID: <2024020151-purchase-swerve-a3b3@gregkh>
+References: <20240129170014.969142961@linuxfoundation.org>
+ <20240129170015.067909940@linuxfoundation.org>
+ <ZbkfGst991YHqJHK@fedora64.linuxtx.org>
+ <87h6iudc7j.fsf@meer.lwn.net>
+ <CAFbkSA2tft--ejgJ58o3G-OxNqnm-C6fK4-kXThsN92NYF8V0A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFbkSA2tft--ejgJ58o3G-OxNqnm-C6fK4-kXThsN92NYF8V0A@mail.gmail.com>
 
-Inside unpack_profile() data->data is allocated using kvmemdup() so it
-should be freed with the corresponding kvfree_sensitive().
+On Thu, Feb 01, 2024 at 06:43:46AM -0600, Justin Forbes wrote:
+> On Tue, Jan 30, 2024 at 10:21 AM Jonathan Corbet <corbet@lwn.net> wrote:
+> >
+> > Justin Forbes <jforbes@fedoraproject.org> writes:
+> >
+> > > On Mon, Jan 29, 2024 at 09:01:07AM -0800, Greg Kroah-Hartman wrote:
+> > >> 6.6-stable review patch.  If anyone has any objections, please let me know.
+> > >>
+> > >> ------------------
+> > >>
+> > >> From: Vegard Nossum <vegard.nossum@oracle.com>
+> > >>
+> > >> [ Upstream commit c48a7c44a1d02516309015b6134c9bb982e17008 ]
+> > >>
+> > >> The kernel-feat directive passes its argument straight to the shell.
+> > >> This is unfortunate and unnecessary.
+> > >>
+> > >> Let's always use paths relative to $srctree/Documentation/ and use
+> > >> subprocess.check_call() instead of subprocess.Popen(shell=True).
+> > >>
+> > >> This also makes the code shorter.
+> > >>
+> > >> This is analogous to commit 3231dd586277 ("docs: kernel_abi.py: fix
+> > >> command injection") where we did exactly the same thing for
+> > >> kernel_abi.py, somehow I completely missed this one.
+> > >>
+> > >> Link: https://fosstodon.org/@jani/111676532203641247
+> > >> Reported-by: Jani Nikula <jani.nikula@intel.com>
+> > >> Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
+> > >> Cc: stable@vger.kernel.org
+> > >> Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+> > >> Link: https://lore.kernel.org/r/20240110174758.3680506-1-vegard.nossum@oracle.com
+> > >> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > >
+> > > This patch seems to be missing something. In 6.6.15-rc1 I get a doc
+> > > build failure with:
+> > >
+> > > /builddir/build/BUILD/kernel-6.6.14-332-g1ff49073b88b/linux-6.6.15-0.rc1.1ff49073b88b.200.fc39.noarch/Documentation/sphinx/kerneldoc.py:133: SyntaxWarning: invalid escape sequence '\.'
+> > >   line_regex = re.compile("^\.\. LINENO ([0-9]+)$")
+> >
+> > Ah ... you're missing 86a0adc029d3 (Documentation/sphinx: fix Python
+> > string escapes).  That is not a problem with this patch, though; I would
+> > expect you to get the same error (with Python 3.12) without.
+> 
+> Well, it appears that 6.6.15 shipped anyway, with this patch included,
+> but not with 86a0adc029d3.  If anyone else builds docs, this thread
+> should at least show them the fix.  Perhaps we can get the missing
+> patch into 6.6.16?
 
-Also add missing data->data release for rhashtable insertion failure path
-in unpack_profile().
+Sure, but again, that should be independent of this change, right?
 
-Found by Linux Verification Center (linuxtesting.org).
+thanks,
 
-Fixes: e025be0f26d5 ("apparmor: support querying extended trusted helper extra data")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- security/apparmor/policy.c        | 2 +-
- security/apparmor/policy_unpack.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+greg k-h
 
-diff --git a/security/apparmor/policy.c b/security/apparmor/policy.c
-index 957654d253dd..14df15e35695 100644
---- a/security/apparmor/policy.c
-+++ b/security/apparmor/policy.c
-@@ -225,7 +225,7 @@ static void aa_free_data(void *ptr, void *arg)
- {
- 	struct aa_data *data = ptr;
- 
--	kfree_sensitive(data->data);
-+	kvfree_sensitive(data->data, data->size);
- 	kfree_sensitive(data->key);
- 	kfree_sensitive(data);
- }
-diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
-index 5e578ef0ddff..75452acd0e35 100644
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -1071,6 +1071,7 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
- 
- 			if (rhashtable_insert_fast(profile->data, &data->head,
- 						   profile->data->p)) {
-+				kvfree_sensitive(data->data, data->size);
- 				kfree_sensitive(data->key);
- 				kfree_sensitive(data);
- 				info = "failed to insert data to table";
--- 
-2.43.0
 
+> 
+> Jusitn
+> 
+> > Thanks,
+> >
+> > jon
+> >
+> 
 
