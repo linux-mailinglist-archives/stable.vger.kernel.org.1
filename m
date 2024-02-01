@@ -1,135 +1,90 @@
-Return-Path: <stable+bounces-17593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B8C845A65
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 15:36:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F8FF845A6A
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 15:37:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61D0C1F219C4
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 14:36:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6C72B23C66
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 14:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7905D49A;
-	Thu,  1 Feb 2024 14:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6763F5D490;
+	Thu,  1 Feb 2024 14:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.fm header.i=@fastmail.fm header.b="j/EoiIyM";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="XQwF1KgB"
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="CzD7Fy3x"
 X-Original-To: stable@vger.kernel.org
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2435A5D49C;
-	Thu,  1 Feb 2024 14:36:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEBF4500F
+	for <stable@vger.kernel.org>; Thu,  1 Feb 2024 14:37:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706798175; cv=none; b=C2ttOKp99abu6f+DS1R2JcPoxvvVRxYmACLmIoO0T9qu8DNMu3fNeYaiMMqBXxpydL7ZQrEEE/rQSsi2GaAeMPxHdswxjSprKWpPzhL3EzGYfJalKTUNAbAb2OqV5kp4bv1hVoYND2hEiQ9365SOp4XMYCVYx+1FOwgIvWoK62o=
+	t=1706798263; cv=none; b=OzaiI28poC4337p6VY+gORydNo3BLXBLnsSyxB7mrsJB0yTGkp36OmVd/hfjxU3MK8p2iMA99330zsXMS8nByREhUAVmCkBcnGvdgVtESHY2CODZOmLGEN/sw7T+K/y5LsO1kgBJOtCaPJFeFcc+ULDchuoZCIp0sOA3d4zbhz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706798175; c=relaxed/simple;
-	bh=FeRaLjIRZZOoVQRE3VbB+k+NxwiDyFTyOTKoaXeaHyI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FpT9fviKuVZeL5ZpFGQcqlWSXQUtSoM7XfyAx7snaMNy8f0TaQmzMKgj2Nxz+VldM4LpTwPCKjrO5t1wWGgOcqvkLJ6a9BmFiSiG3Hz53zHmcWnhS66LkRYX19s+GQn7FHwAHs3/Kq7eS3yvNgG+APm2oqw5Nr7c7pBIRz/M648=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.fm; spf=pass smtp.mailfrom=fastmail.fm; dkim=pass (2048-bit key) header.d=fastmail.fm header.i=@fastmail.fm header.b=j/EoiIyM; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=XQwF1KgB; arc=none smtp.client-ip=64.147.123.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.fm
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.fm
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailout.west.internal (Postfix) with ESMTP id 4242C3200B17;
-	Thu,  1 Feb 2024 09:36:11 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Thu, 01 Feb 2024 09:36:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.fm; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1706798170;
-	 x=1706884570; bh=fbNJ0Fw0DlPFvpJQ5pJ2PmJ8FIFdaBpICHpQUyevCoo=; b=
-	j/EoiIyMwaGcKAc2+GketOt8fAugSdAyb4Cpo5NCYPphNATFRs9Lb0RtxTsB4hCE
-	eXivRr8C/FsVXpwBz+ojRhl0uimR3UI2FGySqRfkx7YXwac28i52zHRjdYe76jvn
-	Zvf2eaiXOODLcdoo4zBGhzBD4oPknJ9oyaiK497j4U2hMCITnlXswndmzoLLEPHN
-	hIEN0ZTjmBOLYmBBt8xrLKqmiuPedIuNfn7/fidHoST+hoBFYOcvmhSOkR7RGxVz
-	xql1BSSdujD1Mb9VkusOL7bMu/Z2qi3z7EeP5yN4HmfFcRSgGc0zwBdpyMCHfe59
-	5loisoj/c8P4Yo8u7SIh5w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1706798170; x=
-	1706884570; bh=fbNJ0Fw0DlPFvpJQ5pJ2PmJ8FIFdaBpICHpQUyevCoo=; b=X
-	QwF1KgB3kTNVV20lcIyyl4dDzOtoSbiJlFYur4ZjqgID05OTS7vBcMPg+YYmLepX
-	MzBuJ0ilUlSChTqKX53OKG/Q6cSBI7ecat2Am9IRV8o2DB7kQxd0FvuJZyzVws/a
-	z96+TQrv3h6DZ4JBZSwhRufC+Q9KDoXrULEWH7UYmGJFZuNOheLQEJKgbkhbTuHB
-	2ktB/bjdf4sBFu643Wi0+KVpasJ+S0lIPKJOh4MUemsqwP3wBdepel6j9pB3+GWO
-	0xPHgExSktHnOcXeKKOrdXUv9Ejidz2vNGxXMHvWQIfcjyZjw92lgFuure96j/RG
-	6k5IkNC4AZTIGWu1OB1GQ==
-X-ME-Sender: <xms:Wqy7ZYCiTKaoEIVvmDwueDg8tr1qfLpw7ZcALHerVSeS0KbbUbZ8VQ>
-    <xme:Wqy7ZahMlr7GL-yd_d5pehkBl_fUfIMp2jARnxkk6D0Ku93EiqnpD9JIXUx3H3Xc5
-    ZeFuiruRhG6bgcG>
-X-ME-Received: <xmr:Wqy7ZbnrHYHdBczs_E8PwIt2pesP8AaYcaW3k3OMwrGm8mweyam3I2ejen5mY4HkHw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrfeduuddgieefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeeuvghr
-    nhguucfutghhuhgsvghrthcuoegsvghrnhgurdhstghhuhgsvghrthesfhgrshhtmhgrih
-    hlrdhfmheqnecuggftrfgrthhtvghrnhepvefhgfdvledtudfgtdfggeelfedvheefieev
-    jeeifeevieetgefggffgueelgfejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsggvrhhnugdrshgthhhusggvrhhtsehfrghsthhmrghilhdr
-    fhhm
-X-ME-Proxy: <xmx:Wqy7Zez_9NxK_KoMWuE0MTpCZuGXs8Kx97KrtsgHltc5m_x9xChCbA>
-    <xmx:Wqy7ZdTDEgQxx4yjgirKQlN501MW2ZFhLot3vcyVs4KTfeU8Ly1UhA>
-    <xmx:Wqy7ZZZ1RHjyqNYvsZ4rKyLipRhzK9IZLnK1bMLSxhPX2dFnIXSibQ>
-    <xmx:Wqy7ZWItDPBxucB9A-PFy52Y7Ly0L9xLuZeuua_mOUDv06TlpxUPWw>
-Feedback-ID: id8a24192:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 1 Feb 2024 09:36:09 -0500 (EST)
-Message-ID: <0d74c391-895c-4481-8f95-8411c706be83@fastmail.fm>
-Date: Thu, 1 Feb 2024 15:36:08 +0100
+	s=arc-20240116; t=1706798263; c=relaxed/simple;
+	bh=bpxojyvJfxUg9T/YapxRu/G5Lc+yOYbSb6q1B1Gxkcg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=VUHVngrin2zep//VxUZej+yVh0TUupsLkDSueJkJsm3QTf57aZGy+aB2lVJjxSu0xjtqEuEg3tb4JIAYlbY/GFYG+f/QBuMHxEDaYaCCDMc0sG8ii1GiPwL0uQvB8g+4yNVmAWnYlxpJFqNwwEHJDtkYX9jTo/cMKtuulgE3uSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=CzD7Fy3x; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 83DCF45ACA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1706798255; bh=5Fnb4z9xsKpaQ/5Dt7jqZU4EVkp2u0kZX01kgfZOPow=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=CzD7Fy3xseFNYoilZGbjaKQZvcBEjGA8jOczgXT0qPx6fwDa4xmUE1GiR7uJqDMK8
+	 GirBjNifgnyFs8+DmQZEUeQOlYwnlWJ4x3ZQi37U2sVfEkUH8DAiNLsE9ujy6HLFvu
+	 +gGIZgOmR9yDjzQru/fkqRdnkXWLIioxlESUVLZVF4xTS1ihjjUg9O0ppMqJmoY8NX
+	 W6Rujz8OytwHp8ne2wOZpKra7JlWTx79BUMqsR95ADgZVXrZtIH6FbkbetszmIqVIU
+	 frg8tdtFUra9H/8GeWUNZADfzGIH+9pGowdfL4fgqdD5tPOTV7JUU0C9JA1NnWy04B
+	 sV0NH2EZa19xA==
+Received: from localhost (unknown [IPv6:2601:280:5e00:7e19::646])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 83DCF45ACA;
+	Thu,  1 Feb 2024 14:37:35 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Justin Forbes
+ <jforbes@fedoraproject.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, Jani Nikula
+ <jani.nikula@intel.com>, Vegard Nossum <vegard.nossum@oracle.com>, Sasha
+ Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 003/331] docs: kernel_feat.py: fix potential command
+ injection
+In-Reply-To: <2024020151-purchase-swerve-a3b3@gregkh>
+References: <20240129170014.969142961@linuxfoundation.org>
+ <20240129170015.067909940@linuxfoundation.org>
+ <ZbkfGst991YHqJHK@fedora64.linuxtx.org> <87h6iudc7j.fsf@meer.lwn.net>
+ <CAFbkSA2tft--ejgJ58o3G-OxNqnm-C6fK4-kXThsN92NYF8V0A@mail.gmail.com>
+ <2024020151-purchase-swerve-a3b3@gregkh>
+Date: Thu, 01 Feb 2024 07:37:34 -0700
+Message-ID: <87le842qtt.fsf@meer.lwn.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] fuse: Fix VM_MAYSHARE and direct_io_allow_mmap
-Content-Language: en-US
-To: Miklos Szeredi <miklos@szeredi.hu>, Bernd Schubert <bschubert@ddn.com>
-Cc: linux-fsdevel@vger.kernel.org, dsingh@ddn.com,
- Hao Xu <howeyxu@tencent.com>, stable@vger.kernel.org,
- Amir Goldstein <amir73il@gmail.com>
-References: <20240131230827.207552-1-bschubert@ddn.com>
- <20240131230827.207552-2-bschubert@ddn.com>
- <CAJfpegsU25pNx9KA0+9HiVLzd2NeSLvzfbXjcFNxT9gpfogjjg@mail.gmail.com>
-From: Bernd Schubert <bernd.schubert@fastmail.fm>
-In-Reply-To: <CAJfpegsU25pNx9KA0+9HiVLzd2NeSLvzfbXjcFNxT9gpfogjjg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
+Greg Kroah-Hartman <gregkh@linuxfoundation.org> writes:
 
+> On Thu, Feb 01, 2024 at 06:43:46AM -0600, Justin Forbes wrote:
+>> Well, it appears that 6.6.15 shipped anyway, with this patch included,
+>> but not with 86a0adc029d3.  If anyone else builds docs, this thread
+>> should at least show them the fix.  Perhaps we can get the missing
+>> patch into 6.6.16?
+>
+> Sure, but again, that should be independent of this change, right?
 
-On 2/1/24 09:45, Miklos Szeredi wrote:
-> On Thu, 1 Feb 2024 at 00:09, Bernd Schubert <bschubert@ddn.com> wrote:
->>
->> There were multiple issues with direct_io_allow_mmap:
->> - fuse_link_write_file() was missing, resulting in warnings in
->>    fuse_write_file_get() and EIO from msync()
->> - "vma->vm_ops = &fuse_file_vm_ops" was not set, but especially
->>    fuse_page_mkwrite is needed.
->>
->> The semantics of invalidate_inode_pages2() is so far not clearly defined
->> in fuse_file_mmap. It dates back to
->> commit 3121bfe76311 ("fuse: fix "direct_io" private mmap")
->> Though, as direct_io_allow_mmap is a new feature, that was for MAP_PRIVATE
->> only. As invalidate_inode_pages2() is calling into fuse_launder_folio()
->> and writes out dirty pages, it should be safe to call
->> invalidate_inode_pages2 for MAP_PRIVATE and MAP_SHARED as well.
-> 
-> Did you test with fsx (various versions can be found in LTP/xfstests)?
->   It's very good at finding  mapped vs. non-mapped bugs.
-
-I tested with xfstest, but not with fsx yet. I can look into that. Do 
-you have by any chance an exact command I should run?
-
+Yes, it's an independent change but seems worth backporting if people
+are running into the issue.
 
 Thanks,
-Bernd
+
+jon
 
