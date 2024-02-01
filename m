@@ -1,107 +1,136 @@
-Return-Path: <stable+bounces-36165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-39206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B3689AA12
-	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 11:21:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 326158A1B63
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 19:29:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC62BB226FA
-	for <lists+stable@lfdr.de>; Sat,  6 Apr 2024 09:21:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF35C2857BD
+	for <lists+stable@lfdr.de>; Thu, 11 Apr 2024 17:29:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534EF24A06;
-	Sat,  6 Apr 2024 09:18:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPLRPBoU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88EC384A55;
+	Thu, 11 Apr 2024 16:01:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E858B2C6AE;
-	Sat,  6 Apr 2024 09:18:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7ED84052
+	for <stable@vger.kernel.org>; Thu, 11 Apr 2024 16:01:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712395131; cv=none; b=ZUEcMwVsTqBR8Ku+XoE02/RLxyYVQLpwubpgVODuPgOd5nPRtLNlnYr1CQgdTAOzgZi00hsaCZl5iIEMMPiVbmT2Q893L823cnTRCWAu8PSQxq45ilMAYvShVnN9UM2wCwWqCxvX79XQrZP3IYcvGskouZOvDfEtsp2sMzF3Z2M=
+	t=1712851317; cv=none; b=UumXoykZlLj5mJmaJH/IJWtEyZvz2eFANWofqvfdlJnfFPsKjPgZ3JWnENVfvd09Yhpea7AL63Kwtf5e+3zStEgZbkzYsoGbnmeU8qHcR53L0+Wh7Q+JI4H+r+x3bMRtdrCJj/99KlDvtz70zl54dqluaNE5iJ6OPIsSz+2BJlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712395131; c=relaxed/simple;
-	bh=OUXrlxpdyrcqJqLEifsJYtil4okGD8qGZToyOExWkJo=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=EuP0Hp4Dg1xln8OjiTv80xOI/HqUsYhyHvNyQ3r2WuhDM2u44rVtMxyPCKRiEn2TNPgZjW960Dni5KYOFYvknGLNgzrvGD+umpXCKVSA4Nk+uGqLZ/rtpnxWbKPQ6mfhcFkMRAvP3URmkUJ5hkkhrXv+Rhy6lVpi7cDA23G4c3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPLRPBoU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2D1C433C7;
-	Sat,  6 Apr 2024 09:18:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712395130;
-	bh=OUXrlxpdyrcqJqLEifsJYtil4okGD8qGZToyOExWkJo=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=IPLRPBoUJTIz64lSs0ulj5jKGWUCP3opeZWNl1GU18wdX6jdXieYh4EYwUZhqDr+4
-	 xEiGH4QXOS5BqiNuo0eQK76RJbaGs2l+X3jIESEOUvA94MhhygBaZ4cy2UV3bqMVHs
-	 65VtuyFD2txH7ZDT5rPRACeIraIQmEn8XFTyxKXlDvA3Nu7d/EFn793Nr5RK60AjIw
-	 BCUqzKJOJBmRV+IyK39P0JPbw92FVfa5QlKj9YkJH38Z+M3HZynMP9SL1+BQxEPNCY
-	 dTwv2hGhmmDC1d5/ULOVqE0nmaFbsq9WrHZhdzmuvFZS1kMtXzyqJ43qNpoLr3Qr85
-	 y7eoSicBuEBTA==
-From: Vinod Koul <vkoul@kernel.org>
-To: linux-phy@lists.infradead.org, Marcel Ziswiler <marcel@ziswiler.com>
-Cc: linux-imx@nxp.com, linux-kernel@vger.kernel.org, kernel@pengutronix.de, 
- Richard Zhu <hongxing.zhu@nxp.com>, Lucas Stach <l.stach@pengutronix.de>, 
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
- Marcel Ziswiler <marcel.ziswiler@toradex.com>, 
- Fabio Estevam <festevam@gmail.com>, Heiko Stuebner <heiko@sntech.de>, 
- Kishon Vijay Abraham I <kishon@kernel.org>, Rob Herring <robh@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Sergio Paracuellos <sergio.paracuellos@gmail.com>, 
- Shawn Guo <shawnguo@kernel.org>, Tim Harvey <tharvey@gateworks.com>, 
- Yang Li <yang.lee@linux.alibaba.com>, imx@lists.linux.dev
-In-Reply-To: <20240327071946.8869-1-marcel@ziswiler.com>
-References: <20240327071946.8869-1-marcel@ziswiler.com>
-Subject: Re: [PATCH v2] phy: freescale: imx8m-pcie: fix pcie link-up
- instability
-Message-Id: <171239512402.352254.17030670986383011631.b4-ty@kernel.org>
-Date: Sat, 06 Apr 2024 14:48:44 +0530
+	s=arc-20240116; t=1712851317; c=relaxed/simple;
+	bh=cU7MWCa30CwJuctZEOpq3UD73AIwiM2LPEj+ohjRW8w=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=KLYFAMwXf84ObDmI74/1v9pjAzVx3I42/Oc//sdVk9oDEzz74KSMNKAIYpejFOI+CHnItSeu+NzEm7V0G/JWAy4rY9kqwPt4+T+4NnKGIpTKDeHnQwWkkaPSIIRiamj8X4F6El9l8olOXV7GGalVUFCC0m8Xg+d2wIBr64bOC7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
+Received: from mchehab by linuxtv.org with local (Exim 4.96)
+	(envelope-from <mchehab@linuxtv.org>)
+	id 1ruws7-0006Dt-0l;
+	Thu, 11 Apr 2024 16:01:55 +0000
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Date: Thu, 01 Feb 2024 12:48:57 +0000
+Subject: [git:media_tree/master] media: rc: bpf attach/detach requires write permission
+To: linuxtv-commits@linuxtv.org
+Cc: stable@vger.kernel.org, Sean Young <sean@mess.org>
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1ruws7-0006Dt-0l@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
 
+This is an automatic generated email to let you know that the following patch were queued:
 
-On Wed, 27 Mar 2024 08:19:37 +0100, Marcel Ziswiler wrote:
-> On the i.MX 8M Mini, the AUX_PLL_REFCLK_SEL has to be left at its reset
-> default of AUX_IN (PLL clock).
-> 
-> Background Information:
-> In our automated testing setup, we use Delock Mini-PCIe SATA cards [1].
-> While this setup has proven very stable overall we noticed upstream on
-> the i.MX 8M Mini fails quite regularly (about 50/50) to bring up the
-> PCIe link while with NXP's downstream BSP 5.15.71_2.2.2 it always works.
-> As that old downstream stuff was quite different, I first also tried
-> NXP's latest downstream BSP 6.1.55_2.2.0 which from a PCIe point of view
-> is fairly vanilla, however, also there the PCIe link-up was not stable.
-> Comparing and debugging I noticed that upstream explicitly configures
-> the AUX_PLL_REFCLK_SEL to I_PLL_REFCLK_FROM_SYSPLL while working
-> downstream [2] leaving it at reset defaults of AUX_IN (PLL clock).
-> Unfortunately, the TRM does not mention any further details about this
-> register (both for the i.MX 8M Mini as well as the Plus).
-> NXP confirmed their validation codes for the i.MX8MM PCIe doesn't
-> configure cmn_reg063 (offset: 0x18C).
-> BTW: On the i.MX 8M Plus we have not seen any issues with PCIe with the
-> exact same setup which is why I left it unchanged.
-> 
-> [...]
+Subject: media: rc: bpf attach/detach requires write permission
+Author:  Sean Young <sean@mess.org>
+Date:    Thu Apr 13 10:50:32 2023 +0200
 
-Applied, thanks!
+Note that bpf attach/detach also requires CAP_NET_ADMIN.
 
-[1/1] phy: freescale: imx8m-pcie: fix pcie link-up instability
-      commit: 3a161017f1de55cc48be81f6156004c151f32677
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Best regards,
--- 
-~Vinod
+ drivers/media/rc/bpf-lirc.c     | 6 +++---
+ drivers/media/rc/lirc_dev.c     | 5 ++++-
+ drivers/media/rc/rc-core-priv.h | 2 +-
+ 3 files changed, 8 insertions(+), 5 deletions(-)
 
+---
 
+diff --git a/drivers/media/rc/bpf-lirc.c b/drivers/media/rc/bpf-lirc.c
+index fe17c7f98e81..52d82cbe7685 100644
+--- a/drivers/media/rc/bpf-lirc.c
++++ b/drivers/media/rc/bpf-lirc.c
+@@ -253,7 +253,7 @@ int lirc_prog_attach(const union bpf_attr *attr, struct bpf_prog *prog)
+ 	if (attr->attach_flags)
+ 		return -EINVAL;
+ 
+-	rcdev = rc_dev_get_from_fd(attr->target_fd);
++	rcdev = rc_dev_get_from_fd(attr->target_fd, true);
+ 	if (IS_ERR(rcdev))
+ 		return PTR_ERR(rcdev);
+ 
+@@ -278,7 +278,7 @@ int lirc_prog_detach(const union bpf_attr *attr)
+ 	if (IS_ERR(prog))
+ 		return PTR_ERR(prog);
+ 
+-	rcdev = rc_dev_get_from_fd(attr->target_fd);
++	rcdev = rc_dev_get_from_fd(attr->target_fd, true);
+ 	if (IS_ERR(rcdev)) {
+ 		bpf_prog_put(prog);
+ 		return PTR_ERR(rcdev);
+@@ -303,7 +303,7 @@ int lirc_prog_query(const union bpf_attr *attr, union bpf_attr __user *uattr)
+ 	if (attr->query.query_flags)
+ 		return -EINVAL;
+ 
+-	rcdev = rc_dev_get_from_fd(attr->query.target_fd);
++	rcdev = rc_dev_get_from_fd(attr->query.target_fd, false);
+ 	if (IS_ERR(rcdev))
+ 		return PTR_ERR(rcdev);
+ 
+diff --git a/drivers/media/rc/lirc_dev.c b/drivers/media/rc/lirc_dev.c
+index a537734832c5..caad59f76793 100644
+--- a/drivers/media/rc/lirc_dev.c
++++ b/drivers/media/rc/lirc_dev.c
+@@ -814,7 +814,7 @@ void __exit lirc_dev_exit(void)
+ 	unregister_chrdev_region(lirc_base_dev, RC_DEV_MAX);
+ }
+ 
+-struct rc_dev *rc_dev_get_from_fd(int fd)
++struct rc_dev *rc_dev_get_from_fd(int fd, bool write)
+ {
+ 	struct fd f = fdget(fd);
+ 	struct lirc_fh *fh;
+@@ -828,6 +828,9 @@ struct rc_dev *rc_dev_get_from_fd(int fd)
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
++	if (write && !(f.file->f_mode & FMODE_WRITE))
++		return ERR_PTR(-EPERM);
++
+ 	fh = f.file->private_data;
+ 	dev = fh->rc;
+ 
+diff --git a/drivers/media/rc/rc-core-priv.h b/drivers/media/rc/rc-core-priv.h
+index ef1e95e1af7f..7df949fc65e2 100644
+--- a/drivers/media/rc/rc-core-priv.h
++++ b/drivers/media/rc/rc-core-priv.h
+@@ -325,7 +325,7 @@ void lirc_raw_event(struct rc_dev *dev, struct ir_raw_event ev);
+ void lirc_scancode_event(struct rc_dev *dev, struct lirc_scancode *lsc);
+ int lirc_register(struct rc_dev *dev);
+ void lirc_unregister(struct rc_dev *dev);
+-struct rc_dev *rc_dev_get_from_fd(int fd);
++struct rc_dev *rc_dev_get_from_fd(int fd, bool write);
+ #else
+ static inline int lirc_dev_init(void) { return 0; }
+ static inline void lirc_dev_exit(void) {}
 
