@@ -1,94 +1,94 @@
-Return-Path: <stable+bounces-17571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D61845495
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 10:55:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A441845610
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 12:12:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BEDD1F2B20A
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 09:55:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18CC31F22D18
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 11:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 121644DA0F;
-	Thu,  1 Feb 2024 09:55:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udU+noJs"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE8A15B992;
+	Thu,  1 Feb 2024 11:12:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA07B4D9F1;
-	Thu,  1 Feb 2024 09:55:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D5F4D9F4;
+	Thu,  1 Feb 2024 11:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706781350; cv=none; b=aW4IJoTqVhJ9XdOPSanFGcj/l0kKX97al8zM6KiWRnH+rRoKBzh+mgb5sn96eZFeq5FGuUpjkqez7OdPYZlA5arIAAI+TzuCAns3s/EwRs4KsuTt3uGvT5h3iiRTZXQYQCvv0Roc6MimaTtg0W/YmzCcaiWnw0jTA5xZ7XIiNM0=
+	t=1706785938; cv=none; b=MZQffvO4h7xeYE3JEgR6IQwOSMGZ4kOjYykLDva6KArzyKLGLK6kndBR2M7esftOAMCmImAj9EjyPrnkrUgK7bkna9XWoF4OaB203gn/7aIry8wNk08JkQex2Z/SyH9JOG5ykzzYBPtC2Pf50tjCZwdLCFiLaF7E3bnwFc36/+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706781350; c=relaxed/simple;
-	bh=vJ1BkR2GfCGMDVdnAPNTubCrwkh1sWpvq2C/V4sxRlw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ftDsPLa7x1iaAVBCKqoOGyHGoDZlfa0Xaq0cq0Flvvn4VTOc4ghHwhPeYztN7Sa/ZZpf8nSAl3ND56Com3PnuM3RFBNQ8maJnKexYCUN2LjdNlWlgRRagNYfO9l12PRYwbC2RmRa7Bttoi8uAmQHL9gSfh2PSMoWaPrDTPjcuwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udU+noJs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD99C43394;
-	Thu,  1 Feb 2024 09:55:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706781350;
-	bh=vJ1BkR2GfCGMDVdnAPNTubCrwkh1sWpvq2C/V4sxRlw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=udU+noJs3w5E5ck/mdeMWLhTqvrzTumyFgYCEg16WRSyWn0uAvjMDBnR+Cf2YT19f
-	 Oky6gZw+fSKadzmpuH2b704oVqsnIkl+eGZVYWkw9gz4CZZhe8aEU4Ozo6a2uK5XEI
-	 +5FyIOFhEyX3BKdfkHi9FiQwWdstJCtJ5dCD76mYcl63T+Jq7rK53AlYEqQGKhGOn2
-	 4q3ScG3RDRZHOIg8isVdYgToSQMSTyiafCADkCrm9Pk5/NuvZrg2VNNtBA6DyZin28
-	 u7ZOsNX5BTN/QidK6xJ4VVS91u/naiOUjvw7FTexORi8n3cFkAst70UZhAkiQyZJW+
-	 qOBQpuhQ4X1wg==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rVTnT-0000000069s-1XJ5;
-	Thu, 01 Feb 2024 10:55:52 +0100
-Date: Thu, 1 Feb 2024 10:55:51 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Doug Anderson <dianders@chromium.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>, Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] HID: i2c-hid-of: fix NULL-deref on failed power up
-Message-ID: <Zbtqp1wgHI0LSSaE@hovoldconsulting.com>
-References: <20240126170901.893-1-johan+linaro@kernel.org>
- <CAD=FV=UzGcneoL1d-DDXVugAeq2+YLCKrq8-5B7TfVAAKgF=SQ@mail.gmail.com>
+	s=arc-20240116; t=1706785938; c=relaxed/simple;
+	bh=EN1d5/97kBFynxSWdKKGsnZPJq2Lg2/jadtPBPf6tHU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FmCTkoEfY4b+dZSqpukJ/ysVQfnkZJjn5hXaobon2lV0+nz7fy9+09cUru005d3/duggY2R0mifBb0wZVLD2Brl581Uy1BvkHI2e4DrmSM+AjNlDO5q7RUfUeYaB85MKEQW8qKvjkxQnhDu3gi9GSjzy5GU/M8YxRmxQOfaEOo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rVUzN-0005ej-Nm; Thu, 01 Feb 2024 12:12:13 +0100
+Message-ID: <dcb4cfe6-1a50-43cb-ad92-76905c05dde3@leemhuis.info>
+Date: Thu, 1 Feb 2024 12:12:13 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=UzGcneoL1d-DDXVugAeq2+YLCKrq8-5B7TfVAAKgF=SQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH regression fix 0/2] Input: atkbd - Fix Dell XPS 13 line
+ suspend/resume regression
+Content-Language: en-US, de-DE
+To: Hans de Goede <hdegoede@redhat.com>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Paul Menzel <pmenzel@molgen.mpg.de>, stable@vger.kernel.org,
+ regressions@lists.linux.dev, linux-input@vger.kernel.org
+References: <20240126160724.13278-1-hdegoede@redhat.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <20240126160724.13278-1-hdegoede@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1706785937;c3eda33f;
+X-HE-SMSGID: 1rVUzN-0005ej-Nm
 
-On Fri, Jan 26, 2024 at 09:47:23AM -0800, Doug Anderson wrote:
-> On Fri, Jan 26, 2024 at 9:10 AM Johan Hovold <johan+linaro@kernel.org> wrote:
-
-> > A while back the I2C HID implementation was split in an ACPI and OF
-> > part, but the new OF driver never initialises the client pointer which
-> > is dereferenced on power-up failures.
-
-> Good catch and thanks for the fix. FWIW, I'd be OK w/
+On 26.01.24 17:07, Hans de Goede wrote:
+> Hi Dmitry,
 > 
-> Reviewed-by: Douglas Anderson <dianders@chromium.org>
+> There have been multiple reports that the keyboard on
+> Dell XPS 13 9350 / 9360 / 9370 models has stopped working after
+> a suspend/resume after the merging of commit 936e4d49ecbc ("Input:
+> atkbd - skip ATKBD_CMD_GETID in translated mode").
 > 
-> That being said, I'd be even happier if you simply removed the
-> "client" from the structure and removed the error printout.
-> regulator_bulk_enable() already prints error messages when a failure
-> happens and thus the error printout is redundant and wastes space.
+> See the 4 closes tags in the first patch for 4 reports of this.
+> 
+> I have been working with the first reporter on resolving this
+> and testing on his Dell XPS 13 9360 confirms that these patches
+> fix things.
+> 
+> Unfortunately the commit causing the issue has also been picked
+> up by multiple stable kernel series now. Can you please send
+> these fixes to Linus ASAP, so that they can also be backported
+> to the stable series ASAP ?
 
-True, but that error message does not include the device that tried to
-use the regulator.
+Dmitry,  Hans, what's the status here? I wonder if there is still a
+chance to get this into -rc3 so that Greg can fix the affected stable
+trees as well next week or so.
 
-I actually hit this when adding dev_dbg() to the function in question.
-For such cases, it's also convenient to have struct device easily
-accessible so I think it should be ok to just leave this pointer in.
+Ciao, Thorsten
 
-Johan
+> Hans de Goede (2):
+>   Input: atkbd - Skip ATKBD_CMD_SETLEDS when skipping ATKBD_CMD_GETID
+>   Input: atkbd - Do not skip atkbd_deactivate() when skipping
+>     ATKBD_CMD_GETID
+> 
+>  drivers/input/keyboard/atkbd.c | 14 +++++++++-----
+>  1 file changed, 9 insertions(+), 5 deletions(-)
+> 
 
