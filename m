@@ -1,206 +1,113 @@
-Return-Path: <stable+bounces-17590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E801845A39
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 15:25:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C67BA845A40
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 15:25:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7ED01F27B74
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 14:25:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6473A1F29ECE
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 14:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC3E6215F;
-	Thu,  1 Feb 2024 14:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FB95B66E;
+	Thu,  1 Feb 2024 14:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="meGgpYrW"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="Y12xKooR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9185D498;
-	Thu,  1 Feb 2024 14:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E35C5B69B;
+	Thu,  1 Feb 2024 14:25:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706797423; cv=none; b=Y3a6T8Np/KAjOEK6T7Gto3jUNuxn7iGEWgF2iiN+Qzpphg0VvsjaC/LeP/AVdpP+WOEcsYFUZS2XcrA0Dl6PlLXsLOKSPkdWzV9ywN2by0hs+ZZ3jW6o0BgJOKVionIdwA0uvbYsPCyI9wk5iUuj6kDohMOXwsNkrTWZgISOKrw=
+	t=1706797537; cv=none; b=qGMtbYcuLbX6sd0qlD4tprmyXg6UUr94e6uaxdECILVr5gHDtwAl+PYWY8h9zufcheVSDwmsHvSE7vdqstEsUldRladlvhv9cX3YEznAFvoqE40atoO2M0x1jcxckayehTYyEL1bhrVPH1TzD3z6Up1lS/rBBCDiwXvjKnXkAtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706797423; c=relaxed/simple;
-	bh=pNUs+vJ9FD1IvCIwoyFyFu+KRz/FNWknrmHlaT5e3uA=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hbn6CeiIhffSKqN4gptqm6BjYIdqRn+OQ2siCeiZJfnOwLciIcPJulXIjeaKcJbVu5pKxGkKPYZjrF9XC0i/KIXIndpmePNFZlelv4RrtnPmoLY2g0o6T1Qse/XYalGPlekMvyp+b1duiEy/ebAV3WFmyuhQ4exMUuNtNyTQ0p8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=meGgpYrW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132E7C433F1;
-	Thu,  1 Feb 2024 14:23:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706797423;
-	bh=pNUs+vJ9FD1IvCIwoyFyFu+KRz/FNWknrmHlaT5e3uA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=meGgpYrWx7o1I9nDq3y9YJmnCymkbm8kMpyA9jWcoZ0xa3NcaPrO0aPGFgUW7RIdp
-	 PKnF0BLNeHQRRbLO2/qjSWkARoF+4qTG4+phjMbqgwwASPE/TgctXRp9WyHcbgYdgc
-	 hHActmvEbcuk/BwN+4NWg+TKaIpYSByWvFUYJ3p8xBTCIAnGWB5x67QDDGAfa8j1o+
-	 vRe5fVjs9euckI5G+ti2rcX7+Nx37HDOIT3ZeCnHb/3G2cNczD2AYvE8YwTiu6zkxU
-	 wQooLzSpMp8c8QmmTuy0F8CrsYC0wGqiftwqy0/5pb0kCeEGVOhU5kPGzxvkJGZs5Z
-	 LlHTei305KdpA==
-Subject: [PATCH 3/3] nfsd: fix RELEASE_LOCKOWNER
-From: Chuck Lever <cel@kernel.org>
-To: stable@vger.kernel.org
-Cc: linux-nfs@vger.kernel.org
-Date: Thu, 01 Feb 2024 09:23:42 -0500
-Message-ID: 
- <170679742213.14195.4225736612593673287.stgit@klimt.1015granger.net>
-In-Reply-To: 
- <170679738225.14195.77163641928598673.stgit@klimt.1015granger.net>
-References: <170679738225.14195.77163641928598673.stgit@klimt.1015granger.net>
-User-Agent: StGit/1.5
+	s=arc-20240116; t=1706797537; c=relaxed/simple;
+	bh=sF+G8ac5rJ6GBWZ7UGnOBa+TCEI+k8Sh7jK8bcRdt4A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lr24SnGcDCo2tBCZ2DuD+TUIcT1xLMgyl4oLwGnEq4kvk+hudFBthSHzV6Oq30qKbU+U4LtrbqL3BF+5evF8LzACDb+0KynhAgyGdDYE/imwfA6KcOb31D7udZKIF0nNVYeK9kIhlBWRV/6uMNBMXNWmR7YdG4G+kuFLXYnqej8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=Y12xKooR; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from localhost.localdomain (unknown [46.242.8.170])
+	by mail.ispras.ru (Postfix) with ESMTPSA id A966D40737B5;
+	Thu,  1 Feb 2024 14:25:23 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru A966D40737B5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1706797524;
+	bh=EfXwutwttYNswqPhr1DI1HL9a39mqxWde2M9ylas6wE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Y12xKooRC1gohuym47VGPE7BZOR5fJOk4yOt3snNMmweJ0+EwkyTkgaBaAM0zbVUo
+	 rLyykzqzbSrlb1JoW8+DDaVSYeUbNS4SNvfleXDxv2muqqTC7dVUMG7kTMChJqX1ox
+	 8GUdYYj5E4KwthHbuLZW0+lOAcl2V95PFhXRu+Ko=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: John Johansen <john.johansen@canonical.com>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	William Hua <william.hua@canonical.com>,
+	apparmor@lists.ubuntu.com,
+	linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	stable@vger.kernel.org
+Subject: [PATCH] apparmor: use kvfree_sensitive to free data->data
+Date: Thu,  1 Feb 2024 17:24:48 +0300
+Message-ID: <20240201142450.30510-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-From: NeilBrown <neilb@suse.de>
+Inside unpack_profile() data->data is allocated using kvmemdup() so it
+should be freed with the corresponding kvfree_sensitive().
 
-[ Upstream commit edcf9725150e42beeca42d085149f4c88fa97afd ]
+Also add missing data->data release for rhashtable insertion failure path
+in unpack_profile().
 
-The test on so_count in nfsd4_release_lockowner() is nonsense and
-harmful.  Revert to using check_for_locks(), changing that to not sleep.
+Found by Linux Verification Center (linuxtesting.org).
 
-First: harmful.
-As is documented in the kdoc comment for nfsd4_release_lockowner(), the
-test on so_count can transiently return a false positive resulting in a
-return of NFS4ERR_LOCKS_HELD when in fact no locks are held.  This is
-clearly a protocol violation and with the Linux NFS client it can cause
-incorrect behaviour.
-
-If RELEASE_LOCKOWNER is sent while some other thread is still
-processing a LOCK request which failed because, at the time that request
-was received, the given owner held a conflicting lock, then the nfsd
-thread processing that LOCK request can hold a reference (conflock) to
-the lock owner that causes nfsd4_release_lockowner() to return an
-incorrect error.
-
-The Linux NFS client ignores that NFS4ERR_LOCKS_HELD error because it
-never sends NFS4_RELEASE_LOCKOWNER without first releasing any locks, so
-it knows that the error is impossible.  It assumes the lock owner was in
-fact released so it feels free to use the same lock owner identifier in
-some later locking request.
-
-When it does reuse a lock owner identifier for which a previous RELEASE
-failed, it will naturally use a lock_seqid of zero.  However the server,
-which didn't release the lock owner, will expect a larger lock_seqid and
-so will respond with NFS4ERR_BAD_SEQID.
-
-So clearly it is harmful to allow a false positive, which testing
-so_count allows.
-
-The test is nonsense because ... well... it doesn't mean anything.
-
-so_count is the sum of three different counts.
-1/ the set of states listed on so_stateids
-2/ the set of active vfs locks owned by any of those states
-3/ various transient counts such as for conflicting locks.
-
-When it is tested against '2' it is clear that one of these is the
-transient reference obtained by find_lockowner_str_locked().  It is not
-clear what the other one is expected to be.
-
-In practice, the count is often 2 because there is precisely one state
-on so_stateids.  If there were more, this would fail.
-
-In my testing I see two circumstances when RELEASE_LOCKOWNER is called.
-In one case, CLOSE is called before RELEASE_LOCKOWNER.  That results in
-all the lock states being removed, and so the lockowner being discarded
-(it is removed when there are no more references which usually happens
-when the lock state is discarded).  When nfsd4_release_lockowner() finds
-that the lock owner doesn't exist, it returns success.
-
-The other case shows an so_count of '2' and precisely one state listed
-in so_stateid.  It appears that the Linux client uses a separate lock
-owner for each file resulting in one lock state per lock owner, so this
-test on '2' is safe.  For another client it might not be safe.
-
-So this patch changes check_for_locks() to use the (newish)
-find_any_file_locked() so that it doesn't take a reference on the
-nfs4_file and so never calls nfsd_file_put(), and so never sleeps.  With
-this check is it safe to restore the use of check_for_locks() rather
-than testing so_count against the mysterious '2'.
-
-Fixes: ce3c4ad7f4ce ("NFSD: Fix possible sleep during nfsd4_release_lockowner()")
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Cc: stable@vger.kernel.org # v6.2+
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: e025be0f26d5 ("apparmor: support querying extended trusted helper extra data")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 ---
- fs/nfsd/nfs4state.c |   26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ security/apparmor/policy.c        | 2 +-
+ security/apparmor/policy_unpack.c | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index b6480be7b5e6..16b073c63798 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -7080,14 +7080,16 @@ check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner)
+diff --git a/security/apparmor/policy.c b/security/apparmor/policy.c
+index 957654d253dd..14df15e35695 100644
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -225,7 +225,7 @@ static void aa_free_data(void *ptr, void *arg)
  {
- 	struct file_lock *fl;
- 	int status = false;
--	struct nfsd_file *nf = find_any_file(fp);
-+	struct nfsd_file *nf;
- 	struct inode *inode;
- 	struct file_lock_context *flctx;
+ 	struct aa_data *data = ptr;
  
-+	spin_lock(&fp->fi_lock);
-+	nf = find_any_file_locked(fp);
- 	if (!nf) {
- 		/* Any valid lock stateid should have some sort of access */
- 		WARN_ON_ONCE(1);
--		return status;
-+		goto out;
- 	}
- 
- 	inode = locks_inode(nf->nf_file);
-@@ -7103,7 +7105,8 @@ check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner)
- 		}
- 		spin_unlock(&flctx->flc_lock);
- 	}
--	nfsd_file_put(nf);
-+out:
-+	spin_unlock(&fp->fi_lock);
- 	return status;
+-	kfree_sensitive(data->data);
++	kvfree_sensitive(data->data, data->size);
+ 	kfree_sensitive(data->key);
+ 	kfree_sensitive(data);
  }
+diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
+index 5e578ef0ddff..75452acd0e35 100644
+--- a/security/apparmor/policy_unpack.c
++++ b/security/apparmor/policy_unpack.c
+@@ -1071,6 +1071,7 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
  
-@@ -7113,10 +7116,8 @@ check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner)
-  * @cstate: NFSv4 COMPOUND state
-  * @u: RELEASE_LOCKOWNER arguments
-  *
-- * The lockowner's so_count is bumped when a lock record is added
-- * or when copying a conflicting lock. The latter case is brief,
-- * but can lead to fleeting false positives when looking for
-- * locks-in-use.
-+ * Check if theree are any locks still held and if not - free the lockowner
-+ * and any lock state that is owned.
-  *
-  * Return values:
-  *   %nfs_ok: lockowner released or not found
-@@ -7152,10 +7153,13 @@ nfsd4_release_lockowner(struct svc_rqst *rqstp,
- 		spin_unlock(&clp->cl_lock);
- 		return nfs_ok;
- 	}
--	if (atomic_read(&lo->lo_owner.so_count) != 2) {
--		spin_unlock(&clp->cl_lock);
--		nfs4_put_stateowner(&lo->lo_owner);
--		return nfserr_locks_held;
-+
-+	list_for_each_entry(stp, &lo->lo_owner.so_stateids, st_perstateowner) {
-+		if (check_for_locks(stp->st_stid.sc_file, lo)) {
-+			spin_unlock(&clp->cl_lock);
-+			nfs4_put_stateowner(&lo->lo_owner);
-+			return nfserr_locks_held;
-+		}
- 	}
- 	unhash_lockowner_locked(lo);
- 	while (!list_empty(&lo->lo_owner.so_stateids)) {
-
+ 			if (rhashtable_insert_fast(profile->data, &data->head,
+ 						   profile->data->p)) {
++				kvfree_sensitive(data->data, data->size);
+ 				kfree_sensitive(data->key);
+ 				kfree_sensitive(data);
+ 				info = "failed to insert data to table";
+-- 
+2.43.0
 
 
