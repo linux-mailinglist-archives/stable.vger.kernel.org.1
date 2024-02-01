@@ -1,188 +1,114 @@
-Return-Path: <stable+bounces-17636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478BB846366
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 23:25:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A4D84643E
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 00:03:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F118B24291
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 22:25:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2DEB1C232F5
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 23:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5821E3FE5D;
-	Thu,  1 Feb 2024 22:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635AC47A6F;
+	Thu,  1 Feb 2024 23:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Ns57tg+o";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OXrsN73T";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Ns57tg+o";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="OXrsN73T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nO2rXlrF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABDB3FE4C;
-	Thu,  1 Feb 2024 22:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E413D960;
+	Thu,  1 Feb 2024 23:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706826295; cv=none; b=V3XDHlHZq83Ym0Y+h2lORZB329dKxQrB7neS6R5BbECLWHks86dbAe8sPByp1HJipjscWBjvgbxjt5bCG492lGMEOrZ1//M+rMt43rg1HpK3MTBmA3OvJLKcf5cUR/8zQJtv/luT8Bsc0aZcuLRpabTkUqo9XLKbaLra4ogzt3U=
+	t=1706828621; cv=none; b=t3D6rKezXZ7WiEweqmGPVhbtlk8sFZkceYcigaIDa1HsyBo7BhmKC87dS74tLkiiQNd0PhfwgxbXrpb6hTM9+PKsI4bjKBgRJ/rhKviHd7M/2II5wIj1Ei0WoyYhEBnZ/Cvn2DzIfxUtKDW0dRDA6gpE72qnoEdKbz17v7TZGeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706826295; c=relaxed/simple;
-	bh=q/RXw/wz9e8k2OeAcJpW/Z4nj1DNk8ypmb92aV3johU=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=rtSCiHfS45qCpF61Kw+iE2KbkyfkGwtSoWMPTuclwisK5fJRapayPdu8fxEbd9Y6C5KROS/DacLA/OYcsL/SguV2PpYs/sWjfjW7vrJOx/yqNqEu8ih2HcWciYEFPAdclnsFs2/KThUymCuHsqDJm0KbWH5X7wiYHyFwRkXDCNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Ns57tg+o; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OXrsN73T; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Ns57tg+o; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=OXrsN73T; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B2EF41FC25;
-	Thu,  1 Feb 2024 22:24:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1706826291; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p9xusTiuViOZVqFuXTNlaMAj31ojkMlLDi+EhZpM64o=;
-	b=Ns57tg+odPykMm9gBhCbnas1SgYEoFWeAsYzsNhb7OBfxteKJtbKNTV85cbqd/Udcx7Yup
-	9qM/9QTnPz5127YD1FkTHTqbU/yeI6LSQJpsE6QWoE1JejVdXJtJFv4CYHqV3zCy29c1K8
-	70m/JURYxqrqzBdRJby0G83d6OBSxbs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1706826291;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p9xusTiuViOZVqFuXTNlaMAj31ojkMlLDi+EhZpM64o=;
-	b=OXrsN73TMgFbtSxnYlGmZ+9Ydo9QiXhi+QgG8Ob4EsR7k/4vtKxVJXutJPIH0Gwulx1mQn
-	hZhDpKmA/+O4hDCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1706826291; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p9xusTiuViOZVqFuXTNlaMAj31ojkMlLDi+EhZpM64o=;
-	b=Ns57tg+odPykMm9gBhCbnas1SgYEoFWeAsYzsNhb7OBfxteKJtbKNTV85cbqd/Udcx7Yup
-	9qM/9QTnPz5127YD1FkTHTqbU/yeI6LSQJpsE6QWoE1JejVdXJtJFv4CYHqV3zCy29c1K8
-	70m/JURYxqrqzBdRJby0G83d6OBSxbs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1706826291;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=p9xusTiuViOZVqFuXTNlaMAj31ojkMlLDi+EhZpM64o=;
-	b=OXrsN73TMgFbtSxnYlGmZ+9Ydo9QiXhi+QgG8Ob4EsR7k/4vtKxVJXutJPIH0Gwulx1mQn
-	hZhDpKmA/+O4hDCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8BB9313672;
-	Thu,  1 Feb 2024 22:24:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 0vU8ETIavGWhZgAAD6G6ig
-	(envelope-from <neilb@suse.de>); Thu, 01 Feb 2024 22:24:50 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	s=arc-20240116; t=1706828621; c=relaxed/simple;
+	bh=LNTO+c64KChLGhrxel1IzuAD7R4UluaRK677Eqkl+KA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=G7YlG/vkoPc47GropVw8WRpwMwqMUgo0ugOuPrkujTqaPsVOyxydyDWyk6V/BFrxlID1Jbv2k9gIFuP8LZ5XD2HSXRGV2koBeyXKFivzVnPy/jwI1C1+COpBx08IdW1V924nZYtMJuLHWw+LL/TApvze1FK+KCXFAZZXRZgv0xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nO2rXlrF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA41C433C7;
+	Thu,  1 Feb 2024 23:03:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1706828620;
+	bh=LNTO+c64KChLGhrxel1IzuAD7R4UluaRK677Eqkl+KA=;
+	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+	b=nO2rXlrF/E80L5xMAbP2msyJqY2RziYyjjxpeXrNH/Ne3p3ncg6RLw52N9ljGOI4z
+	 PHw+gD28jS5IyNHJxcnma7mto+7nz4gXedC5lky2cH4RSHEuzgjCJxOmUbHywYWGQy
+	 I5kncSgbFH2caZ/ShtsVbkwxcIhhtjLpvoGwIV3k6nIq4XOZcKAjZ8D5pbpIfPgDPm
+	 x6HuC0cpH+YM393LIiFCwOoFy2ZNkSLggMFfMTqwVcVHs4mj7odFaMSKStnhzhe9wk
+	 6KFnRmTH9GGmbJleqdW+61GHna7Lk/b/bjB+cZoP6+tuSlCFQmE/HWp2OWZD8fdRSj
+	 L5BKDlulAHvmA==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-From: "NeilBrown" <neilb@suse.de>
-To: "Chuck Lever" <cel@kernel.org>
-Cc: stable@vger.kernel.org, linux-nfs@vger.kernel.org
-Subject: Re: [PATCH 0/3] Fix RELEASE_LOCKOWNER
-In-reply-to:
- <170681433624.15250.5881267576986350500.stgit@klimt.1015granger.net>
-References:
- <170681433624.15250.5881267576986350500.stgit@klimt.1015granger.net>
-Date: Fri, 02 Feb 2024 09:24:47 +1100
-Message-id: <170682628772.13976.3551007711597007133@noble.neil.brown.name>
-Authentication-Results: smtp-out2.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -1.30
-X-Spamd-Result: default: False [-1.30 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 RCPT_COUNT_THREE(0.00)[3];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-0.00)[10.42%]
-X-Spam-Flag: NO
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 02 Feb 2024 01:03:36 +0200
+Message-Id: <CYU48XUW36D8.3P6EOVJFFA4NF@suppilovahvero>
+Cc: <LinoSanfilippo@gmx.de>, <p.rosenberger@kunbus.com>, <lukas@wunner.de>,
+ <jgg@ziepe.ca>, <linux-integrity@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] tpm,tpm_tis: Avoid warning splat at shutdown
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "Lino Sanfilippo" <l.sanfilippo@kunbus.com>, <peterhuewe@gmx.de>
+X-Mailer: aerc 0.15.2
+References: <20240201113646.31734-1-l.sanfilippo@kunbus.com>
+In-Reply-To: <20240201113646.31734-1-l.sanfilippo@kunbus.com>
 
-On Fri, 02 Feb 2024, Chuck Lever wrote:
-> Passes pynfs, fstests, and the git regression suite. Please apply
-> these to origin/linux-5.4.y.
-
-I should have mentioned this a day or two ago but I hadn't quite made
-all the connection yet...
-
-The RELEASE_LOCKOWNER bug was masking a double-free bug that was fixed
-by
-Commit 47446d74f170 ("nfsd4: add refcount for nfsd4_blocked_lock")
-which landed in v5.17 and wasn't marked as a bugfix, and so has not gone to
-stable kernels.
-
-Any kernel earlier than v5.17 that receives the RELEASE_LOCKOWNER fix
-also needs the nfsd4_blocked_lock fix.  There is a minor follow-up fix
-for that nfsd4_blocked_lock fix which Chuck queued yesterday.
-
-The problem scenario is that an nfsd4_lock() call finds a conflicting
-lock and so has a reference to a particular nfsd4_blocked_lock.  A concurrent
-nfsd4_read_lockowner call frees all the nfsd4_blocked_locks including
-the one held in nfsd4_lock().  nfsd4_lock then tries to free the
-blocked_lock it has, and results in a double-free or a use-after-free.
-
-Before either patch is applied, the extra reference on the lock-owner
-than nfsd4_lock holds causes nfsd4_realease_lockowner() to incorrectly
-return an error and NOT free the blocks_lock.
-With only the RELEASE_LOCKOWNER fix applied, the double-free happens.
-With both patches applied the refcount on the nfsd4_blocked_lock prevents
-the double-free.
-
-Kernels before 4.9 are (probably) not affected as they didn't have
-find_or_allocate_block() which takes the second reference to a shared
-object.  But that is ancient history - those kernels are well past EOL.
-
-Thanks,
-NeilBrown
-
-
-> 
+On Thu Feb 1, 2024 at 1:36 PM EET, Lino Sanfilippo wrote:
+> If interrupts are not activated the work struct 'free_irq_work' is not
+> initialized. This results in a warning splat at module shutdown.
+>
+> Fix this by always initializing the work regardless of whether interrupts
+> are activated or not.
+>
+> cc: stable@vger.kernel.org
+> Fixes: 481c2d14627d ("tpm,tpm_tis: Disable interrupts after 1000 unhandle=
+d IRQs")
+> Reported-by: Jarkko Sakkinen <jarkko@kernel.org>
+> Closes: https://lore.kernel.org/all/CX32RFOMJUQ0.3R4YCL9MDCB96@kernel.org=
+/
+> Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 > ---
-> 
-> Chuck Lever (2):
->       NFSD: Modernize nfsd4_release_lockowner()
->       NFSD: Add documenting comment for nfsd4_release_lockowner()
-> 
-> NeilBrown (1):
->       nfsd: fix RELEASE_LOCKOWNER
-> 
-> 
->  fs/nfsd/nfs4state.c | 65 +++++++++++++++++++++++++--------------------
->  1 file changed, 36 insertions(+), 29 deletions(-)
-> 
-> --
-> Chuck Lever
-> 
-> 
-> 
+>  drivers/char/tpm/tpm_tis_core.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/drivers/char/tpm/tpm_tis_core.c b/drivers/char/tpm/tpm_tis_c=
+ore.c
+> index 1b350412d8a6..64c875657687 100644
+> --- a/drivers/char/tpm/tpm_tis_core.c
+> +++ b/drivers/char/tpm/tpm_tis_core.c
+> @@ -919,8 +919,6 @@ static int tpm_tis_probe_irq_single(struct tpm_chip *=
+chip, u32 intmask,
+>  	int rc;
+>  	u32 int_status;
+> =20
+> -	INIT_WORK(&priv->free_irq_work, tpm_tis_free_irq_func);
+> -
+>  	rc =3D devm_request_threaded_irq(chip->dev.parent, irq, NULL,
+>  				       tis_int_handler, IRQF_ONESHOT | flags,
+>  				       dev_name(&chip->dev), chip);
+> @@ -1132,6 +1130,7 @@ int tpm_tis_core_init(struct device *dev, struct tp=
+m_tis_data *priv, int irq,
+>  	priv->phy_ops =3D phy_ops;
+>  	priv->locality_count =3D 0;
+>  	mutex_init(&priv->locality_count_mutex);
+> +	INIT_WORK(&priv->free_irq_work, tpm_tis_free_irq_func);
+> =20
+>  	dev_set_drvdata(&chip->dev, priv);
+> =20
+>
+> base-commit: 41bccc98fb7931d63d03f326a746ac4d429c1dd3
 
+Thank you had forgotten about this.
+
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+
+BR, Jarkko
 
