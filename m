@@ -1,126 +1,155 @@
-Return-Path: <stable+bounces-17576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3B3384577D
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 13:25:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 096DB8457FA
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 13:44:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92C371F2382E
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 12:25:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B596F28EE82
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 12:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D92161B6E;
-	Thu,  1 Feb 2024 12:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD008665A;
+	Thu,  1 Feb 2024 12:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S8lJ/gCe"
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="Mz/o/p8r"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C71D161B4A;
-	Thu,  1 Feb 2024 12:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030202134F
+	for <stable@vger.kernel.org>; Thu,  1 Feb 2024 12:43:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706790236; cv=none; b=M+1H1KNbHHerXJ2L57+QNiOTbs7Jt76Ris84BG7ABb3nxNVIjDAGOMLch3zVEOn9K+R3W2Ir+IuKygpCSjEguqa6zBiclyqcUpUkV6YKEm2oK5x8PEM+soXGOvjJ37AFw25cHUgPkmDDCaLrkUP1dX4v92uKDE4g6JuN6sIugSs=
+	t=1706791442; cv=none; b=Ye21hGP32z30Hln7Fk33kSQ5en9b2TYj+n3imJ6VCM92rR7uBGAkUtLbZPetJH8FSaTv5VyVMPCiFPnSxu9X3K/0pbf0rVJbACCbCgRq5LzyZWWIyJPreJORHW+E5zxBV9A1Xho0OPbPROpkG1y4R6aL1J4pb8/wBfaIRk0BLd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706790236; c=relaxed/simple;
-	bh=B/sd+sxzN/iXla5JBjYaVGUO67qEImOBIvmA9V4z3CM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OT9G1ILTsmknWk/qVn8V2VURIMEuVx9nN1SauhMrKhcri0aExJbfiGv7ygh1Ehaf1d+TGrhn5tROZvllDasdporErl3ah6h5ddDG0hIsNhsy+Ypdih/qQw0N7u6OgXBWbpvgON7gXWvgdMxr26YPI3t76Dbozjpa3StZqTApZJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S8lJ/gCe; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1706790233; x=1738326233;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=B/sd+sxzN/iXla5JBjYaVGUO67qEImOBIvmA9V4z3CM=;
-  b=S8lJ/gCeFa/y8Kt9KXztUSefFkc+8mJyDoPXkT4ya2H2OCZjV1YBi199
-   H2gT3hRrSBHJjZI9WjKX5bQOwFQUNBEQLL8u40IJv4CZAvEoHwFbS1uFd
-   SclLQEzyGxHNoc9bFU1gL8yxYeNk/r1ko92+RyAV3wcbOHJs4/Lw2JrSB
-   BizkeEiBw4inFtuiQJ6cydlK1HA55+QbiivxHWSdxI+24WmmUps1a5FUK
-   lHmlpMrcEFxgmFIsg3yhfMb4U0timQe5sehaS2KHWI2mPHWwF6RckOiT+
-   +uyoMunEGteHOSzDuPS9Lx9HUkM83aAaq8sdkV96aWklrm78wLVlZhEKD
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10969"; a="3746936"
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="3746936"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Feb 2024 04:23:52 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,234,1701158400"; 
-   d="scan'208";a="4499093"
-Received: from newjersey.igk.intel.com ([10.102.20.203])
-  by orviesa004.jf.intel.com with ESMTP; 01 Feb 2024 04:23:47 -0800
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Alexander Potapenko <glider@google.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-btrfs@vger.kernel.org,
-	dm-devel@redhat.com,
-	ntfs3@lists.linux.dev,
-	linux-s390@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net-next v5 04/21] bitops: add missing prototype check
-Date: Thu,  1 Feb 2024 13:21:59 +0100
-Message-ID: <20240201122216.2634007-5-aleksander.lobakin@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240201122216.2634007-1-aleksander.lobakin@intel.com>
-References: <20240201122216.2634007-1-aleksander.lobakin@intel.com>
+	s=arc-20240116; t=1706791442; c=relaxed/simple;
+	bh=dEL0gc6v8FtcF06YHB8recoHi6yic+HuArz4FFcZTwI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KbO7SgXXF/XMbIyOlGIKdnxMo3A+uDYZRC+UzYXGP4NlmGv2cbd4QsJx3Vz1WE3pvrP7/h8a4nkM1pBAIrFuzrgGafh1cGxaF5IO4xNPcftki5t5FnN8qj9XEBRZE7KHkE9FUUl/R70ZvIe8bYOluE8O7FC+gpkl66BEYpIOnIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=Mz/o/p8r; arc=none smtp.client-ip=209.85.166.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-7ba9f1cfe94so61020839f.1
+        for <stable@vger.kernel.org>; Thu, 01 Feb 2024 04:43:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1706791438; x=1707396238; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:sender:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lkVTb1L2m6NuCmMShY81C/HsZ5E18+lzrF+Dzoy+HMg=;
+        b=Mz/o/p8r0QlOy54ZqOPAUKWTGwP5hR7rTxAQNsCaG/NKl/E7xuFZso34JNWvux85Bn
+         qbh1r7b2ITRjxh4L3lgZvJCG2G/s8JuUjCIGQqCvAMS7AvtY9kbbUjrItsChkM9WZBTN
+         dZOzPJL8laZxNfD5dxlBXcTbFR45tsvq3xm0Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706791438; x=1707396238;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:sender:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=lkVTb1L2m6NuCmMShY81C/HsZ5E18+lzrF+Dzoy+HMg=;
+        b=vkHxAwf9WhS4LQuK/pdldgXqI5MPjO7wGaEpbZuGJpAahyiH3HcEE+hnMDZIDHOeDc
+         +H/MZ2CHLdQnuWmvY/g8ZWgyCCDd01xfoVigQL3C6eqxuFQasNeH15L8z/fKwYkJiJSj
+         o2TWKwae84fJAoSXIKzdThpAz03gj3Dpp1JzCC6wfrIXibKx1kcaZIPh+USnfD8jXr0x
+         heAoiqhTo3V6ADsHQFErDRdUVLNJ94gPSeHxrJ7uZyfKWknV/XW7n/U4wm3U4Egmq2tg
+         t/CHVFzaK8AWWeUKrxSbb7tJ0mbQhDYjGH5tuSxCsmUf6pjjGl0Hc3W8RSM1tgETkwiT
+         5+Ng==
+X-Gm-Message-State: AOJu0YzOppbe8Auf0ppRC/Q+goYpIiTZl4LCCBNqWNxZmBHNK4fezd4k
+	yTic0oStclmxy0VQhH+xyOl2jd157Q30GT+qP7WT1GYStxWFruWEy8W+WzyXL5xHtKTg0Nfu7Pn
+	bvg==
+X-Google-Smtp-Source: AGHT+IG8HrY/5043BY/AWblc7Gx9K+wnEwvlwuGA8omOj7wge5pP/B8qHFa9jR52wRQewc/GZ0ZemQ==
+X-Received: by 2002:a05:6e02:1aaf:b0:35f:f880:10ec with SMTP id l15-20020a056e021aaf00b0035ff88010ecmr5212836ilv.4.1706791438493;
+        Thu, 01 Feb 2024 04:43:58 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCW7rVOVaoK4eQsbqF451lJWfBJwx+w3hQ2Y8C5cMLxEP5GNFaTM/CX7WH4qe6ppNxgxtACQSmsO8Lp8o1cK7thwzpEok6En
+Received: from mail-il1-f172.google.com (mail-il1-f172.google.com. [209.85.166.172])
+        by smtp.gmail.com with ESMTPSA id f11-20020a056e0212ab00b00363a88d6ca5sm52057ilr.30.2024.02.01.04.43.58
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Feb 2024 04:43:58 -0800 (PST)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-363898391beso2157775ab.1
+        for <stable@vger.kernel.org>; Thu, 01 Feb 2024 04:43:58 -0800 (PST)
+X-Received: by 2002:a92:4a12:0:b0:363:7f58:ceaa with SMTP id
+ m18-20020a924a12000000b003637f58ceaamr3070531ilf.10.1706791437923; Thu, 01
+ Feb 2024 04:43:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240129170014.969142961@linuxfoundation.org> <20240129170015.067909940@linuxfoundation.org>
+ <ZbkfGst991YHqJHK@fedora64.linuxtx.org> <87h6iudc7j.fsf@meer.lwn.net>
+In-Reply-To: <87h6iudc7j.fsf@meer.lwn.net>
+From: Justin Forbes <jforbes@fedoraproject.org>
+Date: Thu, 1 Feb 2024 06:43:46 -0600
+X-Gmail-Original-Message-ID: <CAFbkSA2tft--ejgJ58o3G-OxNqnm-C6fK4-kXThsN92NYF8V0A@mail.gmail.com>
+Message-ID: <CAFbkSA2tft--ejgJ58o3G-OxNqnm-C6fK4-kXThsN92NYF8V0A@mail.gmail.com>
+Subject: Re: [PATCH 6.6 003/331] docs: kernel_feat.py: fix potential command injection
+To: Jonathan Corbet <corbet@lwn.net>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, Jani Nikula <jani.nikula@intel.com>, 
+	Vegard Nossum <vegard.nossum@oracle.com>, Sasha Levin <sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Commit 8238b4579866 ("wait_on_bit: add an acquire memory barrier") added
-a new bitop, test_bit_acquire(), with proper wrapping in order to try to
-optimize it at compile-time, but missed the list of bitops used for
-checking their prototypes a bit below.
-The functions added have consistent prototypes, so that no more changes
-are required and no functional changes take place.
+On Tue, Jan 30, 2024 at 10:21=E2=80=AFAM Jonathan Corbet <corbet@lwn.net> w=
+rote:
+>
+> Justin Forbes <jforbes@fedoraproject.org> writes:
+>
+> > On Mon, Jan 29, 2024 at 09:01:07AM -0800, Greg Kroah-Hartman wrote:
+> >> 6.6-stable review patch.  If anyone has any objections, please let me =
+know.
+> >>
+> >> ------------------
+> >>
+> >> From: Vegard Nossum <vegard.nossum@oracle.com>
+> >>
+> >> [ Upstream commit c48a7c44a1d02516309015b6134c9bb982e17008 ]
+> >>
+> >> The kernel-feat directive passes its argument straight to the shell.
+> >> This is unfortunate and unnecessary.
+> >>
+> >> Let's always use paths relative to $srctree/Documentation/ and use
+> >> subprocess.check_call() instead of subprocess.Popen(shell=3DTrue).
+> >>
+> >> This also makes the code shorter.
+> >>
+> >> This is analogous to commit 3231dd586277 ("docs: kernel_abi.py: fix
+> >> command injection") where we did exactly the same thing for
+> >> kernel_abi.py, somehow I completely missed this one.
+> >>
+> >> Link: https://fosstodon.org/@jani/111676532203641247
+> >> Reported-by: Jani Nikula <jani.nikula@intel.com>
+> >> Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+> >> Link: https://lore.kernel.org/r/20240110174758.3680506-1-vegard.nossum=
+@oracle.com
+> >> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> >
+> > This patch seems to be missing something. In 6.6.15-rc1 I get a doc
+> > build failure with:
+> >
+> > /builddir/build/BUILD/kernel-6.6.14-332-g1ff49073b88b/linux-6.6.15-0.rc=
+1.1ff49073b88b.200.fc39.noarch/Documentation/sphinx/kerneldoc.py:133: Synta=
+xWarning: invalid escape sequence '\.'
+> >   line_regex =3D re.compile("^\.\. LINENO ([0-9]+)$")
+>
+> Ah ... you're missing 86a0adc029d3 (Documentation/sphinx: fix Python
+> string escapes).  That is not a problem with this patch, though; I would
+> expect you to get the same error (with Python 3.12) without.
 
-Fixes: 8238b4579866 ("wait_on_bit: add an acquire memory barrier")
-Cc: stable@vger.kernel.org # 6.0+
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
----
- include/linux/bitops.h | 1 +
- 1 file changed, 1 insertion(+)
+Well, it appears that 6.6.15 shipped anyway, with this patch included,
+but not with 86a0adc029d3.  If anyone else builds docs, this thread
+should at least show them the fix.  Perhaps we can get the missing
+patch into 6.6.16?
 
-diff --git a/include/linux/bitops.h b/include/linux/bitops.h
-index 2ba557e067fe..f7f5a783da2a 100644
---- a/include/linux/bitops.h
-+++ b/include/linux/bitops.h
-@@ -80,6 +80,7 @@ __check_bitop_pr(__test_and_set_bit);
- __check_bitop_pr(__test_and_clear_bit);
- __check_bitop_pr(__test_and_change_bit);
- __check_bitop_pr(test_bit);
-+__check_bitop_pr(test_bit_acquire);
- 
- #undef __check_bitop_pr
- 
--- 
-2.43.0
+Jusitn
 
+> Thanks,
+>
+> jon
+>
 
