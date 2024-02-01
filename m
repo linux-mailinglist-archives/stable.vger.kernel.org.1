@@ -1,142 +1,136 @@
-Return-Path: <stable+bounces-25915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-29169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287F48700D7
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 12:56:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A851888389
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 01:13:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AF621C20A8D
-	for <lists+stable@lfdr.de>; Mon,  4 Mar 2024 11:56:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E07BB1F2228E
+	for <lists+stable@lfdr.de>; Mon, 25 Mar 2024 00:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 921503C067;
-	Mon,  4 Mar 2024 11:55:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AZJ1cpMh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4E8198304;
+	Sun, 24 Mar 2024 22:42:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C122C3BB4E;
-	Mon,  4 Mar 2024 11:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A72197C92
+	for <stable@vger.kernel.org>; Sun, 24 Mar 2024 22:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709553355; cv=none; b=lLFDB8eT05VqUkLZc9Hqu6tei3kcp2oLw7nX/dVfWiNKr+zsRbnJRuKGr40Vdb17+gtbnYp1h48kGNXB08qgAygMV/LtoVh/3GQERCpIN7bYCefss7a5XvyYA1lyljjOZTLYrBTe2SiWbtqBy86ijKttZSWbH/NWV3K3+dfM/fc=
+	t=1711320141; cv=none; b=TxSXEzeU+bgqEHZowximQJhvq8xHF/amCc4hsAPzWAv5HdaD5s08S3ZZQp50nDj+po0buAHQeGa4LABzubR33BO1Nszj66/yzi0VXSD0cnBxtCbwoWfnpnkurTeZVHkWp/48o9X6cLiycHiW0ucCicBMTXIa5oCOOZNf2ewhljs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709553355; c=relaxed/simple;
-	bh=STXcOLTjf1xq1SwKva2e5Epz+VhE7cqnT+3mPxu+aNA=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:Subject:
-	 In-Reply-To:Content-Type; b=SlUTVox9NfDXxm2E+WFaWFe8TJYugTSVKTLtLlh8RV+c75bAiP3vQIsxxAEk85B9zkjpba28F+NmJJt9psCpWjKPvZpn6l4l1geW8hE3eg2q90C5j/HtyzybV2pHOc5pfA/k1J6qDOLhS22Fs26TpXMo9vZnboHzucm3IERZgdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AZJ1cpMh; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709553354; x=1741089354;
-  h=message-id:date:mime-version:to:cc:references:from:
-   subject:in-reply-to:content-transfer-encoding;
-  bh=STXcOLTjf1xq1SwKva2e5Epz+VhE7cqnT+3mPxu+aNA=;
-  b=AZJ1cpMhZWrq6eJRZd5OwuUIHr6PIqOlCbr/NEWRFIhKpnABwxoWdxcE
-   CvonFc7DDBciUkx1Fh6D/SLhWuetbKLuz9fhL4jrdRxzP52DaD0ECmmyo
-   w3xzFKN5Bdtsazethez2RMhYRb6lm0ix+eF1aHYm7sDEwAceiZnBy0clr
-   PFoY9sNjf2uu7kGIM8fAe6tj+TbwdeeJqVldOjTxUA4UGSolLZcllGUr9
-   ZcFsaPtm03xln2nvxqWKxl+qxQOQ3mlyToOGpeqzkhPRpZhZSbDao43jW
-   CzkdpDBvPC5giOjflavVJvhWwCz88TvfHvOxPfrzUeshOX4EQlTTYKjzO
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="3898898"
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="3898898"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 03:55:52 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="937040376"
-X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="937040376"
-Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
-  by fmsmga001.fm.intel.com with ESMTP; 04 Mar 2024 03:55:50 -0800
-Message-ID: <a6a04009-c3fe-e50d-d792-d075a14ff825@linux.intel.com>
-Date: Mon, 4 Mar 2024 13:57:32 +0200
+	s=arc-20240116; t=1711320141; c=relaxed/simple;
+	bh=cU7MWCa30CwJuctZEOpq3UD73AIwiM2LPEj+ohjRW8w=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=S7xwGed90E/0a4P+7G4D30zyBz5Zns6Cmqcy2kntbmsVxrqvrHyfx+4s8OSIn8CqNBsmIgiHZ2quI7wNEHKRCxN4C9N4Ey4gCl0/aTTUCSUdqNiRdrXw7Iy1jRWD/0e0/55LeEQqHsJMALcz925z1AZzk29eTCf+MIVOenhm9GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
+Received: from hverkuil by linuxtv.org with local (Exim 4.96)
+	(envelope-from <hverkuil@linuxtv.org>)
+	id 1roWXj-0005BA-0a;
+	Sun, 24 Mar 2024 22:42:19 +0000
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Date: Thu, 01 Feb 2024 12:48:57 +0000
+Subject: [git:media_stage/master] media: rc: bpf attach/detach requires write permission
+To: linuxtv-commits@linuxtv.org
+Cc: Sean Young <sean@mess.org>, stable@vger.kernel.org
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1roWXj-0005BA-0a@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.13.0
-Content-Language: en-US
-To: Chris Yokum <linux-usb@mail.totalphase.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
- stable <stable@vger.kernel.org>, linux-usb@vger.kernel.org,
- Niklas Neronin <niklas.neronin@linux.intel.com>
-References: <949223224.833962.1709339266739.JavaMail.zimbra@totalphase.com>
- <50f3ca53-40e3-41f2-8f7a-7ad07c681eea@leemhuis.info>
- <2024030246-wife-detoxify-08c0@gregkh>
- <278587422.841245.1709394906640.JavaMail.zimbra@totalphase.com>
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: Re: 6.5.0 broke XHCI URB submissions for count >512
-In-Reply-To: <278587422.841245.1709394906640.JavaMail.zimbra@totalphase.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 2.3.2024 17.55, Chris Yokum wrote:
-> 
-> The submission of >512 URBs is via usbfs, yes. This worked forever, and still works on EHCI, it's just been failing on xHCI once the indicated change was applied.
-> 
+This is an automatic generated email to let you know that the following patch were queued:
 
->>> We have found a regression bug, where more than 512 URBs cannot be
->>> reliably submitted to XHCI. URBs beyond that return 0x00 instead of
->>> valid data in the buffer.
-> 
->>
->> FWIW, that's f5af638f0609af ("xhci: Fix transfer ring expansion size
->> calculation") [v6.5-rc1] from Mathias.
->>
->>> Attached is a test program that demonstrates the problem. We used a few
->>> different USB-to-Serial adapters with no driver installed as a
->>> convenient way to reproduce. We check the TRB debug information before
->>> and after to verify the actual number of allocated TRBs.
-> 
+Subject: media: rc: bpf attach/detach requires write permission
+Author:  Sean Young <sean@mess.org>
+Date:    Thu Apr 13 10:50:32 2023 +0200
 
-Could you send me that test program as well?
+Note that bpf attach/detach also requires CAP_NET_ADMIN.
 
-> Ah, so this is just through usbfs?
-> 
->>> With some adapters on unaffected kernels, the TRB map gets expanded
->>> correctly. This directly corresponds to correct functional behavior. On
->>> affected kernels, the TRB ring does not expand, and our functional tests
->>> also will fail.
->>>
->>> We don't know exactly why this happens. Some adapters do work correctly,
->>> so there seems to also be some subtle problem that was being masked by
->>> the liberal expansion of the TRB ring in older kernels. We also saw on
->>> one system that the TRB expansion did work correctly with one particular
->>> adapter. However, on all systems at least two adapters did exhibit the
->>> problem and fail.
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 
-Ok, I see, this could be the empty ring exception check in xhci-ring.c:
+ drivers/media/rc/bpf-lirc.c     | 6 +++---
+ drivers/media/rc/lirc_dev.c     | 5 ++++-
+ drivers/media/rc/rc-core-priv.h | 2 +-
+ 3 files changed, 8 insertions(+), 5 deletions(-)
 
-It could falsely assume ring is empty when it in fact is filled up in one
-go by queuing several small urbs.
+---
 
-static unsigned int xhci_ring_expansion_needed(struct xhci_hcd *xhci, struct xhci_ring *ring,
-                                                unsigned int num_trbs)
-{
-  ...
-         /* Empty ring special case, enqueue stuck on link trb while dequeue advanced */
-         if (trb_is_link(ring->enqueue) && ring->enq_seg->next->trbs == ring->dequeue)
-                 return 0;
-...
-}
-
-https://elixir.bootlin.com/linux/v6.7/source/drivers/usb/host/xhci-ring.c#L333
-
-Can you help me test some patches on your setup?
-
-Thanks
-Mathias
-
-  
+diff --git a/drivers/media/rc/bpf-lirc.c b/drivers/media/rc/bpf-lirc.c
+index fe17c7f98e81..52d82cbe7685 100644
+--- a/drivers/media/rc/bpf-lirc.c
++++ b/drivers/media/rc/bpf-lirc.c
+@@ -253,7 +253,7 @@ int lirc_prog_attach(const union bpf_attr *attr, struct bpf_prog *prog)
+ 	if (attr->attach_flags)
+ 		return -EINVAL;
+ 
+-	rcdev = rc_dev_get_from_fd(attr->target_fd);
++	rcdev = rc_dev_get_from_fd(attr->target_fd, true);
+ 	if (IS_ERR(rcdev))
+ 		return PTR_ERR(rcdev);
+ 
+@@ -278,7 +278,7 @@ int lirc_prog_detach(const union bpf_attr *attr)
+ 	if (IS_ERR(prog))
+ 		return PTR_ERR(prog);
+ 
+-	rcdev = rc_dev_get_from_fd(attr->target_fd);
++	rcdev = rc_dev_get_from_fd(attr->target_fd, true);
+ 	if (IS_ERR(rcdev)) {
+ 		bpf_prog_put(prog);
+ 		return PTR_ERR(rcdev);
+@@ -303,7 +303,7 @@ int lirc_prog_query(const union bpf_attr *attr, union bpf_attr __user *uattr)
+ 	if (attr->query.query_flags)
+ 		return -EINVAL;
+ 
+-	rcdev = rc_dev_get_from_fd(attr->query.target_fd);
++	rcdev = rc_dev_get_from_fd(attr->query.target_fd, false);
+ 	if (IS_ERR(rcdev))
+ 		return PTR_ERR(rcdev);
+ 
+diff --git a/drivers/media/rc/lirc_dev.c b/drivers/media/rc/lirc_dev.c
+index a537734832c5..caad59f76793 100644
+--- a/drivers/media/rc/lirc_dev.c
++++ b/drivers/media/rc/lirc_dev.c
+@@ -814,7 +814,7 @@ void __exit lirc_dev_exit(void)
+ 	unregister_chrdev_region(lirc_base_dev, RC_DEV_MAX);
+ }
+ 
+-struct rc_dev *rc_dev_get_from_fd(int fd)
++struct rc_dev *rc_dev_get_from_fd(int fd, bool write)
+ {
+ 	struct fd f = fdget(fd);
+ 	struct lirc_fh *fh;
+@@ -828,6 +828,9 @@ struct rc_dev *rc_dev_get_from_fd(int fd)
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
++	if (write && !(f.file->f_mode & FMODE_WRITE))
++		return ERR_PTR(-EPERM);
++
+ 	fh = f.file->private_data;
+ 	dev = fh->rc;
+ 
+diff --git a/drivers/media/rc/rc-core-priv.h b/drivers/media/rc/rc-core-priv.h
+index ef1e95e1af7f..7df949fc65e2 100644
+--- a/drivers/media/rc/rc-core-priv.h
++++ b/drivers/media/rc/rc-core-priv.h
+@@ -325,7 +325,7 @@ void lirc_raw_event(struct rc_dev *dev, struct ir_raw_event ev);
+ void lirc_scancode_event(struct rc_dev *dev, struct lirc_scancode *lsc);
+ int lirc_register(struct rc_dev *dev);
+ void lirc_unregister(struct rc_dev *dev);
+-struct rc_dev *rc_dev_get_from_fd(int fd);
++struct rc_dev *rc_dev_get_from_fd(int fd, bool write);
+ #else
+ static inline int lirc_dev_init(void) { return 0; }
+ static inline void lirc_dev_exit(void) {}
 
