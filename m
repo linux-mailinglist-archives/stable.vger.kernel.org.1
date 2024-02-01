@@ -1,90 +1,76 @@
-Return-Path: <stable+bounces-17565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BADBA84516C
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 07:34:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A75E8845273
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 09:11:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DB251F2BE3E
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 06:34:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D95E41C22C93
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 08:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EBD0157E91;
-	Thu,  1 Feb 2024 06:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700A7158D81;
+	Thu,  1 Feb 2024 08:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=logitech.com header.i=@logitech.com header.b="jeUfjxiW"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dKt79wKY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CDD157E78
-	for <stable@vger.kernel.org>; Thu,  1 Feb 2024 06:34:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832C61586EF
+	for <stable@vger.kernel.org>; Thu,  1 Feb 2024 08:11:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706769283; cv=none; b=kIRJa4Cj7R8QqC16W1rtB7GhMTmrklSuCtbRrMk4LSxBK/iMi0NfInKsgNKitrvdegYffV/CmprV8ZElPRQkQ56Sz3rh11BCClCzKtdfgh7XB5CezXgp4HIAtJYGrPyZ6hopML7rpQicUFMbrGuUvm8KWi6fqe44WSbL/UDapTU=
+	t=1706775081; cv=none; b=rUq8oRyXrJALQraJYIPGexRYb9fIvmf8ag0FGjNfQtP+VTqxX723kzAX1mTOKiVJcyT612gwVRjF6FIzaI6X2Sn5ZLxoCi2hb9UYcWAdyXXFCxru6pGcTSdp4+BlD81yQ18WeimjddLJvaivtgWmdfJ44ObgedcSbZ2VhEoIZrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706769283; c=relaxed/simple;
-	bh=OOi6m/ttx03p4JB3XlrP+TgknydbKLEPBpB8WTlFoAI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DvdpMHGOn8d0/TCaBUuUsDSh76Y9/ZCH6Mm+aLR4by0cE1BS1Bx8nbsdHU5IMYPwprc45s83PxbVB2OhFjqn4VBV2++KoF/6BholLGRdypOigigZbeUDl56qLnF9i2ez++BFI2ZtmdgFU6FoxmyOxIH5qxNnvXFXjaAVKHJzz4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=logitech.com; spf=pass smtp.mailfrom=logitech.com; dkim=pass (2048-bit key) header.d=logitech.com header.i=@logitech.com header.b=jeUfjxiW; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=logitech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=logitech.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1d958e0d73dso355995ad.1
-        for <stable@vger.kernel.org>; Wed, 31 Jan 2024 22:34:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=logitech.com; s=google; t=1706769280; x=1707374080; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OOi6m/ttx03p4JB3XlrP+TgknydbKLEPBpB8WTlFoAI=;
-        b=jeUfjxiWVvwC0akOjDFRZ2aOfv2F6P0kqzLugTXYorz/N2+EDv+Kp9JJCLUdjDbrHi
-         p66VC6sPXePAp563CU6igSyT+DY/hSoTPJDir4A3VxB/uumN/U3+HxbxbhzMVphwXw/J
-         3wxtq9CifoEet486x/hl/3G6WwHLMlR4sz7NAWFSvLm4AkJcT9zrR5xmIKcWJkUsevLK
-         hu5pjI2v6pXm5btmnnRFfWA9i8loZ8ijn1R5+AD69n2zzwafAfAWRY/IiNEsdYQGMDS/
-         Wcf7DgKgSjbImUciSXcAyTgQUcnZDFDnRIgu1bqn1PoBcW64ExHti+bkRY0fKZ1/9MQQ
-         Vcig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706769280; x=1707374080;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OOi6m/ttx03p4JB3XlrP+TgknydbKLEPBpB8WTlFoAI=;
-        b=ItdjzKHVFCfX+x+Ba4cc34DEwgVoRh05ETTSLgFfw0wXix8IfvxIuBkjiFyA+stzwS
-         eKITlA4xXDdlD8ajaBA7igAyldlssQp4BZW6UIhvDhA2aMbbpw1F9wO0oAJBzNIeUF/V
-         vBOmLpsJZo9l7heSvN7ctSCScoVUcTj8bMFaCF0+DYJS29P/bkEArgHRmd8eusO0EEvj
-         HXlaEX+bemlU2j7DHT3t/qJIGs5EInfdJwaVYJ3ha1vkq0lzgb/E7nWRMdzcTQNn2b8x
-         pLZEVrp6S/VrKEJd7imbpCnufhPtodOtUSWmH0HQo2pK2fkyR/TBbj7lghnZU0GyJyN0
-         Vg7w==
-X-Gm-Message-State: AOJu0YyhvYSseZMHRVeWdvtD2VuVQY+rQ6BvTQLorMe0MwnLg9LkDLWw
-	6NsInyeCv+Et4YEXn+SMlGIaveokMoXak9bMXDg8/p3oMfoxa6bbsaJD86kT8Q==
-X-Google-Smtp-Source: AGHT+IF+BIapmET8K1YuIr3YNHU9VKDFO3qFzb93Bi9ssE+FVQu2m3Uau0P0mXDAR3GlVL3YM4L4PA==
-X-Received: by 2002:a17:902:6946:b0:1d7:407e:418d with SMTP id k6-20020a170902694600b001d7407e418dmr7481989plt.26.1706769279726;
-        Wed, 31 Jan 2024 22:34:39 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCWTXW8bn7Ly8+VvVNH1D/rMmKcZji33FXGnhsXD1I/e6k4Jkd4rusj4aQ3J/TXxDfYCMmeqiOhgKmSBArO5izXy4QqOxP+HX/AD7+eEVPR9yAHSHBaKs0kJAZ7WW5ACCXtgkuXuPqm059JdS+9h0Ee5BOH8BM01CTtx/7qjx1yM4GCmAPUFPDrcVIinoVuuaNFMF4Dc7IB96cQEfk36ARwsgoo5FYeO/neskIRccI5tENpDw1ZbJds2YNWgfG8hDCe+lvJB0rTcLrJotaUuawGwDWudrnc7ZCcq/J13D+atMB3t3XdxoGIrDONsvPntUSZU7Fyf9V3hQTP1hfdYPn3gRZENBn/8U2qywzm6ggFJNvBWXGtmYEqhKXo=
-Received: from localhost.localdomain (c-71-193-234-98.hsd1.wa.comcast.net. [71.193.234.98])
-        by smtp.gmail.com with ESMTPSA id kj4-20020a17090306c400b001d88f0359c1sm6740612plb.278.2024.01.31.22.34.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jan 2024 22:34:39 -0800 (PST)
-From: Devinder Khroad <dkhroad@logitech.com>
-To: senozhatsky@chromium.org
-Cc: gregkh@linuxfoundation.org,
-	laurent.pinchart@ideasonboard.com,
-	linux-kernel@vger.kernel.org,
-	linux-media@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	mchehab@kernel.org,
-	ribalda@chromium.org,
+	s=arc-20240116; t=1706775081; c=relaxed/simple;
+	bh=y1w5sJ8ktbHEe0F3UYcqGu1KS6iUPE0CBc0UPiD+WCw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=V3M1MhwxPKSQ4nxjpGkC7jTGDEDnMwP+e2YVZFh9Pj306KUfL7A41lEsfWlWHlx3Ku9gE2fF8mgk5JfMJtfqZuuT8GfueApNXaLouWBAod9iLBWTVlSOlj6ilLCPQ8x9B73ARBlBrCHl8MG6j4+k+UTq2VNPuSQmuyepwdXFfsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dKt79wKY; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1706775078;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TQDdRV2tMPG+6nfJCtzHbTe1EEi3qaM2yI8qVm5kEZY=;
+	b=dKt79wKYCl07e88ZaAF1/pyG9ACIW7CMk9Qy+sWukC1pqUbxVpePp51AeYPTSwI6cSy8ka
+	EApWS+f2B2/otll8DHgumz3q+XSsWZ6/5zmtvaajXM/t/R4AEUPgqMj7CNFyTtsCdujLJs
+	rc8kI9+2QOJ2ijq6xtBIQV5hdyNoBw0=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-582-XHBq3RvKOoKY9F01Y5fe4w-1; Thu,
+ 01 Feb 2024 03:11:14 -0500
+X-MC-Unique: XHBq3RvKOoKY9F01Y5fe4w-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 09E542932486;
+	Thu,  1 Feb 2024 08:11:14 +0000 (UTC)
+Received: from metal.redhat.com (unknown [10.45.224.66])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 22FDE492BE2;
+	Thu,  1 Feb 2024 08:11:11 +0000 (UTC)
+From: Daniel Vacek <neelx@redhat.com>
+To: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Patrick Kelsey <pat.kelsey@cornelisnetworks.com>,
+	Brendan Cunningham <bcunningham@cornelisnetworks.com>
+Cc: Daniel Vacek <neelx@redhat.com>,
 	stable@vger.kernel.org,
-	stern@rowland.harvard.edu,
-	Devinder Khroad <dkhroad@logitech.com>
-Subject: Re: [PATCH v4] media: ucvideo: Add quirk for Logitech Rally Bar
-Date: Wed, 31 Jan 2024 22:34:20 -0800
-Message-Id: <20240201063420.46495-1-dkhroad@logitech.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240109124838.GB1012017@google.com>
-References: <20240109124838.GB1012017@google.com>
+	Mats Kronberg <kronberg@nsc.liu.se>,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] IB/hfi1: Fix sdma.h tx->num_descs off-by-one error (take two)
+Date: Thu,  1 Feb 2024 09:10:08 +0100
+Message-ID: <20240201081009.1109442-1-neelx@redhat.com>
+In-Reply-To: <20240126152125.869509-1-neelx@redhat.com>
+References: <20240126152125.869509-1-neelx@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,6 +78,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 
-Reviewed-by: Devinder Khroad <dkhroad@logitech.com>
+Unfortunately the commit `fd8958efe877` introduced another error
+causing the `descs` array to overflow. This reults in further crashes
+easily reproducible by `sendmsg` system call.
+
+[ 1080.836473] general protection fault, probably for non-canonical address 0x400300015528b00a: 0000 [#1] PREEMPT SMP PTI
+[ 1080.869326] RIP: 0010:hfi1_ipoib_build_ib_tx_headers.constprop.0+0xe1/0x2b0 [hfi1]
+--
+[ 1080.974535] Call Trace:
+[ 1080.976990]  <TASK>
+[ 1081.021929]  hfi1_ipoib_send_dma_common+0x7a/0x2e0 [hfi1]
+[ 1081.027364]  hfi1_ipoib_send_dma_list+0x62/0x270 [hfi1]
+[ 1081.032633]  hfi1_ipoib_send+0x112/0x300 [hfi1]
+[ 1081.042001]  ipoib_start_xmit+0x2a9/0x2d0 [ib_ipoib]
+[ 1081.046978]  dev_hard_start_xmit+0xc4/0x210
+--
+[ 1081.148347]  __sys_sendmsg+0x59/0xa0
+
+crash> ipoib_txreq 0xffff9cfeba229f00
+struct ipoib_txreq {
+  txreq = {
+    list = {
+      next = 0xffff9cfeba229f00,
+      prev = 0xffff9cfeba229f00
+    },
+    descp = 0xffff9cfeba229f40,
+    coalesce_buf = 0x0,
+    wait = 0xffff9cfea4e69a48,
+    complete = 0xffffffffc0fe0760 <hfi1_ipoib_sdma_complete>,
+    packet_len = 0x46d,
+    tlen = 0x0,
+    num_desc = 0x0,
+    desc_limit = 0x6,
+    next_descq_idx = 0x45c,
+    coalesce_idx = 0x0,
+    flags = 0x0,
+    descs = {{
+        qw = {0x8024000120dffb00, 0x4}  # SDMA_DESC0_FIRST_DESC_FLAG (bit 63)
+      }, {
+        qw = {  0x3800014231b108, 0x4}
+      }, {
+        qw = { 0x310000e4ee0fcf0, 0x8}
+      }, {
+        qw = {  0x3000012e9f8000, 0x8}
+      }, {
+        qw = {  0x59000dfb9d0000, 0x8}
+      }, {
+        qw = {  0x78000e02e40000, 0x8}
+      }}
+  },
+  sdma_hdr =  0x400300015528b000,  <<< invalid pointer in the tx request structure
+  sdma_status = 0x0,                   SDMA_DESC0_LAST_DESC_FLAG (bit 62)
+  complete = 0x0,
+  priv = 0x0,
+  txq = 0xffff9cfea4e69880,
+  skb = 0xffff9d099809f400
+}
+
+If an SDMA send consists of exactly 6 descriptors and requires dword
+padding (in the 7th descriptor), the sdma_txreq descriptor array
+is not properly expanded and the packet will overflow into the
+container structure. This results in a panic when the send completion
+runs. The exact panic varies depending on what elements of the
+container structure get corrupted. The fix is to use the correct
+expression in _pad_sdma_tx_descs() to test the need to expand the
+descriptor array.
+
+With this patch the crashes are no longer reproducible and the machine is stable.
+
+Fixes: fd8958efe877 ("IB/hfi1: Fix sdma.h tx->num_descs off-by-one errors")
+Cc: stable@vger.kernel.org
+Reported-by: Mats Kronberg <kronberg@nsc.liu.se>
+Tested-by: Mats Kronberg <kronberg@nsc.liu.se>
+Signed-off-by: Daniel Vacek <neelx@redhat.com>
+---
+
+Changes in v2:
+ - Dropped the unrelated cleanups.
+ - Improved commit message as suggested by Dennis Dalessandro
+
+ drivers/infiniband/hw/hfi1/sdma.c |  2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/infiniband/hw/hfi1/sdma.c b/drivers/infiniband/hw/hfi1/sdma.c
+index 6e5ac2023328a..b67d23b1f2862 100644
+--- a/drivers/infiniband/hw/hfi1/sdma.c
++++ b/drivers/infiniband/hw/hfi1/sdma.c
+@@ -3158,7 +3158,7 @@ int _pad_sdma_tx_descs(struct hfi1_devdata *dd, struct sdma_txreq *tx)
+ {
+ 	int rval = 0;
+ 
+-	if ((unlikely(tx->num_desc + 1 == tx->desc_limit))) {
++	if ((unlikely(tx->num_desc == tx->desc_limit))) {
+ 		rval = _extend_sdma_tx_descs(dd, tx);
+ 		if (rval) {
+ 			__sdma_txclean(dd, tx);
+-- 
+2.43.0
+
 
