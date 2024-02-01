@@ -1,76 +1,96 @@
-Return-Path: <stable+bounces-17575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A40845754
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 13:23:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A99FA84585E
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 14:01:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4293289832
-	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 12:23:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D43651C2139C
+	for <lists+stable@lfdr.de>; Thu,  1 Feb 2024 13:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0423D15DBB2;
-	Thu,  1 Feb 2024 12:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075B08663B;
+	Thu,  1 Feb 2024 13:01:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.astralinux.ru (mail.astralinux.ru [217.74.38.119])
+Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D214D3A1C3;
-	Thu,  1 Feb 2024 12:23:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.74.38.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 876BE53365
+	for <stable@vger.kernel.org>; Thu,  1 Feb 2024 13:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706790185; cv=none; b=kRrWh0OGWQH0xgIK0241Qqh9f1nRiNcLB48ha6N1RTDjWzTqPIGJA3xMxVykQ1TfQ01xdsGqVeZ3jOSvLYz8Qg9FrUcn5o8tS+v943xJM7lHRvGcFQwh07nMxWfrrYki2uxxL8tZ/MfkEbY6zavSMBnTxrPGNF1JV98+BBWteLQ=
+	t=1706792500; cv=none; b=r2P0rm33PbJ1qTj0a1BS+cY+QGYd5Wsxozezx4b2CG1/KfEgYwJrCX87BQ3Hiy6iPMD1BLRwzjdyYAsY4Iv+ajULwLvy6TiCbNfiYZ6IfxgsR7p18kV2iM4nTkQ6j+yVuOGWxKwRcAF24srMv9QQ3hezfyiskjtTZe26Dg2z1P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706790185; c=relaxed/simple;
-	bh=eHsqM6NTg0ehVoKQcQCUD5ASXZATwOsT8Kua8rMIfGw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=j2TVApuWSn1022wkwLtg0MqGD+QMzGChBedbLOzTMuRkk7PychPGGWbPd9IFqkFHDMahBwNZMyue1zBz4WYKR0MospNlhYCt4jxOd04+VWdVFs3FeClvTXmpACWzAIheoBkVbZr2jVIWXQcYeYDt9So8hRjajRolBEfjtvOyEHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=217.74.38.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.astralinux.ru (Postfix) with ESMTP id 6D8C41867802;
-	Thu,  1 Feb 2024 15:16:19 +0300 (MSK)
-Received: from mail.astralinux.ru ([127.0.0.1])
-	by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id W9wfiTQKmPe6; Thu,  1 Feb 2024 15:16:18 +0300 (MSK)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.astralinux.ru (Postfix) with ESMTP id CF7B918677C2;
-	Thu,  1 Feb 2024 15:16:18 +0300 (MSK)
-X-Virus-Scanned: amavisd-new at astralinux.ru
-Received: from mail.astralinux.ru ([127.0.0.1])
-	by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Y4R5zbGmj5yu; Thu,  1 Feb 2024 15:16:18 +0300 (MSK)
-Received: from rbta-msk-lt-106062.astralinux.ru (unknown [62.217.188.159])
-	by mail.astralinux.ru (Postfix) with ESMTPSA id 8042C1866CBC;
-	Thu,  1 Feb 2024 15:16:17 +0300 (MSK)
-From: Anastasia Belova <abelova@astralinux.ru>
-To: stable@vger.kernel.org,
-	"Greg Kroah-Hartman ." <gregkh@linuxfoundation.org>
-Cc: Anastasia Belova <abelova@astralinux.ru>,
-	lvc-project@linuxtesting.org,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Tsuchiya Yuto <kitakar@gmail.com>,
-	linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5.10/5.15] media: atomisp: add error checking to atomisp_create_pipes_stream()
-Date: Thu,  1 Feb 2024 15:15:32 +0300
-Message-Id: <20240201121532.15164-1-abelova@astralinux.ru>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20231109150001.22891-1-abelova@astralinux.ru>
-References: 
+	s=arc-20240116; t=1706792500; c=relaxed/simple;
+	bh=TZP3e5q0xkTb4dHdmoaGAsHjV0MPkKU0QyCFSryNmTw=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=a3Q3dUX25lL7M7WvlH2bfZxyh2Mmj+FcBk9hkt2J3TFv4Xd+DBLVhBBxSD+E5pIdZXC+KVNZjS0sw85Rfmb0po9wbKBwFFkqmOZfVw6BUAScEEhV+9BroJiJWdNYTm3iEhi+plBkT46BJ5QMOmKGGpKpDkTS0/N3cRgCON6TA1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
+Received: from mchehab by linuxtv.org with local (Exim 4.96)
+	(envelope-from <mchehab@linuxtv.org>)
+	id 1rVWSZ-0006hB-03;
+	Thu, 01 Feb 2024 12:46:27 +0000
+From: Mauro Carvalho Chehab <mchehab@kernel.org>
+Date: Thu, 01 Feb 2024 12:20:40 +0000
+Subject: [git:media_stage/master] media: tc358743: register v4l2 async device only after successful setup
+To: linuxtv-commits@linuxtv.org
+Cc: Robert Foss <rfoss@kernel.org>, Sakari Ailus <sakari.ailus@linux.intel.com>, stable@vger.kernel.org, Alexander Stein <alexander.stein@ew.tq-group.com>
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1rVWSZ-0006hB-03@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
 
-Just a friendly reminder.
+This is an automatic generated email to let you know that the following patch were queued:
+
+Subject: media: tc358743: register v4l2 async device only after successful setup
+Author:  Alexander Stein <alexander.stein@ew.tq-group.com>
+Date:    Wed Jan 10 10:01:11 2024 +0100
+
+Ensure the device has been setup correctly before registering the v4l2
+async device, thus allowing userspace to access.
+
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Fixes: 4c5211a10039 ("[media] tc358743: register v4l2 asynchronous subdevice")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+
+ drivers/media/i2c/tc358743.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+---
+
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index 2785935da497..558152575d10 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -2091,9 +2091,6 @@ static int tc358743_probe(struct i2c_client *client)
+ 	state->mbus_fmt_code = MEDIA_BUS_FMT_RGB888_1X24;
+ 
+ 	sd->dev = &client->dev;
+-	err = v4l2_async_register_subdev(sd);
+-	if (err < 0)
+-		goto err_hdl;
+ 
+ 	mutex_init(&state->confctl_mutex);
+ 
+@@ -2151,6 +2148,10 @@ static int tc358743_probe(struct i2c_client *client)
+ 	if (err)
+ 		goto err_work_queues;
+ 
++	err = v4l2_async_register_subdev(sd);
++	if (err < 0)
++		goto err_work_queues;
++
+ 	v4l2_info(sd, "%s found @ 0x%x (%s)\n", client->name,
+ 		  client->addr << 1, client->adapter->name);
+ 
 
