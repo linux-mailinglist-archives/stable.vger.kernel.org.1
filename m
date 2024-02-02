@@ -1,143 +1,246 @@
-Return-Path: <stable+bounces-17656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FDEB84669A
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 04:46:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21748846708
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 05:40:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D29B3B23EB4
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 03:46:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78298B224A8
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 04:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BEA6C2CF;
-	Fri,  2 Feb 2024 03:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92DA6EAFD;
+	Fri,  2 Feb 2024 04:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="UWWqHXrH"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="QLwOyes5"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F17EE541
-	for <stable@vger.kernel.org>; Fri,  2 Feb 2024 03:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC761F4EA;
+	Fri,  2 Feb 2024 04:40:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706845561; cv=none; b=gVP6leZJtrXCTrQXQhZlybi2g9DgmvpvzMQR7YhAOfvQ4rGLjlgXjoBSVVw7/Q17DKCwxzWhHmAHKhZCXlMnKHcl5QUltreFiVyE2aKdmJbv0daFsWb+WNReDLunaoP/ahlzT1amJtqVSwCovweYypeOLlZYZsSrbm+BD6yNCV8=
+	t=1706848841; cv=none; b=N9qHawXh7UP5WJHekp6g7Xv7PL7kDyr84YNqhj3YQ0pOdRSCmtOjO/82/oj/iBgzJ4E+azgxZQCNhei6PvozhCJevyq7gor5xEsV/5PCtgEZbK6NLyu/v52nnWKw5BIZ5F4rQDk4D5fNqqA+iFXPTABv5U80w+yJR4PgRDyVDWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706845561; c=relaxed/simple;
-	bh=RlqEQSvAE9uSPTVPHf2S8+flCwEfHuIuHr04AbG9uuw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uhOIlfT2ewtgts90tTva41m13yoGJxm2QAS3FQX8eQPVi+D1KvoC+EdPDHCc2Lx5MIP3MfnUFss8/C0NXN+LfE3o57MLFiYny80p7uGc072HwYxyjHXtHhj2/KQGnT6vwnpO0r60KOZyVqc5BOfb4w+3s72VMesGP8iVc6gEArE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=UWWqHXrH; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4120k5eB000479;
-	Fri, 2 Feb 2024 03:45:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding;
- s=corp-2023-11-20; bh=9MkqDURYi9MQXjLvnhM3uOYw2+rtD6jKj+8FGMYFXf4=;
- b=UWWqHXrH0k9jrywdgGmKIESwsb0Zyxzq7Q3ixn48yIpPUbbECh/OjgUX+ONytqFEak8M
- RVkkoPal03n4gjIOLke0qWusDG2ruEG+s5gAb+LiCxj3CktcRIt1tjuKq/xjh7+vOOLZ
- OTV/fkNynmU6ZlCwGE+Ifnege/phxdlrjKqqxEeKTwiAnt/+pkVnLAnkeEjFfS3LN5cm
- +/YDPNUdRnU7F3AH5dq99zIKtUZ9Gh/zs3RCymg/Gu8pewUYi+9I1EgpfKLx7tNpkgF6
- B9YV9k/P9sRXX1HeIqZ4JT2aiQgGTNBv4Q/Fz6FShs124hw/qdbemriuoVQbew/8LlUH Wg== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vvtcv6kf3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 02 Feb 2024 03:45:48 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 4123JKk6011726;
-	Fri, 2 Feb 2024 03:45:47 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3vvr9b98ek-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 02 Feb 2024 03:45:47 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4123jlBe009975;
-	Fri, 2 Feb 2024 03:45:47 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3vvr9b98e0-1;
-	Fri, 02 Feb 2024 03:45:47 +0000
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-To: stable@vger.kernel.org
-Cc: samasth.norway.ananda@oracle.com, harshit.m.mogalapalli@oracle.com,
-        yonghong.song@linux.dev, ast@kernel.org
-Subject: [PATCH  6.6.y] selftests/bpf: Remove flaky test_btf_id test
-Date: Thu,  1 Feb 2024 19:45:45 -0800
-Message-ID: <20240202034545.3143734-1-samasth.norway.ananda@oracle.com>
-X-Mailer: git-send-email 2.42.0
+	s=arc-20240116; t=1706848841; c=relaxed/simple;
+	bh=KmlbEq3PO/srZBOCNisfz+EqGLgCMlx0Mf4zLb30HiI=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=GAy5bTWnreOYrYtGVXrc7vhytrNFosd5NVwxrtGq1SutXiHfzMAHkohji8pynaH5+3EMAVOdOYaGM8swrZ2+5Tb6oeUqAgeWSOBK/JSYapV9YSHaU/SjcDEXtxS0A2yfT1ND2bjjcNHulvrtr9nB8fFs76BlhQr+JKYsNWz3Qag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=QLwOyes5; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id 2957B206FCE0; Thu,  1 Feb 2024 20:40:39 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2957B206FCE0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1706848839;
+	bh=QySjbmai9GE4fttBeHnyPhjnPJbHO88dUi9nFOfGmao=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QLwOyes55GeO8JttIh47g7AUqqiDlOaDt3TFG3gWC7Ts/DdkBrtQfh85o1++ecdYw
+	 tOJzZrcxNpCHPc3JzOGBHn4AiIHj+u2FXvv2aTIkOJuQlm2cgcJaCP3PeVFuaztpnx
+	 XDP0SGYgRT2/idBBfLtYgW+PYgimiRZ7m7kEybBM=
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: "K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	shradhagupta@microsoft.com,
+	stable@vger.kernel.org
+Subject: [PATCH net,v2] hv_netvsc: Register VF in netvsc_probe if NET_DEVICE_REGISTER missed
+Date: Thu,  1 Feb 2024 20:40:38 -0800
+Message-Id: <1706848838-24848-1-git-send-email-shradhagupta@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-01_10,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 malwarescore=0
- suspectscore=0 phishscore=0 mlxscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2402020024
-X-Proofpoint-ORIG-GUID: -YX2o3pXbmT8N97r7PAP0L9ymZkeIB0g
-X-Proofpoint-GUID: -YX2o3pXbmT8N97r7PAP0L9ymZkeIB0g
 
-From: Yonghong Song <yonghong.song@linux.dev>
+If hv_netvsc driver is unloaded and reloaded, the NET_DEVICE_REGISTER
+handler cannot perform VF register successfully as the register call
+is received before netvsc_probe is finished. This is because we
+register register_netdevice_notifier() very early( even before
+vmbus_driver_register()).
+To fix this, we try to register each such matching VF( if it is visible
+as a netdevice) at the end of netvsc_probe.
 
-[ Upstream commit 56925f389e152dcb8d093435d43b78a310539c23 ]
+Cc: stable@vger.kernel.org
+Fixes: 85520856466e ("hv_netvsc: Fix race of register_netdevice_notifier and VF register")
+Suggested-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
 
-With previous patch, one of subtests in test_btf_id becomes
-flaky and may fail. The following is a failing example:
-
-  Error: #26 btf
-  Error: #26/174 btf/BTF ID
-    Error: #26/174 btf/BTF ID
-    btf_raw_create:PASS:check 0 nsec
-    btf_raw_create:PASS:check 0 nsec
-    test_btf_id:PASS:check 0 nsec
-    ...
-    test_btf_id:PASS:check 0 nsec
-    test_btf_id:FAIL:check BTF lingersdo_test_get_info:FAIL:check failed: -1
-
-The test tries to prove a btf_id not available after the map is closed.
-But btf_id is freed only after workqueue and a rcu grace period, compared
-to previous case just after a rcu grade period.
-Depending on system workload, workqueue could take quite some time
-to execute function bpf_map_free_deferred() which may cause the test failure.
-Instead of adding arbitrary delays, let us remove the logic to
-check btf_id availability after map is closed.
-
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20231214203820.1469402-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-[Samasth: backport for 6.6.y]
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
 ---
-Above patch is a fix for 59e5791f59dd ("bpf: Fix a race condition between 
-btf_put() and map_free()"). While the commit causing the error is
-present in 6.6.y the fix is not present. 
+ Changes in v2:
+ * Fixed the subject line of patch with branch details(net)
+ * Added the logic to attach just the one right vf during register
+ * Corrected comment messages
+ * Renamed the context marco with a more appropriate name
+ * Created a new function to avoid code repetition.
 ---
- tools/testing/selftests/bpf/prog_tests/btf.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/net/hyperv/netvsc_drv.c | 82 +++++++++++++++++++++++++--------
+ 1 file changed, 62 insertions(+), 20 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/btf.c b/tools/testing/selftests/bpf/prog_tests/btf.c
-index 92d51f377fe5..0c0881c7eb1a 100644
---- a/tools/testing/selftests/bpf/prog_tests/btf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/btf.c
-@@ -4630,11 +4630,6 @@ static int test_btf_id(unsigned int test_num)
- 	/* The map holds the last ref to BTF and its btf_id */
- 	close(map_fd);
- 	map_fd = -1;
--	btf_fd[0] = bpf_btf_get_fd_by_id(map_info.btf_id);
--	if (CHECK(btf_fd[0] >= 0, "BTF lingers")) {
--		err = -1;
--		goto done;
--	}
+diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
+index 273bd8a20122..11831a1c9762 100644
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -42,6 +42,10 @@
+ #define LINKCHANGE_INT (2 * HZ)
+ #define VF_TAKEOVER_INT (HZ / 10)
  
- 	fprintf(stderr, "OK");
++/* Macros to define the context of vf registration */
++#define VF_REG_IN_PROBE		1
++#define VF_REG_IN_NOTIFIER	2
++
+ static unsigned int ring_size __ro_after_init = 128;
+ module_param(ring_size, uint, 0444);
+ MODULE_PARM_DESC(ring_size, "Ring buffer size (# of 4K pages)");
+@@ -2185,7 +2189,7 @@ static rx_handler_result_t netvsc_vf_handle_frame(struct sk_buff **pskb)
+ }
  
+ static int netvsc_vf_join(struct net_device *vf_netdev,
+-			  struct net_device *ndev)
++			  struct net_device *ndev, int context)
+ {
+ 	struct net_device_context *ndev_ctx = netdev_priv(ndev);
+ 	int ret;
+@@ -2208,7 +2212,11 @@ static int netvsc_vf_join(struct net_device *vf_netdev,
+ 		goto upper_link_failed;
+ 	}
+ 
+-	schedule_delayed_work(&ndev_ctx->vf_takeover, VF_TAKEOVER_INT);
++	/* If this registration is called from probe context vf_takeover
++	 * is taken care of later in probe itself.
++	 */
++	if (context == VF_REG_IN_NOTIFIER)
++		schedule_delayed_work(&ndev_ctx->vf_takeover, VF_TAKEOVER_INT);
+ 
+ 	call_netdevice_notifiers(NETDEV_JOIN, vf_netdev);
+ 
+@@ -2346,7 +2354,7 @@ static int netvsc_prepare_bonding(struct net_device *vf_netdev)
+ 	return NOTIFY_DONE;
+ }
+ 
+-static int netvsc_register_vf(struct net_device *vf_netdev)
++static int netvsc_register_vf(struct net_device *vf_netdev, int context)
+ {
+ 	struct net_device_context *net_device_ctx;
+ 	struct netvsc_device *netvsc_dev;
+@@ -2386,7 +2394,7 @@ static int netvsc_register_vf(struct net_device *vf_netdev)
+ 
+ 	netdev_info(ndev, "VF registering: %s\n", vf_netdev->name);
+ 
+-	if (netvsc_vf_join(vf_netdev, ndev) != 0)
++	if (netvsc_vf_join(vf_netdev, ndev, context) != 0)
+ 		return NOTIFY_DONE;
+ 
+ 	dev_hold(vf_netdev);
+@@ -2484,10 +2492,31 @@ static int netvsc_unregister_vf(struct net_device *vf_netdev)
+ 	return NOTIFY_OK;
+ }
+ 
++static int check_dev_is_matching_vf(struct net_device *event_ndev)
++{
++	/* Skip NetVSC interfaces */
++	if (event_ndev->netdev_ops == &device_ops)
++		return -ENODEV;
++
++	/* Avoid non-Ethernet type devices */
++	if (event_ndev->type != ARPHRD_ETHER)
++		return -ENODEV;
++
++	/* Avoid Vlan dev with same MAC registering as VF */
++	if (is_vlan_dev(event_ndev))
++		return -ENODEV;
++
++	/* Avoid Bonding master dev with same MAC registering as VF */
++	if (netif_is_bond_master(event_ndev))
++		return -ENODEV;
++
++	return 0;
++}
++
+ static int netvsc_probe(struct hv_device *dev,
+ 			const struct hv_vmbus_device_id *dev_id)
+ {
+-	struct net_device *net = NULL;
++	struct net_device *net = NULL, *vf_netdev;
+ 	struct net_device_context *net_device_ctx;
+ 	struct netvsc_device_info *device_info = NULL;
+ 	struct netvsc_device *nvdev;
+@@ -2599,6 +2628,30 @@ static int netvsc_probe(struct hv_device *dev,
+ 	}
+ 
+ 	list_add(&net_device_ctx->list, &netvsc_dev_list);
++
++	/* When the hv_netvsc driver is unloaded and reloaded, the
++	 * NET_DEVICE_REGISTER for the vf device is replayed before probe
++	 * is complete. This is because register_netdevice_notifier() gets
++	 * registered before vmbus_driver_register() so that callback func
++	 * is set before probe and we don't miss events like NETDEV_POST_INIT
++	 * So, in this section we try to register the matching vf device that
++	 * is present as a netdevice, knowing that its register call is not
++	 * processed in the netvsc_netdev_notifier(as probing is progress and
++	 * get_netvsc_byslot fails).
++	 */
++	for_each_netdev(dev_net(net), vf_netdev) {
++		ret = check_dev_is_matching_vf(vf_netdev);
++		if (ret != 0)
++			continue;
++
++		if (net != get_netvsc_byslot(vf_netdev))
++			continue;
++
++		netvsc_prepare_bonding(vf_netdev);
++		netvsc_register_vf(vf_netdev, VF_REG_IN_PROBE);
++		__netvsc_vf_setup(net, vf_netdev);
++		break;
++	}
+ 	rtnl_unlock();
+ 
+ 	netvsc_devinfo_put(device_info);
+@@ -2754,28 +2807,17 @@ static int netvsc_netdev_event(struct notifier_block *this,
+ 			       unsigned long event, void *ptr)
+ {
+ 	struct net_device *event_dev = netdev_notifier_info_to_dev(ptr);
++	int ret = 0;
+ 
+-	/* Skip our own events */
+-	if (event_dev->netdev_ops == &device_ops)
+-		return NOTIFY_DONE;
+-
+-	/* Avoid non-Ethernet type devices */
+-	if (event_dev->type != ARPHRD_ETHER)
+-		return NOTIFY_DONE;
+-
+-	/* Avoid Vlan dev with same MAC registering as VF */
+-	if (is_vlan_dev(event_dev))
+-		return NOTIFY_DONE;
+-
+-	/* Avoid Bonding master dev with same MAC registering as VF */
+-	if (netif_is_bond_master(event_dev))
++	ret = check_dev_is_matching_vf(event_dev);
++	if (ret != 0)
+ 		return NOTIFY_DONE;
+ 
+ 	switch (event) {
+ 	case NETDEV_POST_INIT:
+ 		return netvsc_prepare_bonding(event_dev);
+ 	case NETDEV_REGISTER:
+-		return netvsc_register_vf(event_dev);
++		return netvsc_register_vf(event_dev, VF_REG_IN_NOTIFIER);
+ 	case NETDEV_UNREGISTER:
+ 		return netvsc_unregister_vf(event_dev);
+ 	case NETDEV_UP:
 -- 
-2.42.0
+2.34.1
 
 
