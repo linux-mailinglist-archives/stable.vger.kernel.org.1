@@ -1,117 +1,93 @@
-Return-Path: <stable+bounces-17764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD1E8478F3
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 20:03:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FEE84798A
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 20:20:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DC051F21A03
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 19:03:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C97528A810
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 19:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D15715CB84;
-	Fri,  2 Feb 2024 18:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9D815E5B0;
+	Fri,  2 Feb 2024 19:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q3sNs6+S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fWWnRyOf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29ACE15DF1D;
-	Fri,  2 Feb 2024 18:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB85A15E5A0;
+	Fri,  2 Feb 2024 19:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706899359; cv=none; b=tILsGjMvMZ95CqE1gkppvMyhtd5739zQ/XwroKlV1/iIcyBkycreS6oBPVosrHDK3+nyvbnk4uR4wspr/P8tautOlQeEny9gTt4xwENvcmfGtl47Tc0a5h96KvpOuJr0thFG7Kas0TqzBepP7cyUgDNvN86Ox20waNuCutMc84o=
+	t=1706901601; cv=none; b=ipf2KbB9XuNA1d0d7qefM/AGjwwJv16/UAL5rpwE9IxYWfxlqAm1MNn5FcA7x7Y6LwPTIy3eTowqFGXFHLE+TYhRJtu6WFdTnH5BVcyS2iO24t4FBvbYCy1dFtwjRiYmDz2WicbvVHUeB8vaa2AOIXG0BUjfPaouU0igiY1Y0Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706899359; c=relaxed/simple;
-	bh=TG38hp9r6X6Rv446nvg3drtlUQpDJO2JSwvII2DOXPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NThHtcRREWF/WnN1LpyyaJWR9DtBt/kZpcdn10a5pGjsctZ+7xZ64nzmLMjTISEMWotv5KzaGREme0yQRf3whlZfFIyklltLXia5/pVT1uLpCWyqVXgK1gc600657XQOltdnB4qH35aLLSlQGqHxP8Vx0cNYPn6H8cIM3NrPWo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q3sNs6+S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 130D8C43399;
-	Fri,  2 Feb 2024 18:42:37 +0000 (UTC)
+	s=arc-20240116; t=1706901601; c=relaxed/simple;
+	bh=CbXReCX3ZlwbbZZ2LtMRe+PpRclG31Ljw0m0O0lK4fo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Oe0HPkht0TCMdpkHMpWI27bQfSalwAd2CB6cmjKOksRTAW/K1iNnXmNsrMWhXHWS61S0x/dGR3EKlSh6+Xqdd+l0Qh6j+gMy8ftG6nKKpctPlK/aCNFK/EbOYPCYVASrkc4zp0nkrnx0FIq66M4zlLEXPK/51YDwhkv7HLeBJjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fWWnRyOf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E5EC433F1;
+	Fri,  2 Feb 2024 19:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706899359;
-	bh=TG38hp9r6X6Rv446nvg3drtlUQpDJO2JSwvII2DOXPE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q3sNs6+S1NqmOx1AmLioWn4bbeBL4xxn4KFSGPi59Mg54Ck2A7JrFyU+EDctKujqx
-	 S72Z1PEZyNvUM5gWiABebHEhsz8wc2+e8jnB6rlAi804cPKp6hG/5Ytq/jzb7KvZ8T
-	 Zmv/MAHKjqvSh+WibitBAmE+9rJLvyTyyVjWiV7nPaTWqJN1n06qE4LqcruxzbsCK1
-	 btPid23+1sBCnlIryeX9vaaqjuqFb3HFf4/daD5dFMkhQQQsZXX0C4MAA3FLiJeo1v
-	 VDDVQUl1+wN5d7yYjrMvTKxwKEi1DZDvdO5bz1cJITUtaAwnAuHOUQpSShzHOdTKDL
-	 JxF2cpxGrlNHQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Conrad Kostecki <conikost@gentoo.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Niklas Cassel <cassel@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	dlemoal@kernel.org,
-	linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 5/5] ahci: asm1166: correct count of reported ports
-Date: Fri,  2 Feb 2024 13:42:26 -0500
-Message-ID: <20240202184229.542298-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240202184229.542298-1-sashal@kernel.org>
-References: <20240202184229.542298-1-sashal@kernel.org>
+	s=k20201202; t=1706901600;
+	bh=CbXReCX3ZlwbbZZ2LtMRe+PpRclG31Ljw0m0O0lK4fo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=fWWnRyOfm4mJOX4/eZm+IhaEuLd1JuKdV+JW9Cqe8Z9GKZLpYjLR+5gi8kaWErJYW
+	 3K2uTX+OuwDimwPLsJKDLMCcYTyK/9WaPRneECK2oHFpiWGS/psfiQHarTduW11vtq
+	 NJcFDB8Uird8U3HpiEpeO5H6m/aTS3hYKe5RoB4a9jLR2IBN27hS+e7QbL6zt8twBD
+	 Sxh2/kDFpF9026EJNrEwzxCygItSwYJ46LVz+a3FXjBJeloGejiKvT3ELuY3LSEfoZ
+	 VRqeGWicI+QLrMmr76xm0QYXyNbPgmJP8NmrhBMeJkFpZnhdPdnkahKMIR3hcQOn+b
+	 vAsjtwJfaQG3A==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH ] mm/damon/sysfs-schemes: fix wrong DAMOS tried regions update timeout setup
+Date: Fri,  2 Feb 2024 11:19:56 -0800
+Message-Id: <20240202191956.88791-1-sj@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.306
 Content-Transfer-Encoding: 8bit
 
-From: Conrad Kostecki <conikost@gentoo.org>
+DAMON sysfs interface's update_schemes_tried_regions command has a
+timeout of two apply intervals of the DAMOS scheme.  Having zero value
+DAMOS scheme apply interval means it will use the aggregation interval
+as the value.  However, the timeout setup logic is mistakenly using the
+sampling interval insted of the aggregartion interval for the case.
+This could cause earlier-than-expected timeout of the command.  Fix it.
 
-[ Upstream commit 0077a504e1a4468669fd2e011108db49133db56e ]
-
-The ASM1166 SATA host controller always reports wrongly,
-that it has 32 ports. But in reality, it only has six ports.
-
-This seems to be a hardware issue, as all tested ASM1166
-SATA host controllers reports such high count of ports.
-
-Example output: ahci 0000:09:00.0: AHCI 0001.0301
-32 slots 32 ports 6 Gbps 0xffffff3f impl SATA mode.
-
-By adjusting the port_map, the count is limited to six ports.
-
-New output: ahci 0000:09:00.0: AHCI 0001.0301
-32 slots 32 ports 6 Gbps 0x3f impl SATA mode.
-
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=211873
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218346
-Signed-off-by: Conrad Kostecki <conikost@gentoo.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7d6fa31a2fd7 ("mm/damon/sysfs-schemes: add timeout for update_schemes_tried_regions")
+Cc: <stable@vger.kernel.org> # 6.7.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- drivers/ata/ahci.c | 5 +++++
- 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index ab3ea47ecce3..abdfd440987b 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -634,6 +634,11 @@ MODULE_PARM_DESC(mobile_lpm_policy, "Default LPM policy for mobile chipsets");
- static void ahci_pci_save_initial_config(struct pci_dev *pdev,
- 					 struct ahci_host_priv *hpriv)
- {
-+	if (pdev->vendor == PCI_VENDOR_ID_ASMEDIA && pdev->device == 0x1166) {
-+		dev_info(&pdev->dev, "ASM1166 has only six ports\n");
-+		hpriv->saved_port_map = 0x3f;
-+	}
-+
- 	if (pdev->vendor == PCI_VENDOR_ID_JMICRON && pdev->device == 0x2361) {
- 		dev_info(&pdev->dev, "JMB361 has only one port\n");
- 		hpriv->force_port_map = 1;
+ mm/damon/sysfs-schemes.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
+index 8dbaac6e5c2d..dd2fb5127009 100644
+--- a/mm/damon/sysfs-schemes.c
++++ b/mm/damon/sysfs-schemes.c
+@@ -2194,7 +2194,7 @@ static void damos_tried_regions_init_upd_status(
+ 		sysfs_regions->upd_timeout_jiffies = jiffies +
+ 			2 * usecs_to_jiffies(scheme->apply_interval_us ?
+ 					scheme->apply_interval_us :
+-					ctx->attrs.sample_interval);
++					ctx->attrs.aggr_interval);
+ 	}
+ }
+ 
 -- 
-2.43.0
+2.39.2
 
 
