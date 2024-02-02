@@ -1,150 +1,166 @@
-Return-Path: <stable+bounces-17666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E21846D6A
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 11:11:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E63C7846F0E
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 12:37:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94E2A1C21FCA
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 10:11:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83CAA285B26
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 11:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01A178B64;
-	Fri,  2 Feb 2024 10:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8046A1353E6;
+	Fri,  2 Feb 2024 11:37:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=corigine.onmicrosoft.com header.i=@corigine.onmicrosoft.com header.b="RH8h24c0"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2136.outbound.protection.outlook.com [40.107.220.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0197178689;
-	Fri,  2 Feb 2024 10:11:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706868685; cv=none; b=SHLx0maBA1qrvPYx9VrfP7pSrPLpoUY9frH/RoZzWRxYg+ab38LB7iZN2UxEUbJMPlNtNfiiNKBNx8CFFAS206LBOy/rpfPOZOseDMqEa8K2ffC3slZa8wruzekvFGCdWkRFLR6MmLzgOZ+7huSFZHpclNc0qvo3+fHVyCWm72g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706868685; c=relaxed/simple;
-	bh=C/3ZcqmxK31dP2orHhEIRzBdnVfPyYJkouCJKQL1S5Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eiiDtQIYicZwknTOaYxsp99L/xurmLoi45pbBQakaYAa1CNCRuhNs8j846kewIKLtQyk/QNsS1OqLxgh/WvnFNdvh1S7aeTitBjQnZQBP9GwhFGnKLaJXZtQBKBkIMAj+WqJ6gXX5SyRtfFrPqgg+xNpAg0cZv/EAVGA8CxFHQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.94.2 #2 (Debian))
-	id 1rVqVx-0092t5-TY; Fri, 02 Feb 2024 18:11:18 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 02 Feb 2024 18:11:31 +0800
-Date: Fri, 2 Feb 2024 18:11:31 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Kim Phillips <kim.phillips@amd.com>
-Cc: Ashish Kalra <ashish.kalra@amd.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	John Allen <john.allen@amd.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE84E651A2;
+	Fri,  2 Feb 2024 11:37:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.136
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706873870; cv=fail; b=Udh56eMp+wCXu5fpbeWnOOfNsTaL8O1LUiEquw58Aw0JQZ1eznI27so38y7hiPum1L9BB23j9loT0VNtjXmdloaH7SJmtQl0UgpcsX+zlKsqQyBc038+zjc9Kex9dkUq6KOrir0Ale80Dj3EUst6kR8OWc8YcD5Js0lv6C/3SS0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706873870; c=relaxed/simple;
+	bh=FsYyM4zWULMUFTCajOCLwzD1LuVPQAGerOxDQ8nICSw=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=R/KFfMp2FGPZEv2bIoZhruW0lVB5o4zcHjumAJWjByp3okj+3gT9wnKPuMg3u5IHnoj7frS+/sJ2c+0wIGA2bRI1Ai6yXOPkU4Bk3N9NXymitd65LOPEodaIVqRfoc3BS8tqZ2xvuDTV9AgQfdOZXwnZ/7SOP3y805mAnnvuh4I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corigine.com; spf=pass smtp.mailfrom=corigine.com; dkim=pass (1024-bit key) header.d=corigine.onmicrosoft.com header.i=@corigine.onmicrosoft.com header.b=RH8h24c0; arc=fail smtp.client-ip=40.107.220.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corigine.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=corigine.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=QUWmSvj6jyqcJnuqToqgrHXQzuYNte8+IP34ZNoxbfAXcccvDyT/pZbNCJ5x4NlTlBB0iuOseEBAhGJNDPq3jngGAwWurAzsJhDV3fY/vIUrKuDlK8LidviPBOTeOY19y/joE/UtbBdROXFjPJwFyD0h9jCGUba6u0t7W6ZeKH3ZDYiWmydQMXhX+zrdmpWbTihhbcOvEO+v0YmycgTxIIJRYtIa6ILaRiWCeGu/jnx0xPkoaLXHdrWuIR2r0R0Cb1jSDOLBTx68khRfG8aaV4PgZbBi6STfBxfNbvw1tr5meNd5ElkzmolwwZL6+FZBcUYCDPNkgNZb1jKIEU8FkQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DEJwKZbxrFUE16ntCmaBsaCCsr7nO71hcdvij5RDmyU=;
+ b=MQ3uoO7fG+MaxemYhqZWwZhK2ZD89cDO0nwtZqhzoVrEwuprSXUs65xoYxetAXlzYpzvyU/hApTqyEg8E8GCsiF+1xgcQPHdMg32H/2agpzRmE4gQGhJHX6lp29StdfdtSF37aeyZTqadezwRJEp3qvboJBSrRu3ZCi71nzwX8FW7+8OmTJutv16SICiuLv9dEXnbt6oJDOP9CRIHOZzZGI2yOU3aBUfZ9Wn9pvv9SFYfB7wPNupJushFVO6QVrid7f8S22kGFg/M8wX/kGxRm0mQfsE+8MVAv2jOL60sUs4s7mZ6d/Cnpo167iAP7Cut1b47CBLwW0HXpCnRXPX6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DEJwKZbxrFUE16ntCmaBsaCCsr7nO71hcdvij5RDmyU=;
+ b=RH8h24c0hezJwn0z5ih+kn0VdvT+HRVdGjCd6XkzWtp9YsGYlWoqGv5dZD0MJkIRpDnRrfG9y3Cuk4+Xj5JpbVAqjW7r252DRIBsqyaedAcRc37ZXu5+IoYVus9ECNFfdOViTvoYQMrp2zgywb1LVObVnA3rDxAfD9KdkBGless=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from CH2PR13MB4411.namprd13.prod.outlook.com (2603:10b6:610:6e::12)
+ by MN2PR13MB3853.namprd13.prod.outlook.com (2603:10b6:208:1e2::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.30; Fri, 2 Feb
+ 2024 11:37:43 +0000
+Received: from CH2PR13MB4411.namprd13.prod.outlook.com
+ ([fe80::a58c:f93f:a7fc:c3bd]) by CH2PR13MB4411.namprd13.prod.outlook.com
+ ([fe80::a58c:f93f:a7fc:c3bd%7]) with mapi id 15.20.7249.027; Fri, 2 Feb 2024
+ 11:37:43 +0000
+From: Louis Peens <louis.peens@corigine.com>
+To: David Miller <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: James Hershaw <james.hershaw@corigine.com>,
+	Daniel Basilio <daniel.basilio@corigine.com>,
+	netdev@vger.kernel.org,
 	stable@vger.kernel.org,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH] crypto: ccp - Fix null pointer dereference in
- __sev_platform_shutdown_locked
-Message-ID: <Zby/08lqfWYoz7Ws@gondor.apana.org.au>
-References: <20240125231253.3122579-1-kim.phillips@amd.com>
+	oss-drivers@corigine.com
+Subject: [PATCH net 0/3] nfp: a few simple driver fixes
+Date: Fri,  2 Feb 2024 13:37:16 +0200
+Message-Id: <20240202113719.16171-1-louis.peens@corigine.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: JN2P275CA0039.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:2::27)
+ To CH2PR13MB4411.namprd13.prod.outlook.com (2603:10b6:610:6e::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240125231253.3122579-1-kim.phillips@amd.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PR13MB4411:EE_|MN2PR13MB3853:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9e78eae-5bcd-4df7-e914-08dc23e35eac
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	bxkRgE9jN5DXABxoV4CK8/SqSDE2NhAoegIeeBQZRG+QZp5q+pxJfMZzgY3Tsp4LpyW9FedVbxaxdsEtc6lILj7y6Be0IU51sc178tqfETr/EeonFOm69j2a3Cg0P7FGYUbiBh5MJ02zBZT8Kvgde2SpI9B7HjjTWA7DdVlb99uVx5XK1UHSj66xfBoUKCA16N86LTYlBVujSk57gxXsEi/SU3tk09qUKw3tBRZQbjhwAORM1x4TY0zkkNBz6kWxkjPXJDXuLKEbwYz/9XeKATVfmt4wMYLlukh/gNBrX1bqNs5Bq+Q7UL9SW8uksujKnfSPz1yOBZLPYDnwuCIn9CYWhqOCGzSsht2N12iW5UnBTCAl+BK7nlDss+MDOqZaN57mRRTnOf521A7WcGxwtb97XiJaWHd/8jGxyNCl3y7HIqUqSXxnPsQEd3ChWEly+IlIT0C6ojugGxnRomFL8CAG4z5vmwbimMZ54ZOnqVZmFlusZQqoDVGtkDhqu7+FB5Vp0coOjR0ye0/Hy05Zp07aLolODms6HsB8dIpXpq4Ls8gNGWU2RH1Wbs9mZpEYHKQdiu11MEp487BroCWU1DIhW1CsMPm0N5cNhLL0VXE=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH2PR13MB4411.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39840400004)(376002)(136003)(366004)(346002)(396003)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(478600001)(110136005)(8676002)(83380400001)(66556008)(6506007)(6666004)(8936002)(316002)(54906003)(6486002)(66476007)(26005)(2616005)(6512007)(107886003)(1076003)(52116002)(41300700001)(2906002)(5660300002)(44832011)(4326008)(38350700005)(36756003)(66946007)(38100700002)(86362001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?nFQg3b/KMBt+MwLPUyMNKZxt+BuScZ/ewzpAjp6p4Emc+qqfuV8suai02Ghk?=
+ =?us-ascii?Q?BOvfP5g+Z0vK0yCAzW9NM09PNr/V9mjzKMr4vLNwFFxInYabtIOpzDvU3H5y?=
+ =?us-ascii?Q?8z5urAWk0L1A5Zg3DxHljBfGBGYy4RYZxPmsUQTnvuz50Y5tI61mwe/K8/h5?=
+ =?us-ascii?Q?wSGVOsgPpH9mAvWZKffB2TolPl6qNtu42OIacjrJW8FpJUbKew8HBiTejZZx?=
+ =?us-ascii?Q?oJ9VqWZThZzQuSdJSGgREM4SrMcd1j9jn1KNtcaz9SUaTXm4RBtBawS2ytJ3?=
+ =?us-ascii?Q?OsJ9VJoXhFtFgr+CZ4Ybf1+/WCKAYqr7gvlsvsqzkzpeobLpDCIuLQiX6Owx?=
+ =?us-ascii?Q?3rXpjwFHjPvRn+PwVWkYy/1io8/3yM6H7/g03fxjFPsE5z0UXGGxK7Nhba/x?=
+ =?us-ascii?Q?kmNR6npUFEk3izXBnl9cCMeMvOVofvHhdaLlr40L4oGOaoR/yjqVDAkYsI0V?=
+ =?us-ascii?Q?6C74FRTNH6atRdH32N8/iPLTDg7QleSG2PL0xDUOKmM0nsKFpqmVYmyB7+6I?=
+ =?us-ascii?Q?poutmQKRws+Oidq+sBxyQ4b/KQSclqk8w4dsMLJo4QZutXSxK4SehfWms8c7?=
+ =?us-ascii?Q?5sxVyqDOR2t/9OPLsSJXl5SsBQOaRBZAgBubyKTUN/GKOqUR3uKc5HNKRnjm?=
+ =?us-ascii?Q?6j5554DIcBVCMrQVEcWTDo6a/8qNGNX0qWmF1D6afOuvjKhZN2zVfESwj4AB?=
+ =?us-ascii?Q?03YgMW1A5Sns3QLOaAh0OQoyk2P7a1SkFFSNyTCzOl2l75+YqcZBcGKIONnx?=
+ =?us-ascii?Q?Q/0Q18Vw3n8CkYwP746eo8DqqoWJqf9FyyeqoxtA8gpZwFyag5O8Fc9AUZ4b?=
+ =?us-ascii?Q?5fdTdayhMB4ilTqC4r5JN/YovO7OIx5lYpV4PkQEdXGgpiE0VN+d1mh219j+?=
+ =?us-ascii?Q?OP5TxUsRXw3aGGPC7OAZDhuWC4cIROryxStq5Gi2BWuPZIfYztQhbD0rxzue?=
+ =?us-ascii?Q?XpTtDsr9V7GFrI8c/4EQORXLfreOtm7x8tsRRWeC93Pe9HIUM9xHy9ul475V?=
+ =?us-ascii?Q?GF/yXYnjW/xCWy+IfyZf6xuHqQUancLi3l3wMcqxraCBqy6elBhWE9TQ+g2D?=
+ =?us-ascii?Q?d5MM22bGh8Ed/dxuEM1Ba6/DclZ/A165MRp7+g+3Xgp3y2DoBQ7EzCNyjDUF?=
+ =?us-ascii?Q?5+lZGsuERr348XVOCaPVudTpRH5hx12tJ7zMuv9OWyVLE894VWTNyh/ChG4L?=
+ =?us-ascii?Q?sMpB0AcCPYBbI9PT3xTmjO9kWuODGdH/jnLxphPcLtpThdQbZ0+/hHTPLl8b?=
+ =?us-ascii?Q?JjZ2K175oWn9tXnHXzjffswVC5t5izg3avQCU2bvxJwd2uD6jAL9OpCskJ2V?=
+ =?us-ascii?Q?yIsR3aGBRlM+KLsrpM1TjQdagn/45/4eoE9du/hxtuDC/RMIrFPeFtX8KXCR?=
+ =?us-ascii?Q?NQOLdv3zMTf0kg0PiZFpbkb1xkHJ1479Tr0E7ptKI+j0XBN2REnGw/aBK+Sh?=
+ =?us-ascii?Q?LaJ/XQN/jTgd9DuAj4ksaGn/jL5UVKFOKBIv4VeM1trsf5cXlJeEd3/opiOc?=
+ =?us-ascii?Q?fr+240d47Svl/1ZrwaD6UPLBFYWf7E58pQLUVw4V2N4Ifv73A7lDCx9C7I7U?=
+ =?us-ascii?Q?cd8RpdMPKtc6npVet1KHmri47anmkvxeZz/O7vNKl38GDKd9oJhPv4xT5l0h?=
+ =?us-ascii?Q?Vg=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9e78eae-5bcd-4df7-e914-08dc23e35eac
+X-MS-Exchange-CrossTenant-AuthSource: CH2PR13MB4411.namprd13.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2024 11:37:43.6993
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oLKRvkRj73380VvbcnqiBRyUNAV3c8oO1szFA7lMjWIT63e1w1TiAsWK373yMZPyn7QEet4032xR71x86xLYYdc0t3q7fUoVXwrHreITyxU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR13MB3853
 
-On Thu, Jan 25, 2024 at 05:12:53PM -0600, Kim Phillips wrote:
-> The SEV platform device can be shutdown with a null psp_master,
-> e.g., using DEBUG_TEST_DRIVER_REMOVE.  Found using KASAN:
-> 
-> [  137.148210] ccp 0000:23:00.1: enabling device (0000 -> 0002)
-> [  137.162647] ccp 0000:23:00.1: no command queues available
-> [  137.170598] ccp 0000:23:00.1: sev enabled
-> [  137.174645] ccp 0000:23:00.1: psp enabled
-> [  137.178890] general protection fault, probably for non-canonical address 0xdffffc000000001e: 0000 [#1] PREEMPT SMP DEBUG_PAGEALLOC KASAN NOPTI
-> [  137.182693] KASAN: null-ptr-deref in range [0x00000000000000f0-0x00000000000000f7]
-> [  137.182693] CPU: 93 PID: 1 Comm: swapper/0 Not tainted 6.8.0-rc1+ #311
-> [  137.182693] RIP: 0010:__sev_platform_shutdown_locked+0x51/0x180
-> [  137.182693] Code: 08 80 3c 08 00 0f 85 0e 01 00 00 48 8b 1d 67 b6 01 08 48 b8 00 00 00 00 00 fc ff df 48 8d bb f0 00 00 00 48 89 f9 48 c1 e9 03 <80> 3c 01 00 0f 85 fe 00 00 00 48 8b 9b f0 00 00 00 48 85 db 74 2c
-> [  137.182693] RSP: 0018:ffffc900000cf9b0 EFLAGS: 00010216
-> [  137.182693] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 000000000000001e
-> [  137.182693] RDX: 0000000000000000 RSI: 0000000000000008 RDI: 00000000000000f0
-> [  137.182693] RBP: ffffc900000cf9c8 R08: 0000000000000000 R09: fffffbfff58f5a66
-> [  137.182693] R10: ffffc900000cf9c8 R11: ffffffffac7ad32f R12: ffff8881e5052c28
-> [  137.182693] R13: ffff8881e5052c28 R14: ffff8881758e43e8 R15: ffffffffac64abf8
-> [  137.182693] FS:  0000000000000000(0000) GS:ffff889de7000000(0000) knlGS:0000000000000000
-> [  137.182693] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [  137.182693] CR2: 0000000000000000 CR3: 0000001cf7c7e000 CR4: 0000000000350ef0
-> [  137.182693] Call Trace:
-> [  137.182693]  <TASK>
-> [  137.182693]  ? show_regs+0x6c/0x80
-> [  137.182693]  ? __die_body+0x24/0x70
-> [  137.182693]  ? die_addr+0x4b/0x80
-> [  137.182693]  ? exc_general_protection+0x126/0x230
-> [  137.182693]  ? asm_exc_general_protection+0x2b/0x30
-> [  137.182693]  ? __sev_platform_shutdown_locked+0x51/0x180
-> [  137.182693]  sev_firmware_shutdown.isra.0+0x1e/0x80
-> [  137.182693]  sev_dev_destroy+0x49/0x100
-> [  137.182693]  psp_dev_destroy+0x47/0xb0
-> [  137.182693]  sp_destroy+0xbb/0x240
-> [  137.182693]  sp_pci_remove+0x45/0x60
-> [  137.182693]  pci_device_remove+0xaa/0x1d0
-> [  137.182693]  device_remove+0xc7/0x170
-> [  137.182693]  really_probe+0x374/0xbe0
-> [  137.182693]  ? srso_return_thunk+0x5/0x5f
-> [  137.182693]  __driver_probe_device+0x199/0x460
-> [  137.182693]  driver_probe_device+0x4e/0xd0
-> [  137.182693]  __driver_attach+0x191/0x3d0
-> [  137.182693]  ? __pfx___driver_attach+0x10/0x10
-> [  137.182693]  bus_for_each_dev+0x100/0x190
-> [  137.182693]  ? __pfx_bus_for_each_dev+0x10/0x10
-> [  137.182693]  ? __kasan_check_read+0x15/0x20
-> [  137.182693]  ? srso_return_thunk+0x5/0x5f
-> [  137.182693]  ? _raw_spin_unlock+0x27/0x50
-> [  137.182693]  driver_attach+0x41/0x60
-> [  137.182693]  bus_add_driver+0x2a8/0x580
-> [  137.182693]  driver_register+0x141/0x480
-> [  137.182693]  __pci_register_driver+0x1d6/0x2a0
-> [  137.182693]  ? srso_return_thunk+0x5/0x5f
-> [  137.182693]  ? esrt_sysfs_init+0x1cd/0x5d0
-> [  137.182693]  ? __pfx_sp_mod_init+0x10/0x10
-> [  137.182693]  sp_pci_init+0x22/0x30
-> [  137.182693]  sp_mod_init+0x14/0x30
-> [  137.182693]  ? __pfx_sp_mod_init+0x10/0x10
-> [  137.182693]  do_one_initcall+0xd1/0x470
-> [  137.182693]  ? __pfx_do_one_initcall+0x10/0x10
-> [  137.182693]  ? parameq+0x80/0xf0
-> [  137.182693]  ? srso_return_thunk+0x5/0x5f
-> [  137.182693]  ? __kmalloc+0x3b0/0x4e0
-> [  137.182693]  ? kernel_init_freeable+0x92d/0x1050
-> [  137.182693]  ? kasan_populate_vmalloc_pte+0x171/0x190
-> [  137.182693]  ? srso_return_thunk+0x5/0x5f
-> [  137.182693]  kernel_init_freeable+0xa64/0x1050
-> [  137.182693]  ? __pfx_kernel_init+0x10/0x10
-> [  137.182693]  kernel_init+0x24/0x160
-> [  137.182693]  ? __switch_to_asm+0x3e/0x70
-> [  137.182693]  ret_from_fork+0x40/0x80
-> [  137.182693]  ? __pfx_kernel_init+0x10/0x10
-> [  137.182693]  ret_from_fork_asm+0x1b/0x30
-> [  137.182693]  </TASK>
-> [  137.182693] Modules linked in:
-> [  137.538483] ---[ end trace 0000000000000000 ]---
-> 
-> Fixes: 1b05ece0c9315 ("crypto: ccp - During shutdown, check SEV data pointer before using")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-> Signed-off-by: Kim Phillips <kim.phillips@amd.com>
-> ---
->  drivers/crypto/ccp/sev-dev.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+This is combining a few unrelated one-liner fixes which have been
+floating around internally into a single series. I'm not sure what is
+the least amount of overhead for reviewers, this or a separate
+submission per-patch? I guess it probably depends on personal
+preference, but please let me know if there is a strong preference to
+rather split these in the future.
 
-Patch applied.  Thanks.
+Summary:
+
+Patch1: Fixes an old issue which was hidden because 0 just so happens to
+        be the correct value.
+Patch2: Fixes a corner case for flower offloading with bond ports
+Patch3: Re-enables the 'NETDEV_XDP_ACT_REDIRECT', which was accidentally
+        disabled after a previous refactor.
+
+Daniel Basilio (1):
+  nfp: use correct macro for LengthSelect in BAR config
+
+Daniel de Villiers (1):
+  nfp: flower: prevent re-adding mac index for bonded port
+
+James Hershaw (1):
+  nfp: enable NETDEV_XDP_ACT_REDIRECT feature flag
+
+ drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c   | 2 +-
+ drivers/net/ethernet/netronome/nfp/nfp_net_common.c       | 1 +
+ drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c | 6 ++++--
+ 3 files changed, 6 insertions(+), 3 deletions(-)
+
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.34.1
+
 
