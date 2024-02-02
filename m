@@ -1,141 +1,176 @@
-Return-Path: <stable+bounces-17769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFE0847B99
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 22:35:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D05847C40
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 23:26:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB7981F2A930
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 21:35:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7A15B27F49
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 22:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8314B839E5;
-	Fri,  2 Feb 2024 21:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0948485626;
+	Fri,  2 Feb 2024 22:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T8ebzg23"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="MxYdA9Bb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2053.outbound.protection.outlook.com [40.107.102.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C887CF3F;
-	Fri,  2 Feb 2024 21:35:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706909747; cv=none; b=tZMrht+blEH6tDPl48pbBDZeYMU0wd6E1WNaOUUkv5DZlRXTKb+P8thpdpj503r3aaZUxrVFCy/aMEPEOrPDKsPydwwr8H7FerNn202joGPCihx0akWUVTGD5B3s2T52SJgqwqxdxNWEGBwneAUtwu9eM16XOL5JNpqC7EkkhXM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706909747; c=relaxed/simple;
-	bh=bygkwq3H5uz4EcL8134faBvbhDYNHUEoqi1fXOwtcSU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BOCXT7yXfrNfmgYQyIa3tVyusBNnB1Iay0FtuE/vRStN+2FGammwPq46AGXhoEnVQqJOSzvVXpJAb+D0xSLW/XIC/KoA04O4GOaddZq/0sJGKjZfg+bX+cKU0h0Ng8EEFJnO19TC14w+WRBHD88o8u4LiZCT30t3DchR8FgXPY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T8ebzg23; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F2DC433F1;
-	Fri,  2 Feb 2024 21:35:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706909746;
-	bh=bygkwq3H5uz4EcL8134faBvbhDYNHUEoqi1fXOwtcSU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T8ebzg239yZx11OVUqtKc43pZ50yggUfrA7hQoCBpoKaij0XzbsBZfy/xUVmLLg6S
-	 rW8cxQi03ZsoESqt4C0DOodXMIuDNnslKzlp5y2Uq1Nuy1e1lnXCRRQ82tio8JJY+b
-	 dAAojUn2Pm9HAlrlBWpWxh5Ydd8GCGz52szdWMw8=
-Date: Fri, 2 Feb 2024 13:35:45 -0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Zhiguo Niu <zhiguo.niu@unisoc.com>, bvanassche@acm.org,
-	peterz@infradead.org, mingo@redhat.com, will@kernel.org,
-	longman@redhat.com, boqun.feng@gmail.com,
-	linux-kernel@vger.kernel.org, niuzhiguo84@gmail.com,
-	ke.wang@unisoc.com, hongyu.jin@unisoc.com, stable@vger.kernel.org
-Subject: Re: [PATCH V3] lockdep: fix deadlock issue between lockdep and rcu
-Message-ID: <2024020233-wildland-blouse-2f2e@gregkh>
-References: <1706861676-26574-1-git-send-email-zhiguo.niu@unisoc.com>
- <Zb1IxNd54z2Ib1N3@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125048063B;
+	Fri,  2 Feb 2024 22:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706912791; cv=fail; b=T1mW55BnpRUHECRFssFAYdgJNi3tHlEDDagb68h9hFMP6mCo5iwGSbLR7YejNxSJ27YMsTbhDjQwHckwJad3Vk4ySpBbn/Cw7Ry5ujbWhZdeLvvCBjcd4iss3jliIbQcLbvFBqJr8pYtwadns0h+kFEULKc21XrTJeact4X7D0I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706912791; c=relaxed/simple;
+	bh=WLbJ71AfDl+u5Oq5ctNNxa+d5Sd4ZvXTJCC+L3zqBBQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dq+3KldsgvUybQ7JH+DpUgXcuDmdxl4vxhGvSSHpjGFEnx6DvUCGLN3rCBtuDtEr2Xq6pYBKyb2iIqYTSCBm11mKDiltpYUSOCvp8D6Ukn74d3SSe0hrm1lk6sYcAe3UbMPIHEoXGb6HU0OI0D8CuLc3IQ/pj7q1xHKMKOI38hw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=MxYdA9Bb; arc=fail smtp.client-ip=40.107.102.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=K6ycfbkXDjp3sXqp7nZjrZerCIAWixZ11psn52gZAG2CmG3NurqsGkSuXAMIzN9V0MRuXgYbOzav3uv89uFCE0juZLDxnu9Tc0maQNebbEWJbHRj6aensHz1dIS/mC0w/i+aS+WsH5m/qSMDXRN1WaGkpg6XUIZAbEfVFGiPf5RDFI+mfFlOaUrNtJ5IbqJdGze/QlogBBZhWImEN4o6n1Nol0x9MXyZxVVtkxRpETryztVoQk2gmvAUbMuFrm3PlgI/uW7tSAUoxo30UrObgk+Z9hj433gIWJznDpkCzYT5HU17LnPNnQKjlvnu3TRUlJ3RFZnDWS/2UQeT3CXBKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P81v5G7zBPiTwN6St3VYTvaErPmQ4ZxmantP7vYOP00=;
+ b=kP+iWeW8EwbPmMNgverndu23ewJ9aPPWxhrilC/kxT89c1WXku3UQSMfwUtE7WhOPVHnHqHbNnT51EopfL27NiGIxoAaFAgptZeT/1m36uPNvfsSdNL7TJbSCDO9s/MVqkkLve8VT/7eXPFaxS0o8Hoa6zE1mTPnOzXMkRg5D1k+XkxDQYmp7rBRNirWL/yqWT+CmsCFgqQt/pI5ZR48nxEhqZTJD6YAMF6fX+GaahkVZO2yYuRT3/zFI0brnwt7vjTIkplMUaunNdJhYiEuOA+WAyfbZJHGsrqis8OR4ZaCrbZ65oamjeJ0GF99ckUcmCJ9T+NL2hTTUpK2OKvksw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=P81v5G7zBPiTwN6St3VYTvaErPmQ4ZxmantP7vYOP00=;
+ b=MxYdA9Bb77S0wiKtwUSYoXee9ZNG6GFwr/VVGl1yMdLUtNDlA5HDAFBKvzcGdFQJSxbkqdEnGFTqjh40BuMqb5QTfKSHE5ETo4Z3GT1F6yonlvjFA5ChnM/S4q7qmcfZR67iqNAjSLyasNvZkZopMAZ0HkJsvSLxw3HSuZSgaPk=
+Received: from CY5PR18CA0049.namprd18.prod.outlook.com (2603:10b6:930:13::17)
+ by CH3PR12MB7714.namprd12.prod.outlook.com (2603:10b6:610:14e::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.12; Fri, 2 Feb
+ 2024 22:26:24 +0000
+Received: from CY4PEPF0000EE35.namprd05.prod.outlook.com
+ (2603:10b6:930:13:cafe::6d) by CY5PR18CA0049.outlook.office365.com
+ (2603:10b6:930:13::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.26 via Frontend
+ Transport; Fri, 2 Feb 2024 22:26:24 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EE35.mail.protection.outlook.com (10.167.242.41) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7249.19 via Frontend Transport; Fri, 2 Feb 2024 22:26:24 +0000
+Received: from hamza-pc.localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Fri, 2 Feb
+ 2024 16:26:22 -0600
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+To: <linux-kernel@vger.kernel.org>
+CC: Hamza Mahfooz <hamza.mahfooz@amd.com>, <stable@vger.kernel.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+	<rafael@kernel.org>, Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>, "Pan, Xinhui"
+	<Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>, Daniel Vetter
+	<daniel@ffwll.ch>, Bjorn Helgaas <bhelgaas@google.com>, Mario Limonciello
+	<mario.limonciello@amd.com>, Lijo Lazar <lijo.lazar@amd.com>, "Srinivasan
+ Shanmugam" <srinivasan.shanmugam@amd.com>, Le Ma <le.ma@amd.com>,
+	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>, James Zhu
+	<James.Zhu@amd.com>, Aurabindo Pillai <aurabindo.pillai@amd.com>, "Joerg
+ Roedel" <jroedel@suse.de>, Iwona Winiarska <iwona.winiarska@intel.com>,
+	"Robin Murphy" <robin.murphy@arm.com>, <amd-gfx@lists.freedesktop.org>,
+	<dri-devel@lists.freedesktop.org>, <linux-pci@vger.kernel.org>
+Subject: [PATCH 1/3] driver core: bus: introduce can_remove()
+Date: Fri, 2 Feb 2024 17:25:54 -0500
+Message-ID: <20240202222603.141240-1-hamza.mahfooz@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zb1IxNd54z2Ib1N3@google.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE35:EE_|CH3PR12MB7714:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9ee22a2a-0b2d-4df5-03b1-08dc243dfd9e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	Vxya4GWHqRY8KdRp4AaJ9XPsT0VO4DYdHXtLHCINLCUwd/x+E1lREXa+ND5kEectVUNalYWcAHWk8Za4G3kQm7059Gv6B5U/W/otqfEK3r+dro6ezheyNKiRBmwxKEykqsct01sVSEHvpqmAl6qK+gzPbM5jcqChztkypsFg7Iq4yWx2wBq3SIAuKmUYiEvPCWT4Ve/kNHqM2d2m4N3738LIgYDHhYhrHY9ZR9BMRgm4jUfN1Lo6SQbbhv2SGDTD2SgmpsflvCW/5AFIfX1e4gkDkn6uIbWjWL/E5W6ZgvqjdvIdAM4zpXjcDfNh72kkGZi0j+SZdqzK2shi6tOrY2/N0s2cc0ScnB+6FIAH6wGaHOuqRYxwE70vid4i7Rqb4xzj44Bjvv5BchTDwz2qJSj3nLrLfd0+xkTFrhq4NpHnoUM8rnuQvDTSMYj+w+v7Pl+uvjhpLU5DECjUkZsNVmzBk1PaL/+gUBvjNRxzrDSUsCTxUx7ZYVDKPjwa5nwlytgVwGyqSuVLeb9umhuBKnhCQir8W0/Iz8m9LoG585E2vFp7r/+ba4JiGDh5R30f8s0ZgN9FPFAnGXtcoPBSM9mi6MhMDF9D/QeJ654b9+F7LG/JxktK+KmNkhsgcI8/tkA9BJVIx0XW1JrRm+Iu9ePggvpw9mo2Pm9Lye/IU9hyTwgWFyj9dFWuX4zmrRNUX0XOw3LjfvMjWeLqO6LbTMZQsFRbcVmd+oiFEj/9+QTB4dfzijhnRflxLUrAWru87MiVlrEv+q3yqUUjpTQnxCbf//B8eFrBUKixFocdYQu8NrWa9fU1v27s9+CYRJew
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(136003)(39860400002)(396003)(346002)(230922051799003)(64100799003)(82310400011)(186009)(1800799012)(451199024)(36840700001)(40470700004)(46966006)(478600001)(41300700001)(82740400003)(83380400001)(40480700001)(36860700001)(40460700003)(81166007)(356005)(47076005)(336012)(16526019)(6666004)(6916009)(54906003)(5660300002)(36756003)(316002)(44832011)(8676002)(8936002)(4326008)(426003)(70206006)(7416002)(26005)(70586007)(2906002)(86362001)(2616005)(1076003)(16060500005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2024 22:26:24.5426
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9ee22a2a-0b2d-4df5-03b1-08dc243dfd9e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE35.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7714
 
-On Fri, Feb 02, 2024 at 07:55:48PM +0000, Carlos Llamas wrote:
-> On Fri, Feb 02, 2024 at 04:14:36PM +0800, Zhiguo Niu wrote:
-> > There is a deadlock scenario between lockdep and rcu when
-> > rcu nocb feature is enabled, just as following call stack:
-> > 
-> >      rcuop/x
-> > -000|queued_spin_lock_slowpath(lock = 0xFFFFFF817F2A8A80, val = ?)
-> > -001|queued_spin_lock(inline) // try to hold nocb_gp_lock
-> > -001|do_raw_spin_lock(lock = 0xFFFFFF817F2A8A80)
-> > -002|__raw_spin_lock_irqsave(inline)
-> > -002|_raw_spin_lock_irqsave(lock = 0xFFFFFF817F2A8A80)
-> > -003|wake_nocb_gp_defer(inline)
-> > -003|__call_rcu_nocb_wake(rdp = 0xFFFFFF817F30B680)
-> > -004|__call_rcu_common(inline)
-> > -004|call_rcu(head = 0xFFFFFFC082EECC28, func = ?)
-> > -005|call_rcu_zapped(inline)
-> > -005|free_zapped_rcu(ch = ?)// hold graph lock
-> > -006|rcu_do_batch(rdp = 0xFFFFFF817F245680)
-> > -007|nocb_cb_wait(inline)
-> > -007|rcu_nocb_cb_kthread(arg = 0xFFFFFF817F245680)
-> > -008|kthread(_create = 0xFFFFFF80803122C0)
-> > -009|ret_from_fork(asm)
-> > 
-> >      rcuop/y
-> > -000|queued_spin_lock_slowpath(lock = 0xFFFFFFC08291BBC8, val = 0)
-> > -001|queued_spin_lock()
-> > -001|lockdep_lock()
-> > -001|graph_lock() // try to hold graph lock
-> > -002|lookup_chain_cache_add()
-> > -002|validate_chain()
-> > -003|lock_acquire
-> > -004|_raw_spin_lock_irqsave(lock = 0xFFFFFF817F211D80)
-> > -005|lock_timer_base(inline)
-> > -006|mod_timer(inline)
-> > -006|wake_nocb_gp_defer(inline)// hold nocb_gp_lock
-> > -006|__call_rcu_nocb_wake(rdp = 0xFFFFFF817F2A8680)
-> > -007|__call_rcu_common(inline)
-> > -007|call_rcu(head = 0xFFFFFFC0822E0B58, func = ?)
-> > -008|call_rcu_hurry(inline)
-> > -008|rcu_sync_call(inline)
-> > -008|rcu_sync_func(rhp = 0xFFFFFFC0822E0B58)
-> > -009|rcu_do_batch(rdp = 0xFFFFFF817F266680)
-> > -010|nocb_cb_wait(inline)
-> > -010|rcu_nocb_cb_kthread(arg = 0xFFFFFF817F266680)
-> > -011|kthread(_create = 0xFFFFFF8080363740)
-> > -012|ret_from_fork(asm)
-> > 
-> > rcuop/x and rcuop/y are rcu nocb threads with the same nocb gp thread.
-> > This patch release the graph lock before lockdep call_rcu.
-> > 
-> > Fixes: a0b0fd53e1e6 ("locking/lockdep: Free lock classes that are no longer in use")
-> > Cc: <stable@vger.kernel.org>
-> > Cc: Boqun Feng <boqun.feng@gmail.com>
-> > Cc: Waiman Long <longman@redhat.com>
-> > Cc: Carlos Llamas <cmllamas@google.com>
-> > Cc: Bart Van Assche <bvanassche@acm.org>
-> > Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-> > Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
-> > ---
-> > changes of v3: correct code comments and add Cc tag.
-> > changes of v2: update patch according to Boqun's suggestions.
-> > ---
-> 
-> It seems v3 should have collected the review tags from Boqun and Waiman.
-> Also, I'm actually Cc'ing stable here. I hope that is enough.
-> FWIW, this looks fine to me.
-> 
-> Reviewed-by: Carlos Llamas <cmllamas@google.com>
+Currently, drivers have no mechanism to block requests to unbind
+devices. However, this can cause resource leaks and leave the device in
+an inconsistent state, such that rebinding the device may cause a hang
+or otherwise prevent the device from being rebound. So, introduce
+the can_remove() callback to allow drivers to indicate if it isn't
+appropriate to remove a device at the given time.
 
+Cc: stable@vger.kernel.org
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+---
+ drivers/base/bus.c         | 4 ++++
+ include/linux/device/bus.h | 2 ++
+ 2 files changed, 6 insertions(+)
 
-<formletter>
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index daee55c9b2d9..7c259b01ea99 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -239,6 +239,10 @@ static ssize_t unbind_store(struct device_driver *drv, const char *buf,
+ 
+ 	dev = bus_find_device_by_name(bus, NULL, buf);
+ 	if (dev && dev->driver == drv) {
++		if (dev->bus && dev->bus->can_remove &&
++		    !dev->bus->can_remove(dev))
++			return -EBUSY;
++
+ 		device_driver_detach(dev);
+ 		err = count;
+ 	}
+diff --git a/include/linux/device/bus.h b/include/linux/device/bus.h
+index 5ef4ec1c36c3..c9d4af0ed3b8 100644
+--- a/include/linux/device/bus.h
++++ b/include/linux/device/bus.h
+@@ -46,6 +46,7 @@ struct fwnode_handle;
+  *		be called at late_initcall_sync level. If the device has
+  *		consumers that are never bound to a driver, this function
+  *		will never get called until they do.
++ * @can_remove: Called before attempting to remove a device from this bus.
+  * @remove:	Called when a device removed from this bus.
+  * @shutdown:	Called at shut-down time to quiesce the device.
+  *
+@@ -85,6 +86,7 @@ struct bus_type {
+ 	int (*uevent)(const struct device *dev, struct kobj_uevent_env *env);
+ 	int (*probe)(struct device *dev);
+ 	void (*sync_state)(struct device *dev);
++	bool (*can_remove)(struct device *dev);
+ 	void (*remove)(struct device *dev);
+ 	void (*shutdown)(struct device *dev);
+ 
+-- 
+2.43.0
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
-
-</formletter>
 
