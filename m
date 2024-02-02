@@ -1,135 +1,180 @@
-Return-Path: <stable+bounces-17659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090B484672D
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 05:56:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A47C684684F
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 07:46:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED1ACB25425
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 04:56:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C71891C233DE
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 06:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B36F9C1;
-	Fri,  2 Feb 2024 04:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E66F17BA1;
+	Fri,  2 Feb 2024 06:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CPaAqmta"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="UrgB+i7b"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C313F9C6;
-	Fri,  2 Feb 2024 04:56:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D202179A8
+	for <stable@vger.kernel.org>; Fri,  2 Feb 2024 06:42:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706849809; cv=none; b=fMwr18j8wobIjK1Zlp9HsKx/peqMd29NB4Y2HP4rUWwiu3JV1yi4ilIxT/mUQeJnqVbMBheAWvSL/WIKU4znj/Zw3Y62YR7nv4RusQQXnx77eM8X3hy/W7DTWrkGTkF/fVcEyjhoG+/eUhs2v5FECpDF5Sc8izyjLabRsuKXT0E=
+	t=1706856125; cv=none; b=AARQkRuoPsTXC9VRmoriKxjQIPoFfsiQM5EMlIqNZAMzplLOfNGxQWtpcgTzLhpoGFAnSADA+wJJST6P/uKjJflv7+X4hKsCx39eUMMWdxf9O+QvHrR0uLzz4AKnyCfXAqSp6kQED7Vg98HtXZjQ2qE65ZBhc7UM6Dm4P6yNyhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706849809; c=relaxed/simple;
-	bh=VwBoSb/V7TcqEYO+IMJjfTn/Zoe4yK102sNVcscuwF4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XLE2DW0nZ/kU4tHRufWf6M+lzrA1t4v25+kMF6VUZck8v2m4xwk5g50mn9LLXbUxuzbzP+alsiwEM8ta2E7wmWw1kphG6Z/0PO1bEGH5qssW7orel5wmWek38/J84a8HD721YgSigKlcb8cca2kAKjPooKO3rv1mOm1WzmWKvuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CPaAqmta; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-5d8df2edd29so1377731a12.2;
-        Thu, 01 Feb 2024 20:56:46 -0800 (PST)
+	s=arc-20240116; t=1706856125; c=relaxed/simple;
+	bh=EyPJ1v8uJ1verWOqJzXdRF7tA+iZhYTVX3CQiV6Wfbk=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=DjkyJrSjDTQT5Zn/E1HzRN5QGVRmdP/oKF5l6uuTC7q6Pe/SjyWS2zlg2khZZsHIf5cJ+bUYzjgAb1pWSRuJhdl8+zHgiqrLv3ICpLsnlIsU8AxbrZvodFnIvb3BrmH/QtXzoZH9i0QFcDwwL8ba4HDwMlq9IUf/65C559Ap0DQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=UrgB+i7b; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-5ce942efda5so1523725a12.2
+        for <stable@vger.kernel.org>; Thu, 01 Feb 2024 22:42:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1706849805; x=1707454605; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3ffwccEJwM3X88Nsb0fh+JyW5l/872KQTV4sk735VzA=;
-        b=CPaAqmtaJnglgducvwWVfwANyvGH/lwVaplImUTZ9lxi8rrVBYprKenhaqLO5xAxcU
-         5QVaz6hfjWZpOkcEbYiqKsQTK2i/7Y9sTdFajDqaPXJDxPdX1NK4fKBhZEbKqAASOBXb
-         2mpmECKQrDpqsRvFVK4pF2vyjLmkBgmSJmcTjD0vHaFidvnSxxo1VoWXnm2VqtEpp6Fx
-         GzWGGM4n+q7JeOngBTiQMPQLw2A9pDD8IiynQ6+VAin3ME9K3wOTxBSjVaNNasI/5ueO
-         Womgva20ckAwaG8kl8BgY9Nj/n5M8Kb7+DtFcSkfcw4MMBjzy2yAOVEgBFyw/CvHa2uG
-         yqoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706849805; x=1707454605;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=broadcom.com; s=google; t=1706856122; x=1707460922; darn=vger.kernel.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3ffwccEJwM3X88Nsb0fh+JyW5l/872KQTV4sk735VzA=;
-        b=kTHJQh/+IjoMcfhId8kHj+ciCDRSINlzjsg81gAtKto7bDjMhpghUc8ujXRwAFx4uo
-         Xam4UkCiuHnn9RW1aP+Tm9FJwF3c08V/s5pf7HHI45QUlSIsr4OT46mHg2/t2oUVGIJC
-         OEeqPgzdIAxEcc/LHHBUVmVp3KyaWyficjmTCn/lHje4ZCRhHg50EFFr8IUqtavafzbI
-         3G0iBTJhi09BBfgACvoQLja7LESZp2YX5O01UzdTBe0SMEdE6JYZR/2OrhR/Ylix8E7N
-         Az1u3L/itwEvfjLK3loHC1MMcuFsNaOa7NyHxy6HzrvBwYROQY8L/7AsaYRL7CFPCpGy
-         h72Q==
-X-Gm-Message-State: AOJu0YwGn+UkgJOHhUsc/+YFXzZ1XOn44in2Dsk56+PxFPe1AsU9Z+sZ
-	Xmfs/QeQBQEQrQVJESz2UF09Nfw1jueQMXKUmPT8wTkBVrSjETKydD4MBzhU
-X-Google-Smtp-Source: AGHT+IGgLVZbww0XpQ9vw73ddoiQRtdj4pdLxOncNNvPGlP2aDoWBqeNbSQFRrZPgbmREiJMyJnESQ==
-X-Received: by 2002:a05:6a20:3d06:b0:19c:6a60:b433 with SMTP id y6-20020a056a203d0600b0019c6a60b433mr4888775pzi.3.1706849805521;
-        Thu, 01 Feb 2024 20:56:45 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCX9TM6nv40KZJfTQb9AvCFB3ucZY0S1zNsQ5Do4wcmczMxBH+qPYM0uScT2hlSMnjwbKcS7YqN8Zg44kywAGpaPb3wEjn3X7USpSikl6hUC1Up12n0DXCd/1uirVEW53J1qHEn8gMABPLtym5kc9D6ezjCOJHmU1T8vU1vVstj2TtfwLZrzvV/MEdsoa5Vc229Mls4ODj0P8+xDUg==
-Received: from google.com ([2620:15c:9d:2:c30c:2f35:dc97:44fc])
-        by smtp.gmail.com with ESMTPSA id mn16-20020a1709030a5000b001d9033b9d8csm681585plb.59.2024.02.01.20.56.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Feb 2024 20:56:45 -0800 (PST)
-Date: Thu, 1 Feb 2024 20:56:42 -0800
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>, stable@vger.kernel.org,
-	regressions@lists.linux.dev, linux-input@vger.kernel.org
-Subject: Re: [PATCH regression fix 2/2] Input: atkbd - Do not skip
- atkbd_deactivate() when skipping ATKBD_CMD_GETID
-Message-ID: <Zbx2Cuhfy-rpcvCE@google.com>
-References: <20240126160724.13278-1-hdegoede@redhat.com>
- <20240126160724.13278-3-hdegoede@redhat.com>
+        bh=xeB3e/KJ2ArkcAJ7cDxBQCA+oTgv/CnKDnVoit5SrNw=;
+        b=UrgB+i7bIrvrpk0lS92Bft4VRsM+EndWWT4mLd6NbgGmiuAd9U3XtfwqpXxrrD02f5
+         LUZGf4xyKVmz0uNs5zWfrTytMFVRhgRzMaj3oa7XrrVtzoFIvP+Y1+T25ncVwbwkNwZm
+         ecIFPx4BzhFZeH4KZ+QJBQSuuxTk8ppz00QKY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706856122; x=1707460922;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xeB3e/KJ2ArkcAJ7cDxBQCA+oTgv/CnKDnVoit5SrNw=;
+        b=CfaZxwYWfhgmxduzm6VkbR9aP4Lc/sF8w5Mrwp9kKbSW3n1WViBzOMFgZFbDsFbTQ1
+         G09K/nRqelf8ViBO22dw/m4fXwAM1Z1PMgFiUoT3dI6ToevGF6YG/M9Qy8oFlJrtv63/
+         sA+SjEkltbodRwRgbof97+qhSJxhUaJOu+pSUmRSWqdSrhRnQt/t2hC+SPk4Y7ZJkeQ6
+         G1k+mXhz58kLErUCspM20lAtD6tuMtWR1EIcOBH1rIdWHIKzBAijhFpvQsUuhDAGS6/W
+         ueuceMrEtK/b7owEatY5T5cyXnk0u+RQCPF2E1iUvCNvuw4RiSnb2feeEi7VvvzuCHOT
+         dq2w==
+X-Gm-Message-State: AOJu0Yw25yxOQWZipQWFRdCmY6TnUu5QoT76pzNAH5SwxHqNFwbgivQW
+	1VkTa/mE8OlllkDViwDhQinHuDR8ZAyysGUpucrnEGU6BZhVggfiiN8h/zSqCG7Y+DVdVsjFEid
+	w1Ve3uX1AzziP/3IwtQjHFQIhV13Xfv9MoOETTnFKhIFAUEzGEe/pKZ4scX4XUS0gzx4CWL+xgT
+	+4R1nwx3wzrYNfT/qiPGV7pWE353iSdFK/+/YfpLlIkE6vjg==
+X-Google-Smtp-Source: AGHT+IGkxoHrn5M23ZvqLsrcgWb9Dxe4chh56p5rjnQf81e2tLgOZlZAD6cC22pLx6DS6kx/4ch7Rg==
+X-Received: by 2002:a05:6a20:9326:b0:19e:399f:7bed with SMTP id r38-20020a056a20932600b0019e399f7bedmr4407693pzh.35.1706856121632;
+        Thu, 01 Feb 2024 22:42:01 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCUSv8KyeVxLzlGyhyhJ6/k5Q8l3rOmZnebm5Ftte6euQTEIyGzkjD1oV8Cyqg6y2bKRShGnz/qsu+E5D9h1OLSVVnu84HPXx7PLd5AgFJfvfginU3vSbn1Jyi7RnXvVdEq+bFkO47Zwrq/rLX7o756g05VcM3Kko6+PIh5jDoU0gQgNF3OHccJnR0hZpbe1Y06qv4h8qSFrnEhsGOLrTQoKnGpXivVi4shl/FNK4m1L3o8+vSZqqsv0S3wMcmdERd8EJhTOaZ0PH7W2w6p1bfCEQaLzN/0/w6QZGBwzpqlN4EQOPhwQGxkfy8HJhsbkyUxzRysBfA1uG4CXq1egORvciiFbGJkVKpTYr2N2BpYLQdBSHlgHNrlyBIdB0O+Aoxt7l11Wa7GVWyoTdjg/cOmdceBMrnJ1QDGZsjz0Lz9u+bmbEWiRefNwhkPQQicN/vAkTnHZ8DuoIswbpmksZRumsxfA5YJcJRepZCixavqoYSVuYWECbbW/FXKzEYJZGmL3knKe6cS5u4qkdeaAO/uzJQR5HAA=
+Received: from akaher-virtual-machine.eng.vmware.com ([66.170.99.2])
+        by smtp.gmail.com with ESMTPSA id kc12-20020a17090333cc00b001d94a245f3fsm880583plb.16.2024.02.01.22.41.59
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 01 Feb 2024 22:42:00 -0800 (PST)
+From: Ajay Kaher <ajay.kaher@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: pablo@netfilter.org,
+	kadlec@netfilter.org,
+	fw@strlen.de,
+	davem@davemloft.net,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	alexey.makhalov@broadcom.com,
+	florian.fainelli@broadcom.com,
+	vasavi.sirnapalli@broadcom.com,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Ajay Kaher <ajay.kaher@broadcom.com>
+Subject: [PATCH v5.10.y] netfilter: nf_tables: fix pointer math issue in nft_byteorder_eval()
+Date: Fri,  2 Feb 2024 12:11:21 +0530
+Message-Id: <1706856081-37418-1-git-send-email-ajay.kaher@broadcom.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240126160724.13278-3-hdegoede@redhat.com>
 
-On Fri, Jan 26, 2024 at 05:07:24PM +0100, Hans de Goede wrote:
-> After commit 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in
-> translated mode") not only the getid command is skipped, but also
-> the de-activating of the keyboard at the end of atkbd_probe(), potentially
-> re-introducing the problem fixed by commit be2d7e4233a4 ("Input: atkbd -
-> fix multi-byte scancode handling on reconnect").
-> 
-> Make sure multi-byte scancode handling on reconnect is still handled
-> correctly by not skipping the atkbd_deactivate() call.
-> 
-> Fixes: 936e4d49ecbc ("Input: atkbd - skip ATKBD_CMD_GETID in translated mode")
-> Tested-by: Paul Menzel <pmenzel@molgen.mpg.de>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/input/keyboard/atkbd.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/input/keyboard/atkbd.c b/drivers/input/keyboard/atkbd.c
-> index c229bd6b3f7f..7f67f9f2946b 100644
-> --- a/drivers/input/keyboard/atkbd.c
-> +++ b/drivers/input/keyboard/atkbd.c
-> @@ -826,7 +826,7 @@ static int atkbd_probe(struct atkbd *atkbd)
->  
->  	if (atkbd_skip_getid(atkbd)) {
->  		atkbd->id = 0xab83;
-> -		return 0;
-> +		goto deactivate_kbd;
->  	}
->  
->  /*
-> @@ -863,6 +863,7 @@ static int atkbd_probe(struct atkbd *atkbd)
->  		return -1;
->  	}
->  
-> +deactivate_kbd:
->  /*
->   * Make sure nothing is coming from the keyboard and disturbs our
->   * internal state.
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-I wonder if we need to do the same for the case when we go into SET LEDS
-branch... This can be done in a separate patch though.
+commit c301f0981fdd3fd1ffac6836b423c4d7a8e0eb63 upstream.
 
-Thanks.
+The problem is in nft_byteorder_eval() where we are iterating through a
+loop and writing to dst[0], dst[1], dst[2] and so on...  On each
+iteration we are writing 8 bytes.  But dst[] is an array of u32 so each
+element only has space for 4 bytes.  That means that every iteration
+overwrites part of the previous element.
 
+I spotted this bug while reviewing commit caf3ef7468f7 ("netfilter:
+nf_tables: prevent OOB access in nft_byteorder_eval") which is a related
+issue.  I think that the reason we have not detected this bug in testing
+is that most of time we only write one element.
+
+Fixes: ce1e7989d989 ("netfilter: nft_byteorder: provide 64bit le/be conversion")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Ajay: Modified to apply on v5.10.y]
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+---
+ include/net/netfilter/nf_tables.h | 4 ++--
+ net/netfilter/nft_byteorder.c     | 5 +++--
+ net/netfilter/nft_meta.c          | 2 +-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index 2237657..2da11d8 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -142,9 +142,9 @@ static inline u16 nft_reg_load16(const u32 *sreg)
+ 	return *(u16 *)sreg;
+ }
+ 
+-static inline void nft_reg_store64(u32 *dreg, u64 val)
++static inline void nft_reg_store64(u64 *dreg, u64 val)
+ {
+-	put_unaligned(val, (u64 *)dreg);
++	put_unaligned(val, dreg);
+ }
+ 
+ static inline u64 nft_reg_load64(const u32 *sreg)
+diff --git a/net/netfilter/nft_byteorder.c b/net/netfilter/nft_byteorder.c
+index 7b0b8fe..9d250bd 100644
+--- a/net/netfilter/nft_byteorder.c
++++ b/net/netfilter/nft_byteorder.c
+@@ -38,20 +38,21 @@ void nft_byteorder_eval(const struct nft_expr *expr,
+ 
+ 	switch (priv->size) {
+ 	case 8: {
++		u64 *dst64 = (void *)dst;
+ 		u64 src64;
+ 
+ 		switch (priv->op) {
+ 		case NFT_BYTEORDER_NTOH:
+ 			for (i = 0; i < priv->len / 8; i++) {
+ 				src64 = nft_reg_load64(&src[i]);
+-				nft_reg_store64(&dst[i], be64_to_cpu(src64));
++				nft_reg_store64(&dst64[i], be64_to_cpu(src64));
+ 			}
+ 			break;
+ 		case NFT_BYTEORDER_HTON:
+ 			for (i = 0; i < priv->len / 8; i++) {
+ 				src64 = (__force __u64)
+ 					cpu_to_be64(nft_reg_load64(&src[i]));
+-				nft_reg_store64(&dst[i], src64);
++				nft_reg_store64(&dst64[i], src64);
+ 			}
+ 			break;
+ 		}
+diff --git a/net/netfilter/nft_meta.c b/net/netfilter/nft_meta.c
+index 44d9b38..cb5bb0e 100644
+--- a/net/netfilter/nft_meta.c
++++ b/net/netfilter/nft_meta.c
+@@ -63,7 +63,7 @@ nft_meta_get_eval_time(enum nft_meta_keys key,
+ {
+ 	switch (key) {
+ 	case NFT_META_TIME_NS:
+-		nft_reg_store64(dest, ktime_get_real_ns());
++		nft_reg_store64((u64 *)dest, ktime_get_real_ns());
+ 		break;
+ 	case NFT_META_TIME_DAY:
+ 		nft_reg_store8(dest, nft_meta_weekday());
 -- 
-Dmitry
+2.7.4
+
 
