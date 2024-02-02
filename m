@@ -1,76 +1,158 @@
-Return-Path: <stable+bounces-17767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21B188479E9
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 20:50:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C2E847A01
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 20:56:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9E911F2592C
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 19:50:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64127B26A56
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 19:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A0280601;
-	Fri,  2 Feb 2024 19:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C615B66F;
+	Fri,  2 Feb 2024 19:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YidB8HPf"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3q5u1cCV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C35715E5AE;
-	Fri,  2 Feb 2024 19:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC28C81724
+	for <stable@vger.kernel.org>; Fri,  2 Feb 2024 19:55:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706903413; cv=none; b=G6WP/dOdz2sZ7YckAoF0q/w3XUCJ12dscOT8pY9ix99CpOA8VHIFHoLKiimj4PXmvOiaCHoF9uXvx3350UCiF4st3ynx+wupE3lGBkMVg28Qql9EzJpWBQPppro78RpY4EJzvMyzZffKHpmDukfx8PKRGtYFgyjKgw1dYbiVBJ4=
+	t=1706903754; cv=none; b=arKBkTqW71+vb4/74/Fzs8BJ8GaRwXqsbplnvvW39Cb72WNf49c0fIqJhYZCMpry26e8I9pJmDBEa/LU5uYtHjqtuBdnhCB2F+uMSWbQ8Z/7a7WKFLuV+J0sz8CMnGXMcHrn6qZ7kP0Q7Ihekkbqj+rnhH3+5CU84JetvbIhVVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706903413; c=relaxed/simple;
-	bh=YcqAb0eeG1UQfU4RQ4w69QvxJUQXnoH0wE5ZB5Uatb8=;
+	s=arc-20240116; t=1706903754; c=relaxed/simple;
+	bh=95AIW4KlBus8wL5x7I3bZqt4SU9vj3L1+DdUDs0U47A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cau+wz1Msy+QBHIdP3eVnu63lNXKYxDi77ExuK2Digq/MGCEbuVu8vRpV6qYhyXJR1DvJNgtETKPsaTnzI8Z5ApWtUxpBVfhqm0ledLB9RLujfWlBZkFT6OLWni64ROoNgaxwcJu4s+yELlwIHMWhYnpTxJp7KhAXa12KCuPJb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YidB8HPf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95CAC433C7;
-	Fri,  2 Feb 2024 19:50:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706903413;
-	bh=YcqAb0eeG1UQfU4RQ4w69QvxJUQXnoH0wE5ZB5Uatb8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YidB8HPfaMzk1DQCxQDxYti2FrCpVS5hh8CSjsQIcrRNuXC/utJCu57kxm8TUftjz
-	 J4mAiQK8KNEFuwzcPAntEeE2LROLqEumT5oRgcFIwZuGbLWR2YJVBAlxYL/+/YrszE
-	 CqzMUq3gcqHWdpOu55u9t/l4z7I9fRk/409B7VyzHXav5s2J5LhiuP6X+nFZ7Z+MN+
-	 LquKa4cHWYSUOEClkmOFS7hAahIdBmzFz2VdEgC0hu9E/HeOnezYbDHQW6PaQqVxk1
-	 ax9F43G1Dw01P7fEuRVIZo/N/D+MHux6OVqK3NS3AtrOOApwRzyUBORMW6ESvEKaXd
-	 9FCoMokATyttA==
-Date: Fri, 2 Feb 2024 14:50:11 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Tim Lunn <tim@feathertop.org>
-Cc: stable-commits@vger.kernel.org, stable@vger.kernel.org,
-	Heiko Stuebner <heiko@sntech.de>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: Re: Patch "i2c: rk3x: Adjust mask/value offset for i2c2 on rv1126"
- has been added to the 6.1-stable tree
-Message-ID: <Zb1Hc48F3ssUPOjw@sashalap>
-References: <20240201172757.95049-1-sashal@kernel.org>
- <1698d0d4-8637-4723-b2b2-5e06d5410e5f@feathertop.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=j2XaVe9GbKuwWPgRCQQvfS4A6wQ+W20R5FFKtqCWMf/IZvLIQEqhiaIeIu1E+9W+pRPxJ8rJFuHrV0AdEwiUCCe8Lry/s3qprCTOIkmJ1dAyT+fcN825QV1NZGBeZyPU82gqrK3Xhs1t4gCtA+/Sj0HZ2xK1ZMy/T8V4+adTSxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3q5u1cCV; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-5c6bd3100fcso1986868a12.3
+        for <stable@vger.kernel.org>; Fri, 02 Feb 2024 11:55:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1706903752; x=1707508552; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mZtrhHWJ+pfqN2QJR+1RI9NqKi6clgmRoBV9BxjkVtU=;
+        b=3q5u1cCVKm1xSPBC/s3j0vV32NK6X40U46RrKBQ036aW7IAOs/n5DbzDhhPbK+6hHF
+         SrPMFvHBLaHb4IWoQu0ANShvga7ZMRgFoZirM7QBwPVQS9pWuKIzZ55ircUbv+qO8ze8
+         1C5CJyWwJQxvVDngVbQz68mEE8V0wWWxmiyXbbcIVw2phtkP4d4tL8v99NYE38EpwErU
+         xkLVJ9jL2LULzkZkpfj4dl0pAEVM89zm/Dc8fCTW0tRtOrgR78FVdhvhq8g3oFhyMFVz
+         rNZ0DGuPKVzvUq31LhrpBqsslZvuyQw8q268d1YsJ03BPLUeNpD1tZkeyHzJuDD1sqVf
+         TCxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706903752; x=1707508552;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mZtrhHWJ+pfqN2QJR+1RI9NqKi6clgmRoBV9BxjkVtU=;
+        b=RdC4/vPo6mEZ1TkdRB7wHjvEmXGZepIo8lqzsX95TWOPqQ/NeRuLjFAlQb2KQUifo8
+         Nbf89b9B3vtqEAWQIN3uK4heLOdjLh5c4O2NrPykyB4xZCp0nf2gF/OJEcL9oKr3O61U
+         d4jxxnCAMGIPoxERbZdgmrqo8U63/q5y3WiCY3T8GAy/8V1lc3TLCh2N4uLOztM8jPRP
+         /rkmLgHfTH96QstIhw+f1nMyRuPqb1dQL7G7RAPtwU32rVb+RhCDUImRN6NIGHpSheDR
+         izicQh83jB7GPExQzCtKrU5KDSssIkFH8A+DKZexEM6wJAxVEPSYmdx7o3tYEn5VcPl6
+         UlbQ==
+X-Gm-Message-State: AOJu0YwJ0kL2/oqcQZmPTuCz5TYIGMI+gB7P5XpF3dxlw0cgNu0qcSX6
+	9Lok1xBOAqRtI7nyMwQZaLAFNWp4CwUbRPJFzrG9lOLdCKRMOvZFw9ogFmLCIQ==
+X-Google-Smtp-Source: AGHT+IHWl6n81+OmfaV8OHrK/X4KkCArIuT/WLGKLp1Ihm6VXAnHLRBuZZzCf/NxdXGw+/dzX+SrdA==
+X-Received: by 2002:a05:6a20:b1a:b0:199:29c5:12f7 with SMTP id x26-20020a056a200b1a00b0019929c512f7mr2617689pzf.29.1706903751992;
+        Fri, 02 Feb 2024 11:55:51 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCXxciM+FwBaRLlPGM5QHe7rCQbUPfryauCO3qLegJCU1O3MxuD/uidBPNCFlhYFpemEbwKy5/niV//aa96GoLsQNB1DQ821roJb5To7xHWQBdkH7oklgTGQqcJFaHIlkhRHCOPZvhZxP8R1hVrnX7luJU3j5rKRgsHTTtoLLit/QxnZubgxYjTS7zoJq7QQOuTyPA3sTdUeVi7dIxH+lMb2uo0YzdZ4qAknHK1kToyWqjt6Upqni13yfcHYumvL+Pl7Yj1T25ED/y3R2JW+dt7/wkCc6f80JuBQkPjOP3k6/fwQIpkagTqEdG9f3XmZUyLO4C+nFq40kZFPEEIT+YYLOJphBRcPxQYR
+Received: from google.com (152.33.83.34.bc.googleusercontent.com. [34.83.33.152])
+        by smtp.gmail.com with ESMTPSA id c26-20020aa7881a000000b006d9be753ac7sm2017429pfo.108.2024.02.02.11.55.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 Feb 2024 11:55:51 -0800 (PST)
+Date: Fri, 2 Feb 2024 19:55:48 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Cc: bvanassche@acm.org, peterz@infradead.org, mingo@redhat.com,
+	will@kernel.org, longman@redhat.com, boqun.feng@gmail.com,
+	linux-kernel@vger.kernel.org, niuzhiguo84@gmail.com,
+	ke.wang@unisoc.com, hongyu.jin@unisoc.com, stable@vger.kernel.org
+Subject: Re: [PATCH V3] lockdep: fix deadlock issue between lockdep and rcu
+Message-ID: <Zb1IxNd54z2Ib1N3@google.com>
+References: <1706861676-26574-1-git-send-email-zhiguo.niu@unisoc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1698d0d4-8637-4723-b2b2-5e06d5410e5f@feathertop.org>
+In-Reply-To: <1706861676-26574-1-git-send-email-zhiguo.niu@unisoc.com>
 
-On Fri, Feb 02, 2024 at 07:10:29PM +1100, Tim Lunn wrote:
->Hi,
->  This patch should not be added to 6.1 stable since support for the 
->Rockchip rv1126 SoC was only added later around 6.3.
+On Fri, Feb 02, 2024 at 04:14:36PM +0800, Zhiguo Niu wrote:
+> There is a deadlock scenario between lockdep and rcu when
+> rcu nocb feature is enabled, just as following call stack:
+> 
+>      rcuop/x
+> -000|queued_spin_lock_slowpath(lock = 0xFFFFFF817F2A8A80, val = ?)
+> -001|queued_spin_lock(inline) // try to hold nocb_gp_lock
+> -001|do_raw_spin_lock(lock = 0xFFFFFF817F2A8A80)
+> -002|__raw_spin_lock_irqsave(inline)
+> -002|_raw_spin_lock_irqsave(lock = 0xFFFFFF817F2A8A80)
+> -003|wake_nocb_gp_defer(inline)
+> -003|__call_rcu_nocb_wake(rdp = 0xFFFFFF817F30B680)
+> -004|__call_rcu_common(inline)
+> -004|call_rcu(head = 0xFFFFFFC082EECC28, func = ?)
+> -005|call_rcu_zapped(inline)
+> -005|free_zapped_rcu(ch = ?)// hold graph lock
+> -006|rcu_do_batch(rdp = 0xFFFFFF817F245680)
+> -007|nocb_cb_wait(inline)
+> -007|rcu_nocb_cb_kthread(arg = 0xFFFFFF817F245680)
+> -008|kthread(_create = 0xFFFFFF80803122C0)
+> -009|ret_from_fork(asm)
+> 
+>      rcuop/y
+> -000|queued_spin_lock_slowpath(lock = 0xFFFFFFC08291BBC8, val = 0)
+> -001|queued_spin_lock()
+> -001|lockdep_lock()
+> -001|graph_lock() // try to hold graph lock
+> -002|lookup_chain_cache_add()
+> -002|validate_chain()
+> -003|lock_acquire
+> -004|_raw_spin_lock_irqsave(lock = 0xFFFFFF817F211D80)
+> -005|lock_timer_base(inline)
+> -006|mod_timer(inline)
+> -006|wake_nocb_gp_defer(inline)// hold nocb_gp_lock
+> -006|__call_rcu_nocb_wake(rdp = 0xFFFFFF817F2A8680)
+> -007|__call_rcu_common(inline)
+> -007|call_rcu(head = 0xFFFFFFC0822E0B58, func = ?)
+> -008|call_rcu_hurry(inline)
+> -008|rcu_sync_call(inline)
+> -008|rcu_sync_func(rhp = 0xFFFFFFC0822E0B58)
+> -009|rcu_do_batch(rdp = 0xFFFFFF817F266680)
+> -010|nocb_cb_wait(inline)
+> -010|rcu_nocb_cb_kthread(arg = 0xFFFFFF817F266680)
+> -011|kthread(_create = 0xFFFFFF8080363740)
+> -012|ret_from_fork(asm)
+> 
+> rcuop/x and rcuop/y are rcu nocb threads with the same nocb gp thread.
+> This patch release the graph lock before lockdep call_rcu.
+> 
+> Fixes: a0b0fd53e1e6 ("locking/lockdep: Free lock classes that are no longer in use")
+> Cc: <stable@vger.kernel.org>
+> Cc: Boqun Feng <boqun.feng@gmail.com>
+> Cc: Waiman Long <longman@redhat.com>
+> Cc: Carlos Llamas <cmllamas@google.com>
+> Cc: Bart Van Assche <bvanassche@acm.org>
+> Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+> Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
+> ---
+> changes of v3: correct code comments and add Cc tag.
+> changes of v2: update patch according to Boqun's suggestions.
+> ---
 
-I'll drop it from 6.1, thanks!
+It seems v3 should have collected the review tags from Boqun and Waiman.
+Also, I'm actually Cc'ing stable here. I hope that is enough.
+FWIW, this looks fine to me.
 
--- 
-Thanks,
-Sasha
+Reviewed-by: Carlos Llamas <cmllamas@google.com>
+
+Thanks
 
