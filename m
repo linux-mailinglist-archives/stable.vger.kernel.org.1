@@ -1,80 +1,96 @@
-Return-Path: <stable+bounces-17643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EC28465A0
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 03:05:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 544818465CD
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 03:30:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26BB6B22464
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 02:05:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EC5D289F3B
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 02:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A36D63CC;
-	Fri,  2 Feb 2024 02:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F9FBE69;
+	Fri,  2 Feb 2024 02:30:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from lechuck.jsg.id.au (jsg.id.au [193.114.144.202])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF8F53A1
-	for <stable@vger.kernel.org>; Fri,  2 Feb 2024 02:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.114.144.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9786DBA48;
+	Fri,  2 Feb 2024 02:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706839510; cv=none; b=Ia7XjTSkAqrKf+yn+ipePcaWK08rLsTPgwl05r3eXcuccd8YbFWdA80CffQnOgxRrSZ3C1EZDp6fnwGY7qPRJ5LnhCgpSLSpunrsexkVf1EX+91f8wrXJNkan/PxGX5GIh7RopHXpwRvrtAxFLGHWLsM43vXx85HBaKZVdKrSus=
+	t=1706841004; cv=none; b=YZ2mMcNnxxjcLrxVkWgdyX5mfNj7nCUpKAUvPzWSpH6n4oE7y9B4nh63+h3rkINMAmYbi9lbs5EB1kPXBA3uliIlrCFxlIDjzepR8DCiZzOJDszb5h7e+4X3KIXikjFAeYr1NF4hbxaNqZvM8ZXtUnfWm1sB92l7zUBbALrFZxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706839510; c=relaxed/simple;
-	bh=eH9yUJ3D3URhUvKnrXibXdOp5rYBQ+uXILnFP7Bm/0U=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UQ9laRt0mZpoYPwoZ4sGAZjszxbnyiu0Oy4mga0nD6Y5lumbR2D9+S61gUbLae2ze1BGzMB5irgoGozHtjQsTq2bdLFKgjaYYjw0VQ+Jj8vuvkq6vf5WVfH5BB+UXoRjC9bK+cR08J3t9p5/kmA8wBmvv2fPogqlxortqxM8XA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jsg.id.au; spf=pass smtp.mailfrom=jsg.id.au; arc=none smtp.client-ip=193.114.144.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jsg.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jsg.id.au
-Received: from largo.jsg.id.au (largo.jsg.id.au [192.168.1.43])
-	by lechuck.jsg.id.au (OpenSMTPD) with ESMTPS id 53754607 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Fri, 2 Feb 2024 13:05:06 +1100 (AEDT)
-Received: from largo.jsg.id.au (localhost [127.0.0.1])
-	by largo.jsg.id.au (OpenSMTPD) with ESMTP id 0d3b8a52;
-	Fri, 2 Feb 2024 13:05:05 +1100 (AEDT)
-From: Jonathan Gray <jsg@jsg.id.au>
-To: gregkh@linuxfoundation.org
-Cc: mario.limonciello@amd.com,
-	stable@vger.kernel.org
-Subject: [PATCH 6.7.y] Revert "drm/amd/display: Disable PSR-SU on Parade 0803 TCON again"
-Date: Fri,  2 Feb 2024 13:05:05 +1100
-Message-Id: <20240202020505.22536-1-jsg@jsg.id.au>
-X-Mailer: git-send-email 2.40.0
+	s=arc-20240116; t=1706841004; c=relaxed/simple;
+	bh=xGDj3nGkIf9G4tPuNhBHZGlYOdiazfs12CRgZPhGO4w=;
+	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
+	 Content-Type; b=K8xKM065BFtKVUjmY89nKWGfIRPH8CLzcWpt2UXUSnKF8xG4pxApi/xqWXp6jdonfp7fe9bekAymmFIQ/YtOv09ui98SW/5VtwOx2Ve0IoHQFTttgybGDUwufOne7KKdLJV6UHPzwUjFquhgg2aCsM33vm4X1yqfbAkW7Qu1OF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 441DAC43394;
+	Fri,  2 Feb 2024 02:30:04 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.97)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1rVjJu-00000005k6A-0vDf;
+	Thu, 01 Feb 2024 21:30:22 -0500
+Message-ID: <20240202023022.088387401@goodmis.org>
+User-Agent: quilt/0.67
+Date: Thu, 01 Feb 2024 21:30:00 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org,
+ Vincent Donnefort <vdonnefort@google.com>
+Subject: [for-linus][PATCH 01/13] ring-buffer: Clean ring_buffer_poll_wait() error return
+References: <20240202022959.515961549@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
 
-This reverts commit f015d8b6405d950f30826b4d8d9e1084dd9ea2a4.
+From: Vincent Donnefort <vdonnefort@google.com>
 
-duplicated a change made in 6.7
-e7ab758741672acb21c5d841a9f0309d30e48a06
+The return type for ring_buffer_poll_wait() is __poll_t. This is behind
+the scenes an unsigned where we can set event bits. In case of a
+non-allocated CPU, we do return instead -EINVAL (0xffffffea). Lucky us,
+this ends up setting few error bits (EPOLLERR | EPOLLHUP | EPOLLNVAL), so
+user-space at least is aware something went wrong.
 
-Cc: stable@vger.kernel.org # 6.7
-Signed-off-by: Jonathan Gray <jsg@jsg.id.au>
+Nonetheless, this is an incorrect code. Replace that -EINVAL with a
+proper EPOLLERR to clean that output. As this doesn't change the
+behaviour, there's no need to treat this change as a bug fix.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20240131140955.3322792-1-vdonnefort@google.com
+
+Cc: stable@vger.kernel.org
+Fixes: 6721cb6002262 ("ring-buffer: Do not poll non allocated cpu buffers")
+Signed-off-by: Vincent Donnefort <vdonnefort@google.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- drivers/gpu/drm/amd/display/modules/power/power_helpers.c | 2 --
- 1 file changed, 2 deletions(-)
+ kernel/trace/ring_buffer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/power/power_helpers.c b/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
-index 7806056ca1dd..1675314a3ff2 100644
---- a/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
-+++ b/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
-@@ -841,8 +841,6 @@ bool is_psr_su_specific_panel(struct dc_link *link)
- 				isPSRSUSupported = false;
- 			else if (dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x03)
- 				isPSRSUSupported = false;
--			else if (dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x03)
--				isPSRSUSupported = false;
- 			else if (dpcd_caps->psr_info.force_psrsu_cap == 0x1)
- 				isPSRSUSupported = true;
- 		}
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 13aaf5e85b81..fd4bfe3ecf01 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -944,7 +944,7 @@ __poll_t ring_buffer_poll_wait(struct trace_buffer *buffer, int cpu,
+ 		full = 0;
+ 	} else {
+ 		if (!cpumask_test_cpu(cpu, buffer->cpumask))
+-			return -EINVAL;
++			return EPOLLERR;
+ 
+ 		cpu_buffer = buffer->buffers[cpu];
+ 		work = &cpu_buffer->irq_work;
 -- 
 2.43.0
+
 
 
