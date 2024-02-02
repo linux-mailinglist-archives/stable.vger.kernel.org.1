@@ -1,62 +1,75 @@
-Return-Path: <stable+bounces-17692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B90847802
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 19:44:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B71847804
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 19:44:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42D611C20ADD
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 18:44:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCF711F2DAB6
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 18:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA3E839E6;
-	Fri,  2 Feb 2024 18:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6B2150988;
+	Fri,  2 Feb 2024 18:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dmwWr8lS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jl+YNTKR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896768592A;
-	Fri,  2 Feb 2024 18:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E172581738;
+	Fri,  2 Feb 2024 18:39:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706899193; cv=none; b=XB6wjaTrzQ4smnCKo6folRtB74A69zsfxNjUlpw8QZtSNU9qg3aC224vXkXQkDE9AeQw0/DInDOdmctoY7GIUaR/EoQP0yzq2/vKu3szuVScaCi/pr6UoS1Qcz9N6z5xvPhEc0eHvK2ryhRobS19dmvBXshVsMQdJOIZu7brfdE=
+	t=1706899198; cv=none; b=fFRZQvhPye7yUGI+Ydm4IRWyd52i22N/vESJ3E/YvuzA5pk3ij0lu5+rG1JdDJl31GveaJYPSk7Osf7GUqvq9r/pnPwjT0n7K8/25c4MAKB30yQD17nrUC0PceX3QpX/dBJ3DXhQE68ZAQZ8Yrd/Y+EHMYwc9Vg9y7pU6M6e12I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706899193; c=relaxed/simple;
-	bh=MAtB2ChwFF1exhEfUKrF79D5jxW1fp8BGXZSzKt5ZVE=;
+	s=arc-20240116; t=1706899198; c=relaxed/simple;
+	bh=/GgaPwcxXLMGw96QHxTmcd+p19bQxwEOIwtu1eiz/68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uvkCkRXL+akje/PSwdORurUGfylySpCusnw2583qH7PAVfYVdgDrWdimfJRWsU0yhzo7f54Bv1hHDqDo9EhC7eky3uJBYUbbihiEdAOgctZtR/ViQBY0OC30zkTpAXWbnjM3IyJhcKURpUSGEDlSAwetMI7gRfCI6w0LuYI3Zsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dmwWr8lS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9A4C433C7;
-	Fri,  2 Feb 2024 18:39:51 +0000 (UTC)
+	 MIME-Version; b=fAiAZe99ohnASUnPehI/5KAzlCgh30ToSvPRdIGQgKLZieFg62ZEiJekQj95jelXRh9/px//sp56mE0LQOtXP+UDT1MKQ8UBB5XCXoceiHK4BtXzSvvg28eewLqD2o8VSbKkMs6TjVKYGCpqJPNrao6HcKbeOvoDifhIuhbCeB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jl+YNTKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F2FC433F1;
+	Fri,  2 Feb 2024 18:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706899192;
-	bh=MAtB2ChwFF1exhEfUKrF79D5jxW1fp8BGXZSzKt5ZVE=;
+	s=k20201202; t=1706899196;
+	bh=/GgaPwcxXLMGw96QHxTmcd+p19bQxwEOIwtu1eiz/68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dmwWr8lS5qXnv/HIncGxsoRRi0lNkX5NvSRT07ylB1KllAe6T3wiyR7QQWSuzxpxH
-	 kCT1tWEb449EpNr9KGBavyvS3A2/jWLevMGbtcmEjc+RYNhTNC/K0NyNL2Y5I4pCD1
-	 hNAnJ2LzVzo5YIAHl0W+Sghw+lbZFHBAU+tgt1ojekQJ8bIflVzR0kJPcIJpuazGnj
-	 MtNYJz6+wuzitC6KEfFeq9Tho0n2TGqN8d2/euYLr5Ryom0L56hPWIGvyBNJnmPJA0
-	 98V9RJnkDqwmYWGXQfLI6YqHbuJWWbTCI1XwTvS5UCVU6/r0kMd2B6fRKfDTV9a1Ps
-	 WbLexpMJxMlAg==
+	b=Jl+YNTKRZO5Z+q5sSVrCvBMLinJwzJiFHevf5cc0E850wSV7g+8YJQDZQyUeUF+mE
+	 66v1RL822OouIsrLjzuoqzw8bNc1yXUogCD+igc/h3yBOt8YMeJfcrRG9GHa63sYD3
+	 XRGw5dMxqGwVmSesZthdsLiKHZcZnluV+fl4+VmvkVayQR0LdJjPGMJxrw9o+0NaJ0
+	 2z4Sy9mhBDn/qWCVktFC3bWRAljG6V9F26iTRI2yE9E4wbQcW3acwzKyK6Qk2IRHPB
+	 Hwa4u+UJBC677Us4mNUGr0Ok4VJMcyFeueoAcbelWSSpNNGBcg31n0n5m3znMryapY
+	 96Og3VM/HUQfg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Kees Cook <keescook@chromium.org>,
+	Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
 	Sasha Levin <sashal@kernel.org>,
-	james.schulman@cirrus.com,
-	david.rhodes@cirrus.com,
-	rf@opensource.cirrus.com,
-	alsa-devel@alsa-project.org,
-	patches@opensource.cirrus.com,
-	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.7 17/23] spi: cs42l43: Handle error from devm_pm_runtime_enable
-Date: Fri,  2 Feb 2024 13:39:13 -0500
-Message-ID: <20240202183926.540467-17-sashal@kernel.org>
+	mingo@redhat.com,
+	peterz@infradead.org,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	surenb@google.com,
+	mst@redhat.com,
+	michael.christie@oracle.com,
+	mjguzik@gmail.com,
+	npiggin@gmail.com,
+	zhangpeng.00@bytedance.com,
+	hca@linux.ibm.com
+Subject: [PATCH AUTOSEL 6.7 18/23] exec: Distinguish in_execve from in_exec
+Date: Fri,  2 Feb 2024 13:39:14 -0500
+Message-ID: <20240202183926.540467-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240202183926.540467-1-sashal@kernel.org>
 References: <20240202183926.540467-1-sashal@kernel.org>
@@ -71,38 +84,69 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.7.3
 Content-Transfer-Encoding: 8bit
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit f9f4b0c6425eb9ffd9bf62b8b8143e786b6ba695 ]
+[ Upstream commit 90383cc07895183c75a0db2460301c2ffd912359 ]
 
-As it devm_pm_runtime_enable can fail due to memory allocations, it is
-best to handle the error.
+Just to help distinguish the fs->in_exec flag from the current->in_execve
+flag, add comments in check_unsafe_exec() and copy_fs() for more
+context. Also note that in_execve is only used by TOMOYO now.
 
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://msgid.link/r/20240124174101.2270249-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Kentaro Takeda <takedakn@nttdata.co.jp>
+Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-cs42l43.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/exec.c             | 1 +
+ include/linux/sched.h | 2 +-
+ kernel/fork.c         | 1 +
+ 3 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-cs42l43.c b/drivers/spi/spi-cs42l43.c
-index d239fc5a49cc..c1556b652909 100644
---- a/drivers/spi/spi-cs42l43.c
-+++ b/drivers/spi/spi-cs42l43.c
-@@ -244,7 +244,10 @@ static int cs42l43_spi_probe(struct platform_device *pdev)
- 	priv->ctlr->use_gpio_descriptors = true;
- 	priv->ctlr->auto_runtime_pm = true;
+diff --git a/fs/exec.c b/fs/exec.c
+index 4aa19b24f281..3842066d5b0b 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1588,6 +1588,7 @@ static void check_unsafe_exec(struct linux_binprm *bprm)
+ 	}
+ 	rcu_read_unlock();
  
--	devm_pm_runtime_enable(priv->dev);
-+	ret = devm_pm_runtime_enable(priv->dev);
-+	if (ret)
-+		return ret;
-+
- 	pm_runtime_idle(priv->dev);
++	/* "users" and "in_exec" locked for copy_fs() */
+ 	if (p->fs->users > n_fs)
+ 		bprm->unsafe |= LSM_UNSAFE_SHARE;
+ 	else
+diff --git a/include/linux/sched.h b/include/linux/sched.h
+index 292c31697248..de0e2752c5b2 100644
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -917,7 +917,7 @@ struct task_struct {
+ 	unsigned			sched_rt_mutex:1;
+ #endif
  
- 	regmap_write(priv->regmap, CS42L43_TRAN_CONFIG6, CS42L43_FIFO_SIZE - 1);
+-	/* Bit to tell LSMs we're in execve(): */
++	/* Bit to tell TOMOYO we're in execve(): */
+ 	unsigned			in_execve:1;
+ 	unsigned			in_iowait:1;
+ #ifndef TIF_RESTORE_SIGMASK
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 10917c3e1f03..0a08837e1443 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -1754,6 +1754,7 @@ static int copy_fs(unsigned long clone_flags, struct task_struct *tsk)
+ 	if (clone_flags & CLONE_FS) {
+ 		/* tsk->fs is already what we want */
+ 		spin_lock(&fs->lock);
++		/* "users" and "in_exec" locked for check_unsafe_exec() */
+ 		if (fs->in_exec) {
+ 			spin_unlock(&fs->lock);
+ 			return -EAGAIN;
 -- 
 2.43.0
 
