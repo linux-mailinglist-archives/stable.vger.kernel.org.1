@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-17738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4EB684789F
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 19:56:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D7238478A1
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 19:56:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 523E928F78A
-	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 18:56:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C5D11F27F8B
+	for <lists+stable@lfdr.de>; Fri,  2 Feb 2024 18:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3819150441;
-	Fri,  2 Feb 2024 18:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144EA15045A;
+	Fri,  2 Feb 2024 18:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cCat88zz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E+60b7os"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD5114F9F8;
-	Fri,  2 Feb 2024 18:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C777D15044D;
+	Fri,  2 Feb 2024 18:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706899299; cv=none; b=Owinvlo18vTQIJOCJNw4lS0IiS2rVsJtBwjpKKc2NDDxVJ00fgK+kH0CloPf1jmSdN52VLEHQVnDFnQoK59C45I9CaJ66qA13yzTVynm8p709DnIoJgtdTy4SIo6nMCoOWXOsX4uIvQ6FOTFv0ArmX/eM1PAh9DwaWRRzEcnKzY=
+	t=1706899300; cv=none; b=Vojum8r8tQOVAilA/rVEQ6pMoqv5St+fi4srzL47B/NbCei+hzOQ/ewGi17i09sDbt2JpFYfrnXC6qGrQTljac0elILgyeE0LIwhSwmG/94Pp2uNyNLHA/7Z71+Sa7O7EHTWKWl6vPYTwsyqirHsDy9v1Im1t8+Y3NnftZ7sQi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706899299; c=relaxed/simple;
-	bh=6BtX4sPr7on3EyLgivNTvKhnk2B/xsdLcflX7xhu3/k=;
+	s=arc-20240116; t=1706899300; c=relaxed/simple;
+	bh=Df7cO0dyj8M9NjBa2lGjAHf2hVRhGVQ64biRaupcjmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qkYib5wJ/zC0YrFaaYlJC4zxuaCy47rMdzRIgY90vHPX4+ipC09BtIsuKkr0bLqwlV7HkXGY7UHbrhzdnkxbUPXerQwHGWNhPvFD5WQB6c1IqD3NA7Cs2z/laXsfYxOgO19PEqN3oOJ0jQlGP86Gr/YsUlrIUe3Hcw3ILbhMgZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cCat88zz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E22FC433F1;
-	Fri,  2 Feb 2024 18:41:38 +0000 (UTC)
+	 MIME-Version; b=EtHHfv2kJ6Vdwf11B4rzHOH5J6rnn9AKjgxyG/OLDwx8qf4UyAacfui5HUy5gIfvxg3DjfZ1Uq1dGrk6hyIc7e8vPVoIxEt1rkmtcX6/B16N7noJ2fy5ZmjtYosovhswE654I4Jatj0cCRy26rWu2G8BLvH/PEA97juJQPCgsYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E+60b7os; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13F8C433A6;
+	Fri,  2 Feb 2024 18:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706899299;
-	bh=6BtX4sPr7on3EyLgivNTvKhnk2B/xsdLcflX7xhu3/k=;
+	s=k20201202; t=1706899300;
+	bh=Df7cO0dyj8M9NjBa2lGjAHf2hVRhGVQ64biRaupcjmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cCat88zz4d+Ud37+OkQndOtDZhWyvdugVne/xecWKlQ/4OGeH4SbHphsgIcyUtY8Q
-	 GyZGC6FGR1WVQWUh+/aohw1njVxpvzspZnYW7arL72rZCkv5IxK8wWLTjRbgbepK44
-	 ucciGt3d736ZFp03sCwlQDsSegVq1x+dyupWMqQw+Ak79By7lGCKQQOfoTgWIOZxZ1
-	 ho5glhND8YHeh88Q+IaD6ZZHa7wNLjHVy4I+YIcQlGB7Tm1acd261SFgHPKnOSAjC2
-	 NMM58E8YYkPD7T6v7f1rMOwdwTPVRrXK081pRshw6dQ6K7oVrJVjWnrNnl5s2whoTS
-	 +clOjnBvGu0Qg==
+	b=E+60b7osLka4q2Ym8fUoAdt68DCFMU5T8SQ6QVTb68cNN3og/13Y/OyuNlFQEez+g
+	 rPJZs6fawjAtHBPb3FUltIf4iNq/qnjjCjDhG/lvwFe1kbaaDPzQOR6EarPrBNERnP
+	 XNypLqEQshxCIwgQlOurLCaw8qM3GpX2UDdvvXN/DLzPRQaNI0rkUvrXS01hJTt+xu
+	 Znmm1L8V2pW+miM43evCFQKDdVdWVWjqw2GZp/gJCUqUiQX3ttlpJKdqAEOKDBEGlI
+	 COj8ESs/zKtWQ1FH34sVKGdkOCNWfeiqp0DhlXlPIoq5/VzsG5phDpxpb+RPJbl5RT
+	 6V/VY4QrfnofQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Fullway Wang <fullwaywang@outlook.com>,
-	Helge Deller <deller@gmx.de>,
+Cc: Tony Luck <tony.luck@intel.com>,
+	Borislav Petkov <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>,
-	tzimmermann@suse.de,
-	sam@ravnborg.org,
-	javierm@redhat.com,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 04/11] fbdev: sis: Error out if pixclock equals zero
-Date: Fri,  2 Feb 2024 13:41:18 -0500
-Message-ID: <20240202184130.541736-4-sashal@kernel.org>
+	x86@kernel.org,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	dave.hansen@linux.intel.com
+Subject: [PATCH AUTOSEL 5.15 05/11] x86/cpu: Add model number for Intel Clearwater Forest processor
+Date: Fri,  2 Feb 2024 13:41:19 -0500
+Message-ID: <20240202184130.541736-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240202184130.541736-1-sashal@kernel.org>
 References: <20240202184130.541736-1-sashal@kernel.org>
@@ -69,41 +68,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.148
 Content-Transfer-Encoding: 8bit
 
-From: Fullway Wang <fullwaywang@outlook.com>
+From: Tony Luck <tony.luck@intel.com>
 
-[ Upstream commit e421946be7d9bf545147bea8419ef8239cb7ca52 ]
+[ Upstream commit 090e3bec01763e415bccae445f5bfe3d0c61b629 ]
 
-The userspace program could pass any values to the driver through
-ioctl() interface. If the driver doesn't check the value of pixclock,
-it may cause divide-by-zero error.
+Server product based on the Atom Darkmont core.
 
-In sisfb_check_var(), var->pixclock is used as a divisor to caculate
-drate before it is checked against zero. Fix this by checking it
-at the beginning.
-
-This is similar to CVE-2022-3061 in i740fb which was fixed by
-commit 15cf0b8.
-
-Signed-off-by: Fullway Wang <fullwaywang@outlook.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240117191844.56180-1-tony.luck@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sis/sis_main.c | 2 ++
+ arch/x86/include/asm/intel-family.h | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/video/fbdev/sis/sis_main.c b/drivers/video/fbdev/sis/sis_main.c
-index 266a5582f94d..c6e21ba00895 100644
---- a/drivers/video/fbdev/sis/sis_main.c
-+++ b/drivers/video/fbdev/sis/sis_main.c
-@@ -1474,6 +1474,8 @@ sisfb_check_var(struct fb_var_screeninfo *var, struct fb_info *info)
+diff --git a/arch/x86/include/asm/intel-family.h b/arch/x86/include/asm/intel-family.h
+index d975c60f863a..7ce43b47ab84 100644
+--- a/arch/x86/include/asm/intel-family.h
++++ b/arch/x86/include/asm/intel-family.h
+@@ -153,6 +153,8 @@
  
- 	vtotal = var->upper_margin + var->lower_margin + var->vsync_len;
+ #define INTEL_FAM6_GRANDRIDGE		0xB6
  
-+	if (!var->pixclock)
-+		return -EINVAL;
- 	pixclock = var->pixclock;
++#define INTEL_FAM6_ATOM_DARKMONT_X	0xDD /* Clearwater Forest */
++
+ /* Xeon Phi */
  
- 	if((var->vmode & FB_VMODE_MASK) == FB_VMODE_NONINTERLACED) {
+ #define INTEL_FAM6_XEON_PHI_KNL		0x57 /* Knights Landing */
 -- 
 2.43.0
 
