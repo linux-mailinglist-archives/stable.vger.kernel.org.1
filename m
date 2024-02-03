@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-18161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E3584819F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 263F98482BA
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E88628210B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFF23285DC4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482C333990;
-	Sat,  3 Feb 2024 04:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15FF4D5BD;
+	Sat,  3 Feb 2024 04:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWMNZ3Zj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2v7m0LM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078DA125AC;
-	Sat,  3 Feb 2024 04:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF85E1BF24;
+	Sat,  3 Feb 2024 04:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933592; cv=none; b=R8+lT86GrV8H5BXMU5YHRgGmSq9fqpdu3c0sD7An7OKtXP0b2SHv3It6/+90y8ynMbav/gr5iW957GVXWSx0U2w6H7+oyd/QxyLz5+yJt1N9QdPQRrDRKOtmlJ6uwvFXNGnPpY09CJClx8wmGg13BSkIycTN3JaGF3lvPrSvCnE=
+	t=1706933799; cv=none; b=cWTsZk9XoEHWRXKc0h0d7R8diNukyEdSItuY9DFuBLMZ/feS4A4oq8H5/nP75vK4Fl3W85OQ34HUSDAW3Gj6Bz+1khXAHrgK39Tu0KNpN8Vo2XFdoa+WPF77zBcycXi7X70EQLI1tEGpDbr1mClgEj8QydnCUpU+6W7u0gRvm5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933592; c=relaxed/simple;
-	bh=1QY1PCqExVAL3G9SXXKgtsWdthnZ2dEZntvukfdt/zc=;
+	s=arc-20240116; t=1706933799; c=relaxed/simple;
+	bh=0J4wLIG4OAtIoXkfhJUvaDWUX1flcmeGZmEoz4NVx4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ofufKupmaEWX5yWeMZxgSWeGeD/VwbhIWSqs9tFLXb2+VZ+UgCFO5hypmSAwWbfKmTOvOB54QfzdJcs0/zrdE6H/f78mmoktjNrP/8V/Dfxo/rGzk6rrDWmzDowdIzuSvho4O4k0Aj3j4hM+mW9nFwmm3LdCS6MibUna9Sk4v/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWMNZ3Zj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C69A1C433C7;
-	Sat,  3 Feb 2024 04:13:11 +0000 (UTC)
+	 MIME-Version; b=RSU18JfjujdwuHUVVu8sSb9fgZI6+uysMRPEjnbSlWrk2FlHQZQXmVFhc3vf+PlHsbNgxkmyjMSilRLM814PLxkWnZNiAjlgxLEAdW1neArJVZd3LNOiA1F91qLOiTbDgnSQ8Ck7xlvxEpOma6t5hqZGcow1hyxA5cov2c7UopU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2v7m0LM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7824FC43390;
+	Sat,  3 Feb 2024 04:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933591;
-	bh=1QY1PCqExVAL3G9SXXKgtsWdthnZ2dEZntvukfdt/zc=;
+	s=korg; t=1706933799;
+	bh=0J4wLIG4OAtIoXkfhJUvaDWUX1flcmeGZmEoz4NVx4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jWMNZ3ZjFDv8gAJ7hCaehFOxd/ZXDMMpDWTHDdm6i5dSGhBqJR/2T7ELIuPBx3sSm
-	 ie+06ulS3j/+GscEOVxVWuK7jlZoxteJDXy5J3/+kr9TIuyfwUMsODS/3cXsPgYqcZ
-	 mwTjc04D81u8vz31e4sOY8zPnYIXvcOi9i0YPkXs=
+	b=P2v7m0LMX1QAuDpfKpEgs2kb7XsaZT1G0qNu+yhVtVFSRvArQXotGCYY7qbunyvFq
+	 UbWNsfM4CVMZzwr/UtH0A9T6NL6i8/afIcLjI7ENdb8jizR7+jU7aRVzjvrerla/Kd
+	 GQykqK+UTFwPl647k5vLVgtRCQXeDTUknaG4Hxmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Tobias Waldekranz <tobias@waldekranz.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/322] net: dsa: mv88e6xxx: Fix mv88e6352_serdes_get_stats error path
+Subject: [PATCH 6.7 111/353] ARM: dts: imx: Use flash@0,0 pattern
 Date: Fri,  2 Feb 2024 20:03:49 -0800
-Message-ID: <20240203035403.413893997@linuxfoundation.org>
+Message-ID: <20240203035407.273283297@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobias Waldekranz <tobias@waldekranz.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit fc82a08ae795ee6b73fb6b50785f7be248bec7b5 ]
+[ Upstream commit 1e1d7cc478fb16816de09740e3c323c0c188d58f ]
 
-mv88e6xxx_get_stats, which collects stats from various sources,
-expects all callees to return the number of stats read. If an error
-occurs, 0 should be returned.
+Per mtd-physmap.yaml, 'nor@0,0' is not a valid node pattern.
 
-Prevent future mishaps of this kind by updating the return type to
-reflect this contract.
+Change it to 'flash@0,0' to fix the following dt-schema warning:
 
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+imx1-ads.dtb: nor@0,0: $nodename:0: 'nor@0,0' does not match '^(flash|.*sram|nand)(@.*)?$'
+	from schema $id: http://devicetree.org/schemas/mtd/mtd-physmap.yaml#
+
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.h   |  4 ++--
- drivers/net/dsa/mv88e6xxx/serdes.c | 10 +++++-----
- drivers/net/dsa/mv88e6xxx/serdes.h |  8 ++++----
- 3 files changed, 11 insertions(+), 11 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx1-ads.dts                  | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx1-apf9328.dts              | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi    | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-som.dtsi | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
-index 44383a03ef2f..c54d305a1d83 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.h
-+++ b/drivers/net/dsa/mv88e6xxx/chip.h
-@@ -601,8 +601,8 @@ struct mv88e6xxx_ops {
- 	int (*serdes_get_sset_count)(struct mv88e6xxx_chip *chip, int port);
- 	int (*serdes_get_strings)(struct mv88e6xxx_chip *chip,  int port,
- 				  uint8_t *data);
--	int (*serdes_get_stats)(struct mv88e6xxx_chip *chip,  int port,
--				uint64_t *data);
-+	size_t (*serdes_get_stats)(struct mv88e6xxx_chip *chip, int port,
-+				   uint64_t *data);
+diff --git a/arch/arm/boot/dts/nxp/imx/imx1-ads.dts b/arch/arm/boot/dts/nxp/imx/imx1-ads.dts
+index 5833fb6f15d8..2c817c4a4c68 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx1-ads.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx1-ads.dts
+@@ -65,7 +65,7 @@
+ 	pinctrl-0 = <&pinctrl_weim>;
+ 	status = "okay";
  
- 	/* SERDES registers for ethtool */
- 	int (*serdes_get_regs_len)(struct mv88e6xxx_chip *chip,  int port);
-diff --git a/drivers/net/dsa/mv88e6xxx/serdes.c b/drivers/net/dsa/mv88e6xxx/serdes.c
-index 3b4b42651fa3..01ea53940786 100644
---- a/drivers/net/dsa/mv88e6xxx/serdes.c
-+++ b/drivers/net/dsa/mv88e6xxx/serdes.c
-@@ -177,8 +177,8 @@ static uint64_t mv88e6352_serdes_get_stat(struct mv88e6xxx_chip *chip,
- 	return val;
- }
+-	nor: nor@0,0 {
++	nor: flash@0,0 {
+ 		compatible = "cfi-flash";
+ 		reg = <0 0x00000000 0x02000000>;
+ 		bank-width = <4>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx1-apf9328.dts b/arch/arm/boot/dts/nxp/imx/imx1-apf9328.dts
+index 1f11e9542a72..e66eef87a7a4 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx1-apf9328.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx1-apf9328.dts
+@@ -45,7 +45,7 @@
+ 	pinctrl-0 = <&pinctrl_weim>;
+ 	status = "okay";
  
--int mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
--			       uint64_t *data)
-+size_t mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
-+				  uint64_t *data)
- {
- 	struct mv88e6xxx_port *mv88e6xxx_port = &chip->ports[port];
- 	struct mv88e6352_serdes_hw_stat *stat;
-@@ -187,7 +187,7 @@ int mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
+-	nor: nor@0,0 {
++	nor: flash@0,0 {
+ 		compatible = "cfi-flash";
+ 		reg = <0 0x00000000 0x02000000>;
+ 		bank-width = <2>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi
+index 4b83e2918b55..c7e923584878 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi
+@@ -90,7 +90,7 @@
+ &weim {
+ 	status = "okay";
  
- 	err = mv88e6352_g2_scratch_port_has_serdes(chip, port);
- 	if (err <= 0)
--		return err;
-+		return 0;
+-	nor: nor@0,0 {
++	nor: flash@0,0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		compatible = "cfi-flash";
+diff --git a/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-som.dtsi
+index 7b2ea4cdae58..8d428c844666 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-som.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-som.dtsi
+@@ -314,7 +314,7 @@
+ &weim {
+ 	status = "okay";
  
- 	BUILD_BUG_ON(ARRAY_SIZE(mv88e6352_serdes_hw_stats) >
- 		     ARRAY_SIZE(mv88e6xxx_port->serdes_stats));
-@@ -429,8 +429,8 @@ static uint64_t mv88e6390_serdes_get_stat(struct mv88e6xxx_chip *chip, int lane,
- 	return reg[0] | ((u64)reg[1] << 16) | ((u64)reg[2] << 32);
- }
- 
--int mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
--			       uint64_t *data)
-+size_t mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
-+				  uint64_t *data)
- {
- 	struct mv88e6390_serdes_hw_stat *stat;
- 	int lane;
-diff --git a/drivers/net/dsa/mv88e6xxx/serdes.h b/drivers/net/dsa/mv88e6xxx/serdes.h
-index aac95cab46e3..ff5c3ab31e15 100644
---- a/drivers/net/dsa/mv88e6xxx/serdes.h
-+++ b/drivers/net/dsa/mv88e6xxx/serdes.h
-@@ -127,13 +127,13 @@ unsigned int mv88e6390_serdes_irq_mapping(struct mv88e6xxx_chip *chip,
- int mv88e6352_serdes_get_sset_count(struct mv88e6xxx_chip *chip, int port);
- int mv88e6352_serdes_get_strings(struct mv88e6xxx_chip *chip,
- 				 int port, uint8_t *data);
--int mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
--			       uint64_t *data);
-+size_t mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
-+				  uint64_t *data);
- int mv88e6390_serdes_get_sset_count(struct mv88e6xxx_chip *chip, int port);
- int mv88e6390_serdes_get_strings(struct mv88e6xxx_chip *chip,
- 				 int port, uint8_t *data);
--int mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
--			       uint64_t *data);
-+size_t mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
-+				  uint64_t *data);
- 
- int mv88e6352_serdes_get_regs_len(struct mv88e6xxx_chip *chip, int port);
- void mv88e6352_serdes_get_regs(struct mv88e6xxx_chip *chip, int port, void *_p);
+-	nor: nor@0,0 {
++	nor: flash@0,0 {
+ 		compatible = "cfi-flash";
+ 		reg = <0 0x00000000 0x02000000>;
+ 		bank-width = <2>;
 -- 
 2.43.0
 
