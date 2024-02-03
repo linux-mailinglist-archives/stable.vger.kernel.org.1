@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1BA08482EF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2558848086
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFBE01C24308
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 316921C20C0E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC004F5FF;
-	Sat,  3 Feb 2024 04:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3CF111AC;
+	Sat,  3 Feb 2024 04:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKj8XdHN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGZLEKRW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598361CA80;
-	Sat,  3 Feb 2024 04:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BD7111A8;
+	Sat,  3 Feb 2024 04:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933838; cv=none; b=asKeFKZoyMBCV07Yq7pW8KkXCkZHaYQW0Q0uTgCS+c3CMUAy3eh6UnAXjs6tFDOQH+FkSoAGet0JmNyepzbdPH72WhDfwtvzalOz6/32EP4aeMXk/mKzhswUd139qWZxYSuICMjStzJhPrW5Mz43pcLnObSPG7j4vE1ALPbIMAY=
+	t=1706933393; cv=none; b=Y+ERKs8L1o55iDiD2X6fhWS3ZiSTtELC6lvWrLZfylnUJeuXZRANfxPB5zSETkXIMCBSsqWvAC26L8nGbwx7TirOphZDo5+QZb4+1K6s1Zz/nfo6oUUWiEJlwNSxtIe+pq1PdkfMZ9GajfeGW6iRg6TmHqaS0YxaE7J6nPPqxqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933838; c=relaxed/simple;
-	bh=KF1OPOGOAeiEtplfTWHMHUyw4AHcb8Ma47V/msvcP5s=;
+	s=arc-20240116; t=1706933393; c=relaxed/simple;
+	bh=/KXdMt8nJebMdj1ykWNyinG1k53B8F1uuyA66rT0tsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CGhrF0ECnyVtMkYirA7sfRR25OI4kYSjw7GWLe0Qmcsy1LuzlfvMRCzGoO2LcqoIqUAawhkpzqW2+hDz2XPEUY4v9DFHXzE+RUXD+SkBd74/gmN+G5AsYvb1bc7iELwqd1mgNVH58UE+wvHFyKFMMvzewho6UOubypbqsy4SZOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKj8XdHN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22ED2C433C7;
-	Sat,  3 Feb 2024 04:17:18 +0000 (UTC)
+	 MIME-Version; b=JEAqEaESmEzayR8o/Ihzwkpx+HnAWmwDJEZk//X5u421vqU1yTljSePnDzv0B37oUo/A2aIUHYTY45bs2yhN8XQ0H8Vn5xXZO+WzFOnYhMFLcKWfrZnEmHPfvizH2kYb1gnJJk0mvSe5P3yJ3J8/IpdEc5OxJHrpCk85guIu2pE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGZLEKRW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C1BC433C7;
+	Sat,  3 Feb 2024 04:09:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933838;
-	bh=KF1OPOGOAeiEtplfTWHMHUyw4AHcb8Ma47V/msvcP5s=;
+	s=korg; t=1706933392;
+	bh=/KXdMt8nJebMdj1ykWNyinG1k53B8F1uuyA66rT0tsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oKj8XdHNZdJAUYKd5y81H+RHI3r27bIY8yvctlsvOas1Ow2vRhuTWt10bDdlJo9k3
-	 Dbw+ywuStGL7oowRjqkxsIkrCioDW8ExQaNxYH9pWKIXa6UHalxH2aDnWYAQyY7MjG
-	 g8KYIi9/mLQhfPnwGL31voWCXybyJCcA+U7FrHxY=
+	b=DGZLEKRWMDefnHiFO2Sw4/CWU2HQ/n4+jKN7vkkEfNJ/ztxBASDDpoorJwOGnrwMt
+	 4b1wIlep732MNL3K3s5wc8PrDoVyE31k/gSpTx0rYPnwR3H2uw+C3rNdk4V8Do4axB
+	 NHLnpu+FpZyDrZDfxJTmzLdhMspVQyEOcSRtfYBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 163/353] ASoC: doc: Fix undefined SND_SOC_DAPM_NOPM argument
+Subject: [PATCH 6.1 108/219] RDMA/IPoIB: Fix error code return in ipoib_mcast_join
 Date: Fri,  2 Feb 2024 20:04:41 -0800
-Message-ID: <20240203035408.795065173@linuxfoundation.org>
+Message-ID: <20240203035332.639351209@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Jack Wang <jinpu.wang@ionos.com>
 
-[ Upstream commit 67c7666fe808c3a7af3cc6f9d0a3dd3acfd26115 ]
+[ Upstream commit 753fff78f430704548f45eda52d6d55371a52c0f ]
 
-The virtual widget example makes use of an undefined SND_SOC_DAPM_NOPM
-argument passed to SND_SOC_DAPM_MIXER().  Replace with the correct
-SND_SOC_NOPM definition.
+Return the error code in case of ib_sa_join_multicast fail.
 
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20231121120751.77355-1-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Link: https://lore.kernel.org/r/20231121130316.126364-2-jinpu.wang@ionos.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/sound/soc/dapm.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/ulp/ipoib/ipoib_multicast.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/sound/soc/dapm.rst b/Documentation/sound/soc/dapm.rst
-index 8e44107933ab..c3154ce6e1b2 100644
---- a/Documentation/sound/soc/dapm.rst
-+++ b/Documentation/sound/soc/dapm.rst
-@@ -234,7 +234,7 @@ corresponding soft power control. In this case it is necessary to create
- a virtual widget - a widget with no control bits e.g.
- ::
- 
--  SND_SOC_DAPM_MIXER("AC97 Mixer", SND_SOC_DAPM_NOPM, 0, 0, NULL, 0),
-+  SND_SOC_DAPM_MIXER("AC97 Mixer", SND_SOC_NOPM, 0, 0, NULL, 0),
- 
- This can be used to merge to signal paths together in software.
- 
+diff --git a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
+index 5b3154503bf4..9e6967a40042 100644
+--- a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
++++ b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
+@@ -546,6 +546,7 @@ static int ipoib_mcast_join(struct net_device *dev, struct ipoib_mcast *mcast)
+ 		spin_unlock_irq(&priv->lock);
+ 		complete(&mcast->done);
+ 		spin_lock_irq(&priv->lock);
++		return ret;
+ 	}
+ 	return 0;
+ }
 -- 
 2.43.0
 
