@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-18257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B15848201
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82967848350
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA5031C22A9D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B32FB1C20A16
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3137C12B89;
-	Sat,  3 Feb 2024 04:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FDDE524CA;
+	Sat,  3 Feb 2024 04:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZR/agnyO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSg5F55m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E8218E12;
-	Sat,  3 Feb 2024 04:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95DF171C1;
+	Sat,  3 Feb 2024 04:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933665; cv=none; b=nBVBsv2xeQUBs0iXYYInY5jYRhFqFZbP1OfnXCP6CeFG5Pd/EZTNdU2c2kuU6IRqbi8HIGvXt6C3aalqsjJfFc/K9tRM3b2od/77uulPCWr0v5sna7jN720foppux6zDCC2ydidBFoAXkpxiBJdbAVYImZ8jxomwXoxXdPoLOZU=
+	t=1706933909; cv=none; b=jBD4v0Vga9D4B7YRYNIKeu+6MJ8vhxEx0tNNPXRVXzct+WoEOIoA6+oIQew4guRABCs6QIFXhPlG8DcmWFYN6fd4zX0+oWmqZm3sNVkHtGp8evIew5cctAWi8G7zwiRJ6XKCZnGjhzYOJS501tKeJZHdC5QHlNYWJkyxjdAfF0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933665; c=relaxed/simple;
-	bh=wQ7XUa0T03IEsU+lxVe7eYZZzD9lwZw92gbM+oFRuN0=;
+	s=arc-20240116; t=1706933909; c=relaxed/simple;
+	bh=yW8XMJekV5BVBNWc0CM0VLYRgk0QpwrdULTDP079RFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KiEel55tMPLALL33h97m0NPjaG97IDY7sBGx3VWx2RbCtGMmRD/fcyhdfXsBxTV4XtWHI/a3vfqO9LcABH2A4rh1DLVqoUXwLMH1I9qKw9kCdqKqYwZYsWqWvtO4XNSk5BwTu/4QxMZO6yDHGoji8nOrcgnje2HpmpM9YbMgTkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZR/agnyO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAEB2C43394;
-	Sat,  3 Feb 2024 04:14:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WSAUYbWHTKmh73HZyPK+Od8O+CLhZ6dssPxTlWAeaEIY/yFDXuxUnAKsd4xWMqKK/WqYm0eWC5LWdP9BWESK1NkxUz8KCHRBazFI1eZ9bxbxV6Lew+SMC5Jk6iM+EjzS7JCpEGFNeMFDm+tuAui8CGW0Zgdqt3/71zJpPRcgSqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSg5F55m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15BCC433C7;
+	Sat,  3 Feb 2024 04:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933664;
-	bh=wQ7XUa0T03IEsU+lxVe7eYZZzD9lwZw92gbM+oFRuN0=;
+	s=korg; t=1706933908;
+	bh=yW8XMJekV5BVBNWc0CM0VLYRgk0QpwrdULTDP079RFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZR/agnyONSXM0yodGNhQjx/OxZbPBLAcg/Uc9sTDumWz1BjhLbFGNaIqvjRyliPVJ
-	 tBmnY9nK3KQR8Ffo0PqC9eQHrf7wVuadD3ve08NJet2y78I+QlXXPB/ytTqgQReFqi
-	 iMjNtaxywX/FmHaOAihSQrJeI/rWEyBd75JghJQY=
+	b=MSg5F55mvNrw4ewoFHssopnZuxGSRxz1f91M0uTVua569jRydHGZ8n2LfJKqFoaoL
+	 bJjnnLTxXMqfL2mrH2KtzVQmQ5uaVnPguIA9R2PXM6YjETmb2s2IFMsLWVTuEiYcSB
+	 +oIdE6RUgQkm/OlQryz5OjPByCqQWAnJYaIVyvGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 253/322] drm/amdgpu: fix avg vs input power reporting on smu7
+Subject: [PATCH 6.7 232/353] drm/amdgpu: Fix *fw from request_firmware() not released in amdgpu_ucode_request()
 Date: Fri,  2 Feb 2024 20:05:50 -0800
-Message-ID: <20240203035407.330409672@linuxfoundation.org>
+Message-ID: <20240203035411.010032373@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +63,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 25852d4b97572ff62ffee574cb8bb4bc551af23a ]
+[ Upstream commit 13a1851f923d9a7a78a477497295c2dfd16ad4a4 ]
 
-Hawaii, Bonaire, Fiji, and Tonga support average power, the others
-support current power.
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c:1404 amdgpu_ucode_request() warn: '*fw' from request_firmware() not released on lines: 1404.
 
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Lijo Lazar <lijo.lazar@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index b1a8799e2dee..aa91730e4eaf 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -3999,6 +3999,7 @@ static int smu7_read_sensor(struct pp_hwmgr *hwmgr, int idx,
- 	uint32_t sclk, mclk, activity_percent;
- 	uint32_t offset, val_vid;
- 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
-+	struct amdgpu_device *adev = hwmgr->adev;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
+index b14127429f30..0efb2568cb65 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
+@@ -1397,9 +1397,13 @@ int amdgpu_ucode_request(struct amdgpu_device *adev, const struct firmware **fw,
  
- 	/* size must be at least 4 bytes for all sensors */
- 	if (*size < 4)
-@@ -4042,7 +4043,21 @@ static int smu7_read_sensor(struct pp_hwmgr *hwmgr, int idx,
- 		*size = 4;
- 		return 0;
- 	case AMDGPU_PP_SENSOR_GPU_INPUT_POWER:
--		return smu7_get_gpu_power(hwmgr, (uint32_t *)value);
-+		if ((adev->asic_type != CHIP_HAWAII) &&
-+		    (adev->asic_type != CHIP_BONAIRE) &&
-+		    (adev->asic_type != CHIP_FIJI) &&
-+		    (adev->asic_type != CHIP_TONGA))
-+			return smu7_get_gpu_power(hwmgr, (uint32_t *)value);
-+		else
-+			return -EOPNOTSUPP;
-+	case AMDGPU_PP_SENSOR_GPU_AVG_POWER:
-+		if ((adev->asic_type != CHIP_HAWAII) &&
-+		    (adev->asic_type != CHIP_BONAIRE) &&
-+		    (adev->asic_type != CHIP_FIJI) &&
-+		    (adev->asic_type != CHIP_TONGA))
-+			return -EOPNOTSUPP;
-+		else
-+			return smu7_get_gpu_power(hwmgr, (uint32_t *)value);
- 	case AMDGPU_PP_SENSOR_VDDGFX:
- 		if ((data->vr_config & VRCONF_VDDGFX_MASK) ==
- 		    (VR_SVI2_PLANE_2 << VRCONF_VDDGFX_SHIFT))
+ 	if (err)
+ 		return -ENODEV;
++
+ 	err = amdgpu_ucode_validate(*fw);
+-	if (err)
++	if (err) {
+ 		dev_dbg(adev->dev, "\"%s\" failed to validate\n", fw_name);
++		release_firmware(*fw);
++		*fw = NULL;
++	}
+ 
+ 	return err;
+ }
 -- 
 2.43.0
 
