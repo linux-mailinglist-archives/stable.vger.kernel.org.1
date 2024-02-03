@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-17878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98B8E848079
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F34C848193
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2487B1F2BC3E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B20E11C233F9
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E1D1118F;
-	Sat,  3 Feb 2024 04:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB4C32C8B;
+	Sat,  3 Feb 2024 04:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LlwgoHbZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkNQOUUx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE4B168D9;
-	Sat,  3 Feb 2024 04:09:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B18E2DF87;
+	Sat,  3 Feb 2024 04:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933382; cv=none; b=mzJF8Xtm7rJcF8qtNE6FJ06PuG6T7C0d+rxyGAoR9liPBEGgSo2Z06eFclvHzn8+Je9e/DHkpwjvFn/Vl+NIdQmF682J1vH6SasDZdr6VFTPWE56IM88U1VvR2392NtecMvJ61zx8wwTKqY9PhjNx47SQPD5s3LzYeNpj/w5tCU=
+	t=1706933583; cv=none; b=YrBcJfKLvyQso/FXq5UMKRUxNILZKAmPoqRvh5DtTWKQ1824Ka/hdjWbxJq1fnWL7V75MpvII68VQZbPv6xahsEv6Z5EeEU06K8TViRycwjTtgzRiD3UH5jYG2H2vjxHRqQDI6Wa2NUzXs42R1lXVeTdctpDn6Hmk+DPQ3VA1+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933382; c=relaxed/simple;
-	bh=Is61PY5w7sfdry32ovYdK0BZSh2Q2oIlrLHnZOedbVw=;
+	s=arc-20240116; t=1706933583; c=relaxed/simple;
+	bh=2ywu7LzzdX/3YoUEAi3FPBCNdf6EqnBSBAU779Alom8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UOmMbRL69zXcvZorEMQUtSEJl/YXGPphq9kfE5oHEr415HB3DIO1CSJVDAEr+AkMm+ThO0rX3Q3MCiqP3wHKxJqZJ5K4Wt+eyGiEzd9N0K0wQ4JbP8l5tg2IhknWz7x8nlYhGqWeBeWkwk6P6NKBXcb7/gE2Dlm53bh6H+DLRzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LlwgoHbZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA22C433F1;
-	Sat,  3 Feb 2024 04:09:42 +0000 (UTC)
+	 MIME-Version; b=Zk1evXiQkP7l3PtdX/LNHEulOOw1Dg4gy6LWaEULdQ9QxiRl6gdN+yTNsQzKOxkWvM+KalJxOhuyDL03aoVoy0NgcpCsOecq/0sv9u2ZyADdF+7eGEP4BhzWadqpZcxZUF7RnW1O3bi5nmmctXNX9bTNFeqr/fp5WLMp/h78rhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkNQOUUx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17267C43390;
+	Sat,  3 Feb 2024 04:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933382;
-	bh=Is61PY5w7sfdry32ovYdK0BZSh2Q2oIlrLHnZOedbVw=;
+	s=korg; t=1706933583;
+	bh=2ywu7LzzdX/3YoUEAi3FPBCNdf6EqnBSBAU779Alom8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LlwgoHbZCi0IZ5Zqp/LlxJ+U0wKhmRG1fu13bSbL8YpscOLlwAWySk59/HeQF8Dnm
-	 l3QbGrzKcbI8LEHMIDhvfsMrSkVciXW5b48x8xOkpsz0zNAlSjxY4fZ+O240znXcuh
-	 kgruiGClMLsXD7xLlY0H+xOXEKW/cmPPnNh6n6ho=
+	b=XkNQOUUxaFf0kY2ehgyaCJCJzjzrlB9fHDOAjPZHKggnKdw773FAjKVxowZi0BonA
+	 dTC9mG8mee/ZLXctq1Fpy6sTrJ3S5cuIjyRUHFNc5foCRtqY3VCn2Y6brck5JQszx2
+	 WpxrZv2mc82lEsZ6jTmZxC2zg9+Xg5Vik9B7F3B0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/219] ARM: dts: imx25/27-eukrea: Fix RTC node name
+Subject: [PATCH 6.6 145/322] Bluetooth: qca: Set both WIDEBAND_SPEECH and LE_STATES quirks for QCA2066
 Date: Fri,  2 Feb 2024 20:04:02 -0800
-Message-ID: <20240203035326.573790941@linuxfoundation.org>
+Message-ID: <20240203035403.857534401@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 68c711b882c262e36895547cddea2c2d56ce611d ]
+[ Upstream commit 5d192b697c7417254cdd9edc3d5e9e0364eb9045 ]
 
-Node names should be generic. Use 'rtc' as node name to fix
-the following dt-schema warning:
+Set both WIDEBAND_SPEECH_SUPPORTED and VALID_LE_STATES quirks
+for QCA2066.
 
-imx25-eukrea-mbimxsd25-baseboard.dtb: pcf8563@51: $nodename:0: 'pcf8563@51' does not match '^rtc(@.*|-([0-9]|[1-9][0-9]+))?$'
-	from schema $id: http://devicetree.org/schemas/rtc/nxp,pcf8563.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx25-eukrea-cpuimx25.dtsi | 2 +-
- arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/bluetooth/hci_qca.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/imx25-eukrea-cpuimx25.dtsi b/arch/arm/boot/dts/imx25-eukrea-cpuimx25.dtsi
-index 0703f62d10d1..93a6e4e680b4 100644
---- a/arch/arm/boot/dts/imx25-eukrea-cpuimx25.dtsi
-+++ b/arch/arm/boot/dts/imx25-eukrea-cpuimx25.dtsi
-@@ -27,7 +27,7 @@
- 	pinctrl-0 = <&pinctrl_i2c1>;
- 	status = "okay";
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index 4b57e15f9c7a..ad940027e4b5 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -2035,6 +2035,7 @@ static const struct qca_device_data qca_soc_data_wcn3998 __maybe_unused = {
+ static const struct qca_device_data qca_soc_data_qca6390 __maybe_unused = {
+ 	.soc_type = QCA_QCA6390,
+ 	.num_vregs = 0,
++	.capabilities = QCA_CAP_WIDEBAND_SPEECH | QCA_CAP_VALID_LE_STATES,
+ };
  
--	pcf8563@51 {
-+	rtc@51 {
- 		compatible = "nxp,pcf8563";
- 		reg = <0x51>;
- 	};
-diff --git a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
-index 74110bbcd9d4..4b83e2918b55 100644
---- a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
-+++ b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
-@@ -33,7 +33,7 @@
- 	pinctrl-0 = <&pinctrl_i2c1>;
- 	status = "okay";
- 
--	pcf8563@51 {
-+	rtc@51 {
- 		compatible = "nxp,pcf8563";
- 		reg = <0x51>;
- 	};
+ static const struct qca_device_data qca_soc_data_wcn6750 __maybe_unused = {
 -- 
 2.43.0
 
