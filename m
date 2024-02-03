@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1207784815E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C0C684803F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 446661C229CD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31EB128BEA0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5233A23774;
-	Sat,  3 Feb 2024 04:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80234F9EC;
+	Sat,  3 Feb 2024 04:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxTFcWKg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijkJVCMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128C4171CE;
-	Sat,  3 Feb 2024 04:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E287111B1;
+	Sat,  3 Feb 2024 04:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933545; cv=none; b=BWYc2nNgD0nUO2AZOH2A+spuROqvFqEy+uTyYQMSgsJt+izbWTS/By3tKOaQibNxiPPNMI15UgZAnvZbnOdez9+sgOfevRC81POmKunP4bXW5C0LT6TFTVK/aS7RVLi2dtpDBecJgAHrqQOL5EuQF/15ZDWcvnthSImzB6WTWlE=
+	t=1706933341; cv=none; b=JA3lKEOo/iIxftZTS1SNBaLLNIJ3dH2Ke+r2fyQcwG3CFj/MAvwEQ1sgUtEwOgaGVsP8yqkAeg/IllxNSYcMy6cyQ6QNWbVu5KHRxNZL+FVF60g6i5oUgqaZ7hCywtImDRf6pFwtYsYfAP7VojMLpjfrTgXd+nQsdgyLMJ3EhIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933545; c=relaxed/simple;
-	bh=cpyNM3V1ZXfcj6RivsgNtfC1MfMNISzLbVloIfjF660=;
+	s=arc-20240116; t=1706933341; c=relaxed/simple;
+	bh=M7mnHhZuF5R6tK7u0e0veKy8MisjwUoORHyu9ShZ+BU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJA9O1HgFEB8yjfrbr48UgCJBj9x0D3epAcwDB9FhAdsFVivvkkQ77DLhrmAr9Ig6RDzLg3abojn3Vasu75ZUrN0U9QD38PhWFjYmxJTZxtHcBHgfyffHIesWkcapgFHU+JGAkl3yr+oL6xVRwse+7bnLzNMuT7Nh0x2PM6YWGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oxTFcWKg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB18C43394;
-	Sat,  3 Feb 2024 04:12:24 +0000 (UTC)
+	 MIME-Version; b=TJHOCSUbdsl2XOPw3SAWlo7KeJu4iJGdWN+KdEwKwJsgOqn7WMmbP153Zb+CdhWJA4TwQ3J+Atyro58MLgaSA0xprfCP3mAr2hST5UVGNZQOKhxecxFkpkdDyfibN8EBGUvSJFiPKM0LSedGz+reca3xTwjG6jPlYh/+9Sc+r6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijkJVCMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D91FC43390;
+	Sat,  3 Feb 2024 04:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933544;
-	bh=cpyNM3V1ZXfcj6RivsgNtfC1MfMNISzLbVloIfjF660=;
+	s=korg; t=1706933340;
+	bh=M7mnHhZuF5R6tK7u0e0veKy8MisjwUoORHyu9ShZ+BU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oxTFcWKg1bAWSsATIv6vplxe+AUXSCjY8PeFD7yywb0++Pf5MY9zOJlJ/p/LxvCSy
-	 AYjMpGs8sA6SxkIgQwG+F+NWCXBO82un2J3iR7noD6VTm+Hd/uTveqfjuBwXorvngL
-	 mP2GBrdQzNWfxChXz1yVSMQzCEQAjIhMsYnJ128k=
+	b=ijkJVCMM0xs10cdx4qPtsrbtUdmbRd8hErYrU3CiO9XcJneiDmaVQ5AhHGkebhNhd
+	 CVKmwMZIErR2g6RhhYXtiug1jQx0AfHkSPm1t1WAoYL0dNagNMjWFpY0SitRcDj6Fk
+	 2iFUzKT9bJyUrXL43wzeMK/PvHgwUjz9FHoTRXIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Yuluo Qiu <qyl27@outlook.com>,
+	Celeste Liu <CoelacanthusHex@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/322] scsi: libfc: Dont schedule abort twice
+Subject: [PATCH 6.1 016/219] ACPI: video: Add quirk for the Colorful X15 AT 23 Laptop
 Date: Fri,  2 Feb 2024 20:03:09 -0800
-Message-ID: <20240203035402.127857863@linuxfoundation.org>
+Message-ID: <20240203035318.821115491@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Yuluo Qiu <qyl27@outlook.com>
 
-[ Upstream commit b57c4db5d23b9df0118a25e2441c9288edd73710 ]
+[ Upstream commit 143176a46bdd3bfbe9ba2462bf94458e80d65ebf ]
 
-The current FC error recovery is sending up to three REC (recovery) frames
-in 10 second intervals, and as a final step sending an ABTS after 30
-seconds for the command itself.  Unfortunately sending an ABTS is also the
-action for the SCSI abort handler, and the default timeout for SCSI
-commands is also 30 seconds. This causes two ABTS to be scheduled, with the
-libfc one slightly earlier. The ABTS scheduled by SCSI EH then sees the
-command to be already aborted, and will always return with a 'GOOD' status
-irrespective on the actual result from the first ABTS.  This causes the
-SCSI EH abort handler to always succeed, and SCSI EH never to be engaged.
-Fix this by not issuing an ABTS when a SCSI command is present for the
-exchange, but rather wait for the abort scheduled from SCSI EH.  And warn
-if an abort is already scheduled to avoid similar errors in the future.
+The Colorful X15 AT 23 ACPI video-bus device report spurious
+ACPI_VIDEO_NOTIFY_CYCLE events resulting in spurious KEY_SWITCHVIDEOMODE
+events being reported to userspace (and causing trouble there) when
+an external screen plugged in.
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20231129165832.224100-2-hare@kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Add a quirk setting the report_key_events mask to
+REPORT_BRIGHTNESS_KEY_EVENTS so that the ACPI_VIDEO_NOTIFY_CYCLE
+events will be ignored, while still reporting brightness up/down
+hotkey-presses to userspace normally.
+
+Signed-off-by: Yuluo Qiu <qyl27@outlook.com>
+Co-developed-by: Celeste Liu <CoelacanthusHex@gmail.com>
+Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libfc/fc_fcp.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/acpi/acpi_video.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/scsi/libfc/fc_fcp.c b/drivers/scsi/libfc/fc_fcp.c
-index 945adca5e72f..3f189cedf6db 100644
---- a/drivers/scsi/libfc/fc_fcp.c
-+++ b/drivers/scsi/libfc/fc_fcp.c
-@@ -265,6 +265,11 @@ static int fc_fcp_send_abort(struct fc_fcp_pkt *fsp)
- 	if (!fsp->seq_ptr)
- 		return -EINVAL;
- 
-+	if (fsp->state & FC_SRB_ABORT_PENDING) {
-+		FC_FCP_DBG(fsp, "abort already pending\n");
-+		return -EBUSY;
-+	}
-+
- 	this_cpu_inc(fsp->lp->stats->FcpPktAborts);
- 
- 	fsp->state |= FC_SRB_ABORT_PENDING;
-@@ -1690,11 +1695,12 @@ static void fc_fcp_recovery(struct fc_fcp_pkt *fsp, u8 code)
- 	fsp->status_code = code;
- 	fsp->cdb_status = 0;
- 	fsp->io_status = 0;
--	/*
--	 * if this fails then we let the scsi command timer fire and
--	 * scsi-ml escalate.
--	 */
--	fc_fcp_send_abort(fsp);
-+	if (!fsp->cmd)
-+		/*
-+		 * Only abort non-scsi commands; otherwise let the
-+		 * scsi command timer fire and scsi-ml escalate.
-+		 */
-+		fc_fcp_send_abort(fsp);
- }
- 
- /**
+diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+index f7852fb75ab3..756ab8edde83 100644
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -513,6 +513,15 @@ static const struct dmi_system_id video_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "Vostro 3350"),
+ 		},
+ 	},
++	{
++	 .callback = video_set_report_key_events,
++	 .driver_data = (void *)((uintptr_t)REPORT_BRIGHTNESS_KEY_EVENTS),
++	 .ident = "COLORFUL X15 AT 23",
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "COLORFUL"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "X15 AT 23"),
++		},
++	},
+ 	/*
+ 	 * Some machines change the brightness themselves when a brightness
+ 	 * hotkey gets pressed, despite us telling them not to. In this case
 -- 
 2.43.0
 
