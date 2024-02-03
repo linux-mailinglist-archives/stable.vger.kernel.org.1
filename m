@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B576384817D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 469A4848064
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DFDE282816
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDCC4B29DBD
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385D92BB16;
-	Sat,  3 Feb 2024 04:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F230412E71;
+	Sat,  3 Feb 2024 04:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmUMQ4Cl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orInam1/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE3411C83;
-	Sat,  3 Feb 2024 04:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B6BF9F6;
+	Sat,  3 Feb 2024 04:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933568; cv=none; b=QHqrN+g6FRkMTMJesh4tGqAmrPfabueFY/4liAla4U3AeoSbdnLP5YISZZoaq105GXKuR2vqdzHhGqCLOwGwaWUhtcMaYRwFpRWcDGe53TswxDKxgwiGmcTjKnOGQ50g3MiKeJYpsMFZot9r0zPRgbsugmIizshDkDD+CglUYBE=
+	t=1706933366; cv=none; b=WpSUaefAw52dHRmKDFEC+Zbm2C2E62I8nL4e2dUYrulW0xwWsqsMBXNuFzCiPfUVMsjAZuXvmFa2W2uPTHyf80tXs05Sk3cAs4URmQEOYaqVXgof1KQrszN5m7+3LZ1Qg/zFX/ujpOOaVAVFHj+tYahnnUdB7oVcPHXJUtjWtkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933568; c=relaxed/simple;
-	bh=5z4X8E5d3qM5BOV/vxsp6RMgZtWJS6+SKPYoUm4ixrI=;
+	s=arc-20240116; t=1706933366; c=relaxed/simple;
+	bh=x6F14fs4nxydXWieNonTaMprG9Z/Nuj8lmjrvAvW9MI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AUwJ5I6Ke30Q6OJpVkrGHVvh1pzFVgH104M+/GWlxmjCfWnoWFe/vxCMljoHevKS9hWwcmnqfFdDAhmYaD2JAcPtNGiUZcfy3zHxqmkKkAp3sUdAgyXYd7GB8O51JJhqeXzyZfTjasDftgjUnG3uhp+eq2TaiMCmPLxFj7N0njM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmUMQ4Cl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F04C433F1;
-	Sat,  3 Feb 2024 04:12:47 +0000 (UTC)
+	 MIME-Version; b=GVd14HIsvXpRlYlLCJh7luVpNA7Rpp//U2lgLyVuZrpXLVfXrmFUqQUr2YhzTZKaRzACBUFMkNBm3WCQDQ2DfVQ6LnRoTpC1Xt0aPpbQ2X467HF+bpBpqoKm29c8ZkQ2Jx9bAR/kouBQF/JPxqiEiWiV0raCRKDYvRtKTVqNWKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orInam1/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69ECDC433F1;
+	Sat,  3 Feb 2024 04:09:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933567;
-	bh=5z4X8E5d3qM5BOV/vxsp6RMgZtWJS6+SKPYoUm4ixrI=;
+	s=korg; t=1706933366;
+	bh=x6F14fs4nxydXWieNonTaMprG9Z/Nuj8lmjrvAvW9MI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DmUMQ4CluS2GTB6n9l24dDljTi/7DfN7+lTUycvx2OB6abudRKKVOBGvQSfGcFowy
-	 eti785LCLW68ATpbhpwvUbKTEd/MCjJmLH4PF43Zz8Z4GQEZJZI/HEdkkO5TtzDott
-	 5phhS5Z/d98iaHytuLoi9RGt6QcovXdYdm7WHEp0=
+	b=orInam1/iRNR9E7Csi+hh1SKwGRabJBMF7Kn2fMozaofayAn2+IRHJDXwBVEeXxc+
+	 0OxsXpOELkfC1YvDUBwyRo62pwDDxbZqtAAKQYWXEroNsN7oebvm1u74H9zMb/UxpA
+	 RK9eRSDqyNdMA8C658rcPc7+tFXnQ9HaNgcoqdwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Shiji Yang <yangshiji66@outlook.com>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 123/322] ARM: dts: imx25/27: Pass timing0
-Date: Fri,  2 Feb 2024 20:03:40 -0800
-Message-ID: <20240203035403.121811716@linuxfoundation.org>
+Subject: [PATCH 6.1 048/219] wifi: rt2x00: correct wrong BBP register in RxDCOC calibration
+Date: Fri,  2 Feb 2024 20:03:41 -0800
+Message-ID: <20240203035323.502238324@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-[ Upstream commit 11ab7ad6f795ae23c398a4a5c56505d3dab27c4c ]
+[ Upstream commit 50da74e1e8b682853d1e07fc8bbe3a0774ae5e09 ]
 
-Per display-timings.yaml, the 'timing' pattern should be used to
-describe the display timings.
+Refer to Mediatek vendor driver RxDCOC_Calibration() function, when
+performing gainfreeze calibration, we should write register 140
+instead of 141. This fix can reduce the total calibration time from
+6 seconds to 1 second.
 
-Change it accordingly to fix the following dt-schema warning:
-
-imx27-apf27dev.dtb: display-timings: '800x480' does not match any of the regexes: '^timing', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/display/panel/display-timings.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/TYAP286MB0315B13B89DF57B6B27BB854BCAFA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts   | 2 +-
- .../dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts   | 2 +-
- .../dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts    | 2 +-
- arch/arm/boot/dts/nxp/imx/imx25-pdk.dts                         | 2 +-
- arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts                    | 2 +-
- arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts  | 2 +-
- arch/arm/boot/dts/nxp/imx/imx27-phytec-phycard-s-rdk.dts        | 2 +-
- arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dts          | 2 +-
- 8 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts
-index fc8a502fc957..6cddb2cc36fe 100644
---- a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts
-@@ -16,7 +16,7 @@
- 		bus-width = <18>;
- 		display-timings {
- 			native-mode = <&qvga_timings>;
--			qvga_timings: 320x240 {
-+			qvga_timings: timing0 {
- 				clock-frequency = <6500000>;
- 				hactive = <320>;
- 				vactive = <240>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts
-index 80a7f96de4c6..64b2ffac463b 100644
---- a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts
-@@ -16,7 +16,7 @@
- 		bus-width = <18>;
- 		display-timings {
- 			native-mode = <&dvi_svga_timings>;
--			dvi_svga_timings: 800x600 {
-+			dvi_svga_timings: timing0 {
- 				clock-frequency = <40000000>;
- 				hactive = <800>;
- 				vactive = <600>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts
-index 24027a1fb46d..fb074bfdaa8d 100644
---- a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts
-@@ -16,7 +16,7 @@
- 		bus-width = <18>;
- 		display-timings {
- 			native-mode = <&dvi_vga_timings>;
--			dvi_vga_timings: 640x480 {
-+			dvi_vga_timings: timing0 {
- 				clock-frequency = <31250000>;
- 				hactive = <640>;
- 				vactive = <480>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx25-pdk.dts b/arch/arm/boot/dts/nxp/imx/imx25-pdk.dts
-index 04f4b127a172..e93bf3b7115f 100644
---- a/arch/arm/boot/dts/nxp/imx/imx25-pdk.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx25-pdk.dts
-@@ -68,7 +68,7 @@
- 		bus-width = <18>;
- 		display-timings {
- 			native-mode = <&wvga_timings>;
--			wvga_timings: 640x480 {
-+			wvga_timings: timing0 {
- 				hactive = <640>;
- 				vactive = <480>;
- 				hback-porch = <45>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts b/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts
-index a21f1f7c24b8..f047a8487073 100644
---- a/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts
-@@ -16,7 +16,7 @@
- 		fsl,pcr = <0xfae80083>;	/* non-standard but required */
- 		display-timings {
- 			native-mode = <&timing0>;
--			timing0: 800x480 {
-+			timing0: timing0 {
- 				clock-frequency = <33000033>;
- 				hactive = <800>;
- 				vactive = <480>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts
-index 145e459625b3..d78793601306 100644
---- a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts
-@@ -16,7 +16,7 @@
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+index 12b700c7b9c3..517d9023aae3 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+@@ -8672,7 +8672,7 @@ static void rt2800_rxdcoc_calibration(struct rt2x00_dev *rt2x00dev)
+ 	rt2800_rfcsr_write_bank(rt2x00dev, 5, 4, saverfb5r4);
+ 	rt2800_rfcsr_write_bank(rt2x00dev, 7, 4, saverfb7r4);
  
- 		display-timings {
- 			native-mode = <&timing0>;
--			timing0: 320x240 {
-+			timing0: timing0 {
- 				clock-frequency = <6500000>;
- 				hactive = <320>;
- 				vactive = <240>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycard-s-rdk.dts b/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycard-s-rdk.dts
-index 25442eba21c1..27c93b9fe049 100644
---- a/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycard-s-rdk.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycard-s-rdk.dts
-@@ -19,7 +19,7 @@
- 		fsl,pcr = <0xf0c88080>;	/* non-standard but required */
- 		display-timings {
- 			native-mode = <&timing0>;
--			timing0: 640x480 {
-+			timing0: timing0 {
- 				hactive = <640>;
- 				vactive = <480>;
- 				hback-porch = <112>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dts b/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dts
-index 7f0cd4d3ec2d..67b235044b70 100644
---- a/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dts
-@@ -19,7 +19,7 @@
- 
- 		display-timings {
- 			native-mode = <&timing0>;
--			timing0: 240x320 {
-+			timing0: timing0 {
- 				clock-frequency = <5500000>;
- 				hactive = <240>;
- 				vactive = <320>;
+-	rt2800_bbp_write(rt2x00dev, 158, 141);
++	rt2800_bbp_write(rt2x00dev, 158, 140);
+ 	bbpreg = rt2800_bbp_read(rt2x00dev, 159);
+ 	bbpreg = bbpreg & (~0x40);
+ 	rt2800_bbp_write(rt2x00dev, 159, bbpreg);
 -- 
 2.43.0
 
