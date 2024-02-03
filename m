@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-17843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1FDF848055
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48790848177
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46D6428BF15
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D3381C229A6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D7D112B9E;
-	Sat,  3 Feb 2024 04:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43051758F;
+	Sat,  3 Feb 2024 04:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTWKDEoA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QO11kNAx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A50010A1C;
-	Sat,  3 Feb 2024 04:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D3311738;
+	Sat,  3 Feb 2024 04:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933355; cv=none; b=TCdLQ/XG6Z/KkQpzIIPM2x3xETj3OSePYP9Gly98YLcb5Cr13Pq0bG+kO+zlS15IQ90lSK9NklURYV8X+ei53k8SGoRqh4rietLU/k3Lteg0qheOVXq2N110fpEzJdrWQVnU3vUh5Uorc3KvYSleWyk2IjD1sGIYlPOQ3RnPLCE=
+	t=1706933563; cv=none; b=SnMVSbUZ4R7C77+pduds0oFKBX2QOdOjMpE3JteU3hpX6KjRy8Xh/OdBUdJbVjNhElMuY9autOmf1xspmavmrFncXXNThfm9OrHRTaNxB4BPexVAg+Weu8pN4MkvtsfOVxZ81a5hM1Ly1YnWFUwavGD5XIQv5OzPrAh2C6VdSFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933355; c=relaxed/simple;
-	bh=j2ErxtO4+aSfwwXca9vhGo/dFQxqWQ/MGL8sITEYOes=;
+	s=arc-20240116; t=1706933563; c=relaxed/simple;
+	bh=+hkHKW0NjfnVGkZtPLucM0ZriVXfTjVwi3Ifax/mlx4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p2oRyXJVRPob0ioDPRrDZG3ndI1yxnWP/L0fWbGXxirCtSVQqJc7XrO4I2tZkmwe6gCPWOC2ylm0sUwcSQ1DN+oBc0uCU7rMEsIgFEGbHoj+737fxpOIpi+VyRLDbLMNk62S3ELXyK7JkHgqRWMegWC2fboTsnOfpdfBcX5I4hE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTWKDEoA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F4AC433F1;
-	Sat,  3 Feb 2024 04:09:14 +0000 (UTC)
+	 MIME-Version; b=u+z9kTXuhvJ/fqS6HcdSWTLbZ1P/FH13ZPGxFgf7RcAKQWqUqwS5fByHxHPzH7wnAf45nOVe3ef7S5QCtiQ2GYNB2QbBhAhIO3zibeUtP0xlRulcksEHe3DAf0viFBSFNJQABt7pdRu/glKDnczrNfUa1Ek86saM9eZCKyCpSE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QO11kNAx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B691C433F1;
+	Sat,  3 Feb 2024 04:12:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933355;
-	bh=j2ErxtO4+aSfwwXca9vhGo/dFQxqWQ/MGL8sITEYOes=;
+	s=korg; t=1706933563;
+	bh=+hkHKW0NjfnVGkZtPLucM0ZriVXfTjVwi3Ifax/mlx4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MTWKDEoAa3NSnzPR4GhUEa3s+NkRby0tZiH0hYCanZwtoVOAbGOt/cgQkVbqEOHPu
-	 jYYcoMEXOkacYZ3fTgGlsEvkOvipxgc/o+8KBDKP+V5LWT52M2dB5NMNO9xwAiXG0i
-	 OetaL8kPZjY4dd+kqBvFcaFxXl3WT207gmLlU5WI=
+	b=QO11kNAxB/hojEPRlOLA/JiIHAbUNZHsrEKp3jAQtJwzALphdV3P9hYCGRK08ArJi
+	 uoOjOOli0oF98m5Pq72Z2qkCxSGoqVIIs1I6KrQoNqTi/cDJCSGJB+N2oLKNruO58+
+	 /bLXLZHCtgk2jh4EkZgpI/ZKgWz2wlFoIkqYVVr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/219] ext4: fix inconsistent between segment fstrim and full fstrim
+Subject: [PATCH 6.6 117/322] ionic: bypass firmware cmds when stuck in reset
 Date: Fri,  2 Feb 2024 20:03:34 -0800
-Message-ID: <20240203035322.287845291@linuxfoundation.org>
+Message-ID: <20240203035402.927711271@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit 68da4c44b994aea797eb9821acb3a4a36015293e ]
+[ Upstream commit ca5fdf9a7c5b65968c718f2be159cda4c13556a1 ]
 
-Suppose we issue two FITRIM ioctls for ranges [0,15] and [16,31] with
-mininum length of trimmed range set to 8 blocks. If we have say a range of
-blocks 10-22 free, this range will not be trimmed because it straddles the
-boundary of the two FITRIM ranges and neither part is big enough. This is a
-bit surprising to some users that call FITRIM on smaller ranges of blocks
-to limit impact on the system. Also XFS trims all free space extents that
-overlap with the specified range so we are inconsistent among filesystems.
-Let's change ext4_try_to_trim_range() to consider for trimming the whole
-free space extent that straddles the end of specified range, not just the
-part of it within the range.
+If the driver or firmware is stuck in reset state, don't bother
+trying to use adminq commands.  This speeds up shutdown and
+prevents unnecessary timeouts and error messages.
 
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231216010919.1995851-1-yebin10@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+This includes a bit of rework on ionic_adminq_post_wait()
+and ionic_adminq_post_wait_nomsg() to both use
+__ionic_adminq_post_wait() which can do the checks needed in
+both cases.
+
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ .../ethernet/pensando/ionic/ionic_bus_pci.c   |  4 ++++
+ .../net/ethernet/pensando/ionic/ionic_lif.c   |  3 +++
+ .../net/ethernet/pensando/ionic/ionic_main.c  | 20 ++++++++++++-------
+ 3 files changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 33be702d6e38..c1515daf1def 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -6444,13 +6444,15 @@ static int ext4_try_to_trim_range(struct super_block *sb,
- __acquires(ext4_group_lock_ptr(sb, e4b->bd_group))
- __releases(ext4_group_lock_ptr(sb, e4b->bd_group))
- {
--	ext4_grpblk_t next, count, free_count;
-+	ext4_grpblk_t next, count, free_count, last, origin_start;
- 	bool set_trimmed = false;
- 	void *bitmap;
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+index d6ce113a4210..fa4237c27e06 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+@@ -392,6 +392,10 @@ static void ionic_remove(struct pci_dev *pdev)
+ 	del_timer_sync(&ionic->watchdog_timer);
  
-+	last = ext4_last_grp_cluster(sb, e4b->bd_group);
- 	bitmap = e4b->bd_bitmap;
--	if (start == 0 && max >= ext4_last_grp_cluster(sb, e4b->bd_group))
-+	if (start == 0 && max >= last)
- 		set_trimmed = true;
-+	origin_start = start;
- 	start = max(e4b->bd_info->bb_first_free, start);
- 	count = 0;
- 	free_count = 0;
-@@ -6459,7 +6461,10 @@ __releases(ext4_group_lock_ptr(sb, e4b->bd_group))
- 		start = mb_find_next_zero_bit(bitmap, max + 1, start);
- 		if (start > max)
- 			break;
--		next = mb_find_next_bit(bitmap, max + 1, start);
+ 	if (ionic->lif) {
++		/* prevent adminq cmds if already known as down */
++		if (test_and_clear_bit(IONIC_LIF_F_FW_RESET, ionic->lif->state))
++			set_bit(IONIC_LIF_F_FW_STOPPING, ionic->lif->state);
 +
-+		next = mb_find_next_bit(bitmap, last + 1, start);
-+		if (origin_start == 0 && next >= last)
-+			set_trimmed = true;
+ 		ionic_lif_unregister(ionic->lif);
+ 		ionic_devlink_unregister(ionic);
+ 		ionic_lif_deinit(ionic->lif);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index c9bd2c57a37d..adb0f9b01bb1 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -3238,6 +3238,9 @@ static void ionic_lif_reset(struct ionic_lif *lif)
+ {
+ 	struct ionic_dev *idev = &lif->ionic->idev;
  
- 		if ((next - start) >= minblocks) {
- 			int ret = ext4_trim_extent(sb, start, next - start, e4b);
++	if (!ionic_is_fw_running(idev))
++		return;
++
+ 	mutex_lock(&lif->ionic->dev_cmd_lock);
+ 	ionic_dev_cmd_lif_reset(idev, lif->index);
+ 	ionic_dev_cmd_wait(lif->ionic, DEVCMD_TIMEOUT);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+index baa865af49ad..f019277fec57 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+@@ -410,22 +410,28 @@ int ionic_adminq_wait(struct ionic_lif *lif, struct ionic_admin_ctx *ctx,
+ 				      do_msg);
+ }
+ 
+-int ionic_adminq_post_wait(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
++static int __ionic_adminq_post_wait(struct ionic_lif *lif,
++				    struct ionic_admin_ctx *ctx,
++				    const bool do_msg)
+ {
+ 	int err;
+ 
++	if (!ionic_is_fw_running(&lif->ionic->idev))
++		return 0;
++
+ 	err = ionic_adminq_post(lif, ctx);
+ 
+-	return ionic_adminq_wait(lif, ctx, err, true);
++	return ionic_adminq_wait(lif, ctx, err, do_msg);
+ }
+ 
+-int ionic_adminq_post_wait_nomsg(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
++int ionic_adminq_post_wait(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
+ {
+-	int err;
+-
+-	err = ionic_adminq_post(lif, ctx);
++	return __ionic_adminq_post_wait(lif, ctx, true);
++}
+ 
+-	return ionic_adminq_wait(lif, ctx, err, false);
++int ionic_adminq_post_wait_nomsg(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
++{
++	return __ionic_adminq_post_wait(lif, ctx, false);
+ }
+ 
+ static void ionic_dev_cmd_clean(struct ionic *ionic)
 -- 
 2.43.0
 
