@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-18202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9B28481CA
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A09A8480AF
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F9131C21112
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F1901F21608
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B053BB38;
-	Sat,  3 Feb 2024 04:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C1317BD6;
+	Sat,  3 Feb 2024 04:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/TVBCtz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iDhbQiH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC6F3FB37;
-	Sat,  3 Feb 2024 04:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0157EF9FF;
+	Sat,  3 Feb 2024 04:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933622; cv=none; b=i5LsxVxt3e0V4Edrhixdh8H1yHx71+X8N7oe4komza+xakF9GSgNjvvpwLjy8ZUQhgxwlzuPhexnVXPL4dq/xJ5xTxxX+Y+Ho2cpr8eXfzigKIHX7D3nnO/mYPBJ2PibLR4VTQt86VbdqaXrVlCeMt91QUidp93w3cXcylHZdqU=
+	t=1706933422; cv=none; b=OOjj9/KQn2xkiG9xzf7M43tGWdLPvhg6mfXInnHIvDxHOVRGKzcJKAI3BnNDE3e+6s3kFQuat5h7u/DKG3pdNVUl2YfAG7VTHeVA3xtDnsDae9Ywehe9FCGeg7ueC2qJIXI5M1XZq/G0zTYqIOwQchSFHRnczIFTia5VrJIN9Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933622; c=relaxed/simple;
-	bh=LSzN17ol9pdfJM/W4ksIEgeIjfKz5b2BzBfX+RVsPz0=;
+	s=arc-20240116; t=1706933422; c=relaxed/simple;
+	bh=PZ5h9IwQHVt57txUuEAZkYcVIRV87Ofb4gVNLqyEjjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jHefXEBHWdc+XqsOuChnDuNrXnhYVffuLmLF409Py2Nlt+PDd8Nf0mAU5Twj3ATzG0IjriY+Kodgi1X7vAuzZ+TKIFqa9SzT5wu9Ib/kPEgKNEL6IaAqQKl1WPMEsoRArMWaqEI1PycurCjO9nvH+NKTS9EpI8Bfe9WvT229JX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/TVBCtz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D8CC433C7;
-	Sat,  3 Feb 2024 04:13:42 +0000 (UTC)
+	 MIME-Version; b=pRpFJX9tf4CM3Qr8ljAK5bsunhcuGC38EyK4lQHTprFl3cPDqXT5iDipbRK/Qy1uM49b92/hlFXOzBWlP4voAdcGYXqBCZwH8STip2CD7v5U/n/dnGqPwcUnnuu8sdyFdrc/oCYYvIKUkmo/+St1Ai3guHrKpFib9tHLe+5oops=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iDhbQiH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBA0C433C7;
+	Sat,  3 Feb 2024 04:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933622;
-	bh=LSzN17ol9pdfJM/W4ksIEgeIjfKz5b2BzBfX+RVsPz0=;
+	s=korg; t=1706933421;
+	bh=PZ5h9IwQHVt57txUuEAZkYcVIRV87Ofb4gVNLqyEjjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D/TVBCtzIUVhxEnOTyvDNHf36apYDowM/y9ghIY2NfrKv9ABpbSqCWMwdjuW3lBaV
-	 utIh04cesBRQEDBMad7A+iapktBpB2LkTA88nh4MWa9tu+TFi2l15Yic6QEfLEEfxc
-	 Z4zhsXS92hvaPJWsVhV3YJwdRzKBV6I2OU5RB/m8=
+	b=2iDhbQiH56/rGM1xiKzv3nGJcpa4laMC1crZVRBH/nsUviYXMJkuPrT/SV8wEZZUY
+	 4Z1SlC24OX4fwY9hu6hsQ13nXeD4gfx39n50IdqQhckB7zzdqOxGSzwbiCZO9uPt4U
+	 7Gj1E4VGcIAEtdtZkAbEsHTPlrajgX0CdjrEy0fI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 198/322] drm/msm/dpu: Ratelimit framedone timeout msgs
-Date: Fri,  2 Feb 2024 20:04:55 -0800
-Message-ID: <20240203035405.639199219@linuxfoundation.org>
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Adam Ford <aford173@gmail.com>
+Subject: [PATCH 6.1 123/219] media: rkisp1: Store IRQ lines
+Date: Fri,  2 Feb 2024 20:04:56 -0800
+Message-ID: <20240203035334.879506695@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +64,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 2b72e50c62de60ad2d6bcd86aa38d4ccbdd633f2 ]
+[ Upstream commit 0753874617de883c6d4da903142f334f76a75d70 ]
 
-When we start getting these, we get a *lot*.  So ratelimit it to not
-flood dmesg.
+Store the IRQ lines used by the driver for easy access. These are needed
+in future patches which fix IRQ race issues.
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Patchwork: https://patchwork.freedesktop.org/patch/571584/
-Link: https://lore.kernel.org/r/20231211182000.218088-1-robdclark@gmail.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20231207-rkisp-irq-fix-v3-3-358a2c871a3c@ideasonboard.com
+
+Tested-by: Adam Ford <aford173@gmail.com>  #imx8mp-beacon
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 5 ++++-
- drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h     | 1 +
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ .../platform/rockchip/rkisp1/rkisp1-common.h    | 11 ++++++++++-
+ .../media/platform/rockchip/rkisp1/rkisp1-dev.c | 17 +++++++++++++----
+ 2 files changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index b02aa2eb6c17..7d4cf81fd31c 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -39,6 +39,9 @@
- #define DPU_ERROR_ENC(e, fmt, ...) DPU_ERROR("enc%d " fmt,\
- 		(e) ? (e)->base.base.id : -1, ##__VA_ARGS__)
+diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-common.h b/drivers/media/platform/rockchip/rkisp1/rkisp1-common.h
+index a1293c45aae1..f9ec1c613894 100644
+--- a/drivers/media/platform/rockchip/rkisp1/rkisp1-common.h
++++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-common.h
+@@ -61,6 +61,14 @@ struct dentry;
+ 						 RKISP1_CIF_ISP_EXP_END |	\
+ 						 RKISP1_CIF_ISP_HIST_MEASURE_RDY)
  
-+#define DPU_ERROR_ENC_RATELIMITED(e, fmt, ...) DPU_ERROR_RATELIMITED("enc%d " fmt,\
-+		(e) ? (e)->base.base.id : -1, ##__VA_ARGS__)
++/* IRQ lines */
++enum rkisp1_irq_line {
++	RKISP1_IRQ_ISP = 0,
++	RKISP1_IRQ_MI,
++	RKISP1_IRQ_MIPI,
++	RKISP1_NUM_IRQS,
++};
 +
+ /* enum for the resizer pads */
+ enum rkisp1_rsz_pad {
+ 	RKISP1_RSZ_PAD_SINK,
+@@ -441,7 +449,6 @@ struct rkisp1_debug {
+  * struct rkisp1_device - ISP platform device
+  *
+  * @base_addr:	   base register address
+- * @irq:	   the irq number
+  * @dev:	   a pointer to the struct device
+  * @clk_size:	   number of clocks
+  * @clks:	   array of clocks
+@@ -459,6 +466,7 @@ struct rkisp1_debug {
+  * @stream_lock:   serializes {start/stop}_streaming callbacks between the capture devices.
+  * @debug:	   debug params to be exposed on debugfs
+  * @info:	   version-specific ISP information
++ * @irqs:          IRQ line numbers
+  */
+ struct rkisp1_device {
+ 	void __iomem *base_addr;
+@@ -479,6 +487,7 @@ struct rkisp1_device {
+ 	struct mutex stream_lock; /* serialize {start/stop}_streaming cb between capture devices */
+ 	struct rkisp1_debug debug;
+ 	const struct rkisp1_info *info;
++	int irqs[RKISP1_NUM_IRQS];
+ };
+ 
  /*
-  * Two to anticipate panels that can do cmd/vid dynamic switching
-  * plan is to create all possible physical encoder types, and switch between
-@@ -2327,7 +2330,7 @@ static void dpu_encoder_frame_done_timeout(struct timer_list *t)
- 		return;
- 	}
+diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+index 8d990957ea21..aeb6bb63667e 100644
+--- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
++++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+@@ -114,6 +114,7 @@
+ struct rkisp1_isr_data {
+ 	const char *name;
+ 	irqreturn_t (*isr)(int irq, void *ctx);
++	u32 line_mask;
+ };
  
--	DPU_ERROR_ENC(dpu_enc, "frame done timeout\n");
-+	DPU_ERROR_ENC_RATELIMITED(dpu_enc, "frame done timeout\n");
+ /* ----------------------------------------------------------------------------
+@@ -471,9 +472,9 @@ static const char * const px30_isp_clks[] = {
+ };
  
- 	event = DPU_ENCODER_FRAME_EVENT_ERROR;
- 	trace_dpu_enc_frame_done_timeout(DRMID(drm_enc), event);
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-index b6f53ca6e962..f5473d4dea92 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-@@ -51,6 +51,7 @@
- 	} while (0)
+ static const struct rkisp1_isr_data px30_isp_isrs[] = {
+-	{ "isp", rkisp1_isp_isr },
+-	{ "mi", rkisp1_capture_isr },
+-	{ "mipi", rkisp1_csi_isr },
++	{ "isp", rkisp1_isp_isr, BIT(RKISP1_IRQ_ISP) },
++	{ "mi", rkisp1_capture_isr, BIT(RKISP1_IRQ_MI) },
++	{ "mipi", rkisp1_csi_isr, BIT(RKISP1_IRQ_MIPI) },
+ };
  
- #define DPU_ERROR(fmt, ...) pr_err("[dpu error]" fmt, ##__VA_ARGS__)
-+#define DPU_ERROR_RATELIMITED(fmt, ...) pr_err_ratelimited("[dpu error]" fmt, ##__VA_ARGS__)
+ static const struct rkisp1_info px30_isp_info = {
+@@ -492,7 +493,7 @@ static const char * const rk3399_isp_clks[] = {
+ };
  
- /**
-  * ktime_compare_safe - compare two ktime structures
+ static const struct rkisp1_isr_data rk3399_isp_isrs[] = {
+-	{ NULL, rkisp1_isr },
++	{ NULL, rkisp1_isr, BIT(RKISP1_IRQ_ISP) | BIT(RKISP1_IRQ_MI) | BIT(RKISP1_IRQ_MIPI) },
+ };
+ 
+ static const struct rkisp1_info rk3399_isp_info = {
+@@ -543,6 +544,9 @@ static int rkisp1_probe(struct platform_device *pdev)
+ 	if (IS_ERR(rkisp1->base_addr))
+ 		return PTR_ERR(rkisp1->base_addr);
+ 
++	for (unsigned int il = 0; il < ARRAY_SIZE(rkisp1->irqs); ++il)
++		rkisp1->irqs[il] = -1;
++
+ 	for (i = 0; i < info->isr_size; i++) {
+ 		irq = info->isrs[i].name
+ 		    ? platform_get_irq_byname(pdev, info->isrs[i].name)
+@@ -550,6 +554,11 @@ static int rkisp1_probe(struct platform_device *pdev)
+ 		if (irq < 0)
+ 			return irq;
+ 
++		for (unsigned int il = 0; il < ARRAY_SIZE(rkisp1->irqs); ++il) {
++			if (info->isrs[i].line_mask & BIT(il))
++				rkisp1->irqs[il] = irq;
++		}
++
+ 		ret = devm_request_irq(dev, irq, info->isrs[i].isr, 0,
+ 				       dev_driver_string(dev), dev);
+ 		if (ret) {
 -- 
 2.43.0
 
