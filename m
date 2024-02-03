@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32118848367
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D32E8480FC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 644051C208DC
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C51CA1F2195E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9BC250E0;
-	Sat,  3 Feb 2024 04:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1933F134CA;
+	Sat,  3 Feb 2024 04:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcscDk6n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9EnfTcL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3187828E3C;
-	Sat,  3 Feb 2024 04:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB3C1B944;
+	Sat,  3 Feb 2024 04:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933925; cv=none; b=S44oDnF3pVxmbV1lU6658GeN7MAWYt9HeYZ0QG7DXOKyHXw3xruPqeJ+i3lxGM0N+7X6VxOn8bXKdWAl8Nx39VY8t/dKq4WTDBjPk7LT2k9ZFZm/Gt4aD5SaHUdNuUXNtCU5cnDRvh3xbFCdgVCIAas8bgCpSfYpcAgK1I/dd6g=
+	t=1706933476; cv=none; b=Yw6vu8xT9NvycvDLHmCParzqEaUVljyGWxV0NSxrMwK8TW2KqjcWmcW0ADDYaRfo0M9rzOpJB82hyo6VnEayScJZS/jEOsGlJTCc1Qlp0vH9br7FnABNclb4tRwALD93XUxxmxSoxaddsN7FqdhR8AJVXoZZXjRdVmk0JGaDVuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933925; c=relaxed/simple;
-	bh=NZ214pLdagVQ+lMDh3W/vqkytLCE53hvCUp4mZjb6B8=;
+	s=arc-20240116; t=1706933476; c=relaxed/simple;
+	bh=McQzFvW7CfH3EGA5jgfd29kSoMff53f4MBTmsYlVh1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V3ZkE/cCNdqJMqDTyTkUw2yggjkld88AqzPdGJ9jCP1Vajq1WtbLusNONXpgGKahhmNOmEoOq984/ocgRQUhF7lwM3Y7H5Is398lXJnSYDFa/eo2lgN37Hxhj+mmsg8eRqbp+MSWFb8V+Bz+ELMS1RJvxq4sOFiEka0/QWSUPgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcscDk6n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6B4C43390;
-	Sat,  3 Feb 2024 04:18:44 +0000 (UTC)
+	 MIME-Version; b=rYYKMxAMKzV3T4/PHfY8ANtyaih6tQBq2/3x8CUFkjVXvKFebCofhzS8pxjLA74dX5Y5nLuG8UnIXFRFx0tXm0aQga4cbxF4oxPAAvuwj+FCmhc8j2G9EaFKLpyx3oVZT312N56TXVTEml88WJvtpDFqAjYuCXSS1PwHKHBx36c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9EnfTcL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940DAC43390;
+	Sat,  3 Feb 2024 04:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933925;
-	bh=NZ214pLdagVQ+lMDh3W/vqkytLCE53hvCUp4mZjb6B8=;
+	s=korg; t=1706933476;
+	bh=McQzFvW7CfH3EGA5jgfd29kSoMff53f4MBTmsYlVh1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QcscDk6nvXOumfq2UMz0MUUVXn2zwgn1e18aVzUSoyRGNqesyqgzaZ7Jt8cs+j3hW
-	 W8FdKjmnHbnhnInGdTgwZ1pyB2YvXe3e3HPc9swq3iURbJneU6wCoTmlUWnTDP4daa
-	 692lETiPinY+kHfAy+MPSqnDlAzaqXQwcfI7ljWU=
+	b=s9EnfTcLbSW94cyzOvZhnHuZGle8UMNgermRqjuNqR3GDwc/4AEP3te7pArQgzGtX
+	 epMkO4VtM9j9u3l5Rg+UQ3mllrE9uLsrmd6aDgCvX0zVKz4SdWm0PpT+wIxpdVdT2E
+	 cpH3AEauFZLm7wcB1DBwYwY6PwPCrUWRkgaMfKfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hardik Gajjar <hgajjar@de.adit-jv.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	Matthias May <matthias.may@westermo.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 256/353] usb: hub: Add quirk to decrease IN-ep poll interval for Microchip USB491x hub
-Date: Fri,  2 Feb 2024 20:06:14 -0800
-Message-ID: <20240203035411.841859335@linuxfoundation.org>
+Subject: [PATCH 6.1 202/219] selftests: net: add missing config for GENEVE
+Date: Fri,  2 Feb 2024 20:06:15 -0800
+Message-ID: <20240203035345.490787951@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hardik Gajjar <hgajjar@de.adit-jv.com>
+From: Matthias May <Matthias.May@westermo.com>
 
-[ Upstream commit 855d75cf8311fee156fabb5639bb53757ca83dd4 ]
+[ Upstream commit c9ec85153fea6873c52ed4f5055c87263f1b54f9 ]
 
-There is a potential delay in notifying Linux USB drivers of downstream
-USB bus activity when connecting a high-speed or superSpeed device via the
-Microchip USB491x hub. This delay is due to the fixed bInterval value of
-12 in the silicon of the Microchip USB491x hub.
+l2_tos_ttl_inherit.sh verifies the inheritance of tos and ttl
+for GRETAP, VXLAN and GENEVE.
+Before testing it checks if the required module is available
+and if not skips the tests accordingly.
+Currently only GRETAP and VXLAN are tested because the GENEVE
+module is missing.
 
-Microchip requested to ignore the device descriptor and decrease that
-value to 9 as it was too late to modify that in silicon.
-
-This patch speeds up the USB enummeration process that helps to pass
-Apple Carplay certifications and improve the User experience when utilizing
-the USB device via Microchip Multihost USB491x Hub.
-
-A new hub quirk HUB_QUIRK_REDUCE_FRAME_INTR_BINTERVAL speeds up
-the notification process for Microchip USB491x hub by limiting
-the maximum bInterval value to 9.
-
-Signed-off-by: Hardik Gajjar <hgajjar@de.adit-jv.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20231205181829.127353-2-hgajjar@de.adit-jv.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b690842d12fd ("selftests/net: test l2 tunnel TOS/TTL inheriting")
+Signed-off-by: Matthias May <matthias.may@westermo.com>
+Link: https://lore.kernel.org/r/20240130101157.196006-1-matthias.may@westermo.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ tools/testing/selftests/net/config | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 7deeba174858..ef8d9bda94ac 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -47,12 +47,18 @@
- #define USB_VENDOR_TEXAS_INSTRUMENTS		0x0451
- #define USB_PRODUCT_TUSB8041_USB3		0x8140
- #define USB_PRODUCT_TUSB8041_USB2		0x8142
-+#define USB_VENDOR_MICROCHIP			0x0424
-+#define USB_PRODUCT_USB4913			0x4913
-+#define USB_PRODUCT_USB4914			0x4914
-+#define USB_PRODUCT_USB4915			0x4915
- #define HUB_QUIRK_CHECK_PORT_AUTOSUSPEND	BIT(0)
- #define HUB_QUIRK_DISABLE_AUTOSUSPEND		BIT(1)
-+#define HUB_QUIRK_REDUCE_FRAME_INTR_BINTERVAL	BIT(2)
- 
- #define USB_TP_TRANSMISSION_DELAY	40	/* ns */
- #define USB_TP_TRANSMISSION_DELAY_MAX	65535	/* ns */
- #define USB_PING_RESPONSE_TIME		400	/* ns */
-+#define USB_REDUCE_FRAME_INTR_BINTERVAL	9
- 
- /* Protect struct usb_device->state and ->children members
-  * Note: Both are also protected by ->dev.sem, except that ->state can
-@@ -1904,6 +1910,14 @@ static int hub_probe(struct usb_interface *intf, const struct usb_device_id *id)
- 		usb_autopm_get_interface_no_resume(intf);
- 	}
- 
-+	if ((id->driver_info & HUB_QUIRK_REDUCE_FRAME_INTR_BINTERVAL) &&
-+	    desc->endpoint[0].desc.bInterval > USB_REDUCE_FRAME_INTR_BINTERVAL) {
-+		desc->endpoint[0].desc.bInterval =
-+			USB_REDUCE_FRAME_INTR_BINTERVAL;
-+		/* Tell the HCD about the interrupt ep's new bInterval */
-+		usb_set_interface(hdev, 0, 0);
-+	}
-+
- 	if (hub_configure(hub, &desc->endpoint[0].desc) >= 0) {
- 		onboard_hub_create_pdevs(hdev, &hub->onboard_hub_devs);
- 
-@@ -5895,6 +5909,21 @@ static const struct usb_device_id hub_id_table[] = {
-       .idVendor = USB_VENDOR_TEXAS_INSTRUMENTS,
-       .idProduct = USB_PRODUCT_TUSB8041_USB3,
-       .driver_info = HUB_QUIRK_DISABLE_AUTOSUSPEND},
-+	{ .match_flags = USB_DEVICE_ID_MATCH_VENDOR
-+			| USB_DEVICE_ID_MATCH_PRODUCT,
-+	  .idVendor = USB_VENDOR_MICROCHIP,
-+	  .idProduct = USB_PRODUCT_USB4913,
-+	  .driver_info = HUB_QUIRK_REDUCE_FRAME_INTR_BINTERVAL},
-+	{ .match_flags = USB_DEVICE_ID_MATCH_VENDOR
-+			| USB_DEVICE_ID_MATCH_PRODUCT,
-+	  .idVendor = USB_VENDOR_MICROCHIP,
-+	  .idProduct = USB_PRODUCT_USB4914,
-+	  .driver_info = HUB_QUIRK_REDUCE_FRAME_INTR_BINTERVAL},
-+	{ .match_flags = USB_DEVICE_ID_MATCH_VENDOR
-+			| USB_DEVICE_ID_MATCH_PRODUCT,
-+	  .idVendor = USB_VENDOR_MICROCHIP,
-+	  .idProduct = USB_PRODUCT_USB4915,
-+	  .driver_info = HUB_QUIRK_REDUCE_FRAME_INTR_BINTERVAL},
-     { .match_flags = USB_DEVICE_ID_MATCH_DEV_CLASS,
-       .bDeviceClass = USB_CLASS_HUB},
-     { .match_flags = USB_DEVICE_ID_MATCH_INT_CLASS,
+diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
+index bd89198cd817..ec097f245726 100644
+--- a/tools/testing/selftests/net/config
++++ b/tools/testing/selftests/net/config
+@@ -13,6 +13,7 @@ CONFIG_IPV6_VTI=y
+ CONFIG_DUMMY=y
+ CONFIG_BRIDGE=y
+ CONFIG_VLAN_8021Q=y
++CONFIG_GENEVE=m
+ CONFIG_IFB=y
+ CONFIG_NETFILTER=y
+ CONFIG_NETFILTER_ADVANCED=y
 -- 
 2.43.0
 
