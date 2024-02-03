@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-18068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EBCF848140
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EF1E848275
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71A3F1C20C1E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BCA9281956
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA1F9168DD;
-	Sat,  3 Feb 2024 04:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4703F48CCD;
+	Sat,  3 Feb 2024 04:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/zK57gx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2Pc62Bc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E861079D;
-	Sat,  3 Feb 2024 04:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0439C13AC2;
+	Sat,  3 Feb 2024 04:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933523; cv=none; b=gOD8kH2kR+sZ4b+fH9cKaoyjO9vDgCiaWjP8Y4xbgZ0IeJK3hOPcmI92dy0SPdLX7ReBRPzdLEbyb9n4xY65BGxo5kC4AFbUbeqOnXMo8F0J/1CAsgNkDFJ2wGCl3GWkrUpv4zvAk8UXCo1cZEaOmWnywYePbnfWyJ+0KCdyIgQ=
+	t=1706933749; cv=none; b=KnAfdth+iBCafaHt1bqp0XxlH2i+kAxyHna7gKaOyNUQTZbF3pbA8LdVWMOiXyneIwO3vqLteRdMLEDZa0jC3cDCj1DnLgmkZ0bXrY6bTrwtB//w7hG8XDlx7XdgXVp+iTbimvtNBQGKmz38GrnJkoYif9KVj1+xhTKPZ8xWa/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933523; c=relaxed/simple;
-	bh=DBBCSrsj/WYnpi51K7vr5KnxPdpyLjWyF7imB3BpMLc=;
+	s=arc-20240116; t=1706933749; c=relaxed/simple;
+	bh=XxFxIk2pXdImkhwoTEFaLXlxs4wouqvMwZ27itLSI/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYMenpg8390IAk838I1mlI6y7XvMh9Ssg9kWXK8FSd3HHfeIaMUMCjIsL6lQiGnQpRGRnlzudcGoYnjH00yzfSIXStRgYwuXZX4nL9BiWApJPLNGAS9wASnU39HJAw9CGotea1vuFDkxreJeTQfc5WfuDzD91aNS2YS/l/SVJ+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/zK57gx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE6CC433F1;
-	Sat,  3 Feb 2024 04:12:03 +0000 (UTC)
+	 MIME-Version; b=BJJry+0EIFvmVhpfVyx/NdTN94N++GglTyOvKhaffkbRxcaT5hQvtM9Ifa/x5EFA1Tb0W6/6Qg1LVyDYlAgGbfrmNyJHEmkSquZAqPMewIhfqan4j9EThIvdCc/gsighTYykxZmS+m3keXmcNlPgtoabROoU259bTWLERagiKqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2Pc62Bc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4EBC43390;
+	Sat,  3 Feb 2024 04:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933523;
-	bh=DBBCSrsj/WYnpi51K7vr5KnxPdpyLjWyF7imB3BpMLc=;
+	s=korg; t=1706933748;
+	bh=XxFxIk2pXdImkhwoTEFaLXlxs4wouqvMwZ27itLSI/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/zK57gxc3CB5sqYGLnMRUBCk4dZrMyDfwuZxpOhREO/p4M2UoYG4XUPjbWyAWDBF
-	 FRofFUB4hqQePlStt4gIsuQmZhpAwb2fWOot8nmy+AAjJJOnn3qiU3a/cVRNwuZ/P0
-	 j7Hxp15szKdmH7aQa0+rFHE1KEDUlaNMze+gz7qQ=
+	b=M2Pc62BcA2hGQr7nt885bWLHR1VpDYfL/vlyuLTMIVaa4I6zBQnwxii9i0bIwAMfj
+	 fcwCXN6gXSQKkhPCmAxsnhyY0PxercABieAZpYhWQrzE+Dk9ioggQVtOzQrAV6b/4G
+	 /svVzZPmySu2sQis1u0f8tYhTsz2u5e9wNbkPi70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alan Maguire <alan.maguire@oracle.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/322] selftests/bpf: Fix pyperf180 compilation failure with clang18
-Date: Fri,  2 Feb 2024 20:02:40 -0800
-Message-ID: <20240203035401.179198011@linuxfoundation.org>
+Subject: [PATCH 6.7 043/353] afs: fix the usage of read_seqbegin_or_lock() in afs_lookup_volume_rcu()
+Date: Fri,  2 Feb 2024 20:02:41 -0800
+Message-ID: <20240203035405.170465083@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 100888fb6d8a185866b1520031ee7e3182b173de ]
+[ Upstream commit 4121b4337146b64560d1e46ebec77196d9287802 ]
 
-With latest clang18 (main branch of llvm-project repo), when building bpf selftests,
-    [~/work/bpf-next (master)]$ make -C tools/testing/selftests/bpf LLVM=1 -j
+David Howells says:
 
-The following compilation error happens:
-    fatal error: error in backend: Branch target out of insn range
-    ...
-    Stack dump:
-    0.      Program arguments: clang -g -Wall -Werror -D__TARGET_ARCH_x86 -mlittle-endian
-      -I/home/yhs/work/bpf-next/tools/testing/selftests/bpf/tools/include
-      -I/home/yhs/work/bpf-next/tools/testing/selftests/bpf -I/home/yhs/work/bpf-next/tools/include/uapi
-      -I/home/yhs/work/bpf-next/tools/testing/selftests/usr/include -idirafter
-      /home/yhs/work/llvm-project/llvm/build.18/install/lib/clang/18/include -idirafter /usr/local/include
-      -idirafter /usr/include -Wno-compare-distinct-pointer-types -DENABLE_ATOMICS_TESTS -O2 --target=bpf
-      -c progs/pyperf180.c -mcpu=v3 -o /home/yhs/work/bpf-next/tools/testing/selftests/bpf/pyperf180.bpf.o
-    1.      <eof> parser at end of file
-    2.      Code generation
-    ...
+ (2) afs_lookup_volume_rcu().
 
-The compilation failure only happens to cpu=v2 and cpu=v3. cpu=v4 is okay
-since cpu=v4 supports 32-bit branch target offset.
+     There can be a lot of volumes known by a system.  A thousand would
+     require a 10-step walk and this is drivable by remote operation, so I
+     think this should probably take a lock on the second pass too.
 
-The above failure is due to upstream llvm patch [1] where some inlining behavior
-are changed in clang18.
+Make the "seq" counter odd on the 2nd pass, otherwise read_seqbegin_or_lock()
+never takes the lock.
 
-To workaround the issue, previously all 180 loop iterations are fully unrolled.
-The bpf macro __BPF_CPU_VERSION__ (implemented in clang18 recently) is used to avoid
-unrolling changes if cpu=v4. If __BPF_CPU_VERSION__ is not available and the
-compiler is clang18, the unrollng amount is unconditionally reduced.
-
-  [1] https://github.com/llvm/llvm-project/commit/1a2e77cf9e11dbf56b5720c607313a566eebb16e
-
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Tested-by: Alan Maguire <alan.maguire@oracle.com>
-Link: https://lore.kernel.org/bpf/20231110193644.3130906-1-yonghong.song@linux.dev
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Link: https://lore.kernel.org/r/20231130115606.GA21571@redhat.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/pyperf180.c | 22 +++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ fs/afs/callback.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/pyperf180.c b/tools/testing/selftests/bpf/progs/pyperf180.c
-index c39f559d3100..42c4a8b62e36 100644
---- a/tools/testing/selftests/bpf/progs/pyperf180.c
-+++ b/tools/testing/selftests/bpf/progs/pyperf180.c
-@@ -1,4 +1,26 @@
- // SPDX-License-Identifier: GPL-2.0
- // Copyright (c) 2019 Facebook
- #define STACK_MAX_LEN 180
-+
-+/* llvm upstream commit at clang18
-+ *   https://github.com/llvm/llvm-project/commit/1a2e77cf9e11dbf56b5720c607313a566eebb16e
-+ * changed inlining behavior and caused compilation failure as some branch
-+ * target distance exceeded 16bit representation which is the maximum for
-+ * cpu v1/v2/v3. Macro __BPF_CPU_VERSION__ is later implemented in clang18
-+ * to specify which cpu version is used for compilation. So a smaller
-+ * unroll_count can be set if __BPF_CPU_VERSION__ is less than 4, which
-+ * reduced some branch target distances and resolved the compilation failure.
-+ *
-+ * To capture the case where a developer/ci uses clang18 but the corresponding
-+ * repo checkpoint does not have __BPF_CPU_VERSION__, a smaller unroll_count
-+ * will be set as well to prevent potential compilation failures.
-+ */
-+#ifdef __BPF_CPU_VERSION__
-+#if __BPF_CPU_VERSION__ < 4
-+#define UNROLL_COUNT 90
-+#endif
-+#elif __clang_major__ == 18
-+#define UNROLL_COUNT 90
-+#endif
-+
- #include "pyperf.h"
+diff --git a/fs/afs/callback.c b/fs/afs/callback.c
+index a484fa642808..90f9b2a46ff4 100644
+--- a/fs/afs/callback.c
++++ b/fs/afs/callback.c
+@@ -110,13 +110,14 @@ static struct afs_volume *afs_lookup_volume_rcu(struct afs_cell *cell,
+ {
+ 	struct afs_volume *volume = NULL;
+ 	struct rb_node *p;
+-	int seq = 0;
++	int seq = 1;
+ 
+ 	do {
+ 		/* Unfortunately, rbtree walking doesn't give reliable results
+ 		 * under just the RCU read lock, so we have to check for
+ 		 * changes.
+ 		 */
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
+ 		read_seqbegin_or_lock(&cell->volume_lock, &seq);
+ 
+ 		p = rcu_dereference_raw(cell->volumes.rb_node);
 -- 
 2.43.0
 
