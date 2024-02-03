@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C9F8481E8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A46CD84831B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BD1AB29B58
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1199EB2203F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95A84207D;
-	Sat,  3 Feb 2024 04:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29265111A6;
+	Sat,  3 Feb 2024 04:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="081TQdX5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OH/lUXCU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A582512B7B;
-	Sat,  3 Feb 2024 04:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFF911198;
+	Sat,  3 Feb 2024 04:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933644; cv=none; b=CzExi5yYqOeyESJmbMWE6RlHto8i1BmrEM9uAHbLDJpR90uxxb2nWyMO2/kRfzvkH/1ZpJhqgOCMLbTu0wtMLS1uUsboxvhMn1tyG0Rjm+DNNly1m/k+GMgUB1FZ9kVQUBjcQdFz797yWzH238L/9/kSZjUpXBXDoPID5wAtsD0=
+	t=1706933869; cv=none; b=jXdhfFOSHOrozc2ESIfuwsAVKj3JGTN7Wx1uNWJDDQXApHdk8wIbzx704hliAUrZXxxqZ4yJ5ZhSs7puOn1atGi62Fx4AjDD937wzqfovYbkEB5DRWOMKLzE3/kQc61hDwOfndCh4G9DXSAMiuroDE+k9IFhlyyU2qA55g02q10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933644; c=relaxed/simple;
-	bh=1f/rPJrbb+riHPa9juxg0uZHcBzvsfGY5YvJ7CrL72Q=;
+	s=arc-20240116; t=1706933869; c=relaxed/simple;
+	bh=yYN4jJyxYlpcON42lThOz6rmeuC+c0aO58VhcRcmAMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bd2GBLHoduAIOp3Pb6fK8mGT/XDrwmIRZLb6o8DVywyTdJAEMcxsKiP2ww3WSgl2ief7uRe1M7jHFkSlB9wtZoj5+C2kJNacTKPSMyX1al2OrD+YbyZM+cLIoKHqruaRNew7hVix5y44a8KAtX/axuddLLU6Lh4zcO2BBSU/Wvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=081TQdX5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD45C43399;
-	Sat,  3 Feb 2024 04:14:04 +0000 (UTC)
+	 MIME-Version; b=kp5W/0O7zlVwGJEWPDXWPGPz3chOMOlbBzYoAj2PCbAOavWMBgXFcwf6Xl0Dh5uRWod9M9qqqVR0SMD7f9UDqRomNCNiNQW22GXr8ax951KAgpxYkIbjvC38rMWu0Zu4XvW9eLhwafo4v3A0CDo6GubslfV0FYBCIdQuI9C+qgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OH/lUXCU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A716DC433F1;
+	Sat,  3 Feb 2024 04:17:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933644;
-	bh=1f/rPJrbb+riHPa9juxg0uZHcBzvsfGY5YvJ7CrL72Q=;
+	s=korg; t=1706933869;
+	bh=yYN4jJyxYlpcON42lThOz6rmeuC+c0aO58VhcRcmAMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=081TQdX5cpwGUGyGrwaQsZK647+DrBDcFZm+N3Umb2SAfm8igJWt9lbbKTRgVbdlO
-	 35yGcz49wFbBdgAZu89y7nBaIryQBdoyhozWST7INMQtThwXlWxG4rEVYT2jfqxxRp
-	 JOIr0ITA8YiwPjzeT0aHJCLO4QNTZEvVH2dkLZnA=
+	b=OH/lUXCUf+xinj0OvyVA1DystwwvnnoUrmsTLqABW+52ccaFkBhg5Ql6W0EKgtS9X
+	 9f31Whw8KNLf7Yk3xhtZK3M8tRr2XG4Ptr/FCxPpeOY+wMABcxm+u4lxj+k+EGzq7f
+	 d/cV6UNlGEVY5WFdPg37OZJLdfMTNzILnx5R6yq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 227/322] mfd: ti_am335x_tscadc: Fix TI SoC dependencies
-Date: Fri,  2 Feb 2024 20:05:24 -0800
-Message-ID: <20240203035406.542725050@linuxfoundation.org>
+Subject: [PATCH 6.7 207/353] drm/msm/dpu: enable writeback on SM8350
+Date: Fri,  2 Feb 2024 20:05:25 -0800
+Message-ID: <20240203035410.242872526@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Robinson <pbrobinson@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 284d16c456e5d4b143f375b8ccc4038ab3f4ee0f ]
+[ Upstream commit c2949a49dfe960e952400029e14751dceff79d38 ]
 
-The ti_am335x_tscadc is specific to some TI SoCs, update
-the dependencies for those SoCs and compile testing.
+Enable WB2 hardware block, enabling writeback support on this platform.
 
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-Link: https://lore.kernel.org/r/20231220155643.445849-1-pbrobinson@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/570188/
+Link: https://lore.kernel.org/r/20231203002743.1291956-3-dmitry.baryshkov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ .../drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 90ce58fd629e..68d71b4b55bd 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -1483,6 +1483,7 @@ config MFD_SYSCON
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
+index 1709ba57f384..022b0408c24d 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
+@@ -31,6 +31,7 @@ static const struct dpu_mdp_cfg sm8350_mdp = {
+ 		[DPU_CLK_CTRL_DMA1] = { .reg_off = 0x2b4, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2bc, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA3] = { .reg_off = 0x2c4, .bit_off = 8 },
++		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
+ 		[DPU_CLK_CTRL_REG_DMA] = { .reg_off = 0x2bc, .bit_off = 20 },
+ 	},
+ };
+@@ -298,6 +299,21 @@ static const struct dpu_dsc_cfg sm8350_dsc[] = {
+ 	},
+ };
  
- config MFD_TI_AM335X_TSCADC
- 	tristate "TI ADC / Touch Screen chip support"
-+	depends on ARCH_OMAP2PLUS || ARCH_K3 || COMPILE_TEST
- 	select MFD_CORE
- 	select REGMAP
- 	select REGMAP_MMIO
++static const struct dpu_wb_cfg sm8350_wb[] = {
++	{
++		.name = "wb_2", .id = WB_2,
++		.base = 0x65000, .len = 0x2c8,
++		.features = WB_SM8250_MASK,
++		.format_list = wb2_formats,
++		.num_formats = ARRAY_SIZE(wb2_formats),
++		.clk_ctrl = DPU_CLK_CTRL_WB2,
++		.xin_id = 6,
++		.vbif_idx = VBIF_RT,
++		.maxlinewidth = 4096,
++		.intr_wb_done = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 4),
++	},
++};
++
+ static const struct dpu_intf_cfg sm8350_intf[] = {
+ 	{
+ 		.name = "intf_0", .id = INTF_0,
+@@ -393,6 +409,8 @@ const struct dpu_mdss_cfg dpu_sm8350_cfg = {
+ 	.dsc = sm8350_dsc,
+ 	.merge_3d_count = ARRAY_SIZE(sm8350_merge_3d),
+ 	.merge_3d = sm8350_merge_3d,
++	.wb_count = ARRAY_SIZE(sm8350_wb),
++	.wb = sm8350_wb,
+ 	.intf_count = ARRAY_SIZE(sm8350_intf),
+ 	.intf = sm8350_intf,
+ 	.vbif_count = ARRAY_SIZE(sdm845_vbif),
 -- 
 2.43.0
 
