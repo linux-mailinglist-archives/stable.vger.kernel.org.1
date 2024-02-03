@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-17897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39879848091
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C288481AD
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35DD4281532
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20A481C23CC3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 358D7101FA;
-	Sat,  3 Feb 2024 04:09:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63E0374F5;
+	Sat,  3 Feb 2024 04:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWE0ndnH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qz/qCAY0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E797BFC11;
-	Sat,  3 Feb 2024 04:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6507517C64;
+	Sat,  3 Feb 2024 04:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933397; cv=none; b=bala/xwq8HnfNC/EA0uvwC9rJMeDk0AzdRaYiYwvfq3DX6sGe68ulVQoEAW4dsNOoKH6AaA13IoTwEHpxeA+zJsu/BF7Lb4P1ArGB+EmLFj/FD2ht9LJ2NwBy+3YytSOc6VRgOArC8M4EdYvaMXdz1q7OpOI+Vev6Ia/gxpDKdU=
+	t=1706933602; cv=none; b=RpTr6peDlewfNh5673JxVA6ZkiE+SqZ01ZdK6STommUGMlFFysCQrrH+lVRVt9f4zZQJ/5lxi/HJ4yDUW0jPe/EDyofzh4p3NfWO6eL79mQ2kjX4tlCZt0tzoiGUsLlkZcxEwoRwfj6B8Osx/2PHK8C9sIOdtAJsBINsRkSaIF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933397; c=relaxed/simple;
-	bh=AQjsU0t2Ec6SSUD61nv9GLjyZXUzSTvjBnV5V+/qy0M=;
+	s=arc-20240116; t=1706933602; c=relaxed/simple;
+	bh=SST6Gbk2RUsroI1vT+PJ68Ga9XKTWfYONsSECVLF31w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NIAgB4R5Pe6PREvlZ7udWrTesVI7Qxf8Mq/9Zj4keyB79xw0ZIHIXYLbfX4B5jDakaJx2rtZ0qzDAc6VX/jMPvmKxKoYcp+HflVxzivSrP3KZKFkujG5/uUPZG/T5Jech+n/yeF/I1gwRnESgs97JehAnnccYv7BYVp8VZclWCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWE0ndnH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B9BC433F1;
-	Sat,  3 Feb 2024 04:09:56 +0000 (UTC)
+	 MIME-Version; b=DcA31ew/K0mGTNpol3EZjatiF12UI2RXrjUnkEstNSEe2QUQp+Mxj8ocCr0QquKLsYSZ509fmOkKbWin25UQRLuqE4Dvfyg63S322YAK1WspsrmjxidgYUOpQVP78kHXaknUigS1sJcgrGclFzaya6PLa6YzWilOTugP20MtmAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qz/qCAY0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D775C433F1;
+	Sat,  3 Feb 2024 04:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933396;
-	bh=AQjsU0t2Ec6SSUD61nv9GLjyZXUzSTvjBnV5V+/qy0M=;
+	s=korg; t=1706933602;
+	bh=SST6Gbk2RUsroI1vT+PJ68Ga9XKTWfYONsSECVLF31w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UWE0ndnHSmtaIwPDV+bqRHNN9URcfl8B/ma95BpPanwYxhYRcIo92+WL2VUoHj7ZR
-	 W1GX4cLZa5+fIn+6bX05ZmInsMvzq9EMbgm6bgznOZfWrrQm4WjPz9ag/Oa4uYP+Sd
-	 bvFqAC18c3rpgk3w8ao4raf4x3inGm40OkS9ElXE=
+	b=Qz/qCAY0f6myaQp/AjtrM9IPfOFLTLYIdhHIhHG2yJ7/lDZs99PZ9qn/3wLng1fBu
+	 n8+29MWOV8w7PotdOLW6jVBhv+H5nK3Swfph94tOCHMrQtWmpwoKGsI3N+HMNALc6y
+	 8pW0SoqzLfaA20oxGvgSD0qMe2AL44SFv2Kw/dyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	"H. Nikolaus Schaller" <hns@goldelico.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/219] wifi: cfg80211: free beacon_ies when overridden from hidden BSS
+Subject: [PATCH 6.6 171/322] drm/mipi-dsi: Fix detach call without attach
 Date: Fri,  2 Feb 2024 20:04:28 -0800
-Message-ID: <20240203035330.603478407@linuxfoundation.org>
+Message-ID: <20240203035404.767578783@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +65,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 32af9a9e1069e55bc02741fb00ac9d0ca1a2eaef ]
+[ Upstream commit 90d50b8d85834e73536fdccd5aa913b30494fef0 ]
 
-This is a more of a cosmetic fix. The branch will only be taken if
-proberesp_ies is set, which implies that beacon_ies is not set unless we
-are connected to an AP that just did a channel switch. And, in that case
-we should have found the BSS in the internal storage to begin with.
+It's been reported that DSI host driver's detach can be called without
+the attach ever happening:
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231220133549.b898e22dadff.Id8c4c10aedd176ef2e18a4cad747b299f150f9df@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+https://lore.kernel.org/all/20230412073954.20601-1-tony@atomide.com/
+
+After reading the code, I think this is what happens:
+
+We have a DSI host defined in the device tree and a DSI peripheral under
+that host (i.e. an i2c device using the DSI as data bus doesn't exhibit
+this behavior).
+
+The host driver calls mipi_dsi_host_register(), which causes (via a few
+functions) mipi_dsi_device_add() to be called for the DSI peripheral. So
+now we have a DSI device under the host, but attach hasn't been called.
+
+Normally the probing of the devices continues, and eventually the DSI
+peripheral's driver will call mipi_dsi_attach(), attaching the
+peripheral.
+
+However, if the host driver's probe encounters an error after calling
+mipi_dsi_host_register(), and before the peripheral has called
+mipi_dsi_attach(), the host driver will do cleanups and return an error
+from its probe function. The cleanups include calling
+mipi_dsi_host_unregister().
+
+mipi_dsi_host_unregister() will call two functions for all its DSI
+peripheral devices: mipi_dsi_detach() and mipi_dsi_device_unregister().
+The latter makes sense, as the device exists, but the former may be
+wrong as attach has not necessarily been done.
+
+To fix this, track the attached state of the peripheral, and only detach
+from mipi_dsi_host_unregister() if the peripheral was attached.
+
+Note that I have only tested this with a board with an i2c DSI
+peripheral, not with a "pure" DSI peripheral.
+
+However, slightly related, the unregister machinery still seems broken.
+E.g. if the DSI host driver is unbound, it'll detach and unregister the
+DSI peripherals. After that, when the DSI peripheral driver unbound
+it'll call detach either directly or using the devm variant, leading to
+a crash. And probably the driver will crash if it happens, for some
+reason, to try to send a message via the DSI bus.
+
+But that's another topic.
+
+Tested-by: H. Nikolaus Schaller <hns@goldelico.com>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Tested-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230921-dsi-detach-fix-v1-1-d0de2d1621d9@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/drm_mipi_dsi.c | 17 +++++++++++++++--
+ include/drm/drm_mipi_dsi.h     |  2 ++
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index b7e1631b3d80..86906557a04e 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1810,8 +1810,12 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
- 				list_add(&new->hidden_list,
- 					 &hidden->hidden_list);
- 				hidden->refcount++;
+diff --git a/drivers/gpu/drm/drm_mipi_dsi.c b/drivers/gpu/drm/drm_mipi_dsi.c
+index 14201f73aab1..843a6dbda93a 100644
+--- a/drivers/gpu/drm/drm_mipi_dsi.c
++++ b/drivers/gpu/drm/drm_mipi_dsi.c
+@@ -347,7 +347,8 @@ static int mipi_dsi_remove_device_fn(struct device *dev, void *priv)
+ {
+ 	struct mipi_dsi_device *dsi = to_mipi_dsi_device(dev);
+ 
+-	mipi_dsi_detach(dsi);
++	if (dsi->attached)
++		mipi_dsi_detach(dsi);
+ 	mipi_dsi_device_unregister(dsi);
+ 
+ 	return 0;
+@@ -370,11 +371,18 @@ EXPORT_SYMBOL(mipi_dsi_host_unregister);
+ int mipi_dsi_attach(struct mipi_dsi_device *dsi)
+ {
+ 	const struct mipi_dsi_host_ops *ops = dsi->host->ops;
++	int ret;
+ 
+ 	if (!ops || !ops->attach)
+ 		return -ENOSYS;
+ 
+-	return ops->attach(dsi->host, dsi);
++	ret = ops->attach(dsi->host, dsi);
++	if (ret)
++		return ret;
 +
-+				ies = (void *)rcu_dereference(new->pub.beacon_ies);
- 				rcu_assign_pointer(new->pub.beacon_ies,
- 						   hidden->pub.beacon_ies);
-+				if (ies)
-+					kfree_rcu(ies, rcu_head);
- 			}
- 		} else {
- 			/*
++	dsi->attached = true;
++
++	return 0;
+ }
+ EXPORT_SYMBOL(mipi_dsi_attach);
+ 
+@@ -386,9 +394,14 @@ int mipi_dsi_detach(struct mipi_dsi_device *dsi)
+ {
+ 	const struct mipi_dsi_host_ops *ops = dsi->host->ops;
+ 
++	if (WARN_ON(!dsi->attached))
++		return -EINVAL;
++
+ 	if (!ops || !ops->detach)
+ 		return -ENOSYS;
+ 
++	dsi->attached = false;
++
+ 	return ops->detach(dsi->host, dsi);
+ }
+ EXPORT_SYMBOL(mipi_dsi_detach);
+diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
+index c9df0407980c..c0aec0d4d664 100644
+--- a/include/drm/drm_mipi_dsi.h
++++ b/include/drm/drm_mipi_dsi.h
+@@ -168,6 +168,7 @@ struct mipi_dsi_device_info {
+  * struct mipi_dsi_device - DSI peripheral device
+  * @host: DSI host for this peripheral
+  * @dev: driver model device node for this peripheral
++ * @attached: the DSI device has been successfully attached
+  * @name: DSI peripheral chip type
+  * @channel: virtual channel assigned to the peripheral
+  * @format: pixel format for video mode
+@@ -184,6 +185,7 @@ struct mipi_dsi_device_info {
+ struct mipi_dsi_device {
+ 	struct mipi_dsi_host *host;
+ 	struct device dev;
++	bool attached;
+ 
+ 	char name[DSI_DEV_NAME_SIZE];
+ 	unsigned int channel;
 -- 
 2.43.0
 
