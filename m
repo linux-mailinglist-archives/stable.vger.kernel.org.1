@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-17925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C507D8480A8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F187684832D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6109C1F218B6
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 227C51C24613
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1001C179BE;
-	Sat,  3 Feb 2024 04:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222E250A6D;
+	Sat,  3 Feb 2024 04:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkp1NSE+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IOtIF9bg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C16179BD;
-	Sat,  3 Feb 2024 04:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5E0850A6A;
+	Sat,  3 Feb 2024 04:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933417; cv=none; b=ZYGaF86FPZd9V6T/E/y59Pwkmm0ZF7KWw51Uu1cHAXuPDPCiysw4LQR5FF6OD51QWMj3vWMgagWOeOX8ouBNxhH9Iag475ycp6n7zYppHusTm8hvYcM/g8vzSdy0cFfcmsilTy4WKOosNpPpoVipO096ylux3UN/Rpk6JTUwYJM=
+	t=1706933882; cv=none; b=QicMSzO5Bn7XQC+X3l4qnrHrR9KQpSYKW54jv1JSSeVzafaYTkpM6QArIe2yKL+XNTWiQsYEW5Tg7lhNTDUgp3eAJ59IALRU8A8jx4SOpqkTU5kIp4D5tGhv5lxYh6fdm+HiJdoJT8hKFUoadw8B4vxxe9qdohNJVRrgD5+GxnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933417; c=relaxed/simple;
-	bh=fI3P4NpYf1cyBlIa/obuJq/r3BfrCx+/xPO1uTdXO4g=;
+	s=arc-20240116; t=1706933882; c=relaxed/simple;
+	bh=9+sWO6TVRNcwXco3+suF+Yj+s9N+0OfOHbCZ6jYDXN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mO9Y1DMv/yOIVz64S5UG6v7U6AChnGsv9xArkKh9KswDB3RdxMX8cNkmrz/tOdLbx/KUBvEcSvyfZKAY4HA/EQidYE2fPNue91+PlpjKSW25Zw5UJmFCJZVDcLi3GQwxXmqDgR8nO9gnvCWCvLpqdx2mect3XJnuDwHSCiZiDUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkp1NSE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578A9C433C7;
-	Sat,  3 Feb 2024 04:10:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CiX8XLj+F7QbdQB7SfUPoqQwGidhR4fOQapkmQtPuK2NoCxnDNBfrU1C1cF0vX/YHdliRWG4kIV1Ngk4t1657golIVKFOjddP1KCh3Q7h9j7LsT13/zeJ/M7UzpD/oMaIyZP5Wt9kxumaM9WISeCeDcSv8792LNvy9BP0Nid2k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IOtIF9bg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB86C433F1;
+	Sat,  3 Feb 2024 04:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933417;
-	bh=fI3P4NpYf1cyBlIa/obuJq/r3BfrCx+/xPO1uTdXO4g=;
+	s=korg; t=1706933882;
+	bh=9+sWO6TVRNcwXco3+suF+Yj+s9N+0OfOHbCZ6jYDXN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hkp1NSE+NbLjn6+eFyQzdN5h5RU521nmxUGezcRzMqpHM9EhsT6u+vRoFCnQ9sE42
-	 qc6ArcZCY5Z3RjRB1IU2kklgqoSVkUykc0X27mLGkcuyWjxdNqWXLh+jUMAjKHaZaA
-	 d9UbIZkygHBNCEUtt3Ev7wra5C4BHqg0VQUikW5A=
+	b=IOtIF9bgEy5UHvjDXRQJHKAK4wmcrf3Jsuxn8JSvj3iz2/Ao1fruZwbQxyeSm3tMr
+	 KxnKpQ0Xr92MYzIuc+li55iyrb9+7OWX0Nb2tM9HzNbXakzTJ4Nd+n0Pwzc0yluDpI
+	 Am2GpgixbFFqhQ7zSA+j/GXWNW3/aHy6suzoSP+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Oliver F. Brown" <oliver.brown@oss.nxp.com>,
-	Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Lukasz Stelmach <l.stelmach@samsung.com>,
+	James Seo <james@equiv.tech>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 140/219] clk: imx: clk-imx8qxp: fix LVDS bypass, pixel and phy clocks
-Date: Fri,  2 Feb 2024 20:05:13 -0800
-Message-ID: <20240203035337.150235036@linuxfoundation.org>
+Subject: [PATCH 6.7 196/353] hwmon: (hp-wmi-sensors) Fix failure to load on EliteDesk 800 G6
+Date: Fri,  2 Feb 2024 20:05:14 -0800
+Message-ID: <20240203035409.889115484@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +61,277 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: James Seo <james@equiv.tech>
 
-[ Upstream commit 3f5f63adeea7e7aa715e101ffe4b4ac9705f9664 ]
+[ Upstream commit c9ba592580947b81f33f514320aeef02ddc001fd ]
 
-To be compatible with SCU firmware based on 1.15 a different clock
-routing for LVDS is needed.
+The EliteDesk 800 G6 stores a raw WMI string within the ACPI object in its
+BIOS corresponding to one instance of HPBIOS_PlatformEvents.Name. This is
+evidently a valid way of representing a WMI data item as far as the
+Microsoft ACPI-WMI mapper is concerned, but is preventing the driver from
+loading.
 
-Signed-off-by: Oliver F. Brown <oliver.brown@oss.nxp.com>
-Signed-off-by: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20231218122407.2757175-1-alexander.stein@ew.tq-group.com/
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+This seems quite rare, but add support for such strings. Treating this as a
+quirk pretty much means adding that support anyway.
+
+Also clean up an oversight in update_numeric_sensor_from_wobj() in which
+the result of hp_wmi_strdup() was being used without error checking.
+
+Reported-by: Lukasz Stelmach <l.stelmach@samsung.com>
+Closes: https://lore.kernel.org/linux-hwmon/7850a0bd-60e7-88f8-1d6c-0bb0e3234fdc@roeck-us.net/
+Tested-by: Lukasz Stelmach <l.stelmach@samsung.com>
+Signed-off-by: James Seo <james@equiv.tech>
+Link: https://lore.kernel.org/r/20231123054918.157098-1-james@equiv.tech
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8qxp.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ drivers/hwmon/hp-wmi-sensors.c | 127 ++++++++++++++++++++++++++++-----
+ 1 file changed, 111 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-imx8qxp.c b/drivers/clk/imx/clk-imx8qxp.c
-index 273de1f29307..1066ea16de62 100644
---- a/drivers/clk/imx/clk-imx8qxp.c
-+++ b/drivers/clk/imx/clk-imx8qxp.c
-@@ -67,6 +67,22 @@ static const char * const lcd_pxl_sels[] = {
- 	"lcd_pxl_bypass_div_clk",
+diff --git a/drivers/hwmon/hp-wmi-sensors.c b/drivers/hwmon/hp-wmi-sensors.c
+index 17ae62f88bbf..b5325d0e72b9 100644
+--- a/drivers/hwmon/hp-wmi-sensors.c
++++ b/drivers/hwmon/hp-wmi-sensors.c
+@@ -17,6 +17,8 @@
+  *     Available: https://github.com/linuxhw/ACPI
+  * [4] P. Rohár, "bmfdec - Decompile binary MOF file (BMF) from WMI buffer",
+  *     2017. [Online]. Available: https://github.com/pali/bmfdec
++ * [5] Microsoft Corporation, "Driver-Defined WMI Data Items", 2017. [Online].
++ *     Available: https://learn.microsoft.com/en-us/windows-hardware/drivers/kernel/driver-defined-wmi-data-items
+  */
+ 
+ #include <linux/acpi.h>
+@@ -24,6 +26,7 @@
+ #include <linux/hwmon.h>
+ #include <linux/jiffies.h>
+ #include <linux/mutex.h>
++#include <linux/nls.h>
+ #include <linux/units.h>
+ #include <linux/wmi.h>
+ 
+@@ -395,6 +398,50 @@ struct hp_wmi_sensors {
+ 	struct mutex lock;	/* Lock polling WMI and driver state changes. */
  };
  
-+static const char *const lvds0_sels[] = {
-+	"clk_dummy",
-+	"clk_dummy",
-+	"clk_dummy",
-+	"clk_dummy",
-+	"mipi0_lvds_bypass_clk",
-+};
++static bool is_raw_wmi_string(const u8 *pointer, u32 length)
++{
++	const u16 *ptr;
++	u16 len;
 +
-+static const char *const lvds1_sels[] = {
-+	"clk_dummy",
-+	"clk_dummy",
-+	"clk_dummy",
-+	"clk_dummy",
-+	"mipi1_lvds_bypass_clk",
-+};
++	/* WMI strings are length-prefixed UTF-16 [5]. */
++	if (length <= sizeof(*ptr))
++		return false;
 +
- static const char * const mipi_sels[] = {
- 	"clk_dummy",
- 	"clk_dummy",
-@@ -201,9 +217,9 @@ static int imx8qxp_clk_probe(struct platform_device *pdev)
- 	/* MIPI-LVDS SS */
- 	imx_clk_scu("mipi0_bypass_clk", IMX_SC_R_MIPI_0, IMX_SC_PM_CLK_BYPASS);
- 	imx_clk_scu("mipi0_pixel_clk", IMX_SC_R_MIPI_0, IMX_SC_PM_CLK_PER);
--	imx_clk_scu("mipi0_lvds_pixel_clk", IMX_SC_R_LVDS_0, IMX_SC_PM_CLK_MISC2);
- 	imx_clk_scu("mipi0_lvds_bypass_clk", IMX_SC_R_LVDS_0, IMX_SC_PM_CLK_BYPASS);
--	imx_clk_scu("mipi0_lvds_phy_clk", IMX_SC_R_LVDS_0, IMX_SC_PM_CLK_MISC3);
-+	imx_clk_scu2("mipi0_lvds_pixel_clk", lvds0_sels, ARRAY_SIZE(lvds0_sels), IMX_SC_R_LVDS_0, IMX_SC_PM_CLK_MISC2);
-+	imx_clk_scu2("mipi0_lvds_phy_clk", lvds0_sels, ARRAY_SIZE(lvds0_sels), IMX_SC_R_LVDS_0, IMX_SC_PM_CLK_MISC3);
- 	imx_clk_scu2("mipi0_dsi_tx_esc_clk", mipi_sels, ARRAY_SIZE(mipi_sels), IMX_SC_R_MIPI_0, IMX_SC_PM_CLK_MST_BUS);
- 	imx_clk_scu2("mipi0_dsi_rx_esc_clk", mipi_sels, ARRAY_SIZE(mipi_sels), IMX_SC_R_MIPI_0, IMX_SC_PM_CLK_SLV_BUS);
- 	imx_clk_scu2("mipi0_dsi_phy_clk", mipi_sels, ARRAY_SIZE(mipi_sels), IMX_SC_R_MIPI_0, IMX_SC_PM_CLK_PHY);
-@@ -213,9 +229,9 @@ static int imx8qxp_clk_probe(struct platform_device *pdev)
++	length -= sizeof(*ptr);
++	ptr = (const u16 *)pointer;
++	len = *ptr;
++
++	return len <= length && !(len & 1);
++}
++
++static char *convert_raw_wmi_string(const u8 *buf)
++{
++	const wchar_t *src;
++	unsigned int cps;
++	unsigned int len;
++	char *dst;
++	int i;
++
++	src = (const wchar_t *)buf;
++
++	/* Count UTF-16 code points. Exclude trailing null padding. */
++	cps = *src / sizeof(*src);
++	while (cps && !src[cps])
++		cps--;
++
++	/* Each code point becomes up to 3 UTF-8 characters. */
++	len = min(cps * 3, HP_WMI_MAX_STR_SIZE - 1);
++
++	dst = kmalloc((len + 1) * sizeof(*dst), GFP_KERNEL);
++	if (!dst)
++		return NULL;
++
++	i = utf16s_to_utf8s(++src, cps, UTF16_LITTLE_ENDIAN, dst, len);
++	dst[i] = '\0';
++
++	return dst;
++}
++
+ /* hp_wmi_strdup - devm_kstrdup, but length-limited */
+ static char *hp_wmi_strdup(struct device *dev, const char *src)
+ {
+@@ -412,6 +459,23 @@ static char *hp_wmi_strdup(struct device *dev, const char *src)
+ 	return dst;
+ }
  
- 	imx_clk_scu("mipi1_bypass_clk", IMX_SC_R_MIPI_1, IMX_SC_PM_CLK_BYPASS);
- 	imx_clk_scu("mipi1_pixel_clk", IMX_SC_R_MIPI_1, IMX_SC_PM_CLK_PER);
--	imx_clk_scu("mipi1_lvds_pixel_clk", IMX_SC_R_LVDS_1, IMX_SC_PM_CLK_MISC2);
- 	imx_clk_scu("mipi1_lvds_bypass_clk", IMX_SC_R_LVDS_1, IMX_SC_PM_CLK_BYPASS);
--	imx_clk_scu("mipi1_lvds_phy_clk", IMX_SC_R_LVDS_1, IMX_SC_PM_CLK_MISC3);
-+	imx_clk_scu2("mipi1_lvds_pixel_clk", lvds1_sels, ARRAY_SIZE(lvds1_sels), IMX_SC_R_LVDS_1, IMX_SC_PM_CLK_MISC2);
-+	imx_clk_scu2("mipi1_lvds_phy_clk", lvds1_sels, ARRAY_SIZE(lvds1_sels), IMX_SC_R_LVDS_1, IMX_SC_PM_CLK_MISC3);
++/* hp_wmi_wstrdup - hp_wmi_strdup, but for a raw WMI string */
++static char *hp_wmi_wstrdup(struct device *dev, const u8 *buf)
++{
++	char *src;
++	char *dst;
++
++	src = convert_raw_wmi_string(buf);
++	if (!src)
++		return NULL;
++
++	dst = hp_wmi_strdup(dev, strim(src));	/* Note: Copy is trimmed. */
++
++	kfree(src);
++
++	return dst;
++}
++
+ /*
+  * hp_wmi_get_wobj - poll WMI for a WMI object instance
+  * @guid: WMI object GUID
+@@ -462,8 +526,14 @@ static int check_wobj(const union acpi_object *wobj,
+ 	for (prop = 0; prop <= last_prop; prop++) {
+ 		type = elements[prop].type;
+ 		valid_type = property_map[prop];
+-		if (type != valid_type)
++		if (type != valid_type) {
++			if (type == ACPI_TYPE_BUFFER &&
++			    valid_type == ACPI_TYPE_STRING &&
++			    is_raw_wmi_string(elements[prop].buffer.pointer,
++					      elements[prop].buffer.length))
++				continue;
+ 			return -EINVAL;
++		}
+ 	}
  
- 	imx_clk_scu2("mipi1_dsi_tx_esc_clk", mipi_sels, ARRAY_SIZE(mipi_sels), IMX_SC_R_MIPI_1, IMX_SC_PM_CLK_MST_BUS);
- 	imx_clk_scu2("mipi1_dsi_rx_esc_clk", mipi_sels, ARRAY_SIZE(mipi_sels), IMX_SC_R_MIPI_1, IMX_SC_PM_CLK_SLV_BUS);
+ 	return 0;
+@@ -480,7 +550,9 @@ static int extract_acpi_value(struct device *dev,
+ 		break;
+ 
+ 	case ACPI_TYPE_STRING:
+-		*out_string = hp_wmi_strdup(dev, strim(element->string.pointer));
++		*out_string = element->type == ACPI_TYPE_BUFFER ?
++			hp_wmi_wstrdup(dev, element->buffer.pointer) :
++			hp_wmi_strdup(dev, strim(element->string.pointer));
+ 		if (!*out_string)
+ 			return -ENOMEM;
+ 		break;
+@@ -861,7 +933,9 @@ update_numeric_sensor_from_wobj(struct device *dev,
+ {
+ 	const union acpi_object *elements;
+ 	const union acpi_object *element;
+-	const char *string;
++	const char *new_string;
++	char *trimmed;
++	char *string;
+ 	bool is_new;
+ 	int offset;
+ 	u8 size;
+@@ -885,11 +959,21 @@ update_numeric_sensor_from_wobj(struct device *dev,
+ 	offset = is_new ? size - 1 : -2;
+ 
+ 	element = &elements[HP_WMI_PROPERTY_CURRENT_STATE + offset];
+-	string = strim(element->string.pointer);
+-
+-	if (strcmp(string, nsensor->current_state)) {
+-		devm_kfree(dev, nsensor->current_state);
+-		nsensor->current_state = hp_wmi_strdup(dev, string);
++	string = element->type == ACPI_TYPE_BUFFER ?
++		convert_raw_wmi_string(element->buffer.pointer) :
++		element->string.pointer;
++
++	if (string) {
++		trimmed = strim(string);
++		if (strcmp(trimmed, nsensor->current_state)) {
++			new_string = hp_wmi_strdup(dev, trimmed);
++			if (new_string) {
++				devm_kfree(dev, nsensor->current_state);
++				nsensor->current_state = new_string;
++			}
++		}
++		if (element->type == ACPI_TYPE_BUFFER)
++			kfree(string);
+ 	}
+ 
+ 	/* Old variant: -2 (not -1) because it lacks the Size property. */
+@@ -996,11 +1080,15 @@ static int check_event_wobj(const union acpi_object *wobj)
+ 			  HP_WMI_EVENT_PROPERTY_STATUS);
+ }
+ 
+-static int populate_event_from_wobj(struct hp_wmi_event *event,
++static int populate_event_from_wobj(struct device *dev,
++				    struct hp_wmi_event *event,
+ 				    union acpi_object *wobj)
+ {
+ 	int prop = HP_WMI_EVENT_PROPERTY_NAME;
+ 	union acpi_object *element;
++	acpi_object_type type;
++	char *string;
++	u32 value;
+ 	int err;
+ 
+ 	err = check_event_wobj(wobj);
+@@ -1009,20 +1097,24 @@ static int populate_event_from_wobj(struct hp_wmi_event *event,
+ 
+ 	element = wobj->package.elements;
+ 
+-	/* Extracted strings are NOT device-managed copies. */
+-
+ 	for (; prop <= HP_WMI_EVENT_PROPERTY_CATEGORY; prop++, element++) {
++		type = hp_wmi_event_property_map[prop];
++
++		err = extract_acpi_value(dev, element, type, &value, &string);
++		if (err)
++			return err;
++
+ 		switch (prop) {
+ 		case HP_WMI_EVENT_PROPERTY_NAME:
+-			event->name = strim(element->string.pointer);
++			event->name = string;
+ 			break;
+ 
+ 		case HP_WMI_EVENT_PROPERTY_DESCRIPTION:
+-			event->description = strim(element->string.pointer);
++			event->description = string;
+ 			break;
+ 
+ 		case HP_WMI_EVENT_PROPERTY_CATEGORY:
+-			event->category = element->integer.value;
++			event->category = value;
+ 			break;
+ 
+ 		default:
+@@ -1511,8 +1603,8 @@ static void hp_wmi_notify(u32 value, void *context)
+ 	struct acpi_buffer out = { ACPI_ALLOCATE_BUFFER, NULL };
+ 	struct hp_wmi_sensors *state = context;
+ 	struct device *dev = &state->wdev->dev;
++	struct hp_wmi_event event = {};
+ 	struct hp_wmi_info *fan_info;
+-	struct hp_wmi_event event;
+ 	union acpi_object *wobj;
+ 	acpi_status err;
+ 	int event_type;
+@@ -1546,7 +1638,7 @@ static void hp_wmi_notify(u32 value, void *context)
+ 
+ 	wobj = out.pointer;
+ 
+-	err = populate_event_from_wobj(&event, wobj);
++	err = populate_event_from_wobj(dev, &event, wobj);
+ 	if (err) {
+ 		dev_warn(dev, "Bad event data (ACPI type %d)\n", wobj->type);
+ 		goto out_free_wobj;
+@@ -1577,6 +1669,9 @@ static void hp_wmi_notify(u32 value, void *context)
+ out_free_wobj:
+ 	kfree(wobj);
+ 
++	devm_kfree(dev, event.name);
++	devm_kfree(dev, event.description);
++
+ out_unlock:
+ 	mutex_unlock(&state->lock);
+ }
 -- 
 2.43.0
 
