@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC26084835B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6D5848242
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEA721C21C81
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 683B1284CFD
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908A1171CC;
-	Sat,  3 Feb 2024 04:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55411B263;
+	Sat,  3 Feb 2024 04:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frH/0ohk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mv7YD87r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46164101FA;
-	Sat,  3 Feb 2024 04:18:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BF51AADE;
+	Sat,  3 Feb 2024 04:15:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933916; cv=none; b=l7nr5PHR2NV2L9m5/fCCcn9tvLScN1mEtR9gccO0p4tyNlynVaKeo7yskgG+EL+c06CERlPyMh8xOih2GMvcr1pJPfc0ieWhtU+ZN5ZW52cls/2dog660VffNL4PjJJsl+ehxmFIeVIPoD5xvAc65wryu5FEcHynh1vfqjQSm8U=
+	t=1706933713; cv=none; b=KMPTBZy0BZGC7XTpuRyRBoJa1/UveEkwLydDtrUa1bo/ne7IPYLudq9wJmJz+TIWDhYhv+89G+cUP19pm94MbhaGYIDOMr2qn3fM2YuIAURoB32rmSoshvHHvPMwykc2S9eszft1eYeiObm3+kA0rBzxNbbiA/UZKnmgTraSbtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933916; c=relaxed/simple;
-	bh=hAggIo4Pz/Tp2jQg+xzX/qd3Q8CcW4kbz9pBjFe/t4c=;
+	s=arc-20240116; t=1706933713; c=relaxed/simple;
+	bh=Gxx+34sZquzoUpubgc6JnvxlZqfyohHDlx60Ixp+RMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPtYQGClUmn86qUPM7N/Iz1+8T92d8ZETmbAUyyzo+x1rvzhOuGhV0M6IZfosOGITp5B39WoOvfeKNvk709mMVrSDjuqWrBZmVeGH05ULzcwqQRy+MeOJPz8dqF2wKGMEUE8xo/P+IwTLnpXzaYSyrroN858tbc8DTLHTw0TK40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frH/0ohk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10090C43399;
-	Sat,  3 Feb 2024 04:18:36 +0000 (UTC)
+	 MIME-Version; b=keNtrEmx6bHD+AsiHA0syST3ChpRMHnWLJDttStLngMZMf/dt2zvDSDfmIcRqtnYHNlQbhIj4QpSj2x6kgBY8PqK+aCwnGlrK1citgJ8AsObDGEMGPknfmvzOn4Nms5tGkr1ssi04XPmiQb8u2ClsW2FqgMoyZF+B2whojJpnss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mv7YD87r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1356C433F1;
+	Sat,  3 Feb 2024 04:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933916;
-	bh=hAggIo4Pz/Tp2jQg+xzX/qd3Q8CcW4kbz9pBjFe/t4c=;
+	s=korg; t=1706933713;
+	bh=Gxx+34sZquzoUpubgc6JnvxlZqfyohHDlx60Ixp+RMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frH/0ohkBPzJ7QrRk6kxXJQYvbsGQcejSF+K6Y4eMldpaeXB/EM/Vt/35R59MG2ZS
-	 rMkUu8/Hv9C4v5ZPV0Awt3p8rGRkxm5ameib45o31zAC5/DrsQHYxRYRtDru8NNhFj
-	 3U4uE04NHbgpkoO8ZYTQFgm7Gvbw/kR6Pt3f3UrI=
+	b=mv7YD87raMbO5XA1W+eCzfQJsDDqYLtoVippGNgkLQYMJmuFm8ZP9VM8gkQDrMacy
+	 mifw86dSaj3G8/8GZY0b+RW4yMxAknl370fepwduRqL0Nb1dlrh3g8HyVJZf/UdBSD
+	 5cS3qoooof/4lnLFs0esJn9cgm6JmxvbDeDp211E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChiYuan Huang <cy_huang@richtek.com>,
-	Mark Brown <broonie@kernel.org>,
+	Parav Pandit <parav@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 270/353] ASoC: codecs: rtq9128: Fix PM_RUNTIME usage
+Subject: [PATCH 6.6 291/322] devlink: Fix referring to hw_addr attribute during state validation
 Date: Fri,  2 Feb 2024 20:06:28 -0800
-Message-ID: <20240203035412.300722071@linuxfoundation.org>
+Message-ID: <20240203035408.481295703@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChiYuan Huang <cy_huang@richtek.com>
+From: Parav Pandit <parav@nvidia.com>
 
-[ Upstream commit 35040410372ca27a33cec8382d42c90b6b6c99f6 ]
+[ Upstream commit 1a89e24f8bfd3e3562d69709c9d9cd185ded869b ]
 
-If 'pm_runtime_resume_and_get' is used, must check the return value to
-prevent the active count not matched problem.
+When port function state change is requested, and when the driver
+does not support it, it refers to the hw address attribute instead
+of state attribute. Seems like a copy paste error.
 
-Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
-Link: https://msgid.link/r/bebd9e2bed9e0528a7fd9c528d785da02caf4f1a.1703813842.git.cy_huang@richtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fix it by referring to the port function state attribute.
+
+Fixes: c0bea69d1ca7 ("devlink: Validate port function request")
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20240129191059.129030-1-parav@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rtq9128.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/devlink/port.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rtq9128.c b/sound/soc/codecs/rtq9128.c
-index c22b047115cc..bda64f9eeb62 100644
---- a/sound/soc/codecs/rtq9128.c
-+++ b/sound/soc/codecs/rtq9128.c
-@@ -391,7 +391,11 @@ static int rtq9128_component_probe(struct snd_soc_component *comp)
- 	unsigned int val;
- 	int i, ret;
- 
--	pm_runtime_resume_and_get(comp->dev);
-+	ret = pm_runtime_resume_and_get(comp->dev);
-+	if (ret < 0) {
-+		dev_err(comp->dev, "Failed to resume device (%d)\n", ret);
-+		return ret;
-+	}
- 
- 	val = snd_soc_component_read(comp, RTQ9128_REG_EFUSE_DATA);
- 
+diff --git a/net/devlink/port.c b/net/devlink/port.c
+index 4763b42885fb..91ba1ca0f355 100644
+--- a/net/devlink/port.c
++++ b/net/devlink/port.c
+@@ -665,7 +665,7 @@ static int devlink_port_function_validate(struct devlink_port *devlink_port,
+ 		return -EOPNOTSUPP;
+ 	}
+ 	if (tb[DEVLINK_PORT_FN_ATTR_STATE] && !ops->port_fn_state_set) {
+-		NL_SET_ERR_MSG_ATTR(extack, tb[DEVLINK_PORT_FUNCTION_ATTR_HW_ADDR],
++		NL_SET_ERR_MSG_ATTR(extack, tb[DEVLINK_PORT_FN_ATTR_STATE],
+ 				    "Function does not support state setting");
+ 		return -EOPNOTSUPP;
+ 	}
 -- 
 2.43.0
 
