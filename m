@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045E384818B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA23848058
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 617981F23247
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8A011F2BACC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A091611C8B;
-	Sat,  3 Feb 2024 04:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B314512E42;
+	Sat,  3 Feb 2024 04:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5PLmvHu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J06HMgjk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6C910A09;
-	Sat,  3 Feb 2024 04:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7039910795;
+	Sat,  3 Feb 2024 04:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933577; cv=none; b=WNZClKDrwgwemqBqMdGjWBd/Gz7FFmmk2QNjAk1tAk+LtjxSxSNlaVVB7jfrmvbBWcxeW6xrkhgzG3V5tSrxwvsGjqTTOr+pWjTNe7IFijSbjJG3riZPbMNID9hl5ldT3VlE8OiotZc9/UUb2h1eQO2m/AKxxK8dMlka+zfRe5M=
+	t=1706933358; cv=none; b=tO+YFer3vq35/l2WijzP2OSJc98oP6kuS3cKMjeqo/VC4om+qeyr5ookdZjoUSpq/53kkk80jdfitNV+7+xXWcHR0fbUzFw9XsezK9VylrupSzVvH55nUpG4PBe9kP1DDsc6WunyusVYHpbiqjnmWNbbMa7rVApednsfqgEuCSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933577; c=relaxed/simple;
-	bh=NOdxeJu9orPyAO2KV9daU7o96hPIqkIUXLZGsAftCsc=;
+	s=arc-20240116; t=1706933358; c=relaxed/simple;
+	bh=KHC0tvx5pCUFJOtOGYhLJlxLjrHtVXtt/GMtvVYpVnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3FgVkH84hbcwoZ3JNabZtmv8jvUUTSP/aJAsUsR2NPNDFLpyX85iTl2ekKxRFku3aCxaqM7/TKI3wVNixol6nTgBUKSzbd4FmZLLQjpl6ckEzocHKmPNI7xvV004aTYWSDQ3rbK6xGEDF1PMULcFMckybkExnDhLAtqoncLGQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5PLmvHu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29657C433C7;
-	Sat,  3 Feb 2024 04:12:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nsfh3yWiCMg9V0meBaWKEST56nL/9jU+aslNY2v46shEOIHCBo+aVFAq7/Cs4VsosMMsiKr/tbVcsoNC/ukqzVzDMnZqIRzBZHu9lFDpEq6GUaY0M04oLHTkMINnYeIloFbzfUoxuLk+Kfru00lrwHmhNQc3m5i5Ew35gvh6r5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J06HMgjk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DF9C43390;
+	Sat,  3 Feb 2024 04:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933577;
-	bh=NOdxeJu9orPyAO2KV9daU7o96hPIqkIUXLZGsAftCsc=;
+	s=korg; t=1706933358;
+	bh=KHC0tvx5pCUFJOtOGYhLJlxLjrHtVXtt/GMtvVYpVnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q5PLmvHuwGQ7nNX8H3OQ/yrxgS3RKmAFZQIquYMZZR3uF4UmIwTzLhBSgywWo5eOL
-	 uep1RqTxWxO/AykMYIbSfY0f25239mtmOgoTBsN/p0aGcYC6O4kX4Jga5csfinUnX8
-	 KFWREnOXdPwHFGhx4r2KIlGdtDG+j9qKLwKcy1Cc=
+	b=J06HMgjkh8fyo7h2aT1sqfa96vqV0VjguExRn+7GqLuoc8+gvCytDslSXlRdCf1cr
+	 ScdSTg7JmXAKXlF12itOPfWfTl9UpfYgdpX55wOAW9peezLvMaz5Y2FmaDh7MijXtb
+	 WtyKbiLV7LyOI8uorQDiCUuUA1yQpOFTzuwXKJZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mao Jinlong <quic_jinlmao@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 137/322] arm64: dts: qcom: Fix coresight warnings in in-ports and out-ports
+Subject: [PATCH 6.1 061/219] wifi: ath9k: Fix potential array-index-out-of-bounds read in ath9k_htc_txstatus()
 Date: Fri,  2 Feb 2024 20:03:54 -0800
-Message-ID: <20240203035403.577094943@linuxfoundation.org>
+Message-ID: <20240203035325.505237559@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,130 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mao Jinlong <quic_jinlmao@quicinc.com>
+From: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
 
-[ Upstream commit bdb6339fd46b8702ea7411b0b414587b86a40562 ]
+[ Upstream commit 2adc886244dff60f948497b59affb6c6ebb3c348 ]
 
-When a node is only one in port or one out port, address-cells and
-size-cells are not required in in-ports and out-ports. And the number
-and reg of the port need to be removed.
+Fix an array-index-out-of-bounds read in ath9k_htc_txstatus(). The bug
+occurs when txs->cnt, data from a URB provided by a USB device, is
+bigger than the size of the array txs->txstatus, which is
+HTC_MAX_TX_STATUS. WARN_ON() already checks it, but there is no bug
+handling code after the check. Make the function return if that is the
+case.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Mao Jinlong <quic_jinlmao@quicinc.com>
-Link: https://lore.kernel.org/r/20231210072633.4243-5-quic_jinlmao@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Found by a modified version of syzkaller.
+
+UBSAN: array-index-out-of-bounds in htc_drv_txrx.c
+index 13 is out of range for type '__wmi_event_txstatus [12]'
+Call Trace:
+ ath9k_htc_txstatus
+ ath9k_wmi_event_tasklet
+ tasklet_action_common
+ __do_softirq
+ irq_exit_rxu
+ sysvec_apic_timer_interrupt
+
+Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231113065756.1491991-1-linuxlovemin@yonsei.ac.kr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi |  5 +----
- arch/arm64/boot/dts/qcom/sm8150.dtsi |  5 +----
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 24 ++++--------------------
- 3 files changed, 6 insertions(+), 28 deletions(-)
+ drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index 63f6515692e8..234d7875cd8e 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -3555,11 +3555,8 @@
- 			};
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+index 672789e3c55d..d6a3f001dacb 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+@@ -652,9 +652,10 @@ void ath9k_htc_txstatus(struct ath9k_htc_priv *priv, void *wmi_event)
+ 	struct ath9k_htc_tx_event *tx_pend;
+ 	int i;
  
- 			in-ports {
--				#address-cells = <1>;
--				#size-cells = <0>;
+-	for (i = 0; i < txs->cnt; i++) {
+-		WARN_ON(txs->cnt > HTC_MAX_TX_STATUS);
++	if (WARN_ON_ONCE(txs->cnt > HTC_MAX_TX_STATUS))
++		return;
  
--				port@1 {
--					reg = <1>;
-+				port {
- 					etf_in: endpoint {
- 						remote-endpoint =
- 						  <&merge_funnel_out>;
-diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-index f7e35e220018..26b6d84548a5 100644
---- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-@@ -2973,11 +2973,8 @@
- 			};
++	for (i = 0; i < txs->cnt; i++) {
+ 		__txs = &txs->txstatus[i];
  
- 			in-ports {
--				#address-cells = <1>;
--				#size-cells = <0>;
- 
--				port@1 {
--					reg = <1>;
-+				port {
- 					replicator1_in: endpoint {
- 						remote-endpoint = <&replicator_out1>;
- 					};
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index 1a98481d0c7f..64a656dcfa1f 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -2830,11 +2830,8 @@
- 			clock-names = "apb_pclk";
- 
- 			out-ports {
--				#address-cells = <1>;
--				#size-cells = <0>;
- 
--				port@0 {
--					reg = <0>;
-+				port {
- 					tpda_out_funnel_qatb: endpoint {
- 						remote-endpoint = <&funnel_qatb_in_tpda>;
- 					};
-@@ -2877,11 +2874,7 @@
- 			};
- 
- 			in-ports {
--				#address-cells = <1>;
--				#size-cells = <0>;
--
--				port@0 {
--					reg = <0>;
-+				port {
- 					funnel_qatb_in_tpda: endpoint {
- 						remote-endpoint = <&tpda_out_funnel_qatb>;
- 					};
-@@ -3090,11 +3083,8 @@
- 			};
- 
- 			in-ports {
--				#address-cells = <1>;
--				#size-cells = <0>;
- 
--				port@0 {
--					reg = <0>;
-+				port {
- 					etf_in_funnel_swao_out: endpoint {
- 						remote-endpoint = <&funnel_swao_out_etf>;
- 					};
-@@ -3178,8 +3168,6 @@
- 			clock-names = "apb_pclk";
- 
- 			out-ports {
--				#address-cells = <1>;
--				#size-cells = <0>;
- 				port {
- 					tpdm_mm_out_tpda9: endpoint {
- 						remote-endpoint = <&tpda_9_in_tpdm_mm>;
-@@ -3445,11 +3433,7 @@
- 			};
- 
- 			in-ports {
--				#address-cells = <1>;
--				#size-cells = <0>;
--
--				port@0 {
--					reg = <0>;
-+				port {
- 					funnel_apss_merg_in_funnel_apss: endpoint {
- 					remote-endpoint = <&funnel_apss_out_funnel_apss_merg>;
- 					};
+ 		skb = ath9k_htc_tx_get_packet(priv, __txs);
 -- 
 2.43.0
 
