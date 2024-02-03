@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-18139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F78E84818A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BF6E848044
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1B5BB22DFC
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24EF228BED9
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B8B101C1;
-	Sat,  3 Feb 2024 04:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3380F1173F;
+	Sat,  3 Feb 2024 04:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CD6fOVRV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODV92u7L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FDC1759C;
-	Sat,  3 Feb 2024 04:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69DF10976;
+	Sat,  3 Feb 2024 04:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933575; cv=none; b=ZIri2OqdZ15xHPEAp12i466iedslnA8u8QdDKQIb1dTEabW2YnlQTDwdSpT7vkkkn+yzqxHtDGG8AiUTWnjhsTw1TzsgwMokqqQmPwIGj6lTzO9DOP6EFIsa5pE3VZyROSlbmgvRo8YIAbo61yw0hnVsYBiR2I5AN26NI2oBOu4=
+	t=1706933344; cv=none; b=JUPu2FnRrIrKVtbJONyvPUWiUTvFNOGTnjohC32djUTxoLgCm8Sxf+1g8ijhBkvti3bim7UOh6HzhbQiJGO+Hq48+SBuwLRA0esUgR/MKzh0PZFio7enS5KImS0NvauCHpvqoe7N3M1e+W89k0iMoYec4Oe1STYg3v5+VxCZ2Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933575; c=relaxed/simple;
-	bh=wwRYeqNHJY8fNBNkD7rnEczt1YiYTBoxWYQebK0rjLI=;
+	s=arc-20240116; t=1706933344; c=relaxed/simple;
+	bh=j4VPEhf/uC13VNIFGV3EpSm2NUsD23E0pH4ZrCwvPHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TPaVVUp+tzkV9a5+3R1SfEQgfvdGOO94Oc/Q6hIhHYL8tYtKRE8AlE921Wr5NFC67NyDNJS5Y/qC7jF2Tej7TcMsbetps0bNxj7xN6haLK19teUr9jzu7qcafzMTHykXQH2f55p/74voTOIpwkvqQVuAJVu1Z3uy7UqHHqBouyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CD6fOVRV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 933AFC43390;
-	Sat,  3 Feb 2024 04:12:55 +0000 (UTC)
+	 MIME-Version; b=mcjs6wdSdeHON0rnOg0uWvQCnSvxW2RjFyrKntNjX53uaAtlu6Qporgny41dFNrtCFmG7pqumHZET1YiDFPFQLpbr7N+jaxp/62TH70DZWEb9rVVm5EiyLjmfrTcwBET6mac/jLLTg0qyB601Gb7TYdRTQatvZUFGpXL5LBw8pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODV92u7L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B112DC433F1;
+	Sat,  3 Feb 2024 04:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933575;
-	bh=wwRYeqNHJY8fNBNkD7rnEczt1YiYTBoxWYQebK0rjLI=;
+	s=korg; t=1706933343;
+	bh=j4VPEhf/uC13VNIFGV3EpSm2NUsD23E0pH4ZrCwvPHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CD6fOVRV98StszYqwjV7qqGnE/kQJGSvwC/t3n5nNdB+H6b8LJHCsXeQPXO7i6y13
-	 tormxsmuWOaDepKfPyME1YoukAbfW90uF8p+frAZTaHooCW5yHxyyGWlIB3B7KxjS8
-	 OKT5VvWIl0xhuaIORf9oMoa4+XfC/Kw93gOGipP4=
+	b=ODV92u7LzQ9OwXRdJoTalbRu3xc47oCTq4NPCt/XVCGOc+fRB3j3JSjdBQIz7id0H
+	 MRuFLPtDQR4kMIkTZDvvJr1cP1wDqV3rOPzfysQEd78fPisTkQjcs6OG5UxhSw6tVp
+	 hg3WZw347huXgwq99E++A/T+KKa6OLnpAkYM96xU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 095/322] minmax: fix header inclusions
-Date: Fri,  2 Feb 2024 20:03:12 -0800
-Message-ID: <20240203035402.213856207@linuxfoundation.org>
+	Joyyoung Huang <huangzaiyang@oppo.com>,
+	MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 020/219] PM / devfreq: Synchronize devfreq_monitor_[start/stop]
+Date: Fri,  2 Feb 2024 20:03:13 -0800
+Message-ID: <20240203035319.340447664@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Mukesh Ojha <quic_mojha@quicinc.com>
 
-commit f6e9d38f8eb00ac8b52e6d15f6aa9bcecacb081b upstream.
+[ Upstream commit aed5ed595960c6d301dcd4ed31aeaa7a8054c0c6 ]
 
-BUILD_BUG_ON*() macros are defined in build_bug.h.  Include it.  Replace
-compiler_types.h by compiler.h, which provides the former, to have a
-definition of the __UNIQUE_ID().
+There is a chance if a frequent switch of the governor
+done in a loop result in timer list corruption where
+timer cancel being done from two place one from
+cancel_delayed_work_sync() and followed by expire_timers()
+can be seen from the traces[1].
 
-Link: https://lkml.kernel.org/r/20230912092355.79280-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Herve Codina <herve.codina@bootlin.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+while true
+do
+        echo "simple_ondemand" > /sys/class/devfreq/1d84000.ufshc/governor
+        echo "performance" > /sys/class/devfreq/1d84000.ufshc/governor
+done
 
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+It looks to be issue with devfreq driver where
+device_monitor_[start/stop] need to synchronized so that
+delayed work should get corrupted while it is either
+being queued or running or being cancelled.
+
+Let's use polling flag and devfreq lock to synchronize the
+queueing the timer instance twice and work data being
+corrupted.
+
+[1]
+...
+..
+<idle>-0    [003]   9436.209662:  timer_cancel   timer=0xffffff80444f0428
+<idle>-0    [003]   9436.209664:  timer_expire_entry   timer=0xffffff80444f0428  now=0x10022da1c  function=__typeid__ZTSFvP10timer_listE_global_addr  baseclk=0x10022da1c
+<idle>-0    [003]   9436.209718:  timer_expire_exit   timer=0xffffff80444f0428
+kworker/u16:6-14217    [003]   9436.209863:  timer_start   timer=0xffffff80444f0428  function=__typeid__ZTSFvP10timer_listE_global_addr  expires=0x10022da2b  now=0x10022da1c  flags=182452227
+vendor.xxxyyy.ha-1593    [004]   9436.209888:  timer_cancel   timer=0xffffff80444f0428
+vendor.xxxyyy.ha-1593    [004]   9436.216390:  timer_init   timer=0xffffff80444f0428
+vendor.xxxyyy.ha-1593    [004]   9436.216392:  timer_start   timer=0xffffff80444f0428  function=__typeid__ZTSFvP10timer_listE_global_addr  expires=0x10022da2c  now=0x10022da1d  flags=186646532
+vendor.xxxyyy.ha-1593    [005]   9436.220992:  timer_cancel   timer=0xffffff80444f0428
+xxxyyyTraceManag-7795    [004]   9436.261641:  timer_cancel   timer=0xffffff80444f0428
+
+[2]
+
+ 9436.261653][    C4] Unable to handle kernel paging request at virtual address dead00000000012a
+[ 9436.261664][    C4] Mem abort info:
+[ 9436.261666][    C4]   ESR = 0x96000044
+[ 9436.261669][    C4]   EC = 0x25: DABT (current EL), IL = 32 bits
+[ 9436.261671][    C4]   SET = 0, FnV = 0
+[ 9436.261673][    C4]   EA = 0, S1PTW = 0
+[ 9436.261675][    C4] Data abort info:
+[ 9436.261677][    C4]   ISV = 0, ISS = 0x00000044
+[ 9436.261680][    C4]   CM = 0, WnR = 1
+[ 9436.261682][    C4] [dead00000000012a] address between user and kernel address ranges
+[ 9436.261685][    C4] Internal error: Oops: 96000044 [#1] PREEMPT SMP
+[ 9436.261701][    C4] Skip md ftrace buffer dump for: 0x3a982d0
+...
+
+[ 9436.262138][    C4] CPU: 4 PID: 7795 Comm: TraceManag Tainted: G S      W  O      5.10.149-android12-9-o-g17f915d29d0c #1
+[ 9436.262141][    C4] Hardware name: Qualcomm Technologies, Inc.  (DT)
+[ 9436.262144][    C4] pstate: 22400085 (nzCv daIf +PAN -UAO +TCO BTYPE=--)
+[ 9436.262161][    C4] pc : expire_timers+0x9c/0x438
+[ 9436.262164][    C4] lr : expire_timers+0x2a4/0x438
+[ 9436.262168][    C4] sp : ffffffc010023dd0
+[ 9436.262171][    C4] x29: ffffffc010023df0 x28: ffffffd0636fdc18
+[ 9436.262178][    C4] x27: ffffffd063569dd0 x26: ffffffd063536008
+[ 9436.262182][    C4] x25: 0000000000000001 x24: ffffff88f7c69280
+[ 9436.262185][    C4] x23: 00000000000000e0 x22: dead000000000122
+[ 9436.262188][    C4] x21: 000000010022da29 x20: ffffff8af72b4e80
+[ 9436.262191][    C4] x19: ffffffc010023e50 x18: ffffffc010025038
+[ 9436.262195][    C4] x17: 0000000000000240 x16: 0000000000000201
+[ 9436.262199][    C4] x15: ffffffffffffffff x14: ffffff889f3c3100
+[ 9436.262203][    C4] x13: ffffff889f3c3100 x12: 00000000049f56b8
+[ 9436.262207][    C4] x11: 00000000049f56b8 x10: 00000000ffffffff
+[ 9436.262212][    C4] x9 : ffffffc010023e50 x8 : dead000000000122
+[ 9436.262216][    C4] x7 : ffffffffffffffff x6 : ffffffc0100239d8
+[ 9436.262220][    C4] x5 : 0000000000000000 x4 : 0000000000000101
+[ 9436.262223][    C4] x3 : 0000000000000080 x2 : ffffff889edc155c
+[ 9436.262227][    C4] x1 : ffffff8001005200 x0 : ffffff80444f0428
+[ 9436.262232][    C4] Call trace:
+[ 9436.262236][    C4]  expire_timers+0x9c/0x438
+[ 9436.262240][    C4]  __run_timers+0x1f0/0x330
+[ 9436.262245][    C4]  run_timer_softirq+0x28/0x58
+[ 9436.262255][    C4]  efi_header_end+0x168/0x5ec
+[ 9436.262265][    C4]  __irq_exit_rcu+0x108/0x124
+[ 9436.262274][    C4]  __handle_domain_irq+0x118/0x1e4
+[ 9436.262282][    C4]  gic_handle_irq.30369+0x6c/0x2bc
+[ 9436.262286][    C4]  el0_irq_naked+0x60/0x6c
+
+Link: https://lore.kernel.org/all/1700860318-4025-1-git-send-email-quic_mojha@quicinc.com/
+Reported-by: Joyyoung Huang <huangzaiyang@oppo.com>
+Acked-by: MyungJoo Ham <myungjoo.ham@samsung.com>
+Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/devfreq/devfreq.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -2,7 +2,8 @@
- #ifndef _LINUX_MINMAX_H
- #define _LINUX_MINMAX_H
+diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
+index 2951a87ccb97..344e276165e4 100644
+--- a/drivers/devfreq/devfreq.c
++++ b/drivers/devfreq/devfreq.c
+@@ -461,10 +461,14 @@ static void devfreq_monitor(struct work_struct *work)
+ 	if (err)
+ 		dev_err(&devfreq->dev, "dvfs failed with (%d) error\n", err);
  
--#include <linux/compiler_types.h>
-+#include <linux/build_bug.h>
-+#include <linux/compiler.h>
- #include <linux/const.h>
- #include <linux/types.h>
++	if (devfreq->stop_polling)
++		goto out;
++
+ 	queue_delayed_work(devfreq_wq, &devfreq->work,
+ 				msecs_to_jiffies(devfreq->profile->polling_ms));
+-	mutex_unlock(&devfreq->lock);
  
++out:
++	mutex_unlock(&devfreq->lock);
+ 	trace_devfreq_monitor(devfreq);
+ }
+ 
+@@ -482,6 +486,10 @@ void devfreq_monitor_start(struct devfreq *devfreq)
+ 	if (IS_SUPPORTED_FLAG(devfreq->governor->flags, IRQ_DRIVEN))
+ 		return;
+ 
++	mutex_lock(&devfreq->lock);
++	if (delayed_work_pending(&devfreq->work))
++		goto out;
++
+ 	switch (devfreq->profile->timer) {
+ 	case DEVFREQ_TIMER_DEFERRABLE:
+ 		INIT_DEFERRABLE_WORK(&devfreq->work, devfreq_monitor);
+@@ -490,12 +498,16 @@ void devfreq_monitor_start(struct devfreq *devfreq)
+ 		INIT_DELAYED_WORK(&devfreq->work, devfreq_monitor);
+ 		break;
+ 	default:
+-		return;
++		goto out;
+ 	}
+ 
+ 	if (devfreq->profile->polling_ms)
+ 		queue_delayed_work(devfreq_wq, &devfreq->work,
+ 			msecs_to_jiffies(devfreq->profile->polling_ms));
++
++out:
++	devfreq->stop_polling = false;
++	mutex_unlock(&devfreq->lock);
+ }
+ EXPORT_SYMBOL(devfreq_monitor_start);
+ 
+@@ -512,6 +524,14 @@ void devfreq_monitor_stop(struct devfreq *devfreq)
+ 	if (IS_SUPPORTED_FLAG(devfreq->governor->flags, IRQ_DRIVEN))
+ 		return;
+ 
++	mutex_lock(&devfreq->lock);
++	if (devfreq->stop_polling) {
++		mutex_unlock(&devfreq->lock);
++		return;
++	}
++
++	devfreq->stop_polling = true;
++	mutex_unlock(&devfreq->lock);
+ 	cancel_delayed_work_sync(&devfreq->work);
+ }
+ EXPORT_SYMBOL(devfreq_monitor_stop);
+-- 
+2.43.0
+
 
 
 
