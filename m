@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-17923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 963998480A6
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C758481F4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 535F028A164
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48CEB1F21716
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB34F9F5;
-	Sat,  3 Feb 2024 04:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5423318E10;
+	Sat,  3 Feb 2024 04:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z19AG4L8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBG0pNbk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097BF175BF;
-	Sat,  3 Feb 2024 04:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137FC43AB7;
+	Sat,  3 Feb 2024 04:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933416; cv=none; b=BtqOv146LQM9Ttxe9aT7egb3Lfnmr2JSZxCHA4ovH0SoaH9FyMPzHEQvMcr+jfj7/WzFGm5PyxiyN0QTFR6DW5GO+b/BDbRrg567gBfkV3IvNsTLtRvQfSCDx84NzOTv9ki1w34ut7efJ2Aal4UVgpvs/99oaBtRfODF2qv742Y=
+	t=1706933654; cv=none; b=nYedDKRZD4u6uxCxa4q9Q72B3syMdD7J1272KNZqefKeHh50HAgNcGDcMPY4YUrdfY9MwXiLjtUsv+FDncIZMitXGsjkMh5UP2dmXCjqeoVayQzYglDTo3Tyn3Iq3vdcyl/gJ/UG0f52IncXnXDJdgDk9mFeKkSazjtmVxoYHRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933416; c=relaxed/simple;
-	bh=2qSiuoglXb+DjyH7Uc0S/qnBg1HqoKNmSL3G3vZm5D4=;
+	s=arc-20240116; t=1706933654; c=relaxed/simple;
+	bh=fIQtvV8COOuW9lAQuQdwfrq199VDfUiiH7ipFXsFLn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uKMWFdHrBeZmCLRk6PNtXGmqHszkC27Ec168Lm8Gq/tp9YV0LjqyAyxHFaMZxnklwACiElkKAlM93uidqUJzpJcnIUPmvy/82A1pbw9PyKq1R7V4XBoog++pxk1jms3KmdrPScQ3+jO+1hUBk2XvfI4Jz2t+EVz4D96f9LO6fjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z19AG4L8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F91C43394;
-	Sat,  3 Feb 2024 04:10:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NjRvYHxydDT7rAzx0SCVoYR0zKeEX2PI2IPCjm/ThdZWwe28j6BI6foCRmP49QoSTGVYXWsY1iKdHwHmDpUQeKyLy36vept9c+48XmCM7dP9BZ+Ju902GpmeIEHx5j1yeisBeShwrONEf8uAkmG/AamBBaBLvcKl9K0uRBeoiWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBG0pNbk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3D9C433F1;
+	Sat,  3 Feb 2024 04:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933415;
-	bh=2qSiuoglXb+DjyH7Uc0S/qnBg1HqoKNmSL3G3vZm5D4=;
+	s=korg; t=1706933653;
+	bh=fIQtvV8COOuW9lAQuQdwfrq199VDfUiiH7ipFXsFLn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z19AG4L8rkYnaj3GaDq44dafo4ghJy0Brl/TDkLUQD4Rn/4IpYcGorJ0yPsjzr1bn
-	 pMMmUAboR26Ch3lfKHY23WsMWZRQEWyZA3PLUAPns/8ZYsRD+TLS8DkAWYOPO4RFpj
-	 N/jRR+yVOOupxEcDPzjH6o9cNF12opgfzw92kVO0=
+	b=vBG0pNbk8xbKsPsWLAguYxGbpypLUISNLtP5G9E+Ww5GJYmiJQ9OnXC8JMsA6W8dd
+	 A+b5xkRnqiJSm9okNlWzp9eibU2YJ5e9JYLDfTMuE2Ty057jh/2UMrOAVvnu4X/7fV
+	 DzGzV/WkfiSjRGdMUdzwV7HQXShjWvi67cEklpDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aric Cyr <aric.cyr@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Josip Pavic <josip.pavic@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 139/219] drm/amd/display: make flip_timestamp_in_us a 64-bit variable
+Subject: [PATCH 6.6 215/322] drm/amdkfd: Fix iterator used outside loop in kfd_add_peer_prop()
 Date: Fri,  2 Feb 2024 20:05:12 -0800
-Message-ID: <20240203035336.993017081@linuxfoundation.org>
+Message-ID: <20240203035406.194663269@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josip Pavic <josip.pavic@amd.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 6fb12518ca58412dc51054e2a7400afb41328d85 ]
+[ Upstream commit b1a428b45dc7e47c7acc2ad0d08d8a6dda910c4c ]
 
-[Why]
-This variable currently overflows after about 71 minutes. This doesn't
-cause any known functional issues but it does make debugging more
-difficult.
+Fix the following about iterator use:
+drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1456 kfd_add_peer_prop() warn: iterator used outside loop: 'iolink3'
 
-[How]
-Make it a 64-bit variable.
-
-Reviewed-by: Aric Cyr <aric.cyr@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Josip Pavic <josip.pavic@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc_hw_types.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 24 ++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
-index 46c2b991aa10..811c117665e7 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
-@@ -244,7 +244,7 @@ enum pixel_format {
- #define DC_MAX_DIRTY_RECTS 3
- struct dc_flip_addrs {
- 	struct dc_plane_address address;
--	unsigned int flip_timestamp_in_us;
-+	unsigned long long flip_timestamp_in_us;
- 	bool flip_immediate;
- 	/* TODO: add flip duration for FreeSync */
- 	bool triplebuffer_flips;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+index 6e75e8fa18be..61157fddc15c 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+@@ -1452,17 +1452,19 @@ static int kfd_add_peer_prop(struct kfd_topology_device *kdev,
+ 		/* CPU->CPU  link*/
+ 		cpu_dev = kfd_topology_device_by_proximity_domain(iolink1->node_to);
+ 		if (cpu_dev) {
+-			list_for_each_entry(iolink3, &cpu_dev->io_link_props, list)
+-				if (iolink3->node_to == iolink2->node_to)
+-					break;
+-
+-			props->weight += iolink3->weight;
+-			props->min_latency += iolink3->min_latency;
+-			props->max_latency += iolink3->max_latency;
+-			props->min_bandwidth = min(props->min_bandwidth,
+-							iolink3->min_bandwidth);
+-			props->max_bandwidth = min(props->max_bandwidth,
+-							iolink3->max_bandwidth);
++			list_for_each_entry(iolink3, &cpu_dev->io_link_props, list) {
++				if (iolink3->node_to != iolink2->node_to)
++					continue;
++
++				props->weight += iolink3->weight;
++				props->min_latency += iolink3->min_latency;
++				props->max_latency += iolink3->max_latency;
++				props->min_bandwidth = min(props->min_bandwidth,
++							   iolink3->min_bandwidth);
++				props->max_bandwidth = min(props->max_bandwidth,
++							   iolink3->max_bandwidth);
++				break;
++			}
+ 		} else {
+ 			WARN(1, "CPU node not found");
+ 		}
 -- 
 2.43.0
 
