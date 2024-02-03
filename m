@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-18669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C7C68483A3
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:33:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8A98483AF
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:33:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD8FF28A688
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:33:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7681428BF4F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F9D55C1D;
-	Sat,  3 Feb 2024 04:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF77B55E76;
+	Sat,  3 Feb 2024 04:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xn8S9ic/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CP7sovOc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E592BB0E;
-	Sat,  3 Feb 2024 04:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B34A2C68F;
+	Sat,  3 Feb 2024 04:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933970; cv=none; b=XT/FtPwF2B6ce4+yUFb5itvWHfpHMBRNwIv6PGrcen4SQH1CgPUpXGiHpGe0bu5UQLNpr1ypF/wROkh4/FRPoTraKC7gQ9l0nwrcGPpuT8pKqBo3tUEIO0feXZcX7J48QzvSGTwx7oJe13QVTbiUsKCwEB+BkEXLKM/oZvhPIaA=
+	t=1706933978; cv=none; b=sgCx1YrNwBSrY2o629mt8xUev17pxkG6FXweTPe8MlXYw9p7oGbCZT5B8Jlagetv/4Bp6e7Xt06yVFNUe8jfsdTei+gkpwMGgn8dZfPw6qxWXGz+gNiGTBRzqDYERtNKW6xSzu0fgDqugtDPZPkldUUQdrTu8Qg9I3qqtGDhPmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933970; c=relaxed/simple;
-	bh=KvtNhhi5P2vP9orqcS8uOHYr1RyrOazcyVruQDwoQRo=;
+	s=arc-20240116; t=1706933978; c=relaxed/simple;
+	bh=5u23/lChybvs6Pb/LxkDF18MqFqjKb5830efIvyjj2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fixQ8i89lldIfvp08l77j123ajK7a77S7ZdAmr2+AQYwLIbFJjL4OIPeAXBWXK9tlBzM4ABjGZ5nHA/YfS42Ts5OsvROXJRsYo/kYHd399/qWpFEKXcbd+CJ6eiCg5rvJBctkS9xCgX9MBhQU6tgOrDQOr6ufRtn9G6fCfdHiaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xn8S9ic/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AD1C433C7;
-	Sat,  3 Feb 2024 04:19:30 +0000 (UTC)
+	 MIME-Version; b=EU3ahS0K6b0UcvjUJKtbeJ24J0y1Z03XtuDzUFilDVx5J8MbWc7BDXs0JNt6mbb8NR1FsvHbT0f4sUH5Fdm+0rshoxCtxgIQtRQjpXF/dx2xYy4ferQ5QpaQZtMDz9Zb9oxRGmvkSlE43MeVWBHwu5Vcn1OA341lPHKYd2Uv63Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CP7sovOc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43561C433F1;
+	Sat,  3 Feb 2024 04:19:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933970;
-	bh=KvtNhhi5P2vP9orqcS8uOHYr1RyrOazcyVruQDwoQRo=;
+	s=korg; t=1706933978;
+	bh=5u23/lChybvs6Pb/LxkDF18MqFqjKb5830efIvyjj2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xn8S9ic/HebJlmyR4vdcSYHhTeWUrfUFeuUlVxTSTIjiJZTkCKn1HAm0iKuWs3YKY
-	 Q0PTyH/boRwjmfEcGrPsI4hJtyLkCfzUpmOQGNoMKg5x0UO6zvzv5l2eL4ys6EuV7j
-	 fiQirXwDFCQYAUqmPs569qvQc7JemfLJ78sIC6xs=
+	b=CP7sovOc7DJJW4RByLCXbmHDRD4jPcNBtt4JUMWs2xJNN0t+8lZc5CnHOXnlmOBA7
+	 7PixuvbV66DT2IIqtskRtZHeM4vcUtXLUWvHag3VTFZ985Fp/exw9eryLKdJz2lk+1
+	 6zbS7MipnAvcSWHNKAqdsBYbXUyQGBqoheW79TSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 334/353] pds_core: Prevent race issues involving the adminq
-Date: Fri,  2 Feb 2024 20:07:32 -0800
-Message-ID: <20240203035414.352432233@linuxfoundation.org>
+Subject: [PATCH 6.7 335/353] pds_core: Clear BARs on reset
+Date: Fri,  2 Feb 2024 20:07:33 -0800
+Message-ID: <20240203035414.380122137@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
 References: <20240203035403.657508530@linuxfoundation.org>
@@ -70,199 +70,174 @@ Content-Transfer-Encoding: 8bit
 
 From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit 7e82a8745b951b1e794cc780d46f3fbee5e93447 ]
+[ Upstream commit e96094c1d11cce4deb5da3c0500d49041ab845b8 ]
 
-There are multiple paths that can result in using the pdsc's
-adminq.
+During reset the BARs might be accessed when they are
+unmapped. This can cause unexpected issues, so fix it by
+clearing the cached BAR values so they are not accessed
+until they are re-mapped.
 
-[1] pdsc_adminq_isr and the resulting work from queue_work(),
-    i.e. pdsc_work_thread()->pdsc_process_adminq()
+Also, make sure any places that can access the BARs
+when they are NULL are prevented.
 
-[2] pdsc_adminq_post()
-
-When the device goes through reset via PCIe reset and/or
-a fw_down/fw_up cycle due to bad PCIe state or bad device
-state the adminq is destroyed and recreated.
-
-A NULL pointer dereference can happen if [1] or [2] happens
-after the adminq is already destroyed.
-
-In order to fix this, add some further state checks and
-implement reference counting for adminq uses. Reference
-counting was used because multiple threads can attempt to
-access the adminq at the same time via [1] or [2]. Additionally,
-multiple clients (i.e. pds-vfio-pci) can be using [2]
-at the same time.
-
-The adminq_refcnt is initialized to 1 when the adminq has been
-allocated and is ready to use. Users/clients of the adminq
-(i.e. [1] and [2]) will increment the refcnt when they are using
-the adminq. When the driver goes into a fw_down cycle it will
-set the PDSC_S_FW_DEAD bit and then wait for the adminq_refcnt
-to hit 1. Setting the PDSC_S_FW_DEAD before waiting will prevent
-any further adminq_refcnt increments. Waiting for the
-adminq_refcnt to hit 1 allows for any current users of the adminq
-to finish before the driver frees the adminq. Once the
-adminq_refcnt hits 1 the driver clears the refcnt to signify that
-the adminq is deleted and cannot be used. On the fw_up cycle the
-driver will once again initialize the adminq_refcnt to 1 allowing
-the adminq to be used again.
-
-Fixes: 01ba61b55b20 ("pds_core: Add adminq processing and commands")
+Fixes: 49ce92fbee0b ("pds_core: add FW update feature to devlink")
 Signed-off-by: Brett Creeley <brett.creeley@amd.com>
 Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
 Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://lore.kernel.org/r/20240129234035.69802-5-brett.creeley@amd.com
+Link: https://lore.kernel.org/r/20240129234035.69802-6-brett.creeley@amd.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/adminq.c | 31 +++++++++++++++++-----
- drivers/net/ethernet/amd/pds_core/core.c   | 21 +++++++++++++++
- drivers/net/ethernet/amd/pds_core/core.h   |  1 +
- 3 files changed, 47 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/amd/pds_core/adminq.c  | 28 +++++++++++++++------
+ drivers/net/ethernet/amd/pds_core/core.c    |  8 +++++-
+ drivers/net/ethernet/amd/pds_core/dev.c     |  9 ++++++-
+ drivers/net/ethernet/amd/pds_core/devlink.c |  3 ++-
+ drivers/net/ethernet/amd/pds_core/fw.c      |  3 +++
+ drivers/net/ethernet/amd/pds_core/main.c    |  5 ++++
+ 6 files changed, 45 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/net/ethernet/amd/pds_core/adminq.c b/drivers/net/ethernet/amd/pds_core/adminq.c
-index 68be5ea251fc..5edff33d56f3 100644
+index 5edff33d56f3..ea773cfa0af6 100644
 --- a/drivers/net/ethernet/amd/pds_core/adminq.c
 +++ b/drivers/net/ethernet/amd/pds_core/adminq.c
-@@ -63,6 +63,15 @@ static int pdsc_process_notifyq(struct pdsc_qcq *qcq)
- 	return nq_work;
- }
+@@ -191,10 +191,16 @@ static int __pdsc_adminq_post(struct pdsc *pdsc,
  
-+static bool pdsc_adminq_inc_if_up(struct pdsc *pdsc)
-+{
-+	if (pdsc->state & BIT_ULL(PDSC_S_STOPPING_DRIVER) ||
-+	    pdsc->state & BIT_ULL(PDSC_S_FW_DEAD))
-+		return false;
+ 	/* Check that the FW is running */
+ 	if (!pdsc_is_fw_running(pdsc)) {
+-		u8 fw_status = ioread8(&pdsc->info_regs->fw_status);
+-
+-		dev_info(pdsc->dev, "%s: post failed - fw not running %#02x:\n",
+-			 __func__, fw_status);
++		if (pdsc->info_regs) {
++			u8 fw_status =
++				ioread8(&pdsc->info_regs->fw_status);
 +
-+	return refcount_inc_not_zero(&pdsc->adminq_refcnt);
-+}
++			dev_info(pdsc->dev, "%s: post failed - fw not running %#02x:\n",
++				 __func__, fw_status);
++		} else {
++			dev_info(pdsc->dev, "%s: post failed - BARs not setup\n",
++				 __func__);
++		}
+ 		ret = -ENXIO;
+ 
+ 		goto err_out_unlock;
+@@ -266,10 +272,16 @@ int pdsc_adminq_post(struct pdsc *pdsc,
+ 			break;
+ 
+ 		if (!pdsc_is_fw_running(pdsc)) {
+-			u8 fw_status = ioread8(&pdsc->info_regs->fw_status);
+-
+-			dev_dbg(pdsc->dev, "%s: post wait failed - fw not running %#02x:\n",
+-				__func__, fw_status);
++			if (pdsc->info_regs) {
++				u8 fw_status =
++					ioread8(&pdsc->info_regs->fw_status);
 +
- void pdsc_process_adminq(struct pdsc_qcq *qcq)
- {
- 	union pds_core_adminq_comp *comp;
-@@ -75,9 +84,9 @@ void pdsc_process_adminq(struct pdsc_qcq *qcq)
- 	int aq_work = 0;
- 	int credits;
- 
--	/* Don't process AdminQ when shutting down */
--	if (pdsc->state & BIT_ULL(PDSC_S_STOPPING_DRIVER)) {
--		dev_err(pdsc->dev, "%s: called while PDSC_S_STOPPING_DRIVER\n",
-+	/* Don't process AdminQ when it's not up */
-+	if (!pdsc_adminq_inc_if_up(pdsc)) {
-+		dev_err(pdsc->dev, "%s: called while adminq is unavailable\n",
- 			__func__);
- 		return;
- 	}
-@@ -124,6 +133,7 @@ void pdsc_process_adminq(struct pdsc_qcq *qcq)
- 		pds_core_intr_credits(&pdsc->intr_ctrl[qcq->intx],
- 				      credits,
- 				      PDS_CORE_INTR_CRED_REARM);
-+	refcount_dec(&pdsc->adminq_refcnt);
- }
- 
- void pdsc_work_thread(struct work_struct *work)
-@@ -138,9 +148,9 @@ irqreturn_t pdsc_adminq_isr(int irq, void *data)
- 	struct pdsc *pdsc = data;
- 	struct pdsc_qcq *qcq;
- 
--	/* Don't process AdminQ when shutting down */
--	if (pdsc->state & BIT_ULL(PDSC_S_STOPPING_DRIVER)) {
--		dev_err(pdsc->dev, "%s: called while PDSC_S_STOPPING_DRIVER\n",
-+	/* Don't process AdminQ when it's not up */
-+	if (!pdsc_adminq_inc_if_up(pdsc)) {
-+		dev_err(pdsc->dev, "%s: called while adminq is unavailable\n",
- 			__func__);
- 		return IRQ_HANDLED;
- 	}
-@@ -148,6 +158,7 @@ irqreturn_t pdsc_adminq_isr(int irq, void *data)
- 	qcq = &pdsc->adminqcq;
- 	queue_work(pdsc->wq, &qcq->work);
- 	pds_core_intr_mask(&pdsc->intr_ctrl[qcq->intx], PDS_CORE_INTR_MASK_CLEAR);
-+	refcount_dec(&pdsc->adminq_refcnt);
- 
- 	return IRQ_HANDLED;
- }
-@@ -231,6 +242,12 @@ int pdsc_adminq_post(struct pdsc *pdsc,
- 	int err = 0;
- 	int index;
- 
-+	if (!pdsc_adminq_inc_if_up(pdsc)) {
-+		dev_dbg(pdsc->dev, "%s: preventing adminq cmd %u\n",
-+			__func__, cmd->opcode);
-+		return -ENXIO;
-+	}
-+
- 	wc.qcq = &pdsc->adminqcq;
- 	index = __pdsc_adminq_post(pdsc, &pdsc->adminqcq, cmd, comp, &wc);
- 	if (index < 0) {
-@@ -286,6 +303,8 @@ int pdsc_adminq_post(struct pdsc *pdsc,
- 			queue_work(pdsc->wq, &pdsc->health_work);
- 	}
- 
-+	refcount_dec(&pdsc->adminq_refcnt);
-+
- 	return err;
- }
- EXPORT_SYMBOL_GPL(pdsc_adminq_post);
++				dev_dbg(pdsc->dev, "%s: post wait failed - fw not running %#02x:\n",
++					__func__, fw_status);
++			} else {
++				dev_dbg(pdsc->dev, "%s: post wait failed - BARs not setup\n",
++					__func__);
++			}
+ 			err = -ENXIO;
+ 			break;
+ 		}
 diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
-index 0356e56a6e99..f44333bd1256 100644
+index f44333bd1256..65c8a7072e35 100644
 --- a/drivers/net/ethernet/amd/pds_core/core.c
 +++ b/drivers/net/ethernet/amd/pds_core/core.c
-@@ -450,6 +450,7 @@ int pdsc_setup(struct pdsc *pdsc, bool init)
- 		pdsc_debugfs_add_viftype(pdsc);
- 	}
+@@ -600,7 +600,13 @@ void pdsc_fw_up(struct pdsc *pdsc)
  
-+	refcount_set(&pdsc->adminq_refcnt, 1);
- 	clear_bit(PDSC_S_FW_DEAD, &pdsc->state);
- 	return 0;
- 
-@@ -514,6 +515,24 @@ void pdsc_stop(struct pdsc *pdsc)
- 					   PDS_CORE_INTR_MASK_SET);
- }
- 
-+static void pdsc_adminq_wait_and_dec_once_unused(struct pdsc *pdsc)
-+{
-+	/* The driver initializes the adminq_refcnt to 1 when the adminq is
-+	 * allocated and ready for use. Other users/requesters will increment
-+	 * the refcnt while in use. If the refcnt is down to 1 then the adminq
-+	 * is not in use and the refcnt can be cleared and adminq freed. Before
-+	 * calling this function the driver will set PDSC_S_FW_DEAD, which
-+	 * prevent subsequent attempts to use the adminq and increment the
-+	 * refcnt to fail. This guarantees that this function will eventually
-+	 * exit.
-+	 */
-+	while (!refcount_dec_if_one(&pdsc->adminq_refcnt)) {
-+		dev_dbg_ratelimited(pdsc->dev, "%s: adminq in use\n",
-+				    __func__);
-+		cpu_relax();
-+	}
-+}
-+
- void pdsc_fw_down(struct pdsc *pdsc)
+ static void pdsc_check_pci_health(struct pdsc *pdsc)
  {
- 	union pds_core_notifyq_comp reset_event = {
-@@ -529,6 +548,8 @@ void pdsc_fw_down(struct pdsc *pdsc)
- 	if (pdsc->pdev->is_virtfn)
- 		return;
- 
-+	pdsc_adminq_wait_and_dec_once_unused(pdsc);
+-	u8 fw_status = ioread8(&pdsc->info_regs->fw_status);
++	u8 fw_status;
 +
- 	/* Notify clients of fw_down */
- 	if (pdsc->fw_reporter)
- 		devlink_health_report(pdsc->fw_reporter, "FW down reported", pdsc);
-diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
-index e35d3e7006bf..cbd5716f46e6 100644
---- a/drivers/net/ethernet/amd/pds_core/core.h
-+++ b/drivers/net/ethernet/amd/pds_core/core.h
-@@ -184,6 +184,7 @@ struct pdsc {
- 	struct mutex devcmd_lock;	/* lock for dev_cmd operations */
- 	struct mutex config_lock;	/* lock for configuration operations */
- 	spinlock_t adminq_lock;		/* lock for adminq operations */
-+	refcount_t adminq_refcnt;
- 	struct pds_core_dev_info_regs __iomem *info_regs;
- 	struct pds_core_dev_cmd_regs __iomem *cmd_regs;
- 	struct pds_core_intr __iomem *intr_ctrl;
++	/* some sort of teardown already in progress */
++	if (!pdsc->info_regs)
++		return;
++
++	fw_status = ioread8(&pdsc->info_regs->fw_status);
+ 
+ 	/* is PCI broken? */
+ 	if (fw_status != PDS_RC_BAD_PCI)
+diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
+index 31940b857e0e..62a38e0a8454 100644
+--- a/drivers/net/ethernet/amd/pds_core/dev.c
++++ b/drivers/net/ethernet/amd/pds_core/dev.c
+@@ -57,6 +57,9 @@ int pdsc_err_to_errno(enum pds_core_status_code code)
+ 
+ bool pdsc_is_fw_running(struct pdsc *pdsc)
+ {
++	if (!pdsc->info_regs)
++		return false;
++
+ 	pdsc->fw_status = ioread8(&pdsc->info_regs->fw_status);
+ 	pdsc->last_fw_time = jiffies;
+ 	pdsc->last_hb = ioread32(&pdsc->info_regs->fw_heartbeat);
+@@ -182,13 +185,17 @@ int pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
+ {
+ 	int err;
+ 
++	if (!pdsc->cmd_regs)
++		return -ENXIO;
++
+ 	memcpy_toio(&pdsc->cmd_regs->cmd, cmd, sizeof(*cmd));
+ 	pdsc_devcmd_dbell(pdsc);
+ 	err = pdsc_devcmd_wait(pdsc, cmd->opcode, max_seconds);
+-	memcpy_fromio(comp, &pdsc->cmd_regs->comp, sizeof(*comp));
+ 
+ 	if ((err == -ENXIO || err == -ETIMEDOUT) && pdsc->wq)
+ 		queue_work(pdsc->wq, &pdsc->health_work);
++	else
++		memcpy_fromio(comp, &pdsc->cmd_regs->comp, sizeof(*comp));
+ 
+ 	return err;
+ }
+diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
+index e9948ea5bbcd..54864f27c87a 100644
+--- a/drivers/net/ethernet/amd/pds_core/devlink.c
++++ b/drivers/net/ethernet/amd/pds_core/devlink.c
+@@ -111,7 +111,8 @@ int pdsc_dl_info_get(struct devlink *dl, struct devlink_info_req *req,
+ 
+ 	mutex_lock(&pdsc->devcmd_lock);
+ 	err = pdsc_devcmd_locked(pdsc, &cmd, &comp, pdsc->devcmd_timeout * 2);
+-	memcpy_fromio(&fw_list, pdsc->cmd_regs->data, sizeof(fw_list));
++	if (!err)
++		memcpy_fromio(&fw_list, pdsc->cmd_regs->data, sizeof(fw_list));
+ 	mutex_unlock(&pdsc->devcmd_lock);
+ 	if (err && err != -EIO)
+ 		return err;
+diff --git a/drivers/net/ethernet/amd/pds_core/fw.c b/drivers/net/ethernet/amd/pds_core/fw.c
+index 90a811f3878a..fa626719e68d 100644
+--- a/drivers/net/ethernet/amd/pds_core/fw.c
++++ b/drivers/net/ethernet/amd/pds_core/fw.c
+@@ -107,6 +107,9 @@ int pdsc_firmware_update(struct pdsc *pdsc, const struct firmware *fw,
+ 
+ 	dev_info(pdsc->dev, "Installing firmware\n");
+ 
++	if (!pdsc->cmd_regs)
++		return -ENXIO;
++
+ 	dl = priv_to_devlink(pdsc);
+ 	devlink_flash_update_status_notify(dl, "Preparing to flash",
+ 					   NULL, 0, 0);
+diff --git a/drivers/net/ethernet/amd/pds_core/main.c b/drivers/net/ethernet/amd/pds_core/main.c
+index 5172a5ad8ec6..05fdeb235e5f 100644
+--- a/drivers/net/ethernet/amd/pds_core/main.c
++++ b/drivers/net/ethernet/amd/pds_core/main.c
+@@ -37,6 +37,11 @@ static void pdsc_unmap_bars(struct pdsc *pdsc)
+ 	struct pdsc_dev_bar *bars = pdsc->bars;
+ 	unsigned int i;
+ 
++	pdsc->info_regs = NULL;
++	pdsc->cmd_regs = NULL;
++	pdsc->intr_status = NULL;
++	pdsc->intr_ctrl = NULL;
++
+ 	for (i = 0; i < PDS_CORE_BARS_MAX; i++) {
+ 		if (bars[i].vaddr)
+ 			pci_iounmap(pdsc->pdev, bars[i].vaddr);
 -- 
 2.43.0
 
