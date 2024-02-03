@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-18593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4932B848357
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B704848248
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F67285B24
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 707B51C2402A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF642171A4;
-	Sat,  3 Feb 2024 04:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 566EE482CC;
+	Sat,  3 Feb 2024 04:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NF2eb5MO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2Dmiup5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C1D171CC;
-	Sat,  3 Feb 2024 04:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557EE481DC;
+	Sat,  3 Feb 2024 04:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933913; cv=none; b=HKny2hOVdAs4qn3t7cfIv1IXY+gtzfJc6ykkJup2Lq0ghvJVBdsg5XiCOds2HKHfhzRfcG3r0HvXKs+BMSB4x25KqaD+1DvoCsSHPVYEovAS0YL7q77IEhwoX3gHB658qHF4SmyF15vr5PnqEuCV5GUBtS8EF2gm3lKFu4RDTWQ=
+	t=1706933718; cv=none; b=UP+ndoeTQ4I9CH9jEc2UIQ6R7Jp/8qP3sraHakFN3w54YJ2KoMmTJ/3nH4p7Vn/o9nVVC8GYPgzHmNp9VlYLESGs5nqWZeUE+0Bp4vBYXTV3LzqcJlvmVK3Jcz4H3FCL/h/n47HXxWx7qUoFVTPpk2/8Fqm8LT4ywpp0SMrKnQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933913; c=relaxed/simple;
-	bh=925wP3bWySeLkBur9qxE8jWuiXwiRb1hLswE55ERxM4=;
+	s=arc-20240116; t=1706933718; c=relaxed/simple;
+	bh=DZS3QVJSWU9cfjhejXPu0tvs5b8Fs0Pw0V+UnFDZvH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B6mUA2ila+xTrOK0ufSrEbnJ0Laj9D9SiDMRqugoBPIEyeQGUonpBp0QyuQZtoOL2r3ELxAzWdw0SI7LXvwVTZmmHLce7uUHyvt3sakwosl5dGnldRTTNPptcGUdOmuey8jq4mR4xrXFHhwX8dzyB2FzBWDR1GWorRWZYR3Ffq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NF2eb5MO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A81CC43394;
-	Sat,  3 Feb 2024 04:18:33 +0000 (UTC)
+	 MIME-Version; b=UQuiBDbPqUTR+n/vN8ZrTlJr+Z8Xq0V9Ov5I8OjpUaiPnU5yg+r1gcok8jmEwH/gw2Xq458+OVaXcE4BALx4dZWph9hbWmClpCNaLC8X8J5PZUVCIjhGeurrQTFi/BJ9fehSzghAvDMAJ6LiKbI2ikelhrxtkSZQTttHCmvCsCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2Dmiup5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24133C433C7;
+	Sat,  3 Feb 2024 04:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933913;
-	bh=925wP3bWySeLkBur9qxE8jWuiXwiRb1hLswE55ERxM4=;
+	s=korg; t=1706933718;
+	bh=DZS3QVJSWU9cfjhejXPu0tvs5b8Fs0Pw0V+UnFDZvH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NF2eb5MOG6gOqmzzoA2kao37tGZ2bh/YALNF04GmemlLGyUuOAhlsPfCOxY3uOD6X
-	 /LdA4Uvct82wL0FiUx5ZEhdxg3ZHh08803EG0EjNLzSQN//YscPYiomzgL/jdoYK9v
-	 FyvQcA7WvtdJOuruuDoV1sZhDTAuYykHz+6npqzA=
+	b=x2Dmiup5oUmc/edyGkf0NF6Th6lLHOtgLsLlxqyjpcxygOUBw5psF3BrPrUylKWD0
+	 vKehYvD7d0c7YXrRgMsjIhkeDxgzM9wqQU6PXv9zeX1NFL6jSCW1G8asvn1Fy/x/kL
+	 vXCqBmDe30BNjCZu4L3lHzo4jOXndnou7f9WfR9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Al Viro <viro@ZenIV.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 266/353] tracefs/eventfs: Use root and instance inodes as default ownership
-Date: Fri,  2 Feb 2024 20:06:24 -0800
-Message-ID: <20240203035412.169044331@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+32b89eaa102b372ff76d@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 288/322] llc: call sock_orphan() at release time
+Date: Fri,  2 Feb 2024 20:06:25 -0800
+Message-ID: <20240203035408.383628630@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,490 +65,207 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 8186fff7ab649085e2c60d032d9a20a85af1d87c ]
+[ Upstream commit aa2b2eb3934859904c287bf5434647ba72e14c1c ]
 
-Instead of walking the dentries on mount/remount to update the gid values of
-all the dentries if a gid option is specified on mount, just update the root
-inode. Add .getattr, .setattr, and .permissions on the tracefs inode
-operations to update the permissions of the files and directories.
+syzbot reported an interesting trace [1] caused by a stale sk->sk_wq
+pointer in a closed llc socket.
 
-For all files and directories in the top level instance:
+In commit ff7b11aa481f ("net: socket: set sock->sk to NULL after
+calling proto_ops::release()") Eric Biggers hinted that some protocols
+are missing a sock_orphan(), we need to perform a full audit.
 
- /sys/kernel/tracing/*
+In net-next, I plan to clear sock->sk from sock_orphan() and
+amend Eric patch to add a warning.
 
-It will use the root inode as the default permissions. The inode that
-represents: /sys/kernel/tracing (or wherever it is mounted).
+[1]
+ BUG: KASAN: slab-use-after-free in list_empty include/linux/list.h:373 [inline]
+ BUG: KASAN: slab-use-after-free in waitqueue_active include/linux/wait.h:127 [inline]
+ BUG: KASAN: slab-use-after-free in sock_def_write_space_wfree net/core/sock.c:3384 [inline]
+ BUG: KASAN: slab-use-after-free in sock_wfree+0x9a8/0x9d0 net/core/sock.c:2468
+Read of size 8 at addr ffff88802f4fc880 by task ksoftirqd/1/27
 
-When an instance is created:
+CPU: 1 PID: 27 Comm: ksoftirqd/1 Not tainted 6.8.0-rc1-syzkaller-00049-g6098d87eaf31 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+  __dump_stack lib/dump_stack.c:88 [inline]
+  dump_stack_lvl+0xd9/0x1b0 lib/dump_stack.c:106
+  print_address_description mm/kasan/report.c:377 [inline]
+  print_report+0xc4/0x620 mm/kasan/report.c:488
+  kasan_report+0xda/0x110 mm/kasan/report.c:601
+  list_empty include/linux/list.h:373 [inline]
+  waitqueue_active include/linux/wait.h:127 [inline]
+  sock_def_write_space_wfree net/core/sock.c:3384 [inline]
+  sock_wfree+0x9a8/0x9d0 net/core/sock.c:2468
+  skb_release_head_state+0xa3/0x2b0 net/core/skbuff.c:1080
+  skb_release_all net/core/skbuff.c:1092 [inline]
+  napi_consume_skb+0x119/0x2b0 net/core/skbuff.c:1404
+  e1000_unmap_and_free_tx_resource+0x144/0x200 drivers/net/ethernet/intel/e1000/e1000_main.c:1970
+  e1000_clean_tx_irq drivers/net/ethernet/intel/e1000/e1000_main.c:3860 [inline]
+  e1000_clean+0x4a1/0x26e0 drivers/net/ethernet/intel/e1000/e1000_main.c:3801
+  __napi_poll.constprop.0+0xb4/0x540 net/core/dev.c:6576
+  napi_poll net/core/dev.c:6645 [inline]
+  net_rx_action+0x956/0xe90 net/core/dev.c:6778
+  __do_softirq+0x21a/0x8de kernel/softirq.c:553
+  run_ksoftirqd kernel/softirq.c:921 [inline]
+  run_ksoftirqd+0x31/0x60 kernel/softirq.c:913
+  smpboot_thread_fn+0x660/0xa10 kernel/smpboot.c:164
+  kthread+0x2c6/0x3a0 kernel/kthread.c:388
+  ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+  ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
+ </TASK>
 
- mkdir /sys/kernel/tracing/instance/foo
+Allocated by task 5167:
+  kasan_save_stack+0x33/0x50 mm/kasan/common.c:47
+  kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+  unpoison_slab_object mm/kasan/common.c:314 [inline]
+  __kasan_slab_alloc+0x81/0x90 mm/kasan/common.c:340
+  kasan_slab_alloc include/linux/kasan.h:201 [inline]
+  slab_post_alloc_hook mm/slub.c:3813 [inline]
+  slab_alloc_node mm/slub.c:3860 [inline]
+  kmem_cache_alloc_lru+0x142/0x6f0 mm/slub.c:3879
+  alloc_inode_sb include/linux/fs.h:3019 [inline]
+  sock_alloc_inode+0x25/0x1c0 net/socket.c:308
+  alloc_inode+0x5d/0x220 fs/inode.c:260
+  new_inode_pseudo+0x16/0x80 fs/inode.c:1005
+  sock_alloc+0x40/0x270 net/socket.c:634
+  __sock_create+0xbc/0x800 net/socket.c:1535
+  sock_create net/socket.c:1622 [inline]
+  __sys_socket_create net/socket.c:1659 [inline]
+  __sys_socket+0x14c/0x260 net/socket.c:1706
+  __do_sys_socket net/socket.c:1720 [inline]
+  __se_sys_socket net/socket.c:1718 [inline]
+  __x64_sys_socket+0x72/0xb0 net/socket.c:1718
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xd3/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-The directory "foo" and all its files and directories underneath will use
-the default of what foo is when it was created. A remount of tracefs will
-not affect it.
+Freed by task 0:
+  kasan_save_stack+0x33/0x50 mm/kasan/common.c:47
+  kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+  kasan_save_free_info+0x3f/0x60 mm/kasan/generic.c:640
+  poison_slab_object mm/kasan/common.c:241 [inline]
+  __kasan_slab_free+0x121/0x1b0 mm/kasan/common.c:257
+  kasan_slab_free include/linux/kasan.h:184 [inline]
+  slab_free_hook mm/slub.c:2121 [inline]
+  slab_free mm/slub.c:4299 [inline]
+  kmem_cache_free+0x129/0x350 mm/slub.c:4363
+  i_callback+0x43/0x70 fs/inode.c:249
+  rcu_do_batch kernel/rcu/tree.c:2158 [inline]
+  rcu_core+0x819/0x1680 kernel/rcu/tree.c:2433
+  __do_softirq+0x21a/0x8de kernel/softirq.c:553
 
-If a user were to modify the permissions of any file or directory in
-tracefs, it will also no longer be modified by a change in ownership of a
-remount.
+Last potentially related work creation:
+  kasan_save_stack+0x33/0x50 mm/kasan/common.c:47
+  __kasan_record_aux_stack+0xba/0x100 mm/kasan/generic.c:586
+  __call_rcu_common.constprop.0+0x9a/0x7b0 kernel/rcu/tree.c:2683
+  destroy_inode+0x129/0x1b0 fs/inode.c:315
+  iput_final fs/inode.c:1739 [inline]
+  iput.part.0+0x560/0x7b0 fs/inode.c:1765
+  iput+0x5c/0x80 fs/inode.c:1755
+  dentry_unlink_inode+0x292/0x430 fs/dcache.c:400
+  __dentry_kill+0x1ca/0x5f0 fs/dcache.c:603
+  dput.part.0+0x4ac/0x9a0 fs/dcache.c:845
+  dput+0x1f/0x30 fs/dcache.c:835
+  __fput+0x3b9/0xb70 fs/file_table.c:384
+  task_work_run+0x14d/0x240 kernel/task_work.c:180
+  exit_task_work include/linux/task_work.h:38 [inline]
+  do_exit+0xa8a/0x2ad0 kernel/exit.c:871
+  do_group_exit+0xd4/0x2a0 kernel/exit.c:1020
+  __do_sys_exit_group kernel/exit.c:1031 [inline]
+  __se_sys_exit_group kernel/exit.c:1029 [inline]
+  __x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1029
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xd3/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-The events directory, if it is in the top level instance, will use the
-tracefs root inode as the default ownership for itself and all the files and
-directories below it.
+The buggy address belongs to the object at ffff88802f4fc800
+ which belongs to the cache sock_inode_cache of size 1408
+The buggy address is located 128 bytes inside of
+ freed 1408-byte region [ffff88802f4fc800, ffff88802f4fcd80)
 
-For the events directory in an instance ("foo"), it will keep the ownership
-of what it was when it was created, and that will be used as the default
-ownership for the files and directories beneath it.
+The buggy address belongs to the physical page:
+page:ffffea0000bd3e00 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x2f4f8
+head:ffffea0000bd3e00 order:3 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+anon flags: 0xfff00000000840(slab|head|node=0|zone=1|lastcpupid=0x7ff)
+page_type: 0xffffffff()
+raw: 00fff00000000840 ffff888013b06b40 0000000000000000 0000000000000001
+raw: 0000000000000000 0000000080150015 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+page_owner tracks the page as allocated
+page last allocated via order 3, migratetype Reclaimable, gfp_mask 0xd20d0(__GFP_IO|__GFP_FS|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_NOMEMALLOC|__GFP_RECLAIMABLE), pid 4956, tgid 4956 (sshd), ts 31423924727, free_ts 0
+  set_page_owner include/linux/page_owner.h:31 [inline]
+  post_alloc_hook+0x2d0/0x350 mm/page_alloc.c:1533
+  prep_new_page mm/page_alloc.c:1540 [inline]
+  get_page_from_freelist+0xa28/0x3780 mm/page_alloc.c:3311
+  __alloc_pages+0x22f/0x2440 mm/page_alloc.c:4567
+  __alloc_pages_node include/linux/gfp.h:238 [inline]
+  alloc_pages_node include/linux/gfp.h:261 [inline]
+  alloc_slab_page mm/slub.c:2190 [inline]
+  allocate_slab mm/slub.c:2354 [inline]
+  new_slab+0xcc/0x3a0 mm/slub.c:2407
+  ___slab_alloc+0x4af/0x19a0 mm/slub.c:3540
+  __slab_alloc.constprop.0+0x56/0xa0 mm/slub.c:3625
+  __slab_alloc_node mm/slub.c:3678 [inline]
+  slab_alloc_node mm/slub.c:3850 [inline]
+  kmem_cache_alloc_lru+0x379/0x6f0 mm/slub.c:3879
+  alloc_inode_sb include/linux/fs.h:3019 [inline]
+  sock_alloc_inode+0x25/0x1c0 net/socket.c:308
+  alloc_inode+0x5d/0x220 fs/inode.c:260
+  new_inode_pseudo+0x16/0x80 fs/inode.c:1005
+  sock_alloc+0x40/0x270 net/socket.c:634
+  __sock_create+0xbc/0x800 net/socket.c:1535
+  sock_create net/socket.c:1622 [inline]
+  __sys_socket_create net/socket.c:1659 [inline]
+  __sys_socket+0x14c/0x260 net/socket.c:1706
+  __do_sys_socket net/socket.c:1720 [inline]
+  __se_sys_socket net/socket.c:1718 [inline]
+  __x64_sys_socket+0x72/0xb0 net/socket.c:1718
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xd3/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+page_owner free stack trace missing
 
-Link: https://lore.kernel.org/linux-trace-kernel/CAHk-=wjVdGkjDXBbvLn2wbZnqP4UsH46E3gqJ9m7UG6DpX2+WA@mail.gmail.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20240103215016.1e0c9811@gandalf.local.home
+Memory state around the buggy address:
+ ffff88802f4fc780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff88802f4fc800: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+>ffff88802f4fc880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                   ^
+ ffff88802f4fc900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ffff88802f4fc980: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Al Viro <viro@ZenIV.linux.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 43815482370c ("net: sock_def_readable() and friends RCU conversion")
+Reported-and-tested-by: syzbot+32b89eaa102b372ff76d@syzkaller.appspotmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Eric Biggers <ebiggers@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240126165532.3396702-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/event_inode.c |  79 +++++++++++++++-
- fs/tracefs/inode.c       | 198 ++++++++++++++++++++++-----------------
- fs/tracefs/internal.h    |   3 +
- 3 files changed, 190 insertions(+), 90 deletions(-)
+ net/llc/af_llc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index f0677ea0ec24..517f1ae1a058 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -45,6 +45,7 @@ enum {
- 	EVENTFS_SAVE_MODE	= BIT(16),
- 	EVENTFS_SAVE_UID	= BIT(17),
- 	EVENTFS_SAVE_GID	= BIT(18),
-+	EVENTFS_TOPLEVEL	= BIT(19),
- };
- 
- #define EVENTFS_MODE_MASK	(EVENTFS_SAVE_MODE - 1)
-@@ -117,10 +118,17 @@ static int eventfs_set_attr(struct mnt_idmap *idmap, struct dentry *dentry,
- 		 * The events directory dentry is never freed, unless its
- 		 * part of an instance that is deleted. It's attr is the
- 		 * default for its child files and directories.
--		 * Do not update it. It's not used for its own mode or ownership
-+		 * Do not update it. It's not used for its own mode or ownership.
- 		 */
--		if (!ei->is_events)
-+		if (ei->is_events) {
-+			/* But it still needs to know if it was modified */
-+			if (iattr->ia_valid & ATTR_UID)
-+				ei->attr.mode |= EVENTFS_SAVE_UID;
-+			if (iattr->ia_valid & ATTR_GID)
-+				ei->attr.mode |= EVENTFS_SAVE_GID;
-+		} else {
- 			update_attr(&ei->attr, iattr);
-+		}
- 
- 	} else {
- 		name = dentry->d_name.name;
-@@ -138,9 +146,66 @@ static int eventfs_set_attr(struct mnt_idmap *idmap, struct dentry *dentry,
- 	return ret;
- }
- 
-+static void update_top_events_attr(struct eventfs_inode *ei, struct dentry *dentry)
-+{
-+	struct inode *inode;
-+
-+	/* Only update if the "events" was on the top level */
-+	if (!ei || !(ei->attr.mode & EVENTFS_TOPLEVEL))
-+		return;
-+
-+	/* Get the tracefs root inode. */
-+	inode = d_inode(dentry->d_sb->s_root);
-+	ei->attr.uid = inode->i_uid;
-+	ei->attr.gid = inode->i_gid;
-+}
-+
-+static void set_top_events_ownership(struct inode *inode)
-+{
-+	struct tracefs_inode *ti = get_tracefs(inode);
-+	struct eventfs_inode *ei = ti->private;
-+	struct dentry *dentry;
-+
-+	/* The top events directory doesn't get automatically updated */
-+	if (!ei || !ei->is_events || !(ei->attr.mode & EVENTFS_TOPLEVEL))
-+		return;
-+
-+	dentry = ei->dentry;
-+
-+	update_top_events_attr(ei, dentry);
-+
-+	if (!(ei->attr.mode & EVENTFS_SAVE_UID))
-+		inode->i_uid = ei->attr.uid;
-+
-+	if (!(ei->attr.mode & EVENTFS_SAVE_GID))
-+		inode->i_gid = ei->attr.gid;
-+}
-+
-+static int eventfs_get_attr(struct mnt_idmap *idmap,
-+			    const struct path *path, struct kstat *stat,
-+			    u32 request_mask, unsigned int flags)
-+{
-+	struct dentry *dentry = path->dentry;
-+	struct inode *inode = d_backing_inode(dentry);
-+
-+	set_top_events_ownership(inode);
-+
-+	generic_fillattr(idmap, request_mask, inode, stat);
-+	return 0;
-+}
-+
-+static int eventfs_permission(struct mnt_idmap *idmap,
-+			      struct inode *inode, int mask)
-+{
-+	set_top_events_ownership(inode);
-+	return generic_permission(idmap, inode, mask);
-+}
-+
- static const struct inode_operations eventfs_root_dir_inode_operations = {
- 	.lookup		= eventfs_root_lookup,
- 	.setattr	= eventfs_set_attr,
-+	.getattr	= eventfs_get_attr,
-+	.permission	= eventfs_permission,
- };
- 
- static const struct inode_operations eventfs_file_inode_operations = {
-@@ -178,6 +243,8 @@ static struct eventfs_inode *eventfs_find_events(struct dentry *dentry)
- 	} while (!ei->is_events);
- 	mutex_unlock(&eventfs_mutex);
- 
-+	update_top_events_attr(ei, dentry);
-+
- 	return ei;
- }
- 
-@@ -968,6 +1035,14 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	uid = d_inode(dentry->d_parent)->i_uid;
- 	gid = d_inode(dentry->d_parent)->i_gid;
- 
-+	/*
-+	 * If the events directory is of the top instance, then parent
-+	 * is NULL. Set the attr.mode to reflect this and its permissions will
-+	 * default to the tracefs root dentry.
-+	 */
-+	if (!parent)
-+		ei->attr.mode = EVENTFS_TOPLEVEL;
-+
- 	/* This is used as the default ownership of the files and directories */
- 	ei->attr.uid = uid;
- 	ei->attr.gid = gid;
-diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
-index bc86ffdb103b..e1b172c0e091 100644
---- a/fs/tracefs/inode.c
-+++ b/fs/tracefs/inode.c
-@@ -91,6 +91,7 @@ static int tracefs_syscall_mkdir(struct mnt_idmap *idmap,
- 				 struct inode *inode, struct dentry *dentry,
- 				 umode_t mode)
- {
-+	struct tracefs_inode *ti;
- 	char *name;
- 	int ret;
- 
-@@ -98,6 +99,15 @@ static int tracefs_syscall_mkdir(struct mnt_idmap *idmap,
- 	if (!name)
- 		return -ENOMEM;
- 
-+	/*
-+	 * This is a new directory that does not take the default of
-+	 * the rootfs. It becomes the default permissions for all the
-+	 * files and directories underneath it.
-+	 */
-+	ti = get_tracefs(inode);
-+	ti->flags |= TRACEFS_INSTANCE_INODE;
-+	ti->private = inode;
-+
- 	/*
- 	 * The mkdir call can call the generic functions that create
- 	 * the files within the tracefs system. It is up to the individual
-@@ -141,10 +151,76 @@ static int tracefs_syscall_rmdir(struct inode *inode, struct dentry *dentry)
- 	return ret;
- }
- 
--static const struct inode_operations tracefs_dir_inode_operations = {
-+static void set_tracefs_inode_owner(struct inode *inode)
-+{
-+	struct tracefs_inode *ti = get_tracefs(inode);
-+	struct inode *root_inode = ti->private;
-+
-+	/*
-+	 * If this inode has never been referenced, then update
-+	 * the permissions to the superblock.
-+	 */
-+	if (!(ti->flags & TRACEFS_UID_PERM_SET))
-+		inode->i_uid = root_inode->i_uid;
-+
-+	if (!(ti->flags & TRACEFS_GID_PERM_SET))
-+		inode->i_gid = root_inode->i_gid;
-+}
-+
-+static int tracefs_permission(struct mnt_idmap *idmap,
-+			      struct inode *inode, int mask)
-+{
-+	set_tracefs_inode_owner(inode);
-+	return generic_permission(idmap, inode, mask);
-+}
-+
-+static int tracefs_getattr(struct mnt_idmap *idmap,
-+			   const struct path *path, struct kstat *stat,
-+			   u32 request_mask, unsigned int flags)
-+{
-+	struct inode *inode = d_backing_inode(path->dentry);
-+
-+	set_tracefs_inode_owner(inode);
-+	generic_fillattr(idmap, request_mask, inode, stat);
-+	return 0;
-+}
-+
-+static int tracefs_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
-+			   struct iattr *attr)
-+{
-+	unsigned int ia_valid = attr->ia_valid;
-+	struct inode *inode = d_inode(dentry);
-+	struct tracefs_inode *ti = get_tracefs(inode);
-+
-+	if (ia_valid & ATTR_UID)
-+		ti->flags |= TRACEFS_UID_PERM_SET;
-+
-+	if (ia_valid & ATTR_GID)
-+		ti->flags |= TRACEFS_GID_PERM_SET;
-+
-+	return simple_setattr(idmap, dentry, attr);
-+}
-+
-+static const struct inode_operations tracefs_instance_dir_inode_operations = {
- 	.lookup		= simple_lookup,
- 	.mkdir		= tracefs_syscall_mkdir,
- 	.rmdir		= tracefs_syscall_rmdir,
-+	.permission	= tracefs_permission,
-+	.getattr	= tracefs_getattr,
-+	.setattr	= tracefs_setattr,
-+};
-+
-+static const struct inode_operations tracefs_dir_inode_operations = {
-+	.lookup		= simple_lookup,
-+	.permission	= tracefs_permission,
-+	.getattr	= tracefs_getattr,
-+	.setattr	= tracefs_setattr,
-+};
-+
-+static const struct inode_operations tracefs_file_inode_operations = {
-+	.permission	= tracefs_permission,
-+	.getattr	= tracefs_getattr,
-+	.setattr	= tracefs_setattr,
- };
- 
- struct inode *tracefs_get_inode(struct super_block *sb)
-@@ -183,87 +259,6 @@ struct tracefs_fs_info {
- 	struct tracefs_mount_opts mount_opts;
- };
- 
--static void change_gid(struct dentry *dentry, kgid_t gid)
--{
--	if (!dentry->d_inode)
--		return;
--	dentry->d_inode->i_gid = gid;
--}
--
--/*
-- * Taken from d_walk, but without he need for handling renames.
-- * Nothing can be renamed while walking the list, as tracefs
-- * does not support renames. This is only called when mounting
-- * or remounting the file system, to set all the files to
-- * the given gid.
-- */
--static void set_gid(struct dentry *parent, kgid_t gid)
--{
--	struct dentry *this_parent;
--	struct list_head *next;
--
--	this_parent = parent;
--	spin_lock(&this_parent->d_lock);
--
--	change_gid(this_parent, gid);
--repeat:
--	next = this_parent->d_subdirs.next;
--resume:
--	while (next != &this_parent->d_subdirs) {
--		struct tracefs_inode *ti;
--		struct list_head *tmp = next;
--		struct dentry *dentry = list_entry(tmp, struct dentry, d_child);
--		next = tmp->next;
--
--		/* Note, getdents() can add a cursor dentry with no inode */
--		if (!dentry->d_inode)
--			continue;
--
--		spin_lock_nested(&dentry->d_lock, DENTRY_D_LOCK_NESTED);
--
--		change_gid(dentry, gid);
--
--		/* If this is the events directory, update that too */
--		ti = get_tracefs(dentry->d_inode);
--		if (ti && (ti->flags & TRACEFS_EVENT_INODE))
--			eventfs_update_gid(dentry, gid);
--
--		if (!list_empty(&dentry->d_subdirs)) {
--			spin_unlock(&this_parent->d_lock);
--			spin_release(&dentry->d_lock.dep_map, _RET_IP_);
--			this_parent = dentry;
--			spin_acquire(&this_parent->d_lock.dep_map, 0, 1, _RET_IP_);
--			goto repeat;
--		}
--		spin_unlock(&dentry->d_lock);
--	}
--	/*
--	 * All done at this level ... ascend and resume the search.
--	 */
--	rcu_read_lock();
--ascend:
--	if (this_parent != parent) {
--		struct dentry *child = this_parent;
--		this_parent = child->d_parent;
--
--		spin_unlock(&child->d_lock);
--		spin_lock(&this_parent->d_lock);
--
--		/* go into the first sibling still alive */
--		do {
--			next = child->d_child.next;
--			if (next == &this_parent->d_subdirs)
--				goto ascend;
--			child = list_entry(next, struct dentry, d_child);
--		} while (unlikely(child->d_flags & DCACHE_DENTRY_KILLED));
--		rcu_read_unlock();
--		goto resume;
--	}
--	rcu_read_unlock();
--	spin_unlock(&this_parent->d_lock);
--	return;
--}
--
- static int tracefs_parse_options(char *data, struct tracefs_mount_opts *opts)
- {
- 	substring_t args[MAX_OPT_ARGS];
-@@ -336,10 +331,8 @@ static int tracefs_apply_options(struct super_block *sb, bool remount)
- 	if (!remount || opts->opts & BIT(Opt_uid))
- 		inode->i_uid = opts->uid;
- 
--	if (!remount || opts->opts & BIT(Opt_gid)) {
--		/* Set all the group ids to the mount option */
--		set_gid(sb->s_root, opts->gid);
--	}
-+	if (!remount || opts->opts & BIT(Opt_gid))
-+		inode->i_gid = opts->gid;
- 
+diff --git a/net/llc/af_llc.c b/net/llc/af_llc.c
+index 20551cfb7da6..fde1140d899e 100644
+--- a/net/llc/af_llc.c
++++ b/net/llc/af_llc.c
+@@ -226,6 +226,8 @@ static int llc_ui_release(struct socket *sock)
+ 	}
+ 	netdev_put(llc->dev, &llc->dev_tracker);
+ 	sock_put(sk);
++	sock_orphan(sk);
++	sock->sk = NULL;
+ 	llc_sk_free(sk);
+ out:
  	return 0;
- }
-@@ -573,6 +566,26 @@ struct dentry *eventfs_end_creating(struct dentry *dentry)
- 	return dentry;
- }
- 
-+/* Find the inode that this will use for default */
-+static struct inode *instance_inode(struct dentry *parent, struct inode *inode)
-+{
-+	struct tracefs_inode *ti;
-+
-+	/* If parent is NULL then use root inode */
-+	if (!parent)
-+		return d_inode(inode->i_sb->s_root);
-+
-+	/* Find the inode that is flagged as an instance or the root inode */
-+	while (!IS_ROOT(parent)) {
-+		ti = get_tracefs(d_inode(parent));
-+		if (ti->flags & TRACEFS_INSTANCE_INODE)
-+			break;
-+		parent = parent->d_parent;
-+	}
-+
-+	return d_inode(parent);
-+}
-+
- /**
-  * tracefs_create_file - create a file in the tracefs filesystem
-  * @name: a pointer to a string containing the name of the file to create.
-@@ -603,6 +616,7 @@ struct dentry *tracefs_create_file(const char *name, umode_t mode,
- 				   struct dentry *parent, void *data,
- 				   const struct file_operations *fops)
- {
-+	struct tracefs_inode *ti;
- 	struct dentry *dentry;
- 	struct inode *inode;
- 
-@@ -621,7 +635,11 @@ struct dentry *tracefs_create_file(const char *name, umode_t mode,
- 	if (unlikely(!inode))
- 		return tracefs_failed_creating(dentry);
- 
-+	ti = get_tracefs(inode);
-+	ti->private = instance_inode(parent, inode);
-+
- 	inode->i_mode = mode;
-+	inode->i_op = &tracefs_file_inode_operations;
- 	inode->i_fop = fops ? fops : &tracefs_file_operations;
- 	inode->i_private = data;
- 	inode->i_uid = d_inode(dentry->d_parent)->i_uid;
-@@ -634,6 +652,7 @@ struct dentry *tracefs_create_file(const char *name, umode_t mode,
- static struct dentry *__create_dir(const char *name, struct dentry *parent,
- 				   const struct inode_operations *ops)
- {
-+	struct tracefs_inode *ti;
- 	struct dentry *dentry = tracefs_start_creating(name, parent);
- 	struct inode *inode;
- 
-@@ -651,6 +670,9 @@ static struct dentry *__create_dir(const char *name, struct dentry *parent,
- 	inode->i_uid = d_inode(dentry->d_parent)->i_uid;
- 	inode->i_gid = d_inode(dentry->d_parent)->i_gid;
- 
-+	ti = get_tracefs(inode);
-+	ti->private = instance_inode(parent, inode);
-+
- 	/* directory inodes start off with i_nlink == 2 (for "." entry) */
- 	inc_nlink(inode);
- 	d_instantiate(dentry, inode);
-@@ -681,7 +703,7 @@ struct dentry *tracefs_create_dir(const char *name, struct dentry *parent)
- 	if (security_locked_down(LOCKDOWN_TRACEFS))
- 		return NULL;
- 
--	return __create_dir(name, parent, &simple_dir_inode_operations);
-+	return __create_dir(name, parent, &tracefs_dir_inode_operations);
- }
- 
- /**
-@@ -712,7 +734,7 @@ __init struct dentry *tracefs_create_instance_dir(const char *name,
- 	if (WARN_ON(tracefs_ops.mkdir || tracefs_ops.rmdir))
- 		return NULL;
- 
--	dentry = __create_dir(name, parent, &tracefs_dir_inode_operations);
-+	dentry = __create_dir(name, parent, &tracefs_instance_dir_inode_operations);
- 	if (!dentry)
- 		return NULL;
- 
-diff --git a/fs/tracefs/internal.h b/fs/tracefs/internal.h
-index 42bdeb471a07..12b7d0150ae9 100644
---- a/fs/tracefs/internal.h
-+++ b/fs/tracefs/internal.h
-@@ -5,6 +5,9 @@
- enum {
- 	TRACEFS_EVENT_INODE		= BIT(1),
- 	TRACEFS_EVENT_TOP_INODE		= BIT(2),
-+	TRACEFS_GID_PERM_SET		= BIT(3),
-+	TRACEFS_UID_PERM_SET		= BIT(4),
-+	TRACEFS_INSTANCE_INODE		= BIT(5),
- };
- 
- struct tracefs_inode {
 -- 
 2.43.0
 
