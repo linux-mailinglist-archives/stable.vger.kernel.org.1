@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC0C2848150
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC88D84829F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79E7A28A32B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 692E82839BE
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E73171B4;
-	Sat,  3 Feb 2024 04:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400094C3C6;
+	Sat,  3 Feb 2024 04:16:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yzjo7N3Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ia/XWiqW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED87E1079D;
-	Sat,  3 Feb 2024 04:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27144C3AF;
+	Sat,  3 Feb 2024 04:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933536; cv=none; b=SHhVPmNzxIDcN+pb/VZtoK4C0BH39y9KGqnP5KgIkGiHNMLVOd/muoCyGmbG5GaQMVBj+esfrHT5EEydw2qqiJ6HDWMSQyWi8SA6Ud4k5SP0920EYFfiAodOudKrnlSA1W6+Kgg3PorFKKhdwCuF0MaBlQ06who6lhMY0ui5niA=
+	t=1706933780; cv=none; b=IWtMx0eyAatMcu6OoIc9Zytuxl5OllFw8pH3R7q5rhh5mye9qs11U57ZKr08nPUduNyu2OCjqGd1hOxMnU2zwRklqtkt1BWjOnjn33TfNJtMyFfao/PTnzryfVwtRcukzDcfA4dkyqeyMwRCMF8GAH2C6BP/CO1KUGjj2duRj9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933536; c=relaxed/simple;
-	bh=OH2M3pwxAbICQE1LKU/+dWDZmMraTFjHpd6sk3gK0uM=;
+	s=arc-20240116; t=1706933780; c=relaxed/simple;
+	bh=mgmVB2ub7Q4L0qc1oGRtxYe2zRtVycHCnFVNSGj8Lvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQqdxkQnLSnNhCaqsoscgECEJQXsT1oQnjps1Sv5bkgc22KgKUE0wZ1hUSvy5GU/yica5A3ZE9LneUFQ6wjEZD171+CYUNlBsK/ugJsLRz923mLefamBIG6VZTZoIYxPsmUrIKsRyMKk/OqQ0aURUQUrRDLupxti3TE/nIinA30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yzjo7N3Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5898EC43390;
-	Sat,  3 Feb 2024 04:12:15 +0000 (UTC)
+	 MIME-Version; b=uKsTTLn4oVbtfhrdDcVJVC33EDjFhN0/r6CJKBtRU/L0UaFpz8NDCTI1JNpuAuugbD8ronkWnCUUbtsulOlPNo5Ydz+DgHKcnOB9xTNEHHcmw9R5jD6MDzW3hQXM37XSiP31sSn6QJTHmQa0rhKTLX6f8MNaEckBsuTh9jKqocw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ia/XWiqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC916C433F1;
+	Sat,  3 Feb 2024 04:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933535;
-	bh=OH2M3pwxAbICQE1LKU/+dWDZmMraTFjHpd6sk3gK0uM=;
+	s=korg; t=1706933779;
+	bh=mgmVB2ub7Q4L0qc1oGRtxYe2zRtVycHCnFVNSGj8Lvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yzjo7N3ZIEXcg32BlLLI6zwrRlQHRmfDZtzB9SLyy1/Z94sB55b+eMJ37BOTTyf2Z
-	 s8o7QppqkNiDRDm3uKRrl9/HyH5Gu8/9oNC1DqV9EaBCA7ldIuyl7OS3IufTbg5z0n
-	 y4WbN3EmcS6E808VTffAdkgG5sLR0AW1rpAkAPxA=
+	b=ia/XWiqWtseocnTGq2IJbmRTnaNBO9HjzpwKPcZOQs0qqzBfDUvsNt1vno3Y4BlPl
+	 2bu+TQN/Q6jlxKaS/tOVV/Z0fpTSAHZvlhNnF5x37FUIBXQQcfZnnvO69CSdBaGOzx
+	 C/FK6hG0VwFMFANYle9giyeJe3bI7TywqbxWn100=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Saxena <sumit.saxena@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/322] scsi: mpi3mr: Add PCI checks where SAS5116 diverges from SAS4116
+Subject: [PATCH 6.7 059/353] ext4: fix inconsistent between segment fstrim and full fstrim
 Date: Fri,  2 Feb 2024 20:02:57 -0800
-Message-ID: <20240203035401.751568174@linuxfoundation.org>
+Message-ID: <20240203035405.670795689@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Saxena <sumit.saxena@broadcom.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit c9260ff28ee561fca5f96425c9328a9698e8427b ]
+[ Upstream commit 68da4c44b994aea797eb9821acb3a4a36015293e ]
 
-Add PCI IDs checks for the cases where SAS5116 diverges from SAS4116 in
-behavior.
+Suppose we issue two FITRIM ioctls for ranges [0,15] and [16,31] with
+mininum length of trimmed range set to 8 blocks. If we have say a range of
+blocks 10-22 free, this range will not be trimmed because it straddles the
+boundary of the two FITRIM ranges and neither part is big enough. This is a
+bit surprising to some users that call FITRIM on smaller ranges of blocks
+to limit impact on the system. Also XFS trims all free space extents that
+overlap with the specified range so we are inconsistent among filesystems.
+Let's change ext4_try_to_trim_range() to consider for trimming the whole
+free space extent that straddles the end of specified range, not just the
+part of it within the range.
 
-Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
-Link: https://lore.kernel.org/r/20231123160132.4155-3-sumit.saxena@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231216010919.1995851-1-yebin10@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_fw.c | 3 ++-
- drivers/scsi/mpi3mr/mpi3mr_os.c | 5 ++++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ fs/ext4/mballoc.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-index f039f1d98647..0d148c39ebcc 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -1892,7 +1892,8 @@ static int mpi3mr_create_op_reply_q(struct mpi3mr_ioc *mrioc, u16 qidx)
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index ab023d709f72..8408318e1d32 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -6758,13 +6758,15 @@ static int ext4_try_to_trim_range(struct super_block *sb,
+ __acquires(ext4_group_lock_ptr(sb, e4b->bd_group))
+ __releases(ext4_group_lock_ptr(sb, e4b->bd_group))
+ {
+-	ext4_grpblk_t next, count, free_count;
++	ext4_grpblk_t next, count, free_count, last, origin_start;
+ 	bool set_trimmed = false;
+ 	void *bitmap;
  
- 	reply_qid = qidx + 1;
- 	op_reply_q->num_replies = MPI3MR_OP_REP_Q_QD;
--	if (!mrioc->pdev->revision)
-+	if ((mrioc->pdev->device == MPI3_MFGPAGE_DEVID_SAS4116) &&
-+		!mrioc->pdev->revision)
- 		op_reply_q->num_replies = MPI3MR_OP_REP_Q_QD4K;
- 	op_reply_q->ci = 0;
- 	op_reply_q->ephase = 1;
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
-index 5c50701aa3f7..80d71041086e 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_os.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
-@@ -5095,7 +5095,10 @@ mpi3mr_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		mpi3mr_init_drv_cmd(&mrioc->evtack_cmds[i],
- 				    MPI3MR_HOSTTAG_EVTACKCMD_MIN + i);
++	last = ext4_last_grp_cluster(sb, e4b->bd_group);
+ 	bitmap = e4b->bd_bitmap;
+-	if (start == 0 && max >= ext4_last_grp_cluster(sb, e4b->bd_group))
++	if (start == 0 && max >= last)
+ 		set_trimmed = true;
++	origin_start = start;
+ 	start = max(e4b->bd_info->bb_first_free, start);
+ 	count = 0;
+ 	free_count = 0;
+@@ -6773,7 +6775,10 @@ __releases(ext4_group_lock_ptr(sb, e4b->bd_group))
+ 		start = mb_find_next_zero_bit(bitmap, max + 1, start);
+ 		if (start > max)
+ 			break;
+-		next = mb_find_next_bit(bitmap, max + 1, start);
++
++		next = mb_find_next_bit(bitmap, last + 1, start);
++		if (origin_start == 0 && next >= last)
++			set_trimmed = true;
  
--	if (pdev->revision)
-+	if ((pdev->device == MPI3_MFGPAGE_DEVID_SAS4116) &&
-+		!pdev->revision)
-+		mrioc->enable_segqueue = false;
-+	else
- 		mrioc->enable_segqueue = true;
- 
- 	init_waitqueue_head(&mrioc->reset_waitq);
+ 		if ((next - start) >= minblocks) {
+ 			int ret = ext4_trim_extent(sb, start, next - start, e4b);
 -- 
 2.43.0
 
