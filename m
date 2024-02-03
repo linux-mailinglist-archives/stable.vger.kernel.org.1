@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-18580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D5B848349
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73874848217
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D6F81F242EB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 134831F235C7
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2343A1CF95;
-	Sat,  3 Feb 2024 04:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B59519477;
+	Sat,  3 Feb 2024 04:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANVWai02"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/IY0q+I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A5D171A4;
-	Sat,  3 Feb 2024 04:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286A912E46;
+	Sat,  3 Feb 2024 04:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933903; cv=none; b=Oq0bnusAdn7djELbqgnt/z10YtJ8lFOpv9TSJ3W1IAElJESCCUlEF1IXxLfQ70lDpFaO1fd5G3y4igf9d4Ns5O0MbErpWxh1cCpg9ofVI4yHgHDsyg0EuDnSOEax73uyo3q/aHE/Lg/J1rLjZkytFCeUiwvy3FJXF+WfosaP1jg=
+	t=1706933681; cv=none; b=dQcLkWHnWBuXABWkQyuBmUntj/haf4HSvHLRJ+gfZWot83V0QNgN0adKREPlGtgk4iH0rcCy1vCzwGuYV/yQQMrs0/30c+NgxFVeCtRPelTaPSaN7UP+ctfIQwXE+UZ/+tRnGsZGWJyWkLDd4eYU4RloV+BBe+H382kso05vAks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933903; c=relaxed/simple;
-	bh=g9lWkjE4t+2X5brtia5P4AknTEcblOsQIHw0Y3BHsWg=;
+	s=arc-20240116; t=1706933681; c=relaxed/simple;
+	bh=P4QTwk9cGpI4fsuG3r3kMldbnV+tVfBUTKRNlhw34Ks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jdT8eiu80h1nHme4ivp450DCwqKwkm/KppI1q+u0/khtoCcyBoIJJHIx9SMamc462K2FwPKXCxsbfJV4M6yuDknZpsj0F9XI9IDq9JzaQpnBY5k7+C1NxpYhyXqyLgo5sb2h+ilzi98KkSmGAdEqaMYTwEUJm0xg1jiIUOm2dtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ANVWai02; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0098C433F1;
-	Sat,  3 Feb 2024 04:18:23 +0000 (UTC)
+	 MIME-Version; b=Yq79gUDfHNGOLtBLR0YGbkRoTjYVz94+NwQ/9sJK9Pt4Yqv5dc4XY77SV3a5DyJOCDCQwsheJ4uj1Z6UkepQmKoXKxepWHcSXtQrn2+MWAdTsLcf18RLFT8cbdirkJGTMaEyT1CLXZtzKkK7ZdWJkHXtCxjCDwdxxNC574zZ9YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/IY0q+I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85041C43390;
+	Sat,  3 Feb 2024 04:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933903;
-	bh=g9lWkjE4t+2X5brtia5P4AknTEcblOsQIHw0Y3BHsWg=;
+	s=korg; t=1706933680;
+	bh=P4QTwk9cGpI4fsuG3r3kMldbnV+tVfBUTKRNlhw34Ks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ANVWai02Q+bVMb02E2G5A+Zd8P2+rACPc1ms0JwX7Jxbn60MrJsKppKpqw8xGM6n8
-	 zlLPnCw5DIhhWih21CPX2BwNS4VcSJmH+MffYQbxYJQconK/jBjQn3NCgtyU+0PamB
-	 2RJvIgfx1H3MIxtbkIaHSVwkXGTm24/MI8sJ3W+E=
+	b=i/IY0q+IePC/OxgIAAjBU0GfPQM5H2UyrswXfJFxcBhWfSEPh812KfZ1ONjMT9XKQ
+	 56CeEepLS0Kk2yLr+/xYU3eIZSpofcIdXCOe3+eVfSfKUk/w5QixZOn5wyZBmTmh8t
+	 souUs+m6UY/beJdYOppCr1Y9loAtJi3Xb6V1Lkgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Leo Yan <leo.yan@linaro.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 252/353] perf cs-etm: Bump minimum OpenCSD version to ensure a bugfix is present
-Date: Fri,  2 Feb 2024 20:06:10 -0800
-Message-ID: <20240203035411.706914415@linuxfoundation.org>
+Subject: [PATCH 6.6 274/322] selftests: net: add missing config for big tcp tests
+Date: Fri,  2 Feb 2024 20:06:11 -0800
+Message-ID: <20240203035407.957078100@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,60 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 2dbba30fd69b604802a9535b74bddb5bcca23793 ]
+[ Upstream commit fcf67d82b8b878bdd95145382be43927bce07ec6 ]
 
-Since commit d927ef5004ef ("perf cs-etm: Add exception level consistency
-check"), the exception that was added to Perf will be triggered unless
-the following bugfix from OpenCSD is present:
+The big_tcp test-case requires a few kernel knobs currently
+not specified in the net selftests config, causing the
+following failure:
 
- - _Version 1.2.1_:
-  - __Bugfix__:
-    ETM4x / ETE - output of context elements to client can in some
-    circumstances be delayed until after subsequent atoms have been
-    processed leading to incorrect memory decode access via the client
-    callbacks. Fixed to flush context elements immediately they are
-    committed.
+  # selftests: net: big_tcp.sh
+  # Error: Failed to load TC action module.
+  # We have an error talking to the kernel
+...
+  # Testing for BIG TCP:
+  # CLI GSO | GW GRO | GW GSO | SER GRO
+  # ./big_tcp.sh: line 107: test: !=: unary operator expected
+...
+  # on        on       on       on      : [FAIL_on_link1]
 
-Rather than remove the assert and silently fail, just increase the
-minimum version requirement to avoid hard to debug issues and
-regressions.
+Add the missing configs
 
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: James Clark <james.clark@arm.com>
-Tested-by: Leo Yan <leo.yan@linaro.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Link: https://lore.kernel.org/r/20230901133716.677499-1-james.clark@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 6bb382bcf742 ("selftests: add a selftest for big tcp")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://lore.kernel.org/all/21630ecea872fea13f071342ac64ef52a991a9b5.1706282943.git.pabeni@redhat.com/
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/build/feature/test-libopencsd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/config | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/build/feature/test-libopencsd.c b/tools/build/feature/test-libopencsd.c
-index eb6303ff446e..4cfcef9da3e4 100644
---- a/tools/build/feature/test-libopencsd.c
-+++ b/tools/build/feature/test-libopencsd.c
-@@ -4,9 +4,9 @@
- /*
-  * Check OpenCSD library version is sufficient to provide required features
-  */
--#define OCSD_MIN_VER ((1 << 16) | (1 << 8) | (1))
-+#define OCSD_MIN_VER ((1 << 16) | (2 << 8) | (1))
- #if !defined(OCSD_VER_NUM) || (OCSD_VER_NUM < OCSD_MIN_VER)
--#error "OpenCSD >= 1.1.1 is required"
-+#error "OpenCSD >= 1.2.1 is required"
- #endif
- 
- int main(void)
+diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
+index 19ff75051660..413ab9abcf1b 100644
+--- a/tools/testing/selftests/net/config
++++ b/tools/testing/selftests/net/config
+@@ -29,7 +29,9 @@ CONFIG_NF_NAT=m
+ CONFIG_IP6_NF_IPTABLES=m
+ CONFIG_IP_NF_IPTABLES=m
+ CONFIG_IP6_NF_NAT=m
++CONFIG_IP6_NF_RAW=m
+ CONFIG_IP_NF_NAT=m
++CONFIG_IP_NF_RAW=m
+ CONFIG_IPV6_GRE=m
+ CONFIG_IPV6_SEG6_LWTUNNEL=y
+ CONFIG_L2TP_ETH=m
+@@ -45,6 +47,8 @@ CONFIG_NF_TABLES=m
+ CONFIG_NF_TABLES_IPV6=y
+ CONFIG_NF_TABLES_IPV4=y
+ CONFIG_NFT_NAT=m
++CONFIG_NETFILTER_XT_MATCH_LENGTH=m
++CONFIG_NET_ACT_CT=m
+ CONFIG_NET_ACT_GACT=m
+ CONFIG_NET_CLS_BASIC=m
+ CONFIG_NET_CLS_U32=m
+@@ -55,6 +59,7 @@ CONFIG_NET_SCH_HTB=m
+ CONFIG_NET_SCH_FQ=m
+ CONFIG_NET_SCH_ETF=m
+ CONFIG_NET_SCH_NETEM=y
++CONFIG_NF_FLOW_TABLE=m
+ CONFIG_PSAMPLE=m
+ CONFIG_TCP_MD5SIG=y
+ CONFIG_TEST_BLACKHOLE_DEV=m
 -- 
 2.43.0
 
