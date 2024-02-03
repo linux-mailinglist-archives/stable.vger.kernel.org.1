@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC243848144
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B124848260
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B00D1F23247
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E6A81C24963
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C041CD03;
-	Sat,  3 Feb 2024 04:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EBA482FC;
+	Sat,  3 Feb 2024 04:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F45H/FaM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcwIZHb4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FB81CAA0;
-	Sat,  3 Feb 2024 04:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B894E48786;
+	Sat,  3 Feb 2024 04:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933525; cv=none; b=ne6GRgGDQsQYpy/gpdhI7Q4OwtzDkT81sqMIhO0JTkMjHb/v5fGM4zJ7O2tKf/Jf8Z7bwdoVfx78xyYR7u1fd4SB38YjG+X5M4GtvG/q48DiC+j4LoTbCpeozY1O+x5+8S/w6c+H1+J9mSqNXD+mTZ66pH8dsWjWVdKY/xXoeLk=
+	t=1706933733; cv=none; b=MIg45G0eyaDD5AT9Va8ZHZCn19ViOQnGpo4YQkn5uzgb+btdxXoVl2aOXmJmFr64T6psCFjzt1CMlxaROkeI3QuMhg+i/WmF2E9E2DMtz8zpcZEG+H7/SiQCr4hMkrjhcpV6Zhd9bfjPnEnrJdrBS+oLZ5XTLkfRKQSFruVOSvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933525; c=relaxed/simple;
-	bh=eDI1aOAZs5IJCGJAEW6A6jdfTtrd/+liDEabpjDgo0k=;
+	s=arc-20240116; t=1706933733; c=relaxed/simple;
+	bh=RjD9MTeZdwid756Ahi882o8sfCdm7zKjVdYpKGgdnVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SGBn7sbR/LhhJ4L1fLWSDOyQh3JQ3IMuq4JwLlZGuyxocu1vGGNfcw8G55Jr7HqlRqZk7kC4N6xKTHN8Zm51/KjLJWMdPD8gTHAg78GgwvbpSA/g2ZLtcPx85kkSFSm2CqdGwLreSxv8BkXcBLtb4FZV/autKigdy82Sp1nn/G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F45H/FaM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE91C433F1;
-	Sat,  3 Feb 2024 04:12:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SnZcAnaFjQtk05pWdPPCYCGPsE2qKONAX5yU62hQ8a2uHySWbWir0FNOlB+1Vhjxlx72UMf06HcD5izpGZlsIAt7TTrdPW5cKJxdRKEJPIXPBLancNro5GN6BFALssg0w5npoxv05Rx5RQPXINgTT33ylZFPkbfS336Ofhtbe4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dcwIZHb4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80132C433F1;
+	Sat,  3 Feb 2024 04:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933525;
-	bh=eDI1aOAZs5IJCGJAEW6A6jdfTtrd/+liDEabpjDgo0k=;
+	s=korg; t=1706933733;
+	bh=RjD9MTeZdwid756Ahi882o8sfCdm7zKjVdYpKGgdnVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F45H/FaMEyt9NOsgt8RkdOMje/e0LgGNCBFHBvhO/sbElUpf5t4DxRQOM1NCmuKT1
-	 oPh9hgqwJge9BHkmE+ZjMxg++aNgYBj5i921kxfOox1dGAhWu0aG8x3QQvEHiIPDyc
-	 vHMf5hOzEI6hw/kP+vnWX6Dq73USFnaKx+uy76oY=
+	b=dcwIZHb4PE1TWnz9wuy+tqXohfk/nLfrU2c06NbDmQb358tCIXjUDWUDgH4sb38y7
+	 XQNrc5Gr763UKcyZ/PFOYtneT9VRYVh39z5gqB1Gpg2OAQ4dWVGgtpoMDAUe1ncMc2
+	 a2fPPs42rxWhK5WN16I/B92yOJHFsyE1tK9Phe8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+553d90297e6d2f50dbc7@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 042/322] jfs: fix array-index-out-of-bounds in diNewExt
+	Prarit Bhargava <prarit@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 021/353] ACPI: extlog: fix NULL pointer dereference check
 Date: Fri,  2 Feb 2024 20:02:19 -0800
-Message-ID: <20240203035400.452394231@linuxfoundation.org>
+Message-ID: <20240203035404.413037823@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Prarit Bhargava <prarit@redhat.com>
 
-[ Upstream commit 49f9637aafa6e63ba686c13cb8549bf5e6920402 ]
+[ Upstream commit 72d9b9747e78979510e9aafdd32eb99c7aa30dd1 ]
 
-[Syz report]
-UBSAN: array-index-out-of-bounds in fs/jfs/jfs_imap.c:2360:2
-index -878706688 is out of range for type 'struct iagctl[128]'
-CPU: 1 PID: 5065 Comm: syz-executor282 Not tainted 6.7.0-rc4-syzkaller-00009-gbee0e7762ad2 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
- ubsan_epilogue lib/ubsan.c:217 [inline]
- __ubsan_handle_out_of_bounds+0x11c/0x150 lib/ubsan.c:348
- diNewExt+0x3cf3/0x4000 fs/jfs/jfs_imap.c:2360
- diAllocExt fs/jfs/jfs_imap.c:1949 [inline]
- diAllocAG+0xbe8/0x1e50 fs/jfs/jfs_imap.c:1666
- diAlloc+0x1d3/0x1760 fs/jfs/jfs_imap.c:1587
- ialloc+0x8f/0x900 fs/jfs/jfs_inode.c:56
- jfs_mkdir+0x1c5/0xb90 fs/jfs/namei.c:225
- vfs_mkdir+0x2f1/0x4b0 fs/namei.c:4106
- do_mkdirat+0x264/0x3a0 fs/namei.c:4129
- __do_sys_mkdir fs/namei.c:4149 [inline]
- __se_sys_mkdir fs/namei.c:4147 [inline]
- __x64_sys_mkdir+0x6e/0x80 fs/namei.c:4147
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x45/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-RIP: 0033:0x7fcb7e6a0b57
-Code: ff ff 77 07 31 c0 c3 0f 1f 40 00 48 c7 c2 b8 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 b8 53 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffd83023038 EFLAGS: 00000286 ORIG_RAX: 0000000000000053
-RAX: ffffffffffffffda RBX: 00000000ffffffff RCX: 00007fcb7e6a0b57
-RDX: 00000000000a1020 RSI: 00000000000001ff RDI: 0000000020000140
-RBP: 0000000020000140 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000286 R12: 00007ffd830230d0
-R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+The gcc plugin -fanalyzer [1] tries to detect various
+patterns of incorrect behaviour.  The tool reports:
 
-[Analysis]
-When the agstart is too large, it can cause agno overflow.
+drivers/acpi/acpi_extlog.c: In function ‘extlog_exit’:
+drivers/acpi/acpi_extlog.c:307:12: warning: check of ‘extlog_l1_addr’ for NULL after already dereferencing it [-Wanalyzer-deref-before-check]
+    |
+    |  306 |         ((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
+    |      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~
+    |      |                                                  |
+    |      |                                                  (1) pointer ‘extlog_l1_addr’ is dereferenced here
+    |  307 |         if (extlog_l1_addr)
+    |      |            ~
+    |      |            |
+    |      |            (2) pointer ‘extlog_l1_addr’ is checked for NULL here but it was already dereferenced at (1)
+    |
 
-[Fix]
-After obtaining agno, if the value is invalid, exit the subsequent process.
+Fix the NULL pointer dereference check in extlog_exit().
 
-Reported-and-tested-by: syzbot+553d90297e6d2f50dbc7@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://gcc.gnu.org/onlinedocs/gcc-10.1.0/gcc/Static-Analyzer-Options.html # [1]
 
-Modified the test from agno > MAXAG to agno >= MAXAG based on linux-next
-report by kernel test robot (Dan Carpenter).
-
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Prarit Bhargava <prarit@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_imap.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/acpi/acpi_extlog.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index 1b267eec3f36..eeedf606cf9d 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -2179,6 +2179,9 @@ static int diNewExt(struct inomap * imap, struct iag * iagp, int extno)
- 	/* get the ag and iag numbers for this iag.
- 	 */
- 	agno = BLKTOAG(le64_to_cpu(iagp->agstart), sbi);
-+	if (agno >= MAXAG || agno < 0)
-+		return -EIO;
-+
- 	iagno = le32_to_cpu(iagp->iagnum);
- 
- 	/* check if this is the last free extent within the
+diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
+index 71e8d4e7a36c..ca87a0939135 100644
+--- a/drivers/acpi/acpi_extlog.c
++++ b/drivers/acpi/acpi_extlog.c
+@@ -308,9 +308,10 @@ static int __init extlog_init(void)
+ static void __exit extlog_exit(void)
+ {
+ 	mce_unregister_decode_chain(&extlog_mce_dec);
+-	((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
+-	if (extlog_l1_addr)
++	if (extlog_l1_addr) {
++		((struct extlog_l1_head *)extlog_l1_addr)->flags &= ~FLAG_OS_OPTIN;
+ 		acpi_os_unmap_iomem(extlog_l1_addr, l1_size);
++	}
+ 	if (elog_addr)
+ 		acpi_os_unmap_iomem(elog_addr, elog_size);
+ 	release_mem_region(elog_base, elog_size);
 -- 
 2.43.0
 
