@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC1C8482FA
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 023F18481BB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ED691F23E6D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 202B91C2083C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B24168A4;
-	Sat,  3 Feb 2024 04:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45A03A1DE;
+	Sat,  3 Feb 2024 04:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xDgB4cqN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OspjwacD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CC51CA81;
-	Sat,  3 Feb 2024 04:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E2CF9EB;
+	Sat,  3 Feb 2024 04:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933846; cv=none; b=fJefIZYh2IfNnWk9BiSA/rmvY6CycMVMfPZbxu+DE7Qaz4i3uJiO36t1Xwrd5hu2YWbaAujIikxNIRqKCPqbaivGAK7mBsCkiWLPmRuIXxBZfR9TGHJkLbZb2B7P/5DagwVHnpRP56sLFv5FgPTilBQm1rD+uZEn3v9jLRecuvw=
+	t=1706933612; cv=none; b=cCtp20ZJuyuieAOJwOaEh3vQMeSGmpEBedDtL9b95yHv3or2QRvUSyLUVJugyWIsKQlwaugIP8Svcrr8iTLw9Rgk1p+/ruzOQHTlIetTyhFQR+mB7/eZsNiKlInibwXAlbJ/9pn8xunmeOiVulclAZrwAeLVir4ZF88NZ4vZsSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933846; c=relaxed/simple;
-	bh=3LQWS+dVRmgHEUkNnnq5Bb4fWxtxDJJcZgW0jDkm6AA=;
+	s=arc-20240116; t=1706933612; c=relaxed/simple;
+	bh=5M5rdUzqrNafeL0Xv/aRY2B/JNUhqIcoQ+68VB42w1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QhMvkH1xw3YgtkT6p4+mSVhSnVxuECxJgIu3BiCVDcJt+KWzxtCeH9w3QJwSGi4IMIOeXF/6CLPfvwDFNtreFotaCm7Rq2qkzKKRDqswj+rXZraBlTSRV5wQxoyIC0HLDzk/uSjcjqB7jiVOhaL4G0BJ7egLUDhngfpRn/m/r6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xDgB4cqN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 565CFC433C7;
-	Sat,  3 Feb 2024 04:17:26 +0000 (UTC)
+	 MIME-Version; b=gCHOHd0Y+EwJzRWl0e0BJE1u+lyNbC8+RyAKxNVQpR/L5pRd8slmf2fOvNEifObYxABR40gQFawMBVkaZtFkr4+So0d03TiExNnN/Crvx+u/15CSRBUZkEF993JW5Z9YFPDREKKk68RFaAipxiCYNlkyFtTnftUHJXxwF41FcUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OspjwacD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC37C43399;
+	Sat,  3 Feb 2024 04:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933846;
-	bh=3LQWS+dVRmgHEUkNnnq5Bb4fWxtxDJJcZgW0jDkm6AA=;
+	s=korg; t=1706933612;
+	bh=5M5rdUzqrNafeL0Xv/aRY2B/JNUhqIcoQ+68VB42w1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xDgB4cqNRBGv8EoSmeHJ+L/uImBhxMyis3PxeGeOVEeboBXfzwf/StHSyBzC4FhCt
-	 lABWpeLvj7l4SCVnx0YPW5KrDJWVrwvhR0OwNYYoe17AHb/hZ/N7zqPm/6HnsuAe3O
-	 3i7pnAxSQ+u101RB6w2CR/IccVjhXVPbe7LDsrkg=
+	b=OspjwacDXopQJclgIqbIFEiMx1WQxzjITFYB+Fd0GKKEn/i3a8hKKqoDo7UPui+mx
+	 zsiWd3jKq8TFin7BVByyLOyCBN1FZUTvsWeL0HAuor7JuYt6mlzk4zRsUZZINVBSTK
+	 ipZlhsbiko3jk6l6ZwHNjoxMpv7/JthsNX3cr4TU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mao Jinlong <quic_jinlmao@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 139/353] arm64: dts: qcom: Fix coresight warnings in in-ports and out-ports
+Subject: [PATCH 6.6 160/322] fast_dput(): handle underflows gracefully
 Date: Fri,  2 Feb 2024 20:04:17 -0800
-Message-ID: <20240203035408.105875038@linuxfoundation.org>
+Message-ID: <20240203035404.394085859@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,128 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mao Jinlong <quic_jinlmao@quicinc.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit bdb6339fd46b8702ea7411b0b414587b86a40562 ]
+[ Upstream commit 504e08cebe1d4e1efe25f915234f646e74a364a8 ]
 
-When a node is only one in port or one out port, address-cells and
-size-cells are not required in in-ports and out-ports. And the number
-and reg of the port need to be removed.
+If refcount is less than 1, we should just warn, unlock dentry and
+return true, so that the caller doesn't try to do anything else.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Mao Jinlong <quic_jinlmao@quicinc.com>
-Link: https://lore.kernel.org/r/20231210072633.4243-5-quic_jinlmao@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Taking care of that leaves the rest of "lockref_put_return() has
+failed" case equivalent to "decrement refcount and rejoin the
+normal slow path after the point where we grab ->d_lock".
+
+NOTE: lockref_put_return() is strictly a fastpath thing - unlike
+the rest of lockref primitives, it does not contain a fallback.
+Caller (and it looks like fast_dput() is the only legitimate one
+in the entire kernel) has to do that itself.  Reasons for
+lockref_put_return() failures:
+	* ->d_lock held by somebody
+	* refcount <= 0
+	* ... or an architecture not supporting lockref use of
+cmpxchg - sparc, anything non-SMP, config with spinlock debugging...
+
+We could add a fallback, but it would be a clumsy API - we'd have
+to distinguish between:
+	(1) refcount > 1 - decremented, lock not held on return
+	(2) refcount < 1 - left alone, probably no sense to hold the lock
+	(3) refcount is 1, no cmphxcg - decremented, lock held on return
+	(4) refcount is 1, cmphxcg supported - decremented, lock *NOT* held
+	    on return.
+We want to return with no lock held in case (4); that's the whole point of that
+thing.  We very much do not want to have the fallback in case (3) return without
+a lock, since the caller might have to retake it in that case.
+So it wouldn't be more convenient than doing the fallback in the caller and
+it would be very easy to screw up, especially since the test coverage would
+suck - no way to test (3) and (4) on the same kernel build.
+
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi |  5 +----
- arch/arm64/boot/dts/qcom/sm8150.dtsi |  5 +----
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 24 ++++--------------------
- 3 files changed, 6 insertions(+), 28 deletions(-)
+ fs/dcache.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index 91169e438b46..9e594d21ecd8 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -3545,11 +3545,8 @@
- 			};
+diff --git a/fs/dcache.c b/fs/dcache.c
+index 25ac74d30bff..9ae808fba517 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -787,12 +787,12 @@ static inline bool fast_dput(struct dentry *dentry)
+ 	 */
+ 	if (unlikely(ret < 0)) {
+ 		spin_lock(&dentry->d_lock);
+-		if (dentry->d_lockref.count > 1) {
+-			dentry->d_lockref.count--;
++		if (WARN_ON_ONCE(dentry->d_lockref.count <= 0)) {
+ 			spin_unlock(&dentry->d_lock);
+ 			return true;
+ 		}
+-		return false;
++		dentry->d_lockref.count--;
++		goto locked;
+ 	}
  
- 			in-ports {
--				#address-cells = <1>;
--				#size-cells = <0>;
- 
--				port@1 {
--					reg = <1>;
-+				port {
- 					etf_in: endpoint {
- 						remote-endpoint =
- 						  <&merge_funnel_out>;
-diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-index e302eb7821af..3221478663ac 100644
---- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-@@ -2957,11 +2957,8 @@
- 			};
- 
- 			in-ports {
--				#address-cells = <1>;
--				#size-cells = <0>;
- 
--				port@1 {
--					reg = <1>;
-+				port {
- 					replicator1_in: endpoint {
- 						remote-endpoint = <&replicator_out1>;
- 					};
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index 72db75ca7731..d59a99ca872c 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -3095,11 +3095,8 @@
- 			clock-names = "apb_pclk";
- 
- 			out-ports {
--				#address-cells = <1>;
--				#size-cells = <0>;
- 
--				port@0 {
--					reg = <0>;
-+				port {
- 					tpda_out_funnel_qatb: endpoint {
- 						remote-endpoint = <&funnel_qatb_in_tpda>;
- 					};
-@@ -3142,11 +3139,7 @@
- 			};
- 
- 			in-ports {
--				#address-cells = <1>;
--				#size-cells = <0>;
--
--				port@0 {
--					reg = <0>;
-+				port {
- 					funnel_qatb_in_tpda: endpoint {
- 						remote-endpoint = <&tpda_out_funnel_qatb>;
- 					};
-@@ -3355,11 +3348,8 @@
- 			};
- 
- 			in-ports {
--				#address-cells = <1>;
--				#size-cells = <0>;
- 
--				port@0 {
--					reg = <0>;
-+				port {
- 					etf_in_funnel_swao_out: endpoint {
- 						remote-endpoint = <&funnel_swao_out_etf>;
- 					};
-@@ -3443,8 +3433,6 @@
- 			clock-names = "apb_pclk";
- 
- 			out-ports {
--				#address-cells = <1>;
--				#size-cells = <0>;
- 				port {
- 					tpdm_mm_out_tpda9: endpoint {
- 						remote-endpoint = <&tpda_9_in_tpdm_mm>;
-@@ -3710,11 +3698,7 @@
- 			};
- 
- 			in-ports {
--				#address-cells = <1>;
--				#size-cells = <0>;
--
--				port@0 {
--					reg = <0>;
-+				port {
- 					funnel_apss_merg_in_funnel_apss: endpoint {
- 					remote-endpoint = <&funnel_apss_out_funnel_apss_merg>;
- 					};
+ 	/*
+@@ -850,6 +850,7 @@ static inline bool fast_dput(struct dentry *dentry)
+ 	 * else could have killed it and marked it dead. Either way, we
+ 	 * don't need to do anything else.
+ 	 */
++locked:
+ 	if (dentry->d_lockref.count) {
+ 		spin_unlock(&dentry->d_lock);
+ 		return true;
 -- 
 2.43.0
 
