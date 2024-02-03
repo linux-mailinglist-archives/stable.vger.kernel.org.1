@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-18558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD488848333
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C978480A4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 781C5284E4B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8ACA1F211D9
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C228A51025;
-	Sat,  3 Feb 2024 04:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DF7175BB;
+	Sat,  3 Feb 2024 04:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXCsc6qZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCEan9hT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3C851012;
-	Sat,  3 Feb 2024 04:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81221175B1;
+	Sat,  3 Feb 2024 04:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933887; cv=none; b=bctgxXM0s6lsblpx+b3h5XFLmfxIQUiFaB182Nq57P8LsDFZBezrC5YnAPanqEiayT+QpaEq617PPsAwo01ExVUyCYmyiVvgvviOPBWwnF+D1jh0NOeI6J1O0P6Nv4Dxy9H0V38oypkkaI+IrYFpgoJpo9pqgzQ9ShXT0XCb3TA=
+	t=1706933414; cv=none; b=oHirwoR0z7LPFI8dnb4aE69blsiUbeqcB3IU+eiJVU21f54BtecJ3JR5Re1ZTFm2jYPGOY5k1P85N7DBe66YPukaG1Q8V8GG6c31NkEH9fB6ZhS3NiqHWTot/6ZfZfxpyM2asiY2mmBchRug/5Y+aLAjIc9pyO3YBRQxuezSOiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933887; c=relaxed/simple;
-	bh=RCPlsWLsE/gYb+azpXh/zMz7KQYcIKRyZNtlRWpI+2c=;
+	s=arc-20240116; t=1706933414; c=relaxed/simple;
+	bh=9ID9PSSoOfU/TFNaIqPuvJXB/v2V3vyO5t7SkJx9QeQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4JsNadTYxKM7FnaDWVq7gFHuJugFPST7sKPElHxrrXZiX0TmTbF+WvKkkDqeMED9GdVWRvZW1Res4pZQWc74+eLPMyw0u+Um+Z404QhqpDOco5+lVekMrAhmxn4xUDJW9CEtkvhP+TQWs0dbCmBrBuf0TL2LFoSmlFQITVs0gQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXCsc6qZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AF3C433F1;
-	Sat,  3 Feb 2024 04:18:07 +0000 (UTC)
+	 MIME-Version; b=HjRmCFJdFsQQtSKQ+f4TDdwYZGmHxXJN+yi5O/+ZN5tLB007JddhWRUT6TXc++5HQiacLZaqjhnWjqHN9Bp/4OyvbI1XUpblPVix6LL6KkzoyPyaoGJyKnRBjVm6QnHprCCyeu6CB+BIqsn5ITp+YlAk5NVvzI7ffHp+HLgUnSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCEan9hT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1D7C43390;
+	Sat,  3 Feb 2024 04:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933887;
-	bh=RCPlsWLsE/gYb+azpXh/zMz7KQYcIKRyZNtlRWpI+2c=;
+	s=korg; t=1706933414;
+	bh=9ID9PSSoOfU/TFNaIqPuvJXB/v2V3vyO5t7SkJx9QeQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UXCsc6qZbcZZ52IyRdqtI51lbFG1XawIxk7SSOMRm2DgcuK0XVt26Cth1mPzv9th4
-	 ZNjmibDL7TVD0TuJa7OqtlyS3gKGLe+5g0EIcx4c8dpSo/CCXFquUC2sMJLCUxpOXs
-	 vevXdxqyKvTx9k6smOIMhlAGT7d/S4Mh/BbixPIU=
+	b=LCEan9hTWw4N7FlxNheAJxaO7IpCkMa4sZOJg/YdTvuKeSJOtuTWpgt4UC0L1co2A
+	 hRkCgN7gFFrJQioQzp3Dx2VLxa/busdH5mGnB48Ckg6LpW+54KQrXOWuGC2aqT/HLy
+	 w3FavhYnDPZdV7M1b36yOOAg9nke0nS+ZWePALnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Adam Ford <aford173@gmail.com>
-Subject: [PATCH 6.7 192/353] media: rkisp1: Store IRQ lines
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 137/219] clk: mmp: pxa168: Fix memory leak in pxa168_clk_init()
 Date: Fri,  2 Feb 2024 20:05:10 -0800
-Message-ID: <20240203035409.748330011@linuxfoundation.org>
+Message-ID: <20240203035336.701663665@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,128 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit 0753874617de883c6d4da903142f334f76a75d70 ]
+[ Upstream commit 2fbabea626b6467eb4e6c4cb7a16523da12e43b4 ]
 
-Store the IRQ lines used by the driver for easy access. These are needed
-in future patches which fix IRQ race issues.
+In cases where mapping of mpmu/apmu/apbc registers fails, the code path
+does not handle the failure gracefully, potentially leading to a memory
+leak. This fix ensures proper cleanup by freeing the allocated memory
+for 'pxa_unit' before returning.
 
-Link: https://lore.kernel.org/r/20231207-rkisp-irq-fix-v3-3-358a2c871a3c@ideasonboard.com
-
-Tested-by: Adam Ford <aford173@gmail.com>  #imx8mp-beacon
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Link: https://lore.kernel.org/r/20231210175232.3414584-1-visitorckw@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/rockchip/rkisp1/rkisp1-common.h    | 11 ++++++++++-
- .../media/platform/rockchip/rkisp1/rkisp1-dev.c | 17 +++++++++++++----
- 2 files changed, 23 insertions(+), 5 deletions(-)
+ drivers/clk/mmp/clk-of-pxa168.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-common.h b/drivers/media/platform/rockchip/rkisp1/rkisp1-common.h
-index 1e7cea1bea5e..2d7f06281c39 100644
---- a/drivers/media/platform/rockchip/rkisp1/rkisp1-common.h
-+++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-common.h
-@@ -61,6 +61,14 @@ struct dentry;
- 						 RKISP1_CIF_ISP_EXP_END |	\
- 						 RKISP1_CIF_ISP_HIST_MEASURE_RDY)
+diff --git a/drivers/clk/mmp/clk-of-pxa168.c b/drivers/clk/mmp/clk-of-pxa168.c
+index 130d1a723879..cb0ebbd82038 100644
+--- a/drivers/clk/mmp/clk-of-pxa168.c
++++ b/drivers/clk/mmp/clk-of-pxa168.c
+@@ -306,18 +306,21 @@ static void __init pxa168_clk_init(struct device_node *np)
+ 	pxa_unit->mpmu_base = of_iomap(np, 0);
+ 	if (!pxa_unit->mpmu_base) {
+ 		pr_err("failed to map mpmu registers\n");
++		kfree(pxa_unit);
+ 		return;
+ 	}
  
-+/* IRQ lines */
-+enum rkisp1_irq_line {
-+	RKISP1_IRQ_ISP = 0,
-+	RKISP1_IRQ_MI,
-+	RKISP1_IRQ_MIPI,
-+	RKISP1_NUM_IRQS,
-+};
-+
- /* enum for the resizer pads */
- enum rkisp1_rsz_pad {
- 	RKISP1_RSZ_PAD_SINK,
-@@ -423,7 +431,6 @@ struct rkisp1_debug {
-  * struct rkisp1_device - ISP platform device
-  *
-  * @base_addr:	   base register address
-- * @irq:	   the irq number
-  * @dev:	   a pointer to the struct device
-  * @clk_size:	   number of clocks
-  * @clks:	   array of clocks
-@@ -441,6 +448,7 @@ struct rkisp1_debug {
-  * @stream_lock:   serializes {start/stop}_streaming callbacks between the capture devices.
-  * @debug:	   debug params to be exposed on debugfs
-  * @info:	   version-specific ISP information
-+ * @irqs:          IRQ line numbers
-  */
- struct rkisp1_device {
- 	void __iomem *base_addr;
-@@ -461,6 +469,7 @@ struct rkisp1_device {
- 	struct mutex stream_lock; /* serialize {start/stop}_streaming cb between capture devices */
- 	struct rkisp1_debug debug;
- 	const struct rkisp1_info *info;
-+	int irqs[RKISP1_NUM_IRQS];
- };
+ 	pxa_unit->apmu_base = of_iomap(np, 1);
+ 	if (!pxa_unit->apmu_base) {
+ 		pr_err("failed to map apmu registers\n");
++		kfree(pxa_unit);
+ 		return;
+ 	}
  
- /*
-diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-index 7b8a361d4c4a..f96f821a7b50 100644
---- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-+++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-@@ -114,6 +114,7 @@
- struct rkisp1_isr_data {
- 	const char *name;
- 	irqreturn_t (*isr)(int irq, void *ctx);
-+	u32 line_mask;
- };
+ 	pxa_unit->apbc_base = of_iomap(np, 2);
+ 	if (!pxa_unit->apbc_base) {
+ 		pr_err("failed to map apbc registers\n");
++		kfree(pxa_unit);
+ 		return;
+ 	}
  
- /* ----------------------------------------------------------------------------
-@@ -471,9 +472,9 @@ static const char * const px30_isp_clks[] = {
- };
- 
- static const struct rkisp1_isr_data px30_isp_isrs[] = {
--	{ "isp", rkisp1_isp_isr },
--	{ "mi", rkisp1_capture_isr },
--	{ "mipi", rkisp1_csi_isr },
-+	{ "isp", rkisp1_isp_isr, BIT(RKISP1_IRQ_ISP) },
-+	{ "mi", rkisp1_capture_isr, BIT(RKISP1_IRQ_MI) },
-+	{ "mipi", rkisp1_csi_isr, BIT(RKISP1_IRQ_MIPI) },
- };
- 
- static const struct rkisp1_info px30_isp_info = {
-@@ -492,7 +493,7 @@ static const char * const rk3399_isp_clks[] = {
- };
- 
- static const struct rkisp1_isr_data rk3399_isp_isrs[] = {
--	{ NULL, rkisp1_isr },
-+	{ NULL, rkisp1_isr, BIT(RKISP1_IRQ_ISP) | BIT(RKISP1_IRQ_MI) | BIT(RKISP1_IRQ_MIPI) },
- };
- 
- static const struct rkisp1_info rk3399_isp_info = {
-@@ -543,6 +544,9 @@ static int rkisp1_probe(struct platform_device *pdev)
- 	if (IS_ERR(rkisp1->base_addr))
- 		return PTR_ERR(rkisp1->base_addr);
- 
-+	for (unsigned int il = 0; il < ARRAY_SIZE(rkisp1->irqs); ++il)
-+		rkisp1->irqs[il] = -1;
-+
- 	for (i = 0; i < info->isr_size; i++) {
- 		irq = info->isrs[i].name
- 		    ? platform_get_irq_byname(pdev, info->isrs[i].name)
-@@ -550,6 +554,11 @@ static int rkisp1_probe(struct platform_device *pdev)
- 		if (irq < 0)
- 			return irq;
- 
-+		for (unsigned int il = 0; il < ARRAY_SIZE(rkisp1->irqs); ++il) {
-+			if (info->isrs[i].line_mask & BIT(il))
-+				rkisp1->irqs[il] = irq;
-+		}
-+
- 		ret = devm_request_irq(dev, irq, info->isrs[i].isr, 0,
- 				       dev_driver_string(dev), dev);
- 		if (ret) {
 -- 
 2.43.0
 
