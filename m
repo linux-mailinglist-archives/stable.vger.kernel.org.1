@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-18237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126638481ED
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C78038480B8
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C39EF28259D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5993A1F21F1B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54663433B9;
-	Sat,  3 Feb 2024 04:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200A511CBE;
+	Sat,  3 Feb 2024 04:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUriiMmI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1uIfW5j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1334112B7B;
-	Sat,  3 Feb 2024 04:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40C0125C4;
+	Sat,  3 Feb 2024 04:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933649; cv=none; b=aRwgO8Xhp37PXN5kwD/RbMWro2frivurUj39DWOQXySgVksSxYGL51HfP6b2k9DHmvSQHE7+BaLZT7pj2KMHoqGTjwru5w4pwfudrWUXwJEq1gb7I5GOTXQL5USDV2wY5kEivBzAn/0Fo+rfb96UCFF5FOK30O6Sv22U6QABHts=
+	t=1706933428; cv=none; b=Uu3qLvL+od9iB/bu+0G88fC+47X8VsZNYTwVKqyOFBJVG5ZUCUKr5zdSgM4QJh5odtADKHs1/yEE1Dcydd9CEwNbjK/vcmpcCPpLbcceAEdxKzyv1HJyekXaeMp94eUUJt5bO4oM+tU/QTv3r+hMnNgytOTrwfODfUNI/XHUoPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933649; c=relaxed/simple;
-	bh=wiM2SHmmWymIKCPtjlfvnOmizJ+DscnW2/AsqXHDfuY=;
+	s=arc-20240116; t=1706933428; c=relaxed/simple;
+	bh=7fePzX+zl5ebI+Sf2gTKMcHZX4vXjX7p1M4GbpoiaOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PUYVSVKhYPkNkDrkChKR5jzk0kaG9LZulqbCM5Q9MFaGqUbW3MuMjt12+cO7ooSjb2wncA8OcvKfclnGUHl3QfvXh4GqtSigK0tKL2wwLc4Cow6UoLzA6pwrMvLvJvbMB6ZpB5xj4P7owMgS2+RZbueMHBchp/nC8zsqJT0Z4C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUriiMmI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D068FC433F1;
-	Sat,  3 Feb 2024 04:14:08 +0000 (UTC)
+	 MIME-Version; b=YJdIWvcjPegeNWx2uwz+HiGzYd0JYRoitAheorv+5a2wezEmxQrOO0tj5SLv1xEmwG4iOCPbRkFsE9A+7js+4P0gG+vf0bhGF9SGVAB5sy4Gxe33zE2Xm85stNRPNHf1wmI6NoE/svy9GRXV9d9UfjFLlLFHUKxs5mv/j7d9/fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1uIfW5j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E168C43390;
+	Sat,  3 Feb 2024 04:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933648;
-	bh=wiM2SHmmWymIKCPtjlfvnOmizJ+DscnW2/AsqXHDfuY=;
+	s=korg; t=1706933428;
+	bh=7fePzX+zl5ebI+Sf2gTKMcHZX4vXjX7p1M4GbpoiaOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cUriiMmI8CIHUKSkehws7j76hTSW+L/FJvrao57X13M1YiXumohJ66y5RvcpDSGL0
-	 UMXHyNfHhVq/Hing7EAmvYHoh391REUXgLBbQL63vsKZT0+sb892xfXsRxf1HgpqId
-	 RtskJa9daP3kKn9hCHtUhNVQKigg7xIk2KAgAfgo=
+	b=Z1uIfW5jh+Nd8tysanVEZGpkvnHcxrfRfvStulVyqrDxrz5GWAdnwNlXO8/jxeoKj
+	 v1bX8LtmKTWznWlKhwnLCm2DvkY9sZ03f7KD+vUQkebfKNkvnFGTsba3tUjefGOdEG
+	 lisU836NuRXB1WjWpZBTBdJlMn6TRfZRQq44KkUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuen-Han Tsai <khtsai@google.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Huang Rui <ray.huang@amd.com>,
+	Vicki Pfau <vi@endrift.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 232/322] xhci: fix possible null pointer deref during xhci urb enqueue
+Subject: [PATCH 6.1 156/219] PCI: Only override AMD USB controller if required
 Date: Fri,  2 Feb 2024 20:05:29 -0800
-Message-ID: <20240203035406.695733896@linuxfoundation.org>
+Message-ID: <20240203035338.653418450@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-[ Upstream commit e2e2aacf042f52854c92775b7800ba668e0bdfe4 ]
+[ Upstream commit e585a37e5061f6d5060517aed1ca4ccb2e56a34c ]
 
-There is a short gap between urb being submitted and actually added to the
-endpoint queue (linked). If the device is disconnected during this time
-then usb core is not yet aware of the pending urb, and device may be freed
-just before xhci_urq_enqueue() continues, dereferencing the freed device.
+By running a Van Gogh device (Steam Deck), the following message
+was noticed in the kernel log:
 
-Freeing the device is protected by the xhci spinlock, so make sure we take
-and keep the lock while checking that device exists, dereference it, and
-add the urb to the queue.
+  pci 0000:04:00.3: PCI class overridden (0x0c03fe -> 0x0c03fe) so dwc3 driver can claim this instead of xhci
 
-Remove the unnecessary URB check, usb core checks it before calling
-xhci_urb_enqueue()
+Effectively this means the quirk executed but changed nothing, since the
+class of this device was already the proper one (likely adjusted by newer
+firmware versions).
 
-Suggested-by: Kuen-Han Tsai <khtsai@google.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20231201150647.1307406-20-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Check and perform the override only if necessary.
+
+Link: https://lore.kernel.org/r/20231120160531.361552-1-gpiccoli@igalia.com
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: Vicki Pfau <vi@endrift.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci.c | 40 +++++++++++++++++++++++-----------------
- 1 file changed, 23 insertions(+), 17 deletions(-)
+ drivers/pci/quirks.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 132b76fa7ca6..e39c5ba9b7c7 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -1498,24 +1498,7 @@ static int xhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
- 	struct urb_priv	*urb_priv;
- 	int num_tds;
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 030c8e665757..51d634fbdfb8 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -607,10 +607,13 @@ static void quirk_amd_dwc_class(struct pci_dev *pdev)
+ {
+ 	u32 class = pdev->class;
  
--	if (!urb)
--		return -EINVAL;
--	ret = xhci_check_args(hcd, urb->dev, urb->ep,
--					true, true, __func__);
--	if (ret <= 0)
--		return ret ? ret : -EINVAL;
--
--	slot_id = urb->dev->slot_id;
- 	ep_index = xhci_get_endpoint_index(&urb->ep->desc);
--	ep_state = &xhci->devs[slot_id]->eps[ep_index].ep_state;
--
--	if (!HCD_HW_ACCESSIBLE(hcd))
--		return -ESHUTDOWN;
--
--	if (xhci->devs[slot_id]->flags & VDEV_PORT_ERROR) {
--		xhci_dbg(xhci, "Can't queue urb, port error, link inactive\n");
--		return -ENODEV;
--	}
- 
- 	if (usb_endpoint_xfer_isoc(&urb->ep->desc))
- 		num_tds = urb->number_of_packets;
-@@ -1554,12 +1537,35 @@ static int xhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
- 
- 	spin_lock_irqsave(&xhci->lock, flags);
- 
-+	ret = xhci_check_args(hcd, urb->dev, urb->ep,
-+			      true, true, __func__);
-+	if (ret <= 0) {
-+		ret = ret ? ret : -EINVAL;
-+		goto free_priv;
+-	/* Use "USB Device (not host controller)" class */
+-	pdev->class = PCI_CLASS_SERIAL_USB_DEVICE;
+-	pci_info(pdev, "PCI class overridden (%#08x -> %#08x) so dwc3 driver can claim this instead of xhci\n",
+-		 class, pdev->class);
++	if (class != PCI_CLASS_SERIAL_USB_DEVICE) {
++		/* Use "USB Device (not host controller)" class */
++		pdev->class = PCI_CLASS_SERIAL_USB_DEVICE;
++		pci_info(pdev,
++			"PCI class overridden (%#08x -> %#08x) so dwc3 driver can claim this instead of xhci\n",
++			class, pdev->class);
 +	}
-+
-+	slot_id = urb->dev->slot_id;
-+
-+	if (!HCD_HW_ACCESSIBLE(hcd)) {
-+		ret = -ESHUTDOWN;
-+		goto free_priv;
-+	}
-+
-+	if (xhci->devs[slot_id]->flags & VDEV_PORT_ERROR) {
-+		xhci_dbg(xhci, "Can't queue urb, port error, link inactive\n");
-+		ret = -ENODEV;
-+		goto free_priv;
-+	}
-+
- 	if (xhci->xhc_state & XHCI_STATE_DYING) {
- 		xhci_dbg(xhci, "Ep 0x%x: URB %p submitted for non-responsive xHCI host.\n",
- 			 urb->ep->desc.bEndpointAddress, urb);
- 		ret = -ESHUTDOWN;
- 		goto free_priv;
- 	}
-+
-+	ep_state = &xhci->devs[slot_id]->eps[ep_index].ep_state;
-+
- 	if (*ep_state & (EP_GETTING_STREAMS | EP_GETTING_NO_STREAMS)) {
- 		xhci_warn(xhci, "WARN: Can't enqueue URB, ep in streams transition state %x\n",
- 			  *ep_state);
+ }
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_NL_USB,
+ 		quirk_amd_dwc_class);
 -- 
 2.43.0
 
