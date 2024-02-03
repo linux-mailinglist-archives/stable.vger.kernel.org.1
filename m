@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-18185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06D858481B7
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A37848083
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6DA9282401
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E698B28BED7
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2EBA1805A;
-	Sat,  3 Feb 2024 04:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9371078B;
+	Sat,  3 Feb 2024 04:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjbEW45R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zphSN89/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29C239877;
-	Sat,  3 Feb 2024 04:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5ADFC11;
+	Sat,  3 Feb 2024 04:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933609; cv=none; b=emmvNhSTqETkOiSNYJQFN9eW10TwCnFZiR438oKabZeZhQI8alZOJDBshShzhjeI2mG5GyJSWHrw2I4UhYwWgkjvTkR1eTpnqM1UKnlAPwRrayeGRH5mWH+4KbJDdIwr6ZUEFMxM6aOv2YhxK83CtfUdv9Ao9ujrZ+bbgcW4pDk=
+	t=1706933390; cv=none; b=b8819/e2qYeUwUVXa3cHMPpjEG38KWAmxaYm9qGPS+2IMrhpgVDTMXTGUNL2JiXEvUjmmr3pGhsx4GW2Ccp53POg3n7iBT9ELUZzOc7Tq7NQSuNqsFK0cRwQaZIDgQArEZQrZwvuJ+HC+MMBGiM08yrALAlHzY2KsMxhRplEFiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933609; c=relaxed/simple;
-	bh=X3r8w1cfdHRCAxXqsZPJHKqAli5dwY0Rp59TO8ArO50=;
+	s=arc-20240116; t=1706933390; c=relaxed/simple;
+	bh=aVwnS3VuyjdFl8esDgPvGkdEcfPonjs5Cs7V222KLas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LUZMBScK+KMEExvMpnkLZxFDihTOqm+7CzTlsyuDxpTHaozkFL9jsf5UzvsWjCzjGodw3AEcYVRujfwkmFc/lhfNaQRBWjzIEHQZegCJ7Ng6EGfnfljL8iq+Y5Hepe1MjkDYFHZ4lJvXk5t4VFd92+4P8BIcMXtXP8tFs/Ez4TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjbEW45R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B333C433F1;
-	Sat,  3 Feb 2024 04:13:29 +0000 (UTC)
+	 MIME-Version; b=USEulTiA2QeB/v4OBwRelrEftroWSpnr39Ujwuien/beRq81UpzYepih66iSSXrP8UqsfwI1NXJwMN7yXJ85sHjKxOvmkGrMuBL4AEkeK1VNX5ppe+gPiWOjijvEdRJaWmz6fz/r7WL+h5SvzwLcjEc3GovxaILZZXj2E5x1FcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zphSN89/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 897B8C43394;
+	Sat,  3 Feb 2024 04:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933609;
-	bh=X3r8w1cfdHRCAxXqsZPJHKqAli5dwY0Rp59TO8ArO50=;
+	s=korg; t=1706933390;
+	bh=aVwnS3VuyjdFl8esDgPvGkdEcfPonjs5Cs7V222KLas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OjbEW45RYKYS055JVhuwZT9OEOQR8wfSykXTMJyiY9mDpRB7NTprjsioTYocXN7Ut
-	 KrR9RIDo3asXj+otalcT00fzAY3mbzIZD/OEmYx7BmCy+qo67WCoDcd8fo6sk4vg9E
-	 p9FJymRZKVx1hOBzuIxP4eFWiVxxGwqhmKPeebzw=
+	b=zphSN89//l9+Dzl+rJJhXj/uYemvCOwn1tU89A08iOOuzhcpeU9BdpR/3HQNCFc4A
+	 4wYk9pkoVN5toqSh237+FQx/RiV2aM5rkyzpospmV9oMUKdI1GoupzpoBg8X+1Jpv/
+	 7EZjRd2cZq/A+R8n82DRCuySM0nS7gK9l7h6pxCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Adam Ford <aford173@gmail.com>
-Subject: [PATCH 6.6 180/322] media: rkisp1: Drop IRQF_SHARED
-Date: Fri,  2 Feb 2024 20:04:37 -0800
-Message-ID: <20240203035405.071562565@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 105/219] ALSA: hda: Refer to correct stream index at loops
+Date: Fri,  2 Feb 2024 20:04:38 -0800
+Message-ID: <20240203035332.202859929@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 85d2a31fe4d9be1555f621ead7a520d8791e0f74 ]
+[ Upstream commit 26257869672fd4a06a60c2da841e15fb2cb47bbe ]
 
-In all known platforms the ISP has dedicated IRQ lines, but for some
-reason the driver uses IRQF_SHARED.
+In a couple of loops over the all streams, we check the bitmap against
+the loop counter.  A more correct reference would be, however, the
+index of each stream, instead.
 
-Supporting IRQF_SHARED properly requires handling interrupts even when
-our device is disabled, and the driver does not handle this. To avoid
-adding such code, and to be sure the driver won't accidentally be used
-in a platform with shared interrupts, let's drop the IRQF_SHARED flag.
+This patch corrects the check of bitmaps to the stream index.
 
-Link: https://lore.kernel.org/r/20231207-rkisp-irq-fix-v3-1-358a2c871a3c@ideasonboard.com
+Note that this change doesn't fix anything for now; all existing
+drivers set up the stream indices properly, hence the loop count is
+always equal with the stream index.  That said, this change is only
+for consistency.
 
-Tested-by: Adam Ford <aford173@gmail.com>  #imx8mp-beacon
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Link: https://lore.kernel.org/r/20231121154125.4888-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/hda/hdac_stream.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-index 894d5afaff4e..b676db9bff62 100644
---- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-+++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-@@ -542,7 +542,7 @@ static int rkisp1_probe(struct platform_device *pdev)
- 		if (irq < 0)
- 			return irq;
+diff --git a/sound/hda/hdac_stream.c b/sound/hda/hdac_stream.c
+index 741a5d17ae4c..ecd3aec57c87 100644
+--- a/sound/hda/hdac_stream.c
++++ b/sound/hda/hdac_stream.c
+@@ -629,17 +629,15 @@ void snd_hdac_stream_timecounter_init(struct hdac_stream *azx_dev,
+ 	struct hdac_stream *s;
+ 	bool inited = false;
+ 	u64 cycle_last = 0;
+-	int i = 0;
  
--		ret = devm_request_irq(dev, irq, info->isrs[i].isr, IRQF_SHARED,
-+		ret = devm_request_irq(dev, irq, info->isrs[i].isr, 0,
- 				       dev_driver_string(dev), dev);
- 		if (ret) {
- 			dev_err(dev, "request irq failed: %d\n", ret);
+ 	list_for_each_entry(s, &bus->stream_list, list) {
+-		if (streams & (1 << i)) {
++		if ((streams & (1 << s->index))) {
+ 			azx_timecounter_init(s, inited, cycle_last);
+ 			if (!inited) {
+ 				inited = true;
+ 				cycle_last = s->tc.cycle_last;
+ 			}
+ 		}
+-		i++;
+ 	}
+ 
+ 	snd_pcm_gettime(runtime, &runtime->trigger_tstamp);
+@@ -684,14 +682,13 @@ void snd_hdac_stream_sync(struct hdac_stream *azx_dev, bool start,
+ 			  unsigned int streams)
+ {
+ 	struct hdac_bus *bus = azx_dev->bus;
+-	int i, nwait, timeout;
++	int nwait, timeout;
+ 	struct hdac_stream *s;
+ 
+ 	for (timeout = 5000; timeout; timeout--) {
+ 		nwait = 0;
+-		i = 0;
+ 		list_for_each_entry(s, &bus->stream_list, list) {
+-			if (!(streams & (1 << i++)))
++			if (!(streams & (1 << s->index)))
+ 				continue;
+ 
+ 			if (start) {
 -- 
 2.43.0
 
