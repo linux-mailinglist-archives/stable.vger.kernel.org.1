@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-17879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7289984807A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CED2848194
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A54381C20F13
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1806282B69
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7E116423;
-	Sat,  3 Feb 2024 04:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 597E72DF87;
+	Sat,  3 Feb 2024 04:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCxRbjkR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zoVt1abt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355D5168DD;
-	Sat,  3 Feb 2024 04:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185FBF9F5;
+	Sat,  3 Feb 2024 04:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933383; cv=none; b=pnTGnyf4tC9IMIDBaTDGdOpDYr1mnuAlqdh2uQB119zC9QOBdn1DG0k9fNTj37T4Q2weqw9FAn+jZFeIQZ3IeVNkUWvhpPUt1+X8OiU0FsOQMF+6Mwzo12ebFnlwT1rRhkEWGV+nifGmCVS36S1B1S09qTZaQPylKsL3W7d3/jk=
+	t=1706933584; cv=none; b=qeRGfd7mwlUpfzXC48Uy4O59FIEbT1EHHunll+YVlCnezzfquAau1FkbAPqyRVMbF8TOH/yR0uD/7b2ZYbFB+5NxMwVgcmeqefIYBq6H3ey7J/Rae8kFaiH4HufM9zIvY8Rp7jBkoAEY8S2rrTTy0IbBdNz3t4cTJ+XzdPpZcQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933383; c=relaxed/simple;
-	bh=ST5tEe/5dtcGMbTMxNvdSxsUInWWKdqOJnAK4kf9F1Y=;
+	s=arc-20240116; t=1706933584; c=relaxed/simple;
+	bh=4XTF2xfAyirvSH6EPPeuPgoFt86EenW3bDWCwvLtUPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VEjuRABQ2KB4OYWqvGwcYLeBl7oJb7GBirJJZCurorK/PQk35jsrwbwujKWf8tbR57OvL3RzCJi6NrxskGeIr8FHa1EYvjEqrNF6zfBrSxkRFDgADQ8lzfNGInVwpp8eUvKnhKnehMbUnxJEjWFjgJzrcLWPH2kie6az92+2dk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCxRbjkR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D71DEC43399;
-	Sat,  3 Feb 2024 04:09:42 +0000 (UTC)
+	 MIME-Version; b=S9Tt5NbkazBf+/uNwkjUB7tyMmFQWgfAoWzw1/I/SHFLdzCPMzo3/1P/HwxAFXUWMqL5wT4m3wcT0ZJS7RKbBI2sX6/lXr7lIfW8/bbtxIThki3TM8stKHGjf2kxbAXUpCxryIYh0ngW7TK0vOafbYZrmML4TsPDu/YckBwwQb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zoVt1abt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D438AC433C7;
+	Sat,  3 Feb 2024 04:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933382;
-	bh=ST5tEe/5dtcGMbTMxNvdSxsUInWWKdqOJnAK4kf9F1Y=;
+	s=korg; t=1706933583;
+	bh=4XTF2xfAyirvSH6EPPeuPgoFt86EenW3bDWCwvLtUPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BCxRbjkRlljnG4IkF4V86HHIcVooO9MOaTaVD/SB81iITt0BxPI9IfLZbZZsocgla
-	 PIkxASo/QmrRJC2svbFFJP1tqU2JpOi+9dw1JIqzB3RKM2if+8jU9GXzVQUe4pyMnE
-	 Yqa7/7N5kLrORZPzvKb9NqWeSB+7WNiiJjhw9GS4=
+	b=zoVt1abt3c+Gf2+uFt5HVfkyMg/45ujLrwFAaywICCfPQcjfz+0Wpu2iimh0Gsqs2
+	 J33i+EfEQEjWKoAqPzlaLWzyrXmNDdf2RQNmSYXPMlEXHPe75/i0spNmaVJ5ZJL6MY
+	 SBSLUFl/70K25ojRAdP1g7FGVVDSNqNc4rVV6WT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Iulia Tanasescu <iulia.tanasescu@nxp.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/219] ARM: dts: imx: Use flash@0,0 pattern
+Subject: [PATCH 6.6 146/322] Bluetooth: ISO: Avoid creating child socket if PA sync is terminating
 Date: Fri,  2 Feb 2024 20:04:03 -0800
-Message-ID: <20240203035326.731116235@linuxfoundation.org>
+Message-ID: <20240203035403.896142018@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
 
-[ Upstream commit 1e1d7cc478fb16816de09740e3c323c0c188d58f ]
+[ Upstream commit 9f150019f176078144b02c4b9b9dbe7fd5a2fcc3 ]
 
-Per mtd-physmap.yaml, 'nor@0,0' is not a valid node pattern.
+When a PA sync socket is closed, the associated hcon is also unlinked
+and cleaned up. If there are no other hcons marked with the
+HCI_CONN_PA_SYNC flag, HCI_OP_LE_PA_TERM_SYNC is sent to controller.
 
-Change it to 'flash@0,0' to fix the following dt-schema warning:
+Between the time of the command and the moment PA sync is terminated
+in controller, residual BIGInfo reports might continue to come.
+This causes a new PA sync hcon to be added, and a new socket to be
+notified to user space.
 
-imx1-ads.dtb: nor@0,0: $nodename:0: 'nor@0,0' does not match '^(flash|.*sram|nand)(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/mtd/mtd-physmap.yaml#
+This commit fixs this by adding a flag on a Broadcast listening
+socket to mark when the PA sync child has been closed.
 
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+This flag is checked when BIGInfo reports are indicated in
+iso_connect_ind, to avoid recreating a hcon and socket if
+residual reports arrive before PA sync is terminated.
+
+Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx1-ads.dts                  | 2 +-
- arch/arm/boot/dts/imx1-apf9328.dts              | 2 +-
- arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi    | 2 +-
- arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ net/bluetooth/iso.c | 51 ++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 48 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx1-ads.dts b/arch/arm/boot/dts/imx1-ads.dts
-index 5833fb6f15d8..2c817c4a4c68 100644
---- a/arch/arm/boot/dts/imx1-ads.dts
-+++ b/arch/arm/boot/dts/imx1-ads.dts
-@@ -65,7 +65,7 @@
- 	pinctrl-0 = <&pinctrl_weim>;
- 	status = "okay";
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 2132a16be93c..0eeec6480139 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -52,6 +52,7 @@ static void iso_sock_kill(struct sock *sk);
+ enum {
+ 	BT_SK_BIG_SYNC,
+ 	BT_SK_PA_SYNC,
++	BT_SK_PA_SYNC_TERM,
+ };
  
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		compatible = "cfi-flash";
- 		reg = <0 0x00000000 0x02000000>;
- 		bank-width = <4>;
-diff --git a/arch/arm/boot/dts/imx1-apf9328.dts b/arch/arm/boot/dts/imx1-apf9328.dts
-index 77b21aa7a146..27e72b07b517 100644
---- a/arch/arm/boot/dts/imx1-apf9328.dts
-+++ b/arch/arm/boot/dts/imx1-apf9328.dts
-@@ -45,7 +45,7 @@
- 	pinctrl-0 = <&pinctrl_weim>;
- 	status = "okay";
+ struct iso_pinfo {
+@@ -80,6 +81,11 @@ static bool iso_match_sid(struct sock *sk, void *data);
+ static bool iso_match_sync_handle(struct sock *sk, void *data);
+ static void iso_sock_disconn(struct sock *sk);
  
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		compatible = "cfi-flash";
- 		reg = <0 0x00000000 0x02000000>;
- 		bank-width = <2>;
-diff --git a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
-index 4b83e2918b55..c7e923584878 100644
---- a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
-+++ b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
-@@ -90,7 +90,7 @@
- &weim {
- 	status = "okay";
++typedef bool (*iso_sock_match_t)(struct sock *sk, void *data);
++
++static struct sock *iso_get_sock_listen(bdaddr_t *src, bdaddr_t *dst,
++					iso_sock_match_t match, void *data);
++
+ /* ---- ISO timers ---- */
+ #define ISO_CONN_TIMEOUT	(HZ * 40)
+ #define ISO_DISCONN_TIMEOUT	(HZ * 2)
+@@ -188,10 +194,21 @@ static void iso_chan_del(struct sock *sk, int err)
+ 	sock_set_flag(sk, SOCK_ZAPPED);
+ }
  
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		#address-cells = <1>;
- 		#size-cells = <1>;
- 		compatible = "cfi-flash";
-diff --git a/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi b/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi
-index 3d10273177e9..a5fdc2fd4ce5 100644
---- a/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi
-+++ b/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi
-@@ -322,7 +322,7 @@
- &weim {
- 	status = "okay";
++static bool iso_match_conn_sync_handle(struct sock *sk, void *data)
++{
++	struct hci_conn *hcon = data;
++
++	if (test_bit(BT_SK_PA_SYNC, &iso_pi(sk)->flags))
++		return false;
++
++	return hcon->sync_handle == iso_pi(sk)->sync_handle;
++}
++
+ static void iso_conn_del(struct hci_conn *hcon, int err)
+ {
+ 	struct iso_conn *conn = hcon->iso_data;
+ 	struct sock *sk;
++	struct sock *parent;
  
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		compatible = "cfi-flash";
- 		reg = <0 0x00000000 0x02000000>;
- 		bank-width = <2>;
+ 	if (!conn)
+ 		return;
+@@ -207,6 +224,25 @@ static void iso_conn_del(struct hci_conn *hcon, int err)
+ 
+ 	if (sk) {
+ 		lock_sock(sk);
++
++		/* While a PA sync hcon is in the process of closing,
++		 * mark parent socket with a flag, so that any residual
++		 * BIGInfo adv reports that arrive before PA sync is
++		 * terminated are not processed anymore.
++		 */
++		if (test_bit(BT_SK_PA_SYNC, &iso_pi(sk)->flags)) {
++			parent = iso_get_sock_listen(&hcon->src,
++						     &hcon->dst,
++						     iso_match_conn_sync_handle,
++						     hcon);
++
++			if (parent) {
++				set_bit(BT_SK_PA_SYNC_TERM,
++					&iso_pi(parent)->flags);
++				sock_put(parent);
++			}
++		}
++
+ 		iso_sock_clear_timer(sk);
+ 		iso_chan_del(sk, err);
+ 		release_sock(sk);
+@@ -543,8 +579,6 @@ static struct sock *__iso_get_sock_listen_by_sid(bdaddr_t *ba, bdaddr_t *bc,
+ 	return NULL;
+ }
+ 
+-typedef bool (*iso_sock_match_t)(struct sock *sk, void *data);
+-
+ /* Find socket listening:
+  * source bdaddr (Unicast)
+  * destination bdaddr (Broadcast only)
+@@ -1756,9 +1790,20 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
+ 		/* Try to get PA sync listening socket, if it exists */
+ 		sk = iso_get_sock_listen(&hdev->bdaddr, bdaddr,
+ 						iso_match_pa_sync_flag, NULL);
+-		if (!sk)
++
++		if (!sk) {
+ 			sk = iso_get_sock_listen(&hdev->bdaddr, bdaddr,
+ 						 iso_match_sync_handle, ev2);
++
++			/* If PA Sync is in process of terminating,
++			 * do not handle any more BIGInfo adv reports.
++			 */
++
++			if (sk && test_bit(BT_SK_PA_SYNC_TERM,
++					   &iso_pi(sk)->flags))
++				return lm;
++		}
++
+ 		if (sk) {
+ 			int err;
+ 
 -- 
 2.43.0
 
