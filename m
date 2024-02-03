@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-18197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A72B8481C3
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08743848092
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE389283DE1
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04A472817A9
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519C23D392;
-	Sat,  3 Feb 2024 04:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C48317541;
+	Sat,  3 Feb 2024 04:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afBIymCP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBlO345E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBFD10A18;
-	Sat,  3 Feb 2024 04:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33C1A101C1;
+	Sat,  3 Feb 2024 04:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933619; cv=none; b=beiVOJTPsPq809iT7OWE0w/iBwECdx52mOoiEAvT5r4/yWtWxudHoSG213XBnxtVGgmIfUL57eUNj25IWnfNxBSKFCvJcNEmf55tWrgZLu6YUN+hlOZG03YE/BIcwS+PJN4BcuC2MH1ewnVGrjIk5dLs2D/XpNUpy5Bhu+0efEQ=
+	t=1706933401; cv=none; b=pkghgteLuba2QYsyEh7CQxuB0ABOeIrlOHrxw6COccXO6xQ0GhkmeUQ3Yus7Kuh1Cs1xM7w2Lv438QKXOm63BxU7atRlxzQu8/H8Y0z3DM3M2GeTTdt1UlQL0CsXtJ2kOwozlG6u+EtvLkz9l+wIcVVUZ/zp/TEgPIdPasY40Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933619; c=relaxed/simple;
-	bh=isAKGs+rbHsMyOM+bwcfPmP4YiYJtJfreLmGWl2exeg=;
+	s=arc-20240116; t=1706933401; c=relaxed/simple;
+	bh=dWPIQ0ScG5L8xH7oZPI+/mrqsRlIiNIsUENxPBxtKmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LWkRuKzz7qzcp6sXiSmej87CybIiFPMh5voplZ47CagAwVq60EXNpeUGvakAAs6nI9N9SgYDMuIbo3nJo7nIoqHLil0Vfw5eXouOmuuO7IFtTuEqbAf5dFIKSI9HBEkUJMc1Ruo4L80wuLf6NnP8/lEeuJMFuw8XOhU2q3uAX70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afBIymCP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53161C433C7;
-	Sat,  3 Feb 2024 04:13:38 +0000 (UTC)
+	 MIME-Version; b=qfMcoJfQZC+/9HeygwvLYrhUTr2QgPN3uShyWu2YCZslieEFHjrWdn+NuMKEThpxb+JSyt4SSOQgnRmMYAtDj29Dy3IYpwoZSpMY8kSyFq5cBdQZbqy5OjkFcnZkMIgI1H4cWS2YqsU0pcnuUrn+U0kYZoZUleP2fnyjfkWiueU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBlO345E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE075C43390;
+	Sat,  3 Feb 2024 04:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933618;
-	bh=isAKGs+rbHsMyOM+bwcfPmP4YiYJtJfreLmGWl2exeg=;
+	s=korg; t=1706933401;
+	bh=dWPIQ0ScG5L8xH7oZPI+/mrqsRlIiNIsUENxPBxtKmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=afBIymCPSATwrLEJ76tTtfefsjnh5rrkbhDjnkFjDqqwCB+hAKmLlwon6+r0/t4A4
-	 8l+MWXc0TTeYdXL+C7USJYu7lsj0S4UkUh/2dS3nbAYmx0GLCDrASZcm5QvHFItchw
-	 Z3aEWfgfLTAdxI2SpJsos04wL4CnGBpJ2RuW66IE=
+	b=RBlO345EzxLtU0y3jH6h4NDxSqUuxDIuIikOI9DTCac1HhAtZaMjY5VrFnjKA+5AP
+	 gcSyrr8RzpcvUoTmKBYUOo91ECP5o+474IRBIfZiUkga6LoQGJZA3/Gj2ieLFqAM6p
+	 xlr9zqU+mVj0kT0uGI3agx4NjmAHsDN4JhtYD1W8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jun Lei <jun.lei@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 193/322] drm/amd/display: For prefetch mode > 0, extend prefetch if possible
-Date: Fri,  2 Feb 2024 20:04:50 -0800
-Message-ID: <20240203035405.480164027@linuxfoundation.org>
+Subject: [PATCH 6.1 118/219] media: rockchip: rga: fix swizzling for RGB formats
+Date: Fri,  2 Feb 2024 20:04:51 -0800
+Message-ID: <20240203035334.120241630@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alvin Lee <alvin.lee2@amd.com>
+From: Michael Tretter <m.tretter@pengutronix.de>
 
-[ Upstream commit dd4e4bb28843393065eed279e869fac248d03f0f ]
+[ Upstream commit 9e7dc39260edac180c206bb6149595a40eabae3e ]
 
-[Description]
-For mode programming we want to extend the prefetch as much as possible
-(up to oto, or as long as we can for equ) if we're not already applying
-the 60us prefetch requirement. This is to avoid intermittent underflow
-issues during prefetch.
+When using 32 bit RGB formats, the RGA on the rk3568 produces wrong
+colors as the wrong color channels are read or written.  The reason is
+that the format description for the channel swizzeling is wrong and the
+wrong bits are configured. For example, when converting ARGB32 to NV12,
+the alpha channel is used as blue channel.. This doesn't happen if the
+color format is the same on both sides.
 
-The prefetch extension is applied under the following scenarios:
-1. We're in prefetch mode 1 (i.e. we don't support MCLK switch in blank)
-2. We're using subvp or drr methods of p-state switch, in which case we
-   we don't care if prefetch takes up more of the blanking time
+Fix the color_swap settings of the formats to correctly handle 32 bit
+RGB formats.
 
-Mode programming typically chooses the smallest prefetch time possible
-(i.e. highest bandwidth during prefetch) presumably to create margin between
-p-states / c-states that happen in vblank and prefetch. Therefore we only
-apply this prefetch extension when p-state in vblank is not required (UCLK
-p-states take up the most vblank time).
+For RGA_COLOR_FMT_XBGR8888, the RGA_COLOR_ALPHA_SWAP bit doesn't have an
+effect. Thus, it isn't possible to handle the V4L2_PIX_FMT_XRGB32. Thus,
+it is removed from the list of supported formats.
 
-Reviewed-by: Jun Lei <jun.lei@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dc/dml/dcn32/display_mode_vba_32.c        |  3 ++
- .../dc/dml/dcn32/display_mode_vba_util_32.c   | 33 +++++++++++++++----
- .../dc/dml/dcn32/display_mode_vba_util_32.h   |  1 +
- 3 files changed, 31 insertions(+), 6 deletions(-)
+ drivers/media/platform/rockchip/rga/rga.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-index cbdfb762c10c..6c84b0fa40f4 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-@@ -813,6 +813,8 @@ static void DISPCLKDPPCLKDCFCLKDeepSleepPrefetchParametersWatermarksAndPerforman
- 					(v->DRAMSpeedPerState[mode_lib->vba.VoltageLevel] <= MEM_STROBE_FREQ_MHZ ||
- 						v->DCFCLKPerState[mode_lib->vba.VoltageLevel] <= DCFCLK_FREQ_EXTRA_PREFETCH_REQ_MHZ) ?
- 							mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
-+					mode_lib->vba.PrefetchModePerState[mode_lib->vba.VoltageLevel][mode_lib->vba.maxMpcComb] > 0 || mode_lib->vba.DRAMClockChangeRequirementFinal == false,
-+
- 					/* Output */
- 					&v->DSTXAfterScaler[k],
- 					&v->DSTYAfterScaler[k],
-@@ -3317,6 +3319,7 @@ void dml32_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_l
- 							v->SwathHeightCThisState[k], v->TWait,
- 							(v->DRAMSpeedPerState[i] <= MEM_STROBE_FREQ_MHZ || v->DCFCLKState[i][j] <= DCFCLK_FREQ_EXTRA_PREFETCH_REQ_MHZ) ?
- 									mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
-+							mode_lib->vba.PrefetchModePerState[i][j] > 0 || mode_lib->vba.DRAMClockChangeRequirementFinal == false,
- 
- 							/* Output */
- 							&v->dummy_vars.dml32_ModeSupportAndSystemConfigurationFull.DSTXAfterScaler[k],
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
-index ecea008f19d3..208b89d13d3f 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
-@@ -3423,6 +3423,7 @@ bool dml32_CalculatePrefetchSchedule(
- 		unsigned int SwathHeightC,
- 		double TWait,
- 		double TPreReq,
-+		bool ExtendPrefetchIfPossible,
- 		/* Output */
- 		double   *DSTXAfterScaler,
- 		double   *DSTYAfterScaler,
-@@ -3892,12 +3893,32 @@ bool dml32_CalculatePrefetchSchedule(
- 			/* Clamp to oto for bandwidth calculation */
- 			LinesForPrefetchBandwidth = dst_y_prefetch_oto;
- 		} else {
--			*DestinationLinesForPrefetch = dst_y_prefetch_equ;
--			TimeForFetchingMetaPTE = Tvm_equ;
--			TimeForFetchingRowInVBlank = Tr0_equ;
--			*PrefetchBandwidth = prefetch_bw_equ;
--			/* Clamp to equ for bandwidth calculation */
--			LinesForPrefetchBandwidth = dst_y_prefetch_equ;
-+			/* For mode programming we want to extend the prefetch as much as possible
-+			 * (up to oto, or as long as we can for equ) if we're not already applying
-+			 * the 60us prefetch requirement. This is to avoid intermittent underflow
-+			 * issues during prefetch.
-+			 *
-+			 * The prefetch extension is applied under the following scenarios:
-+			 * 1. We're in prefetch mode > 0 (i.e. we don't support MCLK switch in blank)
-+			 * 2. We're using subvp or drr methods of p-state switch, in which case we
-+			 *    we don't care if prefetch takes up more of the blanking time
-+			 *
-+			 * Mode programming typically chooses the smallest prefetch time possible
-+			 * (i.e. highest bandwidth during prefetch) presumably to create margin between
-+			 * p-states / c-states that happen in vblank and prefetch. Therefore we only
-+			 * apply this prefetch extension when p-state in vblank is not required (UCLK
-+			 * p-states take up the most vblank time).
-+			 */
-+			if (ExtendPrefetchIfPossible && TPreReq == 0 && VStartup < MaxVStartup) {
-+				MyError = true;
-+			} else {
-+				*DestinationLinesForPrefetch = dst_y_prefetch_equ;
-+				TimeForFetchingMetaPTE = Tvm_equ;
-+				TimeForFetchingRowInVBlank = Tr0_equ;
-+				*PrefetchBandwidth = prefetch_bw_equ;
-+				/* Clamp to equ for bandwidth calculation */
-+				LinesForPrefetchBandwidth = dst_y_prefetch_equ;
-+			}
- 		}
- 
- 		*DestinationLinesToRequestVMInVBlank = dml_ceil(4.0 * TimeForFetchingMetaPTE / LineTime, 1.0) / 4.0;
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.h b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.h
-index 592d174df6c6..5d34735df83d 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.h
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.h
-@@ -747,6 +747,7 @@ bool dml32_CalculatePrefetchSchedule(
- 		unsigned int SwathHeightC,
- 		double TWait,
- 		double TPreReq,
-+		bool ExtendPrefetchIfPossible,
- 		/* Output */
- 		double   *DSTXAfterScaler,
- 		double   *DSTYAfterScaler,
+diff --git a/drivers/media/platform/rockchip/rga/rga.c b/drivers/media/platform/rockchip/rga/rga.c
+index 61b25fcf826e..9b20cef5afc6 100644
+--- a/drivers/media/platform/rockchip/rga/rga.c
++++ b/drivers/media/platform/rockchip/rga/rga.c
+@@ -187,25 +187,16 @@ static int rga_setup_ctrls(struct rga_ctx *ctx)
+ static struct rga_fmt formats[] = {
+ 	{
+ 		.fourcc = V4L2_PIX_FMT_ARGB32,
+-		.color_swap = RGA_COLOR_RB_SWAP,
++		.color_swap = RGA_COLOR_ALPHA_SWAP,
+ 		.hw_format = RGA_COLOR_FMT_ABGR8888,
+ 		.depth = 32,
+ 		.uv_factor = 1,
+ 		.y_div = 1,
+ 		.x_div = 1,
+ 	},
+-	{
+-		.fourcc = V4L2_PIX_FMT_XRGB32,
+-		.color_swap = RGA_COLOR_RB_SWAP,
+-		.hw_format = RGA_COLOR_FMT_XBGR8888,
+-		.depth = 32,
+-		.uv_factor = 1,
+-		.y_div = 1,
+-		.x_div = 1,
+-	},
+ 	{
+ 		.fourcc = V4L2_PIX_FMT_ABGR32,
+-		.color_swap = RGA_COLOR_ALPHA_SWAP,
++		.color_swap = RGA_COLOR_RB_SWAP,
+ 		.hw_format = RGA_COLOR_FMT_ABGR8888,
+ 		.depth = 32,
+ 		.uv_factor = 1,
+@@ -214,7 +205,7 @@ static struct rga_fmt formats[] = {
+ 	},
+ 	{
+ 		.fourcc = V4L2_PIX_FMT_XBGR32,
+-		.color_swap = RGA_COLOR_ALPHA_SWAP,
++		.color_swap = RGA_COLOR_RB_SWAP,
+ 		.hw_format = RGA_COLOR_FMT_XBGR8888,
+ 		.depth = 32,
+ 		.uv_factor = 1,
 -- 
 2.43.0
 
