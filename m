@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E25C8482AE
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9102784805F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB6A0B21A68
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 186B3B29C9F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B849013ADB;
-	Sat,  3 Feb 2024 04:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D39412E67;
+	Sat,  3 Feb 2024 04:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iW94vkWE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E94C/U09"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E844CDFD;
-	Sat,  3 Feb 2024 04:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08CBFBE4;
+	Sat,  3 Feb 2024 04:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933789; cv=none; b=sIQNPrNyy4ZKvHi4/7p9oFrmcLMH4ZaNkVJogburAesUAfXeFwj6iFDuk5lx5OjjRVJmpNcw1NQ0VOtvCqCYiGqJ0MHyxHtjhM8bdaDvT4WE70Oe/ks1/3Kri+eW/EepxcAC1RII4DgCRPNAFEDiOB17BW45FmBy4mRQfA0hRxM=
+	t=1706933363; cv=none; b=ALrqLq5dwiRHTcPhGcPHf3UfaX4JwoT4EKvnMepbTuQeeaWF1qo8+X/jzrpSoANtDbGw7+VNDt4CystDsxNpAiMOKsgAPsWNaK29WbRkUMwl/duAvT+a/WUhN23wBd7/idXu07matKTUNIkaq6LiyGiDJgybagHRj7iFzWJ49HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933789; c=relaxed/simple;
-	bh=DilO15CEKJBgaWqfsrh9cKd51s7O9b57p1b05t94OkY=;
+	s=arc-20240116; t=1706933363; c=relaxed/simple;
+	bh=FrV22SFLRiTlYGGHRUpEMjnbrkv5PFpxCQ7A9spMRe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pt7O5Hru9XY68+3GXGRn7uznmGm7piZ8XQ4JPeKW9h9RFXZziB3HV9TDRp+KGZyzRO7j/rNKaNsCzJ1PnS3oVxaDO/Hqe8LNesPpE/RO9KTIi8ocyhCGmrEt7nZ80LfSwzi87vevJ9i8+0rmvm1P6Jgz1UnQzn02D3tiS0j6hVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iW94vkWE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41574C433C7;
-	Sat,  3 Feb 2024 04:16:29 +0000 (UTC)
+	 MIME-Version; b=b8C0dxWOle9iiZCOeeMiSQ16EeRb0nYpkpC8VE28cvvl5DgjDtD5ff/sdOQSV1rbypCwHM6le/Dti/6lIFRJV/vAXbRJdb/Gq4qAe39uAblzcLmzGCkiEonq4RYP3AxTH7KUptha6+7bfbpw5uPOWteZII5A9asB1r80eJmmEAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E94C/U09; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B86D1C433C7;
+	Sat,  3 Feb 2024 04:09:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933789;
-	bh=DilO15CEKJBgaWqfsrh9cKd51s7O9b57p1b05t94OkY=;
+	s=korg; t=1706933362;
+	bh=FrV22SFLRiTlYGGHRUpEMjnbrkv5PFpxCQ7A9spMRe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iW94vkWEIzq76cspeu6TP0jOKALHlJabqYXQuVJ67Azx1c5jmYBoi05qBaZnqWFDN
-	 pLVITz0fHiLH1ad0JIFOOmsCmDrkP9VlZ7RKEmTEmzIbVEbWAMws35rST9dhhh+YJs
-	 Nmf/R8G9tjeOMJH7Qj1zqbo12LL7suduTGV1vmf4=
+	b=E94C/U090tgPgE0/HVG8x0AAKOL0wCs6BfUsaxaH6l41UqtB6bDSBoF6aNrxhCmZZ
+	 O4FQh6SiwIV8FfyiTh7FUnAG1uG16ovCRNuw/EpZMghVW2qTYjXaWPAJssenmuRDjd
+	 sulBmLN+GJ5DbBer4G5nehzfM2R4wtIRGxyYsY7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 098/353] scsi: libfc: Dont schedule abort twice
+Subject: [PATCH 6.1 043/219] ext4: remove unnecessary check from alloc_flex_gd()
 Date: Fri,  2 Feb 2024 20:03:36 -0800
-Message-ID: <20240203035406.894859280@linuxfoundation.org>
+Message-ID: <20240203035322.620006333@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit b57c4db5d23b9df0118a25e2441c9288edd73710 ]
+[ Upstream commit b099eb87de105cf07cad731ded6fb40b2675108b ]
 
-The current FC error recovery is sending up to three REC (recovery) frames
-in 10 second intervals, and as a final step sending an ABTS after 30
-seconds for the command itself.  Unfortunately sending an ABTS is also the
-action for the SCSI abort handler, and the default timeout for SCSI
-commands is also 30 seconds. This causes two ABTS to be scheduled, with the
-libfc one slightly earlier. The ABTS scheduled by SCSI EH then sees the
-command to be already aborted, and will always return with a 'GOOD' status
-irrespective on the actual result from the first ABTS.  This causes the
-SCSI EH abort handler to always succeed, and SCSI EH never to be engaged.
-Fix this by not issuing an ABTS when a SCSI command is present for the
-exchange, but rather wait for the abort scheduled from SCSI EH.  And warn
-if an abort is already scheduled to avoid similar errors in the future.
+In commit 967ac8af4475 ("ext4: fix potential integer overflow in
+alloc_flex_gd()"), an overflow check is added to alloc_flex_gd() to
+prevent the allocated memory from being smaller than expected due to
+the overflow. However, after kmalloc() is replaced with kmalloc_array()
+in commit 6da2ec56059c ("treewide: kmalloc() -> kmalloc_array()"), the
+kmalloc_array() function has an overflow check, so the above problem
+will not occur. Therefore, the extra check is removed.
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20231129165832.224100-2-hare@kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231023013057.2117948-3-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libfc/fc_fcp.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ fs/ext4/resize.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/scsi/libfc/fc_fcp.c b/drivers/scsi/libfc/fc_fcp.c
-index 945adca5e72f..3f189cedf6db 100644
---- a/drivers/scsi/libfc/fc_fcp.c
-+++ b/drivers/scsi/libfc/fc_fcp.c
-@@ -265,6 +265,11 @@ static int fc_fcp_send_abort(struct fc_fcp_pkt *fsp)
- 	if (!fsp->seq_ptr)
- 		return -EINVAL;
+diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+index 31f5da7f9f6c..e76270ee7fe5 100644
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -249,10 +249,7 @@ static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned int flexbg_size)
+ 	if (flex_gd == NULL)
+ 		goto out3;
  
-+	if (fsp->state & FC_SRB_ABORT_PENDING) {
-+		FC_FCP_DBG(fsp, "abort already pending\n");
-+		return -EBUSY;
-+	}
-+
- 	this_cpu_inc(fsp->lp->stats->FcpPktAborts);
- 
- 	fsp->state |= FC_SRB_ABORT_PENDING;
-@@ -1690,11 +1695,12 @@ static void fc_fcp_recovery(struct fc_fcp_pkt *fsp, u8 code)
- 	fsp->status_code = code;
- 	fsp->cdb_status = 0;
- 	fsp->io_status = 0;
--	/*
--	 * if this fails then we let the scsi command timer fire and
--	 * scsi-ml escalate.
--	 */
--	fc_fcp_send_abort(fsp);
-+	if (!fsp->cmd)
-+		/*
-+		 * Only abort non-scsi commands; otherwise let the
-+		 * scsi command timer fire and scsi-ml escalate.
-+		 */
-+		fc_fcp_send_abort(fsp);
- }
- 
- /**
+-	if (flexbg_size >= UINT_MAX / sizeof(struct ext4_new_group_data))
+-		goto out2;
+ 	flex_gd->count = flexbg_size;
+-
+ 	flex_gd->groups = kmalloc_array(flexbg_size,
+ 					sizeof(struct ext4_new_group_data),
+ 					GFP_NOFS);
 -- 
 2.43.0
 
