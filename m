@@ -1,243 +1,131 @@
-Return-Path: <stable+bounces-17778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6119B847DC4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 01:26:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB822847E08
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 02:04:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C710F1F21E5B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 00:26:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65DC028C8C3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 01:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6879C7EC;
-	Sat,  3 Feb 2024 00:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C990780A;
+	Sat,  3 Feb 2024 01:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="n9Y5eB+W";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="yEuu/7b3";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="z9pk/ywi";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="YQZqZITh"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="OEghnonZ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IbgdxkcD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED22C622;
-	Sat,  3 Feb 2024 00:26:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6D2210FA;
+	Sat,  3 Feb 2024 01:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706919977; cv=none; b=habJxkLyi63wy0APRcGwgmz7ho8SxZVM05mWgl4fnKhpTH5O2vg6tCx8dfTM+w43tQVEZNlROPUBGsZUMzTDlVm4JGhMJmYQUjkY66Lp4W4JN8u3jFhCyqVsEsrD/vLm1YrNtAW8ISZEumVhyn3tcANAzJunatLbJITChlak73A=
+	t=1706922289; cv=none; b=OftlrajeXHf5NiDaVr1vhZmDHRtMiveYOp9Abjj+SdPrdto5ett9T1mxwmMPd5AohxCU6Olwub7MX1zeUbULuQ8jLm8a+lSpyQl5Qt0JnVkQR3hQMRRD67UYU4jl55AU+kHMcjaUlQYOhMPGDeNWoJGpj6PpnYEaoP+yG312/fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706919977; c=relaxed/simple;
-	bh=sGPrlB3yjincDWQ6gmHuq5pkDDpK5ZNPTZy9ztTc2v8=;
-	h=Content-Type:MIME-Version:From:To:Cc:Subject:In-reply-to:
-	 References:Date:Message-id; b=M6E7f+9V4rVTx/0lomphVNOhAT7UN1OY8rS1D+dKsTTinNPOG4RWiuv/+tgu4Lj2aHpx9fN0oetFABFVZfgkmAG4HTxkGBChyTBmSsfjwsGrYHP6UmlhxWwjpuEYZGIWgeMM3dBZlDHfgK03dBYHDQkJ5soY7Fv01gKyv/UaaC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=n9Y5eB+W; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=yEuu/7b3; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=z9pk/ywi; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=YQZqZITh; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1D60021FCF;
-	Sat,  3 Feb 2024 00:26:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1706919973; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KYk7i6J9iMlbWsML/nl6fudDcEusAXZhQsKFFM9NkxU=;
-	b=n9Y5eB+WHqW2hrMK3MJeLX9iLc5P+qsg3O7SJdOr6egGnqEXDlOJhzDjcgKW05pR1M2a5h
-	G/nRkM1tE8xCsp2N6UTo9Mg1RZwISNSgfVW4gdLgEh1+1m53j9EgWSnbGNx7kgYAKee+i7
-	j5cZ5EynQe+qL/hXZ5SPKKJoLKILEHg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1706919973;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KYk7i6J9iMlbWsML/nl6fudDcEusAXZhQsKFFM9NkxU=;
-	b=yEuu/7b3fTeMNIxe49+Xiz1FVu7WTojG1G5uarCEIvPwS7YdYJmpUa/8e/yuHxwBHtEnSA
-	Ba3mYAgAGDlcrhDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1706919971; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KYk7i6J9iMlbWsML/nl6fudDcEusAXZhQsKFFM9NkxU=;
-	b=z9pk/ywiObdrap3d/qYIpfmzg7q6Gb/I6HrGTcyuxPqVFS2yMO0ibyj3VQpXU6/N/elCFz
-	GGvMmzshEmsQL5neWhFA/neM6JfYKzQ5DaEeAvSR5l8WKH6+tYuVpnUZu02tJdB6wtdMVK
-	ESRfl4BiFgmujguWiGdMP5R6FWaDcmY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1706919971;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KYk7i6J9iMlbWsML/nl6fudDcEusAXZhQsKFFM9NkxU=;
-	b=YQZqZITh9bdGyj5r9FfYSlqr1mRtEqIq0RH7taEZ3qnT2wY/cIAVfsgVKAVOnLNnLSVYEs
-	wjXdGjSArqUWENAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 97B1C13A58;
-	Sat,  3 Feb 2024 00:26:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id MDYGEyGIvWUAKQAAD6G6ig
-	(envelope-from <neilb@suse.de>); Sat, 03 Feb 2024 00:26:09 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1706922289; c=relaxed/simple;
+	bh=CWmA9yn2XRvwgn+8ejKivBP0f6x1dBdQbw6ZwthDTc0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FwYDDdjpP1gccPOu+ySsGeX5uY7Ba3Ig8NMR21O7zY2vxM8KQr9cAskrSuAadhWOrSSYc8B/7LKn6E/GZ3kkdAZG82y1/V+DcSRyXLJptfx8KfQYytT0YwVvNDq/8Xv2r7UD1U7xPzcpXa4+OLWiR4QyreTJGI8sY/aiGmNfMx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=OEghnonZ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IbgdxkcD; arc=none smtp.client-ip=64.147.123.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailout.west.internal (Postfix) with ESMTP id BAF993200A44;
+	Fri,  2 Feb 2024 20:04:45 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute4.internal (MEProxy); Fri, 02 Feb 2024 20:04:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1706922285;
+	 x=1707008685; bh=f9lUpdnh2JAZeIyrtkQFsdT6DGrcuuvrAYz2wQIJ6UE=; b=
+	OEghnonZJsWXfL4XEEi6EP8bN8LbFPyJGcKaGIv3zuerNHsobMmtt0jzkPAuo437
+	BO4s82MsFfPTb4w4tDtfDpni8ZHGVBoNExybTs8BzzxjEiCIp3PT9WT4vC+4fRIR
+	riBaqBIpMGBG1l4cEM9XhEHuSvpeqDWmuOxrEA77EMeCF9HhLcnrwfRqxbBsHVED
+	bv+6XfTcGBpX1O3S1Pq/k8IbblBfwxLijlVSvC9CZtKfAFTyshJ7EZO7hmdm4o4h
+	UYYe26xB8Sl/ZolXUJ1PHkPtasck9k+M9i7qXvWiSI+kXN0+jc3eOTa9PL2Bn6kZ
+	v1NMTqVOFXLTgg4oOivb4Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1706922285; x=
+	1707008685; bh=f9lUpdnh2JAZeIyrtkQFsdT6DGrcuuvrAYz2wQIJ6UE=; b=I
+	bgdxkcDPh9UtuUay8P8/5hvSNmyDRVb9dMEsNZCL+BI6oE7cQClviTY8lfje31Nw
+	APNUDtuzzPmIBSoO5WebGeDCoi4KTUGJ8F1HC+DIHW/9RprAVDgP/PSzWqO1vmUa
+	/6Ssg5PcG4djQmYNTA9+dt0pfYubMQJKTYrSfDvS0lPdEK/2D6gsDLEOJhENMrNZ
+	4ud5U2DGo2lKgjhda8pMU+FlZF1rQ2ytwR+6uvQ9m5ysYgHr5nZfsTcQx+HKUewZ
+	ZVBCX6ACEOLkSnm13T12n5uKkDhvFh2kxFfn1aTNeZlqhLPrVQljYBr+G5znpOv9
+	qyM/6L32vRYKF1BchNb6g==
+X-ME-Sender: <xms:LJG9ZTaAqp5UVv6mZEkZqQtLol6F8SKUOezgqd_EDQrKdcM_V5ts6Q>
+    <xme:LJG9ZSY3hwtEnrTzJL6CVDvbFOyk-k3nlptExkJjroiqFJOecxw5huxvF-GDyrT0g
+    obBXG3MeyF3Gg>
+X-ME-Received: <xmr:LJG9ZV_3hiabN4vih3lZA5CcIC85o6cK7wadcygCTkEC7aFDgKJTJXqSVdzf>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrfeduhedgfedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpefirhgv
+    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpefgke
+    ffieefieevkeelteejvdetvddtledugfdvhfetjeejieduledtfefffedvieenucevlhhu
+    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhroh
+    grhhdrtghomh
+X-ME-Proxy: <xmx:LJG9ZZoZLlwPf6dBhzfapY0Rxw6Nga5etr8h9iKTmtUdPNzICMeDDg>
+    <xmx:LJG9ZeoG3QwGBclnmRhqnPKiqRRtRr48Di7KEMpOR1WT2s5ZOC-pjA>
+    <xmx:LJG9ZfTJ8NqC24Yr08i1eE6ruudg36S5MQ98o53u9RJIqWZJi5uBcQ>
+    <xmx:LZG9Zd3UxDpzhfklYPwLZglPIoPUPlIWXjEmgg67ZJ82hoMorT-Vgg>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 2 Feb 2024 20:04:44 -0500 (EST)
+Date: Fri, 2 Feb 2024 17:04:43 -0800
+From: Greg KH <greg@kroah.com>
+To: Chuck Lever III <chuck.lever@oracle.com>
+Cc: linux-stable <stable@vger.kernel.org>, Chuck Lever <cel@kernel.org>,
+	Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+	Neil Brown <neilb@suse.de>
+Subject: Re: [PATCH 0/3] Fix RELEASE_LOCKOWNER
+Message-ID: <2024020226-aviation-enviably-2f87@gregkh>
+References: <170681433624.15250.5881267576986350500.stgit@klimt.1015granger.net>
+ <170682628772.13976.3551007711597007133@noble.neil.brown.name>
+ <FF7C90E0-251D-48D2-908B-E2145B0B9BAE@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "NeilBrown" <neilb@suse.de>
-To: "Chuck Lever III" <chuck.lever@oracle.com>
-Cc: "linux-stable" <stable@vger.kernel.org>, "Chuck Lever" <cel@kernel.org>,
- "Linux NFS Mailing List" <linux-nfs@vger.kernel.org>
-Subject: Re: [PATCH 0/3] Fix RELEASE_LOCKOWNER
-In-reply-to: <FF7C90E0-251D-48D2-908B-E2145B0B9BAE@oracle.com>
-References:
- <170681433624.15250.5881267576986350500.stgit@klimt.1015granger.net>,
- <170682628772.13976.3551007711597007133@noble.neil.brown.name>,
- <FF7C90E0-251D-48D2-908B-E2145B0B9BAE@oracle.com>
-Date: Sat, 03 Feb 2024 11:26:06 +1100
-Message-id: <170691996664.13976.18138125578593325497@noble.neil.brown.name>
-X-Spam-Level: 
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="z9pk/ywi";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=YQZqZITh
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	 FROM_HAS_DN(0.00)[];
-	 RCPT_COUNT_THREE(0.00)[4];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 MIME_GOOD(-0.10)[text/plain];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 DKIM_TRACE(0.00)[suse.de:+];
-	 MX_GOOD(-0.01)[];
-	 TO_DN_ALL(0.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:email,nfslock01.sh:url,suse.com:url];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
-	 RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from]
-X-Spam-Score: -4.51
-X-Rspamd-Queue-Id: 1D60021FCF
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <FF7C90E0-251D-48D2-908B-E2145B0B9BAE@oracle.com>
 
-On Sat, 03 Feb 2024, Chuck Lever III wrote:
->=20
->=20
-> > On Feb 1, 2024, at 5:24=E2=80=AFPM, NeilBrown <neilb@suse.de> wrote:
-> >=20
+On Fri, Feb 02, 2024 at 02:12:11PM +0000, Chuck Lever III wrote:
+> 
+> 
+> > On Feb 1, 2024, at 5:24 PM, NeilBrown <neilb@suse.de> wrote:
+> > 
 > > On Fri, 02 Feb 2024, Chuck Lever wrote:
 > >> Passes pynfs, fstests, and the git regression suite. Please apply
 > >> these to origin/linux-5.4.y.
-> >=20
+> > 
 > > I should have mentioned this a day or two ago but I hadn't quite made
 > > all the connection yet...
-> >=20
+> > 
 > > The RELEASE_LOCKOWNER bug was masking a double-free bug that was fixed
 > > by
 > > Commit 47446d74f170 ("nfsd4: add refcount for nfsd4_blocked_lock")
-> > which landed in v5.17 and wasn't marked as a bugfix, and so has not gone =
-to
+> > which landed in v5.17 and wasn't marked as a bugfix, and so has not gone to
 > > stable kernels.
->=20
+> 
 > Then, instructions to stable@vger.kernel.org:
->=20
+> 
 > Do not apply the patches I just sent for 5.15, 5.10, and 5.4. I will
 > apply 47446d74f170, run the tests again, and resend.
->=20
->=20
-> > Any kernel earlier than v5.17 that receives the RELEASE_LOCKOWNER fix
-> > also needs the nfsd4_blocked_lock fix.  There is a minor follow-up fix
-> > for that nfsd4_blocked_lock fix which Chuck queued yesterday.
-> >=20
-> > The problem scenario is that an nfsd4_lock() call finds a conflicting
-> > lock and so has a reference to a particular nfsd4_blocked_lock.  A concur=
-rent
-> > nfsd4_read_lockowner call frees all the nfsd4_blocked_locks including
-> > the one held in nfsd4_lock().  nfsd4_lock then tries to free the
-> > blocked_lock it has, and results in a double-free or a use-after-free.
-> >=20
-> > Before either patch is applied, the extra reference on the lock-owner
-> > than nfsd4_lock holds causes nfsd4_realease_lockowner() to incorrectly
-> > return an error and NOT free the blocks_lock.
-> > With only the RELEASE_LOCKOWNER fix applied, the double-free happens.
->=20
-> Our test suite currently does not exercise this use case, apparently.
-> I didn't see a problem like this during testing.
->=20
 
-Our OpenQA testing found it (as did our customer :-).
-Quoting from a bugzilla that unfortunately is not public (though might
-not be accessible to anyone with an account)
+Thanks for letting us know, I've dropped them from my review queue.
 
-https://bugzilla.suse.com/show_bug.cgi?id=3D1219349
-
-     LTP test nfslock01.sh randomly fails on the latest SLE-15SP4 and
-     SLE-15SP5 KOTD.  The failures appear only when testing NFS protocol
-     v4.0, other versions do not seem to be affected.  The test either
-     gets stuck or sometimes triggers kernel oops.  The contents of the
-     kernel backtrace vary.  All archs appear to be affected.=20
-
-Does your test suite cover v4.0?  Does it include LTP ?
-
-Thanks,
-NeilBrown
-
-
->=20
-> > With both patches applied the refcount on the nfsd4_blocked_lock prevents
-> > the double-free.
-> >=20
-> > Kernels before 4.9 are (probably) not affected as they didn't have
-> > find_or_allocate_block() which takes the second reference to a shared
-> > object.  But that is ancient history - those kernels are well past EOL.
-> >=20
-> > Thanks,
-> > NeilBrown
-> >=20
-> >=20
-> >>=20
-> >> ---
-> >>=20
-> >> Chuck Lever (2):
-> >>      NFSD: Modernize nfsd4_release_lockowner()
-> >>      NFSD: Add documenting comment for nfsd4_release_lockowner()
-> >>=20
-> >> NeilBrown (1):
-> >>      nfsd: fix RELEASE_LOCKOWNER
-> >>=20
-> >>=20
-> >> fs/nfsd/nfs4state.c | 65 +++++++++++++++++++++++++--------------------
-> >> 1 file changed, 36 insertions(+), 29 deletions(-)
-> >>=20
-> >> --
-> >> Chuck Lever
-> >>=20
-> >>=20
-> >>=20
-> >=20
->=20
-> --
-> Chuck Lever
->=20
->=20
->=20
-
+greg k-h
 
