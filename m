@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB9C848054
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784598482CE
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEA741C21161
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17D461F214DC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF67125B6;
-	Sat,  3 Feb 2024 04:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6AB13FE2;
+	Sat,  3 Feb 2024 04:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0BLuO7f8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjZMXUeP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D71212B8D;
-	Sat,  3 Feb 2024 04:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE0913AC6;
+	Sat,  3 Feb 2024 04:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933353; cv=none; b=Ivk/bE6/GcOunNAV/brPKq9Mqh/o98vXPOCxDw+nHg2f5v1SUv6Xt36/NsGkieJ8U4TPKEuJDy/4TELar61nks2dLQKd/MBsaN++NDD9cw1Wc3NnyrUJk+R/EOAUCIE7GcmiioTYznACCCd/yAu9GXRT6FiabuwQuwYpRpV/7E8=
+	t=1706933814; cv=none; b=Je9UauH+bBVUagMKQzYiZz0Vuwrm2N4sg86IpXRQzOju2uxtCVFqfIlMh7lG+JSEcE6k7qlckDdaVDCvKv2BTr7KYmfevLsUmZ+Av3r0wyscKItl99dpaPfMa62ApL1dcKQ7eKTspRAMP8mWynyBuLEy7fUcirNxlexfarjV9bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933353; c=relaxed/simple;
-	bh=dy05Eef2UpUWZYinDW5egm1u8FY/Vd1KD2ISML067b4=;
+	s=arc-20240116; t=1706933814; c=relaxed/simple;
+	bh=t9j2Ves5IwtewQraNJZAXjIiaFix2xBfWUYV/Nd0FK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=klyip6Kd1DXnlBY0H/BDXfPqJBKn3Aqf5MVRu2lvlXed/rj4LC9IDep5SDP8t5DOTS3jeQGdvBQnoTZKQEOG5XxXq+CznC9zV5UUEMO9vHEugRbrNyVMHzzvPIFLHhpyXJxmJV7e6mKayXeXfRgWtvgVizehQnUQ8r0wbmgaunc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0BLuO7f8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57718C43399;
-	Sat,  3 Feb 2024 04:09:13 +0000 (UTC)
+	 MIME-Version; b=VFx/545GZ2sxT1uzht4ySwqSAU1QqsXd0eFzBA2RvXx2UxtUbxDbm2IbSGUaY0xb0C/ZvvNyO1riJZFCSwZlzBPk0mOLyW4Y4hBlZ5pwgHw3z2DBZh6fZb52Un75bfo7tyuUZCsVqCahW8cm631Zcl/qtuy0JO1MDGsFHTmrVYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjZMXUeP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15534C43390;
+	Sat,  3 Feb 2024 04:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933353;
-	bh=dy05Eef2UpUWZYinDW5egm1u8FY/Vd1KD2ISML067b4=;
+	s=korg; t=1706933814;
+	bh=t9j2Ves5IwtewQraNJZAXjIiaFix2xBfWUYV/Nd0FK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0BLuO7f8hFsnmn2BK8baXatvc6UWmHq+qmvTjNL/1hvmBOtYMP7lTLzMJdfV6sW4i
-	 a18lv5UnjQkr0Kk8HZPjxNnm0HdIE9nq1tu4B7XnMdsXVe3DV4EXdecMwmZ/15TCE2
-	 mqZr3gfuJdm7u8sEcLGFmkwaBEJLWHaXbDIooKms=
+	b=yjZMXUePIS6rXHLvuc2w7nNFME0jIoO3/B8WK8OJWOl6YNIBaKRpp6oZVWl6/7+2c
+	 YGx3TCtAEKsc6E1bxhc32AyBa8WM6Nv+iFOkQeok+wUe35P1+yJzD7rHBimaBnGX+w
+	 5/loeNLOBz+TOaEgJG3hqGUFqfh9KrO+jiwETYPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/219] ARM: dts: imx7d: Fix coresight funnel ports
-Date: Fri,  2 Feb 2024 20:03:51 -0800
-Message-ID: <20240203035325.190028016@linuxfoundation.org>
+Subject: [PATCH 6.7 114/353] net: phy: at803x: fix passing the wrong reference for config_intr
+Date: Fri,  2 Feb 2024 20:03:52 -0800
+Message-ID: <20240203035407.364138321@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit 0d4ac04fa7c3f6dc263dba6f575a2ec7a2d4eca8 ]
+[ Upstream commit f8fdbf3389f44c7026f16e36cb1f2ff017f7f5b2 ]
 
-imx7d uses two ports for 'in-ports', so the syntax port@<num> has to
-be used. imx7d has both port and port@1 nodes present, raising these
-error:
-funnel@30041000: in-ports: More than one condition true in oneOf schema
-funnel@30041000: Unevaluated properties are not allowed
-('in-ports' was unexpected)
+Fix passing the wrong reference for config_initr on passing the function
+pointer, drop the wrong & from at803x_config_intr in the PHY struct.
 
-Fix this by also using port@0 for imx7s as well.
-
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx7d.dtsi | 3 ---
- arch/arm/boot/dts/imx7s.dtsi | 6 +++++-
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/phy/at803x.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx7d.dtsi b/arch/arm/boot/dts/imx7d.dtsi
-index 7ceb7c09f7ad..7ef685fdda55 100644
---- a/arch/arm/boot/dts/imx7d.dtsi
-+++ b/arch/arm/boot/dts/imx7d.dtsi
-@@ -208,9 +208,6 @@
- };
- 
- &ca_funnel_in_ports {
--	#address-cells = <1>;
--	#size-cells = <0>;
--
- 	port@1 {
- 		reg = <1>;
- 		ca_funnel_in_port1: endpoint {
-diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
-index 45947707134b..7c153c3e8238 100644
---- a/arch/arm/boot/dts/imx7s.dtsi
-+++ b/arch/arm/boot/dts/imx7s.dtsi
-@@ -190,7 +190,11 @@
- 			clock-names = "apb_pclk";
- 
- 			ca_funnel_in_ports: in-ports {
--				port {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				port@0 {
-+					reg = <0>;
- 					ca_funnel_in_port0: endpoint {
- 						remote-endpoint = <&etm0_out_port>;
- 					};
+diff --git a/drivers/net/phy/at803x.c b/drivers/net/phy/at803x.c
+index 37fb033e1c29..ef203b0807e5 100644
+--- a/drivers/net/phy/at803x.c
++++ b/drivers/net/phy/at803x.c
+@@ -2104,7 +2104,7 @@ static struct phy_driver at803x_driver[] = {
+ 	.write_page		= at803x_write_page,
+ 	.get_features		= at803x_get_features,
+ 	.read_status		= at803x_read_status,
+-	.config_intr		= &at803x_config_intr,
++	.config_intr		= at803x_config_intr,
+ 	.handle_interrupt	= at803x_handle_interrupt,
+ 	.get_tunable		= at803x_get_tunable,
+ 	.set_tunable		= at803x_set_tunable,
+@@ -2134,7 +2134,7 @@ static struct phy_driver at803x_driver[] = {
+ 	.resume			= at803x_resume,
+ 	.flags			= PHY_POLL_CABLE_TEST,
+ 	/* PHY_BASIC_FEATURES */
+-	.config_intr		= &at803x_config_intr,
++	.config_intr		= at803x_config_intr,
+ 	.handle_interrupt	= at803x_handle_interrupt,
+ 	.cable_test_start	= at803x_cable_test_start,
+ 	.cable_test_get_status	= at803x_cable_test_get_status,
+@@ -2150,7 +2150,7 @@ static struct phy_driver at803x_driver[] = {
+ 	.resume			= at803x_resume,
+ 	.flags			= PHY_POLL_CABLE_TEST,
+ 	/* PHY_BASIC_FEATURES */
+-	.config_intr		= &at803x_config_intr,
++	.config_intr		= at803x_config_intr,
+ 	.handle_interrupt	= at803x_handle_interrupt,
+ 	.cable_test_start	= at803x_cable_test_start,
+ 	.cable_test_get_status	= at803x_cable_test_get_status,
 -- 
 2.43.0
 
