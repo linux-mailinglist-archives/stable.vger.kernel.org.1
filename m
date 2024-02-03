@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-18355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41E14848266
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 272D7848133
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65BA51C24D3E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:25:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78B92B2AD5E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC78134D2;
-	Sat,  3 Feb 2024 04:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89501CA8B;
+	Sat,  3 Feb 2024 04:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTl5dBlo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9rt1VT3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18240134C6;
-	Sat,  3 Feb 2024 04:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C661118F;
+	Sat,  3 Feb 2024 04:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933738; cv=none; b=uTdkoUsQQTtir0CZWE2rYftlsSDRErQsCZeLMO581Wijdj7BFfcZyuZxOWW6A4EK6Sqgdxz1kgGFnUE9mx8WMKHNCkHwb5qFBFGZ8XiMOedUv3o7b4HutaTggrw3hVrRfOwu1uYI6oVP1b/ASqgG0K7JPqeL1K9oGU3u3iOZUTM=
+	t=1706933512; cv=none; b=ep3qgCiD/NNfLSe5mZqyWCJTwoIfgjDd7OMe/928ONg150UJceUlP/njZPQ5lqtO85roozqiciOotaWIYdXfW6nl7ma6oZChhpNoxqKSbW3IIn9X5z8mR56EYvVMqlKJFuKeTQKf3pr9hbILiwMarVuYOCNJOEmYHvHP1TRPrSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933738; c=relaxed/simple;
-	bh=jD10W1LCeQjAk8zhyjwwqxuSHRy8bsXQ+Zz32A0hU6c=;
+	s=arc-20240116; t=1706933512; c=relaxed/simple;
+	bh=0fLrqwkn4Bxgn44cu8x2W0e3L2dnp8M7Q+UcToVfOU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EvXu27v1wG9w0MKrtzC8kE7jweWKpwF3mehmE6ibpC+VHAEbdTB3m43MK7IPNK8ScAA/aQxhhVeVTYfoGxozRqmxJTq/5Izn4eqcvq04fsrEMv3rEsODh1qv4xCUr+2pqKVjs2Xe/S0SKA+mxw7bgzBqMaOzXX9a1JYCs2GHeSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTl5dBlo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D27CAC433F1;
-	Sat,  3 Feb 2024 04:15:37 +0000 (UTC)
+	 MIME-Version; b=uzKzUhNNahTY5qEkwNG82Wujh/bgt/LRMEN2Wlc5H24BJJX8ITLDLQZtB5or8N3I50kgxF4230ZUsoisaTA1x5WWaH88bVqGa+wBvpeo7t44hvirOlMmoJUZwdfsqVanO7F6FhLIHZGNedONh8rNCbLg/NaZg6ssencRAGt6Z9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9rt1VT3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BF9C43390;
+	Sat,  3 Feb 2024 04:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933737;
-	bh=jD10W1LCeQjAk8zhyjwwqxuSHRy8bsXQ+Zz32A0hU6c=;
+	s=korg; t=1706933512;
+	bh=0fLrqwkn4Bxgn44cu8x2W0e3L2dnp8M7Q+UcToVfOU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uTl5dBlokwXRzwhCSdcxlW4R7uTWMgV154ZVyiH7sYFhFq9VbD0dLNHtoUv6hIGii
-	 ag4dI5EiVj8sx6u3y0433SEJtZfvr+AsXVCjzxGQgQfo3bBBruuCxE9JACOe/h8zPD
-	 of5jGNc82lfdsRg9NnAVQzyXBBRTqxqks2hA6Ebs=
+	b=a9rt1VT3rFOGcYt+sk3pofT3dQjWAXpQ9L9+o5hAqqt4zJPFBhq7x7e5hctzLUkCa
+	 9owCbY8rjQRKrZ3wUk7+SUcxaRLjpGMflhassO7yJGVCfUntsDrXnQ8yXnhmmvseYP
+	 kKOYpVZBThVtT2+Bsa1A7hIzSrz8Idzwz4Pom6Mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Ma Wupeng <mawupeng1@huawei.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Xiaofei Tan <tanxiaofei@huawei.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	James Morse <james.morse@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 027/353] ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on synchronous events
-Date: Fri,  2 Feb 2024 20:02:25 -0800
-Message-ID: <20240203035404.629091026@linuxfoundation.org>
+Subject: [PATCH 6.6 049/322] SUNRPC: Fix a suspicious RCU usage warning
+Date: Fri,  2 Feb 2024 20:02:26 -0800
+Message-ID: <20240203035400.696252921@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,145 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Anna Schumaker <Anna.Schumaker@Netapp.com>
 
-[ Upstream commit a70297d2213253853e95f5b49651f924990c6d3b ]
+[ Upstream commit 31b62908693c90d4d07db597e685d9f25a120073 ]
 
-There are two major types of uncorrected recoverable (UCR) errors :
+I received the following warning while running cthon against an ontap
+server running pNFS:
 
- - Synchronous error: The error is detected and raised at the point of
-   the consumption in the execution flow, e.g. when a CPU tries to
-   access a poisoned cache line. The CPU will take a synchronous error
-   exception such as Synchronous External Abort (SEA) on Arm64 and
-   Machine Check Exception (MCE) on X86. OS requires to take action (for
-   example, offline failure page/kill failure thread) to recover this
-   uncorrectable error.
+[   57.202521] =============================
+[   57.202522] WARNING: suspicious RCU usage
+[   57.202523] 6.7.0-rc3-g2cc14f52aeb7 #41492 Not tainted
+[   57.202525] -----------------------------
+[   57.202525] net/sunrpc/xprtmultipath.c:349 RCU-list traversed in non-reader section!!
+[   57.202527]
+               other info that might help us debug this:
 
- - Asynchronous error: The error is detected out of processor execution
-   context, e.g. when an error is detected by a background scrubber.
-   Some data in the memory are corrupted. But the data have not been
-   consumed. OS is optional to take action to recover this uncorrectable
-   error.
+[   57.202528]
+               rcu_scheduler_active = 2, debug_locks = 1
+[   57.202529] no locks held by test5/3567.
+[   57.202530]
+               stack backtrace:
+[   57.202532] CPU: 0 PID: 3567 Comm: test5 Not tainted 6.7.0-rc3-g2cc14f52aeb7 #41492 5b09971b4965c0aceba19f3eea324a4a806e227e
+[   57.202534] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 2/2/2022
+[   57.202536] Call Trace:
+[   57.202537]  <TASK>
+[   57.202540]  dump_stack_lvl+0x77/0xb0
+[   57.202551]  lockdep_rcu_suspicious+0x154/0x1a0
+[   57.202556]  rpc_xprt_switch_has_addr+0x17c/0x190 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202596]  rpc_clnt_setup_test_and_add_xprt+0x50/0x180 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202621]  ? rpc_clnt_add_xprt+0x254/0x300 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202646]  rpc_clnt_add_xprt+0x27a/0x300 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202671]  ? __pfx_rpc_clnt_setup_test_and_add_xprt+0x10/0x10 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202696]  nfs4_pnfs_ds_connect+0x345/0x760 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202728]  ? __pfx_nfs4_test_session_trunk+0x10/0x10 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202754]  nfs4_fl_prepare_ds+0x75/0xc0 [nfs_layout_nfsv41_files e3a4187f18ae8a27b630f9feae6831b584a9360a]
+[   57.202760]  filelayout_write_pagelist+0x4a/0x200 [nfs_layout_nfsv41_files e3a4187f18ae8a27b630f9feae6831b584a9360a]
+[   57.202765]  pnfs_generic_pg_writepages+0xbe/0x230 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202788]  __nfs_pageio_add_request+0x3fd/0x520 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202813]  nfs_pageio_add_request+0x18b/0x390 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202831]  nfs_do_writepage+0x116/0x1e0 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202849]  nfs_writepages_callback+0x13/0x30 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202866]  write_cache_pages+0x265/0x450
+[   57.202870]  ? __pfx_nfs_writepages_callback+0x10/0x10 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202891]  nfs_writepages+0x141/0x230 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202913]  do_writepages+0xd2/0x230
+[   57.202917]  ? filemap_fdatawrite_wbc+0x5c/0x80
+[   57.202921]  filemap_fdatawrite_wbc+0x67/0x80
+[   57.202924]  filemap_write_and_wait_range+0xd9/0x170
+[   57.202930]  nfs_wb_all+0x49/0x180 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202947]  nfs4_file_flush+0x72/0xb0 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202969]  __se_sys_close+0x46/0xd0
+[   57.202972]  do_syscall_64+0x68/0x100
+[   57.202975]  ? do_syscall_64+0x77/0x100
+[   57.202976]  ? do_syscall_64+0x77/0x100
+[   57.202979]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+[   57.202982] RIP: 0033:0x7fe2b12e4a94
+[   57.202985] Code: 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 80 3d d5 18 0e 00 00 74 13 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 44 c3 0f 1f 00 48 83 ec 18 89 7c 24 0c e8 c3
+[   57.202987] RSP: 002b:00007ffe857ddb38 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
+[   57.202989] RAX: ffffffffffffffda RBX: 00007ffe857dfd68 RCX: 00007fe2b12e4a94
+[   57.202991] RDX: 0000000000002000 RSI: 00007ffe857ddc40 RDI: 0000000000000003
+[   57.202992] RBP: 00007ffe857dfc50 R08: 7fffffffffffffff R09: 0000000065650f49
+[   57.202993] R10: 00007fe2b11f8300 R11: 0000000000000202 R12: 0000000000000000
+[   57.202994] R13: 00007ffe857dfd80 R14: 00007fe2b1445000 R15: 0000000000000000
+[   57.202999]  </TASK>
 
-When APEI firmware first is enabled, a platform may describe one error
-source for the handling of synchronous errors (e.g. MCE or SEA notification
-), or for handling asynchronous errors (e.g. SCI or External Interrupt
-notification). In other words, we can distinguish synchronous errors by
-APEI notification. For synchronous errors, kernel will kill the current
-process which accessing the poisoned page by sending SIGBUS with
-BUS_MCEERR_AR. In addition, for asynchronous errors, kernel will notify the
-process who owns the poisoned page by sending SIGBUS with BUS_MCEERR_AO in
-early kill mode. However, the GHES driver always sets mf_flags to 0 so that
-all synchronous errors are handled as asynchronous errors in memory failure.
+The problem seems to be that two out of three callers aren't taking the
+rcu_read_lock() before calling the list_for_each_entry_rcu() function in
+rpc_xprt_switch_has_addr(). I fix this by having
+rpc_xprt_switch_has_addr() unconditionaly take the rcu_read_lock(),
+which is okay to do recursively in the case that the lock has already
+been taken by a caller.
 
-To this end, set memory failure flags as MF_ACTION_REQUIRED on synchronous
-events.
-
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Tested-by: Ma Wupeng <mawupeng1@huawei.com>
-Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reviewed-by: James Morse <james.morse@arm.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/ghes.c | 29 +++++++++++++++++++++++------
- 1 file changed, 23 insertions(+), 6 deletions(-)
+ net/sunrpc/xprtmultipath.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 63ad0541db38..ab2a82cb1b0b 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -101,6 +101,20 @@ static inline bool is_hest_type_generic_v2(struct ghes *ghes)
- 	return ghes->generic->header.type == ACPI_HEST_TYPE_GENERIC_ERROR_V2;
+diff --git a/net/sunrpc/xprtmultipath.c b/net/sunrpc/xprtmultipath.c
+index 74ee2271251e..720d3ba742ec 100644
+--- a/net/sunrpc/xprtmultipath.c
++++ b/net/sunrpc/xprtmultipath.c
+@@ -336,8 +336,9 @@ struct rpc_xprt *xprt_iter_current_entry_offline(struct rpc_xprt_iter *xpi)
+ 			xprt_switch_find_current_entry_offline);
  }
  
-+/*
-+ * A platform may describe one error source for the handling of synchronous
-+ * errors (e.g. MCE or SEA), or for handling asynchronous errors (e.g. SCI
-+ * or External Interrupt). On x86, the HEST notifications are always
-+ * asynchronous, so only SEA on ARM is delivered as a synchronous
-+ * notification.
-+ */
-+static inline bool is_hest_sync_notify(struct ghes *ghes)
-+{
-+	u8 notify_type = ghes->generic->notify.type;
-+
-+	return notify_type == ACPI_HEST_NOTIFY_SEA;
-+}
-+
- /*
-  * This driver isn't really modular, however for the time being,
-  * continuing to use module_param is the easiest way to remain
-@@ -489,7 +503,7 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
- }
- 
- static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
--				       int sev)
-+				       int sev, bool sync)
+-bool rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
+-			      const struct sockaddr *sap)
++static
++bool __rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
++				const struct sockaddr *sap)
  {
- 	int flags = -1;
- 	int sec_sev = ghes_severity(gdata->error_severity);
-@@ -503,7 +517,7 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
- 	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
- 		flags = MF_SOFT_OFFLINE;
- 	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
--		flags = 0;
-+		flags = sync ? MF_ACTION_REQUIRED : 0;
- 
- 	if (flags != -1)
- 		return ghes_do_memory_failure(mem_err->physical_addr, flags);
-@@ -511,9 +525,11 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+ 	struct list_head *head;
+ 	struct rpc_xprt *pos;
+@@ -356,6 +357,18 @@ bool rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
  	return false;
  }
  
--static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
-+static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
-+				       int sev, bool sync)
- {
- 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
-+	int flags = sync ? MF_ACTION_REQUIRED : 0;
- 	bool queued = false;
- 	int sec_sev, i;
- 	char *p;
-@@ -538,7 +554,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int s
- 		 * and don't filter out 'corrected' error here.
- 		 */
- 		if (is_cache && has_pa) {
--			queued = ghes_do_memory_failure(err_info->physical_fault_addr, 0);
-+			queued = ghes_do_memory_failure(err_info->physical_fault_addr, flags);
- 			p += err_info->length;
- 			continue;
- 		}
-@@ -666,6 +682,7 @@ static bool ghes_do_proc(struct ghes *ghes,
- 	const guid_t *fru_id = &guid_null;
- 	char *fru_text = "";
- 	bool queued = false;
-+	bool sync = is_hest_sync_notify(ghes);
- 
- 	sev = ghes_severity(estatus->error_severity);
- 	apei_estatus_for_each_section(estatus, gdata) {
-@@ -683,13 +700,13 @@ static bool ghes_do_proc(struct ghes *ghes,
- 			atomic_notifier_call_chain(&ghes_report_chain, sev, mem_err);
- 
- 			arch_apei_report_mem_error(sev, mem_err);
--			queued = ghes_handle_memory_failure(gdata, sev);
-+			queued = ghes_handle_memory_failure(gdata, sev, sync);
- 		}
- 		else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
- 			ghes_handle_aer(gdata);
- 		}
- 		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
--			queued = ghes_handle_arm_hw_error(gdata, sev);
-+			queued = ghes_handle_arm_hw_error(gdata, sev, sync);
- 		} else {
- 			void *err = acpi_hest_get_payload(gdata);
- 
++bool rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
++			      const struct sockaddr *sap)
++{
++	bool res;
++
++	rcu_read_lock();
++	res = __rpc_xprt_switch_has_addr(xps, sap);
++	rcu_read_unlock();
++
++	return res;
++}
++
+ static
+ struct rpc_xprt *xprt_switch_find_next_entry(struct list_head *head,
+ 		const struct rpc_xprt *cur, bool check_active)
 -- 
 2.43.0
 
