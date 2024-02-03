@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A668480AA
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E0484832E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35FDF1F21E06
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CA6F1F20F02
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5775A17BC4;
-	Sat,  3 Feb 2024 04:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E289850A79;
+	Sat,  3 Feb 2024 04:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vo4p6YUt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9QEq7y0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F78125A9;
-	Sat,  3 Feb 2024 04:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02F350A73;
+	Sat,  3 Feb 2024 04:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933419; cv=none; b=CRr/PR/Sbb3GqB7jFFXilZ88iMmIdF3IUP59pfzKhQdf9Umbnq76+f0g2FJ2oew4UY4R47W87RzhY/iIQM9ZCtlAdy+Y53o5XMu91nBKiM8hi0/j2Jd++uiNhdJwhZXRawPWp/GyurF6Nob3YPD9Th4TcMH75aSL4FDJVL+QJ7A=
+	t=1706933883; cv=none; b=mFqfgVEe8xonsKnbwT4jnrbmucZF/8zGVNmiAqo5duCZgxuJZDoKhK7ivovOfugl1B9hGCJXUfr6mn52gISmkbqn426n2YP91SEvIiYrcFDDyTN9oEXlJuaYv8AJjvQ2ZoZTJ4RvA8lbRQwgDknBRzRCSz0uib/kkQ6M5wk/Hdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933419; c=relaxed/simple;
-	bh=lfJW+YRL3UdMrMIiNGiiTZ9mwSPT7zJLTima4NQhj9M=;
+	s=arc-20240116; t=1706933883; c=relaxed/simple;
+	bh=WaMOY/kdvFG2Us3rwEU41F5NsFl+Wu/gnrXJJ6AnQJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PmO+8FjcDgRR0jGFhTpZiffQeWoBxpnu894xa5Yf1jePcMdh+iIKFdJzTQuzXtTJjCXTkQP3jTwwTK3EmhYnyOYWSv5uzgV5YTT9KsEm88/Xhh8C8WQ1573btW0RMdyR7Exz5NUlXkYm4+ylKiWh/FGoh36MxoBvQ7DDI9bIcHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vo4p6YUt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC426C43390;
-	Sat,  3 Feb 2024 04:10:18 +0000 (UTC)
+	 MIME-Version; b=qpGdGZgQx9JQ+5N6MJv4McJ+OPybgrzDAzxJ6o+ebyJgPxGrF/KUYuohPqSH6PpX2tGFEqkVKZ/9z61l/PnDrh7CDnRcI0WfPq6tGI21qiCNz9l0IhTBTHPnti97ClLdKxLIstdyoKIh45McnmADBdkiMQAycyh9VYCOtgrvkIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9QEq7y0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62788C433B1;
+	Sat,  3 Feb 2024 04:18:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933418;
-	bh=lfJW+YRL3UdMrMIiNGiiTZ9mwSPT7zJLTima4NQhj9M=;
+	s=korg; t=1706933883;
+	bh=WaMOY/kdvFG2Us3rwEU41F5NsFl+Wu/gnrXJJ6AnQJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vo4p6YUthbgfPFaglqeVgLiE3ZY0WHIqCOZmctk4LGYYuZZ4LpqgYPftyHfkEZy79
-	 3VEH4QLGjdKZRUH7gJi5hYuY8XtDRZegzOJG5dCWUxTiexSOZd7H3TqBdeCDn2+Owg
-	 5iQ1Rfgb38wZD84PMilwbVbZRu9oF/c6kyja7m2k=
+	b=g9QEq7y01segPb0wV4+ey8iwlNaGM0WvkjdmnLHErHQ1poqbE/EWc36jpSjlWFkiB
+	 WtzQRQFwrSaNGzK3pc9QfC9WuVIXK92k5a7keq9T24LTIlH+ZTuJA0CLS4eVUkwjnb
+	 TDaF0OOSyI4PIJU0hVBPsAcvuSeUzBUIT1u3lLbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 142/219] drm/amdgpu: Let KFD sync with VM fences
+Subject: [PATCH 6.7 197/353] f2fs: fix to tag gcing flag on page during block migration
 Date: Fri,  2 Feb 2024 20:05:15 -0800
-Message-ID: <20240203035337.421073874@linuxfoundation.org>
+Message-ID: <20240203035409.920797432@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +60,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Kuehling <Felix.Kuehling@amd.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit ec9ba4821fa52b5efdbc4cdf0a77497990655231 ]
+[ Upstream commit 4961acdd65c956e97c1a000c82d91a8c1cdbe44b ]
 
-Change the rules for amdgpu_sync_resv to let KFD synchronize with VM
-fences on page table reservations. This fixes intermittent memory
-corruption after evictions when using amdgpu_vm_handle_moved to update
-page tables for VM mappings managed through render nodes.
+It needs to add missing gcing flag on page during block migration,
+in order to garantee migrated data be persisted during checkpoint,
+otherwise out-of-order persistency between data and node may cause
+data corruption after SPOR.
 
-Signed-off-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Similar issue was fixed by commit 2d1fe8a86bf5 ("f2fs: fix to tag
+gcing flag on page during file defragment").
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/f2fs/compress.c | 4 +++-
+ fs/f2fs/file.c     | 2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
-index 090e66a1b284..54bdbd83a8cc 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
-@@ -191,7 +191,8 @@ static bool amdgpu_sync_test_fence(struct amdgpu_device *adev,
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index 36e5dab6baae..62119f3f7206 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1036,8 +1036,10 @@ static void set_cluster_dirty(struct compress_ctx *cc)
+ 	int i;
  
- 	/* Never sync to VM updates either. */
- 	if (fence_owner == AMDGPU_FENCE_OWNER_VM &&
--	    owner != AMDGPU_FENCE_OWNER_UNDEFINED)
-+	    owner != AMDGPU_FENCE_OWNER_UNDEFINED &&
-+	    owner != AMDGPU_FENCE_OWNER_KFD)
- 		return false;
+ 	for (i = 0; i < cc->cluster_size; i++)
+-		if (cc->rpages[i])
++		if (cc->rpages[i]) {
+ 			set_page_dirty(cc->rpages[i]);
++			set_page_private_gcing(cc->rpages[i]);
++		}
+ }
  
- 	/* Ignore fences depending on the sync mode */
+ static int prepare_compress_overwrite(struct compress_ctx *cc,
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 8912511980ae..a05781e708d6 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1317,6 +1317,7 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
+ 			}
+ 			memcpy_page(pdst, 0, psrc, 0, PAGE_SIZE);
+ 			set_page_dirty(pdst);
++			set_page_private_gcing(pdst);
+ 			f2fs_put_page(pdst, 1);
+ 			f2fs_put_page(psrc, 1);
+ 
+@@ -4059,6 +4060,7 @@ static int redirty_blocks(struct inode *inode, pgoff_t page_idx, int len)
+ 		f2fs_bug_on(F2FS_I_SB(inode), !page);
+ 
+ 		set_page_dirty(page);
++		set_page_private_gcing(page);
+ 		f2fs_put_page(page, 1);
+ 		f2fs_put_page(page, 0);
+ 	}
 -- 
 2.43.0
 
