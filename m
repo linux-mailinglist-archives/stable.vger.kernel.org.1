@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D0B848379
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D68848250
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E69C282354
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A8731C24263
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6688511717;
-	Sat,  3 Feb 2024 04:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F328A63B1;
+	Sat,  3 Feb 2024 04:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4jBU3Du"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACbHecy+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263DC171D4;
-	Sat,  3 Feb 2024 04:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8801B26E;
+	Sat,  3 Feb 2024 04:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933938; cv=none; b=NYBEN5LciMhT+GUO3rJvrVrptE/JS4HbccxKMLjT55TB9YIugwtKcrYYM0jn9ue2MZtVXr1J9aNv+bdgCU70xwheuK7spljud8tKcicL6A/n1AUgDwOAcc9ArS4wsHIu7fdve6JpvfcTPNli+isoAchnpSOzY0wt4pS4Ulrr+ck=
+	t=1706933722; cv=none; b=qBTwBsiAeS4imbwY5HvHUZYvIy3CzYy4u5/yoJ21V4sPyhvO6tov9wbuif17s880Q3oh/F18gNvHeNBhj9r0wcM+2M8gjtFeMTjKtd+ozAqgKycZCJ9r3YWjgAQYCMwF5bw3sY1bT+1i6VQP/EyThWh6BK4EQZ2GmnCxP3iFEgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933938; c=relaxed/simple;
-	bh=rC9yz0Iq1BoxsR/iztL/KRAWGJ4VzYTQbPE4o2XNSY8=;
+	s=arc-20240116; t=1706933722; c=relaxed/simple;
+	bh=qQtpXz8puYJcujvt8Za5s9PVlHAbG39wrBxLGd2kwCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tB6pEMU9MJDw9GhfUgDdJVtUqRA7lmWhQWPPJja4S8PlWDQbQo5oaM63Z2SvcHWnIjwp2OGBKHFs15EEDsRyUcaP1/Xpn2nINoNy6aLrOUE4zcc3UGRL9k92brg2PwLCwM4mFiavZ5/xDfgmyQ0tdOpfWyd+EHayUQ/6xBLlopA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4jBU3Du; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4936C433F1;
-	Sat,  3 Feb 2024 04:18:57 +0000 (UTC)
+	 MIME-Version; b=UDvnNB+P3dqK5iy8I94thUpY1+fc12XshcReczw9Om96YnWEKlc2eDMYm4kMlkjSDv7FnMyU8GenLjSsUYDHJRfTEf++9gatvhRKSsPHiGVq23Mt97nPmW/zpwre/QtT9L81TbvxkWKGxyz6aZJKNX2IngNjSIH3MX1ZkMTq1bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACbHecy+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CCCC433C7;
+	Sat,  3 Feb 2024 04:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933938;
-	bh=rC9yz0Iq1BoxsR/iztL/KRAWGJ4VzYTQbPE4o2XNSY8=;
+	s=korg; t=1706933722;
+	bh=qQtpXz8puYJcujvt8Za5s9PVlHAbG39wrBxLGd2kwCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y4jBU3DuRg9lZCkpPaRKOaKxMfrHXBxdfowkIAx50VHza1pvpMtcccrO5QGWnMV5g
-	 HhKU8d+8v4k8DE6JNhFdYUuxeQ+yh0UzhxBlWFexSX8J4skbWKC36rIkZ50ZGpjT1j
-	 C/b1tKLKAccEhTvsg+9uu4We7CZTkTOngVXz9HEc=
+	b=ACbHecy+dOU2+HORaqkONHRc6lg+GFsZbNrFi8G5TP5BTIsZRHk9EkByIyxgTNZTt
+	 t8+eBzEa3YUwWT9LtzlNgpPO67Dfnl/zSR82COLnT2wZds92Q8heuUIuo8hUa0aOYg
+	 7kr+xP5lLQPq720Y+2pdux2gvyKOW6kge9klSq8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 300/353] gve: Fix skb truesize underestimation
-Date: Fri,  2 Feb 2024 20:06:58 -0800
-Message-ID: <20240203035413.329850710@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 322/322] bonding: remove print in bond_verify_device_path
+Date: Fri,  2 Feb 2024 20:06:59 -0800
+Message-ID: <20240203035409.437774286@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Praveen Kaligineedi <pkaligineedi@google.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit 534326711000c318fe1523c77308450522baa499 ]
+commit 486058f42a4728053ae69ebbf78e9731d8ce6f8b upstream.
 
-For a skb frag with a newly allocated copy page, the true size is
-incorrectly set to packet buffer size. It should be set to PAGE_SIZE
-instead.
+As suggested by Paolo in link[1], if the memory allocation fails, the mm
+layer will emit a lot warning comprising the backtrace, so remove the
+print.
 
-Fixes: 82fd151d38d9 ("gve: Reduce alloc and copy costs in the GQ rx path")
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Link: https://lore.kernel.org/r/20240124161025.1819836-1-pkaligineedi@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1] https://lore.kernel.org/all/20231118081653.1481260-1-shaozhengchao@huawei.com/
+
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve_rx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/bonding/bond_main.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_rx.c b/drivers/net/ethernet/google/gve/gve_rx.c
-index 73655347902d..93ff7c8ec905 100644
---- a/drivers/net/ethernet/google/gve/gve_rx.c
-+++ b/drivers/net/ethernet/google/gve/gve_rx.c
-@@ -362,7 +362,7 @@ static enum pkt_hash_types gve_rss_type(__be16 pkt_flags)
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2973,11 +2973,8 @@ struct bond_vlan_tag *bond_verify_device
  
- static struct sk_buff *gve_rx_add_frags(struct napi_struct *napi,
- 					struct gve_rx_slot_page_info *page_info,
--					u16 packet_buffer_size, u16 len,
-+					unsigned int truesize, u16 len,
- 					struct gve_rx_ctx *ctx)
- {
- 	u32 offset = page_info->page_offset + page_info->pad;
-@@ -395,10 +395,10 @@ static struct sk_buff *gve_rx_add_frags(struct napi_struct *napi,
- 	if (skb != ctx->skb_head) {
- 		ctx->skb_head->len += len;
- 		ctx->skb_head->data_len += len;
--		ctx->skb_head->truesize += packet_buffer_size;
-+		ctx->skb_head->truesize += truesize;
+ 	if (start_dev == end_dev) {
+ 		tags = kcalloc(level + 1, sizeof(*tags), GFP_ATOMIC);
+-		if (!tags) {
+-			net_err_ratelimited("%s: %s: Failed to allocate tags\n",
+-					    __func__, start_dev->name);
++		if (!tags)
+ 			return ERR_PTR(-ENOMEM);
+-		}
+ 		tags[level].vlan_proto = BOND_VLAN_PROTO_NONE;
+ 		return tags;
  	}
- 	skb_add_rx_frag(skb, num_frags, page_info->page,
--			offset, len, packet_buffer_size);
-+			offset, len, truesize);
- 
- 	return ctx->skb_head;
- }
-@@ -492,7 +492,7 @@ static struct sk_buff *gve_rx_copy_to_pool(struct gve_rx_ring *rx,
- 
- 		memcpy(alloc_page_info.page_address, src, page_info->pad + len);
- 		skb = gve_rx_add_frags(napi, &alloc_page_info,
--				       rx->packet_buffer_size,
-+				       PAGE_SIZE,
- 				       len, ctx);
- 
- 		u64_stats_update_begin(&rx->statss);
--- 
-2.43.0
-
 
 
 
