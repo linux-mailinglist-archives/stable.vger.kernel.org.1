@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-18249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B278481F9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5CC8480CA
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0719B1F22A37
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 592A91F21D0D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160FE12B7B;
-	Sat,  3 Feb 2024 04:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7013F18E28;
+	Sat,  3 Feb 2024 04:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwJfXWrh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+2DefaM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE63D12B89;
-	Sat,  3 Feb 2024 04:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FAB618E0F;
+	Sat,  3 Feb 2024 04:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933657; cv=none; b=CCHhWNaATOIs3KNLv7b2mkS7b7t9SXiOWGw22zx4trlnBY2mralJJzx14TSVTXl649UmxlhmUp5KLnTKCI5LsRIub7YFJEz81nMQR7xl8quamAUJnxZ451amtSTElYS0q1SDHPF2pKESk14GM7t2H/ghfShlk/D6y/wGPuB/AZQ=
+	t=1706933440; cv=none; b=N0ahmmrwOTFnlNVoLyWWlHQKqL0oIaYC6NO8vPIiZLRNBbrA38S5KKCdPGT3KzFWF00e4Mi26zE+0LFJ5XtEWdAHwygEhBF/GkSwX39siLRDwBZb37ePsa9qgP2UHg2H6Ua4jRmORoFjm+OqBsCjMbSKZb2uXczwgCrRywOAoqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933657; c=relaxed/simple;
-	bh=fBogkLbrBsauhpd7dZTMa/u9WMKkZT22HBNmJ9R/UUA=;
+	s=arc-20240116; t=1706933440; c=relaxed/simple;
+	bh=gqZI0Y3IR6NOoHy3IlwDkp7F8Qy9ZUtw3AkpZWhJmLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y/JBZkH3NynMj5cQ9H2lF61+g5Roe140xO3RV7olfGzgVN18A2sf2dXF9CIzplq7jocYphLUXXLvlEJHX5HvQhT9D53OO1zkOgwO3w3EejNfas0Baw+I6PSBvlSf345CPTwoEtXFyHhCP57M3BiEEC3Nkhul0yD/dsWthrmbAPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwJfXWrh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77982C433F1;
-	Sat,  3 Feb 2024 04:14:17 +0000 (UTC)
+	 MIME-Version; b=kTAZJWsL3b0YBhjYrYWeR6qGcECmzcvt7qV3XRcxaeIAuKFUvZyqEvbjt2EpVm9i5Kt+JYc7fxC5ap+X9nCaqnMhtUeTnVVW7RvfpJzZOHYoHNxGPj08ZAFSiSy+9dGpg6pHk7uMXVpSPZxTPxZ822CZ2K5EiCZP1C3XrQpLUKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+2DefaM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0A0AC433C7;
+	Sat,  3 Feb 2024 04:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933657;
-	bh=fBogkLbrBsauhpd7dZTMa/u9WMKkZT22HBNmJ9R/UUA=;
+	s=korg; t=1706933440;
+	bh=gqZI0Y3IR6NOoHy3IlwDkp7F8Qy9ZUtw3AkpZWhJmLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QwJfXWrhVo0IccvG3Dzf3z67Up7Wz2MHwOdMVwpILZWANdfWopfQocREfcDC4D1MJ
-	 zYWtN02keWU8FCgjgFvQLGR7tl786dMGYoHZ6SdABuUVFmUuzM9VeyIaowPu9dERb3
-	 F9qEZFUms0v+1IfDRjLSnSuGsnIGCeTUCBgR3FtM=
+	b=w+2DefaMoGS1aFirJUBFFLZQIV6cTkBQj5rudnDDO25I+KZuKmZiE3VedC2P3ApBh
+	 21HUDsZgBeCSlXqCMouOBWBpnaK6D7GYu76Gm/i5zpJH3HSqnu1k6VAIJAM34cQMTF
+	 VDE4C9OGscwQNpsGHfIX4K6BJFUMueTA6HsSNYrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -53,12 +53,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 245/322] libsubcmd: Fix memory leak in uniq()
-Date: Fri,  2 Feb 2024 20:05:42 -0800
-Message-ID: <20240203035407.094247154@linuxfoundation.org>
+Subject: [PATCH 6.1 170/219] libsubcmd: Fix memory leak in uniq()
+Date: Fri,  2 Feb 2024 20:05:43 -0800
+Message-ID: <20240203035340.496079993@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,7 +70,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -99,10 +99,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 14 insertions(+), 4 deletions(-)
 
 diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
-index adfbae27dc36..8561b0f01a24 100644
+index bf02d62a3b2b..42f57b640f11 100644
 --- a/tools/lib/subcmd/help.c
 +++ b/tools/lib/subcmd/help.c
-@@ -52,11 +52,21 @@ void uniq(struct cmdnames *cmds)
+@@ -50,11 +50,21 @@ void uniq(struct cmdnames *cmds)
  	if (!cmds->cnt)
  		return;
  
