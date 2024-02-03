@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-18612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C1284836A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D958480FE
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91CD2B257C8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 323BE1F23821
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17E3537E1;
-	Sat,  3 Feb 2024 04:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9287413AC2;
+	Sat,  3 Feb 2024 04:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DAxVJBc0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yz5941rN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64254210E2;
-	Sat,  3 Feb 2024 04:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B65210A31;
+	Sat,  3 Feb 2024 04:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933927; cv=none; b=n9XO7Y8DSAMiLFNK6zxsB/g+vIXPThnPzEep0Ys/3zQ4nw9qfxL1vcdb78UscXZGu7OcMk8nPf0XbLtf5MVw2N8Mo2ud2JR2NBCrdXZwA0xOjWCg/K4I7BvtRDdDK8u/jkXX8jXt7GifiF4+U815bh8T7ahauHn13T1z2a8Jg6c=
+	t=1706933478; cv=none; b=I3cflREfBT0QiU2Mkw4NJE+A3YhvNFMu2L+ArmmExtt6ZskZYP3kqq0vJH9rWR2WoJlalN9SNOK/qITbPLY3nLJ+vZA9hqzhjSamNP6hh8x9AlbpmQQFLXbHSxSDLyqJGT8ovXuvBlXdkuHwUoMr3BPoT8ZKM1LYwfnj3LrihzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933927; c=relaxed/simple;
-	bh=MEMWWicxXwVQwNBqm7/uIIj9jfjCPGETMsjMuQ6tTIk=;
+	s=arc-20240116; t=1706933478; c=relaxed/simple;
+	bh=vE1oO5kPC30hRMQSXa0uMqiolkR6ywSsy8n+cb1eRYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGp+3Qvfk5HO7kB/eFvRMy9Wyv1MFFHGgCw60xf4LAXLJXKdT2uJDsgSRdni1EAx5Fq9LPgAzDrvTj7RQ541TL239jvivMVM3S001lXFjsedtuQGsRTV29bmj9cdDJHdO22QWu0nPGzo6bWXwceKua9S+zceQpvHzEFbSJ+8f04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DAxVJBc0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25586C433F1;
-	Sat,  3 Feb 2024 04:18:47 +0000 (UTC)
+	 MIME-Version; b=JTgN96J3eMfOnLYFRBIJVEClKlAYXuJsd6t5fnvDrF/osLNPtZHdCY0r1fR7XQVHo4k5lSqDSXL+7GwWREpnawCQVsZLubLIjFFPFDsk+inLm9vQKcrxZGD+JtQs4/nmTzAEbX5qHSQr0Zm9LwDwRpFpo7Hq9lE3MTI/4dD9Ddg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yz5941rN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13173C43390;
+	Sat,  3 Feb 2024 04:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933927;
-	bh=MEMWWicxXwVQwNBqm7/uIIj9jfjCPGETMsjMuQ6tTIk=;
+	s=korg; t=1706933478;
+	bh=vE1oO5kPC30hRMQSXa0uMqiolkR6ywSsy8n+cb1eRYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DAxVJBc0IbJdfVagALws+Q12tLNJSs/jYkiwJ6gOeipwgtyxRHPk/YntsU7+FZtIM
-	 WtUVCcKy2cvKh3Sg8qglQ4nm/2IoDv71CvLdUzYHoxI7067WqSJI8UYO41WsbfyYmY
-	 0jtU212Rx3eIhy+8zs6WDaeaa/owGovtTjUSaphA=
+	b=yz5941rNH/w634vXHY4/6h5QkfnU3FL2DYC1h4k36xD9ifl8GsHhhz86fdx9IieSO
+	 NzKQIPV0ASlLxpZBtQxnexlbQ7t0cz7wlU+jT+DKq26kpVz18M4MYirdezOJoMuR5F
+	 31mP9PMUPsYEoQQDk0ZqGQ3RF/KUv75vZcrrUdic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Crescent CY Hsieh <crescentcy.hsieh@moxa.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 259/353] tty: serial: 8250: Set RS422 interface by default to fix Moxa RS422/RS485 PCIe boards
+Subject: [PATCH 6.1 204/219] netfilter: nf_tables: restrict tunnel object to NFPROTO_NETDEV
 Date: Fri,  2 Feb 2024 20:06:17 -0800
-Message-ID: <20240203035411.941429171@linuxfoundation.org>
+Message-ID: <20240203035345.665398858@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Crescent CY Hsieh <crescentcy.hsieh@moxa.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 43f012df3c1e979966524f79b5371fde6545488a ]
+[ Upstream commit 776d451648443f9884be4a1b4e38e8faf1c621f9 ]
 
-MOXA PCIe RS422/RS485 boards will not function by default because of the
-initial default serial interface of all MOXA PCIe boards is set to
-RS232.
+Bail out on using the tunnel dst template from other than netdev family.
+Add the infrastructure to check for the family in objects.
 
-This patch fixes the problem above by setting the initial default serial
-interface to RS422 for those MOXA RS422/RS485 PCIe boards.
-
-Signed-off-by: Crescent CY Hsieh <crescentcy.hsieh@moxa.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20231214060234.6147-1-crescentcy.hsieh@moxa.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: af308b94a2a4 ("netfilter: nf_tables: add tunnel support")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_pci.c | 58 +++++++++++++++++++++++++++++-
- 1 file changed, 57 insertions(+), 1 deletion(-)
+ include/net/netfilter/nf_tables.h |  2 ++
+ net/netfilter/nf_tables_api.c     | 14 +++++++++-----
+ net/netfilter/nft_tunnel.c        |  1 +
+ 3 files changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_pci.c b/drivers/tty/serial/8250/8250_pci.c
-index 614be0f13a31..8ccf691935b7 100644
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -19,6 +19,7 @@
- #include <linux/serial_core.h>
- #include <linux/8250_pci.h>
- #include <linux/bitops.h>
-+#include <linux/bitfield.h>
- 
- #include <asm/byteorder.h>
- #include <asm/io.h>
-@@ -1970,6 +1971,20 @@ pci_sunix_setup(struct serial_private *priv,
- 
- #define MOXA_GPIO_PIN2	BIT(2)
- 
-+#define MOXA_RS232	0x00
-+#define MOXA_RS422	0x01
-+#define MOXA_RS485_4W	0x0B
-+#define MOXA_RS485_2W	0x0F
-+#define MOXA_UIR_OFFSET	0x04
-+#define MOXA_EVEN_RS_MASK	GENMASK(3, 0)
-+#define MOXA_ODD_RS_MASK	GENMASK(7, 4)
-+
-+enum {
-+	MOXA_SUPP_RS232 = BIT(0),
-+	MOXA_SUPP_RS422 = BIT(1),
-+	MOXA_SUPP_RS485 = BIT(2),
-+};
-+
- static bool pci_moxa_is_mini_pcie(unsigned short device)
- {
- 	if (device == PCI_DEVICE_ID_MOXA_CP102N	||
-@@ -1983,13 +1998,54 @@ static bool pci_moxa_is_mini_pcie(unsigned short device)
- 	return false;
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index c726da3b7d68..2fa344cb66f6 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -1286,6 +1286,7 @@ void nft_obj_notify(struct net *net, const struct nft_table *table,
+  *	@type: stateful object numeric type
+  *	@owner: module owner
+  *	@maxattr: maximum netlink attribute
++ *	@family: address family for AF-specific object types
+  *	@policy: netlink attribute policy
+  */
+ struct nft_object_type {
+@@ -1295,6 +1296,7 @@ struct nft_object_type {
+ 	struct list_head		list;
+ 	u32				type;
+ 	unsigned int                    maxattr;
++	u8				family;
+ 	struct module			*owner;
+ 	const struct nla_policy		*policy;
+ };
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 1edb2138260a..49acb89ba9c5 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7129,11 +7129,15 @@ static int nft_object_dump(struct sk_buff *skb, unsigned int attr,
+ 	return -1;
  }
  
-+static unsigned int pci_moxa_supported_rs(struct pci_dev *dev)
-+{
-+	switch (dev->device & 0x0F00) {
-+	case 0x0000:
-+	case 0x0600:
-+		return MOXA_SUPP_RS232;
-+	case 0x0100:
-+		return MOXA_SUPP_RS232 | MOXA_SUPP_RS422 | MOXA_SUPP_RS485;
-+	case 0x0300:
-+		return MOXA_SUPP_RS422 | MOXA_SUPP_RS485;
-+	}
-+	return 0;
-+}
-+
-+static int pci_moxa_set_interface(const struct pci_dev *dev,
-+				  unsigned int port_idx,
-+				  u8 mode)
-+{
-+	resource_size_t iobar_addr = pci_resource_start(dev, 2);
-+	resource_size_t UIR_addr = iobar_addr + MOXA_UIR_OFFSET + port_idx / 2;
-+	u8 val;
-+
-+	val = inb(UIR_addr);
-+
-+	if (port_idx % 2) {
-+		val &= ~MOXA_ODD_RS_MASK;
-+		val |= FIELD_PREP(MOXA_ODD_RS_MASK, mode);
-+	} else {
-+		val &= ~MOXA_EVEN_RS_MASK;
-+		val |= FIELD_PREP(MOXA_EVEN_RS_MASK, mode);
-+	}
-+	outb(val, UIR_addr);
-+
-+	return 0;
-+}
-+
- static int pci_moxa_init(struct pci_dev *dev)
+-static const struct nft_object_type *__nft_obj_type_get(u32 objtype)
++static const struct nft_object_type *__nft_obj_type_get(u32 objtype, u8 family)
  {
- 	unsigned short device = dev->device;
- 	resource_size_t iobar_addr = pci_resource_start(dev, 2);
--	unsigned int num_ports = (device & 0x00F0) >> 4;
-+	unsigned int num_ports = (device & 0x00F0) >> 4, i;
- 	u8 val;
+ 	const struct nft_object_type *type;
  
-+	if (!(pci_moxa_supported_rs(dev) & MOXA_SUPP_RS232)) {
-+		for (i = 0; i < num_ports; ++i)
-+			pci_moxa_set_interface(dev, i, MOXA_RS422);
-+	}
+ 	list_for_each_entry(type, &nf_tables_objects, list) {
++		if (type->family != NFPROTO_UNSPEC &&
++		    type->family != family)
++			continue;
 +
- 	/*
- 	 * Enable hardware buffer to prevent break signal output when system boots up.
- 	 * This hardware buffer is only supported on Mini PCIe series.
+ 		if (objtype == type->type)
+ 			return type;
+ 	}
+@@ -7141,11 +7145,11 @@ static const struct nft_object_type *__nft_obj_type_get(u32 objtype)
+ }
+ 
+ static const struct nft_object_type *
+-nft_obj_type_get(struct net *net, u32 objtype)
++nft_obj_type_get(struct net *net, u32 objtype, u8 family)
+ {
+ 	const struct nft_object_type *type;
+ 
+-	type = __nft_obj_type_get(objtype);
++	type = __nft_obj_type_get(objtype, family);
+ 	if (type != NULL && try_module_get(type->owner))
+ 		return type;
+ 
+@@ -7238,7 +7242,7 @@ static int nf_tables_newobj(struct sk_buff *skb, const struct nfnl_info *info,
+ 		if (info->nlh->nlmsg_flags & NLM_F_REPLACE)
+ 			return -EOPNOTSUPP;
+ 
+-		type = __nft_obj_type_get(objtype);
++		type = __nft_obj_type_get(objtype, family);
+ 		if (WARN_ON_ONCE(!type))
+ 			return -ENOENT;
+ 
+@@ -7252,7 +7256,7 @@ static int nf_tables_newobj(struct sk_buff *skb, const struct nfnl_info *info,
+ 	if (!nft_use_inc(&table->use))
+ 		return -EMFILE;
+ 
+-	type = nft_obj_type_get(net, objtype);
++	type = nft_obj_type_get(net, objtype, family);
+ 	if (IS_ERR(type)) {
+ 		err = PTR_ERR(type);
+ 		goto err_type;
+diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
+index 983ade4be3b3..efb505445eac 100644
+--- a/net/netfilter/nft_tunnel.c
++++ b/net/netfilter/nft_tunnel.c
+@@ -713,6 +713,7 @@ static const struct nft_object_ops nft_tunnel_obj_ops = {
+ 
+ static struct nft_object_type nft_tunnel_obj_type __read_mostly = {
+ 	.type		= NFT_OBJECT_TUNNEL,
++	.family		= NFPROTO_NETDEV,
+ 	.ops		= &nft_tunnel_obj_ops,
+ 	.maxattr	= NFTA_TUNNEL_KEY_MAX,
+ 	.policy		= nft_tunnel_key_policy,
 -- 
 2.43.0
 
