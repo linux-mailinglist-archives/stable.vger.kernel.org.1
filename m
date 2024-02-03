@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-17979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D696E8480E2
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9F9848346
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44D301F236B4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 055B11F24ADA
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3265F1A708;
-	Sat,  3 Feb 2024 04:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23E151C33;
+	Sat,  3 Feb 2024 04:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+q33Dq1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oGnnZLz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00DE10A1C;
-	Sat,  3 Feb 2024 04:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB88171A4;
+	Sat,  3 Feb 2024 04:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933458; cv=none; b=HkCr+IFP0OEsp3/OcRzJlObM6/4O7jSMJbCfUEq8r+4pruOEhLiGVhQmpZm1onqnNPMwpuoKyPPS2KrahwZR+zonHHlPwLKxA2gjUd4f5pWQ74hzJ6lZjflCsyvRVcBlvDo9fNUDhYNPkQFWOhDOTNFonvrv8NYEB5SRw/Db8Wc=
+	t=1706933901; cv=none; b=lFjIZHb84tZ1ZpdokqAqQG6eVzxsw7RY1epBwBuJy0eiXM5k+TvdoTnH+Z3Hu/zGlk4EGbxsg7TsGbYiuuJN/An28HfmaH+tVrbzaBCfkRxBXCZaHYK6jN8K6GMLK+LnSkIcBT2uYXRnVH15GXL3TGx5vjz1cQx9ndI9jwkIJuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933458; c=relaxed/simple;
-	bh=fMuJl4YD1Nm9Gs9AvL1fpNaEyP6uV5S3bqYHkKOBKsg=;
+	s=arc-20240116; t=1706933901; c=relaxed/simple;
+	bh=dD3CQ3oZIW4UJ5GbgoBNQpVNcW8Nw6KZgAQgSx0Dz70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MfnyV9sHIZER/Sz6CDUjyf6ZdsVkDy8mYydBvqpUpM4Vyx7QbhCMQvdQMjEiZ2vmlrwBNqNHreOcxtVtNnNETzcm19I6YBROy0SpfytVMFZLVANUpSX1dcArJdoBLr9erL/N4JRhnpnoPHeiN0QMFclf3GY7ffx1zGSyBTAWiqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+q33Dq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A6CC43390;
-	Sat,  3 Feb 2024 04:10:57 +0000 (UTC)
+	 MIME-Version; b=O1zEthPHfcl0kg7AVChnWWdmvhgNSyCM8xhs2cSjdBPsPE0UXGOrugK+bNsTn17aKDba2yRp3Md7dgAxlsR8AWILm2oMQIa9aruyaW8cZIIK6BXrnmOqLMfXeo/cqsEj0m1qIkwN/hopj24ZouaLiRuRkLTxu99wETjcSJ+KasI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oGnnZLz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504AEC433C7;
+	Sat,  3 Feb 2024 04:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933457;
-	bh=fMuJl4YD1Nm9Gs9AvL1fpNaEyP6uV5S3bqYHkKOBKsg=;
+	s=korg; t=1706933901;
+	bh=dD3CQ3oZIW4UJ5GbgoBNQpVNcW8Nw6KZgAQgSx0Dz70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F+q33Dq1pS2QdhPUGxZn21xX3xpswGyY8ieDXj1zBPvywSsrPrYU3f3pr1iT6o7+O
-	 u14XeMC8mGs2hlmdIQbRljiG6EtcEzJ2/W3s2uxalkbONuOHz5xxLI3vbA7FInQauo
-	 Zd/oM56J/51KE4SdnTQXtTEuNFbkyR1fNXfgN3p8=
+	b=1oGnnZLzDG2eeH3J2n9T92mgTKkSIotlmNtcUZ+wdUo5565Hq5d78BuakZN7DSBW+
+	 KSfD0FnvLZNZxjp+0dyDclToR3XzBpylB1saBH1ddBj4CvoB5lpoiZ9USfyyRRooB+
+	 CTDg0IH0lgs9XK+OmdI3FrG/7ZwsMS+Xiv57rIxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Arjun Roy <arjunroy@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	linux-mm@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-fsdevel@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	ZhangPeng <zhangpeng362@huawei.com>
-Subject: [PATCH 6.1 194/219] tcp: add sanity checks to rx zerocopy
+	"Xiaowu.ding" <xiaowu.ding@jaguarmicro.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Jassi Brar <jaswinder.singh@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 249/353] mailbox: arm_mhuv2: Fix a bug for mhuv2_sender_interrupt
 Date: Fri,  2 Feb 2024 20:06:07 -0800
-Message-ID: <20240203035344.297241145@linuxfoundation.org>
+Message-ID: <20240203035411.601592481@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,80 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Xiaowu.ding <xiaowu.ding@jaguarmicro.com>
 
-[ Upstream commit 577e4432f3ac810049cb7e6b71f4d96ec7c6e894 ]
+[ Upstream commit ee01c0b4384d19ecc5dfa7db3fd4303f965c3eba ]
 
-TCP rx zerocopy intent is to map pages initially allocated
-from NIC drivers, not pages owned by a fs.
+Message Handling Unit version is v2.1.
 
-This patch adds to can_map_frag() these additional checks:
+When arm_mhuv2 working with the data protocol transfer mode.
+We have split one mhu into two channels, and every channel
+include four channel windows, the two channels share
+one gic spi interrupt.
 
-- Page must not be a compound one.
-- page->mapping must be NULL.
+There is a problem with the sending scenario.
 
-This fixes the panic reported by ZhangPeng.
+The first channel will take up 0-3 channel windows, and the second
+channel take up 4-7 channel windows. When the first channel send the
+data, and the receiver will clear all the four channels status.
+Although we only enabled the interrupt on the last channel window with
+register CH_INT_EN,the register CHCOMB_INT_ST0 will be 0xf, not be 0x8.
+Currently we just clear the last channel windows int status with the
+data proctol mode.So after that,the CHCOMB_INT_ST0 status will be 0x7,
+not be the 0x0.
 
-syzbot was able to loopback packets built with sendfile(),
-mapping pages owned by an ext4 file to TCP rx zerocopy.
+Then the second channel send the data, the receiver read the
+data, clear all the four channel windows status, trigger the sender
+interrupt. But currently the CHCOMB_INT_ST0 register will be 0xf7,
+get_irq_chan_comb function will always return the first channel.
 
-r3 = socket$inet_tcp(0x2, 0x1, 0x0)
-mmap(&(0x7f0000ff9000/0x4000)=nil, 0x4000, 0x0, 0x12, r3, 0x0)
-r4 = socket$inet_tcp(0x2, 0x1, 0x0)
-bind$inet(r4, &(0x7f0000000000)={0x2, 0x4e24, @multicast1}, 0x10)
-connect$inet(r4, &(0x7f00000006c0)={0x2, 0x4e24, @empty}, 0x10)
-r5 = openat$dir(0xffffffffffffff9c, &(0x7f00000000c0)='./file0\x00',
-    0x181e42, 0x0)
-fallocate(r5, 0x0, 0x0, 0x85b8)
-sendfile(r4, r5, 0x0, 0x8ba0)
-getsockopt$inet_tcp_TCP_ZEROCOPY_RECEIVE(r4, 0x6, 0x23,
-    &(0x7f00000001c0)={&(0x7f0000ffb000/0x3000)=nil, 0x3000, 0x0, 0x0, 0x0,
-    0x0, 0x0, 0x0, 0x0}, &(0x7f0000000440)=0x40)
-r6 = openat$dir(0xffffffffffffff9c, &(0x7f00000000c0)='./file0\x00',
-    0x181e42, 0x0)
+So this patch clear all channel windows int status to avoid this interrupt
+confusion.
 
-Fixes: 93ab6cc69162 ("tcp: implement mmap() for zero copy receive")
-Link: https://lore.kernel.org/netdev/5106a58e-04da-372a-b836-9d3d0bd2507b@huawei.com/T/
-Reported-and-bisected-by: ZhangPeng <zhangpeng362@huawei.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Arjun Roy <arjunroy@google.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: linux-mm@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Xiaowu.ding <xiaowu.ding@jaguarmicro.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/mailbox/arm_mhuv2.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 90e24c3f6557..86e7695d91ad 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -1934,7 +1934,17 @@ static skb_frag_t *skb_advance_to_frag(struct sk_buff *skb, u32 offset_skb,
+diff --git a/drivers/mailbox/arm_mhuv2.c b/drivers/mailbox/arm_mhuv2.c
+index c6d4957c4da8..0ec21dcdbde7 100644
+--- a/drivers/mailbox/arm_mhuv2.c
++++ b/drivers/mailbox/arm_mhuv2.c
+@@ -553,7 +553,8 @@ static irqreturn_t mhuv2_sender_interrupt(int irq, void *data)
+ 	priv = chan->con_priv;
  
- static bool can_map_frag(const skb_frag_t *frag)
- {
--	return skb_frag_size(frag) == PAGE_SIZE && !skb_frag_off(frag);
-+	struct page *page;
-+
-+	if (skb_frag_size(frag) != PAGE_SIZE || skb_frag_off(frag))
-+		return false;
-+
-+	page = skb_frag_page(frag);
-+
-+	if (PageCompound(page) || page->mapping)
-+		return false;
-+
-+	return true;
- }
+ 	if (!IS_PROTOCOL_DOORBELL(priv)) {
+-		writel_relaxed(1, &mhu->send->ch_wn[priv->ch_wn_idx + priv->windows - 1].int_clr);
++		for (i = 0; i < priv->windows; i++)
++			writel_relaxed(1, &mhu->send->ch_wn[priv->ch_wn_idx + i].int_clr);
  
- static int find_next_mappable_frag(const skb_frag_t *frag,
+ 		if (chan->cl) {
+ 			mbox_chan_txdone(chan, 0);
 -- 
 2.43.0
 
