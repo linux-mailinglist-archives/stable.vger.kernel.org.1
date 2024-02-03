@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-17916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E1084809F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30239848308
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35BE21C220D8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4EE61F2432D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1603E175AA;
-	Sat,  3 Feb 2024 04:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55C61CA83;
+	Sat,  3 Feb 2024 04:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPdq4/m4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIYshcmu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9543101C1;
-	Sat,  3 Feb 2024 04:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74851FBF2;
+	Sat,  3 Feb 2024 04:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933410; cv=none; b=BxTDhdA54cmWOAiggrGknziW9/kbHoMlxlDxDNlaQhu4z4URUVPyiSVHtCnuWrkaEQYgZGRj3yFHkJJ6z+OaENU4HYP7fiEIER9aJgMUSMZZkSv9YWjaAzwloQfjPSwbnpq0C1fI0NyfYmndKBOSuuj3lE7V8QZwFfq3WKj8CI0=
+	t=1706933856; cv=none; b=d/BzeHq4rpeqwDmJbMVNd9GcRt1Y6JekFy7Hjc6qrTz13b+66OL70zb8cvJ2iQNSFTwWyT02y4FIXmTYWLVgW2AvB+XMhpYH47mEpl/z29Sl/W+Z09JkYdyX3JliouuvF4dueUiKAfEE4cFagjSKkNjsIauzaL9LAr1lE12xJUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933410; c=relaxed/simple;
-	bh=hyFkgymHLtnzvKvoJBjkfkk/a0ONWuKNCgqnH3YkKP8=;
+	s=arc-20240116; t=1706933856; c=relaxed/simple;
+	bh=bB0blpQF0DaakYB00tod09BCWcxrDqbZLO7c/CIllQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMWPv8uXUKi0FkQsbtSwypNJ74PI27Ee/qxTLTFcWX8ODaUA9fonpSKizrJZXGpR7Yl2Gl9ur0ogJQxyW1+9cZ11lVbNUNhkRWDX2RJSLzhgbfi4XcN2jXWmsIAVGK0AWCs016W5Cn4mAjp+OnPQndQX4RPDxBy+s0ZcKxTSRDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPdq4/m4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90665C433F1;
-	Sat,  3 Feb 2024 04:10:10 +0000 (UTC)
+	 MIME-Version; b=HkUnuNVqrm2YwuQEYpcIVLAPgf+mMFpz8JJpNbF8FitcmX/zlcuiIuuNfp4a3CZc89fR5Urc3sPO2hNur4THwR0rhFt927p4248TVyTX9BcF551D8ECtV5B4ZiDZuKC6cs/tzF4h4ErwnZUn+ZnP8mW69Z04cHJjuP+qyPouVUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIYshcmu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E988C433C7;
+	Sat,  3 Feb 2024 04:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933410;
-	bh=hyFkgymHLtnzvKvoJBjkfkk/a0ONWuKNCgqnH3YkKP8=;
+	s=korg; t=1706933856;
+	bh=bB0blpQF0DaakYB00tod09BCWcxrDqbZLO7c/CIllQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iPdq4/m4TIixB5bHrbMzQobmk0v7NH6A5QFZm5rjJeOJ51TnWm8L8n/VPbkZqOGxN
-	 qNtrmzt78oJrkX38nLTpLylOWGgzjwM8YgbYhLG3vj49pCo/Jlv2gQfH7nyExW50rp
-	 Ta34dWHrgEbSpN/3zx309J8ohEPh3ne6PugWphxo=
+	b=eIYshcmuQF46A2e3cXWe/UbTujNVp4/bb7bpr+DrJPCcAC1vOQ0ctXWN6A1QrTvgV
+	 qOr01GqUm3EoQYdZSnNKk4zxwDzFsrAIeQWFjyAyUHpEHVx4rG8ChnxdczYNg5e5Qi
+	 AHoAHj+BaxAItETOMb/35zyxkUes7HYXkBaBd3Do=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jun Lei <jun.lei@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 132/219] drm/amd/display: For prefetch mode > 0, extend prefetch if possible
+Subject: [PATCH 6.7 187/353] drm/msm/dp: Add DisplayPort controller for SM8650
 Date: Fri,  2 Feb 2024 20:05:05 -0800
-Message-ID: <20240203035336.033271448@linuxfoundation.org>
+Message-ID: <20240203035409.573825939@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alvin Lee <alvin.lee2@amd.com>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit dd4e4bb28843393065eed279e869fac248d03f0f ]
+[ Upstream commit 1b2d98bdd7b7c64265732f5f0dace4c52c9ba8a8 ]
 
-[Description]
-For mode programming we want to extend the prefetch as much as possible
-(up to oto, or as long as we can for equ) if we're not already applying
-the 60us prefetch requirement. This is to avoid intermittent underflow
-issues during prefetch.
+The Qualcomm SM8650 platform comes with a DisplayPort controller
+with a different base offset than the previous SM8550 SoC,
+add support for this in the DisplayPort driver.
 
-The prefetch extension is applied under the following scenarios:
-1. We're in prefetch mode 1 (i.e. we don't support MCLK switch in blank)
-2. We're using subvp or drr methods of p-state switch, in which case we
-   we don't care if prefetch takes up more of the blanking time
-
-Mode programming typically chooses the smallest prefetch time possible
-(i.e. highest bandwidth during prefetch) presumably to create margin between
-p-states / c-states that happen in vblank and prefetch. Therefore we only
-apply this prefetch extension when p-state in vblank is not required (UCLK
-p-states take up the most vblank time).
-
-Reviewed-by: Jun Lei <jun.lei@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/571132/
+Link: https://lore.kernel.org/r/20231207-topic-sm8650-upstream-dp-v1-2-b762c06965bb@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../dc/dml/dcn32/display_mode_vba_32.c        |  3 ++
- .../dc/dml/dcn32/display_mode_vba_util_32.c   | 33 +++++++++++++++----
- .../dc/dml/dcn32/display_mode_vba_util_32.h   |  1 +
- 3 files changed, 31 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/msm/dp/dp_display.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-index 19f55657272e..cc8c1a48c5c4 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
-@@ -810,6 +810,8 @@ static void DISPCLKDPPCLKDCFCLKDeepSleepPrefetchParametersWatermarksAndPerforman
- 					(v->DRAMSpeedPerState[mode_lib->vba.VoltageLevel] <= MEM_STROBE_FREQ_MHZ ||
- 						v->DCFCLKPerState[mode_lib->vba.VoltageLevel] <= DCFCLK_FREQ_EXTRA_PREFETCH_REQ_MHZ) ?
- 							mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
-+					mode_lib->vba.PrefetchModePerState[mode_lib->vba.VoltageLevel][mode_lib->vba.maxMpcComb] > 0 || mode_lib->vba.DRAMClockChangeRequirementFinal == false,
+diff --git a/drivers/gpu/drm/msm/dp/dp_display.c b/drivers/gpu/drm/msm/dp/dp_display.c
+index 1b88fb52726f..4f89c9939501 100644
+--- a/drivers/gpu/drm/msm/dp/dp_display.c
++++ b/drivers/gpu/drm/msm/dp/dp_display.c
+@@ -170,6 +170,11 @@ static const struct msm_dp_desc sm8350_dp_descs[] = {
+ 	{}
+ };
+ 
++static const struct msm_dp_desc sm8650_dp_descs[] = {
++	{ .io_start = 0x0af54000, .id = MSM_DP_CONTROLLER_0, .connector_type = DRM_MODE_CONNECTOR_DisplayPort },
++	{}
++};
 +
- 					/* Output */
- 					&v->DSTXAfterScaler[k],
- 					&v->DSTYAfterScaler[k],
-@@ -3291,6 +3293,7 @@ void dml32_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_l
- 							v->SwathHeightCThisState[k], v->TWait,
- 							(v->DRAMSpeedPerState[i] <= MEM_STROBE_FREQ_MHZ || v->DCFCLKState[i][j] <= DCFCLK_FREQ_EXTRA_PREFETCH_REQ_MHZ) ?
- 									mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
-+							mode_lib->vba.PrefetchModePerState[i][j] > 0 || mode_lib->vba.DRAMClockChangeRequirementFinal == false,
+ static const struct of_device_id dp_dt_match[] = {
+ 	{ .compatible = "qcom,sc7180-dp", .data = &sc7180_dp_descs },
+ 	{ .compatible = "qcom,sc7280-dp", .data = &sc7280_dp_descs },
+@@ -180,6 +185,7 @@ static const struct of_device_id dp_dt_match[] = {
+ 	{ .compatible = "qcom,sc8280xp-edp", .data = &sc8280xp_edp_descs },
+ 	{ .compatible = "qcom,sdm845-dp", .data = &sc7180_dp_descs },
+ 	{ .compatible = "qcom,sm8350-dp", .data = &sm8350_dp_descs },
++	{ .compatible = "qcom,sm8650-dp", .data = &sm8650_dp_descs },
+ 	{}
+ };
  
- 							/* Output */
- 							&v->dummy_vars.dml32_ModeSupportAndSystemConfigurationFull.DSTXAfterScaler[k],
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
-index 23e4be2ad63f..7f4fc49be35c 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
-@@ -3418,6 +3418,7 @@ bool dml32_CalculatePrefetchSchedule(
- 		unsigned int SwathHeightC,
- 		double TWait,
- 		double TPreReq,
-+		bool ExtendPrefetchIfPossible,
- 		/* Output */
- 		double   *DSTXAfterScaler,
- 		double   *DSTYAfterScaler,
-@@ -3887,12 +3888,32 @@ bool dml32_CalculatePrefetchSchedule(
- 			/* Clamp to oto for bandwidth calculation */
- 			LinesForPrefetchBandwidth = dst_y_prefetch_oto;
- 		} else {
--			*DestinationLinesForPrefetch = dst_y_prefetch_equ;
--			TimeForFetchingMetaPTE = Tvm_equ;
--			TimeForFetchingRowInVBlank = Tr0_equ;
--			*PrefetchBandwidth = prefetch_bw_equ;
--			/* Clamp to equ for bandwidth calculation */
--			LinesForPrefetchBandwidth = dst_y_prefetch_equ;
-+			/* For mode programming we want to extend the prefetch as much as possible
-+			 * (up to oto, or as long as we can for equ) if we're not already applying
-+			 * the 60us prefetch requirement. This is to avoid intermittent underflow
-+			 * issues during prefetch.
-+			 *
-+			 * The prefetch extension is applied under the following scenarios:
-+			 * 1. We're in prefetch mode > 0 (i.e. we don't support MCLK switch in blank)
-+			 * 2. We're using subvp or drr methods of p-state switch, in which case we
-+			 *    we don't care if prefetch takes up more of the blanking time
-+			 *
-+			 * Mode programming typically chooses the smallest prefetch time possible
-+			 * (i.e. highest bandwidth during prefetch) presumably to create margin between
-+			 * p-states / c-states that happen in vblank and prefetch. Therefore we only
-+			 * apply this prefetch extension when p-state in vblank is not required (UCLK
-+			 * p-states take up the most vblank time).
-+			 */
-+			if (ExtendPrefetchIfPossible && TPreReq == 0 && VStartup < MaxVStartup) {
-+				MyError = true;
-+			} else {
-+				*DestinationLinesForPrefetch = dst_y_prefetch_equ;
-+				TimeForFetchingMetaPTE = Tvm_equ;
-+				TimeForFetchingRowInVBlank = Tr0_equ;
-+				*PrefetchBandwidth = prefetch_bw_equ;
-+				/* Clamp to equ for bandwidth calculation */
-+				LinesForPrefetchBandwidth = dst_y_prefetch_equ;
-+			}
- 		}
- 
- 		*DestinationLinesToRequestVMInVBlank = dml_ceil(4.0 * TimeForFetchingMetaPTE / LineTime, 1.0) / 4.0;
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.h b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.h
-index 779c6805f599..1823434d8ede 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.h
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.h
-@@ -744,6 +744,7 @@ bool dml32_CalculatePrefetchSchedule(
- 		unsigned int SwathHeightC,
- 		double TWait,
- 		double TPreReq,
-+		bool ExtendPrefetchIfPossible,
- 		/* Output */
- 		double   *DSTXAfterScaler,
- 		double   *DSTYAfterScaler,
 -- 
 2.43.0
 
