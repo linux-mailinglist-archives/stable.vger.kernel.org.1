@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-18311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43939848239
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40BC0848382
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C310B1F23B1D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE7E11F23282
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3847481B2;
-	Sat,  3 Feb 2024 04:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A290D2BAFF;
+	Sat,  3 Feb 2024 04:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBupypnA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMEpR10v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91778481AE;
-	Sat,  3 Feb 2024 04:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6153C11720;
+	Sat,  3 Feb 2024 04:19:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933705; cv=none; b=hbaFCjDHeqlW4w3U6bAz7KFQDB9qBZRS5jp9rtLDZEHLTcDIHsZqod1yLk/cS3hhXIcA1kXCIoV+yXsSGVlJCwyslivTosLjkDYB9Z7GpF5gMGz3stKK5WzeuR0weMk/vh7JquLnQt2ztm/k07OnFrK9mq0VljhPktKoSP5vsMo=
+	t=1706933945; cv=none; b=q7CqlwJSHVzwechZpamUY01Xwx5cf4JNoxrjLOiZv9wsyANY6pF3fg6w9e4g3W2qJGviQBgIJwZ9xstlft6JGtytCjxK2V4zC8Jyn3FDHed9TM7qdOq67dazk9SL+wzPlT3VWXaYoXYuuC/VxfaRmpwlFWYe9UN/Q9EjAOUM+WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933705; c=relaxed/simple;
-	bh=Jt4f6PoZaPg9f+6eCArYgIRW8Qjs5sJcOclKLjPf0k0=;
+	s=arc-20240116; t=1706933945; c=relaxed/simple;
+	bh=Mu3Ee2Miy3ZWQjNzv46yOfxvTGKNpJPYH09yi6bsF/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r3oQ+vAeJqSpRFO8w0yqx2Q1dai8eyPM0eSNMQNB7CHaZWFkqT89Er3fnKEWWUDNtvGTgXLCKiyaFAs8fVDtWhDJNteAkIwzEbnisDjIyAJNb+5mx3k7OWKY4+d1jDWI+z2gtbPWIwRtrqgHcdyYsfZrYyuBCDsgug0w2XMNukI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBupypnA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526C3C433C7;
-	Sat,  3 Feb 2024 04:15:05 +0000 (UTC)
+	 MIME-Version; b=tsJ8CWCBGf9HHtxfbg/SLbaXM2spqU864sSnivnLK1Lqp7e7W29VmYEiNOedyri/JNPhtuXjlIUXR9YDLxkG+MqdhfG97Y3LgBoHJCa+oJyNPHmVexJj4bhXWB/UAx+tGlPCcqRdKsavpLTc7aK0QhbOfjFhUFIMo2KNLDTI26s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMEpR10v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A1E3C43390;
+	Sat,  3 Feb 2024 04:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933705;
-	bh=Jt4f6PoZaPg9f+6eCArYgIRW8Qjs5sJcOclKLjPf0k0=;
+	s=korg; t=1706933945;
+	bh=Mu3Ee2Miy3ZWQjNzv46yOfxvTGKNpJPYH09yi6bsF/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lBupypnA8zPrIYx4EBTRYLEVaK49q8xPcPrulUJgfLCTDK8qYqzWgyA7PnAOmau5K
-	 /VvlfmvuMiy3iE4J8toPJ3rUGfzFqXUXq6ukchU947B3IAsbBQwgzKaCMA7QuDYii5
-	 eKF4pyd+xkHMeTmTdZNpx6NekeGwQ5TYs2w17+ZM=
+	b=JMEpR10vSJ1MJWB0AFsEPhLSs0i2Cj1vCsmxqBfRUPWvZYoN13q/6+zhmlZWoRWD+
+	 qPiG4ZvLk+eCEkW72P4SQy7AjeUVa39QzCvA2jiC6U1QtiTy8WwJkCUU+r3am72eDq
+	 j3izhoWl8Hxfy52s0XTqIHcgd5O8TGDX99aRYeaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 307/322] selftests: net: add missing config for pmtu.sh tests
-Date: Fri,  2 Feb 2024 20:06:44 -0800
-Message-ID: <20240203035408.961226151@linuxfoundation.org>
+Subject: [PATCH 6.7 287/353] perf: Fix the nr_addr_filters fix
+Date: Fri,  2 Feb 2024 20:06:45 -0800
+Message-ID: <20240203035412.866536521@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit f7c25d8e17dd759d97ca093faf92eeb7da7b3890 ]
+[ Upstream commit 388a1fb7da6aaa1970c7e2a7d7fcd983a87a8484 ]
 
-The mentioned test uses a few Kconfig still missing the
-net config, add them.
+Thomas reported that commit 652ffc2104ec ("perf/core: Fix narrow
+startup race when creating the perf nr_addr_filters sysfs file") made
+the entire attribute group vanish, instead of only the nr_addr_filters
+attribute.
 
-Before:
-  # Error: Specified qdisc kind is unknown.
-  # Error: Specified qdisc kind is unknown.
-  # Error: Qdisc not classful.
-  # We have an error talking to the kernel
-  # Error: Qdisc not classful.
-  # We have an error talking to the kernel
-  #   policy_routing not supported
-  # TEST: ICMPv4 with DSCP and ECN: PMTU exceptions                     [SKIP]
+Additionally a stray return.
 
-After:
-  # TEST: ICMPv4 with DSCP and ECN: PMTU exceptions                     [ OK ]
+Insufficient coffee was involved with both writing and merging the
+patch.
 
-Fixes: ec730c3e1f0e ("selftest: net: Test IPv4 PMTU exceptions with DSCP and ECN")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/8d27bf6762a5c7b3acc457d6e6872c533040f9c1.1706635101.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 652ffc2104ec ("perf/core: Fix narrow startup race when creating the perf nr_addr_filters sysfs file")
+Reported-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Thomas Richter <tmricht@linux.ibm.com>
+Link: https://lkml.kernel.org/r/20231122100756.GP8262@noisy.programming.kicks-ass.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/config | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/events/core.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-index 77a173635a29..98c6bd2228c6 100644
---- a/tools/testing/selftests/net/config
-+++ b/tools/testing/selftests/net/config
-@@ -49,8 +49,10 @@ CONFIG_NF_TABLES_IPV6=y
- CONFIG_NF_TABLES_IPV4=y
- CONFIG_NFT_NAT=m
- CONFIG_NETFILTER_XT_MATCH_LENGTH=m
-+CONFIG_NET_ACT_CSUM=m
- CONFIG_NET_ACT_CT=m
- CONFIG_NET_ACT_GACT=m
-+CONFIG_NET_ACT_PEDIT=m
- CONFIG_NET_CLS_BASIC=m
- CONFIG_NET_CLS_BPF=m
- CONFIG_NET_CLS_MATCHALL=m
-@@ -62,6 +64,7 @@ CONFIG_NET_SCH_HTB=m
- CONFIG_NET_SCH_FQ=m
- CONFIG_NET_SCH_ETF=m
- CONFIG_NET_SCH_NETEM=y
-+CONFIG_NET_SCH_PRIO=m
- CONFIG_NFT_COMPAT=m
- CONFIG_NF_FLOW_TABLE=m
- CONFIG_PSAMPLE=m
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index fbecba5b00b1..7c0330579718 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -11434,12 +11434,10 @@ static umode_t pmu_dev_is_visible(struct kobject *kobj, struct attribute *a, int
+ 	struct device *dev = kobj_to_dev(kobj);
+ 	struct pmu *pmu = dev_get_drvdata(dev);
+ 
+-	if (!pmu->nr_addr_filters)
++	if (n == 2 && !pmu->nr_addr_filters)
+ 		return 0;
+ 
+ 	return a->mode;
+-
+-	return 0;
+ }
+ 
+ static struct attribute_group pmu_dev_attr_group = {
 -- 
 2.43.0
 
