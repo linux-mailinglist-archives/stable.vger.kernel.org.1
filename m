@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 502748481AB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B168D8482F9
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C4E128312B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ED9228CCE3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1AB175BF;
-	Sat,  3 Feb 2024 04:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F551C6B8;
+	Sat,  3 Feb 2024 04:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNhlF06E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="joN6j5/5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCBE36122;
-	Sat,  3 Feb 2024 04:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5ED34F616;
+	Sat,  3 Feb 2024 04:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933601; cv=none; b=JQEvZ/lGsu4QAeZTozodGJcF0PUnksvPIIGt+0gFMIX5v/HM/21voiS8oAe6KnEriQkYoPvtE/7tvpKCnSBnN7OnFsNxaxbGEHJIAaf4IYo+JUrCBvC4iGcDkEOFIvn3lPzFAFNCoBw7bxD9dGOflcHFRC9GazZgcnjIh1Vc8zo=
+	t=1706933845; cv=none; b=DLUKivjPf8yIFjsanaJTHOsgNOJWBRUb9u1z9YVECxIW5wyhlDWbkwiaiS2Flpf7c2cM7tdzzdzODi8HMGCYRCUbZEew+hBz6G3WVAeh+QykoQpYd2Fu1BJ8S+v2QUDFE13p9kaxJ10jjRXRHY8LXoeEUcqKLCFdHcErSGMoHkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933601; c=relaxed/simple;
-	bh=8Qu75LzH1eNQNAC6RC89HaB00zjDjjv0LNa9eGnaTdk=;
+	s=arc-20240116; t=1706933845; c=relaxed/simple;
+	bh=zgHMt+MauDqhDg3bco8/n+QopH1oYfZx8NyX72ycwEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rMFZdsevX2ycf1jD9k/OMcMKvFF7T81k51DzMgcRZRJCl1bzslhTkT7yldn24C1IOO+5DI0hc749eeCp2QXWAhRere3Z6ksqEF3eTafKkqeNuOFzUIQvPPNRPX1Mz/cQAU/fIHTGeOIKIYHN7sFOa58v7j+f4HkNQyeX8lzDW1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNhlF06E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B610FC433F1;
-	Sat,  3 Feb 2024 04:13:20 +0000 (UTC)
+	 MIME-Version; b=m0xcAajb4hm7kBm01Q36nwrnnuLXkim/iAk/DeJ6Ojyaqz4XMN05s6zErOzJNoqjTr2eG4AjzdndSgAS6UIGLAPZf4NrOEjxh88gOfnKlDbO1+KM+zHfqVk1dbC3HBbTqe6+tLIyEVy4WXOTEcZBAsAjp6v0FSNqVdVG5V9tGjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=joN6j5/5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F578C433F1;
+	Sat,  3 Feb 2024 04:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933600;
-	bh=8Qu75LzH1eNQNAC6RC89HaB00zjDjjv0LNa9eGnaTdk=;
+	s=korg; t=1706933845;
+	bh=zgHMt+MauDqhDg3bco8/n+QopH1oYfZx8NyX72ycwEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YNhlF06E7Hh40Q+UHNeRDucSbiAgDEAof7Br6cSsGw+/8DR9kxkLjkS0j5bzBePgB
-	 96OyiDukkZHbXyaweYQ+e3guMmlxhT2DzsCSi6lE2MnKxf5hi5INBL4IlfEl/OLj13
-	 aZ4zAzGhxctJcXMZi7fibftACd043OOXHG+PjXjo=
+	b=joN6j5/5f9219I0SUvu0uCbNRTmYOYsIQGaiDOfLB52snb89hiUHn8HjkcbcrwxW3
+	 25p6Hr9Cvj9JwRbLKUguFPXXU/+E1gA4a3gEDYmRF5O+dgd6RZwMBI57Sib6wd1Vjh
+	 ioUm4Hkg/pNEUVOydrxsve+OQ3oOKa2cn34kg0Co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 169/322] drm/drm_file: fix use of uninitialized variable
+Subject: [PATCH 6.7 148/353] Bluetooth: qca: Set both WIDEBAND_SPEECH and LE_STATES quirks for QCA2066
 Date: Fri,  2 Feb 2024 20:04:26 -0800
-Message-ID: <20240203035404.698367770@linuxfoundation.org>
+Message-ID: <20240203035408.351800438@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 1d3062fad9c7313fff9970a88e0538a24480ffb8 ]
+[ Upstream commit 5d192b697c7417254cdd9edc3d5e9e0364eb9045 ]
 
-smatch reports:
+Set both WIDEBAND_SPEECH_SUPPORTED and VALID_LE_STATES quirks
+for QCA2066.
 
-drivers/gpu/drm/drm_file.c:967 drm_show_memory_stats() error: uninitialized symbol 'supported_status'.
-
-'supported_status' is only set in one code path. I'm not familiar with
-the code to say if that path will always be ran in real life, but
-whether that is the case or not, I think it is good to initialize
-'supported_status' to 0 to silence the warning (and possibly fix a bug).
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-1-c22b2444f5f5@ideasonboard.com
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bluetooth/hci_qca.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/drm_file.c b/drivers/gpu/drm/drm_file.c
-index e692770ef6d3..a7799086017a 100644
---- a/drivers/gpu/drm/drm_file.c
-+++ b/drivers/gpu/drm/drm_file.c
-@@ -958,7 +958,7 @@ void drm_show_memory_stats(struct drm_printer *p, struct drm_file *file)
- {
- 	struct drm_gem_object *obj;
- 	struct drm_memory_stats status = {};
--	enum drm_gem_object_status supported_status;
-+	enum drm_gem_object_status supported_status = 0;
- 	int id;
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index 067e248e3599..35f74f209d1f 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -2039,6 +2039,7 @@ static const struct qca_device_data qca_soc_data_wcn3998 __maybe_unused = {
+ static const struct qca_device_data qca_soc_data_qca2066 __maybe_unused = {
+ 	.soc_type = QCA_QCA2066,
+ 	.num_vregs = 0,
++	.capabilities = QCA_CAP_WIDEBAND_SPEECH | QCA_CAP_VALID_LE_STATES,
+ };
  
- 	spin_lock(&file->table_lock);
+ static const struct qca_device_data qca_soc_data_qca6390 __maybe_unused = {
 -- 
 2.43.0
 
