@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-18481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DAA68482E4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A94C58481B2
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A063F1C20B2A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA7761C21484
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236E71643E;
-	Sat,  3 Feb 2024 04:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A29439ADE;
+	Sat,  3 Feb 2024 04:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHRBUCZs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dycx81mi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D478C4F21B;
-	Sat,  3 Feb 2024 04:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD232F9EB;
+	Sat,  3 Feb 2024 04:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933830; cv=none; b=s1xRICUKyGDVuEqrfVTiw6EHKtPbwWjmQZG+2ppWnYOHLCC9yoxVG72hKYK4rnmCbYfU7YXuTzH3aG0iY3wW1HuTIQM60/2vo/gTGsAL0ulzz/ARRaNpKMGvwff0rRXTeq/I/Yw4yk0bXvYk6piZ8AWivvDw2L53/PiPAfzxnJA=
+	t=1706933606; cv=none; b=aKjBaTC0Fn1mNIprA3YmI9frkQSE+ma3bVJiKbYVC1BcTHAL/AFX9SeL6GF4jeV842gs9ZlPLULT2uNidxthONxBGoUaZnmBUyNI47IcAof16GmZQ22DpZ+MACDl2qmSrOofCIigd2VjyKTi1B6BsD77UUvVXtmXYMTwt5DfKGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933830; c=relaxed/simple;
-	bh=3hfpKwrL1dkwsBALjzPqEjZ4Gl95YB6Mkeipyfw7BPs=;
+	s=arc-20240116; t=1706933606; c=relaxed/simple;
+	bh=D86GhkRz++rH3dTTqbuva/YkcMMAuTRbWHNIQaDidMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gk9EOWHWMlzjmWcritpyppZzYuVI1mLrmgKZzVIEWA3VSh8j/AQJ2fnl3cvKC0vBcYeTSNbmeOf9qYCmYrhzmIkJCnxgoWlLMMjmeM6iErKciiauPvc3gvoOfIJ7GvjraHfcDrWwhHv5GyCegpHu9mB7vqVaBKR8Vf2FSSWmNg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHRBUCZs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D216C43399;
-	Sat,  3 Feb 2024 04:17:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MXePL+BDj4JvepHVoI8oVpGdDSEoXHEOHDwPDJdUGwWQKdIiBFovABWdGNe3gUGP/ATBSiwJGepa2QhJk8w9P8xQlueanzKUfs0A9j08F4sAwnrnykBhWnAdeOoiIRxRnYce6K0DjKNkcvK5FcouIUVqspT9aZ/AKylZ7MLPKRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dycx81mi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8333AC433C7;
+	Sat,  3 Feb 2024 04:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933830;
-	bh=3hfpKwrL1dkwsBALjzPqEjZ4Gl95YB6Mkeipyfw7BPs=;
+	s=korg; t=1706933606;
+	bh=D86GhkRz++rH3dTTqbuva/YkcMMAuTRbWHNIQaDidMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hHRBUCZs6deo1DBlRpTjlEBcZcLp73DjddMLvjAzaLa42Wbw5Mo9Kje/npuhx0Lm4
-	 X4FqNQTbAg93KbE02m8kglVQfdSPPDwh5fk8a2irsLq6TV8hAAzaxiK9t6afQ2fUFt
-	 Qf9eNOx9iNA8EAqGRqCu0ZH3y65Tu7N0XNxf1+c0=
+	b=Dycx81miCAGkcndKG6Kgb2VzheLyJLNT1Z2xcTIeeuHd+IBwOyphuFrpUTyXhad4G
+	 r3O1v0MT50TNX/PoT3tp8KdUvTpv+eI7vg/OrLU/74DsQqk8m+ffvWDw/KHlC83Oqq
+	 yLd3e8QTY0DOEB0LhHt7P9WLoDFzwHfFxyRO2JdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunyan Zhang <chunyan.zhang@unisoc.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 154/353] arm64: dts: sprd: Add clock reference for pll2 on UMS512
-Date: Fri,  2 Feb 2024 20:04:32 -0800
-Message-ID: <20240203035408.537797869@linuxfoundation.org>
+Subject: [PATCH 6.6 176/322] ALSA: hda: intel-dspcfg: add filters for ARL-S and ARL
+Date: Fri,  2 Feb 2024 20:04:33 -0800
+Message-ID: <20240203035404.935739492@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,39 +63,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunyan Zhang <chunyan.zhang@unisoc.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 829e3e70fe72edc084fbfc4964669594ebe427ce ]
+[ Upstream commit 7a9d6bbe8a663c817080be55d9fecf19a4a8fd8f ]
 
-Fix below dtbs_check warning:
+Same usual filters, SOF is required for DMIC and/or SoundWire support.
 
-'clocks' is a dependency of 'clock-names'
-
-Link: https://lore.kernel.org/r/20231221092824.1169453-2-chunyan.zhang@unisoc.com
-Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20231204212710.185976-4-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/sprd/ums512.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ sound/hda/intel-dsp-config.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/sprd/ums512.dtsi b/arch/arm64/boot/dts/sprd/ums512.dtsi
-index 97ac550af2f1..91c22667d40f 100644
---- a/arch/arm64/boot/dts/sprd/ums512.dtsi
-+++ b/arch/arm64/boot/dts/sprd/ums512.dtsi
-@@ -291,6 +291,7 @@
- 			pll2: clock-controller@0 {
- 				compatible = "sprd,ums512-gc-pll";
- 				reg = <0x0 0x100>;
-+				clocks = <&ext_26m>;
- 				clock-names = "ext-26m";
- 				#clock-cells = <1>;
- 			};
+diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
+index 756fa0aa69bb..6a384b922e4f 100644
+--- a/sound/hda/intel-dsp-config.c
++++ b/sound/hda/intel-dsp-config.c
+@@ -521,6 +521,16 @@ static const struct config_entry config_table[] = {
+ 		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
+ 		.device = PCI_DEVICE_ID_INTEL_HDA_MTL,
+ 	},
++	/* ArrowLake-S */
++	{
++		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
++		.device = PCI_DEVICE_ID_INTEL_HDA_ARL_S,
++	},
++	/* ArrowLake */
++	{
++		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
++		.device = PCI_DEVICE_ID_INTEL_HDA_ARL,
++	},
+ #endif
+ 
+ /* Lunar Lake */
 -- 
 2.43.0
 
