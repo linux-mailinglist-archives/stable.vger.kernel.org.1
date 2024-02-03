@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-17811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9451C848032
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 224CD84829D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 508B228BED2
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2A952819E7
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02B610A22;
-	Sat,  3 Feb 2024 04:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49F94C3AA;
+	Sat,  3 Feb 2024 04:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orVLsDtI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnZy+lfZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D08110A13;
-	Sat,  3 Feb 2024 04:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FB44C3B3;
+	Sat,  3 Feb 2024 04:16:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933330; cv=none; b=YiRwtG//CuL8Uo9zs1C72FASIKcotrdq2ir8sSaec/OUi221uxbv62IosbN7coCBXqqsmyxfsmwN12Q/FS6GWG5aS13cLumGICDDDt50XY/ypGsvKaupNzgiFXk0XcUlEWB8km7xJ1hhPPMaZBzp0ik0tgrJ5bdqbeXmTIAyHCU=
+	t=1706933778; cv=none; b=HWr93oc/+uQE7UHq7y6EZPn0q6IotQF4+yQGe7ojvudSaqKszeG34D/w8nA87tRcWRs6b67dZ+rxOG23GYGLFKICs5H9tDjbSV15lNbwpmfWXdRLG9xgKeEeKv2DrqSC2KiSk9QSpvEiCdpHBbTeZR25i2hpsZj+BUVGuTDYfxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933330; c=relaxed/simple;
-	bh=rKUN8QohzzGrFdAc3CBfc5Mjo0t38sHx0PAx6Ujq6S8=;
+	s=arc-20240116; t=1706933778; c=relaxed/simple;
+	bh=mg23ImoLiQK9aF4lsuWFfLRt+Lx7t7Oh1kSFzQZhkvk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fyPcu4590RovoqptjZKpwUs6U9eyqQPxx2lygJfR8uX+kOMhQn4w4+02i7MTDLSzKjJesP+CDJv8CuSjVA/EXn9jlEYUhCbqnkdzMdcUQChqxV9hHFkMGKR09yVkivmmfEewQK1rZ85hzN+7kBgtJC+u4iinumUH3/En3hZIScY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orVLsDtI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4154DC43390;
-	Sat,  3 Feb 2024 04:08:50 +0000 (UTC)
+	 MIME-Version; b=FYBjiSceTIXHwmhtFw15uOwpop3VP9chiSenF9JFWFbvStZbahWQVD4DeCnw7g3v/sWvi0GAV6uU4yX73U7aK5Wlggh8RWg6xpk3XkaqyPGwsMTsYZLkRZoJ5UEJbCLA0nvK+6XajenNzTYaITY/FCIT+/Ul2rksv4cXQ2avfwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnZy+lfZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B7CC433C7;
+	Sat,  3 Feb 2024 04:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933330;
-	bh=rKUN8QohzzGrFdAc3CBfc5Mjo0t38sHx0PAx6Ujq6S8=;
+	s=korg; t=1706933778;
+	bh=mg23ImoLiQK9aF4lsuWFfLRt+Lx7t7Oh1kSFzQZhkvk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=orVLsDtIraQxHzRhJAeeDpKY4mCQQcUd3Jl8KNRyGPolI354el74uaf63Rzjl54SY
-	 gT6euG+jpK84JK+nsQ0gUpmvSbpyDV1IEbIbx1d8kW+ttnZ4DfdfUr8Re1ycebyZOx
-	 UyxtqOFnSIE1DJp6w3Sh3szy1fSuOTwGM8HkRimA=
+	b=xnZy+lfZsJWeasKmXlPpvLh88rXisKn/CRidtwCNSdJmGquzCkCvuS0dyJgVfyisp
+	 5v30Igv5C/2f3opE4LLQQ6ldSIHCF61yBWH95mrFKxm1DOWaUS/XKvKNdQMpJYiUh7
+	 DhZhkXFQM70c4kfhCXKuBYY+bsopv9RJeE6mBkRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weichen Chen <weichen.chen@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Kees Cook <keescook@chromium.org>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Jay Vosburgh <jay.vosburgh@canonical.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/219] pstore/ram: Fix crash when setting number of cpus to an odd number
+Subject: [PATCH 6.7 082/353] bonding: return -ENOMEM instead of BUG in alb_upper_dev_walk
 Date: Fri,  2 Feb 2024 20:03:20 -0800
-Message-ID: <20240203035320.234127883@linuxfoundation.org>
+Message-ID: <20240203035406.400459177@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weichen Chen <weichen.chen@mediatek.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit d49270a04623ce3c0afddbf3e984cb245aa48e9c ]
+[ Upstream commit d6b83f1e3707c4d60acfa58afd3515e17e5d5384 ]
 
-When the number of cpu cores is adjusted to 7 or other odd numbers,
-the zone size will become an odd number.
-The address of the zone will become:
-    addr of zone0 = BASE
-    addr of zone1 = BASE + zone_size
-    addr of zone2 = BASE + zone_size*2
-    ...
-The address of zone1/3/5/7 will be mapped to non-alignment va.
-Eventually crashes will occur when accessing these va.
+If failed to allocate "tags" or could not find the final upper device from
+start_dev's upper list in bond_verify_device_path(), only the loopback
+detection of the current upper device should be affected, and the system is
+no need to be panic.
+So return -ENOMEM in alb_upper_dev_walk to stop walking, print some warn
+information when failed to allocate memory for vlan tags in
+bond_verify_device_path.
 
-So, use ALIGN_DOWN() to make sure the zone size is even
-to avoid this bug.
+I also think that the following function calls
+netdev_walk_all_upper_dev_rcu
+---->>>alb_upper_dev_walk
+---------->>>bond_verify_device_path
+>From this way, "end device" can eventually be obtained from "start device"
+in bond_verify_device_path, IS_ERR(tags) could be instead of
+IS_ERR_OR_NULL(tags) in alb_upper_dev_walk.
 
-Signed-off-by: Weichen Chen <weichen.chen@mediatek.com>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Tested-by: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Link: https://lore.kernel.org/r/20230224023632.6840-1-weichen.chen@mediatek.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
+Link: https://lore.kernel.org/r/20231118081653.1481260-1-shaozhengchao@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/ram.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/bonding/bond_alb.c  | 3 ++-
+ drivers/net/bonding/bond_main.c | 5 ++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/fs/pstore/ram.c b/fs/pstore/ram.c
-index f3fa3625d772..e15b4631364a 100644
---- a/fs/pstore/ram.c
-+++ b/fs/pstore/ram.c
-@@ -519,6 +519,7 @@ static int ramoops_init_przs(const char *name,
- 	}
+diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
+index dc2c7b979656..7edf0fd58c34 100644
+--- a/drivers/net/bonding/bond_alb.c
++++ b/drivers/net/bonding/bond_alb.c
+@@ -985,7 +985,8 @@ static int alb_upper_dev_walk(struct net_device *upper,
+ 	if (netif_is_macvlan(upper) && !strict_match) {
+ 		tags = bond_verify_device_path(bond->dev, upper, 0);
+ 		if (IS_ERR_OR_NULL(tags))
+-			BUG();
++			return -ENOMEM;
++
+ 		alb_send_lp_vid(slave, upper->dev_addr,
+ 				tags[0].vlan_proto, tags[0].vlan_id);
+ 		kfree(tags);
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 8e6cc0e133b7..9c1652886f4e 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2973,8 +2973,11 @@ struct bond_vlan_tag *bond_verify_device_path(struct net_device *start_dev,
  
- 	zone_sz = mem_sz / *cnt;
-+	zone_sz = ALIGN_DOWN(zone_sz, 2);
- 	if (!zone_sz) {
- 		dev_err(dev, "%s zone size == 0\n", name);
- 		goto fail;
+ 	if (start_dev == end_dev) {
+ 		tags = kcalloc(level + 1, sizeof(*tags), GFP_ATOMIC);
+-		if (!tags)
++		if (!tags) {
++			net_err_ratelimited("%s: %s: Failed to allocate tags\n",
++					    __func__, start_dev->name);
+ 			return ERR_PTR(-ENOMEM);
++		}
+ 		tags[level].vlan_proto = BOND_VLAN_PROTO_NONE;
+ 		return tags;
+ 	}
 -- 
 2.43.0
 
