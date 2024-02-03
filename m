@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9F9848346
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 576BE848214
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 055B11F24ADA
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F158428A313
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23E151C33;
-	Sat,  3 Feb 2024 04:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14A745949;
+	Sat,  3 Feb 2024 04:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oGnnZLz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAIwNPeD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB88171A4;
-	Sat,  3 Feb 2024 04:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A27C45030;
+	Sat,  3 Feb 2024 04:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933901; cv=none; b=lFjIZHb84tZ1ZpdokqAqQG6eVzxsw7RY1epBwBuJy0eiXM5k+TvdoTnH+Z3Hu/zGlk4EGbxsg7TsGbYiuuJN/An28HfmaH+tVrbzaBCfkRxBXCZaHYK6jN8K6GMLK+LnSkIcBT2uYXRnVH15GXL3TGx5vjz1cQx9ndI9jwkIJuw=
+	t=1706933678; cv=none; b=SSijK5Yu+HT/qHYozGGRXcWP+irkwfH/oPkgeZUmiaperkceKd1Sz5rofYvrChdeSF1AmfA2m7jMuYpUCef+qF3s9F8ESoiI/TGjwDtkUUtfVRE5D9vkieEq3vNtRyQARVnpbe6wAiiogvU+PZR+d6iLBw8lCRKcHlhee6WykHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933901; c=relaxed/simple;
-	bh=dD3CQ3oZIW4UJ5GbgoBNQpVNcW8Nw6KZgAQgSx0Dz70=;
+	s=arc-20240116; t=1706933678; c=relaxed/simple;
+	bh=LIufBq7DfiJQH+qWs5IKm1KrZS5N/KjflTSK3x/731Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O1zEthPHfcl0kg7AVChnWWdmvhgNSyCM8xhs2cSjdBPsPE0UXGOrugK+bNsTn17aKDba2yRp3Md7dgAxlsR8AWILm2oMQIa9aruyaW8cZIIK6BXrnmOqLMfXeo/cqsEj0m1qIkwN/hopj24ZouaLiRuRkLTxu99wETjcSJ+KasI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oGnnZLz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504AEC433C7;
-	Sat,  3 Feb 2024 04:18:21 +0000 (UTC)
+	 MIME-Version; b=anwWUcvC07RYTKrVdtXye3Qw+nE0uzA3PgHM5hF/50uGdlMg+5ra3aGGR+IZUECJJ2+FdiYmDxFQddDefEa7qt9TnS0JWvQKyvfDxt7lIUE3o6/8xv//uZPCWAnQOmF6DZyiFIYlBC4UD1JpBfRz3mnBBlMPn1J49b/t+Pzgzyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAIwNPeD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 627A8C433F1;
+	Sat,  3 Feb 2024 04:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933901;
-	bh=dD3CQ3oZIW4UJ5GbgoBNQpVNcW8Nw6KZgAQgSx0Dz70=;
+	s=korg; t=1706933678;
+	bh=LIufBq7DfiJQH+qWs5IKm1KrZS5N/KjflTSK3x/731Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1oGnnZLzDG2eeH3J2n9T92mgTKkSIotlmNtcUZ+wdUo5565Hq5d78BuakZN7DSBW+
-	 KSfD0FnvLZNZxjp+0dyDclToR3XzBpylB1saBH1ddBj4CvoB5lpoiZ9USfyyRRooB+
-	 CTDg0IH0lgs9XK+OmdI3FrG/7ZwsMS+Xiv57rIxg=
+	b=iAIwNPeDco9sMs132gjyabhLX/wAxH+o0oh7uSyUEvI2NqVYvE+elyb0jAbFAwOaL
+	 JHIvAl61UXjlb7oDsfVoNbkiwDE8IzMujmBR13KpwuYUoZqknVTwk0IBYszGyXpPXI
+	 B4F3RDA5aJdw2faXfPhMTqli8Y1vX5x2JIa1izgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Xiaowu.ding" <xiaowu.ding@jaguarmicro.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Jassi Brar <jaswinder.singh@linaro.org>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 249/353] mailbox: arm_mhuv2: Fix a bug for mhuv2_sender_interrupt
-Date: Fri,  2 Feb 2024 20:06:07 -0800
-Message-ID: <20240203035411.601592481@linuxfoundation.org>
+Subject: [PATCH 6.6 271/322] gve: Fix skb truesize underestimation
+Date: Fri,  2 Feb 2024 20:06:08 -0800
+Message-ID: <20240203035407.869350362@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaowu.ding <xiaowu.ding@jaguarmicro.com>
+From: Praveen Kaligineedi <pkaligineedi@google.com>
 
-[ Upstream commit ee01c0b4384d19ecc5dfa7db3fd4303f965c3eba ]
+[ Upstream commit 534326711000c318fe1523c77308450522baa499 ]
 
-Message Handling Unit version is v2.1.
+For a skb frag with a newly allocated copy page, the true size is
+incorrectly set to packet buffer size. It should be set to PAGE_SIZE
+instead.
 
-When arm_mhuv2 working with the data protocol transfer mode.
-We have split one mhu into two channels, and every channel
-include four channel windows, the two channels share
-one gic spi interrupt.
-
-There is a problem with the sending scenario.
-
-The first channel will take up 0-3 channel windows, and the second
-channel take up 4-7 channel windows. When the first channel send the
-data, and the receiver will clear all the four channels status.
-Although we only enabled the interrupt on the last channel window with
-register CH_INT_EN,the register CHCOMB_INT_ST0 will be 0xf, not be 0x8.
-Currently we just clear the last channel windows int status with the
-data proctol mode.So after that,the CHCOMB_INT_ST0 status will be 0x7,
-not be the 0x0.
-
-Then the second channel send the data, the receiver read the
-data, clear all the four channel windows status, trigger the sender
-interrupt. But currently the CHCOMB_INT_ST0 register will be 0xf7,
-get_irq_chan_comb function will always return the first channel.
-
-So this patch clear all channel windows int status to avoid this interrupt
-confusion.
-
-Signed-off-by: Xiaowu.ding <xiaowu.ding@jaguarmicro.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Jassi Brar <jaswinder.singh@linaro.org>
+Fixes: 82fd151d38d9 ("gve: Reduce alloc and copy costs in the GQ rx path")
+Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Link: https://lore.kernel.org/r/20240124161025.1819836-1-pkaligineedi@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/arm_mhuv2.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/google/gve/gve_rx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mailbox/arm_mhuv2.c b/drivers/mailbox/arm_mhuv2.c
-index c6d4957c4da8..0ec21dcdbde7 100644
---- a/drivers/mailbox/arm_mhuv2.c
-+++ b/drivers/mailbox/arm_mhuv2.c
-@@ -553,7 +553,8 @@ static irqreturn_t mhuv2_sender_interrupt(int irq, void *data)
- 	priv = chan->con_priv;
+diff --git a/drivers/net/ethernet/google/gve/gve_rx.c b/drivers/net/ethernet/google/gve/gve_rx.c
+index 73655347902d..93ff7c8ec905 100644
+--- a/drivers/net/ethernet/google/gve/gve_rx.c
++++ b/drivers/net/ethernet/google/gve/gve_rx.c
+@@ -362,7 +362,7 @@ static enum pkt_hash_types gve_rss_type(__be16 pkt_flags)
  
- 	if (!IS_PROTOCOL_DOORBELL(priv)) {
--		writel_relaxed(1, &mhu->send->ch_wn[priv->ch_wn_idx + priv->windows - 1].int_clr);
-+		for (i = 0; i < priv->windows; i++)
-+			writel_relaxed(1, &mhu->send->ch_wn[priv->ch_wn_idx + i].int_clr);
+ static struct sk_buff *gve_rx_add_frags(struct napi_struct *napi,
+ 					struct gve_rx_slot_page_info *page_info,
+-					u16 packet_buffer_size, u16 len,
++					unsigned int truesize, u16 len,
+ 					struct gve_rx_ctx *ctx)
+ {
+ 	u32 offset = page_info->page_offset + page_info->pad;
+@@ -395,10 +395,10 @@ static struct sk_buff *gve_rx_add_frags(struct napi_struct *napi,
+ 	if (skb != ctx->skb_head) {
+ 		ctx->skb_head->len += len;
+ 		ctx->skb_head->data_len += len;
+-		ctx->skb_head->truesize += packet_buffer_size;
++		ctx->skb_head->truesize += truesize;
+ 	}
+ 	skb_add_rx_frag(skb, num_frags, page_info->page,
+-			offset, len, packet_buffer_size);
++			offset, len, truesize);
  
- 		if (chan->cl) {
- 			mbox_chan_txdone(chan, 0);
+ 	return ctx->skb_head;
+ }
+@@ -492,7 +492,7 @@ static struct sk_buff *gve_rx_copy_to_pool(struct gve_rx_ring *rx,
+ 
+ 		memcpy(alloc_page_info.page_address, src, page_info->pad + len);
+ 		skb = gve_rx_add_frags(napi, &alloc_page_info,
+-				       rx->packet_buffer_size,
++				       PAGE_SIZE,
+ 				       len, ctx);
+ 
+ 		u64_stats_update_begin(&rx->statss);
 -- 
 2.43.0
 
