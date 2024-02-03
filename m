@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-17924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F35708480A7
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C9B28481CA
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 322331C21848
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F9131C21112
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184FF179A7;
-	Sat,  3 Feb 2024 04:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B053BB38;
+	Sat,  3 Feb 2024 04:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJrwHTFu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/TVBCtz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB47C10A0E;
-	Sat,  3 Feb 2024 04:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC6F3FB37;
+	Sat,  3 Feb 2024 04:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933416; cv=none; b=Jk/4oWgLKi/dXDiHwXklUBzmHCqR7EbVVBAOPX85fG7gMoArn96YVjyexziUQho+7g1dnaliWtpm00oyn2ZuLo+ajZDXQtN6LQoQ4DGmTsPk/tKlwEsM4d1z/auYrklWkOwFYLlf8AoJhiDe19hPIStpIAINHAWEauHTVu7BmHQ=
+	t=1706933622; cv=none; b=i5LsxVxt3e0V4Edrhixdh8H1yHx71+X8N7oe4komza+xakF9GSgNjvvpwLjy8ZUQhgxwlzuPhexnVXPL4dq/xJ5xTxxX+Y+Ho2cpr8eXfzigKIHX7D3nnO/mYPBJ2PibLR4VTQt86VbdqaXrVlCeMt91QUidp93w3cXcylHZdqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933416; c=relaxed/simple;
-	bh=4QnCtxLAUQQRs8XRNb33oJK1D7AXW71DG1axSVwSwYc=;
+	s=arc-20240116; t=1706933622; c=relaxed/simple;
+	bh=LSzN17ol9pdfJM/W4ksIEgeIjfKz5b2BzBfX+RVsPz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bw6g43DeTe14xuAgaFTg2bBb5dIafiiGoBaeXnG3zhYG3IpKsQMSYF3weH455ECBx8DrcJMqBySbpp8qvUUkdnPaoNYYodaTEl8o/OYTD/dLDVjnJAe67u6sifIRiXrDqDdVZvo38q4+7ift2tcon28x3CQHnbWa6AXRRSZdKKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJrwHTFu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F3BC433F1;
-	Sat,  3 Feb 2024 04:10:16 +0000 (UTC)
+	 MIME-Version; b=jHefXEBHWdc+XqsOuChnDuNrXnhYVffuLmLF409Py2Nlt+PDd8Nf0mAU5Twj3ATzG0IjriY+Kodgi1X7vAuzZ+TKIFqa9SzT5wu9Ib/kPEgKNEL6IaAqQKl1WPMEsoRArMWaqEI1PycurCjO9nvH+NKTS9EpI8Bfe9WvT229JX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/TVBCtz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D8CC433C7;
+	Sat,  3 Feb 2024 04:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933416;
-	bh=4QnCtxLAUQQRs8XRNb33oJK1D7AXW71DG1axSVwSwYc=;
+	s=korg; t=1706933622;
+	bh=LSzN17ol9pdfJM/W4ksIEgeIjfKz5b2BzBfX+RVsPz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJrwHTFuVrCM9qvEo/bUpbFhr0RNs9C9dL/3k4UXbKzGdJZQHnuJX2XuX4M+8ZUtT
-	 iWYRCWc4vGQzm+0EMl4plfMsh1pc6MR1lXdnpEVxLE+Ec6RJsRVkVQEOIcMaAoSG9A
-	 ECIQmA0unCUildjENN5n21tJfK12znKWLqLDtK3Q=
+	b=D/TVBCtzIUVhxEnOTyvDNHf36apYDowM/y9ghIY2NfrKv9ABpbSqCWMwdjuW3lBaV
+	 utIh04cesBRQEDBMad7A+iapktBpB2LkTA88nh4MWa9tu+TFi2l15Yic6QEfLEEfxc
+	 Z4zhsXS92hvaPJWsVhV3YJwdRzKBV6I2OU5RB/m8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Adam Ford <aford173@gmail.com>
-Subject: [PATCH 6.1 122/219] media: rkisp1: Fix IRQ handler return values
+	Rob Clark <robdclark@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 198/322] drm/msm/dpu: Ratelimit framedone timeout msgs
 Date: Fri,  2 Feb 2024 20:04:55 -0800
-Message-ID: <20240203035334.761264592@linuxfoundation.org>
+Message-ID: <20240203035405.639199219@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit 3eb7910e1b16a2c136be26a8380f21469225b2f6 ]
+[ Upstream commit 2b72e50c62de60ad2d6bcd86aa38d4ccbdd633f2 ]
 
-The IRQ handler rkisp1_isr() calls sub-handlers, all of which returns an
-irqreturn_t value, but rkisp1_isr() ignores those values and always
-returns IRQ_HANDLED.
+When we start getting these, we get a *lot*.  So ratelimit it to not
+flood dmesg.
 
-Fix this by collecting the return values, and returning IRQ_HANDLED or
-IRQ_NONE as appropriate.
-
-Link: https://lore.kernel.org/r/20231207-rkisp-irq-fix-v3-2-358a2c871a3c@ideasonboard.com
-
-Tested-by: Adam Ford <aford173@gmail.com>  #imx8mp-beacon
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
+Patchwork: https://patchwork.freedesktop.org/patch/571584/
+Link: https://lore.kernel.org/r/20231211182000.218088-1-robdclark@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/platform/rockchip/rkisp1/rkisp1-dev.c  | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 5 ++++-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h     | 1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-index 46d94e4c9745..8d990957ea21 100644
---- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-+++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-@@ -442,17 +442,25 @@ static int rkisp1_entities_register(struct rkisp1_device *rkisp1)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+index b02aa2eb6c17..7d4cf81fd31c 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+@@ -39,6 +39,9 @@
+ #define DPU_ERROR_ENC(e, fmt, ...) DPU_ERROR("enc%d " fmt,\
+ 		(e) ? (e)->base.base.id : -1, ##__VA_ARGS__)
  
- static irqreturn_t rkisp1_isr(int irq, void *ctx)
- {
-+	irqreturn_t ret = IRQ_NONE;
++#define DPU_ERROR_ENC_RATELIMITED(e, fmt, ...) DPU_ERROR_RATELIMITED("enc%d " fmt,\
++		(e) ? (e)->base.base.id : -1, ##__VA_ARGS__)
 +
- 	/*
- 	 * Call rkisp1_capture_isr() first to handle the frame that
- 	 * potentially completed using the current frame_sequence number before
- 	 * it is potentially incremented by rkisp1_isp_isr() in the vertical
- 	 * sync.
- 	 */
--	rkisp1_capture_isr(irq, ctx);
--	rkisp1_isp_isr(irq, ctx);
--	rkisp1_csi_isr(irq, ctx);
+ /*
+  * Two to anticipate panels that can do cmd/vid dynamic switching
+  * plan is to create all possible physical encoder types, and switch between
+@@ -2327,7 +2330,7 @@ static void dpu_encoder_frame_done_timeout(struct timer_list *t)
+ 		return;
+ 	}
  
--	return IRQ_HANDLED;
-+	if (rkisp1_capture_isr(irq, ctx) == IRQ_HANDLED)
-+		ret = IRQ_HANDLED;
-+
-+	if (rkisp1_isp_isr(irq, ctx) == IRQ_HANDLED)
-+		ret = IRQ_HANDLED;
-+
-+	if (rkisp1_csi_isr(irq, ctx) == IRQ_HANDLED)
-+		ret = IRQ_HANDLED;
-+
-+	return ret;
- }
+-	DPU_ERROR_ENC(dpu_enc, "frame done timeout\n");
++	DPU_ERROR_ENC_RATELIMITED(dpu_enc, "frame done timeout\n");
  
- static const char * const px30_isp_clks[] = {
+ 	event = DPU_ENCODER_FRAME_EVENT_ERROR;
+ 	trace_dpu_enc_frame_done_timeout(DRMID(drm_enc), event);
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+index b6f53ca6e962..f5473d4dea92 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+@@ -51,6 +51,7 @@
+ 	} while (0)
+ 
+ #define DPU_ERROR(fmt, ...) pr_err("[dpu error]" fmt, ##__VA_ARGS__)
++#define DPU_ERROR_RATELIMITED(fmt, ...) pr_err_ratelimited("[dpu error]" fmt, ##__VA_ARGS__)
+ 
+ /**
+  * ktime_compare_safe - compare two ktime structures
 -- 
 2.43.0
 
