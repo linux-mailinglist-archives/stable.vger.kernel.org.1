@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-18130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 861A6848180
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A43EC848297
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8C9A1C22151
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D772E1C20E78
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA642C1A5;
-	Sat,  3 Feb 2024 04:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D004BA8F;
+	Sat,  3 Feb 2024 04:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhW8BKSM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TztLErqi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8AB175AD;
-	Sat,  3 Feb 2024 04:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9746413AD4;
+	Sat,  3 Feb 2024 04:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933569; cv=none; b=JbmKQK3GewvSFI8cnq4+GBJj+yrpUxn/nSPNQjwnCYcEwXJZ8TAkepM0eJeSzj6c9Ex5AWrx2RCC6ylXr3PehV5/pD+n+SpGLSbL0pW3oD9sS50dmr1YqulaHm9350yYRUpQ24mEnSFMZelvl3TkDKaf8DsyvP5kvLdnMApjs/o=
+	t=1706933774; cv=none; b=bDH78Uuj68XA1eVKsmDV6j+CPq6IH99fk4ZBGHQpVjvhH/DNI1KV1jwHHEC8Tk4ZQj8pxxOn51QGHt9l4JQv4Y8hoET+t+ZH+ju91VIYCeJvng3/vIBUdnL93uWCGzocQ+dgjlmqJgJwOqXuCaecCubvqzNj1CHDtNmalKZtWyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933569; c=relaxed/simple;
-	bh=pkWkor3THrzvF2US4F3iDnSMWSVhjUkByjHUOUb38bo=;
+	s=arc-20240116; t=1706933774; c=relaxed/simple;
+	bh=jftSSsNse/Nqr4yYAc+goSCpCLooFDkJxh1z0h/oZ00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1t1NV/UJci90ClbZNcqGNMcsqIW5bAPjq5a9aB5T/yQ6UAYBiC7G6Dooh/asRroH13IcTLOmSpUTt/w5nglmEvffGWM/stifygDgYMRWAjI0yxo0FT/UH3xmiEpk3N8MlRIUYSYu+t9caGRaCByy8ePBXWElF0m+Xf1VDiaFls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhW8BKSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22D5DC433C7;
-	Sat,  3 Feb 2024 04:12:49 +0000 (UTC)
+	 MIME-Version; b=T2mS/zXQxz9JNhLU4zjQ0vELe1GThFpfrNyxa1GKqa04og50GyMYxs1fwF6+B5RqiaAGYol5wOia5EGc4NsRcuIDnM+b9TYKjztC3xDUqVYhra1ajQOvE36dEMnqCM/2hWASutjMJYVFsQ3ggEvIWgiCTDmiHnMnthqbWDU2zSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TztLErqi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62AEDC433F1;
+	Sat,  3 Feb 2024 04:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933569;
-	bh=pkWkor3THrzvF2US4F3iDnSMWSVhjUkByjHUOUb38bo=;
+	s=korg; t=1706933774;
+	bh=jftSSsNse/Nqr4yYAc+goSCpCLooFDkJxh1z0h/oZ00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WhW8BKSMgDp2GJAQ6Zdyqzc7rBnDPZtl+sLP2vQXmD8I8t+toJ/5u4pHyhavkKuxq
-	 eZlzLiqsfGDoPRsal2vE6kV/hcmc8NZFINlTznUJpSjQ+UrEOzWANEwRywIkKJ6YOP
-	 HOGk45FrSgO+IwhPsub8SHF76izTUZycs4IgIZhQ=
+	b=TztLErqiS4EZmULtAzEEEpi8oNwxJYdcrRrTcJr6NgI+S15eoMDVT1GDjNJduVFHQ
+	 dvFfa7zkKFDITNSKZXljAEb52uG3x0V8wVhn5jxYE1R5J/H6gW628tc5L60ousK+i2
+	 EboSA17PbJ67SgZeEONIJJSStVlw26RAW+p6OEgo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 098/322] minmax: fix indentation of __cmp_once() and __clamp_once()
+	Justin Tee <justin.tee@broadcom.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 077/353] scsi: lpfc: Fix possible file string name overflow when updating firmware
 Date: Fri,  2 Feb 2024 20:03:15 -0800
-Message-ID: <20240203035402.307926815@linuxfoundation.org>
+Message-ID: <20240203035406.250327125@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,75 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: Justin Tee <justin.tee@broadcom.com>
 
-commit f4b84b2ff851f01d0fac619eadef47eb41648534 upstream.
+[ Upstream commit f5779b529240b715f0e358489ad0ed933bf77c97 ]
 
-Remove the extra indentation and align continuation markers.
+Because file_name and phba->ModelName are both declared a size 80 bytes,
+the extra ".grp" file extension could cause an overflow into file_name.
 
-Link: https://lkml.kernel.org/r/bed41317a05c498ea0209eafbcab45a5@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Define a ELX_FW_NAME_SIZE macro with value 84.  84 incorporates the 4 extra
+characters from ".grp".  file_name is changed to be declared as a char and
+initialized to zeros i.e. null chars.
+
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20231031191224.150862-3-justintee8345@gmail.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h |   30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ drivers/scsi/lpfc/lpfc.h      | 1 +
+ drivers/scsi/lpfc/lpfc_init.c | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -35,11 +35,11 @@
- #define __cmp(op, x, y)	((x) __cmp_op_##op (y) ? (x) : (y))
+diff --git a/drivers/scsi/lpfc/lpfc.h b/drivers/scsi/lpfc/lpfc.h
+index af15f7a22d25..04d608ea9106 100644
+--- a/drivers/scsi/lpfc/lpfc.h
++++ b/drivers/scsi/lpfc/lpfc.h
+@@ -33,6 +33,7 @@
+ struct lpfc_sli2_slim;
  
- #define __cmp_once(op, x, y, unique_x, unique_y) ({	\
--		typeof(x) unique_x = (x);		\
--		typeof(y) unique_y = (y);		\
--		static_assert(__types_ok(x, y),		\
--			#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
--		__cmp(op, unique_x, unique_y); })
-+	typeof(x) unique_x = (x);			\
-+	typeof(y) unique_y = (y);			\
-+	static_assert(__types_ok(x, y),			\
-+		#op "(" #x ", " #y ") signedness error, fix types or consider u" #op "() before " #op "_t()"); \
-+	__cmp(op, unique_x, unique_y); })
+ #define ELX_MODEL_NAME_SIZE	80
++#define ELX_FW_NAME_SIZE	84
  
- #define __careful_cmp(op, x, y)					\
- 	__builtin_choose_expr(__is_constexpr((x) - (y)),	\
-@@ -49,16 +49,16 @@
- #define __clamp(val, lo, hi)	\
- 	((val) >= (hi) ? (hi) : ((val) <= (lo) ? (lo) : (val)))
+ #define LPFC_PCI_DEV_LP		0x1
+ #define LPFC_PCI_DEV_OC		0x2
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index e7c47ee185a4..70bcee64bc8c 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -14721,7 +14721,7 @@ lpfc_write_firmware(const struct firmware *fw, void *context)
+ int
+ lpfc_sli4_request_firmware_update(struct lpfc_hba *phba, uint8_t fw_upgrade)
+ {
+-	uint8_t file_name[ELX_MODEL_NAME_SIZE];
++	char file_name[ELX_FW_NAME_SIZE] = {0};
+ 	int ret;
+ 	const struct firmware *fw;
  
--#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({	\
--		typeof(val) unique_val = (val);				\
--		typeof(lo) unique_lo = (lo);				\
--		typeof(hi) unique_hi = (hi);				\
--		static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
--				(lo) <= (hi), true),					\
--			"clamp() low limit " #lo " greater than high limit " #hi);	\
--		static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
--		static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
--		__clamp(unique_val, unique_lo, unique_hi); })
-+#define __clamp_once(val, lo, hi, unique_val, unique_lo, unique_hi) ({		\
-+	typeof(val) unique_val = (val);						\
-+	typeof(lo) unique_lo = (lo);						\
-+	typeof(hi) unique_hi = (hi);						\
-+	static_assert(__builtin_choose_expr(__is_constexpr((lo) > (hi)), 	\
-+			(lo) <= (hi), true),					\
-+		"clamp() low limit " #lo " greater than high limit " #hi);	\
-+	static_assert(__types_ok(val, lo), "clamp() 'lo' signedness error");	\
-+	static_assert(__types_ok(val, hi), "clamp() 'hi' signedness error");	\
-+	__clamp(unique_val, unique_lo, unique_hi); })
+@@ -14730,7 +14730,7 @@ lpfc_sli4_request_firmware_update(struct lpfc_hba *phba, uint8_t fw_upgrade)
+ 	    LPFC_SLI_INTF_IF_TYPE_2)
+ 		return -EPERM;
  
- #define __careful_clamp(val, lo, hi) ({					\
- 	__builtin_choose_expr(__is_constexpr((val) - (lo) + (hi)),	\
+-	snprintf(file_name, ELX_MODEL_NAME_SIZE, "%s.grp", phba->ModelName);
++	scnprintf(file_name, sizeof(file_name), "%s.grp", phba->ModelName);
+ 
+ 	if (fw_upgrade == INT_FW_UPGRADE) {
+ 		ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+-- 
+2.43.0
+
 
 
 
