@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-18261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 254A9848204
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3B968480ED
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 514401C213C8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7105B1F21615
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC3F18E3F;
-	Sat,  3 Feb 2024 04:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC6DF9E6;
+	Sat,  3 Feb 2024 04:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4AaTByb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7bu82gJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31CE12B9A;
-	Sat,  3 Feb 2024 04:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF6BFC03;
+	Sat,  3 Feb 2024 04:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933667; cv=none; b=C2HSbR/dpg4/FlcJv72rDIBDAGdNTQGlMoJOzSttTOqMMdb2fW5Sbj8YBh1lJr+01Bui9ZrNyH+LlB/4wnvEAYpu1lN6ZCRCUc1wlleLql4WYhNcpopv/tGIr9pNLvKjLSLHx4Hdx5zEuEQaCOXX8Oc60lADj8z+CUtwqyxQs2w=
+	t=1706933465; cv=none; b=OBrp++c+ZPSCxpPJULOGvyR/3rdF+wIvVgkTD5rJo61t9dvKnmOWRvaojgKjZ8b4wNw1dARQT2XW/e4Yt0T091hIwqsI/Xr5wOwYSluUSYRFFBb9wN8jXZUG+ELICTXucWOt8L6WpZ0k501UXjW1bn860q6JltTV9urhQW9HX5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933667; c=relaxed/simple;
-	bh=AI4bVDxKEynGd8k4bW7JH5gIkj11dvoftYlMqfUPr5k=;
+	s=arc-20240116; t=1706933465; c=relaxed/simple;
+	bh=o6qh/jny8zembC91UflrNnnB9Pwe+o1T2aGFBR2qVck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Soivtw6veIPyq8wN6w//Ju84ou8GT6H1kpUvMAV7hE8i7i8axK00tumSDZMjvoWf1QXG2meuF1pT723jjxFy4owapr48faLnYv3J3oZE9SzJa8jUKBpp3ARHYxeG063fZwIwErkbGzbKElvorD/mQg3thaF608BG2Pu39Lzn8iE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4AaTByb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B06BC43394;
-	Sat,  3 Feb 2024 04:14:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AUYYTuC/3gVvEXkvBDROkDuC+23FleDpEWLA5mKzIyjxlN5k+zw5Qqt0rqBcXNZIjPFFtHMZrknY4YlBRBpQkTSiyzOD3o2M/WEgtlUxBufjjrK9PVb0BiJbiDqbF/9Bsqxbky/WaGESBTkUDg4b/wmTDsarDzyBBTcZ56c/S68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7bu82gJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C84C43394;
+	Sat,  3 Feb 2024 04:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933667;
-	bh=AI4bVDxKEynGd8k4bW7JH5gIkj11dvoftYlMqfUPr5k=;
+	s=korg; t=1706933465;
+	bh=o6qh/jny8zembC91UflrNnnB9Pwe+o1T2aGFBR2qVck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4AaTBybtDRNf32G2XAW7ZBTxI6nacoru7MWQW5BCwC47q/SoMR5e9q3qDJejwEum
-	 47m1zgNtEqu8iGb9V3Xcgbrh6BMzomxFoB3dtCwuX48LfuElvH718C8bu2PCYYHfUO
-	 gY2HpPRMOANAm0nLp08azLPO3dKlEcOFmhd9Ubkg=
+	b=v7bu82gJOR+oN+qGKDxmWCIT2oDgP+rf1wxTK3l6if1o2U3lytChNveXWvrMKcqB7
+	 DwxZ9tSu98oiglOMOwbkTnRP5FJ+Q+l2+IZ4D77pzi1EeZzGkmdT1SCUHI8QGB68tx
+	 20zTMN5NFwVCcQMlwieaw2+6T6phrG45Lf7oGsEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Lijo Lazar <lijo.lazar@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 256/322] drm/amdgpu: Release adev->pm.fw before return in amdgpu_device_need_post()
+Subject: [PATCH 6.1 180/219] drm/amdgpu: Release adev->pm.fw before return in amdgpu_device_need_post()
 Date: Fri,  2 Feb 2024 20:05:53 -0800
-Message-ID: <20240203035407.419312004@linuxfoundation.org>
+Message-ID: <20240203035342.053992637@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -95,10 +95,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 56d99ffbba2e..7791367e7c02 100644
+index a5352e5e2bd4..4b91f95066ec 100644
 --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
 +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -1218,6 +1218,7 @@ bool amdgpu_device_need_post(struct amdgpu_device *adev)
+@@ -1310,6 +1310,7 @@ bool amdgpu_device_need_post(struct amdgpu_device *adev)
  				return true;
  
  			fw_ver = *((uint32_t *)adev->pm.fw->data + 69);
