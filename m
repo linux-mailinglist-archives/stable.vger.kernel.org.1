@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAE2C8482B9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D74B284819E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87381285BEA
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 087571C227E1
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5FE4D5B5;
-	Sat,  3 Feb 2024 04:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C912F9F5;
+	Sat,  3 Feb 2024 04:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izFnSftx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mb237oZr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BAE1BF24;
-	Sat,  3 Feb 2024 04:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C6C10A0E;
+	Sat,  3 Feb 2024 04:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933799; cv=none; b=HyuIpFBXpFm3bFK8sIVxku4wINuUGbMZiXVFaTZa3XeZ1arBSqz1DjVwy/3jidDInIMdyea1BEugYGL3Ip8omgwPVSCo4VTXcmf8+1UHRQXpcsoET9A8/QO55/yslSh+QaCT0A0xFx4ON4VOBNRWeE4DrMGaMsWIpI950mJb/5I=
+	t=1706933591; cv=none; b=JXKQSphR5fdb4VSvI6NNve+Qp430/J/TsAdKOrBV2CRzZs/9AztiO9jBgMQUJatmObF0iTW/rQre/TM0HBsFh31xLkKundByiqND2Rf9cMz9raWaF2G6I32g+ut+kFkYht8GEC5rnudXpcY1NLkeHQ37HDjS69l+CZ87ruSTDj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933799; c=relaxed/simple;
-	bh=tP45OdTe5m+8ur+J8Z5WClkXEWNpYIxJCMitKPGZ0WE=;
+	s=arc-20240116; t=1706933591; c=relaxed/simple;
+	bh=aN2qfrg6H9bLMIcoqJIySZdr3UkHB32X4QSZP9uhScA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftvHY3nSCj40eGdcJeL/fCpgyneScVwTPD33bTakpdV7y40v0rhhoLmNxm30JWafrK6uA0n5quM76iN5o1i1fKm5hL45n/72bXnjJLs2yeO1n4+7zIVmOWRQA0jEd7P0IucCFMy7U8h6tSLyuWXGA01JfabHjVgQsWpQQwIh5Pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izFnSftx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C054EC43390;
-	Sat,  3 Feb 2024 04:16:38 +0000 (UTC)
+	 MIME-Version; b=oj2XIWDL2zJy4ksyaoPKOh5qCokWXCjkxLxG4o64rmqRTh4Dpy/IL61ZzKegU5ZZSUZ34czXBeKJn4V8gPrCfTIFOQRKBq9Ug4lDo2CuroAkp6loCE06rnn2CjaqzPtcNgIzkpmWY/+oHjwLWg6L1k0iCfePvuGljk25T5ok74o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mb237oZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22580C43390;
+	Sat,  3 Feb 2024 04:13:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933798;
-	bh=tP45OdTe5m+8ur+J8Z5WClkXEWNpYIxJCMitKPGZ0WE=;
+	s=korg; t=1706933591;
+	bh=aN2qfrg6H9bLMIcoqJIySZdr3UkHB32X4QSZP9uhScA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=izFnSftxsnvTd/jHLUfqB/w5QTBEkINUz+VMSThA4PXrAbAN2zz2o4JjKn8yKs1a5
-	 /of7ZTq8a8xNh5Jzx0KwzADN97gUhsuMMVZ299r7I3DJozzFbPpIBGdzp+dfNooby6
-	 MNDnzxLZdjSP6NqAE/Qv9RNuoSDtd0TGEEH2+dLA=
+	b=mb237oZr5N8mjLLwfrw8Rw6V8/qL9L/YfSlTwawTXdyui3m7hTxu9Z0wT4jpgzEbj
+	 PKqmxv1pgULRbwWYt40QJOBX0Fq92YPA96qnVndIzU+P/YcZHchLuKJetADGe6AtJX
+	 EBUp8HduJlEO2U/d4EJc7gOphMpUzMoN7GVB4BYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Igor Russkikh <irusskikh@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 110/353] ARM: dts: imx25/27-eukrea: Fix RTC node name
+Subject: [PATCH 6.6 131/322] net: atlantic: eliminate double free in error handling logic
 Date: Fri,  2 Feb 2024 20:03:48 -0800
-Message-ID: <20240203035407.245076029@linuxfoundation.org>
+Message-ID: <20240203035403.387328199@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,290 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Igor Russkikh <irusskikh@marvell.com>
 
-[ Upstream commit 68c711b882c262e36895547cddea2c2d56ce611d ]
+[ Upstream commit b3cb7a830a24527877b0bc900b9bd74a96aea928 ]
 
-Node names should be generic. Use 'rtc' as node name to fix
-the following dt-schema warning:
+Driver has a logic leak in ring data allocation/free,
+where aq_ring_free could be called multiple times on same ring,
+if system is under stress and got memory allocation error.
 
-imx25-eukrea-mbimxsd25-baseboard.dtb: pcf8563@51: $nodename:0: 'pcf8563@51' does not match '^rtc(@.*|-([0-9]|[1-9][0-9]+))?$'
-	from schema $id: http://devicetree.org/schemas/rtc/nxp,pcf8563.yaml#
+Ring pointer was used as an indicator of failure, but this is
+not correct since only ring data is allocated/deallocated.
+Ring itself is an array member.
 
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Changing ring allocation functions to return error code directly.
+This simplifies error handling and eliminates aq_ring_free
+on higher layer.
+
+Signed-off-by: Igor Russkikh <irusskikh@marvell.com>
+Link: https://lore.kernel.org/r/20231213095044.23146-1-irusskikh@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx25-eukrea-cpuimx25.dtsi | 2 +-
- arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ .../net/ethernet/aquantia/atlantic/aq_ptp.c   | 28 +++------
+ .../net/ethernet/aquantia/atlantic/aq_ring.c  | 61 +++++--------------
+ .../net/ethernet/aquantia/atlantic/aq_ring.h  | 22 +++----
+ .../net/ethernet/aquantia/atlantic/aq_vec.c   | 23 +++----
+ 4 files changed, 47 insertions(+), 87 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-cpuimx25.dtsi b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-cpuimx25.dtsi
-index 0703f62d10d1..93a6e4e680b4 100644
---- a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-cpuimx25.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-cpuimx25.dtsi
-@@ -27,7 +27,7 @@
- 	pinctrl-0 = <&pinctrl_i2c1>;
- 	status = "okay";
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
+index 28c9b6f1a54f..abd4832e4ed2 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
+@@ -953,8 +953,6 @@ int aq_ptp_ring_alloc(struct aq_nic_s *aq_nic)
+ {
+ 	struct aq_ptp_s *aq_ptp = aq_nic->aq_ptp;
+ 	unsigned int tx_ring_idx, rx_ring_idx;
+-	struct aq_ring_s *hwts;
+-	struct aq_ring_s *ring;
+ 	int err;
  
--	pcf8563@51 {
-+	rtc@51 {
- 		compatible = "nxp,pcf8563";
- 		reg = <0x51>;
- 	};
-diff --git a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi
-index 74110bbcd9d4..4b83e2918b55 100644
---- a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi
-@@ -33,7 +33,7 @@
- 	pinctrl-0 = <&pinctrl_i2c1>;
- 	status = "okay";
+ 	if (!aq_ptp)
+@@ -962,29 +960,23 @@ int aq_ptp_ring_alloc(struct aq_nic_s *aq_nic)
  
--	pcf8563@51 {
-+	rtc@51 {
- 		compatible = "nxp,pcf8563";
- 		reg = <0x51>;
- 	};
+ 	tx_ring_idx = aq_ptp_ring_idx(aq_nic->aq_nic_cfg.tc_mode);
+ 
+-	ring = aq_ring_tx_alloc(&aq_ptp->ptp_tx, aq_nic,
+-				tx_ring_idx, &aq_nic->aq_nic_cfg);
+-	if (!ring) {
+-		err = -ENOMEM;
++	err = aq_ring_tx_alloc(&aq_ptp->ptp_tx, aq_nic,
++			       tx_ring_idx, &aq_nic->aq_nic_cfg);
++	if (err)
+ 		goto err_exit;
+-	}
+ 
+ 	rx_ring_idx = aq_ptp_ring_idx(aq_nic->aq_nic_cfg.tc_mode);
+ 
+-	ring = aq_ring_rx_alloc(&aq_ptp->ptp_rx, aq_nic,
+-				rx_ring_idx, &aq_nic->aq_nic_cfg);
+-	if (!ring) {
+-		err = -ENOMEM;
++	err = aq_ring_rx_alloc(&aq_ptp->ptp_rx, aq_nic,
++			       rx_ring_idx, &aq_nic->aq_nic_cfg);
++	if (err)
+ 		goto err_exit_ptp_tx;
+-	}
+ 
+-	hwts = aq_ring_hwts_rx_alloc(&aq_ptp->hwts_rx, aq_nic, PTP_HWST_RING_IDX,
+-				     aq_nic->aq_nic_cfg.rxds,
+-				     aq_nic->aq_nic_cfg.aq_hw_caps->rxd_size);
+-	if (!hwts) {
+-		err = -ENOMEM;
++	err = aq_ring_hwts_rx_alloc(&aq_ptp->hwts_rx, aq_nic, PTP_HWST_RING_IDX,
++				    aq_nic->aq_nic_cfg.rxds,
++				    aq_nic->aq_nic_cfg.aq_hw_caps->rxd_size);
++	if (err)
+ 		goto err_exit_ptp_rx;
+-	}
+ 
+ 	err = aq_ptp_skb_ring_init(&aq_ptp->skb_ring, aq_nic->aq_nic_cfg.rxds);
+ 	if (err != 0) {
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+index e1885c1eb100..cda8597b4e14 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+@@ -132,8 +132,8 @@ static int aq_get_rxpages(struct aq_ring_s *self, struct aq_ring_buff_s *rxbuf)
+ 	return 0;
+ }
+ 
+-static struct aq_ring_s *aq_ring_alloc(struct aq_ring_s *self,
+-				       struct aq_nic_s *aq_nic)
++static int aq_ring_alloc(struct aq_ring_s *self,
++			 struct aq_nic_s *aq_nic)
+ {
+ 	int err = 0;
+ 
+@@ -156,46 +156,29 @@ static struct aq_ring_s *aq_ring_alloc(struct aq_ring_s *self,
+ err_exit:
+ 	if (err < 0) {
+ 		aq_ring_free(self);
+-		self = NULL;
+ 	}
+ 
+-	return self;
++	return err;
+ }
+ 
+-struct aq_ring_s *aq_ring_tx_alloc(struct aq_ring_s *self,
+-				   struct aq_nic_s *aq_nic,
+-				   unsigned int idx,
+-				   struct aq_nic_cfg_s *aq_nic_cfg)
++int aq_ring_tx_alloc(struct aq_ring_s *self,
++		     struct aq_nic_s *aq_nic,
++		     unsigned int idx,
++		     struct aq_nic_cfg_s *aq_nic_cfg)
+ {
+-	int err = 0;
+-
+ 	self->aq_nic = aq_nic;
+ 	self->idx = idx;
+ 	self->size = aq_nic_cfg->txds;
+ 	self->dx_size = aq_nic_cfg->aq_hw_caps->txd_size;
+ 
+-	self = aq_ring_alloc(self, aq_nic);
+-	if (!self) {
+-		err = -ENOMEM;
+-		goto err_exit;
+-	}
+-
+-err_exit:
+-	if (err < 0) {
+-		aq_ring_free(self);
+-		self = NULL;
+-	}
+-
+-	return self;
++	return aq_ring_alloc(self, aq_nic);
+ }
+ 
+-struct aq_ring_s *aq_ring_rx_alloc(struct aq_ring_s *self,
+-				   struct aq_nic_s *aq_nic,
+-				   unsigned int idx,
+-				   struct aq_nic_cfg_s *aq_nic_cfg)
++int aq_ring_rx_alloc(struct aq_ring_s *self,
++		     struct aq_nic_s *aq_nic,
++		     unsigned int idx,
++		     struct aq_nic_cfg_s *aq_nic_cfg)
+ {
+-	int err = 0;
+-
+ 	self->aq_nic = aq_nic;
+ 	self->idx = idx;
+ 	self->size = aq_nic_cfg->rxds;
+@@ -217,22 +200,10 @@ struct aq_ring_s *aq_ring_rx_alloc(struct aq_ring_s *self,
+ 		self->tail_size = 0;
+ 	}
+ 
+-	self = aq_ring_alloc(self, aq_nic);
+-	if (!self) {
+-		err = -ENOMEM;
+-		goto err_exit;
+-	}
+-
+-err_exit:
+-	if (err < 0) {
+-		aq_ring_free(self);
+-		self = NULL;
+-	}
+-
+-	return self;
++	return aq_ring_alloc(self, aq_nic);
+ }
+ 
+-struct aq_ring_s *
++int
+ aq_ring_hwts_rx_alloc(struct aq_ring_s *self, struct aq_nic_s *aq_nic,
+ 		      unsigned int idx, unsigned int size, unsigned int dx_size)
+ {
+@@ -250,10 +221,10 @@ aq_ring_hwts_rx_alloc(struct aq_ring_s *self, struct aq_nic_s *aq_nic,
+ 					   GFP_KERNEL);
+ 	if (!self->dx_ring) {
+ 		aq_ring_free(self);
+-		return NULL;
++		return -ENOMEM;
+ 	}
+ 
+-	return self;
++	return 0;
+ }
+ 
+ int aq_ring_init(struct aq_ring_s *self, const enum atl_ring_type ring_type)
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h b/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
+index 0a6c34438c1d..52847310740a 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
+@@ -183,14 +183,14 @@ static inline unsigned int aq_ring_avail_dx(struct aq_ring_s *self)
+ 		self->sw_head - self->sw_tail - 1);
+ }
+ 
+-struct aq_ring_s *aq_ring_tx_alloc(struct aq_ring_s *self,
+-				   struct aq_nic_s *aq_nic,
+-				   unsigned int idx,
+-				   struct aq_nic_cfg_s *aq_nic_cfg);
+-struct aq_ring_s *aq_ring_rx_alloc(struct aq_ring_s *self,
+-				   struct aq_nic_s *aq_nic,
+-				   unsigned int idx,
+-				   struct aq_nic_cfg_s *aq_nic_cfg);
++int aq_ring_tx_alloc(struct aq_ring_s *self,
++		     struct aq_nic_s *aq_nic,
++		     unsigned int idx,
++		     struct aq_nic_cfg_s *aq_nic_cfg);
++int aq_ring_rx_alloc(struct aq_ring_s *self,
++		     struct aq_nic_s *aq_nic,
++		     unsigned int idx,
++		     struct aq_nic_cfg_s *aq_nic_cfg);
+ 
+ int aq_ring_init(struct aq_ring_s *self, const enum atl_ring_type ring_type);
+ void aq_ring_rx_deinit(struct aq_ring_s *self);
+@@ -207,9 +207,9 @@ int aq_ring_rx_clean(struct aq_ring_s *self,
+ 		     int budget);
+ int aq_ring_rx_fill(struct aq_ring_s *self);
+ 
+-struct aq_ring_s *aq_ring_hwts_rx_alloc(struct aq_ring_s *self,
+-		struct aq_nic_s *aq_nic, unsigned int idx,
+-		unsigned int size, unsigned int dx_size);
++int aq_ring_hwts_rx_alloc(struct aq_ring_s *self,
++			  struct aq_nic_s *aq_nic, unsigned int idx,
++			  unsigned int size, unsigned int dx_size);
+ void aq_ring_hwts_rx_clean(struct aq_ring_s *self, struct aq_nic_s *aq_nic);
+ 
+ unsigned int aq_ring_fill_stats_data(struct aq_ring_s *self, u64 *data);
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_vec.c b/drivers/net/ethernet/aquantia/atlantic/aq_vec.c
+index f5db1c44e9b9..9769ab4f9bef 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_vec.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_vec.c
+@@ -136,35 +136,32 @@ int aq_vec_ring_alloc(struct aq_vec_s *self, struct aq_nic_s *aq_nic,
+ 		const unsigned int idx_ring = AQ_NIC_CFG_TCVEC2RING(aq_nic_cfg,
+ 								    i, idx);
+ 
+-		ring = aq_ring_tx_alloc(&self->ring[i][AQ_VEC_TX_ID], aq_nic,
+-					idx_ring, aq_nic_cfg);
+-		if (!ring) {
+-			err = -ENOMEM;
++		ring = &self->ring[i][AQ_VEC_TX_ID];
++		err = aq_ring_tx_alloc(ring, aq_nic, idx_ring, aq_nic_cfg);
++		if (err)
+ 			goto err_exit;
+-		}
+ 
+ 		++self->tx_rings;
+ 
+ 		aq_nic_set_tx_ring(aq_nic, idx_ring, ring);
+ 
+-		if (xdp_rxq_info_reg(&self->ring[i][AQ_VEC_RX_ID].xdp_rxq,
++		ring = &self->ring[i][AQ_VEC_RX_ID];
++		if (xdp_rxq_info_reg(&ring->xdp_rxq,
+ 				     aq_nic->ndev, idx,
+ 				     self->napi.napi_id) < 0) {
+ 			err = -ENOMEM;
+ 			goto err_exit;
+ 		}
+-		if (xdp_rxq_info_reg_mem_model(&self->ring[i][AQ_VEC_RX_ID].xdp_rxq,
++		if (xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
+ 					       MEM_TYPE_PAGE_SHARED, NULL) < 0) {
+-			xdp_rxq_info_unreg(&self->ring[i][AQ_VEC_RX_ID].xdp_rxq);
++			xdp_rxq_info_unreg(&ring->xdp_rxq);
+ 			err = -ENOMEM;
+ 			goto err_exit;
+ 		}
+ 
+-		ring = aq_ring_rx_alloc(&self->ring[i][AQ_VEC_RX_ID], aq_nic,
+-					idx_ring, aq_nic_cfg);
+-		if (!ring) {
+-			xdp_rxq_info_unreg(&self->ring[i][AQ_VEC_RX_ID].xdp_rxq);
+-			err = -ENOMEM;
++		err = aq_ring_rx_alloc(ring, aq_nic, idx_ring, aq_nic_cfg);
++		if (err) {
++			xdp_rxq_info_unreg(&ring->xdp_rxq);
+ 			goto err_exit;
+ 		}
+ 
 -- 
 2.43.0
 
