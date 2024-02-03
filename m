@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 224CD84829D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14388848187
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2A952819E7
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C54632815EC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49F94C3AA;
-	Sat,  3 Feb 2024 04:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A03111AE;
+	Sat,  3 Feb 2024 04:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnZy+lfZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dheVVL+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FB44C3B3;
-	Sat,  3 Feb 2024 04:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C492C695;
+	Sat,  3 Feb 2024 04:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933778; cv=none; b=HWr93oc/+uQE7UHq7y6EZPn0q6IotQF4+yQGe7ojvudSaqKszeG34D/w8nA87tRcWRs6b67dZ+rxOG23GYGLFKICs5H9tDjbSV15lNbwpmfWXdRLG9xgKeEeKv2DrqSC2KiSk9QSpvEiCdpHBbTeZR25i2hpsZj+BUVGuTDYfxE=
+	t=1706933574; cv=none; b=C2zkd+dd5ZewkrXEMIm+J8xlGk8TLJrAV3vbComy3cSPFHIoxZbqqwfLkvZjypfKtINaqQlKs8u45bV25Thy7JvNIhi4KiOiBJ02z7SGe/juN+g7cORORBHSvUrYqwoB+Z/lXpjTdvQGHvVbSfXHvN5i5URq3rr9zPz5UFk+o+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933778; c=relaxed/simple;
-	bh=mg23ImoLiQK9aF4lsuWFfLRt+Lx7t7Oh1kSFzQZhkvk=;
+	s=arc-20240116; t=1706933574; c=relaxed/simple;
+	bh=NyEUorLdke72bZkrsnTJ90H4gVgCfSbJYCzdf8OcPkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FYBjiSceTIXHwmhtFw15uOwpop3VP9chiSenF9JFWFbvStZbahWQVD4DeCnw7g3v/sWvi0GAV6uU4yX73U7aK5Wlggh8RWg6xpk3XkaqyPGwsMTsYZLkRZoJ5UEJbCLA0nvK+6XajenNzTYaITY/FCIT+/Ul2rksv4cXQ2avfwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnZy+lfZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B7CC433C7;
-	Sat,  3 Feb 2024 04:16:18 +0000 (UTC)
+	 MIME-Version; b=h7aWGGDFwdojnooCaHedO/cZcB9P5VcLZROPXQ6NRZ3Zmp4eFp59ss1hi32HFsvEaG79FEu9MRLm91pf/ImxqAoB5r/LJZDvRlHFeM7h2IcdUNbDATzBnwF8QSeWUQ9/2U6v773Yax5B29q/HON7OQf6CrRiKMYsF1xZUeke/CU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dheVVL+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB5EC433F1;
+	Sat,  3 Feb 2024 04:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933778;
-	bh=mg23ImoLiQK9aF4lsuWFfLRt+Lx7t7Oh1kSFzQZhkvk=;
+	s=korg; t=1706933574;
+	bh=NyEUorLdke72bZkrsnTJ90H4gVgCfSbJYCzdf8OcPkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xnZy+lfZsJWeasKmXlPpvLh88rXisKn/CRidtwCNSdJmGquzCkCvuS0dyJgVfyisp
-	 5v30Igv5C/2f3opE4LLQQ6ldSIHCF61yBWH95mrFKxm1DOWaUS/XKvKNdQMpJYiUh7
-	 DhZhkXFQM70c4kfhCXKuBYY+bsopv9RJeE6mBkRs=
+	b=0dheVVL+PvRMXzFcv+cg01cvRk9gSCdMhweTBEgMcJb/5jfnaKwlhZbEmIes5lgyz
+	 9D/WvAq38jksgQ0Xoo2T/+mWkFhC2KJ5OM5ZIx4hOLxruHKmTk8gmu3SCohUT/XjRS
+	 A2r+O3YIPu0vr6y2Zq2bRiWiG67YOJ2/9mLoUL1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Jay Vosburgh <jay.vosburgh@canonical.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 082/353] bonding: return -ENOMEM instead of BUG in alb_upper_dev_walk
+Subject: [PATCH 6.6 103/322] arm64: dts: qcom: sm8450: fix soundwire controllers node name
 Date: Fri,  2 Feb 2024 20:03:20 -0800
-Message-ID: <20240203035406.400459177@linuxfoundation.org>
+Message-ID: <20240203035402.474859583@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit d6b83f1e3707c4d60acfa58afd3515e17e5d5384 ]
+[ Upstream commit 11fcb81373de52eeb1d3ff135a8d24a4b18978d3 ]
 
-If failed to allocate "tags" or could not find the final upper device from
-start_dev's upper list in bond_verify_device_path(), only the loopback
-detection of the current upper device should be affected, and the system is
-no need to be panic.
-So return -ENOMEM in alb_upper_dev_walk to stop walking, print some warn
-information when failed to allocate memory for vlan tags in
-bond_verify_device_path.
+Fix the following dt bindings check:
+arch/arm64/boot/dts/qcom/sm8450-hdk.dtb: soundwire-controller@31f0000: $nodename:0: 'soundwire-controller@31f0000' does not match '^soundwire(@.*)?$'
+        from schema $id: http://devicetree.org/schemas/soundwire/qcom,soundwire.yaml#
 
-I also think that the following function calls
-netdev_walk_all_upper_dev_rcu
----->>>alb_upper_dev_walk
----------->>>bond_verify_device_path
->From this way, "end device" can eventually be obtained from "start device"
-in bond_verify_device_path, IS_ERR(tags) could be instead of
-IS_ERR_OR_NULL(tags) in alb_upper_dev_walk.
-
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
-Link: https://lore.kernel.org/r/20231118081653.1481260-1-shaozhengchao@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20231106-topic-sm8450-upstream-soundwire-bindings-fix-v1-1-41d4844a5a7d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_alb.c  | 3 ++-
- drivers/net/bonding/bond_main.c | 5 ++++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8450.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
-index dc2c7b979656..7edf0fd58c34 100644
---- a/drivers/net/bonding/bond_alb.c
-+++ b/drivers/net/bonding/bond_alb.c
-@@ -985,7 +985,8 @@ static int alb_upper_dev_walk(struct net_device *upper,
- 	if (netif_is_macvlan(upper) && !strict_match) {
- 		tags = bond_verify_device_path(bond->dev, upper, 0);
- 		if (IS_ERR_OR_NULL(tags))
--			BUG();
-+			return -ENOMEM;
-+
- 		alb_send_lp_vid(slave, upper->dev_addr,
- 				tags[0].vlan_proto, tags[0].vlan_id);
- 		kfree(tags);
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 8e6cc0e133b7..9c1652886f4e 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2973,8 +2973,11 @@ struct bond_vlan_tag *bond_verify_device_path(struct net_device *start_dev,
+diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+index 79cc8fbcd846..91d856e5b06b 100644
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -2176,7 +2176,7 @@
+ 			#sound-dai-cells = <1>;
+ 		};
  
- 	if (start_dev == end_dev) {
- 		tags = kcalloc(level + 1, sizeof(*tags), GFP_ATOMIC);
--		if (!tags)
-+		if (!tags) {
-+			net_err_ratelimited("%s: %s: Failed to allocate tags\n",
-+					    __func__, start_dev->name);
- 			return ERR_PTR(-ENOMEM);
-+		}
- 		tags[level].vlan_proto = BOND_VLAN_PROTO_NONE;
- 		return tags;
- 	}
+-		swr4: soundwire-controller@31f0000 {
++		swr4: soundwire@31f0000 {
+ 			compatible = "qcom,soundwire-v1.7.0";
+ 			reg = <0 0x031f0000 0 0x2000>;
+ 			interrupts = <GIC_SPI 171 IRQ_TYPE_LEVEL_HIGH>;
+@@ -2224,7 +2224,7 @@
+ 			#sound-dai-cells = <1>;
+ 		};
+ 
+-		swr1: soundwire-controller@3210000 {
++		swr1: soundwire@3210000 {
+ 			compatible = "qcom,soundwire-v1.7.0";
+ 			reg = <0 0x03210000 0 0x2000>;
+ 			interrupts = <GIC_SPI 155 IRQ_TYPE_LEVEL_HIGH>;
+@@ -2291,7 +2291,7 @@
+ 			#sound-dai-cells = <1>;
+ 		};
+ 
+-		swr0: soundwire-controller@3250000 {
++		swr0: soundwire@3250000 {
+ 			compatible = "qcom,soundwire-v1.7.0";
+ 			reg = <0 0x03250000 0 0x2000>;
+ 			interrupts = <GIC_SPI 170 IRQ_TYPE_LEVEL_HIGH>;
+@@ -2318,7 +2318,7 @@
+ 			status = "disabled";
+ 		};
+ 
+-		swr2: soundwire-controller@33b0000 {
++		swr2: soundwire@33b0000 {
+ 			compatible = "qcom,soundwire-v1.7.0";
+ 			reg = <0 0x033b0000 0 0x2000>;
+ 			interrupts = <GIC_SPI 496 IRQ_TYPE_LEVEL_HIGH>,
 -- 
 2.43.0
 
