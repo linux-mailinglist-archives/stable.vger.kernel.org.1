@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-18553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68E0484832E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41B068480AB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CA6F1F20F02
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B63751F218B6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E289850A79;
-	Sat,  3 Feb 2024 04:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1801C125AC;
+	Sat,  3 Feb 2024 04:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9QEq7y0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFFGmJvc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02F350A73;
-	Sat,  3 Feb 2024 04:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADB010976;
+	Sat,  3 Feb 2024 04:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933883; cv=none; b=mFqfgVEe8xonsKnbwT4jnrbmucZF/8zGVNmiAqo5duCZgxuJZDoKhK7ivovOfugl1B9hGCJXUfr6mn52gISmkbqn426n2YP91SEvIiYrcFDDyTN9oEXlJuaYv8AJjvQ2ZoZTJ4RvA8lbRQwgDknBRzRCSz0uib/kkQ6M5wk/Hdk=
+	t=1706933419; cv=none; b=g+mSJBb2SPp9gcLXxlyPygPhsD7SL0invQXdf+zK9FVw32kYUk7cTmgZXaLO0FCyEbDsnb74c89qSa8xXMPyqgd6ufOdwdXn3Ucs7vqLGGRn4bxaA6FB9vp6t+cGlakUhh1NDpqrpG218ewA2hSydou/I7KZ4VvhxNznTQymNfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933883; c=relaxed/simple;
-	bh=WaMOY/kdvFG2Us3rwEU41F5NsFl+Wu/gnrXJJ6AnQJs=;
+	s=arc-20240116; t=1706933419; c=relaxed/simple;
+	bh=JSuhpo9wJBTV7jz4dRUsR6twuSp5hyKnp4eaDMaIYcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qpGdGZgQx9JQ+5N6MJv4McJ+OPybgrzDAzxJ6o+ebyJgPxGrF/KUYuohPqSH6PpX2tGFEqkVKZ/9z61l/PnDrh7CDnRcI0WfPq6tGI21qiCNz9l0IhTBTHPnti97ClLdKxLIstdyoKIh45McnmADBdkiMQAycyh9VYCOtgrvkIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9QEq7y0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62788C433B1;
-	Sat,  3 Feb 2024 04:18:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i4T1ysMEe/X/oMFC7UUpaWC9FZfz1FFsvcCVaIjl/Hhqhg9ZFO1U6mj5yRs3DVjbeEM1llW5F9jWhtXyP8qdreCTcVH23PTMW98qyyOJV0wG0gNCcmZXhiRsEAls8v1TXifx/16Dbhtyqdg+Fqvl4frQotZTd8bdRzHtgRUT7w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFFGmJvc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91400C43394;
+	Sat,  3 Feb 2024 04:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933883;
-	bh=WaMOY/kdvFG2Us3rwEU41F5NsFl+Wu/gnrXJJ6AnQJs=;
+	s=korg; t=1706933419;
+	bh=JSuhpo9wJBTV7jz4dRUsR6twuSp5hyKnp4eaDMaIYcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g9QEq7y01segPb0wV4+ey8iwlNaGM0WvkjdmnLHErHQ1poqbE/EWc36jpSjlWFkiB
-	 WtzQRQFwrSaNGzK3pc9QfC9WuVIXK92k5a7keq9T24LTIlH+ZTuJA0CLS4eVUkwjnb
-	 TDaF0OOSyI4PIJU0hVBPsAcvuSeUzBUIT1u3lLbw=
+	b=BFFGmJvcJ3URWdpQVW7X50gzdcsuKtxk3PknmuOmQRAyH7rZv6Tv2AhHwuJpou9AC
+	 LSdd/EgHGyUolez79fGHYhCxKjcVvUW0RVoZt6wc053tdL8aZQuKuiujemKPMxjFJR
+	 yAeM/phn1ps3jl3uy0oAl4USNELd7ikZE983QZRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 197/353] f2fs: fix to tag gcing flag on page during block migration
-Date: Fri,  2 Feb 2024 20:05:15 -0800
-Message-ID: <20240203035409.920797432@linuxfoundation.org>
+Subject: [PATCH 6.1 143/219] drm/amdgpu: Fix *fw from request_firmware() not released in amdgpu_ucode_request()
+Date: Fri,  2 Feb 2024 20:05:16 -0800
+Message-ID: <20240203035337.536774547@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +63,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 4961acdd65c956e97c1a000c82d91a8c1cdbe44b ]
+[ Upstream commit 13a1851f923d9a7a78a477497295c2dfd16ad4a4 ]
 
-It needs to add missing gcing flag on page during block migration,
-in order to garantee migrated data be persisted during checkpoint,
-otherwise out-of-order persistency between data and node may cause
-data corruption after SPOR.
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c:1404 amdgpu_ucode_request() warn: '*fw' from request_firmware() not released on lines: 1404.
 
-Similar issue was fixed by commit 2d1fe8a86bf5 ("f2fs: fix to tag
-gcing flag on page during file defragment").
-
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Lijo Lazar <lijo.lazar@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/compress.c | 4 +++-
- fs/f2fs/file.c     | 2 ++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index 36e5dab6baae..62119f3f7206 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -1036,8 +1036,10 @@ static void set_cluster_dirty(struct compress_ctx *cc)
- 	int i;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
+index 6e7058a2d1c8..779707f19c88 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ucode.c
+@@ -1110,9 +1110,13 @@ int amdgpu_ucode_request(struct amdgpu_device *adev, const struct firmware **fw,
  
- 	for (i = 0; i < cc->cluster_size; i++)
--		if (cc->rpages[i])
-+		if (cc->rpages[i]) {
- 			set_page_dirty(cc->rpages[i]);
-+			set_page_private_gcing(cc->rpages[i]);
-+		}
+ 	if (err)
+ 		return -ENODEV;
++
+ 	err = amdgpu_ucode_validate(*fw);
+-	if (err)
++	if (err) {
+ 		dev_dbg(adev->dev, "\"%s\" failed to validate\n", fw_name);
++		release_firmware(*fw);
++		*fw = NULL;
++	}
+ 
+ 	return err;
  }
- 
- static int prepare_compress_overwrite(struct compress_ctx *cc,
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 8912511980ae..a05781e708d6 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1317,6 +1317,7 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
- 			}
- 			memcpy_page(pdst, 0, psrc, 0, PAGE_SIZE);
- 			set_page_dirty(pdst);
-+			set_page_private_gcing(pdst);
- 			f2fs_put_page(pdst, 1);
- 			f2fs_put_page(psrc, 1);
- 
-@@ -4059,6 +4060,7 @@ static int redirty_blocks(struct inode *inode, pgoff_t page_idx, int len)
- 		f2fs_bug_on(F2FS_I_SB(inode), !page);
- 
- 		set_page_dirty(page);
-+		set_page_private_gcing(page);
- 		f2fs_put_page(page, 1);
- 		f2fs_put_page(page, 0);
- 	}
 -- 
 2.43.0
 
