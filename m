@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-17911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE7A84809A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 412738482E8
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 635061F27BC7
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECDBE28C5C4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9401758C;
-	Sat,  3 Feb 2024 04:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9B04F219;
+	Sat,  3 Feb 2024 04:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yBwVnJ2U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rr8WlhWz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B371101C1;
-	Sat,  3 Feb 2024 04:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375B91C6A6;
+	Sat,  3 Feb 2024 04:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933407; cv=none; b=VXNWW8//ZZoycEsBZk3pTGx5zMRj39lyA3em79RlwXqcLtw2YS2KLje0kPTKNiOr/z5oy+GDzxjCrtQCqI6vVCgaBDBUBSOdFomzNfws6pr/2DGJ8GszB/et117THLA+/bbU+Rz5PA1hVgrWSMt09I7Yupi7hiBpPAcwjFFkqZI=
+	t=1706933833; cv=none; b=D+2l7NvLFM2/Q1xxCxRhvaNVtZowCyx5Hf65RiqGf2Tt0shZMBFexJttaoEGcfLYdDw4lauP9hn5tTfV5Mi4F4Hf4xHEh0y50EMrL9xiJKRhYrTrikEqotcQ85FhoRjfb53+APLVBaE0LRSR7n/8J3h0ekEmg2exZ6z3oC8cstw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933407; c=relaxed/simple;
-	bh=tRmvJSLQcnrt/lV2JED7+7fk7TUoVq4tFm/6A+LVpu0=;
+	s=arc-20240116; t=1706933833; c=relaxed/simple;
+	bh=dGqdXI1MAbKuELzdEdGvKu+K2DHtm0Ss+8CVxPkuR4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HRrGseZrVOB2E9EumuARJGpyF7d0QDxQrqxTXVJ8XktnzUAU+/a1KEci3CgptmLVU2LuB577LG2glOFDekuvOzK/U8H2QDHm/cIf8oKHoMLn5YBf2g9PuY91177bGxbtIs2gNyQiYP3bdc56jo0G0uH9hCFM4maAGB8G2y94dsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yBwVnJ2U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D869FC433C7;
-	Sat,  3 Feb 2024 04:10:06 +0000 (UTC)
+	 MIME-Version; b=HEnNbYBhK3jx4bRBZxP/8UtPvoQDzcNNlKRQdcnFUHpQWIYV6FmjahjsvEtxsKFDMofC4DS09PFg5DMQsX2yzil1n5D+HAYbtc90VEFbXaVmxChi96YZhrFRsWyhCHkedUT6Jp6JI2T6bNFQbY3u46308k29L+ajc0/ui6JEJ5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rr8WlhWz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBC2C433F1;
+	Sat,  3 Feb 2024 04:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933406;
-	bh=tRmvJSLQcnrt/lV2JED7+7fk7TUoVq4tFm/6A+LVpu0=;
+	s=korg; t=1706933833;
+	bh=dGqdXI1MAbKuELzdEdGvKu+K2DHtm0Ss+8CVxPkuR4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yBwVnJ2UfLVB2821ZVckDzsCAtZDpxTJhp5/kZ2zyWQqu0O7hV7aEZ8sYbQJsF03+
-	 SJc0MRNIXhG6m9JjpQcQKeTPit3ydyVfFJMPFdWdfDV5tDf4Rav99OCD6rvra1/I5y
-	 zPAzSgML//MqlyiwyKA/KRBp00bxj7Q9INaVcb48=
+	b=rr8WlhWzSWGct59CY/epH+GNNpLtaDG6OV5qF4sm/2m2f7XEXpQz0TEUy7zk94g+r
+	 8z7ZH5f909HZb4on+FfnHX1+o0AQbtiYRpxVKCmF7ewcyrOPnIZ4AoO6WN9/3jPEXp
+	 2LBXy7IiMKugSDwlRiTIAVxFTWWTn2j0nNtGFoC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Suman Ghosh <sumang@marvell.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/219] octeontx2-af: Fix max NPC MCAM entry check while validating ref_entry
+Subject: [PATCH 6.7 157/353] octeontx2-af: Fix max NPC MCAM entry check while validating ref_entry
 Date: Fri,  2 Feb 2024 20:04:35 -0800
-Message-ID: <20240203035331.697852887@linuxfoundation.org>
+Message-ID: <20240203035408.622424248@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
