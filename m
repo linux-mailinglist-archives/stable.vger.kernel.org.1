@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 294808482B4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD4C848048
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C6951C2239E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AF6D1C218D8
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874EC4D109;
-	Sat,  3 Feb 2024 04:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AC311CB7;
+	Sat,  3 Feb 2024 04:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H26uEpdq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XA4rWkN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB251BDED;
-	Sat,  3 Feb 2024 04:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3EAF9D7;
+	Sat,  3 Feb 2024 04:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933795; cv=none; b=G4wHdLVmE0LXfXSLiNvFcqqHAzCi3WdbE3Ri/w27df+ca7ynFa2d701a/lgZF7g92K6HLjjMynd/rfT+xAxNL3ACPCJCb+eqWhFDCytt4ZfWpCtW4qM52DtjlFdX1coG4XUyWeLIlrWHBKKxMys1g7pAztVRRfri5QHOoR+tN8c=
+	t=1706933347; cv=none; b=um+NgTc04SIVEu147fK8livvu3KUJ0+3IYk6LFVISynqRt+g9W85QZekOmV3Ctgt2nmnspFvW2wPgn5sQ/Q7cCjZ2NT64KlFxpL1LJLERB+fFvAa91dbttSzFTTiEXhKOSxBfjUOGhSIX9OnM4ZBuepSKWVT+cFyKxiy/uo5m2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933795; c=relaxed/simple;
-	bh=7mlvTdKzHxrujO3QNCpzfzva4vz/8GOCooAx8AQXlZs=;
+	s=arc-20240116; t=1706933347; c=relaxed/simple;
+	bh=/MnlGyblHDv1PfMYrnVx4N0GfJeK9YucJzsbi4MP39w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jLtknsHFcqEIQRAE3Wr6itB8KgRZEisra89zNGlOBmkjCQ1X5FvNdV8gVh4cR0/e5lXPj32lmwhl0ZTllyS9hW8gLBTwcrRClLdg61CmCtP+1Vc+8ZFFkqWqe3j6c37ik2/VIhAO1mTdGd1trGQ+H5Ud84FnknunE04ZBnNTh4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H26uEpdq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D6BC43390;
-	Sat,  3 Feb 2024 04:16:34 +0000 (UTC)
+	 MIME-Version; b=qz6lJSvs0pmjSfK3GEkOOXPsresYWIifrcES4T+oLAs3VDpOtiU1NoQykbMlRPMATD29U40XHWs7NCcv4c49HbeeWyFNxRRb0bEYFVJRkGyTAneCS2fhNV1L6StS8Im6+XvRB+OTcr3CK8u6hLrQe09Kk/pWE/GnK/cSkzlp9vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XA4rWkN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82557C43390;
+	Sat,  3 Feb 2024 04:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933795;
-	bh=7mlvTdKzHxrujO3QNCpzfzva4vz/8GOCooAx8AQXlZs=;
+	s=korg; t=1706933347;
+	bh=/MnlGyblHDv1PfMYrnVx4N0GfJeK9YucJzsbi4MP39w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H26uEpdqmpJoYNK1tfuy52YOjMBNnSCJoGr9Jo3/JLH/4XulH06FH36qfyv+QJXjd
-	 xxtB4o/DDfDuvVJ7vufSX5nYj8y/MwJXNLCcYDR6v0FxGqmv30UqfuqUFJTWGk886h
-	 zitc6+ra1pA/JuYPUWYvoQ+Jn3shvBBsg7+RKlrk=
+	b=XA4rWkN07EwiWnF9/qn6SA7OJodwmSGiwce7u+lQsRIZKrhoPqjlX9h3gTGTf254P
+	 yMYOW2c3aKmQctJDL9+HoP9v8kLQJ58kaXNTsoj1S13Zy0ZibGul1RTLz8WqsldLLx
+	 HMJdWSQBOYIC0n3TWsoZNpcnAtfueYmXvDFrk96E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	HariBabu Gattem <haribabu.gattem@xilinx.com>,
+	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 105/353] wifi: mt76: mt7996: add PCI IDs for mt7992
+Subject: [PATCH 6.1 050/219] soc: xilinx: Fix for call trace due to the usage of smp_processor_id()
 Date: Fri,  2 Feb 2024 20:03:43 -0800
-Message-ID: <20240203035407.092867766@linuxfoundation.org>
+Message-ID: <20240203035323.714609905@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+From: HariBabu Gattem <haribabu.gattem@xilinx.com>
 
-[ Upstream commit 3d3f117a259a65353bf2714a18e25731b3ca5770 ]
+[ Upstream commit daed80ed07580e5adc0e6d8bc79933a35154135a ]
 
-Add PCI device IDs to enable mt7992 chipsets support.
+When preemption is enabled in kernel and if any task which can be
+preempted should not use smp_processor_id() directly, since CPU
+switch can happen at any time, the previous value of cpu_id
+differs with current cpu_id. As a result we see the below call trace
+during xlnx_event_manager_probe.
 
-Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+[ 6.140197] dump_backtrace+0x0/0x190
+[ 6.143884] show_stack+0x18/0x40
+[ 6.147220] dump_stack_lvl+0x7c/0xa0
+[ 6.150907] dump_stack+0x18/0x34
+[ 6.154241] check_preemption_disabled+0x124/0x134
+[ 6.159068] debug_smp_processor_id+0x20/0x2c
+[ 6.163453] xlnx_event_manager_probe+0x48/0x250
+
+To protect cpu_id, It is recommended to use get_cpu()/put_cpu()
+to disable preemption, get the cpu_id and enable preemption respectively.
+(For Reference, Documentation/locking/preempt-locking.rst and
+Documentation/kernel-hacking/hacking.rst)
+
+Use preempt_disable()/smp_processor_id()/preempt_enable()
+API's to achieve the same.
+
+Signed-off-by: HariBabu Gattem <haribabu.gattem@xilinx.com>
+Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+Link: https://lore.kernel.org/r/20231027055622.21544-1-jay.buddhabhatti@amd.com
+Signed-off-by: Michal Simek <michal.simek@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/pci.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/soc/xilinx/xlnx_event_manager.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-index c5301050ff8b..67c015896243 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-@@ -17,11 +17,13 @@ static u32 hif_idx;
- 
- static const struct pci_device_id mt7996_pci_device_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7990) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7992) },
- 	{ },
- };
- 
- static const struct pci_device_id mt7996_hif_device_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7991) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x799a) },
- 	{ },
- };
- 
-@@ -60,7 +62,9 @@ static void mt7996_put_hif2(struct mt7996_hif *hif)
- static struct mt7996_hif *mt7996_pci_init_hif2(struct pci_dev *pdev)
+diff --git a/drivers/soc/xilinx/xlnx_event_manager.c b/drivers/soc/xilinx/xlnx_event_manager.c
+index f9d9b82b562d..56d22d3989bb 100644
+--- a/drivers/soc/xilinx/xlnx_event_manager.c
++++ b/drivers/soc/xilinx/xlnx_event_manager.c
+@@ -555,7 +555,7 @@ static void xlnx_disable_percpu_irq(void *data)
+ static int xlnx_event_init_sgi(struct platform_device *pdev)
  {
- 	hif_idx++;
--	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7991, NULL))
+ 	int ret = 0;
+-	int cpu = smp_processor_id();
++	int cpu;
+ 	/*
+ 	 * IRQ related structures are used for the following:
+ 	 * for each SGI interrupt ensure its mapped by GIC IRQ domain
+@@ -592,9 +592,12 @@ static int xlnx_event_init_sgi(struct platform_device *pdev)
+ 	sgi_fwspec.param[0] = sgi_num;
+ 	virq_sgi = irq_create_fwspec_mapping(&sgi_fwspec);
+ 
++	cpu = get_cpu();
+ 	per_cpu(cpu_number1, cpu) = cpu;
+ 	ret = request_percpu_irq(virq_sgi, xlnx_event_handler, "xlnx_event_mgmt",
+ 				 &cpu_number1);
++	put_cpu();
 +
-+	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7991, NULL) &&
-+	    !pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x799a, NULL))
- 		return NULL;
- 
- 	writel(hif_idx | MT_PCIE_RECOG_ID_SEM,
-@@ -113,7 +117,7 @@ static int mt7996_pci_probe(struct pci_dev *pdev,
- 
- 	mt76_pci_disable_aspm(pdev);
- 
--	if (id->device == 0x7991)
-+	if (id->device == 0x7991 || id->device == 0x799a)
- 		return mt7996_pci_hif2_probe(pdev);
- 
- 	dev = mt7996_mmio_probe(&pdev->dev, pcim_iomap_table(pdev)[0],
+ 	WARN_ON(ret);
+ 	if (ret) {
+ 		irq_dispose_mapping(virq_sgi);
 -- 
 2.43.0
 
