@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-18660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31FB484839A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:33:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ACB28483B8
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:33:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64CD21C220F9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:33:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADBAC2837FB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1625578F;
-	Sat,  3 Feb 2024 04:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F453101C1;
+	Sat,  3 Feb 2024 04:19:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZS3F2xs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U74OnPQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B0E2BB18;
-	Sat,  3 Feb 2024 04:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17A956741;
+	Sat,  3 Feb 2024 04:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933962; cv=none; b=ktOxjclDpbyRIQA/ASrauYytPFr/8WQpxeE/SniM1Q90QZ9115ZF8f0MWWQg7AwF0aH4eiuVfPgalYSxNYGw1xxwsy17Rl8yivn5UMhhihXOBuFpp96zc8fMrlRDoMqUQBAZO6W7u2N5BN591oHKgq6faUntGcMQwnYW/RdgTXE=
+	t=1706933985; cv=none; b=dV4lyOjpvRzPBN6kcxXLLfyQ1Ec0K1yu1Qsw8sHFW38YOCm4xm/hIvJsXeeUVCcPeceH3Wx4yQKJ27Wwo1f72iHVwA9VFW2vQ4Mvx8bkI1y7Me+aw+F+N+OjY8sCQaed0/DlwV1Qbvmt0ASpUldTx+oz7HGx0SWRFpFn+6bVaGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933962; c=relaxed/simple;
-	bh=bwG7drlwkkyv1E200nlRDrEx3+ZtJqUTO3Y0dF1SuYs=;
+	s=arc-20240116; t=1706933985; c=relaxed/simple;
+	bh=BNcZVunwoneIcefGu8sqSjkE4WWSVK00cDTdLxDkde0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQzx8SNJrdf8+7vPJ4UG/Xk+LK2R02+3bWTlnqonHjHREaz/TR0emWHYEjKTqTtEcrpEhBaBR4UhBC8lqC7gIXvMAu7VcOZuyxVWAwZSQQ+wjWcubCuEGGBypoVGie+q8Lu8rRZ4Og+/OZ2p57XYXUNGM1S+Q2ehRSTsbXUf2To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZS3F2xs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C008C433F1;
-	Sat,  3 Feb 2024 04:19:22 +0000 (UTC)
+	 MIME-Version; b=Tp12NpHJOUYvodTYgSXAtqPdg7YkI+8+N7T3XMw7EW+gHLhGlKQ+cu4hQgpm+r3cWMUZ9y9kFNbCzJ1jdabl/4uQOC0EydWI20DApJO3uMro10M4kIcv9TMKDXXvdS76HahiCA5HAdtM61uC8x+tI6zqiAxlC83HVuW4Sw4cDTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U74OnPQ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED60C433A6;
+	Sat,  3 Feb 2024 04:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933962;
-	bh=bwG7drlwkkyv1E200nlRDrEx3+ZtJqUTO3Y0dF1SuYs=;
+	s=korg; t=1706933984;
+	bh=BNcZVunwoneIcefGu8sqSjkE4WWSVK00cDTdLxDkde0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KZS3F2xs8qgFRpPkwGAAqo7HzPWEbA1yUTwBa7Mmf0AUHzKJ/focmP6IidgciLsR1
-	 RBSdRoq5kKQoMYclDZNDunE9ksYR2qfxz598QgKk5+ZGlS0gVY5jYDRVzvy6efmv60
-	 3hS6nT37IxVMHxN4glnsdzGurykEn8+O2TdhZfw8=
+	b=U74OnPQ5uR3sFEcfZPElzDSdjYR8tE+srurhS2tHBJx3bfPa3T3SIgA1S8yLJuFa9
+	 eFKA8l5o9s5zMZn77y3e95H0iqdk6XoN6PryUHsTUsVMbwWhkcvgQ+Xib1LLFsurGb
+	 05xoOf0RCE8S6KJ9KfKikPMzV/gOqbp9L+5nsE1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 332/353] pds_core: Cancel AQ work on teardown
-Date: Fri,  2 Feb 2024 20:07:30 -0800
-Message-ID: <20240203035414.291656602@linuxfoundation.org>
+Subject: [PATCH 6.7 333/353] pds_core: Use struct pdsc for the pdsc_adminq_isr private data
+Date: Fri,  2 Feb 2024 20:07:31 -0800
+Message-ID: <20240203035414.321261493@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
 References: <20240203035403.657508530@linuxfoundation.org>
@@ -70,49 +70,68 @@ Content-Transfer-Encoding: 8bit
 
 From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit d321067e2cfa4d5e45401a00912ca9da8d1af631 ]
+[ Upstream commit 951705151e50f9022bc96ec8b3fd5697380b1df6 ]
 
-There is a small window where pdsc_work_thread()
-calls pdsc_process_adminq() and pdsc_process_adminq()
-passes the PDSC_S_STOPPING_DRIVER check and starts
-to process adminq/notifyq work and then the driver
-starts a fw_down cycle. This could cause some
-undefined behavior if the notifyqcq/adminqcq are
-free'd while pdsc_process_adminq() is running. Use
-cancel_work_sync() on the adminqcq's work struct
-to make sure any pending work items are cancelled
-and any in progress work items are completed.
+The initial design for the adminq interrupt was done based
+on client drivers having their own adminq and adminq
+interrupt. So, each client driver's adminq isr would use
+their specific adminqcq for the private data struct. For the
+time being the design has changed to only use a single
+adminq for all clients. So, instead use the struct pdsc for
+the private data to simplify things a bit.
 
-Also, make sure to not call cancel_work_sync() if
-the work item has not be initialized. Without this,
-traces will happen in cases where a reset fails and
-teardown is called again or if reset fails and the
-driver is removed.
+This also has the benefit of not dereferencing the adminqcq
+to access the pdsc struct when the PDSC_S_STOPPING_DRIVER bit
+is set and the adminqcq has actually been cleared/freed.
 
 Fixes: 01ba61b55b20 ("pds_core: Add adminq processing and commands")
 Signed-off-by: Brett Creeley <brett.creeley@amd.com>
 Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
 Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://lore.kernel.org/r/20240129234035.69802-3-brett.creeley@amd.com
+Link: https://lore.kernel.org/r/20240129234035.69802-4-brett.creeley@amd.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/amd/pds_core/adminq.c | 5 +++--
+ drivers/net/ethernet/amd/pds_core/core.c   | 2 +-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/net/ethernet/amd/pds_core/adminq.c b/drivers/net/ethernet/amd/pds_core/adminq.c
+index 5beadabc2136..68be5ea251fc 100644
+--- a/drivers/net/ethernet/amd/pds_core/adminq.c
++++ b/drivers/net/ethernet/amd/pds_core/adminq.c
+@@ -135,8 +135,8 @@ void pdsc_work_thread(struct work_struct *work)
+ 
+ irqreturn_t pdsc_adminq_isr(int irq, void *data)
+ {
+-	struct pdsc_qcq *qcq = data;
+-	struct pdsc *pdsc = qcq->pdsc;
++	struct pdsc *pdsc = data;
++	struct pdsc_qcq *qcq;
+ 
+ 	/* Don't process AdminQ when shutting down */
+ 	if (pdsc->state & BIT_ULL(PDSC_S_STOPPING_DRIVER)) {
+@@ -145,6 +145,7 @@ irqreturn_t pdsc_adminq_isr(int irq, void *data)
+ 		return IRQ_HANDLED;
+ 	}
+ 
++	qcq = &pdsc->adminqcq;
+ 	queue_work(pdsc->wq, &qcq->work);
+ 	pds_core_intr_mask(&pdsc->intr_ctrl[qcq->intx], PDS_CORE_INTR_MASK_CLEAR);
+ 
 diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
-index 0d2091e9eb28..b582729331eb 100644
+index b582729331eb..0356e56a6e99 100644
 --- a/drivers/net/ethernet/amd/pds_core/core.c
 +++ b/drivers/net/ethernet/amd/pds_core/core.c
-@@ -464,6 +464,8 @@ void pdsc_teardown(struct pdsc *pdsc, bool removing)
+@@ -125,7 +125,7 @@ static int pdsc_qcq_intr_alloc(struct pdsc *pdsc, struct pdsc_qcq *qcq)
  
- 	if (!pdsc->pdev->is_virtfn)
- 		pdsc_devcmd_reset(pdsc);
-+	if (pdsc->adminqcq.work.func)
-+		cancel_work_sync(&pdsc->adminqcq.work);
- 	pdsc_qcq_free(pdsc, &pdsc->notifyqcq);
- 	pdsc_qcq_free(pdsc, &pdsc->adminqcq);
- 
+ 	snprintf(name, sizeof(name), "%s-%d-%s",
+ 		 PDS_CORE_DRV_NAME, pdsc->pdev->bus->number, qcq->q.name);
+-	index = pdsc_intr_alloc(pdsc, name, pdsc_adminq_isr, qcq);
++	index = pdsc_intr_alloc(pdsc, name, pdsc_adminq_isr, pdsc);
+ 	if (index < 0)
+ 		return index;
+ 	qcq->intx = index;
 -- 
 2.43.0
 
