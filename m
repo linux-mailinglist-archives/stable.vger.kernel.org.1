@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-17816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62FCC848037
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C31584815C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E86C51F2BAB8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED015282D1B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7857211198;
-	Sat,  3 Feb 2024 04:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3152225A9;
+	Sat,  3 Feb 2024 04:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUlVxDkU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mjfsppy1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E3311193;
-	Sat,  3 Feb 2024 04:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FAB210782;
+	Sat,  3 Feb 2024 04:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933334; cv=none; b=KZIfAwfQekS3lXUuJgD+rzOf6BjoYN4Tnh5VLjzeaJ5cE+8hL1wp3nzd4oBvb9xGFP3oK6j7aj+M2x7i5LJ+qvOmoAxK9NuJ0i7RI53RQFsPnMJl4NcDRbk7czs5C+vQDYgNlK6sA2vObLpKAeSsy9iEOkDWmd3B/Uk8MYuPdIU=
+	t=1706933543; cv=none; b=dozyIodzE5UguVQ97GAKsiWFYMKQZrLcj7ppiTRBqrP9p+Lu4dSBuUPJxcMajph/vBSUtiI92uSgAcn6XnsmJ26N1ej5w+1M3BnoRF8zsMuqHuhOddg6xsTQXVtHg7v21P0tJtGJe/aPDr6dw4xqgzGfk6/ezusG68Q1D6l9dm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933334; c=relaxed/simple;
-	bh=cSa3nhQOk4q/ITqGnMAnkE+qls+KkLsKoTVg+3Q/W+o=;
+	s=arc-20240116; t=1706933543; c=relaxed/simple;
+	bh=wEQfSd/DZZkTseJ3JFlUK1b+US46MN4WeBytLwB+vcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHZ3p3cCdbL6/CiX0mfm293bQvmmL8iOxlJnbSEI8Gxj7uUqSolnCArXUzgUlp8WIaaBIYIkFos9OY1WcZjlFUEYnrVJWR62sjX3+A5LKrSGqtQDe5aZ9+cZCJs+oR1itLHpSfCgcK77h9qQ/t3i3Dysw6i1lHWZhXwY5V8uFxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUlVxDkU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC1CC433F1;
-	Sat,  3 Feb 2024 04:08:53 +0000 (UTC)
+	 MIME-Version; b=O6edblYZJAG01MMwKC60ko8vir8HJ+rYiywntw2ZvEHWlBpllnw+9PpuPr1xapMZbKVPBq4+SV5d6RQ3CfQGg7NQ58wU6ULrZ0Jzeeq8EOr0EalwzGTXumYe8dVI+ILTfaz0KmQ/fCgUi3IDmzepDkDbK7LVZrmCQStcFdfaVLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mjfsppy1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A84DC433C7;
+	Sat,  3 Feb 2024 04:12:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933334;
-	bh=cSa3nhQOk4q/ITqGnMAnkE+qls+KkLsKoTVg+3Q/W+o=;
+	s=korg; t=1706933543;
+	bh=wEQfSd/DZZkTseJ3JFlUK1b+US46MN4WeBytLwB+vcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QUlVxDkUVaAqzpPj1Q7IYlX8rrfiqKPd9h0BWJKC3ePi6BYeUKdV3LDa7H/P29CWT
-	 QAEyUaT/Pq0v637h5LbcaZHXFqKhEM3RoXJLpc+BZsXej92rr3X3P5ax9qXfDoNhM7
-	 +Yrrx0Lc8wYPWT363pqE2Se25w6KSubdNmUA78uE=
+	b=Mjfsppy159HK05IZTHCcNcigfNIY8GgX8XQ6FPb9Zd41HitkjMr3xIOQcSCtCQV0k
+	 5D46L2I8PM2CkXs3f5VSctS1IklsrCpAnlPp21WSzGJTFzu/UKUzV+WEkJtj3zphJy
+	 spdS3ZJwAyC5CPd3ijYlyKS6hHyuTnmYWRl4xkMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rui Zhang <zr.zhang@vivo.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/219] regulator: core: Only increment use_count when enable_count changes
+Subject: [PATCH 6.6 090/322] bpf: Set need_defer as false when clearing fd array during map free
 Date: Fri,  2 Feb 2024 20:03:07 -0800
-Message-ID: <20240203035318.573653816@linuxfoundation.org>
+Message-ID: <20240203035402.067832318@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +62,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rui Zhang <zr.zhang@vivo.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 7993d3a9c34f609c02171e115fd12c10e2105ff4 ]
+[ Upstream commit 79d93b3c6ffd79abcd8e43345980aa1e904879c4 ]
 
-The use_count of a regulator should only be incremented when the
-enable_count changes from 0 to 1. Similarly, the use_count should
-only be decremented when the enable_count changes from 1 to 0.
+Both map deletion operation, map release and map free operation use
+fd_array_map_delete_elem() to remove the element from fd array and
+need_defer is always true in fd_array_map_delete_elem(). For the map
+deletion operation and map release operation, need_defer=true is
+necessary, because the bpf program, which accesses the element in fd
+array, may still alive. However for map free operation, it is certain
+that the bpf program which owns the fd array has already been exited, so
+setting need_defer as false is appropriate for map free operation.
 
-In the previous implementation, use_count was sometimes decremented
-to 0 when some consumer called unbalanced disable,
-leading to unexpected disable even the regulator is enabled by
-other consumers. With this change, the use_count accurately reflects
-the number of users which the regulator is enabled.
+So fix it by adding need_defer parameter to bpf_fd_array_map_clear() and
+adding a new helper __fd_array_map_delete_elem() to handle the map
+deletion, map release and map free operations correspondingly.
 
-This should make things more robust in the case where a consumer does
-leak references.
-
-Signed-off-by: Rui Zhang <zr.zhang@vivo.com>
-Link: https://lore.kernel.org/r/20231103074231.8031-1-zr.zhang@vivo.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20231204140425.1480317-4-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 56 +++++++++++++++++++++-------------------
- 1 file changed, 30 insertions(+), 26 deletions(-)
+ kernel/bpf/arraymap.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 34d3d8281906..c8702011b761 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -2925,7 +2925,8 @@ static int _regulator_enable(struct regulator *regulator)
- 		/* Fallthrough on positive return values - already enabled */
- 	}
- 
--	rdev->use_count++;
-+	if (regulator->enable_count == 1)
-+		rdev->use_count++;
- 
+diff --git a/kernel/bpf/arraymap.c b/kernel/bpf/arraymap.c
+index 9bfad7e96913..c9843dde6908 100644
+--- a/kernel/bpf/arraymap.c
++++ b/kernel/bpf/arraymap.c
+@@ -871,7 +871,7 @@ int bpf_fd_array_map_update_elem(struct bpf_map *map, struct file *map_file,
  	return 0;
+ }
  
-@@ -3000,37 +3001,40 @@ static int _regulator_disable(struct regulator *regulator)
- 
- 	lockdep_assert_held_once(&rdev->mutex.base);
- 
--	if (WARN(rdev->use_count <= 0,
-+	if (WARN(regulator->enable_count == 0,
- 		 "unbalanced disables for %s\n", rdev_get_name(rdev)))
- 		return -EIO;
- 
--	/* are we the last user and permitted to disable ? */
--	if (rdev->use_count == 1 &&
--	    (rdev->constraints && !rdev->constraints->always_on)) {
--
--		/* we are last user */
--		if (regulator_ops_is_valid(rdev, REGULATOR_CHANGE_STATUS)) {
--			ret = _notifier_call_chain(rdev,
--						   REGULATOR_EVENT_PRE_DISABLE,
--						   NULL);
--			if (ret & NOTIFY_STOP_MASK)
--				return -EINVAL;
--
--			ret = _regulator_do_disable(rdev);
--			if (ret < 0) {
--				rdev_err(rdev, "failed to disable: %pe\n", ERR_PTR(ret));
--				_notifier_call_chain(rdev,
--						REGULATOR_EVENT_ABORT_DISABLE,
-+	if (regulator->enable_count == 1) {
-+	/* disabling last enable_count from this regulator */
-+		/* are we the last user and permitted to disable ? */
-+		if (rdev->use_count == 1 &&
-+		    (rdev->constraints && !rdev->constraints->always_on)) {
-+
-+			/* we are last user */
-+			if (regulator_ops_is_valid(rdev, REGULATOR_CHANGE_STATUS)) {
-+				ret = _notifier_call_chain(rdev,
-+							   REGULATOR_EVENT_PRE_DISABLE,
-+							   NULL);
-+				if (ret & NOTIFY_STOP_MASK)
-+					return -EINVAL;
-+
-+				ret = _regulator_do_disable(rdev);
-+				if (ret < 0) {
-+					rdev_err(rdev, "failed to disable: %pe\n", ERR_PTR(ret));
-+					_notifier_call_chain(rdev,
-+							REGULATOR_EVENT_ABORT_DISABLE,
-+							NULL);
-+					return ret;
-+				}
-+				_notifier_call_chain(rdev, REGULATOR_EVENT_DISABLE,
- 						NULL);
--				return ret;
- 			}
--			_notifier_call_chain(rdev, REGULATOR_EVENT_DISABLE,
--					NULL);
--		}
- 
--		rdev->use_count = 0;
--	} else if (rdev->use_count > 1) {
--		rdev->use_count--;
-+			rdev->use_count = 0;
-+		} else if (rdev->use_count > 1) {
-+			rdev->use_count--;
-+		}
+-static long fd_array_map_delete_elem(struct bpf_map *map, void *key)
++static long __fd_array_map_delete_elem(struct bpf_map *map, void *key, bool need_defer)
+ {
+ 	struct bpf_array *array = container_of(map, struct bpf_array, map);
+ 	void *old_ptr;
+@@ -890,13 +890,18 @@ static long fd_array_map_delete_elem(struct bpf_map *map, void *key)
  	}
  
- 	if (ret == 0)
+ 	if (old_ptr) {
+-		map->ops->map_fd_put_ptr(map, old_ptr, true);
++		map->ops->map_fd_put_ptr(map, old_ptr, need_defer);
+ 		return 0;
+ 	} else {
+ 		return -ENOENT;
+ 	}
+ }
+ 
++static long fd_array_map_delete_elem(struct bpf_map *map, void *key)
++{
++	return __fd_array_map_delete_elem(map, key, true);
++}
++
+ static void *prog_fd_array_get_ptr(struct bpf_map *map,
+ 				   struct file *map_file, int fd)
+ {
+@@ -925,13 +930,13 @@ static u32 prog_fd_array_sys_lookup_elem(void *ptr)
+ }
+ 
+ /* decrement refcnt of all bpf_progs that are stored in this map */
+-static void bpf_fd_array_map_clear(struct bpf_map *map)
++static void bpf_fd_array_map_clear(struct bpf_map *map, bool need_defer)
+ {
+ 	struct bpf_array *array = container_of(map, struct bpf_array, map);
+ 	int i;
+ 
+ 	for (i = 0; i < array->map.max_entries; i++)
+-		fd_array_map_delete_elem(map, &i);
++		__fd_array_map_delete_elem(map, &i, need_defer);
+ }
+ 
+ static void prog_array_map_seq_show_elem(struct bpf_map *map, void *key,
+@@ -1072,7 +1077,7 @@ static void prog_array_map_clear_deferred(struct work_struct *work)
+ {
+ 	struct bpf_map *map = container_of(work, struct bpf_array_aux,
+ 					   work)->map;
+-	bpf_fd_array_map_clear(map);
++	bpf_fd_array_map_clear(map, true);
+ 	bpf_map_put(map);
+ }
+ 
+@@ -1222,7 +1227,7 @@ static void perf_event_fd_array_release(struct bpf_map *map,
+ 	for (i = 0; i < array->map.max_entries; i++) {
+ 		ee = READ_ONCE(array->ptrs[i]);
+ 		if (ee && ee->map_file == map_file)
+-			fd_array_map_delete_elem(map, &i);
++			__fd_array_map_delete_elem(map, &i, true);
+ 	}
+ 	rcu_read_unlock();
+ }
+@@ -1230,7 +1235,7 @@ static void perf_event_fd_array_release(struct bpf_map *map,
+ static void perf_event_fd_array_map_free(struct bpf_map *map)
+ {
+ 	if (map->map_flags & BPF_F_PRESERVE_ELEMS)
+-		bpf_fd_array_map_clear(map);
++		bpf_fd_array_map_clear(map, false);
+ 	fd_array_map_free(map);
+ }
+ 
+@@ -1266,7 +1271,7 @@ static void cgroup_fd_array_put_ptr(struct bpf_map *map, void *ptr, bool need_de
+ 
+ static void cgroup_fd_array_free(struct bpf_map *map)
+ {
+-	bpf_fd_array_map_clear(map);
++	bpf_fd_array_map_clear(map, false);
+ 	fd_array_map_free(map);
+ }
+ 
+@@ -1311,7 +1316,7 @@ static void array_of_map_free(struct bpf_map *map)
+ 	 * is protected by fdget/fdput.
+ 	 */
+ 	bpf_map_meta_free(map->inner_map_meta);
+-	bpf_fd_array_map_clear(map);
++	bpf_fd_array_map_clear(map, false);
+ 	fd_array_map_free(map);
+ }
+ 
 -- 
 2.43.0
 
