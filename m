@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-17813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5281848034
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2674984816B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6191E1F2BA08
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58CF91C22D96
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51CC8FC11;
-	Sat,  3 Feb 2024 04:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E01A02BAF2;
+	Sat,  3 Feb 2024 04:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s942w0s2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwp9fQ9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B6510A21;
-	Sat,  3 Feb 2024 04:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1571755E;
+	Sat,  3 Feb 2024 04:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933332; cv=none; b=eZUd19RWmzAZHlOWcDYNylfCZn13fDwh4VAvoKmjHfGb+jbamdsdNHTXV6HuTSclougXAT5jPRpDhwLtNEVOyxAP4I/ZM8xVx9S0Hylu5QQ48/ps7VHxb/1ZybgtYe+bi4w6VSc5ZP3dLpjrt9wouu8IRsGrMFKKVGTgzF5SPIE=
+	t=1706933554; cv=none; b=prUxPI5p4OR/dbr68yhvFz98M8Vh04SZICDeHAk2Z7qrxw655Bo93jujPXsJL9UZLntge0F2eELjbroeg70BpFOSkalSoJB2Y9+LsekmCg9Gox5TOqjlVrkksHkdZgKPIHk82ijIbmfcCaj7EAY8x1fx2TtelLBTxDGPCrl5xfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933332; c=relaxed/simple;
-	bh=+OAw/pGo5Vf1nDDQ/N76eaJZYSt4YY4/I6RHqxeT3dM=;
+	s=arc-20240116; t=1706933554; c=relaxed/simple;
+	bh=+1RiSG6nZWiO01+dqmGpSF3O36z8aWuVU/JnY6OaDnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uZ4YS5zWR8CLNhN5tk6thuOuCvmWKf6vxEVGEBlmGpghbhq81nKWztOPRZsXlItArRZVPHIuosLBvpcTxbPopLjl/0cTble22lb5h7m0F30PVPgnLufG1TguXbJGNAcieLZGV/ZTh0sf+t4BOoErfmyG9hLY743bJx0jCngtlrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s942w0s2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA08CC433F1;
-	Sat,  3 Feb 2024 04:08:51 +0000 (UTC)
+	 MIME-Version; b=CuY1ghiVTFXnhSWCVYLAW+3iZJ8LWYCDglJ926ki83sf6+xO35q+FC1GXEKuAVBEzDPF4VICpAekAPzeu6iTWZgJuK9aYD8hyCsuqFquM2s2cePtnB+C8QOnezozjNHOKdPyO22xPIlHkUNQmcyP1liu5jsavCyB6OD9q8IcbD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwp9fQ9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF91C433C7;
+	Sat,  3 Feb 2024 04:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933331;
-	bh=+OAw/pGo5Vf1nDDQ/N76eaJZYSt4YY4/I6RHqxeT3dM=;
+	s=korg; t=1706933554;
+	bh=+1RiSG6nZWiO01+dqmGpSF3O36z8aWuVU/JnY6OaDnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s942w0s2loe5WUAMgPFC1VQW/cSJbhuQbLyM6s/9rvMcRLwwhbeO24Je7q8uDEohc
-	 9+yLhQmodxH0F87pugRjkJghh8QjRCgpnebgQgxFgvOPAktFgFf4NlHuSlwaocvny3
-	 2aGoNK6RjuIyqYWE0CzIxGrlC4J4Il5/0c5eckv0=
+	b=xwp9fQ9p8a3iqtxa1JmK5jHThDiPC9OssszXDSAHdM8cKv9W2AI7lOREyGpeov9lO
+	 Sz0pCGCgims4ni/Y2rBfdNwZAfZZnFbw+pldk+JA+MaV0F6C+d3bxg3tu6ZQWIFrbd
+	 1pFnKmgda0C18TPVHmQeT0sboLkuh6uBExj41JzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Yue Hu <huyue2@coolpad.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/219] erofs: fix ztailpacking for subpage compressed blocks
-Date: Fri,  2 Feb 2024 20:03:22 -0800
-Message-ID: <20240203035320.456328068@linuxfoundation.org>
+Subject: [PATCH 6.6 106/322] wifi: mt76: mt7996: add PCI IDs for mt7992
+Date: Fri,  2 Feb 2024 20:03:23 -0800
+Message-ID: <20240203035402.580755296@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
 
-[ Upstream commit e5aba911dee5e20fa82efbe13e0af8f38ea459e7 ]
+[ Upstream commit 3d3f117a259a65353bf2714a18e25731b3ca5770 ]
 
-`pageofs_in` should be the compressed data offset of the page rather
-than of the block.
+Add PCI device IDs to enable mt7992 chipsets support.
 
-Acked-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Yue Hu <huyue2@coolpad.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20231214161337.753049-1-hsiangkao@linux.alibaba.com
+Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zdata.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/pci.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index cf9a2fa7f55d..47e71964eeff 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -652,7 +652,6 @@ static int z_erofs_register_pcluster(struct z_erofs_decompress_frontend *fe)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
+index c5301050ff8b..67c015896243 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
+@@ -17,11 +17,13 @@ static u32 hif_idx;
  
- 	if (ztailpacking) {
- 		pcl->obj.index = 0;	/* which indicates ztailpacking */
--		pcl->pageofs_in = erofs_blkoff(map->m_pa);
- 		pcl->tailpacking_size = map->m_plen;
- 	} else {
- 		pcl->obj.index = map->m_pa >> PAGE_SHIFT;
-@@ -852,6 +851,7 @@ static int z_erofs_do_read_page(struct z_erofs_decompress_frontend *fe,
- 		get_page(fe->map.buf.page);
- 		WRITE_ONCE(fe->pcl->compressed_bvecs[0].page,
- 			   fe->map.buf.page);
-+		fe->pcl->pageofs_in = map->m_pa & ~PAGE_MASK;
- 		fe->mode = Z_EROFS_PCLUSTER_FOLLOWED_NOINPLACE;
- 	} else {
- 		/* bind cache first when cached decompression is preferred */
+ static const struct pci_device_id mt7996_pci_device_table[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7990) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7992) },
+ 	{ },
+ };
+ 
+ static const struct pci_device_id mt7996_hif_device_table[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7991) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x799a) },
+ 	{ },
+ };
+ 
+@@ -60,7 +62,9 @@ static void mt7996_put_hif2(struct mt7996_hif *hif)
+ static struct mt7996_hif *mt7996_pci_init_hif2(struct pci_dev *pdev)
+ {
+ 	hif_idx++;
+-	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7991, NULL))
++
++	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7991, NULL) &&
++	    !pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x799a, NULL))
+ 		return NULL;
+ 
+ 	writel(hif_idx | MT_PCIE_RECOG_ID_SEM,
+@@ -113,7 +117,7 @@ static int mt7996_pci_probe(struct pci_dev *pdev,
+ 
+ 	mt76_pci_disable_aspm(pdev);
+ 
+-	if (id->device == 0x7991)
++	if (id->device == 0x7991 || id->device == 0x799a)
+ 		return mt7996_pci_hif2_probe(pdev);
+ 
+ 	dev = mt7996_mmio_probe(&pdev->dev, pcim_iomap_table(pdev)[0],
 -- 
 2.43.0
 
