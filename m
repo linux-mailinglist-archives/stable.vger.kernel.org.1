@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E9248482AD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93B16848060
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE40F283D07
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F72C28BEF4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3965C4CE11;
-	Sat,  3 Feb 2024 04:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE10710A3A;
+	Sat,  3 Feb 2024 04:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTux8rFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzsVSKe8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2ED4D108;
-	Sat,  3 Feb 2024 04:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8BFFBE4;
+	Sat,  3 Feb 2024 04:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933791; cv=none; b=sVLR0aP85D9JisAnMVbYJFfmeA5JaaEnoiQRoEp41IGeDG7oXwoboVBNd/RYWbAMTAIo/rA/rlNlwSnc7qunyWi78plI7qBZihFuuDQXShTKcW/pH0XJDT/Zahvbijn3PLDS+X/2qagLst8+3YR/lhFHDLfFToQ5t2q7p3q8kZE=
+	t=1706933364; cv=none; b=hdYqWMTKzADZPX5MEBXT/Fh1m8GAyiix3RqyuLQfbeinVf8JHaoPM2suKiDt0GYbE0OPsUcbdvcGSSwE32WRq0hQFlU+HzyNi+H2BMTZKbU9EwO9LMiG2tHkYBjMAepxC+8omWbDIetO6lJ9sjlhVf9kfI42C7UyzFgkmN0ZjXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933791; c=relaxed/simple;
-	bh=rRbU84YNEefQz5v5r15q3WnVYWvBMiNiH2vxIHDSeDE=;
+	s=arc-20240116; t=1706933364; c=relaxed/simple;
+	bh=XWTmRF2hbPw7ISaAFDz0dZVkQyq5fKxZus1iHm7cdBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bVHRTXlv+iibHcjLTaI1nvY/L0IQbDyOkSefN2oknofSK868TXy/WOD0B9RQbQM7LKIQNAznjjZoOBR4Ls7J2I72BMkaa1YF7sUpR1J34cy1gxpfrZVqpX3lHKKnlUZwjYNU552cEZu1XEXC4EKuIGU3U2SLWTjZSPlxDLzSvNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nTux8rFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B546BC433C7;
-	Sat,  3 Feb 2024 04:16:30 +0000 (UTC)
+	 MIME-Version; b=rBYmvSrkOq42jcIECgr/qvXQbJ81YuoFgX06YxkS1MTmDrbc+sy6pJMoNYhmxfbKWlB0M5hKnv0mUOL8w/oPGRhdtd5/ySzrJh0E3/AMtUwLMtGmcUvFueRS3RekGkhjnx7fpoEMx3ZxDnV7xygt4Jfr/Qulb1sZkOILGb8y2UI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzsVSKe8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D4EC43399;
+	Sat,  3 Feb 2024 04:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933790;
-	bh=rRbU84YNEefQz5v5r15q3WnVYWvBMiNiH2vxIHDSeDE=;
+	s=korg; t=1706933364;
+	bh=XWTmRF2hbPw7ISaAFDz0dZVkQyq5fKxZus1iHm7cdBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nTux8rFNZRmynFCyHh2GL8hvipmoHBHqUgSSd1sc3ZHbap/9Q8ZdynISjnUlkL6OI
-	 oT2SdPYHlmdpDWOG9hv7M65wPVnDWbO+QhpmW1LTYHChIqQ6xJBA3NNuyHEJRcqXWd
-	 q6b/fQK/RDNZLzZUsFK4ZHx+dZhB9ncw85ltMCCM=
+	b=FzsVSKe8x2vk9/0UBfFLaQtlT+bxxMShFNvjMD8UriU7bySV5Sv8B97pblNzSz8Bx
+	 UwAb5dIl9bXvdX7dI9ASeeNTslFEniI3oiR/7d7BYmyfYQ3SLaoq7hO20PDRQL+Nrk
+	 xkYMKeAZhHVECZ6j855Fu5oPkDHwtPwVigcmAmf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobias Waldekranz <tobias@waldekranz.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shiji Yang <yangshiji66@outlook.com>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 100/353] net: mvmdio: Avoid excessive sleeps in polled mode
+Subject: [PATCH 6.1 045/219] wifi: rt2x00: restart beacon queue when hardware reset
 Date: Fri,  2 Feb 2024 20:03:38 -0800
-Message-ID: <20240203035406.951662710@linuxfoundation.org>
+Message-ID: <20240203035322.938351207@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,141 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobias Waldekranz <tobias@waldekranz.com>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-[ Upstream commit 7dd12fe34686d89c332b1a05104d18d728591f0a ]
+[ Upstream commit a11d965a218f0cd95b13fe44d0bcd8a20ce134a8 ]
 
-Before this change, when operating in polled mode, i.e. no IRQ is
-available, every individual C45 access would be hit with a 150us sleep
-after the bus access.
+When a hardware reset is triggered, all registers are reset, so all
+queues are forced to stop in hardware interface. However, mac80211
+will not automatically stop the queue. If we don't manually stop the
+beacon queue, the queue will be deadlocked and unable to start again.
+This patch fixes the issue where Apple devices cannot connect to the
+AP after calling ieee80211_restart_hw().
 
-For example, on a board with a CN9130 SoC connected to an MV88X3310
-PHY, a single C45 read would take around 165us:
-
-    root@infix:~$ mdio f212a600.mdio-mii mmd 4:1 bench 0xc003
-    Performed 1000 reads in 165ms
-
-By replacing the long sleep with a tighter poll loop, we observe a 10x
-increase in bus throughput:
-
-    root@infix:~$ mdio f212a600.mdio-mii mmd 4:1 bench 0xc003
-    Performed 1000 reads in 15ms
-
-Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Tested-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20231204100811.2708884-3-tobias@waldekranz.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/TYAP286MB031530EB6D98DCE4DF20766CBCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvmdio.c | 53 ++++++++-------------------
- 1 file changed, 16 insertions(+), 37 deletions(-)
+ drivers/net/wireless/ralink/rt2x00/rt2x00dev.c |  3 +++
+ drivers/net/wireless/ralink/rt2x00/rt2x00mac.c | 11 +++++++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/mvmdio.c b/drivers/net/ethernet/marvell/mvmdio.c
-index 89f26402f8fb..5f66f779e56f 100644
---- a/drivers/net/ethernet/marvell/mvmdio.c
-+++ b/drivers/net/ethernet/marvell/mvmdio.c
-@@ -23,6 +23,7 @@
- #include <linux/delay.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/kernel.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
-@@ -58,11 +59,6 @@
-  * - Armada 370       (Globalscale Mirabox):   41us to 43us (Polled)
-  */
- #define MVMDIO_SMI_TIMEOUT		1000 /* 1000us = 1ms */
--#define MVMDIO_SMI_POLL_INTERVAL_MIN	45
--#define MVMDIO_SMI_POLL_INTERVAL_MAX	55
--
--#define MVMDIO_XSMI_POLL_INTERVAL_MIN	150
--#define MVMDIO_XSMI_POLL_INTERVAL_MAX	160
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+index 9a9cfd0ce402..00b945053e19 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+@@ -101,6 +101,7 @@ void rt2x00lib_disable_radio(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00link_stop_tuner(rt2x00dev);
+ 	rt2x00queue_stop_queues(rt2x00dev);
+ 	rt2x00queue_flush_queues(rt2x00dev, true);
++	rt2x00queue_stop_queue(rt2x00dev->bcn);
  
- struct orion_mdio_dev {
- 	void __iomem *regs;
-@@ -84,8 +80,6 @@ enum orion_mdio_bus_type {
+ 	/*
+ 	 * Disable radio.
+@@ -1286,6 +1287,7 @@ int rt2x00lib_start(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00dev->intf_ap_count = 0;
+ 	rt2x00dev->intf_sta_count = 0;
+ 	rt2x00dev->intf_associated = 0;
++	rt2x00dev->intf_beaconing = 0;
  
- struct orion_mdio_ops {
- 	int (*is_done)(struct orion_mdio_dev *);
--	unsigned int poll_interval_min;
--	unsigned int poll_interval_max;
- };
+ 	/* Enable the radio */
+ 	retval = rt2x00lib_enable_radio(rt2x00dev);
+@@ -1312,6 +1314,7 @@ void rt2x00lib_stop(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00dev->intf_ap_count = 0;
+ 	rt2x00dev->intf_sta_count = 0;
+ 	rt2x00dev->intf_associated = 0;
++	rt2x00dev->intf_beaconing = 0;
+ }
  
- /* Wait for the SMI unit to be ready for another operation
-@@ -94,34 +88,23 @@ static int orion_mdio_wait_ready(const struct orion_mdio_ops *ops,
- 				 struct mii_bus *bus)
- {
- 	struct orion_mdio_dev *dev = bus->priv;
--	unsigned long timeout = usecs_to_jiffies(MVMDIO_SMI_TIMEOUT);
--	unsigned long end = jiffies + timeout;
--	int timedout = 0;
-+	unsigned long timeout;
-+	int done;
- 
--	while (1) {
--	        if (ops->is_done(dev))
-+	if (dev->err_interrupt <= 0) {
-+		if (!read_poll_timeout_atomic(ops->is_done, done, done, 2,
-+					      MVMDIO_SMI_TIMEOUT, false, dev))
-+			return 0;
-+	} else {
-+		/* wait_event_timeout does not guarantee a delay of at
-+		 * least one whole jiffie, so timeout must be no less
-+		 * than two.
-+		 */
-+		timeout = max(usecs_to_jiffies(MVMDIO_SMI_TIMEOUT), 2);
+ static inline void rt2x00lib_set_if_combinations(struct rt2x00_dev *rt2x00dev)
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
+index 4202c6517783..75fda72c14ca 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
+@@ -598,6 +598,17 @@ void rt2x00mac_bss_info_changed(struct ieee80211_hw *hw,
+ 	 */
+ 	if (changes & BSS_CHANGED_BEACON_ENABLED) {
+ 		mutex_lock(&intf->beacon_skb_mutex);
 +
-+		if (wait_event_timeout(dev->smi_busy_wait,
-+				       ops->is_done(dev), timeout))
- 			return 0;
--	        else if (timedout)
--			break;
--
--	        if (dev->err_interrupt <= 0) {
--			usleep_range(ops->poll_interval_min,
--				     ops->poll_interval_max);
--
--			if (time_is_before_jiffies(end))
--				++timedout;
--	        } else {
--			/* wait_event_timeout does not guarantee a delay of at
--			 * least one whole jiffie, so timeout must be no less
--			 * than two.
--			 */
--			if (timeout < 2)
--				timeout = 2;
--			wait_event_timeout(dev->smi_busy_wait,
--				           ops->is_done(dev), timeout);
--
--			++timedout;
--	        }
- 	}
- 
- 	dev_err(bus->parent, "Timeout: SMI busy for too long\n");
-@@ -135,8 +118,6 @@ static int orion_mdio_smi_is_done(struct orion_mdio_dev *dev)
- 
- static const struct orion_mdio_ops orion_mdio_smi_ops = {
- 	.is_done = orion_mdio_smi_is_done,
--	.poll_interval_min = MVMDIO_SMI_POLL_INTERVAL_MIN,
--	.poll_interval_max = MVMDIO_SMI_POLL_INTERVAL_MAX,
- };
- 
- static int orion_mdio_smi_read(struct mii_bus *bus, int mii_id,
-@@ -194,8 +175,6 @@ static int orion_mdio_xsmi_is_done(struct orion_mdio_dev *dev)
- 
- static const struct orion_mdio_ops orion_mdio_xsmi_ops = {
- 	.is_done = orion_mdio_xsmi_is_done,
--	.poll_interval_min = MVMDIO_XSMI_POLL_INTERVAL_MIN,
--	.poll_interval_max = MVMDIO_XSMI_POLL_INTERVAL_MAX,
- };
- 
- static int orion_mdio_xsmi_read_c45(struct mii_bus *bus, int mii_id,
++		/*
++		 * Clear the 'enable_beacon' flag and clear beacon because
++		 * the beacon queue has been stopped after hardware reset.
++		 */
++		if (test_bit(DEVICE_STATE_RESET, &rt2x00dev->flags) &&
++		    intf->enable_beacon) {
++			intf->enable_beacon = false;
++			rt2x00queue_clear_beacon(rt2x00dev, vif);
++		}
++
+ 		if (!bss_conf->enable_beacon && intf->enable_beacon) {
+ 			rt2x00dev->intf_beaconing--;
+ 			intf->enable_beacon = false;
 -- 
 2.43.0
 
