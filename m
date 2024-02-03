@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-18260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FBDC848205
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CBCD8480EC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D27A1F234FB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 701231C23F28
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66FD84439A;
-	Sat,  3 Feb 2024 04:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2430D1B298;
+	Sat,  3 Feb 2024 04:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UC0RuiMz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySd6Brw/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2681412B9A;
-	Sat,  3 Feb 2024 04:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D542EFC03;
+	Sat,  3 Feb 2024 04:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933667; cv=none; b=cW7IIyM1SEmbLnXAtzWH71WVKu4qcdGBti4jPNOYk2+AAA1PXyteFVJWoCs4lrLLc40yek5DwGZMVvo/9jzIfethaapumKtKFz3hOzVJEeS5597mNatDQuZvqRLlDX7v3+qAZTJSjb5qv+nidqEVvqYj9uRWl0SbvByRp7vXWCQ=
+	t=1706933464; cv=none; b=t8UVmOs35zKyV87tS73PyJMae+zwjJvuPXZOz+bAy9VXk0nTGKDvD3sgVApS3XpYMD68coOER+01snPJAYQ6Medp3yoaSS2Z/c+zjsmVVz6noUFoYpUv9ppBWmcFAYaZ7VdvlMBf7uJyYziBkethP1ubMvjQIkTMe0YtGkkvRXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933667; c=relaxed/simple;
-	bh=yPbbo8h4XWvtDuAqAmYpRWDcFwn61VmtQhWd4c4iCLU=;
+	s=arc-20240116; t=1706933464; c=relaxed/simple;
+	bh=39B4aIPEfnq3rEvUOLGcV9gzXBiDJRYnz+SsK1adeuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pYJ6YJDUrlTgTD8cj41GCX158O/i9fDTzy+Ab2kT02mRwT3eRGje01ObY4wywi5egQV+iua5WQC8xSuFfZDle1RpHMZr3zE+6+C8hR2t/gFOgFbEDme/0k27WbhMYi7PH4A1GmIM0WYbfhBxDhNZlx/KwUcMK07mV2g2eKnsFMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UC0RuiMz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E399EC43390;
-	Sat,  3 Feb 2024 04:14:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NpVPENw4B1gFaDIx5Ocz5jZWfn5aXCHJ2jLOWKgXushhU7ko1yy/YEIkGHH3MmGvZHzV55mzU9uah04enzQVYI+dFanPXiR+J0KFVrBBEzgOSLHWITIbTbFrqOstmnsBrpFul6GsYDmgUdJ7vZZHedKwcvuU69WKiBoOCMCXFFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySd6Brw/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E13AC43399;
+	Sat,  3 Feb 2024 04:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933667;
-	bh=yPbbo8h4XWvtDuAqAmYpRWDcFwn61VmtQhWd4c4iCLU=;
+	s=korg; t=1706933464;
+	bh=39B4aIPEfnq3rEvUOLGcV9gzXBiDJRYnz+SsK1adeuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UC0RuiMzqiuuJMn1JIH8901aXeNR9Q8iT8wbr7qzTqMorqYCKtL+fGoy/hOEh7Duo
-	 DSgOyQ55+4aZ+gGgBj6TvtGn8/0YyG2aoRrcarDC079y60yvfVN9bBjUq+BlIOmxI8
-	 XriniWaBC+k2Xf/diYnCShYttpknaFJzyZOIpOl0=
+	b=ySd6Brw/GLSh4BJKfH3oA7b08XLUO2aPg3uhh90TK4716VC5xhEELVqGr7VJewukf
+	 BKRPD69cN4EaVssodI61bZE/nGmYwe9wN1r6aOvAh6/AozFSbnRdJPkqAdR8tpnKdf
+	 GdSqIN17xFzM1EpuiCQbdICrPkEDgJRJb+T9CQ7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,12 +48,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 255/322] drm/amdgpu: Fix with right return code -EIO in amdgpu_gmc_vram_checking()
+Subject: [PATCH 6.1 179/219] drm/amdgpu: Fix with right return code -EIO in amdgpu_gmc_vram_checking()
 Date: Fri,  2 Feb 2024 20:05:52 -0800
-Message-ID: <20240203035407.393194105@linuxfoundation.org>
+Message-ID: <20240203035341.908396200@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +66,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -98,10 +98,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 14 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-index d78bd9732543..bc0eda1a729c 100644
+index 2bc791ed8830..ea0fb079f942 100644
 --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
 +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-@@ -876,21 +876,28 @@ int amdgpu_gmc_vram_checking(struct amdgpu_device *adev)
+@@ -808,19 +808,26 @@ int amdgpu_gmc_vram_checking(struct amdgpu_device *adev)
  	 * seconds, so here, we just pick up three parts for emulation.
  	 */
  	ret = memcmp(vram_ptr, cptr, 10);
@@ -135,8 +135,6 @@ index d78bd9732543..bc0eda1a729c 100644
 -	return 0;
 +	return ret;
  }
- 
- static ssize_t current_memory_partition_show(
 -- 
 2.43.0
 
