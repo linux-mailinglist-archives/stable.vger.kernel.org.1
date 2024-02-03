@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-17826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB3C848041
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B8584815F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41F981C24098
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91FD1B2B120
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D951611721;
-	Sat,  3 Feb 2024 04:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DF4250E0;
+	Sat,  3 Feb 2024 04:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZr+2C5T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYObazfD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FE411717;
-	Sat,  3 Feb 2024 04:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0526171CE;
+	Sat,  3 Feb 2024 04:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933341; cv=none; b=jjEmqDlb4HYO/ivr+e0vMuEYB9WpD02WSEO/kDBjyu8XtGEHp+IhNyBg7uelT+iCKPRYtACsl46U/XXXSK3Q3sMQtVsGxJ3+mQA5TpmRRRfyrh/MSzQ534ooaZRt/otVEjCF4jV7sxPmTIMTFO9B5hG6MyzW3yXVSVDd1VvQTWA=
+	t=1706933545; cv=none; b=lpPm2FouYtztzDy7TdJ69E7icQqdp0UGey8KyY7/zDQ/wS3jS04OKOumk3zT616bG4TXfit3iS7AqFT2OYZ55vwcugLgCCnIxi5fvZUzUwtvroEzgOjwzmpNMYHO8Gnxz8OcwIJ3AXEV2HUtcYyWwed+xCPpCssA2Mz8LFQSCag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933341; c=relaxed/simple;
-	bh=/cwcGLWo6son86EYgO/5oWh2ES9r/QDoyaeuhzoIoVc=;
+	s=arc-20240116; t=1706933545; c=relaxed/simple;
+	bh=5QA8HAsBL3TgVz/XtPnuzFUOoKbSTZc0fba7bTJirOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YE+Gr89zqsfaCWQOEEK4wRdJSMiChngH/eE1pkGHTdZuc4+uAmtg8+b8mdXSd5wFZ8oQqj4Ewmt1lmTGJfTF6aX5TrShJ3UOgR+FIN0hf4JO0f0a69DAUOF9f00TGPdZPqvEN92ou7ZWwVuhjbhZ9Jr78JybISpaARxEDp3chW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZr+2C5T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D3BFC433C7;
-	Sat,  3 Feb 2024 04:09:01 +0000 (UTC)
+	 MIME-Version; b=HvnjH/ezt/Er6ChYZDKQ/jjXrYwg67Cw3OgV5t1hYgGb/yMbkx1qOKKoq+7H7DgiwxTsi44wll3oXwHsxRanW0ivoykmx/kuWK/fSmwLkIBWuIqS+2DknNzjJaIIZ3+RZ4TB5ucLyRkwhjd5xmXzpwjrdcLmVfmpbVCw2LRqL8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYObazfD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1D5C43399;
+	Sat,  3 Feb 2024 04:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933341;
-	bh=/cwcGLWo6son86EYgO/5oWh2ES9r/QDoyaeuhzoIoVc=;
+	s=korg; t=1706933545;
+	bh=5QA8HAsBL3TgVz/XtPnuzFUOoKbSTZc0fba7bTJirOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xZr+2C5TG6gnY2F1FkrAS4ch2/xKFI3qyP7R2jp9iWVtaOtBprAiRokNttM0n+3tS
-	 HmFEnCx+g+Z1hzIqM+WP0GTvThvxMG4VIFkT4IXaGZVdkQBtgvw6DhH9gVfnYNseOj
-	 MzHzh0HTtPRCDCVgh//K5ZOn0ymWGK/GVNp+Kk20=
+	b=lYObazfDYa0MePG+tL2SyEQASVzkkBfr1fhbMEBGhe1ECf2RtmjCxHg0IFjfK5wqK
+	 zbBlYirY+O+X99dBUydZ8nbHvi79tHHOmeBbScrIrWm7uFvsqJ6oX01H/ZvflKvR3d
+	 ODozz8VKmz3YR/poCc8G9riaGy+65e0FodBC+RlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Kees Cook <keescook@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/219] PNP: ACPI: fix fortify warning
+Subject: [PATCH 6.6 093/322] scsi: libfc: Fix up timeout error in fc_fcp_rec_error()
 Date: Fri,  2 Feb 2024 20:03:10 -0800
-Message-ID: <20240203035318.934989541@linuxfoundation.org>
+Message-ID: <20240203035402.159611434@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Hannes Reinecke <hare@suse.de>
 
-[ Upstream commit ba3f5058db437d919f8468db50483dd9028ff688 ]
+[ Upstream commit 53122a49f49796beb2c4a1bb702303b66347e29f ]
 
-When compiling with gcc version 14.0.0 20231126 (experimental)
-and CONFIG_FORTIFY_SOURCE=y, I've noticed the following:
+We should set the status to FC_TIMED_OUT when a timeout error is passed to
+fc_fcp_rec_error().
 
-In file included from ./include/linux/string.h:295,
-                 from ./include/linux/bitmap.h:12,
-                 from ./include/linux/cpumask.h:12,
-                 from ./arch/x86/include/asm/paravirt.h:17,
-                 from ./arch/x86/include/asm/cpuid.h:62,
-                 from ./arch/x86/include/asm/processor.h:19,
-                 from ./arch/x86/include/asm/cpufeature.h:5,
-                 from ./arch/x86/include/asm/thread_info.h:53,
-                 from ./include/linux/thread_info.h:60,
-                 from ./arch/x86/include/asm/preempt.h:9,
-                 from ./include/linux/preempt.h:79,
-                 from ./include/linux/spinlock.h:56,
-                 from ./include/linux/mmzone.h:8,
-                 from ./include/linux/gfp.h:7,
-                 from ./include/linux/slab.h:16,
-                 from ./include/linux/resource_ext.h:11,
-                 from ./include/linux/acpi.h:13,
-                 from drivers/pnp/pnpacpi/rsparser.c:11:
-In function 'fortify_memcpy_chk',
-    inlined from 'pnpacpi_parse_allocated_vendor' at drivers/pnp/pnpacpi/rsparser.c:158:3,
-    inlined from 'pnpacpi_allocated_resource' at drivers/pnp/pnpacpi/rsparser.c:249:3:
-./include/linux/fortify-string.h:588:25: warning: call to '__read_overflow2_field'
-declared with attribute warning: detected read beyond size of field (2nd parameter);
-maybe use struct_group()? [-Wattribute-warning]
-  588 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-According to the comments in include/linux/fortify-string.h, 'memcpy()',
-'memmove()' and 'memset()' must not be used beyond individual struct
-members to ensure that the compiler can enforce protection against
-buffer overflows, and, IIUC, this also applies to partial copies from
-the particular member ('vendor->byte_data' in this case). So it should
-be better (and safer) to do both copies at once (and 'byte_data' of
-'struct acpi_resource_vendor_typed' seems to be a good candidate for
-'__counted_by(byte_length)' as well).
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20231129165832.224100-3-hare@kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pnp/pnpacpi/rsparser.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/scsi/libfc/fc_fcp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pnp/pnpacpi/rsparser.c b/drivers/pnp/pnpacpi/rsparser.c
-index 4f05f610391b..c02ce0834c2c 100644
---- a/drivers/pnp/pnpacpi/rsparser.c
-+++ b/drivers/pnp/pnpacpi/rsparser.c
-@@ -151,13 +151,13 @@ static int vendor_resource_matches(struct pnp_dev *dev,
- static void pnpacpi_parse_allocated_vendor(struct pnp_dev *dev,
- 				    struct acpi_resource_vendor_typed *vendor)
- {
--	if (vendor_resource_matches(dev, vendor, &hp_ccsr_uuid, 16)) {
--		u64 start, length;
-+	struct { u64 start, length; } range;
- 
--		memcpy(&start, vendor->byte_data, sizeof(start));
--		memcpy(&length, vendor->byte_data + 8, sizeof(length));
--
--		pnp_add_mem_resource(dev, start, start + length - 1, 0);
-+	if (vendor_resource_matches(dev, vendor, &hp_ccsr_uuid,
-+				    sizeof(range))) {
-+		memcpy(&range, vendor->byte_data, sizeof(range));
-+		pnp_add_mem_resource(dev, range.start, range.start +
-+				     range.length - 1, 0);
+diff --git a/drivers/scsi/libfc/fc_fcp.c b/drivers/scsi/libfc/fc_fcp.c
+index 3f189cedf6db..05be0810b5e3 100644
+--- a/drivers/scsi/libfc/fc_fcp.c
++++ b/drivers/scsi/libfc/fc_fcp.c
+@@ -1676,7 +1676,7 @@ static void fc_fcp_rec_error(struct fc_fcp_pkt *fsp, struct fc_frame *fp)
+ 		if (fsp->recov_retry++ < FC_MAX_RECOV_RETRY)
+ 			fc_fcp_rec(fsp);
+ 		else
+-			fc_fcp_recovery(fsp, FC_ERROR);
++			fc_fcp_recovery(fsp, FC_TIMED_OUT);
+ 		break;
  	}
- }
- 
+ 	fc_fcp_unlock_pkt(fsp);
 -- 
 2.43.0
 
