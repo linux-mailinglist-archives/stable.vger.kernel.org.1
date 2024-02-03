@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-18451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93A9D8482C5
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7289984807A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C73351C2369C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A54381C20F13
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E461C280;
-	Sat,  3 Feb 2024 04:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA7E116423;
+	Sat,  3 Feb 2024 04:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBNcMps3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCxRbjkR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974744E1D0;
-	Sat,  3 Feb 2024 04:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355D5168DD;
+	Sat,  3 Feb 2024 04:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933808; cv=none; b=gUoEeAhMDikG/INm/xOdgrSJMpt5idWllUHfJJHocWRDC7W82nhiv2w1b3fUxwJX4KhRCfzRMUUHsxr+CfSzczVC7gHYfR2vvz88FIIZ10FSnfLQIwCMBY/Zi515fqYhIv0x+hLl/CRHpoXXNxd0vJiNNXJsLB2ol9g04FQRNN0=
+	t=1706933383; cv=none; b=pnTGnyf4tC9IMIDBaTDGdOpDYr1mnuAlqdh2uQB119zC9QOBdn1DG0k9fNTj37T4Q2weqw9FAn+jZFeIQZ3IeVNkUWvhpPUt1+X8OiU0FsOQMF+6Mwzo12ebFnlwT1rRhkEWGV+nifGmCVS36S1B1S09qTZaQPylKsL3W7d3/jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933808; c=relaxed/simple;
-	bh=j8Pwq+wqVMCT7/3IyW5uwV3uavZ3vffMwTJvnpAnNBc=;
+	s=arc-20240116; t=1706933383; c=relaxed/simple;
+	bh=ST5tEe/5dtcGMbTMxNvdSxsUInWWKdqOJnAK4kf9F1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1yQ/i0ZSuHUxdeVI8uWs6ujWFTIU8N08wF8GXtxHLI77WOLjMBtHjJN8EK3C7/KyOmcDy+LQraVcarRoX6EUS9rS4kRgHcagdK0t6+deRdFoH4P4pcU08tyNTsFqVckcA/fM4Zi55ae1Ns9UPWQUb8ia+V6sCQWTurJgNZtcvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBNcMps3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D9CC43394;
-	Sat,  3 Feb 2024 04:16:48 +0000 (UTC)
+	 MIME-Version; b=VEjuRABQ2KB4OYWqvGwcYLeBl7oJb7GBirJJZCurorK/PQk35jsrwbwujKWf8tbR57OvL3RzCJi6NrxskGeIr8FHa1EYvjEqrNF6zfBrSxkRFDgADQ8lzfNGInVwpp8eUvKnhKnehMbUnxJEjWFjgJzrcLWPH2kie6az92+2dk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCxRbjkR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D71DEC43399;
+	Sat,  3 Feb 2024 04:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933808;
-	bh=j8Pwq+wqVMCT7/3IyW5uwV3uavZ3vffMwTJvnpAnNBc=;
+	s=korg; t=1706933382;
+	bh=ST5tEe/5dtcGMbTMxNvdSxsUInWWKdqOJnAK4kf9F1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UBNcMps3hWBZqIJBPMX2RCAvgtbEbwYx6ADv/LTkN6mONnZVrPJNpWrZadgP19uTT
-	 jHDe8OxSfmGFdPKePc95kNKjsPlM6sCgayyA/+w/MVYjJN2+6tMMDCbYrgaXw++rJM
-	 ighDqsek4U0QRRnCcgPSZ8ivTRocou6EhTABnm2g=
+	b=BCxRbjkRlljnG4IkF4V86HHIcVooO9MOaTaVD/SB81iITt0BxPI9IfLZbZZsocgla
+	 PIkxASo/QmrRJC2svbFFJP1tqU2JpOi+9dw1JIqzB3RKM2if+8jU9GXzVQUe4pyMnE
+	 Yqa7/7N5kLrORZPzvKb9NqWeSB+7WNiiJjhw9GS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Fabio Estevam <festevam@denx.de>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 124/353] ARM: dts: imx23-sansa: Use preferred i2c-gpios properties
-Date: Fri,  2 Feb 2024 20:04:02 -0800
-Message-ID: <20240203035407.660436994@linuxfoundation.org>
+Subject: [PATCH 6.1 070/219] ARM: dts: imx: Use flash@0,0 pattern
+Date: Fri,  2 Feb 2024 20:04:03 -0800
+Message-ID: <20240203035326.731116235@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit e3aa1a82fb20ee97597022f6528823a8ab82bde6 ]
+[ Upstream commit 1e1d7cc478fb16816de09740e3c323c0c188d58f ]
 
-The 'gpios' property to describe the SDA and SCL GPIOs is considered
-deprecated according to i2c-gpio.yaml.
+Per mtd-physmap.yaml, 'nor@0,0' is not a valid node pattern.
 
-Switch to the preferred 'sda-gpios' and 'scl-gpios' properties.
+Change it to 'flash@0,0' to fix the following dt-schema warning:
 
-This fixes the following schema warnings:
-
-imx23-sansa.dtb: i2c-0: 'sda-gpios' is a required property
-	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
-imx23-sansa.dtb: i2c-0: 'scl-gpios' is a required property
-	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+imx1-ads.dtb: nor@0,0: $nodename:0: 'nor@0,0' does not match '^(flash|.*sram|nand)(@.*)?$'
+	from schema $id: http://devicetree.org/schemas/mtd/mtd-physmap.yaml#
 
 Signed-off-by: Fabio Estevam <festevam@denx.de>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ arch/arm/boot/dts/imx1-ads.dts                  | 2 +-
+ arch/arm/boot/dts/imx1-apf9328.dts              | 2 +-
+ arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi    | 2 +-
+ arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts b/arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts
-index 636cf09a2b37..b23e7ada9c80 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts
-+++ b/arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts
-@@ -175,10 +175,8 @@
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		compatible = "i2c-gpio";
--		gpios = <
--			&gpio1 24 0		/* SDA */
--			&gpio1 22 0		/* SCL */
--		>;
-+		sda-gpios = <&gpio1 24 0>;
-+		scl-gpios = <&gpio1 22 0>;
- 		i2c-gpio,delay-us = <2>;	/* ~100 kHz */
- 	};
+diff --git a/arch/arm/boot/dts/imx1-ads.dts b/arch/arm/boot/dts/imx1-ads.dts
+index 5833fb6f15d8..2c817c4a4c68 100644
+--- a/arch/arm/boot/dts/imx1-ads.dts
++++ b/arch/arm/boot/dts/imx1-ads.dts
+@@ -65,7 +65,7 @@
+ 	pinctrl-0 = <&pinctrl_weim>;
+ 	status = "okay";
  
-@@ -186,10 +184,8 @@
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		compatible = "i2c-gpio";
--		gpios = <
--			&gpio0 31 0		/* SDA */
--			&gpio0 30 0		/* SCL */
--		>;
-+		sda-gpios = <&gpio0 31 0>;
-+		scl-gpios = <&gpio0 30 0>;
- 		i2c-gpio,delay-us = <2>;	/* ~100 kHz */
+-	nor: nor@0,0 {
++	nor: flash@0,0 {
+ 		compatible = "cfi-flash";
+ 		reg = <0 0x00000000 0x02000000>;
+ 		bank-width = <4>;
+diff --git a/arch/arm/boot/dts/imx1-apf9328.dts b/arch/arm/boot/dts/imx1-apf9328.dts
+index 77b21aa7a146..27e72b07b517 100644
+--- a/arch/arm/boot/dts/imx1-apf9328.dts
++++ b/arch/arm/boot/dts/imx1-apf9328.dts
+@@ -45,7 +45,7 @@
+ 	pinctrl-0 = <&pinctrl_weim>;
+ 	status = "okay";
  
- 		touch: touch@20 {
+-	nor: nor@0,0 {
++	nor: flash@0,0 {
+ 		compatible = "cfi-flash";
+ 		reg = <0 0x00000000 0x02000000>;
+ 		bank-width = <2>;
+diff --git a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
+index 4b83e2918b55..c7e923584878 100644
+--- a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
++++ b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
+@@ -90,7 +90,7 @@
+ &weim {
+ 	status = "okay";
+ 
+-	nor: nor@0,0 {
++	nor: flash@0,0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <1>;
+ 		compatible = "cfi-flash";
+diff --git a/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi b/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi
+index 3d10273177e9..a5fdc2fd4ce5 100644
+--- a/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi
++++ b/arch/arm/boot/dts/imx27-phytec-phycore-som.dtsi
+@@ -322,7 +322,7 @@
+ &weim {
+ 	status = "okay";
+ 
+-	nor: nor@0,0 {
++	nor: flash@0,0 {
+ 		compatible = "cfi-flash";
+ 		reg = <0 0x00000000 0x02000000>;
+ 		bank-width = <2>;
 -- 
 2.43.0
 
