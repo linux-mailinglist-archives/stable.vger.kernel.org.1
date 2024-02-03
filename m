@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-18559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B99848334
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A198480C9
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D86CC285C79
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5A8E1C24072
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A96171A3;
-	Sat,  3 Feb 2024 04:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C687D18AF6;
+	Sat,  3 Feb 2024 04:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9Av7WaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbFR2kQ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3492251012;
-	Sat,  3 Feb 2024 04:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F7C18E0F;
+	Sat,  3 Feb 2024 04:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933888; cv=none; b=ofUHf46Are3W//TQ+PIrUlhyySr4/z/ytqtHktOtCiba/2ovYMNqcE4VJc9BMpkz7ewdh8YUlKaxB05/NLboXK2DnO9NJvnux9OzhAWrt6Y52auNuNIaqqHLM+rZ4sa+Na2vThlF35/hiDb2tiP5Uz63cnexRO4+a4wmGZChJls=
+	t=1706933439; cv=none; b=eEpEegQ4NbUNt5R5oZ0OjttzeCtBwNLpgU8mMNuUz37D5Ydj4VpIB/Ir2JEtlX8pvKJETkldHj8PG5gJRASxkgEjryWIv+OAZ3sURCsqzK5ytromq2TonDlYhlb49P3AxgCRoToMzV10V8gqctdFpetvcBWaTVPWMdao4pVZVeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933888; c=relaxed/simple;
-	bh=kgmbrckL5nYu8Sa7GqMvQuy3ho6raDwPFRShrNLeo1Q=;
+	s=arc-20240116; t=1706933439; c=relaxed/simple;
+	bh=R8J8mUspFcl43KgbOcM8OrdtzZHrdiqkc+qTlbtjpy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SOzVncOBqvMwZGmbUdc7PnPXoYeP3oyOHfKFcndn7vZNgW70NW+PyfDc7qYk43JWTfqBlFcEFGBjdkLDJHTweGSDkPYSGoJ+zWztgTaCoLxz4mcMax41hfwWwUsH6ynY1w4OgccNNNbM+MIfO/aSRmRObGP45u/TYvPGGCBnRAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9Av7WaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1422C433C7;
-	Sat,  3 Feb 2024 04:18:07 +0000 (UTC)
+	 MIME-Version; b=tyGQRIgQITJaWGifFnHv3za78sc1aNvBRp72Da+aAEbx59ki7kG6CPOBD7Yaoe4nbbSRG3NkWbIKNeTwj1prJImoCFya065FThycvQBBVgpVRKXnGCQfmya6ur2jSuvKHF3A/nNFuK5GoNPIwLZxn00w3qsc3IsovJ2bdLxkrq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbFR2kQ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA2CC43399;
+	Sat,  3 Feb 2024 04:10:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933888;
-	bh=kgmbrckL5nYu8Sa7GqMvQuy3ho6raDwPFRShrNLeo1Q=;
+	s=korg; t=1706933439;
+	bh=R8J8mUspFcl43KgbOcM8OrdtzZHrdiqkc+qTlbtjpy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u9Av7WaIiyt/Lk+r7mdsF2P9tg+1IS8cNTibZtfF7mj00iPbdTlGHqAZiwuK++aSt
-	 mw1XYd37CGqrq3WnMRy0A2ppTLDty68CNxRzmCDd72FKjM//qcPIVAvoQ8RAHZ60to
-	 J2wFf5/vV5+3ETI7D7+4jnZJjSQmxa2QZbs49+fY=
+	b=jbFR2kQ6kl/WxbFYo9w6aULNbP1DmCCrDHM+korhjGEA2ZtxqSE30hmpnUVKw+kqu
+	 mojCc/5zLZzsHS54JuA8yQbRBWNpdwf2kUIoTNuX/rApjC3lDBz9HDWZXYFELksTrn
+	 g91kgacbApjK0J1X7mONKZIdLdbQLrkl2SATDSZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 224/353] clk: imx: scu: Fix memory leak in __imx_clk_gpr_scu()
+Subject: [PATCH 6.1 169/219] misc: lis3lv02d_i2c: Add missing setting of the reg_ctrl callback
 Date: Fri,  2 Feb 2024 20:05:42 -0800
-Message-ID: <20240203035410.757839321@linuxfoundation.org>
+Message-ID: <20240203035340.354849038@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 21c0efbcb45cf94724d17b040ebc03fcd4a81f22 ]
+[ Upstream commit b1b9f7a494400c0c39f8cd83de3aaa6111c55087 ]
 
-In cases where imx_clk_is_resource_owned() returns false, the code path
-does not handle the failure gracefully, potentially leading to a memory
-leak. This fix ensures proper cleanup by freeing the allocated memory
-for 'clk_node' before returning.
+The lis3lv02d_i2c driver was missing a line to set the lis3_dev's
+reg_ctrl callback.
 
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/all/20231210171907.3410922-1-visitorckw@gmail.com/
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+lis3_reg_ctrl(on) is called from the init callback, but due to
+the missing reg_ctrl callback the regulators where never turned off
+again leading to the following oops/backtrace when detaching the driver:
+
+[   82.313527] ------------[ cut here ]------------
+[   82.313546] WARNING: CPU: 1 PID: 1724 at drivers/regulator/core.c:2396 _regulator_put+0x219/0x230
+...
+[   82.313695] RIP: 0010:_regulator_put+0x219/0x230
+...
+[   82.314767] Call Trace:
+[   82.314770]  <TASK>
+[   82.314772]  ? _regulator_put+0x219/0x230
+[   82.314777]  ? __warn+0x81/0x170
+[   82.314784]  ? _regulator_put+0x219/0x230
+[   82.314791]  ? report_bug+0x18d/0x1c0
+[   82.314801]  ? handle_bug+0x3c/0x80
+[   82.314806]  ? exc_invalid_op+0x13/0x60
+[   82.314812]  ? asm_exc_invalid_op+0x16/0x20
+[   82.314845]  ? _regulator_put+0x219/0x230
+[   82.314857]  regulator_bulk_free+0x39/0x60
+[   82.314865]  i2c_device_remove+0x22/0xb0
+
+Add the missing setting of the callback so that the regulators
+properly get turned off again when not used.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231224183402.95640-1-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-scu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/misc/lis3lv02d/lis3lv02d_i2c.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/imx/clk-scu.c b/drivers/clk/imx/clk-scu.c
-index be89180dd19c..e48a904c0013 100644
---- a/drivers/clk/imx/clk-scu.c
-+++ b/drivers/clk/imx/clk-scu.c
-@@ -886,8 +886,10 @@ struct clk_hw *__imx_clk_gpr_scu(const char *name, const char * const *parent_na
- 		return ERR_PTR(-EINVAL);
- 	}
- 
--	if (!imx_clk_is_resource_owned(rsrc_id))
-+	if (!imx_clk_is_resource_owned(rsrc_id)) {
-+		kfree(clk_node);
- 		return NULL;
-+	}
- 
- 	clk = kzalloc(sizeof(*clk), GFP_KERNEL);
- 	if (!clk) {
+diff --git a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+index d7daa01fe7ca..fdec2c30eb16 100644
+--- a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
++++ b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+@@ -151,6 +151,7 @@ static int lis3lv02d_i2c_probe(struct i2c_client *client,
+ 	lis3_dev.init	  = lis3_i2c_init;
+ 	lis3_dev.read	  = lis3_i2c_read;
+ 	lis3_dev.write	  = lis3_i2c_write;
++	lis3_dev.reg_ctrl = lis3_reg_ctrl;
+ 	lis3_dev.irq	  = client->irq;
+ 	lis3_dev.ac	  = lis3lv02d_axis_map;
+ 	lis3_dev.pm_dev	  = &client->dev;
 -- 
 2.43.0
 
