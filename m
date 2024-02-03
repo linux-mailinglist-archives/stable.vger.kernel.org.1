@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20E4848176
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B088F8482A9
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55C681F245AD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A991282E56
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0FF2BB0A;
-	Sat,  3 Feb 2024 04:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DE04CE0B;
+	Sat,  3 Feb 2024 04:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2IYI1wC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MLKoMz0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E059A2BB08;
-	Sat,  3 Feb 2024 04:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63AF61BC53;
+	Sat,  3 Feb 2024 04:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933563; cv=none; b=mqc8u/L3VAVm02UGPJvoiN7ypY7tWQeaJt2B48smNY8tAE0PwMoGiA6je/0Td7McX4vRQY80xKE7rQwly7RvNzDjuhPKL2Rk13EApbOMnkhA+OtmbVxe94I4k1fUobUmk2+w/OPftsn1yRwkzVUVWRrNOkH1w/o3qQx1ab708mo=
+	t=1706933787; cv=none; b=XCOvOd2QVuZMKLYAGR22KF7NGYvcnLkj5qNC6OR5rg9mJbWKuse39zJgTOCT4t6rrvjW+0+osdy2XvLWfCPHcw3xP/XVbHVBRX86M4DvGzciCmvcNBKaN1vIMtsmUf9QKiVZCbHPYfc6Q5IY2QglljOM+J6ju3RLsfAygWrWbPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933563; c=relaxed/simple;
-	bh=SB9egFxjXOT2LDQvj2uOBOoK/RYOnDIoURxWZIjGdR8=;
+	s=arc-20240116; t=1706933787; c=relaxed/simple;
+	bh=ApgEl7Lu5MAFldm2Jq1HB5OQW+K+wKOph1QH3f7E4es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EpL0J0R2RZ8F4kN5RBmXggeims0qS+LUDgw5khFjvQdQlIbQtZibWgNSZ+ke3+z3zWbUcjcXsiBBUa2/wKi5erdOe/RrL+UicwOpJM5fUj6B5FpOKhTmFih74BhjkyaDbYMXAcjrN9NodmKvwFjYfHcjJsmlhMEyk5Ama0JUaRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2IYI1wC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A656EC433F1;
-	Sat,  3 Feb 2024 04:12:42 +0000 (UTC)
+	 MIME-Version; b=SsXR/aa4B7ffA/l7d2fHPgbm2up4bgpWtm7mhHI82DYOnX5/lL8BKocddJyNZYIS8A2jaRE/oFon/2NVdVBDAhX0BXkbfvzbMd/xxJVVJA9CLCzFSuXtkVAVYQIpALGd8gFpQzNU4FMFQgDRei2QHBt9zzy0jVQ3nIJI0p9y0Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MLKoMz0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E30AC433A6;
+	Sat,  3 Feb 2024 04:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933562;
-	bh=SB9egFxjXOT2LDQvj2uOBOoK/RYOnDIoURxWZIjGdR8=;
+	s=korg; t=1706933787;
+	bh=ApgEl7Lu5MAFldm2Jq1HB5OQW+K+wKOph1QH3f7E4es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W2IYI1wC0WWZXXHloyG6yOCtCYXdtvBnM06jpvzXn9GuBIk/z6QwWF1QPHxzzkIYO
-	 p3rGtFCpd4C0NQI02w1A3GtjpyjCG0EuhMqdjnHfilDMfJb6hw/K7qAbL9r2931v1d
-	 BwxR5fd8FPvJ0Ydg34edvoxyhU8ja73qjFCDXCZ8=
+	b=MLKoMz0ACmMqCrZejJfhGQt/Gx7HQvoJMk+v7CaAC++uApLXOlMjicuaF35SwntGy
+	 SGVsJkbSN7GKQWugPtnqYGLfErUcPqv4kqnizuekiSBbkIY84feUuM5Yi0uwn0R8Sy
+	 d6KpL9GrrSpM4/rXC6RQqbIzOoxGPMytWDDT1YgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 116/322] ionic: pass opcode to devcmd_wait
+Subject: [PATCH 6.7 095/353] bpf: Check rcu_read_lock_trace_held() before calling bpf map helpers
 Date: Fri,  2 Feb 2024 20:03:33 -0800
-Message-ID: <20240203035402.896264250@linuxfoundation.org>
+Message-ID: <20240203035406.804041343@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 24f110240c03c6b5368f1203bac72883d511e606 ]
+[ Upstream commit 169410eba271afc9f0fb476d996795aa26770c6d ]
 
-Don't rely on the PCI memory for the devcmd opcode because we
-read a 0xff value if the PCI bus is broken, which can cause us
-to report a bogus dev_cmd opcode later.
+These three bpf_map_{lookup,update,delete}_elem() helpers are also
+available for sleepable bpf program, so add the corresponding lock
+assertion for sleepable bpf program, otherwise the following warning
+will be reported when a sleepable bpf program manipulates bpf map under
+interpreter mode (aka bpf_jit_enable=0):
 
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+  WARNING: CPU: 3 PID: 4985 at kernel/bpf/helpers.c:40 ......
+  CPU: 3 PID: 4985 Comm: test_progs Not tainted 6.6.0+ #2
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996) ......
+  RIP: 0010:bpf_map_lookup_elem+0x54/0x60
+  ......
+  Call Trace:
+   <TASK>
+   ? __warn+0xa5/0x240
+   ? bpf_map_lookup_elem+0x54/0x60
+   ? report_bug+0x1ba/0x1f0
+   ? handle_bug+0x40/0x80
+   ? exc_invalid_op+0x18/0x50
+   ? asm_exc_invalid_op+0x1b/0x20
+   ? __pfx_bpf_map_lookup_elem+0x10/0x10
+   ? rcu_lockdep_current_cpu_online+0x65/0xb0
+   ? rcu_is_watching+0x23/0x50
+   ? bpf_map_lookup_elem+0x54/0x60
+   ? __pfx_bpf_map_lookup_elem+0x10/0x10
+   ___bpf_prog_run+0x513/0x3b70
+   __bpf_prog_run32+0x9d/0xd0
+   ? __bpf_prog_enter_sleepable_recur+0xad/0x120
+   ? __bpf_prog_enter_sleepable_recur+0x3e/0x120
+   bpf_trampoline_6442580665+0x4d/0x1000
+   __x64_sys_getpgid+0x5/0x30
+   ? do_syscall_64+0x36/0xb0
+   entry_SYSCALL_64_after_hwframe+0x6e/0x76
+   </TASK>
+
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20231204140425.1480317-2-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_dev.c  | 1 +
- drivers/net/ethernet/pensando/ionic/ionic_dev.h  | 1 +
- drivers/net/ethernet/pensando/ionic/ionic_main.c | 2 +-
- 3 files changed, 3 insertions(+), 1 deletion(-)
+ kernel/bpf/helpers.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.c b/drivers/net/ethernet/pensando/ionic/ionic_dev.c
-index c06576f43916..22ab0a44fa8c 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_dev.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.c
-@@ -321,6 +321,7 @@ void ionic_dev_cmd_comp(struct ionic_dev *idev, union ionic_dev_cmd_comp *comp)
- 
- void ionic_dev_cmd_go(struct ionic_dev *idev, union ionic_dev_cmd *cmd)
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 6950f0461634..991186520af0 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -32,12 +32,13 @@
+  *
+  * Different map implementations will rely on rcu in map methods
+  * lookup/update/delete, therefore eBPF programs must run under rcu lock
+- * if program is allowed to access maps, so check rcu_read_lock_held in
+- * all three functions.
++ * if program is allowed to access maps, so check rcu_read_lock_held() or
++ * rcu_read_lock_trace_held() in all three functions.
+  */
+ BPF_CALL_2(bpf_map_lookup_elem, struct bpf_map *, map, void *, key)
  {
-+	idev->opcode = cmd->cmd.opcode;
- 	memcpy_toio(&idev->dev_cmd_regs->cmd, cmd, sizeof(*cmd));
- 	iowrite32(0, &idev->dev_cmd_regs->done);
- 	iowrite32(1, &idev->dev_cmd_regs->doorbell);
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.h b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
-index bd2d4a26f543..23f9d3b8029a 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_dev.h
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
-@@ -152,6 +152,7 @@ struct ionic_dev {
- 	bool fw_hb_ready;
- 	bool fw_status_ready;
- 	u8 fw_generation;
-+	u8 opcode;
+-	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
++	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
++		     !rcu_read_lock_bh_held());
+ 	return (unsigned long) map->ops->map_lookup_elem(map, key);
+ }
  
- 	u64 __iomem *db_pages;
- 	dma_addr_t phy_db_pages;
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
-index 1dc79cecc5cc..baa865af49ad 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
-@@ -465,7 +465,7 @@ static int __ionic_dev_cmd_wait(struct ionic *ionic, unsigned long max_seconds,
- 	 */
- 	max_wait = jiffies + (max_seconds * HZ);
- try_again:
--	opcode = readb(&idev->dev_cmd_regs->cmd.cmd.opcode);
-+	opcode = idev->opcode;
- 	start_time = jiffies;
- 	for (fw_up = ionic_is_fw_running(idev);
- 	     !done && fw_up && time_before(jiffies, max_wait);
+@@ -53,7 +54,8 @@ const struct bpf_func_proto bpf_map_lookup_elem_proto = {
+ BPF_CALL_4(bpf_map_update_elem, struct bpf_map *, map, void *, key,
+ 	   void *, value, u64, flags)
+ {
+-	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
++	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
++		     !rcu_read_lock_bh_held());
+ 	return map->ops->map_update_elem(map, key, value, flags);
+ }
+ 
+@@ -70,7 +72,8 @@ const struct bpf_func_proto bpf_map_update_elem_proto = {
+ 
+ BPF_CALL_2(bpf_map_delete_elem, struct bpf_map *, map, void *, key)
+ {
+-	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
++	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
++		     !rcu_read_lock_bh_held());
+ 	return map->ops->map_delete_elem(map, key);
+ }
+ 
 -- 
 2.43.0
 
