@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-18512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A469F848305
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F268481D4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35849B273AD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73543B29927
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969554F893;
-	Sat,  3 Feb 2024 04:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B581863B;
+	Sat,  3 Feb 2024 04:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJvwnhp/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VhJ8fXUk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4331119E;
-	Sat,  3 Feb 2024 04:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C507CF9D7;
+	Sat,  3 Feb 2024 04:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933854; cv=none; b=XY4+Oj7YX8PDtAs2RP8ssQBGDvzaJIXkdD5bNQuvaHLBTmj1llWP2zK4NulAAgASMltdA2zKnFhhAa6eIpbGeSnX8SpLoAllX3gaocEE3e9cr+yAFhVI/PbIHyEkW/hxJeE+mleGYgqsbz/t5CTE/ycL7tjLCMNzVQHnJrdVJJE=
+	t=1706933629; cv=none; b=B+smVkvnze/y9nuSuZbDUgHShK3iBbX5BqfqGg8n/5y8PazSA5cLhN3rufmyS60emYb8kQSoStnbO3EaxSMVfQu1qbi7YMLM0hw1ZHBqyZjbXhCDUku2yWVYLlc6HxIJK9UwbLRjt4NqnbnaDYkBNYCrQHAl28T2uY6ryzjTqUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933854; c=relaxed/simple;
-	bh=T5yVV9cLGLfZ28zr+U8IpcN22gYDMgJXhGSbq/IZmy4=;
+	s=arc-20240116; t=1706933629; c=relaxed/simple;
+	bh=xgCgnDrRLitg/2cmlw6IEnPhWjoI3MevoeidrEW8y+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IqPnnAyYd3HkiNe2LJBe8JXoFzkNkg2h2VasTx+hTpCUke+kiIPy3oyxDzDKfoBdyXp8w1BkQpS9+suGIqeBJHT8Mi/sOd7kUeHbSNdGMQrW6+JWFAK+JO7gxwSPfbBVEl4HyXCEDo/jZqS84M+O63PILKRH2RjGxFn7YOFHKB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJvwnhp/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 136DEC43390;
-	Sat,  3 Feb 2024 04:17:34 +0000 (UTC)
+	 MIME-Version; b=YWPD+FHydZ42S/mi2IZ8/96tyvQbPSflpuZpHK3a2OWZEPOcpmdv/KepXmIgxx38XsoZGAa7djlkjrbkawjHPSRdkoOAAG7kBRtvN0LlGJQSB/H43EADeCLujrbd6vW62H1DKpoUQbHgjOw/nMKfSqDut0MLuIFluWzaYVoBQSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VhJ8fXUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294FCC433C7;
+	Sat,  3 Feb 2024 04:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933854;
-	bh=T5yVV9cLGLfZ28zr+U8IpcN22gYDMgJXhGSbq/IZmy4=;
+	s=korg; t=1706933629;
+	bh=xgCgnDrRLitg/2cmlw6IEnPhWjoI3MevoeidrEW8y+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GJvwnhp/2MsgBqaZeGSLodiRxVtvbSmGOmO1WzJRNHdxZL7vHznso+4ki1tHUERKR
-	 +U0M1VAVXmL+lHCmMSLNg5xJqgi3mmO6hEDYM3ysjE+raGmsj1vYyB6ypIiBk30G/5
-	 Fga7TLmmY99ETwuVdoZK7cHxmOdsI6r4J7UFgjkU=
+	b=VhJ8fXUk9xQwZXtAlG6l71quNqeEDtSlSAuhRM7S2+Y0CCaOsObE+kiInxdYbniSi
+	 364sicHgPyKlyqUzbNzs8jNCiZyffNNNj+4eboVAlEy1wIDejSWnWwJ3HEzols+xhf
+	 ZbNyYd+soa7rWwT9SNoGUolj2NvxM8AEryo4ZH/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	Aric Cyr <aric.cyr@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Josip Pavic <josip.pavic@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 185/353] ALSA: hda: Intel: add HDA_ARL PCI ID support
+Subject: [PATCH 6.6 206/322] drm/amd/display: make flip_timestamp_in_us a 64-bit variable
 Date: Fri,  2 Feb 2024 20:05:03 -0800
-Message-ID: <20240203035409.498494173@linuxfoundation.org>
+Message-ID: <20240203035405.902550103@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Josip Pavic <josip.pavic@amd.com>
 
-[ Upstream commit a31014ebad617868c246d3985ff80d891f03711e ]
+[ Upstream commit 6fb12518ca58412dc51054e2a7400afb41328d85 ]
 
-Yet another PCI ID.
+[Why]
+This variable currently overflows after about 71 minutes. This doesn't
+cause any known functional issues but it does make debugging more
+difficult.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20231204212710.185976-3-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+[How]
+Make it a 64-bit variable.
+
+Reviewed-by: Aric Cyr <aric.cyr@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Josip Pavic <josip.pavic@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dc_hw_types.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index 2d1df3654424..2276adc84478 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2504,6 +2504,8 @@ static const struct pci_device_id azx_ids[] = {
- 	{ PCI_DEVICE_DATA(INTEL, HDA_LNL_P, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE) },
- 	/* Arrow Lake-S */
- 	{ PCI_DEVICE_DATA(INTEL, HDA_ARL_S, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE) },
-+	/* Arrow Lake */
-+	{ PCI_DEVICE_DATA(INTEL, HDA_ARL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE) },
- 	/* Apollolake (Broxton-P) */
- 	{ PCI_DEVICE_DATA(INTEL, HDA_APL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_BROXTON) },
- 	/* Gemini-Lake */
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
+index 99880b08cda0..00de342e5290 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
+@@ -244,7 +244,7 @@ enum pixel_format {
+ #define DC_MAX_DIRTY_RECTS 3
+ struct dc_flip_addrs {
+ 	struct dc_plane_address address;
+-	unsigned int flip_timestamp_in_us;
++	unsigned long long flip_timestamp_in_us;
+ 	bool flip_immediate;
+ 	/* TODO: add flip duration for FreeSync */
+ 	bool triplebuffer_flips;
 -- 
 2.43.0
 
