@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-17942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FE38480B9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC0DF8481EF
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BB331C240FF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEFE21C227C3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91AF18054;
-	Sat,  3 Feb 2024 04:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70CF18C28;
+	Sat,  3 Feb 2024 04:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PTbuidhm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cb6hclhr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6731DF9D7;
-	Sat,  3 Feb 2024 04:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844E710965;
+	Sat,  3 Feb 2024 04:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933430; cv=none; b=awiG8v1+W3Ah5bwokyHWdVucSO7VawZN2GFh3ewQjy82etvm0HZT9daOwVm4bUcVX+BqnkWbQYPSQUwakO8iK9Ko+RWbD3nJXwka1YC1DZgHujBk3Yw9JFSIMQ2drxgO1I6Tj0P/+ezXkl5Rk8Os6qWnU5Fpz6Fv+WtZv3dwWfQ=
+	t=1706933650; cv=none; b=iqr3fOd2WZYTZUrQ8bRGsrwZbkQRH/jH7X6PPyzL2zKHZcKEFLEtoqk0ht37yk+SjSptl/zvhlYUZxj9Za1LNKSq335sgtigniJx/6u+ZTX6Wit2grgeocpbkRLFZ9Hy4gePSafJWinBWmk0iq7eUKG6m0c/xiboSm40hHdEhFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933430; c=relaxed/simple;
-	bh=HzecKn/aA0T9hq4qx12qEF5fAc0vcvF+v3CrLpU3UT4=;
+	s=arc-20240116; t=1706933650; c=relaxed/simple;
+	bh=+HS5+04230q6Nz1fQIDggyJ1Qab5pDOnEyebAUvrq0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y4KAOGwm1/MZjEKttH4YnITdrB8XjGC+AKqQw03SUGY4IvDUKVxVk9xrH9ep4yz3oM4YY6EtuDSzw0UbfNOfXwl2EnFAJKTOLqPM1leVqHyKdRnIs27IBcbLHysDx+dd2ST2Gcf0OmG+9Nn4eHe05pp9Zu1QTSVxKwjrEtcDs+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PTbuidhm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FCCBC433C7;
-	Sat,  3 Feb 2024 04:10:30 +0000 (UTC)
+	 MIME-Version; b=KEyJHIqM/IKZNV5X7hO3EVCJE+3vxcQNObHAE16P3D/dPKUNNvOhi82vku8IPmKMIKabJTtx0p1JDkavlQEzCZm2Qsq+5v7QafmIRRwN+BuDZEEFMuNqegSXOrU0HYhDaheukK16jZtxRZm77XCCw7JrZhyoX8vHU0BydILvZlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cb6hclhr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAC4C433F1;
+	Sat,  3 Feb 2024 04:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933430;
-	bh=HzecKn/aA0T9hq4qx12qEF5fAc0vcvF+v3CrLpU3UT4=;
+	s=korg; t=1706933650;
+	bh=+HS5+04230q6Nz1fQIDggyJ1Qab5pDOnEyebAUvrq0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PTbuidhm3WJuHb1E0SjUE+cABqCJbHfNAmw6jjDFqzfLUR8M3j0Xoou387V3LHfkW
-	 JKtcdLkwedhfDFNlM70as0IMy7cSvLzTh9a0Mzv/AlHYX8PVXtcwlxNVP7XGt4DzfI
-	 Bm/hAenaw/+vRXYNdQv/Mi6cQnJVxDWudv3rVdcI=
+	b=Cb6hclhr1o9DjZglfJkOzEkqoR2vjqlChrXUXeJw+Y99Oj1/Z5q7P+fJBih2ooSnI
+	 UNiSVjr40zjg+iLOa1gv1+3iTyzNnSajsskSL8Y/ipNDhjXF3EUNcwEaZoliGxhs2e
+	 9QqS0EGGhef5/aEcKkwTT2KuNNj46dbUOX3ldVY4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Leo Yan <leo.yan@linaro.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	Will Deacon <will@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Hardik Gajjar <hgajjar@de.adit-jv.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 158/219] perf cs-etm: Bump minimum OpenCSD version to ensure a bugfix is present
+Subject: [PATCH 6.6 234/322] usb: hub: Replace hardcoded quirk value with BIT() macro
 Date: Fri,  2 Feb 2024 20:05:31 -0800
-Message-ID: <20240203035338.872706817@linuxfoundation.org>
+Message-ID: <20240203035406.749395140@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,60 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Hardik Gajjar <hgajjar@de.adit-jv.com>
 
-[ Upstream commit 2dbba30fd69b604802a9535b74bddb5bcca23793 ]
+[ Upstream commit 6666ea93d2c422ebeb8039d11e642552da682070 ]
 
-Since commit d927ef5004ef ("perf cs-etm: Add exception level consistency
-check"), the exception that was added to Perf will be triggered unless
-the following bugfix from OpenCSD is present:
+This patch replaces the hardcoded quirk value in the macro with
+BIT().
 
- - _Version 1.2.1_:
-  - __Bugfix__:
-    ETM4x / ETE - output of context elements to client can in some
-    circumstances be delayed until after subsequent atoms have been
-    processed leading to incorrect memory decode access via the client
-    callbacks. Fixed to flush context elements immediately they are
-    committed.
-
-Rather than remove the assert and silently fail, just increase the
-minimum version requirement to avoid hard to debug issues and
-regressions.
-
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: James Clark <james.clark@arm.com>
-Tested-by: Leo Yan <leo.yan@linaro.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Link: https://lore.kernel.org/r/20230901133716.677499-1-james.clark@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Hardik Gajjar <hgajjar@de.adit-jv.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20231205181829.127353-1-hgajjar@de.adit-jv.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/build/feature/test-libopencsd.c | 4 ++--
+ drivers/usb/core/hub.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/build/feature/test-libopencsd.c b/tools/build/feature/test-libopencsd.c
-index eb6303ff446e..4cfcef9da3e4 100644
---- a/tools/build/feature/test-libopencsd.c
-+++ b/tools/build/feature/test-libopencsd.c
-@@ -4,9 +4,9 @@
- /*
-  * Check OpenCSD library version is sufficient to provide required features
-  */
--#define OCSD_MIN_VER ((1 << 16) | (1 << 8) | (1))
-+#define OCSD_MIN_VER ((1 << 16) | (2 << 8) | (1))
- #if !defined(OCSD_VER_NUM) || (OCSD_VER_NUM < OCSD_MIN_VER)
--#error "OpenCSD >= 1.1.1 is required"
-+#error "OpenCSD >= 1.2.1 is required"
- #endif
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index dfc30cebd4c4..f5abfba68e69 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -47,8 +47,8 @@
+ #define USB_VENDOR_TEXAS_INSTRUMENTS		0x0451
+ #define USB_PRODUCT_TUSB8041_USB3		0x8140
+ #define USB_PRODUCT_TUSB8041_USB2		0x8142
+-#define HUB_QUIRK_CHECK_PORT_AUTOSUSPEND	0x01
+-#define HUB_QUIRK_DISABLE_AUTOSUSPEND		0x02
++#define HUB_QUIRK_CHECK_PORT_AUTOSUSPEND	BIT(0)
++#define HUB_QUIRK_DISABLE_AUTOSUSPEND		BIT(1)
  
- int main(void)
+ #define USB_TP_TRANSMISSION_DELAY	40	/* ns */
+ #define USB_TP_TRANSMISSION_DELAY_MAX	65535	/* ns */
 -- 
 2.43.0
 
