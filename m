@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8B0848227
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B58F28480DC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E4181C23813
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71DE928308C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4471A27D;
-	Sat,  3 Feb 2024 04:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA290199A7;
+	Sat,  3 Feb 2024 04:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IMsIkQeN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXyCYRQZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AED10A1F;
-	Sat,  3 Feb 2024 04:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7929410A1C;
+	Sat,  3 Feb 2024 04:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933692; cv=none; b=I8YsRaVlOEtWHQHcVblcQwyR6jGBGfosie4EO65RhxjTgkP50VgW7vv/LL9D0ysNz//IQQtCIW14ltfB6DaTjOrKE2KFg+KrmKOPHdgwf2NMrgxmjrRAMR3Mw7V71PCQ5iUdOltVJ4fr/GdUhEK9pPYNWR8lrI+roPwWn2d5sG0=
+	t=1706933453; cv=none; b=mT48BjoN3SZP0OOH+Buw7ECEq1uFn2givytY1Eo1hQ/S1qKcDssZKTOT2rjRlx10j27i7/Ycxyo6nvYAHKItSXu3ySfdnEl20fMxn4cMiDyw8s+sTc7QJORohCbSqhen5tUV8WereTRYOktsiCLtFgB8zIkUaQBrftATUYRH89A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933692; c=relaxed/simple;
-	bh=l9SxfXL9FLXUepiP8wu+4aIIiKrlckMpg8pZlb/uGVI=;
+	s=arc-20240116; t=1706933453; c=relaxed/simple;
+	bh=cxU+npQtpZ99h9v6IhB4MfgRjAOTRrS31Cy1DzKEwow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YVWNmrGe7/MplNEFiSUKA0x6y6DwnH53RWziGOSabP65b16ulJGmIU85ybDIt/8ltAk8rn2CHzb42H4eS+IRfxMU+DpwZPx0h0pmGOM75EmWX/j1XfAsAhgdC0GiQz8QgaUZE9OG5uF7OMZFK1kFxXmwAY62Sd2Dwtq5K+pkCzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMsIkQeN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D3BC433F1;
-	Sat,  3 Feb 2024 04:14:51 +0000 (UTC)
+	 MIME-Version; b=euwEERwqNLwHghlD9e3TIfevhr8+ge9sLR9ODmlJVONv2wCF+ebIuDDMiWv6ifVlEwWJaQ1B6oLw+lvdoASdB89xCQH1EPDFru9BIlproARDbAdOIRKGA/34d98uN7pUXsuByN7ei7niWjDGzkW4xF+yzpFIhdGrrVS/+mnZ1b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXyCYRQZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4463DC433C7;
+	Sat,  3 Feb 2024 04:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933691;
-	bh=l9SxfXL9FLXUepiP8wu+4aIIiKrlckMpg8pZlb/uGVI=;
+	s=korg; t=1706933453;
+	bh=cxU+npQtpZ99h9v6IhB4MfgRjAOTRrS31Cy1DzKEwow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IMsIkQeNMJFaXecCTSUWv3zXbrXIjC6gNh7BNGG3XHurLxclqTsQHsQ+hd0/YsAIB
-	 nKrvLUt0IIDAbXYWADVTd2yDWGDZltK1OYqCgiuvIhS0Re9HY+Xwblp2VjfRb7waD7
-	 jppMY9dReV/Q0PftMaA7JlN8GgHQNM0LhbNJplEE=
+	b=QXyCYRQZ6raO6cWlW5B2jMAKLBGLdRNUlbxl4ypTMXEND/AskdTyw7qawgyxvCjuG
+	 z7uI4obTBsl/PtEh/6C/f7t98GF6A8zqrlDj/0DBc4ottaE2mIlQZOWAVLbn3wJ84u
+	 IdCColEOOOeDwvlfgzEErV25oFmAOz6eto3fd1Q0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Artur Paszkiewicz <artur.paszkiewicz@intel.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 264/322] scsi: isci: Fix an error code problem in isci_io_request_build()
-Date: Fri,  2 Feb 2024 20:06:01 -0800
-Message-ID: <20240203035407.662562967@linuxfoundation.org>
+Subject: [PATCH 6.1 189/219] selftests: net: give more time for GRO aggregation
+Date: Fri,  2 Feb 2024 20:06:02 -0800
+Message-ID: <20240203035343.279961881@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 658365c6b0857e6a306436e315a8633937e3af42 ]
+[ Upstream commit 89abe628375301fedb68770644df845d49018d8b ]
 
-Clang static complains that Value stored to 'status' is never read. Return
-'status' rather than 'SCI_SUCCESS'.
+The gro.sh test-case relay on the gro_flush_timeout to ensure
+that all the segments belonging to any given batch are properly
+aggregated.
 
-Fixes: f1f52e75939b ("isci: uplevel request infrastructure")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20240112041926.3924315-1-suhui@nfschina.com
-Reviewed-by: Artur Paszkiewicz <artur.paszkiewicz@intel.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+The other end, the sender is a user-space program transmitting
+each packet with a separate write syscall. A busy host and/or
+stracing the sender program can make the relevant segments reach
+the GRO engine after the flush timeout triggers.
+
+Give the GRO flush timeout more slack, to avoid sporadic self-tests
+failures.
+
+Fixes: 9af771d2ec04 ("selftests/net: allow GRO coalesce test on veth")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Tested-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/bffec2beab3a5672dd13ecabe4fad81d2155b367.1706206101.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/isci/request.c | 2 +-
+ tools/testing/selftests/net/setup_veth.sh | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/isci/request.c b/drivers/scsi/isci/request.c
-index a7b3243b471d..7162a5029b37 100644
---- a/drivers/scsi/isci/request.c
-+++ b/drivers/scsi/isci/request.c
-@@ -3390,7 +3390,7 @@ static enum sci_status isci_io_request_build(struct isci_host *ihost,
- 		return SCI_FAILURE;
- 	}
+diff --git a/tools/testing/selftests/net/setup_veth.sh b/tools/testing/selftests/net/setup_veth.sh
+index 1003ddf7b3b2..227fd1076f21 100644
+--- a/tools/testing/selftests/net/setup_veth.sh
++++ b/tools/testing/selftests/net/setup_veth.sh
+@@ -8,7 +8,7 @@ setup_veth_ns() {
+ 	local -r ns_mac="$4"
  
--	return SCI_SUCCESS;
-+	return status;
- }
+ 	[[ -e /var/run/netns/"${ns_name}" ]] || ip netns add "${ns_name}"
+-	echo 100000 > "/sys/class/net/${ns_dev}/gro_flush_timeout"
++	echo 1000000 > "/sys/class/net/${ns_dev}/gro_flush_timeout"
+ 	ip link set dev "${ns_dev}" netns "${ns_name}" mtu 65535
+ 	ip -netns "${ns_name}" link set dev "${ns_dev}" up
  
- static struct isci_request *isci_request_from_tag(struct isci_host *ihost, u16 tag)
 -- 
 2.43.0
 
