@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6178481E4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8D08480C3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA6791C20F64
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABA311F21728
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCDE718AED;
-	Sat,  3 Feb 2024 04:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DCD12B70;
+	Sat,  3 Feb 2024 04:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEnLF2p9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrHmcYU0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD8A12B7B;
-	Sat,  3 Feb 2024 04:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633BE18638;
+	Sat,  3 Feb 2024 04:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933642; cv=none; b=GKaK1dPZZRiyZBc/LVDkfzMrNCUOVUKLahuDfm+DRCaTlG0smPDHF3imKs6t2dK1bAaqpO2t/AFHkALwgGvFCLj+9KYzqBRw6NfMZE3td+2sKdOFqyFdDEh8uoyrPsZQFMP7HxASz/8JXJ5CVxE5lPIlbDLoEF5CBBP2jt4YeMs=
+	t=1706933436; cv=none; b=FlYdwz5gJVXs+6Fo4vmgegOpcRea7v3zq2Vw5aGaQXSmggHGjjVID33rNvyDay7WChLDfTgM5w7cULzY1IwtPHMtXyy24QdiCogSNs4ljYVIz6VFCOCAGzujTvoRMyK0VMUXFCgO4ABvgu7a/VMVZTIa03CnAtfO2kt0n0607yA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933642; c=relaxed/simple;
-	bh=q97pFsllvIv5wdQfB83sGIYIgwnJsfPManRnB2x2wZw=;
+	s=arc-20240116; t=1706933436; c=relaxed/simple;
+	bh=l76E9VScVXCFNossq7cJkObdXQdJdksDTuC5KszZqew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mIa1Z1bNwaYPTF/VntXqAsBkl3oPeRZfX5p0u/xSXuF/4B8Rc+njuuOZTTM3SbJQtylybuKQcl0TNLvIE0cUxGxA4zgIsT3hBr1DSqc6onWqZmKuVEYH/recns/FWjrS/ZZ27K8pgQUwgUAvC5cMoolPQZngJ7niCFjj7Hn4X/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEnLF2p9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FC8C433C7;
-	Sat,  3 Feb 2024 04:14:02 +0000 (UTC)
+	 MIME-Version; b=dEFCWnIl11KKTHtoxdWPAHFu2ks6/B82Qfh9b8ZLCcOQbYEgWI/1x4zSeSaW9oXQR7wSUkYo+BgpAmha7Jz+Iw4QZiYUdmn/XQ1fuNI0L16yXAFnTxqM+CaYV76Tjlpjg/yLVb4dDtJvdWAdLhQgrngvwjU+iU4a86HbVNFaqAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrHmcYU0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC84C433B2;
+	Sat,  3 Feb 2024 04:10:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933642;
-	bh=q97pFsllvIv5wdQfB83sGIYIgwnJsfPManRnB2x2wZw=;
+	s=korg; t=1706933436;
+	bh=l76E9VScVXCFNossq7cJkObdXQdJdksDTuC5KszZqew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GEnLF2p9652bZAwBqiXpl/6B54RER1amcjw0oBn7wNY2/k8TeoxB7kn8GVD2HsMRe
-	 cOFOiteuokRsto6dR1JyzT0xCWrgqp/4s6chkqfjGyv8RtHOmeMZ8GP3pNw56ZqJOO
-	 oEinFUikBYzdCdZc4KKWKaNA4ChXrU4fMqvx5IIc=
+	b=lrHmcYU0E14EvyOE02A/17f13s6HJWXGcmDOevePI2zOkOCZNrEgP66hUSG4a2k8r
+	 4fK+xS3Q3Y2A2NbwDQMvC9Gtz8l1sDTQESpH2OqBKl0bU6/eFl6nYsCTcrS6vhNRZH
+	 r5xjqh7n249H3jeP5lcJ22ZBwHJrkdlA9iDv4Ub8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshit Shah <harshitshah.opendev@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Peter Lafreniere <peter@n8pjl.ca>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 224/322] i3c: master: cdns: Update maximum prescaler value for i2c clock
+Subject: [PATCH 6.1 148/219] um: Fix naming clash between UML and scheduler
 Date: Fri,  2 Feb 2024 20:05:21 -0800
-Message-ID: <20240203035406.460183148@linuxfoundation.org>
+Message-ID: <20240203035337.923324789@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Shah <harshitshah.opendev@gmail.com>
+From: Anton Ivanov <anton.ivanov@cambridgegreys.com>
 
-[ Upstream commit 374c13f9080a1b9835a5ed3e7bea93cf8e2dc262 ]
+[ Upstream commit 541d4e4d435c8b9bfd29f70a1da4a2db97794e0a ]
 
-As per the Cadence IP document fixed the I2C clock divider value limit from
-16 bits instead of 10 bits. Without this change setting up the I2C clock to
-low frequencies will not work as the prescaler value might be greater than
-10 bit number.
+__cant_sleep was already used and exported by the scheduler.
+The name had to be changed to a UML specific one.
 
-I3C clock divider value is 10 bits only. Updating the macro names for both.
-
-Signed-off-by: Harshit Shah <harshitshah.opendev@gmail.com>
-Link: https://lore.kernel.org/r/1703927483-28682-1-git-send-email-harshitshah.opendev@gmail.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Reviewed-by: Peter Lafreniere <peter@n8pjl.ca>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/i3c-master-cdns.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/um/include/shared/kern_util.h | 2 +-
+ arch/um/kernel/process.c           | 2 +-
+ arch/um/os-Linux/helper.c          | 6 +++---
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3c-master-cdns.c
-index 8f1fda3c7ac5..fa5aaaf44618 100644
---- a/drivers/i3c/master/i3c-master-cdns.c
-+++ b/drivers/i3c/master/i3c-master-cdns.c
-@@ -76,7 +76,8 @@
- #define PRESCL_CTRL0			0x14
- #define PRESCL_CTRL0_I2C(x)		((x) << 16)
- #define PRESCL_CTRL0_I3C(x)		(x)
--#define PRESCL_CTRL0_MAX		GENMASK(9, 0)
-+#define PRESCL_CTRL0_I3C_MAX		GENMASK(9, 0)
-+#define PRESCL_CTRL0_I2C_MAX		GENMASK(15, 0)
+diff --git a/arch/um/include/shared/kern_util.h b/arch/um/include/shared/kern_util.h
+index d8b8b4f07e42..444bae755b16 100644
+--- a/arch/um/include/shared/kern_util.h
++++ b/arch/um/include/shared/kern_util.h
+@@ -50,7 +50,7 @@ extern void do_uml_exitcalls(void);
+  * Are we disallowed to sleep? Used to choose between GFP_KERNEL and
+  * GFP_ATOMIC.
+  */
+-extern int __cant_sleep(void);
++extern int __uml_cant_sleep(void);
+ extern int get_current_pid(void);
+ extern int copy_from_user_proc(void *to, void *from, int size);
+ extern char *uml_strdup(const char *string);
+diff --git a/arch/um/kernel/process.c b/arch/um/kernel/process.c
+index 010bc422a09d..a351c87db248 100644
+--- a/arch/um/kernel/process.c
++++ b/arch/um/kernel/process.c
+@@ -220,7 +220,7 @@ void arch_cpu_idle(void)
+ 	raw_local_irq_enable();
+ }
  
- #define PRESCL_CTRL1			0x18
- #define PRESCL_CTRL1_PP_LOW_MASK	GENMASK(15, 8)
-@@ -1233,7 +1234,7 @@ static int cdns_i3c_master_bus_init(struct i3c_master_controller *m)
- 		return -EINVAL;
+-int __cant_sleep(void) {
++int __uml_cant_sleep(void) {
+ 	return in_atomic() || irqs_disabled() || in_interrupt();
+ 	/* Is in_interrupt() really needed? */
+ }
+diff --git a/arch/um/os-Linux/helper.c b/arch/um/os-Linux/helper.c
+index b459745f52e2..3cb8ac63be6e 100644
+--- a/arch/um/os-Linux/helper.c
++++ b/arch/um/os-Linux/helper.c
+@@ -46,7 +46,7 @@ int run_helper(void (*pre_exec)(void *), void *pre_data, char **argv)
+ 	unsigned long stack, sp;
+ 	int pid, fds[2], ret, n;
  
- 	pres = DIV_ROUND_UP(sysclk_rate, (bus->scl_rate.i3c * 4)) - 1;
--	if (pres > PRESCL_CTRL0_MAX)
-+	if (pres > PRESCL_CTRL0_I3C_MAX)
- 		return -ERANGE;
+-	stack = alloc_stack(0, __cant_sleep());
++	stack = alloc_stack(0, __uml_cant_sleep());
+ 	if (stack == 0)
+ 		return -ENOMEM;
  
- 	bus->scl_rate.i3c = sysclk_rate / ((pres + 1) * 4);
-@@ -1246,7 +1247,7 @@ static int cdns_i3c_master_bus_init(struct i3c_master_controller *m)
- 	max_i2cfreq = bus->scl_rate.i2c;
+@@ -70,7 +70,7 @@ int run_helper(void (*pre_exec)(void *), void *pre_data, char **argv)
+ 	data.pre_data = pre_data;
+ 	data.argv = argv;
+ 	data.fd = fds[1];
+-	data.buf = __cant_sleep() ? uml_kmalloc(PATH_MAX, UM_GFP_ATOMIC) :
++	data.buf = __uml_cant_sleep() ? uml_kmalloc(PATH_MAX, UM_GFP_ATOMIC) :
+ 					uml_kmalloc(PATH_MAX, UM_GFP_KERNEL);
+ 	pid = clone(helper_child, (void *) sp, CLONE_VM, &data);
+ 	if (pid < 0) {
+@@ -121,7 +121,7 @@ int run_helper_thread(int (*proc)(void *), void *arg, unsigned int flags,
+ 	unsigned long stack, sp;
+ 	int pid, status, err;
  
- 	pres = (sysclk_rate / (max_i2cfreq * 5)) - 1;
--	if (pres > PRESCL_CTRL0_MAX)
-+	if (pres > PRESCL_CTRL0_I2C_MAX)
- 		return -ERANGE;
+-	stack = alloc_stack(0, __cant_sleep());
++	stack = alloc_stack(0, __uml_cant_sleep());
+ 	if (stack == 0)
+ 		return -ENOMEM;
  
- 	bus->scl_rate.i2c = sysclk_rate / ((pres + 1) * 5);
 -- 
 2.43.0
 
