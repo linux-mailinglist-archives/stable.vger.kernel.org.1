@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-18532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43912848318
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E69718480CE
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C50D41F24AED
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 369891F2376F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE10B50240;
-	Sat,  3 Feb 2024 04:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9A518E2E;
+	Sat,  3 Feb 2024 04:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2h7H9D9B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IwT2GNKD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B47A11198;
-	Sat,  3 Feb 2024 04:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF8D12B9D;
+	Sat,  3 Feb 2024 04:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933868; cv=none; b=FwBq+tNmUWVC9q7vt1jIk0suar2YyeNh4kxZ4jmuuXBjvGygU1+C0DSOdjt3ijKWLPH+wvxdcjLWB+h/o8CZ42mkhymfSoTSZF+u5ZzE2PV41Zi0pzyLbJ0aPZsQj9GDDXexCfQbs7cF2UIKZZHB+wD7fIgUAcQOWx7zK6wV18c=
+	t=1706933443; cv=none; b=rCunNMUDtHQ0/Npnz9jKdiPXWzzPTDZnLE1EKKWBQmA2vOkUtIek/lDj+VrzVTx5BCakq0ot1/yBBuj6+7fPtMH0skAEYhkI0RNBCidRJUCEglo4HtkIsDH4Qy6VGnR/y6WOPg1Je/rDy8WbXwBeD+9sNIs7tTv+WhWEb0wLT40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933868; c=relaxed/simple;
-	bh=WmRxZMSRnq+0+ITRfnfNyitQYz9o5Nw6Yxrc++oSnFs=;
+	s=arc-20240116; t=1706933443; c=relaxed/simple;
+	bh=uXORvhHnrYOlqG7xp9SyoXkIGFMQlHdrmaUzBNVwv9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4CyqWzP9YJcKduncZmtkmhb9gRvYNcZ2CiSS61Tr7bMf9S30h5EKYYWkiCBRqbvQ0B9mN8OacAFjsNjBWganOMfZnOrfqp0ake4bn4g/WQ8GFORKRqZkeZ2WJFODzbvrpwrTK6U5tVV0AP+Fc3pwot5bKio6w0m7RqUx4+7KmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2h7H9D9B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F2CC433F1;
-	Sat,  3 Feb 2024 04:17:48 +0000 (UTC)
+	 MIME-Version; b=YSXe/YVWDohigSD+aXhTm5ASYJ3dk9a17dyrIsOjGUN5PSO9Q/JXR17YD0n7ggodMitYrAqRZAmdP4MV0G6BBesWw25JgX4MGqrdg+qhvxdOoeJsZseudpuyWLLsr1lVurdlrl08fOadamja8sYcN02bGredwNRYSxxji8DnxXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IwT2GNKD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8285C43394;
+	Sat,  3 Feb 2024 04:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933868;
-	bh=WmRxZMSRnq+0+ITRfnfNyitQYz9o5Nw6Yxrc++oSnFs=;
+	s=korg; t=1706933443;
+	bh=uXORvhHnrYOlqG7xp9SyoXkIGFMQlHdrmaUzBNVwv9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2h7H9D9B/jIugSJozVCB/LUKrMzh0LP0QKXwlQ7JvMB7E+lutJdsO1Q5y8WTC+vYn
-	 e3s2Wy2yi/Gsp8uAa8e30g6QmjOFbNgkSC65v7MO6VMxYXJxUgK3KCuP3kDv+YfPnA
-	 /LGJTZ3VJneSrJedxMgYxUajayZmbYEwkqXR3a4E=
+	b=IwT2GNKD4TriiMXlzgYa6ZDRg9WjpEVPQLu+7JIEgc0DAhien2RuYdGQvtHJYZHCv
+	 VukZf8pFhX3j8eZJqADAtbU/DyC8uy3AT3DGpaB73lx2XNX/tNsr8SKaz5jHaJ3jme
+	 CQK1uwCBPVSQBv1fZaMDc2cX5DdrlkE9Ns8w+i0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samson Tam <samson.tam@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	kernel test robot <lkp@intel.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 205/353] drm/amd/display: Force p-state disallow if leaving no plane config
+Subject: [PATCH 6.1 150/219] um: net: Fix return type of uml_net_start_xmit()
 Date: Fri,  2 Feb 2024 20:05:23 -0800
-Message-ID: <20240203035410.175820259@linuxfoundation.org>
+Message-ID: <20240203035338.067143950@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alvin Lee <alvin.lee2@amd.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 9a902a9073c287353e25913c0761bfed49d75a88 ]
+[ Upstream commit 7d748f60a4b82b50bf25fad1bd42d33f049f76aa ]
 
-[Description]
-- When we're in a no plane config, DCN is always asserting
-  P-State allow
-- This creates a scenario where the P-State blackout can start
-  just as VUPDATE takes place and transitions the DCN config to
-  a one where one or more HUBP's are active which can result in
-  underflow
-- To fix this issue, force p-state disallow and unforce after
-  the transition from no planes case -> one or more planes active
+With clang's kernel control flow integrity (kCFI, CONFIG_CFI_CLANG),
+indirect call targets are validated against the expected function
+pointer prototype to make sure the call target is valid to help mitigate
+ROP attacks. If they are not identical, there is a failure at run time,
+which manifests as either a kernel panic or thread getting killed. A
+warning in clang aims to catch these at compile time, which reveals:
 
-Reviewed-by: Samson Tam <samson.tam@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+  arch/um/drivers/net_kern.c:353:21: warning: incompatible function pointer types initializing 'netdev_tx_t (*)(struct sk_buff *, struct net_device *)' (aka 'enum netdev_tx (*)(struct sk_buff *, struct net_device *)') with an expression of type 'int (struct sk_buff *, struct net_device *)' [-Wincompatible-function-pointer-types-strict]
+    353 |         .ndo_start_xmit         = uml_net_start_xmit,
+        |                                   ^~~~~~~~~~~~~~~~~~
+  1 warning generated.
+
+->ndo_start_xmit() in 'struct net_device_ops' expects a return type of
+'netdev_tx_t', not 'int'. Adjust the return type of uml_net_start_xmit()
+to match the prototype's to resolve the warning. While UML does not
+currently implement support for kCFI, it could in the future, which
+means this warning becomes a fatal CFI failure at run time.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310031340.v1vPh207-lkp@intel.com/
+Acked-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/hwss/dcn20/dcn20_hwseq.c   | 20 +++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ arch/um/drivers/net_kern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-index 608221b0dd5d..c3c83178eb1e 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-@@ -1877,6 +1877,8 @@ void dcn20_program_front_end_for_ctx(
- 	int i;
- 	struct dce_hwseq *hws = dc->hwseq;
- 	DC_LOGGER_INIT(dc->ctx->logger);
-+	unsigned int prev_hubp_count = 0;
-+	unsigned int hubp_count = 0;
+diff --git a/arch/um/drivers/net_kern.c b/arch/um/drivers/net_kern.c
+index 3d7836c46507..cabcc501b448 100644
+--- a/arch/um/drivers/net_kern.c
++++ b/arch/um/drivers/net_kern.c
+@@ -204,7 +204,7 @@ static int uml_net_close(struct net_device *dev)
+ 	return 0;
+ }
  
- 	if (resource_is_pipe_topology_changed(dc->current_state, context))
- 		resource_log_pipe_topology_update(dc, context);
-@@ -1894,6 +1896,20 @@ void dcn20_program_front_end_for_ctx(
- 		}
- 	}
- 
-+	for (i = 0; i < dc->res_pool->pipe_count; i++) {
-+		if (dc->current_state->res_ctx.pipe_ctx[i].plane_state)
-+			prev_hubp_count++;
-+		if (context->res_ctx.pipe_ctx[i].plane_state)
-+			hubp_count++;
-+	}
-+
-+	if (prev_hubp_count == 0 && hubp_count > 0) {
-+		if (dc->res_pool->hubbub->funcs->force_pstate_change_control)
-+			dc->res_pool->hubbub->funcs->force_pstate_change_control(
-+					dc->res_pool->hubbub, true, false);
-+		udelay(500);
-+	}
-+
- 	/* Set pipe update flags and lock pipes */
- 	for (i = 0; i < dc->res_pool->pipe_count; i++)
- 		dcn20_detect_pipe_changes(&dc->current_state->res_ctx.pipe_ctx[i],
-@@ -2039,6 +2055,10 @@ void dcn20_post_unlock_program_front_end(
- 		}
- 	}
- 
-+	if (dc->res_pool->hubbub->funcs->force_pstate_change_control)
-+		dc->res_pool->hubbub->funcs->force_pstate_change_control(
-+				dc->res_pool->hubbub, false, false);
-+
- 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
- 		struct pipe_ctx *pipe = &context->res_ctx.pipe_ctx[i];
- 
+-static int uml_net_start_xmit(struct sk_buff *skb, struct net_device *dev)
++static netdev_tx_t uml_net_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct uml_net_private *lp = netdev_priv(dev);
+ 	unsigned long flags;
 -- 
 2.43.0
 
