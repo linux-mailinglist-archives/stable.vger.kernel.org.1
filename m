@@ -1,146 +1,144 @@
-Return-Path: <stable+bounces-18733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 404E38489BE
-	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 00:08:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCBC98489CE
+	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 00:54:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB4801F24300
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 23:08:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA0891C223BC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 23:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE7A12E68;
-	Sat,  3 Feb 2024 23:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED2713FE5;
+	Sat,  3 Feb 2024 23:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="d4hmAW8l"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="baKu5Kak"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFB413AC0
-	for <stable@vger.kernel.org>; Sat,  3 Feb 2024 23:08:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6251016436;
+	Sat,  3 Feb 2024 23:54:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707001682; cv=none; b=Dpu8McydrlHNVtENvz6KJIC5CqYk4i+YLsLfJ2aQdAzVK0yWRsQ0AOM9+9TYwyKrxObrm3+D42YPMvODoyQnvIhVJ74NIklnglLN35od4dt7o5IzWLU91F/do64sgo6XeKfKTCqq5YjDDH4MTjxaHyncNi11U+njugNGZOX8ong=
+	t=1707004494; cv=none; b=Cri4WsqxcBQciDynv/+ZVj+ewvvvROG//5rd7NzW1c/+BtCrD/zXYJbeEXd57mONyV80aPFjMBgB8lCctK8Ml7L77slFoO6HE/W5YjbBEKyj+Aumqkn0d9Azr3or/SYyFJ4Jkv+Jjhz1H/7Ir5a4E6DTusrYWPCmi4wTy6gy8HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707001682; c=relaxed/simple;
-	bh=7p0zw0Zru3MsWw07ScgwZWkx1CMQuefGCDRebXcKKrU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hHJnoTQKJmjJXjjYVUHIa6umCYMd211uhYnm/4uJULejjFoTDdkZZG9KDWsD4h2DZm/8sP2GaJxR8hwEH81lv7Cwy0j1e0teXc3vA4DfN49qGvRxGWHBLZHc6Rz2pFvu3jkQlVCKtUNY8l3BtKMWeVPGFgMl2qEWLmC8QvWtyTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=d4hmAW8l; arc=none smtp.client-ip=209.85.214.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1d746856d85so24867195ad.0
-        for <stable@vger.kernel.org>; Sat, 03 Feb 2024 15:08:01 -0800 (PST)
+	s=arc-20240116; t=1707004494; c=relaxed/simple;
+	bh=eQyjHYQAZ/iU45xmzwCXi10gQml0ia8HLSDyflfKzIc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MeERyoloxTYmtvWDBtwWvAEEH1pk6ON1DhGEo13MwaJ+H4okd05dEA4se3jEwI2qikFcvgRAbYcDbfGlmysYHjeOWTJZaiQk4MWEwfEIn9GgmV4WA4vTtc+MTXkBklayiyd5R7dDUgfaK0TMDYbDwWsTY4bXSclhzxifEeykrzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=baKu5Kak; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-40ef64d8955so29803945e9.3;
+        Sat, 03 Feb 2024 15:54:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1707001681; x=1707606481; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z+bcyaVUeNaxyEoXSbmvlmjxUQdhkegwt1YEX58Lwf4=;
-        b=d4hmAW8lGEhZsiFd/ZL3E/nXwEMy5V0Swc6+XAYhZ4uvufzHC2dNkMUm92aeLLPEhw
-         XLHlsfPOSky0LdSVx0iF/G9w8jz7e5TdtvJoZbVxq3xlvFbpU+KnKpn/ODUNDRnSc3TA
-         S3pV9l/YndwwyfW6SA5b5OYF2+ZFLez4FeMAdamhKM/bgWUSKuyTVCgFCExEbAg0EBps
-         KDvNz+vIkoxmWe0z5Pid8TI6Kn7UAaYth+mjz7PDPiT6YwtXYAvLwUm2S7NlWPFgrnj+
-         fDZMfWXP3QZY1xoJwmWfgiLeCwzM3bIwdZvnube9B/5wpOwshdTSp7w8ER85vP/hc7bB
-         LwBw==
+        d=gmail.com; s=20230601; t=1707004490; x=1707609290; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=m2UMKoFcK4wh3ZcVjxqCTfGH8GhWg4G2rR6ZKhHXo4Y=;
+        b=baKu5Kakmq4JnhMTTAkA9xFwsIYUimmuDAVgincQCg4i7tNfnyKNX0BHYUsRq94K7H
+         eNVRmxVpdcdddjNu+mr2+OLCFkva71MzElmyGGSTQGKnudwlFmpJFQwX7LQYQ+e6WGPR
+         iRCsLOP+b/q9TbTYXieW6u1/BDWKG+adw6eU8pBnMlqOLMjijbCW5LbfjzlfZgCSlJYv
+         PNpIi53QLw3sPwXd+TBNp0OI/PF/Ci8QfojlvqgeVlx9Xd4vmTkKoF9saHM0aeXH2YVl
+         3dLUKtZcUSVkSKAJF8FRmqMl1mua6bWJ05uP4XVk5cakddeyP7U32a8UYVlE0jW5VmYJ
+         Q7Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707001681; x=1707606481;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=z+bcyaVUeNaxyEoXSbmvlmjxUQdhkegwt1YEX58Lwf4=;
-        b=rvAc7AozO9saZpry1wf+alqb3KLwczexJ+SE7l7D2K9YFt6RVCixa4ZKI6H1M8C9Y5
-         ZQaSzOLDwTZmaJVenGNZi0BqRAWJ+CDecwQwY/zKThVRvq5WuY8X8XXLS70B1+0qjpvD
-         xNJeSjfOiRWR8Bs1s9pTMZPDrshM5x/GXYJ8hhWCqWqhHmdRtxVddmGKItuAbYgEfMdC
-         k6hO9cPUFFhCezIq6jfjAsElDY9ILRpsCyLxGGtkSEe5FIf20drm5e3KdcWOutC9FKFR
-         rtL+FSJnz4u9PzgflrHF/sjC+BLO4CtWW0EqmNS4Pk7QkEX04ZY6kneZVPXVDo8DoY/Z
-         UOCA==
-X-Gm-Message-State: AOJu0YyOPf9awh+sCqzW8tc+GJ+eJukjEFYHXdRuP6T7QLs08ceeAzzJ
-	KkwMR5dQiHjSekmyXfD3Omuld8MQ92CTUbA3rLTT/zJug6wRJaKiCE/bc0MwS++oiSlMz9KN8FH
-	jx0Sj8tmViyuOtg0gGikydiFXu/kFMUdmCTWQTw==
-X-Google-Smtp-Source: AGHT+IFhdozQG1G0hMbTqVxDG5libdTTSaFkdNxFFWC7hBg7ttK+Qdlvater9xOWBPPUyrohBpk/ISI7HXXI3zOZug4=
-X-Received: by 2002:a17:90a:b113:b0:296:1da3:c9e5 with SMTP id
- z19-20020a17090ab11300b002961da3c9e5mr5159730pjq.4.1707001680720; Sat, 03 Feb
- 2024 15:08:00 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707004490; x=1707609290;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=m2UMKoFcK4wh3ZcVjxqCTfGH8GhWg4G2rR6ZKhHXo4Y=;
+        b=LvfOfElCRYzHqfHRAa/AS57sBvtIIdBPeVDmup12NMsCZsbrQJ8ydTt+xqbSZSSst7
+         qWdk3UPa1HaRJN7yw8bOB3ZuLhGal7GZ8lRXtryLE6itHsDZvve44qI7PRqLJyKP5gl0
+         fg/pXPqlP53xRE/XLDAiv7gGiGUJsauvjsugtr558HxtEOd9jaQUT7fnSOrXk/fDDEzc
+         nts1Xvc2rY+RgKJv/J0ODqzoxOkDMRMp/8lRvKmuIdgdng3xTQbr+A+AGKkuYPrCSrr7
+         B2JPxDZK/N1Uh0fJkv2XC+YK7Ukj5HQi3B2Tqo8ygqOR77EyLnnZ63ylp0wg141YVGsk
+         /78A==
+X-Gm-Message-State: AOJu0YxSShZNWuj0gIX10sy7Ggas+SC7w8+fprEgPdpk4K9YYD5EL+/s
+	JDJgzt4pWtv93Mt9V0p9SLxge8Mgw1IXRlxCSZj0fKknFisNYQYK
+X-Google-Smtp-Source: AGHT+IH8/8dQl8i3DvDOzAG1waxr9XwcgMTXpdlgsWwHdPY1U+MI5TwUQoQfMXx6OSI3ox9XNpr/gA==
+X-Received: by 2002:a05:600c:3594:b0:40e:a569:3555 with SMTP id p20-20020a05600c359400b0040ea5693555mr1815554wmq.35.1707004490421;
+        Sat, 03 Feb 2024 15:54:50 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCWcLM6iuqsM7llfMG+jxZIMr/2tcxT71Wz2lUQgOSa8U7u3KjBDSxmX3m5oXtQc1a3lQgsNI1svoI9DQk1nAFXfANn5J7VcT9fm5tjliM5RLrKKQxkufl8k6971XOO/i83HKTgzcWa4BowQrXPscY1KoIjUuWvyzGpB9osHKog3TtFlDSR5ymax2WfECZnGstk9IJCwS1gqXwVMr4VUsrXdswY0/FlBdj49+Ax1y9wDly7h7Ty+bFCbmCd6g7o++sL7PA2UUtxR3pI3coXZoV5m0BHhHXGFlRtKxPUsm7pIiR6LaWJW013V7peQos+8E45W1zc2EBILQR5pDkRF88hunVnm6v/g
+Received: from localhost.localdomain (93-34-89-13.ip49.fastwebnet.it. [93.34.89.13])
+        by smtp.googlemail.com with ESMTPSA id g6-20020a05600c310600b0040fd1e2a773sm2659512wmo.47.2024.02.03.15.54.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Feb 2024 15:54:49 -0800 (PST)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: Pavel Machek <pavel@ucw.cz>,
+	Lee Jones <lee@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Li Zetao <lizetao1@huawei.com>,
+	linux-leds@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] leds: trigger: netdev: Fix kernel panic on interface rename trig notify
+Date: Sun,  4 Feb 2024 00:54:01 +0100
+Message-ID: <20240203235413.1146-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240203035359.041730947@linuxfoundation.org> <CAKL4bV59sRxqmyn33Xyh9uU8EMxytfqqNFAKxAdFALdWXzr-pQ@mail.gmail.com>
- <2024020321-predict-twister-356f@gregkh>
-In-Reply-To: <2024020321-predict-twister-356f@gregkh>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Sun, 4 Feb 2024 08:07:49 +0900
-Message-ID: <CAKL4bV5OV8JBr0LFAmXyaqb6N3ir-Jsaiqtfc7FDx4dduFq7Hw@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/322] 6.6.16-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Feb 4, 2024 at 12:57=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Sat, Feb 03, 2024 at 10:48:48PM +0900, Takeshi Ogasawara wrote:
-> > Hi Greg
-> >
-> > On Sat, Feb 3, 2024 at 1:16=E2=80=AFPM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > This is the start of the stable review cycle for the 6.6.16 release.
-> > > There are 322 patches in this series, all will be posted as a respons=
-e
-> > > to this one.  If anyone has any issues with these being applied, plea=
-se
-> > > let me know.
-> > >
-> > > Responses should be made by Mon, 05 Feb 2024 03:51:47 +0000.
-> > > Anything received after that time might be too late.
-> > >
-> > > The whole patch series can be found in one patch at:
-> > >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/pa=
-tch-6.6.16-rc1.gz
-> > > or in the git tree and branch at:
-> > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git linux-6.6.y
-> > > and the diffstat can be found below.
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
-> > >
-> >
-> > 6.6.16-rc1 tested.
-> >
-> > Build successfully completed.
-> > Boot error.
-> >
-> > After selecting the rc kernel in grub I can't proceed further
-> >
-> > Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
-> >
-> > Thanks
-> >
-> > Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
->
-> Any traceback report from the boot error?
+Commit d5e01266e7f5 ("leds: trigger: netdev: add additional specific link
+speed mode") in the various changes, reworked the way to set the LINKUP
+mode in commit cee4bd16c319 ("leds: trigger: netdev: Recheck
+NETDEV_LED_MODE_LINKUP on dev rename") and moved it to a generic function.
 
-I checked the log when the rc1 kernel started from the kernel that
-started normally, but there was no log of the boot of the rc1 kernel.
+This changed the logic where, in the previous implementation the dev
+from the trigger event was used to check if the carrier was ok, but in
+the new implementation with the generic function, the dev in
+trigger_data is used instead.
 
-Symptoms include grub starting, the screen blacking out, and returning
-to the grub screen, but no keyboard input was accepted.
+This is problematic and cause a possible kernel panic due to the fact
+that the dev in the trigger_data still reference the old one as the
+new one (passed from the trigger event) still has to be hold and saved
+in the trigger_data struct (done in the NETDEV_REGISTER case).
 
-The problem was resolved with 6.6.16-rc2 and it worked normally.
+On calling of get_device_state(), an invalid net_dev is used and this
+cause a kernel panic.
 
-Thanks
+To handle this correctly, move the call to get_device_state() after the
+new net_dev is correctly set in trigger_data (in the NETDEV_REGISTER
+case) and correctly parse the new dev.
+
+Fixes: d5e01266e7f5 ("leds: trigger: netdev: add additional specific link speed mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+ drivers/leds/trigger/ledtrig-netdev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/leds/trigger/ledtrig-netdev.c b/drivers/leds/trigger/ledtrig-netdev.c
+index 8e5475819590..df1b1d8468e6 100644
+--- a/drivers/leds/trigger/ledtrig-netdev.c
++++ b/drivers/leds/trigger/ledtrig-netdev.c
+@@ -504,12 +504,12 @@ static int netdev_trig_notify(struct notifier_block *nb,
+ 	trigger_data->duplex = DUPLEX_UNKNOWN;
+ 	switch (evt) {
+ 	case NETDEV_CHANGENAME:
+-		get_device_state(trigger_data);
+-		fallthrough;
+ 	case NETDEV_REGISTER:
+ 		dev_put(trigger_data->net_dev);
+ 		dev_hold(dev);
+ 		trigger_data->net_dev = dev;
++		if (evt == NETDEV_CHANGENAME)
++			get_device_state(trigger_data);
+ 		break;
+ 	case NETDEV_UNREGISTER:
+ 		dev_put(trigger_data->net_dev);
+-- 
+2.43.0
+
 
