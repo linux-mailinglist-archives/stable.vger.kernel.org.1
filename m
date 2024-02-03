@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A38184834C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E1EF8480F0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2AC3E1F24D81
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B46C1F23396
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715AA524BD;
-	Sat,  3 Feb 2024 04:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E0721B5B7;
+	Sat,  3 Feb 2024 04:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqwzABnS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+JJTuw2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D86524B4;
-	Sat,  3 Feb 2024 04:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C08134A1;
+	Sat,  3 Feb 2024 04:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933906; cv=none; b=unCs+ZkGIIXkBGVV30XC/+DfiEEhsRf+VY5Zg/yBTo9ARWdPasGh0nXfymGd4Jly5wWmrEcdqsOQsQzCcBt04ZteRb6YyJ2JYXWsHhN4/IWE6SgwC7KllTsr1w4LGMh9+P9S/U9Jvxrv9uwVZm3rHCdIRezIABR8emkwEgJtINw=
+	t=1706933467; cv=none; b=F5cwl/31EcBA6WeBLwgQLq+sqGIDF/hK5TpeXVg5lo9TU+wFA2XURbhPcBHWzRvc0owASwFU5xvg+92xyX/bCQDpprNZEF041KPSJreKgNp8tyn4rRCkHWYQ+Cj2OT3ZOjtw0XZoCJJ0OcnpQzg5RL+FEw0I6pFId3NsR438PaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933906; c=relaxed/simple;
-	bh=/fpA3/vZRIzHT2ZDFYp1XgZSEavAL3AhLAIHWZyuwkQ=;
+	s=arc-20240116; t=1706933467; c=relaxed/simple;
+	bh=BgcS4PxPkh+FvIzxE3UOkQz6rrX6E934hxuy+Q0dpQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EUMG7LvUki2S8QaIB1aqUog/oT7pWhx7xqndHF8aSzomNfs2geiKqraYMX9CrZxGxllZ17aRwfTqYs5OEFWyyqj/PhUe8pVXqCysF19QzYPCPXh/OcK+GPZCRG4WL5IdoeOWkQN8tRBCBZ59hh3mYrV7kc2Fg59VXSMqKIRIPWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqwzABnS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBE7C433C7;
-	Sat,  3 Feb 2024 04:18:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jFcsIlKHPP6JD7quFvCh0iYzs9ebOS7A9ei4hKPzDQoMLsNY24YkQhYzWoSb58U59J9C+8CIUkwE65vyPPjagTP/sYRl7wM1CKpf9dxtgmIy5xVWrLPOgwpJpPSPj32D7sOsW5SZkETLTFm87rvs9wdpu6/mtfgxQGoreYQ1od0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+JJTuw2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C9FC43390;
+	Sat,  3 Feb 2024 04:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933906;
-	bh=/fpA3/vZRIzHT2ZDFYp1XgZSEavAL3AhLAIHWZyuwkQ=;
+	s=korg; t=1706933467;
+	bh=BgcS4PxPkh+FvIzxE3UOkQz6rrX6E934hxuy+Q0dpQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fqwzABnSCTK4sa7M2VYui93QRGGt5uicdHT96eiD1HatHtuSaxMZkrcQdWrq4gXW8
-	 G5i//O6eE/ZNa6wEwj07zwkOhaCuA/LeurjIAxtqejVtHD3GxdPJ9a0xZN0+wDCuKW
-	 DnGe1q2tcrPEAnGllsvxOD5RGVHqbASnYrzbVPzk=
+	b=B+JJTuw2AQZhVEvF6izXLY11evlAxS1/viZwiIMN+yyb5K4IRBRZfFxQG38jtCEG6
+	 fJX8Ihm5zRqFGvrEURaOt0Ns8neWu5G104aUvSCOar1FUM68HPidZ+nt5NE2iiF+pX
+	 q69PeIVWT8ZHMJYBUcNBIoEzDWun9PGIqnJsCaFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 228/353] drm/amdgpu: Let KFD sync with VM fences
+Subject: =?UTF-8?q?=5BPATCH=206=2E1=20173/219=5D=20=3D=3FUTF-8=3Fq=3Fvirtio=3D5Fnet=3A=3D20Fix=3D20=22=3DE2=3D80=3D98=25d=3DE2=3D80=3D99=3D20directive=3F=3D=20=3D=3FUTF-8=3Fq=3F=3D20writing=3D20between=3D201=3D20and=3D2011=3D20bytes=3D20into=3D20a=3D20region=3F=3D=20=3D=3FUTF-8=3Fq=3F=3D20of=3D20size=3D2010=22=3D20warnings=3F=3D?=
 Date: Fri,  2 Feb 2024 20:05:46 -0800
-Message-ID: <20240203035410.884484894@linuxfoundation.org>
+Message-ID: <20240203035340.983640255@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +64,81 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Kuehling <Felix.Kuehling@amd.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-[ Upstream commit ec9ba4821fa52b5efdbc4cdf0a77497990655231 ]
+[ Upstream commit e3fe8d28c67bf6c291e920c6d04fa22afa14e6e4 ]
 
-Change the rules for amdgpu_sync_resv to let KFD synchronize with VM
-fences on page table reservations. This fixes intermittent memory
-corruption after evictions when using amdgpu_vm_handle_moved to update
-page tables for VM mappings managed through render nodes.
+Fix the warnings when building virtio_net driver.
 
-Signed-off-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+"
+drivers/net/virtio_net.c: In function ‘init_vqs’:
+drivers/net/virtio_net.c:4551:48: warning: ‘%d’ directive writing between 1 and 11 bytes into a region of size 10 [-Wformat-overflow=]
+ 4551 |                 sprintf(vi->rq[i].name, "input.%d", i);
+      |                                                ^~
+In function ‘virtnet_find_vqs’,
+    inlined from ‘init_vqs’ at drivers/net/virtio_net.c:4645:8:
+drivers/net/virtio_net.c:4551:41: note: directive argument in the range [-2147483643, 65534]
+ 4551 |                 sprintf(vi->rq[i].name, "input.%d", i);
+      |                                         ^~~~~~~~~~
+drivers/net/virtio_net.c:4551:17: note: ‘sprintf’ output between 8 and 18 bytes into a destination of size 16
+ 4551 |                 sprintf(vi->rq[i].name, "input.%d", i);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/net/virtio_net.c: In function ‘init_vqs’:
+drivers/net/virtio_net.c:4552:49: warning: ‘%d’ directive writing between 1 and 11 bytes into a region of size 9 [-Wformat-overflow=]
+ 4552 |                 sprintf(vi->sq[i].name, "output.%d", i);
+      |                                                 ^~
+In function ‘virtnet_find_vqs’,
+    inlined from ‘init_vqs’ at drivers/net/virtio_net.c:4645:8:
+drivers/net/virtio_net.c:4552:41: note: directive argument in the range [-2147483643, 65534]
+ 4552 |                 sprintf(vi->sq[i].name, "output.%d", i);
+      |                                         ^~~~~~~~~~~
+drivers/net/virtio_net.c:4552:17: note: ‘sprintf’ output between 9 and 19 bytes into a destination of size 16
+ 4552 |                 sprintf(vi->sq[i].name, "output.%d", i);
+
+"
+
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Link: https://lore.kernel.org/r/20240104020902.2753599-1-yanjun.zhu@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/virtio_net.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
-index dcd8c066bc1f..1b013a44ca99 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_sync.c
-@@ -191,7 +191,8 @@ static bool amdgpu_sync_test_fence(struct amdgpu_device *adev,
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 21d3461fb5d1..45f1a871b7da 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3474,10 +3474,11 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
+ {
+ 	vq_callback_t **callbacks;
+ 	struct virtqueue **vqs;
+-	int ret = -ENOMEM;
+-	int i, total_vqs;
+ 	const char **names;
++	int ret = -ENOMEM;
++	int total_vqs;
+ 	bool *ctx;
++	u16 i;
  
- 	/* Never sync to VM updates either. */
- 	if (fence_owner == AMDGPU_FENCE_OWNER_VM &&
--	    owner != AMDGPU_FENCE_OWNER_UNDEFINED)
-+	    owner != AMDGPU_FENCE_OWNER_UNDEFINED &&
-+	    owner != AMDGPU_FENCE_OWNER_KFD)
- 		return false;
- 
- 	/* Ignore fences depending on the sync mode */
+ 	/* We expect 1 RX virtqueue followed by 1 TX virtqueue, followed by
+ 	 * possible N-1 RX/TX queue pairs used in multiqueue mode, followed by
+@@ -3514,8 +3515,8 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
+ 	for (i = 0; i < vi->max_queue_pairs; i++) {
+ 		callbacks[rxq2vq(i)] = skb_recv_done;
+ 		callbacks[txq2vq(i)] = skb_xmit_done;
+-		sprintf(vi->rq[i].name, "input.%d", i);
+-		sprintf(vi->sq[i].name, "output.%d", i);
++		sprintf(vi->rq[i].name, "input.%u", i);
++		sprintf(vi->sq[i].name, "output.%u", i);
+ 		names[rxq2vq(i)] = vi->rq[i].name;
+ 		names[txq2vq(i)] = vi->sq[i].name;
+ 		if (ctx)
 -- 
 2.43.0
 
