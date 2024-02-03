@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-18348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0029084825F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A7D2848114
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:16:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF2E12812EC
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:25:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22C4F281D4A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976771B949;
-	Sat,  3 Feb 2024 04:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB311BDCE;
+	Sat,  3 Feb 2024 04:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ym8lwzQr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AciCHUd1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557D11B59F;
-	Sat,  3 Feb 2024 04:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9FC13FF2;
+	Sat,  3 Feb 2024 04:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933733; cv=none; b=isK6JebA0ELNIDRoyb+Zo5PYYY78qA2bro3wYvhIBYpnuq7coWViZH5OCq5UIPXCO98D9sOonEEuwi/F3KKydFCzYBvnEQlswJQak052lxSEz9ETlG1kh29c9qXWJpLx01x3YMce7AoTXk8TfgexExUu70n/DzAwuRwM24n6Jtc=
+	t=1706933494; cv=none; b=qjQI9+f3DAaqR+e698dieasoq9Z2UkU5fh49N84deyFIcXKuqzIjaP6u76BftBobxOO5cMbQy9ZIqDx8IcUGxEdvBNfM54aXI1irl9n0VVgB1C7CbI9bU1B6R9cgELsAfcadT72WSC0iVN/axOt4/6sB5MvZ9sIPhyYY9SsxhJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933733; c=relaxed/simple;
-	bh=pz7G7UBevW1xM0E5rL84qHbT9nhD8KHZ661u2/iJBZ8=;
+	s=arc-20240116; t=1706933494; c=relaxed/simple;
+	bh=ySUMBP4UNKUJab3r3wMB+7ISx/qVayjVoZpYnohWnJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jEwwW/XvbWDfoLX1TlhKx8CEyiEyhiHsIy2x2oCM+tc29D1YoeNO/PM78Z2nt1FLTUoT0TJuEM8HDgljTBsrr6WsBfu5WaQiYbimzsYrEys46rkyWF3+eHnDyuxFZty6qomrvkPEP3kEyMquAPgbnd/ldJ1RWT0A9AJ/C6W5Esc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ym8lwzQr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C72A8C433C7;
-	Sat,  3 Feb 2024 04:15:32 +0000 (UTC)
+	 MIME-Version; b=g6IbaO5DNJtTg6745KZLHXCzAsz/oDZrFU1dcsFzLNNetU6aPcweWNFsogFoAwC/dZuok/qkAm/1JLuET7erfwgBf84KbTLoJTUeYB7oZCtS5/NYT5vDFWRi5RkXE3O6dV41g2YTVfcy1EXItUN/UgisVbkeAtnP4wEeFZc7aXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AciCHUd1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93CBFC43390;
+	Sat,  3 Feb 2024 04:11:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933732;
-	bh=pz7G7UBevW1xM0E5rL84qHbT9nhD8KHZ661u2/iJBZ8=;
+	s=korg; t=1706933494;
+	bh=ySUMBP4UNKUJab3r3wMB+7ISx/qVayjVoZpYnohWnJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ym8lwzQrn3WZoJ5bBmHZvdnbZKVEkUf1Uj2XY0OnpQaajWB2q005VRNb6ju3zkZF+
-	 lL24ft7oe88JcpPSzrXJA/dVQ2Ct4+CEE4VXM5IUvXn1r1+f8tXFJy6c/59W455WP5
-	 KiEqQZbELEwG4T2JcE2KICDme/+xibUGRsdZJOB4=
+	b=AciCHUd1YNoaCBbfmlHZ4n0ZWKpjC6ypuS/yyF4D1RJSzOI+gEC2wbK+FS/o81hbE
+	 d9HxB20dCxN5Cp/+KxwkpUBBnhacWKOAOtwBfIKd7GvPbcqhbiylJV9rMymZ4cwuyp
+	 Y3vJ5K9VlBTZila/Et7PilAA60I6YVCYPW0cXScI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Huang Shijie <shijie@os.amperecomputing.com>,
-	Will Deacon <will@kernel.org>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Ma Wupeng <mawupeng1@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Xiaofei Tan <tanxiaofei@huawei.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	James Morse <james.morse@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 003/353] arm64: irq: set the correct node for VMAP stack
+Subject: [PATCH 6.6 024/322] ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on synchronous events
 Date: Fri,  2 Feb 2024 20:02:01 -0800
-Message-ID: <20240203035403.773781106@linuxfoundation.org>
+Message-ID: <20240203035359.830587334@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +67,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang Shijie <shijie@os.amperecomputing.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-[ Upstream commit 75b5e0bf90bffaca4b1f19114065dc59f5cc161f ]
+[ Upstream commit a70297d2213253853e95f5b49651f924990c6d3b ]
 
-In current code, init_irq_stacks() will call cpu_to_node().
-The cpu_to_node() depends on percpu "numa_node" which is initialized in:
-     arch_call_rest_init() --> rest_init() -- kernel_init()
-	--> kernel_init_freeable() --> smp_prepare_cpus()
+There are two major types of uncorrected recoverable (UCR) errors :
 
-But init_irq_stacks() is called in init_IRQ() which is before
-arch_call_rest_init().
+ - Synchronous error: The error is detected and raised at the point of
+   the consumption in the execution flow, e.g. when a CPU tries to
+   access a poisoned cache line. The CPU will take a synchronous error
+   exception such as Synchronous External Abort (SEA) on Arm64 and
+   Machine Check Exception (MCE) on X86. OS requires to take action (for
+   example, offline failure page/kill failure thread) to recover this
+   uncorrectable error.
 
-So in init_irq_stacks(), the cpu_to_node() does not work, it
-always return 0. In NUMA, it makes the node 1 cpu accesses the IRQ stack which
-is in the node 0.
+ - Asynchronous error: The error is detected out of processor execution
+   context, e.g. when an error is detected by a background scrubber.
+   Some data in the memory are corrupted. But the data have not been
+   consumed. OS is optional to take action to recover this uncorrectable
+   error.
 
-This patch fixes it by:
-  1.) export the early_cpu_to_node(), and use it in the init_irq_stacks().
-  2.) change init_irq_stacks() to __init function.
+When APEI firmware first is enabled, a platform may describe one error
+source for the handling of synchronous errors (e.g. MCE or SEA notification
+), or for handling asynchronous errors (e.g. SCI or External Interrupt
+notification). In other words, we can distinguish synchronous errors by
+APEI notification. For synchronous errors, kernel will kill the current
+process which accessing the poisoned page by sending SIGBUS with
+BUS_MCEERR_AR. In addition, for asynchronous errors, kernel will notify the
+process who owns the poisoned page by sending SIGBUS with BUS_MCEERR_AO in
+early kill mode. However, the GHES driver always sets mf_flags to 0 so that
+all synchronous errors are handled as asynchronous errors in memory failure.
 
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Huang Shijie <shijie@os.amperecomputing.com>
-Link: https://lore.kernel.org/r/20231124031513.81548-1-shijie@os.amperecomputing.com
-Signed-off-by: Will Deacon <will@kernel.org>
+To this end, set memory failure flags as MF_ACTION_REQUIRED on synchronous
+events.
+
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Tested-by: Ma Wupeng <mawupeng1@huawei.com>
+Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: James Morse <james.morse@arm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/irq.c    | 5 +++--
- drivers/base/arch_numa.c   | 2 +-
- include/asm-generic/numa.h | 2 ++
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/acpi/apei/ghes.c | 29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/kernel/irq.c b/arch/arm64/kernel/irq.c
-index 6ad5c6ef5329..9f253d8efe90 100644
---- a/arch/arm64/kernel/irq.c
-+++ b/arch/arm64/kernel/irq.c
-@@ -22,6 +22,7 @@
- #include <linux/vmalloc.h>
- #include <asm/daifflags.h>
- #include <asm/exception.h>
-+#include <asm/numa.h>
- #include <asm/softirq_stack.h>
- #include <asm/stacktrace.h>
- #include <asm/vmap_stack.h>
-@@ -51,13 +52,13 @@ static void init_irq_scs(void)
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 63ad0541db38..ab2a82cb1b0b 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -101,6 +101,20 @@ static inline bool is_hest_type_generic_v2(struct ghes *ghes)
+ 	return ghes->generic->header.type == ACPI_HEST_TYPE_GENERIC_ERROR_V2;
  }
  
- #ifdef CONFIG_VMAP_STACK
--static void init_irq_stacks(void)
-+static void __init init_irq_stacks(void)
++/*
++ * A platform may describe one error source for the handling of synchronous
++ * errors (e.g. MCE or SEA), or for handling asynchronous errors (e.g. SCI
++ * or External Interrupt). On x86, the HEST notifications are always
++ * asynchronous, so only SEA on ARM is delivered as a synchronous
++ * notification.
++ */
++static inline bool is_hest_sync_notify(struct ghes *ghes)
++{
++	u8 notify_type = ghes->generic->notify.type;
++
++	return notify_type == ACPI_HEST_NOTIFY_SEA;
++}
++
+ /*
+  * This driver isn't really modular, however for the time being,
+  * continuing to use module_param is the easiest way to remain
+@@ -489,7 +503,7 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
+ }
+ 
+ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+-				       int sev)
++				       int sev, bool sync)
  {
- 	int cpu;
- 	unsigned long *p;
+ 	int flags = -1;
+ 	int sec_sev = ghes_severity(gdata->error_severity);
+@@ -503,7 +517,7 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+ 	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
+ 		flags = MF_SOFT_OFFLINE;
+ 	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
+-		flags = 0;
++		flags = sync ? MF_ACTION_REQUIRED : 0;
  
- 	for_each_possible_cpu(cpu) {
--		p = arch_alloc_vmap_stack(IRQ_STACK_SIZE, cpu_to_node(cpu));
-+		p = arch_alloc_vmap_stack(IRQ_STACK_SIZE, early_cpu_to_node(cpu));
- 		per_cpu(irq_stack_ptr, cpu) = p;
- 	}
+ 	if (flags != -1)
+ 		return ghes_do_memory_failure(mem_err->physical_addr, flags);
+@@ -511,9 +525,11 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+ 	return false;
  }
-diff --git a/drivers/base/arch_numa.c b/drivers/base/arch_numa.c
-index eaa31e567d1e..5b59d133b6af 100644
---- a/drivers/base/arch_numa.c
-+++ b/drivers/base/arch_numa.c
-@@ -144,7 +144,7 @@ void __init early_map_cpu_to_node(unsigned int cpu, int nid)
- unsigned long __per_cpu_offset[NR_CPUS] __read_mostly;
- EXPORT_SYMBOL(__per_cpu_offset);
  
--static int __init early_cpu_to_node(int cpu)
-+int __init early_cpu_to_node(int cpu)
+-static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
++static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
++				       int sev, bool sync)
  {
- 	return cpu_to_node_map[cpu];
- }
-diff --git a/include/asm-generic/numa.h b/include/asm-generic/numa.h
-index 1a3ad6d29833..c32e0cf23c90 100644
---- a/include/asm-generic/numa.h
-+++ b/include/asm-generic/numa.h
-@@ -35,6 +35,7 @@ int __init numa_add_memblk(int nodeid, u64 start, u64 end);
- void __init numa_set_distance(int from, int to, int distance);
- void __init numa_free_distance(void);
- void __init early_map_cpu_to_node(unsigned int cpu, int nid);
-+int __init early_cpu_to_node(int cpu);
- void numa_store_cpu_info(unsigned int cpu);
- void numa_add_cpu(unsigned int cpu);
- void numa_remove_cpu(unsigned int cpu);
-@@ -46,6 +47,7 @@ static inline void numa_add_cpu(unsigned int cpu) { }
- static inline void numa_remove_cpu(unsigned int cpu) { }
- static inline void arch_numa_init(void) { }
- static inline void early_map_cpu_to_node(unsigned int cpu, int nid) { }
-+static inline int early_cpu_to_node(int cpu) { return 0; }
+ 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
++	int flags = sync ? MF_ACTION_REQUIRED : 0;
+ 	bool queued = false;
+ 	int sec_sev, i;
+ 	char *p;
+@@ -538,7 +554,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int s
+ 		 * and don't filter out 'corrected' error here.
+ 		 */
+ 		if (is_cache && has_pa) {
+-			queued = ghes_do_memory_failure(err_info->physical_fault_addr, 0);
++			queued = ghes_do_memory_failure(err_info->physical_fault_addr, flags);
+ 			p += err_info->length;
+ 			continue;
+ 		}
+@@ -666,6 +682,7 @@ static bool ghes_do_proc(struct ghes *ghes,
+ 	const guid_t *fru_id = &guid_null;
+ 	char *fru_text = "";
+ 	bool queued = false;
++	bool sync = is_hest_sync_notify(ghes);
  
- #endif	/* CONFIG_NUMA */
+ 	sev = ghes_severity(estatus->error_severity);
+ 	apei_estatus_for_each_section(estatus, gdata) {
+@@ -683,13 +700,13 @@ static bool ghes_do_proc(struct ghes *ghes,
+ 			atomic_notifier_call_chain(&ghes_report_chain, sev, mem_err);
+ 
+ 			arch_apei_report_mem_error(sev, mem_err);
+-			queued = ghes_handle_memory_failure(gdata, sev);
++			queued = ghes_handle_memory_failure(gdata, sev, sync);
+ 		}
+ 		else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
+ 			ghes_handle_aer(gdata);
+ 		}
+ 		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
+-			queued = ghes_handle_arm_hw_error(gdata, sev);
++			queued = ghes_handle_arm_hw_error(gdata, sev, sync);
+ 		} else {
+ 			void *err = acpi_hest_get_payload(gdata);
  
 -- 
 2.43.0
