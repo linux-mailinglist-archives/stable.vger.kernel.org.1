@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-18330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A0E84824B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBAD9848375
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD0691F277A0
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CC20282CDC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3BD8481DB;
-	Sat,  3 Feb 2024 04:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4E353E0D;
+	Sat,  3 Feb 2024 04:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YWKA0NsR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAckoWlZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB37482C3;
-	Sat,  3 Feb 2024 04:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C5B11717;
+	Sat,  3 Feb 2024 04:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933720; cv=none; b=an1IHZjis2Ruv8lJWlDnwFHxx8Y98wqs0dCYgNdyzHIvItHr68SvqAeoN7haB5fHM3ChoxOwK6OvKO7SecUFdY770HNjxCjSW/kvMRGrFgeDcLEeh8vRGsWJNCa7u6PoLy40lGw5Zjf/6zAos7BxesAasso0YlFzE3SxbBabAH8=
+	t=1706933936; cv=none; b=ZdWjnD+u88xG19DXIjP1283Ezw70/2i94mrlQSQA9TtV64G3YRPbAwDF3xnrn7JeF0I3kqXLtflvdGnuSsZuAgNI0Gh4z+k9bMC9xgSS4Kxf3LckQwokxbRsqEIN/WCvpQ0tLiWWittIkwjAZjo27l+KVHzVpO56vvZGviQlprs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933720; c=relaxed/simple;
-	bh=izSrFqt+4gGrmoxFKWc28u0poeWk9svdqB9fI6X1xsk=;
+	s=arc-20240116; t=1706933936; c=relaxed/simple;
+	bh=8dRRkc/fwvIMRPxH3jB+PTBBVlK/NYentOKhxhvmKF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hOD/veWB5wVhHnscANvO2pWd+FgOv7gDhRKISwOajJUv7n/0Kqp9KRd0YEmhpCxRP2/8OKxamDY++SbMg0oqkFOpBUNyIXpPAw+/p/qAXGyaRbfO2kddlPSd9M2b9FIB7FUXNX6gdVdfSbv1voO2QKtWPm7HaXLNBFa32IECWIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YWKA0NsR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CC3C43394;
-	Sat,  3 Feb 2024 04:15:19 +0000 (UTC)
+	 MIME-Version; b=dVtrFfWBscYBKAebxQ4coDsxkrIKzDSArsQ6g8ybqq/j1bFCmtxJBqky+QW51K4M6yWw/TD3kulvS8TfqJMrfa8XBJcAszo04whBXHHjNz0JXxQEVUU/d3UYXYwyVYHQknsZu3Xt2FK+iimqqKJWSv6v6w8W3lBITSauFIQXxRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAckoWlZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE86C43390;
+	Sat,  3 Feb 2024 04:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933719;
-	bh=izSrFqt+4gGrmoxFKWc28u0poeWk9svdqB9fI6X1xsk=;
+	s=korg; t=1706933935;
+	bh=8dRRkc/fwvIMRPxH3jB+PTBBVlK/NYentOKhxhvmKF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YWKA0NsRL/rQ0Uba8lTNJVCXT7xfqNcfhcc/C7nNzcIjaxjd+/VZIFqFNtnZtX/oK
-	 uNWakNJAuoLlMID4mZLpXGzq6GYUMT3XgrfuzYew2rdBL5a8vjzgSjV5gtJzo/NlN6
-	 bMQaFErWBZZUrIPvaSKrI1u9vjBI5kl/y2Yb4/E8=
+	b=wAckoWlZCmkYJ0N2cTz7XJZetkRcMC2TENvpT0SQc95K8gnws/lNFIfeoYdjfOLDt
+	 YI5PMV0RXV+2PhgLa3x8u3GbsmACopYnNjYVJzxn2TqgWkF4tIxWMj7becpxDKyuNu
+	 MkC6IQJnYf88GK3E9AOFB0MPjgwZVUc44ma7PB1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Gray <jsg@jsg.id.au>
-Subject: [PATCH 6.6 318/322] Revert "drm/amd/display: Disable PSR-SU on Parade 0803 TCON again"
+	Su Hui <suhui@nfschina.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 297/353] HID: hidraw: fix a problem of memory leak in hidraw_release()
 Date: Fri,  2 Feb 2024 20:06:55 -0800
-Message-ID: <20240203035409.310551998@linuxfoundation.org>
+Message-ID: <20240203035413.224119793@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,35 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Gray <jsg@jsg.id.au>
+From: Su Hui <suhui@nfschina.com>
 
-This reverts commit 107a11637f43e7cdcca96c09525481e38b004455.
+[ Upstream commit a3bdcdd022c68942a774e8e63424cc11c85aab78 ]
 
-duplicated a change made in 6.6.8
-a8f922ad2f76a53383982132ee44d123b72533c5
+'struct hidraw_list' is a circular queue whose head can be smaller than
+tail. Using 'list->tail != list->head' to release all memory that should
+be released.
 
-Cc: stable@vger.kernel.org # 6.6
-Signed-off-by: Jonathan Gray <jsg@jsg.id.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a5623a203cff ("HID: hidraw: fix memory leak in hidraw_release()")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/modules/power/power_helpers.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/hid/hidraw.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
-+++ b/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
-@@ -841,8 +841,6 @@ bool is_psr_su_specific_panel(struct dc_
- 				isPSRSUSupported = false;
- 			else if (dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x03)
- 				isPSRSUSupported = false;
--			else if (dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x03)
--				isPSRSUSupported = false;
- 			else if (dpcd_caps->psr_info.force_psrsu_cap == 0x1)
- 				isPSRSUSupported = true;
- 		}
+diff --git a/drivers/hid/hidraw.c b/drivers/hid/hidraw.c
+index 13c8dd8cd350..2bc762d31ac7 100644
+--- a/drivers/hid/hidraw.c
++++ b/drivers/hid/hidraw.c
+@@ -357,8 +357,11 @@ static int hidraw_release(struct inode * inode, struct file * file)
+ 	down_write(&minors_rwsem);
+ 
+ 	spin_lock_irqsave(&hidraw_table[minor]->list_lock, flags);
+-	for (int i = list->tail; i < list->head; i++)
+-		kfree(list->buffer[i].value);
++	while (list->tail != list->head) {
++		kfree(list->buffer[list->tail].value);
++		list->buffer[list->tail].value = NULL;
++		list->tail = (list->tail + 1) & (HIDRAW_BUFFER_SIZE - 1);
++	}
+ 	list_del(&list->node);
+ 	spin_unlock_irqrestore(&hidraw_table[minor]->list_lock, flags);
+ 	kfree(list);
+-- 
+2.43.0
+
 
 
 
