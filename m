@@ -1,77 +1,94 @@
-Return-Path: <stable+bounces-18697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64EF848530
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 11:36:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9847684868A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 14:39:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60BC41F247F4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 10:36:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFC1A1C225CC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 13:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEDE05D74C;
-	Sat,  3 Feb 2024 10:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABD04174F;
+	Sat,  3 Feb 2024 13:39:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="YTXSe0IQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.itouring.de (mail.itouring.de [85.10.202.141])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC3C48CC7;
-	Sat,  3 Feb 2024 10:36:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.202.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766675DF01;
+	Sat,  3 Feb 2024 13:39:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706956593; cv=none; b=oFBRWhFetyj1SQ6A/uppu5cAxCi/2F8Sdfj9va/wS308Xf4FbsrCUEb+jAmMslV/sz63SnuO5kjB1YI5ZbjSuxW2Gw1+uGJOagnzolwzvIF+l0yewZm2xRQiiwc+G1k6LNeNSRYjfuPfnZ1nLELNb+D3uaXcFd8czg1xfZ2y0pI=
+	t=1706967587; cv=none; b=liBLKa2kUr+m5ngPU7+fMEftEkPNBoSW0kjTY79uX+ykpro9HEDXaiBn3a8nIELidQUCmIJBPu8GMlPaMg1/sEb1MgaBmVG7WpydJFVtDB4Ux8N3PLMDNJbXAm3XDqre34+mZMWS8O0siijuqz2tyV6Xu1IdJ+F13wRXTbufaCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706956593; c=relaxed/simple;
-	bh=//6EOTglFqOTTA2dxf/fckQDdFeuxwvhrqyoedDTnzc=;
-	h=Subject:From:To:Cc:References:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=fezBwyFCLeqHLvwmaB+rDOz1AqsL9YI/1lPUiYs7zENKgl+4ZO2XJTfUVeuKLr81+xhuenQO1irBRuj4RBcQxMtHnEhdg5rx2+qOSjMM0dS8TMAnvgtOKoH2viEEJRzYkKijx0VIX84g8PZAdnLnKGuMMLk7UHfGPaEZtcyEmK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com; spf=pass smtp.mailfrom=applied-asynchrony.com; arc=none smtp.client-ip=85.10.202.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=applied-asynchrony.com
-Received: from tux.applied-asynchrony.com (p5b2e8fde.dip0.t-ipconnect.de [91.46.143.222])
-	by mail.itouring.de (Postfix) with ESMTPSA id 1A56CD015AA;
-	Sat,  3 Feb 2024 11:36:29 +0100 (CET)
-Received: from [192.168.100.221] (hho.applied-asynchrony.com [192.168.100.221])
-	by tux.applied-asynchrony.com (Postfix) with ESMTP id E04EEF01604;
-	Sat,  3 Feb 2024 11:36:28 +0100 (CET)
-Subject: Re: [PATCH 6.7 000/353] 6.7.4-rc1 review
-From: =?UTF-8?Q?Holger_Hoffst=c3=a4tte?= <holger@applied-asynchrony.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20240203035403.657508530@linuxfoundation.org>
- <9fa210ec-1086-615e-b972-f28a74df7b49@applied-asynchrony.com>
-Organization: Applied Asynchrony, Inc.
-Message-ID: <e07488c7-8375-5d03-d2b6-eba2a9769684@applied-asynchrony.com>
-Date: Sat, 3 Feb 2024 11:36:28 +0100
+	s=arc-20240116; t=1706967587; c=relaxed/simple;
+	bh=JM+qhCQHHHoXmUGLpcSRnertDD/feaRM25mS6GIRcWs=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=X1VeOGl3Y1GiK/v6SRhdamOl/l9TcTKGr3PHR4Z/V8AeoJzta+xXS1GVvGz1QbJ3v2kZBZmggEtVfggQrsI31VY7jgnoCIy6DAolYL4U0s3EV6K2CgnMclFuxy7tfsrqJC5qWrh9RtgSz+XEMc8yNdsBdwiNURFo4KNxJxTPn/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=YTXSe0IQ; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1706967582; x=1707572382; i=rwarsow@gmx.de;
+	bh=JM+qhCQHHHoXmUGLpcSRnertDD/feaRM25mS6GIRcWs=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+	b=YTXSe0IQ5fehwM3rcLDp51QpdlKIlOe+RtlDVxKBkSPob+mxr3SQJZdK3epFyT8F
+	 nOiXERBPFKL/URKi+qEfBCFMiqfKPfUJ3JcU0+ydqP3Y/Z2Gge7uMfy6bp1jRNNBu
+	 7eT4hJsiStwN5xxRK4z/astsP061cUGOYx4bYfcpA64qiPzbtfsHjM15aim5he76P
+	 FRGVmqT2EbakMjVrgowKyRX4wqrXCGrK2y837hJlyaWtY7GLZJ9yOmh7ksurpKU2g
+	 LxHkpT235ZhWZEvjLIUwZxvyN5J5dhF1/CfneluaL5UAin9YusEi6sWOMRo3PopOI
+	 D+8JxwfM0rBCBvTuwg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.35.89]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1My32L-1r6mna41CJ-00zWng; Sat, 03
+ Feb 2024 14:39:42 +0100
+Message-ID: <295b099e-3b60-416f-a28c-6d58bb5564bb@gmx.de>
+Date: Sat, 3 Feb 2024 14:39:41 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <9fa210ec-1086-615e-b972-f28a74df7b49@applied-asynchrony.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.7 000/353] 6.7.4-rc1 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:rmtUvSKC406CC1RhZUVFRG9TFlHDwO5d981bPHk4/0QLr7AYA02
+ DxdGIbqlxSaGAG+cFOewY48JTq81nAUCVZ0Or06rYL6cNV/w4WZIEXjolQ20NUUf41UZBZa
+ REAh4tevdwgQVBj2CbRkH46bIO4TXJb2n9m4JLla0o4jvrBE3bh8ErUf1z51A17KsVjVsel
+ we2hYpbA0Ctn2jc4M1qWg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:fBkzQlnevZc=;v9V4EGAncxKlQ48daLaaLyOkK7W
+ TT7BzVxknHn1spSA5uweu7gClpgjgRtffVMxZoTWggmbrFLzr4kWRVqES/K9aCGSJe0L37gM5
+ iGKy0ykeNYAeKNzSN1QHeiPSxYc/8TaS1P+MBCerQ+alHXzB3m809U9x22TZt8sWj+M41+wON
+ KzW3Nov56QpbwOxyZTh93SSocUvm1kFRDaEQ3SN7yI9kiDE4y5NLIB7wybpyqhde94/pp+NQt
+ nvY1cGziU0FJAwvjOmGSDsL7cbefUnRXqRrxWZ63AKY9kQrfqraNdGVXi68FC6lSQJaPH7roK
+ LrlDlm98+LjASyqxd0XpwjGcjq/Cz6tldBjcrCdEb5gs90+n1xhDP5pvJCw/T1XW/du9mQksT
+ c13wWGsRlh2A28JESaFrFzkHnU1RvJ58KUbb1Bigmc1eOgyJS1ucugugaGGja9Sl+KeZrEASw
+ tsj87JS8ptQfVAaObn05+H1mrHVQ4z1orgyatptT3mLyeXQlWlEsRRJXWmS43lu4jfn8CetiW
+ A+ILKmSz9rvBfjuRoHN1k+diufRPe1DiAd8LGAa2n5erhOCCU+zclo26V8sioCC1Pjhv6Do+6
+ a9OMv8Y22hJrnmmmnduUyngobqxAqNHk2kyMfWCq38lKmVCo3MlxHPk1Y9RYTdf1h9Fykm4xk
+ 2W30FJve1gomjQhkhQH6OpcROV6VuQ0q174eEpr9a3TR6R10SlNQ9bXD6k41N67FK8hg7AGm2
+ A4Ih/kzjUyoq9KiUmh6f4hpwYJBMqvvQYAskdjdaitysB0OJ5vap/J6VLj5n3lIK8H/3lNzpp
+ l95AXyNnBe1ng4+daLB2y7qBk0KD1XiEaRzWuEwoWnehQ=
 
-On 2024-02-03 11:18, Holger Hoffstätte wrote:
-> On 2024-02-03 05:01, Greg Kroah-Hartman wrote:
->> This is the start of the stable review cycle for the 6.7.4 release.
->> There are 353 patches in this series, all will be posted as a response
->> to this one.  If anyone has any issues with these being applied, please
->> let me know.
-> 
-> On my Zen2-based Thinkpad I now get the trace below on boot; this never
-> happened before. The boot continues and the system seems usable.
+Hi Greg
 
-..except for the part where reboot hangs, but whatever.
-In any case reverting the patch makes the trace disappear.
+Kernel does *NOT* boot here on x86_64 (Intel Rocket Lake: i5-11400) and
+Fedora 39
 
--h
+just after grub the box is dead; not pingable, etc ...
+
+
+Thanks
+
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
+
 
