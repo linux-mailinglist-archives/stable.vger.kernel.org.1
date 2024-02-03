@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-17815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05836848036
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF1088482B2
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BAD11F2BAB0
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E26991C21003
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE21101DB;
-	Sat,  3 Feb 2024 04:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 252FD4D131;
+	Sat,  3 Feb 2024 04:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0KSmJ17e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9CEvkXa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A90101CE;
-	Sat,  3 Feb 2024 04:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69171BDE1;
+	Sat,  3 Feb 2024 04:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933333; cv=none; b=Y2YRwren59y77SPxQw5lILeFEpwdSKWhX8qYLAghflNtKk/1bXpo8Vz1Ho8/b08WfmVHO9zGvjt0TEMC2cfvf/5i50TQjSoJnL99r3Q6yLrS6DYNEUhmsL+VUI6LzZCTee2IasIME2C5QzwcAtm/mv1co1rIGPjuj9Qfq5+MLw8=
+	t=1706933793; cv=none; b=RtFG0IwE5/b6ogO4lC6NxPyJcIK7XFm+aoWR9m2N9mf9v6wqeh01G/qApJXype4OhrWLeMp1SO1VAzUOMzu93N8jfPFfAnm3Lh+fxNRt9AqLejkQQZmGrs5VWmMHegUzQEx3/OvO570rZ46VLq/B/+6RF9FdUPitiDVczlxROAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933333; c=relaxed/simple;
-	bh=JdaGP105BgIALyVTcvVA29I+A9lLy2E9FgxY65mf8yE=;
+	s=arc-20240116; t=1706933793; c=relaxed/simple;
+	bh=iEoFZ6DyIhVaPJjieLGjGQBOPsQ8v6tbelItvWCa6E0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XPDSr89h3bg3oYxEx3joKp3itmKHljOszGNbdjgap1cuHnlwK6zxTfnpXPB/4PvyiSh02/oC860iTtJqSVdYn3UvqgwdlsUYfOSG7kJRECj/6K3Z72CubyL34fpppEUDeJs9FhKdmKqOnTDume8CwdGc4QIyPF041x3YrmgKJaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0KSmJ17e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407FFC43394;
-	Sat,  3 Feb 2024 04:08:53 +0000 (UTC)
+	 MIME-Version; b=X/igAIcq1u1Kx39t+v7SP652xFXwhT/gO7iokARcPGGS9AiGZJQvAJFjif+kV2aQH3WUmOuRgFn0pmvYlu2G/3DfVkCzegDUMhy9B7m1FbJyX6xQ2ulTW1Dy8PH7BHs7DlOwTo1Dc1F3IVjsWhnIh51FQJ6ao0mf+TWxayC9IPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i9CEvkXa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96874C43390;
+	Sat,  3 Feb 2024 04:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933333;
-	bh=JdaGP105BgIALyVTcvVA29I+A9lLy2E9FgxY65mf8yE=;
+	s=korg; t=1706933793;
+	bh=iEoFZ6DyIhVaPJjieLGjGQBOPsQ8v6tbelItvWCa6E0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0KSmJ17ebulUChj0iCJdNjP+lJIZgg9fkn8G0vooFjSHL/id5JQm/Cm96ezdawanQ
-	 gwFVy3Mz+yWkIyUCuRlFd5EBSzrKW9wR9zyktIPPHUI6h0OZOm93WQvGS95BqMbdCg
-	 Pvdp2LulONGXyvlAnIh9eRRnMA1LM/s1ixzJQZrU=
+	b=i9CEvkXaM5lVK+v+H9QrRHZJXlhE7GwyVQNnBdTbpJIMYv57P+b48moKMS2DsxPzy
+	 IeLf2sas/tgLyBQkIfFQCjngkb441/jjjYCb92y8E+x2FAlF1wv8ayup5fSeTTM4+0
+	 58WfF3mWgK2KziHVDrHqFW5nXiuaMFDc/C1F3w2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	ching Huang <ching2048@areca.com.tw>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 031/219] afs: fix the usage of read_seqbegin_or_lock() in afs_lookup_volume_rcu()
+Subject: [PATCH 6.7 086/353] scsi: arcmsr: Support new PCI device IDs 1883 and 1886
 Date: Fri,  2 Feb 2024 20:03:24 -0800
-Message-ID: <20240203035320.720053637@linuxfoundation.org>
+Message-ID: <20240203035406.528532345@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: ching Huang <ching2048@areca.com.tw>
 
-[ Upstream commit 4121b4337146b64560d1e46ebec77196d9287802 ]
+[ Upstream commit 41c8a1a1e90fa4721f856bf3cf71211fd16d6434 ]
 
-David Howells says:
+Add support for Areca RAID controllers with PCI device IDs 1883 and 1886.
 
- (2) afs_lookup_volume_rcu().
-
-     There can be a lot of volumes known by a system.  A thousand would
-     require a 10-step walk and this is drivable by remote operation, so I
-     think this should probably take a lock on the second pass too.
-
-Make the "seq" counter odd on the 2nd pass, otherwise read_seqbegin_or_lock()
-never takes the lock.
-
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Link: https://lore.kernel.org/r/20231130115606.GA21571@redhat.com/
+Signed-off-by: ching Huang <ching2048@areca.com.tw>
+Link: https://lore.kernel.org/r/7732e743eaad57681b1552eec9c6a86c76dbe459.camel@areca.com.tw
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/callback.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/arcmsr/arcmsr.h     | 4 ++++
+ drivers/scsi/arcmsr/arcmsr_hba.c | 6 ++++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/fs/afs/callback.c b/fs/afs/callback.c
-index a484fa642808..90f9b2a46ff4 100644
---- a/fs/afs/callback.c
-+++ b/fs/afs/callback.c
-@@ -110,13 +110,14 @@ static struct afs_volume *afs_lookup_volume_rcu(struct afs_cell *cell,
- {
- 	struct afs_volume *volume = NULL;
- 	struct rb_node *p;
--	int seq = 0;
-+	int seq = 1;
- 
- 	do {
- 		/* Unfortunately, rbtree walking doesn't give reliable results
- 		 * under just the RCU read lock, so we have to check for
- 		 * changes.
- 		 */
-+		seq++; /* 2 on the 1st/lockless path, otherwise odd */
- 		read_seqbegin_or_lock(&cell->volume_lock, &seq);
- 
- 		p = rcu_dereference_raw(cell->volumes.rb_node);
+diff --git a/drivers/scsi/arcmsr/arcmsr.h b/drivers/scsi/arcmsr/arcmsr.h
+index ed8d9319862a..3819d559ebbb 100644
+--- a/drivers/scsi/arcmsr/arcmsr.h
++++ b/drivers/scsi/arcmsr/arcmsr.h
+@@ -78,9 +78,13 @@ struct device_attribute;
+ #ifndef PCI_DEVICE_ID_ARECA_1203
+ #define PCI_DEVICE_ID_ARECA_1203	0x1203
+ #endif
++#ifndef PCI_DEVICE_ID_ARECA_1883
++#define PCI_DEVICE_ID_ARECA_1883	0x1883
++#endif
+ #ifndef PCI_DEVICE_ID_ARECA_1884
+ #define PCI_DEVICE_ID_ARECA_1884	0x1884
+ #endif
++#define PCI_DEVICE_ID_ARECA_1886_0	0x1886
+ #define PCI_DEVICE_ID_ARECA_1886	0x188A
+ #define	ARCMSR_HOURS			(1000 * 60 * 60 * 4)
+ #define	ARCMSR_MINUTES			(1000 * 60 * 60)
+diff --git a/drivers/scsi/arcmsr/arcmsr_hba.c b/drivers/scsi/arcmsr/arcmsr_hba.c
+index a66221c3b72f..01fb1396e1a9 100644
+--- a/drivers/scsi/arcmsr/arcmsr_hba.c
++++ b/drivers/scsi/arcmsr/arcmsr_hba.c
+@@ -214,8 +214,12 @@ static struct pci_device_id arcmsr_device_id_table[] = {
+ 		.driver_data = ACB_ADAPTER_TYPE_A},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1880),
+ 		.driver_data = ACB_ADAPTER_TYPE_C},
++	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1883),
++		.driver_data = ACB_ADAPTER_TYPE_C},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1884),
+ 		.driver_data = ACB_ADAPTER_TYPE_E},
++	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1886_0),
++		.driver_data = ACB_ADAPTER_TYPE_F},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1886),
+ 		.driver_data = ACB_ADAPTER_TYPE_F},
+ 	{0, 0}, /* Terminating entry */
+@@ -4706,9 +4710,11 @@ static const char *arcmsr_info(struct Scsi_Host *host)
+ 	case PCI_DEVICE_ID_ARECA_1680:
+ 	case PCI_DEVICE_ID_ARECA_1681:
+ 	case PCI_DEVICE_ID_ARECA_1880:
++	case PCI_DEVICE_ID_ARECA_1883:
+ 	case PCI_DEVICE_ID_ARECA_1884:
+ 		type = "SAS/SATA";
+ 		break;
++	case PCI_DEVICE_ID_ARECA_1886_0:
+ 	case PCI_DEVICE_ID_ARECA_1886:
+ 		type = "NVMe/SAS/SATA";
+ 		break;
 -- 
 2.43.0
 
