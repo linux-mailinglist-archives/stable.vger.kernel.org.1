@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBAE784807E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D9C8482CC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D1511C20C0E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49C3828B13F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6EF168C4;
-	Sat,  3 Feb 2024 04:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED7B4EB2C;
+	Sat,  3 Feb 2024 04:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zY9Xf10p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxgIBpBX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D22F9CE;
-	Sat,  3 Feb 2024 04:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F135913AC6;
+	Sat,  3 Feb 2024 04:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933386; cv=none; b=OofCS33sNCIlbeK5hD9Xe+0oPKpxBryGPekS3ReOf2eJpjg+HyRQIHL9F7qrcoj2bxSP5qHZs8b2jlJC2nM5Q6+7JuuKJJCx9cYwGqA2vx7Pgv2CD0x+z9yKftofiVboFM2Ny42FH1tzCADx+42yL0ajgIGtj9ic58DBQtLpiuw=
+	t=1706933813; cv=none; b=UnaI9g5B7leO+2kzSZ0fe6anGZ5ueN7mp8IlDXIFvQk5zxzyv/KHb9bBcWBdnIhIty4FAKPXzfByu/ngzkMQTdGuTTQTROm/rSkL9pAIZrYd93yt1o+B9HHNc4/PeYwCG0yDJA5qdzd9BZFcwq8Nn1TurCEdOMZrz09hyDe+SF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933386; c=relaxed/simple;
-	bh=5/LH1GVOF3u+zYiJ1mRNt+lxGIr1rhTip//MqHVAPOs=;
+	s=arc-20240116; t=1706933813; c=relaxed/simple;
+	bh=ZxWqskc6N1EghgADVPwCPCHmPPSR1RyejHmMBG1dc18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=njM7ful9IiEAuu04DH8nQunh2fAqzAmCAg3BrwzNL0X57Sbrun5g1qyjT+RVvm+ERhu6mLkMuKea8yYfTZgxDhhe2hXoEg84jXdVlF43eoBrfIAS8vgGn/wPAUai4eJHEANqzJiXXhtmND/P6VKJiPzPUOrVXTMG3p3XaR9TuZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zY9Xf10p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EB5C433C7;
-	Sat,  3 Feb 2024 04:09:46 +0000 (UTC)
+	 MIME-Version; b=Y5LYgXjZiCGdMYnexSU+/qeSw43oc0mn2XP4y1x/0IKRQixPF7iRIrIvPVjwn2BtSPC2D3WDaMkFFwzbMvZ8EWW0swxClSc+E8JveOd2ad8aThesBVCpANtqGQs4uepXW4pssJ8goeCH8BHE7ivLk3dL/NIdDziVXbCz1/eD8b0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxgIBpBX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C50C433F1;
+	Sat,  3 Feb 2024 04:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933386;
-	bh=5/LH1GVOF3u+zYiJ1mRNt+lxGIr1rhTip//MqHVAPOs=;
+	s=korg; t=1706933812;
+	bh=ZxWqskc6N1EghgADVPwCPCHmPPSR1RyejHmMBG1dc18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zY9Xf10puZl9srmhd00bu0EgN4rlxPc44sb0O/OwyPtKSW4n7dBmRaSxZfLYdt6Kp
-	 IELQcVGTdqeN/PyUyKZAvIzw8OlgCYK0azKEgonslQY7xtJYbeT/DTf72xvcRLc76A
-	 ER8r/GmigmsQ8sDJDjDBzy7QkRLTJHabU2eCkYFE=
+	b=SxgIBpBXwblPM3RGakEK8vyKBtAd1LF/lRgqjdPEAysp2RUGvuVQI38XC3R+FUv3j
+	 jlYwYHJa7ZufyTnbo8g6h4XhBKtgk5oyKFcWbTgIlXOn+dj8DzD38FyGEFbZhPqRDb
+	 UT7kI69Kd4JdHZT9Pu17ZYds6m3WIuilFzWVxJDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Igor Russkikh <irusskikh@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 075/219] ionic: bypass firmware cmds when stuck in reset
+Subject: [PATCH 6.7 130/353] net: atlantic: eliminate double free in error handling logic
 Date: Fri,  2 Feb 2024 20:04:08 -0800
-Message-ID: <20240203035327.641753030@linuxfoundation.org>
+Message-ID: <20240203035407.836787296@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +62,290 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Igor Russkikh <irusskikh@marvell.com>
 
-[ Upstream commit ca5fdf9a7c5b65968c718f2be159cda4c13556a1 ]
+[ Upstream commit b3cb7a830a24527877b0bc900b9bd74a96aea928 ]
 
-If the driver or firmware is stuck in reset state, don't bother
-trying to use adminq commands.  This speeds up shutdown and
-prevents unnecessary timeouts and error messages.
+Driver has a logic leak in ring data allocation/free,
+where aq_ring_free could be called multiple times on same ring,
+if system is under stress and got memory allocation error.
 
-This includes a bit of rework on ionic_adminq_post_wait()
-and ionic_adminq_post_wait_nomsg() to both use
-__ionic_adminq_post_wait() which can do the checks needed in
-both cases.
+Ring pointer was used as an indicator of failure, but this is
+not correct since only ring data is allocated/deallocated.
+Ring itself is an array member.
 
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Changing ring allocation functions to return error code directly.
+This simplifies error handling and eliminates aq_ring_free
+on higher layer.
+
+Signed-off-by: Igor Russkikh <irusskikh@marvell.com>
+Link: https://lore.kernel.org/r/20231213095044.23146-1-irusskikh@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/pensando/ionic/ionic_bus_pci.c   |  4 ++++
- .../net/ethernet/pensando/ionic/ionic_lif.c   |  3 +++
- .../net/ethernet/pensando/ionic/ionic_main.c  | 20 ++++++++++++-------
- 3 files changed, 20 insertions(+), 7 deletions(-)
+ .../net/ethernet/aquantia/atlantic/aq_ptp.c   | 28 +++------
+ .../net/ethernet/aquantia/atlantic/aq_ring.c  | 61 +++++--------------
+ .../net/ethernet/aquantia/atlantic/aq_ring.h  | 22 +++----
+ .../net/ethernet/aquantia/atlantic/aq_vec.c   | 23 +++----
+ 4 files changed, 47 insertions(+), 87 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-index ce436e97324a..4b9caec6eb9b 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-@@ -380,6 +380,10 @@ static void ionic_remove(struct pci_dev *pdev)
- 	del_timer_sync(&ionic->watchdog_timer);
- 
- 	if (ionic->lif) {
-+		/* prevent adminq cmds if already known as down */
-+		if (test_and_clear_bit(IONIC_LIF_F_FW_RESET, ionic->lif->state))
-+			set_bit(IONIC_LIF_F_FW_STOPPING, ionic->lif->state);
-+
- 		ionic_lif_unregister(ionic->lif);
- 		ionic_devlink_unregister(ionic);
- 		ionic_lif_deinit(ionic->lif);
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index f7634884c750..fcc3faecb060 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -3008,6 +3008,9 @@ static void ionic_lif_reset(struct ionic_lif *lif)
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
+index 28c9b6f1a54f..abd4832e4ed2 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
+@@ -953,8 +953,6 @@ int aq_ptp_ring_alloc(struct aq_nic_s *aq_nic)
  {
- 	struct ionic_dev *idev = &lif->ionic->idev;
- 
-+	if (!ionic_is_fw_running(idev))
-+		return;
-+
- 	mutex_lock(&lif->ionic->dev_cmd_lock);
- 	ionic_dev_cmd_lif_reset(idev, lif->index);
- 	ionic_dev_cmd_wait(lif->ionic, DEVCMD_TIMEOUT);
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
-index 9ecbbe7a02ec..d2038ff316ca 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
-@@ -410,22 +410,28 @@ int ionic_adminq_wait(struct ionic_lif *lif, struct ionic_admin_ctx *ctx,
- 				      do_msg);
- }
- 
--int ionic_adminq_post_wait(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
-+static int __ionic_adminq_post_wait(struct ionic_lif *lif,
-+				    struct ionic_admin_ctx *ctx,
-+				    const bool do_msg)
- {
+ 	struct aq_ptp_s *aq_ptp = aq_nic->aq_ptp;
+ 	unsigned int tx_ring_idx, rx_ring_idx;
+-	struct aq_ring_s *hwts;
+-	struct aq_ring_s *ring;
  	int err;
  
-+	if (!ionic_is_fw_running(&lif->ionic->idev))
-+		return 0;
-+
- 	err = ionic_adminq_post(lif, ctx);
+ 	if (!aq_ptp)
+@@ -962,29 +960,23 @@ int aq_ptp_ring_alloc(struct aq_nic_s *aq_nic)
  
--	return ionic_adminq_wait(lif, ctx, err, true);
-+	return ionic_adminq_wait(lif, ctx, err, do_msg);
+ 	tx_ring_idx = aq_ptp_ring_idx(aq_nic->aq_nic_cfg.tc_mode);
+ 
+-	ring = aq_ring_tx_alloc(&aq_ptp->ptp_tx, aq_nic,
+-				tx_ring_idx, &aq_nic->aq_nic_cfg);
+-	if (!ring) {
+-		err = -ENOMEM;
++	err = aq_ring_tx_alloc(&aq_ptp->ptp_tx, aq_nic,
++			       tx_ring_idx, &aq_nic->aq_nic_cfg);
++	if (err)
+ 		goto err_exit;
+-	}
+ 
+ 	rx_ring_idx = aq_ptp_ring_idx(aq_nic->aq_nic_cfg.tc_mode);
+ 
+-	ring = aq_ring_rx_alloc(&aq_ptp->ptp_rx, aq_nic,
+-				rx_ring_idx, &aq_nic->aq_nic_cfg);
+-	if (!ring) {
+-		err = -ENOMEM;
++	err = aq_ring_rx_alloc(&aq_ptp->ptp_rx, aq_nic,
++			       rx_ring_idx, &aq_nic->aq_nic_cfg);
++	if (err)
+ 		goto err_exit_ptp_tx;
+-	}
+ 
+-	hwts = aq_ring_hwts_rx_alloc(&aq_ptp->hwts_rx, aq_nic, PTP_HWST_RING_IDX,
+-				     aq_nic->aq_nic_cfg.rxds,
+-				     aq_nic->aq_nic_cfg.aq_hw_caps->rxd_size);
+-	if (!hwts) {
+-		err = -ENOMEM;
++	err = aq_ring_hwts_rx_alloc(&aq_ptp->hwts_rx, aq_nic, PTP_HWST_RING_IDX,
++				    aq_nic->aq_nic_cfg.rxds,
++				    aq_nic->aq_nic_cfg.aq_hw_caps->rxd_size);
++	if (err)
+ 		goto err_exit_ptp_rx;
+-	}
+ 
+ 	err = aq_ptp_skb_ring_init(&aq_ptp->skb_ring, aq_nic->aq_nic_cfg.rxds);
+ 	if (err != 0) {
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+index e1885c1eb100..cda8597b4e14 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+@@ -132,8 +132,8 @@ static int aq_get_rxpages(struct aq_ring_s *self, struct aq_ring_buff_s *rxbuf)
+ 	return 0;
  }
  
--int ionic_adminq_post_wait_nomsg(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
-+int ionic_adminq_post_wait(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
+-static struct aq_ring_s *aq_ring_alloc(struct aq_ring_s *self,
+-				       struct aq_nic_s *aq_nic)
++static int aq_ring_alloc(struct aq_ring_s *self,
++			 struct aq_nic_s *aq_nic)
  {
--	int err;
--
--	err = ionic_adminq_post(lif, ctx);
-+	return __ionic_adminq_post_wait(lif, ctx, true);
-+}
+ 	int err = 0;
  
--	return ionic_adminq_wait(lif, ctx, err, false);
-+int ionic_adminq_post_wait_nomsg(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
-+{
-+	return __ionic_adminq_post_wait(lif, ctx, false);
+@@ -156,46 +156,29 @@ static struct aq_ring_s *aq_ring_alloc(struct aq_ring_s *self,
+ err_exit:
+ 	if (err < 0) {
+ 		aq_ring_free(self);
+-		self = NULL;
+ 	}
+ 
+-	return self;
++	return err;
  }
  
- static void ionic_dev_cmd_clean(struct ionic *ionic)
+-struct aq_ring_s *aq_ring_tx_alloc(struct aq_ring_s *self,
+-				   struct aq_nic_s *aq_nic,
+-				   unsigned int idx,
+-				   struct aq_nic_cfg_s *aq_nic_cfg)
++int aq_ring_tx_alloc(struct aq_ring_s *self,
++		     struct aq_nic_s *aq_nic,
++		     unsigned int idx,
++		     struct aq_nic_cfg_s *aq_nic_cfg)
+ {
+-	int err = 0;
+-
+ 	self->aq_nic = aq_nic;
+ 	self->idx = idx;
+ 	self->size = aq_nic_cfg->txds;
+ 	self->dx_size = aq_nic_cfg->aq_hw_caps->txd_size;
+ 
+-	self = aq_ring_alloc(self, aq_nic);
+-	if (!self) {
+-		err = -ENOMEM;
+-		goto err_exit;
+-	}
+-
+-err_exit:
+-	if (err < 0) {
+-		aq_ring_free(self);
+-		self = NULL;
+-	}
+-
+-	return self;
++	return aq_ring_alloc(self, aq_nic);
+ }
+ 
+-struct aq_ring_s *aq_ring_rx_alloc(struct aq_ring_s *self,
+-				   struct aq_nic_s *aq_nic,
+-				   unsigned int idx,
+-				   struct aq_nic_cfg_s *aq_nic_cfg)
++int aq_ring_rx_alloc(struct aq_ring_s *self,
++		     struct aq_nic_s *aq_nic,
++		     unsigned int idx,
++		     struct aq_nic_cfg_s *aq_nic_cfg)
+ {
+-	int err = 0;
+-
+ 	self->aq_nic = aq_nic;
+ 	self->idx = idx;
+ 	self->size = aq_nic_cfg->rxds;
+@@ -217,22 +200,10 @@ struct aq_ring_s *aq_ring_rx_alloc(struct aq_ring_s *self,
+ 		self->tail_size = 0;
+ 	}
+ 
+-	self = aq_ring_alloc(self, aq_nic);
+-	if (!self) {
+-		err = -ENOMEM;
+-		goto err_exit;
+-	}
+-
+-err_exit:
+-	if (err < 0) {
+-		aq_ring_free(self);
+-		self = NULL;
+-	}
+-
+-	return self;
++	return aq_ring_alloc(self, aq_nic);
+ }
+ 
+-struct aq_ring_s *
++int
+ aq_ring_hwts_rx_alloc(struct aq_ring_s *self, struct aq_nic_s *aq_nic,
+ 		      unsigned int idx, unsigned int size, unsigned int dx_size)
+ {
+@@ -250,10 +221,10 @@ aq_ring_hwts_rx_alloc(struct aq_ring_s *self, struct aq_nic_s *aq_nic,
+ 					   GFP_KERNEL);
+ 	if (!self->dx_ring) {
+ 		aq_ring_free(self);
+-		return NULL;
++		return -ENOMEM;
+ 	}
+ 
+-	return self;
++	return 0;
+ }
+ 
+ int aq_ring_init(struct aq_ring_s *self, const enum atl_ring_type ring_type)
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h b/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
+index 0a6c34438c1d..52847310740a 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
+@@ -183,14 +183,14 @@ static inline unsigned int aq_ring_avail_dx(struct aq_ring_s *self)
+ 		self->sw_head - self->sw_tail - 1);
+ }
+ 
+-struct aq_ring_s *aq_ring_tx_alloc(struct aq_ring_s *self,
+-				   struct aq_nic_s *aq_nic,
+-				   unsigned int idx,
+-				   struct aq_nic_cfg_s *aq_nic_cfg);
+-struct aq_ring_s *aq_ring_rx_alloc(struct aq_ring_s *self,
+-				   struct aq_nic_s *aq_nic,
+-				   unsigned int idx,
+-				   struct aq_nic_cfg_s *aq_nic_cfg);
++int aq_ring_tx_alloc(struct aq_ring_s *self,
++		     struct aq_nic_s *aq_nic,
++		     unsigned int idx,
++		     struct aq_nic_cfg_s *aq_nic_cfg);
++int aq_ring_rx_alloc(struct aq_ring_s *self,
++		     struct aq_nic_s *aq_nic,
++		     unsigned int idx,
++		     struct aq_nic_cfg_s *aq_nic_cfg);
+ 
+ int aq_ring_init(struct aq_ring_s *self, const enum atl_ring_type ring_type);
+ void aq_ring_rx_deinit(struct aq_ring_s *self);
+@@ -207,9 +207,9 @@ int aq_ring_rx_clean(struct aq_ring_s *self,
+ 		     int budget);
+ int aq_ring_rx_fill(struct aq_ring_s *self);
+ 
+-struct aq_ring_s *aq_ring_hwts_rx_alloc(struct aq_ring_s *self,
+-		struct aq_nic_s *aq_nic, unsigned int idx,
+-		unsigned int size, unsigned int dx_size);
++int aq_ring_hwts_rx_alloc(struct aq_ring_s *self,
++			  struct aq_nic_s *aq_nic, unsigned int idx,
++			  unsigned int size, unsigned int dx_size);
+ void aq_ring_hwts_rx_clean(struct aq_ring_s *self, struct aq_nic_s *aq_nic);
+ 
+ unsigned int aq_ring_fill_stats_data(struct aq_ring_s *self, u64 *data);
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_vec.c b/drivers/net/ethernet/aquantia/atlantic/aq_vec.c
+index f5db1c44e9b9..9769ab4f9bef 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_vec.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_vec.c
+@@ -136,35 +136,32 @@ int aq_vec_ring_alloc(struct aq_vec_s *self, struct aq_nic_s *aq_nic,
+ 		const unsigned int idx_ring = AQ_NIC_CFG_TCVEC2RING(aq_nic_cfg,
+ 								    i, idx);
+ 
+-		ring = aq_ring_tx_alloc(&self->ring[i][AQ_VEC_TX_ID], aq_nic,
+-					idx_ring, aq_nic_cfg);
+-		if (!ring) {
+-			err = -ENOMEM;
++		ring = &self->ring[i][AQ_VEC_TX_ID];
++		err = aq_ring_tx_alloc(ring, aq_nic, idx_ring, aq_nic_cfg);
++		if (err)
+ 			goto err_exit;
+-		}
+ 
+ 		++self->tx_rings;
+ 
+ 		aq_nic_set_tx_ring(aq_nic, idx_ring, ring);
+ 
+-		if (xdp_rxq_info_reg(&self->ring[i][AQ_VEC_RX_ID].xdp_rxq,
++		ring = &self->ring[i][AQ_VEC_RX_ID];
++		if (xdp_rxq_info_reg(&ring->xdp_rxq,
+ 				     aq_nic->ndev, idx,
+ 				     self->napi.napi_id) < 0) {
+ 			err = -ENOMEM;
+ 			goto err_exit;
+ 		}
+-		if (xdp_rxq_info_reg_mem_model(&self->ring[i][AQ_VEC_RX_ID].xdp_rxq,
++		if (xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
+ 					       MEM_TYPE_PAGE_SHARED, NULL) < 0) {
+-			xdp_rxq_info_unreg(&self->ring[i][AQ_VEC_RX_ID].xdp_rxq);
++			xdp_rxq_info_unreg(&ring->xdp_rxq);
+ 			err = -ENOMEM;
+ 			goto err_exit;
+ 		}
+ 
+-		ring = aq_ring_rx_alloc(&self->ring[i][AQ_VEC_RX_ID], aq_nic,
+-					idx_ring, aq_nic_cfg);
+-		if (!ring) {
+-			xdp_rxq_info_unreg(&self->ring[i][AQ_VEC_RX_ID].xdp_rxq);
+-			err = -ENOMEM;
++		err = aq_ring_rx_alloc(ring, aq_nic, idx_ring, aq_nic_cfg);
++		if (err) {
++			xdp_rxq_info_unreg(&ring->xdp_rxq);
+ 			goto err_exit;
+ 		}
+ 
 -- 
 2.43.0
 
