@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-18524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 107B084830F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3953848093
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1B0C286528
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28AFA1F23495
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B494F8AE;
-	Sat,  3 Feb 2024 04:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361DF11720;
+	Sat,  3 Feb 2024 04:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="heUIb4Pj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMzsuLAO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018CC4F8B3;
-	Sat,  3 Feb 2024 04:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E7E101C1;
+	Sat,  3 Feb 2024 04:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933863; cv=none; b=sWQSfP6zYugkK53dkV0cwCDyP4XeA9YZeNowAO6gYWCSZcFDPdg2J/HM8utnSCIM79JxRog8rD4FL0DcT6+O8R+qGtkCHQx8qVDuPelbtHpSAvRj+5ewTb1DWHcccRbfTGuu2r3LdbPOzSgOTWpf7DV2wRYf5ztSgs61ZrH/uik=
+	t=1706933401; cv=none; b=Q+TBne6lH582WTtI1n0ARyU2UpeA+uMW2jxZ7mwSLVuDVsTE3qEWwtuqznLmfSYTZCM9FPDrQoNIyiQCrO3AWmp03+l9jOWg70JqEAqhViJgemsfhBR+xbu46ExX3W6ARpupYhx8Ha3K3UmW1VE6cg559g6cS2mnipTKF9MZvkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933863; c=relaxed/simple;
-	bh=AhO2FiS+lfR1TOSAFs+jzic6VpYAme9Wxu8LwCqhboI=;
+	s=arc-20240116; t=1706933401; c=relaxed/simple;
+	bh=nt9lmC/YR2BOOC5Hc4RcYflwuCd4Ue2YbQoQ+c/XV9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r7hgVrpVmw7AguhSPAXfxV162So23scuLyxGBKsLHH43aTbiIKsswClDlSEx2gMqgZueqjGrDYlxDGfFA/4EPSj/HOp7sS6UOqEDzlcg3KhF4il2iuEiPgJhCYKvakMH4FYZVvI2pC2DpNQyHZRwzJCYZJ9a4Sm/MjaehHsYPlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=heUIb4Pj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E9FC43390;
-	Sat,  3 Feb 2024 04:17:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rioKiVReHgxRUpNFvX0TIZ8kS7KUt7Kokgg2Y+4kq/28kRUtRJA/NdIKnm8CFhqlGmfnHDV28WSQQqp59Cuh96XWgWUTQchcWCSpN5zSX8z6O9QdWsNhEB8fsGvHDYUYfqyx71qV7FiNHacGfOCUq92JSpzAriszV337hVaGcyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMzsuLAO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F99DC433F1;
+	Sat,  3 Feb 2024 04:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933862;
-	bh=AhO2FiS+lfR1TOSAFs+jzic6VpYAme9Wxu8LwCqhboI=;
+	s=korg; t=1706933401;
+	bh=nt9lmC/YR2BOOC5Hc4RcYflwuCd4Ue2YbQoQ+c/XV9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=heUIb4PjO+dPd6sQk6ESE6Mp2OAO+JWEGQ8v2Ehv/E9jHiUUYU0KHHJWXK7lAel+l
-	 OeN+MXqESIbXHu7mVdHSWl8WiDVjR6i848ifo577tn1IEcnCoaZKgkftZmVDluRdpm
-	 b2l7qN4iYpwcVG1XVesDns4QMyhcslwZa5pUzuug=
+	b=OMzsuLAOMWq24jDqn4mlCRiirgwPd5hkWxlSt5u94+I8hqLu3Z1jJVC+pfcttjwuA
+	 qiMlUk+oA4rb7rDF8jVNJHpg5K050/2BHO51sZdXtGBa6cfvsv7bHMWs5cGncR1mjh
+	 kHeImM7q7RvfskuHxE3BYPbcTKDD2uGibJ8JpzbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Syed Hassan <syed.hassan@amd.com>,
-	Allen Pan <allen.pan@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 174/353] drm/amd/display: initialize all the dpm levels stutter latency
+Subject: [PATCH 6.1 119/219] PCI: add INTEL_HDA_ARL to pci_ids.h
 Date: Fri,  2 Feb 2024 20:04:52 -0800
-Message-ID: <20240203035409.144765856@linuxfoundation.org>
+Message-ID: <20240203035334.270526533@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charlene Liu <charlene.liu@amd.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 885c71ad791c1709f668a37f701d33e6872a902f ]
+[ Upstream commit 5ec42bf04d72fd6d0a6855810cc779e0ee31dfd7 ]
 
-Fix issue when override level bigger than default. Levels 5, 6, and 7
-had zero stutter latency, this is because override level being
-initialized after stutter latency inits.
+The PCI ID insertion follows the increasing order in the table, but
+this hardware follows MTL (MeteorLake).
 
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Syed Hassan <syed.hassan@amd.com>
-Reviewed-by: Allen Pan <allen.pan@amd.com>
-Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20231204212710.185976-2-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/pci_ids.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-index bcc03b184e5e..9f84d17f4658 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-@@ -341,6 +341,9 @@ void dml2_init_soc_states(struct dml2_context *dml2, const struct dc *in_dc,
- 		break;
- 	}
- 
-+	if (dml2->config.bbox_overrides.clks_table.num_states)
-+			p->in_states->num_states = dml2->config.bbox_overrides.clks_table.num_states;
-+
- 	/* Override from passed values, if available */
- 	for (i = 0; i < p->in_states->num_states; i++) {
- 		if (dml2->config.bbox_overrides.sr_exit_latency_us) {
-@@ -397,7 +400,6 @@ void dml2_init_soc_states(struct dml2_context *dml2, const struct dc *in_dc,
- 	}
- 	/* Copy clocks tables entries, if available */
- 	if (dml2->config.bbox_overrides.clks_table.num_states) {
--		p->in_states->num_states = dml2->config.bbox_overrides.clks_table.num_states;
- 
- 		for (i = 0; i < dml2->config.bbox_overrides.clks_table.num_entries_per_clk.num_dcfclk_levels; i++) {
- 			p->in_states->state_array[i].dcfclk_mhz = dml2->config.bbox_overrides.clks_table.clk_entries[i].dcfclk_mhz;
+diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
+index b76ff0850618..73cc1e7dd15a 100644
+--- a/include/linux/pci_ids.h
++++ b/include/linux/pci_ids.h
+@@ -3000,6 +3000,7 @@
+ #define PCI_DEVICE_ID_INTEL_82443GX_0	0x71a0
+ #define PCI_DEVICE_ID_INTEL_82443GX_2	0x71a2
+ #define PCI_DEVICE_ID_INTEL_82372FB_1	0x7601
++#define PCI_DEVICE_ID_INTEL_HDA_ARL	0x7728
+ #define PCI_DEVICE_ID_INTEL_SCH_LPC	0x8119
+ #define PCI_DEVICE_ID_INTEL_SCH_IDE	0x811a
+ #define PCI_DEVICE_ID_INTEL_E6XX_CU	0x8183
 -- 
 2.43.0
 
