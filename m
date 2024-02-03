@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-17958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F9718480CD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43912848318
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 002B9B20CD4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C50D41F24AED
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD74E125B6;
-	Sat,  3 Feb 2024 04:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE10B50240;
+	Sat,  3 Feb 2024 04:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2AumvkL1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2h7H9D9B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6466112B8A;
-	Sat,  3 Feb 2024 04:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B47A11198;
+	Sat,  3 Feb 2024 04:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933442; cv=none; b=r9il85WnffEEg2AScv4fVridUwLXzn/v1zu3rb5Uf4KcT6cGnw5prAiwzN8xphuffaZp7UU8aOa3ieOIsjM48pbYHi5JR030gEjcJlCYg1v2GrJ3mbVm+QlocEJNTj81VMraddmKCUJq+EC/CBhTFQndtdrAJwShI6HUM3CK4GE=
+	t=1706933868; cv=none; b=FwBq+tNmUWVC9q7vt1jIk0suar2YyeNh4kxZ4jmuuXBjvGygU1+C0DSOdjt3ijKWLPH+wvxdcjLWB+h/o8CZ42mkhymfSoTSZF+u5ZzE2PV41Zi0pzyLbJ0aPZsQj9GDDXexCfQbs7cF2UIKZZHB+wD7fIgUAcQOWx7zK6wV18c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933442; c=relaxed/simple;
-	bh=dJlu5iVOgDLnH4WpOmgrZ18kC9Ez6cqAxDW7hYyf0LI=;
+	s=arc-20240116; t=1706933868; c=relaxed/simple;
+	bh=WmRxZMSRnq+0+ITRfnfNyitQYz9o5Nw6Yxrc++oSnFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UYac9daiUWSFa+k0PZJHRLI/Nfr7rSPYGaJjO5QBLhxLB+d99cMHn72rPTjJLpjbfXBvYf3ScY9zgnLCXIPL2hx6ssNX2kPIn2yHdIYf2XoJalzmFKuH0hJNBKz5pCVasDrIvN+Gf3hFJ+/cqmcO2Qo4xqugHR5J/dJK7bSLAVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2AumvkL1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BCA2C433F1;
-	Sat,  3 Feb 2024 04:10:42 +0000 (UTC)
+	 MIME-Version; b=a4CyqWzP9YJcKduncZmtkmhb9gRvYNcZ2CiSS61Tr7bMf9S30h5EKYYWkiCBRqbvQ0B9mN8OacAFjsNjBWganOMfZnOrfqp0ake4bn4g/WQ8GFORKRqZkeZ2WJFODzbvrpwrTK6U5tVV0AP+Fc3pwot5bKio6w0m7RqUx4+7KmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2h7H9D9B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F2CC433F1;
+	Sat,  3 Feb 2024 04:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933442;
-	bh=dJlu5iVOgDLnH4WpOmgrZ18kC9Ez6cqAxDW7hYyf0LI=;
+	s=korg; t=1706933868;
+	bh=WmRxZMSRnq+0+ITRfnfNyitQYz9o5Nw6Yxrc++oSnFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2AumvkL10XVHNN8iHvvY3mYBYir9SjdXiocOU67fpAwBtZJSUrnDVnTgY/wFU9oM1
-	 5OReTz6Ez03qGdhJUp7F70SNwjjdhcrPbzgRllNS6JXEXTuCy16fSzXoruZZfq62VY
-	 n4im9IFddfsFiX1Yjjtfejpy+531hC2bfgINQTYg=
+	b=2h7H9D9B/jIugSJozVCB/LUKrMzh0LP0QKXwlQ7JvMB7E+lutJdsO1Q5y8WTC+vYn
+	 e3s2Wy2yi/Gsp8uAa8e30g6QmjOFbNgkSC65v7MO6VMxYXJxUgK3KCuP3kDv+YfPnA
+	 /LGJTZ3VJneSrJedxMgYxUajayZmbYEwkqXR3a4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin@sipsolutions.net>,
-	Richard Weinberger <richard@nod.at>,
+	Samson Tam <samson.tam@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 149/219] um: Dont use vfprintf() for os_info()
-Date: Fri,  2 Feb 2024 20:05:22 -0800
-Message-ID: <20240203035338.000022856@linuxfoundation.org>
+Subject: [PATCH 6.7 205/353] drm/amd/display: Force p-state disallow if leaving no plane config
+Date: Fri,  2 Feb 2024 20:05:23 -0800
+Message-ID: <20240203035410.175820259@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin@sipsolutions.net>
+From: Alvin Lee <alvin.lee2@amd.com>
 
-[ Upstream commit 236f9fe39b02c15fa5530b53e9cca48354394389 ]
+[ Upstream commit 9a902a9073c287353e25913c0761bfed49d75a88 ]
 
-The threads allocated inside the kernel have only a single page of
-stack. Unfortunately, the vfprintf function in standard glibc may use
-too much stack-space, overflowing it.
+[Description]
+- When we're in a no plane config, DCN is always asserting
+  P-State allow
+- This creates a scenario where the P-State blackout can start
+  just as VUPDATE takes place and transitions the DCN config to
+  a one where one or more HUBP's are active which can result in
+  underflow
+- To fix this issue, force p-state disallow and unforce after
+  the transition from no planes case -> one or more planes active
 
-To make os_info safe to be used by helper threads, use the kernel
-vscnprintf function into a smallish buffer and write out the information
-to stderr.
-
-Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Reviewed-by: Samson Tam <samson.tam@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/os-Linux/util.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ .../amd/display/dc/hwss/dcn20/dcn20_hwseq.c   | 20 +++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/arch/um/os-Linux/util.c b/arch/um/os-Linux/util.c
-index fc0f2a9dee5a..1dca4ffbd572 100644
---- a/arch/um/os-Linux/util.c
-+++ b/arch/um/os-Linux/util.c
-@@ -173,23 +173,38 @@ __uml_setup("quiet", quiet_cmd_param,
- "quiet\n"
- "    Turns off information messages during boot.\n\n");
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+index 608221b0dd5d..c3c83178eb1e 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
+@@ -1877,6 +1877,8 @@ void dcn20_program_front_end_for_ctx(
+ 	int i;
+ 	struct dce_hwseq *hws = dc->hwseq;
+ 	DC_LOGGER_INIT(dc->ctx->logger);
++	unsigned int prev_hubp_count = 0;
++	unsigned int hubp_count = 0;
  
-+/*
-+ * The os_info/os_warn functions will be called by helper threads. These
-+ * have a very limited stack size and using the libc formatting functions
-+ * may overflow the stack.
-+ * So pull in the kernel vscnprintf and use that instead with a fixed
-+ * on-stack buffer.
-+ */
-+int vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
+ 	if (resource_is_pipe_topology_changed(dc->current_state, context))
+ 		resource_log_pipe_topology_update(dc, context);
+@@ -1894,6 +1896,20 @@ void dcn20_program_front_end_for_ctx(
+ 		}
+ 	}
+ 
++	for (i = 0; i < dc->res_pool->pipe_count; i++) {
++		if (dc->current_state->res_ctx.pipe_ctx[i].plane_state)
++			prev_hubp_count++;
++		if (context->res_ctx.pipe_ctx[i].plane_state)
++			hubp_count++;
++	}
 +
- void os_info(const char *fmt, ...)
- {
-+	char buf[256];
- 	va_list list;
-+	int len;
++	if (prev_hubp_count == 0 && hubp_count > 0) {
++		if (dc->res_pool->hubbub->funcs->force_pstate_change_control)
++			dc->res_pool->hubbub->funcs->force_pstate_change_control(
++					dc->res_pool->hubbub, true, false);
++		udelay(500);
++	}
++
+ 	/* Set pipe update flags and lock pipes */
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++)
+ 		dcn20_detect_pipe_changes(&dc->current_state->res_ctx.pipe_ctx[i],
+@@ -2039,6 +2055,10 @@ void dcn20_post_unlock_program_front_end(
+ 		}
+ 	}
  
- 	if (quiet_info)
- 		return;
++	if (dc->res_pool->hubbub->funcs->force_pstate_change_control)
++		dc->res_pool->hubbub->funcs->force_pstate_change_control(
++				dc->res_pool->hubbub, false, false);
++
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+ 		struct pipe_ctx *pipe = &context->res_ctx.pipe_ctx[i];
  
- 	va_start(list, fmt);
--	vfprintf(stderr, fmt, list);
-+	len = vscnprintf(buf, sizeof(buf), fmt, list);
-+	fwrite(buf, len, 1, stderr);
- 	va_end(list);
- }
- 
- void os_warn(const char *fmt, ...)
- {
-+	char buf[256];
- 	va_list list;
-+	int len;
- 
- 	va_start(list, fmt);
--	vfprintf(stderr, fmt, list);
-+	len = vscnprintf(buf, sizeof(buf), fmt, list);
-+	fwrite(buf, len, 1, stderr);
- 	va_end(list);
- }
 -- 
 2.43.0
 
