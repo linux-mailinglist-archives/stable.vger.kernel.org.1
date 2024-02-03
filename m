@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-18069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96EE7848142
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DA5B848276
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32CA31F21838
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACCE21F22770
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F1A1CAB8;
-	Sat,  3 Feb 2024 04:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C411BC22;
+	Sat,  3 Feb 2024 04:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dR7Jz08V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v42oE3TZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356731079D;
-	Sat,  3 Feb 2024 04:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42FA48CC5;
+	Sat,  3 Feb 2024 04:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933524; cv=none; b=pKPXyoO7/vx/5k9MYqSm4rWQ+k2r0U3sXRHPYpyBPeuJe1ZCBggHYklKAec6un9uBHn7WaeBNsMO9ru418M7Nnceg1/aIROtD7VoEnZvkLgcZ89dAszflodXsr7lLlJKD0e4kV8wqJxvB1lYcJmQRHEkb/XwRi4WcDxWqV0Q6kQ=
+	t=1706933749; cv=none; b=owX3qWyElzyQVOG13f9LuWeVUG1oZp70O7k3P+txOyhG7DoGYekfJqdJv3YsxBI3i7c+z3t7ZUjq6qbz4KFCrb36wyx0qySdev/52S1pJ8ZAPSXQzjh1AhksNBg00T0uYs42gEBYtSG0MYLNC6BXIIXnt5GEqeU0bymF4dS9Wbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933524; c=relaxed/simple;
-	bh=f98+fcH1FEwRECtkrrA/U+vXIWCedQpV8HE4aGThKXk=;
+	s=arc-20240116; t=1706933749; c=relaxed/simple;
+	bh=pWC2Hn9x8MhcoQ+aQ+Wmx6+kS6XGEtKsIf7/fuPS4T4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SFs2TX/HcGi7CY9G+K+zPexwoLZ3xsd73s+XFAKvmYCJGTbzwXvURc/WEzSJgi1UgYQuKhq/Ke9uvS085wkLncy1pgbA0ya6U/wCSOymEiT0Y3JDZ1zAEVRBpA9QmtmBvm2ScS1C2QBzamFm9EZrnjR/hOK7qAvVK1sLVPjVlcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dR7Jz08V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF4CC433A6;
-	Sat,  3 Feb 2024 04:12:03 +0000 (UTC)
+	 MIME-Version; b=GVAseZLmqqh5iWkYxCW+TIOlwKknQFmCfxvPzVnCagbnTZkcjR+sEcFQ+WiYugSmYGECAJ6Js726goo8M3gI1hbRI84UHfHHURg7r1uVRfLOIZHUfIOJ78nHTXfLZWXnObYTvDib6LhFFE0QCM86vcmgKX3Ji2aqNwZMctI+20c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v42oE3TZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C494C433C7;
+	Sat,  3 Feb 2024 04:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933524;
-	bh=f98+fcH1FEwRECtkrrA/U+vXIWCedQpV8HE4aGThKXk=;
+	s=korg; t=1706933749;
+	bh=pWC2Hn9x8MhcoQ+aQ+Wmx6+kS6XGEtKsIf7/fuPS4T4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dR7Jz08VMGzMZWP+EvnOqLzaINW1j1DG+coq5dLlQYmovxwRNAw7ha8NcAQzyc65B
-	 wcfjF0ETQ5TxqEzwq9PKU6aUrhg+PTPJYeFNPE0qJqNKb5Ilha1uPNfefoZGKYAwxi
-	 xBgfZz2ZIqJHx5rLNBbXnmANGFGPzlbZl8fa0abw=
+	b=v42oE3TZmQ+PvplAS3ta3Uu8PlWpxeGEX/AuvNtR8ne5A+6aMWjq3wpZ5K7hBp28z
+	 SgWm8RdTAxcCwxgvV1ADUClc809V9rn07/9bI/LMsQE27tMeyZHnr89sBdwokOucIS
+	 hG5p0tgzWsRUZgiAxB0Vtwpf6oxjgw0rUHGEqMd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Kalle Valo <kvalo@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/322] wifi: rt2x00: correct wrong BBP register in RxDCOC calibration
-Date: Fri,  2 Feb 2024 20:02:41 -0800
-Message-ID: <20240203035401.206354266@linuxfoundation.org>
+Subject: [PATCH 6.7 044/353] rxrpc_find_service_conn_rcu: fix the usage of read_seqbegin_or_lock()
+Date: Fri,  2 Feb 2024 20:02:42 -0800
+Message-ID: <20240203035405.201753981@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 50da74e1e8b682853d1e07fc8bbe3a0774ae5e09 ]
+[ Upstream commit bad1a11c0f061aa073bab785389fe04f19ba02e1 ]
 
-Refer to Mediatek vendor driver RxDCOC_Calibration() function, when
-performing gainfreeze calibration, we should write register 140
-instead of 141. This fix can reduce the total calibration time from
-6 seconds to 1 second.
+rxrpc_find_service_conn_rcu() should make the "seq" counter odd on the
+second pass, otherwise read_seqbegin_or_lock() never takes the lock.
 
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/TYAP286MB0315B13B89DF57B6B27BB854BCAFA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Link: https://lore.kernel.org/r/20231117164846.GA10410@redhat.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/rxrpc/conn_service.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-index e65cc00fa17c..c13ae87f94f4 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-@@ -8695,7 +8695,7 @@ static void rt2800_rxdcoc_calibration(struct rt2x00_dev *rt2x00dev)
- 	rt2800_rfcsr_write_bank(rt2x00dev, 5, 4, saverfb5r4);
- 	rt2800_rfcsr_write_bank(rt2x00dev, 7, 4, saverfb7r4);
+diff --git a/net/rxrpc/conn_service.c b/net/rxrpc/conn_service.c
+index 89ac05a711a4..39c908a3ca6e 100644
+--- a/net/rxrpc/conn_service.c
++++ b/net/rxrpc/conn_service.c
+@@ -25,7 +25,7 @@ struct rxrpc_connection *rxrpc_find_service_conn_rcu(struct rxrpc_peer *peer,
+ 	struct rxrpc_conn_proto k;
+ 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
+ 	struct rb_node *p;
+-	unsigned int seq = 0;
++	unsigned int seq = 1;
  
--	rt2800_bbp_write(rt2x00dev, 158, 141);
-+	rt2800_bbp_write(rt2x00dev, 158, 140);
- 	bbpreg = rt2800_bbp_read(rt2x00dev, 159);
- 	bbpreg = bbpreg & (~0x40);
- 	rt2800_bbp_write(rt2x00dev, 159, bbpreg);
+ 	k.epoch	= sp->hdr.epoch;
+ 	k.cid	= sp->hdr.cid & RXRPC_CIDMASK;
+@@ -35,6 +35,7 @@ struct rxrpc_connection *rxrpc_find_service_conn_rcu(struct rxrpc_peer *peer,
+ 		 * under just the RCU read lock, so we have to check for
+ 		 * changes.
+ 		 */
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
+ 		read_seqbegin_or_lock(&peer->service_conn_lock, &seq);
+ 
+ 		p = rcu_dereference_raw(peer->service_conns.rb_node);
 -- 
 2.43.0
 
