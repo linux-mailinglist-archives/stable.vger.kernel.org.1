@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-18220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C878B8481DB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FF048482EC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07A001C20BF9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D23728C7BB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99FD618657;
-	Sat,  3 Feb 2024 04:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5334F5F4;
+	Sat,  3 Feb 2024 04:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rc4X1STR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHUoF+tr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562ED10965;
-	Sat,  3 Feb 2024 04:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD994F5F2;
+	Sat,  3 Feb 2024 04:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933636; cv=none; b=JUlWrFj6mXdZfzBDzhccff9RlaLdrE5aDcZZftPHXGtuTQx5Se1bn9vxfqooewam3WMlVapi5HrNyncSMOxYmJj1uzEOViL79/i9Ta4+ifRonbM8RjglLC58aiZfslGFX+4Cfy3Fvd6/dEPSh85rDD3haB/6SKREmovMvMtVA6c=
+	t=1706933836; cv=none; b=YV8HuRDfxk0vfMNhX3XSzMtW2AWqszEqmf2Qk0kl5EofIDSa2IQCmtTbFcev8ppbFaF+j+VEnXIHOc2If5HOy1m2SyRET3vMfbga/F/TftSRScWvNLj5CaujZu1xrpZ7p3u12VaYyHEC1Fulok0WAgofjimkPa9QxBuSBJKbm+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933636; c=relaxed/simple;
-	bh=eWFA+lGl4awhFjv+8k92tzRrjZuBq5QteYbIJMt2jvI=;
+	s=arc-20240116; t=1706933836; c=relaxed/simple;
+	bh=9Do7iVHwTVlEkU9ULDDAVOMOavYIbg3a9cWlVT39SYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K14JPTT1tk4YJ0T7NogY4/FAycZHDlc7ICZ9PdBP8XN25d24oxkgLj3OOma1uLbT57tunfjX3XYLJ/CkTXtchr/dKUAw1ePX13vsnw+U/fvBYYadJ6mVJ1mSyx4z4rikKZw7bt0NnEhQFNJthGJVG4mLYM3kTr5g+l+B8pVd9bY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rc4X1STR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E700C433F1;
-	Sat,  3 Feb 2024 04:13:56 +0000 (UTC)
+	 MIME-Version; b=QCD1LLOVe2YVZ+WmqmDMtWFXJ1GtsGb5jj/sMS0t9/JaKX8xNoJqh2vImS2GbbaVS5L+s9Z9m4Vqmotz9M8/crenHUFVnPgNpVXkN08ayMCho46KVrmONOGXhch9q8mmDW4CHbRp8hww3VV5C/xXFCoVHiPRZJdn9qf2C2g7DWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHUoF+tr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04C17C433F1;
+	Sat,  3 Feb 2024 04:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933636;
-	bh=eWFA+lGl4awhFjv+8k92tzRrjZuBq5QteYbIJMt2jvI=;
+	s=korg; t=1706933836;
+	bh=9Do7iVHwTVlEkU9ULDDAVOMOavYIbg3a9cWlVT39SYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rc4X1STRSBM/GDogshKeHEeqqSJXmw7pKDYrQkKuKIy/1vtHxyxXSly7bFZzyCkkM
-	 BwszvC35uZodLvQ8H7gh0SwlBXElp3Y336BMuBJ/gNu60/Y86yo7hePIlF9+jrk2S6
-	 PGtWpRT+LJDqF2DU2JqFi3S0wdBpjsWNpbIB06lQ=
+	b=ZHUoF+trnlf7APE3IvSL6THxT8WguvqRqIK3E5oNKn5GgWwk/OL7zJ/L5/nNv6+DY
+	 iFPt7xllO6nPz3xZv8r/UXfeMjkDzmtK09sIRsA9DgKOVKbQk8rqz0nEBu8FQzm5mV
+	 0ov9ftJDew+M9i2NMKXsnMk+1LkVkJ4KIYAjcjKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Adam Ford <aford173@gmail.com>
-Subject: [PATCH 6.6 181/322] media: rkisp1: Fix IRQ handler return values
+	Linus Walleij <linus.walleij@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 160/353] ARM: dts: usr8200: Fix phy registers
 Date: Fri,  2 Feb 2024 20:04:38 -0800
-Message-ID: <20240203035405.104872830@linuxfoundation.org>
+Message-ID: <20240203035408.712291770@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 3eb7910e1b16a2c136be26a8380f21469225b2f6 ]
+[ Upstream commit 18a1ee9d716d355361da2765f87dbbadcdea03bf ]
 
-The IRQ handler rkisp1_isr() calls sub-handlers, all of which returns an
-irqreturn_t value, but rkisp1_isr() ignores those values and always
-returns IRQ_HANDLED.
+The MV88E6060 switch has internal PHY registers at MDIO
+addresses 0x00..0x04. Tie each port to the corresponding
+PHY.
 
-Fix this by collecting the return values, and returning IRQ_HANDLED or
-IRQ_NONE as appropriate.
-
-Link: https://lore.kernel.org/r/20231207-rkisp-irq-fix-v3-2-358a2c871a3c@ideasonboard.com
-
-Tested-by: Adam Ford <aford173@gmail.com>  #imx8mp-beacon
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20231020-ixp4xx-usr8200-dtsfix-v1-1-3a8591dea259@linaro.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../media/platform/rockchip/rkisp1/rkisp1-dev.c  | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ .../ixp/intel-ixp42x-usrobotics-usr8200.dts   | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-index b676db9bff62..7b8a361d4c4a 100644
---- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-+++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-@@ -442,17 +442,25 @@ static int rkisp1_entities_register(struct rkisp1_device *rkisp1)
+diff --git a/arch/arm/boot/dts/intel/ixp/intel-ixp42x-usrobotics-usr8200.dts b/arch/arm/boot/dts/intel/ixp/intel-ixp42x-usrobotics-usr8200.dts
+index 90fd51b36e7d..2c89db34c8d8 100644
+--- a/arch/arm/boot/dts/intel/ixp/intel-ixp42x-usrobotics-usr8200.dts
++++ b/arch/arm/boot/dts/intel/ixp/intel-ixp42x-usrobotics-usr8200.dts
+@@ -165,6 +165,24 @@
+ 				#address-cells = <1>;
+ 				#size-cells = <0>;
  
- static irqreturn_t rkisp1_isr(int irq, void *ctx)
- {
-+	irqreturn_t ret = IRQ_NONE;
++				/*
++				 * PHY 0..4 are internal to the MV88E6060 switch but appear
++				 * as independent devices.
++				 */
++				phy0: ethernet-phy@0 {
++					reg = <0>;
++				};
++				phy1: ethernet-phy@1 {
++					reg = <1>;
++				};
++				phy2: ethernet-phy@2 {
++					reg = <2>;
++				};
++				phy3: ethernet-phy@3 {
++					reg = <3>;
++				};
 +
- 	/*
- 	 * Call rkisp1_capture_isr() first to handle the frame that
- 	 * potentially completed using the current frame_sequence number before
- 	 * it is potentially incremented by rkisp1_isp_isr() in the vertical
- 	 * sync.
- 	 */
--	rkisp1_capture_isr(irq, ctx);
--	rkisp1_isp_isr(irq, ctx);
--	rkisp1_csi_isr(irq, ctx);
++				/* Altima AMI101L used by the WAN port */
+ 				phy9: ethernet-phy@9 {
+ 					reg = <9>;
+ 				};
+@@ -181,21 +199,25 @@
+ 						port@0 {
+ 							reg = <0>;
+ 							label = "lan1";
++							phy-handle = <&phy0>;
+ 						};
  
--	return IRQ_HANDLED;
-+	if (rkisp1_capture_isr(irq, ctx) == IRQ_HANDLED)
-+		ret = IRQ_HANDLED;
-+
-+	if (rkisp1_isp_isr(irq, ctx) == IRQ_HANDLED)
-+		ret = IRQ_HANDLED;
-+
-+	if (rkisp1_csi_isr(irq, ctx) == IRQ_HANDLED)
-+		ret = IRQ_HANDLED;
-+
-+	return ret;
- }
+ 						port@1 {
+ 							reg = <1>;
+ 							label = "lan2";
++							phy-handle = <&phy1>;
+ 						};
  
- static const char * const px30_isp_clks[] = {
+ 						port@2 {
+ 							reg = <2>;
+ 							label = "lan3";
++							phy-handle = <&phy2>;
+ 						};
+ 
+ 						port@3 {
+ 							reg = <3>;
+ 							label = "lan4";
++							phy-handle = <&phy3>;
+ 						};
+ 
+ 						port@5 {
 -- 
 2.43.0
 
