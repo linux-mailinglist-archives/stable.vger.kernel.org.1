@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB09C84815B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D755C84828F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FDD51F23BBF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 951BE282A1F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243231F92C;
-	Sat,  3 Feb 2024 04:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2BE4B5AD;
+	Sat,  3 Feb 2024 04:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/VT07jP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXCW9U+p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D657010782;
-	Sat,  3 Feb 2024 04:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD9B10A13;
+	Sat,  3 Feb 2024 04:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933542; cv=none; b=Vy2TFdH5sa+GzGsnqmfQTtAE8cg74lxGzhwrGTyBcvj0XJz0uujW0lqPgZN/NJrK4auRzIcgea4shXzxs+WWlX+8LS5BzUEM+L5ULJSLK6BwOeYHskTIxvyOg5mV+hZI2K/kmJbLsE7n+1CX1g6sbnQzVdzAYRImIzaNM8EsFVU=
+	t=1706933768; cv=none; b=VQpiK4e42NZLFcYL3/ywpNhUw9UNY58fQ99Xk8WvOYuWoOEkLauMk2QxI9wJvMoLyPvdwY0lOEklh8q7TziNe1hznU/mMhz2dth3qAfiV1tDDVXujzI6zlt9MXULpCv8VQ3LpmdD5odDP2eGoXfm3zKV5YC9a6ILZfNE2kK90fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933542; c=relaxed/simple;
-	bh=VFPwUhvYd14MGurl3b2rYvrf43FdwGQvKA8qwma/SW0=;
+	s=arc-20240116; t=1706933768; c=relaxed/simple;
+	bh=22TDI6BcpLMOQniXuU4CGSa0qLtvmmDnL2YzkI5aCgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=afRFEUuprSpyCqnChp3OcXAy65Dlh2psGkAlvLrOza4ZZ7ExuPjj90hXyhO5eH72WHWcXrJconCMC2PpWFRc0fVR4Y9kB1f7iXceXFMZxB6D3TnxK2gEOyviPww3cByCTGeuB8qvCDPDe3zk+0OkxxoTYuYDd71gc9/H+gmWr4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/VT07jP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03C9C43390;
-	Sat,  3 Feb 2024 04:12:22 +0000 (UTC)
+	 MIME-Version; b=bUIffBEZeuIO5wmrJP7i+mjxHpXRY6ovhRftew143pymlyXU9CakKyeI5UXF6Tb5ICikX/ILo16BZZU7hTA4bLDedH8bS1one5nbCeOOM6XjGDmhCGqf95mrsHZP47q4CSpx2l5deFVSi8qD75vmGat7t3J5DytVcIh2vM+ZAyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXCW9U+p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E05C433F1;
+	Sat,  3 Feb 2024 04:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933542;
-	bh=VFPwUhvYd14MGurl3b2rYvrf43FdwGQvKA8qwma/SW0=;
+	s=korg; t=1706933768;
+	bh=22TDI6BcpLMOQniXuU4CGSa0qLtvmmDnL2YzkI5aCgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O/VT07jPIcKP+lGUl4y8w3ZWXe+iJkLPp/7myIyrJbnSGHu3nWqn82wHzcCbgEsqx
-	 4UivbaFjj4LDN5jhiNGwHLBJpu5h6MHh/rvrGMPP1W+cuqWs5sJL94d3ciucCbv1Ah
-	 53NTL7g9pB/B9NNQWarL9taUREFEMyZtnDRa2+QQ=
+	b=kXCW9U+pDHg9OReBJa8QEuePmFY7+U/7gX+2gmOecg0u9ib5f+O7GTNmZ2K07LEYj
+	 Noszhufb36C8L6QjlD2FhQ8ytiI4b9kAdWzRgduTyGkgoeySD2JPa0oWHbVBS1gDMT
+	 VdWbo/Ajnl/XPMmcYq/1E2Rl7nalL5FH0LeTBY2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Shiji Yang <yangshiji66@outlook.com>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/322] bpf: Check rcu_read_lock_trace_held() before calling bpf map helpers
-Date: Fri,  2 Feb 2024 20:03:06 -0800
-Message-ID: <20240203035402.037454429@linuxfoundation.org>
+Subject: [PATCH 6.7 069/353] wifi: rt2x00: correct wrong BBP register in RxDCOC calibration
+Date: Fri,  2 Feb 2024 20:03:07 -0800
+Message-ID: <20240203035406.004644124@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-[ Upstream commit 169410eba271afc9f0fb476d996795aa26770c6d ]
+[ Upstream commit 50da74e1e8b682853d1e07fc8bbe3a0774ae5e09 ]
 
-These three bpf_map_{lookup,update,delete}_elem() helpers are also
-available for sleepable bpf program, so add the corresponding lock
-assertion for sleepable bpf program, otherwise the following warning
-will be reported when a sleepable bpf program manipulates bpf map under
-interpreter mode (aka bpf_jit_enable=0):
+Refer to Mediatek vendor driver RxDCOC_Calibration() function, when
+performing gainfreeze calibration, we should write register 140
+instead of 141. This fix can reduce the total calibration time from
+6 seconds to 1 second.
 
-  WARNING: CPU: 3 PID: 4985 at kernel/bpf/helpers.c:40 ......
-  CPU: 3 PID: 4985 Comm: test_progs Not tainted 6.6.0+ #2
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996) ......
-  RIP: 0010:bpf_map_lookup_elem+0x54/0x60
-  ......
-  Call Trace:
-   <TASK>
-   ? __warn+0xa5/0x240
-   ? bpf_map_lookup_elem+0x54/0x60
-   ? report_bug+0x1ba/0x1f0
-   ? handle_bug+0x40/0x80
-   ? exc_invalid_op+0x18/0x50
-   ? asm_exc_invalid_op+0x1b/0x20
-   ? __pfx_bpf_map_lookup_elem+0x10/0x10
-   ? rcu_lockdep_current_cpu_online+0x65/0xb0
-   ? rcu_is_watching+0x23/0x50
-   ? bpf_map_lookup_elem+0x54/0x60
-   ? __pfx_bpf_map_lookup_elem+0x10/0x10
-   ___bpf_prog_run+0x513/0x3b70
-   __bpf_prog_run32+0x9d/0xd0
-   ? __bpf_prog_enter_sleepable_recur+0xad/0x120
-   ? __bpf_prog_enter_sleepable_recur+0x3e/0x120
-   bpf_trampoline_6442580665+0x4d/0x1000
-   __x64_sys_getpgid+0x5/0x30
-   ? do_syscall_64+0x36/0xb0
-   entry_SYSCALL_64_after_hwframe+0x6e/0x76
-   </TASK>
-
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20231204140425.1480317-2-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/TYAP286MB0315B13B89DF57B6B27BB854BCAFA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 607be04db75b..e68ef39cda67 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -31,12 +31,13 @@
-  *
-  * Different map implementations will rely on rcu in map methods
-  * lookup/update/delete, therefore eBPF programs must run under rcu lock
-- * if program is allowed to access maps, so check rcu_read_lock_held in
-- * all three functions.
-+ * if program is allowed to access maps, so check rcu_read_lock_held() or
-+ * rcu_read_lock_trace_held() in all three functions.
-  */
- BPF_CALL_2(bpf_map_lookup_elem, struct bpf_map *, map, void *, key)
- {
--	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
-+	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
-+		     !rcu_read_lock_bh_held());
- 	return (unsigned long) map->ops->map_lookup_elem(map, key);
- }
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+index ee880f749b3c..1926ffdffb4f 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+@@ -8659,7 +8659,7 @@ static void rt2800_rxdcoc_calibration(struct rt2x00_dev *rt2x00dev)
+ 	rt2800_rfcsr_write_bank(rt2x00dev, 5, 4, saverfb5r4);
+ 	rt2800_rfcsr_write_bank(rt2x00dev, 7, 4, saverfb7r4);
  
-@@ -52,7 +53,8 @@ const struct bpf_func_proto bpf_map_lookup_elem_proto = {
- BPF_CALL_4(bpf_map_update_elem, struct bpf_map *, map, void *, key,
- 	   void *, value, u64, flags)
- {
--	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
-+	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
-+		     !rcu_read_lock_bh_held());
- 	return map->ops->map_update_elem(map, key, value, flags);
- }
- 
-@@ -69,7 +71,8 @@ const struct bpf_func_proto bpf_map_update_elem_proto = {
- 
- BPF_CALL_2(bpf_map_delete_elem, struct bpf_map *, map, void *, key)
- {
--	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
-+	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
-+		     !rcu_read_lock_bh_held());
- 	return map->ops->map_delete_elem(map, key);
- }
- 
+-	rt2800_bbp_write(rt2x00dev, 158, 141);
++	rt2800_bbp_write(rt2x00dev, 158, 140);
+ 	bbpreg = rt2800_bbp_read(rt2x00dev, 159);
+ 	bbpreg = bbpreg & (~0x40);
+ 	rt2800_bbp_write(rt2x00dev, 159, bbpreg);
 -- 
 2.43.0
 
