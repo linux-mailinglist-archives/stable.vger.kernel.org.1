@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198CB848061
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2448482AF
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8C7F28BF1A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED3F6283DE5
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8076E10A33;
-	Sat,  3 Feb 2024 04:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A164D110;
+	Sat,  3 Feb 2024 04:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZCYO+Tmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1Y2c14c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DBCE10A22;
-	Sat,  3 Feb 2024 04:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACB94CB47;
+	Sat,  3 Feb 2024 04:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933365; cv=none; b=QqHm4sp3vzM4Qiveij6SB2ETt5Q7YzKaSDpVKM3sBOFRKUAHvQBMXjGD4x8E91IvaviUawAcIv8eCRehYW2S6+Bwfo5TyGmhrjFXP1N8I0ekuuCxbWokqqXUEsVNf5jDyzgQfByqgrC6dCtGo5qt2AME/WNbHe5CAjYSeVeTsYQ=
+	t=1706933791; cv=none; b=lzEXpSDdqA/JUMQIFXK95tpG/3G8pyaoYbzjHQVBjcnP8/H69cU1zfUwfc8MuLJ7IHaxuEZZ6Gjyo3FajsJ5woVby2bzYo7CgU3miJbQTpzKb7D3kG+tkRwj4crYX/DX+V0Pq4t1xD/jweC7//D2V4bnlt2/A1gqo0vbjitSNfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933365; c=relaxed/simple;
-	bh=F5z7kZC+dungTs3Fsh2M4450FpADiKLpEIEGpG10dac=;
+	s=arc-20240116; t=1706933791; c=relaxed/simple;
+	bh=d4ESUat7mnNfkt10T7CzxBaddYWIv8su2cW/8ab3k7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aP6VYpCU7fZ1klKysbv/W4ttrERVSIBmdv83F3PyUxzsCmwO1SpqiYgxYxFAQi5h68NO4WfK4FD+nYfc2TRVMpefaLmpAcFoD7ESstj1sQAK2qc77lyiba/AzX0Stuwy5hsMABPfW9oDDHLxvzvwSiq2lrWjVEa9kU3V96/YcNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCYO+Tmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071D1C43394;
-	Sat,  3 Feb 2024 04:09:24 +0000 (UTC)
+	 MIME-Version; b=j2COSduxmZtCFuaDi5VKF8WEBQSGKkBSjJngi+JxXRO6Tws4RL/tcsIGtHyIbA163eXUeOOVM4H52fckcNORUaxHbcnsL8tHMSDjvkW5CvZNd0rvRtuaNhAj1BqfcvFWAdFWrmN9ZuakpO45OEmrcs9Qj7lIzY5vVDSAv8igx4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1Y2c14c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AA8C433A6;
+	Sat,  3 Feb 2024 04:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933365;
-	bh=F5z7kZC+dungTs3Fsh2M4450FpADiKLpEIEGpG10dac=;
+	s=korg; t=1706933791;
+	bh=d4ESUat7mnNfkt10T7CzxBaddYWIv8su2cW/8ab3k7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZCYO+TmpEZlzKhX0q1G880cbKLdzSjMObV+Nvy5qy34DP942YFY7+axRLp9IWQDQ9
-	 Ey6CmuDDSyaxNZ0fix9U1O6X5mpZsPtryxFWK4lDNjO05zd3HZRplxJntAQdF1y69G
-	 cP9Mhi7OapK6ygFzoUhHUa9duQiiEtnjtPGyWhU4=
+	b=p1Y2c14cBrtvMl5KIqvohGn4G0MxZOQ6MfVc9yzYAr+6c/XgwEJLR4cxDqpGyo/8s
+	 ugP/nWrZp11KugTGf0kiFbyuHlWq9vQvgA8BqljVuoOtv7DFQEkqUQDZz22PnPlAE2
+	 hvrj7Z43gzYXLeYK6/orV6YP24lJ+w6CDWMDGefA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/219] selftests/bpf: satisfy compiler by having explicit return in btf test
+Subject: [PATCH 6.7 101/353] arm64: dts: qcom: sm8550: fix soundwire controllers node name
 Date: Fri,  2 Feb 2024 20:03:39 -0800
-Message-ID: <20240203035323.121351768@linuxfoundation.org>
+Message-ID: <20240203035406.980654171@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit f4c7e887324f5776eef6e6e47a90e0ac8058a7a8 ]
+[ Upstream commit 07c88da81caf0e72c3690b689d30f0d325cfeff4 ]
 
-Some compilers complain about get_pprint_mapv_size() not returning value
-in some code paths. Fix with explicit return.
+Fix the following dt bindings check:
+arch/arm64/boot/dts/qcom/sm8550-mtp.dtb: soundwire-controller@6ab0000: $nodename:0: 'soundwire-controller@6ab0000' does not match '^soundwire(@.*)?$'
+from schema $id: http://devicetree.org/schemas/soundwire/qcom,soundwire.yaml#
 
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20231102033759.2541186-3-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20231106-topic-sm8550-upstream-soundwire-bindings-fix-v1-1-4ded91c805a1@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/btf.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/btf.c b/tools/testing/selftests/bpf/prog_tests/btf.c
-index d711f4bea98e..47cb753ef1e3 100644
---- a/tools/testing/selftests/bpf/prog_tests/btf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/btf.c
-@@ -5211,6 +5211,7 @@ static size_t get_pprint_mapv_size(enum pprint_mapv_kind_t mapv_kind)
- #endif
+diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+index 5cf813a579d5..e15564ed54ce 100644
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -2060,7 +2060,7 @@
+ 			#sound-dai-cells = <1>;
+ 		};
  
- 	assert(0);
-+	return 0;
- }
+-		swr3: soundwire-controller@6ab0000 {
++		swr3: soundwire@6ab0000 {
+ 			compatible = "qcom,soundwire-v2.0.0";
+ 			reg = <0 0x06ab0000 0 0x10000>;
+ 			interrupts = <GIC_SPI 171 IRQ_TYPE_LEVEL_HIGH>;
+@@ -2106,7 +2106,7 @@
+ 			#sound-dai-cells = <1>;
+ 		};
  
- static void set_pprint_mapv(enum pprint_mapv_kind_t mapv_kind,
+-		swr1: soundwire-controller@6ad0000 {
++		swr1: soundwire@6ad0000 {
+ 			compatible = "qcom,soundwire-v2.0.0";
+ 			reg = <0 0x06ad0000 0 0x10000>;
+ 			interrupts = <GIC_SPI 155 IRQ_TYPE_LEVEL_HIGH>;
+@@ -2171,7 +2171,7 @@
+ 			#sound-dai-cells = <1>;
+ 		};
+ 
+-		swr0: soundwire-controller@6b10000 {
++		swr0: soundwire@6b10000 {
+ 			compatible = "qcom,soundwire-v2.0.0";
+ 			reg = <0 0x06b10000 0 0x10000>;
+ 			interrupts = <GIC_SPI 170 IRQ_TYPE_LEVEL_HIGH>;
+@@ -2198,7 +2198,7 @@
+ 			status = "disabled";
+ 		};
+ 
+-		swr2: soundwire-controller@6d30000 {
++		swr2: soundwire@6d30000 {
+ 			compatible = "qcom,soundwire-v2.0.0";
+ 			reg = <0 0x06d30000 0 0x10000>;
+ 			interrupts = <GIC_SPI 496 IRQ_TYPE_LEVEL_HIGH>,
 -- 
 2.43.0
 
