@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-18200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DAA78481C8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B658480B5
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1071B1F24542
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64F3A28ADA1
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A193FB14;
-	Sat,  3 Feb 2024 04:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5AE218042;
+	Sat,  3 Feb 2024 04:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFRtevxg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwLkCOyF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60BC3CF58;
-	Sat,  3 Feb 2024 04:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7327F11CBE;
+	Sat,  3 Feb 2024 04:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933620; cv=none; b=PrX+VAva3EodLCzQlQWVpUzuM3oDQufzyAOwkDzTEc21jU2afs6B971TK8xB87C/9nGGLVJqqbSxSwMIpdSVs1x35SegHOMeux7wmvHh8egBL+1/GHaD0dS7d2rygFNKXi8HO4sLAz8bOjYJqpheL14ZIMuNhudtQT6ZGMZq4Qs=
+	t=1706933427; cv=none; b=XZRfH5wpyRXRK+dJ61CHGa+bGMRhI3zjj3fJsBM3u10toSMLaDpxfCbedCVEgyl40+zGRT+1/uoDemH/Et/fKWQRxNGUJUT/kentPyUJIBad34Uq9U3KRVUIwXxL+hH5aAP6Ff9pIuyhr4rzCu8NJOrqduzCjqqRLiSFr9GtCXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933620; c=relaxed/simple;
-	bh=p8Ev3G+JDMpzO5bBfQmRjKItd0AZUblnn9HKFjIvpPI=;
+	s=arc-20240116; t=1706933427; c=relaxed/simple;
+	bh=8hUlnYrzgDTZMTB6gvkR02gkpjBuBcmZKxxH2YkoBU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WC4r5OytMZJWBKO5vcF5sBYD3SnjVKFz2NYCmlnQrWDZdFxfT8FGjpBaL6vpZgHJ8ngKzDBccsLle/lzHFZz02Cioc63YcIdNyGSLUfNABPbXzibUHmVEaFE9cHFWLpzMUSYA5kVNFcehCdkGGv52zgFp9QK8E4P6b5OymeDsSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFRtevxg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE37C43394;
-	Sat,  3 Feb 2024 04:13:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c4lpyTrUaxnkaEHM3I6g9hFOjGnmzqXgwUdeN4eaOSNaNQf7HgolW+NY9s1NwMdzcuuYD0xeHwg8tH1vdyrM57rczwRRNFZKgF4uhDHmict2OqV1ECO5hidFx80KgW6NAtO3qFkqLrD2JcwnpYZFaJPMjFI3wuVmGQK/qx1q20I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwLkCOyF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B9FC43394;
+	Sat,  3 Feb 2024 04:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933620;
-	bh=p8Ev3G+JDMpzO5bBfQmRjKItd0AZUblnn9HKFjIvpPI=;
+	s=korg; t=1706933427;
+	bh=8hUlnYrzgDTZMTB6gvkR02gkpjBuBcmZKxxH2YkoBU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFRtevxgvILIGgnzs411aLpTJdWaPBwr3eseK67Ov5Xkh2VwDtoRwYOpOtpt1qzKO
-	 SvDaMO5xkalsSLrwxF+mKG0G7BPmb1VgLLj8WuCnuALIwSrDG6dVxI/D6W/l/qM31r
-	 1sYrpFhuYly/dGPGxGW5RxIFxvsMYJ9fFYYdQH0E=
+	b=qwLkCOyFBZqE+QAQMsDHe+umQbalj8L4E8M5UkPErfBv/6AzAROZz4xm8nXgma1o7
+	 GJ9HWMP/RZLU0aSKTHhWV7tC+L8J3gc8Fgvlwu0yNFmWS75LOGeV8OMgME9l/b0geO
+	 2KcKu+Um1I6hLMEwltkudIfwivf3LG9mJyfoyCP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 196/322] drm/msm/dpu: enable writeback on SM8350
+Subject: [PATCH 6.1 120/219] ALSA: hda: Intel: add HDA_ARL PCI ID support
 Date: Fri,  2 Feb 2024 20:04:53 -0800
-Message-ID: <20240203035405.573933488@linuxfoundation.org>
+Message-ID: <20240203035334.380609507@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +63,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit c2949a49dfe960e952400029e14751dceff79d38 ]
+[ Upstream commit a31014ebad617868c246d3985ff80d891f03711e ]
 
-Enable WB2 hardware block, enabling writeback support on this platform.
+Yet another PCI ID.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/570188/
-Link: https://lore.kernel.org/r/20231203002743.1291956-3-dmitry.baryshkov@linaro.org
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20231204212710.185976-3-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ sound/pci/hda/hda_intel.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
-index f8d16f9bf528..428bcbcfbf19 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
-@@ -31,6 +31,7 @@ static const struct dpu_mdp_cfg sm8350_mdp = {
- 		[DPU_CLK_CTRL_DMA1] = { .reg_off = 0x2b4, .bit_off = 8 },
- 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2bc, .bit_off = 8 },
- 		[DPU_CLK_CTRL_DMA3] = { .reg_off = 0x2c4, .bit_off = 8 },
-+		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
- 		[DPU_CLK_CTRL_REG_DMA] = { .reg_off = 0x2bc, .bit_off = 20 },
- 	},
- };
-@@ -304,6 +305,21 @@ static const struct dpu_dsc_cfg sm8350_dsc[] = {
- 	},
- };
- 
-+static const struct dpu_wb_cfg sm8350_wb[] = {
-+	{
-+		.name = "wb_2", .id = WB_2,
-+		.base = 0x65000, .len = 0x2c8,
-+		.features = WB_SM8250_MASK,
-+		.format_list = wb2_formats,
-+		.num_formats = ARRAY_SIZE(wb2_formats),
-+		.clk_ctrl = DPU_CLK_CTRL_WB2,
-+		.xin_id = 6,
-+		.vbif_idx = VBIF_RT,
-+		.maxlinewidth = 4096,
-+		.intr_wb_done = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 4),
-+	},
-+};
-+
- static const struct dpu_intf_cfg sm8350_intf[] = {
- 	{
- 		.name = "intf_0", .id = INTF_0,
-@@ -401,6 +417,8 @@ const struct dpu_mdss_cfg dpu_sm8350_cfg = {
- 	.dsc = sm8350_dsc,
- 	.merge_3d_count = ARRAY_SIZE(sm8350_merge_3d),
- 	.merge_3d = sm8350_merge_3d,
-+	.wb_count = ARRAY_SIZE(sm8350_wb),
-+	.wb = sm8350_wb,
- 	.intf_count = ARRAY_SIZE(sm8350_intf),
- 	.intf = sm8350_intf,
- 	.vbif_count = ARRAY_SIZE(sdm845_vbif),
+diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+index 5aaf3dcecf27..a26f2a2d44cf 100644
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2549,6 +2549,8 @@ static const struct pci_device_id azx_ids[] = {
+ 	/* Lunarlake-P */
+ 	{ PCI_DEVICE(0x8086, 0xa828),
+ 	  .driver_data = AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE},
++	/* Arrow Lake */
++	{ PCI_DEVICE_DATA(INTEL, HDA_ARL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE) },
+ 	/* Broxton-P(Apollolake) */
+ 	{ PCI_DEVICE(0x8086, 0x5a98),
+ 	  .driver_data = AZX_DRIVER_SKL | AZX_DCAPS_INTEL_BROXTON },
 -- 
 2.43.0
 
