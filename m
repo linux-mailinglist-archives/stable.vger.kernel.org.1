@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-18252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F3488481FC
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A29B84834B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 825741C229A6
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D2B4B2935C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5203843AD1;
-	Sat,  3 Feb 2024 04:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD278171B8;
+	Sat,  3 Feb 2024 04:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EUB4drta"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WojDKUD9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102E618E1C;
-	Sat,  3 Feb 2024 04:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C534171A4;
+	Sat,  3 Feb 2024 04:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933661; cv=none; b=FedYaDyTZ/RVVfQb19FfNe5/MxB2f/G510FgrOR6s+KehpdgXqJND94KH8lRInf0KDHbzWc8L9bEcUuwiLYOVrvG6H2N9QDiUypotrcEenA3/fhJO9CMInfSCiIG/7JDGmnBuFO0umeQ/hI3mQRcX45sR78iZSEjUJCe7ESUjHA=
+	t=1706933905; cv=none; b=pMJRs+kz9xIsfHL6v9BYdbkuwCj/lzVzfBti/j+q5aqsHoJ2Rp0plJ4TiJex2ZB4JFet5EcmXYOayXlQPecY8VDVDEuVlPGyPn5W/NN6lfg6d3xrw1+4kjaQhS2Lw67epwupmIRC6cw3qqhjIrXiRWeqcnvkrihqIfoWUEOOaNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933661; c=relaxed/simple;
-	bh=WhbHsbxcTz3JwQ46K+jRdLkzrjulAfCORTv3U8JjDd4=;
+	s=arc-20240116; t=1706933905; c=relaxed/simple;
+	bh=knsbEdqn5vf1ItK/EcwoFK7q940bgiKjAGsdjxffYFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MrxnAYoiAqRxiRISN3FHuf5d+3IPnxWzXjOhZ2AhW0Nk5TULssB8NgWToLGt9c8+Rodbt7SrDDkhWrq+j4KeLEO+qtmgAAIJxZh9CrT49f8bWKmld8Gm5hlYAKO7bQdxZGx53jZ4xCwgYdVoI+butVH0VIxN+XLQ1OPBLIJLo0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EUB4drta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34B8C433C7;
-	Sat,  3 Feb 2024 04:14:20 +0000 (UTC)
+	 MIME-Version; b=niSkZC451WWNIQcaWpQ4GXHgfYOCUdfPY78Kg92TJvTKj2Qe8/+0Nsfw6ZESKOP0izeDcD11wT4rvWaH9R+mrWUFqBO3iuBNvKWD+kc2Hdilm7KAhz5l0Qoi+lxAV2ei+J0RhraZxi/R/6/NcT9aBw1cbgqhsfVykkmJtUnurXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WojDKUD9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30DAAC43394;
+	Sat,  3 Feb 2024 04:18:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933660;
-	bh=WhbHsbxcTz3JwQ46K+jRdLkzrjulAfCORTv3U8JjDd4=;
+	s=korg; t=1706933905;
+	bh=knsbEdqn5vf1ItK/EcwoFK7q940bgiKjAGsdjxffYFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EUB4drtanKNHlr18kb3Sp/gByOqvGdScoWGPnO8X4Ev8zQpy+gsPQZZ+AVb2gRTDX
-	 kSxhwpIZ2nt8QuYfnFwUN+xNQpoXa9xYdPRXAv/as1xRXpmmbvZpSmt18D0OxVwL9Q
-	 bq5gan9Sj/zLXOAxAHZKiCtnU4/SNa9RLkbzak0A=
+	b=WojDKUD9JNYg/MUJ7QFKiex6WyO6hQoDHZXXz/yYWC/W5haB7Fvb+QisgZiN0qe/i
+	 6rm7mX6QPIGo1WRxMUcz6XEword4tSxPv/KAoZIGhDn+GzFMMenPphBhQEHHGcorJk
+	 ykY7kxJl+AE8KDnOWunWfJXDsPxYXCCiYc9KHoK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	PeiChen Huang <peichen.huang@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: =?UTF-8?q?=5BPATCH=206=2E6=20248/322=5D=20=3D=3FUTF-8=3Fq=3Fvirtio=3D5Fnet=3A=3D20Fix=3D20=22=3DE2=3D80=3D98=25d=3DE2=3D80=3D99=3D20directive=3F=3D=20=3D=3FUTF-8=3Fq=3F=3D20writing=3D20between=3D201=3D20and=3D2011=3D20bytes=3D20into=3D20a=3D20region=3F=3D=20=3D=3FUTF-8=3Fq=3F=3D20of=3D20size=3D2010=22=3D20warnings=3F=3D?=
+Subject: [PATCH 6.7 227/353] drm/amd/display: Fix minor issues in BW Allocation Phase2
 Date: Fri,  2 Feb 2024 20:05:45 -0800
-Message-ID: <20240203035407.180697533@linuxfoundation.org>
+Message-ID: <20240203035410.856319310@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +63,465 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
 
-[ Upstream commit e3fe8d28c67bf6c291e920c6d04fa22afa14e6e4 ]
+[ Upstream commit aa5dc05340eb97486a631ce6bccb8d020bf6b56b ]
 
-Fix the warnings when building virtio_net driver.
+[Why]
+Fix minor issues in BW Allocation Phase2.
 
-"
-drivers/net/virtio_net.c: In function ‘init_vqs’:
-drivers/net/virtio_net.c:4551:48: warning: ‘%d’ directive writing between 1 and 11 bytes into a region of size 10 [-Wformat-overflow=]
- 4551 |                 sprintf(vi->rq[i].name, "input.%d", i);
-      |                                                ^~
-In function ‘virtnet_find_vqs’,
-    inlined from ‘init_vqs’ at drivers/net/virtio_net.c:4645:8:
-drivers/net/virtio_net.c:4551:41: note: directive argument in the range [-2147483643, 65534]
- 4551 |                 sprintf(vi->rq[i].name, "input.%d", i);
-      |                                         ^~~~~~~~~~
-drivers/net/virtio_net.c:4551:17: note: ‘sprintf’ output between 8 and 18 bytes into a destination of size 16
- 4551 |                 sprintf(vi->rq[i].name, "input.%d", i);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/net/virtio_net.c: In function ‘init_vqs’:
-drivers/net/virtio_net.c:4552:49: warning: ‘%d’ directive writing between 1 and 11 bytes into a region of size 9 [-Wformat-overflow=]
- 4552 |                 sprintf(vi->sq[i].name, "output.%d", i);
-      |                                                 ^~
-In function ‘virtnet_find_vqs’,
-    inlined from ‘init_vqs’ at drivers/net/virtio_net.c:4645:8:
-drivers/net/virtio_net.c:4552:41: note: directive argument in the range [-2147483643, 65534]
- 4552 |                 sprintf(vi->sq[i].name, "output.%d", i);
-      |                                         ^~~~~~~~~~~
-drivers/net/virtio_net.c:4552:17: note: ‘sprintf’ output between 9 and 19 bytes into a destination of size 16
- 4552 |                 sprintf(vi->sq[i].name, "output.%d", i);
+[How]
+- In set_usb4_req_bw_req(), link->dpia_bw_alloc_config.response_ready
+  flag should be reset before writing DPCD REQUEST_BW.
+- Fix the granularity for value of 2 in get_bw_granularity().
+- Removed bandwidth allocation support display fw boot option as
+  the fw would read feature enable status from bios.
+- Clean up DPIA_EST_BW_CHANGED and DPIA_BW_REQ_SUCCESS cases in
+  dpia_handle_bw_alloc_response().
+- Removed allocate_usb4_bw and deallocate_usb4_bw.
+- Optimized loop in get_lowest_dpia_index().
+- Updated link_dp_dpia_allocate_usb4_bandwidth_for_stream() and
+  set_usb4_req_bw_req() to always issue request bw.
 
-"
-
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://lore.kernel.org/r/20240104020902.2753599-1-yanjun.zhu@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: PeiChen Huang <peichen.huang@amd.com>
+Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Meenakshikumar Somasundaram <meenakshikumar.somasundaram@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ .../dc/link/protocols/link_dp_dpia_bw.c       | 221 ++++++++----------
+ .../dc/link/protocols/link_dp_dpia_bw.h       |   4 +-
+ 2 files changed, 101 insertions(+), 124 deletions(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index deb2229ab4d8..7cb0548d17a3 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -4096,10 +4096,11 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
+index 7581023daa47..d6e1f969bfd5 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.c
+@@ -50,6 +50,7 @@ static bool get_bw_alloc_proceed_flag(struct dc_link *tmp)
+ 			&& tmp->hpd_status
+ 			&& tmp->dpia_bw_alloc_config.bw_alloc_enabled);
+ }
++
+ static void reset_bw_alloc_struct(struct dc_link *link)
  {
- 	vq_callback_t **callbacks;
- 	struct virtqueue **vqs;
--	int ret = -ENOMEM;
--	int i, total_vqs;
- 	const char **names;
-+	int ret = -ENOMEM;
-+	int total_vqs;
- 	bool *ctx;
-+	u16 i;
+ 	link->dpia_bw_alloc_config.bw_alloc_enabled = false;
+@@ -59,6 +60,11 @@ static void reset_bw_alloc_struct(struct dc_link *link)
+ 	link->dpia_bw_alloc_config.bw_granularity = 0;
+ 	link->dpia_bw_alloc_config.response_ready = false;
+ }
++
++#define BW_GRANULARITY_0 4 // 0.25 Gbps
++#define BW_GRANULARITY_1 2 // 0.5 Gbps
++#define BW_GRANULARITY_2 1 // 1 Gbps
++
+ static uint8_t get_bw_granularity(struct dc_link *link)
+ {
+ 	uint8_t bw_granularity = 0;
+@@ -71,16 +77,20 @@ static uint8_t get_bw_granularity(struct dc_link *link)
  
- 	/* We expect 1 RX virtqueue followed by 1 TX virtqueue, followed by
- 	 * possible N-1 RX/TX queue pairs used in multiqueue mode, followed by
-@@ -4136,8 +4137,8 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
- 	for (i = 0; i < vi->max_queue_pairs; i++) {
- 		callbacks[rxq2vq(i)] = skb_recv_done;
- 		callbacks[txq2vq(i)] = skb_xmit_done;
--		sprintf(vi->rq[i].name, "input.%d", i);
--		sprintf(vi->sq[i].name, "output.%d", i);
-+		sprintf(vi->rq[i].name, "input.%u", i);
-+		sprintf(vi->sq[i].name, "output.%u", i);
- 		names[rxq2vq(i)] = vi->rq[i].name;
- 		names[txq2vq(i)] = vi->sq[i].name;
- 		if (ctx)
+ 	switch (bw_granularity & 0x3) {
+ 	case 0:
+-		bw_granularity = 4;
++		bw_granularity = BW_GRANULARITY_0;
+ 		break;
+ 	case 1:
++		bw_granularity = BW_GRANULARITY_1;
++		break;
++	case 2:
+ 	default:
+-		bw_granularity = 2;
++		bw_granularity = BW_GRANULARITY_2;
+ 		break;
+ 	}
+ 
+ 	return bw_granularity;
+ }
++
+ static int get_estimated_bw(struct dc_link *link)
+ {
+ 	uint8_t bw_estimated_bw = 0;
+@@ -93,31 +103,7 @@ static int get_estimated_bw(struct dc_link *link)
+ 
+ 	return bw_estimated_bw * (Kbps_TO_Gbps / link->dpia_bw_alloc_config.bw_granularity);
+ }
+-static bool allocate_usb4_bw(int *stream_allocated_bw, int bw_needed, struct dc_link *link)
+-{
+-	if (bw_needed > 0)
+-		*stream_allocated_bw += bw_needed;
+-
+-	return true;
+-}
+-static bool deallocate_usb4_bw(int *stream_allocated_bw, int bw_to_dealloc, struct dc_link *link)
+-{
+-	bool ret = false;
+-
+-	if (*stream_allocated_bw > 0) {
+-		*stream_allocated_bw -= bw_to_dealloc;
+-		ret = true;
+-	} else {
+-		//Do nothing for now
+-		ret = true;
+-	}
+ 
+-	// Unplug so reset values
+-	if (!link->hpd_status)
+-		reset_bw_alloc_struct(link);
+-
+-	return ret;
+-}
+ /*
+  * Read all New BW alloc configuration ex: estimated_bw, allocated_bw,
+  * granuality, Driver_ID, CM_Group, & populate the BW allocation structs
+@@ -128,7 +114,12 @@ static void init_usb4_bw_struct(struct dc_link *link)
+ 	// Init the known values
+ 	link->dpia_bw_alloc_config.bw_granularity = get_bw_granularity(link);
+ 	link->dpia_bw_alloc_config.estimated_bw = get_estimated_bw(link);
++
++	DC_LOG_DEBUG("%s: bw_granularity(%d), estimated_bw(%d)\n",
++		__func__, link->dpia_bw_alloc_config.bw_granularity,
++		link->dpia_bw_alloc_config.estimated_bw);
+ }
++
+ static uint8_t get_lowest_dpia_index(struct dc_link *link)
+ {
+ 	const struct dc *dc_struct = link->dc;
+@@ -141,12 +132,15 @@ static uint8_t get_lowest_dpia_index(struct dc_link *link)
+ 				dc_struct->links[i]->ep_type != DISPLAY_ENDPOINT_USB4_DPIA)
+ 			continue;
+ 
+-		if (idx > dc_struct->links[i]->link_index)
++		if (idx > dc_struct->links[i]->link_index) {
+ 			idx = dc_struct->links[i]->link_index;
++			break;
++		}
+ 	}
+ 
+ 	return idx;
+ }
++
+ /*
+  * Get the Max Available BW or Max Estimated BW for each Host Router
+  *
+@@ -186,6 +180,7 @@ static int get_host_router_total_bw(struct dc_link *link, uint8_t type)
+ 
+ 	return total_bw;
+ }
++
+ /*
+  * Cleanup function for when the dpia is unplugged to reset struct
+  * and perform any required clean up
+@@ -194,42 +189,50 @@ static int get_host_router_total_bw(struct dc_link *link, uint8_t type)
+  *
+  * return: none
+  */
+-static bool dpia_bw_alloc_unplug(struct dc_link *link)
++static void dpia_bw_alloc_unplug(struct dc_link *link)
+ {
+-	if (!link)
+-		return true;
+-
+-	return deallocate_usb4_bw(&link->dpia_bw_alloc_config.sink_allocated_bw,
+-			link->dpia_bw_alloc_config.sink_allocated_bw, link);
++	if (link) {
++		DC_LOG_DEBUG("%s: resetting bw alloc config for link(%d)\n",
++			__func__, link->link_index);
++		link->dpia_bw_alloc_config.sink_allocated_bw = 0;
++		reset_bw_alloc_struct(link);
++	}
+ }
++
+ static void set_usb4_req_bw_req(struct dc_link *link, int req_bw)
+ {
+ 	uint8_t requested_bw;
+ 	uint32_t temp;
+ 
+-	// 1. Add check for this corner case #1
+-	if (req_bw > link->dpia_bw_alloc_config.estimated_bw)
++	/* Error check whether request bw greater than allocated */
++	if (req_bw > link->dpia_bw_alloc_config.estimated_bw) {
++		DC_LOG_ERROR("%s: Request bw greater than estimated bw for link(%d)\n",
++			__func__, link->link_index);
+ 		req_bw = link->dpia_bw_alloc_config.estimated_bw;
++	}
+ 
+ 	temp = req_bw * link->dpia_bw_alloc_config.bw_granularity;
+ 	requested_bw = temp / Kbps_TO_Gbps;
+ 
+-	// Always make sure to add more to account for floating points
++	/* Always make sure to add more to account for floating points */
+ 	if (temp % Kbps_TO_Gbps)
+ 		++requested_bw;
+ 
+-	// 2. Add check for this corner case #2
++	/* Error check whether requested and allocated are equal */
+ 	req_bw = requested_bw * (Kbps_TO_Gbps / link->dpia_bw_alloc_config.bw_granularity);
+-	if (req_bw == link->dpia_bw_alloc_config.sink_allocated_bw)
+-		return;
++	if (req_bw == link->dpia_bw_alloc_config.sink_allocated_bw) {
++		DC_LOG_ERROR("%s: Request bw equals to allocated bw for link(%d)\n",
++			__func__, link->link_index);
++	}
+ 
+-	if (core_link_write_dpcd(
++	link->dpia_bw_alloc_config.response_ready = false; // Reset flag
++	core_link_write_dpcd(
+ 		link,
+ 		REQUESTED_BW,
+ 		&requested_bw,
+-		sizeof(uint8_t)) == DC_OK)
+-		link->dpia_bw_alloc_config.response_ready = false; // Reset flag
++		sizeof(uint8_t));
+ }
++
+ /*
+  * Return the response_ready flag from dc_link struct
+  *
+@@ -241,6 +244,7 @@ static bool get_cm_response_ready_flag(struct dc_link *link)
+ {
+ 	return link->dpia_bw_alloc_config.response_ready;
+ }
++
+ // ------------------------------------------------------------------
+ //					PUBLIC FUNCTIONS
+ // ------------------------------------------------------------------
+@@ -277,27 +281,27 @@ bool link_dp_dpia_set_dptx_usb4_bw_alloc_support(struct dc_link *link)
+ 				DPTX_BW_ALLOCATION_MODE_CONTROL,
+ 				&response,
+ 				sizeof(uint8_t)) != DC_OK) {
+-			DC_LOG_DEBUG("%s: **** FAILURE Enabling DPtx BW Allocation Mode Support ***\n",
+-					__func__);
++			DC_LOG_DEBUG("%s: FAILURE Enabling DPtx BW Allocation Mode Support for link(%d)\n",
++				__func__, link->link_index);
+ 		} else {
+ 			// SUCCESS Enabled DPtx BW Allocation Mode Support
+-			link->dpia_bw_alloc_config.bw_alloc_enabled = true;
+-			DC_LOG_DEBUG("%s: **** SUCCESS Enabling DPtx BW Allocation Mode Support ***\n",
+-					__func__);
++			DC_LOG_DEBUG("%s: SUCCESS Enabling DPtx BW Allocation Mode Support for link(%d)\n",
++				__func__, link->link_index);
+ 
+ 			ret = true;
+ 			init_usb4_bw_struct(link);
++			link->dpia_bw_alloc_config.bw_alloc_enabled = true;
+ 		}
+ 	}
+ 
+ out:
+ 	return ret;
+ }
++
+ void dpia_handle_bw_alloc_response(struct dc_link *link, uint8_t bw, uint8_t result)
+ {
+ 	int bw_needed = 0;
+ 	int estimated = 0;
+-	int host_router_total_estimated_bw = 0;
+ 
+ 	if (!get_bw_alloc_proceed_flag((link)))
+ 		return;
+@@ -306,14 +310,22 @@ void dpia_handle_bw_alloc_response(struct dc_link *link, uint8_t bw, uint8_t res
+ 
+ 	case DPIA_BW_REQ_FAILED:
+ 
+-		DC_LOG_DEBUG("%s: *** *** BW REQ FAILURE for DP-TX Request *** ***\n", __func__);
++		/*
++		 * Ideally, we shouldn't run into this case as we always validate available
++		 * bandwidth and request within that limit
++		 */
++		estimated = bw * (Kbps_TO_Gbps / link->dpia_bw_alloc_config.bw_granularity);
+ 
+-		// Update the new Estimated BW value updated by CM
+-		link->dpia_bw_alloc_config.estimated_bw =
+-				bw * (Kbps_TO_Gbps / link->dpia_bw_alloc_config.bw_granularity);
++		DC_LOG_ERROR("%s: BW REQ FAILURE for DP-TX Request for link(%d)\n",
++			__func__, link->link_index);
++		DC_LOG_ERROR("%s: current estimated_bw(%d), new estimated_bw(%d)\n",
++			__func__, link->dpia_bw_alloc_config.estimated_bw, estimated);
+ 
++		/* Update the new Estimated BW value updated by CM */
++		link->dpia_bw_alloc_config.estimated_bw = estimated;
++
++		/* Allocate the previously requested bandwidth */
+ 		set_usb4_req_bw_req(link, link->dpia_bw_alloc_config.estimated_bw);
+-		link->dpia_bw_alloc_config.response_ready = false;
+ 
+ 		/*
+ 		 * If FAIL then it is either:
+@@ -326,68 +338,34 @@ void dpia_handle_bw_alloc_response(struct dc_link *link, uint8_t bw, uint8_t res
+ 
+ 	case DPIA_BW_REQ_SUCCESS:
+ 
+-		DC_LOG_DEBUG("%s: *** BW REQ SUCCESS for DP-TX Request ***\n", __func__);
+-
+-		// 1. SUCCESS 1st time before any Pruning is done
+-		// 2. SUCCESS after prev. FAIL before any Pruning is done
+-		// 3. SUCCESS after Pruning is done but before enabling link
+-
+ 		bw_needed = bw * (Kbps_TO_Gbps / link->dpia_bw_alloc_config.bw_granularity);
+ 
+-		// 1.
+-		if (!link->dpia_bw_alloc_config.sink_allocated_bw) {
+-
+-			allocate_usb4_bw(&link->dpia_bw_alloc_config.sink_allocated_bw, bw_needed, link);
+-			link->dpia_bw_alloc_config.sink_verified_bw =
+-					link->dpia_bw_alloc_config.sink_allocated_bw;
++		DC_LOG_DEBUG("%s: BW REQ SUCCESS for DP-TX Request for link(%d)\n",
++			__func__, link->link_index);
++		DC_LOG_DEBUG("%s: current allocated_bw(%d), new allocated_bw(%d)\n",
++			__func__, link->dpia_bw_alloc_config.sink_allocated_bw, bw_needed);
+ 
+-			// SUCCESS from first attempt
+-			if (link->dpia_bw_alloc_config.sink_allocated_bw >
+-			link->dpia_bw_alloc_config.sink_max_bw)
+-				link->dpia_bw_alloc_config.sink_verified_bw =
+-						link->dpia_bw_alloc_config.sink_max_bw;
+-		}
+-		// 3.
+-		else if (link->dpia_bw_alloc_config.sink_allocated_bw) {
+-
+-			// Find out how much do we need to de-alloc
+-			if (link->dpia_bw_alloc_config.sink_allocated_bw > bw_needed)
+-				deallocate_usb4_bw(&link->dpia_bw_alloc_config.sink_allocated_bw,
+-						link->dpia_bw_alloc_config.sink_allocated_bw - bw_needed, link);
+-			else
+-				allocate_usb4_bw(&link->dpia_bw_alloc_config.sink_allocated_bw,
+-						bw_needed - link->dpia_bw_alloc_config.sink_allocated_bw, link);
+-		}
+-
+-		// 4. If this is the 2nd sink then any unused bw will be reallocated to master DPIA
+-		// => check if estimated_bw changed
++		link->dpia_bw_alloc_config.sink_allocated_bw = bw_needed;
+ 
+ 		link->dpia_bw_alloc_config.response_ready = true;
+ 		break;
+ 
+ 	case DPIA_EST_BW_CHANGED:
+ 
+-		DC_LOG_DEBUG("%s: *** ESTIMATED BW CHANGED for DP-TX Request ***\n", __func__);
+-
+ 		estimated = bw * (Kbps_TO_Gbps / link->dpia_bw_alloc_config.bw_granularity);
+-		host_router_total_estimated_bw = get_host_router_total_bw(link, HOST_ROUTER_BW_ESTIMATED);
+ 
+-		// 1. If due to unplug of other sink
+-		if (estimated == host_router_total_estimated_bw) {
+-			// First update the estimated & max_bw fields
+-			if (link->dpia_bw_alloc_config.estimated_bw < estimated)
+-				link->dpia_bw_alloc_config.estimated_bw = estimated;
+-		}
+-		// 2. If due to realloc bw btw 2 dpia due to plug OR realloc unused Bw
+-		else {
+-			// We lost estimated bw usually due to plug event of other dpia
+-			link->dpia_bw_alloc_config.estimated_bw = estimated;
+-		}
++		DC_LOG_DEBUG("%s: ESTIMATED BW CHANGED for link(%d)\n",
++			__func__, link->link_index);
++		DC_LOG_DEBUG("%s: current estimated_bw(%d), new estimated_bw(%d)\n",
++			__func__, link->dpia_bw_alloc_config.estimated_bw, estimated);
++
++		link->dpia_bw_alloc_config.estimated_bw = estimated;
+ 		break;
+ 
+ 	case DPIA_BW_ALLOC_CAPS_CHANGED:
+ 
+-		DC_LOG_DEBUG("%s: *** BW ALLOC CAPABILITY CHANGED for DP-TX Request ***\n", __func__);
++		DC_LOG_ERROR("%s: BW ALLOC CAPABILITY CHANGED to Disabled for link(%d)\n",
++			__func__, link->link_index);
+ 		link->dpia_bw_alloc_config.bw_alloc_enabled = false;
+ 		break;
+ 	}
+@@ -409,11 +387,11 @@ int dpia_handle_usb4_bandwidth_allocation_for_link(struct dc_link *link, int pea
+ 		set_usb4_req_bw_req(link, link->dpia_bw_alloc_config.sink_max_bw);
+ 
+ 		do {
+-			if (!(timeout > 0))
++			if (timeout > 0)
+ 				timeout--;
+ 			else
+ 				break;
+-			fsleep(10 * 1000);
++			msleep(10);
+ 		} while (!get_cm_response_ready_flag(link));
+ 
+ 		if (!timeout)
+@@ -428,37 +406,36 @@ int dpia_handle_usb4_bandwidth_allocation_for_link(struct dc_link *link, int pea
+ out:
+ 	return ret;
+ }
+-int link_dp_dpia_allocate_usb4_bandwidth_for_stream(struct dc_link *link, int req_bw)
++
++bool link_dp_dpia_allocate_usb4_bandwidth_for_stream(struct dc_link *link, int req_bw)
+ {
+-	int ret = 0;
++	bool ret = false;
+ 	uint8_t timeout = 10;
+ 
++	DC_LOG_DEBUG("%s: ENTER: link(%d), hpd_status(%d), current allocated_bw(%d), req_bw(%d)\n",
++		__func__, link->link_index, link->hpd_status,
++		link->dpia_bw_alloc_config.sink_allocated_bw, req_bw);
++
+ 	if (!get_bw_alloc_proceed_flag(link))
+ 		goto out;
+ 
+-	/*
+-	 * Sometimes stream uses same timing parameters as the already
+-	 * allocated max sink bw so no need to re-alloc
+-	 */
+-	if (req_bw != link->dpia_bw_alloc_config.sink_allocated_bw) {
+-		set_usb4_req_bw_req(link, req_bw);
+-		do {
+-			if (!(timeout > 0))
+-				timeout--;
+-			else
+-				break;
+-			udelay(10 * 1000);
+-		} while (!get_cm_response_ready_flag(link));
++	set_usb4_req_bw_req(link, req_bw);
++	do {
++		if (timeout > 0)
++			timeout--;
++		else
++			break;
++		msleep(10);
++	} while (!get_cm_response_ready_flag(link));
+ 
+-		if (!timeout)
+-			ret = 0;// ERROR TIMEOUT waiting for response for allocating bw
+-		else if (link->dpia_bw_alloc_config.sink_allocated_bw > 0)
+-			ret = get_host_router_total_bw(link, HOST_ROUTER_BW_ALLOCATED);
+-	}
++	if (timeout)
++		ret = true;
+ 
+ out:
++	DC_LOG_DEBUG("%s: EXIT: timeout(%d), ret(%d)\n", __func__, timeout, ret);
+ 	return ret;
+ }
++
+ bool dpia_validate_usb4_bw(struct dc_link **link, int *bw_needed_per_dpia, const unsigned int num_dpias)
+ {
+ 	bool ret = true;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.h b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.h
+index 7292690383ae..981bc4eb6120 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.h
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_dpia_bw.h
+@@ -59,9 +59,9 @@ bool link_dp_dpia_set_dptx_usb4_bw_alloc_support(struct dc_link *link);
+  * @link: pointer to the dc_link struct instance
+  * @req_bw: Bw requested by the stream
+  *
+- * return: allocated bw else return 0
++ * return: true if allocated successfully
+  */
+-int link_dp_dpia_allocate_usb4_bandwidth_for_stream(struct dc_link *link, int req_bw);
++bool link_dp_dpia_allocate_usb4_bandwidth_for_stream(struct dc_link *link, int req_bw);
+ 
+ /*
+  * Handle the USB4 BW Allocation related functionality here:
 -- 
 2.43.0
 
