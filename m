@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072888482A0
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 493E1848152
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 878E51F2301E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0545328A8A0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0742F4C3AF;
-	Sat,  3 Feb 2024 04:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C981CD38;
+	Sat,  3 Feb 2024 04:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BJ7rrE1G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qy3QnQKb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89431BC39;
-	Sat,  3 Feb 2024 04:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E101CD14;
+	Sat,  3 Feb 2024 04:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933780; cv=none; b=UcebVHF5Mhle5PLuMVSF0/s+stg2YjsrB4Yo6HJdjymcS0yBRC/QftA0NKS+mDVkmWdN9XXgt2xz2cGgwCLlsdHA9tXxRGfNFe958GFzd6Rssw436Z2hnzM8bSnfP2Jh73vg2taw5xL62qmlLA044xGbAbARS9Jpe1OVGBUaMVY=
+	t=1706933536; cv=none; b=WhZwRXMEWAyqlr4PCGpgQbzB1jKXfYPs3M/msm3hOQv5Hd7sCml1+W3pzoTmDB4UhtHOgi8Qz07kip3ZoSUNHHnbXZdpf++y5RalM1e39mkiCY5Qryeqmrn6AczdA9Ejy7t45VYyWU1f/wT9pN5Z7rlMkexAN/nreuo/nmIOqi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933780; c=relaxed/simple;
-	bh=hPaNIWpTEADtap4UEOKjCrOmpD3R9BvDDArmq9AEHxg=;
+	s=arc-20240116; t=1706933536; c=relaxed/simple;
+	bh=duI8EafTm5oTutYEGW63P7IwM/WpOdbcMyYQEWQrEew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMWD9UYMJz45tpb/ijpo1zEOxKV61z4vnBGW7THw5/0wwV5lkpU0SeDw5aRMVifLdOEAfU7ewi8aGT2QPK/zbHKXXGYu8oAfeaWm1lU8keFnwemPNSphp6FVh9bBZgjFEcRzvHc8pI+z1LWKGwnNa6qwkVKj8iVjaaHZpYeDNJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BJ7rrE1G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8122CC433C7;
-	Sat,  3 Feb 2024 04:16:20 +0000 (UTC)
+	 MIME-Version; b=DRD5QkTvFWd9KtwphdRtsKLtt1GqQ+fdKUdGvaJi0jaQR9A34kcFKhQuO3O9uWxs7ihYNIfX3kmr2QSrDRaNNLSEu+/Wt7/Z5EGQs8l3XdE4eWPwKzwOXF8M5FX4LxIRqpnfwghSODSX9/iN8a3sp9SwPy0DT1FHyMdFk3Cz06w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qy3QnQKb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2192AC433C7;
+	Sat,  3 Feb 2024 04:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933780;
-	bh=hPaNIWpTEADtap4UEOKjCrOmpD3R9BvDDArmq9AEHxg=;
+	s=korg; t=1706933536;
+	bh=duI8EafTm5oTutYEGW63P7IwM/WpOdbcMyYQEWQrEew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJ7rrE1GNr5pgQ+t7uov9aZjLtOxm9oOXtWSbHH4kO88os62rSFW7EruifwYcKpMt
-	 3Mr1UJQSznxWckVEbWar6jAhVfjHj0TgkTX2ImxYd8xHsjWNlRBhpatKzQWZIOoRpM
-	 EVp1hAFj2X3DB+fg3X4klCOLu9IgrdZ2ybltHxEM=
+	b=qy3QnQKbhTRZgV10r0YjVVtm6TuV+BqV+kGzEfo8AkG8X3ATuI/F3pHFxbykVeMCZ
+	 bcHeDOV0V7I8f+xDg3oFm6QdcH/MfYSPkpfD+kq84ik6zfJCNFbbWV/x8TJcZ3OVtR
+	 FnYxO4pd6DIaF4+9F6YzWd3/dA5uJ2a55ZEmw9mk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	ching Huang <ching2048@areca.com.tw>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 060/353] ext4: unify the type of flexbg_size to unsigned int
+Subject: [PATCH 6.6 081/322] scsi: arcmsr: Support new PCI device IDs 1883 and 1886
 Date: Fri,  2 Feb 2024 20:02:58 -0800
-Message-ID: <20240203035405.698087238@linuxfoundation.org>
+Message-ID: <20240203035401.784440184@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: ching Huang <ching2048@areca.com.tw>
 
-[ Upstream commit 658a52344fb139f9531e7543a6e0015b630feb38 ]
+[ Upstream commit 41c8a1a1e90fa4721f856bf3cf71211fd16d6434 ]
 
-The maximum value of flexbg_size is 2^31, but the maximum value of int
-is (2^31 - 1), so overflow may occur when the type of flexbg_size is
-declared as int.
+Add support for Areca RAID controllers with PCI device IDs 1883 and 1886.
 
-For example, when uninit_mask is initialized in ext4_alloc_group_tables(),
-if flexbg_size == 2^31, the initialized uninit_mask is incorrect, and this
-may causes set_flexbg_block_bitmap() to trigger a BUG_ON().
-
-Therefore, the flexbg_size type is declared as unsigned int to avoid
-overflow and memory waste.
-
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231023013057.2117948-2-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 5d1935ac02ca ("ext4: avoid online resizing failures due to oversized flex bg")
+Signed-off-by: ching Huang <ching2048@areca.com.tw>
+Link: https://lore.kernel.org/r/7732e743eaad57681b1552eec9c6a86c76dbe459.camel@areca.com.tw
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/resize.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/scsi/arcmsr/arcmsr.h     | 4 ++++
+ drivers/scsi/arcmsr/arcmsr_hba.c | 6 ++++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
-index 4fe061edefdd..c6d4539d4c1f 100644
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -228,7 +228,7 @@ struct ext4_new_flex_group_data {
-  *
-  * Returns NULL on failure otherwise address of the allocated structure.
-  */
--static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned long flexbg_size)
-+static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned int flexbg_size)
- {
- 	struct ext4_new_flex_group_data *flex_gd;
- 
-@@ -283,7 +283,7 @@ static void free_flex_gd(struct ext4_new_flex_group_data *flex_gd)
-  */
- static int ext4_alloc_group_tables(struct super_block *sb,
- 				struct ext4_new_flex_group_data *flex_gd,
--				int flexbg_size)
-+				unsigned int flexbg_size)
- {
- 	struct ext4_new_group_data *group_data = flex_gd->groups;
- 	ext4_fsblk_t start_blk;
-@@ -384,12 +384,12 @@ static int ext4_alloc_group_tables(struct super_block *sb,
- 		group = group_data[0].group;
- 
- 		printk(KERN_DEBUG "EXT4-fs: adding a flex group with "
--		       "%d groups, flexbg size is %d:\n", flex_gd->count,
-+		       "%u groups, flexbg size is %u:\n", flex_gd->count,
- 		       flexbg_size);
- 
- 		for (i = 0; i < flex_gd->count; i++) {
- 			ext4_debug(
--			       "adding %s group %u: %u blocks (%d free, %d mdata blocks)\n",
-+			       "adding %s group %u: %u blocks (%u free, %u mdata blocks)\n",
- 			       ext4_bg_has_super(sb, group + i) ? "normal" :
- 			       "no-super", group + i,
- 			       group_data[i].blocks_count,
-@@ -1606,7 +1606,7 @@ static int ext4_flex_group_add(struct super_block *sb,
- static int ext4_setup_next_flex_gd(struct super_block *sb,
- 				    struct ext4_new_flex_group_data *flex_gd,
- 				    ext4_fsblk_t n_blocks_count,
--				    unsigned long flexbg_size)
-+				    unsigned int flexbg_size)
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
- 	struct ext4_super_block *es = sbi->s_es;
-@@ -1990,8 +1990,9 @@ int ext4_resize_fs(struct super_block *sb, ext4_fsblk_t n_blocks_count)
- 	ext4_fsblk_t o_blocks_count;
- 	ext4_fsblk_t n_blocks_count_retry = 0;
- 	unsigned long last_update_time = 0;
--	int err = 0, flexbg_size = 1 << sbi->s_log_groups_per_flex;
-+	int err = 0;
- 	int meta_bg;
-+	unsigned int flexbg_size = ext4_flex_bg_size(sbi);
- 
- 	/* See if the device is actually as big as what was requested */
- 	bh = ext4_sb_bread(sb, n_blocks_count - 1, 0);
+diff --git a/drivers/scsi/arcmsr/arcmsr.h b/drivers/scsi/arcmsr/arcmsr.h
+index ed8d9319862a..3819d559ebbb 100644
+--- a/drivers/scsi/arcmsr/arcmsr.h
++++ b/drivers/scsi/arcmsr/arcmsr.h
+@@ -78,9 +78,13 @@ struct device_attribute;
+ #ifndef PCI_DEVICE_ID_ARECA_1203
+ #define PCI_DEVICE_ID_ARECA_1203	0x1203
+ #endif
++#ifndef PCI_DEVICE_ID_ARECA_1883
++#define PCI_DEVICE_ID_ARECA_1883	0x1883
++#endif
+ #ifndef PCI_DEVICE_ID_ARECA_1884
+ #define PCI_DEVICE_ID_ARECA_1884	0x1884
+ #endif
++#define PCI_DEVICE_ID_ARECA_1886_0	0x1886
+ #define PCI_DEVICE_ID_ARECA_1886	0x188A
+ #define	ARCMSR_HOURS			(1000 * 60 * 60 * 4)
+ #define	ARCMSR_MINUTES			(1000 * 60 * 60)
+diff --git a/drivers/scsi/arcmsr/arcmsr_hba.c b/drivers/scsi/arcmsr/arcmsr_hba.c
+index a66221c3b72f..01fb1396e1a9 100644
+--- a/drivers/scsi/arcmsr/arcmsr_hba.c
++++ b/drivers/scsi/arcmsr/arcmsr_hba.c
+@@ -214,8 +214,12 @@ static struct pci_device_id arcmsr_device_id_table[] = {
+ 		.driver_data = ACB_ADAPTER_TYPE_A},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1880),
+ 		.driver_data = ACB_ADAPTER_TYPE_C},
++	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1883),
++		.driver_data = ACB_ADAPTER_TYPE_C},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1884),
+ 		.driver_data = ACB_ADAPTER_TYPE_E},
++	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1886_0),
++		.driver_data = ACB_ADAPTER_TYPE_F},
+ 	{PCI_DEVICE(PCI_VENDOR_ID_ARECA, PCI_DEVICE_ID_ARECA_1886),
+ 		.driver_data = ACB_ADAPTER_TYPE_F},
+ 	{0, 0}, /* Terminating entry */
+@@ -4706,9 +4710,11 @@ static const char *arcmsr_info(struct Scsi_Host *host)
+ 	case PCI_DEVICE_ID_ARECA_1680:
+ 	case PCI_DEVICE_ID_ARECA_1681:
+ 	case PCI_DEVICE_ID_ARECA_1880:
++	case PCI_DEVICE_ID_ARECA_1883:
+ 	case PCI_DEVICE_ID_ARECA_1884:
+ 		type = "SAS/SATA";
+ 		break;
++	case PCI_DEVICE_ID_ARECA_1886_0:
+ 	case PCI_DEVICE_ID_ARECA_1886:
+ 		type = "NVMe/SAS/SATA";
+ 		break;
 -- 
 2.43.0
 
