@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-17919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C9A8480A3
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058ED8481F1
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2AC8CB2A384
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B17C928310F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE85101C1;
-	Sat,  3 Feb 2024 04:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3940B18B1A;
+	Sat,  3 Feb 2024 04:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WECm/GO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s95toPns"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0635AF9F5;
-	Sat,  3 Feb 2024 04:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2AE12B83;
+	Sat,  3 Feb 2024 04:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933413; cv=none; b=lv4VnmboPqbXtDGULH4GqabViKMA/0V7ClEtI4KOTZTooyxdIJ07RbPtAW6SSwJEt4/nbrZHhPtrGELwHRwHAdtZB0xbrUfUQL2pu8Ag01/H9Mzp43id2myMixKaMLKeIeipZv/97RN5bDDDNFkqglJfKSdsxNs+SqMWpcEjvfo=
+	t=1706933652; cv=none; b=g7axTP692uKENd48vpvx8NfaZLvnXVc1TLLmlfVfs6x1zDcXWu0hgRM/kyIkMotnrgJc2+L7Utp3IcUE4ipdkJJawZzJL4ujBmktsv49laZvGDMymVCKoQnaAI+m6LWYzwrSnz5d1w5SKveX+xffCkjuE0hAkCOc49gGL78pvvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933413; c=relaxed/simple;
-	bh=LaMAmnFU2L+OiqViV+qoj7piyRuIAc+WwkApNOI4ZDQ=;
+	s=arc-20240116; t=1706933652; c=relaxed/simple;
+	bh=uyn9LOz5DuICicw6Mr0RBOLKBtDFVgXdzQvNa2QmjTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hOED2i1/dYMp98KdMVWuXWYpT/BbElChYdDgIiAJc8ZIzlSJPYFGIpqLvr4PVf7rIgPbtcKSIG1FnnF/qPiKw986m0ZymLqk02fZKBJublSdvbwRWXxUxWz1dz6gMR9PB64BVMG9V0CjpYeLS6IpmCycejNe93Ycdv3YVFY7WNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WECm/GO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C330FC43390;
-	Sat,  3 Feb 2024 04:10:12 +0000 (UTC)
+	 MIME-Version; b=Ja25FlAV83i5SotC9CEu9pGHJWPlwwpxRnj9I03vwUa3qkhyYkvJDIrUI1mlUZRSg/RF72B1/wxzc+FXdUAqAY/kR7z4adPkK9/OrCNMDGYuSz/arBbFDXZm9daDFne8deglgt0WxTNBkxCON7GssysaKC8MalLN4hzpobYjiC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s95toPns; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B03C433C7;
+	Sat,  3 Feb 2024 04:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933412;
-	bh=LaMAmnFU2L+OiqViV+qoj7piyRuIAc+WwkApNOI4ZDQ=;
+	s=korg; t=1706933651;
+	bh=uyn9LOz5DuICicw6Mr0RBOLKBtDFVgXdzQvNa2QmjTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1WECm/GOpWZjBRA9xSKJXSrCjJU/WcmhpLFS719elUwxCH0EoksWxkkf/TYcgKvWa
-	 xuoNumTeAxHnJS4ratt3iUDZsj9qWkrj+WSwwpj4BS1QtQ0W4IkigD4xclB6Ccr/da
-	 NDUQPXwYz8ZPwaWzwS3PChYhiMcuceCz4eey/a0s=
+	b=s95toPnsfF+Zk0Z1CLVr56p1fjsXZkAv2jSzpC0PuwwKbzS5X+fNyeNdaced+ZJbr
+	 guD4nyKTQElGSNPrYARXEKInMkdxtMyEj18/qZdph50OZjY91RV1Cc7ifdHuKMumlD
+	 iJhttvJIDTJKa6uYg3Rs38SGYSVjqhYPopDAExMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, "Wang, Beyond" <Wang.Beyond@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	patches@lists.linux.dev,
+	Leo Li <sunpeng.li@amd.com>,
+	Ivan Lipski <ivlipski@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>, Wang@web.codeaurora.org
-Subject: [PATCH 6.1 135/219] drm/amdgpu: fix ftrace event amdgpu_bo_move always move on same heap
-Date: Fri,  2 Feb 2024 20:05:08 -0800
-Message-ID: <20240203035336.394058183@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 212/322] Re-revert "drm/amd/display: Enable Replay for static screen use cases"
+Date: Fri,  2 Feb 2024 20:05:09 -0800
+Message-ID: <20240203035406.095385905@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,116 +62,144 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang, Beyond <Wang.Beyond@amd.com>
+From: Ivan Lipski <ivlipski@amd.com>
 
-[ Upstream commit 94aeb4117343d072e3a35b9595bcbfc0058ee724 ]
+[ Upstream commit d6398866a6b47e92319ef6efdb0126a4fbb7796a ]
 
-Issue: during evict or validate happened on amdgpu_bo, the 'from' and
-'to' is always same in ftrace event of amdgpu_bo_move
+This reverts commit 44e60b14d5a72f91fd0bdeae8da59ae37a3ca8e5.
 
-where calling the 'trace_amdgpu_bo_move', the comment says move_notify
-is called before move happens, but actually it is called after move
-happens, here the new_mem is same as bo->resource
+Since, it causes a regression in which eDP displays with PSR support,
+but no Replay support (Sink support <= 0x03), fail to enable PSR and
+consequently all IGT amd_psr tests fail. So, revert this until a more
+suitable fix can be found.
 
-Fix: move trace_amdgpu_bo_move from move_notify to amdgpu_bo_move
+This got brought back accidently with the backmerge.
 
-Signed-off-by: Wang, Beyond <Wang.Beyond@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Acked-by: Leo Li <sunpeng.li@amd.com>
+Signed-off-by: Ivan Lipski <ivlipski@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.c | 13 +------------
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.h |  4 +---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c    |  5 +++--
- 3 files changed, 5 insertions(+), 17 deletions(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 22 -------------------
+ .../amd/display/amdgpu_dm/amdgpu_dm_crtc.c    |  9 +-------
+ drivers/gpu/drm/amd/include/amd_shared.h      |  2 --
+ 3 files changed, 1 insertion(+), 32 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-index 0ee7c935fba1..cde2fd2f7117 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-@@ -1222,19 +1222,15 @@ int amdgpu_bo_get_metadata(struct amdgpu_bo *bo, void *buffer,
-  * amdgpu_bo_move_notify - notification about a memory move
-  * @bo: pointer to a buffer object
-  * @evict: if this move is evicting the buffer from the graphics address space
-- * @new_mem: new information of the bufer object
-  *
-  * Marks the corresponding &amdgpu_bo buffer object as invalid, also performs
-  * bookkeeping.
-  * TTM driver callback which is called when ttm moves a buffer.
-  */
--void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
--			   bool evict,
--			   struct ttm_resource *new_mem)
-+void amdgpu_bo_move_notify(struct ttm_buffer_object *bo, bool evict)
- {
- 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->bdev);
- 	struct amdgpu_bo *abo;
--	struct ttm_resource *old_mem = bo->resource;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 861b5e45e2a7..fabbfea33b0c 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -65,7 +65,6 @@
+ #include "amdgpu_dm_debugfs.h"
+ #endif
+ #include "amdgpu_dm_psr.h"
+-#include "amdgpu_dm_replay.h"
  
- 	if (!amdgpu_bo_is_amdgpu_bo(bo))
- 		return;
-@@ -1251,13 +1247,6 @@ void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
- 	/* remember the eviction */
- 	if (evict)
- 		atomic64_inc(&adev->num_evictions);
--
--	/* update statistics */
--	if (!new_mem)
--		return;
--
--	/* move_notify is called before move happens */
--	trace_amdgpu_bo_move(abo, new_mem->mem_type, old_mem->mem_type);
- }
+ #include "ivsrcid/ivsrcid_vislands30.h"
  
- void amdgpu_bo_get_memory(struct amdgpu_bo *bo, uint64_t *vram_mem,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-index 6dcd7bab42fb..2ada421e79e4 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-@@ -312,9 +312,7 @@ int amdgpu_bo_set_metadata (struct amdgpu_bo *bo, void *metadata,
- int amdgpu_bo_get_metadata(struct amdgpu_bo *bo, void *buffer,
- 			   size_t buffer_size, uint32_t *metadata_size,
- 			   uint64_t *flags);
--void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
--			   bool evict,
--			   struct ttm_resource *new_mem);
-+void amdgpu_bo_move_notify(struct ttm_buffer_object *bo, bool evict);
- void amdgpu_bo_release_notify(struct ttm_buffer_object *bo);
- vm_fault_t amdgpu_bo_fault_reserve_notify(struct ttm_buffer_object *bo);
- void amdgpu_bo_fence(struct amdgpu_bo *bo, struct dma_fence *fence,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-index 10469f20a10c..158b791883f0 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -555,10 +555,11 @@ static int amdgpu_bo_move(struct ttm_buffer_object *bo, bool evict,
- 			return r;
+@@ -4338,7 +4337,6 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
+ 	enum dc_connection_type new_connection_type = dc_connection_none;
+ 	const struct dc_plane_cap *plane;
+ 	bool psr_feature_enabled = false;
+-	bool replay_feature_enabled = false;
+ 	int max_overlay = dm->dc->caps.max_slave_planes;
+ 
+ 	dm->display_indexes_num = dm->dc->caps.max_streams;
+@@ -4448,20 +4446,6 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
+ 		}
  	}
  
-+	trace_amdgpu_bo_move(abo, new_mem->mem_type, old_mem->mem_type);
- out:
- 	/* update statistics */
- 	atomic64_add(bo->base.size, &adev->num_bytes_moved);
--	amdgpu_bo_move_notify(bo, evict, new_mem);
-+	amdgpu_bo_move_notify(bo, evict);
- 	return 0;
- }
+-	if (!(amdgpu_dc_debug_mask & DC_DISABLE_REPLAY)) {
+-		switch (adev->ip_versions[DCE_HWIP][0]) {
+-		case IP_VERSION(3, 1, 4):
+-		case IP_VERSION(3, 1, 5):
+-		case IP_VERSION(3, 1, 6):
+-		case IP_VERSION(3, 2, 0):
+-		case IP_VERSION(3, 2, 1):
+-			replay_feature_enabled = true;
+-			break;
+-		default:
+-			replay_feature_enabled = amdgpu_dc_feature_mask & DC_REPLAY_MASK;
+-			break;
+-		}
+-	}
+ 	/* loops over all connectors on the board */
+ 	for (i = 0; i < link_cnt; i++) {
+ 		struct dc_link *link = NULL;
+@@ -4510,12 +4494,6 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
+ 				amdgpu_dm_update_connector_after_detect(aconnector);
+ 				setup_backlight_device(dm, aconnector);
  
-@@ -1503,7 +1504,7 @@ static int amdgpu_ttm_access_memory(struct ttm_buffer_object *bo,
- static void
- amdgpu_bo_delete_mem_notify(struct ttm_buffer_object *bo)
- {
--	amdgpu_bo_move_notify(bo, false, NULL);
-+	amdgpu_bo_move_notify(bo, false);
- }
+-				/*
+-				 * Disable psr if replay can be enabled
+-				 */
+-				if (replay_feature_enabled && amdgpu_dm_setup_replay(link, aconnector))
+-					psr_feature_enabled = false;
+-
+ 				if (psr_feature_enabled)
+ 					amdgpu_dm_set_psr_caps(link);
  
- static struct ttm_device_funcs amdgpu_bo_driver = {
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+index 97b7a0b8a1c2..30d4c6fd95f5 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+@@ -29,7 +29,6 @@
+ #include "dc.h"
+ #include "amdgpu.h"
+ #include "amdgpu_dm_psr.h"
+-#include "amdgpu_dm_replay.h"
+ #include "amdgpu_dm_crtc.h"
+ #include "amdgpu_dm_plane.h"
+ #include "amdgpu_dm_trace.h"
+@@ -124,12 +123,7 @@ static void vblank_control_worker(struct work_struct *work)
+ 	 * fill_dc_dirty_rects().
+ 	 */
+ 	if (vblank_work->stream && vblank_work->stream->link) {
+-		/*
+-		 * Prioritize replay, instead of psr
+-		 */
+-		if (vblank_work->stream->link->replay_settings.replay_feature_enabled)
+-			amdgpu_dm_replay_enable(vblank_work->stream, false);
+-		else if (vblank_work->enable) {
++		if (vblank_work->enable) {
+ 			if (vblank_work->stream->link->psr_settings.psr_version < DC_PSR_VERSION_SU_1 &&
+ 			    vblank_work->stream->link->psr_settings.psr_allow_active)
+ 				amdgpu_dm_psr_disable(vblank_work->stream);
+@@ -138,7 +132,6 @@ static void vblank_control_worker(struct work_struct *work)
+ #ifdef CONFIG_DRM_AMD_SECURE_DISPLAY
+ 			   !amdgpu_dm_crc_window_is_activated(&vblank_work->acrtc->base) &&
+ #endif
+-			   vblank_work->stream->link->panel_config.psr.disallow_replay &&
+ 			   vblank_work->acrtc->dm_irq_params.allow_psr_entry) {
+ 			amdgpu_dm_psr_enable(vblank_work->stream);
+ 		}
+diff --git a/drivers/gpu/drm/amd/include/amd_shared.h b/drivers/gpu/drm/amd/include/amd_shared.h
+index 67d7b7ee8a2a..abe829bbd54a 100644
+--- a/drivers/gpu/drm/amd/include/amd_shared.h
++++ b/drivers/gpu/drm/amd/include/amd_shared.h
+@@ -240,7 +240,6 @@ enum DC_FEATURE_MASK {
+ 	DC_DISABLE_LTTPR_DP2_0 = (1 << 6), //0x40, disabled by default
+ 	DC_PSR_ALLOW_SMU_OPT = (1 << 7), //0x80, disabled by default
+ 	DC_PSR_ALLOW_MULTI_DISP_OPT = (1 << 8), //0x100, disabled by default
+-	DC_REPLAY_MASK = (1 << 9), //0x200, disabled by default for dcn < 3.1.4
+ };
+ 
+ enum DC_DEBUG_MASK {
+@@ -251,7 +250,6 @@ enum DC_DEBUG_MASK {
+ 	DC_DISABLE_PSR = 0x10,
+ 	DC_FORCE_SUBVP_MCLK_SWITCH = 0x20,
+ 	DC_DISABLE_MPO = 0x40,
+-	DC_DISABLE_REPLAY = 0x50,
+ 	DC_ENABLE_DPIA_TRACE = 0x80,
+ };
+ 
 -- 
 2.43.0
 
