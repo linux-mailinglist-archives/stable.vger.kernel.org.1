@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB8428480D4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62131848315
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A29C828C7BF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1611A1F240FA
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86B010A05;
-	Sat,  3 Feb 2024 04:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49A74F8B8;
+	Sat,  3 Feb 2024 04:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XaWa4elq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJZVwU6f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A64FBEE;
-	Sat,  3 Feb 2024 04:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832B911198;
+	Sat,  3 Feb 2024 04:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933447; cv=none; b=Hxq2hfTCZTc7ngDVo7krDGoZ4wyNIcRXy/A81ZqvFiQ1nhcJ9frN/1BCu6y4IKJ336hcNjG5uqH+/MCfunn83vetbIgdYSHRyR/8CDxhBvyxCQQTcQ/AfX8InoSc4LnPqAb8phBJuU0LjNX/u80nLrq9lR82T9d9MWX+bEed4mM=
+	t=1706933866; cv=none; b=QW6v14jyiEBkDEOZcCBB6djP+dskq7XfOezG+6lJQ+u3rk3B+rRWDWho1M0gcA8NdstcQFUpq0Dkvc24RgRq7ai8lJTYDL6DySRVFysLGHoUlTSNwWOYZ9QkKc7TgvBOhPGJeXqnQQpGBaftZnUk9El2RJHCwW8yZvoTIXadJjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933447; c=relaxed/simple;
-	bh=y1qqkfBGbbEBP4qtK61jmqxkmW6SCAM6WL4mhR4vdsI=;
+	s=arc-20240116; t=1706933866; c=relaxed/simple;
+	bh=R6Ml8+ckbhiffBmoVRm/MSX/1bVjug9k4dIffdM+Ha8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYbzGGphPOx+BqQGAD0Vslc+4m2P7wcW0g5kq1bIB66Pgt32CUuhWVHs0ixsxTFaZ408VgrINO22Sk76VlHN8bdZssDc1UiWDxG7ZkQ5UTGUq581wB1chdi8c1K/72bw6yyKbaPbWhiyF481X9PCZIj0WaljYi5rMr72W/SKt/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XaWa4elq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E86AC433C7;
-	Sat,  3 Feb 2024 04:10:47 +0000 (UTC)
+	 MIME-Version; b=a7HyXtWkIaF+oolyojN6Fq2oLH4ZJ/SB62Cq5deL8eRvNFKZvbbU7RNfRqyGVC4eLPcRKsFhPu2W2XubBeEqPLcusrcsN2kPSnKyKOlfmhQY0x4HirQGMY1UF2Q4+gQBh6qXRnFIdxL4Q7msSK/fglEmjDBNXApg2c6lLrfbkfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJZVwU6f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A453C43394;
+	Sat,  3 Feb 2024 04:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933447;
-	bh=y1qqkfBGbbEBP4qtK61jmqxkmW6SCAM6WL4mhR4vdsI=;
+	s=korg; t=1706933866;
+	bh=R6Ml8+ckbhiffBmoVRm/MSX/1bVjug9k4dIffdM+Ha8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XaWa4elqWaZokc4oTOrGRWfs+H3h2vsyqIwoiEJKHUA80XeYsaYE4775knzTLOyb2
-	 7y6Q4/AHEMKxJzInpcUrD/6N9f6xlccbEmuINE5tP853Zpj4syVRPFkZvIX1P4uSQa
-	 h/9z59Ipzh5VH5CPgfYhNKwXrwG3ODL97omuZL/M=
+	b=QJZVwU6f9+FhVj6WWS0qhMsQsGrYHoXBFJ26yHtfAjTUQb4QLqC3jRFKwuV6b1aaU
+	 4Cq4zHkv6yh8mhnx/YbtGQTOq4PUI9S+ncmh5hGmVeHZdT4GaqJlM8Sw//msCSIE40
+	 aYU5VvdE2PM5Z7bqwG4eDfXeLKV4VSEgjwsFgl1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	bo liu <bo.liu@senarytech.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 146/219] ALSA: hda/conexant: Fix headset auto detect fail in cx8070 and SN6140
-Date: Fri,  2 Feb 2024 20:05:19 -0800
-Message-ID: <20240203035337.768182300@linuxfoundation.org>
+Subject: [PATCH 6.7 202/353] media: ov2740: Fix hts value
+Date: Fri,  2 Feb 2024 20:05:20 -0800
+Message-ID: <20240203035410.076746217@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,202 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: bo liu <bo.liu@senarytech.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 7aeb259086487417f0fecf66e325bee133e8813a ]
+[ Upstream commit 3735228bbe3511f844e03dfcc4003fadb59dde23 ]
 
-When OMTP headset plugin the headset jack of CX8070 and SN6160 sound cards,
-the headset type detection circuit will recognize the headset type as CTIA.
-At this point, plugout and plugin the headset will get the correct headset
-type as OMTP.
-The reason for the failure of headset type recognition is that the sound
-card creation will enable the VREF voltage of the headset mic, which
-interferes with the headset type automatic detection circuit. Plugout and
-plugin the headset will restart the headset detection and get the correct
-headset type.
-The patch is disable the VREF voltage when the headset is not present, and
-will enable the VREF voltage when the headset is present.
+HTS must be more then width, so the 1080 value clearly is wrong,
+this is then corrected with some weird math dividing clocks in
+to_pixels_per_line() which results in the hts getting multiplied by 2,
+resulting in 2160.
 
-Signed-off-by: bo liu <bo.liu@senarytech.com>
-Link: https://lore.kernel.org/r/20240108110235.3867-1-bo.liu@senarytech.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Instead just directly set hts to the correct value of 2160 and
+drop to_pixels_per_line().
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c | 115 ++++++++++++++++++++++++++++++++-
- 1 file changed, 113 insertions(+), 2 deletions(-)
+ drivers/media/i2c/ov2740.c | 17 +++--------------
+ 1 file changed, 3 insertions(+), 14 deletions(-)
 
-diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
-index a889cccdd607..e8819e8a9876 100644
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -21,6 +21,12 @@
- #include "hda_jack.h"
- #include "hda_generic.h"
+diff --git a/drivers/media/i2c/ov2740.c b/drivers/media/i2c/ov2740.c
+index 24e468485fbf..6be22586c3d2 100644
+--- a/drivers/media/i2c/ov2740.c
++++ b/drivers/media/i2c/ov2740.c
+@@ -310,7 +310,7 @@ static const struct ov2740_mode supported_modes[] = {
+ 	{
+ 		.width = 1932,
+ 		.height = 1092,
+-		.hts = 1080,
++		.hts = 2160,
+ 		.vts_def = OV2740_VTS_DEF,
+ 		.vts_min = OV2740_VTS_MIN,
+ 		.reg_list = {
+@@ -357,15 +357,6 @@ static u64 to_pixel_rate(u32 f_index)
+ 	return pixel_rate;
+ }
  
-+enum {
-+	CX_HEADSET_NOPRESENT = 0,
-+	CX_HEADSET_PARTPRESENT,
-+	CX_HEADSET_ALLPRESENT,
-+};
-+
- struct conexant_spec {
- 	struct hda_gen_spec gen;
- 
-@@ -42,7 +48,8 @@ struct conexant_spec {
- 	unsigned int gpio_led;
- 	unsigned int gpio_mute_led_mask;
- 	unsigned int gpio_mic_led_mask;
+-static u64 to_pixels_per_line(u32 hts, u32 f_index)
+-{
+-	u64 ppl = hts * to_pixel_rate(f_index);
 -
-+	unsigned int headset_present_flag;
-+	bool is_cx8070_sn6140;
- };
- 
- 
-@@ -164,6 +171,27 @@ static void cxt_init_gpio_led(struct hda_codec *codec)
- 	}
- }
- 
-+static void cx_fixup_headset_recog(struct hda_codec *codec)
-+{
-+	unsigned int mic_persent;
-+
-+	/* fix some headset type recognize fail issue, such as EDIFIER headset */
-+	/* set micbiasd output current comparator threshold from 66% to 55%. */
-+	snd_hda_codec_write(codec, 0x1c, 0, 0x320, 0x010);
-+	/* set OFF voltage for DFET from -1.2V to -0.8V, set headset micbias registor
-+	 * value adjustment trim from 2.2K ohms to 2.0K ohms.
-+	 */
-+	snd_hda_codec_write(codec, 0x1c, 0, 0x3b0, 0xe10);
-+	/* fix reboot headset type recognize fail issue */
-+	mic_persent = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_PIN_SENSE, 0x0);
-+	if (mic_persent & AC_PINSENSE_PRESENCE)
-+		/* enable headset mic VREF */
-+		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x24);
-+	else
-+		/* disable headset mic VREF */
-+		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x20);
-+}
-+
- static int cx_auto_init(struct hda_codec *codec)
+-	do_div(ppl, OV2740_SCLK);
+-
+-	return ppl;
+-}
+-
+ static int ov2740_read_reg(struct ov2740 *ov2740, u16 reg, u16 len, u32 *val)
  {
- 	struct conexant_spec *spec = codec->spec;
-@@ -174,6 +202,9 @@ static int cx_auto_init(struct hda_codec *codec)
- 	cxt_init_gpio_led(codec);
- 	snd_hda_apply_fixup(codec, HDA_FIXUP_ACT_INIT);
+ 	struct i2c_client *client = v4l2_get_subdevdata(&ov2740->sd);
+@@ -598,8 +589,7 @@ static int ov2740_init_controls(struct ov2740 *ov2740)
+ 					   V4L2_CID_VBLANK, vblank_min,
+ 					   vblank_max, 1, vblank_default);
  
-+	if (spec->is_cx8070_sn6140)
-+		cx_fixup_headset_recog(codec);
-+
+-	h_blank = to_pixels_per_line(cur_mode->hts, cur_mode->link_freq_index);
+-	h_blank -= cur_mode->width;
++	h_blank = cur_mode->hts - cur_mode->width;
+ 	ov2740->hblank = v4l2_ctrl_new_std(ctrl_hdlr, &ov2740_ctrl_ops,
+ 					   V4L2_CID_HBLANK, h_blank, h_blank, 1,
+ 					   h_blank);
+@@ -842,8 +832,7 @@ static int ov2740_set_format(struct v4l2_subdev *sd,
+ 				 mode->vts_min - mode->height,
+ 				 OV2740_VTS_MAX - mode->height, 1, vblank_def);
+ 	__v4l2_ctrl_s_ctrl(ov2740->vblank, vblank_def);
+-	h_blank = to_pixels_per_line(mode->hts, mode->link_freq_index) -
+-		mode->width;
++	h_blank = mode->hts - mode->width;
+ 	__v4l2_ctrl_modify_range(ov2740->hblank, h_blank, h_blank, 1, h_blank);
+ 
  	return 0;
- }
- 
-@@ -192,6 +223,77 @@ static void cx_auto_free(struct hda_codec *codec)
- 	snd_hda_gen_free(codec);
- }
- 
-+static void cx_process_headset_plugin(struct hda_codec *codec)
-+{
-+	unsigned int val;
-+	unsigned int count = 0;
-+
-+	/* Wait headset detect done. */
-+	do {
-+		val = snd_hda_codec_read(codec, 0x1c, 0, 0xca0, 0x0);
-+		if (val & 0x080) {
-+			codec_dbg(codec, "headset type detect done!\n");
-+			break;
-+		}
-+		msleep(20);
-+		count++;
-+	} while (count < 3);
-+	val = snd_hda_codec_read(codec, 0x1c, 0, 0xcb0, 0x0);
-+	if (val & 0x800) {
-+		codec_dbg(codec, "headset plugin, type is CTIA\n");
-+		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x24);
-+	} else if (val & 0x400) {
-+		codec_dbg(codec, "headset plugin, type is OMTP\n");
-+		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x24);
-+	} else {
-+		codec_dbg(codec, "headphone plugin\n");
-+	}
-+}
-+
-+static void cx_update_headset_mic_vref(struct hda_codec *codec, unsigned int res)
-+{
-+	unsigned int phone_present, mic_persent, phone_tag, mic_tag;
-+	struct conexant_spec *spec = codec->spec;
-+
-+	/* In cx8070 and sn6140, the node 16 can only be config to headphone or disabled,
-+	 * the node 19 can only be config to microphone or disabled.
-+	 * Check hp&mic tag to process headset pulgin&plugout.
-+	 */
-+	phone_tag = snd_hda_codec_read(codec, 0x16, 0, AC_VERB_GET_UNSOLICITED_RESPONSE, 0x0);
-+	mic_tag = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_UNSOLICITED_RESPONSE, 0x0);
-+	if ((phone_tag & (res >> AC_UNSOL_RES_TAG_SHIFT)) ||
-+	    (mic_tag & (res >> AC_UNSOL_RES_TAG_SHIFT))) {
-+		phone_present = snd_hda_codec_read(codec, 0x16, 0, AC_VERB_GET_PIN_SENSE, 0x0);
-+		if (!(phone_present & AC_PINSENSE_PRESENCE)) {/* headphone plugout */
-+			spec->headset_present_flag = CX_HEADSET_NOPRESENT;
-+			snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x20);
-+			return;
-+		}
-+		if (spec->headset_present_flag == CX_HEADSET_NOPRESENT) {
-+			spec->headset_present_flag = CX_HEADSET_PARTPRESENT;
-+		} else if (spec->headset_present_flag == CX_HEADSET_PARTPRESENT) {
-+			mic_persent = snd_hda_codec_read(codec, 0x19, 0,
-+							 AC_VERB_GET_PIN_SENSE, 0x0);
-+			/* headset is present */
-+			if ((phone_present & AC_PINSENSE_PRESENCE) &&
-+			    (mic_persent & AC_PINSENSE_PRESENCE)) {
-+				cx_process_headset_plugin(codec);
-+				spec->headset_present_flag = CX_HEADSET_ALLPRESENT;
-+			}
-+		}
-+	}
-+}
-+
-+static void cx_jack_unsol_event(struct hda_codec *codec, unsigned int res)
-+{
-+	struct conexant_spec *spec = codec->spec;
-+
-+	if (spec->is_cx8070_sn6140)
-+		cx_update_headset_mic_vref(codec, res);
-+
-+	snd_hda_jack_unsol_event(codec, res);
-+}
-+
- #ifdef CONFIG_PM
- static int cx_auto_suspend(struct hda_codec *codec)
- {
-@@ -205,7 +307,7 @@ static const struct hda_codec_ops cx_auto_patch_ops = {
- 	.build_pcms = snd_hda_gen_build_pcms,
- 	.init = cx_auto_init,
- 	.free = cx_auto_free,
--	.unsol_event = snd_hda_jack_unsol_event,
-+	.unsol_event = cx_jack_unsol_event,
- #ifdef CONFIG_PM
- 	.suspend = cx_auto_suspend,
- 	.check_power_status = snd_hda_gen_check_power_status,
-@@ -1042,6 +1144,15 @@ static int patch_conexant_auto(struct hda_codec *codec)
- 	codec->spec = spec;
- 	codec->patch_ops = cx_auto_patch_ops;
- 
-+	/* init cx8070/sn6140 flag and reset headset_present_flag */
-+	switch (codec->core.vendor_id) {
-+	case 0x14f11f86:
-+	case 0x14f11f87:
-+		spec->is_cx8070_sn6140 = true;
-+		spec->headset_present_flag = CX_HEADSET_NOPRESENT;
-+		break;
-+	}
-+
- 	cx_auto_parse_eapd(codec);
- 	spec->gen.own_eapd_ctl = 1;
- 
 -- 
 2.43.0
 
