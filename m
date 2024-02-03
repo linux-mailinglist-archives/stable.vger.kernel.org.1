@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-17996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A748480F4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D45848358
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A359B1C24406
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CD311F262A4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03CAB1B94E;
-	Sat,  3 Feb 2024 04:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7675952F85;
+	Sat,  3 Feb 2024 04:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjRekyc9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UL5y++ej"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63CFFC03;
-	Sat,  3 Feb 2024 04:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350B1171CC;
+	Sat,  3 Feb 2024 04:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933470; cv=none; b=e5UjO+lxgvlFRs+tnTjGEC3OcY2SdxqSXx7o9EuEqaNW5pkZYW7cWAREC4+NEsB8ZdqGdb4slSdBropENIerD9uz271aBheSyHrxwN14vLiL+IXamVZLQTxELcIX78yCm48fI6v8RBvAjJorUZmGl44pVl0ezqe7liNBRhCScPk=
+	t=1706933914; cv=none; b=f/Wg6F9x8HNnmPj+wzOJNkaQMsRAqcg0+R4zjWOihm3gU4NRDhgYyaSa5IKQoM4eb+eOt4S+WAZwoOsCtmgqIA/kN8scxhV1n1aP9Sfyi6LdVqkTNRXs8JJUN3oLsLBrKWaF/QIZkmwMBfds9Xn/bJ89XT+EvY05YkERxNcF4jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933470; c=relaxed/simple;
-	bh=iTlTRGyyK0EfaeBLWaCHxVM9ry3rRMfdjxfgT1MRZsg=;
+	s=arc-20240116; t=1706933914; c=relaxed/simple;
+	bh=eEI+dzoXeJ86fz2hkIYOP+vY8YhgpMFNUSUuA1vJGqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PLD7xiuAxiH5JlnN99lyhHD8wwBl4270U8sdrcEdRuuZZuQoRxC/YgK7PLBFL332mSSJIOfLBbiSkTDIJkvliKUVGSOK40PATWpdDbxjRj0McRgSpmicMRaAxBgGop+Iy4R/pQOtQ1FJ0OfhGd003ip5/24KFFJI9YD/0Mqk6So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjRekyc9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E74AC43390;
-	Sat,  3 Feb 2024 04:11:10 +0000 (UTC)
+	 MIME-Version; b=VDjkMu7hpO9sONE4fHx4ZLud95yjkJ7hfdE+Y4p4nTlzQVrYcaAsQjOj+6GF4TEs3+ZNoEj3E0np8nTX+C8KCH+I34VjL1+vD/pJrbP+WpbNjq5W/PbW1ZWsL5C/XLVuhaKJwg/1enmATTwYNNALoGC0LYre0BKueozrCHUIjg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UL5y++ej; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5EEC43390;
+	Sat,  3 Feb 2024 04:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933470;
-	bh=iTlTRGyyK0EfaeBLWaCHxVM9ry3rRMfdjxfgT1MRZsg=;
+	s=korg; t=1706933914;
+	bh=eEI+dzoXeJ86fz2hkIYOP+vY8YhgpMFNUSUuA1vJGqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EjRekyc9zWFaStWChxRqrSHF52NZrsCmBWX9QT8kPG1XrCNkVoIP7R6awL4ybplHb
-	 090LerrOve5JHAdaenAISeWi8sWaUbddJQUe/ULK/sBsBBxmnegHLHNPqWHKjbZbFn
-	 51efaJQ65I04s7iP7df40fOzlF3p60Znkfo/rd+Y=
+	b=UL5y++ejDIZ8OzpKlvXKRxfEy/KtH7OsHfB5ERpKZ50eRaexs93O1iZll8qnoaWv/
+	 GUnPwo7RY8acIkOKdIJsRUjRpGGyw9RPdu9aRUUkx9XkBGVImyDEB7/FnzDD/LuF4a
+	 8nC6ejnJWIFyKcY9BHeJpvNZDASa10mw3+qsQMNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Poirier <bpoirier@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yinbo Zhu <zhuyinbo@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 212/219] selftests: bonding: Check initial state
+Subject: [PATCH 6.7 267/353] usb: xhci-plat: fix usb disconnect issue after s4
 Date: Fri,  2 Feb 2024 20:06:25 -0800
-Message-ID: <20240203035346.570450237@linuxfoundation.org>
+Message-ID: <20240203035412.203947661@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Poirier <bpoirier@nvidia.com>
+From: Yinbo Zhu <zhuyinbo@loongson.cn>
 
-[ Upstream commit 8cc063ae1b3dbe416ce62a15d49af4c2314b45fe ]
+[ Upstream commit 6d6887c42e946f43bed2e64571a40c8476a1e4a9 ]
 
-The purpose of the test_LAG_cleanup() function is to check that some
-hardware addresses are removed from underlying devices after they have been
-unenslaved. The test function simply checks that those addresses are not
-present at the end. However, if the addresses were never added to begin
-with due to some error in device setup, the test function currently passes.
-This is a false positive since in that situation the test did not actually
-exercise the intended functionality.
+The xhci retaining bogus hardware states cause usb disconnect devices
+connected before hibernation(s4) and refer to the commit 'f3d478858be
+("usb: ohci-platform: fix usb disconnect issue after s4")' which set
+flag "hibernated" as true when resume-from-hibernation and that the
+drivers will reset the hardware to get rid of any existing state and
+make sure resume from hibernation re-enumerates everything for xhci.
 
-Add a check that the expected addresses are indeed present after device
-setup. This makes the test function more robust.
-
-I noticed this problem when running the team/dev_addr_lists.sh test on a
-system without support for dummy and ipv6:
-
-tools/testing/selftests/drivers/net/team# ./dev_addr_lists.sh
-Error: Unknown device type.
-Error: Unknown device type.
-This program is not intended to be run as root.
-RTNETLINK answers: Operation not supported
-TEST: team cleanup mode lacp                                        [ OK ]
-
-Fixes: bbb774d921e2 ("net: Add tests for bonding and team address list management")
-Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
-Link: https://lore.kernel.org/r/20240131140848.360618-3-bpoirier@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Yinbo Zhu <zhuyinbo@loongson.cn>
+Link: https://lore.kernel.org/r/20231228071113.1719-1-zhuyinbo@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/drivers/net/bonding/lag_lib.sh  | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/usb/host/xhci-plat.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/bonding/lag_lib.sh b/tools/testing/selftests/drivers/net/bonding/lag_lib.sh
-index 16c7fb858ac1..696ef9bf3afc 100644
---- a/tools/testing/selftests/drivers/net/bonding/lag_lib.sh
-+++ b/tools/testing/selftests/drivers/net/bonding/lag_lib.sh
-@@ -46,6 +46,17 @@ test_LAG_cleanup()
- 	ip link add mv0 link "$name" up address "$ucaddr" type macvlan
- 	# Used to test dev->mc handling
- 	ip address add "$addr6" dev "$name"
-+
-+	# Check that addresses were added as expected
-+	(grep_bridge_fdb "$ucaddr" bridge fdb show dev dummy1 ||
-+		grep_bridge_fdb "$ucaddr" bridge fdb show dev dummy2) >/dev/null
-+	check_err $? "macvlan unicast address not found on a slave"
-+
-+	# mcaddr is added asynchronously by addrconf_dad_work(), use busywait
-+	(busywait 10000 grep_bridge_fdb "$mcaddr" bridge fdb show dev dummy1 ||
-+		grep_bridge_fdb "$mcaddr" bridge fdb show dev dummy2) >/dev/null
-+	check_err $? "IPv6 solicited-node multicast mac address not found on a slave"
-+
- 	ip link set dev "$name" down
- 	ip link del "$name"
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index 732cdeb73920..f0853c4478f5 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -433,7 +433,7 @@ void xhci_plat_remove(struct platform_device *dev)
+ }
+ EXPORT_SYMBOL_GPL(xhci_plat_remove);
  
+-static int __maybe_unused xhci_plat_suspend(struct device *dev)
++static int xhci_plat_suspend(struct device *dev)
+ {
+ 	struct usb_hcd	*hcd = dev_get_drvdata(dev);
+ 	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
+@@ -461,7 +461,7 @@ static int __maybe_unused xhci_plat_suspend(struct device *dev)
+ 	return 0;
+ }
+ 
+-static int __maybe_unused xhci_plat_resume(struct device *dev)
++static int xhci_plat_resume_common(struct device *dev, struct pm_message pmsg)
+ {
+ 	struct usb_hcd	*hcd = dev_get_drvdata(dev);
+ 	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
+@@ -483,7 +483,7 @@ static int __maybe_unused xhci_plat_resume(struct device *dev)
+ 	if (ret)
+ 		goto disable_clks;
+ 
+-	ret = xhci_resume(xhci, PMSG_RESUME);
++	ret = xhci_resume(xhci, pmsg);
+ 	if (ret)
+ 		goto disable_clks;
+ 
+@@ -502,6 +502,16 @@ static int __maybe_unused xhci_plat_resume(struct device *dev)
+ 	return ret;
+ }
+ 
++static int xhci_plat_resume(struct device *dev)
++{
++	return xhci_plat_resume_common(dev, PMSG_RESUME);
++}
++
++static int xhci_plat_restore(struct device *dev)
++{
++	return xhci_plat_resume_common(dev, PMSG_RESTORE);
++}
++
+ static int __maybe_unused xhci_plat_runtime_suspend(struct device *dev)
+ {
+ 	struct usb_hcd  *hcd = dev_get_drvdata(dev);
+@@ -524,7 +534,12 @@ static int __maybe_unused xhci_plat_runtime_resume(struct device *dev)
+ }
+ 
+ const struct dev_pm_ops xhci_plat_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(xhci_plat_suspend, xhci_plat_resume)
++	.suspend = pm_sleep_ptr(xhci_plat_suspend),
++	.resume = pm_sleep_ptr(xhci_plat_resume),
++	.freeze = pm_sleep_ptr(xhci_plat_suspend),
++	.thaw = pm_sleep_ptr(xhci_plat_resume),
++	.poweroff = pm_sleep_ptr(xhci_plat_suspend),
++	.restore = pm_sleep_ptr(xhci_plat_restore),
+ 
+ 	SET_RUNTIME_PM_OPS(xhci_plat_runtime_suspend,
+ 			   xhci_plat_runtime_resume,
 -- 
 2.43.0
 
