@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-18003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D38A8480FB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5369184824A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E6F81C2461F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E93141F2A29F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A29241B95E;
-	Sat,  3 Feb 2024 04:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7266482C6;
+	Sat,  3 Feb 2024 04:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXd9LMgE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZ/KZBSB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61147134C0;
-	Sat,  3 Feb 2024 04:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA878482E4;
+	Sat,  3 Feb 2024 04:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933476; cv=none; b=aNIH0C7fZc3iWDkz1nVQAG13umcI3ydQ0ouC5NFuwuaEu5vtVRoivJWTbhko6RsZ9t8bHC2t4GT2CDh6NE7gDUQnGw9PX/Z0roMFc8RcUK0mDb6bIYeD2cgBNuGxdc0esNBJtyyOC5M6p8JAj7eDUi3i1nv1PIMGnW1rPaDJqug=
+	t=1706933718; cv=none; b=qeIz0EKY7jZQZj9iXZnJsYrUEy/zSbic34plQKU2wDJbctnfiUUhzoa4Bv4tMPOSsSfMhBYXRvHTyFraaNmKRXoqlbMqjGqH3UwsLDzCI3QvGPFNIqFQkoOiYf2t+KrJVReyjAGcTF+by2/5XLCOgCcd7dK3jNIOZrjsVGs+0/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933476; c=relaxed/simple;
-	bh=k87zqLb+sPEb9yoN9+ZYs+qYEUenqnzInTntwg3i/j0=;
+	s=arc-20240116; t=1706933718; c=relaxed/simple;
+	bh=kHyKEygPVo1aTwVjzGYkWjZiIrR9ITqQqcpm1XoiBD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uTZ2RBDRYp32Y9Jow4ca6iDh4nDQa8Q+3x23mFBrV9uCqWx/aBhaKZzTpPVO04/tv4Y/hOPT9wABlaUdeq+EG0yysLXUMV5y+a76fEOhiM3ycztovFons92dtJgQ9yigl4tKqYvv6rjydYWwZLhdnd3usOIDyRnTevjihuOxmMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXd9LMgE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A72C43390;
-	Sat,  3 Feb 2024 04:11:15 +0000 (UTC)
+	 MIME-Version; b=qRFSq98UdMTl5FAq09MlImhpuFouZhvHcsPxt6OrojopfpCC3l2BYCAyVjuIxrytMq4UMYJT7KeRIkiWDVMN6ZYfox+1eXN5y+WaUm8VL+uXjTNntO4BpJo8pE6MzV+vZIBAhUw/LQ743yADkfYQKX0fhnOCOAJL8f9BP8if3Rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZ/KZBSB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F7DC43390;
+	Sat,  3 Feb 2024 04:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933475;
-	bh=k87zqLb+sPEb9yoN9+ZYs+qYEUenqnzInTntwg3i/j0=;
+	s=korg; t=1706933716;
+	bh=kHyKEygPVo1aTwVjzGYkWjZiIrR9ITqQqcpm1XoiBD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YXd9LMgERz0l/PCKfUCRTJ06aZ1Zk6mzJSHZe8JzzEvid3S6r8V3ADMadYUF+BL4H
-	 QJmKGWjOTwAxgCIIwmYDajtTY6vJBm7UvjuuxJp9tE4u5xNkBvcoTPcuiLgaOBk4dq
-	 OJf6R8vfHGlpzNbsxqnfeXM1/+vRL5HorDwO2bEk=
+	b=BZ/KZBSB47SvXdS+gd8ZKglm1+B4y4bZP2dRzcDdS/xZk5IxSaByOD1Sh4dB9rvTI
+	 U3OY+hfdzQAK5LhOvgt0PtmmEyvRvsr7PcmlpY3BCtoTtR9cIjlqQeadGy90zOVkCQ
+	 GIoD+B03s5lUPlknPWPX83onsVJwrV3/kjN3bWcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 219/219] bonding: remove print in bond_verify_device_path
-Date: Fri,  2 Feb 2024 20:06:32 -0800
-Message-ID: <20240203035347.379642185@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 296/322] netfilter: nf_log: replace BUG_ON by WARN_ON_ONCE when putting logger
+Date: Fri,  2 Feb 2024 20:06:33 -0800
+Message-ID: <20240203035408.623661907@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 486058f42a4728053ae69ebbf78e9731d8ce6f8b upstream.
+[ Upstream commit 259eb32971e9eb24d1777a28d82730659f50fdcb ]
 
-As suggested by Paolo in link[1], if the memory allocation fails, the mm
-layer will emit a lot warning comprising the backtrace, so remove the
-print.
+Module reference is bumped for each user, this should not ever happen.
 
-[1] https://lore.kernel.org/all/20231118081653.1481260-1-shaozhengchao@huawei.com/
+But BUG_ON check should use rcu_access_pointer() instead.
 
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If this ever happens, do WARN_ON_ONCE() instead of BUG_ON() and
+consolidate pointer check under the rcu read side lock section.
+
+Fixes: fab4085f4e24 ("netfilter: log: nf_log_packet() as real unified interface")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ net/netfilter/nf_log.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2943,11 +2943,8 @@ struct bond_vlan_tag *bond_verify_device
- 
- 	if (start_dev == end_dev) {
- 		tags = kcalloc(level + 1, sizeof(*tags), GFP_ATOMIC);
--		if (!tags) {
--			net_err_ratelimited("%s: %s: Failed to allocate tags\n",
--					    __func__, start_dev->name);
-+		if (!tags)
- 			return ERR_PTR(-ENOMEM);
--		}
- 		tags[level].vlan_proto = VLAN_N_VID;
- 		return tags;
+diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
+index 8cc52d2bd31b..e16f158388bb 100644
+--- a/net/netfilter/nf_log.c
++++ b/net/netfilter/nf_log.c
+@@ -193,11 +193,12 @@ void nf_logger_put(int pf, enum nf_log_type type)
+ 		return;
  	}
+ 
+-	BUG_ON(loggers[pf][type] == NULL);
+-
+ 	rcu_read_lock();
+ 	logger = rcu_dereference(loggers[pf][type]);
+-	module_put(logger->me);
++	if (!logger)
++		WARN_ON_ONCE(1);
++	else
++		module_put(logger->me);
+ 	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL_GPL(nf_logger_put);
+-- 
+2.43.0
+
 
 
 
