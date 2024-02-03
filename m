@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E75A84817E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8E3848062
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDF321F22D74
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDD8B28BF15
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3C52BB0B;
-	Sat,  3 Feb 2024 04:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342D1FC09;
+	Sat,  3 Feb 2024 04:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ure6MvIb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPfXoE1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F2C11C83;
-	Sat,  3 Feb 2024 04:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C8510A22;
+	Sat,  3 Feb 2024 04:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933567; cv=none; b=K7s+jwEVi9f0g1yICRukCRakvb1BzQFRFOVYmmnhkUW8JIwTI2kbGd6Hxw0hr60+Q6HNDqrgcgbyoy7ifxsVFQVblq62ktnNiMxZNjAb8XHtYO/S7VpOU2/3rbj93o6iqZK20qBjW/fapVs1MWmAdHwj1A+4QcTKcVu8JD4WSw0=
+	t=1706933366; cv=none; b=l1kcnpLs1+EOlFhkkFfITxGILiJVl7QzCMLbhI+5xOe8SZv+c+mGA3UDDVsCqvap9N68kcrK3iuuJZoUCyWJLN7jFLnQaUI7H9p4UecBsnc3Mx1uTehl21/5JV3KVT5ihPLpRm0RdncIWi2NyzSwzzhvyet7DiP5ce39cf9aOYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933567; c=relaxed/simple;
-	bh=gtRM2V0vwI4WagPTLYHyy9MGVUlqLaNm27A6pLSUOyg=;
+	s=arc-20240116; t=1706933366; c=relaxed/simple;
+	bh=aiLsS1FX/fxaxYYFSvSTqFIUgh/dpRbs9WDFE07S5y0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hNwdK8w7rXgQVSYJf9cIklpE63iV2h35OmU7iaGhraLdwM2izCrCwpVRW1XP2Rl+Wc2Wnh4cNRZG07DAMpllVQc93U3LLW4WkRJ/giXLxSBxX4qSLI1XQ5LrA0gwvizhFTq/nkWCBeo11KtpO4bidmIyA2czM5QNZdcz7GL31ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ure6MvIb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75B6C433F1;
-	Sat,  3 Feb 2024 04:12:46 +0000 (UTC)
+	 MIME-Version; b=Ma5IepKi6h7vo3QwmBvpq2cejq7H02XH0/TBrMqkfRayRnBvod95JN2dqlZVoMvfFF3d6MLQ5iKA3ibNK3+Gev6p8BGg3EN5FQZcWn3wAOf3TiZb//uyFeBSDU+l13tLM7SSABns9sxAeTSywrEGh6rhaHNY+lLhaNKwpJ6F6fM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPfXoE1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB03C43390;
+	Sat,  3 Feb 2024 04:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933567;
-	bh=gtRM2V0vwI4WagPTLYHyy9MGVUlqLaNm27A6pLSUOyg=;
+	s=korg; t=1706933365;
+	bh=aiLsS1FX/fxaxYYFSvSTqFIUgh/dpRbs9WDFE07S5y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ure6MvIb3FCSqNY7Wp4i9A8fRP6ZAR8yaduVbKkF6TKFey242vL3vpGEhlFcu6ZoD
-	 tXjrKOZMd2L5pnhjVj34NaV4yemFFWYMev2KIvtzuXPz6Pd2wB3KeA58txTDqDJNa6
-	 hU+rFBJdLmpMlJd24UHoKar+17z6ptpWnKcR5FW4=
+	b=fPfXoE1m6EVnWl3hBTX26gSHd05FBNJhR1DFgKEo/2Onaw0rLh0Icn09jx4D3Ukht
+	 /4OeTMi3bcGzapsD2bvaUvwOK4k2dr2KCAws8n31PfCiGX5xT0rMBFgxA1C5b1Rq6o
+	 yVo27238hihTTwvpv0n3O32FaRZZ4cxMjve3GgtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alan Maguire <alan.maguire@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/322] ARM: dts: imx25: Fix the iim compatible string
-Date: Fri,  2 Feb 2024 20:03:39 -0800
-Message-ID: <20240203035403.088374123@linuxfoundation.org>
+Subject: [PATCH 6.1 047/219] selftests/bpf: Fix pyperf180 compilation failure with clang18
+Date: Fri,  2 Feb 2024 20:03:40 -0800
+Message-ID: <20240203035323.314312178@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Yonghong Song <yonghong.song@linux.dev>
 
-[ Upstream commit f0b929f58719fc57a4926ab4fc972f185453d6a5 ]
+[ Upstream commit 100888fb6d8a185866b1520031ee7e3182b173de ]
 
-Per imx-iim.yaml, the compatible string should only contain a single
-entry.
+With latest clang18 (main branch of llvm-project repo), when building bpf selftests,
+    [~/work/bpf-next (master)]$ make -C tools/testing/selftests/bpf LLVM=1 -j
 
-Use it as "fsl,imx25-iim" to fix the following dt-schema warning:
+The following compilation error happens:
+    fatal error: error in backend: Branch target out of insn range
+    ...
+    Stack dump:
+    0.      Program arguments: clang -g -Wall -Werror -D__TARGET_ARCH_x86 -mlittle-endian
+      -I/home/yhs/work/bpf-next/tools/testing/selftests/bpf/tools/include
+      -I/home/yhs/work/bpf-next/tools/testing/selftests/bpf -I/home/yhs/work/bpf-next/tools/include/uapi
+      -I/home/yhs/work/bpf-next/tools/testing/selftests/usr/include -idirafter
+      /home/yhs/work/llvm-project/llvm/build.18/install/lib/clang/18/include -idirafter /usr/local/include
+      -idirafter /usr/include -Wno-compare-distinct-pointer-types -DENABLE_ATOMICS_TESTS -O2 --target=bpf
+      -c progs/pyperf180.c -mcpu=v3 -o /home/yhs/work/bpf-next/tools/testing/selftests/bpf/pyperf180.bpf.o
+    1.      <eof> parser at end of file
+    2.      Code generation
+    ...
 
-imx25-karo-tx25.dtb: efuse@53ff0000: compatible: ['fsl,imx25-iim', 'fsl,imx27-iim'] is too long
-	from schema $id: http://devicetree.org/schemas/nvmem/imx-iim.yaml#
+The compilation failure only happens to cpu=v2 and cpu=v3. cpu=v4 is okay
+since cpu=v4 supports 32-bit branch target offset.
 
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+The above failure is due to upstream llvm patch [1] where some inlining behavior
+are changed in clang18.
+
+To workaround the issue, previously all 180 loop iterations are fully unrolled.
+The bpf macro __BPF_CPU_VERSION__ (implemented in clang18 recently) is used to avoid
+unrolling changes if cpu=v4. If __BPF_CPU_VERSION__ is not available and the
+compiler is clang18, the unrollng amount is unconditionally reduced.
+
+  [1] https://github.com/llvm/llvm-project/commit/1a2e77cf9e11dbf56b5720c607313a566eebb16e
+
+Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Tested-by: Alan Maguire <alan.maguire@oracle.com>
+Link: https://lore.kernel.org/bpf/20231110193644.3130906-1-yonghong.song@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx25.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/progs/pyperf180.c | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx25.dtsi b/arch/arm/boot/dts/nxp/imx/imx25.dtsi
-index 5f90d72b840b..5ac4549286bd 100644
---- a/arch/arm/boot/dts/nxp/imx/imx25.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx25.dtsi
-@@ -543,7 +543,7 @@
- 			};
- 
- 			iim: efuse@53ff0000 {
--				compatible = "fsl,imx25-iim", "fsl,imx27-iim";
-+				compatible = "fsl,imx25-iim";
- 				reg = <0x53ff0000 0x4000>;
- 				interrupts = <19>;
- 				clocks = <&clks 99>;
+diff --git a/tools/testing/selftests/bpf/progs/pyperf180.c b/tools/testing/selftests/bpf/progs/pyperf180.c
+index c39f559d3100..42c4a8b62e36 100644
+--- a/tools/testing/selftests/bpf/progs/pyperf180.c
++++ b/tools/testing/selftests/bpf/progs/pyperf180.c
+@@ -1,4 +1,26 @@
+ // SPDX-License-Identifier: GPL-2.0
+ // Copyright (c) 2019 Facebook
+ #define STACK_MAX_LEN 180
++
++/* llvm upstream commit at clang18
++ *   https://github.com/llvm/llvm-project/commit/1a2e77cf9e11dbf56b5720c607313a566eebb16e
++ * changed inlining behavior and caused compilation failure as some branch
++ * target distance exceeded 16bit representation which is the maximum for
++ * cpu v1/v2/v3. Macro __BPF_CPU_VERSION__ is later implemented in clang18
++ * to specify which cpu version is used for compilation. So a smaller
++ * unroll_count can be set if __BPF_CPU_VERSION__ is less than 4, which
++ * reduced some branch target distances and resolved the compilation failure.
++ *
++ * To capture the case where a developer/ci uses clang18 but the corresponding
++ * repo checkpoint does not have __BPF_CPU_VERSION__, a smaller unroll_count
++ * will be set as well to prevent potential compilation failures.
++ */
++#ifdef __BPF_CPU_VERSION__
++#if __BPF_CPU_VERSION__ < 4
++#define UNROLL_COUNT 90
++#endif
++#elif __clang_major__ == 18
++#define UNROLL_COUNT 90
++#endif
++
+ #include "pyperf.h"
 -- 
 2.43.0
 
