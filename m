@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 060D78480BF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C339E848326
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 390CE1C240C0
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FBA128BC25
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF5B18636;
-	Sat,  3 Feb 2024 04:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97F850268;
+	Sat,  3 Feb 2024 04:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pTtFS3x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WuUcaH1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4991918622;
-	Sat,  3 Feb 2024 04:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A558D50263;
+	Sat,  3 Feb 2024 04:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933434; cv=none; b=MnI7y17iK1l1k2qa60nIgiMGFwTzLJLsEu+ZYVvURm61Ej4Wxqea7DDSJWsCr2W/5kzczi4saVlHdcCo/oB8cmTiDWZiTQiA/kXld24EZGXkY/nsU8xsLX8PqqzqBJYpDFsKwgoLqGabU+Nk4e+G6LzKDZOpxhbJHJ+ZJsmvw2c=
+	t=1706933878; cv=none; b=lpZCWY83P3FfiQg0DU9Yv1pkZCexrhsER9Go2V02PGHJZi8o2LF1sXPt04ACpI/5jqtxtH4Oubnh/wAx1L1xtTIF5csY/sMUPY1AX7oS7bU1Ml/iCC379SRYCh5+XDnzJjeP5JvO++ndOA3Dn46ZUdmrALUw4FOMg1SmxNqQOq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933434; c=relaxed/simple;
-	bh=0iH1ZDr4agu+A1J/3RuqZq6MlHthprQNoFLeF5BEZm0=;
+	s=arc-20240116; t=1706933878; c=relaxed/simple;
+	bh=XK7ZfO29UEYr9CGL2JjY5lQGl1ibOHLcjjggwt/olOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BIM2Rcm4VsMZk+aMIuTT/BdmZ6IiP/Cqd5lSu822+h5EmHkUK3dgCqHw/f76TFOHZfmG8Go5JABWij19dwhBlnH3Liv9rnF5AkozaUiXkCZJxF+pWaS9oEB8FnaaAutgddRgwucm+p7jlMqMKQCD+8DdT3wTEQttu9Om8CeNdIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pTtFS3x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE27C433C7;
-	Sat,  3 Feb 2024 04:10:34 +0000 (UTC)
+	 MIME-Version; b=lWOFyRKZ5v/tRxWK4zlF7cuOoV7uUthaBZ9DWWmLnlVYxcC5184QpYp077KRUHazBV+pVWW/Ln2c1O+ytuT0FZTltFTChiwmWQLPxvFlsospd707+a/KtwNSmk+qMmSgTCGznscgT8SKEAHjZ/eBlpmZw4++ZBpH07hc+DCBzzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WuUcaH1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D313C43390;
+	Sat,  3 Feb 2024 04:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933434;
-	bh=0iH1ZDr4agu+A1J/3RuqZq6MlHthprQNoFLeF5BEZm0=;
+	s=korg; t=1706933878;
+	bh=XK7ZfO29UEYr9CGL2JjY5lQGl1ibOHLcjjggwt/olOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2pTtFS3xozdMKTQ2Sthh2m5ylu1JN1MOqKh/IBwEFWg8j2cvlukOKBavjeHsWYs6n
-	 B+BrUtWt51iy4fLciaz8+ztT6nyt7s6F6buhGDBOsJ8AXq2gzXTavKjcpEuhMGR2/3
-	 9i+JY8QT+yJM4Ozqg4rC34ym477jv0QdLmwRx+p0=
+	b=WuUcaH1JfKU9VhL6gj302kTOpINj0gScl1cIQ/Yq/UKuYAioDux8QiWlNLmwzEusC
+	 pVGALzqrmuJCeEZUKXL3V4NA8uEqV11pQ4FF+S8gyx92wUH7CKkbAS33B/9iLyjoMA
+	 L83SlOuzi0+NzDqIIRvMfgLd3jjrJXvQ7f9iAFR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Adrian Reber <areber@redhat.com>,
-	Andrei Vagin <avagin@gmail.com>,
+	Farah Kassabri <fkassabri@habana.ai>,
+	Oded Gabbay <ogabbay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 163/219] tty: allow TIOCSLCKTRMIOS with CAP_CHECKPOINT_RESTORE
+Subject: [PATCH 6.7 218/353] accel/habanalabs: fix EQ heartbeat mechanism
 Date: Fri,  2 Feb 2024 20:05:36 -0800
-Message-ID: <20240203035339.418628344@linuxfoundation.org>
+Message-ID: <20240203035410.579133708@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Reber <areber@redhat.com>
+From: Farah Kassabri <fkassabri@habana.ai>
 
-[ Upstream commit e0f25b8992345aa5f113da2815f5add98738c611 ]
+[ Upstream commit d1958dce5ab6a3e089c60cf474e8c9b7e96e70ad ]
 
-The capability CAP_CHECKPOINT_RESTORE was introduced to allow non-root
-users to checkpoint and restore processes as non-root with CRIU.
+Stop rescheduling another heartbeat check when EQ heartbeat check fails
+as it generates confusing logs in dmesg that the heartbeat fails.
 
-This change extends CAP_CHECKPOINT_RESTORE to enable the CRIU option
-'--shell-job' as non-root. CRIU's man-page describes the '--shell-job'
-option like this:
-
-  Allow one to dump shell jobs. This implies the restored task will
-  inherit session and process group ID from the criu itself. This option
-  also allows to migrate a single external tty connection, to migrate
-  applications like top.
-
-TIOCSLCKTRMIOS can only be done if the process has CAP_SYS_ADMIN and
-this change extends it to CAP_SYS_ADMIN or CAP_CHECKPOINT_RESTORE.
-
-With this change it is possible to checkpoint and restore processes
-which have a tty connection as non-root if CAP_CHECKPOINT_RESTORE is
-set.
-
-Acked-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Adrian Reber <areber@redhat.com>
-Acked-by: Andrei Vagin <avagin@gmail.com>
-Link: https://lore.kernel.org/r/20231208143656.1019-1-areber@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Farah Kassabri <fkassabri@habana.ai>
+Reviewed-by: Oded Gabbay <ogabbay@kernel.org>
+Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty_ioctl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/accel/habanalabs/common/device.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/tty/tty_ioctl.c b/drivers/tty/tty_ioctl.c
-index 8767c504b95d..9d3b237304ea 100644
---- a/drivers/tty/tty_ioctl.c
-+++ b/drivers/tty/tty_ioctl.c
-@@ -859,7 +859,7 @@ int tty_mode_ioctl(struct tty_struct *tty, unsigned int cmd, unsigned long arg)
- 			ret = -EFAULT;
- 		return ret;
- 	case TIOCSLCKTRMIOS:
--		if (!capable(CAP_SYS_ADMIN))
-+		if (!checkpoint_restore_ns_capable(&init_user_ns))
- 			return -EPERM;
- 		copy_termios_locked(real_tty, &kterm);
- 		if (user_termios_to_kernel_termios(&kterm,
-@@ -876,7 +876,7 @@ int tty_mode_ioctl(struct tty_struct *tty, unsigned int cmd, unsigned long arg)
- 			ret = -EFAULT;
- 		return ret;
- 	case TIOCSLCKTRMIOS:
--		if (!capable(CAP_SYS_ADMIN))
-+		if (!checkpoint_restore_ns_capable(&init_user_ns))
- 			return -EPERM;
- 		copy_termios_locked(real_tty, &kterm);
- 		if (user_termios_to_kernel_termios_1(&kterm,
+diff --git a/drivers/accel/habanalabs/common/device.c b/drivers/accel/habanalabs/common/device.c
+index 9e461c03e705..9290d4374551 100644
+--- a/drivers/accel/habanalabs/common/device.c
++++ b/drivers/accel/habanalabs/common/device.c
+@@ -1044,18 +1044,19 @@ static bool is_pci_link_healthy(struct hl_device *hdev)
+ 	return (vendor_id == PCI_VENDOR_ID_HABANALABS);
+ }
+ 
+-static void hl_device_eq_heartbeat(struct hl_device *hdev)
++static int hl_device_eq_heartbeat_check(struct hl_device *hdev)
+ {
+-	u64 event_mask = HL_NOTIFIER_EVENT_DEVICE_RESET | HL_NOTIFIER_EVENT_DEVICE_UNAVAILABLE;
+ 	struct asic_fixed_properties *prop = &hdev->asic_prop;
+ 
+ 	if (!prop->cpucp_info.eq_health_check_supported)
+-		return;
++		return 0;
+ 
+ 	if (hdev->eq_heartbeat_received)
+ 		hdev->eq_heartbeat_received = false;
+ 	else
+-		hl_device_cond_reset(hdev, HL_DRV_RESET_HARD, event_mask);
++		return -EIO;
++
++	return 0;
+ }
+ 
+ static void hl_device_heartbeat(struct work_struct *work)
+@@ -1072,10 +1073,9 @@ static void hl_device_heartbeat(struct work_struct *work)
+ 	/*
+ 	 * For EQ health check need to check if driver received the heartbeat eq event
+ 	 * in order to validate the eq is working.
++	 * Only if both the EQ is healthy and we managed to send the next heartbeat reschedule.
+ 	 */
+-	hl_device_eq_heartbeat(hdev);
+-
+-	if (!hdev->asic_funcs->send_heartbeat(hdev))
++	if ((!hl_device_eq_heartbeat_check(hdev)) && (!hdev->asic_funcs->send_heartbeat(hdev)))
+ 		goto reschedule;
+ 
+ 	if (hl_device_operational(hdev, NULL))
 -- 
 2.43.0
 
