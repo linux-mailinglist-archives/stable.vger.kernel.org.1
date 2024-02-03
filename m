@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-17876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78118848077
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B768481AA
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 343CB28BF1F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB8DA1C2120D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEFC1643A;
-	Sat,  3 Feb 2024 04:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A96936123;
+	Sat,  3 Feb 2024 04:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4aI4VWn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2jsJrWg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C027C16419;
-	Sat,  3 Feb 2024 04:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0D536122;
+	Sat,  3 Feb 2024 04:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933380; cv=none; b=gNizo6nEmtZfvfDvGLesHbNq1g9lX8jA3IwHUMbIQMMEvmAiCqQmuWxRrdp9LvYbnOMjdlo+8UiMDGe+DW+ULndAl8aKe8cJYGqSuFe/07yKSfaC6WZ75igYE2WjfrzvZvhjR+oRZCu78aTmxX1eVd4wmxEX6FNAV/wGkYU7D7Q=
+	t=1706933600; cv=none; b=rO6LQhlhfFQ0hHm6N6pTJlwsDSM5TULmay5RB2mTuGBfuTZ8AzP0d/CM/0HEGGP/OBmRHGTUvkH8NLAjZ+XDlSJxSQZ14ZNmxJYbMf6jeqyAG2W2M8YYKO1u9J3rVR16Xdf/V9JrFR8axEXmHnp4fmv9dn/5VClbXIUB9GdSOtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933380; c=relaxed/simple;
-	bh=AXA2YAtHZsYhKItWyLpq1I1ezerIgpOlMl1wmpc0z70=;
+	s=arc-20240116; t=1706933600; c=relaxed/simple;
+	bh=ZilyjS7LYK1jQSgzdeTgT+eJpBeXOz2TzM8jF/UfqRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n49jFca0H0YEreWTB3reIGIYLR7UnuHV//ajDVTsaE7BIVcOh9poDKfu6X49NbXGxEGUh4/1/znysVh71poPPA9X01jMiSh3KkTYORQZ7fm+fqX+pLPIXofCuQDY1CeLXAboMQyzFnivFH3VBXefCLvgkQunHvNTNeFDYSwKF9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4aI4VWn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88CB7C43390;
-	Sat,  3 Feb 2024 04:09:40 +0000 (UTC)
+	 MIME-Version; b=YrZq1v7zJu9WRhG6FiHnmsjYnxKRJ4RNKtXm0kQ4yHXE9KOdw6eo8a+YKO+2PboP4F/VgH89L7C7ght1KhmH34+iSHM+v7j+7MM8r+ZNWnV9C1+khuytzNt6RNn87O93WLvWhdOEp4SX8dZuwXy7IlwnbfSYMEWp+c6qVvCorUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2jsJrWg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115EDC433F1;
+	Sat,  3 Feb 2024 04:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933380;
-	bh=AXA2YAtHZsYhKItWyLpq1I1ezerIgpOlMl1wmpc0z70=;
+	s=korg; t=1706933600;
+	bh=ZilyjS7LYK1jQSgzdeTgT+eJpBeXOz2TzM8jF/UfqRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P4aI4VWnw3+EqbNtH9RUGulph6Ev8P1XeBAfw3jvoV0a7rD84mxDZHrh5DrMyYp49
-	 TPL73jSagmCFaBlMKfEQVksPO6KcrrPo/sHUrHsipab2pSErA3ukZkNU1gGmjOV0Gq
-	 LhA60Muj7s0y5tbIK68sCqkJ+nrkhLoDh3M3HDcw=
+	b=h2jsJrWgYURt6wXO/JGJqdtxeDxk9dZbSy7fjF53C9k7IrBPGNEVoYHATTyT133Sn
+	 RLIJThIheseDNTXzgnwTb+GBjC/BikScit9kqLyCfSCR+K1o7ynZYI5X1W1WK/QBzE
+	 mAVOKvJtiwT6y0K9P1Iy/w3wKQyaoBnkzNw2VCJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Ilya Bakoulin <ilya.bakoulin@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 091/219] arm64: dts: amlogic: fix format for s4 uart node
-Date: Fri,  2 Feb 2024 20:04:24 -0800
-Message-ID: <20240203035330.163616319@linuxfoundation.org>
+Subject: [PATCH 6.6 168/322] drm/amd/display: Fix MST PBN/X.Y value calculations
+Date: Fri,  2 Feb 2024 20:04:25 -0800
+Message-ID: <20240203035404.663969146@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +65,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xianwei Zhao <xianwei.zhao@amlogic.com>
+From: Ilya Bakoulin <ilya.bakoulin@amd.com>
 
-[ Upstream commit eb54ef36282f670c704ed5af8593da62bebba80d ]
+[ Upstream commit 94bbf802efd0a8f13147d6664af6e653637340a8 ]
 
-Aliases use lowercase letters and place status in end.
+Changing PBN calculation to be more in line with spec. We don't need to
+inflate PBN_NATIVE value by the 1.006 margin, since that is already
+taken care of in the get_pbn_per_slot function.
 
-Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20231215-s4-dts-v1-1-7831ab6972be@amlogic.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Ilya Bakoulin <ilya.bakoulin@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts | 4 ++--
- arch/arm64/boot/dts/amlogic/meson-s4.dtsi             | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/link/link_dpms.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts b/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts
-index 8ffbcb2b1ac5..bbd3c05cbd90 100644
---- a/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts
-+++ b/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts
-@@ -15,7 +15,7 @@
- 	#size-cells = <2>;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+index a96f0747628c..b9768cd9b8a0 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+@@ -1059,18 +1059,21 @@ static struct fixed31_32 get_pbn_from_bw_in_kbps(uint64_t kbps)
+ 	uint32_t denominator = 1;
  
- 	aliases {
--		serial0 = &uart_B;
-+		serial0 = &uart_b;
- 	};
+ 	/*
+-	 * margin 5300ppm + 300ppm ~ 0.6% as per spec, factor is 1.006
++	 * The 1.006 factor (margin 5300ppm + 300ppm ~ 0.6% as per spec) is not
++	 * required when determining PBN/time slot utilization on the link between
++	 * us and the branch, since that overhead is already accounted for in
++	 * the get_pbn_per_slot function.
++	 *
+ 	 * The unit of 54/64Mbytes/sec is an arbitrary unit chosen based on
+ 	 * common multiplier to render an integer PBN for all link rate/lane
+ 	 * counts combinations
+ 	 * calculate
+-	 * peak_kbps *= (1006/1000)
+ 	 * peak_kbps *= (64/54)
+-	 * peak_kbps *= 8    convert to bytes
++	 * peak_kbps /= (8 * 1000) convert to bytes
+ 	 */
  
- 	memory@0 {
-@@ -25,6 +25,6 @@
+-	numerator = 64 * PEAK_FACTOR_X1000;
+-	denominator = 54 * 8 * 1000 * 1000;
++	numerator = 64;
++	denominator = 54 * 8 * 1000;
+ 	kbps *= numerator;
+ 	peak_kbps = dc_fixpt_from_fraction(kbps, denominator);
  
- };
- 
--&uart_B {
-+&uart_b {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
-index ad50cba42d19..372a03762d69 100644
---- a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
-@@ -118,14 +118,14 @@
- 					<10 11 12 13 14 15 16 17 18 19 20 21>;
- 			};
- 
--			uart_B: serial@7a000 {
-+			uart_b: serial@7a000 {
- 				compatible = "amlogic,meson-s4-uart",
- 					     "amlogic,meson-ao-uart";
- 				reg = <0x0 0x7a000 0x0 0x18>;
- 				interrupts = <GIC_SPI 169 IRQ_TYPE_EDGE_RISING>;
--				status = "disabled";
- 				clocks = <&xtal>, <&xtal>, <&xtal>;
- 				clock-names = "xtal", "pclk", "baud";
-+				status = "disabled";
- 			};
- 
- 			reset: reset-controller@2000 {
 -- 
 2.43.0
 
