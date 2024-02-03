@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EEF9848191
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBF02848071
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1B4D1C22F8E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A9301C2113A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E262C6B3;
-	Sat,  3 Feb 2024 04:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894C811190;
+	Sat,  3 Feb 2024 04:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1PXpeKsz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6ZERYeq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E857110A09;
-	Sat,  3 Feb 2024 04:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45154FC11;
+	Sat,  3 Feb 2024 04:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933582; cv=none; b=hxfRwPQlcOtoFl87fC6nGZEGolUAaMSarlEWnNu2MzbCGDu45P9Yhy6WxPIp1v4DREz9eD5Nvu+9VtvzaZA3xiQq9ZVmiN2BJUlyNug82WfYT5z2y7UT1gAOxiw1pMVguR8FCnm78dXhngkfA24wTSkPs+6CqXM9/glCogmDihQ=
+	t=1706933376; cv=none; b=WYFeXITZAXDlT+OSsvEwMT4hu4vl9S23Md8jIITohS66A213w93JlyJ9LDIstczJ5pjC7+wvz/+36u3xR2mLYqptC86ej0FU3EddlnCXYz5cvYKj++WiVE53jfHCmWEZPnFeWVws3gxcgBLsSLxxzBV6lXqZbfKmwlFugAo9Iqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933582; c=relaxed/simple;
-	bh=PyFEWjh1aX77pe2iZcqXCTkQ3Aw/3Bqm5qkcu/AlcIE=;
+	s=arc-20240116; t=1706933376; c=relaxed/simple;
+	bh=E7ERQZ8HTO9OIYdbKh8gcPYBWdy4l2ssUZpjg+EFZnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OrmavyPN8Kg44F/U4hlu/b4p+WzpUo4EFRhZvC/Os9VWrt5uaQGfMpRFSVs8XWWv08c2CJm7nUuq8d6PGyuHhwn/u6xXohS0cIXnGPyoygHovcz7/3nBdnclHVbQ2thw/rbo4ca9639s3dRPyR/KJRN1Qev328+tr5c5PnfpzWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1PXpeKsz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B131BC433F1;
-	Sat,  3 Feb 2024 04:13:01 +0000 (UTC)
+	 MIME-Version; b=FhOP+BXBRuJsWw2wF/IqvRGAX3uIypSGZ0s+ZCvtUyRwHfsENOVCAAk0b7Bf52wzNR33kg2Mz4L4mN2UcpXPz9Tei7gI3y+nzWEovNINLWoCyQrXpoiIRu8r93Akt4DY9ziUlwzRVbYfkCPa45449BG5Y0vRrR1OoRN8+XOVNQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6ZERYeq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E3C9C433F1;
+	Sat,  3 Feb 2024 04:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933581;
-	bh=PyFEWjh1aX77pe2iZcqXCTkQ3Aw/3Bqm5qkcu/AlcIE=;
+	s=korg; t=1706933376;
+	bh=E7ERQZ8HTO9OIYdbKh8gcPYBWdy4l2ssUZpjg+EFZnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1PXpeKszSfJzHA6XQy4rJucqnpklUarHSf8+RcdyK6cDVnhKdfH/xV219iawvE+OC
-	 CBxo8c2JYnXnyUDA1VY5x/OguxFXTgB2fR9vz/q3vaJzitSYSGaZ5oKBMBpbrDI6zf
-	 0Mms+0UuJ1iY2Q1xrsXXrLOAm3utgmg5tZneYlQ0=
+	b=v6ZERYeqhfzHO46Dh3+oKbmBGzPLjsZZbDxcRhA2M7Y+5kPiK2pwAAFVQY0i+WXPQ
+	 yk+2Q1C0MtCyfRPociG0TRXsWpY6OC3PJd50JlSJz4TcEEylCSTndoXPbzIla1QylO
+	 R5CEFQBp8oIE8qVd4R5taO5nq39f+aRe08L9tj0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 143/322] wifi: rtlwifi: rtl8723{be,ae}: using calculate_bit_shift()
-Date: Fri,  2 Feb 2024 20:04:00 -0800
-Message-ID: <20240203035403.783238579@linuxfoundation.org>
+Subject: [PATCH 6.1 068/219] ARM: dts: rockchip: fix rk3036 hdmi ports node
+Date: Fri,  2 Feb 2024 20:04:01 -0800
+Message-ID: <20240203035326.380234551@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit 5c16618bc06a41ad68fd8499a21d35ef57ca06c2 ]
+[ Upstream commit 27ded76ef0fcfcf939914532aae575cf23c221b4 ]
 
-Using calculate_bit_shift() to replace rtl8723_phy_calculate_bit_shift().
-And fix an undefined bitwise shift behavior problem.
+Fix hdmi ports node so that it matches the
+rockchip,inno-hdmi.yaml binding.
 
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-12-suhui@nfschina.com
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/9a2afac1-ed5c-382d-02b0-b2f5f1af3abb@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c | 6 +++---
- drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/boot/dts/rk3036.dtsi | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
-index fe9b407dc2af..71e29b103da5 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
-@@ -49,7 +49,7 @@ u32 rtl8723e_phy_query_rf_reg(struct ieee80211_hw *hw,
- 							    rfpath, regaddr);
- 	}
+diff --git a/arch/arm/boot/dts/rk3036.dtsi b/arch/arm/boot/dts/rk3036.dtsi
+index 78686fc72ce6..c420c7c642cb 100644
+--- a/arch/arm/boot/dts/rk3036.dtsi
++++ b/arch/arm/boot/dts/rk3036.dtsi
+@@ -402,12 +402,20 @@
+ 		pinctrl-0 = <&hdmi_ctl>;
+ 		status = "disabled";
  
--	bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -80,7 +80,7 @@ void rtl8723e_phy_set_rf_reg(struct ieee80211_hw *hw,
- 			original_value = rtl8723_phy_rf_serial_read(hw,
- 								    rfpath,
- 								    regaddr);
--			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
-@@ -89,7 +89,7 @@ void rtl8723e_phy_set_rf_reg(struct ieee80211_hw *hw,
- 		rtl8723_phy_rf_serial_write(hw, rfpath, regaddr, data);
- 	} else {
- 		if (bitmask != RFREG_OFFSET_MASK) {
--			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
-index 2b9313cb93db..094cb36153f5 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
-@@ -41,7 +41,7 @@ u32 rtl8723be_phy_query_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
- 	spin_lock(&rtlpriv->locks.rf_lock);
- 
- 	original_value = rtl8723_phy_rf_serial_read(hw, rfpath, regaddr);
--	bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -68,7 +68,7 @@ void rtl8723be_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path path,
- 	if (bitmask != RFREG_OFFSET_MASK) {
- 			original_value = rtl8723_phy_rf_serial_read(hw, path,
- 								    regaddr);
--			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data = ((original_value & (~bitmask)) |
- 				(data << bitshift));
- 		}
+-		hdmi_in: port {
++		ports {
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+-			hdmi_in_vop: endpoint@0 {
++
++			hdmi_in: port@0 {
+ 				reg = <0>;
+-				remote-endpoint = <&vop_out_hdmi>;
++
++				hdmi_in_vop: endpoint {
++					remote-endpoint = <&vop_out_hdmi>;
++				};
++			};
++
++			hdmi_out: port@1 {
++				reg = <1>;
+ 			};
+ 		};
+ 	};
 -- 
 2.43.0
 
