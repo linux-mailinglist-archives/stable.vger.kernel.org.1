@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-18537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83CC184831D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B9DF8481EC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FB6028ABDD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31F04282209
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEFC5024F;
-	Sat,  3 Feb 2024 04:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC6118C08;
+	Sat,  3 Feb 2024 04:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hASgn5Uz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="va8eyJ8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19351118E;
-	Sat,  3 Feb 2024 04:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C74D10965;
+	Sat,  3 Feb 2024 04:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933872; cv=none; b=YVzMQxt//0DkWcfaWdENpOxgBoxY8/B30wPGOcWkL2+b8GR6W3ZUK7LImKez1CDuwSVfZ/Ljf9A03gC1JBDLsg01uMJlJxEWjsUCtj7A8qvNWvAYGV+cxvbrD6l4Bmd2yBiMtzGXgFO0NpZMGFLzq5MrD+CGZqJwLXvSQ/ct/aw=
+	t=1706933648; cv=none; b=rBQx+ZY4bDKHz1RlG1hb9RLh2SMQMQykDqOzGYK7rX5L/nK2De0zTSVhKu78iG2uJOw/E7ND44qnPUgOGifUwDPBRY5mmAXv9MQ6JmikPhyEJFEQ+yB/KER+MatLr0M6Kg9+7ZOyckOl3BDkeDMCS/e3d1WkYD7ZcYBsJYmTC+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933872; c=relaxed/simple;
-	bh=htWv1Uj36s9SIfWHOBb2IHkL5UmCEVrM00bosLPjiqI=;
+	s=arc-20240116; t=1706933648; c=relaxed/simple;
+	bh=yyLIcQo5dnCIiTGEREKIWX3FvcHPBdAg8ldHZPwUB9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m1OZ0bl7pcNww+FkJUL70NJWzhlW9c3L6T+oW77n5B+Kn2YcoK5p5n94kx/WhS86lKHx22AmdVuvd+t+vHeyIJryHxJNvOJp0+dcc87sevzhVuXbyPnmDj+hiUWccsdfmUsweNNMIaX/EkggS/ohssnE3ZC7ILMGIlTFyUTLV4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hASgn5Uz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6CA3C43390;
-	Sat,  3 Feb 2024 04:17:51 +0000 (UTC)
+	 MIME-Version; b=Dv3TBjmJ3ho/dB9IsSAh6Ak1JF8CiNRfFoiUcDRO0AbzB0HqoZOS9ZtDInLYloSf0auztjF+3/UdMwJu7ZntUhS5l9YA1qbsrui/MWBlihr0FS5m8IEpzHNf9JwfVHwJ3n2GAY5GSqfIhhCLfNxhr+RbTp/p3SrfW27GFclKWOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=va8eyJ8G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268A2C433C7;
+	Sat,  3 Feb 2024 04:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933871;
-	bh=htWv1Uj36s9SIfWHOBb2IHkL5UmCEVrM00bosLPjiqI=;
+	s=korg; t=1706933648;
+	bh=yyLIcQo5dnCIiTGEREKIWX3FvcHPBdAg8ldHZPwUB9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hASgn5UzqPq1IRGud8//4TAuSgzZmnyf9ym9xtBvGW0KDGyV8s4XopsXeQu9ISpg8
-	 m/E1/Z9qylChoyGO+wDz0IJsv/8cFAaJTQ//FIxiT8m0Fj0ox05+9BhGtuAgTne6kU
-	 MDZZJyhaJl+Vcl6S4bv0yCPVhv1fRlANau/VkpBQ=
+	b=va8eyJ8GvY8sbWbJC9KDcnxcTakcGniVLX+SFfGAlHlYc4pp1Knu94jnfBFoEOQ0y
+	 U84PzjOeEFDAUGyp+XbFQp8C3UiUY/RZsHFl+FGTfM1BCDviUQWxP6ADQK/4ob5LnB
+	 EPBBik/ImpsOQWnwm14SDrcFl/ZQ/zH7JGP/P/Jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@arm.com>,
+	Leo Yan <leo.yan@linaro.org>,
+	John Garry <john.g.garry@oracle.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 210/353] drm/msm/dpu: fix writeback programming for YUV cases
+Subject: [PATCH 6.6 231/322] perf cs-etm: Bump minimum OpenCSD version to ensure a bugfix is present
 Date: Fri,  2 Feb 2024 20:05:28 -0800
-Message-ID: <20240203035410.343647057@linuxfoundation.org>
+Message-ID: <20240203035406.665227222@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +68,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit 79caf2f2202b9eaad3a5a726e4b33807f67d0f1b ]
+[ Upstream commit 2dbba30fd69b604802a9535b74bddb5bcca23793 ]
 
-For YUV cases, setting the required format bits was missed
-out in the register programming. Lets fix it now in preparation
-of adding YUV formats support for writeback.
+Since commit d927ef5004ef ("perf cs-etm: Add exception level consistency
+check"), the exception that was added to Perf will be triggered unless
+the following bugfix from OpenCSD is present:
 
-changes in v2:
-    - dropped the fixes tag as its not a fix but adding
-      new functionality
+ - _Version 1.2.1_:
+  - __Bugfix__:
+    ETM4x / ETE - output of context elements to client can in some
+    circumstances be delayed until after subsequent atoms have been
+    processed leading to incorrect memory decode access via the client
+    callbacks. Fixed to flush context elements immediately they are
+    committed.
 
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/571814/
-Link: https://lore.kernel.org/r/20231212205254.12422-4-quic_abhinavk@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Rather than remove the assert and silently fail, just increase the
+minimum version requirement to avoid hard to debug issues and
+regressions.
+
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: James Clark <james.clark@arm.com>
+Tested-by: Leo Yan <leo.yan@linaro.org>
+Cc: John Garry <john.g.garry@oracle.com>
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: Will Deacon <will@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Link: https://lore.kernel.org/r/20230901133716.677499-1-james.clark@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_hw_wb.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/build/feature/test-libopencsd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_wb.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_wb.c
-index 9668fb97c047..d49b3ef7689e 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_wb.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_wb.c
-@@ -87,6 +87,9 @@ static void dpu_hw_wb_setup_format(struct dpu_hw_wb *ctx,
- 			dst_format |= BIT(14); /* DST_ALPHA_X */
- 	}
+diff --git a/tools/build/feature/test-libopencsd.c b/tools/build/feature/test-libopencsd.c
+index eb6303ff446e..4cfcef9da3e4 100644
+--- a/tools/build/feature/test-libopencsd.c
++++ b/tools/build/feature/test-libopencsd.c
+@@ -4,9 +4,9 @@
+ /*
+  * Check OpenCSD library version is sufficient to provide required features
+  */
+-#define OCSD_MIN_VER ((1 << 16) | (1 << 8) | (1))
++#define OCSD_MIN_VER ((1 << 16) | (2 << 8) | (1))
+ #if !defined(OCSD_VER_NUM) || (OCSD_VER_NUM < OCSD_MIN_VER)
+-#error "OpenCSD >= 1.1.1 is required"
++#error "OpenCSD >= 1.2.1 is required"
+ #endif
  
-+	if (DPU_FORMAT_IS_YUV(fmt))
-+		dst_format |= BIT(15);
-+
- 	pattern = (fmt->element[3] << 24) |
- 		(fmt->element[2] << 16) |
- 		(fmt->element[1] << 8)  |
+ int main(void)
 -- 
 2.43.0
 
