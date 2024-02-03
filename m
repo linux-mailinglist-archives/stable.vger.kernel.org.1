@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-17798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1135848024
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:08:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0C2848150
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E42928BE8D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:08:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79E7A28A32B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A04E101C5;
-	Sat,  3 Feb 2024 04:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E73171B4;
+	Sat,  3 Feb 2024 04:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AZv4c3Vo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yzjo7N3Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23EEFBFC;
-	Sat,  3 Feb 2024 04:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED87E1079D;
+	Sat,  3 Feb 2024 04:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933320; cv=none; b=BNDninLOq2jpsaid1ZUhCwqMndr2GAtqgFerEtmQTE1/6WmB1knp0S4KOmSfuoQnBMwNeUgn2lYYj/sFfCxPf/fjWO8TKrlLRt3tj4rcDh6wVQAX3hRTjS1xr/eTlETBgfqE3AF9P4TVNJ8LL5NLBtMspuM9tFT+esYwy+7GK7w=
+	t=1706933536; cv=none; b=SHhVPmNzxIDcN+pb/VZtoK4C0BH39y9KGqnP5KgIkGiHNMLVOd/muoCyGmbG5GaQMVBj+esfrHT5EEydw2qqiJ6HDWMSQyWi8SA6Ud4k5SP0920EYFfiAodOudKrnlSA1W6+Kgg3PorFKKhdwCuF0MaBlQ06who6lhMY0ui5niA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933320; c=relaxed/simple;
-	bh=735QOjo7+WRDeY8LyDGnUiiKkVqMb76TtpU2YczarUE=;
+	s=arc-20240116; t=1706933536; c=relaxed/simple;
+	bh=OH2M3pwxAbICQE1LKU/+dWDZmMraTFjHpd6sk3gK0uM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QuUME/bC9Tbi4OPc9Rmvl7bqz2wewInrE+wycvR/4QbpByFbM2EOjKQ5lEJGjU4sNJWcbjtCFoo3RReIGNeJXf5RAry/f9P7uBUKNEnBNw7AZH6OgU2WES5FfIxU87lgqwPAH8oBWEiRwk3zA2ZIaFJ7f3LNi0CpEve5X8sbsuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AZv4c3Vo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20645C43390;
-	Sat,  3 Feb 2024 04:08:40 +0000 (UTC)
+	 MIME-Version; b=YQqdxkQnLSnNhCaqsoscgECEJQXsT1oQnjps1Sv5bkgc22KgKUE0wZ1hUSvy5GU/yica5A3ZE9LneUFQ6wjEZD171+CYUNlBsK/ugJsLRz923mLefamBIG6VZTZoIYxPsmUrIKsRyMKk/OqQ0aURUQUrRDLupxti3TE/nIinA30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yzjo7N3Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5898EC43390;
+	Sat,  3 Feb 2024 04:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933320;
-	bh=735QOjo7+WRDeY8LyDGnUiiKkVqMb76TtpU2YczarUE=;
+	s=korg; t=1706933535;
+	bh=OH2M3pwxAbICQE1LKU/+dWDZmMraTFjHpd6sk3gK0uM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AZv4c3VoE2QEqmEbhxnt4Cf6BB/gc5rvMSTyKO97MmuxnyhM68zNX4pnpESdUHNhL
-	 gP53oyM+illc6gm2clTIgDguTtbtvOekrKrbklkfxFVAywqsD1r9mcQ9QF1CNp1ZMN
-	 vDZCxXUKi1RV0YFXBl+vXmKZkhW9+QgZU/PjaeAg=
+	b=Yzjo7N3ZIEXcg32BlLLI6zwrRlQHRmfDZtzB9SLyy1/Z94sB55b+eMJ37BOTTyf2Z
+	 s8o7QppqkNiDRDm3uKRrl9/HyH5Gu8/9oNC1DqV9EaBCA7ldIuyl7OS3IufTbg5z0n
+	 y4WbN3EmcS6E808VTffAdkgG5sLR0AW1rpAkAPxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Sumit Saxena <sumit.saxena@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/219] drivers/perf: pmuv3: dont expose SW_INCR event in sysfs
+Subject: [PATCH 6.6 080/322] scsi: mpi3mr: Add PCI checks where SAS5116 diverges from SAS4116
 Date: Fri,  2 Feb 2024 20:02:57 -0800
-Message-ID: <20240203035317.769122992@linuxfoundation.org>
+Message-ID: <20240203035401.751568174@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Sumit Saxena <sumit.saxena@broadcom.com>
 
-[ Upstream commit ca6f537e459e2da4b331fe8928d1a0b0f9301f42 ]
+[ Upstream commit c9260ff28ee561fca5f96425c9328a9698e8427b ]
 
-The SW_INCR event is somewhat unusual, and depends on the specific HW
-counter that it is programmed into. When programmed into PMEVCNTR<n>,
-SW_INCR will count any writes to PMSWINC_EL0 with bit n set, ignoring
-writes to SW_INCR with bit n clear.
+Add PCI IDs checks for the cases where SAS5116 diverges from SAS4116 in
+behavior.
 
-Event rotation means that there's no fixed relationship between
-perf_events and HW counters, so this isn't all that useful.
-
-Further, we program PMUSERENR.{SW,EN}=={0,0}, which causes EL0 writes to
-PMSWINC_EL0 to be trapped and handled as UNDEFINED, resulting in a
-SIGILL to userspace.
-
-Given that, it's not a good idea to expose SW_INCR in sysfs. Hide it as
-we did for CHAIN back in commit:
-
-  4ba2578fa7b55701 ("arm64: perf: don't expose CHAIN event in sysfs")
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20231204115847.2993026-1-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
+Link: https://lore.kernel.org/r/20231123160132.4155-3-sumit.saxena@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/perf_event.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c | 3 ++-
+ drivers/scsi/mpi3mr/mpi3mr_os.c | 5 ++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/kernel/perf_event.c b/arch/arm64/kernel/perf_event.c
-index 7b0643fe2f13..214b1805e536 100644
---- a/arch/arm64/kernel/perf_event.c
-+++ b/arch/arm64/kernel/perf_event.c
-@@ -168,7 +168,11 @@ armv8pmu_events_sysfs_show(struct device *dev,
- 	PMU_EVENT_ATTR_ID(name, armv8pmu_events_sysfs_show, config)
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+index f039f1d98647..0d148c39ebcc 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -1892,7 +1892,8 @@ static int mpi3mr_create_op_reply_q(struct mpi3mr_ioc *mrioc, u16 qidx)
  
- static struct attribute *armv8_pmuv3_event_attrs[] = {
--	ARMV8_EVENT_ATTR(sw_incr, ARMV8_PMUV3_PERFCTR_SW_INCR),
-+	/*
-+	 * Don't expose the sw_incr event in /sys. It's not usable as writes to
-+	 * PMSWINC_EL0 will trap as PMUSERENR.{SW,EN}=={0,0} and event rotation
-+	 * means we don't have a fixed event<->counter relationship regardless.
-+	 */
- 	ARMV8_EVENT_ATTR(l1i_cache_refill, ARMV8_PMUV3_PERFCTR_L1I_CACHE_REFILL),
- 	ARMV8_EVENT_ATTR(l1i_tlb_refill, ARMV8_PMUV3_PERFCTR_L1I_TLB_REFILL),
- 	ARMV8_EVENT_ATTR(l1d_cache_refill, ARMV8_PMUV3_PERFCTR_L1D_CACHE_REFILL),
+ 	reply_qid = qidx + 1;
+ 	op_reply_q->num_replies = MPI3MR_OP_REP_Q_QD;
+-	if (!mrioc->pdev->revision)
++	if ((mrioc->pdev->device == MPI3_MFGPAGE_DEVID_SAS4116) &&
++		!mrioc->pdev->revision)
+ 		op_reply_q->num_replies = MPI3MR_OP_REP_Q_QD4K;
+ 	op_reply_q->ci = 0;
+ 	op_reply_q->ephase = 1;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index 5c50701aa3f7..80d71041086e 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -5095,7 +5095,10 @@ mpi3mr_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		mpi3mr_init_drv_cmd(&mrioc->evtack_cmds[i],
+ 				    MPI3MR_HOSTTAG_EVTACKCMD_MIN + i);
+ 
+-	if (pdev->revision)
++	if ((pdev->device == MPI3_MFGPAGE_DEVID_SAS4116) &&
++		!pdev->revision)
++		mrioc->enable_segqueue = false;
++	else
+ 		mrioc->enable_segqueue = true;
+ 
+ 	init_waitqueue_head(&mrioc->reset_waitq);
 -- 
 2.43.0
 
