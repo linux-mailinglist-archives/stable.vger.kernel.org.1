@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F13368480CF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C9F8481E8
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F6D71C228AB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BD1AB29B58
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC9B10A01;
-	Sat,  3 Feb 2024 04:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95A84207D;
+	Sat,  3 Feb 2024 04:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PivWXXDQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="081TQdX5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25CF12B8D;
-	Sat,  3 Feb 2024 04:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A582512B7B;
+	Sat,  3 Feb 2024 04:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933444; cv=none; b=Reb5zGhBsov+h4eSCok/hwIwYmOFcriH4dqRdHHGAPZK9wXrcpr4O2Wqmgv5gL4/OV/9TdSpcGTGwh2Tp48O9wUSjyCUdP1fTqXwffoTa16U79QDuUjYBqnqFHRtOyjtrY2qjms4SyIlbwHekwsqddKApbPE0lG4MRYae1WrXEE=
+	t=1706933644; cv=none; b=CzExi5yYqOeyESJmbMWE6RlHto8i1BmrEM9uAHbLDJpR90uxxb2nWyMO2/kRfzvkH/1ZpJhqgOCMLbTu0wtMLS1uUsboxvhMn1tyG0Rjm+DNNly1m/k+GMgUB1FZ9kVQUBjcQdFz797yWzH238L/9/kSZjUpXBXDoPID5wAtsD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933444; c=relaxed/simple;
-	bh=p3qZD+MbQO4M89kKZyQEfG4pMnWrIqJU8rVgYCbwL3s=;
+	s=arc-20240116; t=1706933644; c=relaxed/simple;
+	bh=1f/rPJrbb+riHPa9juxg0uZHcBzvsfGY5YvJ7CrL72Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K6DAVCFZ+Q6kS3lEJ8X4tLGQQ0i3dkP5Omf3MkxjWMQ6LuxqRfZQU8oFsddHnPvCFJGfJufKrutJfB6mw/aWmaOt/AU78P1YptL6ppP8+Quj8ETaFzwKJNfT0M4GbAPsJM+28LUk25/panqMdW6CvaS0hrud62WLDNQm38sG9JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PivWXXDQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74A7C433C7;
-	Sat,  3 Feb 2024 04:10:43 +0000 (UTC)
+	 MIME-Version; b=Bd2GBLHoduAIOp3Pb6fK8mGT/XDrwmIRZLb6o8DVywyTdJAEMcxsKiP2ww3WSgl2ief7uRe1M7jHFkSlB9wtZoj5+C2kJNacTKPSMyX1al2OrD+YbyZM+cLIoKHqruaRNew7hVix5y44a8KAtX/axuddLLU6Lh4zcO2BBSU/Wvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=081TQdX5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD45C43399;
+	Sat,  3 Feb 2024 04:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933443;
-	bh=p3qZD+MbQO4M89kKZyQEfG4pMnWrIqJU8rVgYCbwL3s=;
+	s=korg; t=1706933644;
+	bh=1f/rPJrbb+riHPa9juxg0uZHcBzvsfGY5YvJ7CrL72Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PivWXXDQNghLMIU179Zkc7ERSUHSDyoA/s/i9aGoZ8SrH59Xw3hUu7GtRyvYRPS4s
-	 ZTQg+cH9uXEUAimIA4a7e+LY3CzypsWpjPafHh0/+9k3GqtP6KyPLWDGydSBd3Qmap
-	 jcjhmjuS7fkJ73QAphhd3pldIK9a8FNJOEj0HaYY=
+	b=081TQdX5cpwGUGyGrwaQsZK647+DrBDcFZm+N3Umb2SAfm8igJWt9lbbKTRgVbdlO
+	 35yGcz49wFbBdgAZu89y7nBaIryQBdoyhozWST7INMQtThwXlWxG4rEVYT2jfqxxRp
+	 JOIr0ITA8YiwPjzeT0aHJCLO4QNTZEvVH2dkLZnA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Whitchurch <Vincent.Whitchurch@axis.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Richard Weinberger <richard@nod.at>,
+	Peter Robinson <pbrobinson@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 151/219] um: time-travel: fix time corruption
+Subject: [PATCH 6.6 227/322] mfd: ti_am335x_tscadc: Fix TI SoC dependencies
 Date: Fri,  2 Feb 2024 20:05:24 -0800
-Message-ID: <20240203035338.144994119@linuxfoundation.org>
+Message-ID: <20240203035406.542725050@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Peter Robinson <pbrobinson@gmail.com>
 
-[ Upstream commit abe4eaa8618bb36c2b33e9cdde0499296a23448c ]
+[ Upstream commit 284d16c456e5d4b143f375b8ccc4038ab3f4ee0f ]
 
-In 'basic' time-travel mode (without =inf-cpu or =ext), we
-still get timer interrupts. These can happen at arbitrary
-points in time, i.e. while in timer_read(), which pushes
-time forward just a little bit. Then, if we happen to get
-the interrupt after calculating the new time to push to,
-but before actually finishing that, the interrupt will set
-the time to a value that's incompatible with the forward,
-and we'll crash because time goes backwards when we do the
-forwarding.
+The ti_am335x_tscadc is specific to some TI SoCs, update
+the dependencies for those SoCs and compile testing.
 
-Fix this by reading the time_travel_time, calculating the
-adjustment, and doing the adjustment all with interrupts
-disabled.
-
-Reported-by: Vincent Whitchurch <Vincent.Whitchurch@axis.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+Link: https://lore.kernel.org/r/20231220155643.445849-1-pbrobinson@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/time.c | 32 +++++++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 5 deletions(-)
+ drivers/mfd/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/um/kernel/time.c b/arch/um/kernel/time.c
-index fddd1dec27e6..3e270da6b6f6 100644
---- a/arch/um/kernel/time.c
-+++ b/arch/um/kernel/time.c
-@@ -432,9 +432,29 @@ static void time_travel_update_time(unsigned long long next, bool idle)
- 	time_travel_del_event(&ne);
- }
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index 90ce58fd629e..68d71b4b55bd 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -1483,6 +1483,7 @@ config MFD_SYSCON
  
-+static void time_travel_update_time_rel(unsigned long long offs)
-+{
-+	unsigned long flags;
-+
-+	/*
-+	 * Disable interrupts before calculating the new time so
-+	 * that a real timer interrupt (signal) can't happen at
-+	 * a bad time e.g. after we read time_travel_time but
-+	 * before we've completed updating the time.
-+	 */
-+	local_irq_save(flags);
-+	time_travel_update_time(time_travel_time + offs, false);
-+	local_irq_restore(flags);
-+}
-+
- void time_travel_ndelay(unsigned long nsec)
- {
--	time_travel_update_time(time_travel_time + nsec, false);
-+	/*
-+	 * Not strictly needed to use _rel() version since this is
-+	 * only used in INFCPU/EXT modes, but it doesn't hurt and
-+	 * is more readable too.
-+	 */
-+	time_travel_update_time_rel(nsec);
- }
- EXPORT_SYMBOL(time_travel_ndelay);
- 
-@@ -568,7 +588,11 @@ static void time_travel_set_start(void)
- #define time_travel_time 0
- #define time_travel_ext_waiting 0
- 
--static inline void time_travel_update_time(unsigned long long ns, bool retearly)
-+static inline void time_travel_update_time(unsigned long long ns, bool idle)
-+{
-+}
-+
-+static inline void time_travel_update_time_rel(unsigned long long offs)
- {
- }
- 
-@@ -720,9 +744,7 @@ static u64 timer_read(struct clocksource *cs)
- 		 */
- 		if (!irqs_disabled() && !in_interrupt() && !in_softirq() &&
- 		    !time_travel_ext_waiting)
--			time_travel_update_time(time_travel_time +
--						TIMER_MULTIPLIER,
--						false);
-+			time_travel_update_time_rel(TIMER_MULTIPLIER);
- 		return time_travel_time / TIMER_MULTIPLIER;
- 	}
- 
+ config MFD_TI_AM335X_TSCADC
+ 	tristate "TI ADC / Touch Screen chip support"
++	depends on ARCH_OMAP2PLUS || ARCH_K3 || COMPILE_TEST
+ 	select MFD_CORE
+ 	select REGMAP
+ 	select REGMAP_MMIO
 -- 
 2.43.0
 
