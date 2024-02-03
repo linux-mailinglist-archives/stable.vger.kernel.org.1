@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-18450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5268482C6
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B8E848079
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D47E51F23F5A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2487B1F2BC3E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6723F1BF40;
-	Sat,  3 Feb 2024 04:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E1D1118F;
+	Sat,  3 Feb 2024 04:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFpKBtsk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LlwgoHbZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25DD24E1C3;
-	Sat,  3 Feb 2024 04:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE4B168D9;
+	Sat,  3 Feb 2024 04:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933808; cv=none; b=t2ED6oYRREQSoVu6A2GoLO7/PaEhV5UmXrSUqLwBu7iqS3B8VC/FCiGCJtF4WYVi8rpQVJHRDHUXw58AfnSVu34NSgPo1XbFqz5weA/QnY5Hc5o/yE9gz1+AX3/lkQNzovk4SW7M8wDgpNVfx1fZFrIXqR7L4lqnV85TgTVMifY=
+	t=1706933382; cv=none; b=mzJF8Xtm7rJcF8qtNE6FJ06PuG6T7C0d+rxyGAoR9liPBEGgSo2Z06eFclvHzn8+Je9e/DHkpwjvFn/Vl+NIdQmF682J1vH6SasDZdr6VFTPWE56IM88U1VvR2392NtecMvJ61zx8wwTKqY9PhjNx47SQPD5s3LzYeNpj/w5tCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933808; c=relaxed/simple;
-	bh=CYyMWxmXEQNDMlbRuA29/hjPqtlLNn++bPdAFP0mlDg=;
+	s=arc-20240116; t=1706933382; c=relaxed/simple;
+	bh=Is61PY5w7sfdry32ovYdK0BZSh2Q2oIlrLHnZOedbVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e+PUee51NmtT/iHQVpL4fQhgsIMwcb+c3dgWTxTOsGSUr0ZELPTcLJhZrQwl7rgr9w7Nhl6bYnINtCWCsNRn2ISC+bQu38aucRxLfjZYasvDkDpxnU96VxppmtOkKgxV5JuCLBKeQiBTzyZcd5ZMLuNWIC8CAgATWeZLcnuQCuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFpKBtsk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91789C433C7;
-	Sat,  3 Feb 2024 04:16:47 +0000 (UTC)
+	 MIME-Version; b=UOmMbRL69zXcvZorEMQUtSEJl/YXGPphq9kfE5oHEr415HB3DIO1CSJVDAEr+AkMm+ThO0rX3Q3MCiqP3wHKxJqZJ5K4Wt+eyGiEzd9N0K0wQ4JbP8l5tg2IhknWz7x8nlYhGqWeBeWkwk6P6NKBXcb7/gE2Dlm53bh6H+DLRzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LlwgoHbZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA22C433F1;
+	Sat,  3 Feb 2024 04:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933807;
-	bh=CYyMWxmXEQNDMlbRuA29/hjPqtlLNn++bPdAFP0mlDg=;
+	s=korg; t=1706933382;
+	bh=Is61PY5w7sfdry32ovYdK0BZSh2Q2oIlrLHnZOedbVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bFpKBtskKGq90YwyZ2urnM09oe/KqGrrY5Ml5ayqy2+I7URmD+x3XFa/oDhyOsaNL
-	 O6LYyxBxyCoGZ0ZTlEz6bYNFkVgvAiHDwiKZO/SJZaBRs1K4exrGtCFaxTA6BPHydv
-	 no/x8C6WssCbre0QOgZpA3ocNp8tDEF4pMBoJewY=
+	b=LlwgoHbZCi0IZ5Zqp/LlxJ+U0wKhmRG1fu13bSbL8YpscOLlwAWySk59/HeQF8Dnm
+	 l3QbGrzKcbI8LEHMIDhvfsMrSkVciXW5b48x8xOkpsz0zNAlSjxY4fZ+O240znXcuh
+	 kgruiGClMLsXD7xLlY0H+xOXEKW/cmPPnNh6n6ho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Fabio Estevam <festevam@denx.de>,
 	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 123/353] ARM: dts: imx27-apf27dev: Fix LED name
-Date: Fri,  2 Feb 2024 20:04:01 -0800
-Message-ID: <20240203035407.635488353@linuxfoundation.org>
+Subject: [PATCH 6.1 069/219] ARM: dts: imx25/27-eukrea: Fix RTC node name
+Date: Fri,  2 Feb 2024 20:04:02 -0800
+Message-ID: <20240203035326.573790941@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit dc35e253d032b959d92e12f081db5b00db26ae64 ]
+[ Upstream commit 68c711b882c262e36895547cddea2c2d56ce611d ]
 
-Per leds-gpio.yaml, the led names should start with 'led'.
+Node names should be generic. Use 'rtc' as node name to fix
+the following dt-schema warning:
 
-Change it to fix the following dt-schema warning:
-
-imx27-apf27dev.dtb: leds: 'user' does not match any of the regexes: '(^led-[0-9a-f]$|led)', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/leds/leds-gpio.yaml#
+imx25-eukrea-mbimxsd25-baseboard.dtb: pcf8563@51: $nodename:0: 'pcf8563@51' does not match '^rtc(@.*|-([0-9]|[1-9][0-9]+))?$'
+	from schema $id: http://devicetree.org/schemas/rtc/nxp,pcf8563.yaml#
 
 Signed-off-by: Fabio Estevam <festevam@denx.de>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/imx25-eukrea-cpuimx25.dtsi | 2 +-
+ arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts b/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts
-index f047a8487073..849306cb4532 100644
---- a/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts
-@@ -47,7 +47,7 @@
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_gpio_leds>;
+diff --git a/arch/arm/boot/dts/imx25-eukrea-cpuimx25.dtsi b/arch/arm/boot/dts/imx25-eukrea-cpuimx25.dtsi
+index 0703f62d10d1..93a6e4e680b4 100644
+--- a/arch/arm/boot/dts/imx25-eukrea-cpuimx25.dtsi
++++ b/arch/arm/boot/dts/imx25-eukrea-cpuimx25.dtsi
+@@ -27,7 +27,7 @@
+ 	pinctrl-0 = <&pinctrl_i2c1>;
+ 	status = "okay";
  
--		user {
-+		led-user {
- 			label = "Heartbeat";
- 			gpios = <&gpio6 14 GPIO_ACTIVE_HIGH>;
- 			linux,default-trigger = "heartbeat";
+-	pcf8563@51 {
++	rtc@51 {
+ 		compatible = "nxp,pcf8563";
+ 		reg = <0x51>;
+ 	};
+diff --git a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
+index 74110bbcd9d4..4b83e2918b55 100644
+--- a/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
++++ b/arch/arm/boot/dts/imx27-eukrea-cpuimx27.dtsi
+@@ -33,7 +33,7 @@
+ 	pinctrl-0 = <&pinctrl_i2c1>;
+ 	status = "okay";
+ 
+-	pcf8563@51 {
++	rtc@51 {
+ 		compatible = "nxp,pcf8563";
+ 		reg = <0x51>;
+ 	};
 -- 
 2.43.0
 
