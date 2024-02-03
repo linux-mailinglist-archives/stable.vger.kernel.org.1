@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D509A848116
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:16:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A02848267
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F412281694
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:16:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35806281828
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0C71BDD9;
-	Sat,  3 Feb 2024 04:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26DA5487A2;
+	Sat,  3 Feb 2024 04:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RLqAFN2n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/y4z6eG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993DE1118B;
-	Sat,  3 Feb 2024 04:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D0C134C6;
+	Sat,  3 Feb 2024 04:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933495; cv=none; b=I8+Z8ud89s/UpuDg4GtOs+9Cf+7pgk7qT3nOFbFi9b4GkriKyA5rTSsoomCFqakEMws6htXW3SsjEcvaMg5xcZUKjwiO35eSWwK8d7w9LXrLgmQWeaI61uVIpyZS0Qpm/3FPnnVREhR+T9zEtusJff+FeEXmGQnx2dnkEZkFfzg=
+	t=1706933738; cv=none; b=Vq3N9yqWpB58cb2Nt+Iki/5dDPsgI3yir/rQbJE1r2OSSqgGwGG6dUvkPHQuGOXtBSSB5tc9DR4/mcnCUe32ubFfFbi1oGwV5uCEBxoH3Q7k/rV7Q8rjmT4gtfojMRk0DhSZm/yUeHmhoCDNeOSfVZOkXEkQERZJkEjYC22Ykjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933495; c=relaxed/simple;
-	bh=nu766SimR8VrCemGXDtCZD6Gf7m8KSOgYJCUTQoklG0=;
+	s=arc-20240116; t=1706933738; c=relaxed/simple;
+	bh=9aLKuRlm3SHCw20GC8ZtBfbXRfDxiJkBzekA5a23dCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I3GDl5A+64pe8AxppxUTGEK0fzd+RR0e9BaJbQYPsCGb3I9WJJXLVdGihbqEI+flOM/fgQjzl2T8kpWDSDCl7sc3a9Qko3cTwdXs0PNo5KnJwzwyxG6WYmOtN2TCRr9Y0QG3Sn+98P/VVQRD8XflH/55xTP1Ks82CP1cs1yR9Aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RLqAFN2n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DC6C43399;
-	Sat,  3 Feb 2024 04:11:35 +0000 (UTC)
+	 MIME-Version; b=qBxMXoaSh9/ZxnxxEvYEbJKRCBvn9RMP/vVLcGQVv+C5qVJB9G3Ddwga95D4RaGaJIl5B476+3bY3/fE/YXWZ6jrF/PQKhFTr4hO7G8V6QpPpYmJtWJ22K1hwpG0aANbUgPAdrch5IC252zDlu8D9Ib6gYMbg6CdZkmNGSD1NHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/y4z6eG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FBC5C433C7;
+	Sat,  3 Feb 2024 04:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933495;
-	bh=nu766SimR8VrCemGXDtCZD6Gf7m8KSOgYJCUTQoklG0=;
+	s=korg; t=1706933738;
+	bh=9aLKuRlm3SHCw20GC8ZtBfbXRfDxiJkBzekA5a23dCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RLqAFN2nsFrL6Fi7iTSgxlbVyK56tVbOU8CIgzqFU9mb1RNDYEfJ6svXJFVG6hyE3
-	 v5Oi6XKHMPKrQ01QgLHVpKwNnB0YEEEV1N3S+PE00dn6LpK/JJkZkur6fBONDOcvO4
-	 WapkZywfxzVMrJnIewHBIxZlsV9Lx/1S3I3UxRRw=
+	b=D/y4z6eGhDbnR84kP66TndJbRSj+cB1bmi+RcbB9aarUDJ7S2EXd5P+OUwiAJ32FE
+	 oElBe9jJw7o6K4sQ+YimcmegfOa1GfdXNEh7/DvWDNNFUHjW1WZDJDKWmrV+8OTZu+
+	 kX9DBdG5raerf3foAiBfy7hZqd8dTbMRiCAZQWE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bo Ye <bo.ye@mediatek.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/322] thermal: core: Fix thermal zone suspend-resume synchronization
+Subject: [PATCH 6.7 004/353] drivers/perf: pmuv3: dont expose SW_INCR event in sysfs
 Date: Fri,  2 Feb 2024 20:02:02 -0800
-Message-ID: <20240203035359.860066050@linuxfoundation.org>
+Message-ID: <20240203035403.813228675@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,134 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 4e814173a8c4f432fd068b1c796f0416328c9d99 ]
+[ Upstream commit ca6f537e459e2da4b331fe8928d1a0b0f9301f42 ]
 
-There are 3 synchronization issues with thermal zone suspend-resume
-during system-wide transitions:
+The SW_INCR event is somewhat unusual, and depends on the specific HW
+counter that it is programmed into. When programmed into PMEVCNTR<n>,
+SW_INCR will count any writes to PMSWINC_EL0 with bit n set, ignoring
+writes to SW_INCR with bit n clear.
 
- 1. The resume code runs in a PM notifier which is invoked after user
-    space has been thawed, so it can run concurrently with user space
-    which can trigger a thermal zone device removal.  If that happens,
-    the thermal zone resume code may use a stale pointer to the next
-    list element and crash, because it does not hold thermal_list_lock
-    while walking thermal_tz_list.
+Event rotation means that there's no fixed relationship between
+perf_events and HW counters, so this isn't all that useful.
 
- 2. The thermal zone resume code calls thermal_zone_device_init()
-    outside the zone lock, so user space or an update triggered by
-    the platform firmware may see an inconsistent state of a
-    thermal zone leading to unexpected behavior.
+Further, we program PMUSERENR.{SW,EN}=={0,0}, which causes EL0 writes to
+PMSWINC_EL0 to be trapped and handled as UNDEFINED, resulting in a
+SIGILL to userspace.
 
- 3. Clearing the in_suspend global variable in thermal_pm_notify()
-    allows __thermal_zone_device_update() to continue for all thermal
-    zones and it may as well run before the thermal_tz_list walk (or
-    at any point during the list walk for that matter) and attempt to
-    operate on a thermal zone that has not been resumed yet.  It may
-    also race destructively with thermal_zone_device_init().
+Given that, it's not a good idea to expose SW_INCR in sysfs. Hide it as
+we did for CHAIN back in commit:
 
-To address these issues, add thermal_list_lock locking to
-thermal_pm_notify(), especially arount the thermal_tz_list,
-make it call thermal_zone_device_init() back-to-back with
-__thermal_zone_device_update() under the zone lock and replace
-in_suspend with per-zone bool "suspend" indicators set and unset
-under the given zone's lock.
+  4ba2578fa7b55701 ("arm64: perf: don't expose CHAIN event in sysfs")
 
-Link: https://lore.kernel.org/linux-pm/20231218162348.69101-1-bo.ye@mediatek.com/
-Reported-by: Bo Ye <bo.ye@mediatek.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20231204115847.2993026-1-mark.rutland@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_core.c | 30 +++++++++++++++++++++++-------
- include/linux/thermal.h        |  2 ++
- 2 files changed, 25 insertions(+), 7 deletions(-)
+ drivers/perf/arm_pmuv3.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index 1494ffa59754..dee3022539cf 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -37,8 +37,6 @@ static LIST_HEAD(thermal_governor_list);
- static DEFINE_MUTEX(thermal_list_lock);
- static DEFINE_MUTEX(thermal_governor_lock);
+diff --git a/drivers/perf/arm_pmuv3.c b/drivers/perf/arm_pmuv3.c
+index 6ca7be05229c..0e80fdc9f9ca 100644
+--- a/drivers/perf/arm_pmuv3.c
++++ b/drivers/perf/arm_pmuv3.c
+@@ -169,7 +169,11 @@ armv8pmu_events_sysfs_show(struct device *dev,
+ 	PMU_EVENT_ATTR_ID(name, armv8pmu_events_sysfs_show, config)
  
--static atomic_t in_suspend;
--
- static struct thermal_governor *def_governor;
- 
- /*
-@@ -409,7 +407,7 @@ void __thermal_zone_device_update(struct thermal_zone_device *tz,
- {
- 	int count;
- 
--	if (atomic_read(&in_suspend))
-+	if (tz->suspended)
- 		return;
- 
- 	if (WARN_ONCE(!tz->ops->get_temp,
-@@ -1532,17 +1530,35 @@ static int thermal_pm_notify(struct notifier_block *nb,
- 	case PM_HIBERNATION_PREPARE:
- 	case PM_RESTORE_PREPARE:
- 	case PM_SUSPEND_PREPARE:
--		atomic_set(&in_suspend, 1);
-+		mutex_lock(&thermal_list_lock);
-+
-+		list_for_each_entry(tz, &thermal_tz_list, node) {
-+			mutex_lock(&tz->lock);
-+
-+			tz->suspended = true;
-+
-+			mutex_unlock(&tz->lock);
-+		}
-+
-+		mutex_unlock(&thermal_list_lock);
- 		break;
- 	case PM_POST_HIBERNATION:
- 	case PM_POST_RESTORE:
- 	case PM_POST_SUSPEND:
--		atomic_set(&in_suspend, 0);
-+		mutex_lock(&thermal_list_lock);
-+
- 		list_for_each_entry(tz, &thermal_tz_list, node) {
-+			mutex_lock(&tz->lock);
-+
-+			tz->suspended = false;
-+
- 			thermal_zone_device_init(tz);
--			thermal_zone_device_update(tz,
--						   THERMAL_EVENT_UNSPECIFIED);
-+			__thermal_zone_device_update(tz, THERMAL_EVENT_UNSPECIFIED);
-+
-+			mutex_unlock(&tz->lock);
- 		}
-+
-+		mutex_unlock(&thermal_list_lock);
- 		break;
- 	default:
- 		break;
-diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-index a5ae4af955ff..4012f440bfdc 100644
---- a/include/linux/thermal.h
-+++ b/include/linux/thermal.h
-@@ -150,6 +150,7 @@ struct thermal_cooling_device {
-  * @node:	node in thermal_tz_list (in thermal_core.c)
-  * @poll_queue:	delayed work for polling
-  * @notify_event: Last notification event
-+ * @suspended: thermal zone suspend indicator
-  */
- struct thermal_zone_device {
- 	int id;
-@@ -183,6 +184,7 @@ struct thermal_zone_device {
- 	struct list_head node;
- 	struct delayed_work poll_queue;
- 	enum thermal_notify_event notify_event;
-+	bool suspended;
- };
- 
- /**
+ static struct attribute *armv8_pmuv3_event_attrs[] = {
+-	ARMV8_EVENT_ATTR(sw_incr, ARMV8_PMUV3_PERFCTR_SW_INCR),
++	/*
++	 * Don't expose the sw_incr event in /sys. It's not usable as writes to
++	 * PMSWINC_EL0 will trap as PMUSERENR.{SW,EN}=={0,0} and event rotation
++	 * means we don't have a fixed event<->counter relationship regardless.
++	 */
+ 	ARMV8_EVENT_ATTR(l1i_cache_refill, ARMV8_PMUV3_PERFCTR_L1I_CACHE_REFILL),
+ 	ARMV8_EVENT_ATTR(l1i_tlb_refill, ARMV8_PMUV3_PERFCTR_L1I_TLB_REFILL),
+ 	ARMV8_EVENT_ATTR(l1d_cache_refill, ARMV8_PMUV3_PERFCTR_L1D_CACHE_REFILL),
 -- 
 2.43.0
 
