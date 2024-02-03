@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-18480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 785738482E5
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD5E8481B3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 069EC1F2137B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87A7C1F234CD
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5740B4F21D;
-	Sat,  3 Feb 2024 04:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5362418030;
+	Sat,  3 Feb 2024 04:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qg2NHz5S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KFw3zvWK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14DDA4F21B;
-	Sat,  3 Feb 2024 04:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1325FF9EB;
+	Sat,  3 Feb 2024 04:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933830; cv=none; b=hUOM9dWhSfIEIqsFr+eOco6IF8ykMPs1WaZs2HHz7nEj7Z+3MedR6oSni42n+5eO65AYJTuSfEh9BODM9Yiyz88Ba60Xj/RpntF6vXyjxoHzMDrN3yb62kiE9j9B2DoNwK0nkUGIfEtDslADnQdsahM2Jo8pKOYZ/hhcngOi0Z4=
+	t=1706933606; cv=none; b=QQzHQBNJvJ9WZ634oIq1TyHRYHZ0albpfxtOkZNp6ixsmWYIKQDii9LLKDpf3p5wcsghnWje5lql4gKbwis/Jll39w5lu4rVSsJc99vx20xbqHEcJtK8m8bDIjEgaahCaQMXg3UIER+/XrQyysabuHkyuplPn81KSbkX9V5x7rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933830; c=relaxed/simple;
-	bh=E1mVyUCH6Yy7sT4Q32z1sFFyW8Kc4pRXHd3Zbgf/PWQ=;
+	s=arc-20240116; t=1706933606; c=relaxed/simple;
+	bh=Pd0RzMhu/GUBfJlqhxn8prfOF3kRgLnEDovZPGbq9S4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iLz/4g6iMJDLbuanbjsXAaqtrjCjUZS8oXtTJMILWCm2OlQhS61dRMn69CeS+wTS/QKZ+awyq+02aZ9UGsEkt8USBO4hqOsg+Qecj123RUmf/DwAU45RAtB+plAwipnzYvCLwcENmDctYKHM9SK7xHWbqzZb7giiFNRthcY4qgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qg2NHz5S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D02C43394;
-	Sat,  3 Feb 2024 04:17:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LXYH2M0ffhEJYlJe4VBLcmi07S7ayXf+9jL31cZYqi1reJuyEORipaNGbTnSch5fdL1S+gJSs8ZiFJhlvdNCAe+ccaIvfckipRdZQVfGvZsMKRHmji7z3yqP2yNHHnFz62ptk9Y0781lOgaGKeG1zOkakETqXMkgfxlHPrshYww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KFw3zvWK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8BBC433F1;
+	Sat,  3 Feb 2024 04:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933829;
-	bh=E1mVyUCH6Yy7sT4Q32z1sFFyW8Kc4pRXHd3Zbgf/PWQ=;
+	s=korg; t=1706933605;
+	bh=Pd0RzMhu/GUBfJlqhxn8prfOF3kRgLnEDovZPGbq9S4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qg2NHz5SlF/uq8d5xQddC4mda5pIxDH4dtXOM8+P6xnu5/XiWASRSWrEbLbcnshsx
-	 0WFov/cLxbGq8bgi52MWKjy+meoYZemyzra3E6b4+t3DocaOK0Pqj2VMy7lJWxcnSM
-	 6hVeeDTRxI+jBdkQrlca3FsESi+geQfx1ihpZTe4=
+	b=KFw3zvWKHDHhbkoGteaKaJsrlNa18jyC1by2yMasAQh2ZDHPjUeBldzycvktgNdEt
+	 BQbpNTyBGLRMgw7WPXWqVjuXzjWEjCUlncqCurCSlhQ0Ii9H9hlY/qqCSwCFibcFQH
+	 tmoo86TWXZCgyt62ZJ3lh2LNlCzO9//ogi/nRuWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 153/353] bridge: cfm: fix enum typo in br_cc_ccm_tx_parse
-Date: Fri,  2 Feb 2024 20:04:31 -0800
-Message-ID: <20240203035408.505609676@linuxfoundation.org>
+Subject: [PATCH 6.6 175/322] ALSA: hda: Intel: add HDA_ARL PCI ID support
+Date: Fri,  2 Feb 2024 20:04:32 -0800
+Message-ID: <20240203035404.901886037@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit c2b2ee36250d967c21890cb801e24af4b6a9eaa5 ]
+[ Upstream commit a31014ebad617868c246d3985ff80d891f03711e ]
 
-It appears that there is a typo in the code where the nlattr array is
-being parsed with policy br_cfm_cc_ccm_tx_policy, but the instance is
-being accessed via IFLA_BRIDGE_CFM_CC_RDI_INSTANCE, which is associated
-with the policy br_cfm_cc_rdi_policy.
+Yet another PCI ID.
 
-This problem was introduced by commit 2be665c3940d ("bridge: cfm: Netlink
-SET configuration Interface.").
-
-Though it seems like a harmless typo since these two enum owns the exact
-same value (1 here), it is quite misleading hence fix it by using the
-correct enum IFLA_BRIDGE_CFM_CC_CCM_TX_INSTANCE here.
-
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20231204212710.185976-3-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_cfm_netlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/hda_intel.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/bridge/br_cfm_netlink.c b/net/bridge/br_cfm_netlink.c
-index 5c4c369f8536..2faab44652e7 100644
---- a/net/bridge/br_cfm_netlink.c
-+++ b/net/bridge/br_cfm_netlink.c
-@@ -362,7 +362,7 @@ static int br_cc_ccm_tx_parse(struct net_bridge *br, struct nlattr *attr,
- 
- 	memset(&tx_info, 0, sizeof(tx_info));
- 
--	instance = nla_get_u32(tb[IFLA_BRIDGE_CFM_CC_RDI_INSTANCE]);
-+	instance = nla_get_u32(tb[IFLA_BRIDGE_CFM_CC_CCM_TX_INSTANCE]);
- 	nla_memcpy(&tx_info.dmac.addr,
- 		   tb[IFLA_BRIDGE_CFM_CC_CCM_TX_DMAC],
- 		   sizeof(tx_info.dmac.addr));
+diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+index 75148485b755..55d3a78112e0 100644
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2504,6 +2504,8 @@ static const struct pci_device_id azx_ids[] = {
+ 	{ PCI_DEVICE_DATA(INTEL, HDA_LNL_P, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE) },
+ 	/* Arrow Lake-S */
+ 	{ PCI_DEVICE_DATA(INTEL, HDA_ARL_S, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE) },
++	/* Arrow Lake */
++	{ PCI_DEVICE_DATA(INTEL, HDA_ARL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE) },
+ 	/* Apollolake (Broxton-P) */
+ 	{ PCI_DEVICE_DATA(INTEL, HDA_APL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_BROXTON) },
+ 	/* Gemini-Lake */
 -- 
 2.43.0
 
