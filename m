@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-18545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D5F848325
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 060D78480BF
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E675D1F24E4E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 390CE1C240C0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC2750265;
-	Sat,  3 Feb 2024 04:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF5B18636;
+	Sat,  3 Feb 2024 04:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6rJcK9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pTtFS3x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2F51CD04;
-	Sat,  3 Feb 2024 04:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4991918622;
+	Sat,  3 Feb 2024 04:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933878; cv=none; b=p6szujuKD1tx3+qNaoxgwIhvFBPO4qdtK2w8Ssz8iDlVF+nS/FWw94Ubuw4x4sTWIR3aIJk50WVJ8wcTfJCz+aLep4v0XX4rN57NfTWtY6KMYdKvTreVg6ctpRZuZyZZ3ky1wzyEH3M8MHxaAegWxDZaFH6CDMgDaWDMToFbOyc=
+	t=1706933434; cv=none; b=MnI7y17iK1l1k2qa60nIgiMGFwTzLJLsEu+ZYVvURm61Ej4Wxqea7DDSJWsCr2W/5kzczi4saVlHdcCo/oB8cmTiDWZiTQiA/kXld24EZGXkY/nsU8xsLX8PqqzqBJYpDFsKwgoLqGabU+Nk4e+G6LzKDZOpxhbJHJ+ZJsmvw2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933878; c=relaxed/simple;
-	bh=34p1I2heCsWUkXlcKnlNUFndg2d9uZtcacYWRltqyMU=;
+	s=arc-20240116; t=1706933434; c=relaxed/simple;
+	bh=0iH1ZDr4agu+A1J/3RuqZq6MlHthprQNoFLeF5BEZm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PB59SGYnhJVRZQanC50L3Arv6f1HI5beDzsaB0MjhhQe1IZFiAjcePIzG3q8HaVWexotx4I1b+fWo9UN3OijRSqeumjk3gdlcW+8JOM2A1drrkXQrvBxfAN/yeCxhtU0kOVW+33iss/bDYh8bA/fiA7uXWLTyYnyY3BbPWkcYzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6rJcK9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5902C433C7;
-	Sat,  3 Feb 2024 04:17:57 +0000 (UTC)
+	 MIME-Version; b=BIM2Rcm4VsMZk+aMIuTT/BdmZ6IiP/Cqd5lSu822+h5EmHkUK3dgCqHw/f76TFOHZfmG8Go5JABWij19dwhBlnH3Liv9rnF5AkozaUiXkCZJxF+pWaS9oEB8FnaaAutgddRgwucm+p7jlMqMKQCD+8DdT3wTEQttu9Om8CeNdIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pTtFS3x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE27C433C7;
+	Sat,  3 Feb 2024 04:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933877;
-	bh=34p1I2heCsWUkXlcKnlNUFndg2d9uZtcacYWRltqyMU=;
+	s=korg; t=1706933434;
+	bh=0iH1ZDr4agu+A1J/3RuqZq6MlHthprQNoFLeF5BEZm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P6rJcK9HI8vgwFO+2zI/m8JW6lTAJhOs/+wBhg7Xy/xiHcnb9JLtrvLcMO85RYa4w
-	 eiaD/yLEkeORFc8PQ/pviMB5LYH381uJVJT3Wms5WX2DSEceuLnl+Wo6fPP/Xijywk
-	 8ltjB+VjLpqUQI1PDzUVfZZSSdSA4AaZn1bXCrVo=
+	b=2pTtFS3xozdMKTQ2Sthh2m5ylu1JN1MOqKh/IBwEFWg8j2cvlukOKBavjeHsWYs6n
+	 B+BrUtWt51iy4fLciaz8+ztT6nyt7s6F6buhGDBOsJ8AXq2gzXTavKjcpEuhMGR2/3
+	 9i+JY8QT+yJM4Ozqg4rC34ym477jv0QdLmwRx+p0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oded Gabbay <ogabbay@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Adrian Reber <areber@redhat.com>,
+	Andrei Vagin <avagin@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 217/353] accel/habanalabs: add support for Gaudi2C device
-Date: Fri,  2 Feb 2024 20:05:35 -0800
-Message-ID: <20240203035410.548345387@linuxfoundation.org>
+Subject: [PATCH 6.1 163/219] tty: allow TIOCSLCKTRMIOS with CAP_CHECKPOINT_RESTORE
+Date: Fri,  2 Feb 2024 20:05:36 -0800
+Message-ID: <20240203035339.418628344@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,114 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oded Gabbay <ogabbay@kernel.org>
+From: Adrian Reber <areber@redhat.com>
 
-[ Upstream commit 42422993cf28d456778ee9168d73758ec037cd51 ]
+[ Upstream commit e0f25b8992345aa5f113da2815f5add98738c611 ]
 
-Gaudi2 with PCI revision ID with the value of '3' represents Gaudi2C
-device and should be detected and initialized as Gaudi2.
+The capability CAP_CHECKPOINT_RESTORE was introduced to allow non-root
+users to checkpoint and restore processes as non-root with CRIU.
 
-Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
+This change extends CAP_CHECKPOINT_RESTORE to enable the CRIU option
+'--shell-job' as non-root. CRIU's man-page describes the '--shell-job'
+option like this:
+
+  Allow one to dump shell jobs. This implies the restored task will
+  inherit session and process group ID from the criu itself. This option
+  also allows to migrate a single external tty connection, to migrate
+  applications like top.
+
+TIOCSLCKTRMIOS can only be done if the process has CAP_SYS_ADMIN and
+this change extends it to CAP_SYS_ADMIN or CAP_CHECKPOINT_RESTORE.
+
+With this change it is possible to checkpoint and restore processes
+which have a tty connection as non-root if CAP_CHECKPOINT_RESTORE is
+set.
+
+Acked-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Adrian Reber <areber@redhat.com>
+Acked-by: Andrei Vagin <avagin@gmail.com>
+Link: https://lore.kernel.org/r/20231208143656.1019-1-areber@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/habanalabs/common/device.c                 | 3 +++
- drivers/accel/habanalabs/common/habanalabs.h             | 2 ++
- drivers/accel/habanalabs/common/habanalabs_drv.c         | 3 +++
- drivers/accel/habanalabs/common/mmu/mmu.c                | 1 +
- drivers/accel/habanalabs/common/sysfs.c                  | 3 +++
- drivers/accel/habanalabs/include/hw_ip/pci/pci_general.h | 1 +
- 6 files changed, 13 insertions(+)
+ drivers/tty/tty_ioctl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/accel/habanalabs/common/device.c b/drivers/accel/habanalabs/common/device.c
-index 9711e8fc979d..9e461c03e705 100644
---- a/drivers/accel/habanalabs/common/device.c
-+++ b/drivers/accel/habanalabs/common/device.c
-@@ -853,6 +853,9 @@ static int device_early_init(struct hl_device *hdev)
- 		gaudi2_set_asic_funcs(hdev);
- 		strscpy(hdev->asic_name, "GAUDI2B", sizeof(hdev->asic_name));
- 		break;
-+	case ASIC_GAUDI2C:
-+		gaudi2_set_asic_funcs(hdev);
-+		strscpy(hdev->asic_name, "GAUDI2C", sizeof(hdev->asic_name));
- 		break;
- 	default:
- 		dev_err(hdev->dev, "Unrecognized ASIC type %d\n",
-diff --git a/drivers/accel/habanalabs/common/habanalabs.h b/drivers/accel/habanalabs/common/habanalabs.h
-index 1655c101c705..d0fd77bb6a74 100644
---- a/drivers/accel/habanalabs/common/habanalabs.h
-+++ b/drivers/accel/habanalabs/common/habanalabs.h
-@@ -1262,6 +1262,7 @@ struct hl_dec {
-  * @ASIC_GAUDI_SEC: Gaudi secured device (HL-2000).
-  * @ASIC_GAUDI2: Gaudi2 device.
-  * @ASIC_GAUDI2B: Gaudi2B device.
-+ * @ASIC_GAUDI2C: Gaudi2C device.
-  */
- enum hl_asic_type {
- 	ASIC_INVALID,
-@@ -1270,6 +1271,7 @@ enum hl_asic_type {
- 	ASIC_GAUDI_SEC,
- 	ASIC_GAUDI2,
- 	ASIC_GAUDI2B,
-+	ASIC_GAUDI2C,
- };
- 
- struct hl_cs_parser;
-diff --git a/drivers/accel/habanalabs/common/habanalabs_drv.c b/drivers/accel/habanalabs/common/habanalabs_drv.c
-index 306a5bc9bf89..51fb04bbe376 100644
---- a/drivers/accel/habanalabs/common/habanalabs_drv.c
-+++ b/drivers/accel/habanalabs/common/habanalabs_drv.c
-@@ -141,6 +141,9 @@ static enum hl_asic_type get_asic_type(struct hl_device *hdev)
- 		case REV_ID_B:
- 			asic_type = ASIC_GAUDI2B;
- 			break;
-+		case REV_ID_C:
-+			asic_type = ASIC_GAUDI2C;
-+			break;
- 		default:
- 			break;
- 		}
-diff --git a/drivers/accel/habanalabs/common/mmu/mmu.c b/drivers/accel/habanalabs/common/mmu/mmu.c
-index b2145716c605..b654302a68fc 100644
---- a/drivers/accel/habanalabs/common/mmu/mmu.c
-+++ b/drivers/accel/habanalabs/common/mmu/mmu.c
-@@ -596,6 +596,7 @@ int hl_mmu_if_set_funcs(struct hl_device *hdev)
- 		break;
- 	case ASIC_GAUDI2:
- 	case ASIC_GAUDI2B:
-+	case ASIC_GAUDI2C:
- 		/* MMUs in Gaudi2 are always host resident */
- 		hl_mmu_v2_hr_set_funcs(hdev, &hdev->mmu_func[MMU_HR_PGT]);
- 		break;
-diff --git a/drivers/accel/habanalabs/common/sysfs.c b/drivers/accel/habanalabs/common/sysfs.c
-index 01f89f029355..278606373055 100644
---- a/drivers/accel/habanalabs/common/sysfs.c
-+++ b/drivers/accel/habanalabs/common/sysfs.c
-@@ -251,6 +251,9 @@ static ssize_t device_type_show(struct device *dev,
- 	case ASIC_GAUDI2B:
- 		str = "GAUDI2B";
- 		break;
-+	case ASIC_GAUDI2C:
-+		str = "GAUDI2C";
-+		break;
- 	default:
- 		dev_err(hdev->dev, "Unrecognized ASIC type %d\n",
- 				hdev->asic_type);
-diff --git a/drivers/accel/habanalabs/include/hw_ip/pci/pci_general.h b/drivers/accel/habanalabs/include/hw_ip/pci/pci_general.h
-index f5d497dc9bdc..4f951cada077 100644
---- a/drivers/accel/habanalabs/include/hw_ip/pci/pci_general.h
-+++ b/drivers/accel/habanalabs/include/hw_ip/pci/pci_general.h
-@@ -25,6 +25,7 @@ enum hl_revision_id {
- 	REV_ID_INVALID				= 0x00,
- 	REV_ID_A				= 0x01,
- 	REV_ID_B				= 0x02,
-+	REV_ID_C				= 0x03
- };
- 
- #endif /* INCLUDE_PCI_GENERAL_H_ */
+diff --git a/drivers/tty/tty_ioctl.c b/drivers/tty/tty_ioctl.c
+index 8767c504b95d..9d3b237304ea 100644
+--- a/drivers/tty/tty_ioctl.c
++++ b/drivers/tty/tty_ioctl.c
+@@ -859,7 +859,7 @@ int tty_mode_ioctl(struct tty_struct *tty, unsigned int cmd, unsigned long arg)
+ 			ret = -EFAULT;
+ 		return ret;
+ 	case TIOCSLCKTRMIOS:
+-		if (!capable(CAP_SYS_ADMIN))
++		if (!checkpoint_restore_ns_capable(&init_user_ns))
+ 			return -EPERM;
+ 		copy_termios_locked(real_tty, &kterm);
+ 		if (user_termios_to_kernel_termios(&kterm,
+@@ -876,7 +876,7 @@ int tty_mode_ioctl(struct tty_struct *tty, unsigned int cmd, unsigned long arg)
+ 			ret = -EFAULT;
+ 		return ret;
+ 	case TIOCSLCKTRMIOS:
+-		if (!capable(CAP_SYS_ADMIN))
++		if (!checkpoint_restore_ns_capable(&init_user_ns))
+ 			return -EPERM;
+ 		copy_termios_locked(real_tty, &kterm);
+ 		if (user_termios_to_kernel_termios_1(&kterm,
 -- 
 2.43.0
 
