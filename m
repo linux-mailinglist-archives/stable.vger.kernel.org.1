@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088768481BE
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC2B8482F4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B16F01F24997
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AC771C209F9
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE293B786;
-	Sat,  3 Feb 2024 04:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CFE4F612;
+	Sat,  3 Feb 2024 04:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgADfhdx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omY+bs+q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C291112B6D;
-	Sat,  3 Feb 2024 04:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230A81C6B5;
+	Sat,  3 Feb 2024 04:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933614; cv=none; b=RXkQhClz19wH9XZiimwMk4gm4jE2es3m3QIVwITU8PtII8Gpw+90K2xcnha45CiF3e9ItcEHTi3oY8oIOpXbrvNOQ7DVGDeIpjXSNwwXIV7L9G9pix1PIxYUr7PjaesuYEqdIxhB0/+meIpirsvn3uPcPo2V9PcEggIVGZY+CL8=
+	t=1706933842; cv=none; b=g2shdsUlfAfIMUJZDsuNIy/UKi0H36OSi3ZhqLriTujuNPItldFQoMh6P06RDGfN4aQSQwH7HaEKKjjUrg/OOuxntds1od905IRb1Jb00g5aoWvkYdidlpZYvliqnXwsq0xh3TQpzyNNPtThYPg67VmJvVcaRS9nvhKMJ4PMF1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933614; c=relaxed/simple;
-	bh=7N4Fh3HihoXJLhrN0tYK136mauuHnfRxRL+PBC4LwhU=;
+	s=arc-20240116; t=1706933842; c=relaxed/simple;
+	bh=CbuZGX98tJVBMsMWLcwzUB0JNuyBTOm+pBMq2kgyydo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NlqEKplKCTyb0dndzvJwX7ilNKn/GLJRwkxfUkjFZo0TUa8p4rnN6d3sO8DDSGVRUSKXW3AroIOhAv5QmSbqkdJyxhkPIGNRGtqvoxCB+7HJEtTqGFJTZMTP2cFBOIwmPHDF3oEbaMvVgyMEcLYw9c++qMX1ezNOT25w1OwJmps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgADfhdx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F54AC43390;
-	Sat,  3 Feb 2024 04:13:34 +0000 (UTC)
+	 MIME-Version; b=ZQlHyuhrxqjLKudkS/fKeC2kmp0OrXHRPgbOs8Nos2CNX6nqYfNncs9cJOX+/ggYFCCMfcUk3AWZMA8S8CctthueWak+xMBDIp35lh/udN4rfDubMRlk8jq+JvQGmJ0Kzer8LejXw30ugbHEDI2qeZWgjYG3m58K9nf24YxT1nU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omY+bs+q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0068C433A6;
+	Sat,  3 Feb 2024 04:17:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933614;
-	bh=7N4Fh3HihoXJLhrN0tYK136mauuHnfRxRL+PBC4LwhU=;
+	s=korg; t=1706933842;
+	bh=CbuZGX98tJVBMsMWLcwzUB0JNuyBTOm+pBMq2kgyydo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NgADfhdx32zYC0X/Vv+O1XLFWnpRWeWAkiQSFAY3pMvBlptIUPegMya97tYhlKl8j
-	 Lv3LvPIX4goYtqCAjzhxhsTZ1SfeMuAUy7FyKBW0r7TTRNMFHNf5n+v0IVrn4kgKHl
-	 HAsW1gw/mjHYYEhaPmOSj983KF+OHpsq38llI1o4=
+	b=omY+bs+qDNXs+EV7mGmhvERGnhlKtjQifudOZxtcRt0m1Y0s/vZxYWqjOumhZU1X/
+	 lmwQw38940C0g6+JL9idJe/WDB1e0Il3A9m1Jxb91GoA6twcPqUguh4h3IBmvUHlM+
+	 lbsE4x/R8XG+PbyrGW//XAcfkxhLFcKJjuyl+xcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Yi Wang <hsinyi@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	Zenm Chen <zenmchen@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/322] drm/panel-edp: Add override_edid_mode quirk for generic edp
-Date: Fri,  2 Feb 2024 20:04:20 -0800
-Message-ID: <20240203035404.493449612@linuxfoundation.org>
+Subject: [PATCH 6.7 143/353] wifi: rtl8xxxu: Add additional USB IDs for RTL8192EU devices
+Date: Fri,  2 Feb 2024 20:04:21 -0800
+Message-ID: <20240203035408.216825536@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Yi Wang <hsinyi@chromium.org>
+From: Zenm Chen <zenmchen@gmail.com>
 
-[ Upstream commit 9f7843b515811aea6c56527eb195b622e9c01f12 ]
+[ Upstream commit 4e87ca403e2008b9e182239e1abbf6876a55eb33 ]
 
-Generic edp gets mode from edid. However, some panels report incorrect
-mode in this way, resulting in glitches on panel. Introduce a new quirk
-additional_mode to the generic edid to pick a correct hardcoded mode.
+Add additional USB IDs found in the vendor driver from
+https://github.com/Mange/rtl8192eu-linux-driver to support more
+RTL8192EU devices.
 
-Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231117215056.1883314-2-hsinyi@chromium.org
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231217123017.1982-1-zenmchen@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-edp.c | 48 +++++++++++++++++++++++++++++--
- 1 file changed, 45 insertions(+), 3 deletions(-)
+ .../net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c    | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
-index 7dc6fb7308ce..cba5a93e6082 100644
---- a/drivers/gpu/drm/panel/panel-edp.c
-+++ b/drivers/gpu/drm/panel/panel-edp.c
-@@ -203,6 +203,9 @@ struct edp_panel_entry {
- 
- 	/** @name: Name of this panel (for printing to logs). */
- 	const char *name;
-+
-+	/** @override_edid_mode: Override the mode obtained by edid. */
-+	const struct drm_display_mode *override_edid_mode;
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+index 43ee7592bc6e..180907319e8c 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/rtl8xxxu_core.c
+@@ -7961,6 +7961,18 @@ static const struct usb_device_id dev_table[] = {
+ 	.driver_info = (unsigned long)&rtl8192eu_fops},
+ {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x818c, 0xff, 0xff, 0xff),
+ 	.driver_info = (unsigned long)&rtl8192eu_fops},
++/* D-Link DWA-131 rev C1 */
++{USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x3312, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192eu_fops},
++/* TP-Link TL-WN8200ND V2 */
++{USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0126, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192eu_fops},
++/* Mercusys MW300UM */
++{USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0100, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192eu_fops},
++/* Mercusys MW300UH */
++{USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0104, 0xff, 0xff, 0xff),
++	.driver_info = (unsigned long)&rtl8192eu_fops},
+ #endif
+ { }
  };
- 
- struct panel_edp {
-@@ -301,6 +304,24 @@ static unsigned int panel_edp_get_display_modes(struct panel_edp *panel,
- 	return num;
- }
- 
-+static int panel_edp_override_edid_mode(struct panel_edp *panel,
-+					struct drm_connector *connector,
-+					const struct drm_display_mode *override_mode)
-+{
-+	struct drm_display_mode *mode;
-+
-+	mode = drm_mode_duplicate(connector->dev, override_mode);
-+	if (!mode) {
-+		dev_err(panel->base.dev, "failed to add additional mode\n");
-+		return 0;
-+	}
-+
-+	mode->type |= DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
-+	drm_mode_set_name(mode);
-+	drm_mode_probed_add(connector, mode);
-+	return 1;
-+}
-+
- static int panel_edp_get_non_edid_modes(struct panel_edp *panel,
- 					struct drm_connector *connector)
- {
-@@ -568,6 +589,9 @@ static int panel_edp_get_modes(struct drm_panel *panel,
- {
- 	struct panel_edp *p = to_panel_edp(panel);
- 	int num = 0;
-+	bool has_override_edid_mode = p->detected_panel &&
-+				      p->detected_panel != ERR_PTR(-EINVAL) &&
-+				      p->detected_panel->override_edid_mode;
- 
- 	/* probe EDID if a DDC bus is available */
- 	if (p->ddc) {
-@@ -575,9 +599,18 @@ static int panel_edp_get_modes(struct drm_panel *panel,
- 
- 		if (!p->edid)
- 			p->edid = drm_get_edid(connector, p->ddc);
--
--		if (p->edid)
--			num += drm_add_edid_modes(connector, p->edid);
-+		if (p->edid) {
-+			if (has_override_edid_mode) {
-+				/*
-+				 * override_edid_mode is specified. Use
-+				 * override_edid_mode instead of from edid.
-+				 */
-+				num += panel_edp_override_edid_mode(p, connector,
-+						p->detected_panel->override_edid_mode);
-+			} else {
-+				num += drm_add_edid_modes(connector, p->edid);
-+			}
-+		}
- 
- 		pm_runtime_mark_last_busy(panel->dev);
- 		pm_runtime_put_autosuspend(panel->dev);
-@@ -1830,6 +1863,15 @@ static const struct panel_delay delay_200_500_e200 = {
- 	.delay = _delay \
- }
- 
-+#define EDP_PANEL_ENTRY2(vend_chr_0, vend_chr_1, vend_chr_2, product_id, _delay, _name, _mode) \
-+{ \
-+	.name = _name, \
-+	.panel_id = drm_edid_encode_panel_id(vend_chr_0, vend_chr_1, vend_chr_2, \
-+					     product_id), \
-+	.delay = _delay, \
-+	.override_edid_mode = _mode \
-+}
-+
- /*
-  * This table is used to figure out power sequencing delays for panels that
-  * are detected by EDID. Entries here may point to entries in the
 -- 
 2.43.0
 
