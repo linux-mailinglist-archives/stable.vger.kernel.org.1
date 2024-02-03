@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B89F684826F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7FFE848134
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F39C2802AE
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 832521F23F12
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355201B944;
-	Sat,  3 Feb 2024 04:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3193B1CA83;
+	Sat,  3 Feb 2024 04:11:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsmVMA+l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXwQ5nlO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E244A13AC0;
-	Sat,  3 Feb 2024 04:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42B2FBF2;
+	Sat,  3 Feb 2024 04:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933745; cv=none; b=a8MPR6psgMYbeL34zDKyJlkZjkagx0Z0i6yxnhZP/l4oDqeXZtKNbRZYbZz+f99vptukjuJfvJEMXqiRDPBRLdEQ5lnetM1qJqLyImGRZgwJyD7tlpXd1S7xDZ8WLDO7oS7IshepAtoiMwIYHBXFMnB5wn3uT3tV+6ogfo6o57I=
+	t=1706933514; cv=none; b=cTg+CcAQwHJcydG3WugkAtnIEw4QlOMJjecjR2IfA8+5+NZijxpxjydU/9BBYMhU527RpCEtrmoQpAPnz0M+r9IVJRvRDcnQz57e8cz76lHTEccg5ikV03UZ9Q47cO+0uh1WZ//jle0alJ9OM187jCHS/VPXaLw3spfCNB/xlDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933745; c=relaxed/simple;
-	bh=oZSDejc1y/TSO8e4BvpySOawGSXREhDafFXgbzjXWNc=;
+	s=arc-20240116; t=1706933514; c=relaxed/simple;
+	bh=PQ7u7kB84OcVlLaKCva35vB8MUKk/mUi1zoFHdqvepA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gw3+t8usChWffG09qGwTXrxYaezywKWFeh4F3uviF1DGID+I+4vVE6IkuI83SpHFcIFdRL0gXBXL5VKePCVkhVSEch7emadGDBG7PDthHbcvlH5XkFiLk+WTME3Cbd0IrovdNxhYSMyFrDf549EMtBNZEYFr/cw3H7uM9Dz57OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsmVMA+l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5251BC43390;
-	Sat,  3 Feb 2024 04:15:44 +0000 (UTC)
+	 MIME-Version; b=MwT9Pnge9ZJGiQ54t31VNtr56dVV3zOT235AGEfY8vfFb7VPCcAtRrpfy8zFDOyh0P0okCVVXUuP+CRpGdlsmNCo/bSrg0oiCFb76TJIdXZyDJHVNh1zb5WuzsQb2d8DxANp0N+pLIAPl4xoc6JwOsJMpjxVzSqZnFmI/gf0Oi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXwQ5nlO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAFE3C43394;
+	Sat,  3 Feb 2024 04:11:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933744;
-	bh=oZSDejc1y/TSO8e4BvpySOawGSXREhDafFXgbzjXWNc=;
+	s=korg; t=1706933513;
+	bh=PQ7u7kB84OcVlLaKCva35vB8MUKk/mUi1zoFHdqvepA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bsmVMA+lHi0eMUsOq4TjXuKhYxy/hEZX35DtiB1J7tSSXZtkxQUTgMQfGZvDucr3d
-	 1R6WoarVtS9BtMAnlf7Rd2lovPxMIXdqwmO9N/NQ/4T+2RsP/z5yav5MPGeLjdIk+Y
-	 U1d+YWMZ/U+G6o7W5pO0wSaiDLxJzis4YmbTxbls=
+	b=cXwQ5nlOWft55W2uqeWBk8hqBZznpKFbelV01zPet+tIK6fIHl3WwFsJPpdZhemtT
+	 mz+tHxo2zjMbWuKBjQSqHPruu/Ed0/pvBlIgWZWuZw63e53hEIXWgGvbbxaACAUfOY
+	 Y6J4d8EP9pwiQKhqcWxXNrkP8IoNOiRwIx5p5oRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bo Ye <bo.ye@mediatek.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 029/353] thermal: core: Fix thermal zone suspend-resume synchronization
-Date: Fri,  2 Feb 2024 20:02:27 -0800
-Message-ID: <20240203035404.701418237@linuxfoundation.org>
+Subject: [PATCH 6.6 051/322] smb: client: fix renaming of reparse points
+Date: Fri,  2 Feb 2024 20:02:28 -0800
+Message-ID: <20240203035400.769938250@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,134 +62,217 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 4e814173a8c4f432fd068b1c796f0416328c9d99 ]
+[ Upstream commit 7435d51b7ea2ab7801279c43ecd72063e9d5c92f ]
 
-There are 3 synchronization issues with thermal zone suspend-resume
-during system-wide transitions:
+The client was sending an SMB2_CREATE request without setting
+OPEN_REPARSE_POINT flag thus failing the entire rename operation.
 
- 1. The resume code runs in a PM notifier which is invoked after user
-    space has been thawed, so it can run concurrently with user space
-    which can trigger a thermal zone device removal.  If that happens,
-    the thermal zone resume code may use a stale pointer to the next
-    list element and crash, because it does not hold thermal_list_lock
-    while walking thermal_tz_list.
+Fix this by setting OPEN_REPARSE_POINT in create options for
+SMB2_CREATE request when the source inode is a repase point.
 
- 2. The thermal zone resume code calls thermal_zone_device_init()
-    outside the zone lock, so user space or an update triggered by
-    the platform firmware may see an inconsistent state of a
-    thermal zone leading to unexpected behavior.
-
- 3. Clearing the in_suspend global variable in thermal_pm_notify()
-    allows __thermal_zone_device_update() to continue for all thermal
-    zones and it may as well run before the thermal_tz_list walk (or
-    at any point during the list walk for that matter) and attempt to
-    operate on a thermal zone that has not been resumed yet.  It may
-    also race destructively with thermal_zone_device_init().
-
-To address these issues, add thermal_list_lock locking to
-thermal_pm_notify(), especially arount the thermal_tz_list,
-make it call thermal_zone_device_init() back-to-back with
-__thermal_zone_device_update() under the zone lock and replace
-in_suspend with per-zone bool "suspend" indicators set and unset
-under the given zone's lock.
-
-Link: https://lore.kernel.org/linux-pm/20231218162348.69101-1-bo.ye@mediatek.com/
-Reported-by: Bo Ye <bo.ye@mediatek.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/thermal_core.c | 30 +++++++++++++++++++++++-------
- include/linux/thermal.h        |  2 ++
- 2 files changed, 25 insertions(+), 7 deletions(-)
+ fs/smb/client/cifsglob.h  | 22 +++++++++++++++++-----
+ fs/smb/client/cifsproto.h |  7 ++++---
+ fs/smb/client/cifssmb.c   |  8 ++++----
+ fs/smb/client/inode.c     |  3 ++-
+ fs/smb/client/smb2inode.c | 38 +++++++++++++++++++++++---------------
+ fs/smb/client/smb2proto.h |  8 +++++---
+ 6 files changed, 55 insertions(+), 31 deletions(-)
 
-diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
-index 1bc7ba459406..45f51727410c 100644
---- a/drivers/thermal/thermal_core.c
-+++ b/drivers/thermal/thermal_core.c
-@@ -37,8 +37,6 @@ static LIST_HEAD(thermal_governor_list);
- static DEFINE_MUTEX(thermal_list_lock);
- static DEFINE_MUTEX(thermal_governor_lock);
- 
--static atomic_t in_suspend;
--
- static struct thermal_governor *def_governor;
- 
- /*
-@@ -405,7 +403,7 @@ void __thermal_zone_device_update(struct thermal_zone_device *tz,
- {
- 	const struct thermal_trip *trip;
- 
--	if (atomic_read(&in_suspend))
-+	if (tz->suspended)
- 		return;
- 
- 	if (WARN_ONCE(!tz->ops->get_temp,
-@@ -1514,17 +1512,35 @@ static int thermal_pm_notify(struct notifier_block *nb,
- 	case PM_HIBERNATION_PREPARE:
- 	case PM_RESTORE_PREPARE:
- 	case PM_SUSPEND_PREPARE:
--		atomic_set(&in_suspend, 1);
-+		mutex_lock(&thermal_list_lock);
-+
-+		list_for_each_entry(tz, &thermal_tz_list, node) {
-+			mutex_lock(&tz->lock);
-+
-+			tz->suspended = true;
-+
-+			mutex_unlock(&tz->lock);
-+		}
-+
-+		mutex_unlock(&thermal_list_lock);
- 		break;
- 	case PM_POST_HIBERNATION:
- 	case PM_POST_RESTORE:
- 	case PM_POST_SUSPEND:
--		atomic_set(&in_suspend, 0);
-+		mutex_lock(&thermal_list_lock);
-+
- 		list_for_each_entry(tz, &thermal_tz_list, node) {
-+			mutex_lock(&tz->lock);
-+
-+			tz->suspended = false;
-+
- 			thermal_zone_device_init(tz);
--			thermal_zone_device_update(tz,
--						   THERMAL_EVENT_UNSPECIFIED);
-+			__thermal_zone_device_update(tz, THERMAL_EVENT_UNSPECIFIED);
-+
-+			mutex_unlock(&tz->lock);
- 		}
-+
-+		mutex_unlock(&thermal_list_lock);
- 		break;
- 	default:
- 		break;
-diff --git a/include/linux/thermal.h b/include/linux/thermal.h
-index cee814d5d1ac..1da1739d75d9 100644
---- a/include/linux/thermal.h
-+++ b/include/linux/thermal.h
-@@ -149,6 +149,7 @@ struct thermal_cooling_device {
-  * @node:	node in thermal_tz_list (in thermal_core.c)
-  * @poll_queue:	delayed work for polling
-  * @notify_event: Last notification event
-+ * @suspended: thermal zone suspend indicator
-  */
- struct thermal_zone_device {
- 	int id;
-@@ -181,6 +182,7 @@ struct thermal_zone_device {
- 	struct list_head node;
- 	struct delayed_work poll_queue;
- 	enum thermal_notify_event notify_event;
-+	bool suspended;
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index 5e32c79f03a7..4d07b96038d8 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -205,9 +205,18 @@ struct cifs_open_info_data {
+ 	};
  };
  
- /**
+-#define cifs_open_data_reparse(d) \
+-	((d)->reparse_point || \
+-	 (le32_to_cpu((d)->fi.Attributes) & ATTR_REPARSE))
++static inline bool cifs_open_data_reparse(struct cifs_open_info_data *data)
++{
++	struct smb2_file_all_info *fi = &data->fi;
++	u32 attrs = le32_to_cpu(fi->Attributes);
++	bool ret;
++
++	ret = data->reparse_point || (attrs & ATTR_REPARSE);
++	if (ret)
++		attrs |= ATTR_REPARSE;
++	fi->Attributes = cpu_to_le32(attrs);
++	return ret;
++}
+ 
+ static inline void cifs_free_open_info(struct cifs_open_info_data *data)
+ {
+@@ -390,8 +399,11 @@ struct smb_version_operations {
+ 	int (*rename_pending_delete)(const char *, struct dentry *,
+ 				     const unsigned int);
+ 	/* send rename request */
+-	int (*rename)(const unsigned int, struct cifs_tcon *, const char *,
+-		      const char *, struct cifs_sb_info *);
++	int (*rename)(const unsigned int xid,
++		      struct cifs_tcon *tcon,
++		      struct dentry *source_dentry,
++		      const char *from_name, const char *to_name,
++		      struct cifs_sb_info *cifs_sb);
+ 	/* send create hardlink request */
+ 	int (*create_hardlink)(const unsigned int, struct cifs_tcon *,
+ 			       const char *, const char *,
+diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
+index c00f84420559..f89e6c2a4974 100644
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -435,9 +435,10 @@ extern int CIFSPOSIXDelFile(const unsigned int xid, struct cifs_tcon *tcon,
+ 			int remap_special_chars);
+ extern int CIFSSMBDelFile(const unsigned int xid, struct cifs_tcon *tcon,
+ 			  const char *name, struct cifs_sb_info *cifs_sb);
+-extern int CIFSSMBRename(const unsigned int xid, struct cifs_tcon *tcon,
+-			 const char *from_name, const char *to_name,
+-			 struct cifs_sb_info *cifs_sb);
++int CIFSSMBRename(const unsigned int xid, struct cifs_tcon *tcon,
++		  struct dentry *source_dentry,
++		  const char *from_name, const char *to_name,
++		  struct cifs_sb_info *cifs_sb);
+ extern int CIFSSMBRenameOpenFile(const unsigned int xid, struct cifs_tcon *tcon,
+ 				 int netfid, const char *target_name,
+ 				 const struct nls_table *nls_codepage,
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index 9ee348e6d106..5bdea01919e8 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -2149,10 +2149,10 @@ CIFSSMBFlush(const unsigned int xid, struct cifs_tcon *tcon, int smb_file_id)
+ 	return rc;
+ }
+ 
+-int
+-CIFSSMBRename(const unsigned int xid, struct cifs_tcon *tcon,
+-	      const char *from_name, const char *to_name,
+-	      struct cifs_sb_info *cifs_sb)
++int CIFSSMBRename(const unsigned int xid, struct cifs_tcon *tcon,
++		  struct dentry *source_dentry,
++		  const char *from_name, const char *to_name,
++		  struct cifs_sb_info *cifs_sb)
+ {
+ 	int rc = 0;
+ 	RENAME_REQ *pSMB = NULL;
+diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
+index 09c5c0f5c96e..eb54e4893777 100644
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -2219,7 +2219,8 @@ cifs_do_rename(const unsigned int xid, struct dentry *from_dentry,
+ 		return -ENOSYS;
+ 
+ 	/* try path-based rename first */
+-	rc = server->ops->rename(xid, tcon, from_path, to_path, cifs_sb);
++	rc = server->ops->rename(xid, tcon, from_dentry,
++				 from_path, to_path, cifs_sb);
+ 
+ 	/*
+ 	 * Don't bother with rename by filehandle unless file is busy and
+diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
+index c94940af5d4b..c3e28673e0cd 100644
+--- a/fs/smb/client/smb2inode.c
++++ b/fs/smb/client/smb2inode.c
+@@ -781,11 +781,11 @@ smb2_unlink(const unsigned int xid, struct cifs_tcon *tcon, const char *name,
+ 				ACL_NO_MODE, NULL, SMB2_OP_DELETE, NULL, NULL, NULL, NULL, NULL);
+ }
+ 
+-static int
+-smb2_set_path_attr(const unsigned int xid, struct cifs_tcon *tcon,
+-		   const char *from_name, const char *to_name,
+-		   struct cifs_sb_info *cifs_sb, __u32 access, int command,
+-		   struct cifsFileInfo *cfile)
++static int smb2_set_path_attr(const unsigned int xid, struct cifs_tcon *tcon,
++			      const char *from_name, const char *to_name,
++			      struct cifs_sb_info *cifs_sb,
++			      __u32 create_options, __u32 access,
++			      int command, struct cifsFileInfo *cfile)
+ {
+ 	__le16 *smb2_to_name = NULL;
+ 	int rc;
+@@ -796,25 +796,33 @@ smb2_set_path_attr(const unsigned int xid, struct cifs_tcon *tcon,
+ 		goto smb2_rename_path;
+ 	}
+ 	rc = smb2_compound_op(xid, tcon, cifs_sb, from_name, access,
+-			      FILE_OPEN, 0, ACL_NO_MODE, smb2_to_name,
++			      FILE_OPEN, create_options, ACL_NO_MODE, smb2_to_name,
+ 			      command, cfile, NULL, NULL, NULL, NULL);
+ smb2_rename_path:
+ 	kfree(smb2_to_name);
+ 	return rc;
+ }
+ 
+-int
+-smb2_rename_path(const unsigned int xid, struct cifs_tcon *tcon,
+-		 const char *from_name, const char *to_name,
+-		 struct cifs_sb_info *cifs_sb)
++int smb2_rename_path(const unsigned int xid,
++		     struct cifs_tcon *tcon,
++		     struct dentry *source_dentry,
++		     const char *from_name, const char *to_name,
++		     struct cifs_sb_info *cifs_sb)
+ {
++	struct cifsInodeInfo *ci;
+ 	struct cifsFileInfo *cfile;
++	__u32 co = 0;
+ 
++	if (source_dentry) {
++		ci = CIFS_I(d_inode(source_dentry));
++		if (ci->cifsAttrs & ATTR_REPARSE)
++			co |= OPEN_REPARSE_POINT;
++	}
+ 	drop_cached_dir_by_name(xid, tcon, from_name, cifs_sb);
+ 	cifs_get_writable_path(tcon, from_name, FIND_WR_WITH_DELETE, &cfile);
+ 
+-	return smb2_set_path_attr(xid, tcon, from_name, to_name,
+-				  cifs_sb, DELETE, SMB2_OP_RENAME, cfile);
++	return smb2_set_path_attr(xid, tcon, from_name, to_name, cifs_sb,
++				  co, DELETE, SMB2_OP_RENAME, cfile);
+ }
+ 
+ int
+@@ -822,9 +830,9 @@ smb2_create_hardlink(const unsigned int xid, struct cifs_tcon *tcon,
+ 		     const char *from_name, const char *to_name,
+ 		     struct cifs_sb_info *cifs_sb)
+ {
+-	return smb2_set_path_attr(xid, tcon, from_name, to_name, cifs_sb,
+-				  FILE_READ_ATTRIBUTES, SMB2_OP_HARDLINK,
+-				  NULL);
++	return smb2_set_path_attr(xid, tcon, from_name, to_name,
++				  cifs_sb, 0, FILE_READ_ATTRIBUTES,
++				  SMB2_OP_HARDLINK, NULL);
+ }
+ 
+ int
+diff --git a/fs/smb/client/smb2proto.h b/fs/smb/client/smb2proto.h
+index 0e371f7e2854..7cbf1a76b42d 100644
+--- a/fs/smb/client/smb2proto.h
++++ b/fs/smb/client/smb2proto.h
+@@ -80,9 +80,11 @@ extern int smb2_rmdir(const unsigned int xid, struct cifs_tcon *tcon,
+ 		      const char *name, struct cifs_sb_info *cifs_sb);
+ extern int smb2_unlink(const unsigned int xid, struct cifs_tcon *tcon,
+ 		       const char *name, struct cifs_sb_info *cifs_sb);
+-extern int smb2_rename_path(const unsigned int xid, struct cifs_tcon *tcon,
+-			    const char *from_name, const char *to_name,
+-			    struct cifs_sb_info *cifs_sb);
++int smb2_rename_path(const unsigned int xid,
++		     struct cifs_tcon *tcon,
++		     struct dentry *source_dentry,
++		     const char *from_name, const char *to_name,
++		     struct cifs_sb_info *cifs_sb);
+ extern int smb2_create_hardlink(const unsigned int xid, struct cifs_tcon *tcon,
+ 				const char *from_name, const char *to_name,
+ 				struct cifs_sb_info *cifs_sb);
 -- 
 2.43.0
 
