@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46CD84831B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6B38480D0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1199EB2203F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 574AB28C63B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29265111A6;
-	Sat,  3 Feb 2024 04:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4462318EA2;
+	Sat,  3 Feb 2024 04:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OH/lUXCU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AiZRfqTu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFF911198;
-	Sat,  3 Feb 2024 04:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F098F12B9D;
+	Sat,  3 Feb 2024 04:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933869; cv=none; b=jXdhfFOSHOrozc2ESIfuwsAVKj3JGTN7Wx1uNWJDDQXApHdk8wIbzx704hliAUrZXxxqZ4yJ5ZhSs7puOn1atGi62Fx4AjDD937wzqfovYbkEB5DRWOMKLzE3/kQc61hDwOfndCh4G9DXSAMiuroDE+k9IFhlyyU2qA55g02q10=
+	t=1706933445; cv=none; b=NYud+f7OfWk/+MK2DrdyEr1jeZ6S4cUSXqMAyweh5NGkjcKmB+E9OHZLYVrnp8sb1h0xo7IBPe3T5QtHhs2IWbe6WwPZSGTQ9uc3+SdjqTYOqxAtwLClnom6ojxjs94a2lCLmIe8utl2vcCLI+czcCfgXhCD6Fk8brqvkfMiCII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933869; c=relaxed/simple;
-	bh=yYN4jJyxYlpcON42lThOz6rmeuC+c0aO58VhcRcmAMU=;
+	s=arc-20240116; t=1706933445; c=relaxed/simple;
+	bh=1xIVM4n4Qzs5qmKBdQiZC6tZopKgC42zU/1mby1rNog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kp5W/0O7zlVwGJEWPDXWPGPz3chOMOlbBzYoAj2PCbAOavWMBgXFcwf6Xl0Dh5uRWod9M9qqqVR0SMD7f9UDqRomNCNiNQW22GXr8ax951KAgpxYkIbjvC38rMWu0Zu4XvW9eLhwafo4v3A0CDo6GubslfV0FYBCIdQuI9C+qgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OH/lUXCU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A716DC433F1;
-	Sat,  3 Feb 2024 04:17:49 +0000 (UTC)
+	 MIME-Version; b=c/FvUnWrgVFMF2alpMXVHc8Hil6jaUB46DcYFPDS0cEVpYW59bEPHkKZif65ANk5fwW2yNRjJ9tpmWCTb+dDt/nW9OQYsht0iD06FLpxq2htBc08kNnoj6vIfBBbZOdpUAWLogE2uq3f93WkK/CfP/ZFbfIMbqXoW0Le22PJzQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AiZRfqTu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C70AC433F1;
+	Sat,  3 Feb 2024 04:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933869;
-	bh=yYN4jJyxYlpcON42lThOz6rmeuC+c0aO58VhcRcmAMU=;
+	s=korg; t=1706933444;
+	bh=1xIVM4n4Qzs5qmKBdQiZC6tZopKgC42zU/1mby1rNog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OH/lUXCUf+xinj0OvyVA1DystwwvnnoUrmsTLqABW+52ccaFkBhg5Ql6W0EKgtS9X
-	 9f31Whw8KNLf7Yk3xhtZK3M8tRr2XG4Ptr/FCxPpeOY+wMABcxm+u4lxj+k+EGzq7f
-	 d/cV6UNlGEVY5WFdPg37OZJLdfMTNzILnx5R6yq0=
+	b=AiZRfqTuTbicAcjujgEK+S57Z89w+l0PIzw7Ksnxm3ggWGbwt5imKJ2vQ/K5eBmqo
+	 fwKozNE41q7Fuol57Avnaxb3oTaT/U53CsE2FzgBKahT7xWKtGN/5f/C8Vt9hFzGyh
+	 aKea5rEC0mTN+sWacL15QiKC0jqUrPubmmlMF4Dw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Harshit Shah <harshitshah.opendev@gmail.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 207/353] drm/msm/dpu: enable writeback on SM8350
+Subject: [PATCH 6.1 152/219] i3c: master: cdns: Update maximum prescaler value for i2c clock
 Date: Fri,  2 Feb 2024 20:05:25 -0800
-Message-ID: <20240203035410.242872526@linuxfoundation.org>
+Message-ID: <20240203035338.224742649@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Harshit Shah <harshitshah.opendev@gmail.com>
 
-[ Upstream commit c2949a49dfe960e952400029e14751dceff79d38 ]
+[ Upstream commit 374c13f9080a1b9835a5ed3e7bea93cf8e2dc262 ]
 
-Enable WB2 hardware block, enabling writeback support on this platform.
+As per the Cadence IP document fixed the I2C clock divider value limit from
+16 bits instead of 10 bits. Without this change setting up the I2C clock to
+low frequencies will not work as the prescaler value might be greater than
+10 bit number.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/570188/
-Link: https://lore.kernel.org/r/20231203002743.1291956-3-dmitry.baryshkov@linaro.org
+I3C clock divider value is 10 bits only. Updating the macro names for both.
+
+Signed-off-by: Harshit Shah <harshitshah.opendev@gmail.com>
+Link: https://lore.kernel.org/r/1703927483-28682-1-git-send-email-harshitshah.opendev@gmail.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/i3c/master/i3c-master-cdns.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
-index 1709ba57f384..022b0408c24d 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
-@@ -31,6 +31,7 @@ static const struct dpu_mdp_cfg sm8350_mdp = {
- 		[DPU_CLK_CTRL_DMA1] = { .reg_off = 0x2b4, .bit_off = 8 },
- 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2bc, .bit_off = 8 },
- 		[DPU_CLK_CTRL_DMA3] = { .reg_off = 0x2c4, .bit_off = 8 },
-+		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
- 		[DPU_CLK_CTRL_REG_DMA] = { .reg_off = 0x2bc, .bit_off = 20 },
- 	},
- };
-@@ -298,6 +299,21 @@ static const struct dpu_dsc_cfg sm8350_dsc[] = {
- 	},
- };
+diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3c-master-cdns.c
+index 4a49c75a9408..b9cfda6ae9ae 100644
+--- a/drivers/i3c/master/i3c-master-cdns.c
++++ b/drivers/i3c/master/i3c-master-cdns.c
+@@ -77,7 +77,8 @@
+ #define PRESCL_CTRL0			0x14
+ #define PRESCL_CTRL0_I2C(x)		((x) << 16)
+ #define PRESCL_CTRL0_I3C(x)		(x)
+-#define PRESCL_CTRL0_MAX		GENMASK(9, 0)
++#define PRESCL_CTRL0_I3C_MAX		GENMASK(9, 0)
++#define PRESCL_CTRL0_I2C_MAX		GENMASK(15, 0)
  
-+static const struct dpu_wb_cfg sm8350_wb[] = {
-+	{
-+		.name = "wb_2", .id = WB_2,
-+		.base = 0x65000, .len = 0x2c8,
-+		.features = WB_SM8250_MASK,
-+		.format_list = wb2_formats,
-+		.num_formats = ARRAY_SIZE(wb2_formats),
-+		.clk_ctrl = DPU_CLK_CTRL_WB2,
-+		.xin_id = 6,
-+		.vbif_idx = VBIF_RT,
-+		.maxlinewidth = 4096,
-+		.intr_wb_done = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 4),
-+	},
-+};
-+
- static const struct dpu_intf_cfg sm8350_intf[] = {
- 	{
- 		.name = "intf_0", .id = INTF_0,
-@@ -393,6 +409,8 @@ const struct dpu_mdss_cfg dpu_sm8350_cfg = {
- 	.dsc = sm8350_dsc,
- 	.merge_3d_count = ARRAY_SIZE(sm8350_merge_3d),
- 	.merge_3d = sm8350_merge_3d,
-+	.wb_count = ARRAY_SIZE(sm8350_wb),
-+	.wb = sm8350_wb,
- 	.intf_count = ARRAY_SIZE(sm8350_intf),
- 	.intf = sm8350_intf,
- 	.vbif_count = ARRAY_SIZE(sdm845_vbif),
+ #define PRESCL_CTRL1			0x18
+ #define PRESCL_CTRL1_PP_LOW_MASK	GENMASK(15, 8)
+@@ -1234,7 +1235,7 @@ static int cdns_i3c_master_bus_init(struct i3c_master_controller *m)
+ 		return -EINVAL;
+ 
+ 	pres = DIV_ROUND_UP(sysclk_rate, (bus->scl_rate.i3c * 4)) - 1;
+-	if (pres > PRESCL_CTRL0_MAX)
++	if (pres > PRESCL_CTRL0_I3C_MAX)
+ 		return -ERANGE;
+ 
+ 	bus->scl_rate.i3c = sysclk_rate / ((pres + 1) * 4);
+@@ -1247,7 +1248,7 @@ static int cdns_i3c_master_bus_init(struct i3c_master_controller *m)
+ 	max_i2cfreq = bus->scl_rate.i2c;
+ 
+ 	pres = (sysclk_rate / (max_i2cfreq * 5)) - 1;
+-	if (pres > PRESCL_CTRL0_MAX)
++	if (pres > PRESCL_CTRL0_I2C_MAX)
+ 		return -ERANGE;
+ 
+ 	bus->scl_rate.i2c = sysclk_rate / ((pres + 1) * 5);
 -- 
 2.43.0
 
