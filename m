@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-17991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D38928480EF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97BF88480D6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 122A71C2423E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 262021F22DD2
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605A51B27A;
-	Sat,  3 Feb 2024 04:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684A91947D;
+	Sat,  3 Feb 2024 04:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TW00g3pX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/ozOQ/6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204C5FC03;
-	Sat,  3 Feb 2024 04:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26522125BF;
+	Sat,  3 Feb 2024 04:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933467; cv=none; b=naS7uV1iOWdpp2ms+AZypRfnxT/1obeQTV2UGHnaWaqJ3iEuKB26VP2OzF/AeM+x2vnfN8iY7LIzovQfF91+sGxtI+RVfNBSEFnQk/GSKRAjRwnNp26KYowFy/Pg77qUopZ0iNIzbWTZhPpcRto1+4zf3N22pDl/xbAYpU0XhX0=
+	t=1706933449; cv=none; b=aHo08OEvQVkeALNKQz/+03Rc4l1nFI8NGtd6GoFvnpfSXtYNKonzrimc3VX+6bxtqcWWWyuw+Z/u92xzG2N1pyp9P5XiYwMksIEfc5vlA5VA0EL7aqacr6eOtj8iqsgfkuf8BieJcv8jL+AzHolZc+ilGLmxxsMJJEwU0NcMojU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933467; c=relaxed/simple;
-	bh=BFRxOgs980Lh2tyWFhQvcy8vMcQudOkoTILzWkmPRWM=;
+	s=arc-20240116; t=1706933449; c=relaxed/simple;
+	bh=Y0t1V8lEuIsfagdOUQFQLrKaqurw5L1XjKpYgcqsPlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q76n92tYN3KeMW+DVtvyRRjmMW4MLa0raISGknqMdC6QpHrZIP5guKt7uPs98XN9aJ5H8pXjYoXg6KrgXhboV8rMg/6NVRZ9s27Qke+wdFWDPHHJsshNxiq27pxjPlc3LVh8lWwg+sdm9pAjBD1HaEg4B73d1BvCk7IkEKDlWDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TW00g3pX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA2AC43390;
-	Sat,  3 Feb 2024 04:11:06 +0000 (UTC)
+	 MIME-Version; b=RQ+o6gXc2o0N55Hek3xDNHuEcSa+qaLiEoEZryJJef2N9p+GZrdVW1XHv0VgnUzk9q1Uj+CotRSkflug0ZIXiBgRANMrmlC4CHeq2X4OwuWtApAhCH6Jk6Rgkl37VY2BE102mpHHIQ5O7c/xt4NnB+rnfmvUxMeBeB4fpHFnx3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/ozOQ/6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A3BC433B1;
+	Sat,  3 Feb 2024 04:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933467;
-	bh=BFRxOgs980Lh2tyWFhQvcy8vMcQudOkoTILzWkmPRWM=;
+	s=korg; t=1706933449;
+	bh=Y0t1V8lEuIsfagdOUQFQLrKaqurw5L1XjKpYgcqsPlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TW00g3pXgk7ofvx8beGeR/2PgyYyIM5MmkiuAA2zY90aNFQjwK3mxenmMlEan/p65
-	 SNZrNobrWyZLTHAdoEDEM13glpewtFHmXOWmW0KRLfCVduWF7LdqowI1c8m84UCbWn
-	 vZk6A14jfTdkjKwT2WDXsd7gjnsrxQbi/Ak/fvVw=
+	b=z/ozOQ/6m92N2q9nAmgNwEj/g8VuF/P9xrsh5ok0OQlhpb5Hh8EoK77ZcrKCe7GkV
+	 fbUajPLl7zw0JbJ/NqQIC9p8z68vh5Nkl+IclhcjjCKr/TOkVaKdwIQqPXNRuQr9wx
+	 7yDn4axwWyIt6WzmV6sDZGE/gQwoXWfG3Sqg1680=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 182/219] perf: Fix the nr_addr_filters fix
-Date: Fri,  2 Feb 2024 20:05:55 -0800
-Message-ID: <20240203035342.284485591@linuxfoundation.org>
+	Edward Adam Davis <eadavis@qq.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 183/219] wifi: cfg80211: fix RCU dereference in __cfg80211_bss_update
+Date: Fri,  2 Feb 2024 20:05:56 -0800
+Message-ID: <20240203035342.417766713@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
 References: <20240203035317.354186483@linuxfoundation.org>
@@ -66,48 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 388a1fb7da6aaa1970c7e2a7d7fcd983a87a8484 ]
+[ Upstream commit 1184950e341c11b6f82bc5b59564411d9537ab27 ]
 
-Thomas reported that commit 652ffc2104ec ("perf/core: Fix narrow
-startup race when creating the perf nr_addr_filters sysfs file") made
-the entire attribute group vanish, instead of only the nr_addr_filters
-attribute.
+Replace rcu_dereference() with rcu_access_pointer() since we hold
+the lock here (and aren't in an RCU critical section).
 
-Additionally a stray return.
-
-Insufficient coffee was involved with both writing and merging the
-patch.
-
-Fixes: 652ffc2104ec ("perf/core: Fix narrow startup race when creating the perf nr_addr_filters sysfs file")
-Reported-by: Thomas Richter <tmricht@linux.ibm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Thomas Richter <tmricht@linux.ibm.com>
-Link: https://lkml.kernel.org/r/20231122100756.GP8262@noisy.programming.kicks-ass.net
+Fixes: 32af9a9e1069 ("wifi: cfg80211: free beacon_ies when overridden from hidden BSS")
+Reported-and-tested-by: syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://msgid.link/tencent_BF8F0DF0258C8DBF124CDDE4DD8D992DCF07@qq.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ net/wireless/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 1e4841ebc22e..872d149b1959 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -11232,12 +11232,10 @@ static umode_t pmu_dev_is_visible(struct kobject *kobj, struct attribute *a, int
- 	struct device *dev = kobj_to_dev(kobj);
- 	struct pmu *pmu = dev_get_drvdata(dev);
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 86906557a04e..3ad4c1032c03 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1811,7 +1811,7 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ 					 &hidden->hidden_list);
+ 				hidden->refcount++;
  
--	if (!pmu->nr_addr_filters)
-+	if (n == 2 && !pmu->nr_addr_filters)
- 		return 0;
- 
- 	return a->mode;
--
--	return 0;
- }
- 
- static struct attribute_group pmu_dev_attr_group = {
+-				ies = (void *)rcu_dereference(new->pub.beacon_ies);
++				ies = (void *)rcu_access_pointer(new->pub.beacon_ies);
+ 				rcu_assign_pointer(new->pub.beacon_ies,
+ 						   hidden->pub.beacon_ies);
+ 				if (ies)
 -- 
 2.43.0
 
