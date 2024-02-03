@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 034AD84829E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F44848188
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A508B1F23129
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EFD3281F7F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB951BC5A;
-	Sat,  3 Feb 2024 04:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5B82C69A;
+	Sat,  3 Feb 2024 04:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AszD5MdR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06xjuoYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9F01BC39;
-	Sat,  3 Feb 2024 04:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D5D2C694;
+	Sat,  3 Feb 2024 04:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933779; cv=none; b=Ya9TdGtDzzfHVJYQgYAfCBbDvrZEqB4rr0xIvsYjjrdiDJbt2z8kGoIBpRZNCRJkNBBHHtfRB0VPC428Eb2N0OaUJYoovsiyDqx7novPEvLR7RzsaY2LyOWW4JRvXLawF8Iq5+gJrFtcHitQifE0x3Te9wExqkoN4lMAEWXULks=
+	t=1706933575; cv=none; b=IJUhWNayJTbApMJW+3BvR4bh9gYIM0F9A/gAMnQqhj0Leqgb98CzYIEP8AnX24/uDFVuNbe+Igdkxwg1jD4A97dKeIQmUKG9qXcsjpLwWNvUJETEUpcTNRqVhDBKLAWoRc6o3v/RDrpfSodn+MYkl2qbtNIKAr7LfirYvKSC2ZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933779; c=relaxed/simple;
-	bh=LsfdYN87QxgVnc99KhRqWGo2XeN2Rx2EGeVny05I4KM=;
+	s=arc-20240116; t=1706933575; c=relaxed/simple;
+	bh=WBEBi24HQfr6O4mdtrEI/BQASxXqv9bpYcT8yo6SPlA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Upe+9FFBSrHIGL8SQ95UZUPV4lcNUpznCvl/QSioVMkt7CvH/Y7nWTVvqN5DmS6YAKxfU26p8A43wbLwgt1GQpMDjINTT/+Y3w5DkasqNBu2T2E9ePhzxQg69HVnTmxtyMjZ8k3Xkm0TMFGUGTNfFh9o2J5/40OAWk+0IFb7EZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AszD5MdR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007F9C43394;
-	Sat,  3 Feb 2024 04:16:18 +0000 (UTC)
+	 MIME-Version; b=FYOEnQ/TIC6MqV0DaKrWO5pyc8rak/hkJnhaToNDwlpNooWlOVGFqhsnSUOLCz4Ai3IYcNnEc9tVCFCd2f8VxsVzPDTJzeAodw1AC5CLWbnCFZYn8UyYORkHDYTDNOgxhrsUwPmYebB1muaKlNP2rneZLM1ldmI8gQhVqdiAE8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06xjuoYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AFFC43394;
+	Sat,  3 Feb 2024 04:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933779;
-	bh=LsfdYN87QxgVnc99KhRqWGo2XeN2Rx2EGeVny05I4KM=;
+	s=korg; t=1706933575;
+	bh=WBEBi24HQfr6O4mdtrEI/BQASxXqv9bpYcT8yo6SPlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AszD5MdRZwxDhfSjQ7TLFt1z/6ZKIEIeNnMHRBkHFCbVaQqz10uDu34hpHbaKODxK
-	 l/0QV3/YOFK32+G+F8StinhIstIuQtuFS9+oWiDb1coSvXo2EVZNRYDc5JCPW+hD1R
-	 ymhp2Pm41aDq34huiuad8egdKEZFiP0LH4VJ9Vts=
+	b=06xjuoYFK76LXA9AOEKX9gjv+er7E2DjexPH9965Q1OD45tu2+pO0z3HjA9dO+UXe
+	 /xdvMJpCDMyWmgiI57A9OhvFBJywZqX9Al6CyIDvqv+BiGl8qXSphI67nkDTBbCbJC
+	 htFk4ey6PMxpbh1693jy+ZlLiM0xKfPvqhxJFCK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herb Wei <weihao.bj@ieisystem.com>,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nia Espera <nespera@igalia.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 083/353] net: usb: ax88179_178a: avoid two consecutive device resets
+Subject: [PATCH 6.6 104/322] arm64: dts: qcom: sm8350: Fix remoteproc interrupt type
 Date: Fri,  2 Feb 2024 20:03:21 -0800
-Message-ID: <20240203035406.435399112@linuxfoundation.org>
+Message-ID: <20240203035402.511264352@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Nia Espera <nespera@igalia.com>
 
-[ Upstream commit d2689b6a86b9d23574bd4b654bf770b6034e2c7e ]
+[ Upstream commit 54ee322f845c7f25fbf6e43e11147b6cae8eff56 ]
 
-The device is always reset two consecutive times (ax88179_reset is called
-twice), one from usbnet_probe during the device binding and the other from
-usbnet_open.
+In a similar vein to
+https://lore.kernel.org/lkml/20220530080842.37024-3-manivannan.sadhasivam@linaro.org/,
+the remote processors on sm8350 fail to initialize with the 'correct'
+(i.e., specified in downstream) IRQ type. Change this to EDGE_RISING.
 
-Remove the non-necessary reset during the device binding and let the reset
-operation from open to keep the normal behavior (tested with generic ASIX
-Electronics Corp. AX88179 Gigabit Ethernet device).
-
-Reported-by: Herb Wei <weihao.bj@ieisystem.com>
-Tested-by: Herb Wei <weihao.bj@ieisystem.com>
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Link: https://lore.kernel.org/r/20231120121239.54504-1-jtornosm@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Nia Espera <nespera@igalia.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231111-nia-sm8350-for-upstream-v4-4-3a638b02eea5@igalia.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ax88179_178a.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8350.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index 5a1bf42ce156..d837c1887416 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -1315,8 +1315,6 @@ static int ax88179_bind(struct usbnet *dev, struct usb_interface *intf)
+diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+index a7cf506f24b6..5ed464c37422 100644
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -2020,7 +2020,7 @@
+ 			compatible = "qcom,sm8350-mpss-pas";
+ 			reg = <0x0 0x04080000 0x0 0x4040>;
  
- 	netif_set_tso_max_size(dev->net, 16384);
+-			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_LEVEL_HIGH>,
++			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_modem_in 1 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_modem_in 2 IRQ_TYPE_EDGE_RISING>,
+@@ -2062,7 +2062,7 @@
+ 			compatible = "qcom,sm8350-slpi-pas";
+ 			reg = <0 0x05c00000 0 0x4000>;
  
--	ax88179_reset(dev);
--
- 	return 0;
- }
+-			interrupts-extended = <&pdc 9 IRQ_TYPE_LEVEL_HIGH>,
++			interrupts-extended = <&pdc 9 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_slpi_in 0 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_slpi_in 1 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_slpi_in 2 IRQ_TYPE_EDGE_RISING>,
+@@ -3206,7 +3206,7 @@
+ 			compatible = "qcom,sm8350-adsp-pas";
+ 			reg = <0 0x17300000 0 0x100>;
  
+-			interrupts-extended = <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
++			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
+@@ -3511,7 +3511,7 @@
+ 			compatible = "qcom,sm8350-cdsp-pas";
+ 			reg = <0 0x98900000 0 0x1400000>;
+ 
+-			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_LEVEL_HIGH>,
++			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_cdsp_in 1 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_cdsp_in 2 IRQ_TYPE_EDGE_RISING>,
 -- 
 2.43.0
 
