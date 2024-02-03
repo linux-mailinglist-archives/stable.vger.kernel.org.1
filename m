@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-17796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D83848022
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:08:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF2484814F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 476971F2BAAF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:08:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DC3CB2AFAA
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CB6FC03;
-	Sat,  3 Feb 2024 04:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7016B171B0;
+	Sat,  3 Feb 2024 04:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPUD2pxJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2uBCKUAg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DED5F9E4;
-	Sat,  3 Feb 2024 04:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A355171A6;
+	Sat,  3 Feb 2024 04:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933319; cv=none; b=mPXJDUEryET2vZ7I2rmh/I4jE7c+WUFr1vNf+sw6duy16trYEg3jGUgf7OsZTPCGq939OkCNmjgwNzV+/0YIJyol6xP2qScGDeAgRTE5YSruuNLU7fD3zUh5hfxq7jQfujF9O10apatfb7YOjTvgDKeuNdnf9xS7uIemBJlK3x0=
+	t=1706933534; cv=none; b=W2RKLvfF8kV/FXedB7pGYP2lWM205Tag/rXPZFZaaVXPtrcRD5tGDd/0UniBbA3UobckCDKLExjiFHOroTyKOalaOCdshA+zkdZijkpjJxFzf3tu1WKcrmpF1f3QtEfvfX9WvM8OKI2EQZovMj0UYmkyC5KlikHb1jfNKkjCyS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933319; c=relaxed/simple;
-	bh=7IC6lLNeH3+xqXhhmXebZFUfqhnd2nu20TaXZX+t8xU=;
+	s=arc-20240116; t=1706933534; c=relaxed/simple;
+	bh=N6UFFb/P/ILmCIlleeyu7kLB3B4kT/+Bk30jEuVRsuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NRlwJjh0vO5ojWMcFaEdM8nnkl8nTeyj//Gj28Q+CcfutPBvdNMqUXDpeHn0jMQ7vP/03StgJpZbYOo3O6yJJQ24/lxA4teMZyS8peSoSUsrKV6Klyk+uFKmaip8/DqfmOQE+D6VQ8Id+bWPuUeCEHoB39pH4UTz9IvTPHf3ULg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPUD2pxJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9140BC433C7;
-	Sat,  3 Feb 2024 04:08:38 +0000 (UTC)
+	 MIME-Version; b=FK02iF+9vnx469s+18tZ2cwg0mbVl+jyEuE1PHjNlNuDv9Cv33i7eHJr+WL411+hUQsb1R7o1O+7RM9tBiI44RagWQacZBvaX6w/jugKIEqbjcM9CBAnYnOzc5xXS/4u1EHvD7BcUJ1CdyffF56BwrOm1FPz7tQkIfNMacGOsi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2uBCKUAg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BA7C433F1;
+	Sat,  3 Feb 2024 04:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933318;
-	bh=7IC6lLNeH3+xqXhhmXebZFUfqhnd2nu20TaXZX+t8xU=;
+	s=korg; t=1706933534;
+	bh=N6UFFb/P/ILmCIlleeyu7kLB3B4kT/+Bk30jEuVRsuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pPUD2pxJjCNOwmtx7sSsr/jV6RKvTmrEspdnPxqyE4jdYD2zhTbY1QYLSpmcYN5bu
-	 ExnTWhbO4E69UoacYITJpFTfAbjvuNhaVJM5FouVVl8+TdceNiKLqGGHw8QBMNMM8V
-	 f4NUiUSQKjprDjgRsDv2IlckSWB7Vw81wRKva2RQ=
+	b=2uBCKUAgnnm6LNwSeJ1bqFkX+RlUkW2SRqj0y8JxwqxiCbQ6btJcR01VqJ68ZgCIF
+	 OLxrY0fbAL9sLfM7OtrVD2Gr/q1k1R+3tChRiblpB1KumAasQL3I0tjTGlcvJVgfHS
+	 aa6TIq7Vv0RU7aEfvItRP7HLT64Ljf/8RhTa2E84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Kunwu Chan <chentao@kylinos.cn>,
+	Herb Wei <weihao.bj@ieisystem.com>,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/219] powerpc/mm: Fix null-pointer dereference in pgtable_cache_add
+Subject: [PATCH 6.6 078/322] net: usb: ax88179_178a: avoid two consecutive device resets
 Date: Fri,  2 Feb 2024 20:02:55 -0800
-Message-ID: <20240203035317.567951613@linuxfoundation.org>
+Message-ID: <20240203035401.686987641@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-[ Upstream commit f46c8a75263f97bda13c739ba1c90aced0d3b071 ]
+[ Upstream commit d2689b6a86b9d23574bd4b654bf770b6034e2c7e ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful
-by checking the pointer validity.
+The device is always reset two consecutive times (ax88179_reset is called
+twice), one from usbnet_probe during the device binding and the other from
+usbnet_open.
 
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231204023223.2447523-1-chentao@kylinos.cn
+Remove the non-necessary reset during the device binding and let the reset
+operation from open to keep the normal behavior (tested with generic ASIX
+Electronics Corp. AX88179 Gigabit Ethernet device).
+
+Reported-by: Herb Wei <weihao.bj@ieisystem.com>
+Tested-by: Herb Wei <weihao.bj@ieisystem.com>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Link: https://lore.kernel.org/r/20231120121239.54504-1-jtornosm@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/init-common.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/usb/ax88179_178a.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
-index 119ef491f797..d3a7726ecf51 100644
---- a/arch/powerpc/mm/init-common.c
-+++ b/arch/powerpc/mm/init-common.c
-@@ -126,7 +126,7 @@ void pgtable_cache_add(unsigned int shift)
- 	 * as to leave enough 0 bits in the address to contain it. */
- 	unsigned long minalign = max(MAX_PGTABLE_INDEX_SIZE + 1,
- 				     HUGEPD_SHIFT_MASK + 1);
--	struct kmem_cache *new;
-+	struct kmem_cache *new = NULL;
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index 5a1bf42ce156..d837c1887416 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -1315,8 +1315,6 @@ static int ax88179_bind(struct usbnet *dev, struct usb_interface *intf)
  
- 	/* It would be nice if this was a BUILD_BUG_ON(), but at the
- 	 * moment, gcc doesn't seem to recognize is_power_of_2 as a
-@@ -139,7 +139,8 @@ void pgtable_cache_add(unsigned int shift)
+ 	netif_set_tso_max_size(dev->net, 16384);
  
- 	align = max_t(unsigned long, align, minalign);
- 	name = kasprintf(GFP_KERNEL, "pgtable-2^%d", shift);
--	new = kmem_cache_create(name, table_size, align, 0, ctor(shift));
-+	if (name)
-+		new = kmem_cache_create(name, table_size, align, 0, ctor(shift));
- 	if (!new)
- 		panic("Could not allocate pgtable cache for order %d", shift);
+-	ax88179_reset(dev);
+-
+ 	return 0;
+ }
  
 -- 
 2.43.0
