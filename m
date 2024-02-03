@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-17902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F5184808F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A72B8481C3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CEBD1C2092D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE389283DE1
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A44FEFC11;
-	Sat,  3 Feb 2024 04:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519C23D392;
+	Sat,  3 Feb 2024 04:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YANeg6Z7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afBIymCP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62085101C1;
-	Sat,  3 Feb 2024 04:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBFD10A18;
+	Sat,  3 Feb 2024 04:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933400; cv=none; b=U6PrR0h6+uDpxtNjrn2g+sthoCPWfb4bHj40Zdwg6preN5CU342N7MpT1ZuC2WsAtuDbbTPtF1duJ7nTZ260RbEd7ywag+pQE0VWRHoKep+r98fS/8coiMvF/XpN26j5xBr3WQfNTCDtetJRetn00eHXm5x5LVZ+1jE7E3CQBZg=
+	t=1706933619; cv=none; b=beiVOJTPsPq809iT7OWE0w/iBwECdx52mOoiEAvT5r4/yWtWxudHoSG213XBnxtVGgmIfUL57eUNj25IWnfNxBSKFCvJcNEmf55tWrgZLu6YUN+hlOZG03YE/BIcwS+PJN4BcuC2MH1ewnVGrjIk5dLs2D/XpNUpy5Bhu+0efEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933400; c=relaxed/simple;
-	bh=RuyO6NHgT/Eqm3/+Sb6k6JszX/VdV7sBbcN2nQN49pc=;
+	s=arc-20240116; t=1706933619; c=relaxed/simple;
+	bh=isAKGs+rbHsMyOM+bwcfPmP4YiYJtJfreLmGWl2exeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BMbrbe0iyHifNEQKp2ezOkKGQgsQY9OWzOMfqlXSZdbB3jk4NjuchasFxMz/guGFFpyOorC+KRkuTkZhJrQDL/lFwxjzb3LGeV+E16g7/oG00rvWe+xnwkvCIUWTWEl74gCFnS3qwZn2OWeIuS0h8WWNQxmuOdBckx15QLGawdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YANeg6Z7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E13C433C7;
-	Sat,  3 Feb 2024 04:10:00 +0000 (UTC)
+	 MIME-Version; b=LWkRuKzz7qzcp6sXiSmej87CybIiFPMh5voplZ47CagAwVq60EXNpeUGvakAAs6nI9N9SgYDMuIbo3nJo7nIoqHLil0Vfw5eXouOmuuO7IFtTuEqbAf5dFIKSI9HBEkUJMc1Ruo4L80wuLf6NnP8/lEeuJMFuw8XOhU2q3uAX70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afBIymCP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53161C433C7;
+	Sat,  3 Feb 2024 04:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933400;
-	bh=RuyO6NHgT/Eqm3/+Sb6k6JszX/VdV7sBbcN2nQN49pc=;
+	s=korg; t=1706933618;
+	bh=isAKGs+rbHsMyOM+bwcfPmP4YiYJtJfreLmGWl2exeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YANeg6Z7C6m1jyRQpXj58gwytHxtlRmVtOnd8vn6Cidr4geP3HqN33gsJsEsfl5pj
-	 +Sce+EV3RdRon6+aEzS3T1fHBWgRBEfQQaaZkjTbel46Wk58+R0I9tQimKYqbWMvW7
-	 NLFgGTjIMyfN/ZtwpHzDzOnoF6n/oYvBfHWni0vY=
+	b=afBIymCPSATwrLEJ76tTtfefsjnh5rrkbhDjnkFjDqqwCB+hAKmLlwon6+r0/t4A4
+	 8l+MWXc0TTeYdXL+C7USJYu7lsj0S4UkUh/2dS3nbAYmx0GLCDrASZcm5QvHFItchw
+	 Z3aEWfgfLTAdxI2SpJsos04wL4CnGBpJ2RuW66IE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Potter <phil@philpotter.co.uk>,
-	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Jun Lei <jun.lei@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 117/219] media: stk1160: Fixed high volume of stk1160_dbg messages
+Subject: [PATCH 6.6 193/322] drm/amd/display: For prefetch mode > 0, extend prefetch if possible
 Date: Fri,  2 Feb 2024 20:04:50 -0800
-Message-ID: <20240203035333.961526352@linuxfoundation.org>
+Message-ID: <20240203035405.480164027@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+From: Alvin Lee <alvin.lee2@amd.com>
 
-[ Upstream commit b3695e86d25aafbe175dd51f6aaf6f68d341d590 ]
+[ Upstream commit dd4e4bb28843393065eed279e869fac248d03f0f ]
 
-The function stk1160_dbg gets called too many times, which causes
-the output to get flooded with messages. Since stk1160_dbg uses
-printk, it is now replaced with printk_ratelimited.
+[Description]
+For mode programming we want to extend the prefetch as much as possible
+(up to oto, or as long as we can for equ) if we're not already applying
+the 60us prefetch requirement. This is to avoid intermittent underflow
+issues during prefetch.
 
-Suggested-by: Phillip Potter <phil@philpotter.co.uk>
-Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+The prefetch extension is applied under the following scenarios:
+1. We're in prefetch mode 1 (i.e. we don't support MCLK switch in blank)
+2. We're using subvp or drr methods of p-state switch, in which case we
+   we don't care if prefetch takes up more of the blanking time
+
+Mode programming typically chooses the smallest prefetch time possible
+(i.e. highest bandwidth during prefetch) presumably to create margin between
+p-states / c-states that happen in vblank and prefetch. Therefore we only
+apply this prefetch extension when p-state in vblank is not required (UCLK
+p-states take up the most vblank time).
+
+Reviewed-by: Jun Lei <jun.lei@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/stk1160/stk1160-video.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ .../dc/dml/dcn32/display_mode_vba_32.c        |  3 ++
+ .../dc/dml/dcn32/display_mode_vba_util_32.c   | 33 +++++++++++++++----
+ .../dc/dml/dcn32/display_mode_vba_util_32.h   |  1 +
+ 3 files changed, 31 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/usb/stk1160/stk1160-video.c b/drivers/media/usb/stk1160/stk1160-video.c
-index 4e966f6bf608..366f0e4a5dc0 100644
---- a/drivers/media/usb/stk1160/stk1160-video.c
-+++ b/drivers/media/usb/stk1160/stk1160-video.c
-@@ -107,8 +107,7 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
+index cbdfb762c10c..6c84b0fa40f4 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_32.c
+@@ -813,6 +813,8 @@ static void DISPCLKDPPCLKDCFCLKDeepSleepPrefetchParametersWatermarksAndPerforman
+ 					(v->DRAMSpeedPerState[mode_lib->vba.VoltageLevel] <= MEM_STROBE_FREQ_MHZ ||
+ 						v->DCFCLKPerState[mode_lib->vba.VoltageLevel] <= DCFCLK_FREQ_EXTRA_PREFETCH_REQ_MHZ) ?
+ 							mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
++					mode_lib->vba.PrefetchModePerState[mode_lib->vba.VoltageLevel][mode_lib->vba.maxMpcComb] > 0 || mode_lib->vba.DRAMClockChangeRequirementFinal == false,
++
+ 					/* Output */
+ 					&v->DSTXAfterScaler[k],
+ 					&v->DSTYAfterScaler[k],
+@@ -3317,6 +3319,7 @@ void dml32_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_l
+ 							v->SwathHeightCThisState[k], v->TWait,
+ 							(v->DRAMSpeedPerState[i] <= MEM_STROBE_FREQ_MHZ || v->DCFCLKState[i][j] <= DCFCLK_FREQ_EXTRA_PREFETCH_REQ_MHZ) ?
+ 									mode_lib->vba.ip.min_prefetch_in_strobe_us : 0,
++							mode_lib->vba.PrefetchModePerState[i][j] > 0 || mode_lib->vba.DRAMClockChangeRequirementFinal == false,
  
- 	/*
- 	 * TODO: These stk1160_dbg are very spammy!
--	 * We should 1) check why we are getting them
--	 * and 2) add ratelimit.
-+	 * We should check why we are getting them.
- 	 *
- 	 * UPDATE: One of the reasons (the only one?) for getting these
- 	 * is incorrect standard (mismatch between expected and configured).
-@@ -151,7 +150,7 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 							/* Output */
+ 							&v->dummy_vars.dml32_ModeSupportAndSystemConfigurationFull.DSTXAfterScaler[k],
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
+index ecea008f19d3..208b89d13d3f 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.c
+@@ -3423,6 +3423,7 @@ bool dml32_CalculatePrefetchSchedule(
+ 		unsigned int SwathHeightC,
+ 		double TWait,
+ 		double TPreReq,
++		bool ExtendPrefetchIfPossible,
+ 		/* Output */
+ 		double   *DSTXAfterScaler,
+ 		double   *DSTYAfterScaler,
+@@ -3892,12 +3893,32 @@ bool dml32_CalculatePrefetchSchedule(
+ 			/* Clamp to oto for bandwidth calculation */
+ 			LinesForPrefetchBandwidth = dst_y_prefetch_oto;
+ 		} else {
+-			*DestinationLinesForPrefetch = dst_y_prefetch_equ;
+-			TimeForFetchingMetaPTE = Tvm_equ;
+-			TimeForFetchingRowInVBlank = Tr0_equ;
+-			*PrefetchBandwidth = prefetch_bw_equ;
+-			/* Clamp to equ for bandwidth calculation */
+-			LinesForPrefetchBandwidth = dst_y_prefetch_equ;
++			/* For mode programming we want to extend the prefetch as much as possible
++			 * (up to oto, or as long as we can for equ) if we're not already applying
++			 * the 60us prefetch requirement. This is to avoid intermittent underflow
++			 * issues during prefetch.
++			 *
++			 * The prefetch extension is applied under the following scenarios:
++			 * 1. We're in prefetch mode > 0 (i.e. we don't support MCLK switch in blank)
++			 * 2. We're using subvp or drr methods of p-state switch, in which case we
++			 *    we don't care if prefetch takes up more of the blanking time
++			 *
++			 * Mode programming typically chooses the smallest prefetch time possible
++			 * (i.e. highest bandwidth during prefetch) presumably to create margin between
++			 * p-states / c-states that happen in vblank and prefetch. Therefore we only
++			 * apply this prefetch extension when p-state in vblank is not required (UCLK
++			 * p-states take up the most vblank time).
++			 */
++			if (ExtendPrefetchIfPossible && TPreReq == 0 && VStartup < MaxVStartup) {
++				MyError = true;
++			} else {
++				*DestinationLinesForPrefetch = dst_y_prefetch_equ;
++				TimeForFetchingMetaPTE = Tvm_equ;
++				TimeForFetchingRowInVBlank = Tr0_equ;
++				*PrefetchBandwidth = prefetch_bw_equ;
++				/* Clamp to equ for bandwidth calculation */
++				LinesForPrefetchBandwidth = dst_y_prefetch_equ;
++			}
+ 		}
  
- 	/* Let the bug hunt begin! sanity checks! */
- 	if (lencopy < 0) {
--		stk1160_dbg("copy skipped: negative lencopy\n");
-+		printk_ratelimited(KERN_DEBUG "copy skipped: negative lencopy\n");
- 		return;
- 	}
- 
+ 		*DestinationLinesToRequestVMInVBlank = dml_ceil(4.0 * TimeForFetchingMetaPTE / LineTime, 1.0) / 4.0;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.h b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.h
+index 592d174df6c6..5d34735df83d 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.h
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/display_mode_vba_util_32.h
+@@ -747,6 +747,7 @@ bool dml32_CalculatePrefetchSchedule(
+ 		unsigned int SwathHeightC,
+ 		double TWait,
+ 		double TPreReq,
++		bool ExtendPrefetchIfPossible,
+ 		/* Output */
+ 		double   *DSTXAfterScaler,
+ 		double   *DSTYAfterScaler,
 -- 
 2.43.0
 
