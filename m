@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33ECA84831F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B8328481EE
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEA171F23201
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39213282A8A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF8750255;
-	Sat,  3 Feb 2024 04:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238E643146;
+	Sat,  3 Feb 2024 04:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3e6HFG6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LlpQS6Hj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A91168D0;
-	Sat,  3 Feb 2024 04:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D576D10965;
+	Sat,  3 Feb 2024 04:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933874; cv=none; b=ey0JKyC5ObcHGLe03WdTqb5lmgMB0Ab9Q4CA9T8Th367qDbjGnDAlogMbBPdJYQO0/VqbEjuHxbFaub0R+qxorHovTqq285pGkK02ktbwR22h1Sr2Ryy5ux5q+QE+H6BnTI4XGgLeINJ38J7MTByhYCd2mu4Bnxce0d5lAurSeU=
+	t=1706933649; cv=none; b=kQR5xArrlXVGBhRwslN1yu+2Ac1tpSLL9v4w2Mxr6RaDJR7I7QZNe0CvpXMtPCQBL2XWdg1dSGOSFcC6/gAH5z+BBr5oxu58MgHw5ALIyXVj7t3qw5Sn5ufVfgyI3E3HjJ1vztKCanj2p8UFA3uGJZY/WZis72MtYtXOzZ5mcU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933874; c=relaxed/simple;
-	bh=C8KeWE1cDsyRZsF4VrOVo92rbHAKmvVUq/k0U14Kahk=;
+	s=arc-20240116; t=1706933649; c=relaxed/simple;
+	bh=LuTKsXiec32VQxbd3Pi7pvzg1FHlVQjhE8mw3FqVpPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mnd5qB30zW36g1YoyiMMuYSfIdOlOaar41FUp1+kTXNm3zqF3IXTzm4E55GVPN0tkBUONxvx8c/fcSw0wa3+zi+ALn4P9SE9/DO7BYzaxX1DawZYPz+OGnvTRtIGatcnuVnUCVyVrByVU1M6dgzOBEi9jKPAWGhf8OiVpBlXmGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3e6HFG6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CB0C433F1;
-	Sat,  3 Feb 2024 04:17:54 +0000 (UTC)
+	 MIME-Version; b=YX7j/oQF78zkEe87oOlFOofxRRA6YFVVptWcI5wIBnKu81sfK6xqZxweicUKfayapkSBSbyTTjRtDrcsElPxULzCMTYAwv86ix/6V6TTUn1P2Dz306dcuYWnDVZy0xLW4EGqbjXKmm62NPEX3Q6rhedApSzOQ5MVqhq32ULmWJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LlpQS6Hj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCBFC433C7;
+	Sat,  3 Feb 2024 04:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933874;
-	bh=C8KeWE1cDsyRZsF4VrOVo92rbHAKmvVUq/k0U14Kahk=;
+	s=korg; t=1706933649;
+	bh=LuTKsXiec32VQxbd3Pi7pvzg1FHlVQjhE8mw3FqVpPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3e6HFG6utIVMB40bhvlXJll4tl8eWjjTBPVyt9vl5geEnVO3afKpjxNPpyKEOYx6
-	 LfLnSDMn8x4q/MaYilwA+ntmJOXH/H6lhvnludVrdEmd56KIGwJg1HUVfEYw170Q/d
-	 Wd6aOgillELDDbwsC6JN0URYoqgYeG6WAwOisEjU=
+	b=LlpQS6HjIqXssSJUhb1iPdY3QtKdk5lK21jGDhrZ8mIJaGfcodKqIseqjPaeZ5AQt
+	 zMrL0kjGCMjtDYjEz1qR4IkTjdsAfJDshrqSFmI3g1w/eTlLqRPEVHav9QbR5Nyamn
+	 gb8eTdKPH4exae2Pbt0Sw4CExhpQLDNUgznsWUVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, "Wang, Beyond" <Wang.Beyond@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>, Wang@web.codeaurora.org
-Subject: [PATCH 6.7 212/353] drm/amdgpu: fix ftrace event amdgpu_bo_move always move on same heap
+	patches@lists.linux.dev,
+	Yaxiong Tian <tianyaxiong@kylinos.cn>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 233/322] extcon: fix possible name leak in extcon_dev_register()
 Date: Fri,  2 Feb 2024 20:05:30 -0800
-Message-ID: <20240203035410.403730780@linuxfoundation.org>
+Message-ID: <20240203035406.721778460@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,116 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang, Beyond <Wang.Beyond@amd.com>
+From: Yaxiong Tian <tianyaxiong@kylinos.cn>
 
-[ Upstream commit 94aeb4117343d072e3a35b9595bcbfc0058ee724 ]
+[ Upstream commit e66523c72c9aae0ff0dae6859eb77b04de1e8e5f ]
 
-Issue: during evict or validate happened on amdgpu_bo, the 'from' and
-'to' is always same in ftrace event of amdgpu_bo_move
+In the error path after calling dev_set_name(), the device
+name is leaked. To fix this, moving dev_set_name() after the
+error path and before device_register.
 
-where calling the 'trace_amdgpu_bo_move', the comment says move_notify
-is called before move happens, but actually it is called after move
-happens, here the new_mem is same as bo->resource
-
-Fix: move trace_amdgpu_bo_move from move_notify to amdgpu_bo_move
-
-Signed-off-by: Wang, Beyond <Wang.Beyond@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/lkml/TYZPR01MB4784ADCD3E951E0863F3DB72D5B8A@TYZPR01MB4784.apcprd01.prod.exchangelabs.com/
+Signed-off-by: Yaxiong Tian <tianyaxiong@kylinos.cn>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.c | 13 +------------
- drivers/gpu/drm/amd/amdgpu/amdgpu_object.h |  4 +---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c    |  5 +++--
- 3 files changed, 5 insertions(+), 17 deletions(-)
+ drivers/extcon/extcon.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-index 5ad03f2afdb4..425cebcc5cbf 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
-@@ -1245,19 +1245,15 @@ int amdgpu_bo_get_metadata(struct amdgpu_bo *bo, void *buffer,
-  * amdgpu_bo_move_notify - notification about a memory move
-  * @bo: pointer to a buffer object
-  * @evict: if this move is evicting the buffer from the graphics address space
-- * @new_mem: new information of the bufer object
-  *
-  * Marks the corresponding &amdgpu_bo buffer object as invalid, also performs
-  * bookkeeping.
-  * TTM driver callback which is called when ttm moves a buffer.
-  */
--void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
--			   bool evict,
--			   struct ttm_resource *new_mem)
-+void amdgpu_bo_move_notify(struct ttm_buffer_object *bo, bool evict)
- {
- 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->bdev);
- 	struct amdgpu_bo *abo;
--	struct ttm_resource *old_mem = bo->resource;
+diff --git a/drivers/extcon/extcon.c b/drivers/extcon/extcon.c
+index 6f7a60d2ed91..e7f55c021e56 100644
+--- a/drivers/extcon/extcon.c
++++ b/drivers/extcon/extcon.c
+@@ -1280,8 +1280,6 @@ int extcon_dev_register(struct extcon_dev *edev)
  
- 	if (!amdgpu_bo_is_amdgpu_bo(bo))
- 		return;
-@@ -1274,13 +1270,6 @@ void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
- 	/* remember the eviction */
- 	if (evict)
- 		atomic64_inc(&adev->num_evictions);
+ 	edev->id = ret;
+ 
+-	dev_set_name(&edev->dev, "extcon%d", edev->id);
 -
--	/* update statistics */
--	if (!new_mem)
--		return;
--
--	/* move_notify is called before move happens */
--	trace_amdgpu_bo_move(abo, new_mem->mem_type, old_mem->mem_type);
- }
+ 	ret = extcon_alloc_cables(edev);
+ 	if (ret < 0)
+ 		goto err_alloc_cables;
+@@ -1310,6 +1308,7 @@ int extcon_dev_register(struct extcon_dev *edev)
+ 	RAW_INIT_NOTIFIER_HEAD(&edev->nh_all);
  
- void amdgpu_bo_get_memory(struct amdgpu_bo *bo,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-index d28e21baef16..a3ea8a82db23 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
-@@ -344,9 +344,7 @@ int amdgpu_bo_set_metadata (struct amdgpu_bo *bo, void *metadata,
- int amdgpu_bo_get_metadata(struct amdgpu_bo *bo, void *buffer,
- 			   size_t buffer_size, uint32_t *metadata_size,
- 			   uint64_t *flags);
--void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
--			   bool evict,
--			   struct ttm_resource *new_mem);
-+void amdgpu_bo_move_notify(struct ttm_buffer_object *bo, bool evict);
- void amdgpu_bo_release_notify(struct ttm_buffer_object *bo);
- vm_fault_t amdgpu_bo_fault_reserve_notify(struct ttm_buffer_object *bo);
- void amdgpu_bo_fence(struct amdgpu_bo *bo, struct dma_fence *fence,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-index ab4a762aed5b..75c9fd2c6c2a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -545,10 +545,11 @@ static int amdgpu_bo_move(struct ttm_buffer_object *bo, bool evict,
- 			return r;
- 	}
+ 	dev_set_drvdata(&edev->dev, edev);
++	dev_set_name(&edev->dev, "extcon%d", edev->id);
+ 	edev->state = 0;
  
-+	trace_amdgpu_bo_move(abo, new_mem->mem_type, old_mem->mem_type);
- out:
- 	/* update statistics */
- 	atomic64_add(bo->base.size, &adev->num_bytes_moved);
--	amdgpu_bo_move_notify(bo, evict, new_mem);
-+	amdgpu_bo_move_notify(bo, evict);
- 	return 0;
- }
- 
-@@ -1553,7 +1554,7 @@ static int amdgpu_ttm_access_memory(struct ttm_buffer_object *bo,
- static void
- amdgpu_bo_delete_mem_notify(struct ttm_buffer_object *bo)
- {
--	amdgpu_bo_move_notify(bo, false, NULL);
-+	amdgpu_bo_move_notify(bo, false);
- }
- 
- static struct ttm_device_funcs amdgpu_bo_driver = {
+ 	ret = device_register(&edev->dev);
 -- 
 2.43.0
 
