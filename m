@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-18223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4140F8481DF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D29784832F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFC70284042
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC76B2845D0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071CC41C61;
-	Sat,  3 Feb 2024 04:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C028BFBFC;
+	Sat,  3 Feb 2024 04:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCUr8SZc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+bppYrj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABC8182B3;
-	Sat,  3 Feb 2024 04:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F07550259;
+	Sat,  3 Feb 2024 04:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933638; cv=none; b=b0gnC8GnBrTxaVOjJD30i7il6xlfGgcaSqZXaJafmn8p7HvNqR0vNr9ib9T4QLTgK5/MfBFoBJUzBvMdHkZtGXX30IoV6pFRQX/8ibX0l75RvPRG1e5eQuQRql3Aum8O1hyizk/0xOtxP3hLg9IVAD6ccSpsq1pgGNUst7ZJkCM=
+	t=1706933884; cv=none; b=habjAu7qWMo8AJIhfWNlmINeeMFIJccIWCveYfPAzgECvWVIvFbYtFej+9zTlucBUez27/r+GnpQGSfkFz2ri/wZKyZ3ki8NZcxaTX1ntbMTFiaRPuwN837U1SJpMXhJPoaJeDvb3lybXxApz93TJAlnmOCz7RVNLTaEsvQenz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933638; c=relaxed/simple;
-	bh=G9VST/y9FcWBmogtaDGrCJf1UCdNWV+XIhUnbax14Oo=;
+	s=arc-20240116; t=1706933884; c=relaxed/simple;
+	bh=zlXUmccyaMCNuIdy4AYNVJPnuOTfQhOZpHVyqLj5/ZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTGQ1oh0L9kEKEvTdLPVgmOwGLFgqs5btnDDs10/E5/NVWPcwyYd5Eqk3N8JRNKhwfkUdHDmIvh+vu3RkYQXF0Va2er3eEWfAMNXJz90sbidI4OSwI7IcTZIahsbtEszSXvuPTOdJ3bHNrHLXFXCMIG0Aj2oJVoFUsGcCaoYwsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCUr8SZc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84554C43390;
-	Sat,  3 Feb 2024 04:13:58 +0000 (UTC)
+	 MIME-Version; b=USja/67KGEN36JKOK0xUfWc+yWcOcFOGpgvRNZpsEbLGGPSEC2VTRWzvAD4m0wsTPAek0rD5U+gnygwxwFov2L+utTSnCVZuKHOF+zI9vjVHC14fRf/689cbfs7c07Di0U3HNtdJ2XP5wVE4yqDeGCbgUCPtk5txyf/5eOnLOVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+bppYrj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D07C43601;
+	Sat,  3 Feb 2024 04:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933638;
-	bh=G9VST/y9FcWBmogtaDGrCJf1UCdNWV+XIhUnbax14Oo=;
+	s=korg; t=1706933884;
+	bh=zlXUmccyaMCNuIdy4AYNVJPnuOTfQhOZpHVyqLj5/ZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eCUr8SZcQWNl8cY5n78WwK7JT31MTYwOdzf5bS2d7k2vSmMhtZB31VDXkcvNJ+WYq
-	 GjZeXUQYPWZ2ms3An9A5+dbpuUpbYJKgCVhDF+6ktUmxG57Q2e7IjFyuofC60nKycX
-	 8HxgIzc2mTkoVfr4uBK5PZRWON7OEJdcdgKafgUA=
+	b=M+bppYrjqz6DDowbqkinYQCY++EAZm0frTFe6ceu/zgnBBYfcxwS5B0UrlhBfEK02
+	 mWC7oQRol6PLE/HCbT3WkkVZDFsvDTHqhLvmYD09jK1qzMZ675L/+lQ4jvNv+fRcDw
+	 F6vbpxcy/VUdLIGrZ5lFzxgn0dq+PI7XR25EU4EI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 219/322] leds: trigger: panic: Dont register panic notifier if creating the trigger failed
+Subject: [PATCH 6.7 198/353] drm/exynos: Call drm_atomic_helper_shutdown() at shutdown/unbind time
 Date: Fri,  2 Feb 2024 20:05:16 -0800
-Message-ID: <20240203035406.317711764@linuxfoundation.org>
+Message-ID: <20240203035409.952045379@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit afacb21834bb02785ddb0c3ec197208803b74faa ]
+[ Upstream commit 16ac5b21b31b439f03cdf44c153c5f5af94fb3eb ]
 
-It doesn't make sense to register the panic notifier if creating the
-panic trigger failed.
+Based on grepping through the source code this driver appears to be
+missing a call to drm_atomic_helper_shutdown() at system shutdown time
+and at driver unbind time. Among other things, this means that if a
+panel is in use that it won't be cleanly powered off at system
+shutdown time.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/8a61e229-5388-46c7-919a-4d18cc7362b2@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+The fact that we should call drm_atomic_helper_shutdown() in the case
+of OS shutdown/restart and at driver remove (or unbind) time comes
+straight out of the kernel doc "driver instance overview" in
+drm_drv.c.
+
+A few notes about this fix:
+- When adding drm_atomic_helper_shutdown() to the unbind path, I added
+  it after drm_kms_helper_poll_fini() since that's when other drivers
+  seemed to have it.
+- Technically with a previous patch, ("drm/atomic-helper:
+  drm_atomic_helper_shutdown(NULL) should be a noop"), we don't
+  actually need to check to see if our "drm" pointer is NULL before
+  calling drm_atomic_helper_shutdown(). We'll leave the "if" test in,
+  though, so that this patch can land without any dependencies. It
+  could potentially be removed later.
+- This patch also makes sure to set the drvdata to NULL in the case of
+  bind errors to make sure that shutdown can't access freed data.
+
+Suggested-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/trigger/ledtrig-panic.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/exynos/exynos_drm_drv.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/leds/trigger/ledtrig-panic.c b/drivers/leds/trigger/ledtrig-panic.c
-index 64abf2e91608..5a6b21bfeb9a 100644
---- a/drivers/leds/trigger/ledtrig-panic.c
-+++ b/drivers/leds/trigger/ledtrig-panic.c
-@@ -64,10 +64,13 @@ static long led_panic_blink(int state)
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_drv.c b/drivers/gpu/drm/exynos/exynos_drm_drv.c
+index 8399256cb5c9..5380fb6c55ae 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_drv.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_drv.c
+@@ -300,6 +300,7 @@ static int exynos_drm_bind(struct device *dev)
+ 	drm_mode_config_cleanup(drm);
+ 	exynos_drm_cleanup_dma(drm);
+ 	kfree(private);
++	dev_set_drvdata(dev, NULL);
+ err_free_drm:
+ 	drm_dev_put(drm);
  
- static int __init ledtrig_panic_init(void)
- {
-+	led_trigger_register_simple("panic", &trigger);
-+	if (!trigger)
-+		return -ENOMEM;
-+
- 	atomic_notifier_chain_register(&panic_notifier_list,
- 				       &led_trigger_panic_nb);
+@@ -313,6 +314,7 @@ static void exynos_drm_unbind(struct device *dev)
+ 	drm_dev_unregister(drm);
  
--	led_trigger_register_simple("panic", &trigger);
- 	panic_blink = led_panic_blink;
+ 	drm_kms_helper_poll_fini(drm);
++	drm_atomic_helper_shutdown(drm);
+ 
+ 	component_unbind_all(drm->dev, drm);
+ 	drm_mode_config_cleanup(drm);
+@@ -350,9 +352,18 @@ static int exynos_drm_platform_remove(struct platform_device *pdev)
  	return 0;
  }
+ 
++static void exynos_drm_platform_shutdown(struct platform_device *pdev)
++{
++	struct drm_device *drm = platform_get_drvdata(pdev);
++
++	if (drm)
++		drm_atomic_helper_shutdown(drm);
++}
++
+ static struct platform_driver exynos_drm_platform_driver = {
+ 	.probe	= exynos_drm_platform_probe,
+ 	.remove	= exynos_drm_platform_remove,
++	.shutdown = exynos_drm_platform_shutdown,
+ 	.driver	= {
+ 		.name	= "exynos-drm",
+ 		.pm	= &exynos_drm_pm_ops,
 -- 
 2.43.0
 
