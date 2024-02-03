@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-18528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB32848314
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E3CE8480A5
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B3FF2875EB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C014F28A113
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0693F4F8BD;
-	Sat,  3 Feb 2024 04:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7852E175BD;
+	Sat,  3 Feb 2024 04:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CCadR5h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PM8VJXxu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B9B11198;
-	Sat,  3 Feb 2024 04:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36EC210976;
+	Sat,  3 Feb 2024 04:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933865; cv=none; b=p0g8iqFhA769BRrMFa9UH9l1F6RLUZyeBhVUp9PBnJ4XGup79A4XmgOCePgCLnCdip8m0xPVTn0To2P8FUAoOnvS9Jm0wmcunZtNnFp0Yu5kQRdt1pncRWy+vnDFe/W205p+6sjaWwWlg2+2WfkkCOVQELhbPEzpMG0B3UudK/8=
+	t=1706933415; cv=none; b=eFyPd0vtcubo2uVz0cXwh4/0XRelmpmoLdlt3zsEbl0nNpb1KASNnEb9m+b7bDJJLIwcntgsEzitAVX47iUOxdnHS9VZNJmUALl8obiQSt3VyOiGLXxrSwzaRnGmZ3+AHpYfV1Y/chQLODYh71e8UrT+9GuNbkBCrmRTtcUVzCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933865; c=relaxed/simple;
-	bh=hmf+KV5HWcs1DBjYDsoVs4Cz9Wk9S0Hteb7bFEGABpo=;
+	s=arc-20240116; t=1706933415; c=relaxed/simple;
+	bh=s+BCnASocVNEIVmEy/r7oQRuhkwoaSxlt0iTxDtyjnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OicHvwyNWrd1KCZ0gJolYLZruK6Nw9jyCAUW0g/R0NMEYyuQEY/Xy16F9HLZQu88sSZk9zyQNnzXiw9hENBjVQinuw2fvLAj6vilzN5GWktLyNvQVn0I6SqIbE9vGTBNeXZDpeQg2PjaYhXPJioRvs9tWacOYTABKpjsXiZe7Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CCadR5h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8096BC433F1;
-	Sat,  3 Feb 2024 04:17:45 +0000 (UTC)
+	 MIME-Version; b=rheiHFh6cXPd65VENAsTxyeE6QX5hTodx2q2b94wiaZjmfeYpFAkXW1J73No9SfhrDgRIHTo7O+8nJxIlGvXjsUFZ/De6acEXWUb4yBKb1d3MDrSFeKHOpu3go3KW1Lr5tmrY+ko7x0LYUJasPZ52YupTGvjfVIyOmKsPyUugJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PM8VJXxu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00248C433C7;
+	Sat,  3 Feb 2024 04:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933865;
-	bh=hmf+KV5HWcs1DBjYDsoVs4Cz9Wk9S0Hteb7bFEGABpo=;
+	s=korg; t=1706933415;
+	bh=s+BCnASocVNEIVmEy/r7oQRuhkwoaSxlt0iTxDtyjnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0CCadR5hcrXsa8yCwGMqvn/+RQdaMDuGMr/GR/LQFkG7fYb3k7EM6kdNyB13eeNGj
-	 wLvIbbj9il3oZFfgcqQBmJKOqdgjkOszD72SUGZ0tQRmNE5YcSU+RTgESwAjMzL3M8
-	 l0DmSt+O/CTCMQr468LA1/WV4VfQ4qMAGF4F6xv4=
+	b=PM8VJXxuQ0Q6A0vyTDYUG0sa3lgngYRzr6jcFy4qGVbqMyQwO4NjUnA7Ke9zfUgDA
+	 i4tg2lIKlsDsAm9I8DNjRhIgKl8iAgFDxXMhj4QSL0pMM6E0IkN7cvx+DFXpvAICgh
+	 JTTmgha+GoWm/xLG/VPmFcBeTkR5X6CrQCTfZZUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Adam Ford <aford173@gmail.com>
-Subject: [PATCH 6.7 193/353] media: rkisp1: Fix IRQ disable race issue
+	Werner Fischer <devlists@wefi.net>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 138/219] watchdog: it87_wdt: Keep WDTCTRL bit 3 unmodified for IT8784/IT8786
 Date: Fri,  2 Feb 2024 20:05:11 -0800
-Message-ID: <20240203035409.783486403@linuxfoundation.org>
+Message-ID: <20240203035336.849875852@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Werner Fischer <devlists@wefi.net>
 
-[ Upstream commit 870565f063a58576e8a4529f122cac4325c6b395 ]
+[ Upstream commit d12971849d71781c1e4ffd1117d4878ce233d319 ]
 
-In rkisp1_isp_stop() and rkisp1_csi_disable() the driver masks the
-interrupts and then apparently assumes that the interrupt handler won't
-be running, and proceeds in the stop procedure. This is not the case, as
-the interrupt handler can already be running, which would lead to the
-ISP being disabled while the interrupt handler handling a captured
-frame.
+WDTCTRL bit 3 sets the mode choice for the clock input of IT8784/IT8786.
+Some motherboards require this bit to be set to 1 (= PCICLK mode),
+otherwise the watchdog functionality gets broken. The BIOS of those
+motherboards sets WDTCTRL bit 3 already to 1.
 
-This brings up two issues: 1) the ISP could be powered off while the
-interrupt handler is still running and accessing registers, leading to
-board lockup, and 2) the interrupt handler code and the code that
-disables the streaming might do things that conflict.
+Instead of setting all bits of WDTCTRL to 0 by writing 0x00 to it, keep
+bit 3 of it unchanged for IT8784/IT8786 chips. In this way, bit 3 keeps
+the status as set by the BIOS of the motherboard.
 
-It is not clear to me if 2) causes a real issue, but 1) can be seen with
-a suitable delay (or printk in my case) in the interrupt handler,
-leading to board lockup.
+Watchdog tests have been successful with this patch with the following
+systems:
+  IT8784: Thomas-Krenn LES plus v2 (YANLING YL-KBRL2 V2)
+  IT8786: Thomas-Krenn LES plus v3 (YANLING YL-CLU L2)
+  IT8786: Thomas-Krenn LES network 6L v2 (YANLING YL-CLU6L)
 
-Link: https://lore.kernel.org/r/20231207-rkisp-irq-fix-v3-4-358a2c871a3c@ideasonboard.com
+Link: https://lore.kernel.org/all/140b264d-341f-465b-8715-dacfe84b3f71@roeck-us.net/
 
-Tested-by: Adam Ford <aford173@gmail.com>  #imx8mp-beacon
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Werner Fischer <devlists@wefi.net>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20231213094525.11849-4-devlists@wefi.net
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../platform/rockchip/rkisp1/rkisp1-csi.c     | 14 ++++++++++++-
- .../platform/rockchip/rkisp1/rkisp1-isp.c     | 20 ++++++++++++++++---
- 2 files changed, 30 insertions(+), 4 deletions(-)
+ drivers/watchdog/it87_wdt.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-csi.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-csi.c
-index 6e17b2817e61..702adee83322 100644
---- a/drivers/media/platform/rockchip/rkisp1/rkisp1-csi.c
-+++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-csi.c
-@@ -125,8 +125,20 @@ static void rkisp1_csi_disable(struct rkisp1_csi *csi)
- 	struct rkisp1_device *rkisp1 = csi->rkisp1;
- 	u32 val;
+diff --git a/drivers/watchdog/it87_wdt.c b/drivers/watchdog/it87_wdt.c
+index bb1122909396..843f9f8e3917 100644
+--- a/drivers/watchdog/it87_wdt.c
++++ b/drivers/watchdog/it87_wdt.c
+@@ -255,6 +255,7 @@ static struct watchdog_device wdt_dev = {
+ static int __init it87_wdt_init(void)
+ {
+ 	u8  chip_rev;
++	u8 ctrl;
+ 	int rc;
  
--	/* Mask and clear interrupts. */
-+	/* Mask MIPI interrupts. */
- 	rkisp1_write(rkisp1, RKISP1_CIF_MIPI_IMSC, 0);
-+
-+	/* Flush posted writes */
-+	rkisp1_read(rkisp1, RKISP1_CIF_MIPI_IMSC);
-+
-+	/*
-+	 * Wait until the IRQ handler has ended. The IRQ handler may get called
-+	 * even after this, but it will return immediately as the MIPI
-+	 * interrupts have been masked.
-+	 */
-+	synchronize_irq(rkisp1->irqs[RKISP1_IRQ_MIPI]);
-+
-+	/* Clear MIPI interrupt status */
- 	rkisp1_write(rkisp1, RKISP1_CIF_MIPI_ICR, ~0);
+ 	rc = superio_enter();
+@@ -313,7 +314,18 @@ static int __init it87_wdt_init(void)
  
- 	val = rkisp1_read(rkisp1, RKISP1_CIF_MIPI_CTRL);
-diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-isp.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-isp.c
-index 45d1ab96fc6e..5fbc47bda683 100644
---- a/drivers/media/platform/rockchip/rkisp1/rkisp1-isp.c
-+++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-isp.c
-@@ -254,11 +254,25 @@ static void rkisp1_isp_stop(struct rkisp1_isp *isp)
- 	 * ISP(mi) stop in mi frame end -> Stop ISP(mipi) ->
- 	 * Stop ISP(isp) ->wait for ISP isp off
- 	 */
--	/* stop and clear MI and ISP interrupts */
--	rkisp1_write(rkisp1, RKISP1_CIF_ISP_IMSC, 0);
--	rkisp1_write(rkisp1, RKISP1_CIF_ISP_ICR, ~0);
+ 	superio_select(GPIO);
+ 	superio_outb(WDT_TOV1, WDTCFG);
+-	superio_outb(0x00, WDTCTRL);
++
++	switch (chip_type) {
++	case IT8784_ID:
++	case IT8786_ID:
++		ctrl = superio_inb(WDTCTRL);
++		ctrl &= 0x08;
++		superio_outb(ctrl, WDTCTRL);
++		break;
++	default:
++		superio_outb(0x00, WDTCTRL);
++	}
++
+ 	superio_exit();
  
-+	/* Mask MI and ISP interrupts */
-+	rkisp1_write(rkisp1, RKISP1_CIF_ISP_IMSC, 0);
- 	rkisp1_write(rkisp1, RKISP1_CIF_MI_IMSC, 0);
-+
-+	/* Flush posted writes */
-+	rkisp1_read(rkisp1, RKISP1_CIF_MI_IMSC);
-+
-+	/*
-+	 * Wait until the IRQ handler has ended. The IRQ handler may get called
-+	 * even after this, but it will return immediately as the MI and ISP
-+	 * interrupts have been masked.
-+	 */
-+	synchronize_irq(rkisp1->irqs[RKISP1_IRQ_ISP]);
-+	if (rkisp1->irqs[RKISP1_IRQ_ISP] != rkisp1->irqs[RKISP1_IRQ_MI])
-+		synchronize_irq(rkisp1->irqs[RKISP1_IRQ_MI]);
-+
-+	/* Clear MI and ISP interrupt status */
-+	rkisp1_write(rkisp1, RKISP1_CIF_ISP_ICR, ~0);
- 	rkisp1_write(rkisp1, RKISP1_CIF_MI_ICR, ~0);
- 
- 	/* stop ISP */
+ 	if (timeout < 1 || timeout > max_units * 60) {
 -- 
 2.43.0
 
