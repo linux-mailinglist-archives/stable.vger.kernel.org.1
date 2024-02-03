@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DCAF8482F2
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0E878481D7
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA1341C2435C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FB951C214E8
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E940F101D4;
-	Sat,  3 Feb 2024 04:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CE64120F;
+	Sat,  3 Feb 2024 04:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLQ32r+L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="em8ykU2m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80581C6B5;
-	Sat,  3 Feb 2024 04:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946B510965;
+	Sat,  3 Feb 2024 04:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933840; cv=none; b=JBGLD3OX5GBvY25B0hlIoHKqRHnAQOJNtE7+CD3wi0aZ03y7mGo1tLl8JOfb0v7htGic+eO3F5TPFUh4SuCVPdFddaKz/iJjv99imwU10RalbAAoJRSk2eSFP3Wr8sh57+m6wTF6cw9Nb77KuT2h9TUBFGk0fa+UPRd9AMX6pCI=
+	t=1706933633; cv=none; b=EjYSIFDOKaTch5Q0J1Uc23DJ4RLv3qx0ghUnm+zK3gjzZIXPfJ2BHMCOM8wK3v7pHBo4JWBuQogB2YO4eHsSpBpfcYLEwDha8qvxGY94SkM+HtTOH8CA9Mdl7DDUSpkTypngLzr5Oc38G3jyP2FIaeTQ6BwC3J/c5aGm/ZQQymk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933840; c=relaxed/simple;
-	bh=KQnQRLlux5glK8XFGesd33Bv/lrZ8kiO37wH/+64gsI=;
+	s=arc-20240116; t=1706933633; c=relaxed/simple;
+	bh=GJiRNEtdQe/LCtUr/bNbPJJSS6ey0B/dQkUpqKJ61WA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBS0frbi1IylDy5hNe81/JVDKhapoqmBRkjK8BOdUlUIZACGvdp6LQKsnKJJGDddwghdIzIb9s+pol7irby1U+CIujw+HsmoctZxWvz6+zqnNPGZotCLRajYEMNpKfBIb9szEwTFEDXiE+Ny0H820EzuX7X2TDH0a2/ruGEog9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLQ32r+L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F340C43390;
-	Sat,  3 Feb 2024 04:17:20 +0000 (UTC)
+	 MIME-Version; b=lfpcphB+B954HCi9sKFRJ736x0ub8ak6IBLca2WtxO3Pyrh868uexD6s/cng2FC2kjiJWXgvT1DCzk4dMw2YfAg90cUF4klDz/6AuZatN+rc7z6Ztl30l2sspm0SHcOYbsjf5gcPEefWDOWAgNmKWkmlGhFqm6O+xRp4NVeZITo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=em8ykU2m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC4CC433F1;
+	Sat,  3 Feb 2024 04:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933840;
-	bh=KQnQRLlux5glK8XFGesd33Bv/lrZ8kiO37wH/+64gsI=;
+	s=korg; t=1706933633;
+	bh=GJiRNEtdQe/LCtUr/bNbPJJSS6ey0B/dQkUpqKJ61WA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oLQ32r+LzCQ3nKNGSMYOcTurepbsipIYSu1VrF80seja39KkVFUJIQ/eiS+J4IA/m
-	 pG50CpXvZ/x+u0chLBoAroBSTN1swN8kamk32Tmtksf09HABg445pJoAkq1wKkGTaj
-	 lNH+QgVWXI35OLPVSzAfcWZGoRx7izLpzn3lo1Bs=
+	b=em8ykU2mF6evPn0q+ehwXTT23XfFO5fQJypbSnRieW1F2pU6DgYLNJiMgOnBU7o2H
+	 iwPnA3MKndxxit1NubK6Hd+bf/8oXiG6yb/gmWmNH4VzJqoY3IG2G+BeF8BNbVgsce
+	 rrgsofByKGA1TmejpLROv50D2ZoYCBs7w16H+u04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 166/353] ocfs2: Avoid touching renamed directory if parent does not change
+Subject: [PATCH 6.6 187/322] f2fs: fix to tag gcing flag on page during block migration
 Date: Fri,  2 Feb 2024 20:04:44 -0800
-Message-ID: <20240203035408.892817585@linuxfoundation.org>
+Message-ID: <20240203035405.303390124@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 9d618d19b29c2943527e3a43da0a35aea91062fc ]
+[ Upstream commit 4961acdd65c956e97c1a000c82d91a8c1cdbe44b ]
 
-The VFS will not be locking moved directory if its parent does not
-change. Change ocfs2 rename code to avoid touching renamed directory if
-its parent does not change as without locking that can corrupt the
-filesystem.
+It needs to add missing gcing flag on page during block migration,
+in order to garantee migrated data be persisted during checkpoint,
+otherwise out-of-order persistency between data and node may cause
+data corruption after SPOR.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Similar issue was fixed by commit 2d1fe8a86bf5 ("f2fs: fix to tag
+gcing flag on page during file defragment").
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/namei.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/f2fs/compress.c | 4 +++-
+ fs/f2fs/file.c     | 2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
-index 814733ba2f4b..9221a33f917b 100644
---- a/fs/ocfs2/namei.c
-+++ b/fs/ocfs2/namei.c
-@@ -1336,7 +1336,7 @@ static int ocfs2_rename(struct mnt_idmap *idmap,
- 		goto bail;
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index 7514661bbfbb..372616ca8fb5 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1029,8 +1029,10 @@ static void set_cluster_dirty(struct compress_ctx *cc)
+ 	int i;
+ 
+ 	for (i = 0; i < cc->cluster_size; i++)
+-		if (cc->rpages[i])
++		if (cc->rpages[i]) {
+ 			set_page_dirty(cc->rpages[i]);
++			set_page_private_gcing(cc->rpages[i]);
++		}
+ }
+ 
+ static int prepare_compress_overwrite(struct compress_ctx *cc,
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index a631d706e117..dcf2d926ab59 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1317,6 +1317,7 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
+ 			}
+ 			memcpy_page(pdst, 0, psrc, 0, PAGE_SIZE);
+ 			set_page_dirty(pdst);
++			set_page_private_gcing(pdst);
+ 			f2fs_put_page(pdst, 1);
+ 			f2fs_put_page(psrc, 1);
+ 
+@@ -4059,6 +4060,7 @@ static int redirty_blocks(struct inode *inode, pgoff_t page_idx, int len)
+ 		f2fs_bug_on(F2FS_I_SB(inode), !page);
+ 
+ 		set_page_dirty(page);
++		set_page_private_gcing(page);
+ 		f2fs_put_page(page, 1);
+ 		f2fs_put_page(page, 0);
  	}
- 
--	if (S_ISDIR(old_inode->i_mode)) {
-+	if (S_ISDIR(old_inode->i_mode) && new_dir != old_dir) {
- 		u64 old_inode_parent;
- 
- 		update_dot_dot = 1;
-@@ -1353,8 +1353,7 @@ static int ocfs2_rename(struct mnt_idmap *idmap,
- 			goto bail;
- 		}
- 
--		if (!new_inode && new_dir != old_dir &&
--		    new_dir->i_nlink >= ocfs2_link_max(osb)) {
-+		if (!new_inode && new_dir->i_nlink >= ocfs2_link_max(osb)) {
- 			status = -EMLINK;
- 			goto bail;
- 		}
-@@ -1601,6 +1600,9 @@ static int ocfs2_rename(struct mnt_idmap *idmap,
- 			mlog_errno(status);
- 			goto bail;
- 		}
-+	}
-+
-+	if (S_ISDIR(old_inode->i_mode)) {
- 		drop_nlink(old_dir);
- 		if (new_inode) {
- 			drop_nlink(new_inode);
 -- 
 2.43.0
 
