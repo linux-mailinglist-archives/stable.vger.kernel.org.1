@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381CE8482FF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED848481CD
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A6EF1C23737
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71B881C20BA2
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B544C4F88C;
-	Sat,  3 Feb 2024 04:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA93405F9;
+	Sat,  3 Feb 2024 04:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4XghrDn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDIZvZai"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729951642F;
-	Sat,  3 Feb 2024 04:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712DC182B5;
+	Sat,  3 Feb 2024 04:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933850; cv=none; b=gN0SoRTAZ0c/vXCMUGl49Oj+EzNDBgqKTvTRwM63FP5bdGkYx3GeWkRmrE/dpeAihhiHOE8YffJQ/24VeNwt4Shc9Di71apBfobCK8z/u/kI5k9yzFPKc1ZvjhrYPQAwkh0u+4v4DCc6/20rH/adYw9oXP8y/G9JlOFIqoRZdAM=
+	t=1706933625; cv=none; b=FB6B/818nKZJR7Lr8k+YsZvv/hnww78fT/F4gWZtxCVpUqljBzVE+msK7aeMSVbzfscYYYUKWhC1bLQtUPT9kxFUNLULkyUkbdc8NkejR02W0N+vWpdEKwYekRNKrikHNgmH3oip7VI/2hThWDwgVVtMoc7DfJQTZNScNYGFWZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933850; c=relaxed/simple;
-	bh=Lh+VD8lYtu28hUF6d7xkETtGj9LEl3OPmu/mezfDivg=;
+	s=arc-20240116; t=1706933625; c=relaxed/simple;
+	bh=mIa75TZ0nyK3rclLCQFjcn2ssygx1MNdN6DNNbaPThI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xf0KzVR0ZRrZiWXFJzmNP7Po/BpB+UIJLZRT54/Cs20O8/Rv+IXj7YPKGNkb3eoozG05mjnLGOLMvcG40u8VzOsmgdkSpWwZLO41V9yIDVs/6e6TTyCi1ROi7GMLnRRbpyRCgWv65U3PyUrHVmrrrfzsVMSUFTvweO9+UDBtLs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4XghrDn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC8AC433C7;
-	Sat,  3 Feb 2024 04:17:30 +0000 (UTC)
+	 MIME-Version; b=BKlqh3TcDyXBQpDKRLB8MuDkcEzWkPQmDzo4dHzu3skN7uZm/CSMOIB/OVMjwSkfTp/CQdZplO6HranHxvmOQ7OTNcde40H8S78ecf6k5yQZgNzDEQB4GVOn050obVRTx1vJZlppoG+K11mqJbsI2nZZoP17o1Srl/wAFbfUayc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDIZvZai; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A003C433C7;
+	Sat,  3 Feb 2024 04:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933850;
-	bh=Lh+VD8lYtu28hUF6d7xkETtGj9LEl3OPmu/mezfDivg=;
+	s=korg; t=1706933625;
+	bh=mIa75TZ0nyK3rclLCQFjcn2ssygx1MNdN6DNNbaPThI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n4XghrDnFoS8ZG8AXV21+SIwE4JCOPryiNm+WOZq46hdYpLVX9+WWcEK4CXjrWRdi
-	 jgoEbbf8dX4UCB+bK+mngg8rZRtB33hqcuU/UahtNXR2nLGa0fDLZLmzun+ZTgxnmg
-	 ueUvPBwYe9XMtelBqGM9yc09mvvr9aCiYhTU+Ctg=
+	b=TDIZvZaisiYa3jiQ07kq7isIeWz7lDZNBCuY0/KJTygFUyhd5vOhBJ3vj9IhvtITg
+	 VRFKB6UaSQJlCXc0225dWlNPvEY13G7dlXOGPUu262Y1ok+eJWxERrZltl45ud9pSy
+	 /vlnu9NV1rP2FJrJC3t0zpJIhztzVGJ/RKxkpSK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 180/353] drm/framebuffer: Fix use of uninitialized variable
+Subject: [PATCH 6.6 201/322] clk: hi3620: Fix memory leak in hi3620_mmc_clk_init()
 Date: Fri,  2 Feb 2024 20:04:58 -0800
-Message-ID: <20240203035409.348719400@linuxfoundation.org>
+Message-ID: <20240203035405.730862741@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit f9af8f0c1dc567a5a6a6318ff324c45d80d4a60f ]
+[ Upstream commit bfbea9e5667cfa9552c3d88f023386f017f6c308 ]
 
-smatch reports:
+In cases where kcalloc() fails for the 'clk_data->clks' allocation, the
+code path does not handle the failure gracefully, potentially leading
+to a memory leak. This fix ensures proper cleanup by freeing the
+allocated memory for 'clk_data' before returning.
 
-drivers/gpu/drm/drm_framebuffer.c:654 drm_mode_getfb2_ioctl() error: uninitialized symbol 'ret'.
-
-'ret' is possibly not set when there are no errors, causing the error
-above. I can't say if that ever happens in real-life, but in any case I
-think it is good to initialize 'ret' to 0.
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-2-c22b2444f5f5@ideasonboard.com
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Link: https://lore.kernel.org/r/20231210165040.3407545-1-visitorckw@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_framebuffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/hisilicon/clk-hi3620.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_framebuffer.c b/drivers/gpu/drm/drm_framebuffer.c
-index d3ba0698b84b..36c5629af7d8 100644
---- a/drivers/gpu/drm/drm_framebuffer.c
-+++ b/drivers/gpu/drm/drm_framebuffer.c
-@@ -552,7 +552,7 @@ int drm_mode_getfb2_ioctl(struct drm_device *dev,
- 	struct drm_mode_fb_cmd2 *r = data;
- 	struct drm_framebuffer *fb;
- 	unsigned int i;
--	int ret;
-+	int ret = 0;
+diff --git a/drivers/clk/hisilicon/clk-hi3620.c b/drivers/clk/hisilicon/clk-hi3620.c
+index 2d7186905abd..5d0226530fdb 100644
+--- a/drivers/clk/hisilicon/clk-hi3620.c
++++ b/drivers/clk/hisilicon/clk-hi3620.c
+@@ -466,8 +466,10 @@ static void __init hi3620_mmc_clk_init(struct device_node *node)
+ 		return;
  
- 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
- 		return -EINVAL;
+ 	clk_data->clks = kcalloc(num, sizeof(*clk_data->clks), GFP_KERNEL);
+-	if (!clk_data->clks)
++	if (!clk_data->clks) {
++		kfree(clk_data);
+ 		return;
++	}
+ 
+ 	for (i = 0; i < num; i++) {
+ 		struct hisi_mmc_clock *mmc_clk = &hi3620_mmc_clks[i];
 -- 
 2.43.0
 
