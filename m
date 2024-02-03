@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 412738482E8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8D668481B5
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECDBE28C5C4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB2EF1C20EF9
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9B04F219;
-	Sat,  3 Feb 2024 04:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B79718042;
+	Sat,  3 Feb 2024 04:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rr8WlhWz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5SJFAQ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375B91C6A6;
-	Sat,  3 Feb 2024 04:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A537179BD;
+	Sat,  3 Feb 2024 04:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933833; cv=none; b=D+2l7NvLFM2/Q1xxCxRhvaNVtZowCyx5Hf65RiqGf2Tt0shZMBFexJttaoEGcfLYdDw4lauP9hn5tTfV5Mi4F4Hf4xHEh0y50EMrL9xiJKRhYrTrikEqotcQ85FhoRjfb53+APLVBaE0LRSR7n/8J3h0ekEmg2exZ6z3oC8cstw=
+	t=1706933608; cv=none; b=OGXHfxNLXtZBTPdxEsOi6qn1Z4Z71/ar8r7/orPD7MAaqxOeEVYPVghBBMAkTxlxq91BfNDDHXWWHfNQVHgk0uQF6Hu77VhmTBXlJiYr/csJfiUBobuFFg3/hWd244ryE+gW4u5/dfYIAOz6CuFAIpyoRWCZJL37e73vMMyVqOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933833; c=relaxed/simple;
-	bh=dGqdXI1MAbKuELzdEdGvKu+K2DHtm0Ss+8CVxPkuR4s=;
+	s=arc-20240116; t=1706933608; c=relaxed/simple;
+	bh=lT1RNi0ZiDZCdJDRYQOPGAHxeRjkgImxeIt73m6LzRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HEnNbYBhK3jx4bRBZxP/8UtPvoQDzcNNlKRQdcnFUHpQWIYV6FmjahjsvEtxsKFDMofC4DS09PFg5DMQsX2yzil1n5D+HAYbtc90VEFbXaVmxChi96YZhrFRsWyhCHkedUT6Jp6JI2T6bNFQbY3u46308k29L+ajc0/ui6JEJ5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rr8WlhWz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBC2C433F1;
-	Sat,  3 Feb 2024 04:17:12 +0000 (UTC)
+	 MIME-Version; b=GAVCXfQJITxBQEmqkphGzS2eFwedhkmjyNkBswXN5kA9ETV/jOI74aEHy2dFtMv+tyoZPziTqZSn0R9NtQbrAxSDjZqu2K3lVtOtoxvjTJu2rptdScIgpqcPzTmDQcfeR/Gdjx+TCQKaZbCnIMY152t2bnxwGFWNnHrDYVB0Sik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5SJFAQ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E70B2C43399;
+	Sat,  3 Feb 2024 04:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933833;
-	bh=dGqdXI1MAbKuELzdEdGvKu+K2DHtm0Ss+8CVxPkuR4s=;
+	s=korg; t=1706933608;
+	bh=lT1RNi0ZiDZCdJDRYQOPGAHxeRjkgImxeIt73m6LzRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rr8WlhWzSWGct59CY/epH+GNNpLtaDG6OV5qF4sm/2m2f7XEXpQz0TEUy7zk94g+r
-	 8z7ZH5f909HZb4on+FfnHX1+o0AQbtiYRpxVKCmF7ewcyrOPnIZ4AoO6WN9/3jPEXp
-	 2LBXy7IiMKugSDwlRiTIAVxFTWWTn2j0nNtGFoC4=
+	b=w5SJFAQ7Uyc+uKIkp77ypDgOtO59oLoyAvq88avksyx7WhxYW6FQyuufx+5lQhiDK
+	 cN39ekONXMbhatETFjPZ9nMRdfkDKiu0m+d1rO0OPmxkQat3bVLa5YhhN2qKPKlW5X
+	 600FmLczr36hJgZN+Tj+PTl/6zw/8ndL4PU3Y900=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Ghosh <sumang@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 157/353] octeontx2-af: Fix max NPC MCAM entry check while validating ref_entry
+Subject: [PATCH 6.6 178/322] media: uvcvideo: Fix power line control for a Chicony camera
 Date: Fri,  2 Feb 2024 20:04:35 -0800
-Message-ID: <20240203035408.622424248@linuxfoundation.org>
+Message-ID: <20240203035405.004387727@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suman Ghosh <sumang@marvell.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 4ebb1f95e0c3c3e0eec5bb21aa43097580c4b6e4 ]
+[ Upstream commit dba3e701917a4cce92920f8ccb9fa4d4ee5ac07e ]
 
-As of today, the last MCAM entry was not getting allocated because of
-a <= check with the max_bmap count. This patch modifies that and if the
-requested entry is greater than the available entries then set it to the
-max value.
+The device does not implement the control properly.
 
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Link: https://lore.kernel.org/r/20240101145042.419697-1-sumang@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes v4l2-compliance error:
+
+info: checking control 'Power Line Frequency' (0x00980918)
+fail: v4l2-test-controls.cpp(552): could not set valid menu item 3
+
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index 0bcf3e559280..3784347b6fd8 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -2678,18 +2678,17 @@ int rvu_mbox_handler_npc_mcam_alloc_entry(struct rvu *rvu,
- 	rsp->entry = NPC_MCAM_ENTRY_INVALID;
- 	rsp->free_count = 0;
- 
--	/* Check if ref_entry is within range */
--	if (req->priority && req->ref_entry >= mcam->bmap_entries) {
--		dev_err(rvu->dev, "%s: reference entry %d is out of range\n",
--			__func__, req->ref_entry);
--		return NPC_MCAM_INVALID_REQ;
--	}
-+	/* Check if ref_entry is greater that the range
-+	 * then set it to max value.
-+	 */
-+	if (req->ref_entry > mcam->bmap_entries)
-+		req->ref_entry = mcam->bmap_entries;
- 
- 	/* ref_entry can't be '0' if requested priority is high.
- 	 * Can't be last entry if requested priority is low.
- 	 */
- 	if ((!req->ref_entry && req->priority == NPC_MCAM_HIGHER_PRIO) ||
--	    ((req->ref_entry == (mcam->bmap_entries - 1)) &&
-+	    ((req->ref_entry == mcam->bmap_entries) &&
- 	     req->priority == NPC_MCAM_LOWER_PRIO))
- 		return NPC_MCAM_INVALID_REQ;
- 
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 08fcd2ffa727..4b5ea3501753 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -2592,6 +2592,15 @@ static const struct usb_device_id uvc_ids[] = {
+ 	  .bInterfaceSubClass	= 1,
+ 	  .bInterfaceProtocol	= 0,
+ 	  .driver_info		= (kernel_ulong_t)&uvc_ctrl_power_line_limited },
++	/* Chicony Electronics Co., Ltd Integrated Camera */
++	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
++				| USB_DEVICE_ID_MATCH_INT_INFO,
++	  .idVendor		= 0x04f2,
++	  .idProduct		= 0xb67c,
++	  .bInterfaceClass	= USB_CLASS_VIDEO,
++	  .bInterfaceSubClass	= 1,
++	  .bInterfaceProtocol	= UVC_PC_PROTOCOL_15,
++	  .driver_info		= (kernel_ulong_t)&uvc_ctrl_power_line_uvc11 },
+ 	/* Chicony EasyCamera */
+ 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+ 				| USB_DEVICE_ID_MATCH_INT_INFO,
 -- 
 2.43.0
 
