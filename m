@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-17997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A7B88480F5
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F99A848359
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26401B274CD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D16E91F22EDB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F9D1B59F;
-	Sat,  3 Feb 2024 04:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2658E52F8A;
+	Sat,  3 Feb 2024 04:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogJVO1NU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4kFwFpY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84444FC03;
-	Sat,  3 Feb 2024 04:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D946C171CC;
+	Sat,  3 Feb 2024 04:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933471; cv=none; b=aGjzhDuZykrzhpM39d59g+vC3XQONZrvzjj3gW9bch8Mj+JOtQq0O4g3jw60VavLEvVOgZ9YoSiuEVybXgb6FMcKPnLKNganHXlCXpWVbFbPw31C1JPYmDmyilgAVwtGaYXjOseywnzzn/0bDjeYA4yMlShMCuWIFix48Q+JiXo=
+	t=1706933914; cv=none; b=pIEn2RHVeErO8YQosrEwGP3Y8nrkbTyDf4olMjAYXp+8R00CDzDjsdA7OOmdiMTWQ1uNXVqaWwKVt32dzhphU2e1fIDDucAVEx9ih8NclwBv5NZaoqhr6cfPX0Ohk8bvql5Sz/gYOlJWBGEivxAG3CXmjd6tqH6oYV9w9wrWb6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933471; c=relaxed/simple;
-	bh=E6NosFwnfH7sOxKZumdlbXyucwJBu0XhNH4w30VTS9w=;
+	s=arc-20240116; t=1706933914; c=relaxed/simple;
+	bh=KuTQzTScqvOdwfwgCUlhiUdAvgHywJUjcV89uC1gMe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D1E3NChdDEkFHKNjJ1Jg+xZDUaxTYKwMdX0LQahb81dFeZhRlj89boxTow2KY8Hy5KsTRydLjqSmkCpX+R6DdfNGQpr/+Z64DgzsgUJeL6Rf8gQuGtJipLp5J7dyctgpBfdPReIhcL8HsdUmJAG8oBm0vvPvYS0xyE5P4/NJzvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogJVO1NU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C7E0C43390;
-	Sat,  3 Feb 2024 04:11:11 +0000 (UTC)
+	 MIME-Version; b=KMeNduxKodkyyajVDcgYoe4RRsb7lm+EfjlOomxEHnLMhYYt+EoMLYaCUo7N5AovFUVFYG9FCMCvFanMwzgmpzEn24QqVJr9V2RMyGtYk2lO12/PfjGQvw+LhFAAZs1txKw3fcCaFyLEF0JxWa8XjHihVVBjOgirlKiOedBWw3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4kFwFpY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47BEC433F1;
+	Sat,  3 Feb 2024 04:18:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933471;
-	bh=E6NosFwnfH7sOxKZumdlbXyucwJBu0XhNH4w30VTS9w=;
+	s=korg; t=1706933914;
+	bh=KuTQzTScqvOdwfwgCUlhiUdAvgHywJUjcV89uC1gMe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogJVO1NUTM7SQLN7z+4JyXp3H/RhUiNlK2UIakJXfWSAnltFM7dsowyLWHDSoZ2aB
-	 ExpvsPLnmFmtuiLyzSPPtq66uCCx9KRWkg3M5SmRDMor7n/EF1nXpOIkUfPU7iA0M3
-	 I6gxcmBBf4/bDcMGdbBORWgyVxzEPB8nWppI2mk0=
+	b=I4kFwFpYfnnrjrBP9uYSFQKdCy8KYY1T5t3wDuznI4CXuMMvsCwmaUxbnAlshPktp
+	 p4VhqqrJmsQHR+BwiBYmqPfv8N/BolY7DhRlHr2PnnKWvt8iwKrVLHvmZdKN9Uiec/
+	 GgPsERs1u0m6+G3V45nP2sxNBHKN3romKSeOXQTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huang Shijie <shijie@os.amperecomputing.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.1 213/219] arm64: irq: set the correct node for shadow call stack
+	Hans de Goede <hdegoede@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 268/353] misc: lis3lv02d_i2c: Add missing setting of the reg_ctrl callback
 Date: Fri,  2 Feb 2024 20:06:26 -0800
-Message-ID: <20240203035346.661858536@linuxfoundation.org>
+Message-ID: <20240203035412.236651561@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang Shijie <shijie@os.amperecomputing.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 7b1a09e44dc64f4f5930659b6d14a27183c00705 upstream.
+[ Upstream commit b1b9f7a494400c0c39f8cd83de3aaa6111c55087 ]
 
-The init_irq_stacks() has been changed to use the correct node:
-https://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git/commit/?id=75b5e0bf90bf
+The lis3lv02d_i2c driver was missing a line to set the lis3_dev's
+reg_ctrl callback.
 
-The init_irq_scs() has the same issue with init_irq_stacks():
-	cpu_to_node() is not initialized yet, it does not work.
+lis3_reg_ctrl(on) is called from the init callback, but due to
+the missing reg_ctrl callback the regulators where never turned off
+again leading to the following oops/backtrace when detaching the driver:
 
-This patch uses early_cpu_to_node() to set the init_irq_scs()
-with the correct node.
+[   82.313527] ------------[ cut here ]------------
+[   82.313546] WARNING: CPU: 1 PID: 1724 at drivers/regulator/core.c:2396 _regulator_put+0x219/0x230
+...
+[   82.313695] RIP: 0010:_regulator_put+0x219/0x230
+...
+[   82.314767] Call Trace:
+[   82.314770]  <TASK>
+[   82.314772]  ? _regulator_put+0x219/0x230
+[   82.314777]  ? __warn+0x81/0x170
+[   82.314784]  ? _regulator_put+0x219/0x230
+[   82.314791]  ? report_bug+0x18d/0x1c0
+[   82.314801]  ? handle_bug+0x3c/0x80
+[   82.314806]  ? exc_invalid_op+0x13/0x60
+[   82.314812]  ? asm_exc_invalid_op+0x16/0x20
+[   82.314845]  ? _regulator_put+0x219/0x230
+[   82.314857]  regulator_bulk_free+0x39/0x60
+[   82.314865]  i2c_device_remove+0x22/0xb0
 
-Signed-off-by: Huang Shijie <shijie@os.amperecomputing.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20231213012046.12014-1-shijie@os.amperecomputing.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Add the missing setting of the callback so that the regulators
+properly get turned off again when not used.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231224183402.95640-1-hdegoede@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/irq.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/lis3lv02d/lis3lv02d_i2c.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/kernel/irq.c
-+++ b/arch/arm64/kernel/irq.c
-@@ -47,7 +47,7 @@ static void init_irq_scs(void)
- 
- 	for_each_possible_cpu(cpu)
- 		per_cpu(irq_shadow_call_stack_ptr, cpu) =
--			scs_alloc(cpu_to_node(cpu));
-+			scs_alloc(early_cpu_to_node(cpu));
- }
- 
- #ifdef CONFIG_VMAP_STACK
+diff --git a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+index 3882e97e96a7..c6eb27d46cb0 100644
+--- a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
++++ b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+@@ -150,6 +150,7 @@ static int lis3lv02d_i2c_probe(struct i2c_client *client)
+ 	lis3_dev.init	  = lis3_i2c_init;
+ 	lis3_dev.read	  = lis3_i2c_read;
+ 	lis3_dev.write	  = lis3_i2c_write;
++	lis3_dev.reg_ctrl = lis3_reg_ctrl;
+ 	lis3_dev.irq	  = client->irq;
+ 	lis3_dev.ac	  = lis3lv02d_axis_map;
+ 	lis3_dev.pm_dev	  = &client->dev;
+-- 
+2.43.0
+
 
 
 
