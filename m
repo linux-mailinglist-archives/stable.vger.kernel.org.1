@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DB4C848112
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:16:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB767848253
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDC7F281947
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:16:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A7111C21379
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B5C11197;
-	Sat,  3 Feb 2024 04:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33ED31B5B3;
+	Sat,  3 Feb 2024 04:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJWpCMbf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGLV1yW+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526601BC5B;
-	Sat,  3 Feb 2024 04:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49E7482CA;
+	Sat,  3 Feb 2024 04:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933493; cv=none; b=sIEhDhXyLLRivxwU0j8xF5ZWM2CcB4ESV6mF9BcbsnfdFwxDP7Q9uOtFUpVQEHXUzsP4Yqk2xerrGmTZUXZeHKH6WH71Jus8sYTQvq7v1K39yLPG8IImbVxNl4dxuZ19zvQcG2pIJhUxFKzWXG/67km2SpPe25hyhFEF5bkwih4=
+	t=1706933725; cv=none; b=WuNnwM9CG58RPFl/7GVHNZIa9kdZaRIhjQGUKNwPjcBkVLPXCi/ILn7EmzFYGc7onEzPv2/tjLIQLZjwWii9qivwAQulwg2R8Hkhs+NET3Lo1t7hqMI9D+x1IpeuRjJ3uVzPciw9H86EDbnq77yAGgubancKtANI/GN920GUNBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933493; c=relaxed/simple;
-	bh=Fav4MeK3fFiX6Qe9NWAYDFWUGloQS1ckA/gEhDzVtws=;
+	s=arc-20240116; t=1706933725; c=relaxed/simple;
+	bh=fi0nMbBU0cYbEUtWNBjH35fdTaSJi0ZzS3EhdB5R6+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8p+0nIwPVXNgwSjHfz0bTXFPfhD0iWZYSzNiHILAFZGeFv6U5kl8hup66JVaCFuuG0N9pNd1UhFwqA4tOTexJLicaVl1YnYULQZT7sT1upwa/CLiQufUkLpIQYEKM5QTGqGvuOPJqLpl94RVH/ueD+fINliA68ABUuVzaAK6/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJWpCMbf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD83C433F1;
-	Sat,  3 Feb 2024 04:11:33 +0000 (UTC)
+	 MIME-Version; b=YzreB9W2g2lNZyhqsQI98UA72/TGy0Dlhj4W3DBRyrtPJwy99Ah+XWRcXqkRSIexGuLghQJ3JSAogTU3F37gHDmBVqXCnkj6ni0FHf5UwCmjEAH7zwvDWzlw/nAJv2U+Opmr0G36RPL9vfYgxRzrdjzQZFnobkHg/pcsKDYeXjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGLV1yW+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD05C43399;
+	Sat,  3 Feb 2024 04:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933493;
-	bh=Fav4MeK3fFiX6Qe9NWAYDFWUGloQS1ckA/gEhDzVtws=;
+	s=korg; t=1706933724;
+	bh=fi0nMbBU0cYbEUtWNBjH35fdTaSJi0ZzS3EhdB5R6+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uJWpCMbfmKa1qsV3ZZasvt3TF1YASuFHmJiHVq1ghLIeElLbwQScvdfl1YWWy/hZ9
-	 aJnwcMa/j6MCYtd3XctLT2q0A+ghHyDHOp86dGeWK0gYpkHZ7ZiQGv7qvbGqDZASoJ
-	 DM4o747HUGXegJV3xPAyaTp9UnEuPF24Zs01A2AQ=
+	b=WGLV1yW+NbR+Y1zbDkDq55CgW2hZl43aCWr2+PLTng5zhRnj+20OaM4i0W0b99jts
+	 eXukehTh0443s7f1XYRsMxFxjDdbSvZRGahFvVHainFmi3FnypCiq5AR0JqQfzDjLO
+	 sXwbZibt3FlIhViaTvujPI0z/XjtbyLJb2pKrIXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rae Moar <rmoar@google.com>,
-	David Gow <davidgow@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Kunwu Chan <chentao@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/322] kunit: tool: fix parsing of test attributes
-Date: Fri,  2 Feb 2024 20:01:59 -0800
-Message-ID: <20240203035359.764739639@linuxfoundation.org>
+Subject: [PATCH 6.7 002/353] powerpc/mm: Fix null-pointer dereference in pgtable_cache_add
+Date: Fri,  2 Feb 2024 20:02:00 -0800
+Message-ID: <20240203035403.742026617@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rae Moar <rmoar@google.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 8ae27bc7fff4ef467a7964821a6cedb34a05d3b2 ]
+[ Upstream commit f46c8a75263f97bda13c739ba1c90aced0d3b071 ]
 
-Add parsing of attributes as diagnostic data. Fixes issue with test plan
-being parsed incorrectly as diagnostic data when located after
-suite-level attributes.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure. Ensure the allocation was successful
+by checking the pointer validity.
 
-Note that if there does not exist a test plan line, the diagnostic lines
-between the suite header and the first result will be saved in the suite
-log rather than the first test case log.
-
-Signed-off-by: Rae Moar <rmoar@google.com>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Suggested-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231204023223.2447523-1-chentao@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/kunit/kunit_parser.py | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/mm/init-common.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/kunit/kunit_parser.py b/tools/testing/kunit/kunit_parser.py
-index 79d8832c862a..ce34be15c929 100644
---- a/tools/testing/kunit/kunit_parser.py
-+++ b/tools/testing/kunit/kunit_parser.py
-@@ -450,7 +450,7 @@ def parse_diagnostic(lines: LineStream) -> List[str]:
- 	Log of diagnostic lines
- 	"""
- 	log = []  # type: List[str]
--	non_diagnostic_lines = [TEST_RESULT, TEST_HEADER, KTAP_START, TAP_START]
-+	non_diagnostic_lines = [TEST_RESULT, TEST_HEADER, KTAP_START, TAP_START, TEST_PLAN]
- 	while lines and not any(re.match(lines.peek())
- 			for re in non_diagnostic_lines):
- 		log.append(lines.pop())
-@@ -726,6 +726,7 @@ def parse_test(lines: LineStream, expected_num: int, log: List[str], is_subtest:
- 		# test plan
- 		test.name = "main"
- 		ktap_line = parse_ktap_header(lines, test)
-+		test.log.extend(parse_diagnostic(lines))
- 		parse_test_plan(lines, test)
- 		parent_test = True
- 	else:
-@@ -737,6 +738,7 @@ def parse_test(lines: LineStream, expected_num: int, log: List[str], is_subtest:
- 		if parent_test:
- 			# If KTAP version line and/or subtest header is found, attempt
- 			# to parse test plan and print test header
-+			test.log.extend(parse_diagnostic(lines))
- 			parse_test_plan(lines, test)
- 			print_test_header(test)
- 	expected_count = test.expected_count
+diff --git a/arch/powerpc/mm/init-common.c b/arch/powerpc/mm/init-common.c
+index 119ef491f797..d3a7726ecf51 100644
+--- a/arch/powerpc/mm/init-common.c
++++ b/arch/powerpc/mm/init-common.c
+@@ -126,7 +126,7 @@ void pgtable_cache_add(unsigned int shift)
+ 	 * as to leave enough 0 bits in the address to contain it. */
+ 	unsigned long minalign = max(MAX_PGTABLE_INDEX_SIZE + 1,
+ 				     HUGEPD_SHIFT_MASK + 1);
+-	struct kmem_cache *new;
++	struct kmem_cache *new = NULL;
+ 
+ 	/* It would be nice if this was a BUILD_BUG_ON(), but at the
+ 	 * moment, gcc doesn't seem to recognize is_power_of_2 as a
+@@ -139,7 +139,8 @@ void pgtable_cache_add(unsigned int shift)
+ 
+ 	align = max_t(unsigned long, align, minalign);
+ 	name = kasprintf(GFP_KERNEL, "pgtable-2^%d", shift);
+-	new = kmem_cache_create(name, table_size, align, 0, ctor(shift));
++	if (name)
++		new = kmem_cache_create(name, table_size, align, 0, ctor(shift));
+ 	if (!new)
+ 		panic("Could not allocate pgtable cache for order %d", shift);
+ 
 -- 
 2.43.0
 
