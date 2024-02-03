@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-18088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCCC6848154
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D806F848157
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89DF128ABF6
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 592441F23A2D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2F01D681;
-	Sat,  3 Feb 2024 04:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5149EF9CE;
+	Sat,  3 Feb 2024 04:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NC2PkEYf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9hzMruc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD3E1CD28;
-	Sat,  3 Feb 2024 04:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112F8101C2;
+	Sat,  3 Feb 2024 04:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933538; cv=none; b=bw+yCPLjmhoo0IYz5EbOFdg2mk0WvT0JKJq0VdY3i38BFclq7RQNnZoPj3t9M3iyIFM35wBZb6mvt45PZcO5Xw2vXVa3emVG33rK3K5O/sZzTBth7Pmi7HE3MGp8/Ez5Rm9N4/+h+M7jzj1HDXL8XgApt9pGjylPDJZBsChqg3k=
+	t=1706933540; cv=none; b=dqyT68F7PyRh6cqjWEwGxyxSB24RB7TMwlFat4qycrbwI0WiDA4slTbRfv1Z7/CJ9rgF0EdjL4DbomfsBpcuS3mO9cILtYSy6ySCSu3+/e4VdsCdK65tYO2WT+dtaoMn5ftPzc4/gHB9Gv5bVsacvzS6IMUkVquXsS8XedJJu0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933538; c=relaxed/simple;
-	bh=NRxZuAiIHzFKGBz4Uzk/3WmPdBu6853sb0Xrd8FKXs8=;
+	s=arc-20240116; t=1706933540; c=relaxed/simple;
+	bh=TrZW5PXc1mmX52CczXTKh2HsGJYaLKyo4LrkEqW5SnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQ7Hl3AxPrrZtQmAOP8ZrqbvKy4uERdTX12GxmvbP8lxV6Si5aZ2466yvkomGEir5MII5shrEO2glDPJidI++yXOfVN4/bnXLvioOX2lZ9HxzFPeUUa2QnQ2RiTmA47Rwi4Y99P7wlgAvHNApjbvfrVZlh9uPCNnrHTXkwPykw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NC2PkEYf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4556DC433F1;
-	Sat,  3 Feb 2024 04:12:18 +0000 (UTC)
+	 MIME-Version; b=pYk2pH2skgPnhV7YUWhQ3dI9FbLfwSM1qeVTOHF1ePF7wZlNi3dVMt6zKsZanW86OsSkl0HjNdIJ9FleSgU03sNtJQNwPZoWaSZ0eZZcyPlk4AIfiSeQjKLKTHp6Os85bkcbzt8Jf0buBPqQ4z1y0pdfwpUZ04zxy98ol4wSyhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9hzMruc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD372C433F1;
+	Sat,  3 Feb 2024 04:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933538;
-	bh=NRxZuAiIHzFKGBz4Uzk/3WmPdBu6853sb0Xrd8FKXs8=;
+	s=korg; t=1706933539;
+	bh=TrZW5PXc1mmX52CczXTKh2HsGJYaLKyo4LrkEqW5SnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NC2PkEYfl9DW4YBwF5rGNfyH6YQqRM3wSehlzbqfhqaJsTOaTXS80RiYjRBbsxnE3
-	 R79XZLliTys6bFAbv/1G3I2zc7A7HvpAzOdaQEZSJxWYQI6KDAAdydaHMMtVIJdQh3
-	 WkvsTjk/YyvIeYYvwwInMFPajQtNmoO9fuQmbWwg=
+	b=B9hzMrucMUzy3clR+wIHfHLtxhk6e78/dTqGKVDK3ATxYtsuCaXoeewSew6qiCjxQ
+	 4scIvl7XeeM0NDf9wY2tba5sMIMqWg7odFDYXiMqLGNjR7jRlyrmzSq4Ueu1k2gdNg
+	 6rwD+Hz2DVZ59TKv1bqZ1mdA+WqrfUgLVqweaIgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/322] ARM: dts: imx7s: Fix nand-controller #size-cells
-Date: Fri,  2 Feb 2024 20:03:01 -0800
-Message-ID: <20240203035401.876754369@linuxfoundation.org>
+Subject: [PATCH 6.6 085/322] bpf: Fix a few selftest failures due to llvm18 change
+Date: Fri,  2 Feb 2024 20:03:02 -0800
+Message-ID: <20240203035401.903786405@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
 References: <20240203035359.041730947@linuxfoundation.org>
@@ -66,36 +66,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Yonghong Song <yonghong.song@linux.dev>
 
-[ Upstream commit 4aadb841ed49bada1415c48c44d21f5b69e01299 ]
+[ Upstream commit b16904fd9f01b580db357ef2b1cc9e86d89576c2 ]
 
-nand-controller.yaml bindings says #size-cells shall be set to 0.
-Fixes the dtbs_check warning:
-arch/arm/boot/dts/nxp/imx/imx7s-mba7.dtb: nand-controller@33002000:
- #size-cells:0:0: 0 was expected
-  from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
+With latest upstream llvm18, the following test cases failed:
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+  $ ./test_progs -j
+  #13/2    bpf_cookie/multi_kprobe_link_api:FAIL
+  #13/3    bpf_cookie/multi_kprobe_attach_api:FAIL
+  #13      bpf_cookie:FAIL
+  #77      fentry_fexit:FAIL
+  #78/1    fentry_test/fentry:FAIL
+  #78      fentry_test:FAIL
+  #82/1    fexit_test/fexit:FAIL
+  #82      fexit_test:FAIL
+  #112/1   kprobe_multi_test/skel_api:FAIL
+  #112/2   kprobe_multi_test/link_api_addrs:FAIL
+  [...]
+  #112     kprobe_multi_test:FAIL
+  #356/17  test_global_funcs/global_func17:FAIL
+  #356     test_global_funcs:FAIL
+
+Further analysis shows llvm upstream patch [1] is responsible for the above
+failures. For example, for function bpf_fentry_test7() in net/bpf/test_run.c,
+without [1], the asm code is:
+
+  0000000000000400 <bpf_fentry_test7>:
+     400: f3 0f 1e fa                   endbr64
+     404: e8 00 00 00 00                callq   0x409 <bpf_fentry_test7+0x9>
+     409: 48 89 f8                      movq    %rdi, %rax
+     40c: c3                            retq
+     40d: 0f 1f 00                      nopl    (%rax)
+
+... and with [1], the asm code is:
+
+  0000000000005d20 <bpf_fentry_test7.specialized.1>:
+    5d20: e8 00 00 00 00                callq   0x5d25 <bpf_fentry_test7.specialized.1+0x5>
+    5d25: c3                            retq
+
+... and <bpf_fentry_test7.specialized.1> is called instead of <bpf_fentry_test7>
+and this caused test failures for #13/#77 etc. except #356.
+
+For test case #356/17, with [1] (progs/test_global_func17.c)), the main prog
+looks like:
+
+  0000000000000000 <global_func17>:
+       0:       b4 00 00 00 2a 00 00 00 w0 = 0x2a
+       1:       95 00 00 00 00 00 00 00 exit
+
+... which passed verification while the test itself expects a verification
+failure.
+
+Let us add 'barrier_var' style asm code in both places to prevent function
+specialization which caused selftests failure.
+
+  [1] https://github.com/llvm/llvm-project/pull/72903
+
+Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20231127050342.1945270-1-yonghong.song@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx7s.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bpf/test_run.c                                     | 2 +-
+ tools/testing/selftests/bpf/progs/test_global_func17.c | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7s.dtsi b/arch/arm/boot/dts/nxp/imx/imx7s.dtsi
-index b6d03794d8d9..39e9f1411ebb 100644
---- a/arch/arm/boot/dts/nxp/imx/imx7s.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx7s.dtsi
-@@ -1282,7 +1282,7 @@
- 		gpmi: nand-controller@33002000 {
- 			compatible = "fsl,imx7d-gpmi-nand";
- 			#address-cells = <1>;
--			#size-cells = <1>;
-+			#size-cells = <0>;
- 			reg = <0x33002000 0x2000>, <0x33004000 0x4000>;
- 			reg-names = "gpmi-nand", "bch";
- 			interrupts = <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>;
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index 0841f8d82419..478ee7aba85f 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -543,7 +543,7 @@ struct bpf_fentry_test_t {
+ 
+ int noinline bpf_fentry_test7(struct bpf_fentry_test_t *arg)
+ {
+-	asm volatile ("");
++	asm volatile ("": "+r"(arg));
+ 	return (long)arg;
+ }
+ 
+diff --git a/tools/testing/selftests/bpf/progs/test_global_func17.c b/tools/testing/selftests/bpf/progs/test_global_func17.c
+index a32e11c7d933..5de44b09e8ec 100644
+--- a/tools/testing/selftests/bpf/progs/test_global_func17.c
++++ b/tools/testing/selftests/bpf/progs/test_global_func17.c
+@@ -5,6 +5,7 @@
+ 
+ __noinline int foo(int *p)
+ {
++	barrier_var(p);
+ 	return p ? (*p = 42) : 0;
+ }
+ 
 -- 
 2.43.0
 
