@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-18156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF3BB84819A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBAE784807E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C2811F240F7
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D1511C20C0E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25D132C9C;
-	Sat,  3 Feb 2024 04:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6EF168C4;
+	Sat,  3 Feb 2024 04:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvjxgfsP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zY9Xf10p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6190FF9F5;
-	Sat,  3 Feb 2024 04:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D22F9CE;
+	Sat,  3 Feb 2024 04:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933588; cv=none; b=QIWFt3c2W70+LOKKOJT4ctjPpv2mBHL9tMfBTxFXJSUwAgebBY2ZJtPICeaaEHYvANlC3XlgyLOZXUT4yj3WLkG+LaByC+UOjJL1drnGQ6ABfboDxaEhD2PAGm7R3GftkRnpDG2FxMnm4rYUvDJExWTlK87/jW8b09N8HZ+Bshg=
+	t=1706933386; cv=none; b=OofCS33sNCIlbeK5hD9Xe+0oPKpxBryGPekS3ReOf2eJpjg+HyRQIHL9F7qrcoj2bxSP5qHZs8b2jlJC2nM5Q6+7JuuKJJCx9cYwGqA2vx7Pgv2CD0x+z9yKftofiVboFM2Ny42FH1tzCADx+42yL0ajgIGtj9ic58DBQtLpiuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933588; c=relaxed/simple;
-	bh=feshkVubLYRW8q2+/HMSoKy/5q0zID4Btj6YWJVHgBM=;
+	s=arc-20240116; t=1706933386; c=relaxed/simple;
+	bh=5/LH1GVOF3u+zYiJ1mRNt+lxGIr1rhTip//MqHVAPOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eKlao4ZtV6/2hqGipJGwgSxtEAqvXTwzsbLVcC+EJI5DOoMhOKYdfAhBTZghpKD1D90y1BJojMOfFWwr2yINTTfH+nNou9LuJZ0BMOE9AFpVc2q0lcvOUyG+YBhIfzq+rxueqJhSAqfN844erYMxYU7rSqQOJTUOUu86dpDt7ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvjxgfsP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2EBC433F1;
-	Sat,  3 Feb 2024 04:13:08 +0000 (UTC)
+	 MIME-Version; b=njM7ful9IiEAuu04DH8nQunh2fAqzAmCAg3BrwzNL0X57Sbrun5g1qyjT+RVvm+ERhu6mLkMuKea8yYfTZgxDhhe2hXoEg84jXdVlF43eoBrfIAS8vgGn/wPAUai4eJHEANqzJiXXhtmND/P6VKJiPzPUOrVXTMG3p3XaR9TuZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zY9Xf10p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0EB5C433C7;
+	Sat,  3 Feb 2024 04:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933588;
-	bh=feshkVubLYRW8q2+/HMSoKy/5q0zID4Btj6YWJVHgBM=;
+	s=korg; t=1706933386;
+	bh=5/LH1GVOF3u+zYiJ1mRNt+lxGIr1rhTip//MqHVAPOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvjxgfsPvWcutz6z7hBwnElFzOcNDFVmFlcysXchKRpmyT07uAD1UPvEfIwnPuujH
-	 SG4wss31ghwM1zVDOSgw07SZUkF0U27ULsfxxgF2LrHC9b2a1pKC39dJiYEBnmahMl
-	 as5VYu8YiGg7ULixk/5GYl0pZ+h8nzqoPpO6TiSk=
+	b=zY9Xf10puZl9srmhd00bu0EgN4rlxPc44sb0O/OwyPtKSW4n7dBmRaSxZfLYdt6Kp
+	 IELQcVGTdqeN/PyUyKZAvIzw8OlgCYK0azKEgonslQY7xtJYbeT/DTf72xvcRLc76A
+	 ER8r/GmigmsQ8sDJDjDBzy7QkRLTJHabU2eCkYFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chunyan Zhang <chunyan.zhang@unisoc.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 151/322] arm64: dts: sprd: Add clock reference for pll2 on UMS512
+Subject: [PATCH 6.1 075/219] ionic: bypass firmware cmds when stuck in reset
 Date: Fri,  2 Feb 2024 20:04:08 -0800
-Message-ID: <20240203035404.068179833@linuxfoundation.org>
+Message-ID: <20240203035327.641753030@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunyan Zhang <chunyan.zhang@unisoc.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit 829e3e70fe72edc084fbfc4964669594ebe427ce ]
+[ Upstream commit ca5fdf9a7c5b65968c718f2be159cda4c13556a1 ]
 
-Fix below dtbs_check warning:
+If the driver or firmware is stuck in reset state, don't bother
+trying to use adminq commands.  This speeds up shutdown and
+prevents unnecessary timeouts and error messages.
 
-'clocks' is a dependency of 'clock-names'
+This includes a bit of rework on ionic_adminq_post_wait()
+and ionic_adminq_post_wait_nomsg() to both use
+__ionic_adminq_post_wait() which can do the checks needed in
+both cases.
 
-Link: https://lore.kernel.org/r/20231221092824.1169453-2-chunyan.zhang@unisoc.com
-Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/sprd/ums512.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ .../ethernet/pensando/ionic/ionic_bus_pci.c   |  4 ++++
+ .../net/ethernet/pensando/ionic/ionic_lif.c   |  3 +++
+ .../net/ethernet/pensando/ionic/ionic_main.c  | 20 ++++++++++++-------
+ 3 files changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/sprd/ums512.dtsi b/arch/arm64/boot/dts/sprd/ums512.dtsi
-index 97ac550af2f1..91c22667d40f 100644
---- a/arch/arm64/boot/dts/sprd/ums512.dtsi
-+++ b/arch/arm64/boot/dts/sprd/ums512.dtsi
-@@ -291,6 +291,7 @@
- 			pll2: clock-controller@0 {
- 				compatible = "sprd,ums512-gc-pll";
- 				reg = <0x0 0x100>;
-+				clocks = <&ext_26m>;
- 				clock-names = "ext-26m";
- 				#clock-cells = <1>;
- 			};
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+index ce436e97324a..4b9caec6eb9b 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+@@ -380,6 +380,10 @@ static void ionic_remove(struct pci_dev *pdev)
+ 	del_timer_sync(&ionic->watchdog_timer);
+ 
+ 	if (ionic->lif) {
++		/* prevent adminq cmds if already known as down */
++		if (test_and_clear_bit(IONIC_LIF_F_FW_RESET, ionic->lif->state))
++			set_bit(IONIC_LIF_F_FW_STOPPING, ionic->lif->state);
++
+ 		ionic_lif_unregister(ionic->lif);
+ 		ionic_devlink_unregister(ionic);
+ 		ionic_lif_deinit(ionic->lif);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index f7634884c750..fcc3faecb060 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -3008,6 +3008,9 @@ static void ionic_lif_reset(struct ionic_lif *lif)
+ {
+ 	struct ionic_dev *idev = &lif->ionic->idev;
+ 
++	if (!ionic_is_fw_running(idev))
++		return;
++
+ 	mutex_lock(&lif->ionic->dev_cmd_lock);
+ 	ionic_dev_cmd_lif_reset(idev, lif->index);
+ 	ionic_dev_cmd_wait(lif->ionic, DEVCMD_TIMEOUT);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+index 9ecbbe7a02ec..d2038ff316ca 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+@@ -410,22 +410,28 @@ int ionic_adminq_wait(struct ionic_lif *lif, struct ionic_admin_ctx *ctx,
+ 				      do_msg);
+ }
+ 
+-int ionic_adminq_post_wait(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
++static int __ionic_adminq_post_wait(struct ionic_lif *lif,
++				    struct ionic_admin_ctx *ctx,
++				    const bool do_msg)
+ {
+ 	int err;
+ 
++	if (!ionic_is_fw_running(&lif->ionic->idev))
++		return 0;
++
+ 	err = ionic_adminq_post(lif, ctx);
+ 
+-	return ionic_adminq_wait(lif, ctx, err, true);
++	return ionic_adminq_wait(lif, ctx, err, do_msg);
+ }
+ 
+-int ionic_adminq_post_wait_nomsg(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
++int ionic_adminq_post_wait(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
+ {
+-	int err;
+-
+-	err = ionic_adminq_post(lif, ctx);
++	return __ionic_adminq_post_wait(lif, ctx, true);
++}
+ 
+-	return ionic_adminq_wait(lif, ctx, err, false);
++int ionic_adminq_post_wait_nomsg(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
++{
++	return __ionic_adminq_post_wait(lif, ctx, false);
+ }
+ 
+ static void ionic_dev_cmd_clean(struct ionic *ionic)
 -- 
 2.43.0
 
