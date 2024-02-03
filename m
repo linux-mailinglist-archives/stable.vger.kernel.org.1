@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-18689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ACB28483B8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:33:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C7C68483A3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:33:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADBAC2837FB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:33:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD8FF28A688
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F453101C1;
-	Sat,  3 Feb 2024 04:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F9D55C1D;
+	Sat,  3 Feb 2024 04:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U74OnPQ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xn8S9ic/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17A956741;
-	Sat,  3 Feb 2024 04:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E592BB0E;
+	Sat,  3 Feb 2024 04:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933985; cv=none; b=dV4lyOjpvRzPBN6kcxXLLfyQ1Ec0K1yu1Qsw8sHFW38YOCm4xm/hIvJsXeeUVCcPeceH3Wx4yQKJ27Wwo1f72iHVwA9VFW2vQ4Mvx8bkI1y7Me+aw+F+N+OjY8sCQaed0/DlwV1Qbvmt0ASpUldTx+oz7HGx0SWRFpFn+6bVaGM=
+	t=1706933970; cv=none; b=XT/FtPwF2B6ce4+yUFb5itvWHfpHMBRNwIv6PGrcen4SQH1CgPUpXGiHpGe0bu5UQLNpr1ypF/wROkh4/FRPoTraKC7gQ9l0nwrcGPpuT8pKqBo3tUEIO0feXZcX7J48QzvSGTwx7oJe13QVTbiUsKCwEB+BkEXLKM/oZvhPIaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933985; c=relaxed/simple;
-	bh=BNcZVunwoneIcefGu8sqSjkE4WWSVK00cDTdLxDkde0=;
+	s=arc-20240116; t=1706933970; c=relaxed/simple;
+	bh=KvtNhhi5P2vP9orqcS8uOHYr1RyrOazcyVruQDwoQRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tp12NpHJOUYvodTYgSXAtqPdg7YkI+8+N7T3XMw7EW+gHLhGlKQ+cu4hQgpm+r3cWMUZ9y9kFNbCzJ1jdabl/4uQOC0EydWI20DApJO3uMro10M4kIcv9TMKDXXvdS76HahiCA5HAdtM61uC8x+tI6zqiAxlC83HVuW4Sw4cDTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U74OnPQ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BED60C433A6;
-	Sat,  3 Feb 2024 04:19:44 +0000 (UTC)
+	 MIME-Version; b=fixQ8i89lldIfvp08l77j123ajK7a77S7ZdAmr2+AQYwLIbFJjL4OIPeAXBWXK9tlBzM4ABjGZ5nHA/YfS42Ts5OsvROXJRsYo/kYHd399/qWpFEKXcbd+CJ6eiCg5rvJBctkS9xCgX9MBhQU6tgOrDQOr6ufRtn9G6fCfdHiaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xn8S9ic/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AD1C433C7;
+	Sat,  3 Feb 2024 04:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933984;
-	bh=BNcZVunwoneIcefGu8sqSjkE4WWSVK00cDTdLxDkde0=;
+	s=korg; t=1706933970;
+	bh=KvtNhhi5P2vP9orqcS8uOHYr1RyrOazcyVruQDwoQRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U74OnPQ5uR3sFEcfZPElzDSdjYR8tE+srurhS2tHBJx3bfPa3T3SIgA1S8yLJuFa9
-	 eFKA8l5o9s5zMZn77y3e95H0iqdk6XoN6PryUHsTUsVMbwWhkcvgQ+Xib1LLFsurGb
-	 05xoOf0RCE8S6KJ9KfKikPMzV/gOqbp9L+5nsE1c=
+	b=Xn8S9ic/HebJlmyR4vdcSYHhTeWUrfUFeuUlVxTSTIjiJZTkCKn1HAm0iKuWs3YKY
+	 Q0PTyH/boRwjmfEcGrPsI4hJtyLkCfzUpmOQGNoMKg5x0UO6zvzv5l2eL4ys6EuV7j
+	 fiQirXwDFCQYAUqmPs569qvQc7JemfLJ78sIC6xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 333/353] pds_core: Use struct pdsc for the pdsc_adminq_isr private data
-Date: Fri,  2 Feb 2024 20:07:31 -0800
-Message-ID: <20240203035414.321261493@linuxfoundation.org>
+Subject: [PATCH 6.7 334/353] pds_core: Prevent race issues involving the adminq
+Date: Fri,  2 Feb 2024 20:07:32 -0800
+Message-ID: <20240203035414.352432233@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
 References: <20240203035403.657508530@linuxfoundation.org>
@@ -70,68 +70,199 @@ Content-Transfer-Encoding: 8bit
 
 From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit 951705151e50f9022bc96ec8b3fd5697380b1df6 ]
+[ Upstream commit 7e82a8745b951b1e794cc780d46f3fbee5e93447 ]
 
-The initial design for the adminq interrupt was done based
-on client drivers having their own adminq and adminq
-interrupt. So, each client driver's adminq isr would use
-their specific adminqcq for the private data struct. For the
-time being the design has changed to only use a single
-adminq for all clients. So, instead use the struct pdsc for
-the private data to simplify things a bit.
+There are multiple paths that can result in using the pdsc's
+adminq.
 
-This also has the benefit of not dereferencing the adminqcq
-to access the pdsc struct when the PDSC_S_STOPPING_DRIVER bit
-is set and the adminqcq has actually been cleared/freed.
+[1] pdsc_adminq_isr and the resulting work from queue_work(),
+    i.e. pdsc_work_thread()->pdsc_process_adminq()
+
+[2] pdsc_adminq_post()
+
+When the device goes through reset via PCIe reset and/or
+a fw_down/fw_up cycle due to bad PCIe state or bad device
+state the adminq is destroyed and recreated.
+
+A NULL pointer dereference can happen if [1] or [2] happens
+after the adminq is already destroyed.
+
+In order to fix this, add some further state checks and
+implement reference counting for adminq uses. Reference
+counting was used because multiple threads can attempt to
+access the adminq at the same time via [1] or [2]. Additionally,
+multiple clients (i.e. pds-vfio-pci) can be using [2]
+at the same time.
+
+The adminq_refcnt is initialized to 1 when the adminq has been
+allocated and is ready to use. Users/clients of the adminq
+(i.e. [1] and [2]) will increment the refcnt when they are using
+the adminq. When the driver goes into a fw_down cycle it will
+set the PDSC_S_FW_DEAD bit and then wait for the adminq_refcnt
+to hit 1. Setting the PDSC_S_FW_DEAD before waiting will prevent
+any further adminq_refcnt increments. Waiting for the
+adminq_refcnt to hit 1 allows for any current users of the adminq
+to finish before the driver frees the adminq. Once the
+adminq_refcnt hits 1 the driver clears the refcnt to signify that
+the adminq is deleted and cannot be used. On the fw_up cycle the
+driver will once again initialize the adminq_refcnt to 1 allowing
+the adminq to be used again.
 
 Fixes: 01ba61b55b20 ("pds_core: Add adminq processing and commands")
 Signed-off-by: Brett Creeley <brett.creeley@amd.com>
 Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
 Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://lore.kernel.org/r/20240129234035.69802-4-brett.creeley@amd.com
+Link: https://lore.kernel.org/r/20240129234035.69802-5-brett.creeley@amd.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/adminq.c | 5 +++--
- drivers/net/ethernet/amd/pds_core/core.c   | 2 +-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/amd/pds_core/adminq.c | 31 +++++++++++++++++-----
+ drivers/net/ethernet/amd/pds_core/core.c   | 21 +++++++++++++++
+ drivers/net/ethernet/amd/pds_core/core.h   |  1 +
+ 3 files changed, 47 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/ethernet/amd/pds_core/adminq.c b/drivers/net/ethernet/amd/pds_core/adminq.c
-index 5beadabc2136..68be5ea251fc 100644
+index 68be5ea251fc..5edff33d56f3 100644
 --- a/drivers/net/ethernet/amd/pds_core/adminq.c
 +++ b/drivers/net/ethernet/amd/pds_core/adminq.c
-@@ -135,8 +135,8 @@ void pdsc_work_thread(struct work_struct *work)
+@@ -63,6 +63,15 @@ static int pdsc_process_notifyq(struct pdsc_qcq *qcq)
+ 	return nq_work;
+ }
  
- irqreturn_t pdsc_adminq_isr(int irq, void *data)
++static bool pdsc_adminq_inc_if_up(struct pdsc *pdsc)
++{
++	if (pdsc->state & BIT_ULL(PDSC_S_STOPPING_DRIVER) ||
++	    pdsc->state & BIT_ULL(PDSC_S_FW_DEAD))
++		return false;
++
++	return refcount_inc_not_zero(&pdsc->adminq_refcnt);
++}
++
+ void pdsc_process_adminq(struct pdsc_qcq *qcq)
  {
--	struct pdsc_qcq *qcq = data;
--	struct pdsc *pdsc = qcq->pdsc;
-+	struct pdsc *pdsc = data;
-+	struct pdsc_qcq *qcq;
+ 	union pds_core_adminq_comp *comp;
+@@ -75,9 +84,9 @@ void pdsc_process_adminq(struct pdsc_qcq *qcq)
+ 	int aq_work = 0;
+ 	int credits;
  
- 	/* Don't process AdminQ when shutting down */
- 	if (pdsc->state & BIT_ULL(PDSC_S_STOPPING_DRIVER)) {
-@@ -145,6 +145,7 @@ irqreturn_t pdsc_adminq_isr(int irq, void *data)
+-	/* Don't process AdminQ when shutting down */
+-	if (pdsc->state & BIT_ULL(PDSC_S_STOPPING_DRIVER)) {
+-		dev_err(pdsc->dev, "%s: called while PDSC_S_STOPPING_DRIVER\n",
++	/* Don't process AdminQ when it's not up */
++	if (!pdsc_adminq_inc_if_up(pdsc)) {
++		dev_err(pdsc->dev, "%s: called while adminq is unavailable\n",
+ 			__func__);
+ 		return;
+ 	}
+@@ -124,6 +133,7 @@ void pdsc_process_adminq(struct pdsc_qcq *qcq)
+ 		pds_core_intr_credits(&pdsc->intr_ctrl[qcq->intx],
+ 				      credits,
+ 				      PDS_CORE_INTR_CRED_REARM);
++	refcount_dec(&pdsc->adminq_refcnt);
+ }
+ 
+ void pdsc_work_thread(struct work_struct *work)
+@@ -138,9 +148,9 @@ irqreturn_t pdsc_adminq_isr(int irq, void *data)
+ 	struct pdsc *pdsc = data;
+ 	struct pdsc_qcq *qcq;
+ 
+-	/* Don't process AdminQ when shutting down */
+-	if (pdsc->state & BIT_ULL(PDSC_S_STOPPING_DRIVER)) {
+-		dev_err(pdsc->dev, "%s: called while PDSC_S_STOPPING_DRIVER\n",
++	/* Don't process AdminQ when it's not up */
++	if (!pdsc_adminq_inc_if_up(pdsc)) {
++		dev_err(pdsc->dev, "%s: called while adminq is unavailable\n",
+ 			__func__);
  		return IRQ_HANDLED;
  	}
- 
-+	qcq = &pdsc->adminqcq;
+@@ -148,6 +158,7 @@ irqreturn_t pdsc_adminq_isr(int irq, void *data)
+ 	qcq = &pdsc->adminqcq;
  	queue_work(pdsc->wq, &qcq->work);
  	pds_core_intr_mask(&pdsc->intr_ctrl[qcq->intx], PDS_CORE_INTR_MASK_CLEAR);
++	refcount_dec(&pdsc->adminq_refcnt);
  
+ 	return IRQ_HANDLED;
+ }
+@@ -231,6 +242,12 @@ int pdsc_adminq_post(struct pdsc *pdsc,
+ 	int err = 0;
+ 	int index;
+ 
++	if (!pdsc_adminq_inc_if_up(pdsc)) {
++		dev_dbg(pdsc->dev, "%s: preventing adminq cmd %u\n",
++			__func__, cmd->opcode);
++		return -ENXIO;
++	}
++
+ 	wc.qcq = &pdsc->adminqcq;
+ 	index = __pdsc_adminq_post(pdsc, &pdsc->adminqcq, cmd, comp, &wc);
+ 	if (index < 0) {
+@@ -286,6 +303,8 @@ int pdsc_adminq_post(struct pdsc *pdsc,
+ 			queue_work(pdsc->wq, &pdsc->health_work);
+ 	}
+ 
++	refcount_dec(&pdsc->adminq_refcnt);
++
+ 	return err;
+ }
+ EXPORT_SYMBOL_GPL(pdsc_adminq_post);
 diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
-index b582729331eb..0356e56a6e99 100644
+index 0356e56a6e99..f44333bd1256 100644
 --- a/drivers/net/ethernet/amd/pds_core/core.c
 +++ b/drivers/net/ethernet/amd/pds_core/core.c
-@@ -125,7 +125,7 @@ static int pdsc_qcq_intr_alloc(struct pdsc *pdsc, struct pdsc_qcq *qcq)
+@@ -450,6 +450,7 @@ int pdsc_setup(struct pdsc *pdsc, bool init)
+ 		pdsc_debugfs_add_viftype(pdsc);
+ 	}
  
- 	snprintf(name, sizeof(name), "%s-%d-%s",
- 		 PDS_CORE_DRV_NAME, pdsc->pdev->bus->number, qcq->q.name);
--	index = pdsc_intr_alloc(pdsc, name, pdsc_adminq_isr, qcq);
-+	index = pdsc_intr_alloc(pdsc, name, pdsc_adminq_isr, pdsc);
- 	if (index < 0)
- 		return index;
- 	qcq->intx = index;
++	refcount_set(&pdsc->adminq_refcnt, 1);
+ 	clear_bit(PDSC_S_FW_DEAD, &pdsc->state);
+ 	return 0;
+ 
+@@ -514,6 +515,24 @@ void pdsc_stop(struct pdsc *pdsc)
+ 					   PDS_CORE_INTR_MASK_SET);
+ }
+ 
++static void pdsc_adminq_wait_and_dec_once_unused(struct pdsc *pdsc)
++{
++	/* The driver initializes the adminq_refcnt to 1 when the adminq is
++	 * allocated and ready for use. Other users/requesters will increment
++	 * the refcnt while in use. If the refcnt is down to 1 then the adminq
++	 * is not in use and the refcnt can be cleared and adminq freed. Before
++	 * calling this function the driver will set PDSC_S_FW_DEAD, which
++	 * prevent subsequent attempts to use the adminq and increment the
++	 * refcnt to fail. This guarantees that this function will eventually
++	 * exit.
++	 */
++	while (!refcount_dec_if_one(&pdsc->adminq_refcnt)) {
++		dev_dbg_ratelimited(pdsc->dev, "%s: adminq in use\n",
++				    __func__);
++		cpu_relax();
++	}
++}
++
+ void pdsc_fw_down(struct pdsc *pdsc)
+ {
+ 	union pds_core_notifyq_comp reset_event = {
+@@ -529,6 +548,8 @@ void pdsc_fw_down(struct pdsc *pdsc)
+ 	if (pdsc->pdev->is_virtfn)
+ 		return;
+ 
++	pdsc_adminq_wait_and_dec_once_unused(pdsc);
++
+ 	/* Notify clients of fw_down */
+ 	if (pdsc->fw_reporter)
+ 		devlink_health_report(pdsc->fw_reporter, "FW down reported", pdsc);
+diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
+index e35d3e7006bf..cbd5716f46e6 100644
+--- a/drivers/net/ethernet/amd/pds_core/core.h
++++ b/drivers/net/ethernet/amd/pds_core/core.h
+@@ -184,6 +184,7 @@ struct pdsc {
+ 	struct mutex devcmd_lock;	/* lock for dev_cmd operations */
+ 	struct mutex config_lock;	/* lock for configuration operations */
+ 	spinlock_t adminq_lock;		/* lock for adminq operations */
++	refcount_t adminq_refcnt;
+ 	struct pds_core_dev_info_regs __iomem *info_regs;
+ 	struct pds_core_dev_cmd_regs __iomem *cmd_regs;
+ 	struct pds_core_intr __iomem *intr_ctrl;
 -- 
 2.43.0
 
