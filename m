@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-17912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAAA984809C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F3828482E0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7ECD4B2A2BF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D13101F23AF2
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0700017581;
-	Sat,  3 Feb 2024 04:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D054F212;
+	Sat,  3 Feb 2024 04:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBSTc/DD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6cZJogd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0C2101C1;
-	Sat,  3 Feb 2024 04:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94A61643E;
+	Sat,  3 Feb 2024 04:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933407; cv=none; b=IifFhg+6Q0TH0eDtQvkElrTcc/kDJAfNoDu/jMQlq5UtOmtpDjdGIuwSJc7gfA76jhEG/qNAZIeW6TiJidSZNDFJnNg22HnT4KXLAnx46Nq8J2xER4Jak/X1nE10PDi5HBRCE9grl6A0GQmTitS7NvpNmKQDrkqc/6n5dGQjCO8=
+	t=1706933826; cv=none; b=Fo1qk+9az5i8emcfyV4KgvOgNbJ7B0HDjb3bcKss1IfGQ/ZpmTxZZjz8co54Jg0ONakZtv+tCoJ6C84Wu9OZ2R8D7drg1Y79z2y+8YTh34iFZ/+Pl+6aoGf3ddYltue7ryR5PJRPTWuZjdVoCHwu2TkyGn9Hs/mkCZ+b1pS2QBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933407; c=relaxed/simple;
-	bh=AILvEb0iPqzGeujwPQyfq1dpMvk2dXBOV3AAEAZnFjE=;
+	s=arc-20240116; t=1706933826; c=relaxed/simple;
+	bh=6NSTYxB2LVJNip4gZs2ARY1mUgpqr94A5eBhZ4BWgdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ghqIOUOAQrT0XM4D24zsEl3bdUb5CqhsiFUaxgK9Bi4pQVXUZSjArzKjVSLjFcwWRqVMsacJYRxRJEX7rGZ3WNo31/iNDOrl7WGYaiS4YByE93KLdby5TqxV02XFnE3QY4nLcSXYn6eQ5dmNaiS5AvWlWyCcN7gDXpo/F3sD61Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBSTc/DD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C07C433C7;
-	Sat,  3 Feb 2024 04:10:07 +0000 (UTC)
+	 MIME-Version; b=UIGcSraYL+X8t26qaptLa0AFw/dmn5aM1RrZklpAnVbz9lsVIG4nH9iGaGmXDO9q5fR8ueSnC/0BQqHSUpAMuExEo9TWeuAxwuIKwc/b3ME6cHF2J0hUad9V7Y4aLimBEI+4lqoMseaZpIYW2xhXvQ6c9uPiLSR8hBSNV2xSbHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6cZJogd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A230CC43394;
+	Sat,  3 Feb 2024 04:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933407;
-	bh=AILvEb0iPqzGeujwPQyfq1dpMvk2dXBOV3AAEAZnFjE=;
+	s=korg; t=1706933826;
+	bh=6NSTYxB2LVJNip4gZs2ARY1mUgpqr94A5eBhZ4BWgdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VBSTc/DDiRnAWBXVq2qksACwhE/3460nv/7pludLXCcUcqgBTLpoY1N4SCEdDkHAS
-	 5GCd2U4QktmOMXVA1qpXLvNd87kJvUrziDMq1V7AcWnCL/JlVp4hwTYoWhQYaqJFDm
-	 Cqs68P5UPO3Zz8JkHrLS7oEjyDZ6MHbP7eBJc2kQ=
+	b=w6cZJogdNqd2xCb8rJRain6+JA2OWJ+pfbasr1AiJcZEqxEcALe3rqz1LSvxtbCca
+	 bFyh3nULvEDfD0gdjxIXvl+AEMEDVyr34eb3QzHkeKPeYAYwuZKIiHWby/4qnkkcIz
+	 7t3jov03C7nlVxzZ9i6hl29hja47gZkJlyg5kRnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingyi Zhang <zhangmingyi5@huawei.com>,
-	Xin Liu <liuxin350@huawei.com>,
-	Changye Wu <wuchangye@huawei.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Iulia Tanasescu <iulia.tanasescu@nxp.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 093/219] libbpf: Fix NULL pointer dereference in bpf_object__collect_prog_relos
-Date: Fri,  2 Feb 2024 20:04:26 -0800
-Message-ID: <20240203035330.403952682@linuxfoundation.org>
+Subject: [PATCH 6.7 149/353] Bluetooth: ISO: Avoid creating child socket if PA sync is terminating
+Date: Fri,  2 Feb 2024 20:04:27 -0800
+Message-ID: <20240203035408.386785549@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +62,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingyi Zhang <zhangmingyi5@huawei.com>
+From: Iulia Tanasescu <iulia.tanasescu@nxp.com>
 
-[ Upstream commit fc3a5534e2a8855427403113cbeb54af5837bbe0 ]
+[ Upstream commit 9f150019f176078144b02c4b9b9dbe7fd5a2fcc3 ]
 
-An issue occurred while reading an ELF file in libbpf.c during fuzzing:
+When a PA sync socket is closed, the associated hcon is also unlinked
+and cleaned up. If there are no other hcons marked with the
+HCI_CONN_PA_SYNC flag, HCI_OP_LE_PA_TERM_SYNC is sent to controller.
 
-	Program received signal SIGSEGV, Segmentation fault.
-	0x0000000000958e97 in bpf_object.collect_prog_relos () at libbpf.c:4206
-	4206 in libbpf.c
-	(gdb) bt
-	#0 0x0000000000958e97 in bpf_object.collect_prog_relos () at libbpf.c:4206
-	#1 0x000000000094f9d6 in bpf_object.collect_relos () at libbpf.c:6706
-	#2 0x000000000092bef3 in bpf_object_open () at libbpf.c:7437
-	#3 0x000000000092c046 in bpf_object.open_mem () at libbpf.c:7497
-	#4 0x0000000000924afa in LLVMFuzzerTestOneInput () at fuzz/bpf-object-fuzzer.c:16
-	#5 0x000000000060be11 in testblitz_engine::fuzzer::Fuzzer::run_one ()
-	#6 0x000000000087ad92 in tracing::span::Span::in_scope ()
-	#7 0x00000000006078aa in testblitz_engine::fuzzer::util::walkdir ()
-	#8 0x00000000005f3217 in testblitz_engine::entrypoint::main::{{closure}} ()
-	#9 0x00000000005f2601 in main ()
-	(gdb)
+Between the time of the command and the moment PA sync is terminated
+in controller, residual BIGInfo reports might continue to come.
+This causes a new PA sync hcon to be added, and a new socket to be
+notified to user space.
 
-scn_data was null at this code(tools/lib/bpf/src/libbpf.c):
+This commit fixs this by adding a flag on a Broadcast listening
+socket to mark when the PA sync child has been closed.
 
-	if (rel->r_offset % BPF_INSN_SZ || rel->r_offset >= scn_data->d_size) {
+This flag is checked when BIGInfo reports are indicated in
+iso_connect_ind, to avoid recreating a hcon and socket if
+residual reports arrive before PA sync is terminated.
 
-The scn_data is derived from the code above:
-
-	scn = elf_sec_by_idx(obj, sec_idx);
-	scn_data = elf_sec_data(obj, scn);
-
-	relo_sec_name = elf_sec_str(obj, shdr->sh_name);
-	sec_name = elf_sec_name(obj, scn);
-	if (!relo_sec_name || !sec_name)// don't check whether scn_data is NULL
-		return -EINVAL;
-
-In certain special scenarios, such as reading a malformed ELF file,
-it is possible that scn_data may be a null pointer
-
-Signed-off-by: Mingyi Zhang <zhangmingyi5@huawei.com>
-Signed-off-by: Xin Liu <liuxin350@huawei.com>
-Signed-off-by: Changye Wu <wuchangye@huawei.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20231221033947.154564-1-liuxin350@huawei.com
+Signed-off-by: Iulia Tanasescu <iulia.tanasescu@nxp.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/bluetooth/iso.c | 51 ++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 48 insertions(+), 3 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 10f15a3e3a95..e2014b1250ea 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -4157,6 +4157,8 @@ bpf_object__collect_prog_relos(struct bpf_object *obj, Elf64_Shdr *shdr, Elf_Dat
+diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
+index 07b80e97aead..fd81289fd3e5 100644
+--- a/net/bluetooth/iso.c
++++ b/net/bluetooth/iso.c
+@@ -54,6 +54,7 @@ static void iso_sock_kill(struct sock *sk);
+ enum {
+ 	BT_SK_BIG_SYNC,
+ 	BT_SK_PA_SYNC,
++	BT_SK_PA_SYNC_TERM,
+ };
  
- 	scn = elf_sec_by_idx(obj, sec_idx);
- 	scn_data = elf_sec_data(obj, scn);
-+	if (!scn_data)
-+		return -LIBBPF_ERRNO__FORMAT;
+ struct iso_pinfo {
+@@ -82,6 +83,11 @@ static bool iso_match_sid(struct sock *sk, void *data);
+ static bool iso_match_sync_handle(struct sock *sk, void *data);
+ static void iso_sock_disconn(struct sock *sk);
  
- 	relo_sec_name = elf_sec_str(obj, shdr->sh_name);
- 	sec_name = elf_sec_name(obj, scn);
++typedef bool (*iso_sock_match_t)(struct sock *sk, void *data);
++
++static struct sock *iso_get_sock_listen(bdaddr_t *src, bdaddr_t *dst,
++					iso_sock_match_t match, void *data);
++
+ /* ---- ISO timers ---- */
+ #define ISO_CONN_TIMEOUT	(HZ * 40)
+ #define ISO_DISCONN_TIMEOUT	(HZ * 2)
+@@ -190,10 +196,21 @@ static void iso_chan_del(struct sock *sk, int err)
+ 	sock_set_flag(sk, SOCK_ZAPPED);
+ }
+ 
++static bool iso_match_conn_sync_handle(struct sock *sk, void *data)
++{
++	struct hci_conn *hcon = data;
++
++	if (test_bit(BT_SK_PA_SYNC, &iso_pi(sk)->flags))
++		return false;
++
++	return hcon->sync_handle == iso_pi(sk)->sync_handle;
++}
++
+ static void iso_conn_del(struct hci_conn *hcon, int err)
+ {
+ 	struct iso_conn *conn = hcon->iso_data;
+ 	struct sock *sk;
++	struct sock *parent;
+ 
+ 	if (!conn)
+ 		return;
+@@ -209,6 +226,25 @@ static void iso_conn_del(struct hci_conn *hcon, int err)
+ 
+ 	if (sk) {
+ 		lock_sock(sk);
++
++		/* While a PA sync hcon is in the process of closing,
++		 * mark parent socket with a flag, so that any residual
++		 * BIGInfo adv reports that arrive before PA sync is
++		 * terminated are not processed anymore.
++		 */
++		if (test_bit(BT_SK_PA_SYNC, &iso_pi(sk)->flags)) {
++			parent = iso_get_sock_listen(&hcon->src,
++						     &hcon->dst,
++						     iso_match_conn_sync_handle,
++						     hcon);
++
++			if (parent) {
++				set_bit(BT_SK_PA_SYNC_TERM,
++					&iso_pi(parent)->flags);
++				sock_put(parent);
++			}
++		}
++
+ 		iso_sock_clear_timer(sk);
+ 		iso_chan_del(sk, err);
+ 		release_sock(sk);
+@@ -545,8 +581,6 @@ static struct sock *__iso_get_sock_listen_by_sid(bdaddr_t *ba, bdaddr_t *bc,
+ 	return NULL;
+ }
+ 
+-typedef bool (*iso_sock_match_t)(struct sock *sk, void *data);
+-
+ /* Find socket listening:
+  * source bdaddr (Unicast)
+  * destination bdaddr (Broadcast only)
+@@ -1759,9 +1793,20 @@ int iso_connect_ind(struct hci_dev *hdev, bdaddr_t *bdaddr, __u8 *flags)
+ 		/* Try to get PA sync listening socket, if it exists */
+ 		sk = iso_get_sock_listen(&hdev->bdaddr, bdaddr,
+ 						iso_match_pa_sync_flag, NULL);
+-		if (!sk)
++
++		if (!sk) {
+ 			sk = iso_get_sock_listen(&hdev->bdaddr, bdaddr,
+ 						 iso_match_sync_handle, ev2);
++
++			/* If PA Sync is in process of terminating,
++			 * do not handle any more BIGInfo adv reports.
++			 */
++
++			if (sk && test_bit(BT_SK_PA_SYNC_TERM,
++					   &iso_pi(sk)->flags))
++				return lm;
++		}
++
+ 		if (sk) {
+ 			int err;
+ 
 -- 
 2.43.0
 
