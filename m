@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-18015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54CE848107
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4B1B84812E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8036D281947
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9411228250C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739FC1BC35;
-	Sat,  3 Feb 2024 04:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83B4168DE;
+	Sat,  3 Feb 2024 04:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMvezo6A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ECB9Afmp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332871B95C;
-	Sat,  3 Feb 2024 04:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675ADFBF2;
+	Sat,  3 Feb 2024 04:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933485; cv=none; b=pZAnMPEdCbZoDY4AOW2VyUaTZuCANm05D8Dj1mMmPF9Zpe6wZJK8yzOky7fvhHcHY5tiAQKH/5oLLHd4K+XEloRvuYeDufmjETQ7T927Iqtl9y629f41qJTK8oMcuHeXWCsw8o7DfNz4IzweqEziPDQfaJsMUdkwhqMJ8ZXCSLo=
+	t=1706933510; cv=none; b=Y4kR5zERybFy41bmAGIZPHdOjj8v88V+3GvW4ZMcCuo7GfEWsNoj6E+FCKlHArt2jbNXGcgBJ38wypOt+zHF/rQVGVKWZo1N2e6kQKakevHFo62K7ISLMeaBamxkdKtCTYm57QMZcFzl9TlBx+QtgcOxWV5ZJMNT4UWA7DA9i2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933485; c=relaxed/simple;
-	bh=LPTTV4GEzriQZf9n2uu7blDFn884mM9qrbX2M3Z6034=;
+	s=arc-20240116; t=1706933510; c=relaxed/simple;
+	bh=ngyvTmchcqoQZSDID24RXZTg63QOoriQVRh1IJa2QQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ajTxbbt8ALDsT1lGne2EmdomSeyAEFID+JPb9QQTaqqE9X2EHezYFs2CbKzSZEvDV6hnh8hKal5Vmom4zwtcbDPHhTdkZOXKA39DsZMG8SyODdoHn/VYOcOuZDosCuc/4Gr1hJfG/26zMbMxqZtebq/mvn5m+HuL7UYYhLjebI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMvezo6A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED53CC433C7;
-	Sat,  3 Feb 2024 04:11:24 +0000 (UTC)
+	 MIME-Version; b=jCQVOvn53qmbsSCoIa6yEtOwM6uS05rC4z2wJ+dMmqeqWMBYUbrk6PffR+CMkAeMwKN2WxdaGAh3lmlUOSQI5dsCxXd/cD2TauYEOfOcWxhCvPcRC1wFcxU9n2cPQwpOtS/TLH7cE9apueRJ0hHE+O06glEFuAcYyIwmV3+O4ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ECB9Afmp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309D1C43399;
+	Sat,  3 Feb 2024 04:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933485;
-	bh=LPTTV4GEzriQZf9n2uu7blDFn884mM9qrbX2M3Z6034=;
+	s=korg; t=1706933510;
+	bh=ngyvTmchcqoQZSDID24RXZTg63QOoriQVRh1IJa2QQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RMvezo6AMLdDVaLizTOu6rgTaDFoyKBbH1aXszLx0eb0wqQ97NkmDaR7a7oqNTF+r
-	 YqnJzCfhfRRWh8f2F7NPiupEee2frEtmmp1CceknnliBaWQk2IIFUby72TqyxejaBN
-	 85AXCIgnbcPqtHin6LGmUNIHP5lBqddMeBTk5sK4=
+	b=ECB9Afmp/OhBbQcvJZTg6B2lQ0z4Dy5FXd5xY3s/+Tav1XkZns5988hAK3tMHIBDf
+	 jo4MGEHbvfYTj9tJ7RIeXM1+lQsNunlywZQUM0FDQy88ZOL3Uq9gkNc9JGKzEjGMUb
+	 vb5Tg4w7/CJ9vl4rVzSGaA5KaleAkJiECVdLs+mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen N Rao <naveen@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Youquan Song <youquan.song@intel.com>,
+	Zhiquan Li <zhiquan1.li@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Naoya Horiguchi <naoya.horiguchi@nec.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 011/322] powerpc/lib: Validate size for vector operations
-Date: Fri,  2 Feb 2024 20:01:48 -0800
-Message-ID: <20240203035359.413727005@linuxfoundation.org>
+Subject: [PATCH 6.6 012/322] x86/mce: Mark fatal MCEs page as poison to avoid panic in the kdump kernel
+Date: Fri,  2 Feb 2024 20:01:49 -0800
+Message-ID: <20240203035359.440181327@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
 References: <20240203035359.041730947@linuxfoundation.org>
@@ -67,69 +68,80 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Naveen N Rao <naveen@kernel.org>
+From: Zhiquan Li <zhiquan1.li@intel.com>
 
-[ Upstream commit 8f9abaa6d7de0a70fc68acaedce290c1f96e2e59 ]
+[ Upstream commit 9f3b130048bfa2e44a8cfb1b616f826d9d5d8188 ]
 
-Some of the fp/vmx code in sstep.c assume a certain maximum size for the
-instructions being emulated. The size of those operations however is
-determined separately in analyse_instr().
+Memory errors don't happen very often, especially fatal ones. However,
+in large-scale scenarios such as data centers, that probability
+increases with the amount of machines present.
 
-Add a check to validate the assumption on the maximum size of the
-operations, so as to prevent any unintended kernel stack corruption.
+When a fatal machine check happens, mce_panic() is called based on the
+severity grading of that error. The page containing the error is not
+marked as poison.
 
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Build-tested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231123071705.397625-1-naveen@kernel.org
+However, when kexec is enabled, tools like makedumpfile understand when
+pages are marked as poison and do not touch them so as not to cause
+a fatal machine check exception again while dumping the previous
+kernel's memory.
+
+Therefore, mark the page containing the error as poisoned so that the
+kexec'ed kernel can avoid accessing the page.
+
+  [ bp: Rewrite commit message and comment. ]
+
+Co-developed-by: Youquan Song <youquan.song@intel.com>
+Signed-off-by: Youquan Song <youquan.song@intel.com>
+Signed-off-by: Zhiquan Li <zhiquan1.li@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Link: https://lore.kernel.org/r/20231014051754.3759099-1-zhiquan1.li@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/lib/sstep.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/x86/kernel/cpu/mce/core.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index a4ab8625061a..6af97dc0f6d5 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -586,6 +586,8 @@ static int do_fp_load(struct instruction_op *op, unsigned long ea,
- 	} u;
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 6f35f724cc14..20ab11aec60b 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -44,6 +44,7 @@
+ #include <linux/sync_core.h>
+ #include <linux/task_work.h>
+ #include <linux/hardirq.h>
++#include <linux/kexec.h>
  
- 	nb = GETSIZE(op->type);
-+	if (nb > sizeof(u))
-+		return -EINVAL;
- 	if (!address_ok(regs, ea, nb))
- 		return -EFAULT;
- 	rn = op->reg;
-@@ -636,6 +638,8 @@ static int do_fp_store(struct instruction_op *op, unsigned long ea,
- 	} u;
+ #include <asm/intel-family.h>
+ #include <asm/processor.h>
+@@ -233,6 +234,7 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
+ 	struct llist_node *pending;
+ 	struct mce_evt_llist *l;
+ 	int apei_err = 0;
++	struct page *p;
  
- 	nb = GETSIZE(op->type);
-+	if (nb > sizeof(u))
-+		return -EINVAL;
- 	if (!address_ok(regs, ea, nb))
- 		return -EFAULT;
- 	rn = op->reg;
-@@ -680,6 +684,9 @@ static nokprobe_inline int do_vec_load(int rn, unsigned long ea,
- 		u8 b[sizeof(__vector128)];
- 	} u = {};
- 
-+	if (size > sizeof(u))
-+		return -EINVAL;
+ 	/*
+ 	 * Allow instrumentation around external facilities usage. Not that it
+@@ -286,6 +288,20 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
+ 	if (!fake_panic) {
+ 		if (panic_timeout == 0)
+ 			panic_timeout = mca_cfg.panic_timeout;
 +
- 	if (!address_ok(regs, ea & ~0xfUL, 16))
- 		return -EFAULT;
- 	/* align to multiple of size */
-@@ -707,6 +714,9 @@ static nokprobe_inline int do_vec_store(int rn, unsigned long ea,
- 		u8 b[sizeof(__vector128)];
- 	} u;
- 
-+	if (size > sizeof(u))
-+		return -EINVAL;
-+
- 	if (!address_ok(regs, ea & ~0xfUL, 16))
- 		return -EFAULT;
- 	/* align to multiple of size */
++		/*
++		 * Kdump skips the poisoned page in order to avoid
++		 * touching the error bits again. Poison the page even
++		 * if the error is fatal and the machine is about to
++		 * panic.
++		 */
++		if (kexec_crash_loaded()) {
++			if (final && (final->status & MCI_STATUS_ADDRV)) {
++				p = pfn_to_online_page(final->addr >> PAGE_SHIFT);
++				if (p)
++					SetPageHWPoison(p);
++			}
++		}
+ 		panic(msg);
+ 	} else
+ 		pr_emerg(HW_ERR "Fake kernel panic: %s\n", msg);
 -- 
 2.43.0
 
