@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9096848196
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2345E8482C8
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2AE4282F38
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 563261C22B08
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB7617593;
-	Sat,  3 Feb 2024 04:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485404E1CC;
+	Sat,  3 Feb 2024 04:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Up9iXNT4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lkz4zLz9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E49E10A0A;
-	Sat,  3 Feb 2024 04:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0711813AC6;
+	Sat,  3 Feb 2024 04:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933585; cv=none; b=des90LufNsCQHfE+nsJq4Ro3WnXH9ySYosB69eiEvvez/JOXbgj465WbtXNU7HXocJuOvSeKoes/G7lXUP4CaYjR+i9I5ydw/sRsd13y6roImTNo61HnNlLnPTV8O3n+eOGvzdQC0XMRdgFCE2H3l6tYSMANDbWJgsLai13qrSY=
+	t=1706933810; cv=none; b=RAvnOCu99nqNPB/X8FSH8Q9vnKN0l9AcTSrKSkrnbgSqdFhIS/h6ACbh8kYuNFuUH2xxXDLjcW+l2sNGenUjHPkpOfGAmK/g8iBx6gKAzqOs3aAoBOAzzvuC/38f+yuwkeiX+d1RxTUAJZKoL8foex4snJQa4+AINFusQakpVI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933585; c=relaxed/simple;
-	bh=LJaB3+PWvhTEZVQwnL0o2lpGrZxaa5ciZvfO0rNNOH8=;
+	s=arc-20240116; t=1706933810; c=relaxed/simple;
+	bh=QqqoQNf5mPSwkHw3/GLMf5XkDr/12ARtLHixZm5cN9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=edmoiw3A+6pi0uCk367Yo69Q1/gB/wbGOVjbTkVKJJUJQV/TY3A0zHhm76toi2g88FsNnG/SjwVqKDPNmkrb1BACIxiunubFOJkOFNn4x6J/Cz2qYP3NvVy4ykek7nMSnh96gDSxwsXu0gZA4csTdQKS3lyJ886q9DGPh9T/CEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Up9iXNT4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552F1C433F1;
-	Sat,  3 Feb 2024 04:13:05 +0000 (UTC)
+	 MIME-Version; b=B4Sh0YmHPC7HI/ELaKxR6s/H7T4STwVqGEe5yKW8M01Q6xcPTjEOYpxFpdN26YJDrBfwNzE9M01LdZdZjcD6sc6WOe9rqOMqC7x50K3+jwjdvsQUfMH2rwFwl6EKUsjJrtcNB8Xx02AoEDPFgk/WJ3dBsAa5l30a/JI3r1H/SKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lkz4zLz9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C213EC433F1;
+	Sat,  3 Feb 2024 04:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933585;
-	bh=LJaB3+PWvhTEZVQwnL0o2lpGrZxaa5ciZvfO0rNNOH8=;
+	s=korg; t=1706933809;
+	bh=QqqoQNf5mPSwkHw3/GLMf5XkDr/12ARtLHixZm5cN9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Up9iXNT46X7V6Pn+GO7ZKbwgAZN/GZbSneOYGlhgLR4TxgK5nZ2INquXjvo3IKF8r
-	 lvu+0J79yDoVH0sAQSpEBXVM7PRDquFGxjD+5MmbPN7wejfwFolLiknoif92c9SRKP
-	 QZacCDD5RAGJPdF3fUN2vL0KN6TJjSoEmhRWttqc=
+	b=Lkz4zLz9zZ+osSWQJ5tn9NpNPgDR0Thbnv00FrMK9US/diOeirRYql7JBK4K0kzpD
+	 XG+3g4uTwl2csvResXKfYRJiP+D1AuiCXo9FoaVHxPC9+Euc0X9epvL9GCCfV+P/R8
+	 7zQlKuqoa+keIGiWdTX6Q8BptMRhiNeMjz/fPOwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	clancy shang <clancy.shang@quectel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 147/322] Bluetooth: hci_sync: fix BR/EDR wakeup bug
+Subject: [PATCH 6.7 126/353] scsi: lpfc: Reinitialize an NPIVs VMID data structures after FDISC
 Date: Fri,  2 Feb 2024 20:04:04 -0800
-Message-ID: <20240203035403.937973395@linuxfoundation.org>
+Message-ID: <20240203035407.713943231@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: clancy shang <clancy.shang@quectel.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit d4b70ba1eab450eff9c5ef536f07c01d424b7eda ]
+[ Upstream commit 8dc8eb89f4df74593ba4bf30c3d31a0fc6d3ea47 ]
 
-when Bluetooth set the event mask and enter suspend, the controller
-has hci mode change event coming, it cause controller can not enter
-sleep mode. so it should to set the hci mode change event mask before
-enter suspend.
+After a follow up FDISC cmpl, an NPIV's VMID data structures are not
+updated.
 
-Signed-off-by: clancy shang <clancy.shang@quectel.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fix by calling lpfc_reinit_vmid and copying the physical port's vmid_flag
+to the NPIV's vmid_flag in the NPIV registration cmpl code path.
+
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20231207224039.35466-3-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/scsi/lpfc/lpfc_els.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 9e71362c04b4..5c4efa624625 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -3800,12 +3800,14 @@ static int hci_set_event_mask_sync(struct hci_dev *hdev)
- 	if (lmp_bredr_capable(hdev)) {
- 		events[4] |= 0x01; /* Flow Specification Complete */
+diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
+index 0829fe6ddff8..7e9b93460e64 100644
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -11130,6 +11130,14 @@ lpfc_cmpl_reg_new_vport(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
+ 	lpfc_nlp_put(ndlp);
  
--		/* Don't set Disconnect Complete when suspended as that
--		 * would wakeup the host when disconnecting due to
--		 * suspend.
-+		/* Don't set Disconnect Complete and mode change when
-+		 * suspended as that would wakeup the host when disconnecting
-+		 * due to suspend.
- 		 */
--		if (hdev->suspended)
-+		if (hdev->suspended) {
- 			events[0] &= 0xef;
-+			events[2] &= 0xf7;
-+		}
- 	} else {
- 		/* Use a different default for LE-only devices */
- 		memset(events, 0, sizeof(events));
+ 	mempool_free(pmb, phba->mbox_mem_pool);
++
++	/* reinitialize the VMID datastructure before returning.
++	 * this is specifically for vport
++	 */
++	if (lpfc_is_vmid_enabled(phba))
++		lpfc_reinit_vmid(vport);
++	vport->vmid_flag = vport->phba->pport->vmid_flag;
++
+ 	return;
+ }
+ 
 -- 
 2.43.0
 
