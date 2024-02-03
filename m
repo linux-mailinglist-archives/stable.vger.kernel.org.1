@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D755C84828F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62FCC848037
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 951BE282A1F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E86C51F2BAB8
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2BE4B5AD;
-	Sat,  3 Feb 2024 04:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7857211198;
+	Sat,  3 Feb 2024 04:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXCW9U+p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QUlVxDkU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD9B10A13;
-	Sat,  3 Feb 2024 04:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E3311193;
+	Sat,  3 Feb 2024 04:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933768; cv=none; b=VQpiK4e42NZLFcYL3/ywpNhUw9UNY58fQ99Xk8WvOYuWoOEkLauMk2QxI9wJvMoLyPvdwY0lOEklh8q7TziNe1hznU/mMhz2dth3qAfiV1tDDVXujzI6zlt9MXULpCv8VQ3LpmdD5odDP2eGoXfm3zKV5YC9a6ILZfNE2kK90fc=
+	t=1706933334; cv=none; b=KZIfAwfQekS3lXUuJgD+rzOf6BjoYN4Tnh5VLjzeaJ5cE+8hL1wp3nzd4oBvb9xGFP3oK6j7aj+M2x7i5LJ+qvOmoAxK9NuJ0i7RI53RQFsPnMJl4NcDRbk7czs5C+vQDYgNlK6sA2vObLpKAeSsy9iEOkDWmd3B/Uk8MYuPdIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933768; c=relaxed/simple;
-	bh=22TDI6BcpLMOQniXuU4CGSa0qLtvmmDnL2YzkI5aCgI=;
+	s=arc-20240116; t=1706933334; c=relaxed/simple;
+	bh=cSa3nhQOk4q/ITqGnMAnkE+qls+KkLsKoTVg+3Q/W+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bUIffBEZeuIO5wmrJP7i+mjxHpXRY6ovhRftew143pymlyXU9CakKyeI5UXF6Tb5ICikX/ILo16BZZU7hTA4bLDedH8bS1one5nbCeOOM6XjGDmhCGqf95mrsHZP47q4CSpx2l5deFVSi8qD75vmGat7t3J5DytVcIh2vM+ZAyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXCW9U+p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E05C433F1;
-	Sat,  3 Feb 2024 04:16:07 +0000 (UTC)
+	 MIME-Version; b=SHZ3p3cCdbL6/CiX0mfm293bQvmmL8iOxlJnbSEI8Gxj7uUqSolnCArXUzgUlp8WIaaBIYIkFos9OY1WcZjlFUEYnrVJWR62sjX3+A5LKrSGqtQDe5aZ9+cZCJs+oR1itLHpSfCgcK77h9qQ/t3i3Dysw6i1lHWZhXwY5V8uFxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QUlVxDkU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC1CC433F1;
+	Sat,  3 Feb 2024 04:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933768;
-	bh=22TDI6BcpLMOQniXuU4CGSa0qLtvmmDnL2YzkI5aCgI=;
+	s=korg; t=1706933334;
+	bh=cSa3nhQOk4q/ITqGnMAnkE+qls+KkLsKoTVg+3Q/W+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kXCW9U+pDHg9OReBJa8QEuePmFY7+U/7gX+2gmOecg0u9ib5f+O7GTNmZ2K07LEYj
-	 Noszhufb36C8L6QjlD2FhQ8ytiI4b9kAdWzRgduTyGkgoeySD2JPa0oWHbVBS1gDMT
-	 VdWbo/Ajnl/XPMmcYq/1E2Rl7nalL5FH0LeTBY2s=
+	b=QUlVxDkUVaAqzpPj1Q7IYlX8rrfiqKPd9h0BWJKC3ePi6BYeUKdV3LDa7H/P29CWT
+	 QAEyUaT/Pq0v637h5LbcaZHXFqKhEM3RoXJLpc+BZsXej92rr3X3P5ax9qXfDoNhM7
+	 +Yrrx0Lc8wYPWT363pqE2Se25w6KSubdNmUA78uE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Kalle Valo <kvalo@kernel.org>,
+	Rui Zhang <zr.zhang@vivo.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 069/353] wifi: rt2x00: correct wrong BBP register in RxDCOC calibration
+Subject: [PATCH 6.1 014/219] regulator: core: Only increment use_count when enable_count changes
 Date: Fri,  2 Feb 2024 20:03:07 -0800
-Message-ID: <20240203035406.004644124@linuxfoundation.org>
+Message-ID: <20240203035318.573653816@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Rui Zhang <zr.zhang@vivo.com>
 
-[ Upstream commit 50da74e1e8b682853d1e07fc8bbe3a0774ae5e09 ]
+[ Upstream commit 7993d3a9c34f609c02171e115fd12c10e2105ff4 ]
 
-Refer to Mediatek vendor driver RxDCOC_Calibration() function, when
-performing gainfreeze calibration, we should write register 140
-instead of 141. This fix can reduce the total calibration time from
-6 seconds to 1 second.
+The use_count of a regulator should only be incremented when the
+enable_count changes from 0 to 1. Similarly, the use_count should
+only be decremented when the enable_count changes from 1 to 0.
 
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/TYAP286MB0315B13B89DF57B6B27BB854BCAFA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+In the previous implementation, use_count was sometimes decremented
+to 0 when some consumer called unbalanced disable,
+leading to unexpected disable even the regulator is enabled by
+other consumers. With this change, the use_count accurately reflects
+the number of users which the regulator is enabled.
+
+This should make things more robust in the case where a consumer does
+leak references.
+
+Signed-off-by: Rui Zhang <zr.zhang@vivo.com>
+Link: https://lore.kernel.org/r/20231103074231.8031-1-zr.zhang@vivo.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/regulator/core.c | 56 +++++++++++++++++++++-------------------
+ 1 file changed, 30 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-index ee880f749b3c..1926ffdffb4f 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-@@ -8659,7 +8659,7 @@ static void rt2800_rxdcoc_calibration(struct rt2x00_dev *rt2x00dev)
- 	rt2800_rfcsr_write_bank(rt2x00dev, 5, 4, saverfb5r4);
- 	rt2800_rfcsr_write_bank(rt2x00dev, 7, 4, saverfb7r4);
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 34d3d8281906..c8702011b761 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -2925,7 +2925,8 @@ static int _regulator_enable(struct regulator *regulator)
+ 		/* Fallthrough on positive return values - already enabled */
+ 	}
  
--	rt2800_bbp_write(rt2x00dev, 158, 141);
-+	rt2800_bbp_write(rt2x00dev, 158, 140);
- 	bbpreg = rt2800_bbp_read(rt2x00dev, 159);
- 	bbpreg = bbpreg & (~0x40);
- 	rt2800_bbp_write(rt2x00dev, 159, bbpreg);
+-	rdev->use_count++;
++	if (regulator->enable_count == 1)
++		rdev->use_count++;
+ 
+ 	return 0;
+ 
+@@ -3000,37 +3001,40 @@ static int _regulator_disable(struct regulator *regulator)
+ 
+ 	lockdep_assert_held_once(&rdev->mutex.base);
+ 
+-	if (WARN(rdev->use_count <= 0,
++	if (WARN(regulator->enable_count == 0,
+ 		 "unbalanced disables for %s\n", rdev_get_name(rdev)))
+ 		return -EIO;
+ 
+-	/* are we the last user and permitted to disable ? */
+-	if (rdev->use_count == 1 &&
+-	    (rdev->constraints && !rdev->constraints->always_on)) {
+-
+-		/* we are last user */
+-		if (regulator_ops_is_valid(rdev, REGULATOR_CHANGE_STATUS)) {
+-			ret = _notifier_call_chain(rdev,
+-						   REGULATOR_EVENT_PRE_DISABLE,
+-						   NULL);
+-			if (ret & NOTIFY_STOP_MASK)
+-				return -EINVAL;
+-
+-			ret = _regulator_do_disable(rdev);
+-			if (ret < 0) {
+-				rdev_err(rdev, "failed to disable: %pe\n", ERR_PTR(ret));
+-				_notifier_call_chain(rdev,
+-						REGULATOR_EVENT_ABORT_DISABLE,
++	if (regulator->enable_count == 1) {
++	/* disabling last enable_count from this regulator */
++		/* are we the last user and permitted to disable ? */
++		if (rdev->use_count == 1 &&
++		    (rdev->constraints && !rdev->constraints->always_on)) {
++
++			/* we are last user */
++			if (regulator_ops_is_valid(rdev, REGULATOR_CHANGE_STATUS)) {
++				ret = _notifier_call_chain(rdev,
++							   REGULATOR_EVENT_PRE_DISABLE,
++							   NULL);
++				if (ret & NOTIFY_STOP_MASK)
++					return -EINVAL;
++
++				ret = _regulator_do_disable(rdev);
++				if (ret < 0) {
++					rdev_err(rdev, "failed to disable: %pe\n", ERR_PTR(ret));
++					_notifier_call_chain(rdev,
++							REGULATOR_EVENT_ABORT_DISABLE,
++							NULL);
++					return ret;
++				}
++				_notifier_call_chain(rdev, REGULATOR_EVENT_DISABLE,
+ 						NULL);
+-				return ret;
+ 			}
+-			_notifier_call_chain(rdev, REGULATOR_EVENT_DISABLE,
+-					NULL);
+-		}
+ 
+-		rdev->use_count = 0;
+-	} else if (rdev->use_count > 1) {
+-		rdev->use_count--;
++			rdev->use_count = 0;
++		} else if (rdev->use_count > 1) {
++			rdev->use_count--;
++		}
+ 	}
+ 
+ 	if (ret == 0)
 -- 
 2.43.0
 
