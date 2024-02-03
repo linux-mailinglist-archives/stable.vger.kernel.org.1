@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-18388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3D6848287
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2BB84813A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC5DE1F2BAA1
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F2BAB2ADC7
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A6084A990;
-	Sat,  3 Feb 2024 04:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8CD51CAAA;
+	Sat,  3 Feb 2024 04:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UcI9j7o6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZS0Q/r+V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494211BC3C;
-	Sat,  3 Feb 2024 04:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A901118F;
+	Sat,  3 Feb 2024 04:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933762; cv=none; b=l2uyvcoLMRoguozQIHcxL6yx+5Tt3/WJ1B4d8k3URRGGeAyTX51t7ceUw+TgC6YdOsSUMvwBgAfst+TLXSZ+bhlZKQf7RznimQW1ksMciNO/gyUkqppGJFm4gQR2mPmsOm0TdmsiLckCW0exh5JsB+trG61P9Ve7uyQhH3Zx34E=
+	t=1706933517; cv=none; b=gs6NSxPU+Ufj48neopWGPxeB0UcHGArNUemzZJgHzCBN16GRilb7lcTri2SbFDo3k4EWPDEeOoy7PGDbSxYNbihLIIygXsBPPa+MCY94jGL3/x56357Ez84tX0KWTWZteWyQoeZSctXhH3ra3J9OdvKaJYpQGiMQqKJ8Abej93E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933762; c=relaxed/simple;
-	bh=OO5MwZ/Y3HM0w26tXUe+5kl0xyI/+JS4aLTqeeCREZs=;
+	s=arc-20240116; t=1706933517; c=relaxed/simple;
+	bh=VjtbO7rp0rpBb/4k+4O8rJ5Fn8I5FNagDBNOaEVISSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aiMI/Y+FbwhY5eiXfioW6WMKVUMc6g5+1DT+ha7hAuDIIUeXlI7f0czKqFkBfsy06cXjio0GQULfk5JQ5phSbwrVVLHoeeQjYJh/TSEZT2aow64n1YpRKMO7KXs0JtnnCjHG/AvdfAKTD90vR1revy7L9Qdihpp0jeyRLErE95I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UcI9j7o6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124D2C43399;
-	Sat,  3 Feb 2024 04:16:02 +0000 (UTC)
+	 MIME-Version; b=cY0xUNYjaxsrXfKWTmSUMLWQM2GdedPbVgI3VvJXsCmwq61OZhexTi3xvE2m6Yarii5Ut3yeNHERBAtlbI3uv5HbwFeqbdRKrDsspSt4Y+4mN8PlVb6qEL/ZT4bQHGq+PAlkY+HdVdQcYNXDSUefKrJLbks8nOXQjRdrPSLYE5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZS0Q/r+V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DD8C433C7;
+	Sat,  3 Feb 2024 04:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933762;
-	bh=OO5MwZ/Y3HM0w26tXUe+5kl0xyI/+JS4aLTqeeCREZs=;
+	s=korg; t=1706933517;
+	bh=VjtbO7rp0rpBb/4k+4O8rJ5Fn8I5FNagDBNOaEVISSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UcI9j7o6//KqpAp1VJzal2TlBxb9HSXum7WncJCsC2mpKgWtJJEcUc3qwUTiXPqbh
-	 TBK9o2+HxqP5VOct8j+uxNHoPm+qZhm5TZQSNhRXJ84wkTOyfS1gyO7co41xxcOGP1
-	 q00aJIiex6lAfhhLFk5dHjKeMqKgnF1GAXEA+FaM=
+	b=ZS0Q/r+Vl+NGdGKYA+X83/Y9YsNrF0Fwl7u9P2NzZr4EI5hLZ2PhqvOiVYCPFVUrE
+	 2G6BrU89UXYYrpRZBfU6khaA8PyH86PF2sxrnbYzOe+AtCAe3oFEYecqbNOPuc/6EF
+	 +LFmk4tPVkvqgSfQvf4eC5CS/9tSIMItcYgIwTPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jia Jie Ho <jiajie.ho@starfivetech.com>,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 035/353] hwrng: starfive - Fix dev_err_probe return error
+Subject: [PATCH 6.6 056/322] ext4: remove unnecessary check from alloc_flex_gd()
 Date: Fri,  2 Feb 2024 20:02:33 -0800
-Message-ID: <20240203035404.907407683@linuxfoundation.org>
+Message-ID: <20240203035400.948604784@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jia Jie Ho <jiajie.ho@starfivetech.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 2d37b3649c412b3bcecfea932cb677f7a5775b15 ]
+[ Upstream commit b099eb87de105cf07cad731ded6fb40b2675108b ]
 
-Current dev_err_probe will return 0 instead of proper error code if
-driver failed to get irq number. Fix the return err code.
+In commit 967ac8af4475 ("ext4: fix potential integer overflow in
+alloc_flex_gd()"), an overflow check is added to alloc_flex_gd() to
+prevent the allocated memory from being smaller than expected due to
+the overflow. However, after kmalloc() is replaced with kmalloc_array()
+in commit 6da2ec56059c ("treewide: kmalloc() -> kmalloc_array()"), the
+kmalloc_array() function has an overflow check, so the above problem
+will not occur. Therefore, the extra check is removed.
 
-Signed-off-by: Jia Jie Ho <jiajie.ho@starfivetech.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202311160649.3GhKCfhd-lkp@intel.com/
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231023013057.2117948-3-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/jh7110-trng.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/resize.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/char/hw_random/jh7110-trng.c b/drivers/char/hw_random/jh7110-trng.c
-index 38474d48a25e..b1f94e3c0c6a 100644
---- a/drivers/char/hw_random/jh7110-trng.c
-+++ b/drivers/char/hw_random/jh7110-trng.c
-@@ -300,7 +300,7 @@ static int starfive_trng_probe(struct platform_device *pdev)
- 	ret = devm_request_irq(&pdev->dev, irq, starfive_trng_irq, 0, pdev->name,
- 			       (void *)trng);
- 	if (ret)
--		return dev_err_probe(&pdev->dev, irq,
-+		return dev_err_probe(&pdev->dev, ret,
- 				     "Failed to register interrupt handler\n");
+diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+index f3a9b97bb7e7..df47b269efce 100644
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -249,10 +249,7 @@ static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned int flexbg_size)
+ 	if (flex_gd == NULL)
+ 		goto out3;
  
- 	trng->hclk = devm_clk_get(&pdev->dev, "hclk");
+-	if (flexbg_size >= UINT_MAX / sizeof(struct ext4_new_group_data))
+-		goto out2;
+ 	flex_gd->count = flexbg_size;
+-
+ 	flex_gd->groups = kmalloc_array(flexbg_size,
+ 					sizeof(struct ext4_new_group_data),
+ 					GFP_NOFS);
 -- 
 2.43.0
 
