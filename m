@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 499EA84814D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2F7584801F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:08:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07C2B281D27
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D38DB2923F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:08:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E57168D7;
-	Sat,  3 Feb 2024 04:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F603F9EB;
+	Sat,  3 Feb 2024 04:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgLWwIkj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGdIhHnL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63060171A6;
-	Sat,  3 Feb 2024 04:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95ACF9E4;
+	Sat,  3 Feb 2024 04:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933533; cv=none; b=u437FxRO91n5yyPmg+BtJcq/7mrWXyAmmftizwwT2Q/N4tEJwjkgpqa8z4FlL4UNyLQ45+z+tCTkTKYzI8CUj/Q1Ex32fQKUEqyY1GnIVISYrsCAMwGKN5pqqyZqq8J8a2rOeGK8pPaIyozR0r1Kc/Vh1j6DcAV1DNGEgUspL50=
+	t=1706933317; cv=none; b=B9AptOvQ1aa5TsMxavloh9D1LS+xtd9GKrT9OdQt6fFe/tMvqsVd+Y1Z1vx7uib5D5bhFONH57th7WmeEAsEZD367pV1emWEkarNYEBmK5aCHUkDfBlzWFXS+t+RhMu4Utm7xKgGRZLH7cbuH0qoh4BprEKEQjhMBiEydEVJLZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933533; c=relaxed/simple;
-	bh=Qux6x2Y9z6BX8grVMrSxg+G2cEMuESsBjHvDB9b4kdI=;
+	s=arc-20240116; t=1706933317; c=relaxed/simple;
+	bh=2OdrLFrTHDB6shOjE1xykvG1Dvgh2YwDrW1dMoqvkAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=neqIJYSo8iLM0kQJjff56Sucr+yOBoODhfxIY9pK66PRxVxivceAUXgVJzl7yChec9NjYv21OppOgIAqksNilgNcIN3QsUV5bEUcYSJdEUCuwfP1ipqgX0M3QyolA1Sq+9W8wCrjbQxf22G2A80I8rmwEFysJsuKDBfMxKwNwU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgLWwIkj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2937FC43399;
-	Sat,  3 Feb 2024 04:12:13 +0000 (UTC)
+	 MIME-Version; b=iBULF9VsEyN1dmJjlyL3OAmPfmX/RnQUFmgiDgYE9rhJ8yjGE4ZehrM0M/sT8UsWPwag9APhIOlxmmvrdvoNp+GVRp9DN/vbgIHFtmtrFZh1Mtw9URYcxTpfxcdtzN3/6eOhJZvZFXY2mAvgjBsLpNrhyvg/KJk8h9SAzs3neDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGdIhHnL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28BFDC433F1;
+	Sat,  3 Feb 2024 04:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933533;
-	bh=Qux6x2Y9z6BX8grVMrSxg+G2cEMuESsBjHvDB9b4kdI=;
+	s=korg; t=1706933316;
+	bh=2OdrLFrTHDB6shOjE1xykvG1Dvgh2YwDrW1dMoqvkAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MgLWwIkjMDrHt7waksRdJZYiyv+UWokAqT9wNnrncDsxkOfJWeEj48cYi7l35Mmcv
-	 0Y/nl8f/5O6fxe93JFlorQjsP0glgd7EIILM90d0l6+2buyQ00Lt+LW38Nx9wxaKsc
-	 7rxOc94MzKKhN1K3b3nLnsSCKmVSywm0/rh2fNw4=
+	b=AGdIhHnL1OFaAtT1Cv/P/VQ+W0p736ymwvH7eRLOOrc6n9BirducVhjUNnT1BCtsK
+	 qfbhBhyu9XBabnZVtTzbUa9oO8fvmQ+dEQcNAG3L3OX9RuE9sSp/hds6mdJdpoHAGI
+	 GfK6oyi/l/jjM4iA9qnZrkuhBqDlWqMC5LtiyHCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Jay Vosburgh <jay.vosburgh@canonical.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	kernel test robot <lkp@intel.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/322] bonding: return -ENOMEM instead of BUG in alb_upper_dev_walk
+Subject: [PATCH 6.1 001/219] asm-generic: make sparse happy with odd-sized put_unaligned_*()
 Date: Fri,  2 Feb 2024 20:02:54 -0800
-Message-ID: <20240203035401.655018802@linuxfoundation.org>
+Message-ID: <20240203035317.490481892@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit d6b83f1e3707c4d60acfa58afd3515e17e5d5384 ]
+[ Upstream commit 1ab33c03145d0f6c345823fc2da935d9a1a9e9fc ]
 
-If failed to allocate "tags" or could not find the final upper device from
-start_dev's upper list in bond_verify_device_path(), only the loopback
-detection of the current upper device should be affected, and the system is
-no need to be panic.
-So return -ENOMEM in alb_upper_dev_walk to stop walking, print some warn
-information when failed to allocate memory for vlan tags in
-bond_verify_device_path.
+__put_unaligned_be24() and friends use implicit casts to convert
+larger-sized data to bytes, which trips sparse truncation warnings when
+the argument is a constant:
 
-I also think that the following function calls
-netdev_walk_all_upper_dev_rcu
----->>>alb_upper_dev_walk
----------->>>bond_verify_device_path
->From this way, "end device" can eventually be obtained from "start device"
-in bond_verify_device_path, IS_ERR(tags) could be instead of
-IS_ERR_OR_NULL(tags) in alb_upper_dev_walk.
+    CC [M]  drivers/input/touchscreen/hynitron_cstxxx.o
+    CHECK   drivers/input/touchscreen/hynitron_cstxxx.c
+  drivers/input/touchscreen/hynitron_cstxxx.c: note: in included file (through arch/x86/include/generated/asm/unaligned.h):
+  include/asm-generic/unaligned.h:119:16: warning: cast truncates bits from constant value (aa01a0 becomes a0)
+  include/asm-generic/unaligned.h:120:20: warning: cast truncates bits from constant value (aa01 becomes 1)
+  include/asm-generic/unaligned.h:119:16: warning: cast truncates bits from constant value (ab00d0 becomes d0)
+  include/asm-generic/unaligned.h:120:20: warning: cast truncates bits from constant value (ab00 becomes 0)
 
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
-Link: https://lore.kernel.org/r/20231118081653.1481260-1-shaozhengchao@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+To avoid this let's mask off upper bits explicitly, the resulting code
+should be exactly the same, but it will keep sparse happy.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Closes: https://lore.kernel.org/oe-kbuild-all/202401070147.gqwVulOn-lkp@intel.com/
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_alb.c  | 3 ++-
- drivers/net/bonding/bond_main.c | 5 ++++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ include/asm-generic/unaligned.h | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
-index dc2c7b979656..7edf0fd58c34 100644
---- a/drivers/net/bonding/bond_alb.c
-+++ b/drivers/net/bonding/bond_alb.c
-@@ -985,7 +985,8 @@ static int alb_upper_dev_walk(struct net_device *upper,
- 	if (netif_is_macvlan(upper) && !strict_match) {
- 		tags = bond_verify_device_path(bond->dev, upper, 0);
- 		if (IS_ERR_OR_NULL(tags))
--			BUG();
-+			return -ENOMEM;
-+
- 		alb_send_lp_vid(slave, upper->dev_addr,
- 				tags[0].vlan_proto, tags[0].vlan_id);
- 		kfree(tags);
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 8e6cc0e133b7..9c1652886f4e 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2973,8 +2973,11 @@ struct bond_vlan_tag *bond_verify_device_path(struct net_device *start_dev,
+diff --git a/include/asm-generic/unaligned.h b/include/asm-generic/unaligned.h
+index 699650f81970..a84c64e5f11e 100644
+--- a/include/asm-generic/unaligned.h
++++ b/include/asm-generic/unaligned.h
+@@ -104,9 +104,9 @@ static inline u32 get_unaligned_le24(const void *p)
  
- 	if (start_dev == end_dev) {
- 		tags = kcalloc(level + 1, sizeof(*tags), GFP_ATOMIC);
--		if (!tags)
-+		if (!tags) {
-+			net_err_ratelimited("%s: %s: Failed to allocate tags\n",
-+					    __func__, start_dev->name);
- 			return ERR_PTR(-ENOMEM);
-+		}
- 		tags[level].vlan_proto = BOND_VLAN_PROTO_NONE;
- 		return tags;
- 	}
+ static inline void __put_unaligned_be24(const u32 val, u8 *p)
+ {
+-	*p++ = val >> 16;
+-	*p++ = val >> 8;
+-	*p++ = val;
++	*p++ = (val >> 16) & 0xff;
++	*p++ = (val >> 8) & 0xff;
++	*p++ = val & 0xff;
+ }
+ 
+ static inline void put_unaligned_be24(const u32 val, void *p)
+@@ -116,9 +116,9 @@ static inline void put_unaligned_be24(const u32 val, void *p)
+ 
+ static inline void __put_unaligned_le24(const u32 val, u8 *p)
+ {
+-	*p++ = val;
+-	*p++ = val >> 8;
+-	*p++ = val >> 16;
++	*p++ = val & 0xff;
++	*p++ = (val >> 8) & 0xff;
++	*p++ = (val >> 16) & 0xff;
+ }
+ 
+ static inline void put_unaligned_le24(const u32 val, void *p)
+@@ -128,12 +128,12 @@ static inline void put_unaligned_le24(const u32 val, void *p)
+ 
+ static inline void __put_unaligned_be48(const u64 val, u8 *p)
+ {
+-	*p++ = val >> 40;
+-	*p++ = val >> 32;
+-	*p++ = val >> 24;
+-	*p++ = val >> 16;
+-	*p++ = val >> 8;
+-	*p++ = val;
++	*p++ = (val >> 40) & 0xff;
++	*p++ = (val >> 32) & 0xff;
++	*p++ = (val >> 24) & 0xff;
++	*p++ = (val >> 16) & 0xff;
++	*p++ = (val >> 8) & 0xff;
++	*p++ = val & 0xff;
+ }
+ 
+ static inline void put_unaligned_be48(const u64 val, void *p)
 -- 
 2.43.0
 
