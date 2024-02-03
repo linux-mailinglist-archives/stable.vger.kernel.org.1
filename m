@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-18037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF94848121
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:16:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 267AD848254
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E01981C20961
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:16:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 547231C241DB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD1F71C698;
-	Sat,  3 Feb 2024 04:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531B1482DA;
+	Sat,  3 Feb 2024 04:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q3EnOTAf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtLMygzp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A59C1C68D;
-	Sat,  3 Feb 2024 04:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8DA134A1;
+	Sat,  3 Feb 2024 04:15:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933501; cv=none; b=kzYg/yTjjdCIqtc8xE2vCrKvpuzGYvafR2EXdHohYML1JByonKK+XyryNjEmvjl8HJRghTnv/OwLxG0ST29mtPrBNIBatDQza6/cpkFEIU1HJZ5Yr/qWp4KOFwMBQL7Qo5kT+TejAGuDr9Pxz3KAPG4tIuyra3X/3KDtl91Mvco=
+	t=1706933726; cv=none; b=N4tokPPI9F61owFsWBGciVeHYbvl54AsC+DYO3ZftM6IwKi72U/CpBoxcVRyM/CdscAJBMTC987OV7xOqAK1vxNXifXF/tHZrAQGOF6XRm9WDSNyL5QQ7K4V4C10uZ2Z+3bstcEKaXl+VKxMiget7JTGm0zGUOOTg6ZtD2QviEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933501; c=relaxed/simple;
-	bh=55JggL62xzRf/il2iG/99dYEurrIP/ZFbQQkc+5HHHg=;
+	s=arc-20240116; t=1706933726; c=relaxed/simple;
+	bh=gGLsvsEos6h15yLDbGjnm3w9MQg6RPGaLl/Col5EHrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AtkN0I3TrLXVz20JhymnTK0DVnvOWKXeG1u4rE6T4a9TdK1yvZVfQgJ2nZgST/5rtb2V1ucTIdXtc53QKWF5CAQzQrjM9MgAitbbCeYxRrtXH1RoA3r6npQ12p+2t4pvqb1g34OHWY21E/8q1L4DVeNc14YWh5eU/kElUtIBWkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q3EnOTAf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1411FC433C7;
-	Sat,  3 Feb 2024 04:11:41 +0000 (UTC)
+	 MIME-Version; b=LqJS769UKHrK2k3EjZFgEY+GboEo88zlw+VdoqFDWss+4TICVWLUHknCoJAbv87EvgSvFnhqgNtr1OzMHUL5sLRjk9NSB7Qmju3J4KgeK0DI+dRlCNgRGboV6qLXQwog/F9lX/7sNV8qnkVboqwjCp2eoSNJGN+8KwJTGVoFvU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtLMygzp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E09AC433C7;
+	Sat,  3 Feb 2024 04:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933501;
-	bh=55JggL62xzRf/il2iG/99dYEurrIP/ZFbQQkc+5HHHg=;
+	s=korg; t=1706933725;
+	bh=gGLsvsEos6h15yLDbGjnm3w9MQg6RPGaLl/Col5EHrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q3EnOTAfRogAiQ3My9pvLGbjBfxp0ShYLVm86iFRiWBGCpSBqRSK67QW0GTUR0MZS
-	 DV/Y5EbRAQ46+eRdFiWgOMnL3ex4gr6Ej0T+MCwSX7bOxrowKAc+h5ajiyEopgOtjt
-	 k9FZzL+eoeAbd06elOO0IhtUBxi69vtAhx4Yha9w=
+	b=KtLMygzpKRKhovcb+P9GsCRjltWnhSwr4V+RirlGMdy3OwHoWRuHTwgDLZ3XLU5zT
+	 EoPMst2JBEPgx72AaWbPvoFUC73/nDwsPh2ijOeDvTvtoJ6IAEwi9pk4ji23ALJ0yN
+	 jp0w3Y7MjAcTxwSQEwPM+Ee2fY3umQ+u/Zgj8kEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Youquan Song <youquan.song@intel.com>,
+	Zhiquan Li <zhiquan1.li@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Naoya Horiguchi <naoya.horiguchi@nec.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/322] crypto: p10-aes-gcm - Avoid -Wstringop-overflow warnings
+Subject: [PATCH 6.7 011/353] x86/mce: Mark fatal MCEs page as poison to avoid panic in the kdump kernel
 Date: Fri,  2 Feb 2024 20:02:09 -0800
-Message-ID: <20240203035400.103072598@linuxfoundation.org>
+Message-ID: <20240203035404.063946326@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +64,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Zhiquan Li <zhiquan1.li@intel.com>
 
-[ Upstream commit aaa03fdb56c781db4a4831dd5d6ec8817918c726 ]
+[ Upstream commit 9f3b130048bfa2e44a8cfb1b616f826d9d5d8188 ]
 
-The compiler doesn't know that `32` is an offset into the Hash table:
+Memory errors don't happen very often, especially fatal ones. However,
+in large-scale scenarios such as data centers, that probability
+increases with the amount of machines present.
 
- 56 struct Hash_ctx {
- 57         u8 H[16];       /* subkey */
- 58         u8 Htable[256]; /* Xi, Hash table(offset 32) */
- 59 };
+When a fatal machine check happens, mce_panic() is called based on the
+severity grading of that error. The page containing the error is not
+marked as poison.
 
-So, it legitimately complains about a potential out-of-bounds issue
-if `256 bytes` are accessed in `htable` (this implies going
-`32 bytes` beyond the boundaries of `Htable`):
+However, when kexec is enabled, tools like makedumpfile understand when
+pages are marked as poison and do not touch them so as not to cause
+a fatal machine check exception again while dumping the previous
+kernel's memory.
 
-arch/powerpc/crypto/aes-gcm-p10-glue.c: In function 'gcmp10_init':
-arch/powerpc/crypto/aes-gcm-p10-glue.c:120:9: error: 'gcm_init_htable' accessing 256 bytes in a region of size 224 [-Werror=stringop-overflow=]
-  120 |         gcm_init_htable(hash->Htable+32, hash->H);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-arch/powerpc/crypto/aes-gcm-p10-glue.c:120:9: note: referencing argument 1 of type 'unsigned char[256]'
-arch/powerpc/crypto/aes-gcm-p10-glue.c:120:9: note: referencing argument 2 of type 'unsigned char[16]'
-arch/powerpc/crypto/aes-gcm-p10-glue.c:40:17: note: in a call to function 'gcm_init_htable'
-   40 | asmlinkage void gcm_init_htable(unsigned char htable[256], unsigned char Xi[16]);
-      |                 ^~~~~~~~~~~~~~~
+Therefore, mark the page containing the error as poisoned so that the
+kexec'ed kernel can avoid accessing the page.
 
-Address this by avoiding specifying the size of `htable` in the function
-prototype; and just for consistency, do the same for parameter `Xi`.
+  [ bp: Rewrite commit message and comment. ]
 
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/linux-next/20231121131903.68a37932@canb.auug.org.au/
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Co-developed-by: Youquan Song <youquan.song@intel.com>
+Signed-off-by: Youquan Song <youquan.song@intel.com>
+Signed-off-by: Zhiquan Li <zhiquan1.li@intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Link: https://lore.kernel.org/r/20231014051754.3759099-1-zhiquan1.li@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/crypto/aes-gcm-p10-glue.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mce/core.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/powerpc/crypto/aes-gcm-p10-glue.c b/arch/powerpc/crypto/aes-gcm-p10-glue.c
-index 4b6e899895e7..f62ee54076c0 100644
---- a/arch/powerpc/crypto/aes-gcm-p10-glue.c
-+++ b/arch/powerpc/crypto/aes-gcm-p10-glue.c
-@@ -37,7 +37,7 @@ asmlinkage void aes_p10_gcm_encrypt(u8 *in, u8 *out, size_t len,
- 				    void *rkey, u8 *iv, void *Xi);
- asmlinkage void aes_p10_gcm_decrypt(u8 *in, u8 *out, size_t len,
- 				    void *rkey, u8 *iv, void *Xi);
--asmlinkage void gcm_init_htable(unsigned char htable[256], unsigned char Xi[16]);
-+asmlinkage void gcm_init_htable(unsigned char htable[], unsigned char Xi[]);
- asmlinkage void gcm_ghash_p10(unsigned char *Xi, unsigned char *Htable,
- 		unsigned char *aad, unsigned int alen);
+diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+index 7b397370b4d6..df8d25e744d1 100644
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -44,6 +44,7 @@
+ #include <linux/sync_core.h>
+ #include <linux/task_work.h>
+ #include <linux/hardirq.h>
++#include <linux/kexec.h>
  
+ #include <asm/intel-family.h>
+ #include <asm/processor.h>
+@@ -233,6 +234,7 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
+ 	struct llist_node *pending;
+ 	struct mce_evt_llist *l;
+ 	int apei_err = 0;
++	struct page *p;
+ 
+ 	/*
+ 	 * Allow instrumentation around external facilities usage. Not that it
+@@ -286,6 +288,20 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
+ 	if (!fake_panic) {
+ 		if (panic_timeout == 0)
+ 			panic_timeout = mca_cfg.panic_timeout;
++
++		/*
++		 * Kdump skips the poisoned page in order to avoid
++		 * touching the error bits again. Poison the page even
++		 * if the error is fatal and the machine is about to
++		 * panic.
++		 */
++		if (kexec_crash_loaded()) {
++			if (final && (final->status & MCI_STATUS_ADDRV)) {
++				p = pfn_to_online_page(final->addr >> PAGE_SHIFT);
++				if (p)
++					SetPageHWPoison(p);
++			}
++		}
+ 		panic(msg);
+ 	} else
+ 		pr_emerg(HW_ERR "Fake kernel panic: %s\n", msg);
 -- 
 2.43.0
 
