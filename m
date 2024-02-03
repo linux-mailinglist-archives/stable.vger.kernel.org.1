@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-18525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69D07848311
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DAA78481C8
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15FCC1F23E15
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1071B1F24542
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4AD4F8BA;
-	Sat,  3 Feb 2024 04:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A193FB14;
+	Sat,  3 Feb 2024 04:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnKEuzIp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFRtevxg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96BC1CAA5;
-	Sat,  3 Feb 2024 04:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60BC3CF58;
+	Sat,  3 Feb 2024 04:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933863; cv=none; b=NgnoVkfnf95K3jSlEMiEnGd+SoQiEePeKE0rhA87TRCbhdNs9weH4G05RCV1c9ZG4SpZgaEwAqMFtRRSq3zCQuKCsjWQeK7FOu12nrxeYmgqEWVHmwRtl+1X3h460CBnQk2pTyjRQgJxmgQ6ZN3dR2HiS5HA3AIIn4DbKESG7S4=
+	t=1706933620; cv=none; b=PrX+VAva3EodLCzQlQWVpUzuM3oDQufzyAOwkDzTEc21jU2afs6B971TK8xB87C/9nGGLVJqqbSxSwMIpdSVs1x35SegHOMeux7wmvHh8egBL+1/GHaD0dS7d2rygFNKXi8HO4sLAz8bOjYJqpheL14ZIMuNhudtQT6ZGMZq4Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933863; c=relaxed/simple;
-	bh=tkwHYwTZWUrLt/WOAQ+MUOaTP3BXaU6pkeigFoURRus=;
+	s=arc-20240116; t=1706933620; c=relaxed/simple;
+	bh=p8Ev3G+JDMpzO5bBfQmRjKItd0AZUblnn9HKFjIvpPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mz0XUI59tijO9NZjf0Qblp/wynWh+86Ey+rBqiRUuaH+LJxIdiWPrxCT7aDW3ehJSd57sqXG+sFDBwsU1SCpDNzwi4/c/f1jyNYk8llNQMB0OqkT0p3XMEki/RDRnB6g3nHzS0W887bF2S2kdmmiLAuW/Qm9YAgRrJYv252zbrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnKEuzIp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B940C433F1;
-	Sat,  3 Feb 2024 04:17:43 +0000 (UTC)
+	 MIME-Version; b=WC4r5OytMZJWBKO5vcF5sBYD3SnjVKFz2NYCmlnQrWDZdFxfT8FGjpBaL6vpZgHJ8ngKzDBccsLle/lzHFZz02Cioc63YcIdNyGSLUfNABPbXzibUHmVEaFE9cHFWLpzMUSYA5kVNFcehCdkGGv52zgFp9QK8E4P6b5OymeDsSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFRtevxg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE37C43394;
+	Sat,  3 Feb 2024 04:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933863;
-	bh=tkwHYwTZWUrLt/WOAQ+MUOaTP3BXaU6pkeigFoURRus=;
+	s=korg; t=1706933620;
+	bh=p8Ev3G+JDMpzO5bBfQmRjKItd0AZUblnn9HKFjIvpPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mnKEuzIpqwPq8523NLhRHtNziiNhe5gMk3IjAC/vZvTtfjamWhVNyIMPu/hYFzGHn
-	 IOJt/0L/6tT5J+ncqR0SFSkYwGBrbHz0iZARke7r3xmAh7mA1d6ZBDYS3NuDsldYbe
-	 tCzUhxR/H6zGu9yw8fNQaSLtF5y3Cop1usc5DsAg=
+	b=AFRtevxgvILIGgnzs411aLpTJdWaPBwr3eseK67Ov5Xkh2VwDtoRwYOpOtpt1qzKO
+	 SvDaMO5xkalsSLrwxF+mKG0G7BPmb1VgLLj8WuCnuALIwSrDG6dVxI/D6W/l/qM31r
+	 1sYrpFhuYly/dGPGxGW5RxIFxvsMYJ9fFYYdQH0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Ilya Bakoulin <ilya.bakoulin@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 175/353] drm/amd/display: Fix MST PBN/X.Y value calculations
+Subject: [PATCH 6.6 196/322] drm/msm/dpu: enable writeback on SM8350
 Date: Fri,  2 Feb 2024 20:04:53 -0800
-Message-ID: <20240203035409.181389830@linuxfoundation.org>
+Message-ID: <20240203035405.573933488@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Bakoulin <ilya.bakoulin@amd.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 94bbf802efd0a8f13147d6664af6e653637340a8 ]
+[ Upstream commit c2949a49dfe960e952400029e14751dceff79d38 ]
 
-Changing PBN calculation to be more in line with spec. We don't need to
-inflate PBN_NATIVE value by the 1.006 margin, since that is already
-taken care of in the get_pbn_per_slot function.
+Enable WB2 hardware block, enabling writeback support on this platform.
 
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Ilya Bakoulin <ilya.bakoulin@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/570188/
+Link: https://lore.kernel.org/r/20231203002743.1291956-3-dmitry.baryshkov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_dpms.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ .../drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-index 04d1ecd6e593..d28564b1b28a 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-@@ -1061,18 +1061,21 @@ static struct fixed31_32 get_pbn_from_bw_in_kbps(uint64_t kbps)
- 	uint32_t denominator = 1;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
+index f8d16f9bf528..428bcbcfbf19 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
+@@ -31,6 +31,7 @@ static const struct dpu_mdp_cfg sm8350_mdp = {
+ 		[DPU_CLK_CTRL_DMA1] = { .reg_off = 0x2b4, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2bc, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA3] = { .reg_off = 0x2c4, .bit_off = 8 },
++		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
+ 		[DPU_CLK_CTRL_REG_DMA] = { .reg_off = 0x2bc, .bit_off = 20 },
+ 	},
+ };
+@@ -304,6 +305,21 @@ static const struct dpu_dsc_cfg sm8350_dsc[] = {
+ 	},
+ };
  
- 	/*
--	 * margin 5300ppm + 300ppm ~ 0.6% as per spec, factor is 1.006
-+	 * The 1.006 factor (margin 5300ppm + 300ppm ~ 0.6% as per spec) is not
-+	 * required when determining PBN/time slot utilization on the link between
-+	 * us and the branch, since that overhead is already accounted for in
-+	 * the get_pbn_per_slot function.
-+	 *
- 	 * The unit of 54/64Mbytes/sec is an arbitrary unit chosen based on
- 	 * common multiplier to render an integer PBN for all link rate/lane
- 	 * counts combinations
- 	 * calculate
--	 * peak_kbps *= (1006/1000)
- 	 * peak_kbps *= (64/54)
--	 * peak_kbps *= 8    convert to bytes
-+	 * peak_kbps /= (8 * 1000) convert to bytes
- 	 */
- 
--	numerator = 64 * PEAK_FACTOR_X1000;
--	denominator = 54 * 8 * 1000 * 1000;
-+	numerator = 64;
-+	denominator = 54 * 8 * 1000;
- 	kbps *= numerator;
- 	peak_kbps = dc_fixpt_from_fraction(kbps, denominator);
- 
++static const struct dpu_wb_cfg sm8350_wb[] = {
++	{
++		.name = "wb_2", .id = WB_2,
++		.base = 0x65000, .len = 0x2c8,
++		.features = WB_SM8250_MASK,
++		.format_list = wb2_formats,
++		.num_formats = ARRAY_SIZE(wb2_formats),
++		.clk_ctrl = DPU_CLK_CTRL_WB2,
++		.xin_id = 6,
++		.vbif_idx = VBIF_RT,
++		.maxlinewidth = 4096,
++		.intr_wb_done = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 4),
++	},
++};
++
+ static const struct dpu_intf_cfg sm8350_intf[] = {
+ 	{
+ 		.name = "intf_0", .id = INTF_0,
+@@ -401,6 +417,8 @@ const struct dpu_mdss_cfg dpu_sm8350_cfg = {
+ 	.dsc = sm8350_dsc,
+ 	.merge_3d_count = ARRAY_SIZE(sm8350_merge_3d),
+ 	.merge_3d = sm8350_merge_3d,
++	.wb_count = ARRAY_SIZE(sm8350_wb),
++	.wb = sm8350_wb,
+ 	.intf_count = ARRAY_SIZE(sm8350_intf),
+ 	.intf = sm8350_intf,
+ 	.vbif_count = ARRAY_SIZE(sdm845_vbif),
 -- 
 2.43.0
 
