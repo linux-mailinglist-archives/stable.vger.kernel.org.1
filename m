@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB24B8481D0
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73FB3848302
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F0A81F2981C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3040628334F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADBD18628;
-	Sat,  3 Feb 2024 04:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184664F890;
+	Sat,  3 Feb 2024 04:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SF/F8zxP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WocH8AIc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E91125BC;
-	Sat,  3 Feb 2024 04:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97261119A;
+	Sat,  3 Feb 2024 04:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933627; cv=none; b=OECQY1+FganPphxXW/LNm85jJ1kXUc69+3z7+zUHw+bg+9Ar57w7XQQLYM8vnulK8kpPRP/chIqLNm2AiQrgzG7XqvdYQ8F+AguRdM9iEGjhCpncPtSNMcvsRe7J6RvV736qBAPZl2o+mWjVBYG7WyLyXlAgiB2Y6lRPPUDh4dM=
+	t=1706933852; cv=none; b=B2a7aYtEAD+g2tpYbnZgCtwfNPXnl3mafd6FcNBd1SumQNmztCZLlAJp7S6GjUdLgo9JWoPes8vV55iKoFNUDXCJ3ZAp4sJbD7w3aXJX0Hy/vAQxwFTOLe4u+nOZ/wb1iochx++mwwvWsiNOaAwLFHcRoXQxfzfFehO4HkPDdIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933627; c=relaxed/simple;
-	bh=xDmas0giujAxFXLkOKHVcoXjee4Qki4rCw4/SvINQ1s=;
+	s=arc-20240116; t=1706933852; c=relaxed/simple;
+	bh=I+2U8K7QQjnm9IVeyCT5NneY0cycJJn4xzE4rpQ+xSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSr2cVj8CVp5k8EhPfW4yVxa6UXVuWu/fql2MjU5+gbyKZtVUgjm8xyNL9NA4mY05sHJLOKXzbXZu2r42FeyB2zcxlZieuQR4jFL7/PsIYMK9weMzedppyCg9ltE3UGe5VogXp7UdwgEBWBJpN8w1uqoS9r6+n17eujp77t9oMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SF/F8zxP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9929C433C7;
-	Sat,  3 Feb 2024 04:13:46 +0000 (UTC)
+	 MIME-Version; b=Ds272rlXNDF9pP4BIQeY+M1JtB/eZqTEhpcxNRVZLQcW6tC8qBC9x/HOKq50/uVkXEHRMFBTe5rfxamGFmMPj5Mk70/4lvFjXcsTKDgRt33WShG+zT64j2ym0YINsuC0UaLL01sCXbKKA8GHnlePo4eBWt+MkHO0qR87QJENSjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WocH8AIc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B4BC433C7;
+	Sat,  3 Feb 2024 04:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933626;
-	bh=xDmas0giujAxFXLkOKHVcoXjee4Qki4rCw4/SvINQ1s=;
+	s=korg; t=1706933852;
+	bh=I+2U8K7QQjnm9IVeyCT5NneY0cycJJn4xzE4rpQ+xSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SF/F8zxPM0AyMsWKNAgOsxHzmpWIsA2JSYJ7aYA0QAIkWO9jAWbAgH5PcEewrd4QQ
-	 1g+5SjHhZ7b4E/LtNcr8193HXV1+zhTXLZEHm2/NwUtPn9sybaB1z7Y+Z+mdiuKwXY
-	 Qu3e10JbVwS7I65SoNYgaH+C3lYtn4EtlnsEJgwU=
+	b=WocH8AIcsnUH/mgPgxau1fx3pohCD9LrJ2Xj5A9wKhABv9pAulxyXJ8YSN4uH7Gm1
+	 1lxoggOaWfGo0k/nxhsC77GSRACdhWBsZ1/hx+s1bUtOX5tGYAzpMhltL6WJ+p7JKM
+	 Kr2SuPy9iUIB+PaFBDKq4aMXWLazXfCaaZ3B9Ez4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 203/322] watchdog: starfive: add lock annotations to fix context imbalances
-Date: Fri,  2 Feb 2024 20:05:00 -0800
-Message-ID: <20240203035405.791276458@linuxfoundation.org>
+Subject: [PATCH 6.7 183/353] media: rockchip: rga: fix swizzling for RGB formats
+Date: Fri,  2 Feb 2024 20:05:01 -0800
+Message-ID: <20240203035409.436860436@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Dooks <ben.dooks@codethink.co.uk>
+From: Michael Tretter <m.tretter@pengutronix.de>
 
-[ Upstream commit f77999887235f8c378af343df11a6bcedda5b284 ]
+[ Upstream commit 9e7dc39260edac180c206bb6149595a40eabae3e ]
 
-Add the necessary __acquires() and __releases() to the functions
-that take and release the wdt lock to avoid the following sparse
-warnings:
+When using 32 bit RGB formats, the RGA on the rk3568 produces wrong
+colors as the wrong color channels are read or written.  The reason is
+that the format description for the channel swizzeling is wrong and the
+wrong bits are configured. For example, when converting ARGB32 to NV12,
+the alpha channel is used as blue channel.. This doesn't happen if the
+color format is the same on both sides.
 
-drivers/watchdog/starfive-wdt.c:204:13: warning: context imbalance in 'starfive_wdt_unlock' - wrong count at exit
-drivers/watchdog/starfive-wdt.c:212:9: warning: context imbalance in 'starfive_wdt_lock' - unexpected unlock
+Fix the color_swap settings of the formats to correctly handle 32 bit
+RGB formats.
 
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231122085118.177589-1-ben.dooks@codethink.co.uk
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+For RGA_COLOR_FMT_XBGR8888, the RGA_COLOR_ALPHA_SWAP bit doesn't have an
+effect. Thus, it isn't possible to handle the V4L2_PIX_FMT_XRGB32. Thus,
+it is removed from the list of supported formats.
+
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/starfive-wdt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/platform/rockchip/rga/rga.c | 15 +++------------
+ 1 file changed, 3 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/watchdog/starfive-wdt.c b/drivers/watchdog/starfive-wdt.c
-index 5f501b41faf9..49b38ecc092d 100644
---- a/drivers/watchdog/starfive-wdt.c
-+++ b/drivers/watchdog/starfive-wdt.c
-@@ -202,12 +202,14 @@ static u32 starfive_wdt_ticks_to_sec(struct starfive_wdt *wdt, u32 ticks)
- 
- /* Write unlock-key to unlock. Write other value to lock. */
- static void starfive_wdt_unlock(struct starfive_wdt *wdt)
-+	__acquires(&wdt->lock)
- {
- 	spin_lock(&wdt->lock);
- 	writel(wdt->variant->unlock_key, wdt->base + wdt->variant->unlock);
- }
- 
- static void starfive_wdt_lock(struct starfive_wdt *wdt)
-+	__releases(&wdt->lock)
- {
- 	writel(~wdt->variant->unlock_key, wdt->base + wdt->variant->unlock);
- 	spin_unlock(&wdt->lock);
+diff --git a/drivers/media/platform/rockchip/rga/rga.c b/drivers/media/platform/rockchip/rga/rga.c
+index f1c532a5802a..25f5b5eebf13 100644
+--- a/drivers/media/platform/rockchip/rga/rga.c
++++ b/drivers/media/platform/rockchip/rga/rga.c
+@@ -184,25 +184,16 @@ static int rga_setup_ctrls(struct rga_ctx *ctx)
+ static struct rga_fmt formats[] = {
+ 	{
+ 		.fourcc = V4L2_PIX_FMT_ARGB32,
+-		.color_swap = RGA_COLOR_RB_SWAP,
++		.color_swap = RGA_COLOR_ALPHA_SWAP,
+ 		.hw_format = RGA_COLOR_FMT_ABGR8888,
+ 		.depth = 32,
+ 		.uv_factor = 1,
+ 		.y_div = 1,
+ 		.x_div = 1,
+ 	},
+-	{
+-		.fourcc = V4L2_PIX_FMT_XRGB32,
+-		.color_swap = RGA_COLOR_RB_SWAP,
+-		.hw_format = RGA_COLOR_FMT_XBGR8888,
+-		.depth = 32,
+-		.uv_factor = 1,
+-		.y_div = 1,
+-		.x_div = 1,
+-	},
+ 	{
+ 		.fourcc = V4L2_PIX_FMT_ABGR32,
+-		.color_swap = RGA_COLOR_ALPHA_SWAP,
++		.color_swap = RGA_COLOR_RB_SWAP,
+ 		.hw_format = RGA_COLOR_FMT_ABGR8888,
+ 		.depth = 32,
+ 		.uv_factor = 1,
+@@ -211,7 +202,7 @@ static struct rga_fmt formats[] = {
+ 	},
+ 	{
+ 		.fourcc = V4L2_PIX_FMT_XBGR32,
+-		.color_swap = RGA_COLOR_ALPHA_SWAP,
++		.color_swap = RGA_COLOR_RB_SWAP,
+ 		.hw_format = RGA_COLOR_FMT_XBGR8888,
+ 		.depth = 32,
+ 		.uv_factor = 1,
 -- 
 2.43.0
 
