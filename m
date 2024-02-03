@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A09D848324
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E58C9848203
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9A4728B808
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89682B29E9F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE0550261;
-	Sat,  3 Feb 2024 04:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A11FA446A0;
+	Sat,  3 Feb 2024 04:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZHTt/Ep"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mWrGmZ8h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A56A168D0;
-	Sat,  3 Feb 2024 04:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF2D43AD9;
+	Sat,  3 Feb 2024 04:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933877; cv=none; b=Me0n/LNmFWYLzQ1htenqNFSSSX/xpuHUnHhcYNQZZBaxHrKMrfqvy20zxNG0yhUeZBUvZd4UsPa5w1btrhMXvM20aDDh2UO21ZFz5hhCLM+vodbPDtt9BJmtjxwp6sfWOkNg0RlPJDnNouV7s0LM/6kqf4jo1qONMMPydpFs4gU=
+	t=1706933666; cv=none; b=leh6gEARJ7zmPQPG2Eb0ZYrTe7w6vn1azYN+AnxB9YFCjHZ/F3RTnJYKeb4asxTNvpceMoAAOMwkNgR5wSDerQTswl/aqxuwgKJP+9uWKFJ0zdjGn+o1WxgBjkCq2txLVqtFp3hbA9kCaZg3xlYy+6qFvc+6Lxf5JzibIiEMjRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933877; c=relaxed/simple;
-	bh=5aj3pt+JTrzp1xwG+GImgxua9xJMdtGKg40EfdYwHn4=;
+	s=arc-20240116; t=1706933666; c=relaxed/simple;
+	bh=/x+j3f4gec2A1V2UGWupvvxcYhPZeTNShZ4paynjhAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B+0rlZB9hPQNBwHJmSXl+ExmX3KpUEygiuZpiwkq1Bh+V/SX+jiNp1KWkQzMbjuwLyeY+OrPCKO4DjW7XKohlFv8vh+XWOyzeJ9f8spfW6CcsuW/Lu220KCy8zDG6ZzQM212UKuilzfkoi8f/xFSioZiNklS25AFk1Nd2qfXteA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZHTt/Ep; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DC6C433F1;
-	Sat,  3 Feb 2024 04:17:56 +0000 (UTC)
+	 MIME-Version; b=LVm1536PBvjOem+pzkxowa8ifQ+2UqYzLNYw+SqDQ7s0axyJtC/K55ZaP8pg5i6oCwyKGCUtkqeNpiFkSTHZYW1CeckxEAz078IlqPZRUdFG1Lj6+HpPjiG7RI7zq0FiMsX/zANa7EToCrp/+mEE+ZTahUhK9l14cfqv2sRsQAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mWrGmZ8h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A313C433F1;
+	Sat,  3 Feb 2024 04:14:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933877;
-	bh=5aj3pt+JTrzp1xwG+GImgxua9xJMdtGKg40EfdYwHn4=;
+	s=korg; t=1706933666;
+	bh=/x+j3f4gec2A1V2UGWupvvxcYhPZeTNShZ4paynjhAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PZHTt/Ep9NPAQdIV68Bvrn+MKHVKAfTlJYVdV/MjBFpVghBMrU4IFP79rSZOXZKRf
-	 dnvASiwDJImacWpDvy6KnztZTpfR5g0E/owWBUkX2QXOqUAnbRgTVGTXZ7bP8ahPWg
-	 dPsbrpcwvXlkcKRI43ekBWn0SmNOzie5EvcLgr7E=
+	b=mWrGmZ8hOMrVWaALXyczpj8YSl2Fi/PYPkCWPJBfcEAJ0PVb7XoQZ+cRySd82BTo6
+	 1nuKDTNzlPpx53u+qlgc6LXPk3DG+0TcRa00QhjaB73BXaAEPEGa2jsUuYeFWV9PMl
+	 oBahjFSAiIUpV5ay3mIeJe3kjkpqyyyzDXX0fQ7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Fischer <devlists@wefi.net>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Adrian Reber <areber@redhat.com>,
+	Andrei Vagin <avagin@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 216/353] watchdog: it87_wdt: Keep WDTCTRL bit 3 unmodified for IT8784/IT8786
+Subject: [PATCH 6.6 237/322] tty: allow TIOCSLCKTRMIOS with CAP_CHECKPOINT_RESTORE
 Date: Fri,  2 Feb 2024 20:05:34 -0800
-Message-ID: <20240203035410.518488735@linuxfoundation.org>
+Message-ID: <20240203035406.848175891@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Fischer <devlists@wefi.net>
+From: Adrian Reber <areber@redhat.com>
 
-[ Upstream commit d12971849d71781c1e4ffd1117d4878ce233d319 ]
+[ Upstream commit e0f25b8992345aa5f113da2815f5add98738c611 ]
 
-WDTCTRL bit 3 sets the mode choice for the clock input of IT8784/IT8786.
-Some motherboards require this bit to be set to 1 (= PCICLK mode),
-otherwise the watchdog functionality gets broken. The BIOS of those
-motherboards sets WDTCTRL bit 3 already to 1.
+The capability CAP_CHECKPOINT_RESTORE was introduced to allow non-root
+users to checkpoint and restore processes as non-root with CRIU.
 
-Instead of setting all bits of WDTCTRL to 0 by writing 0x00 to it, keep
-bit 3 of it unchanged for IT8784/IT8786 chips. In this way, bit 3 keeps
-the status as set by the BIOS of the motherboard.
+This change extends CAP_CHECKPOINT_RESTORE to enable the CRIU option
+'--shell-job' as non-root. CRIU's man-page describes the '--shell-job'
+option like this:
 
-Watchdog tests have been successful with this patch with the following
-systems:
-  IT8784: Thomas-Krenn LES plus v2 (YANLING YL-KBRL2 V2)
-  IT8786: Thomas-Krenn LES plus v3 (YANLING YL-CLU L2)
-  IT8786: Thomas-Krenn LES network 6L v2 (YANLING YL-CLU6L)
+  Allow one to dump shell jobs. This implies the restored task will
+  inherit session and process group ID from the criu itself. This option
+  also allows to migrate a single external tty connection, to migrate
+  applications like top.
 
-Link: https://lore.kernel.org/all/140b264d-341f-465b-8715-dacfe84b3f71@roeck-us.net/
+TIOCSLCKTRMIOS can only be done if the process has CAP_SYS_ADMIN and
+this change extends it to CAP_SYS_ADMIN or CAP_CHECKPOINT_RESTORE.
 
-Signed-off-by: Werner Fischer <devlists@wefi.net>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231213094525.11849-4-devlists@wefi.net
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+With this change it is possible to checkpoint and restore processes
+which have a tty connection as non-root if CAP_CHECKPOINT_RESTORE is
+set.
+
+Acked-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Adrian Reber <areber@redhat.com>
+Acked-by: Andrei Vagin <avagin@gmail.com>
+Link: https://lore.kernel.org/r/20231208143656.1019-1-areber@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/it87_wdt.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/tty/tty_ioctl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/it87_wdt.c b/drivers/watchdog/it87_wdt.c
-index e888b1bdd1f2..8c1ee072f48b 100644
---- a/drivers/watchdog/it87_wdt.c
-+++ b/drivers/watchdog/it87_wdt.c
-@@ -256,6 +256,7 @@ static struct watchdog_device wdt_dev = {
- static int __init it87_wdt_init(void)
- {
- 	u8  chip_rev;
-+	u8 ctrl;
- 	int rc;
- 
- 	rc = superio_enter();
-@@ -315,7 +316,18 @@ static int __init it87_wdt_init(void)
- 
- 	superio_select(GPIO);
- 	superio_outb(WDT_TOV1, WDTCFG);
--	superio_outb(0x00, WDTCTRL);
-+
-+	switch (chip_type) {
-+	case IT8784_ID:
-+	case IT8786_ID:
-+		ctrl = superio_inb(WDTCTRL);
-+		ctrl &= 0x08;
-+		superio_outb(ctrl, WDTCTRL);
-+		break;
-+	default:
-+		superio_outb(0x00, WDTCTRL);
-+	}
-+
- 	superio_exit();
- 
- 	if (timeout < 1 || timeout > max_units * 60) {
+diff --git a/drivers/tty/tty_ioctl.c b/drivers/tty/tty_ioctl.c
+index 7958bf6d27c4..7c6253685545 100644
+--- a/drivers/tty/tty_ioctl.c
++++ b/drivers/tty/tty_ioctl.c
+@@ -850,7 +850,7 @@ int tty_mode_ioctl(struct tty_struct *tty, unsigned int cmd, unsigned long arg)
+ 			ret = -EFAULT;
+ 		return ret;
+ 	case TIOCSLCKTRMIOS:
+-		if (!capable(CAP_SYS_ADMIN))
++		if (!checkpoint_restore_ns_capable(&init_user_ns))
+ 			return -EPERM;
+ 		copy_termios_locked(real_tty, &kterm);
+ 		if (user_termios_to_kernel_termios(&kterm,
+@@ -867,7 +867,7 @@ int tty_mode_ioctl(struct tty_struct *tty, unsigned int cmd, unsigned long arg)
+ 			ret = -EFAULT;
+ 		return ret;
+ 	case TIOCSLCKTRMIOS:
+-		if (!capable(CAP_SYS_ADMIN))
++		if (!checkpoint_restore_ns_capable(&init_user_ns))
+ 			return -EPERM;
+ 		copy_termios_locked(real_tty, &kterm);
+ 		if (user_termios_to_kernel_termios_1(&kterm,
 -- 
 2.43.0
 
