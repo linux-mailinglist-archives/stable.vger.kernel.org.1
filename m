@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 784598482CE
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA175848056
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17D461F214DC
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4904B1F2BAFF
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6AB13FE2;
-	Sat,  3 Feb 2024 04:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A458212B9C;
+	Sat,  3 Feb 2024 04:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjZMXUeP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kgt8Apku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE0913AC6;
-	Sat,  3 Feb 2024 04:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6373A125BF;
+	Sat,  3 Feb 2024 04:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933814; cv=none; b=Je9UauH+bBVUagMKQzYiZz0Vuwrm2N4sg86IpXRQzOju2uxtCVFqfIlMh7lG+JSEcE6k7qlckDdaVDCvKv2BTr7KYmfevLsUmZ+Av3r0wyscKItl99dpaPfMa62ApL1dcKQ7eKTspRAMP8mWynyBuLEy7fUcirNxlexfarjV9bQ=
+	t=1706933356; cv=none; b=a6US9r/PqguOlHZ5YUNfzLzF/hKU1NtY4p2Pv/J2vhFLUx57i1GWUJQ9q6O5djN6ej64EKQPV9vgiAXcMODm/fgMWtuDuayM68v3MLRalQS3nPJfKrqs5yA/L3UnRQNKOf/PQ7T7tMNilcztFaUpr5nMUPRpB1kRtgu4L8sYG4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933814; c=relaxed/simple;
-	bh=t9j2Ves5IwtewQraNJZAXjIiaFix2xBfWUYV/Nd0FK0=;
+	s=arc-20240116; t=1706933356; c=relaxed/simple;
+	bh=piBN4nJawsqj/5DWdOnfWUMVS88+6o6bksvt5TlaR70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VFx/545GZ2sxT1uzht4ySwqSAU1QqsXd0eFzBA2RvXx2UxtUbxDbm2IbSGUaY0xb0C/ZvvNyO1riJZFCSwZlzBPk0mOLyW4Y4hBlZ5pwgHw3z2DBZh6fZb52Un75bfo7tyuUZCsVqCahW8cm631Zcl/qtuy0JO1MDGsFHTmrVYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjZMXUeP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15534C43390;
-	Sat,  3 Feb 2024 04:16:54 +0000 (UTC)
+	 MIME-Version; b=ZJFB9olcvQ8mda/rNYLlRgcAZn/1uHmTj3bXk2/nje7fuFKKnZGnI9CIrSj+uptw26p6x9EFHBhTIUuDNgXyUm6ZO0AwHv2Efr72zqQpqdS5U/91TeZW8GkeFlbTS3xkBkwjWGPVCBZCzAjrmOEhcGMm12oSsGjfNuB+NWGAKpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kgt8Apku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC4DC433C7;
+	Sat,  3 Feb 2024 04:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933814;
-	bh=t9j2Ves5IwtewQraNJZAXjIiaFix2xBfWUYV/Nd0FK0=;
+	s=korg; t=1706933356;
+	bh=piBN4nJawsqj/5DWdOnfWUMVS88+6o6bksvt5TlaR70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yjZMXUePIS6rXHLvuc2w7nNFME0jIoO3/B8WK8OJWOl6YNIBaKRpp6oZVWl6/7+2c
-	 YGx3TCtAEKsc6E1bxhc32AyBa8WM6Nv+iFOkQeok+wUe35P1+yJzD7rHBimaBnGX+w
-	 5/loeNLOBz+TOaEgJG3hqGUFqfh9KrO+jiwETYPk=
+	b=Kgt8ApkuNuokSfXoteTfumFGZEcEd1qwfYT/Ccr9i1w2q91hTrozYYqHZoK6fDjr2
+	 9WiDlIs7tXv3iiG/3yZ8GnyFFD4Bi/viYvTg7oDD1itcpaSni98Ak+5zi5oXKkq5Je
+	 cuqeQkHAYJkds/BSrllILFK/1V4ayMT5j8fA0nww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 114/353] net: phy: at803x: fix passing the wrong reference for config_intr
+Subject: [PATCH 6.1 059/219] ARM: dts: imx7s: Fix lcdif compatible
 Date: Fri,  2 Feb 2024 20:03:52 -0800
-Message-ID: <20240203035407.364138321@linuxfoundation.org>
+Message-ID: <20240203035325.273482933@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit f8fdbf3389f44c7026f16e36cb1f2ff017f7f5b2 ]
+[ Upstream commit 5f55da4cc37051cda600ea870ce8cf29f1297715 ]
 
-Fix passing the wrong reference for config_initr on passing the function
-pointer, drop the wrong & from at803x_config_intr in the PHY struct.
+imx7d-lcdif is compatible to imx6sx-lcdif. MXSFB_V6 supports overlay
+by using LCDC_AS_CTRL register. This registers used by overlay plane:
+* LCDC_AS_CTRL
+* LCDC_AS_BUF
+* LCDC_AS_NEXT_BUF
+are listed in i.MX7D RM as well.
 
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/at803x.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/imx7s.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/at803x.c b/drivers/net/phy/at803x.c
-index 37fb033e1c29..ef203b0807e5 100644
---- a/drivers/net/phy/at803x.c
-+++ b/drivers/net/phy/at803x.c
-@@ -2104,7 +2104,7 @@ static struct phy_driver at803x_driver[] = {
- 	.write_page		= at803x_write_page,
- 	.get_features		= at803x_get_features,
- 	.read_status		= at803x_read_status,
--	.config_intr		= &at803x_config_intr,
-+	.config_intr		= at803x_config_intr,
- 	.handle_interrupt	= at803x_handle_interrupt,
- 	.get_tunable		= at803x_get_tunable,
- 	.set_tunable		= at803x_set_tunable,
-@@ -2134,7 +2134,7 @@ static struct phy_driver at803x_driver[] = {
- 	.resume			= at803x_resume,
- 	.flags			= PHY_POLL_CABLE_TEST,
- 	/* PHY_BASIC_FEATURES */
--	.config_intr		= &at803x_config_intr,
-+	.config_intr		= at803x_config_intr,
- 	.handle_interrupt	= at803x_handle_interrupt,
- 	.cable_test_start	= at803x_cable_test_start,
- 	.cable_test_get_status	= at803x_cable_test_get_status,
-@@ -2150,7 +2150,7 @@ static struct phy_driver at803x_driver[] = {
- 	.resume			= at803x_resume,
- 	.flags			= PHY_POLL_CABLE_TEST,
- 	/* PHY_BASIC_FEATURES */
--	.config_intr		= &at803x_config_intr,
-+	.config_intr		= at803x_config_intr,
- 	.handle_interrupt	= at803x_handle_interrupt,
- 	.cable_test_start	= at803x_cable_test_start,
- 	.cable_test_get_status	= at803x_cable_test_get_status,
+diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
+index 7c153c3e8238..44085ef27977 100644
+--- a/arch/arm/boot/dts/imx7s.dtsi
++++ b/arch/arm/boot/dts/imx7s.dtsi
+@@ -818,7 +818,7 @@
+ 			};
+ 
+ 			lcdif: lcdif@30730000 {
+-				compatible = "fsl,imx7d-lcdif", "fsl,imx28-lcdif";
++				compatible = "fsl,imx7d-lcdif", "fsl,imx6sx-lcdif";
+ 				reg = <0x30730000 0x10000>;
+ 				interrupts = <GIC_SPI 5 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks IMX7D_LCDIF_PIXEL_ROOT_CLK>,
 -- 
 2.43.0
 
