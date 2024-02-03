@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14388848187
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA055848033
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C54632815EC
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18F691C23EE2
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A03111AE;
-	Sat,  3 Feb 2024 04:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CACF9F6;
+	Sat,  3 Feb 2024 04:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0dheVVL+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZcO+u8YG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C492C695;
-	Sat,  3 Feb 2024 04:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432D810A13;
+	Sat,  3 Feb 2024 04:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933574; cv=none; b=C2zkd+dd5ZewkrXEMIm+J8xlGk8TLJrAV3vbComy3cSPFHIoxZbqqwfLkvZjypfKtINaqQlKs8u45bV25Thy7JvNIhi4KiOiBJ02z7SGe/juN+g7cORORBHSvUrYqwoB+Z/lXpjTdvQGHvVbSfXHvN5i5URq3rr9zPz5UFk+o+s=
+	t=1706933331; cv=none; b=aGiy6c93UdC73eqPNBZCc7GHXWkAYonhK4j7lP8TVijMUd4p5PUDl2H4SQkuOxLvm+lZD1T2x51RzBeKCbYHTY571bMRJPFKq7y3gTcwXfK/ngQmAvjRcuVRM5d+C0m0MSj4dqqFyPVB8e9N3A/59mHUUuKaWFhn91HVGSnA3YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933574; c=relaxed/simple;
-	bh=NyEUorLdke72bZkrsnTJ90H4gVgCfSbJYCzdf8OcPkw=;
+	s=arc-20240116; t=1706933331; c=relaxed/simple;
+	bh=gk4+CX2Oer8H5kuv1ba5l4pJ6fK+k0pFwDYKSrUgX2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7aWGGDFwdojnooCaHedO/cZcB9P5VcLZROPXQ6NRZ3Zmp4eFp59ss1hi32HFsvEaG79FEu9MRLm91pf/ImxqAoB5r/LJZDvRlHFeM7h2IcdUNbDATzBnwF8QSeWUQ9/2U6v773Yax5B29q/HON7OQf6CrRiKMYsF1xZUeke/CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0dheVVL+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB5EC433F1;
-	Sat,  3 Feb 2024 04:12:54 +0000 (UTC)
+	 MIME-Version; b=CW//srlEhgF5tOS7xV9CZ1Iy1wIqHqTGNsOwrYZViQSqX1/dmF8pIatXWlrdwbFeQJUOtK2d4atNDT6Gm//fQDcQ/sVzV6RIrdCWw5dPISKZfrNosZGIOWSXHa5c0QWDLQmrkhh7jL06AcrDWDXJdXoMKcRD5jhBKJum6iULwas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZcO+u8YG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A697C43390;
+	Sat,  3 Feb 2024 04:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933574;
-	bh=NyEUorLdke72bZkrsnTJ90H4gVgCfSbJYCzdf8OcPkw=;
+	s=korg; t=1706933331;
+	bh=gk4+CX2Oer8H5kuv1ba5l4pJ6fK+k0pFwDYKSrUgX2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0dheVVL+PvRMXzFcv+cg01cvRk9gSCdMhweTBEgMcJb/5jfnaKwlhZbEmIes5lgyz
-	 9D/WvAq38jksgQ0Xoo2T/+mWkFhC2KJ5OM5ZIx4hOLxruHKmTk8gmu3SCohUT/XjRS
-	 A2r+O3YIPu0vr6y2Zq2bRiWiG67YOJ2/9mLoUL1o=
+	b=ZcO+u8YGla2CBZS/KtwjhQA3kDi/5cH0jHkiNnla725vcBrXT9fU0jeN9yxZmK0Gs
+	 ZRTgvbBbqLiJzrq6cCAYU6S7/fqbmt/Srf4LvsV1Qt6lUc1ASsvkHKPxRgEBDLvggA
+	 /LN059IUwhqzd2bIiL3XAGdHBT7ab++xR3UzRDMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/322] arm64: dts: qcom: sm8450: fix soundwire controllers node name
-Date: Fri,  2 Feb 2024 20:03:20 -0800
-Message-ID: <20240203035402.474859583@linuxfoundation.org>
+Subject: [PATCH 6.1 028/219] crypto: octeontx2 - Fix cptvf driver cleanup
+Date: Fri,  2 Feb 2024 20:03:21 -0800
+Message-ID: <20240203035320.337089061@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Bharat Bhushan <bbhushan2@marvell.com>
 
-[ Upstream commit 11fcb81373de52eeb1d3ff135a8d24a4b18978d3 ]
+[ Upstream commit c480a421a4faf693c38e60b0fe6e554c9a3fee02 ]
 
-Fix the following dt bindings check:
-arch/arm64/boot/dts/qcom/sm8450-hdk.dtb: soundwire-controller@31f0000: $nodename:0: 'soundwire-controller@31f0000' does not match '^soundwire(@.*)?$'
-        from schema $id: http://devicetree.org/schemas/soundwire/qcom,soundwire.yaml#
+This patch fixes following cleanup issues:
+ - Missing instruction queue free on cleanup. This
+   will lead to memory leak.
+ - lfs->lfs_num is set to zero before cleanup, which
+   will lead to improper cleanup.
 
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20231106-topic-sm8450-upstream-soundwire-bindings-fix-v1-1-41d4844a5a7d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8450.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/crypto/marvell/octeontx2/otx2_cptlf.c      | 6 ++++--
+ drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c | 3 +++
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-index 79cc8fbcd846..91d856e5b06b 100644
---- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-@@ -2176,7 +2176,7 @@
- 			#sound-dai-cells = <1>;
- 		};
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptlf.c b/drivers/crypto/marvell/octeontx2/otx2_cptlf.c
+index 71e5f79431af..6e4a78e1f3ce 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptlf.c
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptlf.c
+@@ -419,8 +419,8 @@ int otx2_cptlf_init(struct otx2_cptlfs_info *lfs, u8 eng_grp_mask, int pri,
+ 	return 0;
  
--		swr4: soundwire-controller@31f0000 {
-+		swr4: soundwire@31f0000 {
- 			compatible = "qcom,soundwire-v1.7.0";
- 			reg = <0 0x031f0000 0 0x2000>;
- 			interrupts = <GIC_SPI 171 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2224,7 +2224,7 @@
- 			#sound-dai-cells = <1>;
- 		};
+ free_iq:
+-	otx2_cpt_free_instruction_queues(lfs);
+ 	cptlf_hw_cleanup(lfs);
++	otx2_cpt_free_instruction_queues(lfs);
+ detach_rsrcs:
+ 	otx2_cpt_detach_rsrcs_msg(lfs);
+ clear_lfs_num:
+@@ -431,11 +431,13 @@ EXPORT_SYMBOL_NS_GPL(otx2_cptlf_init, CRYPTO_DEV_OCTEONTX2_CPT);
  
--		swr1: soundwire-controller@3210000 {
-+		swr1: soundwire@3210000 {
- 			compatible = "qcom,soundwire-v1.7.0";
- 			reg = <0 0x03210000 0 0x2000>;
- 			interrupts = <GIC_SPI 155 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2291,7 +2291,7 @@
- 			#sound-dai-cells = <1>;
- 		};
+ void otx2_cptlf_shutdown(struct otx2_cptlfs_info *lfs)
+ {
+-	lfs->lfs_num = 0;
+ 	/* Cleanup LFs hardware side */
+ 	cptlf_hw_cleanup(lfs);
++	/* Free instruction queues */
++	otx2_cpt_free_instruction_queues(lfs);
+ 	/* Send request to detach LFs */
+ 	otx2_cpt_detach_rsrcs_msg(lfs);
++	lfs->lfs_num = 0;
+ }
+ EXPORT_SYMBOL_NS_GPL(otx2_cptlf_shutdown, CRYPTO_DEV_OCTEONTX2_CPT);
  
--		swr0: soundwire-controller@3250000 {
-+		swr0: soundwire@3250000 {
- 			compatible = "qcom,soundwire-v1.7.0";
- 			reg = <0 0x03250000 0 0x2000>;
- 			interrupts = <GIC_SPI 170 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2318,7 +2318,7 @@
- 			status = "disabled";
- 		};
+diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c b/drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c
+index 392e9fee05e8..6f3373f9928c 100644
+--- a/drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c
++++ b/drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c
+@@ -249,8 +249,11 @@ static void cptvf_lf_shutdown(struct otx2_cptlfs_info *lfs)
+ 	otx2_cptlf_unregister_interrupts(lfs);
+ 	/* Cleanup LFs software side */
+ 	lf_sw_cleanup(lfs);
++	/* Free instruction queues */
++	otx2_cpt_free_instruction_queues(lfs);
+ 	/* Send request to detach LFs */
+ 	otx2_cpt_detach_rsrcs_msg(lfs);
++	lfs->lfs_num = 0;
+ }
  
--		swr2: soundwire-controller@33b0000 {
-+		swr2: soundwire@33b0000 {
- 			compatible = "qcom,soundwire-v1.7.0";
- 			reg = <0 0x033b0000 0 0x2000>;
- 			interrupts = <GIC_SPI 496 IRQ_TYPE_LEVEL_HIGH>,
+ static int cptvf_lf_init(struct otx2_cptvf_dev *cptvf)
 -- 
 2.43.0
 
