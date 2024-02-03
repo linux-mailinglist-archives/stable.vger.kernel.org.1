@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-17846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FA23848058
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F358482D7
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8A011F2BACC
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9E711C21FE6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B314512E42;
-	Sat,  3 Feb 2024 04:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB2E4EB5B;
+	Sat,  3 Feb 2024 04:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J06HMgjk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rf8qHDia"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7039910795;
-	Sat,  3 Feb 2024 04:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8131C2BD;
+	Sat,  3 Feb 2024 04:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933358; cv=none; b=tO+YFer3vq35/l2WijzP2OSJc98oP6kuS3cKMjeqo/VC4om+qeyr5ookdZjoUSpq/53kkk80jdfitNV+7+xXWcHR0fbUzFw9XsezK9VylrupSzVvH55nUpG4PBe9kP1DDsc6WunyusVYHpbiqjnmWNbbMa7rVApednsfqgEuCSI=
+	t=1706933821; cv=none; b=QEwtFL5ZiX6i7kmyxrlkQuafUDImd4R+ZPQ+KIcrM4jAjrsn6wZIHLTYa5uEvEYHCD2dzXOgVabhxj+K0klgr5TSTuA3bQa2OHRv5JIDmMrGWqh5ipFn9bc1eU+ptUT/87WjR0fMj+zXQl6xtjnYlQ9rSSZT8YeHTCIumtkUCKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933358; c=relaxed/simple;
-	bh=KHC0tvx5pCUFJOtOGYhLJlxLjrHtVXtt/GMtvVYpVnE=;
+	s=arc-20240116; t=1706933821; c=relaxed/simple;
+	bh=GWfvDG2oJvWi4yvCL40MfFiYZG+ISkKerGnmVKVve78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nsfh3yWiCMg9V0meBaWKEST56nL/9jU+aslNY2v46shEOIHCBo+aVFAq7/Cs4VsosMMsiKr/tbVcsoNC/ukqzVzDMnZqIRzBZHu9lFDpEq6GUaY0M04oLHTkMINnYeIloFbzfUoxuLk+Kfru00lrwHmhNQc3m5i5Ew35gvh6r5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J06HMgjk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37DF9C43390;
-	Sat,  3 Feb 2024 04:09:18 +0000 (UTC)
+	 MIME-Version; b=qFnXMCa5v/UNnnzFZNDhAFl0adsFyIGB3Mc7eMZx4RRwTjyv7upOTuZAtTo9MZ75ilejFNMHOL447kPYngr8qwjiD5Kj4DRdujRET59lhZ2POyguZ82gAKfqgf/BW0WC2o8PKCcKfbjqy4QYg+TBALJN9eDmjLRvdaKLeWq33R8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rf8qHDia; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7F9EC43394;
+	Sat,  3 Feb 2024 04:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933358;
-	bh=KHC0tvx5pCUFJOtOGYhLJlxLjrHtVXtt/GMtvVYpVnE=;
+	s=korg; t=1706933821;
+	bh=GWfvDG2oJvWi4yvCL40MfFiYZG+ISkKerGnmVKVve78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J06HMgjkh8fyo7h2aT1sqfa96vqV0VjguExRn+7GqLuoc8+gvCytDslSXlRdCf1cr
-	 ScdSTg7JmXAKXlF12itOPfWfTl9UpfYgdpX55wOAW9peezLvMaz5Y2FmaDh7MijXtb
-	 WtyKbiLV7LyOI8uorQDiCUuUA1yQpOFTzuwXKJZc=
+	b=Rf8qHDiaQbhk2/a5XorQdhj0nJ5xHwqDdJFo78lLJxfC9azkWlxzDZgqzNM89y3V4
+	 oKs6D2A8fJdATdCwJ4LB0bpQGHB9K5UGAOPkFlAMo0DN0v5oNFh2dtzqSykI0uuVIe
+	 pkjHkrEpL9c9ut0kbug0mITwbif3fZplcHzW9p38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/219] wifi: ath9k: Fix potential array-index-out-of-bounds read in ath9k_htc_txstatus()
+Subject: [PATCH 6.7 116/353] ionic: bypass firmware cmds when stuck in reset
 Date: Fri,  2 Feb 2024 20:03:54 -0800
-Message-ID: <20240203035325.505237559@linuxfoundation.org>
+Message-ID: <20240203035407.420875613@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit 2adc886244dff60f948497b59affb6c6ebb3c348 ]
+[ Upstream commit ca5fdf9a7c5b65968c718f2be159cda4c13556a1 ]
 
-Fix an array-index-out-of-bounds read in ath9k_htc_txstatus(). The bug
-occurs when txs->cnt, data from a URB provided by a USB device, is
-bigger than the size of the array txs->txstatus, which is
-HTC_MAX_TX_STATUS. WARN_ON() already checks it, but there is no bug
-handling code after the check. Make the function return if that is the
-case.
+If the driver or firmware is stuck in reset state, don't bother
+trying to use adminq commands.  This speeds up shutdown and
+prevents unnecessary timeouts and error messages.
 
-Found by a modified version of syzkaller.
+This includes a bit of rework on ionic_adminq_post_wait()
+and ionic_adminq_post_wait_nomsg() to both use
+__ionic_adminq_post_wait() which can do the checks needed in
+both cases.
 
-UBSAN: array-index-out-of-bounds in htc_drv_txrx.c
-index 13 is out of range for type '__wmi_event_txstatus [12]'
-Call Trace:
- ath9k_htc_txstatus
- ath9k_wmi_event_tasklet
- tasklet_action_common
- __do_softirq
- irq_exit_rxu
- sysvec_apic_timer_interrupt
-
-Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231113065756.1491991-1-linuxlovemin@yonsei.ac.kr
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../ethernet/pensando/ionic/ionic_bus_pci.c   |  4 ++++
+ .../net/ethernet/pensando/ionic/ionic_lif.c   |  3 +++
+ .../net/ethernet/pensando/ionic/ionic_main.c  | 20 ++++++++++++-------
+ 3 files changed, 20 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-index 672789e3c55d..d6a3f001dacb 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
-@@ -652,9 +652,10 @@ void ath9k_htc_txstatus(struct ath9k_htc_priv *priv, void *wmi_event)
- 	struct ath9k_htc_tx_event *tx_pend;
- 	int i;
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+index d6ce113a4210..fa4237c27e06 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+@@ -392,6 +392,10 @@ static void ionic_remove(struct pci_dev *pdev)
+ 	del_timer_sync(&ionic->watchdog_timer);
  
--	for (i = 0; i < txs->cnt; i++) {
--		WARN_ON(txs->cnt > HTC_MAX_TX_STATUS);
-+	if (WARN_ON_ONCE(txs->cnt > HTC_MAX_TX_STATUS))
+ 	if (ionic->lif) {
++		/* prevent adminq cmds if already known as down */
++		if (test_and_clear_bit(IONIC_LIF_F_FW_RESET, ionic->lif->state))
++			set_bit(IONIC_LIF_F_FW_STOPPING, ionic->lif->state);
++
+ 		ionic_lif_unregister(ionic->lif);
+ 		ionic_devlink_unregister(ionic);
+ 		ionic_lif_deinit(ionic->lif);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index bad919343180..075e0e3fc2ea 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -3238,6 +3238,9 @@ static void ionic_lif_reset(struct ionic_lif *lif)
+ {
+ 	struct ionic_dev *idev = &lif->ionic->idev;
+ 
++	if (!ionic_is_fw_running(idev))
 +		return;
++
+ 	mutex_lock(&lif->ionic->dev_cmd_lock);
+ 	ionic_dev_cmd_lif_reset(idev, lif->index);
+ 	ionic_dev_cmd_wait(lif->ionic, DEVCMD_TIMEOUT);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+index 1b547acfd8e9..83c413a10f79 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+@@ -410,22 +410,28 @@ int ionic_adminq_wait(struct ionic_lif *lif, struct ionic_admin_ctx *ctx,
+ 				      do_msg);
+ }
  
-+	for (i = 0; i < txs->cnt; i++) {
- 		__txs = &txs->txstatus[i];
+-int ionic_adminq_post_wait(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
++static int __ionic_adminq_post_wait(struct ionic_lif *lif,
++				    struct ionic_admin_ctx *ctx,
++				    const bool do_msg)
+ {
+ 	int err;
  
- 		skb = ath9k_htc_tx_get_packet(priv, __txs);
++	if (!ionic_is_fw_running(&lif->ionic->idev))
++		return 0;
++
+ 	err = ionic_adminq_post(lif, ctx);
+ 
+-	return ionic_adminq_wait(lif, ctx, err, true);
++	return ionic_adminq_wait(lif, ctx, err, do_msg);
+ }
+ 
+-int ionic_adminq_post_wait_nomsg(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
++int ionic_adminq_post_wait(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
+ {
+-	int err;
+-
+-	err = ionic_adminq_post(lif, ctx);
++	return __ionic_adminq_post_wait(lif, ctx, true);
++}
+ 
+-	return ionic_adminq_wait(lif, ctx, err, false);
++int ionic_adminq_post_wait_nomsg(struct ionic_lif *lif, struct ionic_admin_ctx *ctx)
++{
++	return __ionic_adminq_post_wait(lif, ctx, false);
+ }
+ 
+ static void ionic_dev_cmd_clean(struct ionic *ionic)
 -- 
 2.43.0
 
