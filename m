@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-18076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A84E1848149
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 689F0848131
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 342641F22E64
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E02BA1F23AF0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29765171A9;
-	Sat,  3 Feb 2024 04:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 270F31119E;
+	Sat,  3 Feb 2024 04:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KFNeORi6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiEyRYof"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE30171A4;
-	Sat,  3 Feb 2024 04:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99CCFBF2;
+	Sat,  3 Feb 2024 04:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933529; cv=none; b=jhIf3w6SjjvtLYr6Z6EwWXZSJyjIAvGIWX12BRZqEFEdqKXAXQdTy2m9sIXpAQndEpzM7Q3KDsCY51pRiVMlCx1dr/4w8XW8F9wqId2zvDVLnZChJJ2WMbO4uNUDN52DhEWsreOcduI22ooglRctylZ5alr9bq40ZQnN09l0YII=
+	t=1706933511; cv=none; b=IrBttJY++q880xHMjfwANJRBj6VhXsfZncYc8feUR0mMvMRNGfU+M+mIp8SoQ5nSC4V1wxIwlI8eZTnlg68N4lCQwBNISTFk4y2fP65sleGuiTnhceHKF7tkzb6MeI09RMBpw7Y6Dvrc3JKCawjtw7vZVapG9UzcnRVKmmb0Pzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933529; c=relaxed/simple;
-	bh=abWFhiSGIUjn0d4aFLbV1O9Nowu0njXh0SXdvvWjVAI=;
+	s=arc-20240116; t=1706933511; c=relaxed/simple;
+	bh=uFc26fBd6YUNLASkbzuaUh2x2Jp4izCai2nlcc51sf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lXVTirq2aQ3lAerKpPmD9D9R/JAo4oEMBqSAKU6mTNZULPOoH8tuTUnWZ2pD+3/lGxfCM6B4qvPTdGCMx9dGZyDoz72RSAa1TRifGUOSFI86H1cfA3ZvifY7m2kIYck8kv2KaELz3OQOuID8NdWYOqyi9V62G1xqi5VoFhR0LE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KFNeORi6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48875C433F1;
-	Sat,  3 Feb 2024 04:12:09 +0000 (UTC)
+	 MIME-Version; b=snV5EO9Sj0BYWyPJTX8S+LbFizTJEFOrdMZasbZyzF659RwzeQw+CJZVWJ0DLQEV2e1U/AM1ML456rwjPrkcoE1xCj8DzcaXea49x912R9XA65Qt2lT5jHl75KooMY5b6ModVr+0fAfIW+7fn891EPNMzk8dNEmhbm28tLm9Wv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiEyRYof; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18D7C433F1;
+	Sat,  3 Feb 2024 04:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933529;
-	bh=abWFhiSGIUjn0d4aFLbV1O9Nowu0njXh0SXdvvWjVAI=;
+	s=korg; t=1706933511;
+	bh=uFc26fBd6YUNLASkbzuaUh2x2Jp4izCai2nlcc51sf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KFNeORi6gP5L7E9Bjz+rDwRzh0mqH3mSuIhIGrInuFUPZy4GoYvTkenMdQaKHOqFo
-	 UvCQ2oR9IYE07hhZjSDB5wYFJOG4BJLc0+OiAncmO7sIWlAW64v/V1wj3NBnHG8n+U
-	 r3TO4RnBg6kVPOlT0dkrouDcAKd3rQOzv/6a4bZc=
+	b=OiEyRYofQ3zyL84RkIgNHWuxBON6GPhV53mVZQEW2rzerS+y2Gs5LqoWTFQMWBSN2
+	 z6pKjjJaS5iflZMJsnp2z42rmRK+xrbi1W9W4cYHA3VLoPLdii5zSpJ/ZKDonNGeOT
+	 0FYNXQc9vIc9WB4FXWU/RdeU9xpeIA65UEVfSw8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Joel Granados <j.granados@samsung.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/322] KVM: s390: fix setting of fpc register
-Date: Fri,  2 Feb 2024 20:02:24 -0800
-Message-ID: <20240203035400.622697076@linuxfoundation.org>
+Subject: [PATCH 6.6 048/322] sysctl: Fix out of bounds access for empty sysctl registers
+Date: Fri,  2 Feb 2024 20:02:25 -0800
+Message-ID: <20240203035400.659252071@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
 References: <20240203035359.041730947@linuxfoundation.org>
@@ -68,68 +67,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Joel Granados <j.granados@samsung.com>
 
-[ Upstream commit b988b1bb0053c0dcd26187d29ef07566a565cf55 ]
+[ Upstream commit 315552310c7de92baea4e570967066569937a843 ]
 
-kvm_arch_vcpu_ioctl_set_fpu() allows to set the floating point control
-(fpc) register of a guest cpu. The new value is tested for validity by
-temporarily loading it into the fpc register.
+When registering tables to the sysctl subsystem there is a check to see
+if header is a permanently empty directory (used for mounts). This check
+evaluates the first element of the ctl_table. This results in an out of
+bounds evaluation when registering empty directories.
 
-This may lead to corruption of the fpc register of the host process:
-if an interrupt happens while the value is temporarily loaded into the fpc
-register, and within interrupt context floating point or vector registers
-are used, the current fp/vx registers are saved with save_fpu_regs()
-assuming they belong to user space and will be loaded into fp/vx registers
-when returning to user space.
+The function register_sysctl_mount_point now passes a ctl_table of size
+1 instead of size 0. It now relies solely on the type to identify
+a permanently empty register.
 
-test_fp_ctl() restores the original user space / host process fpc register
-value, however it will be discarded, when returning to user space.
+Make sure that the ctl_table has at least one element before testing for
+permanent emptiness.
 
-In result the host process will incorrectly continue to run with the value
-that was supposed to be used for a guest cpu.
-
-Fix this by simply removing the test. There is another test right before
-the SIE context is entered which will handles invalid values.
-
-This results in a change of behaviour: invalid values will now be accepted
-instead of that the ioctl fails with -EINVAL. This seems to be acceptable,
-given that this interface is most likely not used anymore, and this is in
-addition the same behaviour implemented with the memory mapped interface
-(replace invalid values with zero) - see sync_regs() in kvm-s390.c.
-
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Joel Granados <j.granados@samsung.com>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202311201431.57aae8f3-oliver.sang@intel.com
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/kvm-s390.c | 5 -----
- 1 file changed, 5 deletions(-)
+ fs/proc/proc_sysctl.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index b3f17e014cab..49cce436444e 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -4307,10 +4307,6 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
- 
- 	vcpu_load(vcpu);
- 
--	if (test_fp_ctl(fpu->fpc)) {
--		ret = -EINVAL;
--		goto out;
--	}
- 	vcpu->run->s.regs.fpc = fpu->fpc;
- 	if (MACHINE_HAS_VX)
- 		convert_fp_to_vx((__vector128 *) vcpu->run->s.regs.vrs,
-@@ -4318,7 +4314,6 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
- 	else
- 		memcpy(vcpu->run->s.regs.fprs, &fpu->fprs, sizeof(fpu->fprs));
- 
--out:
- 	vcpu_put(vcpu);
- 	return ret;
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index de484195f49f..5b5cdc747cef 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -44,7 +44,7 @@ static struct ctl_table sysctl_mount_point[] = {
+  */
+ struct ctl_table_header *register_sysctl_mount_point(const char *path)
+ {
+-	return register_sysctl_sz(path, sysctl_mount_point, 0);
++	return register_sysctl(path, sysctl_mount_point);
  }
+ EXPORT_SYMBOL(register_sysctl_mount_point);
+ 
+@@ -233,7 +233,8 @@ static int insert_header(struct ctl_dir *dir, struct ctl_table_header *header)
+ 		return -EROFS;
+ 
+ 	/* Am I creating a permanently empty directory? */
+-	if (sysctl_is_perm_empty_ctl_table(header->ctl_table)) {
++	if (header->ctl_table_size > 0 &&
++	    sysctl_is_perm_empty_ctl_table(header->ctl_table)) {
+ 		if (!RB_EMPTY_ROOT(&dir->root))
+ 			return -EINVAL;
+ 		sysctl_set_perm_empty_ctl_header(dir_h);
+@@ -1213,6 +1214,10 @@ static bool get_links(struct ctl_dir *dir,
+ 	struct ctl_table_header *tmp_head;
+ 	struct ctl_table *entry, *link;
+ 
++	if (header->ctl_table_size == 0 ||
++	    sysctl_is_perm_empty_ctl_table(header->ctl_table))
++		return true;
++
+ 	/* Are there links available for every entry in table? */
+ 	list_for_each_table_entry(entry, header) {
+ 		const char *procname = entry->procname;
 -- 
 2.43.0
 
