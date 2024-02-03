@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-18181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A94C58481B2
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C0DF848098
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA7761C21484
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 084FB283726
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A29439ADE;
-	Sat,  3 Feb 2024 04:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E569017559;
+	Sat,  3 Feb 2024 04:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dycx81mi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+XS8fBU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD232F9EB;
-	Sat,  3 Feb 2024 04:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DBF111AE;
+	Sat,  3 Feb 2024 04:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933606; cv=none; b=aKjBaTC0Fn1mNIprA3YmI9frkQSE+ma3bVJiKbYVC1BcTHAL/AFX9SeL6GF4jeV842gs9ZlPLULT2uNidxthONxBGoUaZnmBUyNI47IcAof16GmZQ22DpZ+MACDl2qmSrOofCIigd2VjyKTi1B6BsD77UUvVXtmXYMTwt5DfKGQ=
+	t=1706933405; cv=none; b=RxwfDdGUapChsxXeDjoEc5+rR1ny5Z7auIU5lDFcCz1uh0SAXVxbKW8taG5yjBkVuE9KxoENxOVsgFuY9euNYj/eWO4upELCpdyZ42rTv3TEesa9IUUbdASmkFSJzHyIky4ipkUYMKnpnPQkWoMbJN6mK56j++9TebOnNcKJ+rQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933606; c=relaxed/simple;
-	bh=D86GhkRz++rH3dTTqbuva/YkcMMAuTRbWHNIQaDidMA=;
+	s=arc-20240116; t=1706933405; c=relaxed/simple;
+	bh=86/hVDGwj1+bX1Ytb8MWtznzl2lF2BGWzQWDejgzrj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MXePL+BDj4JvepHVoI8oVpGdDSEoXHEOHDwPDJdUGwWQKdIiBFovABWdGNe3gUGP/ATBSiwJGepa2QhJk8w9P8xQlueanzKUfs0A9j08F4sAwnrnykBhWnAdeOoiIRxRnYce6K0DjKNkcvK5FcouIUVqspT9aZ/AKylZ7MLPKRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dycx81mi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8333AC433C7;
-	Sat,  3 Feb 2024 04:13:26 +0000 (UTC)
+	 MIME-Version; b=SVaE2eL06PEcofOfKJOrQeuiXYsLbmE+yC9wkIs9CRuuPhRNmWiEtQv/Q6Y0rNgLeEOGUbtzGWHw2BcVZPqcYUBmLnCRXHFMIgPl2QQ13QeXmdEkyBA1/+zLTAad7NJw2/Upq8A3SkJCEb9SsV0E7L1RIWmFOAOCPkaJ+VK0lYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+XS8fBU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A985C43390;
+	Sat,  3 Feb 2024 04:10:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933606;
-	bh=D86GhkRz++rH3dTTqbuva/YkcMMAuTRbWHNIQaDidMA=;
+	s=korg; t=1706933405;
+	bh=86/hVDGwj1+bX1Ytb8MWtznzl2lF2BGWzQWDejgzrj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dycx81miCAGkcndKG6Kgb2VzheLyJLNT1Z2xcTIeeuHd+IBwOyphuFrpUTyXhad4G
-	 r3O1v0MT50TNX/PoT3tp8KdUvTpv+eI7vg/OrLU/74DsQqk8m+ffvWDw/KHlC83Oqq
-	 yLd3e8QTY0DOEB0LhHt7P9WLoDFzwHfFxyRO2JdA=
+	b=k+XS8fBUiS8qx/3Qx3hFahh46vKz0r5h7dFBSAOCY359ZPF2+VB1L+tTYb8EZ9RpV
+	 os5YBFy/BjV/K6VO/X2hHnxIQrfreN8FzqQjUcDVXHf62rVNQtuvqyIPNy+n3panP3
+	 TmfC5BmkFhQQHRdHlYTd3J7sXFUFpgFdgiB55UXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	Lin Ma <linma@zju.edu.cn>,
+	Simon Horman <horms@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 176/322] ALSA: hda: intel-dspcfg: add filters for ARL-S and ARL
+Subject: [PATCH 6.1 100/219] bridge: cfm: fix enum typo in br_cc_ccm_tx_parse
 Date: Fri,  2 Feb 2024 20:04:33 -0800
-Message-ID: <20240203035404.935739492@linuxfoundation.org>
+Message-ID: <20240203035331.373440857@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 7a9d6bbe8a663c817080be55d9fecf19a4a8fd8f ]
+[ Upstream commit c2b2ee36250d967c21890cb801e24af4b6a9eaa5 ]
 
-Same usual filters, SOF is required for DMIC and/or SoundWire support.
+It appears that there is a typo in the code where the nlattr array is
+being parsed with policy br_cfm_cc_ccm_tx_policy, but the instance is
+being accessed via IFLA_BRIDGE_CFM_CC_RDI_INSTANCE, which is associated
+with the policy br_cfm_cc_rdi_policy.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20231204212710.185976-4-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This problem was introduced by commit 2be665c3940d ("bridge: cfm: Netlink
+SET configuration Interface.").
+
+Though it seems like a harmless typo since these two enum owns the exact
+same value (1 here), it is quite misleading hence fix it by using the
+correct enum IFLA_BRIDGE_CFM_CC_CCM_TX_INSTANCE here.
+
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/intel-dsp-config.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/bridge/br_cfm_netlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
-index 756fa0aa69bb..6a384b922e4f 100644
---- a/sound/hda/intel-dsp-config.c
-+++ b/sound/hda/intel-dsp-config.c
-@@ -521,6 +521,16 @@ static const struct config_entry config_table[] = {
- 		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
- 		.device = PCI_DEVICE_ID_INTEL_HDA_MTL,
- 	},
-+	/* ArrowLake-S */
-+	{
-+		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
-+		.device = PCI_DEVICE_ID_INTEL_HDA_ARL_S,
-+	},
-+	/* ArrowLake */
-+	{
-+		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
-+		.device = PCI_DEVICE_ID_INTEL_HDA_ARL,
-+	},
- #endif
+diff --git a/net/bridge/br_cfm_netlink.c b/net/bridge/br_cfm_netlink.c
+index 5c4c369f8536..2faab44652e7 100644
+--- a/net/bridge/br_cfm_netlink.c
++++ b/net/bridge/br_cfm_netlink.c
+@@ -362,7 +362,7 @@ static int br_cc_ccm_tx_parse(struct net_bridge *br, struct nlattr *attr,
  
- /* Lunar Lake */
+ 	memset(&tx_info, 0, sizeof(tx_info));
+ 
+-	instance = nla_get_u32(tb[IFLA_BRIDGE_CFM_CC_RDI_INSTANCE]);
++	instance = nla_get_u32(tb[IFLA_BRIDGE_CFM_CC_CCM_TX_INSTANCE]);
+ 	nla_memcpy(&tx_info.dmac.addr,
+ 		   tb[IFLA_BRIDGE_CFM_CC_CCM_TX_DMAC],
+ 		   sizeof(tx_info.dmac.addr));
 -- 
 2.43.0
 
