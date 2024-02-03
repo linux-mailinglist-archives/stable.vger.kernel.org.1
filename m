@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38039848282
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C98E184814C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD711B2A5CF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 750B81F23E5B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1CD495CC;
-	Sat,  3 Feb 2024 04:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291DA1CD27;
+	Sat,  3 Feb 2024 04:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7RePiSt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bZR2qEV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1E048CC1;
-	Sat,  3 Feb 2024 04:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C6E1CD19;
+	Sat,  3 Feb 2024 04:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933757; cv=none; b=KLOfdPN3mdJcRs36h2YVXpyb+fbMVVSNAslWB2efIChBiT446yTDHeS4irxk8i2m2dGQi0c7XobzdSAq3drq2jqGD5x0u1rpVfRUBvvLvW/2GITMnDgoZi5qTcrGlY1oBZQCbMeq706UVtPVJKdrwnEHekKOEOdxU4Fwb+nvyT8=
+	t=1706933531; cv=none; b=FUeNpYbJAubR7XSBx+VPfHADYdItUSQddE+5a4tjFC4A4dOs7+SwPxYsWEXQLNrlwTfwjY+DKF7D6LXr4hX0fPmOysUAyJJGgj9mKoQ43jw6jWJrTJD8uUbykcw38tKeCRwsk7Vo+8234qvwWze49H1494HEmwtj/pU2tOq/iM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933757; c=relaxed/simple;
-	bh=ulXdhQf0rdjOuvK8yHDnW1UoTy3L6XIQ84IahF4pAqc=;
+	s=arc-20240116; t=1706933531; c=relaxed/simple;
+	bh=1/1ydPRyKsJtVcko9y/6H13iK/oUJYyEQLxQlqrQeUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l4AYFfkzB8O+nCDgj5lqmcSXPXrvSla/7qzG+Pxe3uNue2pPoTvHQxdOlGkebma/9aTgGcsxQb/rvQ15GUYo4tWkLrQW4QdvwpljCvaIelJJdbNnQ9Fyy2n0mo8VqRdbFDzh/p5yr3ZahVML3X8F/JSAQldexTkQECnnpHQt2P4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7RePiSt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6716EC433F1;
-	Sat,  3 Feb 2024 04:15:57 +0000 (UTC)
+	 MIME-Version; b=m7XYDk18xCCPrkGjnnsg+bAUep1/JDZsSIdb4lyAFuuGL8AndGH+ZJDE311zVlZrmLkafB7m+o378CDy3L6gwx4pjorF2Ym6VWYfA/sN9pdjwAvJpvhIfhlGPPdfYr7hzx48OIxNrh+h1DhP4ySygaDt5GB1dcONR2K9JTIXk8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bZR2qEV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F66DC433C7;
+	Sat,  3 Feb 2024 04:12:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933757;
-	bh=ulXdhQf0rdjOuvK8yHDnW1UoTy3L6XIQ84IahF4pAqc=;
+	s=korg; t=1706933531;
+	bh=1/1ydPRyKsJtVcko9y/6H13iK/oUJYyEQLxQlqrQeUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7RePiStEq81A0alULaPV4nuD3Tqz0t9RHpIg9J47/9aJTb3Z9Qj4aSQtpKkSiJGy
-	 R9mz4fpELXUPlS9+JyaSapmNZCkQacsAjehJIH2LWiKrHiN/3rB8RaTBLyiSengR0X
-	 mAtWUYHpUTGnp0mNXxW9+laODCJJt8WqQTvpYho0=
+	b=2bZR2qEVVSpx1et6795zXO5O6fPIsaSvpIWy+U9OpLim4eQ8Wq/gLgqJi8pPFYGRx
+	 w4Df0k/qcGPnEbheFpnXnrPRcCIXIxs4e3ASvg/V3Yj06NcQ2VG25D9bW3PnhtnBsj
+	 wthdupDnj9rmA6bBNMei78xGIeiZfDeVr9zy+RgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Kory Maincent <kory.maincent@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 054/353] ext4: treat end of range as exclusive in ext4_zero_range()
+Subject: [PATCH 6.6 075/322] net: phy: micrel: fix ts_info value in case of no phc
 Date: Fri,  2 Feb 2024 20:02:52 -0800
-Message-ID: <20240203035405.510409849@linuxfoundation.org>
+Message-ID: <20240203035401.595159525@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Kory Maincent <kory.maincent@bootlin.com>
 
-[ Upstream commit 92573369144f40397e8514440afdf59f24905b40 ]
+[ Upstream commit 915d25a9d69be969c1cc6c1dd0c3861f6da7b55e ]
 
-The call to filemap_write_and_wait_range() assumes the range passed to be
-inclusive, so fix the call to make sure we follow that.
+In case of no phc we should not return SOFTWARE TIMESTAMPING flags as we do
+not know whether the netdev supports of timestamping.
+Remove it from the lan8841_ts_info and simply return 0.
 
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/e503107a7c73a2b68dec645c5ad798c437717c45.1698856309.git.ojaswin@linux.ibm.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Kory Maincent <kory.maincent@bootlin.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/phy/micrel.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index d5efe076d3d3..01299b55a567 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -4523,7 +4523,8 @@ static long ext4_zero_range(struct file *file, loff_t offset,
- 	 * Round up offset. This is not fallocate, we need to zero out
- 	 * blocks, so convert interior block aligned part of the range to
- 	 * unwritten and possibly manually zero out unaligned parts of the
--	 * range.
-+	 * range. Here, start and partial_begin are inclusive, end and
-+	 * partial_end are exclusive.
- 	 */
- 	start = round_up(offset, 1 << blkbits);
- 	end = round_down((offset + len), 1 << blkbits);
-@@ -4609,7 +4610,8 @@ static long ext4_zero_range(struct file *file, loff_t offset,
- 		 * disk in case of crash before zeroing trans is committed.
- 		 */
- 		if (ext4_should_journal_data(inode)) {
--			ret = filemap_write_and_wait_range(mapping, start, end);
-+			ret = filemap_write_and_wait_range(mapping, start,
-+							   end - 1);
- 			if (ret) {
- 				filemap_invalidate_unlock(mapping);
- 				goto out_mutex;
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 27ca25bbd141..f81c4bcd85a2 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -3628,12 +3628,8 @@ static int lan8841_ts_info(struct mii_timestamper *mii_ts,
+ 
+ 	info->phc_index = ptp_priv->ptp_clock ?
+ 				ptp_clock_index(ptp_priv->ptp_clock) : -1;
+-	if (info->phc_index == -1) {
+-		info->so_timestamping |= SOF_TIMESTAMPING_TX_SOFTWARE |
+-					 SOF_TIMESTAMPING_RX_SOFTWARE |
+-					 SOF_TIMESTAMPING_SOFTWARE;
++	if (info->phc_index == -1)
+ 		return 0;
+-	}
+ 
+ 	info->so_timestamping = SOF_TIMESTAMPING_TX_HARDWARE |
+ 				SOF_TIMESTAMPING_RX_HARDWARE |
 -- 
 2.43.0
 
