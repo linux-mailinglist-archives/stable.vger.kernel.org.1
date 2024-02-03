@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-18362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24B984826D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D375F84811F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:16:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E501F1C242B0
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 119F51C2154F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E095487B8;
-	Sat,  3 Feb 2024 04:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F23A1C2A1;
+	Sat,  3 Feb 2024 04:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnjdgZC0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ph6GQwWs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6B813AC0;
-	Sat,  3 Feb 2024 04:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BBD1BF3F;
+	Sat,  3 Feb 2024 04:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933743; cv=none; b=r1N1Yp8C46CTeDPhlb/YA+bT6aJRrHO57jbWmZwR5xee+aP/0Ki9Zbtn0l+CEkhCMhwF1j9pQK5ihW2torXGPDDgQGFwVviT+Ng/ITxhHnV+yIkjaHIRY9u7xfi0dnUWhme9dctNvF/9o/PnSEXgG0bmTdZvQJbxyshEuQzVfK0=
+	t=1706933499; cv=none; b=QVBSN08yZP4zh+mWi6yz+phxwG5L2SbQWDuYigmQX7mJN8WHiaF+/ekugsCk/Zkc8ZZKCX9EsidQ0trI3a6PhvhOOnt6XY6KWvXh6IurOS/CM8xZy3iscGXJlLMpgwJvPOYvJ3nfp7qG9EOPvoQOLDkTe3ebQ7H2MHiKlgj+04s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933743; c=relaxed/simple;
-	bh=pcCDs8dFfAA9+H6tBjeqVMn7eda9155YEHOVCDQnXgw=;
+	s=arc-20240116; t=1706933499; c=relaxed/simple;
+	bh=1AHauRYHtZu58dzwVeqc5o2Xs4gUtOPBnf36noNT/VQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDpuhi17zjC+2Iiax4GwpVgdbEN3bKrKNzUx87RoFpAhqYUlA6DYaeA7kMmIWXXnOSMmIJPYFqzyGFr1T9GiNX6MbEWN7QqRC+O/Z5qMIX0I9EcZj4mfTQSdDXNEKLHvuXT0Xx43wpQeFAVuok6nxlfEGoBqOWZoF9s0Q9+h6co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnjdgZC0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C5AC43390;
-	Sat,  3 Feb 2024 04:15:42 +0000 (UTC)
+	 MIME-Version; b=ejlxrzmjpZKMPhIeixqrh0v5CArz530NvfU8UXj2Hi+oM4ljI/xSHjRvERqjAGdtM/q6pmKQqFqrf8nlhWX8hIUecBNEzWXH/V5ZPkambShj79TWuohfjxYyVavJX+jSpZqcjzAoQRiuLpvHPNlUhDPRX19FNNbQzhDg7q6W/cM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ph6GQwWs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E29C433C7;
+	Sat,  3 Feb 2024 04:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933742;
-	bh=pcCDs8dFfAA9+H6tBjeqVMn7eda9155YEHOVCDQnXgw=;
+	s=korg; t=1706933499;
+	bh=1AHauRYHtZu58dzwVeqc5o2Xs4gUtOPBnf36noNT/VQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WnjdgZC0fgSnOza5ktJcTUh+s+TUirA72iz5HolH+eU+lokMzVA5SUq5ALRls/Ir3
-	 BHHg0IRZIV8TeA/Es1JMxF1k1QcoK/NwPxOUpOGPl8Nvga0NYE+y+fQZmO9W85MumW
-	 HU/BsRD1ImDbZSSRW71qZSnihkgrT+0UDB047Q04=
+	b=Ph6GQwWsReVEE+gd59zutLPb6cyEqy6UkZo5pJ7BBnJ0ExHQlLWTfkmjSORrSBLkN
+	 Oq+QqyH1WgKk2DLOEnJI5K6VFYDiFe/wLj5rmwuUXXIz3Ifqso2fLv1RNZBw/cXTOm
+	 +9GzBCOn6SkT+GsGlpdrq31biexNl30iUOMtNkqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen N Rao <naveen@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Jia Jie Ho <jiajie.ho@starfivetech.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 010/353] powerpc/lib: Validate size for vector operations
+Subject: [PATCH 6.6 031/322] hwrng: starfive - Fix dev_err_probe return error
 Date: Fri,  2 Feb 2024 20:02:08 -0800
-Message-ID: <20240203035404.032401251@linuxfoundation.org>
+Message-ID: <20240203035400.064996118@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen N Rao <naveen@kernel.org>
+From: Jia Jie Ho <jiajie.ho@starfivetech.com>
 
-[ Upstream commit 8f9abaa6d7de0a70fc68acaedce290c1f96e2e59 ]
+[ Upstream commit 2d37b3649c412b3bcecfea932cb677f7a5775b15 ]
 
-Some of the fp/vmx code in sstep.c assume a certain maximum size for the
-instructions being emulated. The size of those operations however is
-determined separately in analyse_instr().
+Current dev_err_probe will return 0 instead of proper error code if
+driver failed to get irq number. Fix the return err code.
 
-Add a check to validate the assumption on the maximum size of the
-operations, so as to prevent any unintended kernel stack corruption.
-
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Build-tested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231123071705.397625-1-naveen@kernel.org
+Signed-off-by: Jia Jie Ho <jiajie.ho@starfivetech.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202311160649.3GhKCfhd-lkp@intel.com/
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/lib/sstep.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/char/hw_random/jh7110-trng.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index a4ab8625061a..6af97dc0f6d5 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -586,6 +586,8 @@ static int do_fp_load(struct instruction_op *op, unsigned long ea,
- 	} u;
+diff --git a/drivers/char/hw_random/jh7110-trng.c b/drivers/char/hw_random/jh7110-trng.c
+index 38474d48a25e..b1f94e3c0c6a 100644
+--- a/drivers/char/hw_random/jh7110-trng.c
++++ b/drivers/char/hw_random/jh7110-trng.c
+@@ -300,7 +300,7 @@ static int starfive_trng_probe(struct platform_device *pdev)
+ 	ret = devm_request_irq(&pdev->dev, irq, starfive_trng_irq, 0, pdev->name,
+ 			       (void *)trng);
+ 	if (ret)
+-		return dev_err_probe(&pdev->dev, irq,
++		return dev_err_probe(&pdev->dev, ret,
+ 				     "Failed to register interrupt handler\n");
  
- 	nb = GETSIZE(op->type);
-+	if (nb > sizeof(u))
-+		return -EINVAL;
- 	if (!address_ok(regs, ea, nb))
- 		return -EFAULT;
- 	rn = op->reg;
-@@ -636,6 +638,8 @@ static int do_fp_store(struct instruction_op *op, unsigned long ea,
- 	} u;
- 
- 	nb = GETSIZE(op->type);
-+	if (nb > sizeof(u))
-+		return -EINVAL;
- 	if (!address_ok(regs, ea, nb))
- 		return -EFAULT;
- 	rn = op->reg;
-@@ -680,6 +684,9 @@ static nokprobe_inline int do_vec_load(int rn, unsigned long ea,
- 		u8 b[sizeof(__vector128)];
- 	} u = {};
- 
-+	if (size > sizeof(u))
-+		return -EINVAL;
-+
- 	if (!address_ok(regs, ea & ~0xfUL, 16))
- 		return -EFAULT;
- 	/* align to multiple of size */
-@@ -707,6 +714,9 @@ static nokprobe_inline int do_vec_store(int rn, unsigned long ea,
- 		u8 b[sizeof(__vector128)];
- 	} u;
- 
-+	if (size > sizeof(u))
-+		return -EINVAL;
-+
- 	if (!address_ok(regs, ea & ~0xfUL, 16))
- 		return -EFAULT;
- 	/* align to multiple of size */
+ 	trng->hclk = devm_clk_get(&pdev->dev, "hclk");
 -- 
 2.43.0
 
