@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-18211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F268481D4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBCC484809D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73543B29927
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 889F928433C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B581863B;
-	Sat,  3 Feb 2024 04:13:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64616175A7;
+	Sat,  3 Feb 2024 04:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VhJ8fXUk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOCh+dih"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C507CF9D7;
-	Sat,  3 Feb 2024 04:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238B1101C1;
+	Sat,  3 Feb 2024 04:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933629; cv=none; b=B+smVkvnze/y9nuSuZbDUgHShK3iBbX5BqfqGg8n/5y8PazSA5cLhN3rufmyS60emYb8kQSoStnbO3EaxSMVfQu1qbi7YMLM0hw1ZHBqyZjbXhCDUku2yWVYLlc6HxIJK9UwbLRjt4NqnbnaDYkBNYCrQHAl28T2uY6ryzjTqUI=
+	t=1706933409; cv=none; b=fIR7Yuife3Wb9BVx9gwW8xAhuuu9/tIoS4I04sBIE2Vy7R808z3rnzV6oWEpxlPCvRu44YC5MObbWM5NQFsY0M2EtDi4lHRE2Ht3Eb36y/PHTHkEmpntjcVzVolpHWpkN5hWF7TSaEcXcZNr0WQt9zV6+jxXz75sr3ReRZ7O0c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933629; c=relaxed/simple;
-	bh=xgCgnDrRLitg/2cmlw6IEnPhWjoI3MevoeidrEW8y+A=;
+	s=arc-20240116; t=1706933409; c=relaxed/simple;
+	bh=yFNMFvCXu9aQHJdvW6lY9cUqj21taBmExrNOzXpiev0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWPD+FHydZ42S/mi2IZ8/96tyvQbPSflpuZpHK3a2OWZEPOcpmdv/KepXmIgxx38XsoZGAa7djlkjrbkawjHPSRdkoOAAG7kBRtvN0LlGJQSB/H43EADeCLujrbd6vW62H1DKpoUQbHgjOw/nMKfSqDut0MLuIFluWzaYVoBQSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VhJ8fXUk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 294FCC433C7;
-	Sat,  3 Feb 2024 04:13:49 +0000 (UTC)
+	 MIME-Version; b=QgSSsrUU9wKmE+x2m50nH0g7tT65BEJX5iGNDvbbbhwnaBmLOT6RPOlGlTFLh5QngPTZXgd74E/s9E1gWQv+rxio/G9PAqoxso3XzEuHLiazU1s4mY0BzGsFIBQa2jvferVv3D47D/l5Vwjbigg7LBjpDhR9g37VYv7O855fT9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOCh+dih; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CBCC433F1;
+	Sat,  3 Feb 2024 04:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933629;
-	bh=xgCgnDrRLitg/2cmlw6IEnPhWjoI3MevoeidrEW8y+A=;
+	s=korg; t=1706933409;
+	bh=yFNMFvCXu9aQHJdvW6lY9cUqj21taBmExrNOzXpiev0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VhJ8fXUk9xQwZXtAlG6l71quNqeEDtSlSAuhRM7S2+Y0CCaOsObE+kiInxdYbniSi
-	 364sicHgPyKlyqUzbNzs8jNCiZyffNNNj+4eboVAlEy1wIDejSWnWwJ3HEzols+xhf
-	 ZbNyYd+soa7rWwT9SNoGUolj2NvxM8AEryo4ZH/8=
+	b=wOCh+dihOd5TAOijcNDdKGZaTRmqHnqMZNEttNL/p+6YEbOBw18dGdAH4wVx3h4xg
+	 Vk+jVcJuubauk0yGaf5W0KBDK8r6hBE5/yVHKHFj96+6DphQgaDG16humbM5FwsVsL
+	 ++rSQRGmG80u7xBpN1W9qw2ui7PSxRteHUnzC48Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aric Cyr <aric.cyr@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Josip Pavic <josip.pavic@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Su Hui <suhui@nfschina.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 206/322] drm/amd/display: make flip_timestamp_in_us a 64-bit variable
+Subject: [PATCH 6.1 130/219] media: ddbridge: fix an error code problem in ddb_probe
 Date: Fri,  2 Feb 2024 20:05:03 -0800
-Message-ID: <20240203035405.902550103@linuxfoundation.org>
+Message-ID: <20240203035335.777025516@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,45 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josip Pavic <josip.pavic@amd.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 6fb12518ca58412dc51054e2a7400afb41328d85 ]
+[ Upstream commit 09b4195021be69af1e1936cca995712a6d0f2562 ]
 
-[Why]
-This variable currently overflows after about 71 minutes. This doesn't
-cause any known functional issues but it does make debugging more
-difficult.
+Error code is assigned to 'stat', return 'stat' rather than '-1'.
 
-[How]
-Make it a 64-bit variable.
-
-Reviewed-by: Aric Cyr <aric.cyr@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Josip Pavic <josip.pavic@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dc_hw_types.h | 2 +-
+ drivers/media/pci/ddbridge/ddbridge-main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
-index 99880b08cda0..00de342e5290 100644
---- a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
-@@ -244,7 +244,7 @@ enum pixel_format {
- #define DC_MAX_DIRTY_RECTS 3
- struct dc_flip_addrs {
- 	struct dc_plane_address address;
--	unsigned int flip_timestamp_in_us;
-+	unsigned long long flip_timestamp_in_us;
- 	bool flip_immediate;
- 	/* TODO: add flip duration for FreeSync */
- 	bool triplebuffer_flips;
+diff --git a/drivers/media/pci/ddbridge/ddbridge-main.c b/drivers/media/pci/ddbridge/ddbridge-main.c
+index 91733ab9f58c..363badab7cf0 100644
+--- a/drivers/media/pci/ddbridge/ddbridge-main.c
++++ b/drivers/media/pci/ddbridge/ddbridge-main.c
+@@ -238,7 +238,7 @@ static int ddb_probe(struct pci_dev *pdev,
+ 	ddb_unmap(dev);
+ 	pci_set_drvdata(pdev, NULL);
+ 	pci_disable_device(pdev);
+-	return -1;
++	return stat;
+ }
+ 
+ /****************************************************************************/
 -- 
 2.43.0
 
