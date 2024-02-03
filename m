@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED848481CD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C8D8480B0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71B881C20BA2
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 994791C227AB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA93405F9;
-	Sat,  3 Feb 2024 04:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB5617C76;
+	Sat,  3 Feb 2024 04:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDIZvZai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SV9c/ET7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712DC182B5;
-	Sat,  3 Feb 2024 04:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1C99125C4;
+	Sat,  3 Feb 2024 04:10:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933625; cv=none; b=FB6B/818nKZJR7Lr8k+YsZvv/hnww78fT/F4gWZtxCVpUqljBzVE+msK7aeMSVbzfscYYYUKWhC1bLQtUPT9kxFUNLULkyUkbdc8NkejR02W0N+vWpdEKwYekRNKrikHNgmH3oip7VI/2hThWDwgVVtMoc7DfJQTZNScNYGFWZk=
+	t=1706933423; cv=none; b=ovdcw0HgnxJReKPB+HJDZhZg/T7cZVvAyXOBeW8TNXp1NnCDohAe++xHSD4thgjop9dF68HNW0qdFN+zBbmGKlL1wR1OPJfXjaHDS8+oMdJF1J0XWUCXApUHr6t+ChmQP2CFRsvJCP/ouZf7NYQGSlIGU8Tr3jvyE9pO8sfGeYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933625; c=relaxed/simple;
-	bh=mIa75TZ0nyK3rclLCQFjcn2ssygx1MNdN6DNNbaPThI=;
+	s=arc-20240116; t=1706933423; c=relaxed/simple;
+	bh=1zbpDW1vWI16iA/bBbDQ9OTbE8uVM9IKipGCyVBDsfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BKlqh3TcDyXBQpDKRLB8MuDkcEzWkPQmDzo4dHzu3skN7uZm/CSMOIB/OVMjwSkfTp/CQdZplO6HranHxvmOQ7OTNcde40H8S78ecf6k5yQZgNzDEQB4GVOn050obVRTx1vJZlppoG+K11mqJbsI2nZZoP17o1Srl/wAFbfUayc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDIZvZai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A003C433C7;
-	Sat,  3 Feb 2024 04:13:45 +0000 (UTC)
+	 MIME-Version; b=YMKBdi6dcdCOtA+vTlI81tGqHWvZy0LV+s0Q3kHVXcuoic/WVwAPZZubZjlP4C6MrxGtM6i7eCLYWOeXEf9bwF58y6Djw11AbdPOAjCw4UiI2ni6XALi0lQKipX6ZBWkRIxAQ1MVEAx735GfmY2N7H9PcXs4nlU14tiITqIU1lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SV9c/ET7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BD4DC43390;
+	Sat,  3 Feb 2024 04:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933625;
-	bh=mIa75TZ0nyK3rclLCQFjcn2ssygx1MNdN6DNNbaPThI=;
+	s=korg; t=1706933423;
+	bh=1zbpDW1vWI16iA/bBbDQ9OTbE8uVM9IKipGCyVBDsfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TDIZvZaisiYa3jiQ07kq7isIeWz7lDZNBCuY0/KJTygFUyhd5vOhBJ3vj9IhvtITg
-	 VRFKB6UaSQJlCXc0225dWlNPvEY13G7dlXOGPUu262Y1ok+eJWxERrZltl45ud9pSy
-	 /vlnu9NV1rP2FJrJC3t0zpJIhztzVGJ/RKxkpSK4=
+	b=SV9c/ET7v0BrVtIH9ca2MucenirfjJadA06zsBAYZHwCRiQFUuYQYlbZnkTDWF4I2
+	 vArnbU1qHvV+Arwqu2mw614JcDEUa7Gg3cNrKojA5hbr8AwSSyEqmaGX0VlXZaT+gm
+	 yVCid6ec9H/QizzOmPYw+NzkHbZfp/XXpVRR2KUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Xing Tong Wu <xingtong.wu@siemens.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 201/322] clk: hi3620: Fix memory leak in hi3620_mmc_clk_init()
+Subject: [PATCH 6.1 125/219] hwmon: (nct6775) Fix fan speed set failure in automatic mode
 Date: Fri,  2 Feb 2024 20:04:58 -0800
-Message-ID: <20240203035405.730862741@linuxfoundation.org>
+Message-ID: <20240203035335.110746376@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Xing Tong Wu <xingtong.wu@siemens.com>
 
-[ Upstream commit bfbea9e5667cfa9552c3d88f023386f017f6c308 ]
+[ Upstream commit 8b3800256abad20e91c2698607f9b28591407b19 ]
 
-In cases where kcalloc() fails for the 'clk_data->clks' allocation, the
-code path does not handle the failure gracefully, potentially leading
-to a memory leak. This fix ensures proper cleanup by freeing the
-allocated memory for 'clk_data' before returning.
+Setting the fan speed is only valid in manual mode; it is not possible
+to set the fan's speed in automatic mode.
+Return error when attempting to set the fan speed in automatic mode.
 
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Link: https://lore.kernel.org/r/20231210165040.3407545-1-visitorckw@gmail.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Xing Tong Wu <xingtong.wu@siemens.com>
+Link: https://lore.kernel.org/r/20231121081604.2499-3-xingtong_wu@163.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/hisilicon/clk-hi3620.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hwmon/nct6775-core.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/clk/hisilicon/clk-hi3620.c b/drivers/clk/hisilicon/clk-hi3620.c
-index 2d7186905abd..5d0226530fdb 100644
---- a/drivers/clk/hisilicon/clk-hi3620.c
-+++ b/drivers/clk/hisilicon/clk-hi3620.c
-@@ -466,8 +466,10 @@ static void __init hi3620_mmc_clk_init(struct device_node *node)
- 		return;
+diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
+index 80310845fb99..9720ad214c20 100644
+--- a/drivers/hwmon/nct6775-core.c
++++ b/drivers/hwmon/nct6775-core.c
+@@ -2462,6 +2462,13 @@ store_pwm(struct device *dev, struct device_attribute *attr, const char *buf,
+ 	int err;
+ 	u16 reg;
  
- 	clk_data->clks = kcalloc(num, sizeof(*clk_data->clks), GFP_KERNEL);
--	if (!clk_data->clks)
-+	if (!clk_data->clks) {
-+		kfree(clk_data);
- 		return;
-+	}
- 
- 	for (i = 0; i < num; i++) {
- 		struct hisi_mmc_clock *mmc_clk = &hi3620_mmc_clks[i];
++	/*
++	 * The fan control mode should be set to manual if the user wants to adjust
++	 * the fan speed. Otherwise, it will fail to set.
++	 */
++	if (index == 0 && data->pwm_enable[nr] > manual)
++		return -EBUSY;
++
+ 	err = kstrtoul(buf, 10, &val);
+ 	if (err < 0)
+ 		return err;
 -- 
 2.43.0
 
