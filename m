@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-17881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E022984807C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A238482C9
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DF831C227E8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2117028A6FD
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AF4C1119F;
-	Sat,  3 Feb 2024 04:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033A34E1C3;
+	Sat,  3 Feb 2024 04:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsQHTPZ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbG+Xhz9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A297116436;
-	Sat,  3 Feb 2024 04:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B552613AC6;
+	Sat,  3 Feb 2024 04:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933384; cv=none; b=rkBChvYuCgxa9UE4UjTA6Hd32n/uHelY00rfv/vfzw+PJ0dqMObq5kAgNyrPZLFcbKZH3iJVKYv3IM8q+0YbC+EU1FFIa+T80f6Q3u2VnzQcHWkxqrdNk5SD5TXgA2xeB2f+m74XYsKP8kvv9ybWN7F6KAVXM078EEmYBEE4zro=
+	t=1706933810; cv=none; b=tMzMF+Rccm76gD/qzlYNIUECXLCtO/vUFyWJpx4aCYNwfTubq3r3cS+/ZknC7N8/B7P78nphJvksRIB1T7I0rpYf3n6OdBwWIQtbRtm+Yj9fagkFJ9mxsIEwaUFDULfm5UmdE6stH0XmPdlSEoGSVDtw9UvyClfRBqDBounVW/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933384; c=relaxed/simple;
-	bh=/673l2NYejh6z++jIjMLypUC91sHlm1tRxxVgLY4pbs=;
+	s=arc-20240116; t=1706933810; c=relaxed/simple;
+	bh=0rorU600mYjpy+y27I4D2R7jpwVs7Dla1yJiZjmk5iE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZJmDBJIVndErqdPpHU+tJJ8U5n2iRXx+xqz7bBqZ/ynyxYbGYjYAzOHkiCNEGJ6w+HieLAwgNuk5zt2tnzKL3eZayzKr+J5IOtHUG9SBbH8libiO4H4lcr0to1jC0L+mE2QYTlEhQYU7C027yQSgxVsGWz9d9FLDDdyQ4BpJsvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsQHTPZ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68254C433F1;
-	Sat,  3 Feb 2024 04:09:44 +0000 (UTC)
+	 MIME-Version; b=UoATgnFa2rO2Oj+OHlv4jAGSwzHoI0LBvWtyZvGMxNtj3zLKhJxu8YGWPpzOoCiPP+pXF21vsr33U9bcv1KZ5ZJgkZbsU6itd35MubvIr9lnFr6e6fM1Wcp2RlGH5tsIndTEbg4CAa0flOLf2i/FrxYpJjTYehh62TDktTiKFGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbG+Xhz9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF21C43390;
+	Sat,  3 Feb 2024 04:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933384;
-	bh=/673l2NYejh6z++jIjMLypUC91sHlm1tRxxVgLY4pbs=;
+	s=korg; t=1706933810;
+	bh=0rorU600mYjpy+y27I4D2R7jpwVs7Dla1yJiZjmk5iE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qsQHTPZ7yXmLFwSX35BRcXam+d9E+sYVMs1Vizj9qieCLNwTABke46s4c7hyAErmJ
-	 oJ0qUxeo2jcffGL96SBD5wtY8b5jwmVe0qWa0rBqXvikDwWi6pa6XygyXtenEmXvru
-	 63nxlyOLoENMvZCaYqTF1HmdY6rjgFdbI/OYB7lU=
+	b=NbG+Xhz90JsWzltN03m0LaxPgGewwNOwaFZYYHOlo02A/L5OekzDqpI8qcf+vs9z4
+	 Ftdz66CoN1z6ostw/M0+7HhT3RO9kSKhEStCEDCRR2znLNXiV9ECoUQN2ucCdP2Cer
+	 84wQnpxlpZQNMYyRpgumujuCUlps7B3yR/CCWBHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/219] ARM: dts: imx1: Fix sram node
+Subject: [PATCH 6.7 127/353] scsi: lpfc: Move determination of vmid_flag after VMID reinitialization completes
 Date: Fri,  2 Feb 2024 20:04:05 -0800
-Message-ID: <20240203035327.005671857@linuxfoundation.org>
+Message-ID: <20240203035407.746252441@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit c248e535973088ba7071ff6f26ab7951143450af ]
+[ Upstream commit aba0fb0ef607a71511d23a07406f11130c1a54c5 ]
 
-Per sram.yaml, address-cells, size-cells and ranges are mandatory.
+If priority tagging is set in the service parameters of a FLOGI cmpl, then
+we update the vmid_flag.  In the current logic, if a follow up FLOGI cmpl
+updates its service parameters such that priority tagging is no longer set,
+then the vmid_flag ends up keeping stale data.
 
-The node name should be sram.
+Fix by ensuring we clear the vmid_flag member during lpfc_reinit_vmid, and
+check the priority tagging service parameter after reinitialization of the
+vmid data structures.
 
-Change the node name and pass the required properties to fix the
-following dt-schema warnings:
-
-imx1-apf9328.dtb: esram@300000: $nodename:0: 'esram@300000' does not match '^sram(@.*)?'
-	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
-imx1-apf9328.dtb: esram@300000: '#address-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
-imx1-apf9328.dtb: esram@300000: '#size-cells' is a required property
-	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
-imx1-apf9328.dtb: esram@300000: 'ranges' is a required property
-	from schema $id: http://devicetree.org/schemas/sram/sram.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20231207224039.35466-4-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx1.dtsi | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_els.c  | 6 +++---
+ drivers/scsi/lpfc/lpfc_vmid.c | 1 +
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx1.dtsi b/arch/arm/boot/dts/imx1.dtsi
-index e312f1e74e2f..4aeb74479f44 100644
---- a/arch/arm/boot/dts/imx1.dtsi
-+++ b/arch/arm/boot/dts/imx1.dtsi
-@@ -268,9 +268,12 @@
- 			status = "disabled";
- 		};
+diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
+index 7e9b93460e64..385e1636f139 100644
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -1130,12 +1130,12 @@ lpfc_cmpl_els_flogi(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+ 			 vport->port_state, vport->fc_flag,
+ 			 sp->cmn.priority_tagging, kref_read(&ndlp->kref));
  
--		esram: esram@300000 {
-+		esram: sram@300000 {
- 			compatible = "mmio-sram";
- 			reg = <0x00300000 0x20000>;
-+			ranges = <0 0x00300000 0x20000>;
-+			#address-cells = <1>;
-+			#size-cells = <1>;
- 		};
- 	};
- };
+-	if (sp->cmn.priority_tagging)
+-		vport->phba->pport->vmid_flag |= (LPFC_VMID_ISSUE_QFPA |
+-						  LPFC_VMID_TYPE_PRIO);
+ 	/* reinitialize the VMID datastructure before returning */
+ 	if (lpfc_is_vmid_enabled(phba))
+ 		lpfc_reinit_vmid(vport);
++	if (sp->cmn.priority_tagging)
++		vport->phba->pport->vmid_flag |= (LPFC_VMID_ISSUE_QFPA |
++						  LPFC_VMID_TYPE_PRIO);
+ 
+ 	/*
+ 	 * Address a timing race with dev_loss.  If dev_loss is active on
+diff --git a/drivers/scsi/lpfc/lpfc_vmid.c b/drivers/scsi/lpfc/lpfc_vmid.c
+index cf8ba840d0ea..773e02ae20c3 100644
+--- a/drivers/scsi/lpfc/lpfc_vmid.c
++++ b/drivers/scsi/lpfc/lpfc_vmid.c
+@@ -321,5 +321,6 @@ lpfc_reinit_vmid(struct lpfc_vport *vport)
+ 	if (!hash_empty(vport->hash_table))
+ 		hash_for_each_safe(vport->hash_table, bucket, tmp, cur, hnode)
+ 			hash_del(&cur->hnode);
++	vport->vmid_flag = 0;
+ 	write_unlock(&vport->vmid_lock);
+ }
 -- 
 2.43.0
 
