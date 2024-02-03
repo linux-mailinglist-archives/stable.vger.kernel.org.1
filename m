@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0E878481D7
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3254784808B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FB951C214E8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9088B2A151
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CE64120F;
-	Sat,  3 Feb 2024 04:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30108171B8;
+	Sat,  3 Feb 2024 04:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="em8ykU2m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xy8w4rHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946B510965;
-	Sat,  3 Feb 2024 04:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1917101C5;
+	Sat,  3 Feb 2024 04:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933633; cv=none; b=EjYSIFDOKaTch5Q0J1Uc23DJ4RLv3qx0ghUnm+zK3gjzZIXPfJ2BHMCOM8wK3v7pHBo4JWBuQogB2YO4eHsSpBpfcYLEwDha8qvxGY94SkM+HtTOH8CA9Mdl7DDUSpkTypngLzr5Oc38G3jyP2FIaeTQ6BwC3J/c5aGm/ZQQymk=
+	t=1706933396; cv=none; b=mDbGSIYx8PPUXx0m320nGFwBOctEjwpaBYsmzLUe5th1A8I5HDac20DF/BvphBaBQ59fN22pO4WbkhPVYKrGMS4gy053JRmA4cWRhTsUWoIduhKrfOwD1vDBbFch3hiyJu9XDA4LqDf3NtT+WLcd4L2bXvpywheE5FmXfmqPTPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933633; c=relaxed/simple;
-	bh=GJiRNEtdQe/LCtUr/bNbPJJSS6ey0B/dQkUpqKJ61WA=;
+	s=arc-20240116; t=1706933396; c=relaxed/simple;
+	bh=kXufJV42T/yHpRR4asT35p4wo4nG8RMxGuj2jZgThzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lfpcphB+B954HCi9sKFRJ736x0ub8ak6IBLca2WtxO3Pyrh868uexD6s/cng2FC2kjiJWXgvT1DCzk4dMw2YfAg90cUF4klDz/6AuZatN+rc7z6Ztl30l2sspm0SHcOYbsjf5gcPEefWDOWAgNmKWkmlGhFqm6O+xRp4NVeZITo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=em8ykU2m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC4CC433F1;
-	Sat,  3 Feb 2024 04:13:53 +0000 (UTC)
+	 MIME-Version; b=uKF3p9Enz1RqFyC1OAFRMHva3CDd+RYz4fvZ2x7K2qo3ckATMdgzEbqXi8QuE0HlPFDfEwwB+wYKc7rqpI/t9n3QOczgMPJi4/FuUjCSljl+nFnqVZkYL6d459SXSBb95UxG3SsrW6ectrr5l36n8oR1x45KsvktfowQDdFfy50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xy8w4rHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93CCC433C7;
+	Sat,  3 Feb 2024 04:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933633;
-	bh=GJiRNEtdQe/LCtUr/bNbPJJSS6ey0B/dQkUpqKJ61WA=;
+	s=korg; t=1706933395;
+	bh=kXufJV42T/yHpRR4asT35p4wo4nG8RMxGuj2jZgThzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=em8ykU2mF6evPn0q+ehwXTT23XfFO5fQJypbSnRieW1F2pU6DgYLNJiMgOnBU7o2H
-	 iwPnA3MKndxxit1NubK6Hd+bf/8oXiG6yb/gmWmNH4VzJqoY3IG2G+BeF8BNbVgsce
-	 rrgsofByKGA1TmejpLROv50D2ZoYCBs7w16H+u04=
+	b=Xy8w4rHWuzlZBTIVMHm5iBH63IP9HPkRc4E39F5dvzBE4oKQjfb6IRcKCVtLeab5C
+	 RbVHaPXIkw0JXHw2UlyhgV9bAW6wN4Bxel4ye8PVyvjpzSyHWmufn6fYzfN6CcW8jC
+	 rJgOM6G7h9H28i+SedFAMfaCfzxZGfTLKIUX8KDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
+	Daeho Jeong <daehojeong@google.com>,
 	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 187/322] f2fs: fix to tag gcing flag on page during block migration
-Date: Fri,  2 Feb 2024 20:04:44 -0800
-Message-ID: <20240203035405.303390124@linuxfoundation.org>
+Subject: [PATCH 6.1 112/219] f2fs: fix write pointers on zoned device after roll forward
+Date: Fri,  2 Feb 2024 20:04:45 -0800
+Message-ID: <20240203035333.113293671@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit 4961acdd65c956e97c1a000c82d91a8c1cdbe44b ]
+[ Upstream commit 9dad4d964291295ef48243d4e03972b85138bc9f ]
 
-It needs to add missing gcing flag on page during block migration,
-in order to garantee migrated data be persisted during checkpoint,
-otherwise out-of-order persistency between data and node may cause
-data corruption after SPOR.
+1. do roll forward recovery
+2. update current segments pointers
+3. fix the entire zones' write pointers
+4. do checkpoint
 
-Similar issue was fixed by commit 2d1fe8a86bf5 ("f2fs: fix to tag
-gcing flag on page during file defragment").
-
-Signed-off-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Daeho Jeong <daehojeong@google.com>
 Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/compress.c | 4 +++-
- fs/f2fs/file.c     | 2 ++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ fs/f2fs/recovery.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index 7514661bbfbb..372616ca8fb5 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -1029,8 +1029,10 @@ static void set_cluster_dirty(struct compress_ctx *cc)
- 	int i;
- 
- 	for (i = 0; i < cc->cluster_size; i++)
--		if (cc->rpages[i])
-+		if (cc->rpages[i]) {
- 			set_page_dirty(cc->rpages[i]);
-+			set_page_private_gcing(cc->rpages[i]);
-+		}
- }
- 
- static int prepare_compress_overwrite(struct compress_ctx *cc,
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index a631d706e117..dcf2d926ab59 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1317,6 +1317,7 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
- 			}
- 			memcpy_page(pdst, 0, psrc, 0, PAGE_SIZE);
- 			set_page_dirty(pdst);
-+			set_page_private_gcing(pdst);
- 			f2fs_put_page(pdst, 1);
- 			f2fs_put_page(psrc, 1);
- 
-@@ -4059,6 +4060,7 @@ static int redirty_blocks(struct inode *inode, pgoff_t page_idx, int len)
- 		f2fs_bug_on(F2FS_I_SB(inode), !page);
- 
- 		set_page_dirty(page);
-+		set_page_private_gcing(page);
- 		f2fs_put_page(page, 1);
- 		f2fs_put_page(page, 0);
+diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
+index 4f4db465220f..53a6487f91e4 100644
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -898,6 +898,8 @@ int f2fs_recover_fsync_data(struct f2fs_sb_info *sbi, bool check_only)
+ 	if (!err && fix_curseg_write_pointer && !f2fs_readonly(sbi->sb) &&
+ 			f2fs_sb_has_blkzoned(sbi)) {
+ 		err = f2fs_fix_curseg_write_pointer(sbi);
++		if (!err)
++			err = f2fs_check_write_pointer(sbi);
+ 		ret = err;
  	}
+ 
 -- 
 2.43.0
 
