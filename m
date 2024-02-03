@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-17869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549C0848070
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4E28481BC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CB4B28BE50
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A875281D27
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91D413FF2;
-	Sat,  3 Feb 2024 04:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EF617C96;
+	Sat,  3 Feb 2024 04:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KydOkqr7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bH3NfmEG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951EEFC11;
-	Sat,  3 Feb 2024 04:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444333A1C3;
+	Sat,  3 Feb 2024 04:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933375; cv=none; b=UQmx5UolpuEJ0XSvHFLtXKeXyzJLxAavPrW0g3tmUsky4BxcgJsDTNbIG0Em1COppvwK+qmNxXwYZMTFTkylHgwfFc5cWPD8For2cVQNCS37W+A96cPvOGkkKCkKQJOmJYN1txG2jJhC1OBGwRLc4ZC+oxpWE6qFRRsd2ujFrKc=
+	t=1706933613; cv=none; b=dQLobBE8CZeumlkfDh7AE6+qaJgXjXTb7/PewWoSjT2GpLTr+T4qn7zJl7gvt0MtB4YF6Le9Z4+WYlVsGROn5gokiE7XxbZb5TZPZhmf9LQr9ykZ6c5dlhSFVDUZpo0Bf0JUg17gywkSxEn/0QLZICvvKzn0tQnUJB02SiH2hsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933375; c=relaxed/simple;
-	bh=NgchTqzGdsYsI0FZmHtYMgYEaXzFU3AFaUt89iflj3Y=;
+	s=arc-20240116; t=1706933613; c=relaxed/simple;
+	bh=BfTP6QImxKeB7+9qaOBw1Vnh1Usc7ymWPzw1vRycqZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y0iFcncdFP9VDJEYxQ7YlaehCDdNcme2tHGoC8FMkB5FroelCcd35a2vv58y7YarAGiRQc7wwFxVjdwlCmKJYMlgxhxuDnIEKy9AjpyEmo1LJLKLfpDnHJIaEP8h2BSVPFH6subxPGQlgO51ANs092O846/sPcmpij2NXxjWRl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KydOkqr7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C93DC433F1;
-	Sat,  3 Feb 2024 04:09:35 +0000 (UTC)
+	 MIME-Version; b=p+63yQITXrlaa7IutH6mPL7QUzCp5pEAEyquWab+fzHD14tqHSsDuhol11tdeQp3nmDSdbvZ7CPi6Brcy3PFOrquhPn+qB1Nxqs9ecBbeszYnRfJtptSxD07DxaV71NUqCE31XE2575vMkYj+Tn2qTkZW9cdTnGtWk7JktqaJvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bH3NfmEG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E3BDC43390;
+	Sat,  3 Feb 2024 04:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933375;
-	bh=NgchTqzGdsYsI0FZmHtYMgYEaXzFU3AFaUt89iflj3Y=;
+	s=korg; t=1706933613;
+	bh=BfTP6QImxKeB7+9qaOBw1Vnh1Usc7ymWPzw1vRycqZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KydOkqr7X16GgH9U1EiZbDoX5eZBD7nQjSJLkckJCGAPBTIuP+9+NDDIaym59cizE
-	 HqQLiUi59bvzr+VMyRwmG+xzOxinDFzvoYhsIYx+4jUSl8mRJB0oJjFT+59BKKCypu
-	 I4BAPqvuCx+Pz62XWOLEfGETG8zwGHUXkC70Pye0=
+	b=bH3NfmEGrwEz0fx8CIDnejeStsK7F26A/C5ahJ0GyriQXFbix++4X1AndzFdUuaf5
+	 rwGu/HI2nGo/fMspzgCGINqWh0PbF6Vd27nTKXdkslp70cL8hNHQUZHAFjekb7+j3C
+	 kLJuDksbUvtMcomHzFFPiLOfU1pS4+J4yBDCsJxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Tobias Waldekranz <tobias@waldekranz.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jan Kara <jack@suse.cz>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/219] net: dsa: mv88e6xxx: Fix mv88e6352_serdes_get_stats error path
+Subject: [PATCH 6.6 161/322] reiserfs: Avoid touching renamed directory if parent does not change
 Date: Fri,  2 Feb 2024 20:04:18 -0800
-Message-ID: <20240203035329.154895275@linuxfoundation.org>
+Message-ID: <20240203035404.424789481@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +62,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobias Waldekranz <tobias@waldekranz.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit fc82a08ae795ee6b73fb6b50785f7be248bec7b5 ]
+[ Upstream commit 49db9b1b86a82448dfaf3fcfefcf678dee56c8ed ]
 
-mv88e6xxx_get_stats, which collects stats from various sources,
-expects all callees to return the number of stats read. If an error
-occurs, 0 should be returned.
+The VFS will not be locking moved directory if its parent does not
+change. Change reiserfs rename code to avoid touching renamed directory
+if its parent does not change as without locking that can corrupt the
+filesystem.
 
-Prevent future mishaps of this kind by updating the return type to
-reflect this contract.
-
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.h   |  4 ++--
- drivers/net/dsa/mv88e6xxx/serdes.c | 10 +++++-----
- drivers/net/dsa/mv88e6xxx/serdes.h |  8 ++++----
- 3 files changed, 11 insertions(+), 11 deletions(-)
+ fs/reiserfs/namei.c | 54 ++++++++++++++++++++++++---------------------
+ 1 file changed, 29 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
-index e693154cf803..97a47d8743fd 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.h
-+++ b/drivers/net/dsa/mv88e6xxx/chip.h
-@@ -601,8 +601,8 @@ struct mv88e6xxx_ops {
- 	int (*serdes_get_sset_count)(struct mv88e6xxx_chip *chip, int port);
- 	int (*serdes_get_strings)(struct mv88e6xxx_chip *chip,  int port,
- 				  uint8_t *data);
--	int (*serdes_get_stats)(struct mv88e6xxx_chip *chip,  int port,
--				uint64_t *data);
-+	size_t (*serdes_get_stats)(struct mv88e6xxx_chip *chip, int port,
-+				   uint64_t *data);
+diff --git a/fs/reiserfs/namei.c b/fs/reiserfs/namei.c
+index 9c5704be2435..889341c6b8f0 100644
+--- a/fs/reiserfs/namei.c
++++ b/fs/reiserfs/namei.c
+@@ -1324,8 +1324,8 @@ static int reiserfs_rename(struct mnt_idmap *idmap,
+ 	struct inode *old_inode, *new_dentry_inode;
+ 	struct reiserfs_transaction_handle th;
+ 	int jbegin_count;
+-	umode_t old_inode_mode;
+ 	unsigned long savelink = 1;
++	bool update_dir_parent = false;
  
- 	/* SERDES registers for ethtool */
- 	int (*serdes_get_regs_len)(struct mv88e6xxx_chip *chip,  int port);
-diff --git a/drivers/net/dsa/mv88e6xxx/serdes.c b/drivers/net/dsa/mv88e6xxx/serdes.c
-index d94150d8f3f4..4c38df4982bf 100644
---- a/drivers/net/dsa/mv88e6xxx/serdes.c
-+++ b/drivers/net/dsa/mv88e6xxx/serdes.c
-@@ -342,8 +342,8 @@ static uint64_t mv88e6352_serdes_get_stat(struct mv88e6xxx_chip *chip,
- 	return val;
- }
+ 	if (flags & ~RENAME_NOREPLACE)
+ 		return -EINVAL;
+@@ -1375,8 +1375,7 @@ static int reiserfs_rename(struct mnt_idmap *idmap,
+ 		return -ENOENT;
+ 	}
  
--int mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
--			       uint64_t *data)
-+size_t mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
-+				  uint64_t *data)
- {
- 	struct mv88e6xxx_port *mv88e6xxx_port = &chip->ports[port];
- 	struct mv88e6352_serdes_hw_stat *stat;
-@@ -352,7 +352,7 @@ int mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
+-	old_inode_mode = old_inode->i_mode;
+-	if (S_ISDIR(old_inode_mode)) {
++	if (S_ISDIR(old_inode->i_mode)) {
+ 		/*
+ 		 * make sure that directory being renamed has correct ".."
+ 		 * and that its new parent directory has not too many links
+@@ -1389,24 +1388,28 @@ static int reiserfs_rename(struct mnt_idmap *idmap,
+ 			}
+ 		}
  
- 	err = mv88e6352_g2_scratch_port_has_serdes(chip, port);
- 	if (err <= 0)
--		return err;
-+		return 0;
+-		/*
+-		 * directory is renamed, its parent directory will be changed,
+-		 * so find ".." entry
+-		 */
+-		dot_dot_de.de_gen_number_bit_string = NULL;
+-		retval =
+-		    reiserfs_find_entry(old_inode, "..", 2, &dot_dot_entry_path,
++		if (old_dir != new_dir) {
++			/*
++			 * directory is renamed, its parent directory will be
++			 * changed, so find ".." entry
++			 */
++			dot_dot_de.de_gen_number_bit_string = NULL;
++			retval =
++			    reiserfs_find_entry(old_inode, "..", 2,
++					&dot_dot_entry_path,
+ 					&dot_dot_de);
+-		pathrelse(&dot_dot_entry_path);
+-		if (retval != NAME_FOUND) {
+-			reiserfs_write_unlock(old_dir->i_sb);
+-			return -EIO;
+-		}
++			pathrelse(&dot_dot_entry_path);
++			if (retval != NAME_FOUND) {
++				reiserfs_write_unlock(old_dir->i_sb);
++				return -EIO;
++			}
  
- 	BUILD_BUG_ON(ARRAY_SIZE(mv88e6352_serdes_hw_stats) >
- 		     ARRAY_SIZE(mv88e6xxx_port->serdes_stats));
-@@ -798,8 +798,8 @@ static uint64_t mv88e6390_serdes_get_stat(struct mv88e6xxx_chip *chip, int lane,
- 	return reg[0] | ((u64)reg[1] << 16) | ((u64)reg[2] << 32);
- }
+-		/* inode number of .. must equal old_dir->i_ino */
+-		if (dot_dot_de.de_objectid != old_dir->i_ino) {
+-			reiserfs_write_unlock(old_dir->i_sb);
+-			return -EIO;
++			/* inode number of .. must equal old_dir->i_ino */
++			if (dot_dot_de.de_objectid != old_dir->i_ino) {
++				reiserfs_write_unlock(old_dir->i_sb);
++				return -EIO;
++			}
++			update_dir_parent = true;
+ 		}
+ 	}
  
--int mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
--			       uint64_t *data)
-+size_t mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
-+				  uint64_t *data)
- {
- 	struct mv88e6390_serdes_hw_stat *stat;
- 	int lane;
-diff --git a/drivers/net/dsa/mv88e6xxx/serdes.h b/drivers/net/dsa/mv88e6xxx/serdes.h
-index 29bb4e91e2f6..67369054951f 100644
---- a/drivers/net/dsa/mv88e6xxx/serdes.h
-+++ b/drivers/net/dsa/mv88e6xxx/serdes.h
-@@ -165,13 +165,13 @@ irqreturn_t mv88e6393x_serdes_irq_status(struct mv88e6xxx_chip *chip, int port,
- int mv88e6352_serdes_get_sset_count(struct mv88e6xxx_chip *chip, int port);
- int mv88e6352_serdes_get_strings(struct mv88e6xxx_chip *chip,
- 				 int port, uint8_t *data);
--int mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
--			       uint64_t *data);
-+size_t mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
-+				  uint64_t *data);
- int mv88e6390_serdes_get_sset_count(struct mv88e6xxx_chip *chip, int port);
- int mv88e6390_serdes_get_strings(struct mv88e6xxx_chip *chip,
- 				 int port, uint8_t *data);
--int mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
--			       uint64_t *data);
-+size_t mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
-+				  uint64_t *data);
+@@ -1486,7 +1489,7 @@ static int reiserfs_rename(struct mnt_idmap *idmap,
  
- int mv88e6352_serdes_get_regs_len(struct mv88e6xxx_chip *chip, int port);
- void mv88e6352_serdes_get_regs(struct mv88e6xxx_chip *chip, int port, void *_p);
+ 		reiserfs_prepare_for_journal(old_inode->i_sb, new_de.de_bh, 1);
+ 
+-		if (S_ISDIR(old_inode->i_mode)) {
++		if (update_dir_parent) {
+ 			if ((retval =
+ 			     search_by_entry_key(new_dir->i_sb,
+ 						 &dot_dot_de.de_entry_key,
+@@ -1534,14 +1537,14 @@ static int reiserfs_rename(struct mnt_idmap *idmap,
+ 							 new_de.de_bh);
+ 			reiserfs_restore_prepared_buffer(old_inode->i_sb,
+ 							 old_de.de_bh);
+-			if (S_ISDIR(old_inode_mode))
++			if (update_dir_parent)
+ 				reiserfs_restore_prepared_buffer(old_inode->
+ 								 i_sb,
+ 								 dot_dot_de.
+ 								 de_bh);
+ 			continue;
+ 		}
+-		if (S_ISDIR(old_inode_mode)) {
++		if (update_dir_parent) {
+ 			if (item_moved(&dot_dot_ih, &dot_dot_entry_path) ||
+ 			    !entry_points_to_object("..", 2, &dot_dot_de,
+ 						    old_dir)) {
+@@ -1559,7 +1562,7 @@ static int reiserfs_rename(struct mnt_idmap *idmap,
+ 			}
+ 		}
+ 
+-		RFALSE(S_ISDIR(old_inode_mode) &&
++		RFALSE(update_dir_parent &&
+ 		       !buffer_journal_prepared(dot_dot_de.de_bh), "");
+ 
+ 		break;
+@@ -1592,11 +1595,12 @@ static int reiserfs_rename(struct mnt_idmap *idmap,
+ 		savelink = new_dentry_inode->i_nlink;
+ 	}
+ 
+-	if (S_ISDIR(old_inode_mode)) {
++	if (update_dir_parent) {
+ 		/* adjust ".." of renamed directory */
+ 		set_ino_in_dir_entry(&dot_dot_de, INODE_PKEY(new_dir));
+ 		journal_mark_dirty(&th, dot_dot_de.de_bh);
+-
++	}
++	if (S_ISDIR(old_inode->i_mode)) {
+ 		/*
+ 		 * there (in new_dir) was no directory, so it got new link
+ 		 * (".."  of renamed directory)
 -- 
 2.43.0
 
