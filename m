@@ -1,251 +1,121 @@
-Return-Path: <stable+bounces-17781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E0E4847E0E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 02:12:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C152847E0D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 02:12:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63C2C1C21C84
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 01:12:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3125B28352
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 01:12:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7813210E6;
-	Sat,  3 Feb 2024 01:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A65510F9;
+	Sat,  3 Feb 2024 01:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="QkQaH9yQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNE9eojQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CF31369
-	for <stable@vger.kernel.org>; Sat,  3 Feb 2024 01:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9313137B;
+	Sat,  3 Feb 2024 01:12:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706922769; cv=none; b=jXqLOSm8EJVQmzKOmiKTx6U9amk/Laqw0wIHekq7N4+XyOGhXAamPztG3BbTkFTUCuRBxAZV0BsKZ6e3ecdKoI08WF29Lt8Rwn8z8eF18Et2w6TklRg6m1N8lpC5a28kel89OIGk2qwhivBRfD979gacXtJg98G+RZB4GoaMQEY=
+	t=1706922750; cv=none; b=Exjfs2iBBsOl7jPXrQhYxxRat/SsNkB50OXBPzbgx4sxnHoP6v1zI1N32kE+R1+MCubvFKp7bjsZYPsGZokdNJ3F65/48I9IZtWNmttUm33oe3PhsSThsUb2i+IWID0ORbPSOBtB+8HBScs/yzLdeeObus+UYEbqZEXlggDPUZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706922769; c=relaxed/simple;
-	bh=/RY7nYXOnqPkWXRx9WuXzsni79N+nRuNl8UoA/cTePA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q7JbPiqa4GykuzuohSJx3uIK6yRXNVK5e2svYX25dBpnux3dEbIlvyNz5ggCHAGCzrN3iZWnIIDaEdoK9a+fq0PDYAiGTXN19N3HivOpYnIoYvebO93qOsGTTs0LSuRURbCByi5acCL0S3BFDD2QNTTDkBkMEAYP6e1oUNctbdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=QkQaH9yQ; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4130EWPq007448;
-	Sat, 3 Feb 2024 01:12:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : mime-version : content-transfer-encoding;
- s=corp-2023-11-20; bh=a6KLjOb2QWt/Y18wXRyvQWFwGbGwTYm25Tg/iqQf07w=;
- b=QkQaH9yQrZVJuVjPWiAo7InFwPCQVeldnMRrz15Kw2QNZe8cYIuhOiwhJs9xZEuKLeiD
- D51VDmyo6qQ+96bNUCOr1nxtzY/dISkUoHuhN/+V68Pj3UUrtuQYcBYCZdGGwCVNS6iD
- Z5MfTCNHQyfuiO9874cCTcMKmx089wCu15fED9d9BCZ6tBXrsimAjGcAe70VKJvSJ0kt
- nNTKK+Zgs2fXMlJP6SUZx0g9OjoAinvbnWhbEQJmFmyBe2JL1KlcPifCyv/F+LG8rLiV
- jlrf7Y+Coas2GvxI0RiSA8lPQ+n5cVTdcJwT5sqk4vDovHPzGk4y1RneRaFJRAyGD62d zg== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vvsqb8wsx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 03 Feb 2024 01:12:32 +0000
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 4130MoKh006693;
-	Sat, 3 Feb 2024 01:12:31 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3vvr9k0h14-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 03 Feb 2024 01:12:31 +0000
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4131CUwu020300;
-	Sat, 3 Feb 2024 01:12:30 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3vvr9k0h0f-1;
-	Sat, 03 Feb 2024 01:12:30 +0000
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-To: stable@vger.kernel.org
-Cc: jakub@cloudflare.com, daniel@iogearbox.net,
-        samasth.norway.ananda@oracle.com, alan.maguire@oracle.com
-Subject: [PATCH 5.15.y] Revert "selftests/bpf: Test tail call counting with bpf2bpf and data on stack"
-Date: Fri,  2 Feb 2024 17:12:28 -0800
-Message-ID: <20240203011229.3326803-1-samasth.norway.ananda@oracle.com>
-X-Mailer: git-send-email 2.42.0
+	s=arc-20240116; t=1706922750; c=relaxed/simple;
+	bh=2DiNg+AV7VuJ2EwtZlmsfWoLff7eCS+w/xEf/uARMwI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dOBT9paUM5T2yPtD4/BI8diTndNTnk6rQp8JPB0pSW49zRL8SNTQe2YK5O5jZqWdzMie4EKYpVVId9GmXOP+jNTG3iw5jOfQqUlICr7Mr0AGEagG3WDU2n1vUTui2g5GKwhbMDy8wjPDnqwp+si72iODQ7xcGo0/qSeb/WMX89g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNE9eojQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C03C433C7;
+	Sat,  3 Feb 2024 01:12:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1706922749;
+	bh=2DiNg+AV7VuJ2EwtZlmsfWoLff7eCS+w/xEf/uARMwI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eNE9eojQwUc6DjSQklExt40eZUahaqQYQkmoWPFEI0OXb+T0MElo6Zy1Wp1FhDxY2
+	 T2PKMk+fuVx/ng/Wqu/B6guq2BJ9F1WcNPlcHy3+rj18P7Tzg3/T5KjO/rqzT1fz9A
+	 H2Ci8pHC+kcPdmwCj0fOQQakETltS0lmL3WwK3D4=
+Date: Fri, 2 Feb 2024 17:12:28 -0800
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Marco Elver <elver@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Jiri Slaby <jirislaby@kernel.org>,
+	Alexander Potapenko <glider@google.com>, stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.7 125/346] mm/sparsemem: fix race in accessing
+ memory_section->usage
+Message-ID: <2024020221-disburse-scrawny-ff90@gregkh>
+References: <20240129170016.356158639@linuxfoundation.org>
+ <20240129170020.057681007@linuxfoundation.org>
+ <81752462-c6c7-4a65-b9f2-371573e15499@kernel.org>
+ <2024013044-snowiness-abreast-2a47@gregkh>
+ <7d963e3f-2677-4459-b60e-2590d6cddc79@suse.cz>
+ <CANpmjNOdRXcok7oyQ=-G7iYthy7f6zHMjJ+TZqGP+vzwRT4+pg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-02_16,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
- bulkscore=0 malwarescore=0 suspectscore=0 phishscore=0 spamscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402030007
-X-Proofpoint-GUID: w75CwO_m97nP7YiW4NbncdU5DdJi6CFP
-X-Proofpoint-ORIG-GUID: w75CwO_m97nP7YiW4NbncdU5DdJi6CFP
+In-Reply-To: <CANpmjNOdRXcok7oyQ=-G7iYthy7f6zHMjJ+TZqGP+vzwRT4+pg@mail.gmail.com>
 
-This reverts commit 3eefb2fbf4ec1c1ff239b8b65e6e78aae335e4a6.
+On Fri, Feb 02, 2024 at 10:50:26AM +0100, Marco Elver wrote:
+> On Fri, 2 Feb 2024 at 10:44, Vlastimil Babka <vbabka@suse.cz> wrote:
+> >
+> >
+> >
+> > On 1/30/24 17:21, Greg Kroah-Hartman wrote:
+> > > On Tue, Jan 30, 2024 at 07:00:36AM +0100, Jiri Slaby wrote:
+> > >> On 29. 01. 24, 18:02, Greg Kroah-Hartman wrote:
+> > >>> 6.7-stable review patch.  If anyone has any objections, please let me know.
+> > >>>
+> > >>> ------------------
+> > >>>
+> > >>> From: Charan Teja Kalla <quic_charante@quicinc.com>
+> > >>>
+> > >>> commit 5ec8e8ea8b7783fab150cf86404fc38cb4db8800 upstream.
+> > >>
+> > >> Hi,
+> > >>
+> > >> our machinery (git-fixes) says, this is needed as a fix:
+> > >> commit f6564fce256a3944aa1bc76cb3c40e792d97c1eb
+> > >> Author: Marco Elver <elver@google.com>
+> > >> Date:   Thu Jan 18 11:59:14 2024 +0100
+> > >>
+> > >>     mm, kmsan: fix infinite recursion due to RCU critical section
+> > >>
+> > >>
+> > >> Leaving up to the recipients to decide, as I have no idea…
+> >
+> > Let's Cc the people involved in f6564fce256a394
+> >
+> > > That commit just got merged into Linus's tree, AND it is not marked for
+> > > stable, which is worrying as I have to get the developers's approval to
+> > > add any non-cc-stable mm patch to the tree because they said they would
+> > > always mark them properly :)
+> > >
+> > > So I can't take it just yet...
+> 
+> So 5ec8e8ea8b7783fab150cf86404fc38cb4db8800 is being backported to
+> stable, which means that the issue that f6564fce256a394 fixed will be
+> present in stable. I didn't mark f6564fce256a394 as stable as the
+> problem doesn't exist in stable (yet), but if the problem-introducing
+> commit is being backported, then yes, please also backport
+> f6564fce256a394 to stable.
 
-libbpf support for "tc" progs doesn't exist for the linux-5.15.y tree.
-This commit was backported too far back in upstream, to a kernel where
-the libbpf support was not there for the test.
+Thanks, now queued up.
 
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-
-Conflicts:
-        tools/testing/selftests/bpf/prog_tests/tailcalls.c
-        conflict was caused due to code overlap with the commit
-        b06bde1c5ed6 ("selftests/bpf: Correct map_fd to data_fd in tailcalls")
-        in the function test_tailcall_bpf2bpf_6(). As this function is
-        removed by the revert conflict is resolved.
----
-This was identified when we ran bpf selftest.
-$ cd tools/testing/selftests/bpf
-$ make test_progs
-$ ./test_progs --name=ksyms_module
-#137/1 tailcalls/tailcall_1:OK
-#137/2 tailcalls/tailcall_2:OK
-#137/3 tailcalls/tailcall_3:OK
-#137/4 tailcalls/tailcall_4:OK
-#137/5 tailcalls/tailcall_5:OK
-#137/6 tailcalls/tailcall_bpf2bpf_1:OK
-#137/7 tailcalls/tailcall_bpf2bpf_2:OK
-#137/8 tailcalls/tailcall_bpf2bpf_3:OK
-#137/9 tailcalls/tailcall_bpf2bpf_4:OK
-#137/10 tailcalls/tailcall_bpf2bpf_5:OK
-libbpf: prog 'classifier_0': missing BPF prog type, check ELF section name 'tc'
-libbpf: failed to load program 'classifier_0'
-libbpf: failed to load object 'tailcall_bpf2bpf6'
-libbpf: failed to load BPF skeleton 'tailcall_bpf2bpf6': -22
-test_tailcall_bpf2bpf_6:FAIL:open and load unexpected error: -22
-#137/11 tailcalls/tailcall_bpf2bpf_6:FAIL
-#137 tailcalls:FAIL
-Summary: 0/10 PASSED, 0 SKIPPED, 2 FAILED
----
- .../selftests/bpf/prog_tests/tailcalls.c      | 55 -------------------
- .../selftests/bpf/progs/tailcall_bpf2bpf6.c   | 42 --------------
- 2 files changed, 97 deletions(-)
- delete mode 100644 tools/testing/selftests/bpf/progs/tailcall_bpf2bpf6.c
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/tailcalls.c b/tools/testing/selftests/bpf/prog_tests/tailcalls.c
-index 28e30ad4a30e..2e3e525e8579 100644
---- a/tools/testing/selftests/bpf/prog_tests/tailcalls.c
-+++ b/tools/testing/selftests/bpf/prog_tests/tailcalls.c
-@@ -810,59 +810,6 @@ static void test_tailcall_bpf2bpf_4(bool noise)
- 	bpf_object__close(obj);
- }
- 
--#include "tailcall_bpf2bpf6.skel.h"
--
--/* Tail call counting works even when there is data on stack which is
-- * not aligned to 8 bytes.
-- */
--static void test_tailcall_bpf2bpf_6(void)
--{
--	struct tailcall_bpf2bpf6 *obj;
--	int err, map_fd, prog_fd, main_fd, data_fd, i, val;
--	LIBBPF_OPTS(bpf_test_run_opts, topts,
--		.data_in = &pkt_v4,
--		.data_size_in = sizeof(pkt_v4),
--		.repeat = 1,
--	);
--
--	obj = tailcall_bpf2bpf6__open_and_load();
--	if (!ASSERT_OK_PTR(obj, "open and load"))
--		return;
--
--	main_fd = bpf_program__fd(obj->progs.entry);
--	if (!ASSERT_GE(main_fd, 0, "entry prog fd"))
--		goto out;
--
--	map_fd = bpf_map__fd(obj->maps.jmp_table);
--	if (!ASSERT_GE(map_fd, 0, "jmp_table map fd"))
--		goto out;
--
--	prog_fd = bpf_program__fd(obj->progs.classifier_0);
--	if (!ASSERT_GE(prog_fd, 0, "classifier_0 prog fd"))
--		goto out;
--
--	i = 0;
--	err = bpf_map_update_elem(map_fd, &i, &prog_fd, BPF_ANY);
--	if (!ASSERT_OK(err, "jmp_table map update"))
--		goto out;
--
--	err = bpf_prog_test_run_opts(main_fd, &topts);
--	ASSERT_OK(err, "entry prog test run");
--	ASSERT_EQ(topts.retval, 0, "tailcall retval");
--
--	data_fd = bpf_map__fd(obj->maps.bss);
--	if (!ASSERT_GE(data_fd, 0, "bss map fd"))
--		goto out;
--
--	i = 0;
--	err = bpf_map_lookup_elem(data_fd, &i, &val);
--	ASSERT_OK(err, "bss map lookup");
--	ASSERT_EQ(val, 1, "done flag is set");
--
--out:
--	tailcall_bpf2bpf6__destroy(obj);
--}
--
- void test_tailcalls(void)
- {
- 	if (test__start_subtest("tailcall_1"))
-@@ -885,6 +832,4 @@ void test_tailcalls(void)
- 		test_tailcall_bpf2bpf_4(false);
- 	if (test__start_subtest("tailcall_bpf2bpf_5"))
- 		test_tailcall_bpf2bpf_4(true);
--	if (test__start_subtest("tailcall_bpf2bpf_6"))
--		test_tailcall_bpf2bpf_6();
- }
-diff --git a/tools/testing/selftests/bpf/progs/tailcall_bpf2bpf6.c b/tools/testing/selftests/bpf/progs/tailcall_bpf2bpf6.c
-deleted file mode 100644
-index 41ce83da78e8..000000000000
---- a/tools/testing/selftests/bpf/progs/tailcall_bpf2bpf6.c
-+++ /dev/null
-@@ -1,42 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--#include <linux/bpf.h>
--#include <bpf/bpf_helpers.h>
--
--#define __unused __attribute__((unused))
--
--struct {
--	__uint(type, BPF_MAP_TYPE_PROG_ARRAY);
--	__uint(max_entries, 1);
--	__uint(key_size, sizeof(__u32));
--	__uint(value_size, sizeof(__u32));
--} jmp_table SEC(".maps");
--
--int done = 0;
--
--SEC("tc")
--int classifier_0(struct __sk_buff *skb __unused)
--{
--	done = 1;
--	return 0;
--}
--
--static __noinline
--int subprog_tail(struct __sk_buff *skb)
--{
--	/* Don't propagate the constant to the caller */
--	volatile int ret = 1;
--
--	bpf_tail_call_static(skb, &jmp_table, 0);
--	return ret;
--}
--
--SEC("tc")
--int entry(struct __sk_buff *skb)
--{
--	/* Have data on stack which size is not a multiple of 8 */
--	volatile char arr[1] = {};
--
--	return subprog_tail(skb);
--}
--
--char __license[] SEC("license") = "GPL";
--- 
-2.42.0
-
+greg k-h
 
