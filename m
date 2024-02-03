@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-18516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0E0848307
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C92768480A0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D4081C21A14
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84BE6284A15
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F414F8A1;
-	Sat,  3 Feb 2024 04:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F8217592;
+	Sat,  3 Feb 2024 04:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B4lMrY3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeRyWqF+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2846FFBF2;
-	Sat,  3 Feb 2024 04:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912D11173F;
+	Sat,  3 Feb 2024 04:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933857; cv=none; b=oASJ1zLMacwFkXxYSdRHu/UYWW3rTWMBXDKz9qcQh4a/z25ED2Oswe9Q6PTBOqzAhhmEkG2V36RHMyfvYaaugzNv3N/NtP+uaHUGLlCbbZ2mmjuTANsUnjyieZ1VvpEHuNV5Uj9rUE9z6cy+xoce7YOpiPB+hwoPceJqZtV/OSw=
+	t=1706933411; cv=none; b=Q+20MRWTfstL5vQeT5aIs8LsMEEA+hbrnIW+7DkouYz5ea0UabfluowGP30fz/iizzwolPGluxd1Rysd7ZOXbWUrIJBRQUNfCTlJZH23J0+uZUKRVa8tMzJe7jIdutK+7VGONubljQMphjzJ2SutiBeHvtkLncDwA5i4p+4q2J8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933857; c=relaxed/simple;
-	bh=18ATDsmaFSEJ7fE+RVzQSvC+/n9C+yDEDVhrLaFVBG4=;
+	s=arc-20240116; t=1706933411; c=relaxed/simple;
+	bh=eU7VWmoK2UF6XEz3zq3zf6sMOCuauvDcbkXbulyqb3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W4bh0veCAbwMjI1LiP2utgxl4CJjw58DjczhEtBa5ozIItl5Ykb/dLa7VWE/ELjrBCPW4oW3po70OTiW02gn05bOAFm5S7gtwzAY6d2prxmtw+9EgEJZtrPmsrk2GDcBXyTS6fFJCE8ZVrsfFc15U8eYn6/zHx28zpFlJivDOCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B4lMrY3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24B7C433C7;
-	Sat,  3 Feb 2024 04:17:36 +0000 (UTC)
+	 MIME-Version; b=dAbdk7a4btLKwFsKv2KX823LmvJ4WR3rrkb6FZooP87TWtWXz3P+0TbNKySOb17f7aPw98fffPMJqjNDivyAQkhJVmjBb0AGDE6wplDs4GVEqZjk77PfuTOfDAWvcw4w8NJEo7xkM2UvgSNVgRxLZdhtofWNmMq9In5E2qWtD9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeRyWqF+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59158C43390;
+	Sat,  3 Feb 2024 04:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933857;
-	bh=18ATDsmaFSEJ7fE+RVzQSvC+/n9C+yDEDVhrLaFVBG4=;
+	s=korg; t=1706933411;
+	bh=eU7VWmoK2UF6XEz3zq3zf6sMOCuauvDcbkXbulyqb3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B4lMrY3uQTK5nfX0FIzpzs8qVTy5xwIrnWWHxjOf1JiCsS+u909LBnpPALEn5WfNU
-	 Dm5dIrOt8AEkKQRId6H+wwU/KikH5H6qafyFC3wQSZyBjOpavHttEdUz/QuC3CcQsg
-	 ZTXfgkQ0OuPyX6iWjUKjU0U3Gcz3WFAdVgL5B2lo=
+	b=HeRyWqF+kwgGOmdJqlncctEqSisHKhqeizLM4tIrVSrWB5ep1ETkVldUw7DMHmwn3
+	 QH4wPPh9rzUobBAd52VCXzvEjh/DyMPJDYZkJARmniiZb8tCZgGQH6jDGTEkUL21jU
+	 o5yQE/1PqJP5iVdLl85xI6iJAnCr0r+cScrUNZIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Rob Clark <robdclark@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 188/353] media: uvcvideo: Fix power line control for a Chicony camera
+Subject: [PATCH 6.1 133/219] drm/msm/dpu: Ratelimit framedone timeout msgs
 Date: Fri,  2 Feb 2024 20:05:06 -0800
-Message-ID: <20240203035409.612853711@linuxfoundation.org>
+Message-ID: <20240203035336.129932646@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit dba3e701917a4cce92920f8ccb9fa4d4ee5ac07e ]
+[ Upstream commit 2b72e50c62de60ad2d6bcd86aa38d4ccbdd633f2 ]
 
-The device does not implement the control properly.
+When we start getting these, we get a *lot*.  So ratelimit it to not
+flood dmesg.
 
-Fixes v4l2-compliance error:
-
-info: checking control 'Power Line Frequency' (0x00980918)
-fail: v4l2-test-controls.cpp(552): could not set valid menu item 3
-
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
+Patchwork: https://patchwork.freedesktop.org/patch/571584/
+Link: https://lore.kernel.org/r/20231211182000.218088-1-robdclark@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 5 ++++-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h     | 1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 08fcd2ffa727..4b5ea3501753 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -2592,6 +2592,15 @@ static const struct usb_device_id uvc_ids[] = {
- 	  .bInterfaceSubClass	= 1,
- 	  .bInterfaceProtocol	= 0,
- 	  .driver_info		= (kernel_ulong_t)&uvc_ctrl_power_line_limited },
-+	/* Chicony Electronics Co., Ltd Integrated Camera */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x04f2,
-+	  .idProduct		= 0xb67c,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= UVC_PC_PROTOCOL_15,
-+	  .driver_info		= (kernel_ulong_t)&uvc_ctrl_power_line_uvc11 },
- 	/* Chicony EasyCamera */
- 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
- 				| USB_DEVICE_ID_MATCH_INT_INFO,
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+index b0eb881f8af1..38d38f923df6 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+@@ -38,6 +38,9 @@
+ #define DPU_ERROR_ENC(e, fmt, ...) DPU_ERROR("enc%d " fmt,\
+ 		(e) ? (e)->base.base.id : -1, ##__VA_ARGS__)
+ 
++#define DPU_ERROR_ENC_RATELIMITED(e, fmt, ...) DPU_ERROR_RATELIMITED("enc%d " fmt,\
++		(e) ? (e)->base.base.id : -1, ##__VA_ARGS__)
++
+ /*
+  * Two to anticipate panels that can do cmd/vid dynamic switching
+  * plan is to create all possible physical encoder types, and switch between
+@@ -2385,7 +2388,7 @@ static void dpu_encoder_frame_done_timeout(struct timer_list *t)
+ 		return;
+ 	}
+ 
+-	DPU_ERROR_ENC(dpu_enc, "frame done timeout\n");
++	DPU_ERROR_ENC_RATELIMITED(dpu_enc, "frame done timeout\n");
+ 
+ 	event = DPU_ENCODER_FRAME_EVENT_ERROR;
+ 	trace_dpu_enc_frame_done_timeout(DRMID(drm_enc), event);
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+index ed80ed6784ee..bb35aa5f5709 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+@@ -51,6 +51,7 @@
+ 	} while (0)
+ 
+ #define DPU_ERROR(fmt, ...) pr_err("[dpu error]" fmt, ##__VA_ARGS__)
++#define DPU_ERROR_RATELIMITED(fmt, ...) pr_err_ratelimited("[dpu error]" fmt, ##__VA_ARGS__)
+ 
+ /**
+  * ktime_compare_safe - compare two ktime structures
 -- 
 2.43.0
 
