@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C8C8480DB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40AAC84833F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBA1428180F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 731B61C2034D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062ED199C2;
-	Sat,  3 Feb 2024 04:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE3651C3F;
+	Sat,  3 Feb 2024 04:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iamJzlts"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsPc8oea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B970710A1C;
-	Sat,  3 Feb 2024 04:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A860171A4;
+	Sat,  3 Feb 2024 04:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933452; cv=none; b=a8AxmnEByTQaKO+YG8J54mFDHG01ctNe4DZjJWcrcPnsAXqNK2NSCPK/QNtctk1ojasbGEFKh8ybpqeoEO13dgjQPRn3WzmpDoerCxM26Y9tnRQJx2441GXu8MTQ5WkhKFtuPof/ZTX02Q4GtAxgdzleseeDPVojrKJzRkTPewg=
+	t=1706933897; cv=none; b=iBJu75HZEStQFjw1aACpxNc1WBMSttkIp4Wvj8WbdYKxT91jgNvA/MI3m0eQM5IIjEcoLLJKImvlm1vt4LkyzZI1EHbtBLzcmv3WA/DALPb1hT/gaM2kCAr/ZUhUwW9FpspIs3QjOUuOXkSlDG5fMsn18NekxDL76+eCKkM99sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933452; c=relaxed/simple;
-	bh=OqF6UHtXsoYhH4Q/9D6NWL/HEK1ysD6b3mZOo54+oSE=;
+	s=arc-20240116; t=1706933897; c=relaxed/simple;
+	bh=P20S2eTb0gmao4CUhn28/OhgzRl0Wn4la7P/UzPdq90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yzu9fhW+39BJl5gQ3xeA9YSfklH4c2wcom/BwvYXiAxIcYMEXRaggcUwiLepQYr9LFXT+vbYsAM9oYhGTUnCL2LQjSkXkAtpUKH/nE0/lP1Wc+fl0sT1oHO4NUKGKV4mEve2Pfygkc/Qbumsd57j7aIqjEDSFo28o6u4Ify/o9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iamJzlts; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F49C43390;
-	Sat,  3 Feb 2024 04:10:52 +0000 (UTC)
+	 MIME-Version; b=X1OQ0WTS1LgTsU9q+MBmfzMxc6em3nmuZBtvwWzD2mNdCmzklIXX2KLho128WuvoqMk7fuD77GpQ76CGxP0R/jub9aWOvhrv4M7ZUmPqooOdPyWKEJwxYfuNhEL7S4uKdZ72//gmcA9wvQ4XclN+QYmTW/lV9NOXfzl/ajfVjHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsPc8oea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6721C433F1;
+	Sat,  3 Feb 2024 04:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933452;
-	bh=OqF6UHtXsoYhH4Q/9D6NWL/HEK1ysD6b3mZOo54+oSE=;
+	s=korg; t=1706933896;
+	bh=P20S2eTb0gmao4CUhn28/OhgzRl0Wn4la7P/UzPdq90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iamJzltsB+cCOOhuEOwmLSJdg6ph/9gCIR2dOzS3rnv1omvbbT1+p/AWL3ycIZASM
-	 DhS0FZTZ+n/KOooiQiaLGYkI/d/Mk0vLQR94BlXccurxKwKG8FyVyNw2H3RJbd9ELv
-	 /72DZWk30vMjyacvwAXGmHFcv4uxLp0Mqbcnesgo=
+	b=VsPc8oea6AN+F9642i6NVYER8nQafL2wmhVNJibU0yLTMwhqwfRSYJjQUJlr20lOo
+	 raSFDadjjv3lgUc1F9BIB3AUKAoFV5pglpsV7Onx+9mEdm7mq0LyAEreQWgDRK46y2
+	 dFwV+QoajteBA0WARBu0Xn4Pd2IEmDnJrXrA1U+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jiri Kosina <jkosina@suse.com>,
+	Harshit Shah <harshitshah.opendev@gmail.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 188/219] HID: hidraw: fix a problem of memory leak in hidraw_release()
+Subject: [PATCH 6.7 243/353] i3c: master: cdns: Update maximum prescaler value for i2c clock
 Date: Fri,  2 Feb 2024 20:06:01 -0800
-Message-ID: <20240203035343.116208612@linuxfoundation.org>
+Message-ID: <20240203035411.385089634@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Harshit Shah <harshitshah.opendev@gmail.com>
 
-[ Upstream commit a3bdcdd022c68942a774e8e63424cc11c85aab78 ]
+[ Upstream commit 374c13f9080a1b9835a5ed3e7bea93cf8e2dc262 ]
 
-'struct hidraw_list' is a circular queue whose head can be smaller than
-tail. Using 'list->tail != list->head' to release all memory that should
-be released.
+As per the Cadence IP document fixed the I2C clock divider value limit from
+16 bits instead of 10 bits. Without this change setting up the I2C clock to
+low frequencies will not work as the prescaler value might be greater than
+10 bit number.
 
-Fixes: a5623a203cff ("HID: hidraw: fix memory leak in hidraw_release()")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+I3C clock divider value is 10 bits only. Updating the macro names for both.
+
+Signed-off-by: Harshit Shah <harshitshah.opendev@gmail.com>
+Link: https://lore.kernel.org/r/1703927483-28682-1-git-send-email-harshitshah.opendev@gmail.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hidraw.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/i3c/master/i3c-master-cdns.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hidraw.c b/drivers/hid/hidraw.c
-index b617aada50b0..7b097ab2170c 100644
---- a/drivers/hid/hidraw.c
-+++ b/drivers/hid/hidraw.c
-@@ -355,8 +355,11 @@ static int hidraw_release(struct inode * inode, struct file * file)
- 	down_write(&minors_rwsem);
+diff --git a/drivers/i3c/master/i3c-master-cdns.c b/drivers/i3c/master/i3c-master-cdns.c
+index bcbe8f914149..c1627f3552ce 100644
+--- a/drivers/i3c/master/i3c-master-cdns.c
++++ b/drivers/i3c/master/i3c-master-cdns.c
+@@ -76,7 +76,8 @@
+ #define PRESCL_CTRL0			0x14
+ #define PRESCL_CTRL0_I2C(x)		((x) << 16)
+ #define PRESCL_CTRL0_I3C(x)		(x)
+-#define PRESCL_CTRL0_MAX		GENMASK(9, 0)
++#define PRESCL_CTRL0_I3C_MAX		GENMASK(9, 0)
++#define PRESCL_CTRL0_I2C_MAX		GENMASK(15, 0)
  
- 	spin_lock_irqsave(&hidraw_table[minor]->list_lock, flags);
--	for (int i = list->tail; i < list->head; i++)
--		kfree(list->buffer[i].value);
-+	while (list->tail != list->head) {
-+		kfree(list->buffer[list->tail].value);
-+		list->buffer[list->tail].value = NULL;
-+		list->tail = (list->tail + 1) & (HIDRAW_BUFFER_SIZE - 1);
-+	}
- 	list_del(&list->node);
- 	spin_unlock_irqrestore(&hidraw_table[minor]->list_lock, flags);
- 	kfree(list);
+ #define PRESCL_CTRL1			0x18
+ #define PRESCL_CTRL1_PP_LOW_MASK	GENMASK(15, 8)
+@@ -1233,7 +1234,7 @@ static int cdns_i3c_master_bus_init(struct i3c_master_controller *m)
+ 		return -EINVAL;
+ 
+ 	pres = DIV_ROUND_UP(sysclk_rate, (bus->scl_rate.i3c * 4)) - 1;
+-	if (pres > PRESCL_CTRL0_MAX)
++	if (pres > PRESCL_CTRL0_I3C_MAX)
+ 		return -ERANGE;
+ 
+ 	bus->scl_rate.i3c = sysclk_rate / ((pres + 1) * 4);
+@@ -1246,7 +1247,7 @@ static int cdns_i3c_master_bus_init(struct i3c_master_controller *m)
+ 	max_i2cfreq = bus->scl_rate.i2c;
+ 
+ 	pres = (sysclk_rate / (max_i2cfreq * 5)) - 1;
+-	if (pres > PRESCL_CTRL0_MAX)
++	if (pres > PRESCL_CTRL0_I2C_MAX)
+ 		return -ERANGE;
+ 
+ 	bus->scl_rate.i2c = sysclk_rate / ((pres + 1) * 5);
 -- 
 2.43.0
 
