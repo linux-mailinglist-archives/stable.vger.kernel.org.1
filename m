@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-18105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DCFA848166
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B8FD848280
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62E5F1C21FE6
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6F98281020
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B1A2B9D7;
-	Sat,  3 Feb 2024 04:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3479548CD7;
+	Sat,  3 Feb 2024 04:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t32B35dS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMyxcOkE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CF9111BE;
-	Sat,  3 Feb 2024 04:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6EDD10A13;
+	Sat,  3 Feb 2024 04:15:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933550; cv=none; b=qeSVaatbx/dygzTTlBrypous34A3TPhvMOA+hBIIEmjBM777znx4sxWjSW5G6sm7KndMyMYJg+o1qJMUo738+t0d14dYmtrXQDX0tIJfP809YcHY8H7OtGLkQ3xwjZm6w5ryqWQv/4pQK/Rmv0LSUELDMgVd2vU36A7XLrAajvQ=
+	t=1706933757; cv=none; b=VczM9P5oAa2fewgvdw4UPLJPqCeDeQ5StEAaTG0xyIMWr0ITo1qHwS3JSLU9El9zfAO6/0SfOiVvrZwGor8QL+ZYxqVQauOBvJL1Luy7qHbmEicMW6ImYWvEx0t80iTPaLls0kOiMpg1piL/Wc8jJSKIUbSCV8gwT1e6OoVkjH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933550; c=relaxed/simple;
-	bh=09LXb0D5WMDasqMfRfooFBcX6EU47t9IDBW/jZ11clw=;
+	s=arc-20240116; t=1706933757; c=relaxed/simple;
+	bh=nIvc1STP4mtDR3vdgvJ4WsawW5WJurA5Sy0zMi6qoRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iP2t2QvnMDdYk3UnTGj3X6GZcUcVwQMY+VHIuxEvBfx2rv5LgFv2Vt0oUM2z1KvA+b2zOIPDcG89TjcGb+0DcoeDSmvtxI2suJ4Yb/e926Gw27JtC2w1s0Ppf+pwD+LS3138ZZmgiCqc+DPbeVrWEUXyzo4Rn4a6+FxsnktSkcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t32B35dS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FAA5C433F1;
-	Sat,  3 Feb 2024 04:12:30 +0000 (UTC)
+	 MIME-Version; b=CjAFy/qa87oKlny4YsS2sPm70kQ6axiUWy5QPwGqHW1sISlEmOYgdNqVX456183FsEKiMUxqzMEkXkdOxCECxaD1N/NW7PR1smHePpLNyMg8TVaezuWj5mtpqNjcd+NnH2fF1QYxEL4M/qjEvqT0rIpHTcs6fzcQ2/NPWSixHoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMyxcOkE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4E0C43390;
+	Sat,  3 Feb 2024 04:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933550;
-	bh=09LXb0D5WMDasqMfRfooFBcX6EU47t9IDBW/jZ11clw=;
+	s=korg; t=1706933756;
+	bh=nIvc1STP4mtDR3vdgvJ4WsawW5WJurA5Sy0zMi6qoRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t32B35dS3WAj1CmDCfIFree31kHySA4yUxlDGIHTuKcSoGUHOwEeZwj4FUowSIvA2
-	 apQ3pMmlZ4vwYZscfbwfXSNG+vdy4Yq97cSO7epXQDdWnBCiUw+nJJbP+bXq2Yb0dX
-	 2dMzJJwNbqKR/UVjjkyAQB4fBfkfC7jy2R23heXE=
+	b=hMyxcOkEsqyD1Xcbuo8aGgNqj90Usu0W8uLWHQL024NAj4RDygNH+B/CiNZm+Kz9Y
+	 0AVOWmzbKXxkB+jwTATdMssPRHg1l+LWLDC2jsdtRFzyo+fBuB867rPQbiJNIc97m/
+	 EqgX17vs5pKXjPZ+BvZ6y/r8k9JgdqynwUD2Bg6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/322] ARM: dts: samsung: exynos4: fix camera unit addresses/ranges
-Date: Fri,  2 Feb 2024 20:02:50 -0800
-Message-ID: <20240203035401.534622904@linuxfoundation.org>
+Subject: [PATCH 6.7 053/353] SUNRPC: Fix a suspicious RCU usage warning
+Date: Fri,  2 Feb 2024 20:02:51 -0800
+Message-ID: <20240203035405.479244034@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,173 +62,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Anna Schumaker <Anna.Schumaker@Netapp.com>
 
-[ Upstream commit ba2a45a48503665f7e8eeec51f8b40456566b0cd ]
+[ Upstream commit 31b62908693c90d4d07db597e685d9f25a120073 ]
 
-The camera node has both unit address and children within the same bus
-mapping, thus needs proper ranges property to fix dtc W=1 warnings:
+I received the following warning while running cthon against an ontap
+server running pNFS:
 
-  Warning (unit_address_vs_reg): /soc/camera@11800000: node has a unit name, but no reg or ranges property
-  Warning (simple_bus_reg): /soc/camera@11800000: missing or empty reg/ranges property
+[   57.202521] =============================
+[   57.202522] WARNING: suspicious RCU usage
+[   57.202523] 6.7.0-rc3-g2cc14f52aeb7 #41492 Not tainted
+[   57.202525] -----------------------------
+[   57.202525] net/sunrpc/xprtmultipath.c:349 RCU-list traversed in non-reader section!!
+[   57.202527]
+               other info that might help us debug this:
 
-Subtract 0x11800000 from all its children nodes.  No functional impact
-expected.
+[   57.202528]
+               rcu_scheduler_active = 2, debug_locks = 1
+[   57.202529] no locks held by test5/3567.
+[   57.202530]
+               stack backtrace:
+[   57.202532] CPU: 0 PID: 3567 Comm: test5 Not tainted 6.7.0-rc3-g2cc14f52aeb7 #41492 5b09971b4965c0aceba19f3eea324a4a806e227e
+[   57.202534] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 2/2/2022
+[   57.202536] Call Trace:
+[   57.202537]  <TASK>
+[   57.202540]  dump_stack_lvl+0x77/0xb0
+[   57.202551]  lockdep_rcu_suspicious+0x154/0x1a0
+[   57.202556]  rpc_xprt_switch_has_addr+0x17c/0x190 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202596]  rpc_clnt_setup_test_and_add_xprt+0x50/0x180 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202621]  ? rpc_clnt_add_xprt+0x254/0x300 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202646]  rpc_clnt_add_xprt+0x27a/0x300 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202671]  ? __pfx_rpc_clnt_setup_test_and_add_xprt+0x10/0x10 [sunrpc ebe02571b9a8ceebf7d98e71675af20c19bdb1f6]
+[   57.202696]  nfs4_pnfs_ds_connect+0x345/0x760 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202728]  ? __pfx_nfs4_test_session_trunk+0x10/0x10 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202754]  nfs4_fl_prepare_ds+0x75/0xc0 [nfs_layout_nfsv41_files e3a4187f18ae8a27b630f9feae6831b584a9360a]
+[   57.202760]  filelayout_write_pagelist+0x4a/0x200 [nfs_layout_nfsv41_files e3a4187f18ae8a27b630f9feae6831b584a9360a]
+[   57.202765]  pnfs_generic_pg_writepages+0xbe/0x230 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202788]  __nfs_pageio_add_request+0x3fd/0x520 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202813]  nfs_pageio_add_request+0x18b/0x390 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202831]  nfs_do_writepage+0x116/0x1e0 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202849]  nfs_writepages_callback+0x13/0x30 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202866]  write_cache_pages+0x265/0x450
+[   57.202870]  ? __pfx_nfs_writepages_callback+0x10/0x10 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202891]  nfs_writepages+0x141/0x230 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202913]  do_writepages+0xd2/0x230
+[   57.202917]  ? filemap_fdatawrite_wbc+0x5c/0x80
+[   57.202921]  filemap_fdatawrite_wbc+0x67/0x80
+[   57.202924]  filemap_write_and_wait_range+0xd9/0x170
+[   57.202930]  nfs_wb_all+0x49/0x180 [nfs 6c976fa593a7c2976f5a0aeb4965514a828e6902]
+[   57.202947]  nfs4_file_flush+0x72/0xb0 [nfsv4 c716d88496ded0ea6d289bbea684fa996f9b57a9]
+[   57.202969]  __se_sys_close+0x46/0xd0
+[   57.202972]  do_syscall_64+0x68/0x100
+[   57.202975]  ? do_syscall_64+0x77/0x100
+[   57.202976]  ? do_syscall_64+0x77/0x100
+[   57.202979]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+[   57.202982] RIP: 0033:0x7fe2b12e4a94
+[   57.202985] Code: 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 80 3d d5 18 0e 00 00 74 13 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 44 c3 0f 1f 00 48 83 ec 18 89 7c 24 0c e8 c3
+[   57.202987] RSP: 002b:00007ffe857ddb38 EFLAGS: 00000202 ORIG_RAX: 0000000000000003
+[   57.202989] RAX: ffffffffffffffda RBX: 00007ffe857dfd68 RCX: 00007fe2b12e4a94
+[   57.202991] RDX: 0000000000002000 RSI: 00007ffe857ddc40 RDI: 0000000000000003
+[   57.202992] RBP: 00007ffe857dfc50 R08: 7fffffffffffffff R09: 0000000065650f49
+[   57.202993] R10: 00007fe2b11f8300 R11: 0000000000000202 R12: 0000000000000000
+[   57.202994] R13: 00007ffe857dfd80 R14: 00007fe2b1445000 R15: 0000000000000000
+[   57.202999]  </TASK>
 
-Link: https://lore.kernel.org/r/20230722121719.150094-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+The problem seems to be that two out of three callers aren't taking the
+rcu_read_lock() before calling the list_for_each_entry_rcu() function in
+rpc_xprt_switch_has_addr(). I fix this by having
+rpc_xprt_switch_has_addr() unconditionaly take the rcu_read_lock(),
+which is okay to do recursively in the case that the lock has already
+been taken by a caller.
+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/samsung/exynos4.dtsi    | 26 +++++++++++------------
- arch/arm/boot/dts/samsung/exynos4x12.dtsi | 17 ++++++++-------
- 2 files changed, 22 insertions(+), 21 deletions(-)
+ net/sunrpc/xprtmultipath.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/samsung/exynos4.dtsi b/arch/arm/boot/dts/samsung/exynos4.dtsi
-index f775b9377a38..7f981b5c0d64 100644
---- a/arch/arm/boot/dts/samsung/exynos4.dtsi
-+++ b/arch/arm/boot/dts/samsung/exynos4.dtsi
-@@ -203,16 +203,16 @@
+diff --git a/net/sunrpc/xprtmultipath.c b/net/sunrpc/xprtmultipath.c
+index 74ee2271251e..720d3ba742ec 100644
+--- a/net/sunrpc/xprtmultipath.c
++++ b/net/sunrpc/xprtmultipath.c
+@@ -336,8 +336,9 @@ struct rpc_xprt *xprt_iter_current_entry_offline(struct rpc_xprt_iter *xpi)
+ 			xprt_switch_find_current_entry_offline);
+ }
  
- 		camera: camera@11800000 {
- 			compatible = "samsung,fimc";
-+			ranges = <0x0 0x11800000 0xa0000>;
- 			status = "disabled";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			#clock-cells = <1>;
- 			clock-output-names = "cam_a_clkout", "cam_b_clkout";
--			ranges;
+-bool rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
+-			      const struct sockaddr *sap)
++static
++bool __rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
++				const struct sockaddr *sap)
+ {
+ 	struct list_head *head;
+ 	struct rpc_xprt *pos;
+@@ -356,6 +357,18 @@ bool rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
+ 	return false;
+ }
  
--			fimc_0: fimc@11800000 {
-+			fimc_0: fimc@0 {
- 				compatible = "samsung,exynos4210-fimc";
--				reg = <0x11800000 0x1000>;
-+				reg = <0x0 0x1000>;
- 				interrupts = <GIC_SPI 84 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clock CLK_FIMC0>,
- 					 <&clock CLK_SCLK_FIMC0>;
-@@ -223,9 +223,9 @@
- 				status = "disabled";
- 			};
- 
--			fimc_1: fimc@11810000 {
-+			fimc_1: fimc@10000 {
- 				compatible = "samsung,exynos4210-fimc";
--				reg = <0x11810000 0x1000>;
-+				reg = <0x00010000 0x1000>;
- 				interrupts = <GIC_SPI 85 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clock CLK_FIMC1>,
- 					 <&clock CLK_SCLK_FIMC1>;
-@@ -236,9 +236,9 @@
- 				status = "disabled";
- 			};
- 
--			fimc_2: fimc@11820000 {
-+			fimc_2: fimc@20000 {
- 				compatible = "samsung,exynos4210-fimc";
--				reg = <0x11820000 0x1000>;
-+				reg = <0x00020000 0x1000>;
- 				interrupts = <GIC_SPI 86 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clock CLK_FIMC2>,
- 					 <&clock CLK_SCLK_FIMC2>;
-@@ -249,9 +249,9 @@
- 				status = "disabled";
- 			};
- 
--			fimc_3: fimc@11830000 {
-+			fimc_3: fimc@30000 {
- 				compatible = "samsung,exynos4210-fimc";
--				reg = <0x11830000 0x1000>;
-+				reg = <0x00030000 0x1000>;
- 				interrupts = <GIC_SPI 87 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clock CLK_FIMC3>,
- 					 <&clock CLK_SCLK_FIMC3>;
-@@ -262,9 +262,9 @@
- 				status = "disabled";
- 			};
- 
--			csis_0: csis@11880000 {
-+			csis_0: csis@80000 {
- 				compatible = "samsung,exynos4210-csis";
--				reg = <0x11880000 0x4000>;
-+				reg = <0x00080000 0x4000>;
- 				interrupts = <GIC_SPI 78 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clock CLK_CSIS0>,
- 					 <&clock CLK_SCLK_CSIS0>;
-@@ -278,9 +278,9 @@
- 				#size-cells = <0>;
- 			};
- 
--			csis_1: csis@11890000 {
-+			csis_1: csis@90000 {
- 				compatible = "samsung,exynos4210-csis";
--				reg = <0x11890000 0x4000>;
-+				reg = <0x00090000 0x4000>;
- 				interrupts = <GIC_SPI 80 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clock CLK_CSIS1>,
- 					 <&clock CLK_SCLK_CSIS1>;
-diff --git a/arch/arm/boot/dts/samsung/exynos4x12.dtsi b/arch/arm/boot/dts/samsung/exynos4x12.dtsi
-index 84c1db221c98..83d9d0a0a617 100644
---- a/arch/arm/boot/dts/samsung/exynos4x12.dtsi
-+++ b/arch/arm/boot/dts/samsung/exynos4x12.dtsi
-@@ -451,14 +451,15 @@
- };
- 
- &camera {
-+	ranges = <0x0 0x11800000 0xba1000>;
- 	clocks = <&clock CLK_SCLK_CAM0>, <&clock CLK_SCLK_CAM1>,
- 		 <&clock CLK_PIXELASYNCM0>, <&clock CLK_PIXELASYNCM1>;
- 	clock-names = "sclk_cam0", "sclk_cam1", "pxl_async0", "pxl_async1";
- 
- 	/* fimc_[0-3] are configured outside, under phandles */
--	fimc_lite_0: fimc-lite@12390000 {
-+	fimc_lite_0: fimc-lite@b90000 {
- 		compatible = "samsung,exynos4212-fimc-lite";
--		reg = <0x12390000 0x1000>;
-+		reg = <0x00b90000 0x1000>;
- 		interrupts = <GIC_SPI 105 IRQ_TYPE_LEVEL_HIGH>;
- 		power-domains = <&pd_isp>;
- 		clocks = <&isp_clock CLK_ISP_FIMC_LITE0>;
-@@ -467,9 +468,9 @@
- 		status = "disabled";
- 	};
- 
--	fimc_lite_1: fimc-lite@123a0000 {
-+	fimc_lite_1: fimc-lite@ba0000 {
- 		compatible = "samsung,exynos4212-fimc-lite";
--		reg = <0x123a0000 0x1000>;
-+		reg = <0x00ba0000 0x1000>;
- 		interrupts = <GIC_SPI 106 IRQ_TYPE_LEVEL_HIGH>;
- 		power-domains = <&pd_isp>;
- 		clocks = <&isp_clock CLK_ISP_FIMC_LITE1>;
-@@ -478,9 +479,9 @@
- 		status = "disabled";
- 	};
- 
--	fimc_is: fimc-is@12000000 {
-+	fimc_is: fimc-is@800000 {
- 		compatible = "samsung,exynos4212-fimc-is";
--		reg = <0x12000000 0x260000>;
-+		reg = <0x00800000 0x260000>;
- 		interrupts = <GIC_SPI 90 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 95 IRQ_TYPE_LEVEL_HIGH>;
- 		power-domains = <&pd_isp>;
-@@ -525,9 +526,9 @@
- 			reg = <0x10020000 0x3000>;
- 		};
- 
--		i2c1_isp: i2c-isp@12140000 {
-+		i2c1_isp: i2c-isp@940000 {
- 			compatible = "samsung,exynos4212-i2c-isp";
--			reg = <0x12140000 0x100>;
-+			reg = <0x00940000 0x100>;
- 			clocks = <&isp_clock CLK_ISP_I2C1_ISP>;
- 			clock-names = "i2c_isp";
- 			#address-cells = <1>;
++bool rpc_xprt_switch_has_addr(struct rpc_xprt_switch *xps,
++			      const struct sockaddr *sap)
++{
++	bool res;
++
++	rcu_read_lock();
++	res = __rpc_xprt_switch_has_addr(xps, sap);
++	rcu_read_unlock();
++
++	return res;
++}
++
+ static
+ struct rpc_xprt *xprt_switch_find_next_entry(struct list_head *head,
+ 		const struct rpc_xprt *cur, bool check_active)
 -- 
 2.43.0
 
