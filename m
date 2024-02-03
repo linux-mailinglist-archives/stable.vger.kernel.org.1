@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09625848372
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D9D1848243
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BDF0B2AA89
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A89FB22272
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F1353818;
-	Sat,  3 Feb 2024 04:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FDEC481CD;
+	Sat,  3 Feb 2024 04:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdvw25Ui"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VsVpcDpb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124B3171D4;
-	Sat,  3 Feb 2024 04:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAEA12E67;
+	Sat,  3 Feb 2024 04:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933933; cv=none; b=uG1gv20drZ14KKCrdqw4wpWdadn1sU1qrnxVefNB3YaPOHIsSSz7Lg4ZZ798jbxuCnHoMwWIao0k+FWpdyVFdAEFm1QfL3wyOBehWHV31lfVJ5A52LnkKZS2cA9Ws9af/6ak9wM5ydkM1/0XwfVp1K/18E+2Yrlr8F4UOd2vHZc=
+	t=1706933712; cv=none; b=JnJh2mEdAKh9+fHR+QbuGWGDtx0PqhhrEvC2I8QPQZkvjvxMLURiR6PdQsAx0Z55EvwiHoWj6M6v6+0Esd5bp+TXoob0jKJabuh+hDQHuuBoEfWg/0lbzuZlUu9yQy0/LVtRGQ8sVGwQHgriwHh15incHTV2b89gvumIPCSUnvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933933; c=relaxed/simple;
-	bh=Gm+HO3fzjdABOW+rYozkIX3TOFQ1AhP5j2+59ER7otg=;
+	s=arc-20240116; t=1706933712; c=relaxed/simple;
+	bh=kxnL3GpX2D8RCqBoCor2xk4hddOG5hwtnKIieXlDtnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UIrAHPVR2AbWSPq6FypLjU2R5JJQGjrdc7LmN+wv/JiULSt/VGiwUcVuby6Tq5NHnPQ/vutWHxyQqtGYcZKQhulC3G/PvnUTa3zVZ6vXmr10ZsH6c5luUhBATJ/Oy+lzLfAlfK1FN0d18tZXlS/ep9qR5GMt8T6fK26b20QhhNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdvw25Ui; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2B2C433C7;
-	Sat,  3 Feb 2024 04:18:52 +0000 (UTC)
+	 MIME-Version; b=ReMnkU1HuhBhxBe7xDy+k3h3CMxw0+kYANpoda0x2RAZ1Qslvs/EO0hJ+yAojqmScx6ygNMxzJ/2IA+0HLTJXTWsLeIUZY5ARM6W9uP2EcXnk1Mb+5ZXXbVTkBqIWRbwoaBZAb2FvJlxDYGRnWTdi6f6WibteYtDBvfY3GiW830=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VsVpcDpb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24975C433F1;
+	Sat,  3 Feb 2024 04:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933932;
-	bh=Gm+HO3fzjdABOW+rYozkIX3TOFQ1AhP5j2+59ER7otg=;
+	s=korg; t=1706933712;
+	bh=kxnL3GpX2D8RCqBoCor2xk4hddOG5hwtnKIieXlDtnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gdvw25UibNSA/vMyMFZ/gav8DFXwR/w/EZu1tONBoCkvGnOiXGaLUHNhWJYskWZ5I
-	 zLrRNN85P2ZnS3Qik7Y6THtoItfDbjt5Lt0JRbJM/i2UmWcN5wBzcz8QGuvKn7Ddjn
-	 CogoQakWYXkVvJkCnO2D8BXY0gGfd1q5neOz3iJg=
+	b=VsVpcDpblcI1Ff04ZPKvDWgSkuyXk+blAkJdQjluxieeFObDkzS8Fbfgg8C1xFDrl
+	 TFKezxBqZxvDuHlhT2k6baMmbv2M9JYW0PivlxixChMa+TFOYKzROBbOyOylni0UlV
+	 rNxKdo6PPnRzrcEueCEnNx/cZlryleXWdqkjq9jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Artur Paszkiewicz <artur.paszkiewicz@intel.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 293/353] scsi: isci: Fix an error code problem in isci_io_request_build()
-Date: Fri,  2 Feb 2024 20:06:51 -0800
-Message-ID: <20240203035413.073833018@linuxfoundation.org>
+Subject: [PATCH 6.6 315/322] selftests: net: enable some more knobs
+Date: Fri,  2 Feb 2024 20:06:52 -0800
+Message-ID: <20240203035409.206936921@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 658365c6b0857e6a306436e315a8633937e3af42 ]
+[ Upstream commit c15a729c9d45aa142fb01a3afee822ab1f0e62a8 ]
 
-Clang static complains that Value stored to 'status' is never read. Return
-'status' rather than 'SCI_SUCCESS'.
+The rtnetlink tests require additional options currently
+off by default.
 
-Fixes: f1f52e75939b ("isci: uplevel request infrastructure")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20240112041926.3924315-1-suhui@nfschina.com
-Reviewed-by: Artur Paszkiewicz <artur.paszkiewicz@intel.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 2766a11161cc ("selftests: rtnetlink: add ipsec offload API test")
+Fixes: 5e596ee171ba ("selftests: add xfrm state-policy-monitor to rtnetlink.sh")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/9048ca58e49b962f35dba1dfb2beaf3dab3e0411.1706723341.git.pabeni@redhat.com/
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/isci/request.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/config | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/scsi/isci/request.c b/drivers/scsi/isci/request.c
-index a7b3243b471d..7162a5029b37 100644
---- a/drivers/scsi/isci/request.c
-+++ b/drivers/scsi/isci/request.c
-@@ -3390,7 +3390,7 @@ static enum sci_status isci_io_request_build(struct isci_host *ihost,
- 		return SCI_FAILURE;
- 	}
- 
--	return SCI_SUCCESS;
-+	return status;
- }
- 
- static struct isci_request *isci_request_from_tag(struct isci_host *ihost, u16 tag)
+diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
+index 24a7c7bcbbc1..3b749addd364 100644
+--- a/tools/testing/selftests/net/config
++++ b/tools/testing/selftests/net/config
+@@ -22,6 +22,8 @@ CONFIG_VLAN_8021Q=y
+ CONFIG_GENEVE=m
+ CONFIG_IFB=y
+ CONFIG_INET_DIAG=y
++CONFIG_INET_ESP=y
++CONFIG_INET_ESP_OFFLOAD=y
+ CONFIG_IP_GRE=m
+ CONFIG_NETFILTER=y
+ CONFIG_NETFILTER_ADVANCED=y
+@@ -93,3 +95,4 @@ CONFIG_IP_SCTP=m
+ CONFIG_NETFILTER_XT_MATCH_POLICY=m
+ CONFIG_CRYPTO_ARIA=y
+ CONFIG_XFRM_INTERFACE=m
++CONFIG_XFRM_USER=m
 -- 
 2.43.0
 
