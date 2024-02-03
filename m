@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-18385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3BD6848284
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9968F848136
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 909C828211D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CC6E1F23129
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0D1495E4;
-	Sat,  3 Feb 2024 04:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B87501119F;
+	Sat,  3 Feb 2024 04:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZGyR2sb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAc7W3cn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D90210A13;
-	Sat,  3 Feb 2024 04:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C701118F;
+	Sat,  3 Feb 2024 04:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933760; cv=none; b=fDR3RYyOR/FLKJoPBqFz1ZqvTrsaEuOJ+dVmBadjjGo0KTjfcFNh2tHN9HTyuDMt4LzEE/yswq8XQwlpgK8z7wiTKSKs7OjbITm1l0TgQCIYZ7mewRVq555arrNFYLRpkgYIyvNZuR2FMuxCbs0YPFcr+BywUM05xcl0knHhYqI=
+	t=1706933515; cv=none; b=rC7FZrzFfphESSQvOmHZL4YBLA9tFPkBEp0Xu30l/al5Qo20w2gHckY4cJnAQFtVLh21qLdALbxqhAtvMGA0pzkme4ju7KAYRMb0vN1D04AQXVBTdw/qR1ymUuFiu8n8ilCOhQ49yJ14XRMBm2vgGGnBC//f5gMyVZRUJnNvW4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933760; c=relaxed/simple;
-	bh=hWdQKtoNUOWOt1Dvf2qUmupzyTueEVqvuzUmh+vCijg=;
+	s=arc-20240116; t=1706933515; c=relaxed/simple;
+	bh=mQcNMdXlCgWtEOptkQvKuj8mo4iJFZZ7fpdaFUAkhPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q+Kjal7WoJLZrnEe/uKiIcGslWVRSiy57DU1jDQ1Whhj4czE1epM/VbwsbOW+SClK0WvJU+qtTLVeWkdK0MYKHOaZlvPCZ4DlTanaYfnb7E6k/b+fpA+kM8kxfjnrqXCbTgL6LJjR8D7fRWuldzVkVLnaqrctXea1mntfXMdJTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZGyR2sb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8CA7C43390;
-	Sat,  3 Feb 2024 04:15:59 +0000 (UTC)
+	 MIME-Version; b=BU66bKyp3W/SR4aDGkMcKYGVKJcfukJqZZNT1gFNQVFrf9a4CFZ46kemVkH9jCu6U9yNLBltwitjc4H9pKpXktUtqDJHdbwMDoiHRG20whsoP/3QkkfZAAqKvVa9Thn1IBiJT6XAbZhAI8Oji8I9Gbhz0sYUp3pyVAoATEdlBAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAc7W3cn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0FAC43390;
+	Sat,  3 Feb 2024 04:11:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933759;
-	bh=hWdQKtoNUOWOt1Dvf2qUmupzyTueEVqvuzUmh+vCijg=;
+	s=korg; t=1706933515;
+	bh=mQcNMdXlCgWtEOptkQvKuj8mo4iJFZZ7fpdaFUAkhPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UZGyR2sbsKdiKDl5s9IbIqfDpBLrD95RUd2nVE6hRpnG9d0QIovMvomuldQ5o2jjM
-	 8248s6ZQVET6QcqC+Oy6i9Uec5a1BeQcNUVDUD8N7R1NmKCEABWnts60/VX6v0WBi+
-	 MglbgxVn1+d3g8WwTWZqzNNfbLeOgaRrqV6/gU6c=
+	b=SAc7W3cn38CyhyFdCco8c1cMuV5tXAYL+FbL1ShbvZD3VT4OcEGKwFrFdR/+s6k0v
+	 ERpJJJg6OUpiiuFBi6h2by98zO8lMpiw7Exhz3ioIxnXvsWjdkFMigAbUYJyzxf79k
+	 3CZCdEfgBLD2u8nbNO/igjCVbqgLgtrxBothq6AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Manas Ghandat <ghandatmanas@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Eric Biggers <ebiggers@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 032/353] jfs: fix slab-out-of-bounds Read in dtSearch
+Subject: [PATCH 6.6 053/322] ecryptfs: Reject casefold directory inodes
 Date: Fri,  2 Feb 2024 20:02:30 -0800
-Message-ID: <20240203035404.808644987@linuxfoundation.org>
+Message-ID: <20240203035400.839034452@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manas Ghandat <ghandatmanas@gmail.com>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-[ Upstream commit fa5492ee89463a7590a1449358002ff7ef63529f ]
+[ Upstream commit cd72c7ef5fed44272272a105b1da22810c91be69 ]
 
-Currently while searching for current page in the sorted entry table
-of the page there is a out of bound access. Added a bound check to fix
-the error.
+Even though it seems to be able to resolve some names of
+case-insensitive directories, the lack of d_hash and d_compare means we
+end up with a broken state in the d_cache.  Considering it was never a
+goal to support these two together, and we are preparing to use
+d_revalidate in case-insensitive filesystems, which would make the
+combination even more broken, reject any attempt to get a casefolded
+inode from ecryptfs.
 
-Dave:
-Set return code to -EIO
-
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202310241724.Ed02yUz9-lkp@intel.com/
-Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dtree.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/ecryptfs/inode.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
-index f3d3e8b3f50c..031d8f570f58 100644
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -633,6 +633,11 @@ int dtSearch(struct inode *ip, struct component_name * key, ino_t * data,
- 		for (base = 0, lim = p->header.nextindex; lim; lim >>= 1) {
- 			index = base + (lim >> 1);
+diff --git a/fs/ecryptfs/inode.c b/fs/ecryptfs/inode.c
+index 5ab4b87888a7..795e9fe2f721 100644
+--- a/fs/ecryptfs/inode.c
++++ b/fs/ecryptfs/inode.c
+@@ -78,6 +78,14 @@ static struct inode *__ecryptfs_get_inode(struct inode *lower_inode,
  
-+			if (stbl[index] < 0) {
-+				rc = -EIO;
-+				goto out;
-+			}
+ 	if (lower_inode->i_sb != ecryptfs_superblock_to_lower(sb))
+ 		return ERR_PTR(-EXDEV);
 +
- 			if (p->header.flag & BT_LEAF) {
- 				/* uppercase leaf name to compare */
- 				cmp =
++	/* Reject dealing with casefold directories. */
++	if (IS_CASEFOLDED(lower_inode)) {
++		pr_err_ratelimited("%s: Can't handle casefolded directory.\n",
++				   __func__);
++		return ERR_PTR(-EREMOTE);
++	}
++
+ 	if (!igrab(lower_inode))
+ 		return ERR_PTR(-ESTALE);
+ 	inode = iget5_locked(sb, (unsigned long)lower_inode,
 -- 
 2.43.0
 
