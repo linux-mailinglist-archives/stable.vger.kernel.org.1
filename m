@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-17794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127FB848020
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:08:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 235E3848158
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F95F1F2BA5C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:08:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 542281C22878
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8B3F9D7;
-	Sat,  3 Feb 2024 04:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07565219F3;
+	Sat,  3 Feb 2024 04:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="puZKa1ZO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGLWt0yf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977ECF9E4;
-	Sat,  3 Feb 2024 04:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA20D171C7;
+	Sat,  3 Feb 2024 04:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933317; cv=none; b=DBOmotHXaFTgfbwfydsjEccC4PlNmxOHzYj3xnqxUClN31K8xzB2Py+2TAvdb5i5e0VZyhNh56k4aX4IhOR+c+q43tegdH/nulNG95ctP03rVhUY4SbZlwtmcI2dZKH4EuVhRYCGcwOrrXmnLcbMVcJ4bWTV9o6pAQr/U4AhJhM=
+	t=1706933540; cv=none; b=U+hxiwAbeGTWSUpGIeI6YbKUGCv1XrrorVp/l0t5a6mpr05kvvLfuS+1OnLDivOi6vS1plLy7uMdj1X0wk1JHxU5K7HstzCax3pVoSfvPUOvhOTSZo250SYyONoYudIqiKqiL3TKSuD3TTkglc1wwv5pA5QJ3DuIm8f1NnypXPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933317; c=relaxed/simple;
-	bh=r86nZ1LGZCy2S87YeEgftaiWmxSdEzQN+OuQskVDMjE=;
+	s=arc-20240116; t=1706933540; c=relaxed/simple;
+	bh=UD+X5NWI3EUsYRePQDFuzli/6cEbFh3bxGAjL1Y1jI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R8chzsxSy1lJWc/g61piwf0E+MzK7zweuYoN7bSIBdsFWhjEaW9+iwCDBpvxEzGATivmlfW/pPqKiDLY05eBc/Rbfaja5A5nsh0WEfF3i7YHp8QRmGdVGU+mUMF4p2U2yEGxJ4bXYmmWkl/s239GtjevJreowDq3cMWowkAN+QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=puZKa1ZO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7C4C43394;
-	Sat,  3 Feb 2024 04:08:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZNgW9aEcoDEZmF6Ewos4yKcrFEl+sSZqGqR8upP0QDuhWTg6HSjzfiRMuFlGkFKFBE9iGjvc5cv5zFU/jCRV08bKQ8XxxHkl1K0UHoAmxyILILLT5bxrnhpDXcdEHxGFCHzgj/PabwckXXWMhPM+AjPzvzr8IkV6xQQ0vGIRX4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGLWt0yf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8375BC43390;
+	Sat,  3 Feb 2024 04:12:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933317;
-	bh=r86nZ1LGZCy2S87YeEgftaiWmxSdEzQN+OuQskVDMjE=;
+	s=korg; t=1706933540;
+	bh=UD+X5NWI3EUsYRePQDFuzli/6cEbFh3bxGAjL1Y1jI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=puZKa1ZO/fF2FtkBhqJ68gKeIcv2c2VGzzfXuG6dBJ/663AgeIGjcDzUXhPpLTnTP
-	 004m6goea7mTHvVChoPAFHWgHWe7Iywjm3ZmxXter2ifopFdLmeggEiR793Wyz4Mhy
-	 ATTMAMtjodOtki8ybR3eF8yISTAW481X6ftikkC4=
+	b=JGLWt0yfS23nlL0GlhADyl5HjVqn5WoHJIX/E27ldOHwmFzRN7x/n9D7yMYpjkZ5w
+	 cAJQZMmLbrjpjyoR9okVlRr88Ws7LwKtHTvy6nXxWZbwjx58bXRC6/7BVIoQiB1OEW
+	 EThGvP+WLNt/y3aE4Dpqtt8FlWkjjHMhkeUJEz6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen N Rao <naveen@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Minsuk Kang <linuxlovemin@yonsei.ac.kr>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/219] powerpc/lib: Validate size for vector operations
+Subject: [PATCH 6.6 086/322] wifi: ath9k: Fix potential array-index-out-of-bounds read in ath9k_htc_txstatus()
 Date: Fri,  2 Feb 2024 20:03:03 -0800
-Message-ID: <20240203035318.280367435@linuxfoundation.org>
+Message-ID: <20240203035401.938033832@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen N Rao <naveen@kernel.org>
+From: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
 
-[ Upstream commit 8f9abaa6d7de0a70fc68acaedce290c1f96e2e59 ]
+[ Upstream commit 2adc886244dff60f948497b59affb6c6ebb3c348 ]
 
-Some of the fp/vmx code in sstep.c assume a certain maximum size for the
-instructions being emulated. The size of those operations however is
-determined separately in analyse_instr().
+Fix an array-index-out-of-bounds read in ath9k_htc_txstatus(). The bug
+occurs when txs->cnt, data from a URB provided by a USB device, is
+bigger than the size of the array txs->txstatus, which is
+HTC_MAX_TX_STATUS. WARN_ON() already checks it, but there is no bug
+handling code after the check. Make the function return if that is the
+case.
 
-Add a check to validate the assumption on the maximum size of the
-operations, so as to prevent any unintended kernel stack corruption.
+Found by a modified version of syzkaller.
 
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Build-tested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231123071705.397625-1-naveen@kernel.org
+UBSAN: array-index-out-of-bounds in htc_drv_txrx.c
+index 13 is out of range for type '__wmi_event_txstatus [12]'
+Call Trace:
+ ath9k_htc_txstatus
+ ath9k_wmi_event_tasklet
+ tasklet_action_common
+ __do_softirq
+ irq_exit_rxu
+ sysvec_apic_timer_interrupt
+
+Signed-off-by: Minsuk Kang <linuxlovemin@yonsei.ac.kr>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231113065756.1491991-1-linuxlovemin@yonsei.ac.kr
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/lib/sstep.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/wireless/ath/ath9k/htc_drv_txrx.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 398b5694aeb7..ec30af8eadb7 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -586,6 +586,8 @@ static int do_fp_load(struct instruction_op *op, unsigned long ea,
- 	} u;
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+index 672789e3c55d..d6a3f001dacb 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_txrx.c
+@@ -652,9 +652,10 @@ void ath9k_htc_txstatus(struct ath9k_htc_priv *priv, void *wmi_event)
+ 	struct ath9k_htc_tx_event *tx_pend;
+ 	int i;
  
- 	nb = GETSIZE(op->type);
-+	if (nb > sizeof(u))
-+		return -EINVAL;
- 	if (!address_ok(regs, ea, nb))
- 		return -EFAULT;
- 	rn = op->reg;
-@@ -636,6 +638,8 @@ static int do_fp_store(struct instruction_op *op, unsigned long ea,
- 	} u;
+-	for (i = 0; i < txs->cnt; i++) {
+-		WARN_ON(txs->cnt > HTC_MAX_TX_STATUS);
++	if (WARN_ON_ONCE(txs->cnt > HTC_MAX_TX_STATUS))
++		return;
  
- 	nb = GETSIZE(op->type);
-+	if (nb > sizeof(u))
-+		return -EINVAL;
- 	if (!address_ok(regs, ea, nb))
- 		return -EFAULT;
- 	rn = op->reg;
-@@ -680,6 +684,9 @@ static nokprobe_inline int do_vec_load(int rn, unsigned long ea,
- 		u8 b[sizeof(__vector128)];
- 	} u = {};
++	for (i = 0; i < txs->cnt; i++) {
+ 		__txs = &txs->txstatus[i];
  
-+	if (size > sizeof(u))
-+		return -EINVAL;
-+
- 	if (!address_ok(regs, ea & ~0xfUL, 16))
- 		return -EFAULT;
- 	/* align to multiple of size */
-@@ -707,6 +714,9 @@ static nokprobe_inline int do_vec_store(int rn, unsigned long ea,
- 		u8 b[sizeof(__vector128)];
- 	} u;
- 
-+	if (size > sizeof(u))
-+		return -EINVAL;
-+
- 	if (!address_ok(regs, ea & ~0xfUL, 16))
- 		return -EFAULT;
- 	/* align to multiple of size */
+ 		skb = ath9k_htc_tx_get_packet(priv, __txs);
 -- 
 2.43.0
 
