@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-18688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A1CC8483B7
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:33:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5225A8483A5
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:33:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2DFD1F25FF7
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:33:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D07141F2564A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A69F17588;
-	Sat,  3 Feb 2024 04:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B1755E47;
+	Sat,  3 Feb 2024 04:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEuw/quM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c31BgOVP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49795111AE;
-	Sat,  3 Feb 2024 04:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B112BB0B;
+	Sat,  3 Feb 2024 04:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933984; cv=none; b=n/iWg2AR6Vzz3akp6E+fdgJP8ZEiMhmqmUY8b30OPFey6GKcWWIiJt+/O/u1gKrZWZ+Kl0w5uUy17UhT1Y1a+QHPyZlwdFtqu3BVREPBWv2KvoiELvVKnJakwilMABaS5GQbyjS813kvcDspI1f8qBAF6AE62GURyySlizo7C+Q=
+	t=1706933971; cv=none; b=NUYjGJrN407uyJrNQat8VaLG3puMPY6lotInWkaxGKzrYvQZ9Ie9vPTFLiXwTNJHXD70570jOMMytdGzTSojykrGgI96nRi1D/hGCqT75XkmU0lZZ0NvLkCKLhg1lCItR7OBtdfotaXeZVU21ENmOQPOc44w//NmcJfaSkNT2uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933984; c=relaxed/simple;
-	bh=aTxAnlhhgl+6Gq7TLfdjsxsU24q2D46N5Lfjr+TgVWQ=;
+	s=arc-20240116; t=1706933971; c=relaxed/simple;
+	bh=3laAQLdSC61DJA2Pj1NfcRDFsiuw2wQZp1HhKvpSBPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqHVZf42oFDai1AbFQFMJiHFiFD+eDgltkUoDx6A7JVMaB2OafiV4edVH9ja+8kT7faFCBanbiqeuvJnadNccUNN0oAmHKlpLHNjcn5TTNlB487gPQ/ykSWkUW5+jEv/ZTNhzxPPh4C3O+L/3tBtp3tQzxdeB+FAwXNLhxGyQZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEuw/quM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13172C433C7;
-	Sat,  3 Feb 2024 04:19:44 +0000 (UTC)
+	 MIME-Version; b=LgmvZwehdfvitpCis5k2jLjvIBJr6AGtbzyvYH6g0z67GE7N6pAhxv27OCugnVbLFrPB/ltVTNw11h5EJfJ8a4thsA8XKGetL/IBuuXA1qx8ShXsGTL1DgFmHc7DfKubHvo5kv+USmtlh9b8qXEx2OyyqHL13080XqcAUvPTOPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c31BgOVP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5385C433F1;
+	Sat,  3 Feb 2024 04:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933984;
-	bh=aTxAnlhhgl+6Gq7TLfdjsxsU24q2D46N5Lfjr+TgVWQ=;
+	s=korg; t=1706933970;
+	bh=3laAQLdSC61DJA2Pj1NfcRDFsiuw2wQZp1HhKvpSBPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BEuw/quMHc6vo6Ma3w+PdVrfeR5D5OEGPxR4f0s8MqvzmKAOwTV89S7r6p2D8lY1N
-	 3zXe5tAjZ+QKqdUwdX5HGRgN/oAeA61M8cEKKy4foYSID9e7R0kGd80O1eSR9b13Jr
-	 XQDZm6XwegPqtMqJ/rIPS9pZEiMz4ql8x7EsrtX8=
+	b=c31BgOVPCjy9ilyocawa4sBgPyK3hFu6lwID/iX6ODTQ5iiusiHjc4A2NXrl7dPtO
+	 /PTia2esRaxePI4fsn85/rLs1gdDA3vj7jtBehyv0EMfov05eaYk5UN2G7gVdwB2fd
+	 LJi3gLFFxmy6qf4qh3GJml0ylhvzPYDfxu8Sq5wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
+	Petr Machata <petrm@nvidia.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 342/353] net: sysfs: Fix /sys/class/net/<iface> path
-Date: Fri,  2 Feb 2024 20:07:40 -0800
-Message-ID: <20240203035414.584620848@linuxfoundation.org>
+Subject: [PATCH 6.7 343/353] selftests: team: Add missing config options
+Date: Fri,  2 Feb 2024 20:07:41 -0800
+Message-ID: <20240203035414.613847118@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
 References: <20240203035403.657508530@linuxfoundation.org>
@@ -66,125 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Benjamin Poirier <bpoirier@nvidia.com>
 
-[ Upstream commit ae3f4b44641dfff969604735a0dcbf931f383285 ]
+[ Upstream commit 7b6fb3050d8f5e2b6858eef344e47ac1f5442827 ]
 
-The documentation is pointing to the wrong path for the interface.
-Documentation is pointing to /sys/class/<iface>, instead of
-/sys/class/net/<iface>.
+Similar to commit dd2d40acdbb2 ("selftests: bonding: Add more missing
+config options"), add more networking-specific config options which are
+needed for team device tests.
 
-Fix it by adding the `net/` directory before the interface.
+For testing, I used the minimal config generated by virtme-ng and I added
+the options in the config file. Afterwards, the team device test passed.
 
-Fixes: 1a02ef76acfa ("net: sysfs: add documentation entries for /sys/class/<iface>/queues")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://lore.kernel.org/r/20240131102150.728960-2-leitao@debian.org
+Fixes: bbb774d921e2 ("net: Add tests for bonding and team address list management")
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
+Link: https://lore.kernel.org/r/20240131140848.360618-2-bpoirier@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ABI/testing/sysfs-class-net-queues        | 22 +++++++++----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ tools/testing/selftests/drivers/net/team/config | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-class-net-queues b/Documentation/ABI/testing/sysfs-class-net-queues
-index 906ff3ca928a..5bff64d256c2 100644
---- a/Documentation/ABI/testing/sysfs-class-net-queues
-+++ b/Documentation/ABI/testing/sysfs-class-net-queues
-@@ -1,4 +1,4 @@
--What:		/sys/class/<iface>/queues/rx-<queue>/rps_cpus
-+What:		/sys/class/net/<iface>/queues/rx-<queue>/rps_cpus
- Date:		March 2010
- KernelVersion:	2.6.35
- Contact:	netdev@vger.kernel.org
-@@ -8,7 +8,7 @@ Description:
- 		network device queue. Possible values depend on the number
- 		of available CPU(s) in the system.
- 
--What:		/sys/class/<iface>/queues/rx-<queue>/rps_flow_cnt
-+What:		/sys/class/net/<iface>/queues/rx-<queue>/rps_flow_cnt
- Date:		April 2010
- KernelVersion:	2.6.35
- Contact:	netdev@vger.kernel.org
-@@ -16,7 +16,7 @@ Description:
- 		Number of Receive Packet Steering flows being currently
- 		processed by this particular network device receive queue.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/tx_timeout
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/tx_timeout
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
-@@ -24,7 +24,7 @@ Description:
- 		Indicates the number of transmit timeout events seen by this
- 		network interface transmit queue.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/tx_maxrate
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/tx_maxrate
- Date:		March 2015
- KernelVersion:	4.1
- Contact:	netdev@vger.kernel.org
-@@ -32,7 +32,7 @@ Description:
- 		A Mbps max-rate set for the queue, a value of zero means disabled,
- 		default is disabled.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/xps_cpus
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/xps_cpus
- Date:		November 2010
- KernelVersion:	2.6.38
- Contact:	netdev@vger.kernel.org
-@@ -42,7 +42,7 @@ Description:
- 		network device transmit queue. Possible values depend on the
- 		number of available CPU(s) in the system.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/xps_rxqs
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/xps_rxqs
- Date:		June 2018
- KernelVersion:	4.18.0
- Contact:	netdev@vger.kernel.org
-@@ -53,7 +53,7 @@ Description:
- 		number of available receive queue(s) in the network device.
- 		Default is disabled.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/hold_time
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/hold_time
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
-@@ -62,7 +62,7 @@ Description:
- 		of this particular network device transmit queue.
- 		Default value is 1000.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/inflight
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/inflight
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
-@@ -70,7 +70,7 @@ Description:
- 		Indicates the number of bytes (objects) in flight on this
- 		network device transmit queue.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/limit
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/limit
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
-@@ -79,7 +79,7 @@ Description:
- 		on this network device transmit queue. This value is clamped
- 		to be within the bounds defined by limit_max and limit_min.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/limit_max
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/limit_max
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
-@@ -88,7 +88,7 @@ Description:
- 		queued on this network device transmit queue. See
- 		include/linux/dynamic_queue_limits.h for the default value.
- 
--What:		/sys/class/<iface>/queues/tx-<queue>/byte_queue_limits/limit_min
-+What:		/sys/class/net/<iface>/queues/tx-<queue>/byte_queue_limits/limit_min
- Date:		November 2011
- KernelVersion:	3.3
- Contact:	netdev@vger.kernel.org
+diff --git a/tools/testing/selftests/drivers/net/team/config b/tools/testing/selftests/drivers/net/team/config
+index 265b6882cc21..b5e3a3aad4bf 100644
+--- a/tools/testing/selftests/drivers/net/team/config
++++ b/tools/testing/selftests/drivers/net/team/config
+@@ -1,3 +1,5 @@
++CONFIG_DUMMY=y
++CONFIG_IPV6=y
++CONFIG_MACVLAN=y
+ CONFIG_NET_TEAM=y
+ CONFIG_NET_TEAM_MODE_LOADBALANCE=y
+-CONFIG_MACVLAN=y
 -- 
 2.43.0
 
