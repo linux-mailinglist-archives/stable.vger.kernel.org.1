@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD4C848048
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F29B8482B5
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AF6D1C218D8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E1431F23D37
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AC311CB7;
-	Sat,  3 Feb 2024 04:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E6C4D59C;
+	Sat,  3 Feb 2024 04:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XA4rWkN0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZDr9QX/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3EAF9D7;
-	Sat,  3 Feb 2024 04:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F211BDED;
+	Sat,  3 Feb 2024 04:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933347; cv=none; b=um+NgTc04SIVEu147fK8livvu3KUJ0+3IYk6LFVISynqRt+g9W85QZekOmV3Ctgt2nmnspFvW2wPgn5sQ/Q7cCjZ2NT64KlFxpL1LJLERB+fFvAa91dbttSzFTTiEXhKOSxBfjUOGhSIX9OnM4ZBuepSKWVT+cFyKxiy/uo5m2A=
+	t=1706933796; cv=none; b=o83mVWKqeOhi01LjfVpKJlHbQnZHEQMg1dgyuGQQKSPB7EQkmA1mGH0c0pbFU1W/4MZGm5nI7a1XLK/gB3AYxmRZXjBLxEdaMAG35oDrJTFmRrY7MCQcI8DV5usfjkH/7Uz9lROE6mLUMUrOIlKBktv9cJmZXvt4teVjmFzv+Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933347; c=relaxed/simple;
-	bh=/MnlGyblHDv1PfMYrnVx4N0GfJeK9YucJzsbi4MP39w=;
+	s=arc-20240116; t=1706933796; c=relaxed/simple;
+	bh=vqgiZxYQir9bIZDi/NOtKxgeQh94Oim+zKb7xzZSDdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qz6lJSvs0pmjSfK3GEkOOXPsresYWIifrcES4T+oLAs3VDpOtiU1NoQykbMlRPMATD29U40XHWs7NCcv4c49HbeeWyFNxRRb0bEYFVJRkGyTAneCS2fhNV1L6StS8Im6+XvRB+OTcr3CK8u6hLrQe09Kk/pWE/GnK/cSkzlp9vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XA4rWkN0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82557C43390;
-	Sat,  3 Feb 2024 04:09:07 +0000 (UTC)
+	 MIME-Version; b=Q/6svEeSiJK+MJGgq42xYXhQN7/iShwIotvGNehNu0ZeX3Dgwzu6ETtn0lGbiJOITmO5hZol8YqdCD2GH6+DHCWRlXD0cHKThrPDWUGthmTIl9kVVAmJjkf75XaeTf2VJgUEtAJXrHp4EWSN9X0X/VxtomPI3x4mGVB0H+WynP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZDr9QX/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD279C433C7;
+	Sat,  3 Feb 2024 04:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933347;
-	bh=/MnlGyblHDv1PfMYrnVx4N0GfJeK9YucJzsbi4MP39w=;
+	s=korg; t=1706933795;
+	bh=vqgiZxYQir9bIZDi/NOtKxgeQh94Oim+zKb7xzZSDdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XA4rWkN07EwiWnF9/qn6SA7OJodwmSGiwce7u+lQsRIZKrhoPqjlX9h3gTGTf254P
-	 yMYOW2c3aKmQctJDL9+HoP9v8kLQJ58kaXNTsoj1S13Zy0ZibGul1RTLz8WqsldLLx
-	 HMJdWSQBOYIC0n3TWsoZNpcnAtfueYmXvDFrk96E=
+	b=vZDr9QX/IFj9mYot4eS6proy4usTnacBGY4pQzN0chCEAAIBdghyaJi0FhmZAkvXD
+	 vfmt42IpIdmV+Rzxu3jCs3wKSnLlPlasnyqPXNZZO9VQ0LgFRMoUngKw8NbG43ODaA
+	 1xpX/fyMWhZVw/HOD4apcOzFKJFqsiprH5dztb/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	HariBabu Gattem <haribabu.gattem@xilinx.com>,
-	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
-	Michal Simek <michal.simek@amd.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 050/219] soc: xilinx: Fix for call trace due to the usage of smp_processor_id()
-Date: Fri,  2 Feb 2024 20:03:43 -0800
-Message-ID: <20240203035323.714609905@linuxfoundation.org>
+Subject: [PATCH 6.7 106/353] bpf: Set uattr->batch.count as zero before batched update or deletion
+Date: Fri,  2 Feb 2024 20:03:44 -0800
+Message-ID: <20240203035407.122785829@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: HariBabu Gattem <haribabu.gattem@xilinx.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit daed80ed07580e5adc0e6d8bc79933a35154135a ]
+[ Upstream commit 06e5c999f10269a532304e89a6adb2fbfeb0593c ]
 
-When preemption is enabled in kernel and if any task which can be
-preempted should not use smp_processor_id() directly, since CPU
-switch can happen at any time, the previous value of cpu_id
-differs with current cpu_id. As a result we see the below call trace
-during xlnx_event_manager_probe.
+generic_map_{delete,update}_batch() doesn't set uattr->batch.count as
+zero before it tries to allocate memory for key. If the memory
+allocation fails, the value of uattr->batch.count will be incorrect.
 
-[ 6.140197] dump_backtrace+0x0/0x190
-[ 6.143884] show_stack+0x18/0x40
-[ 6.147220] dump_stack_lvl+0x7c/0xa0
-[ 6.150907] dump_stack+0x18/0x34
-[ 6.154241] check_preemption_disabled+0x124/0x134
-[ 6.159068] debug_smp_processor_id+0x20/0x2c
-[ 6.163453] xlnx_event_manager_probe+0x48/0x250
+Fix it by setting uattr->batch.count as zero beore batched update or
+deletion.
 
-To protect cpu_id, It is recommended to use get_cpu()/put_cpu()
-to disable preemption, get the cpu_id and enable preemption respectively.
-(For Reference, Documentation/locking/preempt-locking.rst and
-Documentation/kernel-hacking/hacking.rst)
-
-Use preempt_disable()/smp_processor_id()/preempt_enable()
-API's to achieve the same.
-
-Signed-off-by: HariBabu Gattem <haribabu.gattem@xilinx.com>
-Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
-Link: https://lore.kernel.org/r/20231027055622.21544-1-jay.buddhabhatti@amd.com
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20231208102355.2628918-6-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/xilinx/xlnx_event_manager.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/bpf/syscall.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/soc/xilinx/xlnx_event_manager.c b/drivers/soc/xilinx/xlnx_event_manager.c
-index f9d9b82b562d..56d22d3989bb 100644
---- a/drivers/soc/xilinx/xlnx_event_manager.c
-+++ b/drivers/soc/xilinx/xlnx_event_manager.c
-@@ -555,7 +555,7 @@ static void xlnx_disable_percpu_irq(void *data)
- static int xlnx_event_init_sgi(struct platform_device *pdev)
- {
- 	int ret = 0;
--	int cpu = smp_processor_id();
-+	int cpu;
- 	/*
- 	 * IRQ related structures are used for the following:
- 	 * for each SGI interrupt ensure its mapped by GIC IRQ domain
-@@ -592,9 +592,12 @@ static int xlnx_event_init_sgi(struct platform_device *pdev)
- 	sgi_fwspec.param[0] = sgi_num;
- 	virq_sgi = irq_create_fwspec_mapping(&sgi_fwspec);
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 58e34ff81197..349d735b4e1d 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -1702,6 +1702,9 @@ int generic_map_delete_batch(struct bpf_map *map,
+ 	if (!max_count)
+ 		return 0;
  
-+	cpu = get_cpu();
- 	per_cpu(cpu_number1, cpu) = cpu;
- 	ret = request_percpu_irq(virq_sgi, xlnx_event_handler, "xlnx_event_mgmt",
- 				 &cpu_number1);
-+	put_cpu();
++	if (put_user(0, &uattr->batch.count))
++		return -EFAULT;
 +
- 	WARN_ON(ret);
- 	if (ret) {
- 		irq_dispose_mapping(virq_sgi);
+ 	key = kvmalloc(map->key_size, GFP_USER | __GFP_NOWARN);
+ 	if (!key)
+ 		return -ENOMEM;
+@@ -1759,6 +1762,9 @@ int generic_map_update_batch(struct bpf_map *map, struct file *map_file,
+ 	if (!max_count)
+ 		return 0;
+ 
++	if (put_user(0, &uattr->batch.count))
++		return -EFAULT;
++
+ 	key = kvmalloc(map->key_size, GFP_USER | __GFP_NOWARN);
+ 	if (!key)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
