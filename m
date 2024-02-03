@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-18578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DBF9848347
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B73B8480E5
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 226B51F242EB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE04B2847ED
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DD551C5F;
-	Sat,  3 Feb 2024 04:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBC712E67;
+	Sat,  3 Feb 2024 04:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="re3dVFbq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7Np0GZf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 547CD171A4;
-	Sat,  3 Feb 2024 04:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB02FC03;
+	Sat,  3 Feb 2024 04:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933902; cv=none; b=s6WEcm8KdpZMXlZ9QYoWNGMEekSmiNOBEPUR90sqbskLgjXnEDa04Uj/l6REUUCJ8tqP/oVgh1c6T2TUK4+JcIZt8mLosI5B2dyfJ2uMfyisZZiyy7URpHMWjhOuO8b0gJe08KH2hRLVH1bT02ycoYU05zibcYYYQ5rAco7Wmcs=
+	t=1706933459; cv=none; b=FgDYTwkJvPz6+T9ICo0ola7Kk4N7YPghrGEcznYniOOP4wuIK9qD3NKNziZ9c/jYQB8U34lCOKvgl0H0olawjTeID/XzP0yMx+X0XppS+wE59MP2Q5ZCOOKNbbz/PsHE5UiGhR3z2TgItPHg7fc38MWQLfFJ/vigtZyjVZaGwYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933902; c=relaxed/simple;
-	bh=VZXnJJ0p/IPZsuWmMHozzNFmmb2bRAV8jHn5s8YPhoY=;
+	s=arc-20240116; t=1706933459; c=relaxed/simple;
+	bh=8tHGNpZKCSwicQodxU4zyvZKcfiOd3SPY/1nFh5GT8s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=URRTF7MJxwogMv4oUl7uI21FXZGRXDHlTR9RtYts8zv6+F0JMlI/tzBG2skiYHJ4j6Nl+KnyhMP1+Vk4LksWCFuLkNHS0M9NR7TDJhebJp6BuyxqU30LycbRHgatsXbWs2zRSCYixBHX4D573b5rP/5+pF+tQBRO8e46y/l5ukg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=re3dVFbq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF69C433F1;
-	Sat,  3 Feb 2024 04:18:22 +0000 (UTC)
+	 MIME-Version; b=ErygDkFI4I5QWcOLpmZAD+yZ+qaD1DwpR4Y+BSdQbgsDgAA+OlEQw94wryzZmeT2sKzXBuqCBVqklW1XhMbkhQZ323rqf/qgtoWaOum39a3Eh1iJkX2HqeFTndOVYUTebXsw6vc9XmczjRSiBf7T+/0YEmxhjLb9Jb7MQjoXwdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7Np0GZf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EB4C433C7;
+	Sat,  3 Feb 2024 04:10:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933902;
-	bh=VZXnJJ0p/IPZsuWmMHozzNFmmb2bRAV8jHn5s8YPhoY=;
+	s=korg; t=1706933459;
+	bh=8tHGNpZKCSwicQodxU4zyvZKcfiOd3SPY/1nFh5GT8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=re3dVFbqciU/eOj+PSiwrZjzAywmxt9fsl61U9lEW5nd22cA+WqiFT0WNUVjAdUmd
-	 rFLf8mb3VaMXlQhljyS8UzqSQ0W/FNLSiFz8b7GAqN4gn13dlt2RHE/lN3bDTBr6sO
-	 IzohMxqa1n/1PfueOsKvdcUgOBlGjdHolaXtWhH8=
+	b=q7Np0GZf/2TSYk9zEYOIyrUs4lKfyMcVbZtkCZ1R19Rq6afMjJq93NvRGoEKmJbJg
+	 0maaFqXsn8iUkjBoZCCrzHaI1s4dcEZemJuuFCbBiGSsl4z7xmfLGuGMPEazMYmv03
+	 f+YIoy8LUE8XjPp2eexijEHUo5t7m7fj55CA3/Ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Vicki Pfau <vi@endrift.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 250/353] PCI: Only override AMD USB controller if required
-Date: Fri,  2 Feb 2024 20:06:08 -0800
-Message-ID: <20240203035411.635812696@linuxfoundation.org>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Sunitha Mekala <sunithax.d.mekala@intel.com>
+Subject: [PATCH 6.1 196/219] ixgbe: Refactor overtemp event handling
+Date: Fri,  2 Feb 2024 20:06:09 -0800
+Message-ID: <20240203035344.762863012@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +66,295 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-[ Upstream commit e585a37e5061f6d5060517aed1ca4ccb2e56a34c ]
+[ Upstream commit 6c1b4af8c1b20c70dde01e58381685d6a4a1d2c8 ]
 
-By running a Van Gogh device (Steam Deck), the following message
-was noticed in the kernel log:
+Currently ixgbe driver is notified of overheating events
+via internal IXGBE_ERR_OVERTEMP error code.
 
-  pci 0000:04:00.3: PCI class overridden (0x0c03fe -> 0x0c03fe) so dwc3 driver can claim this instead of xhci
+Change the approach for handle_lasi() to use freshly introduced
+is_overtemp function parameter which set when such event occurs.
+Change check_overtemp() to bool and return true if overtemp
+event occurs.
 
-Effectively this means the quirk executed but changed nothing, since the
-class of this device was already the proper one (likely adjusted by newer
-firmware versions).
-
-Check and perform the override only if necessary.
-
-Link: https://lore.kernel.org/r/20231120160531.361552-1-gpiccoli@igalia.com
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Huang Rui <ray.huang@amd.com>
-Cc: Vicki Pfau <vi@endrift.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 16 +++-----
+ drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c  | 21 +++++-----
+ drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h  |  2 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_type.h |  4 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c | 41 +++++++++++--------
+ 5 files changed, 43 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index a991710efa40..a2bf6de11462 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -702,10 +702,13 @@ static void quirk_amd_dwc_class(struct pci_dev *pdev)
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index c1d4e4a18502..6dc554e810a1 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -2764,7 +2764,6 @@ static void ixgbe_check_overtemp_subtask(struct ixgbe_adapter *adapter)
  {
- 	u32 class = pdev->class;
+ 	struct ixgbe_hw *hw = &adapter->hw;
+ 	u32 eicr = adapter->interrupt_event;
+-	s32 rc;
  
--	/* Use "USB Device (not host controller)" class */
--	pdev->class = PCI_CLASS_SERIAL_USB_DEVICE;
--	pci_info(pdev, "PCI class overridden (%#08x -> %#08x) so dwc3 driver can claim this instead of xhci\n",
--		 class, pdev->class);
-+	if (class != PCI_CLASS_SERIAL_USB_DEVICE) {
-+		/* Use "USB Device (not host controller)" class */
-+		pdev->class = PCI_CLASS_SERIAL_USB_DEVICE;
-+		pci_info(pdev,
-+			"PCI class overridden (%#08x -> %#08x) so dwc3 driver can claim this instead of xhci\n",
-+			class, pdev->class);
-+	}
+ 	if (test_bit(__IXGBE_DOWN, &adapter->state))
+ 		return;
+@@ -2798,14 +2797,13 @@ static void ixgbe_check_overtemp_subtask(struct ixgbe_adapter *adapter)
+ 		}
+ 
+ 		/* Check if this is not due to overtemp */
+-		if (hw->phy.ops.check_overtemp(hw) != IXGBE_ERR_OVERTEMP)
++		if (!hw->phy.ops.check_overtemp(hw))
+ 			return;
+ 
+ 		break;
+ 	case IXGBE_DEV_ID_X550EM_A_1G_T:
+ 	case IXGBE_DEV_ID_X550EM_A_1G_T_L:
+-		rc = hw->phy.ops.check_overtemp(hw);
+-		if (rc != IXGBE_ERR_OVERTEMP)
++		if (!hw->phy.ops.check_overtemp(hw))
+ 			return;
+ 		break;
+ 	default:
+@@ -7946,7 +7944,7 @@ static void ixgbe_service_timer(struct timer_list *t)
+ static void ixgbe_phy_interrupt_subtask(struct ixgbe_adapter *adapter)
+ {
+ 	struct ixgbe_hw *hw = &adapter->hw;
+-	u32 status;
++	bool overtemp;
+ 
+ 	if (!(adapter->flags2 & IXGBE_FLAG2_PHY_INTERRUPT))
+ 		return;
+@@ -7956,11 +7954,9 @@ static void ixgbe_phy_interrupt_subtask(struct ixgbe_adapter *adapter)
+ 	if (!hw->phy.ops.handle_lasi)
+ 		return;
+ 
+-	status = hw->phy.ops.handle_lasi(&adapter->hw);
+-	if (status != IXGBE_ERR_OVERTEMP)
+-		return;
+-
+-	e_crit(drv, "%s\n", ixgbe_overheat_msg);
++	hw->phy.ops.handle_lasi(&adapter->hw, &overtemp);
++	if (overtemp)
++		e_crit(drv, "%s\n", ixgbe_overheat_msg);
  }
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_NL_USB,
- 		quirk_amd_dwc_class);
+ 
+ static void ixgbe_reset_subtask(struct ixgbe_adapter *adapter)
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
+index 20c45766c694..305afb82388b 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
+@@ -408,8 +408,7 @@ s32 ixgbe_reset_phy_generic(struct ixgbe_hw *hw)
+ 		return status;
+ 
+ 	/* Don't reset PHY if it's shut down due to overtemp. */
+-	if (!hw->phy.reset_if_overtemp &&
+-	    (IXGBE_ERR_OVERTEMP == hw->phy.ops.check_overtemp(hw)))
++	if (!hw->phy.reset_if_overtemp && hw->phy.ops.check_overtemp(hw))
+ 		return 0;
+ 
+ 	/* Blocked by MNG FW so bail */
+@@ -2621,22 +2620,24 @@ static void ixgbe_i2c_bus_clear(struct ixgbe_hw *hw)
+  *  @hw: pointer to hardware structure
+  *
+  *  Checks if the LASI temp alarm status was triggered due to overtemp
++ *
++ *  Return true when an overtemp event detected, otherwise false.
+  **/
+-s32 ixgbe_tn_check_overtemp(struct ixgbe_hw *hw)
++bool ixgbe_tn_check_overtemp(struct ixgbe_hw *hw)
+ {
+ 	u16 phy_data = 0;
++	u32 status;
+ 
+ 	if (hw->device_id != IXGBE_DEV_ID_82599_T3_LOM)
+-		return 0;
++		return false;
+ 
+ 	/* Check that the LASI temp alarm status was triggered */
+-	hw->phy.ops.read_reg(hw, IXGBE_TN_LASI_STATUS_REG,
+-			     MDIO_MMD_PMAPMD, &phy_data);
+-
+-	if (!(phy_data & IXGBE_TN_LASI_STATUS_TEMP_ALARM))
+-		return 0;
++	status = hw->phy.ops.read_reg(hw, IXGBE_TN_LASI_STATUS_REG,
++				      MDIO_MMD_PMAPMD, &phy_data);
++	if (status)
++		return false;
+ 
+-	return IXGBE_ERR_OVERTEMP;
++	return !!(phy_data & IXGBE_TN_LASI_STATUS_TEMP_ALARM);
+ }
+ 
+ /** ixgbe_set_copper_phy_power - Control power for copper phy
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h
+index 6544c4539c0d..ef72729d7c93 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.h
+@@ -155,7 +155,7 @@ s32 ixgbe_identify_sfp_module_generic(struct ixgbe_hw *hw);
+ s32 ixgbe_get_sfp_init_sequence_offsets(struct ixgbe_hw *hw,
+ 					u16 *list_offset,
+ 					u16 *data_offset);
+-s32 ixgbe_tn_check_overtemp(struct ixgbe_hw *hw);
++bool ixgbe_tn_check_overtemp(struct ixgbe_hw *hw);
+ s32 ixgbe_read_i2c_byte_generic(struct ixgbe_hw *hw, u8 byte_offset,
+ 				u8 dev_addr, u8 *data);
+ s32 ixgbe_read_i2c_byte_generic_unlocked(struct ixgbe_hw *hw, u8 byte_offset,
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
+index 4b19b1282f28..61b9774b3d31 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
+@@ -3509,10 +3509,10 @@ struct ixgbe_phy_operations {
+ 	s32 (*read_i2c_sff8472)(struct ixgbe_hw *, u8 , u8 *);
+ 	s32 (*read_i2c_eeprom)(struct ixgbe_hw *, u8 , u8 *);
+ 	s32 (*write_i2c_eeprom)(struct ixgbe_hw *, u8, u8);
+-	s32 (*check_overtemp)(struct ixgbe_hw *);
++	bool (*check_overtemp)(struct ixgbe_hw *);
+ 	s32 (*set_phy_power)(struct ixgbe_hw *, bool on);
+ 	s32 (*enter_lplu)(struct ixgbe_hw *);
+-	s32 (*handle_lasi)(struct ixgbe_hw *hw);
++	s32 (*handle_lasi)(struct ixgbe_hw *hw, bool *);
+ 	s32 (*read_i2c_byte_unlocked)(struct ixgbe_hw *, u8 offset, u8 addr,
+ 				      u8 *value);
+ 	s32 (*write_i2c_byte_unlocked)(struct ixgbe_hw *, u8 offset, u8 addr,
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
+index 19de26520a88..fe2d2d2f0494 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
+@@ -600,8 +600,10 @@ static s32 ixgbe_setup_fw_link(struct ixgbe_hw *hw)
+ 	rc = ixgbe_fw_phy_activity(hw, FW_PHY_ACT_SETUP_LINK, &setup);
+ 	if (rc)
+ 		return rc;
++
+ 	if (setup[0] == FW_PHY_ACT_SETUP_LINK_RSP_DOWN)
+-		return IXGBE_ERR_OVERTEMP;
++		return -EIO;
++
+ 	return 0;
+ }
+ 
+@@ -2369,18 +2371,18 @@ static s32 ixgbe_get_link_capabilities_X550em(struct ixgbe_hw *hw,
+  * @hw: pointer to hardware structure
+  * @lsc: pointer to boolean flag which indicates whether external Base T
+  *	 PHY interrupt is lsc
++ * @is_overtemp: indicate whether an overtemp event encountered
+  *
+  * Determime if external Base T PHY interrupt cause is high temperature
+  * failure alarm or link status change.
+- *
+- * Return IXGBE_ERR_OVERTEMP if interrupt is high temperature
+- * failure alarm, else return PHY access status.
+  **/
+-static s32 ixgbe_get_lasi_ext_t_x550em(struct ixgbe_hw *hw, bool *lsc)
++static s32 ixgbe_get_lasi_ext_t_x550em(struct ixgbe_hw *hw, bool *lsc,
++				       bool *is_overtemp)
+ {
+ 	u32 status;
+ 	u16 reg;
+ 
++	*is_overtemp = false;
+ 	*lsc = false;
+ 
+ 	/* Vendor alarm triggered */
+@@ -2412,7 +2414,8 @@ static s32 ixgbe_get_lasi_ext_t_x550em(struct ixgbe_hw *hw, bool *lsc)
+ 	if (reg & IXGBE_MDIO_GLOBAL_ALM_1_HI_TMP_FAIL) {
+ 		/* power down the PHY in case the PHY FW didn't already */
+ 		ixgbe_set_copper_phy_power(hw, false);
+-		return IXGBE_ERR_OVERTEMP;
++		*is_overtemp = true;
++		return -EIO;
+ 	}
+ 	if (reg & IXGBE_MDIO_GLOBAL_ALM_1_DEV_FAULT) {
+ 		/*  device fault alarm triggered */
+@@ -2426,7 +2429,8 @@ static s32 ixgbe_get_lasi_ext_t_x550em(struct ixgbe_hw *hw, bool *lsc)
+ 		if (reg == IXGBE_MDIO_GLOBAL_FAULT_MSG_HI_TMP) {
+ 			/* power down the PHY in case the PHY FW didn't */
+ 			ixgbe_set_copper_phy_power(hw, false);
+-			return IXGBE_ERR_OVERTEMP;
++			*is_overtemp = true;
++			return -EIO;
+ 		}
+ 	}
+ 
+@@ -2462,12 +2466,12 @@ static s32 ixgbe_get_lasi_ext_t_x550em(struct ixgbe_hw *hw, bool *lsc)
+  **/
+ static s32 ixgbe_enable_lasi_ext_t_x550em(struct ixgbe_hw *hw)
+ {
++	bool lsc, overtemp;
+ 	u32 status;
+ 	u16 reg;
+-	bool lsc;
+ 
+ 	/* Clear interrupt flags */
+-	status = ixgbe_get_lasi_ext_t_x550em(hw, &lsc);
++	status = ixgbe_get_lasi_ext_t_x550em(hw, &lsc, &overtemp);
+ 
+ 	/* Enable link status change alarm */
+ 
+@@ -2546,21 +2550,20 @@ static s32 ixgbe_enable_lasi_ext_t_x550em(struct ixgbe_hw *hw)
+ /**
+  * ixgbe_handle_lasi_ext_t_x550em - Handle external Base T PHY interrupt
+  * @hw: pointer to hardware structure
++ * @is_overtemp: indicate whether an overtemp event encountered
+  *
+  * Handle external Base T PHY interrupt. If high temperature
+  * failure alarm then return error, else if link status change
+  * then setup internal/external PHY link
+- *
+- * Return IXGBE_ERR_OVERTEMP if interrupt is high temperature
+- * failure alarm, else return PHY access status.
+  **/
+-static s32 ixgbe_handle_lasi_ext_t_x550em(struct ixgbe_hw *hw)
++static s32 ixgbe_handle_lasi_ext_t_x550em(struct ixgbe_hw *hw,
++					  bool *is_overtemp)
+ {
+ 	struct ixgbe_phy_info *phy = &hw->phy;
+ 	bool lsc;
+ 	u32 status;
+ 
+-	status = ixgbe_get_lasi_ext_t_x550em(hw, &lsc);
++	status = ixgbe_get_lasi_ext_t_x550em(hw, &lsc, is_overtemp);
+ 	if (status)
+ 		return status;
+ 
+@@ -3188,21 +3191,23 @@ static s32 ixgbe_reset_phy_fw(struct ixgbe_hw *hw)
+ /**
+  * ixgbe_check_overtemp_fw - Check firmware-controlled PHYs for overtemp
+  * @hw: pointer to hardware structure
++ *
++ * Return true when an overtemp event detected, otherwise false.
+  */
+-static s32 ixgbe_check_overtemp_fw(struct ixgbe_hw *hw)
++static bool ixgbe_check_overtemp_fw(struct ixgbe_hw *hw)
+ {
+ 	u32 store[FW_PHY_ACT_DATA_COUNT] = { 0 };
+ 	s32 rc;
+ 
+ 	rc = ixgbe_fw_phy_activity(hw, FW_PHY_ACT_GET_LINK_INFO, &store);
+ 	if (rc)
+-		return rc;
++		return false;
+ 
+ 	if (store[0] & FW_PHY_ACT_GET_LINK_INFO_TEMP) {
+ 		ixgbe_shutdown_fw_phy(hw);
+-		return IXGBE_ERR_OVERTEMP;
++		return true;
+ 	}
+-	return 0;
++	return false;
+ }
+ 
+ /**
 -- 
 2.43.0
 
