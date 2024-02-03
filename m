@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-18151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C236848195
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC02284804C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EFE01C229A6
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1754B1C2266A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247DC1798E;
-	Sat,  3 Feb 2024 04:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6075F125C2;
+	Sat,  3 Feb 2024 04:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ovogIzOH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVtFCwG3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D799710A0A;
-	Sat,  3 Feb 2024 04:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5F7F9D7;
+	Sat,  3 Feb 2024 04:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933584; cv=none; b=uzfvt8YTfN0pkXUkYBBQ3PYbFO30pPknJlwmeo6LatYFGWrgP0+QS4OVi+mML9fluKYvCefE+Rpvw424pmwLrSDYUeOfefeNhZqwFvowulz6/ltH//vaS/PJ5kTKGYTS+btYLVJC0cQoA/ApNsXYhReA3/Urihp8uVJWFDTM/K4=
+	t=1706933350; cv=none; b=skScspeYSoN0Yjg00x229ZxitJ970iQK33n1FOwbwfr7DYdeMqIj28iPG0/a7UyhbcnuYxYmmHfL6UNcemB9YvQNxPVuNKUgRCJ1NCuK89zY8rXrQ4wHt2raKiNabliT0zg5Z5MMKf5XFsdBFbbtfPiRkWxortMIVGOuwh0OMy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933584; c=relaxed/simple;
-	bh=/HUEX0FQ4OREj+wCKcWNuK+vfbdyibq1g6+uXfos32Q=;
+	s=arc-20240116; t=1706933350; c=relaxed/simple;
+	bh=auD5Fqz7T1192qfMMpK08NRFlLvjyZqRC9AaU8smYZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=etVsiCZnv6vOzf5T7A7mVZTIUV33iAPbBlKhyLgcEdJnVb/PiC0eiiba2sKqSyq1SkqWF//Yo0kjZZ15pmnr8+nnHQvw4P5U+ixhia5aJjdYN+II0pe+amaBo8czTiMWlTKz+xQBLi8yLV+/xvbYYtWIYEQyjgUYNdwDFMVdOnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ovogIzOH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04C0C43390;
-	Sat,  3 Feb 2024 04:13:04 +0000 (UTC)
+	 MIME-Version; b=IxTZeTARKZZ0/giI2kr2c/gGC0u6pSAVpwou6hAq5WKY5RJZbMtbwdbFuD1u3Cl8BmBjVJyN+UxR0/Rsq7gWdmwzWO2bTrtE+Er4nb9Cri7cqaryqpWOeIGXWLAHRZPExlbj77vEOuQgGRwXRDkZxhTfRzkAqKF3JPDyxQi7KEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVtFCwG3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D816BC433F1;
+	Sat,  3 Feb 2024 04:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933584;
-	bh=/HUEX0FQ4OREj+wCKcWNuK+vfbdyibq1g6+uXfos32Q=;
+	s=korg; t=1706933349;
+	bh=auD5Fqz7T1192qfMMpK08NRFlLvjyZqRC9AaU8smYZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ovogIzOHkL0QMsN0EUQTL635+eU7pwrI+SsDLzGCShnODoH+IsfY7YGzqftYjoDO4
-	 0ttCss16sXltd3WJbEYsO2UpDJ0pZUFFLHpWIuiUIug26aAHT72OpH/6r/f0Iuvbxv
-	 FTz4GAek0EdQzhIW/UGXYfOzLfl8yweUwikFXxq8=
+	b=TVtFCwG35iDHrJOB4nNKL5u1/9uCnQOmgkg191+W53lTy4PGA70rl74/TUIiy4/7X
+	 BkDiNWpy3r2rSNdt9zY8Oqn08INX5hmjmB/lj61K93FQ1/cgWf4lOMb9qKwqsgbPq5
+	 wjv0d/24UFYZEKl7vJb+6NLchsOf6k+9SnVCGS7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Petr Machata <petrm@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 129/322] scsi: hisi_sas: Set .phy_attached before notifing phyup event HISI_PHYE_PHY_UP_PM
+Subject: [PATCH 6.1 053/219] PCI: Add no PM reset quirk for NVIDIA Spectrum devices
 Date: Fri,  2 Feb 2024 20:03:46 -0800
-Message-ID: <20240203035403.317171504@linuxfoundation.org>
+Message-ID: <20240203035324.302948671@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit ce26497c745d0541aec930d5211b431a1c26af97 ]
+[ Upstream commit 3ed48c80b28d8dcd584d6ddaf00c75b7673e1a05 ]
 
-Currently in directly attached scenario, the phyup event
-HISI_PHYE_PHY_UP_PM is notified before .phy_attached is set - this may
-cause the phyup work hisi_sas_bytes_dmaed() execution failed and the
-attached device will not be found.
+Spectrum-{1,2,3,4} devices report that a D3hot->D0 transition causes a
+reset (i.e., they advertise NoSoftRst-). However, this transition does
+not have any effect on the device: It continues to be operational and
+network ports remain up. Advertising this support makes it seem as if a
+PM reset is viable for these devices. Mark it as unavailable to skip it
+when testing reset methods.
 
-To fix it, set .phy_attached before notifing phyup event.
+Before:
 
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/1702525516-51258-2-git-send-email-chenxiang66@hisilicon.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+ # cat /sys/bus/pci/devices/0000\:03\:00.0/reset_method
+ pm bus
+
+After:
+
+ # cat /sys/bus/pci/devices/0000\:03\:00.0/reset_method
+ bus
+
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/pci/quirks.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 520fffc14282..e914c0c13bb5 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -1606,6 +1606,11 @@ static irqreturn_t phy_up_v3_hw(int phy_no, struct hisi_hba *hisi_hba)
- 	}
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 8765544bac35..030c8e665757 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -3691,6 +3691,19 @@ static void quirk_no_pm_reset(struct pci_dev *dev)
+ DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_VENDOR_ID_ATI, PCI_ANY_ID,
+ 			       PCI_CLASS_DISPLAY_VGA, 8, quirk_no_pm_reset);
  
- 	phy->port_id = port_id;
-+	spin_lock(&phy->lock);
-+	/* Delete timer and set phy_attached atomically */
-+	del_timer(&phy->timer);
-+	phy->phy_attached = 1;
-+	spin_unlock(&phy->lock);
- 
- 	/*
- 	 * Call pm_runtime_get_noresume() which pairs with
-@@ -1619,11 +1624,6 @@ static irqreturn_t phy_up_v3_hw(int phy_no, struct hisi_hba *hisi_hba)
- 
- 	res = IRQ_HANDLED;
- 
--	spin_lock(&phy->lock);
--	/* Delete timer and set phy_attached atomically */
--	del_timer(&phy->timer);
--	phy->phy_attached = 1;
--	spin_unlock(&phy->lock);
- end:
- 	if (phy->reset_completion)
- 		complete(phy->reset_completion);
++/*
++ * Spectrum-{1,2,3,4} devices report that a D3hot->D0 transition causes a reset
++ * (i.e., they advertise NoSoftRst-). However, this transition does not have
++ * any effect on the device: It continues to be operational and network ports
++ * remain up. Advertising this support makes it seem as if a PM reset is viable
++ * for these devices. Mark it as unavailable to skip it when testing reset
++ * methods.
++ */
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcb84, quirk_no_pm_reset);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf6c, quirk_no_pm_reset);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf70, quirk_no_pm_reset);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf80, quirk_no_pm_reset);
++
+ /*
+  * Thunderbolt controllers with broken MSI hotplug signaling:
+  * Entire 1st generation (Light Ridge, Eagle Ridge, Light Peak) and part
 -- 
 2.43.0
 
