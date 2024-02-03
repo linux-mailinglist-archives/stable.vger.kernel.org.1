@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-18562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F93D848336
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F40848206
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E072A286418
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A81C2869F5
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B348D10958;
-	Sat,  3 Feb 2024 04:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E129218E2F;
+	Sat,  3 Feb 2024 04:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgCtg30p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMX4Pmyt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71ED2171A4;
-	Sat,  3 Feb 2024 04:18:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0C1F9C1;
+	Sat,  3 Feb 2024 04:14:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933890; cv=none; b=Nlr1l5+fvQksm8NobRVELTdhk2mqHNKkLvS/L9Y/fD59kgPM3Eu7YJpmkDRo1p9Ay9vhY1+XxQJEfd9YNy3LEBNiJGNf4iA0pRT2Jpc6GNUEsMApF0RlsQtQZ3OMTz4xRvfBm/4a6OoFtcyGnnVOUFf7HgGOQeY9Iqe947GBRyw=
+	t=1706933668; cv=none; b=Cq4bewEZnxkNFc0twf//+OODua2LgQWjUDAyPKj/kmh3IlFzdZzKSWMBUtMETBuB2u9ytnDRTJ38VKWNKW/RdQuxHWc5QDBxVrICnQCjwxwH/mt3tUueAwkQLFMW8k8aZQI1YwOqTDqswMIJmQcAMuN9TAQfEhOPnpzmGvn5RyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933890; c=relaxed/simple;
-	bh=/uSxWQmsUyM0IhDhjjjhjeEMMAeX8ETVPPo1m4VufyI=;
+	s=arc-20240116; t=1706933668; c=relaxed/simple;
+	bh=DEmpum81mk0eWcuGgxMXAX61ofqUn4+ixWq/uU249cM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qJYHcATnQy7MJhZqOuzI+2kDO373VXI3a7bxXh1e1D5PPrkKXT8QV61VGOMd9AMce8ShwSp2YDlpwj2uoJJiP5mXNwwW9IC6jUrlXIKYyUvQSExqLEUAaT4LykAebXVnKeb5zKQVhLoTfXETtLq5sB8cfTk8CcqCipES6jksJmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgCtg30p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAC1C433F1;
-	Sat,  3 Feb 2024 04:18:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ugdSS85SJiCOMeRNP2qqUOUg+BHsaDavlFJ8lPbKJqEeQWdm0f0dRR8Vx7Yqw0yEdzQHkBST575pRhrtjeVy6psivF3EUR4bPfNU/IGtTFpA/m2HgiYQqfL/qgP4RnqNtEMRUqVfjw3t56qgg+Ac3aTmopgbac+ekrHWLbODqNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMX4Pmyt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666EAC433F1;
+	Sat,  3 Feb 2024 04:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933890;
-	bh=/uSxWQmsUyM0IhDhjjjhjeEMMAeX8ETVPPo1m4VufyI=;
+	s=korg; t=1706933668;
+	bh=DEmpum81mk0eWcuGgxMXAX61ofqUn4+ixWq/uU249cM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FgCtg30pI03FAXqB074beyJ+/LJT+BmzIee62cntmCqp6/ZHzs3dHE76+2nNgbWsP
-	 WutrovqZlPGHyk5/Ztyn3XAjppfcuuVGa3LpO7S7P+tHmboL6eOD1jozr9NkiOo6MR
-	 mPdFMj1QJqRhokOdcu74IjbTd3FnbGs3h0bsd+k0=
+	b=uMX4Pmyt/FN0mWZac/bSHUT/Rv8UznBqxvzhWCTM3lTAMJAn6oXEg6wB8XwBQPEl4
+	 msgZz8FZ03BQFBcydYWm9DrUI6rKeipiBfoODbrwH3W/xLHln3s/s6E1G7d231/oMe
+	 N/f3/iOn10qm+0N6ip8ULNxM03h38kXz3DFruvag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Philip Yang <Philip.Yang@amd.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Jiadong Zhu <Jiadong.Zhu@amd.com>
-Subject: [PATCH 6.7 235/353] drm/amdgpu: apply the RV2 system aperture fix to RN/CZN as well
-Date: Fri,  2 Feb 2024 20:05:53 -0800
-Message-ID: <20240203035411.111216579@linuxfoundation.org>
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 257/322] drm/amdkfd: Fix node NULL check in svm_range_get_range_boundaries()
+Date: Fri,  2 Feb 2024 20:05:54 -0800
+Message-ID: <20240203035407.450813186@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,101 +64,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 16783d8ef08448815e149e40c82fc1e1fc41ddbf ]
+[ Upstream commit d7a254fad873775ce6c32b77796c81e81e6b7f2e ]
 
-These chips needs the same fix.  This was previously not seen
-on then since the AGP aperture expanded the system aperture,
-but this showed up again when AGP was disabled.
+Range interval [start, last] is ordered by rb_tree, rb_prev, rb_next
+return value still needs NULL check, thus modified from "node" to "rb_node".
 
-Reviewed-and-tested-by: Jiadong Zhu <Jiadong.Zhu@amd.com>
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_svm.c:2691 svm_range_get_range_boundaries() warn: can 'node' even be NULL?
+
+Suggested-by: Philip Yang <Philip.Yang@amd.com>
+Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c          | 4 +++-
- drivers/gpu/drm/amd/amdgpu/gfxhub_v1_2.c          | 4 +++-
- drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c           | 4 +++-
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 8 ++++++--
- 4 files changed, 15 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-index 53a2ba5fcf4b..22175da0e16a 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-@@ -102,7 +102,9 @@ static void gfxhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
- 		WREG32_SOC15_RLC(GC, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
- 			min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index b51224a85a38..87e9ca65e58e 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -2657,6 +2657,7 @@ svm_range_get_range_boundaries(struct kfd_process *p, int64_t addr,
+ {
+ 	struct vm_area_struct *vma;
+ 	struct interval_tree_node *node;
++	struct rb_node *rb_node;
+ 	unsigned long start_limit, end_limit;
  
--		if (adev->apu_flags & AMD_APU_IS_RAVEN2)
-+		if (adev->apu_flags & (AMD_APU_IS_RAVEN2 |
-+				       AMD_APU_IS_RENOIR |
-+				       AMD_APU_IS_GREEN_SARDINE))
- 		       /*
- 			* Raven2 has a HW issue that it is unable to use the
- 			* vram which is out of MC_VM_SYSTEM_APERTURE_HIGH_ADDR.
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_2.c b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_2.c
-index 55423ff1bb49..95d06da544e2 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_2.c
-@@ -139,7 +139,9 @@ gfxhub_v1_2_xcc_init_system_aperture_regs(struct amdgpu_device *adev,
- 			WREG32_SOC15_RLC(GC, GET_INST(GC, i), regMC_VM_SYSTEM_APERTURE_LOW_ADDR,
- 				min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
- 
--			if (adev->apu_flags & AMD_APU_IS_RAVEN2)
-+			if (adev->apu_flags & (AMD_APU_IS_RAVEN2 |
-+					       AMD_APU_IS_RENOIR |
-+					       AMD_APU_IS_GREEN_SARDINE))
- 			       /*
- 				* Raven2 has a HW issue that it is unable to use the
- 				* vram which is out of MC_VM_SYSTEM_APERTURE_HIGH_ADDR.
-diff --git a/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c
-index 843219a91736..e3ddd22aa172 100644
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c
-@@ -96,7 +96,9 @@ static void mmhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
- 	WREG32_SOC15(MMHUB, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
- 		     min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
- 
--	if (adev->apu_flags & AMD_APU_IS_RAVEN2)
-+	if (adev->apu_flags & (AMD_APU_IS_RAVEN2 |
-+			       AMD_APU_IS_RENOIR |
-+			       AMD_APU_IS_GREEN_SARDINE))
- 		/*
- 		 * Raven2 has a HW issue that it is unable to use the vram which
- 		 * is out of MC_VM_SYSTEM_APERTURE_HIGH_ADDR. So here is the
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 6f7d7f79ef89..affc628004ff 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1257,7 +1257,9 @@ static void mmhub_read_system_context(struct amdgpu_device *adev, struct dc_phy_
- 	/* AGP aperture is disabled */
- 	if (agp_bot > agp_top) {
- 		logical_addr_low = adev->gmc.fb_start >> 18;
--		if (adev->apu_flags & AMD_APU_IS_RAVEN2)
-+		if (adev->apu_flags & (AMD_APU_IS_RAVEN2 |
-+				       AMD_APU_IS_RENOIR |
-+				       AMD_APU_IS_GREEN_SARDINE))
- 			/*
- 			 * Raven2 has a HW issue that it is unable to use the vram which
- 			 * is out of MC_VM_SYSTEM_APERTURE_HIGH_ADDR. So here is the
-@@ -1269,7 +1271,9 @@ static void mmhub_read_system_context(struct amdgpu_device *adev, struct dc_phy_
- 			logical_addr_high = adev->gmc.fb_end >> 18;
+ 	vma = vma_lookup(p->mm, addr << PAGE_SHIFT);
+@@ -2676,16 +2677,15 @@ svm_range_get_range_boundaries(struct kfd_process *p, int64_t addr,
+ 	if (node) {
+ 		end_limit = min(end_limit, node->start);
+ 		/* Last range that ends before the fault address */
+-		node = container_of(rb_prev(&node->rb),
+-				    struct interval_tree_node, rb);
++		rb_node = rb_prev(&node->rb);
  	} else {
- 		logical_addr_low = min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18;
--		if (adev->apu_flags & AMD_APU_IS_RAVEN2)
-+		if (adev->apu_flags & (AMD_APU_IS_RAVEN2 |
-+				       AMD_APU_IS_RENOIR |
-+				       AMD_APU_IS_GREEN_SARDINE))
- 			/*
- 			 * Raven2 has a HW issue that it is unable to use the vram which
- 			 * is out of MC_VM_SYSTEM_APERTURE_HIGH_ADDR. So here is the
+ 		/* Last range must end before addr because
+ 		 * there was no range after addr
+ 		 */
+-		node = container_of(rb_last(&p->svms.objects.rb_root),
+-				    struct interval_tree_node, rb);
++		rb_node = rb_last(&p->svms.objects.rb_root);
+ 	}
+-	if (node) {
++	if (rb_node) {
++		node = container_of(rb_node, struct interval_tree_node, rb);
+ 		if (node->last >= addr) {
+ 			WARN(1, "Overlap with prev node and page fault addr\n");
+ 			return -EFAULT;
 -- 
 2.43.0
 
