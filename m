@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC7C38482BD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 869F784803A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 745B21F23129
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42A9F28BEE6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E37513FE5;
-	Sat,  3 Feb 2024 04:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D350E111A8;
+	Sat,  3 Feb 2024 04:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3YnoeiP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WCpHbSFH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E611118B;
-	Sat,  3 Feb 2024 04:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8CD10A3B;
+	Sat,  3 Feb 2024 04:08:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933801; cv=none; b=UsaWi0zi0XBtCWy4sLO0QZZI6hOlvkZtVEQxuKlWjtg/P9D7h9MfH2pQ6Ek/bgkfJX8fOj38HPkCJpyB/yAb0xF7m4jHFgKPZqLgb1nxwbz1AkJSsaMXiAv6av+KQay9e6Kh47U26jddsbGbWqI48P3VVt1Gxvwj18Z8SDGllHI=
+	t=1706933336; cv=none; b=aPjx9VpeGK2a88ZwoMJPV7MQ9OnxjKcOH60Z7Roqugj8d3FFhhQwwOEXHbfxMVmg7bWMnX42FJ9V+wf3tHCVWXuL0uVAJxq5KZXpY467pHpzgUBJAtvOQGZqbsiZt4hz/AAoP7MeuPgwcuUx89vfE6cOBcIB0WKdyUh6ghaXxL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933801; c=relaxed/simple;
-	bh=DiR5lg7hy4eylnIeejvjhofWdaaI4cJN2Nslfkvcez8=;
+	s=arc-20240116; t=1706933336; c=relaxed/simple;
+	bh=UdWfxzWbKL+pKsfOg1SwL45DUTGga06uM6YKQWcJ+CM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CSMT2SBofDsGxQrJ/iIDbLZx8KjWUpHNlF8i/EG0wN6Gq0scvYgOCqMgaMmWs5mTZiNuvAFLBNR92wsMpGwqJpkUTKEkHvUtzWxO2+TwGOYowtJZKDAhpriM7I+VaFTSVb+sr2glLQNFIKJjbIhOLu3RlYqYYzetukd1c1QNWp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3YnoeiP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B37BC43390;
-	Sat,  3 Feb 2024 04:16:41 +0000 (UTC)
+	 MIME-Version; b=NAFsjtZS0c/5cnPAOkIkqh7Wx1XSmG2QQdYBVvzuVXOxwIz3Bk5MGAd8OwGdXbyF9dfPO8Q3TRSls8uGyDd7EOSRUU6Iuq22jW+6Qy1jAzRt7EI7XyS8WKZjCe3dsyBmWjw0iNtul7PmwXKL8YciHraGzYiXQJ16JvpxkgX9Hy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WCpHbSFH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51EA4C43394;
+	Sat,  3 Feb 2024 04:08:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933801;
-	bh=DiR5lg7hy4eylnIeejvjhofWdaaI4cJN2Nslfkvcez8=;
+	s=korg; t=1706933336;
+	bh=UdWfxzWbKL+pKsfOg1SwL45DUTGga06uM6YKQWcJ+CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e3YnoeiPOVB3do4r+bioXoOfNDFp6QVmwbGWGME0jsfg6FF/fI7sp802N6nvu4anM
-	 YeZ44nY0GbIF1Iga4YHD0D3CaKOZVK09oSSvlhdDYO/K3w58pGiQX3xknXbTHXiFD6
-	 oA+AYOzbU5K9PNalmcW16gVdBzuqPW/hkPCsHSIc=
+	b=WCpHbSFHeGl8kfYJ5rLgkt6S0hRnuz6CxCYDMqxr145OCOTceUcqObfvHVPSmIZEa
+	 i3qRnesAbuBiuYlBCapxKRNJM1+ICIX+MRCTvAD9Pp+ncGwqT4a9VGdJ00yk14AGye
+	 idYpTSwoE4YsLB9dMBhTIHDUxZy2x65pbRKzI5k8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 089/353] ARM: dts: imx7s: Fix nand-controller #size-cells
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+553d90297e6d2f50dbc7@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 034/219] jfs: fix array-index-out-of-bounds in diNewExt
 Date: Fri,  2 Feb 2024 20:03:27 -0800
-Message-ID: <20240203035406.618233980@linuxfoundation.org>
+Message-ID: <20240203035321.219243128@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 4aadb841ed49bada1415c48c44d21f5b69e01299 ]
+[ Upstream commit 49f9637aafa6e63ba686c13cb8549bf5e6920402 ]
 
-nand-controller.yaml bindings says #size-cells shall be set to 0.
-Fixes the dtbs_check warning:
-arch/arm/boot/dts/nxp/imx/imx7s-mba7.dtb: nand-controller@33002000:
- #size-cells:0:0: 0 was expected
-  from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
+[Syz report]
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_imap.c:2360:2
+index -878706688 is out of range for type 'struct iagctl[128]'
+CPU: 1 PID: 5065 Comm: syz-executor282 Not tainted 6.7.0-rc4-syzkaller-00009-gbee0e7762ad2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:217 [inline]
+ __ubsan_handle_out_of_bounds+0x11c/0x150 lib/ubsan.c:348
+ diNewExt+0x3cf3/0x4000 fs/jfs/jfs_imap.c:2360
+ diAllocExt fs/jfs/jfs_imap.c:1949 [inline]
+ diAllocAG+0xbe8/0x1e50 fs/jfs/jfs_imap.c:1666
+ diAlloc+0x1d3/0x1760 fs/jfs/jfs_imap.c:1587
+ ialloc+0x8f/0x900 fs/jfs/jfs_inode.c:56
+ jfs_mkdir+0x1c5/0xb90 fs/jfs/namei.c:225
+ vfs_mkdir+0x2f1/0x4b0 fs/namei.c:4106
+ do_mkdirat+0x264/0x3a0 fs/namei.c:4129
+ __do_sys_mkdir fs/namei.c:4149 [inline]
+ __se_sys_mkdir fs/namei.c:4147 [inline]
+ __x64_sys_mkdir+0x6e/0x80 fs/namei.c:4147
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x45/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+RIP: 0033:0x7fcb7e6a0b57
+Code: ff ff 77 07 31 c0 c3 0f 1f 40 00 48 c7 c2 b8 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 b8 53 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffd83023038 EFLAGS: 00000286 ORIG_RAX: 0000000000000053
+RAX: ffffffffffffffda RBX: 00000000ffffffff RCX: 00007fcb7e6a0b57
+RDX: 00000000000a1020 RSI: 00000000000001ff RDI: 0000000020000140
+RBP: 0000000020000140 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000286 R12: 00007ffd830230d0
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+[Analysis]
+When the agstart is too large, it can cause agno overflow.
+
+[Fix]
+After obtaining agno, if the value is invalid, exit the subsequent process.
+
+Reported-and-tested-by: syzbot+553d90297e6d2f50dbc7@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+
+Modified the test from agno > MAXAG to agno >= MAXAG based on linux-next
+report by kernel test robot (Dan Carpenter).
+
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx7s.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/jfs_imap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7s.dtsi b/arch/arm/boot/dts/nxp/imx/imx7s.dtsi
-index 3bd33255266e..4569d2b8edef 100644
---- a/arch/arm/boot/dts/nxp/imx/imx7s.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx7s.dtsi
-@@ -1279,7 +1279,7 @@
- 		gpmi: nand-controller@33002000 {
- 			compatible = "fsl,imx7d-gpmi-nand";
- 			#address-cells = <1>;
--			#size-cells = <1>;
-+			#size-cells = <0>;
- 			reg = <0x33002000 0x2000>, <0x33004000 0x4000>;
- 			reg-names = "gpmi-nand", "bch";
- 			interrupts = <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>;
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index 6ed2e1d4c894..ac42f8ee553f 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -2179,6 +2179,9 @@ static int diNewExt(struct inomap * imap, struct iag * iagp, int extno)
+ 	/* get the ag and iag numbers for this iag.
+ 	 */
+ 	agno = BLKTOAG(le64_to_cpu(iagp->agstart), sbi);
++	if (agno >= MAXAG || agno < 0)
++		return -EIO;
++
+ 	iagno = le32_to_cpu(iagp->iagnum);
+ 
+ 	/* check if this is the last free extent within the
 -- 
 2.43.0
 
