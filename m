@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-18230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459298481E6
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5FB9848319
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43F27280CFB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DE4D287B9F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E6E42079;
-	Sat,  3 Feb 2024 04:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E52D50241;
+	Sat,  3 Feb 2024 04:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiutpITu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgQbXxkV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DCB182D4;
-	Sat,  3 Feb 2024 04:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3902711198;
+	Sat,  3 Feb 2024 04:17:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933644; cv=none; b=bdNQCqCY3xDBXvGmC2Lvwg2d6zJxcHJ6pX8ZeUJ5B25E5QaK4RBrAK/eFyjvpoLpwl2099LCEqe6otQSStdlLiMlQjuabsaR/Gm0DCuSCG4dhVrJM/LQh/+2gO5iLUvqHqs1x05Zzzg+iecyVtRt6aIsb9SlD+Mc2aDBcHvoJaE=
+	t=1706933869; cv=none; b=ftETyuJRTStYz/HTKRGygtBJ1+0OskBH6piDJySYddz2S8XRnwTEbKsrzwyZ78+Yo0iwveGvhVEzTvSs1Anol8P+JvodY1i2t5kWRNH/QpNkRnx/u3sR2fwiiq1nvPk+5BuSVaxkZHmS+FtRfMA+z3s/vnh764U1meluKRkpT5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933644; c=relaxed/simple;
-	bh=O0ODS0JVFldxgpijqYj8Sz30CgXo8CVSRYX7XjrRfvc=;
+	s=arc-20240116; t=1706933869; c=relaxed/simple;
+	bh=G88xCkwoWx+tB+ria/lBDJHFHpPqsZy/Ns6Cr22CLhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y8En4TRaLMMraDVH4c98delh+6II5wK7YoL2LjFR9323NGRfTfAW0IOC6swDCnCiVbRAcO/FFI7kAIRziONbUSKd5vEbbGKXCglwQMPJgn7VE2WvKsS6HMBY6zbsW/hc1nRlFZwtSvqa6iPCKSvfbQTfqZHHKuoUtCrjVHMK1qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiutpITu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5B7C433C7;
-	Sat,  3 Feb 2024 04:14:03 +0000 (UTC)
+	 MIME-Version; b=M2rspmrkyWmfnlyERj5NEoWEoVT543pN0fowjeZ2NzGQT+Q5XvXIGA9a1UN1UvYN1n1idyOFhoC3Q6yQJeK0QYMWrilQElaEwrmz5K7StJoWazkmpGFLCCP8DQq1Gvm0q2y/kMoH7AzlanvU37a0Bc/RUz4KXfJxBAbHM1FibxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgQbXxkV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0132DC43394;
+	Sat,  3 Feb 2024 04:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933643;
-	bh=O0ODS0JVFldxgpijqYj8Sz30CgXo8CVSRYX7XjrRfvc=;
+	s=korg; t=1706933869;
+	bh=G88xCkwoWx+tB+ria/lBDJHFHpPqsZy/Ns6Cr22CLhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OiutpITupYOdn8BU/wA1QgT0dhSv8xtl92+xv3nZJ4m1YZ68rWj7P+GteBxenez8U
-	 Mayooh6CgbLfS2NYmyBRBionLfu6oHfWvdQ4mEkLCxzYBHUWBkCp/EqothcQ1PkFxR
-	 trsHAJFh1OXqVAOV/VSDRPyt2dKpD/k4XUqOloww=
+	b=wgQbXxkVbfJwc+1ImSCpUc42iawl5S4SmYg1hO4y7HQL45nyruYBx8pbDjmgM3yZu
+	 Q8wOaCxkSw+fL8HYJ48OCiRR1VpLSDRWuBfBxfa6ldIUYHxQmtH2nHXhTdSwyydkzC
+	 55M0AcAl1fzQy08u5nztn4dI+9ea7+fpPxpZESHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
+	Jonathan Kim <jonathan.kim@amd.com>,
+	Alice Wong <shiwei.wong@amd.com>,
+	Eric Huang <jinhuieric.huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 226/322] xen/gntdev: Fix the abuse of underlying struct page in DMA-buf import
-Date: Fri,  2 Feb 2024 20:05:23 -0800
-Message-ID: <20240203035406.518485465@linuxfoundation.org>
+Subject: [PATCH 6.7 206/353] drm/amdkfd: fix mes set shader debugger process management
+Date: Fri,  2 Feb 2024 20:05:24 -0800
+Message-ID: <20240203035410.210647193@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,153 +62,161 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+From: Jonathan Kim <jonathan.kim@amd.com>
 
-[ Upstream commit 2d2db7d40254d5fb53b11ebd703cd1ed0c5de7a1 ]
+[ Upstream commit bd33bb1409b494558a2935f7bbc7842def957fcd ]
 
-DO NOT access the underlying struct page of an sg table exported
-by DMA-buf in dmabuf_imp_to_refs(), this is not allowed.
-Please see drivers/dma-buf/dma-buf.c:mangle_sg_table() for details.
+MES provides the driver a call to explicitly flush stale process memory
+within the MES to avoid a race condition that results in a fatal
+memory violation.
 
-Fortunately, here (for special Xen device) we can avoid using
-pages and calculate gfns directly from dma addresses provided by
-the sg table.
+When SET_SHADER_DEBUGGER is called, the driver passes a memory address
+that represents a process context address MES uses to keep track of
+future per-process calls.
 
-Suggested-by: Daniel Vetter <daniel@ffwll.ch>
-Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Acked-by: Daniel Vetter <daniel@ffwll.ch>
-Link: https://lore.kernel.org/r/20240107103426.2038075-1-olekstysh@gmail.com
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Normally, MES will purge its process context list when the last queue
+has been removed.  The driver, however, can call SET_SHADER_DEBUGGER
+regardless of whether a queue has been added or not.
+
+If SET_SHADER_DEBUGGER has been called with no queues as the last call
+prior to process termination, the passed process context address will
+still reside within MES.
+
+On a new process call to SET_SHADER_DEBUGGER, the driver may end up
+passing an identical process context address value (based on per-process
+gpu memory address) to MES but is now pointing to a new allocated buffer
+object during KFD process creation.  Since the MES is unaware of this,
+access of the passed address points to the stale object within MES and
+triggers a fatal memory violation.
+
+The solution is for KFD to explicitly flush the process context address
+from MES on process termination.
+
+Note that the flush call and the MES debugger calls use the same MES
+interface but are separated as KFD calls to avoid conflicting with each
+other.
+
+Signed-off-by: Jonathan Kim <jonathan.kim@amd.com>
+Tested-by: Alice Wong <shiwei.wong@amd.com>
+Reviewed-by: Eric Huang <jinhuieric.huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/gntdev-dmabuf.c | 50 ++++++++++++++++++-------------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c       | 31 +++++++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h       | 10 +++---
+ .../amd/amdkfd/kfd_process_queue_manager.c    |  1 +
+ drivers/gpu/drm/amd/include/mes_v11_api_def.h |  3 +-
+ 4 files changed, 40 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/xen/gntdev-dmabuf.c b/drivers/xen/gntdev-dmabuf.c
-index 4440e626b797..42adc2c1e06b 100644
---- a/drivers/xen/gntdev-dmabuf.c
-+++ b/drivers/xen/gntdev-dmabuf.c
-@@ -11,6 +11,7 @@
- #include <linux/kernel.h>
- #include <linux/errno.h>
- #include <linux/dma-buf.h>
-+#include <linux/dma-direct.h>
- #include <linux/slab.h>
- #include <linux/types.h>
- #include <linux/uaccess.h>
-@@ -50,7 +51,7 @@ struct gntdev_dmabuf {
- 
- 	/* Number of pages this buffer has. */
- 	int nr_pages;
--	/* Pages of this buffer. */
-+	/* Pages of this buffer (only for dma-buf export). */
- 	struct page **pages;
- };
- 
-@@ -484,7 +485,7 @@ static int dmabuf_exp_from_refs(struct gntdev_priv *priv, int flags,
- /* DMA buffer import support. */
- 
- static int
--dmabuf_imp_grant_foreign_access(struct page **pages, u32 *refs,
-+dmabuf_imp_grant_foreign_access(unsigned long *gfns, u32 *refs,
- 				int count, int domid)
- {
- 	grant_ref_t priv_gref_head;
-@@ -507,7 +508,7 @@ dmabuf_imp_grant_foreign_access(struct page **pages, u32 *refs,
- 		}
- 
- 		gnttab_grant_foreign_access_ref(cur_ref, domid,
--						xen_page_to_gfn(pages[i]), 0);
-+						gfns[i], 0);
- 		refs[i] = cur_ref;
- 	}
- 
-@@ -529,7 +530,6 @@ static void dmabuf_imp_end_foreign_access(u32 *refs, int count)
- 
- static void dmabuf_imp_free_storage(struct gntdev_dmabuf *gntdev_dmabuf)
- {
--	kfree(gntdev_dmabuf->pages);
- 	kfree(gntdev_dmabuf->u.imp.refs);
- 	kfree(gntdev_dmabuf);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
+index 9ddbf1494326..30c010836658 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
+@@ -886,6 +886,11 @@ int amdgpu_mes_set_shader_debugger(struct amdgpu_device *adev,
+ 	op_input.op = MES_MISC_OP_SET_SHADER_DEBUGGER;
+ 	op_input.set_shader_debugger.process_context_addr = process_context_addr;
+ 	op_input.set_shader_debugger.flags.u32all = flags;
++
++	/* use amdgpu mes_flush_shader_debugger instead */
++	if (op_input.set_shader_debugger.flags.process_ctx_flush)
++		return -EINVAL;
++
+ 	op_input.set_shader_debugger.spi_gdbg_per_vmid_cntl = spi_gdbg_per_vmid_cntl;
+ 	memcpy(op_input.set_shader_debugger.tcp_watch_cntl, tcp_watch_cntl,
+ 			sizeof(op_input.set_shader_debugger.tcp_watch_cntl));
+@@ -905,6 +910,32 @@ int amdgpu_mes_set_shader_debugger(struct amdgpu_device *adev,
+ 	return r;
  }
-@@ -549,12 +549,6 @@ static struct gntdev_dmabuf *dmabuf_imp_alloc_storage(int count)
- 	if (!gntdev_dmabuf->u.imp.refs)
- 		goto fail;
  
--	gntdev_dmabuf->pages = kcalloc(count,
--				       sizeof(gntdev_dmabuf->pages[0]),
--				       GFP_KERNEL);
--	if (!gntdev_dmabuf->pages)
--		goto fail;
--
- 	gntdev_dmabuf->nr_pages = count;
- 
- 	for (i = 0; i < count; i++)
-@@ -576,7 +570,8 @@ dmabuf_imp_to_refs(struct gntdev_dmabuf_priv *priv, struct device *dev,
- 	struct dma_buf *dma_buf;
- 	struct dma_buf_attachment *attach;
- 	struct sg_table *sgt;
--	struct sg_page_iter sg_iter;
-+	struct sg_dma_page_iter sg_iter;
-+	unsigned long *gfns;
- 	int i;
- 
- 	dma_buf = dma_buf_get(fd);
-@@ -624,26 +619,31 @@ dmabuf_imp_to_refs(struct gntdev_dmabuf_priv *priv, struct device *dev,
- 
- 	gntdev_dmabuf->u.imp.sgt = sgt;
- 
--	/* Now convert sgt to array of pages and check for page validity. */
-+	gfns = kcalloc(count, sizeof(*gfns), GFP_KERNEL);
-+	if (!gfns) {
-+		ret = ERR_PTR(-ENOMEM);
-+		goto fail_unmap;
++int amdgpu_mes_flush_shader_debugger(struct amdgpu_device *adev,
++				     uint64_t process_context_addr)
++{
++	struct mes_misc_op_input op_input = {0};
++	int r;
++
++	if (!adev->mes.funcs->misc_op) {
++		DRM_ERROR("mes flush shader debugger is not supported!\n");
++		return -EINVAL;
 +	}
 +
-+	/*
-+	 * Now convert sgt to array of gfns without accessing underlying pages.
-+	 * It is not allowed to access the underlying struct page of an sg table
-+	 * exported by DMA-buf, but since we deal with special Xen dma device here
-+	 * (not a normal physical one) look at the dma addresses in the sg table
-+	 * and then calculate gfns directly from them.
-+	 */
- 	i = 0;
--	for_each_sgtable_page(sgt, &sg_iter, 0) {
--		struct page *page = sg_page_iter_page(&sg_iter);
--		/*
--		 * Check if page is valid: this can happen if we are given
--		 * a page from VRAM or other resources which are not backed
--		 * by a struct page.
--		 */
--		if (!pfn_valid(page_to_pfn(page))) {
--			ret = ERR_PTR(-EINVAL);
--			goto fail_unmap;
--		}
-+	for_each_sgtable_dma_page(sgt, &sg_iter, 0) {
-+		dma_addr_t addr = sg_page_iter_dma_address(&sg_iter);
-+		unsigned long pfn = bfn_to_pfn(XEN_PFN_DOWN(dma_to_phys(dev, addr)));
++	op_input.op = MES_MISC_OP_SET_SHADER_DEBUGGER;
++	op_input.set_shader_debugger.process_context_addr = process_context_addr;
++	op_input.set_shader_debugger.flags.process_ctx_flush = true;
++
++	amdgpu_mes_lock(&adev->mes);
++
++	r = adev->mes.funcs->misc_op(&adev->mes, &op_input);
++	if (r)
++		DRM_ERROR("failed to set_shader_debugger\n");
++
++	amdgpu_mes_unlock(&adev->mes);
++
++	return r;
++}
++
+ static void
+ amdgpu_mes_ring_to_queue_props(struct amdgpu_device *adev,
+ 			       struct amdgpu_ring *ring,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
+index a27b424ffe00..c2c88b772361 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
+@@ -291,9 +291,10 @@ struct mes_misc_op_input {
+ 			uint64_t process_context_addr;
+ 			union {
+ 				struct {
+-					uint64_t single_memop : 1;
+-					uint64_t single_alu_op : 1;
+-					uint64_t reserved: 30;
++					uint32_t single_memop : 1;
++					uint32_t single_alu_op : 1;
++					uint32_t reserved: 29;
++					uint32_t process_ctx_flush: 1;
+ 				};
+ 				uint32_t u32all;
+ 			} flags;
+@@ -369,7 +370,8 @@ int amdgpu_mes_set_shader_debugger(struct amdgpu_device *adev,
+ 				const uint32_t *tcp_watch_cntl,
+ 				uint32_t flags,
+ 				bool trap_en);
+-
++int amdgpu_mes_flush_shader_debugger(struct amdgpu_device *adev,
++				uint64_t process_context_addr);
+ int amdgpu_mes_add_ring(struct amdgpu_device *adev, int gang_id,
+ 			int queue_type, int idx,
+ 			struct amdgpu_mes_ctx_data *ctx_data,
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+index 77f493262e05..8e55e78fce4e 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+@@ -87,6 +87,7 @@ void kfd_process_dequeue_from_device(struct kfd_process_device *pdd)
+ 		return;
  
--		gntdev_dmabuf->pages[i++] = page;
-+		gfns[i++] = pfn_to_gfn(pfn);
- 	}
+ 	dev->dqm->ops.process_termination(dev->dqm, &pdd->qpd);
++	amdgpu_mes_flush_shader_debugger(dev->adev, pdd->proc_ctx_gpu_addr);
+ 	pdd->already_dequeued = true;
+ }
  
--	ret = ERR_PTR(dmabuf_imp_grant_foreign_access(gntdev_dmabuf->pages,
-+	ret = ERR_PTR(dmabuf_imp_grant_foreign_access(gfns,
- 						      gntdev_dmabuf->u.imp.refs,
- 						      count, domid));
-+	kfree(gfns);
- 	if (IS_ERR(ret))
- 		goto fail_end_access;
- 
+diff --git a/drivers/gpu/drm/amd/include/mes_v11_api_def.h b/drivers/gpu/drm/amd/include/mes_v11_api_def.h
+index b1db2b190187..e07e93167a82 100644
+--- a/drivers/gpu/drm/amd/include/mes_v11_api_def.h
++++ b/drivers/gpu/drm/amd/include/mes_v11_api_def.h
+@@ -571,7 +571,8 @@ struct SET_SHADER_DEBUGGER {
+ 		struct {
+ 			uint32_t single_memop : 1;  /* SQ_DEBUG.single_memop */
+ 			uint32_t single_alu_op : 1; /* SQ_DEBUG.single_alu_op */
+-			uint32_t reserved : 30;
++			uint32_t reserved : 29;
++			uint32_t process_ctx_flush : 1;
+ 		};
+ 		uint32_t u32all;
+ 	} flags;
 -- 
 2.43.0
 
