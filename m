@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-18358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FDF4848269
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4498784811B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:16:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A35511F21ECA
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:25:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C57E11F2981D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D6AFBE4;
-	Sat,  3 Feb 2024 04:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A6E13FE5;
+	Sat,  3 Feb 2024 04:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYQefkLZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ckMPkZ0h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C56487A8;
-	Sat,  3 Feb 2024 04:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFD413AC6;
+	Sat,  3 Feb 2024 04:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933740; cv=none; b=R5hAoeDfBoBbZbxkGarBnY+grXLVogPK8e01wooacKZ5kprDTdljdYN1iF6eK8hCX4fgc2/IzdYfOQZOBfN1VqlX0CB9OpACXBiaJRSo8X0R8pgRjYSvVsl1LJ5jFzQfk5aa+p2aevj7nGP77HZiIseI/PkyeHGS79/IYalB31E=
+	t=1706933497; cv=none; b=l3kTAoLnSuJkRJyE70kU0ry0+PAZKOKzDuZQf16D2J3r6/v2ydxMZIBhJiJlqkEV/lcHTBqiNoTrDhyRPb00+X+4LJXY62ddjp24/dMkmCX44qvI6Id2oa9jXBvJpH5pgDQSslCGOc7LxTyt42WNXKH9igA/ok98YZqMBuUNRMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933740; c=relaxed/simple;
-	bh=BgdlTFcc5Ito5ztzmf084qEosavzYcVm+puFhEzZTCw=;
+	s=arc-20240116; t=1706933497; c=relaxed/simple;
+	bh=s5E963463xfIhN3/PH5FB/xwmBaScQeNd1A9VPohO8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g5q6re+Fc293P0fWcNxiWPNwAjrjWV3Lsb/qPOFOOdCKEda/T5mYawYKI4hhxzGjlcwR98cxAldLarWw2mhRdYL3SO5U9hfyvJDZt0/T2RAHhdHSd/SJ+FeoGF/a0qT40cRQxXkHOklic+AFKbLT6MDZH/M/3FAX+KluSatRl7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYQefkLZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0444C433C7;
-	Sat,  3 Feb 2024 04:15:39 +0000 (UTC)
+	 MIME-Version; b=YSpEzz0jBFwOxgowlGkPtQbPVgVWWBkIwfafeGTW5yBqpK2Po6FOJrKoMY0I1MFvlcOLVh9bvozr/vm73RVQcmA85SxtT8/pxzUaRhLch55nHwAsTYLwculiR/Oj3/d/g5d7XWPONWKEsL1qdC8zT5dr6VFefsat3xfXILcN04Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ckMPkZ0h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBED3C433F1;
+	Sat,  3 Feb 2024 04:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933740;
-	bh=BgdlTFcc5Ito5ztzmf084qEosavzYcVm+puFhEzZTCw=;
+	s=korg; t=1706933496;
+	bh=s5E963463xfIhN3/PH5FB/xwmBaScQeNd1A9VPohO8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hYQefkLZpUFgl+ZFQO3Dzj8t9ilFjOZVCWGWXFwynhUWdpM9xTfGPA/nD/DYNam9q
-	 WgYWOyzex4NV9lvI6MOG5JD7W448t8flIFOCbSyrsAmxMUDTUcrquOt0z7FtAzbD+S
-	 jK6oKtW9XDn6U7UvHH8JNPttUPgi63zlwOCCB1WA=
+	b=ckMPkZ0hK716+VuDF6OJVnK6V9H2mRH74BHuwYMkXVOpgUlq1mAovYIkEnIp+EZD5
+	 tN+TSXvvVZ4SBW7CeCHhvki7iG6FyP3NzFGgEc/kY7TaY049rg4gKVodkyYUrl0WRZ
+	 MiPbYxNW428emdZDCn3u7JisF+2sBagWdlhws9jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 006/353] powerpc/mm: Fix build failures due to arch_reserved_kernel_pages()
+	Osama Muhammad <osmtendev@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+d4b1df2e9d4ded6488ec@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 027/322] UBSAN: array-index-out-of-bounds in dtSplitRoot
 Date: Fri,  2 Feb 2024 20:02:04 -0800
-Message-ID: <20240203035403.886684846@linuxfoundation.org>
+Message-ID: <20240203035359.929098480@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,70 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Osama Muhammad <osmtendev@gmail.com>
 
-[ Upstream commit d8c3f243d4db24675b653f0568bb65dae34e6455 ]
+[ Upstream commit 27e56f59bab5ddafbcfe69ad7a4a6ea1279c1b16 ]
 
-With NUMA=n and FA_DUMP=y or PRESERVE_FA_DUMP=y the build fails with:
+Syzkaller reported the following issue:
 
-  arch/powerpc/kernel/fadump.c:1739:22: error: no previous prototype for ‘arch_reserved_kernel_pages’ [-Werror=missing-prototypes]
-  1739 | unsigned long __init arch_reserved_kernel_pages(void)
-       |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~
+oop0: detected capacity change from 0 to 32768
 
-The prototype for arch_reserved_kernel_pages() is in include/linux/mm.h,
-but it's guarded by __HAVE_ARCH_RESERVED_KERNEL_PAGES. The powerpc
-headers define __HAVE_ARCH_RESERVED_KERNEL_PAGES in asm/mmzone.h, which
-is not included into the generic headers when NUMA=n.
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dtree.c:1971:9
+index -2 is out of range for type 'struct dtslot [128]'
+CPU: 0 PID: 3613 Comm: syz-executor270 Not tainted 6.0.0-syzkaller-09423-g493ffd6605b2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/22/2022
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1b1/0x28e lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:151 [inline]
+ __ubsan_handle_out_of_bounds+0xdb/0x130 lib/ubsan.c:283
+ dtSplitRoot+0x8d8/0x1900 fs/jfs/jfs_dtree.c:1971
+ dtSplitUp fs/jfs/jfs_dtree.c:985 [inline]
+ dtInsert+0x1189/0x6b80 fs/jfs/jfs_dtree.c:863
+ jfs_mkdir+0x757/0xb00 fs/jfs/namei.c:270
+ vfs_mkdir+0x3b3/0x590 fs/namei.c:4013
+ do_mkdirat+0x279/0x550 fs/namei.c:4038
+ __do_sys_mkdirat fs/namei.c:4053 [inline]
+ __se_sys_mkdirat fs/namei.c:4051 [inline]
+ __x64_sys_mkdirat+0x85/0x90 fs/namei.c:4051
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fcdc0113fd9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffeb8bc67d8 EFLAGS: 00000246 ORIG_RAX: 0000000000000102
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fcdc0113fd9
+RDX: 0000000000000000 RSI: 0000000020000340 RDI: 0000000000000003
+RBP: 00007fcdc00d37a0 R08: 0000000000000000 R09: 00007fcdc00d37a0
+R10: 00005555559a72c0 R11: 0000000000000246 R12: 00000000f8008000
+R13: 0000000000000000 R14: 00083878000000f8 R15: 0000000000000000
+ </TASK>
 
-Move the definition of __HAVE_ARCH_RESERVED_KERNEL_PAGES into asm/mmu.h
-which is included regardless of NUMA=n.
+The issue is caused when the value of fsi becomes less than -1.
+The check to break the loop when fsi value becomes -1 is present
+but syzbot was able to produce value less than -1 which cause the error.
+This patch simply add the change for the values less than 0.
 
-Additionally the ifdef around __HAVE_ARCH_RESERVED_KERNEL_PAGES needs to
-also check for CONFIG_PRESERVE_FA_DUMP.
+The patch is tested via syzbot.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231130114433.3053544-1-mpe@ellerman.id.au
+Reported-and-tested-by: syzbot+d4b1df2e9d4ded6488ec@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=d4b1df2e9d4ded6488ec
+Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/mmu.h    | 4 ++++
- arch/powerpc/include/asm/mmzone.h | 3 ---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ fs/jfs/jfs_dtree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/mmu.h b/arch/powerpc/include/asm/mmu.h
-index 52cc25864a1b..d8b7e246a32f 100644
---- a/arch/powerpc/include/asm/mmu.h
-+++ b/arch/powerpc/include/asm/mmu.h
-@@ -412,5 +412,9 @@ extern void *abatron_pteptrs[2];
- #include <asm/nohash/mmu.h>
- #endif
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index 92b7c533407c..f3d3e8b3f50c 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -1970,7 +1970,7 @@ static int dtSplitRoot(tid_t tid,
+ 		do {
+ 			f = &rp->slot[fsi];
+ 			fsi = f->next;
+-		} while (fsi != -1);
++		} while (fsi >= 0);
  
-+#if defined(CONFIG_FA_DUMP) || defined(CONFIG_PRESERVE_FA_DUMP)
-+#define __HAVE_ARCH_RESERVED_KERNEL_PAGES
-+#endif
-+
- #endif /* __KERNEL__ */
- #endif /* _ASM_POWERPC_MMU_H_ */
-diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
-index 4c6c6dbd182f..3764d3585d30 100644
---- a/arch/powerpc/include/asm/mmzone.h
-+++ b/arch/powerpc/include/asm/mmzone.h
-@@ -42,9 +42,6 @@ u64 memory_hotplug_max(void);
- #else
- #define memory_hotplug_max() memblock_end_of_DRAM()
- #endif /* CONFIG_NUMA */
--#ifdef CONFIG_FA_DUMP
--#define __HAVE_ARCH_RESERVED_KERNEL_PAGES
--#endif
- 
- #ifdef CONFIG_MEMORY_HOTPLUG
- extern int create_section_mapping(unsigned long start, unsigned long end,
+ 		f->next = n;
+ 	}
 -- 
 2.43.0
 
