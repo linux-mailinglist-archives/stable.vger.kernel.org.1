@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ABDC848240
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EE17848371
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D312282D8D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D031F22288
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F33D481C7;
-	Sat,  3 Feb 2024 04:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F33D2BAEE;
+	Sat,  3 Feb 2024 04:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3LCjZRg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcySxa9C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB2A481BF;
-	Sat,  3 Feb 2024 04:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D096171D4;
+	Sat,  3 Feb 2024 04:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933711; cv=none; b=A3KgKDIY9aylc9F+zV56rgYp7tTws11aQnneTTfEzvi8+GE20C9zLhUgt7nHkxNdAVaXKxW0G63jYGPC+/H3SC3cX/iKP6OLAgRo4/OLDSK3JDev8FouAneDf+t/j5CUzVT9J5Y1ikK6asS1NwdxoUqtdVvDI3u43YeWyLCy1oE=
+	t=1706933932; cv=none; b=grTItnRUDPmFtAd855vYYpcCxv6ijUtA8BYF5VTpygCfczjCbHjzSiGaMrjgUvBl8N9DS7p0qgZ156esJtPLxE9zoVxMd27p1yPhHdVfyGk2i8kqwnegh7JjrDldhw7GLgM90nPvNJLbNfopjyQQNLzWCNMldKjNMJoACN3fwM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933711; c=relaxed/simple;
-	bh=1L8+lFg3DvgB8v4Cj1n8v0NuAvjbmXa/0uyajDOVmMI=;
+	s=arc-20240116; t=1706933932; c=relaxed/simple;
+	bh=sRp1ist9v/7XWqKD3zCMynMH5mPkZ6br2i3jf60CVcU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MqoBpTf2eUV6cS3GySgN/ESSi9dEVu1xPzS5Q7fJauthxWjkT1BEQmKqt0rbQjUQXyFLYwqmp0urdjttlTklntodHp/4rV1TsqMZ5Zo5VvnfZm354ADGqu0WyoBMhit9p58z3CSbEJB2U/BM15VTCnFJaSOUJkn6govllNBrhBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3LCjZRg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FA9C433F1;
-	Sat,  3 Feb 2024 04:15:10 +0000 (UTC)
+	 MIME-Version; b=UEkPy68R6BG8i5OWHI7twcIhe+5oOnflGS3r4DVqG6HvWVu2dOX1wOEb4lny496eUk4NFvCLAR69LoiPDtS4b/7U+wUDRqhKX0WWB+QrTlH+B5s5mLmNXn9YJeuhX7Tw8t0qZgo4x6DLQAOUvlNDIPZAdOnmIAXJHLMkmY3Yl3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcySxa9C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2656EC433F1;
+	Sat,  3 Feb 2024 04:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933710;
-	bh=1L8+lFg3DvgB8v4Cj1n8v0NuAvjbmXa/0uyajDOVmMI=;
+	s=korg; t=1706933932;
+	bh=sRp1ist9v/7XWqKD3zCMynMH5mPkZ6br2i3jf60CVcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3LCjZRgR4r5tA/uIIzaD8YztkCVjjh6yVos193PIaYzonMdZmjywfn6xiqGjDcKn
-	 4VH04AKlA885aQ0woY9nYpUOrCknuI5ionzvomDfoV6Wpffzf91/M4FsR6xRsU2c/O
-	 jJTfxAGKQqGihiTe5t1Gh7h6Rm7NPfTYEN/i+DvE=
+	b=KcySxa9CzDsUMeoqEaR2t3PU1YIqRRnZLPV8nFUGSJSbhiSml6kH/9F9mpOMj+H0p
+	 u92pqg7r1hCWRAaVVd4MSRlpVA9b/VaBdXA1GtOjues0oRCBtdmle8npNvpG7dy+kd
+	 dpbN5+jScOR6I5gYwb3B9PKTqLxOUhVCeSBBD09k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Poirier <bpoirier@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 313/322] selftests: bonding: Check initial state
+Subject: [PATCH 6.7 292/353] riscv: Fix build error on rv32 + XIP
 Date: Fri,  2 Feb 2024 20:06:50 -0800
-Message-ID: <20240203035409.145615986@linuxfoundation.org>
+Message-ID: <20240203035413.038572448@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Poirier <bpoirier@nvidia.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 8cc063ae1b3dbe416ce62a15d49af4c2314b45fe ]
+[ Upstream commit 66f962d8939fd2ac74de901d30d30310c8ddca79 ]
 
-The purpose of the test_LAG_cleanup() function is to check that some
-hardware addresses are removed from underlying devices after they have been
-unenslaved. The test function simply checks that those addresses are not
-present at the end. However, if the addresses were never added to begin
-with due to some error in device setup, the test function currently passes.
-This is a false positive since in that situation the test did not actually
-exercise the intended functionality.
+commit 66f1e6809397 ("riscv: Make XIP bootable again") restricted page
+offset to the sv39 page offset instead of the default sv57, which makes
+sense since probably the platforms that target XIP kernels do not
+support anything else than sv39 and we do not try to find out the
+largest address space supported on XIP kernels (ie set_satp_mode()).
 
-Add a check that the expected addresses are indeed present after device
-setup. This makes the test function more robust.
+But PAGE_OFFSET_L3 is not defined for rv32, so fix the build error by
+restoring the previous behaviour which picks CONFIG_PAGE_OFFSET for rv32.
 
-I noticed this problem when running the team/dev_addr_lists.sh test on a
-system without support for dummy and ipv6:
-
-tools/testing/selftests/drivers/net/team# ./dev_addr_lists.sh
-Error: Unknown device type.
-Error: Unknown device type.
-This program is not intended to be run as root.
-RTNETLINK answers: Operation not supported
-TEST: team cleanup mode lacp                                        [ OK ]
-
-Fixes: bbb774d921e2 ("net: Add tests for bonding and team address list management")
-Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
-Link: https://lore.kernel.org/r/20240131140848.360618-3-bpoirier@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 66f1e6809397 ("riscv: Make XIP bootable again")
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Closes: https://lore.kernel.org/linux-riscv/344dca85-5c48-44e1-bc64-4fa7973edd12@infradead.org/T/#u
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Link: https://lore.kernel.org/r/20240118212120.2087803-1-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/drivers/net/bonding/lag_lib.sh  | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ arch/riscv/mm/init.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/testing/selftests/drivers/net/bonding/lag_lib.sh b/tools/testing/selftests/drivers/net/bonding/lag_lib.sh
-index 2a268b17b61f..dbdd736a41d3 100644
---- a/tools/testing/selftests/drivers/net/bonding/lag_lib.sh
-+++ b/tools/testing/selftests/drivers/net/bonding/lag_lib.sh
-@@ -48,6 +48,17 @@ test_LAG_cleanup()
- 	ip link add mv0 link "$name" up address "$ucaddr" type macvlan
- 	# Used to test dev->mc handling
- 	ip address add "$addr6" dev "$name"
-+
-+	# Check that addresses were added as expected
-+	(grep_bridge_fdb "$ucaddr" bridge fdb show dev dummy1 ||
-+		grep_bridge_fdb "$ucaddr" bridge fdb show dev dummy2) >/dev/null
-+	check_err $? "macvlan unicast address not found on a slave"
-+
-+	# mcaddr is added asynchronously by addrconf_dad_work(), use busywait
-+	(busywait 10000 grep_bridge_fdb "$mcaddr" bridge fdb show dev dummy1 ||
-+		grep_bridge_fdb "$mcaddr" bridge fdb show dev dummy2) >/dev/null
-+	check_err $? "IPv6 solicited-node multicast mac address not found on a slave"
-+
- 	ip link set dev "$name" down
- 	ip link del "$name"
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index a65937336cdc..ad77ed410d4d 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -1060,7 +1060,11 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+ 	kernel_map.virt_addr = KERNEL_LINK_ADDR + kernel_map.virt_offset;
+ 
+ #ifdef CONFIG_XIP_KERNEL
++#ifdef CONFIG_64BIT
+ 	kernel_map.page_offset = PAGE_OFFSET_L3;
++#else
++	kernel_map.page_offset = _AC(CONFIG_PAGE_OFFSET, UL);
++#endif
+ 	kernel_map.xiprom = (uintptr_t)CONFIG_XIP_PHYS_ADDR;
+ 	kernel_map.xiprom_sz = (uintptr_t)(&_exiprom) - (uintptr_t)(&_xiprom);
  
 -- 
 2.43.0
