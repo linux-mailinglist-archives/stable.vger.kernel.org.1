@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64A238482C9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77351848197
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2117028A6FD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CBEC282375
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 033A34E1C3;
-	Sat,  3 Feb 2024 04:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794A22E418;
+	Sat,  3 Feb 2024 04:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbG+Xhz9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5FNYWME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B552613AC6;
-	Sat,  3 Feb 2024 04:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F2310A0A;
+	Sat,  3 Feb 2024 04:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933810; cv=none; b=tMzMF+Rccm76gD/qzlYNIUECXLCtO/vUFyWJpx4aCYNwfTubq3r3cS+/ZknC7N8/B7P78nphJvksRIB1T7I0rpYf3n6OdBwWIQtbRtm+Yj9fagkFJ9mxsIEwaUFDULfm5UmdE6stH0XmPdlSEoGSVDtw9UvyClfRBqDBounVW/c=
+	t=1706933586; cv=none; b=FNI1m6ctSGBy/oQ0hu+TT7BpRJuGw5Cdr3qANa7o8gJFk8dD9vAZ21MfqzdngzVrMQP3mCHsW68t1wRuzDSanKWjvQmfw38RR1qxAdmZO7nSQtZc+8WkqRHCInG1eIlJjT0HxsCi8y12xsx39qHkjz+h1rH4918z42lzAslsMeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933810; c=relaxed/simple;
-	bh=0rorU600mYjpy+y27I4D2R7jpwVs7Dla1yJiZjmk5iE=;
+	s=arc-20240116; t=1706933586; c=relaxed/simple;
+	bh=0dxsB67AxbiynVW3P1v92W7kqeGxgSfwdTSMZ/JCkRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UoATgnFa2rO2Oj+OHlv4jAGSwzHoI0LBvWtyZvGMxNtj3zLKhJxu8YGWPpzOoCiPP+pXF21vsr33U9bcv1KZ5ZJgkZbsU6itd35MubvIr9lnFr6e6fM1Wcp2RlGH5tsIndTEbg4CAa0flOLf2i/FrxYpJjTYehh62TDktTiKFGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbG+Xhz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF21C43390;
-	Sat,  3 Feb 2024 04:16:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mzHSFgjDl4mzyvKGGcvIHgpYKq4h0xCHv0FOznLQYcRMh1+GgXOQ9+ZxSSrV0OLBkDNBQc8J6WTNkbQkPmtCa1CD4eVLZ96zQnSapTz4MMFcVXhDkKWql9zI6KffLMlEXnCp5fDWjUw4vMrCm+/8/DgviXqEcto3uA4b1WdgeXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5FNYWME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03FD8C43390;
+	Sat,  3 Feb 2024 04:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933810;
-	bh=0rorU600mYjpy+y27I4D2R7jpwVs7Dla1yJiZjmk5iE=;
+	s=korg; t=1706933586;
+	bh=0dxsB67AxbiynVW3P1v92W7kqeGxgSfwdTSMZ/JCkRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbG+Xhz90JsWzltN03m0LaxPgGewwNOwaFZYYHOlo02A/L5OekzDqpI8qcf+vs9z4
-	 Ftdz66CoN1z6ostw/M0+7HhT3RO9kSKhEStCEDCRR2znLNXiV9ECoUQN2ucCdP2Cer
-	 84wQnpxlpZQNMYyRpgumujuCUlps7B3yR/CCWBHI=
+	b=y5FNYWMErID2yj0nJ+imnpHuRablu+i5DVXUpqzaXpLyfEu+FxEOdYoy9t+O6FzTb
+	 TTDA4QnjdGJ9g9BHqHIOzcgW6gqccjI8X/QDY1n0lpYsM/Xq5vVjEq49MUMaQNPE4G
+	 iUfXe9dUATSnqZ+9jMzuCICCRQDpdILGPYR1Om/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	=?UTF-8?q?Fr=C3=A9d=C3=A9ric=20Danis?= <frederic.danis@collabora.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 127/353] scsi: lpfc: Move determination of vmid_flag after VMID reinitialization completes
+Subject: [PATCH 6.6 148/322] Bluetooth: L2CAP: Fix possible multiple reject send
 Date: Fri,  2 Feb 2024 20:04:05 -0800
-Message-ID: <20240203035407.746252441@linuxfoundation.org>
+Message-ID: <20240203035403.969182808@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Frédéric Danis <frederic.danis@collabora.com>
 
-[ Upstream commit aba0fb0ef607a71511d23a07406f11130c1a54c5 ]
+[ Upstream commit 96a3398b467ab8aada3df2f3a79f4b7835d068b8 ]
 
-If priority tagging is set in the service parameters of a FLOGI cmpl, then
-we update the vmid_flag.  In the current logic, if a follow up FLOGI cmpl
-updates its service parameters such that priority tagging is no longer set,
-then the vmid_flag ends up keeping stale data.
+In case of an incomplete command or a command with a null identifier 2
+reject packets will be sent, one with the identifier and one with 0.
+Consuming the data of the command will prevent it.
+This allows to send a reject packet for each corrupted command in a
+multi-command packet.
 
-Fix by ensuring we clear the vmid_flag member during lpfc_reinit_vmid, and
-check the priority tagging service parameter after reinitialization of the
-vmid data structures.
-
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20231207224039.35466-4-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Frédéric Danis <frederic.danis@collabora.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_els.c  | 6 +++---
- drivers/scsi/lpfc/lpfc_vmid.c | 1 +
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ net/bluetooth/l2cap_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
-index 7e9b93460e64..385e1636f139 100644
---- a/drivers/scsi/lpfc/lpfc_els.c
-+++ b/drivers/scsi/lpfc/lpfc_els.c
-@@ -1130,12 +1130,12 @@ lpfc_cmpl_els_flogi(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
- 			 vport->port_state, vport->fc_flag,
- 			 sp->cmn.priority_tagging, kref_read(&ndlp->kref));
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index baeebee41cd9..60298975d5c4 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6526,7 +6526,8 @@ static inline void l2cap_sig_channel(struct l2cap_conn *conn,
+ 		if (len > skb->len || !cmd->ident) {
+ 			BT_DBG("corrupted command");
+ 			l2cap_sig_send_rej(conn, cmd->ident);
+-			break;
++			skb_pull(skb, len > skb->len ? skb->len : len);
++			continue;
+ 		}
  
--	if (sp->cmn.priority_tagging)
--		vport->phba->pport->vmid_flag |= (LPFC_VMID_ISSUE_QFPA |
--						  LPFC_VMID_TYPE_PRIO);
- 	/* reinitialize the VMID datastructure before returning */
- 	if (lpfc_is_vmid_enabled(phba))
- 		lpfc_reinit_vmid(vport);
-+	if (sp->cmn.priority_tagging)
-+		vport->phba->pport->vmid_flag |= (LPFC_VMID_ISSUE_QFPA |
-+						  LPFC_VMID_TYPE_PRIO);
- 
- 	/*
- 	 * Address a timing race with dev_loss.  If dev_loss is active on
-diff --git a/drivers/scsi/lpfc/lpfc_vmid.c b/drivers/scsi/lpfc/lpfc_vmid.c
-index cf8ba840d0ea..773e02ae20c3 100644
---- a/drivers/scsi/lpfc/lpfc_vmid.c
-+++ b/drivers/scsi/lpfc/lpfc_vmid.c
-@@ -321,5 +321,6 @@ lpfc_reinit_vmid(struct lpfc_vport *vport)
- 	if (!hash_empty(vport->hash_table))
- 		hash_for_each_safe(vport->hash_table, bucket, tmp, cur, hnode)
- 			hash_del(&cur->hnode);
-+	vport->vmid_flag = 0;
- 	write_unlock(&vport->vmid_lock);
- }
+ 		err = l2cap_bredr_sig_cmd(conn, cmd, len, skb->data);
 -- 
 2.43.0
 
