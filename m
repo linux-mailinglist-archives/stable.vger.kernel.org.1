@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-18501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B168D8482F9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAAA984809C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ED9228CCE3
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7ECD4B2A2BF
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F551C6B8;
-	Sat,  3 Feb 2024 04:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0700017581;
+	Sat,  3 Feb 2024 04:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="joN6j5/5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBSTc/DD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5ED34F616;
-	Sat,  3 Feb 2024 04:17:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0C2101C1;
+	Sat,  3 Feb 2024 04:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933845; cv=none; b=DLUKivjPf8yIFjsanaJTHOsgNOJWBRUb9u1z9YVECxIW5wyhlDWbkwiaiS2Flpf7c2cM7tdzzdzODi8HMGCYRCUbZEew+hBz6G3WVAeh+QykoQpYd2Fu1BJ8S+v2QUDFE13p9kaxJ10jjRXRHY8LXoeEUcqKLCFdHcErSGMoHkE=
+	t=1706933407; cv=none; b=IifFhg+6Q0TH0eDtQvkElrTcc/kDJAfNoDu/jMQlq5UtOmtpDjdGIuwSJc7gfA76jhEG/qNAZIeW6TiJidSZNDFJnNg22HnT4KXLAnx46Nq8J2xER4Jak/X1nE10PDi5HBRCE9grl6A0GQmTitS7NvpNmKQDrkqc/6n5dGQjCO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933845; c=relaxed/simple;
-	bh=zgHMt+MauDqhDg3bco8/n+QopH1oYfZx8NyX72ycwEA=;
+	s=arc-20240116; t=1706933407; c=relaxed/simple;
+	bh=AILvEb0iPqzGeujwPQyfq1dpMvk2dXBOV3AAEAZnFjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m0xcAajb4hm7kBm01Q36nwrnnuLXkim/iAk/DeJ6Ojyaqz4XMN05s6zErOzJNoqjTr2eG4AjzdndSgAS6UIGLAPZf4NrOEjxh88gOfnKlDbO1+KM+zHfqVk1dbC3HBbTqe6+tLIyEVy4WXOTEcZBAsAjp6v0FSNqVdVG5V9tGjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=joN6j5/5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F578C433F1;
-	Sat,  3 Feb 2024 04:17:25 +0000 (UTC)
+	 MIME-Version; b=ghqIOUOAQrT0XM4D24zsEl3bdUb5CqhsiFUaxgK9Bi4pQVXUZSjArzKjVSLjFcwWRqVMsacJYRxRJEX7rGZ3WNo31/iNDOrl7WGYaiS4YByE93KLdby5TqxV02XFnE3QY4nLcSXYn6eQ5dmNaiS5AvWlWyCcN7gDXpo/F3sD61Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBSTc/DD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C07C433C7;
+	Sat,  3 Feb 2024 04:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933845;
-	bh=zgHMt+MauDqhDg3bco8/n+QopH1oYfZx8NyX72ycwEA=;
+	s=korg; t=1706933407;
+	bh=AILvEb0iPqzGeujwPQyfq1dpMvk2dXBOV3AAEAZnFjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=joN6j5/5f9219I0SUvu0uCbNRTmYOYsIQGaiDOfLB52snb89hiUHn8HjkcbcrwxW3
-	 25p6Hr9Cvj9JwRbLKUguFPXXU/+E1gA4a3gEDYmRF5O+dgd6RZwMBI57Sib6wd1Vjh
-	 ioUm4Hkg/pNEUVOydrxsve+OQ3oOKa2cn34kg0Co=
+	b=VBSTc/DDiRnAWBXVq2qksACwhE/3460nv/7pludLXCcUcqgBTLpoY1N4SCEdDkHAS
+	 5GCd2U4QktmOMXVA1qpXLvNd87kJvUrziDMq1V7AcWnCL/JlVp4hwTYoWhQYaqJFDm
+	 Cqs68P5UPO3Zz8JkHrLS7oEjyDZ6MHbP7eBJc2kQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Mingyi Zhang <zhangmingyi5@huawei.com>,
+	Xin Liu <liuxin350@huawei.com>,
+	Changye Wu <wuchangye@huawei.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 148/353] Bluetooth: qca: Set both WIDEBAND_SPEECH and LE_STATES quirks for QCA2066
+Subject: [PATCH 6.1 093/219] libbpf: Fix NULL pointer dereference in bpf_object__collect_prog_relos
 Date: Fri,  2 Feb 2024 20:04:26 -0800
-Message-ID: <20240203035408.351800438@linuxfoundation.org>
+Message-ID: <20240203035330.403952682@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +65,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Mingyi Zhang <zhangmingyi5@huawei.com>
 
-[ Upstream commit 5d192b697c7417254cdd9edc3d5e9e0364eb9045 ]
+[ Upstream commit fc3a5534e2a8855427403113cbeb54af5837bbe0 ]
 
-Set both WIDEBAND_SPEECH_SUPPORTED and VALID_LE_STATES quirks
-for QCA2066.
+An issue occurred while reading an ELF file in libbpf.c during fuzzing:
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+	Program received signal SIGSEGV, Segmentation fault.
+	0x0000000000958e97 in bpf_object.collect_prog_relos () at libbpf.c:4206
+	4206 in libbpf.c
+	(gdb) bt
+	#0 0x0000000000958e97 in bpf_object.collect_prog_relos () at libbpf.c:4206
+	#1 0x000000000094f9d6 in bpf_object.collect_relos () at libbpf.c:6706
+	#2 0x000000000092bef3 in bpf_object_open () at libbpf.c:7437
+	#3 0x000000000092c046 in bpf_object.open_mem () at libbpf.c:7497
+	#4 0x0000000000924afa in LLVMFuzzerTestOneInput () at fuzz/bpf-object-fuzzer.c:16
+	#5 0x000000000060be11 in testblitz_engine::fuzzer::Fuzzer::run_one ()
+	#6 0x000000000087ad92 in tracing::span::Span::in_scope ()
+	#7 0x00000000006078aa in testblitz_engine::fuzzer::util::walkdir ()
+	#8 0x00000000005f3217 in testblitz_engine::entrypoint::main::{{closure}} ()
+	#9 0x00000000005f2601 in main ()
+	(gdb)
+
+scn_data was null at this code(tools/lib/bpf/src/libbpf.c):
+
+	if (rel->r_offset % BPF_INSN_SZ || rel->r_offset >= scn_data->d_size) {
+
+The scn_data is derived from the code above:
+
+	scn = elf_sec_by_idx(obj, sec_idx);
+	scn_data = elf_sec_data(obj, scn);
+
+	relo_sec_name = elf_sec_str(obj, shdr->sh_name);
+	sec_name = elf_sec_name(obj, scn);
+	if (!relo_sec_name || !sec_name)// don't check whether scn_data is NULL
+		return -EINVAL;
+
+In certain special scenarios, such as reading a malformed ELF file,
+it is possible that scn_data may be a null pointer
+
+Signed-off-by: Mingyi Zhang <zhangmingyi5@huawei.com>
+Signed-off-by: Xin Liu <liuxin350@huawei.com>
+Signed-off-by: Changye Wu <wuchangye@huawei.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20231221033947.154564-1-liuxin350@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_qca.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/lib/bpf/libbpf.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 067e248e3599..35f74f209d1f 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -2039,6 +2039,7 @@ static const struct qca_device_data qca_soc_data_wcn3998 __maybe_unused = {
- static const struct qca_device_data qca_soc_data_qca2066 __maybe_unused = {
- 	.soc_type = QCA_QCA2066,
- 	.num_vregs = 0,
-+	.capabilities = QCA_CAP_WIDEBAND_SPEECH | QCA_CAP_VALID_LE_STATES,
- };
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 10f15a3e3a95..e2014b1250ea 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -4157,6 +4157,8 @@ bpf_object__collect_prog_relos(struct bpf_object *obj, Elf64_Shdr *shdr, Elf_Dat
  
- static const struct qca_device_data qca_soc_data_qca6390 __maybe_unused = {
+ 	scn = elf_sec_by_idx(obj, sec_idx);
+ 	scn_data = elf_sec_data(obj, scn);
++	if (!scn_data)
++		return -LIBBPF_ERRNO__FORMAT;
+ 
+ 	relo_sec_name = elf_sec_str(obj, shdr->sh_name);
+ 	sec_name = elf_sec_name(obj, scn);
 -- 
 2.43.0
 
