@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-17829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BF6E848044
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8BAC848295
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24EF228BED9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC0711C216B6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3380F1173F;
-	Sat,  3 Feb 2024 04:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE1FC4B5DA;
+	Sat,  3 Feb 2024 04:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODV92u7L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qr0BJZLI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69DF10976;
-	Sat,  3 Feb 2024 04:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B02B13AD4;
+	Sat,  3 Feb 2024 04:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933344; cv=none; b=JUPu2FnRrIrKVtbJONyvPUWiUTvFNOGTnjohC32djUTxoLgCm8Sxf+1g8ijhBkvti3bim7UOh6HzhbQiJGO+Hq48+SBuwLRA0esUgR/MKzh0PZFio7enS5KImS0NvauCHpvqoe7N3M1e+W89k0iMoYec4Oe1STYg3v5+VxCZ2Wg=
+	t=1706933772; cv=none; b=tpEmocHdzoiXDpjigf4NUrvmHdZI0W1nDZqQ5LvvrDoBTIxbfwhBlke4XRSTdt+tTffZVAgXunkdlu+DKpSu0CD1mbqjusJjYbTrTlBn9YHYBsYsJ1T6VYclRdegt1jdG1puEkZbxXtEfOxt+bU29pRR5Nr3kX4g+kWn1DBFZBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933344; c=relaxed/simple;
-	bh=j4VPEhf/uC13VNIFGV3EpSm2NUsD23E0pH4ZrCwvPHs=;
+	s=arc-20240116; t=1706933772; c=relaxed/simple;
+	bh=69HQQF88tkAMTw6uhSl294FK1ILEsEtKQ6WSriYGxPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mcjs6wdSdeHON0rnOg0uWvQCnSvxW2RjFyrKntNjX53uaAtlu6Qporgny41dFNrtCFmG7pqumHZET1YiDFPFQLpbr7N+jaxp/62TH70DZWEb9rVVm5EiyLjmfrTcwBET6mac/jLLTg0qyB601Gb7TYdRTQatvZUFGpXL5LBw8pI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODV92u7L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B112DC433F1;
-	Sat,  3 Feb 2024 04:09:03 +0000 (UTC)
+	 MIME-Version; b=PjTGoSqHKyVdjdjeIkbruf4p5DkBDsYpU+ojp0+Vt1sW1aHjnozKcHk7FrBM4TLT1ER/IWQVRxTP4P+ogsGuipyzZwMF9NqZMduDsde3EpNchCfLIqjc4z0RK/G5RG1fKly0qAqUdl8i4eT3NMhq1j3l2dh8OQRrD2mDEjAPaQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qr0BJZLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B0FC433C7;
+	Sat,  3 Feb 2024 04:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933343;
-	bh=j4VPEhf/uC13VNIFGV3EpSm2NUsD23E0pH4ZrCwvPHs=;
+	s=korg; t=1706933772;
+	bh=69HQQF88tkAMTw6uhSl294FK1ILEsEtKQ6WSriYGxPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODV92u7LzQ9OwXRdJoTalbRu3xc47oCTq4NPCt/XVCGOc+fRB3j3JSjdBQIz7id0H
-	 MRuFLPtDQR4kMIkTZDvvJr1cP1wDqV3rOPzfysQEd78fPisTkQjcs6OG5UxhSw6tVp
-	 hg3WZw347huXgwq99E++A/T+KKa6OLnpAkYM96xU=
+	b=Qr0BJZLI7PWgmff1LMmiO+LmA67hSSwO6/Iz1cxZko2OEocZ1xMxnm86t5LZfnYxY
+	 KBU0WAA1IHcRaZDUOfzvrL7uDAQI8kpY5e6u8Owj+0hD/pqokxYX7YtHwg15rngCSN
+	 0mE5RAvJ11Ykmbw8snjUb1aFaTwS9tTcsC5cUxKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joyyoung Huang <huangzaiyang@oppo.com>,
-	MyungJoo Ham <myungjoo.ham@samsung.com>,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	HariBabu Gattem <haribabu.gattem@xilinx.com>,
+	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 020/219] PM / devfreq: Synchronize devfreq_monitor_[start/stop]
+Subject: [PATCH 6.7 075/353] soc: xilinx: Fix for call trace due to the usage of smp_processor_id()
 Date: Fri,  2 Feb 2024 20:03:13 -0800
-Message-ID: <20240203035319.340447664@linuxfoundation.org>
+Message-ID: <20240203035406.196370124@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,169 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Ojha <quic_mojha@quicinc.com>
+From: HariBabu Gattem <haribabu.gattem@xilinx.com>
 
-[ Upstream commit aed5ed595960c6d301dcd4ed31aeaa7a8054c0c6 ]
+[ Upstream commit daed80ed07580e5adc0e6d8bc79933a35154135a ]
 
-There is a chance if a frequent switch of the governor
-done in a loop result in timer list corruption where
-timer cancel being done from two place one from
-cancel_delayed_work_sync() and followed by expire_timers()
-can be seen from the traces[1].
+When preemption is enabled in kernel and if any task which can be
+preempted should not use smp_processor_id() directly, since CPU
+switch can happen at any time, the previous value of cpu_id
+differs with current cpu_id. As a result we see the below call trace
+during xlnx_event_manager_probe.
 
-while true
-do
-        echo "simple_ondemand" > /sys/class/devfreq/1d84000.ufshc/governor
-        echo "performance" > /sys/class/devfreq/1d84000.ufshc/governor
-done
+[ 6.140197] dump_backtrace+0x0/0x190
+[ 6.143884] show_stack+0x18/0x40
+[ 6.147220] dump_stack_lvl+0x7c/0xa0
+[ 6.150907] dump_stack+0x18/0x34
+[ 6.154241] check_preemption_disabled+0x124/0x134
+[ 6.159068] debug_smp_processor_id+0x20/0x2c
+[ 6.163453] xlnx_event_manager_probe+0x48/0x250
 
-It looks to be issue with devfreq driver where
-device_monitor_[start/stop] need to synchronized so that
-delayed work should get corrupted while it is either
-being queued or running or being cancelled.
+To protect cpu_id, It is recommended to use get_cpu()/put_cpu()
+to disable preemption, get the cpu_id and enable preemption respectively.
+(For Reference, Documentation/locking/preempt-locking.rst and
+Documentation/kernel-hacking/hacking.rst)
 
-Let's use polling flag and devfreq lock to synchronize the
-queueing the timer instance twice and work data being
-corrupted.
+Use preempt_disable()/smp_processor_id()/preempt_enable()
+API's to achieve the same.
 
-[1]
-...
-..
-<idle>-0    [003]   9436.209662:  timer_cancel   timer=0xffffff80444f0428
-<idle>-0    [003]   9436.209664:  timer_expire_entry   timer=0xffffff80444f0428  now=0x10022da1c  function=__typeid__ZTSFvP10timer_listE_global_addr  baseclk=0x10022da1c
-<idle>-0    [003]   9436.209718:  timer_expire_exit   timer=0xffffff80444f0428
-kworker/u16:6-14217    [003]   9436.209863:  timer_start   timer=0xffffff80444f0428  function=__typeid__ZTSFvP10timer_listE_global_addr  expires=0x10022da2b  now=0x10022da1c  flags=182452227
-vendor.xxxyyy.ha-1593    [004]   9436.209888:  timer_cancel   timer=0xffffff80444f0428
-vendor.xxxyyy.ha-1593    [004]   9436.216390:  timer_init   timer=0xffffff80444f0428
-vendor.xxxyyy.ha-1593    [004]   9436.216392:  timer_start   timer=0xffffff80444f0428  function=__typeid__ZTSFvP10timer_listE_global_addr  expires=0x10022da2c  now=0x10022da1d  flags=186646532
-vendor.xxxyyy.ha-1593    [005]   9436.220992:  timer_cancel   timer=0xffffff80444f0428
-xxxyyyTraceManag-7795    [004]   9436.261641:  timer_cancel   timer=0xffffff80444f0428
-
-[2]
-
- 9436.261653][    C4] Unable to handle kernel paging request at virtual address dead00000000012a
-[ 9436.261664][    C4] Mem abort info:
-[ 9436.261666][    C4]   ESR = 0x96000044
-[ 9436.261669][    C4]   EC = 0x25: DABT (current EL), IL = 32 bits
-[ 9436.261671][    C4]   SET = 0, FnV = 0
-[ 9436.261673][    C4]   EA = 0, S1PTW = 0
-[ 9436.261675][    C4] Data abort info:
-[ 9436.261677][    C4]   ISV = 0, ISS = 0x00000044
-[ 9436.261680][    C4]   CM = 0, WnR = 1
-[ 9436.261682][    C4] [dead00000000012a] address between user and kernel address ranges
-[ 9436.261685][    C4] Internal error: Oops: 96000044 [#1] PREEMPT SMP
-[ 9436.261701][    C4] Skip md ftrace buffer dump for: 0x3a982d0
-...
-
-[ 9436.262138][    C4] CPU: 4 PID: 7795 Comm: TraceManag Tainted: G S      W  O      5.10.149-android12-9-o-g17f915d29d0c #1
-[ 9436.262141][    C4] Hardware name: Qualcomm Technologies, Inc.  (DT)
-[ 9436.262144][    C4] pstate: 22400085 (nzCv daIf +PAN -UAO +TCO BTYPE=--)
-[ 9436.262161][    C4] pc : expire_timers+0x9c/0x438
-[ 9436.262164][    C4] lr : expire_timers+0x2a4/0x438
-[ 9436.262168][    C4] sp : ffffffc010023dd0
-[ 9436.262171][    C4] x29: ffffffc010023df0 x28: ffffffd0636fdc18
-[ 9436.262178][    C4] x27: ffffffd063569dd0 x26: ffffffd063536008
-[ 9436.262182][    C4] x25: 0000000000000001 x24: ffffff88f7c69280
-[ 9436.262185][    C4] x23: 00000000000000e0 x22: dead000000000122
-[ 9436.262188][    C4] x21: 000000010022da29 x20: ffffff8af72b4e80
-[ 9436.262191][    C4] x19: ffffffc010023e50 x18: ffffffc010025038
-[ 9436.262195][    C4] x17: 0000000000000240 x16: 0000000000000201
-[ 9436.262199][    C4] x15: ffffffffffffffff x14: ffffff889f3c3100
-[ 9436.262203][    C4] x13: ffffff889f3c3100 x12: 00000000049f56b8
-[ 9436.262207][    C4] x11: 00000000049f56b8 x10: 00000000ffffffff
-[ 9436.262212][    C4] x9 : ffffffc010023e50 x8 : dead000000000122
-[ 9436.262216][    C4] x7 : ffffffffffffffff x6 : ffffffc0100239d8
-[ 9436.262220][    C4] x5 : 0000000000000000 x4 : 0000000000000101
-[ 9436.262223][    C4] x3 : 0000000000000080 x2 : ffffff889edc155c
-[ 9436.262227][    C4] x1 : ffffff8001005200 x0 : ffffff80444f0428
-[ 9436.262232][    C4] Call trace:
-[ 9436.262236][    C4]  expire_timers+0x9c/0x438
-[ 9436.262240][    C4]  __run_timers+0x1f0/0x330
-[ 9436.262245][    C4]  run_timer_softirq+0x28/0x58
-[ 9436.262255][    C4]  efi_header_end+0x168/0x5ec
-[ 9436.262265][    C4]  __irq_exit_rcu+0x108/0x124
-[ 9436.262274][    C4]  __handle_domain_irq+0x118/0x1e4
-[ 9436.262282][    C4]  gic_handle_irq.30369+0x6c/0x2bc
-[ 9436.262286][    C4]  el0_irq_naked+0x60/0x6c
-
-Link: https://lore.kernel.org/all/1700860318-4025-1-git-send-email-quic_mojha@quicinc.com/
-Reported-by: Joyyoung Huang <huangzaiyang@oppo.com>
-Acked-by: MyungJoo Ham <myungjoo.ham@samsung.com>
-Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Signed-off-by: HariBabu Gattem <haribabu.gattem@xilinx.com>
+Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+Link: https://lore.kernel.org/r/20231027055622.21544-1-jay.buddhabhatti@amd.com
+Signed-off-by: Michal Simek <michal.simek@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/devfreq/devfreq.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ drivers/soc/xilinx/xlnx_event_manager.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
-index 2951a87ccb97..344e276165e4 100644
---- a/drivers/devfreq/devfreq.c
-+++ b/drivers/devfreq/devfreq.c
-@@ -461,10 +461,14 @@ static void devfreq_monitor(struct work_struct *work)
- 	if (err)
- 		dev_err(&devfreq->dev, "dvfs failed with (%d) error\n", err);
+diff --git a/drivers/soc/xilinx/xlnx_event_manager.c b/drivers/soc/xilinx/xlnx_event_manager.c
+index 86a048a10a13..edfb1d5c10c6 100644
+--- a/drivers/soc/xilinx/xlnx_event_manager.c
++++ b/drivers/soc/xilinx/xlnx_event_manager.c
+@@ -555,7 +555,7 @@ static void xlnx_disable_percpu_irq(void *data)
+ static int xlnx_event_init_sgi(struct platform_device *pdev)
+ {
+ 	int ret = 0;
+-	int cpu = smp_processor_id();
++	int cpu;
+ 	/*
+ 	 * IRQ related structures are used for the following:
+ 	 * for each SGI interrupt ensure its mapped by GIC IRQ domain
+@@ -592,9 +592,12 @@ static int xlnx_event_init_sgi(struct platform_device *pdev)
+ 	sgi_fwspec.param[0] = sgi_num;
+ 	virq_sgi = irq_create_fwspec_mapping(&sgi_fwspec);
  
-+	if (devfreq->stop_polling)
-+		goto out;
++	cpu = get_cpu();
+ 	per_cpu(cpu_number1, cpu) = cpu;
+ 	ret = request_percpu_irq(virq_sgi, xlnx_event_handler, "xlnx_event_mgmt",
+ 				 &cpu_number1);
++	put_cpu();
 +
- 	queue_delayed_work(devfreq_wq, &devfreq->work,
- 				msecs_to_jiffies(devfreq->profile->polling_ms));
--	mutex_unlock(&devfreq->lock);
- 
-+out:
-+	mutex_unlock(&devfreq->lock);
- 	trace_devfreq_monitor(devfreq);
- }
- 
-@@ -482,6 +486,10 @@ void devfreq_monitor_start(struct devfreq *devfreq)
- 	if (IS_SUPPORTED_FLAG(devfreq->governor->flags, IRQ_DRIVEN))
- 		return;
- 
-+	mutex_lock(&devfreq->lock);
-+	if (delayed_work_pending(&devfreq->work))
-+		goto out;
-+
- 	switch (devfreq->profile->timer) {
- 	case DEVFREQ_TIMER_DEFERRABLE:
- 		INIT_DEFERRABLE_WORK(&devfreq->work, devfreq_monitor);
-@@ -490,12 +498,16 @@ void devfreq_monitor_start(struct devfreq *devfreq)
- 		INIT_DELAYED_WORK(&devfreq->work, devfreq_monitor);
- 		break;
- 	default:
--		return;
-+		goto out;
- 	}
- 
- 	if (devfreq->profile->polling_ms)
- 		queue_delayed_work(devfreq_wq, &devfreq->work,
- 			msecs_to_jiffies(devfreq->profile->polling_ms));
-+
-+out:
-+	devfreq->stop_polling = false;
-+	mutex_unlock(&devfreq->lock);
- }
- EXPORT_SYMBOL(devfreq_monitor_start);
- 
-@@ -512,6 +524,14 @@ void devfreq_monitor_stop(struct devfreq *devfreq)
- 	if (IS_SUPPORTED_FLAG(devfreq->governor->flags, IRQ_DRIVEN))
- 		return;
- 
-+	mutex_lock(&devfreq->lock);
-+	if (devfreq->stop_polling) {
-+		mutex_unlock(&devfreq->lock);
-+		return;
-+	}
-+
-+	devfreq->stop_polling = true;
-+	mutex_unlock(&devfreq->lock);
- 	cancel_delayed_work_sync(&devfreq->work);
- }
- EXPORT_SYMBOL(devfreq_monitor_stop);
+ 	WARN_ON(ret);
+ 	if (ret) {
+ 		irq_dispose_mapping(virq_sgi);
 -- 
 2.43.0
 
