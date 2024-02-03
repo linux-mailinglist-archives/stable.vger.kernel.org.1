@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-18390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5827B848288
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86ACF84813D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13923282DCD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42B582864B1
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E4D4A99A;
-	Sat,  3 Feb 2024 04:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D13661CAB1;
+	Sat,  3 Feb 2024 04:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUq+CEsX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjEzkZuY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29361B95C;
-	Sat,  3 Feb 2024 04:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903C41CAAC;
+	Sat,  3 Feb 2024 04:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933763; cv=none; b=KaWbdt/ta8VmhCKOMgQrkVZcCT/QiDCGuING4Amc9lH5hSPkpQ3+Du2JXlDZ5OWul4UnXagja1xgqR0wN3nN503Tsfgt/O6cvQPCPo0CrvYGCrHzJCbpnp6knGFTgrsxw2Mlyg/4c1AJ+7oQV7KEcIXyLG4DmQmjnm5Gi9jCdCM=
+	t=1706933520; cv=none; b=E3k+5FYV+f0piEbPmq9eH0FdAuZKJwUW3n+RQGNiNJlkVVaJNPzPjUwdcmJK40+HTyNfpU8Uoc5FyjQNi6m4kvJh4uWnXZgu+Dd9DC6GJ8QTKowxvR3bWc2n992hGFG+iyJXk+LQjDyazHdl5YwNwtlWODultpvESQpuELSYmnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933763; c=relaxed/simple;
-	bh=zf+QbtGGM2eFtba5voPG0y+8zXMOuFpDHt4OLTs2GLM=;
+	s=arc-20240116; t=1706933520; c=relaxed/simple;
+	bh=lpz/JIz5KVrH/Hn3d+OxzE2BjhqAc35ncro2htZhQuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oM0LjeFwxqVOhd92psAWLjKdnDIv8jCmWcV4xPrDiBwvyVKlF6tPKdDthRCkO5f8MEBztXKfRdXDNnwzvaBh2nsNXCJH9Mp9CDfOprJrZxnpibGST7D1CDU1SMcVTYedr/9O2oDxZsz/7wdwt5JRPOETX7J9ueFQe9B1YA2DwYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUq+CEsX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA64C433F1;
-	Sat,  3 Feb 2024 04:16:03 +0000 (UTC)
+	 MIME-Version; b=p+2UMFS/NFcdECrLokj7bXXaJb+vLXKpqc1D3SRoDLPWEnuJh7tTao/cP0jJCMxA2+COOQCqJ/9sd/k8VkCnkqE6T4SV6HTHXmPo6z5ugikhy0pvZAbhct3Pr+txkLYROUI/oTlylkDxjIP2OIRSS4Lexdt0g6tWA/p5nHpF/z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjEzkZuY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58CBAC433C7;
+	Sat,  3 Feb 2024 04:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933763;
-	bh=zf+QbtGGM2eFtba5voPG0y+8zXMOuFpDHt4OLTs2GLM=;
+	s=korg; t=1706933520;
+	bh=lpz/JIz5KVrH/Hn3d+OxzE2BjhqAc35ncro2htZhQuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUq+CEsXJxbrBH9sKefs87DzIMejt9QjfvV567uXlnmDBm/DOmvZIawAJd2+jpUGx
-	 HGBD5j1qHePCLueyH1M7+bbZxLfw1ANQoaXl1Xa9iGv5L2a/xtItc3sj5ACA7omjM0
-	 dCJ70YyhWBumSfM9F4hm2DRwXuikFju4ur6FEGBE=
+	b=HjEzkZuYjU2hcEB2jqD5ksr4CY7Yingyx30smChAJOgFef+YnhAQnHzGwoQrLwzxT
+	 U6LfGD9pzNhSKED22y92rm0udvIOQYYnrSYAh7coP2JvZbd5pcDwc3Uu8IGhlxqeia
+	 LYlj6JgPyTSJRO9tNwUA1Nh2Qc2h0nyiO6dOlOy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weichen Chen <weichen.chen@mediatek.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Kees Cook <keescook@chromium.org>,
+	Shiji Yang <yangshiji66@outlook.com>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 037/353] pstore/ram: Fix crash when setting number of cpus to an odd number
-Date: Fri,  2 Feb 2024 20:02:35 -0800
-Message-ID: <20240203035404.971368417@linuxfoundation.org>
+Subject: [PATCH 6.6 059/322] wifi: rt2x00: restart beacon queue when hardware reset
+Date: Fri,  2 Feb 2024 20:02:36 -0800
+Message-ID: <20240203035401.041617833@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weichen Chen <weichen.chen@mediatek.com>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-[ Upstream commit d49270a04623ce3c0afddbf3e984cb245aa48e9c ]
+[ Upstream commit a11d965a218f0cd95b13fe44d0bcd8a20ce134a8 ]
 
-When the number of cpu cores is adjusted to 7 or other odd numbers,
-the zone size will become an odd number.
-The address of the zone will become:
-    addr of zone0 = BASE
-    addr of zone1 = BASE + zone_size
-    addr of zone2 = BASE + zone_size*2
-    ...
-The address of zone1/3/5/7 will be mapped to non-alignment va.
-Eventually crashes will occur when accessing these va.
+When a hardware reset is triggered, all registers are reset, so all
+queues are forced to stop in hardware interface. However, mac80211
+will not automatically stop the queue. If we don't manually stop the
+beacon queue, the queue will be deadlocked and unable to start again.
+This patch fixes the issue where Apple devices cannot connect to the
+AP after calling ieee80211_restart_hw().
 
-So, use ALIGN_DOWN() to make sure the zone size is even
-to avoid this bug.
-
-Signed-off-by: Weichen Chen <weichen.chen@mediatek.com>
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
-Tested-by: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
-Link: https://lore.kernel.org/r/20230224023632.6840-1-weichen.chen@mediatek.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/TYAP286MB031530EB6D98DCE4DF20766CBCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/pstore/ram.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ralink/rt2x00/rt2x00dev.c |  3 +++
+ drivers/net/wireless/ralink/rt2x00/rt2x00mac.c | 11 +++++++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/fs/pstore/ram.c b/fs/pstore/ram.c
-index d36702c7ab3c..88b34fdbf759 100644
---- a/fs/pstore/ram.c
-+++ b/fs/pstore/ram.c
-@@ -529,6 +529,7 @@ static int ramoops_init_przs(const char *name,
- 	}
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+index 9a9cfd0ce402..00b945053e19 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+@@ -101,6 +101,7 @@ void rt2x00lib_disable_radio(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00link_stop_tuner(rt2x00dev);
+ 	rt2x00queue_stop_queues(rt2x00dev);
+ 	rt2x00queue_flush_queues(rt2x00dev, true);
++	rt2x00queue_stop_queue(rt2x00dev->bcn);
  
- 	zone_sz = mem_sz / *cnt;
-+	zone_sz = ALIGN_DOWN(zone_sz, 2);
- 	if (!zone_sz) {
- 		dev_err(dev, "%s zone size == 0\n", name);
- 		goto fail;
+ 	/*
+ 	 * Disable radio.
+@@ -1286,6 +1287,7 @@ int rt2x00lib_start(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00dev->intf_ap_count = 0;
+ 	rt2x00dev->intf_sta_count = 0;
+ 	rt2x00dev->intf_associated = 0;
++	rt2x00dev->intf_beaconing = 0;
+ 
+ 	/* Enable the radio */
+ 	retval = rt2x00lib_enable_radio(rt2x00dev);
+@@ -1312,6 +1314,7 @@ void rt2x00lib_stop(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00dev->intf_ap_count = 0;
+ 	rt2x00dev->intf_sta_count = 0;
+ 	rt2x00dev->intf_associated = 0;
++	rt2x00dev->intf_beaconing = 0;
+ }
+ 
+ static inline void rt2x00lib_set_if_combinations(struct rt2x00_dev *rt2x00dev)
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
+index 4202c6517783..75fda72c14ca 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
+@@ -598,6 +598,17 @@ void rt2x00mac_bss_info_changed(struct ieee80211_hw *hw,
+ 	 */
+ 	if (changes & BSS_CHANGED_BEACON_ENABLED) {
+ 		mutex_lock(&intf->beacon_skb_mutex);
++
++		/*
++		 * Clear the 'enable_beacon' flag and clear beacon because
++		 * the beacon queue has been stopped after hardware reset.
++		 */
++		if (test_bit(DEVICE_STATE_RESET, &rt2x00dev->flags) &&
++		    intf->enable_beacon) {
++			intf->enable_beacon = false;
++			rt2x00queue_clear_beacon(rt2x00dev, vif);
++		}
++
+ 		if (!bss_conf->enable_beacon && intf->enable_beacon) {
+ 			rt2x00dev->intf_beaconing--;
+ 			intf->enable_beacon = false;
 -- 
 2.43.0
 
