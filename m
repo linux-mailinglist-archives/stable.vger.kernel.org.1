@@ -1,64 +1,54 @@
-Return-Path: <stable+bounces-18596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D942C84835A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6037E8480F6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E4721F26318
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 122691F21C29
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D144F225A9;
-	Sat,  3 Feb 2024 04:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F92E1B950;
+	Sat,  3 Feb 2024 04:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aphNOMrF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PdCfgDpr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92322171CC;
-	Sat,  3 Feb 2024 04:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3A8FC03;
+	Sat,  3 Feb 2024 04:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933915; cv=none; b=Rjig8r+qUbkoV7V+ANWXqBzo0Ofq1VbOHFCIbxYfBwc7dXdWFs8XHz2e9EEPwrH3kPTXNDDbj245KOWpdKI8LuzgxZFVeyijP/iYxRCYF4PnSn9wgTCNc7cEJPdakQJNM4inFCbxCOasaSynQfQSpckrLnqd73HtCqdMAAuP1tw=
+	t=1706933473; cv=none; b=TxvtdnJLdIJBEO964aALljn0fh6L9yvjsrlYNj0Jwx6HJnlonfffvmJVqSRx/wqayIphMgg2vKz3SHp4i7IXiZITtPJZDyYgA3JpNrfeWl1DMJ86LOIu8tuDiNtQjuKMT+5gjqku2MBjNgdL4coASToBZGBlb1akKmtkFFe6dWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933915; c=relaxed/simple;
-	bh=rY6CdypWO3rfF0djGdrJCkiIy0QBOsk/JbyOG3azTeQ=;
+	s=arc-20240116; t=1706933473; c=relaxed/simple;
+	bh=hdl190h5m0vep7Vhu0Ud57b7yeyxATOQBi2zMxfkCFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KedHOZ6/9Us7nppHhey9lUcVvZbyTuRdGSJmB4PNI630+5l9YBSvjZh7+cVD02WrS5xa3K3YH1u4TcBvBKPst7Ny4hoEB+Azgq6a6IXyQxch7XL6kI+VFlByHfkrzfhYhnk76MOa3YVwhnIfgpzmjS47jxH2iKRAX45lOt+Hrcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aphNOMrF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52945C433C7;
-	Sat,  3 Feb 2024 04:18:35 +0000 (UTC)
+	 MIME-Version; b=ahto6uGKaFpb6yXj5m7pX4BX9dvEBih33Fmnr6iHRbgRunvkMH6OZ41DIw4g5iRT4p/ZXN3tsPGpv9mVX9NG+F2WCbK8WwmGOp3n3gQG6KokUWlGPh2VnVQYDW4etrDBKVwZNc05wjLVXA2CD+HFjUyC8WLhJUiKtItH8FG0Gpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PdCfgDpr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD47BC433F1;
+	Sat,  3 Feb 2024 04:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933915;
-	bh=rY6CdypWO3rfF0djGdrJCkiIy0QBOsk/JbyOG3azTeQ=;
+	s=korg; t=1706933473;
+	bh=hdl190h5m0vep7Vhu0Ud57b7yeyxATOQBi2zMxfkCFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aphNOMrFuzxoSHI/lQYR3+A5hn8DnfZ4L6tz1HdcVeBnoxPZ1ONvmfUePiIZa5sjZ
-	 NyPdqrwOq6NTovExifZvniV+RlDXodlooNPoT9U2AlUHqzoDKrzgRf03djJzj9naQF
-	 l4I8m6x4aOtBmNmtjXolRgIdWLnoZbzkpAABEUdQ=
+	b=PdCfgDprjWb8azhpAdDMQauVFL9GsCzRR+5gc2r0A1mzvQBBotegUix5Hv1d8P+ef
+	 RAWJ2ixPx/rduFr5YTg53w4MDTYQmSFm5IfSUpxN4QKZbg7gxxK1cduVafSkV6mrhh
+	 abtdNDMkNGIhg/ySZgO44zkL6VlVU4Qc3Ea5/ktQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Chenyuan Mi <cymi20@fudan.edu.cn>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 269/353] libsubcmd: Fix memory leak in uniq()
-Date: Fri,  2 Feb 2024 20:06:27 -0800
-Message-ID: <20240203035412.266136959@linuxfoundation.org>
+	Jonathan Gray <jsg@jsg.id.au>
+Subject: [PATCH 6.1 215/219] Revert "drm/amd/display: Disable PSR-SU on Parade 0803 TCON again"
+Date: Fri,  2 Feb 2024 20:06:28 -0800
+Message-ID: <20240203035346.907725213@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,67 +60,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Jonathan Gray <jsg@jsg.id.au>
 
-[ Upstream commit ad30469a841b50dbb541df4d6971d891f703c297 ]
+This reverts commit 85d16c03ddd3f9b10212674e16ee8662b185bd14.
 
-uniq() will write one command name over another causing the overwritten
-string to be leaked. Fix by doing a pass that removes duplicates and a
-second that removes the holes.
+duplicated a change made in 6.1.69
+20907717918f0487258424631b704c7248a72da2
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Chenyuan Mi <cymi20@fudan.edu.cn>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231208000515.1693746-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Jonathan Gray <jsg@jsg.id.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/subcmd/help.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/modules/power/power_helpers.c |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/tools/lib/subcmd/help.c b/tools/lib/subcmd/help.c
-index adfbae27dc36..8561b0f01a24 100644
---- a/tools/lib/subcmd/help.c
-+++ b/tools/lib/subcmd/help.c
-@@ -52,11 +52,21 @@ void uniq(struct cmdnames *cmds)
- 	if (!cmds->cnt)
- 		return;
- 
--	for (i = j = 1; i < cmds->cnt; i++)
--		if (strcmp(cmds->names[i]->name, cmds->names[i-1]->name))
--			cmds->names[j++] = cmds->names[i];
--
-+	for (i = 1; i < cmds->cnt; i++) {
-+		if (!strcmp(cmds->names[i]->name, cmds->names[i-1]->name))
-+			zfree(&cmds->names[i - 1]);
-+	}
-+	for (i = 0, j = 0; i < cmds->cnt; i++) {
-+		if (cmds->names[i]) {
-+			if (i == j)
-+				j++;
-+			else
-+				cmds->names[j++] = cmds->names[i];
-+		}
-+	}
- 	cmds->cnt = j;
-+	while (j < i)
-+		cmds->names[j++] = NULL;
- }
- 
- void exclude_cmds(struct cmdnames *cmds, struct cmdnames *excludes)
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
++++ b/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
+@@ -818,8 +818,6 @@ bool is_psr_su_specific_panel(struct dc_
+ 				isPSRSUSupported = false;
+ 			else if (dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x03)
+ 				isPSRSUSupported = false;
+-			else if (dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x03)
+-				isPSRSUSupported = false;
+ 			else if (dpcd_caps->psr_info.force_psrsu_cap == 0x1)
+ 				isPSRSUSupported = true;
+ 		}
 
 
 
