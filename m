@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2337B84833E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD6384821E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9461B24E1B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFFFA1C23894
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D117F51005;
-	Sat,  3 Feb 2024 04:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E67045971;
+	Sat,  3 Feb 2024 04:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYrzti1T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n3HosiXK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB7C111AA;
-	Sat,  3 Feb 2024 04:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C26A18E27;
+	Sat,  3 Feb 2024 04:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933895; cv=none; b=siJAWxHy1cNvSdXLjphHute4Rdboyp5zOPQdHhiPT/wM/s2H2D9yvcWIyArlBNRwbrmGvEMctflBjpuqHhSnhKFutbKhFUXh3S/0X9q8iBY+5ZYsa4J8i+DHSideWDyhfhyZD6h7CtcC11ZKTf1+KHbPS76DoAqRZewN2Wc1dZM=
+	t=1706933686; cv=none; b=J7vZRUO0gtfOD9JWMc86tKa9rVH7cbzWVSmEu3uJgfkl699YW+Sn32V0R6+PYci0SqKimCkcv1AfX24zxI1InK14Z7zdfBJ+DdbGxlOX6dVcJmehT9F7OdK5ATCXS2cOcCvsluI5XT07Ey6pcDnh1OAIXxmsLqWRfx/jQPD5vRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933895; c=relaxed/simple;
-	bh=/FvYLrmxg79nmucSl+NgUC7Crin09AhRKIVGNJ5kr64=;
+	s=arc-20240116; t=1706933686; c=relaxed/simple;
+	bh=oVgbtp3J4xUfFEPj6G6Dk0xUma2RzEFiXo9lGY65Xkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TamGTZWztX1tDMFlbDuYln4Bxgcp9mEywP2EXJX8db2cmxLHmWjwQ2QDlZEd/jcxXgwQecFfroWg6RLMXyzrv4BwakeOHc4HeoIFNaxOUt4HIylGQAQsbGOJb8VLB8xu16jnUrcAfW2sZYKOYAPigM9+gCKkqoJxvfgMkI8WjqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYrzti1T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C1CC43390;
-	Sat,  3 Feb 2024 04:18:15 +0000 (UTC)
+	 MIME-Version; b=h+p8NMjsMfl6zziUHpEGcQEYJM1ROXFSPnodaZD8hjnZ3H8e3+Zp/Bn2Owa0yFq15kRtgryimUGgHHt8eWr0YNS36N0z0enqK0IGQrQXdYsaF5F6LTpykMTepAvj+Tj2cRitbLwt4EFOCdzVBnLW3Oyue/BBkcDyDrdgEHlW6DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n3HosiXK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E473AC433F1;
+	Sat,  3 Feb 2024 04:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933895;
-	bh=/FvYLrmxg79nmucSl+NgUC7Crin09AhRKIVGNJ5kr64=;
+	s=korg; t=1706933686;
+	bh=oVgbtp3J4xUfFEPj6G6Dk0xUma2RzEFiXo9lGY65Xkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dYrzti1TbXjnkeWJ/SiW2PTUt4gqIF9g9cF0S3V5BjBk0zHOwgm5juDiyWn/5kRqu
-	 8Nu4s86qHmSNi/BBMmBiLUN4Ya8tlbnrM9LMJY2+TM6XBmmRps1AOviP9N7XOb4QBF
-	 FBi5G2nibb8F2ZtgRp3/W4fy8oCfVptsIh8q75W4=
+	b=n3HosiXKb/2PbXDm/6Ovmo+5kYEGu/dyjTtlAnRfpZTV2kTfo4KkTP2TA5ktNEXsF
+	 tmo41LyiZpcNvTpzxRDnUoRGekih+hiHV8sNXdSs2sheXtexDay6dEQQeQmXewXrAj
+	 TxYgp4zDU1w9esiHB1PTSiluI1eyiGm44HrvkmBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Whitchurch <Vincent.Whitchurch@axis.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Richard Weinberger <richard@nod.at>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 242/353] um: time-travel: fix time corruption
+Subject: [PATCH 6.6 263/322] riscv: Fix build error on rv32 + XIP
 Date: Fri,  2 Feb 2024 20:06:00 -0800
-Message-ID: <20240203035411.347563487@linuxfoundation.org>
+Message-ID: <20240203035407.633283569@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,94 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit abe4eaa8618bb36c2b33e9cdde0499296a23448c ]
+[ Upstream commit 66f962d8939fd2ac74de901d30d30310c8ddca79 ]
 
-In 'basic' time-travel mode (without =inf-cpu or =ext), we
-still get timer interrupts. These can happen at arbitrary
-points in time, i.e. while in timer_read(), which pushes
-time forward just a little bit. Then, if we happen to get
-the interrupt after calculating the new time to push to,
-but before actually finishing that, the interrupt will set
-the time to a value that's incompatible with the forward,
-and we'll crash because time goes backwards when we do the
-forwarding.
+commit 66f1e6809397 ("riscv: Make XIP bootable again") restricted page
+offset to the sv39 page offset instead of the default sv57, which makes
+sense since probably the platforms that target XIP kernels do not
+support anything else than sv39 and we do not try to find out the
+largest address space supported on XIP kernels (ie set_satp_mode()).
 
-Fix this by reading the time_travel_time, calculating the
-adjustment, and doing the adjustment all with interrupts
-disabled.
+But PAGE_OFFSET_L3 is not defined for rv32, so fix the build error by
+restoring the previous behaviour which picks CONFIG_PAGE_OFFSET for rv32.
 
-Reported-by: Vincent Whitchurch <Vincent.Whitchurch@axis.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Fixes: 66f1e6809397 ("riscv: Make XIP bootable again")
+Reported-by: Randy Dunlap <rdunlap@infradead.org>
+Closes: https://lore.kernel.org/linux-riscv/344dca85-5c48-44e1-bc64-4fa7973edd12@infradead.org/T/#u
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
+Link: https://lore.kernel.org/r/20240118212120.2087803-1-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/time.c | 32 +++++++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 5 deletions(-)
+ arch/riscv/mm/init.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/um/kernel/time.c b/arch/um/kernel/time.c
-index fddd1dec27e6..3e270da6b6f6 100644
---- a/arch/um/kernel/time.c
-+++ b/arch/um/kernel/time.c
-@@ -432,9 +432,29 @@ static void time_travel_update_time(unsigned long long next, bool idle)
- 	time_travel_del_event(&ne);
- }
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index 5f1921d014b1..e71dd19ac801 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -1058,7 +1058,11 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
+ 	kernel_map.virt_addr = KERNEL_LINK_ADDR + kernel_map.virt_offset;
  
-+static void time_travel_update_time_rel(unsigned long long offs)
-+{
-+	unsigned long flags;
-+
-+	/*
-+	 * Disable interrupts before calculating the new time so
-+	 * that a real timer interrupt (signal) can't happen at
-+	 * a bad time e.g. after we read time_travel_time but
-+	 * before we've completed updating the time.
-+	 */
-+	local_irq_save(flags);
-+	time_travel_update_time(time_travel_time + offs, false);
-+	local_irq_restore(flags);
-+}
-+
- void time_travel_ndelay(unsigned long nsec)
- {
--	time_travel_update_time(time_travel_time + nsec, false);
-+	/*
-+	 * Not strictly needed to use _rel() version since this is
-+	 * only used in INFCPU/EXT modes, but it doesn't hurt and
-+	 * is more readable too.
-+	 */
-+	time_travel_update_time_rel(nsec);
- }
- EXPORT_SYMBOL(time_travel_ndelay);
- 
-@@ -568,7 +588,11 @@ static void time_travel_set_start(void)
- #define time_travel_time 0
- #define time_travel_ext_waiting 0
- 
--static inline void time_travel_update_time(unsigned long long ns, bool retearly)
-+static inline void time_travel_update_time(unsigned long long ns, bool idle)
-+{
-+}
-+
-+static inline void time_travel_update_time_rel(unsigned long long offs)
- {
- }
- 
-@@ -720,9 +744,7 @@ static u64 timer_read(struct clocksource *cs)
- 		 */
- 		if (!irqs_disabled() && !in_interrupt() && !in_softirq() &&
- 		    !time_travel_ext_waiting)
--			time_travel_update_time(time_travel_time +
--						TIMER_MULTIPLIER,
--						false);
-+			time_travel_update_time_rel(TIMER_MULTIPLIER);
- 		return time_travel_time / TIMER_MULTIPLIER;
- 	}
+ #ifdef CONFIG_XIP_KERNEL
++#ifdef CONFIG_64BIT
+ 	kernel_map.page_offset = PAGE_OFFSET_L3;
++#else
++	kernel_map.page_offset = _AC(CONFIG_PAGE_OFFSET, UL);
++#endif
+ 	kernel_map.xiprom = (uintptr_t)CONFIG_XIP_PHYS_ADDR;
+ 	kernel_map.xiprom_sz = (uintptr_t)(&_exiprom) - (uintptr_t)(&_xiprom);
  
 -- 
 2.43.0
