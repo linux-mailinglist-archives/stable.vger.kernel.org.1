@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA055848033
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 034AD84829E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18F691C23EE2
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A508B1F23129
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CACF9F6;
-	Sat,  3 Feb 2024 04:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB951BC5A;
+	Sat,  3 Feb 2024 04:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZcO+u8YG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AszD5MdR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 432D810A13;
-	Sat,  3 Feb 2024 04:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9F01BC39;
+	Sat,  3 Feb 2024 04:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933331; cv=none; b=aGiy6c93UdC73eqPNBZCc7GHXWkAYonhK4j7lP8TVijMUd4p5PUDl2H4SQkuOxLvm+lZD1T2x51RzBeKCbYHTY571bMRJPFKq7y3gTcwXfK/ngQmAvjRcuVRM5d+C0m0MSj4dqqFyPVB8e9N3A/59mHUUuKaWFhn91HVGSnA3YA=
+	t=1706933779; cv=none; b=Ya9TdGtDzzfHVJYQgYAfCBbDvrZEqB4rr0xIvsYjjrdiDJbt2z8kGoIBpRZNCRJkNBBHHtfRB0VPC428Eb2N0OaUJYoovsiyDqx7novPEvLR7RzsaY2LyOWW4JRvXLawF8Iq5+gJrFtcHitQifE0x3Te9wExqkoN4lMAEWXULks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933331; c=relaxed/simple;
-	bh=gk4+CX2Oer8H5kuv1ba5l4pJ6fK+k0pFwDYKSrUgX2U=;
+	s=arc-20240116; t=1706933779; c=relaxed/simple;
+	bh=LsfdYN87QxgVnc99KhRqWGo2XeN2Rx2EGeVny05I4KM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CW//srlEhgF5tOS7xV9CZ1Iy1wIqHqTGNsOwrYZViQSqX1/dmF8pIatXWlrdwbFeQJUOtK2d4atNDT6Gm//fQDcQ/sVzV6RIrdCWw5dPISKZfrNosZGIOWSXHa5c0QWDLQmrkhh7jL06AcrDWDXJdXoMKcRD5jhBKJum6iULwas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZcO+u8YG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A697C43390;
-	Sat,  3 Feb 2024 04:08:51 +0000 (UTC)
+	 MIME-Version; b=Upe+9FFBSrHIGL8SQ95UZUPV4lcNUpznCvl/QSioVMkt7CvH/Y7nWTVvqN5DmS6YAKxfU26p8A43wbLwgt1GQpMDjINTT/+Y3w5DkasqNBu2T2E9ePhzxQg69HVnTmxtyMjZ8k3Xkm0TMFGUGTNfFh9o2J5/40OAWk+0IFb7EZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AszD5MdR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007F9C43394;
+	Sat,  3 Feb 2024 04:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933331;
-	bh=gk4+CX2Oer8H5kuv1ba5l4pJ6fK+k0pFwDYKSrUgX2U=;
+	s=korg; t=1706933779;
+	bh=LsfdYN87QxgVnc99KhRqWGo2XeN2Rx2EGeVny05I4KM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZcO+u8YGla2CBZS/KtwjhQA3kDi/5cH0jHkiNnla725vcBrXT9fU0jeN9yxZmK0Gs
-	 ZRTgvbBbqLiJzrq6cCAYU6S7/fqbmt/Srf4LvsV1Qt6lUc1ASsvkHKPxRgEBDLvggA
-	 /LN059IUwhqzd2bIiL3XAGdHBT7ab++xR3UzRDMg=
+	b=AszD5MdRZwxDhfSjQ7TLFt1z/6ZKIEIeNnMHRBkHFCbVaQqz10uDu34hpHbaKODxK
+	 l/0QV3/YOFK32+G+F8StinhIstIuQtuFS9+oWiDb1coSvXo2EVZNRYDc5JCPW+hD1R
+	 ymhp2Pm41aDq34huiuad8egdKEZFiP0LH4VJ9Vts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Herb Wei <weihao.bj@ieisystem.com>,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 028/219] crypto: octeontx2 - Fix cptvf driver cleanup
+Subject: [PATCH 6.7 083/353] net: usb: ax88179_178a: avoid two consecutive device resets
 Date: Fri,  2 Feb 2024 20:03:21 -0800
-Message-ID: <20240203035320.337089061@linuxfoundation.org>
+Message-ID: <20240203035406.435399112@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharat Bhushan <bbhushan2@marvell.com>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-[ Upstream commit c480a421a4faf693c38e60b0fe6e554c9a3fee02 ]
+[ Upstream commit d2689b6a86b9d23574bd4b654bf770b6034e2c7e ]
 
-This patch fixes following cleanup issues:
- - Missing instruction queue free on cleanup. This
-   will lead to memory leak.
- - lfs->lfs_num is set to zero before cleanup, which
-   will lead to improper cleanup.
+The device is always reset two consecutive times (ax88179_reset is called
+twice), one from usbnet_probe during the device binding and the other from
+usbnet_open.
 
-Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Remove the non-necessary reset during the device binding and let the reset
+operation from open to keep the normal behavior (tested with generic ASIX
+Electronics Corp. AX88179 Gigabit Ethernet device).
+
+Reported-by: Herb Wei <weihao.bj@ieisystem.com>
+Tested-by: Herb Wei <weihao.bj@ieisystem.com>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Link: https://lore.kernel.org/r/20231120121239.54504-1-jtornosm@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/octeontx2/otx2_cptlf.c      | 6 ++++--
- drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c | 3 +++
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/usb/ax88179_178a.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptlf.c b/drivers/crypto/marvell/octeontx2/otx2_cptlf.c
-index 71e5f79431af..6e4a78e1f3ce 100644
---- a/drivers/crypto/marvell/octeontx2/otx2_cptlf.c
-+++ b/drivers/crypto/marvell/octeontx2/otx2_cptlf.c
-@@ -419,8 +419,8 @@ int otx2_cptlf_init(struct otx2_cptlfs_info *lfs, u8 eng_grp_mask, int pri,
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index 5a1bf42ce156..d837c1887416 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -1315,8 +1315,6 @@ static int ax88179_bind(struct usbnet *dev, struct usb_interface *intf)
+ 
+ 	netif_set_tso_max_size(dev->net, 16384);
+ 
+-	ax88179_reset(dev);
+-
  	return 0;
- 
- free_iq:
--	otx2_cpt_free_instruction_queues(lfs);
- 	cptlf_hw_cleanup(lfs);
-+	otx2_cpt_free_instruction_queues(lfs);
- detach_rsrcs:
- 	otx2_cpt_detach_rsrcs_msg(lfs);
- clear_lfs_num:
-@@ -431,11 +431,13 @@ EXPORT_SYMBOL_NS_GPL(otx2_cptlf_init, CRYPTO_DEV_OCTEONTX2_CPT);
- 
- void otx2_cptlf_shutdown(struct otx2_cptlfs_info *lfs)
- {
--	lfs->lfs_num = 0;
- 	/* Cleanup LFs hardware side */
- 	cptlf_hw_cleanup(lfs);
-+	/* Free instruction queues */
-+	otx2_cpt_free_instruction_queues(lfs);
- 	/* Send request to detach LFs */
- 	otx2_cpt_detach_rsrcs_msg(lfs);
-+	lfs->lfs_num = 0;
- }
- EXPORT_SYMBOL_NS_GPL(otx2_cptlf_shutdown, CRYPTO_DEV_OCTEONTX2_CPT);
- 
-diff --git a/drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c b/drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c
-index 392e9fee05e8..6f3373f9928c 100644
---- a/drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c
-+++ b/drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c
-@@ -249,8 +249,11 @@ static void cptvf_lf_shutdown(struct otx2_cptlfs_info *lfs)
- 	otx2_cptlf_unregister_interrupts(lfs);
- 	/* Cleanup LFs software side */
- 	lf_sw_cleanup(lfs);
-+	/* Free instruction queues */
-+	otx2_cpt_free_instruction_queues(lfs);
- 	/* Send request to detach LFs */
- 	otx2_cpt_detach_rsrcs_msg(lfs);
-+	lfs->lfs_num = 0;
  }
  
- static int cptvf_lf_init(struct otx2_cptvf_dev *cptvf)
 -- 
 2.43.0
 
