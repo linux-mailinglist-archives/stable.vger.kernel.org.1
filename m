@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4988482B8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4F284804E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2038C1F234FB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F75C1F2BAF0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735D01BDEE;
-	Sat,  3 Feb 2024 04:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C382BF9EB;
+	Sat,  3 Feb 2024 04:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G388pNUo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBzodRV0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C8B11190;
-	Sat,  3 Feb 2024 04:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774BDF9D7;
+	Sat,  3 Feb 2024 04:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933798; cv=none; b=mpwI6VM7HUrr77rrygv6OPW0kedoqcTou3kownszcjyh0PIow00emAZDn6JGrL0vF6dpBi4/WkIsmnIAqdxudaAT2KoIjOtjD8cZG4C5Dtl26vbe//BEo0t2d3FQwn/9IjjuIksIF8FWpoVfV1KkZjQAgoFkNmfjnYIDA+szASk=
+	t=1706933351; cv=none; b=SE+AcReFDSmdjI/1k2mTL13vtDH7MsGPDb2T/RT7cDUrf25jOvCfWU2uuFvuzbrmDd7uXSOvJb6kqrRj5eEjyb0/tGN9QeaJc3l2I/GA59/6h9RfPt4EY9cphLzljAp54XYw58UVq7Rj01FWKvOics/HMrjsVZfPpErAAQQU92w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933798; c=relaxed/simple;
-	bh=G8xYC+oLsiedvAcF/Ew3WwYE0AbwL/kF18tRYzEcHYw=;
+	s=arc-20240116; t=1706933351; c=relaxed/simple;
+	bh=n0x8oED9LFIZOY6+0EuwEgnUEkq9Lv8k4PSwHQc6sQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cpPRd6EwQfsXuo5s/Oiko+yzIKgPzzK3wlp+xtxO5P7nLGCmpZqUv4MSamajmi61RrZWbJFh6qMorWiP4+4BviQ2qe0lVIthVxAXsQ5riEcdu8DsckaOeWmpbEOQ/rlVlMje/81g8GGJBY3Zibtjo6FF+iU1baXGSreRL1apTt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G388pNUo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5EEC433C7;
-	Sat,  3 Feb 2024 04:16:37 +0000 (UTC)
+	 MIME-Version; b=Dhtt0FmhishNjEtQWaZbkc0WFcLt1NO9RJp522to/mpmfCHh8EPlf6x44w3RoMZGtGreQNxRixu1OLJlCsYl6D/9Xejq19j0pYVb8sOynAJWgrQ6a/mN3ofYW/nrSgyKUYakDLHLRIubQyGGZk23xGw39KKMhnyk3MX3+LqfLqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBzodRV0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B7D5C433F1;
+	Sat,  3 Feb 2024 04:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933798;
-	bh=G8xYC+oLsiedvAcF/Ew3WwYE0AbwL/kF18tRYzEcHYw=;
+	s=korg; t=1706933351;
+	bh=n0x8oED9LFIZOY6+0EuwEgnUEkq9Lv8k4PSwHQc6sQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G388pNUoYoiiVp+3PVcT4ymdaAybJS4//U7zC2h2Q6TUrWcSmiKS6YS60ISCfFUln
-	 nGcYlsibDgqzSDDsLG6ZIopG3vJB/+L7tvEs+GAY3v2IfLJTNGdYHP+SUvr51eA3Wy
-	 1sVJaO5rF2hTvUH1tAVmXEcBp8gewWU7kAeE+rrQ=
+	b=UBzodRV0lZWRzwDihf42d118N7Qru3wTM/nJ0Mpn7Jdk2ksbyy41nqEF2wehA/YoL
+	 A6ZZPshmuEBcoPiylkMTFTY2A4sVCZKWw1UIoLfg6Emotuw6g2hGTBTrdci/0Y2cjK
+	 sL9c0QwYRoxFifP3NYmrL0Tj+IshcZxE3K3VXFCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Jonker <jbx6244@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Herb Wei <weihao.bj@ieisystem.com>,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 109/353] ARM: dts: rockchip: fix rk3036 hdmi ports node
-Date: Fri,  2 Feb 2024 20:03:47 -0800
-Message-ID: <20240203035407.216265323@linuxfoundation.org>
+Subject: [PATCH 6.1 055/219] net: usb: ax88179_178a: avoid two consecutive device resets
+Date: Fri,  2 Feb 2024 20:03:48 -0800
+Message-ID: <20240203035324.662213010@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Jonker <jbx6244@gmail.com>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-[ Upstream commit 27ded76ef0fcfcf939914532aae575cf23c221b4 ]
+[ Upstream commit d2689b6a86b9d23574bd4b654bf770b6034e2c7e ]
 
-Fix hdmi ports node so that it matches the
-rockchip,inno-hdmi.yaml binding.
+The device is always reset two consecutive times (ax88179_reset is called
+twice), one from usbnet_probe during the device binding and the other from
+usbnet_open.
 
-Signed-off-by: Johan Jonker <jbx6244@gmail.com>
-Link: https://lore.kernel.org/r/9a2afac1-ed5c-382d-02b0-b2f5f1af3abb@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Remove the non-necessary reset during the device binding and let the reset
+operation from open to keep the normal behavior (tested with generic ASIX
+Electronics Corp. AX88179 Gigabit Ethernet device).
+
+Reported-by: Herb Wei <weihao.bj@ieisystem.com>
+Tested-by: Herb Wei <weihao.bj@ieisystem.com>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Link: https://lore.kernel.org/r/20231120121239.54504-1-jtornosm@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/rockchip/rk3036.dtsi | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/net/usb/ax88179_178a.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/rockchip/rk3036.dtsi b/arch/arm/boot/dts/rockchip/rk3036.dtsi
-index 78686fc72ce6..c420c7c642cb 100644
---- a/arch/arm/boot/dts/rockchip/rk3036.dtsi
-+++ b/arch/arm/boot/dts/rockchip/rk3036.dtsi
-@@ -402,12 +402,20 @@
- 		pinctrl-0 = <&hdmi_ctl>;
- 		status = "disabled";
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index 5a1bf42ce156..d837c1887416 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -1315,8 +1315,6 @@ static int ax88179_bind(struct usbnet *dev, struct usb_interface *intf)
  
--		hdmi_in: port {
-+		ports {
- 			#address-cells = <1>;
- 			#size-cells = <0>;
--			hdmi_in_vop: endpoint@0 {
-+
-+			hdmi_in: port@0 {
- 				reg = <0>;
--				remote-endpoint = <&vop_out_hdmi>;
-+
-+				hdmi_in_vop: endpoint {
-+					remote-endpoint = <&vop_out_hdmi>;
-+				};
-+			};
-+
-+			hdmi_out: port@1 {
-+				reg = <1>;
- 			};
- 		};
- 	};
+ 	netif_set_tso_max_size(dev->net, 16384);
+ 
+-	ax88179_reset(dev);
+-
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
