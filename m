@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-17784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E701847E25
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 02:26:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B03A847E26
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 02:27:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 904BF1C22190
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 01:26:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95D621F28BA7
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 01:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD881110B;
-	Sat,  3 Feb 2024 01:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A319E137B;
+	Sat,  3 Feb 2024 01:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGqC8Ou5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nso9e4d9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D79B1FB2
-	for <stable@vger.kernel.org>; Sat,  3 Feb 2024 01:26:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548651FB2;
+	Sat,  3 Feb 2024 01:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706923601; cv=none; b=UV4lBAFp/zOXKttRzu2E4NiwFq6TzbCjhpEodQt6XdQzlT+9YSgWC+cipioWvZOebHO5OZJZsyL6AucAE8fP4l4Yw1KRUspDO5C/EJiKoODRbmQ2FbpDrle/L1pZXJrHnBT4qOOuu7qD5mhmLgtBAYzAEXgLRMs+HhCzgc0Lcks=
+	t=1706923665; cv=none; b=VPcfz9TUEtVE0HPT8ct003D75IapGrV77SDXla/Te5gPs0Rf5DRFpokfTbh9gC+L1fjn+2Vm3LEhryMy1P1M773cORs4Ay9ORi9GP3itobCyoQDDQyV4ekr7Eo7M5owG9FfnU8o6dR6fX5m6l3wW9dhxuu3bviDoUtSOuIVzX8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706923601; c=relaxed/simple;
-	bh=7AwpwuXdPiaeZN5gy4u31bjRp9LC+rylB/KqETBdEv0=;
+	s=arc-20240116; t=1706923665; c=relaxed/simple;
+	bh=dBctjRI6nluqE8RB9zYwPPC95te3cwqh8vdPXmMhREk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aZgpExDsM6/yZtLduXIcNg83E10niRgl5WWtd+o5HJsel0cXi7jsFMPbiYVosH9wFPa777r57PGAoDRcHXmoy9W92vgpF5BGw+4ZfoF1QVx3ToksRvIHhbwuNBRnrF+fVQQrtMxtlOhluFFA564KQ4pu+3lP9YeeN6QhFpnPnH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGqC8Ou5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E819CC433F1;
-	Sat,  3 Feb 2024 01:26:40 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=BtAnOy3v5Tr0mY3AJaWQ0OWD1LzGHtWH1FqxIH4QP9zTnnEwW6BhJpnxedQxDp94b/f/J2So0cV7yzsyLI8lw3NvZeZ2oVMmFZltoJpPb1uYe8Q3hTijUTIMWEvs3jCqxOR/IKGavyhktXo/E7ssOFRzX4UXOXh6d4tvfWme+Sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nso9e4d9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C527CC433C7;
+	Sat,  3 Feb 2024 01:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706923601;
-	bh=7AwpwuXdPiaeZN5gy4u31bjRp9LC+rylB/KqETBdEv0=;
+	s=korg; t=1706923664;
+	bh=dBctjRI6nluqE8RB9zYwPPC95te3cwqh8vdPXmMhREk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aGqC8Ou5pZYWUxvzNLMSRtzDqEfRtwJxL9pJv5nyM4Ot9OZoUsWtaaeJPXEqZk5Ad
-	 0p17xTfXKQFtiN+rEuATK6lJYghYgTB2QrAA9HROQzaq8oYeMaEJzkyTGRSYIlyBau
-	 uHcg5NFG2WfzXfVobxMKarEatfQudF8q1WQnAJQQ=
-Date: Fri, 2 Feb 2024 17:26:40 -0800
+	b=Nso9e4d9rXfyHjY1mJmZeHdoBsO4xLV3Tr5pzHOfrRN+utd4Xc0sHZux77paGwwBS
+	 RgwIjjiUTRFhLMLbxlx3DzTFZKxHM9lSTj01yqLh3oapyQScdZTSDf10G20KsRDXsE
+	 +WiP/M3wVTYsHy320X64fPgXa5ek6iNGHCbnbLek=
+Date: Fri, 2 Feb 2024 17:27:44 -0800
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Amit Pundir <amit.pundir@linaro.org>
-Cc: Sasha Levin <sashal@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Stable <stable@vger.kernel.org>
-Subject: Re: [PATCH for-v6.1.y+] drm/msm/dsi: Enable runtime PM
-Message-ID: <2024020231-tarot-stress-3e50@gregkh>
-References: <20240130134647.58630-1-amit.pundir@linaro.org>
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Huacai Chen <chenhuacai@kernel.org>, loongarch@lists.linux.dev,
+	stable@vger.kernel.org, Xuefeng Li <lixuefeng@loongson.cn>,
+	Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-kernel@vger.kernel.org,
+	loongson-kernel@lists.loongnix.cn
+Subject: Re: [PATCH 6.1.y and 6.6.y] LoongArch/smp: Call
+ rcutree_report_cpu_starting() at tlb_init()
+Message-ID: <2024020237-liable-strife-4800@gregkh>
+References: <20240131072151.1023985-1-chenhuacai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,25 +58,26 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240130134647.58630-1-amit.pundir@linaro.org>
+In-Reply-To: <20240131072151.1023985-1-chenhuacai@loongson.cn>
 
-On Tue, Jan 30, 2024 at 07:16:47PM +0530, Amit Pundir wrote:
-> From: Konrad Dybcio <konrad.dybcio@linaro.org>
+On Wed, Jan 31, 2024 at 03:21:51PM +0800, Huacai Chen wrote:
+> Machines which have more than 8 nodes fail to boot SMP after commit
+> a2ccf46333d7b2cf96 ("LoongArch/smp: Call rcutree_report_cpu_starting()
+> earlier"). Because such machines use tlb-based per-cpu base address
+> rather than dmw-based per-cpu base address, resulting per-cpu variables
+> can only be accessed after tlb_init(). But rcutree_report_cpu_starting()
+> is now called before tlb_init() and accesses per-cpu variables indeed.
 > 
-> [ Upstream commit 6ab502bc1cf3147ea1d8540d04b83a7a4cb6d1f1 ]
+> Since the original patch want to avoid the lockdep warning caused by
+> page allocation in tlb_init(), we can move rcutree_report_cpu_starting()
+> to tlb_init() where after tlb exception configuration but before page
+> allocation.
 > 
-> Some devices power the DSI PHY/PLL through a power rail that we model
-> as a GENPD. Enable runtime PM to make it suspendable.
-> 
-> Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Patchwork: https://patchwork.freedesktop.org/patch/543352/
-> Link: https://lore.kernel.org/r/20230620-topic-dsiphy_rpm-v2-2-a11a751f34f0@linaro.org
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> Stable-dep-of: 3d07a411b4fa ("drm/msm/dsi: Use pm_runtime_resume_and_get to prevent refcnt leaks")
-> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 > ---
-> Fixes display regression on DB845c running v6.1.75, v6.6.14 and v6.7.2.
+>  arch/loongarch/kernel/smp.c |  1 -
+>  arch/loongarch/mm/tlb.c     | 16 ++++++++++------
+>  2 files changed, 10 insertions(+), 7 deletions(-)
 
 Now queued up, thanks.
 
