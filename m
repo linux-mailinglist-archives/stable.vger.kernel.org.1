@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-18269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D103184820D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 091C28480C2
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F423B1C23CDB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 901E6B2A651
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633F618EB3;
-	Sat,  3 Feb 2024 04:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CEE51863F;
+	Sat,  3 Feb 2024 04:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iu7WTI31"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhxAouPu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2240112B9C;
-	Sat,  3 Feb 2024 04:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36BA182DB;
+	Sat,  3 Feb 2024 04:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933674; cv=none; b=Sinu34JSS083iJp3Zs7cpHHU3Nuk+oIbDRZPMmtxbv908PfuC7KQednXVYNizcDqZNE7/75EDbUUPmowjzZZJKBp3efxn9aAG4jm8WPYsXVdrv00ZssWIJYmNbuZvDedPIozEf4ZugIHe3Eq51zpH/GWzODkip+CMlnj27dTBlw=
+	t=1706933435; cv=none; b=WslynaHMaHMngfNigV6IH0cFBlzzysarzB7rOXd85a5YvWzBcCprWrBgct2hI+SKf4RVZdnvtKhYsjdIFD6FiP60EbNMuE2knGUIJSoxIfV4LN8r4j7HEMQZZzy0GvPecKwCC9TAhIYtUg8ilrkvbhL63sIQyJGzY/9EcC1eMGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933674; c=relaxed/simple;
-	bh=TjlP6CPuqIVJGgG+DRnR7omwmBSuGTZsIGPmCtrNLWs=;
+	s=arc-20240116; t=1706933435; c=relaxed/simple;
+	bh=WlGpuWPvw1qNnG8U6iIgz+vZJpxayMon764Azjnhlg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rA/ReHXDQVdUPRRzapQIXPpnfuKrjxC2A19K9T4dfLkxIjSYWL8KT6ZcP/mEOhrNa0d9ZrPWtewfYuaG8UaxaNjmhjNXfAINoKs4wkHma2sQ5J8aXflUzAkdtYWIw5FBqS4406zDMNpMPIAoPsRl6CXu7sCKKqxRYocoV6yrbmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iu7WTI31; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC3BFC43390;
-	Sat,  3 Feb 2024 04:14:33 +0000 (UTC)
+	 MIME-Version; b=XeInNeUNLPpU0e0c0+3jICRw3GHvLXiwVz8O6u1kTuMtTqrkSaTJQ5cr0gwD+BYiaUF2JPbRfHRoDh80Krgq3TRaDRKMgLMINICQ8SVSq1FYCpBpjwMfZoJn1LQu5x5Vfr+9yq1rDaEhwnwUev/F3ppR3tKSV1q26tVteOrnHdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhxAouPu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5C2C433B2;
+	Sat,  3 Feb 2024 04:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933674;
-	bh=TjlP6CPuqIVJGgG+DRnR7omwmBSuGTZsIGPmCtrNLWs=;
+	s=korg; t=1706933435;
+	bh=WlGpuWPvw1qNnG8U6iIgz+vZJpxayMon764Azjnhlg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iu7WTI31bVtxybkRxeOE6vjK4lP2l9S0wkNzQO8DChdmNgkOsOxcOAnEECHr451bL
-	 qKUKHagwWRtGZBOdwMjUbU5BE6gnJfnpaKYCKGRJ0qAvfnJhDVp1zEZpl/G+LF0wqx
-	 gIItplMr6zLAOVM5JdWqKKQ4ydyU3PDY+o0kT6ZU=
+	b=QhxAouPuFZR4JEQaodnx1CpI+K/BKOx/3KTPLFddKPd1DLMX2t4eRuN/lF2fJ9C0y
+	 AoH+ZXpHk495Cco/i4nqzQs6hA4dchcHfLolk2pPUfLCGSImZpdWiL9/urDQfwQkj/
+	 C3Z2bhckyJJ7CvFQm979bQkGfYTcsKo8s15tbegQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Fei Shao <fshao@chromium.org>,
+	Yu-Che Cheng <giver@chromium.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 241/322] PCI/AER: Decode Requester ID when no error info found
+Subject: [PATCH 6.1 165/219] spmi: mediatek: Fix UAF on device remove
 Date: Fri,  2 Feb 2024 20:05:38 -0800
-Message-ID: <20240203035406.968547708@linuxfoundation.org>
+Message-ID: <20240203035339.691413103@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Yu-Che Cheng <giver@chromium.org>
 
-[ Upstream commit 1291b716bbf969e101d517bfb8ba18d958f758b8 ]
+[ Upstream commit e821d50ab5b956ed0effa49faaf29912fd4106d9 ]
 
-When a device with AER detects an error, it logs error information in its
-own AER Error Status registers.  It may send an Error Message to the Root
-Port (RCEC in the case of an RCiEP), which logs the fact that an Error
-Message was received (Root Error Status) and the Requester ID of the
-message source (Error Source Identification).
+The pmif driver data that contains the clocks is allocated along with
+spmi_controller.
+On device remove, spmi_controller will be freed first, and then devres
+, including the clocks, will be cleanup.
+This leads to UAF because putting the clocks will access the clocks in
+the pmif driver data, which is already freed along with spmi_controller.
 
-aer_print_port_info() prints the Requester ID from the Root Port Error
-Source in the usual Linux "bb:dd.f" format, but when find_source_device()
-finds no error details in the hierarchy below the Root Port, it printed the
-raw Requester ID without decoding it.
+This can be reproduced by enabling DEBUG_TEST_DRIVER_REMOVE and
+building the kernel with KASAN.
 
-Decode the Requester ID in the usual Linux format so it matches other
-messages.
+Fix the UAF issue by using unmanaged clk_bulk_get() and putting the
+clocks before freeing spmi_controller.
 
-Sample message changes:
-
-  - pcieport 0000:00:1c.5: AER: Correctable error received: 0000:00:1c.5
-  - pcieport 0000:00:1c.5: AER: can't find device of ID00e5
-  + pcieport 0000:00:1c.5: AER: Correctable error message received from 0000:00:1c.5
-  + pcieport 0000:00:1c.5: AER: found no error details for 0000:00:1c.5
-
-Link: https://lore.kernel.org/r/20231206224231.732765-3-helgaas@kernel.org
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reported-by: Fei Shao <fshao@chromium.org>
+Signed-off-by: Yu-Che Cheng <giver@chromium.org>
+Link: https://lore.kernel.org/r/20230717173934.1.If004a6e055a189c7f2d0724fa814422c26789839@changeid
+Tested-by: Fei Shao <fshao@chromium.org>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20231206231733.4031901-3-sboyd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aer.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/spmi/spmi-mtk-pmif.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 40d84cb0c601..c9afe4362835 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -740,7 +740,7 @@ static void aer_print_port_info(struct pci_dev *dev, struct aer_err_info *info)
- 	u8 bus = info->id >> 8;
- 	u8 devfn = info->id & 0xff;
+diff --git a/drivers/spmi/spmi-mtk-pmif.c b/drivers/spmi/spmi-mtk-pmif.c
+index 01e8851e639d..bf8c0d4109b1 100644
+--- a/drivers/spmi/spmi-mtk-pmif.c
++++ b/drivers/spmi/spmi-mtk-pmif.c
+@@ -475,7 +475,7 @@ static int mtk_spmi_probe(struct platform_device *pdev)
+ 	for (i = 0; i < arb->nclks; i++)
+ 		arb->clks[i].id = pmif_clock_names[i];
  
--	pci_info(dev, "%s%s error received: %04x:%02x:%02x.%d\n",
-+	pci_info(dev, "%s%s error message received from %04x:%02x:%02x.%d\n",
- 		 info->multi_error_valid ? "Multiple " : "",
- 		 aer_error_severity_string[info->severity],
- 		 pci_domain_nr(dev->bus), bus, PCI_SLOT(devfn),
-@@ -928,7 +928,12 @@ static bool find_source_device(struct pci_dev *parent,
- 		pci_walk_bus(parent->subordinate, find_device_iter, e_info);
- 
- 	if (!e_info->error_dev_num) {
--		pci_info(parent, "can't find device of ID%04x\n", e_info->id);
-+		u8 bus = e_info->id >> 8;
-+		u8 devfn = e_info->id & 0xff;
-+
-+		pci_info(parent, "found no error details for %04x:%02x:%02x.%d\n",
-+			 pci_domain_nr(parent->bus), bus, PCI_SLOT(devfn),
-+			 PCI_FUNC(devfn));
- 		return false;
+-	err = devm_clk_bulk_get(&pdev->dev, arb->nclks, arb->clks);
++	err = clk_bulk_get(&pdev->dev, arb->nclks, arb->clks);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "Failed to get clocks: %d\n", err);
+ 		goto err_put_ctrl;
+@@ -484,7 +484,7 @@ static int mtk_spmi_probe(struct platform_device *pdev)
+ 	err = clk_bulk_prepare_enable(arb->nclks, arb->clks);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "Failed to enable clocks: %d\n", err);
+-		goto err_put_ctrl;
++		goto err_put_clks;
  	}
- 	return true;
+ 
+ 	ctrl->cmd = pmif_arb_cmd;
+@@ -510,6 +510,8 @@ static int mtk_spmi_probe(struct platform_device *pdev)
+ 
+ err_domain_remove:
+ 	clk_bulk_disable_unprepare(arb->nclks, arb->clks);
++err_put_clks:
++	clk_bulk_put(arb->nclks, arb->clks);
+ err_put_ctrl:
+ 	spmi_controller_put(ctrl);
+ 	return err;
+@@ -521,6 +523,7 @@ static int mtk_spmi_remove(struct platform_device *pdev)
+ 	struct pmif *arb = spmi_controller_get_drvdata(ctrl);
+ 
+ 	clk_bulk_disable_unprepare(arb->nclks, arb->clks);
++	clk_bulk_put(arb->nclks, arb->clks);
+ 	spmi_controller_remove(ctrl);
+ 	spmi_controller_put(ctrl);
+ 	return 0;
 -- 
 2.43.0
 
