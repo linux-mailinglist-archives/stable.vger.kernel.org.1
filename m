@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F7F8482EA
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EC56848084
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EFB21F2136D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90BB11F2C05C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216D2168D2;
-	Sat,  3 Feb 2024 04:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559F1168DD;
+	Sat,  3 Feb 2024 04:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bk3wUFpi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgc7gDms"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41831C6A6;
-	Sat,  3 Feb 2024 04:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128E4FC11;
+	Sat,  3 Feb 2024 04:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933833; cv=none; b=ljaZ88lIHBRDkS8xtEPQ3x5AfcWFBji19hPN9Pbi50wSrq9n4EaFNnRucHyDIi92ERLszD2KR8tnRVuU1W9c9IhoU75n+jg22HKuPue5keJFaCVgIXwhs6CI+RRx12G2+LBEuf/k6+E2bX3ufMUC6wMEcX5YihAawbaZB2dZ9Lk=
+	t=1706933390; cv=none; b=ne2BMOe6zuMRRnKq4ktZKuvsYVzDHXAkQH/s7GS6LScxajQXYbvjksHXOMhrFL01RszE8nauJUmMOcnJwGJq5YWRoPLly3IrDNXG8OXGyivucbPGXvaG9LxExpFI3CGeUTJmPBIP0OwrLHjp6KrIP4PIvmTllBo/N0gp5/Wk81s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933833; c=relaxed/simple;
-	bh=Hy+o41DHp8BKmssljAIhmiBCPhF32Lje/6dhCzCUmvw=;
+	s=arc-20240116; t=1706933390; c=relaxed/simple;
+	bh=COHRHisYInt1p0cW1qiV7JTzRJNwlqpqeRNADM5YbWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O89O/rCbJE7nVDT2amZfpRv9spcZBNlbbJB5X6Kep4KuyBX+JepZtE353WGQZisCxCa6kEbCqgdSxhh1JQ1aOVtAS6wsKoiIdZ8P7qUsrUnHayzG+wvQ85Vpxfmz5vZuY80xbcL83H5LUSkwiaRYlgbjLtTOUejUEfcc1pCXKvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bk3wUFpi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D737C433C7;
-	Sat,  3 Feb 2024 04:17:13 +0000 (UTC)
+	 MIME-Version; b=W6lbhhNoT7Ng4GTNEuhIswmZsBQ7XCphIOBaqgXOYNZYpaQeFCyQBINP9unI09VRWYGuIBh6/28RJjmyZEXE5Y9QHr65sAy7M2qDq8s13Gsk0uCl0ut2TWsm6Yl6L0ntrX8nQQCfIUWdglaXEgh8v1UvOtgnkhrogQcbBTkM0zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgc7gDms; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAFEC433F1;
+	Sat,  3 Feb 2024 04:09:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933833;
-	bh=Hy+o41DHp8BKmssljAIhmiBCPhF32Lje/6dhCzCUmvw=;
+	s=korg; t=1706933389;
+	bh=COHRHisYInt1p0cW1qiV7JTzRJNwlqpqeRNADM5YbWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bk3wUFpiYAwDJiHLxnhD23+5MuJuaSXFnscSbY6vcb3Ks4EA8F/gSPaP4PoJf0eHh
-	 6ITR+BpNYeBw++YTb1ss5gFVPr39DvbCIqhWStj23vZDIc3M49OngoxIboKFc3A6oE
-	 9yI9aFQ15l0dZ/fZTrTbx+bGQFCisvTohUkpbDnA=
+	b=wgc7gDmsYDE8we67mSvWbwlkbKpZ3+u1P6l6z6FJkQjRqZUWu/f++im4ByGlg2jPu
+	 MHauwSWdV/O68Q8WePxKZ+C25CMeACZOwRlp32a65iJwEJmXn0aOWBKkOC11soXTBa
+	 Qv+pdRKj9sIpscL6Icfkw6XgpmMQ8M/jcHKBE1FY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mina Almasry <almasrymina@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 158/353] net: kcm: fix direct access to bv_len
-Date: Fri,  2 Feb 2024 20:04:36 -0800
-Message-ID: <20240203035408.650105687@linuxfoundation.org>
+Subject: [PATCH 6.1 104/219] f2fs: fix to check return value of f2fs_reserve_new_block()
+Date: Fri,  2 Feb 2024 20:04:37 -0800
+Message-ID: <20240203035332.067869492@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mina Almasry <almasrymina@google.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit b15a4cfe100b9acd097d3ae7052448bd1cdc2a3b ]
+[ Upstream commit 956fa1ddc132e028f3b7d4cf17e6bfc8cb36c7fd ]
 
-Minor fix for kcm: code wanting to access the fields inside an skb
-frag should use the skb_frag_*() helpers, instead of accessing the
-fields directly.
+Let's check return value of f2fs_reserve_new_block() in do_recover_data()
+rather than letting it fails silently.
 
-Signed-off-by: Mina Almasry <almasrymina@google.com>
-Link: https://lore.kernel.org/r/20240102205959.794513-1-almasrymina@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Also refactoring check condition on return value of f2fs_reserve_new_block()
+as below:
+- trigger f2fs_bug_on() only for ENOSPC case;
+- use do-while statement to avoid redundant codes;
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/kcm/kcmsock.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/recovery.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-index 65d1f6755f98..1184d40167b8 100644
---- a/net/kcm/kcmsock.c
-+++ b/net/kcm/kcmsock.c
-@@ -634,7 +634,7 @@ static int kcm_write_msgs(struct kcm_sock *kcm)
+diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
+index dea95b48b647..4f4db465220f 100644
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -683,7 +683,16 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		 */
+ 		if (dest == NEW_ADDR) {
+ 			f2fs_truncate_data_blocks_range(&dn, 1);
+-			f2fs_reserve_new_block(&dn);
++			do {
++				err = f2fs_reserve_new_block(&dn);
++				if (err == -ENOSPC) {
++					f2fs_bug_on(sbi, 1);
++					break;
++				}
++			} while (err &&
++				IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
++			if (err)
++				goto err;
+ 			continue;
+ 		}
  
- 		msize = 0;
- 		for (i = 0; i < skb_shinfo(skb)->nr_frags; i++)
--			msize += skb_shinfo(skb)->frags[i].bv_len;
-+			msize += skb_frag_size(&skb_shinfo(skb)->frags[i]);
+@@ -691,12 +700,14 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		if (f2fs_is_valid_blkaddr(sbi, dest, META_POR)) {
  
- 		iov_iter_bvec(&msg.msg_iter, ITER_SOURCE,
- 			      skb_shinfo(skb)->frags, skb_shinfo(skb)->nr_frags,
+ 			if (src == NULL_ADDR) {
+-				err = f2fs_reserve_new_block(&dn);
+-				while (err &&
+-				       IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION))
++				do {
+ 					err = f2fs_reserve_new_block(&dn);
+-				/* We should not get -ENOSPC */
+-				f2fs_bug_on(sbi, err);
++					if (err == -ENOSPC) {
++						f2fs_bug_on(sbi, 1);
++						break;
++					}
++				} while (err &&
++					IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
+ 				if (err)
+ 					goto err;
+ 			}
 -- 
 2.43.0
 
