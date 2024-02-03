@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263F98482BA
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA6D84804F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFF23285DC4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33D6D1C20B6A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15FF4D5BD;
-	Sat,  3 Feb 2024 04:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9F0F9E5;
+	Sat,  3 Feb 2024 04:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2v7m0LM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yyYiZvx2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF85E1BF24;
-	Sat,  3 Feb 2024 04:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F72F9D7;
+	Sat,  3 Feb 2024 04:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933799; cv=none; b=cWTsZk9XoEHWRXKc0h0d7R8diNukyEdSItuY9DFuBLMZ/feS4A4oq8H5/nP75vK4Fl3W85OQ34HUSDAW3Gj6Bz+1khXAHrgK39Tu0KNpN8Vo2XFdoa+WPF77zBcycXi7X70EQLI1tEGpDbr1mClgEj8QydnCUpU+6W7u0gRvm5s=
+	t=1706933352; cv=none; b=X9clM/gAfCGKSlJvnaSLyWjnqcSouUN0yvDsqau87FcvOzynTEuBovD0iHF72fbeAo6CM0bHPOenkj4o1XZDYzL+2zvq/VjcDfZlw8M7mdPbIGKKy+XARSnwur0J/dUD3HZz0ARG8C3/C6REMgAa4Mlh2DaujhpDk+anNpmeEVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933799; c=relaxed/simple;
-	bh=0J4wLIG4OAtIoXkfhJUvaDWUX1flcmeGZmEoz4NVx4E=;
+	s=arc-20240116; t=1706933352; c=relaxed/simple;
+	bh=p7AZ315qwMczIEPDmnWMICId6LQNNvXOPBLjz0oxxTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RSU18JfjujdwuHUVVu8sSb9fgZI6+uysMRPEjnbSlWrk2FlHQZQXmVFhc3vf+PlHsbNgxkmyjMSilRLM814PLxkWnZNiAjlgxLEAdW1neArJVZd3LNOiA1F91qLOiTbDgnSQ8Ck7xlvxEpOma6t5hqZGcow1hyxA5cov2c7UopU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2v7m0LM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7824FC43390;
-	Sat,  3 Feb 2024 04:16:39 +0000 (UTC)
+	 MIME-Version; b=XVdOG4fXMz1pFruxAuyAULuMHhu1Rk6SByiYbQnXeq34TuAiFhms2IrQ/cVEpL6eqxUdFUYnNEqEIgE5mOTF9nfKfZFVGwk7iIl3pYhCcYu6PpeQnJ2PTPwXJXCf0i8dLaL0K30z9K1cIERpaLZlYhOO0OGqg+gbnZFPA/WrghI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yyYiZvx2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4870C43399;
+	Sat,  3 Feb 2024 04:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933799;
-	bh=0J4wLIG4OAtIoXkfhJUvaDWUX1flcmeGZmEoz4NVx4E=;
+	s=korg; t=1706933352;
+	bh=p7AZ315qwMczIEPDmnWMICId6LQNNvXOPBLjz0oxxTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P2v7m0LMX1QAuDpfKpEgs2kb7XsaZT1G0qNu+yhVtVFSRvArQXotGCYY7qbunyvFq
-	 UbWNsfM4CVMZzwr/UtH0A9T6NL6i8/afIcLjI7ENdb8jizR7+jU7aRVzjvrerla/Kd
-	 GQykqK+UTFwPl647k5vLVgtRCQXeDTUknaG4Hxmk=
+	b=yyYiZvx215kr6V0KcHBiiMIjpXDDEnsb2FHKTGPpxmdNrOMe8MnS2Zx3vRhLFToVo
+	 VaTkG1apJx6n0vKnyyLvjCLFXkZcGs3mYEAGjjQNZXoSWM3u4/EcvEVI6dFFsaagi1
+	 HMIypTFG+e7s1pSBnfMdJatuR7J+q6gY+Zy/sdxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Sumit Saxena <sumit.saxena@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 111/353] ARM: dts: imx: Use flash@0,0 pattern
+Subject: [PATCH 6.1 056/219] scsi: mpi3mr: Add PCI checks where SAS5116 diverges from SAS4116
 Date: Fri,  2 Feb 2024 20:03:49 -0800
-Message-ID: <20240203035407.273283297@linuxfoundation.org>
+Message-ID: <20240203035324.902425937@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Sumit Saxena <sumit.saxena@broadcom.com>
 
-[ Upstream commit 1e1d7cc478fb16816de09740e3c323c0c188d58f ]
+[ Upstream commit c9260ff28ee561fca5f96425c9328a9698e8427b ]
 
-Per mtd-physmap.yaml, 'nor@0,0' is not a valid node pattern.
+Add PCI IDs checks for the cases where SAS5116 diverges from SAS4116 in
+behavior.
 
-Change it to 'flash@0,0' to fix the following dt-schema warning:
-
-imx1-ads.dtb: nor@0,0: $nodename:0: 'nor@0,0' does not match '^(flash|.*sram|nand)(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/mtd/mtd-physmap.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
+Link: https://lore.kernel.org/r/20231123160132.4155-3-sumit.saxena@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx1-ads.dts                  | 2 +-
- arch/arm/boot/dts/nxp/imx/imx1-apf9328.dts              | 2 +-
- arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi    | 2 +-
- arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-som.dtsi | 2 +-
- 4 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c | 3 ++-
+ drivers/scsi/mpi3mr/mpi3mr_os.c | 5 ++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx1-ads.dts b/arch/arm/boot/dts/nxp/imx/imx1-ads.dts
-index 5833fb6f15d8..2c817c4a4c68 100644
---- a/arch/arm/boot/dts/nxp/imx/imx1-ads.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx1-ads.dts
-@@ -65,7 +65,7 @@
- 	pinctrl-0 = <&pinctrl_weim>;
- 	status = "okay";
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+index d2c7de804b99..41636c4c43af 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -1886,7 +1886,8 @@ static int mpi3mr_create_op_reply_q(struct mpi3mr_ioc *mrioc, u16 qidx)
  
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		compatible = "cfi-flash";
- 		reg = <0 0x00000000 0x02000000>;
- 		bank-width = <4>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx1-apf9328.dts b/arch/arm/boot/dts/nxp/imx/imx1-apf9328.dts
-index 1f11e9542a72..e66eef87a7a4 100644
---- a/arch/arm/boot/dts/nxp/imx/imx1-apf9328.dts
-+++ b/arch/arm/boot/dts/nxp/imx/imx1-apf9328.dts
-@@ -45,7 +45,7 @@
- 	pinctrl-0 = <&pinctrl_weim>;
- 	status = "okay";
+ 	reply_qid = qidx + 1;
+ 	op_reply_q->num_replies = MPI3MR_OP_REP_Q_QD;
+-	if (!mrioc->pdev->revision)
++	if ((mrioc->pdev->device == MPI3_MFGPAGE_DEVID_SAS4116) &&
++		!mrioc->pdev->revision)
+ 		op_reply_q->num_replies = MPI3MR_OP_REP_Q_QD4K;
+ 	op_reply_q->ci = 0;
+ 	op_reply_q->ephase = 1;
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index 85f5b349c7e4..7a6b006e70c8 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -4963,7 +4963,10 @@ mpi3mr_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		mpi3mr_init_drv_cmd(&mrioc->evtack_cmds[i],
+ 				    MPI3MR_HOSTTAG_EVTACKCMD_MIN + i);
  
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		compatible = "cfi-flash";
- 		reg = <0 0x00000000 0x02000000>;
- 		bank-width = <2>;
-diff --git a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi
-index 4b83e2918b55..c7e923584878 100644
---- a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi
-@@ -90,7 +90,7 @@
- &weim {
- 	status = "okay";
+-	if (pdev->revision)
++	if ((pdev->device == MPI3_MFGPAGE_DEVID_SAS4116) &&
++		!pdev->revision)
++		mrioc->enable_segqueue = false;
++	else
+ 		mrioc->enable_segqueue = true;
  
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		#address-cells = <1>;
- 		#size-cells = <1>;
- 		compatible = "cfi-flash";
-diff --git a/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-som.dtsi b/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-som.dtsi
-index 7b2ea4cdae58..8d428c844666 100644
---- a/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-som.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-som.dtsi
-@@ -314,7 +314,7 @@
- &weim {
- 	status = "okay";
- 
--	nor: nor@0,0 {
-+	nor: flash@0,0 {
- 		compatible = "cfi-flash";
- 		reg = <0 0x00000000 0x02000000>;
- 		bank-width = <2>;
+ 	init_waitqueue_head(&mrioc->reset_waitq);
 -- 
 2.43.0
 
