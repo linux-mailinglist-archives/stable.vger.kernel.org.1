@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-18508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86056848300
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D1A98480B2
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B909C1C22B08
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 906801C20B06
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B8C34F888;
-	Sat,  3 Feb 2024 04:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7C218029;
+	Sat,  3 Feb 2024 04:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRQ26YPk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYSwp0vZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D981642F;
-	Sat,  3 Feb 2024 04:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5896C17C96;
+	Sat,  3 Feb 2024 04:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933851; cv=none; b=q/4qKLzhxyfTnRebY89bUR+Bo9m+h9AEbos0AjnLcF2aqhsxH8u+SaAjqOrHZeYH8Waf1EsdqE2MeGdkgxG9TBYGjXTNSIJfqAZ89H3ZpUWut0jBw6xI+CtCBdoffj4awBjo0HxDHT7kEpthMwijq46/nKAn05pRA03aUGqsNlo=
+	t=1706933425; cv=none; b=b1Zis3MDh2M61d5ogBtKKUMr4aIiy7iQXo9krZMukjOrqsdbsfiR8XcegwootYHKBQE5/X6y56O6rPdSpGWDw0MwmvJuW9ZOsrKTjCTQ0IjrdYknXszAkIuQYc82YpAocovEZV0gKhdZ1coyU17QUS3M4EIGb19uDbP8fk/hfTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933851; c=relaxed/simple;
-	bh=zhWdTJ4bZqyIID9jYKxLznfluPdnESPnYmZ/vtWLWqg=;
+	s=arc-20240116; t=1706933425; c=relaxed/simple;
+	bh=whWIvuXKv9xk9tMvguEZwwautz04J30589pI1b5Aod4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fNcCGeuthSAWvNRqNd4G1hQjiq48+sFvwFCZ40zQVS8BbuopsmMMOyhDu+fZQJZoTLpM+shxvrltNF4RfQwXN3R7X/pWqk8suZGRyIT2A5SSprCxxi55Fw1fxUwKf85zx9rQ/KMQ/1CgL+r5L6msOkdqss909GsV/oEdQM3TtW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRQ26YPk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02734C43390;
-	Sat,  3 Feb 2024 04:17:30 +0000 (UTC)
+	 MIME-Version; b=nGaqlNiwHU/by9mjk/H51DYGPLNBP6i1lpwLvdC95dzfdaZ0pQtydCgyEmAFbGc3XUxkX3NFF9vlpXvy2YSypuWEeEOXKamyVlHc16JPgwI4il8g0mTH0iyBTBGWX9/LMRWc+hAwkiLaoJkI2YRcHzRE3EH3TU6VO8/iNHLfMw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYSwp0vZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE66AC433C7;
+	Sat,  3 Feb 2024 04:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933851;
-	bh=zhWdTJ4bZqyIID9jYKxLznfluPdnESPnYmZ/vtWLWqg=;
+	s=korg; t=1706933424;
+	bh=whWIvuXKv9xk9tMvguEZwwautz04J30589pI1b5Aod4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VRQ26YPk8UlEu4WPr+xi4U5rZX5Z6OcW1UNUKCc+/gWxV2suLujSgAeYuFNVwjDZ3
-	 ACqKx2KH5fzNQUOXD+tdw/0Q1YR0E8/eeX8a1XWXupuNmSxaIuqh5NUOv+3Ae2OHvm
-	 Cd+gQOGsRgfpDs9QSB0hOQTb9TZBIOMqZ0bMQ2YI=
+	b=uYSwp0vZFDj1hpYlDw6QNbRz4ul5T3090yPWhU+3joCLELIsn3yzi9e8+zQNLAHFg
+	 LS6Ey3JER7zlBdOoEGnMtRWXyRwE22tQooZX78OwLzb9LhbqTiTXrvxC8Gqwd8wAe1
+	 0UidN2w4QpwyKrO6OU929kzRBS03OThZfZr9yCcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"H. Nikolaus Schaller" <hns@goldelico.com>,
 	Maxime Ripard <mripard@kernel.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 181/353] drm/mipi-dsi: Fix detach call without attach
-Date: Fri,  2 Feb 2024 20:04:59 -0800
-Message-ID: <20240203035409.375304767@linuxfoundation.org>
+Subject: [PATCH 6.1 127/219] drm/exynos: Call drm_atomic_helper_shutdown() at shutdown/unbind time
+Date: Fri,  2 Feb 2024 20:05:00 -0800
+Message-ID: <20240203035335.357339173@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,140 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 90d50b8d85834e73536fdccd5aa913b30494fef0 ]
+[ Upstream commit 16ac5b21b31b439f03cdf44c153c5f5af94fb3eb ]
 
-It's been reported that DSI host driver's detach can be called without
-the attach ever happening:
+Based on grepping through the source code this driver appears to be
+missing a call to drm_atomic_helper_shutdown() at system shutdown time
+and at driver unbind time. Among other things, this means that if a
+panel is in use that it won't be cleanly powered off at system
+shutdown time.
 
-https://lore.kernel.org/all/20230412073954.20601-1-tony@atomide.com/
+The fact that we should call drm_atomic_helper_shutdown() in the case
+of OS shutdown/restart and at driver remove (or unbind) time comes
+straight out of the kernel doc "driver instance overview" in
+drm_drv.c.
 
-After reading the code, I think this is what happens:
+A few notes about this fix:
+- When adding drm_atomic_helper_shutdown() to the unbind path, I added
+  it after drm_kms_helper_poll_fini() since that's when other drivers
+  seemed to have it.
+- Technically with a previous patch, ("drm/atomic-helper:
+  drm_atomic_helper_shutdown(NULL) should be a noop"), we don't
+  actually need to check to see if our "drm" pointer is NULL before
+  calling drm_atomic_helper_shutdown(). We'll leave the "if" test in,
+  though, so that this patch can land without any dependencies. It
+  could potentially be removed later.
+- This patch also makes sure to set the drvdata to NULL in the case of
+  bind errors to make sure that shutdown can't access freed data.
 
-We have a DSI host defined in the device tree and a DSI peripheral under
-that host (i.e. an i2c device using the DSI as data bus doesn't exhibit
-this behavior).
-
-The host driver calls mipi_dsi_host_register(), which causes (via a few
-functions) mipi_dsi_device_add() to be called for the DSI peripheral. So
-now we have a DSI device under the host, but attach hasn't been called.
-
-Normally the probing of the devices continues, and eventually the DSI
-peripheral's driver will call mipi_dsi_attach(), attaching the
-peripheral.
-
-However, if the host driver's probe encounters an error after calling
-mipi_dsi_host_register(), and before the peripheral has called
-mipi_dsi_attach(), the host driver will do cleanups and return an error
-from its probe function. The cleanups include calling
-mipi_dsi_host_unregister().
-
-mipi_dsi_host_unregister() will call two functions for all its DSI
-peripheral devices: mipi_dsi_detach() and mipi_dsi_device_unregister().
-The latter makes sense, as the device exists, but the former may be
-wrong as attach has not necessarily been done.
-
-To fix this, track the attached state of the peripheral, and only detach
-from mipi_dsi_host_unregister() if the peripheral was attached.
-
-Note that I have only tested this with a board with an i2c DSI
-peripheral, not with a "pure" DSI peripheral.
-
-However, slightly related, the unregister machinery still seems broken.
-E.g. if the DSI host driver is unbound, it'll detach and unregister the
-DSI peripherals. After that, when the DSI peripheral driver unbound
-it'll call detach either directly or using the devm variant, leading to
-a crash. And probably the driver will crash if it happens, for some
-reason, to try to send a message via the DSI bus.
-
-But that's another topic.
-
-Tested-by: H. Nikolaus Schaller <hns@goldelico.com>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Tested-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230921-dsi-detach-fix-v1-1-d0de2d1621d9@ideasonboard.com
+Suggested-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_mipi_dsi.c | 17 +++++++++++++++--
- include/drm/drm_mipi_dsi.h     |  2 ++
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_drv.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_mipi_dsi.c b/drivers/gpu/drm/drm_mipi_dsi.c
-index 14201f73aab1..843a6dbda93a 100644
---- a/drivers/gpu/drm/drm_mipi_dsi.c
-+++ b/drivers/gpu/drm/drm_mipi_dsi.c
-@@ -347,7 +347,8 @@ static int mipi_dsi_remove_device_fn(struct device *dev, void *priv)
- {
- 	struct mipi_dsi_device *dsi = to_mipi_dsi_device(dev);
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_drv.c b/drivers/gpu/drm/exynos/exynos_drm_drv.c
+index 16c539657f73..4095b0d3ac2e 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_drv.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_drv.c
+@@ -309,6 +309,7 @@ static int exynos_drm_bind(struct device *dev)
+ 	drm_mode_config_cleanup(drm);
+ 	exynos_drm_cleanup_dma(drm);
+ 	kfree(private);
++	dev_set_drvdata(dev, NULL);
+ err_free_drm:
+ 	drm_dev_put(drm);
  
--	mipi_dsi_detach(dsi);
-+	if (dsi->attached)
-+		mipi_dsi_detach(dsi);
- 	mipi_dsi_device_unregister(dsi);
+@@ -323,6 +324,7 @@ static void exynos_drm_unbind(struct device *dev)
  
+ 	exynos_drm_fbdev_fini(drm);
+ 	drm_kms_helper_poll_fini(drm);
++	drm_atomic_helper_shutdown(drm);
+ 
+ 	component_unbind_all(drm->dev, drm);
+ 	drm_mode_config_cleanup(drm);
+@@ -360,9 +362,18 @@ static int exynos_drm_platform_remove(struct platform_device *pdev)
  	return 0;
-@@ -370,11 +371,18 @@ EXPORT_SYMBOL(mipi_dsi_host_unregister);
- int mipi_dsi_attach(struct mipi_dsi_device *dsi)
- {
- 	const struct mipi_dsi_host_ops *ops = dsi->host->ops;
-+	int ret;
- 
- 	if (!ops || !ops->attach)
- 		return -ENOSYS;
- 
--	return ops->attach(dsi->host, dsi);
-+	ret = ops->attach(dsi->host, dsi);
-+	if (ret)
-+		return ret;
-+
-+	dsi->attached = true;
-+
-+	return 0;
  }
- EXPORT_SYMBOL(mipi_dsi_attach);
  
-@@ -386,9 +394,14 @@ int mipi_dsi_detach(struct mipi_dsi_device *dsi)
- {
- 	const struct mipi_dsi_host_ops *ops = dsi->host->ops;
- 
-+	if (WARN_ON(!dsi->attached))
-+		return -EINVAL;
++static void exynos_drm_platform_shutdown(struct platform_device *pdev)
++{
++	struct drm_device *drm = platform_get_drvdata(pdev);
 +
- 	if (!ops || !ops->detach)
- 		return -ENOSYS;
- 
-+	dsi->attached = false;
++	if (drm)
++		drm_atomic_helper_shutdown(drm);
++}
 +
- 	return ops->detach(dsi->host, dsi);
- }
- EXPORT_SYMBOL(mipi_dsi_detach);
-diff --git a/include/drm/drm_mipi_dsi.h b/include/drm/drm_mipi_dsi.h
-index c9df0407980c..c0aec0d4d664 100644
---- a/include/drm/drm_mipi_dsi.h
-+++ b/include/drm/drm_mipi_dsi.h
-@@ -168,6 +168,7 @@ struct mipi_dsi_device_info {
-  * struct mipi_dsi_device - DSI peripheral device
-  * @host: DSI host for this peripheral
-  * @dev: driver model device node for this peripheral
-+ * @attached: the DSI device has been successfully attached
-  * @name: DSI peripheral chip type
-  * @channel: virtual channel assigned to the peripheral
-  * @format: pixel format for video mode
-@@ -184,6 +185,7 @@ struct mipi_dsi_device_info {
- struct mipi_dsi_device {
- 	struct mipi_dsi_host *host;
- 	struct device dev;
-+	bool attached;
- 
- 	char name[DSI_DEV_NAME_SIZE];
- 	unsigned int channel;
+ static struct platform_driver exynos_drm_platform_driver = {
+ 	.probe	= exynos_drm_platform_probe,
+ 	.remove	= exynos_drm_platform_remove,
++	.shutdown = exynos_drm_platform_shutdown,
+ 	.driver	= {
+ 		.name	= "exynos-drm",
+ 		.pm	= &exynos_drm_pm_ops,
 -- 
 2.43.0
 
