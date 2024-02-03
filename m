@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B614784803C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D224848172
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 428681F2BAB6
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFFFF1C22A12
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FD610796;
-	Sat,  3 Feb 2024 04:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C1F2BAFA;
+	Sat,  3 Feb 2024 04:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXkRZiTO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfoQpBrz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B90101C2;
-	Sat,  3 Feb 2024 04:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014C7107B4;
+	Sat,  3 Feb 2024 04:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933338; cv=none; b=CEn8DojfsJZe5bLcVg3sZ1iM5wiGwjOktEYELMMM5WTQF3/hw7+Qw4/Be8zW2KBqnFulpwSabi4zbKnv1iNc/hviPeESzmPmYLoea7eAih2fFujTAQo2kaWaE+sxO/lGBbQHbnWL8DR5mU6l30Jsf6BvK9BldzyRDiH/rrB0+z8=
+	t=1706933560; cv=none; b=Gb8EryyQIW5FTpK4gWYN28yPjsGRT9vTKqZHgWIr43HwxraD5bYIwNV7knAo7/kctgLMhBlboE36B5rBvW8GTgSikhW9riC2CJU9uSJ3V1lMFEPvRXI6W7s3VrGiK5I1XM2v64ag4tjl71YsEfgtSiyVsUr080Fgs8cXLqB9rws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933338; c=relaxed/simple;
-	bh=nlm7CamIoujgucyQfhg7kXX0uvEamB8evS+6sdQTU+U=;
+	s=arc-20240116; t=1706933560; c=relaxed/simple;
+	bh=leHHh/hYaa+QTcaywmzkJlZ/2AHl+9R891z7VA9oO/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YyL4neLZ5D8m09iq/muw1UcjSGlFyEjuTynleieABgDpNlP6hImQRZBGKZl2Z07uM+iYH+LFMDefEmrGVWycXQYKgASMnF6gPxp3QC9QbQAkyJ/7mHyyoDyUm9e965A5Dt817f7VYCE9mhzquF4eiUDUmUK5t8M1us+IeWIXXco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXkRZiTO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E903C433F1;
-	Sat,  3 Feb 2024 04:08:58 +0000 (UTC)
+	 MIME-Version; b=Ea+nMzZ9p9b+05AbdHerCOcxFxn3eA0Oi2TjMmwEMRX80gFVLE2AVfXAWEDKt3oud/sB2l+LtzhFtQIdZNQLAE3jtM6hAW5XWeRf4Bdl06BKF09Fe+9YS+LRPgbAMnHCs0caXvgG3N+i4tor8XnTW1KdRwky3CmqWpB44CqqnrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfoQpBrz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5C8C433F1;
+	Sat,  3 Feb 2024 04:12:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933338;
-	bh=nlm7CamIoujgucyQfhg7kXX0uvEamB8evS+6sdQTU+U=;
+	s=korg; t=1706933559;
+	bh=leHHh/hYaa+QTcaywmzkJlZ/2AHl+9R891z7VA9oO/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bXkRZiTOjC8eI6xSFTMVdlQVljk3cp8+dk1L8Mh031VB0QhEmtKi660ACIRJrl8EH
-	 LCOQo+ZleuBPRr9rG0SCEIstHa2AzUcxnmNQUp9wOqv92WTxwA3StYZYcIPJNBcQzF
-	 xfn+RlnJpqNlBV5xwY6kgEEFbgme3GXKHHB4MX74=
+	b=GfoQpBrz6TQSrOgG4fCfAZH9IkkIhSuyQzbIpNQhwBkX+sG5z4oFHEGonb53V1+Ey
+	 F9+ywME3qI0rYE+9sw7ZuIGk+V7TBahIiv/csPde//hSWqXq87YXJcyU+4EbctWYmQ
+	 iBp0242S+ss0gMCqOPxDdUauHyoWH1Hd2D3N4NuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/219] s390/ptrace: handle setting of fpc register correctly
+Subject: [PATCH 6.6 113/322] ARM: dts: imx27: Fix sram node
 Date: Fri,  2 Feb 2024 20:03:30 -0800
-Message-ID: <20240203035321.651405453@linuxfoundation.org>
+Message-ID: <20240203035402.790706723@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 8b13601d19c541158a6e18b278c00ba69ae37829 ]
+[ Upstream commit 2fb7b2a2f06bb3f8321cf26c33e4e820c5b238b6 ]
 
-If the content of the floating point control (fpc) register of a traced
-process is modified with the ptrace interface the new value is tested for
-validity by temporarily loading it into the fpc register.
+Per sram.yaml, address-cells, size-cells and ranges are mandatory.
 
-This may lead to corruption of the fpc register of the tracing process:
-if an interrupt happens while the value is temporarily loaded into the
-fpc register, and within interrupt context floating point or vector
-registers are used, the current fp/vx registers are saved with
-save_fpu_regs() assuming they belong to user space and will be loaded into
-fp/vx registers when returning to user space.
+Pass them to fix the following dt-schema warnings:
 
-test_fp_ctl() restores the original user space fpc register value, however
-it will be discarded, when returning to user space.
-
-In result the tracer will incorrectly continue to run with the value that
-was supposed to be used for the traced process.
-
-Fix this by saving fpu register contents with save_fpu_regs() before using
-test_fp_ctl().
-
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/ptrace.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx27.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/s390/kernel/ptrace.c b/arch/s390/kernel/ptrace.c
-index 092b16b4dd4f..6b442edb3857 100644
---- a/arch/s390/kernel/ptrace.c
-+++ b/arch/s390/kernel/ptrace.c
-@@ -385,6 +385,7 @@ static int __poke_user(struct task_struct *child, addr_t addr, addr_t data)
- 		/*
- 		 * floating point control reg. is in the thread structure
- 		 */
-+		save_fpu_regs();
- 		if ((unsigned int) data != 0 ||
- 		    test_fp_ctl(data >> (BITS_PER_LONG - 32)))
- 			return -EINVAL;
-@@ -741,6 +742,7 @@ static int __poke_user_compat(struct task_struct *child,
- 		/*
- 		 * floating point control reg. is in the thread structure
- 		 */
-+		save_fpu_regs();
- 		if (test_fp_ctl(tmp))
- 			return -EINVAL;
- 		child->thread.fpu.fpc = data;
-@@ -904,9 +906,7 @@ static int s390_fpregs_set(struct task_struct *target,
- 	int rc = 0;
- 	freg_t fprs[__NUM_FPRS];
- 
--	if (target == current)
--		save_fpu_regs();
--
-+	save_fpu_regs();
- 	if (MACHINE_HAS_VX)
- 		convert_vx_to_fp(fprs, target->thread.fpu.vxrs);
- 	else
+diff --git a/arch/arm/boot/dts/nxp/imx/imx27.dtsi b/arch/arm/boot/dts/nxp/imx/imx27.dtsi
+index faba12ee7465..cac4b3d68986 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx27.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx27.dtsi
+@@ -588,6 +588,9 @@
+ 		iram: sram@ffff4c00 {
+ 			compatible = "mmio-sram";
+ 			reg = <0xffff4c00 0xb400>;
++			ranges = <0 0xffff4c00 0xb400>;
++			#address-cells = <1>;
++			#size-cells = <1>;
+ 		};
+ 	};
+ };
 -- 
 2.43.0
 
