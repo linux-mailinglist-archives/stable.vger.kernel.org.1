@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02327848343
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51C2A848229
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 995911F2549E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08DF028BC73
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E851CD30;
-	Sat,  3 Feb 2024 04:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD6D47F59;
+	Sat,  3 Feb 2024 04:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVci0VKr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOGluWhB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921B6171A4;
-	Sat,  3 Feb 2024 04:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0EB147A7B;
+	Sat,  3 Feb 2024 04:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933898; cv=none; b=e4VVIxSxxW2wfhrS1z+uvy49waqtZQPpiK9dzXSP38igjq+1UoDKleFL8xLw7DkB9UA5Te4LZgJoVnB4NBe9/tPnprmElR4FSaw+kKYXB7+ZoHaEL4GPZ1A2gghR1UJM3fj59s77Ug+MxHJADNU4YACfuo9YsF8rWOXknOCuFXg=
+	t=1706933694; cv=none; b=OSbPrd65h6GOAB9yO9GcT4qDezLJWIRdc4n2NGVgXYSFOU7a4mQbnv6vcFqeu1W/RsbGkiBLuRp2U/xm+q42WD6ef3J+Mqliae6plgbNlld6Tgc634fbC/4MtkhYZ0hN9AwgcEZhJasLA3i9G2LIJO+9lUqRpYxaQTKvQaf8AqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933898; c=relaxed/simple;
-	bh=mR1d7x+M8GIfuVpIHlw+np+dZl+QIl3zupBxPdnOc6k=;
+	s=arc-20240116; t=1706933694; c=relaxed/simple;
+	bh=jEN0uwy0H7/JDzHMB3mPiYS+UM2vAl9CTrSAZkrrR6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RGDVDSxVoqreS+EvzzcOXOqjd3J1SeRds4xpP/6YOmJlhNAgdS8Sndeay6LktAcMCJ/5rxrBuJYjg/fKPnX/fzy7mFHTiVaV+UHgt7O7Zmn8vvWj55W01ySEkIpJlgtLRBwp0UkxQdvVgBRfYIemEA46//nrjQNmWzS1PsD1+vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVci0VKr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C4F3C433F1;
-	Sat,  3 Feb 2024 04:18:18 +0000 (UTC)
+	 MIME-Version; b=RBBBHZSORGjcsaLzwAyB+nt+HPDgPJSdbUM2FwTRdnfX0rJNFziEWduea0PN/WZe2lMHtPCYdwT1Tx0Ev21oNW9EVY5byPKNQmE4JD49U4TKAlZj25HFvElHVk2aXwo1mdnFDAc3Pxwt+Pkr9DbqaBuTphQ3AqE5QK6OoOY0PaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOGluWhB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A10C433C7;
+	Sat,  3 Feb 2024 04:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933898;
-	bh=mR1d7x+M8GIfuVpIHlw+np+dZl+QIl3zupBxPdnOc6k=;
+	s=korg; t=1706933693;
+	bh=jEN0uwy0H7/JDzHMB3mPiYS+UM2vAl9CTrSAZkrrR6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qVci0VKrpphC3OoKRVtWtqLXj1oJ72tEW4zcwg2iou5auZzjAf9ylTPBfGUgsEZNO
-	 UzMkmlTxMBjk+Uc3COm5Q4ZRFMJOP7EXwOJ960IghgtoKx1OB8B3FtVngsZGUsBtGQ
-	 L19UOKrfwaes1Y7bHN3iQzi3hyWo2O/M2sxG71uU=
+	b=cOGluWhBgIKa1EhX5g2otswnEEXyCSvAOg/0RJz5T4Plq0pqTw5wSadUXsz/hkXeN
+	 0QSOzss2ZnKVB04GidlXlL+wxJmrp6LT7Jh21K4oL0zytvVOH1GFtd/49ca9lwV3jV
+	 mgasjoBqV7jVkhsJfXKWIDk8MAbC5K0RDDIl7sY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Maltsev <mekosko@projectyo.network>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Romain Naour <romain.naour@skf.com>,
+	Yoann Congal <yoann.congal@smile.fr>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 245/353] ACPI: resource: Skip IRQ override on ASUS ExpertBook B1502CGA
+Subject: [PATCH 6.6 266/322] regulator: ti-abb: dont use devm_platform_ioremap_resource_byname for shared interrupt register
 Date: Fri,  2 Feb 2024 20:06:03 -0800
-Message-ID: <20240203035411.460383460@linuxfoundation.org>
+Message-ID: <20240203035407.719125187@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Maltsev <mekosko@projectyo.network>
+From: Romain Naour <romain.naour@skf.com>
 
-[ Upstream commit e315e8692f7922cd1b2a26bd7a1741cc8ce77085 ]
+[ Upstream commit a67e1f0bd4564b485e0f0c3ed7f6bf17688be268 ]
 
-Like the ASUS ExpertBook B1502CBA and various ASUS laptops, the
-ASUS ExpertBook B1502CGA has an ACPI DSDT table that describes IRQ 1 as
-ActiveLow while the kernel overrides it to Edge_High.
+We can't use devm_platform_ioremap_resource_byname() to remap the
+interrupt register that can be shared between
+regulator-abb-{ivahd,dspeve,gpu} drivers instances.
 
-	$ sudo dmesg | grep DMI
-	[    0.000000] DMI: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B1502CGA_B1502CGA/B1502CGA, BIOS B1502CGA.303 06/05/2023
-	$ grep -A 40 PS2K dsdt.dsl | grep IRQ -A 1
-	                IRQ (Level, ActiveLow, Exclusive, )
-	                    {1}
+The combined helper introduce a call to devm_request_mem_region() that
+creates a new busy resource region on PRM_IRQSTATUS_MPU register
+(0x4ae06010). The first devm_request_mem_region() call succeeds for
+regulator-abb-ivahd but fails for the two other regulator-abb-dspeve
+and regulator-abb-gpu.
 
-This prevents the keyboard from working. To fix this issue, add this laptop
-to the skip_override_table so that the kernel does not override IRQ 1.
+  # cat /proc/iomem | grep -i 4ae06
+  4ae06010-4ae06013 : 4ae07e34.regulator-abb-ivahd int-address
+  4ae06014-4ae06017 : 4ae07ddc.regulator-abb-mpu int-address
 
-Signed-off-by: Michael Maltsev <mekosko@projectyo.network>
-[ rjw: rebase, replace .ident field with a comment ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+regulator-abb-dspeve and regulator-abb-gpu are missing due to
+devm_request_mem_region() failure (EBUSY):
+
+  [    1.326660] ti_abb 4ae07e30.regulator-abb-dspeve: can't request region for resource [mem 0x4ae06010-0x4ae06013]
+  [    1.326660] ti_abb: probe of 4ae07e30.regulator-abb-dspeve failed with error -16
+  [    1.327239] ti_abb 4ae07de4.regulator-abb-gpu: can't request region for resource [mem 0x4ae06010-0x4ae06013]
+  [    1.327270] ti_abb: probe of 4ae07de4.regulator-abb-gpu failed with error -16
+
+>From arm/boot/dts/dra7.dtsi:
+
+The abb_mpu is the only instance using its own interrupt register:
+  (0x4ae06014) PRM_IRQSTATUS_MPU_2, ABB_MPU_DONE_ST (bit 7)
+
+The other tree instances (abb_ivahd, abb_dspeve, abb_gpu) share
+PRM_IRQSTATUS_MPU register (0x4ae06010) but use different bits
+ABB_IVA_DONE_ST (bit 30), ABB_DSPEVE_DONE_ST( bit 29) and
+ABB_GPU_DONE_ST (but 28).
+
+The commit b36c6b1887ff ("regulator: ti-abb: Make use of the helper
+function devm_ioremap related") overlooked the following comment
+implicitly explaining why devm_ioremap() is used in this case:
+
+  /*
+   * We may have shared interrupt register offsets which are
+   * write-1-to-clear between domains ensuring exclusivity.
+   */
+
+Fixes and partially reverts commit b36c6b1887ff ("regulator: ti-abb:
+Make use of the helper function devm_ioremap related").
+
+Improve the existing comment to avoid further conversion to
+devm_platform_ioremap_resource_byname().
+
+Fixes: b36c6b1887ff ("regulator: ti-abb: Make use of the helper function devm_ioremap related")
+Signed-off-by: Romain Naour <romain.naour@skf.com>
+Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
+Link: https://msgid.link/r/20240123111456.739381-1-romain.naour@smile.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/regulator/ti-abb-regulator.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index 7d58d8b4ca76..03b52d31a3e3 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -461,6 +461,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "B1502CBA"),
- 		},
- 	},
-+	{
-+		/* Asus ExpertBook B1502CGA */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "B1502CGA"),
-+		},
-+	},
- 	{
- 		/* Asus ExpertBook B2402CBA */
- 		.matches = {
+diff --git a/drivers/regulator/ti-abb-regulator.c b/drivers/regulator/ti-abb-regulator.c
+index 86d2d80b4b41..ae5dcaea84df 100644
+--- a/drivers/regulator/ti-abb-regulator.c
++++ b/drivers/regulator/ti-abb-regulator.c
+@@ -734,9 +734,25 @@ static int ti_abb_probe(struct platform_device *pdev)
+ 			return PTR_ERR(abb->setup_reg);
+ 	}
+ 
+-	abb->int_base = devm_platform_ioremap_resource_byname(pdev, "int-address");
+-	if (IS_ERR(abb->int_base))
+-		return PTR_ERR(abb->int_base);
++	pname = "int-address";
++	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, pname);
++	if (!res) {
++		dev_err(dev, "Missing '%s' IO resource\n", pname);
++		return -ENODEV;
++	}
++	/*
++	 * The MPU interrupt status register (PRM_IRQSTATUS_MPU) is
++	 * shared between regulator-abb-{ivahd,dspeve,gpu} driver
++	 * instances. Therefore use devm_ioremap() rather than
++	 * devm_platform_ioremap_resource_byname() to avoid busy
++	 * resource region conflicts.
++	 */
++	abb->int_base = devm_ioremap(dev, res->start,
++					     resource_size(res));
++	if (!abb->int_base) {
++		dev_err(dev, "Unable to map '%s'\n", pname);
++		return -ENOMEM;
++	}
+ 
+ 	/* Map Optional resources */
+ 	pname = "efuse-address";
 -- 
 2.43.0
 
