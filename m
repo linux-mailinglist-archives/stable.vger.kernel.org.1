@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 529F284837A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25933848381
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E760B1F23BF9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8953CB2AC37
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1873817551;
-	Sat,  3 Feb 2024 04:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D1953E2B;
+	Sat,  3 Feb 2024 04:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKZVqLqp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egbdLhuO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98C0171CE;
-	Sat,  3 Feb 2024 04:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217CD11720;
+	Sat,  3 Feb 2024 04:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933938; cv=none; b=sVwDQee+k9Pb9BU00e9gEjDbbWT2o1YdAxLKqkeWZXemfPL29JmummnU7C1zNxFgiTEDrCWli32FcmiweHR+kCqlVHPwTM/LKqcxosSxiP+rYXn5T7pG/tUK1HQiUZNY8Lfm4dewmb5NTJxkJLnA+tpuk/4kK0T0cRbxWBQEx/w=
+	t=1706933943; cv=none; b=G1YLNsgabYFUxzq3zpVyipHonwZAZyAZ5x/IZ7Fni8sG5rXpYvOQA9NUJAsFsvejfBoYP4RVW8xAgjZkYs4b9iJwxEU/HWqVWv+o0it/C0FpQqT31cxhHB0KAuhi5K+FUgxkYeQcDr4gyZcNBlnXFZWvpa8H15v11DQRSSlWyfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933938; c=relaxed/simple;
-	bh=0bofXfwELl64weF8rsdraMK9hyASRhPJAd2BXm5iWfk=;
+	s=arc-20240116; t=1706933943; c=relaxed/simple;
+	bh=sEr3vj4BYWPkwbSTGMdOMdGZytZ3GtpKgvCj4UT6KfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eCNW+FDGrOr78VYWTLqW2K0tlD2c9ZRlCyjolSdJU/E8Yj2ZgSLeI4v9gTjzTCd2CfvJuZ9pJB0yyxQPmJaW329lXdkgVwvi//VUtJJRZsrmhtjxJBdaMpW/wyt5rjfbpjFV0PjUx2O8MG//0wMMgxc4tTMBzAeHVCQfdG88/nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lKZVqLqp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D19C43390;
-	Sat,  3 Feb 2024 04:18:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k9q9W/T1VQST1zpKGCRMOmjewdzsaKqPGR1uO5hjfjWkpXhqcR+VUjte+0QqCK1LVfAgsEQj7Gjy9HmELGh+sbiHK2J/TdJhPPfcjLxUx3w4vLKZHhthr7/DO+36zBQhpbD9khchEl5Z6m+UGqLqClSCzvnThYBUXSQ3Onxt8OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egbdLhuO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE972C433F1;
+	Sat,  3 Feb 2024 04:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933938;
-	bh=0bofXfwELl64weF8rsdraMK9hyASRhPJAd2BXm5iWfk=;
+	s=korg; t=1706933943;
+	bh=sEr3vj4BYWPkwbSTGMdOMdGZytZ3GtpKgvCj4UT6KfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lKZVqLqpMmR/IJRM5GM7YIk0qgwF5ePtliaqYK2nPMssBdrcphoiLzpXuZ1/BGOVS
-	 ICxyHLwe3aJHX16wyr+5Zvxw4REdeLq6lTJXFWoXdnTif9v1dVdzdPVx78SKVuPF+p
-	 g9Esgsr3weRSiOI6fS5Awc7tp7bEAGHdXH/z6/yo=
+	b=egbdLhuOQcS5kQ62Idkt6t8AnzPmlTOujjJ5cdfs/ffgHrJjpWJVTZttjo7fx1EmB
+	 3zt+bfuWBZDhaQmC5AYf5mr0zBBIZbJl6p6+U/GeOeAx73MMWLtXvtvFP6Z3u0vEFH
+	 ZQ4jv3tphz8EL2XJIW30evBLWmWDQTFsSElxv/mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaojian Du <Xiaojian.Du@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
+	Monk Liu <Monk.Liu@amd.com>,
 	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 283/353] drm/amdgpu: Fix with right return code -EIO in amdgpu_gmc_vram_checking()
-Date: Fri,  2 Feb 2024 20:06:41 -0800
-Message-ID: <20240203035412.723169736@linuxfoundation.org>
+Subject: [PATCH 6.7 284/353] drm/amdgpu: Release adev->pm.fw before return in amdgpu_device_need_post()
+Date: Fri,  2 Feb 2024 20:06:42 -0800
+Message-ID: <20240203035412.755850675@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
 References: <20240203035403.657508530@linuxfoundation.org>
@@ -72,71 +72,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit fac4ebd79fed60e79cccafdad45a2bb8d3795044 ]
+[ Upstream commit 8a44fdd3cf91debbd09b43bd2519ad2b2486ccf4 ]
 
-The amdgpu_gmc_vram_checking() function in emulation checks whether
-all of the memory range of shared system memory could be accessed by
-GPU, from this aspect, -EIO is returned for error scenarios.
+In function 'amdgpu_device_need_post(struct amdgpu_device *adev)' -
+'adev->pm.fw' may not be released before return.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/gmc_v6_0.c:919 gmc_v6_0_hw_init() warn: missing error code? 'r'
-drivers/gpu/drm/amd/amdgpu/gmc_v7_0.c:1103 gmc_v7_0_hw_init() warn: missing error code? 'r'
-drivers/gpu/drm/amd/amdgpu/gmc_v8_0.c:1223 gmc_v8_0_hw_init() warn: missing error code? 'r'
-drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c:2344 gmc_v9_0_hw_init() warn: missing error code? 'r'
+Using the function release_firmware() to release adev->pm.fw.
 
-Cc: Xiaojian Du <Xiaojian.Du@amd.com>
-Cc: Lijo Lazar <lijo.lazar@amd.com>
+Thus fixing the below:
+drivers/gpu/drm/amd/amdgpu/amdgpu_device.c:1571 amdgpu_device_need_post() warn: 'adev->pm.fw' from request_firmware() not released on lines: 1554.
+
+Cc: Monk Liu <Monk.Liu@amd.com>
 Cc: Christian König <christian.koenig@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-index d2f273d77e59..55784a9f26c4 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
-@@ -1045,21 +1045,28 @@ int amdgpu_gmc_vram_checking(struct amdgpu_device *adev)
- 	 * seconds, so here, we just pick up three parts for emulation.
- 	 */
- 	ret = memcmp(vram_ptr, cptr, 10);
--	if (ret)
--		return ret;
-+	if (ret) {
-+		ret = -EIO;
-+		goto release_buffer;
-+	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 3677d644183b..9257c9af3fee 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -1485,6 +1485,7 @@ bool amdgpu_device_need_post(struct amdgpu_device *adev)
+ 				return true;
  
- 	ret = memcmp(vram_ptr + (size / 2), cptr, 10);
--	if (ret)
--		return ret;
-+	if (ret) {
-+		ret = -EIO;
-+		goto release_buffer;
-+	}
- 
- 	ret = memcmp(vram_ptr + size - 10, cptr, 10);
--	if (ret)
--		return ret;
-+	if (ret) {
-+		ret = -EIO;
-+		goto release_buffer;
-+	}
- 
-+release_buffer:
- 	amdgpu_bo_free_kernel(&vram_bo, &vram_gpu,
- 			&vram_ptr);
- 
--	return 0;
-+	return ret;
- }
- 
- static ssize_t current_memory_partition_show(
+ 			fw_ver = *((uint32_t *)adev->pm.fw->data + 69);
++			release_firmware(adev->pm.fw);
+ 			if (fw_ver < 0x00160e00)
+ 				return true;
+ 		}
 -- 
 2.43.0
 
