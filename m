@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-17861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7977848068
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B024484819B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 813741F216EF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E23271C227AB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06C413AC2;
-	Sat,  3 Feb 2024 04:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D04710A0A;
+	Sat,  3 Feb 2024 04:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfeWTmzP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hv4DTG+G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2E7134D9;
-	Sat,  3 Feb 2024 04:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D004910A0E;
+	Sat,  3 Feb 2024 04:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933369; cv=none; b=GM+MuY7XD2/0wcrlcpA0l1jgemzN9YsM+WF0TeSUQUQiQs6YlWbfG3an1qG6wJgksWssHp6pzChghOq3qWYZ2oyo6sBGjqRF2OkGrvKSFL1dYe/YGvMNt6EsZN7qnOPUpClCkQeNSjzcHLzDk6NdIgxn3H553vkiJLnfvt+LiNU=
+	t=1706933589; cv=none; b=T2HqR8j8Y5+D1uY78wsZ9XUmRJpF7I1O2LNtnJWyTKs2BUm7ovWG2729AZUpOxV52knARsQBBcR5+QcAdv5XFqzUpuTxOK9pkKZobK5U/XGvmjGLy+Dl2pyayV8yCucsWmq+c+7GSVSYKnTQbiKdVQygjJzoriTmEggCAjnLlMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933369; c=relaxed/simple;
-	bh=zAayvX1wkrF6Pd0I+kxxakfVyNXzpnQNo8AFcbsqLoM=;
+	s=arc-20240116; t=1706933589; c=relaxed/simple;
+	bh=A1ksihDo2y3EcvezdaD98ccofTWAg1d6EgCTzbkTG18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSDivaGnLKi0CfSa1RE1xBzWm9+zxOuTvdHhIgGF2TZGoHPTJBzHKPr9h09L6boEOkklBctku8zUQOHk6YYI6MKny+Buzjtg+Of/oTkc2TqIEBIplsa7QAhAvjn54QzyzKK7ppaP0XrYbRoFsvsRJX6xvqVFsNvrWWQZZkb6FQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfeWTmzP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C3BC43390;
-	Sat,  3 Feb 2024 04:09:29 +0000 (UTC)
+	 MIME-Version; b=ufpRUW9+5+qZIv8kcwEOX2ZoJwpZKZLSwoKB3m2OiThk/6U813iB7cJ8reWh1mmBpazsg5LI3kmNYQ0lY38jEYNLSH5VhTeypiq63kD8knPeIfuxRyuZ/q0gyL7oiayn82FegJ+eR0/M95mI17mL64NOFd73w5mH9mLNbJykMTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hv4DTG+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98961C43394;
+	Sat,  3 Feb 2024 04:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933369;
-	bh=zAayvX1wkrF6Pd0I+kxxakfVyNXzpnQNo8AFcbsqLoM=;
+	s=korg; t=1706933589;
+	bh=A1ksihDo2y3EcvezdaD98ccofTWAg1d6EgCTzbkTG18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zfeWTmzPM61trDi8bF9w46Nca3aUDtTpJNToOAJB1WM4dYNI9+M30HUd/OBxyYWRM
-	 IADuGLVz97eqbSKeZztPjJtykJ03DdHyBYn0Oc4v0akA7rNbSUxs2AG4sCnVlc11JC
-	 AKoW7Xcm2uxER4HQ4mMPZGPPEjTNXzBj8+Pyd5uU=
+	b=Hv4DTG+GI9MGxOhHdLLQ6pndZP9PQeYYyUuo75Ym2iyfAF12lumU4ifSgG4V3Fx7u
+	 vdHjGzeV+JpOUImWl77Q9ZiIx42V1ITJbbuwVgzh/qEh9BoKymyxUl++wB44AzthyC
+	 pAvMekHKaueezH2SSYDOR7RN3cziJxTXyutmU6eM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Jan Sokolowski <jan.sokolowski@intel.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrii Staikov <andrii.staikov@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 077/219] ARM: dts: imx25: Fix the iim compatible string
+Subject: [PATCH 6.6 153/322] i40e: Fix VF disable behavior to block all traffic
 Date: Fri,  2 Feb 2024 20:04:10 -0800
-Message-ID: <20240203035327.916519914@linuxfoundation.org>
+Message-ID: <20240203035404.140883100@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +67,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Andrii Staikov <andrii.staikov@intel.com>
 
-[ Upstream commit f0b929f58719fc57a4926ab4fc972f185453d6a5 ]
+[ Upstream commit 31deb12e85c35ddd2c037f0107d05d8674cab2c0 ]
 
-Per imx-iim.yaml, the compatible string should only contain a single
-entry.
+Currently, if a VF is disabled using the
+'ip link set dev $ETHX vf $VF_NUM state disable' command, the VF is still
+able to receive traffic.
 
-Use it as "fsl,imx25-iim" to fix the following dt-schema warning:
+Fix the behavior of the 'ip link set dev $ETHX vf $VF_NUM state disable'
+to completely shutdown the VF's queues making it entirely disabled and
+not able to receive or send any traffic.
 
-imx25-karo-tx25.dtb: efuse@53ff0000: compatible: ['fsl,imx25-iim', 'fsl,imx27-iim'] is too long
-	from schema $id: http://devicetree.org/schemas/nvmem/imx-iim.yaml#
+Modify the behavior of the 'ip link set $ETHX vf $VF_NUM state enable'
+command to make a VF do reinitialization bringing the queues back up.
 
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Co-developed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Jan Sokolowski <jan.sokolowski@intel.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Andrii Staikov <andrii.staikov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx25.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 32 +++++++++++++++++++
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.h    |  1 +
+ 2 files changed, 33 insertions(+)
 
-diff --git a/arch/arm/boot/dts/imx25.dtsi b/arch/arm/boot/dts/imx25.dtsi
-index 5f90d72b840b..5ac4549286bd 100644
---- a/arch/arm/boot/dts/imx25.dtsi
-+++ b/arch/arm/boot/dts/imx25.dtsi
-@@ -543,7 +543,7 @@
- 			};
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index a97ca2224da0..cc4c53470db2 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -2605,6 +2605,14 @@ static int i40e_vc_enable_queues_msg(struct i40e_vf *vf, u8 *msg)
+ 	int aq_ret = 0;
+ 	int i;
  
- 			iim: efuse@53ff0000 {
--				compatible = "fsl,imx25-iim", "fsl,imx27-iim";
-+				compatible = "fsl,imx25-iim";
- 				reg = <0x53ff0000 0x4000>;
- 				interrupts = <19>;
- 				clocks = <&clks 99>;
++	if (vf->is_disabled_from_host) {
++		aq_ret = -EPERM;
++		dev_info(&pf->pdev->dev,
++			 "Admin has disabled VF %d, will not enable queues\n",
++			 vf->vf_id);
++		goto error_param;
++	}
++
+ 	if (!test_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states)) {
+ 		aq_ret = -EINVAL;
+ 		goto error_param;
+@@ -4732,9 +4740,12 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
+ 	struct i40e_link_status *ls = &pf->hw.phy.link_info;
+ 	struct virtchnl_pf_event pfe;
+ 	struct i40e_hw *hw = &pf->hw;
++	struct i40e_vsi *vsi;
++	unsigned long q_map;
+ 	struct i40e_vf *vf;
+ 	int abs_vf_id;
+ 	int ret = 0;
++	int tmp;
+ 
+ 	if (test_and_set_bit(__I40E_VIRTCHNL_OP_PENDING, pf->state)) {
+ 		dev_warn(&pf->pdev->dev, "Unable to configure VFs, other operation is pending.\n");
+@@ -4757,17 +4768,38 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
+ 	switch (link) {
+ 	case IFLA_VF_LINK_STATE_AUTO:
+ 		vf->link_forced = false;
++		vf->is_disabled_from_host = false;
++		/* reset needed to reinit VF resources */
++		i40e_vc_reset_vf(vf, true);
+ 		i40e_set_vf_link_state(vf, &pfe, ls);
+ 		break;
+ 	case IFLA_VF_LINK_STATE_ENABLE:
+ 		vf->link_forced = true;
+ 		vf->link_up = true;
++		vf->is_disabled_from_host = false;
++		/* reset needed to reinit VF resources */
++		i40e_vc_reset_vf(vf, true);
+ 		i40e_set_vf_link_state(vf, &pfe, ls);
+ 		break;
+ 	case IFLA_VF_LINK_STATE_DISABLE:
+ 		vf->link_forced = true;
+ 		vf->link_up = false;
+ 		i40e_set_vf_link_state(vf, &pfe, ls);
++
++		vsi = pf->vsi[vf->lan_vsi_idx];
++		q_map = BIT(vsi->num_queue_pairs) - 1;
++
++		vf->is_disabled_from_host = true;
++
++		/* Try to stop both Tx&Rx rings even if one of the calls fails
++		 * to ensure we stop the rings even in case of errors.
++		 * If any of them returns with an error then the first
++		 * error that occurred will be returned.
++		 */
++		tmp = i40e_ctrl_vf_tx_rings(vsi, q_map, false);
++		ret = i40e_ctrl_vf_rx_rings(vsi, q_map, false);
++
++		ret = tmp ? tmp : ret;
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
+index bda9ba668c41..cf190762421c 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
+@@ -98,6 +98,7 @@ struct i40e_vf {
+ 	bool link_forced;
+ 	bool link_up;		/* only valid if VF link is forced */
+ 	bool spoofchk;
++	bool is_disabled_from_host; /* PF ctrl of VF enable/disable */
+ 	u16 num_vlan;
+ 
+ 	/* ADq related variables */
 -- 
 2.43.0
 
