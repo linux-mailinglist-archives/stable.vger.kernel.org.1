@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67D588482B7
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B937848189
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E51A6B244AF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27BCA2827B2
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D591BF26;
-	Sat,  3 Feb 2024 04:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9ED62C695;
+	Sat,  3 Feb 2024 04:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OshFozEE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uahwuDxe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A241C1BDED;
-	Sat,  3 Feb 2024 04:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996FC10A09;
+	Sat,  3 Feb 2024 04:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933796; cv=none; b=tXbwmCg9c4ez1JGKtkbAhT0XRYnbJiaZjUKg0LlstTmqfQzpY+vkXaeaX8RSDWKxA8yruYjlxqVy/Feyd9loAbF7iIAkT/Sn/NycveYLsmxK2QvsJrwi/fpqUX4PHXPAGQ+bJbkq9EVXjZstIVJcQPR6QT76nux3Nnd5fOB5i00=
+	t=1706933576; cv=none; b=UFQV+JZITPg68x8OO2cAwllFIXFN8Y12rJyVjxOB/SH6F8eLosXH3grs8Dk2ooDLFQu0ihiMye1fQfREaCptjDAHLDVOyIabBdZp2LozBTaDj4W5MN4ccb1r3rlXE1t0wF8hdCNGz+AX3l8mDD6Z2MDjtNlRvL3UJt8yZqEd98s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933796; c=relaxed/simple;
-	bh=tIjZUOeRRjOGJk48HcxydNQdHzPq3e3B7XmiGd1L5sY=;
+	s=arc-20240116; t=1706933576; c=relaxed/simple;
+	bh=v35n3UlDa1mDMfHJRYd4luEd1ISiUa1eNbsCXQcwuI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MI574ZSMc3S5B4rf73omF0glSstDx9gCZ9pXaEk5lvzOs9P7zP0XURyRRDIYoNcG1QaZdcKzaewJbNbk/o0tcaHX8gnvIpOn9GFgPpUJFf3Vp7sAz/9PLVbx1MbXt00wY3bTKiCFhfd7MHfpAbJxVO20Q7rLLtVAW1Dsw5Egz6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OshFozEE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D65DC43390;
-	Sat,  3 Feb 2024 04:16:36 +0000 (UTC)
+	 MIME-Version; b=SfyxryuSv64H3MG05v+kkWcXGRULO0rErTHaGX2yDUpdFsghKvjUvr0hR8R3J/MQ01VSYHrGe/XDxaDgisyDufq6QfEx2HOevTxVlb06UmKg+LHqcfL5UlN4j16/CXL+905j4FkAvy5ZkxecX7iSeo1LDegC/Wc42d3We8bXe9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uahwuDxe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D49FC43330;
+	Sat,  3 Feb 2024 04:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933796;
-	bh=tIjZUOeRRjOGJk48HcxydNQdHzPq3e3B7XmiGd1L5sY=;
+	s=korg; t=1706933576;
+	bh=v35n3UlDa1mDMfHJRYd4luEd1ISiUa1eNbsCXQcwuI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OshFozEEUmlsuXtW5VCe7dpwB2CIl4Szbuwxp1M9nBbzEKt7F5rfrrouwxN9po1eN
-	 T1B2tSQHhHrhwlaPMFZtdJUnA74V9lRlbDeq3Dw4auIv7b2qnUkB+8fg4cmXvABWER
-	 Q4LacWKPLYMj8/lZF9+hol3OimEeA66y0i+I6N9g=
+	b=uahwuDxeuGykxk/AEhSanHzN3KtKOtrhhITPLuwSGyhJf1Usr9/XFHe2/XCclr8JV
+	 gjg7W37JBpA2qmIfAdIcdqDqiwcjLTEUZGqsBQ3kTMZvYswgxPXLB/6PtnAegRxO1a
+	 NQFMdAn8PDWbBOU+G5SfJRbi9g3ICLtc48MXtYA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= <jerome.pouiller@silabs.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 107/353] wifi: wfx: fix possible NULL pointer dereference in wfx_set_mfp_ap()
+Subject: [PATCH 6.6 128/322] scsi: lpfc: Move determination of vmid_flag after VMID reinitialization completes
 Date: Fri,  2 Feb 2024 20:03:45 -0800
-Message-ID: <20240203035407.153415115@linuxfoundation.org>
+Message-ID: <20240203035403.283374914@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit fe0a7776d4d19e613bb8dd80fe2d78ae49e8b49d ]
+[ Upstream commit aba0fb0ef607a71511d23a07406f11130c1a54c5 ]
 
-Since 'ieee80211_beacon_get()' can return NULL, 'wfx_set_mfp_ap()'
-should check the return value before examining skb data. So convert
-the latter to return an appropriate error code and propagate it to
-return from 'wfx_start_ap()' as well. Compile tested only.
+If priority tagging is set in the service parameters of a FLOGI cmpl, then
+we update the vmid_flag.  In the current logic, if a follow up FLOGI cmpl
+updates its service parameters such that priority tagging is no longer set,
+then the vmid_flag ends up keeping stale data.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Tested-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
-Acked-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20231204171130.141394-1-dmantipov@yandex.ru
+Fix by ensuring we clear the vmid_flag member during lpfc_reinit_vmid, and
+check the priority tagging service parameter after reinitialization of the
+vmid data structures.
+
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20231207224039.35466-4-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/silabs/wfx/sta.c | 42 ++++++++++++++++-----------
- 1 file changed, 25 insertions(+), 17 deletions(-)
+ drivers/scsi/lpfc/lpfc_els.c  | 6 +++---
+ drivers/scsi/lpfc/lpfc_vmid.c | 1 +
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/silabs/wfx/sta.c b/drivers/net/wireless/silabs/wfx/sta.c
-index 1b6c158457b4..537caf9d914a 100644
---- a/drivers/net/wireless/silabs/wfx/sta.c
-+++ b/drivers/net/wireless/silabs/wfx/sta.c
-@@ -336,29 +336,38 @@ static int wfx_upload_ap_templates(struct wfx_vif *wvif)
- 	return 0;
+diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
+index 932d47951cf3..18b8325fd419 100644
+--- a/drivers/scsi/lpfc/lpfc_els.c
++++ b/drivers/scsi/lpfc/lpfc_els.c
+@@ -1119,12 +1119,12 @@ lpfc_cmpl_els_flogi(struct lpfc_hba *phba, struct lpfc_iocbq *cmdiocb,
+ 			 vport->port_state, vport->fc_flag,
+ 			 sp->cmn.priority_tagging, kref_read(&ndlp->kref));
+ 
+-	if (sp->cmn.priority_tagging)
+-		vport->phba->pport->vmid_flag |= (LPFC_VMID_ISSUE_QFPA |
+-						  LPFC_VMID_TYPE_PRIO);
+ 	/* reinitialize the VMID datastructure before returning */
+ 	if (lpfc_is_vmid_enabled(phba))
+ 		lpfc_reinit_vmid(vport);
++	if (sp->cmn.priority_tagging)
++		vport->phba->pport->vmid_flag |= (LPFC_VMID_ISSUE_QFPA |
++						  LPFC_VMID_TYPE_PRIO);
+ 
+ 	/*
+ 	 * Address a timing race with dev_loss.  If dev_loss is active on
+diff --git a/drivers/scsi/lpfc/lpfc_vmid.c b/drivers/scsi/lpfc/lpfc_vmid.c
+index cf8ba840d0ea..773e02ae20c3 100644
+--- a/drivers/scsi/lpfc/lpfc_vmid.c
++++ b/drivers/scsi/lpfc/lpfc_vmid.c
+@@ -321,5 +321,6 @@ lpfc_reinit_vmid(struct lpfc_vport *vport)
+ 	if (!hash_empty(vport->hash_table))
+ 		hash_for_each_safe(vport->hash_table, bucket, tmp, cur, hnode)
+ 			hash_del(&cur->hnode);
++	vport->vmid_flag = 0;
+ 	write_unlock(&vport->vmid_lock);
  }
- 
--static void wfx_set_mfp_ap(struct wfx_vif *wvif)
-+static int wfx_set_mfp_ap(struct wfx_vif *wvif)
- {
- 	struct ieee80211_vif *vif = wvif_to_vif(wvif);
- 	struct sk_buff *skb = ieee80211_beacon_get(wvif->wdev->hw, vif, 0);
- 	const int ieoffset = offsetof(struct ieee80211_mgmt, u.beacon.variable);
--	const u16 *ptr = (u16 *)cfg80211_find_ie(WLAN_EID_RSN, skb->data + ieoffset,
--						 skb->len - ieoffset);
- 	const int pairwise_cipher_suite_count_offset = 8 / sizeof(u16);
- 	const int pairwise_cipher_suite_size = 4 / sizeof(u16);
- 	const int akm_suite_size = 4 / sizeof(u16);
-+	const u16 *ptr;
- 
--	if (ptr) {
--		ptr += pairwise_cipher_suite_count_offset;
--		if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
--			return;
--		ptr += 1 + pairwise_cipher_suite_size * *ptr;
--		if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
--			return;
--		ptr += 1 + akm_suite_size * *ptr;
--		if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
--			return;
--		wfx_hif_set_mfp(wvif, *ptr & BIT(7), *ptr & BIT(6));
--	}
-+	if (unlikely(!skb))
-+		return -ENOMEM;
-+
-+	ptr = (u16 *)cfg80211_find_ie(WLAN_EID_RSN, skb->data + ieoffset,
-+				      skb->len - ieoffset);
-+	if (unlikely(!ptr))
-+		return -EINVAL;
-+
-+	ptr += pairwise_cipher_suite_count_offset;
-+	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
-+		return -EINVAL;
-+
-+	ptr += 1 + pairwise_cipher_suite_size * *ptr;
-+	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
-+		return -EINVAL;
-+
-+	ptr += 1 + akm_suite_size * *ptr;
-+	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
-+		return -EINVAL;
-+
-+	wfx_hif_set_mfp(wvif, *ptr & BIT(7), *ptr & BIT(6));
-+	return 0;
- }
- 
- int wfx_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-@@ -376,8 +385,7 @@ int wfx_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	ret = wfx_hif_start(wvif, &vif->bss_conf, wvif->channel);
- 	if (ret > 0)
- 		return -EIO;
--	wfx_set_mfp_ap(wvif);
--	return ret;
-+	return wfx_set_mfp_ap(wvif);
- }
- 
- void wfx_stop_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 -- 
 2.43.0
 
