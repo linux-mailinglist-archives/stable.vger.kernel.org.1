@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-18605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40CFC848364
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE63848230
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3D0DB2A80F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D13471C241DD
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F5152F9F;
-	Sat,  3 Feb 2024 04:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BB2447F75;
+	Sat,  3 Feb 2024 04:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1zGmfom"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzTji8BG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CF52208E;
-	Sat,  3 Feb 2024 04:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF43E47F70;
+	Sat,  3 Feb 2024 04:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933922; cv=none; b=aFitTU7yQwaOT+WAD2VQuxg7PAXkux4AceXxWy6Tfbtk1yy0pRNVs8TTTqBMKwSNzwUqw/dKuk7jWx65oOAEur+3CYUN6RrZxULBk7UYgZ8J3E/gv2WX83mMKROw1ul6qIWNfywDLEqUq/FQYl1fAkYXBKXHVISn6AmfT2BFPmo=
+	t=1706933698; cv=none; b=DjK2ECE60uuTgNQcugRe2qDqln36YuQxLkZ4BcO9ASwisT5ON9soKaGLIWcvfi+ByYD/IJdWKfQq7Qq9lM/BHqWWjKpzo4v+HZzQe+sZsncbXtS8/evVSxhv7M9oxJwULd5SOqkYrl+Y/YkQmEbw6/rbXr35+XZGZl3uS4EkySI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933922; c=relaxed/simple;
-	bh=VHcCuGxrXkbC9kYuRJK/ATQzj7eIIKk744c3lBdNQnI=;
+	s=arc-20240116; t=1706933698; c=relaxed/simple;
+	bh=4CwPTVQ0WtvN5ZlBVgdYRsq5k1pYWy2BbXC13oEeGYk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iNg0puEJRTmijeRN5LX4AtZNnOV5mciRRCuwJ8xTNsSVP2Asnf+NLY8VOSSFC1JZTvwTRh9soR/au/yvpfRz7kYnF06qrkRwYTauFMN+gyh7nJpR1hOlbutWW+NWHOSWgILKlQlOTrKCOMkN0HKKCGZf08/6qcXcZHRwnYJllEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1zGmfom; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B1DC43390;
-	Sat,  3 Feb 2024 04:18:41 +0000 (UTC)
+	 MIME-Version; b=E5LFBX2T7a1IYTXndPOcZbiMmvECtecYnuBMdcO3vaXceJOtyeXFl9u77jjjLzsagV4QrIYREIEyjiqb0kCGBwgK0oD0ZPlhJRiGN2XwS6V3CQzUn5VNlZn6oQ8VR29sd63hxIbKUnYWKPg+UWogcwyZwE5mfEkclIZGE7lRwPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzTji8BG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D63C43390;
+	Sat,  3 Feb 2024 04:14:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933922;
-	bh=VHcCuGxrXkbC9kYuRJK/ATQzj7eIIKk744c3lBdNQnI=;
+	s=korg; t=1706933698;
+	bh=4CwPTVQ0WtvN5ZlBVgdYRsq5k1pYWy2BbXC13oEeGYk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r1zGmfomHy4wAbZlvxku2qXzVyRrA+FDSv4+Us8tyzaeX7vcLmqdeiSVzLWKU4c3H
-	 6QMml86+56LdT96fFO6cbKZKhZTSbn2d9O+bfj+0XhrPhPW7lu3YU3QgJyMuvhG7X9
-	 7J08hSoajcBBWiV1GkNi6KjWdP5YA8G/zb/xE6Kw=
+	b=EzTji8BG7SGEjhIWJFDlibNkQUuL0KDY3tbLRJ+OUeBrZI6GYvXffsTqj0zOh6AxO
+	 SpaK7baf9jOeuJP71/gHotG/adWN/1vVmmsHYs8qy9ghUxNa48rSxb6tQOEPVLiVK8
+	 OE95PNro6r0gQ7uKt3Q0qdWoOl4k2lptesCgsuh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Changhui Zhong <czhong@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 277/353] blk-mq: fix IO hang from sbitmap wakeup race
+Subject: [PATCH 6.6 298/322] net: ipv4: fix a memleak in ip_setup_cork
 Date: Fri,  2 Feb 2024 20:06:35 -0800
-Message-ID: <20240203035412.540576498@linuxfoundation.org>
+Message-ID: <20240203035408.692674792@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 5266caaf5660529e3da53004b8b7174cab6374ed ]
+[ Upstream commit 5dee6d6923458e26966717f2a3eae7d09fc10bf6 ]
 
-In blk_mq_mark_tag_wait(), __add_wait_queue() may be re-ordered
-with the following blk_mq_get_driver_tag() in case of getting driver
-tag failure.
+When inetdev_valid_mtu fails, cork->opt should be freed if it is
+allocated in ip_setup_cork. Otherwise there could be a memleak.
 
-Then in __sbitmap_queue_wake_up(), waitqueue_active() may not observe
-the added waiter in blk_mq_mark_tag_wait() and wake up nothing, meantime
-blk_mq_mark_tag_wait() can't get driver tag successfully.
-
-This issue can be reproduced by running the following test in loop, and
-fio hang can be observed in < 30min when running it on my test VM
-in laptop.
-
-	modprobe -r scsi_debug
-	modprobe scsi_debug delay=0 dev_size_mb=4096 max_queue=1 host_max_queue=1 submit_queues=4
-	dev=`ls -d /sys/bus/pseudo/drivers/scsi_debug/adapter*/host*/target*/*/block/* | head -1 | xargs basename`
-	fio --filename=/dev/"$dev" --direct=1 --rw=randrw --bs=4k --iodepth=1 \
-       		--runtime=100 --numjobs=40 --time_based --name=test \
-        	--ioengine=libaio
-
-Fix the issue by adding one explicit barrier in blk_mq_mark_tag_wait(), which
-is just fine in case of running out of tag.
-
-Cc: Jan Kara <jack@suse.cz>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Reported-by: Changhui Zhong <czhong@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240112122626.4181044-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 501a90c94510 ("inet: protect against too small mtu values.")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240129091017.2938835-1-alexious@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ net/ipv4/ip_output.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 7e743ac58c31..a71974a5e57c 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -1858,6 +1858,22 @@ static bool blk_mq_mark_tag_wait(struct blk_mq_hw_ctx *hctx,
- 	wait->flags &= ~WQ_FLAG_EXCLUSIVE;
- 	__add_wait_queue(wq, wait);
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index 4ab877cf6d35..ea0247485757 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -1285,6 +1285,12 @@ static int ip_setup_cork(struct sock *sk, struct inet_cork *cork,
+ 	if (unlikely(!rt))
+ 		return -EFAULT;
  
-+	/*
-+	 * Add one explicit barrier since blk_mq_get_driver_tag() may
-+	 * not imply barrier in case of failure.
-+	 *
-+	 * Order adding us to wait queue and allocating driver tag.
-+	 *
-+	 * The pair is the one implied in sbitmap_queue_wake_up() which
-+	 * orders clearing sbitmap tag bits and waitqueue_active() in
-+	 * __sbitmap_queue_wake_up(), since waitqueue_active() is lockless
-+	 *
-+	 * Otherwise, re-order of adding wait queue and getting driver tag
-+	 * may cause __sbitmap_queue_wake_up() to wake up nothing because
-+	 * the waitqueue_active() may not observe us in wait queue.
-+	 */
-+	smp_mb();
++	cork->fragsize = ip_sk_use_pmtu(sk) ?
++			 dst_mtu(&rt->dst) : READ_ONCE(rt->dst.dev->mtu);
++
++	if (!inetdev_valid_mtu(cork->fragsize))
++		return -ENETUNREACH;
 +
  	/*
- 	 * It's possible that a tag was freed in the window between the
- 	 * allocation failure and adding the hardware queue to the wait
+ 	 * setup for corking.
+ 	 */
+@@ -1301,12 +1307,6 @@ static int ip_setup_cork(struct sock *sk, struct inet_cork *cork,
+ 		cork->addr = ipc->addr;
+ 	}
+ 
+-	cork->fragsize = ip_sk_use_pmtu(sk) ?
+-			 dst_mtu(&rt->dst) : READ_ONCE(rt->dst.dev->mtu);
+-
+-	if (!inetdev_valid_mtu(cork->fragsize))
+-		return -ENETUNREACH;
+-
+ 	cork->gso_size = ipc->gso_size;
+ 
+ 	cork->dst = &rt->dst;
 -- 
 2.43.0
 
