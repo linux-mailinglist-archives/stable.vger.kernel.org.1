@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-18394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC4984828D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D00F84815A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB19028209A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E3951F222A3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB77495D6;
-	Sat,  3 Feb 2024 04:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 739CB1CD28;
+	Sat,  3 Feb 2024 04:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pnu/aIxR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWw2VRwM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE671BC3E;
-	Sat,  3 Feb 2024 04:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C3E111B0;
+	Sat,  3 Feb 2024 04:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933766; cv=none; b=nDV5geCpBPqE2IVAKssKX0R2fqGShrwJBjRYD9ZDpJmasoyTNojKf7w9wlEL2J+nDsNL7h6g3nkdDhgxA5YkII9JWqmHMzt12HrN3qrkVIbDQN+mswFWILKdZ+RV06itg4f1XIUuulnekJY5hvxksCUJyoTPNNeSLBpPqthKaao=
+	t=1706933542; cv=none; b=cSoaXSTGrrxQXJzfFrwaFvhp8fQyDzijEL9lWgHKeUqAO0LOE5VZBS1WvBn3319kDTZLhmatgSLf1c7f3tTfKq5BzNmqQ3rDqT5EPRrMxxyaf6ZH/4xiTrPSa49EYW5pVyph/nYPix0byv4QKw0O3GNc3liIVo9yCNyh/p6OENE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933766; c=relaxed/simple;
-	bh=pnGPrnr8GxTsRJjl9DN/Q6PiD9O+wARmFePDXoiKTts=;
+	s=arc-20240116; t=1706933542; c=relaxed/simple;
+	bh=DkXQ/ZU+XuywDS1d7u5zHs9+Byx5Lt9MH/pxNeDQbWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eyd9ahvvdp9pUm3vi4fkfW4qgni6m9hNFfrPaQ+zkF0lZzDtcyBTY+mZjiAwX/bmJa5llGXYnb3OlOMcxG9OYzr9zZjsCe2lTiRFaAHxvgBrJq9sAeInz7b9Wy9weWz7XqoRbyLVLMn3QVsAVzzSZ2XoPh6T3KmBlXKo0sDKd4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pnu/aIxR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646F9C433C7;
-	Sat,  3 Feb 2024 04:16:06 +0000 (UTC)
+	 MIME-Version; b=B+yDnweNshk51C4VSG7621YAmQNKTj/n/COpUkmepDtozH97JAW/z3F99ddBBHSz1wbaAf5k6ceO4y5YlsTgumDp2IGpGAMXxQ70EbRkXfoT+kxzwkF8ngvHv68w+fPu1JzOHWU35+3SJOus0rC0Oe4LLk36xSsQMkGWIt+UQHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWw2VRwM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5F0C433F1;
+	Sat,  3 Feb 2024 04:12:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933766;
-	bh=pnGPrnr8GxTsRJjl9DN/Q6PiD9O+wARmFePDXoiKTts=;
+	s=korg; t=1706933542;
+	bh=DkXQ/ZU+XuywDS1d7u5zHs9+Byx5Lt9MH/pxNeDQbWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pnu/aIxRgIvFdka3j1DxJ67UG+txIpndOeDshLvJHsDOX+Obzm3l47MBoffPbBQmM
-	 sTxokCtQVN++zbHIMzVbn5CIrhwt5YlEQSpI0wFI0Lh2DdR6xPl/TD80OpzTofPRNc
-	 hXH5F270zc7KomOv+fyBto21KiczDalyBqDHoHeA=
+	b=PWw2VRwMz+mGTYLMmrGcujm5znKi+iAQEJA9oVZ1OvP3QWfURXbo5uMWgcqWp6dxs
+	 q0JDYowdMrmvM5IIQjnZxQO0C9s2PN9KtTvB7CuMpRohFVXFMtaJ8PB+kF9tJd4llC
+	 xTsC8+qJgR1TWoPMNEYvR5q5GUPfeYEh86EzB2Rk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Chih-Kang Chang <gary.chang@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 067/353] libbpf: Fix potential uninitialized tail padding with LIBBPF_OPTS_RESET
+Subject: [PATCH 6.6 088/322] wifi: rtw89: fix misbehavior of TX beacon in concurrent mode
 Date: Fri,  2 Feb 2024 20:03:05 -0800
-Message-ID: <20240203035405.931314450@linuxfoundation.org>
+Message-ID: <20240203035402.004176028@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,207 +63,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-[ Upstream commit 7f7c43693c1b46652cfafb7af67ba31726d6ec4e ]
+[ Upstream commit 756b31203d482d2dd1aa6c208978b0410dc7530f ]
 
-Martin reported that there is a libbpf complaining of non-zero-value tail
-padding with LIBBPF_OPTS_RESET macro if struct bpf_netkit_opts is modified
-to have a 4-byte tail padding. This only happens to clang compiler.
-The commend line is: ./test_progs -t tc_netkit_multi_links
-Martin and I did some investigation and found this indeed the case and
-the following are the investigation details.
+In concurrent mode, when STA interface is scanning, it causes
+AP interface TX beacon on wrong channel. We modified it to scan
+with the operating channel when one of the interfaces is already
+connected. Additionally, STA interface need to stop scan when AP
+interface is starting to avoid TX beacon on wrong channel. Finally,
+AP interface need to stop TX beacon when STA interface is scanning
+and switching to non-OP channel,This prevent other device to get
+beacons on wrong channel.
 
-Clang:
-  clang version 18.0.0
-  <I tried clang15/16/17 and they all have similar results>
-
-tools/lib/bpf/libbpf_common.h:
-  #define LIBBPF_OPTS_RESET(NAME, ...)                                      \
-        do {                                                                \
-                memset(&NAME, 0, sizeof(NAME));                             \
-                NAME = (typeof(NAME)) {                                     \
-                        .sz = sizeof(NAME),                                 \
-                        __VA_ARGS__                                         \
-                };                                                          \
-        } while (0)
-
-  #endif
-
-tools/lib/bpf/libbpf.h:
-  struct bpf_netkit_opts {
-        /* size of this struct, for forward/backward compatibility */
-        size_t sz;
-        __u32 flags;
-        __u32 relative_fd;
-        __u32 relative_id;
-        __u64 expected_revision;
-        size_t :0;
-  };
-  #define bpf_netkit_opts__last_field expected_revision
-In the above struct bpf_netkit_opts, there is no tail padding.
-
-prog_tests/tc_netkit.c:
-  static void serial_test_tc_netkit_multi_links_target(int mode, int target)
-  {
-        ...
-        LIBBPF_OPTS(bpf_netkit_opts, optl);
-        ...
-        LIBBPF_OPTS_RESET(optl,
-                .flags = BPF_F_BEFORE,
-                .relative_fd = bpf_program__fd(skel->progs.tc1),
-        );
-        ...
-  }
-
-Let us make the following source change, note that we have a 4-byte
-tailing padding now.
-#  diff --git a/tools/lib/bpf/libbpf.h b/tools/lib/bpf/libbpf.h
-#  index 6cd9c501624f..0dd83910ae9a 100644
-#  --- a/tools/lib/bpf/libbpf.h
-#  +++ b/tools/lib/bpf/libbpf.h
-#  @@ -803,13 +803,13 @@ bpf_program__attach_tcx(const struct bpf_program *prog, int ifindex,
-#   struct bpf_netkit_opts {
-#        /* size of this struct, for forward/backward compatibility */
-#        size_t sz;
-#  -       __u32 flags;
-#        __u32 relative_fd;
-#        __u32 relative_id;
-#        __u64 expected_revision;
-#  +       __u32 flags;
-#        size_t :0;
-#   };
-#  -#define bpf_netkit_opts__last_field expected_revision
-#  +#define bpf_netkit_opts__last_field flags
-
-The clang 18 generated asm code looks like below:
-    ;       LIBBPF_OPTS_RESET(optl,
-    55e3: 48 8d 7d 98                   leaq    -0x68(%rbp), %rdi
-    55e7: 31 f6                         xorl    %esi, %esi
-    55e9: ba 20 00 00 00                movl    $0x20, %edx
-    55ee: e8 00 00 00 00                callq   0x55f3 <serial_test_tc_netkit_multi_links_target+0x18d3>
-    55f3: 48 c7 85 10 fd ff ff 20 00 00 00      movq    $0x20, -0x2f0(%rbp)
-    55fe: 48 8b 85 68 ff ff ff          movq    -0x98(%rbp), %rax
-    5605: 48 8b 78 18                   movq    0x18(%rax), %rdi
-    5609: e8 00 00 00 00                callq   0x560e <serial_test_tc_netkit_multi_links_target+0x18ee>
-    560e: 89 85 18 fd ff ff             movl    %eax, -0x2e8(%rbp)
-    5614: c7 85 1c fd ff ff 00 00 00 00 movl    $0x0, -0x2e4(%rbp)
-    561e: 48 c7 85 20 fd ff ff 00 00 00 00      movq    $0x0, -0x2e0(%rbp)
-    5629: c7 85 28 fd ff ff 08 00 00 00 movl    $0x8, -0x2d8(%rbp)
-    5633: 48 8b 85 10 fd ff ff          movq    -0x2f0(%rbp), %rax
-    563a: 48 89 45 98                   movq    %rax, -0x68(%rbp)
-    563e: 48 8b 85 18 fd ff ff          movq    -0x2e8(%rbp), %rax
-    5645: 48 89 45 a0                   movq    %rax, -0x60(%rbp)
-    5649: 48 8b 85 20 fd ff ff          movq    -0x2e0(%rbp), %rax
-    5650: 48 89 45 a8                   movq    %rax, -0x58(%rbp)
-    5654: 48 8b 85 28 fd ff ff          movq    -0x2d8(%rbp), %rax
-    565b: 48 89 45 b0                   movq    %rax, -0x50(%rbp)
-    ;       link = bpf_program__attach_netkit(skel->progs.tc2, ifindex, &optl);
-
-At -O0 level, the clang compiler creates an intermediate copy.
-We have below to store 'flags' with 4-byte store and leave another 4 byte
-in the same 8-byte-aligned storage undefined,
-    5629: c7 85 28 fd ff ff 08 00 00 00 movl    $0x8, -0x2d8(%rbp)
-and later we store 8-byte to the original zero'ed buffer
-    5654: 48 8b 85 28 fd ff ff          movq    -0x2d8(%rbp), %rax
-    565b: 48 89 45 b0                   movq    %rax, -0x50(%rbp)
-
-This caused a problem as the 4-byte value at [%rbp-0x2dc, %rbp-0x2e0)
-may be garbage.
-
-gcc (gcc 11.4) does not have this issue as it does zeroing struct first before
-doing assignments:
-  ;       LIBBPF_OPTS_RESET(optl,
-    50fd: 48 8d 85 40 fc ff ff          leaq    -0x3c0(%rbp), %rax
-    5104: ba 20 00 00 00                movl    $0x20, %edx
-    5109: be 00 00 00 00                movl    $0x0, %esi
-    510e: 48 89 c7                      movq    %rax, %rdi
-    5111: e8 00 00 00 00                callq   0x5116 <serial_test_tc_netkit_multi_links_target+0x1522>
-    5116: 48 8b 45 f0                   movq    -0x10(%rbp), %rax
-    511a: 48 8b 40 18                   movq    0x18(%rax), %rax
-    511e: 48 89 c7                      movq    %rax, %rdi
-    5121: e8 00 00 00 00                callq   0x5126 <serial_test_tc_netkit_multi_links_target+0x1532>
-    5126: 48 c7 85 40 fc ff ff 00 00 00 00      movq    $0x0, -0x3c0(%rbp)
-    5131: 48 c7 85 48 fc ff ff 00 00 00 00      movq    $0x0, -0x3b8(%rbp)
-    513c: 48 c7 85 50 fc ff ff 00 00 00 00      movq    $0x0, -0x3b0(%rbp)
-    5147: 48 c7 85 58 fc ff ff 00 00 00 00      movq    $0x0, -0x3a8(%rbp)
-    5152: 48 c7 85 40 fc ff ff 20 00 00 00      movq    $0x20, -0x3c0(%rbp)
-    515d: 89 85 48 fc ff ff             movl    %eax, -0x3b8(%rbp)
-    5163: c7 85 58 fc ff ff 08 00 00 00 movl    $0x8, -0x3a8(%rbp)
-  ;       link = bpf_program__attach_netkit(skel->progs.tc2, ifindex, &optl);
-
-It is not clear how to resolve the compiler code generation as the compiler
-generates correct code w.r.t. how to handle unnamed padding in C standard.
-So this patch changed LIBBPF_OPTS_RESET macro to avoid uninitialized tail
-padding. We already knows LIBBPF_OPTS macro works on both gcc and clang,
-even with tail padding. So LIBBPF_OPTS_RESET is changed to be a
-LIBBPF_OPTS followed by a memcpy(), thus avoiding uninitialized tail padding.
-
-The below is asm code generated with this patch and with clang compiler:
-    ;       LIBBPF_OPTS_RESET(optl,
-    55e3: 48 8d bd 10 fd ff ff          leaq    -0x2f0(%rbp), %rdi
-    55ea: 31 f6                         xorl    %esi, %esi
-    55ec: ba 20 00 00 00                movl    $0x20, %edx
-    55f1: e8 00 00 00 00                callq   0x55f6 <serial_test_tc_netkit_multi_links_target+0x18d6>
-    55f6: 48 c7 85 10 fd ff ff 20 00 00 00      movq    $0x20, -0x2f0(%rbp)
-    5601: 48 8b 85 68 ff ff ff          movq    -0x98(%rbp), %rax
-    5608: 48 8b 78 18                   movq    0x18(%rax), %rdi
-    560c: e8 00 00 00 00                callq   0x5611 <serial_test_tc_netkit_multi_links_target+0x18f1>
-    5611: 89 85 18 fd ff ff             movl    %eax, -0x2e8(%rbp)
-    5617: c7 85 1c fd ff ff 00 00 00 00 movl    $0x0, -0x2e4(%rbp)
-    5621: 48 c7 85 20 fd ff ff 00 00 00 00      movq    $0x0, -0x2e0(%rbp)
-    562c: c7 85 28 fd ff ff 08 00 00 00 movl    $0x8, -0x2d8(%rbp)
-    5636: 48 8b 85 10 fd ff ff          movq    -0x2f0(%rbp), %rax
-    563d: 48 89 45 98                   movq    %rax, -0x68(%rbp)
-    5641: 48 8b 85 18 fd ff ff          movq    -0x2e8(%rbp), %rax
-    5648: 48 89 45 a0                   movq    %rax, -0x60(%rbp)
-    564c: 48 8b 85 20 fd ff ff          movq    -0x2e0(%rbp), %rax
-    5653: 48 89 45 a8                   movq    %rax, -0x58(%rbp)
-    5657: 48 8b 85 28 fd ff ff          movq    -0x2d8(%rbp), %rax
-    565e: 48 89 45 b0                   movq    %rax, -0x50(%rbp)
-    ;       link = bpf_program__attach_netkit(skel->progs.tc2, ifindex, &optl);
-
-In the above code, a temporary buffer is zeroed and then has proper value assigned.
-Finally, values in temporary buffer are copied to the original variable buffer,
-hence tail padding is guaranteed to be 0.
-
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Tested-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://lore.kernel.org/bpf/20231107201511.2548645-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231129070046.18443-5-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/bpf/libbpf_common.h |   13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtw89/fw.c       | 17 +++++++++--
+ drivers/net/wireless/realtek/rtw89/mac.c      | 29 +++++++++++++++----
+ drivers/net/wireless/realtek/rtw89/mac.h      |  1 +
+ drivers/net/wireless/realtek/rtw89/mac80211.c |  3 ++
+ 4 files changed, 43 insertions(+), 7 deletions(-)
 
---- a/tools/lib/bpf/libbpf_common.h
-+++ b/tools/lib/bpf/libbpf_common.h
-@@ -79,11 +79,14 @@
-  */
- #define LIBBPF_OPTS_RESET(NAME, ...)					    \
- 	do {								    \
--		memset(&NAME, 0, sizeof(NAME));				    \
--		NAME = (typeof(NAME)) {					    \
--			.sz = sizeof(NAME),				    \
--			__VA_ARGS__					    \
--		};							    \
-+		typeof(NAME) ___##NAME = ({ 				    \
-+			memset(&___##NAME, 0, sizeof(NAME));		    \
-+			(typeof(NAME)) {				    \
-+				.sz = sizeof(NAME),			    \
-+				__VA_ARGS__				    \
-+			};						    \
-+		});							    \
-+		memcpy(&NAME, &___##NAME, sizeof(NAME));		    \
- 	} while (0)
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index df1dc2f43c86..468cfa43ec04 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -3912,6 +3912,7 @@ void rtw89_hw_scan_complete(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
+ 	rtw89_core_scan_complete(rtwdev, vif, true);
+ 	ieee80211_scan_completed(rtwdev->hw, &info);
+ 	ieee80211_wake_queues(rtwdev->hw);
++	rtw89_mac_enable_beacon_for_ap_vifs(rtwdev, true);
  
- #endif /* __LIBBPF_LIBBPF_COMMON_H */
+ 	rtw89_release_pkt_list(rtwdev);
+ 	rtwvif = (struct rtw89_vif *)vif->drv_priv;
+@@ -3929,6 +3930,19 @@ void rtw89_hw_scan_abort(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif)
+ 	rtw89_hw_scan_complete(rtwdev, vif, true);
+ }
+ 
++static bool rtw89_is_any_vif_connected_or_connecting(struct rtw89_dev *rtwdev)
++{
++	struct rtw89_vif *rtwvif;
++
++	rtw89_for_each_rtwvif(rtwdev, rtwvif) {
++		/* This variable implies connected or during attempt to connect */
++		if (!is_zero_ether_addr(rtwvif->bssid))
++			return true;
++	}
++
++	return false;
++}
++
+ int rtw89_hw_scan_offload(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
+ 			  bool enable)
+ {
+@@ -3941,8 +3955,7 @@ int rtw89_hw_scan_offload(struct rtw89_dev *rtwdev, struct ieee80211_vif *vif,
+ 	if (!rtwvif)
+ 		return -EINVAL;
+ 
+-	/* This variable implies connected or during attempt to connect */
+-	connected = !is_zero_ether_addr(rtwvif->bssid);
++	connected = rtw89_is_any_vif_connected_or_connecting(rtwdev);
+ 	opt.enable = enable;
+ 	opt.target_ch_mode = connected;
+ 	if (enable) {
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
+index fab9f5004a75..3c818c4b4653 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -3833,11 +3833,9 @@ static void rtw89_mac_port_cfg_rx_sync(struct rtw89_dev *rtwdev,
+ }
+ 
+ static void rtw89_mac_port_cfg_tx_sw(struct rtw89_dev *rtwdev,
+-				     struct rtw89_vif *rtwvif)
++				     struct rtw89_vif *rtwvif, bool en)
+ {
+ 	const struct rtw89_port_reg *p = &rtw_port_base;
+-	bool en = rtwvif->net_type == RTW89_NET_TYPE_AP_MODE ||
+-		  rtwvif->net_type == RTW89_NET_TYPE_AD_HOC;
+ 
+ 	if (en)
+ 		rtw89_write32_port_set(rtwdev, rtwvif, p->port_cfg, B_AX_BCNTX_EN);
+@@ -3845,6 +3843,24 @@ static void rtw89_mac_port_cfg_tx_sw(struct rtw89_dev *rtwdev,
+ 		rtw89_write32_port_clr(rtwdev, rtwvif, p->port_cfg, B_AX_BCNTX_EN);
+ }
+ 
++static void rtw89_mac_port_cfg_tx_sw_by_nettype(struct rtw89_dev *rtwdev,
++						struct rtw89_vif *rtwvif)
++{
++	bool en = rtwvif->net_type == RTW89_NET_TYPE_AP_MODE ||
++		  rtwvif->net_type == RTW89_NET_TYPE_AD_HOC;
++
++	rtw89_mac_port_cfg_tx_sw(rtwdev, rtwvif, en);
++}
++
++void rtw89_mac_enable_beacon_for_ap_vifs(struct rtw89_dev *rtwdev, bool en)
++{
++	struct rtw89_vif *rtwvif;
++
++	rtw89_for_each_rtwvif(rtwdev, rtwvif)
++		if (rtwvif->net_type == RTW89_NET_TYPE_AP_MODE)
++			rtw89_mac_port_cfg_tx_sw(rtwdev, rtwvif, en);
++}
++
+ static void rtw89_mac_port_cfg_bcn_intv(struct rtw89_dev *rtwdev,
+ 					struct rtw89_vif *rtwvif)
+ {
+@@ -4137,7 +4153,7 @@ int rtw89_mac_port_update(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
+ 	rtw89_mac_port_cfg_bcn_prct(rtwdev, rtwvif);
+ 	rtw89_mac_port_cfg_rx_sw(rtwdev, rtwvif);
+ 	rtw89_mac_port_cfg_rx_sync(rtwdev, rtwvif);
+-	rtw89_mac_port_cfg_tx_sw(rtwdev, rtwvif);
++	rtw89_mac_port_cfg_tx_sw_by_nettype(rtwdev, rtwvif);
+ 	rtw89_mac_port_cfg_bcn_intv(rtwdev, rtwvif);
+ 	rtw89_mac_port_cfg_hiq_win(rtwdev, rtwvif);
+ 	rtw89_mac_port_cfg_hiq_dtim(rtwdev, rtwvif);
+@@ -4298,8 +4314,10 @@ rtw89_mac_c2h_scanofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *c2h,
+ 
+ 	switch (reason) {
+ 	case RTW89_SCAN_LEAVE_CH_NOTIFY:
+-		if (rtw89_is_op_chan(rtwdev, band, chan))
++		if (rtw89_is_op_chan(rtwdev, band, chan)) {
++			rtw89_mac_enable_beacon_for_ap_vifs(rtwdev, false);
+ 			ieee80211_stop_queues(rtwdev->hw);
++		}
+ 		return;
+ 	case RTW89_SCAN_END_SCAN_NOTIFY:
+ 		if (rtwvif && rtwvif->scan_req &&
+@@ -4317,6 +4335,7 @@ rtw89_mac_c2h_scanofld_rsp(struct rtw89_dev *rtwdev, struct sk_buff *c2h,
+ 		if (rtw89_is_op_chan(rtwdev, band, chan)) {
+ 			rtw89_assign_entity_chan(rtwdev, rtwvif->sub_entity_idx,
+ 						 &rtwdev->scan_info.op_chan);
++			rtw89_mac_enable_beacon_for_ap_vifs(rtwdev, true);
+ 			ieee80211_wake_queues(rtwdev->hw);
+ 		} else {
+ 			rtw89_chan_create(&new, chan, chan, band,
+diff --git a/drivers/net/wireless/realtek/rtw89/mac.h b/drivers/net/wireless/realtek/rtw89/mac.h
+index 7cf34137c0bc..7c57ab2814c7 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac.h
++++ b/drivers/net/wireless/realtek/rtw89/mac.h
+@@ -974,6 +974,7 @@ int rtw89_mac_port_get_tsf(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif,
+ void rtw89_mac_set_he_obss_narrow_bw_ru(struct rtw89_dev *rtwdev,
+ 					struct ieee80211_vif *vif);
+ void rtw89_mac_stop_ap(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif);
++void rtw89_mac_enable_beacon_for_ap_vifs(struct rtw89_dev *rtwdev, bool en);
+ int rtw89_mac_remove_vif(struct rtw89_dev *rtwdev, struct rtw89_vif *vif);
+ void rtw89_mac_disable_cpu(struct rtw89_dev *rtwdev);
+ int rtw89_mac_enable_cpu(struct rtw89_dev *rtwdev, u8 boot_reason, bool dlfw);
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index 5e48618706d9..e70757e4dc2c 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -472,6 +472,9 @@ static int rtw89_ops_start_ap(struct ieee80211_hw *hw,
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	if (rtwdev->scanning)
++		rtw89_hw_scan_abort(rtwdev, rtwdev->scan_info.scanning_vif);
++
+ 	ether_addr_copy(rtwvif->bssid, vif->bss_conf.bssid);
+ 	rtw89_cam_bssid_changed(rtwdev, rtwvif);
+ 	rtw89_mac_port_update(rtwdev, rtwvif);
+-- 
+2.43.0
+
 
 
 
