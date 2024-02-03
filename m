@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-17977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B91198480E0
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D3884834F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB4861C2406C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF70AB294C3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC82410A11;
-	Sat,  3 Feb 2024 04:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F99524BC;
+	Sat,  3 Feb 2024 04:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+ykXAVt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMdtYaIg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C65A10A1C;
-	Sat,  3 Feb 2024 04:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910CD171C1;
+	Sat,  3 Feb 2024 04:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933456; cv=none; b=G0W36dFTg+FxGU4dfdVDxbg7sKPVggYW6wv7L+GYij+JAhGlcxbzN2Ths6sXigEHffvHm6yus/FeU2f9V9/2TVZFguXZa+4NBN9omsd6KzELxGPa9pIk8AB0F/GLwC5wBQ6Nc4hM4TQCoEmqJWZW3HLNukQZXE2yBDgOTBtPgEI=
+	t=1706933907; cv=none; b=i2FzZ0aSL+npDGM2GrDWuAVP5ko7Ep23VHINmfeWqBd20kaZD5pCV3mQB5aL4y1hj7uUl5Z0U5Ry9O0p52AGrLWWrRcb9be6dtt4eORHgP7XphY1sQ3O2+DFUCJ1z3yH/ZLE7E/HJdGmhGuQ/+wufSGYvUGpcYkAzXB1V13E0OU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933456; c=relaxed/simple;
-	bh=KcYpidkrKnEKDsS7BKC3GXmuXlOiC8Huil0J8B000tU=;
+	s=arc-20240116; t=1706933907; c=relaxed/simple;
+	bh=fik22QSLbyxYAw4gg0wR4VV/o860SJkHQnseL27+ZuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hdYq069OmJHFzAeWkWyjEfg0xoeTniurwuC0OuFWQbS/7UQaME+dCDFkZxx3NnapWidwB2LMAOheIug3yBUTuiwk7JI3vSt5KBocAWH9JsWPsNauM1c2o/trsg1Xi4Bf/LhV7J/fSExBphFIdZQL+EkaT34QcJyM7WdTgpqn3oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+ykXAVt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342BBC433C7;
-	Sat,  3 Feb 2024 04:10:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q/Oep0x0OZ+Nar+dxY0HvrL/RLhnllaKRo9+uXdzEUvEyEipcedZNIIyAXRvXumXY9ltzm7gi6QO1+K5XHq8n25ht48bzA6RFMDwSuxSbrbi1Um/gN2Rqzi9cwGwg36dCtoAOanW/WbhYKfy9j7r1uEJtGr6QHxzvvgDuJB1b9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMdtYaIg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58CB5C433C7;
+	Sat,  3 Feb 2024 04:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933456;
-	bh=KcYpidkrKnEKDsS7BKC3GXmuXlOiC8Huil0J8B000tU=;
+	s=korg; t=1706933907;
+	bh=fik22QSLbyxYAw4gg0wR4VV/o860SJkHQnseL27+ZuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+ykXAVt4nLYcZ2XGCmuyJlSDaFGgs3EQLTx/TEQWT7vMBy4Splmh6tuQQje7UARt
-	 Zt6b/DMF5DnNLvZ2Jm4ztmg26h7ScU/xOu7cLx9oc0R/ylDRW6cUNY0s3BNcH74/+V
-	 hBaDt3mYZhrPyt26bqsLCloQGCl8dF+VxOgp7Pwk=
+	b=PMdtYaIgf8Zy9+mqwA35v0fIzlgZcpF7TEYstC2akoke8E9vxhJR43zbLe5z6aXLc
+	 t3qLiwHp1z9lp5/oLkA7pXY8GYHDW034kx/4jtZGqBsRxUjsrxiQ8BO+sMWmY5y2uE
+	 IAmJGnc9danhmYrL9PpZoTmrLLcjauTo8O1OXJ1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venky Shankar <vshankar@redhat.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 175/219] ceph: reinitialize mds feature bit even when session in open
+Subject: [PATCH 6.7 230/353] drm/amdgpu: Fix possible NULL dereference in amdgpu_ras_query_error_status_helper()
 Date: Fri,  2 Feb 2024 20:05:48 -0800
-Message-ID: <20240203035341.296723321@linuxfoundation.org>
+Message-ID: <20240203035410.945481770@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +63,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Venky Shankar <vshankar@redhat.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit f48e0342a74d7770cdf1d11894bdc3b6d989b29e ]
+[ Upstream commit b8d55a90fd55b767c25687747e2b24abd1ef8680 ]
 
-Following along the same lines as per the user-space fix. Right
-now this isn't really an issue with the ceph kernel driver because
-of the feature bit laginess, however, that can change over time
-(when the new snaprealm info type is ported to the kernel driver)
-and depending on the MDS version that's being upgraded can cause
-message decoding issues - so, fix that early on.
+Return invalid error code -EINVAL for invalid block id.
 
-Link: http://tracker.ceph.com/issues/63188
-Signed-off-by: Venky Shankar <vshankar@redhat.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Fixes the below:
+
+drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c:1183 amdgpu_ras_query_error_status_helper() error: we previously assumed 'info' could be null (see line 1176)
+
+Suggested-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: Tao Zhou <tao.zhou1@amd.com>
+Cc: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/mds_client.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
-index 82874be94524..da9fcf48ab6c 100644
---- a/fs/ceph/mds_client.c
-+++ b/fs/ceph/mds_client.c
-@@ -3650,11 +3650,11 @@ static void handle_session(struct ceph_mds_session *session,
- 		if (session->s_state == CEPH_MDS_SESSION_RECONNECTING)
- 			pr_info("mds%d reconnect success\n", session->s_mds);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+index 63fb4cd85e53..4a3726bb6da1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+@@ -1174,6 +1174,9 @@ static int amdgpu_ras_query_error_status_helper(struct amdgpu_device *adev,
+ 	enum amdgpu_ras_block blk = info ? info->head.block : AMDGPU_RAS_BLOCK_COUNT;
+ 	struct amdgpu_ras_block_object *block_obj = NULL;
  
-+		session->s_features = features;
- 		if (session->s_state == CEPH_MDS_SESSION_OPEN) {
- 			pr_notice("mds%d is already opened\n", session->s_mds);
- 		} else {
- 			session->s_state = CEPH_MDS_SESSION_OPEN;
--			session->s_features = features;
- 			renewed_caps(mdsc, session, 0);
- 			if (test_bit(CEPHFS_FEATURE_METRIC_COLLECT,
- 				     &session->s_features))
++	if (blk == AMDGPU_RAS_BLOCK_COUNT)
++		return -EINVAL;
++
+ 	if (error_query_mode == AMDGPU_RAS_INVALID_ERROR_QUERY)
+ 		return -EINVAL;
+ 
 -- 
 2.43.0
 
