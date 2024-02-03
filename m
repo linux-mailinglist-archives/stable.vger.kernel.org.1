@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-18104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5AA4848165
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5AC884827E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 711CF1F239E3
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9219928307C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49EF3286AD;
-	Sat,  3 Feb 2024 04:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59B910A22;
+	Sat,  3 Feb 2024 04:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1mLXyG/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MtD9Txrp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0915A171CE;
-	Sat,  3 Feb 2024 04:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D141BC2F;
+	Sat,  3 Feb 2024 04:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933550; cv=none; b=o1VdDyhpx1N6wujKUYN+at5nI1k9Tob2tr+KtCBTK3r7qmDJZszIvoMYvMW7TNG2gqYIhcyzUvj638EA9A79nai611HyoZx/5mpaAYh3pHWgUt19HiZi6XvTwLThAS4rZpqxngU8FksRYfsJWy8hqZQBiw82fQGaIVicYj2Xx6o=
+	t=1706933755; cv=none; b=f7UcNXTT6VfGdS7OpHxRCNMuEwshXgdSuu/tXUeACupLuLcdRtxtnPjvaKeTVPI/2RFofhyJXF+/fNB5TXNfmo16JsD6TEO9tZBe+kZcOGTG+o6V9U6a3cDWeL/mclUmuB6NxLq0vqoQCFcRtrKlZfRF+bIAoBlBRr7MTIWTmKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933550; c=relaxed/simple;
-	bh=pbD4UmnparE82yhBd2L9D35D8cwjvUmU9bgPFn6wSJo=;
+	s=arc-20240116; t=1706933755; c=relaxed/simple;
+	bh=RXyPPvvSWAafV3m6WPeOts11TC6YgoVXs+69GuqMgUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b7P8VVK9sMIaMGBNMoLZv7ODW5f8rL38nHfkjh0igqMWqokX1c6LcYQkATnELxGOlJy1STrSZV1GnWAgePWXGZvucvW5Hi/Hxak/AQKKemFh/ia75eNgyBA5lDl4X9NLtuYsYuDKwkm30TNHc3o0VHPycBCNVr2S/GOIsHDlGj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1mLXyG/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B55C433A6;
-	Sat,  3 Feb 2024 04:12:29 +0000 (UTC)
+	 MIME-Version; b=L+xrFle99h9HihqRNZp9oI3uxwhfsB1fvgBVYQK8bHr8TcerbynYC8rD1YEnn5sia4PdElSfA9sew07uALqJL18YMFc4RnpjWkpwaeYB7g7zGEotfk4i2+zePa+2sqjAQj4j7n/HMMTaDqNEhgFK0KCMb0prrglbhYrM613EyZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MtD9Txrp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288E9C433B1;
+	Sat,  3 Feb 2024 04:15:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933549;
-	bh=pbD4UmnparE82yhBd2L9D35D8cwjvUmU9bgPFn6wSJo=;
+	s=korg; t=1706933755;
+	bh=RXyPPvvSWAafV3m6WPeOts11TC6YgoVXs+69GuqMgUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U1mLXyG/rrlVIUh6aLTX5BjHrlsH9g1qiQKoaZSNYCI9nK+kqEFOGycr1gUmsqgcX
-	 IKc0HhQTeO1iKE/WnuCPqNpxnUCSaU70v7dNOtel3YqecGWy4CgXH8PNqunxvHsCrS
-	 6W/6qjv5Bmye6yPPaa4zpFCPfVo/KzmDhEqB7DXE=
+	b=MtD9TxrpuEzWLhr0fOa8Fv062zEdq6wTupHyl4SIKTcY8QNBuu8gfjod087x9Oi3b
+	 n5b/NBZ++CCdg3ZQyj4XP8cK6C3jeaOrTCPJ6Pd8Gd2AO392YiBM/J5ndsViqlE4EI
+	 S93h2kWxvCaPsvIc0lpDzMLOhnpBWdHkCTPnQm90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 072/322] scsi: lpfc: Fix possible file string name overflow when updating firmware
+Subject: [PATCH 6.7 051/353] KVM: s390: fix setting of fpc register
 Date: Fri,  2 Feb 2024 20:02:49 -0800
-Message-ID: <20240203035401.495985386@linuxfoundation.org>
+Message-ID: <20240203035405.419165877@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit f5779b529240b715f0e358489ad0ed933bf77c97 ]
+[ Upstream commit b988b1bb0053c0dcd26187d29ef07566a565cf55 ]
 
-Because file_name and phba->ModelName are both declared a size 80 bytes,
-the extra ".grp" file extension could cause an overflow into file_name.
+kvm_arch_vcpu_ioctl_set_fpu() allows to set the floating point control
+(fpc) register of a guest cpu. The new value is tested for validity by
+temporarily loading it into the fpc register.
 
-Define a ELX_FW_NAME_SIZE macro with value 84.  84 incorporates the 4 extra
-characters from ".grp".  file_name is changed to be declared as a char and
-initialized to zeros i.e. null chars.
+This may lead to corruption of the fpc register of the host process:
+if an interrupt happens while the value is temporarily loaded into the fpc
+register, and within interrupt context floating point or vector registers
+are used, the current fp/vx registers are saved with save_fpu_regs()
+assuming they belong to user space and will be loaded into fp/vx registers
+when returning to user space.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20231031191224.150862-3-justintee8345@gmail.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+test_fp_ctl() restores the original user space / host process fpc register
+value, however it will be discarded, when returning to user space.
+
+In result the host process will incorrectly continue to run with the value
+that was supposed to be used for a guest cpu.
+
+Fix this by simply removing the test. There is another test right before
+the SIE context is entered which will handles invalid values.
+
+This results in a change of behaviour: invalid values will now be accepted
+instead of that the ioctl fails with -EINVAL. This seems to be acceptable,
+given that this interface is most likely not used anymore, and this is in
+addition the same behaviour implemented with the memory mapped interface
+(replace invalid values with zero) - see sync_regs() in kvm-s390.c.
+
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc.h      | 1 +
- drivers/scsi/lpfc/lpfc_init.c | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ arch/s390/kvm/kvm-s390.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc.h b/drivers/scsi/lpfc/lpfc.h
-index af15f7a22d25..04d608ea9106 100644
---- a/drivers/scsi/lpfc/lpfc.h
-+++ b/drivers/scsi/lpfc/lpfc.h
-@@ -33,6 +33,7 @@
- struct lpfc_sli2_slim;
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index 7aa0e668488f..16e32174807f 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -4316,10 +4316,6 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
  
- #define ELX_MODEL_NAME_SIZE	80
-+#define ELX_FW_NAME_SIZE	84
+ 	vcpu_load(vcpu);
  
- #define LPFC_PCI_DEV_LP		0x1
- #define LPFC_PCI_DEV_OC		0x2
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index 9e59c050103d..2c336953e56c 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -14725,7 +14725,7 @@ lpfc_write_firmware(const struct firmware *fw, void *context)
- int
- lpfc_sli4_request_firmware_update(struct lpfc_hba *phba, uint8_t fw_upgrade)
- {
--	uint8_t file_name[ELX_MODEL_NAME_SIZE];
-+	char file_name[ELX_FW_NAME_SIZE] = {0};
- 	int ret;
- 	const struct firmware *fw;
+-	if (test_fp_ctl(fpu->fpc)) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+ 	vcpu->run->s.regs.fpc = fpu->fpc;
+ 	if (MACHINE_HAS_VX)
+ 		convert_fp_to_vx((__vector128 *) vcpu->run->s.regs.vrs,
+@@ -4327,7 +4323,6 @@ int kvm_arch_vcpu_ioctl_set_fpu(struct kvm_vcpu *vcpu, struct kvm_fpu *fpu)
+ 	else
+ 		memcpy(vcpu->run->s.regs.fprs, &fpu->fprs, sizeof(fpu->fprs));
  
-@@ -14734,7 +14734,7 @@ lpfc_sli4_request_firmware_update(struct lpfc_hba *phba, uint8_t fw_upgrade)
- 	    LPFC_SLI_INTF_IF_TYPE_2)
- 		return -EPERM;
- 
--	snprintf(file_name, ELX_MODEL_NAME_SIZE, "%s.grp", phba->ModelName);
-+	scnprintf(file_name, sizeof(file_name), "%s.grp", phba->ModelName);
- 
- 	if (fw_upgrade == INT_FW_UPGRADE) {
- 		ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+-out:
+ 	vcpu_put(vcpu);
+ 	return ret;
+ }
 -- 
 2.43.0
 
