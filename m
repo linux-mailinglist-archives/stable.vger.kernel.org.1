@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4F284804E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAE2C8482B9
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F75C1F2BAF0
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87381285BEA
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C382BF9EB;
-	Sat,  3 Feb 2024 04:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5FE4D5B5;
+	Sat,  3 Feb 2024 04:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBzodRV0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izFnSftx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774BDF9D7;
-	Sat,  3 Feb 2024 04:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BAE1BF24;
+	Sat,  3 Feb 2024 04:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933351; cv=none; b=SE+AcReFDSmdjI/1k2mTL13vtDH7MsGPDb2T/RT7cDUrf25jOvCfWU2uuFvuzbrmDd7uXSOvJb6kqrRj5eEjyb0/tGN9QeaJc3l2I/GA59/6h9RfPt4EY9cphLzljAp54XYw58UVq7Rj01FWKvOics/HMrjsVZfPpErAAQQU92w=
+	t=1706933799; cv=none; b=HyuIpFBXpFm3bFK8sIVxku4wINuUGbMZiXVFaTZa3XeZ1arBSqz1DjVwy/3jidDInIMdyea1BEugYGL3Ip8omgwPVSCo4VTXcmf8+1UHRQXpcsoET9A8/QO55/yslSh+QaCT0A0xFx4ON4VOBNRWeE4DrMGaMsWIpI950mJb/5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933351; c=relaxed/simple;
-	bh=n0x8oED9LFIZOY6+0EuwEgnUEkq9Lv8k4PSwHQc6sQA=;
+	s=arc-20240116; t=1706933799; c=relaxed/simple;
+	bh=tP45OdTe5m+8ur+J8Z5WClkXEWNpYIxJCMitKPGZ0WE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dhtt0FmhishNjEtQWaZbkc0WFcLt1NO9RJp522to/mpmfCHh8EPlf6x44w3RoMZGtGreQNxRixu1OLJlCsYl6D/9Xejq19j0pYVb8sOynAJWgrQ6a/mN3ofYW/nrSgyKUYakDLHLRIubQyGGZk23xGw39KKMhnyk3MX3+LqfLqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBzodRV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B7D5C433F1;
-	Sat,  3 Feb 2024 04:09:11 +0000 (UTC)
+	 MIME-Version; b=ftvHY3nSCj40eGdcJeL/fCpgyneScVwTPD33bTakpdV7y40v0rhhoLmNxm30JWafrK6uA0n5quM76iN5o1i1fKm5hL45n/72bXnjJLs2yeO1n4+7zIVmOWRQA0jEd7P0IucCFMy7U8h6tSLyuWXGA01JfabHjVgQsWpQQwIh5Pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izFnSftx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C054EC43390;
+	Sat,  3 Feb 2024 04:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933351;
-	bh=n0x8oED9LFIZOY6+0EuwEgnUEkq9Lv8k4PSwHQc6sQA=;
+	s=korg; t=1706933798;
+	bh=tP45OdTe5m+8ur+J8Z5WClkXEWNpYIxJCMitKPGZ0WE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UBzodRV0lZWRzwDihf42d118N7Qru3wTM/nJ0Mpn7Jdk2ksbyy41nqEF2wehA/YoL
-	 A6ZZPshmuEBcoPiylkMTFTY2A4sVCZKWw1UIoLfg6Emotuw6g2hGTBTrdci/0Y2cjK
-	 sL9c0QwYRoxFifP3NYmrL0Tj+IshcZxE3K3VXFCI=
+	b=izFnSftxsnvTd/jHLUfqB/w5QTBEkINUz+VMSThA4PXrAbAN2zz2o4JjKn8yKs1a5
+	 /of7ZTq8a8xNh5Jzx0KwzADN97gUhsuMMVZ299r7I3DJozzFbPpIBGdzp+dfNooby6
+	 MNDnzxLZdjSP6NqAE/Qv9RNuoSDtd0TGEEH2+dLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herb Wei <weihao.bj@ieisystem.com>,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/219] net: usb: ax88179_178a: avoid two consecutive device resets
+Subject: [PATCH 6.7 110/353] ARM: dts: imx25/27-eukrea: Fix RTC node name
 Date: Fri,  2 Feb 2024 20:03:48 -0800
-Message-ID: <20240203035324.662213010@linuxfoundation.org>
+Message-ID: <20240203035407.245076029@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit d2689b6a86b9d23574bd4b654bf770b6034e2c7e ]
+[ Upstream commit 68c711b882c262e36895547cddea2c2d56ce611d ]
 
-The device is always reset two consecutive times (ax88179_reset is called
-twice), one from usbnet_probe during the device binding and the other from
-usbnet_open.
+Node names should be generic. Use 'rtc' as node name to fix
+the following dt-schema warning:
 
-Remove the non-necessary reset during the device binding and let the reset
-operation from open to keep the normal behavior (tested with generic ASIX
-Electronics Corp. AX88179 Gigabit Ethernet device).
+imx25-eukrea-mbimxsd25-baseboard.dtb: pcf8563@51: $nodename:0: 'pcf8563@51' does not match '^rtc(@.*|-([0-9]|[1-9][0-9]+))?$'
+	from schema $id: http://devicetree.org/schemas/rtc/nxp,pcf8563.yaml#
 
-Reported-by: Herb Wei <weihao.bj@ieisystem.com>
-Tested-by: Herb Wei <weihao.bj@ieisystem.com>
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Link: https://lore.kernel.org/r/20231120121239.54504-1-jtornosm@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ax88179_178a.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx25-eukrea-cpuimx25.dtsi | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index 5a1bf42ce156..d837c1887416 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -1315,8 +1315,6 @@ static int ax88179_bind(struct usbnet *dev, struct usb_interface *intf)
+diff --git a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-cpuimx25.dtsi b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-cpuimx25.dtsi
+index 0703f62d10d1..93a6e4e680b4 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-cpuimx25.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-cpuimx25.dtsi
+@@ -27,7 +27,7 @@
+ 	pinctrl-0 = <&pinctrl_i2c1>;
+ 	status = "okay";
  
- 	netif_set_tso_max_size(dev->net, 16384);
+-	pcf8563@51 {
++	rtc@51 {
+ 		compatible = "nxp,pcf8563";
+ 		reg = <0x51>;
+ 	};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi
+index 74110bbcd9d4..4b83e2918b55 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-cpuimx27.dtsi
+@@ -33,7 +33,7 @@
+ 	pinctrl-0 = <&pinctrl_i2c1>;
+ 	status = "okay";
  
--	ax88179_reset(dev);
--
- 	return 0;
- }
- 
+-	pcf8563@51 {
++	rtc@51 {
+ 		compatible = "nxp,pcf8563";
+ 		reg = <0x51>;
+ 	};
 -- 
 2.43.0
 
