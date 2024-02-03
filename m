@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66BAF84811E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:16:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F1284826C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99E8E1C20F6D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:16:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1523B1C24211
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636DC1C280;
-	Sat,  3 Feb 2024 04:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3754879F;
+	Sat,  3 Feb 2024 04:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uba/Iz5h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dukxR6AB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BD61BF3F;
-	Sat,  3 Feb 2024 04:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C827487B9;
+	Sat,  3 Feb 2024 04:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933499; cv=none; b=JHguBQetKcOU+CztBJJODl0v5gFYTcnrCsp6vV34Rzl5uR++AW6vm/7p2H/p8Zz77esWbhE/yiWPgXbJa8hIdSbR4l9BPv1JQuHYGA3XO3SZmOd+Ms6lzm7NjT+2tWALhr7uVW4xoM51Gd2LU0/7ohLcV4Lk18SOS07VXPbcFuM=
+	t=1706933742; cv=none; b=SIi2swz/R7k+f6EJQVOMN3Ajtyc4PqfrfQFfbXTROgBlsuP2zxKphjzKptNGTf7V8OfSL3+2Xzf2E0BZGV0gKGQHs5rSmwo9Fu6OdCJEiCfzTapyvApVJy0mT6w4ONu5WCVwDMunvlOQ4jizwGPncseosZutQUPv1BN7h1L0uFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933499; c=relaxed/simple;
-	bh=oyF318lAPMceF/3ldDTWI8TX0sD/dnyvlm9PtfGctck=;
+	s=arc-20240116; t=1706933742; c=relaxed/simple;
+	bh=K0gu3AMOUq020bYWAGX7T6fJoOxFwUBRGaMxdJlxpEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RuRz8TFkHYyQD6CF7stj0mrTPkNXxK+JE6FfFvyEplFv8TpjoN+E05bjnemn5SAsfCMIfwsjNpzYsUsJjWfWu2MvcN9oymLwP2KrpoOfYkrUgXpPo37e/67SHZxHHpEufQdtC2s+wjLPUAr8SV47WaOzfLevkYHpyayZ5hlfivo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uba/Iz5h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2046C43399;
-	Sat,  3 Feb 2024 04:11:38 +0000 (UTC)
+	 MIME-Version; b=SzJ/+Kth1kqe0SECAiaOFrskIxNTXm2DELiTrVH5wTppTKUYPe+d/uxsKKbd5sBqPMvPYRtL7i8khZkrhm0rxS3BhTpejdlVYXe1EFEDeGj/er6jHgz2Z5q5f7MUEJ7+w8wx4+dIF8nXEHbt5tP1rhPT4JaEGCcZlIUjeu0TFc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dukxR6AB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23568C43399;
+	Sat,  3 Feb 2024 04:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933499;
-	bh=oyF318lAPMceF/3ldDTWI8TX0sD/dnyvlm9PtfGctck=;
+	s=korg; t=1706933742;
+	bh=K0gu3AMOUq020bYWAGX7T6fJoOxFwUBRGaMxdJlxpEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uba/Iz5hpxeIicWsIb52ImfH8XnSxl5R3kFnVfnVTQpcdZVgB1fjYU9xOa5O4YHhX
-	 HU5u7VPkvnunDWxUE13NOx6m3e+oPaNbhBJdV33m62ZF0xwUzYMnOYSje5W30PXlFC
-	 uZWes6ezFPqi6U7T1124GFEntg5ye3sayA1OD2mg=
+	b=dukxR6ABku9iOxE0FvbN1J2+L7cn4bXnjdSOCZuxzbdl3SjIBiFm//0lgreCNJSYs
+	 3GvxBt7zKKhDtiTsWlsuyH8lONDHpapnkBlG6+GFzg1zinvft27f0BG+8P2XzCQfEI
+	 flQ7z2Z5f2FFgX+1dE6f2cqFJm9tnPc2WbMcqiEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+01cf2dbcbe2022454388@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 030/322] jfs: fix uaf in jfs_evict_inode
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 009/353] powerpc: pmd_move_must_withdraw() is only needed for CONFIG_TRANSPARENT_HUGEPAGE
 Date: Fri,  2 Feb 2024 20:02:07 -0800
-Message-ID: <20240203035400.027455510@linuxfoundation.org>
+Message-ID: <20240203035404.002359153@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Stephen Rothwell <sfr@canb.auug.org.au>
 
-[ Upstream commit e0e1958f4c365e380b17ccb35617345b31ef7bf3 ]
+[ Upstream commit 0d555b57ee660d8a871781c0eebf006e855e918d ]
 
-When the execution of diMount(ipimap) fails, the object ipimap that has been
-released may be accessed in diFreeSpecial(). Asynchronous ipimap release occurs
-when rcu_core() calls jfs_free_node().
+The linux-next build of powerpc64 allnoconfig fails with:
 
-Therefore, when diMount(ipimap) fails, sbi->ipimap should not be initialized as
-ipimap.
+  arch/powerpc/mm/book3s64/pgtable.c:557:5: error: no previous prototype for 'pmd_move_must_withdraw'
+    557 | int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
+        |     ^~~~~~~~~~~~~~~~~~~~~~
 
-Reported-and-tested-by: syzbot+01cf2dbcbe2022454388@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Caused by commit:
+
+  c6345dfa6e3e ("Makefile.extrawarn: turn on missing-prototypes globally")
+
+Fix it by moving the function definition under
+CONFIG_TRANSPARENT_HUGEPAGE like the prototype. The function is only
+called when CONFIG_TRANSPARENT_HUGEPAGE=y.
+
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+[mpe: Flesh out change log from linux-next patch]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231127132809.45c2b398@canb.auug.org.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_mount.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/mm/book3s64/pgtable.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/jfs/jfs_mount.c b/fs/jfs/jfs_mount.c
-index b83aae56a1f2..631b8bd3e438 100644
---- a/fs/jfs/jfs_mount.c
-+++ b/fs/jfs/jfs_mount.c
-@@ -172,15 +172,15 @@ int jfs_mount(struct super_block *sb)
- 	}
- 	jfs_info("jfs_mount: ipimap:0x%p", ipimap);
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index be229290a6a7..3438ab72c346 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -542,6 +542,7 @@ void ptep_modify_prot_commit(struct vm_area_struct *vma, unsigned long addr,
+ 	set_pte_at(vma->vm_mm, addr, ptep, pte);
+ }
  
--	/* map further access of per fileset inodes by the fileset inode */
--	sbi->ipimap = ipimap;
--
- 	/* initialize fileset inode allocation map */
- 	if ((rc = diMount(ipimap))) {
- 		jfs_err("jfs_mount: diMount failed w/rc = %d", rc);
- 		goto err_ipimap;
- 	}
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ /*
+  * For hash translation mode, we use the deposited table to store hash slot
+  * information and they are stored at PTRS_PER_PMD offset from related pmd
+@@ -563,6 +564,7 @@ int pmd_move_must_withdraw(struct spinlock *new_pmd_ptl,
  
-+	/* map further access of per fileset inodes by the fileset inode */
-+	sbi->ipimap = ipimap;
-+
- 	return rc;
+ 	return true;
+ }
++#endif
  
- 	/*
+ /*
+  * Does the CPU support tlbie?
 -- 
 2.43.0
 
