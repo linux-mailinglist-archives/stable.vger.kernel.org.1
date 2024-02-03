@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-17818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98786848039
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C82C38482BC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A6501F2BA9D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8331A286363
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C19411193;
-	Sat,  3 Feb 2024 04:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA5C1BF24;
+	Sat,  3 Feb 2024 04:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbIGNwfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdQa7OKY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF311078B;
-	Sat,  3 Feb 2024 04:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC531118B;
+	Sat,  3 Feb 2024 04:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933335; cv=none; b=YjgJVDEDmJjuRs23CbSBRr1QGDM5b4oIwluG/2saCdSs0ZVwUXy2FNBau5K8u1qR9OvGYJozibYTZaJ0nbgoNL20HNhB/XD47FtcSm9GgePAf2JqDcQz1chtTQgKlWpM7cPFOSXYu9NrsNNi/haHqjqR5WhjPYpfEyBTZ2v2Wdk=
+	t=1706933801; cv=none; b=chnABiSo/L9VUL1KMf6jfGIphodaGx4zgq81/oE5KP6G7Gmtp1/qiX9ZuicN/aSkQ70Vg8Ew0ge1WHz2cZqb61rtK+/ZwZo1Bx+ezDs1y8eJpluS+ijaOsXu5b79CtszTQfKjNjopWPPQY9hZtAc52LtFzlYhbko3MUin3Ku6g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933335; c=relaxed/simple;
-	bh=I/btkV30x5vlr4bBqyrLe/RftGBB6e5z5fwPl5SgfJU=;
+	s=arc-20240116; t=1706933801; c=relaxed/simple;
+	bh=WYOkevGUyIivK2l0MoZskS5iFATQJ3v4xoKDjqhiy9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHAUgp7KrPrdEji9ZpUwW9/C3QT06piLuo7ARr7sX0fnuT8lEIfH91/HZcHHj54V+VZRSoAdNFuVcCg2VBTy02+ZT6vDXl+lbkT90s+pK0pt8uunCySgO8Jtks3dkBzBACIKMgYa9Y5uukfpOPe3v2R65ROdlmph03TeIBddadM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbIGNwfe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81880C433F1;
-	Sat,  3 Feb 2024 04:08:55 +0000 (UTC)
+	 MIME-Version; b=X1g4PQnUCVBGkIEpWH/bY3zbEpYfwAxpf7ECbKyxVzXDUKu6/2/1gnUDAIkjPq9vqlh86xA9QBRuK+DOuNCjbQkkJ9Zl8jOlE9MKOXRtx7aP61tLa1lGGjUyF88ZJNe8FsGyZJLQn/tHQA22dtT0xdoRJ2BgG4XJPHZ8CP6b59M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdQa7OKY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61E6C433C7;
+	Sat,  3 Feb 2024 04:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933335;
-	bh=I/btkV30x5vlr4bBqyrLe/RftGBB6e5z5fwPl5SgfJU=;
+	s=korg; t=1706933800;
+	bh=WYOkevGUyIivK2l0MoZskS5iFATQJ3v4xoKDjqhiy9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pbIGNwfe2sZ+LAf0iKti/cPBCzbURWjYgvuLcD5IuGHkbIjeQpmoZb33+nEieU3D8
-	 cyuslLVFuSBlpEsLzdAICtDuyW7ZZBi9z5uNpX5ZhotddLUwtbkY9qY3uzy4/tdNfL
-	 bm2iwTCB52iecwQhAniTdeFzE2rzOdMC3XSQBIxc=
+	b=UdQa7OKY4T9HlPHckwSkYK6UgWWf/TpIAHrQrNSf7dkaptdgMSIh5qa9u1z+yr18w
+	 u6nC0zTx2irB1pf0uZTZrGoxgSLKn1sL8T1CEWOYt/vkS0BAPcZBSlx/GwJjXakRQ0
+	 UgjUht9LSaNf961+tDr/TCIbSqADsKuK2VEjwz3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/219] rxrpc_find_service_conn_rcu: fix the usage of read_seqbegin_or_lock()
+Subject: [PATCH 6.7 088/353] ARM: dts: imx7s: Fix lcdif compatible
 Date: Fri,  2 Feb 2024 20:03:26 -0800
-Message-ID: <20240203035321.012207242@linuxfoundation.org>
+Message-ID: <20240203035406.590590765@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit bad1a11c0f061aa073bab785389fe04f19ba02e1 ]
+[ Upstream commit 5f55da4cc37051cda600ea870ce8cf29f1297715 ]
 
-rxrpc_find_service_conn_rcu() should make the "seq" counter odd on the
-second pass, otherwise read_seqbegin_or_lock() never takes the lock.
+imx7d-lcdif is compatible to imx6sx-lcdif. MXSFB_V6 supports overlay
+by using LCDC_AS_CTRL register. This registers used by overlay plane:
+* LCDC_AS_CTRL
+* LCDC_AS_BUF
+* LCDC_AS_NEXT_BUF
+are listed in i.MX7D RM as well.
 
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Link: https://lore.kernel.org/r/20231117164846.GA10410@redhat.com/
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/conn_service.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/nxp/imx/imx7s.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/conn_service.c b/net/rxrpc/conn_service.c
-index 6e6aa02c6f9e..249353417a18 100644
---- a/net/rxrpc/conn_service.c
-+++ b/net/rxrpc/conn_service.c
-@@ -31,7 +31,7 @@ struct rxrpc_connection *rxrpc_find_service_conn_rcu(struct rxrpc_peer *peer,
- 	struct rxrpc_conn_proto k;
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	struct rb_node *p;
--	unsigned int seq = 0;
-+	unsigned int seq = 1;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx7s.dtsi b/arch/arm/boot/dts/nxp/imx/imx7s.dtsi
+index 9f216d11a396..3bd33255266e 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx7s.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx7s.dtsi
+@@ -815,7 +815,7 @@
+ 			};
  
- 	k.epoch	= sp->hdr.epoch;
- 	k.cid	= sp->hdr.cid & RXRPC_CIDMASK;
-@@ -41,6 +41,7 @@ struct rxrpc_connection *rxrpc_find_service_conn_rcu(struct rxrpc_peer *peer,
- 		 * under just the RCU read lock, so we have to check for
- 		 * changes.
- 		 */
-+		seq++; /* 2 on the 1st/lockless path, otherwise odd */
- 		read_seqbegin_or_lock(&peer->service_conn_lock, &seq);
- 
- 		p = rcu_dereference_raw(peer->service_conns.rb_node);
+ 			lcdif: lcdif@30730000 {
+-				compatible = "fsl,imx7d-lcdif", "fsl,imx28-lcdif";
++				compatible = "fsl,imx7d-lcdif", "fsl,imx6sx-lcdif";
+ 				reg = <0x30730000 0x10000>;
+ 				interrupts = <GIC_SPI 5 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks IMX7D_LCDIF_PIXEL_ROOT_CLK>,
 -- 
 2.43.0
 
