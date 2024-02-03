@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-18234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B7E18481EA
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D1958480D1
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45150281582
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B71EA28C6A4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A0F18C05;
-	Sat,  3 Feb 2024 04:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EACF12B9C;
+	Sat,  3 Feb 2024 04:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8f6hEPq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tU/Gdiyv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AC141C98;
-	Sat,  3 Feb 2024 04:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0FB18EB1;
+	Sat,  3 Feb 2024 04:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933647; cv=none; b=jfSdVxSTJAtEE/PLENS2ph9/lGWK9mZ9HNmfJGJcpmPBb+3QhAeJur7HngCETpz6J02lHxNhxKSVd3XwKvyAQ52IYUdirm2ImYWDGQd3REdyhUTsxdVkSAZ/dHiiJJ/ltQ6ma4fdEjITfB9uSSL8alZTTie0cH71peVpUIpk0O0=
+	t=1706933445; cv=none; b=ndN8lY6KcVzfyHlXkb06EZa2jwN1s0UI30Ypk6KqT+EGjUazDCDF59CvmqLTrxVIOnT7awIoWgXiSQ4FiNukoqnFDfmcKuQVVOetv66Ckobo7lXJFGpbM7xhMvbN6VuzDZtnwOoBDXNTrY58YsfxXd4oIhDRWUzQjBtsx2gwlMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933647; c=relaxed/simple;
-	bh=kRdpAldQlXFpWsCHPA64hxcHDyqLjAgdX3YnsI3qE5w=;
+	s=arc-20240116; t=1706933445; c=relaxed/simple;
+	bh=Y+I4CPOFQsLpr/GzPWvhu5X9yIUZwa8vPeiHczfMDPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kral2aW3btn7D8jnbHbzxBByW384A2UVBSfuBd1aVXsRBuVVPcxfhrWkrJi2rbxojleH25BIOGrfUbE2VV7aN1bI4ItOpl64RIb5Ti7o9lwzW/QU6h1TZwMZEipMuNOQrW1qsqNqXNGcog1Epz6f5v8DIsKlrdvLr2H/4UXYd/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8f6hEPq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC47FC433C7;
-	Sat,  3 Feb 2024 04:14:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u1ufP0hzG7WwIL1F4woHhmMhP74qnFnSu9czVn3XsvQc7AKDIl3bKRFyk+RyyKUUn1TJPYX6pAUMuLqTZoA/s5Fus3X0t2PwlwGzXCt78gYc07BF1ejqkkKszfubgiwxYSy8JTlSrhZ7AzhrhyzohB20vKUz7wxp+W7tEs6cT6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tU/Gdiyv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A04C433F1;
+	Sat,  3 Feb 2024 04:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933646;
-	bh=kRdpAldQlXFpWsCHPA64hxcHDyqLjAgdX3YnsI3qE5w=;
+	s=korg; t=1706933445;
+	bh=Y+I4CPOFQsLpr/GzPWvhu5X9yIUZwa8vPeiHczfMDPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A8f6hEPqS8pnULzghQrr37pIZqZQANo6xclQb1PMjHHqmfRT6bXnrekK61JxKeJZu
-	 BlxMHQh0syBi5sLRJYoSGopiE/exZbSO3l83nt3pyKDVcdl5u1RVQwGZJleiyWWEIr
-	 1Ahff1q+mKf2rCoH/8XiNXdr/VzBxKTcm7K1V8XI=
+	b=tU/GdiyvuFrcknRtrA/GWmLtBAKV2a68aQhIq49a3iyC7+iNixFPgqsDzONbuN8Oc
+	 Jnz4Ym/2KKPP+XcdpR3a9kcVcb1nhaT6IyGGCdKyBbMI8sZQ3/yt86D1WrII5BAtve
+	 KugQUsBN/2XY/vqXxmL3eYzjRAoLStH6sBc0KVPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Vicki Pfau <vi@endrift.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 229/322] PCI: Only override AMD USB controller if required
+Subject: [PATCH 6.1 153/219] xen/gntdev: Fix the abuse of underlying struct page in DMA-buf import
 Date: Fri,  2 Feb 2024 20:05:26 -0800
-Message-ID: <20240203035406.605968168@linuxfoundation.org>
+Message-ID: <20240203035338.309600016@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,153 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
 
-[ Upstream commit e585a37e5061f6d5060517aed1ca4ccb2e56a34c ]
+[ Upstream commit 2d2db7d40254d5fb53b11ebd703cd1ed0c5de7a1 ]
 
-By running a Van Gogh device (Steam Deck), the following message
-was noticed in the kernel log:
+DO NOT access the underlying struct page of an sg table exported
+by DMA-buf in dmabuf_imp_to_refs(), this is not allowed.
+Please see drivers/dma-buf/dma-buf.c:mangle_sg_table() for details.
 
-  pci 0000:04:00.3: PCI class overridden (0x0c03fe -> 0x0c03fe) so dwc3 driver can claim this instead of xhci
+Fortunately, here (for special Xen device) we can avoid using
+pages and calculate gfns directly from dma addresses provided by
+the sg table.
 
-Effectively this means the quirk executed but changed nothing, since the
-class of this device was already the proper one (likely adjusted by newer
-firmware versions).
-
-Check and perform the override only if necessary.
-
-Link: https://lore.kernel.org/r/20231120160531.361552-1-gpiccoli@igalia.com
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Huang Rui <ray.huang@amd.com>
-Cc: Vicki Pfau <vi@endrift.com>
+Suggested-by: Daniel Vetter <daniel@ffwll.ch>
+Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Acked-by: Daniel Vetter <daniel@ffwll.ch>
+Link: https://lore.kernel.org/r/20240107103426.2038075-1-olekstysh@gmail.com
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/xen/gntdev-dmabuf.c | 50 ++++++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 8f3b91e0d264..b5b96d2a9f4b 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -702,10 +702,13 @@ static void quirk_amd_dwc_class(struct pci_dev *pdev)
- {
- 	u32 class = pdev->class;
+diff --git a/drivers/xen/gntdev-dmabuf.c b/drivers/xen/gntdev-dmabuf.c
+index 940e5e9e8a54..335451309566 100644
+--- a/drivers/xen/gntdev-dmabuf.c
++++ b/drivers/xen/gntdev-dmabuf.c
+@@ -11,6 +11,7 @@
+ #include <linux/kernel.h>
+ #include <linux/errno.h>
+ #include <linux/dma-buf.h>
++#include <linux/dma-direct.h>
+ #include <linux/slab.h>
+ #include <linux/types.h>
+ #include <linux/uaccess.h>
+@@ -50,7 +51,7 @@ struct gntdev_dmabuf {
  
--	/* Use "USB Device (not host controller)" class */
--	pdev->class = PCI_CLASS_SERIAL_USB_DEVICE;
--	pci_info(pdev, "PCI class overridden (%#08x -> %#08x) so dwc3 driver can claim this instead of xhci\n",
--		 class, pdev->class);
-+	if (class != PCI_CLASS_SERIAL_USB_DEVICE) {
-+		/* Use "USB Device (not host controller)" class */
-+		pdev->class = PCI_CLASS_SERIAL_USB_DEVICE;
-+		pci_info(pdev,
-+			"PCI class overridden (%#08x -> %#08x) so dwc3 driver can claim this instead of xhci\n",
-+			class, pdev->class);
-+	}
+ 	/* Number of pages this buffer has. */
+ 	int nr_pages;
+-	/* Pages of this buffer. */
++	/* Pages of this buffer (only for dma-buf export). */
+ 	struct page **pages;
+ };
+ 
+@@ -484,7 +485,7 @@ static int dmabuf_exp_from_refs(struct gntdev_priv *priv, int flags,
+ /* DMA buffer import support. */
+ 
+ static int
+-dmabuf_imp_grant_foreign_access(struct page **pages, u32 *refs,
++dmabuf_imp_grant_foreign_access(unsigned long *gfns, u32 *refs,
+ 				int count, int domid)
+ {
+ 	grant_ref_t priv_gref_head;
+@@ -507,7 +508,7 @@ dmabuf_imp_grant_foreign_access(struct page **pages, u32 *refs,
+ 		}
+ 
+ 		gnttab_grant_foreign_access_ref(cur_ref, domid,
+-						xen_page_to_gfn(pages[i]), 0);
++						gfns[i], 0);
+ 		refs[i] = cur_ref;
+ 	}
+ 
+@@ -529,7 +530,6 @@ static void dmabuf_imp_end_foreign_access(u32 *refs, int count)
+ 
+ static void dmabuf_imp_free_storage(struct gntdev_dmabuf *gntdev_dmabuf)
+ {
+-	kfree(gntdev_dmabuf->pages);
+ 	kfree(gntdev_dmabuf->u.imp.refs);
+ 	kfree(gntdev_dmabuf);
  }
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_NL_USB,
- 		quirk_amd_dwc_class);
+@@ -549,12 +549,6 @@ static struct gntdev_dmabuf *dmabuf_imp_alloc_storage(int count)
+ 	if (!gntdev_dmabuf->u.imp.refs)
+ 		goto fail;
+ 
+-	gntdev_dmabuf->pages = kcalloc(count,
+-				       sizeof(gntdev_dmabuf->pages[0]),
+-				       GFP_KERNEL);
+-	if (!gntdev_dmabuf->pages)
+-		goto fail;
+-
+ 	gntdev_dmabuf->nr_pages = count;
+ 
+ 	for (i = 0; i < count; i++)
+@@ -576,7 +570,8 @@ dmabuf_imp_to_refs(struct gntdev_dmabuf_priv *priv, struct device *dev,
+ 	struct dma_buf *dma_buf;
+ 	struct dma_buf_attachment *attach;
+ 	struct sg_table *sgt;
+-	struct sg_page_iter sg_iter;
++	struct sg_dma_page_iter sg_iter;
++	unsigned long *gfns;
+ 	int i;
+ 
+ 	dma_buf = dma_buf_get(fd);
+@@ -624,26 +619,31 @@ dmabuf_imp_to_refs(struct gntdev_dmabuf_priv *priv, struct device *dev,
+ 
+ 	gntdev_dmabuf->u.imp.sgt = sgt;
+ 
+-	/* Now convert sgt to array of pages and check for page validity. */
++	gfns = kcalloc(count, sizeof(*gfns), GFP_KERNEL);
++	if (!gfns) {
++		ret = ERR_PTR(-ENOMEM);
++		goto fail_unmap;
++	}
++
++	/*
++	 * Now convert sgt to array of gfns without accessing underlying pages.
++	 * It is not allowed to access the underlying struct page of an sg table
++	 * exported by DMA-buf, but since we deal with special Xen dma device here
++	 * (not a normal physical one) look at the dma addresses in the sg table
++	 * and then calculate gfns directly from them.
++	 */
+ 	i = 0;
+-	for_each_sgtable_page(sgt, &sg_iter, 0) {
+-		struct page *page = sg_page_iter_page(&sg_iter);
+-		/*
+-		 * Check if page is valid: this can happen if we are given
+-		 * a page from VRAM or other resources which are not backed
+-		 * by a struct page.
+-		 */
+-		if (!pfn_valid(page_to_pfn(page))) {
+-			ret = ERR_PTR(-EINVAL);
+-			goto fail_unmap;
+-		}
++	for_each_sgtable_dma_page(sgt, &sg_iter, 0) {
++		dma_addr_t addr = sg_page_iter_dma_address(&sg_iter);
++		unsigned long pfn = bfn_to_pfn(XEN_PFN_DOWN(dma_to_phys(dev, addr)));
+ 
+-		gntdev_dmabuf->pages[i++] = page;
++		gfns[i++] = pfn_to_gfn(pfn);
+ 	}
+ 
+-	ret = ERR_PTR(dmabuf_imp_grant_foreign_access(gntdev_dmabuf->pages,
++	ret = ERR_PTR(dmabuf_imp_grant_foreign_access(gfns,
+ 						      gntdev_dmabuf->u.imp.refs,
+ 						      count, domid));
++	kfree(gfns);
+ 	if (IS_ERR(ret))
+ 		goto fail_end_access;
+ 
 -- 
 2.43.0
 
