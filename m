@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-18518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3494484830A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C9A8480A3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E58DC284E94
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2AC8CB2A384
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94C71119F;
-	Sat,  3 Feb 2024 04:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE85101C1;
+	Sat,  3 Feb 2024 04:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HgnwZjbz"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WECm/GO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A80BDFBF2;
-	Sat,  3 Feb 2024 04:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0635AF9F5;
+	Sat,  3 Feb 2024 04:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933858; cv=none; b=DbfrNwWb7GdJq5tWNBwXu7YgcISSxTCFmPRnbetM14hyMZsR4lLFnVR1Guk6unkvFj9d03e2TL+6W+bpFqVFGKme8QGiH4uH/hqVpB50XvzS/hc34BNzGX8xN+0pSLHidELxYVkrY/M/D5YyDTipfSfNkk3EsUTgUrptoY9kd9E=
+	t=1706933413; cv=none; b=lv4VnmboPqbXtDGULH4GqabViKMA/0V7ClEtI4KOTZTooyxdIJ07RbPtAW6SSwJEt4/nbrZHhPtrGELwHRwHAdtZB0xbrUfUQL2pu8Ag01/H9Mzp43id2myMixKaMLKeIeipZv/97RN5bDDDNFkqglJfKSdsxNs+SqMWpcEjvfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933858; c=relaxed/simple;
-	bh=tt7x1MrDZu0AWT45Aaw75yRV9fgjFI/A3qBbo1H3nxk=;
+	s=arc-20240116; t=1706933413; c=relaxed/simple;
+	bh=LaMAmnFU2L+OiqViV+qoj7piyRuIAc+WwkApNOI4ZDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BpNSRpDxT3TChRWJvMDFLt5z8hUcSKQsbIMRa3aJr/91WVNai8xqVjJHf3nfYUQ+TxaF3H8hNdJgVLdvvbyzRKoGNjhRjr/LIkXnaMjSUbDyAdkaW6KrqIVBn9bvGxvOVcfz7l3WMouYuQ9xZK4+ynoGDBZLy4ZIzdwRiLgCF/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HgnwZjbz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D4EDC433C7;
-	Sat,  3 Feb 2024 04:17:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hOED2i1/dYMp98KdMVWuXWYpT/BbElChYdDgIiAJc8ZIzlSJPYFGIpqLvr4PVf7rIgPbtcKSIG1FnnF/qPiKw986m0ZymLqk02fZKBJublSdvbwRWXxUxWz1dz6gMR9PB64BVMG9V0CjpYeLS6IpmCycejNe93Ycdv3YVFY7WNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WECm/GO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C330FC43390;
+	Sat,  3 Feb 2024 04:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933858;
-	bh=tt7x1MrDZu0AWT45Aaw75yRV9fgjFI/A3qBbo1H3nxk=;
+	s=korg; t=1706933412;
+	bh=LaMAmnFU2L+OiqViV+qoj7piyRuIAc+WwkApNOI4ZDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HgnwZjbz2rOZxV+eFfDeMXZmHfMFqh3TP0Va18RntauObtexE9ZVYwDKPQ+VP7wLK
-	 vVZ173rqK/gRpW3U5cDxfpbjLKCUBL5506OI3EENxsdwJGtAxzudoMTOl9IxdtrRaJ
-	 9SIk+A86cCegrYYE2yFMigDnSrhGL4nIpPYkMOI0=
+	b=1WECm/GOpWZjBRA9xSKJXSrCjJU/WcmhpLFS719elUwxCH0EoksWxkkf/TYcgKvWa
+	 xuoNumTeAxHnJS4ratt3iUDZsj9qWkrj+WSwwpj4BS1QtQ0W4IkigD4xclB6Ccr/da
+	 NDUQPXwYz8ZPwaWzwS3PChYhiMcuceCz4eey/a0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Adam Ford <aford173@gmail.com>
-Subject: [PATCH 6.7 190/353] media: rkisp1: Drop IRQF_SHARED
+	patches@lists.linux.dev, "Wang, Beyond" <Wang.Beyond@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>, Wang@web.codeaurora.org
+Subject: [PATCH 6.1 135/219] drm/amdgpu: fix ftrace event amdgpu_bo_move always move on same heap
 Date: Fri,  2 Feb 2024 20:05:08 -0800
-Message-ID: <20240203035409.680899716@linuxfoundation.org>
+Message-ID: <20240203035336.394058183@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +60,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Wang, Beyond <Wang.Beyond@amd.com>
 
-[ Upstream commit 85d2a31fe4d9be1555f621ead7a520d8791e0f74 ]
+[ Upstream commit 94aeb4117343d072e3a35b9595bcbfc0058ee724 ]
 
-In all known platforms the ISP has dedicated IRQ lines, but for some
-reason the driver uses IRQF_SHARED.
+Issue: during evict or validate happened on amdgpu_bo, the 'from' and
+'to' is always same in ftrace event of amdgpu_bo_move
 
-Supporting IRQF_SHARED properly requires handling interrupts even when
-our device is disabled, and the driver does not handle this. To avoid
-adding such code, and to be sure the driver won't accidentally be used
-in a platform with shared interrupts, let's drop the IRQF_SHARED flag.
+where calling the 'trace_amdgpu_bo_move', the comment says move_notify
+is called before move happens, but actually it is called after move
+happens, here the new_mem is same as bo->resource
 
-Link: https://lore.kernel.org/r/20231207-rkisp-irq-fix-v3-1-358a2c871a3c@ideasonboard.com
+Fix: move trace_amdgpu_bo_move from move_notify to amdgpu_bo_move
 
-Tested-by: Adam Ford <aford173@gmail.com>  #imx8mp-beacon
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Wang, Beyond <Wang.Beyond@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_object.c | 13 +------------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_object.h |  4 +---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c    |  5 +++--
+ 3 files changed, 5 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-index 894d5afaff4e..b676db9bff62 100644
---- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-+++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
-@@ -542,7 +542,7 @@ static int rkisp1_probe(struct platform_device *pdev)
- 		if (irq < 0)
- 			return irq;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+index 0ee7c935fba1..cde2fd2f7117 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.c
+@@ -1222,19 +1222,15 @@ int amdgpu_bo_get_metadata(struct amdgpu_bo *bo, void *buffer,
+  * amdgpu_bo_move_notify - notification about a memory move
+  * @bo: pointer to a buffer object
+  * @evict: if this move is evicting the buffer from the graphics address space
+- * @new_mem: new information of the bufer object
+  *
+  * Marks the corresponding &amdgpu_bo buffer object as invalid, also performs
+  * bookkeeping.
+  * TTM driver callback which is called when ttm moves a buffer.
+  */
+-void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
+-			   bool evict,
+-			   struct ttm_resource *new_mem)
++void amdgpu_bo_move_notify(struct ttm_buffer_object *bo, bool evict)
+ {
+ 	struct amdgpu_device *adev = amdgpu_ttm_adev(bo->bdev);
+ 	struct amdgpu_bo *abo;
+-	struct ttm_resource *old_mem = bo->resource;
  
--		ret = devm_request_irq(dev, irq, info->isrs[i].isr, IRQF_SHARED,
-+		ret = devm_request_irq(dev, irq, info->isrs[i].isr, 0,
- 				       dev_driver_string(dev), dev);
- 		if (ret) {
- 			dev_err(dev, "request irq failed: %d\n", ret);
+ 	if (!amdgpu_bo_is_amdgpu_bo(bo))
+ 		return;
+@@ -1251,13 +1247,6 @@ void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
+ 	/* remember the eviction */
+ 	if (evict)
+ 		atomic64_inc(&adev->num_evictions);
+-
+-	/* update statistics */
+-	if (!new_mem)
+-		return;
+-
+-	/* move_notify is called before move happens */
+-	trace_amdgpu_bo_move(abo, new_mem->mem_type, old_mem->mem_type);
+ }
+ 
+ void amdgpu_bo_get_memory(struct amdgpu_bo *bo, uint64_t *vram_mem,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
+index 6dcd7bab42fb..2ada421e79e4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_object.h
+@@ -312,9 +312,7 @@ int amdgpu_bo_set_metadata (struct amdgpu_bo *bo, void *metadata,
+ int amdgpu_bo_get_metadata(struct amdgpu_bo *bo, void *buffer,
+ 			   size_t buffer_size, uint32_t *metadata_size,
+ 			   uint64_t *flags);
+-void amdgpu_bo_move_notify(struct ttm_buffer_object *bo,
+-			   bool evict,
+-			   struct ttm_resource *new_mem);
++void amdgpu_bo_move_notify(struct ttm_buffer_object *bo, bool evict);
+ void amdgpu_bo_release_notify(struct ttm_buffer_object *bo);
+ vm_fault_t amdgpu_bo_fault_reserve_notify(struct ttm_buffer_object *bo);
+ void amdgpu_bo_fence(struct amdgpu_bo *bo, struct dma_fence *fence,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+index 10469f20a10c..158b791883f0 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+@@ -555,10 +555,11 @@ static int amdgpu_bo_move(struct ttm_buffer_object *bo, bool evict,
+ 			return r;
+ 	}
+ 
++	trace_amdgpu_bo_move(abo, new_mem->mem_type, old_mem->mem_type);
+ out:
+ 	/* update statistics */
+ 	atomic64_add(bo->base.size, &adev->num_bytes_moved);
+-	amdgpu_bo_move_notify(bo, evict, new_mem);
++	amdgpu_bo_move_notify(bo, evict);
+ 	return 0;
+ }
+ 
+@@ -1503,7 +1504,7 @@ static int amdgpu_ttm_access_memory(struct ttm_buffer_object *bo,
+ static void
+ amdgpu_bo_delete_mem_notify(struct ttm_buffer_object *bo)
+ {
+-	amdgpu_bo_move_notify(bo, false, NULL);
++	amdgpu_bo_move_notify(bo, false);
+ }
+ 
+ static struct ttm_device_funcs amdgpu_bo_driver = {
 -- 
 2.43.0
 
