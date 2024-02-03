@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B589484836F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A94684823F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71651281700
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0D5928126F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E79537FA;
-	Sat,  3 Feb 2024 04:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58641481AE;
+	Sat,  3 Feb 2024 04:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uo4Jshwn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LT8OxDn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8346171D4;
-	Sat,  3 Feb 2024 04:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1392612E67;
+	Sat,  3 Feb 2024 04:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933931; cv=none; b=nH/n1Uxo79q5ZnYPpQWRPXpYMM1ZSCTvy9/FbiC4Ssb0yKLWQOTYsXv0N0/hh6fm0JMKSJoRBXHMuA39/sw/Z50dHbn87OGt6e9sF8YKk2gXTFybluIwderUagTAFxxnmxODcw1mutztc47kGJQ18Vvg/LZDzJ5Q+wWgZOPKL6Q=
+	t=1706933710; cv=none; b=b+UcZJw/dKOjOgBefhIZ2k4mIJhkueZeDQTPsuu8W8lGr5aLhj53vg/V0uZ2A1a0XIU2C048/Xcmb/SAT4U+L0DmecHd4Pur76A/FijkYrRxlQKDSNiHgPxuRJHY+d4yA6DoaBaRQqzDAYWzwiVE4/K/uJxelz38VwhTde7Nkdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933931; c=relaxed/simple;
-	bh=/62yqVNuudGnu7FwdAXeveetHMmMuTky6S2J5wATPwU=;
+	s=arc-20240116; t=1706933710; c=relaxed/simple;
+	bh=4KaevNLLrX9VYfGv3RddjEo8FLnfHrIHHcbYeCxzFpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftJ9z4et19QqphUwa9r9IjjGcL6jEOZfzfR4iWaeGJxAB+KdBCQYi9yXY8zsjIpMB48axOwD52hWvRcViS30EI/dnaTTlitvg6eVHBTKEygAbcd8jc9WfOpq2BKO+XnE33ou4EPzfcTL50PNyfj0U98uH5Yv2lPPCEtCZJ3n88Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uo4Jshwn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E47AC433F1;
-	Sat,  3 Feb 2024 04:18:51 +0000 (UTC)
+	 MIME-Version; b=mWCUfwUeX99kbNaPSq9k+TO/NQ/3EziIGnQL6MY5iIbgq7pY2QHk2rNiTgLcby+4lSSGHiKSlDWffehfxAr+yHCkaaFQNPZXnFSESKI1LolzldNymUlPJ/LUHMstD10skYTefR8B2jx2mfgufz6WKpqsFoDs1oKupQhGUrJi5D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LT8OxDn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DF5C433C7;
+	Sat,  3 Feb 2024 04:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933931;
-	bh=/62yqVNuudGnu7FwdAXeveetHMmMuTky6S2J5wATPwU=;
+	s=korg; t=1706933709;
+	bh=4KaevNLLrX9VYfGv3RddjEo8FLnfHrIHHcbYeCxzFpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uo4JshwnTVA5iAL6Ti0ylwA/oZtp/pNXUZlTqh0RA9VmyMaXo03+EKBBzRFflUfPX
-	 C3U4Mt7wFlztJ3dJ9r+QA6QeCv/MAtse7m3IKYfQLuc0Pn1JZvKzC+krMpTZ5RF6pJ
-	 5EY0LRlo9++zvaPqBa4b3ejcitpC77W/Uyzta/3Q=
+	b=1LT8OxDnPT52+4LMcTn+/lh+DN9whZLboliSU1pFzbjRAUfBF7UTWAXWNreGV/23Q
+	 wHoL91ezMde9Ut08Lg+uDwU9/bufVOYpU1mcYKXSna8a66m9oDmc+QreAw9QsUGtCv
+	 z6L8xF1jD8eP6C3E110COQVxldaB7XQG53qXXehw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Kim <jonathan.kim@amd.com>,
-	Eric Huang <jinhuieric.huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 291/353] drm/amdkfd: only flush mes process context if mes support is there
+Subject: [PATCH 6.6 312/322] selftests: team: Add missing config options
 Date: Fri,  2 Feb 2024 20:06:49 -0800
-Message-ID: <20240203035413.002299785@linuxfoundation.org>
+Message-ID: <20240203035409.112056804@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Kim <jonathan.kim@amd.com>
+From: Benjamin Poirier <bpoirier@nvidia.com>
 
-[ Upstream commit 24149412dfc71f7f4a54868702e9145e396263d3 ]
+[ Upstream commit 7b6fb3050d8f5e2b6858eef344e47ac1f5442827 ]
 
-Fix up on mes process context flush to prevent non-mes devices from
-spamming error messages or running into undefined behaviour during
-process termination.
+Similar to commit dd2d40acdbb2 ("selftests: bonding: Add more missing
+config options"), add more networking-specific config options which are
+needed for team device tests.
 
-Fixes: bd33bb1409b4 ("drm/amdkfd: fix mes set shader debugger process management")
-Signed-off-by: Jonathan Kim <jonathan.kim@amd.com>
-Reviewed-by: Eric Huang <jinhuieric.huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+For testing, I used the minimal config generated by virtme-ng and I added
+the options in the config file. Afterwards, the team device test passed.
+
+Fixes: bbb774d921e2 ("net: Add tests for bonding and team address list management")
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
+Link: https://lore.kernel.org/r/20240131140848.360618-2-bpoirier@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/drivers/net/team/config | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-index 8e55e78fce4e..43eff221eae5 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-@@ -87,7 +87,8 @@ void kfd_process_dequeue_from_device(struct kfd_process_device *pdd)
- 		return;
- 
- 	dev->dqm->ops.process_termination(dev->dqm, &pdd->qpd);
--	amdgpu_mes_flush_shader_debugger(dev->adev, pdd->proc_ctx_gpu_addr);
-+	if (dev->kfd->shared_resources.enable_mes)
-+		amdgpu_mes_flush_shader_debugger(dev->adev, pdd->proc_ctx_gpu_addr);
- 	pdd->already_dequeued = true;
- }
- 
+diff --git a/tools/testing/selftests/drivers/net/team/config b/tools/testing/selftests/drivers/net/team/config
+index 265b6882cc21..b5e3a3aad4bf 100644
+--- a/tools/testing/selftests/drivers/net/team/config
++++ b/tools/testing/selftests/drivers/net/team/config
+@@ -1,3 +1,5 @@
++CONFIG_DUMMY=y
++CONFIG_IPV6=y
++CONFIG_MACVLAN=y
+ CONFIG_NET_TEAM=y
+ CONFIG_NET_TEAM_MODE_LOADBALANCE=y
+-CONFIG_MACVLAN=y
 -- 
 2.43.0
 
