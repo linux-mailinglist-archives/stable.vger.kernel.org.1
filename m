@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-17817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9503848038
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA8DB84816D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E61E1F2BADC
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A5821C20D41
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFCC1119C;
-	Sat,  3 Feb 2024 04:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6596A1755E;
+	Sat,  3 Feb 2024 04:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CU/xC96s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RuIeQQBo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0C8FBFC;
-	Sat,  3 Feb 2024 04:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254031756F;
+	Sat,  3 Feb 2024 04:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933335; cv=none; b=HaRYuvmOLYXJ3qC/+/YNIjkJasNeMw70XLwtoSzgWoTVZarPo7coZdD5hUXgsxI6y8SaovgRIn2e1/MbTi3u8V50n4Rcp4C8P9GMXZNUFUuXd6BxbpVfcGVtQW2gjWbwdE9glIgg64HXoLr7vW515onB1mToymJMgoPW5oCPBgQ=
+	t=1706933556; cv=none; b=gWH28RwCzl1JcOgvmjdtAfry2FXB+X+6+Lx4fg/mhdZQDq2g8bnMsKaYeGtIa94fV9wBJO1zwCPxvFRddfSEVK7zEL8/r+MUlEtSC3meUjxGKdX5BsMg8MMVN2cytbJ/Lc1i5sOR+hkAr2YVPjanMUviYA2T6xG+FcK173+OgSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933335; c=relaxed/simple;
-	bh=l3BJInT7ksOulVLCvJEcItl80X5f9vkWCgTTOkHKqOw=;
+	s=arc-20240116; t=1706933556; c=relaxed/simple;
+	bh=d2TnKelmnG+vGWR9HtqDfQkETjRiAWPShyUb3PeRqgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pKYlAAEMU5A0qm+UVsvsWaY7WmFavkGy5JXoAAxpsqIxijOxVZWdywZh/IAsCOqK+MdrhQn9WLhfB5NAx8OW/QPPJUMr6wrI0Gk8jT47EJfNjBUJmNeE6m7rb7CFQhHIOlBnmwvwnHFaPDy6ldZjX/pU0HlJ7tMCQP0spa910x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CU/xC96s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B06FCC433C7;
-	Sat,  3 Feb 2024 04:08:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Qb2IlHpXLRwMvRt5oIwX8vmhirfUEVQmardgd3wmDphOKA1Dap1QhEh9zW0Yu4pyPvGRhtE9ppUbZ1ISEGrq/X9Z1sobMCJqCgtb3q4lwQEloMHs1b65sSvkQx3ZuWGaErG+z/vilZ3Y16+2X7NgTRmlFhwN328lQ79i3ZHj4ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuIeQQBo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFC2C433A6;
+	Sat,  3 Feb 2024 04:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933334;
-	bh=l3BJInT7ksOulVLCvJEcItl80X5f9vkWCgTTOkHKqOw=;
+	s=korg; t=1706933556;
+	bh=d2TnKelmnG+vGWR9HtqDfQkETjRiAWPShyUb3PeRqgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CU/xC96snGW3r47v7j16/rJN5WNwfF+XkQnd2huEVLWobNNLMaAyTCoHKREonZe0W
-	 iGy3cCWtJo1MzIThiIi38xifxK7fcpxwrQ/zXIQ1aDWPiO6/p6thAe8TAI/eD5kTMs
-	 cIVwJX66NqkYFR6YEDOAYDD5Mm/ByPkLJ6yH6Ke8=
+	b=RuIeQQBoywt5NlNNyp4FGA0OWo6YpoiY6hetJHouYcgrLclzsggrfbwLQ0HTSq6Uf
+	 f2HjpzEx2YKz3B5Y/fEuYMH2dL0TK/UAqv39+eNVocYZQYyYjWO+NV/l33OcJF7wJc
+	 sFxckVxMRu1Q57lr0IHZ0nj+e/MW2Yn7+hW4GBbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= <jerome.pouiller@silabs.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/219] afs: fix the usage of read_seqbegin_or_lock() in afs_find_server*()
+Subject: [PATCH 6.6 108/322] wifi: wfx: fix possible NULL pointer dereference in wfx_set_mfp_ap()
 Date: Fri,  2 Feb 2024 20:03:25 -0800
-Message-ID: <20240203035320.826619686@linuxfoundation.org>
+Message-ID: <20240203035402.647803534@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +61,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 1702e0654ca9a7bcd7c7619c8a5004db58945b71 ]
+[ Upstream commit fe0a7776d4d19e613bb8dd80fe2d78ae49e8b49d ]
 
-David Howells says:
+Since 'ieee80211_beacon_get()' can return NULL, 'wfx_set_mfp_ap()'
+should check the return value before examining skb data. So convert
+the latter to return an appropriate error code and propagate it to
+return from 'wfx_start_ap()' as well. Compile tested only.
 
- (5) afs_find_server().
-
-     There could be a lot of servers in the list and each server can have
-     multiple addresses, so I think this would be better with an exclusive
-     second pass.
-
-     The server list isn't likely to change all that often, but when it does
-     change, there's a good chance several servers are going to be
-     added/removed one after the other.  Further, this is only going to be
-     used for incoming cache management/callback requests from the server,
-     which hopefully aren't going to happen too often - but it is remotely
-     drivable.
-
- (6) afs_find_server_by_uuid().
-
-     Similarly to (5), there could be a lot of servers to search through, but
-     they are in a tree not a flat list, so it should be faster to process.
-     Again, it's not likely to change that often and, again, when it does
-     change it's likely to involve multiple changes.  This can be driven
-     remotely by an incoming cache management request but is mostly going to
-     be driven by setting up or reconfiguring a volume's server list -
-     something that also isn't likely to happen often.
-
-Make the "seq" counter odd on the 2nd pass, otherwise read_seqbegin_or_lock()
-never takes the lock.
-
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Link: https://lore.kernel.org/r/20231130115614.GA21581@redhat.com/
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Tested-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+Acked-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231204171130.141394-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/server.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/wireless/silabs/wfx/sta.c | 42 ++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 17 deletions(-)
 
-diff --git a/fs/afs/server.c b/fs/afs/server.c
-index b5237206eac3..0bd2f5ba6900 100644
---- a/fs/afs/server.c
-+++ b/fs/afs/server.c
-@@ -27,7 +27,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
- 	const struct afs_addr_list *alist;
- 	struct afs_server *server = NULL;
- 	unsigned int i;
--	int seq = 0, diff;
-+	int seq = 1, diff;
+diff --git a/drivers/net/wireless/silabs/wfx/sta.c b/drivers/net/wireless/silabs/wfx/sta.c
+index 626dfb4b7a55..073e870b2641 100644
+--- a/drivers/net/wireless/silabs/wfx/sta.c
++++ b/drivers/net/wireless/silabs/wfx/sta.c
+@@ -354,29 +354,38 @@ static int wfx_upload_ap_templates(struct wfx_vif *wvif)
+ 	return 0;
+ }
  
- 	rcu_read_lock();
- 
-@@ -35,6 +35,7 @@ struct afs_server *afs_find_server(struct afs_net *net,
- 		if (server)
- 			afs_unuse_server_notime(net, server, afs_server_trace_put_find_rsq);
- 		server = NULL;
-+		seq++; /* 2 on the 1st/lockless path, otherwise odd */
- 		read_seqbegin_or_lock(&net->fs_addr_lock, &seq);
- 
- 		if (srx->transport.family == AF_INET6) {
-@@ -90,7 +91,7 @@ struct afs_server *afs_find_server_by_uuid(struct afs_net *net, const uuid_t *uu
+-static void wfx_set_mfp_ap(struct wfx_vif *wvif)
++static int wfx_set_mfp_ap(struct wfx_vif *wvif)
  {
- 	struct afs_server *server = NULL;
- 	struct rb_node *p;
--	int diff, seq = 0;
-+	int diff, seq = 1;
+ 	struct ieee80211_vif *vif = wvif_to_vif(wvif);
+ 	struct sk_buff *skb = ieee80211_beacon_get(wvif->wdev->hw, vif, 0);
+ 	const int ieoffset = offsetof(struct ieee80211_mgmt, u.beacon.variable);
+-	const u16 *ptr = (u16 *)cfg80211_find_ie(WLAN_EID_RSN, skb->data + ieoffset,
+-						 skb->len - ieoffset);
+ 	const int pairwise_cipher_suite_count_offset = 8 / sizeof(u16);
+ 	const int pairwise_cipher_suite_size = 4 / sizeof(u16);
+ 	const int akm_suite_size = 4 / sizeof(u16);
++	const u16 *ptr;
  
- 	_enter("%pU", uuid);
+-	if (ptr) {
+-		ptr += pairwise_cipher_suite_count_offset;
+-		if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
+-			return;
+-		ptr += 1 + pairwise_cipher_suite_size * *ptr;
+-		if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
+-			return;
+-		ptr += 1 + akm_suite_size * *ptr;
+-		if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
+-			return;
+-		wfx_hif_set_mfp(wvif, *ptr & BIT(7), *ptr & BIT(6));
+-	}
++	if (unlikely(!skb))
++		return -ENOMEM;
++
++	ptr = (u16 *)cfg80211_find_ie(WLAN_EID_RSN, skb->data + ieoffset,
++				      skb->len - ieoffset);
++	if (unlikely(!ptr))
++		return -EINVAL;
++
++	ptr += pairwise_cipher_suite_count_offset;
++	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
++		return -EINVAL;
++
++	ptr += 1 + pairwise_cipher_suite_size * *ptr;
++	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
++		return -EINVAL;
++
++	ptr += 1 + akm_suite_size * *ptr;
++	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
++		return -EINVAL;
++
++	wfx_hif_set_mfp(wvif, *ptr & BIT(7), *ptr & BIT(6));
++	return 0;
+ }
  
-@@ -102,7 +103,7 @@ struct afs_server *afs_find_server_by_uuid(struct afs_net *net, const uuid_t *uu
- 		if (server)
- 			afs_unuse_server(net, server, afs_server_trace_put_uuid_rsq);
- 		server = NULL;
--
-+		seq++; /* 2 on the 1st/lockless path, otherwise odd */
- 		read_seqbegin_or_lock(&net->fs_lock, &seq);
+ int wfx_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+@@ -394,8 +403,7 @@ int wfx_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	ret = wfx_hif_start(wvif, &vif->bss_conf, wvif->channel);
+ 	if (ret > 0)
+ 		return -EIO;
+-	wfx_set_mfp_ap(wvif);
+-	return ret;
++	return wfx_set_mfp_ap(wvif);
+ }
  
- 		p = net->fs_servers.rb_node;
+ void wfx_stop_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 -- 
 2.43.0
 
