@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-18285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD6384821E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BCDF8480DA
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFFFA1C23894
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A462F1F21C29
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E67045971;
-	Sat,  3 Feb 2024 04:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540BE19473;
+	Sat,  3 Feb 2024 04:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n3HosiXK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqMtanzX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C26A18E27;
-	Sat,  3 Feb 2024 04:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1023910A1C;
+	Sat,  3 Feb 2024 04:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933686; cv=none; b=J7vZRUO0gtfOD9JWMc86tKa9rVH7cbzWVSmEu3uJgfkl699YW+Sn32V0R6+PYci0SqKimCkcv1AfX24zxI1InK14Z7zdfBJ+DdbGxlOX6dVcJmehT9F7OdK5ATCXS2cOcCvsluI5XT07Ey6pcDnh1OAIXxmsLqWRfx/jQPD5vRE=
+	t=1706933452; cv=none; b=RShXUvl114pflf+9bU/B0iS1Fcqt1oV9AnXbtCU37LXxlk4TDkl7ESJGwwXUQ3zxlK5ON3DmYOf/LlJBADyCcxeKS4Khw8WkwTbip3yqS4oCsBCTJcsX6lZQLwjLAAqV4OYinb3RlNF99PLhs/kDJ8N/ocaN/MI9uHewc1d63c8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933686; c=relaxed/simple;
-	bh=oVgbtp3J4xUfFEPj6G6Dk0xUma2RzEFiXo9lGY65Xkg=;
+	s=arc-20240116; t=1706933452; c=relaxed/simple;
+	bh=MqbsRn0rk1JBlICwuPXpdf/PufI031KrrMkS2xz0Qco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+p8NMjsMfl6zziUHpEGcQEYJM1ROXFSPnodaZD8hjnZ3H8e3+Zp/Bn2Owa0yFq15kRtgryimUGgHHt8eWr0YNS36N0z0enqK0IGQrQXdYsaF5F6LTpykMTepAvj+Tj2cRitbLwt4EFOCdzVBnLW3Oyue/BBkcDyDrdgEHlW6DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n3HosiXK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E473AC433F1;
-	Sat,  3 Feb 2024 04:14:45 +0000 (UTC)
+	 MIME-Version; b=TMIUNQiKevPp2bBWezjU+ZOmZSbwubjgvUIiaAlmNmd4s0gy9h9b08NY9vQozns8460ikINEbOTNZLQ84XEfIscBpyxU5Q4dsTOUd3aGVvsDH/UnbZo33EItRqfUhR1Ye5pKdb6RlG8UpQWPRnZ7v0HaSfUrmkc9lkqaYGNVFmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WqMtanzX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCEE6C433C7;
+	Sat,  3 Feb 2024 04:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933686;
-	bh=oVgbtp3J4xUfFEPj6G6Dk0xUma2RzEFiXo9lGY65Xkg=;
+	s=korg; t=1706933451;
+	bh=MqbsRn0rk1JBlICwuPXpdf/PufI031KrrMkS2xz0Qco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n3HosiXKb/2PbXDm/6Ovmo+5kYEGu/dyjTtlAnRfpZTV2kTfo4KkTP2TA5ktNEXsF
-	 tmo41LyiZpcNvTpzxRDnUoRGekih+hiHV8sNXdSs2sheXtexDay6dEQQeQmXewXrAj
-	 TxYgp4zDU1w9esiHB1PTSiluI1eyiGm44HrvkmBE=
+	b=WqMtanzX2EsdTi9EmUS/oRCdUuYXj5mIdnUD1s9N3I9hARPeJCLKbDlFdueU4qdki
+	 DcWfonaPiomerTePyJ9GAI82Ws5QzLnmjiv8KQ5QOMU5mft8e1L35AnTfwADIcmlq4
+	 B+FoiTo/p/0g9e2LTBF3hldKpSahL0FG+JFPMF2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Ewan Milne <emilne@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Sathya Prakash Veerichetty <safhya.prakash@broadcom.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 263/322] riscv: Fix build error on rv32 + XIP
+Subject: [PATCH 6.1 187/219] scsi: core: Move scsi_host_busy() out of host lock for waking up EH handler
 Date: Fri,  2 Feb 2024 20:06:00 -0800
-Message-ID: <20240203035407.633283569@linuxfoundation.org>
+Message-ID: <20240203035342.946791374@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +65,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 66f962d8939fd2ac74de901d30d30310c8ddca79 ]
+[ Upstream commit 4373534a9850627a2695317944898eb1283a2db0 ]
 
-commit 66f1e6809397 ("riscv: Make XIP bootable again") restricted page
-offset to the sv39 page offset instead of the default sv57, which makes
-sense since probably the platforms that target XIP kernels do not
-support anything else than sv39 and we do not try to find out the
-largest address space supported on XIP kernels (ie set_satp_mode()).
+Inside scsi_eh_wakeup(), scsi_host_busy() is called & checked with host
+lock every time for deciding if error handler kthread needs to be waken up.
 
-But PAGE_OFFSET_L3 is not defined for rv32, so fix the build error by
-restoring the previous behaviour which picks CONFIG_PAGE_OFFSET for rv32.
+This can be too heavy in case of recovery, such as:
 
-Fixes: 66f1e6809397 ("riscv: Make XIP bootable again")
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Closes: https://lore.kernel.org/linux-riscv/344dca85-5c48-44e1-bc64-4fa7973edd12@infradead.org/T/#u
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-Link: https://lore.kernel.org/r/20240118212120.2087803-1-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+ - N hardware queues
+
+ - queue depth is M for each hardware queue
+
+ - each scsi_host_busy() iterates over (N * M) tag/requests
+
+If recovery is triggered in case that all requests are in-flight, each
+scsi_eh_wakeup() is strictly serialized, when scsi_eh_wakeup() is called
+for the last in-flight request, scsi_host_busy() has been run for (N * M -
+1) times, and request has been iterated for (N*M - 1) * (N * M) times.
+
+If both N and M are big enough, hard lockup can be triggered on acquiring
+host lock, and it is observed on mpi3mr(128 hw queues, queue depth 8169).
+
+Fix the issue by calling scsi_host_busy() outside the host lock. We don't
+need the host lock for getting busy count because host the lock never
+covers that.
+
+[mkp: Drop unnecessary 'busy' variables pointed out by Bart]
+
+Cc: Ewan Milne <emilne@redhat.com>
+Fixes: 6eb045e092ef ("scsi: core: avoid host-wide host_busy counter for scsi_mq")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240112070000.4161982-1-ming.lei@redhat.com
+Reviewed-by: Ewan D. Milne <emilne@redhat.com>
+Reviewed-by: Sathya Prakash Veerichetty <safhya.prakash@broadcom.com>
+Tested-by: Sathya Prakash Veerichetty <safhya.prakash@broadcom.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/init.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/scsi/scsi_error.c | 8 ++++----
+ drivers/scsi/scsi_lib.c   | 2 +-
+ drivers/scsi/scsi_priv.h  | 2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 5f1921d014b1..e71dd19ac801 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -1058,7 +1058,11 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
- 	kernel_map.virt_addr = KERNEL_LINK_ADDR + kernel_map.virt_offset;
+diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
+index 9a289d6f2e5e..66290961c47c 100644
+--- a/drivers/scsi/scsi_error.c
++++ b/drivers/scsi/scsi_error.c
+@@ -61,11 +61,11 @@ static int scsi_eh_try_stu(struct scsi_cmnd *scmd);
+ static enum scsi_disposition scsi_try_to_abort_cmd(struct scsi_host_template *,
+ 						   struct scsi_cmnd *);
  
- #ifdef CONFIG_XIP_KERNEL
-+#ifdef CONFIG_64BIT
- 	kernel_map.page_offset = PAGE_OFFSET_L3;
-+#else
-+	kernel_map.page_offset = _AC(CONFIG_PAGE_OFFSET, UL);
-+#endif
- 	kernel_map.xiprom = (uintptr_t)CONFIG_XIP_PHYS_ADDR;
- 	kernel_map.xiprom_sz = (uintptr_t)(&_exiprom) - (uintptr_t)(&_xiprom);
+-void scsi_eh_wakeup(struct Scsi_Host *shost)
++void scsi_eh_wakeup(struct Scsi_Host *shost, unsigned int busy)
+ {
+ 	lockdep_assert_held(shost->host_lock);
  
+-	if (scsi_host_busy(shost) == shost->host_failed) {
++	if (busy == shost->host_failed) {
+ 		trace_scsi_eh_wakeup(shost);
+ 		wake_up_process(shost->ehandler);
+ 		SCSI_LOG_ERROR_RECOVERY(5, shost_printk(KERN_INFO, shost,
+@@ -88,7 +88,7 @@ void scsi_schedule_eh(struct Scsi_Host *shost)
+ 	if (scsi_host_set_state(shost, SHOST_RECOVERY) == 0 ||
+ 	    scsi_host_set_state(shost, SHOST_CANCEL_RECOVERY) == 0) {
+ 		shost->host_eh_scheduled++;
+-		scsi_eh_wakeup(shost);
++		scsi_eh_wakeup(shost, scsi_host_busy(shost));
+ 	}
+ 
+ 	spin_unlock_irqrestore(shost->host_lock, flags);
+@@ -281,7 +281,7 @@ static void scsi_eh_inc_host_failed(struct rcu_head *head)
+ 
+ 	spin_lock_irqsave(shost->host_lock, flags);
+ 	shost->host_failed++;
+-	scsi_eh_wakeup(shost);
++	scsi_eh_wakeup(shost, scsi_host_busy(shost));
+ 	spin_unlock_irqrestore(shost->host_lock, flags);
+ }
+ 
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index d25e1c247253..0e7e9f1e5a02 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -282,7 +282,7 @@ static void scsi_dec_host_busy(struct Scsi_Host *shost, struct scsi_cmnd *cmd)
+ 	if (unlikely(scsi_host_in_recovery(shost))) {
+ 		spin_lock_irqsave(shost->host_lock, flags);
+ 		if (shost->host_failed || shost->host_eh_scheduled)
+-			scsi_eh_wakeup(shost);
++			scsi_eh_wakeup(shost, scsi_host_busy(shost));
+ 		spin_unlock_irqrestore(shost->host_lock, flags);
+ 	}
+ 	rcu_read_unlock();
+diff --git a/drivers/scsi/scsi_priv.h b/drivers/scsi/scsi_priv.h
+index b14545acb40f..9b5fb30e684b 100644
+--- a/drivers/scsi/scsi_priv.h
++++ b/drivers/scsi/scsi_priv.h
+@@ -86,7 +86,7 @@ extern void scmd_eh_abort_handler(struct work_struct *work);
+ extern enum blk_eh_timer_return scsi_timeout(struct request *req);
+ extern int scsi_error_handler(void *host);
+ extern enum scsi_disposition scsi_decide_disposition(struct scsi_cmnd *cmd);
+-extern void scsi_eh_wakeup(struct Scsi_Host *shost);
++extern void scsi_eh_wakeup(struct Scsi_Host *shost, unsigned int busy);
+ extern void scsi_eh_scmd_add(struct scsi_cmnd *);
+ void scsi_eh_ready_devs(struct Scsi_Host *shost,
+ 			struct list_head *work_q,
 -- 
 2.43.0
 
