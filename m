@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-18209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F1408481D1
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBFA88480B4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CD1D284207
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 494BBB2A4E6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27302405FF;
-	Sat,  3 Feb 2024 04:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25216179BD;
+	Sat,  3 Feb 2024 04:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnOSa6EF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMbjmprH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8651405F1;
-	Sat,  3 Feb 2024 04:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E28125A9;
+	Sat,  3 Feb 2024 04:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933627; cv=none; b=MiXoq75fiQxV8oV3uUnin1O2LLRDi+DvYIMDZOTISapwW2CfoB1KiTGcWkigtu8RbZshFiM9dibTLsWKnaIssPlBl7obc+ORF9hVMqExJYV3d7eB9V/NPPB+KQMdnvSDhj3I7B+0pvQV0VF63OQ90nvy346eqs+HtBCmjpKrw1U=
+	t=1706933425; cv=none; b=D6BxOMLDiA7lnjtQUmduDBCnMlfexIC/cnZRD05Jm2tJH5uo9pGR/iF1RftC0yOYFK70y3J4uykBYfS00uoIMaSUG7QOfLGkE0f9d7xsH4iwaQqlxbP5Bs6RiyHGN6RC1jQzDhFn+ivjN0w9VVW4b65R4CmkhK0sqG2FJRp0HXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933627; c=relaxed/simple;
-	bh=OigS+EWGpVXyCnYCWEglUYYcA6R7z7PXeU4qXo1tngY=;
+	s=arc-20240116; t=1706933425; c=relaxed/simple;
+	bh=YCuhGphGrfds1XBDInEH0/kv4t/0x/gqV4WjMbsbLWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fbz1jlIXTFX9LZkYi5fTi4qvZjO0RRsa6vMapUYFN7ic1Gd4SZdqO4glae3D3bqQyzLskPoZaR12VtcrxKqx4CgqPpA1GCKEQIZT2KVCNbl/YFozBDAlAlYettiFa5LPuGAldeBfItcy4G+Qf4e7O3ooZT6j7OVMRRvgFH7tofk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnOSa6EF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974D4C43394;
-	Sat,  3 Feb 2024 04:13:47 +0000 (UTC)
+	 MIME-Version; b=STOpZ4mqgG+flsjJXyp1cx55r0QaXhKWbbWkeDpYh2EJZrG4NiE6blsqxAWSeaySHxfHXFGdpNRxOlpj9HG4GRBuIPWKVM0GQqxMMkeLASb/eTj8IguVHtSszNN4GuBL3w2/LWKg100fnB62ceD5QrZ6s5hY0xwVGVxeojryrb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMbjmprH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA90C433C7;
+	Sat,  3 Feb 2024 04:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933627;
-	bh=OigS+EWGpVXyCnYCWEglUYYcA6R7z7PXeU4qXo1tngY=;
+	s=korg; t=1706933425;
+	bh=YCuhGphGrfds1XBDInEH0/kv4t/0x/gqV4WjMbsbLWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hnOSa6EFuWPUtODd63yxAA1s4150BRxRVCGeQ1gqO67i55NDxqB6mBGXuCvoMbJn9
-	 agWVoLdquKNucUYjRnl/VjSuZ3W2dKvqMj/luAFkcJo0dQ9HHp+h9OCWfklp91XMLo
-	 yMxkhckkWmyceDYDAcPO2QeRZInpSycVW9V3JVCw=
+	b=DMbjmprHzUsmKuKmnkUA5LDBvozNjUBnDZyl7Y2zZv3wiGaWBo8+MM+YxXycJ1YSu
+	 IdUOUXuW1rDWHB8o4tNbx2bM9xJrNTZ+N2Yx1Lw6FP0eB0ejcvD3+eBNm5BZrBqVjr
+	 1A23Tm01ZarGrlmtLeXAmWM7cPMqre70hd3/20lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Fischer <devlists@wefi.net>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 204/322] watchdog: it87_wdt: Keep WDTCTRL bit 3 unmodified for IT8784/IT8786
+Subject: [PATCH 6.1 128/219] IB/ipoib: Fix mcast list locking
 Date: Fri,  2 Feb 2024 20:05:01 -0800
-Message-ID: <20240203035405.827967006@linuxfoundation.org>
+Message-ID: <20240203035335.498037621@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +60,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Fischer <devlists@wefi.net>
+From: Daniel Vacek <neelx@redhat.com>
 
-[ Upstream commit d12971849d71781c1e4ffd1117d4878ce233d319 ]
+[ Upstream commit 4f973e211b3b1c6d36f7c6a19239d258856749f9 ]
 
-WDTCTRL bit 3 sets the mode choice for the clock input of IT8784/IT8786.
-Some motherboards require this bit to be set to 1 (= PCICLK mode),
-otherwise the watchdog functionality gets broken. The BIOS of those
-motherboards sets WDTCTRL bit 3 already to 1.
+Releasing the `priv->lock` while iterating the `priv->multicast_list` in
+`ipoib_mcast_join_task()` opens a window for `ipoib_mcast_dev_flush()` to
+remove the items while in the middle of iteration. If the mcast is removed
+while the lock was dropped, the for loop spins forever resulting in a hard
+lockup (as was reported on RHEL 4.18.0-372.75.1.el8_6 kernel):
 
-Instead of setting all bits of WDTCTRL to 0 by writing 0x00 to it, keep
-bit 3 of it unchanged for IT8784/IT8786 chips. In this way, bit 3 keeps
-the status as set by the BIOS of the motherboard.
+    Task A (kworker/u72:2 below)       | Task B (kworker/u72:0 below)
+    -----------------------------------+-----------------------------------
+    ipoib_mcast_join_task(work)        | ipoib_ib_dev_flush_light(work)
+      spin_lock_irq(&priv->lock)       | __ipoib_ib_dev_flush(priv, ...)
+      list_for_each_entry(mcast,       | ipoib_mcast_dev_flush(dev = priv->dev)
+          &priv->multicast_list, list) |
+        ipoib_mcast_join(dev, mcast)   |
+          spin_unlock_irq(&priv->lock) |
+                                       |   spin_lock_irqsave(&priv->lock, flags)
+                                       |   list_for_each_entry_safe(mcast, tmcast,
+                                       |                  &priv->multicast_list, list)
+                                       |     list_del(&mcast->list);
+                                       |     list_add_tail(&mcast->list, &remove_list)
+                                       |   spin_unlock_irqrestore(&priv->lock, flags)
+          spin_lock_irq(&priv->lock)   |
+                                       |   ipoib_mcast_remove_list(&remove_list)
+   (Here, `mcast` is no longer on the  |     list_for_each_entry_safe(mcast, tmcast,
+    `priv->multicast_list` and we keep |                            remove_list, list)
+    spinning on the `remove_list` of   |  >>>  wait_for_completion(&mcast->done)
+    the other thread which is blocked  |
+    and the list is still valid on     |
+    it's stack.)
 
-Watchdog tests have been successful with this patch with the following
-systems:
-  IT8784: Thomas-Krenn LES plus v2 (YANLING YL-KBRL2 V2)
-  IT8786: Thomas-Krenn LES plus v3 (YANLING YL-CLU L2)
-  IT8786: Thomas-Krenn LES network 6L v2 (YANLING YL-CLU6L)
+Fix this by keeping the lock held and changing to GFP_ATOMIC to prevent
+eventual sleeps.
+Unfortunately we could not reproduce the lockup and confirm this fix but
+based on the code review I think this fix should address such lockups.
 
-Link: https://lore.kernel.org/all/140b264d-341f-465b-8715-dacfe84b3f71@roeck-us.net/
+crash> bc 31
+PID: 747      TASK: ff1c6a1a007e8000  CPU: 31   COMMAND: "kworker/u72:2"
+--
+    [exception RIP: ipoib_mcast_join_task+0x1b1]
+    RIP: ffffffffc0944ac1  RSP: ff646f199a8c7e00  RFLAGS: 00000002
+    RAX: 0000000000000000  RBX: ff1c6a1a04dc82f8  RCX: 0000000000000000
+                                  work (&priv->mcast_task{,.work})
+    RDX: ff1c6a192d60ac68  RSI: 0000000000000286  RDI: ff1c6a1a04dc8000
+           &mcast->list
+    RBP: ff646f199a8c7e90   R8: ff1c699980019420   R9: ff1c6a1920c9a000
+    R10: ff646f199a8c7e00  R11: ff1c6a191a7d9800  R12: ff1c6a192d60ac00
+                                                         mcast
+    R13: ff1c6a1d82200000  R14: ff1c6a1a04dc8000  R15: ff1c6a1a04dc82d8
+           dev                    priv (&priv->lock)     &priv->multicast_list (aka head)
+    ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
 
-Signed-off-by: Werner Fischer <devlists@wefi.net>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231213094525.11849-4-devlists@wefi.net
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/it87_wdt.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/infiniband/ulp/ipoib/ipoib_multicast.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/watchdog/it87_wdt.c b/drivers/watchdog/it87_wdt.c
-index bb1122909396..843f9f8e3917 100644
---- a/drivers/watchdog/it87_wdt.c
-+++ b/drivers/watchdog/it87_wdt.c
-@@ -255,6 +255,7 @@ static struct watchdog_device wdt_dev = {
- static int __init it87_wdt_init(void)
- {
- 	u8  chip_rev;
-+	u8 ctrl;
- 	int rc;
+diff --git a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
+index 9e6967a40042..319d4288eddd 100644
+--- a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
++++ b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
+@@ -531,21 +531,17 @@ static int ipoib_mcast_join(struct net_device *dev, struct ipoib_mcast *mcast)
+ 		if (test_bit(IPOIB_MCAST_FLAG_SENDONLY, &mcast->flags))
+ 			rec.join_state = SENDONLY_FULLMEMBER_JOIN;
+ 	}
+-	spin_unlock_irq(&priv->lock);
  
- 	rc = superio_enter();
-@@ -313,7 +314,18 @@ static int __init it87_wdt_init(void)
- 
- 	superio_select(GPIO);
- 	superio_outb(WDT_TOV1, WDTCFG);
--	superio_outb(0x00, WDTCTRL);
-+
-+	switch (chip_type) {
-+	case IT8784_ID:
-+	case IT8786_ID:
-+		ctrl = superio_inb(WDTCTRL);
-+		ctrl &= 0x08;
-+		superio_outb(ctrl, WDTCTRL);
-+		break;
-+	default:
-+		superio_outb(0x00, WDTCTRL);
-+	}
-+
- 	superio_exit();
- 
- 	if (timeout < 1 || timeout > max_units * 60) {
+ 	multicast = ib_sa_join_multicast(&ipoib_sa_client, priv->ca, priv->port,
+-					 &rec, comp_mask, GFP_KERNEL,
++					 &rec, comp_mask, GFP_ATOMIC,
+ 					 ipoib_mcast_join_complete, mcast);
+-	spin_lock_irq(&priv->lock);
+ 	if (IS_ERR(multicast)) {
+ 		ret = PTR_ERR(multicast);
+ 		ipoib_warn(priv, "ib_sa_join_multicast failed, status %d\n", ret);
+ 		/* Requeue this join task with a backoff delay */
+ 		__ipoib_mcast_schedule_join_thread(priv, mcast, 1);
+ 		clear_bit(IPOIB_MCAST_FLAG_BUSY, &mcast->flags);
+-		spin_unlock_irq(&priv->lock);
+ 		complete(&mcast->done);
+-		spin_lock_irq(&priv->lock);
+ 		return ret;
+ 	}
+ 	return 0;
 -- 
 2.43.0
 
