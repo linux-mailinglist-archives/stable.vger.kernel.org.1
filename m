@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-18172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98B768481AA
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D4C08482F8
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB8DA1C2120D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AACB1C236E0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A96936123;
-	Sat,  3 Feb 2024 04:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE331C6B7;
+	Sat,  3 Feb 2024 04:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h2jsJrWg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqwoebiE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0D536122;
-	Sat,  3 Feb 2024 04:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD941642F;
+	Sat,  3 Feb 2024 04:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933600; cv=none; b=rO6LQhlhfFQ0hHm6N6pTJlwsDSM5TULmay5RB2mTuGBfuTZ8AzP0d/CM/0HEGGP/OBmRHGTUvkH8NLAjZ+XDlSJxSQZ14ZNmxJYbMf6jeqyAG2W2M8YYKO1u9J3rVR16Xdf/V9JrFR8axEXmHnp4fmv9dn/5VClbXIUB9GdSOtw=
+	t=1706933845; cv=none; b=nEOHs68PWPy7et9xCZ6HQk4EQBwQxEY5QFugpE5j3tHEfF8F/cYRqPUxmxdubCR/ggfUVTsjzCOhxZsJ0RBg9Js8nMJs6uuFY7HkggBiESOsa1U8P3PiC5UQx8KLOPFe0LEMJVxKNENCIwyKHYIIswICc7fBUKRxAMY0xjQpxZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933600; c=relaxed/simple;
-	bh=ZilyjS7LYK1jQSgzdeTgT+eJpBeXOz2TzM8jF/UfqRM=;
+	s=arc-20240116; t=1706933845; c=relaxed/simple;
+	bh=qijwYlNhqbFV4DbfWaLKm5kJpNoC92imJ41cZmBpyAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YrZq1v7zJu9WRhG6FiHnmsjYnxKRJ4RNKtXm0kQ4yHXE9KOdw6eo8a+YKO+2PboP4F/VgH89L7C7ght1KhmH34+iSHM+v7j+7MM8r+ZNWnV9C1+khuytzNt6RNn87O93WLvWhdOEp4SX8dZuwXy7IlwnbfSYMEWp+c6qVvCorUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h2jsJrWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115EDC433F1;
-	Sat,  3 Feb 2024 04:13:20 +0000 (UTC)
+	 MIME-Version; b=PsHEbkPqULzpIOz5kgusLwbLMO4RiJ6iPc8wR+E0ZV3stWTUTSgyTMv+hYCzyOKpY+iuud1Qdh059f8SqdRikl5FSN84zFd5tPYGfLmt30qnVAAhxc8EGRrUFIwv6XmyDccv+HOhPqxQu8okJ5t8+vSkmXq0O0Qz3yIm2YZUihA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqwoebiE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FC3C43399;
+	Sat,  3 Feb 2024 04:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933600;
-	bh=ZilyjS7LYK1jQSgzdeTgT+eJpBeXOz2TzM8jF/UfqRM=;
+	s=korg; t=1706933845;
+	bh=qijwYlNhqbFV4DbfWaLKm5kJpNoC92imJ41cZmBpyAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h2jsJrWgYURt6wXO/JGJqdtxeDxk9dZbSy7fjF53C9k7IrBPGNEVoYHATTyT133Sn
-	 RLIJThIheseDNTXzgnwTb+GBjC/BikScit9kqLyCfSCR+K1o7ynZYI5X1W1WK/QBzE
-	 mAVOKvJtiwT6y0K9P1Iy/w3wKQyaoBnkzNw2VCJo=
+	b=nqwoebiEBdhfnPDmoj/mULGLZkifH2iuk2+ZDt0/WOi8f7tgEo0sszF7BQhtS+g2G
+	 86x57KIevzbTDH1wHDF/XXdBrjXb+xzjPu7NKa8UkRwtT67/KbwTzhS0tFLdYYhzdo
+	 RskRFvfv54vetX9z2mf8P4VhTuHaUKe7Zwt3FhjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Ilya Bakoulin <ilya.bakoulin@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 168/322] drm/amd/display: Fix MST PBN/X.Y value calculations
+Subject: [PATCH 6.7 147/353] wifi: cfg80211: free beacon_ies when overridden from hidden BSS
 Date: Fri,  2 Feb 2024 20:04:25 -0800
-Message-ID: <20240203035404.663969146@linuxfoundation.org>
+Message-ID: <20240203035408.327221250@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Bakoulin <ilya.bakoulin@amd.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 94bbf802efd0a8f13147d6664af6e653637340a8 ]
+[ Upstream commit 32af9a9e1069e55bc02741fb00ac9d0ca1a2eaef ]
 
-Changing PBN calculation to be more in line with spec. We don't need to
-inflate PBN_NATIVE value by the 1.006 margin, since that is already
-taken care of in the get_pbn_per_slot function.
+This is a more of a cosmetic fix. The branch will only be taken if
+proberesp_ies is set, which implies that beacon_ies is not set unless we
+are connected to an AP that just did a channel switch. And, in that case
+we should have found the BSS in the internal storage to begin with.
 
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Ilya Bakoulin <ilya.bakoulin@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231220133549.b898e22dadff.Id8c4c10aedd176ef2e18a4cad747b299f150f9df@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_dpms.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ net/wireless/scan.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-index a96f0747628c..b9768cd9b8a0 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-@@ -1059,18 +1059,21 @@ static struct fixed31_32 get_pbn_from_bw_in_kbps(uint64_t kbps)
- 	uint32_t denominator = 1;
- 
- 	/*
--	 * margin 5300ppm + 300ppm ~ 0.6% as per spec, factor is 1.006
-+	 * The 1.006 factor (margin 5300ppm + 300ppm ~ 0.6% as per spec) is not
-+	 * required when determining PBN/time slot utilization on the link between
-+	 * us and the branch, since that overhead is already accounted for in
-+	 * the get_pbn_per_slot function.
-+	 *
- 	 * The unit of 54/64Mbytes/sec is an arbitrary unit chosen based on
- 	 * common multiplier to render an integer PBN for all link rate/lane
- 	 * counts combinations
- 	 * calculate
--	 * peak_kbps *= (1006/1000)
- 	 * peak_kbps *= (64/54)
--	 * peak_kbps *= 8    convert to bytes
-+	 * peak_kbps /= (8 * 1000) convert to bytes
- 	 */
- 
--	numerator = 64 * PEAK_FACTOR_X1000;
--	denominator = 54 * 8 * 1000 * 1000;
-+	numerator = 64;
-+	denominator = 54 * 8 * 1000;
- 	kbps *= numerator;
- 	peak_kbps = dc_fixpt_from_fraction(kbps, denominator);
- 
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 0d6c3fc1238a..082f0bd4ebdd 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1864,8 +1864,12 @@ __cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ 				list_add(&new->hidden_list,
+ 					 &hidden->hidden_list);
+ 				hidden->refcount++;
++
++				ies = (void *)rcu_dereference(new->pub.beacon_ies);
+ 				rcu_assign_pointer(new->pub.beacon_ies,
+ 						   hidden->pub.beacon_ies);
++				if (ies)
++					kfree_rcu(ies, rcu_head);
+ 			}
+ 		} else {
+ 			/*
 -- 
 2.43.0
 
