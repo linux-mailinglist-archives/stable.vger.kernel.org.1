@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F34C848193
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A9D8482C5
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B20E11C233F9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C73351C2369C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB4C32C8B;
-	Sat,  3 Feb 2024 04:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E461C280;
+	Sat,  3 Feb 2024 04:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkNQOUUx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBNcMps3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B18E2DF87;
-	Sat,  3 Feb 2024 04:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974744E1D0;
+	Sat,  3 Feb 2024 04:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933583; cv=none; b=YrBcJfKLvyQso/FXq5UMKRUxNILZKAmPoqRvh5DtTWKQ1824Ka/hdjWbxJq1fnWL7V75MpvII68VQZbPv6xahsEv6Z5EeEU06K8TViRycwjTtgzRiD3UH5jYG2H2vjxHRqQDI6Wa2NUzXs42R1lXVeTdctpDn6Hmk+DPQ3VA1+w=
+	t=1706933808; cv=none; b=gUoEeAhMDikG/INm/xOdgrSJMpt5idWllUHfJJHocWRDC7W82nhiv2w1b3fUxwJX4KhRCfzRMUUHsxr+CfSzczVC7gHYfR2vvz88FIIZ10FSnfLQIwCMBY/Zi515fqYhIv0x+hLl/CRHpoXXNxd0vJiNNXJsLB2ol9g04FQRNN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933583; c=relaxed/simple;
-	bh=2ywu7LzzdX/3YoUEAi3FPBCNdf6EqnBSBAU779Alom8=;
+	s=arc-20240116; t=1706933808; c=relaxed/simple;
+	bh=j8Pwq+wqVMCT7/3IyW5uwV3uavZ3vffMwTJvnpAnNBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zk1evXiQkP7l3PtdX/LNHEulOOw1Dg4gy6LWaEULdQ9QxiRl6gdN+yTNsQzKOxkWvM+KalJxOhuyDL03aoVoy0NgcpCsOecq/0sv9u2ZyADdF+7eGEP4BhzWadqpZcxZUF7RnW1O3bi5nmmctXNX9bTNFeqr/fp5WLMp/h78rhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkNQOUUx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17267C43390;
-	Sat,  3 Feb 2024 04:13:03 +0000 (UTC)
+	 MIME-Version; b=X1yQ/i0ZSuHUxdeVI8uWs6ujWFTIU8N08wF8GXtxHLI77WOLjMBtHjJN8EK3C7/KyOmcDy+LQraVcarRoX6EUS9rS4kRgHcagdK0t6+deRdFoH4P4pcU08tyNTsFqVckcA/fM4Zi55ae1Ns9UPWQUb8ia+V6sCQWTurJgNZtcvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBNcMps3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D9CC43394;
+	Sat,  3 Feb 2024 04:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933583;
-	bh=2ywu7LzzdX/3YoUEAi3FPBCNdf6EqnBSBAU779Alom8=;
+	s=korg; t=1706933808;
+	bh=j8Pwq+wqVMCT7/3IyW5uwV3uavZ3vffMwTJvnpAnNBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XkNQOUUxaFf0kY2ehgyaCJCJzjzrlB9fHDOAjPZHKggnKdw773FAjKVxowZi0BonA
-	 dTC9mG8mee/ZLXctq1Fpy6sTrJ3S5cuIjyRUHFNc5foCRtqY3VCn2Y6brck5JQszx2
-	 WpxrZv2mc82lEsZ6jTmZxC2zg9+Xg5Vik9B7F3B0=
+	b=UBNcMps3hWBZqIJBPMX2RCAvgtbEbwYx6ADv/LTkN6mONnZVrPJNpWrZadgP19uTT
+	 jHDe8OxSfmGFdPKePc95kNKjsPlM6sCgayyA/+w/MVYjJN2+6tMMDCbYrgaXw++rJM
+	 ighDqsek4U0QRRnCcgPSZ8ivTRocou6EhTABnm2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 145/322] Bluetooth: qca: Set both WIDEBAND_SPEECH and LE_STATES quirks for QCA2066
+Subject: [PATCH 6.7 124/353] ARM: dts: imx23-sansa: Use preferred i2c-gpios properties
 Date: Fri,  2 Feb 2024 20:04:02 -0800
-Message-ID: <20240203035403.857534401@linuxfoundation.org>
+Message-ID: <20240203035407.660436994@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 5d192b697c7417254cdd9edc3d5e9e0364eb9045 ]
+[ Upstream commit e3aa1a82fb20ee97597022f6528823a8ab82bde6 ]
 
-Set both WIDEBAND_SPEECH_SUPPORTED and VALID_LE_STATES quirks
-for QCA2066.
+The 'gpios' property to describe the SDA and SCL GPIOs is considered
+deprecated according to i2c-gpio.yaml.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Switch to the preferred 'sda-gpios' and 'scl-gpios' properties.
+
+This fixes the following schema warnings:
+
+imx23-sansa.dtb: i2c-0: 'sda-gpios' is a required property
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+imx23-sansa.dtb: i2c-0: 'scl-gpios' is a required property
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_qca.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 4b57e15f9c7a..ad940027e4b5 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -2035,6 +2035,7 @@ static const struct qca_device_data qca_soc_data_wcn3998 __maybe_unused = {
- static const struct qca_device_data qca_soc_data_qca6390 __maybe_unused = {
- 	.soc_type = QCA_QCA6390,
- 	.num_vregs = 0,
-+	.capabilities = QCA_CAP_WIDEBAND_SPEECH | QCA_CAP_VALID_LE_STATES,
- };
+diff --git a/arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts b/arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts
+index 636cf09a2b37..b23e7ada9c80 100644
+--- a/arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts
++++ b/arch/arm/boot/dts/nxp/mxs/imx23-sansa.dts
+@@ -175,10 +175,8 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		compatible = "i2c-gpio";
+-		gpios = <
+-			&gpio1 24 0		/* SDA */
+-			&gpio1 22 0		/* SCL */
+-		>;
++		sda-gpios = <&gpio1 24 0>;
++		scl-gpios = <&gpio1 22 0>;
+ 		i2c-gpio,delay-us = <2>;	/* ~100 kHz */
+ 	};
  
- static const struct qca_device_data qca_soc_data_wcn6750 __maybe_unused = {
+@@ -186,10 +184,8 @@
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		compatible = "i2c-gpio";
+-		gpios = <
+-			&gpio0 31 0		/* SDA */
+-			&gpio0 30 0		/* SCL */
+-		>;
++		sda-gpios = <&gpio0 31 0>;
++		scl-gpios = <&gpio0 30 0>;
+ 		i2c-gpio,delay-us = <2>;	/* ~100 kHz */
+ 
+ 		touch: touch@20 {
 -- 
 2.43.0
 
