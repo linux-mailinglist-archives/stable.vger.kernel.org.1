@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-17968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDBC38480D7
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA06C84822E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BFB21F216D4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 740A91F22E97
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F8312B9E;
-	Sat,  3 Feb 2024 04:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856EA199D9;
+	Sat,  3 Feb 2024 04:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9DeDhjs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snCSe727"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50C8199A2;
-	Sat,  3 Feb 2024 04:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E9710795;
+	Sat,  3 Feb 2024 04:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933449; cv=none; b=JrINkimw/tpdOkuwzUG7ZpW1fJWiFKIYebGrpla/8Sm1uNvPx7jdF9Oa/vnW/fTj52m6la7tC5njvJQm0a1CkLN3tKTVSJouPEO+3vo+kKsWqkTWlnfvGa90y8b200rzv9+W5kz53Jh0MyqKKqtb1WRFkrEk4KoWVmfDUOrDcMk=
+	t=1706933697; cv=none; b=jZjeeVN2c4H6GznxL1av02PUQO8qgZyMoyqs5/3CKQ+0YHPENTkwms0/cEB1jCeVaZzoxsKg3ttuc5PE5xbUgy/tbDfbDBwVSipdE5uIG6HtpE3FJLae0YzRQpJGnievK2uhtYr7IrthBjb+ce1TQ7AC+2HAxovMcvATMMG9Ups=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933449; c=relaxed/simple;
-	bh=FtXE+3jOCdLEkCMLfoKIpYnROVjka01bI+ZbslOqZGk=;
+	s=arc-20240116; t=1706933697; c=relaxed/simple;
+	bh=8IpqVoLxNjItVboBxsZHsjWfH86rP+4wFSEOhyQIUJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GTVkvSJa0yFaiFSYUXFAJgysT60kevYP6TumMMgUMq+aeKTjT0olrK1bcM5hRqziEWv5+bQ1Brxkg1P3d8iY2t/qpZYlOxIwmOoqkHQvQAXje+fgEEIs3uQH0loHuFQ0NIZXdG/KVHJ+nK51/6qZ9eKiCq8dScjN46KJhH6MSAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9DeDhjs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAAEC433F1;
-	Sat,  3 Feb 2024 04:10:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ldMf/Mi/Gtql92xJ9uqGKIkKtld55LjQgObmE+9fUyZUO1wO3CDvC7uV5VoY4ud5IC0DHf4XU3A2Zo54hRsBk2ZZdq0PIDMoYgKuL2PERJ104qSBn+vFvp8mas4k3rmYuOqLQLmyP+oK9tnenT3235m1yZmWiZ3lIMqEgIm4Kes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snCSe727; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008DFC43390;
+	Sat,  3 Feb 2024 04:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933449;
-	bh=FtXE+3jOCdLEkCMLfoKIpYnROVjka01bI+ZbslOqZGk=;
+	s=korg; t=1706933697;
+	bh=8IpqVoLxNjItVboBxsZHsjWfH86rP+4wFSEOhyQIUJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p9DeDhjspdjdF5lHXe31cG/FfcM1eM+CKU33CeQVIwIvdKFLajDMJOEUfpZcVtFrr
-	 51HVWiAetLQ444wkNUlttENovrdk90NS5t51hhrOIUoN8yD01oqdd8/wYq4dgqyTm4
-	 U8PpeDanfVyKeFE2t0QhTFy0anNTZDpBIRbtC9FA=
+	b=snCSe727EF+BjcxIvwHFuUiIA/5/eSTFlk35j/v+8nsqQ6hUkw9xkrca80gh5PRVf
+	 z4hBuJxhTiW5B5boeCdCMnpf6KD+dKLGS06kLyZamaOEqxWAyQdXWhtzJBChDOhkiR
+	 jKVbNNSGxMN1L46r0bmApfJV43piB0ZLg35IuE34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Stephen Rothwell <sfr@canb.auug.org.au>,
 	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 184/219] drm: using mul_u32_u32() requires linux/math64.h
-Date: Fri,  2 Feb 2024 20:05:57 -0800
-Message-ID: <20240203035342.518174180@linuxfoundation.org>
+Subject: [PATCH 6.6 261/322] drm: using mul_u32_u32() requires linux/math64.h
+Date: Fri,  2 Feb 2024 20:05:58 -0800
+Message-ID: <20240203035407.575435687@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
