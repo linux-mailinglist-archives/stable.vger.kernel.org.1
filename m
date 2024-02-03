@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-17952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F668480C6
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8616D848210
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FEC828C07B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31AB02881BC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7467612B8B;
-	Sat,  3 Feb 2024 04:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85E645034;
+	Sat,  3 Feb 2024 04:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3seZ5gc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkGRe/RL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31AE318AE8;
-	Sat,  3 Feb 2024 04:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8710B18EB1;
+	Sat,  3 Feb 2024 04:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933438; cv=none; b=cbIsR6TH6gFvTffMmPAOVhHII9p9uyQ8mm7EyxduW2OHqB47LSzYAX7PY4lBQfFUMRKRFe7adKxzLpnAuVfHGO2+1syfPVzBJk4/AG8vNpg+TKJz7WyzkrhJobF54Ffq2DGrb7sqFHjsHh9Saa0Yy1GNY4ll9pgDxcTWPu/x4Jw=
+	t=1706933675; cv=none; b=uZ2khqQgiH+8fCKlIamHOPgfC6ogUt5qIK5VDhh9xL6cGEbwcPMVwcAo4yooMzqFvV3zaVR2ZgEd7II/FLqhwQ1azCyZKp4IWOIQG6peWNPLcLyBDdHKb7/rqbEIjQV3nEMJVrw1XaYwh5LRo1J2IjCo8bGi2xePPqdOmosGZNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933438; c=relaxed/simple;
-	bh=0x56dwMoGXY3giwObkJKTMcDSKKgVvpaKpI5Kky4QVc=;
+	s=arc-20240116; t=1706933675; c=relaxed/simple;
+	bh=ocEDrnDlomAadB7ap2ZEMCby0kOwHARLFKDJfyrmokM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WmppIQJ5XAqHYj6gcTOjNByvjdZ8ZHfBweZ11Mxfgc4NZc/1AvzFttCqO4gwo1hNUCmRsWLupMBxotum3UsWon5iiDFCGhqK5QMphDk5YInHwrh4wtW/T4i04T/QMfJKW+QjI42Zn+fVLN7UnjtDhUojygPXMmokV0nvUYaKXFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3seZ5gc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98506C433C7;
-	Sat,  3 Feb 2024 04:10:37 +0000 (UTC)
+	 MIME-Version; b=D4rTbbVe57/PgfRPNlTI6pp1/za/nbJqOoDDPjPm3HCHFpPorripnPH0EVlQb0dp4y2TdZNDrCy6WfFUhCza9EyAD1tXq5vDZShBp0je+rRPhV+ZQyHMcsoA/+ngFV8jL4DrZ9lHaYk4adovVNFes8mdZImbhc/tYroSCKGcYlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkGRe/RL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F30AC433C7;
+	Sat,  3 Feb 2024 04:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933437;
-	bh=0x56dwMoGXY3giwObkJKTMcDSKKgVvpaKpI5Kky4QVc=;
+	s=korg; t=1706933675;
+	bh=ocEDrnDlomAadB7ap2ZEMCby0kOwHARLFKDJfyrmokM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e3seZ5gcQs+TisHjyPmVcjCely/4RXGKtLBw1i9TCWELNijhUKbPzOG5d/cMxvcdK
-	 /6wfnW2Jw0AJIuOvAqvNZsmFqYbXM9WXBikp4TrQ4O9gdZZV5ereEuDUnYzVtyolch
-	 aDfKlnd6mPSlRcKYyVgsryUrMfV1xJUQXBV0iDR0=
+	b=nkGRe/RLOl3QwR3ZLgZSR5mgoZPs6SsP+hDNPb8rA+5dYdhNK5aT10LYagWrO9C1W
+	 TIToxZFnlssRH09DnBFY41sFTudtdTMULq3Qk9Nis8/P0YtVLO/fDMWA6lViGtQ2uH
+	 e1eKJ5jd4+jerFX7UHozPrPpXPfbL9emu0/qFCNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Yinbo Zhu <zhuyinbo@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 167/219] PCI/AER: Decode Requester ID when no error info found
+Subject: [PATCH 6.6 243/322] usb: xhci-plat: fix usb disconnect issue after s4
 Date: Fri,  2 Feb 2024 20:05:40 -0800
-Message-ID: <20240203035340.038669460@linuxfoundation.org>
+Message-ID: <20240203035407.030083720@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Yinbo Zhu <zhuyinbo@loongson.cn>
 
-[ Upstream commit 1291b716bbf969e101d517bfb8ba18d958f758b8 ]
+[ Upstream commit 6d6887c42e946f43bed2e64571a40c8476a1e4a9 ]
 
-When a device with AER detects an error, it logs error information in its
-own AER Error Status registers.  It may send an Error Message to the Root
-Port (RCEC in the case of an RCiEP), which logs the fact that an Error
-Message was received (Root Error Status) and the Requester ID of the
-message source (Error Source Identification).
+The xhci retaining bogus hardware states cause usb disconnect devices
+connected before hibernation(s4) and refer to the commit 'f3d478858be
+("usb: ohci-platform: fix usb disconnect issue after s4")' which set
+flag "hibernated" as true when resume-from-hibernation and that the
+drivers will reset the hardware to get rid of any existing state and
+make sure resume from hibernation re-enumerates everything for xhci.
 
-aer_print_port_info() prints the Requester ID from the Root Port Error
-Source in the usual Linux "bb:dd.f" format, but when find_source_device()
-finds no error details in the hierarchy below the Root Port, it printed the
-raw Requester ID without decoding it.
-
-Decode the Requester ID in the usual Linux format so it matches other
-messages.
-
-Sample message changes:
-
-  - pcieport 0000:00:1c.5: AER: Correctable error received: 0000:00:1c.5
-  - pcieport 0000:00:1c.5: AER: can't find device of ID00e5
-  + pcieport 0000:00:1c.5: AER: Correctable error message received from 0000:00:1c.5
-  + pcieport 0000:00:1c.5: AER: found no error details for 0000:00:1c.5
-
-Link: https://lore.kernel.org/r/20231206224231.732765-3-helgaas@kernel.org
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Signed-off-by: Yinbo Zhu <zhuyinbo@loongson.cn>
+Link: https://lore.kernel.org/r/20231228071113.1719-1-zhuyinbo@loongson.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aer.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-plat.c | 23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index e2d8a74f83c3..5426f450ce91 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -748,7 +748,7 @@ static void aer_print_port_info(struct pci_dev *dev, struct aer_err_info *info)
- 	u8 bus = info->id >> 8;
- 	u8 devfn = info->id & 0xff;
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index 732cdeb73920..f0853c4478f5 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -433,7 +433,7 @@ void xhci_plat_remove(struct platform_device *dev)
+ }
+ EXPORT_SYMBOL_GPL(xhci_plat_remove);
  
--	pci_info(dev, "%s%s error received: %04x:%02x:%02x.%d\n",
-+	pci_info(dev, "%s%s error message received from %04x:%02x:%02x.%d\n",
- 		 info->multi_error_valid ? "Multiple " : "",
- 		 aer_error_severity_string[info->severity],
- 		 pci_domain_nr(dev->bus), bus, PCI_SLOT(devfn),
-@@ -936,7 +936,12 @@ static bool find_source_device(struct pci_dev *parent,
- 		pci_walk_bus(parent->subordinate, find_device_iter, e_info);
+-static int __maybe_unused xhci_plat_suspend(struct device *dev)
++static int xhci_plat_suspend(struct device *dev)
+ {
+ 	struct usb_hcd	*hcd = dev_get_drvdata(dev);
+ 	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
+@@ -461,7 +461,7 @@ static int __maybe_unused xhci_plat_suspend(struct device *dev)
+ 	return 0;
+ }
  
- 	if (!e_info->error_dev_num) {
--		pci_info(parent, "can't find device of ID%04x\n", e_info->id);
-+		u8 bus = e_info->id >> 8;
-+		u8 devfn = e_info->id & 0xff;
+-static int __maybe_unused xhci_plat_resume(struct device *dev)
++static int xhci_plat_resume_common(struct device *dev, struct pm_message pmsg)
+ {
+ 	struct usb_hcd	*hcd = dev_get_drvdata(dev);
+ 	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
+@@ -483,7 +483,7 @@ static int __maybe_unused xhci_plat_resume(struct device *dev)
+ 	if (ret)
+ 		goto disable_clks;
+ 
+-	ret = xhci_resume(xhci, PMSG_RESUME);
++	ret = xhci_resume(xhci, pmsg);
+ 	if (ret)
+ 		goto disable_clks;
+ 
+@@ -502,6 +502,16 @@ static int __maybe_unused xhci_plat_resume(struct device *dev)
+ 	return ret;
+ }
+ 
++static int xhci_plat_resume(struct device *dev)
++{
++	return xhci_plat_resume_common(dev, PMSG_RESUME);
++}
 +
-+		pci_info(parent, "found no error details for %04x:%02x:%02x.%d\n",
-+			 pci_domain_nr(parent->bus), bus, PCI_SLOT(devfn),
-+			 PCI_FUNC(devfn));
- 		return false;
- 	}
- 	return true;
++static int xhci_plat_restore(struct device *dev)
++{
++	return xhci_plat_resume_common(dev, PMSG_RESTORE);
++}
++
+ static int __maybe_unused xhci_plat_runtime_suspend(struct device *dev)
+ {
+ 	struct usb_hcd  *hcd = dev_get_drvdata(dev);
+@@ -524,7 +534,12 @@ static int __maybe_unused xhci_plat_runtime_resume(struct device *dev)
+ }
+ 
+ const struct dev_pm_ops xhci_plat_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(xhci_plat_suspend, xhci_plat_resume)
++	.suspend = pm_sleep_ptr(xhci_plat_suspend),
++	.resume = pm_sleep_ptr(xhci_plat_resume),
++	.freeze = pm_sleep_ptr(xhci_plat_suspend),
++	.thaw = pm_sleep_ptr(xhci_plat_resume),
++	.poweroff = pm_sleep_ptr(xhci_plat_suspend),
++	.restore = pm_sleep_ptr(xhci_plat_restore),
+ 
+ 	SET_RUNTIME_PM_OPS(xhci_plat_runtime_suspend,
+ 			   xhci_plat_runtime_resume,
 -- 
 2.43.0
 
