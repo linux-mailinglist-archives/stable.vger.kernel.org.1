@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-18414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094C08482A1
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54488848028
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:08:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 897C41F21342
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4A3D1F2BA84
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C39A011188;
-	Sat,  3 Feb 2024 04:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B8110782;
+	Sat,  3 Feb 2024 04:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWGlIU5M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guXtG+lf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A8C1426C;
-	Sat,  3 Feb 2024 04:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6874101C6;
+	Sat,  3 Feb 2024 04:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933781; cv=none; b=BU4FzcuEgRfaE4L4HSevCmro8Q9YogL/VX0c57kPPZQwSe/KfMzHCmSfedUjo9zqeLx1Xjy8p4wtoKXz0IXsRasuv8I7EPqNcrXHM1qfyiblrVz7dySk9Yp3pd4THgWHc41yQcnDnsGGXKH5Xs15ymI5B2iyBR/31EW80lO9PZc=
+	t=1706933322; cv=none; b=q/9vbkL+f27apPyxPRodWrAOMAAcBrxX250/h6Qgx7ECJyUpBzW7XzvnTtCawwRCPD+GWZN/a2M+k+1igWtlppcwHPoK/jKc7y/FIXm9W7BY1Vk38qtknCE2xqBF4d5+Fuqkb3UtKZ1KCByepmuzCFGkaBQTpbIbbHtVEvhsifg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933781; c=relaxed/simple;
-	bh=g4OD4mT6Og/j4a0qCnK0hJXDLEvHO+H35b6matCVqp0=;
+	s=arc-20240116; t=1706933322; c=relaxed/simple;
+	bh=wogkyy7hKcDuE47eETUbekm2iYlloKdGhUEX3Plgjlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZsnkB7XLzDI63G+qthAlZoa+2Kbj5iugK3b5mxk/svK6EW59H9CHDu8qE5ssoohEJQZ8UjcHwSyXpuBZGKEgD2XS0FApRiPL8wRCY9RDo8V2no3uxvbV37nxVobbzdpGAf6LJNhZTdd0bauYbxqKjWTWRnKfdEawFc01Y4NhQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWGlIU5M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A32BC43390;
-	Sat,  3 Feb 2024 04:16:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LPKi7T7m0fO+MWI5KHKH0IAPix6VvDDi0lDCBikzw0k0tou3p/4t53RXFa+xxcFJbhlj8d03nZrupN69paZhlCm6qSyIQ7H+xT5kNEfapRe9nY5Xt6jxIBXFCLW7cWqDy1vx6QpBEbwpKGDaeYsDv+ZnNN5aR153WvGw8X/as/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guXtG+lf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623A4C433C7;
+	Sat,  3 Feb 2024 04:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933781;
-	bh=g4OD4mT6Og/j4a0qCnK0hJXDLEvHO+H35b6matCVqp0=;
+	s=korg; t=1706933322;
+	bh=wogkyy7hKcDuE47eETUbekm2iYlloKdGhUEX3Plgjlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OWGlIU5MnatGdzv1zBb9SI+BSg/uCF4+Qgq0dzosvQkRw/I0XLp258ei8uerYTutZ
-	 bqAs7uBOma4d/hFBC2wqTDiQyM4ooDhm9x7+lqaoIuPgfTlHFvDGMNgVx7k/QGZj67
-	 Zk+2TPMjD75LJXyeOFbgCpD4vgYA/i5XSmu7uJ88=
+	b=guXtG+lf72Fxihr8ws0Kp/evKD2fhFPLhYa/VceJtbg0wDzCpzs8tFlJHRA4k6ZGD
+	 Mpl9rsnvnA0cfeZAKNOa8voKg6GHhMY1/oZguDnPXZtT+h/KKb+sDJn8UdfA+5qn6B
+	 bh7LwIMLiqtQKuaSLwpx5UZjnXKgs6ek8zMfyzS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 061/353] ext4: remove unnecessary check from alloc_flex_gd()
-Date: Fri,  2 Feb 2024 20:02:59 -0800
-Message-ID: <20240203035405.730668368@linuxfoundation.org>
+Subject: [PATCH 6.1 007/219] powerpc/64s: Fix CONFIG_NUMA=n build due to create_section_mapping()
+Date: Fri,  2 Feb 2024 20:03:00 -0800
+Message-ID: <20240203035318.010856221@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +59,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit b099eb87de105cf07cad731ded6fb40b2675108b ]
+[ Upstream commit ede66cd22441820cbd399936bf84fdc4294bc7fa ]
 
-In commit 967ac8af4475 ("ext4: fix potential integer overflow in
-alloc_flex_gd()"), an overflow check is added to alloc_flex_gd() to
-prevent the allocated memory from being smaller than expected due to
-the overflow. However, after kmalloc() is replaced with kmalloc_array()
-in commit 6da2ec56059c ("treewide: kmalloc() -> kmalloc_array()"), the
-kmalloc_array() function has an overflow check, so the above problem
-will not occur. Therefore, the extra check is removed.
+With CONFIG_NUMA=n the build fails with:
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231023013057.2117948-3-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 5d1935ac02ca ("ext4: avoid online resizing failures due to oversized flex bg")
+  arch/powerpc/mm/book3s64/pgtable.c:275:15: error: no previous prototype for ‘create_section_mapping’ [-Werror=missing-prototypes]
+  275 | int __meminit create_section_mapping(unsigned long start, unsigned long end,
+      |               ^~~~~~~~~~~~~~~~~~~~~~
+
+That happens because the prototype for create_section_mapping() is in
+asm/mmzone.h, but asm/mmzone.h is only included by linux/mmzone.h
+when CONFIG_NUMA=y.
+
+In fact the prototype is only needed by arch/powerpc/mm code, so move
+the prototype into arch/powerpc/mm/mmu_decl.h, which also fixes the
+build error.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231129131919.2528517-5-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/resize.c | 3 ---
- 1 file changed, 3 deletions(-)
+ arch/powerpc/include/asm/mmzone.h | 5 -----
+ arch/powerpc/mm/mmu_decl.h        | 5 +++++
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
-index c6d4539d4c1f..0a57b199883c 100644
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -236,10 +236,7 @@ static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned int flexbg_size)
- 	if (flex_gd == NULL)
- 		goto out3;
+diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
+index 3764d3585d30..da827d2d0866 100644
+--- a/arch/powerpc/include/asm/mmzone.h
++++ b/arch/powerpc/include/asm/mmzone.h
+@@ -43,10 +43,5 @@ u64 memory_hotplug_max(void);
+ #define memory_hotplug_max() memblock_end_of_DRAM()
+ #endif /* CONFIG_NUMA */
  
--	if (flexbg_size >= UINT_MAX / sizeof(struct ext4_new_group_data))
--		goto out2;
- 	flex_gd->count = flexbg_size;
+-#ifdef CONFIG_MEMORY_HOTPLUG
+-extern int create_section_mapping(unsigned long start, unsigned long end,
+-				  int nid, pgprot_t prot);
+-#endif
 -
- 	flex_gd->groups = kmalloc_array(flexbg_size,
- 					sizeof(struct ext4_new_group_data),
- 					GFP_NOFS);
+ #endif /* __KERNEL__ */
+ #endif /* _ASM_MMZONE_H_ */
+diff --git a/arch/powerpc/mm/mmu_decl.h b/arch/powerpc/mm/mmu_decl.h
+index bd9784f77f2e..71250605b784 100644
+--- a/arch/powerpc/mm/mmu_decl.h
++++ b/arch/powerpc/mm/mmu_decl.h
+@@ -179,3 +179,8 @@ static inline bool debug_pagealloc_enabled_or_kfence(void)
+ {
+ 	return IS_ENABLED(CONFIG_KFENCE) || debug_pagealloc_enabled();
+ }
++
++#ifdef CONFIG_MEMORY_HOTPLUG
++int create_section_mapping(unsigned long start, unsigned long end,
++			   int nid, pgprot_t prot);
++#endif
 -- 
 2.43.0
 
