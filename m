@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-18235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21FE18481EB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B1B98480D3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C85AD281C96
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA8251F21AC4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0294242AB1;
-	Sat,  3 Feb 2024 04:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6736418EBB;
+	Sat,  3 Feb 2024 04:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GW6Ssgk8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfyPh9EP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B8710965;
-	Sat,  3 Feb 2024 04:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F5812B9E;
+	Sat,  3 Feb 2024 04:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933647; cv=none; b=r7hZ3Rm6PBRdNwPaV5YhPGAwoiM9HfN43J6fE+tGgLDvHBRjG7oKTfQvimgLjzDMhelqklbNNAe0NmoYtOa2iTsTzVjWEG9X1CrVNGRMhPJrFLuzOR4Hb+FQCCHOvaakGUQIsfsokTNOFQB/AJNWDkBP6o0YyZUlZ5sKgV/yrTA=
+	t=1706933446; cv=none; b=qAt9xtzQirC/yVUn6eryphFRYnoNbKfY7JLAwuelGj9WgYVsKslmx/sXGuRjj0zUosbwsl1BRJP35T8jyEpSbbxHzyYaIK6wQvOjF4cVBMYolr12ew1uCljGkcWA2ayAg4WX9qwbahOPk0KG1H/NXwoMeOZDyRLZZof1jrwJAog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933647; c=relaxed/simple;
-	bh=9NcnF+CZYd8mQKxMEyQjPxkLXNMWTuvBcpo7kwJtZ+Y=;
+	s=arc-20240116; t=1706933446; c=relaxed/simple;
+	bh=HhbeVmbjV0FhZ+5A1p7oFlpNnKwv90Pwv39c38Cuf40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/pHQCMxOd6Xhjm97myxZDwsrCc15IY5Z3wTugwTfyNxQ2PZuphrtZiVcykatAt52AjZ6ldorXtQr7KumPAU7ME6c/9H6iaUbwqXuOWnm8xP5GtcMg8SLsiefjLUD8NBoH1QGAxs6nSjod1fnfn6uUw3nLrMIJP3McLEqhcrWqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GW6Ssgk8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78EF9C433A6;
-	Sat,  3 Feb 2024 04:14:07 +0000 (UTC)
+	 MIME-Version; b=mt3EryfghQHCPvKNQSGuoOM57YWGAFAIHUMoNogKgiyxWUkdJvCtfJE8IabcVnaJUhwrn3UrZHhT0cfjSeQlv8wZCnY+O45xjhdxF4DqwnW9iby15aAdgIXGsPsG/i0nPvsRtxcm8WqlniVcEicgkV/Tfp13ip5V9Xud6G+Onz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfyPh9EP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E540CC43390;
+	Sat,  3 Feb 2024 04:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933647;
-	bh=9NcnF+CZYd8mQKxMEyQjPxkLXNMWTuvBcpo7kwJtZ+Y=;
+	s=korg; t=1706933446;
+	bh=HhbeVmbjV0FhZ+5A1p7oFlpNnKwv90Pwv39c38Cuf40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GW6Ssgk8co1n/EoWtlND/0lyY15NAufkn7kmULTBROy5efKuQgT/LM+1nVuQs1oQS
-	 nuXsXtFrARjMgkxjxWG5ffudo/XlykbsENnPdfz+03yRz9TmM20JCB9+OO09bMmxUE
-	 jtR/vKRsCdcvCWnzuDpQbQ14sgSkp8lvRLXQP5r8=
+	b=pfyPh9EP1ndwZjVHlq0096dmmzVc472y0GhDlYcU5zp7mpXFzOP1gc0hC+L0jeNIj
+	 1MB6We9KF6N8oU7R+b5NTZMWWNmt0oV2on3JgJfWYIHUDiY/zVnfvJKihtlETTWp/r
+	 DpywEuCbVRYM6VBQKQLPU5aX00UNpQHhzPDrsbrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Stodden <dns@arista.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	Dmitry Safonov <dima@arista.com>,
+	Peter Robinson <pbrobinson@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 230/322] PCI: switchtec: Fix stdev_release() crash after surprise hot remove
+Subject: [PATCH 6.1 154/219] mfd: ti_am335x_tscadc: Fix TI SoC dependencies
 Date: Fri,  2 Feb 2024 20:05:27 -0800
-Message-ID: <20240203035406.632880482@linuxfoundation.org>
+Message-ID: <20240203035338.403327698@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Stodden <dns@arista.com>
+From: Peter Robinson <pbrobinson@gmail.com>
 
-[ Upstream commit df25461119d987b8c81d232cfe4411e91dcabe66 ]
+[ Upstream commit 284d16c456e5d4b143f375b8ccc4038ab3f4ee0f ]
 
-A PCI device hot removal may occur while stdev->cdev is held open. The call
-to stdev_release() then happens during close or exit, at a point way past
-switchtec_pci_remove(). Otherwise the last ref would vanish with the
-trailing put_device(), just before return.
+The ti_am335x_tscadc is specific to some TI SoCs, update
+the dependencies for those SoCs and compile testing.
 
-At that later point in time, the devm cleanup has already removed the
-stdev->mmio_mrpc mapping. Also, the stdev->pdev reference was not a counted
-one. Therefore, in DMA mode, the iowrite32() in stdev_release() will cause
-a fatal page fault, and the subsequent dma_free_coherent(), if reached,
-would pass a stale &stdev->pdev->dev pointer.
-
-Fix by moving MRPC DMA shutdown into switchtec_pci_remove(), after
-stdev_kill(). Counting the stdev->pdev ref is now optional, but may prevent
-future accidents.
-
-Reproducible via the script at
-https://lore.kernel.org/r/20231113212150.96410-1-dns@arista.com
-
-Link: https://lore.kernel.org/r/20231122042316.91208-2-dns@arista.com
-Signed-off-by: Daniel Stodden <dns@arista.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Reviewed-by: Dmitry Safonov <dima@arista.com>
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+Link: https://lore.kernel.org/r/20231220155643.445849-1-pbrobinson@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/switch/switchtec.c | 25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ drivers/mfd/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pci/switch/switchtec.c b/drivers/pci/switch/switchtec.c
-index 5b921387eca6..1804794d0e68 100644
---- a/drivers/pci/switch/switchtec.c
-+++ b/drivers/pci/switch/switchtec.c
-@@ -1308,13 +1308,6 @@ static void stdev_release(struct device *dev)
- {
- 	struct switchtec_dev *stdev = to_stdev(dev);
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index 9da8235cb690..43cb511fd8ba 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -1440,6 +1440,7 @@ config MFD_DAVINCI_VOICECODEC
  
--	if (stdev->dma_mrpc) {
--		iowrite32(0, &stdev->mmio_mrpc->dma_en);
--		flush_wc_buf(stdev);
--		writeq(0, &stdev->mmio_mrpc->dma_addr);
--		dma_free_coherent(&stdev->pdev->dev, sizeof(*stdev->dma_mrpc),
--				stdev->dma_mrpc, stdev->dma_mrpc_dma_addr);
--	}
- 	kfree(stdev);
- }
- 
-@@ -1358,7 +1351,7 @@ static struct switchtec_dev *stdev_create(struct pci_dev *pdev)
- 		return ERR_PTR(-ENOMEM);
- 
- 	stdev->alive = true;
--	stdev->pdev = pdev;
-+	stdev->pdev = pci_dev_get(pdev);
- 	INIT_LIST_HEAD(&stdev->mrpc_queue);
- 	mutex_init(&stdev->mrpc_mutex);
- 	stdev->mrpc_busy = 0;
-@@ -1391,6 +1384,7 @@ static struct switchtec_dev *stdev_create(struct pci_dev *pdev)
- 	return stdev;
- 
- err_put:
-+	pci_dev_put(stdev->pdev);
- 	put_device(&stdev->dev);
- 	return ERR_PTR(rc);
- }
-@@ -1644,6 +1638,18 @@ static int switchtec_init_pci(struct switchtec_dev *stdev,
- 	return 0;
- }
- 
-+static void switchtec_exit_pci(struct switchtec_dev *stdev)
-+{
-+	if (stdev->dma_mrpc) {
-+		iowrite32(0, &stdev->mmio_mrpc->dma_en);
-+		flush_wc_buf(stdev);
-+		writeq(0, &stdev->mmio_mrpc->dma_addr);
-+		dma_free_coherent(&stdev->pdev->dev, sizeof(*stdev->dma_mrpc),
-+				  stdev->dma_mrpc, stdev->dma_mrpc_dma_addr);
-+		stdev->dma_mrpc = NULL;
-+	}
-+}
-+
- static int switchtec_pci_probe(struct pci_dev *pdev,
- 			       const struct pci_device_id *id)
- {
-@@ -1703,6 +1709,9 @@ static void switchtec_pci_remove(struct pci_dev *pdev)
- 	ida_free(&switchtec_minor_ida, MINOR(stdev->dev.devt));
- 	dev_info(&stdev->dev, "unregistered.\n");
- 	stdev_kill(stdev);
-+	switchtec_exit_pci(stdev);
-+	pci_dev_put(stdev->pdev);
-+	stdev->pdev = NULL;
- 	put_device(&stdev->dev);
- }
- 
+ config MFD_TI_AM335X_TSCADC
+ 	tristate "TI ADC / Touch Screen chip support"
++	depends on ARCH_OMAP2PLUS || ARCH_K3 || COMPILE_TEST
+ 	select MFD_CORE
+ 	select REGMAP
+ 	select REGMAP_MMIO
 -- 
 2.43.0
 
