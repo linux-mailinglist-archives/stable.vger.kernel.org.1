@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-18458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24F98482CD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 081F5848067
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55B9F1F22F4F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B84E228BF06
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08281C29F;
-	Sat,  3 Feb 2024 04:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E32A134CA;
+	Sat,  3 Feb 2024 04:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhCmc3fS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Se0PVhJP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FBDB13AC6;
-	Sat,  3 Feb 2024 04:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD46B134C1;
+	Sat,  3 Feb 2024 04:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933813; cv=none; b=Dlg4W+v5omDDaF1QUDbQhYdrjW6qKEukNtrY4GZ9A694U71WKZcmiaUBc/n2VTnzqhYA8FSX+xIRwl2vNU4ek/Xv3scI6wjtBgwz9s2W7rkN1KpH5P8W6GHzJXf+z+wMvfixLUEgrMnuvDgC8B3TpyM/M3/RfKkdjx3samK/GJc=
+	t=1706933368; cv=none; b=jjA8WPp/7qw0BrAxF+zGfwZLvK/OlnsEDJbQXD2H6jphxCl2eJGoAPISfcIcPDC0RwTzNiP0P4lq4MeQMN94Wj6GAVTPGr6/q1eDhbLJvKqn2Ums3OSdt3PNcHW9Ot8qHBUw6v1WiM2UDoFfyiNAeh9hRzpV3G555NwttZXdZNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933813; c=relaxed/simple;
-	bh=O7AmCnhorDsluDHacePlfy8sxq74fJTOs9b9VnEuthU=;
+	s=arc-20240116; t=1706933368; c=relaxed/simple;
+	bh=E65ZQWj9d7qoRpfMa8Jzb593JJBcZ7p4ukRtey2e9I0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f0aaMIeAlwubB1AyTSED6Hcg1RyJUNZk05//MkZhlcEmoZxX4EqQKUCzyExKu0TxOr2XGsdIE9VcQyWOnM2JEvoAEmlV9lgZU+zwNrFI0PNMtzN1rBj8ENqcNOHNfwN/scUmRuUaTVvfj/PZUZ6SiJHyOT9lSOWrtM/yI/lAhKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhCmc3fS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A157C433C7;
-	Sat,  3 Feb 2024 04:16:53 +0000 (UTC)
+	 MIME-Version; b=WVDMBi27LdpPTH5TJ4ywaJ5pHOnE5CFx+PbA3se5GHarOsYiySTDbeas65cG2QGFvlonW7nEWNQRH6d8zArnOm5x6Gni6sCgwgUWuqYyU6yNpaaLolqfMPuN8eX1f68aMTFLY51M8yflrVc+4YlSnjBMcoHUsTgGZ7RNCBrPqWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Se0PVhJP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95092C433C7;
+	Sat,  3 Feb 2024 04:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933813;
-	bh=O7AmCnhorDsluDHacePlfy8sxq74fJTOs9b9VnEuthU=;
+	s=korg; t=1706933368;
+	bh=E65ZQWj9d7qoRpfMa8Jzb593JJBcZ7p4ukRtey2e9I0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FhCmc3fSo+TAPyKh6z3KfaTK4hkoRlU70+KRbkHjRQAZW7A+3R+D/5OXvZO7Sldlc
-	 kmST7sMOVqgmUuZaMoC7zLMqNPaE8TxVaWF/bCl2t8j87OHplVHvX46UHdeWECJ5eQ
-	 hJkxRpe443EXl3m/P2r80uTAC+zSVXS0CfgJpbaQ=
+	b=Se0PVhJPI3bwnNO9dTgQJyjsMQ3DHjzFD5YhrlSkwP2fe2flSvGxlSclYHLMsq4gS
+	 +UDKxAdqtmXKosRzSS3JSZCjtCRaxTsrkbbRYWUn6UR5xlFg0AMmaVKcaVUYadi1yb
+	 prpwwZslios40PAbn28NXzjzoTM23BTUVf90HTsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Tobias Waldekranz <tobias@waldekranz.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	kernel test robot <lkp@intel.com>,
+	"Md. Haris Iqbal" <haris.iqbal@ionos.com>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org,
+	Kees Cook <keescook@chromium.org>,
+	Guoqing Jiang <guoqing.jiang@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 131/353] net: dsa: mv88e6xxx: Fix mv88e6352_serdes_get_stats error path
+Subject: [PATCH 6.1 076/219] block/rnbd-srv: Check for unlikely string overflow
 Date: Fri,  2 Feb 2024 20:04:09 -0800
-Message-ID: <20240203035407.866796273@linuxfoundation.org>
+Message-ID: <20240203035327.793760130@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +67,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobias Waldekranz <tobias@waldekranz.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit fc82a08ae795ee6b73fb6b50785f7be248bec7b5 ]
+[ Upstream commit 9e4bf6a08d1e127bcc4bd72557f2dfafc6bc7f41 ]
 
-mv88e6xxx_get_stats, which collects stats from various sources,
-expects all callees to return the number of stats read. If an error
-occurs, 0 should be returned.
+Since "dev_search_path" can technically be as large as PATH_MAX,
+there was a risk of truncation when copying it and a second string
+into "full_path" since it was also PATH_MAX sized. The W=1 builds were
+reporting this warning:
 
-Prevent future mishaps of this kind by updating the return type to
-reflect this contract.
+drivers/block/rnbd/rnbd-srv.c: In function 'process_msg_open.isra':
+drivers/block/rnbd/rnbd-srv.c:616:51: warning: '%s' directive output may be truncated writing up to 254 bytes into a region of size between 0 and 4095 [-Wformat-truncation=]
+  616 |                 snprintf(full_path, PATH_MAX, "%s/%s",
+      |                                                   ^~
+In function 'rnbd_srv_get_full_path',
+    inlined from 'process_msg_open.isra' at drivers/block/rnbd/rnbd-srv.c:721:14: drivers/block/rnbd/rnbd-srv.c:616:17: note: 'snprintf' output between 2 and 4351 bytes into a destination of size 4096
+  616 |                 snprintf(full_path, PATH_MAX, "%s/%s",
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  617 |                          dev_search_path, dev_name);
+      |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+To fix this, unconditionally check for truncation (as was already done
+for the case where "%SESSNAME%" was present).
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312100355.lHoJPgKy-lkp@intel.com/
+Cc: Md. Haris Iqbal <haris.iqbal@ionos.com>
+Cc: Jack Wang <jinpu.wang@ionos.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc:  <linux-block@vger.kernel.org>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Acked-by: Guoqing Jiang <guoqing.jiang@linux.dev>
+Acked-by: Jack Wang <jinpu.wang@ionos.com>
+Link: https://lore.kernel.org/r/20231212214738.work.169-kees@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.h   |  4 ++--
- drivers/net/dsa/mv88e6xxx/serdes.c | 10 +++++-----
- drivers/net/dsa/mv88e6xxx/serdes.h |  8 ++++----
- 3 files changed, 11 insertions(+), 11 deletions(-)
+ drivers/block/rnbd/rnbd-srv.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.h b/drivers/net/dsa/mv88e6xxx/chip.h
-index 44383a03ef2f..c54d305a1d83 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.h
-+++ b/drivers/net/dsa/mv88e6xxx/chip.h
-@@ -601,8 +601,8 @@ struct mv88e6xxx_ops {
- 	int (*serdes_get_sset_count)(struct mv88e6xxx_chip *chip, int port);
- 	int (*serdes_get_strings)(struct mv88e6xxx_chip *chip,  int port,
- 				  uint8_t *data);
--	int (*serdes_get_stats)(struct mv88e6xxx_chip *chip,  int port,
--				uint64_t *data);
-+	size_t (*serdes_get_stats)(struct mv88e6xxx_chip *chip, int port,
-+				   uint64_t *data);
- 
- 	/* SERDES registers for ethtool */
- 	int (*serdes_get_regs_len)(struct mv88e6xxx_chip *chip,  int port);
-diff --git a/drivers/net/dsa/mv88e6xxx/serdes.c b/drivers/net/dsa/mv88e6xxx/serdes.c
-index 3b4b42651fa3..01ea53940786 100644
---- a/drivers/net/dsa/mv88e6xxx/serdes.c
-+++ b/drivers/net/dsa/mv88e6xxx/serdes.c
-@@ -177,8 +177,8 @@ static uint64_t mv88e6352_serdes_get_stat(struct mv88e6xxx_chip *chip,
- 	return val;
- }
- 
--int mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
--			       uint64_t *data)
-+size_t mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
-+				  uint64_t *data)
+diff --git a/drivers/block/rnbd/rnbd-srv.c b/drivers/block/rnbd/rnbd-srv.c
+index 2cfed2e58d64..ad451224e663 100644
+--- a/drivers/block/rnbd/rnbd-srv.c
++++ b/drivers/block/rnbd/rnbd-srv.c
+@@ -587,6 +587,7 @@ static char *rnbd_srv_get_full_path(struct rnbd_srv_session *srv_sess,
  {
- 	struct mv88e6xxx_port *mv88e6xxx_port = &chip->ports[port];
- 	struct mv88e6352_serdes_hw_stat *stat;
-@@ -187,7 +187,7 @@ int mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
+ 	char *full_path;
+ 	char *a, *b;
++	int len;
  
- 	err = mv88e6352_g2_scratch_port_has_serdes(chip, port);
- 	if (err <= 0)
--		return err;
-+		return 0;
+ 	full_path = kmalloc(PATH_MAX, GFP_KERNEL);
+ 	if (!full_path)
+@@ -598,19 +599,19 @@ static char *rnbd_srv_get_full_path(struct rnbd_srv_session *srv_sess,
+ 	 */
+ 	a = strnstr(dev_search_path, "%SESSNAME%", sizeof(dev_search_path));
+ 	if (a) {
+-		int len = a - dev_search_path;
++		len = a - dev_search_path;
  
- 	BUILD_BUG_ON(ARRAY_SIZE(mv88e6352_serdes_hw_stats) >
- 		     ARRAY_SIZE(mv88e6xxx_port->serdes_stats));
-@@ -429,8 +429,8 @@ static uint64_t mv88e6390_serdes_get_stat(struct mv88e6xxx_chip *chip, int lane,
- 	return reg[0] | ((u64)reg[1] << 16) | ((u64)reg[2] << 32);
- }
+ 		len = snprintf(full_path, PATH_MAX, "%.*s/%s/%s", len,
+ 			       dev_search_path, srv_sess->sessname, dev_name);
+-		if (len >= PATH_MAX) {
+-			pr_err("Too long path: %s, %s, %s\n",
+-			       dev_search_path, srv_sess->sessname, dev_name);
+-			kfree(full_path);
+-			return ERR_PTR(-EINVAL);
+-		}
+ 	} else {
+-		snprintf(full_path, PATH_MAX, "%s/%s",
+-			 dev_search_path, dev_name);
++		len = snprintf(full_path, PATH_MAX, "%s/%s",
++			       dev_search_path, dev_name);
++	}
++	if (len >= PATH_MAX) {
++		pr_err("Too long path: %s, %s, %s\n",
++		       dev_search_path, srv_sess->sessname, dev_name);
++		kfree(full_path);
++		return ERR_PTR(-EINVAL);
+ 	}
  
--int mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
--			       uint64_t *data)
-+size_t mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
-+				  uint64_t *data)
- {
- 	struct mv88e6390_serdes_hw_stat *stat;
- 	int lane;
-diff --git a/drivers/net/dsa/mv88e6xxx/serdes.h b/drivers/net/dsa/mv88e6xxx/serdes.h
-index aac95cab46e3..ff5c3ab31e15 100644
---- a/drivers/net/dsa/mv88e6xxx/serdes.h
-+++ b/drivers/net/dsa/mv88e6xxx/serdes.h
-@@ -127,13 +127,13 @@ unsigned int mv88e6390_serdes_irq_mapping(struct mv88e6xxx_chip *chip,
- int mv88e6352_serdes_get_sset_count(struct mv88e6xxx_chip *chip, int port);
- int mv88e6352_serdes_get_strings(struct mv88e6xxx_chip *chip,
- 				 int port, uint8_t *data);
--int mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
--			       uint64_t *data);
-+size_t mv88e6352_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
-+				  uint64_t *data);
- int mv88e6390_serdes_get_sset_count(struct mv88e6xxx_chip *chip, int port);
- int mv88e6390_serdes_get_strings(struct mv88e6xxx_chip *chip,
- 				 int port, uint8_t *data);
--int mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
--			       uint64_t *data);
-+size_t mv88e6390_serdes_get_stats(struct mv88e6xxx_chip *chip, int port,
-+				  uint64_t *data);
- 
- int mv88e6352_serdes_get_regs_len(struct mv88e6xxx_chip *chip, int port);
- void mv88e6352_serdes_get_regs(struct mv88e6xxx_chip *chip, int port, void *_p);
+ 	/* eliminitate duplicated slashes */
 -- 
 2.43.0
 
