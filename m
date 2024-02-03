@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-17808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF8984802F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9A0848184
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C89828BEA8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 534D0282B01
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4D910A1C;
-	Sat,  3 Feb 2024 04:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD372C690;
+	Sat,  3 Feb 2024 04:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGcFtWtY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dpiSYjUi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DC410A1B;
-	Sat,  3 Feb 2024 04:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458572C68E;
+	Sat,  3 Feb 2024 04:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933328; cv=none; b=BcWzgq31CH4NyhsiJBMCr4WaiYCN47i9dmj4PN3Y6etrv4ezDToK+5q+fZrGe1+WmtrImu3yF9UyIDp5s7VnoxVq1B3KnTRS3+6lCgCDAjs5cV2SM0HLAKimt1F74WtWPxQuJ9AiffgOvM+034Npb0rvFbqryN4nemORR1S3dto=
+	t=1706933572; cv=none; b=M4PKcbEgyu3yrlMxmz03lkxwM6DciCFuK8uyT6/dQzPzMHDSS8HNnvOZCiw/pqIQVE3l299hrb/mcM/GH/obUFygtBvExowybrnCKRnJwvaXDT0dcpEy4LALvD5WKQBbBWUn7snf3J4tY2dxy8LMQN/aJmY7xq3WrUAdqmsbl94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933328; c=relaxed/simple;
-	bh=nK2wCFNr2sSGQa0HJn2esS5t6mnCf/ekX4Em4TDGQPg=;
+	s=arc-20240116; t=1706933572; c=relaxed/simple;
+	bh=FKn//aFH4tjNzgvyeqamkVcPvynE+d9eFrOv+0jc704=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VrUgMRLQ3bR/FIAgIOQfUUpy1UA3YGph8pqtxt1Ac/G4qbhzEv1zEfndDdE8vYlMfLW/rVzfgh3G/cdVnrViH7pQoa6uOZtSxkkLxUlEuM2wPrwuCCVrCJVT9kvyrj+CDs9hYcElBushQ2B1hK001rGOLtqhjZNMJuq3n6Dr77o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGcFtWtY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB524C43390;
-	Sat,  3 Feb 2024 04:08:47 +0000 (UTC)
+	 MIME-Version; b=tbr1RQSvtaYn+5kSIK7HeMDDf9dSOBZUNrpTFtE7UwUcdoIjjqNxNH/rQEktNxYQe/9yXgSonAf8H6q3FSkgiSNgVu20G311sPSELwyPfs2mox8TOGBkzIy3hgUozQjDqSV9btgIYG15Z+8APgf4suIcPCntIT5ElrRriLpCKk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dpiSYjUi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10291C433C7;
+	Sat,  3 Feb 2024 04:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933328;
-	bh=nK2wCFNr2sSGQa0HJn2esS5t6mnCf/ekX4Em4TDGQPg=;
+	s=korg; t=1706933572;
+	bh=FKn//aFH4tjNzgvyeqamkVcPvynE+d9eFrOv+0jc704=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sGcFtWtYuGAU8VlCHKQn4Jd3XM8nBBDdaHvNWgKKC5dMKnQrpLnxHhHaYFVNaOWeC
-	 qbSJHED5K/RigLdJyj+VrMD6MOI28VBSC9HavGTdrGxAgBUadEJHxr2DbxAqjnZ3Br
-	 TjxX73IM9cQdrKvL9ncjaQbW/HEtUftOGZZGxz2o=
+	b=dpiSYjUieRcgSonQUGCsmjQh8HySbrQQvi26O6mJsZQ45qPxufyurc7CVIl/wFNed
+	 rzgCo6twg4WQvaUkHMpeCkGJo38tenswA70LCovHK64KfMrJjyuBHwIOXpBx+6xVEB
+	 7xhhIosdpt2HPUT7tWgNYVRL/YjeAtFA6yyq7rfs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Manas Ghandat <ghandatmanas@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/219] jfs: fix slab-out-of-bounds Read in dtSearch
+	David Laight <david.laight@aculab.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 100/322] minmax: relax check to allow comparison between unsigned arguments and signed constants
 Date: Fri,  2 Feb 2024 20:03:17 -0800
-Message-ID: <20240203035319.877997162@linuxfoundation.org>
+Message-ID: <20240203035402.369507034@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +66,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manas Ghandat <ghandatmanas@gmail.com>
+From: David Laight <David.Laight@ACULAB.COM>
 
-[ Upstream commit fa5492ee89463a7590a1449358002ff7ef63529f ]
+commit 867046cc7027703f60a46339ffde91a1970f2901 upstream.
 
-Currently while searching for current page in the sorted entry table
-of the page there is a out of bound access. Added a bound check to fix
-the error.
+Allow (for example) min(unsigned_var, 20).
 
-Dave:
-Set return code to -EIO
+The opposite min(signed_var, 20u) is still errored.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/r/202310241724.Ed02yUz9-lkp@intel.com/
-Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since a comparison between signed and unsigned never makes the unsigned
+value negative it is only necessary to adjust the __types_ok() test.
+
+Link: https://lkml.kernel.org/r/633b64e2f39e46bb8234809c5595b8c7@AcuMS.aculab.com
+Signed-off-by: David Laight <david.laight@aculab.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Jason A. Donenfeld <Jason@zx2c4.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dtree.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/minmax.h |   24 +++++++++++++++++-------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
-index f3d3e8b3f50c..031d8f570f58 100644
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -633,6 +633,11 @@ int dtSearch(struct inode *ip, struct component_name * key, ino_t * data,
- 		for (base = 0, lim = p->header.nextindex; lim; lim >>= 1) {
- 			index = base + (lim >> 1);
+--- a/include/linux/minmax.h
++++ b/include/linux/minmax.h
+@@ -10,13 +10,18 @@
+ /*
+  * min()/max()/clamp() macros must accomplish three things:
+  *
+- * - avoid multiple evaluations of the arguments (so side-effects like
++ * - Avoid multiple evaluations of the arguments (so side-effects like
+  *   "x++" happen only once) when non-constant.
+- * - perform signed v unsigned type-checking (to generate compile
+- *   errors instead of nasty runtime surprises).
+- * - retain result as a constant expressions when called with only
++ * - Retain result as a constant expressions when called with only
+  *   constant expressions (to avoid tripping VLA warnings in stack
+  *   allocation usage).
++ * - Perform signed v unsigned type-checking (to generate compile
++ *   errors instead of nasty runtime surprises).
++ * - Unsigned char/short are always promoted to signed int and can be
++ *   compared against signed or unsigned arguments.
++ * - Unsigned arguments can be compared against non-negative signed constants.
++ * - Comparison of a signed argument against an unsigned constant fails
++ *   even if the constant is below __INT_MAX__ and could be cast to int.
+  */
+ #define __typecheck(x, y) \
+ 	(!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+@@ -26,9 +31,14 @@
+ 	__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),	\
+ 		is_signed_type(typeof(x)), 0)
  
-+			if (stbl[index] < 0) {
-+				rc = -EIO;
-+				goto out;
-+			}
+-#define __types_ok(x, y) 			\
+-	(__is_signed(x) == __is_signed(y) ||	\
+-		__is_signed((x) + 0) == __is_signed((y) + 0))
++/* True for a non-negative signed int constant */
++#define __is_noneg_int(x)	\
++	(__builtin_choose_expr(__is_constexpr(x) && __is_signed(x), x, -1) >= 0)
 +
- 			if (p->header.flag & BT_LEAF) {
- 				/* uppercase leaf name to compare */
- 				cmp =
--- 
-2.43.0
-
++#define __types_ok(x, y) 					\
++	(__is_signed(x) == __is_signed(y) ||			\
++		__is_signed((x) + 0) == __is_signed((y) + 0) ||	\
++		__is_noneg_int(x) || __is_noneg_int(y))
+ 
+ #define __cmp_op_min <
+ #define __cmp_op_max >
 
 
 
