@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-18008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1891F8480FF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 565C284836B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4272F1C247FE
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14B94282D29
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D11C1BC20;
-	Sat,  3 Feb 2024 04:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF2728DC4;
+	Sat,  3 Feb 2024 04:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdJFU8+4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yoC0QSXA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0721B95C;
-	Sat,  3 Feb 2024 04:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE15F17541;
+	Sat,  3 Feb 2024 04:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933480; cv=none; b=EQzYtM7v+kC8GXWU59kz0jLUk+W2ppYL0BD/aAbOiBz2lpDpQtCJrjUTgsihwXzq+rJGoTuhv7AVEg1RWZwn56LZc1jlQCAYCWWncqPkLOzE4xhVT7SVJQ8oSLfRK3qAeTvO1iiyQ4yc7IxNSfYw0xYr0TAiVeW7r8/GEtnlp2g=
+	t=1706933928; cv=none; b=by3AZYQ7GHz+jROfOjMjDNEjEZNZJr9XYlbhQ/RbDTRCB8h6SBF6bSMbGzzpzS+iuuCueq1rLPeYrFRN4gl4jc4XTyrH2jqk7HTc3KIJxlEcoRd4uRT2Rw3bOLSLa7QzARuP0YZt5N07VzMO0TwVf1Xfat1hXGpI7iJgVFY+Awg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933480; c=relaxed/simple;
-	bh=NHBehaIsxJG4yIc7kXEt2YMCf7CuVuQ01V95LLDbVho=;
+	s=arc-20240116; t=1706933928; c=relaxed/simple;
+	bh=fhsSiXb4GDcRfq9JPEmIE5Q3OdpEX/Rb7ViId2bUqqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MmYMAkCi2mWiwkAIha/PDnwtnHKLjjFNwKBQ1aArLZmX8xjf1dICRNGMhGoC5rEzWBliWN6505FdpAQIcj6iTvOKaqJUK2sAye1P2jPIm70V4GZUF/JhP61zBpdn4+HNQGEh0j/R+/J7f8xfSLpynqoXn7XL5ZaPzK6nPR/C/OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdJFU8+4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6358C433C7;
-	Sat,  3 Feb 2024 04:11:19 +0000 (UTC)
+	 MIME-Version; b=VR5V4KYMviMTwRZ+Re/0jk8nNNIoWcFuDSa4/BdY2RgB/Xhh2KwpxLkrrvGNtP4Vq6nGl2S6nQMvnU5XsjhB4/iA4bVBWhbOjZ3iw6y8Y7GpoeDj3a6oRoM4dkegqAD2Rw+7cRRF+T/peeRUNMAtu3lA1nEq5Jvn5j5qt6lBXCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yoC0QSXA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF0CC433C7;
+	Sat,  3 Feb 2024 04:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933479;
-	bh=NHBehaIsxJG4yIc7kXEt2YMCf7CuVuQ01V95LLDbVho=;
+	s=korg; t=1706933928;
+	bh=fhsSiXb4GDcRfq9JPEmIE5Q3OdpEX/Rb7ViId2bUqqA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EdJFU8+4ZjYBAnQJ360IeoFqxmGFbMWTEQCq2Ujxm6zmQz884wHyGtEFiocbLv9A2
-	 eJkDYpyio7GtIpG76x3pKg2wA0Z8ICOqju2Tbkpj5rSZwBj28sYtyqfzeWFqmHsJX8
-	 Yboa0e53n7Nkxx5gTp+YopKV70NA/cJTyezyxA/g=
+	b=yoC0QSXAKNZBgIsstRBFfaWR2e4QC6AhIC73Z7DMBgZjo3gACkRYm5Znu4LqWjn30
+	 T9wBagsp2hJQBFhXmClN6tlhwi844XbHIfsKmsyAy+Ph938+3hixTtpmwaJ9i191dM
+	 H4pQzcCfWLNp7grRqcc5kG0GPER2jgI6yylQ07jI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Fei Shao <fshao@chromium.org>,
+	Yu-Che Cheng <giver@chromium.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 206/219] netfilter: nft_ct: sanitize layer 3 and 4 protocol number in custom expectations
+Subject: [PATCH 6.7 261/353] spmi: mediatek: Fix UAF on device remove
 Date: Fri,  2 Feb 2024 20:06:19 -0800
-Message-ID: <20240203035345.896646263@linuxfoundation.org>
+Message-ID: <20240203035412.003228706@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Yu-Che Cheng <giver@chromium.org>
 
-[ Upstream commit 8059918a1377f2f1fff06af4f5a4ed3d5acd6bc4 ]
+[ Upstream commit e821d50ab5b956ed0effa49faaf29912fd4106d9 ]
 
-- Disallow families other than NFPROTO_{IPV4,IPV6,INET}.
-- Disallow layer 4 protocol with no ports, since destination port is a
-  mandatory attribute for this object.
+The pmif driver data that contains the clocks is allocated along with
+spmi_controller.
+On device remove, spmi_controller will be freed first, and then devres
+, including the clocks, will be cleanup.
+This leads to UAF because putting the clocks will access the clocks in
+the pmif driver data, which is already freed along with spmi_controller.
 
-Fixes: 857b46027d6f ("netfilter: nft_ct: add ct expectations support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+This can be reproduced by enabling DEBUG_TEST_DRIVER_REMOVE and
+building the kernel with KASAN.
+
+Fix the UAF issue by using unmanaged clk_bulk_get() and putting the
+clocks before freeing spmi_controller.
+
+Reported-by: Fei Shao <fshao@chromium.org>
+Signed-off-by: Yu-Che Cheng <giver@chromium.org>
+Link: https://lore.kernel.org/r/20230717173934.1.If004a6e055a189c7f2d0724fa814422c26789839@changeid
+Tested-by: Fei Shao <fshao@chromium.org>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20231206231733.4031901-3-sboyd@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_ct.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/spmi/spmi-mtk-pmif.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
-index 641dc21f92b4..1101665f5253 100644
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -1231,7 +1231,31 @@ static int nft_ct_expect_obj_init(const struct nft_ctx *ctx,
- 	if (tb[NFTA_CT_EXPECT_L3PROTO])
- 		priv->l3num = ntohs(nla_get_be16(tb[NFTA_CT_EXPECT_L3PROTO]));
+diff --git a/drivers/spmi/spmi-mtk-pmif.c b/drivers/spmi/spmi-mtk-pmif.c
+index 54c35f5535cb..1261f381cae6 100644
+--- a/drivers/spmi/spmi-mtk-pmif.c
++++ b/drivers/spmi/spmi-mtk-pmif.c
+@@ -475,7 +475,7 @@ static int mtk_spmi_probe(struct platform_device *pdev)
+ 	for (i = 0; i < arb->nclks; i++)
+ 		arb->clks[i].id = pmif_clock_names[i];
  
-+	switch (priv->l3num) {
-+	case NFPROTO_IPV4:
-+	case NFPROTO_IPV6:
-+		if (priv->l3num != ctx->family)
-+			return -EINVAL;
-+
-+		fallthrough;
-+	case NFPROTO_INET:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
- 	priv->l4proto = nla_get_u8(tb[NFTA_CT_EXPECT_L4PROTO]);
-+	switch (priv->l4proto) {
-+	case IPPROTO_TCP:
-+	case IPPROTO_UDP:
-+	case IPPROTO_UDPLITE:
-+	case IPPROTO_DCCP:
-+	case IPPROTO_SCTP:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
- 	priv->dport = nla_get_be16(tb[NFTA_CT_EXPECT_DPORT]);
- 	priv->timeout = nla_get_u32(tb[NFTA_CT_EXPECT_TIMEOUT]);
- 	priv->size = nla_get_u8(tb[NFTA_CT_EXPECT_SIZE]);
+-	err = devm_clk_bulk_get(&pdev->dev, arb->nclks, arb->clks);
++	err = clk_bulk_get(&pdev->dev, arb->nclks, arb->clks);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "Failed to get clocks: %d\n", err);
+ 		goto err_put_ctrl;
+@@ -484,7 +484,7 @@ static int mtk_spmi_probe(struct platform_device *pdev)
+ 	err = clk_bulk_prepare_enable(arb->nclks, arb->clks);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "Failed to enable clocks: %d\n", err);
+-		goto err_put_ctrl;
++		goto err_put_clks;
+ 	}
+ 
+ 	ctrl->cmd = pmif_arb_cmd;
+@@ -510,6 +510,8 @@ static int mtk_spmi_probe(struct platform_device *pdev)
+ 
+ err_domain_remove:
+ 	clk_bulk_disable_unprepare(arb->nclks, arb->clks);
++err_put_clks:
++	clk_bulk_put(arb->nclks, arb->clks);
+ err_put_ctrl:
+ 	spmi_controller_put(ctrl);
+ 	return err;
+@@ -521,6 +523,7 @@ static void mtk_spmi_remove(struct platform_device *pdev)
+ 	struct pmif *arb = spmi_controller_get_drvdata(ctrl);
+ 
+ 	clk_bulk_disable_unprepare(arb->nclks, arb->clks);
++	clk_bulk_put(arb->nclks, arb->clks);
+ 	spmi_controller_remove(ctrl);
+ 	spmi_controller_put(ctrl);
+ }
 -- 
 2.43.0
 
