@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-17998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F33618480F7
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE1A84823A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E42AB274DB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20013283A83
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48CA1B941;
-	Sat,  3 Feb 2024 04:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 925201A708;
+	Sat,  3 Feb 2024 04:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1g7F4zOI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbZFNhm2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63666FC03;
-	Sat,  3 Feb 2024 04:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCF9481AE;
+	Sat,  3 Feb 2024 04:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933472; cv=none; b=ijSFaw4O/z96RMqm1MM1KhPyJdTnyvqxkFD/ko9s8AGVVWfiwKOPFBeM29gFDACTJtRO/en8ROkEScRFlisc3TQsxwGoW2gV6aO/3+I07VPho8M2I2Tz9SOb3gyeA6uw33m329q7rRgOyBcSEgr8BAcvBaGHOwklBuSI+87TUoE=
+	t=1706933706; cv=none; b=GOWw09FhtPSU5zVgGjYBeXBRl7Miynh1B5qm4hAeovG6ybtWBpB9kjbMjXjSS0Se/Lui9oezyi/T1vAKqPf1cPvpjeH+QQfHDZX+3yYixN0LeSu7FrcDreV/oB/RBxf8VZasfoq3AvCMOt4X4xBLM02IZvMtuqm3UjaZGpRqW44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933472; c=relaxed/simple;
-	bh=sLhDoVBZnUxLc7lxM8orDa2PqWGZKtYV2R+cDxBS2fE=;
+	s=arc-20240116; t=1706933706; c=relaxed/simple;
+	bh=YDniJLy2oCXc8gWedtRpZ22IFLbZbBAr2hSu+ZDrI6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JfiKS1rcZKRc43N5doEM4qPciUkcWB5LgNZcbn8V9lO+/BiX4TBeVjH6Ix3Sv96ycZKCPN+2RM8lkrk0jbADVUZonlw+BGeHiZXzaDSCsV9GGc6qDt5U6sJVXI1vFVeEpPLTUshNSJRIDTItxHNKvPhYKYxtO8m06oR276WMQ7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1g7F4zOI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BEA3C433C7;
-	Sat,  3 Feb 2024 04:11:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Pw5w+1OwbJ2nHA2DsftcW2CBpgXBiCFZYLDM7lspo0wshAAhM7sFNS9AqeTqZh9yBQRcKQ5t9gf+w5mHiMnfmHotddg2y9k7Wco3Gkj4DHq5I44YuSaBcFPOXxlGgzHPnDilgxaNB+SDg/CQVhmvX8i4LztoF7FLVdHOPLuK/H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbZFNhm2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 139E0C43394;
+	Sat,  3 Feb 2024 04:15:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933472;
-	bh=sLhDoVBZnUxLc7lxM8orDa2PqWGZKtYV2R+cDxBS2fE=;
+	s=korg; t=1706933706;
+	bh=YDniJLy2oCXc8gWedtRpZ22IFLbZbBAr2hSu+ZDrI6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1g7F4zOIHgAvFLNb7qMJuqSft+cgy4U8pCvW92xqwkULHl7I1r6xj08o7gn7pqujU
-	 /3ItHbADQv9RJJi8m1zoOS1Jfh3JPonseOsbXf71e0M6FQW507vUbWtiDssKodUiEt
-	 OnF4Z01pa0wl1qxe9sPVfvUWVmqp4bOqZrgGUmdQ=
+	b=AbZFNhm2g5EXMum/xbsYBo3ytHh/b7vJsY/rQFUhLVNYPPX7ZmJxFASMlcy214TFp
+	 K7DYt0ljczGKra6NfnAhOwYzARxIID4/GVnqmXOAt2DgFeozzH8xFYI3c5yvOSRra8
+	 aWdSrPUbP/5VAM0IHWdJykvGFOZI4JHijnexNf+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Elver <elver@google.com>,
-	Alexander Potapenko <glider@google.com>,
-	syzbot+93a9e8a3dea8d6085e12@syzkaller.appspotmail.com,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 214/219] mm, kmsan: fix infinite recursion due to RCU critical section
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 290/322] bridge: mcast: fix disabled snooping after long uptime
 Date: Fri,  2 Feb 2024 20:06:27 -0800
-Message-ID: <20240203035346.771599322@linuxfoundation.org>
+Message-ID: <20240203035408.451442757@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,132 +61,163 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Linus Lüssing <linus.luessing@c0d3.blue>
 
-commit f6564fce256a3944aa1bc76cb3c40e792d97c1eb upstream.
+[ Upstream commit f5c3eb4b7251baba5cd72c9e93920e710ac8194a ]
 
-Alexander Potapenko writes in [1]: "For every memory access in the code
-instrumented by KMSAN we call kmsan_get_metadata() to obtain the metadata
-for the memory being accessed.  For virtual memory the metadata pointers
-are stored in the corresponding `struct page`, therefore we need to call
-virt_to_page() to get them.
+The original idea of the delay_time check was to not apply multicast
+snooping too early when an MLD querier appears. And to instead wait at
+least for MLD reports to arrive before switching from flooding to group
+based, MLD snooped forwarding, to avoid temporary packet loss.
 
-According to the comment in arch/x86/include/asm/page.h,
-virt_to_page(kaddr) returns a valid pointer iff virt_addr_valid(kaddr) is
-true, so KMSAN needs to call virt_addr_valid() as well.
+However in a batman-adv mesh network it was noticed that after 248 days of
+uptime 32bit MIPS based devices would start to signal that they had
+stopped applying multicast snooping due to missing queriers - even though
+they were the elected querier and still sending MLD queries themselves.
 
-To avoid recursion, kmsan_get_metadata() must not call instrumented code,
-therefore ./arch/x86/include/asm/kmsan.h forks parts of
-arch/x86/mm/physaddr.c to check whether a virtual address is valid or not.
+While time_is_before_jiffies() generally is safe against jiffies
+wrap-arounds, like the code comments in jiffies.h explain, it won't
+be able to track a difference larger than ULONG_MAX/2. With a 32bit
+large jiffies and one jiffies tick every 10ms (CONFIG_HZ=100) on these MIPS
+devices running OpenWrt this would result in a difference larger than
+ULONG_MAX/2 after 248 (= 2^32/100/60/60/24/2) days and
+time_is_before_jiffies() would then start to return false instead of
+true. Leading to multicast snooping not being applied to multicast
+packets anymore.
 
-But the introduction of rcu_read_lock() to pfn_valid() added instrumented
-RCU API calls to virt_to_page_or_null(), which is called by
-kmsan_get_metadata(), so there is an infinite recursion now.  I do not
-think it is correct to stop that recursion by doing
-kmsan_enter_runtime()/kmsan_exit_runtime() in kmsan_get_metadata(): that
-would prevent instrumented functions called from within the runtime from
-tracking the shadow values, which might introduce false positives."
+Fix this issue by using a proper timer_list object which won't have this
+ULONG_MAX/2 difference limitation.
 
-Fix the issue by switching pfn_valid() to the _sched() variant of
-rcu_read_lock/unlock(), which does not require calling into RCU.  Given
-the critical section in pfn_valid() is very small, this is a reasonable
-trade-off (with preemptible RCU).
-
-KMSAN further needs to be careful to suppress calls into the scheduler,
-which would be another source of recursion.  This can be done by wrapping
-the call to pfn_valid() into preempt_disable/enable_no_resched().  The
-downside is that this sacrifices breaking scheduling guarantees; however,
-a kernel compiled with KMSAN has already given up any performance
-guarantees due to being heavily instrumented.
-
-Note, KMSAN code already disables tracing via Makefile, and since mmzone.h
-is included, it is not necessary to use the notrace variant, which is
-generally preferred in all other cases.
-
-Link: https://lkml.kernel.org/r/20240115184430.2710652-1-glider@google.com [1]
-Link: https://lkml.kernel.org/r/20240118110022.2538350-1-elver@google.com
-Fixes: 5ec8e8ea8b77 ("mm/sparsemem: fix race in accessing memory_section->usage")
-Signed-off-by: Marco Elver <elver@google.com>
-Reported-by: Alexander Potapenko <glider@google.com>
-Reported-by: syzbot+93a9e8a3dea8d6085e12@syzkaller.appspotmail.com
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Tested-by: Alexander Potapenko <glider@google.com>
-Cc: Charan Teja Kalla <quic_charante@quicinc.com>
-Cc: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b00589af3b04 ("bridge: disable snooping if there is no querier")
+Signed-off-by: Linus Lüssing <linus.luessing@c0d3.blue>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20240127175033.9640-1-linus.luessing@c0d3.blue
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kmsan.h |   17 ++++++++++++++++-
- include/linux/mmzone.h       |    6 +++---
- 2 files changed, 19 insertions(+), 4 deletions(-)
+ net/bridge/br_multicast.c | 20 +++++++++++++++-----
+ net/bridge/br_private.h   |  4 ++--
+ 2 files changed, 17 insertions(+), 7 deletions(-)
 
---- a/arch/x86/include/asm/kmsan.h
-+++ b/arch/x86/include/asm/kmsan.h
-@@ -64,6 +64,7 @@ static inline bool kmsan_virt_addr_valid
- {
- 	unsigned long x = (unsigned long)addr;
- 	unsigned long y = x - __START_KERNEL_map;
-+	bool ret;
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index 96d1fc78dd39..38373b4fb7dd 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -1761,6 +1761,10 @@ static void br_ip6_multicast_querier_expired(struct timer_list *t)
+ }
+ #endif
  
- 	/* use the carry flag to determine if x was < __START_KERNEL_map */
- 	if (unlikely(x > y)) {
-@@ -79,7 +80,21 @@ static inline bool kmsan_virt_addr_valid
- 			return false;
- 	}
- 
--	return pfn_valid(x >> PAGE_SHIFT);
-+	/*
-+	 * pfn_valid() relies on RCU, and may call into the scheduler on exiting
-+	 * the critical section. However, this would result in recursion with
-+	 * KMSAN. Therefore, disable preemption here, and re-enable preemption
-+	 * below while suppressing reschedules to avoid recursion.
-+	 *
-+	 * Note, this sacrifices occasionally breaking scheduling guarantees.
-+	 * Although, a kernel compiled with KMSAN has already given up on any
-+	 * performance guarantees due to being heavily instrumented.
-+	 */
-+	preempt_disable();
-+	ret = pfn_valid(x >> PAGE_SHIFT);
-+	preempt_enable_no_resched();
++static void br_multicast_query_delay_expired(struct timer_list *t)
++{
++}
 +
-+	return ret;
- }
+ static void br_multicast_select_own_querier(struct net_bridge_mcast *brmctx,
+ 					    struct br_ip *ip,
+ 					    struct sk_buff *skb)
+@@ -3197,7 +3201,7 @@ br_multicast_update_query_timer(struct net_bridge_mcast *brmctx,
+ 				unsigned long max_delay)
+ {
+ 	if (!timer_pending(&query->timer))
+-		query->delay_time = jiffies + max_delay;
++		mod_timer(&query->delay_timer, jiffies + max_delay);
  
- #endif /* !MODULE */
---- a/include/linux/mmzone.h
-+++ b/include/linux/mmzone.h
-@@ -1854,9 +1854,9 @@ static inline int pfn_valid(unsigned lon
- 	if (pfn_to_section_nr(pfn) >= NR_MEM_SECTIONS)
- 		return 0;
- 	ms = __pfn_to_section(pfn);
--	rcu_read_lock();
-+	rcu_read_lock_sched();
- 	if (!valid_section(ms)) {
--		rcu_read_unlock();
-+		rcu_read_unlock_sched();
- 		return 0;
+ 	mod_timer(&query->timer, jiffies + brmctx->multicast_querier_interval);
+ }
+@@ -4040,13 +4044,11 @@ void br_multicast_ctx_init(struct net_bridge *br,
+ 	brmctx->multicast_querier_interval = 255 * HZ;
+ 	brmctx->multicast_membership_interval = 260 * HZ;
+ 
+-	brmctx->ip4_other_query.delay_time = 0;
+ 	brmctx->ip4_querier.port_ifidx = 0;
+ 	seqcount_spinlock_init(&brmctx->ip4_querier.seq, &br->multicast_lock);
+ 	brmctx->multicast_igmp_version = 2;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	brmctx->multicast_mld_version = 1;
+-	brmctx->ip6_other_query.delay_time = 0;
+ 	brmctx->ip6_querier.port_ifidx = 0;
+ 	seqcount_spinlock_init(&brmctx->ip6_querier.seq, &br->multicast_lock);
+ #endif
+@@ -4055,6 +4057,8 @@ void br_multicast_ctx_init(struct net_bridge *br,
+ 		    br_ip4_multicast_local_router_expired, 0);
+ 	timer_setup(&brmctx->ip4_other_query.timer,
+ 		    br_ip4_multicast_querier_expired, 0);
++	timer_setup(&brmctx->ip4_other_query.delay_timer,
++		    br_multicast_query_delay_expired, 0);
+ 	timer_setup(&brmctx->ip4_own_query.timer,
+ 		    br_ip4_multicast_query_expired, 0);
+ #if IS_ENABLED(CONFIG_IPV6)
+@@ -4062,6 +4066,8 @@ void br_multicast_ctx_init(struct net_bridge *br,
+ 		    br_ip6_multicast_local_router_expired, 0);
+ 	timer_setup(&brmctx->ip6_other_query.timer,
+ 		    br_ip6_multicast_querier_expired, 0);
++	timer_setup(&brmctx->ip6_other_query.delay_timer,
++		    br_multicast_query_delay_expired, 0);
+ 	timer_setup(&brmctx->ip6_own_query.timer,
+ 		    br_ip6_multicast_query_expired, 0);
+ #endif
+@@ -4196,10 +4202,12 @@ static void __br_multicast_stop(struct net_bridge_mcast *brmctx)
+ {
+ 	del_timer_sync(&brmctx->ip4_mc_router_timer);
+ 	del_timer_sync(&brmctx->ip4_other_query.timer);
++	del_timer_sync(&brmctx->ip4_other_query.delay_timer);
+ 	del_timer_sync(&brmctx->ip4_own_query.timer);
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	del_timer_sync(&brmctx->ip6_mc_router_timer);
+ 	del_timer_sync(&brmctx->ip6_other_query.timer);
++	del_timer_sync(&brmctx->ip6_other_query.delay_timer);
+ 	del_timer_sync(&brmctx->ip6_own_query.timer);
+ #endif
+ }
+@@ -4642,13 +4650,15 @@ int br_multicast_set_querier(struct net_bridge_mcast *brmctx, unsigned long val)
+ 	max_delay = brmctx->multicast_query_response_interval;
+ 
+ 	if (!timer_pending(&brmctx->ip4_other_query.timer))
+-		brmctx->ip4_other_query.delay_time = jiffies + max_delay;
++		mod_timer(&brmctx->ip4_other_query.delay_timer,
++			  jiffies + max_delay);
+ 
+ 	br_multicast_start_querier(brmctx, &brmctx->ip4_own_query);
+ 
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	if (!timer_pending(&brmctx->ip6_other_query.timer))
+-		brmctx->ip6_other_query.delay_time = jiffies + max_delay;
++		mod_timer(&brmctx->ip6_other_query.delay_timer,
++			  jiffies + max_delay);
+ 
+ 	br_multicast_start_querier(brmctx, &brmctx->ip6_own_query);
+ #endif
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index a1f4acfa6994..82e63908dce8 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -78,7 +78,7 @@ struct bridge_mcast_own_query {
+ /* other querier */
+ struct bridge_mcast_other_query {
+ 	struct timer_list		timer;
+-	unsigned long			delay_time;
++	struct timer_list		delay_timer;
+ };
+ 
+ /* selected querier */
+@@ -1149,7 +1149,7 @@ __br_multicast_querier_exists(struct net_bridge_mcast *brmctx,
+ 		own_querier_enabled = false;
  	}
- 	/*
-@@ -1864,7 +1864,7 @@ static inline int pfn_valid(unsigned lon
- 	 * the entire section-sized span.
- 	 */
- 	ret = early_section(ms) || pfn_section_valid(ms, pfn);
--	rcu_read_unlock();
-+	rcu_read_unlock_sched();
  
- 	return ret;
+-	return time_is_before_jiffies(querier->delay_time) &&
++	return !timer_pending(&querier->delay_timer) &&
+ 	       (own_querier_enabled || timer_pending(&querier->timer));
  }
+ 
+-- 
+2.43.0
+
 
 
 
