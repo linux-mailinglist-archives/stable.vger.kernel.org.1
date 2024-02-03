@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67D68848250
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84F8284837B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A8731C24263
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:25:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B78441C21C8C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F328A63B1;
-	Sat,  3 Feb 2024 04:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C9C53E11;
+	Sat,  3 Feb 2024 04:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACbHecy+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a1m3ehOR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8801B26E;
-	Sat,  3 Feb 2024 04:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7919E171D4;
+	Sat,  3 Feb 2024 04:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933722; cv=none; b=qBTwBsiAeS4imbwY5HvHUZYvIy3CzYy4u5/yoJ21V4sPyhvO6tov9wbuif17s880Q3oh/F18gNvHeNBhj9r0wcM+2M8gjtFeMTjKtd+ozAqgKycZCJ9r3YWjgAQYCMwF5bw3sY1bT+1i6VQP/EyThWh6BK4EQZ2GmnCxP3iFEgc=
+	t=1706933939; cv=none; b=Qpc/vgcUqzxxA0or+GPKfIBGOERgodWbJj1gCqGICYa2EF2JvcMzyrsDL5nMJ4F803Q9IKiTmgMUdEgSgpEuDqV/r/Z+FcwcabCL6sx/iT6xPzBbkLHrjRLs01mmuN/fqEkPySncxFD80SdHbJfKakoTtrBNUY6OAMiaGgWYO2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933722; c=relaxed/simple;
-	bh=qQtpXz8puYJcujvt8Za5s9PVlHAbG39wrBxLGd2kwCI=;
+	s=arc-20240116; t=1706933939; c=relaxed/simple;
+	bh=3I/DZVFQQ7AQbQwyhYf9tIj0k7shBttptve6+PDhRNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UDvnNB+P3dqK5iy8I94thUpY1+fc12XshcReczw9Om96YnWEKlc2eDMYm4kMlkjSDv7FnMyU8GenLjSsUYDHJRfTEf++9gatvhRKSsPHiGVq23Mt97nPmW/zpwre/QtT9L81TbvxkWKGxyz6aZJKNX2IngNjSIH3MX1ZkMTq1bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACbHecy+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CCCC433C7;
-	Sat,  3 Feb 2024 04:15:22 +0000 (UTC)
+	 MIME-Version; b=jxdCu/Yb4+gN8SZ8YvICPNDOYMzSMgYSiCwsqmpmt3gqK1cuvO/K8rhQy4/KCjiJxK6Kv0S1mg3bDgLJw1npn2wPzrfBn4W4I5BRzeIV4XHzOR+a1OIOlfW28Jzs5wbhP/Hc6sxi4ptp3Xvak/wWHuqbpXqerZKobk0HK4u5Whg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a1m3ehOR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421A5C433C7;
+	Sat,  3 Feb 2024 04:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933722;
-	bh=qQtpXz8puYJcujvt8Za5s9PVlHAbG39wrBxLGd2kwCI=;
+	s=korg; t=1706933939;
+	bh=3I/DZVFQQ7AQbQwyhYf9tIj0k7shBttptve6+PDhRNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ACbHecy+dOU2+HORaqkONHRc6lg+GFsZbNrFi8G5TP5BTIsZRHk9EkByIyxgTNZTt
-	 t8+eBzEa3YUwWT9LtzlNgpPO67Dfnl/zSR82COLnT2wZds92Q8heuUIuo8hUa0aOYg
-	 7kr+xP5lLQPq720Y+2pdux2gvyKOW6kge9klSq8s=
+	b=a1m3ehORQHC315zs0s79Df3R0ndyWXI8lMsEPw00krZZbHJFsDKvex9xIHIXkVft7
+	 cyyWWjgk0l4U2OsLdUQL3nc2c/b3q1fIa3QfYQS49aXhzLnfpHT3CIDEaeo9RFbylh
+	 2ffr0+YG45pLs+NR/MLd6aAoef9SiXPfkomdQYrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 322/322] bonding: remove print in bond_verify_device_path
+	Elad Yifee <eladwf@users.github.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 301/353] net: ethernet: mtk_eth_soc: set DMA coherent mask to get PPE working
 Date: Fri,  2 Feb 2024 20:06:59 -0800
-Message-ID: <20240203035409.437774286@linuxfoundation.org>
+Message-ID: <20240203035413.363704481@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Daniel Golle <daniel@makrotopia.org>
 
-commit 486058f42a4728053ae69ebbf78e9731d8ce6f8b upstream.
+[ Upstream commit cae1f1c36661f28c92a1db9113961a9ebd61dbaa ]
 
-As suggested by Paolo in link[1], if the memory allocation fails, the mm
-layer will emit a lot warning comprising the backtrace, so remove the
-print.
+Set DMA coherent mask to 32-bit which makes PPE offloading engine start
+working on BPi-R4 which got 4 GiB of RAM.
 
-[1] https://lore.kernel.org/all/20231118081653.1481260-1-shaozhengchao@huawei.com/
-
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2d75891ebc09 ("net: ethernet: mtk_eth_soc: support 36-bit DMA addressing on MT7988")
+Suggested-by: Elad Yifee <eladwf@users.github.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Link: https://lore.kernel.org/r/97e90925368b405f0974b9b15f1b7377c4a329ad.1706113251.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2973,11 +2973,8 @@ struct bond_vlan_tag *bond_verify_device
- 
- 	if (start_dev == end_dev) {
- 		tags = kcalloc(level + 1, sizeof(*tags), GFP_ATOMIC);
--		if (!tags) {
--			net_err_ratelimited("%s: %s: Failed to allocate tags\n",
--					    __func__, start_dev->name);
-+		if (!tags)
- 			return ERR_PTR(-ENOMEM);
--		}
- 		tags[level].vlan_proto = BOND_VLAN_PROTO_NONE;
- 		return tags;
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 3cf6589cfdac..d2c039f83019 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -4758,7 +4758,10 @@ static int mtk_probe(struct platform_device *pdev)
  	}
+ 
+ 	if (MTK_HAS_CAPS(eth->soc->caps, MTK_36BIT_DMA)) {
+-		err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(36));
++		err = dma_set_mask(&pdev->dev, DMA_BIT_MASK(36));
++		if (!err)
++			err = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
++
+ 		if (err) {
+ 			dev_err(&pdev->dev, "Wrong DMA config\n");
+ 			return -EINVAL;
+-- 
+2.43.0
+
 
 
 
