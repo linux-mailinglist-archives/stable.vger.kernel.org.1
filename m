@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 091948481E3
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAEE78480B6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BC8D1C22681
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D69AB2A340
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192EE4205D;
-	Sat,  3 Feb 2024 04:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61207107B6;
+	Sat,  3 Feb 2024 04:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJRKG4Yo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhIEGgYW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C95E84176E;
-	Sat,  3 Feb 2024 04:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2031111CBE;
+	Sat,  3 Feb 2024 04:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933641; cv=none; b=eOtvwU9Yy/5UemWrcRSDftZM/fcpnHq5vGWEFQZ66/XucgDSK2xqhdT7+27/stcALESZ9nv5oZluyTR06ssQnTBhjwbCb7SXWTKvFOIMsol581kKXOOVQ/Ee4MVnqZZXg50shqhMecs37cgGbzP/iyIG2DM7h3vupsvpOiyuopI=
+	t=1706933428; cv=none; b=hFPGk7T7GGYc8zWZa+CI0Gd8fCeraJLjp7elVHHSXtl0y3J+C8YgqsQUZB3C3GDk9uCcKK0i8et+4sO1qIB+/st5Vy2BqZVa1CWfeEYk9GdEqdNitmGxi1aG4QL4LoMKfYE7icQc1XMo1AWzuSTQK8sDszaBJjn07rfsU8FqE4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933641; c=relaxed/simple;
-	bh=HZQ/MTbFbliWaRqYs7Uf5ZOgPU1lS++5R+yQttDr2iA=;
+	s=arc-20240116; t=1706933428; c=relaxed/simple;
+	bh=dnlPbdbolLxdr5RfNICWLH6ktmk+w3Jouw4nTeZBIe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LkNRYE9DVd9KmTcMPbdIc1h0xPRhsnQu+zJyghmUucUPS8g3MzmGBHr7C/vIDhADCNgQe0G97UQPl53wIxHMgzOnUH0qVTSb6fm6k8TIco41l7hV7uzInJ4cImfiJ6t2jLuaa9UYM0wWe6eDN1dK9zAiG1TxQiCMR/J1+BTwbvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJRKG4Yo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91690C433F1;
-	Sat,  3 Feb 2024 04:14:01 +0000 (UTC)
+	 MIME-Version; b=Deflqr+xqTdd9mD9WvXy2Z5J0Kc/Bm82hu4OgCc+AMt/0wbczPleqHH/UBQaxHm3frfqNjTnj7IGhnYSK0cPeKZAUUE9Z8l0F9qaDgy1skDQwprHPwh2zqWp2PKvPUYQPDWMoNvmfQpvItuETlwOWUMXhDbhPpgdgJ0Yd5kHnCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhIEGgYW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF391C433F1;
+	Sat,  3 Feb 2024 04:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933641;
-	bh=HZQ/MTbFbliWaRqYs7Uf5ZOgPU1lS++5R+yQttDr2iA=;
+	s=korg; t=1706933428;
+	bh=dnlPbdbolLxdr5RfNICWLH6ktmk+w3Jouw4nTeZBIe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJRKG4YofFA3R38cnNgTUfIQpROAQpOsKPBKF3dJTLLr2vOAP7ykAhm6hmyBQEBEM
-	 u1xe9IehX/+e+c4V5grrijN+2phojjTganMloRiiobPhln3eBKKy1jLnCbpXsS5Df0
-	 U49t90wMHa/P/H2+C8HALM9gfxlY+zvCV7YRIzSg=
+	b=fhIEGgYWTRfKW2IXoNVkITkiADGqBqAJPZyb9lHzuKINIXRVYmJm1XrDbi9EmxhWn
+	 5/dBHmXyI5lWKridmOuACWbJqrXYXnDFfjfEtDpKrdCP+tTBVcAyswuXPuekt0++TS
+	 hjG5c3AXT7zyOxMlxvlaZbBsEYx+1k+Wp8qcnW8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Whitchurch <Vincent.Whitchurch@axis.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Richard Weinberger <richard@nod.at>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 223/322] um: time-travel: fix time corruption
+Subject: [PATCH 6.1 147/219] leds: trigger: panic: Dont register panic notifier if creating the trigger failed
 Date: Fri,  2 Feb 2024 20:05:20 -0800
-Message-ID: <20240203035406.428904455@linuxfoundation.org>
+Message-ID: <20240203035337.842388098@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit abe4eaa8618bb36c2b33e9cdde0499296a23448c ]
+[ Upstream commit afacb21834bb02785ddb0c3ec197208803b74faa ]
 
-In 'basic' time-travel mode (without =inf-cpu or =ext), we
-still get timer interrupts. These can happen at arbitrary
-points in time, i.e. while in timer_read(), which pushes
-time forward just a little bit. Then, if we happen to get
-the interrupt after calculating the new time to push to,
-but before actually finishing that, the interrupt will set
-the time to a value that's incompatible with the forward,
-and we'll crash because time goes backwards when we do the
-forwarding.
+It doesn't make sense to register the panic notifier if creating the
+panic trigger failed.
 
-Fix this by reading the time_travel_time, calculating the
-adjustment, and doing the adjustment all with interrupts
-disabled.
-
-Reported-by: Vincent Whitchurch <Vincent.Whitchurch@axis.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/8a61e229-5388-46c7-919a-4d18cc7362b2@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/kernel/time.c | 32 +++++++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 5 deletions(-)
+ drivers/leds/trigger/ledtrig-panic.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/um/kernel/time.c b/arch/um/kernel/time.c
-index fddd1dec27e6..3e270da6b6f6 100644
---- a/arch/um/kernel/time.c
-+++ b/arch/um/kernel/time.c
-@@ -432,9 +432,29 @@ static void time_travel_update_time(unsigned long long next, bool idle)
- 	time_travel_del_event(&ne);
- }
+diff --git a/drivers/leds/trigger/ledtrig-panic.c b/drivers/leds/trigger/ledtrig-panic.c
+index 64abf2e91608..5a6b21bfeb9a 100644
+--- a/drivers/leds/trigger/ledtrig-panic.c
++++ b/drivers/leds/trigger/ledtrig-panic.c
+@@ -64,10 +64,13 @@ static long led_panic_blink(int state)
  
-+static void time_travel_update_time_rel(unsigned long long offs)
-+{
-+	unsigned long flags;
-+
-+	/*
-+	 * Disable interrupts before calculating the new time so
-+	 * that a real timer interrupt (signal) can't happen at
-+	 * a bad time e.g. after we read time_travel_time but
-+	 * before we've completed updating the time.
-+	 */
-+	local_irq_save(flags);
-+	time_travel_update_time(time_travel_time + offs, false);
-+	local_irq_restore(flags);
-+}
-+
- void time_travel_ndelay(unsigned long nsec)
+ static int __init ledtrig_panic_init(void)
  {
--	time_travel_update_time(time_travel_time + nsec, false);
-+	/*
-+	 * Not strictly needed to use _rel() version since this is
-+	 * only used in INFCPU/EXT modes, but it doesn't hurt and
-+	 * is more readable too.
-+	 */
-+	time_travel_update_time_rel(nsec);
- }
- EXPORT_SYMBOL(time_travel_ndelay);
- 
-@@ -568,7 +588,11 @@ static void time_travel_set_start(void)
- #define time_travel_time 0
- #define time_travel_ext_waiting 0
- 
--static inline void time_travel_update_time(unsigned long long ns, bool retearly)
-+static inline void time_travel_update_time(unsigned long long ns, bool idle)
-+{
-+}
++	led_trigger_register_simple("panic", &trigger);
++	if (!trigger)
++		return -ENOMEM;
 +
-+static inline void time_travel_update_time_rel(unsigned long long offs)
- {
+ 	atomic_notifier_chain_register(&panic_notifier_list,
+ 				       &led_trigger_panic_nb);
+ 
+-	led_trigger_register_simple("panic", &trigger);
+ 	panic_blink = led_panic_blink;
+ 	return 0;
  }
- 
-@@ -720,9 +744,7 @@ static u64 timer_read(struct clocksource *cs)
- 		 */
- 		if (!irqs_disabled() && !in_interrupt() && !in_softirq() &&
- 		    !time_travel_ext_waiting)
--			time_travel_update_time(time_travel_time +
--						TIMER_MULTIPLIER,
--						false);
-+			time_travel_update_time_rel(TIMER_MULTIPLIER);
- 		return time_travel_time / TIMER_MULTIPLIER;
- 	}
- 
 -- 
 2.43.0
 
