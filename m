@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-18470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F35E8482DA
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFE7F84818D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B037C1C23802
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C9BC282AA3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCFAC1C6A3;
-	Sat,  3 Feb 2024 04:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369BC1759C;
+	Sat,  3 Feb 2024 04:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gohJKqhM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaqj49GD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A89C1C69E;
-	Sat,  3 Feb 2024 04:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABA0F9E9;
+	Sat,  3 Feb 2024 04:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933822; cv=none; b=C3kHdtYRL8Qw3+abbbYsajzSDd+OFZvJFNS/3VsU42ZgkVvTwWJOyXHYrOnwxCkErAyJMPjGPs5zFz4ZphEC1F6XuF0kuNkvJqSXHmepY/DcxAs/eT5PLY8hy9KUPdC1ktBLT0jXcfnsXGdvSIxBdt+5vmB4qbaULgRvMzOgv7o=
+	t=1706933579; cv=none; b=r/xJRlrST+YgNLEvJtAtRlhIiUyEP/AdlJ2EV1XMKkbiD9kfXNws9Jt5HcoPAzHsRXsmQ8ZAcPoPvUtu+dx3OJ8KMnn/Rn+7rV6cEdjS/+UftJOH+RjLow9riBwWcG35zAH9SX7/y0D29IT24mDjeqpjcORmVG+jSY5pwMej114=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933822; c=relaxed/simple;
-	bh=rQ+QBSr8qe/M7zsoMcorY5WELMdFcNb5G0V9rRqkDUs=;
+	s=arc-20240116; t=1706933579; c=relaxed/simple;
+	bh=WNyNu0WXNpO7P3fXc1YXYRAoXjJ5cxkaOdH0Ii4LbmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VOejTruu82O8IdLnw6h5Z/Vz1XHFT/bczmBhputRa5vljV9YcFyjLx7W4PQGzbiKmfpf7I76yWTej605FWikMtPyyHq1CaP0bo/t1MNBl1SlOKMV1CmENP9HOXkjRtDeqU58l+zypsdClK3CI7DcPBU+w5kcieSgwUvHBCuUEqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gohJKqhM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62CAFC433C7;
-	Sat,  3 Feb 2024 04:17:02 +0000 (UTC)
+	 MIME-Version; b=CYoQiYyBtfVE0WycitKgCZrjjL9NJBMhxoSmLvfHrKvX27xIvh8GUaBhAg9az0Sao90+awnxDSRxSiJtVrTUNOYcfryYX/J6k/sRkc8HgB3KyIvA3uL59eP1vqoxbSVLEite/OTydw5gja2Ozoh0DkmUyJ+Viz3ofJtV+hxa3Yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaqj49GD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38B4C433F1;
+	Sat,  3 Feb 2024 04:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933822;
-	bh=rQ+QBSr8qe/M7zsoMcorY5WELMdFcNb5G0V9rRqkDUs=;
+	s=korg; t=1706933578;
+	bh=WNyNu0WXNpO7P3fXc1YXYRAoXjJ5cxkaOdH0Ii4LbmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gohJKqhMU4VKZE79vIlVR4+zxLKKwSRkkXETwGlKAgEpZCJoxLbbXL//SRYjBSsqA
-	 iVVZZImLjRy37Zl0xi3c0LfuquaH/C6nQi9OIZEIZnSKVAcIyHacighVxaieeQMxC4
-	 K5q4on8Ugtw3MlnBGNn7+9Q7FEGV8qrFXN1ce60I=
+	b=yaqj49GDwIfVyCMH19Zv893V/GA8yiHj5cLeDfFohK+EK/1GmoJef8X1Tt+c0rjeL
+	 kouZXy4HKhOi89NaPuBYnEAIVPerbQ0GiodEITvojngg6jSJu3SLX0dv+B88u4hMg9
+	 Odv/M2tCBmqoAzb9oFr1Stp856lk1ZkDYtACEgs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Simek <michal.simek@amd.com>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 118/353] arm64: zynqmp: Move fixed clock to / for kv260
+Subject: [PATCH 6.6 139/322] arm64: dts: amlogic: fix format for s4 uart node
 Date: Fri,  2 Feb 2024 20:03:56 -0800
-Message-ID: <20240203035407.478335773@linuxfoundation.org>
+Message-ID: <20240203035403.645449524@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,119 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Simek <michal.simek@amd.com>
+From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 
-[ Upstream commit 6a10a19a6bd2fd8d27a510678bf87bd9408f51d8 ]
+[ Upstream commit eb54ef36282f670c704ed5af8593da62bebba80d ]
 
-fixed clock nodes can't be on the bus because they are missing reg
-property. That's why move them to root.
-And because it is root it is good to have it as the first node in a file.
+Aliases use lowercase letters and place status in end.
 
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20231215-s4-dts-v1-1-7831ab6972be@amlogic.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso | 28 ++++++++---------
- .../boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso | 30 +++++++++----------
- 2 files changed, 29 insertions(+), 29 deletions(-)
+ arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts | 4 ++--
+ arch/arm64/boot/dts/amlogic/meson-s4.dtsi             | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso b/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso
-index ae1b9b2bdbee..dee238739290 100644
---- a/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso
-+++ b/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso
-@@ -21,20 +21,7 @@
- /dts-v1/;
- /plugin/;
+diff --git a/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts b/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts
+index 8ffbcb2b1ac5..bbd3c05cbd90 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts
++++ b/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts
+@@ -15,7 +15,7 @@
+ 	#size-cells = <2>;
  
--&i2c1 { /* I2C_SCK C23/C24 - MIO from SOM */
--	#address-cells = <1>;
--	#size-cells = <0>;
--	pinctrl-names = "default", "gpio";
--	pinctrl-0 = <&pinctrl_i2c1_default>;
--	pinctrl-1 = <&pinctrl_i2c1_gpio>;
--	scl-gpios = <&gpio 24 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
--	sda-gpios = <&gpio 25 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
--
--	/* u14 - 0x40 - ina260 */
--	/* u27 - 0xe0 - STDP4320 DP/HDMI splitter */
--};
--
--&amba {
-+&{/} {
- 	si5332_0: si5332_0 { /* u17 */
- 		compatible = "fixed-clock";
- 		#clock-cells = <0>;
-@@ -72,6 +59,19 @@
+ 	aliases {
+-		serial0 = &uart_B;
++		serial0 = &uart_b;
  	};
+ 
+ 	memory@0 {
+@@ -25,6 +25,6 @@
+ 
  };
  
-+&i2c1 { /* I2C_SCK C23/C24 - MIO from SOM */
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	pinctrl-names = "default", "gpio";
-+	pinctrl-0 = <&pinctrl_i2c1_default>;
-+	pinctrl-1 = <&pinctrl_i2c1_gpio>;
-+	scl-gpios = <&gpio 24 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio 25 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+
-+	/* u14 - 0x40 - ina260 */
-+	/* u27 - 0xe0 - STDP4320 DP/HDMI splitter */
-+};
-+
- /* DP/USB 3.0 and SATA */
- &psgtr {
+-&uart_B {
++&uart_b {
  	status = "okay";
-diff --git a/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso b/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso
-index b59e48be6465..73c5cb156caf 100644
---- a/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso
-+++ b/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso
-@@ -16,21 +16,7 @@
- /dts-v1/;
- /plugin/;
- 
--&i2c1 { /* I2C_SCK C23/C24 - MIO from SOM */
--	#address-cells = <1>;
--	#size-cells = <0>;
--	pinctrl-names = "default", "gpio";
--	pinctrl-0 = <&pinctrl_i2c1_default>;
--	pinctrl-1 = <&pinctrl_i2c1_gpio>;
--	scl-gpios = <&gpio 24 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
--	sda-gpios = <&gpio 25 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
--
--	/* u14 - 0x40 - ina260 */
--	/* u43 - 0x2d - usb5744 */
--	/* u27 - 0xe0 - STDP4320 DP/HDMI splitter */
--};
--
--&amba {
-+&{/} {
- 	si5332_0: si5332_0 { /* u17 */
- 		compatible = "fixed-clock";
- 		#clock-cells = <0>;
-@@ -68,6 +54,20 @@
- 	};
  };
+diff --git a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
+index f24460186d3d..55ddea6dc9f8 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
+@@ -118,14 +118,14 @@
+ 					<10 11 12 13 14 15 16 17 18 19 20 21>;
+ 			};
  
-+&i2c1 { /* I2C_SCK C23/C24 - MIO from SOM */
-+	#address-cells = <1>;
-+	#size-cells = <0>;
-+	pinctrl-names = "default", "gpio";
-+	pinctrl-0 = <&pinctrl_i2c1_default>;
-+	pinctrl-1 = <&pinctrl_i2c1_gpio>;
-+	scl-gpios = <&gpio 24 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio 25 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+
-+	/* u14 - 0x40 - ina260 */
-+	/* u43 - 0x2d - usb5744 */
-+	/* u27 - 0xe0 - STDP4320 DP/HDMI splitter */
-+};
-+
- /* DP/USB 3.0 */
- &psgtr {
- 	status = "okay";
+-			uart_B: serial@7a000 {
++			uart_b: serial@7a000 {
+ 				compatible = "amlogic,meson-s4-uart",
+ 					     "amlogic,meson-ao-uart";
+ 				reg = <0x0 0x7a000 0x0 0x18>;
+ 				interrupts = <GIC_SPI 169 IRQ_TYPE_EDGE_RISING>;
+-				status = "disabled";
+ 				clocks = <&xtal>, <&xtal>, <&xtal>;
+ 				clock-names = "xtal", "pclk", "baud";
++				status = "disabled";
+ 			};
+ 
+ 			reset: reset-controller@2000 {
 -- 
 2.43.0
 
