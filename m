@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-18407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 532A584829A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DCD848030
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F0F8282857
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB79C28BEDB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BDF13AD4;
-	Sat,  3 Feb 2024 04:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7271C10A23;
+	Sat,  3 Feb 2024 04:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJlR5H6N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+3ztnTe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7836D1BC39;
-	Sat,  3 Feb 2024 04:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD93FBE4;
+	Sat,  3 Feb 2024 04:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933776; cv=none; b=JadhAPOz1QxxFuygWOZbXFfsh52HIE4oW/YI5vygplyUuRzocs9rqTTI3dmnAQT74llRmzSRvceJtoFKIEb2yybFQ6YY1kpW1X4S/eD4HaEWoMzDQ8LNdzaE+sqKhOr0PRux6Tnhe5R4T9CAIE5lt/U/ssOKVRgDRnSOrezzUIc=
+	t=1706933329; cv=none; b=rnOfGZdBTpa3kROurPGm+SQuYmf3SLQfTgzXW9AcVehhh3x0K/DFweycMP50sGwwuasHDyBDXcEP8moi46V8YMifNGFoxkoIbtP5+t8xJ+1OPSBSKcmn2zqtnIEeZw+a3ivA/kNc7n7qpdgUNn26FZiY+NbbDOp8pwnxq1c7AcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933776; c=relaxed/simple;
-	bh=tNzqlYb6LAjqKO4Wp3Jk1QSwFpMEc5HczL4Pp5H/SoM=;
+	s=arc-20240116; t=1706933329; c=relaxed/simple;
+	bh=Jmr+zpAFd308A1f2RF+B/sPtj3i4BSLTG7x2d0WG17U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YhjGTL5Vcj9Xaxqb/GeaHF74v4o0AdZuhtj9HY/lyDN6ZMxeJkcD0zsS3hHCnQcRvKkl1Rc2OznNYyhjxNCzz2yAyxAJ5cJPIyfa9KYHRiIFyUq2kZdtp2h6gK15Of0pKI0BLS5ByF7sKO3VILI7bAPjHb9J53VkeF+UpXzF2FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJlR5H6N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8142C433C7;
-	Sat,  3 Feb 2024 04:16:15 +0000 (UTC)
+	 MIME-Version; b=n55aYLlmH/vO+OQTqdiQl9uVEIWpqWCVR/M+Jyzzv9hblNxHRk0O5xb1MWnQXGiYPxNmFvKr+T9ntvvQ6q45T/j7JLkMUR2I3/54Z77bopVq5k1b8l+cRaVv4jo7YKgXMAYBgPUpJrCM7/0MmbtwOZVuih8Mq5sQjNt/V4en6Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+3ztnTe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AB4C433C7;
+	Sat,  3 Feb 2024 04:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933776;
-	bh=tNzqlYb6LAjqKO4Wp3Jk1QSwFpMEc5HczL4Pp5H/SoM=;
+	s=korg; t=1706933328;
+	bh=Jmr+zpAFd308A1f2RF+B/sPtj3i4BSLTG7x2d0WG17U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJlR5H6NUT1CT8vNpuIKExlTw1TTC8bYGBBOYZcAS9EZbeVQzS5SE1me0juZJxuXV
-	 p1DWN4zytpcpM0gdK/+V/m5umc5MJOZ5PR+T0WFQm4tKYZftOeEBRW9rNNfpfutGxd
-	 dz78k8gLFyPUoKiupbo/aTvkmiDxfziOLkT9RkRg=
+	b=w+3ztnTexcCp+64SjO+aeH6R0tj64NPv/DcY+yz0WWt8FDoz+xMp6GCCODY9AWz6P
+	 bIdVbxgCQHU6kjZLV0q4Ttznk65gpwqroaWBXm1V6s0W+Og3hGjw4kbI59NKNGmE7x
+	 dBKVK+JHbyk7QylAuzy6YA0E/k1gloy/fDBCncnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	syzbot+39ba34a099ac2e9bd3cb@syzkaller.appspotmail.com,
+	Manas Ghandat <ghandatmanas@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 079/353] ARM: dts: samsung: s5pv210: fix camera unit addresses/ranges
-Date: Fri,  2 Feb 2024 20:03:17 -0800
-Message-ID: <20240203035406.312797107@linuxfoundation.org>
+Subject: [PATCH 6.1 025/219] jfs: fix array-index-out-of-bounds in dbAdjTree
+Date: Fri,  2 Feb 2024 20:03:18 -0800
+Message-ID: <20240203035320.009850040@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +63,241 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Manas Ghandat <ghandatmanas@gmail.com>
 
-[ Upstream commit 07e6a553c2f1d385edfc9185081dee442a9dd38d ]
+[ Upstream commit 74ecdda68242b174920fe7c6133a856fb7d8559b ]
 
-The camera node has both unit address and children within the same bus
-mapping, thus needs proper ranges property to fix dtc W=1 warnings:
+Currently there is a bound check missing in the dbAdjTree while
+accessing the dmt_stree. To add the required check added the bool is_ctl
+which is required to determine the size as suggest in the following
+commit.
+https://lore.kernel.org/linux-kernel-mentees/f9475918-2186-49b8-b801-6f0f9e75f4fa@oracle.com/
 
-  Warning (unit_address_vs_reg): /soc/camera@fa600000: node has a unit name, but no reg or ranges property
-  Warning (simple_bus_reg): /soc/camera@fa600000: missing or empty reg/ranges property
-
-Subtract 0xfa600000 from all its children nodes.  No functional impact
-expected.
-
-Link: https://lore.kernel.org/r/20230722121719.150094-3-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reported-by: syzbot+39ba34a099ac2e9bd3cb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=39ba34a099ac2e9bd3cb
+Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/samsung/s5pv210.dtsi | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ fs/jfs/jfs_dmap.c | 60 ++++++++++++++++++++++++-----------------------
+ 1 file changed, 31 insertions(+), 29 deletions(-)
 
-diff --git a/arch/arm/boot/dts/samsung/s5pv210.dtsi b/arch/arm/boot/dts/samsung/s5pv210.dtsi
-index f7de5b5f2f38..ed560c9a3aa1 100644
---- a/arch/arm/boot/dts/samsung/s5pv210.dtsi
-+++ b/arch/arm/boot/dts/samsung/s5pv210.dtsi
-@@ -549,17 +549,17 @@
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 34e230b2110b..4462274e325a 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -63,10 +63,10 @@
+  */
+ static void dbAllocBits(struct bmap * bmp, struct dmap * dp, s64 blkno,
+ 			int nblocks);
+-static void dbSplit(dmtree_t * tp, int leafno, int splitsz, int newval);
+-static int dbBackSplit(dmtree_t * tp, int leafno);
+-static int dbJoin(dmtree_t * tp, int leafno, int newval);
+-static void dbAdjTree(dmtree_t * tp, int leafno, int newval);
++static void dbSplit(dmtree_t *tp, int leafno, int splitsz, int newval, bool is_ctl);
++static int dbBackSplit(dmtree_t *tp, int leafno, bool is_ctl);
++static int dbJoin(dmtree_t *tp, int leafno, int newval, bool is_ctl);
++static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl);
+ static int dbAdjCtl(struct bmap * bmp, s64 blkno, int newval, int alloc,
+ 		    int level);
+ static int dbAllocAny(struct bmap * bmp, s64 nblocks, int l2nb, s64 * results);
+@@ -2103,7 +2103,7 @@ static int dbFreeDmap(struct bmap * bmp, struct dmap * dp, s64 blkno,
+ 		 * system.
+ 		 */
+ 		if (dp->tree.stree[word] == NOFREE)
+-			dbBackSplit((dmtree_t *) & dp->tree, word);
++			dbBackSplit((dmtree_t *)&dp->tree, word, false);
  
- 		camera: camera@fa600000 {
- 			compatible = "samsung,fimc";
-+			ranges = <0x0 0xfa600000 0xe01000>;
- 			clocks = <&clocks SCLK_CAM0>, <&clocks SCLK_CAM1>;
- 			clock-names = "sclk_cam0", "sclk_cam1";
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			#clock-cells = <1>;
- 			clock-output-names = "cam_a_clkout", "cam_b_clkout";
--			ranges;
+ 		dbAllocBits(bmp, dp, blkno, nblocks);
+ 	}
+@@ -2189,7 +2189,7 @@ static void dbAllocBits(struct bmap * bmp, struct dmap * dp, s64 blkno,
+ 			 * the binary system of the leaves if need be.
+ 			 */
+ 			dbSplit(tp, word, BUDMIN,
+-				dbMaxBud((u8 *) & dp->wmap[word]));
++				dbMaxBud((u8 *)&dp->wmap[word]), false);
  
--			csis0: csis@fa600000 {
-+			csis0: csis@0 {
- 				compatible = "samsung,s5pv210-csis";
--				reg = <0xfa600000 0x4000>;
-+				reg = <0x00000000 0x4000>;
- 				interrupt-parent = <&vic2>;
- 				interrupts = <29>;
- 				clocks = <&clocks CLK_CSIS>,
-@@ -572,9 +572,9 @@
- 				#size-cells = <0>;
- 			};
+ 			word += 1;
+ 		} else {
+@@ -2229,7 +2229,7 @@ static void dbAllocBits(struct bmap * bmp, struct dmap * dp, s64 blkno,
+ 				 * system of the leaves to reflect the current
+ 				 * allocation (size).
+ 				 */
+-				dbSplit(tp, word, size, NOFREE);
++				dbSplit(tp, word, size, NOFREE, false);
  
--			fimc0: fimc@fb200000 {
-+			fimc0: fimc@c00000 {
- 				compatible = "samsung,s5pv210-fimc";
--				reg = <0xfb200000 0x1000>;
-+				reg = <0x00c00000 0x1000>;
- 				interrupts = <5>;
- 				interrupt-parent = <&vic2>;
- 				clocks = <&clocks CLK_FIMC0>,
-@@ -586,9 +586,9 @@
- 				samsung,cam-if;
- 			};
+ 				/* get the number of dmap words handled */
+ 				nw = BUDSIZE(size, BUDMIN);
+@@ -2336,7 +2336,7 @@ static int dbFreeBits(struct bmap * bmp, struct dmap * dp, s64 blkno,
+ 			/* update the leaf for this dmap word.
+ 			 */
+ 			rc = dbJoin(tp, word,
+-				    dbMaxBud((u8 *) & dp->wmap[word]));
++				    dbMaxBud((u8 *)&dp->wmap[word]), false);
+ 			if (rc)
+ 				return rc;
  
--			fimc1: fimc@fb300000 {
-+			fimc1: fimc@d00000 {
- 				compatible = "samsung,s5pv210-fimc";
--				reg = <0xfb300000 0x1000>;
-+				reg = <0x00d00000 0x1000>;
- 				interrupt-parent = <&vic2>;
- 				interrupts = <6>;
- 				clocks = <&clocks CLK_FIMC1>,
-@@ -602,9 +602,9 @@
- 				samsung,lcd-wb;
- 			};
+@@ -2369,7 +2369,7 @@ static int dbFreeBits(struct bmap * bmp, struct dmap * dp, s64 blkno,
  
--			fimc2: fimc@fb400000 {
-+			fimc2: fimc@e00000 {
- 				compatible = "samsung,s5pv210-fimc";
--				reg = <0xfb400000 0x1000>;
-+				reg = <0x00e00000 0x1000>;
- 				interrupt-parent = <&vic2>;
- 				interrupts = <7>;
- 				clocks = <&clocks CLK_FIMC2>,
+ 				/* update the leaf.
+ 				 */
+-				rc = dbJoin(tp, word, size);
++				rc = dbJoin(tp, word, size, false);
+ 				if (rc)
+ 					return rc;
+ 
+@@ -2521,16 +2521,16 @@ dbAdjCtl(struct bmap * bmp, s64 blkno, int newval, int alloc, int level)
+ 		 * that it is at the front of a binary buddy system.
+ 		 */
+ 		if (oldval == NOFREE) {
+-			rc = dbBackSplit((dmtree_t *) dcp, leafno);
++			rc = dbBackSplit((dmtree_t *)dcp, leafno, true);
+ 			if (rc) {
+ 				release_metapage(mp);
+ 				return rc;
+ 			}
+ 			oldval = dcp->stree[ti];
+ 		}
+-		dbSplit((dmtree_t *) dcp, leafno, dcp->budmin, newval);
++		dbSplit((dmtree_t *) dcp, leafno, dcp->budmin, newval, true);
+ 	} else {
+-		rc = dbJoin((dmtree_t *) dcp, leafno, newval);
++		rc = dbJoin((dmtree_t *) dcp, leafno, newval, true);
+ 		if (rc) {
+ 			release_metapage(mp);
+ 			return rc;
+@@ -2561,7 +2561,7 @@ dbAdjCtl(struct bmap * bmp, s64 blkno, int newval, int alloc, int level)
+ 				 */
+ 				if (alloc) {
+ 					dbJoin((dmtree_t *) dcp, leafno,
+-					       oldval);
++					       oldval, true);
+ 				} else {
+ 					/* the dbJoin() above might have
+ 					 * caused a larger binary buddy system
+@@ -2571,9 +2571,9 @@ dbAdjCtl(struct bmap * bmp, s64 blkno, int newval, int alloc, int level)
+ 					 */
+ 					if (dcp->stree[ti] == NOFREE)
+ 						dbBackSplit((dmtree_t *)
+-							    dcp, leafno);
++							    dcp, leafno, true);
+ 					dbSplit((dmtree_t *) dcp, leafno,
+-						dcp->budmin, oldval);
++						dcp->budmin, oldval, true);
+ 				}
+ 
+ 				/* release the buffer and return the error.
+@@ -2621,7 +2621,7 @@ dbAdjCtl(struct bmap * bmp, s64 blkno, int newval, int alloc, int level)
+  *
+  * serialization: IREAD_LOCK(ipbmap) or IWRITE_LOCK(ipbmap) held on entry/exit;
+  */
+-static void dbSplit(dmtree_t * tp, int leafno, int splitsz, int newval)
++static void dbSplit(dmtree_t *tp, int leafno, int splitsz, int newval, bool is_ctl)
+ {
+ 	int budsz;
+ 	int cursz;
+@@ -2643,7 +2643,7 @@ static void dbSplit(dmtree_t * tp, int leafno, int splitsz, int newval)
+ 		while (cursz >= splitsz) {
+ 			/* update the buddy's leaf with its new value.
+ 			 */
+-			dbAdjTree(tp, leafno ^ budsz, cursz);
++			dbAdjTree(tp, leafno ^ budsz, cursz, is_ctl);
+ 
+ 			/* on to the next size and buddy.
+ 			 */
+@@ -2655,7 +2655,7 @@ static void dbSplit(dmtree_t * tp, int leafno, int splitsz, int newval)
+ 	/* adjust the dmap tree to reflect the specified leaf's new
+ 	 * value.
+ 	 */
+-	dbAdjTree(tp, leafno, newval);
++	dbAdjTree(tp, leafno, newval, is_ctl);
+ }
+ 
+ 
+@@ -2686,7 +2686,7 @@ static void dbSplit(dmtree_t * tp, int leafno, int splitsz, int newval)
+  *
+  * serialization: IREAD_LOCK(ipbmap) or IWRITE_LOCK(ipbmap) held on entry/exit;
+  */
+-static int dbBackSplit(dmtree_t * tp, int leafno)
++static int dbBackSplit(dmtree_t *tp, int leafno, bool is_ctl)
+ {
+ 	int budsz, bud, w, bsz, size;
+ 	int cursz;
+@@ -2737,7 +2737,7 @@ static int dbBackSplit(dmtree_t * tp, int leafno)
+ 				 * system in two.
+ 				 */
+ 				cursz = leaf[bud] - 1;
+-				dbSplit(tp, bud, cursz, cursz);
++				dbSplit(tp, bud, cursz, cursz, is_ctl);
+ 				break;
+ 			}
+ 		}
+@@ -2765,7 +2765,7 @@ static int dbBackSplit(dmtree_t * tp, int leafno)
+  *
+  * RETURN VALUES: none
+  */
+-static int dbJoin(dmtree_t * tp, int leafno, int newval)
++static int dbJoin(dmtree_t *tp, int leafno, int newval, bool is_ctl)
+ {
+ 	int budsz, buddy;
+ 	s8 *leaf;
+@@ -2820,12 +2820,12 @@ static int dbJoin(dmtree_t * tp, int leafno, int newval)
+ 			if (leafno < buddy) {
+ 				/* leafno is the left buddy.
+ 				 */
+-				dbAdjTree(tp, buddy, NOFREE);
++				dbAdjTree(tp, buddy, NOFREE, is_ctl);
+ 			} else {
+ 				/* buddy is the left buddy and becomes
+ 				 * leafno.
+ 				 */
+-				dbAdjTree(tp, leafno, NOFREE);
++				dbAdjTree(tp, leafno, NOFREE, is_ctl);
+ 				leafno = buddy;
+ 			}
+ 
+@@ -2838,7 +2838,7 @@ static int dbJoin(dmtree_t * tp, int leafno, int newval)
+ 
+ 	/* update the leaf value.
+ 	 */
+-	dbAdjTree(tp, leafno, newval);
++	dbAdjTree(tp, leafno, newval, is_ctl);
+ 
+ 	return 0;
+ }
+@@ -2859,21 +2859,23 @@ static int dbJoin(dmtree_t * tp, int leafno, int newval)
+  *
+  * RETURN VALUES: none
+  */
+-static void dbAdjTree(dmtree_t * tp, int leafno, int newval)
++static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
+ {
+ 	int lp, pp, k;
+-	int max;
++	int max, size;
++
++	size = is_ctl ? CTLTREESIZE : TREESIZE;
+ 
+ 	/* pick up the index of the leaf for this leafno.
+ 	 */
+ 	lp = leafno + le32_to_cpu(tp->dmt_leafidx);
+ 
++	if (WARN_ON_ONCE(lp >= size || lp < 0))
++		return;
++
+ 	/* is the current value the same as the old value ?  if so,
+ 	 * there is nothing to do.
+ 	 */
+-	if (WARN_ON_ONCE(lp >= CTLTREESIZE))
+-		return;
+-
+ 	if (tp->dmt_stree[lp] == newval)
+ 		return;
+ 
 -- 
 2.43.0
 
