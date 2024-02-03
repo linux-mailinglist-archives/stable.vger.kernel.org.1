@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1981C8482F7
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78118848077
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA5BF28CC3F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 343CB28BF1F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CD41119C;
-	Sat,  3 Feb 2024 04:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEFC1643A;
+	Sat,  3 Feb 2024 04:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFdeUELF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4aI4VWn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CB91642F;
-	Sat,  3 Feb 2024 04:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C027C16419;
+	Sat,  3 Feb 2024 04:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933844; cv=none; b=MQkY3B0xcjOLg9J9Us+Dot3O5sCzS+lvA9lemzYGbEZZWH39YsCUQxhg1lOjnP1QNEE3tMcfbt94a9GMD/IBBgHnqngBbsEAlF3l8/A4DaQa5XRg4aquFfHSSFiaDIiiJ/WTVpHHrBTFMbcinFWyb+tXzGdO15OzlPomIjt8VTM=
+	t=1706933380; cv=none; b=gNizo6nEmtZfvfDvGLesHbNq1g9lX8jA3IwHUMbIQMMEvmAiCqQmuWxRrdp9LvYbnOMjdlo+8UiMDGe+DW+ULndAl8aKe8cJYGqSuFe/07yKSfaC6WZ75igYE2WjfrzvZvhjR+oRZCu78aTmxX1eVd4wmxEX6FNAV/wGkYU7D7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933844; c=relaxed/simple;
-	bh=PENr2SYQYtwgIzqg8t/6MuokqGdeuEqvzWt/4ZWs7kA=;
+	s=arc-20240116; t=1706933380; c=relaxed/simple;
+	bh=AXA2YAtHZsYhKItWyLpq1I1ezerIgpOlMl1wmpc0z70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ElmXdQoGuD5Us7PB3FjrViUzoptlM7hM1gntNcscUCf+uC97UUMci3S87hNj0p5H6gqLcfsBzI4X0A6PlLw5noaGYQVfmUGSpWa7E5e6K3+WI1fv74Jo5aasLKM/cjEkF+87xhXTuScpH9z9lvW6ST8gHwTITKMCXnUrrZkPTZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFdeUELF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32846C433C7;
-	Sat,  3 Feb 2024 04:17:24 +0000 (UTC)
+	 MIME-Version; b=n49jFca0H0YEreWTB3reIGIYLR7UnuHV//ajDVTsaE7BIVcOh9poDKfu6X49NbXGxEGUh4/1/znysVh71poPPA9X01jMiSh3KkTYORQZ7fm+fqX+pLPIXofCuQDY1CeLXAboMQyzFnivFH3VBXefCLvgkQunHvNTNeFDYSwKF9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4aI4VWn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88CB7C43390;
+	Sat,  3 Feb 2024 04:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933844;
-	bh=PENr2SYQYtwgIzqg8t/6MuokqGdeuEqvzWt/4ZWs7kA=;
+	s=korg; t=1706933380;
+	bh=AXA2YAtHZsYhKItWyLpq1I1ezerIgpOlMl1wmpc0z70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFdeUELF5GTc7cdZluD3nZdXoDdkI6vDXC1bNUlX71Six3fvnjGksmaXdZDaziPxZ
-	 BzbZF8gpdya+ur8bKK8HlSWoGSNOSlC1yQHwL4EguqOqt9fFMbyA16zJIndENLPGzB
-	 IMJ0Hg7NLdLJhwd/RkjotBvfuBRbWdKZOhhExzm4=
+	b=P4aI4VWnw3+EqbNtH9RUGulph6Ev8P1XeBAfw3jvoV0a7rD84mxDZHrh5DrMyYp49
+	 TPL73jSagmCFaBlMKfEQVksPO6KcrrPo/sHUrHsipab2pSErA3ukZkNU1gGmjOV0Gq
+	 LhA60Muj7s0y5tbIK68sCqkJ+nrkhLoDh3M3HDcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 146/353] wifi: rtlwifi: rtl8723{be,ae}: using calculate_bit_shift()
+Subject: [PATCH 6.1 091/219] arm64: dts: amlogic: fix format for s4 uart node
 Date: Fri,  2 Feb 2024 20:04:24 -0800
-Message-ID: <20240203035408.298047246@linuxfoundation.org>
+Message-ID: <20240203035330.163616319@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 
-[ Upstream commit 5c16618bc06a41ad68fd8499a21d35ef57ca06c2 ]
+[ Upstream commit eb54ef36282f670c704ed5af8593da62bebba80d ]
 
-Using calculate_bit_shift() to replace rtl8723_phy_calculate_bit_shift().
-And fix an undefined bitwise shift behavior problem.
+Aliases use lowercase letters and place status in end.
 
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-12-suhui@nfschina.com
+Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20231215-s4-dts-v1-1-7831ab6972be@amlogic.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c | 6 +++---
- drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c | 4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts | 4 ++--
+ arch/arm64/boot/dts/amlogic/meson-s4.dtsi             | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
-index fe9b407dc2af..71e29b103da5 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
-@@ -49,7 +49,7 @@ u32 rtl8723e_phy_query_rf_reg(struct ieee80211_hw *hw,
- 							    rfpath, regaddr);
- 	}
+diff --git a/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts b/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts
+index 8ffbcb2b1ac5..bbd3c05cbd90 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts
++++ b/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts
+@@ -15,7 +15,7 @@
+ 	#size-cells = <2>;
  
--	bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
+ 	aliases {
+-		serial0 = &uart_B;
++		serial0 = &uart_b;
+ 	};
  
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -80,7 +80,7 @@ void rtl8723e_phy_set_rf_reg(struct ieee80211_hw *hw,
- 			original_value = rtl8723_phy_rf_serial_read(hw,
- 								    rfpath,
- 								    regaddr);
--			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
-@@ -89,7 +89,7 @@ void rtl8723e_phy_set_rf_reg(struct ieee80211_hw *hw,
- 		rtl8723_phy_rf_serial_write(hw, rfpath, regaddr, data);
- 	} else {
- 		if (bitmask != RFREG_OFFSET_MASK) {
--			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
-index 2b9313cb93db..094cb36153f5 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
-@@ -41,7 +41,7 @@ u32 rtl8723be_phy_query_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
- 	spin_lock(&rtlpriv->locks.rf_lock);
+ 	memory@0 {
+@@ -25,6 +25,6 @@
  
- 	original_value = rtl8723_phy_rf_serial_read(hw, rfpath, regaddr);
--	bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
+ };
  
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -68,7 +68,7 @@ void rtl8723be_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path path,
- 	if (bitmask != RFREG_OFFSET_MASK) {
- 			original_value = rtl8723_phy_rf_serial_read(hw, path,
- 								    regaddr);
--			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data = ((original_value & (~bitmask)) |
- 				(data << bitshift));
- 		}
+-&uart_B {
++&uart_b {
+ 	status = "okay";
+ };
+diff --git a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
+index ad50cba42d19..372a03762d69 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
+@@ -118,14 +118,14 @@
+ 					<10 11 12 13 14 15 16 17 18 19 20 21>;
+ 			};
+ 
+-			uart_B: serial@7a000 {
++			uart_b: serial@7a000 {
+ 				compatible = "amlogic,meson-s4-uart",
+ 					     "amlogic,meson-ao-uart";
+ 				reg = <0x0 0x7a000 0x0 0x18>;
+ 				interrupts = <GIC_SPI 169 IRQ_TYPE_EDGE_RISING>;
+-				status = "disabled";
+ 				clocks = <&xtal>, <&xtal>, <&xtal>;
+ 				clock-names = "xtal", "pclk", "baud";
++				status = "disabled";
+ 			};
+ 
+ 			reset: reset-controller@2000 {
 -- 
 2.43.0
 
