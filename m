@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-18108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D8A848169
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AC8B848045
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A6B11C22312
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B8881C21CFC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AECB111A8;
-	Sat,  3 Feb 2024 04:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD81111B1;
+	Sat,  3 Feb 2024 04:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQi1ShUj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEISvKgz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B2611717;
-	Sat,  3 Feb 2024 04:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADCCEF9FD;
+	Sat,  3 Feb 2024 04:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933553; cv=none; b=nBy61ghn+GsFo2l3SrPmSIhqj2WORSVgZc9qIeqJG84wbvIXoGiruBLhSouw0/b9SLGudwvcKL85VuP9IKa17f73azkHM5WyowI4JhPrUxLVixENMxrwWWg7ly3RO/OPFuq1Zc6wDJWyyG37JS757vDAe3toTkkDZqcB1ETAzDE=
+	t=1706933344; cv=none; b=ioUTK0CD1VyrX/BVGSOwnT34mHfXy81yxlI/nzbkOAFl6lHpsvfj3EF3Qhmywy0kPwiUS0FKk7iANKHU4DnubEUGiZafcYAQoIoqEuGYLNVFxZI31/UVthN8xL7oDEnbXKlySWDXLR9+U+JSgs8h1gQEXcRlV6cUM6vgVWbTxVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933553; c=relaxed/simple;
-	bh=bimm/H/0cykokIHuDJ0htiKl+NgtkFfSsXQ0xxqr0cQ=;
+	s=arc-20240116; t=1706933344; c=relaxed/simple;
+	bh=/ZFBToNICGpzw0Y2VmaeOShfocQF50Em+IO5k3RcEYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lohBoKnR6YjVss3iMw6+zUkkAYBipj4qm+jH8ggCQ4Cv+3FtfdNE3w1eTaIu+Xes2cD2EQ2v8y8W2M86eD0Zp+/X+I3BWCdWRKSfHwuYtYBo/VDFL60UXWeJqjXLTpxrHT+P9N5wcFCu17PGV48aHqPHt+FZMUM95kyJ7FposZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQi1ShUj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E65A6C433C7;
-	Sat,  3 Feb 2024 04:12:32 +0000 (UTC)
+	 MIME-Version; b=WfozYmEf2+F4nl0sCtTr8fBKkibkA0SNxJIK62i/8SX59R5lOtKyQtkA+zU132ifwN2fsaEE2jA+xHVG+Ibqs/GcS2cd/S+OuaA0aatoQ+xCr4Z0y1DxhOD+wjmZVAc8Kz0rp4klszqfu0Y3FLgXFNgwQ1UtLGC4zP6Gs3N5VXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEISvKgz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FC59C433C7;
+	Sat,  3 Feb 2024 04:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933553;
-	bh=bimm/H/0cykokIHuDJ0htiKl+NgtkFfSsXQ0xxqr0cQ=;
+	s=korg; t=1706933344;
+	bh=/ZFBToNICGpzw0Y2VmaeOShfocQF50Em+IO5k3RcEYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQi1ShUj3ycLCmhfqs2mdQ28/UsoJw4HtYnQtN+NdRWXa87vcbs1PREux94WT0PmS
-	 LyALcdtF9V/vWRO2UI6VLFE3XdwmgNkvSz7LuSi8MYJj2dSlykCWYNomKUCKeFcyUI
-	 Hox1vC/p2NONGNkEOLTrC8PhnPvP4Ayot6BGgzTI=
+	b=PEISvKgzEL4uXF5vvLwgP9CxrCzvEDpRY8hHDHLnmFW7TWjbfKASVkKyNwUKmL5lp
+	 VoTFsHGVig6gleU4/myT6HQReRbHGwYVpt9qKvXg0mbegCKhoHvMw5QEkV7s7ViPQi
+	 EHqAlFJoOtLmeNBENfrrBtD49FA24QCSmig+kEcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 096/322] minmax: add umin(a, b) and umax(a, b)
-Date: Fri,  2 Feb 2024 20:03:13 -0800
-Message-ID: <20240203035402.244266080@linuxfoundation.org>
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Ma Wupeng <mawupeng1@huawei.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Xiaofei Tan <tanxiaofei@huawei.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	James Morse <james.morse@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 021/219] ACPI: APEI: set memory failure flags as MF_ACTION_REQUIRED on synchronous events
+Date: Fri,  2 Feb 2024 20:03:14 -0800
+Message-ID: <20240203035319.515850812@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,142 +67,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 80fcac55385ccb710d33a20dc1caaef29bd5a921 upstream.
+[ Upstream commit a70297d2213253853e95f5b49651f924990c6d3b ]
 
-Patch series "minmax: Relax type checks in min() and max()", v4.
+There are two major types of uncorrected recoverable (UCR) errors :
 
-The min() (etc) functions in minmax.h require that the arguments have
-exactly the same types.
+ - Synchronous error: The error is detected and raised at the point of
+   the consumption in the execution flow, e.g. when a CPU tries to
+   access a poisoned cache line. The CPU will take a synchronous error
+   exception such as Synchronous External Abort (SEA) on Arm64 and
+   Machine Check Exception (MCE) on X86. OS requires to take action (for
+   example, offline failure page/kill failure thread) to recover this
+   uncorrectable error.
 
-However when the type check fails, rather than look at the types and fix
-the type of a variable/constant, everyone seems to jump on min_t().  In
-reality min_t() ought to be rare - when something unusual is being done,
-not normality.
+ - Asynchronous error: The error is detected out of processor execution
+   context, e.g. when an error is detected by a background scrubber.
+   Some data in the memory are corrupted. But the data have not been
+   consumed. OS is optional to take action to recover this uncorrectable
+   error.
 
-The orginal min() (added in 2.4.9) replaced several inline functions and
-included the type - so matched the implicit casting of the function call.
-This was renamed min_t() in 2.4.10 and the current min() added.  There is
-no actual indication that the conversion of negatve values to large
-unsigned values has ever been an actual problem.
+When APEI firmware first is enabled, a platform may describe one error
+source for the handling of synchronous errors (e.g. MCE or SEA notification
+), or for handling asynchronous errors (e.g. SCI or External Interrupt
+notification). In other words, we can distinguish synchronous errors by
+APEI notification. For synchronous errors, kernel will kill the current
+process which accessing the poisoned page by sending SIGBUS with
+BUS_MCEERR_AR. In addition, for asynchronous errors, kernel will notify the
+process who owns the poisoned page by sending SIGBUS with BUS_MCEERR_AO in
+early kill mode. However, the GHES driver always sets mf_flags to 0 so that
+all synchronous errors are handled as asynchronous errors in memory failure.
 
-A quick grep shows 5734 min() and 4597 min_t().  Having the casts on
-almost half of the calls shows that something is clearly wrong.
+To this end, set memory failure flags as MF_ACTION_REQUIRED on synchronous
+events.
 
-If the wrong type is picked (and it is far too easy to pick the type of
-the result instead of the larger input) then significant bits can get
-discarded.
-
-Pretty much the worst example is in the derived clamp_val(), consider:
-        unsigned char x = 200u;
-        y = clamp_val(x, 10u, 300u);
-
-I also suspect that many of the min_t(u16, ...) are actually wrong.  For
-example copy_data() in printk_ringbuffer.c contains:
-
-        data_size = min_t(u16, buf_size, len);
-
-Here buf_size is 'unsigned int' and len 'u16', pass a 64k buffer (can you
-prove that doesn't happen?) and no data is returned.  Apparantly it did -
-and has since been fixed.
-
-The only reason that most of the min_t() are 'fine' is that pretty much
-all the values in the kernel are between 0 and INT_MAX.
-
-Patch 1 adds umin(), this uses integer promotions to convert both
-arguments to 'unsigned long long'.  It can be used to compare a signed
-type that is known to contain a non-negative value with an unsigned type.
-The compiler typically optimises it all away.  Added first so that it can
-be referred to in patch 2.
-
-Patch 2 replaces the 'same type' check with a 'same signedness' one.  This
-makes min(unsigned_int_var, sizeof()) be ok.  The error message is also
-improved and will contain the expanded form of both arguments (useful for
-seeing how constants are defined).
-
-Patch 3 just fixes some whitespace.
-
-Patch 4 allows comparisons of 'unsigned char' and 'unsigned short' to
-signed types.  The integer promotion rules convert them both to 'signed
-int' prior to the comparison so they can never cause a negative value be
-converted to a large positive one.
-
-Patch 5 (rewritted for v4) allows comparisons of unsigned values against
-non-negative constant integer expressions.  This makes
-min(unsigned_int_var, 4) be ok.
-
-The only common case that is still errored is the comparison of signed
-values against unsigned constant integer expressions below __INT_MAX__.
-Typcally min(int_val, sizeof (foo)), the real fix for this is casting the
-constant: min(int_var, (int)sizeof (foo)).
-
-With all the patches applied pretty much all the min_t() could be replaced
-by min(), and most of the rest by umin().  However they all need careful
-inspection due to code like:
-
-        sz = min_t(unsigned char, sz - 1, LIM - 1) + 1;
-
-which converts 0 to LIM.
-
-
-This patch (of 6):
-
-umin() and umax() can be used when min()/max() errors a signed v unsigned
-compare when the signed value is known to be non-negative.
-
-Unlike min_t(some_unsigned_type, a, b) umin() will never mask off high
-bits if an inappropriate type is selected.
-
-The '+ 0u + 0ul + 0ull' may look strange.
-The '+ 0u' is needed for 'signed int' on 64bit systems.
-The '+ 0ul' is needed for 'signed long' on 32bit systems.
-The '+ 0ull' is needed for 'signed long long'.
-
-Link: https://lkml.kernel.org/r/b97faef60ad24922b530241c5d7c933c@AcuMS.aculab.com
-Link: https://lkml.kernel.org/r/41d93ca827a248698ec64bf57e0c05a5@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Tested-by: Ma Wupeng <mawupeng1@huawei.com>
+Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+Reviewed-by: Xiaofei Tan <tanxiaofei@huawei.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: James Morse <james.morse@arm.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/acpi/apei/ghes.c | 29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -77,6 +77,23 @@
- #define max(x, y)	__careful_cmp(x, y, >)
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index 9952f3a792ba..dd808cf65c84 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -99,6 +99,20 @@ static inline bool is_hest_type_generic_v2(struct ghes *ghes)
+ 	return ghes->generic->header.type == ACPI_HEST_TYPE_GENERIC_ERROR_V2;
+ }
  
- /**
-+ * umin - return minimum of two non-negative values
-+ *   Signed types are zero extended to match a larger unsigned type.
-+ * @x: first value
-+ * @y: second value
++/*
++ * A platform may describe one error source for the handling of synchronous
++ * errors (e.g. MCE or SEA), or for handling asynchronous errors (e.g. SCI
++ * or External Interrupt). On x86, the HEST notifications are always
++ * asynchronous, so only SEA on ARM is delivered as a synchronous
++ * notification.
 + */
-+#define umin(x, y)	\
-+	__careful_cmp((x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull, <)
++static inline bool is_hest_sync_notify(struct ghes *ghes)
++{
++	u8 notify_type = ghes->generic->notify.type;
 +
-+/**
-+ * umax - return maximum of two non-negative values
-+ * @x: first value
-+ * @y: second value
-+ */
-+#define umax(x, y)	\
-+	__careful_cmp((x) + 0u + 0ul + 0ull, (y) + 0u + 0ul + 0ull, >)
++	return notify_type == ACPI_HEST_NOTIFY_SEA;
++}
 +
-+/**
-  * min3 - return minimum of three values
-  * @x: first value
-  * @y: second value
+ /*
+  * This driver isn't really modular, however for the time being,
+  * continuing to use module_param is the easiest way to remain
+@@ -461,7 +475,7 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
+ }
+ 
+ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+-				       int sev)
++				       int sev, bool sync)
+ {
+ 	int flags = -1;
+ 	int sec_sev = ghes_severity(gdata->error_severity);
+@@ -475,7 +489,7 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+ 	    (gdata->flags & CPER_SEC_ERROR_THRESHOLD_EXCEEDED))
+ 		flags = MF_SOFT_OFFLINE;
+ 	if (sev == GHES_SEV_RECOVERABLE && sec_sev == GHES_SEV_RECOVERABLE)
+-		flags = 0;
++		flags = sync ? MF_ACTION_REQUIRED : 0;
+ 
+ 	if (flags != -1)
+ 		return ghes_do_memory_failure(mem_err->physical_addr, flags);
+@@ -483,9 +497,11 @@ static bool ghes_handle_memory_failure(struct acpi_hest_generic_data *gdata,
+ 	return false;
+ }
+ 
+-static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int sev)
++static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
++				       int sev, bool sync)
+ {
+ 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
++	int flags = sync ? MF_ACTION_REQUIRED : 0;
+ 	bool queued = false;
+ 	int sec_sev, i;
+ 	char *p;
+@@ -510,7 +526,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata, int s
+ 		 * and don't filter out 'corrected' error here.
+ 		 */
+ 		if (is_cache && has_pa) {
+-			queued = ghes_do_memory_failure(err_info->physical_fault_addr, 0);
++			queued = ghes_do_memory_failure(err_info->physical_fault_addr, flags);
+ 			p += err_info->length;
+ 			continue;
+ 		}
+@@ -631,6 +647,7 @@ static bool ghes_do_proc(struct ghes *ghes,
+ 	const guid_t *fru_id = &guid_null;
+ 	char *fru_text = "";
+ 	bool queued = false;
++	bool sync = is_hest_sync_notify(ghes);
+ 
+ 	sev = ghes_severity(estatus->error_severity);
+ 	apei_estatus_for_each_section(estatus, gdata) {
+@@ -648,13 +665,13 @@ static bool ghes_do_proc(struct ghes *ghes,
+ 			ghes_edac_report_mem_error(sev, mem_err);
+ 
+ 			arch_apei_report_mem_error(sev, mem_err);
+-			queued = ghes_handle_memory_failure(gdata, sev);
++			queued = ghes_handle_memory_failure(gdata, sev, sync);
+ 		}
+ 		else if (guid_equal(sec_type, &CPER_SEC_PCIE)) {
+ 			ghes_handle_aer(gdata);
+ 		}
+ 		else if (guid_equal(sec_type, &CPER_SEC_PROC_ARM)) {
+-			queued = ghes_handle_arm_hw_error(gdata, sev);
++			queued = ghes_handle_arm_hw_error(gdata, sev, sync);
+ 		} else {
+ 			void *err = acpi_hest_get_payload(gdata);
+ 
+-- 
+2.43.0
+
 
 
 
