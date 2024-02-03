@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA6D84804F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C2258481A0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33D6D1C20B6A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CAD31F24714
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9F0F9E5;
-	Sat,  3 Feb 2024 04:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665C910A0E;
+	Sat,  3 Feb 2024 04:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yyYiZvx2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0T6KaMd9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F72F9D7;
-	Sat,  3 Feb 2024 04:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26950101C6;
+	Sat,  3 Feb 2024 04:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933352; cv=none; b=X9clM/gAfCGKSlJvnaSLyWjnqcSouUN0yvDsqau87FcvOzynTEuBovD0iHF72fbeAo6CM0bHPOenkj4o1XZDYzL+2zvq/VjcDfZlw8M7mdPbIGKKy+XARSnwur0J/dUD3HZz0ARG8C3/C6REMgAa4Mlh2DaujhpDk+anNpmeEVk=
+	t=1706933593; cv=none; b=O8ZBGNq6eHpmlfVqAwWEXavA4sQASkbeNOe7X0GBi+qH5W1/sHlIUEUI5DXxbza5I3ZfSwCoO9Z9Z54XAE2dAneeWdMjq+wnPGD3bpywaPPaetoEA6Xb0qINkPciCZDn9tTBP4sySyWE/N9Tc+jyskXtgi2UG5r+S704qpxKuCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933352; c=relaxed/simple;
-	bh=p7AZ315qwMczIEPDmnWMICId6LQNNvXOPBLjz0oxxTQ=;
+	s=arc-20240116; t=1706933593; c=relaxed/simple;
+	bh=B6q2qrlcU13bk2bTsQqv8aXVPt3GXsV1fqUuyZRFOZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVdOG4fXMz1pFruxAuyAULuMHhu1Rk6SByiYbQnXeq34TuAiFhms2IrQ/cVEpL6eqxUdFUYnNEqEIgE5mOTF9nfKfZFVGwk7iIl3pYhCcYu6PpeQnJ2PTPwXJXCf0i8dLaL0K30z9K1cIERpaLZlYhOO0OGqg+gbnZFPA/WrghI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yyYiZvx2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4870C43399;
-	Sat,  3 Feb 2024 04:09:11 +0000 (UTC)
+	 MIME-Version; b=t4RXh1jZjyuikAcLaYB7wOnaiQWcBDjN6JP4AwJuyZGLK3aS8nayh4UNniDcu7ao2lM4UP0HohxZz9h10uFpK0vaPJhzS4dEB6GjMVl48UK6wtoXRU2ymFPmpEW9coj2eRLKwmVvAdMF4E/5sHDLwsbcNP5YtrGH16tM+N2hMgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0T6KaMd9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925BCC433C7;
+	Sat,  3 Feb 2024 04:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933352;
-	bh=p7AZ315qwMczIEPDmnWMICId6LQNNvXOPBLjz0oxxTQ=;
+	s=korg; t=1706933592;
+	bh=B6q2qrlcU13bk2bTsQqv8aXVPt3GXsV1fqUuyZRFOZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yyYiZvx215kr6V0KcHBiiMIjpXDDEnsb2FHKTGPpxmdNrOMe8MnS2Zx3vRhLFToVo
-	 VaTkG1apJx6n0vKnyyLvjCLFXkZcGs3mYEAGjjQNZXoSWM3u4/EcvEVI6dFFsaagi1
-	 HMIypTFG+e7s1pSBnfMdJatuR7J+q6gY+Zy/sdxE=
+	b=0T6KaMd92DXEGXKxeLq2Z82x/TaxFix3akaZuQgdRRoKxYb3s1VTc5mXyYoZ1pQG2
+	 s4aROapz/C8K8IBs0ttW1v9rLEyRCmg2LEIdRfnSJKTc2xS2HAuZ3NpIIROnEx21H2
+	 U/Civp8hTxyFHYFV0KhAPgdtx9kPIfUEd39h21Tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Saxena <sumit.saxena@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 056/219] scsi: mpi3mr: Add PCI checks where SAS5116 diverges from SAS4116
-Date: Fri,  2 Feb 2024 20:03:49 -0800
-Message-ID: <20240203035324.902425937@linuxfoundation.org>
+Subject: [PATCH 6.6 133/322] block: prevent an integer overflow in bvec_try_merge_hw_page
+Date: Fri,  2 Feb 2024 20:03:50 -0800
+Message-ID: <20240203035403.446982470@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Saxena <sumit.saxena@broadcom.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit c9260ff28ee561fca5f96425c9328a9698e8427b ]
+[ Upstream commit 3f034c374ad55773c12dd8f3c1607328e17c0072 ]
 
-Add PCI IDs checks for the cases where SAS5116 diverges from SAS4116 in
-behavior.
+Reordered a check to avoid a possible overflow when adding len to bv_len.
 
-Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
-Link: https://lore.kernel.org/r/20231123160132.4155-3-sumit.saxena@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20231204173419.782378-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_fw.c | 3 ++-
- drivers/scsi/mpi3mr/mpi3mr_os.c | 5 ++++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ block/bio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-index d2c7de804b99..41636c4c43af 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -1886,7 +1886,8 @@ static int mpi3mr_create_op_reply_q(struct mpi3mr_ioc *mrioc, u16 qidx)
+diff --git a/block/bio.c b/block/bio.c
+index 5eba53ca953b..270f6b99926e 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -944,7 +944,7 @@ bool bvec_try_merge_hw_page(struct request_queue *q, struct bio_vec *bv,
  
- 	reply_qid = qidx + 1;
- 	op_reply_q->num_replies = MPI3MR_OP_REP_Q_QD;
--	if (!mrioc->pdev->revision)
-+	if ((mrioc->pdev->device == MPI3_MFGPAGE_DEVID_SAS4116) &&
-+		!mrioc->pdev->revision)
- 		op_reply_q->num_replies = MPI3MR_OP_REP_Q_QD4K;
- 	op_reply_q->ci = 0;
- 	op_reply_q->ephase = 1;
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
-index 85f5b349c7e4..7a6b006e70c8 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_os.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
-@@ -4963,7 +4963,10 @@ mpi3mr_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		mpi3mr_init_drv_cmd(&mrioc->evtack_cmds[i],
- 				    MPI3MR_HOSTTAG_EVTACKCMD_MIN + i);
- 
--	if (pdev->revision)
-+	if ((pdev->device == MPI3_MFGPAGE_DEVID_SAS4116) &&
-+		!pdev->revision)
-+		mrioc->enable_segqueue = false;
-+	else
- 		mrioc->enable_segqueue = true;
- 
- 	init_waitqueue_head(&mrioc->reset_waitq);
+ 	if ((addr1 | mask) != (addr2 | mask))
+ 		return false;
+-	if (bv->bv_len + len > queue_max_segment_size(q))
++	if (len > queue_max_segment_size(q) - bv->bv_len)
+ 		return false;
+ 	return bvec_try_merge_page(bv, page, len, offset, same_page);
+ }
 -- 
 2.43.0
 
