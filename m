@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-18594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67D45848358
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54EED84822F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CD311F262A4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00A14281A23
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7675952F85;
-	Sat,  3 Feb 2024 04:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7E247F6F;
+	Sat,  3 Feb 2024 04:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UL5y++ej"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlBo78gc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350B1171CC;
-	Sat,  3 Feb 2024 04:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AA110A23;
+	Sat,  3 Feb 2024 04:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933914; cv=none; b=f/Wg6F9x8HNnmPj+wzOJNkaQMsRAqcg0+R4zjWOihm3gU4NRDhgYyaSa5IKQoM4eb+eOt4S+WAZwoOsCtmgqIA/kN8scxhV1n1aP9Sfyi6LdVqkTNRXs8JJUN3oLsLBrKWaF/QIZkmwMBfds9Xn/bJ89XT+EvY05YkERxNcF4jk=
+	t=1706933698; cv=none; b=m3ONozOEiKF3qefn2YBPzyMbmFERZaUTMIOFZ0hndXKaGwZrwNQh30JvT6iPJo8SKtCihdXHNdA61EmaTrzD/qpL+N0IwJME+GT6gsaRW1dLuC4Iw28S1IiMwvsmDzvEc1SRZ54ZPlOYoLjkGETF0wuAurhhXgP8aLkEYSWdUC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933914; c=relaxed/simple;
-	bh=eEI+dzoXeJ86fz2hkIYOP+vY8YhgpMFNUSUuA1vJGqQ=;
+	s=arc-20240116; t=1706933698; c=relaxed/simple;
+	bh=FVEXWIiyE5hFPwDPal7jQxS4NA4QcsYjrSa9ywmagrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VDjkMu7hpO9sONE4fHx4ZLud95yjkJ7hfdE+Y4p4nTlzQVrYcaAsQjOj+6GF4TEs3+ZNoEj3E0np8nTX+C8KCH+I34VjL1+vD/pJrbP+WpbNjq5W/PbW1ZWsL5C/XLVuhaKJwg/1enmATTwYNNALoGC0LYre0BKueozrCHUIjg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UL5y++ej; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5EEC43390;
-	Sat,  3 Feb 2024 04:18:33 +0000 (UTC)
+	 MIME-Version; b=dm0OZFDYwBx4YPQbdZgOEFdXmv5qUE0n9zVDy4MeWEL5wy1jph7UOqS35w0Vr2uRtLIKdyd/kZAP+TrcbxoL5YN/RCR1bAI7fWEkLFFPxnJXG1wQXQsnGu7Xhw16k/DfJRz+HStcleH661MjCESRql3J6yHrDqcbHRjroqht8gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlBo78gc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B85A5C433F1;
+	Sat,  3 Feb 2024 04:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933914;
-	bh=eEI+dzoXeJ86fz2hkIYOP+vY8YhgpMFNUSUuA1vJGqQ=;
+	s=korg; t=1706933697;
+	bh=FVEXWIiyE5hFPwDPal7jQxS4NA4QcsYjrSa9ywmagrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UL5y++ejDIZ8OzpKlvXKRxfEy/KtH7OsHfB5ERpKZ50eRaexs93O1iZll8qnoaWv/
-	 GUnPwo7RY8acIkOKdIJsRUjRpGGyw9RPdu9aRUUkx9XkBGVImyDEB7/FnzDD/LuF4a
-	 8nC6ejnJWIFyKcY9BHeJpvNZDASa10mw3+qsQMNw=
+	b=vlBo78gcgwfBOFCq7wVBVODWImhUw3BQ0O01elv0eGjiobEfYk3jcos3rGNcqUEJr
+	 FVEz44yBK8K0PCY6MwcTJg0nVEtUfF3Plh9i4psFrfsNcXCwogzrom6+707edbQyPj
+	 N9NjURMYt4wr/FhDNWD2g3fBXP7ES9lEhQUFuR50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yinbo Zhu <zhuyinbo@loongson.cn>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 267/353] usb: xhci-plat: fix usb disconnect issue after s4
-Date: Fri,  2 Feb 2024 20:06:25 -0800
-Message-ID: <20240203035412.203947661@linuxfoundation.org>
+Subject: [PATCH 6.6 289/322] selftests: net: Add missing matchall classifier
+Date: Fri,  2 Feb 2024 20:06:26 -0800
+Message-ID: <20240203035408.413868712@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinbo Zhu <zhuyinbo@loongson.cn>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 6d6887c42e946f43bed2e64571a40c8476a1e4a9 ]
+[ Upstream commit b40f873a7c80dbafbb6f4a7a569f2dcaf969d283 ]
 
-The xhci retaining bogus hardware states cause usb disconnect devices
-connected before hibernation(s4) and refer to the commit 'f3d478858be
-("usb: ohci-platform: fix usb disconnect issue after s4")' which set
-flag "hibernated" as true when resume-from-hibernation and that the
-drivers will reset the hardware to get rid of any existing state and
-make sure resume from hibernation re-enumerates everything for xhci.
+One of the test cases in the test_bridge_backup_port.sh selftest relies
+on a matchall classifier to drop unrelated traffic so that the Tx drop
+counter on the VXLAN device will only be incremented as a result of
+traffic generated by the test.
 
-Signed-off-by: Yinbo Zhu <zhuyinbo@loongson.cn>
-Link: https://lore.kernel.org/r/20231228071113.1719-1-zhuyinbo@loongson.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, the configuration option for the matchall classifier is
+missing from the configuration file which might explain the failures we
+see in the netdev CI [1].
+
+Fix by adding CONFIG_NET_CLS_MATCHALL to the configuration file.
+
+[1]
+ # Backup nexthop ID - invalid IDs
+ # -------------------------------
+ [...]
+ # TEST: Forwarding out of vx0                                         [ OK ]
+ # TEST: No forwarding using backup nexthop ID                         [ OK ]
+ # TEST: Tx drop increased                                             [FAIL]
+ # TEST: IPv6 address family nexthop as backup nexthop                 [ OK ]
+ # TEST: No forwarding out of swp1                                     [ OK ]
+ # TEST: Forwarding out of vx0                                         [ OK ]
+ # TEST: No forwarding using backup nexthop ID                         [ OK ]
+ # TEST: Tx drop increased                                             [FAIL]
+ [...]
+
+Fixes: b408453053fb ("selftests: net: Add bridge backup port and backup nexthop ID test")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20240129123703.1857843-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-plat.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ tools/testing/selftests/net/config | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
-index 732cdeb73920..f0853c4478f5 100644
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -433,7 +433,7 @@ void xhci_plat_remove(struct platform_device *dev)
- }
- EXPORT_SYMBOL_GPL(xhci_plat_remove);
- 
--static int __maybe_unused xhci_plat_suspend(struct device *dev)
-+static int xhci_plat_suspend(struct device *dev)
- {
- 	struct usb_hcd	*hcd = dev_get_drvdata(dev);
- 	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
-@@ -461,7 +461,7 @@ static int __maybe_unused xhci_plat_suspend(struct device *dev)
- 	return 0;
- }
- 
--static int __maybe_unused xhci_plat_resume(struct device *dev)
-+static int xhci_plat_resume_common(struct device *dev, struct pm_message pmsg)
- {
- 	struct usb_hcd	*hcd = dev_get_drvdata(dev);
- 	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
-@@ -483,7 +483,7 @@ static int __maybe_unused xhci_plat_resume(struct device *dev)
- 	if (ret)
- 		goto disable_clks;
- 
--	ret = xhci_resume(xhci, PMSG_RESUME);
-+	ret = xhci_resume(xhci, pmsg);
- 	if (ret)
- 		goto disable_clks;
- 
-@@ -502,6 +502,16 @@ static int __maybe_unused xhci_plat_resume(struct device *dev)
- 	return ret;
- }
- 
-+static int xhci_plat_resume(struct device *dev)
-+{
-+	return xhci_plat_resume_common(dev, PMSG_RESUME);
-+}
-+
-+static int xhci_plat_restore(struct device *dev)
-+{
-+	return xhci_plat_resume_common(dev, PMSG_RESTORE);
-+}
-+
- static int __maybe_unused xhci_plat_runtime_suspend(struct device *dev)
- {
- 	struct usb_hcd  *hcd = dev_get_drvdata(dev);
-@@ -524,7 +534,12 @@ static int __maybe_unused xhci_plat_runtime_resume(struct device *dev)
- }
- 
- const struct dev_pm_ops xhci_plat_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(xhci_plat_suspend, xhci_plat_resume)
-+	.suspend = pm_sleep_ptr(xhci_plat_suspend),
-+	.resume = pm_sleep_ptr(xhci_plat_resume),
-+	.freeze = pm_sleep_ptr(xhci_plat_suspend),
-+	.thaw = pm_sleep_ptr(xhci_plat_resume),
-+	.poweroff = pm_sleep_ptr(xhci_plat_suspend),
-+	.restore = pm_sleep_ptr(xhci_plat_restore),
- 
- 	SET_RUNTIME_PM_OPS(xhci_plat_runtime_suspend,
- 			   xhci_plat_runtime_resume,
+diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
+index 56da5d52674c..b4e811f17eb1 100644
+--- a/tools/testing/selftests/net/config
++++ b/tools/testing/selftests/net/config
+@@ -52,6 +52,7 @@ CONFIG_NET_ACT_CT=m
+ CONFIG_NET_ACT_GACT=m
+ CONFIG_NET_CLS_BASIC=m
+ CONFIG_NET_CLS_BPF=m
++CONFIG_NET_CLS_MATCHALL=m
+ CONFIG_NET_CLS_U32=m
+ CONFIG_NET_IPGRE_DEMUX=m
+ CONFIG_NET_IPGRE=m
 -- 
 2.43.0
 
