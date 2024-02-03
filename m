@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-18180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD5E8481B3
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B6C848097
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87A7C1F234CD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6615F281D9D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5362418030;
-	Sat,  3 Feb 2024 04:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275901757A;
+	Sat,  3 Feb 2024 04:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KFw3zvWK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCPmtKqG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1325FF9EB;
-	Sat,  3 Feb 2024 04:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6F4111AE;
+	Sat,  3 Feb 2024 04:10:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933606; cv=none; b=QQzHQBNJvJ9WZ634oIq1TyHRYHZ0albpfxtOkZNp6ixsmWYIKQDii9LLKDpf3p5wcsghnWje5lql4gKbwis/Jll39w5lu4rVSsJc99vx20xbqHEcJtK8m8bDIjEgaahCaQMXg3UIER+/XrQyysabuHkyuplPn81KSbkX9V5x7rc=
+	t=1706933404; cv=none; b=rAizZtAqKqq2ikgS+1TKwRod8+po+b99RYS22jPx8GPObywNN2gLZXMVzhuCnxY57YN67vTkjLENpfYxNzHiCgxxru+QBpcyTtGdP6AO/OIMEar6kgbohtrA/67VwVMtR3/ESEjdAL7hhK7F01hmfgPF6QRJ4xWRt/F9GvhVp38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933606; c=relaxed/simple;
-	bh=Pd0RzMhu/GUBfJlqhxn8prfOF3kRgLnEDovZPGbq9S4=;
+	s=arc-20240116; t=1706933404; c=relaxed/simple;
+	bh=QhFJMa3/G/ykHEOqBfUsaaP5QqWzyjR/S9G6KXl9yVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LXYH2M0ffhEJYlJe4VBLcmi07S7ayXf+9jL31cZYqi1reJuyEORipaNGbTnSch5fdL1S+gJSs8ZiFJhlvdNCAe+ccaIvfckipRdZQVfGvZsMKRHmji7z3yqP2yNHHnFz62ptk9Y0781lOgaGKeG1zOkakETqXMkgfxlHPrshYww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KFw3zvWK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8BBC433F1;
-	Sat,  3 Feb 2024 04:13:25 +0000 (UTC)
+	 MIME-Version; b=QAz3LEkJXZ2U3EuFwajTkgl1V0Wc+Ud3Ok78nnhEC01MSul7oKcsaQkeKyWfaCo86UMTRc3vhHKokn6LnHiHBxzWKnfTjrBOfhw8iUU+kMLsQb4ogygiICRWK/iwl4G5I+KKlBS8xdcdz4InbH27rkRgrWGOKXb6N9MeCz0rzFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCPmtKqG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47A3C433F1;
+	Sat,  3 Feb 2024 04:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933605;
-	bh=Pd0RzMhu/GUBfJlqhxn8prfOF3kRgLnEDovZPGbq9S4=;
+	s=korg; t=1706933404;
+	bh=QhFJMa3/G/ykHEOqBfUsaaP5QqWzyjR/S9G6KXl9yVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KFw3zvWKHDHhbkoGteaKaJsrlNa18jyC1by2yMasAQh2ZDHPjUeBldzycvktgNdEt
-	 BQbpNTyBGLRMgw7WPXWqVjuXzjWEjCUlncqCurCSlhQ0Ii9H9hlY/qqCSwCFibcFQH
-	 tmoo86TWXZCgyt62ZJ3lh2LNlCzO9//ogi/nRuWI=
+	b=QCPmtKqGUFRQla6mpiZGcNlyEW23c/iX2eNG19E1agrCOyxMU8L3i/pwJb8ebfAci
+	 TjxupQX5drg4/oipUcprbcIA+iN2zqtc5jupeG6lll3jA8Naq8qKNYUL1DUV+twzCe
+	 URpV1DzMW5vDqNbAU4Ad/xaGCnIzbjLU0frmW/Lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 175/322] ALSA: hda: Intel: add HDA_ARL PCI ID support
+	Wen Gu <guwen@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	Wenjia Zhang <wenjia@linux.ibm.com>
+Subject: [PATCH 6.1 099/219] net/smc: disable SEID on non-s390 archs where virtual ISM may be used
 Date: Fri,  2 Feb 2024 20:04:32 -0800
-Message-ID: <20240203035404.901886037@linuxfoundation.org>
+Message-ID: <20240203035331.123226313@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Wen Gu <guwen@linux.alibaba.com>
 
-[ Upstream commit a31014ebad617868c246d3985ff80d891f03711e ]
+[ Upstream commit c6b8b8eb49904018e22e4e4b1fa502e57dc747d9 ]
 
-Yet another PCI ID.
+The system EID (SEID) is an internal EID used by SMC-D to represent the
+s390 physical machine that OS is executing on. On s390 architecture, it
+predefined by fixed string and part of cpuid and is enabled regardless
+of whether underlay device is virtual ISM or platform firmware ISM.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20231204212710.185976-3-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+However on non-s390 architectures where SMC-D can be used with virtual
+ISM devices, there is no similar information to identify physical
+machines, especially in virtualization scenarios. So in such cases, SEID
+is forcibly disabled and the user-defined UEID will be used to represent
+the communicable space.
+
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Reviewed-and-tested-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/smc/smc_clc.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-index 75148485b755..55d3a78112e0 100644
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2504,6 +2504,8 @@ static const struct pci_device_id azx_ids[] = {
- 	{ PCI_DEVICE_DATA(INTEL, HDA_LNL_P, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE) },
- 	/* Arrow Lake-S */
- 	{ PCI_DEVICE_DATA(INTEL, HDA_ARL_S, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE) },
-+	/* Arrow Lake */
-+	{ PCI_DEVICE_DATA(INTEL, HDA_ARL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_SKYLAKE) },
- 	/* Apollolake (Broxton-P) */
- 	{ PCI_DEVICE_DATA(INTEL, HDA_APL, AZX_DRIVER_SKL | AZX_DCAPS_INTEL_BROXTON) },
- 	/* Gemini-Lake */
+diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
+index 9b8999e2afca..867df4522815 100644
+--- a/net/smc/smc_clc.c
++++ b/net/smc/smc_clc.c
+@@ -155,10 +155,12 @@ static int smc_clc_ueid_remove(char *ueid)
+ 			rc = 0;
+ 		}
+ 	}
++#if IS_ENABLED(CONFIG_S390)
+ 	if (!rc && !smc_clc_eid_table.ueid_cnt) {
+ 		smc_clc_eid_table.seid_enabled = 1;
+ 		rc = -EAGAIN;	/* indicate success and enabling of seid */
+ 	}
++#endif
+ 	write_unlock(&smc_clc_eid_table.lock);
+ 	return rc;
+ }
+@@ -273,22 +275,30 @@ int smc_nl_dump_seid(struct sk_buff *skb, struct netlink_callback *cb)
+ 
+ int smc_nl_enable_seid(struct sk_buff *skb, struct genl_info *info)
+ {
++#if IS_ENABLED(CONFIG_S390)
+ 	write_lock(&smc_clc_eid_table.lock);
+ 	smc_clc_eid_table.seid_enabled = 1;
+ 	write_unlock(&smc_clc_eid_table.lock);
+ 	return 0;
++#else
++	return -EOPNOTSUPP;
++#endif
+ }
+ 
+ int smc_nl_disable_seid(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	int rc = 0;
+ 
++#if IS_ENABLED(CONFIG_S390)
+ 	write_lock(&smc_clc_eid_table.lock);
+ 	if (!smc_clc_eid_table.ueid_cnt)
+ 		rc = -ENOENT;
+ 	else
+ 		smc_clc_eid_table.seid_enabled = 0;
+ 	write_unlock(&smc_clc_eid_table.lock);
++#else
++	rc = -EOPNOTSUPP;
++#endif
+ 	return rc;
+ }
+ 
+@@ -1168,7 +1178,11 @@ void __init smc_clc_init(void)
+ 	INIT_LIST_HEAD(&smc_clc_eid_table.list);
+ 	rwlock_init(&smc_clc_eid_table.lock);
+ 	smc_clc_eid_table.ueid_cnt = 0;
++#if IS_ENABLED(CONFIG_S390)
+ 	smc_clc_eid_table.seid_enabled = 1;
++#else
++	smc_clc_eid_table.seid_enabled = 0;
++#endif
+ }
+ 
+ void smc_clc_exit(void)
 -- 
 2.43.0
 
