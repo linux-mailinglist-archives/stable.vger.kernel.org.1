@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-17985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA5238480E9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A86F84834E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84EA82847ED
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3FBE284DDE
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C335612E51;
-	Sat,  3 Feb 2024 04:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C0521363;
+	Sat,  3 Feb 2024 04:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0213Q6V8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0p1rf5GG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835AE1AADF;
-	Sat,  3 Feb 2024 04:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42767171C1;
+	Sat,  3 Feb 2024 04:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933462; cv=none; b=u++/sSQAEF5Mo5ydHjEgFZZN1MLQjUI9hwoHsba46+OYq28xbUOiXAF6jzcNNHXfTmJcFSIPnVzxYpDVORztOgbyEVCakKnLZBBQ4e33az/a1LM4yg+HiKcSs2X5lcDu/dHzy1+PLujByw3heweuwfVT39hyU3NCIPs4XyY6LFs=
+	t=1706933908; cv=none; b=HfYT8nx5C6sHoPV/jfqtWsXfCDkRzDSr9RQ0fczpJwk22boGCqqb61RGvIVnjN8oVTCi5uMOEC9bWVxlQbaVdOVtxIwUHcIlpGiXdvHWIfeXDY9FtOUkJjgkdcVPW5JqcmkEON/ec55U8SsEMkcGKFm7XEeLM1wcs/oUy2r910A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933462; c=relaxed/simple;
-	bh=oqE50NlU0ZbzSnje1faMbxWl45AfXMpKpD84W371Zxs=;
+	s=arc-20240116; t=1706933908; c=relaxed/simple;
+	bh=cB9EXEPIGwZDtCuctSYQFLI/krxeLLKq0suRpbq0Ap4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gI1NkL3uNWBwjx/nmddnKao4UQIMB9QQgs9K7g1eFofvgOGs1qLRzxE+QbRvv5dOvleDmHmAn/msVMpvIACaaqJe56+cKbeDQQ/LvH9P0onr6gBRRfRr0dRUXaOLzQQfYCnJk7n7dz/7YQFUV8irv5InpvSmZC4OUGcwoxCzNRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0213Q6V8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B33BC433F1;
-	Sat,  3 Feb 2024 04:11:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h0XhJpUnbTOlKWzOV9PHqi5UX6bvjVPU+0kKakgY1cLjn6N1zKACppcKWc7FRKUEAi2lRcDBJKLgm9huvYHe3FatsPrHXhIvme/G1L36KhYHbwW2kh47ORnArRmDv4v6VFDwSUI52XEetLEv71V8sEEXL5bpoWsfxDwv3xlHM44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0p1rf5GG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A2DEC433F1;
+	Sat,  3 Feb 2024 04:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933462;
-	bh=oqE50NlU0ZbzSnje1faMbxWl45AfXMpKpD84W371Zxs=;
+	s=korg; t=1706933908;
+	bh=cB9EXEPIGwZDtCuctSYQFLI/krxeLLKq0suRpbq0Ap4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0213Q6V8W++8QMOmwsJ+I7VPpzUEU8wjt7Y7nlXg8BlvGBc7EmaVaLROrVjxWF+UX
-	 Djmo7UiijtpcdYH7IY9aORi9cNkB/OfdEh/fBfPDZWZkk3g9cSAJgjYnGfz+0/f5IC
-	 R0pePrG7t4VC/nyf8YEx8coOOxDRruE/iJXO9kHc=
+	b=0p1rf5GGzCEAuitIEcCXENKyUeebzwFuFST9RkDG1qTUPewdRKQIwpK2wVKPXW+jW
+	 DW32sb+5HQUUEZy66xIPRg1GwF7Q0JnDzQBjfXeJAwf613U69id6ptDISK4LZrIErj
+	 1J6s4shBAWBAGSAEvo3na+1lisQS4N4LRfJYVshQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Xiubo Li <xiubli@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 176/219] ceph: fix deadlock or deadcode of misusing dget()
+Subject: [PATCH 6.7 231/353] drm/amdgpu: Fix variable mca_funcs dereferenced before NULL check in amdgpu_mca_smu_get_mca_entry()
 Date: Fri,  2 Feb 2024 20:05:49 -0800
-Message-ID: <20240203035341.463432385@linuxfoundation.org>
+Message-ID: <20240203035410.973088261@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit b493ad718b1f0357394d2cdecbf00a44a36fa085 ]
+[ Upstream commit 4f32504a2f85a7b40fe149436881381f48e9c0c0 ]
 
-The lock order is incorrect between denty and its parent, we should
-always make sure that the parent get the lock first.
+Fixes the below:
 
-But since this deadcode is never used and the parent dir will always
-be set from the callers, let's just remove it.
+drivers/gpu/drm/amd/amdgpu/amdgpu_mca.c:377 amdgpu_mca_smu_get_mca_entry() warn: variable dereferenced before check 'mca_funcs' (see line 368)
 
-Link: https://lore.kernel.org/r/20231116081919.GZ1957730@ZenIV
-Reported-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+357 int amdgpu_mca_smu_get_mca_entry(struct amdgpu_device *adev,
+				     enum amdgpu_mca_error_type type,
+358                                  int idx, struct mca_bank_entry *entry)
+359 {
+360         const struct amdgpu_mca_smu_funcs *mca_funcs =
+						adev->mca.mca_funcs;
+361         int count;
+362
+363         switch (type) {
+364         case AMDGPU_MCA_ERROR_TYPE_UE:
+365                 count = mca_funcs->max_ue_count;
+
+mca_funcs is dereferenced here.
+
+366                 break;
+367         case AMDGPU_MCA_ERROR_TYPE_CE:
+368                 count = mca_funcs->max_ce_count;
+
+mca_funcs is dereferenced here.
+
+369                 break;
+370         default:
+371                 return -EINVAL;
+372         }
+373
+374         if (idx >= count)
+375                 return -EINVAL;
+376
+377         if (mca_funcs && mca_funcs->mca_get_mca_entry)
+	        ^^^^^^^^^
+
+Checked too late!
+
+Cc: Yang Wang <kevinyang.wang@amd.com>
+Cc: Hawking Zhang <Hawking.Zhang@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/caps.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_mca.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ceph/caps.c b/fs/ceph/caps.c
-index 36052a362683..111938a6307e 100644
---- a/fs/ceph/caps.c
-+++ b/fs/ceph/caps.c
-@@ -4597,12 +4597,14 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
- 			       struct inode *dir,
- 			       int mds, int drop, int unless)
- {
--	struct dentry *parent = NULL;
- 	struct ceph_mds_request_release *rel = *p;
- 	struct ceph_dentry_info *di = ceph_dentry(dentry);
- 	int force = 0;
- 	int ret;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mca.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_mca.c
+index cf33eb219e25..061d88f4480d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mca.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mca.c
+@@ -351,6 +351,9 @@ int amdgpu_mca_smu_get_mca_entry(struct amdgpu_device *adev, enum amdgpu_mca_err
+ 	const struct amdgpu_mca_smu_funcs *mca_funcs = adev->mca.mca_funcs;
+ 	int count;
  
-+	/* This shouldn't happen */
-+	BUG_ON(!dir);
++	if (!mca_funcs || !mca_funcs->mca_get_mca_entry)
++		return -EOPNOTSUPP;
 +
- 	/*
- 	 * force an record for the directory caps if we have a dentry lease.
- 	 * this is racy (can't take i_ceph_lock and d_lock together), but it
-@@ -4612,14 +4614,9 @@ int ceph_encode_dentry_release(void **p, struct dentry *dentry,
- 	spin_lock(&dentry->d_lock);
- 	if (di->lease_session && di->lease_session->s_mds == mds)
- 		force = 1;
--	if (!dir) {
--		parent = dget(dentry->d_parent);
--		dir = d_inode(parent);
--	}
- 	spin_unlock(&dentry->d_lock);
+ 	switch (type) {
+ 	case AMDGPU_MCA_ERROR_TYPE_UE:
+ 		count = mca_funcs->max_ue_count;
+@@ -365,10 +368,7 @@ int amdgpu_mca_smu_get_mca_entry(struct amdgpu_device *adev, enum amdgpu_mca_err
+ 	if (idx >= count)
+ 		return -EINVAL;
  
- 	ret = ceph_encode_inode_release(p, dir, mds, drop, unless, force);
--	dput(parent);
+-	if (mca_funcs && mca_funcs->mca_get_mca_entry)
+-		return mca_funcs->mca_get_mca_entry(adev, type, idx, entry);
+-
+-	return -EOPNOTSUPP;
++	return mca_funcs->mca_get_mca_entry(adev, type, idx, entry);
+ }
  
- 	spin_lock(&dentry->d_lock);
- 	if (ret && di->lease_session && di->lease_session->s_mds == mds) {
+ #if defined(CONFIG_DEBUG_FS)
 -- 
 2.43.0
 
