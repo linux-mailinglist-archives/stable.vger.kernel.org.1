@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C295C84828B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40BD9848151
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DF4A283007
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCA8A1F21342
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716694A99F;
-	Sat,  3 Feb 2024 04:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 245101CD30;
+	Sat,  3 Feb 2024 04:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZ7zxGuM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oarZdWEZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3015710A13;
-	Sat,  3 Feb 2024 04:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59D0171A6;
+	Sat,  3 Feb 2024 04:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933765; cv=none; b=jT2tWYdMivWjG2D/R0PRx7eGkgo6q926FKwHMuzsNAYVcgkzV/BcUmDiXUCib7aqvDBwv++6J8lchel59ZfDv6ybVpSL6H9HswCkpGg6zQFeAqRiqg9bRx9JkwQDL4CwxM3vTgSs4jnyumr/Ut7nO63t1fMdeAsMbMzKyeYOZws=
+	t=1706933534; cv=none; b=ajS4YF0fDW5d6TaZh66zvXDON5LE5BXcJTINj1j+x1sH2kU6G6h/G33d2zPGzUQma8Z3RyDaLgAuq/u1Jd11y2jojeV64Lx81gDLffPGSIDVf+xhbk+WBgfFJBekGyXl5tI1cGlx8fzgdWbgh8JllGSHwwQAGUNvF6ORVY6XQA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933765; c=relaxed/simple;
-	bh=wEaJKdRQRdt1Gee4UfBpm8ep8ZYPjpDo01ibyThE5Y4=;
+	s=arc-20240116; t=1706933534; c=relaxed/simple;
+	bh=988bYwNPUCLu0SrFXBjxLvs0yhfvkvGKFqd464+O+jE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SXARvdLgMev9LKitFjR0gR0603WVcN1MQBLWiWQ/y/APFxTO+8UBZ7WBg2QtHpJllaaPSQ2dT3hxbRxvueo2jMmV6JMYR+LTvo9cD9iQVJuTMOFc8BEwenomIpUB9vojYd4opKL5QniI0uuPHjdCpA2VLG1vhGNb19TWYZ6tpo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZ7zxGuM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC3E3C433C7;
-	Sat,  3 Feb 2024 04:16:04 +0000 (UTC)
+	 MIME-Version; b=hfg0bmmxhIJf2IfVrHeyV7EsjkJqIOqH9Ol5zEgSHQ8TYl0xCknwQtOekxRiMk9o5Wpu+r3cuvxPm3Thq9onlXRKX6hY0/cW+fRYuBBJZIQ8aA31ebYur88GcE2CG/aGre75RVOLrbfb9eKs5XOAT1KC1muzS62rZCaGK9KCbgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oarZdWEZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC1CC433C7;
+	Sat,  3 Feb 2024 04:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933765;
-	bh=wEaJKdRQRdt1Gee4UfBpm8ep8ZYPjpDo01ibyThE5Y4=;
+	s=korg; t=1706933534;
+	bh=988bYwNPUCLu0SrFXBjxLvs0yhfvkvGKFqd464+O+jE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZ7zxGuMJULTIU18NJeIjueLdUqAfCXwuwu8vmljCtPATXnZTfQUIA94FaVqV1KWH
-	 7S12XtGUska7zIOVztXY9DM/r/m+BRnZfyvJQYru2LOZ4/iCBKnLiVbcUEODeIUfKk
-	 ciuHAm4l/rHdg0Jh5UbCFzfbz/d3N3dk1Mg7PZnk=
+	b=oarZdWEZqMU0V1aFktCJZUl4gHz4Bo459N59A7auOMS4hEzl9a7UCoN4C6dUV7mMo
+	 RhWLudPucfrUc6rzeWIMnpjxypac4ZZ1xSJvp08/HD51j9mojRi48Uj+oEK6hZmnLV
+	 Aj/nITmeFbaa4TKIVjaKFqo7+O84v3yDH8FZz5E0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Sumit Saxena <sumit.saxena@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 057/353] cifs: fix in logging in cifs_chan_update_iface
-Date: Fri,  2 Feb 2024 20:02:55 -0800
-Message-ID: <20240203035405.604946319@linuxfoundation.org>
+Subject: [PATCH 6.6 079/322] scsi: mpi3mr: Add support for SAS5116 PCI IDs
+Date: Fri,  2 Feb 2024 20:02:56 -0800
+Message-ID: <20240203035401.718180473@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Sumit Saxena <sumit.saxena@broadcom.com>
 
-[ Upstream commit 516eea97f92f1e7271f20835cfe9e73774b0f8cc ]
+[ Upstream commit 6fa21eab82be57a3ad2470fac27b982793805336 ]
 
-Recently, cifs_chan_update_iface was modified to not
-remove an iface if a suitable replacement was not found.
-With that, there were two conditionals that were exactly
-the same. This change removes that extra condition check.
+Add support for Broadcom's SAS5116 IO/RAID controllers PCI IDs.
 
-Also, fixed a logging in the same function to indicate
-the correct message.
-
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
+Link: https://lore.kernel.org/r/20231123160132.4155-2-sumit.saxena@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_os.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index 2d3b332a79a1..a16e175731eb 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -440,8 +440,14 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 	}
- 
- 	if (!iface) {
--		cifs_dbg(FYI, "unable to get the interface matching: %pIS\n",
--			 &ss);
-+		if (!chan_index)
-+			cifs_dbg(FYI, "unable to get the interface matching: %pIS\n",
-+				 &ss);
-+		else {
-+			cifs_dbg(FYI, "unable to find another interface to replace: %pIS\n",
-+				 &old_iface->sockaddr);
-+		}
-+
- 		spin_unlock(&ses->iface_lock);
- 		return 0;
- 	}
-@@ -459,10 +465,6 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 		iface->weight_fulfilled++;
- 
- 		kref_put(&old_iface->refcount, release_iface);
--	} else if (old_iface) {
--		/* if a new candidate is not found, keep things as is */
--		cifs_dbg(FYI, "could not replace iface: %pIS\n",
--			 &old_iface->sockaddr);
- 	} else if (!chan_index) {
- 		/* special case: update interface for primary channel */
- 		if (iface) {
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index c7c75257425d..5c50701aa3f7 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -5424,6 +5424,14 @@ static const struct pci_device_id mpi3mr_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(MPI3_MFGPAGE_VENDORID_BROADCOM,
+ 		    MPI3_MFGPAGE_DEVID_SAS4116, PCI_ANY_ID, PCI_ANY_ID)
+ 	},
++	{
++		PCI_DEVICE_SUB(MPI3_MFGPAGE_VENDORID_BROADCOM,
++		    MPI3_MFGPAGE_DEVID_SAS5116_MPI, PCI_ANY_ID, PCI_ANY_ID)
++	},
++	{
++		PCI_DEVICE_SUB(MPI3_MFGPAGE_VENDORID_BROADCOM,
++		    MPI3_MFGPAGE_DEVID_SAS5116_MPI_MGMT, PCI_ANY_ID, PCI_ANY_ID)
++	},
+ 	{ 0 }
+ };
+ MODULE_DEVICE_TABLE(pci, mpi3mr_pci_id_table);
 -- 
 2.43.0
 
