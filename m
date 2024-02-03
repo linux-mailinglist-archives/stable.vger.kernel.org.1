@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-18374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38005848279
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C2B848161
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69F461C22AC6
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C9061F23FEC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB23D48CE5;
-	Sat,  3 Feb 2024 04:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7395CFC11;
+	Sat,  3 Feb 2024 04:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UC6DUwaM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2VsK2r1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A85D8134D1;
-	Sat,  3 Feb 2024 04:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C1A111BE;
+	Sat,  3 Feb 2024 04:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933751; cv=none; b=YGBkJBnzQnUQwt9t6nwzsqnYHokCFkRuh80fSw7mpMwGNuQzOIUB+8NgVJZ0304oYeQpn3T0NAYWlE4ATd2zmUsgWt9pDZaIiyLs/n2WJOTKyzBmzmMEOOVoomxEZ8/Hbr+BP3/AV6UsMie7H+xUoMrJt0iEE8shwKPmThuYkiY=
+	t=1706933547; cv=none; b=N1F1Sr4GJSW2nxcX5/uduym01VKnkIhTkCiuwOyYdkoa1dLquntTOtnJIyihV8YmtNOQr027/jLYSoYKcDaWSPfKzzBUSzIZ2kDyCk+97jzX3trjMue4yVSt2ocUakb76wDxg1y2Mh60DovG/J0SlZKT8vvmTWgGga4GM8zGzbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933751; c=relaxed/simple;
-	bh=v7b9FR7S5mVC3TLMk/DhsK8OroTCAOq9q7adPjK8IUc=;
+	s=arc-20240116; t=1706933547; c=relaxed/simple;
+	bh=/RVgAqDIKbrHOF7Hqz399tCUnwvVMjMcUZObXK0aJys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WNoJaVvB4buIWceaw+6nmw/zWQDjY6dpYkvWovBL+izsEfRgJTg0erxL5lXv75kMnUTSxKYJQuvnG4oxXXi4GsRLErmxTalLjdR2doQx2SsRuZ90laXyJKfWouA5eQze5eguxZpNIXYJI2sW4d6RfvI0+UItu0PFlLbXyH0kM44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UC6DUwaM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E87C43394;
-	Sat,  3 Feb 2024 04:15:51 +0000 (UTC)
+	 MIME-Version; b=S3lQsDGOxEfmiZ9VbiFSilD9SITYXTkoBU+QM2vgqaOe9nwHNWcayxhHipHBl4eWhn2N8S47Ff5S5mURvvTOz6ZMGfVLVustO4fqYsTtoPsbULvTkwWjcrBIYD/urdRIt4CZ1oBERVXBdPuLxlSAD7UjnA7R/czOWna66+TvFZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2VsK2r1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D50C433C7;
+	Sat,  3 Feb 2024 04:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933751;
-	bh=v7b9FR7S5mVC3TLMk/DhsK8OroTCAOq9q7adPjK8IUc=;
+	s=korg; t=1706933547;
+	bh=/RVgAqDIKbrHOF7Hqz399tCUnwvVMjMcUZObXK0aJys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UC6DUwaM17KfgEmLGLh7rUBXXyhY8466h22gtw71LNj9KcaNJRtsd9VP1l9oybhFR
-	 gFnq3v2bt5gKTwDs30NVRaF5CZA1jn3wuDs5qwbx1ASJVbF/mgUXjQmfPuOox9N/7E
-	 uwK/NRvviRvE71iDwheoAhErcccBTAWh+2+Pi9r0=
+	b=Z2VsK2r1q5h8pDMKcP4MpG0k8FXfAlC1nk/SbQtRzbNlIrSVbQg7kQZanI5eYA6ki
+	 iDUOvDwprg0ignyFkXzn0hy23IHEtnitX2LVQYrOChCV+9fhmXGEdYRzYHHYol+vCD
+	 jI1F+ve/GDi5hOaA0/3kKwg6YnCcC82IOyGuRt98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Guo Ren <guoren@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 047/353] arch: consolidate arch_irq_work_raise prototypes
+Subject: [PATCH 6.6 068/322] ARM: dts: qcom: msm8660: fix PMIC node labels
 Date: Fri,  2 Feb 2024 20:02:45 -0800
-Message-ID: <20240203035405.302262031@linuxfoundation.org>
+Message-ID: <20240203035401.348667775@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,132 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 64bac5ea17d527872121adddfee869c7a0618f8f ]
+[ Upstream commit c6d86aa8a12194d1c9c2f9108910a46c8a3ddc90 ]
 
-The prototype was hidden in an #ifdef on x86, which causes a warning:
+Change PM8058 node labels to start with pm8058_ prefix, following other
+Qualcomm PMIC device nodes.
 
-kernel/irq_work.c:72:13: error: no previous prototype for 'arch_irq_work_raise' [-Werror=missing-prototypes]
-
-Some architectures have a working prototype, while others don't.
-Fix this by providing it in only one place that is always visible.
-
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
-Acked-by: Guo Ren <guoren@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230928110309.1212221-11-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/include/asm/irq_work.h     | 2 --
- arch/arm64/include/asm/irq_work.h   | 2 --
- arch/csky/include/asm/irq_work.h    | 2 +-
- arch/powerpc/include/asm/irq_work.h | 1 -
- arch/riscv/include/asm/irq_work.h   | 2 +-
- arch/s390/include/asm/irq_work.h    | 2 --
- arch/x86/include/asm/irq_work.h     | 1 -
- include/linux/irq_work.h            | 3 +++
- 8 files changed, 5 insertions(+), 10 deletions(-)
+ .../boot/dts/qcom/qcom-apq8060-dragonboard.dts   |  4 ++--
+ arch/arm/boot/dts/qcom/qcom-msm8660.dtsi         | 16 ++++++++--------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/include/asm/irq_work.h b/arch/arm/include/asm/irq_work.h
-index 3149e4dc1b54..8895999834cc 100644
---- a/arch/arm/include/asm/irq_work.h
-+++ b/arch/arm/include/asm/irq_work.h
-@@ -9,6 +9,4 @@ static inline bool arch_irq_work_has_interrupt(void)
- 	return is_smp();
- }
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8060-dragonboard.dts b/arch/arm/boot/dts/qcom/qcom-apq8060-dragonboard.dts
+index db4c791b2e2f..48fd1a1feea3 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8060-dragonboard.dts
++++ b/arch/arm/boot/dts/qcom/qcom-apq8060-dragonboard.dts
+@@ -72,7 +72,7 @@
+ 		/* Trig on both edges - getting close or far away */
+ 		interrupts-extended = <&pm8058_gpio 34 IRQ_TYPE_EDGE_BOTH>;
+ 		/* MPP05 analog input to the XOADC */
+-		io-channels = <&xoadc 0x00 0x05>;
++		io-channels = <&pm8058_xoadc 0x00 0x05>;
+ 		io-channel-names = "aout";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&dragon_cm3605_gpios>, <&dragon_cm3605_mpps>;
+@@ -945,7 +945,7 @@
+ 	};
+ };
  
--extern void arch_irq_work_raise(void);
--
- #endif /* _ASM_ARM_IRQ_WORK_H */
-diff --git a/arch/arm64/include/asm/irq_work.h b/arch/arm64/include/asm/irq_work.h
-index 81bbfa3a035b..a1020285ea75 100644
---- a/arch/arm64/include/asm/irq_work.h
-+++ b/arch/arm64/include/asm/irq_work.h
-@@ -2,8 +2,6 @@
- #ifndef __ASM_IRQ_WORK_H
- #define __ASM_IRQ_WORK_H
+-&xoadc {
++&pm8058_xoadc {
+ 	/* Reference voltage 2.2 V */
+ 	xoadc-ref-supply = <&pm8058_l18>;
  
--extern void arch_irq_work_raise(void);
--
- static inline bool arch_irq_work_has_interrupt(void)
- {
- 	return true;
-diff --git a/arch/csky/include/asm/irq_work.h b/arch/csky/include/asm/irq_work.h
-index 33aaf39d6f94..d39fcc1f5395 100644
---- a/arch/csky/include/asm/irq_work.h
-+++ b/arch/csky/include/asm/irq_work.h
-@@ -7,5 +7,5 @@ static inline bool arch_irq_work_has_interrupt(void)
- {
- 	return true;
- }
--extern void arch_irq_work_raise(void);
-+
- #endif /* __ASM_CSKY_IRQ_WORK_H */
-diff --git a/arch/powerpc/include/asm/irq_work.h b/arch/powerpc/include/asm/irq_work.h
-index b8b0be8f1a07..c6d3078bd8c3 100644
---- a/arch/powerpc/include/asm/irq_work.h
-+++ b/arch/powerpc/include/asm/irq_work.h
-@@ -6,6 +6,5 @@ static inline bool arch_irq_work_has_interrupt(void)
- {
- 	return true;
- }
--extern void arch_irq_work_raise(void);
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8660.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8660.dtsi
+index 78023ed2fdf7..9217ced108c4 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8660.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-msm8660.dtsi
+@@ -80,13 +80,13 @@
+ 	 */
+ 	iio-hwmon {
+ 		compatible = "iio-hwmon";
+-		io-channels = <&xoadc 0x00 0x01>, /* Battery */
+-			    <&xoadc 0x00 0x02>, /* DC in (charger) */
+-			    <&xoadc 0x00 0x04>, /* VPH the main system voltage */
+-			    <&xoadc 0x00 0x0b>, /* Die temperature */
+-			    <&xoadc 0x00 0x0c>, /* Reference voltage 1.25V */
+-			    <&xoadc 0x00 0x0d>, /* Reference voltage 0.625V */
+-			    <&xoadc 0x00 0x0e>; /* Reference voltage 0.325V */
++		io-channels = <&pm8058_xoadc 0x00 0x01>, /* Battery */
++			      <&pm8058_xoadc 0x00 0x02>, /* DC in (charger) */
++			      <&pm8058_xoadc 0x00 0x04>, /* VPH the main system voltage */
++			      <&pm8058_xoadc 0x00 0x0b>, /* Die temperature */
++			      <&pm8058_xoadc 0x00 0x0c>, /* Reference voltage 1.25V */
++			      <&pm8058_xoadc 0x00 0x0d>, /* Reference voltage 0.625V */
++			      <&pm8058_xoadc 0x00 0x0e>; /* Reference voltage 0.325V */
+ 	};
  
- #endif /* _ASM_POWERPC_IRQ_WORK_H */
-diff --git a/arch/riscv/include/asm/irq_work.h b/arch/riscv/include/asm/irq_work.h
-index b53891964ae0..b27a4d64fc6a 100644
---- a/arch/riscv/include/asm/irq_work.h
-+++ b/arch/riscv/include/asm/irq_work.h
-@@ -6,5 +6,5 @@ static inline bool arch_irq_work_has_interrupt(void)
- {
- 	return IS_ENABLED(CONFIG_SMP);
- }
--extern void arch_irq_work_raise(void);
-+
- #endif /* _ASM_RISCV_IRQ_WORK_H */
-diff --git a/arch/s390/include/asm/irq_work.h b/arch/s390/include/asm/irq_work.h
-index 603783766d0a..f00c9f610d5a 100644
---- a/arch/s390/include/asm/irq_work.h
-+++ b/arch/s390/include/asm/irq_work.h
-@@ -7,6 +7,4 @@ static inline bool arch_irq_work_has_interrupt(void)
- 	return true;
- }
+ 	soc: soc {
+@@ -390,7 +390,7 @@
+ 					row-hold = <91500>;
+ 				};
  
--void arch_irq_work_raise(void);
--
- #endif /* _ASM_S390_IRQ_WORK_H */
-diff --git a/arch/x86/include/asm/irq_work.h b/arch/x86/include/asm/irq_work.h
-index 800ffce0db29..6b4d36c95165 100644
---- a/arch/x86/include/asm/irq_work.h
-+++ b/arch/x86/include/asm/irq_work.h
-@@ -9,7 +9,6 @@ static inline bool arch_irq_work_has_interrupt(void)
- {
- 	return boot_cpu_has(X86_FEATURE_APIC);
- }
--extern void arch_irq_work_raise(void);
- #else
- static inline bool arch_irq_work_has_interrupt(void)
- {
-diff --git a/include/linux/irq_work.h b/include/linux/irq_work.h
-index 8cd11a223260..136f2980cba3 100644
---- a/include/linux/irq_work.h
-+++ b/include/linux/irq_work.h
-@@ -66,6 +66,9 @@ void irq_work_sync(struct irq_work *work);
- void irq_work_run(void);
- bool irq_work_needs_cpu(void);
- void irq_work_single(void *arg);
-+
-+void arch_irq_work_raise(void);
-+
- #else
- static inline bool irq_work_needs_cpu(void) { return false; }
- static inline void irq_work_run(void) { }
+-				xoadc: xoadc@197 {
++				pm8058_xoadc: xoadc@197 {
+ 					compatible = "qcom,pm8058-adc";
+ 					reg = <0x197>;
+ 					interrupts-extended = <&pm8058 76 IRQ_TYPE_EDGE_RISING>;
 -- 
 2.43.0
 
