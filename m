@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-18526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFBA848313
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D91E84809B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0B27B214D2
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE5E1283C3D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD80168BA;
-	Sat,  3 Feb 2024 04:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCC911C83;
+	Sat,  3 Feb 2024 04:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PcBw8VZ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtaWCSXP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5849E1CAA5;
-	Sat,  3 Feb 2024 04:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D400101C1;
+	Sat,  3 Feb 2024 04:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933864; cv=none; b=UGVyJLEEc0JSdt8cMee2qh43NTtrIesGGzo37DdqSXtNtIsjU9FkAS7FFkwIgV6xM6K+Fd3wuuDtyxpr8lWvm2T/BcEX40TjFVfJ7/FRIr6unvLAnopMayIWqQrie/CCRp5NlOeeX6b8sR/zvKyK3RzzjNCGLumQmEkFNdIKXNU=
+	t=1706933408; cv=none; b=cl0brOJTU7B/cb5WiPBkTWemYq7gOV/Cm67/FKCp4d+lGlVikIjaqF2Xpje+RVyvMO9k6lbpmzMtOfNUQ2aUd5PClEQAz1LcWPp5dqlzlOGLZWH4k+Xr993eDCHmEQH8C8cH2YSamoiQPJ0TddTtEnYA0YjbGEKSiAFkyS4rWts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933864; c=relaxed/simple;
-	bh=/mPlyNOC83xaNvx1jrFRRIeS5IDuFaXbvwpaPssj9YI=;
+	s=arc-20240116; t=1706933408; c=relaxed/simple;
+	bh=aaSUBYznvUu6+uGgsA8kO8tu7iOUMj90eHP3Qm37n6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ujn286MbEZyOkwpO9Jgz3aSQP3umjkX4aOv6qTKHbNRcCvP0vF4E44zprcbgRvsDTi0Wr6NO2TE2vu0nXIGG4iL7bU1hZcvIVRbtt0fpUmKc0my6L+zUa+KozbRYLlMha+rEfNccWmo7iIUFuSeVjCjYVgNqcWdv3PVfmg0QZmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PcBw8VZ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2125AC43390;
-	Sat,  3 Feb 2024 04:17:44 +0000 (UTC)
+	 MIME-Version; b=H5yj7xRBk0T+WGVuV9PR2Uu0RD+cTuYdH1FMeRUoGnpV56D8h+L/N6wnVs2fqSm/cOD6uhigutt75B584So9E1oGswMmQBvWoxN5hkmrdZYeaVZWx043UAoOuRvX95mabAlJebr7FgCfUzgwNjdH4o6/DiGuuxEdiqcYdNlk0KE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtaWCSXP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37914C433C7;
+	Sat,  3 Feb 2024 04:10:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933864;
-	bh=/mPlyNOC83xaNvx1jrFRRIeS5IDuFaXbvwpaPssj9YI=;
+	s=korg; t=1706933408;
+	bh=aaSUBYznvUu6+uGgsA8kO8tu7iOUMj90eHP3Qm37n6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PcBw8VZ+nxqI3RHe5SrebTNxz6uCFOoxtaUGTPDgvzsAiqVZP0sPTAAqRzmQGamkn
-	 OPx/WoyhJFY5LE7E54pNvYggfOkuDxie1NfThRrLJSzTOXK4lCfKnuaVbdeE1FmmCi
-	 POeNo9VLnACn7kwGc47208mxR8876QNRe7WQpVaU=
+	b=KtaWCSXP+ttbAR72cVhLBDf4HO42rBNhxcsS4MqrZUG95kYpB8zePbSCAAzaJPHdM
+	 kOATX7W7xbKddG6IblcNWl/hHweaVRmI6fvQdh40M80RL6cE8+m3d4fm9oY/bWdQKI
+	 V0pmb+G3uF+p8mOM2iJhQ9O3UrMgy7MG8ql3PKqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Nicholas Susanto <nicholas.susanto@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 176/353] drm/amd/display: Fix disable_otg_wa logic
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Adam Ford <aford173@gmail.com>
+Subject: [PATCH 6.1 121/219] media: rkisp1: Drop IRQF_SHARED
 Date: Fri,  2 Feb 2024 20:04:54 -0800
-Message-ID: <20240203035409.213588957@linuxfoundation.org>
+Message-ID: <20240203035334.572524833@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Susanto <nicholas.susanto@amd.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 2ce156482a6fef349d2eba98e5070c412d3af662 ]
+[ Upstream commit 85d2a31fe4d9be1555f621ead7a520d8791e0f74 ]
 
-[Why]
-When switching to another HDMI mode, we are unnecesarilly
-disabling/enabling FIFO causing both HPO and DIG registers to be set at
-the same time when only HPO is supposed to be set.
+In all known platforms the ISP has dedicated IRQ lines, but for some
+reason the driver uses IRQF_SHARED.
 
-This can lead to a system hang the next time we change refresh rates as
-there are cases when we don't disable OTG/FIFO but FIFO is enabled when
-it isn't supposed to be.
+Supporting IRQF_SHARED properly requires handling interrupts even when
+our device is disabled, and the driver does not handle this. To avoid
+adding such code, and to be sure the driver won't accidentally be used
+in a platform with shared interrupts, let's drop the IRQF_SHARED flag.
 
-[How]
-Removing the enable/disable FIFO entirely.
+Link: https://lore.kernel.org/r/20231207-rkisp-irq-fix-v3-1-358a2c871a3c@ideasonboard.com
 
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Nicholas Susanto <nicholas.susanto@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Tested-by: Adam Ford <aford173@gmail.com>  #imx8mp-beacon
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c  | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index 45ede6440a79..4ef90a3add1c 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -126,21 +126,13 @@ static void dcn35_disable_otg_wa(struct clk_mgr *clk_mgr_base, struct dc_state *
- 			continue;
- 		if (pipe->stream && (pipe->stream->dpms_off || dc_is_virtual_signal(pipe->stream->signal) ||
- 				     !pipe->stream->link_enc)) {
--			struct stream_encoder *stream_enc = pipe->stream_res.stream_enc;
--
- 			if (disable) {
--				if (stream_enc && stream_enc->funcs->disable_fifo)
--					pipe->stream_res.stream_enc->funcs->disable_fifo(stream_enc);
--
- 				if (pipe->stream_res.tg && pipe->stream_res.tg->funcs->immediate_disable_crtc)
- 					pipe->stream_res.tg->funcs->immediate_disable_crtc(pipe->stream_res.tg);
+diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+index 2b76339f9381..46d94e4c9745 100644
+--- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
++++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+@@ -542,7 +542,7 @@ static int rkisp1_probe(struct platform_device *pdev)
+ 		if (irq < 0)
+ 			return irq;
  
- 				reset_sync_context_for_pipe(dc, context, i);
- 			} else {
- 				pipe->stream_res.tg->funcs->enable_crtc(pipe->stream_res.tg);
--
--				if (stream_enc && stream_enc->funcs->enable_fifo)
--					pipe->stream_res.stream_enc->funcs->enable_fifo(stream_enc);
- 			}
- 		}
- 	}
+-		ret = devm_request_irq(dev, irq, info->isrs[i].isr, IRQF_SHARED,
++		ret = devm_request_irq(dev, irq, info->isrs[i].isr, 0,
+ 				       dev_driver_string(dev), dev);
+ 		if (ret) {
+ 			dev_err(dev, "request irq failed: %d\n", ret);
 -- 
 2.43.0
 
