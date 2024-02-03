@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-18606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2736B848363
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA60848232
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6E0C28376E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B4591F22BC4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CE2752F98;
-	Sat,  3 Feb 2024 04:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EED01A702;
+	Sat,  3 Feb 2024 04:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nX8xrEqg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tvrc6WO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0796FC11;
-	Sat,  3 Feb 2024 04:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE3110A11;
+	Sat,  3 Feb 2024 04:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933923; cv=none; b=mXA9uEErO2AJWHX07G3U/Zxo1g+7GTDryur8kz2oOr5subFsQiY9QoKOTQPHDzSVqhuTCAFlmd2bMSgqBYbhrohkOcpbPkvoxlQbbfOsXqrtEGaNuztyCBXb7DLsibZrm6BNDjXefbHPqmG/BcQwB+eJpPdwDW5D8JsI1g9C48M=
+	t=1706933700; cv=none; b=lhUPEyiV4Gu/v4u1SZKa8o+cNoFyJzAwmskpjyGXBkMF8nyTjsb2inecelr4QY1D/GXxLAOjUh3dkWzsCFQ9RxWHWKrOW7n6s5iLnDMt2qKPk7SdpT02kiaxwdaSbm/FLQUtzp/hHhlPOGgDUW79byG9t5mwEIfJesPhRx8qiy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933923; c=relaxed/simple;
-	bh=FQ205kXC8XoN99GsUTK1A+Ig/U56vbsv3a6mGK8qVFs=;
+	s=arc-20240116; t=1706933700; c=relaxed/simple;
+	bh=CxGplyRoRQuBZ2QVJMYq5Qbj1qKQP8ki6JAGYt/3m8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T86qNB5kDbI3ihvKY3hXN9Y1afs6eluLzZZYIJo0+cFjCiHyy0kdzZBrNIlaTcIHOcNErS6uUaJ7sOJDvKB3qe2NkcZsmTRzig07LJPrry4GYy11Xuc+nCK/uIr1w18NT1DBX9Ved6PaYieFxlo2mSAiyHvXDX4kZXIMdpcZ6LA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nX8xrEqg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A420CC433F1;
-	Sat,  3 Feb 2024 04:18:42 +0000 (UTC)
+	 MIME-Version; b=DCsT5hZKc9Yz4RntOdyint/vnl2eSsiVukrdiLrESl0LOMguhI3087jQp7EqfjS3Pq3NzeJAj6KogIIcVw8Y1lmxeVBv2Ug9K9HDySVa8c7ecCDggJ4Vaqr/Pb5yEkFvcNQAwTQ4w5d9YtKkbdrscYb82fRKcaMimGb63tiVYGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tvrc6WO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B6FC43390;
+	Sat,  3 Feb 2024 04:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933922;
-	bh=FQ205kXC8XoN99GsUTK1A+Ig/U56vbsv3a6mGK8qVFs=;
+	s=korg; t=1706933700;
+	bh=CxGplyRoRQuBZ2QVJMYq5Qbj1qKQP8ki6JAGYt/3m8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nX8xrEqgg0BEpLbV+7SGMpDx9FfGZmIiaxnq+mm/09C9x24cwH9K340kjysl7jkSQ
-	 DexodHPZYxyjzVv1B91PlcpupQdowuGlp+X7mRcb4sj10BSeKDBeQfG3Uj8vFZE500
-	 b5KuFAukUQ8lokocz2JAwSeEOvbxj+OlMzXYxwTQ=
+	b=2tvrc6WOH5NMiAzAYDOi69MLg7Wjvn5J1LK1lTpv7A/49KUk5dQlaWSsrtnqIZhg9
+	 XivUTmUdv/csq9PXyesJD/bTy61+FxrXcVGBRHw+wz3gUFnkIHvtEE7SIfSziNQFwf
+	 4quYfRItQ2ivGS89PL8pxY7XCZBX9mI3LjfocZEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venky Shankar <vshankar@redhat.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 278/353] ceph: reinitialize mds feature bit even when session in open
-Date: Fri,  2 Feb 2024 20:06:36 -0800
-Message-ID: <20240203035412.569571206@linuxfoundation.org>
+Subject: [PATCH 6.6 300/322] pds_core: Cancel AQ work on teardown
+Date: Fri,  2 Feb 2024 20:06:37 -0800
+Message-ID: <20240203035408.754497498@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Venky Shankar <vshankar@redhat.com>
+From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit f48e0342a74d7770cdf1d11894bdc3b6d989b29e ]
+[ Upstream commit d321067e2cfa4d5e45401a00912ca9da8d1af631 ]
 
-Following along the same lines as per the user-space fix. Right
-now this isn't really an issue with the ceph kernel driver because
-of the feature bit laginess, however, that can change over time
-(when the new snaprealm info type is ported to the kernel driver)
-and depending on the MDS version that's being upgraded can cause
-message decoding issues - so, fix that early on.
+There is a small window where pdsc_work_thread()
+calls pdsc_process_adminq() and pdsc_process_adminq()
+passes the PDSC_S_STOPPING_DRIVER check and starts
+to process adminq/notifyq work and then the driver
+starts a fw_down cycle. This could cause some
+undefined behavior if the notifyqcq/adminqcq are
+free'd while pdsc_process_adminq() is running. Use
+cancel_work_sync() on the adminqcq's work struct
+to make sure any pending work items are cancelled
+and any in progress work items are completed.
 
-Link: http://tracker.ceph.com/issues/63188
-Signed-off-by: Venky Shankar <vshankar@redhat.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Also, make sure to not call cancel_work_sync() if
+the work item has not be initialized. Without this,
+traces will happen in cases where a reset fails and
+teardown is called again or if reset fails and the
+driver is removed.
+
+Fixes: 01ba61b55b20 ("pds_core: Add adminq processing and commands")
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://lore.kernel.org/r/20240129234035.69802-3-brett.creeley@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/mds_client.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/amd/pds_core/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ceph/mds_client.c b/fs/ceph/mds_client.c
-index d95eb525519a..558c3af44449 100644
---- a/fs/ceph/mds_client.c
-+++ b/fs/ceph/mds_client.c
-@@ -4128,12 +4128,12 @@ static void handle_session(struct ceph_mds_session *session,
- 			pr_info_client(cl, "mds%d reconnect success\n",
- 				       session->s_mds);
+diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
+index 36f9b932b9e2..b58c166d438d 100644
+--- a/drivers/net/ethernet/amd/pds_core/core.c
++++ b/drivers/net/ethernet/amd/pds_core/core.c
+@@ -466,6 +466,8 @@ void pdsc_teardown(struct pdsc *pdsc, bool removing)
  
-+		session->s_features = features;
- 		if (session->s_state == CEPH_MDS_SESSION_OPEN) {
- 			pr_notice_client(cl, "mds%d is already opened\n",
- 					 session->s_mds);
- 		} else {
- 			session->s_state = CEPH_MDS_SESSION_OPEN;
--			session->s_features = features;
- 			renewed_caps(mdsc, session, 0);
- 			if (test_bit(CEPHFS_FEATURE_METRIC_COLLECT,
- 				     &session->s_features))
+ 	if (!pdsc->pdev->is_virtfn)
+ 		pdsc_devcmd_reset(pdsc);
++	if (pdsc->adminqcq.work.func)
++		cancel_work_sync(&pdsc->adminqcq.work);
+ 	pdsc_qcq_free(pdsc, &pdsc->notifyqcq);
+ 	pdsc_qcq_free(pdsc, &pdsc->adminqcq);
+ 
 -- 
 2.43.0
 
