@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-17966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76F608480D5
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BAAD84834D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3354028C84A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 152381F21DE0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A63312E46;
-	Sat,  3 Feb 2024 04:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F646524B8;
+	Sat,  3 Feb 2024 04:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udo7Zqfi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnWHuLD+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585E919473;
-	Sat,  3 Feb 2024 04:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D77524B4;
+	Sat,  3 Feb 2024 04:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933448; cv=none; b=fisRmOyUpw7MjPAjKWIMGXLDjy9AFxRN7XTfBLmxPMTqSrfGYsBVpk2WbclSUMOhLHjFAXTk6sU3vnapWDxBVdAVKPWQNeU2BvxSzCHw4mQn4rk2mzH/483YSjn2Y/9/g2FAJz7/H1dLNZqrDFgKmGOeo3Cz7Mu3xV0R+MBs8ZQ=
+	t=1706933906; cv=none; b=NXVIE+GHdNgj5Sn7gQLxq88qIJ5k4rGn91FSwesDjMCR0f9ZheVK65/xu5OMGglvNuhBxfGagv9lNp1SJ9zSKvi7mNGa9coA4ldUiNN0cArHmX54RsNHZI1xDZQNQ+kz1YNrcZHK8G+6s7hLv38/q1YSrnSaJr9hccrr/zkvCqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933448; c=relaxed/simple;
-	bh=P3Y34x6iaBMwNzldeilmhXUMpxEXLfAI7NdP5GepVr8=;
+	s=arc-20240116; t=1706933906; c=relaxed/simple;
+	bh=4O6ymGH7l8qoAAJ4AA/CwwR3BHCnggIUKCyxMh8XsFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dPEKKNw7ZzlEfomyc9ZwMxzoHDUvNN4jCfM487u4PwTdZjDC+lL+KMEbsxSgf96rRoFdH7Iygzx5eIYnX4A1j7QNBCQZOBQ1kNFd7OyZuT9cHsFECO6vzZBmRiVGDqO3uNlBupu8FpJpY4EDZs0m7hFXzIiljdRmSHtbUZjgnb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udo7Zqfi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F151C433F1;
-	Sat,  3 Feb 2024 04:10:48 +0000 (UTC)
+	 MIME-Version; b=YPxoOW+uyw8FWGp4xbXW/BConO4dF3wYA+s5sjt1yxrVR4lanVGsralk0Rc0i5/ulze5EOAbbhVnP89p0be9S3QZPFSvNz3GiCAEbQFQzU98tUEZUmPpW7ltT7kqLIbpjjyiFKsy2Ig3O5r9eAzXdCVCJUvZN1fMjAU0pVYp4kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CnWHuLD+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D107C433F1;
+	Sat,  3 Feb 2024 04:18:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933448;
-	bh=P3Y34x6iaBMwNzldeilmhXUMpxEXLfAI7NdP5GepVr8=;
+	s=korg; t=1706933906;
+	bh=4O6ymGH7l8qoAAJ4AA/CwwR3BHCnggIUKCyxMh8XsFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udo7ZqfivoWTncruQ9HWL7p0dX29i5aP2KUzzXTkAT7NfX562JhTrioflg9PRTkEi
-	 JcXgxlbRE5tdeiMnbwzP3bZNfHLcmoAFYMMA6oXbPHaFXFeXzdbRIXhzMVMlFQHpkh
-	 uwH1k4KmH+e3PqAqKJf13PhNOqcEt+guydoG7FUc=
+	b=CnWHuLD+75Z8/ypgriY/q0bK9BOcdAeTJ/Bfeiv93kO4/wOW8PatqHZSJJr2QmTRb
+	 qJWQPt8MW3758R16NmcRR67SmStNMOFzOSU2hiRCOLnmRJ8y1qF3u/+6e6lySb44bq
+	 DEa2ZgamW04e5hSg8CNlt7BA+RfFVI4neROI2UKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Changhui Zhong <czhong@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Leo Li <sunpeng.li@amd.com>,
+	Ivan Lipski <ivlipski@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 174/219] blk-mq: fix IO hang from sbitmap wakeup race
+Subject: [PATCH 6.7 229/353] Re-revert "drm/amd/display: Enable Replay for static screen use cases"
 Date: Fri,  2 Feb 2024 20:05:47 -0800
-Message-ID: <20240203035341.126065725@linuxfoundation.org>
+Message-ID: <20240203035410.916230500@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +64,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Ivan Lipski <ivlipski@amd.com>
 
-[ Upstream commit 5266caaf5660529e3da53004b8b7174cab6374ed ]
+[ Upstream commit d6398866a6b47e92319ef6efdb0126a4fbb7796a ]
 
-In blk_mq_mark_tag_wait(), __add_wait_queue() may be re-ordered
-with the following blk_mq_get_driver_tag() in case of getting driver
-tag failure.
+This reverts commit 44e60b14d5a72f91fd0bdeae8da59ae37a3ca8e5.
 
-Then in __sbitmap_queue_wake_up(), waitqueue_active() may not observe
-the added waiter in blk_mq_mark_tag_wait() and wake up nothing, meantime
-blk_mq_mark_tag_wait() can't get driver tag successfully.
+Since, it causes a regression in which eDP displays with PSR support,
+but no Replay support (Sink support <= 0x03), fail to enable PSR and
+consequently all IGT amd_psr tests fail. So, revert this until a more
+suitable fix can be found.
 
-This issue can be reproduced by running the following test in loop, and
-fio hang can be observed in < 30min when running it on my test VM
-in laptop.
+This got brought back accidently with the backmerge.
 
-	modprobe -r scsi_debug
-	modprobe scsi_debug delay=0 dev_size_mb=4096 max_queue=1 host_max_queue=1 submit_queues=4
-	dev=`ls -d /sys/bus/pseudo/drivers/scsi_debug/adapter*/host*/target*/*/block/* | head -1 | xargs basename`
-	fio --filename=/dev/"$dev" --direct=1 --rw=randrw --bs=4k --iodepth=1 \
-       		--runtime=100 --numjobs=40 --time_based --name=test \
-        	--ioengine=libaio
-
-Fix the issue by adding one explicit barrier in blk_mq_mark_tag_wait(), which
-is just fine in case of running out of tag.
-
-Cc: Jan Kara <jack@suse.cz>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Reported-by: Changhui Zhong <czhong@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240112122626.4181044-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Acked-by: Leo Li <sunpeng.li@amd.com>
+Signed-off-by: Ivan Lipski <ivlipski@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 22 -------------------
+ .../amd/display/amdgpu_dm/amdgpu_dm_crtc.c    |  9 +-------
+ drivers/gpu/drm/amd/include/amd_shared.h      |  2 --
+ 3 files changed, 1 insertion(+), 32 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index b3f99dda4530..c07e5eebcbd8 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -1859,6 +1859,22 @@ static bool blk_mq_mark_tag_wait(struct blk_mq_hw_ctx *hctx,
- 	wait->flags &= ~WQ_FLAG_EXCLUSIVE;
- 	__add_wait_queue(wq, wait);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 9dbbaeb8c6cf..6f7d7f79ef89 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -65,7 +65,6 @@
+ #include "amdgpu_dm_debugfs.h"
+ #endif
+ #include "amdgpu_dm_psr.h"
+-#include "amdgpu_dm_replay.h"
  
-+	/*
-+	 * Add one explicit barrier since blk_mq_get_driver_tag() may
-+	 * not imply barrier in case of failure.
-+	 *
-+	 * Order adding us to wait queue and allocating driver tag.
-+	 *
-+	 * The pair is the one implied in sbitmap_queue_wake_up() which
-+	 * orders clearing sbitmap tag bits and waitqueue_active() in
-+	 * __sbitmap_queue_wake_up(), since waitqueue_active() is lockless
-+	 *
-+	 * Otherwise, re-order of adding wait queue and getting driver tag
-+	 * may cause __sbitmap_queue_wake_up() to wake up nothing because
-+	 * the waitqueue_active() may not observe us in wait queue.
-+	 */
-+	smp_mb();
-+
- 	/*
- 	 * It's possible that a tag was freed in the window between the
- 	 * allocation failure and adding the hardware queue to the wait
+ #include "ivsrcid/ivsrcid_vislands30.h"
+ 
+@@ -4348,7 +4347,6 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
+ 	enum dc_connection_type new_connection_type = dc_connection_none;
+ 	const struct dc_plane_cap *plane;
+ 	bool psr_feature_enabled = false;
+-	bool replay_feature_enabled = false;
+ 	int max_overlay = dm->dc->caps.max_slave_planes;
+ 
+ 	dm->display_indexes_num = dm->dc->caps.max_streams;
+@@ -4460,20 +4458,6 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
+ 		}
+ 	}
+ 
+-	if (!(amdgpu_dc_debug_mask & DC_DISABLE_REPLAY)) {
+-		switch (adev->ip_versions[DCE_HWIP][0]) {
+-		case IP_VERSION(3, 1, 4):
+-		case IP_VERSION(3, 1, 5):
+-		case IP_VERSION(3, 1, 6):
+-		case IP_VERSION(3, 2, 0):
+-		case IP_VERSION(3, 2, 1):
+-			replay_feature_enabled = true;
+-			break;
+-		default:
+-			replay_feature_enabled = amdgpu_dc_feature_mask & DC_REPLAY_MASK;
+-			break;
+-		}
+-	}
+ 	/* loops over all connectors on the board */
+ 	for (i = 0; i < link_cnt; i++) {
+ 		struct dc_link *link = NULL;
+@@ -4522,12 +4506,6 @@ static int amdgpu_dm_initialize_drm_device(struct amdgpu_device *adev)
+ 				amdgpu_dm_update_connector_after_detect(aconnector);
+ 				setup_backlight_device(dm, aconnector);
+ 
+-				/*
+-				 * Disable psr if replay can be enabled
+-				 */
+-				if (replay_feature_enabled && amdgpu_dm_setup_replay(link, aconnector))
+-					psr_feature_enabled = false;
+-
+ 				if (psr_feature_enabled)
+ 					amdgpu_dm_set_psr_caps(link);
+ 
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+index cb0b48bb2a7d..d2834ad85a54 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_crtc.c
+@@ -29,7 +29,6 @@
+ #include "dc.h"
+ #include "amdgpu.h"
+ #include "amdgpu_dm_psr.h"
+-#include "amdgpu_dm_replay.h"
+ #include "amdgpu_dm_crtc.h"
+ #include "amdgpu_dm_plane.h"
+ #include "amdgpu_dm_trace.h"
+@@ -124,12 +123,7 @@ static void amdgpu_dm_crtc_vblank_control_worker(struct work_struct *work)
+ 	 * fill_dc_dirty_rects().
+ 	 */
+ 	if (vblank_work->stream && vblank_work->stream->link) {
+-		/*
+-		 * Prioritize replay, instead of psr
+-		 */
+-		if (vblank_work->stream->link->replay_settings.replay_feature_enabled)
+-			amdgpu_dm_replay_enable(vblank_work->stream, false);
+-		else if (vblank_work->enable) {
++		if (vblank_work->enable) {
+ 			if (vblank_work->stream->link->psr_settings.psr_version < DC_PSR_VERSION_SU_1 &&
+ 			    vblank_work->stream->link->psr_settings.psr_allow_active)
+ 				amdgpu_dm_psr_disable(vblank_work->stream);
+@@ -138,7 +132,6 @@ static void amdgpu_dm_crtc_vblank_control_worker(struct work_struct *work)
+ #ifdef CONFIG_DRM_AMD_SECURE_DISPLAY
+ 			   !amdgpu_dm_crc_window_is_activated(&vblank_work->acrtc->base) &&
+ #endif
+-			   vblank_work->stream->link->panel_config.psr.disallow_replay &&
+ 			   vblank_work->acrtc->dm_irq_params.allow_psr_entry) {
+ 			amdgpu_dm_psr_enable(vblank_work->stream);
+ 		}
+diff --git a/drivers/gpu/drm/amd/include/amd_shared.h b/drivers/gpu/drm/amd/include/amd_shared.h
+index 7f98394338c2..579977f6ad52 100644
+--- a/drivers/gpu/drm/amd/include/amd_shared.h
++++ b/drivers/gpu/drm/amd/include/amd_shared.h
+@@ -244,7 +244,6 @@ enum DC_FEATURE_MASK {
+ 	DC_DISABLE_LTTPR_DP2_0 = (1 << 6), //0x40, disabled by default
+ 	DC_PSR_ALLOW_SMU_OPT = (1 << 7), //0x80, disabled by default
+ 	DC_PSR_ALLOW_MULTI_DISP_OPT = (1 << 8), //0x100, disabled by default
+-	DC_REPLAY_MASK = (1 << 9), //0x200, disabled by default for dcn < 3.1.4
+ };
+ 
+ enum DC_DEBUG_MASK {
+@@ -255,7 +254,6 @@ enum DC_DEBUG_MASK {
+ 	DC_DISABLE_PSR = 0x10,
+ 	DC_FORCE_SUBVP_MCLK_SWITCH = 0x20,
+ 	DC_DISABLE_MPO = 0x40,
+-	DC_DISABLE_REPLAY = 0x50,
+ 	DC_ENABLE_DPIA_TRACE = 0x80,
+ };
+ 
 -- 
 2.43.0
 
