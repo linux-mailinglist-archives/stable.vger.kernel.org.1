@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAAD38482A8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 901CE84816C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DB3D1F226A9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DBD32830E5
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E774C609;
-	Sat,  3 Feb 2024 04:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F053111A9;
+	Sat,  3 Feb 2024 04:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldMriuDn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZ1ifuJ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019C813ADB;
-	Sat,  3 Feb 2024 04:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6041755E;
+	Sat,  3 Feb 2024 04:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933786; cv=none; b=BAQOEpKbva0wyO9jokc6JM3VxOxliNIZ/EJySnxD3Y2K7mtSgmGb9xEmEa3aC6aGltKolUDcm3VnBrO/Aj6adOMSfQQ0olTEjF1XU/e+0wpd62aBSkZRMhnEanr+CVEUHQfnuiupbalWmuF/8JxOkQUNWsZBahubq7ITESm3WC4=
+	t=1706933555; cv=none; b=EtRqwqwS8L/AFNpTuea9GfC7VUzuyuCb8MxLsvm0ieukCq0/36wjFjM8OUYqhoZg/215m3N3HncEqDf8kX7UnRP9XorgIcdmxlPe3ICoGBpJcXMON4HlMJuOPAd1uG/ot4UbrUafShX0h2geIALUEoKwvRM82T66RDTt81fqadM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933786; c=relaxed/simple;
-	bh=Ba4iCRgV5Ib56xqk6mlCHei2GbhwJxguBfo/qHhuemY=;
+	s=arc-20240116; t=1706933555; c=relaxed/simple;
+	bh=tVujJEXi6KX5dxHmo8JccmDWs+tJBjXmpt6DYyutUn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B7+cciYqszcd4My6JuwLPc6QAwgk4bvSy6Kla84KvQ6SijwPr+KN6fzk28bMUSyskAF8iQn+AyZPlmpKw1iEP6XGy024iNUDKYG7jHjFgReSQP0+eB18G1PFobljQ9t0Q5YaKoK9g35U7P75slrP2WbGWPZk9GRGQP9pW0ervEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldMriuDn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE597C433C7;
-	Sat,  3 Feb 2024 04:16:25 +0000 (UTC)
+	 MIME-Version; b=kxZUGRCuiwfd/rgh+NkudeZ9weTtC3qkV8rTCp3r/Fn14GaVmsG/ch1LyWRk3d8f8NPOsu65WMZyInH+DSVnROpjPovb1FaecYgYpDAn4DqQZyoXlXdR/oYfoxMB5DCpRUMUlR0cmSifF3r+v6cOht1i/lKENfvt4dycpsMb9/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZ1ifuJ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242F0C433C7;
+	Sat,  3 Feb 2024 04:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933785;
-	bh=Ba4iCRgV5Ib56xqk6mlCHei2GbhwJxguBfo/qHhuemY=;
+	s=korg; t=1706933555;
+	bh=tVujJEXi6KX5dxHmo8JccmDWs+tJBjXmpt6DYyutUn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ldMriuDn4IhfwvhT7FahyFn2OMZH2rfCGXhmQVSloeHnm6oQZN5UAlpyCi5GcJtDa
-	 b0xAhIcU9h52BQ93b1i4GdAk1zMQgPfWmJzDWwPgS4RAE6JM/IACsjCVB7OUpC8eVZ
-	 /NYNqLxcdW9RnBJ2yBmNv0Yf+Pscj9Qjsq9zp13M=
+	b=SZ1ifuJ0MJqW9Zr/gt9cyolmFA4oy40Lbs9h07TzdFwNmq4bQgneGltkiiDjh5J8r
+	 83gQj7nInYcnsculNncfBI4uMyU5Ov3iFJ/8FMfMiwtwCpepFop70t7Lgkr+jYB976
+	 Hpk35+JUY4TdstFlEirepSf+BSBRg6ZFSn15I0Q4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Saxena <sumit.saxena@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 085/353] scsi: mpi3mr: Add PCI checks where SAS5116 diverges from SAS4116
-Date: Fri,  2 Feb 2024 20:03:23 -0800
-Message-ID: <20240203035406.498327234@linuxfoundation.org>
+Subject: [PATCH 6.6 107/322] bpf: Set uattr->batch.count as zero before batched update or deletion
+Date: Fri,  2 Feb 2024 20:03:24 -0800
+Message-ID: <20240203035402.614106252@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Saxena <sumit.saxena@broadcom.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit c9260ff28ee561fca5f96425c9328a9698e8427b ]
+[ Upstream commit 06e5c999f10269a532304e89a6adb2fbfeb0593c ]
 
-Add PCI IDs checks for the cases where SAS5116 diverges from SAS4116 in
-behavior.
+generic_map_{delete,update}_batch() doesn't set uattr->batch.count as
+zero before it tries to allocate memory for key. If the memory
+allocation fails, the value of uattr->batch.count will be incorrect.
 
-Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
-Link: https://lore.kernel.org/r/20231123160132.4155-3-sumit.saxena@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fix it by setting uattr->batch.count as zero beore batched update or
+deletion.
+
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20231208102355.2628918-6-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_fw.c | 3 ++-
- drivers/scsi/mpi3mr/mpi3mr_os.c | 5 ++++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ kernel/bpf/syscall.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-index f039f1d98647..0d148c39ebcc 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -1892,7 +1892,8 @@ static int mpi3mr_create_op_reply_q(struct mpi3mr_ioc *mrioc, u16 qidx)
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index f61c53237c19..4b7d186c7622 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -1699,6 +1699,9 @@ int generic_map_delete_batch(struct bpf_map *map,
+ 	if (!max_count)
+ 		return 0;
  
- 	reply_qid = qidx + 1;
- 	op_reply_q->num_replies = MPI3MR_OP_REP_Q_QD;
--	if (!mrioc->pdev->revision)
-+	if ((mrioc->pdev->device == MPI3_MFGPAGE_DEVID_SAS4116) &&
-+		!mrioc->pdev->revision)
- 		op_reply_q->num_replies = MPI3MR_OP_REP_Q_QD4K;
- 	op_reply_q->ci = 0;
- 	op_reply_q->ephase = 1;
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
-index 94adb0b1afc9..872d4b809d08 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_os.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
-@@ -5112,7 +5112,10 @@ mpi3mr_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		mpi3mr_init_drv_cmd(&mrioc->evtack_cmds[i],
- 				    MPI3MR_HOSTTAG_EVTACKCMD_MIN + i);
++	if (put_user(0, &uattr->batch.count))
++		return -EFAULT;
++
+ 	key = kvmalloc(map->key_size, GFP_USER | __GFP_NOWARN);
+ 	if (!key)
+ 		return -ENOMEM;
+@@ -1756,6 +1759,9 @@ int generic_map_update_batch(struct bpf_map *map, struct file *map_file,
+ 	if (!max_count)
+ 		return 0;
  
--	if (pdev->revision)
-+	if ((pdev->device == MPI3_MFGPAGE_DEVID_SAS4116) &&
-+		!pdev->revision)
-+		mrioc->enable_segqueue = false;
-+	else
- 		mrioc->enable_segqueue = true;
- 
- 	init_waitqueue_head(&mrioc->reset_waitq);
++	if (put_user(0, &uattr->batch.count))
++		return -EFAULT;
++
+ 	key = kvmalloc(map->key_size, GFP_USER | __GFP_NOWARN);
+ 	if (!key)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
