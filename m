@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F92084833B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBC38480D7
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A24FA1C2083C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BFB21F216D4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6EC51C2A;
-	Sat,  3 Feb 2024 04:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F8312B9E;
+	Sat,  3 Feb 2024 04:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJPZNze/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9DeDhjs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D822168A9;
-	Sat,  3 Feb 2024 04:18:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50C8199A2;
+	Sat,  3 Feb 2024 04:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933893; cv=none; b=jl1Xo5P0DBiHtdpV2euqZCxtmA5URuIytFagNWvRDASIiHNACQZeGLfl8yRg0KuOpCrkvW/D3NztrN7JLsAauFtTXMESLR/S8AwUZzzUvkG0FwutMONV3xCuAtFkE0bpp1glLkzTrPG//WKHUqcPsRPm2KUtS2nkLMmHa8twgDE=
+	t=1706933449; cv=none; b=JrINkimw/tpdOkuwzUG7ZpW1fJWiFKIYebGrpla/8Sm1uNvPx7jdF9Oa/vnW/fTj52m6la7tC5njvJQm0a1CkLN3tKTVSJouPEO+3vo+kKsWqkTWlnfvGa90y8b200rzv9+W5kz53Jh0MyqKKqtb1WRFkrEk4KoWVmfDUOrDcMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933893; c=relaxed/simple;
-	bh=khT4/pcJQ0OPcMopZ+dFKyXxmhbR0GYbuXTZjzMPhE4=;
+	s=arc-20240116; t=1706933449; c=relaxed/simple;
+	bh=FtXE+3jOCdLEkCMLfoKIpYnROVjka01bI+ZbslOqZGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JLpz/fr0u8sGX3fpCAY1fjsda6FHG6rNDKCgBuAqdTaUPDM/vlqloPX/2kbayfidx7IjHCjlPjSpifcpVoB5NIjLMCNdvVF0QbyYRB7hK5N9h8W2jhqgMowQqzV8ONX78NNt2Hf2N4mPAg8kRO7Ot1SJ1V/P2D0tvtf9XKN4V8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJPZNze/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 046D0C433F1;
-	Sat,  3 Feb 2024 04:18:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GTVkvSJa0yFaiFSYUXFAJgysT60kevYP6TumMMgUMq+aeKTjT0olrK1bcM5hRqziEWv5+bQ1Brxkg1P3d8iY2t/qpZYlOxIwmOoqkHQvQAXje+fgEEIs3uQH0loHuFQ0NIZXdG/KVHJ+nK51/6qZ9eKiCq8dScjN46KJhH6MSAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9DeDhjs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAAEC433F1;
+	Sat,  3 Feb 2024 04:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933893;
-	bh=khT4/pcJQ0OPcMopZ+dFKyXxmhbR0GYbuXTZjzMPhE4=;
+	s=korg; t=1706933449;
+	bh=FtXE+3jOCdLEkCMLfoKIpYnROVjka01bI+ZbslOqZGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJPZNze/UyO/JDjLn9Bh1Fr2VME7ZeKo0Q58o4obmV3nP58gAnNmAbiqGRiKES0jI
-	 FgYdaA9pJA81D6sWmvX97sixn6BNOnNy1VcBEt2BFF2p3PK4ZhajjIco8DCytaucwJ
-	 5DJ55HuvoU5BtF1JLzLKbd1Of9Iy8ylr+KYuu/Nc=
+	b=p9DeDhjspdjdF5lHXe31cG/FfcM1eM+CKU33CeQVIwIvdKFLajDMJOEUfpZcVtFrr
+	 51HVWiAetLQ444wkNUlttENovrdk90NS5t51hhrOIUoN8yD01oqdd8/wYq4dgqyTm4
+	 U8PpeDanfVyKeFE2t0QhTFy0anNTZDpBIRbtC9FA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Peter Lafreniere <peter@n8pjl.ca>,
-	Richard Weinberger <richard@nod.at>,
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 239/353] um: Fix naming clash between UML and scheduler
+Subject: [PATCH 6.1 184/219] drm: using mul_u32_u32() requires linux/math64.h
 Date: Fri,  2 Feb 2024 20:05:57 -0800
-Message-ID: <20240203035411.241803440@linuxfoundation.org>
+Message-ID: <20240203035342.518174180@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+From: Stephen Rothwell <sfr@canb.auug.org.au>
 
-[ Upstream commit 541d4e4d435c8b9bfd29f70a1da4a2db97794e0a ]
+[ Upstream commit 933a2a376fb3f22ba4774f74233571504ac56b02 ]
 
-__cant_sleep was already used and exported by the scheduler.
-The name had to be changed to a UML specific one.
+Some pending include file cleanups produced this error:
 
-Signed-off-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Reviewed-by: Peter Lafreniere <peter@n8pjl.ca>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+In file included from include/linux/kernel.h:27,
+                 from drivers/gpu/ipu-v3/ipu-dp.c:7:
+include/drm/drm_color_mgmt.h: In function 'drm_color_lut_extract':
+include/drm/drm_color_mgmt.h:45:46: error: implicit declaration of function 'mul_u32_u32' [-Werror=implicit-function-declaration]
+   45 |                 return DIV_ROUND_CLOSEST_ULL(mul_u32_u32(user_input, (1 << bit_precision) - 1),
+      |                                              ^~~~~~~~~~~
+
+Fixes: c6fbb6bca108 ("drm: Fix color LUT rounding")
+Signed-off-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231219145734.13e40e1e@canb.auug.org.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/include/shared/kern_util.h | 2 +-
- arch/um/kernel/process.c           | 2 +-
- arch/um/os-Linux/helper.c          | 6 +++---
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ include/drm/drm_color_mgmt.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/um/include/shared/kern_util.h b/arch/um/include/shared/kern_util.h
-index d8b8b4f07e42..444bae755b16 100644
---- a/arch/um/include/shared/kern_util.h
-+++ b/arch/um/include/shared/kern_util.h
-@@ -50,7 +50,7 @@ extern void do_uml_exitcalls(void);
-  * Are we disallowed to sleep? Used to choose between GFP_KERNEL and
-  * GFP_ATOMIC.
-  */
--extern int __cant_sleep(void);
-+extern int __uml_cant_sleep(void);
- extern int get_current_pid(void);
- extern int copy_from_user_proc(void *to, void *from, int size);
- extern char *uml_strdup(const char *string);
-diff --git a/arch/um/kernel/process.c b/arch/um/kernel/process.c
-index 106b7da2f8d6..6daffb9d8a8d 100644
---- a/arch/um/kernel/process.c
-+++ b/arch/um/kernel/process.c
-@@ -220,7 +220,7 @@ void arch_cpu_idle(void)
- 	um_idle_sleep();
- }
+diff --git a/include/drm/drm_color_mgmt.h b/include/drm/drm_color_mgmt.h
+index 54b2b2467bfd..ed81741036d7 100644
+--- a/include/drm/drm_color_mgmt.h
++++ b/include/drm/drm_color_mgmt.h
+@@ -24,6 +24,7 @@
+ #define __DRM_COLOR_MGMT_H__
  
--int __cant_sleep(void) {
-+int __uml_cant_sleep(void) {
- 	return in_atomic() || irqs_disabled() || in_interrupt();
- 	/* Is in_interrupt() really needed? */
- }
-diff --git a/arch/um/os-Linux/helper.c b/arch/um/os-Linux/helper.c
-index b459745f52e2..3cb8ac63be6e 100644
---- a/arch/um/os-Linux/helper.c
-+++ b/arch/um/os-Linux/helper.c
-@@ -46,7 +46,7 @@ int run_helper(void (*pre_exec)(void *), void *pre_data, char **argv)
- 	unsigned long stack, sp;
- 	int pid, fds[2], ret, n;
+ #include <linux/ctype.h>
++#include <linux/math64.h>
+ #include <drm/drm_property.h>
  
--	stack = alloc_stack(0, __cant_sleep());
-+	stack = alloc_stack(0, __uml_cant_sleep());
- 	if (stack == 0)
- 		return -ENOMEM;
- 
-@@ -70,7 +70,7 @@ int run_helper(void (*pre_exec)(void *), void *pre_data, char **argv)
- 	data.pre_data = pre_data;
- 	data.argv = argv;
- 	data.fd = fds[1];
--	data.buf = __cant_sleep() ? uml_kmalloc(PATH_MAX, UM_GFP_ATOMIC) :
-+	data.buf = __uml_cant_sleep() ? uml_kmalloc(PATH_MAX, UM_GFP_ATOMIC) :
- 					uml_kmalloc(PATH_MAX, UM_GFP_KERNEL);
- 	pid = clone(helper_child, (void *) sp, CLONE_VM, &data);
- 	if (pid < 0) {
-@@ -121,7 +121,7 @@ int run_helper_thread(int (*proc)(void *), void *arg, unsigned int flags,
- 	unsigned long stack, sp;
- 	int pid, status, err;
- 
--	stack = alloc_stack(0, __cant_sleep());
-+	stack = alloc_stack(0, __uml_cant_sleep());
- 	if (stack == 0)
- 		return -ENOMEM;
- 
+ struct drm_crtc;
 -- 
 2.43.0
 
