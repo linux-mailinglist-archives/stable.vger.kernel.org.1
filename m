@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-17864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4FED84806A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E799B8481B1
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FAAB28BF1E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D86BB294DC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0889813AE8;
-	Sat,  3 Feb 2024 04:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C986A17C76;
+	Sat,  3 Feb 2024 04:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q3xjXcdC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVkuLmaQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6AB12E58;
-	Sat,  3 Feb 2024 04:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885DD125C2;
+	Sat,  3 Feb 2024 04:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933371; cv=none; b=aHzOGB5kQpAPvu8pBu2R6fvNFYWUr2kUlF3o+MueOCQbgMFI1Iu0ONpOZ2PvpT0Tw27rojrZo9jcY/hueIW2IL3jE//DR95ghFWr5ndpZPWAH47JIqI8b/gFTyY0cpZG1hzOnfnw/ObSfwwN1j0fExQ2no6equEK66qX5EiHLrU=
+	t=1706933604; cv=none; b=fJPKoqxgRz7XKOFEs7biWS0x9yHp0rOK+bRkIiV319HGlESHkpYCxiEuDgXLnOWIfkRxpvHO9dBKink1mbt5wj/IKWp0PamSXxKaaSiETsn/ATQiVAIWUVkjgfuAr/C/JFL8gg0g0w9esfjIPgKZPqNTnj+tfKovRkmKLXtiqjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933371; c=relaxed/simple;
-	bh=kZeyYCuZ3J8OLU94uTLI/YzHRPNj9vqd/Zo6S0qOaf8=;
+	s=arc-20240116; t=1706933604; c=relaxed/simple;
+	bh=w0qy8zT/DZswIXJCDbY3jHlvnCP7dSF9ZJl1RigswQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOhIyZ9UlhaGEWpfbD15LyBQPxxvnvNaTDhlXUkHfTFxEnngVI/Y2yUME0sKSfYobZyl1xw0ph0+mD7GZy830cO0vxlr0B5JvKE8jIP6xxiubz8Cb1mLtQxXhdDq19gsw48m9KnDg4+nS2EN3igLX6++irkRGCNgwU+rnB8tQPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q3xjXcdC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F3DC433C7;
-	Sat,  3 Feb 2024 04:09:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OomLkQ8kCdjDmKr9SemUgaSOe8OIzpLZeJwNkw9qGRPXq0EblhYDfKROJU/ndFeegNeSznohKTcYSc87QFDJtrEmy9ReGQ8vcLKYAc/q0v32I67w1BaUFr/nQ8P4wToZH05FoPDhffpSB7h9fuUEDbE3/oGoP9dxEtvCYSFvvPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVkuLmaQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53408C433C7;
+	Sat,  3 Feb 2024 04:13:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933371;
-	bh=kZeyYCuZ3J8OLU94uTLI/YzHRPNj9vqd/Zo6S0qOaf8=;
+	s=korg; t=1706933604;
+	bh=w0qy8zT/DZswIXJCDbY3jHlvnCP7dSF9ZJl1RigswQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q3xjXcdCAbaBQho8MIvXbtEIOirn+9M3jyqKr+YRhVroNPm4rgh9YWCtaAXRBOmaa
-	 2fI5wSvWINauFQi6Idu7m//AJVM1k0B7JzSsY4zk8RL21IV/2X+Ll2EuztC4xXsLQP
-	 E9ailLKctkftzsSTe7nfpArVFvGu1tsKkUeUuOpw=
+	b=KVkuLmaQHBiklyLUwK4EncSm341nktCE0/YN1Z2UxBB5ZpjskBaa1M0D4Z3iwswNZ
+	 dAJDN8Hc0sQ/UKeq1A0Brjxq8zpRYvAvzdasXd2zz5rv0FXlMKrIVLmkBuVSrF0iw/
+	 RlFNGT24WZbKc7JCyNcxcYCIS7MUfJFSpZggbQv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/219] ARM: dts: imx23-sansa: Use preferred i2c-gpios properties
+Subject: [PATCH 6.6 156/322] net: dsa: qca8k: put MDIO bus OF node on qca8k_mdio_register() failure
 Date: Fri,  2 Feb 2024 20:04:13 -0800
-Message-ID: <20240203035328.357044409@linuxfoundation.org>
+Message-ID: <20240203035404.257970294@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +62,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit e3aa1a82fb20ee97597022f6528823a8ab82bde6 ]
+[ Upstream commit 68e1010cda7967cfca9c8650ee1f4efcae54ab90 ]
 
-The 'gpios' property to describe the SDA and SCL GPIOs is considered
-deprecated according to i2c-gpio.yaml.
+of_get_child_by_name() gives us an OF node with an elevated refcount,
+which should be dropped when we're done with it. This is so that,
+if (of_node_check_flag(node, OF_DYNAMIC)) is true, the node's memory can
+eventually be freed.
 
-Switch to the preferred 'sda-gpios' and 'scl-gpios' properties.
+There are 2 distinct paths to be considered in qca8k_mdio_register():
 
-This fixes the following schema warnings:
+- devm_of_mdiobus_register() succeeds: since commit 3b73a7b8ec38 ("net:
+  mdio_bus: add refcounting for fwnodes to mdiobus"), the MDIO core
+  treats this well.
 
-imx23-sansa.dtb: i2c-0: 'sda-gpios' is a required property
-	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
-imx23-sansa.dtb: i2c-0: 'scl-gpios' is a required property
-	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+- devm_of_mdiobus_register() or anything up to that point fails: it is
+  the duty of the qca8k driver to release the OF node.
 
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+This change addresses the second case by making sure that the OF node
+reference is not leaked.
+
+The "mdio" node may be NULL, but of_node_put(NULL) is safe.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Alvin Šipraga <alsi@bang-olufsen.dk>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx23-sansa.dts | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ drivers/net/dsa/qca/qca8k-8xxx.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx23-sansa.dts b/arch/arm/boot/dts/imx23-sansa.dts
-index 46057d9bf555..c2efcc20ae80 100644
---- a/arch/arm/boot/dts/imx23-sansa.dts
-+++ b/arch/arm/boot/dts/imx23-sansa.dts
-@@ -175,10 +175,8 @@
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		compatible = "i2c-gpio";
--		gpios = <
--			&gpio1 24 0		/* SDA */
--			&gpio1 22 0		/* SCL */
--		>;
-+		sda-gpios = <&gpio1 24 0>;
-+		scl-gpios = <&gpio1 22 0>;
- 		i2c-gpio,delay-us = <2>;	/* ~100 kHz */
- 	};
+diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
+index 4ce68e655a63..368d53d3b1d6 100644
+--- a/drivers/net/dsa/qca/qca8k-8xxx.c
++++ b/drivers/net/dsa/qca/qca8k-8xxx.c
+@@ -949,10 +949,15 @@ qca8k_mdio_register(struct qca8k_priv *priv)
+ 	struct dsa_switch *ds = priv->ds;
+ 	struct device_node *mdio;
+ 	struct mii_bus *bus;
++	int err;
++
++	mdio = of_get_child_by_name(priv->dev->of_node, "mdio");
  
-@@ -186,10 +184,8 @@
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		compatible = "i2c-gpio";
--		gpios = <
--			&gpio0 31 0		/* SDA */
--			&gpio0 30 0		/* SCL */
--		>;
-+		sda-gpios = <&gpio0 31 0>;
-+		scl-gpios = <&gpio0 30 0>;
- 		i2c-gpio,delay-us = <2>;	/* ~100 kHz */
+ 	bus = devm_mdiobus_alloc(ds->dev);
+-	if (!bus)
+-		return -ENOMEM;
++	if (!bus) {
++		err = -ENOMEM;
++		goto out_put_node;
++	}
  
- 		touch: touch@20 {
+ 	bus->priv = (void *)priv;
+ 	snprintf(bus->id, MII_BUS_ID_SIZE, "qca8k-%d.%d",
+@@ -962,12 +967,12 @@ qca8k_mdio_register(struct qca8k_priv *priv)
+ 	ds->slave_mii_bus = bus;
+ 
+ 	/* Check if the devicetree declare the port:phy mapping */
+-	mdio = of_get_child_by_name(priv->dev->of_node, "mdio");
+ 	if (of_device_is_available(mdio)) {
+ 		bus->name = "qca8k slave mii";
+ 		bus->read = qca8k_internal_mdio_read;
+ 		bus->write = qca8k_internal_mdio_write;
+-		return devm_of_mdiobus_register(priv->dev, bus, mdio);
++		err = devm_of_mdiobus_register(priv->dev, bus, mdio);
++		goto out_put_node;
+ 	}
+ 
+ 	/* If a mapping can't be found the legacy mapping is used,
+@@ -976,7 +981,13 @@ qca8k_mdio_register(struct qca8k_priv *priv)
+ 	bus->name = "qca8k-legacy slave mii";
+ 	bus->read = qca8k_legacy_mdio_read;
+ 	bus->write = qca8k_legacy_mdio_write;
+-	return devm_mdiobus_register(priv->dev, bus);
++
++	err = devm_mdiobus_register(priv->dev, bus);
++
++out_put_node:
++	of_node_put(mdio);
++
++	return err;
+ }
+ 
+ static int
 -- 
 2.43.0
 
