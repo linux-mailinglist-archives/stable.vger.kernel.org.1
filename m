@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-18326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D903848249
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40CFC848364
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5E15B22622
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3D0DB2A80F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FEEB482E6;
-	Sat,  3 Feb 2024 04:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F5152F9F;
+	Sat,  3 Feb 2024 04:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmwxnHDG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1zGmfom"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89ED412E63;
-	Sat,  3 Feb 2024 04:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CF52208E;
+	Sat,  3 Feb 2024 04:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933717; cv=none; b=H1glWwvyf8sywOYJZraxz5F2s4kjqIWLrq3RGAq7JM+cKK3JpwSPUFuABD7Y9Gys/jp092JodGFscKOH6kvMIsL4MI+8NwVZc0Egg4h/PU10ZJLvZbB0HWEnygP+8fSZFl9Zdf4uj5D+T0q+9lOf9wEgjuQPZwmJowoBY7eZPnc=
+	t=1706933922; cv=none; b=aFitTU7yQwaOT+WAD2VQuxg7PAXkux4AceXxWy6Tfbtk1yy0pRNVs8TTTqBMKwSNzwUqw/dKuk7jWx65oOAEur+3CYUN6RrZxULBk7UYgZ8J3E/gv2WX83mMKROw1ul6qIWNfywDLEqUq/FQYl1fAkYXBKXHVISn6AmfT2BFPmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933717; c=relaxed/simple;
-	bh=OyaFB2EUWqXO4ikR/AqkTKBTAXcqCJAXWZoAESsx2Wg=;
+	s=arc-20240116; t=1706933922; c=relaxed/simple;
+	bh=VHcCuGxrXkbC9kYuRJK/ATQzj7eIIKk744c3lBdNQnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jW8kbq88BtVkl1JTcn/k4Yt2hIK5kRqVy9mkACef3TH000auealbFJvD6ZMVo+UbDnBvukX/2Jr2Pdnco4oh4biqP4+i9m3HnoW2I/wD3MINynGFf7RZeNEYSedwZAbadIR8CP48mdaPIWNUSCYKO0IKJeE4es6S8UTee8YFDBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmwxnHDG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B036C433C7;
-	Sat,  3 Feb 2024 04:15:17 +0000 (UTC)
+	 MIME-Version; b=iNg0puEJRTmijeRN5LX4AtZNnOV5mciRRCuwJ8xTNsSVP2Asnf+NLY8VOSSFC1JZTvwTRh9soR/au/yvpfRz7kYnF06qrkRwYTauFMN+gyh7nJpR1hOlbutWW+NWHOSWgILKlQlOTrKCOMkN0HKKCGZf08/6qcXcZHRwnYJllEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1zGmfom; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B1DC43390;
+	Sat,  3 Feb 2024 04:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933717;
-	bh=OyaFB2EUWqXO4ikR/AqkTKBTAXcqCJAXWZoAESsx2Wg=;
+	s=korg; t=1706933922;
+	bh=VHcCuGxrXkbC9kYuRJK/ATQzj7eIIKk744c3lBdNQnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vmwxnHDG9SlQZnr9Tw1tOV7SuMFFSqLSH+ze1fXFc/u0nDRwHGunmsgIY0ZYr35Hi
-	 Is+uRsnYuhNgpMMCR7XNFUrAN7xPhXjPU9QoSfOomUQYxULk2HU2ZYyYY3FXu1KRcI
-	 aBAsUDztic88/uKv9vdiQe5YqDrvjJWWDCw1dFNg=
+	b=r1zGmfomHy4wAbZlvxku2qXzVyRrA+FDSv4+Us8tyzaeX7vcLmqdeiSVzLWKU4c3H
+	 6QMml86+56LdT96fFO6cbKZKhZTSbn2d9O+bfj+0XhrPhPW7lu3YU3QgJyMuvhG7X9
+	 7J08hSoajcBBWiV1GkNi6KjWdP5YA8G/zb/xE6Kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jan Kara <jack@suse.cz>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Changhui Zhong <czhong@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 297/322] netfilter: nft_ct: sanitize layer 3 and 4 protocol number in custom expectations
-Date: Fri,  2 Feb 2024 20:06:34 -0800
-Message-ID: <20240203035408.657491456@linuxfoundation.org>
+Subject: [PATCH 6.7 277/353] blk-mq: fix IO hang from sbitmap wakeup race
+Date: Fri,  2 Feb 2024 20:06:35 -0800
+Message-ID: <20240203035412.540576498@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +65,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit 8059918a1377f2f1fff06af4f5a4ed3d5acd6bc4 ]
+[ Upstream commit 5266caaf5660529e3da53004b8b7174cab6374ed ]
 
-- Disallow families other than NFPROTO_{IPV4,IPV6,INET}.
-- Disallow layer 4 protocol with no ports, since destination port is a
-  mandatory attribute for this object.
+In blk_mq_mark_tag_wait(), __add_wait_queue() may be re-ordered
+with the following blk_mq_get_driver_tag() in case of getting driver
+tag failure.
 
-Fixes: 857b46027d6f ("netfilter: nft_ct: add ct expectations support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Then in __sbitmap_queue_wake_up(), waitqueue_active() may not observe
+the added waiter in blk_mq_mark_tag_wait() and wake up nothing, meantime
+blk_mq_mark_tag_wait() can't get driver tag successfully.
+
+This issue can be reproduced by running the following test in loop, and
+fio hang can be observed in < 30min when running it on my test VM
+in laptop.
+
+	modprobe -r scsi_debug
+	modprobe scsi_debug delay=0 dev_size_mb=4096 max_queue=1 host_max_queue=1 submit_queues=4
+	dev=`ls -d /sys/bus/pseudo/drivers/scsi_debug/adapter*/host*/target*/*/block/* | head -1 | xargs basename`
+	fio --filename=/dev/"$dev" --direct=1 --rw=randrw --bs=4k --iodepth=1 \
+       		--runtime=100 --numjobs=40 --time_based --name=test \
+        	--ioengine=libaio
+
+Fix the issue by adding one explicit barrier in blk_mq_mark_tag_wait(), which
+is just fine in case of running out of tag.
+
+Cc: Jan Kara <jack@suse.cz>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Reported-by: Changhui Zhong <czhong@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240112122626.4181044-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_ct.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ block/blk-mq.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
-index 86bb9d7797d9..aac98a3c966e 100644
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -1250,7 +1250,31 @@ static int nft_ct_expect_obj_init(const struct nft_ctx *ctx,
- 	if (tb[NFTA_CT_EXPECT_L3PROTO])
- 		priv->l3num = ntohs(nla_get_be16(tb[NFTA_CT_EXPECT_L3PROTO]));
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 7e743ac58c31..a71974a5e57c 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -1858,6 +1858,22 @@ static bool blk_mq_mark_tag_wait(struct blk_mq_hw_ctx *hctx,
+ 	wait->flags &= ~WQ_FLAG_EXCLUSIVE;
+ 	__add_wait_queue(wq, wait);
  
-+	switch (priv->l3num) {
-+	case NFPROTO_IPV4:
-+	case NFPROTO_IPV6:
-+		if (priv->l3num != ctx->family)
-+			return -EINVAL;
++	/*
++	 * Add one explicit barrier since blk_mq_get_driver_tag() may
++	 * not imply barrier in case of failure.
++	 *
++	 * Order adding us to wait queue and allocating driver tag.
++	 *
++	 * The pair is the one implied in sbitmap_queue_wake_up() which
++	 * orders clearing sbitmap tag bits and waitqueue_active() in
++	 * __sbitmap_queue_wake_up(), since waitqueue_active() is lockless
++	 *
++	 * Otherwise, re-order of adding wait queue and getting driver tag
++	 * may cause __sbitmap_queue_wake_up() to wake up nothing because
++	 * the waitqueue_active() may not observe us in wait queue.
++	 */
++	smp_mb();
 +
-+		fallthrough;
-+	case NFPROTO_INET:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
- 	priv->l4proto = nla_get_u8(tb[NFTA_CT_EXPECT_L4PROTO]);
-+	switch (priv->l4proto) {
-+	case IPPROTO_TCP:
-+	case IPPROTO_UDP:
-+	case IPPROTO_UDPLITE:
-+	case IPPROTO_DCCP:
-+	case IPPROTO_SCTP:
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
- 	priv->dport = nla_get_be16(tb[NFTA_CT_EXPECT_DPORT]);
- 	priv->timeout = nla_get_u32(tb[NFTA_CT_EXPECT_TIMEOUT]);
- 	priv->size = nla_get_u8(tb[NFTA_CT_EXPECT_SIZE]);
+ 	/*
+ 	 * It's possible that a tag was freed in the window between the
+ 	 * allocation failure and adding the hardware queue to the wait
 -- 
 2.43.0
 
