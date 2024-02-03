@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-18074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 254C3848147
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16F96848263
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 589A81C20D25
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49D4C1C24ABC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6541078B;
-	Sat,  3 Feb 2024 04:12:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241A44878B;
+	Sat,  3 Feb 2024 04:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewiIl+Pl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KSXGIfXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16AC1079D;
-	Sat,  3 Feb 2024 04:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A951B953;
+	Sat,  3 Feb 2024 04:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933528; cv=none; b=NNsHSd8KrZahMqqUEY/aVwiYAFPHyCCfdZcoDU7sqI1UvOzf6FA6tJNrXnFzBX6N6G3WjH8ezSzUmpAMvCFOjKKmMJkYAi/laXu6C311ziBbi7D/bbk73+UH5jw581kmHKU53ibXKWTekhxhn945gGOEysvoWKx5LdQikp6307s=
+	t=1706933735; cv=none; b=Mp9VoC4Z/Lw87C2Uu4lnDnuXt8Ob2GcSYAKdtqGAes0MzrDXKSrOS9mhFuYfx1tA01qAd9ncBCBGN0Djlh8iRRpZDO8JvAGZfvmDJV0Dup0/Q7kUHUUx1e+4PiJ7zhgNMjzttlXk8glWXDLXHWg/EZhcuqbPnQsRNWGb0pKigJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933528; c=relaxed/simple;
-	bh=lqzbkHDXKEdKyuD9lXkQlLXU94xZC4iBkhIZLFXMxqg=;
+	s=arc-20240116; t=1706933735; c=relaxed/simple;
+	bh=82PBtxAAKSs5QJtYQQasEdAVzWpIfNxcHGUBDj434SI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2zD9F657iaO0nzj+wQkCDGCpawWseuP3D8F/Gx5u76ELBTjllunvMesw0OXHOmb7zScbbFZIqXZWz4NVO+MqN4QKKGkRTkkVtCCL33XwiKBZ4hf8Lymbrleqvzm2gXZzo/YZA3mvCF0tJSHxI3UxXAww9vGQv9llp6M53k9eqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewiIl+Pl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41C4C433C7;
-	Sat,  3 Feb 2024 04:12:07 +0000 (UTC)
+	 MIME-Version; b=Gb2+n/Bv4qMCmIEprAJW3Do0OzSOsGgzDN7wv1RamE7MM7uO7vSHSVwYVaE93SVSzdt0Vxg96SoJk6Xrp2riqGOk6xesM9UEBFgZ67lCeF+goCr2A/Et1N6Ja8sGEW0Gxoqvh0kPt0Rf77sJyhixDOVWgsTALx0UMNxC+a/CyDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KSXGIfXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02F9C43399;
+	Sat,  3 Feb 2024 04:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933527;
-	bh=lqzbkHDXKEdKyuD9lXkQlLXU94xZC4iBkhIZLFXMxqg=;
+	s=korg; t=1706933735;
+	bh=82PBtxAAKSs5QJtYQQasEdAVzWpIfNxcHGUBDj434SI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ewiIl+Pl3hd/YPNiaANLiSUHan4wBa8BZshlPx4NoNbD5xdNxDUmpkLiSz4ecHcF5
-	 SXoHTP9K6pRAO+S/FipKhkaSTn5e9ptnvJXdJvSCtKJZSqP0j0y72bp4NzTWCASdJh
-	 AB2ugLi22q5MXt9g1RpdRsWPumPs0IshU3yoOu5o=
+	b=KSXGIfXm7UKwaqg6aH5gDgGAiz8C0EArGKUCrxZoXGjY36pcCupw5v3NYu649Pt0K
+	 al71Jo8oueaeQC6cSHxrf7Ob5LOL30KlIhfJjbtV/Rcz9+9pa6zi3W6KYkHQW6iyob
+	 HF0RiPASRGDnH4myZYaEhR0Q4S7qFT/48GZc84PA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Krowiak <akrowiak@linux.ibm.com>,
-	Halil Pasic <pasic@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Rae Moar <rmoar@google.com>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/322] s390/vfio-ap: fix sysfs status attribute for AP queue devices
+Subject: [PATCH 6.7 024/353] kunit: tool: fix parsing of test attributes
 Date: Fri,  2 Feb 2024 20:02:22 -0800
-Message-ID: <20240203035400.547570258@linuxfoundation.org>
+Message-ID: <20240203035404.526776219@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Krowiak <akrowiak@linux.ibm.com>
+From: Rae Moar <rmoar@google.com>
 
-[ Upstream commit a0d8f4eeb7c4ffaee21702bcc91a09b3988c5b7a ]
+[ Upstream commit 8ae27bc7fff4ef467a7964821a6cedb34a05d3b2 ]
 
-The 'status' attribute for AP queue devices bound to the vfio_ap device
-driver displays incorrect status when the mediated device is attached to a
-guest, but the queue device is not passed through. In the current
-implementation, the status displayed is 'in_use' which is not correct; it
-should be 'assigned'. This can happen if one of the queue devices
-associated with a given adapter is not bound to the vfio_ap device driver.
-For example:
+Add parsing of attributes as diagnostic data. Fixes issue with test plan
+being parsed incorrectly as diagnostic data when located after
+suite-level attributes.
 
-Queues listed in /sys/bus/ap/drivers/vfio_ap:
-14.0005
-14.0006
-14.000d
-16.0006
-16.000d
+Note that if there does not exist a test plan line, the diagnostic lines
+between the suite header and the first result will be saved in the suite
+log rather than the first test case log.
 
-Queues listed in /sys/devices/vfio_ap/matrix/$UUID/matrix
-14.0005
-14.0006
-14.000d
-16.0005
-16.0006
-16.000d
-
-Queues listed in /sys/devices/vfio_ap/matrix/$UUID/guest_matrix
-14.0005
-14.0006
-14.000d
-
-The reason no queues for adapter 0x16 are listed in the guest_matrix is
-because queue 16.0005 is not bound to the vfio_ap device driver, so no
-queue associated with the adapter is passed through to the guest;
-therefore, each queue device for adapter 0x16 should display 'assigned'
-instead of 'in_use', because those queues are not in use by a guest, but
-only assigned to the mediated device.
-
-Let's check the AP configuration for the guest to determine whether a
-queue device is passed through before displaying a status of 'in_use'.
-
-Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
-Acked-by: Halil Pasic <pasic@linux.ibm.com>
-Acked-by: Harald Freudenberger <freude@linux.ibm.com>
-Link: https://lore.kernel.org/r/20231108201135.351419-1-akrowiak@linux.ibm.com
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Rae Moar <rmoar@google.com>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/vfio_ap_ops.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ tools/testing/kunit/kunit_parser.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
-index 88f41f95cc94..d6ea2fd4c2a0 100644
---- a/drivers/s390/crypto/vfio_ap_ops.c
-+++ b/drivers/s390/crypto/vfio_ap_ops.c
-@@ -2044,6 +2044,7 @@ static ssize_t status_show(struct device *dev,
- {
- 	ssize_t nchars = 0;
- 	struct vfio_ap_queue *q;
-+	unsigned long apid, apqi;
- 	struct ap_matrix_mdev *matrix_mdev;
- 	struct ap_device *apdev = to_ap_dev(dev);
- 
-@@ -2051,8 +2052,21 @@ static ssize_t status_show(struct device *dev,
- 	q = dev_get_drvdata(&apdev->device);
- 	matrix_mdev = vfio_ap_mdev_for_queue(q);
- 
-+	/* If the queue is assigned to the matrix mediated device, then
-+	 * determine whether it is passed through to a guest; otherwise,
-+	 * indicate that it is unassigned.
-+	 */
- 	if (matrix_mdev) {
--		if (matrix_mdev->kvm)
-+		apid = AP_QID_CARD(q->apqn);
-+		apqi = AP_QID_QUEUE(q->apqn);
-+		/*
-+		 * If the queue is passed through to the guest, then indicate
-+		 * that it is in use; otherwise, indicate that it is
-+		 * merely assigned to a matrix mediated device.
-+		 */
-+		if (matrix_mdev->kvm &&
-+		    test_bit_inv(apid, matrix_mdev->shadow_apcb.apm) &&
-+		    test_bit_inv(apqi, matrix_mdev->shadow_apcb.aqm))
- 			nchars = scnprintf(buf, PAGE_SIZE, "%s\n",
- 					   AP_QUEUE_IN_USE);
- 		else
+diff --git a/tools/testing/kunit/kunit_parser.py b/tools/testing/kunit/kunit_parser.py
+index 79d8832c862a..ce34be15c929 100644
+--- a/tools/testing/kunit/kunit_parser.py
++++ b/tools/testing/kunit/kunit_parser.py
+@@ -450,7 +450,7 @@ def parse_diagnostic(lines: LineStream) -> List[str]:
+ 	Log of diagnostic lines
+ 	"""
+ 	log = []  # type: List[str]
+-	non_diagnostic_lines = [TEST_RESULT, TEST_HEADER, KTAP_START, TAP_START]
++	non_diagnostic_lines = [TEST_RESULT, TEST_HEADER, KTAP_START, TAP_START, TEST_PLAN]
+ 	while lines and not any(re.match(lines.peek())
+ 			for re in non_diagnostic_lines):
+ 		log.append(lines.pop())
+@@ -726,6 +726,7 @@ def parse_test(lines: LineStream, expected_num: int, log: List[str], is_subtest:
+ 		# test plan
+ 		test.name = "main"
+ 		ktap_line = parse_ktap_header(lines, test)
++		test.log.extend(parse_diagnostic(lines))
+ 		parse_test_plan(lines, test)
+ 		parent_test = True
+ 	else:
+@@ -737,6 +738,7 @@ def parse_test(lines: LineStream, expected_num: int, log: List[str], is_subtest:
+ 		if parent_test:
+ 			# If KTAP version line and/or subtest header is found, attempt
+ 			# to parse test plan and print test header
++			test.log.extend(parse_diagnostic(lines))
+ 			parse_test_plan(lines, test)
+ 			print_test_header(test)
+ 	expected_count = test.expected_count
 -- 
 2.43.0
 
