@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-18641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 116E0848387
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C542F848370
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2157284B6E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6720AB2AA4F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B415467A;
-	Sat,  3 Feb 2024 04:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3766953800;
+	Sat,  3 Feb 2024 04:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3/KBfB5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FyBCj+kW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34AD653E27;
-	Sat,  3 Feb 2024 04:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8FFC171D4;
+	Sat,  3 Feb 2024 04:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933948; cv=none; b=cqSwZswusjqxM8/uRUsarpOvED2MHmixK6TLvimRWHvMjhzSqcQu7nveVVvLOprIQoY4M2Or1Nf3g68srWrVQ/Puv3Hy97/cS1wCUokMMtKkJ3oong8C08v0tKP1ZId4BNdHZoKO0CzDtVTo9kVGixqe1r6JVaHC/D8ipjFLTd0=
+	t=1706933931; cv=none; b=IHUsXlOUPml7BaYKeiECHA0zElCuSdDBS8e5Pip7f9piacQadt3s5cAFiJVHlUGtMwiIMHjHjkbl7DpJTXmcDlIaBFPvcRg5hkTTbKMbqmo1GJIAET5TlqX7XKBBB3t5rREzBGGhIGUthq9hXTdNolyswjal1VQN1EXjgBMuvzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933948; c=relaxed/simple;
-	bh=vtRzVSc+VLyIlivhnpsvhXpTKsL4U7he4TxJxsWWQYQ=;
+	s=arc-20240116; t=1706933931; c=relaxed/simple;
+	bh=0yqtR+eLYsbTz3qk9ZePsxENjZefVLMAZf+ySQIWxyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LNTKfTWwGyODRXhfR7F5pb1nDEu2aP2dgl7mQiJ05ehlrDNq1BFTTYmd0ySfD8+LkeLSHQlPZkKR49BpNFsx9OZ39ipQIo71YN9sWdokHiWB1yVEIqTIlxh5srHl6Ui0hwjdeFhJP0yEXXgI1+29xsZOjb9XbKqqOa/wdgF08KQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3/KBfB5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14BBC43390;
-	Sat,  3 Feb 2024 04:19:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bsgQNskuqybhg95RPCcNkl4x+yeL/fkapre+VvnZFE+aXCTQOqJ+fgROWhso4ITKCcgruGpUiwO3jdOYo43kVdZGpdAlJPdR28WIatSn4jtqy7rRLwkHymyz/CG5KUlXOJRZk0aDBbqLOQZcDjXPFYQ/VAnL+3RDT4F1w1Ja8fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FyBCj+kW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1650C433F1;
+	Sat,  3 Feb 2024 04:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933948;
-	bh=vtRzVSc+VLyIlivhnpsvhXpTKsL4U7he4TxJxsWWQYQ=;
+	s=korg; t=1706933930;
+	bh=0yqtR+eLYsbTz3qk9ZePsxENjZefVLMAZf+ySQIWxyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M3/KBfB5ApM055wmf5XlIwdi/AP97xjnHffsuuzaajX0XvlkZu4izN7zDMQtczWsX
-	 +f/PKd0zpP7ENH8fA5XXwkOQTmUcpfjFscWEbDTE+ooW2FmofGdNq63/zU7dW9wIxF
-	 VcpkUEPyHh32hLhBfMLKvbKrVqE+yIywo8MW9fSY=
+	b=FyBCj+kWKHw2rB9VMeCy4+7Gk8UZf0VWylPKZ9jVGzmI4f6l1rhaKdhYIl3Rlkc3V
+	 upz3m2XrczdKSFid96YML3yGURwtwqPCJAWIieOIME9GmEK5Kj0a7nOA3Ev1ORo+As
+	 Km7xK36TMZMXE6vzh5YWAczz58ohgmEtM8JPYyZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
+	Eric Huang <JinHuiEric.Huang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 281/353] drm/amdgpu: fix avg vs input power reporting on smu7
-Date: Fri,  2 Feb 2024 20:06:39 -0800
-Message-ID: <20240203035412.659652819@linuxfoundation.org>
+Subject: [PATCH 6.7 282/353] drm/amd/powerplay: Fix kzalloc parameter ATOM_Tonga_PPM_Table in get_platform_power_management_table()
+Date: Fri,  2 Feb 2024 20:06:40 -0800
+Message-ID: <20240203035412.691235947@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
 References: <20240203035403.657508530@linuxfoundation.org>
@@ -60,61 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 25852d4b97572ff62ffee574cb8bb4bc551af23a ]
+[ Upstream commit 6616b5e1999146b1304abe78232af810080c67e3 ]
 
-Hawaii, Bonaire, Fiji, and Tonga support average power, the others
-support current power.
+In 'struct phm_ppm_table *ptr' allocation using kzalloc, an incorrect
+structure type is passed to sizeof() in kzalloc, larger structure types
+were used, thus using correct type 'struct phm_ppm_table' fixes the
+below:
 
-Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+drivers/gpu/drm/amd/amdgpu/../pm/powerplay/hwmgr/process_pptables_v1_0.c:203 get_platform_power_management_table() warn: struct type mismatch 'phm_ppm_table vs _ATOM_Tonga_PPM_Table'
+
+Cc: Eric Huang <JinHuiEric.Huang@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/process_pptables_v1_0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index b1a8799e2dee..aa91730e4eaf 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -3999,6 +3999,7 @@ static int smu7_read_sensor(struct pp_hwmgr *hwmgr, int idx,
- 	uint32_t sclk, mclk, activity_percent;
- 	uint32_t offset, val_vid;
- 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
-+	struct amdgpu_device *adev = hwmgr->adev;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/process_pptables_v1_0.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/process_pptables_v1_0.c
+index f2a55c1413f5..17882f8dfdd3 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/process_pptables_v1_0.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/process_pptables_v1_0.c
+@@ -200,7 +200,7 @@ static int get_platform_power_management_table(
+ 		struct pp_hwmgr *hwmgr,
+ 		ATOM_Tonga_PPM_Table *atom_ppm_table)
+ {
+-	struct phm_ppm_table *ptr = kzalloc(sizeof(ATOM_Tonga_PPM_Table), GFP_KERNEL);
++	struct phm_ppm_table *ptr = kzalloc(sizeof(*ptr), GFP_KERNEL);
+ 	struct phm_ppt_v1_information *pp_table_information =
+ 		(struct phm_ppt_v1_information *)(hwmgr->pptable);
  
- 	/* size must be at least 4 bytes for all sensors */
- 	if (*size < 4)
-@@ -4042,7 +4043,21 @@ static int smu7_read_sensor(struct pp_hwmgr *hwmgr, int idx,
- 		*size = 4;
- 		return 0;
- 	case AMDGPU_PP_SENSOR_GPU_INPUT_POWER:
--		return smu7_get_gpu_power(hwmgr, (uint32_t *)value);
-+		if ((adev->asic_type != CHIP_HAWAII) &&
-+		    (adev->asic_type != CHIP_BONAIRE) &&
-+		    (adev->asic_type != CHIP_FIJI) &&
-+		    (adev->asic_type != CHIP_TONGA))
-+			return smu7_get_gpu_power(hwmgr, (uint32_t *)value);
-+		else
-+			return -EOPNOTSUPP;
-+	case AMDGPU_PP_SENSOR_GPU_AVG_POWER:
-+		if ((adev->asic_type != CHIP_HAWAII) &&
-+		    (adev->asic_type != CHIP_BONAIRE) &&
-+		    (adev->asic_type != CHIP_FIJI) &&
-+		    (adev->asic_type != CHIP_TONGA))
-+			return -EOPNOTSUPP;
-+		else
-+			return smu7_get_gpu_power(hwmgr, (uint32_t *)value);
- 	case AMDGPU_PP_SENSOR_VDDGFX:
- 		if ((data->vr_config & VRCONF_VDDGFX_MASK) ==
- 		    (VR_SVI2_PLANE_2 << VRCONF_VDDGFX_SHIFT))
 -- 
 2.43.0
 
