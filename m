@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-17850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890AA84805C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD06284818F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B4711F2BAFC
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A93F282F57
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25EE12E54;
-	Sat,  3 Feb 2024 04:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966AE1798A;
+	Sat,  3 Feb 2024 04:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoX6Uh6G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iNrB5dIs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F29112E51;
-	Sat,  3 Feb 2024 04:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CB517593;
+	Sat,  3 Feb 2024 04:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933361; cv=none; b=pRRlYS7tplzOfp+IjYsDnT0E+rivpcnYtEDhg6/zCt3nuVLfd1gy0G71Eb3tbnRjLh8D86MVPRPrQJm/yn6zm/9y4JI8+fnxoBMHwLb0ecVx8dkWl5Gijdc8V9i6y3QewEdKjSGxFEM6iAC+1F2G0OYzMeqIS2s61DpBKrnjNzU=
+	t=1706933580; cv=none; b=Ca0HbHDi3MPJdlhTrMsZ2getwwFHhyoZoy32m4TM/AHUD7hjtW6AuWfZ2dJwHVjoX0J2ZWy0VU0csJLZCCs4pIf9mVuydYDh8ZkkrcWMRjQlSuDc156oOl7DvS3NU0H92ZzTzPOKbba7KvPz2mE+oEsDtpdnMhdSnQ3QmqXwadw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933361; c=relaxed/simple;
-	bh=38lcF6KZG8IQW8BBAqz1zclIjwqmcfvwmNlhPd2/02o=;
+	s=arc-20240116; t=1706933580; c=relaxed/simple;
+	bh=s3SXs3a5T/VZVAXctZlArcx2iKpTSFEoIFDX62OaUrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqcdLIGo7pKQQptrk8B9txadLe9UT3wkFNhqMkZSalnTxgPn41k/qOGK+VUuczBI6rAf4bQxHFqYgpd29ecBDmq6QHd3DDen+iRIGtxuRx5pARZPpUmH7rp1eOIf2032T+fRCT7ItK6BYnZzceN/K/Zrwd9vkCZN78uPyK47te4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoX6Uh6G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F03C433F1;
-	Sat,  3 Feb 2024 04:09:21 +0000 (UTC)
+	 MIME-Version; b=PjBhY1sZtnoSYqXxE8DyTkbtBJjOhSnbRabQCcOgG5GhNI2XHhHcP+BQgbsnH0QttxROWci4x6/GO5jIhmDZoOPCiS78LzidGFs3vc+RRXxh9mcllXVFllZ67RzEf1oPqzvPLr2DwZ2z2vfUr0Ygt+PnMiG58BTVVet/Cs1Eapo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iNrB5dIs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EBEFC43390;
+	Sat,  3 Feb 2024 04:13:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933361;
-	bh=38lcF6KZG8IQW8BBAqz1zclIjwqmcfvwmNlhPd2/02o=;
+	s=korg; t=1706933580;
+	bh=s3SXs3a5T/VZVAXctZlArcx2iKpTSFEoIFDX62OaUrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CoX6Uh6Gi8dPhYEXx8yuMEj9yhrT81XjbvkDsA2ONi/2VJAulrR+xzPfzIZU9DIYJ
-	 f8T5mr277ao19ePfN+8n/teeZPHKuZkGYsbygsnei3ARbu1i1bBz+Ee0DHZ9+rcTFz
-	 pR0Sck3hhIperY6/vdXLT8+/RqqMNyBhd7puAc0Q=
+	b=iNrB5dIsGRIAWiRB2JgUSrcfv7tV3MMM7NZjypGb9GrcRVeaJXltUuglUvpHZcbnP
+	 KeZr/VIT6+uOD1R0XmIqKkaPZcNKNdU/N14Fhpg7x3iQ5cYY3PgAN+suATPaPqKObr
+	 smL3mJlejBzDExOeGaEHthCmHo+iwKAuKzRKEsc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ching-Te Ku <ku920601@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/219] scsi: libfc: Fix up timeout error in fc_fcp_rec_error()
+Subject: [PATCH 6.6 141/322] wifi: rtw89: coex: Fix wrong Wi-Fi role info and FDDT parameter members
 Date: Fri,  2 Feb 2024 20:03:58 -0800
-Message-ID: <20240203035325.899737248@linuxfoundation.org>
+Message-ID: <20240203035403.705545254@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Ching-Te Ku <ku920601@realtek.com>
 
-[ Upstream commit 53122a49f49796beb2c4a1bb702303b66347e29f ]
+[ Upstream commit acc55d7dd4de525ac07e43e90ea3cc630677ec8a ]
 
-We should set the status to FC_TIMED_OUT when a timeout error is passed to
-fc_fcp_rec_error().
+The Wi-Fi firmware 29.29.X should use version 2 role info format. FDDT
+mechanism version 5 use the same cell members to judge traffic situation,
+don't need to add another new format.
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20231129165832.224100-3-hare@kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231218061341.51255-2-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libfc/fc_fcp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/coex.c |  4 ++--
+ drivers/net/wireless/realtek/rtw89/core.h | 12 +++---------
+ 2 files changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/scsi/libfc/fc_fcp.c b/drivers/scsi/libfc/fc_fcp.c
-index 3f189cedf6db..05be0810b5e3 100644
---- a/drivers/scsi/libfc/fc_fcp.c
-+++ b/drivers/scsi/libfc/fc_fcp.c
-@@ -1676,7 +1676,7 @@ static void fc_fcp_rec_error(struct fc_fcp_pkt *fsp, struct fc_frame *fp)
- 		if (fsp->recov_retry++ < FC_MAX_RECOV_RETRY)
- 			fc_fcp_rec(fsp);
- 		else
--			fc_fcp_recovery(fsp, FC_ERROR);
-+			fc_fcp_recovery(fsp, FC_TIMED_OUT);
- 		break;
- 	}
- 	fc_fcp_unlock_pkt(fsp);
+diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
+index 4ba8b3df70ae..6ab1b6ffbb50 100644
+--- a/drivers/net/wireless/realtek/rtw89/coex.c
++++ b/drivers/net/wireless/realtek/rtw89/coex.c
+@@ -131,7 +131,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
+ 	 .fcxbtcrpt = 105, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 5,
+ 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 2,  .fcxgpiodbg = 1,
+ 	 .fcxbtver = 1,  .fcxbtscan = 2,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
+-	 .fwlrole = 1,   .frptmap = 3,    .fcxctrl = 1,
++	 .fwlrole = 2,   .frptmap = 3,    .fcxctrl = 1,
+ 	 .info_buf = 1800, .max_role_num = 6,
+ 	},
+ 	{RTL8852C, RTW89_FW_VER_CODE(0, 27, 57, 0),
+@@ -159,7 +159,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
+ 	 .fcxbtcrpt = 105, .fcxtdma = 3,  .fcxslots = 1, .fcxcysta = 5,
+ 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 2,  .fcxgpiodbg = 1,
+ 	 .fcxbtver = 1,  .fcxbtscan = 2,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
+-	 .fwlrole = 1,   .frptmap = 3,    .fcxctrl = 1,
++	 .fwlrole = 2,   .frptmap = 3,    .fcxctrl = 1,
+ 	 .info_buf = 1800, .max_role_num = 6,
+ 	},
+ 	{RTL8852B, RTW89_FW_VER_CODE(0, 29, 14, 0),
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 04ce221730f9..ee6ae2a0c798 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -2230,12 +2230,6 @@ struct rtw89_btc_fbtc_fddt_cell_status {
+ 	u8 state_phase; /* [0:3] train state, [4:7] train phase */
+ } __packed;
+ 
+-struct rtw89_btc_fbtc_fddt_cell_status_v5 {
+-	s8 wl_tx_pwr;
+-	s8 bt_tx_pwr;
+-	s8 bt_rx_gain;
+-} __packed;
+-
+ struct rtw89_btc_fbtc_cysta_v3 { /* statistics for cycles */
+ 	u8 fver;
+ 	u8 rsvd;
+@@ -2299,9 +2293,9 @@ struct rtw89_btc_fbtc_cysta_v5 { /* statistics for cycles */
+ 	struct rtw89_btc_fbtc_cycle_a2dp_empty_info a2dp_ept;
+ 	struct rtw89_btc_fbtc_a2dp_trx_stat_v4 a2dp_trx[BTC_CYCLE_SLOT_MAX];
+ 	struct rtw89_btc_fbtc_cycle_fddt_info_v5 fddt_trx[BTC_CYCLE_SLOT_MAX];
+-	struct rtw89_btc_fbtc_fddt_cell_status_v5 fddt_cells[FDD_TRAIN_WL_DIRECTION]
+-							    [FDD_TRAIN_WL_RSSI_LEVEL]
+-							    [FDD_TRAIN_BT_RSSI_LEVEL];
++	struct rtw89_btc_fbtc_fddt_cell_status fddt_cells[FDD_TRAIN_WL_DIRECTION]
++							 [FDD_TRAIN_WL_RSSI_LEVEL]
++							 [FDD_TRAIN_BT_RSSI_LEVEL];
+ 	__le32 except_map;
+ } __packed;
+ 
 -- 
 2.43.0
 
