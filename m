@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC688481A3
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29614848057
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D5371F2433F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D84E328BE50
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E92A17BCF;
-	Sat,  3 Feb 2024 04:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27772FBEE;
+	Sat,  3 Feb 2024 04:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YC3tcnqs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkIpg5C3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E395125AC;
-	Sat,  3 Feb 2024 04:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F4A125BF;
+	Sat,  3 Feb 2024 04:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933595; cv=none; b=LEIlVb97aNfSlu9Q1ewz7QWNDTUcX9dwHedQapetN05RWc2WCvyfFc/xv73jG1iCZlm4IiqVCYUKaF8uNQWYICZtRx0mjLNR39AxXNSlEg3mLEpsMeZIQlQ8Xs9NPRufL0EL68h9RNb0T9k+HAMf/zCj27QT/DsnNwSXdE92xgA=
+	t=1706933357; cv=none; b=tqN6OHXdMUdoOXd+wZObhylm/20+VjDYfl1ZLBK0nnCn01NLiL2iQgJoRE+eVnB8d2waq2EPW27Mt/9sMZKqPfDJv1KyTKejHIYhfqVJjbV4fVePQkOKIas3MuQReCr3hgG3b0LUVK+cXNL9QUad0QobMPPcbuYKcTWzkRsE/BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933595; c=relaxed/simple;
-	bh=UDDYiMU8BJNs5qVegKCvgRB8xvt7dTZKtmb3ouarVak=;
+	s=arc-20240116; t=1706933357; c=relaxed/simple;
+	bh=j/ma5VLHhx4LFml5JW/K6MPLyAeftvP2btc20ntCu0c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b1x6qhVDalcbVaTdOd3xkvdfNmkAif+wvMVxRiIORRMN8XnmuVJqxXhiL/D8wVuhLVHojvabWH4IVn+4XeAYx7ds9dqWrcYwEVRJdgIahW/ZhZnMb+EIVvxC7/3UJ1jRCWIRGK2s164tgroysC0PgjIhPPK7SSAT5CvJKczQKnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YC3tcnqs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFCDFC43390;
-	Sat,  3 Feb 2024 04:13:14 +0000 (UTC)
+	 MIME-Version; b=lmoSsp2UrmwpM3jNNmq1q3RmBFmZUu5B/t1HhFHCQZ5R7AfimHUmxbfGrGtC8glXVqFSxIShSafWd8/Qwa5lue6w8s2P4oxcZ+REOPuCR9fo/mJKOp6nV4p4C0P5WD+9RCw8VouV37xDVfzDkCny6Ty1QI7kp05lW+ABtQ4tXrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkIpg5C3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454D4C433C7;
+	Sat,  3 Feb 2024 04:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933594;
-	bh=UDDYiMU8BJNs5qVegKCvgRB8xvt7dTZKtmb3ouarVak=;
+	s=korg; t=1706933357;
+	bh=j/ma5VLHhx4LFml5JW/K6MPLyAeftvP2btc20ntCu0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YC3tcnqsRnnBDXVXV+wA6OG81N3TAGsI2UWX7nAgyJChYUwqc2oBU8JJZXcbA6lpG
-	 5ihHUf98beyaeg/UNHVn2ZoWVP5hRqquyKc5gED3W0wcQcVXdp7ec0bxYqsENIi/Xt
-	 sIHuKZ54SDFdscbFFTlOhOaDjGyVyLRuva/pNlpo=
+	b=xkIpg5C3b6Zl4Py17MS6RGcVDFDZ42iZN9id787liCDe3wYHO+NtlAhGf1/uphF7O
+	 VCcJxvCWAhUvdvS0Rg0jFyYV48bzhzis91RmVLpEgsLzCAaurAWf9Lv8zSdvQzDIX8
+	 pyzIeTpAu7HUlZRQFTTvbIHmDgZ4vx5jq08kbWZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mao Jinlong <quic_jinlmao@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 136/322] arm64: dts: qcom: msm8998: Fix out-ports is a required property
+Subject: [PATCH 6.1 060/219] ARM: dts: imx7s: Fix nand-controller #size-cells
 Date: Fri,  2 Feb 2024 20:03:53 -0800
-Message-ID: <20240203035403.543312936@linuxfoundation.org>
+Message-ID: <20240203035325.382724203@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mao Jinlong <quic_jinlmao@quicinc.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit ae5ee3562a2519214b12228545e88a203dd68bbd ]
+[ Upstream commit 4aadb841ed49bada1415c48c44d21f5b69e01299 ]
 
-out-ports is a required property for coresight ETM. Add out-ports for
-ETM nodes to fix the warning.
+nand-controller.yaml bindings says #size-cells shall be set to 0.
+Fixes the dtbs_check warning:
+arch/arm/boot/dts/nxp/imx/imx7s-mba7.dtb: nand-controller@33002000:
+ #size-cells:0:0: 0 was expected
+  from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Mao Jinlong <quic_jinlmao@quicinc.com>
-Link: https://lore.kernel.org/r/20231210072633.4243-4-quic_jinlmao@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8998.dtsi | 32 +++++++++++++++++----------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ arch/arm/boot/dts/imx7s.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-index f180047cacb0..f91c58c844af 100644
---- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-@@ -2034,9 +2034,11 @@
- 
- 			cpu = <&CPU4>;
- 
--			port {
--				etm4_out: endpoint {
--					remote-endpoint = <&apss_funnel_in4>;
-+			out-ports {
-+				port {
-+					etm4_out: endpoint {
-+						remote-endpoint = <&apss_funnel_in4>;
-+					};
- 				};
- 			};
- 		};
-@@ -2051,9 +2053,11 @@
- 
- 			cpu = <&CPU5>;
- 
--			port {
--				etm5_out: endpoint {
--					remote-endpoint = <&apss_funnel_in5>;
-+			out-ports {
-+				port {
-+					etm5_out: endpoint {
-+						remote-endpoint = <&apss_funnel_in5>;
-+					};
- 				};
- 			};
- 		};
-@@ -2068,9 +2072,11 @@
- 
- 			cpu = <&CPU6>;
- 
--			port {
--				etm6_out: endpoint {
--					remote-endpoint = <&apss_funnel_in6>;
-+			out-ports {
-+				port {
-+					etm6_out: endpoint {
-+						remote-endpoint = <&apss_funnel_in6>;
-+					};
- 				};
- 			};
- 		};
-@@ -2085,9 +2091,11 @@
- 
- 			cpu = <&CPU7>;
- 
--			port {
--				etm7_out: endpoint {
--					remote-endpoint = <&apss_funnel_in7>;
-+			out-ports {
-+				port {
-+					etm7_out: endpoint {
-+						remote-endpoint = <&apss_funnel_in7>;
-+					};
- 				};
- 			};
- 		};
+diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
+index 44085ef27977..4b23630fc738 100644
+--- a/arch/arm/boot/dts/imx7s.dtsi
++++ b/arch/arm/boot/dts/imx7s.dtsi
+@@ -1283,7 +1283,7 @@
+ 		gpmi: nand-controller@33002000{
+ 			compatible = "fsl,imx7d-gpmi-nand";
+ 			#address-cells = <1>;
+-			#size-cells = <1>;
++			#size-cells = <0>;
+ 			reg = <0x33002000 0x2000>, <0x33004000 0x4000>;
+ 			reg-names = "gpmi-nand", "bch";
+ 			interrupts = <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>;
 -- 
 2.43.0
 
