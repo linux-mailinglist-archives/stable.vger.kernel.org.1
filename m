@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-17873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03193848074
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A3738482F5
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3657C1C227E1
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3581428CB94
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3CA210A3D;
-	Sat,  3 Feb 2024 04:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB5C4F613;
+	Sat,  3 Feb 2024 04:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vc1DRIta"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UG1nIB0E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8293C156E4;
-	Sat,  3 Feb 2024 04:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8F01119C;
+	Sat,  3 Feb 2024 04:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933378; cv=none; b=cj31c8HVi0l/qK81mtmDgmSxvCqq38nw5v2Q2QY9MU40zAdHYaqpbwcOjo8Rw369V1JI8YwAGqXP/5m2lBieOldi71q6quMcau5HeLJAowLzwJ4m0gOLUKVRhrmH7MVCWGHZ68OuP8uEJ7qObqBPZxpMMy6VpEDR0yOgRB51yZY=
+	t=1706933842; cv=none; b=Oc3EKGgDY3KVPxYnqAYmCSkOoAWAMtD+xi1gHpx/Wh8DxKtWVqUqDwaNPWWwAoSVVcMFXmPGh35jkOuFk8eUEBAB2JmwtmOteLj79R0VNeqQN4HDKmpkF52WbygVgYx7wRjilN1XoWfAqWHZMJHEt+rfAJj7q6or+BH4SwnklW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933378; c=relaxed/simple;
-	bh=MT99ETjIXI3i9SRioBp65lU4gWygn3UqGpnAec7NA0I=;
+	s=arc-20240116; t=1706933842; c=relaxed/simple;
+	bh=KuCSzq2Wivbcy8c4mViN09t3NuUoyL/3VtANl06dnx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ePaHwUzJnSkF545NkJkdK+nxHduAyElQ78jXOw8MVAOU5OPS397YE0S7odch5VZOSKxbQxM1wVTKTzOsuio3WlGS7/dPIzn1U8odCGU+5FtiKRM0FayIQWSGHWJaZIPJ474kh/Q4ZkXUcjo9jjtiLPPR6XMseMunNqdQxovsvWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vc1DRIta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CFAC43394;
-	Sat,  3 Feb 2024 04:09:38 +0000 (UTC)
+	 MIME-Version; b=oVo6cEDSIowXv78eO4tOHEDdjak+FTDGeN1myF70C57K2em9/t+hfBQG4S35VC5QySNWnaslesGCdF77K5qal8aXe5FqJ3aKZMqAw37iDd6Ny0eVXFvLGOQk2vJ5bPxEftdbyEr0sfZzGlXOJdsuj3AQDyaUdYrLpcq59JEFGsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UG1nIB0E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DE6C433F1;
+	Sat,  3 Feb 2024 04:17:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933378;
-	bh=MT99ETjIXI3i9SRioBp65lU4gWygn3UqGpnAec7NA0I=;
+	s=korg; t=1706933842;
+	bh=KuCSzq2Wivbcy8c4mViN09t3NuUoyL/3VtANl06dnx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vc1DRItaLfB9EKghLg/7JLqRFinOoDYGqr/KQcxWvAQaSw5s8Ki6WYqnwpNAFSFi4
-	 gtmqqTHvOEnJxOuX8mxxG9Ryk5nCIenaFKX3pV7YJ2TnJ7iXg3PkGgTwpd29x1j21E
-	 hRcbYkBNDty03Nk+0eaZ/mtr0fQohFfPqLeKCJPo=
+	b=UG1nIB0ECwkJPqjNLQwSDM4stc8S6IU+tXO80hQRk5NXtHJxAWlVbPG8KIMJsj89d
+	 ZMPv7LuQWttKXJfhn6A+UdxdJmZETOM5XHJKJUAyJmBcmWKk+i8c0WgrO9z4y2m+O7
+	 F5/KOA+MFfFGBxrgWFv/cCSzyCnHYfuUze3vg234=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mao Jinlong <quic_jinlmao@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ching-Te Ku <ku920601@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/219] arm64: dts: qcom: msm8996: Fix in-ports is a required property
-Date: Fri,  2 Feb 2024 20:04:21 -0800
-Message-ID: <20240203035329.663096457@linuxfoundation.org>
+Subject: [PATCH 6.7 144/353] wifi: rtw89: coex: Fix wrong Wi-Fi role info and FDDT parameter members
+Date: Fri,  2 Feb 2024 20:04:22 -0800
+Message-ID: <20240203035408.243148293@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mao Jinlong <quic_jinlmao@quicinc.com>
+From: Ching-Te Ku <ku920601@realtek.com>
 
-[ Upstream commit 9a6fc510a6a3ec150cb7450aec1e5f257e6fc77b ]
+[ Upstream commit acc55d7dd4de525ac07e43e90ea3cc630677ec8a ]
 
-Add the inport of funnel@3023000 to fix 'in-ports' is a required property
-warning.
+The Wi-Fi firmware 29.29.X should use version 2 role info format. FDDT
+mechanism version 5 use the same cell members to judge traffic situation,
+don't need to add another new format.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Mao Jinlong <quic_jinlmao@quicinc.com>
-Link: https://lore.kernel.org/r/20231210072633.4243-3-quic_jinlmao@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231218061341.51255-2-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8996.dtsi | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/net/wireless/realtek/rtw89/coex.c |  4 ++--
+ drivers/net/wireless/realtek/rtw89/core.h | 12 +++---------
+ 2 files changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-index 9de2248a385a..789121171a11 100644
---- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-@@ -390,6 +390,19 @@
- 		reg = <0x0 0x80000000 0x0 0x0>;
- 	};
+diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
+index bdcc172639e4..ace7bbf2cf94 100644
+--- a/drivers/net/wireless/realtek/rtw89/coex.c
++++ b/drivers/net/wireless/realtek/rtw89/coex.c
+@@ -131,7 +131,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
+ 	 .fcxbtcrpt = 105, .fcxtdma = 3,    .fcxslots = 1, .fcxcysta = 5,
+ 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 2,  .fcxgpiodbg = 1,
+ 	 .fcxbtver = 1,  .fcxbtscan = 2,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
+-	 .fwlrole = 1,   .frptmap = 3,    .fcxctrl = 1,
++	 .fwlrole = 2,   .frptmap = 3,    .fcxctrl = 1,
+ 	 .info_buf = 1800, .max_role_num = 6,
+ 	},
+ 	{RTL8852C, RTW89_FW_VER_CODE(0, 27, 57, 0),
+@@ -159,7 +159,7 @@ static const struct rtw89_btc_ver rtw89_btc_ver_defs[] = {
+ 	 .fcxbtcrpt = 105, .fcxtdma = 3,  .fcxslots = 1, .fcxcysta = 5,
+ 	 .fcxstep = 3,   .fcxnullsta = 2, .fcxmreg = 2,  .fcxgpiodbg = 1,
+ 	 .fcxbtver = 1,  .fcxbtscan = 2,  .fcxbtafh = 2, .fcxbtdevinfo = 1,
+-	 .fwlrole = 1,   .frptmap = 3,    .fcxctrl = 1,
++	 .fwlrole = 2,   .frptmap = 3,    .fcxctrl = 1,
+ 	 .info_buf = 1800, .max_role_num = 6,
+ 	},
+ 	{RTL8852B, RTW89_FW_VER_CODE(0, 29, 14, 0),
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 91e4d4e79eea..8f59461e58f2 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -2294,12 +2294,6 @@ struct rtw89_btc_fbtc_fddt_cell_status {
+ 	u8 state_phase; /* [0:3] train state, [4:7] train phase */
+ } __packed;
  
-+	etm {
-+		compatible = "qcom,coresight-remote-etm";
-+
-+		out-ports {
-+			port {
-+				modem_etm_out_funnel_in2: endpoint {
-+					remote-endpoint =
-+					  <&funnel_in2_in_modem_etm>;
-+				};
-+			};
-+		};
-+	};
-+
- 	psci {
- 		compatible = "arm,psci-1.0";
- 		method = "smc";
-@@ -2565,6 +2578,14 @@
- 			clocks = <&rpmcc RPM_QDSS_CLK>, <&rpmcc RPM_QDSS_A_CLK>;
- 			clock-names = "apb_pclk", "atclk";
+-struct rtw89_btc_fbtc_fddt_cell_status_v5 {
+-	s8 wl_tx_pwr;
+-	s8 bt_tx_pwr;
+-	s8 bt_rx_gain;
+-} __packed;
+-
+ struct rtw89_btc_fbtc_cysta_v3 { /* statistics for cycles */
+ 	u8 fver;
+ 	u8 rsvd;
+@@ -2363,9 +2357,9 @@ struct rtw89_btc_fbtc_cysta_v5 { /* statistics for cycles */
+ 	struct rtw89_btc_fbtc_cycle_a2dp_empty_info a2dp_ept;
+ 	struct rtw89_btc_fbtc_a2dp_trx_stat_v4 a2dp_trx[BTC_CYCLE_SLOT_MAX];
+ 	struct rtw89_btc_fbtc_cycle_fddt_info_v5 fddt_trx[BTC_CYCLE_SLOT_MAX];
+-	struct rtw89_btc_fbtc_fddt_cell_status_v5 fddt_cells[FDD_TRAIN_WL_DIRECTION]
+-							    [FDD_TRAIN_WL_RSSI_LEVEL]
+-							    [FDD_TRAIN_BT_RSSI_LEVEL];
++	struct rtw89_btc_fbtc_fddt_cell_status fddt_cells[FDD_TRAIN_WL_DIRECTION]
++							 [FDD_TRAIN_WL_RSSI_LEVEL]
++							 [FDD_TRAIN_BT_RSSI_LEVEL];
+ 	__le32 except_map;
+ } __packed;
  
-+			in-ports {
-+				port {
-+					funnel_in2_in_modem_etm: endpoint {
-+						remote-endpoint =
-+						  <&modem_etm_out_funnel_in2>;
-+					};
-+				};
-+			};
- 
- 			out-ports {
- 				port {
 -- 
 2.43.0
 
