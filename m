@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-17926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A6648480A9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FEFE8481F6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91843B2A42A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2729283F14
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F36A17BA7;
-	Sat,  3 Feb 2024 04:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D72912B83;
+	Sat,  3 Feb 2024 04:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ew/QGr6t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QuIIhLI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D426F9FF;
-	Sat,  3 Feb 2024 04:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF6B443ABE;
+	Sat,  3 Feb 2024 04:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933418; cv=none; b=fssPkh8yvEgFgHyypQ6uON7RbMYTMxtN/BO65udumxFf7KEJCNw2K6wjOrvp6V1gFV9NqdkD3ecMfUp9ZXNp3+9EUNwpd5OucqUvNtsv7TrC3eqQ1E+J0ZcxCdPmZg0jYaYrY2LH6P+1q+Gf5cQKQ9jqwaYGB4+0LN1Wj0tFTm4=
+	t=1706933655; cv=none; b=H7widbz8xkb/Q2omVpq/zeFk0pHg3BHBL8zkPKjMYgQrJyF+49gHFQcqDNQJ5Ug9NI4N5dtHQuFGoMjtsHwccDxs/S6uEuyCV9ql175YTuw2ajM35PRxownyjAaQ9UndBGtpNsxsgk+kengHtK/l99nZr+SmTjBHtwbG9V0sLz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933418; c=relaxed/simple;
-	bh=GsBgKaKJeX7HDdVZc8XtA9IIe0jAfKSyWi4dFcD1PpQ=;
+	s=arc-20240116; t=1706933655; c=relaxed/simple;
+	bh=/4+ydmmVIBquCB5KwOyVyHxXt9yOWU/4doA3ALIrOak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aScxNasCGhlXAdpekuSa/jeOHPrLQtkYuEZAEHmVFsB1huY5ONhLc2efewp/u4Ci8RIlweuV1vspgbgSEsDzJLMQ9VCc9s+KWTXI2z7TnWCcWaQQEzBABM/hBthwq1DpPU68dZFsKshPg1jGj4+2gn86bCQIHcAZKr0rsgd0JmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ew/QGr6t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 260D7C433F1;
-	Sat,  3 Feb 2024 04:10:18 +0000 (UTC)
+	 MIME-Version; b=mdGLWjqyc0SnSe9YVk7J/aUCzybDVXXzP39IN6L1sFOPQD7Oa+5Z6f6QBM3m4usUkIMq2jdJV+kW5m8u9mlXVpYGss8N4HcQCs4BxeV04OsL+wYc9Fe8wQmintJhGDVWVyKNYmrLZ7aoC+D0GE76//Kz8JgQZS4KBXeLz6gXMOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QuIIhLI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A23EC433F1;
+	Sat,  3 Feb 2024 04:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933418;
-	bh=GsBgKaKJeX7HDdVZc8XtA9IIe0jAfKSyWi4dFcD1PpQ=;
+	s=korg; t=1706933655;
+	bh=/4+ydmmVIBquCB5KwOyVyHxXt9yOWU/4doA3ALIrOak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ew/QGr6t+UUkoNX26y3t+D0oZLY97EcgRKOwdu6+3zau8ZajNQa87Tqg8c5IbqJBK
-	 Rn4Ntn5/LAkq6bJf1NCUsEy8MNpfAx4F4FDYPSGfSsHsdLd7aFvbB7LpIwMSpjeJ+Z
-	 Dl8MNDXWs95GDKD0TiUg51wkMzlLTGWKEfwpsfPU=
+	b=1QuIIhLI1D0Qma/BkEzEDIr7pRcwiCWg2aZd86w5vrY+q0H2syEF0CVsE/B88Gi0D
+	 6y3FTx1BRZWXuj5x+gykmTxDETzSEWgF4C+9QbVYVDMWFNtaDEUlGsSD8p7RPGV88A
+	 t5LIsAuph7oLvVOUxo0R1PQZt+T1ksYyxqWpiZuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Stanley.Yang" <Stanley.Yang@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	bo liu <bo.liu@senarytech.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 141/219] drm/amdgpu: Fix ecc irq enable/disable unpaired
+Subject: [PATCH 6.6 217/322] ALSA: hda/conexant: Fix headset auto detect fail in cx8070 and SN6140
 Date: Fri,  2 Feb 2024 20:05:14 -0800
-Message-ID: <20240203035337.284745368@linuxfoundation.org>
+Message-ID: <20240203035406.256204428@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +62,201 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanley.Yang <Stanley.Yang@amd.com>
+From: bo liu <bo.liu@senarytech.com>
 
-[ Upstream commit a32c6f7f5737cc7e31cd7ad5133f0d96fca12ea6 ]
+[ Upstream commit 7aeb259086487417f0fecf66e325bee133e8813a ]
 
-The ecc_irq is disabled while GPU mode2 reset suspending process,
-but not be enabled during GPU mode2 reset resume process.
+When OMTP headset plugin the headset jack of CX8070 and SN6160 sound cards,
+the headset type detection circuit will recognize the headset type as CTIA.
+At this point, plugout and plugin the headset will get the correct headset
+type as OMTP.
+The reason for the failure of headset type recognition is that the sound
+card creation will enable the VREF voltage of the headset mic, which
+interferes with the headset type automatic detection circuit. Plugout and
+plugin the headset will restart the headset detection and get the correct
+headset type.
+The patch is disable the VREF voltage when the headset is not present, and
+will enable the VREF voltage when the headset is present.
 
-Changed from V1:
-	only do sdma/gfx ras_late_init in aldebaran_mode2_restore_ip
-	delete amdgpu_ras_late_resume function
-
-Changed from V2:
-	check umc ras supported before put ecc_irq
-
-Signed-off-by: Stanley.Yang <Stanley.Yang@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: bo liu <bo.liu@senarytech.com>
+Link: https://lore.kernel.org/r/20240108110235.3867-1-bo.liu@senarytech.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/aldebaran.c | 26 +++++++++++++++++++++++++-
- drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c |  4 ++++
- drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c |  5 +++++
- drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c  |  4 ++++
- 4 files changed, 38 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_conexant.c | 115 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 113 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/aldebaran.c b/drivers/gpu/drm/amd/amdgpu/aldebaran.c
-index 2b97b8a96fb4..fa6193535d48 100644
---- a/drivers/gpu/drm/amd/amdgpu/aldebaran.c
-+++ b/drivers/gpu/drm/amd/amdgpu/aldebaran.c
-@@ -333,6 +333,7 @@ aldebaran_mode2_restore_hwcontext(struct amdgpu_reset_control *reset_ctl,
- {
- 	struct list_head *reset_device_list = reset_context->reset_device_list;
- 	struct amdgpu_device *tmp_adev = NULL;
-+	struct amdgpu_ras *con;
- 	int r;
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index a889cccdd607..e8819e8a9876 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -21,6 +21,12 @@
+ #include "hda_jack.h"
+ #include "hda_generic.h"
  
- 	if (reset_device_list == NULL)
-@@ -358,7 +359,30 @@ aldebaran_mode2_restore_hwcontext(struct amdgpu_reset_control *reset_ctl,
- 		 */
- 		amdgpu_register_gpu_instance(tmp_adev);
- 
--		/* Resume RAS */
-+		/* Resume RAS, ecc_irq */
-+		con = amdgpu_ras_get_context(tmp_adev);
-+		if (!amdgpu_sriov_vf(tmp_adev) && con) {
-+			if (tmp_adev->sdma.ras &&
-+				tmp_adev->sdma.ras->ras_block.ras_late_init) {
-+				r = tmp_adev->sdma.ras->ras_block.ras_late_init(tmp_adev,
-+						&tmp_adev->sdma.ras->ras_block.ras_comm);
-+				if (r) {
-+					dev_err(tmp_adev->dev, "SDMA failed to execute ras_late_init! ret:%d\n", r);
-+					goto end;
-+				}
-+			}
++enum {
++	CX_HEADSET_NOPRESENT = 0,
++	CX_HEADSET_PARTPRESENT,
++	CX_HEADSET_ALLPRESENT,
++};
 +
-+			if (tmp_adev->gfx.ras &&
-+				tmp_adev->gfx.ras->ras_block.ras_late_init) {
-+				r = tmp_adev->gfx.ras->ras_block.ras_late_init(tmp_adev,
-+						&tmp_adev->gfx.ras->ras_block.ras_comm);
-+				if (r) {
-+					dev_err(tmp_adev->dev, "GFX failed to execute ras_late_init! ret:%d\n", r);
-+					goto end;
-+				}
+ struct conexant_spec {
+ 	struct hda_gen_spec gen;
+ 
+@@ -42,7 +48,8 @@ struct conexant_spec {
+ 	unsigned int gpio_led;
+ 	unsigned int gpio_mute_led_mask;
+ 	unsigned int gpio_mic_led_mask;
+-
++	unsigned int headset_present_flag;
++	bool is_cx8070_sn6140;
+ };
+ 
+ 
+@@ -164,6 +171,27 @@ static void cxt_init_gpio_led(struct hda_codec *codec)
+ 	}
+ }
+ 
++static void cx_fixup_headset_recog(struct hda_codec *codec)
++{
++	unsigned int mic_persent;
++
++	/* fix some headset type recognize fail issue, such as EDIFIER headset */
++	/* set micbiasd output current comparator threshold from 66% to 55%. */
++	snd_hda_codec_write(codec, 0x1c, 0, 0x320, 0x010);
++	/* set OFF voltage for DFET from -1.2V to -0.8V, set headset micbias registor
++	 * value adjustment trim from 2.2K ohms to 2.0K ohms.
++	 */
++	snd_hda_codec_write(codec, 0x1c, 0, 0x3b0, 0xe10);
++	/* fix reboot headset type recognize fail issue */
++	mic_persent = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_PIN_SENSE, 0x0);
++	if (mic_persent & AC_PINSENSE_PRESENCE)
++		/* enable headset mic VREF */
++		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x24);
++	else
++		/* disable headset mic VREF */
++		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x20);
++}
++
+ static int cx_auto_init(struct hda_codec *codec)
+ {
+ 	struct conexant_spec *spec = codec->spec;
+@@ -174,6 +202,9 @@ static int cx_auto_init(struct hda_codec *codec)
+ 	cxt_init_gpio_led(codec);
+ 	snd_hda_apply_fixup(codec, HDA_FIXUP_ACT_INIT);
+ 
++	if (spec->is_cx8070_sn6140)
++		cx_fixup_headset_recog(codec);
++
+ 	return 0;
+ }
+ 
+@@ -192,6 +223,77 @@ static void cx_auto_free(struct hda_codec *codec)
+ 	snd_hda_gen_free(codec);
+ }
+ 
++static void cx_process_headset_plugin(struct hda_codec *codec)
++{
++	unsigned int val;
++	unsigned int count = 0;
++
++	/* Wait headset detect done. */
++	do {
++		val = snd_hda_codec_read(codec, 0x1c, 0, 0xca0, 0x0);
++		if (val & 0x080) {
++			codec_dbg(codec, "headset type detect done!\n");
++			break;
++		}
++		msleep(20);
++		count++;
++	} while (count < 3);
++	val = snd_hda_codec_read(codec, 0x1c, 0, 0xcb0, 0x0);
++	if (val & 0x800) {
++		codec_dbg(codec, "headset plugin, type is CTIA\n");
++		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x24);
++	} else if (val & 0x400) {
++		codec_dbg(codec, "headset plugin, type is OMTP\n");
++		snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x24);
++	} else {
++		codec_dbg(codec, "headphone plugin\n");
++	}
++}
++
++static void cx_update_headset_mic_vref(struct hda_codec *codec, unsigned int res)
++{
++	unsigned int phone_present, mic_persent, phone_tag, mic_tag;
++	struct conexant_spec *spec = codec->spec;
++
++	/* In cx8070 and sn6140, the node 16 can only be config to headphone or disabled,
++	 * the node 19 can only be config to microphone or disabled.
++	 * Check hp&mic tag to process headset pulgin&plugout.
++	 */
++	phone_tag = snd_hda_codec_read(codec, 0x16, 0, AC_VERB_GET_UNSOLICITED_RESPONSE, 0x0);
++	mic_tag = snd_hda_codec_read(codec, 0x19, 0, AC_VERB_GET_UNSOLICITED_RESPONSE, 0x0);
++	if ((phone_tag & (res >> AC_UNSOL_RES_TAG_SHIFT)) ||
++	    (mic_tag & (res >> AC_UNSOL_RES_TAG_SHIFT))) {
++		phone_present = snd_hda_codec_read(codec, 0x16, 0, AC_VERB_GET_PIN_SENSE, 0x0);
++		if (!(phone_present & AC_PINSENSE_PRESENCE)) {/* headphone plugout */
++			spec->headset_present_flag = CX_HEADSET_NOPRESENT;
++			snd_hda_codec_write(codec, 0x19, 0, AC_VERB_SET_PIN_WIDGET_CONTROL, 0x20);
++			return;
++		}
++		if (spec->headset_present_flag == CX_HEADSET_NOPRESENT) {
++			spec->headset_present_flag = CX_HEADSET_PARTPRESENT;
++		} else if (spec->headset_present_flag == CX_HEADSET_PARTPRESENT) {
++			mic_persent = snd_hda_codec_read(codec, 0x19, 0,
++							 AC_VERB_GET_PIN_SENSE, 0x0);
++			/* headset is present */
++			if ((phone_present & AC_PINSENSE_PRESENCE) &&
++			    (mic_persent & AC_PINSENSE_PRESENCE)) {
++				cx_process_headset_plugin(codec);
++				spec->headset_present_flag = CX_HEADSET_ALLPRESENT;
 +			}
 +		}
++	}
++}
 +
- 		amdgpu_ras_resume(tmp_adev);
- 
- 		/* Update PSP FW topology after reset */
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-index d96ee48e1706..35921b41fc27 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-@@ -1144,6 +1144,10 @@ static int gmc_v10_0_hw_fini(void *handle)
- 
- 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
- 
-+	if (adev->gmc.ecc_irq.funcs &&
-+		amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__UMC))
-+		amdgpu_irq_put(adev, &adev->gmc.ecc_irq, 0);
++static void cx_jack_unsol_event(struct hda_codec *codec, unsigned int res)
++{
++	struct conexant_spec *spec = codec->spec;
 +
- 	return 0;
- }
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-index 7124347d2b6c..310a5607d83b 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-@@ -951,6 +951,11 @@ static int gmc_v11_0_hw_fini(void *handle)
- 	}
- 
- 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
++	if (spec->is_cx8070_sn6140)
++		cx_update_headset_mic_vref(codec, res);
 +
-+	if (adev->gmc.ecc_irq.funcs &&
-+		amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__UMC))
-+		amdgpu_irq_put(adev, &adev->gmc.ecc_irq, 0);
++	snd_hda_jack_unsol_event(codec, res);
++}
 +
- 	gmc_v11_0_gart_disable(adev);
+ #ifdef CONFIG_PM
+ static int cx_auto_suspend(struct hda_codec *codec)
+ {
+@@ -205,7 +307,7 @@ static const struct hda_codec_ops cx_auto_patch_ops = {
+ 	.build_pcms = snd_hda_gen_build_pcms,
+ 	.init = cx_auto_init,
+ 	.free = cx_auto_free,
+-	.unsol_event = snd_hda_jack_unsol_event,
++	.unsol_event = cx_jack_unsol_event,
+ #ifdef CONFIG_PM
+ 	.suspend = cx_auto_suspend,
+ 	.check_power_status = snd_hda_gen_check_power_status,
+@@ -1042,6 +1144,15 @@ static int patch_conexant_auto(struct hda_codec *codec)
+ 	codec->spec = spec;
+ 	codec->patch_ops = cx_auto_patch_ops;
  
- 	return 0;
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-index 0d9e9d9dd4a1..409e3aa018f2 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-@@ -1900,6 +1900,10 @@ static int gmc_v9_0_hw_fini(void *handle)
- 
- 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
- 
-+	if (adev->gmc.ecc_irq.funcs &&
-+		amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__UMC))
-+		amdgpu_irq_put(adev, &adev->gmc.ecc_irq, 0);
++	/* init cx8070/sn6140 flag and reset headset_present_flag */
++	switch (codec->core.vendor_id) {
++	case 0x14f11f86:
++	case 0x14f11f87:
++		spec->is_cx8070_sn6140 = true;
++		spec->headset_present_flag = CX_HEADSET_NOPRESENT;
++		break;
++	}
 +
- 	return 0;
- }
+ 	cx_auto_parse_eapd(codec);
+ 	spec->gen.own_eapd_ctl = 1;
  
 -- 
 2.43.0
