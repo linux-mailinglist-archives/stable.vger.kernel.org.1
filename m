@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-17915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84CE384809E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1CA6848304
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E59F2846EF
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72C121F2426E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466B911714;
-	Sat,  3 Feb 2024 04:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3284F897;
+	Sat,  3 Feb 2024 04:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTYl34Tx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIciLSCT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C93101C1;
-	Sat,  3 Feb 2024 04:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5811119E;
+	Sat,  3 Feb 2024 04:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933410; cv=none; b=ATfQcDowedBiOgJ+CWQ3XDNR1l5uAHGRLpIkfPUS9knAK/OBAx9rEZUBMpk+TYFn2UxJGwZh14dxPQNgh0TPc2//b0YVBX3dTS4G76olLslIBPMXsfWyvGg9P7n7MpDGS2KKSqdGzID/uJh0xyxAZ1vSnFe53roGv1jbvr+bHgM=
+	t=1706933855; cv=none; b=WpH/J3AlQyhcr2ss+W1ahJ4mrrNJpwBaLdOuNe6Pa63q0Y5VIxVCKwSPrkbVg92J68V4sNu+8QoAXiRFPF+BqTMiwEkffxIb0zyXHZ1x4cloJ6G/Rq25XAJOkg1f0IEiAuzAwkgfyi5BvnT8sdizZ1iWGjf8A49Qm0LXUOLFeQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933410; c=relaxed/simple;
-	bh=aWpGc/NMHrQ30jg0dn0e2x9uvvz+tAi2yvh0gGHU7lk=;
+	s=arc-20240116; t=1706933855; c=relaxed/simple;
+	bh=iwkAdeoESeVr/DuLzbqB9zwq5CsljHhxlMamahf4820=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RD3to8uFQp4IzJ/jrdA7ShLF+jPobaZqzgOAcBIgv7scJ6I/4FPXHJTMKwqcbJVPwCjihYP6oH9kpFv2XDWFD7c9Ct7MCJIZQVyaGAD5Loh07mcRKe3UYw2iBNb1LcaJc/nMCpD86CEC2S8gSCcP8RkCWtrH+5KEPIUcSRtY+N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTYl34Tx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA814C43390;
-	Sat,  3 Feb 2024 04:10:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nZMNZ6EpWcJVyL2OVgIw4vSniERPsk9lBYr1ejz8j+L8owJhgJcPD4o6uK0nU1QbefBxjHv8nyYfG0W2ElcXaBSLwC0gQwou3d0RXWQXl9RDRinTug9XXAz+Wcef3zlMONRlal3XZhtI6vnO+iPqopmcnmzhW3Qwik/5vcK/tqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bIciLSCT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9665C43394;
+	Sat,  3 Feb 2024 04:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933409;
-	bh=aWpGc/NMHrQ30jg0dn0e2x9uvvz+tAi2yvh0gGHU7lk=;
+	s=korg; t=1706933854;
+	bh=iwkAdeoESeVr/DuLzbqB9zwq5CsljHhxlMamahf4820=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mTYl34Tx/Wv4L4qfoMNnNXzYYfQ001WSBL/ZouL6RBJQ/FV3/IK9oEy8/3QPu0xmY
-	 hmAlsSbiV/ZB0/HmvO6hj3bBe07S5RiD5ETpcT9g2gkZl4BBpniGSeq+KsG7Tg3qlB
-	 AdjH5BcUMdDi1EUOFZhRFNQlCRgU0dPmHok545zQ=
+	b=bIciLSCTdIFBSLRiKHoJ+NJLlQs88b8aFQ15mAb7arT65uUEYbrwNtjTCTfdILRn5
+	 zg/8dDfb0VYAQyYPtDYzz60G2+x+tqqRr0+VV6fcCBoa9KQNILrLd35FsZvJ0+hnj9
+	 6fJxfGJt1aheWin+dehafLC2Vmy/T93EaFqsadC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Umang Jain <umang.jain@ideasonboard.com>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 131/219] media: i2c: imx335: Fix hblank min/max values
+Subject: [PATCH 6.7 186/353] ALSA: hda: intel-dspcfg: add filters for ARL-S and ARL
 Date: Fri,  2 Feb 2024 20:05:04 -0800
-Message-ID: <20240203035335.906799958@linuxfoundation.org>
+Message-ID: <20240203035409.531595470@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kieran Bingham <kieran.bingham@ideasonboard.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit d7b95ad7a8d56248dfc34f861e445fad7a4004f4 ]
+[ Upstream commit 7a9d6bbe8a663c817080be55d9fecf19a4a8fd8f ]
 
-The V4L2_CID_HBLANK control is marked as readonly and can only be a
-single value.
+Same usual filters, SOF is required for DMIC and/or SoundWire support.
 
-Set the minimum and maximum value to match the mode value.
-
-Reviewed-by: Umang Jain <umang.jain@ideasonboard.com>
-Signed-off-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20231204212710.185976-4-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx335.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/hda/intel-dsp-config.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/media/i2c/imx335.c b/drivers/media/i2c/imx335.c
-index 078ede2b7a00..8e91767d6130 100644
---- a/drivers/media/i2c/imx335.c
-+++ b/drivers/media/i2c/imx335.c
-@@ -971,8 +971,8 @@ static int imx335_init_controls(struct imx335 *imx335)
- 	imx335->hblank_ctrl = v4l2_ctrl_new_std(ctrl_hdlr,
- 						&imx335_ctrl_ops,
- 						V4L2_CID_HBLANK,
--						IMX335_REG_MIN,
--						IMX335_REG_MAX,
-+						mode->hblank,
-+						mode->hblank,
- 						1, mode->hblank);
- 	if (imx335->hblank_ctrl)
- 		imx335->hblank_ctrl->flags |= V4L2_CTRL_FLAG_READ_ONLY;
+diff --git a/sound/hda/intel-dsp-config.c b/sound/hda/intel-dsp-config.c
+index 756fa0aa69bb..6a384b922e4f 100644
+--- a/sound/hda/intel-dsp-config.c
++++ b/sound/hda/intel-dsp-config.c
+@@ -521,6 +521,16 @@ static const struct config_entry config_table[] = {
+ 		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
+ 		.device = PCI_DEVICE_ID_INTEL_HDA_MTL,
+ 	},
++	/* ArrowLake-S */
++	{
++		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
++		.device = PCI_DEVICE_ID_INTEL_HDA_ARL_S,
++	},
++	/* ArrowLake */
++	{
++		.flags = FLAG_SOF | FLAG_SOF_ONLY_IF_DMIC_OR_SOUNDWIRE,
++		.device = PCI_DEVICE_ID_INTEL_HDA_ARL,
++	},
+ #endif
+ 
+ /* Lunar Lake */
 -- 
 2.43.0
 
