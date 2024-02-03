@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-18588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E108C848351
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F31DA848211
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 747661F2407A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA22A289223
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0179F20B3E;
-	Sat,  3 Feb 2024 04:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF0F18E2E;
+	Sat,  3 Feb 2024 04:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBWMno1c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+Tjt1kG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3752171A4;
-	Sat,  3 Feb 2024 04:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA1512E43;
+	Sat,  3 Feb 2024 04:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933909; cv=none; b=DfXeVwsZsm2MS5/FtFlfnfhRUxEnrQfZXhi/4kY86bGX4sOQl+QcOsWsbbsrgsFuYhgk+oWC3RaYUdRTVZfXNg9d6W7AkOr6YHXu8IxQvpmvwTokfIi6tmo87eNW3TTPow+1ce6BQj1/+jfZqXHWfmrn8z4NloD4oCTtDju5XpA=
+	t=1706933676; cv=none; b=SUrHBJqORoJ1gfwCU/SNNS6DfKfsATAzva44ZU5C8oKEwyjbYkKzHazI3JHtuy9WstL+2kkFKlBUVYKVyOCTrDKmkW8zexFKx7JfjRoaCU//PYpKDOHB8DBJXi415p+Nk+Oi2jN/ZdZI/lVwNMU8LJR6UrLIheyMYF33U488tFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933909; c=relaxed/simple;
-	bh=6mVA8kcgHIFLJETJBZYFYi1I9pp0C2TDqb0cBiIYHeU=;
+	s=arc-20240116; t=1706933676; c=relaxed/simple;
+	bh=V1DjULzSYfd1elV669KjOChCzVWY4py1ujl0CSqjGLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SvugS+b123WzOYlmHNxd+E+Iv8JX9Ykuq7hOL5OAkYdpjJbLLAiKmi99KOnSVeABPGKLQgZd8Q7zBXNiKwZmwFJo5hyb3K2DHxa9aYjvx6dWItUds1ZRgLpy35k8YKww2jWpKwFUlWR5x7Qf5e+ClfoPQ61bK6ZDNhCEIz9FL1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBWMno1c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FDAC43390;
-	Sat,  3 Feb 2024 04:18:29 +0000 (UTC)
+	 MIME-Version; b=rUxwO2abP1JkMjMFR6q5hLf+E08OY31jrGZTHv09DjTi9pgNqI/Uivl1U9C6Ra2Cjec/fyKjnFtAWf89rudKRhB/YHPtHPJl1cb6VQkXUCZdQxFOvwxbUnAeFjxWKn9P4DSc8XC5Ct37+BlM/TmLyU94dfsH5VCy7qvxfYqJWDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+Tjt1kG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17863C433C7;
+	Sat,  3 Feb 2024 04:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933909;
-	bh=6mVA8kcgHIFLJETJBZYFYi1I9pp0C2TDqb0cBiIYHeU=;
+	s=korg; t=1706933676;
+	bh=V1DjULzSYfd1elV669KjOChCzVWY4py1ujl0CSqjGLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zBWMno1cw83ZQz7b2hBWoAz7p844Id0AWoF4T9hhId0MFTlHbnUZhLjsEZyCRo3rS
-	 b+fJxceCKO0L2Ewl+dFcvRpUMqE6ekiWmBANpEidQmfRIRB9nCrtYmMR2HfbfrQ1+x
-	 R6707CCq1RzRkMQ+xjYAqr6be5ANq8go4YrQ0qoI=
+	b=m+Tjt1kGdqCPWA08bhE1QiqjwBEp4EvHYijJsdW4THUA5SDk2t/u3dlhlN/75in3u
+	 f6ITVN5cIQHl1aqryH25vXAJ98QGToKzuwlwo/x7gfWeAFzid0wBY7suZuUK60/r++
+	 z8400odIodLOEItgdsQ3uU6yTY/Tb1BpXwdyB0uw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samson Tam <samson.tam@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 223/353] drm/amd/display: Only clear symclk otg flag for HDMI
+Subject: [PATCH 6.6 244/322] misc: lis3lv02d_i2c: Add missing setting of the reg_ctrl callback
 Date: Fri,  2 Feb 2024 20:05:41 -0800
-Message-ID: <20240203035410.727527274@linuxfoundation.org>
+Message-ID: <20240203035407.060526417@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alvin Lee <alvin.lee2@amd.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit dff45f03f508c92cd8eb2050e27b726726b8ae0b ]
+[ Upstream commit b1b9f7a494400c0c39f8cd83de3aaa6111c55087 ]
 
-[Description]
-There is a corner case where the symclk otg flag is cleared
-when disabling the phantom pipe for subvp (because the phantom
-and main pipe share the same link). This is undesired because
-we need the maintain the correct symclk otg flag state for
-the main pipe.
+The lis3lv02d_i2c driver was missing a line to set the lis3_dev's
+reg_ctrl callback.
 
-For now only clear the flag only for HDMI signal type, since
-it's only set for HDMI signal type (phantom is virtual). The
-ideal solution is to not clear it if the stream is phantom but
-currently there's a bug that doesn't allow us to do this. Once
-this issue is fixed the proper fix can be implemented.
+lis3_reg_ctrl(on) is called from the init callback, but due to
+the missing reg_ctrl callback the regulators where never turned off
+again leading to the following oops/backtrace when detaching the driver:
 
-Reviewed-by: Samson Tam <samson.tam@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[   82.313527] ------------[ cut here ]------------
+[   82.313546] WARNING: CPU: 1 PID: 1724 at drivers/regulator/core.c:2396 _regulator_put+0x219/0x230
+...
+[   82.313695] RIP: 0010:_regulator_put+0x219/0x230
+...
+[   82.314767] Call Trace:
+[   82.314770]  <TASK>
+[   82.314772]  ? _regulator_put+0x219/0x230
+[   82.314777]  ? __warn+0x81/0x170
+[   82.314784]  ? _regulator_put+0x219/0x230
+[   82.314791]  ? report_bug+0x18d/0x1c0
+[   82.314801]  ? handle_bug+0x3c/0x80
+[   82.314806]  ? exc_invalid_op+0x13/0x60
+[   82.314812]  ? asm_exc_invalid_op+0x16/0x20
+[   82.314845]  ? _regulator_put+0x219/0x230
+[   82.314857]  regulator_bulk_free+0x39/0x60
+[   82.314865]  i2c_device_remove+0x22/0xb0
+
+Add the missing setting of the callback so that the regulators
+properly get turned off again when not used.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231224183402.95640-1-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c | 3 ++-
- drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c   | 3 ++-
- drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c   | 3 ++-
- drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c   | 3 ++-
- 4 files changed, 8 insertions(+), 4 deletions(-)
+ drivers/misc/lis3lv02d/lis3lv02d_i2c.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-index 9b8299d97e40..578e51a19fdd 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-@@ -2124,7 +2124,8 @@ static void dce110_reset_hw_ctx_wrap(
- 				BREAK_TO_DEBUGGER();
- 			}
- 			pipe_ctx_old->stream_res.tg->funcs->disable_crtc(pipe_ctx_old->stream_res.tg);
--			pipe_ctx_old->stream->link->phy_state.symclk_ref_cnts.otg = 0;
-+			if (dc_is_hdmi_tmds_signal(pipe_ctx_old->stream->signal))
-+				pipe_ctx_old->stream->link->phy_state.symclk_ref_cnts.otg = 0;
- 			pipe_ctx_old->plane_res.mi->funcs->free_mem_input(
- 					pipe_ctx_old->plane_res.mi, dc->current_state->stream_count);
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-index cdb903116eb7..1fc8436c8130 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-@@ -1057,7 +1057,8 @@ static void dcn10_reset_back_end_for_pipe(
- 		if (pipe_ctx->stream_res.tg->funcs->set_drr)
- 			pipe_ctx->stream_res.tg->funcs->set_drr(
- 					pipe_ctx->stream_res.tg, NULL);
--		pipe_ctx->stream->link->phy_state.symclk_ref_cnts.otg = 0;
-+		if (dc_is_hdmi_tmds_signal(pipe_ctx->stream->signal))
-+			pipe_ctx->stream->link->phy_state.symclk_ref_cnts.otg = 0;
- 	}
- 
- 	for (i = 0; i < dc->res_pool->pipe_count; i++)
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-index c3c83178eb1e..da0181fef411 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn20/dcn20_hwseq.c
-@@ -2610,7 +2610,8 @@ static void dcn20_reset_back_end_for_pipe(
- 		 * the case where the same symclk is shared across multiple otg
- 		 * instances
- 		 */
--		link->phy_state.symclk_ref_cnts.otg = 0;
-+		if (dc_is_hdmi_tmds_signal(pipe_ctx->stream->signal))
-+			link->phy_state.symclk_ref_cnts.otg = 0;
- 		if (link->phy_state.symclk_state == SYMCLK_ON_TX_OFF) {
- 			link_hwss->disable_link_output(link,
- 					&pipe_ctx->link_res, pipe_ctx->stream->signal);
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c
-index 52656691ae48..3a70a3cbc274 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn31/dcn31_hwseq.c
-@@ -523,7 +523,8 @@ static void dcn31_reset_back_end_for_pipe(
- 	if (pipe_ctx->stream_res.tg->funcs->set_odm_bypass)
- 		pipe_ctx->stream_res.tg->funcs->set_odm_bypass(
- 				pipe_ctx->stream_res.tg, &pipe_ctx->stream->timing);
--	pipe_ctx->stream->link->phy_state.symclk_ref_cnts.otg = 0;
-+	if (dc_is_hdmi_tmds_signal(pipe_ctx->stream->signal))
-+		pipe_ctx->stream->link->phy_state.symclk_ref_cnts.otg = 0;
- 
- 	if (pipe_ctx->stream_res.tg->funcs->set_drr)
- 		pipe_ctx->stream_res.tg->funcs->set_drr(
+diff --git a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+index 3882e97e96a7..c6eb27d46cb0 100644
+--- a/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
++++ b/drivers/misc/lis3lv02d/lis3lv02d_i2c.c
+@@ -150,6 +150,7 @@ static int lis3lv02d_i2c_probe(struct i2c_client *client)
+ 	lis3_dev.init	  = lis3_i2c_init;
+ 	lis3_dev.read	  = lis3_i2c_read;
+ 	lis3_dev.write	  = lis3_i2c_write;
++	lis3_dev.reg_ctrl = lis3_reg_ctrl;
+ 	lis3_dev.irq	  = client->irq;
+ 	lis3_dev.ac	  = lis3lv02d_axis_map;
+ 	lis3_dev.pm_dev	  = &client->dev;
 -- 
 2.43.0
 
