@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-18383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19633848281
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD2B84814E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4D5B283188
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD15FB2B01A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 994CE13AC8;
-	Sat,  3 Feb 2024 04:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2C01CD1D;
+	Sat,  3 Feb 2024 04:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oORA2reA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkFG0mIR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B1AF9F6;
-	Sat,  3 Feb 2024 04:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB34C171AC;
+	Sat,  3 Feb 2024 04:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933758; cv=none; b=PwUlZ3/8jRaL8laiZvJNbCl2WZecaeFSD2Q9mwNzgEC+9eHAmxrr/dqx8qzPPAO8vzgBzdOnJav6npJo0zYGmq3bJ0iWmJ0wUxPeMI9TY+3uSWPGTt9mZdNwlJqOMICH6WkERz8pOO5g6pha5okDU/obJU8JAPYYFKEWO2GlQb0=
+	t=1706933533; cv=none; b=hTcG5Zpm8+J30i2/YapgLFA6mNUzYn4gBn+i3jZ+M0ISNvXtyBgDKd5mU8Z8fJq5uPSy8dM2NXJlA5TGPGP6ULhxOmKI1kwuuXsMuKPtqKtfMDFxHS/oDmRfS7AeOa8cfP+30y/II3freZTs15uVknnmBoKwzI4RkDhSucVYnQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933758; c=relaxed/simple;
-	bh=LzhrGulXMT4eFsul6s64hiRzBkF+CzjoRYa4SB669us=;
+	s=arc-20240116; t=1706933533; c=relaxed/simple;
+	bh=FmywTrWYzZTuBKs9BmEPfW+Yn7RQwftA0j0xd0M+6N4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZR1Lap1lmpgkVc1Cio6onRrH6R4QZK8ah6lM0gBOBrgdlTp6I2yhMMZkm4daj/lo9ihkYE8xLwGxApZwLZpGjm3tXvTR8XjkXO/F0Uw2T879sPIfCvJ2BA9RalmAIWu3EBLS2Vcjb911fq3+d0hhol+z+s8xJdIn6nrfMsjwmWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oORA2reA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D280C433C7;
-	Sat,  3 Feb 2024 04:15:58 +0000 (UTC)
+	 MIME-Version; b=p5t8CEQrbNX+InvdDlro454ujQ4UycQpL/df07rgzYbTc4Lt8BXyhx9PWM+eQSmHXGmgq8EwO7/fRPob/PRVlvQJL88yIe+hOmmXcqCO9ek/Mz3CnRNxRMKKL7bPf2bkWC+3dVlffv/nzmOfPw0gvwV+AFX2uy6Xv0oPCYjXbGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkFG0mIR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 610FCC433F1;
+	Sat,  3 Feb 2024 04:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933758;
-	bh=LzhrGulXMT4eFsul6s64hiRzBkF+CzjoRYa4SB669us=;
+	s=korg; t=1706933532;
+	bh=FmywTrWYzZTuBKs9BmEPfW+Yn7RQwftA0j0xd0M+6N4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oORA2reAHelPbsEkK05osEFN9VfipqdGjX1wT95ySIljN0pNGYBnJTnN/WTe76Jyc
-	 MACbz0bC3WXcFgLZUjdJxNWWVNKvG+mloXmxNT45fbVEUZrgDRpHWHSaY9bhj6XYSI
-	 rKODilGgVan/Z0iFSy1xr+H5vaypWmPrQG11KVJw=
+	b=AkFG0mIRFC5z0AO0Vdb3sF/SW5sN06MwlCcne4fsbpFHymc5hxaFiMQC6DDBFRau/
+	 Z8jbNJ8XW+zK8budN3nSEwKs7m7jhEpE7xYv514QdbXnnxEpiaHSMKACUIrIU/xdfa
+	 BK+82MgbzfMuPv5/a6CFV7Erzpapf21IjUP9NX20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Petr Machata <petrm@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 055/353] smb: client: fix renaming of reparse points
+Subject: [PATCH 6.6 076/322] PCI: Add no PM reset quirk for NVIDIA Spectrum devices
 Date: Fri,  2 Feb 2024 20:02:53 -0800
-Message-ID: <20240203035405.541862699@linuxfoundation.org>
+Message-ID: <20240203035401.622193093@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,217 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 7435d51b7ea2ab7801279c43ecd72063e9d5c92f ]
+[ Upstream commit 3ed48c80b28d8dcd584d6ddaf00c75b7673e1a05 ]
 
-The client was sending an SMB2_CREATE request without setting
-OPEN_REPARSE_POINT flag thus failing the entire rename operation.
+Spectrum-{1,2,3,4} devices report that a D3hot->D0 transition causes a
+reset (i.e., they advertise NoSoftRst-). However, this transition does
+not have any effect on the device: It continues to be operational and
+network ports remain up. Advertising this support makes it seem as if a
+PM reset is viable for these devices. Mark it as unavailable to skip it
+when testing reset methods.
 
-Fix this by setting OPEN_REPARSE_POINT in create options for
-SMB2_CREATE request when the source inode is a repase point.
+Before:
 
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+ # cat /sys/bus/pci/devices/0000\:03\:00.0/reset_method
+ pm bus
+
+After:
+
+ # cat /sys/bus/pci/devices/0000\:03\:00.0/reset_method
+ bus
+
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsglob.h  | 22 +++++++++++++++++-----
- fs/smb/client/cifsproto.h |  7 ++++---
- fs/smb/client/cifssmb.c   |  8 ++++----
- fs/smb/client/inode.c     |  3 ++-
- fs/smb/client/smb2inode.c | 38 +++++++++++++++++++++++---------------
- fs/smb/client/smb2proto.h |  8 +++++---
- 6 files changed, 55 insertions(+), 31 deletions(-)
+ drivers/pci/quirks.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 5e32c79f03a7..4d07b96038d8 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -205,9 +205,18 @@ struct cifs_open_info_data {
- 	};
- };
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index e0081914052f..8f3b91e0d264 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -3786,6 +3786,19 @@ static void quirk_no_pm_reset(struct pci_dev *dev)
+ DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_VENDOR_ID_ATI, PCI_ANY_ID,
+ 			       PCI_CLASS_DISPLAY_VGA, 8, quirk_no_pm_reset);
  
--#define cifs_open_data_reparse(d) \
--	((d)->reparse_point || \
--	 (le32_to_cpu((d)->fi.Attributes) & ATTR_REPARSE))
-+static inline bool cifs_open_data_reparse(struct cifs_open_info_data *data)
-+{
-+	struct smb2_file_all_info *fi = &data->fi;
-+	u32 attrs = le32_to_cpu(fi->Attributes);
-+	bool ret;
++/*
++ * Spectrum-{1,2,3,4} devices report that a D3hot->D0 transition causes a reset
++ * (i.e., they advertise NoSoftRst-). However, this transition does not have
++ * any effect on the device: It continues to be operational and network ports
++ * remain up. Advertising this support makes it seem as if a PM reset is viable
++ * for these devices. Mark it as unavailable to skip it when testing reset
++ * methods.
++ */
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcb84, quirk_no_pm_reset);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf6c, quirk_no_pm_reset);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf70, quirk_no_pm_reset);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf80, quirk_no_pm_reset);
 +
-+	ret = data->reparse_point || (attrs & ATTR_REPARSE);
-+	if (ret)
-+		attrs |= ATTR_REPARSE;
-+	fi->Attributes = cpu_to_le32(attrs);
-+	return ret;
-+}
- 
- static inline void cifs_free_open_info(struct cifs_open_info_data *data)
- {
-@@ -390,8 +399,11 @@ struct smb_version_operations {
- 	int (*rename_pending_delete)(const char *, struct dentry *,
- 				     const unsigned int);
- 	/* send rename request */
--	int (*rename)(const unsigned int, struct cifs_tcon *, const char *,
--		      const char *, struct cifs_sb_info *);
-+	int (*rename)(const unsigned int xid,
-+		      struct cifs_tcon *tcon,
-+		      struct dentry *source_dentry,
-+		      const char *from_name, const char *to_name,
-+		      struct cifs_sb_info *cifs_sb);
- 	/* send create hardlink request */
- 	int (*create_hardlink)(const unsigned int, struct cifs_tcon *,
- 			       const char *, const char *,
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index 46feaa0880bd..5af921b400d7 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -435,9 +435,10 @@ extern int CIFSPOSIXDelFile(const unsigned int xid, struct cifs_tcon *tcon,
- 			int remap_special_chars);
- extern int CIFSSMBDelFile(const unsigned int xid, struct cifs_tcon *tcon,
- 			  const char *name, struct cifs_sb_info *cifs_sb);
--extern int CIFSSMBRename(const unsigned int xid, struct cifs_tcon *tcon,
--			 const char *from_name, const char *to_name,
--			 struct cifs_sb_info *cifs_sb);
-+int CIFSSMBRename(const unsigned int xid, struct cifs_tcon *tcon,
-+		  struct dentry *source_dentry,
-+		  const char *from_name, const char *to_name,
-+		  struct cifs_sb_info *cifs_sb);
- extern int CIFSSMBRenameOpenFile(const unsigned int xid, struct cifs_tcon *tcon,
- 				 int netfid, const char *target_name,
- 				 const struct nls_table *nls_codepage,
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index 9ee348e6d106..5bdea01919e8 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -2149,10 +2149,10 @@ CIFSSMBFlush(const unsigned int xid, struct cifs_tcon *tcon, int smb_file_id)
- 	return rc;
- }
- 
--int
--CIFSSMBRename(const unsigned int xid, struct cifs_tcon *tcon,
--	      const char *from_name, const char *to_name,
--	      struct cifs_sb_info *cifs_sb)
-+int CIFSSMBRename(const unsigned int xid, struct cifs_tcon *tcon,
-+		  struct dentry *source_dentry,
-+		  const char *from_name, const char *to_name,
-+		  struct cifs_sb_info *cifs_sb)
- {
- 	int rc = 0;
- 	RENAME_REQ *pSMB = NULL;
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index 09c5c0f5c96e..eb54e4893777 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -2219,7 +2219,8 @@ cifs_do_rename(const unsigned int xid, struct dentry *from_dentry,
- 		return -ENOSYS;
- 
- 	/* try path-based rename first */
--	rc = server->ops->rename(xid, tcon, from_path, to_path, cifs_sb);
-+	rc = server->ops->rename(xid, tcon, from_dentry,
-+				 from_path, to_path, cifs_sb);
- 
- 	/*
- 	 * Don't bother with rename by filehandle unless file is busy and
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index c94940af5d4b..c3e28673e0cd 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -781,11 +781,11 @@ smb2_unlink(const unsigned int xid, struct cifs_tcon *tcon, const char *name,
- 				ACL_NO_MODE, NULL, SMB2_OP_DELETE, NULL, NULL, NULL, NULL, NULL);
- }
- 
--static int
--smb2_set_path_attr(const unsigned int xid, struct cifs_tcon *tcon,
--		   const char *from_name, const char *to_name,
--		   struct cifs_sb_info *cifs_sb, __u32 access, int command,
--		   struct cifsFileInfo *cfile)
-+static int smb2_set_path_attr(const unsigned int xid, struct cifs_tcon *tcon,
-+			      const char *from_name, const char *to_name,
-+			      struct cifs_sb_info *cifs_sb,
-+			      __u32 create_options, __u32 access,
-+			      int command, struct cifsFileInfo *cfile)
- {
- 	__le16 *smb2_to_name = NULL;
- 	int rc;
-@@ -796,25 +796,33 @@ smb2_set_path_attr(const unsigned int xid, struct cifs_tcon *tcon,
- 		goto smb2_rename_path;
- 	}
- 	rc = smb2_compound_op(xid, tcon, cifs_sb, from_name, access,
--			      FILE_OPEN, 0, ACL_NO_MODE, smb2_to_name,
-+			      FILE_OPEN, create_options, ACL_NO_MODE, smb2_to_name,
- 			      command, cfile, NULL, NULL, NULL, NULL);
- smb2_rename_path:
- 	kfree(smb2_to_name);
- 	return rc;
- }
- 
--int
--smb2_rename_path(const unsigned int xid, struct cifs_tcon *tcon,
--		 const char *from_name, const char *to_name,
--		 struct cifs_sb_info *cifs_sb)
-+int smb2_rename_path(const unsigned int xid,
-+		     struct cifs_tcon *tcon,
-+		     struct dentry *source_dentry,
-+		     const char *from_name, const char *to_name,
-+		     struct cifs_sb_info *cifs_sb)
- {
-+	struct cifsInodeInfo *ci;
- 	struct cifsFileInfo *cfile;
-+	__u32 co = 0;
- 
-+	if (source_dentry) {
-+		ci = CIFS_I(d_inode(source_dentry));
-+		if (ci->cifsAttrs & ATTR_REPARSE)
-+			co |= OPEN_REPARSE_POINT;
-+	}
- 	drop_cached_dir_by_name(xid, tcon, from_name, cifs_sb);
- 	cifs_get_writable_path(tcon, from_name, FIND_WR_WITH_DELETE, &cfile);
- 
--	return smb2_set_path_attr(xid, tcon, from_name, to_name,
--				  cifs_sb, DELETE, SMB2_OP_RENAME, cfile);
-+	return smb2_set_path_attr(xid, tcon, from_name, to_name, cifs_sb,
-+				  co, DELETE, SMB2_OP_RENAME, cfile);
- }
- 
- int
-@@ -822,9 +830,9 @@ smb2_create_hardlink(const unsigned int xid, struct cifs_tcon *tcon,
- 		     const char *from_name, const char *to_name,
- 		     struct cifs_sb_info *cifs_sb)
- {
--	return smb2_set_path_attr(xid, tcon, from_name, to_name, cifs_sb,
--				  FILE_READ_ATTRIBUTES, SMB2_OP_HARDLINK,
--				  NULL);
-+	return smb2_set_path_attr(xid, tcon, from_name, to_name,
-+				  cifs_sb, 0, FILE_READ_ATTRIBUTES,
-+				  SMB2_OP_HARDLINK, NULL);
- }
- 
- int
-diff --git a/fs/smb/client/smb2proto.h b/fs/smb/client/smb2proto.h
-index 0e371f7e2854..7cbf1a76b42d 100644
---- a/fs/smb/client/smb2proto.h
-+++ b/fs/smb/client/smb2proto.h
-@@ -80,9 +80,11 @@ extern int smb2_rmdir(const unsigned int xid, struct cifs_tcon *tcon,
- 		      const char *name, struct cifs_sb_info *cifs_sb);
- extern int smb2_unlink(const unsigned int xid, struct cifs_tcon *tcon,
- 		       const char *name, struct cifs_sb_info *cifs_sb);
--extern int smb2_rename_path(const unsigned int xid, struct cifs_tcon *tcon,
--			    const char *from_name, const char *to_name,
--			    struct cifs_sb_info *cifs_sb);
-+int smb2_rename_path(const unsigned int xid,
-+		     struct cifs_tcon *tcon,
-+		     struct dentry *source_dentry,
-+		     const char *from_name, const char *to_name,
-+		     struct cifs_sb_info *cifs_sb);
- extern int smb2_create_hardlink(const unsigned int xid, struct cifs_tcon *tcon,
- 				const char *from_name, const char *to_name,
- 				struct cifs_sb_info *cifs_sb);
+ /*
+  * Thunderbolt controllers with broken MSI hotplug signaling:
+  * Entire 1st generation (Light Ridge, Eagle Ridge, Light Peak) and part
 -- 
 2.43.0
 
