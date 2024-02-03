@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-18225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CDDF8481E1
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 878B08480AC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECA4828430C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 442BC28A79E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2401865C;
-	Sat,  3 Feb 2024 04:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859BE17BCE;
+	Sat,  3 Feb 2024 04:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/mrGqAm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbGDqzIm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACA810965;
-	Sat,  3 Feb 2024 04:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AB9F9FF;
+	Sat,  3 Feb 2024 04:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933640; cv=none; b=TLyICz7VDIwMSTkWN0h//4MzONwD1s2ukZOPZ70mrA8F4kXJnFQF8hNjwZEDl/chIT1njQ1Uc9xRBvN2Vm5mM/kjyDdOSZoS5li/NqjV2C0UhoIt0I5TgP+K2CDDAusqw+BJyzoimc3SZy7xFwbJWGZmB0cDc+DZFgU4K8SrnTA=
+	t=1706933421; cv=none; b=Yg84BNO2JUO4+Y3uHFNy20dF9jZGmJM95Jv6E8OpyHQsa01M8NiIoh6YEB5o11UVBANB6Okmw89u8dX27SzoOsVvkAppi8XqxmuRps+SijnMyaxKpHbUEE25K5IPzym7DJSCw2hHQOPLNsnph1nkSM7wST7bKEQlQB1UpW/oz48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933640; c=relaxed/simple;
-	bh=2fV1jUcdTju7MuHuXu6pnEdBYNjIbXD6pg9k9NwPMGQ=;
+	s=arc-20240116; t=1706933421; c=relaxed/simple;
+	bh=0dJ/+dB/bmSkj0YOi8AAVHVk4iLBI9ePPSa+nVDmOwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R447aWBjqVuhpRNbnzzX9rvPk0R79sQVyCvKdK7lWJAkxziYW6FFFn2EzUZupypmk3sZY31vXVP6xAJnu4QxdyWObntOxnoQRPPL9Der0m1wtSSg+v7DdcPtcLrtet0NTdZlvZiBZhjMtAoVYWRQRAtHI0Mf0nbMI2wIW7Yt4H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/mrGqAm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C27C433F1;
-	Sat,  3 Feb 2024 04:14:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ebEyFFkdxf6LL2PX+BHY48QS5IWWE8erv0+ehbvregX9nTe/y++22VMTPA9Rg7whb+xa3Ma4yMrcHS8N4RjPZR9D1uuyfJsQBhS+LnILNVYsx+zdLv1ojC9VuDtljseFQf+M9TyNR0+58ORBsE3BLQos105BpkFKwBDr417AvHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbGDqzIm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4B3C433C7;
+	Sat,  3 Feb 2024 04:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933640;
-	bh=2fV1jUcdTju7MuHuXu6pnEdBYNjIbXD6pg9k9NwPMGQ=;
+	s=korg; t=1706933421;
+	bh=0dJ/+dB/bmSkj0YOi8AAVHVk4iLBI9ePPSa+nVDmOwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/mrGqAmxikQUmMJPP+OVJbD+IFLVq7a8+52vhKImqlTWU7a6HB/FpfMuM5wLKMhj
-	 /4NUOkAo5Jo4CAGi1SbIhQqW5ghm8eiZu+8Sv/a17upMG6qC2pfMvBLsPwemaRpEy9
-	 qJ2JwJSTbsbD9/F8R19fX1HJITBXs/djik2O4hRw=
+	b=nbGDqzImsTPEh1vNdy/nJioQwxAfb7/5rbUlSqpOLWn9DxWygb7Cc4SCQxuwT5r8T
+	 LAYUjgE1hVlJPFTkk/vLSa9g7cBAcB4/3f92l9AEcsiC+oavmpuTqgXv8OpNGcTTWd
+	 xY2icmjnWDq3p8kcbwJ3E9OQbGKasfDaTnL2pDmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin@sipsolutions.net>,
-	Richard Weinberger <richard@nod.at>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 221/322] um: Dont use vfprintf() for os_info()
+Subject: [PATCH 6.1 145/219] drm/amdkfd: Fix iterator used outside loop in kfd_add_peer_prop()
 Date: Fri,  2 Feb 2024 20:05:18 -0800
-Message-ID: <20240203035406.375085232@linuxfoundation.org>
+Message-ID: <20240203035337.696105104@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +63,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin@sipsolutions.net>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 236f9fe39b02c15fa5530b53e9cca48354394389 ]
+[ Upstream commit b1a428b45dc7e47c7acc2ad0d08d8a6dda910c4c ]
 
-The threads allocated inside the kernel have only a single page of
-stack. Unfortunately, the vfprintf function in standard glibc may use
-too much stack-space, overflowing it.
+Fix the following about iterator use:
+drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1456 kfd_add_peer_prop() warn: iterator used outside loop: 'iolink3'
 
-To make os_info safe to be used by helper threads, use the kernel
-vscnprintf function into a smallish buffer and write out the information
-to stderr.
-
-Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Cc: Felix Kuehling <Felix.Kuehling@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/os-Linux/util.c | 19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 24 ++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/arch/um/os-Linux/util.c b/arch/um/os-Linux/util.c
-index fc0f2a9dee5a..1dca4ffbd572 100644
---- a/arch/um/os-Linux/util.c
-+++ b/arch/um/os-Linux/util.c
-@@ -173,23 +173,38 @@ __uml_setup("quiet", quiet_cmd_param,
- "quiet\n"
- "    Turns off information messages during boot.\n\n");
- 
-+/*
-+ * The os_info/os_warn functions will be called by helper threads. These
-+ * have a very limited stack size and using the libc formatting functions
-+ * may overflow the stack.
-+ * So pull in the kernel vscnprintf and use that instead with a fixed
-+ * on-stack buffer.
-+ */
-+int vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+index 705d9e91b5aa..029916971bf6 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+@@ -1513,17 +1513,19 @@ static int kfd_add_peer_prop(struct kfd_topology_device *kdev,
+ 		/* CPU->CPU  link*/
+ 		cpu_dev = kfd_topology_device_by_proximity_domain(iolink1->node_to);
+ 		if (cpu_dev) {
+-			list_for_each_entry(iolink3, &cpu_dev->io_link_props, list)
+-				if (iolink3->node_to == iolink2->node_to)
+-					break;
+-
+-			props->weight += iolink3->weight;
+-			props->min_latency += iolink3->min_latency;
+-			props->max_latency += iolink3->max_latency;
+-			props->min_bandwidth = min(props->min_bandwidth,
+-							iolink3->min_bandwidth);
+-			props->max_bandwidth = min(props->max_bandwidth,
+-							iolink3->max_bandwidth);
++			list_for_each_entry(iolink3, &cpu_dev->io_link_props, list) {
++				if (iolink3->node_to != iolink2->node_to)
++					continue;
 +
- void os_info(const char *fmt, ...)
- {
-+	char buf[256];
- 	va_list list;
-+	int len;
- 
- 	if (quiet_info)
- 		return;
- 
- 	va_start(list, fmt);
--	vfprintf(stderr, fmt, list);
-+	len = vscnprintf(buf, sizeof(buf), fmt, list);
-+	fwrite(buf, len, 1, stderr);
- 	va_end(list);
- }
- 
- void os_warn(const char *fmt, ...)
- {
-+	char buf[256];
- 	va_list list;
-+	int len;
- 
- 	va_start(list, fmt);
--	vfprintf(stderr, fmt, list);
-+	len = vscnprintf(buf, sizeof(buf), fmt, list);
-+	fwrite(buf, len, 1, stderr);
- 	va_end(list);
- }
++				props->weight += iolink3->weight;
++				props->min_latency += iolink3->min_latency;
++				props->max_latency += iolink3->max_latency;
++				props->min_bandwidth = min(props->min_bandwidth,
++							   iolink3->min_bandwidth);
++				props->max_bandwidth = min(props->max_bandwidth,
++							   iolink3->max_bandwidth);
++				break;
++			}
+ 		} else {
+ 			WARN(1, "CPU node not found");
+ 		}
 -- 
 2.43.0
 
