@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BAE6848369
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 056C484821C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3900B2A99B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E3451F23D82
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD30FC11;
-	Sat,  3 Feb 2024 04:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA6519475;
+	Sat,  3 Feb 2024 04:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFTbTMrN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/mFOWUv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E731B28E3C;
-	Sat,  3 Feb 2024 04:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F14245971;
+	Sat,  3 Feb 2024 04:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933926; cv=none; b=gkRo5CqCVhji1T5lw4uBJ6jy4ip2zPZEniFsEFhLnGfwk0/7WlPfAco3NDKY9VHC6VgkCx+LFRJHQ8qoxW5oVB1cGl85p6Qa0ZGK+MxgBtlrpBuOzgN2P2liC4c223kfD9tJDBSulgpP/QgOieBZbY+PzFzFYQGfXZksYvOXW0k=
+	t=1706933684; cv=none; b=aB0CvC7NDsR21Ys/H+hwq1V73HTDaUkLCbdJmapGG/b9aP/3rA+oMxgw1ayT768kKkyJ8M2RhTUA7R/YHNb2+/Wzi3vg00s07JCT1sGXONixEZM0OMO5FBMhbRMTiw1z7OxpbMocj++njw6lBjHJxl4Ga2XffLy0Qn38KXQBDrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933926; c=relaxed/simple;
-	bh=2A11RtW7k0q6fT/Uk2+hu71d8MVyEoF9j7VRPZckI8s=;
+	s=arc-20240116; t=1706933684; c=relaxed/simple;
+	bh=cRBFqDnuY/gW5M5HRavacW4ulmVBery6HZcYeNqRPTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/zvluo25dBq5/r+uhALyiYq7EE0X/RIig3+aAukmQCRMTYcxZwYp7WkVsv2bkbNkeU8pkEf4fVxDhcRhYinViLGQm8WomGKF+qCoUAzxWghvz49Rj6f0cxvYjA2kzUhfcLRAM/0ugckIt9dnopaHH9KnZ9NoTnb6sxDqOuCDjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFTbTMrN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC26AC43390;
-	Sat,  3 Feb 2024 04:18:45 +0000 (UTC)
+	 MIME-Version; b=WuzbXcWG2gF6c8Z3IoIDB4385f04xsp/GY2/4T5zYiQ+ouP5LZKoeyJTxAH+Uukbac6ZDCxhVvlDGgg/QZaOTSuxDXKZA+eJMIsJBeedv7FfG1M6Vbb28Kj7Fv45F/wpWpi5vTuakF15EU08zoA3YCeWPX8EiiSQwYipmo7Gu3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/mFOWUv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D83DC43390;
+	Sat,  3 Feb 2024 04:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933925;
-	bh=2A11RtW7k0q6fT/Uk2+hu71d8MVyEoF9j7VRPZckI8s=;
+	s=korg; t=1706933684;
+	bh=cRBFqDnuY/gW5M5HRavacW4ulmVBery6HZcYeNqRPTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OFTbTMrNJ8k8iIj3mcwLL6gabRvYFpyfBGFiClVh+X8I+Cwq4VXRGWGFJ0IzkASoF
-	 usmb+UoGnLxrdURMLhIs8DrsLv+6JZXU3TY+GZDrh85KsQX06Qn3JSq1VQyC8vkFRd
-	 WJz43gd2t4RjOd3kJligvOOA+yLCWMBalGwJB8GU=
+	b=e/mFOWUvS8YR9noyi1K7JFBltGfzPLRpSEpLpmmZAtkpXIUnV8w95kybRR7TCuoBF
+	 eGrMau1/Coenv0rlLHORvDrKm1sQug3XyKTvoj62aHcF9ZlpheSrezpGI5cCK38UVh
+	 Xhc5IRYSFiwxi20+ZlhvOX6yeCpOHojgo7bgn1RA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 257/353] selftests/sgx: Fix linker script asserts
-Date: Fri,  2 Feb 2024 20:06:15 -0800
-Message-ID: <20240203035411.869820255@linuxfoundation.org>
+Subject: [PATCH 6.6 279/322] ipmr: fix kernel panic when forwarding mcast packets
+Date: Fri,  2 Feb 2024 20:06:16 -0800
+Message-ID: <20240203035408.111241464@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-[ Upstream commit 9fd552ee32c6c1e27c125016b87d295bea6faea7 ]
+[ Upstream commit e622502c310f1069fd9f41cd38210553115f610a ]
 
-DEFINED only considers symbols, not section names. Hence, replace the
-check for .got.plt with the _GLOBAL_OFFSET_TABLE_ symbol and remove other
-(non-essential) asserts.
+The stacktrace was:
+[   86.305548] BUG: kernel NULL pointer dereference, address: 0000000000000092
+[   86.306815] #PF: supervisor read access in kernel mode
+[   86.307717] #PF: error_code(0x0000) - not-present page
+[   86.308624] PGD 0 P4D 0
+[   86.309091] Oops: 0000 [#1] PREEMPT SMP NOPTI
+[   86.309883] CPU: 2 PID: 3139 Comm: pimd Tainted: G     U             6.8.0-6wind-knet #1
+[   86.311027] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.11.1-0-g0551a4be2c-prebuilt.qemu-project.org 04/01/2014
+[   86.312728] RIP: 0010:ip_mr_forward (/build/work/knet/net/ipv4/ipmr.c:1985)
+[ 86.313399] Code: f9 1f 0f 87 85 03 00 00 48 8d 04 5b 48 8d 04 83 49 8d 44 c5 00 48 8b 40 70 48 39 c2 0f 84 d9 00 00 00 49 8b 46 58 48 83 e0 fe <80> b8 92 00 00 00 00 0f 84 55 ff ff ff 49 83 47 38 01 45 85 e4 0f
+[   86.316565] RSP: 0018:ffffad21c0583ae0 EFLAGS: 00010246
+[   86.317497] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+[   86.318596] RDX: ffff9559cb46c000 RSI: 0000000000000000 RDI: 0000000000000000
+[   86.319627] RBP: ffffad21c0583b30 R08: 0000000000000000 R09: 0000000000000000
+[   86.320650] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000001
+[   86.321672] R13: ffff9559c093a000 R14: ffff9559cc00b800 R15: ffff9559c09c1d80
+[   86.322873] FS:  00007f85db661980(0000) GS:ffff955a79d00000(0000) knlGS:0000000000000000
+[   86.324291] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   86.325314] CR2: 0000000000000092 CR3: 000000002f13a000 CR4: 0000000000350ef0
+[   86.326589] Call Trace:
+[   86.327036]  <TASK>
+[   86.327434] ? show_regs (/build/work/knet/arch/x86/kernel/dumpstack.c:479)
+[   86.328049] ? __die (/build/work/knet/arch/x86/kernel/dumpstack.c:421 /build/work/knet/arch/x86/kernel/dumpstack.c:434)
+[   86.328508] ? page_fault_oops (/build/work/knet/arch/x86/mm/fault.c:707)
+[   86.329107] ? do_user_addr_fault (/build/work/knet/arch/x86/mm/fault.c:1264)
+[   86.329756] ? srso_return_thunk (/build/work/knet/arch/x86/lib/retpoline.S:223)
+[   86.330350] ? __irq_work_queue_local (/build/work/knet/kernel/irq_work.c:111 (discriminator 1))
+[   86.331013] ? exc_page_fault (/build/work/knet/./arch/x86/include/asm/paravirt.h:693 /build/work/knet/arch/x86/mm/fault.c:1515 /build/work/knet/arch/x86/mm/fault.c:1563)
+[   86.331702] ? asm_exc_page_fault (/build/work/knet/./arch/x86/include/asm/idtentry.h:570)
+[   86.332468] ? ip_mr_forward (/build/work/knet/net/ipv4/ipmr.c:1985)
+[   86.333183] ? srso_return_thunk (/build/work/knet/arch/x86/lib/retpoline.S:223)
+[   86.333920] ipmr_mfc_add (/build/work/knet/./include/linux/rcupdate.h:782 /build/work/knet/net/ipv4/ipmr.c:1009 /build/work/knet/net/ipv4/ipmr.c:1273)
+[   86.334583] ? __pfx_ipmr_hash_cmp (/build/work/knet/net/ipv4/ipmr.c:363)
+[   86.335357] ip_mroute_setsockopt (/build/work/knet/net/ipv4/ipmr.c:1470)
+[   86.336135] ? srso_return_thunk (/build/work/knet/arch/x86/lib/retpoline.S:223)
+[   86.336854] ? ip_mroute_setsockopt (/build/work/knet/net/ipv4/ipmr.c:1470)
+[   86.337679] do_ip_setsockopt (/build/work/knet/net/ipv4/ip_sockglue.c:944)
+[   86.338408] ? __pfx_unix_stream_read_actor (/build/work/knet/net/unix/af_unix.c:2862)
+[   86.339232] ? srso_return_thunk (/build/work/knet/arch/x86/lib/retpoline.S:223)
+[   86.339809] ? aa_sk_perm (/build/work/knet/security/apparmor/include/cred.h:153 /build/work/knet/security/apparmor/net.c:181)
+[   86.340342] ip_setsockopt (/build/work/knet/net/ipv4/ip_sockglue.c:1415)
+[   86.340859] raw_setsockopt (/build/work/knet/net/ipv4/raw.c:836)
+[   86.341408] ? security_socket_setsockopt (/build/work/knet/security/security.c:4561 (discriminator 13))
+[   86.342116] sock_common_setsockopt (/build/work/knet/net/core/sock.c:3716)
+[   86.342747] do_sock_setsockopt (/build/work/knet/net/socket.c:2313)
+[   86.343363] __sys_setsockopt (/build/work/knet/./include/linux/file.h:32 /build/work/knet/net/socket.c:2336)
+[   86.344020] __x64_sys_setsockopt (/build/work/knet/net/socket.c:2340)
+[   86.344766] do_syscall_64 (/build/work/knet/arch/x86/entry/common.c:52 /build/work/knet/arch/x86/entry/common.c:83)
+[   86.345433] ? srso_return_thunk (/build/work/knet/arch/x86/lib/retpoline.S:223)
+[   86.346161] ? syscall_exit_work (/build/work/knet/./include/linux/audit.h:357 /build/work/knet/kernel/entry/common.c:160)
+[   86.346938] ? srso_return_thunk (/build/work/knet/arch/x86/lib/retpoline.S:223)
+[   86.347657] ? syscall_exit_to_user_mode (/build/work/knet/kernel/entry/common.c:215)
+[   86.348538] ? srso_return_thunk (/build/work/knet/arch/x86/lib/retpoline.S:223)
+[   86.349262] ? do_syscall_64 (/build/work/knet/./arch/x86/include/asm/cpufeature.h:171 /build/work/knet/arch/x86/entry/common.c:98)
+[   86.349971] entry_SYSCALL_64_after_hwframe (/build/work/knet/arch/x86/entry/entry_64.S:129)
 
-Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lore.kernel.org/all/20231005153854.25566-10-jo.vanbulck%40cs.kuleuven.be
+The original packet in ipmr_cache_report() may be queued and then forwarded
+with ip_mr_forward(). This last function has the assumption that the skb
+dst is set.
+
+After the below commit, the skb dst is dropped by ipv4_pktinfo_prepare(),
+which causes the oops.
+
+Fixes: bb7403655b3c ("ipmr: support IP_PKTINFO on cache report IGMP msg")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240125141847.1931933-1-nicolas.dichtel@6wind.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/sgx/test_encl.lds | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ include/net/ip.h       | 2 +-
+ net/ipv4/ip_sockglue.c | 6 ++++--
+ net/ipv4/ipmr.c        | 2 +-
+ net/ipv4/raw.c         | 2 +-
+ net/ipv4/udp.c         | 2 +-
+ 5 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/sgx/test_encl.lds b/tools/testing/selftests/sgx/test_encl.lds
-index a1ec64f7d91f..108bc11d1d8c 100644
---- a/tools/testing/selftests/sgx/test_encl.lds
-+++ b/tools/testing/selftests/sgx/test_encl.lds
-@@ -34,8 +34,4 @@ SECTIONS
+diff --git a/include/net/ip.h b/include/net/ip.h
+index 3489a1cca5e7..162cf2d2f841 100644
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -758,7 +758,7 @@ int ip_options_rcv_srr(struct sk_buff *skb, struct net_device *dev);
+  *	Functions provided by ip_sockglue.c
+  */
+ 
+-void ipv4_pktinfo_prepare(const struct sock *sk, struct sk_buff *skb);
++void ipv4_pktinfo_prepare(const struct sock *sk, struct sk_buff *skb, bool drop_dst);
+ void ip_cmsg_recv_offset(struct msghdr *msg, struct sock *sk,
+ 			 struct sk_buff *skb, int tlen, int offset);
+ int ip_cmsg_send(struct sock *sk, struct msghdr *msg,
+diff --git a/net/ipv4/ip_sockglue.c b/net/ipv4/ip_sockglue.c
+index cce9cb25f3b3..1a6952921e07 100644
+--- a/net/ipv4/ip_sockglue.c
++++ b/net/ipv4/ip_sockglue.c
+@@ -1369,12 +1369,13 @@ int do_ip_setsockopt(struct sock *sk, int level, int optname,
+  * ipv4_pktinfo_prepare - transfer some info from rtable to skb
+  * @sk: socket
+  * @skb: buffer
++ * @drop_dst: if true, drops skb dst
+  *
+  * To support IP_CMSG_PKTINFO option, we store rt_iif and specific
+  * destination in skb->cb[] before dst drop.
+  * This way, receiver doesn't make cache line misses to read rtable.
+  */
+-void ipv4_pktinfo_prepare(const struct sock *sk, struct sk_buff *skb)
++void ipv4_pktinfo_prepare(const struct sock *sk, struct sk_buff *skb, bool drop_dst)
+ {
+ 	struct in_pktinfo *pktinfo = PKTINFO_SKB_CB(skb);
+ 	bool prepare = inet_test_bit(PKTINFO, sk) ||
+@@ -1403,7 +1404,8 @@ void ipv4_pktinfo_prepare(const struct sock *sk, struct sk_buff *skb)
+ 		pktinfo->ipi_ifindex = 0;
+ 		pktinfo->ipi_spec_dst.s_addr = 0;
  	}
+-	skb_dst_drop(skb);
++	if (drop_dst)
++		skb_dst_drop(skb);
  }
  
--ASSERT(!DEFINED(.altinstructions), "ALTERNATIVES are not supported in enclaves")
--ASSERT(!DEFINED(.altinstr_replacement), "ALTERNATIVES are not supported in enclaves")
--ASSERT(!DEFINED(.discard.retpoline_safe), "RETPOLINE ALTERNATIVES are not supported in enclaves")
--ASSERT(!DEFINED(.discard.nospec), "RETPOLINE ALTERNATIVES are not supported in enclaves")
--ASSERT(!DEFINED(.got.plt), "Libcalls are not supported in enclaves")
-+ASSERT(!DEFINED(_GLOBAL_OFFSET_TABLE_), "Libcalls through GOT are not supported in enclaves")
+ int ip_setsockopt(struct sock *sk, int level, int optname, sockptr_t optval,
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index 0063a237253b..e49242706b5f 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -1073,7 +1073,7 @@ static int ipmr_cache_report(const struct mr_table *mrt,
+ 		msg = (struct igmpmsg *)skb_network_header(skb);
+ 		msg->im_vif = vifi;
+ 		msg->im_vif_hi = vifi >> 8;
+-		ipv4_pktinfo_prepare(mroute_sk, pkt);
++		ipv4_pktinfo_prepare(mroute_sk, pkt, false);
+ 		memcpy(skb->cb, pkt->cb, sizeof(skb->cb));
+ 		/* Add our header */
+ 		igmp = skb_put(skb, sizeof(struct igmphdr));
+diff --git a/net/ipv4/raw.c b/net/ipv4/raw.c
+index 4b5db5d1edc2..c0ef81f0bcee 100644
+--- a/net/ipv4/raw.c
++++ b/net/ipv4/raw.c
+@@ -292,7 +292,7 @@ static int raw_rcv_skb(struct sock *sk, struct sk_buff *skb)
+ 
+ 	/* Charge it to the socket. */
+ 
+-	ipv4_pktinfo_prepare(sk, skb);
++	ipv4_pktinfo_prepare(sk, skb, true);
+ 	if (sock_queue_rcv_skb_reason(sk, skb, &reason) < 0) {
+ 		kfree_skb_reason(skb, reason);
+ 		return NET_RX_DROP;
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 7be4ddc80d95..8e5a8b3b22c6 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -2167,7 +2167,7 @@ static int udp_queue_rcv_one_skb(struct sock *sk, struct sk_buff *skb)
+ 
+ 	udp_csum_pull_header(skb);
+ 
+-	ipv4_pktinfo_prepare(sk, skb);
++	ipv4_pktinfo_prepare(sk, skb, true);
+ 	return __udp_queue_rcv_skb(sk, skb);
+ 
+ csum_error:
 -- 
 2.43.0
 
