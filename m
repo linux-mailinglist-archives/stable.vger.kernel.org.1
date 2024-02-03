@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-18245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007948481F5
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C507D8480A8
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 972021F22F26
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6109C1F218B6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DAF718C1A;
-	Sat,  3 Feb 2024 04:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1001C179BE;
+	Sat,  3 Feb 2024 04:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OzOFgJn0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkp1NSE+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C5A43147;
-	Sat,  3 Feb 2024 04:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C16179BD;
+	Sat,  3 Feb 2024 04:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933654; cv=none; b=NGwS/boPZsanZMh7ywq2Zo2rKmFgXkkELIcyB0kM8B9LDpI3aVFwigIC4w2WE8ve2QtHqoyv1um5PEIVWzxIKFCtdeVTovvxKfT9CUx0g/pDiAyZMcGYLTbPD+syYENsBtv1s+bhWFZeH6+TRgMMHVB5/xInvkF0hSaWumcwGv4=
+	t=1706933417; cv=none; b=ZYGaF86FPZd9V6T/E/y59Pwkmm0ZF7KWw51Uu1cHAXuPDPCiysw4LQR5FF6OD51QWMj3vWMgagWOeOX8ouBNxhH9Iag475ycp6n7zYppHusTm8hvYcM/g8vzSdy0cFfcmsilTy4WKOosNpPpoVipO096ylux3UN/Rpk6JTUwYJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933654; c=relaxed/simple;
-	bh=jNRn0KHrkJrlxORtOAvOG35Ew6Fts6vUVxdi5g77m4M=;
+	s=arc-20240116; t=1706933417; c=relaxed/simple;
+	bh=fI3P4NpYf1cyBlIa/obuJq/r3BfrCx+/xPO1uTdXO4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=motprkM1Si6/926rHoANJk2IFZAZK9gSZjh1kq9hQC90RcspdLYz1bYeNyt7l7rLtQNsdkiOaKG8WTO3meIhEGSfJ0HPa7ohNCDuK0fenyT7WM5GOVU8NudqJEo5jyKpkcA5Bk5nPV/g392n08nrYgHn06HLXdD9H4QyfHrUZtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OzOFgJn0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87BB4C43390;
-	Sat,  3 Feb 2024 04:14:14 +0000 (UTC)
+	 MIME-Version; b=mO9Y1DMv/yOIVz64S5UG6v7U6AChnGsv9xArkKh9KswDB3RdxMX8cNkmrz/tOdLbx/KUBvEcSvyfZKAY4HA/EQidYE2fPNue91+PlpjKSW25Zw5UJmFCJZVDcLi3GQwxXmqDgR8nO9gnvCWCvLpqdx2mect3XJnuDwHSCiZiDUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkp1NSE+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578A9C433C7;
+	Sat,  3 Feb 2024 04:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933654;
-	bh=jNRn0KHrkJrlxORtOAvOG35Ew6Fts6vUVxdi5g77m4M=;
+	s=korg; t=1706933417;
+	bh=fI3P4NpYf1cyBlIa/obuJq/r3BfrCx+/xPO1uTdXO4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OzOFgJn05i6gbpZJAqr7lZTXAxHCiKyGKFL+GRI/+eF91Iy0KKKCPPvtylt9BD2Yt
-	 GrfIlWtrlcVMkb6PXQnbvmXraXojc3tEzydXoVSxvTe5sg7Lxyj6bEmdwXO1cHbQdm
-	 IDAwscP0/U9CyvQtp6SWDh86+DVVIfD21APR9nVc=
+	b=hkp1NSE+NbLjn6+eFyQzdN5h5RU521nmxUGezcRzMqpHM9EhsT6u+vRoFCnQ9sE42
+	 qc6ArcZCY5Z3RjRB1IU2kklgqoSVkUykc0X27mLGkcuyWjxdNqWXLh+jUMAjKHaZaA
+	 d9UbIZkygHBNCEUtt3Ev7wra5C4BHqg0VQUikW5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Jiadong Zhu <Jiadong.Zhu@amd.com>
-Subject: [PATCH 6.6 216/322] drm/amdgpu: apply the RV2 system aperture fix to RN/CZN as well
+	"Oliver F. Brown" <oliver.brown@oss.nxp.com>,
+	Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 140/219] clk: imx: clk-imx8qxp: fix LVDS bypass, pixel and phy clocks
 Date: Fri,  2 Feb 2024 20:05:13 -0800
-Message-ID: <20240203035406.227740333@linuxfoundation.org>
+Message-ID: <20240203035337.150235036@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 16783d8ef08448815e149e40c82fc1e1fc41ddbf ]
+[ Upstream commit 3f5f63adeea7e7aa715e101ffe4b4ac9705f9664 ]
 
-These chips needs the same fix.  This was previously not seen
-on then since the AGP aperture expanded the system aperture,
-but this showed up again when AGP was disabled.
+To be compatible with SCU firmware based on 1.15 a different clock
+routing for LVDS is needed.
 
-Reviewed-and-tested-by: Jiadong Zhu <Jiadong.Zhu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Oliver F. Brown <oliver.brown@oss.nxp.com>
+Signed-off-by: Ranjani Vaidyanathan <ranjani.vaidyanathan@nxp.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20231218122407.2757175-1-alexander.stein@ew.tq-group.com/
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c          | 4 +++-
- drivers/gpu/drm/amd/amdgpu/gfxhub_v1_2.c          | 4 +++-
- drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c           | 4 +++-
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 8 ++++++--
- 4 files changed, 15 insertions(+), 5 deletions(-)
+ drivers/clk/imx/clk-imx8qxp.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-index cdc290a474a9..66c6bab75f8a 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-@@ -102,7 +102,9 @@ static void gfxhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
- 		WREG32_SOC15_RLC(GC, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
- 			min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
+diff --git a/drivers/clk/imx/clk-imx8qxp.c b/drivers/clk/imx/clk-imx8qxp.c
+index 273de1f29307..1066ea16de62 100644
+--- a/drivers/clk/imx/clk-imx8qxp.c
++++ b/drivers/clk/imx/clk-imx8qxp.c
+@@ -67,6 +67,22 @@ static const char * const lcd_pxl_sels[] = {
+ 	"lcd_pxl_bypass_div_clk",
+ };
  
--		if (adev->apu_flags & AMD_APU_IS_RAVEN2)
-+		if (adev->apu_flags & (AMD_APU_IS_RAVEN2 |
-+				       AMD_APU_IS_RENOIR |
-+				       AMD_APU_IS_GREEN_SARDINE))
- 		       /*
- 			* Raven2 has a HW issue that it is unable to use the
- 			* vram which is out of MC_VM_SYSTEM_APERTURE_HIGH_ADDR.
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_2.c b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_2.c
-index 0834af771549..b50f24f7ea5c 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_2.c
-@@ -139,7 +139,9 @@ gfxhub_v1_2_xcc_init_system_aperture_regs(struct amdgpu_device *adev,
- 			WREG32_SOC15_RLC(GC, GET_INST(GC, i), regMC_VM_SYSTEM_APERTURE_LOW_ADDR,
- 				min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
++static const char *const lvds0_sels[] = {
++	"clk_dummy",
++	"clk_dummy",
++	"clk_dummy",
++	"clk_dummy",
++	"mipi0_lvds_bypass_clk",
++};
++
++static const char *const lvds1_sels[] = {
++	"clk_dummy",
++	"clk_dummy",
++	"clk_dummy",
++	"clk_dummy",
++	"mipi1_lvds_bypass_clk",
++};
++
+ static const char * const mipi_sels[] = {
+ 	"clk_dummy",
+ 	"clk_dummy",
+@@ -201,9 +217,9 @@ static int imx8qxp_clk_probe(struct platform_device *pdev)
+ 	/* MIPI-LVDS SS */
+ 	imx_clk_scu("mipi0_bypass_clk", IMX_SC_R_MIPI_0, IMX_SC_PM_CLK_BYPASS);
+ 	imx_clk_scu("mipi0_pixel_clk", IMX_SC_R_MIPI_0, IMX_SC_PM_CLK_PER);
+-	imx_clk_scu("mipi0_lvds_pixel_clk", IMX_SC_R_LVDS_0, IMX_SC_PM_CLK_MISC2);
+ 	imx_clk_scu("mipi0_lvds_bypass_clk", IMX_SC_R_LVDS_0, IMX_SC_PM_CLK_BYPASS);
+-	imx_clk_scu("mipi0_lvds_phy_clk", IMX_SC_R_LVDS_0, IMX_SC_PM_CLK_MISC3);
++	imx_clk_scu2("mipi0_lvds_pixel_clk", lvds0_sels, ARRAY_SIZE(lvds0_sels), IMX_SC_R_LVDS_0, IMX_SC_PM_CLK_MISC2);
++	imx_clk_scu2("mipi0_lvds_phy_clk", lvds0_sels, ARRAY_SIZE(lvds0_sels), IMX_SC_R_LVDS_0, IMX_SC_PM_CLK_MISC3);
+ 	imx_clk_scu2("mipi0_dsi_tx_esc_clk", mipi_sels, ARRAY_SIZE(mipi_sels), IMX_SC_R_MIPI_0, IMX_SC_PM_CLK_MST_BUS);
+ 	imx_clk_scu2("mipi0_dsi_rx_esc_clk", mipi_sels, ARRAY_SIZE(mipi_sels), IMX_SC_R_MIPI_0, IMX_SC_PM_CLK_SLV_BUS);
+ 	imx_clk_scu2("mipi0_dsi_phy_clk", mipi_sels, ARRAY_SIZE(mipi_sels), IMX_SC_R_MIPI_0, IMX_SC_PM_CLK_PHY);
+@@ -213,9 +229,9 @@ static int imx8qxp_clk_probe(struct platform_device *pdev)
  
--			if (adev->apu_flags & AMD_APU_IS_RAVEN2)
-+			if (adev->apu_flags & (AMD_APU_IS_RAVEN2 |
-+					       AMD_APU_IS_RENOIR |
-+					       AMD_APU_IS_GREEN_SARDINE))
- 			       /*
- 				* Raven2 has a HW issue that it is unable to use the
- 				* vram which is out of MC_VM_SYSTEM_APERTURE_HIGH_ADDR.
-diff --git a/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c
-index fb91b31056ca..d25f87fb1971 100644
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c
-@@ -96,7 +96,9 @@ static void mmhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
- 	WREG32_SOC15(MMHUB, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
- 		     min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
+ 	imx_clk_scu("mipi1_bypass_clk", IMX_SC_R_MIPI_1, IMX_SC_PM_CLK_BYPASS);
+ 	imx_clk_scu("mipi1_pixel_clk", IMX_SC_R_MIPI_1, IMX_SC_PM_CLK_PER);
+-	imx_clk_scu("mipi1_lvds_pixel_clk", IMX_SC_R_LVDS_1, IMX_SC_PM_CLK_MISC2);
+ 	imx_clk_scu("mipi1_lvds_bypass_clk", IMX_SC_R_LVDS_1, IMX_SC_PM_CLK_BYPASS);
+-	imx_clk_scu("mipi1_lvds_phy_clk", IMX_SC_R_LVDS_1, IMX_SC_PM_CLK_MISC3);
++	imx_clk_scu2("mipi1_lvds_pixel_clk", lvds1_sels, ARRAY_SIZE(lvds1_sels), IMX_SC_R_LVDS_1, IMX_SC_PM_CLK_MISC2);
++	imx_clk_scu2("mipi1_lvds_phy_clk", lvds1_sels, ARRAY_SIZE(lvds1_sels), IMX_SC_R_LVDS_1, IMX_SC_PM_CLK_MISC3);
  
--	if (adev->apu_flags & AMD_APU_IS_RAVEN2)
-+	if (adev->apu_flags & (AMD_APU_IS_RAVEN2 |
-+			       AMD_APU_IS_RENOIR |
-+			       AMD_APU_IS_GREEN_SARDINE))
- 		/*
- 		 * Raven2 has a HW issue that it is unable to use the vram which
- 		 * is out of MC_VM_SYSTEM_APERTURE_HIGH_ADDR. So here is the
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index fabbfea33b0c..56a61ac2b3f5 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1247,7 +1247,9 @@ static void mmhub_read_system_context(struct amdgpu_device *adev, struct dc_phy_
- 	/* AGP aperture is disabled */
- 	if (agp_bot == agp_top) {
- 		logical_addr_low = adev->gmc.fb_start >> 18;
--		if (adev->apu_flags & AMD_APU_IS_RAVEN2)
-+		if (adev->apu_flags & (AMD_APU_IS_RAVEN2 |
-+				       AMD_APU_IS_RENOIR |
-+				       AMD_APU_IS_GREEN_SARDINE))
- 			/*
- 			 * Raven2 has a HW issue that it is unable to use the vram which
- 			 * is out of MC_VM_SYSTEM_APERTURE_HIGH_ADDR. So here is the
-@@ -1259,7 +1261,9 @@ static void mmhub_read_system_context(struct amdgpu_device *adev, struct dc_phy_
- 			logical_addr_high = adev->gmc.fb_end >> 18;
- 	} else {
- 		logical_addr_low = min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18;
--		if (adev->apu_flags & AMD_APU_IS_RAVEN2)
-+		if (adev->apu_flags & (AMD_APU_IS_RAVEN2 |
-+				       AMD_APU_IS_RENOIR |
-+				       AMD_APU_IS_GREEN_SARDINE))
- 			/*
- 			 * Raven2 has a HW issue that it is unable to use the vram which
- 			 * is out of MC_VM_SYSTEM_APERTURE_HIGH_ADDR. So here is the
+ 	imx_clk_scu2("mipi1_dsi_tx_esc_clk", mipi_sels, ARRAY_SIZE(mipi_sels), IMX_SC_R_MIPI_1, IMX_SC_PM_CLK_MST_BUS);
+ 	imx_clk_scu2("mipi1_dsi_rx_esc_clk", mipi_sels, ARRAY_SIZE(mipi_sels), IMX_SC_R_MIPI_1, IMX_SC_PM_CLK_SLV_BUS);
 -- 
 2.43.0
 
