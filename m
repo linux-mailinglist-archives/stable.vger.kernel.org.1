@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-17857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469A4848064
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2DAF8482B1
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDCC4B29DBD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F0B52846F7
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F230412E71;
-	Sat,  3 Feb 2024 04:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FEE1BDDF;
+	Sat,  3 Feb 2024 04:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orInam1/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wro47sam"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B6BF9F6;
-	Sat,  3 Feb 2024 04:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B521BDE6;
+	Sat,  3 Feb 2024 04:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933366; cv=none; b=WpSUaefAw52dHRmKDFEC+Zbm2C2E62I8nL4e2dUYrulW0xwWsqsMBXNuFzCiPfUVMsjAZuXvmFa2W2uPTHyf80tXs05Sk3cAs4URmQEOYaqVXgof1KQrszN5m7+3LZ1Qg/zFX/ujpOOaVAVFHj+tYahnnUdB7oVcPHXJUtjWtkk=
+	t=1706933793; cv=none; b=ZtNJ6YKpoeR8PqHkum5krTFvRrf7pZgTNQf9nlRyFTpdPyWO9lmoDFN6F9Mcm3rcGEIEoQV/lFNhyMcEUyJDdQfV6iyjH2hB/RJI/Bqv1i15nkmyF4UBCYoBMSolKQPByz3n0ulZ/brgSEMvcRjysa8iaLw0N/3AFckFj13ZqsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933366; c=relaxed/simple;
-	bh=x6F14fs4nxydXWieNonTaMprG9Z/Nuj8lmjrvAvW9MI=;
+	s=arc-20240116; t=1706933793; c=relaxed/simple;
+	bh=KJNtyDKsSui10Zs6JC16CT/4JTYflPrYA5aa/rZ2Y4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GVd14HIsvXpRlYlLCJh7luVpNA7Rpp//U2lgLyVuZrpXLVfXrmFUqQUr2YhzTZKaRzACBUFMkNBm3WCQDQ2DfVQ6LnRoTpC1Xt0aPpbQ2X467HF+bpBpqoKm29c8ZkQ2Jx9bAR/kouBQF/JPxqiEiWiV0raCRKDYvRtKTVqNWKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orInam1/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69ECDC433F1;
-	Sat,  3 Feb 2024 04:09:26 +0000 (UTC)
+	 MIME-Version; b=fhy8Ig0Z4kgN9ZG3doi3Sb2KjU1YbbY3EF8N6q20b1zvu+XjQgPslcSgDmIrG48jYZgKSlN7EiclvD1Zqe1HDkrIw8gFV0NnXkxb2vTXbEz6WjFtb8VE7eurLkQDnEDgv3bLgIiYWVxWTsS75NjyF7uK12xPbZRut/V6jtsM7VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wro47sam; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FBFC433C7;
+	Sat,  3 Feb 2024 04:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933366;
-	bh=x6F14fs4nxydXWieNonTaMprG9Z/Nuj8lmjrvAvW9MI=;
+	s=korg; t=1706933793;
+	bh=KJNtyDKsSui10Zs6JC16CT/4JTYflPrYA5aa/rZ2Y4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=orInam1/iRNR9E7Csi+hh1SKwGRabJBMF7Kn2fMozaofayAn2+IRHJDXwBVEeXxc+
-	 0OxsXpOELkfC1YvDUBwyRo62pwDDxbZqtAAKQYWXEroNsN7oebvm1u74H9zMb/UxpA
-	 RK9eRSDqyNdMA8C658rcPc7+tFXnQ9HaNgcoqdwg=
+	b=Wro47samzFRTYdbcmMo0ZYM+fdB1i2q4w37WJxM87uRbsI/xRfpWt5VDFx2AjOPqC
+	 aVEzeF7FeS+oQtTsGfIMfE6MWLOQCnH0P09d5v8TipAh3QWliylN3qfoJyf7WRzLg9
+	 u8NRzOJc7bnUPo4FcIj8aZOhz2M+74DluxoF0Xo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Kalle Valo <kvalo@kernel.org>,
+	Nia Espera <nespera@igalia.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/219] wifi: rt2x00: correct wrong BBP register in RxDCOC calibration
+Subject: [PATCH 6.7 103/353] arm64: dts: qcom: sm8350: Fix remoteproc interrupt type
 Date: Fri,  2 Feb 2024 20:03:41 -0800
-Message-ID: <20240203035323.502238324@linuxfoundation.org>
+Message-ID: <20240203035407.033467950@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Nia Espera <nespera@igalia.com>
 
-[ Upstream commit 50da74e1e8b682853d1e07fc8bbe3a0774ae5e09 ]
+[ Upstream commit 54ee322f845c7f25fbf6e43e11147b6cae8eff56 ]
 
-Refer to Mediatek vendor driver RxDCOC_Calibration() function, when
-performing gainfreeze calibration, we should write register 140
-instead of 141. This fix can reduce the total calibration time from
-6 seconds to 1 second.
+In a similar vein to
+https://lore.kernel.org/lkml/20220530080842.37024-3-manivannan.sadhasivam@linaro.org/,
+the remote processors on sm8350 fail to initialize with the 'correct'
+(i.e., specified in downstream) IRQ type. Change this to EDGE_RISING.
 
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/TYAP286MB0315B13B89DF57B6B27BB854BCAFA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+Signed-off-by: Nia Espera <nespera@igalia.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231111-nia-sm8350-for-upstream-v4-4-3a638b02eea5@igalia.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm8350.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-index 12b700c7b9c3..517d9023aae3 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-@@ -8672,7 +8672,7 @@ static void rt2800_rxdcoc_calibration(struct rt2x00_dev *rt2x00dev)
- 	rt2800_rfcsr_write_bank(rt2x00dev, 5, 4, saverfb5r4);
- 	rt2800_rfcsr_write_bank(rt2x00dev, 7, 4, saverfb7r4);
+diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+index 1d597af15bb3..a72f3c470089 100644
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -2021,7 +2021,7 @@
+ 			compatible = "qcom,sm8350-mpss-pas";
+ 			reg = <0x0 0x04080000 0x0 0x4040>;
  
--	rt2800_bbp_write(rt2x00dev, 158, 141);
-+	rt2800_bbp_write(rt2x00dev, 158, 140);
- 	bbpreg = rt2800_bbp_read(rt2x00dev, 159);
- 	bbpreg = bbpreg & (~0x40);
- 	rt2800_bbp_write(rt2x00dev, 159, bbpreg);
+-			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_LEVEL_HIGH>,
++			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_modem_in 1 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_modem_in 2 IRQ_TYPE_EDGE_RISING>,
+@@ -2063,7 +2063,7 @@
+ 			compatible = "qcom,sm8350-slpi-pas";
+ 			reg = <0 0x05c00000 0 0x4000>;
+ 
+-			interrupts-extended = <&pdc 9 IRQ_TYPE_LEVEL_HIGH>,
++			interrupts-extended = <&pdc 9 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_slpi_in 0 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_slpi_in 1 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_slpi_in 2 IRQ_TYPE_EDGE_RISING>,
+@@ -3207,7 +3207,7 @@
+ 			compatible = "qcom,sm8350-adsp-pas";
+ 			reg = <0 0x17300000 0 0x100>;
+ 
+-			interrupts-extended = <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
++			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
+@@ -3512,7 +3512,7 @@
+ 			compatible = "qcom,sm8350-cdsp-pas";
+ 			reg = <0 0x98900000 0 0x1400000>;
+ 
+-			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_LEVEL_HIGH>,
++			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_cdsp_in 1 IRQ_TYPE_EDGE_RISING>,
+ 					      <&smp2p_cdsp_in 2 IRQ_TYPE_EDGE_RISING>,
 -- 
 2.43.0
 
