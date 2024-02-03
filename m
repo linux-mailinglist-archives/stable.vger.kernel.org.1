@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C6E28482C0
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B614784803C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB6901C21912
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 428681F2BAB6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234E31BF37;
-	Sat,  3 Feb 2024 04:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FD610796;
+	Sat,  3 Feb 2024 04:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XOXM6pAP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXkRZiTO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54D51BF38;
-	Sat,  3 Feb 2024 04:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B90101C2;
+	Sat,  3 Feb 2024 04:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933803; cv=none; b=k+S/1B9nEfYPzsKMhFQ7g+Idf1pKI8Hx9xR2JK4z8wYiq/4620+520dBOBEGnzzrgVlnrlHvo3eY5qPGHEd/mqNyEKj/GH69VnX1z/Mclco2qal0NQWUe1WQeoP1sAL0uLhjI33vw8Zn8kWDlL++dbdIh+/5nlV/xHUh2ejqAZc=
+	t=1706933338; cv=none; b=CEn8DojfsJZe5bLcVg3sZ1iM5wiGwjOktEYELMMM5WTQF3/hw7+Qw4/Be8zW2KBqnFulpwSabi4zbKnv1iNc/hviPeESzmPmYLoea7eAih2fFujTAQo2kaWaE+sxO/lGBbQHbnWL8DR5mU6l30Jsf6BvK9BldzyRDiH/rrB0+z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933803; c=relaxed/simple;
-	bh=0tllTTXbp7ZSrhsbgb4tl67It0hYuie1+vZF5uvNzWc=;
+	s=arc-20240116; t=1706933338; c=relaxed/simple;
+	bh=nlm7CamIoujgucyQfhg7kXX0uvEamB8evS+6sdQTU+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uG4nK+5kz8nDNPn99lP5I7QFMGzO4H0zN2D9b552xJBg0sFg7zN46SdRCaRZWc2Uam9OruOU/34lQ/WllTu68tOi/cRJgFzNXEObj/ffmlRik1V17xB16Ow0OLKjZ3XOjum3d8Nr7yAKF7i+i8zf0lbk22zt5o0yqIUEWyxnyas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XOXM6pAP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EFD9C433A6;
-	Sat,  3 Feb 2024 04:16:43 +0000 (UTC)
+	 MIME-Version; b=YyL4neLZ5D8m09iq/muw1UcjSGlFyEjuTynleieABgDpNlP6hImQRZBGKZl2Z07uM+iYH+LFMDefEmrGVWycXQYKgASMnF6gPxp3QC9QbQAkyJ/7mHyyoDyUm9e965A5Dt817f7VYCE9mhzquF4eiUDUmUK5t8M1us+IeWIXXco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXkRZiTO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E903C433F1;
+	Sat,  3 Feb 2024 04:08:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933803;
-	bh=0tllTTXbp7ZSrhsbgb4tl67It0hYuie1+vZF5uvNzWc=;
+	s=korg; t=1706933338;
+	bh=nlm7CamIoujgucyQfhg7kXX0uvEamB8evS+6sdQTU+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XOXM6pAPksAbW30Ik8WaUr7o7gJ9Wf1eaCT94Yooc+0lFhLvGk4hFvzlEdWPHlllo
-	 ghCiUlQIw9VOLj7uzG7geUFodPGiJuBz+DWXu+cRxvOR5rj7qQooXDR8wKJfr6yWL1
-	 zzn7PvsWvufOiUmcO0JBjV+MDLlqbeoFaYxY9Yz4=
+	b=bXkRZiTOjC8eI6xSFTMVdlQVljk3cp8+dk1L8Mh031VB0QhEmtKi660ACIRJrl8EH
+	 LCOQo+ZleuBPRr9rG0SCEIstHa2AzUcxnmNQUp9wOqv92WTxwA3StYZYcIPJNBcQzF
+	 xfn+RlnJpqNlBV5xwY6kgEEFbgme3GXKHHB4MX74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 092/353] wifi: ath11k: fix race due to setting ATH11K_FLAG_EXT_IRQ_ENABLED too early
+Subject: [PATCH 6.1 037/219] s390/ptrace: handle setting of fpc register correctly
 Date: Fri,  2 Feb 2024 20:03:30 -0800
-Message-ID: <20240203035406.712629600@linuxfoundation.org>
+Message-ID: <20240203035321.651405453@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 5082b3e3027eae393a4e86874bffb4ce3f83c26e ]
+[ Upstream commit 8b13601d19c541158a6e18b278c00ba69ae37829 ]
 
-We are seeing below error randomly in the case where only
-one MSI vector is configured:
+If the content of the floating point control (fpc) register of a traced
+process is modified with the ptrace interface the new value is tested for
+validity by temporarily loading it into the fpc register.
 
-kernel: ath11k_pci 0000:03:00.0: wmi command 16387 timeout
+This may lead to corruption of the fpc register of the tracing process:
+if an interrupt happens while the value is temporarily loaded into the
+fpc register, and within interrupt context floating point or vector
+registers are used, the current fp/vx registers are saved with
+save_fpu_regs() assuming they belong to user space and will be loaded into
+fp/vx registers when returning to user space.
 
-The reason is, currently, in ath11k_pcic_ext_irq_enable(),
-ATH11K_FLAG_EXT_IRQ_ENABLED is set before NAPI is enabled.
-This results in a race condition: after
-ATH11K_FLAG_EXT_IRQ_ENABLED is set but before NAPI enabled,
-CE interrupt breaks in. Since IRQ is shared by CE and data
-path, ath11k_pcic_ext_interrupt_handler() is also called
-where we call disable_irq_nosync() to disable IRQ. Then
-napi_schedule() is called but it does nothing because NAPI
-is not enabled at that time, meaning
-ath11k_pcic_ext_grp_napi_poll() will never run, so we have
-no chance to call enable_irq() to enable IRQ back. Finally
-we get above error.
+test_fp_ctl() restores the original user space fpc register value, however
+it will be discarded, when returning to user space.
 
-Fix it by setting ATH11K_FLAG_EXT_IRQ_ENABLED after all
-NAPI and IRQ work are done. With the fix, we are sure that
-by the time ATH11K_FLAG_EXT_IRQ_ENABLED is set, NAPI is
-enabled.
+In result the tracer will incorrectly continue to run with the value that
+was supposed to be used for the traced process.
 
-Note that the fix above also introduce some side effects:
-if ath11k_pcic_ext_interrupt_handler() breaks in after NAPI
-enabled but before ATH11K_FLAG_EXT_IRQ_ENABLED set, nothing
-will be done by the handler this time, the work will be
-postponed till the next time the IRQ fires.
+Fix this by saving fpu register contents with save_fpu_regs() before using
+test_fp_ctl().
 
-Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
-
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231117003919.26218-1-quic_bqiang@quicinc.com
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/pcic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/kernel/ptrace.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/pcic.c b/drivers/net/wireless/ath/ath11k/pcic.c
-index 16d1e332193f..e602d4130105 100644
---- a/drivers/net/wireless/ath/ath11k/pcic.c
-+++ b/drivers/net/wireless/ath/ath11k/pcic.c
-@@ -460,8 +460,6 @@ void ath11k_pcic_ext_irq_enable(struct ath11k_base *ab)
- {
- 	int i;
+diff --git a/arch/s390/kernel/ptrace.c b/arch/s390/kernel/ptrace.c
+index 092b16b4dd4f..6b442edb3857 100644
+--- a/arch/s390/kernel/ptrace.c
++++ b/arch/s390/kernel/ptrace.c
+@@ -385,6 +385,7 @@ static int __poke_user(struct task_struct *child, addr_t addr, addr_t data)
+ 		/*
+ 		 * floating point control reg. is in the thread structure
+ 		 */
++		save_fpu_regs();
+ 		if ((unsigned int) data != 0 ||
+ 		    test_fp_ctl(data >> (BITS_PER_LONG - 32)))
+ 			return -EINVAL;
+@@ -741,6 +742,7 @@ static int __poke_user_compat(struct task_struct *child,
+ 		/*
+ 		 * floating point control reg. is in the thread structure
+ 		 */
++		save_fpu_regs();
+ 		if (test_fp_ctl(tmp))
+ 			return -EINVAL;
+ 		child->thread.fpu.fpc = data;
+@@ -904,9 +906,7 @@ static int s390_fpregs_set(struct task_struct *target,
+ 	int rc = 0;
+ 	freg_t fprs[__NUM_FPRS];
  
--	set_bit(ATH11K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags);
+-	if (target == current)
+-		save_fpu_regs();
 -
- 	for (i = 0; i < ATH11K_EXT_IRQ_GRP_NUM_MAX; i++) {
- 		struct ath11k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
- 
-@@ -471,6 +469,8 @@ void ath11k_pcic_ext_irq_enable(struct ath11k_base *ab)
- 		}
- 		ath11k_pcic_ext_grp_enable(irq_grp);
- 	}
-+
-+	set_bit(ATH11K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags);
- }
- EXPORT_SYMBOL(ath11k_pcic_ext_irq_enable);
- 
++	save_fpu_regs();
+ 	if (MACHINE_HAS_VX)
+ 		convert_vx_to_fp(fprs, target->thread.fpu.vxrs);
+ 	else
 -- 
 2.43.0
 
