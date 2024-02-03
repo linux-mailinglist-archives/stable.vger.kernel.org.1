@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-18146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55AC0848190
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F85A848080
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1293D282299
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 824AD1C2269B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C14C175B1;
-	Sat,  3 Feb 2024 04:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B6811198;
+	Sat,  3 Feb 2024 04:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzZ5mZsh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ApPG+w/U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AA8A2C69E;
-	Sat,  3 Feb 2024 04:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3767168A9;
+	Sat,  3 Feb 2024 04:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933581; cv=none; b=cq9/NXUWgPzgMxIF7Ogqhp2vNQyuYN1q1igKflhpC76bGbzheEaImPvf1sZoNL7IHDpPvfdQ9cXrMpGDRy7jWIJqfEnoy2BnWdPfOHx+vYq6EnlRCRCLWw/3YjRx7ucGl9NDaC11hj20JrWjovmG4GrQdN5W00rWfKDU8Lxdnsk=
+	t=1706933387; cv=none; b=mDF8uqTmHkKjbBX8m/uD5Ds54NbG/IcR4yjB7g7r72tCrhpEOegS5/J7hrthklD2dU0kcUHfGTfyqId2ChYy18PYE9WVgqb3GSjHbczW7/hIsmyqqyOB4VziP13/v+NhjaNkgTb9+wQUn1BASELvezSclQ/QEa72GvCdtWmqDBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933581; c=relaxed/simple;
-	bh=e/63Q4Gh0+adC1SG3lws7zVvGjQPLgEeZucEMiX+90Q=;
+	s=arc-20240116; t=1706933387; c=relaxed/simple;
+	bh=qjLCcTo+LV50YtOH5Qh17Mr+p8yN1GYGUft6tFCrGIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fc4FxfcIfLi7wqbNqQQ+QVIYBnCsHorAY9I4KQr7lemFpnW9jGDAXKnXgzS/TnmLWT28K/XjhI3H7M76mdAZt/6yIjn88PLyabs0JJfmfASDfPKdXwqtYmcbjlwyu4uB8uy8NNRrPCTjB4aVbVBAXBsagumrL3xrXV1i3yywSAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzZ5mZsh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA76C433C7;
-	Sat,  3 Feb 2024 04:13:00 +0000 (UTC)
+	 MIME-Version; b=eHePfUXLhuRfXIubtTmLJTtAWvqg0wC/n00QSKDjt3inlM72XJyyLstSoKcllc8QKOEOut1AevQJbKMhOQ/Iy1pz1IG9t5jciCVOb1pcZ+IiFnn1FqoSVfO5QtXEdYFOe2DchvMQE0WfaPH+rKoEeZy+1NtHal5osUmPtAxKO68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ApPG+w/U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C09BC43390;
+	Sat,  3 Feb 2024 04:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933581;
-	bh=e/63Q4Gh0+adC1SG3lws7zVvGjQPLgEeZucEMiX+90Q=;
+	s=korg; t=1706933387;
+	bh=qjLCcTo+LV50YtOH5Qh17Mr+p8yN1GYGUft6tFCrGIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzZ5mZshTYPqzr2ZCMY+SRMNOCfZ66mCEVs9D+nmYZ/0AkwjpGsvHUQwlxj1odln8
-	 wbX9msziEB87P3sY7gMiCqQ7GhMTYm97hwhnzKwoJC28/819vCY55ak8maZIi1of6H
-	 JIYZfegxFsqtPQ5krY5BuAuOpEKhQflL+S7uos88=
+	b=ApPG+w/UZpqsUE4sX+x7N70hL0qb98V7pqVMcCR/krNaJatMkZNCsYoYG2Jnx1FV5
+	 DUPw/q1exo5rz4PJfy9D9ln2pRxECjiSnNINyapUp/oruQkcPU8IrsaCqramoTnhEf
+	 t0mBZmWyYy145fN8jNkK1P8xLfZCbijTmRlXoWko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingyi Zhang <zhangmingyi5@huawei.com>,
-	Xin Liu <liuxin350@huawei.com>,
-	Changye Wu <wuchangye@huawei.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 142/322] libbpf: Fix NULL pointer dereference in bpf_object__collect_prog_relos
+Subject: [PATCH 6.1 066/219] bpf: Set uattr->batch.count as zero before batched update or deletion
 Date: Fri,  2 Feb 2024 20:03:59 -0800
-Message-ID: <20240203035403.736965950@linuxfoundation.org>
+Message-ID: <20240203035326.039915430@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,74 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingyi Zhang <zhangmingyi5@huawei.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit fc3a5534e2a8855427403113cbeb54af5837bbe0 ]
+[ Upstream commit 06e5c999f10269a532304e89a6adb2fbfeb0593c ]
 
-An issue occurred while reading an ELF file in libbpf.c during fuzzing:
+generic_map_{delete,update}_batch() doesn't set uattr->batch.count as
+zero before it tries to allocate memory for key. If the memory
+allocation fails, the value of uattr->batch.count will be incorrect.
 
-	Program received signal SIGSEGV, Segmentation fault.
-	0x0000000000958e97 in bpf_object.collect_prog_relos () at libbpf.c:4206
-	4206 in libbpf.c
-	(gdb) bt
-	#0 0x0000000000958e97 in bpf_object.collect_prog_relos () at libbpf.c:4206
-	#1 0x000000000094f9d6 in bpf_object.collect_relos () at libbpf.c:6706
-	#2 0x000000000092bef3 in bpf_object_open () at libbpf.c:7437
-	#3 0x000000000092c046 in bpf_object.open_mem () at libbpf.c:7497
-	#4 0x0000000000924afa in LLVMFuzzerTestOneInput () at fuzz/bpf-object-fuzzer.c:16
-	#5 0x000000000060be11 in testblitz_engine::fuzzer::Fuzzer::run_one ()
-	#6 0x000000000087ad92 in tracing::span::Span::in_scope ()
-	#7 0x00000000006078aa in testblitz_engine::fuzzer::util::walkdir ()
-	#8 0x00000000005f3217 in testblitz_engine::entrypoint::main::{{closure}} ()
-	#9 0x00000000005f2601 in main ()
-	(gdb)
+Fix it by setting uattr->batch.count as zero beore batched update or
+deletion.
 
-scn_data was null at this code(tools/lib/bpf/src/libbpf.c):
-
-	if (rel->r_offset % BPF_INSN_SZ || rel->r_offset >= scn_data->d_size) {
-
-The scn_data is derived from the code above:
-
-	scn = elf_sec_by_idx(obj, sec_idx);
-	scn_data = elf_sec_data(obj, scn);
-
-	relo_sec_name = elf_sec_str(obj, shdr->sh_name);
-	sec_name = elf_sec_name(obj, scn);
-	if (!relo_sec_name || !sec_name)// don't check whether scn_data is NULL
-		return -EINVAL;
-
-In certain special scenarios, such as reading a malformed ELF file,
-it is possible that scn_data may be a null pointer
-
-Signed-off-by: Mingyi Zhang <zhangmingyi5@huawei.com>
-Signed-off-by: Xin Liu <liuxin350@huawei.com>
-Signed-off-by: Changye Wu <wuchangye@huawei.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20231221033947.154564-1-liuxin350@huawei.com
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20231208102355.2628918-6-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/bpf/syscall.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 96ff1aa4bf6a..de08b920a149 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -4251,6 +4251,8 @@ bpf_object__collect_prog_relos(struct bpf_object *obj, Elf64_Shdr *shdr, Elf_Dat
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 8d0c38a8dcf2..1e46a84694b8 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -1598,6 +1598,9 @@ int generic_map_delete_batch(struct bpf_map *map,
+ 	if (!max_count)
+ 		return 0;
  
- 	scn = elf_sec_by_idx(obj, sec_idx);
- 	scn_data = elf_sec_data(obj, scn);
-+	if (!scn_data)
-+		return -LIBBPF_ERRNO__FORMAT;
++	if (put_user(0, &uattr->batch.count))
++		return -EFAULT;
++
+ 	key = kvmalloc(map->key_size, GFP_USER | __GFP_NOWARN);
+ 	if (!key)
+ 		return -ENOMEM;
+@@ -1657,6 +1660,9 @@ int generic_map_update_batch(struct bpf_map *map,
+ 	if (!max_count)
+ 		return 0;
  
- 	relo_sec_name = elf_sec_str(obj, shdr->sh_name);
- 	sec_name = elf_sec_name(obj, scn);
++	if (put_user(0, &uattr->batch.count))
++		return -EFAULT;
++
+ 	key = kvmalloc(map->key_size, GFP_USER | __GFP_NOWARN);
+ 	if (!key)
+ 		return -ENOMEM;
 -- 
 2.43.0
 
