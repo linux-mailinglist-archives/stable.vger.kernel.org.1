@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-18111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 901CE84816C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05836848036
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DBD32830E5
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BAD11F2BAB0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F053111A9;
-	Sat,  3 Feb 2024 04:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE21101DB;
+	Sat,  3 Feb 2024 04:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZ1ifuJ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0KSmJ17e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6041755E;
-	Sat,  3 Feb 2024 04:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A90101CE;
+	Sat,  3 Feb 2024 04:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933555; cv=none; b=EtRqwqwS8L/AFNpTuea9GfC7VUzuyuCb8MxLsvm0ieukCq0/36wjFjM8OUYqhoZg/215m3N3HncEqDf8kX7UnRP9XorgIcdmxlPe3ICoGBpJcXMON4HlMJuOPAd1uG/ot4UbrUafShX0h2geIALUEoKwvRM82T66RDTt81fqadM=
+	t=1706933333; cv=none; b=Y2YRwren59y77SPxQw5lILeFEpwdSKWhX8qYLAghflNtKk/1bXpo8Vz1Ho8/b08WfmVHO9zGvjt0TEMC2cfvf/5i50TQjSoJnL99r3Q6yLrS6DYNEUhmsL+VUI6LzZCTee2IasIME2C5QzwcAtm/mv1co1rIGPjuj9Qfq5+MLw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933555; c=relaxed/simple;
-	bh=tVujJEXi6KX5dxHmo8JccmDWs+tJBjXmpt6DYyutUn0=;
+	s=arc-20240116; t=1706933333; c=relaxed/simple;
+	bh=JdaGP105BgIALyVTcvVA29I+A9lLy2E9FgxY65mf8yE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kxZUGRCuiwfd/rgh+NkudeZ9weTtC3qkV8rTCp3r/Fn14GaVmsG/ch1LyWRk3d8f8NPOsu65WMZyInH+DSVnROpjPovb1FaecYgYpDAn4DqQZyoXlXdR/oYfoxMB5DCpRUMUlR0cmSifF3r+v6cOht1i/lKENfvt4dycpsMb9/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZ1ifuJ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242F0C433C7;
-	Sat,  3 Feb 2024 04:12:35 +0000 (UTC)
+	 MIME-Version; b=XPDSr89h3bg3oYxEx3joKp3itmKHljOszGNbdjgap1cuHnlwK6zxTfnpXPB/4PvyiSh02/oC860iTtJqSVdYn3UvqgwdlsUYfOSG7kJRECj/6K3Z72CubyL34fpppEUDeJs9FhKdmKqOnTDume8CwdGc4QIyPF041x3YrmgKJaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0KSmJ17e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407FFC43394;
+	Sat,  3 Feb 2024 04:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933555;
-	bh=tVujJEXi6KX5dxHmo8JccmDWs+tJBjXmpt6DYyutUn0=;
+	s=korg; t=1706933333;
+	bh=JdaGP105BgIALyVTcvVA29I+A9lLy2E9FgxY65mf8yE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SZ1ifuJ0MJqW9Zr/gt9cyolmFA4oy40Lbs9h07TzdFwNmq4bQgneGltkiiDjh5J8r
-	 83gQj7nInYcnsculNncfBI4uMyU5Ov3iFJ/8FMfMiwtwCpepFop70t7Lgkr+jYB976
-	 Hpk35+JUY4TdstFlEirepSf+BSBRg6ZFSn15I0Q4=
+	b=0KSmJ17ebulUChj0iCJdNjP+lJIZgg9fkn8G0vooFjSHL/id5JQm/Cm96ezdawanQ
+	 gwFVy3Mz+yWkIyUCuRlFd5EBSzrKW9wR9zyktIPPHUI6h0OZOm93WQvGS95BqMbdCg
+	 Pvdp2LulONGXyvlAnIh9eRRnMA1LM/s1ixzJQZrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Oleg Nesterov <oleg@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 107/322] bpf: Set uattr->batch.count as zero before batched update or deletion
+Subject: [PATCH 6.1 031/219] afs: fix the usage of read_seqbegin_or_lock() in afs_lookup_volume_rcu()
 Date: Fri,  2 Feb 2024 20:03:24 -0800
-Message-ID: <20240203035402.614106252@linuxfoundation.org>
+Message-ID: <20240203035320.720053637@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 06e5c999f10269a532304e89a6adb2fbfeb0593c ]
+[ Upstream commit 4121b4337146b64560d1e46ebec77196d9287802 ]
 
-generic_map_{delete,update}_batch() doesn't set uattr->batch.count as
-zero before it tries to allocate memory for key. If the memory
-allocation fails, the value of uattr->batch.count will be incorrect.
+David Howells says:
 
-Fix it by setting uattr->batch.count as zero beore batched update or
-deletion.
+ (2) afs_lookup_volume_rcu().
 
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20231208102355.2628918-6-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+     There can be a lot of volumes known by a system.  A thousand would
+     require a 10-step walk and this is drivable by remote operation, so I
+     think this should probably take a lock on the second pass too.
+
+Make the "seq" counter odd on the 2nd pass, otherwise read_seqbegin_or_lock()
+never takes the lock.
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Link: https://lore.kernel.org/r/20231130115606.GA21571@redhat.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/syscall.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/afs/callback.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index f61c53237c19..4b7d186c7622 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -1699,6 +1699,9 @@ int generic_map_delete_batch(struct bpf_map *map,
- 	if (!max_count)
- 		return 0;
+diff --git a/fs/afs/callback.c b/fs/afs/callback.c
+index a484fa642808..90f9b2a46ff4 100644
+--- a/fs/afs/callback.c
++++ b/fs/afs/callback.c
+@@ -110,13 +110,14 @@ static struct afs_volume *afs_lookup_volume_rcu(struct afs_cell *cell,
+ {
+ 	struct afs_volume *volume = NULL;
+ 	struct rb_node *p;
+-	int seq = 0;
++	int seq = 1;
  
-+	if (put_user(0, &uattr->batch.count))
-+		return -EFAULT;
-+
- 	key = kvmalloc(map->key_size, GFP_USER | __GFP_NOWARN);
- 	if (!key)
- 		return -ENOMEM;
-@@ -1756,6 +1759,9 @@ int generic_map_update_batch(struct bpf_map *map, struct file *map_file,
- 	if (!max_count)
- 		return 0;
+ 	do {
+ 		/* Unfortunately, rbtree walking doesn't give reliable results
+ 		 * under just the RCU read lock, so we have to check for
+ 		 * changes.
+ 		 */
++		seq++; /* 2 on the 1st/lockless path, otherwise odd */
+ 		read_seqbegin_or_lock(&cell->volume_lock, &seq);
  
-+	if (put_user(0, &uattr->batch.count))
-+		return -EFAULT;
-+
- 	key = kvmalloc(map->key_size, GFP_USER | __GFP_NOWARN);
- 	if (!key)
- 		return -ENOMEM;
+ 		p = rcu_dereference_raw(cell->volumes.rb_node);
 -- 
 2.43.0
 
