@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-18107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B1E848167
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A9484814B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99E7E1C22809
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 458851F23129
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B734011721;
-	Sat,  3 Feb 2024 04:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5020E168DF;
+	Sat,  3 Feb 2024 04:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+YC4mgd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAEGTSHo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7624B11720;
-	Sat,  3 Feb 2024 04:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED30171B0;
+	Sat,  3 Feb 2024 04:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933552; cv=none; b=AY92lq8E552VfJNEax6JummT3noAwp+esltPkyCaDd1xFhjwFy8c4yG5a5K6WlDr+ogyBv/qRyozT7dcbnwJNeLBq1pLPTwYECjbNdTVoPnM4LK5yyi1G8Q8pO3Os6jmtFZKI4WmNpuLv+0n1zLL+5KxpFOeryvtCeMt8JRI2JY=
+	t=1706933531; cv=none; b=cwdVT0oIHJELL1K+4vBhCKtOjSFFwiQRpBQf/i0WzS+BqDb2sp1gecFwypc8+HnpMo64+c8Amri/NJnTotn3LPwViw2Wun0UcHN2cFC9WYzAMwHM4Ij12chHDEVClo3JHXkQm8ELIEhtJtqxdRbxX8HBc6IWDGy7FZGEkzTiLaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933552; c=relaxed/simple;
-	bh=rG7XAQjJFcU80kDQxZ5mG1oGMa/5/ImS53AzOhyXKpA=;
+	s=arc-20240116; t=1706933531; c=relaxed/simple;
+	bh=WeE99WniFxxjGUONEPFOUOmETNERSBAkHT9HcSUepyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HUtNiKOUH4xx9hFWA7A5Tl7G3n0jCRbBFXSIwVm/r/nCdQ1H/mJ2DF5gpg4OHMyOQKLWm65yAqMjeb2+MWF1Vd7JVEwNeT41eZxxXVNniiyoONEWdIn6igbhUPdVRGKXEtl4VzorSFsgzU/IwYtTnV0SXzmtKAmXWjsJwMOw1wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+YC4mgd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B518C433F1;
-	Sat,  3 Feb 2024 04:12:32 +0000 (UTC)
+	 MIME-Version; b=giSmg2X6Zy/L4eZYLS54O7SSVYZV+O/WD6kjimrYKot5L+UFRMEUnWGL2sofyrfp9A/KhCNX7upg3o2pzMiwDw3AWIVHT1p1gBu7kxYCg93+kE2dgWLpoEobUW371T7ovm9p5GqcTP60UYexBMs/tDjIOclBk++q7Wwo0WAPrMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAEGTSHo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B0AC43399;
+	Sat,  3 Feb 2024 04:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933552;
-	bh=rG7XAQjJFcU80kDQxZ5mG1oGMa/5/ImS53AzOhyXKpA=;
+	s=korg; t=1706933530;
+	bh=WeE99WniFxxjGUONEPFOUOmETNERSBAkHT9HcSUepyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+YC4mgdg+LYU0uZfRGQQtXOYcVP5uZQWKx03wvn4vIWFxhR+VHmIm89eee8lKc0+
-	 mI9NZUqdmYgLvHsezuqY+lSiC9fKjb3UBUkOD594BKSGk/uG/mgmi5T6BWZ9BjihRM
-	 EfRrv7Nhoeiv53OChtZ3rkG4M9e/o0pKqez05DZM=
+	b=VAEGTSHoGBNFZdFOWHlD7BcidA7g6rH7xf2Cur2UDC7jRFuR343OkNqrzlU8izzYZ
+	 ife0CKqBxzETuy20Eboiv4ariVNgx0DixYk4tqUqxVyFC8WavKTX09/SgqD6mbJnhy
+	 WlSXgQnyJwkz2B/Fdx1kDLoVnHIuNUt/yrBA9qf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/322] selftests/bpf: Fix issues in setup_classid_environment()
-Date: Fri,  2 Feb 2024 20:02:42 -0800
-Message-ID: <20240203035401.235400432@linuxfoundation.org>
+Subject: [PATCH 6.6 066/322] ARM: dts: qcom: strip prefix from PMIC files
+Date: Fri,  2 Feb 2024 20:02:43 -0800
+Message-ID: <20240203035401.274969902@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
 References: <20240203035359.041730947@linuxfoundation.org>
@@ -66,83 +67,300 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 4849775587844e44d215289c425bcd70f315efe7 ]
+[ Upstream commit 455a4c46e023ab84263eae0fc7acca9a5ee8b7ac ]
 
-If the net_cls subsystem is already mounted, attempting to mount it again
-in setup_classid_environment() will result in a failure with the error code
-EBUSY. Despite this, tmpfs will have been successfully mounted at
-/sys/fs/cgroup/net_cls. Consequently, the /sys/fs/cgroup/net_cls directory
-will be empty, causing subsequent setup operations to fail.
+As the vendor DTS files were moved to per-vendor subdirs, there no need
+to use common prefixes. Drop the `qcom-' prefix from PMIC dtsi file.
+This makes 32-bit qcom/ dts files closer to arm64 ones.
 
-Here's an error log excerpt illustrating the issue when net_cls has already
-been mounted at /sys/fs/cgroup/net_cls prior to running
-setup_classid_environment():
-
-- Before that change
-
-  $ tools/testing/selftests/bpf/test_progs --name=cgroup_v1v2
-  test_cgroup_v1v2:PASS:server_fd 0 nsec
-  test_cgroup_v1v2:PASS:client_fd 0 nsec
-  test_cgroup_v1v2:PASS:cgroup_fd 0 nsec
-  test_cgroup_v1v2:PASS:server_fd 0 nsec
-  run_test:PASS:skel_open 0 nsec
-  run_test:PASS:prog_attach 0 nsec
-  test_cgroup_v1v2:PASS:cgroup-v2-only 0 nsec
-  (cgroup_helpers.c:248: errno: No such file or directory) Opening Cgroup Procs: /sys/fs/cgroup/net_cls/cgroup.procs
-  (cgroup_helpers.c:540: errno: No such file or directory) Opening cgroup classid: /sys/fs/cgroup/net_cls/cgroup-test-work-dir/net_cls.classid
-  run_test:PASS:skel_open 0 nsec
-  run_test:PASS:prog_attach 0 nsec
-  (cgroup_helpers.c:248: errno: No such file or directory) Opening Cgroup Procs: /sys/fs/cgroup/net_cls/cgroup-test-work-dir/cgroup.procs
-  run_test:FAIL:join_classid unexpected error: 1 (errno 2)
-  test_cgroup_v1v2:FAIL:cgroup-v1v2 unexpected error: -1 (errno 2)
-  (cgroup_helpers.c:248: errno: No such file or directory) Opening Cgroup Procs: /sys/fs/cgroup/net_cls/cgroup.procs
-  #44      cgroup_v1v2:FAIL
-  Summary: 0/0 PASSED, 0 SKIPPED, 1 FAILED
-
-- After that change
-  $ tools/testing/selftests/bpf/test_progs --name=cgroup_v1v2
-  #44      cgroup_v1v2:OK
-  Summary: 1/0 PASSED, 0 SKIPPED, 0 FAILED
-
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Link: https://lore.kernel.org/r/20231111090034.4248-3-laoar.shao@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230928110309.1212221-8-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/cgroup_helpers.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/qcom/{qcom-pm8226.dtsi => pm8226.dtsi}      | 0
+ arch/arm/boot/dts/qcom/{qcom-pm8841.dtsi => pm8841.dtsi}      | 0
+ arch/arm/boot/dts/qcom/{qcom-pm8941.dtsi => pm8941.dtsi}      | 0
+ arch/arm/boot/dts/qcom/{qcom-pma8084.dtsi => pma8084.dtsi}    | 0
+ arch/arm/boot/dts/qcom/{qcom-pmx55.dtsi => pmx55.dtsi}        | 0
+ arch/arm/boot/dts/qcom/{qcom-pmx65.dtsi => pmx65.dtsi}        | 0
+ arch/arm/boot/dts/qcom/qcom-apq8026-asus-sparrow.dts          | 2 +-
+ arch/arm/boot/dts/qcom/qcom-apq8026-huawei-sturgeon.dts       | 2 +-
+ arch/arm/boot/dts/qcom/qcom-apq8026-lg-lenok.dts              | 2 +-
+ arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts  | 2 +-
+ arch/arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts           | 4 ++--
+ arch/arm/boot/dts/qcom/qcom-apq8084-ifc6540.dts               | 2 +-
+ arch/arm/boot/dts/qcom/qcom-apq8084-mtp.dts                   | 2 +-
+ arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts | 4 ++--
+ arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi    | 4 ++--
+ arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dts      | 4 ++--
+ arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts      | 4 ++--
+ arch/arm/boot/dts/qcom/qcom-msm8974pro-samsung-klte.dts       | 2 +-
+ .../dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts   | 4 ++--
+ arch/arm/boot/dts/qcom/qcom-sdx55-mtp.dts                     | 2 +-
+ arch/arm/boot/dts/qcom/qcom-sdx55-t55.dts                     | 2 +-
+ arch/arm/boot/dts/qcom/qcom-sdx55-telit-fn980-tlb.dts         | 2 +-
+ arch/arm/boot/dts/qcom/qcom-sdx65-mtp.dts                     | 2 +-
+ 23 files changed, 23 insertions(+), 23 deletions(-)
+ rename arch/arm/boot/dts/qcom/{qcom-pm8226.dtsi => pm8226.dtsi} (100%)
+ rename arch/arm/boot/dts/qcom/{qcom-pm8841.dtsi => pm8841.dtsi} (100%)
+ rename arch/arm/boot/dts/qcom/{qcom-pm8941.dtsi => pm8941.dtsi} (100%)
+ rename arch/arm/boot/dts/qcom/{qcom-pma8084.dtsi => pma8084.dtsi} (100%)
+ rename arch/arm/boot/dts/qcom/{qcom-pmx55.dtsi => pmx55.dtsi} (100%)
+ rename arch/arm/boot/dts/qcom/{qcom-pmx65.dtsi => pmx65.dtsi} (100%)
 
-diff --git a/tools/testing/selftests/bpf/cgroup_helpers.c b/tools/testing/selftests/bpf/cgroup_helpers.c
-index 2caee8423ee0..f68fbc6c3f52 100644
---- a/tools/testing/selftests/bpf/cgroup_helpers.c
-+++ b/tools/testing/selftests/bpf/cgroup_helpers.c
-@@ -499,10 +499,20 @@ int setup_classid_environment(void)
- 		return 1;
- 	}
+diff --git a/arch/arm/boot/dts/qcom/qcom-pm8226.dtsi b/arch/arm/boot/dts/qcom/pm8226.dtsi
+similarity index 100%
+rename from arch/arm/boot/dts/qcom/qcom-pm8226.dtsi
+rename to arch/arm/boot/dts/qcom/pm8226.dtsi
+diff --git a/arch/arm/boot/dts/qcom/qcom-pm8841.dtsi b/arch/arm/boot/dts/qcom/pm8841.dtsi
+similarity index 100%
+rename from arch/arm/boot/dts/qcom/qcom-pm8841.dtsi
+rename to arch/arm/boot/dts/qcom/pm8841.dtsi
+diff --git a/arch/arm/boot/dts/qcom/qcom-pm8941.dtsi b/arch/arm/boot/dts/qcom/pm8941.dtsi
+similarity index 100%
+rename from arch/arm/boot/dts/qcom/qcom-pm8941.dtsi
+rename to arch/arm/boot/dts/qcom/pm8941.dtsi
+diff --git a/arch/arm/boot/dts/qcom/qcom-pma8084.dtsi b/arch/arm/boot/dts/qcom/pma8084.dtsi
+similarity index 100%
+rename from arch/arm/boot/dts/qcom/qcom-pma8084.dtsi
+rename to arch/arm/boot/dts/qcom/pma8084.dtsi
+diff --git a/arch/arm/boot/dts/qcom/qcom-pmx55.dtsi b/arch/arm/boot/dts/qcom/pmx55.dtsi
+similarity index 100%
+rename from arch/arm/boot/dts/qcom/qcom-pmx55.dtsi
+rename to arch/arm/boot/dts/qcom/pmx55.dtsi
+diff --git a/arch/arm/boot/dts/qcom/qcom-pmx65.dtsi b/arch/arm/boot/dts/qcom/pmx65.dtsi
+similarity index 100%
+rename from arch/arm/boot/dts/qcom/qcom-pmx65.dtsi
+rename to arch/arm/boot/dts/qcom/pmx65.dtsi
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8026-asus-sparrow.dts b/arch/arm/boot/dts/qcom/qcom-apq8026-asus-sparrow.dts
+index aa0e0e8d2a97..a39f5a161b03 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8026-asus-sparrow.dts
++++ b/arch/arm/boot/dts/qcom/qcom-apq8026-asus-sparrow.dts
+@@ -6,7 +6,7 @@
+ /dts-v1/;
  
--	if (mount("net_cls", NETCLS_MOUNT_PATH, "cgroup", 0, "net_cls") &&
--	    errno != EBUSY) {
--		log_err("mount cgroup net_cls");
--		return 1;
-+	if (mount("net_cls", NETCLS_MOUNT_PATH, "cgroup", 0, "net_cls")) {
-+		if (errno != EBUSY) {
-+			log_err("mount cgroup net_cls");
-+			return 1;
-+		}
-+
-+		if (rmdir(NETCLS_MOUNT_PATH)) {
-+			log_err("rmdir cgroup net_cls");
-+			return 1;
-+		}
-+		if (umount(CGROUP_MOUNT_DFLT)) {
-+			log_err("umount cgroup base");
-+			return 1;
-+		}
- 	}
+ #include "qcom-msm8226.dtsi"
+-#include "qcom-pm8226.dtsi"
++#include "pm8226.dtsi"
  
- 	cleanup_classid_environment();
+ /delete-node/ &adsp_region;
+ 
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8026-huawei-sturgeon.dts b/arch/arm/boot/dts/qcom/qcom-apq8026-huawei-sturgeon.dts
+index de19640efe55..59b218042d32 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8026-huawei-sturgeon.dts
++++ b/arch/arm/boot/dts/qcom/qcom-apq8026-huawei-sturgeon.dts
+@@ -6,7 +6,7 @@
+ /dts-v1/;
+ 
+ #include "qcom-msm8226.dtsi"
+-#include "qcom-pm8226.dtsi"
++#include "pm8226.dtsi"
+ #include <dt-bindings/input/ti-drv260x.h>
+ 
+ /delete-node/ &adsp_region;
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8026-lg-lenok.dts b/arch/arm/boot/dts/qcom/qcom-apq8026-lg-lenok.dts
+index b887e5361ec3..feb78afef3a6 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8026-lg-lenok.dts
++++ b/arch/arm/boot/dts/qcom/qcom-apq8026-lg-lenok.dts
+@@ -6,7 +6,7 @@
+ /dts-v1/;
+ 
+ #include "qcom-msm8226.dtsi"
+-#include "qcom-pm8226.dtsi"
++#include "pm8226.dtsi"
+ 
+ /delete-node/ &adsp_region;
+ 
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts b/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts
+index f516e0426bb9..cffc069712b2 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts
++++ b/arch/arm/boot/dts/qcom/qcom-apq8026-samsung-matisse-wifi.dts
+@@ -7,7 +7,7 @@
+ 
+ #include <dt-bindings/input/input.h>
+ #include "qcom-msm8226.dtsi"
+-#include "qcom-pm8226.dtsi"
++#include "pm8226.dtsi"
+ 
+ /delete-node/ &adsp_region;
+ /delete-node/ &smem_region;
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts b/arch/arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts
+index 6d1b2439ae3a..950fa652f985 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts
++++ b/arch/arm/boot/dts/qcom/qcom-apq8074-dragonboard.dts
+@@ -4,8 +4,8 @@
+ #include <dt-bindings/leds/common.h>
+ #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+ #include "qcom-msm8974.dtsi"
+-#include "qcom-pm8841.dtsi"
+-#include "qcom-pm8941.dtsi"
++#include "pm8841.dtsi"
++#include "pm8941.dtsi"
+ 
+ /delete-node/ &mpss_region;
+ 
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8084-ifc6540.dts b/arch/arm/boot/dts/qcom/qcom-apq8084-ifc6540.dts
+index 116e59a3b76d..1df24c922be9 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8084-ifc6540.dts
++++ b/arch/arm/boot/dts/qcom/qcom-apq8084-ifc6540.dts
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include "qcom-apq8084.dtsi"
+-#include "qcom-pma8084.dtsi"
++#include "pma8084.dtsi"
+ 
+ / {
+ 	model = "Qualcomm APQ8084/IFC6540";
+diff --git a/arch/arm/boot/dts/qcom/qcom-apq8084-mtp.dts b/arch/arm/boot/dts/qcom/qcom-apq8084-mtp.dts
+index c6b6680248a6..d4e6aee034af 100644
+--- a/arch/arm/boot/dts/qcom/qcom-apq8084-mtp.dts
++++ b/arch/arm/boot/dts/qcom/qcom-apq8084-mtp.dts
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include "qcom-apq8084.dtsi"
+-#include "qcom-pma8084.dtsi"
++#include "pma8084.dtsi"
+ 
+ / {
+ 	model = "Qualcomm APQ 8084-MTP";
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts b/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts
+index 60bdfddeae69..da99f770d4f5 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dts
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include "qcom-msm8974.dtsi"
+-#include "qcom-pm8841.dtsi"
+-#include "qcom-pm8941.dtsi"
++#include "pm8841.dtsi"
++#include "pm8941.dtsi"
+ #include <dt-bindings/input/input.h>
+ #include <dt-bindings/leds/common.h>
+ #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi
+index 68a2f9094e53..23ae474698aa 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-msm8974-sony-xperia-rhine.dtsi
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include "qcom-msm8974.dtsi"
+-#include "qcom-pm8841.dtsi"
+-#include "qcom-pm8941.dtsi"
++#include "pm8841.dtsi"
++#include "pm8941.dtsi"
+ #include <dt-bindings/input/input.h>
+ #include <dt-bindings/leds/common.h>
+ #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dts
+index 42d253b75dad..6c4153689b39 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-fairphone-fp2.dts
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include "qcom-msm8974pro.dtsi"
+-#include "qcom-pm8841.dtsi"
+-#include "qcom-pm8941.dtsi"
++#include "pm8841.dtsi"
++#include "pm8941.dtsi"
+ #include <dt-bindings/input/input.h>
+ #include <dt-bindings/leds/common.h>
+ #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts
+index 8230d0e1d95d..c0ca264d8140 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-oneplus-bacon.dts
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include "qcom-msm8974pro.dtsi"
+-#include "qcom-pm8841.dtsi"
+-#include "qcom-pm8941.dtsi"
++#include "pm8841.dtsi"
++#include "pm8941.dtsi"
+ #include <dt-bindings/input/input.h>
+ #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+ 
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-samsung-klte.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-samsung-klte.dts
+index 3e2c86591ee2..325feb89b343 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-samsung-klte.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-samsung-klte.dts
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include "qcom-msm8974pro.dtsi"
+-#include "qcom-pma8084.dtsi"
++#include "pma8084.dtsi"
+ #include <dt-bindings/input/input.h>
+ #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+ #include <dt-bindings/leds/common.h>
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
+index 11468d1409f7..0798cce3dbea 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
++++ b/arch/arm/boot/dts/qcom/qcom-msm8974pro-sony-xperia-shinano-castor.dts
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ #include "qcom-msm8974pro.dtsi"
+-#include "qcom-pm8841.dtsi"
+-#include "qcom-pm8941.dtsi"
++#include "pm8841.dtsi"
++#include "pm8941.dtsi"
+ #include <dt-bindings/input/input.h>
+ #include <dt-bindings/leds/common.h>
+ #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+diff --git a/arch/arm/boot/dts/qcom/qcom-sdx55-mtp.dts b/arch/arm/boot/dts/qcom/qcom-sdx55-mtp.dts
+index 7e97ad5803d8..247069361909 100644
+--- a/arch/arm/boot/dts/qcom/qcom-sdx55-mtp.dts
++++ b/arch/arm/boot/dts/qcom/qcom-sdx55-mtp.dts
+@@ -9,7 +9,7 @@
+ #include "qcom-sdx55.dtsi"
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+ #include <arm64/qcom/pm8150b.dtsi>
+-#include "qcom-pmx55.dtsi"
++#include "pmx55.dtsi"
+ 
+ / {
+ 	model = "Qualcomm Technologies, Inc. SDX55 MTP";
+diff --git a/arch/arm/boot/dts/qcom/qcom-sdx55-t55.dts b/arch/arm/boot/dts/qcom/qcom-sdx55-t55.dts
+index 51058b065279..082f7ed1a01f 100644
+--- a/arch/arm/boot/dts/qcom/qcom-sdx55-t55.dts
++++ b/arch/arm/boot/dts/qcom/qcom-sdx55-t55.dts
+@@ -8,7 +8,7 @@
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+ #include "qcom-sdx55.dtsi"
+-#include "qcom-pmx55.dtsi"
++#include "pmx55.dtsi"
+ 
+ / {
+ 	model = "Thundercomm T55 Development Kit";
+diff --git a/arch/arm/boot/dts/qcom/qcom-sdx55-telit-fn980-tlb.dts b/arch/arm/boot/dts/qcom/qcom-sdx55-telit-fn980-tlb.dts
+index 8fadc6e70692..e336a15b45c4 100644
+--- a/arch/arm/boot/dts/qcom/qcom-sdx55-telit-fn980-tlb.dts
++++ b/arch/arm/boot/dts/qcom/qcom-sdx55-telit-fn980-tlb.dts
+@@ -8,7 +8,7 @@
+ #include <dt-bindings/gpio/gpio.h>
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+ #include "qcom-sdx55.dtsi"
+-#include "qcom-pmx55.dtsi"
++#include "pmx55.dtsi"
+ 
+ / {
+ 	model = "Telit FN980 TLB";
+diff --git a/arch/arm/boot/dts/qcom/qcom-sdx65-mtp.dts b/arch/arm/boot/dts/qcom/qcom-sdx65-mtp.dts
+index fcf1c51c5e7a..b87c5434cc29 100644
+--- a/arch/arm/boot/dts/qcom/qcom-sdx65-mtp.dts
++++ b/arch/arm/boot/dts/qcom/qcom-sdx65-mtp.dts
+@@ -8,7 +8,7 @@
+ #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
+ #include <arm64/qcom/pmk8350.dtsi>
+ #include <arm64/qcom/pm7250b.dtsi>
+-#include "qcom-pmx65.dtsi"
++#include "pmx65.dtsi"
+ 
+ / {
+ 	model = "Qualcomm Technologies, Inc. SDX65 MTP";
 -- 
 2.43.0
 
