@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-18619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EE17848371
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2060848241
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D031F22288
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81C4F284EDC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F33D2BAEE;
-	Sat,  3 Feb 2024 04:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6975481BF;
+	Sat,  3 Feb 2024 04:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcySxa9C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUGS9O/C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D096171D4;
-	Sat,  3 Feb 2024 04:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9570F1AAD8;
+	Sat,  3 Feb 2024 04:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933932; cv=none; b=grTItnRUDPmFtAd855vYYpcCxv6ijUtA8BYF5VTpygCfczjCbHjzSiGaMrjgUvBl8N9DS7p0qgZ156esJtPLxE9zoVxMd27p1yPhHdVfyGk2i8kqwnegh7JjrDldhw7GLgM90nPvNJLbNfopjyQQNLzWCNMldKjNMJoACN3fwM8=
+	t=1706933711; cv=none; b=P69fkuSWnxej64jzvGtETZ1zk1qUneqqXozVWVpsic/hQ6zJ/pfatLdSQvrfoSmvtfRaBbwj46BOe8Lz1dk1fTroYd4U8FOwUd/8J+4XKdAGrEEd2daBVsr1fFigvMaI0slJA7Antj7EyE24UK5R4Ji8JvwFcra68tgIs+KTrPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933932; c=relaxed/simple;
-	bh=sRp1ist9v/7XWqKD3zCMynMH5mPkZ6br2i3jf60CVcU=;
+	s=arc-20240116; t=1706933711; c=relaxed/simple;
+	bh=Q/ruibSpp1zIeQ0sdCoxpLCW2zveQNjvtUwrRdqj6/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UEkPy68R6BG8i5OWHI7twcIhe+5oOnflGS3r4DVqG6HvWVu2dOX1wOEb4lny496eUk4NFvCLAR69LoiPDtS4b/7U+wUDRqhKX0WWB+QrTlH+B5s5mLmNXn9YJeuhX7Tw8t0qZgo4x6DLQAOUvlNDIPZAdOnmIAXJHLMkmY3Yl3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcySxa9C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2656EC433F1;
-	Sat,  3 Feb 2024 04:18:52 +0000 (UTC)
+	 MIME-Version; b=CkmZRPrxjzUyiGCOUK1RRTRHc7lWOYngEb4CqKoxCctyV/pH37YAvzqFNjSfv3QrzaPBg99RjIXV2XOT5NQPotKFztTdvB/m9iAmoh0BupEIzEy4TsagCPBmQRaZWD0N/fsuXKlZPsoAIiUgVIN+lBtAwedfLgcoA4wKJFSDsmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUGS9O/C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF6BC433C7;
+	Sat,  3 Feb 2024 04:15:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933932;
-	bh=sRp1ist9v/7XWqKD3zCMynMH5mPkZ6br2i3jf60CVcU=;
+	s=korg; t=1706933711;
+	bh=Q/ruibSpp1zIeQ0sdCoxpLCW2zveQNjvtUwrRdqj6/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KcySxa9CzDsUMeoqEaR2t3PU1YIqRRnZLPV8nFUGSJSbhiSml6kH/9F9mpOMj+H0p
-	 u92pqg7r1hCWRAaVVd4MSRlpVA9b/VaBdXA1GtOjues0oRCBtdmle8npNvpG7dy+kd
-	 dpbN5+jScOR6I5gYwb3B9PKTqLxOUhVCeSBBD09k=
+	b=aUGS9O/C7EL9P8iQ4GSZuR++KWURH8UmbQcB+X/trBZE/KoiNnbLs2VJ19BTIyX1J
+	 m+vh9+ZjFO/gWMGkxQVEvWsZ0budIDPNsuarhA94tNIm+E+rVCPybc0r7eDWGHI6ni
+	 TJXXjzYp47+D55QqQBn/adGu8QJc0k0EjHiQuJKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 292/353] riscv: Fix build error on rv32 + XIP
-Date: Fri,  2 Feb 2024 20:06:50 -0800
-Message-ID: <20240203035413.038572448@linuxfoundation.org>
+Subject: [PATCH 6.6 314/322] selftests: net: add missing config for NF_TARGET_TTL
+Date: Fri,  2 Feb 2024 20:06:51 -0800
+Message-ID: <20240203035409.171752203@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 66f962d8939fd2ac74de901d30d30310c8ddca79 ]
+[ Upstream commit 1939f738c73dfdb8389839bdc9624c765e3326e6 ]
 
-commit 66f1e6809397 ("riscv: Make XIP bootable again") restricted page
-offset to the sv39 page offset instead of the default sv57, which makes
-sense since probably the platforms that target XIP kernels do not
-support anything else than sv39 and we do not try to find out the
-largest address space supported on XIP kernels (ie set_satp_mode()).
+amt test uses the TTL iptables module:
 
-But PAGE_OFFSET_L3 is not defined for rv32, so fix the build error by
-restoring the previous behaviour which picks CONFIG_PAGE_OFFSET for rv32.
+  ip netns exec "${RELAY}" iptables -t mangle -I PREROUTING \
+  	-d 239.0.0.1 -j TTL --ttl-set 2
 
-Fixes: 66f1e6809397 ("riscv: Make XIP bootable again")
-Reported-by: Randy Dunlap <rdunlap@infradead.org>
-Closes: https://lore.kernel.org/linux-riscv/344dca85-5c48-44e1-bc64-4fa7973edd12@infradead.org/T/#u
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org> # build-tested
-Link: https://lore.kernel.org/r/20240118212120.2087803-1-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: c08e8baea78e ("selftests: add amt interface selftest script")
+Link: https://lore.kernel.org/r/20240131165605.4051645-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/init.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/testing/selftests/net/config | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index a65937336cdc..ad77ed410d4d 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -1060,7 +1060,11 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
- 	kernel_map.virt_addr = KERNEL_LINK_ADDR + kernel_map.virt_offset;
- 
- #ifdef CONFIG_XIP_KERNEL
-+#ifdef CONFIG_64BIT
- 	kernel_map.page_offset = PAGE_OFFSET_L3;
-+#else
-+	kernel_map.page_offset = _AC(CONFIG_PAGE_OFFSET, UL);
-+#endif
- 	kernel_map.xiprom = (uintptr_t)CONFIG_XIP_PHYS_ADDR;
- 	kernel_map.xiprom_sz = (uintptr_t)(&_exiprom) - (uintptr_t)(&_xiprom);
- 
+diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
+index 98c6bd2228c6..24a7c7bcbbc1 100644
+--- a/tools/testing/selftests/net/config
++++ b/tools/testing/selftests/net/config
+@@ -33,6 +33,7 @@ CONFIG_IP6_NF_NAT=m
+ CONFIG_IP6_NF_RAW=m
+ CONFIG_IP_NF_NAT=m
+ CONFIG_IP_NF_RAW=m
++CONFIG_IP_NF_TARGET_TTL=m
+ CONFIG_IPV6_GRE=m
+ CONFIG_IPV6_SEG6_LWTUNNEL=y
+ CONFIG_L2TP_ETH=m
 -- 
 2.43.0
 
