@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-18310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF959848237
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D062B848384
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A1F01F22D9C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E260B2AC77
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0361A1AACC;
-	Sat,  3 Feb 2024 04:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08A253E30;
+	Sat,  3 Feb 2024 04:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUJz2g9r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jN+jolw1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0511A701;
-	Sat,  3 Feb 2024 04:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F14611720;
+	Sat,  3 Feb 2024 04:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933704; cv=none; b=abq02RtEeLzZlLaFstMWOrdhkuUqJUHikQTwJkkI7pGwD5pp+4bAuP8XMog+AkNvP4FVMq18GmyrBFOWLAAglyhRvsRuMQBJcU37bgelVawrZNMOe1O1AmGZ1EplcnYYss9HVZ9dXAgDBNucvHduGPD1WurQ9pe95Mal5MsQv8Y=
+	t=1706933944; cv=none; b=thfVh98tNqAyU5n6ZLgNcxsks4AHEEH1aXXgrfxTu7Un0ldCaCzHBvg2Lu50WqiGJd1l8pKfaMz/v7HBLoSyRAv3fmgGvHHeWDVbw1p2io0iFaArozoak+wlAozVVHrGtsw5S8C9IDQ7zOLs+FmpEurSHV0Hx6bxEyQtcSoHTw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933704; c=relaxed/simple;
-	bh=WMpUxHMtgCb7J+dEujnk1ppqF8FCVR/KoivOI3bFSR4=;
+	s=arc-20240116; t=1706933944; c=relaxed/simple;
+	bh=ospwZBTkfK7pTTW2kUTq0XV6cBgTjKcrPwIah/LkTps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EqsMweVgpqeERM7p4T5CSPgmG9v03ebBa/s2xUYwEb3ukxnHlADbaEZna0NQLrHS3VFkSf4vElYbyzjxpmUY+BBjo3/swvSFYAGSpxQwvKfyNGkOrGDNsTB6TxU+j3H+kKHwCi1DxiGgjGZNvEcAxjZSts1a1LPyYL/66zrtKkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUJz2g9r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76571C433F1;
-	Sat,  3 Feb 2024 04:15:04 +0000 (UTC)
+	 MIME-Version; b=SUcja1s3jlJiV8+u0mnZ2QoF4PJVYJL71xEIO7enn0byxpZdVF+Dpjgn8l/jHqA2qD/GpIx/C/znijrtf2GwvNDyL2wlYQoHaHmUIQqDUsR0WXz2SyfOdvq5CaOQLM2BnTBbqq9L23ol2ZKWckPkbj40wW4F2z/VgSqX9EjZPWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jN+jolw1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65614C433F1;
+	Sat,  3 Feb 2024 04:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933704;
-	bh=WMpUxHMtgCb7J+dEujnk1ppqF8FCVR/KoivOI3bFSR4=;
+	s=korg; t=1706933944;
+	bh=ospwZBTkfK7pTTW2kUTq0XV6cBgTjKcrPwIah/LkTps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OUJz2g9rva1JKy4I6Vyf/nTj8LFTFID36oLS39C+Vngu5MAN2wi18SIBvoomHlSZK
-	 Q7HWvhNMREMVP/rbKur/EN2MggTaoo58WVdE25JJmSLe406CQs0LkNKU7bJfIb4UdL
-	 iZNY1Te48GPb0zt9fhKj8N3UNv2pyz5j4fMJ94AQ=
+	b=jN+jolw1BvxEF4Fib4hcVzc9pvMBy7clvHVg3lqnJ7PQfSDkv0lA4Wo0UrqTlKEx/
+	 QzGsXV9gro+YqTpAsz5qfaHUi2VWGBMN6EZHSrWzWAtHXiV8cST8XBUuTvc4fACxLE
+	 I8SbSfZFj9hgoTbhYgyo7jLaTT/AfzMDyRGHLpKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tim Lunn <tim@feathertop.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 306/322] selftests: net: add missing config for nftables-backed iptables
-Date: Fri,  2 Feb 2024 20:06:43 -0800
-Message-ID: <20240203035408.932858133@linuxfoundation.org>
+Subject: [PATCH 6.7 286/353] i2c: rk3x: Adjust mask/value offset for i2c2 on rv1126
+Date: Fri,  2 Feb 2024 20:06:44 -0800
+Message-ID: <20240203035412.830024667@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Tim Lunn <tim@feathertop.org>
 
-[ Upstream commit 59c93583491ab15db109f9902524d241c4fa4c0b ]
+[ Upstream commit 92a85b7c6262f19c65a1c115cf15f411ba65a57c ]
 
-Modern OSes use iptables implementation with nf_tables as a backend,
-e.g.:
+Rockchip RV1126 is using old style i2c controller, the i2c2
+bus uses a non-sequential offset in the grf register for the
+mask/value bits for this bus.
 
-$ iptables -V
-iptables v1.8.8 (nf_tables)
+This patch fixes i2c2 bus on rv1126 SoCs.
 
-Pablo points out that we need CONFIG_NFT_COMPAT to make that work,
-otherwise we see a lot of:
-
-  Warning: Extension DNAT revision 0 not supported, missing kernel module?
-
-with DNAT being just an example here, other modules we need
-include udp, TTL, length etc.
-
-Link: https://lore.kernel.org/r/20240126201308.2903602-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: f7c25d8e17dd ("selftests: net: add missing config for pmtu.sh tests")
+Signed-off-by: Tim Lunn <tim@feathertop.org>
+Acked-by: Heiko Stuebner <heiko@sntech.de>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/config | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-rk3x.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-index dad385f73612..77a173635a29 100644
---- a/tools/testing/selftests/net/config
-+++ b/tools/testing/selftests/net/config
-@@ -62,6 +62,7 @@ CONFIG_NET_SCH_HTB=m
- CONFIG_NET_SCH_FQ=m
- CONFIG_NET_SCH_ETF=m
- CONFIG_NET_SCH_NETEM=y
-+CONFIG_NFT_COMPAT=m
- CONFIG_NF_FLOW_TABLE=m
- CONFIG_PSAMPLE=m
- CONFIG_TCP_MD5SIG=y
+diff --git a/drivers/i2c/busses/i2c-rk3x.c b/drivers/i2c/busses/i2c-rk3x.c
+index 4362db7c5789..086fdf262e7b 100644
+--- a/drivers/i2c/busses/i2c-rk3x.c
++++ b/drivers/i2c/busses/i2c-rk3x.c
+@@ -1295,8 +1295,12 @@ static int rk3x_i2c_probe(struct platform_device *pdev)
+ 			return -EINVAL;
+ 		}
+ 
+-		/* 27+i: write mask, 11+i: value */
+-		value = BIT(27 + bus_nr) | BIT(11 + bus_nr);
++		/* rv1126 i2c2 uses non-sequential write mask 20, value 4 */
++		if (i2c->soc_data == &rv1126_soc_data && bus_nr == 2)
++			value = BIT(20) | BIT(4);
++		else
++			/* 27+i: write mask, 11+i: value */
++			value = BIT(27 + bus_nr) | BIT(11 + bus_nr);
+ 
+ 		ret = regmap_write(grf, i2c->soc_data->grf_offset, value);
+ 		if (ret != 0) {
 -- 
 2.43.0
 
