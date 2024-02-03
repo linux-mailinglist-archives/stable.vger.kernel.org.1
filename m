@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-18123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DB86848179
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534218482AB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBD4A1F2404F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E8162832F6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3B22BB12;
-	Sat,  3 Feb 2024 04:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1870911739;
+	Sat,  3 Feb 2024 04:16:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqB/FEZ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1I2DqXx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553AF11738;
-	Sat,  3 Feb 2024 04:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C5E13ADB;
+	Sat,  3 Feb 2024 04:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933564; cv=none; b=sYmma/C6v1fLYAG5OL11EpTdoaSj1Rc9Vf38n9z85E5y1GJue1ju2VFt2YuAImqPtkC7pxD3Wv96BuBgpoq5CT1HhaS8QToI8AQGFsoSk/STkRi/n17WgYs/p/FGbPgTbgK+2Iu2X+azkF8fAkjASCogURauS9bwkx3YNOnlXfQ=
+	t=1706933788; cv=none; b=PGrn0qeRVvXi3qgqx4B4lmkRKvH49G55Pk0RjoUwYA3yhcmOjRmJEQU73lnVZkdzCKQuAz2I++2Y3LcC18kSTFa9I1IcJwlZdAXDjy65R6eLhkPPb2EYSK5VEnB1TR4OCbi0RUTwySJIYO//6l+reG2aQM5r/bat+k4bZ0OhKC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933564; c=relaxed/simple;
-	bh=mZUwljEJkfnLFnf+VU+JHp0fV3eoEhPLnE7DDYAIuXw=;
+	s=arc-20240116; t=1706933788; c=relaxed/simple;
+	bh=EUd7gAB3KrdNAt6YUsJLwj2KV+la1bVKwWBzUPSG++Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2VkpK57RQfxlbESZ8W5GGJ+v7Q/GxO4ekxMcVsENTXaY36lL32D+JEBhsyeLAgaecPHppGHqkYQfYcYbR33Lv1XnDi5ttW9jdPzkxwRj+LDUCpCVifNpnSZRgcVRR9oAVcxvnWkEZLNU4lkD6/8eGtvcpPqzANu0YOjG+b1Dmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LqB/FEZ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F343C43394;
-	Sat,  3 Feb 2024 04:12:44 +0000 (UTC)
+	 MIME-Version; b=PVmPACzTpxofBCF4oA2wt9ZKyjZ6jGMT5+5aCx7Vt1m8ZAflZS2Cr8RoilqGwTUxAh1uz8A71WNYt4b0g07g4B+DW+1EIuKCXve/EIvYw4iW0dhgh+kALBDIlHKcoypbWht+XGLL3TSfnZHGw6UecdjMwEqSTXXz9liig2GRHEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1I2DqXx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DEFC43394;
+	Sat,  3 Feb 2024 04:16:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933564;
-	bh=mZUwljEJkfnLFnf+VU+JHp0fV3eoEhPLnE7DDYAIuXw=;
+	s=korg; t=1706933788;
+	bh=EUd7gAB3KrdNAt6YUsJLwj2KV+la1bVKwWBzUPSG++Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LqB/FEZ5TfZ28XJ82+5UUgKBQzYp/a9RhjWGmU5lYCz7zRM/hvzovNYkwsuQP68NH
-	 uRA/25e49Ok4HM9rRIQcyTQTQajU2C+4rLVbX4WNgu6le5M3oqiJNzSZReueB6vj2V
-	 /qB7yp7cCRSALQi9eN7c7e4BQ2pgncUHY8gp1Uks=
+	b=f1I2DqXxCEKHwKxNHDST244P/c04eLQpRIFGxs65u6cX9dphtRmD0CXzxD6AMDveS
+	 dwae+ffo+cmfIrXoSkVbscsdr1+bajydosbiVaaXt1gZzi8qC1Oy0+YNLMgn6/753D
+	 w7wof56mMNXiTlp0A0MwjtuGWJXPpeoAMZbIXzbg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	"Md. Haris Iqbal" <haris.iqbal@ionos.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org,
-	Kees Cook <keescook@chromium.org>,
-	Guoqing Jiang <guoqing.jiang@linux.dev>,
+	Kang Yang <quic_kangyang@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/322] block/rnbd-srv: Check for unlikely string overflow
+Subject: [PATCH 6.7 097/353] wifi: ath12k: fix and enable AP mode for WCN7850
 Date: Fri,  2 Feb 2024 20:03:35 -0800
-Message-ID: <20240203035402.960991083@linuxfoundation.org>
+Message-ID: <20240203035406.862895600@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,90 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Kang Yang <quic_kangyang@quicinc.com>
 
-[ Upstream commit 9e4bf6a08d1e127bcc4bd72557f2dfafc6bc7f41 ]
+[ Upstream commit ed7e818a7b501012038d6bc6fedadaf7375a380a ]
 
-Since "dev_search_path" can technically be as large as PATH_MAX,
-there was a risk of truncation when copying it and a second string
-into "full_path" since it was also PATH_MAX sized. The W=1 builds were
-reporting this warning:
+For AP mode, the peer is created earlier in ath12k_mac_op_add_interface() but
+ath12k_mac_op_assign_vif_chanctx() will try to create peer again.  Then an
+error will return which makes AP mode startup fail.
 
-drivers/block/rnbd/rnbd-srv.c: In function 'process_msg_open.isra':
-drivers/block/rnbd/rnbd-srv.c:616:51: warning: '%s' directive output may be truncated writing up to 254 bytes into a region of size between 0 and 4095 [-Wformat-truncation=]
-  616 |                 snprintf(full_path, PATH_MAX, "%s/%s",
-      |                                                   ^~
-In function 'rnbd_srv_get_full_path',
-    inlined from 'process_msg_open.isra' at drivers/block/rnbd/rnbd-srv.c:721:14: drivers/block/rnbd/rnbd-srv.c:616:17: note: 'snprintf' output between 2 and 4351 bytes into a destination of size 4096
-  616 |                 snprintf(full_path, PATH_MAX, "%s/%s",
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  617 |                          dev_search_path, dev_name);
-      |                          ~~~~~~~~~~~~~~~~~~~~~~~~~~
+Kernel log:
 
-To fix this, unconditionally check for truncation (as was already done
-for the case where "%SESSNAME%" was present).
+[ 5017.665006] ath12k_pci 0000:04:00.0: failed to create peer after vdev start delay: -22
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312100355.lHoJPgKy-lkp@intel.com/
-Cc: Md. Haris Iqbal <haris.iqbal@ionos.com>
-Cc: Jack Wang <jinpu.wang@ionos.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc:  <linux-block@vger.kernel.org>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Acked-by: Guoqing Jiang <guoqing.jiang@linux.dev>
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Link: https://lore.kernel.org/r/20231212214738.work.169-kees@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+wpa_supplicant log:
+
+Failed to set beacon parameters
+Interface initialization failed
+wls1: interface state UNINITIALIZED->DISABLED
+wls1: AP-DISABLED
+wls1: Unable to setup interface.
+Failed to initialize AP interface
+wls1: interface state DISABLED->DISABLED
+wls1: AP-DISABLED
+
+So fix this check and enable AP mode for WCN7850, as now AP mode works normally.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+
+Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231121022459.17209-1-quic_kangyang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/rnbd/rnbd-srv.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/net/wireless/ath/ath12k/hw.c  | 3 ++-
+ drivers/net/wireless/ath/ath12k/mac.c | 4 ++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/rnbd/rnbd-srv.c b/drivers/block/rnbd/rnbd-srv.c
-index c186df0ec641..b67e39a34010 100644
---- a/drivers/block/rnbd/rnbd-srv.c
-+++ b/drivers/block/rnbd/rnbd-srv.c
-@@ -585,6 +585,7 @@ static char *rnbd_srv_get_full_path(struct rnbd_srv_session *srv_sess,
- {
- 	char *full_path;
- 	char *a, *b;
-+	int len;
+diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
+index 2245fb510ba2..b55cf33e37bd 100644
+--- a/drivers/net/wireless/ath/ath12k/hw.c
++++ b/drivers/net/wireless/ath/ath12k/hw.c
+@@ -949,7 +949,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
+ 		.rx_mac_buf_ring = true,
+ 		.vdev_start_delay = true,
  
- 	full_path = kmalloc(PATH_MAX, GFP_KERNEL);
- 	if (!full_path)
-@@ -596,19 +597,19 @@ static char *rnbd_srv_get_full_path(struct rnbd_srv_session *srv_sess,
- 	 */
- 	a = strnstr(dev_search_path, "%SESSNAME%", sizeof(dev_search_path));
- 	if (a) {
--		int len = a - dev_search_path;
-+		len = a - dev_search_path;
+-		.interface_modes = BIT(NL80211_IFTYPE_STATION),
++		.interface_modes = BIT(NL80211_IFTYPE_STATION) |
++				   BIT(NL80211_IFTYPE_AP),
+ 		.supports_monitor = false,
  
- 		len = snprintf(full_path, PATH_MAX, "%.*s/%s/%s", len,
- 			       dev_search_path, srv_sess->sessname, dev_name);
--		if (len >= PATH_MAX) {
--			pr_err("Too long path: %s, %s, %s\n",
--			       dev_search_path, srv_sess->sessname, dev_name);
--			kfree(full_path);
--			return ERR_PTR(-EINVAL);
--		}
- 	} else {
--		snprintf(full_path, PATH_MAX, "%s/%s",
--			 dev_search_path, dev_name);
-+		len = snprintf(full_path, PATH_MAX, "%s/%s",
-+			       dev_search_path, dev_name);
-+	}
-+	if (len >= PATH_MAX) {
-+		pr_err("Too long path: %s, %s, %s\n",
-+		       dev_search_path, srv_sess->sessname, dev_name);
-+		kfree(full_path);
-+		return ERR_PTR(-EINVAL);
+ 		.idle_ps = true,
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index fc0d14ea328e..b698e55a5b7b 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -6380,8 +6380,8 @@ ath12k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
  	}
  
- 	/* eliminitate duplicated slashes */
+ 	if (ab->hw_params->vdev_start_delay &&
+-	    (arvif->vdev_type == WMI_VDEV_TYPE_AP ||
+-	    arvif->vdev_type == WMI_VDEV_TYPE_MONITOR)) {
++	    arvif->vdev_type != WMI_VDEV_TYPE_AP &&
++	    arvif->vdev_type != WMI_VDEV_TYPE_MONITOR) {
+ 		param.vdev_id = arvif->vdev_id;
+ 		param.peer_type = WMI_PEER_TYPE_DEFAULT;
+ 		param.peer_addr = ar->mac_addr;
 -- 
 2.43.0
 
