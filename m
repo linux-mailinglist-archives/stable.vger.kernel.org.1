@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-18002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07F68480F9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D6C848361
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C8F228283F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9318FB29D9C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4331B95D;
-	Sat,  3 Feb 2024 04:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D5952F9D;
+	Sat,  3 Feb 2024 04:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQQoiFZp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nb0R7YTE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B39D10A31;
-	Sat,  3 Feb 2024 04:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E8D22F14;
+	Sat,  3 Feb 2024 04:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933475; cv=none; b=T3cmrG/NoKXRsa0uzFo6vigiN66BySjKpTtLyQJOPj5hisfM+a22pGh9pkq7pwddhs3qk7n6SWfXkDCpmC6/bPdrby9jDh3VyfjRTa4Ks2tGRDibQBgVBWLELtMSrp1ZEegcP+w4j2J8yaeZxH5oNq8MXPnspUROuKUn+FC2i/Q=
+	t=1706933920; cv=none; b=f65UAN+D5OYRXRyu5s+e1iYc2sXVqTzl3ctuksy2hmKwyyRmyf3vn6ybMR/y7geDjZ1p8N3c0RUDuogtdrcnwTx9iRXRiyjZV3myK1K9kY8G5DkEm8V46suNv8BoLC2f+MbDU4bkM/Qs63UZZpEQywOXnTTB/4bG6r1y7gWViy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933475; c=relaxed/simple;
-	bh=Uz7LYP8zyKbbPAwuQ6kYf6GHmuZETXV9ETqb/u+IMGI=;
+	s=arc-20240116; t=1706933920; c=relaxed/simple;
+	bh=h/7cu8GNBa2y2afzukx59fGSrGx/HEig1kEjjw89V7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P8G9RbmUW7h+ieZ8elNen3SEJu/+BUBPR/V0xrWursW5N1eus7bZM/mJ/zj2n3/tCGHuSlsMXymultVoyokd60/vXlDBqThRZYdMm/IN42Cc/8Y5X4CtHe0obiOmjwL/X2WseXR7DchgKMAEY1dPsJbSK5cHxIHVsagoruK63m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQQoiFZp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10120C43390;
-	Sat,  3 Feb 2024 04:11:15 +0000 (UTC)
+	 MIME-Version; b=YH9ICETlcRuXdlWcif1nTn4B5W9+Fd3qX9cQ33EuLj19URrjmM++di7HpSXKZ9qY/vCafvwTY7j6Pf/WdbCIYr0sl97Z1qm0exEeIj6c8Ntc0F2on3rbijoQSywcZiGvlPn7zv2Pc3aoz+v2Hh4vNaSuSUkd56XWmqarbvD1x0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nb0R7YTE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C756CC433F1;
+	Sat,  3 Feb 2024 04:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933475;
-	bh=Uz7LYP8zyKbbPAwuQ6kYf6GHmuZETXV9ETqb/u+IMGI=;
+	s=korg; t=1706933919;
+	bh=h/7cu8GNBa2y2afzukx59fGSrGx/HEig1kEjjw89V7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQQoiFZpMGt57uWVafwWVxc5TFsvTcFjVxEcoYVcpzS/lDBCUHfmGHo1mOVSZ+2lL
-	 owdKcTNGbJ4S07eE7pMsrw7Jf+AD1DDa4fRWKic8y0lyMOdiYafVFVYf7r1i9S4hch
-	 CRTvsfXwntP3hOpQ2hChe5e3jWvOo6EUXWF/nfIw=
+	b=Nb0R7YTE7r/6JLH/coqosNHGQ2+epz5My11y+IIgEbPm/8w3+FYwvgp6YxHqB82Nr
+	 UERs6RI1NfrD6u9jj9rPh2TiMqVwk6aRkWnScNkbhVgX05QsmJ2DrJn8NMJ78q0yf/
+	 DADIManyaIQO3/gLUAbSlZdT5DittJixgUUZiHWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Bailey Forrest <bcf@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jeroen de Borst <jeroendb@google.com>,
-	Kevin DeCabooter <decabooter@google.com>
-Subject: [PATCH 6.1 218/219] [PATCH 5.15 6.1] gve: Fix use-after-free vulnerability
-Date: Fri,  2 Feb 2024 20:06:31 -0800
-Message-ID: <20240203035347.276973351@linuxfoundation.org>
+	Charlene Liu <charlene.liu@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Daniel Miess <daniel.miess@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 274/353] Revert "drm/amd/display: Fix conversions between bytes and KB"
+Date: Fri,  2 Feb 2024 20:06:32 -0800
+Message-ID: <20240203035412.430120166@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Praveen Kaligineedi <pkaligineedi@google.com>
+From: Daniel Miess <daniel.miess@amd.com>
 
-From: Bailey Forrest <bcf@google.com>
+[ Upstream commit bf282eb92b84709d99186ad5940b9997eb3c1ff2 ]
 
-Call skb_shinfo() after gve_prep_tso() on DQO TX path.
-gve_prep_tso() calls skb_cow_head(), which may reallocate
-shinfo causing a use after free.
+This reverts commit d0f639c5869399bf6dde4d694d5f8c0ab8c0ec46.
 
-This bug was unintentionally fixed by 'a6fb8d5a8b69
-("gve: Tx path for DQO-QPL")' while adding DQO-QPL format
-support in 6.6. That patch is not appropriate for stable releases.
+The previous commit causes failure to light up for 1080p
+eDP + 8k HDMI panel combo.
 
-Fixes: a57e5de476be ("gve: DQO: Add TX path")
-Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
-Signed-off-by: Bailey Forrest <bcf@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jeroen de Borst <jeroendb@google.com>
-Reviewed-by: Kevin DeCabooter <decabooter@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Daniel Miess <daniel.miess@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/google/gve/gve_tx_dqo.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-@@ -350,6 +350,7 @@ static void gve_tx_fill_pkt_desc_dqo(str
- /* Validates and prepares `skb` for TSO.
-  *
-  * Returns header length, or < 0 if invalid.
-+ * Warning : Might change skb->head (and thus skb_shinfo).
-  */
- static int gve_prep_tso(struct sk_buff *skb)
- {
-@@ -451,8 +452,8 @@ gve_tx_fill_general_ctx_desc(struct gve_
- static int gve_tx_add_skb_no_copy_dqo(struct gve_tx_ring *tx,
- 				      struct sk_buff *skb)
- {
--	const struct skb_shared_info *shinfo = skb_shinfo(skb);
- 	const bool is_gso = skb_is_gso(skb);
-+	struct skb_shared_info *shinfo;
- 	u32 desc_idx = tx->dqo_tx.tail;
- 
- 	struct gve_tx_pending_packet_dqo *pkt;
-@@ -477,6 +478,8 @@ static int gve_tx_add_skb_no_copy_dqo(st
- 		desc_idx = (desc_idx + 1) & tx->mask;
- 	}
- 
-+	/* Must get after gve_prep_tso(), which can change shinfo. */
-+	shinfo = skb_shinfo(skb);
- 	gve_tx_fill_general_ctx_desc(&tx->dqo.tx_ring[desc_idx].general_ctx,
- 				     &metadata);
- 	desc_idx = (desc_idx + 1) & tx->mask;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
+index 62ce95bac8f2..9be5ebf3a8c0 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
+@@ -6229,7 +6229,7 @@ static void set_calculate_prefetch_schedule_params(struct display_mode_lib_st *m
+ 				CalculatePrefetchSchedule_params->GPUVMEnable = mode_lib->ms.cache_display_cfg.plane.GPUVMEnable;
+ 				CalculatePrefetchSchedule_params->HostVMEnable = mode_lib->ms.cache_display_cfg.plane.HostVMEnable;
+ 				CalculatePrefetchSchedule_params->HostVMMaxNonCachedPageTableLevels = mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels;
+-				CalculatePrefetchSchedule_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes;
++				CalculatePrefetchSchedule_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024;
+ 				CalculatePrefetchSchedule_params->DynamicMetadataEnable = mode_lib->ms.cache_display_cfg.plane.DynamicMetadataEnable[k];
+ 				CalculatePrefetchSchedule_params->DynamicMetadataVMEnabled = mode_lib->ms.ip.dynamic_metadata_vm_enabled;
+ 				CalculatePrefetchSchedule_params->DynamicMetadataLinesBeforeActiveRequired = mode_lib->ms.cache_display_cfg.plane.DynamicMetadataLinesBeforeActiveRequired[k];
+-- 
+2.43.0
+
 
 
 
