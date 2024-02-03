@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-18626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DCA0848378
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E291784824F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 713F01C2215D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 847A6B2259F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAC4053E14;
-	Sat,  3 Feb 2024 04:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A237212E56;
+	Sat,  3 Feb 2024 04:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CL/RrDWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3nVOsw4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781F017551;
-	Sat,  3 Feb 2024 04:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5372612E6D;
+	Sat,  3 Feb 2024 04:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933937; cv=none; b=tBMLmweVnUg1PmLckmoZYb5bkFe+ST3Hmmuuofw/qvI3mniwYTsLYyvZLqM9DkDWSV6ba+eKNndTwLJJFSR/fZPIrZecHvJnWWzP7AhSRePWOV7D8WMaalaCwvWvmqUi0C5JB5O1LbgIvoyH6FSkUcTaNLjAx6X5BP0IteGJYGY=
+	t=1706933721; cv=none; b=Z4ZAxHhH5mgu362MxjuSFyx0q5CKsKSV/6kThQi2cVeWv9AFJTtqXJSneB047hcMXNqNqOI7PXcHv5x5Uymg/czOg0tHIDvjpH5oyhFmGYCz8VmfQAZUs5alVIYM8uIy8hkTzjwQYNoRWRlTcd3SKQF5n2jVv8/jjHgD1KpflZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933937; c=relaxed/simple;
-	bh=L0NnWtO9xGqe6yA4tMTGa9IE4N1ctB3SlDDEgQpbNwI=;
+	s=arc-20240116; t=1706933721; c=relaxed/simple;
+	bh=pEv86BzAivXO6GG4qpR7So2cmGwf+F2yi+Ic5kMGQfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V87rv2Y2RspSRsZCfzYSHlosN8mJHteGiPQfP6Sid0liQvOZ/m3lqoqttx7KIGjsh+WWFa1WchF6r0z/0g6GvBjpyXsBrT1G/kkRsqw67MyVfyWBu7cTS5H8ihHyzFSkLyZ7VtSwFPoSyFr/jJN2CU9xWEsCc2ETsPyPRLGxlsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CL/RrDWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C49C433C7;
-	Sat,  3 Feb 2024 04:18:57 +0000 (UTC)
+	 MIME-Version; b=BNk23YdxrFrr0oq1t5Ja1EjLMwL7RWf5IUDoGPllo3envZyAOmBVRZmd5zMhQ0aJNtr/d3a2i0/7TCAdIW+1aVg2a87nLfATQcyBr1RNAMT1WRIlc5/b/OLKSdZ0LKhKEPy1+O5AjVdp+fFOa2sN6m78OQjZcK2yKxFvDlsMQjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3nVOsw4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168D2C43390;
+	Sat,  3 Feb 2024 04:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933937;
-	bh=L0NnWtO9xGqe6yA4tMTGa9IE4N1ctB3SlDDEgQpbNwI=;
+	s=korg; t=1706933721;
+	bh=pEv86BzAivXO6GG4qpR7So2cmGwf+F2yi+Ic5kMGQfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CL/RrDWf5KgkwSyC1hjQ/9OTH3RFyG64H4oVeq9eF9Ns/7WgN+qIfzSQ3g2MbnSfY
-	 9MrIQNiuxMYLVWHZMWGu89kHPyY+OJT1zHENN8x/QAG7ec+8v+//ZeNb0JJC/oIZY3
-	 lXoLZYde50h09Too2CSRnwD/qOBpAwIcmEYfTRxU=
+	b=E3nVOsw4dGFKjHJUJrJzL87qElcaaEgAidCQpQfmtPEIuuXuTr0z4bJTNJS75FA3/
+	 P44m+NqvAj9uRV8kV0Wahr632KC63JUsUkbEWLakWPdkjmbwQ4L6bMWFFeLtSzvtU7
+	 PkKQodDy2isILely48zND8CipslxV973HllWyY+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 299/353] selftests: net: explicitly wait for listener ready
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 320/322] LoongArch/smp: Call rcutree_report_cpu_starting() at tlb_init()
 Date: Fri,  2 Feb 2024 20:06:57 -0800
-Message-ID: <20240203035413.295962811@linuxfoundation.org>
+Message-ID: <20240203035409.374589337@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +60,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 4acffb66630a0e4800880baa61a54ef18047ccd3 ]
+commit 5056c596c3d1848021a4eaa76ee42f4c05c50346 upstream.
 
-The UDP GRO forwarding test still hard-code an arbitrary pause
-to wait for the UDP listener becoming ready in background.
+Machines which have more than 8 nodes fail to boot SMP after commit
+a2ccf46333d7b2cf96 ("LoongArch/smp: Call rcutree_report_cpu_starting()
+earlier"). Because such machines use tlb-based per-cpu base address
+rather than dmw-based per-cpu base address, resulting per-cpu variables
+can only be accessed after tlb_init(). But rcutree_report_cpu_starting()
+is now called before tlb_init() and accesses per-cpu variables indeed.
 
-That causes sporadic failures depending on the host load.
+Since the original patch want to avoid the lockdep warning caused by
+page allocation in tlb_init(), we can move rcutree_report_cpu_starting()
+to tlb_init() where after tlb exception configuration but before page
+allocation.
 
-Replace the sleep with the existing helper waiting for the desired
-port being exposed.
-
-Fixes: a062260a9d5f ("selftests: net: add UDP GRO forwarding self-tests")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/4d58900fb09cef42749cfcf2ad7f4b91a97d225c.1706131762.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a2ccf46333d7b2cf96 ("LoongArch/smp: Call rcutree_report_cpu_starting() earlier")
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/udpgro_fwd.sh | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/loongarch/kernel/smp.c |    1 -
+ arch/loongarch/mm/tlb.c     |   16 ++++++++++------
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/tools/testing/selftests/net/udpgro_fwd.sh b/tools/testing/selftests/net/udpgro_fwd.sh
-index 5fa8659ab13d..d6b9c759043c 100755
---- a/tools/testing/selftests/net/udpgro_fwd.sh
-+++ b/tools/testing/selftests/net/udpgro_fwd.sh
-@@ -1,6 +1,8 @@
- #!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
+--- a/arch/loongarch/kernel/smp.c
++++ b/arch/loongarch/kernel/smp.c
+@@ -506,7 +506,6 @@ asmlinkage void start_secondary(void)
+ 	sync_counter();
+ 	cpu = raw_smp_processor_id();
+ 	set_my_cpu_offset(per_cpu_offset(cpu));
+-	rcu_cpu_starting(cpu);
  
-+source net_helper.sh
+ 	cpu_probe();
+ 	constant_clockevent_init();
+--- a/arch/loongarch/mm/tlb.c
++++ b/arch/loongarch/mm/tlb.c
+@@ -284,12 +284,16 @@ static void setup_tlb_handler(int cpu)
+ 		set_handler(EXCCODE_TLBNR * VECSIZE, handle_tlb_protect, VECSIZE);
+ 		set_handler(EXCCODE_TLBNX * VECSIZE, handle_tlb_protect, VECSIZE);
+ 		set_handler(EXCCODE_TLBPE * VECSIZE, handle_tlb_protect, VECSIZE);
+-	}
++	} else {
++		int vec_sz __maybe_unused;
++		void *addr __maybe_unused;
++		struct page *page __maybe_unused;
 +
- BPF_FILE="xdp_dummy.o"
- readonly BASE="ns-$(mktemp -u XXXXXX)"
- readonly SRC=2
-@@ -119,7 +121,7 @@ run_test() {
- 	ip netns exec $NS_DST $ipt -A INPUT -p udp --dport 8000
- 	ip netns exec $NS_DST ./udpgso_bench_rx -C 1000 -R 10 -n 10 -l 1300 $rx_args &
- 	local spid=$!
--	sleep 0.1
-+	wait_local_port_listen "$NS_DST" 8000 udp
- 	ip netns exec $NS_SRC ./udpgso_bench_tx $family -M 1 -s 13000 -S 1300 -D $dst
- 	local retc=$?
- 	wait $spid
-@@ -168,7 +170,7 @@ run_bench() {
- 	ip netns exec $NS_DST bash -c "echo 2 > /sys/class/net/veth$DST/queues/rx-0/rps_cpus"
- 	ip netns exec $NS_DST taskset 0x2 ./udpgso_bench_rx -C 1000 -R 10  &
- 	local spid=$!
--	sleep 0.1
-+	wait_local_port_listen "$NS_DST" 8000 udp
- 	ip netns exec $NS_SRC taskset 0x1 ./udpgso_bench_tx $family -l 3 -S 1300 -D $dst
- 	local retc=$?
- 	wait $spid
--- 
-2.43.0
-
++		/* Avoid lockdep warning */
++		rcu_cpu_starting(cpu);
++
+ #ifdef CONFIG_NUMA
+-	else {
+-		void *addr;
+-		struct page *page;
+-		const int vec_sz = sizeof(exception_handlers);
++		vec_sz = sizeof(exception_handlers);
+ 
+ 		if (pcpu_handlers[cpu])
+ 			return;
+@@ -305,8 +309,8 @@ static void setup_tlb_handler(int cpu)
+ 		csr_write64(pcpu_handlers[cpu], LOONGARCH_CSR_EENTRY);
+ 		csr_write64(pcpu_handlers[cpu], LOONGARCH_CSR_MERRENTRY);
+ 		csr_write64(pcpu_handlers[cpu] + 80*VECSIZE, LOONGARCH_CSR_TLBRENTRY);
+-	}
+ #endif
++	}
+ }
+ 
+ void tlb_init(int cpu)
 
 
 
