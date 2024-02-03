@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C98BA84835E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6F528480F1
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8451228485A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 084AF1C242D2
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3F65249EF;
-	Sat,  3 Feb 2024 04:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36141B818;
+	Sat,  3 Feb 2024 04:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oP5TFrm+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smC9Krgo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73438224E8;
-	Sat,  3 Feb 2024 04:18:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923AB12E71;
+	Sat,  3 Feb 2024 04:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933918; cv=none; b=XqIxxWz0vhJS5Vy7ErWOhwS3SZalx3nxAXWoGZOa5GHay/Ln25jDk915Z378D7/dw5Ggi/JGX9byXlCoyyvnn5j//+dMIq7eWcB+Vsj9p6WqkbejOdB7SMu9juhaibG4nD4FV+BvVLf57j18+QxArV7D7O6Xnc6gXnHzIQAqEJ0=
+	t=1706933468; cv=none; b=J8mIQ+kpSVBJBHqLqf+qjRaYotHH09nhYvQCEQFs5QBD6bryGSuw41/iKP5WD5WCCRQ9NQG3a/KnsI99cXfM3D04IPWKPs7tix8E6PlCOr9bc14jkHzvpKoqWCrihOpn4guvgZLmo1gPK5257xT1DhIYcXszLyxcji6Wua4+zdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933918; c=relaxed/simple;
-	bh=NTj6ntT8C9dFrT0o/VBT9b6MXbsgtCxu/ZS4+qX8r2o=;
+	s=arc-20240116; t=1706933468; c=relaxed/simple;
+	bh=tQIIz2CupsFokNQ6O869pLju6BeLAm6vP47rwcK1wwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GcPbN/amhmVRGJ3XAc90AvLrxb7Ii9DSm7dK5tVlJYiPlvaeVNZzkxHobj2z/uyzcafFCR0/9TSVLG0VnMadnEQjg8sMEihtolBuxNdX2uwCClHA0oUejWHIDp2Zs6J5xyFSAbwbTtB5+q8KP/Nr08LNPd3uVdHXBheuP6SNfOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oP5TFrm+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39868C43394;
-	Sat,  3 Feb 2024 04:18:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N7slQsE2D1I3r4wY36RX2ViV5xIKSS+PApd4ltboMeScamlzYo3m9FgQiFdHqfw1HKgkibKGswv4PCr8lyEWXj9LuKTfUNwY5fCNe98HlVWVmsK8X1ABGtU3FmjhukUeWnJBanVC7CtwwK5uzYCoSKq7JeW4NwPbjmBxwqNrbXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smC9Krgo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9EDC433F1;
+	Sat,  3 Feb 2024 04:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933918;
-	bh=NTj6ntT8C9dFrT0o/VBT9b6MXbsgtCxu/ZS4+qX8r2o=;
+	s=korg; t=1706933468;
+	bh=tQIIz2CupsFokNQ6O869pLju6BeLAm6vP47rwcK1wwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oP5TFrm+Jj4tePseq0UNEi0vU8NqC4Ia9VMiYenb5UutKRbPqpJC3bpt0bZywD/vH
-	 0h/4dTl8GjrpxFS+81BG2EEkpue5KQfjT9N6e+5sJADxGNxwfXAsEueK/kt/JRzB7f
-	 Y8UjOJmGappSn7u9LUcX5tGyIC5XifjtOwAktZ08=
+	b=smC9KrgoY/r1V5H1A2dCry9eHizn5El+MSHlj7vgoC9ZyjvNrbHkbIlTm/srTeGNU
+	 dLeGR7fLEKfJryIXQ1LCP0AMoJOy+MkbNfRRIgsmAkS4gapB8bbKePf3zyh4/WgK7E
+	 LzKBMPNluMy8I1aWhOJjNNbjzPhHHSeAkPOUyR58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hardik Gajjar <hgajjar@de.adit-jv.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 255/353] usb: hub: Replace hardcoded quirk value with BIT() macro
-Date: Fri,  2 Feb 2024 20:06:13 -0800
-Message-ID: <20240203035411.810907210@linuxfoundation.org>
+Subject: [PATCH 6.1 201/219] bridge: mcast: fix disabled snooping after long uptime
+Date: Fri,  2 Feb 2024 20:06:14 -0800
+Message-ID: <20240203035345.396818181@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,160 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hardik Gajjar <hgajjar@de.adit-jv.com>
+From: Linus Lüssing <linus.luessing@c0d3.blue>
 
-[ Upstream commit 6666ea93d2c422ebeb8039d11e642552da682070 ]
+[ Upstream commit f5c3eb4b7251baba5cd72c9e93920e710ac8194a ]
 
-This patch replaces the hardcoded quirk value in the macro with
-BIT().
+The original idea of the delay_time check was to not apply multicast
+snooping too early when an MLD querier appears. And to instead wait at
+least for MLD reports to arrive before switching from flooding to group
+based, MLD snooped forwarding, to avoid temporary packet loss.
 
-Signed-off-by: Hardik Gajjar <hgajjar@de.adit-jv.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20231205181829.127353-1-hgajjar@de.adit-jv.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However in a batman-adv mesh network it was noticed that after 248 days of
+uptime 32bit MIPS based devices would start to signal that they had
+stopped applying multicast snooping due to missing queriers - even though
+they were the elected querier and still sending MLD queries themselves.
+
+While time_is_before_jiffies() generally is safe against jiffies
+wrap-arounds, like the code comments in jiffies.h explain, it won't
+be able to track a difference larger than ULONG_MAX/2. With a 32bit
+large jiffies and one jiffies tick every 10ms (CONFIG_HZ=100) on these MIPS
+devices running OpenWrt this would result in a difference larger than
+ULONG_MAX/2 after 248 (= 2^32/100/60/60/24/2) days and
+time_is_before_jiffies() would then start to return false instead of
+true. Leading to multicast snooping not being applied to multicast
+packets anymore.
+
+Fix this issue by using a proper timer_list object which won't have this
+ULONG_MAX/2 difference limitation.
+
+Fixes: b00589af3b04 ("bridge: disable snooping if there is no querier")
+Signed-off-by: Linus Lüssing <linus.luessing@c0d3.blue>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20240127175033.9640-1-linus.luessing@c0d3.blue
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bridge/br_multicast.c | 20 +++++++++++++++-----
+ net/bridge/br_private.h   |  4 ++--
+ 2 files changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 87480a6e6d93..7deeba174858 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -47,8 +47,8 @@
- #define USB_VENDOR_TEXAS_INSTRUMENTS		0x0451
- #define USB_PRODUCT_TUSB8041_USB3		0x8140
- #define USB_PRODUCT_TUSB8041_USB2		0x8142
--#define HUB_QUIRK_CHECK_PORT_AUTOSUSPEND	0x01
--#define HUB_QUIRK_DISABLE_AUTOSUSPEND		0x02
-+#define HUB_QUIRK_CHECK_PORT_AUTOSUSPEND	BIT(0)
-+#define HUB_QUIRK_DISABLE_AUTOSUSPEND		BIT(1)
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index db4f2641d1cd..9765f9f9bf7f 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -1607,6 +1607,10 @@ static void br_ip6_multicast_querier_expired(struct timer_list *t)
+ }
+ #endif
  
- #define USB_TP_TRANSMISSION_DELAY	40	/* ns */
- #define USB_TP_TRANSMISSION_DELAY_MAX	65535	/* ns */
++static void br_multicast_query_delay_expired(struct timer_list *t)
++{
++}
++
+ static void br_multicast_select_own_querier(struct net_bridge_mcast *brmctx,
+ 					    struct br_ip *ip,
+ 					    struct sk_buff *skb)
+@@ -3024,7 +3028,7 @@ br_multicast_update_query_timer(struct net_bridge_mcast *brmctx,
+ 				unsigned long max_delay)
+ {
+ 	if (!timer_pending(&query->timer))
+-		query->delay_time = jiffies + max_delay;
++		mod_timer(&query->delay_timer, jiffies + max_delay);
+ 
+ 	mod_timer(&query->timer, jiffies + brmctx->multicast_querier_interval);
+ }
+@@ -3867,13 +3871,11 @@ void br_multicast_ctx_init(struct net_bridge *br,
+ 	brmctx->multicast_querier_interval = 255 * HZ;
+ 	brmctx->multicast_membership_interval = 260 * HZ;
+ 
+-	brmctx->ip4_other_query.delay_time = 0;
+ 	brmctx->ip4_querier.port_ifidx = 0;
+ 	seqcount_spinlock_init(&brmctx->ip4_querier.seq, &br->multicast_lock);
+ 	brmctx->multicast_igmp_version = 2;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	brmctx->multicast_mld_version = 1;
+-	brmctx->ip6_other_query.delay_time = 0;
+ 	brmctx->ip6_querier.port_ifidx = 0;
+ 	seqcount_spinlock_init(&brmctx->ip6_querier.seq, &br->multicast_lock);
+ #endif
+@@ -3882,6 +3884,8 @@ void br_multicast_ctx_init(struct net_bridge *br,
+ 		    br_ip4_multicast_local_router_expired, 0);
+ 	timer_setup(&brmctx->ip4_other_query.timer,
+ 		    br_ip4_multicast_querier_expired, 0);
++	timer_setup(&brmctx->ip4_other_query.delay_timer,
++		    br_multicast_query_delay_expired, 0);
+ 	timer_setup(&brmctx->ip4_own_query.timer,
+ 		    br_ip4_multicast_query_expired, 0);
+ #if IS_ENABLED(CONFIG_IPV6)
+@@ -3889,6 +3893,8 @@ void br_multicast_ctx_init(struct net_bridge *br,
+ 		    br_ip6_multicast_local_router_expired, 0);
+ 	timer_setup(&brmctx->ip6_other_query.timer,
+ 		    br_ip6_multicast_querier_expired, 0);
++	timer_setup(&brmctx->ip6_other_query.delay_timer,
++		    br_multicast_query_delay_expired, 0);
+ 	timer_setup(&brmctx->ip6_own_query.timer,
+ 		    br_ip6_multicast_query_expired, 0);
+ #endif
+@@ -4023,10 +4029,12 @@ static void __br_multicast_stop(struct net_bridge_mcast *brmctx)
+ {
+ 	del_timer_sync(&brmctx->ip4_mc_router_timer);
+ 	del_timer_sync(&brmctx->ip4_other_query.timer);
++	del_timer_sync(&brmctx->ip4_other_query.delay_timer);
+ 	del_timer_sync(&brmctx->ip4_own_query.timer);
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	del_timer_sync(&brmctx->ip6_mc_router_timer);
+ 	del_timer_sync(&brmctx->ip6_other_query.timer);
++	del_timer_sync(&brmctx->ip6_other_query.delay_timer);
+ 	del_timer_sync(&brmctx->ip6_own_query.timer);
+ #endif
+ }
+@@ -4469,13 +4477,15 @@ int br_multicast_set_querier(struct net_bridge_mcast *brmctx, unsigned long val)
+ 	max_delay = brmctx->multicast_query_response_interval;
+ 
+ 	if (!timer_pending(&brmctx->ip4_other_query.timer))
+-		brmctx->ip4_other_query.delay_time = jiffies + max_delay;
++		mod_timer(&brmctx->ip4_other_query.delay_timer,
++			  jiffies + max_delay);
+ 
+ 	br_multicast_start_querier(brmctx, &brmctx->ip4_own_query);
+ 
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	if (!timer_pending(&brmctx->ip6_other_query.timer))
+-		brmctx->ip6_other_query.delay_time = jiffies + max_delay;
++		mod_timer(&brmctx->ip6_other_query.delay_timer,
++			  jiffies + max_delay);
+ 
+ 	br_multicast_start_querier(brmctx, &brmctx->ip6_own_query);
+ #endif
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index 06e5f6faa431..51d010f64e06 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -77,7 +77,7 @@ struct bridge_mcast_own_query {
+ /* other querier */
+ struct bridge_mcast_other_query {
+ 	struct timer_list		timer;
+-	unsigned long			delay_time;
++	struct timer_list		delay_timer;
+ };
+ 
+ /* selected querier */
+@@ -1083,7 +1083,7 @@ __br_multicast_querier_exists(struct net_bridge_mcast *brmctx,
+ 		own_querier_enabled = false;
+ 	}
+ 
+-	return time_is_before_jiffies(querier->delay_time) &&
++	return !timer_pending(&querier->delay_timer) &&
+ 	       (own_querier_enabled || timer_pending(&querier->timer));
+ }
+ 
 -- 
 2.43.0
 
