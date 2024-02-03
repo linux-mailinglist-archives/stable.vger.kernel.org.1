@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-18281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 983E084821A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32118848367
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EDD328A79B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 644051C208DC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1AE4595C;
-	Sat,  3 Feb 2024 04:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9BC250E0;
+	Sat,  3 Feb 2024 04:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8JReW4X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcscDk6n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3A018EBF;
-	Sat,  3 Feb 2024 04:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3187828E3C;
+	Sat,  3 Feb 2024 04:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933683; cv=none; b=CxPTpvZ8OY+BTvSGHi7r3pxvpDXVEUBJkDYegB2sIAF7mHH12Dqtfqx974SYGvE5PSQJlx5x7AAOOWhNZp7HS7t/iJefoMXKlZyav9XSTqKQzjIhBroMnCdhBGsLTLjBj+BaCOA+xBZz5DY1nlcyl55BXIlYIC4qveW3GCO2Aj0=
+	t=1706933925; cv=none; b=S44oDnF3pVxmbV1lU6658GeN7MAWYt9HeYZ0QG7DXOKyHXw3xruPqeJ+i3lxGM0N+7X6VxOn8bXKdWAl8Nx39VY8t/dKq4WTDBjPk7LT2k9ZFZm/Gt4aD5SaHUdNuUXNtCU5cnDRvh3xbFCdgVCIAas8bgCpSfYpcAgK1I/dd6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933683; c=relaxed/simple;
-	bh=GToQs3GobfFIuNI6plZvENYdxh32xCjNDilTQJQQCjk=;
+	s=arc-20240116; t=1706933925; c=relaxed/simple;
+	bh=NZ214pLdagVQ+lMDh3W/vqkytLCE53hvCUp4mZjb6B8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZT8Oxk4gz069s42HrCPPsOIA8nsJtv7OImUDDkA4iy/rCgCU8tDsI08hT36uHgY3YtjeslnYrO8u0XPPi37FWaTToNc+1aKkgc8YHK37/ZlRKjJ0cssDtNr+pIdoJcX0iV6jW8VXbSmhXrr81FeM6spFqxQlS/ClB/X1q2Fx4H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8JReW4X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8857C43390;
-	Sat,  3 Feb 2024 04:14:42 +0000 (UTC)
+	 MIME-Version; b=V3ZkE/cCNdqJMqDTyTkUw2yggjkld88AqzPdGJ9jCP1Vajq1WtbLusNONXpgGKahhmNOmEoOq984/ocgRQUhF7lwM3Y7H5Is398lXJnSYDFa/eo2lgN37Hxhj+mmsg8eRqbp+MSWFb8V+Bz+ELMS1RJvxq4sOFiEka0/QWSUPgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcscDk6n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6B4C43390;
+	Sat,  3 Feb 2024 04:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933682;
-	bh=GToQs3GobfFIuNI6plZvENYdxh32xCjNDilTQJQQCjk=;
+	s=korg; t=1706933925;
+	bh=NZ214pLdagVQ+lMDh3W/vqkytLCE53hvCUp4mZjb6B8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8JReW4XywovErPi5rMqjklSXnkZP+czuzOn1b6aTHogtVqB1W6UiAOdE3DQ5nojw
-	 8E6BPZbE1NU0fF6fLVnOegSutPA+9g1/we0vpXq8jjeGWpC7agAoIgR8MENlRrAoHv
-	 1kdx+4mDBzKIytg9658BaoheodPDsie0nssSTkZk=
+	b=QcscDk6nvXOumfq2UMz0MUUVXn2zwgn1e18aVzUSoyRGNqesyqgzaZ7Jt8cs+j3hW
+	 W8FdKjmnHbnhnInGdTgwZ1pyB2YvXe3e3HPc9swq3iURbJneU6wCoTmlUWnTDP4daa
+	 692lETiPinY+kHfAy+MPSqnDlAzaqXQwcfI7ljWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hardik Gajjar <hgajjar@de.adit-jv.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 277/322] ip6_tunnel: make sure to pull inner header in __ip6_tnl_rcv()
+Subject: [PATCH 6.7 256/353] usb: hub: Add quirk to decrease IN-ep poll interval for Microchip USB491x hub
 Date: Fri,  2 Feb 2024 20:06:14 -0800
-Message-ID: <20240203035408.049073762@linuxfoundation.org>
+Message-ID: <20240203035411.841859335@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,141 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Hardik Gajjar <hgajjar@de.adit-jv.com>
 
-[ Upstream commit 8d975c15c0cd744000ca386247432d57b21f9df0 ]
+[ Upstream commit 855d75cf8311fee156fabb5639bb53757ca83dd4 ]
 
-syzbot found __ip6_tnl_rcv() could access unitiliazed data [1].
+There is a potential delay in notifying Linux USB drivers of downstream
+USB bus activity when connecting a high-speed or superSpeed device via the
+Microchip USB491x hub. This delay is due to the fixed bInterval value of
+12 in the silicon of the Microchip USB491x hub.
 
-Call pskb_inet_may_pull() to fix this, and initialize ipv6h
-variable after this call as it can change skb->head.
+Microchip requested to ignore the device descriptor and decrease that
+value to 9 as it was too late to modify that in silicon.
 
-[1]
- BUG: KMSAN: uninit-value in __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
- BUG: KMSAN: uninit-value in INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
- BUG: KMSAN: uninit-value in IP6_ECN_decapsulate+0x7df/0x1e50 include/net/inet_ecn.h:321
-  __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
-  INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
-  IP6_ECN_decapsulate+0x7df/0x1e50 include/net/inet_ecn.h:321
-  ip6ip6_dscp_ecn_decapsulate+0x178/0x1b0 net/ipv6/ip6_tunnel.c:727
-  __ip6_tnl_rcv+0xd4e/0x1590 net/ipv6/ip6_tunnel.c:845
-  ip6_tnl_rcv+0xce/0x100 net/ipv6/ip6_tunnel.c:888
- gre_rcv+0x143f/0x1870
-  ip6_protocol_deliver_rcu+0xda6/0x2a60 net/ipv6/ip6_input.c:438
-  ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
-  NF_HOOK include/linux/netfilter.h:314 [inline]
-  ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
-  ip6_mc_input+0xa7e/0xc80 net/ipv6/ip6_input.c:586
-  dst_input include/net/dst.h:461 [inline]
-  ip6_rcv_finish+0x5db/0x870 net/ipv6/ip6_input.c:79
-  NF_HOOK include/linux/netfilter.h:314 [inline]
-  ipv6_rcv+0xda/0x390 net/ipv6/ip6_input.c:310
-  __netif_receive_skb_one_core net/core/dev.c:5532 [inline]
-  __netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5646
-  netif_receive_skb_internal net/core/dev.c:5732 [inline]
-  netif_receive_skb+0x58/0x660 net/core/dev.c:5791
-  tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1555
-  tun_get_user+0x53af/0x66d0 drivers/net/tun.c:2002
-  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-  call_write_iter include/linux/fs.h:2084 [inline]
-  new_sync_write fs/read_write.c:497 [inline]
-  vfs_write+0x786/0x1200 fs/read_write.c:590
-  ksys_write+0x20f/0x4c0 fs/read_write.c:643
-  __do_sys_write fs/read_write.c:655 [inline]
-  __se_sys_write fs/read_write.c:652 [inline]
-  __x64_sys_write+0x93/0xd0 fs/read_write.c:652
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0x6d/0x140 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
+This patch speeds up the USB enummeration process that helps to pass
+Apple Carplay certifications and improve the User experience when utilizing
+the USB device via Microchip Multihost USB491x Hub.
 
-Uninit was created at:
-  slab_post_alloc_hook+0x129/0xa70 mm/slab.h:768
-  slab_alloc_node mm/slub.c:3478 [inline]
-  kmem_cache_alloc_node+0x5e9/0xb10 mm/slub.c:3523
-  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:560
-  __alloc_skb+0x318/0x740 net/core/skbuff.c:651
-  alloc_skb include/linux/skbuff.h:1286 [inline]
-  alloc_skb_with_frags+0xc8/0xbd0 net/core/skbuff.c:6334
-  sock_alloc_send_pskb+0xa80/0xbf0 net/core/sock.c:2787
-  tun_alloc_skb drivers/net/tun.c:1531 [inline]
-  tun_get_user+0x1e8a/0x66d0 drivers/net/tun.c:1846
-  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
-  call_write_iter include/linux/fs.h:2084 [inline]
-  new_sync_write fs/read_write.c:497 [inline]
-  vfs_write+0x786/0x1200 fs/read_write.c:590
-  ksys_write+0x20f/0x4c0 fs/read_write.c:643
-  __do_sys_write fs/read_write.c:655 [inline]
-  __se_sys_write fs/read_write.c:652 [inline]
-  __x64_sys_write+0x93/0xd0 fs/read_write.c:652
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0x6d/0x140 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
+A new hub quirk HUB_QUIRK_REDUCE_FRAME_INTR_BINTERVAL speeds up
+the notification process for Microchip USB491x hub by limiting
+the maximum bInterval value to 9.
 
-CPU: 0 PID: 5034 Comm: syz-executor331 Not tainted 6.7.0-syzkaller-00562-g9f8413c4a66f #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-
-Fixes: 0d3c703a9d17 ("ipv6: Cleanup IPv6 tunnel receive path")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240125170557.2663942-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hardik Gajjar <hgajjar@de.adit-jv.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20231205181829.127353-2-hgajjar@de.adit-jv.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_tunnel.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/usb/core/hub.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 46c19bd48990..9bbabf750a21 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -796,8 +796,8 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- 						struct sk_buff *skb),
- 			 bool log_ecn_err)
- {
--	const struct ipv6hdr *ipv6h = ipv6_hdr(skb);
--	int err;
-+	const struct ipv6hdr *ipv6h;
-+	int nh, err;
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index 7deeba174858..ef8d9bda94ac 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -47,12 +47,18 @@
+ #define USB_VENDOR_TEXAS_INSTRUMENTS		0x0451
+ #define USB_PRODUCT_TUSB8041_USB3		0x8140
+ #define USB_PRODUCT_TUSB8041_USB2		0x8142
++#define USB_VENDOR_MICROCHIP			0x0424
++#define USB_PRODUCT_USB4913			0x4913
++#define USB_PRODUCT_USB4914			0x4914
++#define USB_PRODUCT_USB4915			0x4915
+ #define HUB_QUIRK_CHECK_PORT_AUTOSUSPEND	BIT(0)
+ #define HUB_QUIRK_DISABLE_AUTOSUSPEND		BIT(1)
++#define HUB_QUIRK_REDUCE_FRAME_INTR_BINTERVAL	BIT(2)
  
- 	if ((!(tpi->flags & TUNNEL_CSUM) &&
- 	     (tunnel->parms.i_flags & TUNNEL_CSUM)) ||
-@@ -829,7 +829,6 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- 			goto drop;
- 		}
+ #define USB_TP_TRANSMISSION_DELAY	40	/* ns */
+ #define USB_TP_TRANSMISSION_DELAY_MAX	65535	/* ns */
+ #define USB_PING_RESPONSE_TIME		400	/* ns */
++#define USB_REDUCE_FRAME_INTR_BINTERVAL	9
  
--		ipv6h = ipv6_hdr(skb);
- 		skb->protocol = eth_type_trans(skb, tunnel->dev);
- 		skb_postpull_rcsum(skb, eth_hdr(skb), ETH_HLEN);
- 	} else {
-@@ -837,7 +836,23 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
- 		skb_reset_mac_header(skb);
+ /* Protect struct usb_device->state and ->children members
+  * Note: Both are also protected by ->dev.sem, except that ->state can
+@@ -1904,6 +1910,14 @@ static int hub_probe(struct usb_interface *intf, const struct usb_device_id *id)
+ 		usb_autopm_get_interface_no_resume(intf);
  	}
  
-+	/* Save offset of outer header relative to skb->head,
-+	 * because we are going to reset the network header to the inner header
-+	 * and might change skb->head.
-+	 */
-+	nh = skb_network_header(skb) - skb->head;
-+
- 	skb_reset_network_header(skb);
-+
-+	if (!pskb_inet_may_pull(skb)) {
-+		DEV_STATS_INC(tunnel->dev, rx_length_errors);
-+		DEV_STATS_INC(tunnel->dev, rx_errors);
-+		goto drop;
++	if ((id->driver_info & HUB_QUIRK_REDUCE_FRAME_INTR_BINTERVAL) &&
++	    desc->endpoint[0].desc.bInterval > USB_REDUCE_FRAME_INTR_BINTERVAL) {
++		desc->endpoint[0].desc.bInterval =
++			USB_REDUCE_FRAME_INTR_BINTERVAL;
++		/* Tell the HCD about the interrupt ep's new bInterval */
++		usb_set_interface(hdev, 0, 0);
 +	}
 +
-+	/* Get the outer header. */
-+	ipv6h = (struct ipv6hdr *)(skb->head + nh);
-+
- 	memset(skb->cb, 0, sizeof(struct inet6_skb_parm));
+ 	if (hub_configure(hub, &desc->endpoint[0].desc) >= 0) {
+ 		onboard_hub_create_pdevs(hdev, &hub->onboard_hub_devs);
  
- 	__skb_tunnel_rx(skb, tunnel->dev, tunnel->net);
+@@ -5895,6 +5909,21 @@ static const struct usb_device_id hub_id_table[] = {
+       .idVendor = USB_VENDOR_TEXAS_INSTRUMENTS,
+       .idProduct = USB_PRODUCT_TUSB8041_USB3,
+       .driver_info = HUB_QUIRK_DISABLE_AUTOSUSPEND},
++	{ .match_flags = USB_DEVICE_ID_MATCH_VENDOR
++			| USB_DEVICE_ID_MATCH_PRODUCT,
++	  .idVendor = USB_VENDOR_MICROCHIP,
++	  .idProduct = USB_PRODUCT_USB4913,
++	  .driver_info = HUB_QUIRK_REDUCE_FRAME_INTR_BINTERVAL},
++	{ .match_flags = USB_DEVICE_ID_MATCH_VENDOR
++			| USB_DEVICE_ID_MATCH_PRODUCT,
++	  .idVendor = USB_VENDOR_MICROCHIP,
++	  .idProduct = USB_PRODUCT_USB4914,
++	  .driver_info = HUB_QUIRK_REDUCE_FRAME_INTR_BINTERVAL},
++	{ .match_flags = USB_DEVICE_ID_MATCH_VENDOR
++			| USB_DEVICE_ID_MATCH_PRODUCT,
++	  .idVendor = USB_VENDOR_MICROCHIP,
++	  .idProduct = USB_PRODUCT_USB4915,
++	  .driver_info = HUB_QUIRK_REDUCE_FRAME_INTR_BINTERVAL},
+     { .match_flags = USB_DEVICE_ID_MATCH_DEV_CLASS,
+       .bDeviceClass = USB_CLASS_HUB},
+     { .match_flags = USB_DEVICE_ID_MATCH_INT_CLASS,
 -- 
 2.43.0
 
