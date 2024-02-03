@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D77E84824E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11D0B848379
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE4492819E2
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E69C282354
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACA4812E6D;
-	Sat,  3 Feb 2024 04:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6688511717;
+	Sat,  3 Feb 2024 04:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldF3/fIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4jBU3Du"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAB263B1;
-	Sat,  3 Feb 2024 04:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263DC171D4;
+	Sat,  3 Feb 2024 04:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933722; cv=none; b=CLH/kN+gLOwi2nCD5YHhyTRRktjhYppKXnzYJZLVsjvXJFxnKuWPPepesZG7Tmv055v7PE/JGx6jEZ8gSpk0kspYz5N3LZaEc/w0zSSgDcPCZpN8bSbFqtkwlk/plbikzCIchAGfHIPhTQ8FnI9BodeLuZ6v5tilWnyDvkGrbUc=
+	t=1706933938; cv=none; b=NYBEN5LciMhT+GUO3rJvrVrptE/JS4HbccxKMLjT55TB9YIugwtKcrYYM0jn9ue2MZtVXr1J9aNv+bdgCU70xwheuK7spljud8tKcicL6A/n1AUgDwOAcc9ArS4wsHIu7fdve6JpvfcTPNli+isoAchnpSOzY0wt4pS4Ulrr+ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933722; c=relaxed/simple;
-	bh=1l+XPyTyBqLpcZHMfu+Ai7w2tkqUglCJNQZD1WS9Ra8=;
+	s=arc-20240116; t=1706933938; c=relaxed/simple;
+	bh=rC9yz0Iq1BoxsR/iztL/KRAWGJ4VzYTQbPE4o2XNSY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQFsLw+qrvAIVN57HONIdpJlAo6srHHWllcRaHVtFlwvuVZXM94Wqz5Zo3HdCUnmJNbcs6ydn5Od9Nu0k5ysXkTz7u6lo16zfvsxMB9CR3OmqcTXADnGHLpxJ2w+jyKDoUAMXKUYLzifPiC4Kz5E7bpWBgbPKlTcecYbQLQn0Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldF3/fIT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C3AC43399;
-	Sat,  3 Feb 2024 04:15:21 +0000 (UTC)
+	 MIME-Version; b=tB6pEMU9MJDw9GhfUgDdJVtUqRA7lmWhQWPPJja4S8PlWDQbQo5oaM63Z2SvcHWnIjwp2OGBKHFs15EEDsRyUcaP1/Xpn2nINoNy6aLrOUE4zcc3UGRL9k92brg2PwLCwM4mFiavZ5/xDfgmyQ0tdOpfWyd+EHayUQ/6xBLlopA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4jBU3Du; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4936C433F1;
+	Sat,  3 Feb 2024 04:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933721;
-	bh=1l+XPyTyBqLpcZHMfu+Ai7w2tkqUglCJNQZD1WS9Ra8=;
+	s=korg; t=1706933938;
+	bh=rC9yz0Iq1BoxsR/iztL/KRAWGJ4VzYTQbPE4o2XNSY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ldF3/fIThM1PMu+LZb6Ry2cNSt/QfOYMReGW/Y86TN46t3Nd+lKFSf9DPAVrXZheb
-	 5yNH7MJ3RsNXIvN+xuv2pjmWmC+7bWQM+lWrV8c31DPyWnLS7oak375L5V85ArLQ8n
-	 6WV5QPXN6rX2LxXjF3+LQDUnVLOWwbYwX6cjZovI=
+	b=y4jBU3DuRg9lZCkpPaRKOaKxMfrHXBxdfowkIAx50VHza1pvpMtcccrO5QGWnMV5g
+	 HhKU8d+8v4k8DE6JNhFdYUuxeQ+yh0UzhxBlWFexSX8J4skbWKC36rIkZ50ZGpjT1j
+	 C/b1tKLKAccEhTvsg+9uu4We7CZTkTOngVXz9HEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Subject: [PATCH 6.6 321/322] selftests/bpf: Remove flaky test_btf_id test
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 300/353] gve: Fix skb truesize underestimation
 Date: Fri,  2 Feb 2024 20:06:58 -0800
-Message-ID: <20240203035409.407061189@linuxfoundation.org>
+Message-ID: <20240203035413.329850710@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Praveen Kaligineedi <pkaligineedi@google.com>
 
-commit 56925f389e152dcb8d093435d43b78a310539c23 upstream.
+[ Upstream commit 534326711000c318fe1523c77308450522baa499 ]
 
-With previous patch, one of subtests in test_btf_id becomes
-flaky and may fail. The following is a failing example:
+For a skb frag with a newly allocated copy page, the true size is
+incorrectly set to packet buffer size. It should be set to PAGE_SIZE
+instead.
 
-  Error: #26 btf
-  Error: #26/174 btf/BTF ID
-    Error: #26/174 btf/BTF ID
-    btf_raw_create:PASS:check 0 nsec
-    btf_raw_create:PASS:check 0 nsec
-    test_btf_id:PASS:check 0 nsec
-    ...
-    test_btf_id:PASS:check 0 nsec
-    test_btf_id:FAIL:check BTF lingersdo_test_get_info:FAIL:check failed: -1
-
-The test tries to prove a btf_id not available after the map is closed.
-But btf_id is freed only after workqueue and a rcu grace period, compared
-to previous case just after a rcu grade period.
-Depending on system workload, workqueue could take quite some time
-to execute function bpf_map_free_deferred() which may cause the test failure.
-Instead of adding arbitrary delays, let us remove the logic to
-check btf_id availability after map is closed.
-
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20231214203820.1469402-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 82fd151d38d9 ("gve: Reduce alloc and copy costs in the GQ rx path")
+Signed-off-by: Praveen Kaligineedi <pkaligineedi@google.com>
+Link: https://lore.kernel.org/r/20240124161025.1819836-1-pkaligineedi@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/btf.c |    5 -----
- 1 file changed, 5 deletions(-)
+ drivers/net/ethernet/google/gve/gve_rx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/tools/testing/selftests/bpf/prog_tests/btf.c
-+++ b/tools/testing/selftests/bpf/prog_tests/btf.c
-@@ -4630,11 +4630,6 @@ static int test_btf_id(unsigned int test
- 	/* The map holds the last ref to BTF and its btf_id */
- 	close(map_fd);
- 	map_fd = -1;
--	btf_fd[0] = bpf_btf_get_fd_by_id(map_info.btf_id);
--	if (CHECK(btf_fd[0] >= 0, "BTF lingers")) {
--		err = -1;
--		goto done;
--	}
+diff --git a/drivers/net/ethernet/google/gve/gve_rx.c b/drivers/net/ethernet/google/gve/gve_rx.c
+index 73655347902d..93ff7c8ec905 100644
+--- a/drivers/net/ethernet/google/gve/gve_rx.c
++++ b/drivers/net/ethernet/google/gve/gve_rx.c
+@@ -362,7 +362,7 @@ static enum pkt_hash_types gve_rss_type(__be16 pkt_flags)
  
- 	fprintf(stderr, "OK");
+ static struct sk_buff *gve_rx_add_frags(struct napi_struct *napi,
+ 					struct gve_rx_slot_page_info *page_info,
+-					u16 packet_buffer_size, u16 len,
++					unsigned int truesize, u16 len,
+ 					struct gve_rx_ctx *ctx)
+ {
+ 	u32 offset = page_info->page_offset + page_info->pad;
+@@ -395,10 +395,10 @@ static struct sk_buff *gve_rx_add_frags(struct napi_struct *napi,
+ 	if (skb != ctx->skb_head) {
+ 		ctx->skb_head->len += len;
+ 		ctx->skb_head->data_len += len;
+-		ctx->skb_head->truesize += packet_buffer_size;
++		ctx->skb_head->truesize += truesize;
+ 	}
+ 	skb_add_rx_frag(skb, num_frags, page_info->page,
+-			offset, len, packet_buffer_size);
++			offset, len, truesize);
  
+ 	return ctx->skb_head;
+ }
+@@ -492,7 +492,7 @@ static struct sk_buff *gve_rx_copy_to_pool(struct gve_rx_ring *rx,
+ 
+ 		memcpy(alloc_page_info.page_address, src, page_info->pad + len);
+ 		skb = gve_rx_add_frags(napi, &alloc_page_info,
+-				       rx->packet_buffer_size,
++				       PAGE_SIZE,
+ 				       len, ctx);
+ 
+ 		u64_stats_update_begin(&rx->statss);
+-- 
+2.43.0
+
 
 
 
