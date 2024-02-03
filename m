@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-18133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A2A6848183
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EFF584802D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA958281EDA
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFA4328BE7B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96C5175B6;
-	Sat,  3 Feb 2024 04:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFE3F9E5;
+	Sat,  3 Feb 2024 04:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2RyWhqr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FxpSF+eL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9931A11C83;
-	Sat,  3 Feb 2024 04:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B44FBEE;
+	Sat,  3 Feb 2024 04:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933571; cv=none; b=aZAh99Q895OOvUqRH77IfhvkxexJ6xRtZhdTaQpBUk42xGaYVkldA88rfSOHzUJZki3MeulPWIkUSCrtrtd1unQYXYIA+SofMyQ6OAFtIQZdR67OLpZTpk7chEVPvU2pu4Eg33Tkv6mZcO/36SisPOqVIPbuSCzVdMzeBjuOQRE=
+	t=1706933328; cv=none; b=qve4tJp7dL2FTCwzhrGaTI0gFAdRMS+EYmKdh3VTMgM7FHQv/vqBmI0ojt3/hZJatjxnlrXoHQpPQeJe62cZakx+yQp3HhIm/N3Ess2cAqPj3eXwiB6QCDuTTVLb+1zggSJE+YDnSRAEl7ePEcIGz1hpjj0vg238fG2RPvYw49k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933571; c=relaxed/simple;
-	bh=n8JPe5XvDOEejNommyIhV4KS7UXQpxHJ9AfmwD9gDmY=;
+	s=arc-20240116; t=1706933328; c=relaxed/simple;
+	bh=xdGQ5nku0wnFvvl07K68ySUQo7L/nb4aw6fvEj8kOrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fv3nigqUUSJwrIq1aK7OCNNcqOqabpHJRH+pIbxevlo1I5p0+MM6jKXecdk84IgROBjH/N9L80qZCygoVugz2ZgK+LHMgoaWSeoPsZ7LncuSyQQnfJQjFXuqmyqWTfXIsQCc+KLee0bf99S0gMycCDjVv8kz70o4Lb7EdMbajoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2RyWhqr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 609FDC43394;
-	Sat,  3 Feb 2024 04:12:51 +0000 (UTC)
+	 MIME-Version; b=Gd0oG/dx0i1VnOmJdTaWbaIwGZsLCaibLTmkMDHwYJiWtDfT4MSC2gTEf2Qt2EBJDmLmKW3I9T4aN6ldfJIlpTucwVDdGzN3r8ATL5uqq2DCP32jMZv1xDt9yPj06EM/dmQCM73kfVGZEFzZ8iYcxIL21n59By9Qjjmm4OAM+w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FxpSF+eL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E92BC433C7;
+	Sat,  3 Feb 2024 04:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933571;
-	bh=n8JPe5XvDOEejNommyIhV4KS7UXQpxHJ9AfmwD9gDmY=;
+	s=korg; t=1706933327;
+	bh=xdGQ5nku0wnFvvl07K68ySUQo7L/nb4aw6fvEj8kOrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2RyWhqrkDFobz5Imhp5ljTJFViRu3uOUzRgeKqM2aODYs3ey56uKd1U7Dzeo8qxE
-	 PBOWI9x1fiMU7n59V+Ksz8s2Jxqxd3dxcxm51zEHxx/qABSd1xz2ARfa6Cvp8COCL5
-	 lSjMCUbzzKgrTFwI2qUil4YL/POfklOybVEQoilY=
+	b=FxpSF+eLNhmzX3nruHHeN6NqijhQU4e1LDQ1aB0Mhb9KwdKUhv7EjVIJ31id4Y8Im
+	 GGHBqtG3khLoSk/RWQWWhRfIi0EG3+8Qtu0RRltnRK1fs6ceZqmaxGoPjdskCOo6VT
+	 kxLW9MYGVnVE0vfr1cFZfygHolcXgaoYuSPPoHdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Laight <david.laight@aculab.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 099/322] minmax: allow comparisons of int against unsigned char/short
+	Osama Muhammad <osmtendev@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+d4b1df2e9d4ded6488ec@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 023/219] UBSAN: array-index-out-of-bounds in dtSplitRoot
 Date: Fri,  2 Feb 2024 20:03:16 -0800
-Message-ID: <20240203035402.334675691@linuxfoundation.org>
+Message-ID: <20240203035319.740161852@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,44 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Laight <David.Laight@ACULAB.COM>
+From: Osama Muhammad <osmtendev@gmail.com>
 
-commit 4ead534fba42fc4fd41163297528d2aa731cd121 upstream.
+[ Upstream commit 27e56f59bab5ddafbcfe69ad7a4a6ea1279c1b16 ]
 
-Since 'unsigned char/short' get promoted to 'signed int' it is safe to
-compare them against an 'int' value.
+Syzkaller reported the following issue:
 
-Link: https://lkml.kernel.org/r/8732ef5f809c47c28a7be47c938b28d4@AcuMS.aculab.com
-Signed-off-by: David Laight <david.laight@aculab.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+oop0: detected capacity change from 0 to 32768
+
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dtree.c:1971:9
+index -2 is out of range for type 'struct dtslot [128]'
+CPU: 0 PID: 3613 Comm: syz-executor270 Not tainted 6.0.0-syzkaller-09423-g493ffd6605b2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/22/2022
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1b1/0x28e lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:151 [inline]
+ __ubsan_handle_out_of_bounds+0xdb/0x130 lib/ubsan.c:283
+ dtSplitRoot+0x8d8/0x1900 fs/jfs/jfs_dtree.c:1971
+ dtSplitUp fs/jfs/jfs_dtree.c:985 [inline]
+ dtInsert+0x1189/0x6b80 fs/jfs/jfs_dtree.c:863
+ jfs_mkdir+0x757/0xb00 fs/jfs/namei.c:270
+ vfs_mkdir+0x3b3/0x590 fs/namei.c:4013
+ do_mkdirat+0x279/0x550 fs/namei.c:4038
+ __do_sys_mkdirat fs/namei.c:4053 [inline]
+ __se_sys_mkdirat fs/namei.c:4051 [inline]
+ __x64_sys_mkdirat+0x85/0x90 fs/namei.c:4051
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fcdc0113fd9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffeb8bc67d8 EFLAGS: 00000246 ORIG_RAX: 0000000000000102
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fcdc0113fd9
+RDX: 0000000000000000 RSI: 0000000020000340 RDI: 0000000000000003
+RBP: 00007fcdc00d37a0 R08: 0000000000000000 R09: 00007fcdc00d37a0
+R10: 00005555559a72c0 R11: 0000000000000246 R12: 00000000f8008000
+R13: 0000000000000000 R14: 00083878000000f8 R15: 0000000000000000
+ </TASK>
+
+The issue is caused when the value of fsi becomes less than -1.
+The check to break the loop when fsi value becomes -1 is present
+but syzbot was able to produce value less than -1 which cause the error.
+This patch simply add the change for the values less than 0.
+
+The patch is tested via syzbot.
+
+Reported-and-tested-by: syzbot+d4b1df2e9d4ded6488ec@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=d4b1df2e9d4ded6488ec
+Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/jfs/jfs_dtree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -26,8 +26,9 @@
- 	__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),	\
- 		is_signed_type(typeof(x)), 0)
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index 92b7c533407c..f3d3e8b3f50c 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -1970,7 +1970,7 @@ static int dtSplitRoot(tid_t tid,
+ 		do {
+ 			f = &rp->slot[fsi];
+ 			fsi = f->next;
+-		} while (fsi != -1);
++		} while (fsi >= 0);
  
--#define __types_ok(x, y) \
--	(__is_signed(x) == __is_signed(y))
-+#define __types_ok(x, y) 			\
-+	(__is_signed(x) == __is_signed(y) ||	\
-+		__is_signed((x) + 0) == __is_signed((y) + 0))
- 
- #define __cmp_op_min <
- #define __cmp_op_max >
+ 		f->next = n;
+ 	}
+-- 
+2.43.0
+
 
 
 
