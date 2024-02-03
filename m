@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-18359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C532184826B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC57684811C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:16:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66E4EB2A342
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:25:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FA1CB2AA37
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7D0487A9;
-	Sat,  3 Feb 2024 04:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33001BF38;
+	Sat,  3 Feb 2024 04:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQCakN9j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oBLOLyzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0FFA1B95E;
-	Sat,  3 Feb 2024 04:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26DD13AC6;
+	Sat,  3 Feb 2024 04:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933741; cv=none; b=Onop9sbN8lw6pQ7AHd6MdzwyDmXu9Gq2Wx7pnIu6cIODXfevf7kk4W1Xiq9uIiP9atYTRX3BjLWwM25HeP4jliW0MPMKR683iMdqfFT6GhKQFi989JdYxuJGQOuXAmBCLNYzZEzlhmDXkHbkNu+SY8M1zBGRuK2iJju7fAb5HV8=
+	t=1706933497; cv=none; b=YJJjIxhW84Wt93v3+DNc7KIUn+13gBL2efL3YY+MCfBBihegmU5Eb4YPTA0t+fC5hbKbLw+2kSxWDEeWKbsDC5DXLsglH8IMZEcIzhdiaDFj7qitzdiGutbGctCEC2AXfbdDWVRFFNUL6CiiO/YVVS7qgLY4yUdS27N9znoWZEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933741; c=relaxed/simple;
-	bh=eMkdW3ynW9W4y71yt+OdZGgYw7K/HEh2AqFSZpkZAYY=;
+	s=arc-20240116; t=1706933497; c=relaxed/simple;
+	bh=W6wSVK+x7QkXQLMZGVXibEhPGvKPb2halY/xGvez3XE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ktCuaQNuLxp4PV6Jln8IAZx4JrHmHSWLT6nMk9DSH/MHOzo/wCefMNlb2C8l9cJzFNFpXQGra56OWapbZJ2VzdUV2u5vu2fJh86pnoLaluMtf5LKeP9IIOh4sCqTZ4jNoS4ZOiKnyNDYyfBSIvytFLeLmR/I+/R0MriOJD+qtFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQCakN9j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE160C43390;
-	Sat,  3 Feb 2024 04:15:40 +0000 (UTC)
+	 MIME-Version; b=Hcy3oBoN/57lfrBBLXamfwnsDoMC97RwkLZKSGoEUk9MkKKMn45beHQxDA6fUq6KxHRrSDqQvVzKnjXH448iqGypdyJqTX7cbuNa4+T0Pm7BAyTCQuM1wKA7OXt5Thqe32jjvwrbEJbsyarS1wO1LxcPqk7SggPa4kzqR2KOw7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oBLOLyzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB20C433F1;
+	Sat,  3 Feb 2024 04:11:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933740;
-	bh=eMkdW3ynW9W4y71yt+OdZGgYw7K/HEh2AqFSZpkZAYY=;
+	s=korg; t=1706933497;
+	bh=W6wSVK+x7QkXQLMZGVXibEhPGvKPb2halY/xGvez3XE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SQCakN9jYc4h3TwJe69y1+aVeKxU64CM6p/WdxpVeTMsTccd1bCfJajKs8eZerAy1
-	 +uVMs0hztKtTFvHEDOUZVYI27tnITtLB9XDgLx1KUm7gBzlkKYLC6BFUbPGbRvQAiV
-	 ralUblQUOc2k8zLPSynyWBMeSZ9Xl5k01M/ecjyU=
+	b=oBLOLyzQvYIUAwpvmbe4Bw/uFnCZl6h9BwFW7LwjC0v1ux3dpYWS5UcYvMJalfWNZ
+	 xnm4J/gJ79PKBs9ZGPmUD2TtOKOdqoOHzhYVhz6uj+D6Vn6OpYSpzATXt+dbU3yFGQ
+	 hdg8IMrb63I48ELQmRl0bhtSZa6IEJ2ldm4VhcYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Manas Ghandat <ghandatmanas@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 007/353] powerpc/64s: Fix CONFIG_NUMA=n build due to create_section_mapping()
+Subject: [PATCH 6.6 028/322] jfs: fix slab-out-of-bounds Read in dtSearch
 Date: Fri,  2 Feb 2024 20:02:05 -0800
-Message-ID: <20240203035403.925747461@linuxfoundation.org>
+Message-ID: <20240203035359.960063650@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,67 +62,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Manas Ghandat <ghandatmanas@gmail.com>
 
-[ Upstream commit ede66cd22441820cbd399936bf84fdc4294bc7fa ]
+[ Upstream commit fa5492ee89463a7590a1449358002ff7ef63529f ]
 
-With CONFIG_NUMA=n the build fails with:
+Currently while searching for current page in the sorted entry table
+of the page there is a out of bound access. Added a bound check to fix
+the error.
 
-  arch/powerpc/mm/book3s64/pgtable.c:275:15: error: no previous prototype for ‘create_section_mapping’ [-Werror=missing-prototypes]
-  275 | int __meminit create_section_mapping(unsigned long start, unsigned long end,
-      |               ^~~~~~~~~~~~~~~~~~~~~~
+Dave:
+Set return code to -EIO
 
-That happens because the prototype for create_section_mapping() is in
-asm/mmzone.h, but asm/mmzone.h is only included by linux/mmzone.h
-when CONFIG_NUMA=y.
-
-In fact the prototype is only needed by arch/powerpc/mm code, so move
-the prototype into arch/powerpc/mm/mmu_decl.h, which also fixes the
-build error.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231129131919.2528517-5-mpe@ellerman.id.au
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202310241724.Ed02yUz9-lkp@intel.com/
+Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/mmzone.h | 5 -----
- arch/powerpc/mm/mmu_decl.h        | 5 +++++
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ fs/jfs/jfs_dtree.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
-index 3764d3585d30..da827d2d0866 100644
---- a/arch/powerpc/include/asm/mmzone.h
-+++ b/arch/powerpc/include/asm/mmzone.h
-@@ -43,10 +43,5 @@ u64 memory_hotplug_max(void);
- #define memory_hotplug_max() memblock_end_of_DRAM()
- #endif /* CONFIG_NUMA */
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index f3d3e8b3f50c..031d8f570f58 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -633,6 +633,11 @@ int dtSearch(struct inode *ip, struct component_name * key, ino_t * data,
+ 		for (base = 0, lim = p->header.nextindex; lim; lim >>= 1) {
+ 			index = base + (lim >> 1);
  
--#ifdef CONFIG_MEMORY_HOTPLUG
--extern int create_section_mapping(unsigned long start, unsigned long end,
--				  int nid, pgprot_t prot);
--#endif
--
- #endif /* __KERNEL__ */
- #endif /* _ASM_MMZONE_H_ */
-diff --git a/arch/powerpc/mm/mmu_decl.h b/arch/powerpc/mm/mmu_decl.h
-index 7f9ff0640124..72341b9fb552 100644
---- a/arch/powerpc/mm/mmu_decl.h
-+++ b/arch/powerpc/mm/mmu_decl.h
-@@ -181,3 +181,8 @@ static inline bool debug_pagealloc_enabled_or_kfence(void)
- {
- 	return IS_ENABLED(CONFIG_KFENCE) || debug_pagealloc_enabled();
- }
++			if (stbl[index] < 0) {
++				rc = -EIO;
++				goto out;
++			}
 +
-+#ifdef CONFIG_MEMORY_HOTPLUG
-+int create_section_mapping(unsigned long start, unsigned long end,
-+			   int nid, pgprot_t prot);
-+#endif
+ 			if (p->header.flag & BT_LEAF) {
+ 				/* uppercase leaf name to compare */
+ 				cmp =
 -- 
 2.43.0
 
