@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-17795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F4C7848021
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:08:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD269848159
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FC141F2BA84
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:08:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E01FC1C22681
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CFA7F9F6;
-	Sat,  3 Feb 2024 04:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34371CD14;
+	Sat,  3 Feb 2024 04:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIvZ9XJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxTL8PNm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56EE5F9E4;
-	Sat,  3 Feb 2024 04:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A4A111B0;
+	Sat,  3 Feb 2024 04:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933318; cv=none; b=O6r2aeAAiHcq+JnpTbq3AHe3FVvVq78Ot9LxtBlnSC8QFWDFsZeEp84+PKW5xslG4d6awjT4v4YAJG2I6O5Z2snztE471yG8l+t677BUpYDLBJ3u0rl3SMdUYPlxoc4FM+6dDO32Bc+YPN36W9qySJbk2FoIcNJ1rked6TukYoY=
+	t=1706933541; cv=none; b=lqwhlq74INypBl+XfU/HuFIN2OtDSB8Izm7Y3zIxFy8HOfUPcWOt0Va6b/CpKn1p9CxpkIkQI0L9g3BiVAVYyZ61vgYQff6wh2pQWsMH+F10SoZr73oy5dBh0+vk8EXJdCGYNHyT82S2ICdYYFUOS9rB7rfAPcWxFStswoZgrE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933318; c=relaxed/simple;
-	bh=tAtY343UX3ZWyDTHLb2V4FnOO7U+SYpBw6xPBaSnIdI=;
+	s=arc-20240116; t=1706933541; c=relaxed/simple;
+	bh=v0HMJ5+qv/fHGxvuK/i2fO1ghaUUcy/TZBh28A9iw3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qczRBT2PdGke+EYAp4byQQpmITF2lsicafxpHRvDA5E1s7jvMeL0ZAIj5eBwGFqvL6Lv6fUo6STyJv/jItXeUaxipVaoAUeAWBqMvgdeen1oXGv6zv0cU5mGRhcTZTpBIzwNaBZaUSd9ALi++ZyfxKP90tngit/MWMjWVhwClOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIvZ9XJl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C036BC43390;
-	Sat,  3 Feb 2024 04:08:37 +0000 (UTC)
+	 MIME-Version; b=E6bDD8DydvOqAh4/lTanLIR4sy32t4ySXovsfQqg2UUIULsgccQSvt8u5UMrNYMOBUsumzOhEIcJZATiIJUrAKgxdTXa7JXZsE8DRX+OL+GEA6qYKRR+FqHsZE2ugsuQQtC2/n1ir+b3neWgT51OJJpMI7fu5AP732qGLCpkrwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxTL8PNm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37661C433C7;
+	Sat,  3 Feb 2024 04:12:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933317;
-	bh=tAtY343UX3ZWyDTHLb2V4FnOO7U+SYpBw6xPBaSnIdI=;
+	s=korg; t=1706933541;
+	bh=v0HMJ5+qv/fHGxvuK/i2fO1ghaUUcy/TZBh28A9iw3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KIvZ9XJlcv7g8Ce9iTwJuGEP++jdTkR2b6QPUGn3DHQb4570xR2NQk4eZPqUTrJV7
-	 bFWFWSQ8XN3zAX4aaN2InGEML+FrSMabde6vQSbP+np2NBA/Z9jBzINSTqmhoe3ZVq
-	 Zb6J6ZM3HQT87/whhtbLymtT+QyZ2pKQS9hJmsl0=
+	b=fxTL8PNm+jNyTZFfvrJw4ZWvCpgqtxIFiZXL12e1Qj53P9/6DjfFVNXgITnNkCnfA
+	 hPvK/Ucf2PZsmO3n90MIKOcR2tZnE/bVWvIhZbCcrz2b48t+VSflIkHKMF0nbV691r
+	 OvHp6hs3Uu8lZcNTJbkcOsoIYKxRUK1QrE4em3qc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youquan Song <youquan.song@intel.com>,
-	Zhiquan Li <zhiquan1.li@intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Naoya Horiguchi <naoya.horiguchi@nec.com>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/219] x86/mce: Mark fatal MCEs page as poison to avoid panic in the kdump kernel
+Subject: [PATCH 6.6 087/322] wifi: ath11k: fix race due to setting ATH11K_FLAG_EXT_IRQ_ENABLED too early
 Date: Fri,  2 Feb 2024 20:03:04 -0800
-Message-ID: <20240203035318.352896023@linuxfoundation.org>
+Message-ID: <20240203035401.971842139@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiquan Li <zhiquan1.li@intel.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 9f3b130048bfa2e44a8cfb1b616f826d9d5d8188 ]
+[ Upstream commit 5082b3e3027eae393a4e86874bffb4ce3f83c26e ]
 
-Memory errors don't happen very often, especially fatal ones. However,
-in large-scale scenarios such as data centers, that probability
-increases with the amount of machines present.
+We are seeing below error randomly in the case where only
+one MSI vector is configured:
 
-When a fatal machine check happens, mce_panic() is called based on the
-severity grading of that error. The page containing the error is not
-marked as poison.
+kernel: ath11k_pci 0000:03:00.0: wmi command 16387 timeout
 
-However, when kexec is enabled, tools like makedumpfile understand when
-pages are marked as poison and do not touch them so as not to cause
-a fatal machine check exception again while dumping the previous
-kernel's memory.
+The reason is, currently, in ath11k_pcic_ext_irq_enable(),
+ATH11K_FLAG_EXT_IRQ_ENABLED is set before NAPI is enabled.
+This results in a race condition: after
+ATH11K_FLAG_EXT_IRQ_ENABLED is set but before NAPI enabled,
+CE interrupt breaks in. Since IRQ is shared by CE and data
+path, ath11k_pcic_ext_interrupt_handler() is also called
+where we call disable_irq_nosync() to disable IRQ. Then
+napi_schedule() is called but it does nothing because NAPI
+is not enabled at that time, meaning
+ath11k_pcic_ext_grp_napi_poll() will never run, so we have
+no chance to call enable_irq() to enable IRQ back. Finally
+we get above error.
 
-Therefore, mark the page containing the error as poisoned so that the
-kexec'ed kernel can avoid accessing the page.
+Fix it by setting ATH11K_FLAG_EXT_IRQ_ENABLED after all
+NAPI and IRQ work are done. With the fix, we are sure that
+by the time ATH11K_FLAG_EXT_IRQ_ENABLED is set, NAPI is
+enabled.
 
-  [ bp: Rewrite commit message and comment. ]
+Note that the fix above also introduce some side effects:
+if ath11k_pcic_ext_interrupt_handler() breaks in after NAPI
+enabled but before ATH11K_FLAG_EXT_IRQ_ENABLED set, nothing
+will be done by the handler this time, the work will be
+postponed till the next time the IRQ fires.
 
-Co-developed-by: Youquan Song <youquan.song@intel.com>
-Signed-off-by: Youquan Song <youquan.song@intel.com>
-Signed-off-by: Zhiquan Li <zhiquan1.li@intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
-Link: https://lore.kernel.org/r/20231014051754.3759099-1-zhiquan1.li@intel.com
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231117003919.26218-1-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mce/core.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/net/wireless/ath/ath11k/pcic.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index f1a748da5fab..cad6ea1911e9 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -44,6 +44,7 @@
- #include <linux/sync_core.h>
- #include <linux/task_work.h>
- #include <linux/hardirq.h>
-+#include <linux/kexec.h>
+diff --git a/drivers/net/wireless/ath/ath11k/pcic.c b/drivers/net/wireless/ath/ath11k/pcic.c
+index c63083633b37..011cf5fb8023 100644
+--- a/drivers/net/wireless/ath/ath11k/pcic.c
++++ b/drivers/net/wireless/ath/ath11k/pcic.c
+@@ -460,8 +460,6 @@ void ath11k_pcic_ext_irq_enable(struct ath11k_base *ab)
+ {
+ 	int i;
  
- #include <asm/intel-family.h>
- #include <asm/processor.h>
-@@ -239,6 +240,7 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
- 	struct llist_node *pending;
- 	struct mce_evt_llist *l;
- 	int apei_err = 0;
-+	struct page *p;
+-	set_bit(ATH11K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags);
+-
+ 	for (i = 0; i < ATH11K_EXT_IRQ_GRP_NUM_MAX; i++) {
+ 		struct ath11k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
  
- 	/*
- 	 * Allow instrumentation around external facilities usage. Not that it
-@@ -292,6 +294,20 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
- 	if (!fake_panic) {
- 		if (panic_timeout == 0)
- 			panic_timeout = mca_cfg.panic_timeout;
+@@ -471,6 +469,8 @@ void ath11k_pcic_ext_irq_enable(struct ath11k_base *ab)
+ 		}
+ 		ath11k_pcic_ext_grp_enable(irq_grp);
+ 	}
 +
-+		/*
-+		 * Kdump skips the poisoned page in order to avoid
-+		 * touching the error bits again. Poison the page even
-+		 * if the error is fatal and the machine is about to
-+		 * panic.
-+		 */
-+		if (kexec_crash_loaded()) {
-+			if (final && (final->status & MCI_STATUS_ADDRV)) {
-+				p = pfn_to_online_page(final->addr >> PAGE_SHIFT);
-+				if (p)
-+					SetPageHWPoison(p);
-+			}
-+		}
- 		panic(msg);
- 	} else
- 		pr_emerg(HW_ERR "Fake kernel panic: %s\n", msg);
++	set_bit(ATH11K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags);
+ }
+ EXPORT_SYMBOL(ath11k_pcic_ext_irq_enable);
+ 
 -- 
 2.43.0
 
