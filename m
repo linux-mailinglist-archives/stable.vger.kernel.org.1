@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-17872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ECBF848073
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2C3A8482F3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63CDC1C226D8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF90228CAEA
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7E213AC6;
-	Sat,  3 Feb 2024 04:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0914F60C;
+	Sat,  3 Feb 2024 04:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KSnCnXC9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7vod5Cz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09AF156E4;
-	Sat,  3 Feb 2024 04:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5D11C6B5;
+	Sat,  3 Feb 2024 04:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933377; cv=none; b=CA47t4hjYJMcSoBntrh5g6x54vuzulnAlppLGHUPwtThPO6UNa+4Tbffyq7cLXxtl/9E15TKWrUAT49glcfIJQ/UETtwT0xZWOmo2XNZQCG35oHZwlyLBLkWU3jfsvlyTrbKaV41NtR8haZ77jcS5mceTTkG3Hq7rFqCA5scZ18=
+	t=1706933841; cv=none; b=cSTNNtoyCoh77hjOyZaoshYfIaEFzfS8TaWZZWJjURtQ/YzHN2ySENiMwChS/zAuBTfm9IjHNUNFoZH6wd2m1sIFuS5bSu99SNAppTZ+8oCet1kv5ryGbHcKG5Gpl2XgO0sX2ByvaYUU6I/ytE7HePqx1LzcwUxzUiko6mkBW5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933377; c=relaxed/simple;
-	bh=imbN+8FYhB/GXesMzp3g6J0qNh+DhOGpJlCQuX+hyuE=;
+	s=arc-20240116; t=1706933841; c=relaxed/simple;
+	bh=0x3l9+0clveFzlScwniqH6aduuaU2TJDlvWjj5YdZyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qkeeC8XP2qodRzBOTEB7H/IpTlKfVSE2QYRZ6qWLhYblDvaGJSiCJVCC2SiSe6hxv7wdij+pshZUrPby5ZCo4T4sqzSYZScpJawPdDfLggkgduU4g3sJdOyVkoknl1lYu0qa8bXqXbgufiCA58lSrJbVRiNEIyjEOWwRbSOGzYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KSnCnXC9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E133C43390;
-	Sat,  3 Feb 2024 04:09:37 +0000 (UTC)
+	 MIME-Version; b=EQwE3kE5B2VKMk15JdshY3vL8R5UPDoW4fcU2nZ7cIANoeHQMHipXa2lHGutvj+npe5JTP+vbir1bYkmJiw39lDssetRAe5iqy4+vjwGZQbrbGtUCqz2JNtqGitHXlNEw67c+WZx/hVxYA7vKsm94xERKVPcBNsWU85cewJIVTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7vod5Cz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37551C433C7;
+	Sat,  3 Feb 2024 04:17:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933377;
-	bh=imbN+8FYhB/GXesMzp3g6J0qNh+DhOGpJlCQuX+hyuE=;
+	s=korg; t=1706933841;
+	bh=0x3l9+0clveFzlScwniqH6aduuaU2TJDlvWjj5YdZyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KSnCnXC9iWRegB0wDZUYFBFDREOqNRrLhRmd+R2/k/AI2zwTNcNVZEZ9awZLFBRHg
-	 xDth1wFdckVTAsJ5iRTh1VIrWas1Fj3vP5awMaKjoR07p6x0gQxi13u8+qXRxwYHxh
-	 8w7SZ/ZAIQEuJyD/8T6E1ZWD9pTiPpwXP22CyOk8=
+	b=C7vod5Czu6/UUy+q0i4DarCh9b+o47dJVeyyL70kMN75iZlQSnMwGacIiQltnJl+8
+	 tyLvMpx10elGUZiin16cqXwKviupLY5/B+qegYuPGMe+xKy0/DEy5pEptYryoXFpLA
+	 Zux0l3g9agTkM+wEaJ9oHKR/nvtczOpa/4S3z9iU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Lyakas <alex.lyakas@zadara.com>,
-	Song Liu <song@kernel.org>,
+	Xianwei Zhao <xianwei.zhao@amlogic.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/219] md: Whenassemble the array, consult the superblock of the freshest device
+Subject: [PATCH 6.7 142/353] arm64: dts: amlogic: fix format for s4 uart node
 Date: Fri,  2 Feb 2024 20:04:20 -0800
-Message-ID: <20240203035329.493248144@linuxfoundation.org>
+Message-ID: <20240203035408.190798805@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,156 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Lyakas <alex.lyakas@zadara.com>
+From: Xianwei Zhao <xianwei.zhao@amlogic.com>
 
-[ Upstream commit dc1cc22ed58f11d58d8553c5ec5f11cbfc3e3039 ]
+[ Upstream commit eb54ef36282f670c704ed5af8593da62bebba80d ]
 
-Upon assembling the array, both kernel and mdadm allow the devices to have event
-counter difference of 1, and still consider them as up-to-date.
-However, a device whose event count is behind by 1, may in fact not be up-to-date,
-and array resync with such a device may cause data corruption.
-To avoid this, consult the superblock of the freshest device about the status
-of a device, whose event counter is behind by 1.
+Aliases use lowercase letters and place status in end.
 
-Signed-off-by: Alex Lyakas <alex.lyakas@zadara.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/1702470271-16073-1-git-send-email-alex.lyakas@zadara.com
+Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20231215-s4-dts-v1-1-7831ab6972be@amlogic.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 54 ++++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 44 insertions(+), 10 deletions(-)
+ arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts | 4 ++--
+ arch/arm64/boot/dts/amlogic/meson-s4.dtsi             | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 6120f26a7969..3ccf1920682c 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -1145,6 +1145,7 @@ struct super_type  {
- 					  struct md_rdev *refdev,
- 					  int minor_version);
- 	int		    (*validate_super)(struct mddev *mddev,
-+					      struct md_rdev *freshest,
- 					      struct md_rdev *rdev);
- 	void		    (*sync_super)(struct mddev *mddev,
- 					  struct md_rdev *rdev);
-@@ -1282,8 +1283,9 @@ static int super_90_load(struct md_rdev *rdev, struct md_rdev *refdev, int minor
+diff --git a/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts b/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts
+index c1f322c73982..b1b81ac03200 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts
++++ b/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts
+@@ -15,7 +15,7 @@
+ 	#size-cells = <2>;
  
- /*
-  * validate_super for 0.90.0
-+ * note: we are not using "freshest" for 0.9 superblock
-  */
--static int super_90_validate(struct mddev *mddev, struct md_rdev *rdev)
-+static int super_90_validate(struct mddev *mddev, struct md_rdev *freshest, struct md_rdev *rdev)
- {
- 	mdp_disk_t *desc;
- 	mdp_super_t *sb = page_address(rdev->sb_page);
-@@ -1795,7 +1797,7 @@ static int super_1_load(struct md_rdev *rdev, struct md_rdev *refdev, int minor_
- 	return ret;
- }
+ 	aliases {
+-		serial0 = &uart_B;
++		serial0 = &uart_b;
+ 	};
  
--static int super_1_validate(struct mddev *mddev, struct md_rdev *rdev)
-+static int super_1_validate(struct mddev *mddev, struct md_rdev *freshest, struct md_rdev *rdev)
- {
- 	struct mdp_superblock_1 *sb = page_address(rdev->sb_page);
- 	__u64 ev1 = le64_to_cpu(sb->events);
-@@ -1891,13 +1893,15 @@ static int super_1_validate(struct mddev *mddev, struct md_rdev *rdev)
- 		}
- 	} else if (mddev->pers == NULL) {
- 		/* Insist of good event counter while assembling, except for
--		 * spares (which don't need an event count) */
--		++ev1;
-+		 * spares (which don't need an event count).
-+		 * Similar to mdadm, we allow event counter difference of 1
-+		 * from the freshest device.
-+		 */
- 		if (rdev->desc_nr >= 0 &&
- 		    rdev->desc_nr < le32_to_cpu(sb->max_dev) &&
- 		    (le16_to_cpu(sb->dev_roles[rdev->desc_nr]) < MD_DISK_ROLE_MAX ||
- 		     le16_to_cpu(sb->dev_roles[rdev->desc_nr]) == MD_DISK_ROLE_JOURNAL))
--			if (ev1 < mddev->events)
-+			if (ev1 + 1 < mddev->events)
- 				return -EINVAL;
- 	} else if (mddev->bitmap) {
- 		/* If adding to array with a bitmap, then we can accept an
-@@ -1918,8 +1922,38 @@ static int super_1_validate(struct mddev *mddev, struct md_rdev *rdev)
- 		    rdev->desc_nr >= le32_to_cpu(sb->max_dev)) {
- 			role = MD_DISK_ROLE_SPARE;
- 			rdev->desc_nr = -1;
--		} else
-+		} else if (mddev->pers == NULL && freshest && ev1 < mddev->events) {
-+			/*
-+			 * If we are assembling, and our event counter is smaller than the
-+			 * highest event counter, we cannot trust our superblock about the role.
-+			 * It could happen that our rdev was marked as Faulty, and all other
-+			 * superblocks were updated with +1 event counter.
-+			 * Then, before the next superblock update, which typically happens when
-+			 * remove_and_add_spares() removes the device from the array, there was
-+			 * a crash or reboot.
-+			 * If we allow current rdev without consulting the freshest superblock,
-+			 * we could cause data corruption.
-+			 * Note that in this case our event counter is smaller by 1 than the
-+			 * highest, otherwise, this rdev would not be allowed into array;
-+			 * both kernel and mdadm allow event counter difference of 1.
-+			 */
-+			struct mdp_superblock_1 *freshest_sb = page_address(freshest->sb_page);
-+			u32 freshest_max_dev = le32_to_cpu(freshest_sb->max_dev);
-+
-+			if (rdev->desc_nr >= freshest_max_dev) {
-+				/* this is unexpected, better not proceed */
-+				pr_warn("md: %s: rdev[%pg]: desc_nr(%d) >= freshest(%pg)->sb->max_dev(%u)\n",
-+						mdname(mddev), rdev->bdev, rdev->desc_nr,
-+						freshest->bdev, freshest_max_dev);
-+				return -EUCLEAN;
-+			}
-+
-+			role = le16_to_cpu(freshest_sb->dev_roles[rdev->desc_nr]);
-+			pr_debug("md: %s: rdev[%pg]: role=%d(0x%x) according to freshest %pg\n",
-+				     mdname(mddev), rdev->bdev, role, role, freshest->bdev);
-+		} else {
- 			role = le16_to_cpu(sb->dev_roles[rdev->desc_nr]);
-+		}
- 		switch(role) {
- 		case MD_DISK_ROLE_SPARE: /* spare */
- 			break;
-@@ -2861,7 +2895,7 @@ static int add_bound_rdev(struct md_rdev *rdev)
- 		 * and should be added immediately.
- 		 */
- 		super_types[mddev->major_version].
--			validate_super(mddev, rdev);
-+			validate_super(mddev, NULL/*freshest*/, rdev);
- 		if (add_journal)
- 			mddev_suspend(mddev);
- 		err = mddev->pers->hot_add_disk(mddev, rdev);
-@@ -3775,7 +3809,7 @@ static int analyze_sbs(struct mddev *mddev)
- 	}
+ 	memory@0 {
+@@ -25,7 +25,7 @@
  
- 	super_types[mddev->major_version].
--		validate_super(mddev, freshest);
-+		validate_super(mddev, NULL/*freshest*/, freshest);
+ };
  
- 	i = 0;
- 	rdev_for_each_safe(rdev, tmp, mddev) {
-@@ -3790,7 +3824,7 @@ static int analyze_sbs(struct mddev *mddev)
- 		}
- 		if (rdev != freshest) {
- 			if (super_types[mddev->major_version].
--			    validate_super(mddev, rdev)) {
-+			    validate_super(mddev, freshest, rdev)) {
- 				pr_warn("md: kicking non-fresh %pg from array!\n",
- 					rdev->bdev);
- 				md_kick_rdev_from_array(rdev);
-@@ -6804,7 +6838,7 @@ int md_add_new_disk(struct mddev *mddev, struct mdu_disk_info_s *info)
- 			rdev->saved_raid_disk = rdev->raid_disk;
- 		} else
- 			super_types[mddev->major_version].
--				validate_super(mddev, rdev);
-+				validate_super(mddev, NULL/*freshest*/, rdev);
- 		if ((info->state & (1<<MD_DISK_SYNC)) &&
- 		     rdev->raid_disk != info->raid_disk) {
- 			/* This was a hot-add request, but events doesn't
+-&uart_B {
++&uart_b {
+ 	status = "okay";
+ };
+ 
+diff --git a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
+index e0cfc54ebccb..dac18eb634d7 100644
+--- a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
++++ b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
+@@ -126,14 +126,14 @@
+ 					<10 11 12 13 14 15 16 17 18 19 20 21>;
+ 			};
+ 
+-			uart_B: serial@7a000 {
++			uart_b: serial@7a000 {
+ 				compatible = "amlogic,meson-s4-uart",
+ 					     "amlogic,meson-ao-uart";
+ 				reg = <0x0 0x7a000 0x0 0x18>;
+ 				interrupts = <GIC_SPI 169 IRQ_TYPE_EDGE_RISING>;
+-				status = "disabled";
+ 				clocks = <&xtal>, <&xtal>, <&xtal>;
+ 				clock-names = "xtal", "pclk", "baud";
++				status = "disabled";
+ 			};
+ 
+ 			reset: reset-controller@2000 {
 -- 
 2.43.0
 
