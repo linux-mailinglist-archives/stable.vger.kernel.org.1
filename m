@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-17970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E14B8480D9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A66FF848340
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF06A28C9F8
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 480C71F248A0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855C512E42;
-	Sat,  3 Feb 2024 04:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B37C1CD02;
+	Sat,  3 Feb 2024 04:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mD3dHC80"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0A/b2Wc8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4417710A1C;
-	Sat,  3 Feb 2024 04:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0CE111AA;
+	Sat,  3 Feb 2024 04:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933451; cv=none; b=ANkoiAwdNy/dzsx1zrZDUCTtDxfA1X/liy90TSxsWq00fvYo8bMfwpoPT1DpldI4Y9tWpltHlDHls+bVuzX+WGb0eoemYRG0toQAi44IBEZzrjcASRu3yq6mikw39oO/IK32EWBmSeVn5ipOX3wKb8YhRghVQT3t0V1Nbxg6X3s=
+	t=1706933894; cv=none; b=QUc5SruI2E9K4DeRRjfRfxPVM4pt0sytcccJF89cemVNZdsVqaarZ0dU80N+oJhtwzTlWosnwmDfuh3SUHz+f4GQtrbtcvbve3mORSStCVodXGETI+I4huqXVtJXpJzQG+bTTi+yswzJ0MgVl6R8Hs9i+9Cc5BLYI14OpCSxDLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933451; c=relaxed/simple;
-	bh=rgE1K/4Ebbe7pse0Rk0GM7hRm8p7oJUlbSPWKNHzo+U=;
+	s=arc-20240116; t=1706933894; c=relaxed/simple;
+	bh=uyfV+1ynMaoAe2WkOd+9nO6kUygIlMKJ4fOjDGZL15k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NegfNmbtgMwAw8lHEc9/jmISa67nvwfgdVNsr3syxn3mnW2HGpUlIZlpexO19FFBqEWufYCkjc6JKOku/OTa3AA6+K0hW3Z1Sx1QVGp2rpO1u6s9VKdOuDseZbmpVS1BduwzHSgwalR06lAdB6wtEAXv8k9fA1mQeJtZBK/F8MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mD3dHC80; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B909C433F1;
-	Sat,  3 Feb 2024 04:10:51 +0000 (UTC)
+	 MIME-Version; b=FxyMVjeWJNKReBGGxLzKexrKDjJh2AJQi0y3vNT3Fnkv0PgJOEwrB4GXmL9eFn2p9CPEavymcZkdfBksBMfPrgyeG5GvSLZzv1ZjvKPdZuK3P6lmEpg00cSSCqzdTYP/k9pcdLlfMZSDoFHeAHiVA6AtRmDL2Wp3cgLcopsp5a0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0A/b2Wc8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 820BCC43399;
+	Sat,  3 Feb 2024 04:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933451;
-	bh=rgE1K/4Ebbe7pse0Rk0GM7hRm8p7oJUlbSPWKNHzo+U=;
+	s=korg; t=1706933894;
+	bh=uyfV+1ynMaoAe2WkOd+9nO6kUygIlMKJ4fOjDGZL15k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mD3dHC80DgTmym+VJYk0t7ajKFjX0W2Wp3ey6QffH9+a1qqCVaIeXd3DQ7ZS7WEcB
-	 9buZSvYYaDfnATeJfa7GT0bQdAKlj/a3VTz+cPYR2tBV7h18XN2Ok3zSLmhu9521y9
-	 zSYgK2ANjYimQCdSdxEYNtRCo1iDtVQvpKeUczmw=
+	b=0A/b2Wc8+sQUG6uvZudYHmoaUFe+0Ns3OiWMySFMREfzu66LRDrA/yiud12to3kbf
+	 QyKhegh9Isy/PxiP6hgwdP2sfjy8DRSnhn+N2tAwxVL79hHWK10NhhCTQ9Of97J9jD
+	 SL1IETzBsKRtOT8Gq2tFQinWSoUg+YnhFH9BjtW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Romain Naour <romain.naour@skf.com>,
-	Yoann Congal <yoann.congal@smile.fr>,
-	Mark Brown <broonie@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 186/219] regulator: ti-abb: dont use devm_platform_ioremap_resource_byname for shared interrupt register
+Subject: [PATCH 6.7 241/353] um: net: Fix return type of uml_net_start_xmit()
 Date: Fri,  2 Feb 2024 20:05:59 -0800
-Message-ID: <20240203035342.789972746@linuxfoundation.org>
+Message-ID: <20240203035411.307252033@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Romain Naour <romain.naour@skf.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit a67e1f0bd4564b485e0f0c3ed7f6bf17688be268 ]
+[ Upstream commit 7d748f60a4b82b50bf25fad1bd42d33f049f76aa ]
 
-We can't use devm_platform_ioremap_resource_byname() to remap the
-interrupt register that can be shared between
-regulator-abb-{ivahd,dspeve,gpu} drivers instances.
+With clang's kernel control flow integrity (kCFI, CONFIG_CFI_CLANG),
+indirect call targets are validated against the expected function
+pointer prototype to make sure the call target is valid to help mitigate
+ROP attacks. If they are not identical, there is a failure at run time,
+which manifests as either a kernel panic or thread getting killed. A
+warning in clang aims to catch these at compile time, which reveals:
 
-The combined helper introduce a call to devm_request_mem_region() that
-creates a new busy resource region on PRM_IRQSTATUS_MPU register
-(0x4ae06010). The first devm_request_mem_region() call succeeds for
-regulator-abb-ivahd but fails for the two other regulator-abb-dspeve
-and regulator-abb-gpu.
+  arch/um/drivers/net_kern.c:353:21: warning: incompatible function pointer types initializing 'netdev_tx_t (*)(struct sk_buff *, struct net_device *)' (aka 'enum netdev_tx (*)(struct sk_buff *, struct net_device *)') with an expression of type 'int (struct sk_buff *, struct net_device *)' [-Wincompatible-function-pointer-types-strict]
+    353 |         .ndo_start_xmit         = uml_net_start_xmit,
+        |                                   ^~~~~~~~~~~~~~~~~~
+  1 warning generated.
 
-  # cat /proc/iomem | grep -i 4ae06
-  4ae06010-4ae06013 : 4ae07e34.regulator-abb-ivahd int-address
-  4ae06014-4ae06017 : 4ae07ddc.regulator-abb-mpu int-address
+->ndo_start_xmit() in 'struct net_device_ops' expects a return type of
+'netdev_tx_t', not 'int'. Adjust the return type of uml_net_start_xmit()
+to match the prototype's to resolve the warning. While UML does not
+currently implement support for kCFI, it could in the future, which
+means this warning becomes a fatal CFI failure at run time.
 
-regulator-abb-dspeve and regulator-abb-gpu are missing due to
-devm_request_mem_region() failure (EBUSY):
-
-  [    1.326660] ti_abb 4ae07e30.regulator-abb-dspeve: can't request region for resource [mem 0x4ae06010-0x4ae06013]
-  [    1.326660] ti_abb: probe of 4ae07e30.regulator-abb-dspeve failed with error -16
-  [    1.327239] ti_abb 4ae07de4.regulator-abb-gpu: can't request region for resource [mem 0x4ae06010-0x4ae06013]
-  [    1.327270] ti_abb: probe of 4ae07de4.regulator-abb-gpu failed with error -16
-
->From arm/boot/dts/dra7.dtsi:
-
-The abb_mpu is the only instance using its own interrupt register:
-  (0x4ae06014) PRM_IRQSTATUS_MPU_2, ABB_MPU_DONE_ST (bit 7)
-
-The other tree instances (abb_ivahd, abb_dspeve, abb_gpu) share
-PRM_IRQSTATUS_MPU register (0x4ae06010) but use different bits
-ABB_IVA_DONE_ST (bit 30), ABB_DSPEVE_DONE_ST( bit 29) and
-ABB_GPU_DONE_ST (but 28).
-
-The commit b36c6b1887ff ("regulator: ti-abb: Make use of the helper
-function devm_ioremap related") overlooked the following comment
-implicitly explaining why devm_ioremap() is used in this case:
-
-  /*
-   * We may have shared interrupt register offsets which are
-   * write-1-to-clear between domains ensuring exclusivity.
-   */
-
-Fixes and partially reverts commit b36c6b1887ff ("regulator: ti-abb:
-Make use of the helper function devm_ioremap related").
-
-Improve the existing comment to avoid further conversion to
-devm_platform_ioremap_resource_byname().
-
-Fixes: b36c6b1887ff ("regulator: ti-abb: Make use of the helper function devm_ioremap related")
-Signed-off-by: Romain Naour <romain.naour@skf.com>
-Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
-Link: https://msgid.link/r/20240123111456.739381-1-romain.naour@smile.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310031340.v1vPh207-lkp@intel.com/
+Acked-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/ti-abb-regulator.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ arch/um/drivers/net_kern.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/ti-abb-regulator.c b/drivers/regulator/ti-abb-regulator.c
-index 115345e9fded..82af27b0e469 100644
---- a/drivers/regulator/ti-abb-regulator.c
-+++ b/drivers/regulator/ti-abb-regulator.c
-@@ -734,9 +734,25 @@ static int ti_abb_probe(struct platform_device *pdev)
- 			return PTR_ERR(abb->setup_reg);
- 	}
+diff --git a/arch/um/drivers/net_kern.c b/arch/um/drivers/net_kern.c
+index 3d7836c46507..cabcc501b448 100644
+--- a/arch/um/drivers/net_kern.c
++++ b/arch/um/drivers/net_kern.c
+@@ -204,7 +204,7 @@ static int uml_net_close(struct net_device *dev)
+ 	return 0;
+ }
  
--	abb->int_base = devm_platform_ioremap_resource_byname(pdev, "int-address");
--	if (IS_ERR(abb->int_base))
--		return PTR_ERR(abb->int_base);
-+	pname = "int-address";
-+	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, pname);
-+	if (!res) {
-+		dev_err(dev, "Missing '%s' IO resource\n", pname);
-+		return -ENODEV;
-+	}
-+	/*
-+	 * The MPU interrupt status register (PRM_IRQSTATUS_MPU) is
-+	 * shared between regulator-abb-{ivahd,dspeve,gpu} driver
-+	 * instances. Therefore use devm_ioremap() rather than
-+	 * devm_platform_ioremap_resource_byname() to avoid busy
-+	 * resource region conflicts.
-+	 */
-+	abb->int_base = devm_ioremap(dev, res->start,
-+					     resource_size(res));
-+	if (!abb->int_base) {
-+		dev_err(dev, "Unable to map '%s'\n", pname);
-+		return -ENOMEM;
-+	}
- 
- 	/* Map Optional resources */
- 	pname = "efuse-address";
+-static int uml_net_start_xmit(struct sk_buff *skb, struct net_device *dev)
++static netdev_tx_t uml_net_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct uml_net_private *lp = netdev_priv(dev);
+ 	unsigned long flags;
 -- 
 2.43.0
 
