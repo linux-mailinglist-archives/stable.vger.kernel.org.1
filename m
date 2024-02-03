@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-18007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB975848100
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C8F084836C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DF39B29072
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EDD71F21FA3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C671B960;
-	Sat,  3 Feb 2024 04:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9E3537F0;
+	Sat,  3 Feb 2024 04:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smr4FXcX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTbzIJ/0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124351B96B;
-	Sat,  3 Feb 2024 04:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F76A17541;
+	Sat,  3 Feb 2024 04:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933479; cv=none; b=KcA6Hxq/qDXLaSlR7qlN6GxUdlXGDk4qIvJL+yaULPn4ygi8GSx/YYGZReTBpZh9QAgxeJyDGTVuivZYrMXSsCZ+z5+/NaOSnJT8wed+s8Ev+hiRFDZ2Un0iRCRWOGtxtXJG00NN4gCphjCmLNErofVhim5fiXS/AHNy9iu3320=
+	t=1706933928; cv=none; b=F8TtMaDD64bOEMHA/s1uIS/lWK7i1/jMFwMWAbiL5oxRfolngt6ImQdqQp+8cnGGZ09NHNV55HsjmNwbg0JjCPiYG1CUzqmfM8tmFaK5cKNKIjsXqMGXn0SNuaglBl1vxh+wLFZGQ+MJkI719/kPwL5B5y7XODtvlyoARcLoP2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933479; c=relaxed/simple;
-	bh=Q7rZqqbMjZOWNSvsfa6I1+YCGMs6zE4wjzms/dEqolY=;
+	s=arc-20240116; t=1706933928; c=relaxed/simple;
+	bh=t9gynKT+wbSWhHdNRBUSE+45tVHYs4R3atAmu1T6oOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LSFQDWe5p8sLFn/BCfiKoefON+jYUWauz49XTmpjlM5I5FNYP74aSkD7xF5MRnJFj3nZSRxRwCbXQNI0mdJiKHs5cD1FLayMWR+PNAMubzj6zI1apJgRChr/lKnAW4U1BZBod4sZRn06cCOYqSVGmQrilm11P3BdvKQsk0eWOyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smr4FXcX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE7AC433C7;
-	Sat,  3 Feb 2024 04:11:18 +0000 (UTC)
+	 MIME-Version; b=Nj5fFHjU+f6QP0b9CcCBvqwT9BBwwiTw/6WHjbkDGcBeigfiydo2+mFcEquuFZpj7Q5Y5jRw+1nYHu35kD57RkTigbvmxYIZ7gZTL1uaxV8+GhwRmeOAd0joytdtzNKeVlB6o4vqk72Ic3tbujnP5zS5iQgHkpecv8GH0ilZo3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hTbzIJ/0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A64C43399;
+	Sat,  3 Feb 2024 04:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933478;
-	bh=Q7rZqqbMjZOWNSvsfa6I1+YCGMs6zE4wjzms/dEqolY=;
+	s=korg; t=1706933927;
+	bh=t9gynKT+wbSWhHdNRBUSE+45tVHYs4R3atAmu1T6oOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=smr4FXcX9HGLVlhhnqMnSUsR4Ybs7RqHOEApxFyjHyc0L3iRK9kW3zQp5eyDq1AVK
-	 edlZ2rBvMR2r2DCyfodZpJUkVdE/h5mbxbvmkqxSBN0/BBIygzHar8FSNriJ0kFThf
-	 7qn7sjhzIoD9kpRYreCLxQCNVePyCShpRNL1Wr2k=
+	b=hTbzIJ/0DYAB5tYNI+bKM6pNfFm5QE07EG377wA/Q1Fcnqh4JGJa0QuVtPb5lKkSi
+	 2fTKsNlb1ybJnIFeuRmx1mqq+9VWreXFazGH/I/LwRYtc5+zQxkCkq0Mo7PwGAud/D
+	 OEh4ja44jDyrO5MySxSEytUWAcCq3AxKnZkpSqrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Max Kellermann <max.kellermann@ionos.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 205/219] netfilter: nf_log: replace BUG_ON by WARN_ON_ONCE when putting logger
+Subject: [PATCH 6.7 260/353] fs/kernfs/dir: obey S_ISGID
 Date: Fri,  2 Feb 2024 20:06:18 -0800
-Message-ID: <20240203035345.789587671@linuxfoundation.org>
+Message-ID: <20240203035411.975576365@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-[ Upstream commit 259eb32971e9eb24d1777a28d82730659f50fdcb ]
+[ Upstream commit 5133bee62f0ea5d4c316d503cc0040cac5637601 ]
 
-Module reference is bumped for each user, this should not ever happen.
+Handling of S_ISGID is usually done by inode_init_owner() in all other
+filesystems, but kernfs doesn't use that function.  In kernfs, struct
+kernfs_node is the primary data structure, and struct inode is only
+created from it on demand.  Therefore, inode_init_owner() can't be
+used and we need to imitate its behavior.
 
-But BUG_ON check should use rcu_access_pointer() instead.
+S_ISGID support is useful for the cgroup filesystem; it allows
+subtrees managed by an unprivileged process to retain a certain owner
+gid, which then enables sharing access to the subtree with another
+unprivileged process.
 
-If this ever happens, do WARN_ON_ONCE() instead of BUG_ON() and
-consolidate pointer check under the rcu read side lock section.
+--
+v1 -> v2: minor coding style fix (comment)
 
-Fixes: fab4085f4e24 ("netfilter: log: nf_log_packet() as real unified interface")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20231208093310.297233-2-max.kellermann@ionos.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_log.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/kernfs/dir.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
-index 8a29290149bd..be93a02497d6 100644
---- a/net/netfilter/nf_log.c
-+++ b/net/netfilter/nf_log.c
-@@ -193,11 +193,12 @@ void nf_logger_put(int pf, enum nf_log_type type)
- 		return;
- 	}
+diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
+index 8b2bd65d70e7..62d39ecf0a46 100644
+--- a/fs/kernfs/dir.c
++++ b/fs/kernfs/dir.c
+@@ -676,6 +676,18 @@ struct kernfs_node *kernfs_new_node(struct kernfs_node *parent,
+ {
+ 	struct kernfs_node *kn;
  
--	BUG_ON(loggers[pf][type] == NULL);
--
- 	rcu_read_lock();
- 	logger = rcu_dereference(loggers[pf][type]);
--	module_put(logger->me);
-+	if (!logger)
-+		WARN_ON_ONCE(1);
-+	else
-+		module_put(logger->me);
- 	rcu_read_unlock();
- }
- EXPORT_SYMBOL_GPL(nf_logger_put);
++	if (parent->mode & S_ISGID) {
++		/* this code block imitates inode_init_owner() for
++		 * kernfs
++		 */
++
++		if (parent->iattr)
++			gid = parent->iattr->ia_gid;
++
++		if (flags & KERNFS_DIR)
++			mode |= S_ISGID;
++	}
++
+ 	kn = __kernfs_new_node(kernfs_root(parent), parent,
+ 			       name, mode, uid, gid, flags);
+ 	if (kn) {
 -- 
 2.43.0
 
