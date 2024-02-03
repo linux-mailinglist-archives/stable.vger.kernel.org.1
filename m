@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-18370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF1E848275
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96EE7848142
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BCA9281956
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32CA31F21838
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4703F48CCD;
-	Sat,  3 Feb 2024 04:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F1A1CAB8;
+	Sat,  3 Feb 2024 04:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M2Pc62Bc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dR7Jz08V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0439C13AC2;
-	Sat,  3 Feb 2024 04:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356731079D;
+	Sat,  3 Feb 2024 04:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933749; cv=none; b=KnAfdth+iBCafaHt1bqp0XxlH2i+kAxyHna7gKaOyNUQTZbF3pbA8LdVWMOiXyneIwO3vqLteRdMLEDZa0jC3cDCj1DnLgmkZ0bXrY6bTrwtB//w7hG8XDlx7XdgXVp+iTbimvtNBQGKmz38GrnJkoYif9KVj1+xhTKPZ8xWa/U=
+	t=1706933524; cv=none; b=pKPXyoO7/vx/5k9MYqSm4rWQ+k2r0U3sXRHPYpyBPeuJe1ZCBggHYklKAec6un9uBHn7WaeBNsMO9ru418M7Nnceg1/aIROtD7VoEnZvkLgcZ89dAszflodXsr7lLlJKD0e4kV8wqJxvB1lYcJmQRHEkb/XwRi4WcDxWqV0Q6kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933749; c=relaxed/simple;
-	bh=XxFxIk2pXdImkhwoTEFaLXlxs4wouqvMwZ27itLSI/U=;
+	s=arc-20240116; t=1706933524; c=relaxed/simple;
+	bh=f98+fcH1FEwRECtkrrA/U+vXIWCedQpV8HE4aGThKXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJJry+0EIFvmVhpfVyx/NdTN94N++GglTyOvKhaffkbRxcaT5hQvtM9Ifa/x5EFA1Tb0W6/6Qg1LVyDYlAgGbfrmNyJHEmkSquZAqPMewIhfqan4j9EThIvdCc/gsighTYykxZmS+m3keXmcNlPgtoabROoU259bTWLERagiKqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M2Pc62Bc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE4EBC43390;
-	Sat,  3 Feb 2024 04:15:48 +0000 (UTC)
+	 MIME-Version; b=SFs2TX/HcGi7CY9G+K+zPexwoLZ3xsd73s+XFAKvmYCJGTbzwXvURc/WEzSJgi1UgYQuKhq/Ke9uvS085wkLncy1pgbA0ya6U/wCSOymEiT0Y3JDZ1zAEVRBpA9QmtmBvm2ScS1C2QBzamFm9EZrnjR/hOK7qAvVK1sLVPjVlcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dR7Jz08V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF4CC433A6;
+	Sat,  3 Feb 2024 04:12:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933748;
-	bh=XxFxIk2pXdImkhwoTEFaLXlxs4wouqvMwZ27itLSI/U=;
+	s=korg; t=1706933524;
+	bh=f98+fcH1FEwRECtkrrA/U+vXIWCedQpV8HE4aGThKXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M2Pc62BcA2hGQr7nt885bWLHR1VpDYfL/vlyuLTMIVaa4I6zBQnwxii9i0bIwAMfj
-	 fcwCXN6gXSQKkhPCmAxsnhyY0PxercABieAZpYhWQrzE+Dk9ioggQVtOzQrAV6b/4G
-	 /svVzZPmySu2sQis1u0f8tYhTsz2u5e9wNbkPi70=
+	b=dR7Jz08VMGzMZWP+EvnOqLzaINW1j1DG+coq5dLlQYmovxwRNAw7ha8NcAQzyc65B
+	 wcfjF0ETQ5TxqEzwq9PKU6aUrhg+PTPJYeFNPE0qJqNKb5Ilha1uPNfefoZGKYAwxi
+	 xBgfZz2ZIqJHx5rLNBbXnmANGFGPzlbZl8fa0abw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Shiji Yang <yangshiji66@outlook.com>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 043/353] afs: fix the usage of read_seqbegin_or_lock() in afs_lookup_volume_rcu()
+Subject: [PATCH 6.6 064/322] wifi: rt2x00: correct wrong BBP register in RxDCOC calibration
 Date: Fri,  2 Feb 2024 20:02:41 -0800
-Message-ID: <20240203035405.170465083@linuxfoundation.org>
+Message-ID: <20240203035401.206354266@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-[ Upstream commit 4121b4337146b64560d1e46ebec77196d9287802 ]
+[ Upstream commit 50da74e1e8b682853d1e07fc8bbe3a0774ae5e09 ]
 
-David Howells says:
+Refer to Mediatek vendor driver RxDCOC_Calibration() function, when
+performing gainfreeze calibration, we should write register 140
+instead of 141. This fix can reduce the total calibration time from
+6 seconds to 1 second.
 
- (2) afs_lookup_volume_rcu().
-
-     There can be a lot of volumes known by a system.  A thousand would
-     require a 10-step walk and this is drivable by remote operation, so I
-     think this should probably take a lock on the second pass too.
-
-Make the "seq" counter odd on the 2nd pass, otherwise read_seqbegin_or_lock()
-never takes the lock.
-
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Link: https://lore.kernel.org/r/20231130115606.GA21571@redhat.com/
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/TYAP286MB0315B13B89DF57B6B27BB854BCAFA@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/callback.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/afs/callback.c b/fs/afs/callback.c
-index a484fa642808..90f9b2a46ff4 100644
---- a/fs/afs/callback.c
-+++ b/fs/afs/callback.c
-@@ -110,13 +110,14 @@ static struct afs_volume *afs_lookup_volume_rcu(struct afs_cell *cell,
- {
- 	struct afs_volume *volume = NULL;
- 	struct rb_node *p;
--	int seq = 0;
-+	int seq = 1;
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+index e65cc00fa17c..c13ae87f94f4 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
+@@ -8695,7 +8695,7 @@ static void rt2800_rxdcoc_calibration(struct rt2x00_dev *rt2x00dev)
+ 	rt2800_rfcsr_write_bank(rt2x00dev, 5, 4, saverfb5r4);
+ 	rt2800_rfcsr_write_bank(rt2x00dev, 7, 4, saverfb7r4);
  
- 	do {
- 		/* Unfortunately, rbtree walking doesn't give reliable results
- 		 * under just the RCU read lock, so we have to check for
- 		 * changes.
- 		 */
-+		seq++; /* 2 on the 1st/lockless path, otherwise odd */
- 		read_seqbegin_or_lock(&cell->volume_lock, &seq);
- 
- 		p = rcu_dereference_raw(cell->volumes.rb_node);
+-	rt2800_bbp_write(rt2x00dev, 158, 141);
++	rt2800_bbp_write(rt2x00dev, 158, 140);
+ 	bbpreg = rt2800_bbp_read(rt2x00dev, 159);
+ 	bbpreg = bbpreg & (~0x40);
+ 	rt2800_bbp_write(rt2x00dev, 159, bbpreg);
 -- 
 2.43.0
 
