@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62EB5848127
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 902E684825B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DC4B281947
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A9331F2AE81
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F4921C6B1;
-	Sat,  3 Feb 2024 04:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75CA482F9;
+	Sat,  3 Feb 2024 04:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LbKBmout"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0z27kpUg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6AC101CE;
-	Sat,  3 Feb 2024 04:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B561B94E;
+	Sat,  3 Feb 2024 04:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933504; cv=none; b=pI9bHggJeEnornWl4L2F8J785eOJmo8k6wQ04IUY4tSevFnVE+Yi85guhNfa81shu64DpW7ofxF2vT8e+725DBb4j1GbSWQ4TFGfn4Ibz03FCbLH05ncHjYmlDZpCeHBbe1SP8pkHQM2tuvR4kuZcu70BCTQDEKlpKZHBM5f+HI=
+	t=1706933730; cv=none; b=jDgfP5hSxzfN+IMYc7EmpLKZSoPdvHXc8GgRfGe0H+n3WbBHTWOjddF7xPVgqY4DhjFoYv/E/iCANzSIvQovqDspXkF30Y8cm+58W9AZoXAPr7f/cKHLTHUEf2K71OEy+dod40ZVCy8I0Zcb0KjP/sYJWisihQHEudcMVsryP64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933504; c=relaxed/simple;
-	bh=Ut4d7iSGFWhkV9Uq25zObeVJ2yNa6mlpMcLw7oCD8d8=;
+	s=arc-20240116; t=1706933730; c=relaxed/simple;
+	bh=9d6vwmYG47JD5iQTiTMV+9vCFcKpEebEp6RTxSUnIS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eOQb1eSMa6tEs2h7oMBjrGlrYou0OaDsb3A6mMBE+l3q/91+s+ZmXrsMl4Zo1xJ8GdWenk6Xkx95WNBpchr9Wwr06hJVU0O7CZTTcu0xRNRRwom9YwfnTHM/8Wh34qxF1fq32I0F5I2i3pYvioILdIhCYgQwNd5ky9RByIjVA2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LbKBmout; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 850CFC433C7;
-	Sat,  3 Feb 2024 04:11:44 +0000 (UTC)
+	 MIME-Version; b=l7sDw7LOL2DsM5o088/gHLKxfW7oWqh9o0BijDrAjQgsj2O6qJm/PwynEJgai8CeKWZckGr7JN4dJfTaZJos+KT8hPs/Fl2jOkktyhi/OBPlngSfsK+Skciyl3Pwa7e0AwD/kGpY3K/q2PYJquXFZss8CWQ51eZEH0ci6IJIy3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0z27kpUg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CB8C433F1;
+	Sat,  3 Feb 2024 04:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933504;
-	bh=Ut4d7iSGFWhkV9Uq25zObeVJ2yNa6mlpMcLw7oCD8d8=;
+	s=korg; t=1706933730;
+	bh=9d6vwmYG47JD5iQTiTMV+9vCFcKpEebEp6RTxSUnIS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LbKBmoutqrzYToffndezfQpY8Kvx4jj0ySdmiZUFzkWsNGaoV1tZxAmUOTPEJJZ2U
-	 Fm0S++2J0CY0zIXZ7UgX0FqnRHdWahI9m7lbeSuYnJjKt9+1o1olkzYzvCNQ0aHlt8
-	 W2TqJzbw/YsW669GMLqD2JazYBwMIcHrSAeltFQw=
+	b=0z27kpUg4zjl7LjhPc/RJoCEHXUMbpkeBVkez7LMw8KQdzgO23/BItilkSe4eQGr9
+	 XzFuSOFz3c97kW/aIdydtJvsEee70fBxFULjmGy7zTW0/eqCmRx2PDh76pett+58JK
+	 4VqRasjIZaBswJ765O8Y4BySjVjgURDEimqh+X50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Yue Hu <huyue2@coolpad.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Chris Riches <chris.riches@nutanix.com>,
+	Paul Moore <paul@paul-moore.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/322] erofs: fix ztailpacking for subpage compressed blocks
-Date: Fri,  2 Feb 2024 20:02:14 -0800
-Message-ID: <20240203035400.269096975@linuxfoundation.org>
+Subject: [PATCH 6.7 017/353] audit: Send netlink ACK before setting connection in auditd_set
+Date: Fri,  2 Feb 2024 20:02:15 -0800
+Message-ID: <20240203035404.291916918@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Chris Riches <chris.riches@nutanix.com>
 
-[ Upstream commit e5aba911dee5e20fa82efbe13e0af8f38ea459e7 ]
+[ Upstream commit 022732e3d846e197539712e51ecada90ded0572a ]
 
-`pageofs_in` should be the compressed data offset of the page rather
-than of the block.
+When auditd_set sets the auditd_conn pointer, audit messages can
+immediately be put on the socket by other kernel threads. If the backlog
+is large or the rate is high, this can immediately fill the socket
+buffer. If the audit daemon requested an ACK for this operation, a full
+socket buffer causes the ACK to get dropped, also setting ENOBUFS on the
+socket.
 
-Acked-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Yue Hu <huyue2@coolpad.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20231214161337.753049-1-hsiangkao@linux.alibaba.com
+To avoid this race and ensure ACKs get through, fast-track the ACK in
+this specific case to ensure it is sent before auditd_conn is set.
+
+Signed-off-by: Chris Riches <chris.riches@nutanix.com>
+[PM: fix some tab vs space damage]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zdata.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/audit.c | 31 ++++++++++++++++++++++++-------
+ 1 file changed, 24 insertions(+), 7 deletions(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index a33cd6757f98..1c0e6167d8e7 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -815,7 +815,6 @@ static int z_erofs_register_pcluster(struct z_erofs_decompress_frontend *fe)
+diff --git a/kernel/audit.c b/kernel/audit.c
+index 16205dd29843..9c8e5f732c4c 100644
+--- a/kernel/audit.c
++++ b/kernel/audit.c
+@@ -487,15 +487,19 @@ static void auditd_conn_free(struct rcu_head *rcu)
+  * @pid: auditd PID
+  * @portid: auditd netlink portid
+  * @net: auditd network namespace pointer
++ * @skb: the netlink command from the audit daemon
++ * @ack: netlink ack flag, cleared if ack'd here
+  *
+  * Description:
+  * This function will obtain and drop network namespace references as
+  * necessary.  Returns zero on success, negative values on failure.
+  */
+-static int auditd_set(struct pid *pid, u32 portid, struct net *net)
++static int auditd_set(struct pid *pid, u32 portid, struct net *net,
++		      struct sk_buff *skb, bool *ack)
+ {
+ 	unsigned long flags;
+ 	struct auditd_connection *ac_old, *ac_new;
++	struct nlmsghdr *nlh;
  
- 	if (ztailpacking) {
- 		pcl->obj.index = 0;	/* which indicates ztailpacking */
--		pcl->pageofs_in = erofs_blkoff(fe->inode->i_sb, map->m_pa);
- 		pcl->tailpacking_size = map->m_plen;
- 	} else {
- 		pcl->obj.index = map->m_pa >> PAGE_SHIFT;
-@@ -893,6 +892,7 @@ static int z_erofs_pcluster_begin(struct z_erofs_decompress_frontend *fe)
- 		}
- 		get_page(map->buf.page);
- 		WRITE_ONCE(fe->pcl->compressed_bvecs[0].page, map->buf.page);
-+		fe->pcl->pageofs_in = map->m_pa & ~PAGE_MASK;
- 		fe->mode = Z_EROFS_PCLUSTER_FOLLOWED_NOINPLACE;
- 	}
- 	/* file-backed inplace I/O pages are traversed in reverse order */
+ 	if (!pid || !net)
+ 		return -EINVAL;
+@@ -507,6 +511,13 @@ static int auditd_set(struct pid *pid, u32 portid, struct net *net)
+ 	ac_new->portid = portid;
+ 	ac_new->net = get_net(net);
+ 
++	/* send the ack now to avoid a race with the queue backlog */
++	if (*ack) {
++		nlh = nlmsg_hdr(skb);
++		netlink_ack(skb, nlh, 0, NULL);
++		*ack = false;
++	}
++
+ 	spin_lock_irqsave(&auditd_conn_lock, flags);
+ 	ac_old = rcu_dereference_protected(auditd_conn,
+ 					   lockdep_is_held(&auditd_conn_lock));
+@@ -1200,7 +1211,8 @@ static int audit_replace(struct pid *pid)
+ 	return auditd_send_unicast_skb(skb);
+ }
+ 
+-static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh)
++static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh,
++			     bool *ack)
+ {
+ 	u32			seq;
+ 	void			*data;
+@@ -1293,7 +1305,8 @@ static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh)
+ 				/* register a new auditd connection */
+ 				err = auditd_set(req_pid,
+ 						 NETLINK_CB(skb).portid,
+-						 sock_net(NETLINK_CB(skb).sk));
++						 sock_net(NETLINK_CB(skb).sk),
++						 skb, ack);
+ 				if (audit_enabled != AUDIT_OFF)
+ 					audit_log_config_change("audit_pid",
+ 								new_pid,
+@@ -1538,9 +1551,10 @@ static int audit_receive_msg(struct sk_buff *skb, struct nlmsghdr *nlh)
+  * Parse the provided skb and deal with any messages that may be present,
+  * malformed skbs are discarded.
+  */
+-static void audit_receive(struct sk_buff  *skb)
++static void audit_receive(struct sk_buff *skb)
+ {
+ 	struct nlmsghdr *nlh;
++	bool ack;
+ 	/*
+ 	 * len MUST be signed for nlmsg_next to be able to dec it below 0
+ 	 * if the nlmsg_len was not aligned
+@@ -1553,9 +1567,12 @@ static void audit_receive(struct sk_buff  *skb)
+ 
+ 	audit_ctl_lock();
+ 	while (nlmsg_ok(nlh, len)) {
+-		err = audit_receive_msg(skb, nlh);
+-		/* if err or if this message says it wants a response */
+-		if (err || (nlh->nlmsg_flags & NLM_F_ACK))
++		ack = nlh->nlmsg_flags & NLM_F_ACK;
++		err = audit_receive_msg(skb, nlh, &ack);
++
++		/* send an ack if the user asked for one and audit_receive_msg
++		 * didn't already do it, or if there was an error. */
++		if (ack || err)
+ 			netlink_ack(skb, nlh, err, NULL);
+ 
+ 		nlh = nlmsg_next(nlh, &len);
 -- 
 2.43.0
 
