@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F148481E5
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F9718480CD
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 230321C20F64
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 002B9B20CD4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8353142077;
-	Sat,  3 Feb 2024 04:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD74E125B6;
+	Sat,  3 Feb 2024 04:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cb/CTwGm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2AumvkL1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3321712B7B;
-	Sat,  3 Feb 2024 04:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6466112B8A;
+	Sat,  3 Feb 2024 04:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933643; cv=none; b=EZfZyiHDbtthdoAhAfDFYdXAmfEaOy6oAYTX6NkdXPUXTbTLtBBDo+9RoFDGNa/PfX4VnI2fWPQ8fG/KRwZjnrbe978ot+yJGJVB6bduoyC3H1OFuuLjtazGyXEHl5bqVP0aRc8U5HGtDPTFZcN5Q2LqzBiSuEf9SXZ69TcgZXI=
+	t=1706933442; cv=none; b=r9il85WnffEEg2AScv4fVridUwLXzn/v1zu3rb5Uf4KcT6cGnw5prAiwzN8xphuffaZp7UU8aOa3ieOIsjM48pbYHi5JR030gEjcJlCYg1v2GrJ3mbVm+QlocEJNTj81VMraddmKCUJq+EC/CBhTFQndtdrAJwShI6HUM3CK4GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933643; c=relaxed/simple;
-	bh=xl7ZRhuaEDnUMUo69Ak4l4B9Li/dBgn7g+/sHLCXfOo=;
+	s=arc-20240116; t=1706933442; c=relaxed/simple;
+	bh=dJlu5iVOgDLnH4WpOmgrZ18kC9Ez6cqAxDW7hYyf0LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zqw0+vR4yGz/y/UTCQDRxuH8oI3Ju1d6IFRx3n1LuHC02bWOyiTfGM+/atVBE0b+OoPaXt9Z2ZDcjz2Z48fzh/8jvcQTSFgyRayWdkVKIYso6JKWiHHoXjBP6nbpMEyPwY0bsMQdWOaRo6yfU3edP0gGRZSSZxlS9yQTjz9ck6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cb/CTwGm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9D7C43394;
-	Sat,  3 Feb 2024 04:14:02 +0000 (UTC)
+	 MIME-Version; b=UYac9daiUWSFa+k0PZJHRLI/Nfr7rSPYGaJjO5QBLhxLB+d99cMHn72rPTjJLpjbfXBvYf3ScY9zgnLCXIPL2hx6ssNX2kPIn2yHdIYf2XoJalzmFKuH0hJNBKz5pCVasDrIvN+Gf3hFJ+/cqmcO2Qo4xqugHR5J/dJK7bSLAVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2AumvkL1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BCA2C433F1;
+	Sat,  3 Feb 2024 04:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933643;
-	bh=xl7ZRhuaEDnUMUo69Ak4l4B9Li/dBgn7g+/sHLCXfOo=;
+	s=korg; t=1706933442;
+	bh=dJlu5iVOgDLnH4WpOmgrZ18kC9Ez6cqAxDW7hYyf0LI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cb/CTwGmXFigi6i8/Z2FNw5eDqu+jJ+2IF/3+6vMiaPHzZGS0TqVgxPqEHRQgU/XF
-	 +/pGQ2sa83j1MF+YaotQ4RmCj+yz+P1SUx5Rx3loT4XghIAi+DLncP8iX8UKUfF1Ah
-	 Mqkt7U1Am2LBbrc0IF0LhNY59XwIfShLSKNXIjQk=
+	b=2AumvkL10XVHNN8iHvvY3mYBYir9SjdXiocOU67fpAwBtZJSUrnDVnTgY/wFU9oM1
+	 5OReTz6Ez03qGdhJUp7F70SNwjjdhcrPbzgRllNS6JXEXTuCy16fSzXoruZZfq62VY
+	 n4im9IFddfsFiX1Yjjtfejpy+531hC2bfgINQTYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederik Haxel <haxel@fzi.de>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Benjamin Berg <benjamin@sipsolutions.net>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 225/322] riscv: Make XIP bootable again
+Subject: [PATCH 6.1 149/219] um: Dont use vfprintf() for os_info()
 Date: Fri,  2 Feb 2024 20:05:22 -0800
-Message-ID: <20240203035406.488427316@linuxfoundation.org>
+Message-ID: <20240203035338.000022856@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederik Haxel <haxel@fzi.de>
+From: Benjamin Berg <benjamin@sipsolutions.net>
 
-[ Upstream commit 66f1e68093979816a23412a3fad066f5bcbc0360 ]
+[ Upstream commit 236f9fe39b02c15fa5530b53e9cca48354394389 ]
 
-Currently, the XIP kernel seems to fail to boot due to missing
-XIP_FIXUP and a wrong page_offset value. A superfluous XIP_FIXUP
-has also been removed.
+The threads allocated inside the kernel have only a single page of
+stack. Unfortunately, the vfprintf function in standard glibc may use
+too much stack-space, overflowing it.
 
-Signed-off-by: Frederik Haxel <haxel@fzi.de>
-Link: https://lore.kernel.org/r/20231212130116.848530-2-haxel@fzi.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+To make os_info safe to be used by helper threads, use the kernel
+vscnprintf function into a smallish buffer and write out the information
+to stderr.
+
+Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/head.S | 1 +
- arch/riscv/mm/init.c     | 8 ++++++--
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ arch/um/os-Linux/util.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
-index 3710ea5d160f..0097c145385f 100644
---- a/arch/riscv/kernel/head.S
-+++ b/arch/riscv/kernel/head.S
-@@ -88,6 +88,7 @@ relocate_enable_mmu:
- 	/* Compute satp for kernel page tables, but don't load it yet */
- 	srl a2, a0, PAGE_SHIFT
- 	la a1, satp_mode
-+	XIP_FIXUP_OFFSET a1
- 	REG_L a1, 0(a1)
- 	or a2, a2, a1
+diff --git a/arch/um/os-Linux/util.c b/arch/um/os-Linux/util.c
+index fc0f2a9dee5a..1dca4ffbd572 100644
+--- a/arch/um/os-Linux/util.c
++++ b/arch/um/os-Linux/util.c
+@@ -173,23 +173,38 @@ __uml_setup("quiet", quiet_cmd_param,
+ "quiet\n"
+ "    Turns off information messages during boot.\n\n");
  
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 0798bd861dcb..5f1921d014b1 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -172,6 +172,9 @@ void __init mem_init(void)
- 
- /* Limit the memory size via mem. */
- static phys_addr_t memory_limit;
-+#ifdef CONFIG_XIP_KERNEL
-+#define memory_limit	(*(phys_addr_t *)XIP_FIXUP(&memory_limit))
-+#endif /* CONFIG_XIP_KERNEL */
- 
- static int __init early_mem(char *p)
++/*
++ * The os_info/os_warn functions will be called by helper threads. These
++ * have a very limited stack size and using the libc formatting functions
++ * may overflow the stack.
++ * So pull in the kernel vscnprintf and use that instead with a fixed
++ * on-stack buffer.
++ */
++int vscnprintf(char *buf, size_t size, const char *fmt, va_list args);
++
+ void os_info(const char *fmt, ...)
  {
-@@ -950,7 +953,7 @@ static void __init create_fdt_early_page_table(uintptr_t fix_fdt_va,
- 	 * setup_vm_final installs the linear mapping. For 32-bit kernel, as the
- 	 * kernel is mapped in the linear mapping, that makes no difference.
- 	 */
--	dtb_early_va = kernel_mapping_pa_to_va(XIP_FIXUP(dtb_pa));
-+	dtb_early_va = kernel_mapping_pa_to_va(dtb_pa);
- #endif
++	char buf[256];
+ 	va_list list;
++	int len;
  
- 	dtb_early_pa = dtb_pa;
-@@ -1053,9 +1056,9 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
- #endif
+ 	if (quiet_info)
+ 		return;
  
- 	kernel_map.virt_addr = KERNEL_LINK_ADDR + kernel_map.virt_offset;
--	kernel_map.page_offset = _AC(CONFIG_PAGE_OFFSET, UL);
+ 	va_start(list, fmt);
+-	vfprintf(stderr, fmt, list);
++	len = vscnprintf(buf, sizeof(buf), fmt, list);
++	fwrite(buf, len, 1, stderr);
+ 	va_end(list);
+ }
  
- #ifdef CONFIG_XIP_KERNEL
-+	kernel_map.page_offset = PAGE_OFFSET_L3;
- 	kernel_map.xiprom = (uintptr_t)CONFIG_XIP_PHYS_ADDR;
- 	kernel_map.xiprom_sz = (uintptr_t)(&_exiprom) - (uintptr_t)(&_xiprom);
+ void os_warn(const char *fmt, ...)
+ {
++	char buf[256];
+ 	va_list list;
++	int len;
  
-@@ -1065,6 +1068,7 @@ asmlinkage void __init setup_vm(uintptr_t dtb_pa)
- 
- 	kernel_map.va_kernel_xip_pa_offset = kernel_map.virt_addr - kernel_map.xiprom;
- #else
-+	kernel_map.page_offset = _AC(CONFIG_PAGE_OFFSET, UL);
- 	kernel_map.phys_addr = (uintptr_t)(&_start);
- 	kernel_map.size = (uintptr_t)(&_end) - kernel_map.phys_addr;
- #endif
+ 	va_start(list, fmt);
+-	vfprintf(stderr, fmt, list);
++	len = vscnprintf(buf, sizeof(buf), fmt, list);
++	fwrite(buf, len, 1, stderr);
+ 	va_end(list);
+ }
 -- 
 2.43.0
 
