@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A51848066
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EEF9848191
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08F191F2BB1B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1B4D1C22F8E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81CB134B9;
-	Sat,  3 Feb 2024 04:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E262C6B3;
+	Sat,  3 Feb 2024 04:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QnC8fnLm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1PXpeKsz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66801FBE4;
-	Sat,  3 Feb 2024 04:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E857110A09;
+	Sat,  3 Feb 2024 04:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933368; cv=none; b=V0FpfsVQn44ZQZMPfLQSZwfNd3lmjKzzyZgTQQwF9kTOlKAjNpyw+5KRgoHT3a9TGmIaWbvcx76fTNYgw6AryjtnzPSZALVj1oJce0ihBWnqT9y/HQHJz53Ao8hm/4BOaw5W4kGQ5HN+UUkX0NhK7jsKo79H93ceG+4b0JxD3e0=
+	t=1706933582; cv=none; b=hxfRwPQlcOtoFl87fC6nGZEGolUAaMSarlEWnNu2MzbCGDu45P9Yhy6WxPIp1v4DREz9eD5Nvu+9VtvzaZA3xiQq9ZVmiN2BJUlyNug82WfYT5z2y7UT1gAOxiw1pMVguR8FCnm78dXhngkfA24wTSkPs+6CqXM9/glCogmDihQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933368; c=relaxed/simple;
-	bh=mVgOKmx4HRqFpJ9F1bkpkyeGHl+6LMv/Ln13e4z4GJ0=;
+	s=arc-20240116; t=1706933582; c=relaxed/simple;
+	bh=PyFEWjh1aX77pe2iZcqXCTkQ3Aw/3Bqm5qkcu/AlcIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K+qhSFpO1tWkOs1IGUlG8IKbyhHY88WoFCkvcazds7M/2Wm6AmQj2RJGKSDFlQakDNZFSE2VzJjUzIPtnkiXhwCjz6dgZVzhdex9OYUB8Y9LXK/tEHEUmG8Xdl1NdUatfmsX3WGP1pl+xRbNSeuAZGL6UFnC0XMD4H5q+ZaL7Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QnC8fnLm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8443C43390;
-	Sat,  3 Feb 2024 04:09:27 +0000 (UTC)
+	 MIME-Version; b=OrmavyPN8Kg44F/U4hlu/b4p+WzpUo4EFRhZvC/Os9VWrt5uaQGfMpRFSVs8XWWv08c2CJm7nUuq8d6PGyuHhwn/u6xXohS0cIXnGPyoygHovcz7/3nBdnclHVbQ2thw/rbo4ca9639s3dRPyR/KJRN1Qev328+tr5c5PnfpzWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1PXpeKsz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B131BC433F1;
+	Sat,  3 Feb 2024 04:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933367;
-	bh=mVgOKmx4HRqFpJ9F1bkpkyeGHl+6LMv/Ln13e4z4GJ0=;
+	s=korg; t=1706933581;
+	bh=PyFEWjh1aX77pe2iZcqXCTkQ3Aw/3Bqm5qkcu/AlcIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QnC8fnLmowbWuymLOT8HCvsi5VNuTE38UCKhY2rwMcp1ixLq7Ity4arPGy790NYbA
-	 8gaBSC7R3ue07QQnnVejxMefeG6HNBam6w2LamPT5AOYixbO1PamI+w6KsZTZjkXE0
-	 PIZ6YOH5nra34e5ujvp8t2vdpnn3vVe960nehKkI=
+	b=1PXpeKszSfJzHA6XQy4rJucqnpklUarHSf8+RcdyK6cDVnhKdfH/xV219iawvE+OC
+	 CBxo8c2JYnXnyUDA1VY5x/OguxFXTgB2fR9vz/q3vaJzitSYSGaZ5oKBMBpbrDI6zf
+	 0Mms+0UuJ1iY2Q1xrsXXrLOAm3utgmg5tZneYlQ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= <jerome.pouiller@silabs.com>,
+	Su Hui <suhui@nfschina.com>,
 	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/219] wifi: wfx: fix possible NULL pointer dereference in wfx_set_mfp_ap()
+Subject: [PATCH 6.6 143/322] wifi: rtlwifi: rtl8723{be,ae}: using calculate_bit_shift()
 Date: Fri,  2 Feb 2024 20:04:00 -0800
-Message-ID: <20240203035326.211859516@linuxfoundation.org>
+Message-ID: <20240203035403.783238579@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit fe0a7776d4d19e613bb8dd80fe2d78ae49e8b49d ]
+[ Upstream commit 5c16618bc06a41ad68fd8499a21d35ef57ca06c2 ]
 
-Since 'ieee80211_beacon_get()' can return NULL, 'wfx_set_mfp_ap()'
-should check the return value before examining skb data. So convert
-the latter to return an appropriate error code and propagate it to
-return from 'wfx_start_ap()' as well. Compile tested only.
+Using calculate_bit_shift() to replace rtl8723_phy_calculate_bit_shift().
+And fix an undefined bitwise shift behavior problem.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Tested-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
-Acked-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+Signed-off-by: Su Hui <suhui@nfschina.com>
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20231204171130.141394-1-dmantipov@yandex.ru
+Link: https://msgid.link/20231219065739.1895666-12-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/silabs/wfx/sta.c | 42 ++++++++++++++++-----------
- 1 file changed, 25 insertions(+), 17 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c | 6 +++---
+ drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/silabs/wfx/sta.c b/drivers/net/wireless/silabs/wfx/sta.c
-index 626dfb4b7a55..073e870b2641 100644
---- a/drivers/net/wireless/silabs/wfx/sta.c
-+++ b/drivers/net/wireless/silabs/wfx/sta.c
-@@ -354,29 +354,38 @@ static int wfx_upload_ap_templates(struct wfx_vif *wvif)
- 	return 0;
- }
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
+index fe9b407dc2af..71e29b103da5 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
+@@ -49,7 +49,7 @@ u32 rtl8723e_phy_query_rf_reg(struct ieee80211_hw *hw,
+ 							    rfpath, regaddr);
+ 	}
  
--static void wfx_set_mfp_ap(struct wfx_vif *wvif)
-+static int wfx_set_mfp_ap(struct wfx_vif *wvif)
- {
- 	struct ieee80211_vif *vif = wvif_to_vif(wvif);
- 	struct sk_buff *skb = ieee80211_beacon_get(wvif->wdev->hw, vif, 0);
- 	const int ieoffset = offsetof(struct ieee80211_mgmt, u.beacon.variable);
--	const u16 *ptr = (u16 *)cfg80211_find_ie(WLAN_EID_RSN, skb->data + ieoffset,
--						 skb->len - ieoffset);
- 	const int pairwise_cipher_suite_count_offset = 8 / sizeof(u16);
- 	const int pairwise_cipher_suite_size = 4 / sizeof(u16);
- 	const int akm_suite_size = 4 / sizeof(u16);
-+	const u16 *ptr;
+-	bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
  
--	if (ptr) {
--		ptr += pairwise_cipher_suite_count_offset;
--		if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
--			return;
--		ptr += 1 + pairwise_cipher_suite_size * *ptr;
--		if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
--			return;
--		ptr += 1 + akm_suite_size * *ptr;
--		if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
--			return;
--		wfx_hif_set_mfp(wvif, *ptr & BIT(7), *ptr & BIT(6));
--	}
-+	if (unlikely(!skb))
-+		return -ENOMEM;
-+
-+	ptr = (u16 *)cfg80211_find_ie(WLAN_EID_RSN, skb->data + ieoffset,
-+				      skb->len - ieoffset);
-+	if (unlikely(!ptr))
-+		return -EINVAL;
-+
-+	ptr += pairwise_cipher_suite_count_offset;
-+	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
-+		return -EINVAL;
-+
-+	ptr += 1 + pairwise_cipher_suite_size * *ptr;
-+	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
-+		return -EINVAL;
-+
-+	ptr += 1 + akm_suite_size * *ptr;
-+	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
-+		return -EINVAL;
-+
-+	wfx_hif_set_mfp(wvif, *ptr & BIT(7), *ptr & BIT(6));
-+	return 0;
- }
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -80,7 +80,7 @@ void rtl8723e_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = rtl8723_phy_rf_serial_read(hw,
+ 								    rfpath,
+ 								    regaddr);
+-			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+@@ -89,7 +89,7 @@ void rtl8723e_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 		rtl8723_phy_rf_serial_write(hw, rfpath, regaddr, data);
+ 	} else {
+ 		if (bitmask != RFREG_OFFSET_MASK) {
+-			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
+index 2b9313cb93db..094cb36153f5 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
+@@ -41,7 +41,7 @@ u32 rtl8723be_phy_query_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
+ 	spin_lock(&rtlpriv->locks.rf_lock);
  
- int wfx_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-@@ -394,8 +403,7 @@ int wfx_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	ret = wfx_hif_start(wvif, &vif->bss_conf, wvif->channel);
- 	if (ret > 0)
- 		return -EIO;
--	wfx_set_mfp_ap(wvif);
--	return ret;
-+	return wfx_set_mfp_ap(wvif);
- }
+ 	original_value = rtl8723_phy_rf_serial_read(hw, rfpath, regaddr);
+-	bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
  
- void wfx_stop_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -68,7 +68,7 @@ void rtl8723be_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path path,
+ 	if (bitmask != RFREG_OFFSET_MASK) {
+ 			original_value = rtl8723_phy_rf_serial_read(hw, path,
+ 								    regaddr);
+-			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data = ((original_value & (~bitmask)) |
+ 				(data << bitshift));
+ 		}
 -- 
 2.43.0
 
