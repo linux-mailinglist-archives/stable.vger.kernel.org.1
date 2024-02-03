@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4CC8480BD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D9C84820A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 086DD1C2415D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB3D41F222C9
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C504B182DD;
-	Sat,  3 Feb 2024 04:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B48125B6;
+	Sat,  3 Feb 2024 04:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="olYKJ8JJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvQA1b9H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E3612B70;
-	Sat,  3 Feb 2024 04:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C551A12B7E;
+	Sat,  3 Feb 2024 04:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933433; cv=none; b=TAJN1/BTb3EWYCeG4a/rfNDerYqj6iTWUmyNxzIxFjF/kAtlii0QLmGh0J5ZO8xvlt6m/Q4Zu8S1fRvrsCdaGpBtGazuo1NGYYV1e/8RU72I6ssKPCDT8N1x25uq8jG9nc7MaT9TMbXz6rvLd8SM6HANAiSDApYr5JMFwZPo638=
+	t=1706933671; cv=none; b=j2hvc567Ntlm6hTDhWML4Q/sg4qGPh3kJ/yGAm62lrssA+pD88S1MX+FORYtKO3fJ/8T3Z3F6WR0YUPbTwsgqWHx6GvcQVfGvuANlPSnAyJ1HHPKFoxSWm/kpYWL8QTY1gxRDk/Pj2Ej6aq8Mr2QJoAeLkshI0qi9UjYCeFxPIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933433; c=relaxed/simple;
-	bh=OR1qHp2U6anIbWIUerdirow6LidLbeVC+cO76WQFuQw=;
+	s=arc-20240116; t=1706933671; c=relaxed/simple;
+	bh=Kp0TmxYu1RK+XAL5/qRbg4oUZjFHO2OTqtAW94+HW2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FovchdPBXNt0XcIG75QtdquZm8iCRq+9w5XEdOe0LpwHCXvP5E4IVFv7glI3/AVEQy1EYcqxYvCzyd3c+9LYZqVXvVHtIwM2wBnpF7a6Tv1Waae+LdhvLTgjUj54S9pbUfp/V32hD5RQzoxBV0VF9Vr6llCXY4/c7r3Crvvq/R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=olYKJ8JJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48EB0C433C7;
-	Sat,  3 Feb 2024 04:10:33 +0000 (UTC)
+	 MIME-Version; b=TnUjJs4uVERvDYujn7O3bYswzJaU2T1IIBFj4fWrcqvoxGNbxoGaOG70543OtnT60MUWBzWBvbDMD8IX6ymn1EjX38Dkgw/KMxQt8ySluLpk3KutHw0jm0Q1fANqh5XejnD0XorOTDuxnp/6hjrTJh1fHU7U6BY6CjFMXadgmSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvQA1b9H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA3DC43390;
+	Sat,  3 Feb 2024 04:14:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933433;
-	bh=OR1qHp2U6anIbWIUerdirow6LidLbeVC+cO76WQFuQw=;
+	s=korg; t=1706933671;
+	bh=Kp0TmxYu1RK+XAL5/qRbg4oUZjFHO2OTqtAW94+HW2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=olYKJ8JJ0Zqzg0JDmOMEo/2MkPi1RNn//kLOHLxt9E4UAGOmsBjtv1WWNbsMP8SYr
-	 bO6KWAKYZeqRHILrOSgEeVJyqptr7hgCc+8gXEqe3kHhs0DwWCP2m7vaBM4Vf/rCkb
-	 UO5dXS+PnbAaiQnX/4nQh1XtmMIVy6IfKdrMMOXY=
+	b=gvQA1b9HUZ2AHEhziSVZ++ln+rJlW0v3c7GBf3958Zolm0PARcjpd0OH9A9qQ5mCC
+	 d6DPPraXIMCSYSAyhg0DGnnz1NQ3WNUvhPwQ165ktTobZTFuAmT5wMNj7dDB3fIFIl
+	 llQbUwV3HzdRDSyRMTysXUsU9m1ALyuh7NqDkqpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+	Max Kellermann <max.kellermann@ionos.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 162/219] selftests/sgx: Fix linker script asserts
+Subject: [PATCH 6.6 238/322] fs/kernfs/dir: obey S_ISGID
 Date: Fri,  2 Feb 2024 20:05:35 -0800
-Message-ID: <20240203035339.324548186@linuxfoundation.org>
+Message-ID: <20240203035406.876423822@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-[ Upstream commit 9fd552ee32c6c1e27c125016b87d295bea6faea7 ]
+[ Upstream commit 5133bee62f0ea5d4c316d503cc0040cac5637601 ]
 
-DEFINED only considers symbols, not section names. Hence, replace the
-check for .got.plt with the _GLOBAL_OFFSET_TABLE_ symbol and remove other
-(non-essential) asserts.
+Handling of S_ISGID is usually done by inode_init_owner() in all other
+filesystems, but kernfs doesn't use that function.  In kernfs, struct
+kernfs_node is the primary data structure, and struct inode is only
+created from it on demand.  Therefore, inode_init_owner() can't be
+used and we need to imitate its behavior.
 
-Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lore.kernel.org/all/20231005153854.25566-10-jo.vanbulck%40cs.kuleuven.be
+S_ISGID support is useful for the cgroup filesystem; it allows
+subtrees managed by an unprivileged process to retain a certain owner
+gid, which then enables sharing access to the subtree with another
+unprivileged process.
+
+--
+v1 -> v2: minor coding style fix (comment)
+
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20231208093310.297233-2-max.kellermann@ionos.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/sgx/test_encl.lds | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ fs/kernfs/dir.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/tools/testing/selftests/sgx/test_encl.lds b/tools/testing/selftests/sgx/test_encl.lds
-index a1ec64f7d91f..108bc11d1d8c 100644
---- a/tools/testing/selftests/sgx/test_encl.lds
-+++ b/tools/testing/selftests/sgx/test_encl.lds
-@@ -34,8 +34,4 @@ SECTIONS
- 	}
- }
+diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
+index 8b2bd65d70e7..62d39ecf0a46 100644
+--- a/fs/kernfs/dir.c
++++ b/fs/kernfs/dir.c
+@@ -676,6 +676,18 @@ struct kernfs_node *kernfs_new_node(struct kernfs_node *parent,
+ {
+ 	struct kernfs_node *kn;
  
--ASSERT(!DEFINED(.altinstructions), "ALTERNATIVES are not supported in enclaves")
--ASSERT(!DEFINED(.altinstr_replacement), "ALTERNATIVES are not supported in enclaves")
--ASSERT(!DEFINED(.discard.retpoline_safe), "RETPOLINE ALTERNATIVES are not supported in enclaves")
--ASSERT(!DEFINED(.discard.nospec), "RETPOLINE ALTERNATIVES are not supported in enclaves")
--ASSERT(!DEFINED(.got.plt), "Libcalls are not supported in enclaves")
-+ASSERT(!DEFINED(_GLOBAL_OFFSET_TABLE_), "Libcalls through GOT are not supported in enclaves")
++	if (parent->mode & S_ISGID) {
++		/* this code block imitates inode_init_owner() for
++		 * kernfs
++		 */
++
++		if (parent->iattr)
++			gid = parent->iattr->ia_gid;
++
++		if (flags & KERNFS_DIR)
++			mode |= S_ISGID;
++	}
++
+ 	kn = __kernfs_new_node(kernfs_root(parent), parent,
+ 			       name, mode, uid, gid, flags);
+ 	if (kn) {
 -- 
 2.43.0
 
