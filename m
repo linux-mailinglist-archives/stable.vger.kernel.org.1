@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7971E8482E1
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E7B8481AE
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E35F1F23E47
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5759C28315C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED51A4F211;
-	Sat,  3 Feb 2024 04:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA0137709;
+	Sat,  3 Feb 2024 04:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wly0RcyZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I6+hY1ND"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94B71643E;
-	Sat,  3 Feb 2024 04:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA1617C64;
+	Sat,  3 Feb 2024 04:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933827; cv=none; b=HKhPjJEeTU2f/tM42M5DYPw5+qbsJiGOxqqWdhp/wLGolwsIBjIs3bOmxGlJB/HkbrQ+IM9od+4uMXb18/UZxH3U8AB/3GG9xylJSGKctOxKZFy4F+2WPgeWP5qjtUmMjQ+oyUGb2klf3DmBO+KS3h/VBPhaNqQekWoHQkuJHus=
+	t=1706933603; cv=none; b=p/N4GWdpAa87mVYm3SuJelfG0XAkwlfIQGI1hQkQKJPaJgY9FDbVA5VijpT3aUBka/RK7hiZfOZcPeOGYmmocH5IEqLxylXjTNQ0pU1e2VcLdeS2i0Hf7F+K06RZ/KQ62BpspuPCD/kbxk97Y395ASlA6pTx+oJOYfVOlq4xWxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933827; c=relaxed/simple;
-	bh=26wME1w8R31jIsIrry8Z09wfwhTiyEwPYwYeYCZaAW0=;
+	s=arc-20240116; t=1706933603; c=relaxed/simple;
+	bh=56UJMT+ykNLn6ZvWkx4d1869VadeNFAwAPfhlX8a5aw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sRc/ykezSzYCbHnlG61tDijmJq1ZMcwzJnorkoXMmbOTKpvRfwCSJ0gA3X63cWXytTISANkOnvKf6MBRuFGmnAJfhq+2TDCEvgdnum2gxwQ/Dy6B75bPO+82I4FuBA5mVe/UkQgPmMHdLSiwiguwdgB1TmQAKrdViWxLQ/TnQrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wly0RcyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7026AC433F1;
-	Sat,  3 Feb 2024 04:17:07 +0000 (UTC)
+	 MIME-Version; b=ipFCyOTodEvg3gNJClBrT8Md1ICsVXw2tI1KtEgTM6Mo6Qo7DgQ/MjqSJ2nV10nFUypszcC/CIl0RWdxLSS5Rf/C4eS+EEQsMIbNxy4xhSpawGuiarNt+4t4fIVFE3cc/4vtAoYEomXYm4w9v1jdr5g3KYeSCLOfXg2377twIn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I6+hY1ND; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEEFC433F1;
+	Sat,  3 Feb 2024 04:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933827;
-	bh=26wME1w8R31jIsIrry8Z09wfwhTiyEwPYwYeYCZaAW0=;
+	s=korg; t=1706933603;
+	bh=56UJMT+ykNLn6ZvWkx4d1869VadeNFAwAPfhlX8a5aw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wly0RcyZUarYlT9O/P8tvN9w7yrMerJKWFWNjfQ72YVzLJBcw0g2gzTcFZ5LRa3AA
-	 bTKSWkoaJ/UXQhZtwLOWb7qT/QMydAowN/nkK1w31EoFrJlCtZfEmyyBbZsfo0Eggx
-	 aq6FzgH2cX0qnFH0WPv0iFyNwzZ+IzAgTK2skspU=
+	b=I6+hY1ND8KPbAtcrd3/4YrKJ5NTv/vVtO5n+D9kHnG8QCzMfJu9D7+kxHGR5Dh76/
+	 4cRQU4oxYIrEMDNYeJaZulIsG+w0zvxWisc4cAsD+AklfvTTD+pieFomm/bw/zxMEX
+	 ixYbLP+tm7M3qujoMVAgIkENNQ8o+AkeUk1F/v84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	clancy shang <clancy.shang@quectel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Phillip Potter <phil@philpotter.co.uk>,
+	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 150/353] Bluetooth: hci_sync: fix BR/EDR wakeup bug
-Date: Fri,  2 Feb 2024 20:04:28 -0800
-Message-ID: <20240203035408.412566502@linuxfoundation.org>
+Subject: [PATCH 6.6 172/322] media: stk1160: Fixed high volume of stk1160_dbg messages
+Date: Fri,  2 Feb 2024 20:04:29 -0800
+Message-ID: <20240203035404.802324920@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: clancy shang <clancy.shang@quectel.com>
+From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
 
-[ Upstream commit d4b70ba1eab450eff9c5ef536f07c01d424b7eda ]
+[ Upstream commit b3695e86d25aafbe175dd51f6aaf6f68d341d590 ]
 
-when Bluetooth set the event mask and enter suspend, the controller
-has hci mode change event coming, it cause controller can not enter
-sleep mode. so it should to set the hci mode change event mask before
-enter suspend.
+The function stk1160_dbg gets called too many times, which causes
+the output to get flooded with messages. Since stk1160_dbg uses
+printk, it is now replaced with printk_ratelimited.
 
-Signed-off-by: clancy shang <clancy.shang@quectel.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Suggested-by: Phillip Potter <phil@philpotter.co.uk>
+Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/media/usb/stk1160/stk1160-video.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index d85a7091a116..97284d9b2a2e 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -3800,12 +3800,14 @@ static int hci_set_event_mask_sync(struct hci_dev *hdev)
- 	if (lmp_bredr_capable(hdev)) {
- 		events[4] |= 0x01; /* Flow Specification Complete */
+diff --git a/drivers/media/usb/stk1160/stk1160-video.c b/drivers/media/usb/stk1160/stk1160-video.c
+index 4e966f6bf608..366f0e4a5dc0 100644
+--- a/drivers/media/usb/stk1160/stk1160-video.c
++++ b/drivers/media/usb/stk1160/stk1160-video.c
+@@ -107,8 +107,7 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
  
--		/* Don't set Disconnect Complete when suspended as that
--		 * would wakeup the host when disconnecting due to
--		 * suspend.
-+		/* Don't set Disconnect Complete and mode change when
-+		 * suspended as that would wakeup the host when disconnecting
-+		 * due to suspend.
- 		 */
--		if (hdev->suspended)
-+		if (hdev->suspended) {
- 			events[0] &= 0xef;
-+			events[2] &= 0xf7;
-+		}
- 	} else {
- 		/* Use a different default for LE-only devices */
- 		memset(events, 0, sizeof(events));
+ 	/*
+ 	 * TODO: These stk1160_dbg are very spammy!
+-	 * We should 1) check why we are getting them
+-	 * and 2) add ratelimit.
++	 * We should check why we are getting them.
+ 	 *
+ 	 * UPDATE: One of the reasons (the only one?) for getting these
+ 	 * is incorrect standard (mismatch between expected and configured).
+@@ -151,7 +150,7 @@ void stk1160_copy_video(struct stk1160 *dev, u8 *src, int len)
+ 
+ 	/* Let the bug hunt begin! sanity checks! */
+ 	if (lencopy < 0) {
+-		stk1160_dbg("copy skipped: negative lencopy\n");
++		printk_ratelimited(KERN_DEBUG "copy skipped: negative lencopy\n");
+ 		return;
+ 	}
+ 
 -- 
 2.43.0
 
