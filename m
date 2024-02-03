@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 784578481A4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D588482B7
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 17F701F25F3D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E51A6B244AF
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F09125B4;
-	Sat,  3 Feb 2024 04:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D591BF26;
+	Sat,  3 Feb 2024 04:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qS+jCxLC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OshFozEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92BE17BC4;
-	Sat,  3 Feb 2024 04:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A241C1BDED;
+	Sat,  3 Feb 2024 04:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933595; cv=none; b=kNsVZkLSw4dukF6+/IfdZeVFNz663yixfCrc+IhQUgghUL2i//PvVeYpL8p40HpRHdEfHYAyoVBZmbzGO5Qq/Pm8b86uUgjI8KmSOmvif+EwnU3WOp2wALevsFH/+8qem1Ug+oJZOlDs+dIDcgf9X9iWdDuduHiofc2MMaNWs4Y=
+	t=1706933796; cv=none; b=tXbwmCg9c4ez1JGKtkbAhT0XRYnbJiaZjUKg0LlstTmqfQzpY+vkXaeaX8RSDWKxA8yruYjlxqVy/Feyd9loAbF7iIAkT/Sn/NycveYLsmxK2QvsJrwi/fpqUX4PHXPAGQ+bJbkq9EVXjZstIVJcQPR6QT76nux3Nnd5fOB5i00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933595; c=relaxed/simple;
-	bh=jFCTz9qqPYvSqujlr5z/Z+3OMnpedauA938lBVHkAhk=;
+	s=arc-20240116; t=1706933796; c=relaxed/simple;
+	bh=tIjZUOeRRjOGJk48HcxydNQdHzPq3e3B7XmiGd1L5sY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IxboBTPvoL6MDVuoTNuIHgYpRU+d3cIpeSJe7VJj2B/XLZ0lKZjZIzJ7yQEx4Jt3NcFINKsR4gTEiFuP+sKeLTn1nEuBhDKbeyflC1oSVhz0/D6yZvR5NqbkSLfK4WHCu0FzQA56/eMPvsP58VliePhu+ETxwjJ5YOa7J5Z/M/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qS+jCxLC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B42C43390;
-	Sat,  3 Feb 2024 04:13:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MI574ZSMc3S5B4rf73omF0glSstDx9gCZ9pXaEk5lvzOs9P7zP0XURyRRDIYoNcG1QaZdcKzaewJbNbk/o0tcaHX8gnvIpOn9GFgPpUJFf3Vp7sAz/9PLVbx1MbXt00wY3bTKiCFhfd7MHfpAbJxVO20Q7rLLtVAW1Dsw5Egz6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OshFozEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D65DC43390;
+	Sat,  3 Feb 2024 04:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933595;
-	bh=jFCTz9qqPYvSqujlr5z/Z+3OMnpedauA938lBVHkAhk=;
+	s=korg; t=1706933796;
+	bh=tIjZUOeRRjOGJk48HcxydNQdHzPq3e3B7XmiGd1L5sY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qS+jCxLCL7Lnv8RL47h4aHQHzKdb9GdhRKBC5Hk8XSBFciaUEpgXvgi3C55Sh4hqX
-	 izavzA164u4SxouCtaBDwmok7zXE3HD4WV8fofHcyWbF4bE8iNZJRwREZ3dUPdfVhl
-	 m5NxpEJuxX/iMKRYoMovEmwxSFS8fezOHtLZMoAE=
+	b=OshFozEEUmlsuXtW5VCe7dpwB2CIl4Szbuwxp1M9nBbzEKt7F5rfrrouwxN9po1eN
+	 T1B2tSQHhHrhwlaPMFZtdJUnA74V9lRlbDeq3Dw4auIv7b2qnUkB+8fg4cmXvABWER
+	 Q4LacWKPLYMj8/lZF9+hol3OimEeA66y0i+I6N9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= <jerome.pouiller@silabs.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 127/322] scsi: lpfc: Reinitialize an NPIVs VMID data structures after FDISC
-Date: Fri,  2 Feb 2024 20:03:44 -0800
-Message-ID: <20240203035403.255764406@linuxfoundation.org>
+Subject: [PATCH 6.7 107/353] wifi: wfx: fix possible NULL pointer dereference in wfx_set_mfp_ap()
+Date: Fri,  2 Feb 2024 20:03:45 -0800
+Message-ID: <20240203035407.153415115@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +61,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 8dc8eb89f4df74593ba4bf30c3d31a0fc6d3ea47 ]
+[ Upstream commit fe0a7776d4d19e613bb8dd80fe2d78ae49e8b49d ]
 
-After a follow up FDISC cmpl, an NPIV's VMID data structures are not
-updated.
+Since 'ieee80211_beacon_get()' can return NULL, 'wfx_set_mfp_ap()'
+should check the return value before examining skb data. So convert
+the latter to return an appropriate error code and propagate it to
+return from 'wfx_start_ap()' as well. Compile tested only.
 
-Fix by calling lpfc_reinit_vmid and copying the physical port's vmid_flag
-to the NPIV's vmid_flag in the NPIV registration cmpl code path.
-
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20231207224039.35466-3-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Tested-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+Acked-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231204171130.141394-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_els.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/wireless/silabs/wfx/sta.c | 42 ++++++++++++++++-----------
+ 1 file changed, 25 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_els.c b/drivers/scsi/lpfc/lpfc_els.c
-index 54e47f268235..932d47951cf3 100644
---- a/drivers/scsi/lpfc/lpfc_els.c
-+++ b/drivers/scsi/lpfc/lpfc_els.c
-@@ -11110,6 +11110,14 @@ lpfc_cmpl_reg_new_vport(struct lpfc_hba *phba, LPFC_MBOXQ_t *pmb)
- 	lpfc_nlp_put(ndlp);
- 
- 	mempool_free(pmb, phba->mbox_mem_pool);
-+
-+	/* reinitialize the VMID datastructure before returning.
-+	 * this is specifically for vport
-+	 */
-+	if (lpfc_is_vmid_enabled(phba))
-+		lpfc_reinit_vmid(vport);
-+	vport->vmid_flag = vport->phba->pport->vmid_flag;
-+
- 	return;
+diff --git a/drivers/net/wireless/silabs/wfx/sta.c b/drivers/net/wireless/silabs/wfx/sta.c
+index 1b6c158457b4..537caf9d914a 100644
+--- a/drivers/net/wireless/silabs/wfx/sta.c
++++ b/drivers/net/wireless/silabs/wfx/sta.c
+@@ -336,29 +336,38 @@ static int wfx_upload_ap_templates(struct wfx_vif *wvif)
+ 	return 0;
  }
  
+-static void wfx_set_mfp_ap(struct wfx_vif *wvif)
++static int wfx_set_mfp_ap(struct wfx_vif *wvif)
+ {
+ 	struct ieee80211_vif *vif = wvif_to_vif(wvif);
+ 	struct sk_buff *skb = ieee80211_beacon_get(wvif->wdev->hw, vif, 0);
+ 	const int ieoffset = offsetof(struct ieee80211_mgmt, u.beacon.variable);
+-	const u16 *ptr = (u16 *)cfg80211_find_ie(WLAN_EID_RSN, skb->data + ieoffset,
+-						 skb->len - ieoffset);
+ 	const int pairwise_cipher_suite_count_offset = 8 / sizeof(u16);
+ 	const int pairwise_cipher_suite_size = 4 / sizeof(u16);
+ 	const int akm_suite_size = 4 / sizeof(u16);
++	const u16 *ptr;
+ 
+-	if (ptr) {
+-		ptr += pairwise_cipher_suite_count_offset;
+-		if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
+-			return;
+-		ptr += 1 + pairwise_cipher_suite_size * *ptr;
+-		if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
+-			return;
+-		ptr += 1 + akm_suite_size * *ptr;
+-		if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
+-			return;
+-		wfx_hif_set_mfp(wvif, *ptr & BIT(7), *ptr & BIT(6));
+-	}
++	if (unlikely(!skb))
++		return -ENOMEM;
++
++	ptr = (u16 *)cfg80211_find_ie(WLAN_EID_RSN, skb->data + ieoffset,
++				      skb->len - ieoffset);
++	if (unlikely(!ptr))
++		return -EINVAL;
++
++	ptr += pairwise_cipher_suite_count_offset;
++	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
++		return -EINVAL;
++
++	ptr += 1 + pairwise_cipher_suite_size * *ptr;
++	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
++		return -EINVAL;
++
++	ptr += 1 + akm_suite_size * *ptr;
++	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
++		return -EINVAL;
++
++	wfx_hif_set_mfp(wvif, *ptr & BIT(7), *ptr & BIT(6));
++	return 0;
+ }
+ 
+ int wfx_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+@@ -376,8 +385,7 @@ int wfx_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	ret = wfx_hif_start(wvif, &vif->bss_conf, wvif->channel);
+ 	if (ret > 0)
+ 		return -EIO;
+-	wfx_set_mfp_ap(wvif);
+-	return ret;
++	return wfx_set_mfp_ap(wvif);
+ }
+ 
+ void wfx_stop_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
 -- 
 2.43.0
 
