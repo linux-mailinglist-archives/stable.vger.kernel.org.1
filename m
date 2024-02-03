@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-18184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6991B8481B6
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1133848082
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25368283A38
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22F291F2BE3F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3028D1804F;
-	Sat,  3 Feb 2024 04:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E1F168D0;
+	Sat,  3 Feb 2024 04:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTB6uV87"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNTDiQlE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4096F9EB;
-	Sat,  3 Feb 2024 04:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA02FC11;
+	Sat,  3 Feb 2024 04:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933609; cv=none; b=uYMnv6xvKqjCPoM2cVluPrKipRltF+k2podoNN7L/XyAiFRCWtyKP8XPiqE86/k7R67av9FLdFo5PkwvGpRgHJ7yOG+G31Ca4MY+raDh76qsShOi2wAsefaaZ7VOlV6k1lzM0Pk13i/1QpX/Xdslk25r67yjj4zI3+ZPiI8dLrA=
+	t=1706933389; cv=none; b=Alsbsa6GE7EbZjxLW0xohNolriObbp+EP4WtKO+3zlQFmPAWm/KqSMv3Dz6nhmY6ZDT1N/nlUV2hIBLv1zd+3VRUSJVJubmFatcJYuthiPIiLReWwZrUcU2xpu+z9OC7rIKqFkpuy5Z4KbSZyHKpINRXrtMqLQnOkfQSbmDfDIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933609; c=relaxed/simple;
-	bh=JdMO/qYaCT+sseXxpkRrJ/HJ5WU6x2VvAHOsgmHLGEg=;
+	s=arc-20240116; t=1706933389; c=relaxed/simple;
+	bh=LpGTut7xVwxQCv4xyCrF3bU5ZAq/sacciMwUIr6Ju7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AMnAXX7ruIHHlmdJGPrx3++fmU03ReZZ7Iunvp824AaTwlbzcDSKAJuFdl5eodOqhTATwQ41CxCVWKpoXe6YSPpoqB4AkTrQlX6y+COa1mWnjfu4+2GWHOEVnp9HWygvVKvlt2+8HUKbbpZDIpCxOlrnuASEfZ+YuPvc9uo3Iyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTB6uV87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE718C433F1;
-	Sat,  3 Feb 2024 04:13:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kABvyleSLc0GEcX1W/mDZ47akRRYUbUR/yki36HMCU2+gtFlogGhGef87lT7rw/lgMacOQ1rIKBWOUDOfuwl7nK/DP7Dq8/QfxgrlUvTy9Q5ehSnrQNZJArmziJgQTypCLF/JQCpeoBfj9Wnc0T8dmEW5yjtuKELktl1KdDFelU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNTDiQlE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 056C7C433C7;
+	Sat,  3 Feb 2024 04:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933608;
-	bh=JdMO/qYaCT+sseXxpkRrJ/HJ5WU6x2VvAHOsgmHLGEg=;
+	s=korg; t=1706933389;
+	bh=LpGTut7xVwxQCv4xyCrF3bU5ZAq/sacciMwUIr6Ju7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HTB6uV87J3iED+Cy30kVtmjvhws+KeA4/0jmTA6tU8j5aBNa915MIvW2eZwvKTLtg
-	 dHFfV2tn6x2Vyz/o6XLF2Xv+Rkos4yIA2aq5chQhum6OqROnpdxSYTX+QHXA0PB46O
-	 doRB3Uc1mUFOpRLupmCS82UcFjOcOxm2GylNy9UA=
+	b=TNTDiQlE3/3wtJX4CrEDgEF+xfs4/ehzhnV9rofS7HnlPD8e7fBN/kK4/2UoW1/8T
+	 zwU/PrAfvaOvfjTl90BBOq6XcmdkqYA1k2Vw0iqeQtB5QTjndi2jVeo4yIxOc/r8m5
+	 wVLpLe06DIFDSCeKNMm4RuidDbuiLBIq/BZHwlt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yunke Cao <yunkec@chromium.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/322] media: uvcvideo: Fix power line control for SunplusIT camera
+Subject: [PATCH 6.1 103/219] net: dsa: qca8k: put MDIO bus OF node on qca8k_mdio_register() failure
 Date: Fri,  2 Feb 2024 20:04:36 -0800
-Message-ID: <20240203035405.036163718@linuxfoundation.org>
+Message-ID: <20240203035331.902500417@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 6180056b0e0c097dad5d1569dcd661eaf509ea43 ]
+[ Upstream commit 68e1010cda7967cfca9c8650ee1f4efcae54ab90 ]
 
-The device does not implement the power line frequency control
-correctly. It is a UVC 1.5 device, but implements the control as a UVC
-1.1 device.
+of_get_child_by_name() gives us an OF node with an elevated refcount,
+which should be dropped when we're done with it. This is so that,
+if (of_node_check_flag(node, OF_DYNAMIC)) is true, the node's memory can
+eventually be freed.
 
-Add the corresponding control mapping override.
+There are 2 distinct paths to be considered in qca8k_mdio_register():
 
-Bus 003 Device 002: ID 2b7e:b752 SunplusIT Inc HD Camera
-Device Descriptor:
-  bLength                18
-  bDescriptorType         1
-  bcdUSB               2.01
-  bDeviceClass          239 Miscellaneous Device
-  bDeviceSubClass         2
-  bDeviceProtocol         1 Interface Association
-  bMaxPacketSize0        64
-  idVendor           0x2b7e
-  idProduct          0xb752
-  bcdDevice            0.04
-  iManufacturer           1 SunplusIT Inc
-  iProduct                2 HD Camera
-  iSerial                 3 01.00.00
-  bNumConfigurations      1
+- devm_of_mdiobus_register() succeeds: since commit 3b73a7b8ec38 ("net:
+  mdio_bus: add refcounting for fwnodes to mdiobus"), the MDIO core
+  treats this well.
 
-Cc: Yunke Cao <yunkec@chromium.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+- devm_of_mdiobus_register() or anything up to that point fails: it is
+  the duty of the qca8k driver to release the OF node.
+
+This change addresses the second case by making sure that the OF node
+reference is not leaked.
+
+The "mdio" node may be NULL, but of_node_put(NULL) is safe.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Alvin Šipraga <alsi@bang-olufsen.dk>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/dsa/qca/qca8k-8xxx.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 4b5ea3501753..bbd90123a4e7 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -3003,6 +3003,15 @@ static const struct usb_device_id uvc_ids[] = {
- 	  .bInterfaceSubClass	= 1,
- 	  .bInterfaceProtocol	= 0,
- 	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_FORCE_BPP) },
-+	/* SunplusIT Inc HD Camera */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x2b7e,
-+	  .idProduct		= 0xb752,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= UVC_PC_PROTOCOL_15,
-+	  .driver_info		= (kernel_ulong_t)&uvc_ctrl_power_line_uvc11 },
- 	/* Lenovo Integrated Camera */
- 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
- 				| USB_DEVICE_ID_MATCH_INT_INFO,
+diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
+index 1e94ba1031ec..7c3c90c9edbe 100644
+--- a/drivers/net/dsa/qca/qca8k-8xxx.c
++++ b/drivers/net/dsa/qca/qca8k-8xxx.c
+@@ -842,10 +842,15 @@ qca8k_mdio_register(struct qca8k_priv *priv)
+ 	struct dsa_switch *ds = priv->ds;
+ 	struct device_node *mdio;
+ 	struct mii_bus *bus;
++	int err;
++
++	mdio = of_get_child_by_name(priv->dev->of_node, "mdio");
+ 
+ 	bus = devm_mdiobus_alloc(ds->dev);
+-	if (!bus)
+-		return -ENOMEM;
++	if (!bus) {
++		err = -ENOMEM;
++		goto out_put_node;
++	}
+ 
+ 	bus->priv = (void *)priv;
+ 	snprintf(bus->id, MII_BUS_ID_SIZE, "qca8k-%d.%d",
+@@ -855,12 +860,12 @@ qca8k_mdio_register(struct qca8k_priv *priv)
+ 	ds->slave_mii_bus = bus;
+ 
+ 	/* Check if the devicetree declare the port:phy mapping */
+-	mdio = of_get_child_by_name(priv->dev->of_node, "mdio");
+ 	if (of_device_is_available(mdio)) {
+ 		bus->name = "qca8k slave mii";
+ 		bus->read = qca8k_internal_mdio_read;
+ 		bus->write = qca8k_internal_mdio_write;
+-		return devm_of_mdiobus_register(priv->dev, bus, mdio);
++		err = devm_of_mdiobus_register(priv->dev, bus, mdio);
++		goto out_put_node;
+ 	}
+ 
+ 	/* If a mapping can't be found the legacy mapping is used,
+@@ -869,7 +874,13 @@ qca8k_mdio_register(struct qca8k_priv *priv)
+ 	bus->name = "qca8k-legacy slave mii";
+ 	bus->read = qca8k_legacy_mdio_read;
+ 	bus->write = qca8k_legacy_mdio_write;
+-	return devm_mdiobus_register(priv->dev, bus);
++
++	err = devm_mdiobus_register(priv->dev, bus);
++
++out_put_node:
++	of_node_put(mdio);
++
++	return err;
+ }
+ 
+ static int
 -- 
 2.43.0
 
