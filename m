@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-17849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D135984805A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F22048482DB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 102E21C22097
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE1DC28BE45
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5BB12E4A;
-	Sat,  3 Feb 2024 04:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999DF4F204;
+	Sat,  3 Feb 2024 04:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6xEI4Hs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFQkC+F8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCF910A2B;
-	Sat,  3 Feb 2024 04:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587FE1C69E;
+	Sat,  3 Feb 2024 04:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933360; cv=none; b=ibAv8SGn6wVeoBQ0H9MTyC0aqJhYz7qH6w1sWOX7x5AdhRSf4/9eLyG38Q2Fmj7zqgw7QwpzfV2T8+EeK3GDaalj1bQHaW1jzO05M60BSNKIv2pyEzzHcExnNtJqs0bSIbJ/t9OIt8C0NAD1QZ8QHiNzZErEiNuiQIS//BrlNPo=
+	t=1706933823; cv=none; b=D1mV0WLtiq/72s7Qbf1ZFrwuQ8pUeabxFpwU5NqfgXLumipCI3MuM/2XjuvhbXGNn3n8pp1Z615HhookO2VJXZy3qGwsSuyNBBgtox2m6W8HCbuj11E/BYcEzuP3kkykxcx4CT+cTaV/ZjZbqo1t+mPARwrYRqzeu0H7G6DLYYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933360; c=relaxed/simple;
-	bh=P/C9oUdfxAC8WqPb45SQkjOfKq9XDg81xZsd9d9w6Uw=;
+	s=arc-20240116; t=1706933823; c=relaxed/simple;
+	bh=Pe5bXAF+saF+JT2XePyZ83/zFb0Es21vJX80OYcxYG0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S4/5sgdreYlGKjDUppOTNXmHpN0KKNap4f0uk07tjy5zi2LbkvJDLvXqtx4972ghmULxZpT07qmkgnmcK2Jfz2cx/EzTirxtPz9vhm9yIzgq8TbTOQfcwbassPAtFVWLjzm3gzj5R822O5ydSxzIK6lJNtkCqZjG9tX2rnACQQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6xEI4Hs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DBAC433C7;
-	Sat,  3 Feb 2024 04:09:20 +0000 (UTC)
+	 MIME-Version; b=QAUXE3IkmPAJr2Bji302Gmj4Qk33vIMEp5dyUs2sz9lB4YOmicpGNeeVw86zaJidCJAFfqHCpcwmnJ6BkLo04DKL1WMrOWpgV/GdMMmYIiO+sNNcROGl1Nok5L3OhALWhtWx9dgEveVh4cRYMeV/cl4Np+xO31qCcRmUP2V3t/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFQkC+F8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA1FC43394;
+	Sat,  3 Feb 2024 04:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933360;
-	bh=P/C9oUdfxAC8WqPb45SQkjOfKq9XDg81xZsd9d9w6Uw=;
+	s=korg; t=1706933823;
+	bh=Pe5bXAF+saF+JT2XePyZ83/zFb0Es21vJX80OYcxYG0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H6xEI4Hso3TXm65qJDf13HQrskdbZGwl64ePYoB2NSuWTfVPOUFwVSubeaXiCxK7B
-	 xIRVBs/+oA2ymNFcyjY3JRJhwP5QOURkzDb2Wx3fdVzlO7fx5W6LNPQAv+s8Cdw7zM
-	 1BpGJR7Jfq8EwAJxFKOJaWTQtzQyT1+6uxnRBPHY=
+	b=uFQkC+F86qiAmYmNMSe4c2lh6OqxGf+17UPYYllYvHe18Q8hCd9C5s2viOh8TcnbS
+	 8g/q7/r4dOYrD2QJCXFI13LnpPjy+F9yZCCrdSf1a7nWpP9o5OB/JXRU+0ara6BFji
+	 Vkc6ZWIUN1qYAetrVZiQWkC0cHWquKLdjdaskByQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/219] scsi: libfc: Dont schedule abort twice
+Subject: [PATCH 6.7 119/353] arm64: zynqmp: Fix clock node name in kv260 cards
 Date: Fri,  2 Feb 2024 20:03:57 -0800
-Message-ID: <20240203035325.806194293@linuxfoundation.org>
+Message-ID: <20240203035407.510076691@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hannes Reinecke <hare@suse.de>
+From: Michal Simek <michal.simek@amd.com>
 
-[ Upstream commit b57c4db5d23b9df0118a25e2441c9288edd73710 ]
+[ Upstream commit 0bfb7950cc1975372c4c58c3d3f9803f05245d46 ]
 
-The current FC error recovery is sending up to three REC (recovery) frames
-in 10 second intervals, and as a final step sending an ABTS after 30
-seconds for the command itself.  Unfortunately sending an ABTS is also the
-action for the SCSI abort handler, and the default timeout for SCSI
-commands is also 30 seconds. This causes two ABTS to be scheduled, with the
-libfc one slightly earlier. The ABTS scheduled by SCSI EH then sees the
-command to be already aborted, and will always return with a 'GOOD' status
-irrespective on the actual result from the first ABTS.  This causes the
-SCSI EH abort handler to always succeed, and SCSI EH never to be engaged.
-Fix this by not issuing an ABTS when a SCSI command is present for the
-exchange, but rather wait for the abort scheduled from SCSI EH.  And warn
-if an abort is already scheduled to avoid similar errors in the future.
+node name shouldn't use '_' that's why convert it to '-'.
 
-Signed-off-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20231129165832.224100-2-hare@kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Michal Simek <michal.simek@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libfc/fc_fcp.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso | 12 ++++++------
+ arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso | 12 ++++++------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/scsi/libfc/fc_fcp.c b/drivers/scsi/libfc/fc_fcp.c
-index 945adca5e72f..3f189cedf6db 100644
---- a/drivers/scsi/libfc/fc_fcp.c
-+++ b/drivers/scsi/libfc/fc_fcp.c
-@@ -265,6 +265,11 @@ static int fc_fcp_send_abort(struct fc_fcp_pkt *fsp)
- 	if (!fsp->seq_ptr)
- 		return -EINVAL;
+diff --git a/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso b/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso
+index dee238739290..92f4190d564d 100644
+--- a/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso
++++ b/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso
+@@ -22,37 +22,37 @@
+ /plugin/;
  
-+	if (fsp->state & FC_SRB_ABORT_PENDING) {
-+		FC_FCP_DBG(fsp, "abort already pending\n");
-+		return -EBUSY;
-+	}
-+
- 	this_cpu_inc(fsp->lp->stats->FcpPktAborts);
+ &{/} {
+-	si5332_0: si5332_0 { /* u17 */
++	si5332_0: si5332-0 { /* u17 */
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <125000000>;
+ 	};
  
- 	fsp->state |= FC_SRB_ABORT_PENDING;
-@@ -1690,11 +1695,12 @@ static void fc_fcp_recovery(struct fc_fcp_pkt *fsp, u8 code)
- 	fsp->status_code = code;
- 	fsp->cdb_status = 0;
- 	fsp->io_status = 0;
--	/*
--	 * if this fails then we let the scsi command timer fire and
--	 * scsi-ml escalate.
--	 */
--	fc_fcp_send_abort(fsp);
-+	if (!fsp->cmd)
-+		/*
-+		 * Only abort non-scsi commands; otherwise let the
-+		 * scsi command timer fire and scsi-ml escalate.
-+		 */
-+		fc_fcp_send_abort(fsp);
- }
+-	si5332_1: si5332_1 { /* u17 */
++	si5332_1: si5332-1 { /* u17 */
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <25000000>;
+ 	};
  
- /**
+-	si5332_2: si5332_2 { /* u17 */
++	si5332_2: si5332-2 { /* u17 */
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <48000000>;
+ 	};
+ 
+-	si5332_3: si5332_3 { /* u17 */
++	si5332_3: si5332-3 { /* u17 */
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <24000000>;
+ 	};
+ 
+-	si5332_4: si5332_4 { /* u17 */
++	si5332_4: si5332-4 { /* u17 */
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <26000000>;
+ 	};
+ 
+-	si5332_5: si5332_5 { /* u17 */
++	si5332_5: si5332-5 { /* u17 */
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <27000000>;
+diff --git a/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso b/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso
+index 73c5cb156caf..f88b71f5b07a 100644
+--- a/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso
++++ b/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso
+@@ -17,37 +17,37 @@
+ /plugin/;
+ 
+ &{/} {
+-	si5332_0: si5332_0 { /* u17 */
++	si5332_0: si5332-0 { /* u17 */
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <125000000>;
+ 	};
+ 
+-	si5332_1: si5332_1 { /* u17 */
++	si5332_1: si5332-1 { /* u17 */
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <25000000>;
+ 	};
+ 
+-	si5332_2: si5332_2 { /* u17 */
++	si5332_2: si5332-2 { /* u17 */
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <48000000>;
+ 	};
+ 
+-	si5332_3: si5332_3 { /* u17 */
++	si5332_3: si5332-3 { /* u17 */
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <24000000>;
+ 	};
+ 
+-	si5332_4: si5332_4 { /* u17 */
++	si5332_4: si5332-4 { /* u17 */
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <26000000>;
+ 	};
+ 
+-	si5332_5: si5332_5 { /* u17 */
++	si5332_5: si5332-5 { /* u17 */
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+ 		clock-frequency = <27000000>;
 -- 
 2.43.0
 
