@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBAD9848375
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BC684824D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CC20282CDC
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E89BA1C2421D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4E353E0D;
-	Sat,  3 Feb 2024 04:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8251AADF;
+	Sat,  3 Feb 2024 04:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAckoWlZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1gQ4tCf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C5B11717;
-	Sat,  3 Feb 2024 04:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045161B28D;
+	Sat,  3 Feb 2024 04:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933936; cv=none; b=ZdWjnD+u88xG19DXIjP1283Ezw70/2i94mrlQSQA9TtV64G3YRPbAwDF3xnrn7JeF0I3kqXLtflvdGnuSsZuAgNI0Gh4z+k9bMC9xgSS4Kxf3LckQwokxbRsqEIN/WCvpQ0tLiWWittIkwjAZjo27l+KVHzVpO56vvZGviQlprs=
+	t=1706933721; cv=none; b=ACUBYrxuCzgjaC9egjZqzA2wzQdKqHVNwljIIbgHIGvaXX6mJpth2i8fJJLRS7sSPJM9y81pqx5Cc6qtsqAdpuUlqGAyhYq1yvBo1Fz8MBIZZlVIX1QsHcGjSbS/kl6hjcLspB/nkxpAcnWd78bfZJX52aPyGh+cBGwlJJ1ChFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933936; c=relaxed/simple;
-	bh=8dRRkc/fwvIMRPxH3jB+PTBBVlK/NYentOKhxhvmKF0=;
+	s=arc-20240116; t=1706933721; c=relaxed/simple;
+	bh=GV1WsWLmqxOcJe6aXYc2pJ4TpUmVZ/G8E8TSIbyn8tI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dVtrFfWBscYBKAebxQ4coDsxkrIKzDSArsQ6g8ybqq/j1bFCmtxJBqky+QW51K4M6yWw/TD3kulvS8TfqJMrfa8XBJcAszo04whBXHHjNz0JXxQEVUU/d3UYXYwyVYHQknsZu3Xt2FK+iimqqKJWSv6v6w8W3lBITSauFIQXxRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wAckoWlZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE86C43390;
-	Sat,  3 Feb 2024 04:18:55 +0000 (UTC)
+	 MIME-Version; b=iHL802qd4J90gbkXkJBNPebTLQNQYSvkuDHMiS1mxX/eNuOVc0tgAdjHmJGTG36IYoAvZH0qKSM+O9lkSenWXc01ph2mOIxduO2FdPNVaUC0/gXtL9uCSpZCEnrBiBil9lPePjmAdQVMgQZwYfplKl1zRnVwjdpAwMRw2AyP58Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1gQ4tCf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61633C433B2;
+	Sat,  3 Feb 2024 04:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933935;
-	bh=8dRRkc/fwvIMRPxH3jB+PTBBVlK/NYentOKhxhvmKF0=;
+	s=korg; t=1706933720;
+	bh=GV1WsWLmqxOcJe6aXYc2pJ4TpUmVZ/G8E8TSIbyn8tI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wAckoWlZCmkYJ0N2cTz7XJZetkRcMC2TENvpT0SQc95K8gnws/lNFIfeoYdjfOLDt
-	 YI5PMV0RXV+2PhgLa3x8u3GbsmACopYnNjYVJzxn2TqgWkF4tIxWMj7becpxDKyuNu
-	 MkC6IQJnYf88GK3E9AOFB0MPjgwZVUc44ma7PB1E=
+	b=d1gQ4tCfr9Dl252Ug0KSMs3OgYDc/i4biu04mBpnTFb389eEah/ArD9qMu/mkYN2X
+	 4eUUOIKdue6L4MastODNs6VfkGAkxOtdv5qEA0yNCerM2P6Ep2qs/TRCJEH2emzHTf
+	 pbWfW55ZJ9X+ArkmxzV1/9wBPg74zGNxlMDjM4Cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 297/353] HID: hidraw: fix a problem of memory leak in hidraw_release()
-Date: Fri,  2 Feb 2024 20:06:55 -0800
-Message-ID: <20240203035413.224119793@linuxfoundation.org>
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Amit Pundir <amit.pundir@linaro.org>
+Subject: [PATCH 6.6 319/322] drm/msm/dsi: Enable runtime PM
+Date: Fri,  2 Feb 2024 20:06:56 -0800
+Message-ID: <20240203035409.345415744@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit a3bdcdd022c68942a774e8e63424cc11c85aab78 ]
+commit 6ab502bc1cf3147ea1d8540d04b83a7a4cb6d1f1 upstream.
 
-'struct hidraw_list' is a circular queue whose head can be smaller than
-tail. Using 'list->tail != list->head' to release all memory that should
-be released.
+Some devices power the DSI PHY/PLL through a power rail that we model
+as a GENPD. Enable runtime PM to make it suspendable.
 
-Fixes: a5623a203cff ("HID: hidraw: fix memory leak in hidraw_release()")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/543352/
+Link: https://lore.kernel.org/r/20230620-topic-dsiphy_rpm-v2-2-a11a751f34f0@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hidraw.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hid/hidraw.c b/drivers/hid/hidraw.c
-index 13c8dd8cd350..2bc762d31ac7 100644
---- a/drivers/hid/hidraw.c
-+++ b/drivers/hid/hidraw.c
-@@ -357,8 +357,11 @@ static int hidraw_release(struct inode * inode, struct file * file)
- 	down_write(&minors_rwsem);
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
+@@ -691,6 +691,10 @@ static int dsi_phy_driver_probe(struct p
+ 		return dev_err_probe(dev, PTR_ERR(phy->ahb_clk),
+ 				     "Unable to get ahb clk\n");
  
- 	spin_lock_irqsave(&hidraw_table[minor]->list_lock, flags);
--	for (int i = list->tail; i < list->head; i++)
--		kfree(list->buffer[i].value);
-+	while (list->tail != list->head) {
-+		kfree(list->buffer[list->tail].value);
-+		list->buffer[list->tail].value = NULL;
-+		list->tail = (list->tail + 1) & (HIDRAW_BUFFER_SIZE - 1);
-+	}
- 	list_del(&list->node);
- 	spin_unlock_irqrestore(&hidraw_table[minor]->list_lock, flags);
- 	kfree(list);
--- 
-2.43.0
-
++	ret = devm_pm_runtime_enable(&pdev->dev);
++	if (ret)
++		return ret;
++
+ 	/* PLL init will call into clk_register which requires
+ 	 * register access, so we need to enable power and ahb clock.
+ 	 */
 
 
 
