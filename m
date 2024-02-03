@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-18581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28C584834A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D824A8480CB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 226411C20DA3
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C1AF28C407
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF981524A5;
-	Sat,  3 Feb 2024 04:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8764A18E12;
+	Sat,  3 Feb 2024 04:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qprwu3+l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFtkQ41J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE67171A4;
-	Sat,  3 Feb 2024 04:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479E4182C3;
+	Sat,  3 Feb 2024 04:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933904; cv=none; b=qx7uQEhv4LiRNyVvYw3MIkewjXTafa8lbM39m4L/4RACAtvgWiKfwIhhhn38yf06B6lLrPjzlVfL8cJKeC1gstAbLQIgkA/cdVpCOhlDBtWDVP1pnHq0XAbr6FMITPQJVANwLtQ8TC/R+RMW5qsFFMGK0+lTOnpuwhpQIi/0CxQ=
+	t=1706933441; cv=none; b=b3WI/w/RnQWpQiLBQ/qhfeScjhonTNv7WUBaEy/+AZYZsiZMP7/rEve2AyBNKJgEP05jVMAMKn8V0CDa63MX8hBYbIO8sz2g/8c/s5SQnYskzHlZ+GID4x3PuGwpPT0Xayt3gT8Yyu+E3yj1BFwxHy3uwj2BcMfLlCg7QWVSO3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933904; c=relaxed/simple;
-	bh=lAwX/te4T7DI0QpDimUsmGuOYVvIIUE3E+byIMfRWJ0=;
+	s=arc-20240116; t=1706933441; c=relaxed/simple;
+	bh=xku+5UeQZdn5rH3qR8vSFbP4fgNaE1vVkJeeNz9X+Yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4ZajqxZcqEiUbYiNNG/NcagMX01RehACjOZ3WlWHPN9ZEKbjZJ1B08EXFT8TkQarGQHqeKZhw40I9bEfFeqrQ1qIA6Oly0i8eTIqM5qCflUurGUNUgQegzmh1t88e95O/4fEPPr6lV9q3oEnRP5hhKyPHSL9/5Uuy5h/JRqjfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qprwu3+l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EA5C43394;
-	Sat,  3 Feb 2024 04:18:24 +0000 (UTC)
+	 MIME-Version; b=XzCAcCUnaqBdYi4B0Klf/t4xQd7SROpWkIKRescuFMIIB7b1gAqU8qllFo1wSXEZVGt+19Jp1kYV6KoAmCF7aKVK4FAFPILYtk32TSkQHd/JnGgFypp9YbdQYZHhdWN/hKV6Y/CNkmeXM7wPNAz/7YN6BnKinbZZn8Uz1EhMAXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFtkQ41J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B355FC433C7;
+	Sat,  3 Feb 2024 04:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933904;
-	bh=lAwX/te4T7DI0QpDimUsmGuOYVvIIUE3E+byIMfRWJ0=;
+	s=korg; t=1706933440;
+	bh=xku+5UeQZdn5rH3qR8vSFbP4fgNaE1vVkJeeNz9X+Yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qprwu3+lj2U2PLs1YFeJbBrlFF3B+r9w9BGXn6JklZX1vRIdIQM51TzDRNtOhGgPT
-	 QGMeguK/mGvGZ0mMAYNju8psEewszWjZ/+agiGY56Cawn6IuDchAb2UhEFRClsHEku
-	 ERjz2OZQZo9wyYFAxAPWfgSeT2LbbjcTtjuLfTY0=
+	b=rFtkQ41Jq1A+4F/OEi7Zn0NQexCbsn9c/Efk76N+B9+lCKleaxdANNiBHVLLsrSZQ
+	 NI2mnFGgRtRBps9cTqrKPBLjZfXAPMjzkvHJrh80lCwg0owSKqZeCmH4YvMWg+u1BB
+	 rdF/BmM8r8XU4tTX6uMRS1Xlhcj++TYZlm3ZGeLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Stanley.Yang" <Stanley.Yang@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Philip Yang <philip.yang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 226/353] drm/amdgpu: Fix ecc irq enable/disable unpaired
+Subject: [PATCH 6.1 171/219] drm/amdkfd: Fix lock dependency warning
 Date: Fri,  2 Feb 2024 20:05:44 -0800
-Message-ID: <20240203035410.820392778@linuxfoundation.org>
+Message-ID: <20240203035340.728159750@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,126 +63,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanley.Yang <Stanley.Yang@amd.com>
+From: Felix Kuehling <felix.kuehling@amd.com>
 
-[ Upstream commit a32c6f7f5737cc7e31cd7ad5133f0d96fca12ea6 ]
+[ Upstream commit 47bf0f83fc86df1bf42b385a91aadb910137c5c9 ]
 
-The ecc_irq is disabled while GPU mode2 reset suspending process,
-but not be enabled during GPU mode2 reset resume process.
+======================================================
+WARNING: possible circular locking dependency detected
+6.5.0-kfd-fkuehlin #276 Not tainted
+------------------------------------------------------
+kworker/8:2/2676 is trying to acquire lock:
+ffff9435aae95c88 ((work_completion)(&svm_bo->eviction_work)){+.+.}-{0:0}, at: __flush_work+0x52/0x550
 
-Changed from V1:
-	only do sdma/gfx ras_late_init in aldebaran_mode2_restore_ip
-	delete amdgpu_ras_late_resume function
+but task is already holding lock:
+ffff9435cd8e1720 (&svms->lock){+.+.}-{3:3}, at: svm_range_deferred_list_work+0xe8/0x340 [amdgpu]
 
-Changed from V2:
-	check umc ras supported before put ecc_irq
+which lock already depends on the new lock.
 
-Signed-off-by: Stanley.Yang <Stanley.Yang@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+the existing dependency chain (in reverse order) is:
+
+-> #2 (&svms->lock){+.+.}-{3:3}:
+       __mutex_lock+0x97/0xd30
+       kfd_ioctl_alloc_memory_of_gpu+0x6d/0x3c0 [amdgpu]
+       kfd_ioctl+0x1b2/0x5d0 [amdgpu]
+       __x64_sys_ioctl+0x86/0xc0
+       do_syscall_64+0x39/0x80
+       entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+-> #1 (&mm->mmap_lock){++++}-{3:3}:
+       down_read+0x42/0x160
+       svm_range_evict_svm_bo_worker+0x8b/0x340 [amdgpu]
+       process_one_work+0x27a/0x540
+       worker_thread+0x53/0x3e0
+       kthread+0xeb/0x120
+       ret_from_fork+0x31/0x50
+       ret_from_fork_asm+0x11/0x20
+
+-> #0 ((work_completion)(&svm_bo->eviction_work)){+.+.}-{0:0}:
+       __lock_acquire+0x1426/0x2200
+       lock_acquire+0xc1/0x2b0
+       __flush_work+0x80/0x550
+       __cancel_work_timer+0x109/0x190
+       svm_range_bo_release+0xdc/0x1c0 [amdgpu]
+       svm_range_free+0x175/0x180 [amdgpu]
+       svm_range_deferred_list_work+0x15d/0x340 [amdgpu]
+       process_one_work+0x27a/0x540
+       worker_thread+0x53/0x3e0
+       kthread+0xeb/0x120
+       ret_from_fork+0x31/0x50
+       ret_from_fork_asm+0x11/0x20
+
+other info that might help us debug this:
+
+Chain exists of:
+  (work_completion)(&svm_bo->eviction_work) --> &mm->mmap_lock --> &svms->lock
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&svms->lock);
+                               lock(&mm->mmap_lock);
+                               lock(&svms->lock);
+  lock((work_completion)(&svm_bo->eviction_work));
+
+I believe this cannot really lead to a deadlock in practice, because
+svm_range_evict_svm_bo_worker only takes the mmap_read_lock if the BO
+refcount is non-0. That means it's impossible that svm_range_bo_release
+is running concurrently. However, there is no good way to annotate this.
+
+To avoid the problem, take a BO reference in
+svm_range_schedule_evict_svm_bo instead of in the worker. That way it's
+impossible for a BO to get freed while eviction work is pending and the
+cancel_work_sync call in svm_range_bo_release can be eliminated.
+
+v2: Use svm_bo_ref_unless_zero and explained why that's safe. Also
+removed redundant checks that are already done in
+amdkfd_fence_enable_signaling.
+
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Reviewed-by: Philip Yang <philip.yang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/aldebaran.c | 26 +++++++++++++++++++++++++-
- drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c |  4 ++++
- drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c |  5 +++++
- drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c  |  4 ++++
- 4 files changed, 38 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 26 ++++++++++----------------
+ 1 file changed, 10 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/aldebaran.c b/drivers/gpu/drm/amd/amdgpu/aldebaran.c
-index 02f4c6f9d4f6..576067d66bb9 100644
---- a/drivers/gpu/drm/amd/amdgpu/aldebaran.c
-+++ b/drivers/gpu/drm/amd/amdgpu/aldebaran.c
-@@ -330,6 +330,7 @@ aldebaran_mode2_restore_hwcontext(struct amdgpu_reset_control *reset_ctl,
- {
- 	struct list_head *reset_device_list = reset_context->reset_device_list;
- 	struct amdgpu_device *tmp_adev = NULL;
-+	struct amdgpu_ras *con;
- 	int r;
- 
- 	if (reset_device_list == NULL)
-@@ -355,7 +356,30 @@ aldebaran_mode2_restore_hwcontext(struct amdgpu_reset_control *reset_ctl,
- 		 */
- 		amdgpu_register_gpu_instance(tmp_adev);
- 
--		/* Resume RAS */
-+		/* Resume RAS, ecc_irq */
-+		con = amdgpu_ras_get_context(tmp_adev);
-+		if (!amdgpu_sriov_vf(tmp_adev) && con) {
-+			if (tmp_adev->sdma.ras &&
-+				tmp_adev->sdma.ras->ras_block.ras_late_init) {
-+				r = tmp_adev->sdma.ras->ras_block.ras_late_init(tmp_adev,
-+						&tmp_adev->sdma.ras->ras_block.ras_comm);
-+				if (r) {
-+					dev_err(tmp_adev->dev, "SDMA failed to execute ras_late_init! ret:%d\n", r);
-+					goto end;
-+				}
-+			}
-+
-+			if (tmp_adev->gfx.ras &&
-+				tmp_adev->gfx.ras->ras_block.ras_late_init) {
-+				r = tmp_adev->gfx.ras->ras_block.ras_late_init(tmp_adev,
-+						&tmp_adev->gfx.ras->ras_block.ras_comm);
-+				if (r) {
-+					dev_err(tmp_adev->dev, "GFX failed to execute ras_late_init! ret:%d\n", r);
-+					goto end;
-+				}
-+			}
-+		}
-+
- 		amdgpu_ras_resume(tmp_adev);
- 
- 		/* Update PSP FW topology after reset */
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-index a5a05c16c10d..6c5185608854 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c
-@@ -1041,6 +1041,10 @@ static int gmc_v10_0_hw_fini(void *handle)
- 
- 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
- 
-+	if (adev->gmc.ecc_irq.funcs &&
-+		amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__UMC))
-+		amdgpu_irq_put(adev, &adev->gmc.ecc_irq, 0);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-index 23d7b548d13f..c9c653cfc765 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c
-@@ -941,6 +941,11 @@ static int gmc_v11_0_hw_fini(void *handle)
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index 208812512d8a..4ecc4be1a910 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -380,14 +380,9 @@ static void svm_range_bo_release(struct kref *kref)
+ 		spin_lock(&svm_bo->list_lock);
  	}
+ 	spin_unlock(&svm_bo->list_lock);
+-	if (!dma_fence_is_signaled(&svm_bo->eviction_fence->base)) {
+-		/* We're not in the eviction worker.
+-		 * Signal the fence and synchronize with any
+-		 * pending eviction work.
+-		 */
++	if (!dma_fence_is_signaled(&svm_bo->eviction_fence->base))
++		/* We're not in the eviction worker. Signal the fence. */
+ 		dma_fence_signal(&svm_bo->eviction_fence->base);
+-		cancel_work_sync(&svm_bo->eviction_work);
+-	}
+ 	dma_fence_put(&svm_bo->eviction_fence->base);
+ 	amdgpu_bo_unref(&svm_bo->bo);
+ 	kfree(svm_bo);
+@@ -3310,13 +3305,14 @@ svm_range_trigger_migration(struct mm_struct *mm, struct svm_range *prange,
  
- 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
-+
-+	if (adev->gmc.ecc_irq.funcs &&
-+		amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__UMC))
-+		amdgpu_irq_put(adev, &adev->gmc.ecc_irq, 0);
-+
- 	gmc_v11_0_gart_disable(adev);
+ int svm_range_schedule_evict_svm_bo(struct amdgpu_amdkfd_fence *fence)
+ {
+-	if (!fence)
+-		return -EINVAL;
+-
+-	if (dma_fence_is_signaled(&fence->base))
+-		return 0;
+-
+-	if (fence->svm_bo) {
++	/* Dereferencing fence->svm_bo is safe here because the fence hasn't
++	 * signaled yet and we're under the protection of the fence->lock.
++	 * After the fence is signaled in svm_range_bo_release, we cannot get
++	 * here any more.
++	 *
++	 * Reference is dropped in svm_range_evict_svm_bo_worker.
++	 */
++	if (svm_bo_ref_unless_zero(fence->svm_bo)) {
+ 		WRITE_ONCE(fence->svm_bo->evicting, 1);
+ 		schedule_work(&fence->svm_bo->eviction_work);
+ 	}
+@@ -3331,8 +3327,6 @@ static void svm_range_evict_svm_bo_worker(struct work_struct *work)
+ 	int r = 0;
  
- 	return 0;
-diff --git a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-index 77e625f24cd0..776acdfc7209 100644
---- a/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gmc_v9_0.c
-@@ -2381,6 +2381,10 @@ static int gmc_v9_0_hw_fini(void *handle)
+ 	svm_bo = container_of(work, struct svm_range_bo, eviction_work);
+-	if (!svm_bo_ref_unless_zero(svm_bo))
+-		return; /* svm_bo was freed while eviction was pending */
  
- 	amdgpu_irq_put(adev, &adev->gmc.vm_fault, 0);
- 
-+	if (adev->gmc.ecc_irq.funcs &&
-+		amdgpu_ras_is_supported(adev, AMDGPU_RAS_BLOCK__UMC))
-+		amdgpu_irq_put(adev, &adev->gmc.ecc_irq, 0);
-+
- 	return 0;
- }
- 
+ 	if (mmget_not_zero(svm_bo->eviction_fence->mm)) {
+ 		mm = svm_bo->eviction_fence->mm;
 -- 
 2.43.0
 
