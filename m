@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FEB9848160
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2525848294
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A82C61F20F1B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5CFD1C232DF
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E9610782;
-	Sat,  3 Feb 2024 04:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234DD10A13;
+	Sat,  3 Feb 2024 04:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPpdsSTj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ca7eD+d9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F41171CE;
-	Sat,  3 Feb 2024 04:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74BA4B5D7;
+	Sat,  3 Feb 2024 04:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933546; cv=none; b=dg5MExECT3QypoexwvrwVSp7SgddQKTWgp0Pu7R0zJRxPNU+SCE0QqYqg35yyo7MlWKCdwdc2jN6SoDpo2Ty0yBYiMN+etYv3XofhEBqnVl1aa1JAA1BjIIy+QsWQV64EBacQAzSSViW5RDGwQVS5bqOBxh3xVpGR4OebbZ9qkk=
+	t=1706933771; cv=none; b=cqYYRK2lpHl80F47tWFk0TLPxnilubnX+Uu1wYOG30JMNC4+U2UpjQEtdGQrNeU4qORSNzcvL3v8o2sZKgJAhnTw88jgzyU/vB62sF+zNYprlzzlsqa1PEpqSDf0/SQD256dMRJcQfz1b5piUTM/vlHlRYQpcfKtJx4HJ7x6ZeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933546; c=relaxed/simple;
-	bh=dg19usXIXJKHT2hnZEiWqy1maUQezzyyb357f4h0x9U=;
+	s=arc-20240116; t=1706933771; c=relaxed/simple;
+	bh=cV4d+rH3Yv0TlsAAMg+squZ4G2EcGPwKuNoA35lu/rQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pw/gWbxOuhbPR5K2M63XsCE5icokaP8/FcMWatTPXVvD11nJJGToQTCVQchHArrkI3OD3zvzc+s1r7QneYnTJT5Gksn9GTHB1t/alZuhgLe3TE34b7l1UKZRZQurFKv9uYCyWt3lC3rjCqCFv73Ako2i6o4efuML4p7YyB+IME4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPpdsSTj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37797C433F1;
-	Sat,  3 Feb 2024 04:12:26 +0000 (UTC)
+	 MIME-Version; b=b5gAeLFNzZxg4jRDqe2O3IvWM47ifD9mn9IOO5ROfRocsxn4O/VXKUw/WP/yrpjejfiB/jDMgOxZuJMfDM5I2vBqAzgZT6kun4awpNhbl5i3Dkn3NeGzIo4Z/qhYXMXJZMCHs/VoE4CwTCrxsaCFXNYxopROBzPSFdbHFGR7ezk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ca7eD+d9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E54BC433F1;
+	Sat,  3 Feb 2024 04:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933546;
-	bh=dg19usXIXJKHT2hnZEiWqy1maUQezzyyb357f4h0x9U=;
+	s=korg; t=1706933771;
+	bh=cV4d+rH3Yv0TlsAAMg+squZ4G2EcGPwKuNoA35lu/rQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LPpdsSTjo3zuwDFlt0DP3t1C2wQMLfvSI/yHx2JtXs8XTlShQtZ5D9P5BWVTW6dA9
-	 ZlQDVpVfNYL2wVmUGYV9/8Va/G6RaCYudE59xa1vYV2n/M700TQJPeifVB57qhEvo/
-	 qGN2XeFEPlkeGkdQdPQV6NSjMM525P5KhEToIELg=
+	b=ca7eD+d9YG11xg+o1JyWBlIMCjSCMW+TVUJA8umzrFZyGxwdg/A7t1oWqRLdvqczt
+	 bqfh4fxg5mBTFffvLAz9iGZG4O2mAF8MHROPGLiwHtKfZNEAtZBRh/GHQ+pCtw8szo
+	 HcehbrIMsggxcebv6SmJB5tB1UwRwN1IShpLsXG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 094/322] minmax: deduplicate __unconst_integer_typeof()
-Date: Fri,  2 Feb 2024 20:03:11 -0800
-Message-ID: <20240203035402.187887587@linuxfoundation.org>
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 074/353] ARM: dts: qcom: msm8960: fix PMIC node labels
+Date: Fri,  2 Feb 2024 20:03:12 -0800
+Message-ID: <20240203035406.166770545@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 5e57418a2031cd5e1863efdf3d7447a16a368172 upstream.
+[ Upstream commit a10a09f34eb80b83ca7275e23bf982dae2aa7632 ]
 
-It appears that compiler_types.h already have an implementation of the
-__unconst_integer_typeof() called __unqual_scalar_typeof().  Use it
-instead of the copy.
+Change PM8921 node labels to start with pm8921_ prefix, following other
+Qualcomm PMIC device nodes.
 
-Link: https://lkml.kernel.org/r/20230911154913.4176033-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Herve Codina <herve.codina@bootlin.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230928110309.1212221-12-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/minmax.h |   26 +++-----------------------
- 1 file changed, 3 insertions(+), 23 deletions(-)
+ arch/arm/boot/dts/qcom/qcom-msm8960.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/include/linux/minmax.h
-+++ b/include/linux/minmax.h
-@@ -2,6 +2,7 @@
- #ifndef _LINUX_MINMAX_H
- #define _LINUX_MINMAX_H
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi
+index d13080fcbeea..9099b858a76f 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-msm8960.dtsi
+@@ -264,7 +264,7 @@
+ 			reg = <0x500000 0x1000>;
+ 			qcom,controller-type = "pmic-arbiter";
  
-+#include <linux/compiler_types.h>
- #include <linux/const.h>
- #include <linux/types.h>
+-			pmicintc: pmic {
++			pm8921: pmic {
+ 				compatible = "qcom,pm8921";
+ 				interrupt-parent = <&msmgpio>;
+ 				interrupts = <104 IRQ_TYPE_LEVEL_LOW>;
+@@ -276,7 +276,7 @@
+ 				pwrkey@1c {
+ 					compatible = "qcom,pm8921-pwrkey";
+ 					reg = <0x1c>;
+-					interrupt-parent = <&pmicintc>;
++					interrupt-parent = <&pm8921>;
+ 					interrupts = <50 IRQ_TYPE_EDGE_RISING>,
+ 						     <51 IRQ_TYPE_EDGE_RISING>;
+ 					debounce = <15625>;
+@@ -286,7 +286,7 @@
+ 				keypad@148 {
+ 					compatible = "qcom,pm8921-keypad";
+ 					reg = <0x148>;
+-					interrupt-parent = <&pmicintc>;
++					interrupt-parent = <&pm8921>;
+ 					interrupts = <74 IRQ_TYPE_EDGE_RISING>,
+ 						     <75 IRQ_TYPE_EDGE_RISING>;
+ 					debounce = <15>;
+@@ -296,7 +296,7 @@
  
-@@ -135,27 +136,6 @@
- #define max_t(type, x, y)	__careful_cmp((type)(x), (type)(y), >)
- 
- /*
-- * Remove a const qualifier from integer types
-- * _Generic(foo, type-name: association, ..., default: association) performs a
-- * comparison against the foo type (not the qualified type).
-- * Do not use the const keyword in the type-name as it will not match the
-- * unqualified type of foo.
-- */
--#define __unconst_integer_type_cases(type)	\
--	unsigned type:  (unsigned type)0,	\
--	signed type:    (signed type)0
--
--#define __unconst_integer_typeof(x) typeof(			\
--	_Generic((x),						\
--		char: (char)0,					\
--		__unconst_integer_type_cases(char),		\
--		__unconst_integer_type_cases(short),		\
--		__unconst_integer_type_cases(int),		\
--		__unconst_integer_type_cases(long),		\
--		__unconst_integer_type_cases(long long),	\
--		default: (x)))
--
--/*
-  * Do not check the array parameter using __must_be_array().
-  * In the following legit use-case where the "array" passed is a simple pointer,
-  * __must_be_array() will return a failure.
-@@ -169,13 +149,13 @@
-  * 'int *buff' and 'int buff[N]' types.
-  *
-  * The array can be an array of const items.
-- * typeof() keeps the const qualifier. Use __unconst_integer_typeof() in order
-+ * typeof() keeps the const qualifier. Use __unqual_scalar_typeof() in order
-  * to discard the const qualifier for the __element variable.
-  */
- #define __minmax_array(op, array, len) ({				\
- 	typeof(&(array)[0]) __array = (array);				\
- 	typeof(len) __len = (len);					\
--	__unconst_integer_typeof(__array[0]) __element = __array[--__len]; \
-+	__unqual_scalar_typeof(__array[0]) __element = __array[--__len];\
- 	while (__len--)							\
- 		__element = op(__element, __array[__len]);		\
- 	__element; })
+ 				rtc@11d {
+ 					compatible = "qcom,pm8921-rtc";
+-					interrupt-parent = <&pmicintc>;
++					interrupt-parent = <&pm8921>;
+ 					interrupts = <39 IRQ_TYPE_EDGE_RISING>;
+ 					reg = <0x11d>;
+ 					allow-set-time;
+-- 
+2.43.0
+
 
 
 
