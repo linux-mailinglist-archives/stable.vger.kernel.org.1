@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-18050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4B1B84812E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70FEA848111
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:16:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9411228250C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E6C8281AAF
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83B4168DE;
-	Sat,  3 Feb 2024 04:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302181BC58;
+	Sat,  3 Feb 2024 04:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ECB9Afmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNTMiG1g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675ADFBF2;
-	Sat,  3 Feb 2024 04:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26031BC4F;
+	Sat,  3 Feb 2024 04:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933510; cv=none; b=Y4kR5zERybFy41bmAGIZPHdOjj8v88V+3GvW4ZMcCuo7GfEWsNoj6E+FCKlHArt2jbNXGcgBJ38wypOt+zHF/rQVGVKWZo1N2e6kQKakevHFo62K7ISLMeaBamxkdKtCTYm57QMZcFzl9TlBx+QtgcOxWV5ZJMNT4UWA7DA9i2E=
+	t=1706933493; cv=none; b=TLTKv4C0Rs3fEGshdNdLS2RTZkTvwQMw62DpZVI/fcuXR6gtEOQC0qdi3azv2P0p3G5VDMyU8xuWSAxmaK/QK4Z2G+10e28NSuh+uVA1+M6Ghgng0iiLkhG6Gy8ZIFALD1pETPnosLAsiZ1T53fDq8OXgu46CSmbT0oGWzFQH5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933510; c=relaxed/simple;
-	bh=ngyvTmchcqoQZSDID24RXZTg63QOoriQVRh1IJa2QQA=;
+	s=arc-20240116; t=1706933493; c=relaxed/simple;
+	bh=wr9DuTnJN9vLp57QoF+X0W6xkb2AoI5BzLN3kNkfkvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCQVOvn53qmbsSCoIa6yEtOwM6uS05rC4z2wJ+dMmqeqWMBYUbrk6PffR+CMkAeMwKN2WxdaGAh3lmlUOSQI5dsCxXd/cD2TauYEOfOcWxhCvPcRC1wFcxU9n2cPQwpOtS/TLH7cE9apueRJ0hHE+O06glEFuAcYyIwmV3+O4ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ECB9Afmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309D1C43399;
-	Sat,  3 Feb 2024 04:11:50 +0000 (UTC)
+	 MIME-Version; b=t23nmwAs+Wt36wFBlsasvcY7C8vauAC4VAvzjbg1vzF5bT7b/RoeZP2fNrJsfdtmQHd2NJqSbIPz55vE2EZaJIqMuxoo+pjGBlgwO0i4WwXTd4WJLull5hfK9gyMoxOD8IXqkfudDFyuZziGdXRq/p3YO7Sk0Yq+aKs1fqJg0ZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNTMiG1g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B0FC433F1;
+	Sat,  3 Feb 2024 04:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933510;
-	bh=ngyvTmchcqoQZSDID24RXZTg63QOoriQVRh1IJa2QQA=;
+	s=korg; t=1706933492;
+	bh=wr9DuTnJN9vLp57QoF+X0W6xkb2AoI5BzLN3kNkfkvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ECB9Afmp/OhBbQcvJZTg6B2lQ0z4Dy5FXd5xY3s/+Tav1XkZns5988hAK3tMHIBDf
-	 jo4MGEHbvfYTj9tJ7RIeXM1+lQsNunlywZQUM0FDQy88ZOL3Uq9gkNc9JGKzEjGMUb
-	 vb5Tg4w7/CJ9vl4rVzSGaA5KaleAkJiECVdLs+mg=
+	b=lNTMiG1g1QXeY6T+PYKwcJP0Bu6cmt1kndkOfq9KjFXAVEVq9QZ4G1hr1wdJd9tAC
+	 cVbNKg3SQQwwXvXOhlpEBBA8zBWHbwoXAE0dXgUD73wIgxSDEU8gZ2YxUvOQpWMWt0
+	 LmkvJVqjZHu/Zlo43TPer5lU2/1oUaK8GYZPp3P4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youquan Song <youquan.song@intel.com>,
-	Zhiquan Li <zhiquan1.li@intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Naoya Horiguchi <naoya.horiguchi@nec.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/322] x86/mce: Mark fatal MCEs page as poison to avoid panic in the kdump kernel
-Date: Fri,  2 Feb 2024 20:01:49 -0800
-Message-ID: <20240203035359.440181327@linuxfoundation.org>
+Subject: [PATCH 6.6 013/322] perf/core: Fix narrow startup race when creating the perf nr_addr_filters sysfs file
+Date: Fri,  2 Feb 2024 20:01:50 -0800
+Message-ID: <20240203035359.477480710@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
 References: <20240203035359.041730947@linuxfoundation.org>
@@ -68,80 +65,79 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhiquan Li <zhiquan1.li@intel.com>
+From: Greg KH <gregkh@linuxfoundation.org>
 
-[ Upstream commit 9f3b130048bfa2e44a8cfb1b616f826d9d5d8188 ]
+[ Upstream commit 652ffc2104ec1f69dd4a46313888c33527145ccf ]
 
-Memory errors don't happen very often, especially fatal ones. However,
-in large-scale scenarios such as data centers, that probability
-increases with the amount of machines present.
-
-When a fatal machine check happens, mce_panic() is called based on the
-severity grading of that error. The page containing the error is not
-marked as poison.
-
-However, when kexec is enabled, tools like makedumpfile understand when
-pages are marked as poison and do not touch them so as not to cause
-a fatal machine check exception again while dumping the previous
-kernel's memory.
-
-Therefore, mark the page containing the error as poisoned so that the
-kexec'ed kernel can avoid accessing the page.
-
-  [ bp: Rewrite commit message and comment. ]
-
-Co-developed-by: Youquan Song <youquan.song@intel.com>
-Signed-off-by: Youquan Song <youquan.song@intel.com>
-Signed-off-by: Zhiquan Li <zhiquan1.li@intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
-Link: https://lore.kernel.org/r/20231014051754.3759099-1-zhiquan1.li@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/2023061204-decal-flyable-6090@gregkh
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mce/core.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ kernel/events/core.c | 40 ++++++++++++++++++++++++++++------------
+ 1 file changed, 28 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
-index 6f35f724cc14..20ab11aec60b 100644
---- a/arch/x86/kernel/cpu/mce/core.c
-+++ b/arch/x86/kernel/cpu/mce/core.c
-@@ -44,6 +44,7 @@
- #include <linux/sync_core.h>
- #include <linux/task_work.h>
- #include <linux/hardirq.h>
-+#include <linux/kexec.h>
- 
- #include <asm/intel-family.h>
- #include <asm/processor.h>
-@@ -233,6 +234,7 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
- 	struct llist_node *pending;
- 	struct mce_evt_llist *l;
- 	int apei_err = 0;
-+	struct page *p;
- 
- 	/*
- 	 * Allow instrumentation around external facilities usage. Not that it
-@@ -286,6 +288,20 @@ static noinstr void mce_panic(const char *msg, struct mce *final, char *exp)
- 	if (!fake_panic) {
- 		if (panic_timeout == 0)
- 			panic_timeout = mca_cfg.panic_timeout;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 58ecb1c24387..f22c540350a1 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -11413,9 +11413,32 @@ static DEVICE_ATTR_RW(perf_event_mux_interval_ms);
+ static struct attribute *pmu_dev_attrs[] = {
+ 	&dev_attr_type.attr,
+ 	&dev_attr_perf_event_mux_interval_ms.attr,
++	&dev_attr_nr_addr_filters.attr,
++	NULL,
++};
 +
-+		/*
-+		 * Kdump skips the poisoned page in order to avoid
-+		 * touching the error bits again. Poison the page even
-+		 * if the error is fatal and the machine is about to
-+		 * panic.
-+		 */
-+		if (kexec_crash_loaded()) {
-+			if (final && (final->status & MCI_STATUS_ADDRV)) {
-+				p = pfn_to_online_page(final->addr >> PAGE_SHIFT);
-+				if (p)
-+					SetPageHWPoison(p);
-+			}
-+		}
- 		panic(msg);
- 	} else
- 		pr_emerg(HW_ERR "Fake kernel panic: %s\n", msg);
++static umode_t pmu_dev_is_visible(struct kobject *kobj, struct attribute *a, int n)
++{
++	struct device *dev = kobj_to_dev(kobj);
++	struct pmu *pmu = dev_get_drvdata(dev);
++
++	if (!pmu->nr_addr_filters)
++		return 0;
++
++	return a->mode;
++
++	return 0;
++}
++
++static struct attribute_group pmu_dev_attr_group = {
++	.is_visible = pmu_dev_is_visible,
++	.attrs = pmu_dev_attrs,
++};
++
++static const struct attribute_group *pmu_dev_groups[] = {
++	&pmu_dev_attr_group,
+ 	NULL,
+ };
+-ATTRIBUTE_GROUPS(pmu_dev);
+ 
+ static int pmu_bus_running;
+ static struct bus_type pmu_bus = {
+@@ -11452,18 +11475,11 @@ static int pmu_dev_alloc(struct pmu *pmu)
+ 	if (ret)
+ 		goto free_dev;
+ 
+-	/* For PMUs with address filters, throw in an extra attribute: */
+-	if (pmu->nr_addr_filters)
+-		ret = device_create_file(pmu->dev, &dev_attr_nr_addr_filters);
+-
+-	if (ret)
+-		goto del_dev;
+-
+-	if (pmu->attr_update)
++	if (pmu->attr_update) {
+ 		ret = sysfs_update_groups(&pmu->dev->kobj, pmu->attr_update);
+-
+-	if (ret)
+-		goto del_dev;
++		if (ret)
++			goto del_dev;
++	}
+ 
+ out:
+ 	return ret;
 -- 
 2.43.0
 
