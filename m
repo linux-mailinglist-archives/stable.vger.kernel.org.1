@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-18136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0126848186
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9451C848032
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C7A81F20C9E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 508B228BED2
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6674C2C691;
-	Sat,  3 Feb 2024 04:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02B610A22;
+	Sat,  3 Feb 2024 04:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sxgt+lrL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orVLsDtI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253B8111AE;
-	Sat,  3 Feb 2024 04:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D08110A13;
+	Sat,  3 Feb 2024 04:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933574; cv=none; b=XxeFGuQsVX0D17TKEmOFtzBsB7c3OaqboagS/DXtxU4x35ct9F+HDbtHHacsEv+EMV4mT1pS8+xaelxQYfULN3KjkH1k5/QSFCK06aoXhP9ywMJR5TYHVHCxL9loJN8lHTvq/Yfgxt3VMj0Vu4+JbqvTJO57evF6ErO9ldcx5u4=
+	t=1706933330; cv=none; b=YiRwtG//CuL8Uo9zs1C72FASIKcotrdq2ir8sSaec/OUi221uxbv62IosbN7coCBXqqsmyxfsmwN12Q/FS6GWG5aS13cLumGICDDDt50XY/ypGsvKaupNzgiFXk0XcUlEWB8km7xJ1hhPPMaZBzp0ik0tgrJ5bdqbeXmTIAyHCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933574; c=relaxed/simple;
-	bh=Fbk69N6Bbch7EPTJszWSb3qo64LsLIipV7G59ibZlAg=;
+	s=arc-20240116; t=1706933330; c=relaxed/simple;
+	bh=rKUN8QohzzGrFdAc3CBfc5Mjo0t38sHx0PAx6Ujq6S8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iC5wQj6dDVgiBzSpts/K+0xIfSZRyblBB8j3xhZbPCZL8UifEs1kKmvojfmnMbl+Td7YzvRtoTznpc6A4yuTVxj1ZJUQRL81NvVuZE0ebi4WCIgj/jDbALv7XrEhXUOlC4SOv1n+pQwws1vLtKJHySvmcDTIoeXzc+UhrySZhk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sxgt+lrL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8845DC433B1;
-	Sat,  3 Feb 2024 04:12:53 +0000 (UTC)
+	 MIME-Version; b=fyPcu4590RovoqptjZKpwUs6U9eyqQPxx2lygJfR8uX+kOMhQn4w4+02i7MTDLSzKjJesP+CDJv8CuSjVA/EXn9jlEYUhCbqnkdzMdcUQChqxV9hHFkMGKR09yVkivmmfEewQK1rZ85hzN+7kBgtJC+u4iinumUH3/En3hZIScY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orVLsDtI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4154DC43390;
+	Sat,  3 Feb 2024 04:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933573;
-	bh=Fbk69N6Bbch7EPTJszWSb3qo64LsLIipV7G59ibZlAg=;
+	s=korg; t=1706933330;
+	bh=rKUN8QohzzGrFdAc3CBfc5Mjo0t38sHx0PAx6Ujq6S8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sxgt+lrLXcy2oDjjb8xvMHRSG8Is573LBeKgRAkUAzwz55rpfY3rWaUpoIfyaMM9O
-	 Mt0oJqXEDuv7Wd2KqFxX4h8RiU0gxjFJEXvIluncZ1Ouly5GE66mtiT0SUjeInYnHT
-	 IxAkLzo5xYdtAZ9U10YZciOLwDtsTZh/xjSqg7V0=
+	b=orVLsDtIraQxHzRhJAeeDpKY4mCQQcUd3Jl8KNRyGPolI354el74uaf63Rzjl54SY
+	 gT6euG+jpK84JK+nsQ0gUpmvSbpyDV1IEbIbx1d8kW+ttnZ4DfdfUr8Re1ycebyZOx
+	 UyxtqOFnSIE1DJp6w3Sh3szy1fSuOTwGM8HkRimA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Weichen Chen <weichen.chen@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 102/322] arm64: dts: qcom: sm8550: fix soundwire controllers node name
-Date: Fri,  2 Feb 2024 20:03:19 -0800
-Message-ID: <20240203035402.445010438@linuxfoundation.org>
+Subject: [PATCH 6.1 027/219] pstore/ram: Fix crash when setting number of cpus to an odd number
+Date: Fri,  2 Feb 2024 20:03:20 -0800
+Message-ID: <20240203035320.234127883@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Weichen Chen <weichen.chen@mediatek.com>
 
-[ Upstream commit 07c88da81caf0e72c3690b689d30f0d325cfeff4 ]
+[ Upstream commit d49270a04623ce3c0afddbf3e984cb245aa48e9c ]
 
-Fix the following dt bindings check:
-arch/arm64/boot/dts/qcom/sm8550-mtp.dtb: soundwire-controller@6ab0000: $nodename:0: 'soundwire-controller@6ab0000' does not match '^soundwire(@.*)?$'
-from schema $id: http://devicetree.org/schemas/soundwire/qcom,soundwire.yaml#
+When the number of cpu cores is adjusted to 7 or other odd numbers,
+the zone size will become an odd number.
+The address of the zone will become:
+    addr of zone0 = BASE
+    addr of zone1 = BASE + zone_size
+    addr of zone2 = BASE + zone_size*2
+    ...
+The address of zone1/3/5/7 will be mapped to non-alignment va.
+Eventually crashes will occur when accessing these va.
 
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20231106-topic-sm8550-upstream-soundwire-bindings-fix-v1-1-4ded91c805a1@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+So, use ALIGN_DOWN() to make sure the zone size is even
+to avoid this bug.
+
+Signed-off-by: Weichen Chen <weichen.chen@mediatek.com>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Tested-by: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+Link: https://lore.kernel.org/r/20230224023632.6840-1-weichen.chen@mediatek.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8550.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/pstore/ram.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-index 3a228d4f0c14..076715ef09d5 100644
---- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
-@@ -2044,7 +2044,7 @@
- 			#sound-dai-cells = <1>;
- 		};
+diff --git a/fs/pstore/ram.c b/fs/pstore/ram.c
+index f3fa3625d772..e15b4631364a 100644
+--- a/fs/pstore/ram.c
++++ b/fs/pstore/ram.c
+@@ -519,6 +519,7 @@ static int ramoops_init_przs(const char *name,
+ 	}
  
--		swr3: soundwire-controller@6ab0000 {
-+		swr3: soundwire@6ab0000 {
- 			compatible = "qcom,soundwire-v2.0.0";
- 			reg = <0 0x06ab0000 0 0x10000>;
- 			interrupts = <GIC_SPI 171 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2090,7 +2090,7 @@
- 			#sound-dai-cells = <1>;
- 		};
- 
--		swr1: soundwire-controller@6ad0000 {
-+		swr1: soundwire@6ad0000 {
- 			compatible = "qcom,soundwire-v2.0.0";
- 			reg = <0 0x06ad0000 0 0x10000>;
- 			interrupts = <GIC_SPI 155 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2155,7 +2155,7 @@
- 			#sound-dai-cells = <1>;
- 		};
- 
--		swr0: soundwire-controller@6b10000 {
-+		swr0: soundwire@6b10000 {
- 			compatible = "qcom,soundwire-v2.0.0";
- 			reg = <0 0x06b10000 0 0x10000>;
- 			interrupts = <GIC_SPI 170 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2182,7 +2182,7 @@
- 			status = "disabled";
- 		};
- 
--		swr2: soundwire-controller@6d30000 {
-+		swr2: soundwire@6d30000 {
- 			compatible = "qcom,soundwire-v2.0.0";
- 			reg = <0 0x06d30000 0 0x10000>;
- 			interrupts = <GIC_SPI 496 IRQ_TYPE_LEVEL_HIGH>,
+ 	zone_sz = mem_sz / *cnt;
++	zone_sz = ALIGN_DOWN(zone_sz, 2);
+ 	if (!zone_sz) {
+ 		dev_err(dev, "%s zone size == 0\n", name);
+ 		goto fail;
 -- 
 2.43.0
 
