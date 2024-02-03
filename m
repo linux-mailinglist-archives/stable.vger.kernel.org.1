@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-17962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1958480D1
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 001FE84831A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B71EA28C6A4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8998D1F2493E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EACF12B9C;
-	Sat,  3 Feb 2024 04:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA2E11CAB1;
+	Sat,  3 Feb 2024 04:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tU/Gdiyv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbYXGqr/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0FB18EB1;
-	Sat,  3 Feb 2024 04:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AD611198;
+	Sat,  3 Feb 2024 04:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933445; cv=none; b=ndN8lY6KcVzfyHlXkb06EZa2jwN1s0UI30Ypk6KqT+EGjUazDCDF59CvmqLTrxVIOnT7awIoWgXiSQ4FiNukoqnFDfmcKuQVVOetv66Ckobo7lXJFGpbM7xhMvbN6VuzDZtnwOoBDXNTrY58YsfxXd4oIhDRWUzQjBtsx2gwlMc=
+	t=1706933870; cv=none; b=fBO9OzmvfEPEhHDnnI0kDePxQMXC1nDTo7KfUf3QOGQn2DhfGVvxxkq+Ez5QKtjFM8epUXeepsNjOoG0NU01MQ8Ro0KM8AvSSu9elXTCSWyzQHOikArdBL3BHKaV3k+Ps4bkXeFxvxQBVQjn2u3P0j0so3y4tBBOIIpYaWzVHZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933445; c=relaxed/simple;
-	bh=Y+I4CPOFQsLpr/GzPWvhu5X9yIUZwa8vPeiHczfMDPg=;
+	s=arc-20240116; t=1706933870; c=relaxed/simple;
+	bh=mQYoEsxLaG2QX8gDrlFgfs9ke6pqzHirKw/1M+0xL6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u1ufP0hzG7WwIL1F4woHhmMhP74qnFnSu9czVn3XsvQc7AKDIl3bKRFyk+RyyKUUn1TJPYX6pAUMuLqTZoA/s5Fus3X0t2PwlwGzXCt78gYc07BF1ejqkkKszfubgiwxYSy8JTlSrhZ7AzhrhyzohB20vKUz7wxp+W7tEs6cT6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tU/Gdiyv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26A04C433F1;
-	Sat,  3 Feb 2024 04:10:45 +0000 (UTC)
+	 MIME-Version; b=ZfeQ9yEklSposYnOyUN1lVM5+uOS93LBZkaUtmb6t64woXkt1hEELeeUlxqE/oo3JzQt5n0uTUpfED4LnxOuXj+t/h5pHpSx2OZzmHf55IDZisE5w11DZJwI1855ad+1C0B6Efx3PG+RVjjsOeJbnY/ejS3spwdJRF3o8DDEIFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zbYXGqr/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5411AC433F1;
+	Sat,  3 Feb 2024 04:17:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933445;
-	bh=Y+I4CPOFQsLpr/GzPWvhu5X9yIUZwa8vPeiHczfMDPg=;
+	s=korg; t=1706933870;
+	bh=mQYoEsxLaG2QX8gDrlFgfs9ke6pqzHirKw/1M+0xL6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tU/GdiyvuFrcknRtrA/GWmLtBAKV2a68aQhIq49a3iyC7+iNixFPgqsDzONbuN8Oc
-	 Jnz4Ym/2KKPP+XcdpR3a9kcVcb1nhaT6IyGGCdKyBbMI8sZQ3/yt86D1WrII5BAtve
-	 KugQUsBN/2XY/vqXxmL3eYzjRAoLStH6sBc0KVPQ=
+	b=zbYXGqr/NQxY0Ey+eVSha5I8Godz8iDFdbfytZnm9ccidbQnS5nQaeKcd2/N/zLhb
+	 Z5rbVwoUJTcHYAoNmy6nDqMfPUwkNQ14+WovsTS8KmgsaJEsFi4G/Q65AkBFYtc7Hy
+	 rGN+B4KHKr9on9XJN7SzU+3vkq84Cw9IRVRbKA2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/219] xen/gntdev: Fix the abuse of underlying struct page in DMA-buf import
+Subject: [PATCH 6.7 208/353] drm/msm/dpu: enable writeback on SM8450
 Date: Fri,  2 Feb 2024 20:05:26 -0800
-Message-ID: <20240203035338.309600016@linuxfoundation.org>
+Message-ID: <20240203035410.280397575@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,153 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 2d2db7d40254d5fb53b11ebd703cd1ed0c5de7a1 ]
+[ Upstream commit eaa647cdbf2e357b4a14903f2f1e47ed9c4f8df3 ]
 
-DO NOT access the underlying struct page of an sg table exported
-by DMA-buf in dmabuf_imp_to_refs(), this is not allowed.
-Please see drivers/dma-buf/dma-buf.c:mangle_sg_table() for details.
+Enable WB2 hardware block, enabling writeback support on this platform.
 
-Fortunately, here (for special Xen device) we can avoid using
-pages and calculate gfns directly from dma addresses provided by
-the sg table.
-
-Suggested-by: Daniel Vetter <daniel@ffwll.ch>
-Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Acked-by: Daniel Vetter <daniel@ffwll.ch>
-Link: https://lore.kernel.org/r/20240107103426.2038075-1-olekstysh@gmail.com
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/570187/
+Link: https://lore.kernel.org/r/20231203002743.1291956-4-dmitry.baryshkov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/gntdev-dmabuf.c | 50 ++++++++++++++++++-------------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ .../drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/xen/gntdev-dmabuf.c b/drivers/xen/gntdev-dmabuf.c
-index 940e5e9e8a54..335451309566 100644
---- a/drivers/xen/gntdev-dmabuf.c
-+++ b/drivers/xen/gntdev-dmabuf.c
-@@ -11,6 +11,7 @@
- #include <linux/kernel.h>
- #include <linux/errno.h>
- #include <linux/dma-buf.h>
-+#include <linux/dma-direct.h>
- #include <linux/slab.h>
- #include <linux/types.h>
- #include <linux/uaccess.h>
-@@ -50,7 +51,7 @@ struct gntdev_dmabuf {
- 
- 	/* Number of pages this buffer has. */
- 	int nr_pages;
--	/* Pages of this buffer. */
-+	/* Pages of this buffer (only for dma-buf export). */
- 	struct page **pages;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h
+index 72b0f547242f..7adc42257e1e 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h
+@@ -32,6 +32,7 @@ static const struct dpu_mdp_cfg sm8450_mdp = {
+ 		[DPU_CLK_CTRL_DMA1] = { .reg_off = 0x2b4, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2bc, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA3] = { .reg_off = 0x2c4, .bit_off = 8 },
++		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
+ 		[DPU_CLK_CTRL_REG_DMA] = { .reg_off = 0x2bc, .bit_off = 20 },
+ 	},
+ };
+@@ -316,6 +317,21 @@ static const struct dpu_dsc_cfg sm8450_dsc[] = {
+ 	},
  };
  
-@@ -484,7 +485,7 @@ static int dmabuf_exp_from_refs(struct gntdev_priv *priv, int flags,
- /* DMA buffer import support. */
- 
- static int
--dmabuf_imp_grant_foreign_access(struct page **pages, u32 *refs,
-+dmabuf_imp_grant_foreign_access(unsigned long *gfns, u32 *refs,
- 				int count, int domid)
- {
- 	grant_ref_t priv_gref_head;
-@@ -507,7 +508,7 @@ dmabuf_imp_grant_foreign_access(struct page **pages, u32 *refs,
- 		}
- 
- 		gnttab_grant_foreign_access_ref(cur_ref, domid,
--						xen_page_to_gfn(pages[i]), 0);
-+						gfns[i], 0);
- 		refs[i] = cur_ref;
- 	}
- 
-@@ -529,7 +530,6 @@ static void dmabuf_imp_end_foreign_access(u32 *refs, int count)
- 
- static void dmabuf_imp_free_storage(struct gntdev_dmabuf *gntdev_dmabuf)
- {
--	kfree(gntdev_dmabuf->pages);
- 	kfree(gntdev_dmabuf->u.imp.refs);
- 	kfree(gntdev_dmabuf);
- }
-@@ -549,12 +549,6 @@ static struct gntdev_dmabuf *dmabuf_imp_alloc_storage(int count)
- 	if (!gntdev_dmabuf->u.imp.refs)
- 		goto fail;
- 
--	gntdev_dmabuf->pages = kcalloc(count,
--				       sizeof(gntdev_dmabuf->pages[0]),
--				       GFP_KERNEL);
--	if (!gntdev_dmabuf->pages)
--		goto fail;
--
- 	gntdev_dmabuf->nr_pages = count;
- 
- 	for (i = 0; i < count; i++)
-@@ -576,7 +570,8 @@ dmabuf_imp_to_refs(struct gntdev_dmabuf_priv *priv, struct device *dev,
- 	struct dma_buf *dma_buf;
- 	struct dma_buf_attachment *attach;
- 	struct sg_table *sgt;
--	struct sg_page_iter sg_iter;
-+	struct sg_dma_page_iter sg_iter;
-+	unsigned long *gfns;
- 	int i;
- 
- 	dma_buf = dma_buf_get(fd);
-@@ -624,26 +619,31 @@ dmabuf_imp_to_refs(struct gntdev_dmabuf_priv *priv, struct device *dev,
- 
- 	gntdev_dmabuf->u.imp.sgt = sgt;
- 
--	/* Now convert sgt to array of pages and check for page validity. */
-+	gfns = kcalloc(count, sizeof(*gfns), GFP_KERNEL);
-+	if (!gfns) {
-+		ret = ERR_PTR(-ENOMEM);
-+		goto fail_unmap;
-+	}
++static const struct dpu_wb_cfg sm8450_wb[] = {
++	{
++		.name = "wb_2", .id = WB_2,
++		.base = 0x65000, .len = 0x2c8,
++		.features = WB_SM8250_MASK,
++		.format_list = wb2_formats,
++		.num_formats = ARRAY_SIZE(wb2_formats),
++		.clk_ctrl = DPU_CLK_CTRL_WB2,
++		.xin_id = 6,
++		.vbif_idx = VBIF_RT,
++		.maxlinewidth = 4096,
++		.intr_wb_done = DPU_IRQ_IDX(MDP_SSPP_TOP0_INTR, 4),
++	},
++};
 +
-+	/*
-+	 * Now convert sgt to array of gfns without accessing underlying pages.
-+	 * It is not allowed to access the underlying struct page of an sg table
-+	 * exported by DMA-buf, but since we deal with special Xen dma device here
-+	 * (not a normal physical one) look at the dma addresses in the sg table
-+	 * and then calculate gfns directly from them.
-+	 */
- 	i = 0;
--	for_each_sgtable_page(sgt, &sg_iter, 0) {
--		struct page *page = sg_page_iter_page(&sg_iter);
--		/*
--		 * Check if page is valid: this can happen if we are given
--		 * a page from VRAM or other resources which are not backed
--		 * by a struct page.
--		 */
--		if (!pfn_valid(page_to_pfn(page))) {
--			ret = ERR_PTR(-EINVAL);
--			goto fail_unmap;
--		}
-+	for_each_sgtable_dma_page(sgt, &sg_iter, 0) {
-+		dma_addr_t addr = sg_page_iter_dma_address(&sg_iter);
-+		unsigned long pfn = bfn_to_pfn(XEN_PFN_DOWN(dma_to_phys(dev, addr)));
- 
--		gntdev_dmabuf->pages[i++] = page;
-+		gfns[i++] = pfn_to_gfn(pfn);
- 	}
- 
--	ret = ERR_PTR(dmabuf_imp_grant_foreign_access(gntdev_dmabuf->pages,
-+	ret = ERR_PTR(dmabuf_imp_grant_foreign_access(gfns,
- 						      gntdev_dmabuf->u.imp.refs,
- 						      count, domid));
-+	kfree(gfns);
- 	if (IS_ERR(ret))
- 		goto fail_end_access;
- 
+ static const struct dpu_intf_cfg sm8450_intf[] = {
+ 	{
+ 		.name = "intf_0", .id = INTF_0,
+@@ -411,6 +427,8 @@ const struct dpu_mdss_cfg dpu_sm8450_cfg = {
+ 	.dsc = sm8450_dsc,
+ 	.merge_3d_count = ARRAY_SIZE(sm8450_merge_3d),
+ 	.merge_3d = sm8450_merge_3d,
++	.wb_count = ARRAY_SIZE(sm8450_wb),
++	.wb = sm8450_wb,
+ 	.intf_count = ARRAY_SIZE(sm8450_intf),
+ 	.intf = sm8450_intf,
+ 	.vbif_count = ARRAY_SIZE(sdm845_vbif),
 -- 
 2.43.0
 
