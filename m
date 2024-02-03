@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-17848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62CCA84805B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F35E8482DA
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 556C2B29C66
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B037C1C23802
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BB9FC03;
-	Sat,  3 Feb 2024 04:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCFAC1C6A3;
+	Sat,  3 Feb 2024 04:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1eq1c1kt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gohJKqhM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1006310795;
-	Sat,  3 Feb 2024 04:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A89C1C69E;
+	Sat,  3 Feb 2024 04:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933360; cv=none; b=hqZBo/t+x64qCEXoGAZXqMWiMCKZbm2WRg+ttiRrRI1wAIOLnuiBk8aPK7RY2Dkz9jPWbKVvxFGRTjo/E/vrdPljtfrjgL1ySkv+nyaNSmPbsZbMbA7Jl3LxquYjjL7wKLqEz/vAVqQcf/zejyrTKX5uv13zaaf1t4Uc/AJRTRc=
+	t=1706933822; cv=none; b=C3kHdtYRL8Qw3+abbbYsajzSDd+OFZvJFNS/3VsU42ZgkVvTwWJOyXHYrOnwxCkErAyJMPjGPs5zFz4ZphEC1F6XuF0kuNkvJqSXHmepY/DcxAs/eT5PLY8hy9KUPdC1ktBLT0jXcfnsXGdvSIxBdt+5vmB4qbaULgRvMzOgv7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933360; c=relaxed/simple;
-	bh=5MEtqB170UnplAhK+8lqAjorG4zmlSoWMQpGPlaNCyI=;
+	s=arc-20240116; t=1706933822; c=relaxed/simple;
+	bh=rQ+QBSr8qe/M7zsoMcorY5WELMdFcNb5G0V9rRqkDUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sBpy128ybBJwEH/JY4KjSFKaqpgeIUzDAXqNgCznu14wj0oRGzpgOb1taUiWzRrEqhtrqR/l9pQSLlerf/WqG+5zvN29HqOHbpQXX/9GSdn1kRzwJjET408W46VJZBZ+I9rAUP7/uUa734M9T9fuVVDL5KnnP6Wb51uQeOL8FlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1eq1c1kt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCDEDC433C7;
-	Sat,  3 Feb 2024 04:09:19 +0000 (UTC)
+	 MIME-Version; b=VOejTruu82O8IdLnw6h5Z/Vz1XHFT/bczmBhputRa5vljV9YcFyjLx7W4PQGzbiKmfpf7I76yWTej605FWikMtPyyHq1CaP0bo/t1MNBl1SlOKMV1CmENP9HOXkjRtDeqU58l+zypsdClK3CI7DcPBU+w5kcieSgwUvHBCuUEqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gohJKqhM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62CAFC433C7;
+	Sat,  3 Feb 2024 04:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933359;
-	bh=5MEtqB170UnplAhK+8lqAjorG4zmlSoWMQpGPlaNCyI=;
+	s=korg; t=1706933822;
+	bh=rQ+QBSr8qe/M7zsoMcorY5WELMdFcNb5G0V9rRqkDUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1eq1c1kteLYE96eWS1l3DVql9Y2ahEJJ5EbcyVYNeqfuIpGEVRYA6y0CDGEFaLakQ
-	 rjNOV/DurtKClX+82d3wvTGbH7U5wDQv8y+zmtGZIjGV7nW+2mF6327e0QrYNi2nLu
-	 oHN+GjYzsj3OFbgwuWDM6LqQiW7Y2h4hB46itXeE=
+	b=gohJKqhMU4VKZE79vIlVR4+zxLKKwSRkkXETwGlKAgEpZCJoxLbbXL//SRYjBSsqA
+	 iVVZZImLjRy37Zl0xi3c0LfuquaH/C6nQi9OIZEIZnSKVAcIyHacighVxaieeQMxC4
+	 K5q4on8Ugtw3MlnBGNn7+9Q7FEGV8qrFXN1ce60I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/219] bpf: Check rcu_read_lock_trace_held() before calling bpf map helpers
+Subject: [PATCH 6.7 118/353] arm64: zynqmp: Move fixed clock to / for kv260
 Date: Fri,  2 Feb 2024 20:03:56 -0800
-Message-ID: <20240203035325.695166070@linuxfoundation.org>
+Message-ID: <20240203035407.478335773@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +61,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Michal Simek <michal.simek@amd.com>
 
-[ Upstream commit 169410eba271afc9f0fb476d996795aa26770c6d ]
+[ Upstream commit 6a10a19a6bd2fd8d27a510678bf87bd9408f51d8 ]
 
-These three bpf_map_{lookup,update,delete}_elem() helpers are also
-available for sleepable bpf program, so add the corresponding lock
-assertion for sleepable bpf program, otherwise the following warning
-will be reported when a sleepable bpf program manipulates bpf map under
-interpreter mode (aka bpf_jit_enable=0):
+fixed clock nodes can't be on the bus because they are missing reg
+property. That's why move them to root.
+And because it is root it is good to have it as the first node in a file.
 
-  WARNING: CPU: 3 PID: 4985 at kernel/bpf/helpers.c:40 ......
-  CPU: 3 PID: 4985 Comm: test_progs Not tainted 6.6.0+ #2
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996) ......
-  RIP: 0010:bpf_map_lookup_elem+0x54/0x60
-  ......
-  Call Trace:
-   <TASK>
-   ? __warn+0xa5/0x240
-   ? bpf_map_lookup_elem+0x54/0x60
-   ? report_bug+0x1ba/0x1f0
-   ? handle_bug+0x40/0x80
-   ? exc_invalid_op+0x18/0x50
-   ? asm_exc_invalid_op+0x1b/0x20
-   ? __pfx_bpf_map_lookup_elem+0x10/0x10
-   ? rcu_lockdep_current_cpu_online+0x65/0xb0
-   ? rcu_is_watching+0x23/0x50
-   ? bpf_map_lookup_elem+0x54/0x60
-   ? __pfx_bpf_map_lookup_elem+0x10/0x10
-   ___bpf_prog_run+0x513/0x3b70
-   __bpf_prog_run32+0x9d/0xd0
-   ? __bpf_prog_enter_sleepable_recur+0xad/0x120
-   ? __bpf_prog_enter_sleepable_recur+0x3e/0x120
-   bpf_trampoline_6442580665+0x4d/0x1000
-   __x64_sys_getpgid+0x5/0x30
-   ? do_syscall_64+0x36/0xb0
-   entry_SYSCALL_64_after_hwframe+0x6e/0x76
-   </TASK>
-
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20231204140425.1480317-2-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Michal Simek <michal.simek@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ .../boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso | 28 ++++++++---------
+ .../boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso | 30 +++++++++----------
+ 2 files changed, 29 insertions(+), 29 deletions(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 6212e4ae084b..34135fbd6097 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -28,12 +28,13 @@
-  *
-  * Different map implementations will rely on rcu in map methods
-  * lookup/update/delete, therefore eBPF programs must run under rcu lock
-- * if program is allowed to access maps, so check rcu_read_lock_held in
-- * all three functions.
-+ * if program is allowed to access maps, so check rcu_read_lock_held() or
-+ * rcu_read_lock_trace_held() in all three functions.
-  */
- BPF_CALL_2(bpf_map_lookup_elem, struct bpf_map *, map, void *, key)
- {
--	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
-+	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
-+		     !rcu_read_lock_bh_held());
- 	return (unsigned long) map->ops->map_lookup_elem(map, key);
- }
+diff --git a/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso b/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso
+index ae1b9b2bdbee..dee238739290 100644
+--- a/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso
++++ b/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revA.dtso
+@@ -21,20 +21,7 @@
+ /dts-v1/;
+ /plugin/;
  
-@@ -49,7 +50,8 @@ const struct bpf_func_proto bpf_map_lookup_elem_proto = {
- BPF_CALL_4(bpf_map_update_elem, struct bpf_map *, map, void *, key,
- 	   void *, value, u64, flags)
- {
--	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
-+	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
-+		     !rcu_read_lock_bh_held());
- 	return map->ops->map_update_elem(map, key, value, flags);
- }
+-&i2c1 { /* I2C_SCK C23/C24 - MIO from SOM */
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-	pinctrl-names = "default", "gpio";
+-	pinctrl-0 = <&pinctrl_i2c1_default>;
+-	pinctrl-1 = <&pinctrl_i2c1_gpio>;
+-	scl-gpios = <&gpio 24 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+-	sda-gpios = <&gpio 25 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+-
+-	/* u14 - 0x40 - ina260 */
+-	/* u27 - 0xe0 - STDP4320 DP/HDMI splitter */
+-};
+-
+-&amba {
++&{/} {
+ 	si5332_0: si5332_0 { /* u17 */
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+@@ -72,6 +59,19 @@
+ 	};
+ };
  
-@@ -66,7 +68,8 @@ const struct bpf_func_proto bpf_map_update_elem_proto = {
++&i2c1 { /* I2C_SCK C23/C24 - MIO from SOM */
++	#address-cells = <1>;
++	#size-cells = <0>;
++	pinctrl-names = "default", "gpio";
++	pinctrl-0 = <&pinctrl_i2c1_default>;
++	pinctrl-1 = <&pinctrl_i2c1_gpio>;
++	scl-gpios = <&gpio 24 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	sda-gpios = <&gpio 25 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++
++	/* u14 - 0x40 - ina260 */
++	/* u27 - 0xe0 - STDP4320 DP/HDMI splitter */
++};
++
+ /* DP/USB 3.0 and SATA */
+ &psgtr {
+ 	status = "okay";
+diff --git a/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso b/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso
+index b59e48be6465..73c5cb156caf 100644
+--- a/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso
++++ b/arch/arm64/boot/dts/xilinx/zynqmp-sck-kv-g-revB.dtso
+@@ -16,21 +16,7 @@
+ /dts-v1/;
+ /plugin/;
  
- BPF_CALL_2(bpf_map_delete_elem, struct bpf_map *, map, void *, key)
- {
--	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
-+	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
-+		     !rcu_read_lock_bh_held());
- 	return map->ops->map_delete_elem(map, key);
- }
+-&i2c1 { /* I2C_SCK C23/C24 - MIO from SOM */
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-	pinctrl-names = "default", "gpio";
+-	pinctrl-0 = <&pinctrl_i2c1_default>;
+-	pinctrl-1 = <&pinctrl_i2c1_gpio>;
+-	scl-gpios = <&gpio 24 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+-	sda-gpios = <&gpio 25 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
+-
+-	/* u14 - 0x40 - ina260 */
+-	/* u43 - 0x2d - usb5744 */
+-	/* u27 - 0xe0 - STDP4320 DP/HDMI splitter */
+-};
+-
+-&amba {
++&{/} {
+ 	si5332_0: si5332_0 { /* u17 */
+ 		compatible = "fixed-clock";
+ 		#clock-cells = <0>;
+@@ -68,6 +54,20 @@
+ 	};
+ };
  
++&i2c1 { /* I2C_SCK C23/C24 - MIO from SOM */
++	#address-cells = <1>;
++	#size-cells = <0>;
++	pinctrl-names = "default", "gpio";
++	pinctrl-0 = <&pinctrl_i2c1_default>;
++	pinctrl-1 = <&pinctrl_i2c1_gpio>;
++	scl-gpios = <&gpio 24 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++	sda-gpios = <&gpio 25 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
++
++	/* u14 - 0x40 - ina260 */
++	/* u43 - 0x2d - usb5744 */
++	/* u27 - 0xe0 - STDP4320 DP/HDMI splitter */
++};
++
+ /* DP/USB 3.0 */
+ &psgtr {
+ 	status = "okay";
 -- 
 2.43.0
 
