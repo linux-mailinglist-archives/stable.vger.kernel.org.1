@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BE5F84804D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4988482B8
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACF731C22E42
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2038C1F234FB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132A3125CE;
-	Sat,  3 Feb 2024 04:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 735D01BDEE;
+	Sat,  3 Feb 2024 04:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XONcJzr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G388pNUo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CD0F9D7;
-	Sat,  3 Feb 2024 04:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C8B11190;
+	Sat,  3 Feb 2024 04:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933350; cv=none; b=MNuB1aEV54QDaiTFBpQ/ilxRE56nP9HUcsHHhbVnTYstFR6USnIOX0F8hqZfaJgm7kvb3/sW9ecKX2gjpettqUKIfgSTQJlcj6bBrhM5+k/1EdclNDEQHjBbK2BfSZ5ieaSPOawZrwAuAIHGwSzNeYFWIGq4A3Y/iK6E9pOLBbA=
+	t=1706933798; cv=none; b=mpwI6VM7HUrr77rrygv6OPW0kedoqcTou3kownszcjyh0PIow00emAZDn6JGrL0vF6dpBi4/WkIsmnIAqdxudaAT2KoIjOtjD8cZG4C5Dtl26vbe//BEo0t2d3FQwn/9IjjuIksIF8FWpoVfV1KkZjQAgoFkNmfjnYIDA+szASk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933350; c=relaxed/simple;
-	bh=L15PtcOIbnOSk4OEhcJob/NFly9Ars8Nlf8g02XZd4A=;
+	s=arc-20240116; t=1706933798; c=relaxed/simple;
+	bh=G8xYC+oLsiedvAcF/Ew3WwYE0AbwL/kF18tRYzEcHYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ee8EVwG+J35DGpLa3QWxuAKvrcrt0Vv6WOtfPzNMFczPxJODCo1cvNMZUzeWvf0Ol6kPJMVmPzElHzOAwkNnx6uwqs/0bx1vpPPMenzSLJGoB+TA8V2nOUw30vLpb6Hf7MCpBuWcGL3LE3mvZ3nfxaPvgVDkg7ZAoe+QmFU5mDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XONcJzr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF52C43390;
-	Sat,  3 Feb 2024 04:09:10 +0000 (UTC)
+	 MIME-Version; b=cpPRd6EwQfsXuo5s/Oiko+yzIKgPzzK3wlp+xtxO5P7nLGCmpZqUv4MSamajmi61RrZWbJFh6qMorWiP4+4BviQ2qe0lVIthVxAXsQ5riEcdu8DsckaOeWmpbEOQ/rlVlMje/81g8GGJBY3Zibtjo6FF+iU1baXGSreRL1apTt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G388pNUo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE5EEC433C7;
+	Sat,  3 Feb 2024 04:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933350;
-	bh=L15PtcOIbnOSk4OEhcJob/NFly9Ars8Nlf8g02XZd4A=;
+	s=korg; t=1706933798;
+	bh=G8xYC+oLsiedvAcF/Ew3WwYE0AbwL/kF18tRYzEcHYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1XONcJzrZ8NjXpGSyIJ7eCYklHyUcnDXckvmFcR9x9ErwjtfiLwZo0+9xpwf+bukz
-	 TonxT+iK7Dtfz/iOk519v3SRIgGzznyhUSE0XjEZEN5nxCkgKeDKbvPkBTII22eZHu
-	 CkWpDxSeOZBne4T+Y36FdHpCa+u8WfmeHFH/Qt3o=
+	b=G388pNUoYoiiVp+3PVcT4ymdaAybJS4//U7zC2h2Q6TUrWcSmiKS6YS60ISCfFUln
+	 nGcYlsibDgqzSDDsLG6ZIopG3vJB/+L7tvEs+GAY3v2IfLJTNGdYHP+SUvr51eA3Wy
+	 1sVJaO5rF2hTvUH1tAVmXEcBp8gewWU7kAeE+rrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Jay Vosburgh <jay.vosburgh@canonical.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/219] bonding: return -ENOMEM instead of BUG in alb_upper_dev_walk
+Subject: [PATCH 6.7 109/353] ARM: dts: rockchip: fix rk3036 hdmi ports node
 Date: Fri,  2 Feb 2024 20:03:47 -0800
-Message-ID: <20240203035324.496434532@linuxfoundation.org>
+Message-ID: <20240203035407.216265323@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit d6b83f1e3707c4d60acfa58afd3515e17e5d5384 ]
+[ Upstream commit 27ded76ef0fcfcf939914532aae575cf23c221b4 ]
 
-If failed to allocate "tags" or could not find the final upper device from
-start_dev's upper list in bond_verify_device_path(), only the loopback
-detection of the current upper device should be affected, and the system is
-no need to be panic.
-So return -ENOMEM in alb_upper_dev_walk to stop walking, print some warn
-information when failed to allocate memory for vlan tags in
-bond_verify_device_path.
+Fix hdmi ports node so that it matches the
+rockchip,inno-hdmi.yaml binding.
 
-I also think that the following function calls
-netdev_walk_all_upper_dev_rcu
----->>>alb_upper_dev_walk
----------->>>bond_verify_device_path
->From this way, "end device" can eventually be obtained from "start device"
-in bond_verify_device_path, IS_ERR(tags) could be instead of
-IS_ERR_OR_NULL(tags) in alb_upper_dev_walk.
-
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
-Link: https://lore.kernel.org/r/20231118081653.1481260-1-shaozhengchao@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/9a2afac1-ed5c-382d-02b0-b2f5f1af3abb@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_alb.c  | 3 ++-
- drivers/net/bonding/bond_main.c | 5 ++++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/rockchip/rk3036.dtsi | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
-index fc5da5d7744d..9c4c2c7d90ef 100644
---- a/drivers/net/bonding/bond_alb.c
-+++ b/drivers/net/bonding/bond_alb.c
-@@ -985,7 +985,8 @@ static int alb_upper_dev_walk(struct net_device *upper,
- 	if (netif_is_macvlan(upper) && !strict_match) {
- 		tags = bond_verify_device_path(bond->dev, upper, 0);
- 		if (IS_ERR_OR_NULL(tags))
--			BUG();
-+			return -ENOMEM;
-+
- 		alb_send_lp_vid(slave, upper->dev_addr,
- 				tags[0].vlan_proto, tags[0].vlan_id);
- 		kfree(tags);
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 710734a5af9b..2b333a62ba81 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2943,8 +2943,11 @@ struct bond_vlan_tag *bond_verify_device_path(struct net_device *start_dev,
+diff --git a/arch/arm/boot/dts/rockchip/rk3036.dtsi b/arch/arm/boot/dts/rockchip/rk3036.dtsi
+index 78686fc72ce6..c420c7c642cb 100644
+--- a/arch/arm/boot/dts/rockchip/rk3036.dtsi
++++ b/arch/arm/boot/dts/rockchip/rk3036.dtsi
+@@ -402,12 +402,20 @@
+ 		pinctrl-0 = <&hdmi_ctl>;
+ 		status = "disabled";
  
- 	if (start_dev == end_dev) {
- 		tags = kcalloc(level + 1, sizeof(*tags), GFP_ATOMIC);
--		if (!tags)
-+		if (!tags) {
-+			net_err_ratelimited("%s: %s: Failed to allocate tags\n",
-+					    __func__, start_dev->name);
- 			return ERR_PTR(-ENOMEM);
-+		}
- 		tags[level].vlan_proto = VLAN_N_VID;
- 		return tags;
- 	}
+-		hdmi_in: port {
++		ports {
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+-			hdmi_in_vop: endpoint@0 {
++
++			hdmi_in: port@0 {
+ 				reg = <0>;
+-				remote-endpoint = <&vop_out_hdmi>;
++
++				hdmi_in_vop: endpoint {
++					remote-endpoint = <&vop_out_hdmi>;
++				};
++			};
++
++			hdmi_out: port@1 {
++				reg = <1>;
+ 			};
+ 		};
+ 	};
 -- 
 2.43.0
 
