@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ED55848290
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1207784815E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41E381C224FC
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 446661C229CD
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE954B5B0;
-	Sat,  3 Feb 2024 04:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5233A23774;
+	Sat,  3 Feb 2024 04:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1B2t73o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxTFcWKg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C1910A13;
-	Sat,  3 Feb 2024 04:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128C4171CE;
+	Sat,  3 Feb 2024 04:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933769; cv=none; b=BTIbnoMU5SpVlEM9pJc5aixaBiSc1YxjdEnicU4ZdJ7cYfG2SxX0LK2sTc7SWLPr7tdtnGXm1zBSRg4KQSzwVDqYdu1q+FeeOeea/8wLBrjaQSbP1EX8wy9KbIPhm1i5LwFevv0Wcf9+mKIKE/BBA8j0jc59bZk/JRb/f2jB2AE=
+	t=1706933545; cv=none; b=BWYc2nNgD0nUO2AZOH2A+spuROqvFqEy+uTyYQMSgsJt+izbWTS/By3tKOaQibNxiPPNMI15UgZAnvZbnOdez9+sgOfevRC81POmKunP4bXW5C0LT6TFTVK/aS7RVLi2dtpDBecJgAHrqQOL5EuQF/15ZDWcvnthSImzB6WTWlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933769; c=relaxed/simple;
-	bh=wBDFFgi/ofhOIXnHsZ1BLLWDuJZFy2YDoOh2MH2IKOk=;
+	s=arc-20240116; t=1706933545; c=relaxed/simple;
+	bh=cpyNM3V1ZXfcj6RivsgNtfC1MfMNISzLbVloIfjF660=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tsF4Lgtieg4hVSaxLFsMU9YXztkGnfVmgWZhmMBQZbxcE7vFFqinKaDdMPT/EjLX2148Xm5fHeqPotonJve2MdoAl8yJeHsf3HNCvl0GJJ2Q8snHpzmLGLNyKdyCZFDAIu0pvlcSkw2/vJkCDzqsuXbvvb8LF6yCq+GZ5yJgPA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1B2t73o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB32C43390;
-	Sat,  3 Feb 2024 04:16:08 +0000 (UTC)
+	 MIME-Version; b=fJA9O1HgFEB8yjfrbr48UgCJBj9x0D3epAcwDB9FhAdsFVivvkkQ77DLhrmAr9Ig6RDzLg3abojn3Vasu75ZUrN0U9QD38PhWFjYmxJTZxtHcBHgfyffHIesWkcapgFHU+JGAkl3yr+oL6xVRwse+7bnLzNMuT7Nh0x2PM6YWGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oxTFcWKg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB18C43394;
+	Sat,  3 Feb 2024 04:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933768;
-	bh=wBDFFgi/ofhOIXnHsZ1BLLWDuJZFy2YDoOh2MH2IKOk=;
+	s=korg; t=1706933544;
+	bh=cpyNM3V1ZXfcj6RivsgNtfC1MfMNISzLbVloIfjF660=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z1B2t73oFLByme4fitVXATh+6L8q62yVjC1zVUaXmg3wHaNlGgQvLDjNUYfkB5QkX
-	 yF7ALTqkFWpMecor4dsZwVnS5OgsXgCWD6bc6IPZWgIjaWMdJ+GH1BNChz2tWUzv7u
-	 Lu5AKTnqMjb2EzlndjkDfun89vQWuFUhsbYIWAKk=
+	b=oxTFcWKg1bAWSsATIv6vplxe+AUXSCjY8PeFD7yywb0++Pf5MY9zOJlJ/p/LxvCSy
+	 AYjMpGs8sA6SxkIgQwG+F+NWCXBO82un2J3iR7noD6VTm+Hd/uTveqfjuBwXorvngL
+	 mP2GBrdQzNWfxChXz1yVSMQzCEQAjIhMsYnJ128k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 070/353] selftests/bpf: Fix issues in setup_classid_environment()
-Date: Fri,  2 Feb 2024 20:03:08 -0800
-Message-ID: <20240203035406.044826822@linuxfoundation.org>
+Subject: [PATCH 6.6 092/322] scsi: libfc: Dont schedule abort twice
+Date: Fri,  2 Feb 2024 20:03:09 -0800
+Message-ID: <20240203035402.127857863@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Hannes Reinecke <hare@suse.de>
 
-[ Upstream commit 4849775587844e44d215289c425bcd70f315efe7 ]
+[ Upstream commit b57c4db5d23b9df0118a25e2441c9288edd73710 ]
 
-If the net_cls subsystem is already mounted, attempting to mount it again
-in setup_classid_environment() will result in a failure with the error code
-EBUSY. Despite this, tmpfs will have been successfully mounted at
-/sys/fs/cgroup/net_cls. Consequently, the /sys/fs/cgroup/net_cls directory
-will be empty, causing subsequent setup operations to fail.
+The current FC error recovery is sending up to three REC (recovery) frames
+in 10 second intervals, and as a final step sending an ABTS after 30
+seconds for the command itself.  Unfortunately sending an ABTS is also the
+action for the SCSI abort handler, and the default timeout for SCSI
+commands is also 30 seconds. This causes two ABTS to be scheduled, with the
+libfc one slightly earlier. The ABTS scheduled by SCSI EH then sees the
+command to be already aborted, and will always return with a 'GOOD' status
+irrespective on the actual result from the first ABTS.  This causes the
+SCSI EH abort handler to always succeed, and SCSI EH never to be engaged.
+Fix this by not issuing an ABTS when a SCSI command is present for the
+exchange, but rather wait for the abort scheduled from SCSI EH.  And warn
+if an abort is already scheduled to avoid similar errors in the future.
 
-Here's an error log excerpt illustrating the issue when net_cls has already
-been mounted at /sys/fs/cgroup/net_cls prior to running
-setup_classid_environment():
-
-- Before that change
-
-  $ tools/testing/selftests/bpf/test_progs --name=cgroup_v1v2
-  test_cgroup_v1v2:PASS:server_fd 0 nsec
-  test_cgroup_v1v2:PASS:client_fd 0 nsec
-  test_cgroup_v1v2:PASS:cgroup_fd 0 nsec
-  test_cgroup_v1v2:PASS:server_fd 0 nsec
-  run_test:PASS:skel_open 0 nsec
-  run_test:PASS:prog_attach 0 nsec
-  test_cgroup_v1v2:PASS:cgroup-v2-only 0 nsec
-  (cgroup_helpers.c:248: errno: No such file or directory) Opening Cgroup Procs: /sys/fs/cgroup/net_cls/cgroup.procs
-  (cgroup_helpers.c:540: errno: No such file or directory) Opening cgroup classid: /sys/fs/cgroup/net_cls/cgroup-test-work-dir/net_cls.classid
-  run_test:PASS:skel_open 0 nsec
-  run_test:PASS:prog_attach 0 nsec
-  (cgroup_helpers.c:248: errno: No such file or directory) Opening Cgroup Procs: /sys/fs/cgroup/net_cls/cgroup-test-work-dir/cgroup.procs
-  run_test:FAIL:join_classid unexpected error: 1 (errno 2)
-  test_cgroup_v1v2:FAIL:cgroup-v1v2 unexpected error: -1 (errno 2)
-  (cgroup_helpers.c:248: errno: No such file or directory) Opening Cgroup Procs: /sys/fs/cgroup/net_cls/cgroup.procs
-  #44      cgroup_v1v2:FAIL
-  Summary: 0/0 PASSED, 0 SKIPPED, 1 FAILED
-
-- After that change
-  $ tools/testing/selftests/bpf/test_progs --name=cgroup_v1v2
-  #44      cgroup_v1v2:OK
-  Summary: 1/0 PASSED, 0 SKIPPED, 0 FAILED
-
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Link: https://lore.kernel.org/r/20231111090034.4248-3-laoar.shao@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20231129165832.224100-2-hare@kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/cgroup_helpers.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/scsi/libfc/fc_fcp.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/cgroup_helpers.c b/tools/testing/selftests/bpf/cgroup_helpers.c
-index 5b1da2a32ea7..10b5f42e65e7 100644
---- a/tools/testing/selftests/bpf/cgroup_helpers.c
-+++ b/tools/testing/selftests/bpf/cgroup_helpers.c
-@@ -523,10 +523,20 @@ int setup_classid_environment(void)
- 		return 1;
- 	}
+diff --git a/drivers/scsi/libfc/fc_fcp.c b/drivers/scsi/libfc/fc_fcp.c
+index 945adca5e72f..3f189cedf6db 100644
+--- a/drivers/scsi/libfc/fc_fcp.c
++++ b/drivers/scsi/libfc/fc_fcp.c
+@@ -265,6 +265,11 @@ static int fc_fcp_send_abort(struct fc_fcp_pkt *fsp)
+ 	if (!fsp->seq_ptr)
+ 		return -EINVAL;
  
--	if (mount("net_cls", NETCLS_MOUNT_PATH, "cgroup", 0, "net_cls") &&
--	    errno != EBUSY) {
--		log_err("mount cgroup net_cls");
--		return 1;
-+	if (mount("net_cls", NETCLS_MOUNT_PATH, "cgroup", 0, "net_cls")) {
-+		if (errno != EBUSY) {
-+			log_err("mount cgroup net_cls");
-+			return 1;
-+		}
++	if (fsp->state & FC_SRB_ABORT_PENDING) {
++		FC_FCP_DBG(fsp, "abort already pending\n");
++		return -EBUSY;
++	}
 +
-+		if (rmdir(NETCLS_MOUNT_PATH)) {
-+			log_err("rmdir cgroup net_cls");
-+			return 1;
-+		}
-+		if (umount(CGROUP_MOUNT_DFLT)) {
-+			log_err("umount cgroup base");
-+			return 1;
-+		}
- 	}
+ 	this_cpu_inc(fsp->lp->stats->FcpPktAborts);
  
- 	cleanup_classid_environment();
+ 	fsp->state |= FC_SRB_ABORT_PENDING;
+@@ -1690,11 +1695,12 @@ static void fc_fcp_recovery(struct fc_fcp_pkt *fsp, u8 code)
+ 	fsp->status_code = code;
+ 	fsp->cdb_status = 0;
+ 	fsp->io_status = 0;
+-	/*
+-	 * if this fails then we let the scsi command timer fire and
+-	 * scsi-ml escalate.
+-	 */
+-	fc_fcp_send_abort(fsp);
++	if (!fsp->cmd)
++		/*
++		 * Only abort non-scsi commands; otherwise let the
++		 * scsi command timer fire and scsi-ml escalate.
++		 */
++		fc_fcp_send_abort(fsp);
+ }
+ 
+ /**
 -- 
 2.43.0
 
