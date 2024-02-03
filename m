@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-18244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C758481F4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 438A284832B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48CEB1F21716
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 768BA1C243C7
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5423318E10;
-	Sat,  3 Feb 2024 04:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25CC50278;
+	Sat,  3 Feb 2024 04:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBG0pNbk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SN5ox3L4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137FC43AB7;
-	Sat,  3 Feb 2024 04:14:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8220F1CAA0;
+	Sat,  3 Feb 2024 04:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933654; cv=none; b=nYedDKRZD4u6uxCxa4q9Q72B3syMdD7J1272KNZqefKeHh50HAgNcGDcMPY4YUrdfY9MwXiLjtUsv+FDncIZMitXGsjkMh5UP2dmXCjqeoVayQzYglDTo3Tyn3Iq3vdcyl/gJ/UG0f52IncXnXDJdgDk9mFeKkSazjtmVxoYHRI=
+	t=1706933881; cv=none; b=uMCMHaE8AQ7snfmwFvSEtIRmiH4sftDhIOaXh7dndPRVdfHJoX/ZY0wAupRLlrCiafkueeNksrMFVQDerApkUH1nMhTD1Zl6s5jpSVI5AF4JcbQCOqcWDEUp4+FkUGT4bkSJ7eZQ9iQKqQnYWSdO9botbKdBj5lILdRKZUvp1l8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933654; c=relaxed/simple;
-	bh=fIQtvV8COOuW9lAQuQdwfrq199VDfUiiH7ipFXsFLn4=;
+	s=arc-20240116; t=1706933881; c=relaxed/simple;
+	bh=CkcCVEKAl/qzatc16u1nPF1EyEC75y1Hh9IKzgqEaAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NjRvYHxydDT7rAzx0SCVoYR0zKeEX2PI2IPCjm/ThdZWwe28j6BI6foCRmP49QoSTGVYXWsY1iKdHwHmDpUQeKyLy36vept9c+48XmCM7dP9BZ+Ju902GpmeIEHx5j1yeisBeShwrONEf8uAkmG/AamBBaBLvcKl9K0uRBeoiWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBG0pNbk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3D9C433F1;
-	Sat,  3 Feb 2024 04:14:13 +0000 (UTC)
+	 MIME-Version; b=e1SfHcv/lnPoOTut3o2aAztuSYS6Gv//jdiOc0Fdugm/ZJvDIDQCXTWVlogfRJSCYzSBBvx4EogyjexrWodaIfUqbrphTxw3kxhJF9vBwgWqHuxAZhYRfYT9mFLSSBxwc7LyceXNxiPWdsJxdm/HGJRZgka3Z0gs78IzhKxMosI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SN5ox3L4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49BD8C433F1;
+	Sat,  3 Feb 2024 04:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933653;
-	bh=fIQtvV8COOuW9lAQuQdwfrq199VDfUiiH7ipFXsFLn4=;
+	s=korg; t=1706933881;
+	bh=CkcCVEKAl/qzatc16u1nPF1EyEC75y1Hh9IKzgqEaAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vBG0pNbk8xbKsPsWLAguYxGbpypLUISNLtP5G9E+Ww5GJYmiJQ9OnXC8JMsA6W8dd
-	 A+b5xkRnqiJSm9okNlWzp9eibU2YJ5e9JYLDfTMuE2Ty057jh/2UMrOAVvnu4X/7fV
-	 DzGzV/WkfiSjRGdMUdzwV7HQXShjWvi67cEklpDI=
+	b=SN5ox3L4+/OMpf790Z5BUukkSWNnddlqTKL+2KGcs/PZvAEyO7LlEGGzeygF2wX/r
+	 pqFdng1YUwKz3Z0xuczC7uxRYTfzAUrfY+TUyXUXH7MENjz3KUpXvjbN6D6YcLYJCq
+	 lGi7jd44lnuZzGvYlJXZCxj4XMrVN1vKjAbv0dBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
+	Xing Tong Wu <xingtong.wu@siemens.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 215/322] drm/amdkfd: Fix iterator used outside loop in kfd_add_peer_prop()
-Date: Fri,  2 Feb 2024 20:05:12 -0800
-Message-ID: <20240203035406.194663269@linuxfoundation.org>
+Subject: [PATCH 6.7 195/353] hwmon: (nct6775) Fix fan speed set failure in automatic mode
+Date: Fri,  2 Feb 2024 20:05:13 -0800
+Message-ID: <20240203035409.858623351@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Xing Tong Wu <xingtong.wu@siemens.com>
 
-[ Upstream commit b1a428b45dc7e47c7acc2ad0d08d8a6dda910c4c ]
+[ Upstream commit 8b3800256abad20e91c2698607f9b28591407b19 ]
 
-Fix the following about iterator use:
-drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1456 kfd_add_peer_prop() warn: iterator used outside loop: 'iolink3'
+Setting the fan speed is only valid in manual mode; it is not possible
+to set the fan's speed in automatic mode.
+Return error when attempting to set the fan speed in automatic mode.
 
-Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Xing Tong Wu <xingtong.wu@siemens.com>
+Link: https://lore.kernel.org/r/20231121081604.2499-3-xingtong_wu@163.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 24 ++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/hwmon/nct6775-core.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-index 6e75e8fa18be..61157fddc15c 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-@@ -1452,17 +1452,19 @@ static int kfd_add_peer_prop(struct kfd_topology_device *kdev,
- 		/* CPU->CPU  link*/
- 		cpu_dev = kfd_topology_device_by_proximity_domain(iolink1->node_to);
- 		if (cpu_dev) {
--			list_for_each_entry(iolink3, &cpu_dev->io_link_props, list)
--				if (iolink3->node_to == iolink2->node_to)
--					break;
--
--			props->weight += iolink3->weight;
--			props->min_latency += iolink3->min_latency;
--			props->max_latency += iolink3->max_latency;
--			props->min_bandwidth = min(props->min_bandwidth,
--							iolink3->min_bandwidth);
--			props->max_bandwidth = min(props->max_bandwidth,
--							iolink3->max_bandwidth);
-+			list_for_each_entry(iolink3, &cpu_dev->io_link_props, list) {
-+				if (iolink3->node_to != iolink2->node_to)
-+					continue;
+diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
+index d928eb8ae5a3..92a49fafe2c0 100644
+--- a/drivers/hwmon/nct6775-core.c
++++ b/drivers/hwmon/nct6775-core.c
+@@ -2553,6 +2553,13 @@ store_pwm(struct device *dev, struct device_attribute *attr, const char *buf,
+ 	int err;
+ 	u16 reg;
+ 
++	/*
++	 * The fan control mode should be set to manual if the user wants to adjust
++	 * the fan speed. Otherwise, it will fail to set.
++	 */
++	if (index == 0 && data->pwm_enable[nr] > manual)
++		return -EBUSY;
 +
-+				props->weight += iolink3->weight;
-+				props->min_latency += iolink3->min_latency;
-+				props->max_latency += iolink3->max_latency;
-+				props->min_bandwidth = min(props->min_bandwidth,
-+							   iolink3->min_bandwidth);
-+				props->max_bandwidth = min(props->max_bandwidth,
-+							   iolink3->max_bandwidth);
-+				break;
-+			}
- 		} else {
- 			WARN(1, "CPU node not found");
- 		}
+ 	err = kstrtoul(buf, 10, &val);
+ 	if (err < 0)
+ 		return err;
 -- 
 2.43.0
 
