@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F5E84806B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C0A8482D2
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A338B29E52
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4B141F23C3D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67ED010A22;
-	Sat,  3 Feb 2024 04:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4201C696;
+	Sat,  3 Feb 2024 04:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LpGmMvhU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrOvqQ4L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B80B12E58;
-	Sat,  3 Feb 2024 04:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FFE1C698;
+	Sat,  3 Feb 2024 04:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933371; cv=none; b=gmarReX74ldtI3AqdWxLTlqKAIUbu7s9bqMjv3Ul4ktLln3a3sXSYFM8674qJcZljqyhOMq5SJrcflTUNNEVHmXz3b/f0swIcfg7KdubdliG85A708Cv8yyfJRON1kjemJXgMPqq8e2LaGvi1moD8QvJV+qDTpg695CWcxFXPZ8=
+	t=1706933816; cv=none; b=NB01vVKIh+ahsDBKcoMKfKzUNAfxdE5JNxzKW8Hp0RZl/AXIL8QttczV9z7ycdPWMzgYxJxMjU5ClYpDmptTKBnqUU1fCd3Ym98BXlPzAV1aLFly8Q4egbIi4TkuGiJ0YQ70Ee3nKsj8cCzY8KQzAroTNwpIpEYr2WK00bICUxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933371; c=relaxed/simple;
-	bh=H/4cwrHl+L3Se2Qzk3/YgXspEUIa8d45PFpMNJ4mWI8=;
+	s=arc-20240116; t=1706933816; c=relaxed/simple;
+	bh=lUoK02M4pR0qiRYI/A8vglesfV5YaBnPx2Tn3RHNIDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C41Jh3tfMpU3eEL9ZpvzmJA3MRviDQ9ro9zGOIapzxCMwMHEhtikoXWinobFOuPlsaUnoZSOqpSb8esMLVwlMLsQSMSacoiOtyTxThl34wE4zzdvhLbNDnN1gymGrxSblYp0iSZ8y0a6iOGOhyt+UG35wBcZhyMQoKj0iwDAgpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LpGmMvhU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B7CC433F1;
-	Sat,  3 Feb 2024 04:09:30 +0000 (UTC)
+	 MIME-Version; b=jK5T3ViV45eo9+3wwxzPRV9Xw5U+UXAAUSFiAWdCyiqL/oDLPlvNfZtYUxc/ObeVDlLj6cyWpd+FPpTM26PRrNDtohca1Sa4SJAyYRWslI5Yg/iPQdUYJMPfPWdfkguxeWEsrrWqWJERYpnndTjChFr9DagLGQFkTyYBJD3XG2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrOvqQ4L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60592C433C7;
+	Sat,  3 Feb 2024 04:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933370;
-	bh=H/4cwrHl+L3Se2Qzk3/YgXspEUIa8d45PFpMNJ4mWI8=;
+	s=korg; t=1706933816;
+	bh=lUoK02M4pR0qiRYI/A8vglesfV5YaBnPx2Tn3RHNIDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LpGmMvhU8I8ub90kGvo0uhGMAcY9ycaRYBpYqiUMiGOR7egCkANFjVwh2zsX3aybX
-	 y5wwhdgTU2UajBSc8izcTym2uNf8/3B6Fg4REi2u62XI5Dw+U+pm8GSsa7mEWMlvN1
-	 0MfCfuWqnaPCTb8VzjBDG5dXB5bz1tE6dUuKG8jE=
+	b=LrOvqQ4Li4UWJXTsgGUBel8qMi2B0gl+g+EgyRYL/UQUAGlqnSKv1EZ+SCRx8ai/0
+	 o+BRkGIZWxsaybP3EDmeGii3AO5K+4kTcgOQRhJ8HKQkHBhITNUkz8rrWdp5W/AoI1
+	 cpVnAVr6DZyG1QAz8sg/bR/QVqGg2Ae2OQmbLxcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/219] ARM: dts: imx27-apf27dev: Fix LED name
+Subject: [PATCH 6.7 134/353] block: prevent an integer overflow in bvec_try_merge_hw_page
 Date: Fri,  2 Feb 2024 20:04:12 -0800
-Message-ID: <20240203035328.211907235@linuxfoundation.org>
+Message-ID: <20240203035407.956228517@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit dc35e253d032b959d92e12f081db5b00db26ae64 ]
+[ Upstream commit 3f034c374ad55773c12dd8f3c1607328e17c0072 ]
 
-Per leds-gpio.yaml, the led names should start with 'led'.
+Reordered a check to avoid a possible overflow when adding len to bv_len.
 
-Change it to fix the following dt-schema warning:
-
-imx27-apf27dev.dtb: leds: 'user' does not match any of the regexes: '(^led-[0-9a-f]$|led)', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/leds/leds-gpio.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Link: https://lore.kernel.org/r/20231204173419.782378-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx27-apf27dev.dts | 2 +-
+ block/bio.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/imx27-apf27dev.dts b/arch/arm/boot/dts/imx27-apf27dev.dts
-index 68fcb5ce9a9e..3d9bb7fc3be2 100644
---- a/arch/arm/boot/dts/imx27-apf27dev.dts
-+++ b/arch/arm/boot/dts/imx27-apf27dev.dts
-@@ -47,7 +47,7 @@
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_gpio_leds>;
+diff --git a/block/bio.c b/block/bio.c
+index 5eba53ca953b..270f6b99926e 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -944,7 +944,7 @@ bool bvec_try_merge_hw_page(struct request_queue *q, struct bio_vec *bv,
  
--		user {
-+		led-user {
- 			label = "Heartbeat";
- 			gpios = <&gpio6 14 GPIO_ACTIVE_HIGH>;
- 			linux,default-trigger = "heartbeat";
+ 	if ((addr1 | mask) != (addr2 | mask))
+ 		return false;
+-	if (bv->bv_len + len > queue_max_segment_size(q))
++	if (len > queue_max_segment_size(q) - bv->bv_len)
+ 		return false;
+ 	return bvec_try_merge_page(bv, page, len, offset, same_page);
+ }
 -- 
 2.43.0
 
