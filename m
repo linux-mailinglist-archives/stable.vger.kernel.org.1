@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-18371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA5B848276
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B1E848167
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACCE21F22770
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99E7E1C22809
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C411BC22;
-	Sat,  3 Feb 2024 04:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B734011721;
+	Sat,  3 Feb 2024 04:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v42oE3TZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+YC4mgd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42FA48CC5;
-	Sat,  3 Feb 2024 04:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7624B11720;
+	Sat,  3 Feb 2024 04:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933749; cv=none; b=owX3qWyElzyQVOG13f9LuWeVUG1oZp70O7k3P+txOyhG7DoGYekfJqdJv3YsxBI3i7c+z3t7ZUjq6qbz4KFCrb36wyx0qySdev/52S1pJ8ZAPSXQzjh1AhksNBg00T0uYs42gEBYtSG0MYLNC6BXIIXnt5GEqeU0bymF4dS9Wbg=
+	t=1706933552; cv=none; b=AY92lq8E552VfJNEax6JummT3noAwp+esltPkyCaDd1xFhjwFy8c4yG5a5K6WlDr+ogyBv/qRyozT7dcbnwJNeLBq1pLPTwYECjbNdTVoPnM4LK5yyi1G8Q8pO3Os6jmtFZKI4WmNpuLv+0n1zLL+5KxpFOeryvtCeMt8JRI2JY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933749; c=relaxed/simple;
-	bh=pWC2Hn9x8MhcoQ+aQ+Wmx6+kS6XGEtKsIf7/fuPS4T4=;
+	s=arc-20240116; t=1706933552; c=relaxed/simple;
+	bh=rG7XAQjJFcU80kDQxZ5mG1oGMa/5/ImS53AzOhyXKpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GVAseZLmqqh5iWkYxCW+TIOlwKknQFmCfxvPzVnCagbnTZkcjR+sEcFQ+WiYugSmYGECAJ6Js726goo8M3gI1hbRI84UHfHHURg7r1uVRfLOIZHUfIOJ78nHTXfLZWXnObYTvDib6LhFFE0QCM86vcmgKX3Ji2aqNwZMctI+20c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v42oE3TZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C494C433C7;
-	Sat,  3 Feb 2024 04:15:49 +0000 (UTC)
+	 MIME-Version; b=HUtNiKOUH4xx9hFWA7A5Tl7G3n0jCRbBFXSIwVm/r/nCdQ1H/mJ2DF5gpg4OHMyOQKLWm65yAqMjeb2+MWF1Vd7JVEwNeT41eZxxXVNniiyoONEWdIn6igbhUPdVRGKXEtl4VzorSFsgzU/IwYtTnV0SXzmtKAmXWjsJwMOw1wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+YC4mgd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B518C433F1;
+	Sat,  3 Feb 2024 04:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933749;
-	bh=pWC2Hn9x8MhcoQ+aQ+Wmx6+kS6XGEtKsIf7/fuPS4T4=;
+	s=korg; t=1706933552;
+	bh=rG7XAQjJFcU80kDQxZ5mG1oGMa/5/ImS53AzOhyXKpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v42oE3TZmQ+PvplAS3ta3Uu8PlWpxeGEX/AuvNtR8ne5A+6aMWjq3wpZ5K7hBp28z
-	 SgWm8RdTAxcCwxgvV1ADUClc809V9rn07/9bI/LMsQE27tMeyZHnr89sBdwokOucIS
-	 hG5p0tgzWsRUZgiAxB0Vtwpf6oxjgw0rUHGEqMd4=
+	b=o+YC4mgdg+LYU0uZfRGQQtXOYcVP5uZQWKx03wvn4vIWFxhR+VHmIm89eee8lKc0+
+	 mI9NZUqdmYgLvHsezuqY+lSiC9fKjb3UBUkOD594BKSGk/uG/mgmi5T6BWZ9BjihRM
+	 EfRrv7Nhoeiv53OChtZ3rkG4M9e/o0pKqez05DZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleg Nesterov <oleg@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Yafang Shao <laoar.shao@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 044/353] rxrpc_find_service_conn_rcu: fix the usage of read_seqbegin_or_lock()
+Subject: [PATCH 6.6 065/322] selftests/bpf: Fix issues in setup_classid_environment()
 Date: Fri,  2 Feb 2024 20:02:42 -0800
-Message-ID: <20240203035405.201753981@linuxfoundation.org>
+Message-ID: <20240203035401.235400432@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-[ Upstream commit bad1a11c0f061aa073bab785389fe04f19ba02e1 ]
+[ Upstream commit 4849775587844e44d215289c425bcd70f315efe7 ]
 
-rxrpc_find_service_conn_rcu() should make the "seq" counter odd on the
-second pass, otherwise read_seqbegin_or_lock() never takes the lock.
+If the net_cls subsystem is already mounted, attempting to mount it again
+in setup_classid_environment() will result in a failure with the error code
+EBUSY. Despite this, tmpfs will have been successfully mounted at
+/sys/fs/cgroup/net_cls. Consequently, the /sys/fs/cgroup/net_cls directory
+will be empty, causing subsequent setup operations to fail.
 
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Link: https://lore.kernel.org/r/20231117164846.GA10410@redhat.com/
+Here's an error log excerpt illustrating the issue when net_cls has already
+been mounted at /sys/fs/cgroup/net_cls prior to running
+setup_classid_environment():
+
+- Before that change
+
+  $ tools/testing/selftests/bpf/test_progs --name=cgroup_v1v2
+  test_cgroup_v1v2:PASS:server_fd 0 nsec
+  test_cgroup_v1v2:PASS:client_fd 0 nsec
+  test_cgroup_v1v2:PASS:cgroup_fd 0 nsec
+  test_cgroup_v1v2:PASS:server_fd 0 nsec
+  run_test:PASS:skel_open 0 nsec
+  run_test:PASS:prog_attach 0 nsec
+  test_cgroup_v1v2:PASS:cgroup-v2-only 0 nsec
+  (cgroup_helpers.c:248: errno: No such file or directory) Opening Cgroup Procs: /sys/fs/cgroup/net_cls/cgroup.procs
+  (cgroup_helpers.c:540: errno: No such file or directory) Opening cgroup classid: /sys/fs/cgroup/net_cls/cgroup-test-work-dir/net_cls.classid
+  run_test:PASS:skel_open 0 nsec
+  run_test:PASS:prog_attach 0 nsec
+  (cgroup_helpers.c:248: errno: No such file or directory) Opening Cgroup Procs: /sys/fs/cgroup/net_cls/cgroup-test-work-dir/cgroup.procs
+  run_test:FAIL:join_classid unexpected error: 1 (errno 2)
+  test_cgroup_v1v2:FAIL:cgroup-v1v2 unexpected error: -1 (errno 2)
+  (cgroup_helpers.c:248: errno: No such file or directory) Opening Cgroup Procs: /sys/fs/cgroup/net_cls/cgroup.procs
+  #44      cgroup_v1v2:FAIL
+  Summary: 0/0 PASSED, 0 SKIPPED, 1 FAILED
+
+- After that change
+  $ tools/testing/selftests/bpf/test_progs --name=cgroup_v1v2
+  #44      cgroup_v1v2:OK
+  Summary: 1/0 PASSED, 0 SKIPPED, 0 FAILED
+
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Link: https://lore.kernel.org/r/20231111090034.4248-3-laoar.shao@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/conn_service.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/cgroup_helpers.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/net/rxrpc/conn_service.c b/net/rxrpc/conn_service.c
-index 89ac05a711a4..39c908a3ca6e 100644
---- a/net/rxrpc/conn_service.c
-+++ b/net/rxrpc/conn_service.c
-@@ -25,7 +25,7 @@ struct rxrpc_connection *rxrpc_find_service_conn_rcu(struct rxrpc_peer *peer,
- 	struct rxrpc_conn_proto k;
- 	struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
- 	struct rb_node *p;
--	unsigned int seq = 0;
-+	unsigned int seq = 1;
+diff --git a/tools/testing/selftests/bpf/cgroup_helpers.c b/tools/testing/selftests/bpf/cgroup_helpers.c
+index 2caee8423ee0..f68fbc6c3f52 100644
+--- a/tools/testing/selftests/bpf/cgroup_helpers.c
++++ b/tools/testing/selftests/bpf/cgroup_helpers.c
+@@ -499,10 +499,20 @@ int setup_classid_environment(void)
+ 		return 1;
+ 	}
  
- 	k.epoch	= sp->hdr.epoch;
- 	k.cid	= sp->hdr.cid & RXRPC_CIDMASK;
-@@ -35,6 +35,7 @@ struct rxrpc_connection *rxrpc_find_service_conn_rcu(struct rxrpc_peer *peer,
- 		 * under just the RCU read lock, so we have to check for
- 		 * changes.
- 		 */
-+		seq++; /* 2 on the 1st/lockless path, otherwise odd */
- 		read_seqbegin_or_lock(&peer->service_conn_lock, &seq);
+-	if (mount("net_cls", NETCLS_MOUNT_PATH, "cgroup", 0, "net_cls") &&
+-	    errno != EBUSY) {
+-		log_err("mount cgroup net_cls");
+-		return 1;
++	if (mount("net_cls", NETCLS_MOUNT_PATH, "cgroup", 0, "net_cls")) {
++		if (errno != EBUSY) {
++			log_err("mount cgroup net_cls");
++			return 1;
++		}
++
++		if (rmdir(NETCLS_MOUNT_PATH)) {
++			log_err("rmdir cgroup net_cls");
++			return 1;
++		}
++		if (umount(CGROUP_MOUNT_DFLT)) {
++			log_err("umount cgroup base");
++			return 1;
++		}
+ 	}
  
- 		p = rcu_dereference_raw(peer->service_conns.rb_node);
+ 	cleanup_classid_environment();
 -- 
 2.43.0
 
