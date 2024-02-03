@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-17989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B968480ED
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F93D848336
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7105B1F21615
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E072A286418
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC6DF9E6;
-	Sat,  3 Feb 2024 04:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B348D10958;
+	Sat,  3 Feb 2024 04:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7bu82gJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgCtg30p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF6BFC03;
-	Sat,  3 Feb 2024 04:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71ED2171A4;
+	Sat,  3 Feb 2024 04:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933465; cv=none; b=OBrp++c+ZPSCxpPJULOGvyR/3rdF+wIvVgkTD5rJo61t9dvKnmOWRvaojgKjZ8b4wNw1dARQT2XW/e4Yt0T091hIwqsI/Xr5wOwYSluUSYRFFBb9wN8jXZUG+ELICTXucWOt8L6WpZ0k501UXjW1bn860q6JltTV9urhQW9HX5g=
+	t=1706933890; cv=none; b=Nlr1l5+fvQksm8NobRVELTdhk2mqHNKkLvS/L9Y/fD59kgPM3Eu7YJpmkDRo1p9Ay9vhY1+XxQJEfd9YNy3LEBNiJGNf4iA0pRT2Jpc6GNUEsMApF0RlsQtQZ3OMTz4xRvfBm/4a6OoFtcyGnnVOUFf7HgGOQeY9Iqe947GBRyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933465; c=relaxed/simple;
-	bh=o6qh/jny8zembC91UflrNnnB9Pwe+o1T2aGFBR2qVck=;
+	s=arc-20240116; t=1706933890; c=relaxed/simple;
+	bh=/uSxWQmsUyM0IhDhjjjhjeEMMAeX8ETVPPo1m4VufyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AUYYTuC/3gVvEXkvBDROkDuC+23FleDpEWLA5mKzIyjxlN5k+zw5Qqt0rqBcXNZIjPFFtHMZrknY4YlBRBpQkTSiyzOD3o2M/WEgtlUxBufjjrK9PVb0BiJbiDqbF/9Bsqxbky/WaGESBTkUDg4b/wmTDsarDzyBBTcZ56c/S68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7bu82gJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C84C43394;
-	Sat,  3 Feb 2024 04:11:05 +0000 (UTC)
+	 MIME-Version; b=qJYHcATnQy7MJhZqOuzI+2kDO373VXI3a7bxXh1e1D5PPrkKXT8QV61VGOMd9AMce8ShwSp2YDlpwj2uoJJiP5mXNwwW9IC6jUrlXIKYyUvQSExqLEUAaT4LykAebXVnKeb5zKQVhLoTfXETtLq5sB8cfTk8CcqCipES6jksJmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgCtg30p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AAC1C433F1;
+	Sat,  3 Feb 2024 04:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933465;
-	bh=o6qh/jny8zembC91UflrNnnB9Pwe+o1T2aGFBR2qVck=;
+	s=korg; t=1706933890;
+	bh=/uSxWQmsUyM0IhDhjjjhjeEMMAeX8ETVPPo1m4VufyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7bu82gJOR+oN+qGKDxmWCIT2oDgP+rf1wxTK3l6if1o2U3lytChNveXWvrMKcqB7
-	 DwxZ9tSu98oiglOMOwbkTnRP5FJ+Q+l2+IZ4D77pzi1EeZzGkmdT1SCUHI8QGB68tx
-	 20zTMN5NFwVCcQMlwieaw2+6T6phrG45Lf7oGsEY=
+	b=FgCtg30pI03FAXqB074beyJ+/LJT+BmzIee62cntmCqp6/ZHzs3dHE76+2nNgbWsP
+	 WutrovqZlPGHyk5/Ztyn3XAjppfcuuVGa3LpO7S7P+tHmboL6eOD1jozr9NkiOo6MR
+	 mPdFMj1QJqRhokOdcu74IjbTd3FnbGs3h0bsd+k0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Monk Liu <Monk.Liu@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 180/219] drm/amdgpu: Release adev->pm.fw before return in amdgpu_device_need_post()
+	Sasha Levin <sashal@kernel.org>,
+	Jiadong Zhu <Jiadong.Zhu@amd.com>
+Subject: [PATCH 6.7 235/353] drm/amdgpu: apply the RV2 system aperture fix to RN/CZN as well
 Date: Fri,  2 Feb 2024 20:05:53 -0800
-Message-ID: <20240203035342.053992637@linuxfoundation.org>
+Message-ID: <20240203035411.111216579@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +60,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 8a44fdd3cf91debbd09b43bd2519ad2b2486ccf4 ]
+[ Upstream commit 16783d8ef08448815e149e40c82fc1e1fc41ddbf ]
 
-In function 'amdgpu_device_need_post(struct amdgpu_device *adev)' -
-'adev->pm.fw' may not be released before return.
+These chips needs the same fix.  This was previously not seen
+on then since the AGP aperture expanded the system aperture,
+but this showed up again when AGP was disabled.
 
-Using the function release_firmware() to release adev->pm.fw.
-
-Thus fixing the below:
-drivers/gpu/drm/amd/amdgpu/amdgpu_device.c:1571 amdgpu_device_need_post() warn: 'adev->pm.fw' from request_firmware() not released on lines: 1554.
-
-Cc: Monk Liu <Monk.Liu@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-and-tested-by: Jiadong Zhu <Jiadong.Zhu@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c          | 4 +++-
+ drivers/gpu/drm/amd/amdgpu/gfxhub_v1_2.c          | 4 +++-
+ drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c           | 4 +++-
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 8 ++++++--
+ 4 files changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index a5352e5e2bd4..4b91f95066ec 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -1310,6 +1310,7 @@ bool amdgpu_device_need_post(struct amdgpu_device *adev)
- 				return true;
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
+index 53a2ba5fcf4b..22175da0e16a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
+@@ -102,7 +102,9 @@ static void gfxhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
+ 		WREG32_SOC15_RLC(GC, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
+ 			min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
  
- 			fw_ver = *((uint32_t *)adev->pm.fw->data + 69);
-+			release_firmware(adev->pm.fw);
- 			if (fw_ver < 0x00160e00)
- 				return true;
- 		}
+-		if (adev->apu_flags & AMD_APU_IS_RAVEN2)
++		if (adev->apu_flags & (AMD_APU_IS_RAVEN2 |
++				       AMD_APU_IS_RENOIR |
++				       AMD_APU_IS_GREEN_SARDINE))
+ 		       /*
+ 			* Raven2 has a HW issue that it is unable to use the
+ 			* vram which is out of MC_VM_SYSTEM_APERTURE_HIGH_ADDR.
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_2.c b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_2.c
+index 55423ff1bb49..95d06da544e2 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_2.c
+@@ -139,7 +139,9 @@ gfxhub_v1_2_xcc_init_system_aperture_regs(struct amdgpu_device *adev,
+ 			WREG32_SOC15_RLC(GC, GET_INST(GC, i), regMC_VM_SYSTEM_APERTURE_LOW_ADDR,
+ 				min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
+ 
+-			if (adev->apu_flags & AMD_APU_IS_RAVEN2)
++			if (adev->apu_flags & (AMD_APU_IS_RAVEN2 |
++					       AMD_APU_IS_RENOIR |
++					       AMD_APU_IS_GREEN_SARDINE))
+ 			       /*
+ 				* Raven2 has a HW issue that it is unable to use the
+ 				* vram which is out of MC_VM_SYSTEM_APERTURE_HIGH_ADDR.
+diff --git a/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c
+index 843219a91736..e3ddd22aa172 100644
+--- a/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c
+@@ -96,7 +96,9 @@ static void mmhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
+ 	WREG32_SOC15(MMHUB, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
+ 		     min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
+ 
+-	if (adev->apu_flags & AMD_APU_IS_RAVEN2)
++	if (adev->apu_flags & (AMD_APU_IS_RAVEN2 |
++			       AMD_APU_IS_RENOIR |
++			       AMD_APU_IS_GREEN_SARDINE))
+ 		/*
+ 		 * Raven2 has a HW issue that it is unable to use the vram which
+ 		 * is out of MC_VM_SYSTEM_APERTURE_HIGH_ADDR. So here is the
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 6f7d7f79ef89..affc628004ff 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1257,7 +1257,9 @@ static void mmhub_read_system_context(struct amdgpu_device *adev, struct dc_phy_
+ 	/* AGP aperture is disabled */
+ 	if (agp_bot > agp_top) {
+ 		logical_addr_low = adev->gmc.fb_start >> 18;
+-		if (adev->apu_flags & AMD_APU_IS_RAVEN2)
++		if (adev->apu_flags & (AMD_APU_IS_RAVEN2 |
++				       AMD_APU_IS_RENOIR |
++				       AMD_APU_IS_GREEN_SARDINE))
+ 			/*
+ 			 * Raven2 has a HW issue that it is unable to use the vram which
+ 			 * is out of MC_VM_SYSTEM_APERTURE_HIGH_ADDR. So here is the
+@@ -1269,7 +1271,9 @@ static void mmhub_read_system_context(struct amdgpu_device *adev, struct dc_phy_
+ 			logical_addr_high = adev->gmc.fb_end >> 18;
+ 	} else {
+ 		logical_addr_low = min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18;
+-		if (adev->apu_flags & AMD_APU_IS_RAVEN2)
++		if (adev->apu_flags & (AMD_APU_IS_RAVEN2 |
++				       AMD_APU_IS_RENOIR |
++				       AMD_APU_IS_GREEN_SARDINE))
+ 			/*
+ 			 * Raven2 has a HW issue that it is unable to use the vram which
+ 			 * is out of MC_VM_SYSTEM_APERTURE_HIGH_ADDR. So here is the
 -- 
 2.43.0
 
