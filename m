@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-17866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CDAB84806D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 149048481B9
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B9261C22538
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C554E281D8F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8741A11188;
-	Sat,  3 Feb 2024 04:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678763A1B6;
+	Sat,  3 Feb 2024 04:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCfpSkW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQT+Xbbd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4457DFC11;
-	Sat,  3 Feb 2024 04:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28425F9EB;
+	Sat,  3 Feb 2024 04:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933373; cv=none; b=NkbygWsQZJq0aEEfSn3sVr1RGa0z4DeznS3ze3D5twIpMB6fYJx/Xz+1qFKdtpdobQRZwr8rWlFZTogJOM+ZjZ/WBC2E+i523eAvxSW9wBywMY6HY6n8EEADzSV6nMkou/taHr0QjZDVXRdAu2vYQ7z47iyyclo2B5IjPU48Z+U=
+	t=1706933611; cv=none; b=iaXCuD99ik8PhDVEXh6iOOkWC/sWcpIy+kgILb2WYT0+1o5u5p4pLgpHrCD0LtnAcQgJp1rOGEYgdsHS8guCXHLZdihMrVpiE7TONNNRsXtcCwrOs89CY83IXNUFJe6RUyWaH4Kio2KwOwPbKGnhmIrj5XkD8Ox0Y41DJ0kSDnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933373; c=relaxed/simple;
-	bh=wboH2sXpbOnCauBy53/UB2S5C5QZUhAk+b/IxIg9Y98=;
+	s=arc-20240116; t=1706933611; c=relaxed/simple;
+	bh=KR0Ae327LXHsILFPVoxvLAkRDRy/QNw7JRpaZ9ofnTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JC8QRIymWxNhEIbQygwYXT7U95qRA4uoLuAROufZX+tzO2y1wz/4DPAffTrohSYgHPeM1KMGD98PxPNL/USB3o5mqhNVhBa1G+7kEgMdlOL6YN8344Os8rAXZVZ3iaSbT30UDvNQnuE4GdWHhDc73oDoUHPJCxlGDbY23eMLbTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCfpSkW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BBEDC433F1;
-	Sat,  3 Feb 2024 04:09:33 +0000 (UTC)
+	 MIME-Version; b=JOZXnL62lpCworDJnxgyssbhK40bj4gUACs4bdiiUPWsPNLk+uz48EgLfbGmXAiinY9Z5qj4E2fe6/eRJFYqCEt1EeoE68+R6ik2sSNkbk1k8KKIDQ6/e6bY0ieZc6pXOcQlT2U/wxX0S1nu2bvnUfqpqpeA2n1UPtQcRAr2Z/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQT+Xbbd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40DCC43390;
+	Sat,  3 Feb 2024 04:13:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933373;
-	bh=wboH2sXpbOnCauBy53/UB2S5C5QZUhAk+b/IxIg9Y98=;
+	s=korg; t=1706933611;
+	bh=KR0Ae327LXHsILFPVoxvLAkRDRy/QNw7JRpaZ9ofnTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dCfpSkW/rzjMxO7tIsIiuvgSRbVAC4P8ABVNmM4elXEa3Rn78ToiCtAIxuOFW8Nuf
-	 F0vAMqNtAFVc01o3TRxGAJzAgGpU0AS3emNL5gKBYqvSdh1ulu9dQnpeQOkMiePqIN
-	 uVd/XCjRBXx53CcBnKJOWxwSKCwX5gjnj7/hLhC4=
+	b=UQT+XbbdKTyU0xRE0rfFX5H0N+VQ5vfpJOkXyagT2SqrSUBvq3uCTkOykpc106mVw
+	 q1m7tbiDT0ppRS8ktixlQB3nPGxcOzed35P96I3kztzZbYT4u3wS8RTMywLachmc4w
+	 +bkjs0kZPlX75YBXZvl0nwxfCGAI0ajjtUZwWPqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/219] scsi: hisi_sas: Set .phy_attached before notifing phyup event HISI_PHYE_PHY_UP_PM
+Subject: [PATCH 6.6 158/322] ALSA: hda: Refer to correct stream index at loops
 Date: Fri,  2 Feb 2024 20:04:15 -0800
-Message-ID: <20240203035328.720067811@linuxfoundation.org>
+Message-ID: <20240203035404.328588156@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit ce26497c745d0541aec930d5211b431a1c26af97 ]
+[ Upstream commit 26257869672fd4a06a60c2da841e15fb2cb47bbe ]
 
-Currently in directly attached scenario, the phyup event
-HISI_PHYE_PHY_UP_PM is notified before .phy_attached is set - this may
-cause the phyup work hisi_sas_bytes_dmaed() execution failed and the
-attached device will not be found.
+In a couple of loops over the all streams, we check the bitmap against
+the loop counter.  A more correct reference would be, however, the
+index of each stream, instead.
 
-To fix it, set .phy_attached before notifing phyup event.
+This patch corrects the check of bitmaps to the stream index.
 
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/1702525516-51258-2-git-send-email-chenxiang66@hisilicon.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Note that this change doesn't fix anything for now; all existing
+drivers set up the stream indices properly, hence the loop count is
+always equal with the stream index.  That said, this change is only
+for consistency.
+
+Link: https://lore.kernel.org/r/20231121154125.4888-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ sound/hda/hdac_stream.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 0c80ff9affa3..7ae56a2fe232 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -1565,6 +1565,11 @@ static irqreturn_t phy_up_v3_hw(int phy_no, struct hisi_hba *hisi_hba)
+diff --git a/sound/hda/hdac_stream.c b/sound/hda/hdac_stream.c
+index 214a0680524b..fe0958f9969c 100644
+--- a/sound/hda/hdac_stream.c
++++ b/sound/hda/hdac_stream.c
+@@ -660,17 +660,15 @@ void snd_hdac_stream_timecounter_init(struct hdac_stream *azx_dev,
+ 	struct hdac_stream *s;
+ 	bool inited = false;
+ 	u64 cycle_last = 0;
+-	int i = 0;
+ 
+ 	list_for_each_entry(s, &bus->stream_list, list) {
+-		if (streams & (1 << i)) {
++		if ((streams & (1 << s->index))) {
+ 			azx_timecounter_init(s, inited, cycle_last);
+ 			if (!inited) {
+ 				inited = true;
+ 				cycle_last = s->tc.cycle_last;
+ 			}
+ 		}
+-		i++;
  	}
  
- 	phy->port_id = port_id;
-+	spin_lock(&phy->lock);
-+	/* Delete timer and set phy_attached atomically */
-+	del_timer(&phy->timer);
-+	phy->phy_attached = 1;
-+	spin_unlock(&phy->lock);
+ 	snd_pcm_gettime(runtime, &runtime->trigger_tstamp);
+@@ -715,14 +713,13 @@ void snd_hdac_stream_sync(struct hdac_stream *azx_dev, bool start,
+ 			  unsigned int streams)
+ {
+ 	struct hdac_bus *bus = azx_dev->bus;
+-	int i, nwait, timeout;
++	int nwait, timeout;
+ 	struct hdac_stream *s;
  
- 	/*
- 	 * Call pm_runtime_get_noresume() which pairs with
-@@ -1578,11 +1583,6 @@ static irqreturn_t phy_up_v3_hw(int phy_no, struct hisi_hba *hisi_hba)
+ 	for (timeout = 5000; timeout; timeout--) {
+ 		nwait = 0;
+-		i = 0;
+ 		list_for_each_entry(s, &bus->stream_list, list) {
+-			if (!(streams & (1 << i++)))
++			if (!(streams & (1 << s->index)))
+ 				continue;
  
- 	res = IRQ_HANDLED;
- 
--	spin_lock(&phy->lock);
--	/* Delete timer and set phy_attached atomically */
--	del_timer(&phy->timer);
--	phy->phy_attached = 1;
--	spin_unlock(&phy->lock);
- end:
- 	if (phy->reset_completion)
- 		complete(phy->reset_completion);
+ 			if (start) {
 -- 
 2.43.0
 
