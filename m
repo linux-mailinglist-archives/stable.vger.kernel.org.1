@@ -1,121 +1,86 @@
-Return-Path: <stable+bounces-17780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C152847E0D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 02:12:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 097C4847E0F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 02:14:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3125B28352
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 01:12:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A58E11F259A4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 01:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A65510F9;
-	Sat,  3 Feb 2024 01:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D9E1369;
+	Sat,  3 Feb 2024 01:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNE9eojQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xHdRFkvA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9313137B;
-	Sat,  3 Feb 2024 01:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2145210E6;
+	Sat,  3 Feb 2024 01:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706922750; cv=none; b=Exjfs2iBBsOl7jPXrQhYxxRat/SsNkB50OXBPzbgx4sxnHoP6v1zI1N32kE+R1+MCubvFKp7bjsZYPsGZokdNJ3F65/48I9IZtWNmttUm33oe3PhsSThsUb2i+IWID0ORbPSOBtB+8HBScs/yzLdeeObus+UYEbqZEXlggDPUZg=
+	t=1706922832; cv=none; b=i8SPQjHqwGOBFVdcYvGToIpc1dds0ofLz4lpLKwapCVvuAIGdTpbaAoEPQQd7jsZ5YSv8K8detaaESrl8lIM3ZV1Kiwgo7eovyiKlCa2R83hePokYJu0IzhNfTCh60lZJtr6TPSKwXU7BwTLrSdbGa0j/38+Reuc6+eExrjjTU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706922750; c=relaxed/simple;
-	bh=2DiNg+AV7VuJ2EwtZlmsfWoLff7eCS+w/xEf/uARMwI=;
+	s=arc-20240116; t=1706922832; c=relaxed/simple;
+	bh=Mki4G/PAWSDHRLxwPPWCIKxidm5+6SE37JqhA10oRt8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dOBT9paUM5T2yPtD4/BI8diTndNTnk6rQp8JPB0pSW49zRL8SNTQe2YK5O5jZqWdzMie4EKYpVVId9GmXOP+jNTG3iw5jOfQqUlICr7Mr0AGEagG3WDU2n1vUTui2g5GKwhbMDy8wjPDnqwp+si72iODQ7xcGo0/qSeb/WMX89g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNE9eojQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C03C433C7;
-	Sat,  3 Feb 2024 01:12:29 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=CYwXG8xTmImR91c0n+IlhAQHvb8LuY8d2xptrtNaNPIwAm9SqSEfub+EecjhUvZMQXBx5NHTsenI8akSzhhcIkVQpkWxd8v/2PvrBjeXilEexcHcV63rH9MPKNV4FqEGmNYQpdPtrtgvpnYcgrmxdTWWqoRpVJolQg2lFEMQasw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xHdRFkvA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC9BC433F1;
+	Sat,  3 Feb 2024 01:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706922749;
-	bh=2DiNg+AV7VuJ2EwtZlmsfWoLff7eCS+w/xEf/uARMwI=;
+	s=korg; t=1706922831;
+	bh=Mki4G/PAWSDHRLxwPPWCIKxidm5+6SE37JqhA10oRt8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eNE9eojQwUc6DjSQklExt40eZUahaqQYQkmoWPFEI0OXb+T0MElo6Zy1Wp1FhDxY2
-	 T2PKMk+fuVx/ng/Wqu/B6guq2BJ9F1WcNPlcHy3+rj18P7Tzg3/T5KjO/rqzT1fz9A
-	 H2Ci8pHC+kcPdmwCj0fOQQakETltS0lmL3WwK3D4=
-Date: Fri, 2 Feb 2024 17:12:28 -0800
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Marco Elver <elver@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Jiri Slaby <jirislaby@kernel.org>,
-	Alexander Potapenko <glider@google.com>, stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Mel Gorman <mgorman@techsingularity.net>,
-	Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 6.7 125/346] mm/sparsemem: fix race in accessing
- memory_section->usage
-Message-ID: <2024020221-disburse-scrawny-ff90@gregkh>
-References: <20240129170016.356158639@linuxfoundation.org>
- <20240129170020.057681007@linuxfoundation.org>
- <81752462-c6c7-4a65-b9f2-371573e15499@kernel.org>
- <2024013044-snowiness-abreast-2a47@gregkh>
- <7d963e3f-2677-4459-b60e-2590d6cddc79@suse.cz>
- <CANpmjNOdRXcok7oyQ=-G7iYthy7f6zHMjJ+TZqGP+vzwRT4+pg@mail.gmail.com>
+	b=xHdRFkvALtklBzwDpKYAuY9ZrQ9J5QHzb3UQy25GSUmTVycjAOJLmt2V6tWFoaq+k
+	 nZPfGZnEKbVSfuImC+mFY5NURYLZVFQRVLaWbOwfTFT09HaEFh4ytR607V2wdv2xAO
+	 iYd04AbNIA64BFNP9BynIJ7msWxSR3lDOQxQHKAs=
+Date: Fri, 2 Feb 2024 17:13:50 -0800
+From: Greg KH <gregkh@linuxfoundation.org>
+To: kovalev@altlinux.org
+Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+	alsa-devel@alsa-project.org, u.kleine-koenig@pengutronix.de,
+	a.firago@yadro.com, sashal@kernel.org, zhuning0077@gmail.com,
+	tiwai@suse.com, perex@perex.cz, broonie@kernel.org,
+	lgirdwood@gmail.com
+Subject: Re: [PATCH 6.1.y 0/7] ASoC: codecs: es8326: fix support
+Message-ID: <2024020205-suffering-paparazzi-8a49@gregkh>
+References: <20240130094708.290485-1-kovalev@altlinux.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANpmjNOdRXcok7oyQ=-G7iYthy7f6zHMjJ+TZqGP+vzwRT4+pg@mail.gmail.com>
+In-Reply-To: <20240130094708.290485-1-kovalev@altlinux.org>
 
-On Fri, Feb 02, 2024 at 10:50:26AM +0100, Marco Elver wrote:
-> On Fri, 2 Feb 2024 at 10:44, Vlastimil Babka <vbabka@suse.cz> wrote:
-> >
-> >
-> >
-> > On 1/30/24 17:21, Greg Kroah-Hartman wrote:
-> > > On Tue, Jan 30, 2024 at 07:00:36AM +0100, Jiri Slaby wrote:
-> > >> On 29. 01. 24, 18:02, Greg Kroah-Hartman wrote:
-> > >>> 6.7-stable review patch.  If anyone has any objections, please let me know.
-> > >>>
-> > >>> ------------------
-> > >>>
-> > >>> From: Charan Teja Kalla <quic_charante@quicinc.com>
-> > >>>
-> > >>> commit 5ec8e8ea8b7783fab150cf86404fc38cb4db8800 upstream.
-> > >>
-> > >> Hi,
-> > >>
-> > >> our machinery (git-fixes) says, this is needed as a fix:
-> > >> commit f6564fce256a3944aa1bc76cb3c40e792d97c1eb
-> > >> Author: Marco Elver <elver@google.com>
-> > >> Date:   Thu Jan 18 11:59:14 2024 +0100
-> > >>
-> > >>     mm, kmsan: fix infinite recursion due to RCU critical section
-> > >>
-> > >>
-> > >> Leaving up to the recipients to decide, as I have no idea…
-> >
-> > Let's Cc the people involved in f6564fce256a394
-> >
-> > > That commit just got merged into Linus's tree, AND it is not marked for
-> > > stable, which is worrying as I have to get the developers's approval to
-> > > add any non-cc-stable mm patch to the tree because they said they would
-> > > always mark them properly :)
-> > >
-> > > So I can't take it just yet...
+On Tue, Jan 30, 2024 at 12:47:01PM +0300, kovalev@altlinux.org wrote:
+> These patches were backported from v6.6 upstream and
+> are intended for 6.1.y stable kernel.
 > 
-> So 5ec8e8ea8b7783fab150cf86404fc38cb4db8800 is being backported to
-> stable, which means that the issue that f6564fce256a394 fixed will be
-> present in stable. I didn't mark f6564fce256a394 as stable as the
-> problem doesn't exist in stable (yet), but if the problem-introducing
-> commit is being backported, then yes, please also backport
-> f6564fce256a394 to stable.
+> Patches have been successfully tested on the latest 6.1.75 kernel.
+> 
+> [PATCH 6.1.y 1/7] ASoC: codecs: es8326: Convert to i2c's .probe_new()
+> [PATCH 6.1.y 2/7] ASoC: codecs: ES8326: Add es8326_mute function
+> [PATCH 6.1.y 3/7] ASoC: codecs: ES8326: Change Hp_detect register names
+> [PATCH 6.1.y 4/7] ASoC: codecs: ES8326: Change Volatile Reg function
+> [PATCH 6.1.y 5/7] ASoC: codecs: ES8326: Fix power-up sequence
+> [PATCH 6.1.y 6/7] ASOC: codecs: ES8326: Add calibration support for
+> [PATCH 6.1.y 7/7] ASoC: codecs: ES8326: Update jact detection function
+> 
+> 
 
-Thanks, now queued up.
+What exactly is being "fixed" here?  Was the driver not working properly
+in 5.15?  What broke in 6.1?  Or has this hardware just never worked?
+
+These all don't seem to be fixes, so what is the need for these?
+
+confused,
 
 greg k-h
 
