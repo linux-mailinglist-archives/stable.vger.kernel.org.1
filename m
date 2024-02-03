@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16FE0848132
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B89F684826F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3AEE283E05
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F39C2802AE
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5A416431;
-	Sat,  3 Feb 2024 04:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355201B944;
+	Sat,  3 Feb 2024 04:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rD34ocGI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsmVMA+l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE481118F;
-	Sat,  3 Feb 2024 04:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E244A13AC0;
+	Sat,  3 Feb 2024 04:15:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933513; cv=none; b=U/x7W0xxannnJ+Kh14EgdITMg3oqiasDQ+3OZRqgbv15WsMDnpq82PPjX8LSOtbjq7IkKW+Z9qtlRnJH/K7rOxPFdBiZBE3jwLXqcZ7ALUeF4y8IGzkb3yXltvQYB2SIVpXMO5mNNuyfIAoj7RGGVf1/SLnDI0Tb6byW4G6TEGI=
+	t=1706933745; cv=none; b=a8MPR6psgMYbeL34zDKyJlkZjkagx0Z0i6yxnhZP/l4oDqeXZtKNbRZYbZz+f99vptukjuJfvJEMXqiRDPBRLdEQ5lnetM1qJqLyImGRZgwJyD7tlpXd1S7xDZ8WLDO7oS7IshepAtoiMwIYHBXFMnB5wn3uT3tV+6ogfo6o57I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933513; c=relaxed/simple;
-	bh=V71VIgkQBilAeFSu4jHcFvEpUNSIzrOYWQRHt5PdF0M=;
+	s=arc-20240116; t=1706933745; c=relaxed/simple;
+	bh=oZSDejc1y/TSO8e4BvpySOawGSXREhDafFXgbzjXWNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1BFa7827DCxG/rfQQirx3ToEFhlMHBMe+hhQqoKpf+NRFxQGBpnFz4MRpVoG0XBPU0LA7a2vDI69yxeedp9Yv6nSIPSC8sgmE18HzI4bE/Z13xa3Mo2Blb2ggsdSA1bxj8ZXFjH2dCxJbfnfWudDJFIfvU2Sj8u9npPRIGCf0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rD34ocGI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D92C433B1;
-	Sat,  3 Feb 2024 04:11:52 +0000 (UTC)
+	 MIME-Version; b=Gw3+t8usChWffG09qGwTXrxYaezywKWFeh4F3uviF1DGID+I+4vVE6IkuI83SpHFcIFdRL0gXBXL5VKePCVkhVSEch7emadGDBG7PDthHbcvlH5XkFiLk+WTME3Cbd0IrovdNxhYSMyFrDf549EMtBNZEYFr/cw3H7uM9Dz57OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsmVMA+l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5251BC43390;
+	Sat,  3 Feb 2024 04:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933513;
-	bh=V71VIgkQBilAeFSu4jHcFvEpUNSIzrOYWQRHt5PdF0M=;
+	s=korg; t=1706933744;
+	bh=oZSDejc1y/TSO8e4BvpySOawGSXREhDafFXgbzjXWNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rD34ocGIVhi0UqqbWuyFRTDeDjcTYqS06WRfeH40im+OqZAJQt58COnpslNZCQMvb
-	 g+BS6zIaEvYKMCku1auBH8ZM6ScNXGMUcSXTAja/5p++R5a0orB0gSz+weTqp7RSHh
-	 leXWrYYIdWjpxf3eOhjlEWnXVose2x4Z3pqeZ14w=
+	b=bsmVMA+lHi0eMUsOq4TjXuKhYxy/hEZX35DtiB1J7tSSXZtkxQUTgMQfGZvDucr3d
+	 1R6WoarVtS9BtMAnlf7Rd2lovPxMIXdqwmO9N/NQ/4T+2RsP/z5yav5MPGeLjdIk+Y
+	 U1d+YWMZ/U+G6o7W5pO0wSaiDLxJzis4YmbTxbls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Bo Ye <bo.ye@mediatek.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/322] ext4: treat end of range as exclusive in ext4_zero_range()
+Subject: [PATCH 6.7 029/353] thermal: core: Fix thermal zone suspend-resume synchronization
 Date: Fri,  2 Feb 2024 20:02:27 -0800
-Message-ID: <20240203035400.730286655@linuxfoundation.org>
+Message-ID: <20240203035404.701418237@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 92573369144f40397e8514440afdf59f24905b40 ]
+[ Upstream commit 4e814173a8c4f432fd068b1c796f0416328c9d99 ]
 
-The call to filemap_write_and_wait_range() assumes the range passed to be
-inclusive, so fix the call to make sure we follow that.
+There are 3 synchronization issues with thermal zone suspend-resume
+during system-wide transitions:
 
-Signed-off-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/e503107a7c73a2b68dec645c5ad798c437717c45.1698856309.git.ojaswin@linux.ibm.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+ 1. The resume code runs in a PM notifier which is invoked after user
+    space has been thawed, so it can run concurrently with user space
+    which can trigger a thermal zone device removal.  If that happens,
+    the thermal zone resume code may use a stale pointer to the next
+    list element and crash, because it does not hold thermal_list_lock
+    while walking thermal_tz_list.
+
+ 2. The thermal zone resume code calls thermal_zone_device_init()
+    outside the zone lock, so user space or an update triggered by
+    the platform firmware may see an inconsistent state of a
+    thermal zone leading to unexpected behavior.
+
+ 3. Clearing the in_suspend global variable in thermal_pm_notify()
+    allows __thermal_zone_device_update() to continue for all thermal
+    zones and it may as well run before the thermal_tz_list walk (or
+    at any point during the list walk for that matter) and attempt to
+    operate on a thermal zone that has not been resumed yet.  It may
+    also race destructively with thermal_zone_device_init().
+
+To address these issues, add thermal_list_lock locking to
+thermal_pm_notify(), especially arount the thermal_tz_list,
+make it call thermal_zone_device_init() back-to-back with
+__thermal_zone_device_update() under the zone lock and replace
+in_suspend with per-zone bool "suspend" indicators set and unset
+under the given zone's lock.
+
+Link: https://lore.kernel.org/linux-pm/20231218162348.69101-1-bo.ye@mediatek.com/
+Reported-by: Bo Ye <bo.ye@mediatek.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/thermal/thermal_core.c | 30 +++++++++++++++++++++++-------
+ include/linux/thermal.h        |  2 ++
+ 2 files changed, 25 insertions(+), 7 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 4d8496d1a8ac..4c3e2f38349d 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -4522,7 +4522,8 @@ static long ext4_zero_range(struct file *file, loff_t offset,
- 	 * Round up offset. This is not fallocate, we need to zero out
- 	 * blocks, so convert interior block aligned part of the range to
- 	 * unwritten and possibly manually zero out unaligned parts of the
--	 * range.
-+	 * range. Here, start and partial_begin are inclusive, end and
-+	 * partial_end are exclusive.
- 	 */
- 	start = round_up(offset, 1 << blkbits);
- 	end = round_down((offset + len), 1 << blkbits);
-@@ -4608,7 +4609,8 @@ static long ext4_zero_range(struct file *file, loff_t offset,
- 		 * disk in case of crash before zeroing trans is committed.
- 		 */
- 		if (ext4_should_journal_data(inode)) {
--			ret = filemap_write_and_wait_range(mapping, start, end);
-+			ret = filemap_write_and_wait_range(mapping, start,
-+							   end - 1);
- 			if (ret) {
- 				filemap_invalidate_unlock(mapping);
- 				goto out_mutex;
+diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+index 1bc7ba459406..45f51727410c 100644
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -37,8 +37,6 @@ static LIST_HEAD(thermal_governor_list);
+ static DEFINE_MUTEX(thermal_list_lock);
+ static DEFINE_MUTEX(thermal_governor_lock);
+ 
+-static atomic_t in_suspend;
+-
+ static struct thermal_governor *def_governor;
+ 
+ /*
+@@ -405,7 +403,7 @@ void __thermal_zone_device_update(struct thermal_zone_device *tz,
+ {
+ 	const struct thermal_trip *trip;
+ 
+-	if (atomic_read(&in_suspend))
++	if (tz->suspended)
+ 		return;
+ 
+ 	if (WARN_ONCE(!tz->ops->get_temp,
+@@ -1514,17 +1512,35 @@ static int thermal_pm_notify(struct notifier_block *nb,
+ 	case PM_HIBERNATION_PREPARE:
+ 	case PM_RESTORE_PREPARE:
+ 	case PM_SUSPEND_PREPARE:
+-		atomic_set(&in_suspend, 1);
++		mutex_lock(&thermal_list_lock);
++
++		list_for_each_entry(tz, &thermal_tz_list, node) {
++			mutex_lock(&tz->lock);
++
++			tz->suspended = true;
++
++			mutex_unlock(&tz->lock);
++		}
++
++		mutex_unlock(&thermal_list_lock);
+ 		break;
+ 	case PM_POST_HIBERNATION:
+ 	case PM_POST_RESTORE:
+ 	case PM_POST_SUSPEND:
+-		atomic_set(&in_suspend, 0);
++		mutex_lock(&thermal_list_lock);
++
+ 		list_for_each_entry(tz, &thermal_tz_list, node) {
++			mutex_lock(&tz->lock);
++
++			tz->suspended = false;
++
+ 			thermal_zone_device_init(tz);
+-			thermal_zone_device_update(tz,
+-						   THERMAL_EVENT_UNSPECIFIED);
++			__thermal_zone_device_update(tz, THERMAL_EVENT_UNSPECIFIED);
++
++			mutex_unlock(&tz->lock);
+ 		}
++
++		mutex_unlock(&thermal_list_lock);
+ 		break;
+ 	default:
+ 		break;
+diff --git a/include/linux/thermal.h b/include/linux/thermal.h
+index cee814d5d1ac..1da1739d75d9 100644
+--- a/include/linux/thermal.h
++++ b/include/linux/thermal.h
+@@ -149,6 +149,7 @@ struct thermal_cooling_device {
+  * @node:	node in thermal_tz_list (in thermal_core.c)
+  * @poll_queue:	delayed work for polling
+  * @notify_event: Last notification event
++ * @suspended: thermal zone suspend indicator
+  */
+ struct thermal_zone_device {
+ 	int id;
+@@ -181,6 +182,7 @@ struct thermal_zone_device {
+ 	struct list_head node;
+ 	struct delayed_work poll_queue;
+ 	enum thermal_notify_event notify_event;
++	bool suspended;
+ };
+ 
+ /**
 -- 
 2.43.0
 
