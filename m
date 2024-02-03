@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-18056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B2FA848135
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3BD6848284
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B0D71F23129
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 909C828211D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A474FBF2;
-	Sat,  3 Feb 2024 04:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0D1495E4;
+	Sat,  3 Feb 2024 04:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fpBXoFjj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZGyR2sb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF831118F;
-	Sat,  3 Feb 2024 04:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D90210A13;
+	Sat,  3 Feb 2024 04:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933515; cv=none; b=N9/O4+q4SR5H2cBu6P7M6XIiGBBsU4Yumj+w40l8vyNfLCA9nEqbu92xDH88YYu/lMOJpImmkFmOxo+i6NI7P7wMB8vsdeHSlQJ33el7wC6ksJSuHOQ8kGRDIHeYbkS5UdUUR+cHAqhgqqRfPwNAUfDMEJDjM6YJtAVgkMLkA7U=
+	t=1706933760; cv=none; b=fDR3RYyOR/FLKJoPBqFz1ZqvTrsaEuOJ+dVmBadjjGo0KTjfcFNh2tHN9HTyuDMt4LzEE/yswq8XQwlpgK8z7wiTKSKs7OjbITm1l0TgQCIYZ7mewRVq555arrNFYLRpkgYIyvNZuR2FMuxCbs0YPFcr+BywUM05xcl0knHhYqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933515; c=relaxed/simple;
-	bh=24uw4WIm6xaYVaILodCJfN1N6TfjVVCFHHCoL1KTUjs=;
+	s=arc-20240116; t=1706933760; c=relaxed/simple;
+	bh=hWdQKtoNUOWOt1Dvf2qUmupzyTueEVqvuzUmh+vCijg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqvN0XkYtgPcEqOAHJZ9YyU9o+0pBviTeb5dqm1RXG3xgWI4vXre8ph5EsMgQkGBKS/8E/+PA2UNaUVJ3eshrc698nwHXO8EQzZ/EKNTaQRv5h9j9jrNWLcQQvyj8i7CuoQuz05EOMQNqKRT8bjaiap5/q64S1YVE+r9s/XY/rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fpBXoFjj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C3E8C433C7;
-	Sat,  3 Feb 2024 04:11:54 +0000 (UTC)
+	 MIME-Version; b=Q+Kjal7WoJLZrnEe/uKiIcGslWVRSiy57DU1jDQ1Whhj4czE1epM/VbwsbOW+SClK0WvJU+qtTLVeWkdK0MYKHOaZlvPCZ4DlTanaYfnb7E6k/b+fpA+kM8kxfjnrqXCbTgL6LJjR8D7fRWuldzVkVLnaqrctXea1mntfXMdJTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZGyR2sb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8CA7C43390;
+	Sat,  3 Feb 2024 04:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933514;
-	bh=24uw4WIm6xaYVaILodCJfN1N6TfjVVCFHHCoL1KTUjs=;
+	s=korg; t=1706933759;
+	bh=hWdQKtoNUOWOt1Dvf2qUmupzyTueEVqvuzUmh+vCijg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fpBXoFjjfsJadf5nYWLAHgZEOm4JJp8MYZviC7ltna87+gF1lEDyUcI6LI1McqdUY
-	 ZSetF7djj1rKZQKPsxRZX8yTD13vHn7TU6RfKu0W93AkvOV1Xd+mE8k/IIVwsAeOdR
-	 TsBjNY0e1v3SnDu8c+6f0zVLosQXPTpq4WS9lJJg=
+	b=UZGyR2sbsKdiKDl5s9IbIqfDpBLrD95RUd2nVE6hRpnG9d0QIovMvomuldQ5o2jjM
+	 8248s6ZQVET6QcqC+Oy6i9Uec5a1BeQcNUVDUD8N7R1NmKCEABWnts60/VX6v0WBi+
+	 MglbgxVn1+d3g8WwTWZqzNNfbLeOgaRrqV6/gU6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Manas Ghandat <ghandatmanas@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 052/322] smb: client: fix hardlinking of reparse points
-Date: Fri,  2 Feb 2024 20:02:29 -0800
-Message-ID: <20240203035400.805906522@linuxfoundation.org>
+Subject: [PATCH 6.7 032/353] jfs: fix slab-out-of-bounds Read in dtSearch
+Date: Fri,  2 Feb 2024 20:02:30 -0800
+Message-ID: <20240203035404.808644987@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,186 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Manas Ghandat <ghandatmanas@gmail.com>
 
-[ Upstream commit 5408990aa662bcfd6ba894734023a023a16e8729 ]
+[ Upstream commit fa5492ee89463a7590a1449358002ff7ef63529f ]
 
-The client was sending an SMB2_CREATE request without setting
-OPEN_REPARSE_POINT flag thus failing the entire hardlink operation.
+Currently while searching for current page in the sorted entry table
+of the page there is a out of bound access. Added a bound check to fix
+the error.
 
-Fix this by setting OPEN_REPARSE_POINT in create options for
-SMB2_CREATE request when the source inode is a repase point.
+Dave:
+Set return code to -EIO
 
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202310241724.Ed02yUz9-lkp@intel.com/
+Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsglob.h  |  8 +++++---
- fs/smb/client/cifsproto.h |  8 +++++---
- fs/smb/client/cifssmb.c   |  9 +++++----
- fs/smb/client/link.c      |  4 ++--
- fs/smb/client/smb2inode.c | 33 +++++++++++++++++++++------------
- fs/smb/client/smb2proto.h |  8 +++++---
- 6 files changed, 43 insertions(+), 27 deletions(-)
+ fs/jfs/jfs_dtree.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 4d07b96038d8..942e6ece56b1 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -405,9 +405,11 @@ struct smb_version_operations {
- 		      const char *from_name, const char *to_name,
- 		      struct cifs_sb_info *cifs_sb);
- 	/* send create hardlink request */
--	int (*create_hardlink)(const unsigned int, struct cifs_tcon *,
--			       const char *, const char *,
--			       struct cifs_sb_info *);
-+	int (*create_hardlink)(const unsigned int xid,
-+			       struct cifs_tcon *tcon,
-+			       struct dentry *source_dentry,
-+			       const char *from_name, const char *to_name,
-+			       struct cifs_sb_info *cifs_sb);
- 	/* query symlink target */
- 	int (*query_symlink)(const unsigned int xid,
- 			     struct cifs_tcon *tcon,
-diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
-index f89e6c2a4974..260a6299bddb 100644
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -443,9 +443,11 @@ extern int CIFSSMBRenameOpenFile(const unsigned int xid, struct cifs_tcon *tcon,
- 				 int netfid, const char *target_name,
- 				 const struct nls_table *nls_codepage,
- 				 int remap_special_chars);
--extern int CIFSCreateHardLink(const unsigned int xid, struct cifs_tcon *tcon,
--			      const char *from_name, const char *to_name,
--			      struct cifs_sb_info *cifs_sb);
-+int CIFSCreateHardLink(const unsigned int xid,
-+		       struct cifs_tcon *tcon,
-+		       struct dentry *source_dentry,
-+		       const char *from_name, const char *to_name,
-+		       struct cifs_sb_info *cifs_sb);
- extern int CIFSUnixCreateHardLink(const unsigned int xid,
- 			struct cifs_tcon *tcon,
- 			const char *fromName, const char *toName,
-diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
-index 5bdea01919e8..e9e33b0b3ac4 100644
---- a/fs/smb/client/cifssmb.c
-+++ b/fs/smb/client/cifssmb.c
-@@ -2530,10 +2530,11 @@ CIFSUnixCreateHardLink(const unsigned int xid, struct cifs_tcon *tcon,
- 	return rc;
- }
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index f3d3e8b3f50c..031d8f570f58 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -633,6 +633,11 @@ int dtSearch(struct inode *ip, struct component_name * key, ino_t * data,
+ 		for (base = 0, lim = p->header.nextindex; lim; lim >>= 1) {
+ 			index = base + (lim >> 1);
  
--int
--CIFSCreateHardLink(const unsigned int xid, struct cifs_tcon *tcon,
--		   const char *from_name, const char *to_name,
--		   struct cifs_sb_info *cifs_sb)
-+int CIFSCreateHardLink(const unsigned int xid,
-+		       struct cifs_tcon *tcon,
-+		       struct dentry *source_dentry,
-+		       const char *from_name, const char *to_name,
-+		       struct cifs_sb_info *cifs_sb)
- {
- 	int rc = 0;
- 	NT_RENAME_REQ *pSMB = NULL;
-diff --git a/fs/smb/client/link.c b/fs/smb/client/link.c
-index c66be4904e1f..6c4ae52ddc04 100644
---- a/fs/smb/client/link.c
-+++ b/fs/smb/client/link.c
-@@ -522,8 +522,8 @@ cifs_hardlink(struct dentry *old_file, struct inode *inode,
- 			rc = -ENOSYS;
- 			goto cifs_hl_exit;
- 		}
--		rc = server->ops->create_hardlink(xid, tcon, from_name, to_name,
--						  cifs_sb);
-+		rc = server->ops->create_hardlink(xid, tcon, old_file,
-+						  from_name, to_name, cifs_sb);
- 		if ((rc == -EIO) || (rc == -EINVAL))
- 			rc = -EOPNOTSUPP;
- 	}
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index c3e28673e0cd..6cac0b107a2d 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -35,6 +35,18 @@ free_set_inf_compound(struct smb_rqst *rqst)
- 		SMB2_close_free(&rqst[2]);
- }
- 
-+static inline __u32 file_create_options(struct dentry *dentry)
-+{
-+	struct cifsInodeInfo *ci;
++			if (stbl[index] < 0) {
++				rc = -EIO;
++				goto out;
++			}
 +
-+	if (dentry) {
-+		ci = CIFS_I(d_inode(dentry));
-+		if (ci->cifsAttrs & ATTR_REPARSE)
-+			return OPEN_REPARSE_POINT;
-+	}
-+	return 0;
-+}
-+
- /*
-  * note: If cfile is passed, the reference to it is dropped here.
-  * So make sure that you do not reuse cfile after return from this func.
-@@ -809,15 +821,9 @@ int smb2_rename_path(const unsigned int xid,
- 		     const char *from_name, const char *to_name,
- 		     struct cifs_sb_info *cifs_sb)
- {
--	struct cifsInodeInfo *ci;
- 	struct cifsFileInfo *cfile;
--	__u32 co = 0;
-+	__u32 co = file_create_options(source_dentry);
- 
--	if (source_dentry) {
--		ci = CIFS_I(d_inode(source_dentry));
--		if (ci->cifsAttrs & ATTR_REPARSE)
--			co |= OPEN_REPARSE_POINT;
--	}
- 	drop_cached_dir_by_name(xid, tcon, from_name, cifs_sb);
- 	cifs_get_writable_path(tcon, from_name, FIND_WR_WITH_DELETE, &cfile);
- 
-@@ -825,13 +831,16 @@ int smb2_rename_path(const unsigned int xid,
- 				  co, DELETE, SMB2_OP_RENAME, cfile);
- }
- 
--int
--smb2_create_hardlink(const unsigned int xid, struct cifs_tcon *tcon,
--		     const char *from_name, const char *to_name,
--		     struct cifs_sb_info *cifs_sb)
-+int smb2_create_hardlink(const unsigned int xid,
-+			 struct cifs_tcon *tcon,
-+			 struct dentry *source_dentry,
-+			 const char *from_name, const char *to_name,
-+			 struct cifs_sb_info *cifs_sb)
- {
-+	__u32 co = file_create_options(source_dentry);
-+
- 	return smb2_set_path_attr(xid, tcon, from_name, to_name,
--				  cifs_sb, 0, FILE_READ_ATTRIBUTES,
-+				  cifs_sb, co, FILE_READ_ATTRIBUTES,
- 				  SMB2_OP_HARDLINK, NULL);
- }
- 
-diff --git a/fs/smb/client/smb2proto.h b/fs/smb/client/smb2proto.h
-index 7cbf1a76b42d..a8084ce7fcbd 100644
---- a/fs/smb/client/smb2proto.h
-+++ b/fs/smb/client/smb2proto.h
-@@ -85,9 +85,11 @@ int smb2_rename_path(const unsigned int xid,
- 		     struct dentry *source_dentry,
- 		     const char *from_name, const char *to_name,
- 		     struct cifs_sb_info *cifs_sb);
--extern int smb2_create_hardlink(const unsigned int xid, struct cifs_tcon *tcon,
--				const char *from_name, const char *to_name,
--				struct cifs_sb_info *cifs_sb);
-+int smb2_create_hardlink(const unsigned int xid,
-+			 struct cifs_tcon *tcon,
-+			 struct dentry *source_dentry,
-+			 const char *from_name, const char *to_name,
-+			 struct cifs_sb_info *cifs_sb);
- extern int smb3_create_mf_symlink(unsigned int xid, struct cifs_tcon *tcon,
- 			struct cifs_sb_info *cifs_sb, const unsigned char *path,
- 			char *pbuf, unsigned int *pbytes_written);
+ 			if (p->header.flag & BT_LEAF) {
+ 				/* uppercase leaf name to compare */
+ 				cmp =
 -- 
 2.43.0
 
