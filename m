@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-17836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F7084804B
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C236848195
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E203C28BE84
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EFE01C229A6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98ACF125B4;
-	Sat,  3 Feb 2024 04:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247DC1798E;
+	Sat,  3 Feb 2024 04:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n32l/R6l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ovogIzOH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54AB6F9D7;
-	Sat,  3 Feb 2024 04:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D799710A0A;
+	Sat,  3 Feb 2024 04:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933349; cv=none; b=L+bm5Y4rE4P7h5TDwvWzEnT/lxQgqzsv51mvYq/biZg4usUblgFwYf/N0So4VfVGNzqiFkw4bbzfwiTe6OKVzTgurbDn3rrUxEmP1GcTkcvc5ICQzTFaU3ewe7PrzV4snT6/SDqpglKLHSUXA6S5tz/0Z6TOwCzOZlmS0TwExVE=
+	t=1706933584; cv=none; b=uzfvt8YTfN0pkXUkYBBQ3PYbFO30pPknJlwmeo6LatYFGWrgP0+QS4OVi+mML9fluKYvCefE+Rpvw424pmwLrSDYUeOfefeNhZqwFvowulz6/ltH//vaS/PJ5kTKGYTS+btYLVJC0cQoA/ApNsXYhReA3/Urihp8uVJWFDTM/K4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933349; c=relaxed/simple;
-	bh=iO2p3lP9qYpDtnbYHA/qiutE2rbzhx8Sr0yRoNFf/Os=;
+	s=arc-20240116; t=1706933584; c=relaxed/simple;
+	bh=/HUEX0FQ4OREj+wCKcWNuK+vfbdyibq1g6+uXfos32Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fBMi9iUh4KPhTKwUKDtlt/qCg+2RtrZ9gftVBNbiqjK/W2NNTsRH8BfnwxnXzkTYw7yAbU6IWnP69wCXdjA8rsHZX4zi5xdNF0wbpizcrpbF2jHrTHEc89NyboaL4oC26ciY2F4X2odnHjugXfF6z78Vr2+b3QglJVQhKH9Nfik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n32l/R6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 197DDC433C7;
-	Sat,  3 Feb 2024 04:09:09 +0000 (UTC)
+	 MIME-Version; b=etVsiCZnv6vOzf5T7A7mVZTIUV33iAPbBlKhyLgcEdJnVb/PiC0eiiba2sKqSyq1SkqWF//Yo0kjZZ15pmnr8+nnHQvw4P5U+ixhia5aJjdYN+II0pe+amaBo8czTiMWlTKz+xQBLi8yLV+/xvbYYtWIYEQyjgUYNdwDFMVdOnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ovogIzOH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04C0C43390;
+	Sat,  3 Feb 2024 04:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933349;
-	bh=iO2p3lP9qYpDtnbYHA/qiutE2rbzhx8Sr0yRoNFf/Os=;
+	s=korg; t=1706933584;
+	bh=/HUEX0FQ4OREj+wCKcWNuK+vfbdyibq1g6+uXfos32Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n32l/R6l9+2Z00/ypw1qLcOvwuTUZZb9RC8YqaJeBw2RrNeG+fyt50/rhxvKnmBgS
-	 /OTFS/ISclsRbrOdf+iK0yb9B4cWJCWwVEmHCMYDhft/kxzKjKgIytMyqdYqaoyShp
-	 26BRr3xqC1GlluDJEf8jC2BYntDgOAMhYVNjUHF4=
+	b=ovogIzOHkL0QMsN0EUQTL635+eU7pwrI+SsDLzGCShnODoH+IsfY7YGzqftYjoDO4
+	 0ttCss16sXltd3WJbEYsO2UpDJ0pZUFFLHpWIuiUIug26aAHT72OpH/6r/f0Iuvbxv
+	 FTz4GAek0EdQzhIW/UGXYfOzLfl8yweUwikFXxq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	Yihang Li <liyihang9@huawei.com>,
+	Xiang Chen <chenxiang66@hisilicon.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/219] scsi: lpfc: Fix possible file string name overflow when updating firmware
-Date: Fri,  2 Feb 2024 20:03:45 -0800
-Message-ID: <20240203035324.106681514@linuxfoundation.org>
+Subject: [PATCH 6.6 129/322] scsi: hisi_sas: Set .phy_attached before notifing phyup event HISI_PHYE_PHY_UP_PM
+Date: Fri,  2 Feb 2024 20:03:46 -0800
+Message-ID: <20240203035403.317171504@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Yihang Li <liyihang9@huawei.com>
 
-[ Upstream commit f5779b529240b715f0e358489ad0ed933bf77c97 ]
+[ Upstream commit ce26497c745d0541aec930d5211b431a1c26af97 ]
 
-Because file_name and phba->ModelName are both declared a size 80 bytes,
-the extra ".grp" file extension could cause an overflow into file_name.
+Currently in directly attached scenario, the phyup event
+HISI_PHYE_PHY_UP_PM is notified before .phy_attached is set - this may
+cause the phyup work hisi_sas_bytes_dmaed() execution failed and the
+attached device will not be found.
 
-Define a ELX_FW_NAME_SIZE macro with value 84.  84 incorporates the 4 extra
-characters from ".grp".  file_name is changed to be declared as a char and
-initialized to zeros i.e. null chars.
+To fix it, set .phy_attached before notifing phyup event.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20231031191224.150862-3-justintee8345@gmail.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+Link: https://lore.kernel.org/r/1702525516-51258-2-git-send-email-chenxiang66@hisilicon.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc.h      | 1 +
- drivers/scsi/lpfc/lpfc_init.c | 4 ++--
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc.h b/drivers/scsi/lpfc/lpfc.h
-index 664ac3069c4b..dc5ac3cc70f6 100644
---- a/drivers/scsi/lpfc/lpfc.h
-+++ b/drivers/scsi/lpfc/lpfc.h
-@@ -33,6 +33,7 @@
- struct lpfc_sli2_slim;
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index 520fffc14282..e914c0c13bb5 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -1606,6 +1606,11 @@ static irqreturn_t phy_up_v3_hw(int phy_no, struct hisi_hba *hisi_hba)
+ 	}
  
- #define ELX_MODEL_NAME_SIZE	80
-+#define ELX_FW_NAME_SIZE	84
+ 	phy->port_id = port_id;
++	spin_lock(&phy->lock);
++	/* Delete timer and set phy_attached atomically */
++	del_timer(&phy->timer);
++	phy->phy_attached = 1;
++	spin_unlock(&phy->lock);
  
- #define LPFC_PCI_DEV_LP		0x1
- #define LPFC_PCI_DEV_OC		0x2
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index f59de61803dc..1a0bafde34d8 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -14778,7 +14778,7 @@ lpfc_write_firmware(const struct firmware *fw, void *context)
- int
- lpfc_sli4_request_firmware_update(struct lpfc_hba *phba, uint8_t fw_upgrade)
- {
--	uint8_t file_name[ELX_MODEL_NAME_SIZE];
-+	char file_name[ELX_FW_NAME_SIZE] = {0};
- 	int ret;
- 	const struct firmware *fw;
+ 	/*
+ 	 * Call pm_runtime_get_noresume() which pairs with
+@@ -1619,11 +1624,6 @@ static irqreturn_t phy_up_v3_hw(int phy_no, struct hisi_hba *hisi_hba)
  
-@@ -14787,7 +14787,7 @@ lpfc_sli4_request_firmware_update(struct lpfc_hba *phba, uint8_t fw_upgrade)
- 	    LPFC_SLI_INTF_IF_TYPE_2)
- 		return -EPERM;
+ 	res = IRQ_HANDLED;
  
--	snprintf(file_name, ELX_MODEL_NAME_SIZE, "%s.grp", phba->ModelName);
-+	scnprintf(file_name, sizeof(file_name), "%s.grp", phba->ModelName);
- 
- 	if (fw_upgrade == INT_FW_UPGRADE) {
- 		ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
+-	spin_lock(&phy->lock);
+-	/* Delete timer and set phy_attached atomically */
+-	del_timer(&phy->timer);
+-	phy->phy_attached = 1;
+-	spin_unlock(&phy->lock);
+ end:
+ 	if (phy->reset_completion)
+ 		complete(phy->reset_completion);
 -- 
 2.43.0
 
