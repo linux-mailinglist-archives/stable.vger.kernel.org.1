@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-18077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D333984814A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2388184825D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78EB81F23D9A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA7851F28C9B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740F0171A4;
-	Sat,  3 Feb 2024 04:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEEA548780;
+	Sat,  3 Feb 2024 04:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="av3XdACO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VckS7Zv0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DD01CD02;
-	Sat,  3 Feb 2024 04:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A17D134AE;
+	Sat,  3 Feb 2024 04:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933530; cv=none; b=OZHKexk2I/r/fdtgbp9xwabCceXkiNFW1i0Jsj078Jl0CrOHN8RsK6ysDFyB88H/EyVCbQwmFNOym1CopTkSKQrBqAvwXeLHuPr1YRKZu9JtmURc1o4kS1cnho+Ip16CAL5k+ykUmfaoBWLuv0ZP1WihQP1IYeQ8TmowlYj9GlI=
+	t=1706933731; cv=none; b=DAvLCwkQsqTeqVmU9ClPv6//sJ/Z1CoXuoF65UusBAUMy0W4YVi2udumcYNypVSU2hS9Iqw3ETWPi8DSfvpz5ZEQpr2k4Fax4bvUs/xOMJ0URQFGqBXyQeakvUGXt9xAdIbrFAXIGJdtpoilkEIGKBvRa3DmNmcFtbC/V4dZRW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933530; c=relaxed/simple;
-	bh=MUbqWZS7muOS56gwd7/asman6apKqUz8TqaiToBKPG8=;
+	s=arc-20240116; t=1706933731; c=relaxed/simple;
+	bh=txeTmLbMV4COHrgC5CyBdSdSeRC4Cm1xrD3VMkobU40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ES4iOXfIgoJm64VAGBXl7FBRMFW/BWnkvLq4izU3d9rDRlZpr8J6Ftf/u6WwdZPRbJBLmbHl2xWxyQ9noKepCtUa5tJg8M+QhgKRStAO2D8X1H9MXl8W1TRIQQYxOnjrul2zWRnVZDx0vZyngMXy46bdv+lVNCShkfwei6wI6vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=av3XdACO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F044EC43390;
-	Sat,  3 Feb 2024 04:12:09 +0000 (UTC)
+	 MIME-Version; b=kt82owlpyitfe7J/EZ98v9jERyiw4xGzERwgOcWasfQ2V2yYjX5yJkg+4SaEPJIRhI7SkNF/uDhDG32r2FDlhQLydg28HVrUpfCjARnHs/jsiD/h+zIyizj1DJiB176aUU0L9A3Z4/mgXg7bBSQGTNRZd23KEv89p6SOJxG5rvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VckS7Zv0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD8F8C43399;
+	Sat,  3 Feb 2024 04:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933530;
-	bh=MUbqWZS7muOS56gwd7/asman6apKqUz8TqaiToBKPG8=;
+	s=korg; t=1706933730;
+	bh=txeTmLbMV4COHrgC5CyBdSdSeRC4Cm1xrD3VMkobU40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=av3XdACOBHwVIO7JRIZ7fUPk+gcdKQ4GpjJcHkG6rOiY6zzrotCU15hfEzoxLXS40
-	 sbk9ERAIRLnFhs+N7gJ8ATz4/Q3h6/J+l9cuJWYjghcLk/X9vlwoo6zYKK+siCkMg9
-	 Ryfmnn2kpNUhyWASzYMcnd76GvaYPTByOTjSg/cw=
+	b=VckS7Zv08g9uzxKAvrxRV217YiSrbWXnY4xFPo/MPR5flGeyyYxhloawWtUmC9+Yl
+	 nXimPs9LpQiOhvl87SYzxM57doOPSnOppvc/wOulES1Bsk/IlY0DKDcsxK/pxcZCP8
+	 9vhtJN9Ux+32a5Bh4Y3A+HBGeW4DUWPo9BqVAoSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Thomas Bourgoin <thomas.bourgoin@foss.st.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Yuntao Wang <ytcoode@gmail.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/322] crypto: stm32/crc32 - fix parsing list of devices
-Date: Fri,  2 Feb 2024 20:02:15 -0800
-Message-ID: <20240203035400.306417403@linuxfoundation.org>
+Subject: [PATCH 6.7 018/353] ACPI: tables: Correct and clean up the logic of acpi_parse_entries_array()
+Date: Fri,  2 Feb 2024 20:02:16 -0800
+Message-ID: <20240203035404.321468574@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
+From: Yuntao Wang <ytcoode@gmail.com>
 
-[ Upstream commit 0eaef675b94c746900dcea7f6c41b9a103ed5d53 ]
+[ Upstream commit 4b3805daaacb2168665c6222f261e68accb120dc ]
 
-smatch warnings:
-drivers/crypto/stm32/stm32-crc32.c:108 stm32_crc_get_next_crc() warn:
-can 'crc' even be NULL?
+The original intention of acpi_parse_entries_array() is to return the
+number of all matching entries on success. This number may be greater than
+the value of the max_entries parameter. When this happens, the function
+will output a warning message, indicating that `count - max_entries`
+matching entries remain unprocessed and have been ignored.
 
-Use list_first_entry_or_null instead of list_first_entry to retrieve
-the first device registered.
-The function list_first_entry always return a non NULL pointer even if
-the list is empty. Hence checking if the pointer returned is NULL does
-not tell if the list is empty or not.
+However, commit 4ceacd02f5a1 ("ACPI / table: Always count matched and
+successfully parsed entries") changed this logic to return the number of
+entries successfully processed by the handler. In this case, when the
+max_entries parameter is not zero, the number of entries successfully
+processed can never be greater than the value of max_entries. In other
+words, the expression `count > max_entries` will always evaluate to false.
+This means that the logic in the final if statement will never be executed.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/r/202311281111.ou2oUL2i-lkp@intel.com/
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202311281111.ou2oUL2i-lkp@intel.com/
-Signed-off-by: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Commit 99b0efd7c886 ("ACPI / tables: do not report the number of entries
+ignored by acpi_parse_entries()") mentioned this issue, but it tried to fix
+it by removing part of the warning message. This is meaningless because the
+pr_warn statement will never be executed in the first place.
+
+Commit 8726d4f44150 ("ACPI / tables: fix acpi_parse_entries_array() so it
+traverses all subtables") introduced an errs variable, which is intended to
+make acpi_parse_entries_array() always traverse all of the subtables,
+calling as many of the callbacks as possible. However, it seems that the
+commit does not achieve this goal. For example, when a handler returns an
+error, none of the handlers will be called again in the subsequent
+iterations. This result appears to be no different from before the change.
+
+This patch corrects and cleans up the logic of acpi_parse_entries_array(),
+making it return the number of all matching entries, rather than the number
+of entries successfully processed by handlers. Additionally, if an error
+occurs when executing a handler, the function will return -EINVAL immediately.
+
+This patch should not affect existing users of acpi_parse_entries_array().
+
+Signed-off-by: Yuntao Wang <ytcoode@gmail.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/stm32/stm32-crc32.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/fw_table.c | 30 +++++++++---------------------
+ 1 file changed, 9 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/crypto/stm32/stm32-crc32.c b/drivers/crypto/stm32/stm32-crc32.c
-index 90a920e7f664..c439be1650c8 100644
---- a/drivers/crypto/stm32/stm32-crc32.c
-+++ b/drivers/crypto/stm32/stm32-crc32.c
-@@ -104,7 +104,7 @@ static struct stm32_crc *stm32_crc_get_next_crc(void)
- 	struct stm32_crc *crc;
+diff --git a/lib/fw_table.c b/lib/fw_table.c
+index 294df54e33b6..c49a09ee3853 100644
+--- a/lib/fw_table.c
++++ b/lib/fw_table.c
+@@ -85,11 +85,6 @@ acpi_get_subtable_type(char *id)
+ 	return ACPI_SUBTABLE_COMMON;
+ }
  
- 	spin_lock_bh(&crc_list.lock);
--	crc = list_first_entry(&crc_list.dev_list, struct stm32_crc, list);
-+	crc = list_first_entry_or_null(&crc_list.dev_list, struct stm32_crc, list);
- 	if (crc)
- 		list_move_tail(&crc->list, &crc_list.dev_list);
- 	spin_unlock_bh(&crc_list.lock);
+-static __init_or_acpilib bool has_handler(struct acpi_subtable_proc *proc)
+-{
+-	return proc->handler || proc->handler_arg;
+-}
+-
+ static __init_or_acpilib int call_handler(struct acpi_subtable_proc *proc,
+ 					  union acpi_subtable_headers *hdr,
+ 					  unsigned long end)
+@@ -133,7 +128,6 @@ acpi_parse_entries_array(char *id, unsigned long table_size,
+ 	unsigned long table_end, subtable_len, entry_len;
+ 	struct acpi_subtable_entry entry;
+ 	int count = 0;
+-	int errs = 0;
+ 	int i;
+ 
+ 	table_end = (unsigned long)table_header + table_header->length;
+@@ -145,25 +139,19 @@ acpi_parse_entries_array(char *id, unsigned long table_size,
+ 	    ((unsigned long)table_header + table_size);
+ 	subtable_len = acpi_get_subtable_header_length(&entry);
+ 
+-	while (((unsigned long)entry.hdr) + subtable_len  < table_end) {
+-		if (max_entries && count >= max_entries)
+-			break;
+-
++	while (((unsigned long)entry.hdr) + subtable_len < table_end) {
+ 		for (i = 0; i < proc_num; i++) {
+ 			if (acpi_get_entry_type(&entry) != proc[i].id)
+ 				continue;
+-			if (!has_handler(&proc[i]) ||
+-			    (!errs &&
+-			     call_handler(&proc[i], entry.hdr, table_end))) {
+-				errs++;
+-				continue;
+-			}
++
++			if (!max_entries || count < max_entries)
++				if (call_handler(&proc[i], entry.hdr, table_end))
++					return -EINVAL;
+ 
+ 			proc[i].count++;
++			count++;
+ 			break;
+ 		}
+-		if (i != proc_num)
+-			count++;
+ 
+ 		/*
+ 		 * If entry->length is 0, break from this loop to avoid
+@@ -180,9 +168,9 @@ acpi_parse_entries_array(char *id, unsigned long table_size,
+ 	}
+ 
+ 	if (max_entries && count > max_entries) {
+-		pr_warn("[%4.4s:0x%02x] found the maximum %i entries\n",
+-			id, proc->id, count);
++		pr_warn("[%4.4s:0x%02x] ignored %i entries of %i found\n",
++			id, proc->id, count - max_entries, count);
+ 	}
+ 
+-	return errs ? -EINVAL : count;
++	return count;
+ }
 -- 
 2.43.0
 
