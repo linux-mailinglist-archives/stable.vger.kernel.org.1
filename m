@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-17951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326348480C5
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5412484832A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD4B81F21AC4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC8BDB23B02
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57FE518AE0;
-	Sat,  3 Feb 2024 04:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12FF050272;
+	Sat,  3 Feb 2024 04:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgAUhhSM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WoCmZW15"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164B518654;
-	Sat,  3 Feb 2024 04:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B7550266;
+	Sat,  3 Feb 2024 04:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933437; cv=none; b=FQqOSE6+tSIWu1USIZQEZO4AV7y1lSnaanHcRbfCwI7VmN+M9Zr77hkehUs0yj45IveVp7szJQEHFByHD9j0z4vKBCfi1rIMql7clfwrkbBMKgWbx1vteeDgUa9+ZZGuJCHRJ3Noz53Ix15Mn1uX3VXfkHc3WPUVYgGGD2jgpxQ=
+	t=1706933880; cv=none; b=HqzcKlCfHlCfIjtc5R0bxcaBQDT7W2dO+/9NzggpavHkla0uiEk/zZjqkn8hHgzHmxNU0ioLpxSiPTYNbC3Jn/5Q6H75zaRFm1mjFP5me7gOuKZLcHmWxLamUt4sPiSKvkGtqiUSu4kAdkdye4Am55x3qovv1ZuwieBa68TTvC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933437; c=relaxed/simple;
-	bh=9ag5clWcaL8OmqRfqyHV7mMgHI/2/MePGgrsdVHrVbY=;
+	s=arc-20240116; t=1706933880; c=relaxed/simple;
+	bh=n9+zPiEtA79kRSoRZuZmnbwO5jrlYSiVx7vJh6s0+YU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dqyWV3i5FE5zAq+UztcT+g/ejNF4yaVwXwXh+C3ajPZuX9Lyru0yNSssOt4LFUt9+e1UKmCIJbbCark4i2eCkD3pf2Tscr2V0R5vTdklHniX6s60Ib+q/AYsoJvkifjuJJTAGditGBX8yQmWDgk2zcDkt1HhCz5OJ3jAEAdKyoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgAUhhSM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1162C433C7;
-	Sat,  3 Feb 2024 04:10:36 +0000 (UTC)
+	 MIME-Version; b=nvVrVeWw/du6W/kNtzKnh51nL0zJAo0nqHgxCwwTO7atiIUv5e97J1ip2Lv7sUl5aCEuZLayFuKMYxjR2Qr2YbQP2Hvw+3N+Yobibg9s9nNRyzbIGottTC+xmVpOM4lbLdIKyul78I5oIc4AAEVISMOu6IAULmdW72QLI5Dag1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WoCmZW15; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C44AC433C7;
+	Sat,  3 Feb 2024 04:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933436;
-	bh=9ag5clWcaL8OmqRfqyHV7mMgHI/2/MePGgrsdVHrVbY=;
+	s=korg; t=1706933880;
+	bh=n9+zPiEtA79kRSoRZuZmnbwO5jrlYSiVx7vJh6s0+YU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rgAUhhSMTnRwyFNSm9WF6y2aSAu6j6fFZroe04HEephHbs7KSUsHQq0G8fCmX2hp0
-	 BCKlsxA3lykUsJZWT3Puuye39KMbvlKhnhA6soZKO+J2EdHDBi40GDGwTRtpq2SS3M
-	 KtAVc6wrRAxS9Qz+dwgruEMv7cQQcWdsBnLVy3p0=
+	b=WoCmZW15D22vuywuk/6h0PtoB9hZw+i6HG4wKwx+5qoOCY42VMhXoKXJlXaWLc9LD
+	 WM5q3ucOqUuJtMleL2mDSG1wr9XGjZCXA71BX8Opbj7VvY1BPndnRjWRPqRDcJI70Z
+	 BgE5T7DmPfqkzOkRVc1/MxK1N7ktuHDXNuOSwBWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Allen Pan <allen.pan@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 166/219] PCI: Fix 64GT/s effective data rate calculation
+Subject: [PATCH 6.7 221/353] drm/amd/display: fix usb-c connector_type
 Date: Fri,  2 Feb 2024 20:05:39 -0800
-Message-ID: <20240203035339.837407032@linuxfoundation.org>
+Message-ID: <20240203035410.671683915@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +63,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Allen Pan <allen.pan@amd.com>
 
-[ Upstream commit ac4f1897fa5433a1b07a625503a91b6aa9d7e643 ]
+[ Upstream commit 0d26644bc57d8737c8e2fb3145366f7d0b941935 ]
 
-Unlike the lower rates, the PCIe 64GT/s Data Rate uses 1b/1b encoding, not
-128b/130b (PCIe r6.1 sec 1.2, Table 1-1).  Correct the PCIE_SPEED2MBS_ENC()
-calculation to reflect that.
+[why]
+BIOS switches to use USB-C connector type 0x18, but VBIOS's
+objectInfo table not supported yet. driver needs to patch it
+based on enc_cap from system integration info table.
 
-Link: https://lore.kernel.org/r/20240102172701.65501-1-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Allen Pan <allen.pan@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../gpu/drm/amd/display/dc/dcn35/dcn35_dio_link_encoder.c    | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index ed6d75d138c7..e1d02b7c6029 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -274,7 +274,7 @@ void pci_bus_put(struct pci_bus *bus);
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_dio_link_encoder.c b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_dio_link_encoder.c
+index f91e08895275..da94e5309fba 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_dio_link_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_dio_link_encoder.c
+@@ -256,6 +256,10 @@ void dcn35_link_encoder_construct(
+ 		enc10->base.features.flags.bits.IS_UHBR10_CAPABLE = bp_cap_info.DP_UHBR10_EN;
+ 		enc10->base.features.flags.bits.IS_UHBR13_5_CAPABLE = bp_cap_info.DP_UHBR13_5_EN;
+ 		enc10->base.features.flags.bits.IS_UHBR20_CAPABLE = bp_cap_info.DP_UHBR20_EN;
++		if (bp_cap_info.DP_IS_USB_C) {
++			/*BIOS not switch to use CONNECTOR_ID_USBC = 24 yet*/
++			enc10->base.features.flags.bits.DP_IS_USB_C = 1;
++		}
  
- /* PCIe speed to Mb/s reduced by encoding overhead */
- #define PCIE_SPEED2MBS_ENC(speed) \
--	((speed) == PCIE_SPEED_64_0GT ? 64000*128/130 : \
-+	((speed) == PCIE_SPEED_64_0GT ? 64000*1/1 : \
- 	 (speed) == PCIE_SPEED_32_0GT ? 32000*128/130 : \
- 	 (speed) == PCIE_SPEED_16_0GT ? 16000*128/130 : \
- 	 (speed) == PCIE_SPEED_8_0GT  ?  8000*128/130 : \
+ 	} else {
+ 		DC_LOG_WARNING("%s: Failed to get encoder_cap_info from VBIOS with error code %d!\n",
+@@ -264,4 +268,5 @@ void dcn35_link_encoder_construct(
+ 	}
+ 	if (enc10->base.ctx->dc->debug.hdmi20_disable)
+ 		enc10->base.features.flags.bits.HDMI_6GB_EN = 0;
++
+ }
 -- 
 2.43.0
 
