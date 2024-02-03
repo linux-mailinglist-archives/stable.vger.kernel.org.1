@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D806F848157
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C07D68482A4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 592441F23A2D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F403A1C22F25
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5149EF9CE;
-	Sat,  3 Feb 2024 04:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20EF14C3D6;
+	Sat,  3 Feb 2024 04:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B9hzMruc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XxROqCPJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112F8101C2;
-	Sat,  3 Feb 2024 04:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10A911739;
+	Sat,  3 Feb 2024 04:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933540; cv=none; b=dqyT68F7PyRh6cqjWEwGxyxSB24RB7TMwlFat4qycrbwI0WiDA4slTbRfv1Z7/CJ9rgF0EdjL4DbomfsBpcuS3mO9cILtYSy6ySCSu3+/e4VdsCdK65tYO2WT+dtaoMn5ftPzc4/gHB9Gv5bVsacvzS6IMUkVquXsS8XedJJu0g=
+	t=1706933783; cv=none; b=EhH324ZzSJOYJlZSWZ5HYjUlvRl9i5bEdpYomEEkg2oXoxhcBgYayXKxYK4l1rLEQKO30DeI/0brPrdF+WAksQHywlR+y0LHvxERIeVTSFBa/OOf6djIbNiBGoxh2l7sFrpoUdt6JjCghSLF1n4N/cX4zUo0Qlt91R4DYBe7qdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933540; c=relaxed/simple;
-	bh=TrZW5PXc1mmX52CczXTKh2HsGJYaLKyo4LrkEqW5SnI=;
+	s=arc-20240116; t=1706933783; c=relaxed/simple;
+	bh=dVsbN2fHBszBcX5f46xnw3L95h1f0X5xAZPsZsJa2l0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pYk2pH2skgPnhV7YUWhQ3dI9FbLfwSM1qeVTOHF1ePF7wZlNi3dVMt6zKsZanW86OsSkl0HjNdIJ9FleSgU03sNtJQNwPZoWaSZ0eZZcyPlk4AIfiSeQjKLKTHp6Os85bkcbzt8Jf0buBPqQ4z1y0pdfwpUZ04zxy98ol4wSyhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B9hzMruc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD372C433F1;
-	Sat,  3 Feb 2024 04:12:19 +0000 (UTC)
+	 MIME-Version; b=AIXcbHw03ATIPyyBXEIIXQDNAfiMeSQsqXhw83+iq/SPvoGWmX6uunfRVzRDvBXE8WT+SWnZJxC0ocKOnIrRVyqOwZWdei3zj3AFAce2XJHZy2i8Bx2NCfsa8kY8eVP7B6ccC7aaXSIcTgzGNgRGzzeEdwEIqWiyxI7LGApYXxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XxROqCPJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 976E0C433C7;
+	Sat,  3 Feb 2024 04:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933539;
-	bh=TrZW5PXc1mmX52CczXTKh2HsGJYaLKyo4LrkEqW5SnI=;
+	s=korg; t=1706933783;
+	bh=dVsbN2fHBszBcX5f46xnw3L95h1f0X5xAZPsZsJa2l0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B9hzMrucMUzy3clR+wIHfHLtxhk6e78/dTqGKVDK3ATxYtsuCaXoeewSew6qiCjxQ
-	 4scIvl7XeeM0NDf9wY2tba5sMIMqWg7odFDYXiMqLGNjR7jRlyrmzSq4Ueu1k2gdNg
-	 6rwD+Hz2DVZ59TKv1bqZ1mdA+WqrfUgLVqweaIgQ=
+	b=XxROqCPJzzV7Q/8dBW2O+d070PJ1YmUHlX+hfi0/iYsFSLy6SUSF8oOzv6AXBTHbk
+	 PsRbKBqw+BiAp47UW9DZOCGqaNJ0lW7mGEMi6KW/B1TNwwqkRILR0/4vwE5d5F1gRC
+	 vplgPAWXP4utlpvd8l0L5B+v7yyxxeE9TtZheadI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Shiji Yang <yangshiji66@outlook.com>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/322] bpf: Fix a few selftest failures due to llvm18 change
+Subject: [PATCH 6.7 064/353] wifi: rt2x00: restart beacon queue when hardware reset
 Date: Fri,  2 Feb 2024 20:03:02 -0800
-Message-ID: <20240203035401.903786405@linuxfoundation.org>
+Message-ID: <20240203035405.835696283@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-[ Upstream commit b16904fd9f01b580db357ef2b1cc9e86d89576c2 ]
+[ Upstream commit a11d965a218f0cd95b13fe44d0bcd8a20ce134a8 ]
 
-With latest upstream llvm18, the following test cases failed:
+When a hardware reset is triggered, all registers are reset, so all
+queues are forced to stop in hardware interface. However, mac80211
+will not automatically stop the queue. If we don't manually stop the
+beacon queue, the queue will be deadlocked and unable to start again.
+This patch fixes the issue where Apple devices cannot connect to the
+AP after calling ieee80211_restart_hw().
 
-  $ ./test_progs -j
-  #13/2    bpf_cookie/multi_kprobe_link_api:FAIL
-  #13/3    bpf_cookie/multi_kprobe_attach_api:FAIL
-  #13      bpf_cookie:FAIL
-  #77      fentry_fexit:FAIL
-  #78/1    fentry_test/fentry:FAIL
-  #78      fentry_test:FAIL
-  #82/1    fexit_test/fexit:FAIL
-  #82      fexit_test:FAIL
-  #112/1   kprobe_multi_test/skel_api:FAIL
-  #112/2   kprobe_multi_test/link_api_addrs:FAIL
-  [...]
-  #112     kprobe_multi_test:FAIL
-  #356/17  test_global_funcs/global_func17:FAIL
-  #356     test_global_funcs:FAIL
-
-Further analysis shows llvm upstream patch [1] is responsible for the above
-failures. For example, for function bpf_fentry_test7() in net/bpf/test_run.c,
-without [1], the asm code is:
-
-  0000000000000400 <bpf_fentry_test7>:
-     400: f3 0f 1e fa                   endbr64
-     404: e8 00 00 00 00                callq   0x409 <bpf_fentry_test7+0x9>
-     409: 48 89 f8                      movq    %rdi, %rax
-     40c: c3                            retq
-     40d: 0f 1f 00                      nopl    (%rax)
-
-... and with [1], the asm code is:
-
-  0000000000005d20 <bpf_fentry_test7.specialized.1>:
-    5d20: e8 00 00 00 00                callq   0x5d25 <bpf_fentry_test7.specialized.1+0x5>
-    5d25: c3                            retq
-
-... and <bpf_fentry_test7.specialized.1> is called instead of <bpf_fentry_test7>
-and this caused test failures for #13/#77 etc. except #356.
-
-For test case #356/17, with [1] (progs/test_global_func17.c)), the main prog
-looks like:
-
-  0000000000000000 <global_func17>:
-       0:       b4 00 00 00 2a 00 00 00 w0 = 0x2a
-       1:       95 00 00 00 00 00 00 00 exit
-
-... which passed verification while the test itself expects a verification
-failure.
-
-Let us add 'barrier_var' style asm code in both places to prevent function
-specialization which caused selftests failure.
-
-  [1] https://github.com/llvm/llvm-project/pull/72903
-
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20231127050342.1945270-1-yonghong.song@linux.dev
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/TYAP286MB031530EB6D98DCE4DF20766CBCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bpf/test_run.c                                     | 2 +-
- tools/testing/selftests/bpf/progs/test_global_func17.c | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ralink/rt2x00/rt2x00dev.c |  3 +++
+ drivers/net/wireless/ralink/rt2x00/rt2x00mac.c | 11 +++++++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 0841f8d82419..478ee7aba85f 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -543,7 +543,7 @@ struct bpf_fentry_test_t {
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+index c88ce446e117..9e7d9dbe954c 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+@@ -101,6 +101,7 @@ void rt2x00lib_disable_radio(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00link_stop_tuner(rt2x00dev);
+ 	rt2x00queue_stop_queues(rt2x00dev);
+ 	rt2x00queue_flush_queues(rt2x00dev, true);
++	rt2x00queue_stop_queue(rt2x00dev->bcn);
  
- int noinline bpf_fentry_test7(struct bpf_fentry_test_t *arg)
- {
--	asm volatile ("");
-+	asm volatile ("": "+r"(arg));
- 	return (long)arg;
+ 	/*
+ 	 * Disable radio.
+@@ -1286,6 +1287,7 @@ int rt2x00lib_start(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00dev->intf_ap_count = 0;
+ 	rt2x00dev->intf_sta_count = 0;
+ 	rt2x00dev->intf_associated = 0;
++	rt2x00dev->intf_beaconing = 0;
+ 
+ 	/* Enable the radio */
+ 	retval = rt2x00lib_enable_radio(rt2x00dev);
+@@ -1312,6 +1314,7 @@ void rt2x00lib_stop(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00dev->intf_ap_count = 0;
+ 	rt2x00dev->intf_sta_count = 0;
+ 	rt2x00dev->intf_associated = 0;
++	rt2x00dev->intf_beaconing = 0;
  }
  
-diff --git a/tools/testing/selftests/bpf/progs/test_global_func17.c b/tools/testing/selftests/bpf/progs/test_global_func17.c
-index a32e11c7d933..5de44b09e8ec 100644
---- a/tools/testing/selftests/bpf/progs/test_global_func17.c
-+++ b/tools/testing/selftests/bpf/progs/test_global_func17.c
-@@ -5,6 +5,7 @@
- 
- __noinline int foo(int *p)
- {
-+	barrier_var(p);
- 	return p ? (*p = 42) : 0;
- }
- 
+ static inline void rt2x00lib_set_if_combinations(struct rt2x00_dev *rt2x00dev)
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
+index 4202c6517783..75fda72c14ca 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
+@@ -598,6 +598,17 @@ void rt2x00mac_bss_info_changed(struct ieee80211_hw *hw,
+ 	 */
+ 	if (changes & BSS_CHANGED_BEACON_ENABLED) {
+ 		mutex_lock(&intf->beacon_skb_mutex);
++
++		/*
++		 * Clear the 'enable_beacon' flag and clear beacon because
++		 * the beacon queue has been stopped after hardware reset.
++		 */
++		if (test_bit(DEVICE_STATE_RESET, &rt2x00dev->flags) &&
++		    intf->enable_beacon) {
++			intf->enable_beacon = false;
++			rt2x00queue_clear_beacon(rt2x00dev, vif);
++		}
++
+ 		if (!bss_conf->enable_beacon && intf->enable_beacon) {
+ 			rt2x00dev->intf_beaconing--;
+ 			intf->enable_beacon = false;
 -- 
 2.43.0
 
