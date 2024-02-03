@@ -1,91 +1,90 @@
-Return-Path: <stable+bounces-18721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5610984887A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 20:19:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA5D984888A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 20:30:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C98FEB20E03
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 19:19:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AFBB1F21E4C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 19:30:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659C743AAB;
-	Sat,  3 Feb 2024 19:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CF2D5EE79;
+	Sat,  3 Feb 2024 19:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="aFA8rQ1a"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="dAvweoYY"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B666C5EE6C;
-	Sat,  3 Feb 2024 19:19:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963D85DF31;
+	Sat,  3 Feb 2024 19:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706987957; cv=none; b=RQvkmTdsmM5tk5zEqyYpQKOYqo6htw51iYYvB/2a/8WsC9jZGM1rklXw7lCYsekKEWhD5f+DiJFT+EtuKEMBGVVWdeOfxqBoSGS2CI7r0xY1clkkHV5njDxFbpyBhAv1LnNJbjoGJPbG7NgIo9/86q25lp/LX8h2TIF5JL4JSLU=
+	t=1706988612; cv=none; b=nbBwkza8YxjG6ohpSdW2mtJiuYoV9tIwlEahlmoRhPvfNg7iU/ZtJBH0aAkjM/ZNxrsUrOodPO4D0Ey9mnQ4zBpHPeIsDl3UyagFjY7irthzfRZGq8KzPtjagpmym2ovMFkHXj7yVIOH3CP6hlcLcLBqoIbzsRo4BgA5zbka/Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706987957; c=relaxed/simple;
-	bh=9wbmSDuXLQsTvBXIWvyok8vDsRPUOz2Eu+W/4FJ3oRA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aQ5+hgSNZA51x10bs3CoVcecAreperqZkQPT6QohqYRhDtIqZhc4u2LeSuyJhYKlbbwK0KM4mGJuCDW86tcE7wn1d7byyW6Ldnt5LE8l2iTiGMkj2BVRBcE+MSnmLqO4Jh+m/StaN78zd91ac5XAyGmRdOfJptlxYSIvsQ5SABA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=aFA8rQ1a; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=3sp615ubLIGUFTBs5mkge4Pj6zeRiaFtVTrso1UptCM=; b=aFA8rQ1aUwBaskVWMU0hBfiCZG
-	r5InxUp3+UUQiR1Md1Okf4ZAgFcMsT32DZl4axdQp6jm0ldF0EnuCmlpk1tJ4d5kWG4QQJXN8ul0I
-	9adMI5dmT3SLkgJOxa0Hr/6TLz1BTxkfy3DQfit70XDkujc97iitVWm9PqWFBfleQTLfk7UgoaArQ
-	FEtrJZwBpoCIEnikMO4hdW3PITkodoNPfOVwxhw12EkVtJoyiWONepWzh1Ill7GCmT+UcDFg06ELz
-	Xyrv1ZV4Pt58xxvjjicNE84e79PEheN9j3iL3BWFvBxoj4BgHqLTbr8FJLPsFoL8H29djiGN4J5Oi
-	wIw61OLA==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rWLXl-00000004fFN-2uuf;
-	Sat, 03 Feb 2024 19:19:13 +0000
-Date: Sat, 3 Feb 2024 19:19:13 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>, Arjun Roy <arjunroy@google.com>,
-	linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	linux-fsdevel@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	ZhangPeng <zhangpeng362@huawei.com>
-Subject: Re: [PATCH 6.1 194/219] tcp: add sanity checks to rx zerocopy
-Message-ID: <Zb6Rse9AMI9IHCgk@casper.infradead.org>
-References: <20240203035317.354186483@linuxfoundation.org>
- <20240203035344.297241145@linuxfoundation.org>
- <Zb6RLr7OoZsUboQD@casper.infradead.org>
+	s=arc-20240116; t=1706988612; c=relaxed/simple;
+	bh=LB+tEP8N9nouNEotQM2sUzLKU7fiqJotlHQx9XCpmTA=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=HsBP3II1EbhuOmoT2IomGfpDBZWnXuIsxTbXe9NmxU7xrpje/PigfwrvoYNNPnq3pAjhF0KtaVJ9jIKl2OT3akJ/8Obp5lb+NG0XcxyXnYtF/CrKCsds20fEYkpiSWkYnJBilRKME+8SNCMy2NOs2GMgUp4a77s2iAqa2tDdhuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=dAvweoYY; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1706988607; x=1707593407; i=rwarsow@gmx.de;
+	bh=LB+tEP8N9nouNEotQM2sUzLKU7fiqJotlHQx9XCpmTA=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+	b=dAvweoYYOhxF3KLK+5pQdcdlNJ8mP6B6yfo+TcqwRGVfFcVdh4OdtaAmNO2wm3ON
+	 lb4IFNvj+1bAWUi9Gh6r/CJyCMl+ETGlsHRZymSutG0MlrvNJfMjQmurl4KVFTG1+
+	 5C3ZTuZx9PszGOgNO46FFptUqauK2q80ESDYO6eA1CD15tMIbDAamBfSbjulTseSt
+	 F/O0myJ4J5LCwV8xi2W2srKcUwknt9o+7KLzPEhB4Jnm3VDnw85bZqN1Ymn3jdSGe
+	 3QG8KBIBqAe13DzecYb8iLxIzN4wp+xu21mpQlMn1aAmQlIf8vW4h00Mlxvk7S/ev
+	 pZp+UI5JY7jwTkqZvA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.34.236]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Ml6qM-1qkxCE3RM4-00lUMI; Sat, 03
+ Feb 2024 20:30:06 +0100
+Message-ID: <6719bb63-7857-4da4-8f18-a97602c1e27a@gmx.de>
+Date: Sat, 3 Feb 2024 20:30:06 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zb6RLr7OoZsUboQD@casper.infradead.org>
+User-Agent: Mozilla Thunderbird
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.7 000/355] 6.7.4-rc2 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:Gpo9SfqyDCluo+siy/hrFZ8+HNAwSxQ9+rVULhZwYlaqBnW8jZU
+ TVC2Kq7P4y49mnxnWQcsj0cj4HyIwl7w7CCfPcjDvYD0Lni3RI1xul2HDmQN8v/mcB6ZetK
+ nZf6i1ay3h+xfPQG5ZqZpyWBfPgZH9hfbQDo/pp1/VHbny66/4H2WNm9o1tHTX6yURTORFX
+ ttInVYRenc4+Yk7zPTMIA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:MQC/wcCccdQ=;wFM8+KvGjKIPfbVh7f8seU16bRw
+ Fn3jP79EdpE1w/vR5QLbztMSsJErsNM61j29/f5SJB0JjofnCQqYOViGpGEGB9QjxCR1HWt+r
+ 5pXf8Cg42dCxww4ZVS+wM7kXKFSId5tqIdUIVevL+G/UwgDHI6otM0U/DJO9lpDb/VMSZkK5x
+ 2CwQymy8c1+F8/Ddd+9olDVva51bP04B8AxbtA87NanF9lpq36YgWtGI0+a99sn6k/t+/pKlH
+ MSFI6mQG7SwTqCd6qJckm57vot5m249UuQQelAgPEcfAuemK6RWv6V0ebdwryd5jdgyaN7Xwc
+ 77wWoyXvcdFv7vfJu70ZEK+uBV1m3hil/BiwwDODRTUPUcd7yVPlmBjqAiNcgRqB2lNHuuRHn
+ 8KsT0ltgyTeM49uE2X7Ddce2LLmCo7gD6NuY+hSetcSG5zhtbCBQmSNZuGKZtmlcie0PydhyX
+ gTpaFuw/z6xBprPjzLlq7nfR+I7GBARwO7fWlZIWh0s+X6iCA9gHpV2yeISQgMIQ2CCd/8mo1
+ 9As5FrEfQNCCTBUx86z9+D+s/gPx+V8/A9V73RlECy9yTyN9jf+ahz0+Jo2VHYMFE7sgZ7xkT
+ mAiBiVR7ohG31oec1zMIDJiWUenQpoPjiwLFrQTu4VSIOiA0od1lnlwc8Kw8CjVdPS7a8msDV
+ VTL+tTJgRAQRlTTRFuNnltoJ8fpTALDidW5YoefV8U1M1CkZrJr9wtvu24QdpEafXPD0kgU3+
+ kDOMZBdvyq33DXXNXnPzIphOyTgDrgAH2JFDxJ6B4ElcUjZc0KW26rLZHRn5uwI5Bi0yU37po
+ uqehQpKB9j/nPY/b+ao5s3zvWhBljb3o1//UEmBr2CFMo=
 
+Hi Greg
 
-... and the patch has the wrong email address for linux-mm on it,
-further reducing the number of experts who are going to see it.
+*no* regressions here on x86_64 (Intel Rocket Lake: i5-11400)
 
-On Sat, Feb 03, 2024 at 07:17:02PM +0000, Matthew Wilcox wrote:
-> On Fri, Feb 02, 2024 at 08:06:07PM -0800, Greg Kroah-Hartman wrote:
-> > 6.1-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Eric Dumazet <edumazet@google.com>
-> > 
-> > [ Upstream commit 577e4432f3ac810049cb7e6b71f4d96ec7c6e894 ]
-> 
-> Um, I thought this was an inapproproate way to fix the problem and I
-> said so at the time.  Why did this get applied?  I'm starting to get
-> quite angry at networking developers poking around in the guts of MM.
-> They don't know what they're doing and it shows.
-> 
+Thanks
+
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
+
 
