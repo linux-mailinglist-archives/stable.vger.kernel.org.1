@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-17888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC56848084
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 333AF8482EB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90BB11F2C05C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA2AE1F23F2A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559F1168DD;
-	Sat,  3 Feb 2024 04:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32D34F5E5;
+	Sat,  3 Feb 2024 04:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgc7gDms"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdfyXeM6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128E4FC11;
-	Sat,  3 Feb 2024 04:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71420101CE;
+	Sat,  3 Feb 2024 04:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933390; cv=none; b=ne2BMOe6zuMRRnKq4ktZKuvsYVzDHXAkQH/s7GS6LScxajQXYbvjksHXOMhrFL01RszE8nauJUmMOcnJwGJq5YWRoPLly3IrDNXG8OXGyivucbPGXvaG9LxExpFI3CGeUTJmPBIP0OwrLHjp6KrIP4PIvmTllBo/N0gp5/Wk81s=
+	t=1706933835; cv=none; b=L79npwVlFoT7nwLA8GV8GedONNqkFuf9GUYi1Zyx5BtNSWMWOT6RXVAD6JETZSyj8Hs1Ixu3+3Sw9AwHrdBD6ZTKPBI7R1ByJWMV4YI8COTcWE46PAfcZhpfPOMSh3uIrzduy2gI8VMbbWGGkl/SFq9953P+1zYQf9obmfhhmuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933390; c=relaxed/simple;
-	bh=COHRHisYInt1p0cW1qiV7JTzRJNwlqpqeRNADM5YbWQ=;
+	s=arc-20240116; t=1706933835; c=relaxed/simple;
+	bh=JDwDOEtPHHFHGAldNKzSwETI36qj1YIb527HQYdFq10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W6lbhhNoT7Ng4GTNEuhIswmZsBQ7XCphIOBaqgXOYNZYpaQeFCyQBINP9unI09VRWYGuIBh6/28RJjmyZEXE5Y9QHr65sAy7M2qDq8s13Gsk0uCl0ut2TWsm6Yl6L0ntrX8nQQCfIUWdglaXEgh8v1UvOtgnkhrogQcbBTkM0zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgc7gDms; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCAFEC433F1;
-	Sat,  3 Feb 2024 04:09:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e11Drnoj2YYvf73uGQAJpzBWIt9EdMrVJ+WGfIWbK5SHxY8R9uenM3v4Gd7RhbBy0M0b6jzg/cTvgUwwoUXNMqizX9hwMTnFWKDLQX2GerLRFqiime8ycPFC5ZhDC1KNuXKddrPDBOE3s53IIKdyipmCX3maLli8fVbYsXgx9qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdfyXeM6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37005C433C7;
+	Sat,  3 Feb 2024 04:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933389;
-	bh=COHRHisYInt1p0cW1qiV7JTzRJNwlqpqeRNADM5YbWQ=;
+	s=korg; t=1706933835;
+	bh=JDwDOEtPHHFHGAldNKzSwETI36qj1YIb527HQYdFq10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wgc7gDmsYDE8we67mSvWbwlkbKpZ3+u1P6l6z6FJkQjRqZUWu/f++im4ByGlg2jPu
-	 MHauwSWdV/O68Q8WePxKZ+C25CMeACZOwRlp32a65iJwEJmXn0aOWBKkOC11soXTBa
-	 Qv+pdRKj9sIpscL6Icfkw6XgpmMQ8M/jcHKBE1FY=
+	b=EdfyXeM67C1JGLH6WKAgEyF6IoAyf9uhW9+6bwOJVl3LkQ8QOU4wVkQ/KnniTmMbY
+	 BbOVgsnTLhD0LK3mNZn5dI9ah7FRPBtjL6FF+skn4wKlvO0bp8FzINLBevVwO2goRc
+	 C8pVkHXuDXggoHhx7hhoAjPL7wFyMQolYqNmSXP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/219] f2fs: fix to check return value of f2fs_reserve_new_block()
+Subject: [PATCH 6.7 159/353] net: dsa: qca8k: put MDIO bus OF node on qca8k_mdio_register() failure
 Date: Fri,  2 Feb 2024 20:04:37 -0800
-Message-ID: <20240203035332.067869492@linuxfoundation.org>
+Message-ID: <20240203035408.681120107@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +62,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 956fa1ddc132e028f3b7d4cf17e6bfc8cb36c7fd ]
+[ Upstream commit 68e1010cda7967cfca9c8650ee1f4efcae54ab90 ]
 
-Let's check return value of f2fs_reserve_new_block() in do_recover_data()
-rather than letting it fails silently.
+of_get_child_by_name() gives us an OF node with an elevated refcount,
+which should be dropped when we're done with it. This is so that,
+if (of_node_check_flag(node, OF_DYNAMIC)) is true, the node's memory can
+eventually be freed.
 
-Also refactoring check condition on return value of f2fs_reserve_new_block()
-as below:
-- trigger f2fs_bug_on() only for ENOSPC case;
-- use do-while statement to avoid redundant codes;
+There are 2 distinct paths to be considered in qca8k_mdio_register():
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+- devm_of_mdiobus_register() succeeds: since commit 3b73a7b8ec38 ("net:
+  mdio_bus: add refcounting for fwnodes to mdiobus"), the MDIO core
+  treats this well.
+
+- devm_of_mdiobus_register() or anything up to that point fails: it is
+  the duty of the qca8k driver to release the OF node.
+
+This change addresses the second case by making sure that the OF node
+reference is not leaked.
+
+The "mdio" node may be NULL, but of_node_put(NULL) is safe.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Alvin Šipraga <alsi@bang-olufsen.dk>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/recovery.c | 23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ drivers/net/dsa/qca/qca8k-8xxx.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
-index dea95b48b647..4f4db465220f 100644
---- a/fs/f2fs/recovery.c
-+++ b/fs/f2fs/recovery.c
-@@ -683,7 +683,16 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
- 		 */
- 		if (dest == NEW_ADDR) {
- 			f2fs_truncate_data_blocks_range(&dn, 1);
--			f2fs_reserve_new_block(&dn);
-+			do {
-+				err = f2fs_reserve_new_block(&dn);
-+				if (err == -ENOSPC) {
-+					f2fs_bug_on(sbi, 1);
-+					break;
-+				}
-+			} while (err &&
-+				IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
-+			if (err)
-+				goto err;
- 			continue;
- 		}
+diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
+index ec57d9d52072..5f47a290bd6e 100644
+--- a/drivers/net/dsa/qca/qca8k-8xxx.c
++++ b/drivers/net/dsa/qca/qca8k-8xxx.c
+@@ -949,10 +949,15 @@ qca8k_mdio_register(struct qca8k_priv *priv)
+ 	struct dsa_switch *ds = priv->ds;
+ 	struct device_node *mdio;
+ 	struct mii_bus *bus;
++	int err;
++
++	mdio = of_get_child_by_name(priv->dev->of_node, "mdio");
  
-@@ -691,12 +700,14 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
- 		if (f2fs_is_valid_blkaddr(sbi, dest, META_POR)) {
+ 	bus = devm_mdiobus_alloc(ds->dev);
+-	if (!bus)
+-		return -ENOMEM;
++	if (!bus) {
++		err = -ENOMEM;
++		goto out_put_node;
++	}
  
- 			if (src == NULL_ADDR) {
--				err = f2fs_reserve_new_block(&dn);
--				while (err &&
--				       IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION))
-+				do {
- 					err = f2fs_reserve_new_block(&dn);
--				/* We should not get -ENOSPC */
--				f2fs_bug_on(sbi, err);
-+					if (err == -ENOSPC) {
-+						f2fs_bug_on(sbi, 1);
-+						break;
-+					}
-+				} while (err &&
-+					IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
- 				if (err)
- 					goto err;
- 			}
+ 	bus->priv = (void *)priv;
+ 	snprintf(bus->id, MII_BUS_ID_SIZE, "qca8k-%d.%d",
+@@ -962,12 +967,12 @@ qca8k_mdio_register(struct qca8k_priv *priv)
+ 	ds->user_mii_bus = bus;
+ 
+ 	/* Check if the devicetree declare the port:phy mapping */
+-	mdio = of_get_child_by_name(priv->dev->of_node, "mdio");
+ 	if (of_device_is_available(mdio)) {
+ 		bus->name = "qca8k user mii";
+ 		bus->read = qca8k_internal_mdio_read;
+ 		bus->write = qca8k_internal_mdio_write;
+-		return devm_of_mdiobus_register(priv->dev, bus, mdio);
++		err = devm_of_mdiobus_register(priv->dev, bus, mdio);
++		goto out_put_node;
+ 	}
+ 
+ 	/* If a mapping can't be found the legacy mapping is used,
+@@ -976,7 +981,13 @@ qca8k_mdio_register(struct qca8k_priv *priv)
+ 	bus->name = "qca8k-legacy user mii";
+ 	bus->read = qca8k_legacy_mdio_read;
+ 	bus->write = qca8k_legacy_mdio_write;
+-	return devm_mdiobus_register(priv->dev, bus);
++
++	err = devm_mdiobus_register(priv->dev, bus);
++
++out_put_node:
++	of_node_put(mdio);
++
++	return err;
+ }
+ 
+ static int
 -- 
 2.43.0
 
