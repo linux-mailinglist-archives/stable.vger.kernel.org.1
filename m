@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B248480FD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C1284836A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81F62B29094
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91CD2B257C8
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB511B944;
-	Sat,  3 Feb 2024 04:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17E3537E1;
+	Sat,  3 Feb 2024 04:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lWgcMNyz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DAxVJBc0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F688134D1;
-	Sat,  3 Feb 2024 04:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64254210E2;
+	Sat,  3 Feb 2024 04:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933477; cv=none; b=s1bIyNIOwH/jl4H4Rl7XawJjakZTH4bAOY0kz/d/+vVozZgl3iCiuXarTeIO6evPCyzI/Wi2Sn4Vujpm24sqM4xT7FG+P922S7Vap/M/OAhoaamriZNHI7tDwwmDH9tEeTpv4imou0rIyDvcq2m403pFsiNrH9dmi4eQIdS04DI=
+	t=1706933927; cv=none; b=n9XO7Y8DSAMiLFNK6zxsB/g+vIXPThnPzEep0Ys/3zQ4nw9qfxL1vcdb78UscXZGu7OcMk8nPf0XbLtf5MVw2N8Mo2ud2JR2NBCrdXZwA0xOjWCg/K4I7BvtRDdDK8u/jkXX8jXt7GifiF4+U815bh8T7ahauHn13T1z2a8Jg6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933477; c=relaxed/simple;
-	bh=P17p+VVOVuFnNkYhECs4jLtChdv+AL4EvtO/Ukb4ulw=;
+	s=arc-20240116; t=1706933927; c=relaxed/simple;
+	bh=MEMWWicxXwVQwNBqm7/uIIj9jfjCPGETMsjMuQ6tTIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oil7VVPhMktCHgiJyt1fwRYukEpHeZ3QTdd1nRRHcy/huLlCAO8zBcF4DsG3O6s/qHBGPbooWGHx36+zAyy59iQ6NkOKp4gEbMNa+i3zHa+Kv8ejHIV4+8AW2Vx3PUaEsu1+wfhtnSK2dwvxvHnl67foMWx74FMaj5dGZckcovA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lWgcMNyz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4978AC43390;
-	Sat,  3 Feb 2024 04:11:17 +0000 (UTC)
+	 MIME-Version; b=JGp+3Qvfk5HO7kB/eFvRMy9Wyv1MFFHGgCw60xf4LAXLJXKdT2uJDsgSRdni1EAx5Fq9LPgAzDrvTj7RQ541TL239jvivMVM3S001lXFjsedtuQGsRTV29bmj9cdDJHdO22QWu0nPGzo6bWXwceKua9S+zceQpvHzEFbSJ+8f04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DAxVJBc0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25586C433F1;
+	Sat,  3 Feb 2024 04:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933477;
-	bh=P17p+VVOVuFnNkYhECs4jLtChdv+AL4EvtO/Ukb4ulw=;
+	s=korg; t=1706933927;
+	bh=MEMWWicxXwVQwNBqm7/uIIj9jfjCPGETMsjMuQ6tTIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lWgcMNyzCXuTSb91JO+/CQ3iBi2wxZE7pXiBKNa13bHm/qkHzMWNnbxnHLXpwn3Ne
-	 MrguxwY694Ft3h0zQqnfngs+Ef3APNsHhOOsZTYEqgMDiHzXsZ6XNnZhqTPlY8io5C
-	 fLmrz05dYwvfR7oKNr7LFsUrxX/Lb5QttNmZETkE=
+	b=DAxVJBc0IbJdfVagALws+Q12tLNJSs/jYkiwJ6gOeipwgtyxRHPk/YntsU7+FZtIM
+	 WtUVCcKy2cvKh3Sg8qglQ4nm/2IoDv71CvLdUzYHoxI7067WqSJI8UYO41WsbfyYmY
+	 0jtU212Rx3eIhy+8zs6WDaeaa/owGovtTjUSaphA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Schaefer <ryanschf@amazon.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Crescent CY Hsieh <crescentcy.hsieh@moxa.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 203/219] netfilter: conntrack: correct window scaling with retransmitted SYN
-Date: Fri,  2 Feb 2024 20:06:16 -0800
-Message-ID: <20240203035345.576867852@linuxfoundation.org>
+Subject: [PATCH 6.7 259/353] tty: serial: 8250: Set RS422 interface by default to fix Moxa RS422/RS485 PCIe boards
+Date: Fri,  2 Feb 2024 20:06:17 -0800
+Message-ID: <20240203035411.941429171@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Schaefer <ryanschf@amazon.com>
+From: Crescent CY Hsieh <crescentcy.hsieh@moxa.com>
 
-[ Upstream commit fb366fc7541a1de521ab3df58471746aa793b833 ]
+[ Upstream commit 43f012df3c1e979966524f79b5371fde6545488a ]
 
-commit c7aab4f17021 ("netfilter: nf_conntrack_tcp: re-init for syn packets
-only") introduces a bug where SYNs in ORIGINAL direction on reused 5-tuple
-result in incorrect window scale negotiation. This commit merged the SYN
-re-initialization and simultaneous open or SYN retransmits cases. Merging
-this block added the logic in tcp_init_sender() that performed window scale
-negotiation to the retransmitted syn case. Previously. this would only
-result in updating the sender's scale and flags. After the merge the
-additional logic results in improperly clearing the scale in ORIGINAL
-direction before any packets in the REPLY direction are received. This
-results in packets incorrectly being marked invalid for being
-out-of-window.
+MOXA PCIe RS422/RS485 boards will not function by default because of the
+initial default serial interface of all MOXA PCIe boards is set to
+RS232.
 
-This can be reproduced with the following trace:
+This patch fixes the problem above by setting the initial default serial
+interface to RS422 for those MOXA RS422/RS485 PCIe boards.
 
-Packet Sequence:
-> Flags [S], seq 1687765604, win 62727, options [.. wscale 7], length 0
-> Flags [S], seq 1944817196, win 62727, options [.. wscale 7], length 0
-
-In order to fix the issue, only evaluate window negotiation for packets
-in the REPLY direction. This was tested with simultaneous open, fast
-open, and the above reproduction.
-
-Fixes: c7aab4f17021 ("netfilter: nf_conntrack_tcp: re-init for syn packets only")
-Signed-off-by: Ryan Schaefer <ryanschf@amazon.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Crescent CY Hsieh <crescentcy.hsieh@moxa.com>
+Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20231214060234.6147-1-crescentcy.hsieh@moxa.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_proto_tcp.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/tty/serial/8250/8250_pci.c | 58 +++++++++++++++++++++++++++++-
+ 1 file changed, 57 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_proto_tcp.c b/net/netfilter/nf_conntrack_proto_tcp.c
-index 3ac1af6f59fc..e0092bf273fd 100644
---- a/net/netfilter/nf_conntrack_proto_tcp.c
-+++ b/net/netfilter/nf_conntrack_proto_tcp.c
-@@ -457,7 +457,8 @@ static void tcp_init_sender(struct ip_ct_tcp_state *sender,
- 			    const struct sk_buff *skb,
- 			    unsigned int dataoff,
- 			    const struct tcphdr *tcph,
--			    u32 end, u32 win)
-+			    u32 end, u32 win,
-+			    enum ip_conntrack_dir dir)
- {
- 	/* SYN-ACK in reply to a SYN
- 	 * or SYN from reply direction in simultaneous open.
-@@ -471,7 +472,8 @@ static void tcp_init_sender(struct ip_ct_tcp_state *sender,
- 	 * Both sides must send the Window Scale option
- 	 * to enable window scaling in either direction.
- 	 */
--	if (!(sender->flags & IP_CT_TCP_FLAG_WINDOW_SCALE &&
-+	if (dir == IP_CT_DIR_REPLY &&
-+	    !(sender->flags & IP_CT_TCP_FLAG_WINDOW_SCALE &&
- 	      receiver->flags & IP_CT_TCP_FLAG_WINDOW_SCALE)) {
- 		sender->td_scale = 0;
- 		receiver->td_scale = 0;
-@@ -542,7 +544,7 @@ tcp_in_window(struct nf_conn *ct, enum ip_conntrack_dir dir,
- 		if (tcph->syn) {
- 			tcp_init_sender(sender, receiver,
- 					skb, dataoff, tcph,
--					end, win);
-+					end, win, dir);
- 			if (!tcph->ack)
- 				/* Simultaneous open */
- 				return NFCT_TCP_ACCEPT;
-@@ -585,7 +587,7 @@ tcp_in_window(struct nf_conn *ct, enum ip_conntrack_dir dir,
- 		 */
- 		tcp_init_sender(sender, receiver,
- 				skb, dataoff, tcph,
--				end, win);
-+				end, win, dir);
+diff --git a/drivers/tty/serial/8250/8250_pci.c b/drivers/tty/serial/8250/8250_pci.c
+index 614be0f13a31..8ccf691935b7 100644
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -19,6 +19,7 @@
+ #include <linux/serial_core.h>
+ #include <linux/8250_pci.h>
+ #include <linux/bitops.h>
++#include <linux/bitfield.h>
  
- 		if (dir == IP_CT_DIR_REPLY && !tcph->ack)
- 			return NFCT_TCP_ACCEPT;
+ #include <asm/byteorder.h>
+ #include <asm/io.h>
+@@ -1970,6 +1971,20 @@ pci_sunix_setup(struct serial_private *priv,
+ 
+ #define MOXA_GPIO_PIN2	BIT(2)
+ 
++#define MOXA_RS232	0x00
++#define MOXA_RS422	0x01
++#define MOXA_RS485_4W	0x0B
++#define MOXA_RS485_2W	0x0F
++#define MOXA_UIR_OFFSET	0x04
++#define MOXA_EVEN_RS_MASK	GENMASK(3, 0)
++#define MOXA_ODD_RS_MASK	GENMASK(7, 4)
++
++enum {
++	MOXA_SUPP_RS232 = BIT(0),
++	MOXA_SUPP_RS422 = BIT(1),
++	MOXA_SUPP_RS485 = BIT(2),
++};
++
+ static bool pci_moxa_is_mini_pcie(unsigned short device)
+ {
+ 	if (device == PCI_DEVICE_ID_MOXA_CP102N	||
+@@ -1983,13 +1998,54 @@ static bool pci_moxa_is_mini_pcie(unsigned short device)
+ 	return false;
+ }
+ 
++static unsigned int pci_moxa_supported_rs(struct pci_dev *dev)
++{
++	switch (dev->device & 0x0F00) {
++	case 0x0000:
++	case 0x0600:
++		return MOXA_SUPP_RS232;
++	case 0x0100:
++		return MOXA_SUPP_RS232 | MOXA_SUPP_RS422 | MOXA_SUPP_RS485;
++	case 0x0300:
++		return MOXA_SUPP_RS422 | MOXA_SUPP_RS485;
++	}
++	return 0;
++}
++
++static int pci_moxa_set_interface(const struct pci_dev *dev,
++				  unsigned int port_idx,
++				  u8 mode)
++{
++	resource_size_t iobar_addr = pci_resource_start(dev, 2);
++	resource_size_t UIR_addr = iobar_addr + MOXA_UIR_OFFSET + port_idx / 2;
++	u8 val;
++
++	val = inb(UIR_addr);
++
++	if (port_idx % 2) {
++		val &= ~MOXA_ODD_RS_MASK;
++		val |= FIELD_PREP(MOXA_ODD_RS_MASK, mode);
++	} else {
++		val &= ~MOXA_EVEN_RS_MASK;
++		val |= FIELD_PREP(MOXA_EVEN_RS_MASK, mode);
++	}
++	outb(val, UIR_addr);
++
++	return 0;
++}
++
+ static int pci_moxa_init(struct pci_dev *dev)
+ {
+ 	unsigned short device = dev->device;
+ 	resource_size_t iobar_addr = pci_resource_start(dev, 2);
+-	unsigned int num_ports = (device & 0x00F0) >> 4;
++	unsigned int num_ports = (device & 0x00F0) >> 4, i;
+ 	u8 val;
+ 
++	if (!(pci_moxa_supported_rs(dev) & MOXA_SUPP_RS232)) {
++		for (i = 0; i < num_ports; ++i)
++			pci_moxa_set_interface(dev, i, MOXA_RS422);
++	}
++
+ 	/*
+ 	 * Enable hardware buffer to prevent break signal output when system boots up.
+ 	 * This hardware buffer is only supported on Mini PCIe series.
 -- 
 2.43.0
 
