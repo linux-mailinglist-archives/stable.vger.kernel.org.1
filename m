@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-17934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A5EB8480B1
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729A48481CF
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAECC28AB1D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1965F1F2B0C3
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D29818028;
-	Sat,  3 Feb 2024 04:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893043FE4E;
+	Sat,  3 Feb 2024 04:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZuDA5MOa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sPsHaS9s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B01C125C4;
-	Sat,  3 Feb 2024 04:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4596A10965;
+	Sat,  3 Feb 2024 04:13:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933424; cv=none; b=nIQDIx0+juW9hMV11PomqIsWs8RHP53zdz78DsyaCs5AFP5adshj5YhSMTUYeFNWSyogB4W48PK6QGOcSI5hvm5P7wTPwb91xpGCrBtgl6tagWcfXX6Txzqvpj/BuYLIASgkXAFZauCOnwYOgvGw6QC9yAYCk7d/a8voKCXeezs=
+	t=1706933626; cv=none; b=TQM/OfUcsnqOWkmDdGjNyrc8C0R666asZ6n+JzlXPZVBmH5EicBWibY1+N7/V0TLsqsaLT2Fus9xF4a+AYi2cJWCQTW6p+Dw5d18rRHSGrkugP9oqNLoecQ0H2STiyjjRg1jmiGRf8j5FA2DhZXP010rsZHCSQMzSBYvTWE7bK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933424; c=relaxed/simple;
-	bh=3ohXCnvwdV/faQx3Rk69C7jWNt76Ng0MOqw9lNWTJcw=;
+	s=arc-20240116; t=1706933626; c=relaxed/simple;
+	bh=0pVcqtz0wc/LKMfiiwYxoRxQtZ37gSooxSG3Hnho+AY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RI/XRLlSNmFo4Jub/p2AbPHnHg9mm+n3sj89TQeSLnxKwjyi/uv/pSZZ2d3ai6wONFbVHIozkBTwXRFwvGvuvFqvMtGZ+CNOpC0wcQsVtWVze4GNCS/Ow3sUipSLDBH5rnGbhNtrSoKU4ynKbrURjgqZd/HQf+PCCJuxezt2G5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZuDA5MOa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13342C43390;
-	Sat,  3 Feb 2024 04:10:24 +0000 (UTC)
+	 MIME-Version; b=pPegEZR5fDBieSimeg1vQi46gcmHJ9W6V6MHB9Zx5JBoVv7yb/HbFK9amA9BYEb9v6LdIW3WGVCZ4/KTwGt9PqXPcB2vq81mKuoWmnBEwIqv/nM4OwQucwgz+daHmRm5ZYjIAb7APeFpMwnLz7jyyzKkozqxT2IQ76aWAicwYes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sPsHaS9s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0625CC433F1;
+	Sat,  3 Feb 2024 04:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933424;
-	bh=3ohXCnvwdV/faQx3Rk69C7jWNt76Ng0MOqw9lNWTJcw=;
+	s=korg; t=1706933626;
+	bh=0pVcqtz0wc/LKMfiiwYxoRxQtZ37gSooxSG3Hnho+AY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZuDA5MOatiTFB1E5NIdPtUdm1AaLKWe6E9M7gbIF4Dyhr3MT/0YniNsqAxyY+wkoc
-	 mqXgSNIeo4VrruNisHPxmZzJ/QRXkdQ9XtW+Zg0kLYpWWiVOgOnanImEweYAlch5lW
-	 6S+zWiH0p6tWpdTB9t+nggZeDtdd9QTaMl3Mkb14=
+	b=sPsHaS9sA5ok5P4+FSuAe1IotZHaLQm6KSx2oB7oLZbSrqbMKvvKhEfO99B3s2FE3
+	 QlR6mCwHH+tPQGP1O4GkLN4x4RrVhHnm74IhaJIkv7cWmEySMuPlqHzsXMfvg3NKNs
+	 43Je7ZaAhYp+W6fv/jX031rrHL7emV9QY0aTuj40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/219] f2fs: fix to tag gcing flag on page during block migration
+Subject: [PATCH 6.6 202/322] clk: mmp: pxa168: Fix memory leak in pxa168_clk_init()
 Date: Fri,  2 Feb 2024 20:04:59 -0800
-Message-ID: <20240203035335.207060170@linuxfoundation.org>
+Message-ID: <20240203035405.762466444@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit 4961acdd65c956e97c1a000c82d91a8c1cdbe44b ]
+[ Upstream commit 2fbabea626b6467eb4e6c4cb7a16523da12e43b4 ]
 
-It needs to add missing gcing flag on page during block migration,
-in order to garantee migrated data be persisted during checkpoint,
-otherwise out-of-order persistency between data and node may cause
-data corruption after SPOR.
+In cases where mapping of mpmu/apmu/apbc registers fails, the code path
+does not handle the failure gracefully, potentially leading to a memory
+leak. This fix ensures proper cleanup by freeing the allocated memory
+for 'pxa_unit' before returning.
 
-Similar issue was fixed by commit 2d1fe8a86bf5 ("f2fs: fix to tag
-gcing flag on page during file defragment").
-
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Link: https://lore.kernel.org/r/20231210175232.3414584-1-visitorckw@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/compress.c | 4 +++-
- fs/f2fs/file.c     | 2 ++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/clk/mmp/clk-of-pxa168.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index 4cb58e8d699e..3d9f6495a4db 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -1026,8 +1026,10 @@ static void set_cluster_dirty(struct compress_ctx *cc)
- 	int i;
- 
- 	for (i = 0; i < cc->cluster_size; i++)
--		if (cc->rpages[i])
-+		if (cc->rpages[i]) {
- 			set_page_dirty(cc->rpages[i]);
-+			set_page_private_gcing(cc->rpages[i]);
-+		}
- }
- 
- static int prepare_compress_overwrite(struct compress_ctx *cc,
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index fd22854dbeae..46e4960a9dcf 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1326,6 +1326,7 @@ static int __clone_blkaddrs(struct inode *src_inode, struct inode *dst_inode,
- 			}
- 			memcpy_page(pdst, 0, psrc, 0, PAGE_SIZE);
- 			set_page_dirty(pdst);
-+			set_page_private_gcing(pdst);
- 			f2fs_put_page(pdst, 1);
- 			f2fs_put_page(psrc, 1);
- 
-@@ -4037,6 +4038,7 @@ static int redirty_blocks(struct inode *inode, pgoff_t page_idx, int len)
- 		f2fs_bug_on(F2FS_I_SB(inode), !page);
- 
- 		set_page_dirty(page);
-+		set_page_private_gcing(page);
- 		f2fs_put_page(page, 1);
- 		f2fs_put_page(page, 0);
+diff --git a/drivers/clk/mmp/clk-of-pxa168.c b/drivers/clk/mmp/clk-of-pxa168.c
+index fb0df64cf053..c5a7ba1deaa3 100644
+--- a/drivers/clk/mmp/clk-of-pxa168.c
++++ b/drivers/clk/mmp/clk-of-pxa168.c
+@@ -308,18 +308,21 @@ static void __init pxa168_clk_init(struct device_node *np)
+ 	pxa_unit->mpmu_base = of_iomap(np, 0);
+ 	if (!pxa_unit->mpmu_base) {
+ 		pr_err("failed to map mpmu registers\n");
++		kfree(pxa_unit);
+ 		return;
  	}
+ 
+ 	pxa_unit->apmu_base = of_iomap(np, 1);
+ 	if (!pxa_unit->apmu_base) {
+ 		pr_err("failed to map apmu registers\n");
++		kfree(pxa_unit);
+ 		return;
+ 	}
+ 
+ 	pxa_unit->apbc_base = of_iomap(np, 2);
+ 	if (!pxa_unit->apbc_base) {
+ 		pr_err("failed to map apbc registers\n");
++		kfree(pxa_unit);
+ 		return;
+ 	}
+ 
 -- 
 2.43.0
 
