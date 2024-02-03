@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-18409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C67B584829C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71C36848031
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:09:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5683D1F220B6
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EE8F28BE74
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E0C4BAAA;
-	Sat,  3 Feb 2024 04:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E22EB10A2B;
+	Sat,  3 Feb 2024 04:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HE8EAJpZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjOTOm3W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170E013ADB;
-	Sat,  3 Feb 2024 04:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A075C10A29;
+	Sat,  3 Feb 2024 04:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933778; cv=none; b=iR1gEnrntg6kcA0a0ppnvwr/jOhqUcjhvmQxsDwkoazU6gw9lrgOO/he7ury9M0czGU4p3ruPQ02E77UQP/+/7701oMflwcjrvSUxUCx7/0SEVvxkailYVqsQYXcyQ0GjR25XSsOhFNcLdZeD7H5fLasKXiRXltPgyocCrzo4Ro=
+	t=1706933329; cv=none; b=cJAo5hp4KxmnxSE9KakfHB3mvf/nZiVE3QGYWleDhSbZlujDDNNvKrIxjIVZykF7fk0//3R7PABLzB3azOfZDJK4/aU9PRgJcACs10RJIwVHmmHqBEpD9o2a8+mUpRTgfXkrkoA1TBa0r86HkJ4i7J/pjOlwmB1LKQX+59Bjrj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933778; c=relaxed/simple;
-	bh=Rb3mbr4j66SvtelwodPhrultwgoO7MO0r013PZLSIN0=;
+	s=arc-20240116; t=1706933329; c=relaxed/simple;
+	bh=2BfeEAo3dgDggXpVb3bK4dHadllIIDPBdUhsmMJaPos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/vc++CBHGIaBU3d0f2OuN/JwuMwaptS9FePrSkRy88ofdksclaHdrFy7p519G5l+qFzyrA1fDm69/6sINlEXODOk+i9WxX8NSS4s0/Zm2UZEhy1x23r9t8lDK9NRAy5I1OGSkI2VKJrCy5iU/DGxB70/6758keTl+Y/UUpaxcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HE8EAJpZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82869C433C7;
-	Sat,  3 Feb 2024 04:16:17 +0000 (UTC)
+	 MIME-Version; b=ISrC51tqEAy43b6vBWUVBlPyRAhbvMu0g7JKnTttXEQw1o3PnryPSzBgNkhWfNzq1PbvvbYvUY0ighhR7dsryr2X9rfivz+D6M2Duuvxmvpj81yT6FwuSnT7y/cGbd+au6kZXdtwQdRRZY56/GGFAGXnrSwfPjzcOORPjLZNeJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjOTOm3W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65323C433F1;
+	Sat,  3 Feb 2024 04:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933777;
-	bh=Rb3mbr4j66SvtelwodPhrultwgoO7MO0r013PZLSIN0=;
+	s=korg; t=1706933329;
+	bh=2BfeEAo3dgDggXpVb3bK4dHadllIIDPBdUhsmMJaPos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HE8EAJpZotegC9zs4P+AKfm2w/o6uCDHRvfwX6VQ6sWZCnw/6nWEHk80AEoj4Dst9
-	 R/FdVI9r2b3JkGTPV40GU/Xiu5tLdZN1to7bbJ4+og0teYRGVYcpoBhKtXyyF6wSs7
-	 CZBxfMWqVa07+Qe5BpwTVsILEXdyZq4Dm7HwkUVs=
+	b=YjOTOm3WsZOQ+ZNukzFy25mhoDAJam/Wv6DF6TK5WLQwAqMzKKCTwO21iy7xTf1Ei
+	 OFD23bZvbpqld6vRdOzPQRfteacQjSWUoj3TYkOYaZGDeg2nYspygIYZuAfcSSy+SI
+	 UZOxSwSETtImyFR6KDqDx8rtcB0aL1TOZw4vNfZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Petr Machata <petrm@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 081/353] PCI: Add no PM reset quirk for NVIDIA Spectrum devices
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+01cf2dbcbe2022454388@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 026/219] jfs: fix uaf in jfs_evict_inode
 Date: Fri,  2 Feb 2024 20:03:19 -0800
-Message-ID: <20240203035406.372902273@linuxfoundation.org>
+Message-ID: <20240203035320.123384328@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 3ed48c80b28d8dcd584d6ddaf00c75b7673e1a05 ]
+[ Upstream commit e0e1958f4c365e380b17ccb35617345b31ef7bf3 ]
 
-Spectrum-{1,2,3,4} devices report that a D3hot->D0 transition causes a
-reset (i.e., they advertise NoSoftRst-). However, this transition does
-not have any effect on the device: It continues to be operational and
-network ports remain up. Advertising this support makes it seem as if a
-PM reset is viable for these devices. Mark it as unavailable to skip it
-when testing reset methods.
+When the execution of diMount(ipimap) fails, the object ipimap that has been
+released may be accessed in diFreeSpecial(). Asynchronous ipimap release occurs
+when rcu_core() calls jfs_free_node().
 
-Before:
+Therefore, when diMount(ipimap) fails, sbi->ipimap should not be initialized as
+ipimap.
 
- # cat /sys/bus/pci/devices/0000\:03\:00.0/reset_method
- pm bus
-
-After:
-
- # cat /sys/bus/pci/devices/0000\:03\:00.0/reset_method
- bus
-
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-and-tested-by: syzbot+01cf2dbcbe2022454388@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ fs/jfs/jfs_mount.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index d55a3ffae4b8..a991710efa40 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3786,6 +3786,19 @@ static void quirk_no_pm_reset(struct pci_dev *dev)
- DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_VENDOR_ID_ATI, PCI_ANY_ID,
- 			       PCI_CLASS_DISPLAY_VGA, 8, quirk_no_pm_reset);
+diff --git a/fs/jfs/jfs_mount.c b/fs/jfs/jfs_mount.c
+index 48d1f70f786c..21d8d4a5c67a 100644
+--- a/fs/jfs/jfs_mount.c
++++ b/fs/jfs/jfs_mount.c
+@@ -172,15 +172,15 @@ int jfs_mount(struct super_block *sb)
+ 	}
+ 	jfs_info("jfs_mount: ipimap:0x%p", ipimap);
  
-+/*
-+ * Spectrum-{1,2,3,4} devices report that a D3hot->D0 transition causes a reset
-+ * (i.e., they advertise NoSoftRst-). However, this transition does not have
-+ * any effect on the device: It continues to be operational and network ports
-+ * remain up. Advertising this support makes it seem as if a PM reset is viable
-+ * for these devices. Mark it as unavailable to skip it when testing reset
-+ * methods.
-+ */
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcb84, quirk_no_pm_reset);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf6c, quirk_no_pm_reset);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf70, quirk_no_pm_reset);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf80, quirk_no_pm_reset);
+-	/* map further access of per fileset inodes by the fileset inode */
+-	sbi->ipimap = ipimap;
+-
+ 	/* initialize fileset inode allocation map */
+ 	if ((rc = diMount(ipimap))) {
+ 		jfs_err("jfs_mount: diMount failed w/rc = %d", rc);
+ 		goto err_ipimap;
+ 	}
+ 
++	/* map further access of per fileset inodes by the fileset inode */
++	sbi->ipimap = ipimap;
 +
- /*
-  * Thunderbolt controllers with broken MSI hotplug signaling:
-  * Entire 1st generation (Light Ridge, Eagle Ridge, Light Peak) and part
+ 	return rc;
+ 
+ 	/*
 -- 
 2.43.0
 
