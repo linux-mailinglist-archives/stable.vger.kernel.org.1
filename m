@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FEA8480E1
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56501848345
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 755B61F23CCE
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04A1528AE19
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774E21A58E;
-	Sat,  3 Feb 2024 04:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D891CF96;
+	Sat,  3 Feb 2024 04:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKlnOjMy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SvLEdSTe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3582810A1C;
-	Sat,  3 Feb 2024 04:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9697171A4;
+	Sat,  3 Feb 2024 04:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933457; cv=none; b=dpIlsOBua6AyW7mq6E2x4CEcedQNa5jXsjvv2V7+86U6rfNk1HkG6aFREAXFUKJG/+qYJEfiAGZ7uyjEME3aD/18fRUTz5OLPOM7ap5AEt/WrMqWJycLLN95sb20ClwM1nkEFNf1HIAtsSGRDfqYcDr11PHUSjjI3Q5+G4vmYaQ=
+	t=1706933900; cv=none; b=fgi6AiFaNMH2uMjGBG5ccc2vbsLqSmnz0YwCN9cOit3Z389XLsH7v4VVzqgHv+FFc9JU+QOmog4y766MDzI1nRiZT7NdqD/6zeJAxp/E+oQ9QKXLJDRs5f6+duPNCHWwe9WOTErVAGSxWijSs3/1uIWxWCDqAP0t56LhqrFJHaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933457; c=relaxed/simple;
-	bh=4YaUNYBhswLv8y82K7vfHQ/XI8egVMjer8OGZJS/eI4=;
+	s=arc-20240116; t=1706933900; c=relaxed/simple;
+	bh=i7fkalby9DtXzgCXhXYEbQaP9RVdlWUB8BeApYVRdr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D1UUI6PfEXzZsPmdbFkI028sEJH1uKwGJg6+SwNMZ2jJElr1NnD+WlrYhaJkcxN5KZeA/A3atjzWLB+q2mqRfKWTokahgnFwD79fioSIL5bawra6dyQHknFmW0ICWTWG+EV4Gj5WJ0gAHo1iY3GEwpJVjfwIMkU9pzhRvvzVFSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GKlnOjMy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31A4C433A6;
-	Sat,  3 Feb 2024 04:10:56 +0000 (UTC)
+	 MIME-Version; b=A5HjLczCv3QwdojyEnl4uKE/WuSUZJbZtOoYIMJjYr+mhy8DBKXdeWM3DIHx2wDbVKClBuRi2IueUZPgRAY5q7IqbvV8BZtqhXV428rd7UcidfYuNfgfpK6IDRnRLUBVHaNv/0Bb3ogEn/2johse8WaKClBnVjmbMrHZfB0tp+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SvLEdSTe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84088C433F1;
+	Sat,  3 Feb 2024 04:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933457;
-	bh=4YaUNYBhswLv8y82K7vfHQ/XI8egVMjer8OGZJS/eI4=;
+	s=korg; t=1706933900;
+	bh=i7fkalby9DtXzgCXhXYEbQaP9RVdlWUB8BeApYVRdr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GKlnOjMy6Dd/UAwpBIxayHG8MAMffXXr4S9q1N2ABwJd2nYQndcRqmsazjP6vM47B
-	 b4S3jiZCsT/PA03x7hDZ3Oz13TZTqfIslaaa6CtoF3+xCTsa1umyopT4hDNIM8ZR0t
-	 /ToANKX4OIJsPj8pPITIC+1KByPbMfaAlVlRoB7o=
+	b=SvLEdSTe5vEw1g3FDNnAH5FR0IVDT+j+pCdEIx2UKQmx3oWBAwf4X82jpaJDUHLxW
+	 3so5akwDXpqjJePfUapgjWe8OV6CmUb0BMAT3LDro6L5DxicV+cJUpxFXXo/XXkjmh
+	 WH64Oi/ahvjiH2GE19MfXA+fYRgjDPo7sCczbndY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Peter Robinson <pbrobinson@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 193/219] net: lan966x: Fix port configuration when using SGMII interface
+Subject: [PATCH 6.7 248/353] mfd: ti_am335x_tscadc: Fix TI SoC dependencies
 Date: Fri,  2 Feb 2024 20:06:06 -0800
-Message-ID: <20240203035344.062555238@linuxfoundation.org>
+Message-ID: <20240203035411.569268327@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Peter Robinson <pbrobinson@gmail.com>
 
-[ Upstream commit 62b4248105353e7d1debd30ca5c57ec5e5f28e35 ]
+[ Upstream commit 284d16c456e5d4b143f375b8ccc4038ab3f4ee0f ]
 
-In case the interface between the MAC and the PHY is SGMII, then the bit
-GIGA_MODE on the MAC side needs to be set regardless of the speed at
-which it is running.
+The ti_am335x_tscadc is specific to some TI SoCs, update
+the dependencies for those SoCs and compile testing.
 
-Fixes: d28d6d2e37d1 ("net: lan966x: add port module support")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+Link: https://lore.kernel.org/r/20231220155643.445849-1-pbrobinson@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan966x/lan966x_port.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/mfd/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_port.c b/drivers/net/ethernet/microchip/lan966x/lan966x_port.c
-index 0050fcb988b7..8cc5172833a9 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_port.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_port.c
-@@ -168,9 +168,10 @@ static void lan966x_port_link_up(struct lan966x_port *port)
- 	lan966x_taprio_speed_set(port, config->speed);
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index 90ce58fd629e..68d71b4b55bd 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -1483,6 +1483,7 @@ config MFD_SYSCON
  
- 	/* Also the GIGA_MODE_ENA(1) needs to be set regardless of the
--	 * port speed for QSGMII ports.
-+	 * port speed for QSGMII or SGMII ports.
- 	 */
--	if (phy_interface_num_ports(config->portmode) == 4)
-+	if (phy_interface_num_ports(config->portmode) == 4 ||
-+	    config->portmode == PHY_INTERFACE_MODE_SGMII)
- 		mode = DEV_MAC_MODE_CFG_GIGA_MODE_ENA_SET(1);
- 
- 	lan_wr(config->duplex | mode,
+ config MFD_TI_AM335X_TSCADC
+ 	tristate "TI ADC / Touch Screen chip support"
++	depends on ARCH_OMAP2PLUS || ARCH_K3 || COMPILE_TEST
+ 	select MFD_CORE
+ 	select REGMAP
+ 	select REGMAP_MMIO
 -- 
 2.43.0
 
