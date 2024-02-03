@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B8328481EE
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C36F2848321
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39213282A8A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EB4F28B33F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238E643146;
-	Sat,  3 Feb 2024 04:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE0E5025C;
+	Sat,  3 Feb 2024 04:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LlpQS6Hj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzWQSgzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D576D10965;
-	Sat,  3 Feb 2024 04:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004C8168D0;
+	Sat,  3 Feb 2024 04:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933649; cv=none; b=kQR5xArrlXVGBhRwslN1yu+2Ac1tpSLL9v4w2Mxr6RaDJR7I7QZNe0CvpXMtPCQBL2XWdg1dSGOSFcC6/gAH5z+BBr5oxu58MgHw5ALIyXVj7t3qw5Sn5ufVfgyI3E3HjJ1vztKCanj2p8UFA3uGJZY/WZis72MtYtXOzZ5mcU0=
+	t=1706933875; cv=none; b=BC/NUZZN8WL/qGVrVAPtSn4aO3tXMf74yQ/WDHf3offys5TYCRnbHxIcHXyUHB25GMWmjpcSPgtExW7oVOfPHTpOSgmFvBR5i4sVHhII1LG4NF1Dyt1C6GPg193Eib6GG9ex8hDfX9CHoo0U9O3yVGwIKfnpMPTtCgfNqNc6L3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933649; c=relaxed/simple;
-	bh=LuTKsXiec32VQxbd3Pi7pvzg1FHlVQjhE8mw3FqVpPg=;
+	s=arc-20240116; t=1706933875; c=relaxed/simple;
+	bh=Oq1dj9Dr2vHpx3vHUAK2maMurBvwJVsSHHS+hZSvPpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YX7j/oQF78zkEe87oOlFOofxRRA6YFVVptWcI5wIBnKu81sfK6xqZxweicUKfayapkSBSbyTTjRtDrcsElPxULzCMTYAwv86ix/6V6TTUn1P2Dz306dcuYWnDVZy0xLW4EGqbjXKmm62NPEX3Q6rhedApSzOQ5MVqhq32ULmWJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LlpQS6Hj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCBFC433C7;
-	Sat,  3 Feb 2024 04:14:09 +0000 (UTC)
+	 MIME-Version; b=oOwcvwyCQtyH6RyGmBX8sLWBMkQdJrC+rwPKUWVu4gcKdPhTZjcNVqmxwL9x5jdrAdb2fcgS4ZlQFs/S6+v5kIzoNEsilEBBz2pam5/NAVLiyo6fciUsBZxfru32RV02uajSAfrfNlhA2vaCL49jn85CN3ccEkF+JJNF/gh0OU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzWQSgzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD38CC433C7;
+	Sat,  3 Feb 2024 04:17:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933649;
-	bh=LuTKsXiec32VQxbd3Pi7pvzg1FHlVQjhE8mw3FqVpPg=;
+	s=korg; t=1706933874;
+	bh=Oq1dj9Dr2vHpx3vHUAK2maMurBvwJVsSHHS+hZSvPpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LlpQS6HjIqXssSJUhb1iPdY3QtKdk5lK21jGDhrZ8mIJaGfcodKqIseqjPaeZ5AQt
-	 zMrL0kjGCMjtDYjEz1qR4IkTjdsAfJDshrqSFmI3g1w/eTlLqRPEVHav9QbR5Nyamn
-	 gb8eTdKPH4exae2Pbt0Sw4CExhpQLDNUgznsWUVM=
+	b=YzWQSgzQb4NBiScpr/n4wTf/DS2u/oylfqFekL440KjzBGWVDnFOuiY4VLlyelXnN
+	 PWBhwhuULYQYs0P4XzQZ1LU1c5KgTMAHuLqU0nbIiSuqJ0de/KcNxa+OOvn1J3Ffze
+	 YH99ZF6qZVjhX0heKtBKi5F8CIU+1B3l4x5xcryc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yaxiong Tian <tianyaxiong@kylinos.cn>,
-	Chanwoo Choi <cw00.choi@samsung.com>,
+	Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 233/322] extcon: fix possible name leak in extcon_dev_register()
-Date: Fri,  2 Feb 2024 20:05:30 -0800
-Message-ID: <20240203035406.721778460@linuxfoundation.org>
+Subject: [PATCH 6.7 213/353] clk: hi3620: Fix memory leak in hi3620_mmc_clk_init()
+Date: Fri,  2 Feb 2024 20:05:31 -0800
+Message-ID: <20240203035410.433009101@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yaxiong Tian <tianyaxiong@kylinos.cn>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit e66523c72c9aae0ff0dae6859eb77b04de1e8e5f ]
+[ Upstream commit bfbea9e5667cfa9552c3d88f023386f017f6c308 ]
 
-In the error path after calling dev_set_name(), the device
-name is leaked. To fix this, moving dev_set_name() after the
-error path and before device_register.
+In cases where kcalloc() fails for the 'clk_data->clks' allocation, the
+code path does not handle the failure gracefully, potentially leading
+to a memory leak. This fix ensures proper cleanup by freeing the
+allocated memory for 'clk_data' before returning.
 
-Link: https://lore.kernel.org/lkml/TYZPR01MB4784ADCD3E951E0863F3DB72D5B8A@TYZPR01MB4784.apcprd01.prod.exchangelabs.com/
-Signed-off-by: Yaxiong Tian <tianyaxiong@kylinos.cn>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Link: https://lore.kernel.org/r/20231210165040.3407545-1-visitorckw@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/extcon/extcon.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/clk/hisilicon/clk-hi3620.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/extcon/extcon.c b/drivers/extcon/extcon.c
-index 6f7a60d2ed91..e7f55c021e56 100644
---- a/drivers/extcon/extcon.c
-+++ b/drivers/extcon/extcon.c
-@@ -1280,8 +1280,6 @@ int extcon_dev_register(struct extcon_dev *edev)
+diff --git a/drivers/clk/hisilicon/clk-hi3620.c b/drivers/clk/hisilicon/clk-hi3620.c
+index 2d7186905abd..5d0226530fdb 100644
+--- a/drivers/clk/hisilicon/clk-hi3620.c
++++ b/drivers/clk/hisilicon/clk-hi3620.c
+@@ -466,8 +466,10 @@ static void __init hi3620_mmc_clk_init(struct device_node *node)
+ 		return;
  
- 	edev->id = ret;
+ 	clk_data->clks = kcalloc(num, sizeof(*clk_data->clks), GFP_KERNEL);
+-	if (!clk_data->clks)
++	if (!clk_data->clks) {
++		kfree(clk_data);
+ 		return;
++	}
  
--	dev_set_name(&edev->dev, "extcon%d", edev->id);
--
- 	ret = extcon_alloc_cables(edev);
- 	if (ret < 0)
- 		goto err_alloc_cables;
-@@ -1310,6 +1308,7 @@ int extcon_dev_register(struct extcon_dev *edev)
- 	RAW_INIT_NOTIFIER_HEAD(&edev->nh_all);
- 
- 	dev_set_drvdata(&edev->dev, edev);
-+	dev_set_name(&edev->dev, "extcon%d", edev->id);
- 	edev->state = 0;
- 
- 	ret = device_register(&edev->dev);
+ 	for (i = 0; i < num; i++) {
+ 		struct hisi_mmc_clock *mmc_clk = &hi3620_mmc_clks[i];
 -- 
 2.43.0
 
