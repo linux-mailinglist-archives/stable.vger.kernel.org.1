@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37CAF848156
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10000848278
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AF9A1C22987
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42CE61C235AF
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B8DA20B3E;
-	Sat,  3 Feb 2024 04:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470C648CC5;
+	Sat,  3 Feb 2024 04:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4bxHtFe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SW4kwfHU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE9F1F92C;
-	Sat,  3 Feb 2024 04:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0568B134D1;
+	Sat,  3 Feb 2024 04:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933539; cv=none; b=Zz/RLpKwSmSAKD6QPydCi3+Tnc/DHCxkUR7fd6uY6sIZQtN1O80ic8ZX4PoVkpFj7LfJyIMSb2wMShZbCWxtzcua5kfTPv2YxLexU5GB3PDYNrVyzXWScc+ItsIkihjtU+aApCLabNBpU1iflkxjil15CWhf7G16d8lLHDsUWS8=
+	t=1706933751; cv=none; b=RIUuUI/VU46KZajDScVSqSe/V2L9JSnsJyQP+jWaHrSKvpwQGx2JivjRVfQ3cuzk8KE9+pYj+xPKXav0FP7LwtU96n4zW+D6x2OkGKSNzTLvwX32cjFDTgrnDnXdwgw88Vc9cwnZsWLCaVFODO2zIyLPHHhTvoNScgbOoJqopiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933539; c=relaxed/simple;
-	bh=/RasludhNU2TPvb5f9sxaRnVhuw91QidHVK6XXT0j0Q=;
+	s=arc-20240116; t=1706933751; c=relaxed/simple;
+	bh=yZAFzzNQVImpE9npUa+pfQUUHDq32Og8w9jeLKhfPSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m0VhLTbzn3Oclga8b63J8cNpj/aKIN7XBqmv8BSeEUQbaws2W6r4flYfDufr9EPxV8hvUzusqMjyTom90Y5Hr7HgoOoDIbEA/Ozc7ZcJlGidfZDm6QghvsZabnNvHyg3J4pxhDoWqB90eraSClFOT36PbBb2ftOaTQQY3NvIGUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4bxHtFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11041C43390;
-	Sat,  3 Feb 2024 04:12:19 +0000 (UTC)
+	 MIME-Version; b=U8sPmsr5XKnBUlFv27/HJdKe/3CUKAI1ucKMdjC3QvrtMjrfy668pkNJY1ELawcI0+ANGr2+c0HKqLfTGaTN4uy2IkTqu6BIe84pID+cNc//Z5DKzovTBT/v/05dvO0aWXSyRnDEh1MjzRwhDxAWbeM8z9k76Q/udJoPGowAStE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SW4kwfHU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C051EC433F1;
+	Sat,  3 Feb 2024 04:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933539;
-	bh=/RasludhNU2TPvb5f9sxaRnVhuw91QidHVK6XXT0j0Q=;
+	s=korg; t=1706933750;
+	bh=yZAFzzNQVImpE9npUa+pfQUUHDq32Og8w9jeLKhfPSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w4bxHtFeGwSQwcvr68wKDKol8LmHWyeHWDFXx4p+5Zm7SWey75QkY1FCNh//X5kx4
-	 syEIo72W7+4vBu1YPPEnm+u3/j2WlJ1te4rxr2IDJxHdkdwk3izdyFsvMRG3UbFXQT
-	 gYXPraIrnUGzPAp+D85/XTsgOliTmBg8mO1aAftA=
+	b=SW4kwfHUg22qYRmwOT+EyqIju9BLPMSwc4WI2yzWWouMGUdziYv1nMJLn1yiWSZU9
+	 RBGqQOhcziIPS5xyS+Vu2XoxvXXTcum+3nG1zmOoXcTQe46MvEV/6KbiCt6vcbzViX
+	 pDCMarmkfGwxvSBL7fqUMIWwDqwTBvap9ehQUGUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/322] ARM: dts: qcom: mdm9615: fix PMIC node labels
+Subject: [PATCH 6.7 046/353] s390/boot: always align vmalloc area on segment boundary
 Date: Fri,  2 Feb 2024 20:02:44 -0800
-Message-ID: <20240203035401.313769766@linuxfoundation.org>
+Message-ID: <20240203035405.267905572@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-[ Upstream commit 0e4688cd4ee6efbeae2b31f75e16961fd7f72735 ]
+[ Upstream commit 65f8780e2d70257200547b5a7654974aa7c37ce1 ]
 
-Change PM8018 node labels to start with pm8018_ prefix, following other
-Qualcomm PMIC device nodes.
+The size of vmalloc area depends from various factors
+on boot and could be set to:
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230928110309.1212221-10-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+1. Default size as determined by VMALLOC_DEFAULT_SIZE macro;
+2. One half of the virtual address space not occupied by
+   modules and fixed mappings;
+3. The size provided by user with vmalloc= kernel command
+   line parameter;
+
+In cases [1] and [2] the vmalloc area base address is aligned
+on Region3 table type boundary, while in case [3] in might get
+aligned on page boundary.
+
+Limit the waste of page tables and always align vmalloc area
+size and base address on segment boundary.
+
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom/qcom-mdm9615-wp8548.dtsi |  2 +-
- arch/arm/boot/dts/qcom/qcom-mdm9615.dtsi        | 14 +++++++-------
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ arch/s390/boot/ipl_parm.c | 2 +-
+ arch/s390/boot/startup.c  | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-mdm9615-wp8548.dtsi b/arch/arm/boot/dts/qcom/qcom-mdm9615-wp8548.dtsi
-index 92c8003dac25..dac3aa793f71 100644
---- a/arch/arm/boot/dts/qcom/qcom-mdm9615-wp8548.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-mdm9615-wp8548.dtsi
-@@ -76,7 +76,7 @@
- 	};
- };
+diff --git a/arch/s390/boot/ipl_parm.c b/arch/s390/boot/ipl_parm.c
+index 2ab4872fbee1..b24de9aabf7d 100644
+--- a/arch/s390/boot/ipl_parm.c
++++ b/arch/s390/boot/ipl_parm.c
+@@ -274,7 +274,7 @@ void parse_boot_command_line(void)
+ 			memory_limit = round_down(memparse(val, NULL), PAGE_SIZE);
  
--&pmicgpio {
-+&pm8018_gpio {
- 	usb_vbus_5v_pins: usb-vbus-5v-state {
- 		pins = "gpio4";
- 		function = "normal";
-diff --git a/arch/arm/boot/dts/qcom/qcom-mdm9615.dtsi b/arch/arm/boot/dts/qcom/qcom-mdm9615.dtsi
-index 63e21aa23642..c0a60bae703b 100644
---- a/arch/arm/boot/dts/qcom/qcom-mdm9615.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-mdm9615.dtsi
-@@ -261,7 +261,7 @@
- 			reg = <0x500000 0x1000>;
- 			qcom,controller-type = "pmic-arbiter";
+ 		if (!strcmp(param, "vmalloc") && val) {
+-			vmalloc_size = round_up(memparse(val, NULL), PAGE_SIZE);
++			vmalloc_size = round_up(memparse(val, NULL), _SEGMENT_SIZE);
+ 			vmalloc_size_set = 1;
+ 		}
  
--			pmicintc: pmic {
-+			pm8018: pmic {
- 				compatible = "qcom,pm8018", "qcom,pm8921";
- 				interrupts = <GIC_PPI 226 IRQ_TYPE_LEVEL_HIGH>;
- 				#interrupt-cells = <2>;
-@@ -272,38 +272,38 @@
- 				pwrkey@1c {
- 					compatible = "qcom,pm8018-pwrkey", "qcom,pm8921-pwrkey";
- 					reg = <0x1c>;
--					interrupt-parent = <&pmicintc>;
-+					interrupt-parent = <&pm8018>;
- 					interrupts = <50 IRQ_TYPE_EDGE_RISING>,
- 						     <51 IRQ_TYPE_EDGE_RISING>;
- 					debounce = <15625>;
- 					pull-up;
- 				};
+diff --git a/arch/s390/boot/startup.c b/arch/s390/boot/startup.c
+index 8104e0e3d188..9cc76e631759 100644
+--- a/arch/s390/boot/startup.c
++++ b/arch/s390/boot/startup.c
+@@ -255,7 +255,8 @@ static unsigned long setup_kernel_memory_layout(void)
+ 	VMALLOC_END = MODULES_VADDR;
  
--				pmicmpp: mpps@50 {
-+				pm8018_mpps: mpps@50 {
- 					compatible = "qcom,pm8018-mpp", "qcom,ssbi-mpp";
- 					interrupt-controller;
- 					#interrupt-cells = <2>;
- 					reg = <0x50>;
- 					gpio-controller;
- 					#gpio-cells = <2>;
--					gpio-ranges = <&pmicmpp 0 0 6>;
-+					gpio-ranges = <&pm8018_mpps 0 0 6>;
- 				};
+ 	/* allow vmalloc area to occupy up to about 1/2 of the rest virtual space left */
+-	vmalloc_size = min(vmalloc_size, round_down(VMALLOC_END / 2, _REGION3_SIZE));
++	vsize = round_down(VMALLOC_END / 2, _SEGMENT_SIZE);
++	vmalloc_size = min(vmalloc_size, vsize);
+ 	VMALLOC_START = VMALLOC_END - vmalloc_size;
  
- 				rtc@11d {
- 					compatible = "qcom,pm8018-rtc", "qcom,pm8921-rtc";
--					interrupt-parent = <&pmicintc>;
-+					interrupt-parent = <&pm8018>;
- 					interrupts = <39 IRQ_TYPE_EDGE_RISING>;
- 					reg = <0x11d>;
- 					allow-set-time;
- 				};
- 
--				pmicgpio: gpio@150 {
-+				pm8018_gpio: gpio@150 {
- 					compatible = "qcom,pm8018-gpio", "qcom,ssbi-gpio";
- 					reg = <0x150>;
- 					interrupt-controller;
- 					#interrupt-cells = <2>;
- 					gpio-controller;
--					gpio-ranges = <&pmicgpio 0 0 6>;
-+					gpio-ranges = <&pm8018_gpio 0 0 6>;
- 					#gpio-cells = <2>;
- 				};
- 			};
+ 	/* split remaining virtual space between 1:1 mapping & vmemmap array */
 -- 
 2.43.0
 
