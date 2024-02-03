@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-18294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE42E848228
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B958480DD
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78BCA28BC22
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B2DB1C241CF
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19C9647A61;
-	Sat,  3 Feb 2024 04:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746AD19BBA;
+	Sat,  3 Feb 2024 04:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQXskG88"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbcWIuv0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9D810A1F;
-	Sat,  3 Feb 2024 04:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28915FC03;
+	Sat,  3 Feb 2024 04:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933692; cv=none; b=VOSYXbL5hJuxtkvnrl+kmFE1b40cg/Fk/8AUfB4DHgQWf+6Fnb2DuY6yvqeRLn1PJJ6rdlmWT7Z+uUprsJrXdiNz0tyIwHXWK+K/c2+iL9tZDWn+HQmbSeluTZJhinMsKC9wpqL4LFC0S8cUy645xhl7heKmuTh5nJoITRvFaSM=
+	t=1706933454; cv=none; b=JdMz53d2uGWHHmzuWvaqElMB088/u9A/0S2Y7C/fQwbgmxV+9PdtDXPhqhSO9vFCNHdyJ/Va3KYhQ0Ga0gTXg/ndmyr05SkS2EzDC7P17OkBFhuwMAX2mnrfQrojUEgtaD8SP9etsJm3nbZzMG5KCcZ3G0llU5Ei092YHXwDYJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933692; c=relaxed/simple;
-	bh=XpsHwfU7bsmbHwfb6eCVf4PL51NgpnhIaNiX+1Njkgk=;
+	s=arc-20240116; t=1706933454; c=relaxed/simple;
+	bh=LTeSYk2u20pcmsBQjbqEGg0uJ5NVt9PSvayngZYJehU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XdBgCJ0n3zaYw9DTCJCEmZjEwqf9ioUeruftBd2O3dLoCLLFnR14Y8PlXLd4PVi2R/+EsPdKHKxng0t/uneYa6+F0BT6XY8d54hIZK7m9blz7YGbPLR4pQFyfWH6k1C1LUVDhQPvjhhljZt8NpYNCHUq+asJmXQgpFrIhoQtfM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQXskG88; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 910EAC43394;
-	Sat,  3 Feb 2024 04:14:52 +0000 (UTC)
+	 MIME-Version; b=YBnwhPWfvKkqUiT5LHibyEoDBVRK0JGG//wXykmOxmLC2tzge2L3vEugwZkZ+107vl7e8uluJ56I2ZhXMkUTlx6XLOa4Um7v4dc4SvuNJ0jr9CQM+Ib/xH7ypoVC6C6YW4n1CvizMJbfPi+laoU+IjH0F64ER9bXcG9HhbYIi0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbcWIuv0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6078C433F1;
+	Sat,  3 Feb 2024 04:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933692;
-	bh=XpsHwfU7bsmbHwfb6eCVf4PL51NgpnhIaNiX+1Njkgk=;
+	s=korg; t=1706933454;
+	bh=LTeSYk2u20pcmsBQjbqEGg0uJ5NVt9PSvayngZYJehU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rQXskG887ZaRlYTNdIvc9gLZCsIvUeQpmaKm3IzhVMt5f/Sw559D2WPceJFcwCAoG
-	 o3ui8eNbmIG+yneztSmW/h1D1yWa2a9zhb9/6xUEIR8sZSrAVpGdBJNiqelrExwAm8
-	 /1eVUoSouwvvpDGaalYFrYyAcIVYL3o7aCDrq6W8=
+	b=nbcWIuv09mF5/z/lw8fIOKJ6rugfY+eL9639nZ22fG2zc+zhadvXZvslr/v5s1Y1F
+	 AjKaJwqorqJsoIOoIG9l9HeLf82F65JWXXqec/7YScS9Ku4cgG1jBVbdei1lJwh5ZE
+	 BOtbqdNinW+686BOiS46t5Bl0LcaWkvecOeYpyZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gow <davidgow@google.com>,
-	Rae Moar <rmoar@google.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Marco Pagani <marpagan@redhat.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 265/322] kunit: run test suites only after module initialization completes
-Date: Fri,  2 Feb 2024 20:06:02 -0800
-Message-ID: <20240203035407.692810772@linuxfoundation.org>
+Subject: [PATCH 6.1 190/219] ip6_tunnel: make sure to pull inner header in __ip6_tnl_rcv()
+Date: Fri,  2 Feb 2024 20:06:03 -0800
+Message-ID: <20240203035343.543994075@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,139 +64,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Pagani <marpagan@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a1af6a2bfa0cb46d70b7df5352993e750da6c79b ]
+[ Upstream commit 8d975c15c0cd744000ca386247432d57b21f9df0 ]
 
-Commit 2810c1e99867 ("kunit: Fix wild-memory-access bug in
-kunit_free_suite_set()") fixed a wild-memory-access bug that could have
-happened during the loading phase of test suites built and executed as
-loadable modules. However, it also introduced a problematic side effect
-that causes test suites modules to crash when they attempt to register
-fake devices.
+syzbot found __ip6_tnl_rcv() could access unitiliazed data [1].
 
-When a module is loaded, it traverses the MODULE_STATE_UNFORMED and
-MODULE_STATE_COMING states before reaching the normal operating state
-MODULE_STATE_LIVE. Finally, when the module is removed, it moves to
-MODULE_STATE_GOING before being released. However, if the loading
-function load_module() fails between complete_formation() and
-do_init_module(), the module goes directly from MODULE_STATE_COMING to
-MODULE_STATE_GOING without passing through MODULE_STATE_LIVE.
+Call pskb_inet_may_pull() to fix this, and initialize ipv6h
+variable after this call as it can change skb->head.
 
-This behavior was causing kunit_module_exit() to be called without
-having first executed kunit_module_init(). Since kunit_module_exit() is
-responsible for freeing the memory allocated by kunit_module_init()
-through kunit_filter_suites(), this behavior was resulting in a
-wild-memory-access bug.
+[1]
+ BUG: KMSAN: uninit-value in __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
+ BUG: KMSAN: uninit-value in INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
+ BUG: KMSAN: uninit-value in IP6_ECN_decapsulate+0x7df/0x1e50 include/net/inet_ecn.h:321
+  __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
+  INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
+  IP6_ECN_decapsulate+0x7df/0x1e50 include/net/inet_ecn.h:321
+  ip6ip6_dscp_ecn_decapsulate+0x178/0x1b0 net/ipv6/ip6_tunnel.c:727
+  __ip6_tnl_rcv+0xd4e/0x1590 net/ipv6/ip6_tunnel.c:845
+  ip6_tnl_rcv+0xce/0x100 net/ipv6/ip6_tunnel.c:888
+ gre_rcv+0x143f/0x1870
+  ip6_protocol_deliver_rcu+0xda6/0x2a60 net/ipv6/ip6_input.c:438
+  ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
+  NF_HOOK include/linux/netfilter.h:314 [inline]
+  ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
+  ip6_mc_input+0xa7e/0xc80 net/ipv6/ip6_input.c:586
+  dst_input include/net/dst.h:461 [inline]
+  ip6_rcv_finish+0x5db/0x870 net/ipv6/ip6_input.c:79
+  NF_HOOK include/linux/netfilter.h:314 [inline]
+  ipv6_rcv+0xda/0x390 net/ipv6/ip6_input.c:310
+  __netif_receive_skb_one_core net/core/dev.c:5532 [inline]
+  __netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5646
+  netif_receive_skb_internal net/core/dev.c:5732 [inline]
+  netif_receive_skb+0x58/0x660 net/core/dev.c:5791
+  tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1555
+  tun_get_user+0x53af/0x66d0 drivers/net/tun.c:2002
+  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
+  call_write_iter include/linux/fs.h:2084 [inline]
+  new_sync_write fs/read_write.c:497 [inline]
+  vfs_write+0x786/0x1200 fs/read_write.c:590
+  ksys_write+0x20f/0x4c0 fs/read_write.c:643
+  __do_sys_write fs/read_write.c:655 [inline]
+  __se_sys_write fs/read_write.c:652 [inline]
+  __x64_sys_write+0x93/0xd0 fs/read_write.c:652
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0x6d/0x140 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-Commit 2810c1e99867 ("kunit: Fix wild-memory-access bug in
-kunit_free_suite_set()") fixed this issue by running the tests when the
-module is still in MODULE_STATE_COMING. However, modules in that state
-are not fully initialized, lacking sysfs kobjects. Therefore, if a test
-module attempts to register a fake device, it will inevitably crash.
+Uninit was created at:
+  slab_post_alloc_hook+0x129/0xa70 mm/slab.h:768
+  slab_alloc_node mm/slub.c:3478 [inline]
+  kmem_cache_alloc_node+0x5e9/0xb10 mm/slub.c:3523
+  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:560
+  __alloc_skb+0x318/0x740 net/core/skbuff.c:651
+  alloc_skb include/linux/skbuff.h:1286 [inline]
+  alloc_skb_with_frags+0xc8/0xbd0 net/core/skbuff.c:6334
+  sock_alloc_send_pskb+0xa80/0xbf0 net/core/sock.c:2787
+  tun_alloc_skb drivers/net/tun.c:1531 [inline]
+  tun_get_user+0x1e8a/0x66d0 drivers/net/tun.c:1846
+  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
+  call_write_iter include/linux/fs.h:2084 [inline]
+  new_sync_write fs/read_write.c:497 [inline]
+  vfs_write+0x786/0x1200 fs/read_write.c:590
+  ksys_write+0x20f/0x4c0 fs/read_write.c:643
+  __do_sys_write fs/read_write.c:655 [inline]
+  __se_sys_write fs/read_write.c:652 [inline]
+  __x64_sys_write+0x93/0xd0 fs/read_write.c:652
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0x6d/0x140 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-This patch proposes a different approach to fix the original
-wild-memory-access bug while restoring the normal module execution flow
-by making kunit_module_exit() able to detect if kunit_module_init() has
-previously initialized the tests suite set. In this way, test modules
-can once again register fake devices without crashing.
+CPU: 0 PID: 5034 Comm: syz-executor331 Not tainted 6.7.0-syzkaller-00562-g9f8413c4a66f #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
 
-This behavior is achieved by checking whether mod->kunit_suites is a
-virtual or direct mapping address. If it is a virtual address, then
-kunit_module_init() has allocated the suite_set in kunit_filter_suites()
-using kmalloc_array(). On the contrary, if mod->kunit_suites is still
-pointing to the original address that was set when looking up the
-.kunit_test_suites section of the module, then the loading phase has
-failed and there's no memory to be freed.
-
-v4:
-- rebased on 6.8
-- noted that kunit_filter_suites() must return a virtual address
-v3:
-- add a comment to clarify why the start address is checked
-v2:
-- add include <linux/mm.h>
-
-Fixes: 2810c1e99867 ("kunit: Fix wild-memory-access bug in kunit_free_suite_set()")
-Reviewed-by: David Gow <davidgow@google.com>
-Tested-by: Rae Moar <rmoar@google.com>
-Tested-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Marco Pagani <marpagan@redhat.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 0d3c703a9d17 ("ipv6: Cleanup IPv6 tunnel receive path")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240125170557.2663942-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/kunit/executor.c |  4 ++++
- lib/kunit/test.c     | 14 +++++++++++---
- 2 files changed, 15 insertions(+), 3 deletions(-)
+ net/ipv6/ip6_tunnel.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/lib/kunit/executor.c b/lib/kunit/executor.c
-index 1236b3cd2fbb..51013feba58b 100644
---- a/lib/kunit/executor.c
-+++ b/lib/kunit/executor.c
-@@ -144,6 +144,10 @@ void kunit_free_suite_set(struct kunit_suite_set suite_set)
- 	kfree(suite_set.start);
- }
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index 9125e92d9917..2699915bb85b 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -796,8 +796,8 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
+ 						struct sk_buff *skb),
+ 			 bool log_ecn_err)
+ {
+-	const struct ipv6hdr *ipv6h = ipv6_hdr(skb);
+-	int err;
++	const struct ipv6hdr *ipv6h;
++	int nh, err;
  
-+/*
-+ * Filter and reallocate test suites. Must return the filtered test suites set
-+ * allocated at a valid virtual address or NULL in case of error.
-+ */
- struct kunit_suite_set
- kunit_filter_suites(const struct kunit_suite_set *suite_set,
- 		    const char *filter_glob,
-diff --git a/lib/kunit/test.c b/lib/kunit/test.c
-index 7452d1a2acd9..1d151f6dc1cd 100644
---- a/lib/kunit/test.c
-+++ b/lib/kunit/test.c
-@@ -16,6 +16,7 @@
- #include <linux/panic.h>
- #include <linux/sched/debug.h>
- #include <linux/sched.h>
-+#include <linux/mm.h>
+ 	if ((!(tpi->flags & TUNNEL_CSUM) &&
+ 	     (tunnel->parms.i_flags & TUNNEL_CSUM)) ||
+@@ -829,7 +829,6 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
+ 			goto drop;
+ 		}
  
- #include "debugfs.h"
- #include "hooks-impl.h"
-@@ -807,12 +808,19 @@ static void kunit_module_exit(struct module *mod)
- 	};
- 	const char *action = kunit_action();
+-		ipv6h = ipv6_hdr(skb);
+ 		skb->protocol = eth_type_trans(skb, tunnel->dev);
+ 		skb_postpull_rcsum(skb, eth_hdr(skb), ETH_HLEN);
+ 	} else {
+@@ -837,7 +836,23 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
+ 		skb_reset_mac_header(skb);
+ 	}
  
-+	/*
-+	 * Check if the start address is a valid virtual address to detect
-+	 * if the module load sequence has failed and the suite set has not
-+	 * been initialized and filtered.
++	/* Save offset of outer header relative to skb->head,
++	 * because we are going to reset the network header to the inner header
++	 * and might change skb->head.
 +	 */
-+	if (!suite_set.start || !virt_addr_valid(suite_set.start))
-+		return;
++	nh = skb_network_header(skb) - skb->head;
 +
- 	if (!action)
- 		__kunit_test_suites_exit(mod->kunit_suites,
- 					 mod->num_kunit_suites);
+ 	skb_reset_network_header(skb);
++
++	if (!pskb_inet_may_pull(skb)) {
++		DEV_STATS_INC(tunnel->dev, rx_length_errors);
++		DEV_STATS_INC(tunnel->dev, rx_errors);
++		goto drop;
++	}
++
++	/* Get the outer header. */
++	ipv6h = (struct ipv6hdr *)(skb->head + nh);
++
+ 	memset(skb->cb, 0, sizeof(struct inet6_skb_parm));
  
--	if (suite_set.start)
--		kunit_free_suite_set(suite_set);
-+	kunit_free_suite_set(suite_set);
- }
- 
- static int kunit_module_notify(struct notifier_block *nb, unsigned long val,
-@@ -822,12 +830,12 @@ static int kunit_module_notify(struct notifier_block *nb, unsigned long val,
- 
- 	switch (val) {
- 	case MODULE_STATE_LIVE:
-+		kunit_module_init(mod);
- 		break;
- 	case MODULE_STATE_GOING:
- 		kunit_module_exit(mod);
- 		break;
- 	case MODULE_STATE_COMING:
--		kunit_module_init(mod);
- 		break;
- 	case MODULE_STATE_UNFORMED:
- 		break;
+ 	__skb_tunnel_rx(skb, tunnel->dev, tunnel->net);
 -- 
 2.43.0
 
