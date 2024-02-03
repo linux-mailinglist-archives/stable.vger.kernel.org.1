@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BBD0848236
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 116E0848387
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7A4E1F268B9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2157284B6E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E176F47F7C;
-	Sat,  3 Feb 2024 04:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B415467A;
+	Sat,  3 Feb 2024 04:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6fKjaUm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3/KBfB5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA061A701;
-	Sat,  3 Feb 2024 04:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34AD653E27;
+	Sat,  3 Feb 2024 04:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933701; cv=none; b=fGD3lPZq5N2+WlC3lYmRSvIsctIFV6Z3nA446lWX3YZQs7G7u4x6Jb94OdrP57nBJUb7MgT0vY/w5CZdHuMAsNZ8rUKu6HAVxeS5qFfui0ISgQfe30r7SCaOzLnHKqjExNk7d9EIrae47MTK8F3jYawhghVp4lnwZhMX58GRt+4=
+	t=1706933948; cv=none; b=cqSwZswusjqxM8/uRUsarpOvED2MHmixK6TLvimRWHvMjhzSqcQu7nveVVvLOprIQoY4M2Or1Nf3g68srWrVQ/Puv3Hy97/cS1wCUokMMtKkJ3oong8C08v0tKP1ZId4BNdHZoKO0CzDtVTo9kVGixqe1r6JVaHC/D8ipjFLTd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933701; c=relaxed/simple;
-	bh=S5LIB0XVS8An4XpmJd0qxMzqzdtcHjJI3qO2nWXbUkM=;
+	s=arc-20240116; t=1706933948; c=relaxed/simple;
+	bh=vtRzVSc+VLyIlivhnpsvhXpTKsL4U7he4TxJxsWWQYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c1+J1E+FhlqNH/fFcLzupihhGUSl5PQRpWPMOy6NSxHsuS9Yqkg74zFSejNtWOnckXyP6C9XocrD2tf+BBvgTcK2fEJ0wG7lJrTKVgLov5soW1UuK98/oX/BqqfBR7/A6VajYKk8Q4GyApA+1E9Et6umlX4JaH8CpO3ji5yzLSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6fKjaUm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 678EFC433C7;
-	Sat,  3 Feb 2024 04:15:01 +0000 (UTC)
+	 MIME-Version; b=LNTKfTWwGyODRXhfR7F5pb1nDEu2aP2dgl7mQiJ05ehlrDNq1BFTTYmd0ySfD8+LkeLSHQlPZkKR49BpNFsx9OZ39ipQIo71YN9sWdokHiWB1yVEIqTIlxh5srHl6Ui0hwjdeFhJP0yEXXgI1+29xsZOjb9XbKqqOa/wdgF08KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3/KBfB5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14BBC43390;
+	Sat,  3 Feb 2024 04:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933701;
-	bh=S5LIB0XVS8An4XpmJd0qxMzqzdtcHjJI3qO2nWXbUkM=;
+	s=korg; t=1706933948;
+	bh=vtRzVSc+VLyIlivhnpsvhXpTKsL4U7he4TxJxsWWQYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6fKjaUmghRQxur54Qm7WklnnNR0ms+L3aHRSoH5rzpbqM09feLP2d9mJxd9zM2+J
-	 SqVXsskNS2Ligd2dzwGK8amvDYvJDFSEuP7lqA4CJQAFw7qbdDPnLgg9lBSHarGK0s
-	 hi8GXwhOvY27K2qHM9vVE0ziPPEcrobnoRWs2/h8=
+	b=M3/KBfB5ApM055wmf5XlIwdi/AP97xjnHffsuuzaajX0XvlkZu4izN7zDMQtczWsX
+	 +f/PKd0zpP7ENH8fA5XXwkOQTmUcpfjFscWEbDTE+ooW2FmofGdNq63/zU7dW9wIxF
+	 VcpkUEPyHh32hLhBfMLKvbKrVqE+yIywo8MW9fSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 302/322] pds_core: implement pci reset handlers
+Subject: [PATCH 6.7 281/353] drm/amdgpu: fix avg vs input power reporting on smu7
 Date: Fri,  2 Feb 2024 20:06:39 -0800
-Message-ID: <20240203035408.814433831@linuxfoundation.org>
+Message-ID: <20240203035412.659652819@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,158 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit ffa55858330f267beec995fc4f68098c91311c64 ]
+[ Upstream commit 25852d4b97572ff62ffee574cb8bb4bc551af23a ]
 
-Implement the callbacks for a nice PCI reset.  These get called
-when a user is nice enough to use the sysfs PCI reset entry, e.g.
-    echo 1 > /sys/bus/pci/devices/0000:2b:00.0/reset
+Hawaii, Bonaire, Fiji, and Tonga support average power, the others
+support current power.
 
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 7e82a8745b95 ("pds_core: Prevent race issues involving the adminq")
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/core.c | 14 +++++--
- drivers/net/ethernet/amd/pds_core/core.h |  4 ++
- drivers/net/ethernet/amd/pds_core/main.c | 50 ++++++++++++++++++++++++
- 3 files changed, 65 insertions(+), 3 deletions(-)
+ .../gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/core.c b/drivers/net/ethernet/amd/pds_core/core.c
-index dfb43ed60e27..cc5e3d1fe652 100644
---- a/drivers/net/ethernet/amd/pds_core/core.c
-+++ b/drivers/net/ethernet/amd/pds_core/core.c
-@@ -514,7 +514,7 @@ void pdsc_stop(struct pdsc *pdsc)
- 					   PDS_CORE_INTR_MASK_SET);
- }
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index b1a8799e2dee..aa91730e4eaf 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -3999,6 +3999,7 @@ static int smu7_read_sensor(struct pp_hwmgr *hwmgr, int idx,
+ 	uint32_t sclk, mclk, activity_percent;
+ 	uint32_t offset, val_vid;
+ 	struct smu7_hwmgr *data = (struct smu7_hwmgr *)(hwmgr->backend);
++	struct amdgpu_device *adev = hwmgr->adev;
  
--static void pdsc_fw_down(struct pdsc *pdsc)
-+void pdsc_fw_down(struct pdsc *pdsc)
- {
- 	union pds_core_notifyq_comp reset_event = {
- 		.reset.ecode = cpu_to_le16(PDS_EVENT_RESET),
-@@ -522,10 +522,13 @@ static void pdsc_fw_down(struct pdsc *pdsc)
- 	};
- 
- 	if (test_and_set_bit(PDSC_S_FW_DEAD, &pdsc->state)) {
--		dev_err(pdsc->dev, "%s: already happening\n", __func__);
-+		dev_warn(pdsc->dev, "%s: already happening\n", __func__);
- 		return;
- 	}
- 
-+	if (pdsc->pdev->is_virtfn)
-+		return;
-+
- 	/* Notify clients of fw_down */
- 	if (pdsc->fw_reporter)
- 		devlink_health_report(pdsc->fw_reporter, "FW down reported", pdsc);
-@@ -535,7 +538,7 @@ static void pdsc_fw_down(struct pdsc *pdsc)
- 	pdsc_teardown(pdsc, PDSC_TEARDOWN_RECOVERY);
- }
- 
--static void pdsc_fw_up(struct pdsc *pdsc)
-+void pdsc_fw_up(struct pdsc *pdsc)
- {
- 	union pds_core_notifyq_comp reset_event = {
- 		.reset.ecode = cpu_to_le16(PDS_EVENT_RESET),
-@@ -548,6 +551,11 @@ static void pdsc_fw_up(struct pdsc *pdsc)
- 		return;
- 	}
- 
-+	if (pdsc->pdev->is_virtfn) {
-+		clear_bit(PDSC_S_FW_DEAD, &pdsc->state);
-+		return;
-+	}
-+
- 	err = pdsc_setup(pdsc, PDSC_SETUP_RECOVERY);
- 	if (err)
- 		goto err_out;
-diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
-index b1c1f1007b06..860bce1731c7 100644
---- a/drivers/net/ethernet/amd/pds_core/core.h
-+++ b/drivers/net/ethernet/amd/pds_core/core.h
-@@ -309,4 +309,8 @@ irqreturn_t pdsc_adminq_isr(int irq, void *data);
- 
- int pdsc_firmware_update(struct pdsc *pdsc, const struct firmware *fw,
- 			 struct netlink_ext_ack *extack);
-+
-+void pdsc_fw_down(struct pdsc *pdsc);
-+void pdsc_fw_up(struct pdsc *pdsc);
-+
- #endif /* _PDSC_H_ */
-diff --git a/drivers/net/ethernet/amd/pds_core/main.c b/drivers/net/ethernet/amd/pds_core/main.c
-index 3a45bf474a19..4c7f982c12a1 100644
---- a/drivers/net/ethernet/amd/pds_core/main.c
-+++ b/drivers/net/ethernet/amd/pds_core/main.c
-@@ -445,12 +445,62 @@ static void pdsc_remove(struct pci_dev *pdev)
- 	devlink_free(dl);
- }
- 
-+static void pdsc_reset_prepare(struct pci_dev *pdev)
-+{
-+	struct pdsc *pdsc = pci_get_drvdata(pdev);
-+
-+	pdsc_fw_down(pdsc);
-+
-+	pci_free_irq_vectors(pdev);
-+	pdsc_unmap_bars(pdsc);
-+	pci_release_regions(pdev);
-+	pci_disable_device(pdev);
-+}
-+
-+static void pdsc_reset_done(struct pci_dev *pdev)
-+{
-+	struct pdsc *pdsc = pci_get_drvdata(pdev);
-+	struct device *dev = pdsc->dev;
-+	int err;
-+
-+	err = pci_enable_device(pdev);
-+	if (err) {
-+		dev_err(dev, "Cannot enable PCI device: %pe\n", ERR_PTR(err));
-+		return;
-+	}
-+	pci_set_master(pdev);
-+
-+	if (!pdev->is_virtfn) {
-+		pcie_print_link_status(pdsc->pdev);
-+
-+		err = pci_request_regions(pdsc->pdev, PDS_CORE_DRV_NAME);
-+		if (err) {
-+			dev_err(pdsc->dev, "Cannot request PCI regions: %pe\n",
-+				ERR_PTR(err));
-+			return;
-+		}
-+
-+		err = pdsc_map_bars(pdsc);
-+		if (err)
-+			return;
-+	}
-+
-+	pdsc_fw_up(pdsc);
-+}
-+
-+static const struct pci_error_handlers pdsc_err_handler = {
-+	/* FLR handling */
-+	.reset_prepare      = pdsc_reset_prepare,
-+	.reset_done         = pdsc_reset_done,
-+};
-+
- static struct pci_driver pdsc_driver = {
- 	.name = PDS_CORE_DRV_NAME,
- 	.id_table = pdsc_id_table,
- 	.probe = pdsc_probe,
- 	.remove = pdsc_remove,
- 	.sriov_configure = pdsc_sriov_configure,
-+	.err_handler = &pdsc_err_handler,
- };
- 
- void *pdsc_get_pf_struct(struct pci_dev *vf_pdev)
+ 	/* size must be at least 4 bytes for all sensors */
+ 	if (*size < 4)
+@@ -4042,7 +4043,21 @@ static int smu7_read_sensor(struct pp_hwmgr *hwmgr, int idx,
+ 		*size = 4;
+ 		return 0;
+ 	case AMDGPU_PP_SENSOR_GPU_INPUT_POWER:
+-		return smu7_get_gpu_power(hwmgr, (uint32_t *)value);
++		if ((adev->asic_type != CHIP_HAWAII) &&
++		    (adev->asic_type != CHIP_BONAIRE) &&
++		    (adev->asic_type != CHIP_FIJI) &&
++		    (adev->asic_type != CHIP_TONGA))
++			return smu7_get_gpu_power(hwmgr, (uint32_t *)value);
++		else
++			return -EOPNOTSUPP;
++	case AMDGPU_PP_SENSOR_GPU_AVG_POWER:
++		if ((adev->asic_type != CHIP_HAWAII) &&
++		    (adev->asic_type != CHIP_BONAIRE) &&
++		    (adev->asic_type != CHIP_FIJI) &&
++		    (adev->asic_type != CHIP_TONGA))
++			return -EOPNOTSUPP;
++		else
++			return smu7_get_gpu_power(hwmgr, (uint32_t *)value);
+ 	case AMDGPU_PP_SENSOR_VDDGFX:
+ 		if ((data->vr_config & VRCONF_VDDGFX_MASK) ==
+ 		    (VR_SVI2_PLANE_2 << VRCONF_VDDGFX_SHIFT))
 -- 
 2.43.0
 
