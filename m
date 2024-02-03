@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 537548482F1
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05E568481D6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD9301F2444A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5F0B283233
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63AD14F606;
-	Sat,  3 Feb 2024 04:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05DFC40BFD;
+	Sat,  3 Feb 2024 04:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5Q+nZcG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PN8lWsef"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219951C6BB;
-	Sat,  3 Feb 2024 04:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B769B18641;
+	Sat,  3 Feb 2024 04:13:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933839; cv=none; b=KlqZJlS5tzqi8z7FRmAlysB4tEyWvHhaHllhfUeee190AmU3v9seuuljQGqinRKPiSb0Y3XLKoFOSw2M8mu5vMVP3XnJqhLJryAuaJanLro08cz4jJ+i0M9+BCGgY3iFoe3AShUxVq9lQjkZC+4eBf3Me+FlIZZhzgJ/oAg1LBA=
+	t=1706933631; cv=none; b=QGckHrhRnBbgimLVCBVICtQelbFK1Tg5BaRuQ7hhn+ZJ/xtXvjS76IL53COzMLbGD8ny6aVU2GoymO50OjLq/J1AQqTOEbebn3UzK83s8EL63bYewkRo8RrskESrzFGk6JTHiAuN+sYtz37kvC2boxC0++j+/AJ2wrylsZ41IFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933839; c=relaxed/simple;
-	bh=hP0bPgTBGqjd7u5LPFOS3f6XqwpT1VWp/6L7jECDj4k=;
+	s=arc-20240116; t=1706933631; c=relaxed/simple;
+	bh=RInqa7RzQ3yPg0sCpMuBYkOYdSDF5xOnF9EqUfz4B68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H7tZeMIAVkBrfazFhgWldWpAx7CJr1oaT9EByJn/RezAR9gSxsP3USVc8/4eaZKkPH82YmSZ7MNaPW4Wx2A1AHhwdwS0lLiuAiNCU5JlEzJY+X6cy1VXIKH7fP3w88rAE2LYQtM4hWsyyl/A1NZGAGiDdHHb8y/XNt6GNgLx/Ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5Q+nZcG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCEA2C433F1;
-	Sat,  3 Feb 2024 04:17:18 +0000 (UTC)
+	 MIME-Version; b=Ivmf00Wv9pIrvKR4FFqWQiNk2AH8HKUpirWuG05ORIsH4ObV9sXTiJBr4vJmSUimVifAXPW3PoP+E8oG860YWrP9oJKhGIyjSyhbha6QaEzng0px20fYcph6U+XxsvO2Eja8fn8hXhtcvWM+AvCyOVcW963rBxexVuvwsJL50S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PN8lWsef; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9CBC433F1;
+	Sat,  3 Feb 2024 04:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933839;
-	bh=hP0bPgTBGqjd7u5LPFOS3f6XqwpT1VWp/6L7jECDj4k=;
+	s=korg; t=1706933631;
+	bh=RInqa7RzQ3yPg0sCpMuBYkOYdSDF5xOnF9EqUfz4B68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S5Q+nZcGvYKmLAm/AUzJZbqZ6tWDuGDvnbtX3GnGVM7sud9pdEVtFXIJjm39VdEre
-	 aUA6Tvd2ZfbPKGl048cndQnLx3wTFziIz0R9cnB3syv0ukCj2bVryCQSJmGZmphFd1
-	 aE6CAUWOycmRBqbMWpnzbj1CKT29OFtUpBA7DhA0=
+	b=PN8lWsefPFK8iidFfXA07mgQ/cGWpb3clX5fZBNW7K62ANhkCgah/5MzK/+Ge08YA
+	 AVVBL+Gf3SMtypK6CwfXDcJX1Yvd7F0BM8wb61bfRs1ARg4vJti5/cJOiJP4+NFA+I
+	 BwDnHslUp6eCWgwiQxkXrq1CFWsYJMQgR1cTxuJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Xing Tong Wu <xingtong.wu@siemens.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 164/353] fast_dput(): handle underflows gracefully
+Subject: [PATCH 6.6 185/322] hwmon: (nct6775) Fix fan speed set failure in automatic mode
 Date: Fri,  2 Feb 2024 20:04:42 -0800
-Message-ID: <20240203035408.825711238@linuxfoundation.org>
+Message-ID: <20240203035405.238472645@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Xing Tong Wu <xingtong.wu@siemens.com>
 
-[ Upstream commit 504e08cebe1d4e1efe25f915234f646e74a364a8 ]
+[ Upstream commit 8b3800256abad20e91c2698607f9b28591407b19 ]
 
-If refcount is less than 1, we should just warn, unlock dentry and
-return true, so that the caller doesn't try to do anything else.
+Setting the fan speed is only valid in manual mode; it is not possible
+to set the fan's speed in automatic mode.
+Return error when attempting to set the fan speed in automatic mode.
 
-Taking care of that leaves the rest of "lockref_put_return() has
-failed" case equivalent to "decrement refcount and rejoin the
-normal slow path after the point where we grab ->d_lock".
-
-NOTE: lockref_put_return() is strictly a fastpath thing - unlike
-the rest of lockref primitives, it does not contain a fallback.
-Caller (and it looks like fast_dput() is the only legitimate one
-in the entire kernel) has to do that itself.  Reasons for
-lockref_put_return() failures:
-	* ->d_lock held by somebody
-	* refcount <= 0
-	* ... or an architecture not supporting lockref use of
-cmpxchg - sparc, anything non-SMP, config with spinlock debugging...
-
-We could add a fallback, but it would be a clumsy API - we'd have
-to distinguish between:
-	(1) refcount > 1 - decremented, lock not held on return
-	(2) refcount < 1 - left alone, probably no sense to hold the lock
-	(3) refcount is 1, no cmphxcg - decremented, lock held on return
-	(4) refcount is 1, cmphxcg supported - decremented, lock *NOT* held
-	    on return.
-We want to return with no lock held in case (4); that's the whole point of that
-thing.  We very much do not want to have the fallback in case (3) return without
-a lock, since the caller might have to retake it in that case.
-So it wouldn't be more convenient than doing the fallback in the caller and
-it would be very easy to screw up, especially since the test coverage would
-suck - no way to test (3) and (4) on the same kernel build.
-
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Xing Tong Wu <xingtong.wu@siemens.com>
+Link: https://lore.kernel.org/r/20231121081604.2499-3-xingtong_wu@163.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dcache.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/hwmon/nct6775-core.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/dcache.c b/fs/dcache.c
-index c82ae731df9a..d1ab857a69ca 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -787,12 +787,12 @@ static inline bool fast_dput(struct dentry *dentry)
- 	 */
- 	if (unlikely(ret < 0)) {
- 		spin_lock(&dentry->d_lock);
--		if (dentry->d_lockref.count > 1) {
--			dentry->d_lockref.count--;
-+		if (WARN_ON_ONCE(dentry->d_lockref.count <= 0)) {
- 			spin_unlock(&dentry->d_lock);
- 			return true;
- 		}
--		return false;
-+		dentry->d_lockref.count--;
-+		goto locked;
- 	}
+diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
+index d928eb8ae5a3..92a49fafe2c0 100644
+--- a/drivers/hwmon/nct6775-core.c
++++ b/drivers/hwmon/nct6775-core.c
+@@ -2553,6 +2553,13 @@ store_pwm(struct device *dev, struct device_attribute *attr, const char *buf,
+ 	int err;
+ 	u16 reg;
  
- 	/*
-@@ -850,6 +850,7 @@ static inline bool fast_dput(struct dentry *dentry)
- 	 * else could have killed it and marked it dead. Either way, we
- 	 * don't need to do anything else.
- 	 */
-+locked:
- 	if (dentry->d_lockref.count) {
- 		spin_unlock(&dentry->d_lock);
- 		return true;
++	/*
++	 * The fan control mode should be set to manual if the user wants to adjust
++	 * the fan speed. Otherwise, it will fail to set.
++	 */
++	if (index == 0 && data->pwm_enable[nr] > manual)
++		return -EBUSY;
++
+ 	err = kstrtoul(buf, 10, &val);
+ 	if (err < 0)
+ 		return err;
 -- 
 2.43.0
 
