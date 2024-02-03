@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-18314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 952BF84823C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C85A6848383
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45648283C1C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 070D21C20C03
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A371A701;
-	Sat,  3 Feb 2024 04:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8C253E2E;
+	Sat,  3 Feb 2024 04:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4JZTMhB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2zkWsPq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4082112E6C;
-	Sat,  3 Feb 2024 04:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BEB11720;
+	Sat,  3 Feb 2024 04:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933708; cv=none; b=u29pk4gQMMPCJ5az6Pc+IuqvuMYDd+/czjQDZFOpLSm3f8x150X2YL7W0I7KWP50g6jrD7kaqTcY3jJyh+LZvFXGCMosVyyutsKBGgPXlXIY64on8Xasgb7XVYrLc5bHRJi2Cgkm3nOiMlp6eT3K1IK58/tZPLVZs172h0BkA6I=
+	t=1706933946; cv=none; b=nbm4Tbb8JdzMOcQhM+XP4EMPg1Hj4fHGCMUAL81q+/EOxPNyFo7X0Xv+tb/Oy4ARCxi3nM6WFzWpVkblm7RYP/IvGxzlR63uwrEE2E2Vyh2a1SfCs4KUQIrnIuoXAALSABCSzNEryWx6O9kN2Rbqav16Rhk7bSXzfimtj/swbQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933708; c=relaxed/simple;
-	bh=fjlRJ2mvjpHaX3h3BDMAyno85YPb8+HMjWiqx3MInkk=;
+	s=arc-20240116; t=1706933946; c=relaxed/simple;
+	bh=P04Lhglh09JisJAP1Cc/YKt/dowaJTvj5+nC0VeJuyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=koxkmvtR8oxx22oVpw4F84II1nUfjd/oOt6sE9TFSSiGSPOj+syy3MbwtT7essgeOAMPLCuNOBlW2alNB19HVdguv4ROnqp+yAPpE0a4bLbRxL700vnAnqlBcnIHG5opxlDQ/1+b8tohI8qM+QHRofQImAucffM5QdeoI+mfLf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4JZTMhB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4F5C43399;
-	Sat,  3 Feb 2024 04:15:07 +0000 (UTC)
+	 MIME-Version; b=Pn1euQaGgGYQNUKhrMliZT5rf6Pk47v6PZ9DCKYcWmeFTgZ8yTdiL5PiM8CMyhsORomEH0J3b9hUAc6Y+AtsYb+P3KVBAQTlbn7olJ0ZXIYMNkSbv3ZqfSUz9Mq1pQREaxFITtzCdFbbPlYRby+ve2Fa3Etb3Xku4kk8iz+Uh6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2zkWsPq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3AC4C433F1;
+	Sat,  3 Feb 2024 04:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933707;
-	bh=fjlRJ2mvjpHaX3h3BDMAyno85YPb8+HMjWiqx3MInkk=;
+	s=korg; t=1706933945;
+	bh=P04Lhglh09JisJAP1Cc/YKt/dowaJTvj5+nC0VeJuyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z4JZTMhB/gSgxk50tubJ2xNokg+HUnweayxdcPoSR9wgupk12ujvO9JTYvvybqRd0
-	 oQqBHDc7+CVCkGwolydbu2NcPOJXJqKHOHlz9v7hB2iL7Tc4z4zCt/A0k/ZZ9C32NX
-	 D8wEOv9ilZRrUNpK43sUgDQz3xLm4oald4eO6DQU=
+	b=I2zkWsPqmoQYH2b4guxRbv4w3PJ+Dsb4DwNvbKANBQtIQc1+085gQck9qmRHhdauP
+	 QN64T5LNNxhpm/3549zsUjVJ9VG+LKKaLJNS/22m53Fmy+cytxsMffKavvkN8D7thm
+	 XRvcCO63aTFtye01IuJmgyyKixznPTDvSEBoB/a4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 309/322] selftests: net: dont access /dev/stdout in pmtu.sh
+	Edward Adam Davis <eadavis@qq.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
+Subject: [PATCH 6.7 288/353] wifi: cfg80211: fix RCU dereference in __cfg80211_bss_update
 Date: Fri,  2 Feb 2024 20:06:46 -0800
-Message-ID: <20240203035409.016899515@linuxfoundation.org>
+Message-ID: <20240203035412.896026208@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit bc0970d5ac1d1317e212bdf55533935ecb6ae95c ]
+[ Upstream commit 1184950e341c11b6f82bc5b59564411d9537ab27 ]
 
-When running the pmtu.sh via the kselftest infra, accessing
-/dev/stdout gives unexpected results:
-  # dd: failed to open '/dev/stdout': Device or resource busy
-  # TEST: IPv4, bridged vxlan4: PMTU exceptions                         [FAIL]
+Replace rcu_dereference() with rcu_access_pointer() since we hold
+the lock here (and aren't in an RCU critical section).
 
-Let dd use directly the standard output to fix the above:
-  # TEST: IPv4, bridged vxlan4: PMTU exceptions - nexthop objects       [ OK ]
-
-Fixes: 136a1b434bbb ("selftests: net: test vxlan pmtu exceptions with tcp")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/23d7592c5d77d75cff9b34f15c227f92e911c2ae.1706635101.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 32af9a9e1069 ("wifi: cfg80211: free beacon_ies when overridden from hidden BSS")
+Reported-and-tested-by: syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://msgid.link/tencent_BF8F0DF0258C8DBF124CDDE4DD8D992DCF07@qq.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/pmtu.sh | 2 +-
+ net/wireless/scan.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
-index 1f1e9a49f59a..4a5f031be232 100755
---- a/tools/testing/selftests/net/pmtu.sh
-+++ b/tools/testing/selftests/net/pmtu.sh
-@@ -1348,7 +1348,7 @@ test_pmtu_ipvX_over_bridged_vxlanY_or_geneveY_exception() {
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 082f0bd4ebdd..b9da6f5152cb 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1865,7 +1865,7 @@ __cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ 					 &hidden->hidden_list);
+ 				hidden->refcount++;
  
- 		sleep 1
- 
--		dd if=/dev/zero of=/dev/stdout status=none bs=1M count=1 | ${target} socat -T 3 -u STDIN $TCPDST,connect-timeout=3
-+		dd if=/dev/zero status=none bs=1M count=1 | ${target} socat -T 3 -u STDIN $TCPDST,connect-timeout=3
- 
- 		size=$(du -sb $tmpoutfile)
- 		size=${size%%/tmp/*}
+-				ies = (void *)rcu_dereference(new->pub.beacon_ies);
++				ies = (void *)rcu_access_pointer(new->pub.beacon_ies);
+ 				rcu_assign_pointer(new->pub.beacon_ies,
+ 						   hidden->pub.beacon_ies);
+ 				if (ies)
 -- 
 2.43.0
 
