@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-17856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8E3848062
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 527938482B0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDD8B28BF15
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 005171F239B2
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342D1FC09;
-	Sat,  3 Feb 2024 04:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64D34D10A;
+	Sat,  3 Feb 2024 04:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPfXoE1m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIPElXsb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C8510A22;
-	Sat,  3 Feb 2024 04:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753571BDE6;
+	Sat,  3 Feb 2024 04:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933366; cv=none; b=l1kcnpLs1+EOlFhkkFfITxGILiJVl7QzCMLbhI+5xOe8SZv+c+mGA3UDDVsCqvap9N68kcrK3iuuJZoUCyWJLN7jFLnQaUI7H9p4UecBsnc3Mx1uTehl21/5JV3KVT5ihPLpRm0RdncIWi2NyzSwzzhvyet7DiP5ce39cf9aOYI=
+	t=1706933792; cv=none; b=LPgFi2BrtB3gakkC73eYs/FQ6ZnCykUcDxEDpxkh9TDEjjGpuPvmJPEonLb0/K9ndVicdtLF/7ooMNtyG8mUnbMs99aSeZ0lh2RTnzKHI7ikEYQrF3T9KzW2QHIPXZTZdo7BQZtXL1AfrcR9GQdI+VTdMsMKn0XfuN0FKjLsY0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933366; c=relaxed/simple;
-	bh=aiLsS1FX/fxaxYYFSvSTqFIUgh/dpRbs9WDFE07S5y0=;
+	s=arc-20240116; t=1706933792; c=relaxed/simple;
+	bh=qHPtUKLWPAtmvtFT34mZVsuG4+286JfaA4f/+PsmdWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ma5IepKi6h7vo3QwmBvpq2cejq7H02XH0/TBrMqkfRayRnBvod95JN2dqlZVoMvfFF3d6MLQ5iKA3ibNK3+Gev6p8BGg3EN5FQZcWn3wAOf3TiZb//uyFeBSDU+l13tLM7SSABns9sxAeTSywrEGh6rhaHNY+lLhaNKwpJ6F6fM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPfXoE1m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB03C43390;
-	Sat,  3 Feb 2024 04:09:25 +0000 (UTC)
+	 MIME-Version; b=lpZb2ZAlsIEfDESIorM9iuuVXVFekkK6B6KWvFUyVCiQceqsPS808lFIjZ4xLm34q4hrAGOZWpuGSjWiwBPXtbpblfjwbIKlO+icsHFo+q5XuoVkltFJhPD44p118UdlbmzhOGHXxQ+XDBbvdJqSffcy/82WzsfpnwvKWitss2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oIPElXsb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C708C433F1;
+	Sat,  3 Feb 2024 04:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933365;
-	bh=aiLsS1FX/fxaxYYFSvSTqFIUgh/dpRbs9WDFE07S5y0=;
+	s=korg; t=1706933792;
+	bh=qHPtUKLWPAtmvtFT34mZVsuG4+286JfaA4f/+PsmdWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fPfXoE1m6EVnWl3hBTX26gSHd05FBNJhR1DFgKEo/2Onaw0rLh0Icn09jx4D3Ukht
-	 /4OeTMi3bcGzapsD2bvaUvwOK4k2dr2KCAws8n31PfCiGX5xT0rMBFgxA1C5b1Rq6o
-	 yVo27238hihTTwvpv0n3O32FaRZZ4cxMjve3GgtM=
+	b=oIPElXsbXLsigU0o4zKfxg+hnzV+RgcotpmHjI8UyKkd9TqwNdMFfUNT0J2QHgv3X
+	 CRM3mnp1cPevgJUI2ckUy+4xCXhnpgzTWaWS2YesrikIft7h0hx6FD7e7pqSqI6SIF
+	 weuYzsd6HE4vB/Pv/jVnNgGHxnBWhYaNEIV3GLN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alan Maguire <alan.maguire@oracle.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/219] selftests/bpf: Fix pyperf180 compilation failure with clang18
+Subject: [PATCH 6.7 102/353] arm64: dts: qcom: sm8450: fix soundwire controllers node name
 Date: Fri,  2 Feb 2024 20:03:40 -0800
-Message-ID: <20240203035323.314312178@linuxfoundation.org>
+Message-ID: <20240203035407.008833615@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 100888fb6d8a185866b1520031ee7e3182b173de ]
+[ Upstream commit 11fcb81373de52eeb1d3ff135a8d24a4b18978d3 ]
 
-With latest clang18 (main branch of llvm-project repo), when building bpf selftests,
-    [~/work/bpf-next (master)]$ make -C tools/testing/selftests/bpf LLVM=1 -j
+Fix the following dt bindings check:
+arch/arm64/boot/dts/qcom/sm8450-hdk.dtb: soundwire-controller@31f0000: $nodename:0: 'soundwire-controller@31f0000' does not match '^soundwire(@.*)?$'
+        from schema $id: http://devicetree.org/schemas/soundwire/qcom,soundwire.yaml#
 
-The following compilation error happens:
-    fatal error: error in backend: Branch target out of insn range
-    ...
-    Stack dump:
-    0.      Program arguments: clang -g -Wall -Werror -D__TARGET_ARCH_x86 -mlittle-endian
-      -I/home/yhs/work/bpf-next/tools/testing/selftests/bpf/tools/include
-      -I/home/yhs/work/bpf-next/tools/testing/selftests/bpf -I/home/yhs/work/bpf-next/tools/include/uapi
-      -I/home/yhs/work/bpf-next/tools/testing/selftests/usr/include -idirafter
-      /home/yhs/work/llvm-project/llvm/build.18/install/lib/clang/18/include -idirafter /usr/local/include
-      -idirafter /usr/include -Wno-compare-distinct-pointer-types -DENABLE_ATOMICS_TESTS -O2 --target=bpf
-      -c progs/pyperf180.c -mcpu=v3 -o /home/yhs/work/bpf-next/tools/testing/selftests/bpf/pyperf180.bpf.o
-    1.      <eof> parser at end of file
-    2.      Code generation
-    ...
-
-The compilation failure only happens to cpu=v2 and cpu=v3. cpu=v4 is okay
-since cpu=v4 supports 32-bit branch target offset.
-
-The above failure is due to upstream llvm patch [1] where some inlining behavior
-are changed in clang18.
-
-To workaround the issue, previously all 180 loop iterations are fully unrolled.
-The bpf macro __BPF_CPU_VERSION__ (implemented in clang18 recently) is used to avoid
-unrolling changes if cpu=v4. If __BPF_CPU_VERSION__ is not available and the
-compiler is clang18, the unrollng amount is unconditionally reduced.
-
-  [1] https://github.com/llvm/llvm-project/commit/1a2e77cf9e11dbf56b5720c607313a566eebb16e
-
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Tested-by: Alan Maguire <alan.maguire@oracle.com>
-Link: https://lore.kernel.org/bpf/20231110193644.3130906-1-yonghong.song@linux.dev
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20231106-topic-sm8450-upstream-soundwire-bindings-fix-v1-1-41d4844a5a7d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/pyperf180.c | 22 +++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ arch/arm64/boot/dts/qcom/sm8450.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/pyperf180.c b/tools/testing/selftests/bpf/progs/pyperf180.c
-index c39f559d3100..42c4a8b62e36 100644
---- a/tools/testing/selftests/bpf/progs/pyperf180.c
-+++ b/tools/testing/selftests/bpf/progs/pyperf180.c
-@@ -1,4 +1,26 @@
- // SPDX-License-Identifier: GPL-2.0
- // Copyright (c) 2019 Facebook
- #define STACK_MAX_LEN 180
-+
-+/* llvm upstream commit at clang18
-+ *   https://github.com/llvm/llvm-project/commit/1a2e77cf9e11dbf56b5720c607313a566eebb16e
-+ * changed inlining behavior and caused compilation failure as some branch
-+ * target distance exceeded 16bit representation which is the maximum for
-+ * cpu v1/v2/v3. Macro __BPF_CPU_VERSION__ is later implemented in clang18
-+ * to specify which cpu version is used for compilation. So a smaller
-+ * unroll_count can be set if __BPF_CPU_VERSION__ is less than 4, which
-+ * reduced some branch target distances and resolved the compilation failure.
-+ *
-+ * To capture the case where a developer/ci uses clang18 but the corresponding
-+ * repo checkpoint does not have __BPF_CPU_VERSION__, a smaller unroll_count
-+ * will be set as well to prevent potential compilation failures.
-+ */
-+#ifdef __BPF_CPU_VERSION__
-+#if __BPF_CPU_VERSION__ < 4
-+#define UNROLL_COUNT 90
-+#endif
-+#elif __clang_major__ == 18
-+#define UNROLL_COUNT 90
-+#endif
-+
- #include "pyperf.h"
+diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+index dc904ccb3d6c..f82480570d4b 100644
+--- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
+@@ -2160,7 +2160,7 @@
+ 			#sound-dai-cells = <1>;
+ 		};
+ 
+-		swr4: soundwire-controller@31f0000 {
++		swr4: soundwire@31f0000 {
+ 			compatible = "qcom,soundwire-v1.7.0";
+ 			reg = <0 0x031f0000 0 0x2000>;
+ 			interrupts = <GIC_SPI 171 IRQ_TYPE_LEVEL_HIGH>;
+@@ -2208,7 +2208,7 @@
+ 			#sound-dai-cells = <1>;
+ 		};
+ 
+-		swr1: soundwire-controller@3210000 {
++		swr1: soundwire@3210000 {
+ 			compatible = "qcom,soundwire-v1.7.0";
+ 			reg = <0 0x03210000 0 0x2000>;
+ 			interrupts = <GIC_SPI 155 IRQ_TYPE_LEVEL_HIGH>;
+@@ -2275,7 +2275,7 @@
+ 			#sound-dai-cells = <1>;
+ 		};
+ 
+-		swr0: soundwire-controller@3250000 {
++		swr0: soundwire@3250000 {
+ 			compatible = "qcom,soundwire-v1.7.0";
+ 			reg = <0 0x03250000 0 0x2000>;
+ 			interrupts = <GIC_SPI 170 IRQ_TYPE_LEVEL_HIGH>;
+@@ -2302,7 +2302,7 @@
+ 			status = "disabled";
+ 		};
+ 
+-		swr2: soundwire-controller@33b0000 {
++		swr2: soundwire@33b0000 {
+ 			compatible = "qcom,soundwire-v1.7.0";
+ 			reg = <0 0x033b0000 0 0x2000>;
+ 			interrupts = <GIC_SPI 496 IRQ_TYPE_LEVEL_HIGH>,
 -- 
 2.43.0
 
