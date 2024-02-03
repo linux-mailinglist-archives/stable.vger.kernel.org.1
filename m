@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-17882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8293D84807D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A228482CB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B565E1C22652
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8F8E28B45E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFCA168AC;
-	Sat,  3 Feb 2024 04:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955EB4EB24;
+	Sat,  3 Feb 2024 04:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfIqieu+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGRnOMMT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8B1101E2;
-	Sat,  3 Feb 2024 04:09:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4854615AD9;
+	Sat,  3 Feb 2024 04:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933385; cv=none; b=YZuT3TZ5vPJmBL322dupUlTwrGI5FOkIe/gmmV2DdvWdUXfrj6Fq5xAV1vWeibs29EsmPKVJW9kQh0QzhjIYboqyoNe2dVhlWZxiZ0Zoc9ANnesKR+VtoaDrwkkT725QZy/HeSEzGJ5MQzC7MlPlfrvY9FssYWwmAbo3BN8I1Ao=
+	t=1706933812; cv=none; b=hFWF37wnDtgOD6nwMiCy54bZlQeYwtN/c5OjojefvKD0rOf2hnYROUf26Lm9x5K1maxWcatFYIkPyq/hafFgEgG425FMNMD7v98ioNkaHI3ed2vK9cI5PNnIZVcYXoXNVpkZfknGpYFgH0bfgiW4R3+EzqOFSx3egJV40wWZPAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933385; c=relaxed/simple;
-	bh=GpGEEH7tEm7ddBBnC7t6g0lv+kz6rIwUlw5cy5lehjo=;
+	s=arc-20240116; t=1706933812; c=relaxed/simple;
+	bh=mbr+AW/UmmQlVCgtDweKvaIJyfnIqTRW05spPjpMCFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qSJNH1ZLU6nLXgqdHrQ4J30MwRSf0FFzlHdkuk8DRhMPaT+Rwo5THcxyvLcQgevJfnl1koUsl0MxA5ilvlwO9/r50hYgmNrNFGGvnWCfnBsN49RwOpYd8iqoyhEKLDJ4G2Mhh+E9pnQXzHp+eP2/IFhcQU5jTwhOXxn4JnsZUmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfIqieu+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34099C433F1;
-	Sat,  3 Feb 2024 04:09:45 +0000 (UTC)
+	 MIME-Version; b=qBwIIePVoOdEdErr1e2CLWWtV8a9pBquFUPiaMbnk7R7arTKUDRks4JpVM62dEVeHWykIYNaiYc4XdeW5Uu1faDn9KuruziIZS2nyXSb2fDdc1HXAzj6/9kCzZHo/Vibw6Ti4DJ5lAR4sCx0wk6tGi3iqtFMLW48Gq/aZ24dXB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGRnOMMT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 114E3C43394;
+	Sat,  3 Feb 2024 04:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933385;
-	bh=GpGEEH7tEm7ddBBnC7t6g0lv+kz6rIwUlw5cy5lehjo=;
+	s=korg; t=1706933812;
+	bh=mbr+AW/UmmQlVCgtDweKvaIJyfnIqTRW05spPjpMCFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfIqieu+qKuVMHRYD3eROfrF0dDAeyjhulEqHJ53hEmctGAUAru6U3rIb1SXDbqY8
-	 e+18gkWBIC9cc6Yld37xYPFhxMvGSqd92S2yOfxIeMsJLYf7m0YMBl4Yt78p9zpsUa
-	 ij7aZc1u/74fCPqEhbjuqbSVw0ffq8cpGacDmQSk=
+	b=IGRnOMMTQgt3TGCQfaCxq2rK8YHt2CxL2DLainzuxc3dPxFlnIaFUf9KG7IPtvX6T
+	 QfT0cUUKgYanheB1KKKWeV8RHOO2Tjr+zY59VSus5eIi21SjzjsvPQDDMAlOpPhEkK
+	 BktkpUivH0TR9huz797tOlWSgGVQ0cqkNo/UGCt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jesse Brandeburg <jesse.brandeburg@intel.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Ahmed Zaki <ahmed.zaki@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/219] net: phy: at803x: fix passing the wrong reference for config_intr
-Date: Fri,  2 Feb 2024 20:04:06 -0800
-Message-ID: <20240203035327.214018348@linuxfoundation.org>
+Subject: [PATCH 6.7 129/353] ice: fix ICE_AQ_VSI_Q_OPT_RSS_* register values
+Date: Fri,  2 Feb 2024 20:04:07 -0800
+Message-ID: <20240203035407.805492280@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Ahmed Zaki <ahmed.zaki@intel.com>
 
-[ Upstream commit f8fdbf3389f44c7026f16e36cb1f2ff017f7f5b2 ]
+[ Upstream commit 20f73b60bb5c276cee9b1a530f100c677bc74af8 ]
 
-Fix passing the wrong reference for config_initr on passing the function
-pointer, drop the wrong & from at803x_config_intr in the PHY struct.
+Fix the values of the ICE_AQ_VSI_Q_OPT_RSS_* registers. Shifting is
+already done when the values are used, no need to double shift. Bug was
+not discovered earlier since only ICE_AQ_VSI_Q_OPT_RSS_TPLZ (Zero) is
+currently used.
 
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Also, rename ICE_AQ_VSI_Q_OPT_RSS_XXX to ICE_AQ_VSI_Q_OPT_RSS_HASH_XXX
+for consistency.
+
+Co-developed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Ahmed Zaki <ahmed.zaki@intel.com>
+Link: https://lore.kernel.org/r/20231213003321.605376-5-ahmed.zaki@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/at803x.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_adminq_cmd.h |  8 ++++----
+ drivers/net/ethernet/intel/ice/ice_lib.c        |  4 ++--
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c   | 12 +++++-------
+ 3 files changed, 11 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/phy/at803x.c b/drivers/net/phy/at803x.c
-index edd4b1e58d96..75868e63b81b 100644
---- a/drivers/net/phy/at803x.c
-+++ b/drivers/net/phy/at803x.c
-@@ -2051,7 +2051,7 @@ static struct phy_driver at803x_driver[] = {
- 	.write_page		= at803x_write_page,
- 	.get_features		= at803x_get_features,
- 	.read_status		= at803x_read_status,
--	.config_intr		= &at803x_config_intr,
-+	.config_intr		= at803x_config_intr,
- 	.handle_interrupt	= at803x_handle_interrupt,
- 	.get_tunable		= at803x_get_tunable,
- 	.set_tunable		= at803x_set_tunable,
-@@ -2081,7 +2081,7 @@ static struct phy_driver at803x_driver[] = {
- 	.resume			= at803x_resume,
- 	.flags			= PHY_POLL_CABLE_TEST,
- 	/* PHY_BASIC_FEATURES */
--	.config_intr		= &at803x_config_intr,
-+	.config_intr		= at803x_config_intr,
- 	.handle_interrupt	= at803x_handle_interrupt,
- 	.cable_test_start	= at803x_cable_test_start,
- 	.cable_test_get_status	= at803x_cable_test_get_status,
-@@ -2097,7 +2097,7 @@ static struct phy_driver at803x_driver[] = {
- 	.resume			= at803x_resume,
- 	.flags			= PHY_POLL_CABLE_TEST,
- 	/* PHY_BASIC_FEATURES */
--	.config_intr		= &at803x_config_intr,
-+	.config_intr		= at803x_config_intr,
- 	.handle_interrupt	= at803x_handle_interrupt,
- 	.cable_test_start	= at803x_cable_test_start,
- 	.cable_test_get_status	= at803x_cable_test_get_status,
+diff --git a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
+index fbd5d92182d3..812a35d79b95 100644
+--- a/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
++++ b/drivers/net/ethernet/intel/ice/ice_adminq_cmd.h
+@@ -491,10 +491,10 @@ struct ice_aqc_vsi_props {
+ #define ICE_AQ_VSI_Q_OPT_RSS_GBL_LUT_M		(0xF << ICE_AQ_VSI_Q_OPT_RSS_GBL_LUT_S)
+ #define ICE_AQ_VSI_Q_OPT_RSS_HASH_S		6
+ #define ICE_AQ_VSI_Q_OPT_RSS_HASH_M		(0x3 << ICE_AQ_VSI_Q_OPT_RSS_HASH_S)
+-#define ICE_AQ_VSI_Q_OPT_RSS_TPLZ		(0x0 << ICE_AQ_VSI_Q_OPT_RSS_HASH_S)
+-#define ICE_AQ_VSI_Q_OPT_RSS_SYM_TPLZ		(0x1 << ICE_AQ_VSI_Q_OPT_RSS_HASH_S)
+-#define ICE_AQ_VSI_Q_OPT_RSS_XOR		(0x2 << ICE_AQ_VSI_Q_OPT_RSS_HASH_S)
+-#define ICE_AQ_VSI_Q_OPT_RSS_JHASH		(0x3 << ICE_AQ_VSI_Q_OPT_RSS_HASH_S)
++#define ICE_AQ_VSI_Q_OPT_RSS_HASH_TPLZ		0x0U
++#define ICE_AQ_VSI_Q_OPT_RSS_HASH_SYM_TPLZ	0x1U
++#define ICE_AQ_VSI_Q_OPT_RSS_HASH_XOR		0x2U
++#define ICE_AQ_VSI_Q_OPT_RSS_HASH_JHASH		0x3U
+ 	u8 q_opt_tc;
+ #define ICE_AQ_VSI_Q_OPT_TC_OVR_S		0
+ #define ICE_AQ_VSI_Q_OPT_TC_OVR_M		(0x1F << ICE_AQ_VSI_Q_OPT_TC_OVR_S)
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index 1bad6e17f9be..24f95880a2ed 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -1186,12 +1186,12 @@ static void ice_set_rss_vsi_ctx(struct ice_vsi_ctx *ctxt, struct ice_vsi *vsi)
+ 	case ICE_VSI_PF:
+ 		/* PF VSI will inherit RSS instance of PF */
+ 		lut_type = ICE_AQ_VSI_Q_OPT_RSS_LUT_PF;
+-		hash_type = ICE_AQ_VSI_Q_OPT_RSS_TPLZ;
++		hash_type = ICE_AQ_VSI_Q_OPT_RSS_HASH_TPLZ;
+ 		break;
+ 	case ICE_VSI_VF:
+ 		/* VF VSI will gets a small RSS table which is a VSI LUT type */
+ 		lut_type = ICE_AQ_VSI_Q_OPT_RSS_LUT_VSI;
+-		hash_type = ICE_AQ_VSI_Q_OPT_RSS_TPLZ;
++		hash_type = ICE_AQ_VSI_Q_OPT_RSS_HASH_TPLZ;
+ 		break;
+ 	default:
+ 		dev_dbg(dev, "Unsupported VSI type %s\n",
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+index 1c7b4ded948b..8872f7a4f432 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -823,8 +823,8 @@ static int ice_vc_handle_rss_cfg(struct ice_vf *vf, u8 *msg, bool add)
+ 		int status;
+ 
+ 		lut_type = ICE_AQ_VSI_Q_OPT_RSS_LUT_VSI;
+-		hash_type = add ? ICE_AQ_VSI_Q_OPT_RSS_XOR :
+-				ICE_AQ_VSI_Q_OPT_RSS_TPLZ;
++		hash_type = add ? ICE_AQ_VSI_Q_OPT_RSS_HASH_XOR :
++				ICE_AQ_VSI_Q_OPT_RSS_HASH_TPLZ;
+ 
+ 		ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
+ 		if (!ctx) {
+@@ -832,11 +832,9 @@ static int ice_vc_handle_rss_cfg(struct ice_vf *vf, u8 *msg, bool add)
+ 			goto error_param;
+ 		}
+ 
+-		ctx->info.q_opt_rss = ((lut_type <<
+-					ICE_AQ_VSI_Q_OPT_RSS_LUT_S) &
+-				       ICE_AQ_VSI_Q_OPT_RSS_LUT_M) |
+-				       (hash_type &
+-					ICE_AQ_VSI_Q_OPT_RSS_HASH_M);
++		ctx->info.q_opt_rss =
++			FIELD_PREP(ICE_AQ_VSI_Q_OPT_RSS_LUT_M, lut_type) |
++			FIELD_PREP(ICE_AQ_VSI_Q_OPT_RSS_HASH_M, hash_type);
+ 
+ 		/* Preserve existing queueing option setting */
+ 		ctx->info.q_opt_rss |= (vsi->info.q_opt_rss &
 -- 
 2.43.0
 
