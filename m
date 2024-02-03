@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58AC48481A9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1981C8482F7
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14DFF282726
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA5BF28CC3F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B8E28F3;
-	Sat,  3 Feb 2024 04:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CD41119C;
+	Sat,  3 Feb 2024 04:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgUkBA23"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFdeUELF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795C9125C2;
-	Sat,  3 Feb 2024 04:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69CB91642F;
+	Sat,  3 Feb 2024 04:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933599; cv=none; b=KgbLNvZ/Iqi8oQwoCHRgWkXPk8THeb/atFAF5Z2g5PZiycwOAJqqWw4DdqX744oIY8VY4GMTfGvw666pYctqzIjnsu2yfw4VH+RqJ1jRk4vsFO7SIfGtel1F3BQkQPZzj+aW6z7RFCaN5C4R6dtKs6FSmVD0BTmzm62XGILqyWI=
+	t=1706933844; cv=none; b=MQkY3B0xcjOLg9J9Us+Dot3O5sCzS+lvA9lemzYGbEZZWH39YsCUQxhg1lOjnP1QNEE3tMcfbt94a9GMD/IBBgHnqngBbsEAlF3l8/A4DaQa5XRg4aquFfHSSFiaDIiiJ/WTVpHHrBTFMbcinFWyb+tXzGdO15OzlPomIjt8VTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933599; c=relaxed/simple;
-	bh=zbDtbJTGbUp0Bohs8MNvl3gukb8F7m6gn0vzSuPfJXM=;
+	s=arc-20240116; t=1706933844; c=relaxed/simple;
+	bh=PENr2SYQYtwgIzqg8t/6MuokqGdeuEqvzWt/4ZWs7kA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dOgy2FF39UDs26RchEXNWzOmVx92ZKJgB37q3y2U6clIRCmO4spWZWosKCuSwFwehgWWV/76QSJuWgopL7zKR+KznltW1LU1DDReBo0sfpHc/dRJsDTY9A0+lmtuxIiyUgG3HiebmKr6VjPtPP3q/KkgF5LUvnkHS/MYVXzXQWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgUkBA23; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F92CC433C7;
-	Sat,  3 Feb 2024 04:13:19 +0000 (UTC)
+	 MIME-Version; b=ElmXdQoGuD5Us7PB3FjrViUzoptlM7hM1gntNcscUCf+uC97UUMci3S87hNj0p5H6gqLcfsBzI4X0A6PlLw5noaGYQVfmUGSpWa7E5e6K3+WI1fv74Jo5aasLKM/cjEkF+87xhXTuScpH9z9lvW6ST8gHwTITKMCXnUrrZkPTZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFdeUELF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32846C433C7;
+	Sat,  3 Feb 2024 04:17:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933599;
-	bh=zbDtbJTGbUp0Bohs8MNvl3gukb8F7m6gn0vzSuPfJXM=;
+	s=korg; t=1706933844;
+	bh=PENr2SYQYtwgIzqg8t/6MuokqGdeuEqvzWt/4ZWs7kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bgUkBA23xsaWtCuoBuBL7xKQGbk3Uc/QRhmVegkVFMx3l8BQR3AiaDImZ3MbLADwx
-	 H6YAYfn9w2ZWi3RDcPKbP+37vBy0hsBntSAMM/52851k7T6T1MY2m8dE45TMhOKYrD
-	 DEWdk8RePanwz3eN7HwI5k9s2xpEsKdywlO4gLOs=
+	b=AFdeUELF5GTc7cdZluD3nZdXoDdkI6vDXC1bNUlX71Six3fvnjGksmaXdZDaziPxZ
+	 BzbZF8gpdya+ur8bKK8HlSWoGSNOSlC1yQHwL4EguqOqt9fFMbyA16zJIndENLPGzB
+	 IMJ0Hg7NLdLJhwd/RkjotBvfuBRbWdKZOhhExzm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/322] ASoC: amd: Add new dmi entries for acp5x platform
+Subject: [PATCH 6.7 146/353] wifi: rtlwifi: rtl8723{be,ae}: using calculate_bit_shift()
 Date: Fri,  2 Feb 2024 20:04:24 -0800
-Message-ID: <20240203035404.629028887@linuxfoundation.org>
+Message-ID: <20240203035408.298047246@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit c3ab23a10771bbe06300e5374efa809789c65455 ]
+[ Upstream commit 5c16618bc06a41ad68fd8499a21d35ef57ca06c2 ]
 
-Add sys_vendor and product_name dmi entries for acp5x platform.
+Using calculate_bit_shift() to replace rtl8723_phy_calculate_bit_shift().
+And fix an undefined bitwise shift behavior problem.
 
-Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
-Link: https://lore.kernel.org/r/20231206110620.1695591-1-venkataprasad.potturu@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-12-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp-config.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c | 6 +++---
+ drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/amd/acp-config.c b/sound/soc/amd/acp-config.c
-index f27c27580009..955145448c23 100644
---- a/sound/soc/amd/acp-config.c
-+++ b/sound/soc/amd/acp-config.c
-@@ -3,7 +3,7 @@
- // This file is provided under a dual BSD/GPLv2 license. When using or
- // redistributing this file, you may do so under either license.
- //
--// Copyright(c) 2021 Advanced Micro Devices, Inc.
-+// Copyright(c) 2021, 2023 Advanced Micro Devices, Inc.
- //
- // Authors: Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
- //
-@@ -47,6 +47,19 @@ static const struct config_entry config_table[] = {
- 			{}
- 		},
- 	},
-+	{
-+		.flags = FLAG_AMD_LEGACY,
-+		.device = ACP_PCI_DEV_ID,
-+		.dmi_table = (const struct dmi_system_id []) {
-+			{
-+				.matches = {
-+					DMI_MATCH(DMI_SYS_VENDOR, "Valve"),
-+					DMI_MATCH(DMI_PRODUCT_NAME, "Jupiter"),
-+				},
-+			},
-+			{}
-+		},
-+	},
- 	{
- 		.flags = FLAG_AMD_SOF,
- 		.device = ACP_PCI_DEV_ID,
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
+index fe9b407dc2af..71e29b103da5 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723ae/phy.c
+@@ -49,7 +49,7 @@ u32 rtl8723e_phy_query_rf_reg(struct ieee80211_hw *hw,
+ 							    rfpath, regaddr);
+ 	}
+ 
+-	bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
+ 
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -80,7 +80,7 @@ void rtl8723e_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = rtl8723_phy_rf_serial_read(hw,
+ 								    rfpath,
+ 								    regaddr);
+-			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+@@ -89,7 +89,7 @@ void rtl8723e_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 		rtl8723_phy_rf_serial_write(hw, rfpath, regaddr, data);
+ 	} else {
+ 		if (bitmask != RFREG_OFFSET_MASK) {
+-			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
+index 2b9313cb93db..094cb36153f5 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/phy.c
+@@ -41,7 +41,7 @@ u32 rtl8723be_phy_query_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
+ 	spin_lock(&rtlpriv->locks.rf_lock);
+ 
+ 	original_value = rtl8723_phy_rf_serial_read(hw, rfpath, regaddr);
+-	bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
+ 
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -68,7 +68,7 @@ void rtl8723be_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path path,
+ 	if (bitmask != RFREG_OFFSET_MASK) {
+ 			original_value = rtl8723_phy_rf_serial_read(hw, path,
+ 								    regaddr);
+-			bitshift = rtl8723_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data = ((original_value & (~bitmask)) |
+ 				(data << bitshift));
+ 		}
 -- 
 2.43.0
 
