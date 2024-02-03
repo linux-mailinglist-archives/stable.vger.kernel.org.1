@@ -1,120 +1,95 @@
-Return-Path: <stable+bounces-18693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E68284848A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 09:36:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13AAB848515
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 10:59:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D3C61F2268A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 08:36:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8E4DB250F1
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 09:59:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E3A5C909;
-	Sat,  3 Feb 2024 08:36:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c57KYkkV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D3B10A18;
+	Sat,  3 Feb 2024 09:59:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A11018AED;
-	Sat,  3 Feb 2024 08:36:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112EC59B6A;
+	Sat,  3 Feb 2024 09:59:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706949370; cv=none; b=a8kpuYMipd5m3p3IoZzIVVKF65I/WrZKniKeNMUJM4Ov/2GoMxvis9p6os0E2KWTh8UxWKkgbIgHrjyLWfGvk3bWD74yTyG8T/IB3nt7ypQgDp2LcpfPSKH6rlZv5V1NTv+MQnHOqiGLd60/dHx89rFvGm7eB7qEEgDU0rsnciY=
+	t=1706954361; cv=none; b=AMVTq6A06d2yHX0IP1emmqW+EZkjCYdhx1nO7FbPfFB7052j4SCd+NQ9YfD3kW43k07cO/RzKgHKPe2NAxsP61tYKZp3LA5fDTN2xGKpVF6rjnoCywQLH82W5P/LYYw4pW3x6BgWxdlljvmDfd09lu5j4ITaG+VML2oMX8hVSh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706949370; c=relaxed/simple;
-	bh=OebqqDe2OlNfuBtKrA2Fp5NrNdfMmgRR0lEDATDNxjg=;
+	s=arc-20240116; t=1706954361; c=relaxed/simple;
+	bh=BKWxSZF+A8z9CofVmYuOHESOuQOtgXbFK2MyqfwghH4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OvNOmLeVWVa3I0OTOZw5Wf16V+qKfUomnesjCi5+T0Bhgl7KGQn3p8UCOq42Upm4ICdcMO2oRPc7Gz7PvkbbH/qA/8+vIXpj5O6FEtYp2CBLqZRJqAN8hvjoZnjD9Gz+eMml4zCd2Rb3Fn46HGr3/4HHERmR5OgZnS1gFOiotKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c57KYkkV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D83C433F1;
-	Sat,  3 Feb 2024 08:36:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1706949369;
-	bh=OebqqDe2OlNfuBtKrA2Fp5NrNdfMmgRR0lEDATDNxjg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=c57KYkkVPqqrokvDQtm1sj0j77mgbmS3lGSlsPbfDVoefIQoMSPzBEjqYlqzRHZZM
-	 3NM60BEci5Nn93/V+71Jf5PB8hV4UvKW+fcNAfB4V+ZrE0Fo/yl1jC9bTRrI0dXOLN
-	 SlKcx7VEItswRYP6THbLa4zAxTBv9vk5tFlw9wb5OQpWbkPd7LgSAFHJc+d00ddaL1
-	 26XLGnfBTdseCexgHfuKhTKvrWRwzeRGHHiKUhyA+P/gS72mXegcXVxXiSnvlsYJMs
-	 qc5isvtBauDQTI/9ajrRshRl419Ikh3wYN1e5UCkN9A2upsCqksPhYzX3cU++2j7d2
-	 qw7RRTZRHanYQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rWBVW-000000000M0-2H7G;
-	Sat, 03 Feb 2024 09:36:14 +0100
-Date: Sat, 3 Feb 2024 09:36:14 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Banajit Goswami <bgoswami@quicinc.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Mark Brown <broonie@kernel.org>,
-	Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Stable backport request (was: [PATCH v5 0/4] ASoC: qcom: volume
- fixes and codec cleanups)
-Message-ID: <Zb36_mlapsfSLHEy@hovoldconsulting.com>
-References: <20240122181819.4038-1-johan+linaro@kernel.org>
- <170596045583.161959.6600754837297158632.b4-ty@kernel.org>
- <ZbjxUF2IV3A5zNw5@hovoldconsulting.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=mude841nBjvuNyHKSOcs6jNo6tN2zrwyeE67BMiH75QhZb+qGyjBP5h6goUslTH8jZSbEatPFvru8KfTx0byUig2B8SMxZXJsASIsbA5O3zCHUsNZd6IqE75N8zjqwCuNxgEQKJB7oVykAf+UgLDmFrYzu6xnb8pN4WZW+zqwvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id AE84D1C0077; Sat,  3 Feb 2024 10:59:16 +0100 (CET)
+Date: Sat, 3 Feb 2024 10:59:16 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.6 000/322] 6.6.16-rc1 review
+Message-ID: <Zb4OdNGmklolM9R3@duo.ucw.cz>
+References: <20240203035359.041730947@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="wZUaUqhFTlgZqP4l"
+Content-Disposition: inline
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+
+
+--wZUaUqhFTlgZqP4l
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZbjxUF2IV3A5zNw5@hovoldconsulting.com>
+Content-Transfer-Encoding: quoted-printable
 
-Hi Greg and Sasha,
+Hi!
 
-On Tue, Jan 30, 2024 at 01:53:37PM +0100, Johan Hovold wrote:
-> On Mon, Jan 22, 2024 at 09:54:15PM +0000, Mark Brown wrote:
-> > On Mon, 22 Jan 2024 19:18:15 +0100, Johan Hovold wrote:
-> > > To reduce the risk of speaker damage the PA gain needs to be limited on
-> > > machines like the Lenovo Thinkpad X13s until we have active speaker
-> > > protection in place.
-> > > 
-> > > Limit the gain to the current default setting provided by the UCM
-> > > configuration which most user have so far been using (due to a bug in
-> > > the configuration files which prevented hardware volume control [1]).
-> > > 
-> > > [...]
-> > 
-> > Applied to
-> > 
-> >    https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-> 
-> alsa-ucm-conf 1.2.11 was released yesterday, which means that it is now
-> very urgent to get the speaker volume limitation backported to the
-> stable trees.
-> 
-> Could you please try to make sure that these fixes get to Linus this
-> week?
+> This is the start of the stable review cycle for the 6.6.16 release.
+> There are 322 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-This series (and a related headphone codec fix) were merged into Linus's
-tree yesterday.
+6.6/6.7 seem to have build problems, likely same ones others are
+reporting.
 
-I saw that the 6.7.4 stable patches were sent out for review over night,
-but could it be possible to squeeze in also the following four fixes in
-6.7.4 (and 6.6.16)?
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/pipelines/1=
+163145567
 
-	c481016bb4f8 ASoC: qcom: sc8280xp: limit speaker volumes
-	4d0e8bdfa4a5 ASoC: codecs: wcd938x: fix headphones volume controls
-	46188db080bd ASoC: codecs: lpass-wsa-macro: fix compander volume hack
-	b53cc6144a3f ASoC: codecs: wsa883x: fix PA volume control
+BR,
+								Pavel
 
-These are needed for proper volume control and, importantly, to prevent
-users of the Lenovo ThinkPad X13s from potentially damaging their
-speakers when the distros ship the latest UCM configuration files which
-were released on Monday.
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-Johan
+--wZUaUqhFTlgZqP4l
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZb4OdAAKCRAw5/Bqldv6
+8s0aAKCnp5B56++AL07HcDdc5CjWv4YcEACeNoGC04ANDNE7SW7Xy0pYmbL/G68=
+=uNVW
+-----END PGP SIGNATURE-----
+
+--wZUaUqhFTlgZqP4l--
 
