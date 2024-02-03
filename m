@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-18278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73874848217
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F35D8480E7
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 134831F235C7
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0D8F1F23EF2
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B59519477;
-	Sat,  3 Feb 2024 04:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438EA1AAD8;
+	Sat,  3 Feb 2024 04:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/IY0q+I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="02MCd2al"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286A912E46;
-	Sat,  3 Feb 2024 04:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025D8FC03;
+	Sat,  3 Feb 2024 04:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933681; cv=none; b=dQcLkWHnWBuXABWkQyuBmUntj/haf4HSvHLRJ+gfZWot83V0QNgN0adKREPlGtgk4iH0rcCy1vCzwGuYV/yQQMrs0/30c+NgxFVeCtRPelTaPSaN7UP+ctfIQwXE+UZ/+tRnGsZGWJyWkLDd4eYU4RloV+BBe+H382kso05vAks=
+	t=1706933461; cv=none; b=kaN7kIpZk0/2mlmEue9vDvyEJdHUaoIv2qruVQg/nh07lkBl0h9WMLCdSQYuPn2+F26hFUQreWGsXlT/vmJoNG4tPDDj1C8702gm61ykCzjbcnvey9PMErXSxtoH/Pwn4RVUNpSLHmkeSJhAiXntDNDLdhzPW8g/kv959lEWlVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933681; c=relaxed/simple;
-	bh=P4QTwk9cGpI4fsuG3r3kMldbnV+tVfBUTKRNlhw34Ks=;
+	s=arc-20240116; t=1706933461; c=relaxed/simple;
+	bh=/2/5gz0lF4FleU06Y1ov1jrUE2ZU0+V06pii0DQtLG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yq79gUDfHNGOLtBLR0YGbkRoTjYVz94+NwQ/9sJK9Pt4Yqv5dc4XY77SV3a5DyJOCDCQwsheJ4uj1Z6UkepQmKoXKxepWHcSXtQrn2+MWAdTsLcf18RLFT8cbdirkJGTMaEyT1CLXZtzKkK7ZdWJkHXtCxjCDwdxxNC574zZ9YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/IY0q+I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85041C43390;
-	Sat,  3 Feb 2024 04:14:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kce8M8Ir0U9EzEqX1k1H3Nkbi6EqE5LHYDljRUQcrcstnyf6Yo6Za8/UImAVjZR2UDmsZbMqkUN1npF5zd9kzBRJSBF6ixvjakRBWKISzts8iBogEgeSVELwwOyDXhS5yPeo+7QzzojWhZPC4p0c3eaCO/pK82szAan+1pcRECM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=02MCd2al; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B5DC433C7;
+	Sat,  3 Feb 2024 04:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933680;
-	bh=P4QTwk9cGpI4fsuG3r3kMldbnV+tVfBUTKRNlhw34Ks=;
+	s=korg; t=1706933460;
+	bh=/2/5gz0lF4FleU06Y1ov1jrUE2ZU0+V06pii0DQtLG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i/IY0q+IePC/OxgIAAjBU0GfPQM5H2UyrswXfJFxcBhWfSEPh812KfZ1ONjMT9XKQ
-	 56CeEepLS0Kk2yLr+/xYU3eIZSpofcIdXCOe3+eVfSfKUk/w5QixZOn5wyZBmTmh8t
-	 souUs+m6UY/beJdYOppCr1Y9loAtJi3Xb6V1Lkgo=
+	b=02MCd2alF/SOpz8lR5pM4m+HzzEqS5X3Cvk/9xD8w79ZswlBxrlz5LnpFXSnCND+n
+	 qRD2i3Q2BsziXPKHVfFH6/H9S3lHltHuUNMQgeu0PqlY/Bds4HVw7TSvRPN+Ae4FE6
+	 WfHbObebKLcLvv3RxVe224C6/kv5/JLVWYot7WHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
+	=?UTF-8?q?Michal=20Vok=C3=A1=C4=8D?= <michal.vokac@ysoft.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 274/322] selftests: net: add missing config for big tcp tests
+Subject: [PATCH 6.1 198/219] net: dsa: qca8k: fix illegal usage of GPIO
 Date: Fri,  2 Feb 2024 20:06:11 -0800
-Message-ID: <20240203035407.957078100@linuxfoundation.org>
+Message-ID: <20240203035345.011435424@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Michal Vokáč <michal.vokac@ysoft.com>
 
-[ Upstream commit fcf67d82b8b878bdd95145382be43927bce07ec6 ]
+[ Upstream commit c44fc98f0a8ffd94fa0bd291928e7e312ffc7ca4 ]
 
-The big_tcp test-case requires a few kernel knobs currently
-not specified in the net selftests config, causing the
-following failure:
+When working with GPIO, its direction must be set either when the GPIO is
+requested by gpiod_get*() or later on by one of the gpiod_direction_*()
+functions. Neither of this is done here which results in undefined
+behavior on some systems.
 
-  # selftests: net: big_tcp.sh
-  # Error: Failed to load TC action module.
-  # We have an error talking to the kernel
-...
-  # Testing for BIG TCP:
-  # CLI GSO | GW GRO | GW GSO | SER GRO
-  # ./big_tcp.sh: line 107: test: !=: unary operator expected
-...
-  # on        on       on       on      : [FAIL_on_link1]
+As the reset GPIO is used right after it is requested here, it makes sense
+to configure it as GPIOD_OUT_HIGH right away. With that, the following
+gpiod_set_value_cansleep(1) becomes redundant and can be safely
+removed.
 
-Add the missing configs
-
-Fixes: 6bb382bcf742 ("selftests: add a selftest for big tcp")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Acked-by: Aaron Conole <aconole@redhat.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://lore.kernel.org/all/21630ecea872fea13f071342ac64ef52a991a9b5.1706282943.git.pabeni@redhat.com/
+Fixes: a653f2f538f9 ("net: dsa: qca8k: introduce reset via gpio feature")
+Signed-off-by: Michal Vokáč <michal.vokac@ysoft.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/1706266175-3408-1-git-send-email-michal.vokac@ysoft.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/config | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/dsa/qca/qca8k-8xxx.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/config b/tools/testing/selftests/net/config
-index 19ff75051660..413ab9abcf1b 100644
---- a/tools/testing/selftests/net/config
-+++ b/tools/testing/selftests/net/config
-@@ -29,7 +29,9 @@ CONFIG_NF_NAT=m
- CONFIG_IP6_NF_IPTABLES=m
- CONFIG_IP_NF_IPTABLES=m
- CONFIG_IP6_NF_NAT=m
-+CONFIG_IP6_NF_RAW=m
- CONFIG_IP_NF_NAT=m
-+CONFIG_IP_NF_RAW=m
- CONFIG_IPV6_GRE=m
- CONFIG_IPV6_SEG6_LWTUNNEL=y
- CONFIG_L2TP_ETH=m
-@@ -45,6 +47,8 @@ CONFIG_NF_TABLES=m
- CONFIG_NF_TABLES_IPV6=y
- CONFIG_NF_TABLES_IPV4=y
- CONFIG_NFT_NAT=m
-+CONFIG_NETFILTER_XT_MATCH_LENGTH=m
-+CONFIG_NET_ACT_CT=m
- CONFIG_NET_ACT_GACT=m
- CONFIG_NET_CLS_BASIC=m
- CONFIG_NET_CLS_U32=m
-@@ -55,6 +59,7 @@ CONFIG_NET_SCH_HTB=m
- CONFIG_NET_SCH_FQ=m
- CONFIG_NET_SCH_ETF=m
- CONFIG_NET_SCH_NETEM=y
-+CONFIG_NF_FLOW_TABLE=m
- CONFIG_PSAMPLE=m
- CONFIG_TCP_MD5SIG=y
- CONFIG_TEST_BLACKHOLE_DEV=m
+diff --git a/drivers/net/dsa/qca/qca8k-8xxx.c b/drivers/net/dsa/qca/qca8k-8xxx.c
+index 7c3c90c9edbe..641692f716f8 100644
+--- a/drivers/net/dsa/qca/qca8k-8xxx.c
++++ b/drivers/net/dsa/qca/qca8k-8xxx.c
+@@ -1935,12 +1935,11 @@ qca8k_sw_probe(struct mdio_device *mdiodev)
+ 	priv->info = of_device_get_match_data(priv->dev);
+ 
+ 	priv->reset_gpio = devm_gpiod_get_optional(priv->dev, "reset",
+-						   GPIOD_ASIS);
++						   GPIOD_OUT_HIGH);
+ 	if (IS_ERR(priv->reset_gpio))
+ 		return PTR_ERR(priv->reset_gpio);
+ 
+ 	if (priv->reset_gpio) {
+-		gpiod_set_value_cansleep(priv->reset_gpio, 1);
+ 		/* The active low duration must be greater than 10 ms
+ 		 * and checkpatch.pl wants 20 ms.
+ 		 */
 -- 
 2.43.0
 
