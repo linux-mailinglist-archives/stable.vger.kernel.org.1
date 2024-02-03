@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-17837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC02284804C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 10DF48482B6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1754B1C2266A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 440841C20A1C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6075F125C2;
-	Sat,  3 Feb 2024 04:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA6B1BF28;
+	Sat,  3 Feb 2024 04:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVtFCwG3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iR537i3+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5F7F9D7;
-	Sat,  3 Feb 2024 04:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CF01BDED;
+	Sat,  3 Feb 2024 04:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933350; cv=none; b=skScspeYSoN0Yjg00x229ZxitJ970iQK33n1FOwbwfr7DYdeMqIj28iPG0/a7UyhbcnuYxYmmHfL6UNcemB9YvQNxPVuNKUgRCJ1NCuK89zY8rXrQ4wHt2raKiNabliT0zg5Z5MMKf5XFsdBFbbtfPiRkWxortMIVGOuwh0OMy0=
+	t=1706933797; cv=none; b=VlHvWQNS9tC4FsuzXsWymm5OV7xWd2QN2/iyk87QY+n2RUsSi7IAUSwgDVdE6HR6VlFuK3nsW97BSOdqLfJn52vW0Wqo9eUr9tCDjWdEkru4zErItU5d4OzaC+9NGVTFuyquixBmQ4cdztN4LVZ8lGuA2030PkRifDbgcLwea/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933350; c=relaxed/simple;
-	bh=auD5Fqz7T1192qfMMpK08NRFlLvjyZqRC9AaU8smYZM=;
+	s=arc-20240116; t=1706933797; c=relaxed/simple;
+	bh=AvpDTkJXUhpJEZWSMAVhZuuBQrpnGdYkypdwPuCXvTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IxTZeTARKZZ0/giI2kr2c/gGC0u6pSAVpwou6hAq5WKY5RJZbMtbwdbFuD1u3Cl8BmBjVJyN+UxR0/Rsq7gWdmwzWO2bTrtE+Er4nb9Cri7cqaryqpWOeIGXWLAHRZPExlbj77vEOuQgGRwXRDkZxhTfRzkAqKF3JPDyxQi7KEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVtFCwG3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D816BC433F1;
-	Sat,  3 Feb 2024 04:09:09 +0000 (UTC)
+	 MIME-Version; b=m9tWhcxIJF08iOycPZXOtL7GoiFwHWLhoQNcNTHkVfx8gG0QFwBLrbHpwQ8xX+lQ4T7vQ+JZvt+agAr+9AJzPucgKPVuRXRUQ2N8WFgmySHRW1ZmlVqWNMo+D1s3w6mydg8Lz3InztQ7iHjc2P4A45yYPCa/X03XnwAxwiq6GYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iR537i3+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33516C43390;
+	Sat,  3 Feb 2024 04:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933349;
-	bh=auD5Fqz7T1192qfMMpK08NRFlLvjyZqRC9AaU8smYZM=;
+	s=korg; t=1706933797;
+	bh=AvpDTkJXUhpJEZWSMAVhZuuBQrpnGdYkypdwPuCXvTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TVtFCwG35iDHrJOB4nNKL5u1/9uCnQOmgkg191+W53lTy4PGA70rl74/TUIiy4/7X
-	 BkDiNWpy3r2rSNdt9zY8Oqn08INX5hmjmB/lj61K93FQ1/cgWf4lOMb9qKwqsgbPq5
-	 wjv0d/24UFYZEKl7vJb+6NLchsOf6k+9SnVCGS7k=
+	b=iR537i3+uZLSynX0RRYszRIQLmYJq/kylFXmiUnF44OB0vXCu44xSPD0MZWuqSKG2
+	 6NCQ+NSqVSPS/s/VY5kElgOJSx8SyK8uGVgwm9HHA440ukcH01AhXnSMCjvHwPKPcS
+	 iZnXKYPaoYCG+SbrOvSxYL/NQ28RKXPngFv/IxtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Petr Machata <petrm@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Lingbo Kong <quic_lingbok@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/219] PCI: Add no PM reset quirk for NVIDIA Spectrum devices
+Subject: [PATCH 6.7 108/353] wifi: ath12k: fix the issue that the multicast/broadcast indicator is not read correctly for WCN7850
 Date: Fri,  2 Feb 2024 20:03:46 -0800
-Message-ID: <20240203035324.302948671@linuxfoundation.org>
+Message-ID: <20240203035407.182057168@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Lingbo Kong <quic_lingbok@quicinc.com>
 
-[ Upstream commit 3ed48c80b28d8dcd584d6ddaf00c75b7673e1a05 ]
+[ Upstream commit 7133b072dfbfac8763ffb017642c9c894894c50d ]
 
-Spectrum-{1,2,3,4} devices report that a D3hot->D0 transition causes a
-reset (i.e., they advertise NoSoftRst-). However, this transition does
-not have any effect on the device: It continues to be operational and
-network ports remain up. Advertising this support makes it seem as if a
-PM reset is viable for these devices. Mark it as unavailable to skip it
-when testing reset methods.
+We observe some packets are discarded in ieee80211_rx_handlers_result
+function for WCN7850. This is because the way to get multicast/broadcast
+indicator with RX_MSDU_END_INFO5_DA_IS_MCBC & info5 is incorrect. It should
+use RX_MSDU_END_INFO13_MCAST_BCAST & info13 to get multicast/broadcast
+indicator.
 
-Before:
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 
- # cat /sys/bus/pci/devices/0000\:03\:00.0/reset_method
- pm bus
-
-After:
-
- # cat /sys/bus/pci/devices/0000\:03\:00.0/reset_method
- bus
-
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231206141759.5430-1-quic_lingbok@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/wireless/ath/ath12k/hal.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 8765544bac35..030c8e665757 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3691,6 +3691,19 @@ static void quirk_no_pm_reset(struct pci_dev *dev)
- DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_VENDOR_ID_ATI, PCI_ANY_ID,
- 			       PCI_CLASS_DISPLAY_VGA, 8, quirk_no_pm_reset);
+diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
+index eca86fc25a60..b896dfe66dad 100644
+--- a/drivers/net/wireless/ath/ath12k/hal.c
++++ b/drivers/net/wireless/ath/ath12k/hal.c
+@@ -889,8 +889,8 @@ static u8 *ath12k_hw_wcn7850_rx_desc_mpdu_start_addr2(struct hal_rx_desc *desc)
  
-+/*
-+ * Spectrum-{1,2,3,4} devices report that a D3hot->D0 transition causes a reset
-+ * (i.e., they advertise NoSoftRst-). However, this transition does not have
-+ * any effect on the device: It continues to be operational and network ports
-+ * remain up. Advertising this support makes it seem as if a PM reset is viable
-+ * for these devices. Mark it as unavailable to skip it when testing reset
-+ * methods.
-+ */
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcb84, quirk_no_pm_reset);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf6c, quirk_no_pm_reset);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf70, quirk_no_pm_reset);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_MELLANOX, 0xcf80, quirk_no_pm_reset);
-+
- /*
-  * Thunderbolt controllers with broken MSI hotplug signaling:
-  * Entire 1st generation (Light Ridge, Eagle Ridge, Light Peak) and part
+ static bool ath12k_hw_wcn7850_rx_desc_is_da_mcbc(struct hal_rx_desc *desc)
+ {
+-	return __le16_to_cpu(desc->u.wcn7850.msdu_end.info5) &
+-	       RX_MSDU_END_INFO5_DA_IS_MCBC;
++	return __le32_to_cpu(desc->u.wcn7850.msdu_end.info13) &
++	       RX_MSDU_END_INFO13_MCAST_BCAST;
+ }
+ 
+ static void ath12k_hw_wcn7850_rx_desc_get_dot11_hdr(struct hal_rx_desc *desc,
 -- 
 2.43.0
 
