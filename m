@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A468480BB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:13:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A09D848324
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C68B91C21949
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:13:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9A4728B808
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272FB12B78;
-	Sat,  3 Feb 2024 04:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE0550261;
+	Sat,  3 Feb 2024 04:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSlK/otw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZHTt/Ep"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE8FF9D7;
-	Sat,  3 Feb 2024 04:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A56A168D0;
+	Sat,  3 Feb 2024 04:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933431; cv=none; b=G8fWWXXjZd1pRH6ixMuTHpdr3gdwu2v+bAXU4npaNsNWtGFL/8Rz827s3FjvINqU4DJ4UjoAxACOc/Us5lsm6w+tAPBN0HaEMEzMnaNQAAVwVjWRzq+XAdN22EAlEi7IsvLZvksqYIQMnrQuvtvksGNBjymwSBWvWcksb9loclc=
+	t=1706933877; cv=none; b=Me0n/LNmFWYLzQ1htenqNFSSSX/xpuHUnHhcYNQZZBaxHrKMrfqvy20zxNG0yhUeZBUvZd4UsPa5w1btrhMXvM20aDDh2UO21ZFz5hhCLM+vodbPDtt9BJmtjxwp6sfWOkNg0RlPJDnNouV7s0LM/6kqf4jo1qONMMPydpFs4gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933431; c=relaxed/simple;
-	bh=iJhi77fL3jfbtlOSsCzF0AlD8dAt5APMlQrZJCc+XPk=;
+	s=arc-20240116; t=1706933877; c=relaxed/simple;
+	bh=5aj3pt+JTrzp1xwG+GImgxua9xJMdtGKg40EfdYwHn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=htoQ98Lu0wgIS9jUMzqXiNJfKkl5RKeoJUCKuiDRYh73d++t2RO6zILRUcZBM3bM0L+0yJLWldBs6y+V4wuPJtvDwBOcTKpkTRPtGgCU26KpV+QpbGiC3Hexog9CginJFbn/0cohPN2uxHohSAC+R352DICoR6Cm+OAFEyV8NFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSlK/otw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3785C433B2;
-	Sat,  3 Feb 2024 04:10:31 +0000 (UTC)
+	 MIME-Version; b=B+0rlZB9hPQNBwHJmSXl+ExmX3KpUEygiuZpiwkq1Bh+V/SX+jiNp1KWkQzMbjuwLyeY+OrPCKO4DjW7XKohlFv8vh+XWOyzeJ9f8spfW6CcsuW/Lu220KCy8zDG6ZzQM212UKuilzfkoi8f/xFSioZiNklS25AFk1Nd2qfXteA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZHTt/Ep; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DC6C433F1;
+	Sat,  3 Feb 2024 04:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933431;
-	bh=iJhi77fL3jfbtlOSsCzF0AlD8dAt5APMlQrZJCc+XPk=;
+	s=korg; t=1706933877;
+	bh=5aj3pt+JTrzp1xwG+GImgxua9xJMdtGKg40EfdYwHn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aSlK/otw4GwFAGRO7HUH3RlIG2TvLQIT4lKz0sgVs7infQcQm6+MSuB+3Vy6dZaAK
-	 zyq2uTXryfpLyPXBfKQOH8ItF37Xkr4ObC3EVW33bEIaO+9wf4HKZLtbwbAgEXgCpR
-	 KskZQ29XJmVarsNi7j5IBZxqYddMjLKh49rSjFzw=
+	b=PZHTt/Ep9NPAQdIV68Bvrn+MKHVKAfTlJYVdV/MjBFpVghBMrU4IFP79rSZOXZKRf
+	 dnvASiwDJImacWpDvy6KnztZTpfR5g0E/owWBUkX2QXOqUAnbRgTVGTXZ7bP8ahPWg
+	 dPsbrpcwvXlkcKRI43ekBWn0SmNOzie5EvcLgr7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hardik Gajjar <hgajjar@de.adit-jv.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	Werner Fischer <devlists@wefi.net>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 160/219] usb: hub: Replace hardcoded quirk value with BIT() macro
-Date: Fri,  2 Feb 2024 20:05:33 -0800
-Message-ID: <20240203035339.136631135@linuxfoundation.org>
+Subject: [PATCH 6.7 216/353] watchdog: it87_wdt: Keep WDTCTRL bit 3 unmodified for IT8784/IT8786
+Date: Fri,  2 Feb 2024 20:05:34 -0800
+Message-ID: <20240203035410.518488735@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hardik Gajjar <hgajjar@de.adit-jv.com>
+From: Werner Fischer <devlists@wefi.net>
 
-[ Upstream commit 6666ea93d2c422ebeb8039d11e642552da682070 ]
+[ Upstream commit d12971849d71781c1e4ffd1117d4878ce233d319 ]
 
-This patch replaces the hardcoded quirk value in the macro with
-BIT().
+WDTCTRL bit 3 sets the mode choice for the clock input of IT8784/IT8786.
+Some motherboards require this bit to be set to 1 (= PCICLK mode),
+otherwise the watchdog functionality gets broken. The BIOS of those
+motherboards sets WDTCTRL bit 3 already to 1.
 
-Signed-off-by: Hardik Gajjar <hgajjar@de.adit-jv.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20231205181829.127353-1-hgajjar@de.adit-jv.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead of setting all bits of WDTCTRL to 0 by writing 0x00 to it, keep
+bit 3 of it unchanged for IT8784/IT8786 chips. In this way, bit 3 keeps
+the status as set by the BIOS of the motherboard.
+
+Watchdog tests have been successful with this patch with the following
+systems:
+  IT8784: Thomas-Krenn LES plus v2 (YANLING YL-KBRL2 V2)
+  IT8786: Thomas-Krenn LES plus v3 (YANLING YL-CLU L2)
+  IT8786: Thomas-Krenn LES network 6L v2 (YANLING YL-CLU6L)
+
+Link: https://lore.kernel.org/all/140b264d-341f-465b-8715-dacfe84b3f71@roeck-us.net/
+
+Signed-off-by: Werner Fischer <devlists@wefi.net>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20231213094525.11849-4-devlists@wefi.net
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/watchdog/it87_wdt.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 81c8f564cf87..9163fd5af046 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -47,8 +47,8 @@
- #define USB_VENDOR_TEXAS_INSTRUMENTS		0x0451
- #define USB_PRODUCT_TUSB8041_USB3		0x8140
- #define USB_PRODUCT_TUSB8041_USB2		0x8142
--#define HUB_QUIRK_CHECK_PORT_AUTOSUSPEND	0x01
--#define HUB_QUIRK_DISABLE_AUTOSUSPEND		0x02
-+#define HUB_QUIRK_CHECK_PORT_AUTOSUSPEND	BIT(0)
-+#define HUB_QUIRK_DISABLE_AUTOSUSPEND		BIT(1)
+diff --git a/drivers/watchdog/it87_wdt.c b/drivers/watchdog/it87_wdt.c
+index e888b1bdd1f2..8c1ee072f48b 100644
+--- a/drivers/watchdog/it87_wdt.c
++++ b/drivers/watchdog/it87_wdt.c
+@@ -256,6 +256,7 @@ static struct watchdog_device wdt_dev = {
+ static int __init it87_wdt_init(void)
+ {
+ 	u8  chip_rev;
++	u8 ctrl;
+ 	int rc;
  
- #define USB_TP_TRANSMISSION_DELAY	40	/* ns */
- #define USB_TP_TRANSMISSION_DELAY_MAX	65535	/* ns */
+ 	rc = superio_enter();
+@@ -315,7 +316,18 @@ static int __init it87_wdt_init(void)
+ 
+ 	superio_select(GPIO);
+ 	superio_outb(WDT_TOV1, WDTCFG);
+-	superio_outb(0x00, WDTCTRL);
++
++	switch (chip_type) {
++	case IT8784_ID:
++	case IT8786_ID:
++		ctrl = superio_inb(WDTCTRL);
++		ctrl &= 0x08;
++		superio_outb(ctrl, WDTCTRL);
++		break;
++	default:
++		superio_outb(0x00, WDTCTRL);
++	}
++
+ 	superio_exit();
+ 
+ 	if (timeout < 1 || timeout > max_units * 60) {
 -- 
 2.43.0
 
