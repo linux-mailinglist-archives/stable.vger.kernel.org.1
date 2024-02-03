@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC0038482D3
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF30F84806C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:11:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 882E228BD67
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E28A1F23801
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:11:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59D8E1C686;
-	Sat,  3 Feb 2024 04:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DEC13AD4;
+	Sat,  3 Feb 2024 04:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0z9BXXT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtEnl7qp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189A113AC6;
-	Sat,  3 Feb 2024 04:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E5813AE9;
+	Sat,  3 Feb 2024 04:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933818; cv=none; b=aMNsT29QPb1UYPobAzNeZu8ghcqziQPq3xQGBumBGCvCqa9UDq+4dxXcCJQhQwMAV5huPwoXTYWtknU8HKjrQ36X53HLsSwRzn+hDN3H/xkeTmuCTbBw5ZQvi1I1dsb9uzBeUnmWFv13EO6Gmz/R/318K8oJZWJLdKYwdwLwSBk=
+	t=1706933372; cv=none; b=tPigWzrP/D1SDgIaASs84lKbN0Nr2UiPX6r7BGvvxrSwzP7X+j24VWJXfkokTeHs3Andxhr4PN2cQcgAriYygyOE3NHCfIQq6TSOS6E89/AFplRGdObeba79AmnWUftmHbdzgMFHvSO5KUAI2ANNfyUVfURqJW89odFZu/2zS5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933818; c=relaxed/simple;
-	bh=r/ZdFq0DyknUeo+7EzNMA3Vt8t0y7eVs+ZUSv4+q6ck=;
+	s=arc-20240116; t=1706933372; c=relaxed/simple;
+	bh=7vw6WyWBV5WWbSD/M2N6YfXCD4M4Q1mdSsSB5GKekBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zljkf7UdQHI2FeVw6ky7WwpkK/mYt4Do9Qlxj9w06SkJ33rF2VPzDgVWiVNs1F4KoIrI/NrO4lad851aX2nymKRnCyWYFRCee91Ce5hu9lq29bMibL9tlkbd+QcH56UHPBF10CjApDwCiM4Jxh+OZDBV/CjZZJSXLjpTpTuDImE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0z9BXXT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96FDC433C7;
-	Sat,  3 Feb 2024 04:16:57 +0000 (UTC)
+	 MIME-Version; b=fsa1WJxUGCSjcIpvRRF2aRZkcatjCsdd3QviKv7E1CMh9o0sDSXZmxwtu8SxAPtorIMEYREFfzT/B/IHRGP/ZfcpJJWOGEo9wWtGRxHrc5I6v5tVcPI7FOir5vktth6k7l8z2eTqoi/6yG8ovnLS+q0xjY60RrkS9W3lkBWqDfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtEnl7qp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA0DC433F1;
+	Sat,  3 Feb 2024 04:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933817;
-	bh=r/ZdFq0DyknUeo+7EzNMA3Vt8t0y7eVs+ZUSv4+q6ck=;
+	s=korg; t=1706933372;
+	bh=7vw6WyWBV5WWbSD/M2N6YfXCD4M4Q1mdSsSB5GKekBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T0z9BXXTIOO7gyAJv7TOfFeu+qEq6Hy1xFe4tR8ENSwzlr6NPDZJci9tdHrva2qK1
-	 TvyhY8hg3JX1w1uOPtiTUSP3PJtSopQCDTdiYzoJ+9ydznbiBjrHfKWsod2uIXRIWN
-	 dtOOQaGCTzh/Z154Lix/7qSgZqCAn8acx2UjsmxU=
+	b=PtEnl7qpQpIsdgoY9cPZPJT9Jbjds/3KeuWDdsph5NfolQo5GlIsOwMeDJEFdTEIq
+	 8K1kx2sU3vyU6L8lIaHnQlCBxsWcl3aXS3RTJ9/oBIfLjb0WCY1d3LKQL0QHQmnY36
+	 CRE5tsI+GqJjPUyX9Lwn5Ojzzvz36pUQqdTCVV64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 136/353] x86/cfi,bpf: Fix bpf_exception_cb() signature
+Subject: [PATCH 6.1 081/219] ARM: dts: imx23/28: Fix the DMA controller node name
 Date: Fri,  2 Feb 2024 20:04:14 -0800
-Message-ID: <20240203035408.016252891@linuxfoundation.org>
+Message-ID: <20240203035328.556708616@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 852486b35f344887786d63250946dd921a05d7e8 ]
+[ Upstream commit 858d83ca4b50bbc8693d95cc94310e6d791fb2e6 ]
 
-As per the earlier patches, BPF sub-programs have bpf_callback_t
-signature and CFI expects callers to have matching signature. This is
-violated by bpf_prog_aux::bpf_exception_cb().
+Per fsl,mxs-dma.yaml, the node name should be 'dma-controller'.
 
-[peterz: Changelog]
-Reported-by: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/CAADnVQ+Z7UcXXBBhMubhcMM=R-dExk-uHtfOLtoLxQ1XxEpqEA@mail.gmail.com
-Link: https://lore.kernel.org/r/20231215092707.910319166@infradead.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Change it to fix the following dt-schema warning.
+
+imx28-apf28.dtb: dma-apbx@80024000: $nodename:0: 'dma-apbx@80024000' does not match '^dma-controller(@.*)?$'
+	from schema $id: http://devicetree.org/schemas/dma/fsl,mxs-dma.yaml#
+
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h  | 2 +-
- kernel/bpf/helpers.c | 2 +-
+ arch/arm/boot/dts/imx23.dtsi | 2 +-
+ arch/arm/boot/dts/imx28.dtsi | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 7a7859a5cce4..cfc6d2f98058 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -1447,7 +1447,7 @@ struct bpf_prog_aux {
- 	int cgroup_atype; /* enum cgroup_bpf_attach_type */
- 	struct bpf_map *cgroup_storage[MAX_BPF_CGROUP_STORAGE_TYPE];
- 	char name[BPF_OBJ_NAME_LEN];
--	unsigned int (*bpf_exception_cb)(u64 cookie, u64 sp, u64 bp);
-+	u64 (*bpf_exception_cb)(u64 cookie, u64 sp, u64 bp, u64, u64);
- #ifdef CONFIG_SECURITY
- 	void *security;
- #endif
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 991186520af0..b3053af6427d 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -2509,7 +2509,7 @@ __bpf_kfunc void bpf_throw(u64 cookie)
- 	 * which skips compiler generated instrumentation to do the same.
- 	 */
- 	kasan_unpoison_task_stack_below((void *)(long)ctx.sp);
--	ctx.aux->bpf_exception_cb(cookie, ctx.sp, ctx.bp);
-+	ctx.aux->bpf_exception_cb(cookie, ctx.sp, ctx.bp, 0, 0);
- 	WARN(1, "A call to BPF exception callback should never return\n");
- }
+diff --git a/arch/arm/boot/dts/imx23.dtsi b/arch/arm/boot/dts/imx23.dtsi
+index 7f4c602454a5..ec476b159649 100644
+--- a/arch/arm/boot/dts/imx23.dtsi
++++ b/arch/arm/boot/dts/imx23.dtsi
+@@ -414,7 +414,7 @@
+ 				status = "disabled";
+ 			};
  
+-			dma_apbx: dma-apbx@80024000 {
++			dma_apbx: dma-controller@80024000 {
+ 				compatible = "fsl,imx23-dma-apbx";
+ 				reg = <0x80024000 0x2000>;
+ 				interrupts = <7 5 9 26
+diff --git a/arch/arm/boot/dts/imx28.dtsi b/arch/arm/boot/dts/imx28.dtsi
+index 130b4145af82..b15df16ecb01 100644
+--- a/arch/arm/boot/dts/imx28.dtsi
++++ b/arch/arm/boot/dts/imx28.dtsi
+@@ -994,7 +994,7 @@
+ 				status = "disabled";
+ 			};
+ 
+-			dma_apbx: dma-apbx@80024000 {
++			dma_apbx: dma-controller@80024000 {
+ 				compatible = "fsl,imx28-dma-apbx";
+ 				reg = <0x80024000 0x2000>;
+ 				interrupts = <78 79 66 0
 -- 
 2.43.0
 
