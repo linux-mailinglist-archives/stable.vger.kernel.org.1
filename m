@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-18187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149048481B9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D71528482D4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C554E281D8F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15EDD1C24122
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678763A1B6;
-	Sat,  3 Feb 2024 04:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BDB81C69A;
+	Sat,  3 Feb 2024 04:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQT+Xbbd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rj+eCLMH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28425F9EB;
-	Sat,  3 Feb 2024 04:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38ED911181;
+	Sat,  3 Feb 2024 04:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933611; cv=none; b=iaXCuD99ik8PhDVEXh6iOOkWC/sWcpIy+kgILb2WYT0+1o5u5p4pLgpHrCD0LtnAcQgJp1rOGEYgdsHS8guCXHLZdihMrVpiE7TONNNRsXtcCwrOs89CY83IXNUFJe6RUyWaH4Kio2KwOwPbKGnhmIrj5XkD8Ox0Y41DJ0kSDnI=
+	t=1706933819; cv=none; b=SsdyrUm0uhBg8TfaaN2jPbjj4rebZQI2SAiFlCJa4JBdly2koZwUwvvYzYmixTz6X3i2suBUTwe035uJhW2v+Ok+vxC+N1upCl8aslFhEKtlyFzQ9191l+EJv3lfcQVQNhWDD4gXJ+COd8iuTi26rHKLS4NPadsXNcUt5jxK9xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933611; c=relaxed/simple;
-	bh=KR0Ae327LXHsILFPVoxvLAkRDRy/QNw7JRpaZ9ofnTc=;
+	s=arc-20240116; t=1706933819; c=relaxed/simple;
+	bh=0O0hHFDOxH2Q8E/1benfROwA6G80Dc1/E9UYT3Z8fyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JOZXnL62lpCworDJnxgyssbhK40bj4gUACs4bdiiUPWsPNLk+uz48EgLfbGmXAiinY9Z5qj4E2fe6/eRJFYqCEt1EeoE68+R6ik2sSNkbk1k8KKIDQ6/e6bY0ieZc6pXOcQlT2U/wxX0S1nu2bvnUfqpqpeA2n1UPtQcRAr2Z/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQT+Xbbd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40DCC43390;
-	Sat,  3 Feb 2024 04:13:30 +0000 (UTC)
+	 MIME-Version; b=HfHDWvC1WH5g2LJjXEpWVYX3I9APRXP+xE0DHX+HaElLiF+QRWnKxFAcOwAKR5PXDdYnyFN1LzH28DmxbB8j0TrLx8hZsTAtUH5WEXAHtwqW3E8np8uo3EKf9obdbjdtZU4VpcN8+KuTU/SGGsRv9qIW0GCS4UAMIurVwBg/VBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rj+eCLMH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A12CCC433F1;
+	Sat,  3 Feb 2024 04:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933611;
-	bh=KR0Ae327LXHsILFPVoxvLAkRDRy/QNw7JRpaZ9ofnTc=;
+	s=korg; t=1706933818;
+	bh=0O0hHFDOxH2Q8E/1benfROwA6G80Dc1/E9UYT3Z8fyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQT+XbbdKTyU0xRE0rfFX5H0N+VQ5vfpJOkXyagT2SqrSUBvq3uCTkOykpc106mVw
-	 q1m7tbiDT0ppRS8ktixlQB3nPGxcOzed35P96I3kztzZbYT4u3wS8RTMywLachmc4w
-	 +bkjs0kZPlX75YBXZvl0nwxfCGAI0ajjtUZwWPqo=
+	b=rj+eCLMHgMwYmnYx5l9zJVjzSoy5mWtOT/ksHcFZA7fXdivo7vqJfyjaisquMXukk
+	 VFb2VJ6yQFjBVUhwQj27eWwZCExbSz546Zy2zA4KyoeoK72C3Y8nL3Cjwwc7C7G+65
+	 Vxhz6X11ipf0pTAKGDK+9b+lTbKfjs7vuuJ4FhT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mao Jinlong <quic_jinlmao@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 158/322] ALSA: hda: Refer to correct stream index at loops
+Subject: [PATCH 6.7 137/353] arm64: dts: qcom: msm8996: Fix in-ports is a required property
 Date: Fri,  2 Feb 2024 20:04:15 -0800
-Message-ID: <20240203035404.328588156@linuxfoundation.org>
+Message-ID: <20240203035408.046910586@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Mao Jinlong <quic_jinlmao@quicinc.com>
 
-[ Upstream commit 26257869672fd4a06a60c2da841e15fb2cb47bbe ]
+[ Upstream commit 9a6fc510a6a3ec150cb7450aec1e5f257e6fc77b ]
 
-In a couple of loops over the all streams, we check the bitmap against
-the loop counter.  A more correct reference would be, however, the
-index of each stream, instead.
+Add the inport of funnel@3023000 to fix 'in-ports' is a required property
+warning.
 
-This patch corrects the check of bitmaps to the stream index.
-
-Note that this change doesn't fix anything for now; all existing
-drivers set up the stream indices properly, hence the loop count is
-always equal with the stream index.  That said, this change is only
-for consistency.
-
-Link: https://lore.kernel.org/r/20231121154125.4888-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Mao Jinlong <quic_jinlmao@quicinc.com>
+Link: https://lore.kernel.org/r/20231210072633.4243-3-quic_jinlmao@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/hdac_stream.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8996.dtsi | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/sound/hda/hdac_stream.c b/sound/hda/hdac_stream.c
-index 214a0680524b..fe0958f9969c 100644
---- a/sound/hda/hdac_stream.c
-+++ b/sound/hda/hdac_stream.c
-@@ -660,17 +660,15 @@ void snd_hdac_stream_timecounter_init(struct hdac_stream *azx_dev,
- 	struct hdac_stream *s;
- 	bool inited = false;
- 	u64 cycle_last = 0;
--	int i = 0;
+diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+index 6ba9da9e6a8b..fa8ec92ce490 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+@@ -444,6 +444,19 @@
+ 		reg = <0x0 0x80000000 0x0 0x0>;
+ 	};
  
- 	list_for_each_entry(s, &bus->stream_list, list) {
--		if (streams & (1 << i)) {
-+		if ((streams & (1 << s->index))) {
- 			azx_timecounter_init(s, inited, cycle_last);
- 			if (!inited) {
- 				inited = true;
- 				cycle_last = s->tc.cycle_last;
- 			}
- 		}
--		i++;
- 	}
++	etm {
++		compatible = "qcom,coresight-remote-etm";
++
++		out-ports {
++			port {
++				modem_etm_out_funnel_in2: endpoint {
++					remote-endpoint =
++					  <&funnel_in2_in_modem_etm>;
++				};
++			};
++		};
++	};
++
+ 	psci {
+ 		compatible = "arm,psci-1.0";
+ 		method = "smc";
+@@ -2644,6 +2657,14 @@
+ 			clocks = <&rpmcc RPM_QDSS_CLK>, <&rpmcc RPM_QDSS_A_CLK>;
+ 			clock-names = "apb_pclk", "atclk";
  
- 	snd_pcm_gettime(runtime, &runtime->trigger_tstamp);
-@@ -715,14 +713,13 @@ void snd_hdac_stream_sync(struct hdac_stream *azx_dev, bool start,
- 			  unsigned int streams)
- {
- 	struct hdac_bus *bus = azx_dev->bus;
--	int i, nwait, timeout;
-+	int nwait, timeout;
- 	struct hdac_stream *s;
++			in-ports {
++				port {
++					funnel_in2_in_modem_etm: endpoint {
++						remote-endpoint =
++						  <&modem_etm_out_funnel_in2>;
++					};
++				};
++			};
  
- 	for (timeout = 5000; timeout; timeout--) {
- 		nwait = 0;
--		i = 0;
- 		list_for_each_entry(s, &bus->stream_list, list) {
--			if (!(streams & (1 << i++)))
-+			if (!(streams & (1 << s->index)))
- 				continue;
- 
- 			if (start) {
+ 			out-ports {
+ 				port {
 -- 
 2.43.0
 
