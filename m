@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE7F84818D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D135984805A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C9BC282AA3
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 102E21C22097
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 369BC1759C;
-	Sat,  3 Feb 2024 04:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5BB12E4A;
+	Sat,  3 Feb 2024 04:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaqj49GD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6xEI4Hs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABA0F9E9;
-	Sat,  3 Feb 2024 04:12:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCF910A2B;
+	Sat,  3 Feb 2024 04:09:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933579; cv=none; b=r/xJRlrST+YgNLEvJtAtRlhIiUyEP/AdlJ2EV1XMKkbiD9kfXNws9Jt5HcoPAzHsRXsmQ8ZAcPoPvUtu+dx3OJ8KMnn/Rn+7rV6cEdjS/+UftJOH+RjLow9riBwWcG35zAH9SX7/y0D29IT24mDjeqpjcORmVG+jSY5pwMej114=
+	t=1706933360; cv=none; b=ibAv8SGn6wVeoBQ0H9MTyC0aqJhYz7qH6w1sWOX7x5AdhRSf4/9eLyG38Q2Fmj7zqgw7QwpzfV2T8+EeK3GDaalj1bQHaW1jzO05M60BSNKIv2pyEzzHcExnNtJqs0bSIbJ/t9OIt8C0NAD1QZ8QHiNzZErEiNuiQIS//BrlNPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933579; c=relaxed/simple;
-	bh=WNyNu0WXNpO7P3fXc1YXYRAoXjJ5cxkaOdH0Ii4LbmU=;
+	s=arc-20240116; t=1706933360; c=relaxed/simple;
+	bh=P/C9oUdfxAC8WqPb45SQkjOfKq9XDg81xZsd9d9w6Uw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYoQiYyBtfVE0WycitKgCZrjjL9NJBMhxoSmLvfHrKvX27xIvh8GUaBhAg9az0Sao90+awnxDSRxSiJtVrTUNOYcfryYX/J6k/sRkc8HgB3KyIvA3uL59eP1vqoxbSVLEite/OTydw5gja2Ozoh0DkmUyJ+Viz3ofJtV+hxa3Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaqj49GD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38B4C433F1;
-	Sat,  3 Feb 2024 04:12:58 +0000 (UTC)
+	 MIME-Version; b=S4/5sgdreYlGKjDUppOTNXmHpN0KKNap4f0uk07tjy5zi2LbkvJDLvXqtx4972ghmULxZpT07qmkgnmcK2Jfz2cx/EzTirxtPz9vhm9yIzgq8TbTOQfcwbassPAtFVWLjzm3gzj5R822O5ydSxzIK6lJNtkCqZjG9tX2rnACQQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6xEI4Hs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83DBAC433C7;
+	Sat,  3 Feb 2024 04:09:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933578;
-	bh=WNyNu0WXNpO7P3fXc1YXYRAoXjJ5cxkaOdH0Ii4LbmU=;
+	s=korg; t=1706933360;
+	bh=P/C9oUdfxAC8WqPb45SQkjOfKq9XDg81xZsd9d9w6Uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yaqj49GDwIfVyCMH19Zv893V/GA8yiHj5cLeDfFohK+EK/1GmoJef8X1Tt+c0rjeL
-	 kouZXy4HKhOi89NaPuBYnEAIVPerbQ0GiodEITvojngg6jSJu3SLX0dv+B88u4hMg9
-	 Odv/M2tCBmqoAzb9oFr1Stp856lk1ZkDYtACEgs4=
+	b=H6xEI4Hso3TXm65qJDf13HQrskdbZGwl64ePYoB2NSuWTfVPOUFwVSubeaXiCxK7B
+	 xIRVBs/+oA2ymNFcyjY3JRJhwP5QOURkzDb2Wx3fdVzlO7fx5W6LNPQAv+s8Cdw7zM
+	 1BpGJR7Jfq8EwAJxFKOJaWTQtzQyT1+6uxnRBPHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xianwei Zhao <xianwei.zhao@amlogic.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 139/322] arm64: dts: amlogic: fix format for s4 uart node
-Date: Fri,  2 Feb 2024 20:03:56 -0800
-Message-ID: <20240203035403.645449524@linuxfoundation.org>
+Subject: [PATCH 6.1 064/219] scsi: libfc: Dont schedule abort twice
+Date: Fri,  2 Feb 2024 20:03:57 -0800
+Message-ID: <20240203035325.806194293@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xianwei Zhao <xianwei.zhao@amlogic.com>
+From: Hannes Reinecke <hare@suse.de>
 
-[ Upstream commit eb54ef36282f670c704ed5af8593da62bebba80d ]
+[ Upstream commit b57c4db5d23b9df0118a25e2441c9288edd73710 ]
 
-Aliases use lowercase letters and place status in end.
+The current FC error recovery is sending up to three REC (recovery) frames
+in 10 second intervals, and as a final step sending an ABTS after 30
+seconds for the command itself.  Unfortunately sending an ABTS is also the
+action for the SCSI abort handler, and the default timeout for SCSI
+commands is also 30 seconds. This causes two ABTS to be scheduled, with the
+libfc one slightly earlier. The ABTS scheduled by SCSI EH then sees the
+command to be already aborted, and will always return with a 'GOOD' status
+irrespective on the actual result from the first ABTS.  This causes the
+SCSI EH abort handler to always succeed, and SCSI EH never to be engaged.
+Fix this by not issuing an ABTS when a SCSI command is present for the
+exchange, but rather wait for the abort scheduled from SCSI EH.  And warn
+if an abort is already scheduled to avoid similar errors in the future.
 
-Signed-off-by: Xianwei Zhao <xianwei.zhao@amlogic.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20231215-s4-dts-v1-1-7831ab6972be@amlogic.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20231129165832.224100-2-hare@kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts | 4 ++--
- arch/arm64/boot/dts/amlogic/meson-s4.dtsi             | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/scsi/libfc/fc_fcp.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts b/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts
-index 8ffbcb2b1ac5..bbd3c05cbd90 100644
---- a/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts
-+++ b/arch/arm64/boot/dts/amlogic/meson-s4-s805x2-aq222.dts
-@@ -15,7 +15,7 @@
- 	#size-cells = <2>;
+diff --git a/drivers/scsi/libfc/fc_fcp.c b/drivers/scsi/libfc/fc_fcp.c
+index 945adca5e72f..3f189cedf6db 100644
+--- a/drivers/scsi/libfc/fc_fcp.c
++++ b/drivers/scsi/libfc/fc_fcp.c
+@@ -265,6 +265,11 @@ static int fc_fcp_send_abort(struct fc_fcp_pkt *fsp)
+ 	if (!fsp->seq_ptr)
+ 		return -EINVAL;
  
- 	aliases {
--		serial0 = &uart_B;
-+		serial0 = &uart_b;
- 	};
++	if (fsp->state & FC_SRB_ABORT_PENDING) {
++		FC_FCP_DBG(fsp, "abort already pending\n");
++		return -EBUSY;
++	}
++
+ 	this_cpu_inc(fsp->lp->stats->FcpPktAborts);
  
- 	memory@0 {
-@@ -25,6 +25,6 @@
+ 	fsp->state |= FC_SRB_ABORT_PENDING;
+@@ -1690,11 +1695,12 @@ static void fc_fcp_recovery(struct fc_fcp_pkt *fsp, u8 code)
+ 	fsp->status_code = code;
+ 	fsp->cdb_status = 0;
+ 	fsp->io_status = 0;
+-	/*
+-	 * if this fails then we let the scsi command timer fire and
+-	 * scsi-ml escalate.
+-	 */
+-	fc_fcp_send_abort(fsp);
++	if (!fsp->cmd)
++		/*
++		 * Only abort non-scsi commands; otherwise let the
++		 * scsi command timer fire and scsi-ml escalate.
++		 */
++		fc_fcp_send_abort(fsp);
+ }
  
- };
- 
--&uart_B {
-+&uart_b {
- 	status = "okay";
- };
-diff --git a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
-index f24460186d3d..55ddea6dc9f8 100644
---- a/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
-+++ b/arch/arm64/boot/dts/amlogic/meson-s4.dtsi
-@@ -118,14 +118,14 @@
- 					<10 11 12 13 14 15 16 17 18 19 20 21>;
- 			};
- 
--			uart_B: serial@7a000 {
-+			uart_b: serial@7a000 {
- 				compatible = "amlogic,meson-s4-uart",
- 					     "amlogic,meson-ao-uart";
- 				reg = <0x0 0x7a000 0x0 0x18>;
- 				interrupts = <GIC_SPI 169 IRQ_TYPE_EDGE_RISING>;
--				status = "disabled";
- 				clocks = <&xtal>, <&xtal>, <&xtal>;
- 				clock-names = "xtal", "pclk", "baud";
-+				status = "disabled";
- 			};
- 
- 			reset: reset-controller@2000 {
+ /**
 -- 
 2.43.0
 
