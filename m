@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-18217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 864238481D9
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:21:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF938482FB
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B80CA1C21F2E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:21:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 404421C242F0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDF241744;
-	Sat,  3 Feb 2024 04:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64451CA98;
+	Sat,  3 Feb 2024 04:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bs5RXq1r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGIP0VWE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1784121B;
-	Sat,  3 Feb 2024 04:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6389916423;
+	Sat,  3 Feb 2024 04:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933634; cv=none; b=pnkVilh96IMLJtRG78danHHgsGQA33NXafE+cDEdx5Sv3BEXHf6sJlrCaAcMLfm3G1wU2Ye38Z5y8unfWivkclQBCkbZj5U/3FRBPI3KxWqScb3k8JwVBB97BxYSwLzF7BSxohvyjZ1sTw5DKn2tEbVrVNcALKQoCdxEO/88gWs=
+	t=1706933847; cv=none; b=rPoyUzoFWWacoUAyJJc6iiz0iXw/SZlE1a5tTIg6VbYKP2pgIdPW5pw31BcjBO3/5jbwxI2lcE/663MGCxZFT7iaya/lgTDD6K/0lmIIBg9Z/Sy0L4GM7NlqQe5Lg252Oh/z9jXDExRcvULyL3++O05yJ8/Q1F49eSCuqfrJatE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933634; c=relaxed/simple;
-	bh=uLKuTEgV9+UtKFwTnc69F8Og4c3O1jyOkv/eVEdTEDE=;
+	s=arc-20240116; t=1706933847; c=relaxed/simple;
+	bh=kQCN8NYZbqlbcRaja53WKD7a+uU3Z9LjtrI3BB+sN/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AMMergj0S4VBbAkmeYjm84rcV/SR+oPx1zto5NJdcz7hsAJ9sorAOGViw0rGXCsgwhvF6HfNzsrNlfOZaKg41oy7lYDTZliygf6QXxx7J+QenK+b3akpWHKO4GEsOsdzHPviFrN4CmZ9zhtk9D3PZMT+y6SnTyJTEFE2sRgidQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bs5RXq1r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D88D9C43390;
-	Sat,  3 Feb 2024 04:13:53 +0000 (UTC)
+	 MIME-Version; b=BBuQtzV8lbzqVPB96wUE6qTQqlWU3hdZAMC+kxt3fVEFpnF8Ld1qEdf2JMf8Mfs3NYXRhEjWD8+CA0W84MJvBDSrhhGAXgjb++gYC7S9O+9upOr5msBw8CRmrwAsMt1deJZpfYLXGVvu9W53Ss2Uhg7wOnVoXVz96CITCRkQf4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGIP0VWE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD03C433F1;
+	Sat,  3 Feb 2024 04:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933634;
-	bh=uLKuTEgV9+UtKFwTnc69F8Og4c3O1jyOkv/eVEdTEDE=;
+	s=korg; t=1706933847;
+	bh=kQCN8NYZbqlbcRaja53WKD7a+uU3Z9LjtrI3BB+sN/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bs5RXq1rSYkKKG9Mh8o0VntVi5jNMvKlnwYM5MBn1s6pZWwvrxkEYgpDtxrP38G9o
-	 USJGnreWF4mseC3AKaJpqU+jeLf3lsEW4HXihCqrARXk3drdRm6/Z3mltJgt9u2BZO
-	 i/JchfVQyZbzPmBSh4CfBS3fGWaHobUg/HE1CAKQ=
+	b=TGIP0VWEl02GGM2fGXdcvdEq3ijdTkVH+8keOif3w/DyDtnixmV+gQSZtrQhmS0+d
+	 Mz68xiqPT99xKFOD6w4x60btPmiGsMsPXHq0TsMFlhx+MOvFSoZqvk268HGJIjCgZc
+	 YaQRtalfdlNohdQi1WMRPWffdKAv0TDYPvaafC0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Inki Dae <inki.dae@samsung.com>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 188/322] drm/exynos: Call drm_atomic_helper_shutdown() at shutdown/unbind time
-Date: Fri,  2 Feb 2024 20:04:45 -0800
-Message-ID: <20240203035405.330707509@linuxfoundation.org>
+Subject: [PATCH 6.7 168/353] RDMA/IPoIB: Fix error code return in ipoib_mcast_join
+Date: Fri,  2 Feb 2024 20:04:46 -0800
+Message-ID: <20240203035408.955966821@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Jack Wang <jinpu.wang@ionos.com>
 
-[ Upstream commit 16ac5b21b31b439f03cdf44c153c5f5af94fb3eb ]
+[ Upstream commit 753fff78f430704548f45eda52d6d55371a52c0f ]
 
-Based on grepping through the source code this driver appears to be
-missing a call to drm_atomic_helper_shutdown() at system shutdown time
-and at driver unbind time. Among other things, this means that if a
-panel is in use that it won't be cleanly powered off at system
-shutdown time.
+Return the error code in case of ib_sa_join_multicast fail.
 
-The fact that we should call drm_atomic_helper_shutdown() in the case
-of OS shutdown/restart and at driver remove (or unbind) time comes
-straight out of the kernel doc "driver instance overview" in
-drm_drv.c.
-
-A few notes about this fix:
-- When adding drm_atomic_helper_shutdown() to the unbind path, I added
-  it after drm_kms_helper_poll_fini() since that's when other drivers
-  seemed to have it.
-- Technically with a previous patch, ("drm/atomic-helper:
-  drm_atomic_helper_shutdown(NULL) should be a noop"), we don't
-  actually need to check to see if our "drm" pointer is NULL before
-  calling drm_atomic_helper_shutdown(). We'll leave the "if" test in,
-  though, so that this patch can land without any dependencies. It
-  could potentially be removed later.
-- This patch also makes sure to set the drvdata to NULL in the case of
-  bind errors to make sure that shutdown can't access freed data.
-
-Suggested-by: Maxime Ripard <mripard@kernel.org>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Link: https://lore.kernel.org/r/20231121130316.126364-2-jinpu.wang@ionos.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_drv.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/infiniband/ulp/ipoib/ipoib_multicast.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_drv.c b/drivers/gpu/drm/exynos/exynos_drm_drv.c
-index 8399256cb5c9..5380fb6c55ae 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_drv.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_drv.c
-@@ -300,6 +300,7 @@ static int exynos_drm_bind(struct device *dev)
- 	drm_mode_config_cleanup(drm);
- 	exynos_drm_cleanup_dma(drm);
- 	kfree(private);
-+	dev_set_drvdata(dev, NULL);
- err_free_drm:
- 	drm_dev_put(drm);
- 
-@@ -313,6 +314,7 @@ static void exynos_drm_unbind(struct device *dev)
- 	drm_dev_unregister(drm);
- 
- 	drm_kms_helper_poll_fini(drm);
-+	drm_atomic_helper_shutdown(drm);
- 
- 	component_unbind_all(drm->dev, drm);
- 	drm_mode_config_cleanup(drm);
-@@ -350,9 +352,18 @@ static int exynos_drm_platform_remove(struct platform_device *pdev)
+diff --git a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
+index 5b3154503bf4..9e6967a40042 100644
+--- a/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
++++ b/drivers/infiniband/ulp/ipoib/ipoib_multicast.c
+@@ -546,6 +546,7 @@ static int ipoib_mcast_join(struct net_device *dev, struct ipoib_mcast *mcast)
+ 		spin_unlock_irq(&priv->lock);
+ 		complete(&mcast->done);
+ 		spin_lock_irq(&priv->lock);
++		return ret;
+ 	}
  	return 0;
  }
- 
-+static void exynos_drm_platform_shutdown(struct platform_device *pdev)
-+{
-+	struct drm_device *drm = platform_get_drvdata(pdev);
-+
-+	if (drm)
-+		drm_atomic_helper_shutdown(drm);
-+}
-+
- static struct platform_driver exynos_drm_platform_driver = {
- 	.probe	= exynos_drm_platform_probe,
- 	.remove	= exynos_drm_platform_remove,
-+	.shutdown = exynos_drm_platform_shutdown,
- 	.driver	= {
- 		.name	= "exynos-drm",
- 		.pm	= &exynos_drm_pm_ops,
 -- 
 2.43.0
 
