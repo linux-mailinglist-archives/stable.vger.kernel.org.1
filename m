@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82C38482BC
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 052E584816F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8331A286363
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 375A51C229C1
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA5C1BF24;
-	Sat,  3 Feb 2024 04:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2CD2BB00;
+	Sat,  3 Feb 2024 04:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdQa7OKY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pFXFF1in"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC531118B;
-	Sat,  3 Feb 2024 04:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AAA8107B4;
+	Sat,  3 Feb 2024 04:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933801; cv=none; b=chnABiSo/L9VUL1KMf6jfGIphodaGx4zgq81/oE5KP6G7Gmtp1/qiX9ZuicN/aSkQ70Vg8Ew0ge1WHz2cZqb61rtK+/ZwZo1Bx+ezDs1y8eJpluS+ijaOsXu5b79CtszTQfKjNjopWPPQY9hZtAc52LtFzlYhbko3MUin3Ku6g8=
+	t=1706933557; cv=none; b=QM10WocS5ChZ5zBh3VnI6Dfn3fFPygSt/+gpa7MlXxw+BazcTFB3lZs7F3aiBfpXiUYOHwsFbKBgHWXJU8zZxL9nKVnvaYrUNYfcLP1UmmCdHbDVdbWQNAkxDFd+fCw5/dVTAvz/Q3CR1AtI0oPo9CEbks035WSKRCTEDIEB7Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933801; c=relaxed/simple;
-	bh=WYOkevGUyIivK2l0MoZskS5iFATQJ3v4xoKDjqhiy9M=;
+	s=arc-20240116; t=1706933557; c=relaxed/simple;
+	bh=dYBAHSU/s68DrcllzAWRVQNy8PpvUXrYIW9kj0ILGzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1g4PQnUCVBGkIEpWH/bY3zbEpYfwAxpf7ECbKyxVzXDUKu6/2/1gnUDAIkjPq9vqlh86xA9QBRuK+DOuNCjbQkkJ9Zl8jOlE9MKOXRtx7aP61tLa1lGGjUyF88ZJNe8FsGyZJLQn/tHQA22dtT0xdoRJ2BgG4XJPHZ8CP6b59M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdQa7OKY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D61E6C433C7;
-	Sat,  3 Feb 2024 04:16:40 +0000 (UTC)
+	 MIME-Version; b=tAh4h+1ovVTV2mwbBk7/M87+FOxVhY827qQql2i7tsinzCiY/sMn5yQq0AljhoqJVFYhi8o6232+vHmaTbr5IByBU8Uz1zs6uus5KcMIt8ZqsuFmrvHGs8VYknNjzIiNvzpYToo4rMpYDWXe+HNfFtC7xMSCpZ2+MxlSvUgAV+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pFXFF1in; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BD5C433C7;
+	Sat,  3 Feb 2024 04:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933800;
-	bh=WYOkevGUyIivK2l0MoZskS5iFATQJ3v4xoKDjqhiy9M=;
+	s=korg; t=1706933557;
+	bh=dYBAHSU/s68DrcllzAWRVQNy8PpvUXrYIW9kj0ILGzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UdQa7OKY4T9HlPHckwSkYK6UgWWf/TpIAHrQrNSf7dkaptdgMSIh5qa9u1z+yr18w
-	 u6nC0zTx2irB1pf0uZTZrGoxgSLKn1sL8T1CEWOYt/vkS0BAPcZBSlx/GwJjXakRQ0
-	 UgjUht9LSaNf961+tDr/TCIbSqADsKuK2VEjwz3E=
+	b=pFXFF1inBgxJ5fIGrB0VMXmrRBUv5oObiloXYo2MKC6pTpXFwrI6dmkICAIvMDTJZ
+	 AZixA7CdxKhcRPMb4OT7feBTk0aFmxflM9Ek4BDBq8AMhCU00sHEgcJ+3lBEpLR8U2
+	 2GcBfc/4C7ksGZNL0GMZU5NwJvj2NI86RF/GMzm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Johan Jonker <jbx6244@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 088/353] ARM: dts: imx7s: Fix lcdif compatible
-Date: Fri,  2 Feb 2024 20:03:26 -0800
-Message-ID: <20240203035406.590590765@linuxfoundation.org>
+Subject: [PATCH 6.6 110/322] ARM: dts: rockchip: fix rk3036 hdmi ports node
+Date: Fri,  2 Feb 2024 20:03:27 -0800
+Message-ID: <20240203035402.703022999@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Johan Jonker <jbx6244@gmail.com>
 
-[ Upstream commit 5f55da4cc37051cda600ea870ce8cf29f1297715 ]
+[ Upstream commit 27ded76ef0fcfcf939914532aae575cf23c221b4 ]
 
-imx7d-lcdif is compatible to imx6sx-lcdif. MXSFB_V6 supports overlay
-by using LCDC_AS_CTRL register. This registers used by overlay plane:
-* LCDC_AS_CTRL
-* LCDC_AS_BUF
-* LCDC_AS_NEXT_BUF
-are listed in i.MX7D RM as well.
+Fix hdmi ports node so that it matches the
+rockchip,inno-hdmi.yaml binding.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Johan Jonker <jbx6244@gmail.com>
+Link: https://lore.kernel.org/r/9a2afac1-ed5c-382d-02b0-b2f5f1af3abb@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx7s.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/rockchip/rk3036.dtsi | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx7s.dtsi b/arch/arm/boot/dts/nxp/imx/imx7s.dtsi
-index 9f216d11a396..3bd33255266e 100644
---- a/arch/arm/boot/dts/nxp/imx/imx7s.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx7s.dtsi
-@@ -815,7 +815,7 @@
- 			};
+diff --git a/arch/arm/boot/dts/rockchip/rk3036.dtsi b/arch/arm/boot/dts/rockchip/rk3036.dtsi
+index 78686fc72ce6..c420c7c642cb 100644
+--- a/arch/arm/boot/dts/rockchip/rk3036.dtsi
++++ b/arch/arm/boot/dts/rockchip/rk3036.dtsi
+@@ -402,12 +402,20 @@
+ 		pinctrl-0 = <&hdmi_ctl>;
+ 		status = "disabled";
  
- 			lcdif: lcdif@30730000 {
--				compatible = "fsl,imx7d-lcdif", "fsl,imx28-lcdif";
-+				compatible = "fsl,imx7d-lcdif", "fsl,imx6sx-lcdif";
- 				reg = <0x30730000 0x10000>;
- 				interrupts = <GIC_SPI 5 IRQ_TYPE_LEVEL_HIGH>;
- 				clocks = <&clks IMX7D_LCDIF_PIXEL_ROOT_CLK>,
+-		hdmi_in: port {
++		ports {
+ 			#address-cells = <1>;
+ 			#size-cells = <0>;
+-			hdmi_in_vop: endpoint@0 {
++
++			hdmi_in: port@0 {
+ 				reg = <0>;
+-				remote-endpoint = <&vop_out_hdmi>;
++
++				hdmi_in_vop: endpoint {
++					remote-endpoint = <&vop_out_hdmi>;
++				};
++			};
++
++			hdmi_out: port@1 {
++				reg = <1>;
+ 			};
+ 		};
+ 	};
 -- 
 2.43.0
 
