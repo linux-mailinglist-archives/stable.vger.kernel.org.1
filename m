@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-17990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDBE98480EE
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A3A5848207
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D6C61F2195E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA1E71F2209D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9400210A3C;
-	Sat,  3 Feb 2024 04:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBF44501F;
+	Sat,  3 Feb 2024 04:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhZR/vWa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fsRGofbb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5320DFC03;
-	Sat,  3 Feb 2024 04:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC4412B9A;
+	Sat,  3 Feb 2024 04:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933466; cv=none; b=MUao7P8lYhLntbQtVRuKknL2KdnC9Aj30q7PfLmjQAQ72fVSgPsvyimw5AjJcg5DuRcFl4PE1Zq/GRBmxzBTFxqIjaJm3DOFDq0P/8vaGycZz0Wu3X2jHJ7r4kfy57e43jnvLhmfiG0+IdxSaPp8bN/ukRoJdPPEkSa5CwbBOxI=
+	t=1706933669; cv=none; b=I/eiHAKiHawl7Ph62LLG6Y3dZhf4Qf2pDPkGUgaR5h4UepMNt7VIxU1+SCeBZ0jxSklC/2xNbEjfczLyvRHKgjOF4FEs9TaxpzP/9KvHE/CjHHdzR4bIj9DUdsB9I1MWg6H+0ZIvfSC37NcgcB6qIocrZoy/7zhukFFTKasjpbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933466; c=relaxed/simple;
-	bh=fvppLnU91IN445qCFKwqqW8LDDpO7VZBIYxPJMALTlM=;
+	s=arc-20240116; t=1706933669; c=relaxed/simple;
+	bh=8wb5OuZZLPQTbz0AfYXvZauJWo/WfkfbDgr04QfE2PI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OYCxRO9uOX3CUO1DZhfGDkp4XHYJRTBf9Z80oMZgi0KPh5MOSmzHLABGZ02fN/68n9mQ2BuzGv6xq2BcxiAle36VMsmJqAMUS2o0iDbUrh5tHZg8BbsdNTQ4kxna9dU1Z4+r0vaX7UxGxU0EWQ5NTbKEzA6mc1ZpUmYH8dU1Z70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhZR/vWa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA78C433C7;
-	Sat,  3 Feb 2024 04:11:06 +0000 (UTC)
+	 MIME-Version; b=dulZ78GaRZ0G2NvW7TLQbA7Jc0mwykm2j3vJ4RUjaU43exoi2Ur8ecatZdHAQaAb0BpFYnXlDxuEGy5qG23hZlVRTpER2LMbK1HbzQPUdMdqRi62BdvJlEI0Bo4EMtAbZw5f9R5o7x8/3mXksIZf/X3e9RD3h6Xb/ZwMyrVuvaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fsRGofbb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32261C43394;
+	Sat,  3 Feb 2024 04:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933466;
-	bh=fvppLnU91IN445qCFKwqqW8LDDpO7VZBIYxPJMALTlM=;
+	s=korg; t=1706933669;
+	bh=8wb5OuZZLPQTbz0AfYXvZauJWo/WfkfbDgr04QfE2PI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DhZR/vWaZsGx2RXg72ALd8ZP9qV3CrrZwHsRzzFPBAboVgv53pZM9pjg2rfM/YobB
-	 PecbcBIH1aQU/f5P1ovQCp75j4w7XrNoYgFrIDeCl4qcm+d+/ABpD6t8nAC/QnSVgR
-	 4+f9G1zShZHa7R9Chv7CebdO7ee0a+irpiOiTKKU=
+	b=fsRGofbb+xsQQV7NXivFhk18nwuyNpgAU9rf97zOst2ZdgUed0rctkU4HtZaX9mZp
+	 PTYRrxq4KtGHWhJulM/cbEK25PpLDhjXmbziT3KnRf+kkEdo5KJelU3m93qb5j922D
+	 8husvAsFFHoSM/k63Ab2dqi44+Z1JbhcdqsPvres=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
+	Tim Lunn <tim@feathertop.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 181/219] drm/amdkfd: Fix node NULL check in svm_range_get_range_boundaries()
-Date: Fri,  2 Feb 2024 20:05:54 -0800
-Message-ID: <20240203035342.154225461@linuxfoundation.org>
+Subject: [PATCH 6.6 258/322] i2c: rk3x: Adjust mask/value offset for i2c2 on rv1126
+Date: Fri,  2 Feb 2024 20:05:55 -0800
+Message-ID: <20240203035407.487187131@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Tim Lunn <tim@feathertop.org>
 
-[ Upstream commit d7a254fad873775ce6c32b77796c81e81e6b7f2e ]
+[ Upstream commit 92a85b7c6262f19c65a1c115cf15f411ba65a57c ]
 
-Range interval [start, last] is ordered by rb_tree, rb_prev, rb_next
-return value still needs NULL check, thus modified from "node" to "rb_node".
+Rockchip RV1126 is using old style i2c controller, the i2c2
+bus uses a non-sequential offset in the grf register for the
+mask/value bits for this bus.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_svm.c:2691 svm_range_get_range_boundaries() warn: can 'node' even be NULL?
+This patch fixes i2c2 bus on rv1126 SoCs.
 
-Suggested-by: Philip Yang <Philip.Yang@amd.com>
-Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Tim Lunn <tim@feathertop.org>
+Acked-by: Heiko Stuebner <heiko@sntech.de>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/i2c/busses/i2c-rk3x.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index 5188c4d2e7c0..7fa5e70f1aac 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -2553,6 +2553,7 @@ svm_range_get_range_boundaries(struct kfd_process *p, int64_t addr,
- {
- 	struct vm_area_struct *vma;
- 	struct interval_tree_node *node;
-+	struct rb_node *rb_node;
- 	unsigned long start_limit, end_limit;
+diff --git a/drivers/i2c/busses/i2c-rk3x.c b/drivers/i2c/busses/i2c-rk3x.c
+index 4362db7c5789..086fdf262e7b 100644
+--- a/drivers/i2c/busses/i2c-rk3x.c
++++ b/drivers/i2c/busses/i2c-rk3x.c
+@@ -1295,8 +1295,12 @@ static int rk3x_i2c_probe(struct platform_device *pdev)
+ 			return -EINVAL;
+ 		}
  
- 	vma = find_vma(p->mm, addr << PAGE_SHIFT);
-@@ -2575,16 +2576,15 @@ svm_range_get_range_boundaries(struct kfd_process *p, int64_t addr,
- 	if (node) {
- 		end_limit = min(end_limit, node->start);
- 		/* Last range that ends before the fault address */
--		node = container_of(rb_prev(&node->rb),
--				    struct interval_tree_node, rb);
-+		rb_node = rb_prev(&node->rb);
- 	} else {
- 		/* Last range must end before addr because
- 		 * there was no range after addr
- 		 */
--		node = container_of(rb_last(&p->svms.objects.rb_root),
--				    struct interval_tree_node, rb);
-+		rb_node = rb_last(&p->svms.objects.rb_root);
- 	}
--	if (node) {
-+	if (rb_node) {
-+		node = container_of(rb_node, struct interval_tree_node, rb);
- 		if (node->last >= addr) {
- 			WARN(1, "Overlap with prev node and page fault addr\n");
- 			return -EFAULT;
+-		/* 27+i: write mask, 11+i: value */
+-		value = BIT(27 + bus_nr) | BIT(11 + bus_nr);
++		/* rv1126 i2c2 uses non-sequential write mask 20, value 4 */
++		if (i2c->soc_data == &rv1126_soc_data && bus_nr == 2)
++			value = BIT(20) | BIT(4);
++		else
++			/* 27+i: write mask, 11+i: value */
++			value = BIT(27 + bus_nr) | BIT(11 + bus_nr);
+ 
+ 		ret = regmap_write(grf, i2c->soc_data->grf_offset, value);
+ 		if (ret != 0) {
 -- 
 2.43.0
 
