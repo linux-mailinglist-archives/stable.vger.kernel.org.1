@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-18412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC88D84829F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA915848025
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:08:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 692E82839BE
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DBA5B29344
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400094C3C6;
-	Sat,  3 Feb 2024 04:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADE4101DB;
+	Sat,  3 Feb 2024 04:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ia/XWiqW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRJph+mm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27144C3AF;
-	Sat,  3 Feb 2024 04:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663BDFBFC;
+	Sat,  3 Feb 2024 04:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933780; cv=none; b=IWtMx0eyAatMcu6OoIc9Zytuxl5OllFw8pH3R7q5rhh5mye9qs11U57ZKr08nPUduNyu2OCjqGd1hOxMnU2zwRklqtkt1BWjOnjn33TfNJtMyFfao/PTnzryfVwtRcukzDcfA4dkyqeyMwRCMF8GAH2C6BP/CO1KUGjj2duRj9Q=
+	t=1706933321; cv=none; b=YJ6agYdg/3/q6kg10DnSNCP/84rda2Gd62IBD1WFYA6OHPXeIT5OXs16v/whaHLLHEmsS2tBFFyr8gTr3AKKfOn+7k0R8IU2Ytlxb3jsFKcUlvRVfzwoveG+9IbZ1qj+IVR/UzV2rDPTK5Gd88YpWNxlin3U2rxecoDqYgbZOIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933780; c=relaxed/simple;
-	bh=mgmVB2ub7Q4L0qc1oGRtxYe2zRtVycHCnFVNSGj8Lvk=;
+	s=arc-20240116; t=1706933321; c=relaxed/simple;
+	bh=KWJJFYzHvIE00gTojg26mxZI7zU5Ten2PTIwWxG5Fhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uKsTTLn4oVbtfhrdDcVJVC33EDjFhN0/r6CJKBtRU/L0UaFpz8NDCTI1JNpuAuugbD8ronkWnCUUbtsulOlPNo5Ydz+DgHKcnOB9xTNEHHcmw9R5jD6MDzW3hQXM37XSiP31sSn6QJTHmQa0rhKTLX6f8MNaEckBsuTh9jKqocw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ia/XWiqW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC916C433F1;
-	Sat,  3 Feb 2024 04:16:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CEMhttQtP4qlQO5aBOJLr68FSDLfUDAFZta2/V1+e0hYbb5TMArpHe+yCZtThfD9ctLKhenqcQV1otF56DK7dvnyqY0BYljPlEI5go7UwtG9KvkGPr73hnomef33mYtMbtK4V8+zM6QzusrZvx1FHRnPFciHZJIEN0zNbMzHXeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRJph+mm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4EE8C433C7;
+	Sat,  3 Feb 2024 04:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933779;
-	bh=mgmVB2ub7Q4L0qc1oGRtxYe2zRtVycHCnFVNSGj8Lvk=;
+	s=korg; t=1706933320;
+	bh=KWJJFYzHvIE00gTojg26mxZI7zU5Ten2PTIwWxG5Fhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ia/XWiqWtseocnTGq2IJbmRTnaNBO9HjzpwKPcZOQs0qqzBfDUvsNt1vno3Y4BlPl
-	 2bu+TQN/Q6jlxKaS/tOVV/Z0fpTSAHZvlhNnF5x37FUIBXQQcfZnnvO69CSdBaGOzx
-	 C/FK6hG0VwFMFANYle9giyeJe3bI7TywqbxWn100=
+	b=iRJph+mmHuvwBF6MqPZIzFa/cBvI4G8ApkrNQNfTQuP6ur5PmtnZ97KgTwlvbBgGP
+	 QkgS4WyCzMmhqA+bPi0/wzRoGBnbAnIhj7w8HWHJhvrfVu4FGDuIUQPFEtiNwpFf0v
+	 F6H4J6F5MoISwngtIxi2v7gu7/jC+vpK5bUvL2Ys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 059/353] ext4: fix inconsistent between segment fstrim and full fstrim
-Date: Fri,  2 Feb 2024 20:02:57 -0800
-Message-ID: <20240203035405.670795689@linuxfoundation.org>
+Subject: [PATCH 6.1 005/219] powerpc: Fix build error due to is_valid_bugaddr()
+Date: Fri,  2 Feb 2024 20:02:58 -0800
+Message-ID: <20240203035317.840398194@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 68da4c44b994aea797eb9821acb3a4a36015293e ]
+[ Upstream commit f8d3555355653848082c351fa90775214fb8a4fa ]
 
-Suppose we issue two FITRIM ioctls for ranges [0,15] and [16,31] with
-mininum length of trimmed range set to 8 blocks. If we have say a range of
-blocks 10-22 free, this range will not be trimmed because it straddles the
-boundary of the two FITRIM ranges and neither part is big enough. This is a
-bit surprising to some users that call FITRIM on smaller ranges of blocks
-to limit impact on the system. Also XFS trims all free space extents that
-overlap with the specified range so we are inconsistent among filesystems.
-Let's change ext4_try_to_trim_range() to consider for trimming the whole
-free space extent that straddles the end of specified range, not just the
-part of it within the range.
+With CONFIG_GENERIC_BUG=n the build fails with:
 
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231216010919.1995851-1-yebin10@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+  arch/powerpc/kernel/traps.c:1442:5: error: no previous prototype for ‘is_valid_bugaddr’ [-Werror=missing-prototypes]
+  1442 | int is_valid_bugaddr(unsigned long addr)
+       |     ^~~~~~~~~~~~~~~~
+
+The prototype is only defined, and the function is only needed, when
+CONFIG_GENERIC_BUG=y, so move the implementation under that.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231130114433.3053544-2-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ arch/powerpc/kernel/traps.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index ab023d709f72..8408318e1d32 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -6758,13 +6758,15 @@ static int ext4_try_to_trim_range(struct super_block *sb,
- __acquires(ext4_group_lock_ptr(sb, e4b->bd_group))
- __releases(ext4_group_lock_ptr(sb, e4b->bd_group))
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index 3956f32682c6..362b712386f6 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -1439,10 +1439,12 @@ static int emulate_instruction(struct pt_regs *regs)
+ 	return -EINVAL;
+ }
+ 
++#ifdef CONFIG_GENERIC_BUG
+ int is_valid_bugaddr(unsigned long addr)
  {
--	ext4_grpblk_t next, count, free_count;
-+	ext4_grpblk_t next, count, free_count, last, origin_start;
- 	bool set_trimmed = false;
- 	void *bitmap;
+ 	return is_kernel_addr(addr);
+ }
++#endif
  
-+	last = ext4_last_grp_cluster(sb, e4b->bd_group);
- 	bitmap = e4b->bd_bitmap;
--	if (start == 0 && max >= ext4_last_grp_cluster(sb, e4b->bd_group))
-+	if (start == 0 && max >= last)
- 		set_trimmed = true;
-+	origin_start = start;
- 	start = max(e4b->bd_info->bb_first_free, start);
- 	count = 0;
- 	free_count = 0;
-@@ -6773,7 +6775,10 @@ __releases(ext4_group_lock_ptr(sb, e4b->bd_group))
- 		start = mb_find_next_zero_bit(bitmap, max + 1, start);
- 		if (start > max)
- 			break;
--		next = mb_find_next_bit(bitmap, max + 1, start);
-+
-+		next = mb_find_next_bit(bitmap, last + 1, start);
-+		if (origin_start == 0 && next >= last)
-+			set_trimmed = true;
- 
- 		if ((next - start) >= minblocks) {
- 			int ret = ext4_trim_extent(sb, start, next - start, e4b);
+ #ifdef CONFIG_MATH_EMULATION
+ static int emulate_math(struct pt_regs *regs)
 -- 
 2.43.0
 
