@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-17908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9B6C848097
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DAA68482E4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6615F281D9D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A063F1C20B2A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275901757A;
-	Sat,  3 Feb 2024 04:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236E71643E;
+	Sat,  3 Feb 2024 04:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCPmtKqG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHRBUCZs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA6F4111AE;
-	Sat,  3 Feb 2024 04:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D478C4F21B;
+	Sat,  3 Feb 2024 04:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933404; cv=none; b=rAizZtAqKqq2ikgS+1TKwRod8+po+b99RYS22jPx8GPObywNN2gLZXMVzhuCnxY57YN67vTkjLENpfYxNzHiCgxxru+QBpcyTtGdP6AO/OIMEar6kgbohtrA/67VwVMtR3/ESEjdAL7hhK7F01hmfgPF6QRJ4xWRt/F9GvhVp38=
+	t=1706933830; cv=none; b=s1xRICUKyGDVuEqrfVTiw6EHKtPbwWjmQZG+2ppWnYOHLCC9yoxVG72hKYK4rnmCbYfU7YXuTzH3aG0iY3wW1HuTIQM60/2vo/gTGsAL0ulzz/ARRaNpKMGvwff0rRXTeq/I/Yw4yk0bXvYk6piZ8AWivvDw2L53/PiPAfzxnJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933404; c=relaxed/simple;
-	bh=QhFJMa3/G/ykHEOqBfUsaaP5QqWzyjR/S9G6KXl9yVs=;
+	s=arc-20240116; t=1706933830; c=relaxed/simple;
+	bh=3hfpKwrL1dkwsBALjzPqEjZ4Gl95YB6Mkeipyfw7BPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QAz3LEkJXZ2U3EuFwajTkgl1V0Wc+Ud3Ok78nnhEC01MSul7oKcsaQkeKyWfaCo86UMTRc3vhHKokn6LnHiHBxzWKnfTjrBOfhw8iUU+kMLsQb4ogygiICRWK/iwl4G5I+KKlBS8xdcdz4InbH27rkRgrWGOKXb6N9MeCz0rzFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCPmtKqG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A47A3C433F1;
-	Sat,  3 Feb 2024 04:10:04 +0000 (UTC)
+	 MIME-Version; b=Gk9EOWHWMlzjmWcritpyppZzYuVI1mLrmgKZzVIEWA3VSh8j/AQJ2fnl3cvKC0vBcYeTSNbmeOf9qYCmYrhzmIkJCnxgoWlLMMjmeM6iErKciiauPvc3gvoOfIJ7GvjraHfcDrWwhHv5GyCegpHu9mB7vqVaBKR8Vf2FSSWmNg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHRBUCZs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D216C43399;
+	Sat,  3 Feb 2024 04:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933404;
-	bh=QhFJMa3/G/ykHEOqBfUsaaP5QqWzyjR/S9G6KXl9yVs=;
+	s=korg; t=1706933830;
+	bh=3hfpKwrL1dkwsBALjzPqEjZ4Gl95YB6Mkeipyfw7BPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QCPmtKqGUFRQla6mpiZGcNlyEW23c/iX2eNG19E1agrCOyxMU8L3i/pwJb8ebfAci
-	 TjxupQX5drg4/oipUcprbcIA+iN2zqtc5jupeG6lll3jA8Naq8qKNYUL1DUV+twzCe
-	 URpV1DzMW5vDqNbAU4Ad/xaGCnIzbjLU0frmW/Lw=
+	b=hHRBUCZs6deo1DBlRpTjlEBcZcLp73DjddMLvjAzaLa42Wbw5Mo9Kje/npuhx0Lm4
+	 X4FqNQTbAg93KbE02m8kglVQfdSPPDwh5fk8a2irsLq6TV8hAAzaxiK9t6afQ2fUFt
+	 Qf9eNOx9iNA8EAqGRqCu0ZH3y65Tu7N0XNxf1+c0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wen Gu <guwen@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	Wenjia Zhang <wenjia@linux.ibm.com>
-Subject: [PATCH 6.1 099/219] net/smc: disable SEID on non-s390 archs where virtual ISM may be used
+	Chunyan Zhang <chunyan.zhang@unisoc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 154/353] arm64: dts: sprd: Add clock reference for pll2 on UMS512
 Date: Fri,  2 Feb 2024 20:04:32 -0800
-Message-ID: <20240203035331.123226313@linuxfoundation.org>
+Message-ID: <20240203035408.537797869@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wen Gu <guwen@linux.alibaba.com>
+From: Chunyan Zhang <chunyan.zhang@unisoc.com>
 
-[ Upstream commit c6b8b8eb49904018e22e4e4b1fa502e57dc747d9 ]
+[ Upstream commit 829e3e70fe72edc084fbfc4964669594ebe427ce ]
 
-The system EID (SEID) is an internal EID used by SMC-D to represent the
-s390 physical machine that OS is executing on. On s390 architecture, it
-predefined by fixed string and part of cpuid and is enabled regardless
-of whether underlay device is virtual ISM or platform firmware ISM.
+Fix below dtbs_check warning:
 
-However on non-s390 architectures where SMC-D can be used with virtual
-ISM devices, there is no similar information to identify physical
-machines, especially in virtualization scenarios. So in such cases, SEID
-is forcibly disabled and the user-defined UEID will be used to represent
-the communicable space.
+'clocks' is a dependency of 'clock-names'
 
-Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-and-tested-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lore.kernel.org/r/20231221092824.1169453-2-chunyan.zhang@unisoc.com
+Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/smc_clc.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/arm64/boot/dts/sprd/ums512.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/smc/smc_clc.c b/net/smc/smc_clc.c
-index 9b8999e2afca..867df4522815 100644
---- a/net/smc/smc_clc.c
-+++ b/net/smc/smc_clc.c
-@@ -155,10 +155,12 @@ static int smc_clc_ueid_remove(char *ueid)
- 			rc = 0;
- 		}
- 	}
-+#if IS_ENABLED(CONFIG_S390)
- 	if (!rc && !smc_clc_eid_table.ueid_cnt) {
- 		smc_clc_eid_table.seid_enabled = 1;
- 		rc = -EAGAIN;	/* indicate success and enabling of seid */
- 	}
-+#endif
- 	write_unlock(&smc_clc_eid_table.lock);
- 	return rc;
- }
-@@ -273,22 +275,30 @@ int smc_nl_dump_seid(struct sk_buff *skb, struct netlink_callback *cb)
- 
- int smc_nl_enable_seid(struct sk_buff *skb, struct genl_info *info)
- {
-+#if IS_ENABLED(CONFIG_S390)
- 	write_lock(&smc_clc_eid_table.lock);
- 	smc_clc_eid_table.seid_enabled = 1;
- 	write_unlock(&smc_clc_eid_table.lock);
- 	return 0;
-+#else
-+	return -EOPNOTSUPP;
-+#endif
- }
- 
- int smc_nl_disable_seid(struct sk_buff *skb, struct genl_info *info)
- {
- 	int rc = 0;
- 
-+#if IS_ENABLED(CONFIG_S390)
- 	write_lock(&smc_clc_eid_table.lock);
- 	if (!smc_clc_eid_table.ueid_cnt)
- 		rc = -ENOENT;
- 	else
- 		smc_clc_eid_table.seid_enabled = 0;
- 	write_unlock(&smc_clc_eid_table.lock);
-+#else
-+	rc = -EOPNOTSUPP;
-+#endif
- 	return rc;
- }
- 
-@@ -1168,7 +1178,11 @@ void __init smc_clc_init(void)
- 	INIT_LIST_HEAD(&smc_clc_eid_table.list);
- 	rwlock_init(&smc_clc_eid_table.lock);
- 	smc_clc_eid_table.ueid_cnt = 0;
-+#if IS_ENABLED(CONFIG_S390)
- 	smc_clc_eid_table.seid_enabled = 1;
-+#else
-+	smc_clc_eid_table.seid_enabled = 0;
-+#endif
- }
- 
- void smc_clc_exit(void)
+diff --git a/arch/arm64/boot/dts/sprd/ums512.dtsi b/arch/arm64/boot/dts/sprd/ums512.dtsi
+index 97ac550af2f1..91c22667d40f 100644
+--- a/arch/arm64/boot/dts/sprd/ums512.dtsi
++++ b/arch/arm64/boot/dts/sprd/ums512.dtsi
+@@ -291,6 +291,7 @@
+ 			pll2: clock-controller@0 {
+ 				compatible = "sprd,ums512-gc-pll";
+ 				reg = <0x0 0x100>;
++				clocks = <&ext_26m>;
+ 				clock-names = "ext-26m";
+ 				#clock-cells = <1>;
+ 			};
 -- 
 2.43.0
 
