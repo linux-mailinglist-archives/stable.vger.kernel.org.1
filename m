@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2DAF8482B1
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E793084817F
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F0B52846F7
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2712D1C2297D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FEE1BDDF;
-	Sat,  3 Feb 2024 04:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 483D11759F;
+	Sat,  3 Feb 2024 04:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wro47sam"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxwnhHWA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B521BDE6;
-	Sat,  3 Feb 2024 04:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04530111AE;
+	Sat,  3 Feb 2024 04:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933793; cv=none; b=ZtNJ6YKpoeR8PqHkum5krTFvRrf7pZgTNQf9nlRyFTpdPyWO9lmoDFN6F9Mcm3rcGEIEoQV/lFNhyMcEUyJDdQfV6iyjH2hB/RJI/Bqv1i15nkmyF4UBCYoBMSolKQPByz3n0ulZ/brgSEMvcRjysa8iaLw0N/3AFckFj13ZqsY=
+	t=1706933569; cv=none; b=RELpiAyQJK5Tzqand0yhCFh8mLKE0eBFJlE0j/pMRfoHX5rrDH5XyDJ1SABQVjV4/TuLuqzUh2TTZaGCOQTsVgetpak8P1LTcPSRt5d7NfvM5uP9wZYw4s+Kn3KJWACNlbBPvR1pSTeU3aDA1uv4+Wl7H3LPPYUejPkNYHSIkXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933793; c=relaxed/simple;
-	bh=KJNtyDKsSui10Zs6JC16CT/4JTYflPrYA5aa/rZ2Y4Y=;
+	s=arc-20240116; t=1706933569; c=relaxed/simple;
+	bh=72CMKQZgZEldiyivTqukoqJqu8ZbrBCXRaAo6PNr71I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fhy8Ig0Z4kgN9ZG3doi3Sb2KjU1YbbY3EF8N6q20b1zvu+XjQgPslcSgDmIrG48jYZgKSlN7EiclvD1Zqe1HDkrIw8gFV0NnXkxb2vTXbEz6WjFtb8VE7eurLkQDnEDgv3bLgIiYWVxWTsS75NjyF7uK12xPbZRut/V6jtsM7VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wro47sam; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FBFC433C7;
-	Sat,  3 Feb 2024 04:16:32 +0000 (UTC)
+	 MIME-Version; b=NwocOCwCyDx0k0tg2/lIBpKPJ5TGTpTagw1yeRoO4b5H9AMXrsOezGcRpI6VIhzIGGnhRQzFmzfhC7pRrf7nv8D1Gby8HdxvKvIoKL49Ss+R4NUv+eSpFZHEp7M/jAu7Qp0ODfoDNGnK5u+pRO9BXqYIiJbSCNV6tFHR5EQdffY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxwnhHWA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D09C43399;
+	Sat,  3 Feb 2024 04:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933793;
-	bh=KJNtyDKsSui10Zs6JC16CT/4JTYflPrYA5aa/rZ2Y4Y=;
+	s=korg; t=1706933568;
+	bh=72CMKQZgZEldiyivTqukoqJqu8ZbrBCXRaAo6PNr71I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wro47samzFRTYdbcmMo0ZYM+fdB1i2q4w37WJxM87uRbsI/xRfpWt5VDFx2AjOPqC
-	 aVEzeF7FeS+oQtTsGfIMfE6MWLOQCnH0P09d5v8TipAh3QWliylN3qfoJyf7WRzLg9
-	 u8NRzOJc7bnUPo4FcIj8aZOhz2M+74DluxoF0Xo0=
+	b=CxwnhHWA6DDLlzJ4YGjBhgv1Z3JN/8zJbZQgYRTW1VRrI5agVWkMDCS6jGsYxQ4ho
+	 UB/1ZcFkyRByuyNQLkpyXBjz24e9KBC/+4+Y/sqYXU/WKtCoPpVm8CLmLK2nvjfUZV
+	 J073E6T4AOR8VJdUrZBcJUKmHz4r3oHrUvxoWDII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nia Espera <nespera@igalia.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 103/353] arm64: dts: qcom: sm8350: Fix remoteproc interrupt type
+Subject: [PATCH 6.6 124/322] ARM: dts: imx27-apf27dev: Fix LED name
 Date: Fri,  2 Feb 2024 20:03:41 -0800
-Message-ID: <20240203035407.033467950@linuxfoundation.org>
+Message-ID: <20240203035403.150645007@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nia Espera <nespera@igalia.com>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 54ee322f845c7f25fbf6e43e11147b6cae8eff56 ]
+[ Upstream commit dc35e253d032b959d92e12f081db5b00db26ae64 ]
 
-In a similar vein to
-https://lore.kernel.org/lkml/20220530080842.37024-3-manivannan.sadhasivam@linaro.org/,
-the remote processors on sm8350 fail to initialize with the 'correct'
-(i.e., specified in downstream) IRQ type. Change this to EDGE_RISING.
+Per leds-gpio.yaml, the led names should start with 'led'.
 
-Signed-off-by: Nia Espera <nespera@igalia.com>
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231111-nia-sm8350-for-upstream-v4-4-3a638b02eea5@igalia.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Change it to fix the following dt-schema warning:
+
+imx27-apf27dev.dtb: leds: 'user' does not match any of the regexes: '(^led-[0-9a-f]$|led)', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/leds/leds-gpio.yaml#
+
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-index 1d597af15bb3..a72f3c470089 100644
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -2021,7 +2021,7 @@
- 			compatible = "qcom,sm8350-mpss-pas";
- 			reg = <0x0 0x04080000 0x0 0x4040>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts b/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts
+index f047a8487073..849306cb4532 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts
+@@ -47,7 +47,7 @@
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_gpio_leds>;
  
--			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_LEVEL_HIGH>,
-+			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_modem_in 1 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_modem_in 2 IRQ_TYPE_EDGE_RISING>,
-@@ -2063,7 +2063,7 @@
- 			compatible = "qcom,sm8350-slpi-pas";
- 			reg = <0 0x05c00000 0 0x4000>;
- 
--			interrupts-extended = <&pdc 9 IRQ_TYPE_LEVEL_HIGH>,
-+			interrupts-extended = <&pdc 9 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_slpi_in 0 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_slpi_in 1 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_slpi_in 2 IRQ_TYPE_EDGE_RISING>,
-@@ -3207,7 +3207,7 @@
- 			compatible = "qcom,sm8350-adsp-pas";
- 			reg = <0 0x17300000 0 0x100>;
- 
--			interrupts-extended = <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
-+			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
-@@ -3512,7 +3512,7 @@
- 			compatible = "qcom,sm8350-cdsp-pas";
- 			reg = <0 0x98900000 0 0x1400000>;
- 
--			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_LEVEL_HIGH>,
-+			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp_in 1 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp_in 2 IRQ_TYPE_EDGE_RISING>,
+-		user {
++		led-user {
+ 			label = "Heartbeat";
+ 			gpios = <&gpio6 14 GPIO_ACTIVE_HIGH>;
+ 			linux,default-trigger = "heartbeat";
 -- 
 2.43.0
 
