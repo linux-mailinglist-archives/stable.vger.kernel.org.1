@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D347A848182
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 294808482B4
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 883AD1F23BE0
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C6951C2239E
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B512C684;
-	Sat,  3 Feb 2024 04:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874EC4D109;
+	Sat,  3 Feb 2024 04:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fa6MOHSF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H26uEpdq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2933F111AE;
-	Sat,  3 Feb 2024 04:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB251BDED;
+	Sat,  3 Feb 2024 04:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933571; cv=none; b=KwnjZ0PHl1WgcuXuC7oSYhD5tXkYHNxoxnMhq+tgai/u5HzcTcEDkdjZdHFPB8WSqM+yhy3iNDKpmgIBPfIcdox1ZfIMGZt9u7pEz/y6y3AxhUqqMhkDS+QULgGiA86HTa4ZfyrRIJr4Bb1h8niQ8diZu8JXNikn+DZ5Jm1dzaM=
+	t=1706933795; cv=none; b=G4wHdLVmE0LXfXSLiNvFcqqHAzCi3WdbE3Ri/w27df+ca7ynFa2d701a/lgZF7g92K6HLjjMynd/rfT+xAxNL3ACPCJCb+eqWhFDCytt4ZfWpCtW4qM52DtjlFdX1coG4XUyWeLIlrWHBKKxMys1g7pAztVRRfri5QHOoR+tN8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933571; c=relaxed/simple;
-	bh=7gpO1wKX51jSO7hx1num0MpsdaA5NSmIrSiYwe/iB9k=;
+	s=arc-20240116; t=1706933795; c=relaxed/simple;
+	bh=7mlvTdKzHxrujO3QNCpzfzva4vz/8GOCooAx8AQXlZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MnxhRIAkGIonAhBjAlGS7NgrZPMGSXxzmCl+wfMP9aeV+N6qaCWIMYP4e410d8yG+/lIOA6W1djxsqCW6F867mcPkMW+R+zksLY7skS47VM/cLOb2/6ny2srJONjmR6gKKI84brtPBZu4tks4PSt2sPNeEReAu38+/xdhzQSkLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fa6MOHSF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97443C433A6;
-	Sat,  3 Feb 2024 04:12:50 +0000 (UTC)
+	 MIME-Version; b=jLtknsHFcqEIQRAE3Wr6itB8KgRZEisra89zNGlOBmkjCQ1X5FvNdV8gVh4cR0/e5lXPj32lmwhl0ZTllyS9hW8gLBTwcrRClLdg61CmCtP+1Vc+8ZFFkqWqe3j6c37ik2/VIhAO1mTdGd1trGQ+H5Ud84FnknunE04ZBnNTh4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H26uEpdq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D6BC43390;
+	Sat,  3 Feb 2024 04:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933570;
-	bh=7gpO1wKX51jSO7hx1num0MpsdaA5NSmIrSiYwe/iB9k=;
+	s=korg; t=1706933795;
+	bh=7mlvTdKzHxrujO3QNCpzfzva4vz/8GOCooAx8AQXlZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fa6MOHSFLMCJKcXZtnsK7IFUdMedbe42yzDAiW9XeitYgcigXsSVI0wFoEDl28WYM
-	 JDTF7KA4E1TgF3asOCJ+WhUk+qtnSpjIcP3VobapoMk3B9GutIthG9D2FrL1WrfQHj
-	 Uo1YVPiN1xXo0dzkF1joeKwWrtzpu1IQFtydswKQ=
+	b=H26uEpdqmpJoYNK1tfuy52YOjMBNnSCJoGr9Jo3/JLH/4XulH06FH36qfyv+QJXjd
+	 xxtB4o/DDfDuvVJ7vufSX5nYj8y/MwJXNLCcYDR6v0FxGqmv30UqfuqUFJTWGk886h
+	 zitc6+ra1pA/JuYPUWYvoQ+Jn3shvBBsg7+RKlrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@denx.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 126/322] ARM: dts: imx23/28: Fix the DMA controller node name
+Subject: [PATCH 6.7 105/353] wifi: mt76: mt7996: add PCI IDs for mt7992
 Date: Fri,  2 Feb 2024 20:03:43 -0800
-Message-ID: <20240203035403.226436909@linuxfoundation.org>
+Message-ID: <20240203035407.092867766@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@denx.de>
+From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
 
-[ Upstream commit 858d83ca4b50bbc8693d95cc94310e6d791fb2e6 ]
+[ Upstream commit 3d3f117a259a65353bf2714a18e25731b3ca5770 ]
 
-Per fsl,mxs-dma.yaml, the node name should be 'dma-controller'.
+Add PCI device IDs to enable mt7992 chipsets support.
 
-Change it to fix the following dt-schema warning.
-
-imx28-apf28.dtb: dma-apbx@80024000: $nodename:0: 'dma-apbx@80024000' does not match '^dma-controller(@.*)?$'
-	from schema $id: http://devicetree.org/schemas/dma/fsl,mxs-dma.yaml#
-
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/mxs/imx23.dtsi | 2 +-
- arch/arm/boot/dts/nxp/mxs/imx28.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/pci.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx23.dtsi b/arch/arm/boot/dts/nxp/mxs/imx23.dtsi
-index 5eca942a52fd..14c07b585f82 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx23.dtsi
-+++ b/arch/arm/boot/dts/nxp/mxs/imx23.dtsi
-@@ -412,7 +412,7 @@
- 				status = "disabled";
- 			};
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
+index c5301050ff8b..67c015896243 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
+@@ -17,11 +17,13 @@ static u32 hif_idx;
  
--			dma_apbx: dma-apbx@80024000 {
-+			dma_apbx: dma-controller@80024000 {
- 				compatible = "fsl,imx23-dma-apbx";
- 				reg = <0x80024000 0x2000>;
- 				interrupts = <7>, <5>, <9>, <26>,
-diff --git a/arch/arm/boot/dts/nxp/mxs/imx28.dtsi b/arch/arm/boot/dts/nxp/mxs/imx28.dtsi
-index 763adeb995ee..9b73130887ea 100644
---- a/arch/arm/boot/dts/nxp/mxs/imx28.dtsi
-+++ b/arch/arm/boot/dts/nxp/mxs/imx28.dtsi
-@@ -990,7 +990,7 @@
- 				status = "disabled";
- 			};
+ static const struct pci_device_id mt7996_pci_device_table[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7990) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7992) },
+ 	{ },
+ };
  
--			dma_apbx: dma-apbx@80024000 {
-+			dma_apbx: dma-controller@80024000 {
- 				compatible = "fsl,imx28-dma-apbx";
- 				reg = <0x80024000 0x2000>;
- 				interrupts = <78>, <79>, <66>, <0>,
+ static const struct pci_device_id mt7996_hif_device_table[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7991) },
++	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x799a) },
+ 	{ },
+ };
+ 
+@@ -60,7 +62,9 @@ static void mt7996_put_hif2(struct mt7996_hif *hif)
+ static struct mt7996_hif *mt7996_pci_init_hif2(struct pci_dev *pdev)
+ {
+ 	hif_idx++;
+-	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7991, NULL))
++
++	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7991, NULL) &&
++	    !pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x799a, NULL))
+ 		return NULL;
+ 
+ 	writel(hif_idx | MT_PCIE_RECOG_ID_SEM,
+@@ -113,7 +117,7 @@ static int mt7996_pci_probe(struct pci_dev *pdev,
+ 
+ 	mt76_pci_disable_aspm(pdev);
+ 
+-	if (id->device == 0x7991)
++	if (id->device == 0x7991 || id->device == 0x799a)
+ 		return mt7996_pci_hif2_probe(pdev);
+ 
+ 	dev = mt7996_mmio_probe(&pdev->dev, pcim_iomap_table(pdev)[0],
 -- 
 2.43.0
 
