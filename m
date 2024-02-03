@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-17893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD5AA848088
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B60D8482F0
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 839BB28BEFB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AFE01C2369C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E20168A9;
-	Sat,  3 Feb 2024 04:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295924F5F2;
+	Sat,  3 Feb 2024 04:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6P4YRRb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWbBmLiQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95362101C5;
-	Sat,  3 Feb 2024 04:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC452101D4;
+	Sat,  3 Feb 2024 04:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933393; cv=none; b=dzI2xD09fz+8YShDz+dTPWm5raUnElpfjmyrqUgUio653x763LkTihTqORSeLYTt+th9uDnhNvQsB1os0YFbs3SZ8pyrB8mfTfYwWVyDL8xJnHeMqqi+haRedGaKmZO8m3CCKMqJ9q5jTYywp7YKBJWFTbysnAeLV1VY8oboTXU=
+	t=1706933839; cv=none; b=iy6YRx9/Sj0BhVMjskwrie7iFDca9rgyhZpxSfsSRauAl/f+n4yFXxW+cqtsapS9z/c8o10OIXNdTfN8O+mmhZPHLnEPtC15QZ33/Yn/aW8UCpo69HDOo6AdwtchsayuVFxRt65uiw3fRl11sdD8KFrMmLFpuinM/PxmG+4UDaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933393; c=relaxed/simple;
-	bh=g8tsmAGCfmcptekOTuLGxjKNl5Kbufg/CO2DgqK6DHg=;
+	s=arc-20240116; t=1706933839; c=relaxed/simple;
+	bh=86SuOTOzWYWt/UkzHO7nnuPswoGVSMAWgH8qM5EfgoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NvlpGbFV6yLhoBAxeyQcwnwnxsyNwm7W8ht/c3knv/G0TXO3239sGTV3EJS8g7g4iKM+Mmb7XNXDqfUutMFLKSJnPmBwo7lOq9feFIbvuA+YOAcNbzw20+uQuS/U9epLB1MtGHQ168Cxh4jcWfJbNKadG+CGY+mxkjBY95fxYjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6P4YRRb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6042DC433F1;
-	Sat,  3 Feb 2024 04:09:53 +0000 (UTC)
+	 MIME-Version; b=ryI9GFlSuMiRTtqlxMI0P5G6/Gnhh02yYP/8WKNaVeiTFwenUS0NBuVlnpg8716IouVb3rIFAQzVNOcO4mLAehqVFGItkLMVtReOgws9Tb27fS5hSRXlCsAfiqRRG3Vs/WjmRiWbOx4vai8RXVrMOM7e2RCn3oBNhAKA7Mz6SvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWbBmLiQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56DDC433F1;
+	Sat,  3 Feb 2024 04:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933393;
-	bh=g8tsmAGCfmcptekOTuLGxjKNl5Kbufg/CO2DgqK6DHg=;
+	s=korg; t=1706933839;
+	bh=86SuOTOzWYWt/UkzHO7nnuPswoGVSMAWgH8qM5EfgoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q6P4YRRbk6meRxYZP2THJZPGZMokjv1It+gRUKtrfph8klNTH0UFNOKLk3Fy8GaUu
-	 mebymlAYqOCiTFwF7APWqoZopFhlkVe4mrlUFz/tA++NJA1JKGTfXB5b03d+5LLrjZ
-	 +/kWTEX96iHZhJc67RdEFIL0Xa0bBSE3/hZs8qlM=
+	b=dWbBmLiQEzip/vW2NQqMWNQYTPhnoQku9JO2kZZlM95Hrwhq95PNB6nMLtBH1A4Os
+	 cCb1U8x1v+8KXol/TwV/sLkJBfEmpq6t8N3eYq8Nv9dzmO0u6tCwTs/N/E2x3pAMw4
+	 Nd+TNpaFEHzb44MI6hTxZOid95E9m/9SaGz05cYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Yi Wang <hsinyi@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	Jan Kara <jack@suse.cz>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/219] drm/panel-edp: Add override_edid_mode quirk for generic edp
-Date: Fri,  2 Feb 2024 20:04:42 -0800
-Message-ID: <20240203035332.757066204@linuxfoundation.org>
+Subject: [PATCH 6.7 165/353] reiserfs: Avoid touching renamed directory if parent does not change
+Date: Fri,  2 Feb 2024 20:04:43 -0800
+Message-ID: <20240203035408.856621447@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +62,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Yi Wang <hsinyi@chromium.org>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 9f7843b515811aea6c56527eb195b622e9c01f12 ]
+[ Upstream commit 49db9b1b86a82448dfaf3fcfefcf678dee56c8ed ]
 
-Generic edp gets mode from edid. However, some panels report incorrect
-mode in this way, resulting in glitches on panel. Introduce a new quirk
-additional_mode to the generic edid to pick a correct hardcoded mode.
+The VFS will not be locking moved directory if its parent does not
+change. Change reiserfs rename code to avoid touching renamed directory
+if its parent does not change as without locking that can corrupt the
+filesystem.
 
-Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231117215056.1883314-2-hsinyi@chromium.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-edp.c | 48 +++++++++++++++++++++++++++++--
- 1 file changed, 45 insertions(+), 3 deletions(-)
+ fs/reiserfs/namei.c | 54 ++++++++++++++++++++++++---------------------
+ 1 file changed, 29 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-edp.c b/drivers/gpu/drm/panel/panel-edp.c
-index ecd6238749f7..42584d8a9aeb 100644
---- a/drivers/gpu/drm/panel/panel-edp.c
-+++ b/drivers/gpu/drm/panel/panel-edp.c
-@@ -203,6 +203,9 @@ struct edp_panel_entry {
+diff --git a/fs/reiserfs/namei.c b/fs/reiserfs/namei.c
+index 994d6e6995ab..5996197ba40c 100644
+--- a/fs/reiserfs/namei.c
++++ b/fs/reiserfs/namei.c
+@@ -1324,8 +1324,8 @@ static int reiserfs_rename(struct mnt_idmap *idmap,
+ 	struct inode *old_inode, *new_dentry_inode;
+ 	struct reiserfs_transaction_handle th;
+ 	int jbegin_count;
+-	umode_t old_inode_mode;
+ 	unsigned long savelink = 1;
++	bool update_dir_parent = false;
  
- 	/** @name: Name of this panel (for printing to logs). */
- 	const char *name;
-+
-+	/** @override_edid_mode: Override the mode obtained by edid. */
-+	const struct drm_display_mode *override_edid_mode;
- };
+ 	if (flags & ~RENAME_NOREPLACE)
+ 		return -EINVAL;
+@@ -1375,8 +1375,7 @@ static int reiserfs_rename(struct mnt_idmap *idmap,
+ 		return -ENOENT;
+ 	}
  
- struct panel_edp {
-@@ -301,6 +304,24 @@ static unsigned int panel_edp_get_display_modes(struct panel_edp *panel,
- 	return num;
- }
+-	old_inode_mode = old_inode->i_mode;
+-	if (S_ISDIR(old_inode_mode)) {
++	if (S_ISDIR(old_inode->i_mode)) {
+ 		/*
+ 		 * make sure that directory being renamed has correct ".."
+ 		 * and that its new parent directory has not too many links
+@@ -1389,24 +1388,28 @@ static int reiserfs_rename(struct mnt_idmap *idmap,
+ 			}
+ 		}
  
-+static int panel_edp_override_edid_mode(struct panel_edp *panel,
-+					struct drm_connector *connector,
-+					const struct drm_display_mode *override_mode)
-+{
-+	struct drm_display_mode *mode;
-+
-+	mode = drm_mode_duplicate(connector->dev, override_mode);
-+	if (!mode) {
-+		dev_err(panel->base.dev, "failed to add additional mode\n");
-+		return 0;
-+	}
-+
-+	mode->type |= DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
-+	drm_mode_set_name(mode);
-+	drm_mode_probed_add(connector, mode);
-+	return 1;
-+}
-+
- static int panel_edp_get_non_edid_modes(struct panel_edp *panel,
- 					struct drm_connector *connector)
- {
-@@ -568,6 +589,9 @@ static int panel_edp_get_modes(struct drm_panel *panel,
- {
- 	struct panel_edp *p = to_panel_edp(panel);
- 	int num = 0;
-+	bool has_override_edid_mode = p->detected_panel &&
-+				      p->detected_panel != ERR_PTR(-EINVAL) &&
-+				      p->detected_panel->override_edid_mode;
- 
- 	/* probe EDID if a DDC bus is available */
- 	if (p->ddc) {
-@@ -575,9 +599,18 @@ static int panel_edp_get_modes(struct drm_panel *panel,
- 
- 		if (!p->edid)
- 			p->edid = drm_get_edid(connector, p->ddc);
--
--		if (p->edid)
--			num += drm_add_edid_modes(connector, p->edid);
-+		if (p->edid) {
-+			if (has_override_edid_mode) {
-+				/*
-+				 * override_edid_mode is specified. Use
-+				 * override_edid_mode instead of from edid.
-+				 */
-+				num += panel_edp_override_edid_mode(p, connector,
-+						p->detected_panel->override_edid_mode);
-+			} else {
-+				num += drm_add_edid_modes(connector, p->edid);
+-		/*
+-		 * directory is renamed, its parent directory will be changed,
+-		 * so find ".." entry
+-		 */
+-		dot_dot_de.de_gen_number_bit_string = NULL;
+-		retval =
+-		    reiserfs_find_entry(old_inode, "..", 2, &dot_dot_entry_path,
++		if (old_dir != new_dir) {
++			/*
++			 * directory is renamed, its parent directory will be
++			 * changed, so find ".." entry
++			 */
++			dot_dot_de.de_gen_number_bit_string = NULL;
++			retval =
++			    reiserfs_find_entry(old_inode, "..", 2,
++					&dot_dot_entry_path,
+ 					&dot_dot_de);
+-		pathrelse(&dot_dot_entry_path);
+-		if (retval != NAME_FOUND) {
+-			reiserfs_write_unlock(old_dir->i_sb);
+-			return -EIO;
+-		}
++			pathrelse(&dot_dot_entry_path);
++			if (retval != NAME_FOUND) {
++				reiserfs_write_unlock(old_dir->i_sb);
++				return -EIO;
 +			}
-+		}
  
- 		pm_runtime_mark_last_busy(panel->dev);
- 		pm_runtime_put_autosuspend(panel->dev);
-@@ -1861,6 +1894,15 @@ static const struct panel_delay delay_200_500_e200 = {
- 	.delay = _delay \
- }
+-		/* inode number of .. must equal old_dir->i_ino */
+-		if (dot_dot_de.de_objectid != old_dir->i_ino) {
+-			reiserfs_write_unlock(old_dir->i_sb);
+-			return -EIO;
++			/* inode number of .. must equal old_dir->i_ino */
++			if (dot_dot_de.de_objectid != old_dir->i_ino) {
++				reiserfs_write_unlock(old_dir->i_sb);
++				return -EIO;
++			}
++			update_dir_parent = true;
+ 		}
+ 	}
  
-+#define EDP_PANEL_ENTRY2(vend_chr_0, vend_chr_1, vend_chr_2, product_id, _delay, _name, _mode) \
-+{ \
-+	.name = _name, \
-+	.panel_id = drm_edid_encode_panel_id(vend_chr_0, vend_chr_1, vend_chr_2, \
-+					     product_id), \
-+	.delay = _delay, \
-+	.override_edid_mode = _mode \
-+}
-+
- /*
-  * This table is used to figure out power sequencing delays for panels that
-  * are detected by EDID. Entries here may point to entries in the
+@@ -1486,7 +1489,7 @@ static int reiserfs_rename(struct mnt_idmap *idmap,
+ 
+ 		reiserfs_prepare_for_journal(old_inode->i_sb, new_de.de_bh, 1);
+ 
+-		if (S_ISDIR(old_inode->i_mode)) {
++		if (update_dir_parent) {
+ 			if ((retval =
+ 			     search_by_entry_key(new_dir->i_sb,
+ 						 &dot_dot_de.de_entry_key,
+@@ -1534,14 +1537,14 @@ static int reiserfs_rename(struct mnt_idmap *idmap,
+ 							 new_de.de_bh);
+ 			reiserfs_restore_prepared_buffer(old_inode->i_sb,
+ 							 old_de.de_bh);
+-			if (S_ISDIR(old_inode_mode))
++			if (update_dir_parent)
+ 				reiserfs_restore_prepared_buffer(old_inode->
+ 								 i_sb,
+ 								 dot_dot_de.
+ 								 de_bh);
+ 			continue;
+ 		}
+-		if (S_ISDIR(old_inode_mode)) {
++		if (update_dir_parent) {
+ 			if (item_moved(&dot_dot_ih, &dot_dot_entry_path) ||
+ 			    !entry_points_to_object("..", 2, &dot_dot_de,
+ 						    old_dir)) {
+@@ -1559,7 +1562,7 @@ static int reiserfs_rename(struct mnt_idmap *idmap,
+ 			}
+ 		}
+ 
+-		RFALSE(S_ISDIR(old_inode_mode) &&
++		RFALSE(update_dir_parent &&
+ 		       !buffer_journal_prepared(dot_dot_de.de_bh), "");
+ 
+ 		break;
+@@ -1592,11 +1595,12 @@ static int reiserfs_rename(struct mnt_idmap *idmap,
+ 		savelink = new_dentry_inode->i_nlink;
+ 	}
+ 
+-	if (S_ISDIR(old_inode_mode)) {
++	if (update_dir_parent) {
+ 		/* adjust ".." of renamed directory */
+ 		set_ino_in_dir_entry(&dot_dot_de, INODE_PKEY(new_dir));
+ 		journal_mark_dirty(&th, dot_dot_de.de_bh);
+-
++	}
++	if (S_ISDIR(old_inode->i_mode)) {
+ 		/*
+ 		 * there (in new_dir) was no directory, so it got new link
+ 		 * (".."  of renamed directory)
 -- 
 2.43.0
 
