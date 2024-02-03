@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86ACF84813D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13CA6848270
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42B582864B1
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 675C51F2A6DE
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D13661CAB1;
-	Sat,  3 Feb 2024 04:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04BF1B965;
+	Sat,  3 Feb 2024 04:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjEzkZuY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEOxvp4t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903C41CAAC;
-	Sat,  3 Feb 2024 04:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CE7D13AC0;
+	Sat,  3 Feb 2024 04:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933520; cv=none; b=E3k+5FYV+f0piEbPmq9eH0FdAuZKJwUW3n+RQGNiNJlkVVaJNPzPjUwdcmJK40+HTyNfpU8Uoc5FyjQNi6m4kvJh4uWnXZgu+Dd9DC6GJ8QTKowxvR3bWc2n992hGFG+iyJXk+LQjDyazHdl5YwNwtlWODultpvESQpuELSYmnM=
+	t=1706933745; cv=none; b=lWj5bLEYEja57rHnR3FbVqZ2nzR42pbDEE3bThSLjXARzMB9x1KBib80i2uvz+IKdABZ5ff1sZRG2eO8kVDVpjtE1ZAAzncLqSmORYnSDAho/aRuDuXMbr1w9z0GMVUvcvT0Y6YP3k6dZ8adJrlQuUNgsZtkNAPXqlWdqB28mqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933520; c=relaxed/simple;
-	bh=lpz/JIz5KVrH/Hn3d+OxzE2BjhqAc35ncro2htZhQuI=;
+	s=arc-20240116; t=1706933745; c=relaxed/simple;
+	bh=pJDETNuqL+ortci7qKsDr0LYnqMKXgHRJZ5T5Y/NPko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p+2UMFS/NFcdECrLokj7bXXaJb+vLXKpqc1D3SRoDLPWEnuJh7tTao/cP0jJCMxA2+COOQCqJ/9sd/k8VkCnkqE6T4SV6HTHXmPo6z5ugikhy0pvZAbhct3Pr+txkLYROUI/oTlylkDxjIP2OIRSS4Lexdt0g6tWA/p5nHpF/z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjEzkZuY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58CBAC433C7;
-	Sat,  3 Feb 2024 04:12:00 +0000 (UTC)
+	 MIME-Version; b=SWBwx2uuEIN1Dr+ipIldt35j+E6RrX1KhbN0szx53COfPPQFlO0WPxEQp6Xn4PSpUbxbGJxQwWJz6AvVz08jK+KVEGnRYrZow84/ybiKaokPFi76T3JqgtXMkjFmNIh2CYUgAk8N4QJxUlu+tIIyVcDbWkS5Ln7erhptCA1KxKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEOxvp4t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0154EC43394;
+	Sat,  3 Feb 2024 04:15:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933520;
-	bh=lpz/JIz5KVrH/Hn3d+OxzE2BjhqAc35ncro2htZhQuI=;
+	s=korg; t=1706933745;
+	bh=pJDETNuqL+ortci7qKsDr0LYnqMKXgHRJZ5T5Y/NPko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HjEzkZuYjU2hcEB2jqD5ksr4CY7Yingyx30smChAJOgFef+YnhAQnHzGwoQrLwzxT
-	 U6LfGD9pzNhSKED22y92rm0udvIOQYYnrSYAh7coP2JvZbd5pcDwc3Uu8IGhlxqeia
-	 LYlj6JgPyTSJRO9tNwUA1Nh2Qc2h0nyiO6dOlOy8=
+	b=GEOxvp4tuVnoKNELzjjW81e7FhSrneYfUlktsUjZTprtQ5ZkeScNK51eGO69HWL5O
+	 NEoal4X/py6Rc4a0AyC4UX3YnwQTLzSwvg44WZzk2EpEYdAfPD/b/2Bxp1z6mzrFfx
+	 /YqIpvelbYDCjN3vwn1mruZuMQrEsBytGjv4G030=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Kalle Valo <kvalo@kernel.org>,
+	Yue Hu <huyue2@coolpad.com>,
+	Chao Yu <chao@kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 059/322] wifi: rt2x00: restart beacon queue when hardware reset
+Subject: [PATCH 6.7 038/353] erofs: fix up compacted indexes for block size < 4096
 Date: Fri,  2 Feb 2024 20:02:36 -0800
-Message-ID: <20240203035401.041617833@linuxfoundation.org>
+Message-ID: <20240203035405.004432423@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiji Yang <yangshiji66@outlook.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit a11d965a218f0cd95b13fe44d0bcd8a20ce134a8 ]
+[ Upstream commit 8d2517aaeea3ab8651bb517bca8f3c8664d318ea ]
 
-When a hardware reset is triggered, all registers are reset, so all
-queues are forced to stop in hardware interface. However, mac80211
-will not automatically stop the queue. If we don't manually stop the
-beacon queue, the queue will be deadlocked and unable to start again.
-This patch fixes the issue where Apple devices cannot connect to the
-AP after calling ieee80211_restart_hw().
+Previously, the block size always equaled to PAGE_SIZE, therefore
+`lclusterbits` couldn't be less than 12.
 
-Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
-Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/TYAP286MB031530EB6D98DCE4DF20766CBCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
+Since sub-page compressed blocks are now considered, `lobits` for
+a lcluster in each pack cannot always be `lclusterbits` as before.
+Otherwise, there is no enough room for the special value
+`Z_EROFS_LI_D0_CBLKCNT`.
+
+To support smaller block sizes, `lobits` for each compacted lcluster is
+now calculated as:
+   lobits = max(lclusterbits, ilog2(Z_EROFS_LI_D0_CBLKCNT) + 1)
+
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20231206091057.87027-4-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ralink/rt2x00/rt2x00dev.c |  3 +++
- drivers/net/wireless/ralink/rt2x00/rt2x00mac.c | 11 +++++++++++
- 2 files changed, 14 insertions(+)
+ fs/erofs/zmap.c | 32 ++++++++++++++------------------
+ 1 file changed, 14 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-index 9a9cfd0ce402..00b945053e19 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
-@@ -101,6 +101,7 @@ void rt2x00lib_disable_radio(struct rt2x00_dev *rt2x00dev)
- 	rt2x00link_stop_tuner(rt2x00dev);
- 	rt2x00queue_stop_queues(rt2x00dev);
- 	rt2x00queue_flush_queues(rt2x00dev, true);
-+	rt2x00queue_stop_queue(rt2x00dev->bcn);
- 
- 	/*
- 	 * Disable radio.
-@@ -1286,6 +1287,7 @@ int rt2x00lib_start(struct rt2x00_dev *rt2x00dev)
- 	rt2x00dev->intf_ap_count = 0;
- 	rt2x00dev->intf_sta_count = 0;
- 	rt2x00dev->intf_associated = 0;
-+	rt2x00dev->intf_beaconing = 0;
- 
- 	/* Enable the radio */
- 	retval = rt2x00lib_enable_radio(rt2x00dev);
-@@ -1312,6 +1314,7 @@ void rt2x00lib_stop(struct rt2x00_dev *rt2x00dev)
- 	rt2x00dev->intf_ap_count = 0;
- 	rt2x00dev->intf_sta_count = 0;
- 	rt2x00dev->intf_associated = 0;
-+	rt2x00dev->intf_beaconing = 0;
+diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
+index 7a1a24ae4a2d..e313c936351d 100644
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -82,29 +82,26 @@ static int z_erofs_load_full_lcluster(struct z_erofs_maprecorder *m,
  }
  
- static inline void rt2x00lib_set_if_combinations(struct rt2x00_dev *rt2x00dev)
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-index 4202c6517783..75fda72c14ca 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
-@@ -598,6 +598,17 @@ void rt2x00mac_bss_info_changed(struct ieee80211_hw *hw,
- 	 */
- 	if (changes & BSS_CHANGED_BEACON_ENABLED) {
- 		mutex_lock(&intf->beacon_skb_mutex);
-+
-+		/*
-+		 * Clear the 'enable_beacon' flag and clear beacon because
-+		 * the beacon queue has been stopped after hardware reset.
-+		 */
-+		if (test_bit(DEVICE_STATE_RESET, &rt2x00dev->flags) &&
-+		    intf->enable_beacon) {
-+			intf->enable_beacon = false;
-+			rt2x00queue_clear_beacon(rt2x00dev, vif);
-+		}
-+
- 		if (!bss_conf->enable_beacon && intf->enable_beacon) {
- 			rt2x00dev->intf_beaconing--;
- 			intf->enable_beacon = false;
+ static unsigned int decode_compactedbits(unsigned int lobits,
+-					 unsigned int lomask,
+ 					 u8 *in, unsigned int pos, u8 *type)
+ {
+ 	const unsigned int v = get_unaligned_le32(in + pos / 8) >> (pos & 7);
+-	const unsigned int lo = v & lomask;
++	const unsigned int lo = v & ((1 << lobits) - 1);
+ 
+ 	*type = (v >> lobits) & 3;
+ 	return lo;
+ }
+ 
+-static int get_compacted_la_distance(unsigned int lclusterbits,
++static int get_compacted_la_distance(unsigned int lobits,
+ 				     unsigned int encodebits,
+ 				     unsigned int vcnt, u8 *in, int i)
+ {
+-	const unsigned int lomask = (1 << lclusterbits) - 1;
+ 	unsigned int lo, d1 = 0;
+ 	u8 type;
+ 
+ 	DBG_BUGON(i >= vcnt);
+ 
+ 	do {
+-		lo = decode_compactedbits(lclusterbits, lomask,
+-					  in, encodebits * i, &type);
++		lo = decode_compactedbits(lobits, in, encodebits * i, &type);
+ 
+ 		if (type != Z_EROFS_LCLUSTER_TYPE_NONHEAD)
+ 			return d1;
+@@ -123,15 +120,14 @@ static int unpack_compacted_index(struct z_erofs_maprecorder *m,
+ {
+ 	struct erofs_inode *const vi = EROFS_I(m->inode);
+ 	const unsigned int lclusterbits = vi->z_logical_clusterbits;
+-	const unsigned int lomask = (1 << lclusterbits) - 1;
+-	unsigned int vcnt, base, lo, encodebits, nblk, eofs;
++	unsigned int vcnt, base, lo, lobits, encodebits, nblk, eofs;
+ 	int i;
+ 	u8 *in, type;
+ 	bool big_pcluster;
+ 
+ 	if (1 << amortizedshift == 4 && lclusterbits <= 14)
+ 		vcnt = 2;
+-	else if (1 << amortizedshift == 2 && lclusterbits == 12)
++	else if (1 << amortizedshift == 2 && lclusterbits <= 12)
+ 		vcnt = 16;
+ 	else
+ 		return -EOPNOTSUPP;
+@@ -140,6 +136,7 @@ static int unpack_compacted_index(struct z_erofs_maprecorder *m,
+ 	m->nextpackoff = round_down(pos, vcnt << amortizedshift) +
+ 			 (vcnt << amortizedshift);
+ 	big_pcluster = vi->z_advise & Z_EROFS_ADVISE_BIG_PCLUSTER_1;
++	lobits = max(lclusterbits, ilog2(Z_EROFS_LI_D0_CBLKCNT) + 1U);
+ 	encodebits = ((vcnt << amortizedshift) - sizeof(__le32)) * 8 / vcnt;
+ 	eofs = erofs_blkoff(m->inode->i_sb, pos);
+ 	base = round_down(eofs, vcnt << amortizedshift);
+@@ -147,15 +144,14 @@ static int unpack_compacted_index(struct z_erofs_maprecorder *m,
+ 
+ 	i = (eofs - base) >> amortizedshift;
+ 
+-	lo = decode_compactedbits(lclusterbits, lomask,
+-				  in, encodebits * i, &type);
++	lo = decode_compactedbits(lobits, in, encodebits * i, &type);
+ 	m->type = type;
+ 	if (type == Z_EROFS_LCLUSTER_TYPE_NONHEAD) {
+ 		m->clusterofs = 1 << lclusterbits;
+ 
+ 		/* figure out lookahead_distance: delta[1] if needed */
+ 		if (lookahead)
+-			m->delta[1] = get_compacted_la_distance(lclusterbits,
++			m->delta[1] = get_compacted_la_distance(lobits,
+ 						encodebits, vcnt, in, i);
+ 		if (lo & Z_EROFS_LI_D0_CBLKCNT) {
+ 			if (!big_pcluster) {
+@@ -174,8 +170,8 @@ static int unpack_compacted_index(struct z_erofs_maprecorder *m,
+ 		 * of which lo saves delta[1] rather than delta[0].
+ 		 * Hence, get delta[0] by the previous lcluster indirectly.
+ 		 */
+-		lo = decode_compactedbits(lclusterbits, lomask,
+-					  in, encodebits * (i - 1), &type);
++		lo = decode_compactedbits(lobits, in,
++					  encodebits * (i - 1), &type);
+ 		if (type != Z_EROFS_LCLUSTER_TYPE_NONHEAD)
+ 			lo = 0;
+ 		else if (lo & Z_EROFS_LI_D0_CBLKCNT)
+@@ -190,8 +186,8 @@ static int unpack_compacted_index(struct z_erofs_maprecorder *m,
+ 		nblk = 1;
+ 		while (i > 0) {
+ 			--i;
+-			lo = decode_compactedbits(lclusterbits, lomask,
+-						  in, encodebits * i, &type);
++			lo = decode_compactedbits(lobits, in,
++						  encodebits * i, &type);
+ 			if (type == Z_EROFS_LCLUSTER_TYPE_NONHEAD)
+ 				i -= lo;
+ 
+@@ -202,8 +198,8 @@ static int unpack_compacted_index(struct z_erofs_maprecorder *m,
+ 		nblk = 0;
+ 		while (i > 0) {
+ 			--i;
+-			lo = decode_compactedbits(lclusterbits, lomask,
+-						  in, encodebits * i, &type);
++			lo = decode_compactedbits(lobits, in,
++						  encodebits * i, &type);
+ 			if (type == Z_EROFS_LCLUSTER_TYPE_NONHEAD) {
+ 				if (lo & Z_EROFS_LI_D0_CBLKCNT) {
+ 					--i;
 -- 
 2.43.0
 
