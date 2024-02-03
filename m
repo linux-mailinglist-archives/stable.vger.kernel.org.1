@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-18271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8616D848210
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0819A84832C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31AB02881BC
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EEF4B23AFF
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85E645034;
-	Sat,  3 Feb 2024 04:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7616B50270;
+	Sat,  3 Feb 2024 04:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkGRe/RL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdVExNUC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8710B18EB1;
-	Sat,  3 Feb 2024 04:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E0F5027F;
+	Sat,  3 Feb 2024 04:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933675; cv=none; b=uZ2khqQgiH+8fCKlIamHOPgfC6ogUt5qIK5VDhh9xL6cGEbwcPMVwcAo4yooMzqFvV3zaVR2ZgEd7II/FLqhwQ1azCyZKp4IWOIQG6peWNPLcLyBDdHKb7/rqbEIjQV3nEMJVrw1XaYwh5LRo1J2IjCo8bGi2xePPqdOmosGZNA=
+	t=1706933882; cv=none; b=rcK3VmPPazLo65e/YK6UuBHgixCs6pVpxjh7DPMrEAASh7yP5LZLRZyZV7uKgNvP3u3ruIezDCO8NeObKw6GyappeLvCUsD85xmjNAHyjWtjBOvgQx3NbPbHZ2XooS6mtfvUBgYnpbXUIn+K2A1AwW1RAn68HXmxD76KCunzyDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933675; c=relaxed/simple;
-	bh=ocEDrnDlomAadB7ap2ZEMCby0kOwHARLFKDJfyrmokM=;
+	s=arc-20240116; t=1706933882; c=relaxed/simple;
+	bh=TQlsH6a8Nyygal1SM5q6497fayvp0FZKBRvs1aki9bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D4rTbbVe57/PgfRPNlTI6pp1/za/nbJqOoDDPjPm3HCHFpPorripnPH0EVlQb0dp4y2TdZNDrCy6WfFUhCza9EyAD1tXq5vDZShBp0je+rRPhV+ZQyHMcsoA/+ngFV8jL4DrZ9lHaYk4adovVNFes8mdZImbhc/tYroSCKGcYlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkGRe/RL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F30AC433C7;
-	Sat,  3 Feb 2024 04:14:35 +0000 (UTC)
+	 MIME-Version; b=sbagyLZCyIdp/bkL24i012RCrWW4rqWYVAy4Vqn2H5xDHnXvKP1Zhy8BR6FdcLlmOGsUfVOzQ6Lr9t5pPW6CXFTgVEys+N+149CHqeiF1utpFoI21vKwF17eE6dX1Z86dggydB3rcjsx/FmsPOTMn1dMTODNE42MHoVITvH05mk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdVExNUC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC12C433C7;
+	Sat,  3 Feb 2024 04:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933675;
-	bh=ocEDrnDlomAadB7ap2ZEMCby0kOwHARLFKDJfyrmokM=;
+	s=korg; t=1706933882;
+	bh=TQlsH6a8Nyygal1SM5q6497fayvp0FZKBRvs1aki9bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nkGRe/RLOl3QwR3ZLgZSR5mgoZPs6SsP+hDNPb8rA+5dYdhNK5aT10LYagWrO9C1W
-	 TIToxZFnlssRH09DnBFY41sFTudtdTMULq3Qk9Nis8/P0YtVLO/fDMWA6lViGtQ2uH
-	 e1eKJ5jd4+jerFX7UHozPrPpXPfbL9emu0/qFCNo=
+	b=YdVExNUC7N+SH3ZmRRuXWSuWK1or5jK3WkjnSyj3xp/oLm/RqOvT0e28Q+yOnXjAL
+	 tQ7+TJciTFNA+4Fne2fJcjAhCN2VHPW4bMji7a2vf0OAw+Aqjs41aMRN+uIG7nWG8p
+	 +MNhmKtkZ296dBslMSkJfmhi9kyrGxiwUgQIn1ds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yinbo Zhu <zhuyinbo@loongson.cn>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Michael Strauss <michael.strauss@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 243/322] usb: xhci-plat: fix usb disconnect issue after s4
+Subject: [PATCH 6.7 222/353] drm/amd/display: Fix lightup regression with DP2 single display configs
 Date: Fri,  2 Feb 2024 20:05:40 -0800
-Message-ID: <20240203035407.030083720@linuxfoundation.org>
+Message-ID: <20240203035410.701189540@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +66,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yinbo Zhu <zhuyinbo@loongson.cn>
+From: Michael Strauss <michael.strauss@amd.com>
 
-[ Upstream commit 6d6887c42e946f43bed2e64571a40c8476a1e4a9 ]
+[ Upstream commit 5a82b8d6c05f9b30828ede1b103b9ee5cb5c912e ]
 
-The xhci retaining bogus hardware states cause usb disconnect devices
-connected before hibernation(s4) and refer to the commit 'f3d478858be
-("usb: ohci-platform: fix usb disconnect issue after s4")' which set
-flag "hibernated" as true when resume-from-hibernation and that the
-drivers will reset the hardware to get rid of any existing state and
-make sure resume from hibernation re-enumerates everything for xhci.
+[WHY]
+Previous fix for multiple displays downstream of DP2 MST hub caused regression
 
-Signed-off-by: Yinbo Zhu <zhuyinbo@loongson.cn>
-Link: https://lore.kernel.org/r/20231228071113.1719-1-zhuyinbo@loongson.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[HOW]
+Match sink IDs instead of sink struct addresses
+
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Michael Strauss <michael.strauss@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-plat.c | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_utils.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
-index 732cdeb73920..f0853c4478f5 100644
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -433,7 +433,7 @@ void xhci_plat_remove(struct platform_device *dev)
- }
- EXPORT_SYMBOL_GPL(xhci_plat_remove);
- 
--static int __maybe_unused xhci_plat_suspend(struct device *dev)
-+static int xhci_plat_suspend(struct device *dev)
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_utils.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_utils.c
+index 2498b8341199..d6a68484153c 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_utils.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_utils.c
+@@ -157,6 +157,14 @@ bool is_dp2p0_output_encoder(const struct pipe_ctx *pipe_ctx)
  {
- 	struct usb_hcd	*hcd = dev_get_drvdata(dev);
- 	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
-@@ -461,7 +461,7 @@ static int __maybe_unused xhci_plat_suspend(struct device *dev)
- 	return 0;
- }
- 
--static int __maybe_unused xhci_plat_resume(struct device *dev)
-+static int xhci_plat_resume_common(struct device *dev, struct pm_message pmsg)
- {
- 	struct usb_hcd	*hcd = dev_get_drvdata(dev);
- 	struct xhci_hcd	*xhci = hcd_to_xhci(hcd);
-@@ -483,7 +483,7 @@ static int __maybe_unused xhci_plat_resume(struct device *dev)
- 	if (ret)
- 		goto disable_clks;
- 
--	ret = xhci_resume(xhci, PMSG_RESUME);
-+	ret = xhci_resume(xhci, pmsg);
- 	if (ret)
- 		goto disable_clks;
- 
-@@ -502,6 +502,16 @@ static int __maybe_unused xhci_plat_resume(struct device *dev)
- 	return ret;
- }
- 
-+static int xhci_plat_resume(struct device *dev)
-+{
-+	return xhci_plat_resume_common(dev, PMSG_RESUME);
-+}
+ 	/* If this assert is hit then we have a link encoder dynamic management issue */
+ 	ASSERT(pipe_ctx->stream_res.hpo_dp_stream_enc ? pipe_ctx->link_res.hpo_dp_link_enc != NULL : true);
++	/* Count MST hubs once by treating only 1st remote sink in topology as an encoder */
++	if (pipe_ctx->stream->link && pipe_ctx->stream->link->remote_sinks[0]) {
++		return (pipe_ctx->stream_res.hpo_dp_stream_enc &&
++			pipe_ctx->link_res.hpo_dp_link_enc &&
++			dc_is_dp_signal(pipe_ctx->stream->signal) &&
++			(pipe_ctx->stream->link->remote_sinks[0]->sink_id == pipe_ctx->stream->sink->sink_id));
++	}
 +
-+static int xhci_plat_restore(struct device *dev)
-+{
-+	return xhci_plat_resume_common(dev, PMSG_RESTORE);
-+}
-+
- static int __maybe_unused xhci_plat_runtime_suspend(struct device *dev)
- {
- 	struct usb_hcd  *hcd = dev_get_drvdata(dev);
-@@ -524,7 +534,12 @@ static int __maybe_unused xhci_plat_runtime_resume(struct device *dev)
- }
- 
- const struct dev_pm_ops xhci_plat_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(xhci_plat_suspend, xhci_plat_resume)
-+	.suspend = pm_sleep_ptr(xhci_plat_suspend),
-+	.resume = pm_sleep_ptr(xhci_plat_resume),
-+	.freeze = pm_sleep_ptr(xhci_plat_suspend),
-+	.thaw = pm_sleep_ptr(xhci_plat_resume),
-+	.poweroff = pm_sleep_ptr(xhci_plat_suspend),
-+	.restore = pm_sleep_ptr(xhci_plat_restore),
- 
- 	SET_RUNTIME_PM_OPS(xhci_plat_runtime_suspend,
- 			   xhci_plat_runtime_resume,
+ 	return (pipe_ctx->stream_res.hpo_dp_stream_enc &&
+ 		pipe_ctx->link_res.hpo_dp_link_enc &&
+ 		dc_is_dp_signal(pipe_ctx->stream->signal));
 -- 
 2.43.0
 
