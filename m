@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-17909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C0DF848098
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A725C8482E6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 084FB283726
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA2691C23248
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E569017559;
-	Sat,  3 Feb 2024 04:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7F5A4F21B;
+	Sat,  3 Feb 2024 04:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+XS8fBU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDIrDm49"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DBF111AE;
-	Sat,  3 Feb 2024 04:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8734D1C6A6;
+	Sat,  3 Feb 2024 04:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933405; cv=none; b=RxwfDdGUapChsxXeDjoEc5+rR1ny5Z7auIU5lDFcCz1uh0SAXVxbKW8taG5yjBkVuE9KxoENxOVsgFuY9euNYj/eWO4upELCpdyZ42rTv3TEesa9IUUbdASmkFSJzHyIky4ipkUYMKnpnPQkWoMbJN6mK56j++9TebOnNcKJ+rQ=
+	t=1706933831; cv=none; b=ZyWC/A5DOVXFUB5h/74tQy2hRxcZIauT9Lc4Li6pdXBFJaSZlZtSrjRQEMG8gofByRwEeYj7e6iva68MKF9SU3hfcwv/qIFTUZmOOKUrHbDvg8PvZTL+A8qNQUNYLkRRihq+ZyWXmxQO7jesiPJeMPqSzmbgAVBJ4CrIGmc/pXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933405; c=relaxed/simple;
-	bh=86/hVDGwj1+bX1Ytb8MWtznzl2lF2BGWzQWDejgzrj4=;
+	s=arc-20240116; t=1706933831; c=relaxed/simple;
+	bh=YYlQzTMUkM2QCiMihekzp4IHj1n3BBzNSMHi4PxEDVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SVaE2eL06PEcofOfKJOrQeuiXYsLbmE+yC9wkIs9CRuuPhRNmWiEtQv/Q6Y0rNgLeEOGUbtzGWHw2BcVZPqcYUBmLnCRXHFMIgPl2QQ13QeXmdEkyBA1/+zLTAad7NJw2/Upq8A3SkJCEb9SsV0E7L1RIWmFOAOCPkaJ+VK0lYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+XS8fBU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A985C43390;
-	Sat,  3 Feb 2024 04:10:05 +0000 (UTC)
+	 MIME-Version; b=Nbsw/2fwwUWN+4i8piRSk2JHmSCgbmukGlKaYT9dGp93E7EOtvZ+CG1NRbmF6X4bVHMkPZ8QLCyUzPyv5I/eWGnnow0v78JB0t9JOeO4Vwz2gaUkvzyKsw7BbgbrwbLaih+5DsQ6hSYGKJTn8v/p2GMdLt1fO6sw20Od8X8Bol4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDIrDm49; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509E1C433F1;
+	Sat,  3 Feb 2024 04:17:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933405;
-	bh=86/hVDGwj1+bX1Ytb8MWtznzl2lF2BGWzQWDejgzrj4=;
+	s=korg; t=1706933831;
+	bh=YYlQzTMUkM2QCiMihekzp4IHj1n3BBzNSMHi4PxEDVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k+XS8fBUiS8qx/3Qx3hFahh46vKz0r5h7dFBSAOCY359ZPF2+VB1L+tTYb8EZ9RpV
-	 os5YBFy/BjV/K6VO/X2hHnxIQrfreN8FzqQjUcDVXHf62rVNQtuvqyIPNy+n3panP3
-	 TmfC5BmkFhQQHRdHlYTd3J7sXFUFpgFdgiB55UXY=
+	b=gDIrDm49Hcnmxh1s6MWYaSEu/HNVCHqKM34hoRfE7NuizaAQFidGVj4NKt7SiDvWv
+	 uF3NAE3Km8mlj1RxCOU4xtJgQHaz2YO7ZTIStu31TLfqdumugTckml8rZLs6CU51Np
+	 fwcUByhHoSgpbBLhIIEPT/m6gLedVmepL5yEmGEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lin Ma <linma@zju.edu.cn>,
-	Simon Horman <horms@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Chunyan Zhang <chunyan.zhang@unisoc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 100/219] bridge: cfm: fix enum typo in br_cc_ccm_tx_parse
+Subject: [PATCH 6.7 155/353] arm64: dts: sprd: Change UMS512 idle-state nodename to match bindings
 Date: Fri,  2 Feb 2024 20:04:33 -0800
-Message-ID: <20240203035331.373440857@linuxfoundation.org>
+Message-ID: <20240203035408.563401697@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Chunyan Zhang <chunyan.zhang@unisoc.com>
 
-[ Upstream commit c2b2ee36250d967c21890cb801e24af4b6a9eaa5 ]
+[ Upstream commit 1cff7243334f851b7dddf450abdaa6223a7a28e3 ]
 
-It appears that there is a typo in the code where the nlattr array is
-being parsed with policy br_cfm_cc_ccm_tx_policy, but the instance is
-being accessed via IFLA_BRIDGE_CFM_CC_RDI_INSTANCE, which is associated
-with the policy br_cfm_cc_rdi_policy.
+Fix below dtbs_check warning:
 
-This problem was introduced by commit 2be665c3940d ("bridge: cfm: Netlink
-SET configuration Interface.").
+idle-states: 'core-pd' does not match any of the regexes: '^(cpu|cluster)-', 'pinctrl-[0-9]+'
 
-Though it seems like a harmless typo since these two enum owns the exact
-same value (1 here), it is quite misleading hence fix it by using the
-correct enum IFLA_BRIDGE_CFM_CC_CCM_TX_INSTANCE here.
-
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lore.kernel.org/r/20231221092824.1169453-3-chunyan.zhang@unisoc.com
+Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_cfm_netlink.c | 2 +-
+ arch/arm64/boot/dts/sprd/ums512.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_cfm_netlink.c b/net/bridge/br_cfm_netlink.c
-index 5c4c369f8536..2faab44652e7 100644
---- a/net/bridge/br_cfm_netlink.c
-+++ b/net/bridge/br_cfm_netlink.c
-@@ -362,7 +362,7 @@ static int br_cc_ccm_tx_parse(struct net_bridge *br, struct nlattr *attr,
+diff --git a/arch/arm64/boot/dts/sprd/ums512.dtsi b/arch/arm64/boot/dts/sprd/ums512.dtsi
+index 91c22667d40f..cc4459551e05 100644
+--- a/arch/arm64/boot/dts/sprd/ums512.dtsi
++++ b/arch/arm64/boot/dts/sprd/ums512.dtsi
+@@ -113,7 +113,7 @@
  
- 	memset(&tx_info, 0, sizeof(tx_info));
- 
--	instance = nla_get_u32(tb[IFLA_BRIDGE_CFM_CC_RDI_INSTANCE]);
-+	instance = nla_get_u32(tb[IFLA_BRIDGE_CFM_CC_CCM_TX_INSTANCE]);
- 	nla_memcpy(&tx_info.dmac.addr,
- 		   tb[IFLA_BRIDGE_CFM_CC_CCM_TX_DMAC],
- 		   sizeof(tx_info.dmac.addr));
+ 	idle-states {
+ 		entry-method = "psci";
+-		CORE_PD: core-pd {
++		CORE_PD: cpu-pd {
+ 			compatible = "arm,idle-state";
+ 			entry-latency-us = <4000>;
+ 			exit-latency-us = <4000>;
 -- 
 2.43.0
 
