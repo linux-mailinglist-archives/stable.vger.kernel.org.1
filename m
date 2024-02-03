@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-17890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA569848085
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D4318482ED
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A1B61F2C0DD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8BAC1F24308
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7548111A0;
-	Sat,  3 Feb 2024 04:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314DE4F5FA;
+	Sat,  3 Feb 2024 04:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjLNWZHj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvUN/eLG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740B7FC11;
-	Sat,  3 Feb 2024 04:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E145D1C6BC;
+	Sat,  3 Feb 2024 04:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933391; cv=none; b=mJYtJvT9FMb8dU+ED0dWkXU36N3A8GQo3bzSIWgh8OMz/pcZhAkjVKJlJw9FPfXaH14yeVsG/qc44JSaYC6hX1w2A5vLJ7JfQUh2oaLKPIKZrNKOdeWNC0zp1d5JHIjlz8/3N7MvxMSeG9Fc5SvnGTdhoz4njHH6jD++ncyMyJw=
+	t=1706933837; cv=none; b=uvPwj4Ulj8+tCyEPd6nf1eA1yJSipXTEwRVli7VEv1VvkKcDohhw0adWwP7rUhRIDvvVE18cmYTUGaUDQ6M/SYUbBI20Avs0MiRiAAUzO8q55TsGA1jtwXDEmm6mfGw+qkMD7NsTQRQIlP0eBuzPOrFlr1nnxw9iCNySJOWhlV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933391; c=relaxed/simple;
-	bh=5HC0LYDBXicUPt3Cg3lRNw5eowKFLksu80DnfJMVQSk=;
+	s=arc-20240116; t=1706933837; c=relaxed/simple;
+	bh=W35Fu/lOlj1WJF2asbSlvTyo6zSiGHN+6bsaIp2MH1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PaSMXobklg1+MaFoNPRBxv/LQlCo+9rsSPG1fB656DLCsMyJmAIS3tRLOz3xnCsRQ5amaW6W814N+NIcjP/2VjxFLohzH59IeTGXCOF0eoAb3/SQ6TQl+S3cD8MhNqfVT3YqvQGZkz/nfyZ4n05SkmxzoOijjx+PS9/887NGwy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjLNWZHj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE32C43390;
-	Sat,  3 Feb 2024 04:09:51 +0000 (UTC)
+	 MIME-Version; b=tquT6uHIT7DzEhNeSUNL5PGDLEWwJNrFdH1qDiShj4M9kMO/KUP2ObswtcB6ufGlns1Hp8GL6UGXbbXJVszAD7dGvHVSIUCoS0a767V7MZJHwQsKOl2x+i2X69Vd/1S2BE9HbUdT/rLWrNu7EzCHflOpIHPNSlnFW70opkuZ+w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvUN/eLG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D1DC43390;
+	Sat,  3 Feb 2024 04:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933391;
-	bh=5HC0LYDBXicUPt3Cg3lRNw5eowKFLksu80DnfJMVQSk=;
+	s=korg; t=1706933836;
+	bh=W35Fu/lOlj1WJF2asbSlvTyo6zSiGHN+6bsaIp2MH1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OjLNWZHj/GE6Z6d/u/ijrwr/jqTV1zwPWjfnuuW0TM1hVlYdEdGz72CBYDTA/dusM
-	 qM0IYHKnJu5guU0tBPmuMg9dIVViGyJzi+2nX8hmezMOupEoTb/YuZo+8/ch3T7CFD
-	 vFhdDLrOfQO1kd4ruWL1wttjuOqz1m+APJcT0s7U=
+	b=qvUN/eLGse9TtLWwdF7UL3Z7z//w6RlVs9YiaPJs0hmgaT5x0ekXRM2IBshnEHsz8
+	 M76akKaBWEGlFcFfgefkQzy+T+SyVeAQ6DKG4Kr7y4TUAWQTNWplFgSTanpxt6aN8o
+	 s2oxW2FlJEdsyYnLbQKZZeyffaXhyc9ji527SIGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/219] ASoC: doc: Fix undefined SND_SOC_DAPM_NOPM argument
+Subject: [PATCH 6.7 161/353] f2fs: fix to check return value of f2fs_reserve_new_block()
 Date: Fri,  2 Feb 2024 20:04:39 -0800
-Message-ID: <20240203035332.328704798@linuxfoundation.org>
+Message-ID: <20240203035408.736926069@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 67c7666fe808c3a7af3cc6f9d0a3dd3acfd26115 ]
+[ Upstream commit 956fa1ddc132e028f3b7d4cf17e6bfc8cb36c7fd ]
 
-The virtual widget example makes use of an undefined SND_SOC_DAPM_NOPM
-argument passed to SND_SOC_DAPM_MIXER().  Replace with the correct
-SND_SOC_NOPM definition.
+Let's check return value of f2fs_reserve_new_block() in do_recover_data()
+rather than letting it fails silently.
 
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Link: https://lore.kernel.org/r/20231121120751.77355-1-cristian.ciocaltea@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Also refactoring check condition on return value of f2fs_reserve_new_block()
+as below:
+- trigger f2fs_bug_on() only for ENOSPC case;
+- use do-while statement to avoid redundant codes;
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/sound/soc/dapm.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/recovery.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
-diff --git a/Documentation/sound/soc/dapm.rst b/Documentation/sound/soc/dapm.rst
-index 8e44107933ab..c3154ce6e1b2 100644
---- a/Documentation/sound/soc/dapm.rst
-+++ b/Documentation/sound/soc/dapm.rst
-@@ -234,7 +234,7 @@ corresponding soft power control. In this case it is necessary to create
- a virtual widget - a widget with no control bits e.g.
- ::
+diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
+index b56d0f1078a7..16415c770b45 100644
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -712,7 +712,16 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		 */
+ 		if (dest == NEW_ADDR) {
+ 			f2fs_truncate_data_blocks_range(&dn, 1);
+-			f2fs_reserve_new_block(&dn);
++			do {
++				err = f2fs_reserve_new_block(&dn);
++				if (err == -ENOSPC) {
++					f2fs_bug_on(sbi, 1);
++					break;
++				}
++			} while (err &&
++				IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
++			if (err)
++				goto err;
+ 			continue;
+ 		}
  
--  SND_SOC_DAPM_MIXER("AC97 Mixer", SND_SOC_DAPM_NOPM, 0, 0, NULL, 0),
-+  SND_SOC_DAPM_MIXER("AC97 Mixer", SND_SOC_NOPM, 0, 0, NULL, 0),
+@@ -720,12 +729,14 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		if (f2fs_is_valid_blkaddr(sbi, dest, META_POR)) {
  
- This can be used to merge to signal paths together in software.
- 
+ 			if (src == NULL_ADDR) {
+-				err = f2fs_reserve_new_block(&dn);
+-				while (err &&
+-				       IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION))
++				do {
+ 					err = f2fs_reserve_new_block(&dn);
+-				/* We should not get -ENOSPC */
+-				f2fs_bug_on(sbi, err);
++					if (err == -ENOSPC) {
++						f2fs_bug_on(sbi, 1);
++						break;
++					}
++				} while (err &&
++					IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
+ 				if (err)
+ 					goto err;
+ 			}
 -- 
 2.43.0
 
