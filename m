@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242EA84825E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:25:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC243848144
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:17:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 570E21C24818
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:25:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B00D1F23247
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:17:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A33482FB;
-	Sat,  3 Feb 2024 04:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C041CD03;
+	Sat,  3 Feb 2024 04:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lHq6FZvS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F45H/FaM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451B2134B6;
-	Sat,  3 Feb 2024 04:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FB81CAA0;
+	Sat,  3 Feb 2024 04:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933732; cv=none; b=NaEYnnScS43PQr+q0iDsds7BsulJ1rAuPLhpwc+/O1NLl0iVTdE/zm0Ib2wOuFPdA+FWX/c1EenESK6fmskrD4UEzOZGzWnycNU/hIbMWK+KHsM7f+m230kJS3adQd/+yH4xgThBk2iunF2XbmrLOON6deShSGRyedw3GEF7G1o=
+	t=1706933525; cv=none; b=ne6GRgGDQsQYpy/gpdhI7Q4OwtzDkT81sqMIhO0JTkMjHb/v5fGM4zJ7O2tKf/Jf8Z7bwdoVfx78xyYR7u1fd4SB38YjG+X5M4GtvG/q48DiC+j4LoTbCpeozY1O+x5+8S/w6c+H1+J9mSqNXD+mTZ66pH8dsWjWVdKY/xXoeLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933732; c=relaxed/simple;
-	bh=KUgWj+ZlNVw+VaAKADB09GMsqXEP8HHHSysLTYiMTe0=;
+	s=arc-20240116; t=1706933525; c=relaxed/simple;
+	bh=eDI1aOAZs5IJCGJAEW6A6jdfTtrd/+liDEabpjDgo0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V8rGWt59lwGprQN5HUKtvXETGJuNqcQvjo3OQVVhZtcoDGUvlKTfLxXWsNjq3DQBmi/MkG6Rf2y3HbicvgqpLnZEwPmV/0VZzzTDTcgsONocsjDs27hOZny+0lOsLM7VmAGyyoI6K7Byv030b/4DvyCL+1wsQmt8lnidoCCm7d4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lHq6FZvS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8FCC433F1;
-	Sat,  3 Feb 2024 04:15:32 +0000 (UTC)
+	 MIME-Version; b=SGBn7sbR/LhhJ4L1fLWSDOyQh3JQ3IMuq4JwLlZGuyxocu1vGGNfcw8G55Jr7HqlRqZk7kC4N6xKTHN8Zm51/KjLJWMdPD8gTHAg78GgwvbpSA/g2ZLtcPx85kkSFSm2CqdGwLreSxv8BkXcBLtb4FZV/autKigdy82Sp1nn/G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F45H/FaM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE91C433F1;
+	Sat,  3 Feb 2024 04:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933732;
-	bh=KUgWj+ZlNVw+VaAKADB09GMsqXEP8HHHSysLTYiMTe0=;
+	s=korg; t=1706933525;
+	bh=eDI1aOAZs5IJCGJAEW6A6jdfTtrd/+liDEabpjDgo0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lHq6FZvSgGutP04F1jrgjHHmCA1oBd4B1r94OXi99QfnNcncEd4JLyj8N33sbREWn
-	 oIW1aVlkD7UTSdFQZYMZFHwk0AMD9tuRl7UmGftlCsMP+/Xhv5LP/MqbblvE+0o0J+
-	 ALGCRZGebPnRfAHN5T8CECkh/Tif4PfrqrydBDuU=
+	b=F45H/FaMEyt9NOsgt8RkdOMje/e0LgGNCBFHBvhO/sbElUpf5t4DxRQOM1NCmuKT1
+	 oPh9hgqwJge9BHkmE+ZjMxg++aNgYBj5i921kxfOox1dGAhWu0aG8x3QQvEHiIPDyc
+	 vHMf5hOzEI6hw/kP+vnWX6Dq73USFnaKx+uy76oY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Kees Cook <keescook@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 020/353] PNP: ACPI: fix fortify warning
-Date: Fri,  2 Feb 2024 20:02:18 -0800
-Message-ID: <20240203035404.382464738@linuxfoundation.org>
+	Edward Adam Davis <eadavis@qq.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+553d90297e6d2f50dbc7@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 042/322] jfs: fix array-index-out-of-bounds in diNewExt
+Date: Fri,  2 Feb 2024 20:02:19 -0800
+Message-ID: <20240203035400.452394231@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit ba3f5058db437d919f8468db50483dd9028ff688 ]
+[ Upstream commit 49f9637aafa6e63ba686c13cb8549bf5e6920402 ]
 
-When compiling with gcc version 14.0.0 20231126 (experimental)
-and CONFIG_FORTIFY_SOURCE=y, I've noticed the following:
+[Syz report]
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_imap.c:2360:2
+index -878706688 is out of range for type 'struct iagctl[128]'
+CPU: 1 PID: 5065 Comm: syz-executor282 Not tainted 6.7.0-rc4-syzkaller-00009-gbee0e7762ad2 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:217 [inline]
+ __ubsan_handle_out_of_bounds+0x11c/0x150 lib/ubsan.c:348
+ diNewExt+0x3cf3/0x4000 fs/jfs/jfs_imap.c:2360
+ diAllocExt fs/jfs/jfs_imap.c:1949 [inline]
+ diAllocAG+0xbe8/0x1e50 fs/jfs/jfs_imap.c:1666
+ diAlloc+0x1d3/0x1760 fs/jfs/jfs_imap.c:1587
+ ialloc+0x8f/0x900 fs/jfs/jfs_inode.c:56
+ jfs_mkdir+0x1c5/0xb90 fs/jfs/namei.c:225
+ vfs_mkdir+0x2f1/0x4b0 fs/namei.c:4106
+ do_mkdirat+0x264/0x3a0 fs/namei.c:4129
+ __do_sys_mkdir fs/namei.c:4149 [inline]
+ __se_sys_mkdir fs/namei.c:4147 [inline]
+ __x64_sys_mkdir+0x6e/0x80 fs/namei.c:4147
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x45/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+RIP: 0033:0x7fcb7e6a0b57
+Code: ff ff 77 07 31 c0 c3 0f 1f 40 00 48 c7 c2 b8 ff ff ff f7 d8 64 89 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 b8 53 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffd83023038 EFLAGS: 00000286 ORIG_RAX: 0000000000000053
+RAX: ffffffffffffffda RBX: 00000000ffffffff RCX: 00007fcb7e6a0b57
+RDX: 00000000000a1020 RSI: 00000000000001ff RDI: 0000000020000140
+RBP: 0000000020000140 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000286 R12: 00007ffd830230d0
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
 
-In file included from ./include/linux/string.h:295,
-                 from ./include/linux/bitmap.h:12,
-                 from ./include/linux/cpumask.h:12,
-                 from ./arch/x86/include/asm/paravirt.h:17,
-                 from ./arch/x86/include/asm/cpuid.h:62,
-                 from ./arch/x86/include/asm/processor.h:19,
-                 from ./arch/x86/include/asm/cpufeature.h:5,
-                 from ./arch/x86/include/asm/thread_info.h:53,
-                 from ./include/linux/thread_info.h:60,
-                 from ./arch/x86/include/asm/preempt.h:9,
-                 from ./include/linux/preempt.h:79,
-                 from ./include/linux/spinlock.h:56,
-                 from ./include/linux/mmzone.h:8,
-                 from ./include/linux/gfp.h:7,
-                 from ./include/linux/slab.h:16,
-                 from ./include/linux/resource_ext.h:11,
-                 from ./include/linux/acpi.h:13,
-                 from drivers/pnp/pnpacpi/rsparser.c:11:
-In function 'fortify_memcpy_chk',
-    inlined from 'pnpacpi_parse_allocated_vendor' at drivers/pnp/pnpacpi/rsparser.c:158:3,
-    inlined from 'pnpacpi_allocated_resource' at drivers/pnp/pnpacpi/rsparser.c:249:3:
-./include/linux/fortify-string.h:588:25: warning: call to '__read_overflow2_field'
-declared with attribute warning: detected read beyond size of field (2nd parameter);
-maybe use struct_group()? [-Wattribute-warning]
-  588 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[Analysis]
+When the agstart is too large, it can cause agno overflow.
 
-According to the comments in include/linux/fortify-string.h, 'memcpy()',
-'memmove()' and 'memset()' must not be used beyond individual struct
-members to ensure that the compiler can enforce protection against
-buffer overflows, and, IIUC, this also applies to partial copies from
-the particular member ('vendor->byte_data' in this case). So it should
-be better (and safer) to do both copies at once (and 'byte_data' of
-'struct acpi_resource_vendor_typed' seems to be a good candidate for
-'__counted_by(byte_length)' as well).
+[Fix]
+After obtaining agno, if the value is invalid, exit the subsequent process.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-and-tested-by: syzbot+553d90297e6d2f50dbc7@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+
+Modified the test from agno > MAXAG to agno >= MAXAG based on linux-next
+report by kernel test robot (Dan Carpenter).
+
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pnp/pnpacpi/rsparser.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/jfs/jfs_imap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pnp/pnpacpi/rsparser.c b/drivers/pnp/pnpacpi/rsparser.c
-index 4f05f610391b..c02ce0834c2c 100644
---- a/drivers/pnp/pnpacpi/rsparser.c
-+++ b/drivers/pnp/pnpacpi/rsparser.c
-@@ -151,13 +151,13 @@ static int vendor_resource_matches(struct pnp_dev *dev,
- static void pnpacpi_parse_allocated_vendor(struct pnp_dev *dev,
- 				    struct acpi_resource_vendor_typed *vendor)
- {
--	if (vendor_resource_matches(dev, vendor, &hp_ccsr_uuid, 16)) {
--		u64 start, length;
-+	struct { u64 start, length; } range;
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index 1b267eec3f36..eeedf606cf9d 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -2179,6 +2179,9 @@ static int diNewExt(struct inomap * imap, struct iag * iagp, int extno)
+ 	/* get the ag and iag numbers for this iag.
+ 	 */
+ 	agno = BLKTOAG(le64_to_cpu(iagp->agstart), sbi);
++	if (agno >= MAXAG || agno < 0)
++		return -EIO;
++
+ 	iagno = le32_to_cpu(iagp->iagnum);
  
--		memcpy(&start, vendor->byte_data, sizeof(start));
--		memcpy(&length, vendor->byte_data + 8, sizeof(length));
--
--		pnp_add_mem_resource(dev, start, start + length - 1, 0);
-+	if (vendor_resource_matches(dev, vendor, &hp_ccsr_uuid,
-+				    sizeof(range))) {
-+		memcpy(&range, vendor->byte_data, sizeof(range));
-+		pnp_add_mem_resource(dev, range.start, range.start +
-+				     range.length - 1, 0);
- 	}
- }
- 
+ 	/* check if this is the last free extent within the
 -- 
 2.43.0
 
