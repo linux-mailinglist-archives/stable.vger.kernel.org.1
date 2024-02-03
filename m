@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-18378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A0384827D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:26:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 076CF848164
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:18:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 643DE2823DB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:26:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AD6B1F23E6A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D85F1BC26;
-	Sat,  3 Feb 2024 04:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F82E28E3E;
+	Sat,  3 Feb 2024 04:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omzlb9Ut"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5iT0Os/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B56910A22;
-	Sat,  3 Feb 2024 04:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C124171CE;
+	Sat,  3 Feb 2024 04:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933755; cv=none; b=HsuYARRVsW73wuvMbow9hkhUi6X0Ibm4t0kzgS3u4ev1XenAfH2pmLU1cvjDlVt60ykl8O8zmOA2V2xb+bJPlwm1yNJssZrnvSKZkbX4/YoK/nrP4PggQ08SrWtgKUqMcTx5a4DalJtL43zCSTL6clZHnJFW9ZOx5XBH4uRK8LU=
+	t=1706933549; cv=none; b=QqXROEGhDWctZmnok495dWxe7KLT9X4qEQUIqwzoTmuh2E2ufaWGuyqAidotl8GIjLpcKLn5kek24772deWOM0JdUPNvmebgHp3QIJ67u/6UYx6xzI+oWiYs/bzxbGoe+Syh/ty5vnfGEfbuxxiqr9Op9GnQERqsLUMLbx6kdmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933755; c=relaxed/simple;
-	bh=qlAvQmdFNhqHnrPBtiQeTD7eJHMJ6HHctv66QVKAsqs=;
+	s=arc-20240116; t=1706933549; c=relaxed/simple;
+	bh=APl8qYOIemWxiBPsYYqx2Wn551Q0bZ0GDs27jpqVjQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QfsjMjrPiAJCnLQKB+4toXrXcoXNhvOFaYofWEHGnD9EHmUA6XHN+CK9hTFf8MUiXMZT2W6hjs936gyEuasu1KDSKLRT8kQGA8WSZB6OxPjh+kjgPeRZ9AzfRhVKUTtuklx6vqYrANDxlE/mfaUa61BvNA0lRP9fuaMAODDMHEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omzlb9Ut; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 767C7C433C7;
-	Sat,  3 Feb 2024 04:15:54 +0000 (UTC)
+	 MIME-Version; b=cRljVh0bPPoGs+hyON2rN2LNzIxy18aio69VbJRG70jsDpZFT9+EW9klr1BTpuTDPm6h5DtRjE3j7gpiYcRJxs7mbeLJB+cu0OWp4a6Gmcqua1gaIlgq9zH1fXQIEkXdIjw/d6zP8UU7PbQP+Wd1Q53Bpw+YI9Fq2J9hkmxh8TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5iT0Os/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 062DFC433F1;
+	Sat,  3 Feb 2024 04:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933754;
-	bh=qlAvQmdFNhqHnrPBtiQeTD7eJHMJ6HHctv66QVKAsqs=;
+	s=korg; t=1706933549;
+	bh=APl8qYOIemWxiBPsYYqx2Wn551Q0bZ0GDs27jpqVjQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=omzlb9UtnbjF5ovPOxyvxlVLl0TVKRSkVONGxwlqa9Z0sJjnqpMmWgQluaVGMrbN8
-	 foWOV6SW4+q+7v6UmU8ZZdRgvN4Cz/Izz+NEKb1vFmxXCdzjqFxvhkzmSWEg18WWWE
-	 te/FYcT5TTRshDc3KXwupXUa5M4U7p/lObZQyJOw=
+	b=P5iT0Os/XoUbvsde7x6O1REBW27GQ9UvB+7V3ri8HomoMniqU1Foz71g4CC2IZM+N
+	 +OypHIxqAn3YSRwp9aPg3e1KfunJFNGzqq4IBadqLeaAjBRvpYeWBBw/RKQY4iED4Z
+	 aVODfpbu7MR6ZpAIs0/z80xZedQWxj658Ui1oeTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Tanmay Shah <tanmay.shah@xilinx.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Michal Simek <michal.simek@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 050/353] s390/ptrace: handle setting of fpc register correctly
+Subject: [PATCH 6.6 071/322] soc: xilinx: fix unhandled SGI warning message
 Date: Fri,  2 Feb 2024 20:02:48 -0800
-Message-ID: <20240203035405.387337871@linuxfoundation.org>
+Message-ID: <20240203035401.455005704@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Tanmay Shah <tanmay.shah@xilinx.com>
 
-[ Upstream commit 8b13601d19c541158a6e18b278c00ba69ae37829 ]
+[ Upstream commit 9c6724abf969251af53cdae525ad8100ec78d3c2 ]
 
-If the content of the floating point control (fpc) register of a traced
-process is modified with the ptrace interface the new value is tested for
-validity by temporarily loading it into the fpc register.
+Xen broadcasts SGI to each VM when multiple VMs run on Xen hypervisor. In
+such case spurious SGI is expected if one event is registered by one VM and
+not registered by another VM. We let users know that Unhandled SGI is not
+error and expected if kernel is running on Xen hypervisor.
 
-This may lead to corruption of the fpc register of the tracing process:
-if an interrupt happens while the value is temporarily loaded into the
-fpc register, and within interrupt context floating point or vector
-registers are used, the current fp/vx registers are saved with
-save_fpu_regs() assuming they belong to user space and will be loaded into
-fp/vx registers when returning to user space.
-
-test_fp_ctl() restores the original user space fpc register value, however
-it will be discarded, when returning to user space.
-
-In result the tracer will incorrectly continue to run with the value that
-was supposed to be used for the traced process.
-
-Fix this by saving fpu register contents with save_fpu_regs() before using
-test_fp_ctl().
-
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Tanmay Shah <tanmay.shah@xilinx.com>
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Link: https://lore.kernel.org/r/1698431039-2734260-1-git-send-email-radhey.shyam.pandey@amd.com
+Signed-off-by: Michal Simek <michal.simek@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/ptrace.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/soc/xilinx/xlnx_event_manager.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/ptrace.c b/arch/s390/kernel/ptrace.c
-index 046403471c5d..c7ed302a6b59 100644
---- a/arch/s390/kernel/ptrace.c
-+++ b/arch/s390/kernel/ptrace.c
-@@ -392,6 +392,7 @@ static int __poke_user(struct task_struct *child, addr_t addr, addr_t data)
- 		/*
- 		 * floating point control reg. is in the thread structure
- 		 */
-+		save_fpu_regs();
- 		if ((unsigned int) data != 0 ||
- 		    test_fp_ctl(data >> (BITS_PER_LONG - 32)))
- 			return -EINVAL;
-@@ -748,6 +749,7 @@ static int __poke_user_compat(struct task_struct *child,
- 		/*
- 		 * floating point control reg. is in the thread structure
- 		 */
-+		save_fpu_regs();
- 		if (test_fp_ctl(tmp))
- 			return -EINVAL;
- 		child->thread.fpu.fpc = data;
-@@ -911,9 +913,7 @@ static int s390_fpregs_set(struct task_struct *target,
- 	int rc = 0;
- 	freg_t fprs[__NUM_FPRS];
+diff --git a/drivers/soc/xilinx/xlnx_event_manager.c b/drivers/soc/xilinx/xlnx_event_manager.c
+index edfb1d5c10c6..042553abe1bf 100644
+--- a/drivers/soc/xilinx/xlnx_event_manager.c
++++ b/drivers/soc/xilinx/xlnx_event_manager.c
+@@ -477,7 +477,7 @@ static void xlnx_call_notify_cb_handler(const u32 *payload)
+ 		}
+ 	}
+ 	if (!is_callback_found)
+-		pr_warn("Didn't find any registered callback for 0x%x 0x%x\n",
++		pr_warn("Unhandled SGI node 0x%x event 0x%x. Expected with Xen hypervisor\n",
+ 			payload[1], payload[2]);
+ }
  
--	if (target == current)
--		save_fpu_regs();
--
-+	save_fpu_regs();
- 	if (MACHINE_HAS_VX)
- 		convert_vx_to_fp(fprs, target->thread.fpu.vxrs);
- 	else
 -- 
 2.43.0
 
