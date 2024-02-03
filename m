@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-18418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 432B48482A5
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 127FB848020
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:08:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00181283A9C
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F95F1F2BA5C
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26124CB45;
-	Sat,  3 Feb 2024 04:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8B3F9D7;
+	Sat,  3 Feb 2024 04:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIf7Xqzo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="puZKa1ZO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6651BDCF;
-	Sat,  3 Feb 2024 04:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977ECF9E4;
+	Sat,  3 Feb 2024 04:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933784; cv=none; b=moEmIOQQLGJBzk7pwoy2VU/ygfpze0xot3RrVW0QIdNLM9g05nWp1bbHdwUlhqkqh8AvQXkXqXkOTZuX6M8FLsXC2Cps9kcpThq1GOXcwE9mXzZhHC1FLW3LrmeQpU062vI9hV80rujaPN7hjDEAUzRfAJJwVQEmw2I4Q56J0XI=
+	t=1706933317; cv=none; b=DBOmotHXaFTgfbwfydsjEccC4PlNmxOHzYj3xnqxUClN31K8xzB2Py+2TAvdb5i5e0VZyhNh56k4aX4IhOR+c+q43tegdH/nulNG95ctP03rVhUY4SbZlwtmcI2dZKH4EuVhRYCGcwOrrXmnLcbMVcJ4bWTV9o6pAQr/U4AhJhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933784; c=relaxed/simple;
-	bh=8uUjoXu0t10EoxGZlPRkVGy98ZAMV5jwTh6bw50QXWY=;
+	s=arc-20240116; t=1706933317; c=relaxed/simple;
+	bh=r86nZ1LGZCy2S87YeEgftaiWmxSdEzQN+OuQskVDMjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EsAJ16PZdCiV20qqmNT86DqCXMBTRf8UL4BvVhhCj2NMIZs0IvQQdRpNz2q3/6ujokWP8XchnWTzpaNnrDfi4Ke8hRnLjx1EbLP7R5Hnebfyc9Me75j98kDFpxUDv1ofnkcJf/woI59lwS0a3mL1EoWI24JgMhd0ObgxfMOORnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIf7Xqzo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65434C43394;
-	Sat,  3 Feb 2024 04:16:24 +0000 (UTC)
+	 MIME-Version; b=R8chzsxSy1lJWc/g61piwf0E+MzK7zweuYoN7bSIBdsFWhjEaW9+iwCDBpvxEzGATivmlfW/pPqKiDLY05eBc/Rbfaja5A5nsh0WEfF3i7YHp8QRmGdVGU+mUMF4p2U2yEGxJ4bXYmmWkl/s239GtjevJreowDq3cMWowkAN+QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=puZKa1ZO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7C4C43394;
+	Sat,  3 Feb 2024 04:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933784;
-	bh=8uUjoXu0t10EoxGZlPRkVGy98ZAMV5jwTh6bw50QXWY=;
+	s=korg; t=1706933317;
+	bh=r86nZ1LGZCy2S87YeEgftaiWmxSdEzQN+OuQskVDMjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UIf7Xqzo4hU0SQ9PvTHRJDj6czjCqJyCQhm/TigDgSiKaI5Q0ZUFEzEAglKH0F/cY
-	 E77MCv4TXAxgMF+Z8756CKn301lueEtpqo0zt6nLHAcftWxie+yLJBG291VFDNzQe3
-	 jCgjJDTE0cH7pGqrBpMDx7MQmblkUFvTjdszs7cc=
+	b=puZKa1ZO/fF2FtkBhqJ68gKeIcv2c2VGzzfXuG6dBJ/663AgeIGjcDzUXhPpLTnTP
+	 004m6goea7mTHvVChoPAFHWgHWe7Iywjm3ZmxXter2ifopFdLmeggEiR793Wyz4Mhy
+	 ATTMAMtjodOtki8ybR3eF8yISTAW481X6ftikkC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Naveen N Rao <naveen@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 065/353] selftests/bpf: fix RELEASE=1 build for tc_opts
+Subject: [PATCH 6.1 010/219] powerpc/lib: Validate size for vector operations
 Date: Fri,  2 Feb 2024 20:03:03 -0800
-Message-ID: <20240203035405.868263484@linuxfoundation.org>
+Message-ID: <20240203035318.280367435@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Naveen N Rao <naveen@kernel.org>
 
-[ Upstream commit 2b62aa59d02ed281fa4fc218df3ca91b773e1e62 ]
+[ Upstream commit 8f9abaa6d7de0a70fc68acaedce290c1f96e2e59 ]
 
-Compiler complains about malloc(). We also don't need to dynamically
-allocate anything, so make the life easier by using statically sized
-buffer.
+Some of the fp/vmx code in sstep.c assume a certain maximum size for the
+instructions being emulated. The size of those operations however is
+determined separately in analyse_instr().
 
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20231102033759.2541186-2-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Add a check to validate the assumption on the maximum size of the
+operations, so as to prevent any unintended kernel stack corruption.
+
+Signed-off-by: Naveen N Rao <naveen@kernel.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Build-tested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231123071705.397625-1-naveen@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/tc_opts.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ arch/powerpc/lib/sstep.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/tc_opts.c b/tools/testing/selftests/bpf/prog_tests/tc_opts.c
-index 51883ccb8020..196abf223465 100644
---- a/tools/testing/selftests/bpf/prog_tests/tc_opts.c
-+++ b/tools/testing/selftests/bpf/prog_tests/tc_opts.c
-@@ -2387,12 +2387,9 @@ static int generate_dummy_prog(void)
- 	const size_t prog_insn_cnt = sizeof(prog_insns) / sizeof(struct bpf_insn);
- 	LIBBPF_OPTS(bpf_prog_load_opts, opts);
- 	const size_t log_buf_sz = 256;
--	char *log_buf;
-+	char log_buf[log_buf_sz];
- 	int fd = -1;
+diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
+index 398b5694aeb7..ec30af8eadb7 100644
+--- a/arch/powerpc/lib/sstep.c
++++ b/arch/powerpc/lib/sstep.c
+@@ -586,6 +586,8 @@ static int do_fp_load(struct instruction_op *op, unsigned long ea,
+ 	} u;
  
--	log_buf = malloc(log_buf_sz);
--	if (!ASSERT_OK_PTR(log_buf, "log_buf_alloc"))
--		return fd;
- 	opts.log_buf = log_buf;
- 	opts.log_size = log_buf_sz;
+ 	nb = GETSIZE(op->type);
++	if (nb > sizeof(u))
++		return -EINVAL;
+ 	if (!address_ok(regs, ea, nb))
+ 		return -EFAULT;
+ 	rn = op->reg;
+@@ -636,6 +638,8 @@ static int do_fp_store(struct instruction_op *op, unsigned long ea,
+ 	} u;
  
-@@ -2402,7 +2399,6 @@ static int generate_dummy_prog(void)
- 			   prog_insns, prog_insn_cnt, &opts);
- 	ASSERT_STREQ(log_buf, "", "log_0");
- 	ASSERT_GE(fd, 0, "prog_fd");
--	free(log_buf);
- 	return fd;
- }
+ 	nb = GETSIZE(op->type);
++	if (nb > sizeof(u))
++		return -EINVAL;
+ 	if (!address_ok(regs, ea, nb))
+ 		return -EFAULT;
+ 	rn = op->reg;
+@@ -680,6 +684,9 @@ static nokprobe_inline int do_vec_load(int rn, unsigned long ea,
+ 		u8 b[sizeof(__vector128)];
+ 	} u = {};
  
++	if (size > sizeof(u))
++		return -EINVAL;
++
+ 	if (!address_ok(regs, ea & ~0xfUL, 16))
+ 		return -EFAULT;
+ 	/* align to multiple of size */
+@@ -707,6 +714,9 @@ static nokprobe_inline int do_vec_store(int rn, unsigned long ea,
+ 		u8 b[sizeof(__vector128)];
+ 	} u;
+ 
++	if (size > sizeof(u))
++		return -EINVAL;
++
+ 	if (!address_ok(regs, ea & ~0xfUL, 16))
+ 		return -EFAULT;
+ 	/* align to multiple of size */
 -- 
 2.43.0
 
