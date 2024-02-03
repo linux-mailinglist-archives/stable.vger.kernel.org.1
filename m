@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-18575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD3AF848344
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:31:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FEA8480E1
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2A231C21068
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 755B61F23CCE
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53F5551C50;
-	Sat,  3 Feb 2024 04:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774E21A58E;
+	Sat,  3 Feb 2024 04:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBSBRGhd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKlnOjMy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D17171A4;
-	Sat,  3 Feb 2024 04:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3582810A1C;
+	Sat,  3 Feb 2024 04:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933900; cv=none; b=n7/w24qDHm1EqhhWQF06XfMM6jDhw8abkYF3geqltCBTp1SIIkdduYl+SIBJeZV4TMxi1ogN3K8dBOMVRWMUcd/n/YRm8XOkYYokwzh/3V3NUeHP1bw7Fy7Zq2oGk3RrIOYgtX4iClF8TVa/FmdJofOqiT1kRMq3PZhE/mFxhZ4=
+	t=1706933457; cv=none; b=dpIlsOBua6AyW7mq6E2x4CEcedQNa5jXsjvv2V7+86U6rfNk1HkG6aFREAXFUKJG/+qYJEfiAGZ7uyjEME3aD/18fRUTz5OLPOM7ap5AEt/WrMqWJycLLN95sb20ClwM1nkEFNf1HIAtsSGRDfqYcDr11PHUSjjI3Q5+G4vmYaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933900; c=relaxed/simple;
-	bh=thaCHTelpHHuzAvNsw2Hb21jYKCOUkzhZUJbHex23zU=;
+	s=arc-20240116; t=1706933457; c=relaxed/simple;
+	bh=4YaUNYBhswLv8y82K7vfHQ/XI8egVMjer8OGZJS/eI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PsuEXjuQkE2CzAh6iuqjWtUqIKHlIbNrEJsblvHeFvnR+5poETk8ayYrHq4pKvR8vglw3srXq7g5KUTpzBSpkrp8ns4NLnOa/8iNgg9KzOBDmS+p/6LXXI6V3AWLPR15WeNXvZUlCKSCqESUsk0hcH3Ov8DG0T4CbriJ2Nhb7rE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mBSBRGhd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEBAC433F1;
-	Sat,  3 Feb 2024 04:18:19 +0000 (UTC)
+	 MIME-Version; b=D1UUI6PfEXzZsPmdbFkI028sEJH1uKwGJg6+SwNMZ2jJElr1NnD+WlrYhaJkcxN5KZeA/A3atjzWLB+q2mqRfKWTokahgnFwD79fioSIL5bawra6dyQHknFmW0ICWTWG+EV4Gj5WJ0gAHo1iY3GEwpJVjfwIMkU9pzhRvvzVFSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GKlnOjMy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F31A4C433A6;
+	Sat,  3 Feb 2024 04:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933899;
-	bh=thaCHTelpHHuzAvNsw2Hb21jYKCOUkzhZUJbHex23zU=;
+	s=korg; t=1706933457;
+	bh=4YaUNYBhswLv8y82K7vfHQ/XI8egVMjer8OGZJS/eI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBSBRGhdGbDv+ywOoyLw+A64DCzb2hDDWmfHfTeBGAOp1d/KHj1zwf1mBgWBlg1fh
-	 K3OyR7RQ8EG1InP5DuLKN93Hs7uYaOHDCSZb5u+exBpEfNTwTUZ5n9d90Grk7gR7KL
-	 /syox1BErE+rHR459NHNc6MROEMdDORmvhP08iX8=
+	b=GKlnOjMy6Dd/UAwpBIxayHG8MAMffXXr4S9q1N2ABwJd2nYQndcRqmsazjP6vM47B
+	 b4S3jiZCsT/PA03x7hDZ3Oz13TZTqfIslaaa6CtoF3+xCTsa1umyopT4hDNIM8ZR0t
+	 /ToANKX4OIJsPj8pPITIC+1KByPbMfaAlVlRoB7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 247/353] xen/gntdev: Fix the abuse of underlying struct page in DMA-buf import
-Date: Fri,  2 Feb 2024 20:06:05 -0800
-Message-ID: <20240203035411.534658060@linuxfoundation.org>
+Subject: [PATCH 6.1 193/219] net: lan966x: Fix port configuration when using SGMII interface
+Date: Fri,  2 Feb 2024 20:06:06 -0800
+Message-ID: <20240203035344.062555238@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,153 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 2d2db7d40254d5fb53b11ebd703cd1ed0c5de7a1 ]
+[ Upstream commit 62b4248105353e7d1debd30ca5c57ec5e5f28e35 ]
 
-DO NOT access the underlying struct page of an sg table exported
-by DMA-buf in dmabuf_imp_to_refs(), this is not allowed.
-Please see drivers/dma-buf/dma-buf.c:mangle_sg_table() for details.
+In case the interface between the MAC and the PHY is SGMII, then the bit
+GIGA_MODE on the MAC side needs to be set regardless of the speed at
+which it is running.
 
-Fortunately, here (for special Xen device) we can avoid using
-pages and calculate gfns directly from dma addresses provided by
-the sg table.
-
-Suggested-by: Daniel Vetter <daniel@ffwll.ch>
-Signed-off-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Acked-by: Daniel Vetter <daniel@ffwll.ch>
-Link: https://lore.kernel.org/r/20240107103426.2038075-1-olekstysh@gmail.com
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: d28d6d2e37d1 ("net: lan966x: add port module support")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/gntdev-dmabuf.c | 50 ++++++++++++++++++-------------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
+ drivers/net/ethernet/microchip/lan966x/lan966x_port.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/xen/gntdev-dmabuf.c b/drivers/xen/gntdev-dmabuf.c
-index 4440e626b797..42adc2c1e06b 100644
---- a/drivers/xen/gntdev-dmabuf.c
-+++ b/drivers/xen/gntdev-dmabuf.c
-@@ -11,6 +11,7 @@
- #include <linux/kernel.h>
- #include <linux/errno.h>
- #include <linux/dma-buf.h>
-+#include <linux/dma-direct.h>
- #include <linux/slab.h>
- #include <linux/types.h>
- #include <linux/uaccess.h>
-@@ -50,7 +51,7 @@ struct gntdev_dmabuf {
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_port.c b/drivers/net/ethernet/microchip/lan966x/lan966x_port.c
+index 0050fcb988b7..8cc5172833a9 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_port.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_port.c
+@@ -168,9 +168,10 @@ static void lan966x_port_link_up(struct lan966x_port *port)
+ 	lan966x_taprio_speed_set(port, config->speed);
  
- 	/* Number of pages this buffer has. */
- 	int nr_pages;
--	/* Pages of this buffer. */
-+	/* Pages of this buffer (only for dma-buf export). */
- 	struct page **pages;
- };
+ 	/* Also the GIGA_MODE_ENA(1) needs to be set regardless of the
+-	 * port speed for QSGMII ports.
++	 * port speed for QSGMII or SGMII ports.
+ 	 */
+-	if (phy_interface_num_ports(config->portmode) == 4)
++	if (phy_interface_num_ports(config->portmode) == 4 ||
++	    config->portmode == PHY_INTERFACE_MODE_SGMII)
+ 		mode = DEV_MAC_MODE_CFG_GIGA_MODE_ENA_SET(1);
  
-@@ -484,7 +485,7 @@ static int dmabuf_exp_from_refs(struct gntdev_priv *priv, int flags,
- /* DMA buffer import support. */
- 
- static int
--dmabuf_imp_grant_foreign_access(struct page **pages, u32 *refs,
-+dmabuf_imp_grant_foreign_access(unsigned long *gfns, u32 *refs,
- 				int count, int domid)
- {
- 	grant_ref_t priv_gref_head;
-@@ -507,7 +508,7 @@ dmabuf_imp_grant_foreign_access(struct page **pages, u32 *refs,
- 		}
- 
- 		gnttab_grant_foreign_access_ref(cur_ref, domid,
--						xen_page_to_gfn(pages[i]), 0);
-+						gfns[i], 0);
- 		refs[i] = cur_ref;
- 	}
- 
-@@ -529,7 +530,6 @@ static void dmabuf_imp_end_foreign_access(u32 *refs, int count)
- 
- static void dmabuf_imp_free_storage(struct gntdev_dmabuf *gntdev_dmabuf)
- {
--	kfree(gntdev_dmabuf->pages);
- 	kfree(gntdev_dmabuf->u.imp.refs);
- 	kfree(gntdev_dmabuf);
- }
-@@ -549,12 +549,6 @@ static struct gntdev_dmabuf *dmabuf_imp_alloc_storage(int count)
- 	if (!gntdev_dmabuf->u.imp.refs)
- 		goto fail;
- 
--	gntdev_dmabuf->pages = kcalloc(count,
--				       sizeof(gntdev_dmabuf->pages[0]),
--				       GFP_KERNEL);
--	if (!gntdev_dmabuf->pages)
--		goto fail;
--
- 	gntdev_dmabuf->nr_pages = count;
- 
- 	for (i = 0; i < count; i++)
-@@ -576,7 +570,8 @@ dmabuf_imp_to_refs(struct gntdev_dmabuf_priv *priv, struct device *dev,
- 	struct dma_buf *dma_buf;
- 	struct dma_buf_attachment *attach;
- 	struct sg_table *sgt;
--	struct sg_page_iter sg_iter;
-+	struct sg_dma_page_iter sg_iter;
-+	unsigned long *gfns;
- 	int i;
- 
- 	dma_buf = dma_buf_get(fd);
-@@ -624,26 +619,31 @@ dmabuf_imp_to_refs(struct gntdev_dmabuf_priv *priv, struct device *dev,
- 
- 	gntdev_dmabuf->u.imp.sgt = sgt;
- 
--	/* Now convert sgt to array of pages and check for page validity. */
-+	gfns = kcalloc(count, sizeof(*gfns), GFP_KERNEL);
-+	if (!gfns) {
-+		ret = ERR_PTR(-ENOMEM);
-+		goto fail_unmap;
-+	}
-+
-+	/*
-+	 * Now convert sgt to array of gfns without accessing underlying pages.
-+	 * It is not allowed to access the underlying struct page of an sg table
-+	 * exported by DMA-buf, but since we deal with special Xen dma device here
-+	 * (not a normal physical one) look at the dma addresses in the sg table
-+	 * and then calculate gfns directly from them.
-+	 */
- 	i = 0;
--	for_each_sgtable_page(sgt, &sg_iter, 0) {
--		struct page *page = sg_page_iter_page(&sg_iter);
--		/*
--		 * Check if page is valid: this can happen if we are given
--		 * a page from VRAM or other resources which are not backed
--		 * by a struct page.
--		 */
--		if (!pfn_valid(page_to_pfn(page))) {
--			ret = ERR_PTR(-EINVAL);
--			goto fail_unmap;
--		}
-+	for_each_sgtable_dma_page(sgt, &sg_iter, 0) {
-+		dma_addr_t addr = sg_page_iter_dma_address(&sg_iter);
-+		unsigned long pfn = bfn_to_pfn(XEN_PFN_DOWN(dma_to_phys(dev, addr)));
- 
--		gntdev_dmabuf->pages[i++] = page;
-+		gfns[i++] = pfn_to_gfn(pfn);
- 	}
- 
--	ret = ERR_PTR(dmabuf_imp_grant_foreign_access(gntdev_dmabuf->pages,
-+	ret = ERR_PTR(dmabuf_imp_grant_foreign_access(gfns,
- 						      gntdev_dmabuf->u.imp.refs,
- 						      count, domid));
-+	kfree(gfns);
- 	if (IS_ERR(ret))
- 		goto fail_end_access;
- 
+ 	lan_wr(config->duplex | mode,
 -- 
 2.43.0
 
