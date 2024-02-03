@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F928481B4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:20:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE7A84809A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12B252822AC
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:20:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 635061F27BC7
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC6E39FFA;
-	Sat,  3 Feb 2024 04:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C9401758C;
+	Sat,  3 Feb 2024 04:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1eChTyc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yBwVnJ2U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B477179BD;
-	Sat,  3 Feb 2024 04:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B371101C1;
+	Sat,  3 Feb 2024 04:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933607; cv=none; b=cI76slFa42IQSUEG9YezUjwOQnh51U3bwBjsHIMqYuQh6/b9SQ+idihmfbRSfQy1P7m/v6EQzNkqomToRLv4d9mNrNsbNHvo32e76NkFX/xMFc5PCuqQdcpIYwkHTMGK3t5tm8/f1iIjvejyhllOIoH0sN/d8bVAIIia+kXbjq8=
+	t=1706933407; cv=none; b=VXNWW8//ZZoycEsBZk3pTGx5zMRj39lyA3em79RlwXqcLtw2YS2KLje0kPTKNiOr/z5oy+GDzxjCrtQCqI6vVCgaBDBUBSOdFomzNfws6pr/2DGJ8GszB/et117THLA+/bbU+Rz5PA1hVgrWSMt09I7Yupi7hiBpPAcwjFFkqZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933607; c=relaxed/simple;
-	bh=AKdH0KDnI9LpUTDGwbMHISsZuuH5Sm4li85S/3H/hAY=;
+	s=arc-20240116; t=1706933407; c=relaxed/simple;
+	bh=tRmvJSLQcnrt/lV2JED7+7fk7TUoVq4tFm/6A+LVpu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a2hf6OaHKnHQb4PxYBGQpF2orYAmGRXGQz2SaWog4HsRzIDY58gm8dFlN1Y5fXwb1/RAK7vGih5YFQQ8myCZHOWZJM98H2Zh+TppiFMtDa3LwqEAF9JlQ68PHaB3oY82JP8iu5pzCMBjWioE/lhOHKtivgx5VIPbVW3KQYWOpac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1eChTyc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37863C43390;
-	Sat,  3 Feb 2024 04:13:27 +0000 (UTC)
+	 MIME-Version; b=HRrGseZrVOB2E9EumuARJGpyF7d0QDxQrqxTXVJ8XktnzUAU+/a1KEci3CgptmLVU2LuB577LG2glOFDekuvOzK/U8H2QDHm/cIf8oKHoMLn5YBf2g9PuY91177bGxbtIs2gNyQiYP3bdc56jo0G0uH9hCFM4maAGB8G2y94dsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yBwVnJ2U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D869FC433C7;
+	Sat,  3 Feb 2024 04:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933607;
-	bh=AKdH0KDnI9LpUTDGwbMHISsZuuH5Sm4li85S/3H/hAY=;
+	s=korg; t=1706933406;
+	bh=tRmvJSLQcnrt/lV2JED7+7fk7TUoVq4tFm/6A+LVpu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z1eChTyc9Wy2f226E3ydAH6xeksXgyyRF6MfxFleny60/vBoXKPFjIfhsAzMgPPoQ
-	 lapuZNdwZIeZCexBzRd20t0DWcaxoRSJuhiGOkLchlP5QLLIqxBDfv+yUnzq7E7VJh
-	 l5GU4XN+3f6SbrYFg4I9aIlFRBfGafZtp5FhvEYo=
+	b=yBwVnJ2UfLVB2821ZVckDzsCAtZDpxTJhp5/kZ2zyWQqu0O7hV7aEZ8sYbQJsF03+
+	 SJc0MRNIXhG6m9JjpQcQKeTPit3ydyVfFJMPFdWdfDV5tDf4Rav99OCD6rvra1/I5y
+	 zPAzSgML//MqlyiwyKA/KRBp00bxj7Q9INaVcb48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Suman Ghosh <sumang@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 177/322] drm/msm/dp: Add DisplayPort controller for SM8650
-Date: Fri,  2 Feb 2024 20:04:34 -0800
-Message-ID: <20240203035404.974794418@linuxfoundation.org>
+Subject: [PATCH 6.1 102/219] octeontx2-af: Fix max NPC MCAM entry check while validating ref_entry
+Date: Fri,  2 Feb 2024 20:04:35 -0800
+Message-ID: <20240203035331.697852887@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Suman Ghosh <sumang@marvell.com>
 
-[ Upstream commit 1b2d98bdd7b7c64265732f5f0dace4c52c9ba8a8 ]
+[ Upstream commit 4ebb1f95e0c3c3e0eec5bb21aa43097580c4b6e4 ]
 
-The Qualcomm SM8650 platform comes with a DisplayPort controller
-with a different base offset than the previous SM8550 SoC,
-add support for this in the DisplayPort driver.
+As of today, the last MCAM entry was not getting allocated because of
+a <= check with the max_bmap count. This patch modifies that and if the
+requested entry is greater than the available entries then set it to the
+max value.
 
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/571132/
-Link: https://lore.kernel.org/r/20231207-topic-sm8650-upstream-dp-v1-2-b762c06965bb@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Suman Ghosh <sumang@marvell.com>
+Link: https://lore.kernel.org/r/20240101145042.419697-1-sumang@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_display.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_display.c b/drivers/gpu/drm/msm/dp/dp_display.c
-index 76f13954015b..eec5768aac72 100644
---- a/drivers/gpu/drm/msm/dp/dp_display.c
-+++ b/drivers/gpu/drm/msm/dp/dp_display.c
-@@ -171,6 +171,11 @@ static const struct msm_dp_desc sm8350_dp_descs[] = {
- 	{}
- };
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+index 0bcf3e559280..3784347b6fd8 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+@@ -2678,18 +2678,17 @@ int rvu_mbox_handler_npc_mcam_alloc_entry(struct rvu *rvu,
+ 	rsp->entry = NPC_MCAM_ENTRY_INVALID;
+ 	rsp->free_count = 0;
  
-+static const struct msm_dp_desc sm8650_dp_descs[] = {
-+	{ .io_start = 0x0af54000, .id = MSM_DP_CONTROLLER_0, .connector_type = DRM_MODE_CONNECTOR_DisplayPort },
-+	{}
-+};
-+
- static const struct of_device_id dp_dt_match[] = {
- 	{ .compatible = "qcom,sc7180-dp", .data = &sc7180_dp_descs },
- 	{ .compatible = "qcom,sc7280-dp", .data = &sc7280_dp_descs },
-@@ -181,6 +186,7 @@ static const struct of_device_id dp_dt_match[] = {
- 	{ .compatible = "qcom,sc8280xp-edp", .data = &sc8280xp_edp_descs },
- 	{ .compatible = "qcom,sdm845-dp", .data = &sc7180_dp_descs },
- 	{ .compatible = "qcom,sm8350-dp", .data = &sm8350_dp_descs },
-+	{ .compatible = "qcom,sm8650-dp", .data = &sm8650_dp_descs },
- 	{}
- };
+-	/* Check if ref_entry is within range */
+-	if (req->priority && req->ref_entry >= mcam->bmap_entries) {
+-		dev_err(rvu->dev, "%s: reference entry %d is out of range\n",
+-			__func__, req->ref_entry);
+-		return NPC_MCAM_INVALID_REQ;
+-	}
++	/* Check if ref_entry is greater that the range
++	 * then set it to max value.
++	 */
++	if (req->ref_entry > mcam->bmap_entries)
++		req->ref_entry = mcam->bmap_entries;
+ 
+ 	/* ref_entry can't be '0' if requested priority is high.
+ 	 * Can't be last entry if requested priority is low.
+ 	 */
+ 	if ((!req->ref_entry && req->priority == NPC_MCAM_HIGHER_PRIO) ||
+-	    ((req->ref_entry == (mcam->bmap_entries - 1)) &&
++	    ((req->ref_entry == mcam->bmap_entries) &&
+ 	     req->priority == NPC_MCAM_LOWER_PRIO))
+ 		return NPC_MCAM_INVALID_REQ;
  
 -- 
 2.43.0
