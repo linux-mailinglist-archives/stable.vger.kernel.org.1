@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527938482B0
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B576384817D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 005171F239B2
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DFDE282816
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64D34D10A;
-	Sat,  3 Feb 2024 04:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385D92BB16;
+	Sat,  3 Feb 2024 04:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIPElXsb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmUMQ4Cl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753571BDE6;
-	Sat,  3 Feb 2024 04:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE3411C83;
+	Sat,  3 Feb 2024 04:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933792; cv=none; b=LPgFi2BrtB3gakkC73eYs/FQ6ZnCykUcDxEDpxkh9TDEjjGpuPvmJPEonLb0/K9ndVicdtLF/7ooMNtyG8mUnbMs99aSeZ0lh2RTnzKHI7ikEYQrF3T9KzW2QHIPXZTZdo7BQZtXL1AfrcR9GQdI+VTdMsMKn0XfuN0FKjLsY0Y=
+	t=1706933568; cv=none; b=QHqrN+g6FRkMTMJesh4tGqAmrPfabueFY/4liAla4U3AeoSbdnLP5YISZZoaq105GXKuR2vqdzHhGqCLOwGwaWUhtcMaYRwFpRWcDGe53TswxDKxgwiGmcTjKnOGQ50g3MiKeJYpsMFZot9r0zPRgbsugmIizshDkDD+CglUYBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933792; c=relaxed/simple;
-	bh=qHPtUKLWPAtmvtFT34mZVsuG4+286JfaA4f/+PsmdWc=;
+	s=arc-20240116; t=1706933568; c=relaxed/simple;
+	bh=5z4X8E5d3qM5BOV/vxsp6RMgZtWJS6+SKPYoUm4ixrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lpZb2ZAlsIEfDESIorM9iuuVXVFekkK6B6KWvFUyVCiQceqsPS808lFIjZ4xLm34q4hrAGOZWpuGSjWiwBPXtbpblfjwbIKlO+icsHFo+q5XuoVkltFJhPD44p118UdlbmzhOGHXxQ+XDBbvdJqSffcy/82WzsfpnwvKWitss2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oIPElXsb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C708C433F1;
-	Sat,  3 Feb 2024 04:16:32 +0000 (UTC)
+	 MIME-Version; b=AUwJ5I6Ke30Q6OJpVkrGHVvh1pzFVgH104M+/GWlxmjCfWnoWFe/vxCMljoHevKS9hWwcmnqfFdDAhmYaD2JAcPtNGiUZcfy3zHxqmkKkAp3sUdAgyXYd7GB8O51JJhqeXzyZfTjasDftgjUnG3uhp+eq2TaiMCmPLxFj7N0njM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmUMQ4Cl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F04C433F1;
+	Sat,  3 Feb 2024 04:12:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933792;
-	bh=qHPtUKLWPAtmvtFT34mZVsuG4+286JfaA4f/+PsmdWc=;
+	s=korg; t=1706933567;
+	bh=5z4X8E5d3qM5BOV/vxsp6RMgZtWJS6+SKPYoUm4ixrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oIPElXsbXLsigU0o4zKfxg+hnzV+RgcotpmHjI8UyKkd9TqwNdMFfUNT0J2QHgv3X
-	 CRM3mnp1cPevgJUI2ckUy+4xCXhnpgzTWaWS2YesrikIft7h0hx6FD7e7pqSqI6SIF
-	 weuYzsd6HE4vB/Pv/jVnNgGHxnBWhYaNEIV3GLN0=
+	b=DmUMQ4CluS2GTB6n9l24dDljTi/7DfN7+lTUycvx2OB6abudRKKVOBGvQSfGcFowy
+	 eti785LCLW68ATpbhpwvUbKTEd/MCjJmLH4PF43Zz8Z4GQEZJZI/HEdkkO5TtzDott
+	 5phhS5Z/d98iaHytuLoi9RGt6QcovXdYdm7WHEp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Fabio Estevam <festevam@denx.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 102/353] arm64: dts: qcom: sm8450: fix soundwire controllers node name
+Subject: [PATCH 6.6 123/322] ARM: dts: imx25/27: Pass timing0
 Date: Fri,  2 Feb 2024 20:03:40 -0800
-Message-ID: <20240203035407.008833615@linuxfoundation.org>
+Message-ID: <20240203035403.121811716@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit 11fcb81373de52eeb1d3ff135a8d24a4b18978d3 ]
+[ Upstream commit 11ab7ad6f795ae23c398a4a5c56505d3dab27c4c ]
 
-Fix the following dt bindings check:
-arch/arm64/boot/dts/qcom/sm8450-hdk.dtb: soundwire-controller@31f0000: $nodename:0: 'soundwire-controller@31f0000' does not match '^soundwire(@.*)?$'
-        from schema $id: http://devicetree.org/schemas/soundwire/qcom,soundwire.yaml#
+Per display-timings.yaml, the 'timing' pattern should be used to
+describe the display timings.
 
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20231106-topic-sm8450-upstream-soundwire-bindings-fix-v1-1-41d4844a5a7d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Change it accordingly to fix the following dt-schema warning:
+
+imx27-apf27dev.dtb: display-timings: '800x480' does not match any of the regexes: '^timing', 'pinctrl-[0-9]+'
+	from schema $id: http://devicetree.org/schemas/display/panel/display-timings.yaml#
+
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8450.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts   | 2 +-
+ .../dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts   | 2 +-
+ .../dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts    | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx25-pdk.dts                         | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts                    | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts  | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx27-phytec-phycard-s-rdk.dts        | 2 +-
+ arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dts          | 2 +-
+ 8 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8450.dtsi b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-index dc904ccb3d6c..f82480570d4b 100644
---- a/arch/arm64/boot/dts/qcom/sm8450.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8450.dtsi
-@@ -2160,7 +2160,7 @@
- 			#sound-dai-cells = <1>;
- 		};
+diff --git a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts
+index fc8a502fc957..6cddb2cc36fe 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-cmo-qvga.dts
+@@ -16,7 +16,7 @@
+ 		bus-width = <18>;
+ 		display-timings {
+ 			native-mode = <&qvga_timings>;
+-			qvga_timings: 320x240 {
++			qvga_timings: timing0 {
+ 				clock-frequency = <6500000>;
+ 				hactive = <320>;
+ 				vactive = <240>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts
+index 80a7f96de4c6..64b2ffac463b 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-svga.dts
+@@ -16,7 +16,7 @@
+ 		bus-width = <18>;
+ 		display-timings {
+ 			native-mode = <&dvi_svga_timings>;
+-			dvi_svga_timings: 800x600 {
++			dvi_svga_timings: timing0 {
+ 				clock-frequency = <40000000>;
+ 				hactive = <800>;
+ 				vactive = <600>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts
+index 24027a1fb46d..fb074bfdaa8d 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx25-eukrea-mbimxsd25-baseboard-dvi-vga.dts
+@@ -16,7 +16,7 @@
+ 		bus-width = <18>;
+ 		display-timings {
+ 			native-mode = <&dvi_vga_timings>;
+-			dvi_vga_timings: 640x480 {
++			dvi_vga_timings: timing0 {
+ 				clock-frequency = <31250000>;
+ 				hactive = <640>;
+ 				vactive = <480>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx25-pdk.dts b/arch/arm/boot/dts/nxp/imx/imx25-pdk.dts
+index 04f4b127a172..e93bf3b7115f 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx25-pdk.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx25-pdk.dts
+@@ -68,7 +68,7 @@
+ 		bus-width = <18>;
+ 		display-timings {
+ 			native-mode = <&wvga_timings>;
+-			wvga_timings: 640x480 {
++			wvga_timings: timing0 {
+ 				hactive = <640>;
+ 				vactive = <480>;
+ 				hback-porch = <45>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts b/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts
+index a21f1f7c24b8..f047a8487073 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx27-apf27dev.dts
+@@ -16,7 +16,7 @@
+ 		fsl,pcr = <0xfae80083>;	/* non-standard but required */
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: 800x480 {
++			timing0: timing0 {
+ 				clock-frequency = <33000033>;
+ 				hactive = <800>;
+ 				vactive = <480>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts
+index 145e459625b3..d78793601306 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx27-eukrea-mbimxsd27-baseboard.dts
+@@ -16,7 +16,7 @@
  
--		swr4: soundwire-controller@31f0000 {
-+		swr4: soundwire@31f0000 {
- 			compatible = "qcom,soundwire-v1.7.0";
- 			reg = <0 0x031f0000 0 0x2000>;
- 			interrupts = <GIC_SPI 171 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2208,7 +2208,7 @@
- 			#sound-dai-cells = <1>;
- 		};
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: 320x240 {
++			timing0: timing0 {
+ 				clock-frequency = <6500000>;
+ 				hactive = <320>;
+ 				vactive = <240>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycard-s-rdk.dts b/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycard-s-rdk.dts
+index 25442eba21c1..27c93b9fe049 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycard-s-rdk.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycard-s-rdk.dts
+@@ -19,7 +19,7 @@
+ 		fsl,pcr = <0xf0c88080>;	/* non-standard but required */
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: 640x480 {
++			timing0: timing0 {
+ 				hactive = <640>;
+ 				vactive = <480>;
+ 				hback-porch = <112>;
+diff --git a/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dts b/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dts
+index 7f0cd4d3ec2d..67b235044b70 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dts
+@@ -19,7 +19,7 @@
  
--		swr1: soundwire-controller@3210000 {
-+		swr1: soundwire@3210000 {
- 			compatible = "qcom,soundwire-v1.7.0";
- 			reg = <0 0x03210000 0 0x2000>;
- 			interrupts = <GIC_SPI 155 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2275,7 +2275,7 @@
- 			#sound-dai-cells = <1>;
- 		};
- 
--		swr0: soundwire-controller@3250000 {
-+		swr0: soundwire@3250000 {
- 			compatible = "qcom,soundwire-v1.7.0";
- 			reg = <0 0x03250000 0 0x2000>;
- 			interrupts = <GIC_SPI 170 IRQ_TYPE_LEVEL_HIGH>;
-@@ -2302,7 +2302,7 @@
- 			status = "disabled";
- 		};
- 
--		swr2: soundwire-controller@33b0000 {
-+		swr2: soundwire@33b0000 {
- 			compatible = "qcom,soundwire-v1.7.0";
- 			reg = <0 0x033b0000 0 0x2000>;
- 			interrupts = <GIC_SPI 496 IRQ_TYPE_LEVEL_HIGH>,
+ 		display-timings {
+ 			native-mode = <&timing0>;
+-			timing0: 240x320 {
++			timing0: timing0 {
+ 				clock-frequency = <5500000>;
+ 				hactive = <240>;
+ 				vactive = <320>;
 -- 
 2.43.0
 
