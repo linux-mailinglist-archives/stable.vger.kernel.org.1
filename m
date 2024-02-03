@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C85A6848383
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:32:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C994084823D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:24:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 070D21C20C03
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:32:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07BBB1C24168
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8C253E2E;
-	Sat,  3 Feb 2024 04:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB504481C3;
+	Sat,  3 Feb 2024 04:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2zkWsPq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8QX+YzU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BEB11720;
-	Sat,  3 Feb 2024 04:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C15481AE;
+	Sat,  3 Feb 2024 04:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933946; cv=none; b=nbm4Tbb8JdzMOcQhM+XP4EMPg1Hj4fHGCMUAL81q+/EOxPNyFo7X0Xv+tb/Oy4ARCxi3nM6WFzWpVkblm7RYP/IvGxzlR63uwrEE2E2Vyh2a1SfCs4KUQIrnIuoXAALSABCSzNEryWx6O9kN2Rbqav16Rhk7bSXzfimtj/swbQA=
+	t=1706933708; cv=none; b=e5PsNB2GlgMcBcLN8FB+qXJ5Pb5UlDCdrSO3t3917IU2tdbvNE/YjjxYm4kqAhmi/I9TllZuemsizLPIQY6jH//ihwnOBf6VEaYQcV+aqp04uNlZMoF6muLWyvmDQtpOzeWK2OM4pXMh5Li7ZLhWmgdS+9634hUUzCnA7oeJ/a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933946; c=relaxed/simple;
-	bh=P04Lhglh09JisJAP1Cc/YKt/dowaJTvj5+nC0VeJuyQ=;
+	s=arc-20240116; t=1706933708; c=relaxed/simple;
+	bh=ONFO7+43lXowTJn9ejqWSQcKBHWP+6aY1w9oYR3mohY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pn1euQaGgGYQNUKhrMliZT5rf6Pk47v6PZ9DCKYcWmeFTgZ8yTdiL5PiM8CMyhsORomEH0J3b9hUAc6Y+AtsYb+P3KVBAQTlbn7olJ0ZXIYMNkSbv3ZqfSUz9Mq1pQREaxFITtzCdFbbPlYRby+ve2Fa3Etb3Xku4kk8iz+Uh6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I2zkWsPq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3AC4C433F1;
-	Sat,  3 Feb 2024 04:19:05 +0000 (UTC)
+	 MIME-Version; b=GdFF3V3DJl6cvJQsfOFk1gcTtFcP4xPv5fOlJPlgdzSy2svqiYgev5FAqt4YxER5GgOP8liuD6+SQbRZlP0ZTw2CY8cBb4t6I8P9cRC/98CpwG5evhR+rB1LDLsvdYmj6I6RN6IOut1vP3nj48fJyviViKuj1ExUp4EBVmUkXJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8QX+YzU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB5FC433F1;
+	Sat,  3 Feb 2024 04:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933945;
-	bh=P04Lhglh09JisJAP1Cc/YKt/dowaJTvj5+nC0VeJuyQ=;
+	s=korg; t=1706933708;
+	bh=ONFO7+43lXowTJn9ejqWSQcKBHWP+6aY1w9oYR3mohY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2zkWsPqmoQYH2b4guxRbv4w3PJ+Dsb4DwNvbKANBQtIQc1+085gQck9qmRHhdauP
-	 QN64T5LNNxhpm/3549zsUjVJ9VG+LKKaLJNS/22m53Fmy+cytxsMffKavvkN8D7thm
-	 XRvcCO63aTFtye01IuJmgyyKixznPTDvSEBoB/a4=
+	b=w8QX+YzUSiyXTye9ZN4pKW0o4MnhDLwwZ9SiUNlPJ2QbOjHcTcL31Nq975cA4DHdG
+	 lZALrvzPdSN6tY1jfi73e18kAcKWNeI5RHs98HNB9L1Z3w3XQpOH2kKChorQN19Ck2
+	 a5hCQTrl3BFUhiyPpG6Wr4X5QozCVybVX4X2H3HY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edward Adam Davis <eadavis@qq.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
-Subject: [PATCH 6.7 288/353] wifi: cfg80211: fix RCU dereference in __cfg80211_bss_update
-Date: Fri,  2 Feb 2024 20:06:46 -0800
-Message-ID: <20240203035412.896026208@linuxfoundation.org>
+	Geetha sowjanya <gakula@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 310/322] octeontx2-pf: Remove xdp queues on program detach
+Date: Fri,  2 Feb 2024 20:06:47 -0800
+Message-ID: <20240203035409.047604927@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Geetha sowjanya <gakula@marvell.com>
 
-[ Upstream commit 1184950e341c11b6f82bc5b59564411d9537ab27 ]
+[ Upstream commit 04f647c8e456fcfabe9c252a4dcaee03b586fa4f ]
 
-Replace rcu_dereference() with rcu_access_pointer() since we hold
-the lock here (and aren't in an RCU critical section).
+XDP queues are created/destroyed when a XDP program
+is attached/detached. In current driver xdp_queues are not
+getting destroyed on program exit due to incorrect xdp_queue
+and tot_tx_queue count values.
 
-Fixes: 32af9a9e1069 ("wifi: cfg80211: free beacon_ies when overridden from hidden BSS")
-Reported-and-tested-by: syzbot+864a269c27ee06b58374@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Link: https://msgid.link/tencent_BF8F0DF0258C8DBF124CDDE4DD8D992DCF07@qq.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This patch fixes the issue by setting tot_tx_queue and xdp_queue
+count to correct values. It also fixes xdp.data_hard_start address.
+
+Fixes: 06059a1a9a4a ("octeontx2-pf: Add XDP support to netdev PF")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Link: https://lore.kernel.org/r/20240130120610.16673-1-gakula@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c | 1 -
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c      | 3 +--
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c    | 7 +++----
+ 3 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 082f0bd4ebdd..b9da6f5152cb 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -1865,7 +1865,7 @@ __cfg80211_bss_update(struct cfg80211_registered_device *rdev,
- 					 &hidden->hidden_list);
- 				hidden->refcount++;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+index 53f6258a973c..8b7fc0af91ce 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+@@ -314,7 +314,6 @@ static int otx2_set_channels(struct net_device *dev,
+ 	pfvf->hw.tx_queues = channel->tx_count;
+ 	if (pfvf->xdp_prog)
+ 		pfvf->hw.xdp_queues = channel->rx_count;
+-	pfvf->hw.non_qos_queues =  pfvf->hw.tx_queues + pfvf->hw.xdp_queues;
  
--				ies = (void *)rcu_dereference(new->pub.beacon_ies);
-+				ies = (void *)rcu_access_pointer(new->pub.beacon_ies);
- 				rcu_assign_pointer(new->pub.beacon_ies,
- 						   hidden->pub.beacon_ies);
- 				if (ies)
+ 	if (if_up)
+ 		err = dev->netdev_ops->ndo_open(dev);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index a57455aebff6..e5fe67e73865 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -1744,6 +1744,7 @@ int otx2_open(struct net_device *netdev)
+ 	/* RQ and SQs are mapped to different CQs,
+ 	 * so find out max CQ IRQs (i.e CINTs) needed.
+ 	 */
++	pf->hw.non_qos_queues =  pf->hw.tx_queues + pf->hw.xdp_queues;
+ 	pf->hw.cint_cnt = max3(pf->hw.rx_queues, pf->hw.tx_queues,
+ 			       pf->hw.tc_tx_queues);
+ 
+@@ -2643,8 +2644,6 @@ static int otx2_xdp_setup(struct otx2_nic *pf, struct bpf_prog *prog)
+ 		xdp_features_clear_redirect_target(dev);
+ 	}
+ 
+-	pf->hw.non_qos_queues += pf->hw.xdp_queues;
+-
+ 	if (if_up)
+ 		otx2_open(pf->netdev);
+ 
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+index 4d519ea833b2..f828d32737af 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+@@ -1403,7 +1403,7 @@ static bool otx2_xdp_rcv_pkt_handler(struct otx2_nic *pfvf,
+ 				     struct otx2_cq_queue *cq,
+ 				     bool *need_xdp_flush)
+ {
+-	unsigned char *hard_start, *data;
++	unsigned char *hard_start;
+ 	int qidx = cq->cq_idx;
+ 	struct xdp_buff xdp;
+ 	struct page *page;
+@@ -1417,9 +1417,8 @@ static bool otx2_xdp_rcv_pkt_handler(struct otx2_nic *pfvf,
+ 
+ 	xdp_init_buff(&xdp, pfvf->rbsize, &cq->xdp_rxq);
+ 
+-	data = (unsigned char *)phys_to_virt(pa);
+-	hard_start = page_address(page);
+-	xdp_prepare_buff(&xdp, hard_start, data - hard_start,
++	hard_start = (unsigned char *)phys_to_virt(pa);
++	xdp_prepare_buff(&xdp, hard_start, OTX2_HEAD_ROOM,
+ 			 cqe->sg.seg_size, false);
+ 
+ 	act = bpf_prog_run_xdp(prog, &xdp);
 -- 
 2.43.0
 
