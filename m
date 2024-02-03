@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-17900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7E084808E
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D4984830B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8049F1F2C1A4
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9D052837F5
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C356171AE;
-	Sat,  3 Feb 2024 04:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607CC1CAA6;
+	Sat,  3 Feb 2024 04:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhPtJIYd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKltvwS1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0979D171C4;
-	Sat,  3 Feb 2024 04:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE924F89C;
+	Sat,  3 Feb 2024 04:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933399; cv=none; b=OP0Q8/F3t6tHRi+xCAR4x6c6B51jH52tTV8RIt8arwCdRRqjoc1mVM7yK/SbBs1O/OghlTkhevzMrhtzKYpBk3mtSE6DonZd+0gVFtpC7WUQMgjK1UBrHLbgVo0vMRtSSCNvQ4OSVV3pmpsd15VPZxq5OcJgw9B2RK6RzMCbzoU=
+	t=1706933860; cv=none; b=EmudnWqDJYx7ZYDyLnGMcxgwJgUj3Mk90eW5ZPTxIbHc95K4THc60uo4zh/HszJyA4SMx+G9NgaGA/DGna77ZF5diSx6EIcnLx3FMJX0ZokjBBviudNNwkBdXQ0JnebaXLhkX+rK5Xz+dYuz7Mi641WyMyJPtD4RIrIoGthRyOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933399; c=relaxed/simple;
-	bh=OX8inmMx4Dv8YdVFl51+RxTAJx+P8DK12OvOROuNXrQ=;
+	s=arc-20240116; t=1706933860; c=relaxed/simple;
+	bh=LG+jy7y2/Q/g7LryVmxamr94jXvBtmAN0IweytjDM60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tt7aq0LnjghpBp7YiLv5IL0DcnQRR7WBminHzkujJ0OSUjJQFRuMK5jt2OgGjUuYxQDGzByEvniS5P5URktOHeDdAV9e7xLD/nwLg0ocG/t9HdXtly/pGKubuoy2y6XJT2cu4ssHFqBrVx+YzKstFfPMOPPj3KasSvVGEjzvw90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhPtJIYd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B52C433C7;
-	Sat,  3 Feb 2024 04:09:58 +0000 (UTC)
+	 MIME-Version; b=qAWmQQZWQa/Jyn9IjZsnBEOOhxjZBq2AcTJ+fkHbiLVxWbjYNd5EAAuaDyTAByIEDiTj4RGpH/Ss8mh9GtY1vfGYCD2VoESUJnQn/Z7nfvXHoRH2rPj3bd1ex1fFnGi+NcML6TtAVCCfMeItlmgHYRgV/Cr08rIE0GH6BdGaceE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKltvwS1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC408C43390;
+	Sat,  3 Feb 2024 04:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933398;
-	bh=OX8inmMx4Dv8YdVFl51+RxTAJx+P8DK12OvOROuNXrQ=;
+	s=korg; t=1706933860;
+	bh=LG+jy7y2/Q/g7LryVmxamr94jXvBtmAN0IweytjDM60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhPtJIYdUBK5A/NRoIX3X8egwR8XHW9V5klLjcrzEuaIoHJvaywPWRpuceCnDYPSx
-	 5JgbpwMPl9ir6zehW1Re0fTUNQKvc5uEOGp1Et2Of/FyuUcuyz/C2hxsDKGH8edByj
-	 Nn0Y5XbmjcBrTUQe89q12XeiKI3ji2eNMAWlA6Pg=
+	b=jKltvwS1pwPbxSFXkYez53CNO4uYPnGse6EwqUhB4HECA+3n7KGUGyJFZ5s1lIUTu
+	 3QYD21cUT42K16t9rKErWJWgdw6TSE4rJfyp9r1jEOW9HSNdRxBUhD3p2xiSHrNToa
+	 hOosG8YWRhlSm+LF+asJh0AWZWx81kOJk9Amnj6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Xin Ji <xji@analogixsemi.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 115/219] drm/framebuffer: Fix use of uninitialized variable
+Subject: [PATCH 6.7 170/353] drm/bridge: anx7625: Fix Set HPD irq detect window to 2ms
 Date: Fri,  2 Feb 2024 20:04:48 -0800
-Message-ID: <20240203035333.577822988@linuxfoundation.org>
+Message-ID: <20240203035409.017892027@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Xin Ji <xji@analogixsemi.com>
 
-[ Upstream commit f9af8f0c1dc567a5a6a6318ff324c45d80d4a60f ]
+[ Upstream commit e3af7053de3f685c96158373bc234b2feca1f160 ]
 
-smatch reports:
+Polling firmware HPD GPIO status, set HPD irq detect window to 2ms
+after firmware HPD GPIO initial done
 
-drivers/gpu/drm/drm_framebuffer.c:654 drm_mode_getfb2_ioctl() error: uninitialized symbol 'ret'.
-
-'ret' is possibly not set when there are no errors, causing the error
-above. I can't say if that ever happens in real-life, but in any case I
-think it is good to initialize 'ret' to 0.
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-2-c22b2444f5f5@ideasonboard.com
+Signed-off-by: Xin Ji <xji@analogixsemi.com>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231120091038.284825-2-xji@analogixsemi.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_framebuffer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 51 ++++++++++++++++-------
+ drivers/gpu/drm/bridge/analogix/anx7625.h |  4 ++
+ 2 files changed, 40 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_framebuffer.c b/drivers/gpu/drm/drm_framebuffer.c
-index 2dd97473ca10..72ad1715f8e7 100644
---- a/drivers/gpu/drm/drm_framebuffer.c
-+++ b/drivers/gpu/drm/drm_framebuffer.c
-@@ -570,7 +570,7 @@ int drm_mode_getfb2_ioctl(struct drm_device *dev,
- 	struct drm_mode_fb_cmd2 *r = data;
- 	struct drm_framebuffer *fb;
- 	unsigned int i;
--	int ret;
-+	int ret = 0;
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index 5168628f11cf..29d91493b101 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -1298,10 +1298,32 @@ static void anx7625_config(struct anx7625_data *ctx)
+ 			  XTAL_FRQ_SEL, XTAL_FRQ_27M);
+ }
  
- 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
- 		return -EINVAL;
++static int anx7625_hpd_timer_config(struct anx7625_data *ctx)
++{
++	int ret;
++
++	/* Set irq detect window to 2ms */
++	ret = anx7625_reg_write(ctx, ctx->i2c.tx_p2_client,
++				HPD_DET_TIMER_BIT0_7, HPD_TIME & 0xFF);
++	ret |= anx7625_reg_write(ctx, ctx->i2c.tx_p2_client,
++				 HPD_DET_TIMER_BIT8_15,
++				 (HPD_TIME >> 8) & 0xFF);
++	ret |= anx7625_reg_write(ctx, ctx->i2c.tx_p2_client,
++				 HPD_DET_TIMER_BIT16_23,
++				 (HPD_TIME >> 16) & 0xFF);
++
++	return ret;
++}
++
++static int anx7625_read_hpd_gpio_config_status(struct anx7625_data *ctx)
++{
++	return anx7625_reg_read(ctx, ctx->i2c.rx_p0_client, GPIO_CTRL_2);
++}
++
+ static void anx7625_disable_pd_protocol(struct anx7625_data *ctx)
+ {
+ 	struct device *dev = ctx->dev;
+-	int ret;
++	int ret, val;
+ 
+ 	/* Reset main ocm */
+ 	ret = anx7625_reg_write(ctx, ctx->i2c.rx_p0_client, 0x88, 0x40);
+@@ -1315,6 +1337,19 @@ static void anx7625_disable_pd_protocol(struct anx7625_data *ctx)
+ 		DRM_DEV_DEBUG_DRIVER(dev, "disable PD feature fail.\n");
+ 	else
+ 		DRM_DEV_DEBUG_DRIVER(dev, "disable PD feature succeeded.\n");
++
++	/*
++	 * Make sure the HPD GPIO already be configured after OCM release before
++	 * setting HPD detect window register. Here we poll the status register
++	 * at maximum 40ms, then config HPD irq detect window register
++	 */
++	readx_poll_timeout(anx7625_read_hpd_gpio_config_status,
++			   ctx, val,
++			   ((val & HPD_SOURCE) || (val < 0)),
++			   2000, 2000 * 20);
++
++	/* Set HPD irq detect window to 2ms */
++	anx7625_hpd_timer_config(ctx);
+ }
+ 
+ static int anx7625_ocm_loading_check(struct anx7625_data *ctx)
+@@ -1437,20 +1472,6 @@ static void anx7625_start_dp_work(struct anx7625_data *ctx)
+ 
+ static int anx7625_read_hpd_status_p0(struct anx7625_data *ctx)
+ {
+-	int ret;
+-
+-	/* Set irq detect window to 2ms */
+-	ret = anx7625_reg_write(ctx, ctx->i2c.tx_p2_client,
+-				HPD_DET_TIMER_BIT0_7, HPD_TIME & 0xFF);
+-	ret |= anx7625_reg_write(ctx, ctx->i2c.tx_p2_client,
+-				 HPD_DET_TIMER_BIT8_15,
+-				 (HPD_TIME >> 8) & 0xFF);
+-	ret |= anx7625_reg_write(ctx, ctx->i2c.tx_p2_client,
+-				 HPD_DET_TIMER_BIT16_23,
+-				 (HPD_TIME >> 16) & 0xFF);
+-	if (ret < 0)
+-		return ret;
+-
+ 	return anx7625_reg_read(ctx, ctx->i2c.rx_p0_client, SYSTEM_STSTUS);
+ }
+ 
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.h b/drivers/gpu/drm/bridge/analogix/anx7625.h
+index 80d3fb4e985f..39ed35d33836 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.h
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.h
+@@ -259,6 +259,10 @@
+ #define AP_MIPI_RX_EN BIT(5) /* 1: MIPI RX input in  0: no RX in */
+ #define AP_DISABLE_PD BIT(6)
+ #define AP_DISABLE_DISPLAY BIT(7)
++
++#define GPIO_CTRL_2   0x49
++#define HPD_SOURCE    BIT(6)
++
+ /***************************************************************/
+ /* Register definition of device address 0x84 */
+ #define  MIPI_PHY_CONTROL_3            0x03
 -- 
 2.43.0
 
