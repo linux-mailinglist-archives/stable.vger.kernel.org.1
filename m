@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-17993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6F528480F1
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 983E084821A
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 084AF1C242D2
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EDD328A79B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D36141B818;
-	Sat,  3 Feb 2024 04:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1AE4595C;
+	Sat,  3 Feb 2024 04:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smC9Krgo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8JReW4X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923AB12E71;
-	Sat,  3 Feb 2024 04:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF3A018EBF;
+	Sat,  3 Feb 2024 04:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933468; cv=none; b=J8mIQ+kpSVBJBHqLqf+qjRaYotHH09nhYvQCEQFs5QBD6bryGSuw41/iKP5WD5WCCRQ9NQG3a/KnsI99cXfM3D04IPWKPs7tix8E6PlCOr9bc14jkHzvpKoqWCrihOpn4guvgZLmo1gPK5257xT1DhIYcXszLyxcji6Wua4+zdw=
+	t=1706933683; cv=none; b=CxPTpvZ8OY+BTvSGHi7r3pxvpDXVEUBJkDYegB2sIAF7mHH12Dqtfqx974SYGvE5PSQJlx5x7AAOOWhNZp7HS7t/iJefoMXKlZyav9XSTqKQzjIhBroMnCdhBGsLTLjBj+BaCOA+xBZz5DY1nlcyl55BXIlYIC4qveW3GCO2Aj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933468; c=relaxed/simple;
-	bh=tQIIz2CupsFokNQ6O869pLju6BeLAm6vP47rwcK1wwA=;
+	s=arc-20240116; t=1706933683; c=relaxed/simple;
+	bh=GToQs3GobfFIuNI6plZvENYdxh32xCjNDilTQJQQCjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N7slQsE2D1I3r4wY36RX2ViV5xIKSS+PApd4ltboMeScamlzYo3m9FgQiFdHqfw1HKgkibKGswv4PCr8lyEWXj9LuKTfUNwY5fCNe98HlVWVmsK8X1ABGtU3FmjhukUeWnJBanVC7CtwwK5uzYCoSKq7JeW4NwPbjmBxwqNrbXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=smC9Krgo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9EDC433F1;
-	Sat,  3 Feb 2024 04:11:08 +0000 (UTC)
+	 MIME-Version; b=ZT8Oxk4gz069s42HrCPPsOIA8nsJtv7OImUDDkA4iy/rCgCU8tDsI08hT36uHgY3YtjeslnYrO8u0XPPi37FWaTToNc+1aKkgc8YHK37/ZlRKjJ0cssDtNr+pIdoJcX0iV6jW8VXbSmhXrr81FeM6spFqxQlS/ClB/X1q2Fx4H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8JReW4X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8857C43390;
+	Sat,  3 Feb 2024 04:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933468;
-	bh=tQIIz2CupsFokNQ6O869pLju6BeLAm6vP47rwcK1wwA=;
+	s=korg; t=1706933682;
+	bh=GToQs3GobfFIuNI6plZvENYdxh32xCjNDilTQJQQCjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=smC9KrgoY/r1V5H1A2dCry9eHizn5El+MSHlj7vgoC9ZyjvNrbHkbIlTm/srTeGNU
-	 dLeGR7fLEKfJryIXQ1LCP0AMoJOy+MkbNfRRIgsmAkS4gapB8bbKePf3zyh4/WgK7E
-	 LzKBMPNluMy8I1aWhOJjNNbjzPhHHSeAkPOUyR58=
+	b=D8JReW4XywovErPi5rMqjklSXnkZP+czuzOn1b6aTHogtVqB1W6UiAOdE3DQ5nojw
+	 8E6BPZbE1NU0fF6fLVnOegSutPA+9g1/we0vpXq8jjeGWpC7agAoIgR8MENlRrAoHv
+	 1kdx+4mDBzKIytg9658BaoheodPDsie0nssSTkZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 201/219] bridge: mcast: fix disabled snooping after long uptime
+Subject: [PATCH 6.6 277/322] ip6_tunnel: make sure to pull inner header in __ip6_tnl_rcv()
 Date: Fri,  2 Feb 2024 20:06:14 -0800
-Message-ID: <20240203035345.396818181@linuxfoundation.org>
+Message-ID: <20240203035408.049073762@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,160 +62,143 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Lüssing <linus.luessing@c0d3.blue>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f5c3eb4b7251baba5cd72c9e93920e710ac8194a ]
+[ Upstream commit 8d975c15c0cd744000ca386247432d57b21f9df0 ]
 
-The original idea of the delay_time check was to not apply multicast
-snooping too early when an MLD querier appears. And to instead wait at
-least for MLD reports to arrive before switching from flooding to group
-based, MLD snooped forwarding, to avoid temporary packet loss.
+syzbot found __ip6_tnl_rcv() could access unitiliazed data [1].
 
-However in a batman-adv mesh network it was noticed that after 248 days of
-uptime 32bit MIPS based devices would start to signal that they had
-stopped applying multicast snooping due to missing queriers - even though
-they were the elected querier and still sending MLD queries themselves.
+Call pskb_inet_may_pull() to fix this, and initialize ipv6h
+variable after this call as it can change skb->head.
 
-While time_is_before_jiffies() generally is safe against jiffies
-wrap-arounds, like the code comments in jiffies.h explain, it won't
-be able to track a difference larger than ULONG_MAX/2. With a 32bit
-large jiffies and one jiffies tick every 10ms (CONFIG_HZ=100) on these MIPS
-devices running OpenWrt this would result in a difference larger than
-ULONG_MAX/2 after 248 (= 2^32/100/60/60/24/2) days and
-time_is_before_jiffies() would then start to return false instead of
-true. Leading to multicast snooping not being applied to multicast
-packets anymore.
+[1]
+ BUG: KMSAN: uninit-value in __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
+ BUG: KMSAN: uninit-value in INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
+ BUG: KMSAN: uninit-value in IP6_ECN_decapsulate+0x7df/0x1e50 include/net/inet_ecn.h:321
+  __INET_ECN_decapsulate include/net/inet_ecn.h:253 [inline]
+  INET_ECN_decapsulate include/net/inet_ecn.h:275 [inline]
+  IP6_ECN_decapsulate+0x7df/0x1e50 include/net/inet_ecn.h:321
+  ip6ip6_dscp_ecn_decapsulate+0x178/0x1b0 net/ipv6/ip6_tunnel.c:727
+  __ip6_tnl_rcv+0xd4e/0x1590 net/ipv6/ip6_tunnel.c:845
+  ip6_tnl_rcv+0xce/0x100 net/ipv6/ip6_tunnel.c:888
+ gre_rcv+0x143f/0x1870
+  ip6_protocol_deliver_rcu+0xda6/0x2a60 net/ipv6/ip6_input.c:438
+  ip6_input_finish net/ipv6/ip6_input.c:483 [inline]
+  NF_HOOK include/linux/netfilter.h:314 [inline]
+  ip6_input+0x15d/0x430 net/ipv6/ip6_input.c:492
+  ip6_mc_input+0xa7e/0xc80 net/ipv6/ip6_input.c:586
+  dst_input include/net/dst.h:461 [inline]
+  ip6_rcv_finish+0x5db/0x870 net/ipv6/ip6_input.c:79
+  NF_HOOK include/linux/netfilter.h:314 [inline]
+  ipv6_rcv+0xda/0x390 net/ipv6/ip6_input.c:310
+  __netif_receive_skb_one_core net/core/dev.c:5532 [inline]
+  __netif_receive_skb+0x1a6/0x5a0 net/core/dev.c:5646
+  netif_receive_skb_internal net/core/dev.c:5732 [inline]
+  netif_receive_skb+0x58/0x660 net/core/dev.c:5791
+  tun_rx_batched+0x3ee/0x980 drivers/net/tun.c:1555
+  tun_get_user+0x53af/0x66d0 drivers/net/tun.c:2002
+  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
+  call_write_iter include/linux/fs.h:2084 [inline]
+  new_sync_write fs/read_write.c:497 [inline]
+  vfs_write+0x786/0x1200 fs/read_write.c:590
+  ksys_write+0x20f/0x4c0 fs/read_write.c:643
+  __do_sys_write fs/read_write.c:655 [inline]
+  __se_sys_write fs/read_write.c:652 [inline]
+  __x64_sys_write+0x93/0xd0 fs/read_write.c:652
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0x6d/0x140 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-Fix this issue by using a proper timer_list object which won't have this
-ULONG_MAX/2 difference limitation.
+Uninit was created at:
+  slab_post_alloc_hook+0x129/0xa70 mm/slab.h:768
+  slab_alloc_node mm/slub.c:3478 [inline]
+  kmem_cache_alloc_node+0x5e9/0xb10 mm/slub.c:3523
+  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:560
+  __alloc_skb+0x318/0x740 net/core/skbuff.c:651
+  alloc_skb include/linux/skbuff.h:1286 [inline]
+  alloc_skb_with_frags+0xc8/0xbd0 net/core/skbuff.c:6334
+  sock_alloc_send_pskb+0xa80/0xbf0 net/core/sock.c:2787
+  tun_alloc_skb drivers/net/tun.c:1531 [inline]
+  tun_get_user+0x1e8a/0x66d0 drivers/net/tun.c:1846
+  tun_chr_write_iter+0x3af/0x5d0 drivers/net/tun.c:2048
+  call_write_iter include/linux/fs.h:2084 [inline]
+  new_sync_write fs/read_write.c:497 [inline]
+  vfs_write+0x786/0x1200 fs/read_write.c:590
+  ksys_write+0x20f/0x4c0 fs/read_write.c:643
+  __do_sys_write fs/read_write.c:655 [inline]
+  __se_sys_write fs/read_write.c:652 [inline]
+  __x64_sys_write+0x93/0xd0 fs/read_write.c:652
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0x6d/0x140 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-Fixes: b00589af3b04 ("bridge: disable snooping if there is no querier")
-Signed-off-by: Linus Lüssing <linus.luessing@c0d3.blue>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20240127175033.9640-1-linus.luessing@c0d3.blue
+CPU: 0 PID: 5034 Comm: syz-executor331 Not tainted 6.7.0-syzkaller-00562-g9f8413c4a66f #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
+
+Fixes: 0d3c703a9d17 ("ipv6: Cleanup IPv6 tunnel receive path")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240125170557.2663942-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_multicast.c | 20 +++++++++++++++-----
- net/bridge/br_private.h   |  4 ++--
- 2 files changed, 17 insertions(+), 7 deletions(-)
+ net/ipv6/ip6_tunnel.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index db4f2641d1cd..9765f9f9bf7f 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -1607,6 +1607,10 @@ static void br_ip6_multicast_querier_expired(struct timer_list *t)
- }
- #endif
- 
-+static void br_multicast_query_delay_expired(struct timer_list *t)
-+{
-+}
-+
- static void br_multicast_select_own_querier(struct net_bridge_mcast *brmctx,
- 					    struct br_ip *ip,
- 					    struct sk_buff *skb)
-@@ -3024,7 +3028,7 @@ br_multicast_update_query_timer(struct net_bridge_mcast *brmctx,
- 				unsigned long max_delay)
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index 46c19bd48990..9bbabf750a21 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -796,8 +796,8 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
+ 						struct sk_buff *skb),
+ 			 bool log_ecn_err)
  {
- 	if (!timer_pending(&query->timer))
--		query->delay_time = jiffies + max_delay;
-+		mod_timer(&query->delay_timer, jiffies + max_delay);
+-	const struct ipv6hdr *ipv6h = ipv6_hdr(skb);
+-	int err;
++	const struct ipv6hdr *ipv6h;
++	int nh, err;
  
- 	mod_timer(&query->timer, jiffies + brmctx->multicast_querier_interval);
- }
-@@ -3867,13 +3871,11 @@ void br_multicast_ctx_init(struct net_bridge *br,
- 	brmctx->multicast_querier_interval = 255 * HZ;
- 	brmctx->multicast_membership_interval = 260 * HZ;
+ 	if ((!(tpi->flags & TUNNEL_CSUM) &&
+ 	     (tunnel->parms.i_flags & TUNNEL_CSUM)) ||
+@@ -829,7 +829,6 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
+ 			goto drop;
+ 		}
  
--	brmctx->ip4_other_query.delay_time = 0;
- 	brmctx->ip4_querier.port_ifidx = 0;
- 	seqcount_spinlock_init(&brmctx->ip4_querier.seq, &br->multicast_lock);
- 	brmctx->multicast_igmp_version = 2;
- #if IS_ENABLED(CONFIG_IPV6)
- 	brmctx->multicast_mld_version = 1;
--	brmctx->ip6_other_query.delay_time = 0;
- 	brmctx->ip6_querier.port_ifidx = 0;
- 	seqcount_spinlock_init(&brmctx->ip6_querier.seq, &br->multicast_lock);
- #endif
-@@ -3882,6 +3884,8 @@ void br_multicast_ctx_init(struct net_bridge *br,
- 		    br_ip4_multicast_local_router_expired, 0);
- 	timer_setup(&brmctx->ip4_other_query.timer,
- 		    br_ip4_multicast_querier_expired, 0);
-+	timer_setup(&brmctx->ip4_other_query.delay_timer,
-+		    br_multicast_query_delay_expired, 0);
- 	timer_setup(&brmctx->ip4_own_query.timer,
- 		    br_ip4_multicast_query_expired, 0);
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -3889,6 +3893,8 @@ void br_multicast_ctx_init(struct net_bridge *br,
- 		    br_ip6_multicast_local_router_expired, 0);
- 	timer_setup(&brmctx->ip6_other_query.timer,
- 		    br_ip6_multicast_querier_expired, 0);
-+	timer_setup(&brmctx->ip6_other_query.delay_timer,
-+		    br_multicast_query_delay_expired, 0);
- 	timer_setup(&brmctx->ip6_own_query.timer,
- 		    br_ip6_multicast_query_expired, 0);
- #endif
-@@ -4023,10 +4029,12 @@ static void __br_multicast_stop(struct net_bridge_mcast *brmctx)
- {
- 	del_timer_sync(&brmctx->ip4_mc_router_timer);
- 	del_timer_sync(&brmctx->ip4_other_query.timer);
-+	del_timer_sync(&brmctx->ip4_other_query.delay_timer);
- 	del_timer_sync(&brmctx->ip4_own_query.timer);
- #if IS_ENABLED(CONFIG_IPV6)
- 	del_timer_sync(&brmctx->ip6_mc_router_timer);
- 	del_timer_sync(&brmctx->ip6_other_query.timer);
-+	del_timer_sync(&brmctx->ip6_other_query.delay_timer);
- 	del_timer_sync(&brmctx->ip6_own_query.timer);
- #endif
- }
-@@ -4469,13 +4477,15 @@ int br_multicast_set_querier(struct net_bridge_mcast *brmctx, unsigned long val)
- 	max_delay = brmctx->multicast_query_response_interval;
- 
- 	if (!timer_pending(&brmctx->ip4_other_query.timer))
--		brmctx->ip4_other_query.delay_time = jiffies + max_delay;
-+		mod_timer(&brmctx->ip4_other_query.delay_timer,
-+			  jiffies + max_delay);
- 
- 	br_multicast_start_querier(brmctx, &brmctx->ip4_own_query);
- 
- #if IS_ENABLED(CONFIG_IPV6)
- 	if (!timer_pending(&brmctx->ip6_other_query.timer))
--		brmctx->ip6_other_query.delay_time = jiffies + max_delay;
-+		mod_timer(&brmctx->ip6_other_query.delay_timer,
-+			  jiffies + max_delay);
- 
- 	br_multicast_start_querier(brmctx, &brmctx->ip6_own_query);
- #endif
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 06e5f6faa431..51d010f64e06 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -77,7 +77,7 @@ struct bridge_mcast_own_query {
- /* other querier */
- struct bridge_mcast_other_query {
- 	struct timer_list		timer;
--	unsigned long			delay_time;
-+	struct timer_list		delay_timer;
- };
- 
- /* selected querier */
-@@ -1083,7 +1083,7 @@ __br_multicast_querier_exists(struct net_bridge_mcast *brmctx,
- 		own_querier_enabled = false;
+-		ipv6h = ipv6_hdr(skb);
+ 		skb->protocol = eth_type_trans(skb, tunnel->dev);
+ 		skb_postpull_rcsum(skb, eth_hdr(skb), ETH_HLEN);
+ 	} else {
+@@ -837,7 +836,23 @@ static int __ip6_tnl_rcv(struct ip6_tnl *tunnel, struct sk_buff *skb,
+ 		skb_reset_mac_header(skb);
  	}
  
--	return time_is_before_jiffies(querier->delay_time) &&
-+	return !timer_pending(&querier->delay_timer) &&
- 	       (own_querier_enabled || timer_pending(&querier->timer));
- }
++	/* Save offset of outer header relative to skb->head,
++	 * because we are going to reset the network header to the inner header
++	 * and might change skb->head.
++	 */
++	nh = skb_network_header(skb) - skb->head;
++
+ 	skb_reset_network_header(skb);
++
++	if (!pskb_inet_may_pull(skb)) {
++		DEV_STATS_INC(tunnel->dev, rx_length_errors);
++		DEV_STATS_INC(tunnel->dev, rx_errors);
++		goto drop;
++	}
++
++	/* Get the outer header. */
++	ipv6h = (struct ipv6hdr *)(skb->head + nh);
++
+ 	memset(skb->cb, 0, sizeof(struct inet6_skb_parm));
  
+ 	__skb_tunnel_rx(skb, tunnel->dev, tunnel->net);
 -- 
 2.43.0
 
