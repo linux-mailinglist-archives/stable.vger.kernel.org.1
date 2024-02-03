@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-18006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D958480FE
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:15:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A3384821D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 323BE1F23821
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:15:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16F151F2347B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9287413AC2;
-	Sat,  3 Feb 2024 04:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A44012E46;
+	Sat,  3 Feb 2024 04:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yz5941rN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIjDKB8X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B65210A31;
-	Sat,  3 Feb 2024 04:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B7818E27;
+	Sat,  3 Feb 2024 04:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933478; cv=none; b=I3cflREfBT0QiU2Mkw4NJE+A3YhvNFMu2L+ArmmExtt6ZskZYP3kqq0vJH9rWR2WoJlalN9SNOK/qITbPLY3nLJ+vZA9hqzhjSamNP6hh8x9AlbpmQQFLXbHSxSDLyqJGT8ovXuvBlXdkuHwUoMr3BPoT8ZKM1LYwfnj3LrihzA=
+	t=1706933685; cv=none; b=GpU/G87WAPtN2NiRUzIGPStQsOMDCTQk+eP/JV3VMwUithL8i6YZ/zVMT2oYnS2AIfni2qr1r19HzKuCdFhWjBS1TOVtyr10UVDhbDvHD4SqvZzPTvfC8RETmUOybfMaTsIsYU2YlBWmhghh3UdVPqu0lcRnzifZWDurrsBWS5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933478; c=relaxed/simple;
-	bh=vE1oO5kPC30hRMQSXa0uMqiolkR6ywSsy8n+cb1eRYo=;
+	s=arc-20240116; t=1706933685; c=relaxed/simple;
+	bh=w4iWHtTPodE9TM22TJ/Hz+l9GEqotChOhC0IAzMCuV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JTgN96J3eMfOnLYFRBIJVEClKlAYXuJsd6t5fnvDrF/osLNPtZHdCY0r1fR7XQVHo4k5lSqDSXL+7GwWREpnawCQVsZLubLIjFFPFDsk+inLm9vQKcrxZGD+JtQs4/nmTzAEbX5qHSQr0Zm9LwDwRpFpo7Hq9lE3MTI/4dD9Ddg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yz5941rN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13173C43390;
-	Sat,  3 Feb 2024 04:11:18 +0000 (UTC)
+	 MIME-Version; b=caHt7VPU9ARYmdrXrEwNuRiLgw5pGauBQH3mP6JG/hjOt1Lmbj8a0AASP5PEaDMhc9X8mWP3Fq79KLJZXHuCxGdfPNN9RBQsdWgpnTZnXijs81EO7aKdAzLlcUlK7DiduAaSn10xMznsq54PCRKXRGnk5DkfHsy87N2rL1QOjJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIjDKB8X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1EEC433B1;
+	Sat,  3 Feb 2024 04:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933478;
-	bh=vE1oO5kPC30hRMQSXa0uMqiolkR6ywSsy8n+cb1eRYo=;
+	s=korg; t=1706933685;
+	bh=w4iWHtTPodE9TM22TJ/Hz+l9GEqotChOhC0IAzMCuV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yz5941rNH/w634vXHY4/6h5QkfnU3FL2DYC1h4k36xD9ifl8GsHhhz86fdx9IieSO
-	 NzKQIPV0ASlLxpZBtQxnexlbQ7t0cz7wlU+jT+DKq26kpVz18M4MYirdezOJoMuR5F
-	 31mP9PMUPsYEoQQDk0ZqGQ3RF/KUv75vZcrrUdic=
+	b=GIjDKB8XVaTPKsh2AzWGiiCkU9hjH3VKSC1VpSSFYrzjAEKwYz75K/fm91EBG384X
+	 Jx2M3YjtIfZHisU8hhy16wSrDghkO4v3pk3LdJitiO6Z4h6EeN6PzAKXry176Ilo1e
+	 Mp7TPYUOUFE3tSsiCU+hXOWEWKwCv4MHR0zwhR1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 204/219] netfilter: nf_tables: restrict tunnel object to NFPROTO_NETDEV
+Subject: [PATCH 6.6 280/322] net: lan966x: Fix port configuration when using SGMII interface
 Date: Fri,  2 Feb 2024 20:06:17 -0800
-Message-ID: <20240203035345.665398858@linuxfoundation.org>
+Message-ID: <20240203035408.142432715@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,111 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 776d451648443f9884be4a1b4e38e8faf1c621f9 ]
+[ Upstream commit 62b4248105353e7d1debd30ca5c57ec5e5f28e35 ]
 
-Bail out on using the tunnel dst template from other than netdev family.
-Add the infrastructure to check for the family in objects.
+In case the interface between the MAC and the PHY is SGMII, then the bit
+GIGA_MODE on the MAC side needs to be set regardless of the speed at
+which it is running.
 
-Fixes: af308b94a2a4 ("netfilter: nf_tables: add tunnel support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: d28d6d2e37d1 ("net: lan966x: add port module support")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h |  2 ++
- net/netfilter/nf_tables_api.c     | 14 +++++++++-----
- net/netfilter/nft_tunnel.c        |  1 +
- 3 files changed, 12 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/microchip/lan966x/lan966x_port.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index c726da3b7d68..2fa344cb66f6 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1286,6 +1286,7 @@ void nft_obj_notify(struct net *net, const struct nft_table *table,
-  *	@type: stateful object numeric type
-  *	@owner: module owner
-  *	@maxattr: maximum netlink attribute
-+ *	@family: address family for AF-specific object types
-  *	@policy: netlink attribute policy
-  */
- struct nft_object_type {
-@@ -1295,6 +1296,7 @@ struct nft_object_type {
- 	struct list_head		list;
- 	u32				type;
- 	unsigned int                    maxattr;
-+	u8				family;
- 	struct module			*owner;
- 	const struct nla_policy		*policy;
- };
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 1edb2138260a..49acb89ba9c5 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7129,11 +7129,15 @@ static int nft_object_dump(struct sk_buff *skb, unsigned int attr,
- 	return -1;
- }
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_port.c b/drivers/net/ethernet/microchip/lan966x/lan966x_port.c
+index 92108d354051..2e83bbb9477e 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_port.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_port.c
+@@ -168,9 +168,10 @@ static void lan966x_port_link_up(struct lan966x_port *port)
+ 	lan966x_taprio_speed_set(port, config->speed);
  
--static const struct nft_object_type *__nft_obj_type_get(u32 objtype)
-+static const struct nft_object_type *__nft_obj_type_get(u32 objtype, u8 family)
- {
- 	const struct nft_object_type *type;
+ 	/* Also the GIGA_MODE_ENA(1) needs to be set regardless of the
+-	 * port speed for QSGMII ports.
++	 * port speed for QSGMII or SGMII ports.
+ 	 */
+-	if (phy_interface_num_ports(config->portmode) == 4)
++	if (phy_interface_num_ports(config->portmode) == 4 ||
++	    config->portmode == PHY_INTERFACE_MODE_SGMII)
+ 		mode = DEV_MAC_MODE_CFG_GIGA_MODE_ENA_SET(1);
  
- 	list_for_each_entry(type, &nf_tables_objects, list) {
-+		if (type->family != NFPROTO_UNSPEC &&
-+		    type->family != family)
-+			continue;
-+
- 		if (objtype == type->type)
- 			return type;
- 	}
-@@ -7141,11 +7145,11 @@ static const struct nft_object_type *__nft_obj_type_get(u32 objtype)
- }
- 
- static const struct nft_object_type *
--nft_obj_type_get(struct net *net, u32 objtype)
-+nft_obj_type_get(struct net *net, u32 objtype, u8 family)
- {
- 	const struct nft_object_type *type;
- 
--	type = __nft_obj_type_get(objtype);
-+	type = __nft_obj_type_get(objtype, family);
- 	if (type != NULL && try_module_get(type->owner))
- 		return type;
- 
-@@ -7238,7 +7242,7 @@ static int nf_tables_newobj(struct sk_buff *skb, const struct nfnl_info *info,
- 		if (info->nlh->nlmsg_flags & NLM_F_REPLACE)
- 			return -EOPNOTSUPP;
- 
--		type = __nft_obj_type_get(objtype);
-+		type = __nft_obj_type_get(objtype, family);
- 		if (WARN_ON_ONCE(!type))
- 			return -ENOENT;
- 
-@@ -7252,7 +7256,7 @@ static int nf_tables_newobj(struct sk_buff *skb, const struct nfnl_info *info,
- 	if (!nft_use_inc(&table->use))
- 		return -EMFILE;
- 
--	type = nft_obj_type_get(net, objtype);
-+	type = nft_obj_type_get(net, objtype, family);
- 	if (IS_ERR(type)) {
- 		err = PTR_ERR(type);
- 		goto err_type;
-diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
-index 983ade4be3b3..efb505445eac 100644
---- a/net/netfilter/nft_tunnel.c
-+++ b/net/netfilter/nft_tunnel.c
-@@ -713,6 +713,7 @@ static const struct nft_object_ops nft_tunnel_obj_ops = {
- 
- static struct nft_object_type nft_tunnel_obj_type __read_mostly = {
- 	.type		= NFT_OBJECT_TUNNEL,
-+	.family		= NFPROTO_NETDEV,
- 	.ops		= &nft_tunnel_obj_ops,
- 	.maxattr	= NFTA_TUNNEL_KEY_MAX,
- 	.policy		= nft_tunnel_key_policy,
+ 	lan_wr(config->duplex | mode,
 -- 
 2.43.0
 
