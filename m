@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-17910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E9B9848099
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D4F88482E7
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:28:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31750B2A2AD
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0936F1F23C75
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1FB111725;
-	Sat,  3 Feb 2024 04:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B099D1C6B1;
+	Sat,  3 Feb 2024 04:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPg3OHkU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtLrqr3u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA1D11714;
-	Sat,  3 Feb 2024 04:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6094B1BF3F;
+	Sat,  3 Feb 2024 04:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933406; cv=none; b=bLLPyzpcir17EsEaPCxxXGuhAFRj2BVljnzkzLzwNq1DrtnoJvNEcCP4N8wiP/V7ziUYVSJc4osWzDLnGKb1SogvY45KUhkQPQ/3p2rEvChtVQd3uR1IYimiVMd+O7V0Nwz+jJkzB5JJoY/RG7/N89sw8rnHVt7WDv16TIwibWk=
+	t=1706933832; cv=none; b=h21Y8GzWn1125wRYzq1ZX+s2D/NICTyfJf0iGzGYbVZ6HlvhL0s8LBsMu+MvzcAYOiv4NG7Q6bPR107GFjsitMpXLvd2pQ3yZmJmBAwukhDWFx6nvWkpd45XEEjJRp9nYwzIGppIrjt60RNMCKLOKtxOAHGZxxu2qmh+gY0qgts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933406; c=relaxed/simple;
-	bh=CnIflYujZjwa5rTjvV8vKEuifatj8ZeGbH/ukZ6gqck=;
+	s=arc-20240116; t=1706933832; c=relaxed/simple;
+	bh=DaWTEXf8ucE2any50Hw77vs9Z9NOHsbkXmB7hZYLTb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FH0eeagHsH2fOVfMMdvLRNJGpQcY6N9uqH0EA81VLihTMn4gpYAK/AH/JgunsxfXyXEUDEgvEJQGijadlQDWJ1ScnhVBZfdHUrNI4dhAAXPf/H1Vgw/TPOsDkvcJNCClXSPNSL2DB5Z41XIecvIvAiilVrSR+J3+pZX+Tv88bjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JPg3OHkU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D7AC433A6;
-	Sat,  3 Feb 2024 04:10:06 +0000 (UTC)
+	 MIME-Version; b=El6to1Y9O5A3PpRpsl3Yq0xk299JY/QQmKtrm5M1HcF9aiRDKz8IpEhmfIIQdCmjru05COcqUtF/gJBjEoNzd1D2N9LzrkBP0uXFRm9tOyWSomDNb9ANgAKVqymm9Meofv3wfksKYYm9BmhAVnHBPwK0UfZKkZkaTvLa/vKj0H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtLrqr3u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25504C433C7;
+	Sat,  3 Feb 2024 04:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933406;
-	bh=CnIflYujZjwa5rTjvV8vKEuifatj8ZeGbH/ukZ6gqck=;
+	s=korg; t=1706933832;
+	bh=DaWTEXf8ucE2any50Hw77vs9Z9NOHsbkXmB7hZYLTb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JPg3OHkUm+mhhpg7TihU2lXZSPb1U2kiDoHC8FVe5SmvXHD12P7bwJsyNMa8kzYO6
-	 W8M809G80LoAC8PbMrhzvBjIvW763+gt2n325hlBNLg6VaKlLf85k734r8GgF+8gKa
-	 sehvggNxvXowwYG96g75MKiJzF+05FcNwoLSIzf0=
+	b=FtLrqr3u2PQtf+jumwdplvpRNO5XoL7ok9hFb5dcz7CioiMC6O1pJ2X9wVD97mEXy
+	 DcZslHSg2Iv19oAkTNDHHCWMdgnAq8GZpwBJaeDN4e8dW99t+j3xh11PofZ+iFyacJ
+	 a5G4CqTHEw4RbtoDKC/275sd+LN80ZUe44O4Euls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Rafal Romanowski <rafal.romanowski@intel.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 101/219] i40e: Fix VF disable behavior to block all traffic
+Subject: [PATCH 6.7 156/353] i40e: Fix VF disable behavior to block all traffic
 Date: Fri,  2 Feb 2024 20:04:34 -0800
-Message-ID: <20240203035331.567951380@linuxfoundation.org>
+Message-ID: <20240203035408.592297533@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -101,10 +101,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 33 insertions(+)
 
 diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index c7d761426d6c..3d3db58090ed 100644
+index de5ec4e6bedf..7db89b294510 100644
 --- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
 +++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -2603,6 +2603,14 @@ static int i40e_vc_enable_queues_msg(struct i40e_vf *vf, u8 *msg)
+@@ -2607,6 +2607,14 @@ static int i40e_vc_enable_queues_msg(struct i40e_vf *vf, u8 *msg)
  	int aq_ret = 0;
  	int i;
  
@@ -117,9 +117,9 @@ index c7d761426d6c..3d3db58090ed 100644
 +	}
 +
  	if (!test_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states)) {
- 		aq_ret = I40E_ERR_PARAM;
+ 		aq_ret = -EINVAL;
  		goto error_param;
-@@ -4656,9 +4664,12 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
+@@ -4734,9 +4742,12 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
  	struct i40e_link_status *ls = &pf->hw.phy.link_info;
  	struct virtchnl_pf_event pfe;
  	struct i40e_hw *hw = &pf->hw;
@@ -132,7 +132,7 @@ index c7d761426d6c..3d3db58090ed 100644
  
  	if (test_and_set_bit(__I40E_VIRTCHNL_OP_PENDING, pf->state)) {
  		dev_warn(&pf->pdev->dev, "Unable to configure VFs, other operation is pending.\n");
-@@ -4681,17 +4692,38 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
+@@ -4759,17 +4770,38 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
  	switch (link) {
  	case IFLA_VF_LINK_STATE_AUTO:
  		vf->link_forced = false;
@@ -172,10 +172,10 @@ index c7d761426d6c..3d3db58090ed 100644
  	default:
  		ret = -EINVAL;
 diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-index bd497cc5303a..97e9c34d7c6c 100644
+index 5fd607c0de0a..66f95e2f3146 100644
 --- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
 +++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-@@ -98,6 +98,7 @@ struct i40e_vf {
+@@ -100,6 +100,7 @@ struct i40e_vf {
  	bool link_forced;
  	bool link_up;		/* only valid if VF link is forced */
  	bool spoofchk;
