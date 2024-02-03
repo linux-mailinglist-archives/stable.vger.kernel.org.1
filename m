@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-18565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5400484833A
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:30:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2927848209
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:23:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B37B28751F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:30:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86C61B29EF6
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB85D50A73;
-	Sat,  3 Feb 2024 04:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787F418EAD;
+	Sat,  3 Feb 2024 04:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xl08UU5a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c5HLoU+e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A9251005;
-	Sat,  3 Feb 2024 04:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3615AF9C1;
+	Sat,  3 Feb 2024 04:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933892; cv=none; b=otJUkpcE7j9epeRICmh5IO1cW0gz9Ezf2xo/jl+yMdC5W79l+d8HdmEHeJ8JchvLywNRAnBQeiCywFuf71vKsGtOVULvfaXqQzs4pxQ0lqzxb6KB7qtPVpxbXag0jY3hz9miKSlkouvE/ETs5RdHv4G2miPj0V+EOnPaHKTREak=
+	t=1706933670; cv=none; b=CIfjRcleTtKMKgose0a8xLhZjCFdOf7EcwBUZYVHHbkjIaO3x5QpU0M1OdAFv1FsA7lFVbkjDtVhzitixekewHMMRcNJjkyHT31zv117bvvn23Vv7EC4bS4gsMa1iCmOAsErP8ghjwpbhDuZtgzCPn5gMALXHsbqK1hq1NhkM2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933892; c=relaxed/simple;
-	bh=Kn3lkkRntuqFrOwMPsyfUrL2y1wWejkqpPjR8ba0hVM=;
+	s=arc-20240116; t=1706933670; c=relaxed/simple;
+	bh=OB5jSncuoq5FobWTSn6XJk7OjsYT9HATv2sZ4iSzVI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KZcg1VJNYHFfDMKJvN7sZc1ivb/M/92/VaYu8symSyhB2RX97w26W2UNg13aBpbL9GrChwKaOuy1c4FkjSqcQ/9cw+69yBzHuq+YuBPHDzVOLcYbwN9I/k4U/+vbMsWr8x+UcFp/2l6/V6XnnnGnnrpoDIBX9+rlP0gEcVH9NwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xl08UU5a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54508C43390;
-	Sat,  3 Feb 2024 04:18:12 +0000 (UTC)
+	 MIME-Version; b=nPITgXCCxZJpBHZh1gkutH7V12Gk1mBhHJkwqhcLo68H913t+FpcEB7U73Ua93zWX10AmR6QINLx20Hrf58+ua0lIaoOHIGSTMzEtNLJikqUH3qjfOB67llZptZecwV1xdul9Ov1IqW9bVzu86kbgud44nxV+WJdPv1k4z/Rkjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c5HLoU+e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D60C433C7;
+	Sat,  3 Feb 2024 04:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933892;
-	bh=Kn3lkkRntuqFrOwMPsyfUrL2y1wWejkqpPjR8ba0hVM=;
+	s=korg; t=1706933670;
+	bh=OB5jSncuoq5FobWTSn6XJk7OjsYT9HATv2sZ4iSzVI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xl08UU5aGyqyCR7Cw+bfZbLfxv8VfBc3sK47ev2cG/HtBhMCCefq3Q6EVT9hJKnd3
-	 zdjqMfFkJbLsk2UD9LBNNkYqWD4yqXeXOMbatpZyTWnencgtJLIpPCgis8nvCGmYLd
-	 qbjIPgw4C137Qudx2Ki8hIJDW+ArDezsFcjC1YRU=
+	b=c5HLoU+eLD3y+We6zDisHq4+fUETL9VTeTWtqr/lSblEOKM1fThovjgr4l6TQLO/Y
+	 XNCJJ34wHyvgXJArTBFTzXpats0tZVgG4exoEvt0/ggWS1Xd5ps8VIcwq9N2620QVh
+	 KGPO4ZrHHJtVDvAdBynpmFKkszfQae/UlRMV28qQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 238/353] leds: trigger: panic: Dont register panic notifier if creating the trigger failed
+Subject: [PATCH 6.6 259/322] perf: Fix the nr_addr_filters fix
 Date: Fri,  2 Feb 2024 20:05:56 -0800
-Message-ID: <20240203035411.206218900@linuxfoundation.org>
+Message-ID: <20240203035407.518561886@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
-References: <20240203035403.657508530@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit afacb21834bb02785ddb0c3ec197208803b74faa ]
+[ Upstream commit 388a1fb7da6aaa1970c7e2a7d7fcd983a87a8484 ]
 
-It doesn't make sense to register the panic notifier if creating the
-panic trigger failed.
+Thomas reported that commit 652ffc2104ec ("perf/core: Fix narrow
+startup race when creating the perf nr_addr_filters sysfs file") made
+the entire attribute group vanish, instead of only the nr_addr_filters
+attribute.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/8a61e229-5388-46c7-919a-4d18cc7362b2@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Additionally a stray return.
+
+Insufficient coffee was involved with both writing and merging the
+patch.
+
+Fixes: 652ffc2104ec ("perf/core: Fix narrow startup race when creating the perf nr_addr_filters sysfs file")
+Reported-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Thomas Richter <tmricht@linux.ibm.com>
+Link: https://lkml.kernel.org/r/20231122100756.GP8262@noisy.programming.kicks-ass.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/trigger/ledtrig-panic.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/events/core.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/leds/trigger/ledtrig-panic.c b/drivers/leds/trigger/ledtrig-panic.c
-index 64abf2e91608..5a6b21bfeb9a 100644
---- a/drivers/leds/trigger/ledtrig-panic.c
-+++ b/drivers/leds/trigger/ledtrig-panic.c
-@@ -64,10 +64,13 @@ static long led_panic_blink(int state)
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index f22c540350a1..fe543e7898f5 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -11422,12 +11422,10 @@ static umode_t pmu_dev_is_visible(struct kobject *kobj, struct attribute *a, int
+ 	struct device *dev = kobj_to_dev(kobj);
+ 	struct pmu *pmu = dev_get_drvdata(dev);
  
- static int __init ledtrig_panic_init(void)
- {
-+	led_trigger_register_simple("panic", &trigger);
-+	if (!trigger)
-+		return -ENOMEM;
-+
- 	atomic_notifier_chain_register(&panic_notifier_list,
- 				       &led_trigger_panic_nb);
+-	if (!pmu->nr_addr_filters)
++	if (n == 2 && !pmu->nr_addr_filters)
+ 		return 0;
  
--	led_trigger_register_simple("panic", &trigger);
- 	panic_blink = led_panic_blink;
- 	return 0;
+ 	return a->mode;
+-
+-	return 0;
  }
+ 
+ static struct attribute_group pmu_dev_attr_group = {
 -- 
 2.43.0
 
