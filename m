@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-17904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3953848093
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:12:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D07848311
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:29:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28AFA1F23495
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:12:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15FCC1F23E15
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361DF11720;
-	Sat,  3 Feb 2024 04:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4AD4F8BA;
+	Sat,  3 Feb 2024 04:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMzsuLAO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnKEuzIp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E7E101C1;
-	Sat,  3 Feb 2024 04:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96BC1CAA5;
+	Sat,  3 Feb 2024 04:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933401; cv=none; b=Q+TBne6lH582WTtI1n0ARyU2UpeA+uMW2jxZ7mwSLVuDVsTE3qEWwtuqznLmfSYTZCM9FPDrQoNIyiQCrO3AWmp03+l9jOWg70JqEAqhViJgemsfhBR+xbu46ExX3W6ARpupYhx8Ha3K3UmW1VE6cg559g6cS2mnipTKF9MZvkI=
+	t=1706933863; cv=none; b=NgnoVkfnf95K3jSlEMiEnGd+SoQiEePeKE0rhA87TRCbhdNs9weH4G05RCV1c9ZG4SpZgaEwAqMFtRRSq3zCQuKCsjWQeK7FOu12nrxeYmgqEWVHmwRtl+1X3h460CBnQk2pTyjRQgJxmgQ6ZN3dR2HiS5HA3AIIn4DbKESG7S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933401; c=relaxed/simple;
-	bh=nt9lmC/YR2BOOC5Hc4RcYflwuCd4Ue2YbQoQ+c/XV9g=;
+	s=arc-20240116; t=1706933863; c=relaxed/simple;
+	bh=tkwHYwTZWUrLt/WOAQ+MUOaTP3BXaU6pkeigFoURRus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rioKiVReHgxRUpNFvX0TIZ8kS7KUt7Kokgg2Y+4kq/28kRUtRJA/NdIKnm8CFhqlGmfnHDV28WSQQqp59Cuh96XWgWUTQchcWCSpN5zSX8z6O9QdWsNhEB8fsGvHDYUYfqyx71qV7FiNHacGfOCUq92JSpzAriszV337hVaGcyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMzsuLAO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F99DC433F1;
-	Sat,  3 Feb 2024 04:10:01 +0000 (UTC)
+	 MIME-Version; b=Mz0XUI59tijO9NZjf0Qblp/wynWh+86Ey+rBqiRUuaH+LJxIdiWPrxCT7aDW3ehJSd57sqXG+sFDBwsU1SCpDNzwi4/c/f1jyNYk8llNQMB0OqkT0p3XMEki/RDRnB6g3nHzS0W887bF2S2kdmmiLAuW/Qm9YAgRrJYv252zbrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnKEuzIp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B940C433F1;
+	Sat,  3 Feb 2024 04:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933401;
-	bh=nt9lmC/YR2BOOC5Hc4RcYflwuCd4Ue2YbQoQ+c/XV9g=;
+	s=korg; t=1706933863;
+	bh=tkwHYwTZWUrLt/WOAQ+MUOaTP3BXaU6pkeigFoURRus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OMzsuLAOMWq24jDqn4mlCRiirgwPd5hkWxlSt5u94+I8hqLu3Z1jJVC+pfcttjwuA
-	 qiMlUk+oA4rb7rDF8jVNJHpg5K050/2BHO51sZdXtGBa6cfvsv7bHMWs5cGncR1mjh
-	 kHeImM7q7RvfskuHxE3BYPbcTKDD2uGibJ8JpzbA=
+	b=mnKEuzIpqwPq8523NLhRHtNziiNhe5gMk3IjAC/vZvTtfjamWhVNyIMPu/hYFzGHn
+	 IOJt/0L/6tT5J+ncqR0SFSkYwGBrbHz0iZARke7r3xmAh7mA1d6ZBDYS3NuDsldYbe
+	 tCzUhxR/H6zGu9yw8fNQaSLtF5y3Cop1usc5DsAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Ilya Bakoulin <ilya.bakoulin@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/219] PCI: add INTEL_HDA_ARL to pci_ids.h
-Date: Fri,  2 Feb 2024 20:04:52 -0800
-Message-ID: <20240203035334.270526533@linuxfoundation.org>
+Subject: [PATCH 6.7 175/353] drm/amd/display: Fix MST PBN/X.Y value calculations
+Date: Fri,  2 Feb 2024 20:04:53 -0800
+Message-ID: <20240203035409.181389830@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Ilya Bakoulin <ilya.bakoulin@amd.com>
 
-[ Upstream commit 5ec42bf04d72fd6d0a6855810cc779e0ee31dfd7 ]
+[ Upstream commit 94bbf802efd0a8f13147d6664af6e653637340a8 ]
 
-The PCI ID insertion follows the increasing order in the table, but
-this hardware follows MTL (MeteorLake).
+Changing PBN calculation to be more in line with spec. We don't need to
+inflate PBN_NATIVE value by the 1.006 margin, since that is already
+taken care of in the get_pbn_per_slot function.
 
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20231204212710.185976-2-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Ilya Bakoulin <ilya.bakoulin@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pci_ids.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/link/link_dpms.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/pci_ids.h b/include/linux/pci_ids.h
-index b76ff0850618..73cc1e7dd15a 100644
---- a/include/linux/pci_ids.h
-+++ b/include/linux/pci_ids.h
-@@ -3000,6 +3000,7 @@
- #define PCI_DEVICE_ID_INTEL_82443GX_0	0x71a0
- #define PCI_DEVICE_ID_INTEL_82443GX_2	0x71a2
- #define PCI_DEVICE_ID_INTEL_82372FB_1	0x7601
-+#define PCI_DEVICE_ID_INTEL_HDA_ARL	0x7728
- #define PCI_DEVICE_ID_INTEL_SCH_LPC	0x8119
- #define PCI_DEVICE_ID_INTEL_SCH_IDE	0x811a
- #define PCI_DEVICE_ID_INTEL_E6XX_CU	0x8183
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+index 04d1ecd6e593..d28564b1b28a 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+@@ -1061,18 +1061,21 @@ static struct fixed31_32 get_pbn_from_bw_in_kbps(uint64_t kbps)
+ 	uint32_t denominator = 1;
+ 
+ 	/*
+-	 * margin 5300ppm + 300ppm ~ 0.6% as per spec, factor is 1.006
++	 * The 1.006 factor (margin 5300ppm + 300ppm ~ 0.6% as per spec) is not
++	 * required when determining PBN/time slot utilization on the link between
++	 * us and the branch, since that overhead is already accounted for in
++	 * the get_pbn_per_slot function.
++	 *
+ 	 * The unit of 54/64Mbytes/sec is an arbitrary unit chosen based on
+ 	 * common multiplier to render an integer PBN for all link rate/lane
+ 	 * counts combinations
+ 	 * calculate
+-	 * peak_kbps *= (1006/1000)
+ 	 * peak_kbps *= (64/54)
+-	 * peak_kbps *= 8    convert to bytes
++	 * peak_kbps /= (8 * 1000) convert to bytes
+ 	 */
+ 
+-	numerator = 64 * PEAK_FACTOR_X1000;
+-	denominator = 54 * 8 * 1000 * 1000;
++	numerator = 64;
++	denominator = 54 * 8 * 1000;
+ 	kbps *= numerator;
+ 	peak_kbps = dc_fixpt_from_fraction(kbps, denominator);
+ 
 -- 
 2.43.0
 
