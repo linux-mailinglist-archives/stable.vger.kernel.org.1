@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-17845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29614848057
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:10:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045E384818B
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D84E328BE50
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:10:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 617981F23247
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27772FBEE;
-	Sat,  3 Feb 2024 04:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A091611C8B;
+	Sat,  3 Feb 2024 04:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkIpg5C3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5PLmvHu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F4A125BF;
-	Sat,  3 Feb 2024 04:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6C910A09;
+	Sat,  3 Feb 2024 04:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933357; cv=none; b=tqN6OHXdMUdoOXd+wZObhylm/20+VjDYfl1ZLBK0nnCn01NLiL2iQgJoRE+eVnB8d2waq2EPW27Mt/9sMZKqPfDJv1KyTKejHIYhfqVJjbV4fVePQkOKIas3MuQReCr3hgG3b0LUVK+cXNL9QUad0QobMPPcbuYKcTWzkRsE/BE=
+	t=1706933577; cv=none; b=WNZClKDrwgwemqBqMdGjWBd/Gz7FFmmk2QNjAk1tAk+LtjxSxSNlaVVB7jfrmvbBWcxeW6xrkhgzG3V5tSrxwvsGjqTTOr+pWjTNe7IFijSbjJG3riZPbMNID9hl5ldT3VlE8OiotZc9/UUb2h1eQO2m/AKxxK8dMlka+zfRe5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933357; c=relaxed/simple;
-	bh=j/ma5VLHhx4LFml5JW/K6MPLyAeftvP2btc20ntCu0c=;
+	s=arc-20240116; t=1706933577; c=relaxed/simple;
+	bh=NOdxeJu9orPyAO2KV9daU7o96hPIqkIUXLZGsAftCsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lmoSsp2UrmwpM3jNNmq1q3RmBFmZUu5B/t1HhFHCQZ5R7AfimHUmxbfGrGtC8glXVqFSxIShSafWd8/Qwa5lue6w8s2P4oxcZ+REOPuCR9fo/mJKOp6nV4p4C0P5WD+9RCw8VouV37xDVfzDkCny6Ty1QI7kp05lW+ABtQ4tXrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkIpg5C3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 454D4C433C7;
-	Sat,  3 Feb 2024 04:09:17 +0000 (UTC)
+	 MIME-Version; b=T3FgVkH84hbcwoZ3JNabZtmv8jvUUTSP/aJAsUsR2NPNDFLpyX85iTl2ekKxRFku3aCxaqM7/TKI3wVNixol6nTgBUKSzbd4FmZLLQjpl6ckEzocHKmPNI7xvV004aTYWSDQ3rbK6xGEDF1PMULcFMckybkExnDhLAtqoncLGQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5PLmvHu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29657C433C7;
+	Sat,  3 Feb 2024 04:12:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933357;
-	bh=j/ma5VLHhx4LFml5JW/K6MPLyAeftvP2btc20ntCu0c=;
+	s=korg; t=1706933577;
+	bh=NOdxeJu9orPyAO2KV9daU7o96hPIqkIUXLZGsAftCsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xkIpg5C3b6Zl4Py17MS6RGcVDFDZ42iZN9id787liCDe3wYHO+NtlAhGf1/uphF7O
-	 VCcJxvCWAhUvdvS0Rg0jFyYV48bzhzis91RmVLpEgsLzCAaurAWf9Lv8zSdvQzDIX8
-	 pyzIeTpAu7HUlZRQFTTvbIHmDgZ4vx5jq08kbWZY=
+	b=q5PLmvHuwGQ7nNX8H3OQ/yrxgS3RKmAFZQIquYMZZR3uF4UmIwTzLhBSgywWo5eOL
+	 uep1RqTxWxO/AykMYIbSfY0f25239mtmOgoTBsN/p0aGcYC6O4kX4Jga5csfinUnX8
+	 KFWREnOXdPwHFGhx4r2KIlGdtDG+j9qKLwKcy1Cc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mao Jinlong <quic_jinlmao@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/219] ARM: dts: imx7s: Fix nand-controller #size-cells
-Date: Fri,  2 Feb 2024 20:03:53 -0800
-Message-ID: <20240203035325.382724203@linuxfoundation.org>
+Subject: [PATCH 6.6 137/322] arm64: dts: qcom: Fix coresight warnings in in-ports and out-ports
+Date: Fri,  2 Feb 2024 20:03:54 -0800
+Message-ID: <20240203035403.577094943@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
-References: <20240203035317.354186483@linuxfoundation.org>
+In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
+References: <20240203035359.041730947@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Mao Jinlong <quic_jinlmao@quicinc.com>
 
-[ Upstream commit 4aadb841ed49bada1415c48c44d21f5b69e01299 ]
+[ Upstream commit bdb6339fd46b8702ea7411b0b414587b86a40562 ]
 
-nand-controller.yaml bindings says #size-cells shall be set to 0.
-Fixes the dtbs_check warning:
-arch/arm/boot/dts/nxp/imx/imx7s-mba7.dtb: nand-controller@33002000:
- #size-cells:0:0: 0 was expected
-  from schema $id: http://devicetree.org/schemas/mtd/gpmi-nand.yaml#
+When a node is only one in port or one out port, address-cells and
+size-cells are not required in in-ports and out-ports. And the number
+and reg of the port need to be removed.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Mao Jinlong <quic_jinlmao@quicinc.com>
+Link: https://lore.kernel.org/r/20231210072633.4243-5-quic_jinlmao@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx7s.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi |  5 +----
+ arch/arm64/boot/dts/qcom/sm8150.dtsi |  5 +----
+ arch/arm64/boot/dts/qcom/sm8250.dtsi | 24 ++++--------------------
+ 3 files changed, 6 insertions(+), 28 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
-index 44085ef27977..4b23630fc738 100644
---- a/arch/arm/boot/dts/imx7s.dtsi
-+++ b/arch/arm/boot/dts/imx7s.dtsi
-@@ -1283,7 +1283,7 @@
- 		gpmi: nand-controller@33002000{
- 			compatible = "fsl,imx7d-gpmi-nand";
- 			#address-cells = <1>;
--			#size-cells = <1>;
-+			#size-cells = <0>;
- 			reg = <0x33002000 0x2000>, <0x33004000 0x4000>;
- 			reg-names = "gpmi-nand", "bch";
- 			interrupts = <GIC_SPI 14 IRQ_TYPE_LEVEL_HIGH>;
+diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+index 63f6515692e8..234d7875cd8e 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -3555,11 +3555,8 @@
+ 			};
+ 
+ 			in-ports {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+ 
+-				port@1 {
+-					reg = <1>;
++				port {
+ 					etf_in: endpoint {
+ 						remote-endpoint =
+ 						  <&merge_funnel_out>;
+diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+index f7e35e220018..26b6d84548a5 100644
+--- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+@@ -2973,11 +2973,8 @@
+ 			};
+ 
+ 			in-ports {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+ 
+-				port@1 {
+-					reg = <1>;
++				port {
+ 					replicator1_in: endpoint {
+ 						remote-endpoint = <&replicator_out1>;
+ 					};
+diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+index 1a98481d0c7f..64a656dcfa1f 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -2830,11 +2830,8 @@
+ 			clock-names = "apb_pclk";
+ 
+ 			out-ports {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+ 
+-				port@0 {
+-					reg = <0>;
++				port {
+ 					tpda_out_funnel_qatb: endpoint {
+ 						remote-endpoint = <&funnel_qatb_in_tpda>;
+ 					};
+@@ -2877,11 +2874,7 @@
+ 			};
+ 
+ 			in-ports {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-
+-				port@0 {
+-					reg = <0>;
++				port {
+ 					funnel_qatb_in_tpda: endpoint {
+ 						remote-endpoint = <&tpda_out_funnel_qatb>;
+ 					};
+@@ -3090,11 +3083,8 @@
+ 			};
+ 
+ 			in-ports {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+ 
+-				port@0 {
+-					reg = <0>;
++				port {
+ 					etf_in_funnel_swao_out: endpoint {
+ 						remote-endpoint = <&funnel_swao_out_etf>;
+ 					};
+@@ -3178,8 +3168,6 @@
+ 			clock-names = "apb_pclk";
+ 
+ 			out-ports {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+ 				port {
+ 					tpdm_mm_out_tpda9: endpoint {
+ 						remote-endpoint = <&tpda_9_in_tpdm_mm>;
+@@ -3445,11 +3433,7 @@
+ 			};
+ 
+ 			in-ports {
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-
+-				port@0 {
+-					reg = <0>;
++				port {
+ 					funnel_apss_merg_in_funnel_apss: endpoint {
+ 					remote-endpoint = <&funnel_apss_out_funnel_apss_merg>;
+ 					};
 -- 
 2.43.0
 
