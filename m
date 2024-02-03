@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-18251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-17957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA928481FB
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:22:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3723B8480CC
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:14:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1C9A1C20D2D
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:22:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 697151C2413D
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3011C18E1D;
-	Sat,  3 Feb 2024 04:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA8E18E2F;
+	Sat,  3 Feb 2024 04:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WY4MfbzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKJhx1/6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF53D43ACB;
-	Sat,  3 Feb 2024 04:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF1B18E27;
+	Sat,  3 Feb 2024 04:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933660; cv=none; b=gDlMo1lo3SWbh8EPsU3acUbTZWwXefVHiPcYhk7TNji628iuKqCnho+nOsyvioyrVHuombrA+FLwLaCwlFvTg/2FcsGhNvYBpMS5SrmDVqsdh7bpi+9putXc0tGybjKR7KyWs0Cwru0aYJ31NpZv48NnAz8XD4i+e2VOvjxyLMo=
+	t=1706933441; cv=none; b=N6SiqxjHrp8pK9eQ1yT2Oo0+/eibvApY6ZkbP1ViKa4uhBHfeGQ5FxCvEatY+5iwCgf0yr0mnqBAwqj7QHIk+HIa24S3sZpjq2U9UICa7s8blXpZEM8Uz96yaEutC7HDuRA0vm/gNRIhgsK6JXVIZu/wyuQljdb/JjK+RYbUXtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933660; c=relaxed/simple;
-	bh=bwtWifbC9LNP+NwhVtjklSCRWkmMK3dENrKv8NHV36A=;
+	s=arc-20240116; t=1706933441; c=relaxed/simple;
+	bh=aa0+OG5WSjHmmqt0/NXmAmUGr6DwvxeC8aEvmwouZak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pCj6Y9a70iUrhCHWDMAHSeYJn1zgk7U9S9/PkidGMinSENDTqjojYSfdZp/1U4YzikxQV0dLlxd1ce/Q8JIIfUw1cU7EAzJnCKmf8UgokULX2+QvgO7eKrEV/0hDjIuRHwarQgicSmSWNAPEbkHxrSFR0p6LQXd66R8lI+HTz1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WY4MfbzM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898B8C433F1;
-	Sat,  3 Feb 2024 04:14:19 +0000 (UTC)
+	 MIME-Version; b=KPhrlieG+0I7NmyxPD35MSPZ4dPPy+y2Qh5xLIXSqeoVWFuNzsOuV0iZrQTuJodcCdqVXM1XQSazkI/ApHZVVsygTPE3+NuE5gYXQOPG5N6agom/GDovSaxaQ+LlxklUsQ7P/o2bjOiT3ENe2K23X26l/RoSn2iofJ9rEHbw+uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKJhx1/6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75BC2C43390;
+	Sat,  3 Feb 2024 04:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933659;
-	bh=bwtWifbC9LNP+NwhVtjklSCRWkmMK3dENrKv8NHV36A=;
+	s=korg; t=1706933441;
+	bh=aa0+OG5WSjHmmqt0/NXmAmUGr6DwvxeC8aEvmwouZak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WY4MfbzM5N6UUrxRT/E+Pq2RlX03E8lUNFesTanT1dVdpdOEEhtwcfw27ydZmPwxd
-	 AfnB5jciWzV37txJGg3uFSqqS8DRKmxsT19LyZzAazeEWuOaqCJ8ZEAVlEDyjKr9jD
-	 Ftm244D23XEsG2YCp9NqbNZJPtYWwxq7rubbKMX0=
+	b=EKJhx1/6R/74/dvtYUhkkaDDkVDjBfbVnqYBdl/o2qRuY0WudsmSmHpHTjbmDHMxy
+	 /g/6rES1UKNYMfif22VzgyB+iEScqlR5oYMWXMgB2bT7/EXwaNvW9dqNFvSypqNXOh
+	 GemPW1l89+jR/d6MmLfeLjMfZZ1gfcB9iHKaDg/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Felix Kuehling <felix.kuehling@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 247/322] drm/amdkfd: Fix lock dependency warning with srcu
-Date: Fri,  2 Feb 2024 20:05:44 -0800
-Message-ID: <20240203035407.153279378@linuxfoundation.org>
+Subject: [PATCH 6.1 172/219] drm/amdkfd: Fix lock dependency warning with srcu
+Date: Fri,  2 Feb 2024 20:05:45 -0800
+Message-ID: <20240203035340.846015345@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035317.354186483@linuxfoundation.org>
+References: <20240203035317.354186483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -146,10 +146,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index a4c911fa1675..b51224a85a38 100644
+index 4ecc4be1a910..5188c4d2e7c0 100644
 --- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
 +++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -2343,8 +2343,10 @@ static void svm_range_deferred_list_work(struct work_struct *work)
+@@ -2241,8 +2241,10 @@ static void svm_range_deferred_list_work(struct work_struct *work)
  		mutex_unlock(&svms->lock);
  		mmap_write_unlock(mm);
  
