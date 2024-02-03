@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F44848188
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:19:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C088482C1
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 05:27:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EFD3281F7F
-	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:19:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43EBB1C21379
+	for <lists+stable@lfdr.de>; Sat,  3 Feb 2024 04:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5B82C69A;
-	Sat,  3 Feb 2024 04:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9951BF3A;
+	Sat,  3 Feb 2024 04:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06xjuoYF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GSvSXrP9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D5D2C694;
-	Sat,  3 Feb 2024 04:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF5D4DA18;
+	Sat,  3 Feb 2024 04:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706933575; cv=none; b=IJUhWNayJTbApMJW+3BvR4bh9gYIM0F9A/gAMnQqhj0Leqgb98CzYIEP8AnX24/uDFVuNbe+Igdkxwg1jD4A97dKeIQmUKG9qXcsjpLwWNvUJETEUpcTNRqVhDBKLAWoRc6o3v/RDrpfSodn+MYkl2qbtNIKAr7LfirYvKSC2ZY=
+	t=1706933805; cv=none; b=Y5O31YWbo6tzrGff/qNF0SkIUQOdRjMUB77LRHMb23hW0+iPFwwzcAO2+xqmBCPkWw2Xow3xaND03i496CS4HsGnFOF2CspqMOu7hTaeVxkXyhJPhF7oAlNtJsOc6PsH1txsn9XULDbeDuhrSQWW9VwliohPrn+0V59yX/O841Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706933575; c=relaxed/simple;
-	bh=WBEBi24HQfr6O4mdtrEI/BQASxXqv9bpYcT8yo6SPlA=;
+	s=arc-20240116; t=1706933805; c=relaxed/simple;
+	bh=N9m+UH/nJ9hf3PJ6J1iiybndxyerGOGTW4q9xmAr+hI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FYOEnQ/TIC6MqV0DaKrWO5pyc8rak/hkJnhaToNDwlpNooWlOVGFqhsnSUOLCz4Ai3IYcNnEc9tVCFCd2f8VxsVzPDTJzeAodw1AC5CLWbnCFZYn8UyYORkHDYTDNOgxhrsUwPmYebB1muaKlNP2rneZLM1ldmI8gQhVqdiAE8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06xjuoYF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AFFC43394;
-	Sat,  3 Feb 2024 04:12:54 +0000 (UTC)
+	 MIME-Version; b=E7Emuq0QYublbsl7usIuEVgnSK6HUjZfuIhsHTAUd2/1v/V8yksBIKhbOpGviHV9AV0wSg6ukMLZE5VvTWOAw/LvXyHirjwB89/tx05FN0DZBkvueMFhOY573y4STDDM6zQOamFeBlrOsxAUF+i/wwpDp7TfQFRMnud/BV2BbOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GSvSXrP9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3546FC433F1;
+	Sat,  3 Feb 2024 04:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706933575;
-	bh=WBEBi24HQfr6O4mdtrEI/BQASxXqv9bpYcT8yo6SPlA=;
+	s=korg; t=1706933805;
+	bh=N9m+UH/nJ9hf3PJ6J1iiybndxyerGOGTW4q9xmAr+hI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=06xjuoYFK76LXA9AOEKX9gjv+er7E2DjexPH9965Q1OD45tu2+pO0z3HjA9dO+UXe
-	 /xdvMJpCDMyWmgiI57A9OhvFBJywZqX9Al6CyIDvqv+BiGl8qXSphI67nkDTBbCbJC
-	 htFk4ey6PMxpbh1693jy+ZlLiM0xKfPvqhxJFCK8=
+	b=GSvSXrP9C0F6oohB4NH/wCajARCgqKkHYfr1rwl0sDEgq5GEUmhc4csHYa7syvK/Z
+	 fC+BuZXIb1PsKdPmucliukXzcnopv4V0NJ1s0GYyJfaSga+FDEqYsW8nuy1chVmP6j
+	 uxryhJgP1yQXWKGH3ebiTG3Sbp41vLkUEMRPj2ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nia Espera <nespera@igalia.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Sumit Saxena <sumit.saxena@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/322] arm64: dts: qcom: sm8350: Fix remoteproc interrupt type
-Date: Fri,  2 Feb 2024 20:03:21 -0800
-Message-ID: <20240203035402.511264352@linuxfoundation.org>
+Subject: [PATCH 6.7 084/353] scsi: mpi3mr: Add support for SAS5116 PCI IDs
+Date: Fri,  2 Feb 2024 20:03:22 -0800
+Message-ID: <20240203035406.466421604@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240203035359.041730947@linuxfoundation.org>
-References: <20240203035359.041730947@linuxfoundation.org>
+In-Reply-To: <20240203035403.657508530@linuxfoundation.org>
+References: <20240203035403.657508530@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nia Espera <nespera@igalia.com>
+From: Sumit Saxena <sumit.saxena@broadcom.com>
 
-[ Upstream commit 54ee322f845c7f25fbf6e43e11147b6cae8eff56 ]
+[ Upstream commit 6fa21eab82be57a3ad2470fac27b982793805336 ]
 
-In a similar vein to
-https://lore.kernel.org/lkml/20220530080842.37024-3-manivannan.sadhasivam@linaro.org/,
-the remote processors on sm8350 fail to initialize with the 'correct'
-(i.e., specified in downstream) IRQ type. Change this to EDGE_RISING.
+Add support for Broadcom's SAS5116 IO/RAID controllers PCI IDs.
 
-Signed-off-by: Nia Espera <nespera@igalia.com>
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231111-nia-sm8350-for-upstream-v4-4-3a638b02eea5@igalia.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
+Link: https://lore.kernel.org/r/20231123160132.4155-2-sumit.saxena@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_os.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-index a7cf506f24b6..5ed464c37422 100644
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -2020,7 +2020,7 @@
- 			compatible = "qcom,sm8350-mpss-pas";
- 			reg = <0x0 0x04080000 0x0 0x4040>;
- 
--			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_LEVEL_HIGH>,
-+			interrupts-extended = <&intc GIC_SPI 264 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_modem_in 0 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_modem_in 1 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_modem_in 2 IRQ_TYPE_EDGE_RISING>,
-@@ -2062,7 +2062,7 @@
- 			compatible = "qcom,sm8350-slpi-pas";
- 			reg = <0 0x05c00000 0 0x4000>;
- 
--			interrupts-extended = <&pdc 9 IRQ_TYPE_LEVEL_HIGH>,
-+			interrupts-extended = <&pdc 9 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_slpi_in 0 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_slpi_in 1 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_slpi_in 2 IRQ_TYPE_EDGE_RISING>,
-@@ -3206,7 +3206,7 @@
- 			compatible = "qcom,sm8350-adsp-pas";
- 			reg = <0 0x17300000 0 0x100>;
- 
--			interrupts-extended = <&pdc 6 IRQ_TYPE_LEVEL_HIGH>,
-+			interrupts-extended = <&pdc 6 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_adsp_in 0 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_adsp_in 1 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_adsp_in 2 IRQ_TYPE_EDGE_RISING>,
-@@ -3511,7 +3511,7 @@
- 			compatible = "qcom,sm8350-cdsp-pas";
- 			reg = <0 0x98900000 0 0x1400000>;
- 
--			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_LEVEL_HIGH>,
-+			interrupts-extended = <&intc GIC_SPI 578 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp_in 0 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp_in 1 IRQ_TYPE_EDGE_RISING>,
- 					      <&smp2p_cdsp_in 2 IRQ_TYPE_EDGE_RISING>,
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
+index e2f2c205df71..94adb0b1afc9 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -5441,6 +5441,14 @@ static const struct pci_device_id mpi3mr_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(MPI3_MFGPAGE_VENDORID_BROADCOM,
+ 		    MPI3_MFGPAGE_DEVID_SAS4116, PCI_ANY_ID, PCI_ANY_ID)
+ 	},
++	{
++		PCI_DEVICE_SUB(MPI3_MFGPAGE_VENDORID_BROADCOM,
++		    MPI3_MFGPAGE_DEVID_SAS5116_MPI, PCI_ANY_ID, PCI_ANY_ID)
++	},
++	{
++		PCI_DEVICE_SUB(MPI3_MFGPAGE_VENDORID_BROADCOM,
++		    MPI3_MFGPAGE_DEVID_SAS5116_MPI_MGMT, PCI_ANY_ID, PCI_ANY_ID)
++	},
+ 	{ 0 }
+ };
+ MODULE_DEVICE_TABLE(pci, mpi3mr_pci_id_table);
 -- 
 2.43.0
 
