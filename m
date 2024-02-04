@@ -1,174 +1,128 @@
-Return-Path: <stable+bounces-18762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799A5848B0F
-	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 05:43:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C44D848B94
+	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 07:51:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABD7FB22A01
-	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 04:43:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F30F1285140
+	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 06:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561F21C17;
-	Sun,  4 Feb 2024 04:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990AD7493;
+	Sun,  4 Feb 2024 06:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IB5bylwV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j6jxkDyE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDD07465;
-	Sun,  4 Feb 2024 04:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 062657491;
+	Sun,  4 Feb 2024 06:51:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707021807; cv=none; b=he9gh9a9JuqFvI9/Pig7vQ1mHe7QoCPFYHVIe7A7bg5zKJ2azXyh6sbLHSKmjVVUOK0f+nCHjke4cwvW5tu/ViYQVO4sueraML5UOGM8FbAvmJFYaysdBDdhXF2fwcHQQYo3QZc2SHcQHyrfQ9I0cdc9U3oVseZkCobUTdtjWHU=
+	t=1707029495; cv=none; b=AJVbWA0zJJrUeZ85QmSe5J4Ly4f2x1yVBK4SLmjmtBHuVLOahe5cxmiUPPcvS/SnOXxotoF9Y3bzmodBy8Zt6Fbq/O5uIJJXqLJuidTNxr430+TWwIlqOQc+EjAYSKJQW7qpA3yPJRgGorD0RdN1NYbWtnh7Q1UoSpj/KmuZRqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707021807; c=relaxed/simple;
-	bh=MhG1u2KwcRXQB60CoVgu2vlfbo2nYRBz9tNq8Go3+YA=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=TfGk9aSgZnDFiJxxJ7uUteUHPtZk/lsmX3b8qtDy7u0eCAM+5y4VwwpMAQ3IdWMMdhsboe1MlAk4y7MWFIyvps3W5woWe5UCxVdlRyhVUZ6K3xwL40Zu9kiTmzRuNuTGf6mo005KevgZktTmK+lij1P221DHIGlWG+vvjWurkfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IB5bylwV; arc=none smtp.client-ip=209.85.208.52
+	s=arc-20240116; t=1707029495; c=relaxed/simple;
+	bh=TWYStyek2yVFcxjdK1fNZqAcriCNEswKCVwF/MvulMI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TdVd0MNXwl7yNv9HTtIpG3NQkwXXWxk0ICNX6IjlI2UXBF1toC6ZK1MMZBG9ImDGQ+WHbBP0pgN0gin4dTrv2DWHV3pw96XFgCv1gGlwJs1xg+NmvKQ2bw5ReBHsqU/fE1Tsmr+lKrVBG0TqyD3/8uMejbpg9f+Q7PvmNEnr/FA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j6jxkDyE; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5600f79607eso1257214a12.0;
-        Sat, 03 Feb 2024 20:43:25 -0800 (PST)
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1d51ba18e1bso31599195ad.0;
+        Sat, 03 Feb 2024 22:51:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707021803; x=1707626603; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=q3kBtxxL4VO3WYdtIvm8IZkFAj2RFAPSHZXFLvTp7QI=;
-        b=IB5bylwVdSd8btI/+C7xZFfkOEP3VXJcgUxZArKHwbB89Q5I9JAnxkwTB7Z0ARTiwM
-         R0hRNtHmfocc1cdeZdXl5gCdC1nuAU96+DRzok9rMhMfQA23VYzCjL3NkcbdebiJJdP/
-         skpqZ1MLWYPzCQm+iZy/zlrtXCF30wDFyRfmLSkmhDdRBwVO9ELqe3X1aSEiYN/1FkLD
-         Z/KRa7fTImYgKE19y0/UZmvCqGPPJmN6RomRHarpfDGJ35X31bC+IATUKIH1MZLANTfm
-         ztjTwZxGk0eYvUnK2nVq7FgUQtlnQQB0TcZDU1LugglXVVIM/CDi6RArN+07ccrjRNmr
-         DonQ==
+        d=gmail.com; s=20230601; t=1707029493; x=1707634293; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=806upVwJJIqrdHZYBEdu7UNncPOKx7M8gRsklLDCWtw=;
+        b=j6jxkDyEIac4KBjUrCDP6i4CAziYLHfUw/vIMSm6YZxaRa5rDei4ls74DRIN5pE6Md
+         Wc/wfU06LUiFFS32IauSaBSxMtoNVjVp6oz1e27DJX5uH/n4MxrUjTvgGCNaa27284iT
+         156o0E8ECtGwliqdGdMtfFsOHJei8O1OZ47w7NTxxsm5yyNxomyg6UuL+A5W25amQf6b
+         6E0t+cOYHT7kwrK3tAXH2qTmWHU6Kv8F8tVOzI2TSBOIPV0lGMIHanFaEXxMSDZgBpA2
+         dJtOIUk12zgnebQKn68/CBLaf7evwZkytBMq2CUjMSsPlpk1qXA7XdLDGp93IgMzsu5V
+         xsCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707021803; x=1707626603;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q3kBtxxL4VO3WYdtIvm8IZkFAj2RFAPSHZXFLvTp7QI=;
-        b=AfUpmSef/nvQteMoU0k2AgQBO1OQHgxlfKoLMjiXD33/Yk8JHVkyn1HIHilhi2vRwK
-         Iz5gXaa/0D4CI613Nph5ECqk/DWFb51N8MnrH+LWQh1izK58HjjunxIU18rWVvHPE0AG
-         P1jzHn78XB3tarPJrqMohP9TBiREYfuxIp9xwfs0b2ZQdJsTJkaLlyTOU/JzKzOOCmHE
-         yyUA0Ujx1K88UvP8LPMgEAH4qCaSEhvFT40JZdsYGJMAP1MEwZTsRNWkCLdGvP7yCqzI
-         vKCZU6dbLfKsGe2Rh4YJh9HSyPhMvlHSVoUvT8BMT96Tmzez0aNLLCJe9lpRyEAjMwVE
-         tytA==
-X-Gm-Message-State: AOJu0Yw8YCaT39T4ciFYF5Yt3RpgG/gtBWwbiz8udWXuHwE6VwSa6Ddv
-	C79IcJD4DSm7exYcryioIB0+x6hV9QSqvc8dlXPFsZ+rLIbF0rHUJ1828x4wx5EwYjrxghFL1K8
-	Hcm21EFEJeoa41uJV9e5f6loxjut6vThfRTMARQ==
-X-Google-Smtp-Source: AGHT+IGVfFEqhuH2lesZXMAW+oN7+ske2gC+okX7GaHk6yZD6onVD0CaPVwFwaK9EXd9cSmAgUVw1VgwYCJ3oEMoNK4=
-X-Received: by 2002:a05:6402:31a2:b0:560:56a3:6ef4 with SMTP id
- dj2-20020a05640231a200b0056056a36ef4mr44606edb.26.1707021802937; Sat, 03 Feb
- 2024 20:43:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707029493; x=1707634293;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=806upVwJJIqrdHZYBEdu7UNncPOKx7M8gRsklLDCWtw=;
+        b=wVNoMl7K46i+nV52rVaPnDGLilqGy03fJw2m+tp+OTy2FgrEXcSFzzpGMlNMfD1WkM
+         TkQiCL3QaR4SLHgjG2f5f7dDDChrTEkPcP3k8N3SP1vyRCdCEGqZtz4euv9HMi54vy1d
+         B9XrdVM6wWeOoEQY+ApghfEhFbMgD24wQf1MmTa5c9HAuL0WLiIZI5heBY/4ICLeO/5R
+         qWT6GT5QsjshHKKkjkd4Is/VHskyXmpd4Rr6lyCm3n/fTnSz0VIJLDPQl4q2y/dn/6zf
+         j3syFUJR4WQT9Bw+CUmOtOWRRA3kaZHCZVdXk4jKAzJl/cKYBlA9QxqGb6Zwx1bR1PTp
+         KRyQ==
+X-Gm-Message-State: AOJu0YwDGzrkO34rNClt96SPLJO0cU/A9uUla2XOYlaH73CqIW5R+Chh
+	LlgxvRFFSZ1U1CQyq696xucIlQrsNYZMwh9cLNsklkHE4CLArwgB
+X-Google-Smtp-Source: AGHT+IGk/vsXMjb+tMFduJVmtfptw5PVcP57IfsIzRz+/YTnLvCX0NAD1/hLjsceQNZjqKmRTY9lkQ==
+X-Received: by 2002:a17:903:1cf:b0:1d9:8b4f:909e with SMTP id e15-20020a17090301cf00b001d98b4f909emr4233496plh.35.1707029493167;
+        Sat, 03 Feb 2024 22:51:33 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCUPUiSTLGMAbftianwgz4yYTknTZoq4FcECIUAbj0CjVv+k6+ciAQmNSPsrorUm+hDz5JkfOzYZ/wDPDhAYo9q3SPdNdh40QWKaIz0cmN3Bw2bllRKFbNYLa33QLJcJL89KyxQeqaHCc7fjVfeMa+Qfh8/OKzAtbTr4PrTOkz3fpSLHZcStMhROybWPe3qMU/ivVz+PXg248OKIXqDqJ2DKjZQTwiCsf/ICidO+LVAQVaN5swcAD84d3hyX88qTMQB2BYikZZ5oBI4F782XjUiftUzm07wiNZ9EahcZQ/Xa8RCynKHgSd/V6vk2uoPHz+FbhjwJzVgq4nkU8SUOLQLUpw0coNpbe5TRLf56TYBPz/acuT8L/JIbx5ezQ/obtaoONxddIPkuiHHIVmjMCb+GpD2kPIlXEwyBbKDAw7oHvPquMvqh++jgSJo65HKbyDKXlKmxiBH/S9tDCmvX9pCOlGrxu9bwyNFbKUWA6/OiJ1wXyOqc+FNDpuahx6VR/ubibe/NpJaTPZNvGy4eR6/EavX7iUsJO7LtMtvYjA==
+Received: from archie.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id h12-20020a170902f7cc00b001d8ffe741basm4125133plw.36.2024.02.03.22.51.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Feb 2024 22:51:32 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id 5D5441846855D; Sun,  4 Feb 2024 13:51:28 +0700 (WIB)
+Date: Sun, 4 Feb 2024 13:51:28 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.6 000/326] 6.6.16-rc2 review
+Message-ID: <Zb8z8OBV0CI8ZSVB@archie.me>
+References: <20240203174810.768708706@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: =?UTF-8?B?0KHRgtCw0YEg0J3QuNGH0LjQv9C+0YDQvtCy0LjRhw==?= <stasn77@gmail.com>
-Date: Sun, 4 Feb 2024 07:43:24 +0300
-Message-ID: <CAH37n11s_8qjBaDrao3PKct4FriCWNXHWBBHe-ddMYHSw4wK0Q@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/326] 6.6.16-rc2 review
-To: stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-
-After trying again to create the ipset with timeout option I get a kernel panic
-# ipset create throttled-ips hash:ip family inet hashsize 1024 maxelem
-100000 timeout 600 bucketsize 12 initval 0x22b96e3a
-ipset v7.20: Set cannot be created: set with the same name already exists
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="YW6O7mIOwnm0dUVX"
+Content-Disposition: inline
+In-Reply-To: <20240203174810.768708706@linuxfoundation.org>
 
 
-[Sat Feb  3 21:51:43 2024] Kernel 6.6.16- started...
-[Sat Feb  3 21:51:44 2024] ------------[ cut here ]------------
-[Sat Feb  3 21:51:44 2024] WARNING: CPU: 0 PID: 0 at
-__run_timers.part.0+0x45d/0x570
-[Sat Feb  3 21:51:44 2024] Modules linked in: netconsole configfs
-xt_multiport xt_HL xt_TCPMSS xt_tcpudp xt_comment xt_mark
-iptable_mangle iptable_raw iptable_filter xt_MASQUERADE xt_set
-iptable_nat nfnetlink_cttimeout nfnetlink_log ip_set_list_set
-ip_set_hash_ipport ip_set_hash_ip ip_set_hash_netiface ip_set_hash_net
-ip_set nf_nat_sip nf_nat_ftp nf_nat_tftp nf_nat_irc nf_nat_amanda
-nf_nat_h323 nf_nat_snmp_basic asn1_decoder nf_nat_pptp nf_nat
-nf_conntrack_irc nf_conntrack_snmp nf_conntrack_netbios_ns
-nf_conntrack_broadcast nf_conntrack_sip nf_conntrack_tftp
-nf_conntrack_pptp ts_kmp nf_conntrack_amanda nf_conntrack_sane
-nf_conntrack_h323 xt_conntrack nf_conntrack_ftp xt_dns(O)
-nf_conntrack_netlink nfnetlink ipt_NETFLOW(O) ip6_tables ip_tables
-xt_ndpi(O) xt_RATELIMIT(O) nf_conntrack_rtcache nf_conntrack
-nf_defrag_ipv6 nf_defrag_ipv4 libcrc32c crc32c_generic crc32c_intel
-x_tables vrf sha1_ssse3 sha1_generic hmac ipv6 ixgbevf ixgbe mdio
-mdio_devres libphy ifb virtio_rng rng_core button
-[Sat Feb  3 21:51:44 2024] CPU: 0 PID: 0 Comm: swapper/0 Tainted: G
-       O       6.6.16- #12
-[Sat Feb  3 21:51:44 2024] RIP: 0010:__run_timers.part.0+0x45d/0x570
-[Sat Feb  3 21:51:44 2024] Code: 21 0d f5 7e 89 ca 89 c8 81 e2 00 00
-00 80 44 09 f2 65 0f b1 15 0c 0d f5 7e 39 c1 75 e0 48 89 df e8 38 b0
-48 00 e9 53 ff ff ff <0f> 0b e9 4c ff ff ff 44 89 f2 4c 89 fe 48 c7 c7
-e0 9a 8f 81 c6 05
-[Sat Feb  3 21:51:44 2024] RSP: 0018:ffff88807d805f20 EFLAGS: 00010046
-[Sat Feb  3 21:51:44 2024] RAX: 0000000000000000 RBX: ffff88807d81c9c0
-RCX: ffff88807d805f20
-[Sat Feb  3 21:51:44 2024] RDX: ffff888003207768 RSI: 00000000000000a5
-RDI: ffff88807d81c9e8
-[Sat Feb  3 21:51:44 2024] RBP: ffff88807d805f20 R08: 0000000003ffeee2
-R09: 7fffffffffffffff
-[Sat Feb  3 21:51:44 2024] R10: ffffffff81a050c0 R11: 0000000000000082
-R12: dead000000000122
-[Sat Feb  3 21:51:44 2024] R13: 0000000000000000 R14: ffffffff81a050c8
-R15: 0000000000000000
-[Sat Feb  3 21:51:44 2024] FS:  0000000000000000(0000)
-GS:ffff88807d800000(0000) knlGS:0000000000000000
-[Sat Feb  3 21:51:44 2024] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[Sat Feb  3 21:51:44 2024] CR2: 00007fb98e5e95b0 CR3: 0000000001a12003
-CR4: 00000000001706b0
-[Sat Feb  3 21:51:44 2024] Call Trace:
-[Sat Feb  3 21:51:44 2024]  <IRQ>
-[Sat Feb  3 21:51:44 2024]  ? __warn+0x6c/0x130
-[Sat Feb  3 21:51:44 2024]  ? report_bug+0x136/0x1b0
-[Sat Feb  3 21:51:44 2024]  ? handle_bug+0x36/0x70
-[Sat Feb  3 21:51:44 2024]  ? exc_invalid_op+0x17/0x1a0
-[Sat Feb  3 21:51:44 2024]  ? asm_exc_invalid_op+0x16/0x20
-[Sat Feb  3 21:51:44 2024]  ? __run_timers.part.0+0x45d/0x570
-[Sat Feb  3 21:51:44 2024]  ? ktime_get+0x30/0x90
-[Sat Feb  3 21:51:44 2024]  ? clockevents_program_event+0x76/0xd0
-[Sat Feb  3 21:51:44 2024]  __do_softirq+0xb4/0x1e8
-[Sat Feb  3 21:51:44 2024]  irq_exit_rcu+0x5d/0x80
-[Sat Feb  3 21:51:44 2024]  sysvec_apic_timer_interrupt+0x66/0x80
-[Sat Feb  3 21:51:44 2024]  </IRQ>
-[Sat Feb  3 21:51:44 2024]  <TASK>
-[Sat Feb  3 21:51:44 2024]  asm_sysvec_apic_timer_interrupt+0x16/0x20
-[Sat Feb  3 21:51:44 2024] RIP: 0010:default_idle+0xb/0x10
-[Sat Feb  3 21:51:44 2024] Code: 07 76 e7 48 89 07 49 c7 c0 08 00 00
-00 4d 29 c8 4c 01 c7 4c 29 c2 e9 72 ff ff ff cc cc cc cc eb 07 0f 00
-2d 47 27 2b 00 fb f4 <fa> c3 0f 1f 00 65 48 8b 04 25 c0 10 02 00 f0 80
-48 02 20 48 8b 10
-[Sat Feb  3 21:51:44 2024] RSP: 0018:ffffffff81a03eb0 EFLAGS: 00000206
-[Sat Feb  3 21:51:44 2024] RAX: ffff88807d81fa80 RBX: 0000000000000000
-RCX: 4000000000000000
-[Sat Feb  3 21:51:44 2024] RDX: 0000000000000000 RSI: 0000000000000000
-RDI: 00000000000d8494
-[Sat Feb  3 21:51:44 2024] RBP: ffffffff81a08a40 R08: 0000000000000001
-R09: 0000000000000000
-[Sat Feb  3 21:51:44 2024] R10: 0000000000100000 R11: 000000000122662f
-R12: ffffffff81a08a40
-[Sat Feb  3 21:51:44 2024] R13: ffff88807ffda040 R14: ffffffff81a085e0
-R15: 0000000000013c70
-[Sat Feb  3 21:51:44 2024]  default_idle_call+0x1f/0x26
-[Sat Feb  3 21:51:44 2024]  do_idle+0x92/0xf0
-[Sat Feb  3 21:51:44 2024]  cpu_startup_entry+0x21/0x30
-[Sat Feb  3 21:51:44 2024]  rest_init+0x9e/0xa0
-[Sat Feb  3 21:51:44 2024]  arch_call_rest_init+0x5/0x20
-[Sat Feb  3 21:51:44 2024]  start_kernel+0x3f3/0x460
-[Sat Feb  3 21:51:44 2024]  x86_64_start_reservations+0x14/0x30
-[Sat Feb  3 21:51:44 2024]  x86_64_start_kernel+0xa9/0xc0
-[Sat Feb  3 21:51:44 2024]  secondary_startup_64_no_verify+0x174/0x17b
-[Sat Feb  3 21:51:44 2024]  </TASK>
-[Sat Feb  3 21:51:44 2024] ---[ end trace 0000000000000000 ]---
+--YW6O7mIOwnm0dUVX
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Sat, Feb 03, 2024 at 09:52:59AM -0800, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.16 release.
+> There are 326 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-reverting netfilter-ipset-fix-performance-regression-in-swap-o.patch
-fixes panic.
+Successfully compiled and installed the kernel on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--YW6O7mIOwnm0dUVX
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZb8z6gAKCRD2uYlJVVFO
+ozUlAPwNme3FmvCgq4hk0g36NC3AOYHMFgFALcsVW5ExqnvHpQEA2UJJpwWlDJk1
+VuPdN08hMaqU15neYQjlKPujZshscQk=
+=DtpE
+-----END PGP SIGNATURE-----
+
+--YW6O7mIOwnm0dUVX--
 
