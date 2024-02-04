@@ -1,181 +1,100 @@
-Return-Path: <stable+bounces-18789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 660A7848FA5
-	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 18:21:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FBE4848FBD
+	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 18:30:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B91631F226A0
-	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 17:21:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AB511F227F1
+	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 17:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5401124211;
-	Sun,  4 Feb 2024 17:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3FC823750;
+	Sun,  4 Feb 2024 17:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DxnHVoaR"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="trI3WmwG"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3207923749
-	for <stable@vger.kernel.org>; Sun,  4 Feb 2024 17:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434E2249E8;
+	Sun,  4 Feb 2024 17:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707067286; cv=none; b=Zwz54quANqaHlCaN9Im4dqUKzR0jNa11+SYHd9owJD4FJ1c1P78rn72/ey4pHEKCXn3XzpNFW7oAAU4iguvqWcJZyKTY0wdBM1EhaTKL6PFH4GjMUCJi8EMn7ByZpbS9qaf83jLNmZF9OQI4caEd7th+ez2NEi4yXpn3mN0ARgA=
+	t=1707067850; cv=none; b=YnolxMNY1yGGCJgiVB3T3X/plQvRWJDQJ/RicR7gm9VKgwvlRlLZ5RvqF11ULpZPnxvYVnA5AiuSiWI4LhijGjDK8ZY2QPqrUJN0nu4WWbZ4wOudwx5ObLaDp0rIvHC9plBbIKRhjKQk12JR0THanELe5r6HpMRac2QwEHUAXoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707067286; c=relaxed/simple;
-	bh=QdyWE/+4R+pp9b6gUvuomY37p6mJ6ibdykiKC47jIMY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=f8KDpyfsRNpt8LdT4EqJXVZwHSgrdy2caxwEriSMXUQfkdfR08CIs6wr2W7asSdfQeGelTHDjsOkcQk7iOyfKf3ak86cnr2U4LIycH+39CqtiRSiOH0FZ7Xnly+knT8qLoSW474Vo6sgJbFGX1jbyRlRuqVGapxD8Leo2d+Edv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DxnHVoaR; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707067281;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aLuigqxpjpbSlXGKelVFxUNqaWxVoHJdGn0HSN9dgIE=;
-	b=DxnHVoaRjjPU4KdA5OkL6J6wsdw9jcYjcp703eynVAj6zgyvY2wMLrZExrbRCH3ryMy/LS
-	5lc/shaagarYP1J0jshbg56lLswWjtjZQopUouIRo1RRhECrRJGIcmapadgAIO+BU4Av/0
-	Um7jBfiXJDx25fhKvSbFzKWNuhb9skE=
-Received: from mail-ua1-f71.google.com (mail-ua1-f71.google.com
- [209.85.222.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-686-CJ98aa7YPuyY2OfB6N0gTA-1; Sun, 04 Feb 2024 12:21:20 -0500
-X-MC-Unique: CJ98aa7YPuyY2OfB6N0gTA-1
-Received: by mail-ua1-f71.google.com with SMTP id a1e0cc1a2514c-7d2def0e3ebso1713886241.1
-        for <stable@vger.kernel.org>; Sun, 04 Feb 2024 09:21:20 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707067280; x=1707672080;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aLuigqxpjpbSlXGKelVFxUNqaWxVoHJdGn0HSN9dgIE=;
-        b=e7Sbf08puvydYKLf37pIg48h8To1ZqIv/kMwfcLBPMmL4rMeilVmnI9A92Ziqny0LP
-         TBGOgEicz4WheJkPitp4Z4zWj6rCDEDySugATeNHgyoU4uDYqOJj+ZMEsKfGmOho68yw
-         CUdt96QTGT1EQ/dj0E+MQ0b31AfXIqdoHd8R/79O96PNgsgVWC0Ny6Ye3V6wfc1j6JLy
-         2lmNrvUGuoBt3++SpxM/aRnxLryJG0OJjaiXYmNmzSGp1XlnVlhF2b+51N8MKEWXGJWA
-         KBYQf2ZM+O8loYjZNttOZiEMGLO9pNuDaTVauze1CfE9DvQ586/JiCu+d7fWGUy7Wzba
-         IjGg==
-X-Gm-Message-State: AOJu0YzHqWxzVeRmLrsUL8Mo1Fy9JWFmjNVvOYc0LJahT/xKn32yRELk
-	QQcinEq0SS/t/k5e0wQZjWoD5b31SuaIk3x3nIqKUXxFJa2fozV6hoyfKHnIAzZQHfVKbcp/FIs
-	Qwk0SPi+WPXmZlYnPcDwEWv3NST+Gt3BO2RCqSiXTNlr0Exq28Dlj6KhGMgI+iIt04Q26q0ZBkl
-	HgY0bVoIH3dA4UfWAbdcFAFBuw7iGE
-X-Received: by 2002:a05:6102:3e1f:b0:46c:f805:eb7e with SMTP id j31-20020a0561023e1f00b0046cf805eb7emr11084305vsv.28.1707067280035;
-        Sun, 04 Feb 2024 09:21:20 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGAs2KyQXIPnKUwTCrpj1r1SPLjjEChNRmvmED/CgO+sue7ZkpZWrb/adNLNUNmDyEOk1SEe7VEnvAmY/7QWtY=
-X-Received: by 2002:a05:6102:3e1f:b0:46c:f805:eb7e with SMTP id
- j31-20020a0561023e1f00b0046cf805eb7emr11084278vsv.28.1707067279752; Sun, 04
- Feb 2024 09:21:19 -0800 (PST)
+	s=arc-20240116; t=1707067850; c=relaxed/simple;
+	bh=I3g9WDQRF5vBIUqmbuExMuLRf1s6UoZuTmaXbeShB5U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=NvwIlKzGJg9QGkUr6mBsl3vEr2SlaRG4ehvOECTZ/BTYnVJmG9ojM1ZbCslV91FWYZyy+/PYZpLUXNl4K1kh4dbClTy0RdhZvfdQavVKSrWgHssAVTYxIIWWnEYreZpI8KvSjueHjr78J/SauRp/YJYRCNTKoKQlpC1jHJaM6FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=trI3WmwG; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1707067846;
+	bh=I3g9WDQRF5vBIUqmbuExMuLRf1s6UoZuTmaXbeShB5U=;
+	h=From:Date:Subject:To:Cc:From;
+	b=trI3WmwGD9DstJVbJ42DsrZ2yGW+N8TGmJ99mI82T4uk5vm4UaDS7WpGHC3cmQrou
+	 JKA8QMkARvFcvnTWxa/t9qo+pHsWYWDTMRFyOHjHvBMYeBF0V3dCxv7Xo0XprkkaCE
+	 0PAb8CNgHfo9e9wLe+aGEdMzy5q+wTuLRA/IfH3c=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Date: Sun, 04 Feb 2024 18:30:43 +0100
+Subject: [PATCH] power: supply: mm8013: select REGMAP_I2C
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240131230902.1867092-1-pbonzini@redhat.com> <2b5e6d68-007e-48bd-be61-9a354be2ccbf@intel.com>
- <CABgObfa_7ZAq1Kb9G=ehkzHfc5if3wnFi-kj3MZLE3oYLrArdQ@mail.gmail.com>
-In-Reply-To: <CABgObfa_7ZAq1Kb9G=ehkzHfc5if3wnFi-kj3MZLE3oYLrArdQ@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Sun, 4 Feb 2024 18:21:07 +0100
-Message-ID: <CABgObfbetwO=4whrCE+cFfCPJa0nsK=h6sQAaoamJH=UqaJqTg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] x86/cpu: fix invalid MTRR mask values for SEV or TME
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Zixi Chen <zixchen@redhat.com>, Adam Dunlap <acdunlap@google.com>, 
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Kai Huang <kai.huang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>, x86@kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240204-mm8013-regmap-v1-1-7cc6b619b7d3@weissschuh.net>
+X-B4-Tracking: v=1; b=H4sIAMLJv2UC/x3MQQqAIBBA0avIrBNGE5KuEi1EJ5uFJgoRhHdPW
+ r7F/y80qkwNVvFCpZsbX3lATQL86XIkyWEYNGqDGo1MyaKaZaWYXJHBBmVdcLh4DaMplQ5+/t+
+ 29/4BqgCIG18AAAA=
+To: Sebastian Reichel <sre@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Sebastian Reichel <sebastian.reichel@collabora.com>, 
+ linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1707067844; l=975;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=I3g9WDQRF5vBIUqmbuExMuLRf1s6UoZuTmaXbeShB5U=;
+ b=y2EcWG8Rw69t7dC9mJC/9uObCqm14upCgRqgzcqgT2gCvLcAK3j0SvE6gXEfG5AgjvQzJKEgR
+ ldqHKNmV6TcAs1Rht4AGs4nXIvsDyhF/BHhvV63SH3SI03DTfRISKfh
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-On Fri, Feb 2, 2024 at 12:08=E2=80=AFAM Paolo Bonzini <pbonzini@redhat.com>=
- wrote:
->
-> On Thu, Feb 1, 2024 at 7:29=E2=80=AFPM Dave Hansen <dave.hansen@intel.com=
-> wrote:
-> > I really wanted get_cpu_address_sizes() to be the one and only spot
-> > where c->x86_phys_bits is established.  That way, we don't get a bunch
-> > of code all of the place tweaking it and fighting for who "wins".
-> > We're not there yet, but the approach in this patch moves it back in th=
-e
-> > wrong direction because it permits the random tweaking of c->x86_phys_b=
-its.
->
-> I see your point; one of my earlier attempts added a
-> ->c_detect_mem_encrypt() callback that basically amounted to either
-> amd_detect_mem_encrypt() or detect_tme(). I bailed out of it mostly
-> because these functions do more than adjusting phys_bits, and it
-> seemed arbitrary to call them from get_cpu_address_sizes(). The two
-> approaches share the idea of centralizing the computation of
-> x86_phys_bits in get_cpu_address_sizes().
->
-> There is unfortunately an important hurdle for your patch, in that
-> currently the BSP and AP flows are completely different. For the BSP
-> the flow is ->c_early_init(), then get_cpu_address_sizes(), then again
-> ->c_early_init() called by ->c_init(), then ->c_init(). For APs it is
-> get_cpu_address_sizes(), then ->c_early_init() called by ->c_init(),
-> then the rest of ->c_init(). And let's not even look at
-> ->c_identify().
->
-> This difference is bad for your patch, because get_cpu_address_sizes()
-> is called too early to see enc_phys_bits on APs. But it was also
-> something that fbf6449f84bf didn't take into account, because it left
-> behind the tentative initialization of x86_*_bits in identify_cpu(),
-> while removing it from early_identify_cpu().  And
->
-> TBH my first reaction after Kirill pointed me to fbf6449f84bf was to
-> revert it. It's not like the code before was much less of a dumpster
-> fire, but that commit made the BSP vs. AP mess even worse. But it
-> fixed a real-world bug and it did remove most of the "first set then
-> adjust" logic, at least for the BSP, so a revert wasn't on the table
-> and patch 1 was what came out of it.
->
-> I know that in general in Linux we prefer to fix things for good.
-> Dancing one step behind and two ahead comes with the the risk that you
-> only do the step behind. But in the end something like this patch 1
-> would have to be posted for stable branches (and Greg doesn't like
-> one-off patches), and I am not even sure it's a step behind because it
-> removes _some_ of the BSP vs. AP differences introduced by
-> fbf6449f84bf.
->
-> In a nutshell: I don't dislike the idea behind your patch, but the
-> code is just not ready for it.
+The driver uses regmap APIs so it should make sure they are available.
 
-This is the diffstat before your patch can be applied more or less as is:
+Fixes: c75f4bf6800b ("power: supply: Introduce MM8013 fuel gauge driver")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+---
+ drivers/power/supply/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-$ git diffstat origin/master
- arch/x86/include/asm/processor.h |   1 +
- arch/x86/kernel/cpu/amd.c        |  12 ++--
- arch/x86/kernel/cpu/centaur.c    |  13 ++---
- arch/x86/kernel/cpu/common.c     | 103 +++++++++++++++++++----------------
- arch/x86/kernel/cpu/hygon.c      |   2 -
- arch/x86/kernel/cpu/intel.c      |   4 +-
- arch/x86/kernel/cpu/transmeta.c  |   2 -
- arch/x86/kernel/cpu/zhaoxin.c    |   1 -
- 8 files changed, 69 insertions(+), 69 deletions(-)
+diff --git a/drivers/power/supply/Kconfig b/drivers/power/supply/Kconfig
+index f21cb05815ec..3e31375491d5 100644
+--- a/drivers/power/supply/Kconfig
++++ b/drivers/power/supply/Kconfig
+@@ -978,6 +978,7 @@ config CHARGER_QCOM_SMB2
+ config FUEL_GAUGE_MM8013
+ 	tristate "Mitsumi MM8013 fuel gauge driver"
+ 	depends on I2C
++	select REGMAP_I2C
+ 	help
+ 	  Say Y here to enable the Mitsumi MM8013 fuel gauge driver.
+ 	  It enables the monitoring of many battery parameters, including
 
-$ git log --oneline --reverse origin/master..
-d639afed02aa x86/cpu/common: move code up to early
-get_cpu_address_sizes() to a new function
-40d34260a4ba x86/cpu/common: pull get_cpu_*() calls common to BSPs and
-APs to a new function
-67b9839f9c38 x86/cpu/common: put all setup_force/clear capabilities togethe=
-r
-ebeae7f91cbc x86/cpu/centaur: do everything before
-early_init_centaur() in early_init_centaur()
-d62fa7400885 x86/cpu/cyrix: call early init function from init function
-0aa0916cd7e0 x86/cpu/common: call early_init function on APs from common co=
-de
-d656b651d217 (HEAD) dave
+---
+base-commit: 54be6c6c5ae8e0d93a6c4641cb7528eb0b6ba478
+change-id: 20240204-mm8013-regmap-d8d18ada07c2
 
-
-I still haven't tested very well, but anyway, what do you think?
-
-Paolo
+Best regards,
+-- 
+Thomas Weißschuh <linux@weissschuh.net>
 
 
