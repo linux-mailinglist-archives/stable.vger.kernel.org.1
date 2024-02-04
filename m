@@ -1,104 +1,151 @@
-Return-Path: <stable+bounces-18780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FC2848ED3
-	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 16:15:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B84F4848EEF
+	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 16:32:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04D761C21F59
-	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 15:15:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71B4E28209C
+	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 15:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADFA224E0;
-	Sun,  4 Feb 2024 15:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD393225CE;
+	Sun,  4 Feb 2024 15:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zTL4Va8w"
+	dkim=pass (1024-bit key) header.d=blackhole.kfki.hu header.i=@blackhole.kfki.hu header.b="UwIZHIkR"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp0-kfki.kfki.hu (smtp0-kfki.kfki.hu [148.6.0.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26A822301;
-	Sun,  4 Feb 2024 15:15:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B667225CD
+	for <stable@vger.kernel.org>; Sun,  4 Feb 2024 15:32:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.6.0.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707059723; cv=none; b=tXlSsvy4n1+SWN42Pmez0bowKg9YWScbBk1ZCxLmkpKXaNgX7+Pd08raGNw95tWNkDVAekzdXnH98tieLVnXftSRLqA0a4jeT4l3Oxe4fFDd3XbKOuEs/A/K4OEIKdVLYAPBeODGAKojgPNc7CUFt3Pp7t4l0OBbJTAeRV5Q7Qo=
+	t=1707060737; cv=none; b=Wdp+oW74Gkxa9M59gAsqmJ4eVfaE5bv6Wlinq4QsMUaCoRscuoM6avBCeECQFhGj7TcuEjBtCOfoL7JoVe9AkaE1K0l3Q4bI9oMYK5hamnK2QT44h1tiB45WRjnukj1KTX9etTFVtTmo+RKIZztYpbc6LxypaQ24ENvVeDE3IQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707059723; c=relaxed/simple;
-	bh=IeZfAJeIueCJI7tdAJKSyC4Jwez+pyH758ixVanQ578=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IfMhqeuHnn9G2ooXiO88JOITLGwkCe+dF++peMQT8Jt4+5vVLfu5Z8775LTUkw0sRA2XNEMH19OtOfS1mfS5hqU24PeMzP+I/IXd2B8WwGLKtD9oT9Ubkdiqw7V2rclw0lADJOHyi+ZuJK3yKlFMVW3bNzXEEnp50qA8Jdd93Gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zTL4Va8w; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=edYHnRAqz8+dv8WEmyxXjWpoGAiVxFe3ltzCGSM68NQ=; b=zTL4Va8wcoV/6G2DFrtpoPED7k
-	1Gd4ADSJt7S5piBmZKIaGfIT7mgq8co+nbQvDjwI68Uzn8hY/Z6tVt+IivT570WzbI5kQUQ/25aM3
-	6aBv0Gp3WzyByyqEl0ANbN+vbUh7Q+6r9Zgw1YKfr9r/bOVfuXVC51z5VZ5y9/2zC4kI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1rWeD0-006xuU-Qj; Sun, 04 Feb 2024 16:15:02 +0100
-Date: Sun, 4 Feb 2024 16:15:02 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Pavel Machek <pavel@ucw.cz>, Lee Jones <lee@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Li Zetao <lizetao1@huawei.com>, linux-leds@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] leds: trigger: netdev: Fix kernel panic on interface
- rename trig notify
-Message-ID: <8d51f09b-e6d2-4ee1-9e7d-b545d561798a@lunn.ch>
-References: <20240203235413.1146-1-ansuelsmth@gmail.com>
+	s=arc-20240116; t=1707060737; c=relaxed/simple;
+	bh=jwDrZsMZ7TVHMuUi91brQ9rocuIOobyLD6+lUJBnvUI=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=Jm9KWcGR2JqovajM1X1dERZj6jlC2k/pnWQN8UYEKvxdIEfh2Euw460KdP8vKcuP+h7JEk5G/nN/3Go3xvZ6C76vKy6ZjKu1CSTMHgvXFqN7cY0tXwjdurrQsIyVwoa9mHE+2IB1dnasv1JKOtLIvSvL0MGD0Z5fr9iJgwMPwLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=blackhole.kfki.hu; spf=pass smtp.mailfrom=blackhole.kfki.hu; dkim=pass (1024-bit key) header.d=blackhole.kfki.hu header.i=@blackhole.kfki.hu header.b=UwIZHIkR; arc=none smtp.client-ip=148.6.0.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=blackhole.kfki.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=blackhole.kfki.hu
+Received: from localhost (localhost [127.0.0.1])
+	by smtp0.kfki.hu (Postfix) with ESMTP id 2EC836740101;
+	Sun,  4 Feb 2024 16:24:29 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	blackhole.kfki.hu; h=content-id:mime-version:references
+	:message-id:in-reply-to:from:from:date:date:received:received
+	:received:received; s=20151130; t=1707060267; x=1708874668; bh=K
+	ZFufjh9ilb6Wwl4goYBCX1Sb+SwToj3yoyhFgXKpc4=; b=UwIZHIkRmac2TkFnq
+	BWIOmrDIcVMOU4pnzfVeLgbCKHr1OKuudZW06A9akTV5E4LAFT8maDyrdIP6VxbI
+	tnZwFGcJpLaNIAaX639XuaGESGuK8u5/kgKlyznhTNdSGO5jD2OSIczVCPvAAAY7
+	QXbadrDFsErgTfQ0BKd2Iaa3Z4=
+X-Virus-Scanned: Debian amavisd-new at smtp0.kfki.hu
+Received: from smtp0.kfki.hu ([127.0.0.1])
+	by localhost (smtp0.kfki.hu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP; Sun,  4 Feb 2024 16:24:27 +0100 (CET)
+Received: from mentat.rmki.kfki.hu (host-94-248-211-167.kabelnet.hu [94.248.211.167])
+	(Authenticated sender: kadlecsik.jozsef@wigner.hu)
+	by smtp0.kfki.hu (Postfix) with ESMTPSA id E5A0267400FF;
+	Sun,  4 Feb 2024 16:24:25 +0100 (CET)
+Received: by mentat.rmki.kfki.hu (Postfix, from userid 1000)
+	id 803175A2; Sun,  4 Feb 2024 16:24:25 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by mentat.rmki.kfki.hu (Postfix) with ESMTP id 766CF268;
+	Sun,  4 Feb 2024 16:24:25 +0100 (CET)
+Date: Sun, 4 Feb 2024 16:24:25 +0100 (CET)
+From: Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+cc: Bagas Sanjaya <bagasdotme@gmail.com>, stable@vger.kernel.org, 
+    patches@lists.linux.dev, Ale Crismani <ale.crismani@automattic.com>, 
+    David Wang <00107082@163.com>, Pablo Neira Ayuso <pablo@netfilter.org>, 
+    Sasha Levin <sashal@kernel.org>, 
+    =?UTF-8?B?0KHRgtCw0YEg0J3QuNGH0LjQv9C+0YDQvtCy0LjRhw==?= <stasn77@gmail.com>, 
+    Linux Regressions <regressions@lists.linux.dev>
+Subject: Re: [PATCH 6.6 295/322] netfilter: ipset: fix performance regression
+ in swap operation
+In-Reply-To: <2024020441-grumpily-crumb-03c3@gregkh>
+Message-ID: <303d8488-312a-9fe3-1115-3fe66ff0e688@blackhole.kfki.hu>
+References: <20240203035359.041730947@linuxfoundation.org> <20240203035408.592513874@linuxfoundation.org> <Zb81_PFP54xFYQSd@archie.me> <2024020441-grumpily-crumb-03c3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240203235413.1146-1-ansuelsmth@gmail.com>
+Content-Type: multipart/mixed; boundary="1393428146-1326496185-1707060111=:224058"
+Content-ID: <ea6c5de-9135-1b16-be4d-405d3051726f@blackhole.kfki.hu>
+X-deepspam: ham 0%
 
-On Sun, Feb 04, 2024 at 12:54:01AM +0100, Christian Marangi wrote:
-> Commit d5e01266e7f5 ("leds: trigger: netdev: add additional specific link
-> speed mode") in the various changes, reworked the way to set the LINKUP
-> mode in commit cee4bd16c319 ("leds: trigger: netdev: Recheck
-> NETDEV_LED_MODE_LINKUP on dev rename") and moved it to a generic function.
-> 
-> This changed the logic where, in the previous implementation the dev
-> from the trigger event was used to check if the carrier was ok, but in
-> the new implementation with the generic function, the dev in
-> trigger_data is used instead.
-> 
-> This is problematic and cause a possible kernel panic due to the fact
-> that the dev in the trigger_data still reference the old one as the
-> new one (passed from the trigger event) still has to be hold and saved
-> in the trigger_data struct (done in the NETDEV_REGISTER case).
-> 
-> On calling of get_device_state(), an invalid net_dev is used and this
-> cause a kernel panic.
-> 
-> To handle this correctly, move the call to get_device_state() after the
-> new net_dev is correctly set in trigger_data (in the NETDEV_REGISTER
-> case) and correctly parse the new dev.
-> 
-> Fixes: d5e01266e7f5 ("leds: trigger: netdev: add additional specific link speed mode")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-This should have 'net' in the subject line, to indicate which tree its
-for.
+--1393428146-1326496185-1707060111=:224058
+Content-Type: text/plain; charset=UTF-8
+Content-ID: <37e15f1d-6934-d83d-ed3e-f68222c6c4d@blackhole.kfki.hu>
+Content-Transfer-Encoding: quoted-printable
 
-Otherwise:
+On Sun, 4 Feb 2024, Greg Kroah-Hartman wrote:
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> On Sun, Feb 04, 2024 at 02:00:12PM +0700, Bagas Sanjaya wrote:
+> > On Fri, Feb 02, 2024 at 08:06:32PM -0800, Greg Kroah-Hartman wrote:
+> > > 6.6-stable review patch.  If anyone has any objections, please let =
+me know.
+> > >=20
+> > > ------------------
+> > >=20
+> > > From: Jozsef Kadlecsik <kadlec@netfilter.org>
+> > >=20
+> > > [ Upstream commit 97f7cf1cd80eeed3b7c808b7c12463295c751001 ]
+> > >=20
+> > > The patch "netfilter: ipset: fix race condition between swap/destro=
+y
+> > > and kernel side add/del/test", commit 28628fa9 fixes a race conditi=
+on.
+> > > But the synchronize_rcu() added to the swap function unnecessarily =
+slows
+> > > it down: it can safely be moved to destroy and use call_rcu() inste=
+ad.
+> > >=20
+> > > Eric Dumazet pointed out that simply calling the destroy functions =
+as
+> > > rcu callback does not work: sets with timeout use garbage collector=
+s
+> > > which need cancelling at destroy which can wait. Therefore the dest=
+roy
+> > > functions are split into two: cancelling garbage collectors safely =
+at
+> > > executing the command received by netlink and moving the remaining
+> > > part only into the rcu callback.
+> >=20
+> > Hi,
+> >=20
+> > =D0=A1=D1=82=D0=B0=D1=81 =D0=9D=D0=B8=D1=87=D0=B8=D0=BF=D0=BE=D1=80=D0=
+=BE=D0=B2=D0=B8=D1=87 <stasn77@gmail.com> reported ipset kernel panic wit=
+h this
+> > patch [1]. He noted that reverting it fixed the regression.
+> >=20
+> > Thanks.
+> >=20
+> > [1]: https://lore.kernel.org/stable/CAH37n11s_8qjBaDrao3PKct4FriCWNXH=
+WBBHe-ddMYHSw4wK0Q@mail.gmail.com/
+>=20
+> Is this also an issue in Linus's tree?
 
-    Andrew
+I'm going to send a patch in my next email which fixes the issue. Sorry,=20
+splitting the destroy operation into two halves was not taken into accoun=
+t=20
+at every location.
+
+Best regards,
+Jozsef
+
+--=20
+E-mail  : kadlec@blackhole.kfki.hu, kadlecsik.jozsef@wigner.hu
+PGP key : https://wigner.hu/~kadlec/pgp_public_key.txt
+Address : Wigner Research Centre for Physics
+          H-1525 Budapest 114, POB. 49, Hungary
+--1393428146-1326496185-1707060111=:224058--
 
