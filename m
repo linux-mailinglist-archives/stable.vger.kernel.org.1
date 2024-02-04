@@ -1,98 +1,197 @@
-Return-Path: <stable+bounces-18770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 951FF848C88
-	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 10:40:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B63848CF8
+	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 11:53:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 519E328291A
-	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 09:40:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D5D0B20CC0
+	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 10:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539AF18B14;
-	Sun,  4 Feb 2024 09:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4CA219F6;
+	Sun,  4 Feb 2024 10:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DXye3HoS"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="WROrUUsb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A55518AF4;
-	Sun,  4 Feb 2024 09:40:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F28E21364;
+	Sun,  4 Feb 2024 10:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707039639; cv=none; b=NIJlIK/D4CFpeELuGek1yWjlOivrEwCrYxinxAL6Poq+qbO8WDb+dyAbbZWdaWlDqrcXEjgzec3MTsIqZ9p/Likwtqtq1VE3vmlVMEDuSZgIGTjOBHdJ3grt01LtlSeFq2QDrRjXWsNO5AN4WY49/I0DM7SzCNKEkCugRyxglwo=
+	t=1707043992; cv=none; b=V+917TnP0ectAKolVd2UwsUC/peCApB5fToLVJHdq6LGfp3uNYK2Zrpz8esa+jL312AvQ0/KKnsCrPxAYukWWJPFW/zgL50CWj3Dyge6BkxfTXz3wWRF1Ok1YwBu4ltSd0g2k624B7nIrvPUvO/Jp4EgpYqtkREH0p3v+ISNE4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707039639; c=relaxed/simple;
-	bh=XVIPutM0BEFc5X+MBnaqKSTwT2JVwJjxPuPtgQ6Fq48=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=YiNeKXqmh6N/39wd/7W7v2rM6K31bRUo/oLEuSvLwA2g9SOODvr141bTLGgtNOQaaQP7HynvvYZy1JXSMNjsQcuUXW2F/E9cdPI0SrTCmFQ7drrdbAWC0ZsLVhzqD1ohpKGEUf3++zmYID2/8pBJl85HvUMrkGJ8TiPhJnxfRTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DXye3HoS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1944C433C7;
-	Sun,  4 Feb 2024 09:40:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707039638;
-	bh=XVIPutM0BEFc5X+MBnaqKSTwT2JVwJjxPuPtgQ6Fq48=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=DXye3HoSL69zkNpyHSgEAFuaKoF+ra1gvhhstkhp77WppF2LrH0k7iqZ98Iz7MhPW
-	 caLq5x0b2FX7x1Ck89Mc0qN8/sR01pF26VDtqN9ACbL37eIjfvIhQd6EKI42ToehtZ
-	 FJc6NfAg02t/DpLwjuqxPNQXSiGY1vl7NEAgkdbIh8lZX3hY0jEn1gMEOxhluR2Jpk
-	 pO1yEttu54BjijangXbE15WSbA8vrWwau0LxfLpfD5Qw7w+4TkzECHX7kZ6BwRchbp
-	 e1bs86VlAZ1B/F8rG3WG8XUQAj9y2c/mp6L+TMP4oAV10Qi34R6EZ4tr/QOMFpAyJ5
-	 rQSR90Zm+rCEw==
-From: Leon Romanovsky <leon@kernel.org>
-To: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
- Jason Gunthorpe <jgg@ziepe.ca>,
- Patrick Kelsey <pat.kelsey@cornelisnetworks.com>,
- Brendan Cunningham <bcunningham@cornelisnetworks.com>,
- Daniel Vacek <neelx@redhat.com>
-Cc: stable@vger.kernel.org, Mats Kronberg <kronberg@nsc.liu.se>,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240201081009.1109442-1-neelx@redhat.com>
-References: <20240126152125.869509-1-neelx@redhat.com>
- <20240201081009.1109442-1-neelx@redhat.com>
-Subject:
- Re: [PATCH v2] IB/hfi1: Fix sdma.h tx->num_descs off-by-one error (take two)
-Message-Id: <170703963443.16261.7348326025275862840.b4-ty@kernel.org>
-Date: Sun, 04 Feb 2024 11:40:34 +0200
+	s=arc-20240116; t=1707043992; c=relaxed/simple;
+	bh=upEribLcp6+Tfi0UR9lL0L23B6NQVSwiCpyWQ95lDXE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W9Yc8ENJJogCfFomeIgMxFJZD0YbyS5lfUNI11j/n3hAS8KPlDpV6dNRPE25cIIHegwQa628bUzDw78p/iKg+Q25q2hBP1VEyXL9VgJhEQI+9/oZFmBCiePSsAhePisy7tPRLfxhlsHYNCXZda34mwfcJvZECbI+U/2LFPJLIe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=WROrUUsb; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (unknown [109.128.141.99])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id A51C9720;
+	Sun,  4 Feb 2024 11:51:40 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1707043900;
+	bh=upEribLcp6+Tfi0UR9lL0L23B6NQVSwiCpyWQ95lDXE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WROrUUsb6wvs8/C7BW++Y7YeAhavpUr0tbYayZh2yzkgBdIvlesejiPAtMxEFsFLX
+	 GniaF4qkoxJYd4gnmDZoewVfP3kqpafImtpQOqoT6KaSJUauE/3jaLV6RgZK4ZB6D2
+	 0wkIjiNQ7uYaDZeHKBw3gQf+ERS/FX6njdGGPZO8=
+Date: Sun, 4 Feb 2024 12:52:27 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4] media: ucvideo: Add quirk for Logitech Rally Bar
+Message-ID: <20240204105227.GB25334@pendragon.ideasonboard.com>
+References: <20240108-rallybar-v4-1-a7450641e41b@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12-dev-a055d
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240108-rallybar-v4-1-a7450641e41b@chromium.org>
 
+Hi Ricardo,
 
-On Thu, 01 Feb 2024 09:10:08 +0100, Daniel Vacek wrote:
-> Unfortunately the commit `fd8958efe877` introduced another error
-> causing the `descs` array to overflow. This reults in further crashes
-> easily reproducible by `sendmsg` system call.
+Thank you for the patch.
+
+On Mon, Jan 08, 2024 at 08:17:46AM +0000, Ricardo Ribalda wrote:
+> Logitech Rally Bar devices, despite behaving as UVC cameras, have a
+> different power management system that the other cameras from Logitech.
 > 
-> [ 1080.836473] general protection fault, probably for non-canonical address 0x400300015528b00a: 0000 [#1] PREEMPT SMP PTI
-> [ 1080.869326] RIP: 0010:hfi1_ipoib_build_ib_tx_headers.constprop.0+0xe1/0x2b0 [hfi1]
-> --
-> [ 1080.974535] Call Trace:
-> [ 1080.976990]  <TASK>
-> [ 1081.021929]  hfi1_ipoib_send_dma_common+0x7a/0x2e0 [hfi1]
-> [ 1081.027364]  hfi1_ipoib_send_dma_list+0x62/0x270 [hfi1]
-> [ 1081.032633]  hfi1_ipoib_send+0x112/0x300 [hfi1]
-> [ 1081.042001]  ipoib_start_xmit+0x2a9/0x2d0 [ib_ipoib]
-> [ 1081.046978]  dev_hard_start_xmit+0xc4/0x210
-> --
-> [ 1081.148347]  __sys_sendmsg+0x59/0xa0
+> USB_QUIRK_RESET_RESUME is applied to all the UVC cameras from Logitech
+> at the usb core. Unfortunately, USB_QUIRK_RESET_RESUME causes undesired
+> USB disconnects, that make them completely unusable.
 > 
-> [...]
+> Instead of creating a list for this family of devices in the core, let's
+> create a quirk in the UVC driver.
+> 
+> Fixes: e387ef5c47dd ("usb: Add USB_QUIRK_RESET_RESUME for all Logitech UVC webcams")
+> Cc: stable@vger.kernel.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Alan Stern <stern@rowland.harvard.edu>
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+> ---
+> Tested with a Rallybar Mini with an Acer Chromebook Spin 513
+> ---
+> Changes in v4:
+> - Include Logi Rally Bar Huddle (Thanks Kyle!)
+> - Link to v3: https://lore.kernel.org/r/20240102-rallybar-v3-1-0ab197ce4aa2@chromium.org
+> 
+> Changes in v3:
+> - Move quirk to uvc driver
+> - Link to v2: https://lore.kernel.org/r/20231222-rallybar-v2-1-5849d62a9514@chromium.org
+> 
+> Changes in v2:
+> - Add Fixes tag
+> - Add UVC maintainer as Cc
+> - Link to v1: https://lore.kernel.org/r/20231222-rallybar-v1-1-82b2a4d3106f@chromium.org
+> ---
+>  drivers/media/usb/uvc/uvc_driver.c | 30 ++++++++++++++++++++++++++++++
+>  drivers/media/usb/uvc/uvcvideo.h   |  1 +
+>  2 files changed, 31 insertions(+)
+> 
+> diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+> index 08fcd2ffa727..9663bcac6843 100644
+> --- a/drivers/media/usb/uvc/uvc_driver.c
+> +++ b/drivers/media/usb/uvc/uvc_driver.c
+> @@ -14,6 +14,7 @@
+>  #include <linux/module.h>
+>  #include <linux/slab.h>
+>  #include <linux/usb.h>
+> +#include <linux/usb/quirks.h>
+>  #include <linux/usb/uvc.h>
+>  #include <linux/videodev2.h>
+>  #include <linux/vmalloc.h>
+> @@ -2233,6 +2234,8 @@ static int uvc_probe(struct usb_interface *intf,
+>  	}
+>  
+>  	uvc_dbg(dev, PROBE, "UVC device initialized\n");
+> +	if (dev->quirks & UVC_QUIRK_FORCE_RESUME)
+> +		udev->quirks &= ~USB_QUIRK_RESET_RESUME;
 
-Applied, thanks!
+If you don't mind, I'll move this above the debug message.
 
-[1/1] IB/hfi1: Fix sdma.h tx->num_descs off-by-one error (take two)
-      https://git.kernel.org/rdma/rdma/c/be39e8dcb411fb
+>  	usb_enable_autosuspend(udev);
+>  	return 0;
+>  
+> @@ -2574,6 +2577,33 @@ static const struct usb_device_id uvc_ids[] = {
+>  	  .bInterfaceSubClass	= 1,
+>  	  .bInterfaceProtocol	= 0,
+>  	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_RESTORE_CTRLS_ON_INIT) },
+> +	/* Logitech Rally Bar Huddle */
+> +	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+> +				| USB_DEVICE_ID_MATCH_INT_INFO,
+> +	  .idVendor		= 0x046d,
+> +	  .idProduct		= 0x087c,
+> +	  .bInterfaceClass	= USB_CLASS_VIDEO,
+> +	  .bInterfaceSubClass	= 1,
+> +	  .bInterfaceProtocol	= 0,
+> +	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_FORCE_RESUME) },
+> +	/* Logitech Rally Bar */
+> +	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+> +				| USB_DEVICE_ID_MATCH_INT_INFO,
+> +	  .idVendor		= 0x046d,
+> +	  .idProduct		= 0x089b,
+> +	  .bInterfaceClass	= USB_CLASS_VIDEO,
+> +	  .bInterfaceSubClass	= 1,
+> +	  .bInterfaceProtocol	= 0,
+> +	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_FORCE_RESUME) },
+> +	/* Logitech Rally Bar Mini */
+> +	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+> +				| USB_DEVICE_ID_MATCH_INT_INFO,
+> +	  .idVendor		= 0x046d,
+> +	  .idProduct		= 0x08d3,
+> +	  .bInterfaceClass	= USB_CLASS_VIDEO,
+> +	  .bInterfaceSubClass	= 1,
+> +	  .bInterfaceProtocol	= 0,
+> +	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_FORCE_RESUME) },
 
-Best regards,
+In an ideal world we would get a list of all devices that require the
+reset resume quirk from Logitech, and restrict the quirk to those
+devices only in the USB core. In the real world, this seems fine for
+now, we'll worry about this approach not scaling when we'll need to make
+it scale.
+
+>  	/* Chicony CNF7129 (Asus EEE 100HE) */
+>  	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
+>  				| USB_DEVICE_ID_MATCH_INT_INFO,
+> diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+> index 6fb0a78b1b00..fa59a21d2a28 100644
+> --- a/drivers/media/usb/uvc/uvcvideo.h
+> +++ b/drivers/media/usb/uvc/uvcvideo.h
+> @@ -73,6 +73,7 @@
+>  #define UVC_QUIRK_FORCE_Y8		0x00000800
+>  #define UVC_QUIRK_FORCE_BPP		0x00001000
+>  #define UVC_QUIRK_WAKE_AUTOSUSPEND	0x00002000
+> +#define UVC_QUIRK_FORCE_RESUME		0x00004000
+
+Let's name this UVC_QUICK_NO_RESET_RESUME, as that's what the quirk
+does.
+
+I'll make these small changes when applying, no need to resend.
+
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+
+>  
+>  /* Format flags */
+>  #define UVC_FMT_FLAG_COMPRESSED		0x00000001
+> 
+
 -- 
-Leon Romanovsky <leon@kernel.org>
+Regards,
+
+Laurent Pinchart
 
