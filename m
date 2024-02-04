@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-18766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8867B848BCF
-	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 08:20:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 723E1848BD0
+	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 08:21:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B31A01C21444
-	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 07:20:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29068284F5E
+	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 07:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D590A8F5C;
-	Sun,  4 Feb 2024 07:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B9AC133;
+	Sun,  4 Feb 2024 07:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2VV4NUsL"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="fcCKlMRo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B78E8820;
-	Sun,  4 Feb 2024 07:20:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D21881E;
+	Sun,  4 Feb 2024 07:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707031239; cv=none; b=HqXb96YDuKyghyxcwEgPJ4tnCO7Ws/A9A8ru3l4jmPQIIdSQN7ertZjx30wnEEjn54+UEvNk/ERHScLeGy5bDlNhqAad2MfYutpAsaK1NouQEHJKtwb3S7mUB6iWvY+n0IIs30e0uCwVwxLFgukff3KUqhAj1fvUeI9lz++L6I4=
+	t=1707031260; cv=none; b=AC43AIsH6ThRxOyECO+Ak7YWzC4kawGSwMBHm76cLYWpG84ZXuT8ZzcG8ER+34M1RwXBhyDrTxnwxi4v6vL8ddLF/xHRTCpnfo2US366/mcYXwj8mQO9K1M5VJcSzTrViewIz59c8h7U8Bk+6+1xZUPVkR8WmQoCjy69iXWv3Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707031239; c=relaxed/simple;
-	bh=kLLc1Pp1sPfvj32S1grdwJML3XhyPkARWwtiI7ATrAQ=;
-	h=Date:To:From:Subject:Message-Id; b=oth1o+nyibL5k2OeThKFrzrlYjh9ajFFzhCVRKOqVAJSoEXz0cKSU4b5jJfazRxfJOAHbhuvYC4aev1X1zHjJMe5LdT54Iu44NgfUr93+48uB1fIxkG/qPg2s40sduEfLiBfKB0KNqoeguspP442RmV6GEfQUUb3CqHrq4Caz6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2VV4NUsL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 544BFC433F1;
-	Sun,  4 Feb 2024 07:20:39 +0000 (UTC)
+	s=arc-20240116; t=1707031260; c=relaxed/simple;
+	bh=pChxN2h25FFzfyTFthRWwD/Se7oTwVqXsqMwz7ZrgsU=;
+	h=Date:To:From:Subject:Message-Id; b=KyTSAz/fp+kdIUhT+bV4SuKqRomNoz3EiRWXfz338GYCOM/62ouVNnRKFZiVz1A2RSyKXMnDRXZcc2cFvYtJQTPbXWnQWBtUTH2JWQN+fDInqOHNIG+m6WbhBZ5GTpeR1P6OcA3sr+IazlYwCcL0xUE1vO8Ta/0wcN/bpnP0X00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=fcCKlMRo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A056C433C7;
+	Sun,  4 Feb 2024 07:20:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1707031239;
-	bh=kLLc1Pp1sPfvj32S1grdwJML3XhyPkARWwtiI7ATrAQ=;
+	s=korg; t=1707031259;
+	bh=pChxN2h25FFzfyTFthRWwD/Se7oTwVqXsqMwz7ZrgsU=;
 	h=Date:To:From:Subject:From;
-	b=2VV4NUsLMA7bOugLVH+VTC0f1ZIGVu/2vRmCBR8yDQCQMn7JV7WI7hoVtnRnsEqLP
-	 5ZymJrIF0Iq2UMIJ26WbjlY8bKDFZUF/9R3H8ZvIJM5pUt6tJfxXDHNjqcr7+iEuQl
-	 B2pUGfYCHr2uloGs7ZhVSaJDebRdz+UDz1BcCCOQ=
-Date: Sat, 03 Feb 2024 23:20:38 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
+	b=fcCKlMRoWg5FZj84sgf0tnW+AYVhfkdgu1jZZ4PeLG52daq33lQmNJlCBe8NsBXSm
+	 846uxb6j5FII1vhZH3QLCFnpMFHf/igwZycEg6HoWqUJexu0B0yf+ntD3OZkw+kYri
+	 WiUw+TJagFS8le+sCtJfSzQdu3ChykEQsxL9+/m4=
+Date: Sat, 03 Feb 2024 23:20:58 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,konishi.ryusuke@gmail.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-sysfs-schemes-fix-wrong-damos-tried-regions-update-timeout-setup.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240204072039.544BFC433F1@smtp.kernel.org>
+Subject: + nilfs2-fix-potential-bug-in-end_buffer_async_write.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240204072059.6A056C433C7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm/damon/sysfs-schemes: fix wrong DAMOS tried regions update timeout setup
+     Subject: nilfs2: fix potential bug in end_buffer_async_write
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-sysfs-schemes-fix-wrong-damos-tried-regions-update-timeout-setup.patch
+     nilfs2-fix-potential-bug-in-end_buffer_async_write.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-sysfs-schemes-fix-wrong-damos-tried-regions-update-timeout-setup.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/nilfs2-fix-potential-bug-in-end_buffer_async_write.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,51 +73,120 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/sysfs-schemes: fix wrong DAMOS tried regions update timeout setup
-Date: Fri, 2 Feb 2024 11:19:56 -0800
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Subject: nilfs2: fix potential bug in end_buffer_async_write
+Date: Sun, 4 Feb 2024 01:16:45 +0900
 
-DAMON sysfs interface's update_schemes_tried_regions command has a timeout
-of two apply intervals of the DAMOS scheme.  Having zero value DAMOS
-scheme apply interval means it will use the aggregation interval as the
-value.  However, the timeout setup logic is mistakenly using the sampling
-interval insted of the aggregartion interval for the case.  This could
-cause earlier-than-expected timeout of the command.  Fix it.
+According to a syzbot report, end_buffer_async_write(), which handles the
+completion of block device writes, may detect abnormal condition of the
+buffer async_write flag and cause a BUG_ON failure when using nilfs2.
 
-Link: https://lkml.kernel.org/r/20240202191956.88791-1-sj@kernel.org
-Fixes: 7d6fa31a2fd7 ("mm/damon/sysfs-schemes: add timeout for update_schemes_tried_regions")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org> # 6.7.x
+Nilfs2 itself does not use end_buffer_async_write().  But, the async_write
+flag is now used as a marker by commit 7f42ec394156 ("nilfs2: fix issue
+with race condition of competition between segments for dirty blocks") as
+a means of resolving double list insertion of dirty blocks in
+nilfs_lookup_dirty_data_buffers() and nilfs_lookup_node_buffers() and the
+resulting crash.
+
+This modification is safe as long as it is used for file data and b-tree
+node blocks where the page caches are independent.  However, it was
+irrelevant and redundant to also introduce async_write for segment summary
+and super root blocks that share buffers with the backing device.  This
+led to the possibility that the BUG_ON check in end_buffer_async_write
+would fail as described above, if independent writebacks of the backing
+device occurred in parallel.
+
+The use of async_write for segment summary buffers has already been
+removed in a previous change.
+
+Fix this issue by removing the manipulation of the async_write flag for
+the remaining super root block buffer.
+
+Link: https://lkml.kernel.org/r/20240203161645.4992-1-konishi.ryusuke@gmail.com
+Fixes: 7f42ec394156 ("nilfs2: fix issue with race condition of competition between segments for dirty blocks")
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+5c04210f7c7f897c1e7f@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/00000000000019a97c05fd42f8c8@google.com
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/damon/sysfs-schemes.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/segment.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/mm/damon/sysfs-schemes.c~mm-damon-sysfs-schemes-fix-wrong-damos-tried-regions-update-timeout-setup
-+++ a/mm/damon/sysfs-schemes.c
-@@ -2194,7 +2194,7 @@ static void damos_tried_regions_init_upd
- 		sysfs_regions->upd_timeout_jiffies = jiffies +
- 			2 * usecs_to_jiffies(scheme->apply_interval_us ?
- 					scheme->apply_interval_us :
--					ctx->attrs.sample_interval);
-+					ctx->attrs.aggr_interval);
- 	}
- }
+--- a/fs/nilfs2/segment.c~nilfs2-fix-potential-bug-in-end_buffer_async_write
++++ a/fs/nilfs2/segment.c
+@@ -1703,7 +1703,6 @@ static void nilfs_segctor_prepare_write(
  
+ 		list_for_each_entry(bh, &segbuf->sb_payload_buffers,
+ 				    b_assoc_buffers) {
+-			set_buffer_async_write(bh);
+ 			if (bh == segbuf->sb_super_root) {
+ 				if (bh->b_folio != bd_folio) {
+ 					folio_lock(bd_folio);
+@@ -1714,6 +1713,7 @@ static void nilfs_segctor_prepare_write(
+ 				}
+ 				break;
+ 			}
++			set_buffer_async_write(bh);
+ 			if (bh->b_folio != fs_folio) {
+ 				nilfs_begin_folio_io(fs_folio);
+ 				fs_folio = bh->b_folio;
+@@ -1800,7 +1800,6 @@ static void nilfs_abort_logs(struct list
+ 
+ 		list_for_each_entry(bh, &segbuf->sb_payload_buffers,
+ 				    b_assoc_buffers) {
+-			clear_buffer_async_write(bh);
+ 			if (bh == segbuf->sb_super_root) {
+ 				clear_buffer_uptodate(bh);
+ 				if (bh->b_folio != bd_folio) {
+@@ -1809,6 +1808,7 @@ static void nilfs_abort_logs(struct list
+ 				}
+ 				break;
+ 			}
++			clear_buffer_async_write(bh);
+ 			if (bh->b_folio != fs_folio) {
+ 				nilfs_end_folio_io(fs_folio, err);
+ 				fs_folio = bh->b_folio;
+@@ -1896,8 +1896,9 @@ static void nilfs_segctor_complete_write
+ 				 BIT(BH_Delay) | BIT(BH_NILFS_Volatile) |
+ 				 BIT(BH_NILFS_Redirected));
+ 
+-			set_mask_bits(&bh->b_state, clear_bits, set_bits);
+ 			if (bh == segbuf->sb_super_root) {
++				set_buffer_uptodate(bh);
++				clear_buffer_dirty(bh);
+ 				if (bh->b_folio != bd_folio) {
+ 					folio_end_writeback(bd_folio);
+ 					bd_folio = bh->b_folio;
+@@ -1905,6 +1906,7 @@ static void nilfs_segctor_complete_write
+ 				update_sr = true;
+ 				break;
+ 			}
++			set_mask_bits(&bh->b_state, clear_bits, set_bits);
+ 			if (bh->b_folio != fs_folio) {
+ 				nilfs_end_folio_io(fs_folio, 0);
+ 				fs_folio = bh->b_folio;
 _
 
-Patches currently in -mm which might be from sj@kernel.org are
+Patches currently in -mm which might be from konishi.ryusuke@gmail.com are
 
-mm-damon-sysfs-schemes-fix-wrong-damos-tried-regions-update-timeout-setup.patch
-docs-admin-guide-mm-damon-usage-use-sysfs-interface-for-tracepoints-example.patch
-mm-damon-rename-config_damon_dbgfs-to-damon_dbgfs_deprecated.patch
-mm-damon-dbgfs-implement-deprecation-notice-file.patch
-mm-damon-dbgfs-make-debugfs-interface-deprecation-message-a-macro.patch
-docs-admin-guide-mm-damon-usage-document-deprecated-file-of-damon-debugfs-interface.patch
-selftets-damon-prepare-for-monitor_on-file-renaming.patch
-mm-damon-dbgfs-rename-monitor_on-file-to-monitor_on_deprecated.patch
-docs-admin-guide-mm-damon-usage-update-for-monitor_on-renaming.patch
-docs-translations-damon-usage-update-for-monitor_on-renaming.patch
+nilfs2-fix-data-corruption-in-dsync-block-recovery-for-small-block-sizes.patch
+nilfs2-fix-hang-in-nilfs_lookup_dirty_data_buffers.patch
+nilfs2-fix-potential-bug-in-end_buffer_async_write.patch
+nilfs2-convert-segment-buffer-to-use-kmap_local.patch
+nilfs2-convert-nilfs_copy_buffer-to-use-kmap_local.patch
+nilfs2-convert-metadata-file-common-code-to-use-kmap_local.patch
+nilfs2-convert-sufile-to-use-kmap_local.patch
+nilfs2-convert-persistent-object-allocator-to-use-kmap_local.patch
+nilfs2-convert-dat-to-use-kmap_local.patch
+nilfs2-move-nilfs_bmap_write-call-out-of-nilfs_write_inode_common.patch
+nilfs2-do-not-acquire-rwsem-in-nilfs_bmap_write.patch
+nilfs2-convert-ifile-to-use-kmap_local.patch
+nilfs2-localize-highmem-mapping-for-checkpoint-creation-within-cpfile.patch
+nilfs2-localize-highmem-mapping-for-checkpoint-finalization-within-cpfile.patch
+nilfs2-localize-highmem-mapping-for-checkpoint-reading-within-cpfile.patch
+nilfs2-remove-nilfs_cpfile_getput_checkpoint.patch
+nilfs2-convert-cpfile-to-use-kmap_local.patch
 
 
