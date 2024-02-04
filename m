@@ -1,142 +1,195 @@
-Return-Path: <stable+bounces-18794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D0B849047
-	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 21:06:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11AEA849062
+	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 21:32:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E927C2825A2
-	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 20:06:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8606B22783
+	for <lists+stable@lfdr.de>; Sun,  4 Feb 2024 20:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8972555D;
-	Sun,  4 Feb 2024 20:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA8325567;
+	Sun,  4 Feb 2024 20:32:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="TISutnB0"
 X-Original-To: stable@vger.kernel.org
-Received: from irl.hu (irl.hu [95.85.9.111])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C38025558;
-	Sun,  4 Feb 2024 20:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBAC28688;
+	Sun,  4 Feb 2024 20:32:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707077209; cv=none; b=uk5LMuteNNAlhFLfZcnp/zLA1D00O9v9MxetZiGslD0r+fhNWa9fB4jG702MRb7ECRKCYiUbR3OuF+MLaPEeRe2I/zptHy24nUtKVkfnAXEBrosc2Ag1FUn9Ln/N4V56RQU0hE6bkFfn8g3Ublwr+n3h5ZrASxFFpuFikzklo6o=
+	t=1707078727; cv=none; b=kow6sqyn1yIHXqFq6BiiFyiNgO6qXwrHjDKKFHHsXAa0EUEkunNTcwiJ/x0lNXNifwhGN5//FOpFmurtOY6OkdB6BXs1vRFdPAxpIvg28Y4zEEC6t7SnjtKWVptSmHKggpVhWkCwdTgxSyli+9EcgYQEUEKEIliglYRHgin8S54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707077209; c=relaxed/simple;
-	bh=tpbjTw4X23EhfXeKly94uyy0NFWMMOuT2ePsQRoyPa0=;
-	h=From:To:Cc:Subject:Date:Message-ID:Mime-Version:Content-Type; b=ZgslfUj0tW8w1rOP61nEEo1di2cuBRSBjF6OCimdXqHQptFSZyAsBG/3qz9aZLKCBKhXUjIq/YNfg9GIm9gTaYuLyAQOro49rPP72yFmHaNzmRciL+M97/SvC//zq4q9ZigLXjlk8QmRItzzXeHczAIW+6sE+MPbAvkMPUPm77w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
-Received: from fedori.lan (51b68916.dsl.pool.telekom.hu [::ffff:81.182.137.22])
-  (AUTH: CRAM-MD5 soyer@irl.hu, )
-  by irl.hu with ESMTPSA
-  id 000000000007429F.0000000065BFED1F.001A84E5; Sun, 04 Feb 2024 21:01:35 +0100
-From: Gergo Koteles <soyer@irl.hu>
-To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
-  Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>,
-  Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
-  Mark Brown <broonie@kernel.org>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-  alsa-devel@alsa-project.org, Gergo Koteles <soyer@irl.hu>,
-  stable@vger.kernel.org
-Subject: [PATCH] ASoC: tas2781: add module parameter to tascodec_init()
-Date: Sun,  4 Feb 2024 21:01:17 +0100
-Message-ID: <118dad922cef50525e5aab09badef2fa0eb796e5.1707076603.git.soyer@irl.hu>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1707078727; c=relaxed/simple;
+	bh=dxhoQ6gha6jprWyOLA1prEutTcOkboFoDMbU9dgUZ/E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IRCwHUXuEvKkseNhObN1Y1hv0XtY5RQEb6WcdkiiBkZn4zOh5iM0r9tSBnTk+3S22Yu2ahA4wb4EmPhC1XR9Hr11K+IP28stwM5A/eZ0np6MkipMVtQuBauWZ8sBdTaLps+ItpJ1Ru8usPrqXILwdO2Wd2YUaDNnjOjuqR0Yi3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=TISutnB0; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=PDoQmKoIo+4pyBX8IxmJjNLKSWVkWqDmvzeuM7hEdyg=; b=TISutnB0Zld8cjXp773EH2WRMx
+	8qqEFllTEiWimZnMosmELTaueeV3cm69r+oj53++rSG3TwkQTxMTu6EoixFE6fI/ZEWdcJdzdzzn0
+	Fpq3UKrPSSXhIvzNx55yljsnzq+Ugc2WX8NZI5k/MmsE5cLWkrpOSUoCwyEvEOjmtKiLUpjBokc5G
+	xhtnKBxsBBzbwNQptvmrZrhjmVOKhT4/tN9PaHpxbqaw9gsIhO0df3+5FgNZcT1YOxQiwB/30avKc
+	SGcyJeoR4nGKcVk1gnggBBmhGGFOFFUq8/61c7CbeoMDC88/JwaQ0mzJIEXFrq7mn4o0ylvgGMFPy
+	amz06Y6g==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <carnil@debian.org>)
+	id 1rWj9a-00Aqkl-D4; Sun, 04 Feb 2024 20:31:50 +0000
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id A2052BE2DE0; Sun,  4 Feb 2024 21:31:48 +0100 (CET)
+Date: Sun, 4 Feb 2024 21:31:48 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Vegard Nossum <vegard.nossum@oracle.com>
+Cc: Justin Forbes <jforbes@fedoraproject.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jonathan Corbet <corbet@lwn.net>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Jani Nikula <jani.nikula@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Subject: Re: [PATCH 6.6 003/331] docs: kernel_feat.py: fix potential command
+ injection
+Message-ID: <Zb_0NEeCqok8icwz@eldamar.lan>
+References: <20240129170015.067909940@linuxfoundation.org>
+ <ZbkfGst991YHqJHK@fedora64.linuxtx.org>
+ <87h6iudc7j.fsf@meer.lwn.net>
+ <CAFbkSA2tft--ejgJ58o3G-OxNqnm-C6fK4-kXThsN92NYF8V0A@mail.gmail.com>
+ <2024020151-purchase-swerve-a3b3@gregkh>
+ <CAFbkSA25o88DjaWHc3GRk5vkvANnpi-NJ61XJudz4=ARTyrhtw@mail.gmail.com>
+ <CAFbkSA3M74kvF+v_URm593xSnJTVzeKmy2K6dw0WQYw7BDdwmg@mail.gmail.com>
+ <CAFbkSA3vHDn-Pk9fB6PbWeniGHH6W3bo=jQ9utE9xh88S8bzxA@mail.gmail.com>
+ <1a160e5f-d5ce-4711-b683-808ab87b289b@oracle.com>
+ <Zb_DwdZ3PUr1VbBg@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <Zb_DwdZ3PUr1VbBg@eldamar.lan>
+X-Debian-User: carnil
 
-The tascodec_init() of the snd-soc-tas2781-comlib module is called from
-snd-soc-tas2781-i2c and snd-hda-scodec-tas2781-i2c modules. It calls
-request_firmware_nowait() with parameter THIS_MODULE and a cont/callback
-from the latter modules.
+On Sun, Feb 04, 2024 at 06:05:05PM +0100, Salvatore Bonaccorso wrote:
+> Hi,
+> 
+> On Thu, Feb 01, 2024 at 05:34:25PM +0100, Vegard Nossum wrote:
+> > 
+> > On 01/02/2024 16:07, Justin Forbes wrote:
+> > > On Thu, Feb 1, 2024 at 8:58 AM Justin Forbes <jforbes@fedoraproject.org> wrote:
+> > > > On Thu, Feb 1, 2024 at 8:41 AM Justin Forbes <jforbes@fedoraproject.org> wrote:
+> > > > > On Thu, Feb 1, 2024 at 8:25 AM Greg Kroah-Hartman
+> > > > > <gregkh@linuxfoundation.org> wrote:
+> > > > > > On Thu, Feb 01, 2024 at 06:43:46AM -0600, Justin Forbes wrote:
+> > > > > > > On Tue, Jan 30, 2024 at 10:21 AM Jonathan Corbet <corbet@lwn.net> wrote:
+> > > > > > > > Justin Forbes <jforbes@fedoraproject.org> writes:
+> > > > > > > > > On Mon, Jan 29, 2024 at 09:01:07AM -0800, Greg Kroah-Hartman wrote:
+> > > > > > > > > > 6.6-stable review patch.  If anyone has any objections, please let me know.
+> > > > > > > > > > 
+> > > > > > > > > > ------------------
+> > > > > > > > > > 
+> > > > > > > > > > From: Vegard Nossum <vegard.nossum@oracle.com>
+> > > > > > > > > > 
+> > > > > > > > > > [ Upstream commit c48a7c44a1d02516309015b6134c9bb982e17008 ]
+> > > > > > > > > > 
+> > > > > > > > > > The kernel-feat directive passes its argument straight to the shell.
+> > > > > > > > > > This is unfortunate and unnecessary.
+> > 
+> > [...]
+> > 
+> > > > > > > > > This patch seems to be missing something. In 6.6.15-rc1 I get a doc
+> > > > > > > > > build failure with:
+> > > > > > > > > 
+> > > > > > > > > /builddir/build/BUILD/kernel-6.6.14-332-g1ff49073b88b/linux-6.6.15-0.rc1.1ff49073b88b.200.fc39.noarch/Documentation/sphinx/kerneldoc.py:133: SyntaxWarning: invalid escape sequence '\.'
+> > > > > > > > >    line_regex = re.compile("^\.\. LINENO ([0-9]+)$")
+> > > > > > > > 
+> > > > > > > > Ah ... you're missing 86a0adc029d3 (Documentation/sphinx: fix Python
+> > > > > > > > string escapes).  That is not a problem with this patch, though; I would
+> > > > > > > > expect you to get the same error (with Python 3.12) without.
+> > > > > > > 
+> > > > > > > Well, it appears that 6.6.15 shipped anyway, with this patch included,
+> > > > > > > but not with 86a0adc029d3.  If anyone else builds docs, this thread
+> > > > > > > should at least show them the fix.  Perhaps we can get the missing
+> > > > > > > patch into 6.6.16?
+> > > > > > 
+> > > > > > Sure, but again, that should be independent of this change, right?
+> > > > > 
+> > > > > I am not sure I would say independent. This particular change causes
+> > > > > docs to fail the build as I mentioned during rc1.  There were no
+> > > > > issues building 6.6.14 or previous releases, and no problem building
+> > > > > 6.7.3.
+> > > > 
+> > > > I can confirm that adding this patch to 6.6.15 makes docs build again.
+> > > 
+> > > I lied, it just fails slightly differently. Some of the noise is gone,
+> > > but we still have:
+> > > Sphinx parallel build error:
+> > > UnboundLocalError: cannot access local variable 'fname' where it is
+> > > not associated with a value
+> > > make[2]: *** [Documentation/Makefile:102: htmldocs] Error 2
+> > > make[1]: *** [/builddir/build/BUILD/kernel-6.6.15/linux-6.6.15-200.fc39.noarch/Makefile:1715:
+> > > htmldocs] Error 2
+> > 
+> > The old version of the script unconditionally assigned a value to the
+> > local variable 'fname' (not a value that makes sense to me, since it's
+> > literally assigning the whole command, not just a filename, but that's a
+> > separate issue), and I removed that so it's only conditionally assigned.
+> > This is almost certainly a bug in my patch.
+> > 
+> > I'm guessing maybe a different patch between 6.6 and current mainline is
+> > causing 'fname' to always get assigned for the newer versions and thus
+> > make the run succeed, in spite of the bug.
+> > 
+> > Something like the patch below (completely untested) should restore the
+> > previous behaviour, but I'm not convinced it's correct.
+> > 
+> > 
+> > Vegard
+> > 
+> > diff --git a/Documentation/sphinx/kernel_feat.py
+> > b/Documentation/sphinx/kernel_feat.py
+> > index b9df61eb4501..15713be8b657 100644
+> > --- a/Documentation/sphinx/kernel_feat.py
+> > +++ b/Documentation/sphinx/kernel_feat.py
+> > @@ -93,6 +93,8 @@ class KernelFeat(Directive):
+> >          if len(self.arguments) > 1:
+> >              args.extend(['--arch', self.arguments[1]])
+> > 
+> > +        fname = ' '.join(args)
+> > +
+> >          lines = subprocess.check_output(args,
+> > cwd=os.path.dirname(doc.current_source)).decode('utf-8')
+> > 
+> >          line_regex = re.compile(r"^\.\. FILE (\S+)$")
+> 
+> We have as well a documention build problem in Debian, cf.
+> https://buildd.debian.org/status/fetch.php?pkg=linux&arch=all&ver=6.6.15-1&stamp=1707050360&raw=0
+> though not yet using python 3.12 as default.
+> 
+> Your above change seems to workaround the issue in fact, but need to
+> do a full build yet.
 
-The latter modules can be removed while their callbacks are running,
-resulting in a general protection failure.
+For Debian I'm temporarily reverting from the 6.6.15 upload:
 
-Add module parameter to tascodec_init() so request_firmware_nowait() can
-be called with the module of the callback.
+e961f8c6966a ("docs: kernel_feat.py: fix potential command injection")
 
-Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
-CC: stable@vger.kernel.org
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
----
- include/sound/tas2781.h           | 1 +
- sound/pci/hda/tas2781_hda_i2c.c   | 2 +-
- sound/soc/codecs/tas2781-comlib.c | 3 ++-
- sound/soc/codecs/tas2781-i2c.c    | 2 +-
- 4 files changed, 5 insertions(+), 3 deletions(-)
+This is not the best solution, but unbreaks several other builds.
 
-diff --git a/include/sound/tas2781.h b/include/sound/tas2781.h
-index b00d65417c31..9aff384941de 100644
---- a/include/sound/tas2781.h
-+++ b/include/sound/tas2781.h
-@@ -142,6 +142,7 @@ struct tasdevice_priv {
- 
- void tas2781_reset(struct tasdevice_priv *tas_dev);
- int tascodec_init(struct tasdevice_priv *tas_priv, void *codec,
-+	struct module *module,
- 	void (*cont)(const struct firmware *fw, void *context));
- struct tasdevice_priv *tasdevice_kzalloc(struct i2c_client *i2c);
- int tasdevice_init(struct tasdevice_priv *tas_priv);
-diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
-index 2dd809de62e5..1bfb00102a77 100644
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -710,7 +710,7 @@ static int tas2781_hda_bind(struct device *dev, struct device *master,
- 
- 	strscpy(comps->name, dev_name(dev), sizeof(comps->name));
- 
--	ret = tascodec_init(tas_hda->priv, codec, tasdev_fw_ready);
-+	ret = tascodec_init(tas_hda->priv, codec, THIS_MODULE, tasdev_fw_ready);
- 	if (!ret)
- 		comps->playback_hook = tas2781_hda_playback_hook;
- 
-diff --git a/sound/soc/codecs/tas2781-comlib.c b/sound/soc/codecs/tas2781-comlib.c
-index b7e56ceb1acf..5d0e5348b361 100644
---- a/sound/soc/codecs/tas2781-comlib.c
-+++ b/sound/soc/codecs/tas2781-comlib.c
-@@ -267,6 +267,7 @@ void tas2781_reset(struct tasdevice_priv *tas_dev)
- EXPORT_SYMBOL_GPL(tas2781_reset);
- 
- int tascodec_init(struct tasdevice_priv *tas_priv, void *codec,
-+	struct module *module,
- 	void (*cont)(const struct firmware *fw, void *context))
- {
- 	int ret = 0;
-@@ -280,7 +281,7 @@ int tascodec_init(struct tasdevice_priv *tas_priv, void *codec,
- 		tas_priv->dev_name, tas_priv->ndev);
- 	crc8_populate_msb(tas_priv->crc8_lkp_tbl, TASDEVICE_CRC8_POLYNOMIAL);
- 	tas_priv->codec = codec;
--	ret = request_firmware_nowait(THIS_MODULE, FW_ACTION_UEVENT,
-+	ret = request_firmware_nowait(module, FW_ACTION_UEVENT,
- 		tas_priv->rca_binaryname, tas_priv->dev, GFP_KERNEL, tas_priv,
- 		cont);
- 	if (ret)
-diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
-index 32913bd1a623..b5abff230e43 100644
---- a/sound/soc/codecs/tas2781-i2c.c
-+++ b/sound/soc/codecs/tas2781-i2c.c
-@@ -566,7 +566,7 @@ static int tasdevice_codec_probe(struct snd_soc_component *codec)
- {
- 	struct tasdevice_priv *tas_priv = snd_soc_component_get_drvdata(codec);
- 
--	return tascodec_init(tas_priv, codec, tasdevice_fw_ready);
-+	return tascodec_init(tas_priv, codec, THIS_MODULE, tasdevice_fw_ready);
- }
- 
- static void tasdevice_deinit(void *context)
+The alternative would be to apply Vegard's workaround or the proper
+solution for that.
 
-base-commit: d4ea2bd1bb502c54380cc44a4130660494679bb8
--- 
-2.43.0
-
+Regards,
+Salvatore
 
