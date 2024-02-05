@@ -1,116 +1,131 @@
-Return-Path: <stable+bounces-18815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36FBE8495AA
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 09:50:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF6D84964A
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 10:21:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BECB1B2157E
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 08:50:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95B8B28286D
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 09:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9EFB1173A;
-	Mon,  5 Feb 2024 08:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B028125AF;
+	Mon,  5 Feb 2024 09:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MDxJWxgt"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="laPnRj03"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD3C1170E;
-	Mon,  5 Feb 2024 08:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBD8134AA
+	for <stable@vger.kernel.org>; Mon,  5 Feb 2024 09:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707123013; cv=none; b=MyzrBzOsVv8QjnRv+BGUc+NOSNoDm/Ba/J++Zy2ZXlnikgBozpdIEG0Sbi/aepzsH1q6jbVgAJ+n/PMz22dlDmMb5/EAjnWeBMuE5Z7btWXUHlY6cdUZZ9J/A6evzjqqHEtgXgHAxxVT186x915OhTvntaP/svIzHlm2ESjA07w=
+	t=1707124834; cv=none; b=NujCowgU2X2Rq3j/hUBD9pJqRfHCvjRGX8FVHoBmMUFn4VtkG69oguBODtN2fp26ZzYk07lBzspxnZ/stGJTSkevl8glXZFla7JyNc6hersZxo6PgWV5EgcwKkxSDTMOGu3TQmokeZq2eTdFPdq6ObSWmz68n2sWRkkq+NNUDXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707123013; c=relaxed/simple;
-	bh=n8l8ZDTaGN72EVPrMGmTV9OZ7Qe17Bvaq4fAGCujogI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KXxyN2PJFIYshOGfDdyf22z2puEQFS+hy5/GiWYGgQQGyIJSzxHNckS+4nZDSRBlnw6+20MsXx4kEV2ryhNS3hCOPk76lZK99itG7u45cgoN504TNNftrTgxoW4VNZKnMcSyxsXo8jOGlYv7cKZ0+0iHV1+whlMJwZEtUBdpO0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MDxJWxgt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9320BC433F1;
-	Mon,  5 Feb 2024 08:50:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707123012;
-	bh=n8l8ZDTaGN72EVPrMGmTV9OZ7Qe17Bvaq4fAGCujogI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MDxJWxgtCIdPk2zSnox1ju0XLwp5bi4qEEQVS9Gtc00d6Yzysb+QGs/mZgS5R5Obm
-	 4rjU0x3ZElfQqvnjqvCByj3NI7vfAyo9xDOOJW37n8+Iffb/xo8fKt425XfufGxeeQ
-	 Zcr2gOfgrpe5uOujuYfiqMvifHITVzxuIT/4baIeXUex9fLPipHPAQk8Cy5Jb0y8+W
-	 QsdsWe1oH4GtHUfyxJrQOpizr/RFQ3VixwTMevFMIu8igzukjBb80seOVpf5LiP24q
-	 3IXmpvYrZfUtPT+ca8+vkfvtPQeajDH/uzOGpWkfVKJQHYshD7HRc5H588N1oIBSGs
-	 DUju7HSgt17Aw==
-Date: Mon, 5 Feb 2024 08:50:07 +0000
-From: Lee Jones <lee@kernel.org>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Christian Marangi <ansuelsmth@gmail.com>, Pavel Machek <pavel@ucw.cz>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Li Zetao <lizetao1@huawei.com>, linux-leds@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] leds: trigger: netdev: Fix kernel panic on interface
- rename trig notify
-Message-ID: <20240205085007.GA19855@google.com>
-References: <20240203235413.1146-1-ansuelsmth@gmail.com>
- <8d51f09b-e6d2-4ee1-9e7d-b545d561798a@lunn.ch>
+	s=arc-20240116; t=1707124834; c=relaxed/simple;
+	bh=NwogaMO0Mscgp5dPQGXI6QGM5Bvcz7JNBKciEMJL4J0=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=fL3IM9XfH3tOOLHF0ZLJ0ngbJ0aimFrjIoO+JOlKDDE5qZaZ3khr5NkNp3cM3dA097GPuD1utir23/JLUJJ53p2in43VuJ/vgK4CMEfOrkCiBKLYpqutnkr5vRZWghdRA22OmKvhCOc6rC2O5DZzSbC7t3pLbw+rnNtRwooxF3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=laPnRj03; arc=none smtp.client-ip=35.89.44.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6006a.ext.cloudfilter.net ([10.0.30.182])
+	by cmsmtp with ESMTPS
+	id Wttcr9QDc80oiWv9MrbnW9; Mon, 05 Feb 2024 09:20:24 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id Wv9Mr3NIQZh02Wv9Mr9aU7; Mon, 05 Feb 2024 09:20:24 +0000
+X-Authority-Analysis: v=2.4 cv=T/cvTOKQ c=1 sm=1 tr=0 ts=65c0a858
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=k7vzHIieQBIA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=LpCdqv870RknWCK0Tx5X1QgGvnqvpACA8xnj6UMA0I8=; b=laPnRj03pr/K8rLFEFooMnxpkO
+	GLFhlyxQ7A9dsjjOxNi3Y8wnXzj+QgCgnBWVCnjl0RZwM1CqcMNbbbeve7vx//vsIhJJniI+/k4XL
+	xIOvEd2kyghTWMhRKijf1ICkRJwT6+0ebIMgmcnEVeY2lQDsI/6MLaRYmUlCZ3DvVFo9H76BvBG1m
+	IIXq+1dBskM0AIEmc25rClAXwxA6kepfBMeZzuGkSmu3U4cQ6HnkEaxI3uEfowJD2mmoutN1JSopk
+	i/AZqdq+zjomgPk+7wD9dVHJMX6RMWyO3XT7DD+I1im40KGD6fvDanPcpzT5GNW1s/Q29RY24NeEn
+	NvtIrQaw==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:41072 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rWv9K-000tow-0Z;
+	Mon, 05 Feb 2024 02:20:22 -0700
+Subject: Re: [PATCH 6.1 000/221] 6.1.77-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20240203174756.358721205@linuxfoundation.org>
+In-Reply-To: <20240203174756.358721205@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <fd4114fc-6f4e-3688-10a7-44a6cc567676@w6rz.net>
+Date: Mon, 5 Feb 2024 01:20:19 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <8d51f09b-e6d2-4ee1-9e7d-b545d561798a@lunn.ch>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rWv9K-000tow-0Z
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:41072
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfECLt/kn5u21n2V6Eh4dOoEqyxAU6xvZRXmv/fJsQloYyZnciVd4i/Rz8PnyYyrvEPhebVCHUURprtHSEPZlPhUfmp6S0ieXZ1TXZz5hpNG3CbJBhj+2
+ XMGqh1bY9LTukCrMG8tfbiXdYMI7Jh/PQdfrzzswbTbceJbCIvHuthBmDhasegGZMkVXbenoTNJDCA==
 
-On Sun, 04 Feb 2024, Andrew Lunn wrote:
+On 2/3/24 9:52 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.77 release.
+> There are 221 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Mon, 05 Feb 2024 17:47:20 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.77-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-> On Sun, Feb 04, 2024 at 12:54:01AM +0100, Christian Marangi wrote:
-> > Commit d5e01266e7f5 ("leds: trigger: netdev: add additional specific link
-> > speed mode") in the various changes, reworked the way to set the LINKUP
-> > mode in commit cee4bd16c319 ("leds: trigger: netdev: Recheck
-> > NETDEV_LED_MODE_LINKUP on dev rename") and moved it to a generic function.
-> > 
-> > This changed the logic where, in the previous implementation the dev
-> > from the trigger event was used to check if the carrier was ok, but in
-> > the new implementation with the generic function, the dev in
-> > trigger_data is used instead.
-> > 
-> > This is problematic and cause a possible kernel panic due to the fact
-> > that the dev in the trigger_data still reference the old one as the
-> > new one (passed from the trigger event) still has to be hold and saved
-> > in the trigger_data struct (done in the NETDEV_REGISTER case).
-> > 
-> > On calling of get_device_state(), an invalid net_dev is used and this
-> > cause a kernel panic.
-> > 
-> > To handle this correctly, move the call to get_device_state() after the
-> > new net_dev is correctly set in trigger_data (in the NETDEV_REGISTER
-> > case) and correctly parse the new dev.
-> > 
-> > Fixes: d5e01266e7f5 ("leds: trigger: netdev: add additional specific link speed mode")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-> 
-> This should have 'net' in the subject line, to indicate which tree its
-> for.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-No, it shouldn't.
+Tested-by: Ron Economos <re@w6rz.net>
 
-Contributors aren't obliged to know anything about merging strategies.
-
-Why does this need to go in via net?
-
-> Otherwise:
-> 
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-
-Thanks.  Always very useful.
-
--- 
-Lee Jones [李琼斯]
 
