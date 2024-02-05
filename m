@@ -1,136 +1,151 @@
-Return-Path: <stable+bounces-18854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DE1784A163
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 18:52:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DBAE84A16A
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 18:53:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAAC6284C9E
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 17:52:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19DE428487B
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 17:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE284594A;
-	Mon,  5 Feb 2024 17:52:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="auUJnNCS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630C04503E;
+	Mon,  5 Feb 2024 17:53:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083C845946;
-	Mon,  5 Feb 2024 17:52:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02FD45942;
+	Mon,  5 Feb 2024 17:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707155524; cv=none; b=eptfVD+fHgwarzxX2EvXXAQTZynJYEWFjesEd6JwftQ5ugPMxLst3Dl8pjDzSZ2kYP4Xoiw62RsYnHqkjnx4WtExl94Qsd1afZsnYy9SlppDkjEMV/CGJJYoZQkRaY568+1g3W7ifMb12uAPaP5plWNn3rukfcYU1qKVHbCIe7o=
+	t=1707155623; cv=none; b=ICPin+HrbkDTpPwSE86clLtWl+Dnch7ZDd0X3ZwXlxLRtWw1F6p1hU0CT/mvCcDdnX5b+ru4GmEd72mkAQui3N1e7TG5Rt14z9a3fH1t5dN1Le386Ye8AkpbldE0gnjR7CUSM99ixz5g4w84KarsxWXs51bywVEmG6YtMtIY/Vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707155524; c=relaxed/simple;
-	bh=o6YQGQ9mCnD5CeZ5d8XhryUh6p2Fp1WJUm864lAKkRc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SrpRC6Vi7T4M3U5dqvXY0GHL30jadkRJVW1fJKfHT7cR9EK+ADqB3deTgBmMBnDIVCbDYiDnY0rIlY2Cb6cJvLSfV85D/e++gsh3jpWG6xxiLF8b62x26e+oybWkyAJlHyM4+gF1TfNWKTq6RgQpJzFYEFg6ezx7X0ZZLYhv5HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=auUJnNCS; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 415DVpO4023683;
-	Mon, 5 Feb 2024 17:51:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2023-11-20;
- bh=QdS/NJuUSIfZ9VGtmcmbg7RieoHNF4qrJpxg8LxaPgw=;
- b=auUJnNCSMdgFnOBaRHuTZ89L/Pfi1RgzD8J4o+bnaZNEK8NN2xDUGz3VcTg4EGCPGS7q
- E5534BqobG2MLAebt/q8kzZtwlErO/N9zyTJDpmeSMnz75G1XRXmea+Up+HPoIOqJjdL
- L6MEir1g8yF5OckOph+WmmwnoHy+XQHfTaSYZWOb3bIi6tSamyuVsKboL3sM70T8QLt2
- g8r0EEZ+vFZMMkS9BIsPtdFzM6HeV1uBR4kJ1s/LkMUAJk1zv5UW9wJZaqe569VwUAkD
- tYByCtotbUyYReUNmCuLb84NiV5hUAAwzxy752LzX0uqldMCsaxv94vQ15nXxlOUX8aS 5A== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w1d3ucmt1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 05 Feb 2024 17:51:49 +0000
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 415HidXY038392;
-	Mon, 5 Feb 2024 17:51:49 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3w1bx5u21q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 05 Feb 2024 17:51:49 +0000
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 415Hpkio033449;
-	Mon, 5 Feb 2024 17:51:48 GMT
-Received: from localhost.localdomain (dhcp-10-175-62-2.vpn.oracle.com [10.175.62.2])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3w1bx5u1vh-2;
-	Mon, 05 Feb 2024 17:51:48 +0000
-From: Vegard Nossum <vegard.nossum@oracle.com>
-To: Jonathan Corbet <corbet@lwn.net>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Jani Nikula <jani.nikula@intel.com>, linux-doc@vger.kernel.org,
-        Vegard Nossum <vegard.nossum@oracle.com>,
-        Justin Forbes <jforbes@fedoraproject.org>,
-        Salvatore Bonaccorso <carnil@debian.org>, stable@vger.kernel.org
-Subject: [PATCH 1/8] docs: kernel_feat.py: fix build error for missing files
-Date: Mon,  5 Feb 2024 18:51:26 +0100
-Message-Id: <20240205175133.774271-2-vegard.nossum@oracle.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240205175133.774271-1-vegard.nossum@oracle.com>
-References: <20240205175133.774271-1-vegard.nossum@oracle.com>
+	s=arc-20240116; t=1707155623; c=relaxed/simple;
+	bh=4EirGIPqrbp+q4TnaDXx6ywFBbJZx5YKMeXIK9fxia0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G7JEXW73mna5Ot9E9XaI/jPJBUoNSpAh+iobbRI0JjSftKEacPodm6WZTqkr+Zs/kLpqHr9uVrOZS+fMkdO+7f/Eewl2w8OpIj/C1r8kkd5kC313B1zEVRodk2TtJnUZwfpTpgGBzkVjtrQLMtIZH6aCYvmz/Sd0WfJHaxob8sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rX39o-0005nx-UH; Mon, 05 Feb 2024 18:53:25 +0100
+Message-ID: <dc9f8eab-ec5c-46f1-a168-c510650d1cac@leemhuis.info>
+Date: Mon, 5 Feb 2024 18:53:24 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: huge_memory: don't force huge page alignment on 32
+ bit
+Content-Language: en-US, de-DE
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: jirislaby@kernel.org, surenb@google.com, riel@surriel.com,
+ willy@infradead.org, cl@linux.com, akpm@linux-foundation.org,
+ Linux kernel regressions list <regressions@lists.linux.dev>,
+ yang@os.amperecomputing.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, "stable@vger.kernel.org"
+ <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>,
+ Yang Shi <shy828301@gmail.com>
+References: <20240118133504.2910955-1-shy828301@gmail.com>
+ <ad920491-9d73-4512-8996-badace520699@leemhuis.info>
+ <CAHbLzkp7s1CcSE0rc-CpfcCrNtMdepAA5-K+0P4wz11x4SK6=g@mail.gmail.com>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <CAHbLzkp7s1CcSE0rc-CpfcCrNtMdepAA5-K+0P4wz11x4SK6=g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-05_12,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 spamscore=0
- mlxlogscore=999 bulkscore=0 mlxscore=0 phishscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402050134
-X-Proofpoint-ORIG-GUID: RGSHpv-Zp6TliSXiKI658_Tj6_M0MhYz
-X-Proofpoint-GUID: RGSHpv-Zp6TliSXiKI658_Tj6_M0MhYz
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1707155619;7d2e2678;
+X-HE-SMSGID: 1rX39o-0005nx-UH
 
-If the directory passed to the '.. kernel-feat::' directive does not
-exist or the get_feat.pl script does not find any files to extract
-features from, Sphinx will report the following error:
+[adding the stable team]
 
-    Sphinx parallel build error:
-    UnboundLocalError: local variable 'fname' referenced before assignment
-    make[2]: *** [Documentation/Makefile:102: htmldocs] Error 2
+On 05.02.24 18:07, Yang Shi wrote:
+> On Sat, Feb 3, 2024 at 1:24 AM Thorsten Leemhuis
+> <regressions@leemhuis.info> wrote:
+>> On 18.01.24 14:35, Yang Shi wrote:
+>>>
+>>> The commit efa7df3e3bb5 ("mm: align larger anonymous mappings on THP
+>>> boundaries") caused two issues [1] [2] reported on 32 bit system or compat
+>>> userspace.
+>>>
+>>> It doesn't make too much sense to force huge page alignment on 32 bit
+>>> system due to the constrained virtual address space.
+>>>
+>>> [1] https://lore.kernel.org/linux-mm/CAHbLzkqa1SCBA10yjWTtA2mKCsoK5+M1BthSDL8ROvUq2XxZMw@mail.gmail.com/T/#mf211643a0427f8d6495b5b53f8132f453d60ab95
+>>> [2] https://lore.kernel.org/linux-mm/CAHbLzkqa1SCBA10yjWTtA2mKCsoK5+M1BthSDL8ROvUq2XxZMw@mail.gmail.com/T/#me93dff2ccbd9902c3e395e1c022fb454e48ecb1d
+>>
+>> [FWIW, this is now 4ef9ad19e17676 ("mm: huge_memory: don't force huge
+>> page alignment on 32 bit") in mainline]
+>>
+>> Quick question: it it okay to ask Greg to pick this up for linux-6.7.y
+>> series?
+> 
+> Yes, definitely. Thanks for following up.
 
-This is due to how I changed the script in c48a7c44a1d0 ("docs:
-kernel_feat.py: fix potential command injection"). Before that, the
-filename passed along to self.nestedParse() in this case was weirdly
-just the whole get_feat.pl invocation.
+In that case: Greg, could you please consider picking up 4ef9ad19e17676
+("mm: huge_memory: don't force huge page alignment on 32 bit") for the
+next linux-6.7 rc round? tia!
 
-We can fix it by doing what kernel_abi.py does -- just pass
-self.arguments[0] as 'fname'.
+Ohh, and btw: you might also want to pick up c4608d1bf7c653 ("mm: mmap:
+map MAP_STACK to VM_NOHUGEPAGE") if you haven't already done so: its
+stable tag contains a typo, hence I guess your scripts might have missed
+it (I only noticed that by chance).
 
-Fixes: c48a7c44a1d0 ("docs: kernel_feat.py: fix potential command injection")
-Cc: Justin Forbes <jforbes@fedoraproject.org>
-Cc: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
----
- Documentation/sphinx/kernel_feat.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Ciao, Thorsten
 
-diff --git a/Documentation/sphinx/kernel_feat.py b/Documentation/sphinx/kernel_feat.py
-index b9df61eb4501..03ace5f01b5c 100644
---- a/Documentation/sphinx/kernel_feat.py
-+++ b/Documentation/sphinx/kernel_feat.py
-@@ -109,7 +109,7 @@ class KernelFeat(Directive):
-             else:
-                 out_lines += line + "\n"
- 
--        nodeList = self.nestedParse(out_lines, fname)
-+        nodeList = self.nestedParse(out_lines, self.arguments[0])
-         return nodeList
- 
-     def nestedParse(self, lines, fname):
--- 
-2.34.1
-
+>> I'm wondering because Jiri's report ([1] in above quote) sounded like
+>> this is something that will affect and annoy quite a few people with the
+>> linux-6.7.y.
+>>
+>> Ciao, Thorsten
+>>
+>>> Fixes: efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries")
+>>> Reported-by: Jiri Slaby <jirislaby@kernel.org>
+>>> Reported-by: Suren Baghdasaryan <surenb@google.com>
+>>> Tested-by: Jiri Slaby <jirislaby@kernel.org>
+>>> Tested-by: Suren Baghdasaryan <surenb@google.com>
+>>> Cc: Rik van Riel <riel@surriel.com>
+>>> Cc: Matthew Wilcox <willy@infradead.org>
+>>> Cc: Christopher Lameter <cl@linux.com>
+>>> Signed-off-by: Yang Shi <yang@os.amperecomputing.com>
+>>> ---
+>>>  mm/huge_memory.c | 9 +++++++++
+>>>  1 file changed, 9 insertions(+)
+>>>
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index 94ef5c02b459..e9fbaccbe0c0 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -37,6 +37,7 @@
+>>>  #include <linux/page_owner.h>
+>>>  #include <linux/sched/sysctl.h>
+>>>  #include <linux/memory-tiers.h>
+>>> +#include <linux/compat.h>
+>>>
+>>>  #include <asm/tlb.h>
+>>>  #include <asm/pgalloc.h>
+>>> @@ -811,6 +812,14 @@ static unsigned long __thp_get_unmapped_area(struct file *filp,
+>>>       loff_t off_align = round_up(off, size);
+>>>       unsigned long len_pad, ret;
+>>>
+>>> +     /*
+>>> +      * It doesn't make too much sense to froce huge page alignment on
+>>> +      * 32 bit system or compat userspace due to the contrained virtual
+>>> +      * address space and address entropy.
+>>> +      */
+>>> +     if (IS_ENABLED(CONFIG_32BIT) || in_compat_syscall())
+>>> +             return 0;
+>>> +
+>>>       if (off_end <= off_align || (off_end - off_align) < size)
+>>>               return 0;
+>>>
+> 
+> 
 
