@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-18839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6733849BF3
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 14:36:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F10849C05
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 14:38:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C86011C23C51
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 13:36:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD5CC1F24C8B
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 13:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595151CD1C;
-	Mon,  5 Feb 2024 13:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C60822F11;
+	Mon,  5 Feb 2024 13:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bpQKRRDS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VRGhZumo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A2F2C1A3;
-	Mon,  5 Feb 2024 13:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B1E2C684;
+	Mon,  5 Feb 2024 13:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707140150; cv=none; b=QoYAFW8KXpQk2nX9qwuEQ3CcyuQMXJkb+pf63IRGppP7Xs93gPt0yEM2/tofi+z2FSBU7wD530i0kuWRxE/l8v49I3+OxN7Eo49AAM9q48mI5HDDGcN1U3k7FzAobGpsv66uv+leDP2vgZMqV6FTtpe5p65M9/Egrsuf6I57yB4=
+	t=1707140237; cv=none; b=LRx75Z/fdxMNMkTH7JjDidj8pwc7B7UQi7HzzEirHHErG6DLZRIOSPDcyx9w8JVNs9XtOA8/4SG9gnukocOR7JvKpuyymWWr0mZ4VemicVt8SgIn8o4NtNTnvfiDbeYSHqO1/YyBj9JJrk8kwQ2n5TX8T7F8yEsp2WLgk6WKKVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707140150; c=relaxed/simple;
-	bh=gXsiwKu0fmXcNczWKkuGEIePEvZZ6KW9bACGghjBRDo=;
+	s=arc-20240116; t=1707140237; c=relaxed/simple;
+	bh=u0SvxW6FlGR+ZXQaJdt3PAQTUwFsfKlcW34ooGGl63Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NRiHpkT/tuL3AuyE2TbsSMTneAvEnqdWVKBKke5RMcemPNw8kHkymggRmwfetY2NosQh8qpxsgJaPUO2i87G78P3dnkqbC6c28e23gh6F9V3Zq1yXaoYckf8Nq3oYAMdqeqeQZbUOCgpzJagVSBogJ2jSngnfVmYMdWAzYRoOzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bpQKRRDS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DE02C433F1;
-	Mon,  5 Feb 2024 13:35:47 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=rZwNsMnPCp6wqeNByaQ4Lu+GnvmAAk2JQMv78VHdtakght8zfEXdEMbYyNevAMQX1NGt6JmMoJg48o9VkCKfJNGlQVyAnJKG+8p3PZK4HOQP832M1bY0zHi0IIUqLh2FR+bi6lonV34ndzsE+Mc8mSy24e9Odaw3jrjB8hqwHRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VRGhZumo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D935C433C7;
+	Mon,  5 Feb 2024 13:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707140149;
-	bh=gXsiwKu0fmXcNczWKkuGEIePEvZZ6KW9bACGghjBRDo=;
+	s=k20201202; t=1707140236;
+	bh=u0SvxW6FlGR+ZXQaJdt3PAQTUwFsfKlcW34ooGGl63Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bpQKRRDStcV6jpRFUH/LoBNcqATgei5zNPaMnr8IIYTcMhjoGOovb5SS3nGglBJim
-	 f4jxbngyPz4kLV1r/te8vQkmik4pbF8X6FJ65oilJkDeTmXU8SbOtUuQCDWZoHg5zy
-	 3a8UnkoYQZ5LrjxnbGo6NjHp5d7Mo+Yun6+6X19p8s/ZMYWduIeInWScIOJeC0XZME
-	 zFVx6+wGRXO8KhQmzbHRMK5NVRO4DpQS3yZRUsS1h/G3Bffs7Yfz2UQOEwn7yXtuX0
-	 AwdojbFJj8GxWChN6POGeg5TDnaLwIAUWx7RIjn+2iUTUNIdTI5+/Vryk3wj7q8K0T
-	 50rKmupnb9TZg==
-Date: Mon, 5 Feb 2024 13:35:45 +0000
+	b=VRGhZumoEzGkqOl7mOtMH5MJVpDCLK5lhPFo0HQreKh9gH/JP09snf5GL+RNwS6JD
+	 xZHQHHbnxGUB/FrqRrgIB0/d+I7IJLFUoN/pna8E1FGIb/ipEKQ3G8wf6E9TB+FDHy
+	 qejEDHMzbMxsNWlN6JF7GApKW29OKpk6bOVEHBtEXbp/0M+f/VUWSRAQKkySu59J+C
+	 GBptYpRKur8DVKO9K8o/xtlWimCMytaDc0zmNcYfxAqvyyfGki1rTO9tW94jIsguwc
+	 M96FVnygy6XOpL0EfV0pKAEvnYcIWfAHq/Vvz0tfkNZP68B7SewmTLWWFhF1YfUHQ7
+	 FjYD9uftJ8ZZA==
+Date: Mon, 5 Feb 2024 13:37:12 +0000
 From: Simon Horman <horms@kernel.org>
 To: Louis Peens <louis.peens@corigine.com>
 Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
@@ -50,11 +50,10 @@ Cc: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
 	Daniel Basilio <daniel.basilio@corigine.com>,
 	netdev@vger.kernel.org, stable@vger.kernel.org,
 	oss-drivers@corigine.com
-Subject: Re: [PATCH net 1/3] nfp: use correct macro for LengthSelect in BAR
- config
-Message-ID: <20240205133545.GL960600@kernel.org>
+Subject: Re: [PATCH net 3/3] nfp: enable NETDEV_XDP_ACT_REDIRECT feature flag
+Message-ID: <20240205133712.GM960600@kernel.org>
 References: <20240202113719.16171-1-louis.peens@corigine.com>
- <20240202113719.16171-2-louis.peens@corigine.com>
+ <20240202113719.16171-4-louis.peens@corigine.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,60 +62,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240202113719.16171-2-louis.peens@corigine.com>
+In-Reply-To: <20240202113719.16171-4-louis.peens@corigine.com>
 
-On Fri, Feb 02, 2024 at 01:37:17PM +0200, Louis Peens wrote:
-> From: Daniel Basilio <daniel.basilio@corigine.com>
+On Fri, Feb 02, 2024 at 01:37:19PM +0200, Louis Peens wrote:
+> From: James Hershaw <james.hershaw@corigine.com>
 > 
-> The 1st and 2nd expansion BAR configuration registers are configured,
-> when the driver starts up, in variables 'barcfg_msix_general' and
-> 'barcfg_msix_xpb', respectively. The 'LengthSelect' field is ORed in
-> from bit 0, which is incorrect. The 'LengthSelect' field should
-> start from bit 27.
+> Enable previously excluded xdp feature flag for NFD3 devices. This
+> feature flag is required in order to bind nfp interfaces to an xdp
+> socket and the nfp driver does in fact support the feature.
 > 
-> This has largely gone un-noticed because
-> NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT happens to be 0.
-> 
-> Fixes: 4cb584e0ee7d ("nfp: add CPP access core")
-> Cc: stable@vger.kernel.org # 4.11+
-> Signed-off-by: Daniel Basilio <daniel.basilio@corigine.com>
+> Fixes: 66c0e13ad236 ("drivers: net: turn on XDP features")
+> Cc: stable@vger.kernel.org # 6.3+
+> Signed-off-by: James Hershaw <james.hershaw@corigine.com>
 > Signed-off-by: Louis Peens <louis.peens@corigine.com>
 
-Hi Daniel and Louis,
-
-If I'm reading this right then this is a code-correctness issue
-and there is no runtime effect (because 0 is 0 regardless of shifting and
-masking).
-
-If so, I'd suggest that this is net-next material.
-And, in turn, if so the Fixes tag should be dropped.
-
-> ---
->  drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
-> index 33b4c2856316..3f10c5365c80 100644
-> --- a/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
-> +++ b/drivers/net/ethernet/netronome/nfp/nfpcore/nfp6000_pcie.c
-> @@ -537,11 +537,13 @@ static int enable_bars(struct nfp6000_pcie *nfp, u16 interface)
->  	const u32 barcfg_msix_general =
->  		NFP_PCIE_BAR_PCIE2CPP_MapType(
->  			NFP_PCIE_BAR_PCIE2CPP_MapType_GENERAL) |
-> -		NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT;
-> +		NFP_PCIE_BAR_PCIE2CPP_LengthSelect(
-> +			NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT);
->  	const u32 barcfg_msix_xpb =
->  		NFP_PCIE_BAR_PCIE2CPP_MapType(
->  			NFP_PCIE_BAR_PCIE2CPP_MapType_BULK) |
-> -		NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT |
-> +		NFP_PCIE_BAR_PCIE2CPP_LengthSelect(
-> +			NFP_PCIE_BAR_PCIE2CPP_LengthSelect_32BIT) |
->  		NFP_PCIE_BAR_PCIE2CPP_Target_BaseAddress(
->  			NFP_CPP_TARGET_ISLAND_XPB);
->  	const u32 barcfg_explicit[4] = {
-> -- 
-> 2.34.1
-> 
-> 
+Reviewed-by: Simon Horman <horms@kernel.org>
 
