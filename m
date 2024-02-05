@@ -1,61 +1,50 @@
-Return-Path: <stable+bounces-18823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A86C8498B2
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 12:21:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CCC8498AB
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 12:20:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FB5AB26536
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 11:21:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3C1D1C222BD
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 11:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06AA18AEE;
-	Mon,  5 Feb 2024 11:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A3D2182A0;
+	Mon,  5 Feb 2024 11:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="oOH5Lrlj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SVGrrva3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F174118638;
-	Mon,  5 Feb 2024 11:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F4518E0C;
+	Mon,  5 Feb 2024 11:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707132077; cv=none; b=smID9IFiEHRIvgKFhE60QCYgs2KuSr2I21FZytULPs0ALaz6nbJK4C2Hordeidfaly30Y6lA4iEg728iGfr2vQeXQ4BgGwaYzcBDl0owXxvpbyw7jVr1gdF/yHBWoJ4V+c9OZuy4L/8pshncQ3okCYVsgJc94Q0DgOzDY6HmQ4Y=
+	t=1707132028; cv=none; b=Zz5CHDX5gJ6GdHbSJd0nRgsVnmVterB/qf95SP1HgxoG3/6BySV5N/2ASLw2y1e4AZZZwbSoMi/ihSEpvB/wGiJNc40cyf5eCOUm0LM1MfCXFSCS01sunIpWNYgHgcy8B0pV6VPZFPYq5tmQ00rokUEhU8EYdFhd2fJwa4nlH/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707132077; c=relaxed/simple;
-	bh=Rz2/NQDtnx9QX45qClLg84vegkmZf2yJfQ2ueKkFnJ4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=H6A76IeshiBHBBnmFYls1TQeY+2SU9R5iPPTh4Bd0l1E832nbd56vqcTSNWJVhYwdsWnEDqg0q2g74fh7i831BMRZb1qz4M0SqyVIREo263iTzyLe9JWambzETj1s0VA681Xdp/SO5DWuBzMjN1fUmdGrduAjPR4i7bQZKZYS74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=oOH5Lrlj; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fpc.intra.ispras.ru (unknown [10.10.165.10])
-	by mail.ispras.ru (Postfix) with ESMTPSA id A8EE940F1DFE;
-	Mon,  5 Feb 2024 11:21:04 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru A8EE940F1DFE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1707132064;
-	bh=8eo/Q0edrb5NcHDsJfOyyWcOMOAMiCdqztmPDVSV+jk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=oOH5LrljU5KLyfEHokjGu71VmrskUfa4W4Mo8kK4PDSfP0DkgmVDEHSdksDwKTSOE
-	 b/wC9ajaHAoHZ0eCGdZgr759DnPsk6koUDbtK/KcQK7zKWchnlg6visFjuz+hHCKeq
-	 jjo1LnLOufWl+K5e0WVh/YgZ2Rub8LwDq2NVVYdo=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Namjae Jeon <linkinjeon@kernel.org>
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Steve French <sfrench@samba.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] ksmbd: free aux buffer if ksmbd_iov_pin_rsp_read fails
-Date: Mon,  5 Feb 2024 14:19:16 +0300
-Message-Id: <20240205111917.181490-1-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1707132028; c=relaxed/simple;
+	bh=dWcWFgOnGOZr4S29PL9XvdO++kv756CTKKDhZBmJawM=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Z6R4OS4f8MNNe9oQRjdzrcvt/o74Cb3TntyvrmEXXbrnd6N86kcTl4DxDxbyqSSlNkc/ITAXG//31M+b8RsjsvLT8OJb+guw84faGHOBakjdBMmBg2FuxU+TiC89AqBclL4RZRh2tEah5q0G90P/YinmnRbrtXmlYqwRzjS3JGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SVGrrva3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1E613C43390;
+	Mon,  5 Feb 2024 11:20:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707132028;
+	bh=dWcWFgOnGOZr4S29PL9XvdO++kv756CTKKDhZBmJawM=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=SVGrrva36jrhu3EUSO3fMdKtZNcvTtlaBHEEuXAwFxUTWt74gerct1HXFlnoDRHb5
+	 29kCy9WvTw+7pjmLodMJ9JGY2McjYMiHGtJqzWS7RSTG1n36MroNjeWIzutvjxoqY6
+	 8WBqCUalH2xoJPxc7zS/iTwhGm8RhMe2I22fxvopfh9Eb4cVPzWriKPZvLMNTh5THn
+	 0Xj5DmbpmldAloK5tIvwy8fjlEz8oikTPME2KqtV304AY9Lst+r5AcxYJqlRGfr5VC
+	 BzXn9jDs0n77x/0FtYDXlRnlStjGgU3I+4jCL4xSgLPMAe9aWy6HhyaS0xnHwtwDgV
+	 wjtNe9VvmrV0w==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 05ED5E2F2ED;
+	Mon,  5 Feb 2024 11:20:28 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,49 +52,45 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/3] nfp: a few simple driver fixes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <170713202801.23951.1708366481607486809.git-patchwork-notify@kernel.org>
+Date: Mon, 05 Feb 2024 11:20:28 +0000
+References: <20240202113719.16171-1-louis.peens@corigine.com>
+In-Reply-To: <20240202113719.16171-1-louis.peens@corigine.com>
+To: Louis Peens <louis.peens@corigine.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ james.hershaw@corigine.com, daniel.basilio@corigine.com,
+ netdev@vger.kernel.org, stable@vger.kernel.org, oss-drivers@corigine.com
 
-ksmbd_iov_pin_rsp_read() doesn't free the provided aux buffer if it
-fails. Seems to be the caller's responsibility to clear the buffer in
-error case.
+Hello:
 
-Found by Linux Verification Center (linuxtesting.org).
+This series was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-Fixes: e2b76ab8b5c9 ("ksmbd: add support for read compound")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- fs/smb/server/smb2pdu.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+On Fri,  2 Feb 2024 13:37:16 +0200 you wrote:
+> This is combining a few unrelated one-liner fixes which have been
+> floating around internally into a single series. I'm not sure what is
+> the least amount of overhead for reviewers, this or a separate
+> submission per-patch? I guess it probably depends on personal
+> preference, but please let me know if there is a strong preference to
+> rather split these in the future.
+> 
+> [...]
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index ba7a72a6a4f4..0c97d3c86072 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -6173,8 +6173,10 @@ static noinline int smb2_read_pipe(struct ksmbd_work *work)
- 		err = ksmbd_iov_pin_rsp_read(work, (void *)rsp,
- 					     offsetof(struct smb2_read_rsp, Buffer),
- 					     aux_payload_buf, nbytes);
--		if (err)
-+		if (err) {
-+			kvfree(aux_payload_buf);
- 			goto out;
-+		}
- 		kvfree(rpc_resp);
- 	} else {
- 		err = ksmbd_iov_pin_rsp(work, (void *)rsp,
-@@ -6384,8 +6386,10 @@ int smb2_read(struct ksmbd_work *work)
- 	err = ksmbd_iov_pin_rsp_read(work, (void *)rsp,
- 				     offsetof(struct smb2_read_rsp, Buffer),
- 				     aux_payload_buf, nbytes);
--	if (err)
-+	if (err) {
-+		kvfree(aux_payload_buf);
- 		goto out;
-+	}
- 	ksmbd_fd_put(work, fp);
- 	return 0;
- 
+Here is the summary with links:
+  - [net,1/3] nfp: use correct macro for LengthSelect in BAR config
+    https://git.kernel.org/netdev/net/c/b3d4f7f22889
+  - [net,2/3] nfp: flower: prevent re-adding mac index for bonded port
+    https://git.kernel.org/netdev/net/c/1a1c13303ff6
+  - [net,3/3] nfp: enable NETDEV_XDP_ACT_REDIRECT feature flag
+    https://git.kernel.org/netdev/net/c/0f4d6f011bca
+
+You are awesome, thank you!
 -- 
-2.39.2
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
