@@ -1,149 +1,181 @@
-Return-Path: <stable+bounces-18812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E0B84949B
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 08:35:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0F68494BE
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 08:47:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 201B81C21BD1
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 07:35:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55262288ABF
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 07:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC38E11199;
-	Mon,  5 Feb 2024 07:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27C110A09;
+	Mon,  5 Feb 2024 07:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Rq/K7jZl"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D1211193;
-	Mon,  5 Feb 2024 07:35:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E9D11190;
+	Mon,  5 Feb 2024 07:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707118533; cv=none; b=KQXkuEG2rP6zCuZSQkivLedh1bZYcmabxoq1KoinkteWPMghXApINcDaXmwuM1g1zcdoatP25tjw+Hr1NcAPzv1WGIIjyfJUdvo8eraGydH2sYGCblUomOb7tEf7S03F4DjIEtdWRUBapUQRhDMSoaHouMdfONhbmM2jsQ1Akec=
+	t=1707119253; cv=none; b=b9yJ6CzRjkVDgT5Qhbhd07hMhwfhgFR/8njLCp4QytciFirbbmBOt5dwtcROCuO1aexuEh28cRqCGraDG53L4+NI+fxIJ3yWKeYZ8DJ5pVfWIs5nPrDLCXOag1BsXmujnS70DsnZZulwVn26h3rv1DYJg9ABFCGxFPo4PVZFKfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707118533; c=relaxed/simple;
-	bh=5aTSrCYKf9FMbG5bWnxBlEmn0e03fsCoBTEYrJ7KGDM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IoK8rf/NeMf0sBhufBbj+cADpXrjZNOOLiEfB+j26ysONjVgqwIdKsLYXAG3UgV5kZnyXeYqRp/RRg0nhj5ffbzB8IlZod18vaVET+mRv88QQGKHhazmDUcPx4lvhOmWtsl6k4UCxdL9mHu0wANn9P83FMlCs1ggWjCGDVNzLus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rWtVp-0004Wt-6y; Mon, 05 Feb 2024 08:35:29 +0100
-Message-ID: <bf07c1bc-b38e-4672-9bb0-24c16054569a@leemhuis.info>
-Date: Mon, 5 Feb 2024 08:35:28 +0100
+	s=arc-20240116; t=1707119253; c=relaxed/simple;
+	bh=gvdIDaltTS0ihBKlSJXlAE64b+5OpymAOgP9TR84kks=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pNnxujajShlwZHUzLNMDHwxKmfMM5ZAbS+jgx1H6m1d2cmup9zp5SqALs7uaEGRUNJDESKF9c9EEJrCVwU6A3haL7jeq5NX8PUZG+inW85U68wCq07+LugQqo26w0zfh356W9X7J7lhPnRPN+pLSaBoahabdn0h6BrNJ5TC0Z9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Rq/K7jZl; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4154xFFo003831;
+	Mon, 5 Feb 2024 07:47:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=qcppdkim1; bh=H43mdPT
+	LvVJVPRl+DPOkCMfp+JmkCA5TA8E3ZocTvR4=; b=Rq/K7jZl97cLFk5SHgDRy6A
+	2CbFshNw5hthllYCRL+1iRS0LwNeliX4IiSJ8d3uypwGVVu+CIou+89QbgrOnz+q
+	K6lmF/Q32AMst5o35Ts3DX2TLHzcO94jWxZscljeNWZCv24qlC6yzgdyB8ezqHNS
+	K9/08w8/jr5GIaoacq6kAhf6uvF2AbYXY4yXvoj41fJQeEHaYkV6Xt0CuLK7AJXH
+	JPnDGf2W3Wqj3obsXH6WDvPAYvLrW0tSm4sAUhIePBZBqH5xpQ+8yg61c+jwaxyY
+	2Jd7gsVRrg3mJxKjXPyg7CWFR/zaeEr4ocn0n8q3w90XuIOIpch7C+iOXxE/hGA=
+	=
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w2rvj89m4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 05 Feb 2024 07:47:20 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4157l5YL002700
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 5 Feb 2024 07:47:05 GMT
+Received: from hu-kriskura-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Sun, 4 Feb 2024 23:47:02 -0800
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        =?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+        Hardik Gajjar
+	<hgajjar@de.adit-jv.com>
+CC: <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_ppratap@quicinc.com>, <quic_wcheng@quicinc.com>,
+        <quic_jackp@quicinc.com>, Krishna Kurapati <quic_kriskura@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH v3] usb: gadget: ncm: Avoid dropping datagrams of properly parsed NTBs
+Date: Mon, 5 Feb 2024 13:16:50 +0530
+Message-ID: <20240205074650.200304-1-quic_kriskura@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: S/PDIF not detected anymore / regression on recent kernel 6.7 ?
-Content-Language: en-US, de-DE
-To: Serge SIMON <serge.simon@gmail.com>, linux-sound@vger.kernel.org,
- regressions@lists.linux.dev
-Cc: stable@vger.kernel.org, Takashi Iwai <tiwai@suse.com>,
- Jaroslav Kysela <perex@perex.cz>
-References: <CAMBK1_QFuLQBp1apHD7=FnJo=RWE532=jMwfo=nkkGFSzJaD-A@mail.gmail.com>
- <2024011723-freeness-caviar-774c@gregkh>
- <CAMBK1_S2vwv-8PfFQ4rfChPiW7ut5LXgmUZRtyhN=AoG3g5NEg@mail.gmail.com>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <CAMBK1_S2vwv-8PfFQ4rfChPiW7ut5LXgmUZRtyhN=AoG3g5NEg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1707118531;cb06fef0;
-X-HE-SMSGID: 1rWtVp-0004Wt-6y
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 4-tTLD6_E1V8ZOQTbSjRVm22jzLoejB1
+X-Proofpoint-GUID: 4-tTLD6_E1V8ZOQTbSjRVm22jzLoejB1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-05_03,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
+ phishscore=0 mlxlogscore=485 bulkscore=0 mlxscore=0 clxscore=1011
+ suspectscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402050059
 
-On 05.02.24 08:09, Serge SIMON wrote:
-> 
-> Any news on this ?
+It is observed sometimes when tethering is used over NCM with Windows 11
+as host, at some instances, the gadget_giveback has one byte appended at
+the end of a proper NTB. When the NTB is parsed, unwrap call looks for
+any leftover bytes in SKB provided by u_ether and if there are any pending
+bytes, it treats them as a separate NTB and parses it. But in case the
+second NTB (as per unwrap call) is faulty/corrupt, all the datagrams that
+were parsed properly in the first NTB and saved in rx_list are dropped.
 
-Apparently not. I added the sound maintainers just to be sure they are
-aware of this.
+Adding a few custom traces showed the following:
+[002] d..1  7828.532866: dwc3_gadget_giveback: ep1out:
+req 000000003868811a length 1025/16384 zsI ==> 0
+[002] d..1  7828.532867: ncm_unwrap_ntb: K: ncm_unwrap_ntb toprocess: 1025
+[002] d..1  7828.532867: ncm_unwrap_ntb: K: ncm_unwrap_ntb nth: 1751999342
+[002] d..1  7828.532868: ncm_unwrap_ntb: K: ncm_unwrap_ntb seq: 0xce67
+[002] d..1  7828.532868: ncm_unwrap_ntb: K: ncm_unwrap_ntb blk_len: 0x400
+[002] d..1  7828.532868: ncm_unwrap_ntb: K: ncm_unwrap_ntb ndp_len: 0x10
+[002] d..1  7828.532869: ncm_unwrap_ntb: K: Parsed NTB with 1 frames
 
-> Just to say that i tried the 6.7.3 version and i have the exact same
-> problem as described below
-> ("linux-headers-6.7.3.arch1-2-x86_64.pkg.tar.zst" for the exact ARCH
-> package, of course with a system fully up-to-date and rebooted) : no
-> more S/PDIF device detected after reboot (only the monitors are
-> detected, but not anymore the S/PDIF output at motherboard level-
-> which is what i'm using).
-> 
-> Reverting to 6.6.10 does solve the issue, so per what i'm seeing,
-> something has definitely been broken between 6.6.10 and 6.7.0 on that
-> topic.
+In this case, the giveback is of 1025 bytes and block length is 1024.
+The rest 1 byte (which is 0x00) won't be parsed resulting in drop of
+all datagrams in rx_list.
 
-Unless the sound maintainers come up with something, we most likely need
-a bisection from you to resolve this.
+Same is case with packets of size 2048:
+[002] d..1  7828.557948: dwc3_gadget_giveback: ep1out:
+req 0000000011dfd96e length 2049/16384 zsI ==> 0
+[002] d..1  7828.557949: ncm_unwrap_ntb: K: ncm_unwrap_ntb nth: 1751999342
+[002] d..1  7828.557950: ncm_unwrap_ntb: K: ncm_unwrap_ntb blk_len: 0x800
 
-In case you want to perform a bisection, this guide I'm currently
-working on might help:
+Lecroy shows one byte coming in extra confirming that the byte is coming
+in from PC:
 
-https://www.leemhuis.info/files/misc/How%20to%20bisect%20a%20Linux%20kernel%20regression%20%e2%80%94%20The%20Linux%20Kernel%20documentation.html
+Transfer 2959 - Bytes Transferred(1025)  Timestamp((18.524 843 590)
+- Transaction 8391 - Data(1025 bytes) Timestamp(18.524 843 590)
+--- Packet 4063861
+      Data(1024 bytes)
+      Duration(2.117us) Idle(14.700ns) Timestamp(18.524 843 590)
+--- Packet 4063863
+      Data(1 byte)
+      Duration(66.160ns) Time(282.000ns) Timestamp(18.524 845 722)
 
-> Is this tracked by a bug somewhere ? Does i have to open one (in
-> addition to these mails) ?
+According to Windows driver, no ZLP is needed if wBlockLength is non-zero,
+because the non-zero wBlockLength has already told the function side the
+size of transfer to be expected. However, there are in-market NCM devices
+that rely on ZLP as long as the wBlockLength is multiple of wMaxPacketSize.
+To deal with such devices, it pads an extra 0 at end so the transfer is no
+longer multiple of wMaxPacketSize.
 
-No, this thread (for now) is enough.
+Cc: <stable@vger.kernel.org>
+Fixes: 9f6ce4240a2b ("usb: gadget: f_ncm.c added")
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+---
+Link to v2:
+https://lore.kernel.org/all/20240131150332.1326523-1-quic_kriskura@quicinc.com/
 
-Ciao, Thorsten
+Changes in v2:
+Added check to see if the padded byte is 0x00.
 
+Changes in v3:
+Removed wMaxPacketSize check from v2.
 
-> On Wed, Jan 17, 2024 at 6:39 AM Greg KH <gregkh@linuxfoundation.org> wrote:
->>
->> On Tue, Jan 16, 2024 at 09:49:59PM +0100, Serge SIMON wrote:
->>> Dear Kernel maintainers,
->>>
->>> I think i'm encountering (for the first time in years !) a regression
->>> with the "6.7.arch3-1" kernel (whereas no issues with
->>> "6.6.10.arch1-1", on which i reverted).
->>>
->>> I'm running a (up-to-date, and non-LTS) ARCHLINUX desktop, on a ASUS
->>> B560-I motherboard, with 3 monitors (attached to a 4-HDMI outputs
->>> card), plus an audio S/PDIF optic output at motherboard level.
->>>
->>> With the latest kernel, the S/PIDF optic output of the motherboard is
->>> NOT detected anymore (and i haven't been able to see / find anything
->>> in the logs at quick glance, neither journalctl -xe nor dmesg).
->>>
->>> Once reverted to 6.6.10, everything is fine again.
->>>
->>> For example, in a working situation (6.6.10), i have :
->>>
->>> cat /proc/asound/pcm
->>> 00-00: ALC1220 Analog : ALC1220 Analog : playback 1 : capture 1
->>> 00-01: ALC1220 Digital : ALC1220 Digital : playback 1
->>> 00-02: ALC1220 Alt Analog : ALC1220 Alt Analog : capture 1
->>> 01-03: HDMI 0 : HDMI 0 : playback 1
->>> 01-07: HDMI 1 : HDMI 1 : playback 1
->>> 01-08: HDMI 2 : HDMI 2 : playback 1
->>> 01-09: HDMI 3 : HDMI 3 : playback 1
->>>
->>> Whereas while on the latest 6.7 kernel, i only had the 4 HDMI lines
->>> (linked to a NVIDIA T600 card, with 4 HDMI outputs) and not the three
->>> first ones (attached to the motherboard).
->>>
->>> (of course i did several tests with 6.7, reboot, ... without any changes)
->>>
->>> Any idea ?
->>
->> As this is a sound issue, perhaps send this to the
->> linux-sound@vger.kernel.org mailing list (now added).
->>
->> Any chance you can do a 'git bisect' between 6.6 and 6.7 to track down
->> the issue?  Or maybe the sound developers have some things to ask about
->> as there are loads of debugging knobs in sound...
->>
->> thanks,
->>
->> greg k-h
-> 
-> 
+ drivers/usb/gadget/function/f_ncm.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
+index ca5d5f564998..e2a059cfda2c 100644
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -1338,7 +1338,15 @@ static int ncm_unwrap_ntb(struct gether *port,
+ 	     "Parsed NTB with %d frames\n", dgram_counter);
+ 
+ 	to_process -= block_len;
+-	if (to_process != 0) {
++
++	/*
++	 * Windows NCM driver avoids USB ZLPs by adding a 1-byte
++	 * zero pad as needed.
++	 */
++	if (to_process == 1 &&
++	    (*(unsigned char *)(ntb_ptr + block_len) == 0x00)) {
++		to_process--;
++	} else if (to_process > 0) {
+ 		ntb_ptr = (unsigned char *)(ntb_ptr + block_len);
+ 		goto parse_ntb;
+ 	}
+-- 
+2.34.1
 
 
