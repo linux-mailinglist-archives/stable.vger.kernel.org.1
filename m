@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-18834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80395849BC9
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 14:30:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16BFD849BCC
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 14:30:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B239A1C22AD8
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 13:30:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 417821C22AF1
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 13:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC3F1CD18;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E55720B3E;
 	Mon,  5 Feb 2024 13:30:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70EB22F0E
-	for <stable@vger.kernel.org>; Mon,  5 Feb 2024 13:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A0322F13
+	for <stable@vger.kernel.org>; Mon,  5 Feb 2024 13:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707139819; cv=none; b=dKKLVnBKFl1vvnVT6fnR+o5yxbbe+4D7DWrJPrXKSTaiFn2GJ6ixfrpQclFybLjic1UflEDtONeYR5DyHpfxjLEhnilKoewP9/HtH3ykixhm+VZcjGEcqCrkfJ2cvD/gyTl3AadXFocmZ6+DpUp3D1bbcTeLF5WAtqcospRxGzs=
+	t=1707139820; cv=none; b=lsAUqkr9gpmBZvZHQG6u9hJVYOcnLDk7MnoDpAyM0K2zVuf8yf9InpfjXJ0Gd0b9hZSaj0SNk7RoG44NTI5dZM2URnJEFcFAit+/BEWYY9b9BSOTZJr7RclDHQW4AWEgkXpd8X6UCcFMWvXo7QFjbE4lYrXgBiuxZE0b/xCXTz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707139819; c=relaxed/simple;
-	bh=SzGbdu40TSlf8yync6bv1PIspHVCD9v8k+CRUw/YJEY=;
-	h=From:Date:Subject:To:Cc:Message-Id; b=GD83t44YfNUh4rT/EtEGcxE86GujB5bF3UCHCGlBJzCW45chha/XyMUHF8MowuQuP7RXjh5Q+DZzOBp1xzwBVfhU9QBkMAcwJOwf4RTgBiFhAJBI0+42xhmK35jpg7pghCzPy/jco6gW/v0lcux+JTT6kRCZGeuO4GuCq11CUEM=
+	s=arc-20240116; t=1707139820; c=relaxed/simple;
+	bh=a7XmbZjFkkUYD6WoMTbtehxwo17eUcEklrXfQ5Cg9ug=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=TtoBTaXwK5EMr0EypTEjNqjtIYeLArfFicjw2svEmbS7hfkEIfn0R/aFAZBUzQ0EYz45RFyf/dxa5BO7R1muEqJ2TmALzgXOYHT8+I6zFEaXvaNHY6LGcjkmQQbSt+rdtGRwtcwZNpgpU0FV7jb8Bcwfb6K2X+3ialQ53olbMgo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
 Received: from hverkuil by linuxtv.org with local (Exim 4.96)
 	(envelope-from <hverkuil@linuxtv.org>)
-	id 1rWz37-0004FD-0a;
-	Mon, 05 Feb 2024 13:30:13 +0000
+	id 1rWz36-0004ET-2Z;
+	Mon, 05 Feb 2024 13:30:12 +0000
 From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date: Mon, 05 Feb 2024 13:29:34 +0000
-Subject: [git:media_stage/master] media: mc: Rename pad variable to clarify intent
+Date: Mon, 05 Feb 2024 13:29:35 +0000
+Subject: [git:media_stage/master] media: nxp: imx8-isi: Mark all crossbar sink pads as MUST_CONNECT
 To: linuxtv-commits@linuxtv.org
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, stable@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, stable@vger.kernel.org
 Mail-followup-to: linux-media@vger.kernel.org
 Forward-to: linux-media@vger.kernel.org
 Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1rWz37-0004FD-0a@linuxtv.org>
+Message-Id: <E1rWz36-0004ET-2Z@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,65 +49,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 This is an automatic generated email to let you know that the following patch were queued:
 
-Subject: media: mc: Rename pad variable to clarify intent
+Subject: media: nxp: imx8-isi: Mark all crossbar sink pads as MUST_CONNECT
 Author:  Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Date:    Mon Jan 15 00:30:02 2024 +0200
+Date:    Mon Jan 15 04:16:29 2024 +0200
 
-The pad local variable in the media_pipeline_explore_next_link()
-function is used to store the pad through which the entity has been
-reached. Rename it to origin to reflect that and make the code easier to
-read. This will be even more important in subsequent commits when
-expanding the function with additional logic.
+All the sink pads of the crossbar switch require an active link if
+they're part of the pipeline. Mark them with the
+MEDIA_PAD_FL_MUST_CONNECT flag to fail pipeline validation if they're
+not connected. This allows removing a manual check when translating
+streams.
 
 Cc: stable@vger.kernel.org # 6.1
 Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Acked-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
- drivers/media/mc/mc-entity.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
 ---
 
-diff --git a/drivers/media/mc/mc-entity.c b/drivers/media/mc/mc-entity.c
-index c2d8f59b62c1..5907925ffd89 100644
---- a/drivers/media/mc/mc-entity.c
-+++ b/drivers/media/mc/mc-entity.c
-@@ -605,13 +605,13 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
- 					    struct media_pipeline_walk *walk)
- {
- 	struct media_pipeline_walk_entry *entry = media_pipeline_walk_top(walk);
--	struct media_pad *pad;
-+	struct media_pad *origin;
- 	struct media_link *link;
- 	struct media_pad *local;
- 	struct media_pad *remote;
- 	int ret;
+diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+index 1bb1334ec6f2..93a55c97cd17 100644
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+@@ -160,13 +160,6 @@ mxc_isi_crossbar_xlate_streams(struct mxc_isi_crossbar *xbar,
+ 	}
  
--	pad = entry->pad;
-+	origin = entry->pad;
- 	link = list_entry(entry->links, typeof(*link), list);
- 	media_pipeline_walk_pop(walk);
+ 	pad = media_pad_remote_pad_first(&xbar->pads[sink_pad]);
+-	if (!pad) {
+-		dev_dbg(xbar->isi->dev,
+-			"no pad connected to crossbar input %u\n",
+-			sink_pad);
+-		return ERR_PTR(-EPIPE);
+-	}
+-
+ 	sd = media_entity_to_v4l2_subdev(pad->entity);
+ 	if (!sd) {
+ 		dev_dbg(xbar->isi->dev,
+@@ -475,7 +468,8 @@ int mxc_isi_crossbar_init(struct mxc_isi_dev *isi)
+ 	}
  
-@@ -621,7 +621,7 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
- 		link->sink->entity->name, link->sink->index);
+ 	for (i = 0; i < xbar->num_sinks; ++i)
+-		xbar->pads[i].flags = MEDIA_PAD_FL_SINK;
++		xbar->pads[i].flags = MEDIA_PAD_FL_SINK
++				    | MEDIA_PAD_FL_MUST_CONNECT;
+ 	for (i = 0; i < xbar->num_sources; ++i)
+ 		xbar->pads[i + xbar->num_sinks].flags = MEDIA_PAD_FL_SOURCE;
  
- 	/* Get the local pad and remote pad. */
--	if (link->source->entity == pad->entity) {
-+	if (link->source->entity == origin->entity) {
- 		local = link->source;
- 		remote = link->sink;
- 	} else {
-@@ -633,8 +633,9 @@ static int media_pipeline_explore_next_link(struct media_pipeline *pipe,
- 	 * Skip links that originate from a different pad than the incoming pad
- 	 * that is not connected internally in the entity to the incoming pad.
- 	 */
--	if (pad != local &&
--	    !media_entity_has_pad_interdep(pad->entity, pad->index, local->index)) {
-+	if (origin != local &&
-+	    !media_entity_has_pad_interdep(origin->entity, origin->index,
-+					   local->index)) {
- 		dev_dbg(walk->mdev->dev,
- 			"media pipeline: skipping link (no route)\n");
- 		return 0;
 
