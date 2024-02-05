@@ -1,125 +1,119 @@
-Return-Path: <stable+bounces-18819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5BA849741
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 11:03:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 351B58497B2
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 11:24:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E3071C21AC6
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 10:03:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30E5BB263B4
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 10:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7917F13FF8;
-	Mon,  5 Feb 2024 10:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFEB0168DA;
+	Mon,  5 Feb 2024 10:23:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SB9xsQxo"
 X-Original-To: stable@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B911617565;
-	Mon,  5 Feb 2024 10:03:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECBE17559
+	for <stable@vger.kernel.org>; Mon,  5 Feb 2024 10:23:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707127390; cv=none; b=Yr7uYGiNXz25tFcLZDTlVwR+7onR5vUUWjm6PYI0Sn0ZMGtaQCxL0NzYUa9ODcxEVwUyIAHvaaDnnJjrgVjn1ji2zBBrFm1vd2wo27spzgoHfigIAlstCBfge6jzHqiEwU3y8/ybCsgtgV5AdC9RtFlk/6rkPGNiVOYaMrl58jw=
+	t=1707128630; cv=none; b=kaTlchsPWs6vH2Lr0VDUzaYDkdoe9hmorPVNqy5hsZeyHHuCm1ia3Bkm3RREWh0CI5NRmqD+p+fK/VGdW3vy+tgCeB9/xjrCC4fIKdTW7eZPSnBjxcoI5fPFotsFXNU90ZpVzmndu+c73TcilZetpAcC/m4PyzAj3ZAigaWWnZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707127390; c=relaxed/simple;
-	bh=U8APChL26YPackRITDmxqa+FUsw07IjAEBEZTf+BIk4=;
-	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
-	 Message-ID:Subject; b=Z8LA1iy/s+acd6j6sff0ERMTB0/cdWETh6Y74UtNcDq8XdumYbVDovrZJznzs8oEkYcEYHsFoqSVXBvaqLfxdyrRdSq49CQHy+BZX7NvYmWdIFlgREGLVqGOpPkFhmxUMcVRttHFL8nYY0OMxNif/SQ8RBdADRETj0zi8f2/yr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Received: from hamburger.collabora.co.uk (hamburger.collabora.co.uk [IPv6:2a01:4f8:1c1b:c794::1])
-	by madrid.collaboradmins.com (Postfix) with ESMTP id 248CC3781FEA;
-	Mon,  5 Feb 2024 10:03:05 +0000 (UTC)
-From: "Shreeya Patel" <shreeya.patel@collabora.com>
-In-Reply-To: <20240203174756.358721205@linuxfoundation.org>
-Content-Type: text/plain; charset="utf-8"
-X-Forward: 127.0.0.1
-References: <20240203174756.358721205@linuxfoundation.org>
-Date: Mon, 05 Feb 2024 10:03:04 +0000
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, "Gustavo Padovan" <gustavo.padovan@collabora.com>, "kernelci-regressions mailing list" <kernelci-regressions@lists.collabora.co.uk>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+	s=arc-20240116; t=1707128630; c=relaxed/simple;
+	bh=sq/Qrf0HFbvnzzZSkvn/VEorD3BS2h/vLEufdJf87sI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WrQEI3BK+ddMXYn91kmxNKZce4TE757JSZHEx5NLpPg0+fHXERmSqe82OFS2TPFMrLokofD5rm3vHhR2rGkmVYqulvpjQi3JWUNRgssSFXyCGlZL8DcXhtbRCVGs3Rcaki0QpnxYC/ewqkNZIW0BG4rC+rHsCStNldEfiEWlfaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SB9xsQxo; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a26fa294e56so583517166b.0
+        for <stable@vger.kernel.org>; Mon, 05 Feb 2024 02:23:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707128627; x=1707733427; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XX4Ym3d2uPw+/HY4vPGG7XwZmCRiTXwEgrLOAbWQDn4=;
+        b=SB9xsQxoFvPuPlbazSzMLA21q88QeYFv9s3JBTgAzjxfTmxnweT5XOluMmp5gCDtaT
+         EPP0OoZ0PRGUqYVQWtP/vRiPrvM5qFXa1AQMV6YWtuC8nJ7n/PfSn4iW5rUpPwYbCnw8
+         OByPYNILadjod1HBKORtGAT8DU3szul9b1Pqyj6wZyZhTSG8w1N6Oq6K+rPg3WUjFXOb
+         vsD6WTgNxCVytO3wN4oM6YyOMUNNJYaoMHkkjjsvjzfUAiK2+zGMtsvhYhgxkkPQZUTP
+         x+8+Em0mBHfDrXxcsEXOjyTT9598W9LwvIAsN64w9MlK0yRkpPyVxLEz8A2rPVcUqlq/
+         epyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707128627; x=1707733427;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XX4Ym3d2uPw+/HY4vPGG7XwZmCRiTXwEgrLOAbWQDn4=;
+        b=vMH5Qeg7IDLE/xvixVccJ//vyHUP4JjR6Pj9mBiyf3xINTcBUO2xx8CGTfQuf1wLwF
+         l7PnbhUIvl+yvQxT8ZtkasDUnj6MwbM6Ru3LDCyNjumIx8M6G7NXX9N/Z0ii3FI0iTJh
+         dvWoQAB0JvIC8xL1/NaTwLLShAw7we/v0acRR7yNEHxr5IwZ4CVeeaTgyTS3KhcTnqTM
+         +keuwYhgs7x+jArxX4Z3I4+ikV2NvTe0otYTN+5sCCCRwtqdrh+8mmjGIUHhGi6ox4kG
+         WFtUr7pa+98H2dM2SEbTrsGAHGksTdNd3AxtlZk8JAQCddhNC5e0Iu4zy0wyEcsVd66I
+         5fqw==
+X-Gm-Message-State: AOJu0Yyu+k0XpkAbshCQyiepKtJy56U55HKB2GAxEgUooCyQUF6gsEjZ
+	3XMtZ3bXY+HJwscua4B8qWu0ZWUKtMlw2kxJxI5Dk6yxSBNZYXIX
+X-Google-Smtp-Source: AGHT+IEhgC7WpQxUeQ7w9jPqIfihBfLgrkJnQPKhaKfxYJQOVq5OuY1YA+3A/JW3juiNLHkOHk1kzw==
+X-Received: by 2002:a17:906:194e:b0:a37:e7ee:3ba4 with SMTP id b14-20020a170906194e00b00a37e7ee3ba4mr565762eje.20.1707128627157;
+        Mon, 05 Feb 2024 02:23:47 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCUebXMJzoW8NsFszB6JpWkjxUdvAicQboDttoHPbN0WsjspbdhzsPFJda6aPJXWwbl+JhZNTdV/w/IrsNtPLUGzfAlTARSg+7WtavOZFwmBGpol5IIFic+HnPzk/+aZ7oVFts+fnQtR8HIhZ4ulBkUfzkJRpPr/rSazL32pTy2NsbQzjV4IiVTUsEeJ9bdmRNCD7qDQbx0GZUJkZg==
+Received: from localhost ([2a02:1210:8690:9300:82ee:73ff:feb8:99e3])
+        by smtp.gmail.com with UTF8SMTPSA id vg11-20020a170907d30b00b00a37669280d1sm2450005ejc.141.2024.02.05.02.23.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 Feb 2024 02:23:46 -0800 (PST)
+From: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+To: soc@kernel.org
+Cc: Nikita Shubin <nikita.shubin@maquefel.me>,
+	stable@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Subject: [PATCH] ARM: ep93xx: Add terminator to gpiod_lookup_table
+Date: Mon,  5 Feb 2024 11:23:34 +0100
+Message-ID: <20240205102337.439002-1-alexander.sverdlin@gmail.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <5afa-65c0b280-d-7bb05580@116609044>
-Subject: =?utf-8?q?Re=3A?= [PATCH =?utf-8?q?6=2E1?= 000/221] 
- =?utf-8?q?6=2E1=2E77-rc2?= review
-User-Agent: SOGoMail 5.9.1
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Saturday, February 03, 2024 23:22 IST, Greg Kroah-Hartman <gregkh@li=
-nuxfoundation.org> wrote:
+From: Nikita Shubin <nikita.shubin@maquefel.me>
 
-> This is the start of the stable review cycle for the 6.1.77 release.
-> There are 221 patches in this series, all will be posted as a respons=
-e
-> to this one.  If anyone has any issues with these being applied, plea=
-se
-> let me know.
->=20
-> Responses should be made by Mon, 05 Feb 2024 17:47:20 +0000.
-> Anything received after that time might be too late.
->=20
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1=
-.77-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc=
-.git linux-6.1.y
-> and the diffstat can be found below.
->=20
+Without the terminator, if a con_id is passed to gpio_find() that
+does not exist in the lookup table the function will not stop looping
+correctly, and eventually cause an oops.
 
-KernelCI report for stable-rc/linux-6.1.y for this week :-
+Cc: stable@vger.kernel.org
+Fixes: b2e63555592f ("i2c: gpio: Convert to use descriptors")
+Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+---
+ arch/arm/mach-ep93xx/core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-## stable-rc HEAD for linux-6.1.y:
-Date: 2024-02-03
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.=
-git/log/?h=3D4f7472958779c55ae5b01cfb687a0e791c58f58c
-
-## Build failures:
-No build failures seen for the stable-rc/linux-6.1.y commit head \o/
-
-## Boot failures:
-
-Devices failing to boot :-
-
-acer-cb317-1h-c3z6-dedede
-acer-cbv514-1h-34uz-brya=20
-acer-chromebox-cxi4-puff
-acer-chromebox-cxi5-brask
-acer-cp514-3wh-r0qs-guybrush
-asus-C433TA-AJ0005-rammus=20
-asus-C436FA-Flip-hatch
-asus-C523NA-A20057-coral
-asus-CM1400CXA-dalboz
-dell-latitude-5400-4305U-sarien=20
-dell-latitude-5400-8665U-sarien
-hp-x360-12b-ca0010nr-n4020-octopus
-hp-x360-14-G1-sona
-hp-x360-14a-cb0001xx-zork
-lenovo-TPad-C13-Yoga-zork
-
-Reason for failure :-
-BUG: kernel NULL pointer dereference
-
-Defconfig :-
-x86=5F64=5Fdefconfig+x86-board
-
-KernelCI Dashboard Link :-=20
-https://linux.kernelci.org/test/job/stable-rc/branch/linux-6.1.y/kernel=
-/v6.1.76-220-g4f7472958779c/plan/baseline/
-
-We are currently in the process of investigating this issue and will so=
-on report back with some more information.
-
-Tested-by: kernelci.org bot <bot@kernelci.org>
-
-Thanks,
-Shreeya Patel
+diff --git a/arch/arm/mach-ep93xx/core.c b/arch/arm/mach-ep93xx/core.c
+index 71b113976420..8b1ec60a9a46 100644
+--- a/arch/arm/mach-ep93xx/core.c
++++ b/arch/arm/mach-ep93xx/core.c
+@@ -339,6 +339,7 @@ static struct gpiod_lookup_table ep93xx_i2c_gpiod_table = {
+ 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
+ 		GPIO_LOOKUP_IDX("G", 0, NULL, 1,
+ 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
++		{ }
+ 	},
+ };
+ 
+-- 
+2.42.0
 
 
