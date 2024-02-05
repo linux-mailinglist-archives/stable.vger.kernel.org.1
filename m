@@ -1,189 +1,139 @@
-Return-Path: <stable+bounces-18802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BFD584922C
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 02:29:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 523E7849267
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 03:32:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7427E1F217C1
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 01:29:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBABE1F2182E
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 02:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7DC801;
-	Mon,  5 Feb 2024 01:29:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 849C9A31;
+	Mon,  5 Feb 2024 02:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ea47tLCh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IelBhrCO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C725A7F;
-	Mon,  5 Feb 2024 01:29:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9104C79;
+	Mon,  5 Feb 2024 02:32:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707096564; cv=none; b=qHiuXUsIyvNYx1RSZqOGaHoOBwGlN8sQm/KHckSKEoywzCLKmVwyCZL7oHRyg6HNLvREp1pH/THDyfZiHIGTYqPP1UY6gFtMjOz4CwYwkZldtRbeqtm90zfiJGHMMoTVQJbowJ9HOCZT9/JvEHAC0/lCwxTFet2n4xelB6IOVpo=
+	t=1707100364; cv=none; b=ICBnsLM1uEpz3Pm/3A2ZyK+Op08J7Ha+E+X69tx3Gbu19VeqUVbrWwBjiuRg3H7CeDFbUmhXyN0+3S+71PqxPm5QHNcIPiP09tiMhojFNxFUN3h/D8Tp9QnobXLwatZWGN0p/Siy0FhoRTrwhLyoscjO/rkNV34hbYK4K7KnKPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707096564; c=relaxed/simple;
-	bh=IboaFFEnLezIgEoUZ9g56kPSleqX5Yyo+MKySpAAuAI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WJYXvuz/HFgyDqFoYEeja1F7g/43mSKPNYqVW1jsRVtXRJ+WbPp6oY3jJBdqcBhCSyDslL5rbhaQlH8qCXBuTg0BaFiQAwK8owtzWC/Iq1ndX48r5n2JENeBp2EomMRvhsvPbPxHjmOCBmcjjsqwlh2EqPBH/4erdpLsBuFhy7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ea47tLCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545D5C433C7;
-	Mon,  5 Feb 2024 01:29:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707096564;
-	bh=IboaFFEnLezIgEoUZ9g56kPSleqX5Yyo+MKySpAAuAI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ea47tLChgkqLBZ8k9TVRcxfALSlSX5TUx9tXfQueiKVS9ANgl41uhzaTZb9ne4rkD
-	 2I9BCkCHkzdapD+FSCngV1V3eik9IjiqsVjIKhWq4c6LL4LNBPgsH7lVT9V9ftzMqM
-	 AkddvSCXUNV0O14obgbzAFK0qqB9yA7PzVSAr5Xc=
-Date: Sun, 4 Feb 2024 17:29:23 -0800
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Vegard Nossum <vegard.nossum@oracle.com>,
-	Justin Forbes <jforbes@fedoraproject.org>,
-	Jonathan Corbet <corbet@lwn.net>, stable@vger.kernel.org,
-	patches@lists.linux.dev, Jani Nikula <jani.nikula@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>
-Subject: Re: [PATCH 6.6 003/331] docs: kernel_feat.py: fix potential command
- injection
-Message-ID: <2024020402-scotch-upchuck-9e11@gregkh>
-References: <ZbkfGst991YHqJHK@fedora64.linuxtx.org>
- <87h6iudc7j.fsf@meer.lwn.net>
- <CAFbkSA2tft--ejgJ58o3G-OxNqnm-C6fK4-kXThsN92NYF8V0A@mail.gmail.com>
- <2024020151-purchase-swerve-a3b3@gregkh>
- <CAFbkSA25o88DjaWHc3GRk5vkvANnpi-NJ61XJudz4=ARTyrhtw@mail.gmail.com>
- <CAFbkSA3M74kvF+v_URm593xSnJTVzeKmy2K6dw0WQYw7BDdwmg@mail.gmail.com>
- <CAFbkSA3vHDn-Pk9fB6PbWeniGHH6W3bo=jQ9utE9xh88S8bzxA@mail.gmail.com>
- <1a160e5f-d5ce-4711-b683-808ab87b289b@oracle.com>
- <Zb_DwdZ3PUr1VbBg@eldamar.lan>
- <Zb_0NEeCqok8icwz@eldamar.lan>
+	s=arc-20240116; t=1707100364; c=relaxed/simple;
+	bh=0xkV+S3jz0FQf5tFUn9aI328bppFR3eEj9vpDnkep4o=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=sh3sFxkw9z9SaK6qNbFH9ZVOj8T6QDCKMy+ErKdDJdiTf1IHymWIOMXI+yPz9OosjWS0aRRAVZCZpsobO3csw/Co64LN5rUHKamUjUobKQVdfO84ZZshTQRDz/nsACVRnCHE8H/z6sgqH96VCDOndspLW+G9lre7U5NJO1iuDMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IelBhrCO; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6e03af57c97so184258b3a.3;
+        Sun, 04 Feb 2024 18:32:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707100362; x=1707705162; darn=vger.kernel.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=g6yBnfY3UzFsKOhe3zdv68BwX7r2KJEH3xDafT7AqV8=;
+        b=IelBhrCOfZO7x5ZYhwcG+Mo+uYFsYlH9fwgUp54TNfspj5fO3yPWoKtkVQ1VZdh0qM
+         3p/3/oFboKl6u1vYlFGKwyMJBd81uztH4wRVsHwGxGV2Nb6nvrfhF2UDoDBCjpE3+noo
+         QnE/s2jfquf8wWnZxGtSmTXin75wleDeLjS16U4W+VBehjSO5bsmmyAwrYc0JKCYmNo5
+         rPNWm0BNXWaDX59DdWbh3eZtARnVX/fqZJ73D8uZYRO2uVH9GlC4VyXu/hgtZuwxgh4d
+         f2JNNVrcRdRad3J1YIbchPAX/AyG3Pm/fBgqnkVmpILZy+CaddzZlGF8i7BVht+LBvxX
+         GpxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707100362; x=1707705162;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=g6yBnfY3UzFsKOhe3zdv68BwX7r2KJEH3xDafT7AqV8=;
+        b=qXrpP/EKhnzcGMTaHe48GyTHgzJrDwbD2SyUt2no8xRS6RHvo3EKFC4t6atkEsubVN
+         D6fHGHfdU3fI7fVNrwwHLU/ZSqrzY/32TWlwAodRdsVFktDxutqc3Scksy59ONHSvOoO
+         VEjzlic5TwVkYrYWNaezi4SSVtgMqT3dbDuIAloFheIHB+GLryVleyQhX92sRk7OCMuV
+         a7reNAHIV9bzvCzRNoA2785YbdoPD3PeVue7NrKRADxMav0bAJuu6SWN5id652hlOg/R
+         BROpPSEmvq1cKRYqT4ZmHqFlwYloMP+FcYaw+UdLCkSdgj5+EyzvEPlX+bliySumQ4wT
+         z0tg==
+X-Gm-Message-State: AOJu0YzG2ONnsZ7E9ceVW5T/MhdgEDJTHdSLDSAjNuAUaDn4gtnoMewy
+	RSaArtiI/v49gkz23t73qqK7ANz8oq+BXlup+FggylTKolWnJrhc
+X-Google-Smtp-Source: AGHT+IGdcY1Nn8B3prOF9SJW6zNhD41UvVIGI9jfy7zNT03S5YWpLJ6TKNaSh0/R+t9HO7tEH6SamA==
+X-Received: by 2002:aa7:9e8c:0:b0:6e0:3207:1935 with SMTP id p12-20020aa79e8c000000b006e032071935mr2354565pfq.32.1707100362098;
+        Sun, 04 Feb 2024 18:32:42 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCXXL+dMjEU/+VhxzUAuep9fMpIVt+asIaveoFXo/TNJUn9A9bO83QQh0ADgF8nJV9GOf6HCixsso+GvrknZkHrKXZcvPaU8KxbCMy0kzW9oJ9AYnx3+TK0+2znDDudPPCshqWeyeV4U0LnonRQ5OxqBXKqXh+5PeI9/pv9i8GSX6qHFEvlz3ad/LkpuiGzGVLfRSEcaJzhap9Rx
+Received: from xplor.waratah.dyndns.org (125-236-136-221-fibre.sparkbb.co.nz. [125.236.136.221])
+        by smtp.gmail.com with ESMTPSA id y2-20020a62ce02000000b006e039e97d34sm1876721pfg.151.2024.02.04.18.32.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Feb 2024 18:32:41 -0800 (PST)
+Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
+	id 9248D36031F; Mon,  5 Feb 2024 15:32:38 +1300 (NZDT)
+From: Michael Schmitz <schmitzmic@gmail.com>
+To: linux-m68k@vger.kernel.org
+Cc: geert@linux-m68k.org,
+	uli@fpond.eu,
+	fthain@linux-m68k.org,
+	viro@zeniv.linux.org.uk,
+	Michael Schmitz <schmitzmic@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH RFC v2 1/8] m68k/mm: Adjust VM area to be unmapped by gap size for __iounmap()
+Date: Mon,  5 Feb 2024 15:32:29 +1300
+Message-Id: <20240205023236.9325-2-schmitzmic@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20240205023236.9325-1-schmitzmic@gmail.com>
+References: <20240205023236.9325-1-schmitzmic@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Zb_0NEeCqok8icwz@eldamar.lan>
 
-On Sun, Feb 04, 2024 at 09:31:48PM +0100, Salvatore Bonaccorso wrote:
-> On Sun, Feb 04, 2024 at 06:05:05PM +0100, Salvatore Bonaccorso wrote:
-> > Hi,
-> > 
-> > On Thu, Feb 01, 2024 at 05:34:25PM +0100, Vegard Nossum wrote:
-> > > 
-> > > On 01/02/2024 16:07, Justin Forbes wrote:
-> > > > On Thu, Feb 1, 2024 at 8:58 AM Justin Forbes <jforbes@fedoraproject.org> wrote:
-> > > > > On Thu, Feb 1, 2024 at 8:41 AM Justin Forbes <jforbes@fedoraproject.org> wrote:
-> > > > > > On Thu, Feb 1, 2024 at 8:25 AM Greg Kroah-Hartman
-> > > > > > <gregkh@linuxfoundation.org> wrote:
-> > > > > > > On Thu, Feb 01, 2024 at 06:43:46AM -0600, Justin Forbes wrote:
-> > > > > > > > On Tue, Jan 30, 2024 at 10:21 AM Jonathan Corbet <corbet@lwn.net> wrote:
-> > > > > > > > > Justin Forbes <jforbes@fedoraproject.org> writes:
-> > > > > > > > > > On Mon, Jan 29, 2024 at 09:01:07AM -0800, Greg Kroah-Hartman wrote:
-> > > > > > > > > > > 6.6-stable review patch.  If anyone has any objections, please let me know.
-> > > > > > > > > > > 
-> > > > > > > > > > > ------------------
-> > > > > > > > > > > 
-> > > > > > > > > > > From: Vegard Nossum <vegard.nossum@oracle.com>
-> > > > > > > > > > > 
-> > > > > > > > > > > [ Upstream commit c48a7c44a1d02516309015b6134c9bb982e17008 ]
-> > > > > > > > > > > 
-> > > > > > > > > > > The kernel-feat directive passes its argument straight to the shell.
-> > > > > > > > > > > This is unfortunate and unnecessary.
-> > > 
-> > > [...]
-> > > 
-> > > > > > > > > > This patch seems to be missing something. In 6.6.15-rc1 I get a doc
-> > > > > > > > > > build failure with:
-> > > > > > > > > > 
-> > > > > > > > > > /builddir/build/BUILD/kernel-6.6.14-332-g1ff49073b88b/linux-6.6.15-0.rc1.1ff49073b88b.200.fc39.noarch/Documentation/sphinx/kerneldoc.py:133: SyntaxWarning: invalid escape sequence '\.'
-> > > > > > > > > >    line_regex = re.compile("^\.\. LINENO ([0-9]+)$")
-> > > > > > > > > 
-> > > > > > > > > Ah ... you're missing 86a0adc029d3 (Documentation/sphinx: fix Python
-> > > > > > > > > string escapes).  That is not a problem with this patch, though; I would
-> > > > > > > > > expect you to get the same error (with Python 3.12) without.
-> > > > > > > > 
-> > > > > > > > Well, it appears that 6.6.15 shipped anyway, with this patch included,
-> > > > > > > > but not with 86a0adc029d3.  If anyone else builds docs, this thread
-> > > > > > > > should at least show them the fix.  Perhaps we can get the missing
-> > > > > > > > patch into 6.6.16?
-> > > > > > > 
-> > > > > > > Sure, but again, that should be independent of this change, right?
-> > > > > > 
-> > > > > > I am not sure I would say independent. This particular change causes
-> > > > > > docs to fail the build as I mentioned during rc1.  There were no
-> > > > > > issues building 6.6.14 or previous releases, and no problem building
-> > > > > > 6.7.3.
-> > > > > 
-> > > > > I can confirm that adding this patch to 6.6.15 makes docs build again.
-> > > > 
-> > > > I lied, it just fails slightly differently. Some of the noise is gone,
-> > > > but we still have:
-> > > > Sphinx parallel build error:
-> > > > UnboundLocalError: cannot access local variable 'fname' where it is
-> > > > not associated with a value
-> > > > make[2]: *** [Documentation/Makefile:102: htmldocs] Error 2
-> > > > make[1]: *** [/builddir/build/BUILD/kernel-6.6.15/linux-6.6.15-200.fc39.noarch/Makefile:1715:
-> > > > htmldocs] Error 2
-> > > 
-> > > The old version of the script unconditionally assigned a value to the
-> > > local variable 'fname' (not a value that makes sense to me, since it's
-> > > literally assigning the whole command, not just a filename, but that's a
-> > > separate issue), and I removed that so it's only conditionally assigned.
-> > > This is almost certainly a bug in my patch.
-> > > 
-> > > I'm guessing maybe a different patch between 6.6 and current mainline is
-> > > causing 'fname' to always get assigned for the newer versions and thus
-> > > make the run succeed, in spite of the bug.
-> > > 
-> > > Something like the patch below (completely untested) should restore the
-> > > previous behaviour, but I'm not convinced it's correct.
-> > > 
-> > > 
-> > > Vegard
-> > > 
-> > > diff --git a/Documentation/sphinx/kernel_feat.py
-> > > b/Documentation/sphinx/kernel_feat.py
-> > > index b9df61eb4501..15713be8b657 100644
-> > > --- a/Documentation/sphinx/kernel_feat.py
-> > > +++ b/Documentation/sphinx/kernel_feat.py
-> > > @@ -93,6 +93,8 @@ class KernelFeat(Directive):
-> > >          if len(self.arguments) > 1:
-> > >              args.extend(['--arch', self.arguments[1]])
-> > > 
-> > > +        fname = ' '.join(args)
-> > > +
-> > >          lines = subprocess.check_output(args,
-> > > cwd=os.path.dirname(doc.current_source)).decode('utf-8')
-> > > 
-> > >          line_regex = re.compile(r"^\.\. FILE (\S+)$")
-> > 
-> > We have as well a documention build problem in Debian, cf.
-> > https://buildd.debian.org/status/fetch.php?pkg=linux&arch=all&ver=6.6.15-1&stamp=1707050360&raw=0
-> > though not yet using python 3.12 as default.
-> > 
-> > Your above change seems to workaround the issue in fact, but need to
-> > do a full build yet.
-> 
-> For Debian I'm temporarily reverting from the 6.6.15 upload:
-> 
-> e961f8c6966a ("docs: kernel_feat.py: fix potential command injection")
-> 
-> This is not the best solution, but unbreaks several other builds.
-> 
-> The alternative would be to apply Vegard's workaround or the proper
-> solution for that.
+If 020/030 support is enabled, get_io_area() leaves an IO_SIZE gap
+between mappings which is added to the vm_struct representing the
+mapping.  __ioremap() uses the actual requested size (after alignment),
+while __iounmap() is passed the size from the vm_struct.
 
-What is the "proper" solution here?  Does 6.8-rc3 work?  What are we
-missing to be backported here?
+On 020/030, early termination descriptors are used to set up mappings of
+extent 'size', which are validated on unmapping. The unmapped gap of
+size IO_SIZE defeats the sanity check of the pmd tables, causing
+__iounmap() to loop forever on 030.
 
-thanks,
+On 040/060, unmapping of page table entries does not check for a valid
+mapping, so the umapping loop always completes there.
 
-greg k-h
+Adjust size to be unmapped by the gap that had been added in the
+vm_struct prior.
+
+This fixes the hang in atari_platform_init() reported a long time ago,
+and a similar one reported by Finn recently (addressed by removing
+ioremap() use from the SWIM driver.
+
+Tested on my Falcon in 030 mode - untested but should work the same on
+040/060 (the extra page tables cleared there would never have been set
+up anyway).
+
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+[geert: Minor commit description improvements]
+[geert: This was fixed in 2.4.23, but not in 2.5.x]
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: stable@vger.kernel.org
+---
+ arch/m68k/mm/kmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/m68k/mm/kmap.c b/arch/m68k/mm/kmap.c
+index 6e4955bc542b..fcd52cefee29 100644
+--- a/arch/m68k/mm/kmap.c
++++ b/arch/m68k/mm/kmap.c
+@@ -88,7 +88,8 @@ static inline void free_io_area(void *addr)
+ 	for (p = &iolist ; (tmp = *p) ; p = &tmp->next) {
+ 		if (tmp->addr == addr) {
+ 			*p = tmp->next;
+-			__iounmap(tmp->addr, tmp->size);
++			/* remove gap added in get_io_area() */
++			__iounmap(tmp->addr, tmp->size - IO_SIZE);
+ 			kfree(tmp);
+ 			return;
+ 		}
+-- 
+2.17.1
+
 
