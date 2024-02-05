@@ -1,81 +1,79 @@
-Return-Path: <stable+bounces-18820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 351B58497B2
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 11:24:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB25F8497E5
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 11:40:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30E5BB263B4
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 10:23:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 781EA285B0B
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 10:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFEB0168DA;
-	Mon,  5 Feb 2024 10:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D4E17572;
+	Mon,  5 Feb 2024 10:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SB9xsQxo"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="eM59Nmsn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECBE17559
-	for <stable@vger.kernel.org>; Mon,  5 Feb 2024 10:23:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24331175B4
+	for <stable@vger.kernel.org>; Mon,  5 Feb 2024 10:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707128630; cv=none; b=kaTlchsPWs6vH2Lr0VDUzaYDkdoe9hmorPVNqy5hsZeyHHuCm1ia3Bkm3RREWh0CI5NRmqD+p+fK/VGdW3vy+tgCeB9/xjrCC4fIKdTW7eZPSnBjxcoI5fPFotsFXNU90ZpVzmndu+c73TcilZetpAcC/m4PyzAj3ZAigaWWnZY=
+	t=1707129616; cv=none; b=QYs2qR2gtWwb85H1bOZ665QUSK7z/e6ig5sxzBDrMehPy5PjF39zFykSun29cktKzGPguG+y3kfp7CpAr4ZDRxmyeYVUF3LyfSVVG+Vwv54qu5yV7NtXBrinpdihnAEz2jtmKgIgKa2SBbBM5eEYzSE+rS8cMdZxmalXNJkd/BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707128630; c=relaxed/simple;
-	bh=sq/Qrf0HFbvnzzZSkvn/VEorD3BS2h/vLEufdJf87sI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WrQEI3BK+ddMXYn91kmxNKZce4TE757JSZHEx5NLpPg0+fHXERmSqe82OFS2TPFMrLokofD5rm3vHhR2rGkmVYqulvpjQi3JWUNRgssSFXyCGlZL8DcXhtbRCVGs3Rcaki0QpnxYC/ewqkNZIW0BG4rC+rHsCStNldEfiEWlfaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SB9xsQxo; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a26fa294e56so583517166b.0
-        for <stable@vger.kernel.org>; Mon, 05 Feb 2024 02:23:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707128627; x=1707733427; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XX4Ym3d2uPw+/HY4vPGG7XwZmCRiTXwEgrLOAbWQDn4=;
-        b=SB9xsQxoFvPuPlbazSzMLA21q88QeYFv9s3JBTgAzjxfTmxnweT5XOluMmp5gCDtaT
-         EPP0OoZ0PRGUqYVQWtP/vRiPrvM5qFXa1AQMV6YWtuC8nJ7n/PfSn4iW5rUpPwYbCnw8
-         OByPYNILadjod1HBKORtGAT8DU3szul9b1Pqyj6wZyZhTSG8w1N6Oq6K+rPg3WUjFXOb
-         vsD6WTgNxCVytO3wN4oM6YyOMUNNJYaoMHkkjjsvjzfUAiK2+zGMtsvhYhgxkkPQZUTP
-         x+8+Em0mBHfDrXxcsEXOjyTT9598W9LwvIAsN64w9MlK0yRkpPyVxLEz8A2rPVcUqlq/
-         epyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707128627; x=1707733427;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XX4Ym3d2uPw+/HY4vPGG7XwZmCRiTXwEgrLOAbWQDn4=;
-        b=vMH5Qeg7IDLE/xvixVccJ//vyHUP4JjR6Pj9mBiyf3xINTcBUO2xx8CGTfQuf1wLwF
-         l7PnbhUIvl+yvQxT8ZtkasDUnj6MwbM6Ru3LDCyNjumIx8M6G7NXX9N/Z0ii3FI0iTJh
-         dvWoQAB0JvIC8xL1/NaTwLLShAw7we/v0acRR7yNEHxr5IwZ4CVeeaTgyTS3KhcTnqTM
-         +keuwYhgs7x+jArxX4Z3I4+ikV2NvTe0otYTN+5sCCCRwtqdrh+8mmjGIUHhGi6ox4kG
-         WFtUr7pa+98H2dM2SEbTrsGAHGksTdNd3AxtlZk8JAQCddhNC5e0Iu4zy0wyEcsVd66I
-         5fqw==
-X-Gm-Message-State: AOJu0Yyu+k0XpkAbshCQyiepKtJy56U55HKB2GAxEgUooCyQUF6gsEjZ
-	3XMtZ3bXY+HJwscua4B8qWu0ZWUKtMlw2kxJxI5Dk6yxSBNZYXIX
-X-Google-Smtp-Source: AGHT+IEhgC7WpQxUeQ7w9jPqIfihBfLgrkJnQPKhaKfxYJQOVq5OuY1YA+3A/JW3juiNLHkOHk1kzw==
-X-Received: by 2002:a17:906:194e:b0:a37:e7ee:3ba4 with SMTP id b14-20020a170906194e00b00a37e7ee3ba4mr565762eje.20.1707128627157;
-        Mon, 05 Feb 2024 02:23:47 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCUebXMJzoW8NsFszB6JpWkjxUdvAicQboDttoHPbN0WsjspbdhzsPFJda6aPJXWwbl+JhZNTdV/w/IrsNtPLUGzfAlTARSg+7WtavOZFwmBGpol5IIFic+HnPzk/+aZ7oVFts+fnQtR8HIhZ4ulBkUfzkJRpPr/rSazL32pTy2NsbQzjV4IiVTUsEeJ9bdmRNCD7qDQbx0GZUJkZg==
-Received: from localhost ([2a02:1210:8690:9300:82ee:73ff:feb8:99e3])
-        by smtp.gmail.com with UTF8SMTPSA id vg11-20020a170907d30b00b00a37669280d1sm2450005ejc.141.2024.02.05.02.23.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 Feb 2024 02:23:46 -0800 (PST)
-From: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-To: soc@kernel.org
-Cc: Nikita Shubin <nikita.shubin@maquefel.me>,
-	stable@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Subject: [PATCH] ARM: ep93xx: Add terminator to gpiod_lookup_table
-Date: Mon,  5 Feb 2024 11:23:34 +0100
-Message-ID: <20240205102337.439002-1-alexander.sverdlin@gmail.com>
-X-Mailer: git-send-email 2.42.0
+	s=arc-20240116; t=1707129616; c=relaxed/simple;
+	bh=LZ+ectrNy1WQhig0loqrq07Hh1s6oJ33PbC1M2sErIo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Ikdoka2DkRa/DkiEhIDwHJbDYoTAa90xaBTOpuWH1pV9gsAZd1eqhNdEGrDbthCq+wYDJ/+3yB/UhgC5GI7VP24Qw2BXaTWIOuSTaqnc+kIozYnf6Qh+uzQQi+kJYjk7jBqaD9P54UNxR++psyGbye7FyJF6P9OPv8VIGZssQMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=eM59Nmsn; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4159OZVW005829;
+	Mon, 5 Feb 2024 10:40:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=corp-2023-11-20;
+ bh=kB97LssFl2YN4BXZKI5gv9CXMiBoEUSvx6yQWYwR1aw=;
+ b=eM59NmsnfVMMhup8aPyM2FSW4Pb7K70n3qmQ2NiU85nggcBRLMAWK5kqFWhibXKodvQt
+ to7UUPFiiWD3VlkbT8ppwajb5Hhh13VRwFHym6TfdaeUiyeNrZZiVzHhTqCzFM3HlGDP
+ smU8ox1Ck2CzWz20Af0XD0lNpndyu3QDF7y7QPOxDu9TRk9v8/vmvpwIGJDRH3qcTd6s
+ V/AERUQDBiAR6Be+3a9+AvzErGxuy5Cn8GucsjxPMZR4NQrddFlnCeTeUHbtGM3oBT6k
+ X1NYWApvHQMv2D2u1Fgf1knjcb1IQkMe61/cAZEx2cD6dpN+bRfbldfuFF15lO5B6zme +w== 
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w1cdcumjd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 05 Feb 2024 10:40:08 +0000
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 4158xdtL038305;
+	Mon, 5 Feb 2024 10:40:07 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3w1bx5h9d5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 05 Feb 2024 10:40:07 +0000
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 415Ae7AT022135;
+	Mon, 5 Feb 2024 10:40:07 GMT
+Received: from t460-2.nl.oracle.com (dhcp-10-175-50-194.vpn.oracle.com [10.175.50.194])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3w1bx5h9ba-1;
+	Mon, 05 Feb 2024 10:40:06 +0000
+From: Vegard Nossum <vegard.nossum@oracle.com>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jonathan Corbet <corbet@lwn.net>, Jani Nikula <jani.nikula@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Vegard Nossum <vegard.nossum@oracle.com>,
+        Justin Forbes <jforbes@fedoraproject.org>
+Subject: [PATCH -stable] Documentation/arch/ia64/features.rst: fix kernel-feat directive
+Date: Mon,  5 Feb 2024 11:39:59 +0100
+Message-Id: <20240205103959.281871-1-vegard.nossum@oracle.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <6e02ac20-490a-48ff-9370-5e466cb740bb@oracle.com>
+References: <6e02ac20-490a-48ff-9370-5e466cb740bb@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,37 +81,60 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-05_06,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 bulkscore=0
+ mlxlogscore=999 phishscore=0 spamscore=0 mlxscore=0 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402050081
+X-Proofpoint-GUID: HTim7QwhIa_VbDMPI6cYIdKjYvQsV0MQ
+X-Proofpoint-ORIG-GUID: HTim7QwhIa_VbDMPI6cYIdKjYvQsV0MQ
 
-From: Nikita Shubin <nikita.shubin@maquefel.me>
+My mainline commit c48a7c44a1d0 ("docs: kernel_feat.py: fix potential
+command injection") contains a bug which can manifests like this when
+building the documentation:
 
-Without the terminator, if a con_id is passed to gpio_find() that
-does not exist in the lookup table the function will not stop looping
-correctly, and eventually cause an oops.
+    Sphinx parallel build error:
+    UnboundLocalError: local variable 'fname' referenced before assignment
+    make[2]: *** [Documentation/Makefile:102: htmldocs] Error 2
 
-Cc: stable@vger.kernel.org
-Fixes: b2e63555592f ("i2c: gpio: Convert to use descriptors")
-Reported-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Nikita Shubin <nikita.shubin@maquefel.me>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+However, this only appears when there exists a '.. kernel-feat::'
+directive that points to a non-existent file, which isn't the case in
+mainline.
+
+When this commit was backported to stable 6.6, it didn't change
+Documentation/arch/ia64/features.rst since ia64 was removed in 6.7 in
+commit cf8e8658100d ("arch: Remove Itanium (IA-64) architecture"). This
+lead to the build failure seen above -- but only in stable kernels.
+
+This patch fixes the backport and should only be applied to kernels where
+Documentation/arch/ia64/features.rst exists and commit c48a7c44a1d0 has
+also been applied.
+
+A second patch will follow to fix kernel_feat.py in mainline so that it
+doesn't error out when the '.. kernel-feat::' directive points to a
+nonexistent file.
+
+Link: https://lore.kernel.org/all/ZbkfGst991YHqJHK@fedora64.linuxtx.org/
+Fixes: e961f8c6966a ("docs: kernel_feat.py: fix potential command injection") # stable 6.6.15
+Reported-by: Justin Forbes <jforbes@fedoraproject.org>
+Reported-y: Salvatore Bonaccorso <carnil@debian.org>
+Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
 ---
- arch/arm/mach-ep93xx/core.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/arch/ia64/features.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-ep93xx/core.c b/arch/arm/mach-ep93xx/core.c
-index 71b113976420..8b1ec60a9a46 100644
---- a/arch/arm/mach-ep93xx/core.c
-+++ b/arch/arm/mach-ep93xx/core.c
-@@ -339,6 +339,7 @@ static struct gpiod_lookup_table ep93xx_i2c_gpiod_table = {
- 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
- 		GPIO_LOOKUP_IDX("G", 0, NULL, 1,
- 				GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN),
-+		{ }
- 	},
- };
+diff --git a/Documentation/arch/ia64/features.rst b/Documentation/arch/ia64/features.rst
+index d7226fdcf5f8..056838d2ab55 100644
+--- a/Documentation/arch/ia64/features.rst
++++ b/Documentation/arch/ia64/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
  
+-.. kernel-feat:: $srctree/Documentation/features ia64
++.. kernel-feat:: features ia64
 -- 
-2.42.0
+2.34.1
 
 
