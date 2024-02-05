@@ -1,140 +1,121 @@
-Return-Path: <stable+bounces-18870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3F384A8D2
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 23:12:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB4784A91B
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 23:21:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A447A29BCF7
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 22:12:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5266F1F2D256
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 22:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7241E3172D;
-	Mon,  5 Feb 2024 21:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741C72D604;
+	Mon,  5 Feb 2024 22:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jj2o3pkn"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ZAYg+A8z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6EA5B1F5;
-	Mon,  5 Feb 2024 21:54:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3BB3172D;
+	Mon,  5 Feb 2024 22:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707170051; cv=none; b=jKbRoa16qeNjhB7Rf/eJXd89xlfSaY3csbWzxCJwGLQpUue8qz4avLqWT0bA7RNqacSzcjwSXs7v3MCgNDY+OiEIg4AL9qsvR733MLvHA17r9Qio58mEckiyVHkx/1XmsvzrL42T+0AePS2+1kiLScE3gfebVxYV4/+f0KC6jY0=
+	t=1707171333; cv=none; b=fHtGvYJI5cfuIdj/TPHSRK6VE71HlgWYTndXYHwo6gr4kiNJ8IfhL3RTYLIjWML3k+421JA+1e8uFYK8KatFmqG7eF3vfxyKky6gvzJ1Lq7o9BN1fFgPpSNrBGS4bDb/X14R68r0368YIBK+YLo8Nd1z0CLRoVm7Ao0UtxqXPMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707170051; c=relaxed/simple;
-	bh=6GEDCFQk41XP9DzQmt+P7xWPiXzZfQEwbIAYsyL/6lY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qbhl8GS2kDBWg61yAEi3qNM2cW3ILLQBPn6jbktmtKp4r5TQIlphUG5szhsiJDYKHyQ3rXGILksbxv/Ujsx58djGs5Pj++cuDrNopb6/8wv0RrTHJvbPnud2eomaFVYdOV1c/ffGMj51qN5yzH5kAEUgDj4hW7a9WYVdNpSWQB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jj2o3pkn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEC07C433C7;
-	Mon,  5 Feb 2024 21:54:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707170050;
-	bh=6GEDCFQk41XP9DzQmt+P7xWPiXzZfQEwbIAYsyL/6lY=;
-	h=From:Date:Subject:To:Cc:From;
-	b=Jj2o3pkngkvdJslLtmThbXMGJLXgEonRU0XkDkA5VSynRzNafZQYBhR0MwS2Yl2Av
-	 WSXySO4kdnczUeTzv1GpIyQQ1tDJb+Pp1mJ2cqmarPN5orAlu3n6091jZg3mSMRER7
-	 nOEuXRcSkcgkayi+1PhrreJvPypDfAHU5GegfQRvTCNHFBIfKKNQp6LcVDU5UWe9fA
-	 v93Gd0MoGmDc34Y+chk4j+l7UMWP+fy83EW0ZIlsAeUkCSUC1pXxCwzNkQ7TpEIuZx
-	 Ekupidglumd3Aode9f/uAldY8t3ukiCX2HOujyZiQSmdGUGQVGfaEYoiGUG2q3e4Mx
-	 br5mYdGEBztJw==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Mon, 05 Feb 2024 14:54:05 -0700
-Subject: [PATCH] drm/amd/display: Increase frame-larger-than for all
- display_mode_vba files
+	s=arc-20240116; t=1707171333; c=relaxed/simple;
+	bh=pdoPaqUDLrCKkYkbIvgHrBVe7I2Gk8VPTo8favYYvfU=;
+	h=Date:To:From:Subject:Message-Id; b=IZzFC4gfFwedJVs/WzKC3/pl3n7DePlvKTO24vLTjujEBj7+jgfN3TMpYz1PiTrgm4O2le9YcyqzqEug33xNZsg3H+5mCAMOixt5Xml6oaXzYtII7lerhkLvTtI7qF4yN5b4cvQ4RVGJ0qN76dNCrhzTQq1HmKcf1kwosKJQ95Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ZAYg+A8z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8C2C433F1;
+	Mon,  5 Feb 2024 22:15:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1707171332;
+	bh=pdoPaqUDLrCKkYkbIvgHrBVe7I2Gk8VPTo8favYYvfU=;
+	h=Date:To:From:Subject:From;
+	b=ZAYg+A8zkJxlN6U6YtMFZcWUyo89VLrAkS+2d4inwpJdfb57OIqGesRnLECrnIIt4
+	 bS/sseO+SY7u4+CBTlvei5LzOxTugMkJdSeYLSeSXjy3mcS/n1AVFWgitZx67OvHpR
+	 USMw9W5x8uhwVdLS74zpRPevoH3QC7U0GkzWiNjA=
+Date: Mon, 05 Feb 2024 14:15:31 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,hirofumi@mail.parknet.co.jp,amir73il@gmail.com,jack@suse.cz,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + fat-fix-uninitialized-field-in-nostale-filehandles.patch added to mm-nonmm-unstable branch
+Message-Id: <20240205221532.7E8C2C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240205-amdgpu-raise-flt-for-dml-vba-files-v1-1-9bc8c8b98fb4@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAPxYwWUC/x3NywqDMBBG4VeRWXcgTc2ifZXSRTR/7EC8MFOlI
- L67weW3OWcngwqMXs1Oik1M5qnifmuo/8ZpAEuqJu9867wLHMc0LCtrFAPn8uM8K6ex8NZFzlJ
- gDIQuxGcf0D6ohhZFlv81eX+O4wQUV7JbdAAAAA==
-To: harry.wentland@amd.com, sunpeng.li@amd.com, Rodrigo.Siqueira@amd.com, 
- alexander.deucher@amd.com
-Cc: christian.koenig@amd.com, Xinhui.Pan@amd.com, morbo@google.com, 
- justinstitt@google.com, amd-gfx@lists.freedesktop.org, 
- dri-devel@lists.freedesktop.org, llvm@lists.linux.dev, 
- patches@lists.linux.dev, stable@vger.kernel.org, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.13-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3644; i=nathan@kernel.org;
- h=from:subject:message-id; bh=6GEDCFQk41XP9DzQmt+P7xWPiXzZfQEwbIAYsyL/6lY=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDKkHIxnj9YTvrShxvWjc1DiTy07ynlzcAc6LYifEJZkWC
- VXXirJ0lLIwiHExyIopslQ/Vj1uaDjnLOONU5Ng5rAygQxh4OIUgInsVGdk+BHpcmr2r5kGQTMk
- Shd21Z6M5OET7p/ZEyf/12Z6pt7njYwMq3/f7WIIe2TkI/OmcAPbuVePSva0SKnYpwZNCmpP+L2
- GHwA=
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-After a recent change in LLVM, allmodconfig (which has CONFIG_KCSAN=y
-and CONFIG_WERROR=y enabled) has a few new instances of
--Wframe-larger-than for the mode support and system configuration
-functions:
 
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn20/display_mode_vba_20v2.c:3393:6: error: stack frame size (2144) exceeds limit (2048) in 'dml20v2_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
-   3393 | void dml20v2_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
-        |      ^
-  1 error generated.
+The patch titled
+     Subject: fat: Fix uninitialized field in nostale filehandles
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     fat-fix-uninitialized-field-in-nostale-filehandles.patch
 
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn21/display_mode_vba_21.c:3520:6: error: stack frame size (2192) exceeds limit (2048) in 'dml21_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
-   3520 | void dml21_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
-        |      ^
-  1 error generated.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fat-fix-uninitialized-field-in-nostale-filehandles.patch
 
-  drivers/gpu/drm/amd/amdgpu/../display/dc/dml/dcn20/display_mode_vba_20.c:3286:6: error: stack frame size (2128) exceeds limit (2048) in 'dml20_ModeSupportAndSystemConfigurationFull' [-Werror,-Wframe-larger-than]
-   3286 | void dml20_ModeSupportAndSystemConfigurationFull(struct display_mode_lib *mode_lib)
-        |      ^
-  1 error generated.
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Without the sanitizers enabled, there are no warnings.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-This was the catalyst for commit 6740ec97bcdb ("drm/amd/display:
-Increase frame warning limit with KASAN or KCSAN in dml2") and that same
-change was made to dml in commit 5b750b22530f ("drm/amd/display:
-Increase frame warning limit with KASAN or KCSAN in dml") but the
-frame_warn_flag variable was not applied to all files. Do so now to
-clear up the warnings and make all these files consistent.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Cc: stable@vger.kernel.org
-Closes: https://github.com/ClangBuiltLinux/linux/issue/1990
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Jan Kara <jack@suse.cz>
+Subject: fat: Fix uninitialized field in nostale filehandles
+Date: Mon, 5 Feb 2024 13:26:26 +0100
+
+When fat_encode_fh_nostale() encodes file handle without a parent it
+stores only first 10 bytes of the file handle. However the length of the
+file handle must be a multiple of 4 so the file handle is actually 12
+bytes long and the last two bytes remain uninitialized. This is not
+great at we potentially leak uninitialized information with the handle
+to userspace. Properly initialize the full handle length.
+
+Link: https://lkml.kernel.org/r/20240205122626.13701-1-jack@suse.cz
+Reported-by: syzbot+3ce5dea5b1539ff36769@syzkaller.appspotmail.com
+Fixes: ea3983ace6b7 ("fat: restructure export_operations")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Acked-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+Cc: Amir Goldstein <amir73il@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/Makefile | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/Makefile b/drivers/gpu/drm/amd/display/dc/dml/Makefile
-index 6042a5a6a44f..59ade76ffb18 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
-@@ -72,11 +72,11 @@ CFLAGS_$(AMDDALPATH)/dc/dml/display_mode_lib.o := $(dml_ccflags)
- CFLAGS_$(AMDDALPATH)/dc/dml/display_mode_vba.o := $(dml_ccflags)
- CFLAGS_$(AMDDALPATH)/dc/dml/dcn10/dcn10_fpu.o := $(dml_ccflags)
- CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/dcn20_fpu.o := $(dml_ccflags)
--CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20.o := $(dml_ccflags)
-+CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20.o := $(dml_ccflags) $(frame_warn_flag)
- CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_rq_dlg_calc_20.o := $(dml_ccflags)
--CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20v2.o := $(dml_ccflags)
-+CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_mode_vba_20v2.o := $(dml_ccflags) $(frame_warn_flag)
- CFLAGS_$(AMDDALPATH)/dc/dml/dcn20/display_rq_dlg_calc_20v2.o := $(dml_ccflags)
--CFLAGS_$(AMDDALPATH)/dc/dml/dcn21/display_mode_vba_21.o := $(dml_ccflags)
-+CFLAGS_$(AMDDALPATH)/dc/dml/dcn21/display_mode_vba_21.o := $(dml_ccflags) $(frame_warn_flag)
- CFLAGS_$(AMDDALPATH)/dc/dml/dcn21/display_rq_dlg_calc_21.o := $(dml_ccflags)
- CFLAGS_$(AMDDALPATH)/dc/dml/dcn30/display_mode_vba_30.o := $(dml_ccflags) $(frame_warn_flag)
- CFLAGS_$(AMDDALPATH)/dc/dml/dcn30/display_rq_dlg_calc_30.o := $(dml_ccflags)
+ fs/fat/nfs.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
----
-base-commit: 6813cdca4ab94a238f8eb0cef3d3f3fcbdfb0ee0
-change-id: 20240205-amdgpu-raise-flt-for-dml-vba-files-ee5b5a9c5e43
+--- a/fs/fat/nfs.c~fat-fix-uninitialized-field-in-nostale-filehandles
++++ a/fs/fat/nfs.c
+@@ -130,6 +130,12 @@ fat_encode_fh_nostale(struct inode *inod
+ 		fid->parent_i_gen = parent->i_generation;
+ 		type = FILEID_FAT_WITH_PARENT;
+ 		*lenp = FAT_FID_SIZE_WITH_PARENT;
++	} else {
++		/*
++		 * We need to initialize this field because the fh is actually
++		 * 12 bytes long
++		 */
++		fid->parent_i_pos_hi = 0;
+ 	}
+ 
+ 	return type;
+_
 
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
+Patches currently in -mm which might be from jack@suse.cz are
+
+fat-fix-uninitialized-field-in-nostale-filehandles.patch
 
 
