@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-18867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF15C84A82D
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 22:55:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 449E484A878
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 23:04:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFD2F1C2743C
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 21:55:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0341B2475D
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 22:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC6313A877;
-	Mon,  5 Feb 2024 20:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9E31509BF;
+	Mon,  5 Feb 2024 21:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="taVV21zw"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="jsv47+qS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19F248783;
-	Mon,  5 Feb 2024 20:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C5E1509B4;
+	Mon,  5 Feb 2024 21:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707166590; cv=none; b=W+FEbjQ0LCIC/Yqx3B4yd74Pap+rtHyrqiNXnpydRe0f5EGTpsPTjQk8wovqosf+CGPxJtzlMgXOidcMhP2br+QCXQIybbD2CTc1nBSUiMcrXuP0iwE55qkK3dgTGGRDO62XBrjc75BvJQTPUB95XnIiG3qsVc7txUhSkCcHZ7c=
+	t=1707167335; cv=none; b=GEz4WIjb9jZ1GEP/OOnwkVh+O9mOnZW20YcGzNNs1Tbe8N0e0IH9UdYK5nA0bNdI4aCXP2SodkNclJZXwaitfc/ibW502t+IYri2L106urSDiBtwv6KeeD+DaJqitV5W9o5tChzhYJxsJlTUuU4vNE9MTSVNYbiwWAAcM0Nn0vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707166590; c=relaxed/simple;
-	bh=gDZ6wrndIFbg/VL02kI6xzC1bj6/RUzS32l0qNprLPk=;
-	h=Date:To:From:Subject:Message-Id; b=ufEzRyJ7DoNGfOSPkKJhNwtdjR2eciT/QXE4kdVQ/ow/WF3In0py5A6C33Uu1BFRUFc2v11JUlpAWeEHcbQQ+ExsG0SD7dOO20zeK5JA2+MSiA0S5pc3nQObjOIdj0iw5DvoTVU05kyGlEliYkRTUr194HhjnFuk3qF1YF3jdv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=taVV21zw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B6EC433C7;
-	Mon,  5 Feb 2024 20:56:29 +0000 (UTC)
+	s=arc-20240116; t=1707167335; c=relaxed/simple;
+	bh=biKneaSJseSe+6JBLd4UMROHAignWpqHbXjxEn3Vclo=;
+	h=Date:To:From:Subject:Message-Id; b=Djktz97jAD5Lrld+rAmkkxld5fG0Y5JerPVvLCrEkg61xVka2Krd3/PwRpjyWc2EJjVMcrYJcrKoXVIMybt2g2tELYxIry7Od5SG0tKxU+im3T+l/JFMRq1j1Y5WfbknJXfaLjSa/FAf5yyJ82u8VxSLG8FwYCqD3bpxE7nvmBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=jsv47+qS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFA3C32792;
+	Mon,  5 Feb 2024 21:08:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1707166589;
-	bh=gDZ6wrndIFbg/VL02kI6xzC1bj6/RUzS32l0qNprLPk=;
+	s=korg; t=1707167334;
+	bh=biKneaSJseSe+6JBLd4UMROHAignWpqHbXjxEn3Vclo=;
 	h=Date:To:From:Subject:From;
-	b=taVV21zwDiifwrFKZhW/caHf8gn1pt9GMdBqbropKxNDyStne15NDOhs9SV5G/xWk
-	 tspRI3ue/ovXnEWWk+npfOmNLgrVdR1pxlWMosBTf+d3Ipt+QTRoPRZs5mEy1CcDYT
-	 arkNE0+9///7/TsUsfRvRgUWNJMyLw+3WdOC5CkE=
-Date: Mon, 05 Feb 2024 12:56:28 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
+	b=jsv47+qSUNt1dyryv8+31Xb8z1XRgFs+Rh8jOKcFL6dAtNbGytIM/EeJ9u+gQd/yQ
+	 0d7cimUOEFN99Jf2RTR96UAj/HyyQWEDUQ3t0wTkoWnWNpxnx8n0/9zDkPC4qlwAtw
+	 z3OgJz32OpSVvP3RhcKY/SYwMmyZgt5FQbsoJJJc=
+Date: Mon, 05 Feb 2024 13:08:54 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,peterx@redhat.com,peter.griffin@linaro.org,terry.tritton@linaro.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-core-check-apply-interval-in-damon_do_apply_schemes.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240205205629.45B6EC433C7@smtp.kernel.org>
+Subject: + selftests-mm-uffd-unit-test-check-if-huge-page-size-is-0.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240205210854.ADFA3C32792@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm/damon/core: check apply interval in damon_do_apply_schemes()
+     Subject: selftests/mm: uffd-unit-test check if huge page size is 0
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-core-check-apply-interval-in-damon_do_apply_schemes.patch
+     selftests-mm-uffd-unit-test-check-if-huge-page-size-is-0.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-core-check-apply-interval-in-damon_do_apply_schemes.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-uffd-unit-test-check-if-huge-page-size-is-0.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,79 +73,46 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/core: check apply interval in damon_do_apply_schemes()
-Date: Mon, 5 Feb 2024 12:13:06 -0800
+From: Terry Tritton <terry.tritton@linaro.org>
+Subject: selftests/mm: uffd-unit-test check if huge page size is 0
+Date: Mon, 5 Feb 2024 14:50:56 +0000
 
-kdamond_apply_schemes() checks apply intervals of schemes and avoid
-further applying any schemes if no scheme passed its apply interval. 
-However, the following schemes applying function, damon_do_apply_schemes()
-iterates all schemes without the apply interval check.  As a result, the
-shortest apply interval is applied to all schemes.  Fix the problem by
-checking the apply interval in damon_do_apply_schemes().
+If HUGETLBFS is not enabled then the default_huge_page_size function will
+return 0 and cause a divide by 0 error. Add a check to see if the huge page
+size is 0 and skip the hugetlb tests if it is.
 
-Link: https://lkml.kernel.org/r/20240205201306.88562-1-sj@kernel.org
-Fixes: 42f994b71404 ("mm/damon/core: implement scheme-specific apply interval")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.7.x]
+Link: https://lkml.kernel.org/r/20240205145055.3545806-2-terry.tritton@linaro.org
+Fixes: 16a45b57cbf2 ("selftests/mm: add framework for uffd-unit-test")
+Signed-off-by: Terry Tritton <terry.tritton@linaro.org>
+Cc: Peter Griffin <peter.griffin@linaro.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/damon/core.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ tools/testing/selftests/mm/uffd-unit-tests.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/mm/damon/core.c~mm-damon-core-check-apply-interval-in-damon_do_apply_schemes
-+++ a/mm/damon/core.c
-@@ -1026,6 +1026,9 @@ static void damon_do_apply_schemes(struc
- 	damon_for_each_scheme(s, c) {
- 		struct damos_quota *quota = &s->quota;
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c~selftests-mm-uffd-unit-test-check-if-huge-page-size-is-0
++++ a/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -1517,6 +1517,12 @@ int main(int argc, char *argv[])
+ 				continue;
  
-+		if (c->passed_sample_intervals != s->next_apply_sis)
-+			continue;
-+
- 		if (!s->wmarks.activated)
- 			continue;
- 
-@@ -1176,10 +1179,6 @@ static void kdamond_apply_schemes(struct
- 		if (c->passed_sample_intervals != s->next_apply_sis)
- 			continue;
- 
--		s->next_apply_sis +=
--			(s->apply_interval_us ? s->apply_interval_us :
--			 c->attrs.aggr_interval) / sample_interval;
--
- 		if (!s->wmarks.activated)
- 			continue;
- 
-@@ -1195,6 +1194,14 @@ static void kdamond_apply_schemes(struct
- 		damon_for_each_region_safe(r, next_r, t)
- 			damon_do_apply_schemes(c, t, r);
- 	}
-+
-+	damon_for_each_scheme(s, c) {
-+		if (c->passed_sample_intervals != s->next_apply_sis)
-+			continue;
-+		s->next_apply_sis +=
-+			(s->apply_interval_us ? s->apply_interval_us :
-+			 c->attrs.aggr_interval) / sample_interval;
-+	}
- }
- 
- /*
+ 			uffd_test_start("%s on %s", test->name, mem_type->name);
++			if ((mem_type->mem_flag == MEM_HUGETLB ||
++			    mem_type->mem_flag == MEM_HUGETLB_PRIVATE) &&
++			    (default_huge_page_size() == 0)) {
++				uffd_test_skip("huge page size is 0, feature missing?");
++				continue;
++			}
+ 			if (!uffd_feature_supported(test)) {
+ 				uffd_test_skip("feature missing");
+ 				continue;
 _
 
-Patches currently in -mm which might be from sj@kernel.org are
+Patches currently in -mm which might be from terry.tritton@linaro.org are
 
-mm-damon-sysfs-schemes-fix-wrong-damos-tried-regions-update-timeout-setup.patch
-mm-damon-core-check-apply-interval-in-damon_do_apply_schemes.patch
-docs-admin-guide-mm-damon-usage-use-sysfs-interface-for-tracepoints-example.patch
-mm-damon-rename-config_damon_dbgfs-to-damon_dbgfs_deprecated.patch
-mm-damon-dbgfs-implement-deprecation-notice-file.patch
-mm-damon-dbgfs-make-debugfs-interface-deprecation-message-a-macro.patch
-docs-admin-guide-mm-damon-usage-document-deprecated-file-of-damon-debugfs-interface.patch
-selftets-damon-prepare-for-monitor_on-file-renaming.patch
-mm-damon-dbgfs-rename-monitor_on-file-to-monitor_on_deprecated.patch
-docs-admin-guide-mm-damon-usage-update-for-monitor_on-renaming.patch
-docs-translations-damon-usage-update-for-monitor_on-renaming.patch
+selftests-mm-uffd-unit-test-check-if-huge-page-size-is-0.patch
 
 
