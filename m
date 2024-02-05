@@ -1,127 +1,162 @@
-Return-Path: <stable+bounces-18810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7080E849345
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 06:20:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9FFE849436
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 08:09:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE8BC1F217B6
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 05:20:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 872E4284CA8
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 07:09:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C679B65C;
-	Mon,  5 Feb 2024 05:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1EB0C147;
+	Mon,  5 Feb 2024 07:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="QKgyu4Kn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WEg0wNbj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16E8BE47
-	for <stable@vger.kernel.org>; Mon,  5 Feb 2024 05:20:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9A8D524;
+	Mon,  5 Feb 2024 07:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707110403; cv=none; b=aMpAdYhCiLhaClABel0IFz3QMQRFXbWt/IyuVr0Jjcrb/arGIGrku+18mS+U/Fam4IPd+aXMQdJfejfSnc5/zIFXyBZxCUQGf1cIVyjTo00tywHEMGPYVVs5GXfeqkm51o+ZlFjQmouJz07OCmmAzKXIjPMc672f5aTLxkoNIhA=
+	t=1707116971; cv=none; b=d+vcpFN4CNG5XXx7bMrdkh6rhis1MzBeQEzLKD9UOTlFlhX1gg4ODLjDbAFmgVGG8bKWuHaphs0Iir2+hABpICBhcYBMTRlKvbjYL7pJlOuIz/6SoGyUia3DdJMxAeY2tIoWEzo6MIaXWKAZSu1HhRheGq06UZCCZ0GDklbD70A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707110403; c=relaxed/simple;
-	bh=b/F/IvZJvxSYV6yT8GonNahencq0VCJX3syNSsaFNgM=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=glqQ7G7C2Itx85eTWOR2KkWwy9kyW+eLiEx5bDHvSRSlQ/PVIs7beDNghzk5qox+MRxLkI9/H1fSsEr1IJYziVg41gfr7WYZLcdvpWn1coQzrwszDTvFcFoOjvvpRpXZnoM5G6oW5FmJ2Ggw8o9hIdBa71G6uSNGgP3E2W3fg7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=QKgyu4Kn; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-5cf2d73a183so3559321a12.1
-        for <stable@vger.kernel.org>; Sun, 04 Feb 2024 21:20:01 -0800 (PST)
+	s=arc-20240116; t=1707116971; c=relaxed/simple;
+	bh=0HWTyJnF7cZWV5uhr1xy2sa3Kokjs5AlpLAQuJ5RMns=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XZkw4vfXO+95dCdGYcqvCoqesoLbtUX2l1XlsB68/koRMQEDwx/9ruM4WPSkHKgR1S7cCvVN/M4tqpoK5Ryd+X+KZp4mQhQHjucIBKpijyNGW/djGMNa3xxCXhmH59t7hvnFDAHuirw1Tmg+VEhRYEuHigJIhO7X/el0w/yY+D8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WEg0wNbj; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-55cca88b6a5so4757239a12.1;
+        Sun, 04 Feb 2024 23:09:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1707110401; x=1707715201; darn=vger.kernel.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1707116968; x=1707721768; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dW5zoXaotbxS+SYq2Yu+7hcfyLit5t9UvVc+9SbtbuU=;
-        b=QKgyu4KnQu38n2VMRkHNS5SggccUPhHeAB5NHXAIHQQDUrPtX1wBLFaCTwLDrX2HX+
-         OHyTcm7lD7ikBOun9Bx1P64lNpiEdLWY8gwj4WojiQ6vEyZI8Vj7MptLH6mNBp19rtpE
-         vmBvlOGuHDFRkvk/4GLvGMC3TsY55tuFCTqnA=
+        bh=cHtD0SBsqpOCqsRqynKKiqdaU6jxk/8r+8X131ttTZQ=;
+        b=WEg0wNbjilSNXom4P3Q0mnMLv7gia8UH0wLYHjpQOtgSHPZvfcopPQjX9OEdfbTWIj
+         LVFC5R/xn7gAJfgfdOOe8q1nAoB+s7riK+xYDYmLV9FhpDWkG+Jy196D4XvaLYO9OpvG
+         YrzZJ3KmarcUdttBnzw1VWX8xq7uGc2oE/3P8XWjQwAsK1RGXMJyg+TgZltOWsvSXZE3
+         VztMfqrund4RVgu2OEcDaTYreW9DIV4uAm/JpkEo0FmS2SHx9wmI1gancd7j1LqNcMYS
+         GTLKW9xfLk04Z+Lk8j3SQMexm4yTNoZuTgb27qHtNJXagQp4VLQhPJq98cU7Q6QVr6PP
+         iMQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707110401; x=1707715201;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1707116968; x=1707721768;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dW5zoXaotbxS+SYq2Yu+7hcfyLit5t9UvVc+9SbtbuU=;
-        b=Rvmt66S78ZhOsC0KoIA1rTugUo4I1RORTMhe7gUyjiwFubadznTSNZVWgSNQuCBdVs
-         YzYzCFysRC7a7444AnvfscjTj/xuQTZMgz3mOer08kI//uDbwNxaB9xf93kCxGG9rrs4
-         7n7k8HHSNM+VAEJ754G5JlS0ExSX/VRT/v00Y98gQjS8nnRBmqfZhsYE1YWgHEcGn8n8
-         ndsDSY8tfSKh6UlIepZUr/F+W0gskqT4IgTb4j/MY2VY5NnvSyytY5ffUUDZsatGimml
-         Tm+x5D9yskIgqckVZTPXFCaR+SaAu0RoI7Ienl85I7wXL/czB2XVWXzofb09IL2CFRIC
-         iEKA==
-X-Gm-Message-State: AOJu0YyYuOgacQ9n3mAprMLoaRBtjrjfQQBjdtUQtXjqhGobSN2KYM44
-	fhHTHOYkYw7e4aPdvkeQFiN2XC2XztVQioD3j0apShWfByJ0UtuBdCQURt3nsHtUZtshnSJZj+N
-	X4aezrUOhqcjZfsy2TcQXZIk3oqUQxqPaYk/o4NUrF1XQUgLD2cc/3gOstmEZ6Lxu9EXNl9SNeI
-	BHJk4XZgAbWD0fhY6HwbcDdXU4zmflR+rg7nxBvu71Kto=
-X-Google-Smtp-Source: AGHT+IF9ggkIkGzgeO3uo/eh4fyZDfJpqokYxDxSkwePH8H9UgegtHqrBxC2F2NZ8p3jAZTfYMVDNA==
-X-Received: by 2002:a05:6a20:d909:b0:19e:5e0c:3bb8 with SMTP id jd9-20020a056a20d90900b0019e5e0c3bb8mr7970208pzb.7.1707110400605;
-        Sun, 04 Feb 2024 21:20:00 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCW49LbvIWU+foFA9+KIxmqctHvrKIaSi1hkNesPGFRM7R9cegKJcmHbSFXi3GzjE/YdnB5Fl/OpeO3vZzMH5DaqL6KSgHIyyvlhIQUpyRQReWw22hTiBxoqktD8Cs1h7bN/Cd/Brw9tVOsaoCiNwdisW/3kqqmoiX+5XZTjDIqgn/YKopHvMH6THCVhQxwRn9vXhafxdhJ7MbNsEh9Z/9YUHTbcQNqFSa+eN44LDAwcUHy+/tAEd4rqQbdLVf1pwFbD1iIlD/rVOCG5lAw/zFeMPiZY9dZ2IBAaMoBOvFsYb/QRCnW7ICYfQ42h28TqV1bbU+64mlT2XlHJn9yY0theGA3HEUVu3iIEwKYlsyLO/v8F+HDPf11iYfXrGwhw7dYZ7Am1PDIbpWcadF12ojDSrkZSe+UAP7aKohAyjC+TQld5Zn/uBnxO8g==
-Received: from akaher-virtual-machine.eng.vmware.com ([66.170.99.2])
-        by smtp.gmail.com with ESMTPSA id b16-20020aa78110000000b006dd84763ce3sm5612953pfi.169.2024.02.04.21.19.59
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 04 Feb 2024 21:20:00 -0800 (PST)
-From: Ajay Kaher <ajay.kaher@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: mst@redhat.com,
-	jasowang@redhat.com,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux-foundation.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	alexey.makhalov@broadcom.com,
-	vasavi.sirnapalli@broadcom.com,
-	Prathu Baronia <prathubaronia2011@gmail.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>
-Subject: [PATCH v6.1.y-v4.19.y] vhost: use kzalloc() instead of kmalloc() followed by memset()
-Date: Mon,  5 Feb 2024 10:49:37 +0530
-Message-Id: <1707110377-1483-1-git-send-email-ajay.kaher@broadcom.com>
-X-Mailer: git-send-email 2.7.4
+        bh=cHtD0SBsqpOCqsRqynKKiqdaU6jxk/8r+8X131ttTZQ=;
+        b=Itp1IrtBw34DDJpbn+EPtUwJq+uvqZAjyyEtmkxe12Ldt9CFscPU/uYjDGuiHai5SG
+         87kiV15x04gBJHjH8rpqs2mIoChff68wFJQFNuAB0HgCEiK5V6gvBczId8N0SomJnEJ3
+         JC6bZpSnxZNAcUI2yU6ieCz5iqONUTPgu5/mpB33/LwDS/g580QcX+yxLVxKQUdjN7ad
+         fgvzguiglPIjETpQspuXivh1mnMEaqDOp/SvZY2zqIPDOrk5kivHZMCzcPiyFQWHph6p
+         /Ob+GMJlHNia3Q5vwRMzaMM8HUmGSrr0auMatyC30qk6ZLoqzUeUCgK9HC/Vf91L2hlb
+         tOkA==
+X-Gm-Message-State: AOJu0YwOE8Chu3KSj7hx8srkwJOuDDzjrQEexXmhngYzTMjo8U5pydqs
+	tTOjBWbOX9p4XRG0vPyTOMHUDxegEtYJ9Bfp+X4fX9EdcLfCoC5AqKXdAmFruAS05DtwbFg0KNd
+	xIa9yQOmHA2FtPNkhuCMK81vTV2D8bC6AX+c=
+X-Google-Smtp-Source: AGHT+IEaiPB/WBdvTY0Xy9HmY2UTVqCSq6/bTFChmLjdYOwg3RgsGcf1VGS6PC79lQ4LEZx1oVfK2TsLN24i19dHJgg=
+X-Received: by 2002:a17:907:77d5:b0:a36:cfdd:1fe8 with SMTP id
+ kz21-20020a17090777d500b00a36cfdd1fe8mr5139298ejc.50.1707116967614; Sun, 04
+ Feb 2024 23:09:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <CAMBK1_QFuLQBp1apHD7=FnJo=RWE532=jMwfo=nkkGFSzJaD-A@mail.gmail.com>
+ <2024011723-freeness-caviar-774c@gregkh>
+In-Reply-To: <2024011723-freeness-caviar-774c@gregkh>
+From: Serge SIMON <serge.simon@gmail.com>
+Date: Mon, 5 Feb 2024 08:09:01 +0100
+Message-ID: <CAMBK1_S2vwv-8PfFQ4rfChPiW7ut5LXgmUZRtyhN=AoG3g5NEg@mail.gmail.com>
+Subject: Re: S/PDIF not detected anymore / regression on recent kernel 6.7 ?
+To: linux-sound@vger.kernel.org, regressions@lists.linux.dev
+Cc: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Prathu Baronia <prathubaronia2011@gmail.com>
+Hello,
 
-From: Prathu Baronia <prathubaronia2011@gmail.com>
+Any news on this ?
+Just to say that i tried the 6.7.3 version and i have the exact same
+problem as described below
+("linux-headers-6.7.3.arch1-2-x86_64.pkg.tar.zst" for the exact ARCH
+package, of course with a system fully up-to-date and rebooted) : no
+more S/PDIF device detected after reboot (only the monitors are
+detected, but not anymore the S/PDIF output at motherboard level-
+which is what i'm using).
 
-commit 4d8df0f5f79f747d75a7d356d9b9ea40a4e4c8a9 upstream
+Reverting to 6.6.10 does solve the issue, so per what i'm seeing,
+something has definitely been broken between 6.6.10 and 6.7.0 on that
+topic.
 
-Use kzalloc() to allocate new zeroed out msg node instead of
-memsetting a node allocated with kmalloc().
+Is this tracked by a bug somewhere ? Does i have to open one (in
+addition to these mails) ?
 
-Signed-off-by: Prathu Baronia <prathubaronia2011@gmail.com>
-Message-Id: <20230522085019.42914-1-prathubaronia2011@gmail.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-[Ajay: This is a security fix as per CVE-2024-0340]
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
----
- drivers/vhost/vhost.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Regards.
 
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index 07427302084955..ecb3b397bb3888 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -2563,12 +2563,11 @@ EXPORT_SYMBOL_GPL(vhost_disable_notify);
- /* Create a new message. */
- struct vhost_msg_node *vhost_new_msg(struct vhost_virtqueue *vq, int type)
- {
--	struct vhost_msg_node *node = kmalloc(sizeof *node, GFP_KERNEL);
-+	/* Make sure all padding within the structure is initialized. */
-+	struct vhost_msg_node *node = kzalloc(sizeof(*node), GFP_KERNEL);
- 	if (!node)
- 		return NULL;
- 
--	/* Make sure all padding within the structure is initialized. */
--	memset(&node->msg, 0, sizeof node->msg);
- 	node->vq = vq;
- 	node->msg.type = type;
- 	return node;
+--=20
+Serge.
+
+--=20
+Serge.
+
+
+On Wed, Jan 17, 2024 at 6:39=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Tue, Jan 16, 2024 at 09:49:59PM +0100, Serge SIMON wrote:
+> > Dear Kernel maintainers,
+> >
+> > I think i'm encountering (for the first time in years !) a regression
+> > with the "6.7.arch3-1" kernel (whereas no issues with
+> > "6.6.10.arch1-1", on which i reverted).
+> >
+> > I'm running a (up-to-date, and non-LTS) ARCHLINUX desktop, on a ASUS
+> > B560-I motherboard, with 3 monitors (attached to a 4-HDMI outputs
+> > card), plus an audio S/PDIF optic output at motherboard level.
+> >
+> > With the latest kernel, the S/PIDF optic output of the motherboard is
+> > NOT detected anymore (and i haven't been able to see / find anything
+> > in the logs at quick glance, neither journalctl -xe nor dmesg).
+> >
+> > Once reverted to 6.6.10, everything is fine again.
+> >
+> > For example, in a working situation (6.6.10), i have :
+> >
+> > cat /proc/asound/pcm
+> > 00-00: ALC1220 Analog : ALC1220 Analog : playback 1 : capture 1
+> > 00-01: ALC1220 Digital : ALC1220 Digital : playback 1
+> > 00-02: ALC1220 Alt Analog : ALC1220 Alt Analog : capture 1
+> > 01-03: HDMI 0 : HDMI 0 : playback 1
+> > 01-07: HDMI 1 : HDMI 1 : playback 1
+> > 01-08: HDMI 2 : HDMI 2 : playback 1
+> > 01-09: HDMI 3 : HDMI 3 : playback 1
+> >
+> > Whereas while on the latest 6.7 kernel, i only had the 4 HDMI lines
+> > (linked to a NVIDIA T600 card, with 4 HDMI outputs) and not the three
+> > first ones (attached to the motherboard).
+> >
+> > (of course i did several tests with 6.7, reboot, ... without any change=
+s)
+> >
+> > Any idea ?
+>
+> As this is a sound issue, perhaps send this to the
+> linux-sound@vger.kernel.org mailing list (now added).
+>
+> Any chance you can do a 'git bisect' between 6.6 and 6.7 to track down
+> the issue?  Or maybe the sound developers have some things to ask about
+> as there are loads of debugging knobs in sound...
+>
+> thanks,
+>
+> greg k-h
 
