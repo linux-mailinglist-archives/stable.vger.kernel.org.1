@@ -1,182 +1,127 @@
-Return-Path: <stable+bounces-18809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E01C1849308
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 05:46:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7080E849345
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 06:20:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6718F1F22A27
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 04:46:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE8BC1F217B6
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 05:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A160BB641;
-	Mon,  5 Feb 2024 04:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C679B65C;
+	Mon,  5 Feb 2024 05:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="CPbdZ1+p"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="QKgyu4Kn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D667EAD5A
-	for <stable@vger.kernel.org>; Mon,  5 Feb 2024 04:45:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16E8BE47
+	for <stable@vger.kernel.org>; Mon,  5 Feb 2024 05:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707108353; cv=none; b=l3EmjfOGckRfExRhXnNtv+RfLjjKcjhVyws9/XU6Yjy2cS9j/SRLsrJBHPQAfZxpejgClhY0LR2zDuR71X+9f8fYbxz4OfeHokJIrtUZS8tLHq2cN126w+WWS9F+qsWLg3hSwQAfBEMhJd9GCR3gRPLpaeVFtvRN+au/0qmSu9s=
+	t=1707110403; cv=none; b=aMpAdYhCiLhaClABel0IFz3QMQRFXbWt/IyuVr0Jjcrb/arGIGrku+18mS+U/Fam4IPd+aXMQdJfejfSnc5/zIFXyBZxCUQGf1cIVyjTo00tywHEMGPYVVs5GXfeqkm51o+ZlFjQmouJz07OCmmAzKXIjPMc672f5aTLxkoNIhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707108353; c=relaxed/simple;
-	bh=nnZDfL2lYVUfyeGMgfLB2kVMymyfHCXbZUS54zB1Tvo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=WhV0JZxFtSejLfmRbtGDP/bFZPpgglW/TLyCGsgBUg85PZBx9x7WmxzXD+oNGZWioIqfT0u2MSNkMYHqT+WwepKMNQwnAXinA2Bt6quYXOH4oPCJ7EUT/7WKAkTdywFrmOf4OtJIeQFekK1t4bGDOEnFtajrkRvOFfAqVgh+L1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=CPbdZ1+p; arc=none smtp.client-ip=209.85.161.47
+	s=arc-20240116; t=1707110403; c=relaxed/simple;
+	bh=b/F/IvZJvxSYV6yT8GonNahencq0VCJX3syNSsaFNgM=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=glqQ7G7C2Itx85eTWOR2KkWwy9kyW+eLiEx5bDHvSRSlQ/PVIs7beDNghzk5qox+MRxLkI9/H1fSsEr1IJYziVg41gfr7WYZLcdvpWn1coQzrwszDTvFcFoOjvvpRpXZnoM5G6oW5FmJ2Ggw8o9hIdBa71G6uSNGgP3E2W3fg7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=QKgyu4Kn; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-595d24ad466so2589525eaf.0
-        for <stable@vger.kernel.org>; Sun, 04 Feb 2024 20:45:51 -0800 (PST)
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-5cf2d73a183so3559321a12.1
+        for <stable@vger.kernel.org>; Sun, 04 Feb 2024 21:20:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1707108350; x=1707713150; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+l8cKr2Ar+3gm80Z7qi74idXrPpugT+r6d47IRBYS9g=;
-        b=CPbdZ1+pUknOpXGs8c2aOTW5Z/0RnCricIOUqj9lIyuCZTDewS0tSvqPvJirN0Yexj
-         mV6+s8KfSJQcEW4eMdf1jZRPH2vH4zso1MqDFPEP2QSmf8zzfDHk+4CQ/N0mU9ZM52S8
-         i8EuPEVihCOs9gN968SbEka5bYUf1QlogvoZc=
+        d=broadcom.com; s=google; t=1707110401; x=1707715201; darn=vger.kernel.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dW5zoXaotbxS+SYq2Yu+7hcfyLit5t9UvVc+9SbtbuU=;
+        b=QKgyu4KnQu38n2VMRkHNS5SggccUPhHeAB5NHXAIHQQDUrPtX1wBLFaCTwLDrX2HX+
+         OHyTcm7lD7ikBOun9Bx1P64lNpiEdLWY8gwj4WojiQ6vEyZI8Vj7MptLH6mNBp19rtpE
+         vmBvlOGuHDFRkvk/4GLvGMC3TsY55tuFCTqnA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707108350; x=1707713150;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+l8cKr2Ar+3gm80Z7qi74idXrPpugT+r6d47IRBYS9g=;
-        b=eAlm7vHO+a5A8jWL/77rva2HOBju+SE2QKBy1Ej6H7yuu7Okkx4lvsm4htQ8Awi8i8
-         vIZwPPiRaz3uGpkZnQwQjQWda6eixZUCR5eW4GZuntKKoq+kjxyTboT05LwIC2L1DtUl
-         OCqwLYvWvp2cAIZLOlGlrrEG+GXyJjumF6NEsVeI8gqZMogcsLDOK7F58vH20ve/fBmf
-         zogZptKdKtZINJUCChq+KBJ00g+ISs1kOdzH5ZMX0gqqieEf8Ka1WgBDLmsU2Zusmm8n
-         l8G/FxC1bgT3QlrmaR5o/grfDaqkUfDFtUrijnI4zTg8bS1mIXN3fP+3UvOjD25keUw+
-         QPfQ==
-X-Gm-Message-State: AOJu0Yw1p494wyVVuUCfB57dDStDr4sMu3SjhhSaYCmGhYBPU62+D7Yc
-	tVT92G/ka8SRnnmbi90myU7UG19VCNWwVhQ/Rm9pi7bkYxZaMoBTWx7Fn1obiFR4wYYFVR1nHEV
-	awoBqp+0+SySi7cgwD7SEK+CLeCO0QGa5pTP5c5KxbQa3VnQ0Gh/LUwBMkahvbUYlch7jOnrxRE
-	pg3OoioD/KALvPcImyu4jyrA1qh7NeD5Q7OV+Y0/ZBf48=
-X-Google-Smtp-Source: AGHT+IGLMowC6WyzR8w+BTpjGzc6iPM2N0JN8gb7a+0G98ERsVa31G2lPl8Fn3u/yexX5CCcsFV/3w==
-X-Received: by 2002:a05:6358:7e4c:b0:176:3457:c380 with SMTP id p12-20020a0563587e4c00b001763457c380mr16650091rwm.6.1707108349845;
-        Sun, 04 Feb 2024 20:45:49 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCVjQV4S2ybY8pGan8KqUeVvYMJi6ijevtOYAi0NyG00pUt9STw260/xIUjHY7i2uw5xni2OohqS+qNGSbUbKsqZuDqV2Q//VCP9PIj/7DK0RDDOtyTww/A1cEFgL+2W1iETz2CrEzhIGoRJo3ocAYwZzPB3w+Iy2kqOUyZRO91u9tJU1Uz6MIXEdBS3RvE2/wBuzY4a9qzlUlXEDWbHFLH8Bq1cZioblAuauN69ktdN0zf1WKSiUoicD6c4IEGjIvFzTC4plu5SSoY/NHVVfo4pJG8P70dzemWzIMbWkSvieh5uAhddCkpI6oHq92o361e+MtbmX/fMnwbG7q+ZABmKaKH2qeB4MfPegltEx+SfOI1wtb0bSZB75b17qW1/ivM8i1qfKpDDJTBkJbh/gOF1gIDFjeAFq9PFaT5z6+Nb7RUj7pDUJHU55aY1njeP4CvpE2w/4CsWz26PaL2GeI6Ay0GuQTynkUQ68PlguRc//Of+p8hwhiDjYm0+d2JNsOIbl6moQvmu+wYo91LWwnzQyM6Ft/M=
+        d=1e100.net; s=20230601; t=1707110401; x=1707715201;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dW5zoXaotbxS+SYq2Yu+7hcfyLit5t9UvVc+9SbtbuU=;
+        b=Rvmt66S78ZhOsC0KoIA1rTugUo4I1RORTMhe7gUyjiwFubadznTSNZVWgSNQuCBdVs
+         YzYzCFysRC7a7444AnvfscjTj/xuQTZMgz3mOer08kI//uDbwNxaB9xf93kCxGG9rrs4
+         7n7k8HHSNM+VAEJ754G5JlS0ExSX/VRT/v00Y98gQjS8nnRBmqfZhsYE1YWgHEcGn8n8
+         ndsDSY8tfSKh6UlIepZUr/F+W0gskqT4IgTb4j/MY2VY5NnvSyytY5ffUUDZsatGimml
+         Tm+x5D9yskIgqckVZTPXFCaR+SaAu0RoI7Ienl85I7wXL/czB2XVWXzofb09IL2CFRIC
+         iEKA==
+X-Gm-Message-State: AOJu0YyYuOgacQ9n3mAprMLoaRBtjrjfQQBjdtUQtXjqhGobSN2KYM44
+	fhHTHOYkYw7e4aPdvkeQFiN2XC2XztVQioD3j0apShWfByJ0UtuBdCQURt3nsHtUZtshnSJZj+N
+	X4aezrUOhqcjZfsy2TcQXZIk3oqUQxqPaYk/o4NUrF1XQUgLD2cc/3gOstmEZ6Lxu9EXNl9SNeI
+	BHJk4XZgAbWD0fhY6HwbcDdXU4zmflR+rg7nxBvu71Kto=
+X-Google-Smtp-Source: AGHT+IF9ggkIkGzgeO3uo/eh4fyZDfJpqokYxDxSkwePH8H9UgegtHqrBxC2F2NZ8p3jAZTfYMVDNA==
+X-Received: by 2002:a05:6a20:d909:b0:19e:5e0c:3bb8 with SMTP id jd9-20020a056a20d90900b0019e5e0c3bb8mr7970208pzb.7.1707110400605;
+        Sun, 04 Feb 2024 21:20:00 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCW49LbvIWU+foFA9+KIxmqctHvrKIaSi1hkNesPGFRM7R9cegKJcmHbSFXi3GzjE/YdnB5Fl/OpeO3vZzMH5DaqL6KSgHIyyvlhIQUpyRQReWw22hTiBxoqktD8Cs1h7bN/Cd/Brw9tVOsaoCiNwdisW/3kqqmoiX+5XZTjDIqgn/YKopHvMH6THCVhQxwRn9vXhafxdhJ7MbNsEh9Z/9YUHTbcQNqFSa+eN44LDAwcUHy+/tAEd4rqQbdLVf1pwFbD1iIlD/rVOCG5lAw/zFeMPiZY9dZ2IBAaMoBOvFsYb/QRCnW7ICYfQ42h28TqV1bbU+64mlT2XlHJn9yY0theGA3HEUVu3iIEwKYlsyLO/v8F+HDPf11iYfXrGwhw7dYZ7Am1PDIbpWcadF12ojDSrkZSe+UAP7aKohAyjC+TQld5Zn/uBnxO8g==
 Received: from akaher-virtual-machine.eng.vmware.com ([66.170.99.2])
-        by smtp.gmail.com with ESMTPSA id bn23-20020a056a00325700b006dbda7bcf3csm5629859pfb.83.2024.02.04.20.45.47
+        by smtp.gmail.com with ESMTPSA id b16-20020aa78110000000b006dd84763ce3sm5612953pfi.169.2024.02.04.21.19.59
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 04 Feb 2024 20:45:49 -0800 (PST)
+        Sun, 04 Feb 2024 21:20:00 -0800 (PST)
 From: Ajay Kaher <ajay.kaher@broadcom.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
-Cc: pablo@netfilter.org,
-	kadlec@netfilter.org,
-	fw@strlen.de,
-	davem@davemloft.net,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
+Cc: mst@redhat.com,
+	jasowang@redhat.com,
+	kvm@vger.kernel.org,
+	virtualization@lists.linux-foundation.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	alexey.makhalov@broadcom.com,
-	florian.fainelli@broadcom.com,
 	vasavi.sirnapalli@broadcom.com,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Sasha Levin <sashal@kernel.org>,
+	Prathu Baronia <prathubaronia2011@gmail.com>,
 	Ajay Kaher <ajay.kaher@broadcom.com>
-Subject: [PATCH v5.4.y] netfilter: nf_tables: fix pointer math issue in  nft_byteorder_eval()
-Date: Mon,  5 Feb 2024 10:14:53 +0530
-Message-Id: <1707108293-1004-2-git-send-email-ajay.kaher@broadcom.com>
+Subject: [PATCH v6.1.y-v4.19.y] vhost: use kzalloc() instead of kmalloc() followed by memset()
+Date: Mon,  5 Feb 2024 10:49:37 +0530
+Message-Id: <1707110377-1483-1-git-send-email-ajay.kaher@broadcom.com>
 X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1707108293-1004-1-git-send-email-ajay.kaher@broadcom.com>
-References: <1707108293-1004-1-git-send-email-ajay.kaher@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Prathu Baronia <prathubaronia2011@gmail.com>
 
-commit c301f0981fdd3fd1ffac6836b423c4d7a8e0eb63 upstream.
+From: Prathu Baronia <prathubaronia2011@gmail.com>
 
-The problem is in nft_byteorder_eval() where we are iterating through a
-loop and writing to dst[0], dst[1], dst[2] and so on...  On each
-iteration we are writing 8 bytes.  But dst[] is an array of u32 so each
-element only has space for 4 bytes.  That means that every iteration
-overwrites part of the previous element.
+commit 4d8df0f5f79f747d75a7d356d9b9ea40a4e4c8a9 upstream
 
-I spotted this bug while reviewing commit caf3ef7468f7 ("netfilter:
-nf_tables: prevent OOB access in nft_byteorder_eval") which is a related
-issue.  I think that the reason we have not detected this bug in testing
-is that most of time we only write one element.
+Use kzalloc() to allocate new zeroed out msg node instead of
+memsetting a node allocated with kmalloc().
 
-Fixes: ce1e7989d989 ("netfilter: nft_byteorder: provide 64bit le/be conversion")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[Ajay: Modified to apply on v5.4.y]
+Signed-off-by: Prathu Baronia <prathubaronia2011@gmail.com>
+Message-Id: <20230522085019.42914-1-prathubaronia2011@gmail.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+[Ajay: This is a security fix as per CVE-2024-0340]
 Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
 ---
- include/net/netfilter/nf_tables.h | 4 ++--
- net/netfilter/nft_byteorder.c     | 5 +++--
- net/netfilter/nft_meta.c          | 2 +-
- 3 files changed, 6 insertions(+), 5 deletions(-)
+ drivers/vhost/vhost.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 0a49d44..cf314ce 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -130,9 +130,9 @@ static inline u16 nft_reg_load16(u32 *sreg)
- 	return *(u16 *)sreg;
- }
- 
--static inline void nft_reg_store64(u32 *dreg, u64 val)
-+static inline void nft_reg_store64(u64 *dreg, u64 val)
+diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
+index 07427302084955..ecb3b397bb3888 100644
+--- a/drivers/vhost/vhost.c
++++ b/drivers/vhost/vhost.c
+@@ -2563,12 +2563,11 @@ EXPORT_SYMBOL_GPL(vhost_disable_notify);
+ /* Create a new message. */
+ struct vhost_msg_node *vhost_new_msg(struct vhost_virtqueue *vq, int type)
  {
--	put_unaligned(val, (u64 *)dreg);
-+	put_unaligned(val, dreg);
- }
+-	struct vhost_msg_node *node = kmalloc(sizeof *node, GFP_KERNEL);
++	/* Make sure all padding within the structure is initialized. */
++	struct vhost_msg_node *node = kzalloc(sizeof(*node), GFP_KERNEL);
+ 	if (!node)
+ 		return NULL;
  
- static inline u64 nft_reg_load64(u32 *sreg)
-diff --git a/net/netfilter/nft_byteorder.c b/net/netfilter/nft_byteorder.c
-index 7b0b8fe..9d250bd 100644
---- a/net/netfilter/nft_byteorder.c
-+++ b/net/netfilter/nft_byteorder.c
-@@ -38,20 +38,21 @@ void nft_byteorder_eval(const struct nft_expr *expr,
- 
- 	switch (priv->size) {
- 	case 8: {
-+		u64 *dst64 = (void *)dst;
- 		u64 src64;
- 
- 		switch (priv->op) {
- 		case NFT_BYTEORDER_NTOH:
- 			for (i = 0; i < priv->len / 8; i++) {
- 				src64 = nft_reg_load64(&src[i]);
--				nft_reg_store64(&dst[i], be64_to_cpu(src64));
-+				nft_reg_store64(&dst64[i], be64_to_cpu(src64));
- 			}
- 			break;
- 		case NFT_BYTEORDER_HTON:
- 			for (i = 0; i < priv->len / 8; i++) {
- 				src64 = (__force __u64)
- 					cpu_to_be64(nft_reg_load64(&src[i]));
--				nft_reg_store64(&dst[i], src64);
-+				nft_reg_store64(&dst64[i], src64);
- 			}
- 			break;
- 		}
-diff --git a/net/netfilter/nft_meta.c b/net/netfilter/nft_meta.c
-index ec2798f..ac7d3c7 100644
---- a/net/netfilter/nft_meta.c
-+++ b/net/netfilter/nft_meta.c
-@@ -247,7 +247,7 @@ void nft_meta_get_eval(const struct nft_expr *expr,
- 		strncpy((char *)dest, out->rtnl_link_ops->kind, IFNAMSIZ);
- 		break;
- 	case NFT_META_TIME_NS:
--		nft_reg_store64(dest, ktime_get_real_ns());
-+		nft_reg_store64((u64 *)dest, ktime_get_real_ns());
- 		break;
- 	case NFT_META_TIME_DAY:
- 		nft_reg_store8(dest, nft_meta_weekday(ktime_get_real_seconds()));
--- 
-2.7.4
-
+-	/* Make sure all padding within the structure is initialized. */
+-	memset(&node->msg, 0, sizeof node->msg);
+ 	node->vq = vq;
+ 	node->msg.type = type;
+ 	return node;
 
