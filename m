@@ -1,177 +1,266 @@
-Return-Path: <stable+bounces-18804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC8E849268
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 03:32:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 134C684926E
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 03:36:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB066283119
-	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 02:32:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BC7E1C21EDF
+	for <lists+stable@lfdr.de>; Mon,  5 Feb 2024 02:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B372F25;
-	Mon,  5 Feb 2024 02:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F666635;
+	Mon,  5 Feb 2024 02:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iSA85bBL"
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="ExX0Oboy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EAF8F51;
-	Mon,  5 Feb 2024 02:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711C98F40
+	for <stable@vger.kernel.org>; Mon,  5 Feb 2024 02:36:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707100370; cv=none; b=dn58N8tcA25p/IJiz/rFcVcvuMBVqA5xvybKHac6AahpHX9s8j8P7Ax2hQIEs6F7EKoAKQnMlCmo3QZ7mwveKusiRxuLRzTqvsdqD+OjlFe/pB39TK1yAo/CzBI31p6M4zmdxyztLOr3E2UpEScFXSSopsG2GkWZkpyeC70XqUE=
+	t=1707100602; cv=none; b=GTexpXuSCK5soqCVPu3KrSItcsc3/X9aO2JuwScROj/bYZ47UDbgTCfYQA4fi4/BxoWkmb5dLnVkavKINv56hquBqL/krSNWnpiRNefWzobLaXcx0hPQNPDYdheJf0TWk51JxTctE8kobY/st4vePalNxs03qI18xDJCo3sRAeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707100370; c=relaxed/simple;
-	bh=gEMjQcZtRi/+8XKkrggSOKWdHpkxx9sAEC+ja8pr0r0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=itV3yRHRRDe8g9rnWTCAt3NE6J8YDaAXIYFuwFju6KeO3Sr+7/A1a1ew7fZs65OGZqJaO+N/EbE628mzbiKFwrC7Ilck9BvF74RXoGL/+avDEHXl3OPFCSjfhnpcV4s7xbZ1TKbpNSMX/HD25U1sdcxwhv6EXc6FvELKEx+Mpbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iSA85bBL; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-6e03ab56e75so293529b3a.2;
-        Sun, 04 Feb 2024 18:32:48 -0800 (PST)
+	s=arc-20240116; t=1707100602; c=relaxed/simple;
+	bh=moawmu/R7SkvIszsNA58WWtFqtAPtbcjuG7SFFT/lew=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Rtn++yJI3zZWoVr58M+q3G00/qUxhVEDP5rfMdWPTWBALcJ+7/dnbie/Cj79eubI7plg0HubYPnNz5+6wYjkOV2xg/ljI+AXpEut6aKtM0xlSPA9joJAN+note17xRhc6yW1p+qj9mTADx7C3yvdxxAmPs/gDL8G/nQ4+nkQXB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=ExX0Oboy; arc=none smtp.client-ip=209.85.166.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-363afc38a1cso8917285ab.3
+        for <stable@vger.kernel.org>; Sun, 04 Feb 2024 18:36:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707100368; x=1707705168; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=AHP3bpnrDrmcH0nJC+WbODRZ2J1Taa/l9rz69PC7XxM=;
-        b=iSA85bBLEBLUYdUsxQi51YiJHH6M4iX9Xb+qYIri2//xMqoRn4vj62h6glpWnPqeGA
-         5FC/k1Q4uJ8AlMawu2myr5EALxZ6fOWw8WTAR95c6RItcaN0bgOtSOM4HHbyV0Zk1yHC
-         muRopguAVYq6tdRaKy8NVEx8dH1Qvb67O2J+wXQn/rZGeZwKT+u2Y0He8THZ4P/xaiJe
-         OcMx6636tHDow5nlRfJHXy6agqBqw+owqqbYVFfwBLe68eYbP/ax4bTuTZ5AMEP1UX5j
-         5fqNMBsmAt66GEymp6GvjNDM5ZiEtmixYcVw/4EsI053DK8BzxB/fx/2BTyoA4O5hLdB
-         KQRg==
+        d=linuxtx.org; s=google; t=1707100599; x=1707705399; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:sender:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8qU9GWODvVKB+EFUVXJYWQXMFFmQ70Fyp511xtLl9Zc=;
+        b=ExX0Oboy0lc7ndQ1/6jdMKOlNoyZ3iQKW52WDmK9P8u5KOh4UqD9KD5rfyCRuQ+ir+
+         fQCd71PU1oCHjWEHRJJW19pDgzzh0ESRPxkNFJp8H0AIBYcCAmaur7RMdMt3KnrkRXp5
+         SZrkqsAWuXCWNQx1dA9NrHaLk7JMDc/swiC1A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707100368; x=1707705168;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AHP3bpnrDrmcH0nJC+WbODRZ2J1Taa/l9rz69PC7XxM=;
-        b=hJcBjPZF40X1es67Ol/cIKOX572/g96yTkFP4tGDvXu3lfEp2lhibPmpR4mhNj8rQF
-         mvKlcMGZdp5YtjvrGCeqnVNNTvWx/vX23KbW2S9gc4lAUBq8Ta8iaWnpt+/9QLjWC3TR
-         Ypw1NSd7dac5kW1aHb4KruZnAwLUyAmEkd0RFMPGyuoWTfAo/zgkFvmmZ7EWUx9VapBy
-         2ObAbZVkl0XNHXil+8EqNe9ag7ePtE1yNKxXNYIOj7dyjzt3Nj+td9djIi9KYDGTiZb5
-         6aQ1n+y/aGDNbjt+4xhbSQx33F0YdjpctsyeJwkU5qTaBBnqLtME/2igXnFrtVpgM/Gx
-         51Iw==
-X-Gm-Message-State: AOJu0YxGoLDu0fRwD5++cvAyw47/viNob04VZqlQMiwS8IgvtawrDoqX
-	vohAfSD+fXBf7vMc0Czpm6hh/JJWGl47KlyAl9Mn+Rj1T4RF1ASG
-X-Google-Smtp-Source: AGHT+IEc7XKX0NKQkKGoHzBtBofWOM0OIau3VNyrfnCT9Ts0PHH2zTQOhNLm2jwa58jN2GhwdmbWtQ==
-X-Received: by 2002:aa7:9817:0:b0:6e0:3cfd:501e with SMTP id e23-20020aa79817000000b006e03cfd501emr1582502pfl.3.1707100368178;
-        Sun, 04 Feb 2024 18:32:48 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCXJ1wl23UYPABeuCmOrY8t5d1BlUT5eoHYlrVnVypYCGm8MF4YnPUg+4/QDpE6cH631fSHX0/BpEwtsvWqYKlSpetER1n5zQ5zT1wLb1no58wj0gGWAEPZzgs2paXwPtwPzdGTxo49OZ6d/T4/TDUZoJLSVwjd7Evy4sS5yOFrzRZRF94nMICh29LV++Ci0Zv3/CKRtcyZBWIzCu8asfGUoBVhwqkekbhOpf4IYeHYmizI=
-Received: from xplor.waratah.dyndns.org (125-236-136-221-fibre.sparkbb.co.nz. [125.236.136.221])
-        by smtp.gmail.com with ESMTPSA id q18-20020aa79832000000b006d0a29ad0aasm5392960pfl.5.2024.02.04.18.32.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Feb 2024 18:32:46 -0800 (PST)
-Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
-	id DE54236031F; Mon,  5 Feb 2024 15:32:42 +1300 (NZDT)
-From: Michael Schmitz <schmitzmic@gmail.com>
-To: linux-m68k@vger.kernel.org
-Cc: geert@linux-m68k.org,
-	uli@fpond.eu,
-	fthain@linux-m68k.org,
-	viro@zeniv.linux.org.uk,
-	Michael Schmitz <schmitzmic@gmail.com>,
-	Andreas Schwab <schwab@linux-m68k.org>,
-	stable@vger.kernel.org
-Subject: [PATCH RFC v2 8/8] m68k: Move signal frame following exception on 68020/030
-Date: Mon,  5 Feb 2024 15:32:36 +1300
-Message-Id: <20240205023236.9325-9-schmitzmic@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20240205023236.9325-1-schmitzmic@gmail.com>
-References: <20240205023236.9325-1-schmitzmic@gmail.com>
+        d=1e100.net; s=20230601; t=1707100599; x=1707705399;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:sender:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8qU9GWODvVKB+EFUVXJYWQXMFFmQ70Fyp511xtLl9Zc=;
+        b=QYpFbiRddMRVD80Ej3HVcD7hfmeBdB4ma/yrRJ9LcSg2HFnZdjQtdAPg/anEvIto43
+         CFz86TF2UrpDlSyFNA73NFDN2GJcKNIoEuHFCSK1EQDMgJoEbGgucsLTbWBAv0kb6Meu
+         KPLvAgKfAxV6Hq3R9tBtj4LFT1hGwGNJyqVhxBtlMFIvI5zm6vcKuyNj1EBsZbtzJDxe
+         l1c0sOoZ6pInHgLHjSsERzsIImoKVKM4F4Fwj+YQlCQO8IDftsqrNAlQz7ZxcQSU5XMV
+         k2tadPRzWSCeokovitI29KyDprS1UNVL3vpBaeSAYtzJdWKe/lOwrNuwBM5AVj4cUBQ6
+         TURg==
+X-Gm-Message-State: AOJu0YzZoDsGOPb9giOSJVXh0JF1hJQgDOE7iDmsRZQ7ud1bPuAASRD8
+	WUyE0Yhralw9mhvhZx0pQw0usIBigKBBblQR+DcjQ4GlnIi6dFg+7lEWpjIGFNxUTPUpZg4pybI
+	Tvw==
+X-Google-Smtp-Source: AGHT+IFXp/tQHaqKFqsOz0WWXfZ6ponFRPtFelvcvnecMgjx5ZnysvgSrQPArEZHimh0TtuygwwxQw==
+X-Received: by 2002:a92:d842:0:b0:363:c1e5:300b with SMTP id h2-20020a92d842000000b00363c1e5300bmr4649198ilq.11.1707100599134;
+        Sun, 04 Feb 2024 18:36:39 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCXinqwjmdDC8qd896cj+Z5HReJfw++cbCq2QahpniAYdKF872g4o125P4O51y79/fDqd92Nv/fWVuLYzie2B64cEEnpk8AB
+Received: from mail-il1-f170.google.com (mail-il1-f170.google.com. [209.85.166.170])
+        by smtp.gmail.com with ESMTPSA id o4-20020a056638124400b00471261d7d5dsm699838jas.19.2024.02.04.18.36.38
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 04 Feb 2024 18:36:38 -0800 (PST)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-363c503de95so2628035ab.2
+        for <stable@vger.kernel.org>; Sun, 04 Feb 2024 18:36:38 -0800 (PST)
+X-Received: by 2002:a92:c612:0:b0:363:8560:977d with SMTP id
+ p18-20020a92c612000000b003638560977dmr9984128ilm.3.1707100597756; Sun, 04 Feb
+ 2024 18:36:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <ZbkfGst991YHqJHK@fedora64.linuxtx.org> <87h6iudc7j.fsf@meer.lwn.net>
+ <CAFbkSA2tft--ejgJ58o3G-OxNqnm-C6fK4-kXThsN92NYF8V0A@mail.gmail.com>
+ <2024020151-purchase-swerve-a3b3@gregkh> <CAFbkSA25o88DjaWHc3GRk5vkvANnpi-NJ61XJudz4=ARTyrhtw@mail.gmail.com>
+ <CAFbkSA3M74kvF+v_URm593xSnJTVzeKmy2K6dw0WQYw7BDdwmg@mail.gmail.com>
+ <CAFbkSA3vHDn-Pk9fB6PbWeniGHH6W3bo=jQ9utE9xh88S8bzxA@mail.gmail.com>
+ <1a160e5f-d5ce-4711-b683-808ab87b289b@oracle.com> <Zb_DwdZ3PUr1VbBg@eldamar.lan>
+ <Zb_0NEeCqok8icwz@eldamar.lan> <2024020402-scotch-upchuck-9e11@gregkh>
+In-Reply-To: <2024020402-scotch-upchuck-9e11@gregkh>
+From: Justin Forbes <jforbes@fedoraproject.org>
+Date: Sun, 4 Feb 2024 20:36:26 -0600
+X-Gmail-Original-Message-ID: <CAFbkSA08Wo-rWJiOXf4BmNu_nXFX6gQriW5J09L8KzSHUU1j9g@mail.gmail.com>
+Message-ID: <CAFbkSA08Wo-rWJiOXf4BmNu_nXFX6gQriW5J09L8KzSHUU1j9g@mail.gmail.com>
+Subject: Re: [PATCH 6.6 003/331] docs: kernel_feat.py: fix potential command injection
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Salvatore Bonaccorso <carnil@debian.org>, Vegard Nossum <vegard.nossum@oracle.com>, 
+	Jonathan Corbet <corbet@lwn.net>, stable@vger.kernel.org, patches@lists.linux.dev, 
+	Jani Nikula <jani.nikula@intel.com>, Sasha Levin <sashal@kernel.org>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Finn Thain <fthain@linux-m68k.org>
+On Sun, Feb 4, 2024 at 7:29=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Sun, Feb 04, 2024 at 09:31:48PM +0100, Salvatore Bonaccorso wrote:
+> > On Sun, Feb 04, 2024 at 06:05:05PM +0100, Salvatore Bonaccorso wrote:
+> > > Hi,
+> > >
+> > > On Thu, Feb 01, 2024 at 05:34:25PM +0100, Vegard Nossum wrote:
+> > > >
+> > > > On 01/02/2024 16:07, Justin Forbes wrote:
+> > > > > On Thu, Feb 1, 2024 at 8:58=E2=80=AFAM Justin Forbes <jforbes@fed=
+oraproject.org> wrote:
+> > > > > > On Thu, Feb 1, 2024 at 8:41=E2=80=AFAM Justin Forbes <jforbes@f=
+edoraproject.org> wrote:
+> > > > > > > On Thu, Feb 1, 2024 at 8:25=E2=80=AFAM Greg Kroah-Hartman
+> > > > > > > <gregkh@linuxfoundation.org> wrote:
+> > > > > > > > On Thu, Feb 01, 2024 at 06:43:46AM -0600, Justin Forbes wro=
+te:
+> > > > > > > > > On Tue, Jan 30, 2024 at 10:21=E2=80=AFAM Jonathan Corbet =
+<corbet@lwn.net> wrote:
+> > > > > > > > > > Justin Forbes <jforbes@fedoraproject.org> writes:
+> > > > > > > > > > > On Mon, Jan 29, 2024 at 09:01:07AM -0800, Greg Kroah-=
+Hartman wrote:
+> > > > > > > > > > > > 6.6-stable review patch.  If anyone has any objecti=
+ons, please let me know.
+> > > > > > > > > > > >
+> > > > > > > > > > > > ------------------
+> > > > > > > > > > > >
+> > > > > > > > > > > > From: Vegard Nossum <vegard.nossum@oracle.com>
+> > > > > > > > > > > >
+> > > > > > > > > > > > [ Upstream commit c48a7c44a1d02516309015b6134c9bb98=
+2e17008 ]
+> > > > > > > > > > > >
+> > > > > > > > > > > > The kernel-feat directive passes its argument strai=
+ght to the shell.
+> > > > > > > > > > > > This is unfortunate and unnecessary.
+> > > >
+> > > > [...]
+> > > >
+> > > > > > > > > > > This patch seems to be missing something. In 6.6.15-r=
+c1 I get a doc
+> > > > > > > > > > > build failure with:
+> > > > > > > > > > >
+> > > > > > > > > > > /builddir/build/BUILD/kernel-6.6.14-332-g1ff49073b88b=
+/linux-6.6.15-0.rc1.1ff49073b88b.200.fc39.noarch/Documentation/sphinx/kerne=
+ldoc.py:133: SyntaxWarning: invalid escape sequence '\.'
+> > > > > > > > > > >    line_regex =3D re.compile("^\.\. LINENO ([0-9]+)$"=
+)
+> > > > > > > > > >
+> > > > > > > > > > Ah ... you're missing 86a0adc029d3 (Documentation/sphin=
+x: fix Python
+> > > > > > > > > > string escapes).  That is not a problem with this patch=
+, though; I would
+> > > > > > > > > > expect you to get the same error (with Python 3.12) wit=
+hout.
+> > > > > > > > >
+> > > > > > > > > Well, it appears that 6.6.15 shipped anyway, with this pa=
+tch included,
+> > > > > > > > > but not with 86a0adc029d3.  If anyone else builds docs, t=
+his thread
+> > > > > > > > > should at least show them the fix.  Perhaps we can get th=
+e missing
+> > > > > > > > > patch into 6.6.16?
+> > > > > > > >
+> > > > > > > > Sure, but again, that should be independent of this change,=
+ right?
+> > > > > > >
+> > > > > > > I am not sure I would say independent. This particular change=
+ causes
+> > > > > > > docs to fail the build as I mentioned during rc1.  There were=
+ no
+> > > > > > > issues building 6.6.14 or previous releases, and no problem b=
+uilding
+> > > > > > > 6.7.3.
+> > > > > >
+> > > > > > I can confirm that adding this patch to 6.6.15 makes docs build=
+ again.
+> > > > >
+> > > > > I lied, it just fails slightly differently. Some of the noise is =
+gone,
+> > > > > but we still have:
+> > > > > Sphinx parallel build error:
+> > > > > UnboundLocalError: cannot access local variable 'fname' where it =
+is
+> > > > > not associated with a value
+> > > > > make[2]: *** [Documentation/Makefile:102: htmldocs] Error 2
+> > > > > make[1]: *** [/builddir/build/BUILD/kernel-6.6.15/linux-6.6.15-20=
+0.fc39.noarch/Makefile:1715:
+> > > > > htmldocs] Error 2
+> > > >
+> > > > The old version of the script unconditionally assigned a value to t=
+he
+> > > > local variable 'fname' (not a value that makes sense to me, since i=
+t's
+> > > > literally assigning the whole command, not just a filename, but tha=
+t's a
+> > > > separate issue), and I removed that so it's only conditionally assi=
+gned.
+> > > > This is almost certainly a bug in my patch.
+> > > >
+> > > > I'm guessing maybe a different patch between 6.6 and current mainli=
+ne is
+> > > > causing 'fname' to always get assigned for the newer versions and t=
+hus
+> > > > make the run succeed, in spite of the bug.
+> > > >
+> > > > Something like the patch below (completely untested) should restore=
+ the
+> > > > previous behaviour, but I'm not convinced it's correct.
+> > > >
+> > > >
+> > > > Vegard
+> > > >
+> > > > diff --git a/Documentation/sphinx/kernel_feat.py
+> > > > b/Documentation/sphinx/kernel_feat.py
+> > > > index b9df61eb4501..15713be8b657 100644
+> > > > --- a/Documentation/sphinx/kernel_feat.py
+> > > > +++ b/Documentation/sphinx/kernel_feat.py
+> > > > @@ -93,6 +93,8 @@ class KernelFeat(Directive):
+> > > >          if len(self.arguments) > 1:
+> > > >              args.extend(['--arch', self.arguments[1]])
+> > > >
+> > > > +        fname =3D ' '.join(args)
+> > > > +
+> > > >          lines =3D subprocess.check_output(args,
+> > > > cwd=3Dos.path.dirname(doc.current_source)).decode('utf-8')
+> > > >
+> > > >          line_regex =3D re.compile(r"^\.\. FILE (\S+)$")
+> > >
+> > > We have as well a documention build problem in Debian, cf.
+> > > https://buildd.debian.org/status/fetch.php?pkg=3Dlinux&arch=3Dall&ver=
+=3D6.6.15-1&stamp=3D1707050360&raw=3D0
+> > > though not yet using python 3.12 as default.
+> > >
+> > > Your above change seems to workaround the issue in fact, but need to
+> > > do a full build yet.
+> >
+> > For Debian I'm temporarily reverting from the 6.6.15 upload:
+> >
+> > e961f8c6966a ("docs: kernel_feat.py: fix potential command injection")
+> >
+> > This is not the best solution, but unbreaks several other builds.
+> >
+> > The alternative would be to apply Vegard's workaround or the proper
+> > solution for that.
+>
+> What is the "proper" solution here?  Does 6.8-rc3 work?  What are we
+> missing to be backported here?
 
-On 68030/020, an instruction such as, moveml %a2-%a3/%a5,%sp@- may cause
-a stack page fault during instruction execution (i.e. not at an
-instruction boundary) and produce a format 0xB exception frame.
+I am not sure what the "proper"fix was, but as I mentioned with
+6.6.15, this patch broke the build with 6.6.15, but 6.7.3 and newer
+were fine.  I think the fix came in through another path incidentally,
+but Vegard mentioned a possible fox for 6.6 kernels.  Realistically,
+Fedora has moved on to 6.7.x now, but I do still test 6.6.x stable rcs
+and while I reported that 6.6.16 was good, it was only because I saw
+no regressions from 6.6.15. The docs failure from this patch still
+exists.
 
-In this situation, the value of USP will be unreliable.  If a signal is
-to be delivered following the exception, this USP value is used to
-calculate the location for a signal frame.  This can result in a
-corrupted user stack.
+Justin
 
-The corruption was detected in dash (actually in glibc) where it showed
-up as an intermittent "stack smashing detected" message and crash
-following signal delivery for SIGCHLD.
-
-It was hard to reproduce that failure because delivery of the signal
-raced with the page fault and because the kernel places an unpredictable
-gap of up to 7 bytes between the USP and the signal frame.
-
-A format 0xB exception frame can be produced by a bus error or an
-address error.  The 68030 Users Manual says that address errors occur
-immediately upon detection during instruction prefetch.  The instruction
-pipeline allows prefetch to overlap with other instructions, which means
-an address error can arise during the execution of a different
-instruction.  So it seems likely that this patch may help in the address
-error case also.
-
-Reported-and-tested-by: Stan Johnson <userm57@yahoo.com>
-Link: https://lore.kernel.org/all/CAMuHMdW3yD22_ApemzW_6me3adq6A458u1_F0v-1EYwK_62jPA@mail.gmail.com/
-Cc: Michael Schmitz <schmitzmic@gmail.com>
-Cc: Andreas Schwab <schwab@linux-m68k.org>
-Cc: stable@vger.kernel.org
-Co-developed-by: Michael Schmitz <schmitzmic@gmail.com>
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/r/9e66262a754fcba50208aa424188896cc52a1dd1.1683365892.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
----
- arch/m68k/kernel/signal.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
-diff --git a/arch/m68k/kernel/signal.c b/arch/m68k/kernel/signal.c
-index 8fb8ee804b3a..de7c1bde62bc 100644
---- a/arch/m68k/kernel/signal.c
-+++ b/arch/m68k/kernel/signal.c
-@@ -808,11 +808,17 @@ static inline int rt_setup_ucontext(struct ucontext __user *uc, struct pt_regs *
- }
- 
- static inline void __user *
--get_sigframe(struct ksignal *ksig, size_t frame_size)
-+get_sigframe(struct ksignal *ksig, struct pt_regs *tregs, size_t frame_size)
- {
- 	unsigned long usp = sigsp(rdusp(), ksig);
-+	unsigned long gap = 0;
- 
--	return (void __user *)((usp - frame_size) & -8UL);
-+	if (CPU_IS_020_OR_030 && tregs->format == 0xb) {
-+		/* USP is unreliable so use worst-case value */
-+		gap = 256;
-+	}
-+
-+	return (void __user *)((usp - gap - frame_size) & -8UL);
- }
- 
- static int setup_frame(struct ksignal *ksig, sigset_t *set,
-@@ -830,7 +836,7 @@ static int setup_frame(struct ksignal *ksig, sigset_t *set,
- 		return -EFAULT;
- 	}
- 
--	frame = get_sigframe(ksig, sizeof(*frame) + fsize);
-+	frame = get_sigframe(ksig, tregs, sizeof(*frame) + fsize);
- 
- 	if (fsize)
- 		err |= copy_to_user (frame + 1, regs + 1, fsize);
-@@ -903,7 +909,7 @@ static int setup_rt_frame(struct ksignal *ksig, sigset_t *set,
- 		return -EFAULT;
- 	}
- 
--	frame = get_sigframe(ksig, sizeof(*frame));
-+	frame = get_sigframe(ksig, tregs, sizeof(*frame));
- 
- 	if (fsize)
- 		err |= copy_to_user (&frame->uc.uc_extra, regs + 1, fsize);
--- 
-2.17.1
-
+> thanks,
+>
+> greg k-h
+>
 
