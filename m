@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-18895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D846B84B2CC
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 11:53:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5010584B2E4
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 11:57:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2B37B25AFA
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 10:53:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7F28B2575F
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 10:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E9212DDB3;
-	Tue,  6 Feb 2024 10:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4F612D16A;
+	Tue,  6 Feb 2024 10:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lW/aOBM0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXym/VY/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453884EB46;
-	Tue,  6 Feb 2024 10:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D0E127B7B;
+	Tue,  6 Feb 2024 10:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707216795; cv=none; b=fZgeKjvtt2e0InrzYiytmqniuZyBDrKTDhnT8aV8X7tsuynCKv+I4chAoSa6U9/fx8XkS6FhZ7zULJhyDkvw6gI2TRo6F+r+ioNtMn6SiedNhJHZXN92zHTGW28dVd2EINidaSXIaVUCxHlPgajuliL85Z0gjbGRzeHINs2NmN4=
+	t=1707217021; cv=none; b=ifkWQrwL+VXzQXn9WuouPgoFJnHtpNtgSHfPw8Lg14Lw5xdK/ZCdx1AyL4VZEAv8O49Gzo8/EUsRNbWwOYCRmGLiO7IWIMfLjXKlDbANrJCNsmvdNokCbCHPTz13jU6X4T2OazfcyXlH/in75aCvfaVqeU+Tki4H8uLHUK90b4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707216795; c=relaxed/simple;
-	bh=Jw80we5CtO+VxkV79VnROzych80YG1K0NYBVQWdtJA8=;
+	s=arc-20240116; t=1707217021; c=relaxed/simple;
+	bh=3Lhq9mSmpgCBq52pk4XzYDiys11ugzbO0gtwPHiuULc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FJkM5cmF/kGU1hTTpjEgtdC3YoE+tZp8NKFz6FlpfTZpFKEDPzgwI9q4SqZnqaWtEqI0KpvCAQ1nWgXO0w0xadLgAiRVcJXT/rT29GTnBoIRyFNEjNr2rsn9Jj9qOozN/PgYPN3GMwhhhmQH39oVtvCILC087x1l3SKhSM7dKQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lW/aOBM0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AEA7C433C7;
-	Tue,  6 Feb 2024 10:53:14 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=i0GtDiyHawgZcunJJGgGjwQhuWsNiPbeXiwlqwXVjrJiOnGwn1nxnhFr8cu4eoFUUov2D2ELAKtKkxbqJhNnQlZS/9IYCMt1lP+rah1+1NWOJyBuekc5llc6/d5VXmNOiVLj6lPgCgJqLIUvRNi74e91M1uRPVdAWvFKib3HNXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXym/VY/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF61C433C7;
+	Tue,  6 Feb 2024 10:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707216794;
-	bh=Jw80we5CtO+VxkV79VnROzych80YG1K0NYBVQWdtJA8=;
+	s=korg; t=1707217020;
+	bh=3Lhq9mSmpgCBq52pk4XzYDiys11ugzbO0gtwPHiuULc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lW/aOBM0QgorItLizvpr6oa7h1xAzOqlQ8RWA7zstrEHbIpXBp6Uc7hR//w7wsjAl
-	 ms1z9tgbwKajIEb8DO6bLaMsZJ1mwAElb5wImFKe23J9ARXIA9d/lMzUyg4t7Ixw5z
-	 Ls2dqfbVNo+EtPhXWlnETEO0z/zHuyqD2vYEjy8w=
-Date: Tue, 6 Feb 2024 10:53:10 +0000
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Zhiguo Niu <niuzhiguo84@gmail.com>
-Cc: Carlos Llamas <cmllamas@google.com>, Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	bvanassche@acm.org, peterz@infradead.org, mingo@redhat.com,
-	will@kernel.org, longman@redhat.com, boqun.feng@gmail.com,
-	linux-kernel@vger.kernel.org, ke.wang@unisoc.com,
-	hongyu.jin@unisoc.com, stable@vger.kernel.org
-Subject: Re: [PATCH V3] lockdep: fix deadlock issue between lockdep and rcu
-Message-ID: <2024020613-abrasive-splashed-6fe3@gregkh>
-References: <1706861676-26574-1-git-send-email-zhiguo.niu@unisoc.com>
- <Zb1IxNd54z2Ib1N3@google.com>
- <2024020233-wildland-blouse-2f2e@gregkh>
- <CAHJ8P3L8A4uUwDuD5WQkDGdsOB6jWBdPFzR98mCiAh-0LtM91A@mail.gmail.com>
+	b=vXym/VY/EBHnj6gxYyEiMG/bZ4fM9VgXCQgX++/KO/wikCDxJOL3IWreWxMcR0ove
+	 AUDpMH4z5cK6FLXQY7tt/kEWlmbHbPWan21E2eUyrWIKG3eMj1EeU7Qijk0dMFOGRb
+	 0QS7aLaAnaE3RCY+KydKS/ZJ3Z1oGbZaxSVyR9tU=
+Date: Tue, 6 Feb 2024 10:56:58 +0000
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Joy Chakraborty <joychakr@google.com>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Nicolas Saenz Julienne <nsaenz@kernel.org>,
+	linux-kernel@vger.kernel.org, manugautam@google.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] nvmem: rmem: Fix return value of rmem_read()
+Message-ID: <2024020637-handpick-pamphlet-bacb@gregkh>
+References: <20240206042408.224138-1-joychakr@google.com>
+ <2024020647-submarine-lucid-ea7b@gregkh>
+ <CAOSNQF3jk+85-P+NB-1w=nQwJr1BBO9OQuLbm6s8PiXrFMQdjg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,109 +60,85 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHJ8P3L8A4uUwDuD5WQkDGdsOB6jWBdPFzR98mCiAh-0LtM91A@mail.gmail.com>
+In-Reply-To: <CAOSNQF3jk+85-P+NB-1w=nQwJr1BBO9OQuLbm6s8PiXrFMQdjg@mail.gmail.com>
 
-On Tue, Feb 06, 2024 at 06:37:05PM +0800, Zhiguo Niu wrote:
-> hi Greg,
-> 
-> On Sat, Feb 3, 2024 at 5:36 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+On Tue, Feb 06, 2024 at 04:01:02PM +0530, Joy Chakraborty wrote:
+> On Tue, Feb 6, 2024 at 3:00 PM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
 > >
-> > On Fri, Feb 02, 2024 at 07:55:48PM +0000, Carlos Llamas wrote:
-> > > On Fri, Feb 02, 2024 at 04:14:36PM +0800, Zhiguo Niu wrote:
-> > > > There is a deadlock scenario between lockdep and rcu when
-> > > > rcu nocb feature is enabled, just as following call stack:
-> > > >
-> > > >      rcuop/x
-> > > > -000|queued_spin_lock_slowpath(lock = 0xFFFFFF817F2A8A80, val = ?)
-> > > > -001|queued_spin_lock(inline) // try to hold nocb_gp_lock
-> > > > -001|do_raw_spin_lock(lock = 0xFFFFFF817F2A8A80)
-> > > > -002|__raw_spin_lock_irqsave(inline)
-> > > > -002|_raw_spin_lock_irqsave(lock = 0xFFFFFF817F2A8A80)
-> > > > -003|wake_nocb_gp_defer(inline)
-> > > > -003|__call_rcu_nocb_wake(rdp = 0xFFFFFF817F30B680)
-> > > > -004|__call_rcu_common(inline)
-> > > > -004|call_rcu(head = 0xFFFFFFC082EECC28, func = ?)
-> > > > -005|call_rcu_zapped(inline)
-> > > > -005|free_zapped_rcu(ch = ?)// hold graph lock
-> > > > -006|rcu_do_batch(rdp = 0xFFFFFF817F245680)
-> > > > -007|nocb_cb_wait(inline)
-> > > > -007|rcu_nocb_cb_kthread(arg = 0xFFFFFF817F245680)
-> > > > -008|kthread(_create = 0xFFFFFF80803122C0)
-> > > > -009|ret_from_fork(asm)
-> > > >
-> > > >      rcuop/y
-> > > > -000|queued_spin_lock_slowpath(lock = 0xFFFFFFC08291BBC8, val = 0)
-> > > > -001|queued_spin_lock()
-> > > > -001|lockdep_lock()
-> > > > -001|graph_lock() // try to hold graph lock
-> > > > -002|lookup_chain_cache_add()
-> > > > -002|validate_chain()
-> > > > -003|lock_acquire
-> > > > -004|_raw_spin_lock_irqsave(lock = 0xFFFFFF817F211D80)
-> > > > -005|lock_timer_base(inline)
-> > > > -006|mod_timer(inline)
-> > > > -006|wake_nocb_gp_defer(inline)// hold nocb_gp_lock
-> > > > -006|__call_rcu_nocb_wake(rdp = 0xFFFFFF817F2A8680)
-> > > > -007|__call_rcu_common(inline)
-> > > > -007|call_rcu(head = 0xFFFFFFC0822E0B58, func = ?)
-> > > > -008|call_rcu_hurry(inline)
-> > > > -008|rcu_sync_call(inline)
-> > > > -008|rcu_sync_func(rhp = 0xFFFFFFC0822E0B58)
-> > > > -009|rcu_do_batch(rdp = 0xFFFFFF817F266680)
-> > > > -010|nocb_cb_wait(inline)
-> > > > -010|rcu_nocb_cb_kthread(arg = 0xFFFFFF817F266680)
-> > > > -011|kthread(_create = 0xFFFFFF8080363740)
-> > > > -012|ret_from_fork(asm)
-> > > >
-> > > > rcuop/x and rcuop/y are rcu nocb threads with the same nocb gp thread.
-> > > > This patch release the graph lock before lockdep call_rcu.
-> > > >
-> > > > Fixes: a0b0fd53e1e6 ("locking/lockdep: Free lock classes that are no longer in use")
-> > > > Cc: <stable@vger.kernel.org>
-
-Oops, I missed this line ^^^
-
-> > > > Cc: Boqun Feng <boqun.feng@gmail.com>
-> > > > Cc: Waiman Long <longman@redhat.com>
-> > > > Cc: Carlos Llamas <cmllamas@google.com>
-> > > > Cc: Bart Van Assche <bvanassche@acm.org>
-> > > > Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-> > > > Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
-> > > > ---
-> > > > changes of v3: correct code comments and add Cc tag.
-> > > > changes of v2: update patch according to Boqun's suggestions.
-> > > > ---
+> > On Tue, Feb 06, 2024 at 04:24:08AM +0000, Joy Chakraborty wrote:
+> > > reg_read() callback registered with nvmem core expects an integer error
+> > > as a return value but rmem_read() returns the number of bytes read, as a
+> > > result error checks in nvmem core fail even when they shouldn't.
 > > >
-> > > It seems v3 should have collected the review tags from Boqun and Waiman.
-> > > Also, I'm actually Cc'ing stable here. I hope that is enough.
-> > > FWIW, this looks fine to me.
+> > > Return 0 on success where number of bytes read match the number of bytes
+> > > requested and a negative error -EINVAL on all other cases.
 > > >
-> > > Reviewed-by: Carlos Llamas <cmllamas@google.com>
+> > > Fixes: 5a3fa75a4d9c ("nvmem: Add driver to expose reserved memory as nvmem")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Joy Chakraborty <joychakr@google.com>
+> > > ---
+> > >  drivers/nvmem/rmem.c | 7 ++++++-
+> > >  1 file changed, 6 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/nvmem/rmem.c b/drivers/nvmem/rmem.c
+> > > index 752d0bf4445e..a74dfa279ff4 100644
+> > > --- a/drivers/nvmem/rmem.c
+> > > +++ b/drivers/nvmem/rmem.c
+> > > @@ -46,7 +46,12 @@ static int rmem_read(void *context, unsigned int offset,
+> > >
+> > >       memunmap(addr);
+> > >
+> > > -     return count;
+> > > +     if (count != bytes) {
+> > > +             dev_err(priv->dev, "Failed read memory (%d)\n", count);
+> > > +             return -EINVAL;
 > >
-> >
-> > <formletter>
-> >
-> > This is not the correct way to submit patches for inclusion in the
-> > stable kernel tree.  Please read:
-> >     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> > for how to do this properly.
-> >
-> > </formletter>
+> > Why is a "short read" somehow illegal here?  What internal changes need
+> > to be made now that this has changed?
 > 
-> I see that many commits in mainline use Cc: <stable@vger.kernel.org>
-> directly without other information,
-> and I also find this information from above link: "Note, such tagging
-> is unnecessary if the stable team can
-> derive the appropriate versions from Fixes: tags."
-> 
-> In addition, this fixed commit "a0b0fd53e1e6 ("locking/lockdep: Free
-> lock classes that are no longer in use")"
-> was committed in 2019, so I am not very sure which start version
-> should be added to stabe tag.
-> Do you have any good suggestions?
+> In my opinion "short read" should be illegal for cases where if the
+> nvmem core is unable to read the required size of data to fill up a
+> nvmem cell then data returned might have truncated value.
 
-Nope, you did this right, I missed it in the body of the changelog as
-listed above, my apologies for the incorrect response here.
+But that's kind of against what a read() call normally expects.
+
+> No internal changes should be made since the registered reg_read() is
+> called from  __nvmem_reg_read() which eventually passes on the error
+> code to nvmem_reg_read() whose return code is already checked and
+> passed to nvmem consumers.
+> Currently rmem driver is incorrectly passing a positive value for success.
+
+So this is an internal api issue and not a general issue?  Unwinding the
+read callbacks here is hard.
+
+Also, in looking at the code, how can this ever be a short read?  You
+are using memory_read_from_buffer() which unless the values passed into
+it are incorrect, will always return the expected read amount.
+
+> > And what will userspace do with this error message in the kernel log?
+> 
+> User space currently is not seeing this error for nvmem device/eeprom
+> reads due to the following code at nvmem/core.c in
+> bin_attr_nvmem_read():
+> "
+>     rc = nvmem_reg_read(nvmem, pos, buf, count);
+> 
+>     if (rc)
+>         return rc;
+> 
+>     return count;
+> "
+> since it expects to return the number of bytes.
+> 
+> Userspace will see a false error with nvmem cell reads from
+> nvmem_cell_attr_read() in current code, which should be fixed on
+> returning 0 for success.
+
+So maybe fix this all up to allow the read to return the actual amount
+read?  That feels more "correct" to me.
+
+thanks,
 
 greg k-h
 
