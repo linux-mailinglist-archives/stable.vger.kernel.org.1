@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-18940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B0184B4B4
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 13:14:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8347B84B4B6
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 13:14:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6F471C23FB8
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 12:14:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B63161C23FBA
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 12:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2551353FB;
-	Tue,  6 Feb 2024 12:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D01135412;
+	Tue,  6 Feb 2024 12:09:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB0B1353E2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33701353F4;
 	Tue,  6 Feb 2024 12:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707221359; cv=none; b=JPKlCowuhEJYgsDuDfQjSEw7maJkUABSzQIZZFDiHpO3GvBPaOsKkMxunVleiIl+3uTfx90gxp3Wz5hWrtkkzG3thmC831cmhPcZpNt58NmyR82dncJ4Wkpbyo5MhGT7oc5akC6nJHz2TPuhb3/rL0CFQFjVQOGiPV/dWsM+8Ao=
+	t=1707221359; cv=none; b=LXUQa516Csi2cv3g4WpoQVbwtqRfhQY1mvAut+90eCmpeCbGhXPrnkhuklbDKiNMWCXNZtLAKm6FtpIW0uVm/Occ0IC3b2k25VObh3J1aIEfEy5naLYy2wiAXrBtJuSyDTdvgr7fRin47iJzP1KWDqZvX6BtHgkKlyIw4rZ8jMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1707221359; c=relaxed/simple;
-	bh=U8O8HbXTyCH85fzphuPj2gzKXQlZuOW81DY3SFrBp6U=;
+	bh=yxagGa01h2asUZexPZIm50VtsB5OwdxwdGuVM2gCW2Q=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=lMqlO1EERJ/qxICVaJXvGVCP27hy+3GlQu7YsshPtEMkniIa+BFbVgCzpKPX4Pi+2QfNOoBDHvG5p2T7bCycXNPrrzYBGRINvTRpIhqZmwiG+qjbbMQM80UWHtBK9nXcF2JbUR7igd9MVyGZEnGWOqbufFeRuBCNm04pECVyIrI=
+	 Content-Type; b=pH9bKuaCWChFkY6iw3xGpc3FdOqfbd6X0dGf+GOECCRBSzHpi6JBQ7gIN28NcSaFzz8veR+sHgwjoZ9d1gfqrTCvs0YO0hjyBUcTD3YShsgOPR6TO/GfQo64QqAc9Fo60ljk2x4y1wdUAbKZPxqIkTKADFH+gjrBwfe9GzIwBAg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891EBC4166B;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE411C433B1;
 	Tue,  6 Feb 2024 12:09:19 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.97)
 	(envelope-from <rostedt@rostedt.homelinux.com>)
-	id 1rXKGp-00000006b5q-47OS;
-	Tue, 06 Feb 2024 07:09:47 -0500
-Message-ID: <20240206120947.843106843@rostedt.homelinux.com>
+	id 1rXKGq-00000006b6L-0bJb;
+	Tue, 06 Feb 2024 07:09:48 -0500
+Message-ID: <20240206120948.003109160@rostedt.homelinux.com>
 User-Agent: quilt/0.67
-Date: Tue, 06 Feb 2024 07:09:14 -0500
+Date: Tue, 06 Feb 2024 07:09:15 -0500
 From: Steven Rostedt <rostedt@goodmis.org>
 To: linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
@@ -45,9 +45,8 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  Masami Hiramatsu <mhiramat@kernel.org>,
  Mark Rutland <mark.rutland@arm.com>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Kees Cook <keescook@chromium.org>,
- Nathan Chancellor <nathan@kernel.org>
-Subject: [v6.6][PATCH 09/57] eventfs: Use ERR_CAST() in eventfs_create_events_dir()
+ Julia Lawall <julia.lawall@inria.fr>
+Subject: [v6.6][PATCH 10/57] eventfs: Fix failure path in eventfs_create_events_dir()
 References: <20240206120905.570408983@rostedt.homelinux.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -57,44 +56,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-When building with clang and CONFIG_RANDSTRUCT_FULL=y, there is an error
-due to a cast in eventfs_create_events_dir():
+The failure path of allocating ei goes to a path that dereferences ei.
+Add another label that skips over the ei dereferences to do the rest of
+the clean up.
 
-  fs/tracefs/event_inode.c:734:10: error: casting from randomized structure pointer type 'struct dentry *' to 'struct eventfs_inode *'
-    734 |                 return (struct eventfs_inode *)dentry;
-        |                        ^
-  1 error generated.
+Link: https://lore.kernel.org/all/70e7bace-561c-95f-1117-706c2c220bc@inria.fr/
+Link: https://lore.kernel.org/linux-trace-kernel/20231019204132.6662fef0@gandalf.local.home
 
-Use the ERR_CAST() function to resolve the error, as it was designed for
-this exact situation (casting an error pointer to another type).
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231018-ftrace-fix-clang-randstruct-v1-1-338cb214abfb@kernel.org
-
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1947
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
 Fixes: 5790b1fb3d67 ("eventfs: Remove eventfs_file and just use eventfs_inode")
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reported-by: Julia Lawall <julia.lawall@inria.fr>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-(cherry picked from commit b8a555dc31e5aa18d976de0bc228006e398a2e7d)
+(cherry picked from commit 7e8ad67c9b5c11e990c320ed7e7563f2301672a7)
 ---
- fs/tracefs/event_inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/tracefs/event_inode.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 1ccd100bc565..9f19b6608954 100644
+index 9f19b6608954..1885f1f1f339 100644
 --- a/fs/tracefs/event_inode.c
 +++ b/fs/tracefs/event_inode.c
-@@ -731,7 +731,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 		return NULL;
- 
- 	if (IS_ERR(dentry))
--		return (struct eventfs_inode *)dentry;
-+		return ERR_CAST(dentry);
+@@ -735,7 +735,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
  
  	ei = kzalloc(sizeof(*ei), GFP_KERNEL);
  	if (!ei)
+-		goto fail;
++		goto fail_ei;
+ 
+ 	inode = tracefs_get_inode(dentry->d_sb);
+ 	if (unlikely(!inode))
+@@ -781,6 +781,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
+  fail:
+ 	kfree(ei->d_children);
+ 	kfree(ei);
++ fail_ei:
+ 	tracefs_failed_creating(dentry);
+ 	return ERR_PTR(-ENOMEM);
+ }
 -- 
 2.43.0
 
