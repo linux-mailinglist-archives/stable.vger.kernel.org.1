@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-18972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCC9784B4E5
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 13:18:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AC584B4E9
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 13:18:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ACBF1F2575B
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 12:18:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FD7E282B28
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 12:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8DF13AA2D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9276E13B286;
 	Tue,  6 Feb 2024 12:09:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFD413A889;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF6713AA27;
 	Tue,  6 Feb 2024 12:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707221364; cv=none; b=qWiyBSrWNMSmo/Dr8A3rvXJr+w0k+pq8ElAjDjP3oDbb9bnlcUcDB795IcL0Ni5HcYI0Z3/E89UosXi466tanPKIRL/2nU6y+G//uKbNF7v3RKgMkcXUAOIvAioHKRqQbFkMRaV7dUFHvNzteTKlXjAYaxjmEFiLMr9d9FctlRg=
+	t=1707221365; cv=none; b=QZZKC95rDKtGOE1lwJM7T9lyPshhPb+3hd/dt7WtCzQEo87AmLjL4Nft3kkZ2dP2G+dARdLNZ/tCdiUB7l2uOi0xc3uyNflkPqar8W9tilLloj3KLN58RYbhHqqSPm0Bd7nvTPimJFsTSHg9K5RyNrIb3c/VWA/BWmMz2zbfYPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707221364; c=relaxed/simple;
-	bh=msUlAhKaN43vF7JsX1xwBfcdPGlDn+EyYYaBimHJa/8=;
+	s=arc-20240116; t=1707221365; c=relaxed/simple;
+	bh=KBGhBIbjsMRKtn4hdiJH0PuIBiRoV1R54hmlDTiI6ZI=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=Z9cFyddLBBpVdIG8cB6CntUiAUEehdPiJjPf4fikVF6aYJR4TUY7MQqtz+of0VpX4uIlz279I/2oP5VpH888jtL+Y93SRjK6SegJYRFYNK1Ke8/xXH7nDq+9avBZPEm/i+KIUbJUabpE5TuUOe85NjFoF4gAfHBksw0ZFoxUgrw=
+	 Content-Type; b=hNqqS3brInlMhz58Js5IMEZcTU/ASKdW/2OwdP1C6kijrAg7otTpV2s7vw8373Sg7dhX1zdL8erdgFLvv5s1xlVvPEIT7miFZ3bsL+IioLvfJNyc0hI4ZatqI0fVZPho/RxzCXHQHYVawmBa2Md6xV9CMJYW3xvTMjPTckjx3uY=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 916EDC4167D;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE464C4167E;
 	Tue,  6 Feb 2024 12:09:24 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.97)
 	(envelope-from <rostedt@rostedt.homelinux.com>)
-	id 1rXKGv-00000006bLL-07BP;
+	id 1rXKGv-00000006bLq-0naA;
 	Tue, 06 Feb 2024 07:09:53 -0500
-Message-ID: <20240206120952.892527913@rostedt.homelinux.com>
+Message-ID: <20240206120953.046426517@rostedt.homelinux.com>
 User-Agent: quilt/0.67
-Date: Tue, 06 Feb 2024 07:09:45 -0500
+Date: Tue, 06 Feb 2024 07:09:46 -0500
 From: Steven Rostedt <rostedt@goodmis.org>
 To: linux-kernel@vger.kernel.org,
  stable@vger.kernel.org
@@ -48,7 +48,7 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Al Viro <viro@zeniv.linux.org.uk>,
  Christian Brauner <brauner@kernel.org>
-Subject: [v6.6][PATCH 40/57] eventfs: Read ei->entries before ei->children in eventfs_iterate()
+Subject: [v6.6][PATCH 41/57] eventfs: Shortcut eventfs_iterate() by skipping entries already read
 References: <20240206120905.570408983@rostedt.homelinux.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -60,116 +60,89 @@ Content-Type: text/plain; charset=UTF-8
 
 From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-In order to apply a shortcut to skip over the current ctx->pos
-immediately, by using the ei->entries array, the reading of that array
-should be first. Moving the array reading before the linked list reading
-will make the shortcut change diff nicer to read.
+As the ei->entries array is fixed for the duration of the eventfs_inode,
+it can be used to skip over already read entries in eventfs_iterate().
+
+That is, if ctx->pos is greater than zero, there's no reason in doing the
+loop across the ei->entries array for the entries less than ctx->pos.
+Instead, start the lookup of the entries at the current ctx->pos.
 
 Link: https://lore.kernel.org/all/CAHk-=wiKwDUDv3+jCsv-uacDcHDVTYsXtBR9=6sGM5mqX+DhOg@mail.gmail.com/
-Link: https://lore.kernel.org/linux-trace-kernel/20240104220048.333115095@goodmis.org
+Link: https://lore.kernel.org/linux-trace-kernel/20240104220048.494956957@goodmis.org
 
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
 Cc: Al Viro <viro@zeniv.linux.org.uk>
 Cc: Christian Brauner <brauner@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-(cherry picked from commit 704f960dbee2f1634f4b4e16f208cb16eaf41c1e)
+(cherry picked from commit 1de94b52d5e8d8b32f0252f14fad1f1edc2e71f1)
 ---
- fs/tracefs/event_inode.c | 46 ++++++++++++++++++++--------------------
- 1 file changed, 23 insertions(+), 23 deletions(-)
+ fs/tracefs/event_inode.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
 diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index c73fb1f7ddbc..a1934e0eea3b 100644
+index a1934e0eea3b..fdff53d5a1f8 100644
 --- a/fs/tracefs/event_inode.c
 +++ b/fs/tracefs/event_inode.c
-@@ -752,8 +752,8 @@ static int eventfs_iterate(struct file *file, struct dir_context *ctx)
+@@ -746,21 +746,15 @@ static int eventfs_iterate(struct file *file, struct dir_context *ctx)
+ 	if (!ei || !ei_dentry)
+ 		goto out;
+ 
+-	ret = 0;
+-
+ 	/*
  	 * Need to create the dentries and inodes to have a consistent
  	 * inode number.
  	 */
--	list_for_each_entry_srcu(ei_child, &ei->children, list,
--				 srcu_read_lock_held(&eventfs_srcu)) {
-+	for (i = 0; i < ei->nr_entries; i++) {
-+		void *cdata = ei->data;
- 
- 		if (c > 0) {
- 			c--;
-@@ -762,23 +762,32 @@ static int eventfs_iterate(struct file *file, struct dir_context *ctx)
- 
- 		ctx->pos++;
- 
--		if (ei_child->is_freed)
--			continue;
-+		entry = &ei->entries[i];
-+		name = entry->name;
- 
--		name = ei_child->name;
-+		mutex_lock(&eventfs_mutex);
-+		/* If ei->is_freed then just bail here, nothing more to do */
-+		if (ei->is_freed) {
-+			mutex_unlock(&eventfs_mutex);
-+			goto out_dec;
-+		}
-+		r = entry->callback(name, &mode, &cdata, &fops);
-+		mutex_unlock(&eventfs_mutex);
-+		if (r <= 0)
-+			continue;
- 
--		dentry = create_dir_dentry(ei, ei_child, ei_dentry);
-+		dentry = create_file_dentry(ei, i, ei_dentry, name, mode, cdata, fops);
- 		if (!dentry)
- 			goto out_dec;
- 		ino = dentry->d_inode->i_ino;
- 		dput(dentry);
- 
--		if (!dir_emit(ctx, name, strlen(name), ino, DT_DIR))
-+		if (!dir_emit(ctx, name, strlen(name), ino, DT_REG))
- 			goto out_dec;
- 	}
- 
 -	for (i = 0; i < ei->nr_entries; i++) {
 -		void *cdata = ei->data;
-+	list_for_each_entry_srcu(ei_child, &ei->children, list,
-+				 srcu_read_lock_held(&eventfs_srcu)) {
- 
- 		if (c > 0) {
- 			c--;
-@@ -787,27 +796,18 @@ static int eventfs_iterate(struct file *file, struct dir_context *ctx)
- 
- 		ctx->pos++;
- 
--		entry = &ei->entries[i];
--		name = entry->name;
 -
--		mutex_lock(&eventfs_mutex);
--		/* If ei->is_freed then just bail here, nothing more to do */
--		if (ei->is_freed) {
--			mutex_unlock(&eventfs_mutex);
--			goto out_dec;
+-		if (c > 0) {
+-			c--;
+-			continue;
 -		}
--		r = entry->callback(name, &mode, &cdata, &fops);
--		mutex_unlock(&eventfs_mutex);
--		if (r <= 0)
-+		if (ei_child->is_freed)
- 			continue;
++	ret = 0;
  
--		dentry = create_file_dentry(ei, i, ei_dentry, name, mode, cdata, fops);
-+		name = ei_child->name;
-+
-+		dentry = create_dir_dentry(ei, ei_child, ei_dentry);
+-		ctx->pos++;
++	/* Start at 'c' to jump over already read entries */
++	for (i = c; i < ei->nr_entries; i++, ctx->pos++) {
++		void *cdata = ei->data;
+ 
+ 		entry = &ei->entries[i];
+ 		name = entry->name;
+@@ -769,7 +763,7 @@ static int eventfs_iterate(struct file *file, struct dir_context *ctx)
+ 		/* If ei->is_freed then just bail here, nothing more to do */
+ 		if (ei->is_freed) {
+ 			mutex_unlock(&eventfs_mutex);
+-			goto out_dec;
++			goto out;
+ 		}
+ 		r = entry->callback(name, &mode, &cdata, &fops);
+ 		mutex_unlock(&eventfs_mutex);
+@@ -778,14 +772,17 @@ static int eventfs_iterate(struct file *file, struct dir_context *ctx)
+ 
+ 		dentry = create_file_dentry(ei, i, ei_dentry, name, mode, cdata, fops);
  		if (!dentry)
- 			goto out_dec;
+-			goto out_dec;
++			goto out;
  		ino = dentry->d_inode->i_ino;
  		dput(dentry);
  
--		if (!dir_emit(ctx, name, strlen(name), ino, DT_REG))
-+		if (!dir_emit(ctx, name, strlen(name), ino, DT_DIR))
- 			goto out_dec;
+ 		if (!dir_emit(ctx, name, strlen(name), ino, DT_REG))
+-			goto out_dec;
++			goto out;
  	}
- 	ret = 1;
+ 
++	/* Subtract the skipped entries above */
++	c -= min((unsigned int)c, (unsigned int)ei->nr_entries);
++
+ 	list_for_each_entry_srcu(ei_child, &ei->children, list,
+ 				 srcu_read_lock_held(&eventfs_srcu)) {
+ 
 -- 
 2.43.0
 
