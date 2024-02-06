@@ -1,121 +1,98 @@
-Return-Path: <stable+bounces-19009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EFFE84BEA9
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 21:26:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA46584BEFC
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 21:56:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6A4CB2523F
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 20:26:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 058B51C22DCF
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 20:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EA4179BE;
-	Tue,  6 Feb 2024 20:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DA81B942;
+	Tue,  6 Feb 2024 20:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b="HdcuQ4zV"
 X-Original-To: stable@vger.kernel.org
-Received: from irl.hu (irl.hu [95.85.9.111])
+Received: from mr85p00im-zteg06023901.me.com (mr85p00im-zteg06023901.me.com [17.58.23.192])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C2D18EA8;
-	Tue,  6 Feb 2024 20:26:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79ED1B80F
+	for <stable@vger.kernel.org>; Tue,  6 Feb 2024 20:56:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.192
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707251172; cv=none; b=nS/xI0JAkYsegd7F7exe/ycrFOL2DuJxoIWI78HQg9JexAAfgTJAYuqtQS5lQiJ90M2ss9Rf8FgqWkfGsAMnPx2sAHvd99wzNwniYR6gQlqCdHRm8zG0nHoTe02Z2oYFlnqrvlLVS0WRzenV5ZhsIge9VcYJsZn8n2kA3sQDiQo=
+	t=1707252965; cv=none; b=T0iyD4Dbz6M0fOKgJDv62FuE5xVhbO9C6I/k+ee+G1dNs1RqT2nArjhWhtGpRU3SC7BbjATG+BijVFZSZZmG2NA4fYVFzCv1euSBtXbIinuCBZmrIIlpLpOm722uubTgMtoTON3xwZGdnQSS8UIPawM7yHYpW8szEyAKfji8eEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707251172; c=relaxed/simple;
-	bh=GCZTOpyn0Zr/27ByvG88St2jXBibIhL8nI1Rez9DQwA=;
-	h=From:To:Cc:Subject:Date:Message-ID:Mime-Version:Content-Type; b=plN5cEaaUmnV9bimE8iSiRjbAXADw8QP9IQNlUDzmKZKfK6TpZXT0zEnpJsM3ONJ8SKnJtQcT1gxvoXC7XpefgHzFb5BXS72krCZ+StJcRGr/0PdbNSDHtx5TzZbnR0RWhf8Lg8/555+P0HWXa0iZDaYOW8HzW14XO/7SDwLp/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
-Received: from fedori.lan (51b69e54.dsl.pool.telekom.hu [::ffff:81.182.158.84])
-  (AUTH: CRAM-MD5 soyer@irl.hu, )
-  by irl.hu with ESMTPSA
-  id 00000000000729AE.0000000065C295D9.001AD416; Tue, 06 Feb 2024 21:26:01 +0100
-From: Gergo Koteles <soyer@irl.hu>
-To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
-  Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>,
-  Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
-  Mark Brown <broonie@kernel.org>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-  alsa-devel@alsa-project.org, Gergo Koteles <soyer@irl.hu>,
-  stable@vger.kernel.org
-Subject: [PATCH] ASoC: tas2781: remove unused acpi_subysystem_id
-Date: Tue,  6 Feb 2024 21:25:50 +0100
-Message-ID: <df5c94396256e9573b772962182def52d20c50d4.1707250969.git.soyer@irl.hu>
+	s=arc-20240116; t=1707252965; c=relaxed/simple;
+	bh=2xm3AT/eRSxwqdNOftMIryVkwU+qLY7viqygWB+r4Pk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oi6Gfe7mRGdRct6wgq0iOZXSorLsZFGtyHzBl5vnBBZ6KNMhS8at6wzVCPSX7FO4mL/rdiUkG6laTUwCwZpU2k/rfYqgptWoVg/2PtnPBqccJMBYySpPOuDxf0SNDt0VwWGMLcaufmoPwaP2RWpZlvNbzCuIW+6T6hub91OhO/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net; spf=pass smtp.mailfrom=danm.net; dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b=HdcuQ4zV; arc=none smtp.client-ip=17.58.23.192
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danm.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=danm.net; s=sig1;
+	t=1707252963; bh=9ZmzGBmNVTa/8kwYBxGy8hTi1lwybR+HgPQFnfk+Pp0=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=HdcuQ4zVg41Gc0d4hEPK19pUUvu8IsCu2yFIrX/oo1b4z2bWLQxZ+9LQsTY4jMxfL
+	 5JsHo1MJzANr48dqcSUOMn9bCoqanZsGU5wSZ0Nb2WXlYnskpeLtlvuVAOdE+dKo2a
+	 BEGznsW6rTjsNb8x5ljfBNvMgQcGsAd5oH0r2j4uTIdnCYlq9fijjW8DMNZ630ckR3
+	 WEEKT43hYJi6eKWgdWRjdxob/dWcLVzw8fYFgII3U6BYwAYp1uW131gzZ7RLqa6CDa
+	 n2CvNNI3Tahqg+jgWMUzBHLsw8AeHizlURNvncHIIZThP/JAu2Pp/pV0dRzoYYyXfA
+	 ElCNIQfNOfnCQ==
+Received: from hitch.danm.net (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
+	by mr85p00im-zteg06023901.me.com (Postfix) with ESMTPSA id 110BA6E0369;
+	Tue,  6 Feb 2024 20:56:01 +0000 (UTC)
+From: Dan Moulding <dan@danm.net>
+To: song@kernel.org
+Cc: dan@danm.net,
+	gregkh@linuxfoundation.org,
+	junxiao.bi@oracle.com,
+	linux-kernel@vger.kernel.org,
+	linux-raid@vger.kernel.org,
+	regressions@lists.linux.dev,
+	stable@vger.kernel.org,
+	yukuai1@huaweicloud.com
+Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system; successfully bisected
+Date: Tue,  6 Feb 2024 13:56:00 -0700
+Message-ID: <20240206205600.20788-1-dan@danm.net>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAPhsuW58VdmZwigxP6t_fstkSDb34GB9+gTM0Sziet=n17HzQg@mail.gmail.com>
+References: <CAPhsuW58VdmZwigxP6t_fstkSDb34GB9+gTM0Sziet=n17HzQg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-GUID: 1PwEXQiIHZiZPEsu5x6_2YSUNe4Yw20j
+X-Proofpoint-ORIG-GUID: 1PwEXQiIHZiZPEsu5x6_2YSUNe4Yw20j
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-06_14,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0 spamscore=0
+ mlxscore=0 adultscore=0 clxscore=1030 malwarescore=0 mlxlogscore=688
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2402060146
 
-The acpi_subysystem_id is only written and freed, not read, so
-unnecessary.
+> Dan, could you please run the test on this branch
+> (83cbdaf61b1ab9cdaa0321eeea734bc70ca069c8)?
 
-Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
-CC: stable@vger.kernel.org
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
----
- include/sound/tas2781.h           |  1 -
- sound/pci/hda/tas2781_hda_i2c.c   | 10 ----------
- sound/soc/codecs/tas2781-comlib.c |  1 -
- 3 files changed, 12 deletions(-)
+I'm sorry to report that I can still reproduce the problem running the
+kernel built from the md-6.9 branch (83cbdaf61b1a).
 
-diff --git a/include/sound/tas2781.h b/include/sound/tas2781.h
-index 9aff384941de..99ca3e401fd1 100644
---- a/include/sound/tas2781.h
-+++ b/include/sound/tas2781.h
-@@ -103,7 +103,6 @@ struct tasdevice_priv {
- 	struct tm tm;
- 
- 	enum device_catlog_id catlog_id;
--	const char *acpi_subsystem_id;
- 	unsigned char cal_binaryname[TASDEVICE_MAX_CHANNELS][64];
- 	unsigned char crc8_lkp_tbl[CRC8_TABLE_SIZE];
- 	unsigned char coef_binaryname[64];
-diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
-index 1bfb00102a77..02c85084aca5 100644
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -129,18 +129,8 @@ static int tas2781_read_acpi(struct tasdevice_priv *p, const char *hid)
- 
- 	acpi_dev_free_resource_list(&resources);
- 	strscpy(p->dev_name, hid, sizeof(p->dev_name));
--	physdev = get_device(acpi_get_first_physical_node(adev));
- 	acpi_dev_put(adev);
- 
--	/* No side-effect to the playback even if subsystem_id is NULL*/
--	sub = acpi_get_subsystem_id(ACPI_HANDLE(physdev));
--	if (IS_ERR(sub))
--		sub = NULL;
--
--	p->acpi_subsystem_id = sub;
--
--	put_device(physdev);
--
- 	return 0;
- 
- err:
-diff --git a/sound/soc/codecs/tas2781-comlib.c b/sound/soc/codecs/tas2781-comlib.c
-index 5d0e5348b361..3aa81514dad7 100644
---- a/sound/soc/codecs/tas2781-comlib.c
-+++ b/sound/soc/codecs/tas2781-comlib.c
-@@ -408,7 +408,6 @@ void tasdevice_remove(struct tasdevice_priv *tas_priv)
- {
- 	if (gpio_is_valid(tas_priv->irq_info.irq_gpio))
- 		gpio_free(tas_priv->irq_info.irq_gpio);
--	kfree(tas_priv->acpi_subsystem_id);
- 	mutex_destroy(&tas_priv->codec_lock);
- }
- EXPORT_SYMBOL_GPL(tasdevice_remove);
+But the only commit I see on that branch that's not in master and
+touches raid5.c is this one:
 
-base-commit: 610010737f74482a61896596a0116876ecf9e65c
--- 
-2.43.0
+    test@sysrescue:~/src/linux$ git log master..song/md-6.9 drivers/md/raid5.c
+    commit 61c90765e131e63ead773b9b99167415e246a945
+    Author: Yu Kuai <yukuai3@huawei.com>
+    Date:   Thu Dec 28 20:55:51 2023 +0800
 
+        md: remove redundant check of 'mddev->sync_thread'
+
+Is that expected, or were you expecting additional fixes to be in there?
+
+-- Dan
 
