@@ -1,171 +1,240 @@
-Return-Path: <stable+bounces-18884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC7DA84B081
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 09:59:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7268784B0BD
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 10:06:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 620AA1F227F3
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 08:59:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8EAD287545
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 09:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2734A12C7F5;
-	Tue,  6 Feb 2024 08:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C9212E1C5;
+	Tue,  6 Feb 2024 09:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tShhh1Ag"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="e8BoFuj8";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="gyjZ5CMm";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="NsqeBWwp";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="+O2acdkp"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DBCF12C538;
-	Tue,  6 Feb 2024 08:58:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC1412DDB1;
+	Tue,  6 Feb 2024 09:05:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707209939; cv=none; b=q+HaTWIfH5gsBaMy8TOFe5UdlR8ljcV+Wn9JML91JXy+I7jKXIxOgx5gN/U+zQe7MzHjfMi9fRaPJnhM8dtj8W8SEJPs4aPETf1mWjS0T3GRbhqEQLZrXdRmiXFkbi/nTeOkPQZE/krG7OSXiVEX7OFEe7ZGDsJZER8Ak2J0Jak=
+	t=1707210309; cv=none; b=bqFz9E4YKIvXSfIHUXugptQH8quDIdmFBwHUKOfbO4Ncsg6qL4Yi+AdjBL4Jzt71KjTo/N+R5uJojvAU2vhHWjMvuJd3p+1b8+LC9VGOcH6i/ZckxZPVQ3fsYjUiftGxx+qxEQgtc/7j0hSCxo1pvIQXp6wemM+RtIAIK09RqL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707209939; c=relaxed/simple;
-	bh=6+hp/oOkfW9CIroBlUwLQdgpKfvmzFYtEufR1uK5Vx0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LtP/icBszwtVHi4w002WQ9FuAAF0ZtiRjx1etI8qn+jU0qgGMHm+eAGIvphT+Lugt/i+1kVjcvh3FoO5peTS2KCyn81cGr/Jo0VFOtpVvPqCi5YLgZIy1kxTx7Ji4kScAJfBLvZvEm4Arqins7skAMuou516iTfweHCUaezU6MI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=de.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tShhh1Ag; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4168q7np023267;
-	Tue, 6 Feb 2024 08:58:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : mime-version : content-transfer-encoding; s=pp1;
- bh=uItTlyiNjJHOxqJ+zObA3XYJXQMGB08e0vkKy7tN6g8=;
- b=tShhh1AgLAl+EG67XaQJTRqv2X9w9QH1y6RmFpD98YeB+Wl84dTHUugwVhAxaX3uxbc9
- 7uAAyrLbQB1j/PYAOk1YTWE4cnAa5KRuRvCLdWVSy0BrzPfGHjm3jbx1RDoStHSro6/c
- D/Cjb8Tj/N/RA0w8zEdVcM1UxpiMiETIkYL/k/3jVZvXjCeSmtHcTl0T9QossxYMD7Ft
- +RTxwv94TfJ5DRcWVnzevI4kMR1XwA8lR+Yz+EC8hImsut7AzqNuQP5b1cqvXzF330YK
- oFHgm5f9EK/hKrjDaRA2nCzvqvuRKrIf470n5TTXL34kBlyOjXqFXbGA6vZwKPWRxZTf ow== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w3hms08gj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Feb 2024 08:58:54 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4168qtWE026037;
-	Tue, 6 Feb 2024 08:58:53 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w3hms08g9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Feb 2024 08:58:53 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4167jIus008494;
-	Tue, 6 Feb 2024 08:58:52 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w221jwk2a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 06 Feb 2024 08:58:52 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4168wn3w57541102
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 6 Feb 2024 08:58:49 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BE5C120043;
-	Tue,  6 Feb 2024 08:58:49 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AC8B420040;
-	Tue,  6 Feb 2024 08:58:49 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  6 Feb 2024 08:58:49 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55271)
-	id 6F5E1E0454; Tue,  6 Feb 2024 09:58:49 +0100 (CET)
-From: Alexandra Winter <wintera@linux.ibm.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, stable@vger.kernel.org
-Subject: [PATCH net] s390/qeth: Fix potential loss of L3-IP@ in case of network issues
-Date: Tue,  6 Feb 2024 09:58:49 +0100
-Message-Id: <20240206085849.2902775-1-wintera@linux.ibm.com>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1707210309; c=relaxed/simple;
+	bh=6Cn0EbvAQpVPxlCuWBtkPBkK6X11iXgtuISc1ez4iNg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=suS3rMbf2gFnvJ2gJjTiITMfMkGrqOj3fVG8b41xl38vCK/RPGUZhWfnMX8QlpEqpdzCA5muVleLVZ5jh9l4JVfdeWSO4pr64Xr6c4WzOfdGTNjaKn7f0/35y0yBV/r8HWhu/HRu+O+ZWTcDgdyXRP6tnfM+2WFDsK7GGTpBE1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=e8BoFuj8; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=gyjZ5CMm; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=NsqeBWwp; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=+O2acdkp; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EDEDA221BC;
+	Tue,  6 Feb 2024 09:04:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1707210300; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vtfFhp4YaOA3+zKQ2nkJ0A0u4dH5KkXGPgSkUaEbRbc=;
+	b=e8BoFuj8Y32yDAcZu89DwmhASVI2IYPtMNLQ8K+g0sVpo//lIFRDVElNfF1iqBcAzUF24W
+	X2afMENAc3iArMNMdIjlTCvwlkhzht8hhhoEzAV1jUZVOI0jYL2aHsHkXtk8M4Ipkfjtd1
+	nGZlsHxPY02mlWj050GaGZjYSti4cpE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1707210300;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vtfFhp4YaOA3+zKQ2nkJ0A0u4dH5KkXGPgSkUaEbRbc=;
+	b=gyjZ5CMmpelXCeV4s4Bihp8OnxXNQND+VhtGptzbKY9r04T5c6pxLDjDJUeZmfNyUvorbp
+	Hd6VS+w9Np+0uTBg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1707210299; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vtfFhp4YaOA3+zKQ2nkJ0A0u4dH5KkXGPgSkUaEbRbc=;
+	b=NsqeBWwpogJSa2imSjXlenOidfPomNHfVp+m+VnnlwvWYV2wITrCgdjoJLX5h3lpZmOFV/
+	PhTYwMMwyrpdgOlIL3t5aBGOD1jxd3Qn4+cxSZKG/VWlZSCa5xDH0PzBgXKaVvj4YA6lzo
+	nHUSog9XMgbCT1IKhazeKIU+o24gzGs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1707210299;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vtfFhp4YaOA3+zKQ2nkJ0A0u4dH5KkXGPgSkUaEbRbc=;
+	b=+O2acdkpJpUE1XXLUjpc4zDVHaBixm5HU+aDEOntfhoUSbq3dL7vP6cK6soQTjD3BkwQ+3
+	UoSN3qKer2noQACA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E0764132DD;
+	Tue,  6 Feb 2024 09:04:59 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id zfPENjv2wWWlZwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 06 Feb 2024 09:04:59 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 7C9CEA0809; Tue,  6 Feb 2024 10:04:59 +0100 (CET)
+Date: Tue, 6 Feb 2024 10:04:59 +0100
+From: Jan Kara <jack@suse.cz>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org, linux-mm@kvack.org,
+	Jan Kara <jack@suse.cz>, stable@vger.kernel.org
+Subject: Re: [PATCH] blk-wbt: Fix detection of dirty-throttled tasks
+Message-ID: <20240206090459.6a6qpb6lug3nw57g@quack3>
+References: <20240123175826.21452-1-jack@suse.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 68xvcKJN30DPzE1C-BkO0tis0iQ_Rxy5
-X-Proofpoint-GUID: 94lOZk7C5sKAZ72aaqv7frQK__iaNSgb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-06_02,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 bulkscore=0
- priorityscore=1501 malwarescore=0 spamscore=0 suspectscore=0 adultscore=0
- clxscore=1011 mlxscore=0 impostorscore=0 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2402060062
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240123175826.21452-1-jack@suse.cz>
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Level: 
+X-Spam-Score: -3.80
+X-Spamd-Result: default: False [-3.80 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MIME_GOOD(-0.10)[text/plain];
+	 RCPT_COUNT_FIVE(0.00)[5];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.com:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 MID_RHS_NOT_FQDN(0.50)[];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-3.00)[100.00%]
+X-Spam-Flag: NO
 
-Symptom:
-In case of a bad cable connection (e.g. dirty optics) a fast sequence of
-network DOWN-UP-DOWN-UP could happen. UP triggers recovery of the qeth
-interface. In case of a second DOWN while recovery is still ongoing, it
-can happen that the IP@ of a Layer3 qeth interface is lost and will not
-be recovered by the second UP.
+On Tue 23-01-24 18:58:26, Jan Kara wrote:
+> The detection of dirty-throttled tasks in blk-wbt has been subtly broken
+> since its beginning in 2016. Namely if we are doing cgroup writeback and
+> the throttled task is not in the root cgroup, balance_dirty_pages() will
+> set dirty_sleep for the non-root bdi_writeback structure. However
+> blk-wbt checks dirty_sleep only in the root cgroup bdi_writeback
+> structure. Thus detection of recently throttled tasks is not working in
+> this case (we noticed this when we switched to cgroup v2 and suddently
+> writeback was slow).
+> 
+> Since blk-wbt has no easy way to get to proper bdi_writeback and
+> furthermore its intention has always been to work on the whole device
+> rather than on individual cgroups, just move the dirty_sleep timestamp
+> from bdi_writeback to backing_dev_info. That fixes the checking for
+> recently throttled task and saves memory for everybody as a bonus.
+> 
+> CC: stable@vger.kernel.org
+> Fixes: b57d74aff9ab ("writeback: track if we're sleeping on progress in balance_dirty_pages()")
+> Signed-off-by: Jan Kara <jack@suse.cz>
 
-Problem:
-When registration of IP addresses with Layer 3 qeth devices fails, (e.g.
-because of bad address format) the respective IP address is deleted from
-its hash-table in the driver. If registration fails because of a ENETDOWN
-condition, the address should stay in the hashtable, so a subsequent
-recovery can restore it.
+Ping Jens?
 
-3caa4af834df ("qeth: keep ip-address after LAN_OFFLINE failure")
-fixes this for registration failures during normal operation, but not
-during recovery.
+								Honza
 
-Solution:
-Keep L3-IP address in case of ENETDOWN in qeth_l3_recover_ip(). For
-consistency with qeth_l3_add_ip() we also keep it in case of EADDRINUSE,
-i.e. for some reason the card already/still has this address registered.
-
-Fixes: 4a71df50047f ("qeth: new qeth device driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
----
- drivers/s390/net/qeth_l3_main.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/s390/net/qeth_l3_main.c b/drivers/s390/net/qeth_l3_main.c
-index b92a32b4b114..04c64ce0a1ca 100644
---- a/drivers/s390/net/qeth_l3_main.c
-+++ b/drivers/s390/net/qeth_l3_main.c
-@@ -255,9 +255,10 @@ static void qeth_l3_clear_ip_htable(struct qeth_card *card, int recover)
- 		if (!recover) {
- 			hash_del(&addr->hnode);
- 			kfree(addr);
--			continue;
-+		} else {
-+			/* prepare for recovery */
-+			addr->disp_flag = QETH_DISP_ADDR_ADD;
- 		}
--		addr->disp_flag = QETH_DISP_ADDR_ADD;
- 	}
- 
- 	mutex_unlock(&card->ip_lock);
-@@ -278,9 +279,11 @@ static void qeth_l3_recover_ip(struct qeth_card *card)
- 		if (addr->disp_flag == QETH_DISP_ADDR_ADD) {
- 			rc = qeth_l3_register_addr_entry(card, addr);
- 
--			if (!rc) {
-+			if (!rc || rc == -EADDRINUSE || rc == -ENETDOWN) {
-+				/* keep it in the records */
- 				addr->disp_flag = QETH_DISP_ADDR_DO_NOTHING;
- 			} else {
-+				/* bad address */
- 				hash_del(&addr->hnode);
- 				kfree(addr);
- 			}
+> ---
+>  block/blk-wbt.c                  | 4 ++--
+>  include/linux/backing-dev-defs.h | 7 +++++--
+>  mm/backing-dev.c                 | 2 +-
+>  mm/page-writeback.c              | 2 +-
+>  4 files changed, 9 insertions(+), 6 deletions(-)
+> 
+> diff --git a/block/blk-wbt.c b/block/blk-wbt.c
+> index 5ba3cd574eac..0c0e270a8265 100644
+> --- a/block/blk-wbt.c
+> +++ b/block/blk-wbt.c
+> @@ -163,9 +163,9 @@ static void wb_timestamp(struct rq_wb *rwb, unsigned long *var)
+>   */
+>  static bool wb_recent_wait(struct rq_wb *rwb)
+>  {
+> -	struct bdi_writeback *wb = &rwb->rqos.disk->bdi->wb;
+> +	struct backing_dev_info *bdi = rwb->rqos.disk->bdi;
+>  
+> -	return time_before(jiffies, wb->dirty_sleep + HZ);
+> +	return time_before(jiffies, bdi->last_bdp_sleep + HZ);
+>  }
+>  
+>  static inline struct rq_wait *get_rq_wait(struct rq_wb *rwb,
+> diff --git a/include/linux/backing-dev-defs.h b/include/linux/backing-dev-defs.h
+> index ae12696ec492..ad17739a2e72 100644
+> --- a/include/linux/backing-dev-defs.h
+> +++ b/include/linux/backing-dev-defs.h
+> @@ -141,8 +141,6 @@ struct bdi_writeback {
+>  	struct delayed_work dwork;	/* work item used for writeback */
+>  	struct delayed_work bw_dwork;	/* work item used for bandwidth estimate */
+>  
+> -	unsigned long dirty_sleep;	/* last wait */
+> -
+>  	struct list_head bdi_node;	/* anchored at bdi->wb_list */
+>  
+>  #ifdef CONFIG_CGROUP_WRITEBACK
+> @@ -179,6 +177,11 @@ struct backing_dev_info {
+>  	 * any dirty wbs, which is depended upon by bdi_has_dirty().
+>  	 */
+>  	atomic_long_t tot_write_bandwidth;
+> +	/*
+> +	 * Jiffies when last process was dirty throttled on this bdi. Used by
+> + 	 * blk-wbt.
+> +	*/
+> +	unsigned long last_bdp_sleep;
+>  
+>  	struct bdi_writeback wb;  /* the root writeback info for this bdi */
+>  	struct list_head wb_list; /* list of all wbs */
+> diff --git a/mm/backing-dev.c b/mm/backing-dev.c
+> index 1e3447bccdb1..e039d05304dd 100644
+> --- a/mm/backing-dev.c
+> +++ b/mm/backing-dev.c
+> @@ -436,7 +436,6 @@ static int wb_init(struct bdi_writeback *wb, struct backing_dev_info *bdi,
+>  	INIT_LIST_HEAD(&wb->work_list);
+>  	INIT_DELAYED_WORK(&wb->dwork, wb_workfn);
+>  	INIT_DELAYED_WORK(&wb->bw_dwork, wb_update_bandwidth_workfn);
+> -	wb->dirty_sleep = jiffies;
+>  
+>  	err = fprop_local_init_percpu(&wb->completions, gfp);
+>  	if (err)
+> @@ -921,6 +920,7 @@ int bdi_init(struct backing_dev_info *bdi)
+>  	INIT_LIST_HEAD(&bdi->bdi_list);
+>  	INIT_LIST_HEAD(&bdi->wb_list);
+>  	init_waitqueue_head(&bdi->wb_waitq);
+> +	bdi->last_bdp_sleep = jiffies;
+>  
+>  	return cgwb_bdi_init(bdi);
+>  }
+> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+> index cd4e4ae77c40..cc37fa7f3364 100644
+> --- a/mm/page-writeback.c
+> +++ b/mm/page-writeback.c
+> @@ -1921,7 +1921,7 @@ static int balance_dirty_pages(struct bdi_writeback *wb,
+>  			break;
+>  		}
+>  		__set_current_state(TASK_KILLABLE);
+> -		wb->dirty_sleep = now;
+> +		bdi->last_bdp_sleep = jiffies;
+>  		io_schedule_timeout(pause);
+>  
+>  		current->dirty_paused_when = now + pause;
+> -- 
+> 2.35.3
+> 
 -- 
-2.40.1
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
