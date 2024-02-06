@@ -1,136 +1,96 @@
-Return-Path: <stable+bounces-18927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822B184B3D1
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 12:45:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 776F284B410
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 12:59:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FE321C2128F
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 11:45:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9A881C23156
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 11:59:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C765A1350E9;
-	Tue,  6 Feb 2024 11:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D846E130AF9;
+	Tue,  6 Feb 2024 11:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zgx8cob5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9948E1350D0;
-	Tue,  6 Feb 2024 11:33:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E40130AFA
+	for <stable@vger.kernel.org>; Tue,  6 Feb 2024 11:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707219213; cv=none; b=qlnBMp8+kCeV4V1+Q62WxuIk+YD3hEzqzeHNUg8vPKTIPuTBBaDxJ8WhgqRXgCZd5OYXB5Sf+NnBMFVgCVYhSRM1iYi5uXGZPi6s93COdvfFakPpWBVZiY8+q1JVZ1IqYEB5fyVJJBpUplUtSVmOo6sL3RAOhjAlC1U7so2p/nE=
+	t=1707219845; cv=none; b=qrsm0r7ytS1E4XToYb9Xp5F+T6OcvtSejej0TuqHDxwH4vw9NDVzQBqm0mHQJZ7KAa4KiZd0Vbe9K9O4+rpTOzrMn14Bh61wNuaB0QUmcyW+4vWv6Jmk89+tahSCLgQUSPh+iUYEy+dM1ev8+AVCFS4YOKRmyybikfHy66hoT7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707219213; c=relaxed/simple;
-	bh=K0Ph34GY80unDV6Wcvz0AavqMJytP5uSNCEE07y3Q00=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=R+YfVpntuY9rMvHY0L0Mo0ERrA38qXWVQ2UtCgSZFn5ZaDq+feRj6v+R6nGllm5NlVUMobZhhInF04QtlJV9j8EKIg0RJScD9Qu57Sn7UgGCxBhsPrT19491kTAs82UkvNrY5xenfkLCFUqSs5kwDqX53Q4jcp66hPqlIDq8fdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849F1C43141;
-	Tue,  6 Feb 2024 11:33:33 +0000 (UTC)
-Received: from rostedt by gandalf with local (Exim 4.97)
-	(envelope-from <rostedt@rostedt.homelinux.com>)
-	id 1rXJiD-00000006aRp-42bw;
-	Tue, 06 Feb 2024 06:34:01 -0500
-Message-ID: <20240206113401.818811467@rostedt.homelinux.com>
-User-Agent: quilt/0.67
-Date: Tue, 06 Feb 2024 06:32:21 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Christian Brauner <brauner@kernel.org>,
- Al Viro <viro@ZenIV.linux.org.uk>,
- Ajay Kaher <ajay.kaher@broadcom.com>,
- Al Viro <viro@zeniv.linux.org.uk>
-Subject: [v6.7][PATCH v2 23/23] eventfs: Keep all directory links at 1
-References: <20240206113158.822006147@rostedt.homelinux.com>
+	s=arc-20240116; t=1707219845; c=relaxed/simple;
+	bh=ifMf3q5KFj3fEb143LGBQ/RQHb9VNjmpSvKzU0efqXg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=IpeBefJ+2TTRoFwIIHh8P6cToPU5rzMLm22G95+/ieOIrnlyv3Wbi59m53JyNr0rEw3KpJvFMzxPxuN/hxl4FXqUApmJB8+ShHvCnHc7dIxvZQLFiNBwznrDLB74nJWDeJxrnTgdlHMQPpvKJXln1vnNBw9TbkexC3T/42dMnwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zgx8cob5; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707219843; x=1738755843;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=ifMf3q5KFj3fEb143LGBQ/RQHb9VNjmpSvKzU0efqXg=;
+  b=Zgx8cob5wNrX3jnj7syp0VMZf5+1x95Dqb4i9VRID9XfnOQ0SIdnL5Gp
+   8CApnsPXNF9af73f5XnQs0virC9j5AcMygksPQfw9fr7aZKeV1zAcC4os
+   aq7wMtSt4sU2ghl1+OEgqQ6A5IrCchribrwb+SmkjNvhtEWzWCraUrhnK
+   N9yYerCWBcEkhRWniP8Xzzc/iPfBeJFZwSjAAV2/VH6LfrS2bBOGQdXe4
+   7ohG0KvvPlj4WE4PeXv39AbxHUIbuk7k6JP6gqR5XjQDeZnVwr6Ds6AMN
+   VW9mtUZFxh5KggzeAyHFN2xCy8gaYtePRqlPiNBlyZoKD9ecgZyCCRaK+
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10975"; a="4515357"
+X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
+   d="scan'208";a="4515357"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 03:44:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,247,1701158400"; 
+   d="scan'208";a="5760999"
+Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 06 Feb 2024 03:44:02 -0800
+Received: from kbuild by 01f0647817ea with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rXJrq-0001KO-34;
+	Tue, 06 Feb 2024 11:43:58 +0000
+Date: Tue, 6 Feb 2024 19:43:34 +0800
+From: kernel test robot <lkp@intel.com>
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [v6.7][PATCH v2 04/23] eventfs: Have eventfs_iterate() stop
+ immediately if ei->is_freed is set
+Message-ID: <ZcIbZhvrZE8c8xlp@ddcdc6924185>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240206113358.729003384@rostedt.homelinux.com>
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Hi,
 
-The directory link count in eventfs was somewhat bogus. It was only being
-updated when a directory child was being looked up and not on creation.
+Thanks for your patch.
 
-One solution would be to update in get_attr() the link count by iterating
-the ei->children list and then adding 2. But that could slow down simple
-stat() calls, especially if it's done on all directories in eventfs.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Another solution would be to add a parent pointer to the eventfs_inode
-and keep track of the number of sub directories it has on creation. But
-this adds overhead for something not really worthwhile.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-The solution decided upon is to keep all directory links in eventfs as 1.
-This tells user space not to rely on the hard links of directories. Which
-in this case it shouldn't.
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [v6.7][PATCH v2 04/23] eventfs: Have eventfs_iterate() stop immediately if ei->is_freed is set
+Link: https://lore.kernel.org/stable/20240206113358.729003384%40rostedt.homelinux.com
 
-Link: https://lore.kernel.org/linux-trace-kernel/20240201002719.GS2087318@ZenIV/
-Link: https://lore.kernel.org/linux-trace-kernel/20240201161617.339968298@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Al Viro <viro@ZenIV.linux.org.uk>
-Cc: Ajay Kaher <ajay.kaher@broadcom.com>
-Fixes: c1504e510238 ("eventfs: Implement eventfs dir creation functions")
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-(cherry picked from commit ca185770db914869ff9fe773bac5e0e5e4165b83)
----
- fs/tracefs/event_inode.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 9e031e5a2713..110e8a272189 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -404,9 +404,7 @@ static struct dentry *lookup_dir_entry(struct dentry *dentry,
- 
- 	dentry->d_fsdata = get_ei(ei);
- 
--	inc_nlink(inode);
- 	d_add(dentry, inode);
--	inc_nlink(dentry->d_parent->d_inode);
- 	return NULL;
- }
- 
-@@ -769,9 +767,17 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 
- 	dentry->d_fsdata = get_ei(ei);
- 
--	/* directory inodes start off with i_nlink == 2 (for "." entry) */
--	inc_nlink(inode);
-+	/*
-+	 * Keep all eventfs directories with i_nlink == 1.
-+	 * Due to the dynamic nature of the dentry creations and not
-+	 * wanting to add a pointer to the parent eventfs_inode in the
-+	 * eventfs_inode structure, keeping the i_nlink in sync with the
-+	 * number of directories would cause too much complexity for
-+	 * something not worth much. Keeping directory links at 1
-+	 * tells userspace not to trust the link number.
-+	 */
- 	d_instantiate(dentry, inode);
-+	/* The dentry of the "events" parent does keep track though */
- 	inc_nlink(dentry->d_parent->d_inode);
- 	fsnotify_mkdir(dentry->d_parent->d_inode, dentry);
- 	tracefs_end_creating(dentry);
 -- 
-2.43.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
 
 
 
