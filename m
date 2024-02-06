@@ -1,98 +1,143 @@
-Return-Path: <stable+bounces-19010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA46584BEFC
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 21:56:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0C684BF0F
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 22:11:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 058B51C22DCF
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 20:56:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1BCB1C21B48
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 21:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9DA81B942;
-	Tue,  6 Feb 2024 20:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA0C91B946;
+	Tue,  6 Feb 2024 21:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b="HdcuQ4zV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V15MCYET"
 X-Original-To: stable@vger.kernel.org
-Received: from mr85p00im-zteg06023901.me.com (mr85p00im-zteg06023901.me.com [17.58.23.192])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E79ED1B80F
-	for <stable@vger.kernel.org>; Tue,  6 Feb 2024 20:56:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.23.192
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394D61BF20;
+	Tue,  6 Feb 2024 21:11:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707252965; cv=none; b=T0iyD4Dbz6M0fOKgJDv62FuE5xVhbO9C6I/k+ee+G1dNs1RqT2nArjhWhtGpRU3SC7BbjATG+BijVFZSZZmG2NA4fYVFzCv1euSBtXbIinuCBZmrIIlpLpOm722uubTgMtoTON3xwZGdnQSS8UIPawM7yHYpW8szEyAKfji8eEc=
+	t=1707253880; cv=none; b=qx/fZUw49V2GOZrX2x2KNvZ/mpyHZ06zDvMVBz+DITQOBLUPWMhwRJsuGTkESz743ikzJmLKZHExp/MWYGfKzGZHyPd26x5RKIqxd9WTf8HuDSP7ZNAus8WFZfPcAEtr2l5m3Yf5BhlRiOUpUOCnS9/Dw+jSnUMahGL+esV2Wbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707252965; c=relaxed/simple;
-	bh=2xm3AT/eRSxwqdNOftMIryVkwU+qLY7viqygWB+r4Pk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oi6Gfe7mRGdRct6wgq0iOZXSorLsZFGtyHzBl5vnBBZ6KNMhS8at6wzVCPSX7FO4mL/rdiUkG6laTUwCwZpU2k/rfYqgptWoVg/2PtnPBqccJMBYySpPOuDxf0SNDt0VwWGMLcaufmoPwaP2RWpZlvNbzCuIW+6T6hub91OhO/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net; spf=pass smtp.mailfrom=danm.net; dkim=pass (2048-bit key) header.d=danm.net header.i=@danm.net header.b=HdcuQ4zV; arc=none smtp.client-ip=17.58.23.192
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=danm.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=danm.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=danm.net; s=sig1;
-	t=1707252963; bh=9ZmzGBmNVTa/8kwYBxGy8hTi1lwybR+HgPQFnfk+Pp0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=HdcuQ4zVg41Gc0d4hEPK19pUUvu8IsCu2yFIrX/oo1b4z2bWLQxZ+9LQsTY4jMxfL
-	 5JsHo1MJzANr48dqcSUOMn9bCoqanZsGU5wSZ0Nb2WXlYnskpeLtlvuVAOdE+dKo2a
-	 BEGznsW6rTjsNb8x5ljfBNvMgQcGsAd5oH0r2j4uTIdnCYlq9fijjW8DMNZ630ckR3
-	 WEEKT43hYJi6eKWgdWRjdxob/dWcLVzw8fYFgII3U6BYwAYp1uW131gzZ7RLqa6CDa
-	 n2CvNNI3Tahqg+jgWMUzBHLsw8AeHizlURNvncHIIZThP/JAu2Pp/pV0dRzoYYyXfA
-	 ElCNIQfNOfnCQ==
-Received: from hitch.danm.net (mr38p00im-dlb-asmtp-mailmevip.me.com [17.57.152.18])
-	by mr85p00im-zteg06023901.me.com (Postfix) with ESMTPSA id 110BA6E0369;
-	Tue,  6 Feb 2024 20:56:01 +0000 (UTC)
-From: Dan Moulding <dan@danm.net>
-To: song@kernel.org
-Cc: dan@danm.net,
-	gregkh@linuxfoundation.org,
-	junxiao.bi@oracle.com,
-	linux-kernel@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	regressions@lists.linux.dev,
+	s=arc-20240116; t=1707253880; c=relaxed/simple;
+	bh=6W2qJ7emBHDpfjsMd5I+Yh5aNZEm7ERBKlFcs6o7FCc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=R30abWg0iP1JrNiW9zDfW4xCHjFKqVo21Jwc7zm/w91sy7oHgHItOp5oBVq4bY5UrKjgrn3fUj2WdGQm2igmztHkmwElS/Fkq9Rl7ZbT3PcB0J1u7jzrilLI74xPa4tZk61ORy756C4GTCHCFo2erH7ayhJ3bCGrUoXgQbVlZOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V15MCYET; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-296cca91667so806976a91.3;
+        Tue, 06 Feb 2024 13:11:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707253878; x=1707858678; darn=vger.kernel.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=I2CG33VPPpXBW0bT6gJ7H7D26BUksG/NvgMt6SM3LZM=;
+        b=V15MCYETce+D2589znVr25ARUhG58effZJWBLIo5sEeWg/9ryWMuxbULFxIilAlBoq
+         /ybSNJ1JHSWuTJ/8+ZjtLSaF5wtL12cj7KCeLHWyEmvAKwUX6YwEeYqqAKKhlIx729+O
+         Rjp7RPa4QapwxPWNPz2IlScQ6PPmOj+mwb6GtM/iTkVHWNYUgADLKzkAKcWLj53jr7p4
+         ddFyqcGZzz77/Wuu+TdxxqvTsYEq9CJTb3/gsAzc8mAd1h4MSFF1W9+z7J4aSNIZKIMh
+         tBKpUxIkqbdhXGHkWsLEFVNNNtCCDK3TdfZUP/X4JX7Yl7+SbX42XnFYxB/nPWC1KP53
+         O5iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707253878; x=1707858678;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I2CG33VPPpXBW0bT6gJ7H7D26BUksG/NvgMt6SM3LZM=;
+        b=i1L5DoJm7Jcpn+DH42x9qwl0IBd4Vb1IeTiu4CIeuZLXCdHEjc9HSrEtlD1kdO+ddm
+         Oz8rc2McA8QkHYwQvmzbCIeYIUklEDvHRIPjhzgZmAbS1mNfPTTlcaXvdZ7x6RGxw1rY
+         CFjLIWwwGuAqr7XPMDlCNrZmixeX43RlVxRvR6FzoMSu4hWRjnZH/HCh1YYoYMFS5PbC
+         E/mzkJ9S6sPRMWjZfZvbDguxyC1QbJ8kA1PsdDtRAqSyDPuGxE6ONwBr+roaLO+pSBqi
+         Udd3lQRAQcNizgdNSjNNrwomZVXnXwcX8a88VBlF5hOHmMuO82/mbNP8ktUQ590sCX7a
+         HyaA==
+X-Gm-Message-State: AOJu0YzzxRuba6mtJ8Pj/j5BfsJgwPOURXoytlDqjC5528ToEnAx3iEJ
+	Gh/IFOeOL8yx1FxXTOwf5nhkvn4N2vUoQPw+pM416fXbKlVq3rem
+X-Google-Smtp-Source: AGHT+IGVeb5RZpfylDVMc7uFzF0bFVYLKe4HdkLjmpP7649rzmcsyMIf+ArF8LarY9xNjUUvum2wXQ==
+X-Received: by 2002:a17:90b:1bc2:b0:296:a746:67f5 with SMTP id oa2-20020a17090b1bc200b00296a74667f5mr713716pjb.44.1707253878470;
+        Tue, 06 Feb 2024 13:11:18 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW5VIR9m9MMf8pmz/Juke+rIkiaThYJzHJEqOC6aLZ9e2M+FwS4sPB2eyROhKpqeAHdIkbPQy2JINmb71r9IAgdX4igZZDAs3slsD2qWziJjP51PAEccx8LWS+M1b2XHsOAQW8nETQFLTVwyfZMKjNLdGW+H0GH+lVta8YAKMl8wyRejRxG5qCyXKC1LrSmpMtYgEZQW89ZewsAwjsJPJbWycuIzCPX40cyUwyZW1iWp8JE37FBsk/fcw==
+Received: from xplor.waratah.dyndns.org (125-236-136-221-fibre.sparkbb.co.nz. [125.236.136.221])
+        by smtp.gmail.com with ESMTPSA id z6-20020a17090a468600b002961ccd55e4sm2143578pjf.31.2024.02.06.13.11.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Feb 2024 13:11:17 -0800 (PST)
+Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
+	id B2A2036031F; Wed,  7 Feb 2024 10:11:13 +1300 (NZDT)
+From: Michael Schmitz <schmitzmic@gmail.com>
+To: linux-m68k@vger.kernel.org
+Cc: geert@linux-m68k.org,
+	uli@fpond.eu,
+	fthain@linux-m68k.org,
+	viro@zeniv.linux.org.uk,
+	Michael Schmitz <schmitzmic@gmail.com>,
 	stable@vger.kernel.org,
-	yukuai1@huaweicloud.com
-Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system; successfully bisected
-Date: Tue,  6 Feb 2024 13:56:00 -0700
-Message-ID: <20240206205600.20788-1-dan@danm.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CAPhsuW58VdmZwigxP6t_fstkSDb34GB9+gTM0Sziet=n17HzQg@mail.gmail.com>
-References: <CAPhsuW58VdmZwigxP6t_fstkSDb34GB9+gTM0Sziet=n17HzQg@mail.gmail.com>
+	cip-dev@lists.cip-project.org
+Subject: [PATCH v3 1/8] m68k/mm: Adjust VM area to be unmapped by gap size for __iounmap()
+Date: Wed,  7 Feb 2024 10:10:57 +1300
+Message-Id: <20240206211104.26421-2-schmitzmic@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20240206211104.26421-1-schmitzmic@gmail.com>
+References: <20240206211104.26421-1-schmitzmic@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: 1PwEXQiIHZiZPEsu5x6_2YSUNe4Yw20j
-X-Proofpoint-ORIG-GUID: 1PwEXQiIHZiZPEsu5x6_2YSUNe4Yw20j
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-06_14,2024-01-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 phishscore=0 spamscore=0
- mlxscore=0 adultscore=0 clxscore=1030 malwarescore=0 mlxlogscore=688
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2402060146
 
-> Dan, could you please run the test on this branch
-> (83cbdaf61b1ab9cdaa0321eeea734bc70ca069c8)?
+commit 3f90f9ef2dda316d64e420d5d51ba369587ccc55 upstream.
 
-I'm sorry to report that I can still reproduce the problem running the
-kernel built from the md-6.9 branch (83cbdaf61b1a).
+If 020/030 support is enabled, get_io_area() leaves an IO_SIZE gap
+between mappings which is added to the vm_struct representing the
+mapping.  __ioremap() uses the actual requested size (after alignment),
+while __iounmap() is passed the size from the vm_struct.
 
-But the only commit I see on that branch that's not in master and
-touches raid5.c is this one:
+On 020/030, early termination descriptors are used to set up mappings of
+extent 'size', which are validated on unmapping. The unmapped gap of
+size IO_SIZE defeats the sanity check of the pmd tables, causing
+__iounmap() to loop forever on 030.
 
-    test@sysrescue:~/src/linux$ git log master..song/md-6.9 drivers/md/raid5.c
-    commit 61c90765e131e63ead773b9b99167415e246a945
-    Author: Yu Kuai <yukuai3@huawei.com>
-    Date:   Thu Dec 28 20:55:51 2023 +0800
+On 040/060, unmapping of page table entries does not check for a valid
+mapping, so the umapping loop always completes there.
 
-        md: remove redundant check of 'mddev->sync_thread'
+Adjust size to be unmapped by the gap that had been added in the
+vm_struct prior.
 
-Is that expected, or were you expecting additional fixes to be in there?
+This fixes the hang in atari_platform_init() reported a long time ago,
+and a similar one reported by Finn recently (addressed by removing
+ioremap() use from the SWIM driver.
 
--- Dan
+Tested on my Falcon in 030 mode - untested but should work the same on
+040/060 (the extra page tables cleared there would never have been set
+up anyway).
+
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+[geert: Minor commit description improvements]
+[geert: This was fixed in 2.4.23, but not in 2.5.x]
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: stable@vger.kernel.org
+Cc: <cip-dev@lists.cip-project.org> # 4.4
+---
+ arch/m68k/mm/kmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/m68k/mm/kmap.c b/arch/m68k/mm/kmap.c
+index 6e4955bc542b..fcd52cefee29 100644
+--- a/arch/m68k/mm/kmap.c
++++ b/arch/m68k/mm/kmap.c
+@@ -88,7 +88,8 @@ static inline void free_io_area(void *addr)
+ 	for (p = &iolist ; (tmp = *p) ; p = &tmp->next) {
+ 		if (tmp->addr == addr) {
+ 			*p = tmp->next;
+-			__iounmap(tmp->addr, tmp->size);
++			/* remove gap added in get_io_area() */
++			__iounmap(tmp->addr, tmp->size - IO_SIZE);
+ 			kfree(tmp);
+ 			return;
+ 		}
+-- 
+2.17.1
+
 
