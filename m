@@ -1,90 +1,57 @@
-Return-Path: <stable+bounces-18874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A00A84AB54
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 02:00:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E448484ABA0
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 02:33:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 389EB1C23FA4
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 01:00:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EF391F24BB4
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 01:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A829A137E;
-	Tue,  6 Feb 2024 00:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A681AB805;
+	Tue,  6 Feb 2024 01:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mistralsolutions.com header.i=@mistralsolutions.com header.b="AV8iPH4R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GPfzIhge"
 X-Original-To: stable@vger.kernel.org
-Received: from egress-ip12a.ess.de.barracuda.com (egress-ip12a.ess.de.barracuda.com [18.184.203.235])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9460E4A06
-	for <stable@vger.kernel.org>; Tue,  6 Feb 2024 00:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.184.203.235
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F3E6FB0;
+	Tue,  6 Feb 2024 01:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707181192; cv=none; b=Vl3sC722oAWDObBTlLtXs2nTwBlJE4Hp+Ni6RJCiniy2vWyf61/4n2octgSWvZwccquy2IK8YHzVbhxnMAVt/LyjsozS/QroHb98+vWA16WVbCEoTKSvHaTD7H6KIeRcSWDleGqqlaUizPDzqJPr1PNzpzbpA81vQje5+hIKE5Y=
+	t=1707183178; cv=none; b=ksDrI43oR0OqXFQZK7Afl/3qfjHnRGU14Yn7YXPAABacFzPUubqPl/zE8fzvjPAUtMmtMM88wyDEb2jcJvscsqzTzcM42wNBkeM193zJxwkb5CS+gGaujgcsODNuYGLfYXgHN3unz+ZUpRBx6wIDSIjDxtiiPNr6zZ7V7NNEWIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707181192; c=relaxed/simple;
-	bh=PFuA5xdtIgOFSyw72kpYF/uFFQ62cuFVyjApG9Z1ftI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RwHCJOWNT72wSyh0gQb8fiLxTND/uhRrJarcSfeUrT7fQjj9jRLiOXWWOjz7fNlMSYBqUGNrABeJkKpWgkSqGndMsuoYZ9mPOA9W+//uGCUiZticvjuvJ5xb0GLr0sA3l5ig7M93bsBmoWw41uhue2XP7XFtuKMxdrc6DRr1PA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mistralsolutions.com; spf=pass smtp.mailfrom=mistralsolutions.com; dkim=pass (1024-bit key) header.d=mistralsolutions.com header.i=@mistralsolutions.com header.b=AV8iPH4R; arc=none smtp.client-ip=18.184.203.235
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mistralsolutions.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mistralsolutions.com
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198]) by mx-outbound10-206.eu-central-1a.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Tue, 06 Feb 2024 00:59:48 +0000
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-1d486bce39bso40206425ad.1
-        for <stable@vger.kernel.org>; Mon, 05 Feb 2024 16:59:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mistralsolutions.com; s=google; t=1707181185; x=1707785985; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VbWRmcBkwMEecTwCDQa265tRUPfMy5uFyAEgQ22r9b8=;
-        b=AV8iPH4R4HndhYhWatGBkVUAbsDDxNh0cntdBBuXFJyWcufbIRvhyh1xsoxs0lE6Aa
-         v+SNyBgrcArrXBDk1Dgd3tp7Ma832OCdVdaOSnhuGrU3dOMKsIZ4pmwMb9BZPOLal6tY
-         d+KYls4aavWKYTNMOZtWzIc5PXccWrDLV5ayQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707181185; x=1707785985;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VbWRmcBkwMEecTwCDQa265tRUPfMy5uFyAEgQ22r9b8=;
-        b=xGJiJuHoVFXwDiHvMltl0Zq6nHhTKU+lBuVB/2bhdH/KvmJ4v63L8t2DwJZejKK1xD
-         7l40LZWdavwwEfyF9rz4LNnAr1K9YSXliqJO/BC7W/pjS0GSAg72ieR+aK8ELgWfA0zZ
-         g24O+vKXNHQ3vrCTJu75lUoEFbJD/PgUkXkEX2vJrlKkuYzys+YeMipwI8xRMFeN/byC
-         dysfsXhRa3vUuabQqSs7iDlx5ZlyGnn8hwNWgClxBWelnEjOga6Brw/8C9jCQdCVBdhp
-         PHrQjL/e6tu4cDphjQWBgEh1zQtc/oN0NCRoTwp/j9/zAqFG/qw4hpbR3DkISicJKcAU
-         j+bQ==
-X-Gm-Message-State: AOJu0Yz7NXWmo9uzVo1n/lIyZypga64rXTqUlr+RVNHTB9vfIXnqZmQ3
-	LYi8ylMI8ug5b+7zRjvGmDDn/xNH+xDn+PP1NEx4OENploTL5jERmgO39P1Vn6nrWbujWYN0Gl9
-	MPjWdc7XVMhCrNQuRX1eJsws+bWONyNHNwlG3DyMuXAo4tS7dqr98lnEt4Bqd3dehw3aCwydDSD
-	sR0DbXn/yCvZLmTHwcPLGA
-X-Received: by 2002:a17:903:48d:b0:1d9:620b:89cb with SMTP id jj13-20020a170903048d00b001d9620b89cbmr187737plb.13.1707181185317;
-        Mon, 05 Feb 2024 16:59:45 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGOAtgjSgJxtQ0OWsnBbJCqmPgsXPZ+A3CqZT44gif2wpYXXlhNKWQ4M2WB42yhHBLvg0k4kw==
-X-Received: by 2002:a17:903:48d:b0:1d9:620b:89cb with SMTP id jj13-20020a170903048d00b001d9620b89cbmr187720plb.13.1707181185001;
-        Mon, 05 Feb 2024 16:59:45 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCWz/WSqyM10dRAG0UpNtz48TCpwSK/9J6LcnyWL7CyLcLv7sHdiB5wyp6X9o2IaDjsJ7MrT7O77b38629bOz/H1BtbigQrNgoVY5xi+jUndtH41j9kZ3H9JYa+wk1eBP26O2xxlClOfXFSeSvcwpBkGMiX3SFV9pqyFxmQHn7S7eQrL3p1l+0k1FShba1fWhxbm/p8OrgZ3TVdAt3omfxroGoJ4GK2g/Jw8UaRwT2Tj
-Received: from localhost.localdomain ([49.207.212.181])
-        by smtp.gmail.com with ESMTPSA id le11-20020a170902fb0b00b001d8f251c8b2sm496534plb.221.2024.02.05.16.59.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Feb 2024 16:59:44 -0800 (PST)
-From: Sinthu Raja <sinthu.raja@mistralsolutions.com>
-X-Google-Original-From: Sinthu Raja <sinthu.raja@ti.com>
-To: Denis Kirjanov <dkirjanov@suse.de>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Ravi Gunasekaran <r-gunasekaran@ti.com>,
-	Roger Quadros <rogerq@kernel.org>
-Cc: linux-omap@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Sinthu Raja <sinthu.raja@ti.com>,
-	stable@vger.kernel.org
-Subject: [PATCH V3 2/2] net: ethernet: ti: cpsw: enable mac_managed_pm to fix mdio
-Date: Tue,  6 Feb 2024 06:29:28 +0530
-Message-Id: <20240206005928.15703-3-sinthu.raja@ti.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20240206005928.15703-1-sinthu.raja@ti.com>
-References: <20240206005928.15703-1-sinthu.raja@ti.com>
+	s=arc-20240116; t=1707183178; c=relaxed/simple;
+	bh=SK7BUVmWI8e3vR555Ph71rlM/avdD4/Eeg+aPP6iOt4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kdKKkK7XZCIxJ5WiXQU/eG9TJLmCU+Bnhsxf/3PEHC3xyX8D8kvcRks6ZReDY/6d2MAZQymWmMrtTWMTt0Gu57afApW0qXPIZVpGT878BSHla6iAlBBlVvGAWM4N9v+QzTN4zbJ0DPNRB8H5n00btsgzhDMp6bb+5HfZcx7t2/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GPfzIhge; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1D6C433F1;
+	Tue,  6 Feb 2024 01:32:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707183178;
+	bh=SK7BUVmWI8e3vR555Ph71rlM/avdD4/Eeg+aPP6iOt4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GPfzIhgeaeM7jS/S68VCmgXDwU3b54ge5vhTEAlFasFYm8eaQVjaObBjCke88E9/T
+	 n0+aJAE2WFu1rZ+8oonOY2KVhrpBq8QH24KdncABOastyeHEdqKOxL4C+0dQOUQ0gY
+	 08O4oy6U7ZR2cfsGfoFGbUqHL3DJQj9YBtoA6gdmqO9umgefzEmSEZtdC6HbTlV8PR
+	 wCSbOR6Q0pD+8loCCMB/giVLtjeUO2Of79shn5/teoeD/ddEsK8BxbZtrR6awU4ELx
+	 x87YITXtBrqtwgo3fCeOTTxPDqgFIDK8terX3xgnMLnKCHw+dvw+rGsGW7VmuKaawt
+	 +3CisSAge8E8g==
+From: Eric Biggers <ebiggers@kernel.org>
+To: stable@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org,
+	selinux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Alfred Piccioni <alpic@google.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>
+Subject: [PATCH 5.4,4.19] lsm: new security_file_ioctl_compat() hook
+Date: Mon,  5 Feb 2024 17:29:53 -0800
+Message-ID: <20240206012953.114308-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,77 +59,228 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-BESS-ID: 1707181187-302766-3502-4670-1
-X-BESS-VER: 2019.1_20240205.2236
-X-BESS-Apparent-Source-IP: 209.85.214.198
-X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUirNy1bSUcovVrIyMrI0AbIygILmiaYmJmZmqW
-	aJSUaGZkbmxmbJacYpqSYmhpaJxmlJiUq1sQABbgJlQQAAAA==
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.254014 [from 
-	cloudscan10-250.eu-central-1a.ess.aws.cudaops.com]
-	Rule breakdown below
-	 pts rule name              description
-	---- ---------------------- --------------------------------
-	0.00 BSF_SC0_MISMATCH_TO    META: Envelope rcpt doesn't match header 
-	0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS91090 scores of KILL_LEVEL=7.0 tests=BSF_SC0_MISMATCH_TO, BSF_BESS_OUTBOUND
-X-BESS-BRTS-Status:1
 
-From: Sinthu Raja <sinthu.raja@ti.com>
+From: Alfred Piccioni <alpic@google.com>
 
-The below commit  introduced a WARN when phy state is not in the states:
-PHY_HALTED, PHY_READY and PHY_UP.
-commit 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
+commit f1bb47a31dff6d4b34fb14e99850860ee74bb003 upstream.
+[Please apply to 5.4-stable and 4.19-stable.  The upstream commit failed
+to apply to these kernels.  This patch resolves the conflicts.]
 
-When cpsw resumes, there have port in PHY_NOLINK state, so the below
-warning comes out. Set mac_managed_pm be true to tell mdio that the phy
-resume/suspend is managed by the mac, to fix the following warning:
+Some ioctl commands do not require ioctl permission, but are routed to
+other permissions such as FILE_GETATTR or FILE_SETATTR. This routing is
+done by comparing the ioctl cmd to a set of 64-bit flags (FS_IOC_*).
 
-WARNING: CPU: 0 PID: 965 at drivers/net/phy/phy_device.c:326 mdio_bus_phy_resume+0x140/0x144
-CPU: 0 PID: 965 Comm: sh Tainted: G           O       6.1.46-g247b2535b2 #1
-Hardware name: Generic AM33XX (Flattened Device Tree)
- unwind_backtrace from show_stack+0x18/0x1c
- show_stack from dump_stack_lvl+0x24/0x2c
- dump_stack_lvl from __warn+0x84/0x15c
- __warn from warn_slowpath_fmt+0x1a8/0x1c8
- warn_slowpath_fmt from mdio_bus_phy_resume+0x140/0x144
- mdio_bus_phy_resume from dpm_run_callback+0x3c/0x140
- dpm_run_callback from device_resume+0xb8/0x2b8
- device_resume from dpm_resume+0x144/0x314
- dpm_resume from dpm_resume_end+0x14/0x20
- dpm_resume_end from suspend_devices_and_enter+0xd0/0x924
- suspend_devices_and_enter from pm_suspend+0x2e0/0x33c
- pm_suspend from state_store+0x74/0xd0
- state_store from kernfs_fop_write_iter+0x104/0x1ec
- kernfs_fop_write_iter from vfs_write+0x1b8/0x358
- vfs_write from ksys_write+0x78/0xf8
- ksys_write from ret_fast_syscall+0x0/0x54
-Exception stack(0xe094dfa8 to 0xe094dff0)
-dfa0:                   00000004 005c3fb8 00000001 005c3fb8 00000004 00000001
-dfc0: 00000004 005c3fb8 b6f6bba0 00000004 00000004 0059edb8 00000000 00000000
-dfe0: 00000004 bed918f0 b6f09bd3 b6e89a66
+However, if a 32-bit process is running on a 64-bit kernel, it emits
+32-bit flags (FS_IOC32_*) for certain ioctl operations. These flags are
+being checked erroneously, which leads to these ioctl operations being
+routed to the ioctl permission, rather than the correct file
+permissions.
 
-Cc: <stable@vger.kernel.org> # v6.0+
-Fixes: 744d23c71af3 ("net: phy: Warn about incorrect mdio_bus_phy_resume() state")
-Signed-off-by: Sinthu Raja <sinthu.raja@ti.com>
+This was also noted in a RED-PEN finding from a while back -
+"/* RED-PEN how should LSM module know it's handling 32bit? */".
+
+This patch introduces a new hook, security_file_ioctl_compat(), that is
+called from the compat ioctl syscall. All current LSMs have been changed
+to support this hook.
+
+Reviewing the three places where we are currently using
+security_file_ioctl(), it appears that only SELinux needs a dedicated
+compat change; TOMOYO and SMACK appear to be functional without any
+change.
+
+Cc: stable@vger.kernel.org
+Fixes: 0b24dcb7f2f7 ("Revert "selinux: simplify ioctl checking"")
+Signed-off-by: Alfred Piccioni <alpic@google.com>
+Reviewed-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+[PM: subject tweak, line length fixes, and alignment corrections]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- drivers/net/ethernet/ti/cpsw.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/compat_ioctl.c          |  3 +--
+ include/linux/lsm_hooks.h  |  9 +++++++++
+ include/linux/security.h   |  9 +++++++++
+ security/security.c        | 17 +++++++++++++++++
+ security/selinux/hooks.c   | 28 ++++++++++++++++++++++++++++
+ security/smack/smack_lsm.c |  1 +
+ security/tomoyo/tomoyo.c   |  1 +
+ 7 files changed, 66 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index ea85c6dd5484..c0a5abd8d9a8 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -631,6 +631,8 @@ static void cpsw_slave_open(struct cpsw_slave *slave, struct cpsw_priv *priv)
- 		}
- 	}
+diff --git a/fs/compat_ioctl.c b/fs/compat_ioctl.c
+index 8fcc53d83af2d..22f7dc6688dee 100644
+--- a/fs/compat_ioctl.c
++++ b/fs/compat_ioctl.c
+@@ -994,8 +994,7 @@ COMPAT_SYSCALL_DEFINE3(ioctl, unsigned int, fd, unsigned int, cmd,
+ 	if (!f.file)
+ 		goto out;
  
-+	phy->mac_managed_pm = true;
+-	/* RED-PEN how should LSM module know it's handling 32bit? */
+-	error = security_file_ioctl(f.file, cmd, arg);
++	error = security_file_ioctl_compat(f.file, cmd, arg);
+ 	if (error)
+ 		goto out_fput;
+ 
+diff --git a/include/linux/lsm_hooks.h b/include/linux/lsm_hooks.h
+index a21dc5413653e..0f4897e97c70f 100644
+--- a/include/linux/lsm_hooks.h
++++ b/include/linux/lsm_hooks.h
+@@ -498,6 +498,12 @@
+  *	simple integer value.  When @arg represents a user space pointer, it
+  *	should never be used by the security module.
+  *	Return 0 if permission is granted.
++ * @file_ioctl_compat:
++ *	@file contains the file structure.
++ *	@cmd contains the operation to perform.
++ *	@arg contains the operational arguments.
++ *	Check permission for a compat ioctl operation on @file.
++ *	Return 0 if permission is granted.
+  * @mmap_addr :
+  *	Check permissions for a mmap operation at @addr.
+  *	@addr contains virtual address that will be used for the operation.
+@@ -1602,6 +1608,8 @@ union security_list_options {
+ 	void (*file_free_security)(struct file *file);
+ 	int (*file_ioctl)(struct file *file, unsigned int cmd,
+ 				unsigned long arg);
++	int (*file_ioctl_compat)(struct file *file, unsigned int cmd,
++				unsigned long arg);
+ 	int (*mmap_addr)(unsigned long addr);
+ 	int (*mmap_file)(struct file *file, unsigned long reqprot,
+ 				unsigned long prot, unsigned long flags);
+@@ -1907,6 +1915,7 @@ struct security_hook_heads {
+ 	struct hlist_head file_alloc_security;
+ 	struct hlist_head file_free_security;
+ 	struct hlist_head file_ioctl;
++	struct hlist_head file_ioctl_compat;
+ 	struct hlist_head mmap_addr;
+ 	struct hlist_head mmap_file;
+ 	struct hlist_head file_mprotect;
+diff --git a/include/linux/security.h b/include/linux/security.h
+index aa5c7141c8d17..1a99958b850b5 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -362,6 +362,8 @@ int security_file_permission(struct file *file, int mask);
+ int security_file_alloc(struct file *file);
+ void security_file_free(struct file *file);
+ int security_file_ioctl(struct file *file, unsigned int cmd, unsigned long arg);
++int security_file_ioctl_compat(struct file *file, unsigned int cmd,
++			       unsigned long arg);
+ int security_mmap_file(struct file *file, unsigned long prot,
+ 			unsigned long flags);
+ int security_mmap_addr(unsigned long addr);
+@@ -907,6 +909,13 @@ static inline int security_file_ioctl(struct file *file, unsigned int cmd,
+ 	return 0;
+ }
+ 
++static inline int security_file_ioctl_compat(struct file *file,
++					     unsigned int cmd,
++					     unsigned long arg)
++{
++	return 0;
++}
 +
- 	slave->phy = phy;
+ static inline int security_mmap_file(struct file *file, unsigned long prot,
+ 				     unsigned long flags)
+ {
+diff --git a/security/security.c b/security/security.c
+index 460c3826f6401..6c06296548c21 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -1422,6 +1422,23 @@ int security_file_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 	return call_int_hook(file_ioctl, 0, file, cmd, arg);
+ }
  
- 	phy_attached_info(slave->phy);
++/**
++ * security_file_ioctl_compat() - Check if an ioctl is allowed in compat mode
++ * @file: associated file
++ * @cmd: ioctl cmd
++ * @arg: ioctl arguments
++ *
++ * Compat version of security_file_ioctl() that correctly handles 32-bit
++ * processes running on 64-bit kernels.
++ *
++ * Return: Returns 0 if permission is granted.
++ */
++int security_file_ioctl_compat(struct file *file, unsigned int cmd,
++			       unsigned long arg)
++{
++	return call_int_hook(file_ioctl_compat, 0, file, cmd, arg);
++}
++
+ static inline unsigned long mmap_prot(struct file *file, unsigned long prot)
+ {
+ 	/*
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index c1bf319b459a9..6fec9fba41a84 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -3668,6 +3668,33 @@ static int selinux_file_ioctl(struct file *file, unsigned int cmd,
+ 	return error;
+ }
+ 
++static int selinux_file_ioctl_compat(struct file *file, unsigned int cmd,
++			      unsigned long arg)
++{
++	/*
++	 * If we are in a 64-bit kernel running 32-bit userspace, we need to
++	 * make sure we don't compare 32-bit flags to 64-bit flags.
++	 */
++	switch (cmd) {
++	case FS_IOC32_GETFLAGS:
++		cmd = FS_IOC_GETFLAGS;
++		break;
++	case FS_IOC32_SETFLAGS:
++		cmd = FS_IOC_SETFLAGS;
++		break;
++	case FS_IOC32_GETVERSION:
++		cmd = FS_IOC_GETVERSION;
++		break;
++	case FS_IOC32_SETVERSION:
++		cmd = FS_IOC_SETVERSION;
++		break;
++	default:
++		break;
++	}
++
++	return selinux_file_ioctl(file, cmd, arg);
++}
++
+ static int default_noexec;
+ 
+ static int file_map_prot_check(struct file *file, unsigned long prot, int shared)
+@@ -6933,6 +6960,7 @@ static struct security_hook_list selinux_hooks[] __lsm_ro_after_init = {
+ 	LSM_HOOK_INIT(file_permission, selinux_file_permission),
+ 	LSM_HOOK_INIT(file_alloc_security, selinux_file_alloc_security),
+ 	LSM_HOOK_INIT(file_ioctl, selinux_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, selinux_file_ioctl_compat),
+ 	LSM_HOOK_INIT(mmap_file, selinux_mmap_file),
+ 	LSM_HOOK_INIT(mmap_addr, selinux_mmap_addr),
+ 	LSM_HOOK_INIT(file_mprotect, selinux_file_mprotect),
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 9e48c8b36b678..6f2613f874fa9 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -4648,6 +4648,7 @@ static struct security_hook_list smack_hooks[] __lsm_ro_after_init = {
+ 
+ 	LSM_HOOK_INIT(file_alloc_security, smack_file_alloc_security),
+ 	LSM_HOOK_INIT(file_ioctl, smack_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, smack_file_ioctl),
+ 	LSM_HOOK_INIT(file_lock, smack_file_lock),
+ 	LSM_HOOK_INIT(file_fcntl, smack_file_fcntl),
+ 	LSM_HOOK_INIT(mmap_file, smack_mmap_file),
+diff --git a/security/tomoyo/tomoyo.c b/security/tomoyo/tomoyo.c
+index 716c92ec941ad..0176612bac967 100644
+--- a/security/tomoyo/tomoyo.c
++++ b/security/tomoyo/tomoyo.c
+@@ -554,6 +554,7 @@ static struct security_hook_list tomoyo_hooks[] __lsm_ro_after_init = {
+ 	LSM_HOOK_INIT(path_rename, tomoyo_path_rename),
+ 	LSM_HOOK_INIT(inode_getattr, tomoyo_inode_getattr),
+ 	LSM_HOOK_INIT(file_ioctl, tomoyo_file_ioctl),
++	LSM_HOOK_INIT(file_ioctl_compat, tomoyo_file_ioctl),
+ 	LSM_HOOK_INIT(path_chmod, tomoyo_path_chmod),
+ 	LSM_HOOK_INIT(path_chown, tomoyo_path_chown),
+ 	LSM_HOOK_INIT(path_chroot, tomoyo_path_chroot),
+
+base-commit: f0602893f43a54097fcf22bd8c2f7b8e75ca643e
 -- 
-2.36.1
+2.43.0
 
 
