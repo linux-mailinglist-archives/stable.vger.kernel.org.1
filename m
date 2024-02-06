@@ -1,167 +1,126 @@
-Return-Path: <stable+bounces-18890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EBA684B217
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 11:10:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B71D784B26B
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 11:22:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99EB91F25057
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 10:10:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E86D01C23C89
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 10:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF4212E1E4;
-	Tue,  6 Feb 2024 10:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA2F612E1E2;
+	Tue,  6 Feb 2024 10:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HtH0ojja";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GKEfr1is"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eswa3XIV"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8D912E1C5;
-	Tue,  6 Feb 2024 10:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C5F12B14E;
+	Tue,  6 Feb 2024 10:22:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707214227; cv=none; b=KmpWSpMknIMFCpGxLHiy3RtcHBBAx6Ej1Z9ZyQh6ZW02v2XGJYO9nq/YwwsJWWkgnrYUg5JnFZTTNlebuSEyjL7iGmLFY+dO2rkFsq0WUeu5fO6zmuA5qsK2A5t5ra6UxjBXnWuLRuSecEVPid6BY+DjgwXLi+sQc8GI1QdPdbE=
+	t=1707214973; cv=none; b=hUUdYruvnstyAKzG6GSJUoRXzW8X73Hi2AR3ShlZMqJnyBzg5oYuQNBsfdBALsKHUZcnJArXkzAgKUMpO+y/TSsqd3QVhT8DbVnkZZpggUWS117BemsZkL2vuCcDSLBcIIPS/r5PHTfKQLMe77DF5IbWTzo3mbPDHscu9uixjGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707214227; c=relaxed/simple;
-	bh=/WH4wHExctajLCka8lPaJbDC+CM3T/biAoLKRWKeI9c=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=clp8MQpCZuBQ9ddiI4PJAWLd62eQjcPsDD41c8/roYSP7TfVgLMWu3CLbqSrnytWAa2mce5+iy3oMC71Fz8pQ//HWJ8qPA3uNr/Rcoh6JhuSQ0ASLg4+VGkiSMgEBcmAom0aDrLyOITj/LPqkfzukyd30CKYgJPxsXa/i6d47Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HtH0ojja; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GKEfr1is; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 06 Feb 2024 10:10:22 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1707214223;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=85JFYrajsZCSPLaR70HH1roOmEwxVGyELjZIaTlWZzE=;
-	b=HtH0ojjaPgsOapXdl4MFrGz9hNSpBrMRiKHQtUGzcWToQMezt/SjXJXx/xejOMN6Cdoy1A
-	Sasr0nlsy5PhgFy/kjoIE3pfddjwaKVAgmAHu9u2wyB7ycRpI+NM6KAfkUaoojhbxIHo4L
-	btuYjdjyfYCJxkI9CefuVvv8u2lOklMH1qozC/L/HlJZIsZq7wPVsHzLQbzJV4yYOZ2SZl
-	eT7WoaXtkK68hnARc9WV1oB9qYYdpz+MeZ5ar5BQh776Wp0eNuLZ2ag42E+B8K2SqUbqqF
-	+lagKbyd8ehAxAzJlLcrWPJkEaOqVBNyEjN3QkBi9JWgxZdslUmMHHPUMovznQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1707214223;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=85JFYrajsZCSPLaR70HH1roOmEwxVGyELjZIaTlWZzE=;
-	b=GKEfr1isn26zmy7+wqvheQ9ouEgknT3tUwr6cr0khC1Ajczz7oTYFj34vX3KkMKv5nv3iR
-	mUL8jG+vFYB0RKDw==
-From: "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: timers/urgent] hrtimer: Report offline hrtimer enqueue
-Cc: "Paul E. McKenney" <paulmck@kernel.org>,
- Frederic Weisbecker <frederic@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240129235646.3171983-4-boqun.feng@gmail.com>
-References: <20240129235646.3171983-4-boqun.feng@gmail.com>
+	s=arc-20240116; t=1707214973; c=relaxed/simple;
+	bh=lDcrFbajOxQJyzMqUqx8TzZ9sBClVUvvVl6hgim3mhA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=dYXOQrCPAGrW2Wks3j+NCEVB7dUMDmKkGqhOHo0D0Ap48N55Zmi/qUI1rT6ZKclipyUeDA2k29/XPA/TBoafGpxbF2XRBnKjv0wLkJoMYLlcyQsRBuq9aDjnAJuLo57vFQY9tdFvbm2F5hxs+bhtGGPDnYtHqCuQDkzwOkcy1JQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eswa3XIV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9AAC43390;
+	Tue,  6 Feb 2024 10:22:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707214973;
+	bh=lDcrFbajOxQJyzMqUqx8TzZ9sBClVUvvVl6hgim3mhA=;
+	h=From:Date:Subject:To:Cc:From;
+	b=Eswa3XIVSWu2WDQllGuNSIPaKzkygH/cVXrhv5lbeRn1Kyd9LluwUQgEzTnSciWE4
+	 aQYZNhKhxduye2SpKASqfF1Jy84HLyD10L0jU1e5IklTTKMKzLmZipcqjJUPEVW3zz
+	 PXF6vOW4v35UiRc7MYEdzexWuwQOtSFVp3SRykyMPl/TPFVFKrmi4z1WJDIKTtxXcJ
+	 VHP9IKaXhiXS/7KfaKlYD2EnY89w9l6dkMnfs6/30F3NKfR4nIh7q9i9ptJ7NQTmIL
+	 sDeJVGuP24vF1/P8SlNaLBAC74EBCBsuVCdGkRsTnOvT3jZ6viZcZ4t+OfM773aJPi
+	 nLiB6MV4VTQ0Q==
+From: Christian Brauner <brauner@kernel.org>
+Date: Tue, 06 Feb 2024 11:22:09 +0100
+Subject: [PATCH] fs: relax mount_setattr() permission checks
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170721422238.398.262942897891124372.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20240206-vfs-mount-rootfs-v1-1-19b335eee133@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAFAIwmUC/x3MwQ6CMAyA4VchPVszp0LwVQiHMTrpgc20QEgI7
+ 271+B3+/wAlYVJ4VQcIbaxcsuF2qSBOIb8JeTSDd/7hvKtxS4pzWfOCUspiaFxIydO9fdYjWPY
+ RSrz/l11vHoISDhJynH4j668za4Tz/AK7P7yffQAAAA==
+To: linux-fsdevel@vger.kernel.org
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+ Karel Zak <kzak@redhat.com>, stable@vger.kernel.org, 
+ Christian Brauner <brauner@kernel.org>
+X-Mailer: b4 0.13-dev-2d940
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2460; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=lDcrFbajOxQJyzMqUqx8TzZ9sBClVUvvVl6hgim3mhA=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaQe4qhOL5Cfo558v0SVtUDd2n7LpAST6Mi6SwL/Erjcb
+ Do2siR0lLIwiHExyIopsji0m4TLLeep2GyUqQEzh5UJZAgDF6cATGSOMCNDz9a7a0UCdrfZ1Z+d
+ MSuvyYHBsCnUqoLP3ttruqa9S5EII8OkY9vnpioWyG5LMjq5zPyKcoLI4RO7jyZUS6Z12UW1GTE
+ AAA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-The following commit has been merged into the timers/urgent branch of tip:
+When we added mount_setattr() I added additional checks compared to the
+legacy do_reconfigure_mnt() and do_change_type() helpers used by regular
+mount(2). If that mount had a parent then verify that the caller and the
+mount namespace the mount is attached to match and if not make sure that
+it's an anonymous mount.
 
-Commit-ID:     dad6a09f3148257ac1773cd90934d721d68ab595
-Gitweb:        https://git.kernel.org/tip/dad6a09f3148257ac1773cd90934d721d68ab595
-Author:        Frederic Weisbecker <frederic@kernel.org>
-AuthorDate:    Mon, 29 Jan 2024 15:56:36 -08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 06 Feb 2024 10:56:35 +01:00
+The real rootfs falls into neither category. It is neither an anoymous
+mount because it is obviously attached to the initial mount namespace
+but it also obviously doesn't have a parent mount. So that means legacy
+mount(2) allows changing mount properties on the real rootfs but
+mount_setattr(2) blocks this. I never thought much about this but of
+course someone on this planet of earth changes properties on the real
+rootfs as can be seen in [1].
 
-hrtimer: Report offline hrtimer enqueue
+Since util-linux finally switched to the new mount api in 2.39 not so
+long ago it also relies on mount_setattr() and that surfaced this issue
+when Fedora 39 finally switched to it. Fix this.
 
-The hrtimers migration on CPU-down hotplug process has been moved
-earlier, before the CPU actually goes to die. This leaves a small window
-of opportunity to queue an hrtimer in a blind spot, leaving it ignored.
-
-For example a practical case has been reported with RCU waking up a
-SCHED_FIFO task right before the CPUHP_AP_IDLE_DEAD stage, queuing that
-way a sched/rt timer to the local offline CPU.
-
-Make sure such situations never go unnoticed and warn when that happens.
-
-Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
-Reported-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240129235646.3171983-4-boqun.feng@gmail.com
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2256843
+Reported-by: Karel Zak <kzak@redhat.com>
+Cc: stable@vger.kernel.org # v5.12+
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 ---
- include/linux/hrtimer.h | 4 +++-
- kernel/time/hrtimer.c   | 3 +++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ fs/namespace.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/hrtimer.h b/include/linux/hrtimer.h
-index 87e3bed..641c456 100644
---- a/include/linux/hrtimer.h
-+++ b/include/linux/hrtimer.h
-@@ -157,6 +157,7 @@ enum  hrtimer_base_type {
-  * @max_hang_time:	Maximum time spent in hrtimer_interrupt
-  * @softirq_expiry_lock: Lock which is taken while softirq based hrtimer are
-  *			 expired
-+ * @online:		CPU is online from an hrtimers point of view
-  * @timer_waiters:	A hrtimer_cancel() invocation waits for the timer
-  *			callback to finish.
-  * @expires_next:	absolute time of the next event, is required for remote
-@@ -179,7 +180,8 @@ struct hrtimer_cpu_base {
- 	unsigned int			hres_active		: 1,
- 					in_hrtirq		: 1,
- 					hang_detected		: 1,
--					softirq_activated       : 1;
-+					softirq_activated       : 1,
-+					online			: 1;
- #ifdef CONFIG_HIGH_RES_TIMERS
- 	unsigned int			nr_events;
- 	unsigned short			nr_retries;
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 7607939..edb0f82 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -1085,6 +1085,7 @@ static int enqueue_hrtimer(struct hrtimer *timer,
- 			   enum hrtimer_mode mode)
- {
- 	debug_activate(timer, mode);
-+	WARN_ON_ONCE(!base->cpu_base->online);
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 437f60e96d40..fb0286920bce 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -4472,10 +4472,15 @@ static int do_mount_setattr(struct path *path, struct mount_kattr *kattr)
+ 	/*
+ 	 * If this is an attached mount make sure it's located in the callers
+ 	 * mount namespace. If it's not don't let the caller interact with it.
+-	 * If this is a detached mount make sure it has an anonymous mount
+-	 * namespace attached to it, i.e. we've created it via OPEN_TREE_CLONE.
++	 *
++	 * If this mount doesn't have a parent it's most often simply a
++	 * detached mount with an anonymous mount namespace. IOW, something
++	 * that's simply not attached yet. But there are apparently also users
++	 * that do change mount properties on the rootfs itself. That obviously
++	 * neither has a parent nor is it a detached mount so we cannot
++	 * unconditionally check for detached mounts.
+ 	 */
+-	if (!(mnt_has_parent(mnt) ? check_mnt(mnt) : is_anon_ns(mnt->mnt_ns)))
++	if (mnt_has_parent(mnt) && !check_mnt(mnt))
+ 		goto out;
  
- 	base->cpu_base->active_bases |= 1 << base->index;
- 
-@@ -2183,6 +2184,7 @@ int hrtimers_prepare_cpu(unsigned int cpu)
- 	cpu_base->softirq_next_timer = NULL;
- 	cpu_base->expires_next = KTIME_MAX;
- 	cpu_base->softirq_expires_next = KTIME_MAX;
-+	cpu_base->online = 1;
- 	hrtimer_cpu_base_init_expiry_lock(cpu_base);
- 	return 0;
- }
-@@ -2250,6 +2252,7 @@ int hrtimers_cpu_dying(unsigned int dying_cpu)
- 	smp_call_function_single(ncpu, retrigger_next_event, NULL, 0);
- 
- 	raw_spin_unlock(&new_base->lock);
-+	old_base->online = 0;
- 	raw_spin_unlock(&old_base->lock);
- 
- 	return 0;
+ 	/*
+
+---
+base-commit: 2a42e144dd0b62eaf79148394ab057145afbc3c5
+change-id: 20240206-vfs-mount-rootfs-70aff2e3956d
+
 
