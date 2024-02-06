@@ -1,137 +1,144 @@
-Return-Path: <stable+bounces-19016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5492484BF82
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 22:49:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE5884C022
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 23:36:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF9931F23DBA
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 21:49:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94A38B241C6
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 22:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A181B94C;
-	Tue,  6 Feb 2024 21:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 223C41BF58;
+	Tue,  6 Feb 2024 22:36:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aZZhFz0F"
 X-Original-To: stable@vger.kernel.org
-Received: from irl.hu (irl.hu [95.85.9.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E601B948;
-	Tue,  6 Feb 2024 21:49:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226B31C291
+	for <stable@vger.kernel.org>; Tue,  6 Feb 2024 22:36:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707256174; cv=none; b=YWMOZJCWjUjHN/aDAWhKZcldAdhplryz0mpikyTKq8IRlFCQAYPtd/2S7rOH/6iFnQYdxnD2XqdJXNwNxxSabYM/B4debQdpz9b1JdhpmuXs8KMsedypIPB2PNTYGe1oQFdj/+hj/R2YSaW59AOFqGpwNuGZwzU6gVl7/d6oIIM=
+	t=1707258993; cv=none; b=WgY80lKEANvIVo+uHyhT5i2DpcDwv3VH0qxxofc2A9/9x81FMVON+uiNB/fHjw9OBNr66SSVyvw+SGLWo6xfAZfGVzulEQv1DlKDYf53fFyEel8gxYlrPuL/rqXYJQWEBw8vBVoi+8uj06pg2eYymDewAbEjl7HPTyHjP/PexuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707256174; c=relaxed/simple;
-	bh=LiKVYTVwfhGFPEJc6YnATjTVvQnxnW94uIPI7ylSso4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=cvVs9geX2o3T9wMVpaF1N4uWR/2zxL46oleV6nYu54uscxQc21m8Qb1MsCB4dfrMp//QPb1AvJ/G8XWreejZFl0IAN/5+y7uxpUe6Ol+JxCDJZcALO2reGcCpUqFf1j/u9XFGzHci1nSFdA8nZM4uTnhuPviRXeqg026mBWsT8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
-Received: from fedori.lan (51b69e54.dsl.pool.telekom.hu [::ffff:81.182.158.84])
-  (AUTH: CRAM-MD5 soyer@irl.hu, )
-  by irl.hu with ESMTPSA
-  id 00000000000737A5.0000000065C2A96A.001AD717; Tue, 06 Feb 2024 22:49:30 +0100
-From: Gergo Koteles <soyer@irl.hu>
-To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
-  Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>,
-  Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
-  Mark Brown <broonie@kernel.org>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-  alsa-devel@alsa-project.org, Gergo Koteles <soyer@irl.hu>,
-  stable@vger.kernel.org
-Subject: [PATCH v3] ASoC: tas2781: remove unused acpi_subysystem_id
-Date: Tue,  6 Feb 2024 22:49:29 +0100
-Message-ID: <7f056a4148fec176812ff6cc490860bf565b161c.1707255917.git.soyer@irl.hu>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <df5c94396256e9573b772962182def52d20c50d4.1707250969.git.soyer@irl.hu>
-References: <df5c94396256e9573b772962182def52d20c50d4.1707250969.git.soyer@irl.hu>
+	s=arc-20240116; t=1707258993; c=relaxed/simple;
+	bh=7QrIMERdjq61vUpc9OT4JVGI9Rs0/Mmw9Vd9BvIWxRY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cKqEdQExYCuE3DzldM+TYV8JnY+jw/v6KyHeunQB9SqIsldX9pMh7TaknpJKbClLbAlDHjdtDM27Bvq3A+CUUtppPn5GfX9x4mVcWJiMDQ0nTTkyCZRslQVVSTsoJvxs4TDBNYP1quPv1porVvnIqkb6Dohm854XrO2uBe9Y5hU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aZZhFz0F; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-41009a16ccdso48875e9.2
+        for <stable@vger.kernel.org>; Tue, 06 Feb 2024 14:36:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1707258989; x=1707863789; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iRhZMOmAA7TAbkhcDCFrfmA34xC8BxSwITTbUht8po0=;
+        b=aZZhFz0FNYNOqWNBZEI+ipBQyMo2dYp8HAWJ6M8r8s40O7n7hp24U1GFxZXhmLVGpA
+         cP2E/Poh70k0dJjJK6rOgNQnu6e8/yh7Qre3xnF2kWXFD2puFXcxJlwgn4vWgcg38FpN
+         O3UzLI0FZc2LkrU4OVMVLVznSWY+DJOUA0wxueSqISkdGxDXf08g2otmxse2pc7xdVQu
+         N2s4bAS7KBT2aD85pu6Si51aERhWWFsQr9/efWoc3EGNl1Q3QpNptcFJ1M8GLB6vjyOb
+         hweRv2GZQDwg3lx1JELKmzan8ucUoIzhJOgwTTK4drRo4+/NFZlJARhCb6QylGEqgop7
+         J7FQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707258989; x=1707863789;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=iRhZMOmAA7TAbkhcDCFrfmA34xC8BxSwITTbUht8po0=;
+        b=IRKxyanpPVwrtwIdSulJ6VeFr3ChE4rvErG90bUVIK9Tf1IKZNMjvUfXneOSL6M/yB
+         nS7UKSVozOHnTqEtwmLpAt3VUalFKfjt/CkmIstzAJk92uMKbjvUGGb1CYWOznjHDug2
+         cuxVbb4VR/0r8xkSB1nrFPc6IBfcwDA7Y6QQHPxpcFwiVQs8XZTYAmUcnSq+a66TVoda
+         IZAu3Y1FI+Wd+WtBthzNu51it9oTcAw5BtxZfTHjiOAlkpqsBBfNdmtAiAjs9ZfrNeH6
+         olIdNKzczxgJqRCX+rq8Zhk/HqbwZx+asB5PL7ech6JxEaa/nMYbrBmgHgZtccHsDbyd
+         WQfg==
+X-Forwarded-Encrypted: i=1; AJvYcCU7e3ht3Aw32Y/J66AmrFJttwa3NlYelAFCjbMTg0DEAJbfumSIJDcwfIdduTQK9R3a+keOqTKMGYbSTBei/kWym61wjHOa
+X-Gm-Message-State: AOJu0YxJqBC7DPgMPCf2vnu4UIf/yGnxOGJbi2TEF52eFk+g1HFy7dWO
+	zqIV7PVZBATocCj8SzHwyU+E9X/B2gpIiEZ2Fe7EQqJ6cjQOTtadeFm/DKG0hg8=
+X-Google-Smtp-Source: AGHT+IG+M0GeCEMLYAfdfVbjtiqILEHWEct0zaNDN1ZCbuPUKTdgkLnarP4CjTcQuyBjHA/2Vted/w==
+X-Received: by 2002:a05:6000:232:b0:33a:f521:7066 with SMTP id l18-20020a056000023200b0033af5217066mr2168070wrz.9.1707258989239;
+        Tue, 06 Feb 2024 14:36:29 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVY4nXap1SU4OIfmVLgiP1qLcGYEnhmtYm/id3EjbIFbKKY79D2JTpAXrkAD/X8SmOhXvtJLB9wDMnyf2RQvUf5sZOPwh+FMXB2szWl9+Hhkv1OkrPk/d8TPLtb892G7TH1YHgbBy56lXH6zrt67l2bMDL0sS+0btQqWeM2l7PoK32CHFKuan6JBw7gZF7r/zBndaBKxw1aJ8dn2/Wu
+Received: from [192.168.43.244] ([213.215.212.194])
+        by smtp.googlemail.com with ESMTPSA id w13-20020a5d680d000000b0033afcc069c3sm40059wru.84.2024.02.06.14.36.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 Feb 2024 14:36:28 -0800 (PST)
+Message-ID: <1ecb3744-7baf-4bdd-a01c-8c87fa0a42b3@linaro.org>
+Date: Tue, 6 Feb 2024 22:36:27 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] nvmem: rmem: Fix return value of rmem_read()
+Content-Language: en-US
+To: Joy Chakraborty <joychakr@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Rob Herring <robh@kernel.org>, Nicolas Saenz Julienne <nsaenz@kernel.org>
+Cc: linux-kernel@vger.kernel.org, manugautam@google.com,
+ stable@vger.kernel.org
+References: <20240206042408.224138-1-joychakr@google.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+In-Reply-To: <20240206042408.224138-1-joychakr@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
 
-The acpi_subysystem_id is only written and freed, not read, so
-unnecessary.
 
-Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
-CC: stable@vger.kernel.org
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
----
-Changes since v2: remove sub from tas2781_read_acpi
-Changes since v1: remove physdev from tas2781_read_acpi
----
- include/sound/tas2781.h           |  1 -
- sound/pci/hda/tas2781_hda_i2c.c   | 12 ------------
- sound/soc/codecs/tas2781-comlib.c |  1 -
- 3 files changed, 14 deletions(-)
 
-diff --git a/include/sound/tas2781.h b/include/sound/tas2781.h
-index 9aff384941de..99ca3e401fd1 100644
---- a/include/sound/tas2781.h
-+++ b/include/sound/tas2781.h
-@@ -103,7 +103,6 @@ struct tasdevice_priv {
- 	struct tm tm;
- 
- 	enum device_catlog_id catlog_id;
--	const char *acpi_subsystem_id;
- 	unsigned char cal_binaryname[TASDEVICE_MAX_CHANNELS][64];
- 	unsigned char crc8_lkp_tbl[CRC8_TABLE_SIZE];
- 	unsigned char coef_binaryname[64];
-diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
-index 1bfb00102a77..4c9a788c3501 100644
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -111,9 +111,7 @@ static int tas2781_get_i2c_res(struct acpi_resource *ares, void *data)
- static int tas2781_read_acpi(struct tasdevice_priv *p, const char *hid)
- {
- 	struct acpi_device *adev;
--	struct device *physdev;
- 	LIST_HEAD(resources);
--	const char *sub;
- 	int ret;
- 
- 	adev = acpi_dev_get_first_match_dev(hid, NULL, -1);
-@@ -129,18 +127,8 @@ static int tas2781_read_acpi(struct tasdevice_priv *p, const char *hid)
- 
- 	acpi_dev_free_resource_list(&resources);
- 	strscpy(p->dev_name, hid, sizeof(p->dev_name));
--	physdev = get_device(acpi_get_first_physical_node(adev));
- 	acpi_dev_put(adev);
- 
--	/* No side-effect to the playback even if subsystem_id is NULL*/
--	sub = acpi_get_subsystem_id(ACPI_HANDLE(physdev));
--	if (IS_ERR(sub))
--		sub = NULL;
--
--	p->acpi_subsystem_id = sub;
--
--	put_device(physdev);
--
- 	return 0;
- 
- err:
-diff --git a/sound/soc/codecs/tas2781-comlib.c b/sound/soc/codecs/tas2781-comlib.c
-index 5d0e5348b361..3aa81514dad7 100644
---- a/sound/soc/codecs/tas2781-comlib.c
-+++ b/sound/soc/codecs/tas2781-comlib.c
-@@ -408,7 +408,6 @@ void tasdevice_remove(struct tasdevice_priv *tas_priv)
- {
- 	if (gpio_is_valid(tas_priv->irq_info.irq_gpio))
- 		gpio_free(tas_priv->irq_info.irq_gpio);
--	kfree(tas_priv->acpi_subsystem_id);
- 	mutex_destroy(&tas_priv->codec_lock);
- }
- EXPORT_SYMBOL_GPL(tasdevice_remove);
+On 06/02/2024 04:24, Joy Chakraborty wrote:
+> reg_read() callback registered with nvmem core expects an integer error
+> as a return value but rmem_read() returns the number of bytes read, as a
+> result error checks in nvmem core fail even when they shouldn't.
+> 
+> Return 0 on success where number of bytes read match the number of bytes
+> requested and a negative error -EINVAL on all other cases.
+> 
+> Fixes: 5a3fa75a4d9c ("nvmem: Add driver to expose reserved memory as nvmem")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joy Chakraborty <joychakr@google.com>
+> ---
+>   drivers/nvmem/rmem.c | 7 ++++++-
+>   1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/nvmem/rmem.c b/drivers/nvmem/rmem.c
+> index 752d0bf4445e..a74dfa279ff4 100644
+> --- a/drivers/nvmem/rmem.c
+> +++ b/drivers/nvmem/rmem.c
+> @@ -46,7 +46,12 @@ static int rmem_read(void *context, unsigned int offset,
+>   
+>   	memunmap(addr);
+>   
+> -	return count;
+> +	if (count != bytes) {
 
-base-commit: 610010737f74482a61896596a0116876ecf9e65c
--- 
-2.43.0
+How can this fail unless the values set in priv->mem->size is incorrect
 
+Only case I see this failing with short reads is when offset cross the 
+boundary of priv->mem->size.
+
+
+can you provide more details on the failure usecase, may be with actual 
+values of offsets, bytes and priv->mem->size?
+
+
+> +		dev_err(priv->dev, "Failed read memory (%d)\n", count);
+> +		return -EINVAL;
+> +	}
+> +
+
+> +	return 0;
+
+thanks,
+srini
+
+>   }
+>   
+>   static int rmem_probe(struct platform_device *pdev)
 
