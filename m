@@ -1,105 +1,105 @@
-Return-Path: <stable+bounces-18994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B134584B931
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 16:19:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F0484B9B0
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 16:34:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 625421F2234C
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 15:19:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A686281523
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 15:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC60133998;
-	Tue,  6 Feb 2024 15:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8808013341C;
+	Tue,  6 Feb 2024 15:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e0s0MkHE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vK3OPCHn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EB61339A1;
-	Tue,  6 Feb 2024 15:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1051332BC;
+	Tue,  6 Feb 2024 15:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707232353; cv=none; b=Xv8nW/CiqFuyTXxesWiHSOZbd9UC4HllBjvrplFgJuiX1oGNpc6DtUtzlgtlmmrG3/2n2fDGpeQoswpok2SwfVz5pUz2ELLA2YnekIbzXkAG7qEn2Pj+nIZZgY4RpH4SyvHZe5l8h+489pVWc/VRA7NO1cEGMZYFvwiJ6MagNho=
+	t=1707233646; cv=none; b=h59aDP6FGeNBQlECC00WMvpmGXD5XwYrCv/W0jDNLdEsug5u8zSkkC2xRwBs1GYZ8E/6N9tz/6SIJLxUHbqxhy+Oz+scSzYsMQ6brUd9ClIrxJ7xWBbkaUMZaxofz/0itryqjnLRhkPbLyx+FrRTkwx6sF52Py3ogDOTGFs0Y9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707232353; c=relaxed/simple;
-	bh=BcS7L1q051yZjkZXOVLmCtb7S6nHcDqDk8UPIddb5qU=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=h8EGuI2UcW1TgjfTvaFNjPQIwxJJWh1DTt6qNm8EO8NyfzXHwBflevV8/F0NNHmqrjXgOKDbgD5My6/MInWx29tD7NVUf5X0wSpTtraOY+CN7poLH8kU22lZT0brwLFEew93jfa5o/cRwXXmSJ+VtisLKtt1XbeXUy/Sd2XgOKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e0s0MkHE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A57A5C43390;
-	Tue,  6 Feb 2024 15:12:32 +0000 (UTC)
+	s=arc-20240116; t=1707233646; c=relaxed/simple;
+	bh=mV3IQfXUED3m7nZ6eR8IfdFIfnHb01zoGzJ3cf6A6kE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Zit4VxG/+Mhg3T3G9hKSiJ83MLa18e0T1wBqWDdY6zvO1hJEz8Nv6WDuoXgGuN+hl3oaAqk1NqmJdz3XbmD8KTYoh9bPjpG/WaZkq+hJ5njjOoPusUGIkvyn7WBX6EuOga6y08+Qky+vBg9QoTjIKc7fvf6oxMWozWz/nwFHR6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vK3OPCHn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560FBC433F1;
+	Tue,  6 Feb 2024 15:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707232353;
-	bh=BcS7L1q051yZjkZXOVLmCtb7S6nHcDqDk8UPIddb5qU=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=e0s0MkHEMvXFZCoXwxjCCIAIJYdMFEaMhUh26TOwJDLPiq3QXPR2T4J1a1dpOKfSl
-	 oLBsKB/QytDhtVNORinAlzqadYY0dVTLB3fs+dOvfnXRWDJsSh3eZnkQ89B2CVAeNZ
-	 VLMcCjm9my5NFhbbiDIp1L3KbMVB9XMYhluiUNauO4clmnHq0IZ0rAf23eXlHf8tKW
-	 Dkzp4wrWNxR2caFyLEYyX/CF2m8DiB2cH323rUxpe1oswyR2J3UqVHAQ3lMWty1vdu
-	 EojM/r1m/dIivMnTW8hPQuOik2GTjcWeReGHFEu6VRjAtHq3CEdSFWvNR/ljp9daLg
-	 qbsbegFpKEr1w==
-Date: Tue, 6 Feb 2024 16:12:33 +0100 (CET)
-From: Jiri Kosina <jikos@kernel.org>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-cc: "Gerecke, Jason" <killertofu@gmail.com>, linux-input@vger.kernel.org, 
-    Benjamin Tissoires <benjamin.tissoires@redhat.com>, 
-    Ping Cheng <pinglinux@gmail.com>, 
-    Joshua Dickens <Joshua@joshua-dickens.com>, 
-    Aaron Armstrong Skomra <skomra@gmail.com>, 
-    "Tobita, Tatsunosuke" <tatsunosuke.tobita@wacom.com>, 
-    stable@vger.kernel.org, Jason Gerecke <jason.gerecke@wacom.com>
-Subject: Re: [PATCH] HID: wacom: Do not register input devices until after
- hid_hw_start
-In-Reply-To: <Zbg8yxO91S9_DZl9@google.com>
-Message-ID: <nycvar.YFH.7.76.2402061612250.21798@cbobk.fhfr.pm>
-References: <20240129223545.219878-1-jason.gerecke@wacom.com> <Zbg8yxO91S9_DZl9@google.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+	s=k20201202; t=1707233645;
+	bh=mV3IQfXUED3m7nZ6eR8IfdFIfnHb01zoGzJ3cf6A6kE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=vK3OPCHnCFve5b9RytgRk5bjikuZ9r9QhUTB2Ftm0GDGmzSiZ6SEPPInJm/9NfmWp
+	 0czS12fX0j2hu06KOn2l2iGPjKRLaymIPPIKc2FPWDSecmNgJ+BM02mIwGYY8t7vVY
+	 wDehQUNcnTL6qVbanBPhB645p4RUvI88ej6vhHeBKblYIoq98eV1R25rQoxLLFUqTl
+	 z6brer/ZuUBy++ObqYWGqTLD2ejXfxlunm2qWy3+c3kV+jK2cxKaElTvCpes5adgrY
+	 THpUvb4ihC1T+zjXIZrfnIBNhvPa62Pa1reyB2m35vF6GRx4EcqiUcMynQnIfaa+hF
+	 GEwVyEyYysMag==
+Date: Tue, 6 Feb 2024 09:34:03 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Randy Dunlap <rdunlap@infradead.org>, NeilBrown <neilb@suse.de>,
+	John Sanpe <sanpeqf@gmail.com>,
+	Kent Overstreet <kent.overstreet@gmail.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Uladzislau Koshchanka <koshchanka@gmail.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	David Gow <davidgow@google.com>, Kees Cook <keescook@chromium.org>,
+	Rae Moar <rmoar@google.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	"wuqiang.matt" <wuqiang.matt@bytedance.com>,
+	Yury Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marco Elver <elver@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ben Dooks <ben.dooks@codethink.co.uk>, dakr@redhat.com,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arch@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v6 0/4] Regather scattered PCI-Code
+Message-ID: <20240206153403.GA866283@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1f1be7418b6f52854abdd25ad7b1c526a9a7e35d.camel@redhat.com>
 
-On Mon, 29 Jan 2024, Dmitry Torokhov wrote:
-
-> > From: Jason Gerecke <killertofu@gmail.com>
+On Tue, Feb 06, 2024 at 10:41:13AM +0100, Philipp Stanner wrote:
+> On Wed, 2024-01-31 at 15:08 -0600, Bjorn Helgaas wrote:
+> > On Wed, Jan 31, 2024 at 10:00:19AM +0100, Philipp Stanner wrote:
+> > > @Bjorn:
+> > > I decided that it's now actually possible to just embed the docu
+> > > updates
+> > > to the respective patches, instead of a separate patch.
+> > > Also dropped the ioport_unmap() for now.
 > > 
-> > If a input device is opened before hid_hw_start is called, events may
-> > not be received from the hardware. In the case of USB-backed devices,
-> > for example, the hid_hw_start function is responsible for filling in
-> > the URB which is submitted when the input device is opened. If a device
-> > is opened prematurely, polling will never start because the device will
-> > not have been in the correct state to send the URB.
-> > 
-> > Because the wacom driver registers its input devices before calling
-> > hid_hw_start, there is a window of time where a device can be opened
-> > and end up in an inoperable state. Some ARM-based Chromebooks in particular
-> > reliably trigger this bug.
-> > 
-> > This commit splits the wacom_register_inputs function into two pieces.
-> > One which is responsible for setting up the allocated inputs (and runs
-> > prior to hid_hw_start so that devices are ready for any input events
-> > they may end up receiving) and another which only registers the devices
-> > (and runs after hid_hw_start to ensure devices can be immediately opened
-> > without issue). Note that the functions to initialize the LEDs and remotes
-> > are also moved after hid_hw_start to maintain their own dependency chains.
-> > 
-> > Fixes: 7704ac937345 ("HID: wacom: implement generic HID handling for pen generic devices")
-> > Cc: stable@vger.kernel.org # v3.18+
-> > Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> > Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+> > Thanks.  I didn't see any documentation updates (other than those
+> > related to the changed path names) in this series, so I assume the
+> > updates you mention would be in a future series.
 > 
-> Tested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> No, I actually meant the changed path names.
+> 
+> The next series (new devres functions) just adds more docstrings to
+> iomap.c, devres.c and pci.c in drivers/pci/, which, after this series
+> here is applied, are all already added to the Docu.
 
-Applied, thanks!
+OK.  Other doc issues, I'm sure you've seen already:
+https://lore.kernel.org/r/20240205160908.6df5e790@canb.auug.org.au
 
--- 
-Jiri Kosina
-SUSE Labs
+I'll squash the fixes into this series when they're ready.
 
+Bjorn
 
