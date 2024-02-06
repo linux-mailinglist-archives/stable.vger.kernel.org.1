@@ -1,195 +1,159 @@
-Return-Path: <stable+bounces-18882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A072584AFA1
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 09:08:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 824C784B076
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 09:56:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB2BBB246BE
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 08:08:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35E141F26689
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 08:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25EFF12AAC9;
-	Tue,  6 Feb 2024 08:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CEC512BF2D;
+	Tue,  6 Feb 2024 08:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RgcR4LAG"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QUYtyQx/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C855512A17C;
-	Tue,  6 Feb 2024 08:07:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D192E3F0
+	for <stable@vger.kernel.org>; Tue,  6 Feb 2024 08:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707206870; cv=none; b=eqXfYhRP6qrBM8XvxifVocSYaJFDQXdjCSY6xnwuCppfT1ncaOhzPxSG4do/4hYn6PG8FqlwuLuaM25Wj167KtiCgTxzqPejXotNb7dmGUbeWO8nRZvgku+3JHmQ5wQeY9oYl0TjGo9xf1drQdG5AvH5A2U13KklkObEM/BdZek=
+	t=1707209766; cv=none; b=GYNrIj3iT+D4DZPTSFfoHQa5MezUzw9QEyzOyfdiij8pMI6A01ERaWQEGcNzDXgllrvPabiId95QAoBd76//K3DchkzErSWOnBAXs53w8xeRn7dTqMdZfrxIiVcD63XG6zWqoPp/s9s2nNMzDe3UIxvzeqnpitTzIFJMg/RQArs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707206870; c=relaxed/simple;
-	bh=0KdOyQP5YNXhdX6GF4oEK/J8Apn0951e5RTs3Ez0SZU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=p+To6pPTOV6eTAbPC4owhme7vvqmkQISqGx1xRSjLO/xAbnJ9+og7XclL+AFNEL/hV15rerzE0ZGPK0tQdxor0RglXJrZyFnxE23MDYKEsg6jVMREuAa6rSivAjZuCt6cTJROuHwiVaEWv1DNCZzRGIC9h06tXUJjYcvRy1QE8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RgcR4LAG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721E5C433C7;
-	Tue,  6 Feb 2024 08:07:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707206870;
-	bh=0KdOyQP5YNXhdX6GF4oEK/J8Apn0951e5RTs3Ez0SZU=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=RgcR4LAGY9tP1cmySGDRHutvU403efWJGrfe9/P9Ioc1r98kKKZOgK9LItwJPv1+l
-	 mzSxq90Pxain9Jvax8nseuAxkQXmkl0IBnn3GsLpkf/W6Pw/2dNZirUlfRGc2BC1d6
-	 MQGFnRaCnn9eVhE4BNRm1Ktn+J5jDlICHi2+BPU8zEvcc71cTPznjC+DTOZ1gGKrDO
-	 Vxyz2fZbVWPJAWUVeTQOr/3P5mCIiezY+cEGZn/wEwmr4jfjYO9KMoKBu1Rvajh45k
-	 tDwGUoUcO5h4wwjfcivN3OcgFUz8yYdMf4R/yxLrmdtbi04ZSMpUqKkoacLG0JdZ87
-	 E8rjJ/1zTJK9g==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d0be2cc034so3301661fa.0;
-        Tue, 06 Feb 2024 00:07:50 -0800 (PST)
-X-Gm-Message-State: AOJu0YxD2E9sagbYZ8bXBW1MYyJdMEzvH5tzLVClvcd/vEx12VQhlu1F
-	HS3d1JIr/6y3pErf2OvPK9TrajpyMuXLGKfzkbrTW3+Lfs0bYFlEWiMZ+eSzJu/xheH+9EmQvxw
-	OqrQZVNnjPbe13Xu6+OGN5eY1pJU=
-X-Google-Smtp-Source: AGHT+IEqr/RMoaw1+tLSssWxsN2Qob/acBlyig1+T6sPks7geIvWPgti7f1gkRQQ2iVVMnUo8Tiw87wjfb6729oO38M=
-X-Received: by 2002:a2e:3c16:0:b0:2d0:aca4:b955 with SMTP id
- j22-20020a2e3c16000000b002d0aca4b955mr1320750lja.48.1707206868601; Tue, 06
- Feb 2024 00:07:48 -0800 (PST)
+	s=arc-20240116; t=1707209766; c=relaxed/simple;
+	bh=6+hp/oOkfW9CIroBlUwLQdgpKfvmzFYtEufR1uK5Vx0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=piL1LqssXKUlIFWQLvb8MC/F42WwYjJS5vYtfCZNQdmtHRLuPyki344QPcC5yS2WiiXJ5d3G5hQ2cLRPhoI2tU0Zn21ROsAktL5icxL2OqxUVsD3V8uE+d/92NtBEUybcgV7XJWYEVbtaUfw2JSRlL7bPfo3Cqrl2IHI130r6OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=de.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QUYtyQx/; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 4168WjWP020491
+	for <stable@vger.kernel.org>; Tue, 6 Feb 2024 08:56:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=uItTlyiNjJHOxqJ+zObA3XYJXQMGB08e0vkKy7tN6g8=;
+ b=QUYtyQx/xwmYLiWaC34Csl52rzXCPrddMpknmqa4wHJjpKEqNUzu8oZ1s141lq5GZgRt
+ 2ooIaSFVeJgMCNwKCEQScbEkrh1K2/pzySlCyQDAKWbrjYWTzO+kdYXE8zb2zUjCT78k
+ UXoHWYc2t1LVnXBbck1ELtyqcOnyaW0j4gPVB0g4Ng17CcOfahTxKtc6zKEMBBfxL8Ze
+ NJtIIDwfKsOSMJ5K+iyVerWPXIHtQiPNoSgyP9u7kFlQysoG+zYOKUOMFE68ftjshCx5
+ a+PB97x8QvcvaBQZ1alfNa7hl1xyfa839YPKIdRaCOpUvWqXw4QYY8m9LlsZBs4mnLmp LA== 
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3w3hbn0kbm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 06 Feb 2024 08:56:03 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 4168Uuai020234
+	for <stable@vger.kernel.org>; Tue, 6 Feb 2024 08:56:02 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3w1ytsx6kj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 06 Feb 2024 08:56:02 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4168txb344040788
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 6 Feb 2024 08:55:59 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6EB942004D;
+	Tue,  6 Feb 2024 08:55:59 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5E08D20043;
+	Tue,  6 Feb 2024 08:55:59 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  6 Feb 2024 08:55:59 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55271)
+	id 1D0E3E0454; Tue,  6 Feb 2024 09:55:59 +0100 (CET)
+From: Alexandra Winter <wintera@linux.ibm.com>
+To: Alexandra Winter <wintera@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Subject: [PATCH net] s390/qeth: Fix potential loss of L3-IP@ in case of network issues
+Date: Tue,  6 Feb 2024 09:55:59 +0100
+Message-Id: <20240206085559.2744656-1-wintera@linux.ibm.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2ef7d741-3df8-402a-967f-53ec77c73e2c@oracle.com> <20240125203130.28187-1-dan@danm.net>
-In-Reply-To: <20240125203130.28187-1-dan@danm.net>
-From: Song Liu <song@kernel.org>
-Date: Tue, 6 Feb 2024 00:07:36 -0800
-X-Gmail-Original-Message-ID: <CAPhsuW58VdmZwigxP6t_fstkSDb34GB9+gTM0Sziet=n17HzQg@mail.gmail.com>
-Message-ID: <CAPhsuW58VdmZwigxP6t_fstkSDb34GB9+gTM0Sziet=n17HzQg@mail.gmail.com>
-Subject: Re: [REGRESSION] 6.7.1: md: raid5 hang and unresponsive system;
- successfully bisected
-To: Dan Moulding <dan@danm.net>
-Cc: junxiao.bi@oracle.com, gregkh@linuxfoundation.org, 
-	linux-kernel@vger.kernel.org, linux-raid@vger.kernel.org, 
-	regressions@lists.linux.dev, stable@vger.kernel.org, yukuai1@huaweicloud.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: YDRRoMiVexh8rUZBIXj3fFOoK9ikmS_v
+X-Proofpoint-ORIG-GUID: YDRRoMiVexh8rUZBIXj3fFOoK9ikmS_v
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-06_02,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1011
+ lowpriorityscore=0 phishscore=0 priorityscore=1501 mlxlogscore=999
+ adultscore=0 suspectscore=0 bulkscore=0 spamscore=0 impostorscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2402060062
 
-On Thu, Jan 25, 2024 at 12:31=E2=80=AFPM Dan Moulding <dan@danm.net> wrote:
->
-> Hi Junxiao,
->
-> I first noticed this problem the next day after I had upgraded some
-> machines to the 6.7.1 kernel. One of the machines is a backup server.
-> Just a few hours after the upgrade to 6.7.1, it started running its
-> overnight backup jobs. Those backup jobs hung part way through. When I
-> tried to check on the backups in the morning, I found the server
-> mostly unresponsive. I could SSH in but most shell commands would just
-> hang. I was able to run top and see that the md0_raid5 kernel thread
-> was using 100% CPU. I tried to reboot the server, but it wasn't able
-> to successfully shutdown and eventually I had to hard reset it.
->
-> The next day, the same sequence of events occurred on that server
-> again when it tried to run its backup jobs. Then the following day, I
-> experienced another hang on a different machine, with a similar RAID-5
-> configuration. That time I was scp'ing a large file to a virtual
-> machine whose image was stored on the RAID-5 array. Part way through
-> the transfer scp reported that the transfer had stalled. I checked top
-> on that machine and found once again that the md0_raid5 kernel thread
-> was using 100% CPU.
->
-> Yesterday I created a fresh Fedora 39 VM for the purposes of
-> reproducing this problem in a different environment (the other two
-> machines are both Gentoo servers running v6.7 kernels straight from
-> the stable trees with a custom kernel configuration). I am able to
-> reproduce the problem on Fedora 39 running both the v6.6.13 stable
-> tree kernel code and the Fedora 39 6.6.13 distribution kernel.
->
-> On this Fedora 39 VM, I created a 1GiB LVM volume to use as the RAID-5
-> journal from space on the "boot" disk. Then I attached 3 additional
-> 100 GiB virtual disks and created the RAID-5 from those 3 disks and
-> the write-journal device. I then created a new LVM volume group from
-> the md0 array and created one LVM logical volume named "data", using
-> all but 64GiB of the available VG space. I then created an ext4 file
-> system on the "data" volume, mounted it, and used "dd" to copy 1MiB
-> blocks from /dev/urandom to a file on the "data" file system, and just
-> let it run. Eventually "dd" hangs and top shows that md0_raid5 is
-> using 100% CPU.
->
-> Here is an example command I just ran, which has hung after writing
-> 4.1 GiB of random data to the array:
->
-> test@localhost:~$ dd if=3D/dev/urandom bs=3D1M of=3D/data/random.dat stat=
-us=3Dprogress
-> 4410310656 bytes (4.4 GB, 4.1 GiB) copied, 324 s, 13.6 MB/s
+Symptom:
+In case of a bad cable connection (e.g. dirty optics) a fast sequence of
+network DOWN-UP-DOWN-UP could happen. UP triggers recovery of the qeth
+interface. In case of a second DOWN while recovery is still ongoing, it
+can happen that the IP@ of a Layer3 qeth interface is lost and will not
+be recovered by the second UP.
 
-Update on this..
+Problem:
+When registration of IP addresses with Layer 3 qeth devices fails, (e.g.
+because of bad address format) the respective IP address is deleted from
+its hash-table in the driver. If registration fails because of a ENETDOWN
+condition, the address should stay in the hashtable, so a subsequent
+recovery can restore it.
 
-I haven't been testing the following config md-6.9 branch [1].
-The array works fine afaict.
+3caa4af834df ("qeth: keep ip-address after LAN_OFFLINE failure")
+fixes this for registration failures during normal operation, but not
+during recovery.
 
-Dan, could you please run the test on this branch
-(83cbdaf61b1ab9cdaa0321eeea734bc70ca069c8)?
+Solution:
+Keep L3-IP address in case of ENETDOWN in qeth_l3_recover_ip(). For
+consistency with qeth_l3_add_ip() we also keep it in case of EADDRINUSE,
+i.e. for some reason the card already/still has this address registered.
 
-Thanks,
-Song
+Fixes: 4a71df50047f ("qeth: new qeth device driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+---
+ drivers/s390/net/qeth_l3_main.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/s390/net/qeth_l3_main.c b/drivers/s390/net/qeth_l3_main.c
+index b92a32b4b114..04c64ce0a1ca 100644
+--- a/drivers/s390/net/qeth_l3_main.c
++++ b/drivers/s390/net/qeth_l3_main.c
+@@ -255,9 +255,10 @@ static void qeth_l3_clear_ip_htable(struct qeth_card *card, int recover)
+ 		if (!recover) {
+ 			hash_del(&addr->hnode);
+ 			kfree(addr);
+-			continue;
++		} else {
++			/* prepare for recovery */
++			addr->disp_flag = QETH_DISP_ADDR_ADD;
+ 		}
+-		addr->disp_flag = QETH_DISP_ADDR_ADD;
+ 	}
+ 
+ 	mutex_unlock(&card->ip_lock);
+@@ -278,9 +279,11 @@ static void qeth_l3_recover_ip(struct qeth_card *card)
+ 		if (addr->disp_flag == QETH_DISP_ADDR_ADD) {
+ 			rc = qeth_l3_register_addr_entry(card, addr);
+ 
+-			if (!rc) {
++			if (!rc || rc == -EADDRINUSE || rc == -ENETDOWN) {
++				/* keep it in the records */
+ 				addr->disp_flag = QETH_DISP_ADDR_DO_NOTHING;
+ 			} else {
++				/* bad address */
+ 				hash_del(&addr->hnode);
+ 				kfree(addr);
+ 			}
+-- 
+2.40.1
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/song/md.git/log/?h=3Dmd=
--6.9
-
-[root@eth50-1 ~]# lsblk
-NAME                             MAJ:MIN RM  SIZE RO TYPE  MOUNTPOINT
-sr0                               11:0    1 1024M  0 rom
-vda                              253:0    0   32G  0 disk
-=E2=94=9C=E2=94=80vda1                           253:1    0    2G  0 part  =
-/boot
-=E2=94=94=E2=94=80vda2                           253:2    0   30G  0 part  =
-/
-nvme2n1                          259:0    0   50G  0 disk
-=E2=94=94=E2=94=80md0                              9:0    0  100G  0 raid5
-  =E2=94=9C=E2=94=80vg--md--data-md--data-real   250:2    0   50G  0 lvm
-  =E2=94=82 =E2=94=9C=E2=94=80vg--md--data-md--data      250:1    0   50G  =
-0 lvm   /mnt/2
-  =E2=94=82 =E2=94=94=E2=94=80vg--md--data-snap          250:4    0   50G  =
-0 lvm
-  =E2=94=94=E2=94=80vg--md--data-snap-cow        250:3    0   49G  0 lvm
-    =E2=94=94=E2=94=80vg--md--data-snap          250:4    0   50G  0 lvm
-nvme0n1                          259:1    0   50G  0 disk
-=E2=94=94=E2=94=80md0                              9:0    0  100G  0 raid5
-  =E2=94=9C=E2=94=80vg--md--data-md--data-real   250:2    0   50G  0 lvm
-  =E2=94=82 =E2=94=9C=E2=94=80vg--md--data-md--data      250:1    0   50G  =
-0 lvm   /mnt/2
-  =E2=94=82 =E2=94=94=E2=94=80vg--md--data-snap          250:4    0   50G  =
-0 lvm
-  =E2=94=94=E2=94=80vg--md--data-snap-cow        250:3    0   49G  0 lvm
-    =E2=94=94=E2=94=80vg--md--data-snap          250:4    0   50G  0 lvm
-nvme1n1                          259:2    0   50G  0 disk
-=E2=94=94=E2=94=80md0                              9:0    0  100G  0 raid5
-  =E2=94=9C=E2=94=80vg--md--data-md--data-real   250:2    0   50G  0 lvm
-  =E2=94=82 =E2=94=9C=E2=94=80vg--md--data-md--data      250:1    0   50G  =
-0 lvm   /mnt/2
-  =E2=94=82 =E2=94=94=E2=94=80vg--md--data-snap          250:4    0   50G  =
-0 lvm
-  =E2=94=94=E2=94=80vg--md--data-snap-cow        250:3    0   49G  0 lvm
-    =E2=94=94=E2=94=80vg--md--data-snap          250:4    0   50G  0 lvm
-nvme4n1                          259:3    0    2G  0 disk
-nvme3n1                          259:4    0   50G  0 disk
-=E2=94=94=E2=94=80vg--data-lv--journal           250:0    0  512M  0 lvm
-  =E2=94=94=E2=94=80md0                            9:0    0  100G  0 raid5
-    =E2=94=9C=E2=94=80vg--md--data-md--data-real 250:2    0   50G  0 lvm
-    =E2=94=82 =E2=94=9C=E2=94=80vg--md--data-md--data    250:1    0   50G  =
-0 lvm   /mnt/2
-    =E2=94=82 =E2=94=94=E2=94=80vg--md--data-snap        250:4    0   50G  =
-0 lvm
-    =E2=94=94=E2=94=80vg--md--data-snap-cow      250:3    0   49G  0 lvm
-      =E2=94=94=E2=94=80vg--md--data-snap        250:4    0   50G  0 lvm
-nvme5n1                          259:5    0    2G  0 disk
-nvme6n1                          259:6    0    4G  0 disk
-[root@eth50-1 ~]# cat /proc/mdstat
-Personalities : [raid0] [raid1] [raid10] [raid6] [raid5] [raid4]
-md0 : active raid5 nvme2n1[4] dm-0[3](J) nvme1n1[1] nvme0n1[0]
-      104790016 blocks super 1.2 level 5, 512k chunk, algorithm 2 [3/3] [UU=
-U]
-
-unused devices: <none>
-[root@eth50-1 ~]# mount | grep /mnt/2
-/dev/mapper/vg--md--data-md--data on /mnt/2 type ext4 (rw,relatime,stripe=
-=3D256)
 
