@@ -1,194 +1,132 @@
-Return-Path: <stable+bounces-19013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C441584BF23
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 22:19:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96F8384BF41
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 22:34:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1CF01C21FD2
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 21:19:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E1361F24323
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 21:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C308D1B94C;
-	Tue,  6 Feb 2024 21:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367B61B95E;
+	Tue,  6 Feb 2024 21:34:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from irl.hu (irl.hu [95.85.9.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED271B949;
-	Tue,  6 Feb 2024 21:19:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE201B948;
+	Tue,  6 Feb 2024 21:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707254358; cv=none; b=A2cZDqVaTSdOQJb+8oxSSxYcS5LSjuGLhocb+KK2VREMpYiS/JVVk2UBBsTMHfH9CSWsGyi/G7o7iYA12oG2Bhu/Y1vYAJ9txGjoQxXN2ze6EwEWBjcOrFvrbZJ+QK+68R+Anpg+dU+3vOvH4rl4PgzA/CBubyGMpY4xl7kTngQ=
+	t=1707255266; cv=none; b=EhWyIluoTDl3eSMYqNQ9XzOh2onXB43x7R0La252mJkK4WYp4XVNvFXj871mQXuuPom1KRRMlaKQ2XbcFagWAJH2SbnloynqOXSG2VfCvKXGkIDWmu/Madwbf3Hv18cvSXAtYizYqHBPOcEAwVDS73XhiHK1t+ZTH0mCrRwjiWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707254358; c=relaxed/simple;
-	bh=JERqMQ96ksA+8SNr6Sb2aF7oJ+HCIrtvFbhpArvNsPM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rzjeIB0oki/CcNiKNT4yDd0NTEemudg0+XNKm4Xphb6YKGCPktqdct9uh4hOA2WMdzOyS+1MI6VBWkcaCuqhiSkb09rORROPcOP/ZhHxpmizmLVB86Mu33afqkL/mPRZFHLqK34Mu5/q6Pw9XZ+WLqJg/gJHl3qGQreVu808iaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6e05d958b61so727809b3a.2;
-        Tue, 06 Feb 2024 13:19:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707254356; x=1707859156;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=12Qx9B0ZnSFBsqRDrOP1gg0dYTMVEEBnv/fg/4P2Dug=;
-        b=gE3iXnCZ6j1GIq16Q6Ax+iwcWvVAMKbnRP+UIjeYu4EAFfc9wABWD/F/doMyCcXudN
-         etT4Uu2WOpnJV+BfD1HB2b3EOS4EAed0C36rBNLNWNohIfy2nrAyG5lnMMlaPTN6QLnb
-         9bvfswjNo1JP0WKqj3EihiqmifYCWqtPBBXL1oJbj/kuzqSawXddEvcJmy8L3d59vOv+
-         2Ss2JlEEOkK5OoaWKF9QbtMclyF0YRjF5LPOumrwai8FQYEi92aumh++1YI1CduSsdsi
-         ai/nEYFvAS4WabgZe6jQWJwmPHaf24LMKUhszAecKhT7B4jifvTR6aoR/WkNDEHcGS+h
-         ui+A==
-X-Gm-Message-State: AOJu0Ywy4IL/HYEVA6LviznGQ0Ulr77KDR+wKtcFt+LaQsDyoEaI905W
-	EmS0BHxzl6ajhmvjQyIQl4Zz8U6IrPgvsQvE6rq8pMJYT3fHNzmFY/1bmqXBDJsuhK/2g1xg3+U
-	pFI416Lo/GhDfLvq5U8Ae1msT4+o=
-X-Google-Smtp-Source: AGHT+IEe9lCvb+yV4P8niK2REAzqF734Mpq5zUhD0bIadcPA/gp1AVaf31fRBdBA7kSzNXn/ebfFVwVt9G0TgyRK9Rg=
-X-Received: by 2002:a05:6a00:4e4e:b0:6e0:4b8f:f585 with SMTP id
- gu14-20020a056a004e4e00b006e04b8ff585mr718484pfb.7.1707254356244; Tue, 06 Feb
- 2024 13:19:16 -0800 (PST)
+	s=arc-20240116; t=1707255266; c=relaxed/simple;
+	bh=lN/DzMj73K1wgPn7GGx2AO9rEBiIvV4udCd5v0dcclE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=lYazsjToX+v5KrciIJChqBLiZDtm05/2q+7Uv66yuATSAffwsyAwORmL8HVn9lu+zfIY1UJEymuCQxiIJn80OulpR2LurjgcxhT29HOZho+NqUzj39HUvDuVoA0pxW4NoxodzkGQglCYvNURnyE2rsd5QDHmpOwCIGhVYhbr5Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
+Received: from fedori.lan (51b69e54.dsl.pool.telekom.hu [::ffff:81.182.158.84])
+  (AUTH: CRAM-MD5 soyer@irl.hu, )
+  by irl.hu with ESMTPSA
+  id 0000000000073787.0000000065C2A5DD.001AD62E; Tue, 06 Feb 2024 22:34:21 +0100
+From: Gergo Koteles <soyer@irl.hu>
+To: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
+  Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>,
+  Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
+  Mark Brown <broonie@kernel.org>
+Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+  alsa-devel@alsa-project.org, Gergo Koteles <soyer@irl.hu>,
+  stable@vger.kernel.org
+Subject: [PATCH v2] ASoC: tas2781: remove unused acpi_subysystem_id
+Date: Tue,  6 Feb 2024 22:34:15 +0100
+Message-ID: <631722b9ec0a4a2667d68f4747f01f3f7eb8ceb8.1707255177.git.soyer@irl.hu>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <df5c94396256e9573b772962182def52d20c50d4.1707250969.git.soyer@irl.hu>
+References: <df5c94396256e9573b772962182def52d20c50d4.1707250969.git.soyer@irl.hu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20231216072830.1009339-1-namhyung@kernel.org> <ae648bc4-b32c-4b15-8dfc-9dbd481bb927@linux.intel.com>
- <CAM9d7cgVHHAA0ZHaTYNx9Lmw0+hJJu_EfQRnX8K3AtLCVMznOw@mail.gmail.com>
-In-Reply-To: <CAM9d7cgVHHAA0ZHaTYNx9Lmw0+hJJu_EfQRnX8K3AtLCVMznOw@mail.gmail.com>
-From: Namhyung Kim <namhyung@kernel.org>
-Date: Tue, 6 Feb 2024 13:19:05 -0800
-Message-ID: <CAM9d7cjHJ2FYU-P0B2LA=vX1WUCOwCqC1j4LGFWMYDLFRKPCnA@mail.gmail.com>
-Subject: Re: [PATCH] perf/x86: Fix out of range data
-To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Stephane Eranian <eranian@google.com>, stable@vger.kernel.org, 
-	"Liang, Kan" <kan.liang@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Mime-Autoconverted: from 8bit to 7bit by courier 1.0
 
-Ping!
+The acpi_subysystem_id is only written and freed, not read, so
+unnecessary.
 
-On Tue, Jan 9, 2024 at 1:28=E2=80=AFPM Namhyung Kim <namhyung@kernel.org> w=
-rote:
->
-> Hello,
->
-> On Sat, Dec 16, 2023 at 4:42=E2=80=AFAM Liang, Kan <kan.liang@linux.intel=
-.com> wrote:
-> >
-> >
-> >
-> > On 2023-12-16 2:28 a.m., Namhyung Kim wrote:
-> > > On x86 each cpu_hw_events maintains a table for counter assignment bu=
-t
-> > > it missed to update one for the deleted event in x86_pmu_del().  This
-> > > can make perf_clear_dirty_counters() reset used counter if it's calle=
-d
-> > > before event scheduling or enabling.  Then it would return out of ran=
-ge
-> > > data which doesn't make sense.
-> > >
-> > > The following code can reproduce the problem.
-> > >
-> > >   $ cat repro.c
-> > >   #include <pthread.h>
-> > >   #include <stdio.h>
-> > >   #include <stdlib.h>
-> > >   #include <unistd.h>
-> > >   #include <linux/perf_event.h>
-> > >   #include <sys/ioctl.h>
-> > >   #include <sys/mman.h>
-> > >   #include <sys/syscall.h>
-> > >
-> > >   struct perf_event_attr attr =3D {
-> > >       .type =3D PERF_TYPE_HARDWARE,
-> > >       .config =3D PERF_COUNT_HW_CPU_CYCLES,
-> > >       .disabled =3D 1,
-> > >   };
-> > >
-> > >   void *worker(void *arg)
-> > >   {
-> > >       int cpu =3D (long)arg;
-> > >       int fd1 =3D syscall(SYS_perf_event_open, &attr, -1, cpu, -1, 0)=
-;
-> > >       int fd2 =3D syscall(SYS_perf_event_open, &attr, -1, cpu, -1, 0)=
-;
-> > >       void *p;
-> > >
-> > >       do {
-> > >               ioctl(fd1, PERF_EVENT_IOC_ENABLE, 0);
-> > >               p =3D mmap(NULL, 4096, PROT_READ, MAP_SHARED, fd1, 0);
-> > >               ioctl(fd2, PERF_EVENT_IOC_ENABLE, 0);
-> > >
-> > >               ioctl(fd2, PERF_EVENT_IOC_DISABLE, 0);
-> > >               munmap(p, 4096);
-> > >               ioctl(fd1, PERF_EVENT_IOC_DISABLE, 0);
-> > >       } while (1);
-> > >
-> > >       return NULL;
-> > >   }
-> > >
-> > >   int main(void)
-> > >   {
-> > >       int i;
-> > >       int n =3D sysconf(_SC_NPROCESSORS_ONLN);
-> > >       pthread_t *th =3D calloc(n, sizeof(*th));
-> > >
-> > >       for (i =3D 0; i < n; i++)
-> > >               pthread_create(&th[i], NULL, worker, (void *)(long)i);
-> > >       for (i =3D 0; i < n; i++)
-> > >               pthread_join(th[i], NULL);
-> > >
-> > >       free(th);
-> > >       return 0;
-> > >   }
-> > >
-> > > And you can see the out of range data using perf stat like this.
-> > > Probably it'd be easier to see on a large machine.
-> > >
-> > >   $ gcc -o repro repro.c -pthread
-> > >   $ ./repro &
-> > >   $ sudo perf stat -A -I 1000 2>&1 | awk '{ if (length($3) > 15) prin=
-t }'
-> > >        1.001028462 CPU6   196,719,295,683,763      cycles            =
-               # 194290.996 GHz                       (71.54%)
-> > >        1.001028462 CPU3   396,077,485,787,730      branch-misses     =
-               # 15804359784.80% of all branches      (71.07%)
-> > >        1.001028462 CPU17  197,608,350,727,877      branch-misses     =
-               # 14594186554.56% of all branches      (71.22%)
-> > >        2.020064073 CPU4   198,372,472,612,140      cycles            =
-               # 194681.113 GHz                       (70.95%)
-> > >        2.020064073 CPU6   199,419,277,896,696      cycles            =
-               # 195720.007 GHz                       (70.57%)
-> > >        2.020064073 CPU20  198,147,174,025,639      cycles            =
-               # 194474.654 GHz                       (71.03%)
-> > >        2.020064073 CPU20  198,421,240,580,145      stalled-cycles-fro=
-ntend          #  100.14% frontend cycles idle        (70.93%)
-> > >        3.037443155 CPU4   197,382,689,923,416      cycles            =
-               # 194043.065 GHz                       (71.30%)
-> > >        3.037443155 CPU20  196,324,797,879,414      cycles            =
-               # 193003.773 GHz                       (71.69%)
-> > >        3.037443155 CPU5   197,679,956,608,205      stalled-cycles-bac=
-kend           # 1315606428.66% backend cycles idle   (71.19%)
-> > >        3.037443155 CPU5   198,571,860,474,851      instructions      =
-               # 13215422.58  insn per cycle
-> > >
-> > > It should move the contents in the cpuc->assign as well.
-> >
-> > Yes, the patch looks good to me.
-> >
-> > Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
->
-> Thanks for your review, Kan.
->
-> Ingo, Peter, can you please pick this up?
->
-> Thanks,
-> Namhyung
+Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
+CC: stable@vger.kernel.org
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+---
+ include/sound/tas2781.h           |  1 -
+ sound/pci/hda/tas2781_hda_i2c.c   | 11 -----------
+ sound/soc/codecs/tas2781-comlib.c |  1 -
+ 3 files changed, 13 deletions(-)
+
+diff --git a/include/sound/tas2781.h b/include/sound/tas2781.h
+index 9aff384941de..99ca3e401fd1 100644
+--- a/include/sound/tas2781.h
++++ b/include/sound/tas2781.h
+@@ -103,7 +103,6 @@ struct tasdevice_priv {
+ 	struct tm tm;
+ 
+ 	enum device_catlog_id catlog_id;
+-	const char *acpi_subsystem_id;
+ 	unsigned char cal_binaryname[TASDEVICE_MAX_CHANNELS][64];
+ 	unsigned char crc8_lkp_tbl[CRC8_TABLE_SIZE];
+ 	unsigned char coef_binaryname[64];
+diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
+index 1bfb00102a77..2fd391bc693a 100644
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -111,7 +111,6 @@ static int tas2781_get_i2c_res(struct acpi_resource *ares, void *data)
+ static int tas2781_read_acpi(struct tasdevice_priv *p, const char *hid)
+ {
+ 	struct acpi_device *adev;
+-	struct device *physdev;
+ 	LIST_HEAD(resources);
+ 	const char *sub;
+ 	int ret;
+@@ -129,18 +128,8 @@ static int tas2781_read_acpi(struct tasdevice_priv *p, const char *hid)
+ 
+ 	acpi_dev_free_resource_list(&resources);
+ 	strscpy(p->dev_name, hid, sizeof(p->dev_name));
+-	physdev = get_device(acpi_get_first_physical_node(adev));
+ 	acpi_dev_put(adev);
+ 
+-	/* No side-effect to the playback even if subsystem_id is NULL*/
+-	sub = acpi_get_subsystem_id(ACPI_HANDLE(physdev));
+-	if (IS_ERR(sub))
+-		sub = NULL;
+-
+-	p->acpi_subsystem_id = sub;
+-
+-	put_device(physdev);
+-
+ 	return 0;
+ 
+ err:
+diff --git a/sound/soc/codecs/tas2781-comlib.c b/sound/soc/codecs/tas2781-comlib.c
+index 5d0e5348b361..3aa81514dad7 100644
+--- a/sound/soc/codecs/tas2781-comlib.c
++++ b/sound/soc/codecs/tas2781-comlib.c
+@@ -408,7 +408,6 @@ void tasdevice_remove(struct tasdevice_priv *tas_priv)
+ {
+ 	if (gpio_is_valid(tas_priv->irq_info.irq_gpio))
+ 		gpio_free(tas_priv->irq_info.irq_gpio);
+-	kfree(tas_priv->acpi_subsystem_id);
+ 	mutex_destroy(&tas_priv->codec_lock);
+ }
+ EXPORT_SYMBOL_GPL(tasdevice_remove);
+
+base-commit: 610010737f74482a61896596a0116876ecf9e65c
+-- 
+2.43.0
+
 
