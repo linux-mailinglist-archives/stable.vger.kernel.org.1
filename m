@@ -1,146 +1,167 @@
-Return-Path: <stable+bounces-18889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED78C84B182
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 10:41:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EBA684B217
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 11:10:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DFA71C21F2D
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 09:41:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99EB91F25057
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 10:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D8A12D14E;
-	Tue,  6 Feb 2024 09:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF4212E1E4;
+	Tue,  6 Feb 2024 10:10:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YkeNOred"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="HtH0ojja";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GKEfr1is"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F2212D152
-	for <stable@vger.kernel.org>; Tue,  6 Feb 2024 09:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8D912E1C5;
+	Tue,  6 Feb 2024 10:10:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707212482; cv=none; b=E+Lax0rW50kIQiK++KJ0wBvN1w4aLGk6O0mkWK//0EXWViBOUfWkoUA41HT6WTVuBFHwJDWuK/3b0j0kaRWWKDABA+8ncNbvm8cJ66pr2qgY+KTDw++No8vGPOTCK95p1BdcRINXhhQP2Bgb6iESq7ifXAUEMW2hkEPbFQvVHM4=
+	t=1707214227; cv=none; b=KmpWSpMknIMFCpGxLHiy3RtcHBBAx6Ej1Z9ZyQh6ZW02v2XGJYO9nq/YwwsJWWkgnrYUg5JnFZTTNlebuSEyjL7iGmLFY+dO2rkFsq0WUeu5fO6zmuA5qsK2A5t5ra6UxjBXnWuLRuSecEVPid6BY+DjgwXLi+sQc8GI1QdPdbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707212482; c=relaxed/simple;
-	bh=PS7FDfG+KJoasqQRxO3VrowxY9G2OSe3PNqnq4tkY48=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rXSbytq36Dd9Qj54wCFTc73umJQTSJCMbUEZ2yIXqMhdt8JVEWeilgq+ELsHosv3thCI3GFhAUfaFBpsx3PuhXmmundu7r+tz5AUQ0x/WCCH770dnznl1CLFDCdWP4XHlBPZHlJ2dRlAYanWEZ2RbC5YcT2Hd1NoAgEknomvjEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YkeNOred; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707212480;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1707214227; c=relaxed/simple;
+	bh=/WH4wHExctajLCka8lPaJbDC+CM3T/biAoLKRWKeI9c=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=clp8MQpCZuBQ9ddiI4PJAWLd62eQjcPsDD41c8/roYSP7TfVgLMWu3CLbqSrnytWAa2mce5+iy3oMC71Fz8pQ//HWJ8qPA3uNr/Rcoh6JhuSQ0ASLg4+VGkiSMgEBcmAom0aDrLyOITj/LPqkfzukyd30CKYgJPxsXa/i6d47Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=HtH0ojja; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GKEfr1is; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Tue, 06 Feb 2024 10:10:22 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1707214223;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PS7FDfG+KJoasqQRxO3VrowxY9G2OSe3PNqnq4tkY48=;
-	b=YkeNOredT1LAFdh+gdWiBYw+scQ6omquZnK01nRgoq1O0rtyNbTsJKkloEay0HdBm6vdrS
-	Z/HCqfCH5dOaebqe9h627pBRssaSljGcrG0bEadHqoCFOphqIBNm3bZDt8cbXStfO/3DGU
-	uZgJNd++lkVui+fBYsj6t+/61hS6zOE=
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
- [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-388-6wt1KemWPLGMIxhGpRz0sQ-1; Tue, 06 Feb 2024 04:41:18 -0500
-X-MC-Unique: 6wt1KemWPLGMIxhGpRz0sQ-1
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-42a89aea9aeso11498191cf.1
-        for <stable@vger.kernel.org>; Tue, 06 Feb 2024 01:41:18 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707212478; x=1707817278;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PS7FDfG+KJoasqQRxO3VrowxY9G2OSe3PNqnq4tkY48=;
-        b=v3DQkoCpWOaPwv3kzjBtM71Xj3fD4iDCBSrnh2hlONdMItigrxRPbH5Qhp6/ZUcoac
-         LjXehtPz5j/rNNvud2uyr4gs9wdaUnOZYScXWaA4nCp6U1ImCpATlgXlKquqAmqcycGB
-         44gymi15r51jLHG73xB/l+xyZ3AQea9j3BtTvV14MyK8s5Yjgmuv/aYC+RVBlVY2V+vk
-         m6qUn0PtOOnuTjf/FZSJtYgB0G5isEJHgnYbBRmOdBxapDQpN0h2h6NVcZU7KZwAIbsL
-         RXNeY8AzYiHcxjyMfwlf1a1NGkqepNlqN4FKqpj8EaL0YwLnaoeSXYr0vonQOmZDEMWi
-         lmKg==
-X-Gm-Message-State: AOJu0YzIytXmLN098pLRhlrf4quCIIPEA72lP+dVTcjY3WgpODXH3Swk
-	kgVB+abdzwr7tLh9iaKFOC4ZaHfPEZ+jEhoLmSQPH18gUrDBNwe2sY+iW8GQNzKS1QGKflr0OR7
-	fWdbooVQxmgIgvh6YNY9VWDhdIpvpfcEybY7pJoLEbIpmyH3TLApZxg==
-X-Received: by 2002:a05:622a:287:b0:42c:239c:d87b with SMTP id z7-20020a05622a028700b0042c239cd87bmr2109385qtw.1.1707212478001;
-        Tue, 06 Feb 2024 01:41:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGPwOtJwoBj0o9iD/y81KvrC9NDjv+GvZjnfPUHrQ3iRktuwoj5UA2yWl9XCSI2hrawY6IgDA==
-X-Received: by 2002:a05:622a:287:b0:42c:239c:d87b with SMTP id z7-20020a05622a028700b0042c239cd87bmr2109350qtw.1.1707212477710;
-        Tue, 06 Feb 2024 01:41:17 -0800 (PST)
-X-Forwarded-Encrypted: i=0; AJvYcCW02GSkdtkEVcCB0rGUiv9DRBd1zjZ8LddiDrSMXsyASTobjGW9NuSrarIZIzLiMxjuwwYqMInwnChcTJLIuNQU4odVW1PqV0Ed5Cry4MTH35lt5TYhmNeWgd1oQ+keBNlfm9XPwhGsJ6wh2TJBnl175Ym2e26wYqELtjfm5TUovGpFqbnNztWTzZ6FvSwTFW8j4bRruOQYUplo2SkFfEKzkii1mcQ+B0HtoUkkO51gNylEg0t7i3B7xmUYk7IG+z+bTSQecqUFBI88y/QTOZGXJ9/iTOepV+H0DfcBqtPkmWku6ovriT5KE7Ceg4MwPov8qoX5m61Zycrtbx0b0ksAeV0eJc3meQLAER2Ypb6Q6O22Ga66CFsSe9+EVchBTJfKjklxxVS7bnfG6zu+MpvV+9FXcoofBiHT15F3wLnvafoKR/jaA+O+CQjiGTAJrvTEP28TMaVYAGeqKr3icT2YbsyAPivpaENRQJl49sGmgGiv4II84grTQSJqvon/x3IFbc20UszUYpKICKbrIeqGJE2fwiw75awDA3ZYDYJF0RblOuBjXBbWcRhlfdRmwtIiKHnEfpcEeK8NWBaDfM/kMFDLxi5XGCYDHkdws/1LYLoewFDHcFbt9wzJnzejcg0Orsa5lct0nbW96Z40ljRqeUP1dLCH2yucWEuXDRsVBz/t3fr8vmSFHyATtiz/jGfrb9tMbELht7zjv+D/tzlyKMB7Fw0HNq97YWMB7BHplgy25WfdVWZ0ji603aZsIkArUvFVPqGpy2g1YGDZ+tKge0Duom8fFda/8bgoZdRVAmhSfaA00aFSTb7XoxyPd14gTTq7W8K1fg==
-Received: from pstanner-thinkpadt14sgen1.remote.csb (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id x25-20020ac85399000000b0042aaa37e316sm735315qtp.22.2024.02.06.01.41.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Feb 2024 01:41:17 -0800 (PST)
-Message-ID: <1f1be7418b6f52854abdd25ad7b1c526a9a7e35d.camel@redhat.com>
-Subject: Re: [PATCH v6 0/4] Regather scattered PCI-Code
-From: Philipp Stanner <pstanner@redhat.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, 
- Johannes Berg <johannes@sipsolutions.net>, Randy Dunlap
- <rdunlap@infradead.org>, NeilBrown <neilb@suse.de>,  John Sanpe
- <sanpeqf@gmail.com>, Kent Overstreet <kent.overstreet@gmail.com>, Niklas
- Schnelle <schnelle@linux.ibm.com>, Dave Jiang <dave.jiang@intel.com>,
- Uladzislau Koshchanka <koshchanka@gmail.com>, "Masami Hiramatsu (Google)"
- <mhiramat@kernel.org>, David Gow <davidgow@google.com>, Kees Cook
- <keescook@chromium.org>, Rae Moar <rmoar@google.com>, Geert Uytterhoeven
- <geert@linux-m68k.org>, "wuqiang.matt" <wuqiang.matt@bytedance.com>, Yury
- Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>, Thomas
- Gleixner <tglx@linutronix.de>, Marco Elver <elver@google.com>, Andrew
- Morton <akpm@linux-foundation.org>, Ben Dooks <ben.dooks@codethink.co.uk>,
- dakr@redhat.com, linux-kernel@vger.kernel.org,  linux-pci@vger.kernel.org,
- linux-arch@vger.kernel.org, stable@vger.kernel.org
-Date: Tue, 06 Feb 2024 10:41:13 +0100
-In-Reply-To: <20240131210842.GA599075@bhelgaas>
-References: <20240131210842.GA599075@bhelgaas>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	bh=85JFYrajsZCSPLaR70HH1roOmEwxVGyELjZIaTlWZzE=;
+	b=HtH0ojjaPgsOapXdl4MFrGz9hNSpBrMRiKHQtUGzcWToQMezt/SjXJXx/xejOMN6Cdoy1A
+	Sasr0nlsy5PhgFy/kjoIE3pfddjwaKVAgmAHu9u2wyB7ycRpI+NM6KAfkUaoojhbxIHo4L
+	btuYjdjyfYCJxkI9CefuVvv8u2lOklMH1qozC/L/HlJZIsZq7wPVsHzLQbzJV4yYOZ2SZl
+	eT7WoaXtkK68hnARc9WV1oB9qYYdpz+MeZ5ar5BQh776Wp0eNuLZ2ag42E+B8K2SqUbqqF
+	+lagKbyd8ehAxAzJlLcrWPJkEaOqVBNyEjN3QkBi9JWgxZdslUmMHHPUMovznQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1707214223;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=85JFYrajsZCSPLaR70HH1roOmEwxVGyELjZIaTlWZzE=;
+	b=GKEfr1isn26zmy7+wqvheQ9ouEgknT3tUwr6cr0khC1Ajczz7oTYFj34vX3KkMKv5nv3iR
+	mUL8jG+vFYB0RKDw==
+From: "tip-bot2 for Frederic Weisbecker" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: timers/urgent] hrtimer: Report offline hrtimer enqueue
+Cc: "Paul E. McKenney" <paulmck@kernel.org>,
+ Frederic Weisbecker <frederic@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240129235646.3171983-4-boqun.feng@gmail.com>
+References: <20240129235646.3171983-4-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Message-ID: <170721422238.398.262942897891124372.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-T24gV2VkLCAyMDI0LTAxLTMxIGF0IDE1OjA4IC0wNjAwLCBCam9ybiBIZWxnYWFzIHdyb3RlOgo+
-IE9uIFdlZCwgSmFuIDMxLCAyMDI0IGF0IDEwOjAwOjE5QU0gKzAxMDAsIFBoaWxpcHAgU3Rhbm5l
-ciB3cm90ZToKPiA+IEBCam9ybjoKPiA+IEkgZGVjaWRlZCB0aGF0IGl0J3Mgbm93IGFjdHVhbGx5
-IHBvc3NpYmxlIHRvIGp1c3QgZW1iZWQgdGhlIGRvY3UKPiA+IHVwZGF0ZXMKPiA+IHRvIHRoZSBy
-ZXNwZWN0aXZlIHBhdGNoZXMsIGluc3RlYWQgb2YgYSBzZXBhcmF0ZSBwYXRjaC4KPiA+IEFsc28g
-ZHJvcHBlZCB0aGUgaW9wb3J0X3VubWFwKCkgZm9yIG5vdy4KPiAKPiBUaGFua3MuwqAgSSBkaWRu
-J3Qgc2VlIGFueSBkb2N1bWVudGF0aW9uIHVwZGF0ZXMgKG90aGVyIHRoYW4gdGhvc2UKPiByZWxh
-dGVkIHRvIHRoZSBjaGFuZ2VkIHBhdGggbmFtZXMpIGluIHRoaXMgc2VyaWVzLCBzbyBJIGFzc3Vt
-ZSB0aGUKPiB1cGRhdGVzIHlvdSBtZW50aW9uIHdvdWxkIGJlIGluIGEgZnV0dXJlIHNlcmllcy4K
-Ck5vLCBJIGFjdHVhbGx5IG1lYW50IHRoZSBjaGFuZ2VkIHBhdGggbmFtZXMuCgpUaGUgbmV4dCBz
-ZXJpZXMgKG5ldyBkZXZyZXMgZnVuY3Rpb25zKSBqdXN0IGFkZHMgbW9yZSBkb2NzdHJpbmdzIHRv
-CmlvbWFwLmMsIGRldnJlcy5jIGFuZCBwY2kuYyBpbiBkcml2ZXJzL3BjaS8sIHdoaWNoLCBhZnRl
-ciB0aGlzIHNlcmllcwpoZXJlIGlzIGFwcGxpZWQsIGFyZSBhbGwgYWxyZWFkeSBhZGRlZCB0byB0
-aGUgRG9jdS4KCj4gCj4gPiAuLi4KPiA+IFBoaWxpcHAgU3Rhbm5lciAoNCk6Cj4gPiDCoCBsaWIv
-cGNpX2lvbWFwLmM6IGZpeCBjbGVhbnVwIGJ1ZyBpbiBwY2lfaW91bm1hcCgpCj4gPiDCoCBsaWI6
-IG1vdmUgcGNpX2lvbWFwLmMgdG8gZHJpdmVycy9wY2kvCj4gPiDCoCBsaWI6IG1vdmUgcGNpLXNw
-ZWNpZmljIGRldnJlcyBjb2RlIHRvIGRyaXZlcnMvcGNpLwo+ID4gwqAgUENJOiBNb3ZlIGRldnJl
-cyBjb2RlIGZyb20gcGNpLmMgdG8gZGV2cmVzLmMKPiA+IAo+ID4gwqBEb2N1bWVudGF0aW9uL2Ry
-aXZlci1hcGkvZGV2aWNlLWlvLnJzdCB8wqDCoCAyICstCj4gPiDCoERvY3VtZW50YXRpb24vZHJp
-dmVyLWFwaS9wY2kvcGNpLnJzdMKgwqAgfMKgwqAgNiArCj4gPiDCoE1BSU5UQUlORVJTwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgIDEg
-LQo+ID4gwqBkcml2ZXJzL3BjaS9LY29uZmlnwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgfMKgwqAgNSArCj4gPiDCoGRyaXZlcnMvcGNpL01ha2VmaWxlwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgIDMgKy0KPiA+IMKgZHJpdmVycy9wY2kvZGV2
-cmVzLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCA0NTAKPiA+ICsrKysr
-KysrKysrKysrKysrKysrKysrKysKPiA+IMKgbGliL3BjaV9pb21hcC5jID0+IGRyaXZlcnMvcGNp
-L2lvbWFwLmMgfMKgwqAgNSArLQo+ID4gwqBkcml2ZXJzL3BjaS9wY2kuY8KgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8IDI0OSAtLS0tLS0tLS0tLS0tLQo+ID4gwqBk
-cml2ZXJzL3BjaS9wY2kuaMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCB8wqAgMjQgKysKPiA+IMKgbGliL0tjb25maWfCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgwqAgMyAtCj4gPiDCoGxpYi9NYWtlZmlsZcKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgwqAg
-MSAtCj4gPiDCoGxpYi9kZXZyZXMuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgfCAyMDggKy0tLS0tLS0tLS0tCj4gPiDCoDEyIGZpbGVzIGNoYW5n
-ZWQsIDQ5MCBpbnNlcnRpb25zKCspLCA0NjcgZGVsZXRpb25zKC0pCj4gPiDCoGNyZWF0ZSBtb2Rl
-IDEwMDY0NCBkcml2ZXJzL3BjaS9kZXZyZXMuYwo+ID4gwqByZW5hbWUgbGliL3BjaV9pb21hcC5j
-ID0+IGRyaXZlcnMvcGNpL2lvbWFwLmMgKDk5JSkKPiAKPiBBcHBsaWVkIHRvIHBjaS9kZXZyZXMg
-Zm9yIHY2LjksIHRoYW5rcyEKClRoeCEKCg==
+The following commit has been merged into the timers/urgent branch of tip:
 
+Commit-ID:     dad6a09f3148257ac1773cd90934d721d68ab595
+Gitweb:        https://git.kernel.org/tip/dad6a09f3148257ac1773cd90934d721d68ab595
+Author:        Frederic Weisbecker <frederic@kernel.org>
+AuthorDate:    Mon, 29 Jan 2024 15:56:36 -08:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Tue, 06 Feb 2024 10:56:35 +01:00
+
+hrtimer: Report offline hrtimer enqueue
+
+The hrtimers migration on CPU-down hotplug process has been moved
+earlier, before the CPU actually goes to die. This leaves a small window
+of opportunity to queue an hrtimer in a blind spot, leaving it ignored.
+
+For example a practical case has been reported with RCU waking up a
+SCHED_FIFO task right before the CPUHP_AP_IDLE_DEAD stage, queuing that
+way a sched/rt timer to the local offline CPU.
+
+Make sure such situations never go unnoticed and warn when that happens.
+
+Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
+Reported-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240129235646.3171983-4-boqun.feng@gmail.com
+---
+ include/linux/hrtimer.h | 4 +++-
+ kernel/time/hrtimer.c   | 3 +++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/hrtimer.h b/include/linux/hrtimer.h
+index 87e3bed..641c456 100644
+--- a/include/linux/hrtimer.h
++++ b/include/linux/hrtimer.h
+@@ -157,6 +157,7 @@ enum  hrtimer_base_type {
+  * @max_hang_time:	Maximum time spent in hrtimer_interrupt
+  * @softirq_expiry_lock: Lock which is taken while softirq based hrtimer are
+  *			 expired
++ * @online:		CPU is online from an hrtimers point of view
+  * @timer_waiters:	A hrtimer_cancel() invocation waits for the timer
+  *			callback to finish.
+  * @expires_next:	absolute time of the next event, is required for remote
+@@ -179,7 +180,8 @@ struct hrtimer_cpu_base {
+ 	unsigned int			hres_active		: 1,
+ 					in_hrtirq		: 1,
+ 					hang_detected		: 1,
+-					softirq_activated       : 1;
++					softirq_activated       : 1,
++					online			: 1;
+ #ifdef CONFIG_HIGH_RES_TIMERS
+ 	unsigned int			nr_events;
+ 	unsigned short			nr_retries;
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 7607939..edb0f82 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1085,6 +1085,7 @@ static int enqueue_hrtimer(struct hrtimer *timer,
+ 			   enum hrtimer_mode mode)
+ {
+ 	debug_activate(timer, mode);
++	WARN_ON_ONCE(!base->cpu_base->online);
+ 
+ 	base->cpu_base->active_bases |= 1 << base->index;
+ 
+@@ -2183,6 +2184,7 @@ int hrtimers_prepare_cpu(unsigned int cpu)
+ 	cpu_base->softirq_next_timer = NULL;
+ 	cpu_base->expires_next = KTIME_MAX;
+ 	cpu_base->softirq_expires_next = KTIME_MAX;
++	cpu_base->online = 1;
+ 	hrtimer_cpu_base_init_expiry_lock(cpu_base);
+ 	return 0;
+ }
+@@ -2250,6 +2252,7 @@ int hrtimers_cpu_dying(unsigned int dying_cpu)
+ 	smp_call_function_single(ncpu, retrigger_next_event, NULL, 0);
+ 
+ 	raw_spin_unlock(&new_base->lock);
++	old_base->online = 0;
+ 	raw_spin_unlock(&old_base->lock);
+ 
+ 	return 0;
 
