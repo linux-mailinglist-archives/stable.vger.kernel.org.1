@@ -1,105 +1,138 @@
-Return-Path: <stable+bounces-18995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-18996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F0484B9B0
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 16:34:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C0FF84BA17
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 16:48:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A686281523
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 15:34:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD5DB2819B3
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 15:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8808013341C;
-	Tue,  6 Feb 2024 15:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF03B134CC6;
+	Tue,  6 Feb 2024 15:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vK3OPCHn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rak93+G/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1051332BC;
-	Tue,  6 Feb 2024 15:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911A413341C;
+	Tue,  6 Feb 2024 15:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707233646; cv=none; b=h59aDP6FGeNBQlECC00WMvpmGXD5XwYrCv/W0jDNLdEsug5u8zSkkC2xRwBs1GYZ8E/6N9tz/6SIJLxUHbqxhy+Oz+scSzYsMQ6brUd9ClIrxJ7xWBbkaUMZaxofz/0itryqjnLRhkPbLyx+FrRTkwx6sF52Py3ogDOTGFs0Y9o=
+	t=1707234517; cv=none; b=UqBwEW918OR0u9KWLUAn1z41HC9uO9Pqi91PknsDoZhSgkqe28sdTMBoYsO7Fs386Q/l5TlK9leKoHwRK/xNyDmnOUSLvAY5pXrOMYjD3NXDOWlL/Ird5KHY93emMG/IwFhl0rIX0Fs8vPZhSSts0qsBjyEihQm9eFvTX/8pRZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707233646; c=relaxed/simple;
-	bh=mV3IQfXUED3m7nZ6eR8IfdFIfnHb01zoGzJ3cf6A6kE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Zit4VxG/+Mhg3T3G9hKSiJ83MLa18e0T1wBqWDdY6zvO1hJEz8Nv6WDuoXgGuN+hl3oaAqk1NqmJdz3XbmD8KTYoh9bPjpG/WaZkq+hJ5njjOoPusUGIkvyn7WBX6EuOga6y08+Qky+vBg9QoTjIKc7fvf6oxMWozWz/nwFHR6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vK3OPCHn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 560FBC433F1;
-	Tue,  6 Feb 2024 15:34:05 +0000 (UTC)
+	s=arc-20240116; t=1707234517; c=relaxed/simple;
+	bh=zaZSsrvYhW5Ke2AYAmP/ja6WNn71gyudEVeXSINNEsM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dQ5j7qr3f5UarF+KCPt9P3+82A57mhL3TTPjrmuELMlj2yg6S34v0CAL+SuitC/ak/rWtuQiADYWEtK1wYtz/6XgGHRti7NC61hIV85MwmDloIO+t4WN/ZK83Op8Y9KhPqaxMmuvOo+BTPqCZeAwSsduKb0XH9/wVS2P7Eyld4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rak93+G/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C145DC433F1;
+	Tue,  6 Feb 2024 15:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707233645;
-	bh=mV3IQfXUED3m7nZ6eR8IfdFIfnHb01zoGzJ3cf6A6kE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=vK3OPCHnCFve5b9RytgRk5bjikuZ9r9QhUTB2Ftm0GDGmzSiZ6SEPPInJm/9NfmWp
-	 0czS12fX0j2hu06KOn2l2iGPjKRLaymIPPIKc2FPWDSecmNgJ+BM02mIwGYY8t7vVY
-	 wDehQUNcnTL6qVbanBPhB645p4RUvI88ej6vhHeBKblYIoq98eV1R25rQoxLLFUqTl
-	 z6brer/ZuUBy++ObqYWGqTLD2ejXfxlunm2qWy3+c3kV+jK2cxKaElTvCpes5adgrY
-	 THpUvb4ihC1T+zjXIZrfnIBNhvPa62Pa1reyB2m35vF6GRx4EcqiUcMynQnIfaa+hF
-	 GEwVyEyYysMag==
-Date: Tue, 6 Feb 2024 09:34:03 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Randy Dunlap <rdunlap@infradead.org>, NeilBrown <neilb@suse.de>,
-	John Sanpe <sanpeqf@gmail.com>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Uladzislau Koshchanka <koshchanka@gmail.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	David Gow <davidgow@google.com>, Kees Cook <keescook@chromium.org>,
-	Rae Moar <rmoar@google.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	"wuqiang.matt" <wuqiang.matt@bytedance.com>,
-	Yury Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ben Dooks <ben.dooks@codethink.co.uk>, dakr@redhat.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arch@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v6 0/4] Regather scattered PCI-Code
-Message-ID: <20240206153403.GA866283@bhelgaas>
+	s=k20201202; t=1707234517;
+	bh=zaZSsrvYhW5Ke2AYAmP/ja6WNn71gyudEVeXSINNEsM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Rak93+G/BJ5ORjKtT7vFG8fmk8Bwt1Ix0jXOncUPNsLpN5JcRXpcq/uuHxMwGa/OC
+	 BYwc2bIZqVoxeBRDy7aR8m8/RFB9RT3u0qBiuS6IU+lD22qZEkv3nZ/fJWTw3PoXvV
+	 6foJCiRNwclykXHNvYaVMgcc7sNrxJT5WIaaRXgfTdulEZ+jJGkE1g1yC4CMENy324
+	 iYCsdeZUGt+6gl00zho0VjeUgWgp6TRcs6qepB3mDA8pxDgZJAiGbnK2H1FEwJqZPQ
+	 VKzIxtuCY6zo1MDzmfE3t+sG4xvBD97LH/lfhZU6UpYS9F9ZlIO29kTHaIN+CIHpWb
+	 ObfJEzis5v/TA==
+Date: Tue, 6 Feb 2024 08:48:35 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Daniel Bristot de Oliveira <bristot@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Donald Zickus <dzickus@redhat.com>, stable@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: Re: [PATCH 1/6] tools/rtla: Fix Makefile compiler options for clang
+Message-ID: <20240206154835.GA1433705@dev-arch.thelio-3990X>
+References: <cover.1707217097.git.bristot@kernel.org>
+ <567ac1b94effc228ce9a0225b9df7232a9b35b55.1707217097.git.bristot@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1f1be7418b6f52854abdd25ad7b1c526a9a7e35d.camel@redhat.com>
+In-Reply-To: <567ac1b94effc228ce9a0225b9df7232a9b35b55.1707217097.git.bristot@kernel.org>
 
-On Tue, Feb 06, 2024 at 10:41:13AM +0100, Philipp Stanner wrote:
-> On Wed, 2024-01-31 at 15:08 -0600, Bjorn Helgaas wrote:
-> > On Wed, Jan 31, 2024 at 10:00:19AM +0100, Philipp Stanner wrote:
-> > > @Bjorn:
-> > > I decided that it's now actually possible to just embed the docu
-> > > updates
-> > > to the respective patches, instead of a separate patch.
-> > > Also dropped the ioport_unmap() for now.
-> > 
-> > Thanks.  I didn't see any documentation updates (other than those
-> > related to the changed path names) in this series, so I assume the
-> > updates you mention would be in a future series.
+On Tue, Feb 06, 2024 at 12:05:29PM +0100, Daniel Bristot de Oliveira wrote:
+> The following errors are showing up when compiling rtla with clang:
 > 
-> No, I actually meant the changed path names.
+>  $ make HOSTCC=clang CC=clang LLVM_IAS=1
+>  [...]
 > 
-> The next series (new devres functions) just adds more docstrings to
-> iomap.c, devres.c and pci.c in drivers/pci/, which, after this series
-> here is applied, are all already added to the Docu.
+>   clang -O -g -DVERSION=\"6.8.0-rc1\" -flto=auto -ffat-lto-objects
+> 	-fexceptions -fstack-protector-strong
+> 	-fasynchronous-unwind-tables -fstack-clash-protection  -Wall
+> 	-Werror=format-security -Wp,-D_FORTIFY_SOURCE=2
+> 	-Wp,-D_GLIBCXX_ASSERTIONS -Wno-maybe-uninitialized
+> 	$(pkg-config --cflags libtracefs)    -c -o src/utils.o src/utils.c
+> 
+>   clang: warning: optimization flag '-ffat-lto-objects' is not supported [-Wignored-optimization-argument]
 
-OK.  Other doc issues, I'm sure you've seen already:
-https://lore.kernel.org/r/20240205160908.6df5e790@canb.auug.org.au
+For what it's worth, this flag is supported in clang 17.0.0 and newer:
 
-I'll squash the fixes into this series when they're ready.
+https://github.com/llvm/llvm-project/commit/610fc5cbcc8b68879c562f6458608afe2473ab7f
 
-Bjorn
+But if it is not critical, just dropping the flag like you have done
+here rather than conditionally supporting it is probably easier.
+
+>   warning: unknown warning option '-Wno-maybe-uninitialized'; did you mean '-Wno-uninitialized'? [-Wunknown-warning-option]
+>   1 warning generated.
+> 
+>   clang -o rtla -ggdb  src/osnoise.o src/osnoise_hist.o src/osnoise_top.o
+>   src/rtla.o src/timerlat_aa.o src/timerlat.o src/timerlat_hist.o
+>   src/timerlat_top.o src/timerlat_u.o src/trace.o src/utils.o $(pkg-config --libs libtracefs)
+> 
+>   src/osnoise.o: file not recognized: file format not recognized
+>   clang: error: linker command failed with exit code 1 (use -v to see invocation)
+>   make: *** [Makefile:110: rtla] Error 1
+> 
+> Solve these issues by:
+>   - removing -ffat-lto-objects and -Wno-maybe-uninitialized if using clang
+>   - informing the linker about -flto=auto
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 1a7b22ab15eb ("tools/rtla: Build with EXTRA_{C,LD}FLAGS")
+> Suggested-by: Donald Zickus <dzickus@redhat.com>
+> Signed-off-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+> ---
+>  tools/tracing/rtla/Makefile | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/tracing/rtla/Makefile b/tools/tracing/rtla/Makefile
+> index 2456a399eb9a..afd18c678ff5 100644
+> --- a/tools/tracing/rtla/Makefile
+> +++ b/tools/tracing/rtla/Makefile
+> @@ -28,10 +28,15 @@ FOPTS	:=	-flto=auto -ffat-lto-objects -fexceptions -fstack-protector-strong \
+>  		-fasynchronous-unwind-tables -fstack-clash-protection
+>  WOPTS	:= 	-Wall -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -Wp,-D_GLIBCXX_ASSERTIONS -Wno-maybe-uninitialized
+>  
+> +ifeq ($(CC),clang)
+> +  FOPTS := $(filter-out -ffat-lto-objects, $(FOPTS))
+> +  WOPTS := $(filter-out -Wno-maybe-uninitialized, $(WOPTS))
+> +endif
+> +
+>  TRACEFS_HEADERS	:= $$($(PKG_CONFIG) --cflags libtracefs)
+>  
+>  CFLAGS	:=	-O -g -DVERSION=\"$(VERSION)\" $(FOPTS) $(MOPTS) $(WOPTS) $(TRACEFS_HEADERS) $(EXTRA_CFLAGS)
+> -LDFLAGS	:=	-ggdb $(EXTRA_LDFLAGS)
+> +LDFLAGS	:=	-flto=auto -ggdb $(EXTRA_LDFLAGS)
+>  LIBS	:=	$$($(PKG_CONFIG) --libs libtracefs)
+>  
+>  SRC	:=	$(wildcard src/*.c)
+> -- 
+> 2.43.0
+> 
 
