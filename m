@@ -1,93 +1,114 @@
-Return-Path: <stable+bounces-19000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E71984BB02
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 17:34:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F8B784BB41
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 17:44:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E11AA1F25D05
-	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 16:34:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0794B22C65
+	for <lists+stable@lfdr.de>; Tue,  6 Feb 2024 16:44:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D681DEDF;
-	Tue,  6 Feb 2024 16:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740F517F5;
+	Tue,  6 Feb 2024 16:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="KRQFwn5k"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242874A3C;
-	Tue,  6 Feb 2024 16:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703634C6B
+	for <stable@vger.kernel.org>; Tue,  6 Feb 2024 16:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707237240; cv=none; b=T7LKeS2p+tzfeM4FN25gp56CMdElFsukf6S2/aRApZEIVMoP18MjR2dDurLMVvt22N2ZEaVrYqD3AeSw3POFmVOhhqrdscIDWdeKZ+8EU6/o1pTLbI04kodiwZfjkt6Sd7Ofx/Lp0JzktiBtQZbhMvQmEo6vlWX9k/C2yGcOUvQ=
+	t=1707237866; cv=none; b=H3T1qAG5Eh+3rieiAHTzuGlqsaloIxuenaMiHRaZNqyG6nFL2QvD38FSUd0r5W2zdrlyP46i+hPvD/ddeT+KAwBdSdqJj93ZPerGZTqPMVAWPNU9kZ26VeaQxRVozljX7XXPPNEkE4AZtrTSaW1lL4KcXGQLoWBYd98dwzz0PMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707237240; c=relaxed/simple;
-	bh=xnyKCGVGW+vNEKJDrqf0/JVto/qSmvt6WM5rkiIILRM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D/lnS1P/9y6dS+9NZG2QQHuOqDbbygRpOK4hjNIul53lqG1RzVjps0Y74/kWGuZ6uR782VD0PVq/uzGV+0P4rdrXkwJvkYNBvXQXiS1HPPLiqjlv0qi02SZmN6XOHOUKErZ4Ud9UOQNnQyfxwr5PYYhpGqDV74b1pqRtqOzpQIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: by air.basealt.ru (Postfix, from userid 490)
-	id 586D22F20280; Tue,  6 Feb 2024 16:33:56 +0000 (UTC)
-X-Spam-Level: 
-Received: from [10.88.144.178] (obninsk.basealt.ru [217.15.195.17])
-	by air.basealt.ru (Postfix) with ESMTPSA id EBB8F2F20247;
-	Tue,  6 Feb 2024 16:33:53 +0000 (UTC)
-Message-ID: <7903fc0a-d0c5-20bf-20cc-d9f092e5c498@basealt.ru>
-Date: Tue, 6 Feb 2024 19:33:53 +0300
+	s=arc-20240116; t=1707237866; c=relaxed/simple;
+	bh=Ci5gwbrSM7cmnUZjQU3RB0yI/1+Eq7LqAgTZ83suCgc=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=CRh641DAFZO0jsRQSWBi5bZidpGDJRnMSbLRG6yfD0BRNlcZ4g1kl15UHe/W+vAJOEI/kt3Km1EyCGzPUdtsw5xJNQ86LXSu0h0gPtnfzkw7ch7tnsnGcDKIkaKPdedi8lS2xy5mp/e3nX8+ZcGe0ZFOHpNa1Fq4MzlbyP3HrWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=KRQFwn5k; arc=none smtp.client-ip=209.85.166.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-7bff8f21b74so59265139f.0
+        for <stable@vger.kernel.org>; Tue, 06 Feb 2024 08:44:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1707237863; x=1707842663; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dQcEl2yXnIh9XZWtfFgTdh1YAJ2nWzHZ9qOn3KNYSqE=;
+        b=KRQFwn5k22dhb3NV0WTSWzkkrlUMs1IJPp9U/18DFuLTAZfK9VfDYX6XEtYhD2jD1v
+         2nuVBUjghNwSIHv8rbbA7JjQPNYE8dJNtNrqIWqNV3XjY44KxKKoPLpVW++AYoANwBVn
+         IBmMDMFpPvyVQYSEQbmIdgFaNjs5TuuybzqWO59JHOWObWr6i8PAPuYBgqCFtTG2tOdn
+         QS5JAWa77rlrgBcn3GJuZwcsazo1IXF/YwgcbDXm7YcKl+2+46ONDsZcv1cf7VP30i4j
+         r+6xz/9rHUUYehcjQh4T7MCk+vMHS/t1QRzSY0MbNm7h4ylYt3hckL69HjEMIiE3B69P
+         0qiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707237863; x=1707842663;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dQcEl2yXnIh9XZWtfFgTdh1YAJ2nWzHZ9qOn3KNYSqE=;
+        b=DJh3XtvKZ8CQif/0QXqqCKBPIAL9axljL6gKwV4T5fyoJ9xJ+rRIXinIzdGVgttLgR
+         BYM4nW1jMejziYd7s5yVDMdemeXkIX8QscasqkHuK9ihlW1Hh3wOQVWArYeauSuCImWK
+         aQ3uHoOPqqfjgM7dMppNQKgKbrB8dV2raaGj4kFXqVVDTEagZbBD2RSw3VWJzsLaJ3BB
+         q9O4NcFPLlggyxgl81LKjF74LH0LSDEUnxY9WmRJchZXXGApDJ1/Pl8lzbWzH2n79mxH
+         XuCpsrpFw6ks7C6I7lHsKICrNg9odXEx6JCI0BZfmTj1lY4fsZpW2Q5zkRHVPBvJEOl9
+         QugA==
+X-Forwarded-Encrypted: i=1; AJvYcCWlXrp4CC8/e4QUyozOBKjUdWhbYs83b4HjlOCpzy/R9LqaYl8AwEDzErWhbvKYXdyQn/uzxFgTtoVlbk7QdS+OyyTIPNq9
+X-Gm-Message-State: AOJu0YyxLvcIJHn61EVt/P66ngz1e9pdcAv4kw6mpmkeMC5QftF+osuh
+	Vrtzqb07eHGICUJ33w2AEOmuQEAyQQ4H5Hy1BDKncWpl2Sd+/cGR6lwe7OZPSp+Tx8gOKg71/lH
+	rebg=
+X-Google-Smtp-Source: AGHT+IHZcEs7aDBPkKePRyf15PFF2B8+VP6+6XCTuENUCVBVzCXkDyrXenAcuFqRY39ol7B/hYJTww==
+X-Received: by 2002:a92:c248:0:b0:363:b624:6304 with SMTP id k8-20020a92c248000000b00363b6246304mr3743736ilo.0.1707237863190;
+        Tue, 06 Feb 2024 08:44:23 -0800 (PST)
+X-Forwarded-Encrypted: i=0; AJvYcCXbAW8t4ckd3AZqia0sjMAtxuucZtqgd9p1TKGWqFHopEeROfOeib5LPZvgU5noh22po3h7Z3oSEhEDoSDr8ba7eM0U0+C8KnplV2tM64wikCdkKojirvUn4us=
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id bq9-20020a056e02238900b00363a91effdbsm164701ilb.76.2024.02.06.08.44.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Feb 2024 08:44:22 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: Jan Kara <jack@suse.cz>
+Cc: linux-block@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
+In-Reply-To: <20240123175826.21452-1-jack@suse.cz>
+References: <20240123175826.21452-1-jack@suse.cz>
+Subject: Re: [PATCH] blk-wbt: Fix detection of dirty-throttled tasks
+Message-Id: <170723786248.650796.10431002551375769170.b4-ty@kernel.dk>
+Date: Tue, 06 Feb 2024 09:44:22 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with
- "Resource temporarily unavailable"
-Content-Language: en-US
-To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
- Salvatore Bonaccorso <carnil@debian.org>,
- "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>
-Cc: Paulo Alcantara <pc@manguebit.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "leonardo@schenkel.net" <leonardo@schenkel.net>,
- "linux-cifs@vger.kernel.org" <linux-cifs@vger.kernel.org>,
- "m.weissbach@info-gate.de" <m.weissbach@info-gate.de>,
- "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
- "sairon@sairon.cz" <sairon@sairon.cz>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Steve French <smfrench@gmail.com>, Darren Kenny <darren.kenny@oracle.com>
-References: <53F11617-D406-47C6-8CA7-5BE26EB042BE@amazon.com>
- <9B20AAD6-2C27-4791-8CA9-D7DB912EDC86@amazon.com>
- <2024011521-feed-vanish-5626@gregkh>
- <716A5E86-9D25-4729-BF65-90AC2A335301@amazon.com>
- <ZbnpDbgV7ZCRy3TT@eldamar.lan>
- <848c0723a10638fcf293514fab8cfa2e@manguebit.com>
- <3bfc7bc4-05cd-4353-8fca-a391d6cb9bf4@amazon.com>
- <Zb5eL-AKcZpmvYSl@eldamar.lan>
- <61fde07c-f767-42b0-9bfa-ef915b28fb77@oracle.com>
-From: kovalev@altlinux.org
-In-Reply-To: <61fde07c-f767-42b0-9bfa-ef915b28fb77@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-
-Hello everyone,
-
-06.02.2024 10:46, Harshit Mogalapalli wrote:
->
-> Adding kovalev here(who backported it to 5.10.y)
-I adapted the commit "smb3: Replace smb2pdu 1-element arrays with 
-flex-arrays" for 5.15.y and sent patch[1].
+X-Mailer: b4 0.12.5-dev-2aabd
 
 
-[1] 
-https://lore.kernel.org/lkml/20240206161111.454699-1-kovalev@altlinux.org/T/#u
+On Tue, 23 Jan 2024 18:58:26 +0100, Jan Kara wrote:
+> The detection of dirty-throttled tasks in blk-wbt has been subtly broken
+> since its beginning in 2016. Namely if we are doing cgroup writeback and
+> the throttled task is not in the root cgroup, balance_dirty_pages() will
+> set dirty_sleep for the non-root bdi_writeback structure. However
+> blk-wbt checks dirty_sleep only in the root cgroup bdi_writeback
+> structure. Thus detection of recently throttled tasks is not working in
+> this case (we noticed this when we switched to cgroup v2 and suddently
+> writeback was slow).
+> 
+> [...]
 
+Applied, thanks!
+
+[1/1] blk-wbt: Fix detection of dirty-throttled tasks
+      commit: f814bdda774c183b0cc15ec8f3b6e7c6f4527ba5
+
+Best regards,
 -- 
-Regards,
-Vasiliy Kovalev
+Jens Axboe
+
+
 
 
