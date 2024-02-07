@@ -1,137 +1,118 @@
-Return-Path: <stable+bounces-19085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13E8884D02D
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 18:50:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1EF784D0F4
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 19:15:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 467F21C26643
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 17:50:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6428B282F40
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 18:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF60D83CA7;
-	Wed,  7 Feb 2024 17:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0AB12F380;
+	Wed,  7 Feb 2024 18:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JNIP3OYh"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="cHpzZGOe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAE183CA1
-	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 17:50:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A7E83CD2;
+	Wed,  7 Feb 2024 18:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707328211; cv=none; b=UY/vYicNzHsD1HZ7FKrggpJDIDahuS7tMW0Yd/s5k40EnzCdV6qw1CEwbjR+wQ8f/cw1yAuNi/DTVX1cbaM9qMNfdks2zXBYGWe38GHUnBPu26GvZR5nB7orzCKkNT3+hUQjoLP9DBOj+Iky2Qd/6lHkR/amerOlSmKyA65a3JU=
+	t=1707329402; cv=none; b=WM8MDSSkCL5KXvz2k5MW1Sbyx+xAY4Z9dSG0l1WNjLNoBP8WWfGc04HsQxo91T6GHUFsaUpgkJbwLjYUPqA6tzAqP6cDN3NXes0Q9Mnk+8pw4PKKb1Uz9QE60liwMR6O7k3ICzHziZBS2a+yeDgyoUz2sUvuo19q1z4XA8XX4CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707328211; c=relaxed/simple;
-	bh=Mmz2szsEa8fRc/5VWn+xclgZaQqFrv3+O6GWDXybBIU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HpsEfDUilN1TAHletAeinXc+vTAJAPk5IgKrst8dbOMvlUzApWV5/gEx6r/+1qCIq63Nf+TRjlcN5W94oDJ8Fb8eA3YBOnH6+GPOHOxVC9IZ1Rt/7LguLVZ14d1Re5JcFYJtj0EG8mx6gzEROe1zLob5XTnbdJ+OnI6yy4z7Cg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JNIP3OYh; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-55a5e7fa471so1110092a12.1
-        for <stable@vger.kernel.org>; Wed, 07 Feb 2024 09:50:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707328207; x=1707933007; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HGDFZCXJsgP/e+y8DEUUTJO395BJkBwgpdtBp6SsTfM=;
-        b=JNIP3OYh++e1/7zr65lCKMGtr9EnkK8e7uHDHS2GLmU5Vy7/qMMEPtwU6YGr5w0bFW
-         zwcWqcJOgOw5IalJtY2BmgQA/DmyL0s6MpFd4bLcL60dDJP3ABpf4ugRqC9igz4jf8pi
-         uCPMht5/ZcaGopqX2D9aC5PGGNHQlnJ7MMlz/9RFVhIFQb+O7GJCQ6Wm3kdTPZHx6kLY
-         uF13vXlgWyJKza+fyE5Kpvd3r5/M5rOqiQJV+8dL4AMnWvEz7CEEzoHfnhTqp1W1xKon
-         32owyBQj8V2/Q8lg7lvXnIFOY1/Bh4qgR69Fs9P5PwyLyqfV5bWhokeU0xhMqqF0uH+w
-         lETA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707328207; x=1707933007;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HGDFZCXJsgP/e+y8DEUUTJO395BJkBwgpdtBp6SsTfM=;
-        b=pzgyr3KZN5fH6stvSR476CK7/3BfVvKJI4/1Z2Nyns2uYR1YEU7ei1RybPqxA9A3Bf
-         Mupgc3OQZS0Tj/ZJAGhj5HLsloKYA2EF1quHudXNxlNXBfLap9bxw1ymIehAQX7hDdUj
-         huAO/yJR3oZwWw8lWhO7kZ3bAGvNR73vXjiYzEu7vgT8bAxjIbykM+fAIP/p4ZGkAklb
-         XIPRv4JgqkP6c09PIg9nmBlE1PBcIJI+ioTVXIM2oLH6rO34cCu0ZLXWI1POiOdtEyUk
-         i1zB8Pr8Qa9gSLZrlrekO6rfgbgs3ynXDVMUUSxQpXam7SEh2WbBGuQXRd9Dnr8e0aHe
-         ykCg==
-X-Gm-Message-State: AOJu0Yy4A0IUswJVidNawzxNXEm80xAAI0Ukk00gA1948BaWBjIAgCBM
-	SXvbO068j3qnIwN8G/n/vEksmpu00KMuBHQ+JTQbDmwzzfxSdQYw66hnTeBG
-X-Google-Smtp-Source: AGHT+IH9xD0ZoHBG4Q6eKYQphgfJ1ej5/WN2oX5gK7W7O7t8ZQSiENBsrXlUdeTnPhAhjCDUydEiig==
-X-Received: by 2002:aa7:cf99:0:b0:55f:fd10:5e73 with SMTP id z25-20020aa7cf99000000b0055ffd105e73mr4160390edx.20.1707328207371;
-        Wed, 07 Feb 2024 09:50:07 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWGu6sWkBlNncMKRcXdn/T/yb4cLtusRzgoQNkriY5/pMQCTIw63d/+IgLuLYBPVkXJw2fTL444mEkyKSiKtS/98MgjhgrRzF0xsp6Xyv7V+nWt/qz6Kx9G0WtAmr3OtwoAlGHLVwBpnkGK/P+fxqKjTWWjifA2ooXe9k673XQksK5b0MDWHDkj92uUQJ8+MUp2OLJe/kVzO0XIHH6qhDMF5Y1WMwX02A3kIJUHXMCGIeqydSRMBKyylP6WgW8oRHcC4L4ChpdVistbJ1Z5BSsjS2dayDpMvM8X7DxB+6JozeOXVVk5pp9GAsGxqGHPeQ==
-Received: from toolbox.int.toradex.com (31-10-206-125.static.upc.ch. [31.10.206.125])
-        by smtp.gmail.com with ESMTPSA id c18-20020aa7df12000000b00560f3954ffdsm180992edy.24.2024.02.07.09.50.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Feb 2024 09:50:07 -0800 (PST)
-From: max.oss.09@gmail.com
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	patches@lists.linux.dev,
-	s.hauer@pengutronix.de,
-	han.xu@nxp.com,
-	tomasz.mon@camlingroup.com,
-	richard@nod.at,
-	tharvey@gateworks.com,
-	linux-mtd@lists.infradead.org,
-	Max Krummenacher <max.krummenacher@toradex.com>
-Subject: [regression 5.4.y][RFC][PATCH mtd: rawnand: gpmi: busy_timeout_cycles 1/1]  Revert "Revert "mtd: rawnand: gpmi: Fix setting busy timeout setting""
-Date: Wed,  7 Feb 2024 18:49:11 +0100
-Message-ID: <20240207174911.870822-2-max.oss.09@gmail.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20240207174911.870822-1-max.oss.09@gmail.com>
-References: <20240207174911.870822-1-max.oss.09@gmail.com>
+	s=arc-20240116; t=1707329402; c=relaxed/simple;
+	bh=PZhwfw3yFoBnmTr5KEskYLgTZtjV2a5wBbQGa0szcWA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=tbr76eMgEpfWfelUAMyZoMJNoBa8wR6LV4QmItPqjIXaqvsUoa/X6nNF7pRaCYcz5Be84bfgkwc36RyHOyO//i8axMLTNzjIOWwPhYY65aR5tuSUbrQj8obLgc0HPRfY1aTrNNbSasM/iYKOr4e08KpEfZLjCd2pSfewAwHQYUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=cHpzZGOe; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 417GixPD004624;
+	Wed, 7 Feb 2024 18:09:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=VRwwrWgHIcGNWJXD2OwHm/m6fXi9xzKbfg18D7NF6nI=; b=cH
+	pzZGOe2yWgX4wM9d9QOSAQ9hVZfponNfCuEF6cUksSdzxyG65zvBsfBXCKo/19hG
+	2vHm4WWWb3buUq2CihCGUIWo1pm/2ls99IRL8rKG+MZ2eV7mT9heu2jUJ4DIdfWi
+	yoOXpjexYhhPU6977o2P8kcGpTibUAkM3C/DEhKR+YiPAtzCoizmhoFOKQcCbMxT
+	m/9WGbz7BqbgtOCx+ijqL+rZG3AAjIeDg6rmV1riOQnQSXi01PUe4n4akdVpczSQ
+	NdwRgouaXHihYuDizUaKF9VvY2CoJu1u/B3UmPM7zayKpmVL+olm0pzY0ipwnBmu
+	d5SKvEViZHs65w5lG6iw==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w3x41t41q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 Feb 2024 18:09:04 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 417I93r7011560
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 7 Feb 2024 18:09:03 GMT
+Received: from [10.226.59.182] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 7 Feb
+ 2024 10:09:02 -0800
+Message-ID: <883d5c25-e607-bfe7-1fc1-cad86e828be6@quicinc.com>
+Date: Wed, 7 Feb 2024 11:09:01 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.6.0
+Subject: Re: [PATCH v2] bus: mhi: host: free buffer on error in
+ mhi_alloc_bhie_table
+Content-Language: en-US
+To: Fedor Pchelkin <pchelkin@ispras.ru>,
+        Manivannan Sadhasivam
+	<manivannan.sadhasivam@linaro.org>
+CC: Kalle Valo <quic_kvalo@quicinc.com>,
+        Carl Vanderlip
+	<quic_carlv@quicinc.com>,
+        Sujeev Dias <sdias@codeaurora.org>,
+        "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Siddartha Mohanadoss
+	<smohanad@codeaurora.org>, <mhi@lists.linux.dev>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        "Alexey
+ Khoroshilov" <khoroshilov@ispras.ru>,
+        <lvc-project@linuxtesting.org>, <stable@vger.kernel.org>
+References: <20240207134005.7515-1-pchelkin@ispras.ru>
+From: Jeffrey Hugo <quic_jhugo@quicinc.com>
+In-Reply-To: <20240207134005.7515-1-pchelkin@ispras.ru>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: TGyWmJChje4FlG2rHaPHG3yk2Tldqovb
+X-Proofpoint-GUID: TGyWmJChje4FlG2rHaPHG3yk2Tldqovb
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-07_09,2024-02-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ mlxlogscore=685 clxscore=1011 spamscore=0 priorityscore=1501
+ suspectscore=0 adultscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402070134
 
-From: Max Krummenacher <max.krummenacher@toradex.com>
+On 2/7/2024 6:40 AM, Fedor Pchelkin wrote:
+> img_info->mhi_buf should be freed on error path in mhi_alloc_bhie_table().
+> This error case is rare but still needs to be fixed.
+> 
+> Found by Linux Verification Center (linuxtesting.org).
+> 
+> Fixes: 3000f85b8f47 ("bus: mhi: core: Add support for basic PM operations")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 
-This reverts commit 15a3adfe75937c9e4e0e48f0ed40dd39a0e526e2.
-
-The backport of [1] relies on having [2] also backported. Having only
-one of the two results in a bogus hw->timing1 setting.
-
-If only [2] is backportet the 16 bit register value likely underflows
-resulting in a busy_wait_timeout of 0.
-Or if only [1] is applied the value likely overflows with chances of
-having last 16 LSBs all 0 which would then result in a
-busy_wait_timeout of 0 too.
-
-Both cases may lead to NAND data corruption, e.g. on a Colibri iMX7
-setup this has been seen.
-
-[1] commit 0fddf9ad06fd ("mtd: rawnand: gpmi: Set WAIT_FOR_READY
-timeout based on program/erase times")
-[2] commit 06781a5026350 ("mtd: rawnand: gpmi: Fix setting busy
-timeout setting")
-
-Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
----
- drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-index b806a762d079f..fdf5cf5565f99 100644
---- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-+++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
-@@ -684,7 +684,7 @@ static void gpmi_nfc_compute_timings(struct gpmi_nand_data *this,
- 	hw->timing0 = BF_GPMI_TIMING0_ADDRESS_SETUP(addr_setup_cycles) |
- 		      BF_GPMI_TIMING0_DATA_HOLD(data_hold_cycles) |
- 		      BF_GPMI_TIMING0_DATA_SETUP(data_setup_cycles);
--	hw->timing1 = BF_GPMI_TIMING1_BUSY_TIMEOUT(busy_timeout_cycles * 4096);
-+	hw->timing1 = BF_GPMI_TIMING1_BUSY_TIMEOUT(DIV_ROUND_UP(busy_timeout_cycles, 4096));
- 
- 	/*
- 	 * Derive NFC ideal delay from {3}:
--- 
-2.42.0
-
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
 
