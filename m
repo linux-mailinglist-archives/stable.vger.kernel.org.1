@@ -1,187 +1,388 @@
-Return-Path: <stable+bounces-19026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D591784C252
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 03:16:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A1084C245
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 03:10:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DC3128210D
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 02:16:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4E7E28C834
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 02:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5094ADF6B;
-	Wed,  7 Feb 2024 02:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23AA8D2EE;
+	Wed,  7 Feb 2024 02:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UHR73jYT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DyYS1oEl"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1FBEEDE
-	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 02:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707272146; cv=fail; b=aW3kPgljp7ZQSupJdV58nLKmLXQqBGDZh5tY9p+SRTgcWH8V9nTkCFDBpBcu+3Fk+SfyLbiG94XltSDkxCY6ZTynxKc87AAaXbumNkhEB73mzNktXiZ/vcprRKAUPmfwWeR1xIQHBDvTAwfjwCAO7iLSZpFgwkxIh+GA3R8P96k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707272146; c=relaxed/simple;
-	bh=F5XW9Vk7Zwter6OoUewekf2U+XkH5ZI6PiNjcqi3E9g=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=VyHJYqmZ9C1C4ZQw7ZrrnX2vSmYHWWaPLKJi2ZsuCK00M9/hjWSyWwuV3Cm6mpMiWS8i8Oo/ajWJ+kQ8dyQwsWGb64Akrbj3OWb0ifHzstq+ow/os5yU0tN9LPzQkG4DQZbswv6dkskjiNBH8THUErE+wlypVBVCpA9EZh8X6JI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UHR73jYT; arc=fail smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBCEDDB3;
+	Wed,  7 Feb 2024 02:10:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707271852; cv=none; b=lDuT915eaMcIFY/JpdFj4dD1o8M+AM0mmWpgOuAe893AioX2J8U6AMr6JCzXXivDSvqfNW4hbd2167em1xoT/VzbuTSTDvg10GE7UwFh2H2hrVbyPZ3ArgwkFv5ZZPzZO/ep95Vv4MDB5MhEdJLX1O3lCdBrB/g6bMViie3c+rw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707271852; c=relaxed/simple;
+	bh=wlR15foNqth8/8BSNdAdwtfvkeX+1SMi7T/b+TU+0bE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=sUrAx8Ym94c1RmTVtYTLctnNM134tWihCSFuDP1k1gChaaA4L/geK3K1SHxAP+qxXeVrLFf9w4s18unTXM6l8vJ/NEZtG5SxLjAuIdBHWLZHtIp7mcx7qdHjUQLM+IZK4eqIDT5xpajre7oFwTgjBZGfFusonYHEN5Mf3PvPnJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DyYS1oEl; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707272144; x=1738808144;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=F5XW9Vk7Zwter6OoUewekf2U+XkH5ZI6PiNjcqi3E9g=;
-  b=UHR73jYT/zxfSHPQxozUhAXhnbF5N1h3w7Z6bzqUsoMK9Xe7ht+RYMKC
-   pouBUJlBJCOkJw1ZtvIbgrZ2WhzPWUY02kqQiPrE1DRCPwHQtQIFjh6VW
-   ymb6f5LOoQ0NspNJDcw6pUOLuA65AICMF0148+5NFVE/CDqY9gY8up/ED
-   EowoqrB3z5Y+8/IY3qntHE16hd3qhFAo/LmhjI5Vf58meancc9WlimBzV
-   ZYBpZUkzx78P1BGsd4PBofpSm8pEJVWbD498Om4T09z23Jn6JkbzEIr22
-   q11aFWrdMwgfuxA9B41ZN3dAVW5F0QYuDBkwjP5C6y3Ni4VAtcKMpAY+4
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="1168599"
+  t=1707271851; x=1738807851;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version:content-transfer-encoding;
+  bh=wlR15foNqth8/8BSNdAdwtfvkeX+1SMi7T/b+TU+0bE=;
+  b=DyYS1oElX6KYVqDuY+qpN8ZNmxPVeosPsyTQ/H5GCWg0CGsa3RnBoYuL
+   9D6y38qXqLd7t9BFEak42Xq900Zswa6lsB73PFG6GlJhj9Dp7ruTpONwp
+   4kptikuJ+reUvM6bhitjj1ISJ9Obd0cNDwdjQ/1qKZDEVuobt2w+3qyGt
+   AbuZE74moiM387qAYGWbEYfhcZSTAR3o5ecynOgE450lvenRABoBlKnv8
+   5fETmVXOrgumrJMf9YEpbjdg2Svelcgg023wTcTPItGdHw5RkkpMdZi/e
+   d3bVh2JyH97bt17kch2Ls5zFQv7fL70pAYV2J232Yx11iWS46lOTABx2E
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="18309820"
 X-IronPort-AV: E=Sophos;i="6.05,248,1701158400"; 
-   d="scan'208";a="1168599"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 18:15:43 -0800
+   d="scan'208";a="18309820"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 18:10:50 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10976"; a="933647694"
 X-IronPort-AV: E=Sophos;i="6.05,248,1701158400"; 
-   d="scan'208";a="933647694"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by fmsmga001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 06 Feb 2024 18:15:43 -0800
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 6 Feb 2024 18:15:42 -0800
-Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
- ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 6 Feb 2024 18:15:42 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35 via Frontend Transport; Tue, 6 Feb 2024 18:15:42 -0800
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.41) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 6 Feb 2024 18:15:42 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ja4Yu5B4SblnWCV0WHQ1q2OO2B9ip6wDI10XvwNZU9E/bykQtZKavn7ZLJafQGbs60OA7BcvuVTnihH+h++T9gyugQ8A40gVPhq2+epoaco7OVuR3uw4syWHVIZ2r/34QspGTkcQyOttlx/qQVKbo8nSsU5ZvKCEl/l9pC85lHpUMCZ+yvPJHNG6llVcmh4Q/PXhJynfMs8asbp1q8wkClYiPpk97TDuLnUJpoXckxqK88QofQs9Jks8XseXV9kRax5rMFbaIQdcun612biqjSScUnBYC8XMuiipS5gsM8nTyJZFS95KqjGYBxKakzy169k5UFTIqmG71w8rAWm6uw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ArEgMIcXfcmrly5PAVO9/Dn1w6Yxw7sz4Ksa3cGLALA=;
- b=P9xjTXhEKCv38qqgXw+dD91a7anAlL17TeLhHhiARB1UU2V1O3mfV07xC5w6oeXlfN7hbhiCd0bQQfqovK8yKtWBRIymebr+MhaLiXJ/mdkK3R58QuVL4FAgBuL00IYWgoB9RsHLzQkUR28Rnh7ZW3s2JRfi01FcNctpYzQ71nVvzV+20VXPjc1eP4f121RKz06daugiZQJbKFL7nZDEQHjpZwg47ONx9HdUw0KRPhm8LyZrWrGmRntoj2hZohDVOngoN4I5j7/CcHCqCm3rc3dTPoJ8qnu/zinTWXyd2Ij4yJODtiYU9eysG7eT97HIobqtJivVfFwwhtm1mRL2Dw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY5PR11MB6392.namprd11.prod.outlook.com (2603:10b6:930:37::15)
- by SJ2PR11MB8449.namprd11.prod.outlook.com (2603:10b6:a03:56f::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.36; Wed, 7 Feb
- 2024 02:15:39 +0000
-Received: from CY5PR11MB6392.namprd11.prod.outlook.com
- ([fe80::b99c:f603:f176:aca]) by CY5PR11MB6392.namprd11.prod.outlook.com
- ([fe80::b99c:f603:f176:aca%5]) with mapi id 15.20.7249.035; Wed, 7 Feb 2024
- 02:15:39 +0000
-Date: Wed, 7 Feb 2024 10:08:40 +0800
-From: Yujie Liu <yujie.liu@intel.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: kernel test robot <lkp@intel.com>, Steven Rostedt <rostedt@goodmis.org>,
-	<stable@vger.kernel.org>, <oe-kbuild-all@lists.linux.dev>
-Subject: Re: [v6.6][PATCH 09/57] eventfs: Use ERR_CAST() in
- eventfs_create_events_dir()
-Message-ID: <ZcLmKFhf7Maq+uVx@yujie-X299>
-References: <20240206120947.843106843@rostedt.homelinux.com>
- <ZcIjPz0OgAbfVmIb@ddcdc6924185>
- <2024020618-octopus-passive-367e@gregkh>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <2024020618-octopus-passive-367e@gregkh>
-X-ClientProxiedBy: SI1PR02CA0024.apcprd02.prod.outlook.com
- (2603:1096:4:1f4::12) To CY5PR11MB6392.namprd11.prod.outlook.com
- (2603:10b6:930:37::15)
+   d="scan'208";a="1508747"
+Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2024 18:10:45 -0800
+From: "Huang, Ying" <ying.huang@intel.com>
+To: Barry Song <21cnbao@gmail.com>
+Cc: Chris Li <chrisl@kernel.org>,  Kairui Song <kasong@tencent.com>,
+  linux-mm@kvack.org,  Andrew Morton <akpm@linux-foundation.org>,  Minchan
+ Kim <minchan@kernel.org>,  Yu Zhao <yuzhao@google.com>,  Barry Song
+ <v-songbaohua@oppo.com>,  SeongJae Park <sj@kernel.org>,  Hugh Dickins
+ <hughd@google.com>,  Johannes Weiner <hannes@cmpxchg.org>,  Matthew Wilcox
+ <willy@infradead.org>,  Michal Hocko <mhocko@suse.com>,  Yosry Ahmed
+ <yosryahmed@google.com>,  David Hildenbrand <david@redhat.com>,
+  stable@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm/swap: fix race when skipping swapcache
+In-Reply-To: <CAGsJ_4zF+U5JG8XYANe2x0VbjovokFCirf=YLHOfO3E-U8b4sg@mail.gmail.com>
+	(Barry Song's message of "Wed, 7 Feb 2024 07:40:12 +0800")
+References: <20240206182559.32264-1-ryncsn@gmail.com>
+	<CAF8kJuMe7MYsAhwX804jZfO4w6kt74YMZXuz+FqUbZEt70p7Rg@mail.gmail.com>
+	<CAGsJ_4zF+U5JG8XYANe2x0VbjovokFCirf=YLHOfO3E-U8b4sg@mail.gmail.com>
+Date: Wed, 07 Feb 2024 10:08:49 +0800
+Message-ID: <87sf25yqj2.fsf@yhuang6-desk2.ccr.corp.intel.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6392:EE_|SJ2PR11MB8449:EE_
-X-MS-Office365-Filtering-Correlation-Id: b63ae325-c033-443c-2b67-08dc2782addb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: CJ+lt+pFVPFuRw6jrLwX76XgfAZY/9zY2Y1U5lFlLvVp46biusen4LMD1vNAB0fn6oXzprA7T4YzvRzE2nt4q/j/uSSWnXOFs7vUeD2TQRtGqUlPXslKcDMIDBL4BFrOuyG6oCQHKJbyVh6xVwJrMA9jNo9hydArwZDuGBmSZObeb2C+R6v6oWwFbIrsMLI0KyzXRhI3zgqHSntSlO12LXEt90TJl6b+daScJQQnm2qDu7VMy8WAs610kV+hGtnOBBSoUvimeH7OZafZWy7y3Sj8qXjwcq+hFuBqRzrmJwJUJsPvXdqUEqZvrHOquGsotKuwwYV+SC/5tIXX25xId59+/tAlxglGYT8BKi63pMtnUXYQbMgsElhYFbJndip1UsGxaB/xg5f8+XIebUSuAnfUq7ltywTLbTuBq0r6aT+wV4VfNEKASjk4tlqgT4Jw32naTR5fvoIm45ir7iTYu565/TKVSCGyiBaauVhJr6BGL1ancWyqSrXwEDl287AEllavE+VUPcRwovSIXXIgFVXGWEfyHgFopzFySDmuFT96WBNp4tCWD4RUBnbfRvGK2ijON5kGnPuXvPSDUEhyDp+mBH83ehpICx+R4Yao1c6sSgU00uA8Nr1jiyweRKvZlsoftv4HT4wepplevkrhOA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6392.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(346002)(136003)(376002)(39860400002)(396003)(366004)(230922051799003)(451199024)(64100799003)(1800799012)(186009)(33716001)(26005)(86362001)(6512007)(41300700001)(966005)(4744005)(6486002)(5660300002)(2906002)(478600001)(66556008)(54906003)(316002)(6916009)(66946007)(44832011)(66476007)(9686003)(8936002)(8676002)(4326008)(6506007)(6666004)(82960400001)(38100700002)(83380400001)(67856001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?/s3F03N7v6ejB6GyoEyvJIQCRzDPQZxUTQIxGVwbVTnliZblR2ZfmQHo02iq?=
- =?us-ascii?Q?TKbQA9jbiUBz1FU9iPevQ2jiwwAxkShpqGnhpXvcyVmugk8y5r1LYed4PGFf?=
- =?us-ascii?Q?OlozII9IXtUiH/2lD5eUvffCiIDKw3vx4PV8QlkZ+iVJ71BI5PloQrTJKPRP?=
- =?us-ascii?Q?J8GS5Udpl3vKInYToQm8uh9CTllvqkn7uVub0Lbm4C3r8JSWEemW5ocxPsve?=
- =?us-ascii?Q?sq9mB6b6smZfKuUrAp4wZVWHjxb0Mjc3mxjlDD+IS7dCUT1LeqxWYUz40Fcv?=
- =?us-ascii?Q?hH/PkHl0oFRMRtMZzOI1BcGeORAmbcC7Z12Am7ArEINvFsbLBTACOWZfot78?=
- =?us-ascii?Q?AAAz594nIPamfU/Xl9YDuGoU++y6i1UzOIyHeiaN8MJ9OeT3lKfi2RL/ZPZ3?=
- =?us-ascii?Q?8AGPk38jSt5gDjC/Ez+p8X2Qk7H/IGvgcP+sBYXmz7kRtJlMh7b3t72YM3m8?=
- =?us-ascii?Q?7xl+SDOU0XaHE49w8qqHT5Z7VT5qUYVzegpL1OLMlwhHGKADFjw8+aU9jktW?=
- =?us-ascii?Q?LAWZZbwlMnyiHPH0bhNkhqzGDw23XUUQKDkWYDRxp0TiEbQ1BvtvmLI0Lvmb?=
- =?us-ascii?Q?IeYid03jkvW/N63iYlTqn39jcrxUf8UiATH/heqJ9KfMWEwhm39b7EgGVl9/?=
- =?us-ascii?Q?uTPvYAC9XqrTK0ZXbeQZGfKMyF7orp/VxsTl5PoXzCxjrh6iFGqVILuKSZ1g?=
- =?us-ascii?Q?3wczUh2+VEZ8S9XatfCCNtakArMSvEwpIoALSjeoI8zhkFg7aITOt8Yz+Mlm?=
- =?us-ascii?Q?jdqoHqCNfGwLWkWoIiu/cFix9hhSIfPgL+tld6jhxSmdBsWCnwedfv0+IvMX?=
- =?us-ascii?Q?StIlDjizJNFCiq0TFIcasUcJK2VO/ub0uCbXoAMCYLG7TVJ7lfUvHMSJzcWz?=
- =?us-ascii?Q?C8n11ThdyjF3ZWEVkRhP0kBcq9ls9zEJ8DzercSRr76SIGg/+KFLRaACVRgk?=
- =?us-ascii?Q?op1+BD2K/awHFMZhQrybd8koJp3LwkSQROCZVOUliYCD8z+BpGbdnfQf7QA+?=
- =?us-ascii?Q?YiF87Y5hb6cC3Ef3fspFbAMCMdo+LcaG3PNTseaDLKJoQq5q9c5x6trp+Kse?=
- =?us-ascii?Q?RvxyinM1FA/+5ns25svLbFtRdC6p5MetLhIZ5beFkLO2iabjrFUkEeagdlaU?=
- =?us-ascii?Q?IejoX5cEsWeoa4DeOM3RbEeAg/OS2TMF9lrGXXLdyPwif861QeOR9/JEWDD2?=
- =?us-ascii?Q?8L5E89R2QqFnK89MhkrfH8w3umnNSpflUfjYYDukVHhXnCcW8gc7b4MncgfU?=
- =?us-ascii?Q?RRRnDRUZzELCk4oFMwftkUmNX1UFwGM/FAXYvTVfai8QON4Mu0DKn2jke9sL?=
- =?us-ascii?Q?dLTE7Mv0KoKkYylPpMAVGdPYdsdzhTsamWEolDZm2GfSPUJvX7bjdXHQfsis?=
- =?us-ascii?Q?hbfqJbHK7cdB7CKqdBiCpfAckoWar8v3WqerfyEC55ORpdXUCTFbdI5jhsPT?=
- =?us-ascii?Q?COrmzNtmLvRIBClTAYaUcnKgP/O+prCRKBEF+JylgzbURP+LhcKsxKPGfcq+?=
- =?us-ascii?Q?VFdtRUWNYa1LmcBhmaxF/5g8bGgOwJbgRr2mPVxWD1Rl8mS8WJY4iSj9Ypii?=
- =?us-ascii?Q?ew8pMNKBfZQz4Nk+ZXZziMwj05nkz0/dDrvnZck5?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: b63ae325-c033-443c-2b67-08dc2782addb
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6392.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2024 02:15:39.6528
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Xjzt725SiOz10i2Y0NWtaaz5kGDP9T9+nZD+xhPO4UXhJK0IhqIYbWBaxOTfxxo6p38cFmtTno0t9dikHqYbrA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8449
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 06, 2024 at 02:21:29PM +0000, Greg KH wrote:
-> On Tue, Feb 06, 2024 at 08:17:03PM +0800, kernel test robot wrote:
-> > Hi,
-> > 
-> > Thanks for your patch.
-> > 
-> > FYI: kernel test robot notices the stable kernel rule is not satisfied.
-> > 
-> > The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-> > 
-> > Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-> > Subject: [v6.6][PATCH 09/57] eventfs: Use ERR_CAST() in eventfs_create_events_dir()
-> > Link: https://lore.kernel.org/stable/20240206120947.843106843%40rostedt.homelinux.com
-> 
-> False-positive :(
+Barry Song <21cnbao@gmail.com> writes:
 
-Sorry for the false positive. The bot wrongly parsed the prefix
-"[v6.6][PATCH ...]". We will fix it ASAP.
+> On Wed, Feb 7, 2024 at 7:18=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote:
+>>
+>> Hi Kairui,
+>>
+>> Sorry replying to your patch V1 late, I will reply on the V2 thread.
+>>
+>> On Tue, Feb 6, 2024 at 10:28=E2=80=AFAM Kairui Song <ryncsn@gmail.com> w=
+rote:
+>> >
+>> > From: Kairui Song <kasong@tencent.com>
+>> >
+>> > When skipping swapcache for SWP_SYNCHRONOUS_IO, if two or more threads
+>> > swapin the same entry at the same time, they get different pages (A, B=
+).
+>> > Before one thread (T0) finishes the swapin and installs page (A)
+>> > to the PTE, another thread (T1) could finish swapin of page (B),
+>> > swap_free the entry, then swap out the possibly modified page
+>> > reusing the same entry. It breaks the pte_same check in (T0) because
+>> > PTE value is unchanged, causing ABA problem. Thread (T0) will
+>> > install a stalled page (A) into the PTE and cause data corruption.
+>> >
+>> > One possible callstack is like this:
+>> >
+>> > CPU0                                 CPU1
+>> > ----                                 ----
+>> > do_swap_page()                       do_swap_page() with same entry
+>> > <direct swapin path>                 <direct swapin path>
+>> > <alloc page A>                       <alloc page B>
+>> > swap_read_folio() <- read to page A  swap_read_folio() <- read to page=
+ B
+>> > <slow on later locks or interrupt>   <finished swapin first>
+>> > ...                                  set_pte_at()
+>> >                                      swap_free() <- entry is free
+>> >                                      <write to page B, now page A stal=
+led>
+>> >                                      <swap out page B to same swap ent=
+ry>
+>> > pte_same() <- Check pass, PTE seems
+>> >               unchanged, but page A
+>> >               is stalled!
+>> > swap_free() <- page B content lost!
+>> > set_pte_at() <- staled page A installed!
+>> >
+>> > And besides, for ZRAM, swap_free() allows the swap device to discard
+>> > the entry content, so even if page (B) is not modified, if
+>> > swap_read_folio() on CPU0 happens later than swap_free() on CPU1,
+>> > it may also cause data loss.
+>> >
+>> > To fix this, reuse swapcache_prepare which will pin the swap entry usi=
+ng
+>> > the cache flag, and allow only one thread to pin it. Release the pin
+>> > after PT unlocked. Racers will simply busy wait since it's a rare
+>> > and very short event.
+>> >
+>> > Other methods like increasing the swap count don't seem to be a good
+>> > idea after some tests, that will cause racers to fall back to use the
+>> > swap cache again. Parallel swapin using different methods leads to
+>> > a much more complex scenario.
+>> >
+>> > Reproducer:
+>> >
+>> > This race issue can be triggered easily using a well constructed
+>> > reproducer and patched brd (with a delay in read path) [1]:
+>> >
+>> > With latest 6.8 mainline, race caused data loss can be observed easily:
+>> > $ gcc -g -lpthread test-thread-swap-race.c && ./a.out
+>> >   Polulating 32MB of memory region...
+>> >   Keep swapping out...
+>> >   Starting round 0...
+>> >   Spawning 65536 workers...
+>> >   32746 workers spawned, wait for done...
+>> >   Round 0: Error on 0x5aa00, expected 32746, got 32743, 3 data loss!
+>> >   Round 0: Error on 0x395200, expected 32746, got 32743, 3 data loss!
+>> >   Round 0: Error on 0x3fd000, expected 32746, got 32737, 9 data loss!
+>> >   Round 0 Failed, 15 data loss!
+>> >
+>> > This reproducer spawns multiple threads sharing the same memory region
+>> > using a small swap device. Every two threads updates mapped pages one =
+by
+>> > one in opposite direction trying to create a race, with one dedicated
+>> > thread keep swapping out the data out using madvise.
+>> >
+>> > The reproducer created a reproduce rate of about once every 5 minutes,
+>> > so the race should be totally possible in production.
+>> >
+>> > After this patch, I ran the reproducer for over a few hundred rounds
+>> > and no data loss observed.
+>> >
+>> > Performance overhead is minimal, microbenchmark swapin 10G from 32G
+>> > zram:
+>> >
+>> > Before:     10934698 us
+>> > After:      11157121 us
+>> > Non-direct: 13155355 us (Dropping SWP_SYNCHRONOUS_IO flag)
+>> >
+>> > Fixes: 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchrono=
+us device")
+>> > Reported-by: "Huang, Ying" <ying.huang@intel.com>
+>> > Closes: https://lore.kernel.org/lkml/87bk92gqpx.fsf_-_@yhuang6-desk2.c=
+cr.corp.intel.com/
+>> > Link: https://github.com/ryncsn/emm-test-project/tree/master/swap-stre=
+ss-race [1]
+>> > Signed-off-by: Kairui Song <kasong@tencent.com>
+>> > Reviewed-by: "Huang, Ying" <ying.huang@intel.com>
+>> > Acked-by: Yu Zhao <yuzhao@google.com>
+>> >
+>> > ---
+>> > Update from V1:
+>> > - Add some words on ZRAM case, it will discard swap content on swap_fr=
+ee so the race window is a bit different but cure is the same. [Barry Song]
+>> > - Update comments make it cleaner [Huang, Ying]
+>> > - Add a function place holder to fix CONFIG_SWAP=3Dn built [SeongJae P=
+ark]
+>> > - Update the commit message and summary, refer to SWP_SYNCHRONOUS_IO i=
+nstead of "direct swapin path" [Yu Zhao]
+>> > - Update commit message.
+>> > - Collect Review and Acks.
+>> >
+>> >  include/linux/swap.h |  5 +++++
+>> >  mm/memory.c          | 15 +++++++++++++++
+>> >  mm/swap.h            |  5 +++++
+>> >  mm/swapfile.c        | 13 +++++++++++++
+>> >  4 files changed, 38 insertions(+)
+>> >
+>> > diff --git a/include/linux/swap.h b/include/linux/swap.h
+>> > index 4db00ddad261..8d28f6091a32 100644
+>> > --- a/include/linux/swap.h
+>> > +++ b/include/linux/swap.h
+>> > @@ -549,6 +549,11 @@ static inline int swap_duplicate(swp_entry_t swp)
+>> >         return 0;
+>> >  }
+>> >
+>> > +static inline int swapcache_prepare(swp_entry_t swp)
+>> > +{
+>> > +       return 0;
+>> > +}
+>> > +
+>> >  static inline void swap_free(swp_entry_t swp)
+>> >  {
+>> >  }
+>> > diff --git a/mm/memory.c b/mm/memory.c
+>> > index 7e1f4849463a..1749c700823d 100644
+>> > --- a/mm/memory.c
+>> > +++ b/mm/memory.c
+>> > @@ -3867,6 +3867,16 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>> >         if (!folio) {
+>> >                 if (data_race(si->flags & SWP_SYNCHRONOUS_IO) &&
+>> >                     __swap_count(entry) =3D=3D 1) {
+>> > +                       /*
+>> > +                        * Prevent parallel swapin from proceeding with
+>> > +                        * the cache flag. Otherwise, another thread m=
+ay
+>> > +                        * finish swapin first, free the entry, and sw=
+apout
+>> > +                        * reusing the same entry. It's undetectable as
+>> > +                        * pte_same() returns true due to entry reuse.
+>> > +                        */
+>> > +                       if (swapcache_prepare(entry))
+>> > +                               goto out;
+>> > +
+>>
+>> I am puzzled by this "goto out". If I understand this correctly, you
+>> have two threads CPU1 and CPU2 racing to set the flag SWAP_HAS_CACHE.
+>> The CPU1 will succeed in adding the flag and  the CPU2 will get
+>> "-EEXIST" from "swapcache_prepare(entry)".  Am I understanding it
+>> correctly so far?
+>>
+>> Then the goto out seems wrong to me. For the CPU2, the page fault will
+>> return *unhandled*. Even worse, the "-EEXIST" error is not preserved,
+>> CPU2 does not even know the page fault is not handled, it will resume
+>> from the page fault instruction, possibly generate another page fault
+>> at the exact same location. That page fault loop will repeat until
+>> CPU1 install the new pte on that faulting virtual address and pick up
+>> by CPU2.
+>>
+>> Am I missing something obvious there?
+>
+> I feel you are right. any concurrent page faults at the same pte
+> will increase the count of page faults for a couple of times now.
+>
+>>
+>> I just re-read your comment: "Racers will simply busy wait since it's
+>> a rare and very short event." That might be referring to the above
+>> CPU2 page fault looping situation. I consider the page fault looping
+>> on CPU2 not acceptable. For one it will mess up the page fault
+>> statistics.
+>> In my mind, having an explicit loop for CPU2 waiting for the PTE to
+>> show up is still better than this page fault loop. You can have more
+>> CPU power friendly loops.
+>
+> I assume you mean something like
+>
+> while(!pte_same())
+>    cpu_relax();
+>
+> then we still have a chance to miss the change of B.
+>
+> For example, another thread is changing pte to A->B->A, our loop can
+> miss B. Thus we will trap into an infinite loop. this is even worse.
+>
+> is it possible to loop for the success of swapcache_prepare(entry)
+> instead?
 
+This doesn't work too.  The swap count can increase to > 1 and be put in
+swap cache for long time.
+
+Another possibility is to move swapcache_prepare() after
+vma_alloc_folio() to reduce the race window.
+
+--
 Best Regards,
-Yujie
+Huang, Ying
+
+>>
+>> This behavior needs more discussion.
+>>
+>> Chris
+>>
+>>
+>> Chris
+>>
+>>
+>> >                         /* skip swapcache */
+>> >                         folio =3D vma_alloc_folio(GFP_HIGHUSER_MOVABLE=
+, 0,
+>> >                                                 vma, vmf->address, fal=
+se);
+>> > @@ -4116,6 +4126,9 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>> >  unlock:
+>> >         if (vmf->pte)
+>> >                 pte_unmap_unlock(vmf->pte, vmf->ptl);
+>> > +       /* Clear the swap cache pin for direct swapin after PTL unlock=
+ */
+>> > +       if (folio && !swapcache)
+>> > +               swapcache_clear(si, entry);
+>> >  out:
+>> >         if (si)
+>> >                 put_swap_device(si);
+>> > @@ -4124,6 +4137,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+>> >         if (vmf->pte)
+>> >                 pte_unmap_unlock(vmf->pte, vmf->ptl);
+>> >  out_page:
+>> > +       if (!swapcache)
+>> > +               swapcache_clear(si, entry);
+>> >         folio_unlock(folio);
+>> >  out_release:
+>> >         folio_put(folio);
+>> > diff --git a/mm/swap.h b/mm/swap.h
+>> > index 758c46ca671e..fc2f6ade7f80 100644
+>> > --- a/mm/swap.h
+>> > +++ b/mm/swap.h
+>> > @@ -41,6 +41,7 @@ void __delete_from_swap_cache(struct folio *folio,
+>> >  void delete_from_swap_cache(struct folio *folio);
+>> >  void clear_shadow_from_swap_cache(int type, unsigned long begin,
+>> >                                   unsigned long end);
+>> > +void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry);
+>> >  struct folio *swap_cache_get_folio(swp_entry_t entry,
+>> >                 struct vm_area_struct *vma, unsigned long addr);
+>> >  struct folio *filemap_get_incore_folio(struct address_space *mapping,
+>> > @@ -97,6 +98,10 @@ static inline int swap_writepage(struct page *p, st=
+ruct writeback_control *wbc)
+>> >         return 0;
+>> >  }
+>> >
+>> > +static inline void swapcache_clear(struct swap_info_struct *si, swp_e=
+ntry_t entry)
+>> > +{
+>> > +}
+>> > +
+>> >  static inline struct folio *swap_cache_get_folio(swp_entry_t entry,
+>> >                 struct vm_area_struct *vma, unsigned long addr)
+>> >  {
+>> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+>> > index 556ff7347d5f..746aa9da5302 100644
+>> > --- a/mm/swapfile.c
+>> > +++ b/mm/swapfile.c
+>> > @@ -3365,6 +3365,19 @@ int swapcache_prepare(swp_entry_t entry)
+>> >         return __swap_duplicate(entry, SWAP_HAS_CACHE);
+>> >  }
+>> >
+>> > +void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry)
+>> > +{
+>> > +       struct swap_cluster_info *ci;
+>> > +       unsigned long offset =3D swp_offset(entry);
+>> > +       unsigned char usage;
+>> > +
+>> > +       ci =3D lock_cluster_or_swap_info(si, offset);
+>> > +       usage =3D __swap_entry_free_locked(si, offset, SWAP_HAS_CACHE);
+>> > +       unlock_cluster_or_swap_info(si, ci);
+>> > +       if (!usage)
+>> > +               free_swap_slot(entry);
+>> > +}
+>> > +
+>> >  struct swap_info_struct *swp_swap_info(swp_entry_t entry)
+>> >  {
+>> >         return swap_type_to_swap_info(swp_type(entry));
+>> > --
+>> > 2.43.0
+>
+> Thanks
+> Barry
 
