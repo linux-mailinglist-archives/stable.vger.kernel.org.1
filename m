@@ -1,170 +1,100 @@
-Return-Path: <stable+bounces-19051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3272784C6D2
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 10:04:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09DB384C6F2
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 10:10:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AA61B217B6
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 09:04:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA209286512
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 09:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFBD8208D4;
-	Wed,  7 Feb 2024 09:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A39520B09;
+	Wed,  7 Feb 2024 09:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JpVjA9hi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58C5208D6
-	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 09:04:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2571922307;
+	Wed,  7 Feb 2024 09:10:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707296658; cv=none; b=E2/Cknhh8D/bYGk9Tjyc6rM/KH2RNvXK9VP4PQrrDODVZWrBnoj1L/wrS6+TFD1eTmPVIFklDzuKoTKD9gjzURx7qCdDJyl2ZAvj3Q/nkxtupK6stbfXGEbZNnGdVbs6UlfCUSQz2Kg3Bx9SnathFEnbyozn4HD3+4NrZ7PAST0=
+	t=1707297026; cv=none; b=HUyrlX/I6ag/oBuo9xGhryo4IXEjmK98H4ocwbVran26/pNpO67UD7lJ8u0QonOd4QcjslIj1FcZMGVDb/D7owWwOLcHoylgUTli06juCFnBcNU2wqSrjhr6aezhq3UK8u0sC4DKxariTe7WfEG/boNmXqWcN2hwAYWwGQt6xf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707296658; c=relaxed/simple;
-	bh=uTouoritSBniH6ODqAixgsHapd1gND7Dpi5XY1suL8c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BePrBG2pPEDGBl3oG2rrB1UqQtoCar0IFeh0NpVK8ap/5Z9g7VvDJBVMtaWsvlFxBrehH94zPCKKgBGO70USk0/A4yO+RbzABaBQPQu/YhNzO6B7RYLpSRzDhNtKUaHgf8iSpuf7XXFoI50pk3KWiET8c2cap3IP9qEyYGU5iQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-55ff4dbe6a8so373966a12.2
-        for <stable@vger.kernel.org>; Wed, 07 Feb 2024 01:04:16 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707296655; x=1707901455;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1zIOgF73UoU1efAJaUsPi5EeaDGzs4N42PXEo6xd4xM=;
-        b=R0FX6RSti6ybMEUDZ+UwGw1k5BjUX4w8Ur1wTUQ+RMNwqtLQI1K3u1ZRg596mcvhVG
-         FVigJAkwL/a/YIGg5+uXdBA9HEnnKDWfXp2PFB/NI6qiwdaUs+V25Vqj1htmgkeeQoCJ
-         Y5iK0RejQmq5pgG1ArCDKdYO3ZoSxzOZZFgLV9F+Jf63lmbQ/pThx2zSy8os3xYGOAr2
-         9Ik0ms4X3qKa1e791AhntRzJvYIENCRbLYuvzf/Detob/aICOHyOP3lN3WLph+kzRS7c
-         g0vSfIMm65p5rpmAWqeiFDoUMyhoKgVpyDxgnkIKaHZWv5q/XYnhEKsbgUdf2ZRYJl6W
-         SI0g==
-X-Gm-Message-State: AOJu0YyP3+ulKG8ZQn6p1T/ClfVyejCD0/L1CgZMmIMgzmxVXGYFCXgw
-	hiVDmGdBm78oifHCW8e5nt2s55mgiyMg49ekyu1iRFhTgh6izFxR
-X-Google-Smtp-Source: AGHT+IELamvHZ2VDkAX4T8OV5YwmXlKQUw5K1qZD3CNNuoE1ovffVTUtPIzsvmwWpZxt1W0gqKI7pQ==
-X-Received: by 2002:aa7:c2d3:0:b0:55f:95ac:d698 with SMTP id m19-20020aa7c2d3000000b0055f95acd698mr3437967edp.32.1707296655008;
-        Wed, 07 Feb 2024 01:04:15 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUdqcpBvOO8xsBI5BL5MhrAcdHNlqbhqJmhlQvE0cDC6Ymq4CwkUdU8np7gtLN/yFLnS/sL6fAd5Tv3aIEw9QmXVQiBonfoC3PlDxygoxR6THVEa43dHCL4WXYwQtCSdUr1UQjsZa3IMkVSe2+CMXIqLqOnbyRotVHI5w==
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:59? ([2a0b:e7c0:0:107::aaaa:59])
-        by smtp.gmail.com with ESMTPSA id v30-20020a50a45e000000b0056023efc5besm475161edb.53.2024.02.07.01.04.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Feb 2024 01:04:14 -0800 (PST)
-Message-ID: <f1d815b2-7c0c-4773-a91e-f381df193795@kernel.org>
-Date: Wed, 7 Feb 2024 10:04:12 +0100
+	s=arc-20240116; t=1707297026; c=relaxed/simple;
+	bh=3Skvn/dUoFSwXi54r9T2MMdejeTQaB6k0PKGKLgLFW8=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=OMt7jkMG2sXZ2DDxTbyjJwKhEqoBvVvUdAY0SLg2v31v5QSSTE8KHnHtpwYFM8INoqmpiYD7K1debnM07GwzKpKnmq2t/tkGogGCuvPczgVRu5l6xAqRrvtG0VYWu4hABXbIfoA4fF6uY9OR87ETcGxA+qJamjDgZcU5v5Hb+FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JpVjA9hi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8E773C433C7;
+	Wed,  7 Feb 2024 09:10:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707297025;
+	bh=3Skvn/dUoFSwXi54r9T2MMdejeTQaB6k0PKGKLgLFW8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=JpVjA9hi1PaqsZIiPpiX1hoyJ6QubNOqHgQGqadY/ZlSwQpDZevC20ottlioalOio
+	 cpuxfbsbNgLGI7P5fvOp5m95VdLNvCcaroiZP/ZpHtbH8a1V/KPfNlIwVqoqOv/cDR
+	 zJvWYTi2j9O/6pGfnyxQiT8XE1IT+lTKY0sa2MTJ3fOERzHmL89eJUJ3YI5FFPYFZp
+	 Me2RVjPMY2VPi2RLjKXlUJ0bIsHwzUJ8c6GT8pJhR/jdYfzM5P25t5ovoA3MERwWuW
+	 fxur5Ed2er7vR/xyJnLUkeMcdXnZCm2u7/U0nPfNwEmJS73jdbjBuOJbkXNJXNbSBr
+	 rqnTjW1bObaEA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 6549FD8C96E;
+	Wed,  7 Feb 2024 09:10:25 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.7 427/641] io_uring: dont check iopoll if request
- completes
-Content-Language: en-US
-To: Jens Axboe <axboe@kernel.dk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>
-References: <20240122235818.091081209@linuxfoundation.org>
- <20240122235831.353232285@linuxfoundation.org>
- <9fc00f54-24d5-44a6-a690-d4f73c37caa1@kernel.org>
- <8ec60240-800e-40b5-838f-b4779b5fee36@kernel.org>
- <6c91c497-0653-4901-a673-66922f3f5e7e@kernel.dk>
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <6c91c497-0653-4901-a673-66922f3f5e7e@kernel.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] net: stmmac: protect updates of 64-bit statistics
+ counters
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <170729702541.31522.8754905006786635767.git-patchwork-notify@kernel.org>
+Date: Wed, 07 Feb 2024 09:10:25 +0000
+References: <20240203190927.19669-1-petr@tesarici.cz>
+In-Reply-To: <20240203190927.19669-1-petr@tesarici.cz>
+To: Petr Tesarik <petr@tesarici.cz>
+Cc: alexandre.torgue@foss.st.com, joabreu@synopsys.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, wens@csie.org, jernej.skrabec@gmail.com,
+ samuel@sholland.org, jszhang@kernel.org, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-sunxi@lists.linux.dev, mh+netdev@zugschlus.de, andrew@lunn.ch,
+ f.fainelli@gmail.com, stable@vger.kernel.org
 
-On 29. 01. 24, 14:58, Jens Axboe wrote:
-> On 1/29/24 12:34 AM, Jiri Slaby wrote:
->> On 29. 01. 24, 7:44, Jiri Slaby wrote:
->>> On 23. 01. 24, 0:55, Greg Kroah-Hartman wrote:
->>>> 6.7-stable review patch.  If anyone has any objections, please let me know.
->>>
->>> Hi,
->>>
->>> 6.7.2 fails in liburing tests (both x64 and x86-32 lib on x64 kernel):
->>> [  115s] Tests failed (5): <fd-pass.t> <msg-ring-overflow.t> <pipe-bug.t> <poll-race-mshot.t> <reg-hint.t>
->>>
->>> I cannot reproduce locally, that happens only in openSUSE build machinery (the errors are transient, the links might not be valid in the future):
->>> https://build.opensuse.org/package/live_build_log/openSUSE:Factory:Staging:H/liburing/standard/i586
->>> https://build.opensuse.org/package/live_build_log/openSUSE:Factory:Staging:H/liburing/standard/x86_64
->>>
->>> So I cannot tell if 6.8-rc is affected.
->>>
->>> I suspect one of the 6.7.2 uring changes:
->>> e24bf5b47a57 io_uring: adjust defer tw counting
->>> 22eed9134509 io_uring: ensure local task_work is run on wait timeout
->>> ba8d8a8a36b2 io_uring/rw: ensure io->bytes_done is always initialized
->>> d413a342275d io_uring: don't check iopoll if request completes
->>>
->>> It looks like EINVAL is received unexpectedly (see below). Any ideas?
->>
->> Forget about this. The build service is currently broken and is using
->> 5.14 kernel instead of 6.7.2.
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
+
+On Sat,  3 Feb 2024 20:09:27 +0100 you wrote:
+> As explained by a comment in <linux/u64_stats_sync.h>, write side of struct
+> u64_stats_sync must ensure mutual exclusion, or one seqcount update could
+> be lost on 32-bit platforms, thus blocking readers forever. Such lockups
+> have been observed in real world after stmmac_xmit() on one CPU raced with
+> stmmac_napi_poll_tx() on another CPU.
 > 
-> Ah that makes sense, the tests should work (in the sense that they
-> should not fail) on eg 5.15-stable, but I guess the 5.14 kernel is
-> something else entirely? Most of them would return 77 on older kernels
-> where a specific feature is missing, but eg pipe-bug.t should definitely
-> run and pass on older kernels.
+> To fix the issue without introducing a new lock, split the statics into
+> three parts:
+> 
+> [...]
 
-It's SUSE's 5.14, so 5.14 with this many patches (45k+):
-https://raw.githubusercontent.com/openSUSE/kernel-source/SLE15-SP5/series.conf
+Here is the summary with links:
+  - [net,v3] net: stmmac: protect updates of 64-bit statistics counters
+    https://git.kernel.org/netdev/net/c/38cc3c6dcc09
 
-I am not sure it is supposed to be working in there too. But maybe we 
-are missing some fixes on the top of the backported patches...
-
-FWIW 6.7.2 was fine after all.
-
-thanks,
+You are awesome, thank you!
 -- 
-js
-suse labs
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
