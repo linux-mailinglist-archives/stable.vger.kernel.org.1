@@ -1,91 +1,116 @@
-Return-Path: <stable+bounces-19253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96EC484D68A
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 00:24:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA66F84D6BE
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 00:43:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D00001C245CF
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 23:24:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61D4B1F22EBB
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 23:43:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4CE2033E;
-	Wed,  7 Feb 2024 23:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D8C535B5;
+	Wed,  7 Feb 2024 23:43:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="oHUa2w9M"
 X-Original-To: stable@vger.kernel.org
-Received: from irl.hu (irl.hu [95.85.9.111])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6AA52032D;
-	Wed,  7 Feb 2024 23:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A25200D9;
+	Wed,  7 Feb 2024 23:43:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707348274; cv=none; b=ARGKzgdw9oz+7iWoO35Q9I2bioZEhYq2UK9BQ+DixsCfbPGCxHE8hsaOsuCCzKH8TrPZOphDdpuxce9bH1HUrGSSlFUKlcAp9Vs34J9p/CdU0G3hm3gGiH99Kp7ki01JBuGeUKrwtI1dM2o3H6v+LdJ1eJSFflupbVPu1gjaEc0=
+	t=1707349390; cv=none; b=RXlDCIQWzMbs9NMHa0ljfmEFfWg/TwtDZJlUbTiEki8c9BdL1GxQpsoWyoUJ0igAOJ/t0tv14w4axHStC5hLYef3mMbBsk9TcOUj5oSBtZWuYwb5/YseedBVh0x7ShHFQqcu9ZEn2/3QUM7yWMyFAMwwZ+luDZ/pC95bEui6i7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707348274; c=relaxed/simple;
-	bh=YfRV9IXEHzwUlaK44nivdzdyF+BT5NriNyRCfusq6cE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fd5tv8m+PhUjzCFeKZbsT1IMm1aSb8Lxbi016UiGWuJPCaBjAkDwb5BQMel+UyzFVXkagsGustAmuL6DGux1/1+xNTgOWIgK2oMk0XjT300Ir0azj3JTgxrVETYxQ27rqMgPDUv9mEY79jr/jcuUXnmJvP6+DlMTu8I/Zy+9/l8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
-Received: from [192.168.2.4] (51b69e54.dsl.pool.telekom.hu [::ffff:81.182.158.84])
-  (AUTH: CRAM-MD5 soyer@irl.hu, )
-  by irl.hu with ESMTPSA
-  id 000000000007450D.0000000065C41127.001B0535; Thu, 08 Feb 2024 00:24:23 +0100
-Message-ID: <f49b85d2045fc6960088166374c73f79b551f6c2.camel@irl.hu>
-Subject: Re: [PATCH] ASoC: tas2781: remove unused acpi_subysystem_id
-From: Gergo Koteles <soyer@irl.hu>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
-  Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>,
-  Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
-  Mark Brown <broonie@kernel.org>, linux-sound@vger.kernel.org,
-  linux-kernel@vger.kernel.org, alsa-devel@alsa-project.org,
-  stable@vger.kernel.org
-Date: Thu, 08 Feb 2024 00:24:22 +0100
-In-Reply-To: <2024020745-freight-slush-9ae7@gregkh>
-References: 
-	<df5c94396256e9573b772962182def52d20c50d4.1707250969.git.soyer@irl.hu>
-	 <2024020745-freight-slush-9ae7@gregkh>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1707349390; c=relaxed/simple;
+	bh=MSFIzvdxYtXmQVrYnhwiJReGuZF/2JziUGpHlCPhyaw=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=s9nhjsYRvOZUcbEEPcfZAokjgsTMp+cfxu6K4dAOUD7li3E2vbzsFadrqSX0N18pHhm1wFVnk86UsszkudEz2/BDAmS1zA+nP05uIFwokBCxaidx+bOswRIRtWbh2y7aFcLbLokNFYzdLXe6T3akhZiEhDofc+WgTgQc3gbAGSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=oHUa2w9M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF0EC433C7;
+	Wed,  7 Feb 2024 23:43:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1707349389;
+	bh=MSFIzvdxYtXmQVrYnhwiJReGuZF/2JziUGpHlCPhyaw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=oHUa2w9MenXTtmVIymyF4c5sKPZHCruv1r9X4zN9BxrNK/80ZmTF2ddMarPHIJVAY
+	 0SiUeiabq6KSm+T3IJtbVXgdFxwgARuxz0vN7UK7gp6ym2mr0TD/Fk/k3sy0Lfvbxj
+	 YkyjE9akdJHBxBwa0bTmyvsbjOVR3RZ7cfHfpcPs=
+Date: Wed, 7 Feb 2024 15:43:08 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: chengming.zhou@linux.dev
+Cc: hannes@cmpxchg.org, yosryahmed@google.com, nphamcs@gmail.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Chengming Zhou
+ <zhouchengming@bytedance.com>, stable@vger.kernel.org, Chris Li
+ <chrisl@kernel.org>
+Subject: Re: [PATCH v4] mm/zswap: invalidate old entry when store fail or
+ !zswap_enabled
+Message-Id: <20240207154308.bc275f3e72ec1c1fd06cf5a2@linux-foundation.org>
+In-Reply-To: <20240207115406.3865746-1-chengming.zhou@linux.dev>
+References: <20240207115406.3865746-1-chengming.zhou@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Greg,
+On Wed,  7 Feb 2024 11:54:06 +0000 chengming.zhou@linux.dev wrote:
 
-On Wed, 2024-02-07 at 10:02 +0000, Greg KH wrote:
-> On Tue, Feb 06, 2024 at 09:25:50PM +0100, Gergo Koteles wrote:
-> > The acpi_subysystem_id is only written and freed, not read, so
-> > unnecessary.
-> >=20
-> > Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
->=20
-> What does this really "fix"?  It's just a cleanup.
->=20
-> > CC: stable@vger.kernel.org
->=20
-> Again, what bug is this fixing?
->=20
-> Please read:
->     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.ht=
-ml
-> about what should be tagged for stable kernels, which this patch series
-> does not seem to fix.
->=20
+> From: Chengming Zhou <zhouchengming@bytedance.com>
+> 
+> We may encounter duplicate entry in the zswap_store():
+> 
+> 1. swap slot that freed to per-cpu swap cache, doesn't invalidate
+>    the zswap entry, then got reused. This has been fixed.
+> 
+> 2. !exclusive load mode, swapin folio will leave its zswap entry
+>    on the tree, then swapout again. This has been removed.
+> 
+> 3. one folio can be dirtied again after zswap_store(), so need to
+>    zswap_store() again. This should be handled correctly.
+> 
+> So we must invalidate the old duplicate entry before insert the
+> new one, which actually doesn't have to be done at the beginning
+> of zswap_store(). And this is a normal situation, we shouldn't
+> WARN_ON(1) in this case, so delete it. (The WARN_ON(1) seems want
+> to detect swap entry UAF problem? But not very necessary here.)
+> 
+> The good point is that we don't need to lock tree twice in the
+> store success path.
+> 
+> Note we still need to invalidate the old duplicate entry in the
+> store failure path, otherwise the new data in swapfile could be
+> overwrite by the old data in zswap pool when lru writeback.
+> 
+> We have to do this even when !zswap_enabled since zswap can be
+> disabled anytime. If the folio store success before, then got
+> dirtied again but zswap disabled, we won't invalidate the old
+> duplicate entry in the zswap_store(). So later lru writeback
+> may overwrite the new data in swapfile.
+> 
+> Fixes: 42c06a0e8ebe ("mm: kill frontswap")
+> Cc: <stable@vger.kernel.org>
 
-Yes, you are right, this is not really a bug.
-I took the scope of "oh, that's not good" too wide.
-Sorry for the noise.
+We have a patch ordering issue.
 
-thanks,
-Gergo
+As a cc:stable hotfix, this should be merged into 6.8-rcX and later
+backported into -stable trees.  So it will go
+mm-hotfixes-unstable->mm-hotfixes-stable->mainline.  So someone has to
+make this patch merge and work against latest mm-hotfixes-unstable.
 
+The patch you sent appears to be based on linux-next, so it has
+dependencies upon mm-unstable patches which won't be merged into
+mainline until the next merge window.
 
+So can you please redo and retest this against mm.git's
+mm-hotfixes-unstable branch?  Then I'll try to figure out how to merge
+the gigentic pile of mm-unstable zswap changes on top of that.
+
+Thanks.
 
