@@ -1,184 +1,98 @@
-Return-Path: <stable+bounces-19048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8B1A84C506
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 07:35:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C469084C54C
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 07:59:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E64C81C23FEF
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 06:35:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64953B243ED
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 06:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD83134A8;
-	Wed,  7 Feb 2024 06:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BB71CD3B;
+	Wed,  7 Feb 2024 06:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4pohP0mN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PkOyU5/k"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1381CD30
-	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 06:35:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B7720319
+	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 06:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707287741; cv=none; b=RPUrDORLLw8T5U0d47Is1ukGqZh1aUAXDF1qiixLFrIGOuY8EpbYHmqc/mpctydwPetTHy4na9oOhVnPjC5rIghk7I6Jh8spG1aV1PmiCMAV2WgdQR41lCEve2waRLjDrO0SdH4tS9KPFC9FyAFEVUYjg0Y9bmN99roccBaTeT4=
+	t=1707289091; cv=none; b=dwwf5RPxuCqIc0DuoI36EhZw5GMmrMmumbkDVoSjvWrxF4K6+/lfmU/Cdv9dd+CW9CDzKUFUGg8RVavyKCPrqqKV6WP0YawBRDtvsZ6G787qERLSAkgn20rDQrYjnx3TF2AazEPVV2a6DlQyFBElCtwPHkqOPst4QZPtCgfbAQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707287741; c=relaxed/simple;
-	bh=lqjlboo+jCWTaQSOgl2/7ecV28tdxUQ+Zzm5dCkuAeE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VNOQdh414m6X5N/FqS3fwdjMA+n4bKdaZs5xjUBB1oDFO2sv4BN+1nglEV7ne3KZRI799yF2oxq5sMcCUC0imFABmE85wBqJGwZqTMSWW3WUn3rKq4aCAA1OOJJfnIaQRKJfBYMq3hLFcR7FB78pqHZfZtSd7R5bG1ZPKwJFq7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4pohP0mN; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d09b21a8bbso2881461fa.3
-        for <stable@vger.kernel.org>; Tue, 06 Feb 2024 22:35:39 -0800 (PST)
+	s=arc-20240116; t=1707289091; c=relaxed/simple;
+	bh=46uArN+B/hsNLcWtiZW+AEINMcX4AYmkee1dzKOuIUg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=JWc7stnVflbPZVl7dgeesHACDBLg7go39uiisC5p5zhSVB9B+S6dqxhECre6nEJM3y3paVoQn7Cv5P6JLPfWFow+Wj1sX0yGDA7Yn0/WNRL68pjxBC1nwL4K7d9NVuUviXJLBZEpn9yZHZlrpamqP+xLAL5mQ71yZGCUcf3fE2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PkOyU5/k; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1d7431e702dso3195025ad.1
+        for <stable@vger.kernel.org>; Tue, 06 Feb 2024 22:58:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707287737; x=1707892537; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iHTInI5cACMMsQHW0IyT/5k+Ed2vdENZgygT/PrhjmM=;
-        b=4pohP0mN8o6eRyH7V3ucx3zhmJyaAW/mIM7fhzcV/8pHQV0lR9LLy5W6kpG6Jmgk1/
-         Dv4qQup5wtSdZvq+xSyOl3v4eZkXvYHaBjGCLwo6haFbSoGLlu6vsUsokO4VWO+wU0Jo
-         +m7r39b2r94VyNKI7WtjsnPYb2dP6C8mm3jnQRJM1c+7rhJv+wD8n0HXPAQA1hKNNpZ4
-         liQSaQEY7y/rup0d9fjMxRCGOotUPCxRW6DZpiCYQXOTHi/l4DWe/0BSb2aVk1bObnx6
-         Yk7PJSdS3VelYlCd9zoOzOO7ESxfW4tMnYJrSJJMvSsp7eVKG8soy/SmTxCJwVOhTIA0
-         ZjdA==
+        d=gmail.com; s=20230601; t=1707289088; x=1707893888; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=46uArN+B/hsNLcWtiZW+AEINMcX4AYmkee1dzKOuIUg=;
+        b=PkOyU5/kphziXV2slwSz6lRDp+zj3zeOWyKaTCS4rfsF/+Bowrval2a7+gl3qFMY42
+         7p3H6uJD28tgYE2iFaK5zLLyhOr+xNLqZYUF21aWNRg/qjt4n0MCRQZck8xZc7PzR1sI
+         AfWjn0Hglu6d6nYkY2qZ2yfO6EjtLwnMvasXMLuYCzI6TbrUzryXX/mgT1KT4f+90KtG
+         3HP4YXKjSSxDUtRRO+LwnMnyPV2+budleeNTeDacEkbICLbbQ++/XgA5HbOzhlkFU4FY
+         xNwxwdwPyWPysMMJ60OnfvO94ybXyllOgs3/llwiYjUNhHWQI9mHksWfsyz6HYh9Zi28
+         McqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707287737; x=1707892537;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iHTInI5cACMMsQHW0IyT/5k+Ed2vdENZgygT/PrhjmM=;
-        b=wrp0vUqMp2CSdqfr5btvV5OdNxS6Lwwd26Bgwme0W9EGDngDOMRKoDgld3AptSP6O4
-         EDvVy9cSomIhcd9dPqzvQyeYhNxF0jkyltJmKhz0xXQOOkCUuyv4SDtpUmxCFadlLZZ4
-         V/syrKcdAMAICK6sjIheDSFMtT+KQFz/hzjpDo3wV1XNOVVX5VjVAGqZn4PTVEHLbMkY
-         QUaougLTzoxVg9AsJoPVJVhvcgn/BxrxjTax2crfu7nIiQLvtHrhzyUomXnSbir+TVEy
-         VWq13y3j5LRWbs8gQ3AO/39vUD4Ug6kK3ZMRVlSB/KquKRgWS87TzLaorP3d1QGz4pqx
-         wtKQ==
-X-Gm-Message-State: AOJu0YzN586h0itwwMhTqTCbVZxA9nxAKzliUdpAl/Q6GORDvWF89l3p
-	a9BMDJZKB31Qqex/Z9L9SUBZDtzXDssoMjv8TIgZfRqCyHIF2dbJ6ohhXg+xZag34vLwcPjxExb
-	pRMEoB90PW+lTABipAMTlnahst4IM3Fv9oQjbXLvEgMgRPQ9szedR
-X-Google-Smtp-Source: AGHT+IHwIwmvcIrCK41RgEA8bHQFvL5yOaWzfiS1P8s06hkFLAoBZ8Gkp+Or3sg9vK292ChagbPvh1XmYxchf0/oT74=
-X-Received: by 2002:a19:5f57:0:b0:511:51a9:7759 with SMTP id
- a23-20020a195f57000000b0051151a97759mr3538502lfj.64.1707287737501; Tue, 06
- Feb 2024 22:35:37 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707289088; x=1707893888;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=46uArN+B/hsNLcWtiZW+AEINMcX4AYmkee1dzKOuIUg=;
+        b=Ph1Ug1jTIm+FU9iDXY+6uDO4tw0O6bXC8N7MzP4ul3f/wW0uUAjDt4N5sCmt38ymms
+         r57Em+UPQOCvcAJWn44cdHPg/SCleLBdM1I+jlA2v7EKuhyihPjRQ/K5x1y2bExde4Hz
+         Ba9HXAQUKZO+3fZI4uMcik7iMNTuVNmNZe4P24uKrPte8qfewIL/Be/jFYM2Bkq4jVmO
+         46GwOpqMfF8C9cAmDaLehReJusBJTw7wqEJzKHsiUvh6DbVmhIe1yQ57EGYdAXftbnVn
+         QTJKKF9AlBU+6E4yZ+vuFGDsaCCIoe/0apxK1WxjdTF1dJnlARQJ5U5NwUOuLpkJUfQM
+         MNgg==
+X-Gm-Message-State: AOJu0YyDejpprmtUOy3DluUtf0M7nne/w8x04Uwokga0+v3edfYd0NTg
+	NOwJpm/QMXU+comeJggvihw4wq/rM3ikb3T1o/8sPeYdQHhsJCNBi1UcOW0s
+X-Google-Smtp-Source: AGHT+IGOAQ74ZC5FWK9hS7+HSN0dafXqiEneyl+v8x0vRxWk/4KTMQsbpbuadQrVva750WkThlp4mQ==
+X-Received: by 2002:a17:903:41c9:b0:1d9:e1e3:8639 with SMTP id u9-20020a17090341c900b001d9e1e38639mr4270165ple.62.1707289087811;
+        Tue, 06 Feb 2024 22:58:07 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVQABWU864uieLIpr0ZeoTbeSLmi31lpsW3ze56HPAupqAO7N5CZ/v6ZPHCqK1w0HhVvsc8aWpjcJcYut6u1SHi7A==
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id kh11-20020a170903064b00b001d94c01ae96sm667476plb.66.2024.02.06.22.58.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Feb 2024 22:58:07 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Tue, 6 Feb 2024 22:58:05 -0800
+From: Guenter Roeck <linux@roeck-us.net>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Please apply commit b4909252da9b ("drivers: lkdtm: fix clang
+ -Wformat warning") to v5.15.y
+Message-ID: <b87dd10b-b8d9-417d-bea5-db5a5fc7d86a@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240206042408.224138-1-joychakr@google.com> <1ecb3744-7baf-4bdd-a01c-8c87fa0a42b3@linaro.org>
-In-Reply-To: <1ecb3744-7baf-4bdd-a01c-8c87fa0a42b3@linaro.org>
-From: Joy Chakraborty <joychakr@google.com>
-Date: Wed, 7 Feb 2024 12:05:25 +0530
-Message-ID: <CAOSNQF2TpA1QXKQBEZXsjXojGcfRKZDjCtLhRUGwLPVfhNWmgA@mail.gmail.com>
-Subject: Re: [PATCH v2] nvmem: rmem: Fix return value of rmem_read()
-To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Rob Herring <robh@kernel.org>, 
-	Nicolas Saenz Julienne <nsaenz@kernel.org>, linux-kernel@vger.kernel.org, manugautam@google.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Wed, Feb 7, 2024 at 4:06=E2=80=AFAM Srinivas Kandagatla
-<srinivas.kandagatla@linaro.org> wrote:
->
->
->
-> On 06/02/2024 04:24, Joy Chakraborty wrote:
-> > reg_read() callback registered with nvmem core expects an integer error
-> > as a return value but rmem_read() returns the number of bytes read, as =
-a
-> > result error checks in nvmem core fail even when they shouldn't.
-> >
-> > Return 0 on success where number of bytes read match the number of byte=
-s
-> > requested and a negative error -EINVAL on all other cases.
-> >
-> > Fixes: 5a3fa75a4d9c ("nvmem: Add driver to expose reserved memory as nv=
-mem")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Joy Chakraborty <joychakr@google.com>
-> > ---
-> >   drivers/nvmem/rmem.c | 7 ++++++-
-> >   1 file changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/nvmem/rmem.c b/drivers/nvmem/rmem.c
-> > index 752d0bf4445e..a74dfa279ff4 100644
-> > --- a/drivers/nvmem/rmem.c
-> > +++ b/drivers/nvmem/rmem.c
-> > @@ -46,7 +46,12 @@ static int rmem_read(void *context, unsigned int off=
-set,
-> >
-> >       memunmap(addr);
-> >
-> > -     return count;
-> > +     if (count !=3D bytes) {
->
-> How can this fail unless the values set in priv->mem->size is incorrect
->
+Hi,
 
-That should be correct since it would be fetched from the reserved
-memory definition in the device tree.
+please consider applying the following patch to v5.15.y to fix
+a build error seen with various test builds (m68k:allmodconfig,
+powerpc:allmodconfig, powerpc:ppc32_allmodconfig, and
+xtensa:allmodconfig).
 
-> Only case I see this failing with short reads is when offset cross the
-> boundary of priv->mem->size.
->
->
-> can you provide more details on the failure usecase, may be with actual
-> values of offsets, bytes and priv->mem->size?
->
+b4909252da9b ("drivers: lkdtm: fix clang -Wformat warning")
 
-This could very well happen if a fixed-layout defined for the reserved
-memory has a cell which defines an offset and size greater than the
-actual size of the reserved mem.
-For E.g. if the device tree node is as follows
-reserved-memory {
-    #address-cells =3D <1>;
-    #size-cells =3D <1>;
-    ranges;
-    nvmem@1000 {
-        compatible =3D "nvmem-rmem";
-        reg =3D <0x1000 0x400>;
-        no-map;
-        nvmem-layout {
-            compatible =3D "fixed-layout";
-            #address-cells =3D <1>;
-            #size-cells =3D <1>;
-            calibration@13ff {
-                reg =3D <0x13ff 0x2>;
-            };
-        };
-    };
-};
-If we try to read the cell "calibration" which crosses the boundary of
-the reserved memory then it will lead to a short read.
-Though, one might argue that the protection against such cell
-definition should be there during fixed-layout parsing in core itself
-but that is not there now and would not be a fix.
-
-What I am trying to fix here is not exactly short reads but how the
-return value of rmem_read() is treated by the nvmem core, where it
-treats a non-zero return from read as an error currently. Hence
-returning the number of bytes read leads to false failures if we try
-to read a cell.
-
-
->
-> > +             dev_err(priv->dev, "Failed read memory (%d)\n", count);
-> > +             return -EINVAL;
-> > +     }
-> > +
->
-> > +     return 0;
->
-> thanks,
-> srini
->
-> >   }
-> >
-> >   static int rmem_probe(struct platform_device *pdev)
+Thanks,
+Guenter
 
