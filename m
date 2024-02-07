@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-19133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E46E84D41E
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 22:35:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F056E84D421
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 22:35:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDE282899BB
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 21:35:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74664B25DBB
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 21:35:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2F814076E;
-	Wed,  7 Feb 2024 21:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8332B12BF28;
+	Wed,  7 Feb 2024 21:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T+3jayCy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bOC1LO9p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89F613DBB0;
-	Wed,  7 Feb 2024 21:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C94A127B45;
+	Wed,  7 Feb 2024 21:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707341004; cv=none; b=gmmcjuVh8HqDtFjk+Xa5usZc/BEyX4XIz+pprhVNgc7AEr8Kt+r0fAVFGnzdRKmOGZV5kCqNTN8LXc1AtayA3+b1hblcuYazlKi2SFoMFqjYJ0wTYZw/TZPfQlZ2RFEk+ZeMcbE2uoXGckuXTqZLmMy7Y0l17JrUYhVFqUeKWsA=
+	t=1707341020; cv=none; b=NmL79GO4KpZsfcUZ+98TWvi1Hni0SapRBOyQvcAopXKNF8eUM/VEE63wfrls3eYFZZ5nQZqZyOa6KgKC9Y95LbxyTngygmVyGkx/W1WJ/A8EFCYyHsbzJiGRbi0m/MZdoEg77gNOY8KXzLPGCNoJG9cCM1l0ogPB9qF4dCkvIhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707341004; c=relaxed/simple;
-	bh=7evh+XqFxwvu7R9U2lsnxI8rZrzANHrt6c8aSq0JI28=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ScXM8WDpOzQqXU0KaOORd8P1BLJtGkyWaIM3slQaG7jNMYzZ7UVaIXzV1c5RdzmprI3qqPCncJbOt7QuBPd86qwThDxGzwmnJYr5P6xdRgLDCLHdK7kT18rWAY1q6IWGlEjS34Ssxc5IfaXJ0FOnWWQSA0eeTAh8f70D6UR4cSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T+3jayCy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8925BC43399;
-	Wed,  7 Feb 2024 21:23:22 +0000 (UTC)
+	s=arc-20240116; t=1707341020; c=relaxed/simple;
+	bh=Dm7h8orkgyXc4TDkV9GPoF/y1lKbemV5Qfj+IzwZ3UY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k2bNXHEEVEWleIa776PEdUJ1hLnSto/sJSWwsxMpO2BeGllt3WLXNwLdzibQvXtyYJSVmfaY1k6UkoqYoOh40FQG1Dia20glZfqOL7kkISYhVsTERhIVuYdgOjdBdol7A8nAWT8xHvvPfxiAgwTdp6UHjMjvAUfucubhYdish7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bOC1LO9p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F359AC433C7;
+	Wed,  7 Feb 2024 21:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707341003;
-	bh=7evh+XqFxwvu7R9U2lsnxI8rZrzANHrt6c8aSq0JI28=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+3jayCyYwKnpYq8BzQN9D4QeDabWQigEX61XMDuMFjDgHFloUQLc9zKSXoCNbhPn
-	 nmI3dM2TSXZOtefWRa2WkTO48H+d2EID4oSN9ZhLTRELY/NVzbM1KpquqqFfGhzLul
-	 EwwXwCU9b4BUtmQay1bDzWanwwkXx8OA5lpDixHfKjH5Fra93f0y3pt0LAK/TT+UCl
-	 sPI/hJc4+1UJq8oCUHWrvuhOEFzBRxbEdpAmbY2Mbf0Zr5dgwo6k4YclzQqrC7GAjO
-	 GFoSmdMOqHgA12G08wxTP4k7LOuimUeN0g+vYisHCyyCxTSFqKpHWBfkB8K3F/gMaA
-	 mzZnVfjZApghw==
+	s=k20201202; t=1707341020;
+	bh=Dm7h8orkgyXc4TDkV9GPoF/y1lKbemV5Qfj+IzwZ3UY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=bOC1LO9px8aZv1X3fasnCfPj1xWgi7GxC7V0x40pzyPHhxNrGvrqkQlOtq5Z8sh+k
+	 hTE8VTh/v0oxkjmTB12gXgp6d9XkkcU/N90vx0A5+SiD8o3hN8B649WvO1fFai09x6
+	 aduFhhrwl66umJ/45AysJ/0SeY/MsWvPdc1iKN4dsPPjn8P376S/vT2pLM93c2DW2m
+	 FNq1qGFCuDD4d4ykpJKRupw4wkLmtB/3vbPa/aYgyu83/pO/X3wCHXpvM2QVZrghU1
+	 lYttNgrSHilX7W27iXk98oNL8COMxf67I/HiKrcdd4E3d9M/oAfNcZJOmI4L6uDbIm
+	 QB2s77J0s5Oug==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Szilard Fabian <szfabian@bluemarch.art>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+Cc: Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>,
-	wse@tuxedocomputers.com,
-	hdegoede@redhat.com,
-	eshimanovich@chromium.org,
-	jdenose@chromium.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.7 44/44] Input: i8042 - add Fujitsu Lifebook U728 to i8042 quirk table
-Date: Wed,  7 Feb 2024 16:21:11 -0500
-Message-ID: <20240207212142.1399-44-sashal@kernel.org>
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/38] ext4: avoid dividing by 0 in mb_update_avg_fragment_size() when block bitmap corrupt
+Date: Wed,  7 Feb 2024 16:22:47 -0500
+Message-ID: <20240207212337.2351-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240207212142.1399-1-sashal@kernel.org>
-References: <20240207212142.1399-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,56 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.7.4
+X-stable-base: Linux 6.6.16
 Content-Transfer-Encoding: 8bit
 
-From: Szilard Fabian <szfabian@bluemarch.art>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 4255447ad34c5c3785fcdcf76cfa0271d6e5ed39 ]
+[ Upstream commit 993bf0f4c393b3667830918f9247438a8f6fdb5b ]
 
-Another Fujitsu-related patch.
+Determine if bb_fragments is 0 instead of determining bb_free to eliminate
+the risk of dividing by zero when the block bitmap is corrupted.
 
-In the initial boot stage the integrated keyboard of Fujitsu Lifebook U728
-refuses to work and it's not possible to type for example a dm-crypt
-passphrase without the help of an external keyboard.
-
-i8042.nomux kernel parameter resolves this issue but using that a PS/2
-mouse is detected. This input device is unused even when the i2c-hid-acpi
-kernel module is blacklisted making the integrated ELAN touchpad
-(04F3:3092) not working at all.
-
-So this notebook uses a hid-over-i2c touchpad which is managed by the
-i2c_designware input driver. Since you can't find a PS/2 mouse port on this
-computer and you can't connect a PS/2 mouse to it even with an official
-port replicator I think it's safe to not use the PS/2 mouse port at all.
-
-Signed-off-by: Szilard Fabian <szfabian@bluemarch.art>
-Link: https://lore.kernel.org/r/20240103014717.127307-2-szfabian@bluemarch.art
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-6-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/ext4/mballoc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
-index b585b1dab870..2fd056ebce1c 100644
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -634,6 +634,14 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
- 		},
- 		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
- 	},
-+	{
-+		/* Fujitsu Lifebook U728 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK U728"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
-+	},
- 	{
- 		/* Gigabyte M912 */
- 		.matches = {
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 9a4b73485ded..f74a8f144a66 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -841,7 +841,7 @@ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+ 	int new_order;
+ 
+-	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_free == 0)
++	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_fragments == 0)
+ 		return;
+ 
+ 	new_order = mb_avg_fragment_size_order(sb,
 -- 
 2.43.0
 
