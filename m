@@ -1,120 +1,184 @@
-Return-Path: <stable+bounces-19047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D840F84C480
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 06:53:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B1A84C506
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 07:35:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C4A328A170
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 05:53:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E64C81C23FEF
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 06:35:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E3014AB7;
-	Wed,  7 Feb 2024 05:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD83134A8;
+	Wed,  7 Feb 2024 06:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VWuRugET"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4pohP0mN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BF91CD13
-	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 05:53:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1381CD30
+	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 06:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707285187; cv=none; b=oMOLdV10HeEtgmnLbNM6efOu3lMGtH2SaVc3Pvx5V5fb/Yxeb7fTIeKic4DD5fRHDuDu+bBSi5kZUeu7B2DaxIuZeTMYvh9KmMJRfNyZuGO+3/m8HzHmfQgI50omSRrS3Z2/pQ6R8FrTGdj7hul2X864iOOtpSC2TAJeLPDkFrM=
+	t=1707287741; cv=none; b=RPUrDORLLw8T5U0d47Is1ukGqZh1aUAXDF1qiixLFrIGOuY8EpbYHmqc/mpctydwPetTHy4na9oOhVnPjC5rIghk7I6Jh8spG1aV1PmiCMAV2WgdQR41lCEve2waRLjDrO0SdH4tS9KPFC9FyAFEVUYjg0Y9bmN99roccBaTeT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707285187; c=relaxed/simple;
-	bh=TByPXr7dTrWn79s6knx+N7D+PQY5JFNqw/lbqQ/BLu8=;
+	s=arc-20240116; t=1707287741; c=relaxed/simple;
+	bh=lqjlboo+jCWTaQSOgl2/7ecV28tdxUQ+Zzm5dCkuAeE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=idfckvNERy9xiT9f70qG8HA0aipd4Tgz+0jYAZgNaDO8/Yo0s2pvvNASO2U1X59i5agJqM7F6wP3WFaePLfWbvypu8VmMoRxWA7dhKmOZ/atPGUg5T7gi21atw7rABnSsENJ6NniDcXWkLCJpHwxWlkFiwFjCd0mKPhXqXS+J8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VWuRugET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98BDCC43330
-	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 05:53:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707285186;
-	bh=TByPXr7dTrWn79s6knx+N7D+PQY5JFNqw/lbqQ/BLu8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VWuRugET//9iAp/Ke71ta5Mw+Tv2qJhWf15UxvbSj0TSVqxTEBbPmHLgEQ+JVkSIM
-	 kUFxfCxYrI1riZdm8Ly6YT6Y1s3tC52RZ+8Mlad9bVxVVk/l/31zDlUvC6Rv15MqMf
-	 e3ShULMeNqWM2QtQc3gUnQlWIZiiGGuS3/aG5GVbUznOQonCUGf3Gb4EAZmwQZ6L0F
-	 fPFqddC1SEczggTj5W5P0Isu67iSGaZf5mR4INZoiAO/4AKlWP9fH9twJzpQK8R/Ya
-	 dJYJpvo3qwHPmRT6miGDDhZ7dcQ2pX/yDGuUvNKPa/7sV+XAYFxIIT7J1g4vWO7p3d
-	 yyrRvl2OKUOsQ==
-Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-7bc32b0fdadso12027739f.2
-        for <stable@vger.kernel.org>; Tue, 06 Feb 2024 21:53:06 -0800 (PST)
-X-Gm-Message-State: AOJu0Yyht7WeYWKcNzV0Wm2TeLBOHCLwpR0CRvzCZIA6m2hDRFVb5SC5
-	O0SGAXaqHmx2ZN7R36Dh0/ZSDFLSJbFQg2RxOOgafqtb8FrhDAVPnxJ1afQB/F16Ysxz2XDM79w
-	BPC0ffJNB8mhvTVm52Y3vZbL6s7kGvBJhus2P
-X-Google-Smtp-Source: AGHT+IEItXQ2dsvOVA3WJNrIak4YuH04DcNdDXg3J9pUKtIGPzVHGjWe8iOrcecC+5xCvWGBzwk+7+XwjhYU0roWuR4=
-X-Received: by 2002:a05:6e02:1d04:b0:363:b0fb:322 with SMTP id
- i4-20020a056e021d0400b00363b0fb0322mr6273507ila.0.1707285185861; Tue, 06 Feb
- 2024 21:53:05 -0800 (PST)
+	 To:Cc:Content-Type; b=VNOQdh414m6X5N/FqS3fwdjMA+n4bKdaZs5xjUBB1oDFO2sv4BN+1nglEV7ne3KZRI799yF2oxq5sMcCUC0imFABmE85wBqJGwZqTMSWW3WUn3rKq4aCAA1OOJJfnIaQRKJfBYMq3hLFcR7FB78pqHZfZtSd7R5bG1ZPKwJFq7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4pohP0mN; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d09b21a8bbso2881461fa.3
+        for <stable@vger.kernel.org>; Tue, 06 Feb 2024 22:35:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1707287737; x=1707892537; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iHTInI5cACMMsQHW0IyT/5k+Ed2vdENZgygT/PrhjmM=;
+        b=4pohP0mN8o6eRyH7V3ucx3zhmJyaAW/mIM7fhzcV/8pHQV0lR9LLy5W6kpG6Jmgk1/
+         Dv4qQup5wtSdZvq+xSyOl3v4eZkXvYHaBjGCLwo6haFbSoGLlu6vsUsokO4VWO+wU0Jo
+         +m7r39b2r94VyNKI7WtjsnPYb2dP6C8mm3jnQRJM1c+7rhJv+wD8n0HXPAQA1hKNNpZ4
+         liQSaQEY7y/rup0d9fjMxRCGOotUPCxRW6DZpiCYQXOTHi/l4DWe/0BSb2aVk1bObnx6
+         Yk7PJSdS3VelYlCd9zoOzOO7ESxfW4tMnYJrSJJMvSsp7eVKG8soy/SmTxCJwVOhTIA0
+         ZjdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707287737; x=1707892537;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iHTInI5cACMMsQHW0IyT/5k+Ed2vdENZgygT/PrhjmM=;
+        b=wrp0vUqMp2CSdqfr5btvV5OdNxS6Lwwd26Bgwme0W9EGDngDOMRKoDgld3AptSP6O4
+         EDvVy9cSomIhcd9dPqzvQyeYhNxF0jkyltJmKhz0xXQOOkCUuyv4SDtpUmxCFadlLZZ4
+         V/syrKcdAMAICK6sjIheDSFMtT+KQFz/hzjpDo3wV1XNOVVX5VjVAGqZn4PTVEHLbMkY
+         QUaougLTzoxVg9AsJoPVJVhvcgn/BxrxjTax2crfu7nIiQLvtHrhzyUomXnSbir+TVEy
+         VWq13y3j5LRWbs8gQ3AO/39vUD4Ug6kK3ZMRVlSB/KquKRgWS87TzLaorP3d1QGz4pqx
+         wtKQ==
+X-Gm-Message-State: AOJu0YzN586h0itwwMhTqTCbVZxA9nxAKzliUdpAl/Q6GORDvWF89l3p
+	a9BMDJZKB31Qqex/Z9L9SUBZDtzXDssoMjv8TIgZfRqCyHIF2dbJ6ohhXg+xZag34vLwcPjxExb
+	pRMEoB90PW+lTABipAMTlnahst4IM3Fv9oQjbXLvEgMgRPQ9szedR
+X-Google-Smtp-Source: AGHT+IHwIwmvcIrCK41RgEA8bHQFvL5yOaWzfiS1P8s06hkFLAoBZ8Gkp+Or3sg9vK292ChagbPvh1XmYxchf0/oT74=
+X-Received: by 2002:a19:5f57:0:b0:511:51a9:7759 with SMTP id
+ a23-20020a195f57000000b0051151a97759mr3538502lfj.64.1707287737501; Tue, 06
+ Feb 2024 22:35:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240207033857.3820921-1-chengming.zhou@linux.dev>
- <CAF8kJuOCbuFemoFNUYeNGYzYJ7eGLka6Y6OvSg8h61vXUfYdLw@mail.gmail.com> <CAJD7tkbc7j8B3X8YfQ9r00D3ojJvJg+YwNuAF6P=jyCyrGy_=Q@mail.gmail.com>
-In-Reply-To: <CAJD7tkbc7j8B3X8YfQ9r00D3ojJvJg+YwNuAF6P=jyCyrGy_=Q@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 6 Feb 2024 21:52:54 -0800
-X-Gmail-Original-Message-ID: <CAF8kJuN=yN-fgv3RgQYq2kEbsUr5=bD1fbWVE5QNRTGAO9JgJg@mail.gmail.com>
-Message-ID: <CAF8kJuN=yN-fgv3RgQYq2kEbsUr5=bD1fbWVE5QNRTGAO9JgJg@mail.gmail.com>
-Subject: Re: [PATCH v3] mm/zswap: invalidate old entry when store fail or !zswap_enabled
-To: Yosry Ahmed <yosryahmed@google.com>
-Cc: chengming.zhou@linux.dev, hannes@cmpxchg.org, nphamcs@gmail.com, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Chengming Zhou <zhouchengming@bytedance.com>, stable@vger.kernel.org
+References: <20240206042408.224138-1-joychakr@google.com> <1ecb3744-7baf-4bdd-a01c-8c87fa0a42b3@linaro.org>
+In-Reply-To: <1ecb3744-7baf-4bdd-a01c-8c87fa0a42b3@linaro.org>
+From: Joy Chakraborty <joychakr@google.com>
+Date: Wed, 7 Feb 2024 12:05:25 +0530
+Message-ID: <CAOSNQF2TpA1QXKQBEZXsjXojGcfRKZDjCtLhRUGwLPVfhNWmgA@mail.gmail.com>
+Subject: Re: [PATCH v2] nvmem: rmem: Fix return value of rmem_read()
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Rob Herring <robh@kernel.org>, 
+	Nicolas Saenz Julienne <nsaenz@kernel.org>, linux-kernel@vger.kernel.org, manugautam@google.com, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 6, 2024 at 9:46=E2=80=AFPM Yosry Ahmed <yosryahmed@google.com> =
-wrote:
+On Wed, Feb 7, 2024 at 4:06=E2=80=AFAM Srinivas Kandagatla
+<srinivas.kandagatla@linaro.org> wrote:
 >
-> > > @@ -1608,14 +1598,12 @@ bool zswap_store(struct folio *folio)
-> > >         /* map */
-> > >         spin_lock(&tree->lock);
-> > >         /*
-> > > -        * A duplicate entry should have been removed at the beginnin=
-g of this
-> > > -        * function. Since the swap entry should be pinned, if a dupl=
-icate is
-> > > -        * found again here it means that something went wrong in the=
- swap
-> > > -        * cache.
-> > > +        * The folio may have been dirtied again, invalidate the
-> > > +        * possibly stale entry before inserting the new entry.
-> > >          */
-> > > -       while (zswap_rb_insert(&tree->rbroot, entry, &dupentry) =3D=
-=3D -EEXIST) {
-> > > -               WARN_ON(1);
-> > > +       if (zswap_rb_insert(&tree->rbroot, entry, &dupentry) =3D=3D -=
-EEXIST) {
-> > >                 zswap_invalidate_entry(tree, dupentry);
-> > > +               VM_WARN_ON(zswap_rb_insert(&tree->rbroot, entry, &dup=
-entry));
+>
+>
+> On 06/02/2024 04:24, Joy Chakraborty wrote:
+> > reg_read() callback registered with nvmem core expects an integer error
+> > as a return value but rmem_read() returns the number of bytes read, as =
+a
+> > result error checks in nvmem core fail even when they shouldn't.
 > >
-> > It seems there is only one path called zswap_rb_insert() and there is
-> > no loop to repeat the insert any more. Can we have the
-> > zswap_rb_insert() install the entry and return the dupentry? We can
-> > still just call zswap_invalidate_entry() on the duplicate. The mapping
-> > of the dupentry has been removed when  zswap_rb_insert() returns. That
-> > will save a repeat lookup on the duplicate case.
-> > After this change, the zswap_rb_insert() will map to the xarray
-> > xa_store() pretty nicely.
+> > Return 0 on success where number of bytes read match the number of byte=
+s
+> > requested and a negative error -EINVAL on all other cases.
+> >
+> > Fixes: 5a3fa75a4d9c ("nvmem: Add driver to expose reserved memory as nv=
+mem")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Joy Chakraborty <joychakr@google.com>
+> > ---
+> >   drivers/nvmem/rmem.c | 7 ++++++-
+> >   1 file changed, 6 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/nvmem/rmem.c b/drivers/nvmem/rmem.c
+> > index 752d0bf4445e..a74dfa279ff4 100644
+> > --- a/drivers/nvmem/rmem.c
+> > +++ b/drivers/nvmem/rmem.c
+> > @@ -46,7 +46,12 @@ static int rmem_read(void *context, unsigned int off=
+set,
+> >
+> >       memunmap(addr);
+> >
+> > -     return count;
+> > +     if (count !=3D bytes) {
 >
-> I brought this up in v1 [1]. We agreed to leave it as-is for now since
-> we expect the xarray conversion soon-ish. No need to update
-> zswap_rb_insert() only to replace it with xa_store() later anyway.
+> How can this fail unless the values set in priv->mem->size is incorrect
 >
-> [1] https://lore.kernel.org/lkml/ZcFne336KJdbrvvS@google.com/
->
-Ah, thanks for the pointer. I miss your earlier reply.
 
-Acked-by: Chris Li <chrisl@kernel.org>
+That should be correct since it would be fetched from the reserved
+memory definition in the device tree.
 
-Chris
+> Only case I see this failing with short reads is when offset cross the
+> boundary of priv->mem->size.
+>
+>
+> can you provide more details on the failure usecase, may be with actual
+> values of offsets, bytes and priv->mem->size?
+>
+
+This could very well happen if a fixed-layout defined for the reserved
+memory has a cell which defines an offset and size greater than the
+actual size of the reserved mem.
+For E.g. if the device tree node is as follows
+reserved-memory {
+    #address-cells =3D <1>;
+    #size-cells =3D <1>;
+    ranges;
+    nvmem@1000 {
+        compatible =3D "nvmem-rmem";
+        reg =3D <0x1000 0x400>;
+        no-map;
+        nvmem-layout {
+            compatible =3D "fixed-layout";
+            #address-cells =3D <1>;
+            #size-cells =3D <1>;
+            calibration@13ff {
+                reg =3D <0x13ff 0x2>;
+            };
+        };
+    };
+};
+If we try to read the cell "calibration" which crosses the boundary of
+the reserved memory then it will lead to a short read.
+Though, one might argue that the protection against such cell
+definition should be there during fixed-layout parsing in core itself
+but that is not there now and would not be a fix.
+
+What I am trying to fix here is not exactly short reads but how the
+return value of rmem_read() is treated by the nvmem core, where it
+treats a non-zero return from read as an error currently. Hence
+returning the number of bytes read leads to false failures if we try
+to read a cell.
+
+
+>
+> > +             dev_err(priv->dev, "Failed read memory (%d)\n", count);
+> > +             return -EINVAL;
+> > +     }
+> > +
+>
+> > +     return 0;
+>
+> thanks,
+> srini
+>
+> >   }
+> >
+> >   static int rmem_probe(struct platform_device *pdev)
 
