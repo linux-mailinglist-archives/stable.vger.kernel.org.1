@@ -1,53 +1,59 @@
-Return-Path: <stable+bounces-19070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABAC084CA0E
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 12:57:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F38084C9FF
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 12:54:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63197289414
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 11:57:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C95DB28736D
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 11:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1C055762;
-	Wed,  7 Feb 2024 11:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E3A1B80A;
+	Wed,  7 Feb 2024 11:54:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="G7urxb1z"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1695576E
-	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 11:57:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6D925613
+	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 11:54:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707307063; cv=none; b=sGxyTpF9LAspHuTHw+Dmrkk785MWZwzWjnYXTAr8+lMlmXxWogLUdn3Zg9rrAJx0iUI2F9gO/Al36wJpetl5xzYyrdXB/4oy1HeDfxwQOgj0cbV5UoOwcGPPMWI3+cI4rPahfDyzPOplOanzlO+QHAwGbBgWN0sRkdV8nsulqug=
+	t=1707306868; cv=none; b=S+uaFWR6le8nzGiBSR76eAWdCmc3RA1BZA4VD/pyNo1jTymzzhBB4A7uLr5QoIeUW/lxpOw8NBWo4B2JC7LF4/MC1a7j4fvbmd0kPgnYFqn8mcVF+l+2zSgLN/UM1FA5y8pFBl7+OcK6HJ1t5qcSILvk8LgmtpdZjLuJzYS9Ius=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707307063; c=relaxed/simple;
-	bh=TSzehbTznKfOQuJ6Wfyv/LkFQhtpgKX8oC9L2DXDE50=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yma/KaYP99F1ZKe/ot86oP7qpvm2Zx4nkpwItCqu+bzTcNw72/f3u1A362bBBTTQSsWi30zQ3paF2cWpTCiD7MsjlT1QFI3TTK0kGPl++whj+IBcn0o++RR2ZGjeBuiPYdndSQzE96hlTvkwW0HGqaJY0NGzXzPofrpHhNmtitE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4TVJWV1G4nz1vpJ4;
-	Wed,  7 Feb 2024 19:57:10 +0800 (CST)
-Received: from dggpemd200001.china.huawei.com (unknown [7.185.36.224])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5470714025A;
-	Wed,  7 Feb 2024 19:57:38 +0800 (CST)
-Received: from huawei.com (10.175.104.67) by dggpemd200001.china.huawei.com
- (7.185.36.224) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1258.28; Wed, 7 Feb
- 2024 19:57:37 +0800
-From: ZhaoLong Wang <wangzhaolong1@huawei.com>
-To: <stable@vger.kernel.org>
-CC: <gregkh@linuxfoundation.org>, <sfrench@samba.org>
-Subject: [PATCH 5.10 1/1] cifs: Fix stack-out-of-bounds in smb2_set_next_command()
-Date: Wed, 7 Feb 2024 19:52:51 +0800
-Message-ID: <20240207115251.2209871-2-wangzhaolong1@huawei.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240207115251.2209871-1-wangzhaolong1@huawei.com>
-References: <20240207115251.2209871-1-wangzhaolong1@huawei.com>
+	s=arc-20240116; t=1707306868; c=relaxed/simple;
+	bh=JoXxuLCsrhOpbZQMs+OzlyzJluALM1uI9Rd6eTJkgzg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rtET9fbwxUtcFV4wxRI1+DBbfSO1hcRk2WBI5NNrEXRFM7vuORUqiJ7Q8ltEVe1s33O6TpH9pyUkKeYnAIWE7TrV84uvnR1p7ipXRJq1O/38ettYzPor2h4J/OBc5xWNwCgOgBMehE+oCTjWXRVBhI3MxQjrY7Bwk6xhxf6QWQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=G7urxb1z; arc=none smtp.client-ip=95.215.58.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1707306864;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ck3hKl39ypdTqSG4pfP4RVVn2fuXE/aqcuy4S0hHA80=;
+	b=G7urxb1z2CoYjeym/6zM/gbzSaxYgXK5VSTQONwGFNmhxuLtuFZCpnGIfyLLjDcRpNm+Qu
+	of6IbTfTcagmeY/OPVN6FZRaBR2SGUd8nfLeIUcbcPVZUQwg4W4EpbPJKHzPiNRh2P1Cym
+	r3yO3vleg65c9uXw28g77L1hoFSfh5Q=
+From: chengming.zhou@linux.dev
+To: hannes@cmpxchg.org,
+	yosryahmed@google.com,
+	nphamcs@gmail.com,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	chengming.zhou@linux.dev,
+	Chengming Zhou <zhouchengming@bytedance.com>,
+	stable@vger.kernel.org,
+	Chris Li <chrisl@kernel.org>
+Subject: [PATCH v4] mm/zswap: invalidate old entry when store fail or !zswap_enabled
+Date: Wed,  7 Feb 2024 11:54:06 +0000
+Message-Id: <20240207115406.3865746-1-chengming.zhou@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,142 +61,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- dggpemd200001.china.huawei.com (7.185.36.224)
+X-Migadu-Flow: FLOW_OUT
 
-After backporting the mainline commit 33eae65c6f49 ("smb: client: fix
-OOB in SMB2_query_info_init()") to the linux-5.10.y stable branch,
-an issue arose where the cifs statfs system call failed, resulting in:
+From: Chengming Zhou <zhouchengming@bytedance.com>
 
-  $ df /mnt
-  df: /mnt: Resource temporarily unavailable
+We may encounter duplicate entry in the zswap_store():
 
-KASAN also reported a stack-out-of-bounds error as follows:
+1. swap slot that freed to per-cpu swap cache, doesn't invalidate
+   the zswap entry, then got reused. This has been fixed.
 
- ==================================================================
- BUG: KASAN: stack-out-of-bounds in smb2_set_next_command+0x247/0x280
- [cifs]
- Write of size 8 at addr ffff8881073ef830 by task df/533
+2. !exclusive load mode, swapin folio will leave its zswap entry
+   on the tree, then swapout again. This has been removed.
 
- CPU: 4 PID: 533 Comm: df Not tainted 5.10.0+ #17
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.1-2.
- fc37 04/01/2014
- Call Trace:
-  dump_stack+0xb3/0xf1
-  print_address_description.constprop.0+0x1e/0x280
-  __kasan_report.cold+0x6c/0x84
-  kasan_report+0x3a/0x50
-  smb2_set_next_command+0x247/0x280 [cifs]
-  smb2_query_info_compound+0x3e9/0x5d0 [cifs]
-  smb2_queryfs+0xb9/0x180 [cifs]
-  smb311_queryfs+0x218/0x230 [cifs]
-  cifs_statfs+0x161/0x340 [cifs]
-  statfs_by_dentry+0xa8/0x100
-  vfs_statfs+0x2f/0x180
-  user_statfs+0x96/0x100
-  __se_sys_statfs+0x6a/0xc0
-  do_syscall_64+0x33/0x40
-  entry_SYSCALL_64_after_hwframe+0x62/0xc7
- RIP: 0033:0x7ff427ad93b7
- Code: ff ff ff ff c3 66 0f 1f 44 00 00 48 8b 05 59 ba 0d 00 64 c7 00
- 16 00 00 00 b8 ff ff ff ff c3 0f 1f 40 00 b8 89 00 00 00 0f 05 <48> 3d
- 00 f0 ff ff 77 01 c3 48 8b 15 31 ba 0d 00 f7 d8 64 89 8
- RSP: 002b:00007ffd8371e158 EFLAGS: 00000246 ORIG_RAX: 0000000000000089
- RAX: ffffffffffffffda RBX: 00007ffd8371e200 RCX: 00007ff427ad93b7
- RDX: 0000000000000003 RSI: 00007ffd8371e160 RDI: 00007ffd8371ee4b
- RBP: 00007ffd8371e160 R08: 00007ffd8371e283 R09: 0000000000000032
- R10: 00007ff4279ed368 R11: 0000000000000246 R12: 00007ffd8371e200
- R13: 000056296a125dd0 R14: 0000000000000001 R15: 0000000000000000
+3. one folio can be dirtied again after zswap_store(), so need to
+   zswap_store() again. This should be handled correctly.
 
- The buggy address belongs to the page:
- page:00000000862dac80 refcount:0 mapcount:0 mapping:0000000000000000
- index:0x0 pfn:0x1073ef
- flags: 0x17ffffc0000000(node=0|zone=2|lastcpupid=0x1fffff)
- raw: 0017ffffc0000000 0000000000000000 dead000000000122 0000000000000000
- raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
- page dumped because: kasan: bad access detected
+So we must invalidate the old duplicate entry before insert the
+new one, which actually doesn't have to be done at the beginning
+of zswap_store(). And this is a normal situation, we shouldn't
+WARN_ON(1) in this case, so delete it. (The WARN_ON(1) seems want
+to detect swap entry UAF problem? But not very necessary here.)
 
- addr ffff8881073ef830 is located in stack of task df/533 at offset 112
- in frame:
-  smb2_query_info_compound+0x0/0x5d0 [cifs]
+The good point is that we don't need to lock tree twice in the
+store success path.
 
- this frame has 9 objects:
-  [48, 49) 'oplock'
-  [64, 76) 'resp_buftype'
-  [96, 112) 'qi_iov'
-  [128, 144) 'close_iov'
-  [160, 208) 'rsp_iov'
-  [240, 296) 'oparms'
-  [336, 456) 'rqst'
-  [496, 624) 'open_iov'
-  [656, 736) 'fid'
+Note we still need to invalidate the old duplicate entry in the
+store failure path, otherwise the new data in swapfile could be
+overwrite by the old data in zswap pool when lru writeback.
 
- Memory state around the buggy address:
-  ffff8881073ef700: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  ffff8881073ef780: 00 00 00 00 00 00 00 00 f1 f1 f1 f1 f1 f1 01 f2
- >ffff8881073ef800: 00 04 f2 f2 00 00 f2 f2 00 00 f2 f2 00 00 00 00
-                                      ^
-  ffff8881073ef880: 00 00 f2 f2 f2 f2 00 00 00 00 00 00 00 f2 f2 f2
-  ffff8881073ef900: f2 f2 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ==================================================================
- Disabling lock debugging due to kernel taint
+We have to do this even when !zswap_enabled since zswap can be
+disabled anytime. If the folio store success before, then got
+dirtied again but zswap disabled, we won't invalidate the old
+duplicate entry in the zswap_store(). So later lru writeback
+may overwrite the new data in swapfile.
 
-This issue was caused because the stable branch did not include the
-prerequisite patch eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays
-with flex-arrays"). The patch replaces the trailing 1-element array with
-a flexible array in the smb2_query_info_req structure and modifies the
-length calculation expression from `sizeof(smb2_query_info_req) - 1` to
-`sizeof(smb2_query_info_req)`. Consequently, backporting only commit
-33eae65c6f49 led to an incorrect length calculation for the
-smb2_query_info_req structure within SMB2_query_info_init().
-
-cifs_statfs
-smb2_queryfs
-  smb2_query_info_compound
-    struct kvec qi_iov[1];
-    rqst[1].rq_iov = qi_iov;
-    rqst[1].rq_nvec = 1;
-    SMB2_query_info_init
-      # The length of len is incorrect because the value of sizeof(req)
-      # is not decreased by 1.
-      check_add_overflow(input_len, sizeof(*req), &len)
-    smb2_set_next_command(tcon, &rqst[1]);
-      # 1 byte greater than the actual length
-      len = smb_rqst_len(server, rqst);
-      # 'len' is not 8-byte aligned, then paddingg.
-      # Access to .rq_iov[1] results in out-of-bounds array
-      rqst->rq_iov[rqst->rq_nvec].iov_base = smb2_padding;
-    compound_send_recv
-
-cifs_demultiplex_thread
-  cifs_read_from_socket
-    cifs_readv_from_socket
-      # The request may be invalid and no expected response.
-      length = sock_recvmsg
-
-This patch corrects the length calculation for the smb2_query_info_req
-structure in SMB2_query_info_init() to address this problem.
-
-Signed-off-by: ZhaoLong Wang <wangzhaolong1@huawei.com>
+Fixes: 42c06a0e8ebe ("mm: kill frontswap")
+Cc: <stable@vger.kernel.org>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Acked-by: Yosry Ahmed <yosryahmed@google.com>
+Acked-by: Chris Li <chrisl@kernel.org>
+Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
 ---
- fs/cifs/smb2pdu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v4:
+ - VM_WARN_ON generate no code when !CONFIG_DEBUG_VM, change
+   to use WARN_ON.
 
-diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
-index 76679dc4e632..8532cc416188 100644
---- a/fs/cifs/smb2pdu.c
-+++ b/fs/cifs/smb2pdu.c
-@@ -3354,7 +3354,7 @@ SMB2_query_info_init(struct cifs_tcon *tcon, struct TCP_Server_Info *server,
- 	size_t len;
- 	int rc;
+v3:
+ - Fix a few grammatical problems in comments, per Yosry.
+
+v2:
+ - Change the duplicate entry invalidation loop to if, since we hold
+   the lock, we won't find it once we invalidate it, per Yosry.
+ - Add Fixes tag.
+---
+ mm/zswap.c | 33 ++++++++++++++++-----------------
+ 1 file changed, 16 insertions(+), 17 deletions(-)
+
+diff --git a/mm/zswap.c b/mm/zswap.c
+index cd67f7f6b302..62fe307521c9 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1518,18 +1518,8 @@ bool zswap_store(struct folio *folio)
+ 		return false;
  
--	if (unlikely(check_add_overflow(input_len, sizeof(*req), &len) ||
-+	if (unlikely(check_add_overflow(input_len, sizeof(*req) - 1, &len) ||
- 		     len > CIFSMaxBufSize))
- 		return -EINVAL;
+ 	if (!zswap_enabled)
+-		return false;
++		goto check_old;
  
+-	/*
+-	 * If this is a duplicate, it must be removed before attempting to store
+-	 * it, otherwise, if the store fails the old page won't be removed from
+-	 * the tree, and it might be written back overriding the new data.
+-	 */
+-	spin_lock(&tree->lock);
+-	entry = zswap_rb_search(&tree->rbroot, offset);
+-	if (entry)
+-		zswap_invalidate_entry(tree, entry);
+-	spin_unlock(&tree->lock);
+ 	objcg = get_obj_cgroup_from_folio(folio);
+ 	if (objcg && !obj_cgroup_may_zswap(objcg)) {
+ 		memcg = get_mem_cgroup_from_objcg(objcg);
+@@ -1608,14 +1598,12 @@ bool zswap_store(struct folio *folio)
+ 	/* map */
+ 	spin_lock(&tree->lock);
+ 	/*
+-	 * A duplicate entry should have been removed at the beginning of this
+-	 * function. Since the swap entry should be pinned, if a duplicate is
+-	 * found again here it means that something went wrong in the swap
+-	 * cache.
++	 * The folio may have been dirtied again, invalidate the
++	 * possibly stale entry before inserting the new entry.
+ 	 */
+-	while (zswap_rb_insert(&tree->rbroot, entry, &dupentry) == -EEXIST) {
+-		WARN_ON(1);
++	if (zswap_rb_insert(&tree->rbroot, entry, &dupentry) == -EEXIST) {
+ 		zswap_invalidate_entry(tree, dupentry);
++		WARN_ON(zswap_rb_insert(&tree->rbroot, entry, &dupentry));
+ 	}
+ 	if (entry->length) {
+ 		INIT_LIST_HEAD(&entry->lru);
+@@ -1638,6 +1626,17 @@ bool zswap_store(struct folio *folio)
+ reject:
+ 	if (objcg)
+ 		obj_cgroup_put(objcg);
++check_old:
++	/*
++	 * If the zswap store fails or zswap is disabled, we must invalidate the
++	 * possibly stale entry which was previously stored at this offset.
++	 * Otherwise, writeback could overwrite the new data in the swapfile.
++	 */
++	spin_lock(&tree->lock);
++	entry = zswap_rb_search(&tree->rbroot, offset);
++	if (entry)
++		zswap_invalidate_entry(tree, entry);
++	spin_unlock(&tree->lock);
+ 	return false;
+ 
+ shrink:
 -- 
-2.39.2
+2.40.1
 
 
