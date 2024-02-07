@@ -1,98 +1,86 @@
-Return-Path: <stable+bounces-19061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194E984C849
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 11:07:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A83BE84C895
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 11:27:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C84FC2861FE
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 10:07:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB7131C2492D
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 10:27:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 075DA241E9;
-	Wed,  7 Feb 2024 10:07:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X5FymLmt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2159E2560B;
+	Wed,  7 Feb 2024 10:27:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B245C25551;
-	Wed,  7 Feb 2024 10:07:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF09B25569;
+	Wed,  7 Feb 2024 10:27:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707300469; cv=none; b=FzyRXkS43AN5GBoYeoQTik5A2PH+ZkozXL78TLDWwolBIbw0imZL758mUzURx5iHCI3qw6nnpRCFDxqYp2lPmN0/YcnkSeEvVtvQxLtVOWmLSwuM+PG7sqIDDgXGP99skNA2KfBfOfPRTE0yV0BcfHc/HZR2Er5ROVKjkYnwS+A=
+	t=1707301655; cv=none; b=lf7t+LQ5hEtyAgRFFI9iaAOVpr9cFxucndHDLihfzVF9M77I15JmpiOwmeFrh89q5tZ8AR93W7tqHRKt5Wd52VJTeocwhfiiBD0Z0QvzCBVXe6bXslh/+8T3FXa35uuQp66z/X2sBr4eDJliCj2ZMdSCnWuBl59OLxtkh65vuHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707300469; c=relaxed/simple;
-	bh=EkwACTzf00Vm/obOE2SzPEMWc5wOta4JYj23H9ozjA8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l+47mYqq/TzDElOn8hGi3p6I90p45ewIDi+Od7FnfbUv9jK8cv6+FBn7xiJkYMGHQoiwdSLhHoeXra5gZUq+R8esh07cb6QduHuqQS7A3GWl28F2IVPdjK9CyOU/mmf1TYhQhl/VW9WFM4hD+GIZPWP9DXf2cRskKZOiig/7Ma0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X5FymLmt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D45EC433F1;
-	Wed,  7 Feb 2024 10:07:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707300469;
-	bh=EkwACTzf00Vm/obOE2SzPEMWc5wOta4JYj23H9ozjA8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X5FymLmtm1UGv7rkSJUzFy/XqjAr+KzKn+Z4vBg0y6VPeeIs7oUzRGtyzVC1MUOm5
-	 yAldIueXVQy2srgXS/Vfzr1az3K/exwAYfoHlitZlVVGtSHJFLn811wQlvjOpdSw74
-	 xR2c36tsRYw1WoEC9F8wi6LGmVFIOxk0HepkyAmTP1Oi7yWm76dSrotGLw+LFRqjHQ
-	 QQdz8jQG0Gr3UCirtOjW8LcsBb8SpY46QTm8EVOjJ+1FAlad+bJ7NxEcG66OMXMFUd
-	 oQxOtsGkMWRT/uyG12NiSCf99MePyJwoKAD1lsjdsaAp19vYfmZi23BE5TuyU6NuN6
-	 82d1BXiTgN/Zg==
-Date: Wed, 7 Feb 2024 10:07:46 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Gergo Koteles <soyer@irl.hu>
-Cc: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
-	Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
-	linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-	alsa-devel@alsa-project.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] ASoC: tas2781: remove unused acpi_subysystem_id
-Message-ID: <ZcNWcqYEmUjtusfe@finisterre.sirena.org.uk>
-References: <df5c94396256e9573b772962182def52d20c50d4.1707250969.git.soyer@irl.hu>
- <7f056a4148fec176812ff6cc490860bf565b161c.1707255917.git.soyer@irl.hu>
+	s=arc-20240116; t=1707301655; c=relaxed/simple;
+	bh=gyXT7kHm+VgTEEpItBch3H7VFzSe5+2oZspO1evS+sc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XiQLArAt6YNBMTmfiwgGvVOvMpDB7dYsI98bM3my5cuFenR2n8lOV0zwpRuCPLN/4/YgTgipNCV7ooox97pv0b/tJt25Mk/o/gE143nMZVAcUyqv2ZH7i2Y7jobUNhgBB8+oSJCvkLufVONm97/ZbZhBstKINZd9pwkpe5dt5rw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rXf9N-0003Ga-EQ; Wed, 07 Feb 2024 11:27:29 +0100
+Message-ID: <07cf1cf8-825e-47b9-9837-f91ae958dd6b@leemhuis.info>
+Date: Wed, 7 Feb 2024 11:27:28 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="dXz+AyCXtdSYrj6n"
-Content-Disposition: inline
-In-Reply-To: <7f056a4148fec176812ff6cc490860bf565b161c.1707255917.git.soyer@irl.hu>
-X-Cookie: You might have mail.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/1] netfilter: ipset: Missing gc cancellations fixed
+Content-Language: en-US, de-DE
+To: Jozsef Kadlecsik <kadlec@netfilter.org>, netfilter-devel@vger.kernel.org
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, stable@vger.kernel.org,
+ patches@lists.linux.dev, Ale Crismani <ale.crismani@automattic.com>,
+ David Wang <00107082@163.com>, Sasha Levin <sashal@kernel.org>,
+ =?UTF-8?B?0KHRgtCw0YEg0J3QuNGH0LjQv9C+0YDQvtCy0LjRhw==?=
+ <stasn77@gmail.com>, Linux Regressions <regressions@lists.linux.dev>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20240204152642.1394588-1-kadlec@netfilter.org>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <20240204152642.1394588-1-kadlec@netfilter.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1707301653;bc2a2b27;
+X-HE-SMSGID: 1rXf9N-0003Ga-EQ
 
+On 04.02.24 16:26, Jozsef Kadlecsik wrote:
+> The patch fdb8e12cc2cc ("netfilter: ipset: fix performance regression
+> in swap operation") missed to add the calls to gc cancellations
+> at the error path of create operations and at module unload. Also,
+> because the half of the destroy operations now executed by a
+> function registered by call_rcu(), neither NFNL_SUBSYS_IPSET mutex
+> or rcu read lock is held and therefore the checking of them results
+> false warnings.
+> 
+> Reported-by: syzbot+52bbc0ad036f6f0d4a25@syzkaller.appspotmail.com
+> Reported-by: Brad Spengler <spender@grsecurity.net>
+> Reported-by: Стас Ничипорович <stasn77@gmail.com>
+> Fixes: fdb8e12cc2cc ("netfilter: ipset: fix performance regression in swap operation")
 
---dXz+AyCXtdSYrj6n
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+That afaics should be 97f7cf1cd80e ("netfilter: ipset: fix performance
+regression in swap operation").
 
-On Tue, Feb 06, 2024 at 10:49:29PM +0100, Gergo Koteles wrote:
-> The acpi_subysystem_id is only written and freed, not read, so
-> unnecessary.
+Side note in case anyone cares: I first didn't add the problem to the
+regression tracking as I assumed the fix would get quickly reviewed and
+merged to mainline (for some patches going through -net that's the
+case), but now added it as nothing happened yet.
 
-Please don't send new patches in reply to old patches or serieses, this
-makes it harder for both people and tools to understand what is going
-on - it can bury things in mailboxes and make it difficult to keep track
-of what current patches are, both for the new patches and the old ones.
-
---dXz+AyCXtdSYrj6n
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmXDVnIACgkQJNaLcl1U
-h9DhAggAgjqcZPJB5AA1yAgHmEW8VHnic9bdCPfZ3NDI5u1TWV2Hm76K2lDfH8/2
-Y+2/GH/XZpEKdIiTSGlYvG0fTERM2Z80deweBmYSZ2TcavogndomZNdIiYGn6wqk
-7QN0z7xR6O4lQJ6DZDecwcyLGD0BS5RSJDN4LNuKxK6liQfh/vRvxw7kviUoPxz1
-H55nlOVs2+wuz1O/0+wvshJAwaHXNnBe0cjLkQD6iCz5mh9ldGx6T9dD28auycxw
-IKKfGs5CWvJWz34oZZOgCMLEIZCvlZzlR3WVeHf3Ez6iGGdhFwIN3JVVbw3bPYOE
-x5lnK1d3s4s9NNStBoAIqZzWoCnWLg==
-=UT7t
------END PGP SIGNATURE-----
-
---dXz+AyCXtdSYrj6n--
+Ciao, Thorsten
 
