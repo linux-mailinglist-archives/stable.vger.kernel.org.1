@@ -1,241 +1,225 @@
-Return-Path: <stable+bounces-19251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE7A84D575
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 23:10:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC3684D67C
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 00:07:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60E1428630B
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 22:10:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A9891C22535
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 23:07:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F3A12EBD8;
-	Wed,  7 Feb 2024 21:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56758200D9;
+	Wed,  7 Feb 2024 23:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SMIHIKrh"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LOYJmMd5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343B412D749;
-	Wed,  7 Feb 2024 21:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF67200BA;
+	Wed,  7 Feb 2024 23:06:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707341955; cv=none; b=nAnsBA6977Gp6Jx9SdRugPzVqDWVok1KueJ9XK5oGBRsWtW3RqDH8EfEEVPY6O5gapUKNQcn1ziMkRaXTagpR1S8YK/rRtWmd+D7J/LIQr71dRqqDejdgTQMQ9VAbQY/uODPvQGA72aIKrEyWIyIFanBj7di0VL4+5HvQShoF2o=
+	t=1707347221; cv=none; b=ONxaWIqSxNyf3XDiXbg3NGE4jE3XMm+oGkC1FJnq3f3iEGTU3zDWK6ulzAjS322i7b3DufkbDBRti213yP/Wkt7tfzJCsYSZVHfFiT4hl7zRZguST3nl36ZrgAlK8p+3QTlBVnU+aUF2riQd1xCDbwcc+kvucXWOSoFwxJHjj1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707341955; c=relaxed/simple;
-	bh=6ZWqFx3ca1jpgWlsqAfIR5Ati7mNHH87BZaKOn9KJ9k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CK3vEndJSIGDZcDixzvKiN3DKdAO1M87zWTIYoS2QdkH3O31dH7uiw8QxojYBq1L5XAfVfuCmEql7zCX5BRzcW/RUnqLGOKa9uqLKvOvOoEJB55AgCmigHoVBpCxBIQSNkUYUR83mIOedsI9m42st53qBnAHVzRptYlF4tHrmMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SMIHIKrh; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+	s=arc-20240116; t=1707347221; c=relaxed/simple;
+	bh=ULTvoBUFSGgsxHeRo0ZMsip78lrjmsRFup2qGNw9Uis=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=daR4SScmm3z/zrajRQdyqjw4erPW0hRZ88lI/BGo00TWYTF4hzOznscLNxrltyyrQdfQBP5ttd074oDHj7bTRh+1ytT1bBLyYyqJvDhOL+Our4XdEjsHB56Ps1Z++zlU0nayCqVasY2Ntp10QNnsONjRmChcxoLyx01JGD8I2aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LOYJmMd5; arc=none smtp.client-ip=209.85.166.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-55c2cf644f3so1425833a12.1;
-        Wed, 07 Feb 2024 13:39:12 -0800 (PST)
+Received: by mail-io1-f50.google.com with SMTP id ca18e2360f4ac-7bf7e37dc60so64030739f.3;
+        Wed, 07 Feb 2024 15:06:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707341951; x=1707946751; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tHrWrs6xdhZ+695CZ3GqYRaPvXyFlxSiTcqYfb21vc0=;
-        b=SMIHIKrhDaA6RSmcrIZJM9ih1OSs6lvsAuTkKQGAnMjlj4iJnYfVdLuAJxa0/LXQMb
-         T3K8ornTPDrDyRBQCiEGVRIBECqauIeMVCh9yo77xkoFbIRKXbo1q/cjbWuHWIuX0EtN
-         L5BamIR+0PTb2ruVWqnVszVsISEP/ofCSbkmsQIGVLvCBS/RbKJw1+XZA/hy+8UDwXpm
-         ce43kEFcni+tIoCq8g11fhcG9/6r4Mkt84N+j74XP4VkHe/cYaMhE+pQzchOnfFhxHBM
-         GQx2bglCIzvfU/MAwkBxkWHN4/scNG0vC4XYD+tdxfQxIXSRS5iiKrd1XlBNeMZOEwcj
-         7s8Q==
+        d=gmail.com; s=20230601; t=1707347218; x=1707952018; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y461hO3ePCARg6hvMwpKBSrFexbMsmZV41JTYSiCLYY=;
+        b=LOYJmMd51AoOZxZTVyZ3vHRtteWP+op9GDjRpWliFqIkXohVE9b9ZoF3EYjLl/Y03l
+         0zuH+XpoL/wlCKRVnBucxOLy3a9scrN/WgB4TwZynNyv1qAlqTMko+Q3lTeL9FoldxTF
+         ohq7ldBl06yssy/p+AkFcj0QhuivXvqy0BglqqZ2N7cd3G1U/Nc2KZbOyRlPaQeyVKiM
+         yaa/DkYE/3xDsgzqcxj6P2wPUP+EeTDtI0d3FOUv9ioyz7NcP72XT+j1YJAn07EQpKct
+         qxI+z6MkGlYmUgWKBASK5mhhhI8hOnIcmYeuNmT6OGo9sVSzK9QD3+9pGSlLAFt2EVUR
+         mXxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707341951; x=1707946751;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tHrWrs6xdhZ+695CZ3GqYRaPvXyFlxSiTcqYfb21vc0=;
-        b=MNa82kMbIEexC+w6zo8GtAzBzFTK3DrL5OQT8YQQUbx3k1QWknF5O5WQxQN/9Qd6XK
-         ZLuchn3eKjNCs2CC7dD2rGcuhV72uSNBR3ddiuEmpVjJOUa+Nxbx6HcW/UjM9fJHoPnz
-         z0N4W6JqhuDVDXYrb8qWi3Qf577iuQL+YCE8ubh8PwdKCnp6T8BZoHZltbYvkBLwQLEm
-         9bJEFvZYTJzAzYGKmc2y/jAGZhdXWvIjHbeLVN0v/7JKGpte9UEe4dnRjvaRKKg/LAp+
-         cQzHaArvUXlSeAnrStti3f2zAWSFPRkN2dztpYGVLSZAHH+Th9DmlwCyMh8YYsNPnzS/
-         TSiQ==
-X-Gm-Message-State: AOJu0YzhTfxlghwoDy2ZchRVx19JNHyAWic08ELXZvTtRLQ+Ve8O1626
-	kKq82Cq6HtdGJ0pk2iX64Xk+Qrk7D0lOUJn8KqVOUa4QWTAyFEKE
-X-Google-Smtp-Source: AGHT+IH31AJIGaV5jSnbTxJFqgSEJhPOZR2SHDszJJRSiECJXp6pPaxQhhYbrQ2TFfU4Zn6lsuv1HQ==
-X-Received: by 2002:aa7:d391:0:b0:560:c6a8:e7d3 with SMTP id x17-20020aa7d391000000b00560c6a8e7d3mr3034780edq.1.1707341951102;
-        Wed, 07 Feb 2024 13:39:11 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXBIIJ98wcDQML8JTumvwwlEMas1YdRlwRZ9VPj2YErTrfZA0ITOze9hMyXD5njhtPGQDcMIbzZO8miUxa7gmUPQ+n2VUnNbB1kVVMF1VJ8+P4EcwyHsJ4+GMEhRSSnZHxk/e1LE1fgLcALZT6cnXGGVSWs4lackno8YBhI38F3byEcaVgvtM/qrA/DfK+KXXBBjwsjib/gZQfPvVgExxtmb8LbLXtVq2CyZ3Ei5H/mZzwtpFlRL9ajxZcpMn7WsjnK625IxW74f9jzuy4/GKJa8yOF3QM0O6E+xTG0VMIMGnXLpXmZf8M6zb9fFOatMPKgmEep
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id df21-20020a05640230b500b00557aa8d72c9sm120400edb.25.2024.02.07.13.39.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Feb 2024 13:39:10 -0800 (PST)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 7EF0EBE2EE8; Wed,  7 Feb 2024 22:39:09 +0100 (CET)
-Date: Wed, 7 Feb 2024 22:39:09 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Alexander Aring <aahringo@redhat.com>
-Cc: Jordan Rife <jrife@google.com>, Valentin Kleibel <valentin@vrvis.at>,
-	David Teigland <teigland@redhat.com>, 1063338@bugs.debian.org,
-	gfs2@lists.linux.dev, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, gregkh@linuxfoundation.org,
-	regressions@lists.linux.dev
-Subject: Re: [regression 6.1.76] dlm: cannot start dlm midcomms -97 after
- backport of e9cdebbe23f1 ("dlm: use kernel_connect() and kernel_bind()")
-Message-ID: <ZcP4fXEllcCDHyE6@eldamar.lan>
-References: <38f51dbb-65aa-4ec2-bed2-e914aef27d25@vrvis.at>
- <ZcNdzZVPD76uSbps@eldamar.lan>
- <CADKFtnRfqi-A_Ak_S-YC52jPn604+ekcmCmNoTA_yEpAcW4JJg@mail.gmail.com>
- <CAK-6q+hza9yXb5KpBS2VJMNHJa805nXqiYPTovnf9G-JFadBsg@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1707347218; x=1707952018;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y461hO3ePCARg6hvMwpKBSrFexbMsmZV41JTYSiCLYY=;
+        b=tgkiIsYNMzFi8VahU64FYC3q0AQcQdjqzsmFNeE3PjDRy7ivWmBxLEku4FoksnNg6v
+         UT0x2HesaamqPHmJtSeuNo96bnUZM0f3oFQsyjecaeauosxBOZxjPPPyUkmP0Gdluz3V
+         CBvC7j7u1qQFcPy492c8o3yXOa19n4Z+S4SoJhZUX2XS6hgVdd+VqtxALofeaInF/ZmP
+         5v8xTj8swW7uJwoEHgswPT98wiYXJXrA4iQRLJwMeTt1YBCIg/G7jG6DuGXEWDqkFU7K
+         mXcjNdpENeylkiqr0vWBKBY31ZsmsODtK8DHOK6Hs6G8DI70ee/aI0IlWbLYBDXoMAbq
+         F8Fg==
+X-Forwarded-Encrypted: i=1; AJvYcCVzmpw57HOjlV3kFpBXQeT8rAOk2pZRvThY5MdgHkwM6JZhdRp92wsLw9/bmg/DRPz5JdI8BFiMnCJ+oohIfYshvE7l30LQEdr8qZx2ejhaQxcI576Qj+/UApYgcKcEgkkiFjzE
+X-Gm-Message-State: AOJu0YyF2P+9cNyLDu/L9ZYOEdO8Fwrt5RoIauDRgt0MrCdIQfd/8q7I
+	t+zemhbBActcjsEXFc9rmTbtmcxYDeDgd91u3Y5BpYjy0QFhMLU5gVjYjeIuAz/SeqEr33Wokii
+	GKlnpUA3PjBi8SGRg1herSTQroMU=
+X-Google-Smtp-Source: AGHT+IF3+2QfM9ocMWDhi4nlx3HhMqhvgL9NDyIR1zFC9vJRsfwANzxCykTvgtwJopWMe12Bo9BaLFMz9qY5/S9nM8E=
+X-Received: by 2002:a05:6602:256f:b0:7c3:fbe2:7a65 with SMTP id
+ dj15-20020a056602256f00b007c3fbe27a65mr3830502iob.11.1707347218340; Wed, 07
+ Feb 2024 15:06:58 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK-6q+hza9yXb5KpBS2VJMNHJa805nXqiYPTovnf9G-JFadBsg@mail.gmail.com>
+References: <20240207115406.3865746-1-chengming.zhou@linux.dev>
+In-Reply-To: <20240207115406.3865746-1-chengming.zhou@linux.dev>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Wed, 7 Feb 2024 15:06:47 -0800
+Message-ID: <CAKEwX=NR+QN1P960_Qz_sHACoD8FK=Kb=LQw==JGR+9h73SENg@mail.gmail.com>
+Subject: Re: [PATCH v4] mm/zswap: invalidate old entry when store fail or !zswap_enabled
+To: chengming.zhou@linux.dev
+Cc: hannes@cmpxchg.org, yosryahmed@google.com, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Chengming Zhou <zhouchengming@bytedance.com>, stable@vger.kernel.org, 
+	Chris Li <chrisl@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Alexander,
+On Wed, Feb 7, 2024 at 3:54=E2=80=AFAM <chengming.zhou@linux.dev> wrote:
+>
+> From: Chengming Zhou <zhouchengming@bytedance.com>
+>
+> We may encounter duplicate entry in the zswap_store():
+>
+> 1. swap slot that freed to per-cpu swap cache, doesn't invalidate
+>    the zswap entry, then got reused. This has been fixed.
+>
+> 2. !exclusive load mode, swapin folio will leave its zswap entry
+>    on the tree, then swapout again. This has been removed.
+>
+> 3. one folio can be dirtied again after zswap_store(), so need to
+>    zswap_store() again. This should be handled correctly.
+>
+> So we must invalidate the old duplicate entry before insert the
+> new one, which actually doesn't have to be done at the beginning
+> of zswap_store(). And this is a normal situation, we shouldn't
+> WARN_ON(1) in this case, so delete it. (The WARN_ON(1) seems want
+> to detect swap entry UAF problem? But not very necessary here.)
+>
+> The good point is that we don't need to lock tree twice in the
+> store success path.
+>
+> Note we still need to invalidate the old duplicate entry in the
+> store failure path, otherwise the new data in swapfile could be
+> overwrite by the old data in zswap pool when lru writeback.
+>
+> We have to do this even when !zswap_enabled since zswap can be
+> disabled anytime. If the folio store success before, then got
+> dirtied again but zswap disabled, we won't invalidate the old
+> duplicate entry in the zswap_store(). So later lru writeback
+> may overwrite the new data in swapfile.
+>
+> Fixes: 42c06a0e8ebe ("mm: kill frontswap")
+> Cc: <stable@vger.kernel.org>
+> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+> Acked-by: Yosry Ahmed <yosryahmed@google.com>
+> Acked-by: Chris Li <chrisl@kernel.org>
+> Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
 
-On Wed, Feb 07, 2024 at 04:27:48PM -0500, Alexander Aring wrote:
-> Hi,
-> 
-> On Wed, Feb 7, 2024 at 1:33 PM Jordan Rife <jrife@google.com> wrote:
-> >
-> > On Wed, Feb 7, 2024 at 2:39 AM Salvatore Bonaccorso <carnil@debian.org> wrote:
-> > >
-> > > Hi Valentin, hi all
-> > >
-> > > [This is about a regression reported in Debian for 6.1.67]
-> > >
-> > > On Tue, Feb 06, 2024 at 01:00:11PM +0100, Valentin Kleibel wrote:
-> > > > Package: linux-image-amd64
-> > > > Version: 6.1.76+1
-> > > > Source: linux
-> > > > Source-Version: 6.1.76+1
-> > > > Severity: important
-> > > > Control: notfound -1 6.6.15-2
-> > > >
-> > > > Dear Maintainers,
-> > > >
-> > > > We discovered a bug affecting dlm that prevents any tcp communications by
-> > > > dlm when booted with debian kernel 6.1.76-1.
-> > > >
-> > > > Dlm startup works (corosync-cpgtool shows the dlm:controld group with all
-> > > > expected nodes) but as soon as we try to add a lockspace dmesg shows:
-> > > > ```
-> > > > dlm: Using TCP for communications
-> > > > dlm: cannot start dlm midcomms -97
-> > > > ```
-> > > >
-> > > > It seems that commit "dlm: use kernel_connect() and kernel_bind()"
-> > > > (e9cdebbe) was merged to 6.1.
-> > > >
-> > > > Checking the code it seems that the changed function dlm_tcp_listen_bind()
-> > > > fails with exit code 97 (EAFNOSUPPORT)
-> > > > It is called from
-> > > >
-> > > > dlm/lockspace.c: threads_start() -> dlm_midcomms_start()
-> > > > dlm/midcomms.c: dlm_midcomms_start() -> dlm_lowcomms_start()
-> > > > dlm/lowcomms.c: dlm_lowcomms_start() -> dlm_listen_for_all() ->
-> > > > dlm_proto_ops->listen_bind() = dlm_tcp_listen_bind()
-> > > >
-> > > > The error code is returned all the way to threads_start() where the error
-> > > > message is emmitted.
-> > > >
-> > > > Booting with the unsigned kernel from testing (6.6.15-2), which also
-> > > > contains this commit, works without issues.
-> > > >
-> > > > I'm not sure what additional changes are required to get this working or if
-> > > > rolling back this change is an option.
-> > > >
-> > > > We'd be happy to test patches that might fix this issue.
-> > >
-> > > Thanks for your report. So we have a 6.1.76 specific regression for
-> > > the backport of e9cdebbe23f1 ("dlm: use kernel_connect() and
-> > > kernel_bind()") .
-> > >
-> > > Let's loop in the upstream regression list for tracking and people
-> > > involved for the subsystem to see if the issue can be identified. As
-> > > it is working for 6.6.15 which includes the commit backport as well it
-> > > might be very well that a prerequisite is missing.
-> > >
-> > > # annotate regression with 6.1.y specific commit
-> > > #regzbot ^introduced e11dea8f503341507018b60906c4a9e7332f3663
-> > > #regzbot link: https://bugs.debian.org/1063338
-> > >
-> > > Any ideas?
-> > >
-> > > Regards,
-> > > Salvatore
-> >
-> >
-> > Just a quick look comparing dlm_tcp_listen_bind between the latest 6.1
-> > and 6.6 stable branches,
-> > it looks like there is a mismatch here with the dlm_local_addr[0] parameter.
-> >
-> > 6.1
-> > ----
-> >
-> > static int dlm_tcp_listen_bind(struct socket *sock)
-> > {
-> > int addr_len;
-> >
-> > /* Bind to our port */
-> > make_sockaddr(dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
-> > return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
-> >    addr_len);
-> > }
-> >
-> > 6.6
-> > ----
-> > static int dlm_tcp_listen_bind(struct socket *sock)
-> > {
-> > int addr_len;
-> >
-> > /* Bind to our port */
-> > make_sockaddr(&dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
-> > return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
-> >    addr_len);
-> > }
-> >
-> > 6.6 contains commit c51c9cd8 (fs: dlm: don't put dlm_local_addrs on heap) which
-> > changed
-> >
-> > static struct sockaddr_storage *dlm_local_addr[DLM_MAX_ADDR_COUNT];
-> >
-> > to
-> >
-> > static struct sockaddr_storage dlm_local_addr[DLM_MAX_ADDR_COUNT];
-> >
-> > It looks like kernel_bind() in 6.1 needs to be modified to match.
-> >
-> 
-> makes sense. I tried to cherry-pick e9cdebbe23f1 ("dlm: use
-> kernel_connect() and kernel_bind()") on v6.1.67 as I don't see it
-> there. It failed and does not apply cleanly.
-> 
-> Are we talking here about a debian kernel specific backport? If so,
-> maybe somebody missed to modify those parts you mentioned.
+Acked-by: Nhat Pham <nphamcs@gmail.com>
 
-Thanks all for looking into it.
+Sorry for being late to the party, and thanks for fixing this, Chengming!
 
-No it's not a Debian specific backport, e9cdebbe23f1 ("dlm: use
-kernel_connect() and kernel_bind()") got in fact backported upstream
-in 6.1.76, 6.6.15 and 6.7.3. The respective commits are:
-
-v6.1.76: e11dea8f503341507018b60906c4a9e7332f3663 dlm: use kernel_connect() and kernel_bind()
-v6.6.15: c018ab3e31b16ff97b9b95b69904104c9fcca95b dlm: use kernel_connect() and kernel_bind()
-v6.7.3: 4ecf1864f2076872b7aea29d463e785ef6fc9909 dlm: use kernel_connect() and kernel_bind()
-v6.8-rc1: e9cdebbe23f1aa9a1caea169862f479ab3fa2773 dlm: use kernel_connect() and kernel_bind()
-
-But for the 6.1.76 case there is the above regression (while it works
-for 6.6.15 as confirmed by the reporter).
-
-I'm very sorry I see where I have caused you confusion: The regression
-is in 6.1.*76* not 6.1.*67* and I misstyped the version in two places.
-
-Regards,
-Salvatore
+> ---
+> v4:
+>  - VM_WARN_ON generate no code when !CONFIG_DEBUG_VM, change
+>    to use WARN_ON.
+>
+> v3:
+>  - Fix a few grammatical problems in comments, per Yosry.
+>
+> v2:
+>  - Change the duplicate entry invalidation loop to if, since we hold
+>    the lock, we won't find it once we invalidate it, per Yosry.
+>  - Add Fixes tag.
+> ---
+>  mm/zswap.c | 33 ++++++++++++++++-----------------
+>  1 file changed, 16 insertions(+), 17 deletions(-)
+>
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index cd67f7f6b302..62fe307521c9 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1518,18 +1518,8 @@ bool zswap_store(struct folio *folio)
+>                 return false;
+>
+>         if (!zswap_enabled)
+> -               return false;
+> +               goto check_old;
+>
+> -       /*
+> -        * If this is a duplicate, it must be removed before attempting t=
+o store
+> -        * it, otherwise, if the store fails the old page won't be remove=
+d from
+> -        * the tree, and it might be written back overriding the new data=
+.
+> -        */
+> -       spin_lock(&tree->lock);
+> -       entry =3D zswap_rb_search(&tree->rbroot, offset);
+> -       if (entry)
+> -               zswap_invalidate_entry(tree, entry);
+> -       spin_unlock(&tree->lock);
+>         objcg =3D get_obj_cgroup_from_folio(folio);
+>         if (objcg && !obj_cgroup_may_zswap(objcg)) {
+>                 memcg =3D get_mem_cgroup_from_objcg(objcg);
+> @@ -1608,14 +1598,12 @@ bool zswap_store(struct folio *folio)
+>         /* map */
+>         spin_lock(&tree->lock);
+>         /*
+> -        * A duplicate entry should have been removed at the beginning of=
+ this
+> -        * function. Since the swap entry should be pinned, if a duplicat=
+e is
+> -        * found again here it means that something went wrong in the swa=
+p
+> -        * cache.
+> +        * The folio may have been dirtied again, invalidate the
+> +        * possibly stale entry before inserting the new entry.
+>          */
+> -       while (zswap_rb_insert(&tree->rbroot, entry, &dupentry) =3D=3D -E=
+EXIST) {
+> -               WARN_ON(1);
+> +       if (zswap_rb_insert(&tree->rbroot, entry, &dupentry) =3D=3D -EEXI=
+ST) {
+>                 zswap_invalidate_entry(tree, dupentry);
+> +               WARN_ON(zswap_rb_insert(&tree->rbroot, entry, &dupentry))=
+;
+>         }
+>         if (entry->length) {
+>                 INIT_LIST_HEAD(&entry->lru);
+> @@ -1638,6 +1626,17 @@ bool zswap_store(struct folio *folio)
+>  reject:
+>         if (objcg)
+>                 obj_cgroup_put(objcg);
+> +check_old:
+> +       /*
+> +        * If the zswap store fails or zswap is disabled, we must invalid=
+ate the
+> +        * possibly stale entry which was previously stored at this offse=
+t.
+> +        * Otherwise, writeback could overwrite the new data in the swapf=
+ile.
+> +        */
+> +       spin_lock(&tree->lock);
+> +       entry =3D zswap_rb_search(&tree->rbroot, offset);
+> +       if (entry)
+> +               zswap_invalidate_entry(tree, entry);
+> +       spin_unlock(&tree->lock);
+>         return false;
+>
+>  shrink:
+> --
+> 2.40.1
+>
 
