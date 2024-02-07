@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-19095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3DDA84D3B7
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 22:23:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC40084D3B9
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 22:23:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6ECFF28DCAE
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 21:23:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 911071F289F3
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 21:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7AD712BE96;
-	Wed,  7 Feb 2024 21:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9121612EBD7;
+	Wed,  7 Feb 2024 21:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sAl8kDKe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p6G92GWT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4AD12E1FE;
-	Wed,  7 Feb 2024 21:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A74B12EBC1;
+	Wed,  7 Feb 2024 21:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707340914; cv=none; b=d6rY1nE/5ojwcj75rkF/aLMunpnOMY+qQ+CHjxnhMCzP/+9MrclyDikdpQ8G+V6HzLBduQoJ+rmNgrjMuQ/Bbmf242JGvKrhKeB3jp+KdFjGJaPj7fDJL4jLtQoJR0nJgNuhFv5ONgPveZ33Xg4oTQ4cavTQsJj5uSIav0oachM=
+	t=1707340916; cv=none; b=AZy66/3Mx+5n5xZKS649m2G7Q3TPHjWEQpETJF159eHfD7ZZETi5AWYFbeMFf2h/9XlyuVrOMAWmR6bhVPqDpF45aPLcWrGXIq1nwHjAgH/oGzFtQxfTB4WM2ojKYuNiA1G8mty/dFQPSMdZqibSzOmGFnRnZW5MGMVnUL9irOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707340914; c=relaxed/simple;
-	bh=0VOhKIivJpvUBI1Diu2IvdC9acapXaOv9s1dqEnVZFE=;
+	s=arc-20240116; t=1707340916; c=relaxed/simple;
+	bh=I6ACf0rheCfaTgMnCYw/5BfgrO0NFpeYQB8WyEw7xzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SMTD10TEkQBpsbr/rr2xYnfhxlAbVDiSpkgjR2e9kcsyktPcSEn8hp82BMyi7g1Ro1pf2oSept1DfJGaElRE2TBt2Webge1rhV4Q+0htcmXGWVCK/NnNI9jIz80HAzRxWRgPI+wsMbG0v30GMzkhk/Oce/uwnprjgGqsT8KRLDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sAl8kDKe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1047FC4160D;
-	Wed,  7 Feb 2024 21:21:51 +0000 (UTC)
+	 MIME-Version; b=JKjEYBq9GXuEpppxyB8jnW29MhE4PhItIDtKOi6hyv816hm+uocxOoUNMM/LONEJs9231K3+1WC+MsczWFomYIMfK7zh5Ama32SFECbK6Bpyd+t35FjZ82jZ1w1Ssfo5nde0XT0VlUF6rFe5asooZKn+lpHcvzp5/Up5WYDtWGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p6G92GWT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D479C433C7;
+	Wed,  7 Feb 2024 21:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707340914;
-	bh=0VOhKIivJpvUBI1Diu2IvdC9acapXaOv9s1dqEnVZFE=;
+	s=k20201202; t=1707340916;
+	bh=I6ACf0rheCfaTgMnCYw/5BfgrO0NFpeYQB8WyEw7xzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sAl8kDKe5NbYX3aOUiSsMF2rzvtCqTluQt+q4fHdiFXMcT48HMv9z3TZLw1C8rlVz
-	 o16+Wbk82BTEucMV22zR/AVmRGImlprTqG8MSQtEABjF6qTW5/498CVl5YFPUsobuf
-	 Aajnmj4Qe70F+ctG8oab/tXKIYRtYLZDXyKdIeXHPOU6NuU6h1fAYeLGsBBtA3ammx
-	 8N6YbnUg5BLMMF26jml9KVOQoG7MKq/mhStDyWnJFDxeLolJfZftSbZCNxP1fOnSvy
-	 +RIy/yE66VtEZtulK9dJqmE1t1o8wlnvk6oOrbIkIhlYIAOAKD6NaZYZh7B7OuW2an
-	 wErV/o2iyULMA==
+	b=p6G92GWTlBVh1F8qfOiGV7r824mxZPaXEeaGCqRsua6EsOVaMqZll1HUCLZiZ9kyy
+	 gVf16Lz/5L6d4GTAeZ9TTpmxWdCLoLkLSUItJIi1Ya29D2IVN44duSjRPkeC0Nnheg
+	 BGCX/+TPoVUWgqk3v/NdfXtiWMw9VS23F5VHoVyEds1GBsjCe8UBzFOAnVrJ9W2c7S
+	 ZBcrcE7bVtlX9iOx2FIHF3R63SsG7nMiCdUoea5vKaKlwHwlQnz6qDouCxe5TdmfrG
+	 Bx1mgydhy4yaHh0fLx2dPkXOh4Xa5deYihkYbP+frpfGe3X3ZDAymxQfZl+f5j8p+l
+	 XyAVtkmnCgX+w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	srinivas.kandagatla@linaro.org,
+	bgoswami@quicinc.com,
 	lgirdwood@gmail.com,
 	perex@perex.cz,
 	tiwai@suse.com,
-	Syed.SabaKareem@amd.com,
-	alpernebiyasak@gmail.com,
-	cristian.ciocaltea@collabora.com,
-	kuninori.morimoto.gx@renesas.com,
-	posteuca@mutex.one,
+	alsa-devel@alsa-project.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.7 06/44] ASoC: amd: acp: Add check for cpu dai link initialization
-Date: Wed,  7 Feb 2024 16:20:33 -0500
-Message-ID: <20240207212142.1399-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.7 07/44] ASoC: codecs: wcd934x: drop unneeded regulator include
+Date: Wed,  7 Feb 2024 16:20:34 -0500
+Message-ID: <20240207212142.1399-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240207212142.1399-1-sashal@kernel.org>
 References: <20240207212142.1399-1-sashal@kernel.org>
@@ -73,42 +71,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.7.4
 Content-Transfer-Encoding: 8bit
 
-From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 6cc2aa9a75f2397d42b78d4c159bc06722183c78 ]
+[ Upstream commit 35314e39dabcfb256832654ad0e856a9fba744bd ]
 
-Add condition check for cpu dai link initialization for amplifier
-codec path, as same pcm id uses for both headset and speaker path
-for RENOIR platforms.
+Driver does not use any regulator code, so drop redundant include of
+regulator/consumer.h header.
 
-Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
-Link: https://msgid.link/r/20240118143023.1903984-3-venkataprasad.potturu@amd.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://msgid.link/r/20240117151208.1219755-3-krzysztof.kozlowski@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-mach-common.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ sound/soc/codecs/wcd934x.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/sound/soc/amd/acp/acp-mach-common.c b/sound/soc/amd/acp/acp-mach-common.c
-index 34b14f2611ba..12ff0a558ea8 100644
---- a/sound/soc/amd/acp/acp-mach-common.c
-+++ b/sound/soc/amd/acp/acp-mach-common.c
-@@ -1428,8 +1428,13 @@ int acp_sofdsp_dai_links_create(struct snd_soc_card *card)
- 	if (drv_data->amp_cpu_id == I2S_SP) {
- 		links[i].name = "acp-amp-codec";
- 		links[i].id = AMP_BE_ID;
--		links[i].cpus = sof_sp_virtual;
--		links[i].num_cpus = ARRAY_SIZE(sof_sp_virtual);
-+		if (drv_data->platform == RENOIR) {
-+			links[i].cpus = sof_sp;
-+			links[i].num_cpus = ARRAY_SIZE(sof_sp);
-+		} else {
-+			links[i].cpus = sof_sp_virtual;
-+			links[i].num_cpus = ARRAY_SIZE(sof_sp_virtual);
-+		}
- 		links[i].platforms = sof_component;
- 		links[i].num_platforms = ARRAY_SIZE(sof_component);
- 		links[i].dpcm_playback = 1;
+diff --git a/sound/soc/codecs/wcd934x.c b/sound/soc/codecs/wcd934x.c
+index 1b6e376f3833..6813268e6a19 100644
+--- a/sound/soc/codecs/wcd934x.c
++++ b/sound/soc/codecs/wcd934x.c
+@@ -13,7 +13,6 @@
+ #include <linux/of.h>
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+-#include <linux/regulator/consumer.h>
+ #include <linux/slab.h>
+ #include <linux/slimbus.h>
+ #include <sound/pcm_params.h>
 -- 
 2.43.0
 
