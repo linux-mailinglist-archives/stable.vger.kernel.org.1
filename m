@@ -1,249 +1,215 @@
-Return-Path: <stable+bounces-19072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13BE384CA11
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 12:59:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D193384CA1E
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 13:02:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 778AF1F22858
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 11:59:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 543921F27D37
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 12:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B5C559B63;
-	Wed,  7 Feb 2024 11:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071A659176;
+	Wed,  7 Feb 2024 12:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="lpJz2eoM"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="dcvnbCop";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="iLE67pFP"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE7C59B4C
-	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 11:59:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707307176; cv=none; b=vCSDedGPrg45qTqbETpUf8J5rDCfyEsqz/HWYPRuz7evXPrguZuQuOL01RkWpr520shAlHFKUWLuQgkRKRV5TkCa5hrCjzkUYYwFVTboEQXGLKPDb9VFqu1KGWqD3+kSg16QbrDJlLkCRxMzzIydYtaBXPmqwNEITngT9yLCXmA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707307176; c=relaxed/simple;
-	bh=4Dzuc4ozpYlQxuD8azhA0pj38vOTx6H5p1tDERc3qF0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=P+yR3QbjUjnK0jUxK5pyXeaGDTfKOZEhbQFKbo6weFjwdD/ss2IiylCrt71hYMAV4/Q4BNPIi7P50eb9vg9NGLfOkNKVByLp5+NfKnYpiD01vWFJ3a+kHH5vG08XO8rKJAXT73db5wGwPJ4BWlYktWFEHyZJRol0oYrS1neky+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=lpJz2eoM; arc=none smtp.client-ip=210.118.77.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20240207115930euoutp024ea2658a1b8e6daca63b37b43cc65423~xktNoVfE51839118391euoutp02h
-	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 11:59:30 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20240207115930euoutp024ea2658a1b8e6daca63b37b43cc65423~xktNoVfE51839118391euoutp02h
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1707307170;
-	bh=ynbj17t33/+bqH1PNF8D/EuPAXN1vfaZJ7FwjG8sFdc=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=lpJz2eoMJsKbo0D/d2NM6Emf0oWWHkOR0pwtzo/mOKvKR4cniVlN13YLwp/T/ukDq
-	 95Nh8kRFMzLghfUJw7UFxWiJY8Usn0ISjmbcABjiOs2BykOD3TpdH5F8O+13GpHTmt
-	 BmUXU/ETryUYH3F8cUhSKPkaREuvFWz+l3IWAV/s=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-	20240207115930eucas1p1c3fb19c28c5e442370aae05cab84d8b7~xktNa7EEZ0109101091eucas1p1I;
-	Wed,  7 Feb 2024 11:59:30 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-	eusmges3new.samsung.com (EUCPMTA) with SMTP id 2E.FF.09552.2A073C56; Wed,  7
-	Feb 2024 11:59:30 +0000 (GMT)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20240207115929eucas1p1dc7c6bb3f9aa2ac983dd95d345661aec~xktNCDyoX0983609836eucas1p13;
-	Wed,  7 Feb 2024 11:59:29 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-	eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20240207115929eusmtrp1a3aa4ad5ba4659fa30592e1a707c87c4~xktNBbbt-2420724207eusmtrp1q;
-	Wed,  7 Feb 2024 11:59:29 +0000 (GMT)
-X-AuditID: cbfec7f5-853ff70000002550-13-65c370a2a715
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-	eusmgms2.samsung.com (EUCPMTA) with SMTP id 64.69.10702.1A073C56; Wed,  7
-	Feb 2024 11:59:29 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20240207115929eusmtip2281373b5b758a06bd4b18bfcfb788580~xktMcpQHz0589105891eusmtip2M;
-	Wed,  7 Feb 2024 11:59:29 +0000 (GMT)
-Message-ID: <4b5683cc-8e61-43c5-be0f-b5378639276a@samsung.com>
-Date: Wed, 7 Feb 2024 12:59:28 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41E95A0E9
+	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 12:02:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707307328; cv=fail; b=u/is6UClzeAXnLMTLCk2oUkGPDI97odGp4E352QpFu3rK1rl0yKmpWhQBxoJgN8yAlRH4edEfNmEgLn5hxMZs8wic39UGbV8F52gBcsp7SCJbF+3JXCXx8HuFMAg0wbixqIeEZl977q5BzJEOt1q+AkF3/h+mLfrrMvHpPD8Ido=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707307328; c=relaxed/simple;
+	bh=qaGyMuuAVmLuoW7tVYYrN7a5hOurf8SJtNnSPWnOMWk=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=CGc0KXS65HEDJnuB6JXEBElgvfISEPREBbuVphNFwo/ymSKNB+21ygrf/v4hIwkxzpkSZp3vxcrSNxBw8kVbIWxs6VIre/n2J1pKE0wiN8huWLyzgc/XMPgrGW3DhkvXLUrNr7h+ys4JYQeLLk67AYTG+e61NE4/FhxjAnvKb8Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=dcvnbCop; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=iLE67pFP; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 417AEAbh022583;
+	Wed, 7 Feb 2024 12:01:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-11-20;
+ bh=Btsr7ez8mXfs3SJr4cyBJmEdcGxfKWBL6PaPO8APrBU=;
+ b=dcvnbCopvWv5oar67tXtqfKmaawY3/K17OWsOXAqsfL5xEsHhCqtEQhgpzno6DzZwVrP
+ MRWB2FWYI9/z2fpAGBalSEG3dQ/KYWAmctsRPqa5ONM80Ai50gXCCeN+69LuxuwVJE5G
+ 70f309Xv2Z2lMh2AyWCkWM2QT2NP7LkHgCsJZp+GMlTASDpHdcrNTZl+80sAb10pROpy
+ VLo/pNW3znB7CnQQxVabeqr4UMzVetsmHP/pbQD69jVnbXKzuCyGUkMdu2f9EdbBOAZn
+ 9PfGPbIDoPY9buVvrd1jesFU7pB+1LjZReuMB+7Q4hE9Ayni/Ce6vZya7LE5YHe/Flo8 aQ== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3w1c941nge-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 07 Feb 2024 12:01:46 +0000
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 417ApRd1039463;
+	Wed, 7 Feb 2024 12:01:45 GMT
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2101.outbound.protection.outlook.com [104.47.70.101])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3w1bx8msyu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 07 Feb 2024 12:01:45 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Go406M3XOP3DaZyIk1ifOYGBRP9r7lYw8Vm2mscCbLouh1qPdgQzsyMnpQlLHr5WWVXVtZbAqdToUjQ66+1/6qk4lLRs+EL5PPQ5yJStqVzsxZ/60hQq7v2Q8Isa6BliOfRABeZum8X7ZXNW03Lfjitr/wArTDtauwuF6NKUoVc/DxJwV/nzVLxgNzkSiMU82aDmEwsNqqyrtlAvON4vN3YNs97VseIwUO7n/nLBsmbE5pfj5rO58Drf6yFkwOrrgjCEpQvCQSUG+bpesHmOWSYz1IzB5J3gfGwfkPfwnuYS8Mco7klulsoT9phsgO8auZhSEjXYlowapg/9oBBdZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Btsr7ez8mXfs3SJr4cyBJmEdcGxfKWBL6PaPO8APrBU=;
+ b=FA9BTLEJDSQeUP1+ppl8T3VUjBCVugHAmbmOkltuZmwrWVqtEUDZrHM8njEr6pm1yDqfNslt35sLDEZm6SqPjHOgQjmkO+dC0PyEtGolHPp3smo4t25pfi+MkMwFjr+fhDjq0F6rRjaoNaDnFhM8K+wZltGH5skgSA7cmPNRaC4kmLx9b19MGf0Xhw+OabsZJZIl4CVtg1SKeGXzi/l8U7ELcPhXFhp9VDnXEe41bYrgfx8gYBYVgSa7g92v2F4S6Ff7C/0XhNdmN2Pa8tlKnXK5rqg/zAuhLBn6ISQMctTx4gZt090TYoiRaG7wFEykUKDAm3lrdNJq0ikeJIrfKQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Btsr7ez8mXfs3SJr4cyBJmEdcGxfKWBL6PaPO8APrBU=;
+ b=iLE67pFPyiH60A+WxBaEtIrC8RMHBll36FppEVQes0GIShxwePGIMO+7aD+ecySdtWbLInNJaomOIgvlWQXO0APL8SKnwb6/9uewlYxQlUDwW1C1jnmuVTuQJDdiMSjJ0iynnigvWXS3dRwhNU1AVIXx3gfVJh87Mdmn0KYlzg8=
+Received: from PH8PR10MB6290.namprd10.prod.outlook.com (2603:10b6:510:1c1::7)
+ by SJ2PR10MB7600.namprd10.prod.outlook.com (2603:10b6:a03:543::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.36; Wed, 7 Feb
+ 2024 12:01:43 +0000
+Received: from PH8PR10MB6290.namprd10.prod.outlook.com
+ ([fe80::f41b:4111:b10e:4fa5]) by PH8PR10MB6290.namprd10.prod.outlook.com
+ ([fe80::f41b:4111:b10e:4fa5%4]) with mapi id 15.20.7249.035; Wed, 7 Feb 2024
+ 12:01:42 +0000
+Message-ID: <c4c2f990-20cf-4126-95bd-d14c58e85042@oracle.com>
+Date: Wed, 7 Feb 2024 17:31:36 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 1/1] cifs: Fix stack-out-of-bounds in
+ smb2_set_next_command()
+Content-Language: en-US
+To: ZhaoLong Wang <wangzhaolong1@huawei.com>, stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, sfrench@samba.org, kovalev@altlinux.org,
+        "Mohamed Abuelfotoh, Hazem" <abuehaze@amazon.com>,
+        Darren Kenny <darren.kenny@oracle.com>
+References: <20240207114743.2209367-1-wangzhaolong1@huawei.com>
+ <20240207114743.2209367-2-wangzhaolong1@huawei.com>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20240207114743.2209367-2-wangzhaolong1@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TYCP301CA0043.JPNP301.PROD.OUTLOOK.COM
+ (2603:1096:400:380::19) To PH8PR10MB6290.namprd10.prod.outlook.com
+ (2603:10b6:510:1c1::7)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] usb: dwc3: gadget: Fix NULL pointer dereference in
- dwc3_gadget_suspend
-Content-Language: en-US
-To: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>, Thinh Nguyen
-	<Thinh.Nguyen@synopsys.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	stable@vger.kernel.org, Felipe Balbi <balbi@kernel.org>
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <20240119094825.26530-1-quic_uaggarwa@quicinc.com>
-Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprLKsWRmVeSWpSXmKPExsWy7djP87qLCg6nGpw8z2JxrO0Ju0Xz4vVs
-	Fpd3zWGzWLSsldli44anLBYLNj5itFi14AC7A7vHplWdbB77565h95i4p85jy/7PjB6fN8kF
-	sEZx2aSk5mSWpRbp2yVwZTzesI6xYK9qRdM03gbGXvkuRk4OCQETiePL3zF3MXJxCAmsYJT4
-	/WcNI4TzhVHiy+zFbBDOZ0aJOf/mMMO0PD2yiRUisZxR4uR8mJaPjBKP9h5lAaniFbCTWHTm
-	MjuIzSKgIjGhtZ8VIi4ocXLmE7AaUQF5ifu3ZoDVCAskSBy82Q0WZxYQl7j1ZD4TyFARgT5G
-	idsbJgAVcQAlyiQ+blYEqWETMJToetvFBmJzCthLdLzpZITolZdo3job7CEJgRscEkuvTmGF
-	ONtF4sHBjUwQtrDEq+Nb2CFsGYnTk3tYIBraGSUW/L7PBOFMYJRoeH6LEaLKWuLOuV9sEFdo
-	SqzfpQ8RdpT4vv8CWFhCgE/ixltBiCP4JCZtm84MEeaV6GgTgqhWk5h1fB3c2oMXLjFPYFSa
-	hRQss5C8PwvJO7MQ9i5gZFnFKJ5aWpybnlpsnJdarlecmFtcmpeul5yfu4kRmIJO/zv+dQfj
-	ilcf9Q4xMnEwHmKU4GBWEuE123EgVYg3JbGyKrUoP76oNCe1+BCjNAeLkjivaop8qpBAemJJ
-	anZqakFqEUyWiYNTqoGpeuf5RQWOjU5VH4UUXTl3T+pL2z/77RQR+ZbAczl1s412pi0SS9n5
-	39iq8PHSmYWLVv0LCxOwTpTSd+D7P4/TcpvZ/6V8HlWXJk6M91Ti0sjUWqowY15n889WTRbl
-	BWf6dj+qkDjZ+0mdr8bsotV2v/N5nzYG/A5/aOr3fuaFyRUux9lfL9j37iLDcSmdQrnvEvuc
-	d5cYc16xuvRD/srsrYniGYyHmH5d+nl/vlHrJmXJA1EPT/Ev5a1ZWbo6/oSrYMvt+XemrFc0
-	NJau7Ci3NdJpP6srv+ZzuMtpT/ewiuv/pymm/J/rkdOiKVWWGxq18lKYRkpfTPxz3WVcu7Q5
-	Mj6Vv5ZZYP7p0umcBGElluKMREMt5qLiRAACspp/sAMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrHIsWRmVeSWpSXmKPExsVy+t/xe7oLCw6nGjSu07Q41vaE3aJ58Xo2
-	i8u75rBZLFrWymyxccNTFosFGx8xWqxacIDdgd1j06pONo/9c9ewe0zcU+exZf9nRo/Pm+QC
-	WKP0bIryS0tSFTLyi0tslaINLYz0DC0t9IxMLPUMjc1jrYxMlfTtbFJSczLLUov07RL0Mh5v
-	WMdYsFe1omkabwNjr3wXIyeHhICJxNMjm1hBbCGBpYwSDy6wQsRlJE5Oa4CyhSX+XOti62Lk
-	Aqp5zyixqmcyG0iCV8BOYtGZy+wgNouAisSE1n5WiLigxMmZT1hAbFEBeYn7t2aA1QgLJEgc
-	vNkNFmcWEJe49WQ+E8hQEYEJjBJ7P19lh0iUSXy78YYN4iI7iZ0v+xhBbDYBQ4mut11gcU4B
-	e4mON52MEPVmEl1bu6BseYnmrbOZJzAKzUJyxywk+2YhaZmFpGUBI8sqRpHU0uLc9NxiI73i
-	xNzi0rx0veT83E2MwIjbduznlh2MK1991DvEyMTBeIhRgoNZSYTXbMeBVCHelMTKqtSi/Pii
-	0pzU4kOMpsDAmMgsJZqcD4z5vJJ4QzMDU0MTM0sDU0szYyVxXs+CjkQhgfTEktTs1NSC1CKY
-	PiYOTqkGpkXm/dv3vgxOcrPdELA5JtUyMufTUw4F+b03FhyYrvDqUNbqck4P79cy/Ms5Pj1y
-	rtS489HBmGPREvXplVdzlCu+b3uyuVjqx/8NT2atnP30WJyq12fpHdvXarQfcv5rWlS5db4B
-	e8szG96qxhnpSzpC75msXe/eatCz4Mkeww8vL87/EZeQ8/DAGQ/J+J5jDu9mfHmi0/HCsNt6
-	Vkci11JVJYFrgmdeOn5oPB8SX58X9TFFxnGFrdxZ73M6x4PCpzyTNnd9p6tlmvZFVfDzr7Ad
-	U498znKLy/dkXMy4wao/bavYnLI3thcylWuXfrSYenbRR86Ek7cYGrclrLU9v6ZW33e7ytzb
-	PnWnOQO+hiuxFGckGmoxFxUnAgBvL4jzQQMAAA==
-X-CMS-MailID: 20240207115929eucas1p1dc7c6bb3f9aa2ac983dd95d345661aec
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20240207115929eucas1p1dc7c6bb3f9aa2ac983dd95d345661aec
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20240207115929eucas1p1dc7c6bb3f9aa2ac983dd95d345661aec
-References: <20240119094825.26530-1-quic_uaggarwa@quicinc.com>
-	<CGME20240207115929eucas1p1dc7c6bb3f9aa2ac983dd95d345661aec@eucas1p1.samsung.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR10MB6290:EE_|SJ2PR10MB7600:EE_
+X-MS-Office365-Filtering-Correlation-Id: f3963ffb-370c-4d91-5bf1-08dc27d48cb1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	UXFlWzmUladwyG3T81XjjKURxNq1NEWynRYC7ziiRabynoPll6qFL53uP+d6lRyfyu+Ssr3dTM+D4rzLSzqZcIQShUpyqznRU2Zbg2CBcSpP/IzdkiL8F0/HpfgIQV2z8p/z1P2BJ5L2Y70GOpjlCtKOoYvVya5Q8oDbuUY7Bk9bxHtwSZZecAtSxpttNBYhQ1OxFdxdldGxqn3nGE3NzMu3Qic+lwjICCdOn1VrQXydxEzqN4cJXRlOZ+rfEVGpadrH07AJu+KzsYMo+JUJlBX331ri5CFpcxeF8M661GcRerg97ao0Y5gbVRNmo3Eq+4nQoKOl2wEENUQE7kCuzJKUU3CGqZ7s1cdC3l3w6VU2eoAnnkkX3vGQohD4UHjdI0lPScOQksd7iskBSq4PQFyiYUX7Gu+8pLYZI9PtBYOYLny0QbcgOS5Gaq8DSl2dmNRXA6ZzamxSyBcIlcoQ96/emX+kekOOHFjZ7pNsGw+eOoqMQout2RQm0y/geb997TdC/wUSXvigLzf69Vt/KoHmm/6vqDmQaCVrbxS7PgHNaPRzI2QYnD+cLFyucqxZHP553/EId3ju9yrS4C9T5veC7vJKWKtxllV54Tp3IpXg+5+0/rWHSBmOCziwFWKsWFv6taIMx3BBLnpz3vY5xMrKmdHfKutPEDEK80D39HM=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6290.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(136003)(346002)(396003)(39860400002)(366004)(230922051799003)(186009)(451199024)(1800799012)(64100799003)(31686004)(2906002)(38100700002)(41300700001)(66476007)(66946007)(54906003)(66556008)(316002)(26005)(8676002)(4326008)(8936002)(86362001)(31696002)(6506007)(6512007)(53546011)(2616005)(6666004)(5660300002)(107886003)(478600001)(6486002)(36756003)(966005)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?VzJrOXJMdGdDdndMak5XN08rRzRIc0RrSm91VzZRRWkxM284TlNkdVljU3Vu?=
+ =?utf-8?B?UzRpVjdvV01GcnBnSENwYU5NbC81TU5OY0ZIeENjTmJJMkR2SlM2YzJKd3Fx?=
+ =?utf-8?B?SlFMTzR6WnM3dUF4ZXF2THNWWnhQKzlkVE5EdzdPazlqRklMd2Y4MEQ3ejBx?=
+ =?utf-8?B?T2JNbG03c1lqNGVWT2ZRVG5vTEJhRXBEWVducmo5ZEFMS1pQZklpRmNlYzBp?=
+ =?utf-8?B?N2MvOTJGRjRldjZHMkFGUnBBdGl1L1dMeDBHYjJpbDI2L1hzdDFOSHFxRmtL?=
+ =?utf-8?B?RERvbVhWTW9teU4ySXE0OTZmVEpkaEpCRTlxRnhlUTJXTnBmYU1YN2ExQnhC?=
+ =?utf-8?B?Z095VkpaSTVWWWNSelVpQk5hcmpyOXNOclR6V2RNd3ZubHVoTFAxNnpOZjZF?=
+ =?utf-8?B?WmI1a3B2MlUzZUJoTjJFMU1VYVFTNjdoUFpnaW9QeEZtci85ZC9TVlAwS1k0?=
+ =?utf-8?B?cVR5elJuS0tGVHE0UHJaMC9OTmwrSy96NFh3WU9OeW1XcHpSd3ZyRWFmeEFU?=
+ =?utf-8?B?TCs3YWs2N3hCTEc2S3VieGJBSmpzTThFTmtLMDUrQ0VrL3ZtbnZrM2dIdlBo?=
+ =?utf-8?B?QkVIbFN5d01xczV3QmhDaHozU0g0U0k5bVF1cEpibk9BMURFSEFmNVhuLzRi?=
+ =?utf-8?B?NUl2bnVIdGlwenhUMklNanM1Nks2OWx3MTMwZUpVeTN3UWhGK2JYZVF0WHYy?=
+ =?utf-8?B?c3FSR29QUDNNK1o4N0hsL2R1MjhreGdoY2MyeTBTTmpEUmxxM082ZVdWcEgy?=
+ =?utf-8?B?VngxTzJDNmdmajJZZ3ZYKzM3eTNNVURMK3dsK3ptNFBqYWY0Vlh4NjJEQ1Ba?=
+ =?utf-8?B?VUE4c0lXdUVJMFdCS05zU09LODlhTlpUc3NZWVJleForSTBTdzNxQ2QwRFBJ?=
+ =?utf-8?B?TENBSDFKMytDYmxTWHIwVkE3dzc0Z3I4MjNacUxrcUpoaTQrelF5RFloUzZq?=
+ =?utf-8?B?dktmdTh2eHNPd1NGUU5QeWpBOGFETVlrbUllR0Rvbmp3dGRnTjNGSCtRM3I5?=
+ =?utf-8?B?N015T2NFSnAvaS9xNzBhUmhjczk0MW1ZV1pIcm02VTlWU0VHMnFFdWRTZDFT?=
+ =?utf-8?B?ZDZaQnk2Uk9DM0V2ZHJWTkRDaUNlb0ZoaHQ3NC81eU5CU3ovWE1oWTBsT0Jq?=
+ =?utf-8?B?Z2x0Si9NR2J1eVBnYWJlWTRHc2FHbnNMYmE1ZW5iTjFCb2JLMU9pWUN1aW9C?=
+ =?utf-8?B?SG9CVVpPTk52ZnVOOG55R29WT0g3RlE0RTF2ejc2UGNzK0ZJWjFkVThlMUdC?=
+ =?utf-8?B?TDBXdXVDaVBraTVQaEc1dkllNytaSUY3Z2g4Rkw3Wi85M25sS21Namd3K0xL?=
+ =?utf-8?B?RitxM2JUa2E3L2VhcDFLQWxWdVI2dmorUmtjYkJFWDY2c09GWFAwaUNia2xN?=
+ =?utf-8?B?V2pzdXlGQVh3VWhQb1RVMXVKN0hnU3Q2S1B4UG1qTUhPa3B2Mi9xb0EwZFZn?=
+ =?utf-8?B?WjFMY0JMczRpOWdhYUtjRkFLYVA1ZVhCL28zSjR5R0N6RU5PbnIreTBtMHRE?=
+ =?utf-8?B?KzltSzFSNWs1dmQ5UmIvS0k1dUJDQk5zUDFvRzRycVEySmdhbnpldStOK25D?=
+ =?utf-8?B?dlpYS2h4bzYxMUo5cXArb2wzUlFNOElNcFNmNlV0R3dzMmFSOVBsNERZZEtR?=
+ =?utf-8?B?N1pOaHloaUJPZ1FyOHk3aWZyS1NSamt4NEs4d290b21Ja29xOU5VekpxL0hW?=
+ =?utf-8?B?MGVSSHRORjRVaHkyOXRVOW1qblpaL0JTRVBUVTYzZ3Z3T1piVlBBYlNvRXl3?=
+ =?utf-8?B?QUVZZ2txK0wwek5tbFd5dkp3MkFIVWtyL0JINzh0TmNiK1BJTnlTbTMwVkNm?=
+ =?utf-8?B?dlB5TEo1RlEzTEFRNlFkZHdwZ296aWVMbmNueFl6NHU5SW93RDRKY0FFZ0Rl?=
+ =?utf-8?B?TGl5WVZWS0JqVlExQWJBcG4wRys1OVMzem9lS2c5eExIY0JRZXlaci80c3Fj?=
+ =?utf-8?B?RjRLUzZVTnJWWEtqYUNpZEZSSS9IdlRoQkZpMC9QK3oySXN0QnJaNThMZ3Vv?=
+ =?utf-8?B?dU1TMkFGaGlDMWNUbTNDbUcxMURjajU4Q1czTW5VRWYzTDFqRUtZZVJhdmND?=
+ =?utf-8?B?Yy9zbk9RYUJlSkxmOWlyTmNIRG1CMUVDYkc4eXR5RGU2NmN5VGQ3a0laZ3lj?=
+ =?utf-8?B?amJoalFjTi9uSXZvc1UzeTBQaW15YUtPOGNjVUVSUktxZGRqTWhGcHlQak5u?=
+ =?utf-8?Q?JUIgl8qxnJgwpW9ZF0/JmSg=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	WrvY5dglBqmt32TkeSWrRpc3hcpxYqJBr2HdDNoR0Uog0f7JEAx+2kMm69gL6U+arMv+TX4TRvJR49+4p0lDjtPxVYOytFMmDeTBEVMxBpDAyMn3UB2rnRV5rs4Z9hq2DzMmP7AESYaz8naxUdeWeBVWVmYYLpLQ9lbvQMbtLhzjMtob23+HwW0qEk4R0vZ54MlioOUoIa124Na9rZ6ziQPbF110DYbNTyFvDbMWbjBCY0sF/fhkOleUULHmlzDH+TGmDw5mNKSV0yy6hbQ2qyhcTcjQVZSq8/FlTEb/cAMmt5sL9b5QZhdD8k586BPd0r3exzKRlS06hvho76qsdzZ3gPzcKlCyg1H1mHD+KPJFAeQLJt35ETnwGyoUPRSO0AXoen08FtYLPjqxl5+vyo1zFz/RAkJhfHskodBZj9LUMqcmTNug/5MgbWZQOlOSB698KiBz6+Ceg3XcT/vkzwRRBl7s7sPJTzrcJh/aHpp8osl0w1TjKgKdurv9wanQbmcHa0dRMiYxI1X3dxPWUjDRLYal9wZSrymQDjkmF8UmcF5SvzHfCczPqQ89IRmzxeefEiiiywqyDDi6Aqp5pDT28WTOJZSbx6R4uguFic4=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f3963ffb-370c-4d91-5bf1-08dc27d48cb1
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6290.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2024 12:01:42.8996
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i7NvGtumddnh50iu2kdcyeYoat1F6qgxy1U5UUQnvM9DO21i+ZzxDZw4jO9KFwLec92EkY20mtNXNVscyi1E7HZczlxGv8qOpVm8AZ4hmwTdIjkSDSOVNoMxsDM3GQz4
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR10MB7600
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-07_04,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 phishscore=0
+ spamscore=0 adultscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2402070089
+X-Proofpoint-ORIG-GUID: 6tbAKVnhcXFtTTxb6wEQRGUveFeX8g-m
+X-Proofpoint-GUID: 6tbAKVnhcXFtTTxb6wEQRGUveFeX8g-m
 
-Dear All,
+Hi ZhaoLong,
 
-On 19.01.2024 10:48, Uttkarsh Aggarwal wrote:
-> In current scenario if Plug-out and Plug-In performed continuously
-> there could be a chance while checking for dwc->gadget_driver in
-> dwc3_gadget_suspend, a NULL pointer dereference may occur.
->
-> Call Stack:
->
-> 	CPU1:                           CPU2:
-> 	gadget_unbind_driver            dwc3_suspend_common
-> 	dwc3_gadget_stop                dwc3_gadget_suspend
->                                          dwc3_disconnect_gadget
->
-> CPU1 basically clears the variable and CPU2 checks the variable.
-> Consider CPU1 is running and right before gadget_driver is cleared
-> and in parallel CPU2 executes dwc3_gadget_suspend where it finds
-> dwc->gadget_driver which is not NULL and resumes execution and then
-> CPU1 completes execution. CPU2 executes dwc3_disconnect_gadget where
-> it checks dwc->gadget_driver is already NULL because of which the
-> NULL pointer deference occur.
->
-> Cc: <stable@vger.kernel.org>
-> Fixes: 9772b47a4c29 ("usb: dwc3: gadget: Fix suspend/resume during device mode")
-> Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-> Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
++CC Kovalev, Mohamed (who also worked on this issue)
 
-This patch landed some time ago in linux-next as commit 61a348857e86 
-("usb: dwc3: gadget: Fix NULL pointer dereference in 
-dwc3_gadget_suspend"). Recently I found that it causes the following 
-warning when no USB gadget is bound to the DWC3 driver and a system 
-suspend/resume cycle is performed:
+On 07/02/24 5:17 pm, ZhaoLong Wang wrote:
+> After backporting the mainline commit 33eae65c6f49 ("smb: client: fix
+> OOB in SMB2_query_info_init()") to the linux-5.10.y stable branch,
+> an issue arose where the cifs statfs system call failed, resulting in:
+> 
+>    $ df /mnt
+>    df: /mnt: Resource temporarily unavailable
+> 
+This is true but there are other backporting efforts on this and 5.15.y
 
-dwc3 12400000.usb: wait for SETUP phase timed out
-dwc3 12400000.usb: failed to set STALL on ep0out
-------------[ cut here ]------------
-WARNING: CPU: 4 PID: 604 at drivers/usb/dwc3/ep0.c:289 
-dwc3_ep0_out_start+0xc8/0xcc
-Modules linked in:
-CPU: 4 PID: 604 Comm: rtcwake Not tainted 6.8.0-rc3-next-20240207 #7979
-Hardware name: Samsung Exynos (Flattened Device Tree)
-  unwind_backtrace from show_stack+0x10/0x14
-  show_stack from dump_stack_lvl+0x58/0x70
-  dump_stack_lvl from __warn+0x7c/0x1bc
-  __warn from warn_slowpath_fmt+0x1a0/0x1a8
-  warn_slowpath_fmt from dwc3_ep0_out_start+0xc8/0xcc
-  dwc3_ep0_out_start from dwc3_gadget_soft_disconnect+0x16c/0x230
-  dwc3_gadget_soft_disconnect from dwc3_gadget_suspend+0xc/0x90
-  dwc3_gadget_suspend from dwc3_suspend_common+0x44/0x30c
-  dwc3_suspend_common from dwc3_suspend+0x14/0x2c
-  dwc3_suspend from dpm_run_callback+0x94/0x288
-  dpm_run_callback from device_suspend+0x130/0x6d0
-  device_suspend from dpm_suspend+0x124/0x35c
-  dpm_suspend from dpm_suspend_start+0x64/0x6c
-  dpm_suspend_start from suspend_devices_and_enter+0x134/0xbd8
-  suspend_devices_and_enter from pm_suspend+0x2ec/0x380
-  pm_suspend from state_store+0x68/0xc8
-  state_store from kernfs_fop_write_iter+0x110/0x1d4
-  kernfs_fop_write_iter from vfs_write+0x2e8/0x430
-  vfs_write from ksys_write+0x5c/0xd4
-  ksys_write from ret_fast_syscall+0x0/0x1c
-Exception stack(0xf1421fa8 to 0xf1421ff0)
-...
-irq event stamp: 14304
-hardirqs last  enabled at (14303): [<c01a599c>] console_unlock+0x108/0x114
-hardirqs last disabled at (14304): [<c0c229d8>] 
-_raw_spin_lock_irqsave+0x64/0x68
-softirqs last  enabled at (13030): [<c010163c>] __do_softirq+0x318/0x4f4
-softirqs last disabled at (13025): [<c012dd40>] __irq_exit_rcu+0x130/0x184
----[ end trace 0000000000000000 ]---
+The latest is to backport eb3e28c1e89b ("smb3: Replace smb2pdu 1-element 
+arrays with flex-arrays") to 5.15.y and pull out a similar one liner fix 
+out of the stable-queue from 5.15.-stable queue and 5.10.stable-queue
 
-IMHO dwc3_gadget_soft_disconnect() requires some kind of a check if 
-dwc->gadget_driver is present or not, as it really makes no sense to do 
-any ep0 related operations if there is no gadget driver at all.
+Reference threads:
+1. 
+https://lore.kernel.org/all/7903fc0a-d0c5-20bf-20cc-d9f092e5c498@basealt.ru/
 
+2. https://lore.kernel.org/all/20240206161111.454699-1-kovalev@altlinux.org/
 
-> ---
->
-> changes in v3:
-> Corrected fixes tag and typo mistake in commit message dw3_gadget_stop -> dwc3_gadget_stop.
->
-> Link to v2:
-> https://lore.kernel.org/linux-usb/CAKzKK0r8RUqgXy1o5dndU21KuTKtyZ5rn5Fb9sZqTPZqAjT_9A@mail.gmail.com/T/#t
->
-> Changes in v2:
-> Added cc and fixes tag missing in v1.
->
-> Link to v1:
-> https://lore.kernel.org/linux-usb/20240110095532.4776-1-quic_uaggarwa@quicinc.com/T/#u
->
->   drivers/usb/dwc3/gadget.c | 6 ++----
->   1 file changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-> index 019368f8e9c4..564976b3e2b9 100644
-> --- a/drivers/usb/dwc3/gadget.c
-> +++ b/drivers/usb/dwc3/gadget.c
-> @@ -4709,15 +4709,13 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
->   	unsigned long flags;
->   	int ret;
->   
-> -	if (!dwc->gadget_driver)
-> -		return 0;
-> -
->   	ret = dwc3_gadget_soft_disconnect(dwc);
->   	if (ret)
->   		goto err;
->   
->   	spin_lock_irqsave(&dwc->lock, flags);
-> -	dwc3_disconnect_gadget(dwc);
-> +	if (dwc->gadget_driver)
-> +		dwc3_disconnect_gadget(dwc);
->   	spin_unlock_irqrestore(&dwc->lock, flags);
->   
->   	return 0;
+Applying Kovalev's recent backport[2] most likely will fix this issue.
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
-
+Thanks,
+Harshit
+> KASAN also reported a stack-out-of-bounds error as follows:
+> 
+>   ==================================================================
+>   BUG: KASAN: stack-out-of-bounds in smb2_set_next_command+0x247/0x280
+>   [cifs]
+>   Write of size 8 at addr ffff8881073ef830 by task df/533
+> 
 
