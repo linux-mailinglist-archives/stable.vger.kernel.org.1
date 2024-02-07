@@ -1,139 +1,116 @@
-Return-Path: <stable+bounces-19081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30E3384CE78
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 16:58:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEC9684CEEB
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 17:33:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE90C28A459
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 15:58:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B50628D73F
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 16:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85059811EB;
-	Wed,  7 Feb 2024 15:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD2D80612;
+	Wed,  7 Feb 2024 16:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="DZd1Ehl7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rxl1dpLy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E98F811F6
-	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 15:58:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C010A35280
+	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 16:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707321499; cv=none; b=Uusg/U/NVX9qo50pfMQVS6Mfj36M7wt159rTQk5D5xKGUqI93paY4mn9ISbUwF1ofPcSgVPlPJPcp74HyN633rj+MOCMRPsoleoAjraL7vxRRseQyRLxANPsTuHsS1ysRdV0bmkqo4klXw4jM58onxaqOfWy/rCFnDLoRFa9NZ0=
+	t=1707323579; cv=none; b=PATg3gobUBc4M1/vvU1ReSxyyFbAEooYuR8wPfV5WqjURYEHBZDT3wOt3up9uGN9T2V0ByoENy1qcrDW0A0os8HT7J4zExj+mSv/yJkLch6awWT2wEmXG67S9pMqf89ZwWPrRdwYnLVqoys5iqNTGMbmBqewo+FtsNgPJx5i8X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707321499; c=relaxed/simple;
-	bh=Qye+zuX3oCWPut5vgJD+q4hUJcHXW8C5VACBs8eHm0Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PTJMnVp73HWOlS0Ie2h7bMwdicqPpd6QxeZmuSNtMRUR0ebHUkO7Lr7JeOkxcs2QoU8jxjD3Z2lhxN6HFL2pKAZwEttxoKGsUq6rfQcA5V5iqT8lhc7d1Ga2LP2P70ev0RWY/N4Z8HilvGLCC5nwh4GXXSDkJNSBDlnzxIaFFKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=DZd1Ehl7; arc=none smtp.client-ip=209.85.166.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
-Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-363d953a6c5so1849695ab.1
-        for <stable@vger.kernel.org>; Wed, 07 Feb 2024 07:58:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1707321495; x=1707926295; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ThW4UOydoSx884aXPLxWcHCPZYcLHmO6NwU0Jp/gx9M=;
-        b=DZd1Ehl757sQTrcLgpMaNaPMsbbjFcz1JwySOu5c6Qwip36+h0dG0b8BD76rUrRt9p
-         gQ1KI7lxrBtwDyIUT+D1Nvdq6Otf275Rr49KTnW+6aOZ0zDTl1ZMcveLu2Pm/LRI8bH5
-         VHNxGve10y8gFK51hTx1hLfuGU8u9TgTZwVyl758ApKLun38jOrTnbT804bXWhpjPOtB
-         QZO5QcTFoQkgP9V6Eojv1Qel18qXjoFaCL9wkm9EKTnEmdy50hPBAORnTcgXRnslJ3Dl
-         RB7A7VvVM4YNKNCg5xphFmAaxzUUechkgx8ugV/pOcY9WwMFHE3bSm/GpvcuidKKZ4zs
-         5n1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707321495; x=1707926295;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ThW4UOydoSx884aXPLxWcHCPZYcLHmO6NwU0Jp/gx9M=;
-        b=jtcALe7YP/MaM+wUrtYDWZwYATJohmvqkDQHoQSdSPPjnyOddTmw7ZlIeDZNf64kqr
-         PCg7HzpmScwm6EDqj8SHROHbKsPefoKAthJWwNYfkTujV6juRFF3UGnZkz+mdDy7yLNi
-         uWbzbjkf6tImDuKjtbep8oDyDPC8enSvDSuq2EqhUp6jAEYpgRKJEE83BUeDcqk6r7WT
-         KQD3MzKoNjDISP7xe0pOs/YwazWfo2dnHPYjliSSNO7AlEzTS90cwbyB9caTfNRF9w56
-         7j7x/gALRZwP4o8mx6Q9gj4kLLdJ2a0fRVL6Id7iCRzwBn4HA1fV1+8xfwsUZcHhrPXC
-         CkfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWq7HHkk5MIUm7xaAeI4s1+XK/fOi/PrA2gJvDGZWmWWolAu0UX4KQAzMFrLxGH7h8iFTDw3NIQaUnV1zWbkrdna5kbC1gO
-X-Gm-Message-State: AOJu0Yzr1aGIG6KT7OQoI2g0I4RH3hsBVQm6RyJrROZJ0DYD3cRwJs0o
-	DeK/t4bk9QPucQN7n2OtegUfLj6PAORBDh6ZMmHxliYMcSH2rFyfZqxGwJro35b0wFDlaNs/lb2
-	/nwe9RKpxWbIdkUgwD/qE6EmQXfbGHLsLac3r5A==
-X-Google-Smtp-Source: AGHT+IFCMccHnOQccdE1uuYts0EwIbRXGd1LC1MRLGFWoBZRBmKBJLB8KbPbNhmf/iNYEURqw+cqufs3Yf929+3A1QM=
-X-Received: by 2002:a92:de4d:0:b0:363:c63a:7975 with SMTP id
- e13-20020a92de4d000000b00363c63a7975mr5867115ilr.24.1707321495246; Wed, 07
- Feb 2024 07:58:15 -0800 (PST)
+	s=arc-20240116; t=1707323579; c=relaxed/simple;
+	bh=7IgE4I98BnPfajfynHxPoOaK8OzhuQ09DsyqOGf/eZQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JFF806aZiQa8QQpOOrMjEJsFZq6RuUFEqzvoPj9EBO2OkXhcbV2wHegoZy4WfdaVCBmSq3n9bTatKuIlTVT7P18jX3e4NDotwkYhPxFvoDQ6HuGW4laPCMhFkoQCudrp73lCoRYeGO51vIFPihkWuUhJMwk3r/jHFLH+OXKB5mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rxl1dpLy; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707323578; x=1738859578;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7IgE4I98BnPfajfynHxPoOaK8OzhuQ09DsyqOGf/eZQ=;
+  b=Rxl1dpLyfMyCcyIWHcc0IBb0PA3nKA0Y3VaNjdT3QJl2+KCeFBXZUM2S
+   JPgsrnUmzqKSf14Pe/4sL6LoZxL7IgNRZI4mh0yrH+9pE9H2SXrANwv56
+   TgbO2d/nAlwBX3FYUFBJRGlSmf4vuflgeVLDH1S833eWdBS26pEfMFxaq
+   uDq/NyVfSJEngNib+BC9r9yr4hv0eDlqie0P3R4MaEmSUNgxKyffFKVkX
+   AYFSxJMHmB77xmCxcDxl09bkApUK2Cus1po5zmVpqC4BPhfCSK9kIYoHG
+   /773b85pMZ3M7zIBGnw8alAVn5ZgXvgglwLm6HDRan71NppePxsTKzsWh
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10977"; a="1176549"
+X-IronPort-AV: E=Sophos;i="6.05,251,1701158400"; 
+   d="scan'208";a="1176549"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2024 08:32:58 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,251,1701158400"; 
+   d="scan'208";a="1403856"
+Received: from ssaleem-mobl1.amr.corp.intel.com ([10.246.113.182])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2024 08:32:57 -0800
+From: Shiraz Saleem <shiraz.saleem@intel.com>
+To: stable@vger.kernel.org
+Cc: Mike Marciniszyn <mike.marciniszyn@intel.com>,
+	Shiraz Saleem <shiraz.saleem@intel.com>
+Subject: [PATCH 6.1.y] RDMA/irdma: Ensure iWarp QP queue memory is OS paged aligned
+Date: Wed,  7 Feb 2024 10:32:39 -0600
+Message-Id: <20240207163240.433-1-shiraz.saleem@intel.com>
+X-Mailer: git-send-email 2.39.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240129072625.2837771-1-leyfoon.tan@starfivetech.com>
-In-Reply-To: <20240129072625.2837771-1-leyfoon.tan@starfivetech.com>
-From: Anup Patel <anup@brainfault.org>
-Date: Wed, 7 Feb 2024 21:28:02 +0530
-Message-ID: <CAAhSdy2Hp9GeXFBYVNSCGDNaHjYQjCgj+kPQtOaGz6RQecoDbw@mail.gmail.com>
-Subject: Re: [PATCH v2] clocksource: timer-riscv: Clear timer interrupt on
- timer initialization
-To: Ley Foon Tan <leyfoon.tan@starfivetech.com>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, atishp@rivosinc.com, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Ley Foon Tan <lftan.linux@gmail.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 29, 2024 at 1:12=E2=80=AFPM Ley Foon Tan
-<leyfoon.tan@starfivetech.com> wrote:
->
-> In the RISC-V specification, the stimecmp register doesn't have a default
-> value. To prevent the timer interrupt from being triggered during timer
-> initialization, clear the timer interrupt by writing stimecmp with a
-> maximum value.
->
-> Fixes: 9f7a8ff6391f ("RISC-V: Prefer sstc extension if available")
-> Cc:  <stable@vger.kernel.org>
-> Signed-off-by: Ley Foon Tan <leyfoon.tan@starfivetech.com>
+From: Mike Marciniszyn <mike.marciniszyn@intel.com>
 
-LGTM.
+[ Upstream commit 0a5ec366de7e94192669ba08de6ed336607fd282 ]
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
+The SQ is shared for between kernel and used by storing the kernel page
+pointer and passing that to a kmap_atomic().
 
-Regards,
-Anup
+This then requires that the alignment is PAGE_SIZE aligned.
 
->
-> ---
-> v2:
-> Resolved comments from Anup.
-> - Moved riscv_clock_event_stop() to riscv_timer_starting_cpu().
-> - Added Fixes tag
-> ---
->  drivers/clocksource/timer-riscv.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/clocksource/timer-riscv.c b/drivers/clocksource/time=
-r-riscv.c
-> index e66dcbd66566..672669eb7281 100644
-> --- a/drivers/clocksource/timer-riscv.c
-> +++ b/drivers/clocksource/timer-riscv.c
-> @@ -116,6 +116,9 @@ static int riscv_timer_starting_cpu(unsigned int cpu)
->                 ce->rating =3D 450;
->         clockevents_config_and_register(ce, riscv_timebase, 100, 0x7fffff=
-ff);
->
-> +       /* Clear timer interrupt */
-> +       riscv_clock_event_stop();
-> +
->         enable_percpu_irq(riscv_clock_event_irq,
->                           irq_get_trigger_type(riscv_clock_event_irq));
->         return 0;
-> --
-> 2.43.0
->
->
+Fix by adding an iWarp specific alignment check.
+
+The patch needed to be reworked because the separate routines
+present upstream are not there in older irdma drivers.
+
+Fixes: e965ef0e7b2c ("RDMA/irdma: Split QP handler into irdma_reg_user_mr_type_qp")
+Link: https://lore.kernel.org/r/20231129202143.1434-3-shiraz.saleem@intel.com
+Signed-off-by: Mike Marciniszyn <mike.marciniszyn@intel.com>
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+---
+ drivers/infiniband/hw/irdma/verbs.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index 447e1bcc82a3..3c437c8070b6 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -2845,6 +2845,13 @@ static struct ib_mr *irdma_reg_user_mr(struct ib_pd *pd, u64 start, u64 len,
+ 
+ 	switch (req.reg_type) {
+ 	case IRDMA_MEMREG_TYPE_QP:
++		/* iWarp: Catch page not starting on OS page boundary */
++		if (!rdma_protocol_roce(&iwdev->ibdev, 1) &&
++		    ib_umem_offset(iwmr->region)) {
++			err = -EINVAL;
++			goto error;
++		}
++
+ 		total = req.sq_pages + req.rq_pages + shadow_pgcnt;
+ 		if (total > iwmr->page_cnt) {
+ 			err = -EINVAL;
+-- 
+1.8.3.1
+
 
