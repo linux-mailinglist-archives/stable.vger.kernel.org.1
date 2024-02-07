@@ -1,98 +1,87 @@
-Return-Path: <stable+bounces-19049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C469084C54C
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 07:59:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3215C84C6AD
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 09:53:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64953B243ED
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 06:59:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA6D71F25BA6
+	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 08:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BB71CD3B;
-	Wed,  7 Feb 2024 06:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1049E208A5;
+	Wed,  7 Feb 2024 08:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PkOyU5/k"
+	dkim=pass (1024-bit key) header.d=ruhr-uni-bochum.de header.i=@ruhr-uni-bochum.de header.b="wnziShKl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out2.mail.ruhr-uni-bochum.de (out2.mail.ruhr-uni-bochum.de [134.147.42.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B7720319
-	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 06:58:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF63320DCE
+	for <stable@vger.kernel.org>; Wed,  7 Feb 2024 08:53:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.147.42.229
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707289091; cv=none; b=dwwf5RPxuCqIc0DuoI36EhZw5GMmrMmumbkDVoSjvWrxF4K6+/lfmU/Cdv9dd+CW9CDzKUFUGg8RVavyKCPrqqKV6WP0YawBRDtvsZ6G787qERLSAkgn20rDQrYjnx3TF2AazEPVV2a6DlQyFBElCtwPHkqOPst4QZPtCgfbAQg=
+	t=1707295991; cv=none; b=Gi+eV5ddfR92+4ooPal9EtyKjW+tFfCN4FqU9PeOUO9MgLi3U6tNtU5625oE2542Z2M+Qln0LkoDqAPym+EhqC3CS3Rjo1lRMyUg8ugkEv0zxbMw5x7Bp0mqPm4XY6wT60Z8HvGEOirmu5KOdCZ2968EkVR5UEzKjhMyz/W0qOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707289091; c=relaxed/simple;
-	bh=46uArN+B/hsNLcWtiZW+AEINMcX4AYmkee1dzKOuIUg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=JWc7stnVflbPZVl7dgeesHACDBLg7go39uiisC5p5zhSVB9B+S6dqxhECre6nEJM3y3paVoQn7Cv5P6JLPfWFow+Wj1sX0yGDA7Yn0/WNRL68pjxBC1nwL4K7d9NVuUviXJLBZEpn9yZHZlrpamqP+xLAL5mQ71yZGCUcf3fE2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PkOyU5/k; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1d7431e702dso3195025ad.1
-        for <stable@vger.kernel.org>; Tue, 06 Feb 2024 22:58:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707289088; x=1707893888; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=46uArN+B/hsNLcWtiZW+AEINMcX4AYmkee1dzKOuIUg=;
-        b=PkOyU5/kphziXV2slwSz6lRDp+zj3zeOWyKaTCS4rfsF/+Bowrval2a7+gl3qFMY42
-         7p3H6uJD28tgYE2iFaK5zLLyhOr+xNLqZYUF21aWNRg/qjt4n0MCRQZck8xZc7PzR1sI
-         AfWjn0Hglu6d6nYkY2qZ2yfO6EjtLwnMvasXMLuYCzI6TbrUzryXX/mgT1KT4f+90KtG
-         3HP4YXKjSSxDUtRRO+LwnMnyPV2+budleeNTeDacEkbICLbbQ++/XgA5HbOzhlkFU4FY
-         xNwxwdwPyWPysMMJ60OnfvO94ybXyllOgs3/llwiYjUNhHWQI9mHksWfsyz6HYh9Zi28
-         McqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707289088; x=1707893888;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=46uArN+B/hsNLcWtiZW+AEINMcX4AYmkee1dzKOuIUg=;
-        b=Ph1Ug1jTIm+FU9iDXY+6uDO4tw0O6bXC8N7MzP4ul3f/wW0uUAjDt4N5sCmt38ymms
-         r57Em+UPQOCvcAJWn44cdHPg/SCleLBdM1I+jlA2v7EKuhyihPjRQ/K5x1y2bExde4Hz
-         Ba9HXAQUKZO+3fZI4uMcik7iMNTuVNmNZe4P24uKrPte8qfewIL/Be/jFYM2Bkq4jVmO
-         46GwOpqMfF8C9cAmDaLehReJusBJTw7wqEJzKHsiUvh6DbVmhIe1yQ57EGYdAXftbnVn
-         QTJKKF9AlBU+6E4yZ+vuFGDsaCCIoe/0apxK1WxjdTF1dJnlARQJ5U5NwUOuLpkJUfQM
-         MNgg==
-X-Gm-Message-State: AOJu0YyDejpprmtUOy3DluUtf0M7nne/w8x04Uwokga0+v3edfYd0NTg
-	NOwJpm/QMXU+comeJggvihw4wq/rM3ikb3T1o/8sPeYdQHhsJCNBi1UcOW0s
-X-Google-Smtp-Source: AGHT+IGOAQ74ZC5FWK9hS7+HSN0dafXqiEneyl+v8x0vRxWk/4KTMQsbpbuadQrVva750WkThlp4mQ==
-X-Received: by 2002:a17:903:41c9:b0:1d9:e1e3:8639 with SMTP id u9-20020a17090341c900b001d9e1e38639mr4270165ple.62.1707289087811;
-        Tue, 06 Feb 2024 22:58:07 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVQABWU864uieLIpr0ZeoTbeSLmi31lpsW3ze56HPAupqAO7N5CZ/v6ZPHCqK1w0HhVvsc8aWpjcJcYut6u1SHi7A==
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id kh11-20020a170903064b00b001d94c01ae96sm667476plb.66.2024.02.06.22.58.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Feb 2024 22:58:07 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Tue, 6 Feb 2024 22:58:05 -0800
-From: Guenter Roeck <linux@roeck-us.net>
+	s=arc-20240116; t=1707295991; c=relaxed/simple;
+	bh=Nqjae/cWetQpcf/giuDlO3b4XDHpmSWiARP+pn2lJdQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=qDj3UL8EYOi2/QADXDw0FAILlZZ1g3HpRg7eunm8PqEZTZ9LtezLwPuGy07BHKXN4eT8Lh7vp2VUfTVoqOKzruAwMZuKxUvSObVjzAT8uLyN0IdwqTL91aPvcE7A7PeeZ7okwS+cLukOObLwZUNxI69QD2AinKd9YPQlGB8D3ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruhr-uni-bochum.de; spf=pass smtp.mailfrom=ruhr-uni-bochum.de; dkim=pass (1024-bit key) header.d=ruhr-uni-bochum.de header.i=@ruhr-uni-bochum.de header.b=wnziShKl; arc=none smtp.client-ip=134.147.42.229
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ruhr-uni-bochum.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ruhr-uni-bochum.de
+Received: from mx2.mail.ruhr-uni-bochum.de (localhost [127.0.0.1])
+	by out2.mail.ruhr-uni-bochum.de (Postfix mo-ext) with ESMTP id 4TVDGs1580z8ST2;
+	Wed,  7 Feb 2024 09:45:57 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ruhr-uni-bochum.de;
+	s=mail-2017; t=1707295557;
+	bh=Nqjae/cWetQpcf/giuDlO3b4XDHpmSWiARP+pn2lJdQ=;
+	h=Subject:From:To:Cc:Date:From;
+	b=wnziShKlFaXMGOFxAeE9x+HqoccviX4Tr6WgxmSquE0xvyRiPJJJdQlj2BWkF3cNL
+	 U/g/yJUm6gIYMy8987+U7eOgcGlO4KJAX4PdMzXT133ZCZfdXMj0Bm6PBLUraooyqa
+	 rs5U4G5eqUmu5Ls5s/mxnsJrOb+GdX4VddkZHZTw=
+Received: from out2.mail.ruhr-uni-bochum.de (localhost [127.0.0.1])
+	by mx2.mail.ruhr-uni-bochum.de (Postfix idis) with ESMTP id 4TVDGs0VYfz8SSB;
+	Wed,  7 Feb 2024 09:45:57 +0100 (CET)
+X-RUB-Notes: Internal origin=IPv6:2a05:3e00:c:1001::8693:2aec
+X-Envelope-Sender: <leon.weiss@ruhr-uni-bochum.de>
+Received: from mail2.mail.ruhr-uni-bochum.de (mail2.mail.ruhr-uni-bochum.de [IPv6:2a05:3e00:c:1001::8693:2aec])
+	by out2.mail.ruhr-uni-bochum.de (Postfix mi-int) with ESMTPS id 4TVDGr55zrz8SSN;
+	Wed,  7 Feb 2024 09:45:56 +0100 (CET)
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 1.0.4 at mx2.mail.ruhr-uni-bochum.de
+Received: from [10.150.38.32] (unknown [10.150.38.32])
+	by mail2.mail.ruhr-uni-bochum.de (Postfix) with ESMTPSA id 4TVDGr0cXVzDh0t;
+	Wed,  7 Feb 2024 09:45:56 +0100 (CET)
+X-Virus-Status: Clean
+X-Virus-Scanned: clamav-milter 1.2.1 at mail2.mail.ruhr-uni-bochum.de
+Message-ID: <38c253ea42072cc825dc969ac4e6b9b600371cc8.camel@ruhr-uni-bochum.de>
+Subject: [REGRESSION] NULL pointer dereference drm_dp_add_payload_part2
+From: Leon =?ISO-8859-1?Q?Wei=DF?= <leon.weiss@ruhr-uni-bochum.de>
 To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Please apply commit b4909252da9b ("drivers: lkdtm: fix clang
- -Wformat warning") to v5.15.y
-Message-ID: <b87dd10b-b8d9-417d-bea5-db5a5fc7d86a@roeck-us.net>
+Cc: regressions@lists.linux.dev, Wayne.Lin@amd.com, lyude@redhat.com
+Date: Wed, 07 Feb 2024 09:45:56 +0100
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-Hi,
+Hello,
 
-please consider applying the following patch to v5.15.y to fix
-a build error seen with various test builds (m68k:allmodconfig,
-powerpc:allmodconfig, powerpc:ppc32_allmodconfig, and
-xtensa:allmodconfig).
+54d217406afe250d7a768783baaa79a035f21d38 fixed an issue in
+drm_dp_add_payload_part2 that lead to a NULL pointer dereference in
+case state is NULL.
 
-b4909252da9b ("drivers: lkdtm: fix clang -Wformat warning")
+The change was (accidentally?) reverted in
+5aa1dfcdf0a429e4941e2eef75b006a8c7a8ac49 and the problem reappeared.
 
-Thanks,
-Guenter
+The issue is rather spurious, but I've had it appear when unplugging a
+thunderbolt dock.
+
+#regzbot introduced 5aa1dfcdf0a429e4941e2eef75b006a8c7a8ac49
 
