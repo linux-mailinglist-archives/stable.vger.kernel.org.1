@@ -1,117 +1,157 @@
-Return-Path: <stable+bounces-19279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C4084DB1D
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 09:12:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D310A84DCBA
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 10:23:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B4541C21244
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 08:12:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 125491C229F0
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 09:23:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D746A32A;
-	Thu,  8 Feb 2024 08:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E876BFBB;
+	Thu,  8 Feb 2024 09:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AbswsTdN"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="19wkwW+6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1086A02E;
-	Thu,  8 Feb 2024 08:11:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734FC6F53E;
+	Thu,  8 Feb 2024 09:21:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707379919; cv=none; b=hb7GCfAbJH/kModMW+55F1xOIQiRJ25BR0U8P5EcKuc/s3vpNInMF9wJIU04HiN/ohizTJGpoabdvJgAhawUZUZ8cJ/0CfgUTflcfFxIoAw7FDoE+jB1t6nkmw+QUT+k9dTSdTeL5p/eIjlh2aFbmYUIuDrN9SvixJngPmaPejY=
+	t=1707384072; cv=none; b=VM4qDwqRhCrEstw42OHE7fH/YcrJgp8937gHhSrp2+Am6lC8ThrJjeKHwTN97NrW1z17D953UrR2ZbJ9BC1m7+q3lNa1asExGzZLsshzwu6cSYpJsQFtxgJ4W0SKZxarTMaoyjHoWxjdK7TKiRv0NVn8WFPFUegyxdMQcJ211g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707379919; c=relaxed/simple;
-	bh=r2gDOJZsfcEKcNeXFgVU4/d8DvY6q/9pRPxUslnQm+A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rOxbfn0wAClHj6QfGKzrK4mIfX7V8y9F9FDPLde6IgPSsOx0pjjVoTaKjKiqHrz4+Rn+Q+80IjxFEwqCDZzY/L1dInna8eSWrTsgUwv3EmQvarAj1l6A2GesffnJdgNFomFUnMpEIcZRycdmw6xwydepe0p8BQZjnKMzqKVnmgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AbswsTdN; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1d94323d547so14096635ad.3;
-        Thu, 08 Feb 2024 00:11:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707379916; x=1707984716; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+EzGcEGSGki041mX/q4WVvvLib1LrKkmNOXMbNSMe9k=;
-        b=AbswsTdNrXW4JOEzBSKCm3xLFTEk1LoZKKxB7RDsrmvXD9Hsr42BwqAg5rS7d8Ab7u
-         2TVbCwmRTkq5hX5TgAxAIpg5tRonx3bTCOgzsIanaypTU7h5jJzr6rRGfi8UibsZ0VFV
-         eGvceRd8j09rQ1DROAKg8wW3+1RD7kIGG9zqiOdXZ9Cy8+WPMDo2If7ecZGa3cY0qiGV
-         bblBNjwshQbDfNAaGKvZxY3rexEgQo3teaS6QlBHj2EhYR4P6qHp7/RKdWo/pVKnXEXk
-         ddhpdczEW/rCli/lzBNU3BQJWd/bQXBA9xlLZfW7Lavlu+mGzOFOY6kDVWvJ7Vee6usq
-         uRgA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707379916; x=1707984716;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+EzGcEGSGki041mX/q4WVvvLib1LrKkmNOXMbNSMe9k=;
-        b=qMqckgOMI9N0vSdo+alGV5nkaSXhWv85dXOkjGn3tlNDrLMswtEbTcpwNchQPZjB7j
-         bGvrGMbzKLTeg7W/0/1xTHnKzbN8IB7rlLWg61ZWLrSlWSInJsgQXcrEJZodbl1HKqiF
-         B2UseILIoUlXUswLxN2GSZAUlpTJs6dNuZFASi0jfdQvofkZVlexYugDsdqvZOlWrZOg
-         Co3zoeFiKYRyR9/VtsXP78oBT8Wv9Mp2qCFFSmYXKCYF92K3KM5d54/zRPGGRMWEZIlO
-         +6H+7sO5N2wJSXwUn0OESM4YL0DYDc4eV8fOAyKV6ztLXZfptiYHv9sc3YwvJbL6NKK8
-         ZH8Q==
-X-Gm-Message-State: AOJu0YxnkJezFiNjzGZ1T+6394hJlJnuaehTU7+Hg7D9uTZNLaIU91ES
-	fmJxKUcG3IxLSa0GrKqV89H42c5+yuZg8q+h2zFFLZwRFugfXwwr
-X-Google-Smtp-Source: AGHT+IG5rt3u2UGwyrRiwP0jDNepsx1EaHecgtVzojFLKjbioIlru7dTmEcioRvKo7tRDyS8TaYb7A==
-X-Received: by 2002:a17:902:ead1:b0:1d9:6381:a4b3 with SMTP id p17-20020a170902ead100b001d96381a4b3mr6541505pld.36.1707379916398;
-        Thu, 08 Feb 2024 00:11:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVM0Eei7B+s2xu7LIQ5YQ3htmsre/Zi1BiMcqbTuBhg1gCskj5rTO6VTnGufF83HLSNCtEAExblGgFcT8yp/ZF3LR5ZEDEeAYrVsobqzAxjQGDoYqbhVmCV4nyw38q4NiyLY56twVdxK0e2AFytP+cpdv3aFE6RFHGg23dfp3TvQKGM5XgDRhwP
-Received: from [192.168.50.127] (42-98-185-035.static.netvigator.com. [42.98.185.35])
-        by smtp.gmail.com with ESMTPSA id h4-20020a170902748400b001d8e5a3be8asm2764386pll.259.2024.02.08.00.11.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Feb 2024 00:11:55 -0800 (PST)
-Message-ID: <bab0d763-2907-4412-8075-a7ebb25081c0@gmail.com>
-Date: Thu, 8 Feb 2024 16:11:50 +0800
+	s=arc-20240116; t=1707384072; c=relaxed/simple;
+	bh=7Osbsv9Uu5LnSEkPrNLL6eFwAd2oq5PdQu+OGCPcDYM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VxydNMVldUl5H57RHvQuJBTDDViP9TMslvqe9jpckIWDtSwj79yqMkAMFh97WRNA/jfRpHY8WGvWD2E4I6VgWly0g07vzPgVw1lTJi+1JUj83SnGAOHgQ5CtK5qIz8E3TqnM+96YLBuCpGJkO4WkLMh/XRlfwh/WwOSe+s/WWA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=19wkwW+6; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=vb5dORbqze0SdpTtcMmBFKm/vy+xDGZxBk1OHiDwRbc=; b=19wkwW+6sREDBf78amIq92Zl1u
+	e0eDGWzYrrGtPBT4FJQqeLmWlR6shetElr7ZzQCoLltdJmNRw0G4p65NnJYLS2gWYBIG3kvGV6Zb2
+	CFEwQkt7+rau4DEIzj3JN+cbQOW5aH8P3W3GtuwGs6bHnQB31qUBihTOi6hWKSukGnetdMu40rso5
+	BCwYq62lFyF5fRzDyTdtThxAyJqGAZ+uC+eAisSBHqM5Hv8wSPjV0s8VV1W9GYxawEocCSD9GXL7k
+	LRqcTe00XNGg5NXGm9EvurzWQCwplVd2IY/XPRawXuE4h+SXY2uu9DVLxciVr7wpLRW6YklafcQwd
+	HHZQ/DXg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:38480)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1rY0ad-00048s-1h;
+	Thu, 08 Feb 2024 09:21:03 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1rY0aX-0005QB-5C; Thu, 08 Feb 2024 09:20:57 +0000
+Date: Thu, 8 Feb 2024 09:20:57 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Zev Weiss <zev@bewilderbeest.net>
+Cc: linux-parisc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	Helge Deller <deller@gmx.de>, Florent Revest <revest@chromium.org>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Stefan Roesch <shr@devkernel.io>, Oleg Nesterov <oleg@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>, openbmc@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org, Sam James <sam@gentoo.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 0/2] ARM: prctl: Reject PR_SET_MDWE where not supported
+Message-ID: <ZcSc+ftxHY8RyinQ@shell.armlinux.org.uk>
+References: <20240208012620.32604-4-zev@bewilderbeest.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "f2fs: stop allocating pinned sections if EAGAIN
- happens"
-To: Chao Yu <chao@kernel.org>, Wu Bo <bo.wu@vivo.com>,
- Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: linux-f2fs-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240205031415.557879-1-bo.wu@vivo.com>
- <793fd834-fe28-4647-b2cf-0012acb95b43@kernel.org>
-Content-Language: en-US
-From: Wu Bo <wubo.oduw@gmail.com>
-In-Reply-To: <793fd834-fe28-4647-b2cf-0012acb95b43@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240208012620.32604-4-zev@bewilderbeest.net>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On 2024/2/5 11:54, Chao Yu wrote:
-> How about calling f2fs_balance_fs() to double check and make sure 
-> there is
-> enough free space for following allocation.
->
->         if (has_not_enough_free_secs(sbi, 0,
->             GET_SEC_FROM_SEG(sbi, overprovision_segments(sbi)))) {
->             f2fs_down_write(&sbi->gc_lock);
->             stat_inc_gc_call_count(sbi, FOREGROUND);
->             err = f2fs_gc(sbi, &gc_control);
->             if (err == -EAGAIN)
->                 f2fs_balance_fs(sbi, true);
->             if (err && err != -ENODATA)
->                 goto out_err;
->         }
->
+Hi,
+
+Where is patch 1 of this series? It doesn't seem to have been Cc'd to
+linux-arm-kernel. Therefore, this can't be reviewed.
+
+Thanks.
+
+On Wed, Feb 07, 2024 at 05:26:18PM -0800, Zev Weiss wrote:
+> Hello,
+> 
+> I noticed after a recent kernel update that my ARM926 system started
+> segfaulting on any execve() after calling prctl(PR_SET_MDWE).  After
+> some investigation it appears that ARMv5 is incapable of providing the
+> appropriate protections for MDWE, since any readable memory is also
+> implicitly executable.
+> 
+> (Note that I'm not an expert in either ARM arch details or the mm
+> subsystem, so please bear with me if I've botched something in the
+> above analysis.)
+> 
+> The prctl_set_mdwe() function already had some special-case logic
+> added disabling it on PARISC (commit 793838138c15, "prctl: Disable
+> prctl(PR_SET_MDWE) on parisc"); this patch series (1) generalizes that
+> check to use an arch_*() function, and (2) adds a corresponding
+> override for ARM to disable MDWE on pre-ARMv6 CPUs.
+> 
+> With the series applied, prctl(PR_SET_MDWE) is rejected on ARMv5 and
+> subsequent execve() calls (as well as mmap(PROT_READ|PROT_WRITE)) can
+> succeed instead of unconditionally failing; on ARMv6 the prctl works
+> as it did previously.
+> 
+> Since this was effectively a userspace-breaking change in v6.3 (with
+> newer MDWE-aware userspace on older pre-MDWE kernels the prctl would
+> simply fail safely) I've CCed -stable for v6.3+, though since the
+> patches depend on the PARISC one above it will only apply cleanly on
+> the linux-6.6.y and linux-6.7.y branches, since at least at time of
+> writing the 6.3 through 6.5 branches don't have that patch backported
+> (due to further missing dependencies [0]).
+> 
+> 
 > Thanks,
+> Zev
+> 
+> [0] https://lore.kernel.org/all/2023112456-linked-nape-bf19@gregkh/
+> 
+> Zev Weiss (2):
+>   prctl: Generalize PR_SET_MDWE support check to be per-arch
+>   ARM: prctl: Reject PR_SET_MDWE on pre-ARMv6
+> 
+>  arch/arm/include/asm/mman.h    | 14 ++++++++++++++
+>  arch/parisc/include/asm/mman.h | 14 ++++++++++++++
+>  include/linux/mman.h           |  8 ++++++++
+>  kernel/sys.c                   |  7 +++++--
+>  4 files changed, 41 insertions(+), 2 deletions(-)
+>  create mode 100644 arch/arm/include/asm/mman.h
+>  create mode 100644 arch/parisc/include/asm/mman.h
+> 
+> -- 
+> 2.43.0
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> 
 
-f2fs_balance_fs() here will not change procedure branch and may just 
-trigger another GC.
-
-I'm afraid this is a bit redundant.
-
->
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
