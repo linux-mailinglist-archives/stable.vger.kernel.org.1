@@ -1,157 +1,135 @@
-Return-Path: <stable+bounces-19280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D310A84DCBA
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 10:23:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B148A84DD19
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 10:37:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 125491C229F0
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 09:23:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35238B265EB
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 09:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E876BFBB;
-	Thu,  8 Feb 2024 09:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C9E6BB58;
+	Thu,  8 Feb 2024 09:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="19wkwW+6"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="NVlOusRq"
 X-Original-To: stable@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734FC6F53E;
-	Thu,  8 Feb 2024 09:21:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10D86BB2F;
+	Thu,  8 Feb 2024 09:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707384072; cv=none; b=VM4qDwqRhCrEstw42OHE7fH/YcrJgp8937gHhSrp2+Am6lC8ThrJjeKHwTN97NrW1z17D953UrR2ZbJ9BC1m7+q3lNa1asExGzZLsshzwu6cSYpJsQFtxgJ4W0SKZxarTMaoyjHoWxjdK7TKiRv0NVn8WFPFUegyxdMQcJ211g4=
+	t=1707385045; cv=none; b=e6XCrUQWXCuiiT9cGf3kPdBj54jGhUkcAsIl2VB6n0gRJHpFHliDKGXrU83IlWZr2n/TVqb0zDS4mHiTwbgngL1GecWOVbGj8O28v2uhc9mqV0HpkKwY4awCM5fkkdD/qJDB/7cUUEdmzkxipJOPxXuND3MrWqZv90uKzQRqtAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707384072; c=relaxed/simple;
-	bh=7Osbsv9Uu5LnSEkPrNLL6eFwAd2oq5PdQu+OGCPcDYM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VxydNMVldUl5H57RHvQuJBTDDViP9TMslvqe9jpckIWDtSwj79yqMkAMFh97WRNA/jfRpHY8WGvWD2E4I6VgWly0g07vzPgVw1lTJi+1JUj83SnGAOHgQ5CtK5qIz8E3TqnM+96YLBuCpGJkO4WkLMh/XRlfwh/WwOSe+s/WWA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=19wkwW+6; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=vb5dORbqze0SdpTtcMmBFKm/vy+xDGZxBk1OHiDwRbc=; b=19wkwW+6sREDBf78amIq92Zl1u
-	e0eDGWzYrrGtPBT4FJQqeLmWlR6shetElr7ZzQCoLltdJmNRw0G4p65NnJYLS2gWYBIG3kvGV6Zb2
-	CFEwQkt7+rau4DEIzj3JN+cbQOW5aH8P3W3GtuwGs6bHnQB31qUBihTOi6hWKSukGnetdMu40rso5
-	BCwYq62lFyF5fRzDyTdtThxAyJqGAZ+uC+eAisSBHqM5Hv8wSPjV0s8VV1W9GYxawEocCSD9GXL7k
-	LRqcTe00XNGg5NXGm9EvurzWQCwplVd2IY/XPRawXuE4h+SXY2uu9DVLxciVr7wpLRW6YklafcQwd
-	HHZQ/DXg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:38480)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1rY0ad-00048s-1h;
-	Thu, 08 Feb 2024 09:21:03 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1rY0aX-0005QB-5C; Thu, 08 Feb 2024 09:20:57 +0000
-Date: Thu, 8 Feb 2024 09:20:57 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Zev Weiss <zev@bewilderbeest.net>
-Cc: linux-parisc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	Helge Deller <deller@gmx.de>, Florent Revest <revest@chromium.org>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Stefan Roesch <shr@devkernel.io>, Oleg Nesterov <oleg@redhat.com>,
-	David Hildenbrand <david@redhat.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>, openbmc@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, Sam James <sam@gentoo.org>,
+	s=arc-20240116; t=1707385045; c=relaxed/simple;
+	bh=3Q2iyKC4hyp8AoOZUqz27l11mkhP1r9E0t2phlEb+Ck=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=c1YQYn20twW76s7bKXM6rVrVzESYT0O6WTh8uR6zA7KKlndB9dvtKMXRfuWGR94Q3Txl782ZkogDSUZajP6HnCpwXZoIHxvsUlPCbmyAekrAHPxFeB85xCJ9keGdhL69/nKCqgBZXOL5+bPWRg8GoTLV7PEOTR4DJCiPR1UJonU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=NVlOusRq; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from fpc.intra.ispras.ru (unknown [10.10.165.11])
+	by mail.ispras.ru (Postfix) with ESMTPSA id D37D740755CC;
+	Thu,  8 Feb 2024 09:37:11 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru D37D740755CC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1707385031;
+	bh=2icsXM4sghF71ROYFCFa6roBWVoViRGL+G2hZIeLN2Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=NVlOusRqo/vP1OrfsuqYNRGwY5C9++itFnlj14yUQ6+AwsQ4QEdlh5gLhmU3FDSW5
+	 oMk7LvL1rPu3oPs9JkKZWAG3B1byV1SmiPnUNO91WvAl6BqSc0+vR/epcA74l4wAKF
+	 Cr+X0r7Gz8m/sOmOzhC/bpSLWGFLTmUsumy1sl0g=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: James Smart <james.smart@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Ram Vegesna <ram.vegesna@broadcom.com>,
+	"James E.J. Bottomley" <jejb@linux.ibm.com>,
+	Daniel Wagner <dwagner@suse.de>,
+	Hannes Reinecke <hare@suse.de>,
+	linux-scsi@vger.kernel.org,
+	target-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	lvc-project@linuxtesting.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 0/2] ARM: prctl: Reject PR_SET_MDWE where not supported
-Message-ID: <ZcSc+ftxHY8RyinQ@shell.armlinux.org.uk>
-References: <20240208012620.32604-4-zev@bewilderbeest.net>
+Subject: [PATCH] scsi: elx: efct: adjust error handling inside efct_hw_setup_io
+Date: Thu,  8 Feb 2024 12:36:57 +0300
+Message-Id: <20240208093657.19617-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240208012620.32604-4-zev@bewilderbeest.net>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+IO and WQE buffers are allocated once per HW and can be reused later. If
+WQE buffers allocation fails then the whole allocation is marked as failed
+but already created IO array internal objects are not freed. hw->io is
+freed but not nullified in that specific case - it may become a problem
+later as efct_hw_setup_io() is supposed to be reusable for the same HW.
 
-Where is patch 1 of this series? It doesn't seem to have been Cc'd to
-linux-arm-kernel. Therefore, this can't be reviewed.
+While at it, use kcalloc instead of kmalloc_array/memset-zero combination
+and get rid of some needless NULL assignments: nullifying hw->io[i]
+elements just before freeing hw->io is not really useful.
 
-Thanks.
+Found by Linux Verification Center (linuxtesting.org).
 
-On Wed, Feb 07, 2024 at 05:26:18PM -0800, Zev Weiss wrote:
-> Hello,
-> 
-> I noticed after a recent kernel update that my ARM926 system started
-> segfaulting on any execve() after calling prctl(PR_SET_MDWE).  After
-> some investigation it appears that ARMv5 is incapable of providing the
-> appropriate protections for MDWE, since any readable memory is also
-> implicitly executable.
-> 
-> (Note that I'm not an expert in either ARM arch details or the mm
-> subsystem, so please bear with me if I've botched something in the
-> above analysis.)
-> 
-> The prctl_set_mdwe() function already had some special-case logic
-> added disabling it on PARISC (commit 793838138c15, "prctl: Disable
-> prctl(PR_SET_MDWE) on parisc"); this patch series (1) generalizes that
-> check to use an arch_*() function, and (2) adds a corresponding
-> override for ARM to disable MDWE on pre-ARMv6 CPUs.
-> 
-> With the series applied, prctl(PR_SET_MDWE) is rejected on ARMv5 and
-> subsequent execve() calls (as well as mmap(PROT_READ|PROT_WRITE)) can
-> succeed instead of unconditionally failing; on ARMv6 the prctl works
-> as it did previously.
-> 
-> Since this was effectively a userspace-breaking change in v6.3 (with
-> newer MDWE-aware userspace on older pre-MDWE kernels the prctl would
-> simply fail safely) I've CCed -stable for v6.3+, though since the
-> patches depend on the PARISC one above it will only apply cleanly on
-> the linux-6.6.y and linux-6.7.y branches, since at least at time of
-> writing the 6.3 through 6.5 branches don't have that patch backported
-> (due to further missing dependencies [0]).
-> 
-> 
-> Thanks,
-> Zev
-> 
-> [0] https://lore.kernel.org/all/2023112456-linked-nape-bf19@gregkh/
-> 
-> Zev Weiss (2):
->   prctl: Generalize PR_SET_MDWE support check to be per-arch
->   ARM: prctl: Reject PR_SET_MDWE on pre-ARMv6
-> 
->  arch/arm/include/asm/mman.h    | 14 ++++++++++++++
->  arch/parisc/include/asm/mman.h | 14 ++++++++++++++
->  include/linux/mman.h           |  8 ++++++++
->  kernel/sys.c                   |  7 +++++--
->  4 files changed, 41 insertions(+), 2 deletions(-)
->  create mode 100644 arch/arm/include/asm/mman.h
->  create mode 100644 arch/parisc/include/asm/mman.h
-> 
-> -- 
-> 2.43.0
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
-> 
+Fixes: 4df84e846624 ("scsi: elx: efct: Driver initialization routines")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
+ drivers/scsi/elx/efct/efct_hw.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
+diff --git a/drivers/scsi/elx/efct/efct_hw.c b/drivers/scsi/elx/efct/efct_hw.c
+index 5a5525054d71..e5486e6949f9 100644
+--- a/drivers/scsi/elx/efct/efct_hw.c
++++ b/drivers/scsi/elx/efct/efct_hw.c
+@@ -487,12 +487,10 @@ efct_hw_setup_io(struct efct_hw *hw)
+ 	struct efct *efct = hw->os;
+ 
+ 	if (!hw->io) {
+-		hw->io = kmalloc_array(hw->config.n_io, sizeof(io), GFP_KERNEL);
++		hw->io = kcalloc(hw->config.n_io, sizeof(io), GFP_KERNEL);
+ 		if (!hw->io)
+ 			return -ENOMEM;
+ 
+-		memset(hw->io, 0, hw->config.n_io * sizeof(io));
+-
+ 		for (i = 0; i < hw->config.n_io; i++) {
+ 			hw->io[i] = kzalloc(sizeof(*io), GFP_KERNEL);
+ 			if (!hw->io[i])
+@@ -502,10 +500,8 @@ efct_hw_setup_io(struct efct_hw *hw)
+ 		/* Create WQE buffs for IO */
+ 		hw->wqe_buffs = kzalloc((hw->config.n_io * hw->sli.wqe_size),
+ 					GFP_KERNEL);
+-		if (!hw->wqe_buffs) {
+-			kfree(hw->io);
+-			return -ENOMEM;
+-		}
++		if (!hw->wqe_buffs)
++			goto error;
+ 
+ 	} else {
+ 		/* re-use existing IOs, including SGLs */
+@@ -586,10 +582,8 @@ efct_hw_setup_io(struct efct_hw *hw)
+ 
+ 	return 0;
+ error:
+-	for (i = 0; i < hw->config.n_io && hw->io[i]; i++) {
++	for (i = 0; i < hw->config.n_io && hw->io[i]; i++)
+ 		kfree(hw->io[i]);
+-		hw->io[i] = NULL;
+-	}
+ 
+ 	kfree(hw->io);
+ 	hw->io = NULL;
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.39.2
+
 
