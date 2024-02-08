@@ -1,108 +1,94 @@
-Return-Path: <stable+bounces-19284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D287284DE7B
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 11:40:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0515584DF91
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 12:20:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F0E0B2EA7B
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 10:30:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3B981C22AFD
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 11:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D963822065;
-	Thu,  8 Feb 2024 10:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BAD6EB4F;
+	Thu,  8 Feb 2024 11:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MwhxLA5Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jrZ6Nkor"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8F018E07;
-	Thu,  8 Feb 2024 10:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448FC6D1B8;
+	Thu,  8 Feb 2024 11:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707388237; cv=none; b=uHx167f9zX/GUOYk0am/xQOzz8ENRUJaG/ZnVrJbhxEYn42q2XqbaoPYwo5u62X3mTgzrbTpvixRrSFzKtbpYEuN2yjiVVM/TqbJIG5duT0lT8PFAoPh10tQdOBvoY4mZlYsYbgx04oY6Yd5ml6jfTus4JrNSHC7R4jVnva8Goc=
+	t=1707391229; cv=none; b=fGOSb0tfc2uqjsNomAWrpbwaE0kuYKabYyv/eM+cUgX4ObrbKNbCosMwiRzRWA8niVm7vVPRArXz1hkRPv01wumdxxS05tbxgVxKklkdWeBwjVu5DqbJxLA3SXuMM+5uy9cxURvWzI3XZhI0UvD2gLsJ5JifqmzoTlBAVwlUQV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707388237; c=relaxed/simple;
-	bh=K13J9XbERyxSfjmPTDP4eJHI3fqY0e+Prqu0RLjcPXQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g0quY0X+RvIETBdu8dxFz/XShG0pR9CYAEJd47I15Ls6qg/UUMSndWVcxj7JfpircsfK4bZg4W+GOmYnfiAGNQH9Z9gZU1I2NNZBuxPlZhVt1M5n4M0LjUnEAY05C8Ur48T7OSJ2dDyksn7ntDkGpI35Ln/EzA06NAX+UkkImJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MwhxLA5Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6671C433F1;
-	Thu,  8 Feb 2024 10:30:34 +0000 (UTC)
+	s=arc-20240116; t=1707391229; c=relaxed/simple;
+	bh=EByImiwpvZijymQrU+gOcwzDg3ZBDq9SHqW6dSWiRCA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=pxxUjV+N+iEKDxucKLLNxq2wBTzIwj5NRC9A/kLPDgiW6erZl+wa2QZTbwMyBE7J7tdj9s6HGCqVJapWv7HsolVf3twAmK5+5t0JsCHwLM/cFQtxyMGq778ugy1BOqRzjsURAGMAnhOB4csbhJro2LnOI9YYed/G5eDDstfkCSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jrZ6Nkor; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8F77DC43390;
+	Thu,  8 Feb 2024 11:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707388237;
-	bh=K13J9XbERyxSfjmPTDP4eJHI3fqY0e+Prqu0RLjcPXQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=MwhxLA5Zi9RKpJ9QTqGVbopqqTZUaVFxsO+wajyopWDswA5HhjWMh2WtVGvrgWQRx
-	 ivHnMyk9i4zEwcgGCRseLKwajgc5OrPynE2onad4ETVupBaoTjxGdidCKRgdvQO1qN
-	 BArJGTRoDg5zkjThawJYmKQtoWXdA7Pln4WYXTxfLpIFH5vsP9UBkltX2w0uo4HOJs
-	 gE5jsS316D9kM9AS7Z/vMMer0WBxBTUjdWcBZJ7sOz8P1wjWpv3AEoSBLMdzzwh9Hv
-	 5IVvVOuhLJkW7c9Um/af8hF4oyKMg0GVMg2R68oXSmlDWk4iBf5QXEnQwmRL6r08Kn
-	 tbj3AcwO6Zw6g==
-Message-ID: <684ec15f-6407-430d-af8f-8751e9aa4c43@kernel.org>
-Date: Thu, 8 Feb 2024 11:30:31 +0100
+	s=k20201202; t=1707391228;
+	bh=EByImiwpvZijymQrU+gOcwzDg3ZBDq9SHqW6dSWiRCA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=jrZ6Nkorpep8rr4TqL33j21eViMwyffNSxkzxTxwaS+EhKp52/i0ppaVFOwPbrW99
+	 5G8P7Tl128UflSFxmW1ce7xBPEhz+7U7hunlxo4ksYJNTwqertAUScuj1kqchHDpwa
+	 ZJL0C/tHy+pFperEbPfp6v7K6J99LxtTRnRrjPdeWKG5muCxmU7c4IoqCPYFRcQS19
+	 ob1T/hEX+klahDP7zY23kWH7WZJkMoH1FJVflD4pi5zYjS3MktCszGfZGPry8k0Xzx
+	 DQoDaIBaCxYFM0jRZlPUZAqSL0JPkvl04BpQAVkphV3iOGVoH0l3TXPNBW0l8VnisV
+	 RJIldPy4S4sNQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 7430BC395F1;
+	Thu,  8 Feb 2024 11:20:28 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] tools/rtla: Fix Makefile compiler options for clang
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Donald Zickus <dzickus@redhat.com>, stable@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org,
- llvm@lists.linux.dev
-References: <cover.1707217097.git.bristot@kernel.org>
- <567ac1b94effc228ce9a0225b9df7232a9b35b55.1707217097.git.bristot@kernel.org>
- <20240206154835.GA1433705@dev-arch.thelio-3990X>
-Content-Language: en-US, pt-BR, it-IT
-From: Daniel Bristot de Oliveira <bristot@kernel.org>
-In-Reply-To: <20240206154835.GA1433705@dev-arch.thelio-3990X>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] s390/qeth: Fix potential loss of L3-IP@ in case of
+ network issues
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <170739122846.26165.3983765571371603826.git-patchwork-notify@kernel.org>
+Date: Thu, 08 Feb 2024 11:20:28 +0000
+References: <20240206085849.2902775-1-wintera@linux.ibm.com>
+In-Reply-To: <20240206085849.2902775-1-wintera@linux.ibm.com>
+To: Alexandra Winter <wintera@linux.ibm.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+ hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+ borntraeger@linux.ibm.com, svens@linux.ibm.com, stable@vger.kernel.org
 
-On 2/6/24 16:48, Nathan Chancellor wrote:
-> On Tue, Feb 06, 2024 at 12:05:29PM +0100, Daniel Bristot de Oliveira wrote:
->> The following errors are showing up when compiling rtla with clang:
->>
->>  $ make HOSTCC=clang CC=clang LLVM_IAS=1
->>  [...]
->>
->>   clang -O -g -DVERSION=\"6.8.0-rc1\" -flto=auto -ffat-lto-objects
->> 	-fexceptions -fstack-protector-strong
->> 	-fasynchronous-unwind-tables -fstack-clash-protection  -Wall
->> 	-Werror=format-security -Wp,-D_FORTIFY_SOURCE=2
->> 	-Wp,-D_GLIBCXX_ASSERTIONS -Wno-maybe-uninitialized
->> 	$(pkg-config --cflags libtracefs)    -c -o src/utils.o src/utils.c
->>
->>   clang: warning: optimization flag '-ffat-lto-objects' is not supported [-Wignored-optimization-argument]
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Tue,  6 Feb 2024 09:58:49 +0100 you wrote:
+> Symptom:
+> In case of a bad cable connection (e.g. dirty optics) a fast sequence of
+> network DOWN-UP-DOWN-UP could happen. UP triggers recovery of the qeth
+> interface. In case of a second DOWN while recovery is still ongoing, it
+> can happen that the IP@ of a Layer3 qeth interface is lost and will not
+> be recovered by the second UP.
 > 
-> For what it's worth, this flag is supported in clang 17.0.0 and newer:
-> 
-> https://github.com/llvm/llvm-project/commit/610fc5cbcc8b68879c562f6458608afe2473ab7f
+> [...]
 
-Good! still, I am getting this error on fedora, with this clang version:
+Here is the summary with links:
+  - [net] s390/qeth: Fix potential loss of L3-IP@ in case of network issues
+    https://git.kernel.org/netdev/net/c/2fe8a236436f
 
-bristot@x1:~/src/git/linux/tools/tracing/rtla$ clang --version
-clang version 17.0.6 (Fedora 17.0.6-1.fc39)
-Target: x86_64-redhat-linux-gnu
-Thread model: posix
-InstalledDir: /usr/bin
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-:-(
 
-> But if it is not critical, just dropping the flag like you have done
-> here rather than conditionally supporting it is probably easier.
-
-Yeah, I will drop it for now, and keep monitoring.
-
-Thanks Natan!
--- Daniel
 
