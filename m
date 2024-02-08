@@ -1,193 +1,136 @@
-Return-Path: <stable+bounces-19320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06FCE84E913
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 20:42:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B837684E986
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 21:19:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84A491F25D8F
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 19:42:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CE5A1F2184A
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 20:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8C6381BF;
-	Thu,  8 Feb 2024 19:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DA0383AC;
+	Thu,  8 Feb 2024 20:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nwyL+pHr"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="fINuTcV8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAA7149DFF
-	for <stable@vger.kernel.org>; Thu,  8 Feb 2024 19:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF63C37711;
+	Thu,  8 Feb 2024 20:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707421350; cv=none; b=T7bmXrz39A143H4HHWViDkmqS6zfJWpHg0Bl/RPft7O+S7h/vpEBXixSpXh5aKXQnV1ZyvR+GYdLLQRrGVUlRwP+5oCPbjQ0BojR/ouaAI8vBdt8uXevrypXEtn2Ji68uBowx/nbYAmSrxtZinhht2iHU/OfywTYw45548Xdsdk=
+	t=1707423571; cv=none; b=kmoFPCLffG8yLvR6jkV2avvPjq97q7KGGMj9Lz1xM2vVHsOwTe7XeYZCC9M+QKjse3TslU/gI2KQ2cgJrXYxxyylf07Fko6YgrPR4PdWHyf6yOSAC8V/VqcJH9zPrSAr+G1+ko7QuL4Y/txGUc9VG50rU3kZfSDccPo/PjuLG98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707421350; c=relaxed/simple;
-	bh=Rtu/dgNHowIMhZUa88CnntQ6SugfUthYsgnqdjsX7Go=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YIkJSHfjQc1SrFRtIukefPneCuDQKgMBRG8U4CQXC78ZmCrd5CI3xhEQivME29tpCpXlwaSNex3lRpa2EyEF0Fp0BArRWWQmsjOR/bO+cskPU+oQfaGi/2QWANwcNOq8vOG5M2Ep0XAHh7/R1HHL2yl72g8tqijZaUzODbW98j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nwyL+pHr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73429C43609
-	for <stable@vger.kernel.org>; Thu,  8 Feb 2024 19:42:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707421349;
-	bh=Rtu/dgNHowIMhZUa88CnntQ6SugfUthYsgnqdjsX7Go=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=nwyL+pHrtUggAFG7+gq7rpvp4fptaBg+1myWc3chKSCN2XvuCRzfkgy2Rilz3gP0T
-	 IwCUG3APe8Gnp3Uzg1F1hfJKyN0dBFYEdb0nsfkHawXiKV44TY98l6Umq+r9OlEOK+
-	 T4Yb7DlyaHmiqU3khye1tas4BiFKtbmvgm8pusH55z/xukK70zcFUbT1WMQ/BO2lLy
-	 N4w3XWZIfHv3tmeYiR3wevs7VRZmd5VJtUIa4N1HJ5TOBktvgHDPe40V/GjQpCThPH
-	 AWitEdB9uk5PtdOiTdtU/9RQPflOgF2UWmk/eK3kDpzFG7RZSCRHj/ORY65dhqPTPJ
-	 WN6GI5SDvEUzA==
-Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-7c3de16761aso28971739f.0
-        for <stable@vger.kernel.org>; Thu, 08 Feb 2024 11:42:29 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXX6BN67LjMtmomK8y2CDlKwML15hvWc27Mfu3OlUfD2HO310Wg6fRsQDLzJYgHsxikdImRNnWfdmTorldpSW4WgKz80lkx
-X-Gm-Message-State: AOJu0Ywv+0uAkhohlWghlGaG7GXjruw9ABOWgih6fiTecn97JLh+LfGr
-	Dc/7GjejrNJz7E0ksrDjJour0I9WdwucSW6ANxSi3M5Cfjzvxw4guoZYBopXJgf2WGUNaKDcMbn
-	2dyjFK7+xbWJUKMpIg/D6sv0rKC7yabrUgBc2
-X-Google-Smtp-Source: AGHT+IGcfRhtd9MGWZfmF3BJHfebS6aqh8aEn9feq7jKiTcP0qZsciSIAAE7Fq6y/oaDjz3cb6cf2XLBXQ6TGFiCDb8=
-X-Received: by 2002:a92:d481:0:b0:363:8882:d86 with SMTP id
- p1-20020a92d481000000b0036388820d86mr501941ilg.1.1707421348650; Thu, 08 Feb
- 2024 11:42:28 -0800 (PST)
+	s=arc-20240116; t=1707423571; c=relaxed/simple;
+	bh=JEHF3L83Ez5X9HIZXdBgzhVChwblAjDq3m5eCli5fME=;
+	h=Date:To:From:Subject:Message-Id; b=ndTK4AoMX5LDFTHS4FYdIRxkR5kWc6Q6n6HvJCFPLIlIHwzE6t5PJI/dFH3tKgitjyiyBMyclfClvRkNsNUfHx9TQn4uHUGERvow4TsoE2zo0uPE8IEOKIpz6QpFyOOaMWyh5m2NnD4tQzT6iGn3zQ+q330WNrKhl8SSgLjrA08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=fINuTcV8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D292C433F1;
+	Thu,  8 Feb 2024 20:19:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1707423570;
+	bh=JEHF3L83Ez5X9HIZXdBgzhVChwblAjDq3m5eCli5fME=;
+	h=Date:To:From:Subject:From;
+	b=fINuTcV8E2IX3DHD5G5DIZpRm2fzUg0yLJeA9SuTnjlbVUS8f8jLz3/kWL1qn2B3c
+	 vI9nMFxSJ4fp983NF9z0omI7F7+6WnGpPg8NuFurwmuf/h9xyECQLySCnIF9cRCidA
+	 oXsws0KnlJg9WVbWpqNCRwXF37hWlDSsHNXWA7eg=
+Date: Thu, 08 Feb 2024 12:19:29 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,tzimmermann@suse.de,tvrtko.ursulin@linux.intel.com,stable@vger.kernel.org,rodrigo.vivi@intel.com,ray.huang@amd.com,mripard@kernel.org,maarten.lankhorst@linux.intel.com,joonas.lahtinen@linux.intel.com,jarkko@kernel.org,jani.nikula@linux.intel.com,hughd@google.com,djwong@kernel.org,dhowells@redhat.com,dave.hansen@linux.intel.com,daniel@ffwll.ch,christian.koenig@amd.com,chandan.babu@oracle.com,airlied@gmail.com,hch@lst.de,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [obsolete] mm-add-a-mapping_clear_large_folios-helper.patch removed from -mm tree
+Message-Id: <20240208201930.3D292C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240206182559.32264-1-ryncsn@gmail.com> <CAF8kJuMe7MYsAhwX804jZfO4w6kt74YMZXuz+FqUbZEt70p7Rg@mail.gmail.com>
- <CAGsJ_4zF+U5JG8XYANe2x0VbjovokFCirf=YLHOfO3E-U8b4sg@mail.gmail.com>
- <CAF8kJuOBtT+n5CM2s1Mobk5fzpgetCSMTZ-nb8+0KUj1W5f+Mw@mail.gmail.com>
- <CAMgjq7CV-Cxar8cRj1SxB4ZtO8QPTUuA5mj9_vQro7sm+eFH=w@mail.gmail.com>
- <CAF8kJuOQqqqM6MvOvo4PyOhT9eyNFreQjWC+TybGYDgXRfpweA@mail.gmail.com>
- <CAMgjq7CBV4dVo7ETr0K1VbLE=M7T0Go5=7pHBUY6=o0cuXaZXg@mail.gmail.com>
- <ZcPMi6DX5PN4WwHr@google.com> <CAMgjq7AJo1SKzRc-w5UuK3Ojk5PaXxRV2_G2Ww9BGgiNRp_5Eg@mail.gmail.com>
- <87eddnxy47.fsf@yhuang6-desk2.ccr.corp.intel.com> <CAMgjq7Cg+8zy25Cif2DJ0Qey3bC=Ni0q7xHNO9ka+ezoK1rgxA@mail.gmail.com>
-In-Reply-To: <CAMgjq7Cg+8zy25Cif2DJ0Qey3bC=Ni0q7xHNO9ka+ezoK1rgxA@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Thu, 8 Feb 2024 11:42:16 -0800
-X-Gmail-Original-Message-ID: <CAF8kJuNXr7CT7-homTfOX=XYfie2woPbcS9sKkt4R3HSiHUmng@mail.gmail.com>
-Message-ID: <CAF8kJuNXr7CT7-homTfOX=XYfie2woPbcS9sKkt4R3HSiHUmng@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/swap: fix race when skipping swapcache
-To: Kairui Song <ryncsn@gmail.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>, Minchan Kim <minchan@kernel.org>, 
-	Barry Song <21cnbao@gmail.com>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Yu Zhao <yuzhao@google.com>, 
-	Barry Song <v-songbaohua@oppo.com>, SeongJae Park <sj@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
-	Yosry Ahmed <yosryahmed@google.com>, David Hildenbrand <david@redhat.com>, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Feb 8, 2024 at 11:01=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> On Thu, Feb 8, 2024 at 2:36=E2=80=AFPM Huang, Ying <ying.huang@intel.com>=
- wrote:
-> >
-> > Kairui Song <ryncsn@gmail.com> writes:
-> >
-> > > On Thu, Feb 8, 2024 at 2:31=E2=80=AFAM Minchan Kim <minchan@kernel.or=
-g> wrote:
-> > >>
-> > >> On Wed, Feb 07, 2024 at 12:06:15PM +0800, Kairui Song wrote:
-> >
-> > [snip]
-> >
-> > >> >
-> > >> > So I think the thing is, it's getting complex because this patch
-> > >> > wanted to make it simple and just reuse the swap cache flags.
-> > >>
-> > >> I agree that a simple fix would be the important at this point.
-> > >>
-> > >> Considering your description, here's my understanding of the other i=
-dea:
-> > >> Other method, such as increasing the swap count, haven't proven effe=
-ctive
-> > >> in your tests. The approach risk forcing racers to rely on the swap =
-cache
-> > >> again and the potential performance loss in race scenario.
-> > >>
-> > >> While I understand that simplicity is important, and performance los=
-s
-> > >> in this case may be infrequent, I believe swap_count approach could =
-be a
-> > >> suitable solution. What do you think?
-> > >
-> > > Hi Minchan
-> > >
-> > > Yes, my main concern was about simplicity and performance.
-> > >
-> > > Increasing swap_count here will also race with another process from
-> > > releasing swap_count to 0 (swapcache was able to sync callers in othe=
-r
-> > > call paths but we skipped swapcache here).
-> >
-> > What is the consequence of the race condition?
->
-> Hi Ying,
->
-> It will increase the swap count of an already freed entry, this race
-> with multiple swap free/alloc logic that checks if count =3D=3D
-> SWAP_HAS_CACHE or sets count to zero, or repeated free of an entry,
-> all result in random corruption of the swap map. This happens a lot
-> during stress testing.
-
-In theory, the original code before your patch can get into a
-situation similar to what you try to avoid.
-CPU1 enters the do_swap_page() with entry swap count =3D=3D 1 and
-continues handling the swap fault without swap cache.  Then some
-operation bumps up the swap entry count and CPU2 enters the
-do_swap_page() racing with CPU1 with swap count =3D=3D 2. CPU2 will need
-to go through the swap cache case.  We still need to handle this
-situation correctly.
-So the complexity is already there.
-
-If we can make sure the above case works correctly, then one way to
-avoid the problem is just send the CPU2 to use the swap cache (without
-the swap cache by-passing).
 
 
+The quilt patch titled
+     Subject: mm: add a mapping_clear_large_folios helper
+has been removed from the -mm tree.  Its filename was
+     mm-add-a-mapping_clear_large_folios-helper.patch
 
->
-> >
-> > > So the right step is: 1. Lock the cluster/swap lock; 2. Check if stil=
-l
-> > > have swap_count =3D=3D 1, bail out if not; 3. Set it to 2;
-> > > __swap_duplicate can be modified to support this, it's similar to
-> > > existing logics for SWAP_HAS_CACHE.
-> > >
-> > > And swap freeing path will do more things, swapcache clean up needs t=
-o
-> > > be handled even in the bypassing path since the racer may add it to
-> > > swapcache.
-> > >
-> > > Reusing SWAP_HAS_CACHE seems to make it much simpler and avoided many
-> > > overhead, so I used that way in this patch, the only issue is
-> > > potentially repeated page faults now.
-> > >
-> > > I'm currently trying to add a SWAP_MAP_LOCK (or SWAP_MAP_SYNC, I'm ba=
-d
-> > > at naming it) special value, so any racer can just spin on it to avoi=
-d
-> > > all the problems, how do you think about this?
-> >
-> > Let's try some simpler method firstly.
->
-> Another simpler idea is, add a schedule() or
-> schedule_timeout_uninterruptible(1) in the swapcache_prepare failure
-> path before goto out (just like __read_swap_cache_async). I think this
-> should ensure in almost all cases, PTE is ready after it returns, also
-> yields more CPU.
+This patch was dropped because it is obsolete
 
-I mentioned in my earlier email and Ying points out that as well.
-Looping waiting inside do_swap_page() is bad because it is holding
-other locks. Sorry I started this idea but it seems no good. If we can
-have CPU2 make forward progress without retrying the page fault would
-be the best, if possible.
+------------------------------------------------------
+From: Christoph Hellwig <hch@lst.de>
+Subject: mm: add a mapping_clear_large_folios helper
+Date: Wed, 10 Jan 2024 10:21:08 +0100
 
-Chris
+Patch series "disable large folios for shmem file used by xfs xfile".
+
+Darrick reported that the fairly new XFS xfile code blows up when force
+enabling large folio for shmem.  This series fixes this quickly by
+disabling large folios for this particular shmem file for now until it can
+be fixed properly, which will be a lot more invasive.
+
+
+This patch (of 2):
+
+Users of shmem_kernel_file_setup might not be able to deal with large
+folios (yet).  Give them a way to disable large folio support on their
+mapping.
+
+Link: https://lkml.kernel.org/r/20240110092109.1950011-1-hch@lst.de
+Link: https://lkml.kernel.org/r/20240110092109.1950011-2-hch@lst.de
+Fixes: 3934e8ebb7cc ("xfs: create a big array data structure")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Cc: Chandan Babu R <chandan.babu@oracle.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Dave Airlie <airlied@gmail.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/pagemap.h |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+--- a/include/linux/pagemap.h~mm-add-a-mapping_clear_large_folios-helper
++++ a/include/linux/pagemap.h
+@@ -360,6 +360,20 @@ static inline void mapping_set_large_fol
+ 	__set_bit(AS_LARGE_FOLIO_SUPPORT, &mapping->flags);
+ }
+ 
++/**
++ * mapping_clear_large_folios() - Disable large folio support for a mapping
++ * @mapping: The mapping.
++ *
++ * This can be called to undo the effect of mapping_set_large_folios().
++ *
++ * Context: This should not be called while the inode is active as it
++ * is non-atomic.
++ */
++static inline void mapping_clear_large_folios(struct address_space *mapping)
++{
++	__clear_bit(AS_LARGE_FOLIO_SUPPORT, &mapping->flags);
++}
++
+ /*
+  * Large folio support currently depends on THP.  These dependencies are
+  * being worked on but are not yet fixed.
+_
+
+Patches currently in -mm which might be from hch@lst.de are
+
+xfs-disable-large-folio-support-in-xfile_create.patch
+
 
