@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-19260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADCE684D7DA
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 03:35:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8303984D7ED
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 03:42:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E21722869AD
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 02:35:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34D832875EF
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 02:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBB8C149E03;
-	Thu,  8 Feb 2024 02:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A8F15ACB;
+	Thu,  8 Feb 2024 02:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cSqV5VGu"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="drC4G/dn"
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3A91D524
-	for <stable@vger.kernel.org>; Thu,  8 Feb 2024 02:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C294E1D522
+	for <stable@vger.kernel.org>; Thu,  8 Feb 2024 02:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707359703; cv=none; b=azm9AsuPhJIgCXhNgSwvKkztajuZfGy9uB7HUnmcEMqFwZfgJhZjn1rLr8jJv0MHIf68XsbFsZBxJuOfPHH6F3vMTofq1JFBRUydlwmiiw3OYfkvtcNanKLwrjIElyNFSfgK6d/YSKnHg5xUmT2wUCR0vR49bBWm5LN5evN54vU=
+	t=1707360147; cv=none; b=ZDD4Ufsk1EdFUCaL0W+lJH1fIjugUbVBwZOjZJY4EZLEBzaWW6mPTZweuKYcBMkxG8Ob4/9keqCZKfl6B+Eieq7hORap0XTViolxNWKofwGbjHvShLY9wFI95Zr9tpHLUbrm/GBpfgxX00524O6xxTcgbXJRFsCQyq12TLcvvqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707359703; c=relaxed/simple;
-	bh=EkOqfampjeSKQg5Cr8kvbOMjAirzAY3ivCor7kCy+9I=;
+	s=arc-20240116; t=1707360147; c=relaxed/simple;
+	bh=+Hzd1w7HojwnCU/DVxbJMRTDalNKgxkpki45I1mN0VQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AE6nQlH4f5Y5bZEqXC8dB8mg7lexL/SPJxiI/wF09TPfAp5QFXb+WNiP12AvfEC4/M4UFbkVAFtcKyxDI78wDrtMpaJUIsptzvIFXaxokE7ViGPO4NBfVJjWvAtR8zre6rZhKPUb8RoiLP7XCbEoePtj7P+22xERMCh85oHZhpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cSqV5VGu; arc=none smtp.client-ip=95.215.58.179
+	 In-Reply-To:Content-Type; b=polnfLyn4+x0hfID5gA+kh+CM5yZuHWVeRI7efwuBsoYddlniuwHslYi8gMVHVP22fw/v8Lqukk0Z9kPk/Bv2QnQUJ2iaAOfWViaTSJSKnK9UCZXvfrNwzUw3QqzPb55PqQ1IghLaZQD5SJWoLyMg6Ob5HAc1rR4b1eFjbP03SY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=drC4G/dn; arc=none smtp.client-ip=91.218.175.185
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <9dec8d00-c01b-44fe-983a-ec2b83d71e2a@linux.dev>
+Message-ID: <defcaf0b-21a9-454f-b44a-c91820f541c8@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1707359700;
+	t=1707360143;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JcrtKKNrzp8Qp0fqpYyaI1RyGJgRqDnnLYhAFWHoxnw=;
-	b=cSqV5VGuSF0ia9JzWNev68oQ36rGLC/zt3lp6piRGnu4bMViCrk5P9y+85jZ0slalDg6Mv
-	O+vWNGeAQ9r4clnhO7Q+RkdRsUrYlwCzKtU3n+A4Qho7Gqs8hFRALgr+dPdDlEeL41xNbQ
-	0kWe69ej4IETPXXtQwDoSWX+n78X/C8=
-Date: Thu, 8 Feb 2024 10:34:54 +0800
+	bh=sxbB6xl70fcGsF0IjYGB+vnomK4N76RXXTy+fmO65MY=;
+	b=drC4G/dntuy7hyCZhZ/TYhQlm483ShTPi8iqV0f3Hhe2yE6Idq0qPeIJ61wnyG1xlGW7T3
+	SaHbz8HMLWS/eJcIxevdBDs+KSoDAEfBZpICD9Egc9mUTgLfY/q4hSfnIqSyQa9Fme5Fp6
+	Mfdiw2hOgnNbiiVNyvQdoID3TlotNmo=
+Date: Thu, 8 Feb 2024 10:41:49 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,23 +52,23 @@ MIME-Version: 1.0
 Subject: Re: [PATCH v4] mm/zswap: invalidate old entry when store fail or
  !zswap_enabled
 Content-Language: en-US
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: hannes@cmpxchg.org, yosryahmed@google.com, akpm@linux-foundation.org,
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: hannes@cmpxchg.org, yosryahmed@google.com, nphamcs@gmail.com,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  Chengming Zhou <zhouchengming@bytedance.com>, stable@vger.kernel.org,
  Chris Li <chrisl@kernel.org>
 References: <20240207115406.3865746-1-chengming.zhou@linux.dev>
- <CAKEwX=NR+QN1P960_Qz_sHACoD8FK=Kb=LQw==JGR+9h73SENg@mail.gmail.com>
+ <20240207154308.bc275f3e72ec1c1fd06cf5a2@linux-foundation.org>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Chengming Zhou <chengming.zhou@linux.dev>
-In-Reply-To: <CAKEwX=NR+QN1P960_Qz_sHACoD8FK=Kb=LQw==JGR+9h73SENg@mail.gmail.com>
+In-Reply-To: <20240207154308.bc275f3e72ec1c1fd06cf5a2@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
 
-On 2024/2/8 07:06, Nhat Pham wrote:
-> On Wed, Feb 7, 2024 at 3:54 AM <chengming.zhou@linux.dev> wrote:
->>
+On 2024/2/8 07:43, Andrew Morton wrote:
+> On Wed,  7 Feb 2024 11:54:06 +0000 chengming.zhou@linux.dev wrote:
+> 
 >> From: Chengming Zhou <zhouchengming@bytedance.com>
 >>
 >> We may encounter duplicate entry in the zswap_store():
@@ -103,14 +103,33 @@ On 2024/2/8 07:06, Nhat Pham wrote:
 >>
 >> Fixes: 42c06a0e8ebe ("mm: kill frontswap")
 >> Cc: <stable@vger.kernel.org>
->> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
->> Acked-by: Yosry Ahmed <yosryahmed@google.com>
->> Acked-by: Chris Li <chrisl@kernel.org>
->> Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
 > 
-> Acked-by: Nhat Pham <nphamcs@gmail.com>
+> We have a patch ordering issue.
 > 
-> Sorry for being late to the party, and thanks for fixing this, Chengming!
+> As a cc:stable hotfix, this should be merged into 6.8-rcX and later
+> backported into -stable trees.  So it will go
+> mm-hotfixes-unstable->mm-hotfixes-stable->mainline.  So someone has to
+> make this patch merge and work against latest mm-hotfixes-unstable.
 
-Thanks for your review! :)
+Ah, right. I just sent a fix based on mm-hotfixes-unstable [1], which
+is split from this patch to only include bugfix, so easy to backport.
+
+This patch actually include two parts: bugfix and a little optimization
+for the zswap_store() normal case.
+
+Should I split this patch into two small patches and resend based on
+mm-unstable?
+
+[1] https://lore.kernel.org/all/20240208023254.3873823-1-chengming.zhou@linux.dev/
+
+> 
+> The patch you sent appears to be based on linux-next, so it has
+> dependencies upon mm-unstable patches which won't be merged into
+> mainline until the next merge window.
+> 
+> So can you please redo and retest this against mm.git's
+> mm-hotfixes-unstable branch?  Then I'll try to figure out how to merge
+> the gigentic pile of mm-unstable zswap changes on top of that.
+> 
+> Thanks.
 
