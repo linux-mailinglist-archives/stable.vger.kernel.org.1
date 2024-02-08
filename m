@@ -1,219 +1,116 @@
-Return-Path: <stable+bounces-19301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1AE84E46B
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 16:53:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1C384E479
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 16:56:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5E431F25BBF
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 15:53:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D7101C23BEA
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 15:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1EBF7CF15;
-	Thu,  8 Feb 2024 15:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE767CF15;
+	Thu,  8 Feb 2024 15:56:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BY1EkPIR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D0F7B3FF;
-	Thu,  8 Feb 2024 15:53:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F766BFA7
+	for <stable@vger.kernel.org>; Thu,  8 Feb 2024 15:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707407615; cv=none; b=moCGLEsh45TwQBk6rHvC+PfmIXqAHUss0U0sK+A5IpR8ms8Wn/xiX9vQEeXJd9YM/6e0mOBav63Cbf4sVVC9etazvL9UnrH8GNisrCwzpYsHiluCMz2zBqfzTXWYaWa3bVVPKdZx9Ce9Nwcpuial7oPPjiV8WOnlTHBURjISiV4=
+	t=1707407774; cv=none; b=SHvbwbOW2UMnMnScvHZcDdkdc5O+JeajXefp5dsgvIBMy+S4Uqty49tK91kKgfN17RZb5IKWzOU7lp2ekYU2JUF67gjqiS77M++Pi2LwaYXl9oh3EfX70apv8teaDRYoi+VuJ726X5n7bFSGnhdz6XTkgBGOffU2IAeTyHVP8RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707407615; c=relaxed/simple;
-	bh=riINGfnd79EnQpYg7CsqL7ovhf6cZK3lm1VIv8aEOk4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=fd5ncBapaIt/snW3YlN4837xim0L9AG/36UVprbkRXz4ZBUw2JR9+n3jZQvhVb5Io3gKighIKejLb8wqhhWO5G2EWWJlQUurw/S5M5P5Gq5GHMtkpBazr9OEGNbDttBV/Kk5Ldkwl85ZeiyzLxQsjLebZ6XAiMwYTRrf6SPCLYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C57C433F1;
-	Thu,  8 Feb 2024 15:53:32 +0000 (UTC)
-Date: Thu, 8 Feb 2024 10:53:28 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: LKML <linux-kernel@vger.kernel.org>, Linux trace kernel
- <linux-trace-kernel@vger.kernel.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
- <mathieu.desnoyers@efficios.com>, Vincent Donnefort
- <vdonnefort@google.com>, Sven Schnelle <svens@linux.ibm.com>, Mete Durlu
- <meted@linux.ibm.com>, stable <stable@vger.kernel.org>
-Subject: [PATCH] tracing: Fix wasted memory in saved_cmdlines logic
-Message-ID: <20240208105328.7e73f71d@rorschach.local.home>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1707407774; c=relaxed/simple;
+	bh=lAwzNKO/gag6aJ20qqU1kWN6RLF7uPPEhVquuaSE/MQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=dbr6JnFHe9SqqQNgFADt8I5osCE4OcqE+jFllfRmqWTfxLYnHgTBO4CT5hPQSROqZ7UDx8iWp5QTbfS1vGy2Dj6fCu6wnl8yQ73xyPiJFSAbiEBjLyaOoT78F8qVdMIAIoEJ8VpN5KK7st+kz3aL0yrd+CwB7xU5sPWqmgmH+sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BY1EkPIR; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707407770; x=1738943770;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version:content-transfer-encoding;
+  bh=lAwzNKO/gag6aJ20qqU1kWN6RLF7uPPEhVquuaSE/MQ=;
+  b=BY1EkPIRYgUql0X5i2KSmt2fPFksEa7wAJIF92QWZvGpsZPpXICHZ0wF
+   ojoFpo+Npn9lPSpMfPgVqU+8Ish6Iaqih7gNPYzzxiAuTua8YLgTKfBB4
+   OfO7AGoTWnkmLdFjua1uPZmiakydvn3lCFF9TjCXB+uDhfRpkq4phSHpN
+   Ktbg0Tj4FsRcprfSKgRo/1Yi4aSwQcf1JxlxLahs9gVANjoGPzB9sQMJN
+   WFA5aYLUbXyCPxAq2vLZc4wOMon55F2Dx02E/BevOGlWIjbJTAqH14A6b
+   1R4GUSEtQhrrLZmD7nFwKmbsum4J7SkCrRlGbCkUImuH80h+X5S4puBth
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="1384715"
+X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
+   d="scan'208";a="1384715"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 07:56:01 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
+   d="scan'208";a="1682539"
+Received: from unknown (HELO localhost) ([10.237.66.162])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 07:56:00 -0800
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>,
+ intel-gfx@lists.freedesktop.org
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH] drm/i915/dp: Limit SST link rate to <=8.1Gbps
+In-Reply-To: <20240208154552.14545-1-ville.syrjala@linux.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240208154552.14545-1-ville.syrjala@linux.intel.com>
+Date: Thu, 08 Feb 2024 17:55:53 +0200
+Message-ID: <87le7var1y.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+On Thu, 08 Feb 2024, Ville Syrjala <ville.syrjala@linux.intel.com> wrote:
+> From: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+>
+> Limit the link rate to HBR3 or below (<=3D8.1Gbps) in SST mode.
+> UHBR (10Gbps+) link rates require 128b/132b channel encoding
+> which we have not yet hooked up into the SST/no-sideband codepaths.
+>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
 
-While looking at improving the saved_cmdlines cache I found a huge amount
-of wasted memory that should be used for the cmdlines.
+My bad.
 
-The tracing data saves pids during the trace. At sched switch, if a trace
-occurred, it will save the comm of the task that did the trace. This is
-saved in a "cache" that maps pids to comms and exposed to user space via
-the /sys/kernel/tracing/saved_cmdlines file. Currently it only caches by
-default 128 comms.
+I guess this is the smallest most isolated fix for stable.
 
-The structure that uses this creates an array to store the pids using
-PID_MAX_DEFAULT (which is usually set to 32768). This causes the structure
-to be of the size of 131104 bytes on 64 bit machines.
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
 
-In hex: 131104 = 0x20020, and since the kernel allocates generic memory in
-powers of two, the kernel would allocate 0x40000 or 262144 bytes to store
-this structure. That leaves 131040 bytes of wasted space.
 
-Worse, the structure points to an allocated array to store the comm names,
-which is 16 bytes times the amount of names to save (currently 128), which
-is 2048 bytes. Instead of allocating a separate array, make the structure
-end with a variable length string and use the extra space for that.
 
-This is similar to a recommendation that Linus had made about eventfs_inode names:
+> ---
+>  drivers/gpu/drm/i915/display/intel_dp.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i9=
+15/display/intel_dp.c
+> index ab415f41924d..5045c34a16be 100644
+> --- a/drivers/gpu/drm/i915/display/intel_dp.c
+> +++ b/drivers/gpu/drm/i915/display/intel_dp.c
+> @@ -2356,6 +2356,9 @@ intel_dp_compute_config_limits(struct intel_dp *int=
+el_dp,
+>  	limits->min_rate =3D intel_dp_common_rate(intel_dp, 0);
+>  	limits->max_rate =3D intel_dp_max_link_rate(intel_dp);
+>=20=20
+> +	/* FIXME 128b/132b SST support missing */
+> +	limits->max_rate =3D min(limits->max_rate, 810000);
+> +
+>  	limits->min_lane_count =3D 1;
+>  	limits->max_lane_count =3D intel_dp_max_lane_count(intel_dp);
 
-  https://lore.kernel.org/all/20240130190355.11486-5-torvalds@linux-foundation.org/
-
-Instead of allocating a separate string array to hold the saved comms,
-have the structure end with: char saved_cmdlines[]; and round up to the
-next power of two over sizeof(struct saved_cmdline_buffers) + num_cmdlines * TASK_COMM_LEN
-It will use this extra space for the saved_cmdline portion.
-
-Now, instead of saving only 128 comms by default, by using this wasted
-space at the end of the structure it can save over 8000 comms and even
-saves space by removing the need for allocating the other array.
-
-Cc: stable@vger.kernel.org
-Fixes: 939c7a4f04fcd ("tracing: Introduce saved_cmdlines_size file")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
----
- kernel/trace/trace.c | 73 +++++++++++++++++++++-----------------------
- 1 file changed, 34 insertions(+), 39 deletions(-)
-
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 2a7c6fd934e9..0b3e60b827f7 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -2320,7 +2320,7 @@ struct saved_cmdlines_buffer {
- 	unsigned *map_cmdline_to_pid;
- 	unsigned cmdline_num;
- 	int cmdline_idx;
--	char *saved_cmdlines;
-+	char saved_cmdlines[];
- };
- static struct saved_cmdlines_buffer *savedcmd;
- 
-@@ -2334,47 +2334,54 @@ static inline void set_cmdline(int idx, const char *cmdline)
- 	strncpy(get_saved_cmdlines(idx), cmdline, TASK_COMM_LEN);
- }
- 
--static int allocate_cmdlines_buffer(unsigned int val,
--				    struct saved_cmdlines_buffer *s)
-+static void free_saved_cmdlines_buffer(struct saved_cmdlines_buffer *s)
-+{
-+	int order = get_order(sizeof(*s) + s->cmdline_num * TASK_COMM_LEN);
-+
-+	kfree(s->map_cmdline_to_pid);
-+	free_pages((unsigned long)s, order);
-+}
-+
-+static struct saved_cmdlines_buffer *allocate_cmdlines_buffer(unsigned int val)
- {
-+	struct saved_cmdlines_buffer *s;
-+	struct page *page;
-+	int orig_size, size;
-+	int order;
-+
-+	/* Figure out how much is needed to hold the given number of cmdlines */
-+	orig_size = sizeof(*s) + val * TASK_COMM_LEN;
-+	order = get_order(orig_size);
-+	size = 1 << (order + PAGE_SHIFT);
-+	page = alloc_pages(GFP_KERNEL, order);
-+	if (!page)
-+		return NULL;
-+
-+	s = page_address(page);
-+	memset(s, 0, sizeof(*s));
-+
-+	/* Round up to actual allocation */
-+	val = (size - sizeof(*s)) / TASK_COMM_LEN;
-+	s->cmdline_num = val;
-+
- 	s->map_cmdline_to_pid = kmalloc_array(val,
- 					      sizeof(*s->map_cmdline_to_pid),
- 					      GFP_KERNEL);
--	if (!s->map_cmdline_to_pid)
--		return -ENOMEM;
--
--	s->saved_cmdlines = kmalloc_array(TASK_COMM_LEN, val, GFP_KERNEL);
--	if (!s->saved_cmdlines) {
--		kfree(s->map_cmdline_to_pid);
--		return -ENOMEM;
--	}
- 
- 	s->cmdline_idx = 0;
--	s->cmdline_num = val;
- 	memset(&s->map_pid_to_cmdline, NO_CMDLINE_MAP,
- 	       sizeof(s->map_pid_to_cmdline));
- 	memset(s->map_cmdline_to_pid, NO_CMDLINE_MAP,
- 	       val * sizeof(*s->map_cmdline_to_pid));
- 
--	return 0;
-+	return s;
- }
- 
- static int trace_create_savedcmd(void)
- {
--	int ret;
--
--	savedcmd = kmalloc(sizeof(*savedcmd), GFP_KERNEL);
--	if (!savedcmd)
--		return -ENOMEM;
--
--	ret = allocate_cmdlines_buffer(SAVED_CMDLINES_DEFAULT, savedcmd);
--	if (ret < 0) {
--		kfree(savedcmd);
--		savedcmd = NULL;
--		return -ENOMEM;
--	}
-+	savedcmd = allocate_cmdlines_buffer(SAVED_CMDLINES_DEFAULT);
- 
--	return 0;
-+	return savedcmd ? 0 : -ENOMEM;
- }
- 
- int is_tracing_stopped(void)
-@@ -6056,26 +6063,14 @@ tracing_saved_cmdlines_size_read(struct file *filp, char __user *ubuf,
- 	return simple_read_from_buffer(ubuf, cnt, ppos, buf, r);
- }
- 
--static void free_saved_cmdlines_buffer(struct saved_cmdlines_buffer *s)
--{
--	kfree(s->saved_cmdlines);
--	kfree(s->map_cmdline_to_pid);
--	kfree(s);
--}
--
- static int tracing_resize_saved_cmdlines(unsigned int val)
- {
- 	struct saved_cmdlines_buffer *s, *savedcmd_temp;
- 
--	s = kmalloc(sizeof(*s), GFP_KERNEL);
-+	s = allocate_cmdlines_buffer(val);
- 	if (!s)
- 		return -ENOMEM;
- 
--	if (allocate_cmdlines_buffer(val, s) < 0) {
--		kfree(s);
--		return -ENOMEM;
--	}
--
- 	preempt_disable();
- 	arch_spin_lock(&trace_cmdline_lock);
- 	savedcmd_temp = savedcmd;
--- 
-2.43.0
-
+--=20
+Jani Nikula, Intel
 
