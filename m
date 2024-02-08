@@ -1,102 +1,218 @@
-Return-Path: <stable+bounces-19300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B4D084E438
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 16:46:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D1AE84E46B
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 16:53:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F91E1F26CC7
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 15:46:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5E431F25BBF
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 15:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09117B3EA;
-	Thu,  8 Feb 2024 15:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MVZt/wN0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1EBF7CF15;
+	Thu,  8 Feb 2024 15:53:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281C87B3E9
-	for <stable@vger.kernel.org>; Thu,  8 Feb 2024 15:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D0F7B3FF;
+	Thu,  8 Feb 2024 15:53:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707407157; cv=none; b=kL1swTga8Bcm+PHmf42Nazb30mVolzt5LuAo0P3aiMzYTRZP37ViT51YIdxeZyvwXhB2qOB3ET7vGjMNNEJXldJavxKv8VsvMuyaegkJutA3kjWr2MK8teaC9UyKn01zaX2OlUPzYPzn1vUYaPUsri6Jv/fs+5qGiQb+fU19RSA=
+	t=1707407615; cv=none; b=moCGLEsh45TwQBk6rHvC+PfmIXqAHUss0U0sK+A5IpR8ms8Wn/xiX9vQEeXJd9YM/6e0mOBav63Cbf4sVVC9etazvL9UnrH8GNisrCwzpYsHiluCMz2zBqfzTXWYaWa3bVVPKdZx9Ce9Nwcpuial7oPPjiV8WOnlTHBURjISiV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707407157; c=relaxed/simple;
-	bh=A9yaxMwUDVUVXXKhGKwpMz7HeXYkp/aria/DOFQHeyI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DtyoSLp7MvvGs8CqZf/M3WfZRnaCObR0q78QoDiMezYdnAPf0MhOOPxofHacE63qs2v2N1H8tlQ8E5x4kgz6KMswGlaVz5WvmnjGqiqOJPTTSbGc2V1l6Ut7b/PposMs4dvN/ry0wZNqIgxtngjbpiW5XOUl95DtA0itg50suAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MVZt/wN0; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707407156; x=1738943156;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=A9yaxMwUDVUVXXKhGKwpMz7HeXYkp/aria/DOFQHeyI=;
-  b=MVZt/wN0VDyQUE5WJLXg0NKRtEAe1BmjGPOJFHHkBJaSt1mJeVL4k1+C
-   O+gS5JVVTFmCf67GRhERY73B36RDRWFzJCihdkScnLkHLmJqV7VMudevu
-   DfBc1TG+8gNzSPXtc/ldshKa8Ep+2AlnJzg+Go7x+jzEoKowd2CFBTt+L
-   hx7m71YVlouwk6goWpBmHEINlMwbX9820Xp6f4vFWnU/2nobdoyRuI0Hv
-   fipdik418nydBrkhr8mMTXZD4qpVGILhcnUqDB6gBGChGPyiolv4Mmbx+
-   jXwQE8ax05sogxXUi43Lw9T18FshWGKlScvXddfuvccVlT5OrkU8zsXRZ
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="18663156"
-X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
-   d="scan'208";a="18663156"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 07:45:55 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="824867150"
-X-IronPort-AV: E=Sophos;i="6.05,254,1701158400"; 
-   d="scan'208";a="824867150"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by orsmga001.jf.intel.com with SMTP; 08 Feb 2024 07:45:53 -0800
-Received: by stinkbox (sSMTP sendmail emulation); Thu, 08 Feb 2024 17:45:52 +0200
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: intel-gfx@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] drm/i915/dp: Limit SST link rate to <=8.1Gbps
-Date: Thu,  8 Feb 2024 17:45:52 +0200
-Message-ID: <20240208154552.14545-1-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1707407615; c=relaxed/simple;
+	bh=riINGfnd79EnQpYg7CsqL7ovhf6cZK3lm1VIv8aEOk4=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=fd5ncBapaIt/snW3YlN4837xim0L9AG/36UVprbkRXz4ZBUw2JR9+n3jZQvhVb5Io3gKighIKejLb8wqhhWO5G2EWWJlQUurw/S5M5P5Gq5GHMtkpBazr9OEGNbDttBV/Kk5Ldkwl85ZeiyzLxQsjLebZ6XAiMwYTRrf6SPCLYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C57C433F1;
+	Thu,  8 Feb 2024 15:53:32 +0000 (UTC)
+Date: Thu, 8 Feb 2024 10:53:28 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: LKML <linux-kernel@vger.kernel.org>, Linux trace kernel
+ <linux-trace-kernel@vger.kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Vincent Donnefort
+ <vdonnefort@google.com>, Sven Schnelle <svens@linux.ibm.com>, Mete Durlu
+ <meted@linux.ibm.com>, stable <stable@vger.kernel.org>
+Subject: [PATCH] tracing: Fix wasted memory in saved_cmdlines logic
+Message-ID: <20240208105328.7e73f71d@rorschach.local.home>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-Limit the link rate to HBR3 or below (<=8.1Gbps) in SST mode.
-UHBR (10Gbps+) link rates require 128b/132b channel encoding
-which we have not yet hooked up into the SST/no-sideband codepaths.
+While looking at improving the saved_cmdlines cache I found a huge amount
+of wasted memory that should be used for the cmdlines.
+
+The tracing data saves pids during the trace. At sched switch, if a trace
+occurred, it will save the comm of the task that did the trace. This is
+saved in a "cache" that maps pids to comms and exposed to user space via
+the /sys/kernel/tracing/saved_cmdlines file. Currently it only caches by
+default 128 comms.
+
+The structure that uses this creates an array to store the pids using
+PID_MAX_DEFAULT (which is usually set to 32768). This causes the structure
+to be of the size of 131104 bytes on 64 bit machines.
+
+In hex: 131104 = 0x20020, and since the kernel allocates generic memory in
+powers of two, the kernel would allocate 0x40000 or 262144 bytes to store
+this structure. That leaves 131040 bytes of wasted space.
+
+Worse, the structure points to an allocated array to store the comm names,
+which is 16 bytes times the amount of names to save (currently 128), which
+is 2048 bytes. Instead of allocating a separate array, make the structure
+end with a variable length string and use the extra space for that.
+
+This is similar to a recommendation that Linus had made about eventfs_inode names:
+
+  https://lore.kernel.org/all/20240130190355.11486-5-torvalds@linux-foundation.org/
+
+Instead of allocating a separate string array to hold the saved comms,
+have the structure end with: char saved_cmdlines[]; and round up to the
+next power of two over sizeof(struct saved_cmdline_buffers) + num_cmdlines * TASK_COMM_LEN
+It will use this extra space for the saved_cmdline portion.
+
+Now, instead of saving only 128 comms by default, by using this wasted
+space at the end of the structure it can save over 8000 comms and even
+saves space by removing the need for allocating the other array.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Fixes: 939c7a4f04fcd ("tracing: Introduce saved_cmdlines_size file")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/trace/trace.c | 73 +++++++++++++++++++++-----------------------
+ 1 file changed, 34 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index ab415f41924d..5045c34a16be 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -2356,6 +2356,9 @@ intel_dp_compute_config_limits(struct intel_dp *intel_dp,
- 	limits->min_rate = intel_dp_common_rate(intel_dp, 0);
- 	limits->max_rate = intel_dp_max_link_rate(intel_dp);
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 2a7c6fd934e9..0b3e60b827f7 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2320,7 +2320,7 @@ struct saved_cmdlines_buffer {
+ 	unsigned *map_cmdline_to_pid;
+ 	unsigned cmdline_num;
+ 	int cmdline_idx;
+-	char *saved_cmdlines;
++	char saved_cmdlines[];
+ };
+ static struct saved_cmdlines_buffer *savedcmd;
  
-+	/* FIXME 128b/132b SST support missing */
-+	limits->max_rate = min(limits->max_rate, 810000);
+@@ -2334,47 +2334,54 @@ static inline void set_cmdline(int idx, const char *cmdline)
+ 	strncpy(get_saved_cmdlines(idx), cmdline, TASK_COMM_LEN);
+ }
+ 
+-static int allocate_cmdlines_buffer(unsigned int val,
+-				    struct saved_cmdlines_buffer *s)
++static void free_saved_cmdlines_buffer(struct saved_cmdlines_buffer *s)
++{
++	int order = get_order(sizeof(*s) + s->cmdline_num * TASK_COMM_LEN);
 +
- 	limits->min_lane_count = 1;
- 	limits->max_lane_count = intel_dp_max_lane_count(intel_dp);
++	kfree(s->map_cmdline_to_pid);
++	free_pages((unsigned long)s, order);
++}
++
++static struct saved_cmdlines_buffer *allocate_cmdlines_buffer(unsigned int val)
+ {
++	struct saved_cmdlines_buffer *s;
++	struct page *page;
++	int orig_size, size;
++	int order;
++
++	/* Figure out how much is needed to hold the given number of cmdlines */
++	orig_size = sizeof(*s) + val * TASK_COMM_LEN;
++	order = get_order(orig_size);
++	size = 1 << (order + PAGE_SHIFT);
++	page = alloc_pages(GFP_KERNEL, order);
++	if (!page)
++		return NULL;
++
++	s = page_address(page);
++	memset(s, 0, sizeof(*s));
++
++	/* Round up to actual allocation */
++	val = (size - sizeof(*s)) / TASK_COMM_LEN;
++	s->cmdline_num = val;
++
+ 	s->map_cmdline_to_pid = kmalloc_array(val,
+ 					      sizeof(*s->map_cmdline_to_pid),
+ 					      GFP_KERNEL);
+-	if (!s->map_cmdline_to_pid)
+-		return -ENOMEM;
+-
+-	s->saved_cmdlines = kmalloc_array(TASK_COMM_LEN, val, GFP_KERNEL);
+-	if (!s->saved_cmdlines) {
+-		kfree(s->map_cmdline_to_pid);
+-		return -ENOMEM;
+-	}
  
+ 	s->cmdline_idx = 0;
+-	s->cmdline_num = val;
+ 	memset(&s->map_pid_to_cmdline, NO_CMDLINE_MAP,
+ 	       sizeof(s->map_pid_to_cmdline));
+ 	memset(s->map_cmdline_to_pid, NO_CMDLINE_MAP,
+ 	       val * sizeof(*s->map_cmdline_to_pid));
+ 
+-	return 0;
++	return s;
+ }
+ 
+ static int trace_create_savedcmd(void)
+ {
+-	int ret;
+-
+-	savedcmd = kmalloc(sizeof(*savedcmd), GFP_KERNEL);
+-	if (!savedcmd)
+-		return -ENOMEM;
+-
+-	ret = allocate_cmdlines_buffer(SAVED_CMDLINES_DEFAULT, savedcmd);
+-	if (ret < 0) {
+-		kfree(savedcmd);
+-		savedcmd = NULL;
+-		return -ENOMEM;
+-	}
++	savedcmd = allocate_cmdlines_buffer(SAVED_CMDLINES_DEFAULT);
+ 
+-	return 0;
++	return savedcmd ? 0 : -ENOMEM;
+ }
+ 
+ int is_tracing_stopped(void)
+@@ -6056,26 +6063,14 @@ tracing_saved_cmdlines_size_read(struct file *filp, char __user *ubuf,
+ 	return simple_read_from_buffer(ubuf, cnt, ppos, buf, r);
+ }
+ 
+-static void free_saved_cmdlines_buffer(struct saved_cmdlines_buffer *s)
+-{
+-	kfree(s->saved_cmdlines);
+-	kfree(s->map_cmdline_to_pid);
+-	kfree(s);
+-}
+-
+ static int tracing_resize_saved_cmdlines(unsigned int val)
+ {
+ 	struct saved_cmdlines_buffer *s, *savedcmd_temp;
+ 
+-	s = kmalloc(sizeof(*s), GFP_KERNEL);
++	s = allocate_cmdlines_buffer(val);
+ 	if (!s)
+ 		return -ENOMEM;
+ 
+-	if (allocate_cmdlines_buffer(val, s) < 0) {
+-		kfree(s);
+-		return -ENOMEM;
+-	}
+-
+ 	preempt_disable();
+ 	arch_spin_lock(&trace_cmdline_lock);
+ 	savedcmd_temp = savedcmd;
 -- 
 2.43.0
 
