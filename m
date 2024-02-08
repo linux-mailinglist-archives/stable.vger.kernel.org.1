@@ -1,146 +1,106 @@
-Return-Path: <stable+bounces-19297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A445884E329
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 15:29:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC30884E35A
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 15:42:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C178B24774
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 14:29:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87D202821F3
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 14:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C54178B4D;
-	Thu,  8 Feb 2024 14:29:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hGdscU2q"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901B479DA1;
+	Thu,  8 Feb 2024 14:42:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EA02EB14;
-	Thu,  8 Feb 2024 14:29:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E9378B75;
+	Thu,  8 Feb 2024 14:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707402589; cv=none; b=bCrK7KS6qBfsGgdG6SdsrV5IbStYNXGvPp8Uw7AFYVF4zf12ZZxIcZGwYznsMDhRMk0snkf/FLVuq3HkhFptTsqJqwUCCf/53ixf81/wMffVCNK5+QToXEAHbNQVudPq9gxFqLvfvYWOFHEWPLdobxoxtxCoCyTkJix99bzfi7s=
+	t=1707403370; cv=none; b=q54TBzPCVA3BFD7wIwv3MHsNfTeXqxbRNDdogPlpOrM+pPbEhPg0dWNaIGZox/+kRgYNjCMQ1JAROCTj/pk+mgSa8OSsO6DSsCb/xoq8ToAaD0GJKHkzFJddxZ7GmxMoIAXgAuJhcWbSJImRL38CitZjiwFXLvQHwcbJgmR4LCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707402589; c=relaxed/simple;
-	bh=BjhD4pm+ohrOgBwpHnJBgVialPzyURLLtifb2JZRcvA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=npotn9jDbR/d0NKX9u0O4rwBu4lVFC2lwENvTkOzCzNCE5c14/t5lslbunDGeEE0VyGWmxvUhDe6T1ggeDjx6bAOk988eLKd7YpYU828pvO/IdXQGv9Dfftkl6IHP/O1mB5vNhN8q8yZsSiWWE1gdS7BawQVWc0x8A4yHGvVfDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hGdscU2q; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4185Do4c025038;
-	Thu, 8 Feb 2024 14:29:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=pqOQ0pk1w4ZIPMpcW3wgFsiH/QfkfRueUw7WRbNFp/8=; b=hG
-	dscU2qq7Ic0Y0NtjNeSa5QCTQrb6PSzTkJHnr++4IRXVWAGLEwcktx0Bth5QEkG0
-	XlywtN8eNwDRmcn6V9mv93s2hvmy7JRxdTlsV2hgdtfsZ/nIeT7pHOccUwFjToZ2
-	AMHMtViXlNVCdQ6BgJB8HPINcmQtNeqJo3FjdR6PvIObwoj6WsiVRqDToxv69jE8
-	522tK+6nBeMFNAtZjMmrM8KEygaMZksuyIOel49kcdLBceSAvy5fsCrANKelj47r
-	MQjMviUCYMDTYKoHGlmB4+8yzk4EX0dg0t7EoYnLWC+PbfjKuDPuLp7vr/fc49QN
-	FLKDH7BN9CFNobwpbQSg==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w4h0uj6h7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Feb 2024 14:29:37 +0000 (GMT)
-Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 418ETbXG005314
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 8 Feb 2024 14:29:37 GMT
-Received: from [10.216.60.50] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 8 Feb
- 2024 06:29:34 -0800
-Message-ID: <b1991baf-e642-f811-14b0-ccd7c0cd56ec@quicinc.com>
-Date: Thu, 8 Feb 2024 19:59:20 +0530
+	s=arc-20240116; t=1707403370; c=relaxed/simple;
+	bh=jTC7Yl8CGI3zJJ9sjNzV4WysyTmtlbJK/KOW6mryqbA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PcRThTjdpU+mq0rDmDbRPDcQmz9D6GVIdHDe/reLr/4TwIqcrJKvDZp6JoqRTQ28vC7BCZbQG0igxSGnvHYnn3u1ByXFkkvTvPHIQjyoMFxI5bETBc0jZHPdLq58QHzZr1/ppALbRNQmMMAf8hOEmj2v+j0WOF81D9tQd1jjOVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from r.smirnovsmtp.omp.ru (10.189.215.22) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Thu, 8 Feb
+ 2024 17:42:41 +0300
+From: Roman Smirnov <r.smirnov@omp.ru>
+To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Roman Smirnov <r.smirnov@omp.ru>, Ryusuke Konishi
+	<konishi.ryusuke@gmail.com>, <linux-nilfs@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	<lvc-project@linuxtesting.org>, Sergey Shtylyov <s.shtylyov@omp.ru>, Karina
+ Yankevich <k.yankevich@omp.ru>, Andrey Rusalin <a.rusalin@omp.ru>, Sergey
+ Yudin <s.yudin@omp.ru>, Valentin Perevozchikov <v.perevozchikov@omp.ru>
+Subject: [PATCH 5.10/5.15/6.1 0/1] nilfs2: fix WARNING in nilfs_dat_prepare_end()
+Date: Thu, 8 Feb 2024 14:42:23 +0000
+Message-ID: <20240208144224.438146-1-r.smirnov@omp.ru>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3] soc: qcom: mdt_loader: Add Upperbounds check for
- program header access
-Content-Language: en-US
-To: Auditya Bhattaram <quic_audityab@quicinc.com>, <andersson@kernel.org>,
-        <konrad.dybcio@linaro.org>
-CC: <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20240208123527.19725-1-quic_audityab@quicinc.com>
-From: Mukesh Ojha <quic_mojha@quicinc.com>
-In-Reply-To: <20240208123527.19725-1-quic_audityab@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01c.na.qualcomm.com (10.45.79.139)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: KxJzfQkUXXq8Ut2NX3OHB5BcGof4Gp04
-X-Proofpoint-GUID: KxJzfQkUXXq8Ut2NX3OHB5BcGof4Gp04
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-08_05,2024-02-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- spamscore=0 mlxscore=0 suspectscore=0 phishscore=0 malwarescore=0
- bulkscore=0 mlxlogscore=999 priorityscore=1501 clxscore=1011
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401310000 definitions=main-2402080077
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: msexch02.omp.ru (10.188.4.13) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.0, Database issued on: 02/08/2024 14:27:39
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 183298 [Feb 08 2024]
+X-KSE-AntiSpam-Info: Version: 6.1.0.3
+X-KSE-AntiSpam-Info: Envelope from: r.smirnov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 7 0.3.7 6d6bf5bd8eea7373134f756a2fd73e9456bb7d1a
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info:
+	syzkaller.appspot.com:5.0.1,7.1.1;r.smirnovsmtp.omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;omp.ru:7.1.1
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 02/08/2024 14:32:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 2/8/2024 12:48:00 PM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
+Syzkaller reports WARNING in nilfs_dat_prepare_end() in 5.10, 5.15 and 6.1
+stable releases. The problem has been fixed in upstream:
+https://syzkaller.appspot.com/bug?extid=5d5d25f90f195a3cfcb4
 
+The problem can also be fixed in versions 5.10, 5.15 and 6.1 by the
+following patch.
 
-On 2/8/2024 6:05 PM, Auditya Bhattaram wrote:
-> hash_index is evaluated by looping phdrs till QCOM_MDT_TYPE_HASH
-> is found. Add an upperbound check to phdrs to access within elf size.
-> 
-> Fixes: 64fb5eb87d58 ("soc: qcom: mdt_loader: Allow hash to reside in any segment")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Auditya Bhattaram <quic_audityab@quicinc.com>
-> ---
-> Changes in v3:
->   - Corrected wrong patch versioning in the Subject.
->   - Added error prints for Invalid access.
-> Link to v2 https://lore.kernel.org/linux-arm-msm/9773d189-c896-d5c5-804c-e086c24987b4@quicinc.com/T/#t
-> Link to v1 https://lore.kernel.org/linux-arm-msm/5d7a3b97-d840-4863-91a0-32c1d8e7532f@linaro.org/T/#t
-> ---
->   drivers/soc/qcom/mdt_loader.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/soc/qcom/mdt_loader.c b/drivers/soc/qcom/mdt_loader.c
-> index 6f177e46fa0f..61e2377cc5c3 100644
-> --- a/drivers/soc/qcom/mdt_loader.c
-> +++ b/drivers/soc/qcom/mdt_loader.c
-> @@ -145,6 +145,11 @@ void *qcom_mdt_read_metadata(const struct firmware *fw, size_t *data_len,
->   	if (phdrs[0].p_type == PT_LOAD)
->   		return ERR_PTR(-EINVAL);
-> 
-> +	if (((size_t)(phdrs + ehdr->e_phnum)) > ((size_t)ehdr + fw->size)) {
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-This change is valid only if somehow, ehdr->e_phnum gets corrupted or 
-changed via some engineering means and results in out-of-bounds access.
+Link: https://syzkaller.appspot.com/bug?extid=325e6b0a1e7cf9035cc0
+Link: https://syzkaller.appspot.com/bug?extid=bebf30d67ea2569f0fd3
 
-Acked-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Ryusuke Konishi (1):
+  nilfs2: replace WARN_ONs for invalid DAT metadata block requests
 
-> +		dev_err(dev, "Invalid phdrs access: %s\n", fw_name);
+ fs/nilfs2/dat.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-Should it print ehdr->e_phnum as well to be more valid?
-
--Mukesh
-
-> +		return ERR_PTR(-EINVAL);
-> +	}
-> +
->   	for (i = 1; i < ehdr->e_phnum; i++) {
->   		if ((phdrs[i].p_flags & QCOM_MDT_TYPE_MASK) == QCOM_MDT_TYPE_HASH) {
->   			hash_segment = i;
-> --
-> 2.17.1
-> 
-> 
+-- 
+2.34.1
 
