@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-19325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A693E84E9A5
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 21:25:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F02D484E9C8
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 21:41:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6822B2FA7A
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 20:23:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A739B28784B
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 20:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52B3381D3;
-	Thu,  8 Feb 2024 20:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D9DC44C96;
+	Thu,  8 Feb 2024 20:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2SIKivkJ"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Dc4Bu3rv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608DD38DFA;
-	Thu,  8 Feb 2024 20:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C3A2B9D8;
+	Thu,  8 Feb 2024 20:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707423751; cv=none; b=dPqchK7lvUob4GMdfBXwq23Vi07x6oalh0Xv3fjJJnVeobnZn/zcMGfCayZrS4pW6QmGyTk2p0un40Qm31OU0usTDlMN9odo62j0/C6z0zX0pDrK0kmSIBiq/r0fGn8O8mFOfWKwPPV7ERPnw/asikg2CVKl4fdLYAZcTlVSr0A=
+	t=1707424906; cv=none; b=NQcHAOt7nxwBoSGRSvulgLaGQoXIL2yHYWyYMJdUEmER/EUr71uO6xdzLRX1W0NbMTMEQkeGSBeqdWNdV/a0TS4lY93mJlAJIuZjxBXsATr1g0sw5OWljpfwd5uLVaEZQ+Oi8tlFysXe6t3OaouNoBtbjzwYepgx7p5bJKMwTys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707423751; c=relaxed/simple;
-	bh=WfSEZa6Q3Ok25eTwMPEKrgvr26vOJAtkJzzYKzAq3uk=;
-	h=Date:To:From:Subject:Message-Id; b=gM0AZ8EwNAofLfd+Oeb7eM6fRYKtPLPo2NaCclsVCkeG7EcdoVAjwnfqmHdTmvLopZWCQoCgDMTo0KmugF0ngsmgJgcSp0VbV906A82NZh+3qhUnQQz4TfzxcM9hiuZbLNv8QutJfW1k2eaXnS8zEBMSfTLGNjutS0EZJBlYQHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=2SIKivkJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86F1C433C7;
-	Thu,  8 Feb 2024 20:22:30 +0000 (UTC)
+	s=arc-20240116; t=1707424906; c=relaxed/simple;
+	bh=iymS9N6MpSa6UZMdjc9Nay8JksKAosETXud5N90lqPY=;
+	h=Date:To:From:Subject:Message-Id; b=IkRr4GuqWJxH4WLvAvEeAQ+Ej6+jgbFDMz+Y5Wx/O0rc48yrP17Agsj4lLyYCPJT6KiQ0i++hLUvW5OoeAr85K3kWJu38n4mV2laDJrjxOOcPlQFMa8nsq2t+OHMNe1fbECYiOB/lfvRrbokfJCWc2uMnhV9Sut0S+cOtKr+b+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Dc4Bu3rv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45980C433F1;
+	Thu,  8 Feb 2024 20:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1707423750;
-	bh=WfSEZa6Q3Ok25eTwMPEKrgvr26vOJAtkJzzYKzAq3uk=;
+	s=korg; t=1707424905;
+	bh=iymS9N6MpSa6UZMdjc9Nay8JksKAosETXud5N90lqPY=;
 	h=Date:To:From:Subject:From;
-	b=2SIKivkJMWQGqPmAtGhAUMc9SMVMNwMMaLXYToqqhb0+uwcqLH6pu/PiLthLPBl75
-	 q9hSla7LVcW/PrfQVbpd8bHULZwApfdDc3zmZastjST3+3031SilfKHqWF85eQeUis
-	 129ygmY+D5/oIaDnD14FbJenQzkI4lfMfOMeQr8M=
-Date: Thu, 08 Feb 2024 12:22:29 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,dhowells@redhat.com,linux@roeck-us.net,akpm@linux-foundation.org
+	b=Dc4Bu3rvCO/VMvuhv7AmAxsA0HfM0ffX/0UjhplUJDKocHzg5CeF4zH1cpkMydtuv
+	 SZ5VfkAgtjre88gigvglDIcnKqZ/Ciwjf0glGXwsAZL13f+KjV/QV7eXbVXf1ci4yK
+	 x8EU1VqqrGloZeNjxrFGThWFNR2Ir9OU5bpfkL/I=
+Date: Thu, 08 Feb 2024 12:41:44 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,david@redhat.com,anshuman.khandual@arm.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + lib-kconfigdebug-test_iov_iter-depends-on-mmu.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240208202230.D86F1C433C7@smtp.kernel.org>
+Subject: + fs-proc-task_mmu-add-display-flag-for-vm_mayoverlay.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240208204145.45980C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: lib/Kconfig.debug: TEST_IOV_ITER depends on MMU
+     Subject: fs/proc/task_mmu: add display flag for VM_MAYOVERLAY
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     lib-kconfigdebug-test_iov_iter-depends-on-mmu.patch
+     fs-proc-task_mmu-add-display-flag-for-vm_mayoverlay.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/lib-kconfigdebug-test_iov_iter-depends-on-mmu.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-proc-task_mmu-add-display-flag-for-vm_mayoverlay.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,49 +73,48 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Guenter Roeck <linux@roeck-us.net>
-Subject: lib/Kconfig.debug: TEST_IOV_ITER depends on MMU
-Date: Thu, 8 Feb 2024 07:30:10 -0800
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: fs/proc/task_mmu: add display flag for VM_MAYOVERLAY
+Date: Thu, 8 Feb 2024 14:18:05 +0530
 
-Trying to run the iov_iter unit test on a nommu system such as the qemu
-kc705-nommu emulation results in a crash.
+VM_UFFD_MISSING flag is mutually exclussive with VM_MAYOVERLAY flag as
+they both use the same bit position i.e 0x00000200 in the vm_flags.  Let's
+update show_smap_vma_flags() to display the correct flags depending on
+CONFIG_MMU.
 
-    KTAP version 1
-    # Subtest: iov_iter
-    # module: kunit_iov_iter
-    1..9
-BUG: failure at mm/nommu.c:318/vmap()!
-Kernel panic - not syncing: BUG!
-
-The test calls vmap() directly, but vmap() is not supported on nommu
-systems, causing the crash.  TEST_IOV_ITER therefore needs to depend on
-MMU.
-
-Link: https://lkml.kernel.org/r/20240208153010.1439753-1-linux@roeck-us.net
-Fixes: 2d71340ff1d4 ("iov_iter: Kunit tests for copying to/from an iterator")
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Cc: David Howells <dhowells@redhat.com>
+Link: https://lkml.kernel.org/r/20240208084805.1252337-1-anshuman.khandual@arm.com
+Fixes: b6b7a8faf05c ("mm/nommu: don't use VM_MAYSHARE for MAP_PRIVATE mappings")
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- lib/Kconfig.debug |    1 +
- 1 file changed, 1 insertion(+)
+ fs/proc/task_mmu.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/lib/Kconfig.debug~lib-kconfigdebug-test_iov_iter-depends-on-mmu
-+++ a/lib/Kconfig.debug
-@@ -2235,6 +2235,7 @@ config TEST_DIV64
- config TEST_IOV_ITER
- 	tristate "Test iov_iter operation" if !KUNIT_ALL_TESTS
- 	depends on KUNIT
-+	depends on MMU
- 	default KUNIT_ALL_TESTS
- 	help
- 	  Enable this to turn on testing of the operation of the I/O iterator
+--- a/fs/proc/task_mmu.c~fs-proc-task_mmu-add-display-flag-for-vm_mayoverlay
++++ a/fs/proc/task_mmu.c
+@@ -681,7 +681,11 @@ static void show_smap_vma_flags(struct s
+ 		[ilog2(VM_HUGEPAGE)]	= "hg",
+ 		[ilog2(VM_NOHUGEPAGE)]	= "nh",
+ 		[ilog2(VM_MERGEABLE)]	= "mg",
++#ifdef CONFIG_MMU
+ 		[ilog2(VM_UFFD_MISSING)]= "um",
++#else
++		[ilog2(VM_MAYOVERLAY)]	= "ov",
++#endif /* CONFIG_MMU */
+ 		[ilog2(VM_UFFD_WP)]	= "uw",
+ #ifdef CONFIG_ARM64_MTE
+ 		[ilog2(VM_MTE)]		= "mt",
 _
 
-Patches currently in -mm which might be from linux@roeck-us.net are
+Patches currently in -mm which might be from anshuman.khandual@arm.com are
 
-lib-kconfigdebug-test_iov_iter-depends-on-mmu.patch
+fs-proc-task_mmu-add-display-flag-for-vm_mayoverlay.patch
+mm-cma-dont-treat-bad-input-arguments-for-cma_alloc-as-its-failure.patch
+mm-cma-drop-config_cma_debug.patch
+mm-cma-make-max_cma_areas-=-config_cma_areas.patch
+mm-cma-add-sysfs-file-release_pages_success.patch
 
 
