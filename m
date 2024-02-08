@@ -1,164 +1,140 @@
-Return-Path: <stable+bounces-19303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F380884E6F6
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 18:42:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F180D84E743
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 19:04:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 315511C23492
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 17:42:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F1DD1F25780
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 18:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAADB823CF;
-	Thu,  8 Feb 2024 17:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B333783CD5;
+	Thu,  8 Feb 2024 18:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ODmKEHzt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KHHlQcq5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABFC83CD3
-	for <stable@vger.kernel.org>; Thu,  8 Feb 2024 17:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640D67EF0C;
+	Thu,  8 Feb 2024 18:04:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707414160; cv=none; b=esyHQW65i+Cz4PzQdvjlmKWeiCk9q+ffC3ZyjPz38P44eycVy/KXQn2TuvBxJjK6aUDmWy4U/G9m2HxLxiwYY1glfF5fOK/lOlF0avNsSbWWJAhOg0MNjGpkan9tNQjiNXWYGX8WuZOYcpIJ1gtUvnV4I0Cd7NsFChyJ+POPL4A=
+	t=1707415462; cv=none; b=E/AQbA/ZA4EqAiW3Sc9WA/U0ibv1gH+L78oQnMsEPF7iqqsXFbtf2K4wzRwqZoiDovmklSlII51IGM6KOq7+SNHIpT0WRLs+Lg+/YpCoU6MVGSo4mrXdLj48yK5iRTxiSzVAUHWhVoXcj4E7ATtUwLvHj1JaT/ER6hpvZe1C6tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707414160; c=relaxed/simple;
-	bh=jTyqq1McBzhXuBGoQDTNsRl0bVoBKu3QPqRS+ZSe964=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G8ofc3azzWKwSKgpg8hnUwfSb5z+JWQKB+qL0WejbePoYqjqAqgK698XYsmcsIIig45A5gd83EJL+SP2is7O+KkYNKQY2RMrvInnQlhzrlTpOhHuTL49C7zj1kg3UZKqVy/mVmC3jJMantXd2PKYSKTd8IQTlQu7iTgla/G71jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ODmKEHzt; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6860ff3951aso395886d6.1
-        for <stable@vger.kernel.org>; Thu, 08 Feb 2024 09:42:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707414158; x=1708018958; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qE9yJofYcIrp+q8fl2NtOvzDEIFhiUUc4detkUYKRUo=;
-        b=ODmKEHzt3IVRk9s32gldWB8tCYoD1x7ROFpCAFaY0kCxCj1+OaGZJ9/nEATY0jCirB
-         D0xzDilAaLkVd+aY1yUqSbsIMOTfmtRYo9o12oKtYFfp4ch5bs+UJrD0D3uQTUjSd6k3
-         hVot2f+yitilQxsdjf0ybbKptSug95aUbdozzHRuRMCGPqVVi8Qk3GyNT7Yvij2DPh7P
-         RHNcAo8ZWrAcfEdSjPXeQ1sA4Rqcyf+5MhtI/18MxrI5UVfHWj+a2x0Lft6j86eHxb7F
-         SKsFNKeWCovD7j6ah6RCEAL3eThKvP01fR1834yKVPUpGS5ByW2nny0Sin5/qXtvGpMo
-         cVPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707414158; x=1708018958;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qE9yJofYcIrp+q8fl2NtOvzDEIFhiUUc4detkUYKRUo=;
-        b=bTa0THRqDApV4MNrgjIsCvBbTaf3DFaXtBiedG5yquBiM75ZgiKAF5gYPie5PFcxvE
-         HBiX5AqEI8IulN0THLdMMviQO4kUZ0+OQ3MZJDCVn8RoAVprmf8g07UkdLqLiOmEOjOV
-         npnraGuow6pQM3gmz7hbInEdyMl+ZWXyzW4Ulv/BLrtsAgEXX1AsRZVNveuadP0der3R
-         FCGTSsSCX+8ezbrgyMqhQxnFYABPNzBgf8GbAdXGeQ9Qaq5U+VSvXvBWvGdSDd+Ur55+
-         6iFDyhAVIbKLl+e1AXnRq6s6C8WSEyWGl3RVp+jYbkGH2/OaxHiGaliOtyyxuOMMI7F3
-         hDJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUOlQgakswWDRtRCruuFpkH2FiWqP+ScSo7jhQWa2E6qqTYTIZNKuQUjsYSgRrixrImAHENJYGlhwJHeW2Mw8I0OJHY84He
-X-Gm-Message-State: AOJu0Yx0IOrE/XcTa+7/8dPqHQ1ffchcyMBs5qyuXyS61Is+mgK1KX2X
-	6OET7kC+qdC6YG1/MQAnjwZmZlnpfXz0jD1PS1TAiW0Ys1lQWG+Nb9Anh1F6RVkfNwSzk1ifkX6
-	wOpmB75iYAcEmBE+dZIkcEo2ZFRuW/ummDlZR
-X-Google-Smtp-Source: AGHT+IHisO4YeJ4HMjJTJ7Pa6g2UoWbHmyDF6/F8nMdBmOGtjRmAF7AXJRfz3Lb4ftoWcIr8EGxQVdi4TlQ13SQyHQk=
-X-Received: by 2002:a05:6214:258b:b0:681:78cf:3920 with SMTP id
- fq11-20020a056214258b00b0068178cf3920mr12087645qvb.25.1707414157664; Thu, 08
- Feb 2024 09:42:37 -0800 (PST)
+	s=arc-20240116; t=1707415462; c=relaxed/simple;
+	bh=gg5lRi0FckXjDkUVqSo3pBy+xDC24jMwih4308TMI/o=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HoYjkEVJ3miEXV4qly/mfNMLG/+rXMbVg5SkfpwSPEOmtOD0n/hmwjRoYVva7Ml1244sUdfe+yLn4cxTTJi3vglHoIj9CAHxcDhYQS78KwmF7xPOPEldiA7ZPrQhCzlungxrVWdOVNf65MIHlyZTwqyCMBUar9RaUDwEmsrYYVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KHHlQcq5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF7DC433F1;
+	Thu,  8 Feb 2024 18:04:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707415461;
+	bh=gg5lRi0FckXjDkUVqSo3pBy+xDC24jMwih4308TMI/o=;
+	h=From:Subject:Date:To:Cc:From;
+	b=KHHlQcq5ZRssevtCuJ1jlYCWk7seL1eQX+J123YgSdNo/gIlpycdN3GTjZJSXUKCL
+	 cRu3DB9FYwI4NsZsjTQkQ4S2ny1l7wtUkJeBGdVhHBNeHqmwnMvNqr8C8OejjwEzb9
+	 mdlZCaL6AO9BE6yWCFp7vayYzHKlX6M35ltxGvGBMtnLYrSqRb4dslgzpan1mrSVWV
+	 igUNxRLi6s2WtM5mmxk7Fk8746M/uadJ9CRPlZ+k4lSt/iSp+oyLh8kK5UwP0xyy5X
+	 AYocyg1c8fYrcRKJ9s71j48HhPYNvtPOwfDU3e5zTCBKNW+Q0V8Ok3D5XdM6w/NpL2
+	 T60n12mfK5nLg==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/7] mptcp: locking cleanup & misc. fixes
+Date: Thu, 08 Feb 2024 19:03:48 +0100
+Message-Id: <20240208-upstream-net-20240202-locking-cleanup-misc-v1-0-f75cc5b97e5a@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <38f51dbb-65aa-4ec2-bed2-e914aef27d25@vrvis.at>
- <ZcNdzZVPD76uSbps@eldamar.lan> <CADKFtnRfqi-A_Ak_S-YC52jPn604+ekcmCmNoTA_yEpAcW4JJg@mail.gmail.com>
- <1d4c7d06-0c02-4adb-a2a3-ec85fd802ddb@vrvis.at>
-In-Reply-To: <1d4c7d06-0c02-4adb-a2a3-ec85fd802ddb@vrvis.at>
-From: Jordan Rife <jrife@google.com>
-Date: Thu, 8 Feb 2024 09:42:24 -0800
-Message-ID: <CADKFtnQUQt=M32tYhcutP0q6exOgk9R6xgxddDdewbms+7xwTQ@mail.gmail.com>
-Subject: Re: [regression 6.1.76] dlm: cannot start dlm midcomms -97 after
- backport of e9cdebbe23f1 ("dlm: use kernel_connect() and kernel_bind()")
-To: Valentin Kleibel <valentin@vrvis.at>
-Cc: Salvatore Bonaccorso <carnil@debian.org>, David Teigland <teigland@redhat.com>, 
-	Alexander Aring <aahringo@redhat.com>, 1063338@bugs.debian.org, gfs2@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	gregkh@linuxfoundation.org, regressions@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIQXxWUC/z2NSwrCQBBErxJ6bUMcjb+riIthUomNSWeYTkQIu
+ buNCzcFr+BVrWQoAqNbtVLBW0wmddjvKkrPqD1YWmcKdTjWHrxkmwviyIqZ/+0wpZdoz2lA1CX
+ zKJa46QJwvraXQ3MiH8wFnXx+Z3dynR7b9gVntgzggQAAAA==
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Kishen Maloor <kishen.maloor@intel.com>, 
+ Florian Westphal <fw@strlen.de>, 
+ Peter Krystad <peter.krystad@linux.intel.com>, 
+ Dmytro Shytyi <dmytro@shytyi.net>, 
+ Benjamin Hesmans <benjamin.hesmans@tessares.net>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Christoph Paasch <cpaasch@apple.com>, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org, 
+ syzbot+c53d4d3ddb327e80bc51@syzkaller.appspotmail.com, 
+ Geliang Tang <geliang@kernel.org>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2167; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=gg5lRi0FckXjDkUVqSo3pBy+xDC24jMwih4308TMI/o=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBlxRehYosQjMTFqZJREP9PUCIdS9tEwvEMEsEbU
+ iOtu15J4KKJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZcUXoQAKCRD2t4JPQmmg
+ c2JpEACuYOjFpW4L3CHGYvKnQbqwEOVjCxx9bX305RgAFWX2TMhBDnG82+An3yuQ7ld8wOWc7W3
+ A2sgba96KbnIOQWl1tjlzUS8NohRywHqHjbHPo/LyT1B3ReJeMZ0mihFy29zJOvLDzD9HCh0kl7
+ KvZnL2Fz1FjS8akZejt8eJi99v0munrTr0WUGk6sm9vvDqiJwprR6VK46V3wY5SgOEA6VEHznXt
+ DxsGk6lAEsNBK0OOr4nPOmbV9buQq5IqSVZLr09fUUUNVALJnCwJ6fbO0mPgE7zUEPkhAFWnCix
+ 3LscvV1g2V1sfyyUBCiPK3KKeYzTG8I5Ze7VILHCgd9haA3UBfdOl2gwVz6qk+08psm7U0Ijoe3
+ kTz9fjY62clQAxEZ4LAu5uXg95tncUn6H+x8hwN86c+SuXqtUggEPuTKFIruUiwxmUP92CIVtBX
+ We1bAUj4yBROFo9PNWi03ui4orDCJ45U4hTzO4qPit+3TEkAdNqd0IjbEncGuyJJcsv0WMRJNmV
+ KuqUoUbkek0WzQb7/nlVflpyOH0Yr3z//YfO2h6kAA4jLBvAdL9zFkoY2Y/s0N6f5vXvEJDZx7Z
+ l98N15iQVxSovB1Nj9BtWVqCPHTKPjPl8RCtQPYyPwDNZ5ZLvogXQ3lI7bqEvDx2w9BgbImDQn1
+ z3LMCeWXVy9qDyQ==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-On Thu, Feb 8, 2024 at 3:37=E2=80=AFAM Valentin Kleibel <valentin@vrvis.at>=
- wrote:
->
-> Hi Jordan, hi all
->
-> > Just a quick look comparing dlm_tcp_listen_bind between the latest 6.1
-> > and 6.6 stable branches,
-> > it looks like there is a mismatch here with the dlm_local_addr[0] param=
-eter.
-> >
-> > 6.1
-> > ----
-> >
-> > static int dlm_tcp_listen_bind(struct socket *sock)
-> > {
-> > int addr_len;
-> >
-> > /* Bind to our port */
-> > make_sockaddr(dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
-> > return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
-> >     addr_len);
-> > }
-> >
-> > 6.6
-> > ----
-> > static int dlm_tcp_listen_bind(struct socket *sock)
-> > {
-> > int addr_len;
-> >
-> > /* Bind to our port */
-> > make_sockaddr(&dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
-> > return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
-> >     addr_len);
-> > }
-> >
-> > 6.6 contains commit c51c9cd8 (fs: dlm: don't put dlm_local_addrs on hea=
-p) which
-> > changed
-> >
-> > static struct sockaddr_storage *dlm_local_addr[DLM_MAX_ADDR_COUNT];
-> >
-> > to
-> >
-> > static struct sockaddr_storage dlm_local_addr[DLM_MAX_ADDR_COUNT];
-> >
-> > It looks like kernel_bind() in 6.1 needs to be modified to match.
->
-> We tried to apply commit c51c9cd8 (fs: dlm: don't put dlm_local_addrs on
-> heap) to the debian kernel 6.1.76 and came up with the attached patch.
-> Besides the different offsets there is a slight change dlm_tcp_bind()
-> where in 6.1.76 kernel_bind() is used instead of sock->ops->bind() in
-> the original commit.
->
-> This patch solves the issue we experienced.
->
-> Thanks for your help,
-> Valentin
+Patches 1-4 are fixes for issues found by Paolo while working on adding
+TCP_NOTSENT_LOWAT support. The latter will need to track more states
+under the msk data lock. Since the locking msk locking schema is already
+quite complex, do a long awaited clean-up step by moving several
+confusing lockless initialization under the relevant locks. Note that it
+is unlikely a real race could happen even prior to such patches as the
+MPTCP-level state machine implicitly ensures proper serialization of the
+write accesses, even lacking explicit lock. But still, simplification is
+welcome and this will help for the maintenance. This can be backported
+up to v5.6.
 
-Good to hear that works for you! We should fix this in the 6.1 stable
-kernel as well.
+Patch 5 is a fix for the userspace PM, not to add new local address
+entries if the address is already in the list. This behaviour can be
+seen since v5.19.
 
-IMO it may be less risky and simpler to fix the backport of my patch
-e9cdebbe23f1 ("dlm: use kernel_connect() and
-kernel_bind()") and just switch (struct sockaddr *)&dlm_local_addr[0]
-to (struct sockaddr *)dlm_local_addr[0]
-in the call to kernel_bind() rather than backporting c51c9cd8 (fs:
-dlm: don't put dlm_local_addrs on
-heap) to 6.1.
+Patch 6 fixes an issue when Fastopen is used. The issue can happen since
+v6.2. A previous fix has already been applied, but not taking care of
+all cases according to syzbot.
 
-I will have some time soon to fix the 6.1 backport, but it may make
-sense just to revert in the meantime.
+Patch 7 updates Geliang's email address in the MAINTAINERS file.
 
--Jordan
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Geliang Tang (2):
+      mptcp: check addrs list in userspace_pm_get_local_id
+      MAINTAINERS: update Geliang's email address
+
+Paolo Abeni (5):
+      mptcp: drop the push_pending field
+      mptcp: fix rcv space initialization
+      mptcp: fix more tx path fields initialization
+      mptcp: corner case locking for rx path fields initialization
+      mptcp: really cope with fastopen race
+
+ .mailmap                 |  9 +++---
+ MAINTAINERS              |  2 +-
+ net/mptcp/fastopen.c     |  6 ++--
+ net/mptcp/options.c      |  9 +++---
+ net/mptcp/pm_userspace.c | 13 ++++++++-
+ net/mptcp/protocol.c     | 31 +++++++++++----------
+ net/mptcp/protocol.h     | 16 ++++++-----
+ net/mptcp/subflow.c      | 71 ++++++++++++++++++++++++++++++------------------
+ 8 files changed, 95 insertions(+), 62 deletions(-)
+---
+base-commit: 335bac1daae3fd9070d0f9f34d7d7ba708729256
+change-id: 20240202-upstream-net-20240202-locking-cleanup-misc-5f2ee79d8356
+
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
 
