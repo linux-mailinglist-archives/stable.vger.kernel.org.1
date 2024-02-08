@@ -1,138 +1,99 @@
-Return-Path: <stable+bounces-19293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 854C984E1CD
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 14:20:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 763CE84E22E
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 14:43:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B75FD1C236D9
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 13:20:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3172C2859CA
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 13:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757D87BAE4;
-	Thu,  8 Feb 2024 13:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E905A76413;
+	Thu,  8 Feb 2024 13:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b="v6wGuT0P"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c4hDhH4m"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECD57B3E9
-	for <stable@vger.kernel.org>; Thu,  8 Feb 2024 13:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28966F097;
+	Thu,  8 Feb 2024 13:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707398065; cv=none; b=YHwOJRHNxZMtH2DafeURYgD92Yj6NAPijWOEwvEiSJJvCLBSv+0DDmhfsTnhiNbNdrmTzqtMMDQXTUngFwtvie+I4IPgKVbuoHaywP9A/J74SKHsx2qmo+VYRJ2lFi9f/eBfsZ00Sr7f0NUWof74J2cb9BGOuWmCPS02ynFJF2k=
+	t=1707399816; cv=none; b=cJrJZerAYro19zV5O5A8fWKWq0UqWW/7trf1pN5dTBDRA6gTru7ds9gjm409IwZMACcZ+goBOAFj5FMNpash9CG5i2XGx2AZgFCCoh/4NPpJOOoW+xCHpJPrpepf5y5ZhP04pqflI9z+iGbwKNPCbhSAwwxaaesuuwU+xOmI+y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707398065; c=relaxed/simple;
-	bh=QuMQWAnwWU8Jg8k+fqlUw7v0lstHGn7kXNGqQQEKh0s=;
+	s=arc-20240116; t=1707399816; c=relaxed/simple;
+	bh=wKbk920Kjdp3sw+LbV9RY/efmZU+r4AbLarGIr5Q04o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MVp/e8YZlyi6uE65z2VwqJ8WOfKBviL1g5rKetO5AQJA2jcPcnnCLjMq2QyD7TzfoL2lOrwND1aTx8qRUQy8n5WiadAkvVmQ/MicRw9kmuZ15JWH0kyrYJZO34dFZAg2uTFlmY3QM3Ibudq9TJjqX9K/eXWXKjeqCBzYHpL3kuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b=v6wGuT0P; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a3832ef7726so221510966b.0
-        for <stable@vger.kernel.org>; Thu, 08 Feb 2024 05:14:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1707398059; x=1708002859; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5ntukh3iLbboob5RjSi1RGWl1ttcbv304nzNTDlBnME=;
-        b=v6wGuT0PJ+N4hzmt8UaBTDv7z6pYtEDr/OMrGZNxLyrZCsSKuWL5yNRmfPSDoQy3vX
-         ZiXNNunlaPVoGRQB7Aih7Im6QtCpimTY+Nvn1HXrMNOU0IBMOyq/Ah3q2+wJJCUgXpF2
-         OTYKxr1/tQKW2q4uafhwE2CW2LAYDmGuT7NOetWEc7tyDBDsQGueTUkEh/OrklW3JC/S
-         m5/NRlI9u6qVbJVnc2NCSHScWqY5h8b2e/q7YNbGvFEEdN4IcUI1a8UmX7hOl33cmSPd
-         vf2Fo8xtKcueUt7kBD3arum/26q3DaSJ/13Fa8ytRnEfRWbLZFA5Yk7XLQcHGdImsjyT
-         iuGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707398059; x=1708002859;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5ntukh3iLbboob5RjSi1RGWl1ttcbv304nzNTDlBnME=;
-        b=B/3BjHut0RJXbWJfGwiiEG/RMJ62muBQGpPtkkl35LipSFnqvfkj1R21+MZOFoomrP
-         +C5Ec/tddW6zXkqksLG+j1HxW3PRyVBNRFtwwRGPUOCSBG75TsswGzC6UEi/Mh/udJ02
-         6ttU1IHiC/H9UUaBH2o5AOAXEb4xvI23dIq0C57hVfDMhgLWKFX27gCq5cKYUd6dAW0e
-         JSlHnrsdfOjp3Rkww40CqvJ1zp/8Gm0DhO0l3atEqJ/3lkaUtCyUhGDuuUos/hPKdXOM
-         jWiuX5YsJ/c91zYehir0FElwl1h5fpaFk4ObiTO95UyV8a8dobWjGqZjGgmnBwvlipwd
-         DXMg==
-X-Forwarded-Encrypted: i=1; AJvYcCWStYme0klYxC+ovjqJnrfbt9I4aoQgYBpVP3edFxz1IcPT5niVu7+F8D3Hcbul4CormzUFDeHumT/T+sXtDr3AaxU4LXGH
-X-Gm-Message-State: AOJu0YzRrXoCwLx+EGeHp4dTxOP3i6YpsznbyQLUcWOD/SdUEtITSpLO
-	3NmqGUyh6tYUBmggd9PMZbI5geCSfy2CQ5uQSV2FxXDZL1fjBrwK4Z6vamk8KkA=
-X-Google-Smtp-Source: AGHT+IFxbsmI0ElM1ZdD7KC6y7qcHLiINyUO2uqTJm0NGN+KRXLzE11VCkTZ7fcDVi5+DjtPt7PW0g==
-X-Received: by 2002:a17:906:80d3:b0:a38:4b2c:8178 with SMTP id a19-20020a17090680d300b00a384b2c8178mr4613591ejx.19.1707398059311;
-        Thu, 08 Feb 2024 05:14:19 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVug2VZ27JP6E4LkCDJegC+o/d4kAvgYornjfSyauOCXVlrxA/UD7zr8dqlDJSKtVwbL2zFzOGQp3y3dmjN4bhkknQ3BNy2Z1ZenwsiKzeSrPlPRnx/UkIsoO8Umni4njI72tzxecdB8kUQVEOK5uSM0mAN/ulw5WJtjVNghnu1uD5M1MKzZLcBGkBwMAk6ZPvcuJvebPsczrnn8PcoxxF8UPtS/9ImrEp/3IxhypYE0reubPRtmf8vQpuqdqs+Ncydn7A=
-Received: from localhost ([2a02:8071:6401:180:f8f5:527f:9670:eba8])
-        by smtp.gmail.com with ESMTPSA id z22-20020a170906669600b00a3543718f5bsm24304ejo.221.2024.02.08.05.14.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Feb 2024 05:14:18 -0800 (PST)
-Date: Thu, 8 Feb 2024 14:14:14 +0100
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: chengming.zhou@linux.dev
-Cc: yosryahmed@google.com, nphamcs@gmail.com, akpm@linux-foundation.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Chengming Zhou <zhouchengming@bytedance.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH mm-hotfixes-unstable] mm/zswap: invalidate duplicate
- entry when !zswap_enabled
-Message-ID: <20240208131414.GA224435@cmpxchg.org>
-References: <20240207154308.bc275f3e72ec1c1fd06cf5a2@linux-foundation.org>
- <20240208023254.3873823-1-chengming.zhou@linux.dev>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nkktxn+/K9DbQy3yGafit7cFcqYPSl85scSwkUWUnsFWrT0wdPMVkuPGKrobq7UU3tu4ds5WYyQYE5bATaxQgwg1mD8foaEt+EWhItcwBWeYs7MyPBA1iFP+E7T94INmXgZcMT4rOFO5xVGXlR96deUaNUSFdzc1E34vdi4BQeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c4hDhH4m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59B68C433F1;
+	Thu,  8 Feb 2024 13:43:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707399816;
+	bh=wKbk920Kjdp3sw+LbV9RY/efmZU+r4AbLarGIr5Q04o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=c4hDhH4mWUnalGLkcK9D3aR++AMQy1DxjeX5RtdP5/uJF6oAdEnXG1I/xADOMgJIM
+	 /iTxr4h0id2W+owj4xC6ua126dRoUOVv639qhPNSEKygfyffdHtW9bMrgCV7+IAtCz
+	 944xeuK/nT0vRbpnmL8g4aQfRCXeMUFWvuHKrpMZtDyZHEhAhTDuHkg+9LXrb16cDN
+	 40c5K+17xu8a1nb/PRGXuFvzCbCdmJsyti7Gxm/vJh4Y/KcKDzF7Xusw8f8YsCedPL
+	 1IM4SBIu0GFHpQd5FVI5BJ9xyJLfFNGR9qckM7A5GNGnUOzfovi4kDxtsvml0p3S9+
+	 v2f/W02RIY3MQ==
+Date: Thu, 8 Feb 2024 14:43:31 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	Karel Zak <kzak@redhat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] fs: relax mount_setattr() permission checks
+Message-ID: <20240208-dreitausend-ortschaft-efe30cc59154@brauner>
+References: <20240206-vfs-mount-rootfs-v1-1-19b335eee133@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240208023254.3873823-1-chengming.zhou@linux.dev>
+In-Reply-To: <20240206-vfs-mount-rootfs-v1-1-19b335eee133@kernel.org>
 
-On Thu, Feb 08, 2024 at 02:32:54AM +0000, chengming.zhou@linux.dev wrote:
-> From: Chengming Zhou <zhouchengming@bytedance.com>
+On Tue, Feb 06, 2024 at 11:22:09AM +0100, Christian Brauner wrote:
+> When we added mount_setattr() I added additional checks compared to the
+> legacy do_reconfigure_mnt() and do_change_type() helpers used by regular
+> mount(2). If that mount had a parent then verify that the caller and the
+> mount namespace the mount is attached to match and if not make sure that
+> it's an anonymous mount.
 > 
-> We have to invalidate any duplicate entry even when !zswap_enabled
-> since zswap can be disabled anytime. If the folio store success before,
-> then got dirtied again but zswap disabled, we won't invalidate the old
-> duplicate entry in the zswap_store(). So later lru writeback may
-> overwrite the new data in swapfile.
+> The real rootfs falls into neither category. It is neither an anoymous
+> mount because it is obviously attached to the initial mount namespace
+> but it also obviously doesn't have a parent mount. So that means legacy
+> mount(2) allows changing mount properties on the real rootfs but
+> mount_setattr(2) blocks this. I never thought much about this but of
+> course someone on this planet of earth changes properties on the real
+> rootfs as can be seen in [1].
 > 
-> Fixes: 42c06a0e8ebe ("mm: kill frontswap")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
-
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-
-Nice, this is easier to backport and should be less disruptive to
-mm-unstable as well. It makes sense to me to put the optimization and
-cleanup that was cut out into a separate patch on top of mm-unstable.
-
->  mm/zswap.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
+> Since util-linux finally switched to the new mount api in 2.39 not so
+> long ago it also relies on mount_setattr() and that surfaced this issue
+> when Fedora 39 finally switched to it. Fix this.
 > 
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index fe7ee2640c69..32633d0597dc 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -1516,7 +1516,7 @@ bool zswap_store(struct folio *folio)
->  	if (folio_test_large(folio))
->  		return false;
->  
-> -	if (!zswap_enabled || !tree)
-> +	if (!tree)
->  		return false;
->  
->  	/*
-> @@ -1531,6 +1531,10 @@ bool zswap_store(struct folio *folio)
->  		zswap_invalidate_entry(tree, dupentry);
->  	}
->  	spin_unlock(&tree->lock);
-> +
-> +	if (!zswap_enabled)
-> +		return false;
-> +
->  	objcg = get_obj_cgroup_from_folio(folio);
->  	if (objcg && !obj_cgroup_may_zswap(objcg)) {
->  		memcg = get_mem_cgroup_from_objcg(objcg);
+> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2256843
+> Reported-by: Karel Zak <kzak@redhat.com>
+> Cc: stable@vger.kernel.org # v5.12+
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> ---
+
+Fwiw, I've been going back and forth on this yesterday evening because
+of an inconsistency in legacy mount(2). The gist is that for changing
+generic mount properties via do_reconfigure_mnt() we check_mnt() but for
+changing mount propagation settings via do_change_type() we don't. For
+mount_setattr(2) we should do better. So the change I originally went
+with didn't bother to do check_mnt() when that thing doesn't have a
+parent to be true to mount propagation behavior in legacy mount(2). But
+I think that this is wrong and this should be
+if ((mnt_has_parent(mnt) || !is_anon_ns(mnt->mnt_ns)) && !check_mnt(mnt))
+which means we do check_mnt() even for the real rootfs which doesn't
+have a parent and for both regular and mount propagation properties.
+I've changed the patch to that.
 
