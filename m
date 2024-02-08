@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-19256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34DC84D784
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 02:26:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FE2884D7D8
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 03:33:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F05B1284366
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 01:26:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 216521C2315E
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 02:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB4B14007;
-	Thu,  8 Feb 2024 01:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05566149E03;
+	Thu,  8 Feb 2024 02:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=bewilderbeest.net header.i=@bewilderbeest.net header.b="WE/8Lz4f"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="weZui6S4"
 X-Original-To: stable@vger.kernel.org
-Received: from thorn.bewilderbeest.net (thorn.bewilderbeest.net [71.19.156.171])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982781DFC9;
-	Thu,  8 Feb 2024 01:26:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.19.156.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD311D524
+	for <stable@vger.kernel.org>; Thu,  8 Feb 2024 02:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707355597; cv=none; b=td1B8pyCURM0Bs9/QwDOuvLIEmpImmlLO57zsx4T6QYfIN9psv0sdW5vVs1PjeVSpXUiEAndZir8gqgTrH2IQMYVzut1b9AMEd7bEEuYG5IdVvGPWiaDA1wbA1oI2im+ljmBVu4dI7QagZJJ+vBzQkmiGeCTUkADeuK3wyP+Tmk=
+	t=1707359598; cv=none; b=qKJ5knsGMdro3aA1xjL2EjkYMLQaqx+X1d3k6hV/YRTuTr/BJCbBhs5zEOVb2tURms8izkPX2bY5ABAlZEjwOSW+rSLcouShCXRPurZwJJW9+GB1e9amm636EOYeUvsmIiWrcvS4himX3x9MDYS/ZJqlpWrQ6zSOls4NkMuTBJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707355597; c=relaxed/simple;
-	bh=OLe7cAlE7GWmn6Aw0nOYxdFDKvQ+HmBGQMrUtAdT8nM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pbYAdsZJd353StdQ1d4jrmMrmbILiRlVyOfRBYvrgl2tk/aHp3PBMEjQnwOCvfOp2eJvzw8m0VsLtmM/Oy4IHgnTpynlq7Xc/glLkCCyM6fJOm9IUUWat9XZYqSenohIru6SY/hjUfcK7xYw7GEDEYLMPRdv1KRHZxWI4+w5eq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bewilderbeest.net; spf=pass smtp.mailfrom=bewilderbeest.net; dkim=pass (1024-bit key) header.d=bewilderbeest.net header.i=@bewilderbeest.net header.b=WE/8Lz4f; arc=none smtp.client-ip=71.19.156.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bewilderbeest.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bewilderbeest.net
-Received: from hatter.bewilderbeest.net (unknown [IPv6:2602:61:712b:6300::2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: zev)
-	by thorn.bewilderbeest.net (Postfix) with ESMTPSA id 90C25DD9;
-	Wed,  7 Feb 2024 17:26:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bewilderbeest.net;
-	s=thorn; t=1707355589;
-	bh=jCfZxrSPfJRHCvrnkx78xqXBFO8QXL5lwiLPbS+xTAw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WE/8Lz4fbNW5hsXgLypZFn60E7qq3727+grkoIAgUAZO+kPRV+GimPEAfRtWnfs8N
-	 BHEObsnhOydmXdgmSyMAojdnhwMYrIFvSnPrwMl8MGW8gyVf330s4rIozE0T5/dEE9
-	 47SLwGlLubpXFlRqB6hCTSQk3VHSnmIl2CW0Z4oQ=
-From: Zev Weiss <zev@bewilderbeest.net>
-To: Russell King <linux@armlinux.org.uk>,
-	linux-arm-kernel@lists.infradead.org
-Cc: Zev Weiss <zev@bewilderbeest.net>,
-	openbmc@lists.ozlabs.org,
+	s=arc-20240116; t=1707359598; c=relaxed/simple;
+	bh=vtpZ0m9AT8C+oeZBqgjv+QOJtFQz8dCFsvLGUGtbHRc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=oh2SHnX90InMfYhu8IfzQ9IBRQQKkRNkON7VaCuXwL56Apg5+33V5FMiiAeuHBEqtrqI/I0yZdjMkml6y9EuiGR0zqwdl4Up6w0VQXhVELx4I9LGWN0XD4PDHsTIEa6ufTMD/9GMCLL2x4Uc+OUHD/+aNqsXDb3qsyJR/MSuijw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=weZui6S4; arc=none smtp.client-ip=91.218.175.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1707359594;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YCEnBpcFOe2C77Vjk6R5fbEVUxas4awh0L6SVKgqthY=;
+	b=weZui6S4T5IvHb+TGoDKMyuF0wqgoxEl+MwiUCXhxT0Byj4eY3WO+9hTkCOHADRHRPdAVB
+	UAuJ7a1R632aAgbm3fe4L57GphGBpIK2/1FzbA8KfdBeE/MTAMk568fpswQFaDvDEjISCH
+	VGiR5eGWY7km86874ZBREE9N2wQx8rw=
+From: chengming.zhou@linux.dev
+To: hannes@cmpxchg.org,
+	yosryahmed@google.com,
+	nphamcs@gmail.com,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
+	chengming.zhou@linux.dev,
+	Chengming Zhou <zhouchengming@bytedance.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 2/2] ARM: prctl: Reject PR_SET_MDWE on pre-ARMv6
-Date: Wed,  7 Feb 2024 17:26:20 -0800
-Message-ID: <20240208012620.32604-6-zev@bewilderbeest.net>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240208012620.32604-4-zev@bewilderbeest.net>
-References: <20240208012620.32604-4-zev@bewilderbeest.net>
+Subject: [PATCH mm-hotfixes-unstable] mm/zswap: invalidate duplicate entry when !zswap_enabled
+Date: Thu,  8 Feb 2024 02:32:54 +0000
+Message-Id: <20240208023254.3873823-1-chengming.zhou@linux.dev>
+In-Reply-To: <20240207154308.bc275f3e72ec1c1fd06cf5a2@linux-foundation.org>
+References: <20240207154308.bc275f3e72ec1c1fd06cf5a2@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,43 +64,48 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On v5 and lower CPUs we can't provide MDWE protection, so ensure we
-fail any attempt to enable it via prctl(PR_SET_MDWE).
+From: Chengming Zhou <zhouchengming@bytedance.com>
 
-Previously such an attempt would misleadingly succeed, leading to any
-subsequent mmap(PROT_READ|PROT_WRITE) or execve() failing
-unconditionally (the latter somewhat violently via
-force_fatal_sig(SIGSEGV) due to READ_IMPLIES_EXEC).
+We have to invalidate any duplicate entry even when !zswap_enabled
+since zswap can be disabled anytime. If the folio store success before,
+then got dirtied again but zswap disabled, we won't invalidate the old
+duplicate entry in the zswap_store(). So later lru writeback may
+overwrite the new data in swapfile.
 
-Signed-off-by: Zev Weiss <zev@bewilderbeest.net>
-Cc: <stable@vger.kernel.org> # v6.3+
+Fixes: 42c06a0e8ebe ("mm: kill frontswap")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
 ---
- arch/arm/include/asm/mman.h | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
- create mode 100644 arch/arm/include/asm/mman.h
+ mm/zswap.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/mman.h b/arch/arm/include/asm/mman.h
-new file mode 100644
-index 000000000000..2189e507c8e0
---- /dev/null
-+++ b/arch/arm/include/asm/mman.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_MMAN_H__
-+#define __ASM_MMAN_H__
+diff --git a/mm/zswap.c b/mm/zswap.c
+index fe7ee2640c69..32633d0597dc 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -1516,7 +1516,7 @@ bool zswap_store(struct folio *folio)
+ 	if (folio_test_large(folio))
+ 		return false;
+ 
+-	if (!zswap_enabled || !tree)
++	if (!tree)
+ 		return false;
+ 
+ 	/*
+@@ -1531,6 +1531,10 @@ bool zswap_store(struct folio *folio)
+ 		zswap_invalidate_entry(tree, dupentry);
+ 	}
+ 	spin_unlock(&tree->lock);
 +
-+#include <asm/system_info.h>
-+#include <uapi/asm/mman.h>
++	if (!zswap_enabled)
++		return false;
 +
-+static inline bool arch_memory_deny_write_exec_supported(void)
-+{
-+	return cpu_architecture() >= CPU_ARCH_ARMv6;
-+}
-+#define arch_memory_deny_write_exec_supported arch_memory_deny_write_exec_supported
-+
-+#endif /* __ASM_MMAN_H__ */
+ 	objcg = get_obj_cgroup_from_folio(folio);
+ 	if (objcg && !obj_cgroup_may_zswap(objcg)) {
+ 		memcg = get_mem_cgroup_from_objcg(objcg);
 -- 
-2.43.0
+2.40.1
 
 
