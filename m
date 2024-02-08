@@ -1,120 +1,123 @@
-Return-Path: <stable+bounces-19322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C78484E987
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 21:19:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F19684E98F
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 21:20:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 187E928871C
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 20:19:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 173971F2184A
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 20:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD56383BB;
-	Thu,  8 Feb 2024 20:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E939D3C087;
+	Thu,  8 Feb 2024 20:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="LpzUij05"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="d/wxYcqx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4AE37711;
-	Thu,  8 Feb 2024 20:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B01738FB0;
+	Thu,  8 Feb 2024 20:19:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707423571; cv=none; b=ZPJlSjUIbgX9Z0RHv/FnsH70XDfRLJkpGdXFKaCQSvE2HT5/yWfbcQeQaAeJ5QoE+NRbVy+SaR0ebru3hZ96dcIOPC5ZGVAb8JSzPr3O0tK4oewNFKTivNOYfA+GRpIPNGVnfuE2tw386tw0N/k+jbjqyCykOQsGJYCfigqbza8=
+	t=1707423586; cv=none; b=JdDdVNW9OqdaCL+TB0hOCVIdc5bgoHQzIiau6BzHW2aJn2RouaoAeabhpkyNUQcQERBnjTgC1GPF0TIfrYIqEECjeX+K4HAJyAoFNrAR7qBEbr5J+vi6vI/C+jMmZFP1KQRKipnC1qGTrLpH7Y9DrpWgBnzyv8U8/xzgh6UTnqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707423571; c=relaxed/simple;
-	bh=LF1TI/4K8CFSrmV7nScCwzUC576f50C6BnoIZZw8+ck=;
-	h=Date:To:From:Subject:Message-Id; b=SJzQXZuufuXHSUFoqEcO/PCmyHztDxjRMhdWnx4iMUfZOrUG9kbLSqbMqeRnOUd+yhCsri6uwVaav/2me7u09wc6J08Kfy5WmWQpwqsMzMUmkFwuBeVfiW6zgtlBVQpWDEeApkQeqws+bIlL+qVpwTSnP/JMKdBGjDFi5awQIAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=LpzUij05; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED15C43390;
-	Thu,  8 Feb 2024 20:19:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1707423571;
-	bh=LF1TI/4K8CFSrmV7nScCwzUC576f50C6BnoIZZw8+ck=;
-	h=Date:To:From:Subject:From;
-	b=LpzUij05DjAhV7pvpbeXSW2Do7A1ViJsY1tti0oKpKQjsIL48DaGcjAnHW//l/XYT
-	 V9JWFa+g3p1TNGUB1lc4G9U2s8ImnIRYovaIODgETgNCUBW2GzoBX+XPfhcis6to9A
-	 pIam7ROqqtSN0AJ6wQxM5K2sq08Gzrj25Y2SywJk=
-Date: Thu, 08 Feb 2024 12:19:30 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,tzimmermann@suse.de,tvrtko.ursulin@linux.intel.com,stable@vger.kernel.org,rodrigo.vivi@intel.com,ray.huang@amd.com,mripard@kernel.org,maarten.lankhorst@linux.intel.com,joonas.lahtinen@linux.intel.com,jarkko@kernel.org,jani.nikula@linux.intel.com,hughd@google.com,djwong@kernel.org,dhowells@redhat.com,dave.hansen@linux.intel.com,daniel@ffwll.ch,christian.koenig@amd.com,chandan.babu@oracle.com,airlied@gmail.com,hch@lst.de,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [obsolete] xfs-disable-large-folio-support-in-xfile_create.patch removed from -mm tree
-Message-Id: <20240208201931.3ED15C43390@smtp.kernel.org>
+	s=arc-20240116; t=1707423586; c=relaxed/simple;
+	bh=VPJkilQY0W3dQlN30OMPUbSBlEE8uurTighbY2OUl1o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EghCy4lLinfc0ucpYmBtRRo6CgdmC4ZWsdITTm3tvWwiSCTVytiRYHaIfX5D9Ze8FTsqq609UzOZwF9Re/5Hch/Sff7uWNZQdAjE0QQGcm63mGMx2CXdh6hy8/Fg6Y2YaQHt5cVwyIt0N+0MELwTLC5qd4PXv4Gh+PGlEwOmR/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=d/wxYcqx; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=wu6GEbBipFa7DUcQHgPx5bUPL1eORflnOdQP6J6GMg4=; b=d/wxYcqxezRwk3oH0dGbh/hO2D
+	rb8pj4e8ja3ALbkbJ0Bc3wgt2O935lC4S0FMlxGTALODWyTTxhOozi+GsKqhgLl+/FxEl7Rh9Ktym
+	6CS0Yj7nqZQNdAL6VLSeQpM+gn7vNNT9PO4YoPmkHdDSNoSI7FmtK8VpU9XoRpz20B7b0eN486Gw5
+	yZQms++TtzxFNlWJKJCKRZO9ALebp0bkFXWrrlbR1U2vfJQBos6DVioYHZ+vn14PE9Nd8SgkqieiS
+	Gfzl66uKn78MwwzlgyLwdAauK9zW7pYd1vieqIe1JuwxhLohL9HS/P+5l3wVoNOrJYKwbrcEyg+nH
+	zNcsVAhA==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <carnil@debian.org>)
+	id 1rYArs-00EMbv-RP; Thu, 08 Feb 2024 20:19:33 +0000
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 0FFEDBE2EE8; Thu,  8 Feb 2024 21:19:32 +0100 (CET)
+Date: Thu, 8 Feb 2024 21:19:32 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Dhya <dhya@picorealm.net>, 1063422@bugs.debian.org,
+	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>
+Cc: linux-f2fs-devel@lists.sourceforge.net, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, regressions@lists.linux.dev
+Subject: [regression 6.1.y] f2fs: invalid zstd compress level: 6
+Message-ID: <ZcU3VCrt9VOpuFUq@eldamar.lan>
+References: <170736382774.1975.1861975122613668970.reportbug@tsuga.picorealm.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <170736382774.1975.1861975122613668970.reportbug@tsuga.picorealm.net>
+X-Debian-User: carnil
 
+Hi Jaegeuk Kim, Chao Yu,
 
-The quilt patch titled
-     Subject: xfs: disable large folio support in xfile_create
-has been removed from the -mm tree.  Its filename was
-     xfs-disable-large-folio-support-in-xfile_create.patch
+In Debian the following regression was reported after a Dhya updated
+to 6.1.76:
 
-This patch was dropped because it is obsolete
+On Wed, Feb 07, 2024 at 10:43:47PM -0500, Dhya wrote:
+> Package: src:linux
+> Version: 6.1.76-1
+> Severity: critical
+> Justification: breaks the whole system
+> 
+> Dear Maintainer,
+> 
+> After upgrade to linux-image-6.1.0-18-amd64 6.1.76-1 F2FS filesystem
+> fails to mount rw.  Message in the boot journal:
+> 
+>   kernel: F2FS-fs (nvme0n1p6): invalid zstd compress level: 6
+> 
+> There was recently an f2fs patch to the 6.1 kernel tree which might be
+> related: https://www.spinics.net/lists/stable-commits/msg329957.html
+> 
+> Was able to recover the system by doing:
+> 
+> sudo mount -o remount,rw,relatime,lazytime,background_gc=on,discard,no_heap,user_xattr,inline_xattr,acl,inline_data,inline_dentry,extent_cache,mode=adaptive,active_logs=6,alloc_mode=default,checkpoint_merge,fsync_mode=posix,compress_algorithm=lz4,compress_log_size=2,compress_mode=fs,atgc,discard_unit=block,memory=normal /dev/nvme0n1p6 /
+> 
+> under the running bad 6.1.0-18-amd64 kernel, then editing
+> /etc/default/grub:
+> 
+>   GRUB_DEFAULT="Advanced options for Debian GNU/Linux>Debian GNU/Linux, with Linux 6.1.0-17-amd64"
+> 
+> and running 'update-grub' and rebooting to boot the 6.1.0-17-amd64
+> kernel.
 
-------------------------------------------------------
-From: Christoph Hellwig <hch@lst.de>
-Subject: xfs: disable large folio support in xfile_create
-Date: Wed, 10 Jan 2024 10:21:09 +0100
+The issue is easily reproducible by:
 
-The xfarray code will crash if large folios are force enabled using:
+# dd if=/dev/zero of=test.img count=100 bs=1M
+# mkfs.f2fs -f -O compression,extra_attr ./test.img
+# mount -t f2fs -o compress_algorithm=zstd:6,compress_chksum,atgc,gc_merge,lazytime ./test.img /mnt
 
-   echo force > /sys/kernel/mm/transparent_hugepage/shmem_enabled
+resulting in
 
-Fixing this will require a bit of an API change, and prefeably sorting out
-the hwpoison story for pages vs folio and where it is placed in the shmem
-API.  For now use this one liner to disable large folios.
+[   60.789982] F2FS-fs (loop0): invalid zstd compress level: 6
 
-Link: https://lkml.kernel.org/r/20240110092109.1950011-3-hch@lst.de
-Fixes: 3934e8ebb7cc ("xfs: create a big array data structure")
-Reported-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Cc: Chandan Babu R <chandan.babu@oracle.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Dave Airlie <airlied@gmail.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Huang Rui <ray.huang@amd.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+A bugzilla report has been submitted in
+https://bugzilla.kernel.org/show_bug.cgi?id=218471
 
- fs/xfs/scrub/xfile.c |    5 +++++
- 1 file changed, 5 insertions(+)
+#regzbot introduced: v6.1.69..v6.1.76
+#regzbot link: https://bugs.debian.org/1063422
+#regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=218471
 
---- a/fs/xfs/scrub/xfile.c~xfs-disable-large-folio-support-in-xfile_create
-+++ a/fs/xfs/scrub/xfile.c
-@@ -94,6 +94,11 @@ xfile_create(
- 
- 	lockdep_set_class(&inode->i_rwsem, &xfile_i_mutex_key);
- 
-+	/*
-+	 * We're not quite ready for large folios yet.
-+	 */
-+	mapping_clear_large_folios(inode->i_mapping);
-+
- 	trace_xfile_create(xf);
- 
- 	*xfilep = xf;
-_
-
-Patches currently in -mm which might be from hch@lst.de are
-
-
+Regards,
+Salvatore
 
