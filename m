@@ -1,215 +1,193 @@
-Return-Path: <stable+bounces-19319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C3184E8C0
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 20:13:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06FCE84E913
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 20:42:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26375B280FD
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 19:06:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84A491F25D8F
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 19:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B84286B2;
-	Thu,  8 Feb 2024 19:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8C6381BF;
+	Thu,  8 Feb 2024 19:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="OeX9dN8p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nwyL+pHr"
 X-Original-To: stable@vger.kernel.org
-Received: from relay.smtp-ext.broadcom.com (unknown [192.19.166.231])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA7725601;
-	Thu,  8 Feb 2024 19:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.166.231
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAA7149DFF
+	for <stable@vger.kernel.org>; Thu,  8 Feb 2024 19:42:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707419171; cv=none; b=AZRNKJGrTRkADU3QGsJi6VlnoaolYwnz3+7lCXtwQjU4N0XRhq7W4UjQfThoiKbjK+Zv5drDM4bdvO7RVT6xcT8p03Kksd0Cb3k3YAMXA7pv11kQXVaxQkpWeOwLh4FnxBNC8k73Uhe4g/Z5arjnq4jyuu3rUcASkpyUodTh2+E=
+	t=1707421350; cv=none; b=T7bmXrz39A143H4HHWViDkmqS6zfJWpHg0Bl/RPft7O+S7h/vpEBXixSpXh5aKXQnV1ZyvR+GYdLLQRrGVUlRwP+5oCPbjQ0BojR/ouaAI8vBdt8uXevrypXEtn2Ji68uBowx/nbYAmSrxtZinhht2iHU/OfywTYw45548Xdsdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707419171; c=relaxed/simple;
-	bh=pyH+Ue54Wg/q6X3n+rbfohcY/QkgjD9zNm2XlWtPMdQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kDnfp6/uKe0rtmq6vpk5yolOPrbEIQzCxzJpMsbXdaUk/HZApA4u/3Zqv72DGSXHtYYDBb+sXKligw8RFzlsPAydvY+wp0qCCIG/yilALjM29Lvi/hPj1fZu8dGmXsEGVjxANKhH/PtGvGZ6z4Ga5/ZcIxP7EM9axtYlqdY/JYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=OeX9dN8p; arc=none smtp.client-ip=192.19.166.231
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: from mail-lvn-it-01.lvn.broadcom.net (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 9FA97C001CAD;
-	Thu,  8 Feb 2024 11:06:08 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 9FA97C001CAD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1707419168;
-	bh=pyH+Ue54Wg/q6X3n+rbfohcY/QkgjD9zNm2XlWtPMdQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OeX9dN8pKGCF8ytWIGGd88VHSocOFcVKIRUqTrA7UjTLXtlOOC0xpldeiWbsOYznB
-	 rohTCl1F3LmGoT7quZb4COL3x6uoUBxd9gyUaPZ8cat3WOWJYN/qREOBvvwSz2U8qi
-	 pa+To89xhUqa0JrIUOi3fWHn/fWdYNrp69tOayHA=
-Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail-lvn-it-01.lvn.broadcom.net (Postfix) with ESMTPSA id 1E08918041CAC4;
-	Thu,  8 Feb 2024 11:06:07 -0800 (PST)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: stable@vger.kernel.org
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Russell King <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Doug Berger <opendmb@gmail.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	bcm-kernel-feedback-list@broadcom.com (open list:BROADCOM GENET ETHERNET DRIVER),
-	netdev@vger.kernel.org (open list:BROADCOM GENET ETHERNET DRIVER),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH stable 5.15 v2] net: bcmgenet: Fix EEE implementation
-Date: Thu,  8 Feb 2024 11:06:05 -0800
-Message-Id: <20240208190605.3341379-2-florian.fainelli@broadcom.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240208190605.3341379-1-florian.fainelli@broadcom.com>
-References: <20240208190605.3341379-1-florian.fainelli@broadcom.com>
+	s=arc-20240116; t=1707421350; c=relaxed/simple;
+	bh=Rtu/dgNHowIMhZUa88CnntQ6SugfUthYsgnqdjsX7Go=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YIkJSHfjQc1SrFRtIukefPneCuDQKgMBRG8U4CQXC78ZmCrd5CI3xhEQivME29tpCpXlwaSNex3lRpa2EyEF0Fp0BArRWWQmsjOR/bO+cskPU+oQfaGi/2QWANwcNOq8vOG5M2Ep0XAHh7/R1HHL2yl72g8tqijZaUzODbW98j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nwyL+pHr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73429C43609
+	for <stable@vger.kernel.org>; Thu,  8 Feb 2024 19:42:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707421349;
+	bh=Rtu/dgNHowIMhZUa88CnntQ6SugfUthYsgnqdjsX7Go=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=nwyL+pHrtUggAFG7+gq7rpvp4fptaBg+1myWc3chKSCN2XvuCRzfkgy2Rilz3gP0T
+	 IwCUG3APe8Gnp3Uzg1F1hfJKyN0dBFYEdb0nsfkHawXiKV44TY98l6Umq+r9OlEOK+
+	 T4Yb7DlyaHmiqU3khye1tas4BiFKtbmvgm8pusH55z/xukK70zcFUbT1WMQ/BO2lLy
+	 N4w3XWZIfHv3tmeYiR3wevs7VRZmd5VJtUIa4N1HJ5TOBktvgHDPe40V/GjQpCThPH
+	 AWitEdB9uk5PtdOiTdtU/9RQPflOgF2UWmk/eK3kDpzFG7RZSCRHj/ORY65dhqPTPJ
+	 WN6GI5SDvEUzA==
+Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-7c3de16761aso28971739f.0
+        for <stable@vger.kernel.org>; Thu, 08 Feb 2024 11:42:29 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXX6BN67LjMtmomK8y2CDlKwML15hvWc27Mfu3OlUfD2HO310Wg6fRsQDLzJYgHsxikdImRNnWfdmTorldpSW4WgKz80lkx
+X-Gm-Message-State: AOJu0Ywv+0uAkhohlWghlGaG7GXjruw9ABOWgih6fiTecn97JLh+LfGr
+	Dc/7GjejrNJz7E0ksrDjJour0I9WdwucSW6ANxSi3M5Cfjzvxw4guoZYBopXJgf2WGUNaKDcMbn
+	2dyjFK7+xbWJUKMpIg/D6sv0rKC7yabrUgBc2
+X-Google-Smtp-Source: AGHT+IGcfRhtd9MGWZfmF3BJHfebS6aqh8aEn9feq7jKiTcP0qZsciSIAAE7Fq6y/oaDjz3cb6cf2XLBXQ6TGFiCDb8=
+X-Received: by 2002:a92:d481:0:b0:363:8882:d86 with SMTP id
+ p1-20020a92d481000000b0036388820d86mr501941ilg.1.1707421348650; Thu, 08 Feb
+ 2024 11:42:28 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240206182559.32264-1-ryncsn@gmail.com> <CAF8kJuMe7MYsAhwX804jZfO4w6kt74YMZXuz+FqUbZEt70p7Rg@mail.gmail.com>
+ <CAGsJ_4zF+U5JG8XYANe2x0VbjovokFCirf=YLHOfO3E-U8b4sg@mail.gmail.com>
+ <CAF8kJuOBtT+n5CM2s1Mobk5fzpgetCSMTZ-nb8+0KUj1W5f+Mw@mail.gmail.com>
+ <CAMgjq7CV-Cxar8cRj1SxB4ZtO8QPTUuA5mj9_vQro7sm+eFH=w@mail.gmail.com>
+ <CAF8kJuOQqqqM6MvOvo4PyOhT9eyNFreQjWC+TybGYDgXRfpweA@mail.gmail.com>
+ <CAMgjq7CBV4dVo7ETr0K1VbLE=M7T0Go5=7pHBUY6=o0cuXaZXg@mail.gmail.com>
+ <ZcPMi6DX5PN4WwHr@google.com> <CAMgjq7AJo1SKzRc-w5UuK3Ojk5PaXxRV2_G2Ww9BGgiNRp_5Eg@mail.gmail.com>
+ <87eddnxy47.fsf@yhuang6-desk2.ccr.corp.intel.com> <CAMgjq7Cg+8zy25Cif2DJ0Qey3bC=Ni0q7xHNO9ka+ezoK1rgxA@mail.gmail.com>
+In-Reply-To: <CAMgjq7Cg+8zy25Cif2DJ0Qey3bC=Ni0q7xHNO9ka+ezoK1rgxA@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Thu, 8 Feb 2024 11:42:16 -0800
+X-Gmail-Original-Message-ID: <CAF8kJuNXr7CT7-homTfOX=XYfie2woPbcS9sKkt4R3HSiHUmng@mail.gmail.com>
+Message-ID: <CAF8kJuNXr7CT7-homTfOX=XYfie2woPbcS9sKkt4R3HSiHUmng@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/swap: fix race when skipping swapcache
+To: Kairui Song <ryncsn@gmail.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>, Minchan Kim <minchan@kernel.org>, 
+	Barry Song <21cnbao@gmail.com>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Yu Zhao <yuzhao@google.com>, 
+	Barry Song <v-songbaohua@oppo.com>, SeongJae Park <sj@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
+	Yosry Ahmed <yosryahmed@google.com>, David Hildenbrand <david@redhat.com>, stable@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[ Upstream commit a9f31047baca57d47440c879cf259b86f900260c ]
+On Thu, Feb 8, 2024 at 11:01=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+>
+> On Thu, Feb 8, 2024 at 2:36=E2=80=AFPM Huang, Ying <ying.huang@intel.com>=
+ wrote:
+> >
+> > Kairui Song <ryncsn@gmail.com> writes:
+> >
+> > > On Thu, Feb 8, 2024 at 2:31=E2=80=AFAM Minchan Kim <minchan@kernel.or=
+g> wrote:
+> > >>
+> > >> On Wed, Feb 07, 2024 at 12:06:15PM +0800, Kairui Song wrote:
+> >
+> > [snip]
+> >
+> > >> >
+> > >> > So I think the thing is, it's getting complex because this patch
+> > >> > wanted to make it simple and just reuse the swap cache flags.
+> > >>
+> > >> I agree that a simple fix would be the important at this point.
+> > >>
+> > >> Considering your description, here's my understanding of the other i=
+dea:
+> > >> Other method, such as increasing the swap count, haven't proven effe=
+ctive
+> > >> in your tests. The approach risk forcing racers to rely on the swap =
+cache
+> > >> again and the potential performance loss in race scenario.
+> > >>
+> > >> While I understand that simplicity is important, and performance los=
+s
+> > >> in this case may be infrequent, I believe swap_count approach could =
+be a
+> > >> suitable solution. What do you think?
+> > >
+> > > Hi Minchan
+> > >
+> > > Yes, my main concern was about simplicity and performance.
+> > >
+> > > Increasing swap_count here will also race with another process from
+> > > releasing swap_count to 0 (swapcache was able to sync callers in othe=
+r
+> > > call paths but we skipped swapcache here).
+> >
+> > What is the consequence of the race condition?
+>
+> Hi Ying,
+>
+> It will increase the swap count of an already freed entry, this race
+> with multiple swap free/alloc logic that checks if count =3D=3D
+> SWAP_HAS_CACHE or sets count to zero, or repeated free of an entry,
+> all result in random corruption of the swap map. This happens a lot
+> during stress testing.
 
-We had a number of short comings:
+In theory, the original code before your patch can get into a
+situation similar to what you try to avoid.
+CPU1 enters the do_swap_page() with entry swap count =3D=3D 1 and
+continues handling the swap fault without swap cache.  Then some
+operation bumps up the swap entry count and CPU2 enters the
+do_swap_page() racing with CPU1 with swap count =3D=3D 2. CPU2 will need
+to go through the swap cache case.  We still need to handle this
+situation correctly.
+So the complexity is already there.
 
-- EEE must be re-evaluated whenever the state machine detects a link
-  change as wight be switching from a link partner with EEE
-  enabled/disabled
+If we can make sure the above case works correctly, then one way to
+avoid the problem is just send the CPU2 to use the swap cache (without
+the swap cache by-passing).
 
-- tx_lpi_enabled controls whether EEE should be enabled/disabled for the
-  transmit path, which applies to the TBUF block
 
-- We do not need to forcibly enable EEE upon system resume, as the PHY
-  state machine will trigger a link event that will do that, too
 
-Fixes: 6ef398ea60d9 ("net: bcmgenet: add EEE support")
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://lore.kernel.org/r/20230606214348.2408018-1-florian.fainelli@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
----
-Changes in v2:
+>
+> >
+> > > So the right step is: 1. Lock the cluster/swap lock; 2. Check if stil=
+l
+> > > have swap_count =3D=3D 1, bail out if not; 3. Set it to 2;
+> > > __swap_duplicate can be modified to support this, it's similar to
+> > > existing logics for SWAP_HAS_CACHE.
+> > >
+> > > And swap freeing path will do more things, swapcache clean up needs t=
+o
+> > > be handled even in the bypassing path since the racer may add it to
+> > > swapcache.
+> > >
+> > > Reusing SWAP_HAS_CACHE seems to make it much simpler and avoided many
+> > > overhead, so I used that way in this patch, the only issue is
+> > > potentially repeated page faults now.
+> > >
+> > > I'm currently trying to add a SWAP_MAP_LOCK (or SWAP_MAP_SYNC, I'm ba=
+d
+> > > at naming it) special value, so any racer can just spin on it to avoi=
+d
+> > > all the problems, how do you think about this?
+> >
+> > Let's try some simpler method firstly.
+>
+> Another simpler idea is, add a schedule() or
+> schedule_timeout_uninterruptible(1) in the swapcache_prepare failure
+> path before goto out (just like __read_swap_cache_async). I think this
+> should ensure in almost all cases, PTE is ready after it returns, also
+> yields more CPU.
 
-- none
+I mentioned in my earlier email and Ying points out that as well.
+Looping waiting inside do_swap_page() is bad because it is holding
+other locks. Sorry I started this idea but it seems no good. If we can
+have CPU2 make forward progress without retrying the page fault would
+be the best, if possible.
 
- .../net/ethernet/broadcom/genet/bcmgenet.c    | 22 +++++++------------
- .../net/ethernet/broadcom/genet/bcmgenet.h    |  3 +++
- drivers/net/ethernet/broadcom/genet/bcmmii.c  |  5 +++++
- 3 files changed, 16 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-index 66f0c28298bf..7327a8d5dc75 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
-@@ -1318,7 +1318,8 @@ static void bcmgenet_get_ethtool_stats(struct net_device *dev,
- 	}
- }
- 
--static void bcmgenet_eee_enable_set(struct net_device *dev, bool enable)
-+void bcmgenet_eee_enable_set(struct net_device *dev, bool enable,
-+			     bool tx_lpi_enabled)
- {
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
- 	u32 off = priv->hw_params->tbuf_offset + TBUF_ENERGY_CTRL;
-@@ -1338,7 +1339,7 @@ static void bcmgenet_eee_enable_set(struct net_device *dev, bool enable)
- 
- 	/* Enable EEE and switch to a 27Mhz clock automatically */
- 	reg = bcmgenet_readl(priv->base + off);
--	if (enable)
-+	if (tx_lpi_enabled)
- 		reg |= TBUF_EEE_EN | TBUF_PM_EN;
- 	else
- 		reg &= ~(TBUF_EEE_EN | TBUF_PM_EN);
-@@ -1359,6 +1360,7 @@ static void bcmgenet_eee_enable_set(struct net_device *dev, bool enable)
- 
- 	priv->eee.eee_enabled = enable;
- 	priv->eee.eee_active = enable;
-+	priv->eee.tx_lpi_enabled = tx_lpi_enabled;
- }
- 
- static int bcmgenet_get_eee(struct net_device *dev, struct ethtool_eee *e)
-@@ -1374,6 +1376,7 @@ static int bcmgenet_get_eee(struct net_device *dev, struct ethtool_eee *e)
- 
- 	e->eee_enabled = p->eee_enabled;
- 	e->eee_active = p->eee_active;
-+	e->tx_lpi_enabled = p->tx_lpi_enabled;
- 	e->tx_lpi_timer = bcmgenet_umac_readl(priv, UMAC_EEE_LPI_TIMER);
- 
- 	return phy_ethtool_get_eee(dev->phydev, e);
-@@ -1383,7 +1386,6 @@ static int bcmgenet_set_eee(struct net_device *dev, struct ethtool_eee *e)
- {
- 	struct bcmgenet_priv *priv = netdev_priv(dev);
- 	struct ethtool_eee *p = &priv->eee;
--	int ret = 0;
- 
- 	if (GENET_IS_V1(priv))
- 		return -EOPNOTSUPP;
-@@ -1394,16 +1396,11 @@ static int bcmgenet_set_eee(struct net_device *dev, struct ethtool_eee *e)
- 	p->eee_enabled = e->eee_enabled;
- 
- 	if (!p->eee_enabled) {
--		bcmgenet_eee_enable_set(dev, false);
-+		bcmgenet_eee_enable_set(dev, false, false);
- 	} else {
--		ret = phy_init_eee(dev->phydev, 0);
--		if (ret) {
--			netif_err(priv, hw, dev, "EEE initialization failed\n");
--			return ret;
--		}
--
-+		p->eee_active = phy_init_eee(dev->phydev, false) >= 0;
- 		bcmgenet_umac_writel(priv, e->tx_lpi_timer, UMAC_EEE_LPI_TIMER);
--		bcmgenet_eee_enable_set(dev, true);
-+		bcmgenet_eee_enable_set(dev, p->eee_active, e->tx_lpi_enabled);
- 	}
- 
- 	return phy_ethtool_set_eee(dev->phydev, e);
-@@ -4219,9 +4216,6 @@ static int bcmgenet_resume(struct device *d)
- 	if (!device_may_wakeup(d))
- 		phy_resume(dev->phydev);
- 
--	if (priv->eee.eee_enabled)
--		bcmgenet_eee_enable_set(dev, true);
--
- 	bcmgenet_netif_start(dev);
- 
- 	netif_device_attach(dev);
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.h b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-index d111af605c44..95b3db100af6 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.h
-@@ -735,4 +735,7 @@ int bcmgenet_wol_power_down_cfg(struct bcmgenet_priv *priv,
- int bcmgenet_wol_power_up_cfg(struct bcmgenet_priv *priv,
- 			      enum bcmgenet_power_mode mode);
- 
-+void bcmgenet_eee_enable_set(struct net_device *dev, bool enable,
-+			     bool tx_lpi_enabled);
-+
- #endif /* __BCMGENET_H__ */
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmmii.c b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-index 32fc845ade9e..72bb9364a471 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmmii.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmmii.c
-@@ -87,6 +87,11 @@ static void bcmgenet_mac_config(struct net_device *dev)
- 		reg |= CMD_TX_EN | CMD_RX_EN;
- 	}
- 	bcmgenet_umac_writel(priv, reg, UMAC_CMD);
-+
-+	priv->eee.eee_active = phy_init_eee(phydev, 0) >= 0;
-+	bcmgenet_eee_enable_set(dev,
-+				priv->eee.eee_enabled && priv->eee.eee_active,
-+				priv->eee.tx_lpi_enabled);
- }
- 
- /* setup netdev link state when PHY link status change and
--- 
-2.34.1
-
+Chris
 
