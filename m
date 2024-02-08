@@ -1,79 +1,134 @@
-Return-Path: <stable+bounces-19255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632FA84D6C4
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 00:49:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E851284D78A
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 02:27:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE57D1F23E5E
-	for <lists+stable@lfdr.de>; Wed,  7 Feb 2024 23:49:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A82511C22C33
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 01:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19DE535CA;
-	Wed,  7 Feb 2024 23:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5EF1E893;
+	Thu,  8 Feb 2024 01:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=bewilderbeest.net header.i=@bewilderbeest.net header.b="irSxI+Fu"
 X-Original-To: stable@vger.kernel.org
-Received: from irl.hu (irl.hu [95.85.9.111])
+Received: from thorn.bewilderbeest.net (thorn.bewilderbeest.net [71.19.156.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D3B535B4;
-	Wed,  7 Feb 2024 23:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.85.9.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982541D6AA;
+	Thu,  8 Feb 2024 01:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.19.156.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707349755; cv=none; b=eh7ZM8ShDHfvqfb9YEytwtETDjMeotHprNziOCWJTijDDQhGjmqkm2lHbNlahnz0imr9CGadBaSFmKQ6IHo5gcIoKRDhktY8o3kbADVP/e7aQrn7ZOB5xMeP8kmQWFPLAKx2IMwNY37m/SF4DJsAnkxRvVFLvikpJISqmB983XQ=
+	t=1707355598; cv=none; b=dF3x15Z4GqfnUzdnEchVMEfvveN4lF1OcVNpOnrWuyjO2j2c2RCOJdeyq+bHF7IFQq5SKVjR7qrliD63y6OMgLj1ekdHa0abLAVpNqXg1OA2tUmIhb2UxLtwd9FkNJlkVZhz1HcAzuDkMo6gAzMDSRpBX6t2Gd3VMbeyLztAHoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707349755; c=relaxed/simple;
-	bh=byES4n0K3so3aUygYY5m0e3z3k70nM326q/F378hiBQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gNbhfb0nBUwVvoqXtWVl7+mYxuSmZH3pKG8VSyh6TtDsXeg6xJOL1wTHBvORdn2gltbMdT9X40Suy/bHzE6/3d+zSCeIXWuwE4IL4fVXNKveIXHVtmnAW7QSt3JBhHRGwrvr2vJ0dYtxABwPDP5WBTcvbBiu9UyZIKp/BI73O9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu; spf=pass smtp.mailfrom=irl.hu; arc=none smtp.client-ip=95.85.9.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=irl.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=irl.hu
-Received: from [192.168.2.4] (51b69e54.dsl.pool.telekom.hu [::ffff:81.182.158.84])
-  (AUTH: CRAM-MD5 soyer@irl.hu, )
-  by irl.hu with ESMTPSA
-  id 0000000000074519.0000000065C416F7.001B05BA; Thu, 08 Feb 2024 00:49:11 +0100
-Message-ID: <b762e167bb15c8dca954ba4bea4a27e06a019a9d.camel@irl.hu>
-Subject: Re: [PATCH v3] ASoC: tas2781: remove unused acpi_subysystem_id
-From: Gergo Koteles <soyer@irl.hu>
-To: Mark Brown <broonie@kernel.org>
-Cc: Shenghao Ding <shenghao-ding@ti.com>, Kevin Lu <kevin-lu@ti.com>,
-  Baojun Xu <baojun.xu@ti.com>, Jaroslav Kysela <perex@perex.cz>,
-  Takashi Iwai <tiwai@suse.com>, Liam Girdwood <lgirdwood@gmail.com>,
-  linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
-  alsa-devel@alsa-project.org, stable@vger.kernel.org
-Date: Thu, 08 Feb 2024 00:49:10 +0100
-In-Reply-To: <ZcNWcqYEmUjtusfe@finisterre.sirena.org.uk>
-References: 
-	<df5c94396256e9573b772962182def52d20c50d4.1707250969.git.soyer@irl.hu>
-	 <7f056a4148fec176812ff6cc490860bf565b161c.1707255917.git.soyer@irl.hu>
-	 <ZcNWcqYEmUjtusfe@finisterre.sirena.org.uk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1707355598; c=relaxed/simple;
+	bh=j6d/T+9LmwknQyPw9UW66o8FfW4OYtd1tl4c1Kp289Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q8qDgyLVtcgomhI25XuNEoSQbnU0soaYie/qCsx0TA6haSXdrLukY3mJ7AcBr13cvV+xnnd7boMywTYrNepwj8KG6AwWW7ABeVPB8kJ+3sty1Xsrrvh9mlxiXD5NR1zNoOOYGi79wMTfIejfpwnwA1nJilS2NqDUAc4mAtSDU0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bewilderbeest.net; spf=pass smtp.mailfrom=bewilderbeest.net; dkim=pass (1024-bit key) header.d=bewilderbeest.net header.i=@bewilderbeest.net header.b=irSxI+Fu; arc=none smtp.client-ip=71.19.156.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bewilderbeest.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bewilderbeest.net
+Received: from hatter.bewilderbeest.net (unknown [IPv6:2602:61:712b:6300::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: zev)
+	by thorn.bewilderbeest.net (Postfix) with ESMTPSA id 44659C9;
+	Wed,  7 Feb 2024 17:26:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bewilderbeest.net;
+	s=thorn; t=1707355588;
+	bh=6ONNLssa/JJa3YO5Up1AtekZAzMtVDM0uR/O3aO7Adc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=irSxI+FuU1hFzLtneHeVJ0eyyzW/aD27p1URn43PrNZ3mCJTaF8gG/XgUnNZoO+A/
+	 oZkd4fPJQiT+LDTivSrrTc7wgokOgZn9Kdqxjenj0Yik29OMCIppa5NAZ2AV3SPt0B
+	 ma0+vsxmXVNd0y/4K0ylCCx3i+O8juWJez93rPa4=
+From: Zev Weiss <zev@bewilderbeest.net>
+To: linux-parisc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Helge Deller <deller@gmx.de>,
+	Florent Revest <revest@chromium.org>
+Cc: Zev Weiss <zev@bewilderbeest.net>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Stefan Roesch <shr@devkernel.io>,
+	Oleg Nesterov <oleg@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	openbmc@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Russell King <linux@armlinux.org.uk>,
+	Sam James <sam@gentoo.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 0/2] ARM: prctl: Reject PR_SET_MDWE where not supported
+Date: Wed,  7 Feb 2024 17:26:18 -0800
+Message-ID: <20240208012620.32604-4-zev@bewilderbeest.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Mark,
+Hello,
 
-On Wed, 2024-02-07 at 10:07 +0000, Mark Brown wrote:
-> On Tue, Feb 06, 2024 at 10:49:29PM +0100, Gergo Koteles wrote:
-> > The acpi_subysystem_id is only written and freed, not read, so
-> > unnecessary.
->=20
-> Please don't send new patches in reply to old patches or serieses, this
-> makes it harder for both people and tools to understand what is going
-> on - it can bury things in mailboxes and make it difficult to keep track
-> of what current patches are, both for the new patches and the old ones.
+I noticed after a recent kernel update that my ARM926 system started
+segfaulting on any execve() after calling prctl(PR_SET_MDWE).  After
+some investigation it appears that ARMv5 is incapable of providing the
+appropriate protections for MDWE, since any readable memory is also
+implicitly executable.
 
-Alright. I read somewhere once.
-Sorry for the noise.
+(Note that I'm not an expert in either ARM arch details or the mm
+subsystem, so please bear with me if I've botched something in the
+above analysis.)
 
-thanks,
-Gergo
+The prctl_set_mdwe() function already had some special-case logic
+added disabling it on PARISC (commit 793838138c15, "prctl: Disable
+prctl(PR_SET_MDWE) on parisc"); this patch series (1) generalizes that
+check to use an arch_*() function, and (2) adds a corresponding
+override for ARM to disable MDWE on pre-ARMv6 CPUs.
+
+With the series applied, prctl(PR_SET_MDWE) is rejected on ARMv5 and
+subsequent execve() calls (as well as mmap(PROT_READ|PROT_WRITE)) can
+succeed instead of unconditionally failing; on ARMv6 the prctl works
+as it did previously.
+
+Since this was effectively a userspace-breaking change in v6.3 (with
+newer MDWE-aware userspace on older pre-MDWE kernels the prctl would
+simply fail safely) I've CCed -stable for v6.3+, though since the
+patches depend on the PARISC one above it will only apply cleanly on
+the linux-6.6.y and linux-6.7.y branches, since at least at time of
+writing the 6.3 through 6.5 branches don't have that patch backported
+(due to further missing dependencies [0]).
+
+
+Thanks,
+Zev
+
+[0] https://lore.kernel.org/all/2023112456-linked-nape-bf19@gregkh/
+
+Zev Weiss (2):
+  prctl: Generalize PR_SET_MDWE support check to be per-arch
+  ARM: prctl: Reject PR_SET_MDWE on pre-ARMv6
+
+ arch/arm/include/asm/mman.h    | 14 ++++++++++++++
+ arch/parisc/include/asm/mman.h | 14 ++++++++++++++
+ include/linux/mman.h           |  8 ++++++++
+ kernel/sys.c                   |  7 +++++--
+ 4 files changed, 41 insertions(+), 2 deletions(-)
+ create mode 100644 arch/arm/include/asm/mman.h
+ create mode 100644 arch/parisc/include/asm/mman.h
+
+-- 
+2.43.0
 
 
