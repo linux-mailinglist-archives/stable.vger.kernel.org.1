@@ -1,149 +1,146 @@
-Return-Path: <stable+bounces-19296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD84C84E2E0
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 15:13:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A445884E329
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 15:29:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81ACC1F268CD
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 14:13:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C178B24774
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 14:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFD17B3F3;
-	Thu,  8 Feb 2024 14:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C54178B4D;
+	Thu,  8 Feb 2024 14:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oY7xJcdh"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hGdscU2q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C387B3EE;
-	Thu,  8 Feb 2024 14:12:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EA02EB14;
+	Thu,  8 Feb 2024 14:29:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707401549; cv=none; b=X3aOxmH4f1PwKpMc92+OhzXV2KkIlXPWqw5UIrN0IWEqXKQR5RxcNJ31YupvDjdjPceJfJumMfcLZeqrzg5vSwc6x2MuQO+MGrMB02LIBpfd0LrGuFbP+PZ7yIxU8RZ6Pd4ZtR+OUQBdQJ5h1FSRhgbP4YLWnIaoH8wnTksajD0=
+	t=1707402589; cv=none; b=bCrK7KS6qBfsGgdG6SdsrV5IbStYNXGvPp8Uw7AFYVF4zf12ZZxIcZGwYznsMDhRMk0snkf/FLVuq3HkhFptTsqJqwUCCf/53ixf81/wMffVCNK5+QToXEAHbNQVudPq9gxFqLvfvYWOFHEWPLdobxoxtxCoCyTkJix99bzfi7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707401549; c=relaxed/simple;
-	bh=FVNjVUKh9OyW/83Ue0bZwUjdq4qIapVVOgrhdt/rjmI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s2314Ol0acq6pw7audQ1Dgb31WTuZsow2TdORfVEOW1OQQoppiInCMJD0TaywMbQ2dodlZEVfgladFqYGVDNmuAmELwdBtLg+sFJDtfvy9ujMF9gWPUc4U9V6JUjKjhVuk/X9XW3hFUUNBqTucCuAzfL2Zx3hUN6gwdkJbmO55Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oY7xJcdh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CEDC43601;
-	Thu,  8 Feb 2024 14:12:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707401548;
-	bh=FVNjVUKh9OyW/83Ue0bZwUjdq4qIapVVOgrhdt/rjmI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oY7xJcdhY87obWJfJL9l0De+t6szN33dhakI7R4b8JejBll60yqBTRhz/FqHZjydq
-	 D34SNk5SnrlGc/RAn9usjzjbS4E1wBUWfL9UicpwBj/c6VeNL95STnL7FUzese2F0L
-	 KASwebfLvLZowxscx0R7VDy1v33DKmJEYKVijvD8Pkkmx99NrUfdWloqWhLDFv8va4
-	 62lsGndGw0obTCbyFh/XStxYcd1CjcqrwlawFhk8HLpNNzlyRP3qhS8xWhSBp/rfqu
-	 eIN+qoMcVdgxsVdx9qMp92f75Q8HwPDE8L+REmj4tj3U+XfqZQpK7zZBG0q7+TasjO
-	 QJ+dDPfyh9vaA==
-Date: Thu, 8 Feb 2024 14:12:23 +0000
-From: Lee Jones <lee@kernel.org>
-To: Christian Marangi <ansuelsmth@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Pavel Machek <pavel@ucw.cz>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Li Zetao <lizetao1@huawei.com>, linux-leds@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] leds: trigger: netdev: Fix kernel panic on interface
- rename trig notify
-Message-ID: <20240208141223.GR689448@google.com>
-References: <20240203235413.1146-1-ansuelsmth@gmail.com>
- <8d51f09b-e6d2-4ee1-9e7d-b545d561798a@lunn.ch>
- <20240205085007.GA19855@google.com>
- <2cf84815-f9b6-4a0a-a3b4-d23628a89aa4@lunn.ch>
- <65c0e874.df0a0220.257a.43b1@mx.google.com>
- <20240205143359.GB53266@google.com>
- <65c0f2dc.050a0220.63083.8524@mx.google.com>
- <20240205150422.GC53266@google.com>
+	s=arc-20240116; t=1707402589; c=relaxed/simple;
+	bh=BjhD4pm+ohrOgBwpHnJBgVialPzyURLLtifb2JZRcvA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=npotn9jDbR/d0NKX9u0O4rwBu4lVFC2lwENvTkOzCzNCE5c14/t5lslbunDGeEE0VyGWmxvUhDe6T1ggeDjx6bAOk988eLKd7YpYU828pvO/IdXQGv9Dfftkl6IHP/O1mB5vNhN8q8yZsSiWWE1gdS7BawQVWc0x8A4yHGvVfDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hGdscU2q; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4185Do4c025038;
+	Thu, 8 Feb 2024 14:29:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=pqOQ0pk1w4ZIPMpcW3wgFsiH/QfkfRueUw7WRbNFp/8=; b=hG
+	dscU2qq7Ic0Y0NtjNeSa5QCTQrb6PSzTkJHnr++4IRXVWAGLEwcktx0Bth5QEkG0
+	XlywtN8eNwDRmcn6V9mv93s2hvmy7JRxdTlsV2hgdtfsZ/nIeT7pHOccUwFjToZ2
+	AMHMtViXlNVCdQ6BgJB8HPINcmQtNeqJo3FjdR6PvIObwoj6WsiVRqDToxv69jE8
+	522tK+6nBeMFNAtZjMmrM8KEygaMZksuyIOel49kcdLBceSAvy5fsCrANKelj47r
+	MQjMviUCYMDTYKoHGlmB4+8yzk4EX0dg0t7EoYnLWC+PbfjKuDPuLp7vr/fc49QN
+	FLKDH7BN9CFNobwpbQSg==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w4h0uj6h7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 Feb 2024 14:29:37 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 418ETbXG005314
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 8 Feb 2024 14:29:37 GMT
+Received: from [10.216.60.50] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 8 Feb
+ 2024 06:29:34 -0800
+Message-ID: <b1991baf-e642-f811-14b0-ccd7c0cd56ec@quicinc.com>
+Date: Thu, 8 Feb 2024 19:59:20 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240205150422.GC53266@google.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3] soc: qcom: mdt_loader: Add Upperbounds check for
+ program header access
+Content-Language: en-US
+To: Auditya Bhattaram <quic_audityab@quicinc.com>, <andersson@kernel.org>,
+        <konrad.dybcio@linaro.org>
+CC: <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20240208123527.19725-1-quic_audityab@quicinc.com>
+From: Mukesh Ojha <quic_mojha@quicinc.com>
+In-Reply-To: <20240208123527.19725-1-quic_audityab@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: KxJzfQkUXXq8Ut2NX3OHB5BcGof4Gp04
+X-Proofpoint-GUID: KxJzfQkUXXq8Ut2NX3OHB5BcGof4Gp04
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-08_05,2024-02-08_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ spamscore=0 mlxscore=0 suspectscore=0 phishscore=0 malwarescore=0
+ bulkscore=0 mlxlogscore=999 priorityscore=1501 clxscore=1011
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402080077
 
-On Mon, 05 Feb 2024, Lee Jones wrote:
 
-> On Mon, 05 Feb 2024, Christian Marangi wrote:
-> 
-> > On Mon, Feb 05, 2024 at 02:33:59PM +0000, Lee Jones wrote:
-> > > On Mon, 05 Feb 2024, Christian Marangi wrote:
-> > > 
-> > > > On Mon, Feb 05, 2024 at 02:41:46PM +0100, Andrew Lunn wrote:
-> > > > > > > This should have 'net' in the subject line, to indicate which tree its
-> > > > > > > for.
-> > > > > > 
-> > > > > > No, it shouldn't.
-> > > > > > 
-> > > > > > Contributors aren't obliged to know anything about merging strategies.
-> > > > > 
-> > > > > With netdev, we tend to assume they do, or at least can contribute to
-> > > > > the discussion. They often know about any dependencies etc which could
-> > > > > influence the decision. When there are multiple subsystem maintainers
-> > > > > involved, i tend to use To: to indicate the maintainer i think should
-> > > > > merge the patch, and Cc: for the rest.
-> > > > >
-> > > > 
-> > > > I'm always a bit confused when I have to send patch to mixed subsystem
-> > > > (not the case but for net trigger it's almost that). Sorry for the
-> > > > confusion/noise.
-> > > 
-> > > When you have a truly cross-subsystem patch, it's up to you.
-> > > 
-> > >  - Mention both e.g. leds/net:
-> > >  - Mention neither e.g. <device>:
-> > >  - Mention the one that is most relevant
-> > > 
-> > >  An example of the last option might be when the lion's share of the
-> > >  changes occur in one subsystem and only header files are changed in the
-> > >  other.
-> > > 
-> > > In an ideal world i.e. when there are no build-time/runtime deps between
-> > > them, changes should be separated out into their own commits.
-> > >
-> > 
-> > Thanks a lot for the explaination and the examples!
-> > 
-> > > > > > Why does this need to go in via net?
-> > > > > 
-> > > > > It does not, as far as i'm aware. Christian, do you know of any
-> > > > > reason?
-> > > > > 
-> > > > 
-> > > > This is strictly a fix, no dependency or anything like that. Maybe using
-> > > > net as target would make this faster to merge (since net is for fix only
-> > > > and this has to be backported) than using leds-next?
-> > > 
-> > > We have leds-fixes for that.
-> > >
-> > 
-> > Oh! No idea, should I add a tag to the patch to target that branch
-> > specifically?
-> 
-> You don't need to do anything special.
-> 
-> The Fixes: tag is enough to let us know that this is a fix.
-> 
-> If the commit mentioned in Fixes: was accepted as part of the last
-> merge-window, it'll be sent to the -rcs in good time.  If it fixes a
-> commit which was introduced in a previous cycle, it'll be submitted
-> during the next merge-window.
 
-Since this patch fixes an issue that was incorporated into v6.4, we
-shall not be submitting this for the v6.8-rcs.  Instead it's heading for
-the v6.9 merge-window and will be backported to v6.6.y accordingly.
+On 2/8/2024 6:05 PM, Auditya Bhattaram wrote:
+> hash_index is evaluated by looping phdrs till QCOM_MDT_TYPE_HASH
+> is found. Add an upperbound check to phdrs to access within elf size.
+> 
+> Fixes: 64fb5eb87d58 ("soc: qcom: mdt_loader: Allow hash to reside in any segment")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Auditya Bhattaram <quic_audityab@quicinc.com>
+> ---
+> Changes in v3:
+>   - Corrected wrong patch versioning in the Subject.
+>   - Added error prints for Invalid access.
+> Link to v2 https://lore.kernel.org/linux-arm-msm/9773d189-c896-d5c5-804c-e086c24987b4@quicinc.com/T/#t
+> Link to v1 https://lore.kernel.org/linux-arm-msm/5d7a3b97-d840-4863-91a0-32c1d8e7532f@linaro.org/T/#t
+> ---
+>   drivers/soc/qcom/mdt_loader.c | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/soc/qcom/mdt_loader.c b/drivers/soc/qcom/mdt_loader.c
+> index 6f177e46fa0f..61e2377cc5c3 100644
+> --- a/drivers/soc/qcom/mdt_loader.c
+> +++ b/drivers/soc/qcom/mdt_loader.c
+> @@ -145,6 +145,11 @@ void *qcom_mdt_read_metadata(const struct firmware *fw, size_t *data_len,
+>   	if (phdrs[0].p_type == PT_LOAD)
+>   		return ERR_PTR(-EINVAL);
+> 
+> +	if (((size_t)(phdrs + ehdr->e_phnum)) > ((size_t)ehdr + fw->size)) {
 
--- 
-Lee Jones [李琼斯]
+This change is valid only if somehow, ehdr->e_phnum gets corrupted or 
+changed via some engineering means and results in out-of-bounds access.
+
+Acked-by: Mukesh Ojha <quic_mojha@quicinc.com>
+
+> +		dev_err(dev, "Invalid phdrs access: %s\n", fw_name);
+
+Should it print ehdr->e_phnum as well to be more valid?
+
+-Mukesh
+
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+>   	for (i = 1; i < ehdr->e_phnum; i++) {
+>   		if ((phdrs[i].p_flags & QCOM_MDT_TYPE_MASK) == QCOM_MDT_TYPE_HASH) {
+>   			hash_segment = i;
+> --
+> 2.17.1
+> 
+> 
 
