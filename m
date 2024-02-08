@@ -1,126 +1,214 @@
-Return-Path: <stable+bounces-19291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC87C84E0C2
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 13:35:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC99084E0CC
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 13:38:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BBCE1F24338
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 12:35:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41A11B26314
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 12:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D69A074E27;
-	Thu,  8 Feb 2024 12:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461C871B30;
+	Thu,  8 Feb 2024 12:38:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="f8W0zxW0"
+	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="MP3uOHKf"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB59F1D525;
-	Thu,  8 Feb 2024 12:35:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4525B6EB4B;
+	Thu,  8 Feb 2024 12:38:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707395740; cv=none; b=mo9xmzYWM5Mlw+klxu1jm9A3LO+50P+hfHZaVcCuOKd2KyTou2hJerNpuUeDkJ4E26yMJi0mzueqOIsNAHZ4LrWsBI4iXrY55pbAL3tH+aeqwsyl7B0N6mv3WM18yYjAYLRExXz13/ScqQzVOxTqBgyUkZ2ZsUMMEuBAJtP5EkA=
+	t=1707395921; cv=none; b=OAvLcAVJbz/2XS4vjtEkGug2YANv/D4fzrlJbDUGGUIXjRw9rBM17o965pNpUmRCwFcPlmT+PvcDqkksIDtz+SXzi1OJwmiZu58vTZQG/zE1DVI44LxuropdaNEolvAfFSyJoIl/U/WJGY5DLYR1QkoyL/6FkkUoM7RFEYlpuag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707395740; c=relaxed/simple;
-	bh=yfrto/Me4qW2MHQY54SNciFA0kVeMHFuyf7ci+k9tSY=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=rzmIr3h/Ps6SHBp22Nur5Q4qpyrvaVWgESapIXlA82Ox11rwZzGI8z788dVzm+CcKbeCE9gmD4HZ7uwv9kuNXyFX0AL+k0oknR4c3+6S0+GoEfKOBSPjv8wGng1YuKjsg9rY/Cy1fl6b4dXNi9I0Ej1H0JTaRrdF+kPY+Gu01tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=f8W0zxW0; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 418Akbvd028072;
-	Thu, 8 Feb 2024 12:35:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id; s=qcppdkim1; bh=ikMJYK2WAvNN
-	KXWt0Hgg52AE4P+Ye/pJr8QAkUFv0NQ=; b=f8W0zxW08WbA/IprkZBzMd5VuzhS
-	+H15aAaaoFyuRBbGE1QfjXEcyu78EXwkrotzaBLZR2OWZDBTJRS62MNYXZQJap6c
-	Mv0VBajbBOdXDnQ//mHn3bOvQ3xEBvbkKM05CzOPjMqtbyUDYoyECPhoATdji0sN
-	JqTr/bt8PS6IbTgLOCbTzgAu9V8A94vf0nOzaZqV/AIfgrEC1yFkXaqO0wOvCqlr
-	HilALapNQhAgNDwRJPEwfh8mwriUfWSh75iU+UgNkuhphzhNXDotsXWtS6qQ2kFP
-	M0yr8f1QnmafH51pU7RnHcqpP6sDz9NOAxmtQfvhmC0ViAXUPnTwPm4s2A==
-Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w4pavhcun-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 08 Feb 2024 12:35:34 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 418CZVVs014362;
-	Thu, 8 Feb 2024 12:35:31 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 3w1ejm9s7a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Thu, 08 Feb 2024 12:35:31 +0000
-Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 418CZVNP014356;
-	Thu, 8 Feb 2024 12:35:31 GMT
-Received: from hu-maiyas-hyd.qualcomm.com (hu-audityab-hyd.qualcomm.com [10.147.244.159])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTP id 418CZUqm014355;
-	Thu, 08 Feb 2024 12:35:31 +0000
-Received: by hu-maiyas-hyd.qualcomm.com (Postfix, from userid 207879)
-	id 9BC3E5001CE; Thu,  8 Feb 2024 18:05:29 +0530 (+0530)
-From: Auditya Bhattaram <quic_audityab@quicinc.com>
-To: andersson@kernel.org, konrad.dybcio@linaro.org
-Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Auditya Bhattaram <quic_audityab@quicinc.com>
-Subject: [PATCH v3] soc: qcom: mdt_loader: Add Upperbounds check for program header access
-Date: Thu,  8 Feb 2024 18:05:27 +0530
-Message-Id: <20240208123527.19725-1-quic_audityab@quicinc.com>
-X-Mailer: git-send-email 2.17.1
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Z6aUr7cHfi8mP0tq78xzmvJYc9DNKQLd
-X-Proofpoint-GUID: Z6aUr7cHfi8mP0tq78xzmvJYc9DNKQLd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-08_03,2024-02-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 mlxscore=0 lowpriorityscore=0 malwarescore=0
- mlxlogscore=999 phishscore=0 bulkscore=0 adultscore=0 clxscore=1011
- suspectscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2401310000 definitions=main-2402080066
+	s=arc-20240116; t=1707395921; c=relaxed/simple;
+	bh=v6ar3XL4NmldOxqy4tm/6Yg673Ym1vs13mSEDPytD2Y=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gSbu483/+5U61Foq+2Hznj3gGqQaU5BdiqLo1+rFaEULARByakSXBarr47FDcEbdwy9oU1eWXQkxvEx54FDJMArVlB4enL9paVcDwnCYBz1oP10JCr0CKn9mKFAwwwUm3zgsWJXEFiL1M9s9nx/lJxY8WePS2fBaBFUnaXTR/s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=MP3uOHKf; arc=none smtp.client-ip=99.78.197.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1707395919; x=1738931919;
+  h=date:from:to:subject:message-id:references:mime-version:
+   in-reply-to;
+  bh=XpaOl328Z0sK2jVAZ5hfANv8ZvM8k9ggJCj6QG2taxk=;
+  b=MP3uOHKfPOwlCftpmBijdPejoXr0QS0VOehEbfzK884JVMThBPCR7cfH
+   2U4AbmLJz+ToGAqeRHadOUChb9wKMUrIx0IA4MlT0Ik2u7mC6aDdsHph9
+   THw4FHwPJq7QW63U5wtdMSFDj3wCQEmVPre0YIRRF2T40huCqEF2vvCa1
+   s=;
+X-IronPort-AV: E=Sophos;i="6.05,253,1701129600"; 
+   d="scan'208";a="64637088"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 12:38:36 +0000
+Received: from EX19MTAUEA002.ant.amazon.com [10.0.44.209:48592]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.4.133:2525] with esmtp (Farcaster)
+ id 8f6b3cd2-68f2-4838-a80e-f09091bf4d06; Thu, 8 Feb 2024 12:38:35 +0000 (UTC)
+X-Farcaster-Flow-ID: 8f6b3cd2-68f2-4838-a80e-f09091bf4d06
+Received: from EX19D008UEC002.ant.amazon.com (10.252.135.242) by
+ EX19MTAUEA002.ant.amazon.com (10.252.134.9) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Thu, 8 Feb 2024 12:38:32 +0000
+Received: from EX19MTAUWA001.ant.amazon.com (10.250.64.204) by
+ EX19D008UEC002.ant.amazon.com (10.252.135.242) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Thu, 8 Feb 2024 12:38:32 +0000
+Received: from dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (10.15.57.183)
+ by mail-relay.amazon.com (10.250.64.204) with Microsoft SMTP Server id
+ 15.2.1118.40 via Frontend Transport; Thu, 8 Feb 2024 12:38:31 +0000
+Received: by dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (Postfix, from userid 5466572)
+	id 67924956; Thu,  8 Feb 2024 12:38:31 +0000 (UTC)
+Date: Thu, 8 Feb 2024 12:38:31 +0000
+From: Maximilian Heyne <mheyne@amazon.de>
+To: Julien Grall <jgrall@amazon.com>, <stable@vger.kernel.org>, "Andrew
+ Panyakin" <apanyaki@amazon.com>, Juergen Gross <jgross@suse.com>, "Stefano
+ Stabellini" <sstabellini@kernel.org>, Oleksandr Tyshchenko
+	<oleksandr_tyshchenko@epam.com>, Rahul Singh <rahul.singh@arm.com>, "David
+ Woodhouse" <dwmw@amazon.co.uk>, Viresh Kumar <viresh.kumar@linaro.org>,
+	"Konrad Rzeszutek Wilk" <konrad.wilk@oracle.com>, Jeremy Fitzhardinge
+	<jeremy.fitzhardinge@citrix.com>, <xen-devel@lists.xenproject.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] xen/events: close evtchn after mapping cleanup
+Message-ID: <ZcTLR9uUyfy9cNUk@amazon.de>
+References: <20240124163130.31324-1-mheyne@amazon.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240124163130.31324-1-mheyne@amazon.de>
 
-hash_index is evaluated by looping phdrs till QCOM_MDT_TYPE_HASH
-is found. Add an upperbound check to phdrs to access within elf size.
+On Wed, Jan 24, 2024 at 04:31:28PM +0000, Maximilian Heyne wrote:
+> shutdown_pirq and startup_pirq are not taking the
+> irq_mapping_update_lock because they can't due to lock inversion. Both
+> are called with the irq_desc->lock being taking. The lock order,
+> however, is first irq_mapping_update_lock and then irq_desc->lock.
+> 
+> This opens multiple races:
+> - shutdown_pirq can be interrupted by a function that allocates an event
+>   channel:
+> 
+>   CPU0                        CPU1
+>   shutdown_pirq {
+>     xen_evtchn_close(e)
+>                               __startup_pirq {
+>                                 EVTCHNOP_bind_pirq
+>                                   -> returns just freed evtchn e
+>                                 set_evtchn_to_irq(e, irq)
+>                               }
+>     xen_irq_info_cleanup() {
+>       set_evtchn_to_irq(e, -1)
+>     }
+>   }
+> 
+>   Assume here event channel e refers here to the same event channel
+>   number.
+>   After this race the evtchn_to_irq mapping for e is invalid (-1).
+> 
+> - __startup_pirq races with __unbind_from_irq in a similar way. Because
+>   __startup_pirq doesn't take irq_mapping_update_lock it can grab the
+>   evtchn that __unbind_from_irq is currently freeing and cleaning up. In
+>   this case even though the event channel is allocated, its mapping can
+>   be unset in evtchn_to_irq.
+> 
+> The fix is to first cleanup the mappings and then close the event
+> channel. In this way, when an event channel gets allocated it's
+> potential previous evtchn_to_irq mappings are guaranteed to be unset already.
+> This is also the reverse order of the allocation where first the event
+> channel is allocated and then the mappings are setup.
+> 
+> On a 5.10 kernel prior to commit 3fcdaf3d7634 ("xen/events: modify internal
+> [un]bind interfaces"), we hit a BUG like the following during probing of NVMe
+> devices. The issue is that during nvme_setup_io_queues, pci_free_irq
+> is called for every device which results in a call to shutdown_pirq.
+> With many nvme devices it's therefore likely to hit this race during
+> boot because there will be multiple calls to shutdown_pirq and
+> startup_pirq are running potentially in parallel.
+> 
+>   ------------[ cut here ]------------
+>   blkfront: xvda: barrier or flush: disabled; persistent grants: enabled; indirect descriptors: enabled; bounce buffer: enabled
+>   kernel BUG at drivers/xen/events/events_base.c:499!
+>   invalid opcode: 0000 [#1] SMP PTI
+>   CPU: 44 PID: 375 Comm: kworker/u257:23 Not tainted 5.10.201-191.748.amzn2.x86_64 #1
+>   Hardware name: Xen HVM domU, BIOS 4.11.amazon 08/24/2006
+>   Workqueue: nvme-reset-wq nvme_reset_work
+>   RIP: 0010:bind_evtchn_to_cpu+0xdf/0xf0
+>   Code: 5d 41 5e c3 cc cc cc cc 44 89 f7 e8 2b 55 ad ff 49 89 c5 48 85 c0 0f 84 64 ff ff ff 4c 8b 68 30 41 83 fe ff 0f 85 60 ff ff ff <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 0f 1f 44 00 00
+>   RSP: 0000:ffffc9000d533b08 EFLAGS: 00010046
+>   RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000006
+>   RDX: 0000000000000028 RSI: 00000000ffffffff RDI: 00000000ffffffff
+>   RBP: ffff888107419680 R08: 0000000000000000 R09: ffffffff82d72b00
+>   R10: 0000000000000000 R11: 0000000000000000 R12: 00000000000001ed
+>   R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000002
+>   FS:  0000000000000000(0000) GS:ffff88bc8b500000(0000) knlGS:0000000000000000
+>   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>   CR2: 0000000000000000 CR3: 0000000002610001 CR4: 00000000001706e0
+>   DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+>   DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+>   Call Trace:
+>    ? show_trace_log_lvl+0x1c1/0x2d9
+>    ? show_trace_log_lvl+0x1c1/0x2d9
+>    ? set_affinity_irq+0xdc/0x1c0
+>    ? __die_body.cold+0x8/0xd
+>    ? die+0x2b/0x50
+>    ? do_trap+0x90/0x110
+>    ? bind_evtchn_to_cpu+0xdf/0xf0
+>    ? do_error_trap+0x65/0x80
+>    ? bind_evtchn_to_cpu+0xdf/0xf0
+>    ? exc_invalid_op+0x4e/0x70
+>    ? bind_evtchn_to_cpu+0xdf/0xf0
+>    ? asm_exc_invalid_op+0x12/0x20
+>    ? bind_evtchn_to_cpu+0xdf/0xf0
+>    ? bind_evtchn_to_cpu+0xc5/0xf0
+>    set_affinity_irq+0xdc/0x1c0
+>    irq_do_set_affinity+0x1d7/0x1f0
+>    irq_setup_affinity+0xd6/0x1a0
+>    irq_startup+0x8a/0xf0
+>    __setup_irq+0x639/0x6d0
+>    ? nvme_suspend+0x150/0x150
+>    request_threaded_irq+0x10c/0x180
+>    ? nvme_suspend+0x150/0x150
+>    pci_request_irq+0xa8/0xf0
+>    ? __blk_mq_free_request+0x74/0xa0
+>    queue_request_irq+0x6f/0x80
+>    nvme_create_queue+0x1af/0x200
+>    nvme_create_io_queues+0xbd/0xf0
+>    nvme_setup_io_queues+0x246/0x320
+>    ? nvme_irq_check+0x30/0x30
+>    nvme_reset_work+0x1c8/0x400
+>    process_one_work+0x1b0/0x350
+>    worker_thread+0x49/0x310
+>    ? process_one_work+0x350/0x350
+>    kthread+0x11b/0x140
+>    ? __kthread_bind_mask+0x60/0x60
+>    ret_from_fork+0x22/0x30
+>   Modules linked in:
+>   ---[ end trace a11715de1eee1873 ]---
+> 
+> Fixes: d46a78b05c0e ("xen: implement pirq type event channels")
+> Cc: stable@vger.kernel.org
+> Co-debugged-by: Andrew Panyakin <apanyaki@amazon.com>
+> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
 
-Fixes: 64fb5eb87d58 ("soc: qcom: mdt_loader: Allow hash to reside in any segment")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Auditya Bhattaram <quic_audityab@quicinc.com>
----
-Changes in v3:
- - Corrected wrong patch versioning in the Subject.
- - Added error prints for Invalid access.
-Link to v2 https://lore.kernel.org/linux-arm-msm/9773d189-c896-d5c5-804c-e086c24987b4@quicinc.com/T/#t
-Link to v1 https://lore.kernel.org/linux-arm-msm/5d7a3b97-d840-4863-91a0-32c1d8e7532f@linaro.org/T/#t
----
- drivers/soc/qcom/mdt_loader.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Friendly ping. Did anyone find time to look at this?
 
-diff --git a/drivers/soc/qcom/mdt_loader.c b/drivers/soc/qcom/mdt_loader.c
-index 6f177e46fa0f..61e2377cc5c3 100644
---- a/drivers/soc/qcom/mdt_loader.c
-+++ b/drivers/soc/qcom/mdt_loader.c
-@@ -145,6 +145,11 @@ void *qcom_mdt_read_metadata(const struct firmware *fw, size_t *data_len,
- 	if (phdrs[0].p_type == PT_LOAD)
- 		return ERR_PTR(-EINVAL);
 
-+	if (((size_t)(phdrs + ehdr->e_phnum)) > ((size_t)ehdr + fw->size)) {
-+		dev_err(dev, "Invalid phdrs access: %s\n", fw_name);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
- 	for (i = 1; i < ehdr->e_phnum; i++) {
- 		if ((phdrs[i].p_flags & QCOM_MDT_TYPE_MASK) == QCOM_MDT_TYPE_HASH) {
- 			hash_segment = i;
---
-2.17.1
+
+Amazon Development Center Germany GmbH
+Krausenstr. 38
+10117 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+Sitz: Berlin
+Ust-ID: DE 289 237 879
+
+
 
 
