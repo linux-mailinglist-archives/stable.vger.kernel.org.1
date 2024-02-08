@@ -1,214 +1,138 @@
-Return-Path: <stable+bounces-19292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC99084E0CC
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 13:38:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 854C984E1CD
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 14:20:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41A11B26314
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 12:38:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B75FD1C236D9
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 13:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461C871B30;
-	Thu,  8 Feb 2024 12:38:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757D87BAE4;
+	Thu,  8 Feb 2024 13:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="MP3uOHKf"
+	dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b="v6wGuT0P"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4525B6EB4B;
-	Thu,  8 Feb 2024 12:38:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECD57B3E9
+	for <stable@vger.kernel.org>; Thu,  8 Feb 2024 13:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707395921; cv=none; b=OAvLcAVJbz/2XS4vjtEkGug2YANv/D4fzrlJbDUGGUIXjRw9rBM17o965pNpUmRCwFcPlmT+PvcDqkksIDtz+SXzi1OJwmiZu58vTZQG/zE1DVI44LxuropdaNEolvAfFSyJoIl/U/WJGY5DLYR1QkoyL/6FkkUoM7RFEYlpuag=
+	t=1707398065; cv=none; b=YHwOJRHNxZMtH2DafeURYgD92Yj6NAPijWOEwvEiSJJvCLBSv+0DDmhfsTnhiNbNdrmTzqtMMDQXTUngFwtvie+I4IPgKVbuoHaywP9A/J74SKHsx2qmo+VYRJ2lFi9f/eBfsZ00Sr7f0NUWof74J2cb9BGOuWmCPS02ynFJF2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707395921; c=relaxed/simple;
-	bh=v6ar3XL4NmldOxqy4tm/6Yg673Ym1vs13mSEDPytD2Y=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gSbu483/+5U61Foq+2Hznj3gGqQaU5BdiqLo1+rFaEULARByakSXBarr47FDcEbdwy9oU1eWXQkxvEx54FDJMArVlB4enL9paVcDwnCYBz1oP10JCr0CKn9mKFAwwwUm3zgsWJXEFiL1M9s9nx/lJxY8WePS2fBaBFUnaXTR/s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=MP3uOHKf; arc=none smtp.client-ip=99.78.197.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+	s=arc-20240116; t=1707398065; c=relaxed/simple;
+	bh=QuMQWAnwWU8Jg8k+fqlUw7v0lstHGn7kXNGqQQEKh0s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MVp/e8YZlyi6uE65z2VwqJ8WOfKBviL1g5rKetO5AQJA2jcPcnnCLjMq2QyD7TzfoL2lOrwND1aTx8qRUQy8n5WiadAkvVmQ/MicRw9kmuZ15JWH0kyrYJZO34dFZAg2uTFlmY3QM3Ibudq9TJjqX9K/eXWXKjeqCBzYHpL3kuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b=v6wGuT0P; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a3832ef7726so221510966b.0
+        for <stable@vger.kernel.org>; Thu, 08 Feb 2024 05:14:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1707395919; x=1738931919;
-  h=date:from:to:subject:message-id:references:mime-version:
-   in-reply-to;
-  bh=XpaOl328Z0sK2jVAZ5hfANv8ZvM8k9ggJCj6QG2taxk=;
-  b=MP3uOHKfPOwlCftpmBijdPejoXr0QS0VOehEbfzK884JVMThBPCR7cfH
-   2U4AbmLJz+ToGAqeRHadOUChb9wKMUrIx0IA4MlT0Ik2u7mC6aDdsHph9
-   THw4FHwPJq7QW63U5wtdMSFDj3wCQEmVPre0YIRRF2T40huCqEF2vvCa1
-   s=;
-X-IronPort-AV: E=Sophos;i="6.05,253,1701129600"; 
-   d="scan'208";a="64637088"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 12:38:36 +0000
-Received: from EX19MTAUEA002.ant.amazon.com [10.0.44.209:48592]
- by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.4.133:2525] with esmtp (Farcaster)
- id 8f6b3cd2-68f2-4838-a80e-f09091bf4d06; Thu, 8 Feb 2024 12:38:35 +0000 (UTC)
-X-Farcaster-Flow-ID: 8f6b3cd2-68f2-4838-a80e-f09091bf4d06
-Received: from EX19D008UEC002.ant.amazon.com (10.252.135.242) by
- EX19MTAUEA002.ant.amazon.com (10.252.134.9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 8 Feb 2024 12:38:32 +0000
-Received: from EX19MTAUWA001.ant.amazon.com (10.250.64.204) by
- EX19D008UEC002.ant.amazon.com (10.252.135.242) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 8 Feb 2024 12:38:32 +0000
-Received: from dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (10.15.57.183)
- by mail-relay.amazon.com (10.250.64.204) with Microsoft SMTP Server id
- 15.2.1118.40 via Frontend Transport; Thu, 8 Feb 2024 12:38:31 +0000
-Received: by dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (Postfix, from userid 5466572)
-	id 67924956; Thu,  8 Feb 2024 12:38:31 +0000 (UTC)
-Date: Thu, 8 Feb 2024 12:38:31 +0000
-From: Maximilian Heyne <mheyne@amazon.de>
-To: Julien Grall <jgrall@amazon.com>, <stable@vger.kernel.org>, "Andrew
- Panyakin" <apanyaki@amazon.com>, Juergen Gross <jgross@suse.com>, "Stefano
- Stabellini" <sstabellini@kernel.org>, Oleksandr Tyshchenko
-	<oleksandr_tyshchenko@epam.com>, Rahul Singh <rahul.singh@arm.com>, "David
- Woodhouse" <dwmw@amazon.co.uk>, Viresh Kumar <viresh.kumar@linaro.org>,
-	"Konrad Rzeszutek Wilk" <konrad.wilk@oracle.com>, Jeremy Fitzhardinge
-	<jeremy.fitzhardinge@citrix.com>, <xen-devel@lists.xenproject.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] xen/events: close evtchn after mapping cleanup
-Message-ID: <ZcTLR9uUyfy9cNUk@amazon.de>
-References: <20240124163130.31324-1-mheyne@amazon.de>
+        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1707398059; x=1708002859; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=5ntukh3iLbboob5RjSi1RGWl1ttcbv304nzNTDlBnME=;
+        b=v6wGuT0PJ+N4hzmt8UaBTDv7z6pYtEDr/OMrGZNxLyrZCsSKuWL5yNRmfPSDoQy3vX
+         ZiXNNunlaPVoGRQB7Aih7Im6QtCpimTY+Nvn1HXrMNOU0IBMOyq/Ah3q2+wJJCUgXpF2
+         OTYKxr1/tQKW2q4uafhwE2CW2LAYDmGuT7NOetWEc7tyDBDsQGueTUkEh/OrklW3JC/S
+         m5/NRlI9u6qVbJVnc2NCSHScWqY5h8b2e/q7YNbGvFEEdN4IcUI1a8UmX7hOl33cmSPd
+         vf2Fo8xtKcueUt7kBD3arum/26q3DaSJ/13Fa8ytRnEfRWbLZFA5Yk7XLQcHGdImsjyT
+         iuGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707398059; x=1708002859;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5ntukh3iLbboob5RjSi1RGWl1ttcbv304nzNTDlBnME=;
+        b=B/3BjHut0RJXbWJfGwiiEG/RMJ62muBQGpPtkkl35LipSFnqvfkj1R21+MZOFoomrP
+         +C5Ec/tddW6zXkqksLG+j1HxW3PRyVBNRFtwwRGPUOCSBG75TsswGzC6UEi/Mh/udJ02
+         6ttU1IHiC/H9UUaBH2o5AOAXEb4xvI23dIq0C57hVfDMhgLWKFX27gCq5cKYUd6dAW0e
+         JSlHnrsdfOjp3Rkww40CqvJ1zp/8Gm0DhO0l3atEqJ/3lkaUtCyUhGDuuUos/hPKdXOM
+         jWiuX5YsJ/c91zYehir0FElwl1h5fpaFk4ObiTO95UyV8a8dobWjGqZjGgmnBwvlipwd
+         DXMg==
+X-Forwarded-Encrypted: i=1; AJvYcCWStYme0klYxC+ovjqJnrfbt9I4aoQgYBpVP3edFxz1IcPT5niVu7+F8D3Hcbul4CormzUFDeHumT/T+sXtDr3AaxU4LXGH
+X-Gm-Message-State: AOJu0YzRrXoCwLx+EGeHp4dTxOP3i6YpsznbyQLUcWOD/SdUEtITSpLO
+	3NmqGUyh6tYUBmggd9PMZbI5geCSfy2CQ5uQSV2FxXDZL1fjBrwK4Z6vamk8KkA=
+X-Google-Smtp-Source: AGHT+IFxbsmI0ElM1ZdD7KC6y7qcHLiINyUO2uqTJm0NGN+KRXLzE11VCkTZ7fcDVi5+DjtPt7PW0g==
+X-Received: by 2002:a17:906:80d3:b0:a38:4b2c:8178 with SMTP id a19-20020a17090680d300b00a384b2c8178mr4613591ejx.19.1707398059311;
+        Thu, 08 Feb 2024 05:14:19 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVug2VZ27JP6E4LkCDJegC+o/d4kAvgYornjfSyauOCXVlrxA/UD7zr8dqlDJSKtVwbL2zFzOGQp3y3dmjN4bhkknQ3BNy2Z1ZenwsiKzeSrPlPRnx/UkIsoO8Umni4njI72tzxecdB8kUQVEOK5uSM0mAN/ulw5WJtjVNghnu1uD5M1MKzZLcBGkBwMAk6ZPvcuJvebPsczrnn8PcoxxF8UPtS/9ImrEp/3IxhypYE0reubPRtmf8vQpuqdqs+Ncydn7A=
+Received: from localhost ([2a02:8071:6401:180:f8f5:527f:9670:eba8])
+        by smtp.gmail.com with ESMTPSA id z22-20020a170906669600b00a3543718f5bsm24304ejo.221.2024.02.08.05.14.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Feb 2024 05:14:18 -0800 (PST)
+Date: Thu, 8 Feb 2024 14:14:14 +0100
+From: Johannes Weiner <hannes@cmpxchg.org>
+To: chengming.zhou@linux.dev
+Cc: yosryahmed@google.com, nphamcs@gmail.com, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Chengming Zhou <zhouchengming@bytedance.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH mm-hotfixes-unstable] mm/zswap: invalidate duplicate
+ entry when !zswap_enabled
+Message-ID: <20240208131414.GA224435@cmpxchg.org>
+References: <20240207154308.bc275f3e72ec1c1fd06cf5a2@linux-foundation.org>
+ <20240208023254.3873823-1-chengming.zhou@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240124163130.31324-1-mheyne@amazon.de>
+In-Reply-To: <20240208023254.3873823-1-chengming.zhou@linux.dev>
 
-On Wed, Jan 24, 2024 at 04:31:28PM +0000, Maximilian Heyne wrote:
-> shutdown_pirq and startup_pirq are not taking the
-> irq_mapping_update_lock because they can't due to lock inversion. Both
-> are called with the irq_desc->lock being taking. The lock order,
-> however, is first irq_mapping_update_lock and then irq_desc->lock.
+On Thu, Feb 08, 2024 at 02:32:54AM +0000, chengming.zhou@linux.dev wrote:
+> From: Chengming Zhou <zhouchengming@bytedance.com>
 > 
-> This opens multiple races:
-> - shutdown_pirq can be interrupted by a function that allocates an event
->   channel:
+> We have to invalidate any duplicate entry even when !zswap_enabled
+> since zswap can be disabled anytime. If the folio store success before,
+> then got dirtied again but zswap disabled, we won't invalidate the old
+> duplicate entry in the zswap_store(). So later lru writeback may
+> overwrite the new data in swapfile.
 > 
->   CPU0                        CPU1
->   shutdown_pirq {
->     xen_evtchn_close(e)
->                               __startup_pirq {
->                                 EVTCHNOP_bind_pirq
->                                   -> returns just freed evtchn e
->                                 set_evtchn_to_irq(e, irq)
->                               }
->     xen_irq_info_cleanup() {
->       set_evtchn_to_irq(e, -1)
->     }
->   }
-> 
->   Assume here event channel e refers here to the same event channel
->   number.
->   After this race the evtchn_to_irq mapping for e is invalid (-1).
-> 
-> - __startup_pirq races with __unbind_from_irq in a similar way. Because
->   __startup_pirq doesn't take irq_mapping_update_lock it can grab the
->   evtchn that __unbind_from_irq is currently freeing and cleaning up. In
->   this case even though the event channel is allocated, its mapping can
->   be unset in evtchn_to_irq.
-> 
-> The fix is to first cleanup the mappings and then close the event
-> channel. In this way, when an event channel gets allocated it's
-> potential previous evtchn_to_irq mappings are guaranteed to be unset already.
-> This is also the reverse order of the allocation where first the event
-> channel is allocated and then the mappings are setup.
-> 
-> On a 5.10 kernel prior to commit 3fcdaf3d7634 ("xen/events: modify internal
-> [un]bind interfaces"), we hit a BUG like the following during probing of NVMe
-> devices. The issue is that during nvme_setup_io_queues, pci_free_irq
-> is called for every device which results in a call to shutdown_pirq.
-> With many nvme devices it's therefore likely to hit this race during
-> boot because there will be multiple calls to shutdown_pirq and
-> startup_pirq are running potentially in parallel.
-> 
->   ------------[ cut here ]------------
->   blkfront: xvda: barrier or flush: disabled; persistent grants: enabled; indirect descriptors: enabled; bounce buffer: enabled
->   kernel BUG at drivers/xen/events/events_base.c:499!
->   invalid opcode: 0000 [#1] SMP PTI
->   CPU: 44 PID: 375 Comm: kworker/u257:23 Not tainted 5.10.201-191.748.amzn2.x86_64 #1
->   Hardware name: Xen HVM domU, BIOS 4.11.amazon 08/24/2006
->   Workqueue: nvme-reset-wq nvme_reset_work
->   RIP: 0010:bind_evtchn_to_cpu+0xdf/0xf0
->   Code: 5d 41 5e c3 cc cc cc cc 44 89 f7 e8 2b 55 ad ff 49 89 c5 48 85 c0 0f 84 64 ff ff ff 4c 8b 68 30 41 83 fe ff 0f 85 60 ff ff ff <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 0f 1f 44 00 00
->   RSP: 0000:ffffc9000d533b08 EFLAGS: 00010046
->   RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000006
->   RDX: 0000000000000028 RSI: 00000000ffffffff RDI: 00000000ffffffff
->   RBP: ffff888107419680 R08: 0000000000000000 R09: ffffffff82d72b00
->   R10: 0000000000000000 R11: 0000000000000000 R12: 00000000000001ed
->   R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000002
->   FS:  0000000000000000(0000) GS:ffff88bc8b500000(0000) knlGS:0000000000000000
->   CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->   CR2: 0000000000000000 CR3: 0000000002610001 CR4: 00000000001706e0
->   DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
->   DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
->   Call Trace:
->    ? show_trace_log_lvl+0x1c1/0x2d9
->    ? show_trace_log_lvl+0x1c1/0x2d9
->    ? set_affinity_irq+0xdc/0x1c0
->    ? __die_body.cold+0x8/0xd
->    ? die+0x2b/0x50
->    ? do_trap+0x90/0x110
->    ? bind_evtchn_to_cpu+0xdf/0xf0
->    ? do_error_trap+0x65/0x80
->    ? bind_evtchn_to_cpu+0xdf/0xf0
->    ? exc_invalid_op+0x4e/0x70
->    ? bind_evtchn_to_cpu+0xdf/0xf0
->    ? asm_exc_invalid_op+0x12/0x20
->    ? bind_evtchn_to_cpu+0xdf/0xf0
->    ? bind_evtchn_to_cpu+0xc5/0xf0
->    set_affinity_irq+0xdc/0x1c0
->    irq_do_set_affinity+0x1d7/0x1f0
->    irq_setup_affinity+0xd6/0x1a0
->    irq_startup+0x8a/0xf0
->    __setup_irq+0x639/0x6d0
->    ? nvme_suspend+0x150/0x150
->    request_threaded_irq+0x10c/0x180
->    ? nvme_suspend+0x150/0x150
->    pci_request_irq+0xa8/0xf0
->    ? __blk_mq_free_request+0x74/0xa0
->    queue_request_irq+0x6f/0x80
->    nvme_create_queue+0x1af/0x200
->    nvme_create_io_queues+0xbd/0xf0
->    nvme_setup_io_queues+0x246/0x320
->    ? nvme_irq_check+0x30/0x30
->    nvme_reset_work+0x1c8/0x400
->    process_one_work+0x1b0/0x350
->    worker_thread+0x49/0x310
->    ? process_one_work+0x350/0x350
->    kthread+0x11b/0x140
->    ? __kthread_bind_mask+0x60/0x60
->    ret_from_fork+0x22/0x30
->   Modules linked in:
->   ---[ end trace a11715de1eee1873 ]---
-> 
-> Fixes: d46a78b05c0e ("xen: implement pirq type event channels")
-> Cc: stable@vger.kernel.org
-> Co-debugged-by: Andrew Panyakin <apanyaki@amazon.com>
-> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+> Fixes: 42c06a0e8ebe ("mm: kill frontswap")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
 
-Friendly ping. Did anyone find time to look at this?
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
+Nice, this is easier to backport and should be less disruptive to
+mm-unstable as well. It makes sense to me to put the optimization and
+cleanup that was cut out into a separate patch on top of mm-unstable.
 
-
-Amazon Development Center Germany GmbH
-Krausenstr. 38
-10117 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
-Sitz: Berlin
-Ust-ID: DE 289 237 879
-
-
-
+>  mm/zswap.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/zswap.c b/mm/zswap.c
+> index fe7ee2640c69..32633d0597dc 100644
+> --- a/mm/zswap.c
+> +++ b/mm/zswap.c
+> @@ -1516,7 +1516,7 @@ bool zswap_store(struct folio *folio)
+>  	if (folio_test_large(folio))
+>  		return false;
+>  
+> -	if (!zswap_enabled || !tree)
+> +	if (!tree)
+>  		return false;
+>  
+>  	/*
+> @@ -1531,6 +1531,10 @@ bool zswap_store(struct folio *folio)
+>  		zswap_invalidate_entry(tree, dupentry);
+>  	}
+>  	spin_unlock(&tree->lock);
+> +
+> +	if (!zswap_enabled)
+> +		return false;
+> +
+>  	objcg = get_obj_cgroup_from_folio(folio);
+>  	if (objcg && !obj_cgroup_may_zswap(objcg)) {
+>  		memcg = get_mem_cgroup_from_objcg(objcg);
 
