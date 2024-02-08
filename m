@@ -1,518 +1,156 @@
-Return-Path: <stable+bounces-19334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09A584EAF6
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 22:56:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A54D84EB0E
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 23:01:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56344289C6D
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 21:56:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C67221F27E68
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 22:01:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650CD4F5EC;
-	Thu,  8 Feb 2024 21:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65044F605;
+	Thu,  8 Feb 2024 22:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OI8dmYlj"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFB94F5F1;
-	Thu,  8 Feb 2024 21:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7364F5F2;
+	Thu,  8 Feb 2024 22:01:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707429348; cv=none; b=kvbYqV5Zs8ir0CC5JwDAShwgSzMjpJHbE2t+1Y9SAJ+sUfkdN9eM+ohxxDcEyYNTU4kPwEDvTOAORakQlWVdH9+liwkzsfp9ZD+BTzNUQMbD42pP/7Bm11DaHnaRMguX3OZcuUgvYq/30jIPSQQw7JugZU2PmgjmAiZFBsyfyiU=
+	t=1707429665; cv=none; b=QUJFChV61LV1mYYpQdUwbs0z6WBmEU3H26fUyyQZRx3eAPFWePtnBP2SS/m2jBUJhjcNQ62efPN75FwX6Z8J2uYU5/YgUmo/Al29ysuaPGgNcPn+CfrKmKN/nMaxU/+cCQtel1UfJmtvvEMmYFkW1QMD7eT/k/V0trTz5LSO9jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707429348; c=relaxed/simple;
-	bh=J+c0BcmQhQDSvW0867pgNWBBImYdT8ll+zGLNGru5Mw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a3/iMmW8xASAddtZ/qqc98Mbd/bXuQvmnmKckrNiY0U1y9/v5g340BuZ5gkdfqWXFrFODZ86K+GjeR6nIveHmElmN746KNu0uUyzqivWUbLgOyhLk3h+4ym6QSlQohD8IQkap26FqsTjWv2+Nm+LTBTSBe4xUJCVgd+XNYT0og8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1d958e0d73dso2887295ad.1;
-        Thu, 08 Feb 2024 13:55:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707429345; x=1708034145;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KQ9PD8mdvinv/WwVMMAsHYkNKSpwgA1F6ZEMvLuB0jo=;
-        b=sYT97kXQ8Pl6XDjF7zou+NnQJJd1bL3ZXt+RwU37B7DUVEhKXe2RVgQFB5wFW9bHCj
-         /+rNjf7cbBvMSkaXUqjRSusFIbfgaHw4dUZdLjLnGcZMHQHyOyI+ccyZ9Z/96FW7W//Q
-         hxBOppLd50qJXYlduDTg6GzSdR3jn9CS8YJUxqFu5gRtHwY7drXU1qKeLjTT1eci7S0o
-         LjYICUv+iMwD9Sx8fynTxQtb3eX8J/nV4O5zBufCON1ozFtouMuRJnVhDTsl+t21vqdT
-         4IqDjssN0XiIn/t694eLvzbwCkw7k34rB39o4/9jtlTVHRIORxUuBMFMicrmAtkw183h
-         0qiw==
-X-Gm-Message-State: AOJu0YxiRpCrXDDE6hSxF1Rn10TVRGm04rt45nkU8ReOe+zSeOIhyDF1
-	Hoz48kd4XbLltiP273z9c0x2ZzTNLX8qhNT/b7nAWNUhDyFZQZl9
-X-Google-Smtp-Source: AGHT+IGkcUmTh8dlF+BQEToQ3doxGETlSiKh9Cmb7FOVH3jMTTOuOQSMqHjAUynZt3cC5ggVjGifSQ==
-X-Received: by 2002:a17:902:ed11:b0:1d9:ef4f:376b with SMTP id b17-20020a170902ed1100b001d9ef4f376bmr1133992pld.8.1707429345058;
-        Thu, 08 Feb 2024 13:55:45 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWnvNUiENF5LnUnD3WWRkoHAL14E68njjYmgLjXlBK4OBiVM2LFopj3iwfqwIrUQPZEXfIZiM2RgLvA2ef69MfPHdx+1bmGHf9Ok2pUIJyd27hqX5icUI3ES6jawm1JquVHF9sARFAy0AnolQrI8W+q6mC/GDd18C8XV0t7aAdxa9IzG+FrnzOQCAb07EtllkqgKa1SS+52xeCX0QHV11DRF+kz6O6Li//Mat048UKtqOzS7KyJm9D8sRsCiypL+lrd8BCPiM4kuzH8y+AYdmg3u6Q=
-Received: from bvanassche-linux.mtv.corp.google.com ([2620:0:1000:8411:9d77:6767:98c9:caf2])
-        by smtp.gmail.com with ESMTPSA id ko13-20020a17090307cd00b001d88d791eccsm233980plb.160.2024.02.08.13.55.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Feb 2024 13:55:44 -0800 (PST)
-From: Bart Van Assche <bvanassche@acm.org>
-To: Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Avi Kivity <avi@scylladb.com>,
-	Sandeep Dhavale <dhavale@google.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] fs, USB gadget: Rework kiocb cancellation
-Date: Thu,  8 Feb 2024 13:55:18 -0800
-Message-ID: <20240208215518.1361570-1-bvanassche@acm.org>
-X-Mailer: git-send-email 2.43.0.687.g38aa6559b0-goog
+	s=arc-20240116; t=1707429665; c=relaxed/simple;
+	bh=8o6YNAeT/tziwxPCb43CHtTeCsR1HTefiU0zavxatS8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZrGM8LRshrR6k/2C+qLpUDlUjgaUEZivpE+SaDe38mIu18b897g/Yf6SXwR5Ij7fBwGwTEib1TjJX0qLqDi5+MJpqdHStrArFvOW6QY6Q0vk/KvRojTCMsD1uh65t71cegV4SwtO28eOZQd4NpcqHYgLX/y5xwEz/yYmPxii9n8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OI8dmYlj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD48CC43390;
+	Thu,  8 Feb 2024 22:01:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707429665;
+	bh=8o6YNAeT/tziwxPCb43CHtTeCsR1HTefiU0zavxatS8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OI8dmYljat2y9Xo9Z7wa/MVYiUX5CsJS4r2BHJ90HRXDFkCz2k7KR2XnFQk4BTs9G
+	 dbQLTRrBAxiYb1mhF0VhbMhzQFzGbkzntdGYF3haXly6Saa52B2mG03pc8QTHWZN6r
+	 3BLupCSvfCyFRB4ossTBGE5wbRbIpXNmrbwmM5ZZXP53CDS2Pvwn4TEVerWN3jkM1U
+	 eU6Vsmh7kYnuxzvoNTbWQoXz+0NyQcEDvbEK9/SAChB1H+BvsS898nmXXFYtrhblv1
+	 eLMxDyGZbx1BCrpeB851cHsOb0uZveCegXKuRQyy7zapVaatQ4dfJV5vMjTeCgX47z
+	 YP3Epak519G+Q==
+Date: Thu, 8 Feb 2024 22:01:02 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Badhri Jagan Sridharan <badhri@google.com>
+Cc: gregkh@linuxfoundation.org, linux@roeck-us.net,
+	heikki.krogerus@linux.intel.com, kyletso@google.com,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	rdbabiera@google.com, amitsd@google.com, stable@vger.kernel.org,
+	frank.wang@rock-chips.com, regressions@leemhuis.info
+Subject: Re: [PATCH v2] Revert "usb: typec: tcpm: fix cc role at port reset"
+Message-ID: <ZcVPHtPt2Dppe_9q@finisterre.sirena.org.uk>
+References: <20240117114742.2587779-1-badhri@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="8svY+Xz+hFFp4U70"
+Content-Disposition: inline
+In-Reply-To: <20240117114742.2587779-1-badhri@google.com>
+X-Cookie: Measure twice, cut once.
 
-Calling kiocb_set_cancel_fn() without knowing whether the caller
-submitted a struct kiocb or a struct aio_kiocb is unsafe. Fix this by
-introducing the cancel_kiocb() method in struct file_operations. The
-following call trace illustrates that without this patch an
-out-of-bounds write happens if I/O is submitted by io_uring (from a
-phone with an ARM CPU and kernel 6.1):
 
-WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
-Call trace:
- kiocb_set_cancel_fn+0x9c/0xa8
- ffs_epfile_read_iter+0x144/0x1d0
- io_read+0x19c/0x498
- io_issue_sqe+0x118/0x27c
- io_submit_sqes+0x25c/0x5fc
- __arm64_sys_io_uring_enter+0x104/0xab0
- invoke_syscall+0x58/0x11c
- el0_svc_common+0xb4/0xf4
- do_el0_svc+0x2c/0xb0
- el0_svc+0x2c/0xa4
- el0t_64_sync_handler+0x68/0xb4
- el0t_64_sync+0x1a4/0x1a8
+--8svY+Xz+hFFp4U70
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Several ideas in this patch come from the following patch: Christoph
-Hellwig, "[PATCH 08/32] aio: replace kiocb_set_cancel_fn with a
-cancel_kiocb file operation", May 2018
-(https://lore.kernel.org/all/20180515194833.6906-9-hch@lst.de/).
+On Wed, Jan 17, 2024 at 11:47:42AM +0000, Badhri Jagan Sridharan wrote:
+> This reverts commit 1e35f074399dece73d5df11847d4a0d7a6f49434.
+>=20
+> Given that ERROR_RECOVERY calls into PORT_RESET for Hi-Zing
+> the CC pins, setting CC pins to default state during PORT_RESET
+> breaks error recovery.
 
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Avi Kivity <avi@scylladb.com>
-Cc: Sandeep Dhavale <dhavale@google.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
----
- drivers/usb/gadget/function/f_fs.c |  19 +----
- drivers/usb/gadget/legacy/inode.c  |  12 +--
- fs/aio.c                           | 129 +++++++++++++++++++----------
- include/linux/aio.h                |   7 --
- include/linux/fs.h                 |   1 +
- 5 files changed, 90 insertions(+), 78 deletions(-)
+Between -rc2 and -rc3 I started seeing boot issues in mainline on
+rk3399-roc-pc running arm64 defconfig, a bisection identified this patch
+as having broken things.  The issues manifest as a hang while loading
+modules from the initd, you can see a full boot log at:
 
-Changes compared to v1:
- - Fixed a race between request completion and addition to the list of
-   active requests.
- - Changed the return type of .cancel_kiocb() from int into void.
- - Simplified the .cancel_kiocb() implementations.
- - Introduced the ki_opcode member in struct aio_kiocb.
- - aio_cancel_and_del() checks .ki_opcode before accessing union members.
- - Left out the include/include/mm changes.
+   https://lava.sirena.org.uk/scheduler/job/558789
 
-diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-index 6bff6cb93789..4837e3071263 100644
---- a/drivers/usb/gadget/function/f_fs.c
-+++ b/drivers/usb/gadget/function/f_fs.c
-@@ -31,7 +31,6 @@
- #include <linux/usb/composite.h>
- #include <linux/usb/functionfs.h>
- 
--#include <linux/aio.h>
- #include <linux/kthread.h>
- #include <linux/poll.h>
- #include <linux/eventfd.h>
-@@ -1157,23 +1156,16 @@ ffs_epfile_open(struct inode *inode, struct file *file)
- 	return stream_open(inode, file);
- }
- 
--static int ffs_aio_cancel(struct kiocb *kiocb)
-+static void ffs_epfile_cancel_kiocb(struct kiocb *kiocb)
- {
- 	struct ffs_io_data *io_data = kiocb->private;
- 	struct ffs_epfile *epfile = kiocb->ki_filp->private_data;
- 	unsigned long flags;
--	int value;
- 
- 	spin_lock_irqsave(&epfile->ffs->eps_lock, flags);
--
- 	if (io_data && io_data->ep && io_data->req)
--		value = usb_ep_dequeue(io_data->ep, io_data->req);
--	else
--		value = -EINVAL;
--
-+		usb_ep_dequeue(io_data->ep, io_data->req);
- 	spin_unlock_irqrestore(&epfile->ffs->eps_lock, flags);
--
--	return value;
- }
- 
- static ssize_t ffs_epfile_write_iter(struct kiocb *kiocb, struct iov_iter *from)
-@@ -1198,9 +1190,6 @@ static ssize_t ffs_epfile_write_iter(struct kiocb *kiocb, struct iov_iter *from)
- 
- 	kiocb->private = p;
- 
--	if (p->aio)
--		kiocb_set_cancel_fn(kiocb, ffs_aio_cancel);
--
- 	res = ffs_epfile_io(kiocb->ki_filp, p);
- 	if (res == -EIOCBQUEUED)
- 		return res;
-@@ -1242,9 +1231,6 @@ static ssize_t ffs_epfile_read_iter(struct kiocb *kiocb, struct iov_iter *to)
- 
- 	kiocb->private = p;
- 
--	if (p->aio)
--		kiocb_set_cancel_fn(kiocb, ffs_aio_cancel);
--
- 	res = ffs_epfile_io(kiocb->ki_filp, p);
- 	if (res == -EIOCBQUEUED)
- 		return res;
-@@ -1356,6 +1342,7 @@ static const struct file_operations ffs_epfile_operations = {
- 	.release =	ffs_epfile_release,
- 	.unlocked_ioctl =	ffs_epfile_ioctl,
- 	.compat_ioctl = compat_ptr_ioctl,
-+	.cancel_kiocb = ffs_epfile_cancel_kiocb,
- };
- 
- 
-diff --git a/drivers/usb/gadget/legacy/inode.c b/drivers/usb/gadget/legacy/inode.c
-index 03179b1880fd..c2cf7fca6937 100644
---- a/drivers/usb/gadget/legacy/inode.c
-+++ b/drivers/usb/gadget/legacy/inode.c
-@@ -22,7 +22,6 @@
- #include <linux/slab.h>
- #include <linux/poll.h>
- #include <linux/kthread.h>
--#include <linux/aio.h>
- #include <linux/uio.h>
- #include <linux/refcount.h>
- #include <linux/delay.h>
-@@ -446,23 +445,18 @@ struct kiocb_priv {
- 	unsigned		actual;
- };
- 
--static int ep_aio_cancel(struct kiocb *iocb)
-+static void ep_cancel_kiocb(struct kiocb *iocb)
- {
- 	struct kiocb_priv	*priv = iocb->private;
- 	struct ep_data		*epdata;
--	int			value;
- 
- 	local_irq_disable();
- 	epdata = priv->epdata;
- 	// spin_lock(&epdata->dev->lock);
- 	if (likely(epdata && epdata->ep && priv->req))
--		value = usb_ep_dequeue (epdata->ep, priv->req);
--	else
--		value = -EINVAL;
-+		usb_ep_dequeue(epdata->ep, priv->req);
- 	// spin_unlock(&epdata->dev->lock);
- 	local_irq_enable();
--
--	return value;
- }
- 
- static void ep_user_copy_worker(struct work_struct *work)
-@@ -537,7 +531,6 @@ static ssize_t ep_aio(struct kiocb *iocb,
- 	iocb->private = priv;
- 	priv->iocb = iocb;
- 
--	kiocb_set_cancel_fn(iocb, ep_aio_cancel);
- 	get_ep(epdata);
- 	priv->epdata = epdata;
- 	priv->actual = 0;
-@@ -709,6 +702,7 @@ static const struct file_operations ep_io_operations = {
- 	.unlocked_ioctl = ep_ioctl,
- 	.read_iter =	ep_read_iter,
- 	.write_iter =	ep_write_iter,
-+	.cancel_kiocb = ep_cancel_kiocb,
- };
- 
- /* ENDPOINT INITIALIZATION
-diff --git a/fs/aio.c b/fs/aio.c
-index bb2ff48991f3..9dc0be703aa6 100644
---- a/fs/aio.c
-+++ b/fs/aio.c
-@@ -203,7 +203,6 @@ struct aio_kiocb {
- 	};
- 
- 	struct kioctx		*ki_ctx;
--	kiocb_cancel_fn		*ki_cancel;
- 
- 	struct io_event		ki_res;
- 
-@@ -211,6 +210,8 @@ struct aio_kiocb {
- 						 * for cancellation */
- 	refcount_t		ki_refcnt;
- 
-+	u16			ki_opcode;	/* IOCB_CMD_* */
-+
- 	/*
- 	 * If the aio_resfd field of the userspace iocb is not zero,
- 	 * this is the underlying eventfd context to deliver events to.
-@@ -587,22 +588,6 @@ static int aio_setup_ring(struct kioctx *ctx, unsigned int nr_events)
- #define AIO_EVENTS_FIRST_PAGE	((PAGE_SIZE - sizeof(struct aio_ring)) / sizeof(struct io_event))
- #define AIO_EVENTS_OFFSET	(AIO_EVENTS_PER_PAGE - AIO_EVENTS_FIRST_PAGE)
- 
--void kiocb_set_cancel_fn(struct kiocb *iocb, kiocb_cancel_fn *cancel)
--{
--	struct aio_kiocb *req = container_of(iocb, struct aio_kiocb, rw);
--	struct kioctx *ctx = req->ki_ctx;
--	unsigned long flags;
--
--	if (WARN_ON_ONCE(!list_empty(&req->ki_list)))
--		return;
--
--	spin_lock_irqsave(&ctx->ctx_lock, flags);
--	list_add_tail(&req->ki_list, &ctx->active_reqs);
--	req->ki_cancel = cancel;
--	spin_unlock_irqrestore(&ctx->ctx_lock, flags);
--}
--EXPORT_SYMBOL(kiocb_set_cancel_fn);
--
- /*
-  * free_ioctx() should be RCU delayed to synchronize against the RCU
-  * protected lookup_ioctx() and also needs process context to call
-@@ -634,6 +619,8 @@ static void free_ioctx_reqs(struct percpu_ref *ref)
- 	queue_rcu_work(system_wq, &ctx->free_rwork);
- }
- 
-+static void aio_cancel_and_del(struct aio_kiocb *req);
-+
- /*
-  * When this function runs, the kioctx has been removed from the "hash table"
-  * and ctx->users has dropped to 0, so we know no more kiocbs can be submitted -
-@@ -649,8 +636,7 @@ static void free_ioctx_users(struct percpu_ref *ref)
- 	while (!list_empty(&ctx->active_reqs)) {
- 		req = list_first_entry(&ctx->active_reqs,
- 				       struct aio_kiocb, ki_list);
--		req->ki_cancel(&req->rw);
--		list_del_init(&req->ki_list);
-+		aio_cancel_and_del(req);
- 	}
- 
- 	spin_unlock_irq(&ctx->ctx_lock);
-@@ -1552,6 +1538,24 @@ static ssize_t aio_setup_rw(int rw, const struct iocb *iocb,
- 	return __import_iovec(rw, buf, len, UIO_FASTIOV, iovec, iter, compat);
- }
- 
-+static void aio_add_rw_to_active_reqs(struct kiocb *req)
-+{
-+	struct aio_kiocb *aio = container_of(req, struct aio_kiocb, rw);
-+	struct kioctx *ctx = aio->ki_ctx;
-+	unsigned long flags;
-+
-+	/*
-+	 * If the .cancel_kiocb() callback has been set, add the request
-+	 * to the list of active requests.
-+	 */
-+	if (!req->ki_filp->f_op->cancel_kiocb)
-+		return;
-+
-+	spin_lock_irqsave(&ctx->ctx_lock, flags);
-+	list_add_tail(&aio->ki_list, &ctx->active_reqs);
-+	spin_unlock_irqrestore(&ctx->ctx_lock, flags);
-+}
-+
- static inline void aio_rw_done(struct kiocb *req, ssize_t ret)
- {
- 	switch (ret) {
-@@ -1593,8 +1597,10 @@ static int aio_read(struct kiocb *req, const struct iocb *iocb,
- 	if (ret < 0)
- 		return ret;
- 	ret = rw_verify_area(READ, file, &req->ki_pos, iov_iter_count(&iter));
--	if (!ret)
-+	if (!ret) {
-+		aio_add_rw_to_active_reqs(req);
- 		aio_rw_done(req, call_read_iter(file, req, &iter));
-+	}
- 	kfree(iovec);
- 	return ret;
- }
-@@ -1622,6 +1628,7 @@ static int aio_write(struct kiocb *req, const struct iocb *iocb,
- 		return ret;
- 	ret = rw_verify_area(WRITE, file, &req->ki_pos, iov_iter_count(&iter));
- 	if (!ret) {
-+		aio_add_rw_to_active_reqs(req);
- 		if (S_ISREG(file_inode(file)->i_mode))
- 			kiocb_start_write(req);
- 		req->ki_flags |= IOCB_WRITE;
-@@ -1715,6 +1722,54 @@ static void poll_iocb_unlock_wq(struct poll_iocb *req)
- 	rcu_read_unlock();
- }
- 
-+/* Must be called only for IOCB_CMD_POLL requests. */
-+static void aio_poll_cancel(struct aio_kiocb *aiocb)
-+{
-+	struct poll_iocb *req = &aiocb->poll;
-+	struct kioctx *ctx = aiocb->ki_ctx;
-+
-+	lockdep_assert_held(&ctx->ctx_lock);
-+
-+	if (!poll_iocb_lock_wq(req))
-+		return;
-+
-+	WRITE_ONCE(req->cancelled, true);
-+	if (!req->work_scheduled) {
-+		schedule_work(&aiocb->poll.work);
-+		req->work_scheduled = true;
-+	}
-+	poll_iocb_unlock_wq(req);
-+}
-+
-+static void aio_cancel_and_del(struct aio_kiocb *req)
-+{
-+	void (*cancel_kiocb)(struct kiocb *) =
-+		req->rw.ki_filp->f_op->cancel_kiocb;
-+	struct kioctx *ctx = req->ki_ctx;
-+
-+	lockdep_assert_held(&ctx->ctx_lock);
-+
-+	switch (req->ki_opcode) {
-+	case IOCB_CMD_PREAD:
-+	case IOCB_CMD_PWRITE:
-+	case IOCB_CMD_PREADV:
-+	case IOCB_CMD_PWRITEV:
-+		if (cancel_kiocb)
-+			cancel_kiocb(&req->rw);
-+		break;
-+	case IOCB_CMD_FSYNC:
-+	case IOCB_CMD_FDSYNC:
-+		break;
-+	case IOCB_CMD_POLL:
-+		aio_poll_cancel(req);
-+		break;
-+	default:
-+		WARN_ONCE(true, "invalid aio operation %d\n", req->ki_opcode);
-+	}
-+
-+	list_del_init(&req->ki_list);
-+}
-+
- static void aio_poll_complete_work(struct work_struct *work)
- {
- 	struct poll_iocb *req = container_of(work, struct poll_iocb, work);
-@@ -1727,11 +1782,11 @@ static void aio_poll_complete_work(struct work_struct *work)
- 		mask = vfs_poll(req->file, &pt) & req->events;
- 
- 	/*
--	 * Note that ->ki_cancel callers also delete iocb from active_reqs after
--	 * calling ->ki_cancel.  We need the ctx_lock roundtrip here to
--	 * synchronize with them.  In the cancellation case the list_del_init
--	 * itself is not actually needed, but harmless so we keep it in to
--	 * avoid further branches in the fast path.
-+	 * aio_cancel_and_del() deletes the iocb from the active_reqs list. We
-+	 * need the ctx_lock here to synchronize with aio_cancel_and_del(). In
-+	 * the cancellation case the list_del_init itself is not actually
-+	 * needed, but harmless so we keep it in to avoid further branches in
-+	 * the fast path.
- 	 */
- 	spin_lock_irq(&ctx->ctx_lock);
- 	if (poll_iocb_lock_wq(req)) {
-@@ -1760,24 +1815,6 @@ static void aio_poll_complete_work(struct work_struct *work)
- 	iocb_put(iocb);
- }
- 
--/* assumes we are called with irqs disabled */
--static int aio_poll_cancel(struct kiocb *iocb)
--{
--	struct aio_kiocb *aiocb = container_of(iocb, struct aio_kiocb, rw);
--	struct poll_iocb *req = &aiocb->poll;
--
--	if (poll_iocb_lock_wq(req)) {
--		WRITE_ONCE(req->cancelled, true);
--		if (!req->work_scheduled) {
--			schedule_work(&aiocb->poll.work);
--			req->work_scheduled = true;
--		}
--		poll_iocb_unlock_wq(req);
--	} /* else, the request was force-cancelled by POLLFREE already */
--
--	return 0;
--}
--
- static int aio_poll_wake(struct wait_queue_entry *wait, unsigned mode, int sync,
- 		void *key)
- {
-@@ -1945,7 +1982,6 @@ static int aio_poll(struct aio_kiocb *aiocb, const struct iocb *iocb)
- 			 * active_reqs so that it can be cancelled if needed.
- 			 */
- 			list_add_tail(&aiocb->ki_list, &ctx->active_reqs);
--			aiocb->ki_cancel = aio_poll_cancel;
- 		}
- 		if (on_queue)
- 			poll_iocb_unlock_wq(req);
-@@ -1993,6 +2029,8 @@ static int __io_submit_one(struct kioctx *ctx, const struct iocb *iocb,
- 	req->ki_res.res = 0;
- 	req->ki_res.res2 = 0;
- 
-+	req->ki_opcode = iocb->aio_lio_opcode;
-+
- 	switch (iocb->aio_lio_opcode) {
- 	case IOCB_CMD_PREAD:
- 		return aio_read(&req->rw, iocb, false, compat);
-@@ -2189,8 +2227,7 @@ SYSCALL_DEFINE3(io_cancel, aio_context_t, ctx_id, struct iocb __user *, iocb,
- 	/* TODO: use a hash or array, this sucks. */
- 	list_for_each_entry(kiocb, &ctx->active_reqs, ki_list) {
- 		if (kiocb->ki_res.obj == obj) {
--			ret = kiocb->ki_cancel(&kiocb->rw);
--			list_del_init(&kiocb->ki_list);
-+			aio_cancel_and_del(kiocb);
- 			break;
- 		}
- 	}
-diff --git a/include/linux/aio.h b/include/linux/aio.h
-index 86892a4fe7c8..2aa6d0be3171 100644
---- a/include/linux/aio.h
-+++ b/include/linux/aio.h
-@@ -4,20 +4,13 @@
- 
- #include <linux/aio_abi.h>
- 
--struct kioctx;
--struct kiocb;
- struct mm_struct;
- 
--typedef int (kiocb_cancel_fn)(struct kiocb *);
--
- /* prototypes */
- #ifdef CONFIG_AIO
- extern void exit_aio(struct mm_struct *mm);
--void kiocb_set_cancel_fn(struct kiocb *req, kiocb_cancel_fn *cancel);
- #else
- static inline void exit_aio(struct mm_struct *mm) { }
--static inline void kiocb_set_cancel_fn(struct kiocb *req,
--				       kiocb_cancel_fn *cancel) { }
- #endif /* CONFIG_AIO */
- 
- #endif /* __LINUX__AIO_H */
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index ed5966a70495..7ec714878637 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2021,6 +2021,7 @@ struct file_operations {
- 	int (*uring_cmd)(struct io_uring_cmd *ioucmd, unsigned int issue_flags);
- 	int (*uring_cmd_iopoll)(struct io_uring_cmd *, struct io_comp_batch *,
- 				unsigned int poll_flags);
-+	void (*cancel_kiocb)(struct kiocb *);
- } __randomize_layout;
- 
- /* Wrap a directory iterator that needs exclusive inode access */
+which shows a bunch of video drivers loading at the end of the log but I
+suspect that's not related the actual failure.  A successful boot can be
+seen here:
+
+   https://lava.sirena.org.uk/scheduler/job/559222
+
+I do note that the board is powered by USB PD, I've got it connected to
+a PD power supply which seems potentially relevant to the commit.  The
+board had been working for a long time, at least as far as boot to
+initrd goes.
+
+Full bisect log:
+
+git bisect start
+# status: waiting for both good and bad commits
+# bad: [54be6c6c5ae8e0d93a6c4641cb7528eb0b6ba478] Linux 6.8-rc3
+git bisect bad 54be6c6c5ae8e0d93a6c4641cb7528eb0b6ba478
+# status: waiting for good commit(s), bad commit known
+# good: [41bccc98fb7931d63d03f326a746ac4d429c1dd3] Linux 6.8-rc2
+git bisect good 41bccc98fb7931d63d03f326a746ac4d429c1dd3
+# good: [4f18d3fd2975c943be91522d86257806374881b9] Merge tag 'iommu-fixes-v=
+6.8-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/joro/iommu
+git bisect good 4f18d3fd2975c943be91522d86257806374881b9
+# good: [6b89b6af459fdd6f2741d0c2e33c67af8193697e] Merge tag 'gfs2-v6.8-rc2=
+-revert' of git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2
+git bisect good 6b89b6af459fdd6f2741d0c2e33c67af8193697e
+# good: [bdda52cc664caaf030fdaf51dd715ef5d1f14a26] Merge tag 'i2c-for-6.8-r=
+c3' of git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux
+git bisect good bdda52cc664caaf030fdaf51dd715ef5d1f14a26
+# bad: [0214960971939697f1499239398874cfc3a52d69] Merge tag 'tty-6.8-rc3' o=
+f git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty
+git bisect bad 0214960971939697f1499239398874cfc3a52d69
+# bad: [3caf2b2ad7334ef35f55b95f3e1b138c6f77b368] usb: ulpi: Fix debugfs di=
+rectory leak
+git bisect bad 3caf2b2ad7334ef35f55b95f3e1b138c6f77b368
+# good: [7c4650ded49e5b88929ecbbb631efb8b0838e811] xhci: handle isoc Babble=
+ and Buffer Overrun events properly
+git bisect good 7c4650ded49e5b88929ecbbb631efb8b0838e811
+# good: [cc509b6a47e7c8998d9e41c273191299d5d9d631] usb: chipidea: core: han=
+dle power lost in workqueue
+git bisect good cc509b6a47e7c8998d9e41c273191299d5d9d631
+# good: [b2d2d7ea0dd09802cf5a0545bf54d8ad8987d20c] usb: f_mass_storage: for=
+bid async queue when shutdown happen
+git bisect good b2d2d7ea0dd09802cf5a0545bf54d8ad8987d20c
+# bad: [b717dfbf73e842d15174699fe2c6ee4fdde8aa1f] Revert "usb: typec: tcpm:=
+ fix cc role at port reset"
+git bisect bad b717dfbf73e842d15174699fe2c6ee4fdde8aa1f
+# good: [032178972f8e992b90f9794a13265fec8c8314b0] usb: gadget: pch_udc: fi=
+x an Excess kernel-doc warning
+git bisect good 032178972f8e992b90f9794a13265fec8c8314b0
+# first bad commit: [b717dfbf73e842d15174699fe2c6ee4fdde8aa1f] Revert "usb:=
+ typec: tcpm: fix cc role at port reset"
+
+--8svY+Xz+hFFp4U70
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmXFTx0ACgkQJNaLcl1U
+h9CX5gf9EbKGGM1ko9HMo9mS3/UGzMOECrFkz8hxo+Ym5OweBAUpcHlq0+LGV3/j
+P1nbV3l51yY8VlTVxIopF57qfag4US2NvHRIkP0iXfFsNPM9j/bsfDnc6FQd5cUA
+ppLLUPbYeFg3vDiM8J35iYWT3GOWnOGzHdu9s6fdKQmDyvw6BlhI+th2LGLGHcDz
+G14cUM/KCfPXwUCPEGyDiMwEj64G1zopwjEBpUqemnHxe5dEiWTUETGRHjFMuzvT
+2a0tqQfoJVAH9TMsJEdItCQ3TeQS8XtUHZF55nZ73vZu5NqAkEAzNMV22pfw6gOm
+RxqQkMC/EcrkK3/Pzd/PrLZb6pezkg==
+=rxBM
+-----END PGP SIGNATURE-----
+
+--8svY+Xz+hFFp4U70--
 
