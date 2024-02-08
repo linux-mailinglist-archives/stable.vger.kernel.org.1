@@ -1,74 +1,60 @@
-Return-Path: <stable+bounces-19336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D884584EB71
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 23:14:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A26D84EBCA
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 23:41:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D79E285DB7
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 22:14:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C5181C23EF6
+	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 22:41:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BC04F21A;
-	Thu,  8 Feb 2024 22:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="RfKjYLga"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C1150250;
+	Thu,  8 Feb 2024 22:41:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46E404F613
-	for <stable@vger.kernel.org>; Thu,  8 Feb 2024 22:14:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB144F5E5;
+	Thu,  8 Feb 2024 22:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707430489; cv=none; b=iylJ38K01OABkEBGnv77vzYdOO7ym4Y3Mw2AFktoRLQGwu63Z/tqslePxVJKGfNm1ykal7MDpymqUvDGgy69GzPTHmQxlbNHD/Cwvnc38ZBQy8Lj+/nD/6TdzMXuhcUjlOlfqj+YumWblhPshWL0KzeKj+22wJL0cwkJL1OBOlI=
+	t=1707432109; cv=none; b=e+QWq7rATGfutxCDyUHNXpQtx1o1RPvg7iyJMMUbeIv1pjbm2dSHnhOubLbEIkbxGfq1TR60oabh4ppQIZAH7ZLONNOfPqWQY9QDDea5tywGYb1fDWjItGuFF06hSR5uH5VRsFe4QGg7wbvckerm/hlqSrXYuuToptg5rL3mXeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707430489; c=relaxed/simple;
-	bh=w2knZeJZbIQ0BuLwEt9Ja8H4MCay7UegxluvlLfoKkk=;
+	s=arc-20240116; t=1707432109; c=relaxed/simple;
+	bh=yCMKOQSRFlL36xIo+5kp+jQ/KjqiZ4BaQ18NTi5JwCg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ig8g5+l2Rua8NKr3ttDLFYBJxNzSVjSdFnotB3GhE4yJ4Bl6GyWyMIBOgxolmP6mtU+0rVaQBl722ETY3Oe+dlP/GomHK2smrdv+JnuTcctgvLvcwY/7J4IIiPepi6qkumS01R7yc7PiaHb8lvX7ACm8CwEZB/ljHLkiavs56Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=RfKjYLga; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1d987a58baaso547825ad.1
-        for <stable@vger.kernel.org>; Thu, 08 Feb 2024 14:14:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1707430486; x=1708035286; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XJZe3WKZAzGu9qi3wHAHmWxTGMVrYkJP/kqmcvUlp9Q=;
-        b=RfKjYLga0ubAWl4wXOeuf0bL5SU//XRQl2Jdjkn/zEKRUqL6Rh6YkkDxwqAgNKYyRt
-         MyEk8pwr09WHPTSX9QcYLXWyKQDu75SHCC7AQ72bCl9/wje27jM3pA06ey5lL84ttJT2
-         qHIYDM9GuTXuXrZZZRK0ARj/a/3nhG5RUNu3sT/v/pPh2tbRESNZmgG1IUAgEPrfC/TH
-         tRMsM1rE+8i8L8WxEptlUA++ZAb61tLn5iCNJsBDA/yO/ZnSGfJnyivtrsZs7kJReoKc
-         7vX8vXw0HbDhC3q3Z+2vRcWX363jhBxdkOxXAMQwmmksQxE5+YKZTKDgBq2OONmXT9Ju
-         LiLg==
+	 In-Reply-To:Content-Type; b=OaVabe3gaB8nko3qX+T/qvPUG/kNl0x+fWvgvwbSWqySCt0woeiogthYtJGf7qj/pYQtKJTyJcyC+oQJKy8pk1Vn0H/t+inrpYDSULtLWpWdil/kW5joco0shEs22MO1veWfMXlhn66XVKvD8kaSQA81GhpXyyrpIYxKcqcbuQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-6de3141f041so319716b3a.0;
+        Thu, 08 Feb 2024 14:41:47 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707430486; x=1708035286;
+        d=1e100.net; s=20230601; t=1707432107; x=1708036907;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XJZe3WKZAzGu9qi3wHAHmWxTGMVrYkJP/kqmcvUlp9Q=;
-        b=JGKl3OHBFmBzuRtS/3799Wc0GAWN/YZw9JQ8ri1cMhLx7IFxSlIo/73QUK9gnYIrqz
-         nKwpb90ieJw8dTpMxhkWzmyE/9c4xn325qIOZPnKfe8u2KqCZoGrBJtiFZEJBTFQkSLh
-         P+po6/qeIocvxI2gSBz4v18NVQHQu9LrC3mEwDpDEVjx9PlAId/XYF209RO21omwZaIh
-         9QgG+DbaeQncfiNh5B0zFnoJ3suWsddWPj8mUYdN1Dy3wn7/1zo2aUNp41w9PpqG5ejQ
-         3DyJFcerT4WFWoJqFKBoqQmswYBoIrDdiTxrGjP/1y+1FMXjQGyjvZn3hXkCexKR/mfZ
-         jVSQ==
-X-Gm-Message-State: AOJu0Yx0o2fMkzZQe4jUEsCIZtthEAE5J/NYz+RqbZuaGGizbQesC5NH
-	h4KOkQrb28JXB0F+mtMVWHazHXLg+qBirkc50FLl6ydaMCLvJzLwGWnRgJUxgU8=
-X-Google-Smtp-Source: AGHT+IHO3uSm9x85FQTGuBLYP4FxPnDzQsV1qS1Qs7g6KTcdcB/B4tgEPN2x11npTOHgu7ul8XhzdQ==
-X-Received: by 2002:a17:903:22cf:b0:1d9:143:a254 with SMTP id y15-20020a17090322cf00b001d90143a254mr552425plg.2.1707430486535;
-        Thu, 08 Feb 2024 14:14:46 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXMldF9OJ+LXmKAUVCW2YFka69iOFryVLMcZkkeBW15KbtTqsws6PoOnIQ8NZ5zRUw6Kjp71J4piMiZrOntuY2MO7DKZKk867fk7oQKmrGQ1L0hMFgINADeD3FiBD3UZNhlLiBrwu133YVxK14vfCcRRojnFiYFmgCYgOnecw6XQgRQ1J32L8hC0NU6IHb5gHhQapCBbjbxN7rAcctucff+M47Cl66mM+KPuRtuId+dIUQ4fj3OU3CWtyZTKWVb885H
-Received: from ?IPV6:2600:380:771a:2bff:256a:9053:7400:793f? ([2600:380:771a:2bff:256a:9053:7400:793f])
-        by smtp.gmail.com with ESMTPSA id o18-20020a170902e29200b001d8fb137a57sm263212plc.12.2024.02.08.14.14.45
+        bh=i1ZBXx3BlTXQZLrP3fmMsvzAZiR/YPMJrytP2Jg1d6I=;
+        b=B9Lqcu4R3pTax7Cs3Yo7TYryIwMVxoD9L98zxNnu8K5nbWoQ45GcU/0e/9acFehO2G
+         qu50gCRGxNx+WKNFhflMtqRjyk29m7J/Hw6A/O8wEY3P84K2+iRLa01GldCk+L356ajU
+         pNkh1HH9HLu9OMoqdLiLasck6ooZRsOOcCQBa5PReKJCg9z4Gri6dakzwm7B73rC+sZC
+         T5eHMhpIX5rDrWkGdPBWIEMg2UNTdLcnZMyE1xlRMeOzgvrg0jETtvDus4o03vvkVsNX
+         oiEh+OEyI2K6Ze+m4FfdE8VEgtT9ZN9qxA8f7lv+Tros9lUr0GJcWG0RRxAWavssezHX
+         xbvQ==
+X-Gm-Message-State: AOJu0Yw+inKKI6iUU5kjdW6iUZVkyrc9Adtv03h63WdxMeIQFy5WeN9l
+	0SAB1iXZq+XVHnOjkOZOpkmGth8w/3tzKiv4AkG+ZGZ0F2F0ttSg
+X-Google-Smtp-Source: AGHT+IFuIOY4GK2WuU/2ZyivEXTfWq9rMMh9NLAC0r48cNsqwfbbwo9VAVRlGMIgz00R1ADE8Gskcw==
+X-Received: by 2002:a05:6a20:a085:b0:19e:989e:1993 with SMTP id r5-20020a056a20a08500b0019e989e1993mr867256pzj.29.1707432106750;
+        Thu, 08 Feb 2024 14:41:46 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWzrosB9i00AxQ8wnGjhbMSxgofJX13Gbrv+UhIAxJA06DeSX6wbjGNA8R5ynYlRPs18QeqgYu2SxBLif0TVpLm0U23+zCr9nzjQBjTN/afvFNOjkMQk78/Zh1CxyixNyDE/MTfD3BUoeZ40o2Kb8p8X0D1n7w6Qqj/RfnGviP/eqTI7eN2irwgSK9kixtHMSnbqvkToGdqec1mXpjjNu2jBNQXCf+VWi4o7xD3up/izW0OZIoqYkZ62ekUGK06M3cD
+Received: from ?IPV6:2620:0:1000:8411:9d77:6767:98c9:caf2? ([2620:0:1000:8411:9d77:6767:98c9:caf2])
+        by smtp.gmail.com with ESMTPSA id gx4-20020a056a001e0400b006e07f1829b0sm272276pfb.219.2024.02.08.14.41.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 Feb 2024 14:14:46 -0800 (PST)
-Message-ID: <9e83c34a-63ab-47ea-9c06-14303dbbeaa9@kernel.dk>
-Date: Thu, 8 Feb 2024 15:14:43 -0700
+        Thu, 08 Feb 2024 14:41:45 -0800 (PST)
+Message-ID: <e71501ce-6fb9-42bc-89aa-fcf5d0384c9b@acm.org>
+Date: Thu, 8 Feb 2024 14:41:43 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,153 +64,121 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2] fs, USB gadget: Rework kiocb cancellation
 Content-Language: en-US
-To: Bart Van Assche <bvanassche@acm.org>,
- Christian Brauner <brauner@kernel.org>,
+To: Jens Axboe <axboe@kernel.dk>, Christian Brauner <brauner@kernel.org>,
  Alexander Viro <viro@zeniv.linux.org.uk>
 Cc: linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
  Avi Kivity <avi@scylladb.com>, Sandeep Dhavale <dhavale@google.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 References: <20240208215518.1361570-1-bvanassche@acm.org>
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20240208215518.1361570-1-bvanassche@acm.org>
-Content-Type: text/plain; charset=UTF-8
+ <9e83c34a-63ab-47ea-9c06-14303dbbeaa9@kernel.dk>
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <9e83c34a-63ab-47ea-9c06-14303dbbeaa9@kernel.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 2/8/24 2:55 PM, Bart Van Assche wrote:
-> diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
-> index 6bff6cb93789..4837e3071263 100644
-> --- a/drivers/usb/gadget/function/f_fs.c
-> +++ b/drivers/usb/gadget/function/f_fs.c
-> @@ -31,7 +31,6 @@
->  #include <linux/usb/composite.h>
->  #include <linux/usb/functionfs.h>
->  
-> -#include <linux/aio.h>
->  #include <linux/kthread.h>
->  #include <linux/poll.h>
->  #include <linux/eventfd.h>
-> @@ -1157,23 +1156,16 @@ ffs_epfile_open(struct inode *inode, struct file *file)
->  	return stream_open(inode, file);
->  }
->  
-> -static int ffs_aio_cancel(struct kiocb *kiocb)
-> +static void ffs_epfile_cancel_kiocb(struct kiocb *kiocb)
->  {
->  	struct ffs_io_data *io_data = kiocb->private;
->  	struct ffs_epfile *epfile = kiocb->ki_filp->private_data;
->  	unsigned long flags;
-> -	int value;
->  
->  	spin_lock_irqsave(&epfile->ffs->eps_lock, flags);
-> -
->  	if (io_data && io_data->ep && io_data->req)
-> -		value = usb_ep_dequeue(io_data->ep, io_data->req);
-> -	else
-> -		value = -EINVAL;
-> -
-> +		usb_ep_dequeue(io_data->ep, io_data->req);
->  	spin_unlock_irqrestore(&epfile->ffs->eps_lock, flags);
-> -
-> -	return value;
->  }
+On 2/8/24 14:14, Jens Axboe wrote:
+> On 2/8/24 2:55 PM, Bart Van Assche wrote:
+>> -static int ffs_aio_cancel(struct kiocb *kiocb)
+>> +static void ffs_epfile_cancel_kiocb(struct kiocb *kiocb)
+>>   {
+>>   	struct ffs_io_data *io_data = kiocb->private;
+>>   	struct ffs_epfile *epfile = kiocb->ki_filp->private_data;
+>>   	unsigned long flags;
+>> -	int value;
+>>   
+>>   	spin_lock_irqsave(&epfile->ffs->eps_lock, flags);
+>> -
+>>   	if (io_data && io_data->ep && io_data->req)
+>> -		value = usb_ep_dequeue(io_data->ep, io_data->req);
+>> -	else
+>> -		value = -EINVAL;
+>> -
+>> +		usb_ep_dequeue(io_data->ep, io_data->req);
+>>   	spin_unlock_irqrestore(&epfile->ffs->eps_lock, flags);
+>> -
+>> -	return value;
+>>   }
+> 
+> I'm assuming the NULL checks can go because it's just the async parts
+> now?
 
-I'm assuming the NULL checks can go because it's just the async parts
-now?
+Probably. I will look into this.
 
-> @@ -634,6 +619,8 @@ static void free_ioctx_reqs(struct percpu_ref *ref)
->  	queue_rcu_work(system_wq, &ctx->free_rwork);
->  }
->  
-> +static void aio_cancel_and_del(struct aio_kiocb *req);
-> +
+>> +static void aio_cancel_and_del(struct aio_kiocb *req);
+>> +
+> 
+> Just move the function higher up? It doesn't have any dependencies.
 
-Just move the function higher up? It doesn't have any dependencies.
+aio_cancel_and_del() calls aio_poll_cancel(). aio_poll_cancel() calls
+poll_iocb_lock_wq(). poll_iocb_lock_wq() is defined below the first call of
+aio_cancel_and_del(). It's probably possible to get rid of that function
+declaration but a nontrivial amount of code would have to be moved.
 
-> @@ -1552,6 +1538,24 @@ static ssize_t aio_setup_rw(int rw, const struct iocb *iocb,
->  	return __import_iovec(rw, buf, len, UIO_FASTIOV, iovec, iter, compat);
->  }
->  
-> +static void aio_add_rw_to_active_reqs(struct kiocb *req)
-> +{
-> +	struct aio_kiocb *aio = container_of(req, struct aio_kiocb, rw);
-> +	struct kioctx *ctx = aio->ki_ctx;
-> +	unsigned long flags;
-> +
-> +	/*
-> +	 * If the .cancel_kiocb() callback has been set, add the request
-> +	 * to the list of active requests.
-> +	 */
-> +	if (!req->ki_filp->f_op->cancel_kiocb)
-> +		return;
-> +
-> +	spin_lock_irqsave(&ctx->ctx_lock, flags);
-> +	list_add_tail(&aio->ki_list, &ctx->active_reqs);
-> +	spin_unlock_irqrestore(&ctx->ctx_lock, flags);
-> +}
+>> @@ -1552,6 +1538,24 @@ static ssize_t aio_setup_rw(int rw, const struct iocb *iocb,
+>>   	return __import_iovec(rw, buf, len, UIO_FASTIOV, iovec, iter, compat);
+>>   }
+>>   
+>> +static void aio_add_rw_to_active_reqs(struct kiocb *req)
+>> +{
+>> +	struct aio_kiocb *aio = container_of(req, struct aio_kiocb, rw);
+>> +	struct kioctx *ctx = aio->ki_ctx;
+>> +	unsigned long flags;
+>> +
+>> +	/*
+>> +	 * If the .cancel_kiocb() callback has been set, add the request
+>> +	 * to the list of active requests.
+>> +	 */
+>> +	if (!req->ki_filp->f_op->cancel_kiocb)
+>> +		return;
+>> +
+>> +	spin_lock_irqsave(&ctx->ctx_lock, flags);
+>> +	list_add_tail(&aio->ki_list, &ctx->active_reqs);
+>> +	spin_unlock_irqrestore(&ctx->ctx_lock, flags);
+>> +}
+> 
+> This can use spin_lock_irq(), always called from process context.
 
-This can use spin_lock_irq(), always called from process context.
+I will make this change.
 
-> +/* Must be called only for IOCB_CMD_POLL requests. */
-> +static void aio_poll_cancel(struct aio_kiocb *aiocb)
-> +{
-> +	struct poll_iocb *req = &aiocb->poll;
-> +	struct kioctx *ctx = aiocb->ki_ctx;
-> +
-> +	lockdep_assert_held(&ctx->ctx_lock);
-> +
-> +	if (!poll_iocb_lock_wq(req))
-> +		return;
-> +
-> +	WRITE_ONCE(req->cancelled, true);
-> +	if (!req->work_scheduled) {
-> +		schedule_work(&aiocb->poll.work);
-> +		req->work_scheduled = true;
-> +	}
-> +	poll_iocb_unlock_wq(req);
-> +}
+>> +{
+>> +	void (*cancel_kiocb)(struct kiocb *) =
+>> +		req->rw.ki_filp->f_op->cancel_kiocb;
+>> +	struct kioctx *ctx = req->ki_ctx;
+>> +
+>> +	lockdep_assert_held(&ctx->ctx_lock);
+>> +
+>> +	switch (req->ki_opcode) {
+>> +	case IOCB_CMD_PREAD:
+>> +	case IOCB_CMD_PWRITE:
+>> +	case IOCB_CMD_PREADV:
+>> +	case IOCB_CMD_PWRITEV:
+>> +		if (cancel_kiocb)
+>> +			cancel_kiocb(&req->rw);
+>> +		break;
+>> +	case IOCB_CMD_FSYNC:
+>> +	case IOCB_CMD_FDSYNC:
+>> +		break;
+>> +	case IOCB_CMD_POLL:
+>> +		aio_poll_cancel(req);
+>> +		break;
+>> +	default:
+>> +		WARN_ONCE(true, "invalid aio operation %d\n", req->ki_opcode);
+>> +	}
+>> +
+>> +	list_del_init(&req->ki_list);
+>> +}
+> 
+> Why don't you just keep ki_cancel() and just change it to a void return
+> that takes an aio_kiocb? Then you don't need this odd switch, or adding
+> an opcode field just for this. That seems cleaner.
 
-Not your code, it's just moved, but this looks racy. Might not matter,
-and obviously beyond the scope of this change.
+Keeping .ki_cancel() means that it must be set before I/O starts and only
+if the I/O is submitted by libaio. That would require an approach to
+recognize whether or not a struct kiocb is embedded in struct aio_kiocb,
+e.g. the patch that you posted as a reply on version one of this patch.
+Does anyone else want to comment on this?
 
-> +{
-> +	void (*cancel_kiocb)(struct kiocb *) =
-> +		req->rw.ki_filp->f_op->cancel_kiocb;
-> +	struct kioctx *ctx = req->ki_ctx;
-> +
-> +	lockdep_assert_held(&ctx->ctx_lock);
-> +
-> +	switch (req->ki_opcode) {
-> +	case IOCB_CMD_PREAD:
-> +	case IOCB_CMD_PWRITE:
-> +	case IOCB_CMD_PREADV:
-> +	case IOCB_CMD_PWRITEV:
-> +		if (cancel_kiocb)
-> +			cancel_kiocb(&req->rw);
-> +		break;
-> +	case IOCB_CMD_FSYNC:
-> +	case IOCB_CMD_FDSYNC:
-> +		break;
-> +	case IOCB_CMD_POLL:
-> +		aio_poll_cancel(req);
-> +		break;
-> +	default:
-> +		WARN_ONCE(true, "invalid aio operation %d\n", req->ki_opcode);
-> +	}
-> +
-> +	list_del_init(&req->ki_list);
-> +}
+Thanks,
 
-Why don't you just keep ki_cancel() and just change it to a void return
-that takes an aio_kiocb? Then you don't need this odd switch, or adding
-an opcode field just for this. That seems cleaner.
-
-Outside of these little nits, looks alright. I'd still love to kill the
-silly cancel code just for the gadget bits, but that's for another day.
-And since the gadget and aio code basically never changes, a cleaned up
-variant of the this patch should be trivial enough to backport to
-stable, so I don't think we need to worry about doing a fixup first.
-
--- 
-Jens Axboe
-
+Bart.
 
