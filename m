@@ -1,52 +1,57 @@
-Return-Path: <stable+bounces-19364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394E484EE8B
-	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 02:15:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91DA284EEA3
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 02:43:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCE6AB20DE6
-	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 01:15:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4225628B03A
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 01:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85483376;
-	Fri,  9 Feb 2024 01:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5262A5F;
+	Fri,  9 Feb 2024 01:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fM8cqtJ9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bAoMP/K/"
 X-Original-To: stable@vger.kernel.org
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A3C4C6D
-	for <stable@vger.kernel.org>; Fri,  9 Feb 2024 01:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9479A15AF;
+	Fri,  9 Feb 2024 01:43:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707441302; cv=none; b=csGgnw6yHFgoszD4VwSlKz1INQufN+8cYKsiB9MXdvr7jSNyZyEqTde117NtO7Y/CulSVZ3wz1tLUvTc/2VxIltDUDiy/1znxljcQ6FC4vyDaJR5U87QuYYp/tPVaZ/28JxHY2oHlC5IJEtUgUxQYRmoRn8SDnmSMgmdLHNUJSw=
+	t=1707443004; cv=none; b=I6Egle0IRsrLM35t+5xwUT5buVJKLIBUEnmqjXvOXPDjTIhHx/DMLuUWINXc5bzhwDviZbrPTONPI4krAhPMb2UR/XAWUsPwZKUb4/QWBQKKXrtgf7KsVfYtrEgKVXnG3kvE0SNL4k7+TYa9nm1f/eSsBRGdwFouXIpltbRZoz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707441302; c=relaxed/simple;
-	bh=I74qNCNhSreLNW+mYNwoQ/ToNtGoMYC5nKBXJQwn+GM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=FjS3xnmOBKzvRiFoq3dhtNew3o0F9uLiBnxxd9ujlYJlh2d5vw1auQr61lKDgSMDpKq70P/17M5Zp4gRf4PDiL9HrDxuuxKirarWzYP/s5pVwsx5PxHEtgzjrmBJSuv6marsCgJZmU5JFPt6iUYqK6kc1jOefNRTYP3yEKxuJew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fM8cqtJ9; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Thu, 8 Feb 2024 20:14:39 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1707441298;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=mIxdzPWyKD9wWhNpC+Vouu4n1L4gGXqIV3g6Ttx09jc=;
-	b=fM8cqtJ9LtRwO5E1oGrh7DOM9/GT1DHRBm/uDgVMdIQ5exmq+sFQS5icI+eOiRj6PSVZKo
-	rj8r8F6ks7sBGup/Jp6CuNIg3CCb/+0bwhaMypTDFgcRjXavXTpgOVAf2EpBas9Ck0AFod
-	6gXeLkUwKXVrskSh9iKYb9UimnF3VVA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-bcachefs@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Subject: [GIT PULL] bcachefs stable updates for v6.7
-Message-ID: <6yl6zvu2pa3mz7irsaax5ivp6kh3dae5kaslvst7yafmg6672g@mskleu2vjfp2>
+	s=arc-20240116; t=1707443004; c=relaxed/simple;
+	bh=+Scx3UIv24JIkpDEkG9RgRFZouxyNm778JhYqy4VoiU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EqYjJfen5miXcu3OwxMOZJn6l1/udYlRzyFDM2geh5rVzIcXNashPA/FWJDCrN9gk8JhG6poKXRONf1rJJ93J4csJb0ocuxdSmJ2T8AsI7m1CqBFhgUNBdAVgDUCqN/JMM2lur9/4lu7dLzdJfkmU22rawtqUG5lexRkD1qw3zA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bAoMP/K/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF16FC433C7;
+	Fri,  9 Feb 2024 01:43:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707443004;
+	bh=+Scx3UIv24JIkpDEkG9RgRFZouxyNm778JhYqy4VoiU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bAoMP/K/I3VxVfD2GXsxK1hFI/4VvgHfHiQsLd3XLhXggHMXPswk8VgvrbI3ajtbS
+	 dGSSKnO6XpFCWTQJ0cyaTQYkRyZUu064I/mZ+XP9rdlR1Lnnmgu3oPnlZlPoRI0mxt
+	 ErbaK05dHqmJblJw7HK7JueUVuQstwQ9cm+18Bfv9OuL49ibEWhgrvI0RJqxdBklu1
+	 s4DMAW+tg74R3wkuoNWHipOEKA5vEevUrLmjVIxsdnWEnS/oHatwccrEZZWjCZVB6H
+	 hho0gCSxlvI1zRsPA0jTys4wBikv3sPv+6+YKWTw230NyDXZ2RF2nPOt8XPDq5SCvD
+	 PM2zZT8xFKftQ==
+Date: Thu, 8 Feb 2024 17:43:22 -0800
+From: Jaegeuk Kim <jaegeuk@kernel.org>
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: Dhya <dhya@picorealm.net>, 1063422@bugs.debian.org,
+	Chao Yu <chao@kernel.org>, linux-f2fs-devel@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	regressions@lists.linux.dev
+Subject: Re: [regression 6.1.y] f2fs: invalid zstd compress level: 6
+Message-ID: <ZcWDOjKEnPDxZ0Or@google.com>
+References: <170736382774.1975.1861975122613668970.reportbug@tsuga.picorealm.net>
+ <ZcU3VCrt9VOpuFUq@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,78 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <ZcU3VCrt9VOpuFUq@eldamar.lan>
 
-Hi Greg, few stable updates for you -
+Hi,
 
-Cheers,
-Kent
+Let me check this soon.
 
-The following changes since commit 0dd3ee31125508cd67f7e7172247f05b7fd1753a:
+Thanks,
 
-  Linux 6.7 (2024-01-07 12:18:38 -0800)
-
-are available in the Git repository at:
-
-  https://evilpiepirate.org/git/bcachefs.git tags/bcachefs-for-v6.7-stable-20240208
-
-for you to fetch changes up to f1582f4774ac7c30c5460a8c7a6e5a82b9ce5a6a:
-
-  bcachefs: time_stats: Check for last_event == 0 when updating freq stats (2024-02-08 15:33:11 -0500)
-
-----------------------------------------------------------------
-bcachefs updates for v6.7 stable:
-
-locking fixes in subvolume create, destroy paths - Al, Su Yue, Guoyu Ou
-fix race in thread_with_file - Mathias Krause
-small rebalance fixes - Daniel, myself
-workaround for building with old clang (can't take a pointer to memcmp)
-build fix on parisc
-minor time_stats fix
-
-----------------------------------------------------------------
-Al Viro (2):
-      new helper: user_path_locked_at()
-      bch2_ioctl_subvolume_destroy(): fix locking
-
-Christoph Hellwig (1):
-      bcachefs: fix incorrect usage of REQ_OP_FLUSH
-
-Daniel Hill (1):
-      bcachefs: rebalance should wakeup on shutdown if disabled
-
-Guoyu Ou (1):
-      bcachefs: unlock parent dir if entry is not found in subvolume deletion
-
-Helge Deller (1):
-      bcachefs: Fix build on parisc by avoiding __multi3()
-
-Kent Overstreet (4):
-      bcachefs: Don't pass memcmp() as a pointer
-      bcachefs: Add missing bch2_moving_ctxt_flush_all()
-      bcachefs: bch2_kthread_io_clock_wait() no longer sleeps until full amount
-      bcachefs: time_stats: Check for last_event == 0 when updating freq stats
-
-Mathias Krause (1):
-      bcachefs: install fd later to avoid race with close
-
-Su Yue (2):
-      bcachefs: kvfree bch_fs::snapshots in bch2_fs_snapshots_exit
-      bcachefs: grab s_umount only if snapshotting
-
- fs/bcachefs/chardev.c           |  3 +--
- fs/bcachefs/clock.c             |  4 ++--
- fs/bcachefs/fs-io.c             |  2 +-
- fs/bcachefs/fs-ioctl.c          | 42 +++++++++++++++++++++--------------------
- fs/bcachefs/journal_io.c        |  3 ++-
- fs/bcachefs/mean_and_variance.h |  2 +-
- fs/bcachefs/move.c              |  2 +-
- fs/bcachefs/move.h              |  1 +
- fs/bcachefs/rebalance.c         | 13 +++++++++++--
- fs/bcachefs/replicas.c          | 10 ++++++++--
- fs/bcachefs/snapshot.c          |  2 +-
- fs/bcachefs/util.c              |  5 +++--
- fs/namei.c                      | 16 +++++++++++++---
- include/linux/namei.h           |  1 +
- 14 files changed, 68 insertions(+), 38 deletions(-)
+On 02/08, Salvatore Bonaccorso wrote:
+> Hi Jaegeuk Kim, Chao Yu,
+> 
+> In Debian the following regression was reported after a Dhya updated
+> to 6.1.76:
+> 
+> On Wed, Feb 07, 2024 at 10:43:47PM -0500, Dhya wrote:
+> > Package: src:linux
+> > Version: 6.1.76-1
+> > Severity: critical
+> > Justification: breaks the whole system
+> > 
+> > Dear Maintainer,
+> > 
+> > After upgrade to linux-image-6.1.0-18-amd64 6.1.76-1 F2FS filesystem
+> > fails to mount rw.  Message in the boot journal:
+> > 
+> >   kernel: F2FS-fs (nvme0n1p6): invalid zstd compress level: 6
+> > 
+> > There was recently an f2fs patch to the 6.1 kernel tree which might be
+> > related: https://www.spinics.net/lists/stable-commits/msg329957.html
+> > 
+> > Was able to recover the system by doing:
+> > 
+> > sudo mount -o remount,rw,relatime,lazytime,background_gc=on,discard,no_heap,user_xattr,inline_xattr,acl,inline_data,inline_dentry,extent_cache,mode=adaptive,active_logs=6,alloc_mode=default,checkpoint_merge,fsync_mode=posix,compress_algorithm=lz4,compress_log_size=2,compress_mode=fs,atgc,discard_unit=block,memory=normal /dev/nvme0n1p6 /
+> > 
+> > under the running bad 6.1.0-18-amd64 kernel, then editing
+> > /etc/default/grub:
+> > 
+> >   GRUB_DEFAULT="Advanced options for Debian GNU/Linux>Debian GNU/Linux, with Linux 6.1.0-17-amd64"
+> > 
+> > and running 'update-grub' and rebooting to boot the 6.1.0-17-amd64
+> > kernel.
+> 
+> The issue is easily reproducible by:
+> 
+> # dd if=/dev/zero of=test.img count=100 bs=1M
+> # mkfs.f2fs -f -O compression,extra_attr ./test.img
+> # mount -t f2fs -o compress_algorithm=zstd:6,compress_chksum,atgc,gc_merge,lazytime ./test.img /mnt
+> 
+> resulting in
+> 
+> [   60.789982] F2FS-fs (loop0): invalid zstd compress level: 6
+> 
+> A bugzilla report has been submitted in
+> https://bugzilla.kernel.org/show_bug.cgi?id=218471
+> 
+> #regzbot introduced: v6.1.69..v6.1.76
+> #regzbot link: https://bugs.debian.org/1063422
+> #regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=218471
+> 
+> Regards,
+> Salvatore
 
