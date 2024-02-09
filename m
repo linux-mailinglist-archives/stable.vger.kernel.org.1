@@ -1,124 +1,132 @@
-Return-Path: <stable+bounces-19365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91DA284EEA3
-	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 02:43:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAFB084EFA7
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 05:51:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4225628B03A
-	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 01:43:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 284EFB25180
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 04:51:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5262A5F;
-	Fri,  9 Feb 2024 01:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C9C525D;
+	Fri,  9 Feb 2024 04:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bAoMP/K/"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Sv0HuYUF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9479A15AF;
-	Fri,  9 Feb 2024 01:43:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993BD5672
+	for <stable@vger.kernel.org>; Fri,  9 Feb 2024 04:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707443004; cv=none; b=I6Egle0IRsrLM35t+5xwUT5buVJKLIBUEnmqjXvOXPDjTIhHx/DMLuUWINXc5bzhwDviZbrPTONPI4krAhPMb2UR/XAWUsPwZKUb4/QWBQKKXrtgf7KsVfYtrEgKVXnG3kvE0SNL4k7+TYa9nm1f/eSsBRGdwFouXIpltbRZoz0=
+	t=1707454256; cv=none; b=nbY8rmW0X4gxQRpYeWXV7lyN13NAtbSOvdvhZsLBvkJjn21rCSwsO+y6eLNl20FELhSYynlT1obLim8UJJu6LYceVNB/KjwDcbOW6pq1o9gWWHwl/wloYIUadwlzGlH1ljJu8HaH6cSRALwGZJ+gQtyBQf8XC+EQPMVLw4cazZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707443004; c=relaxed/simple;
-	bh=+Scx3UIv24JIkpDEkG9RgRFZouxyNm778JhYqy4VoiU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EqYjJfen5miXcu3OwxMOZJn6l1/udYlRzyFDM2geh5rVzIcXNashPA/FWJDCrN9gk8JhG6poKXRONf1rJJ93J4csJb0ocuxdSmJ2T8AsI7m1CqBFhgUNBdAVgDUCqN/JMM2lur9/4lu7dLzdJfkmU22rawtqUG5lexRkD1qw3zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bAoMP/K/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF16FC433C7;
-	Fri,  9 Feb 2024 01:43:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707443004;
-	bh=+Scx3UIv24JIkpDEkG9RgRFZouxyNm778JhYqy4VoiU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bAoMP/K/I3VxVfD2GXsxK1hFI/4VvgHfHiQsLd3XLhXggHMXPswk8VgvrbI3ajtbS
-	 dGSSKnO6XpFCWTQJ0cyaTQYkRyZUu064I/mZ+XP9rdlR1Lnnmgu3oPnlZlPoRI0mxt
-	 ErbaK05dHqmJblJw7HK7JueUVuQstwQ9cm+18Bfv9OuL49ibEWhgrvI0RJqxdBklu1
-	 s4DMAW+tg74R3wkuoNWHipOEKA5vEevUrLmjVIxsdnWEnS/oHatwccrEZZWjCZVB6H
-	 hho0gCSxlvI1zRsPA0jTys4wBikv3sPv+6+YKWTw230NyDXZ2RF2nPOt8XPDq5SCvD
-	 PM2zZT8xFKftQ==
-Date: Thu, 8 Feb 2024 17:43:22 -0800
-From: Jaegeuk Kim <jaegeuk@kernel.org>
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Dhya <dhya@picorealm.net>, 1063422@bugs.debian.org,
-	Chao Yu <chao@kernel.org>, linux-f2fs-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	regressions@lists.linux.dev
-Subject: Re: [regression 6.1.y] f2fs: invalid zstd compress level: 6
-Message-ID: <ZcWDOjKEnPDxZ0Or@google.com>
-References: <170736382774.1975.1861975122613668970.reportbug@tsuga.picorealm.net>
- <ZcU3VCrt9VOpuFUq@eldamar.lan>
+	s=arc-20240116; t=1707454256; c=relaxed/simple;
+	bh=xJwqN5X/u7wlJhFpyTJ76mMKj5EfOA+Z4i23eYGUNRc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vllhx+Pfgc8Ik684WzlIdOUxAzEq50Yxv1gO1iQIjsiSpFh2XWTrsIwi7aaGHRJcKer9YEkjGZ8NaMAMBXnBw0TJHT02Ml4qz91cEQSqES9wRXKdu526QWjusBv2bRoIJeMJS+20B/8uE1ovfMGn8tHLK5XBCPT2W/FYhEmFhpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Sv0HuYUF; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <61212b2b-7f40-42f0-9a44-1ab34a2a1cde@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1707454252;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rCsEgKAQ47A9auRHPKJ2GAU0swz6qNM7w47Z4P7dE2A=;
+	b=Sv0HuYUF+rLrL2ry4C0stU1sqBDp6wsd3N5sQY4pOF1ColatziubJNT60FK9S9fiLWhnAd
+	j1QwAzwIkcB5aPbSzow5c8ye7/mvVICXgoGAzY+Pv42L7w+iAtKX9swA7WdzdjRQMlDU86
+	suACeiucy03M07Y4GzIEU6WNiThs0Ds=
+Date: Fri, 9 Feb 2024 12:50:41 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZcU3VCrt9VOpuFUq@eldamar.lan>
+Subject: Re: [PATCH mm-hotfixes-unstable] mm/zswap: invalidate duplicate entry
+ when !zswap_enabled
+Content-Language: en-US
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: hannes@cmpxchg.org, yosryahmed@google.com, nphamcs@gmail.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Chengming Zhou <zhouchengming@bytedance.com>, stable@vger.kernel.org
+References: <20240207154308.bc275f3e72ec1c1fd06cf5a2@linux-foundation.org>
+ <20240208023254.3873823-1-chengming.zhou@linux.dev>
+ <20240208130952.b2696eaf6a27eef9866723d4@linux-foundation.org>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Chengming Zhou <chengming.zhou@linux.dev>
+In-Reply-To: <20240208130952.b2696eaf6a27eef9866723d4@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi,
+On 2024/2/9 05:09, Andrew Morton wrote:
+> On Thu,  8 Feb 2024 02:32:54 +0000 chengming.zhou@linux.dev wrote:
+> 
+>> From: Chengming Zhou <zhouchengming@bytedance.com>
+>>
+>> We have to invalidate any duplicate entry even when !zswap_enabled
+>> since zswap can be disabled anytime. If the folio store success before,
+>> then got dirtied again but zswap disabled, we won't invalidate the old
+>> duplicate entry in the zswap_store(). So later lru writeback may
+>> overwrite the new data in swapfile.
+>>
+>> ...
+>>
+>> --- a/mm/zswap.c
+>> +++ b/mm/zswap.c
+>> @@ -1516,7 +1516,7 @@ bool zswap_store(struct folio *folio)
+>>  	if (folio_test_large(folio))
+>>  		return false;
+>>  
+>> -	if (!zswap_enabled || !tree)
+>> +	if (!tree)
+>>  		return false;
+>>  
+>>  	/*
+>> @@ -1531,6 +1531,10 @@ bool zswap_store(struct folio *folio)
+>>  		zswap_invalidate_entry(tree, dupentry);
+>>  	}
+>>  	spin_unlock(&tree->lock);
+>> +
+>> +	if (!zswap_enabled)
+>> +		return false;
+>> +
+>>  	objcg = get_obj_cgroup_from_folio(folio);
+>>  	if (objcg && !obj_cgroup_may_zswap(objcg)) {
+>>  		memcg = get_mem_cgroup_from_objcg(objcg);
+> 
+> OK, thanks.
+> 
+> I saw only one reject from mm-unstable patches.  Your patch "mm/zswap:
+> make sure each swapfile always have zswap rb-tree" now does
 
-Let me check this soon.
+It's correct. Thanks!
 
-Thanks,
+The other patch that includes optimization and cleanup is updated based on
+mm-unstable and just resend:
 
-On 02/08, Salvatore Bonaccorso wrote:
-> Hi Jaegeuk Kim, Chao Yu,
+https://lore.kernel.org/all/20240209044112.3883835-1-chengming.zhou@linux.dev/
+
 > 
-> In Debian the following regression was reported after a Dhya updated
-> to 6.1.76:
+> --- a/mm/zswap.c~mm-zswap-make-sure-each-swapfile-always-have-zswap-rb-tree
+> +++ a/mm/zswap.c
+> @@ -1518,9 +1518,6 @@ bool zswap_store(struct folio *folio)
+>  	if (folio_test_large(folio))
+>  		return false;
+>  
+> -	if (!tree)
+> -		return false;
+> -
+>  	/*
+>  	 * If this is a duplicate, it must be removed before attempting to store
+>  	 * it, otherwise, if the store fails the old page won't be removed from
 > 
-> On Wed, Feb 07, 2024 at 10:43:47PM -0500, Dhya wrote:
-> > Package: src:linux
-> > Version: 6.1.76-1
-> > Severity: critical
-> > Justification: breaks the whole system
-> > 
-> > Dear Maintainer,
-> > 
-> > After upgrade to linux-image-6.1.0-18-amd64 6.1.76-1 F2FS filesystem
-> > fails to mount rw.  Message in the boot journal:
-> > 
-> >   kernel: F2FS-fs (nvme0n1p6): invalid zstd compress level: 6
-> > 
-> > There was recently an f2fs patch to the 6.1 kernel tree which might be
-> > related: https://www.spinics.net/lists/stable-commits/msg329957.html
-> > 
-> > Was able to recover the system by doing:
-> > 
-> > sudo mount -o remount,rw,relatime,lazytime,background_gc=on,discard,no_heap,user_xattr,inline_xattr,acl,inline_data,inline_dentry,extent_cache,mode=adaptive,active_logs=6,alloc_mode=default,checkpoint_merge,fsync_mode=posix,compress_algorithm=lz4,compress_log_size=2,compress_mode=fs,atgc,discard_unit=block,memory=normal /dev/nvme0n1p6 /
-> > 
-> > under the running bad 6.1.0-18-amd64 kernel, then editing
-> > /etc/default/grub:
-> > 
-> >   GRUB_DEFAULT="Advanced options for Debian GNU/Linux>Debian GNU/Linux, with Linux 6.1.0-17-amd64"
-> > 
-> > and running 'update-grub' and rebooting to boot the 6.1.0-17-amd64
-> > kernel.
 > 
-> The issue is easily reproducible by:
-> 
-> # dd if=/dev/zero of=test.img count=100 bs=1M
-> # mkfs.f2fs -f -O compression,extra_attr ./test.img
-> # mount -t f2fs -o compress_algorithm=zstd:6,compress_chksum,atgc,gc_merge,lazytime ./test.img /mnt
-> 
-> resulting in
-> 
-> [   60.789982] F2FS-fs (loop0): invalid zstd compress level: 6
-> 
-> A bugzilla report has been submitted in
-> https://bugzilla.kernel.org/show_bug.cgi?id=218471
-> 
-> #regzbot introduced: v6.1.69..v6.1.76
-> #regzbot link: https://bugs.debian.org/1063422
-> #regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=218471
-> 
-> Regards,
-> Salvatore
 
