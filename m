@@ -1,158 +1,203 @@
-Return-Path: <stable+bounces-19370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170B884F0A5
-	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 08:09:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC6084F250
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 10:35:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC6F2B21704
-	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 07:09:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2B551F22F6E
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 09:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEA92E3E0;
-	Fri,  9 Feb 2024 07:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC65D6774E;
+	Fri,  9 Feb 2024 09:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="LUTcD4HZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M1j0i4e/"
 X-Original-To: stable@vger.kernel.org
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846FB657A8
-	for <stable@vger.kernel.org>; Fri,  9 Feb 2024 07:09:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65618339AE;
+	Fri,  9 Feb 2024 09:34:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707462578; cv=none; b=hyeh3X8nDTWqcEvmti3wVGuWvmuL4AFRShfBMXEbkjTFXVT9eQGv/f+VKRwFhzs31uj4jCTTHR+EkwDX4t0fjI5ygpMnuI8d+oicXdoIdaIEhZiYopJAljUj2QeStjwX5uFbWD6eyEFO1BltMLy6XsvAQQ5ZnPuq1Xb0JctbAGk=
+	t=1707471298; cv=none; b=ciqsn6pv8QvtS41tBkIetNSosOJNJHrqJ5ZXEx8w4PHLP+9Fp2WAAPrISwAqgxW6l1NOmyTaO3UuV/+zIb9/Y5axF5tvFFH+PEWXaBY7i0t+zvMM/iONQuiX3OssfT9HvXzcHAQdGwjQB/d5y27/DjyNZgynnHmlHKwEqCNll88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707462578; c=relaxed/simple;
-	bh=2BecjwjxWB2L3ulwqYvp9rQ/5AQPmxbNsodwlauhfRM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=R/LfB5nlLU9vd6qOMNVvvX1hxE+QOa7w3Q5luddXen3/Tp/3qgkPhIWtOgPrjQNWiR+BSUDK4x+L7ErEzAdVh5k0s7+GQ94PXJTomlhXNtzIdui51NKZjU8QDqHJvlgsl/lRIhO4EtU7vFFa6I7Ri66e73ft87eY7PUmbWacFGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=LUTcD4HZ; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 86BD424002B
-	for <stable@vger.kernel.org>; Fri,  9 Feb 2024 08:09:34 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
-	t=1707462574; bh=2BecjwjxWB2L3ulwqYvp9rQ/5AQPmxbNsodwlauhfRM=;
-	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version:From;
-	b=LUTcD4HZIKhxNe17j2uLNmMpvxEADiXNnEJ9e2h54tnhoZfwg8TXsXIEMflZZElCX
-	 IEk8trTg+fF3K7xaPnmu/FJaf70d0n6VMpeC008QjRLFZ/C+38AhsP5hWqz7uUjCbe
-	 rjnFJJcedm6CoKCH9vQvQK6V/xKcv+LrQR9o4Wy1hyZxUmScWJIKGfDY6ZOjTankgH
-	 ewzrkTiQvgIileXrJZ+ppNWe1kcrduSfxJ+3lWM7Xbu8soSpg261EFfFIMIvoi/KvO
-	 Tpn2UmnPCnMenmEO16bZ+aX2LXwi8eDnMX21msT0pvIm7JRabQUmElU99MsFsCnyqD
-	 oT2icYXwWzsfQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4TWQ2f0klvz9rxK;
-	Fri,  9 Feb 2024 08:09:29 +0100 (CET)
-Message-ID: <fdfcc3b6e1a884bb986acf072bcc13611eae8bdd.camel@posteo.de>
-Subject: Re: [PATCH 5.4 058/194] mtd: Fix gluebi NULL pointer dereference
- caused by ftl notifier
-From: Martin Kepplinger-Novakovic <martink@posteo.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, ZhaoLong Wang <wangzhaolong1@huawei.com>, 
- Zhihao Cheng <chengzhihao1@huawei.com>, Richard Weinberger
- <richard@nod.at>, Miquel Raynal <miquel.raynal@bootlin.com>, Sasha Levin
- <sashal@kernel.org>,  linux-mtd@lists.infradead.org, vigneshr@ti.com,
- dpervushin@embeddedalley.com,  Artem.Bityutskiy@nokia.com,
- linux-kernel@vger.kernel.org, yi.zhang@huawei.com,  yangerkun@huawei.com,
- Henri Roosen <Henri.Roosen@ginzinger.com>, Melchior Franz
- <Melchior.Franz@ginzinger.com>
-Date: Fri, 09 Feb 2024 07:09:29 +0000
-In-Reply-To: <20240122235721.687806578@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
-	 <20240122235721.687806578@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1707471298; c=relaxed/simple;
+	bh=Dl8+7wqvbWf28CAnnHsxj1BPsEuDTnBPdGgGo5EbXqg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pQDm/ypSGOhg2hWvB71Wem1Gzvd6K9obJVkxCsYXdsU3NGsVEzQFj2sVRtUY+lf1fi0xw1NqqfO0o3jHn1bBNuCCo2fzSwgTI6xt+Xe2d2Kud50680O1OVsjCxP8Q6V6HrR3vXWYNEx5tf9Vxmh2Hx8WYKGdyxOlclNrV1X3ABE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M1j0i4e/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21139C433C7;
+	Fri,  9 Feb 2024 09:34:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707471297;
+	bh=Dl8+7wqvbWf28CAnnHsxj1BPsEuDTnBPdGgGo5EbXqg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=M1j0i4e/4Pe2gBfUglOh5E7B1BX/SEOvUO+84VHkhvPbcz1jK/H6+phGQloEwtq8T
+	 I9OjvsyNJWg17T8kzVrGtN3yxJTxbdviGqDUzrZP48XxXRWLToYbaqk+Od7ScY36Lm
+	 H0VNiyBuS6OPv+CcjiKYBwBzRNagEJoxh88605IV6K/4QXklvf/+LIMRmf7eCdgM9M
+	 e1yW24mkkZfrbzvAwyxX+eZFztt7e43TqCAYkHkB3CjpcZTsw6jhulFUfAbH7wS/JE
+	 QItO9UI+yH2W3walP7dU9RMm2SA5+vXodKZX8wqZqvHexQVBY1V9Q8KjG9KLx6y9Lv
+	 y0dpIqEZS5ACg==
+Date: Fri, 9 Feb 2024 10:34:52 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Bart Van Assche <bvanassche@acm.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@lst.de>, 
+	Avi Kivity <avi@scylladb.com>, Sandeep Dhavale <dhavale@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] fs, USB gadget: Rework kiocb cancellation
+Message-ID: <20240209-katapultieren-lastkraftwagen-d28bbc0a92b2@brauner>
+References: <20240208215518.1361570-1-bvanassche@acm.org>
+ <9e83c34a-63ab-47ea-9c06-14303dbbeaa9@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <9e83c34a-63ab-47ea-9c06-14303dbbeaa9@kernel.dk>
 
-QW0gTW9udGFnLCBkZW0gMjIuMDEuMjAyNCB1bSAxNTo1NiAtMDgwMCBzY2hyaWViIEdyZWcgS3Jv
-YWgtSGFydG1hbjoKPiA1LjQtc3RhYmxlIHJldmlldyBwYXRjaC7CoCBJZiBhbnlvbmUgaGFzIGFu
-eSBvYmplY3Rpb25zLCBwbGVhc2UgbGV0IG1lCj4ga25vdy4KPiAKPiAtLS0tLS0tLS0tLS0tLS0t
-LS0KPiAKPiBGcm9tOiBaaGFvTG9uZyBXYW5nIDx3YW5nemhhb2xvbmcxQGh1YXdlaS5jb20+Cj4g
-Cj4gWyBVcHN0cmVhbSBjb21taXQgYTQzYmRjMzc2ZGVhYjVmZmYxY2ViOTNkY2E1NWJjYWI4ZGJk
-YzFkNiBdCj4gCj4gSWYgYm90aCBmdGwua28gYW5kIGdsdWViaS5rbyBhcmUgbG9hZGVkLCB0aGUg
-bm90aWZpZXIgb2YgZnRsCj4gdHJpZ2dlcnMgTlVMTCBwb2ludGVyIGRlcmVmZXJlbmNlIHdoZW4g
-dHJ5aW5nIHRvIGFjY2Vzcwo+IOKAmGdsdWViaS0+ZGVzY+KAmSBpbiBnbHVlYmlfcmVhZCgpLgo+
-IAo+IHViaV9nbHVlYmlfaW5pdAo+IMKgIHViaV9yZWdpc3Rlcl92b2x1bWVfbm90aWZpZXIKPiDC
-oMKgwqAgdWJpX2VudW1lcmF0ZV92b2x1bWVzCj4gwqDCoMKgwqDCoCB1Ymlfbm90aWZ5X2FsbAo+
-IMKgwqDCoMKgwqDCoMKgIGdsdWViaV9ub3RpZnnCoMKgwqAgbmItPm5vdGlmaWVyX2NhbGwoKQo+
-IMKgwqDCoMKgwqDCoMKgwqDCoCBnbHVlYmlfY3JlYXRlCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCBtdGRfZGV2aWNlX3JlZ2lzdGVyCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbXRkX2Rl
-dmljZV9wYXJzZV9yZWdpc3Rlcgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBhZGRf
-bXRkX2RldmljZQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgYmxrdHJhbnNf
-bm90aWZ5X2FkZMKgwqAgbm90LT5hZGQoKQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIGZ0bF9hZGRfbXRkwqDCoMKgwqDCoMKgwqDCoCB0ci0+YWRkX210ZCgpCj4gwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHNjYW5faGVhZGVyCj4gwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBtdGRfcmVhZAo+IMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG10ZF9yZWFk
-X29vYgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoCBtdGRfcmVhZF9vb2Jfc3RkCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBnbHVlYmlfcmVhZMKgwqAgbXRkLT5yZWFkKCkKPiDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoCBnbHVlYmktPmRlc2MgLSBOVUxMCj4gCj4gRGV0YWlsZWQgcmVwcm9kdWN0aW9uIGluZm9y
-bWF0aW9uIGF2YWlsYWJsZSBhdCB0aGUgTGluayBbMV0sCj4gCj4gSW4gdGhlIG5vcm1hbCBjYXNl
-LCBvYnRhaW4gZ2x1ZWJpLT5kZXNjIGluIHRoZSBnbHVlYmlfZ2V0X2RldmljZSgpLAo+IGFuZCBh
-Y2Nlc3MgZ2x1ZWJpLT5kZXNjIGluIHRoZSBnbHVlYmlfcmVhZCgpLiBIb3dldmVyLAo+IGdsdWVi
-aV9nZXRfZGV2aWNlKCkgaXMgbm90IGV4ZWN1dGVkIGluIGFkdmFuY2UgaW4gdGhlCj4gZnRsX2Fk
-ZF9tdGQoKSBwcm9jZXNzLCB3aGljaCBsZWFkcyB0byBOVUxMIHBvaW50ZXIgZGVyZWZlcmVuY2Uu
-Cj4gCj4gVGhlIHNvbHV0aW9uIGZvciB0aGUgZ2x1ZWJpIG1vZHVsZSBpcyB0byBydW4gamZmczIg
-b24gdGhlIFVCSQo+IHZvbHVtZSB3aXRob3V0IGNvbnNpZGVyaW5nIHdvcmtpbmcgd2l0aCBmdGwg
-b3IgbXRkYmxvY2sgWzJdLgo+IFRoZXJlZm9yZSwgdGhpcyBwcm9ibGVtIGNhbiBiZSBhdm9pZGVk
-IGJ5IHByZXZlbnRpbmcgZ2x1ZWJpIGZyb20KPiBjcmVhdGluZyB0aGUgbXRkYmxvY2sgZGV2aWNl
-IGFmdGVyIGNyZWF0aW5nIG10ZCBwYXJ0aXRpb24gb2YgdGhlCj4gdHlwZSBNVERfVUJJVk9MVU1F
-Lgo+IAo+IEZpeGVzOiAyYmEzZDc2YTFlMjkgKCJVQkk6IG1ha2UgZ2x1ZWJpIGEgc2VwYXJhdGUg
-bW9kdWxlIikKPiBMaW5rOiBodHRwczovL2J1Z3ppbGxhLmtlcm5lbC5vcmcvc2hvd19idWcuY2dp
-P2lkPTIxNzk5MsKgWzFdCj4gTGluazoKPiBodHRwczovL2xvcmUua2VybmVsLm9yZy9sa21sLzQ0
-MTEwNzEwMC4yMzczNC4xNjk3OTA0NTgwMjUyLkphdmFNYWlsLnppbWJyYUBub2QuYXQvCj4gwqBb
-Ml0KPiBTaWduZWQtb2ZmLWJ5OiBaaGFvTG9uZyBXYW5nIDx3YW5nemhhb2xvbmcxQGh1YXdlaS5j
-b20+Cj4gUmV2aWV3ZWQtYnk6IFpoaWhhbyBDaGVuZyA8Y2hlbmd6aGloYW8xQGh1YXdlaS5jb20+
-Cj4gQWNrZWQtYnk6IFJpY2hhcmQgV2VpbmJlcmdlciA8cmljaGFyZEBub2QuYXQ+Cj4gU2lnbmVk
-LW9mZi1ieTogTWlxdWVsIFJheW5hbCA8bWlxdWVsLnJheW5hbEBib290bGluLmNvbT4KPiBMaW5r
-Ogo+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LW10ZC8yMDIzMTIyMDAyNDYxOS4yMTM4
-NjI1LTEtd2FuZ3poYW9sb25nMUBodWF3ZWkuY29tCj4gU2lnbmVkLW9mZi1ieTogU2FzaGEgTGV2
-aW4gPHNhc2hhbEBrZXJuZWwub3JnPgo+IC0tLQo+IMKgZHJpdmVycy9tdGQvbXRkX2Jsa2RldnMu
-YyB8IDQgKystLQo+IMKgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlv
-bnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbXRkX2Jsa2RldnMuYyBiL2RyaXZl
-cnMvbXRkL210ZF9ibGtkZXZzLmMKPiBpbmRleCAwYzA1Zjc3ZjliMjEuLmRkMGQwYmY1ZjU3ZiAx
-MDA2NDQKPiAtLS0gYS9kcml2ZXJzL210ZC9tdGRfYmxrZGV2cy5jCj4gKysrIGIvZHJpdmVycy9t
-dGQvbXRkX2Jsa2RldnMuYwo+IEBAIC01MzMsNyArNTMzLDcgQEAgc3RhdGljIHZvaWQgYmxrdHJh
-bnNfbm90aWZ5X2FkZChzdHJ1Y3QgbXRkX2luZm8KPiAqbXRkKQo+IMKgewo+IMKgwqDCoMKgwqDC
-oMKgwqBzdHJ1Y3QgbXRkX2Jsa3RyYW5zX29wcyAqdHI7Cj4gwqAKPiAtwqDCoMKgwqDCoMKgwqBp
-ZiAobXRkLT50eXBlID09IE1URF9BQlNFTlQpCj4gK8KgwqDCoMKgwqDCoMKgaWYgKG10ZC0+dHlw
-ZSA9PSBNVERfQUJTRU5UIHx8IG10ZC0+dHlwZSA9PSBNVERfVUJJVk9MVU1FKQo+IMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGxp
-c3RfZm9yX2VhY2hfZW50cnkodHIsICZibGt0cmFuc19tYWpvcnMsIGxpc3QpCj4gQEAgLTU3Niw3
-ICs1NzYsNyBAQCBpbnQgcmVnaXN0ZXJfbXRkX2Jsa3RyYW5zKHN0cnVjdCBtdGRfYmxrdHJhbnNf
-b3BzCj4gKnRyKQo+IMKgwqDCoMKgwqDCoMKgwqBsaXN0X2FkZCgmdHItPmxpc3QsICZibGt0cmFu
-c19tYWpvcnMpOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoG10ZF9mb3JfZWFjaF9kZXZpY2UobXRk
-KQo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAobXRkLT50eXBlICE9IE1URF9B
-QlNFTlQpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChtdGQtPnR5cGUgIT0g
-TVREX0FCU0VOVCAmJiBtdGQtPnR5cGUgIT0KPiBNVERfVUJJVk9MVU1FKQo+IMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRyLT5hZGRfbXRkKHRyLCBtdGQp
-Owo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoG11dGV4X3VubG9jaygmbXRkX3RhYmxlX211dGV4KTsK
-CkhpIEdyZWcsIGhpIHBhdGNoLWRldmVsb3BlcnMsCgp3YWl0IGEgc2Vjb25kLiB0aGlzIGFscmVh
-ZHkgd2VudCBpbnRvIHY1LjQuMjY4IGJ1dCBzdGlsbDogRG9lc24ndCB0aGlzCmJyZWFrIHVzZXJz
-cGFjZT8KCkFjY29yZGluZyB0bwpodHRwczovL2xvcmUua2VybmVsLm9yZy9sa21sLzQ0MTEwNzEw
-MC4yMzczNC4xNjk3OTA0NTgwMjUyLkphdmFNYWlsLnppbWJyYUBub2QuYXQvCndoZXJlIHRoaXMg
-c29sdXRpb24gc2VlbXMgdG8gY29tZSBmcm9tLCB0aGUgYmVoYXZpb3VyIGNoYW5nZXM6ICJubwpt
-dGRibG9jayAoaGVuY2UsIGFsc28gbm8gRlRMcykgb24gdG9wIG9mIGdsdWViaS4iCgpJIGZlbGwg
-YWNjcm9zcyB0aGlzIGJlY2F1c2Ugb2YgYW4gb3V0LW9mLXRyZWUgbW9kdWxlIHRoYXQgZG9lcwpz
-eXNfbW91bnQoKSBhbiBtdGRibG9jaywgc28gSSB3b24ndCBjb21wbGFpbiBhYm91dCBteSBjb2Rl
-IHNwZWNpZmljYWxseQo6KSBCdXQgZG9lc24ndCBpdCBicmVhayBtb3VudGluZywgc2F5LCBqZmZz
-MiBpbnNpZGUgYW4gdWJpIHZpYQptdGRibG9jaz8gSWYgc28sIGlzIHRoaXMgcmVhbGx5IHNvbWV0
-aGluZyB0aGF0IHlvdSB3YW50IHRvIHNlZQpiYWNrcG9ydGVkIHRvIG9sZCBrZXJuZWxzPwoKT3Ig
-ZGlmZmVyZW50bHkgcHV0OiBIYXMgdGhpcyBwYXRjaCBiZWVuIHBpY2tlZCB1cCBmb3Igb2xkIHN0
-YWJsZQprZXJuZWxzIGJ5IHNjcmlwdHMgb3IgYnkgYSBodW1hbj8KCkkganVzdCB3YW50IHRvIG1h
-a2Ugc3VyZSwgYW5kIHdobyBrbm93cywgaXQgbWlnaHQgaGVscCBvdGhlcnMgdG9vLCB3aG8Kd291
-bGQganVzdCBkbyBhIChwb3NzaWJseSBkYW5nZXJvdXM/KSByZXZlcnQgaW4gdGhlaXIgdHJlZXMu
-Cgp0aGFua3MhCiAgICAgICAgICAgICAgICAgICAgICAgICAgbWFydGluCgoK
+On Thu, Feb 08, 2024 at 03:14:43PM -0700, Jens Axboe wrote:
+> On 2/8/24 2:55 PM, Bart Van Assche wrote:
+> > diff --git a/drivers/usb/gadget/function/f_fs.c b/drivers/usb/gadget/function/f_fs.c
+> > index 6bff6cb93789..4837e3071263 100644
+> > --- a/drivers/usb/gadget/function/f_fs.c
+> > +++ b/drivers/usb/gadget/function/f_fs.c
+> > @@ -31,7 +31,6 @@
+> >  #include <linux/usb/composite.h>
+> >  #include <linux/usb/functionfs.h>
+> >  
+> > -#include <linux/aio.h>
+> >  #include <linux/kthread.h>
+> >  #include <linux/poll.h>
+> >  #include <linux/eventfd.h>
+> > @@ -1157,23 +1156,16 @@ ffs_epfile_open(struct inode *inode, struct file *file)
+> >  	return stream_open(inode, file);
+> >  }
+> >  
+> > -static int ffs_aio_cancel(struct kiocb *kiocb)
+> > +static void ffs_epfile_cancel_kiocb(struct kiocb *kiocb)
+> >  {
+> >  	struct ffs_io_data *io_data = kiocb->private;
+> >  	struct ffs_epfile *epfile = kiocb->ki_filp->private_data;
+> >  	unsigned long flags;
+> > -	int value;
+> >  
+> >  	spin_lock_irqsave(&epfile->ffs->eps_lock, flags);
+> > -
+> >  	if (io_data && io_data->ep && io_data->req)
+> > -		value = usb_ep_dequeue(io_data->ep, io_data->req);
+> > -	else
+> > -		value = -EINVAL;
+> > -
+> > +		usb_ep_dequeue(io_data->ep, io_data->req);
+> >  	spin_unlock_irqrestore(&epfile->ffs->eps_lock, flags);
+> > -
+> > -	return value;
+> >  }
+> 
+> I'm assuming the NULL checks can go because it's just the async parts
+> now?
+> 
+> > @@ -634,6 +619,8 @@ static void free_ioctx_reqs(struct percpu_ref *ref)
+> >  	queue_rcu_work(system_wq, &ctx->free_rwork);
+> >  }
+> >  
+> > +static void aio_cancel_and_del(struct aio_kiocb *req);
+> > +
+> 
+> Just move the function higher up? It doesn't have any dependencies.
+> 
+> > @@ -1552,6 +1538,24 @@ static ssize_t aio_setup_rw(int rw, const struct iocb *iocb,
+> >  	return __import_iovec(rw, buf, len, UIO_FASTIOV, iovec, iter, compat);
+> >  }
+> >  
+> > +static void aio_add_rw_to_active_reqs(struct kiocb *req)
+> > +{
+> > +	struct aio_kiocb *aio = container_of(req, struct aio_kiocb, rw);
+> > +	struct kioctx *ctx = aio->ki_ctx;
+> > +	unsigned long flags;
+> > +
+> > +	/*
+> > +	 * If the .cancel_kiocb() callback has been set, add the request
+> > +	 * to the list of active requests.
+> > +	 */
+> > +	if (!req->ki_filp->f_op->cancel_kiocb)
+> > +		return;
+> > +
+> > +	spin_lock_irqsave(&ctx->ctx_lock, flags);
+> > +	list_add_tail(&aio->ki_list, &ctx->active_reqs);
+> > +	spin_unlock_irqrestore(&ctx->ctx_lock, flags);
+> > +}
+> 
+> This can use spin_lock_irq(), always called from process context.
+> 
+> > +/* Must be called only for IOCB_CMD_POLL requests. */
+> > +static void aio_poll_cancel(struct aio_kiocb *aiocb)
+> > +{
+> > +	struct poll_iocb *req = &aiocb->poll;
+> > +	struct kioctx *ctx = aiocb->ki_ctx;
+> > +
+> > +	lockdep_assert_held(&ctx->ctx_lock);
+> > +
+> > +	if (!poll_iocb_lock_wq(req))
+> > +		return;
+> > +
+> > +	WRITE_ONCE(req->cancelled, true);
+> > +	if (!req->work_scheduled) {
+> > +		schedule_work(&aiocb->poll.work);
+> > +		req->work_scheduled = true;
+> > +	}
+> > +	poll_iocb_unlock_wq(req);
+> > +}
+> 
+> Not your code, it's just moved, but this looks racy. Might not matter,
+> and obviously beyond the scope of this change.
+> 
+> > +{
+> > +	void (*cancel_kiocb)(struct kiocb *) =
+> > +		req->rw.ki_filp->f_op->cancel_kiocb;
+> > +	struct kioctx *ctx = req->ki_ctx;
+> > +
+> > +	lockdep_assert_held(&ctx->ctx_lock);
+> > +
+> > +	switch (req->ki_opcode) {
+> > +	case IOCB_CMD_PREAD:
+> > +	case IOCB_CMD_PWRITE:
+> > +	case IOCB_CMD_PREADV:
+> > +	case IOCB_CMD_PWRITEV:
+> > +		if (cancel_kiocb)
+> > +			cancel_kiocb(&req->rw);
+> > +		break;
+> > +	case IOCB_CMD_FSYNC:
+> > +	case IOCB_CMD_FDSYNC:
+> > +		break;
+> > +	case IOCB_CMD_POLL:
+> > +		aio_poll_cancel(req);
+> > +		break;
+> > +	default:
+> > +		WARN_ONCE(true, "invalid aio operation %d\n", req->ki_opcode);
+> > +	}
+> > +
+> > +	list_del_init(&req->ki_list);
+> > +}
+> 
+> Why don't you just keep ki_cancel() and just change it to a void return
+> that takes an aio_kiocb? Then you don't need this odd switch, or adding
+> an opcode field just for this. That seems cleaner.
+> 
+> Outside of these little nits, looks alright. I'd still love to kill the
+> silly cancel code just for the gadget bits, but that's for another day.
 
+Well, I'd prefer to kill it if we can asap. Because then we can lose
+that annoying file_operations addition. That really rubs me the wrong way.
+
+> And since the gadget and aio code basically never changes, a cleaned up
+> variant of the this patch should be trivial enough to backport to
+> stable, so I don't think we need to worry about doing a fixup first.
 
