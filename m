@@ -1,71 +1,52 @@
-Return-Path: <stable+bounces-19363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9D3784EDF4
-	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 00:42:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 394E484EE8B
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 02:15:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CA2D28C74F
-	for <lists+stable@lfdr.de>; Thu,  8 Feb 2024 23:42:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCE6AB20DE6
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 01:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B5444F8BE;
-	Thu,  8 Feb 2024 23:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85483376;
+	Fri,  9 Feb 2024 01:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dawJIegt"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fM8cqtJ9"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDF050260
-	for <stable@vger.kernel.org>; Thu,  8 Feb 2024 23:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A3C4C6D
+	for <stable@vger.kernel.org>; Fri,  9 Feb 2024 01:14:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707435676; cv=none; b=iidzSMOcWvOY4nGRiwHGEobTGZ1F1lVJUdruXaEUpkFDsq3onhpbdtyER6V8d+ajCjC2NameURhL5z6zwNoDdWmQUj9qFmu2K9ulsC85YS/weZPGvHHLv9q6n7UMnKfs4cmyrQf4LvxupQvsIsOIV+Hz0Hj2rUgjKSowP4ojyGQ=
+	t=1707441302; cv=none; b=csGgnw6yHFgoszD4VwSlKz1INQufN+8cYKsiB9MXdvr7jSNyZyEqTde117NtO7Y/CulSVZ3wz1tLUvTc/2VxIltDUDiy/1znxljcQ6FC4vyDaJR5U87QuYYp/tPVaZ/28JxHY2oHlC5IJEtUgUxQYRmoRn8SDnmSMgmdLHNUJSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707435676; c=relaxed/simple;
-	bh=hKTqmvrOB7w0VCGhi9z36HneQOE6CnwZzk8LP77mrWw=;
+	s=arc-20240116; t=1707441302; c=relaxed/simple;
+	bh=I74qNCNhSreLNW+mYNwoQ/ToNtGoMYC5nKBXJQwn+GM=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=UAO/ZCYGhIzVBFg9yeBKr3SEYMw1yGSIYRmUODYL+gf7gfkBL98iLBfyN7LpLLSuh8PYEXaHFuHjsYOzrSd9Is3LhlG7YpZLrT7ME58zfJFwPYzSFxHMuXEc1t14X8oCJkJT+SO5duwgNE8a1Z7yEWJbUeuMECgX/XqF/JuQv0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dawJIegt; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707435673; x=1738971673;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=hKTqmvrOB7w0VCGhi9z36HneQOE6CnwZzk8LP77mrWw=;
-  b=dawJIegtbUjZp+fXjhLTfzGX9PCoGcrNT6VR72+Y71J6HWUYVNWXwjmh
-   OjCmPDLyHZ4+o8wJOiM8Ke2xQupy+aYeci0MmYRY7UUukz+TpOdsRbYb1
-   GPJ/HKMgPHTNcEz7usW7RFqEQIf2T/8Mjy17xYITB+OtQXGHS7iL6B7z9
-   v6TeYkNlsRFTTJMMiOH/voxcw31k+mhW2CndZVSId9gLgQ2GD5HoVJAqk
-   ytaQsOH9Wf22EGUGXPh3igRlI4Sps4+JGs75LBMd54fytv6EJLWstUd2+
-   FKCO9nGKGQ+3eM7Qo5dNJdmhuu5oR/lzCJEpNU7z99HPAZ62KgJAP95E6
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="1228192"
-X-IronPort-AV: E=Sophos;i="6.05,255,1701158400"; 
-   d="scan'208";a="1228192"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Feb 2024 15:41:12 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10978"; a="910537215"
-X-IronPort-AV: E=Sophos;i="6.05,255,1701158400"; 
-   d="scan'208";a="910537215"
-Received: from lkp-server01.sh.intel.com (HELO 01f0647817ea) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 08 Feb 2024 15:41:04 -0800
-Received: from kbuild by 01f0647817ea with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rYE0s-0004D6-03;
-	Thu, 08 Feb 2024 23:41:02 +0000
-Date: Fri, 9 Feb 2024 07:40:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Catherine Hoang <catherine.hoang@oracle.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 6.6 01/21] MAINTAINERS: add Catherine as xfs maintainer
- for 6.6.y
-Message-ID: <ZcVmV-vL9CK8gpl7@2fb80f39de5f>
+	 Content-Disposition; b=FjS3xnmOBKzvRiFoq3dhtNew3o0F9uLiBnxxd9ujlYJlh2d5vw1auQr61lKDgSMDpKq70P/17M5Zp4gRf4PDiL9HrDxuuxKirarWzYP/s5pVwsx5PxHEtgzjrmBJSuv6marsCgJZmU5JFPt6iUYqK6kc1jOefNRTYP3yEKxuJew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fM8cqtJ9; arc=none smtp.client-ip=95.215.58.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Thu, 8 Feb 2024 20:14:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1707441298;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=mIxdzPWyKD9wWhNpC+Vouu4n1L4gGXqIV3g6Ttx09jc=;
+	b=fM8cqtJ9LtRwO5E1oGrh7DOM9/GT1DHRBm/uDgVMdIQ5exmq+sFQS5icI+eOiRj6PSVZKo
+	rj8r8F6ks7sBGup/Jp6CuNIg3CCb/+0bwhaMypTDFgcRjXavXTpgOVAf2EpBas9Ck0AFod
+	6gXeLkUwKXVrskSh9iKYb9UimnF3VVA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-bcachefs@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Subject: [GIT PULL] bcachefs stable updates for v6.7
+Message-ID: <6yl6zvu2pa3mz7irsaax5ivp6kh3dae5kaslvst7yafmg6672g@mskleu2vjfp2>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,26 +55,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240208232054.15778-2-catherine.hoang@oracle.com>
+X-Migadu-Flow: FLOW_OUT
 
-Hi,
+Hi Greg, few stable updates for you -
 
-Thanks for your patch.
+Cheers,
+Kent
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+The following changes since commit 0dd3ee31125508cd67f7e7172247f05b7fd1753a:
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+  Linux 6.7 (2024-01-07 12:18:38 -0800)
 
-Rule: The upstream commit ID must be specified with a separate line above the commit text.
-Subject: [PATCH 6.6 01/21] MAINTAINERS: add Catherine as xfs maintainer for 6.6.y
-Link: https://lore.kernel.org/stable/20240208232054.15778-2-catherine.hoang%40oracle.com
+are available in the Git repository at:
 
-Please ignore this mail if the patch is not relevant for upstream.
+  https://evilpiepirate.org/git/bcachefs.git tags/bcachefs-for-v6.7-stable-20240208
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+for you to fetch changes up to f1582f4774ac7c30c5460a8c7a6e5a82b9ce5a6a:
 
+  bcachefs: time_stats: Check for last_event == 0 when updating freq stats (2024-02-08 15:33:11 -0500)
 
+----------------------------------------------------------------
+bcachefs updates for v6.7 stable:
 
+locking fixes in subvolume create, destroy paths - Al, Su Yue, Guoyu Ou
+fix race in thread_with_file - Mathias Krause
+small rebalance fixes - Daniel, myself
+workaround for building with old clang (can't take a pointer to memcmp)
+build fix on parisc
+minor time_stats fix
+
+----------------------------------------------------------------
+Al Viro (2):
+      new helper: user_path_locked_at()
+      bch2_ioctl_subvolume_destroy(): fix locking
+
+Christoph Hellwig (1):
+      bcachefs: fix incorrect usage of REQ_OP_FLUSH
+
+Daniel Hill (1):
+      bcachefs: rebalance should wakeup on shutdown if disabled
+
+Guoyu Ou (1):
+      bcachefs: unlock parent dir if entry is not found in subvolume deletion
+
+Helge Deller (1):
+      bcachefs: Fix build on parisc by avoiding __multi3()
+
+Kent Overstreet (4):
+      bcachefs: Don't pass memcmp() as a pointer
+      bcachefs: Add missing bch2_moving_ctxt_flush_all()
+      bcachefs: bch2_kthread_io_clock_wait() no longer sleeps until full amount
+      bcachefs: time_stats: Check for last_event == 0 when updating freq stats
+
+Mathias Krause (1):
+      bcachefs: install fd later to avoid race with close
+
+Su Yue (2):
+      bcachefs: kvfree bch_fs::snapshots in bch2_fs_snapshots_exit
+      bcachefs: grab s_umount only if snapshotting
+
+ fs/bcachefs/chardev.c           |  3 +--
+ fs/bcachefs/clock.c             |  4 ++--
+ fs/bcachefs/fs-io.c             |  2 +-
+ fs/bcachefs/fs-ioctl.c          | 42 +++++++++++++++++++++--------------------
+ fs/bcachefs/journal_io.c        |  3 ++-
+ fs/bcachefs/mean_and_variance.h |  2 +-
+ fs/bcachefs/move.c              |  2 +-
+ fs/bcachefs/move.h              |  1 +
+ fs/bcachefs/rebalance.c         | 13 +++++++++++--
+ fs/bcachefs/replicas.c          | 10 ++++++++--
+ fs/bcachefs/snapshot.c          |  2 +-
+ fs/bcachefs/util.c              |  5 +++--
+ fs/namei.c                      | 16 +++++++++++++---
+ include/linux/namei.h           |  1 +
+ 14 files changed, 68 insertions(+), 38 deletions(-)
 
