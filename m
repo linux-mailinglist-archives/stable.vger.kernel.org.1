@@ -1,162 +1,158 @@
-Return-Path: <stable+bounces-19369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8A3884F037
-	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 07:24:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 170B884F0A5
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 08:09:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19E401C21D81
-	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 06:24:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC6F2B21704
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 07:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526FC57337;
-	Fri,  9 Feb 2024 06:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECEA92E3E0;
+	Fri,  9 Feb 2024 07:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lPwB5hIf";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PADFRAJP";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="lPwB5hIf";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PADFRAJP"
+	dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b="LUTcD4HZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D36EF57310;
-	Fri,  9 Feb 2024 06:24:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846FB657A8
+	for <stable@vger.kernel.org>; Fri,  9 Feb 2024 07:09:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707459860; cv=none; b=QfyJopc5zJbgmyG9WzHdA8ndIswud+D7Jf9tG5f3quH3gvXTdccv8HbccQQajctZTxk+0jNPv2Eed+wmY7gsEgE/V5Gpi37fMbRiQ+fjGXMwBLb6m1GbmLuiUSzd467xJ7u+oOlo9GbKnw3hsoxnX5qu6uIWf88KI5oZrwKbMwo=
+	t=1707462578; cv=none; b=hyeh3X8nDTWqcEvmti3wVGuWvmuL4AFRShfBMXEbkjTFXVT9eQGv/f+VKRwFhzs31uj4jCTTHR+EkwDX4t0fjI5ygpMnuI8d+oicXdoIdaIEhZiYopJAljUj2QeStjwX5uFbWD6eyEFO1BltMLy6XsvAQQ5ZnPuq1Xb0JctbAGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707459860; c=relaxed/simple;
-	bh=89RlaZiW2zFWOUG3IqWYiZXQPTee7Dmk8dUcq3QXIrI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r2UxGf+QMWhCuq4WGLVHE5yco5mVfQXJKEwRGGIBZe6dUYp82pdCyR9QHktPkXQOdQr1Ih2sPPmSfayBRfu2gvhBq7mkxskvZzb+ml1hqp4hN/GHfv+WsFSiu1/rWydHo2EeJpY4LLD/8jKiT4vNW0+GhVkCL+yEKM1YIf4JNWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lPwB5hIf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PADFRAJP; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=lPwB5hIf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PADFRAJP; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A9E611F7DE;
-	Fri,  9 Feb 2024 06:24:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1707459855; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RLtqCnLoHDcowrIyQ34cuvnOLg2AS9p8XbafIJGUDZs=;
-	b=lPwB5hIf6hZWKniOlXq/i4koRAVGs8RtjFJqe47F5TQRfHJ5cEuZdIVdvCLR3DcEvhxJg6
-	7bl44qQlWxqIC1/n6xY+q+I66ppgehFHifnGG7QGrYuY1uIEIAo8q4cEx0KZluyqhk3BPd
-	0n5lhhOtrJkUGde10/gSVzJNkMHEq4w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1707459855;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RLtqCnLoHDcowrIyQ34cuvnOLg2AS9p8XbafIJGUDZs=;
-	b=PADFRAJP8mnYZ5ZwUwvsrGbb7iJ0bnu2NSLzjomU9kHvvjFsHpkaex8RkN7k+Njhe2NpGD
-	e4UDERtDwR63j2AA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1707459855; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RLtqCnLoHDcowrIyQ34cuvnOLg2AS9p8XbafIJGUDZs=;
-	b=lPwB5hIf6hZWKniOlXq/i4koRAVGs8RtjFJqe47F5TQRfHJ5cEuZdIVdvCLR3DcEvhxJg6
-	7bl44qQlWxqIC1/n6xY+q+I66ppgehFHifnGG7QGrYuY1uIEIAo8q4cEx0KZluyqhk3BPd
-	0n5lhhOtrJkUGde10/gSVzJNkMHEq4w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1707459855;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RLtqCnLoHDcowrIyQ34cuvnOLg2AS9p8XbafIJGUDZs=;
-	b=PADFRAJP8mnYZ5ZwUwvsrGbb7iJ0bnu2NSLzjomU9kHvvjFsHpkaex8RkN7k+Njhe2NpGD
-	e4UDERtDwR63j2AA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6B14A1326D;
-	Fri,  9 Feb 2024 06:24:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id +kvPGQ/FxWVDXAAAD6G6ig
-	(envelope-from <dwagner@suse.de>); Fri, 09 Feb 2024 06:24:15 +0000
-Date: Fri, 9 Feb 2024 07:24:13 +0100
-From: Daniel Wagner <dwagner@suse.de>
-To: Fedor Pchelkin <pchelkin@ispras.ru>
-Cc: James Smart <james.smart@broadcom.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, Ram Vegesna <ram.vegesna@broadcom.com>, 
-	"James E.J. Bottomley" <jejb@linux.ibm.com>, Hannes Reinecke <hare@suse.de>, linux-scsi@vger.kernel.org, 
-	target-devel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alexey Khoroshilov <khoroshilov@ispras.ru>, lvc-project@linuxtesting.org, stable@vger.kernel.org
-Subject: Re: [PATCH] scsi: elx: efct: adjust error handling inside
- efct_hw_setup_io
-Message-ID: <2ik7x74hq6exam5ab4v2moauy4lfvqe3r626bxxettseat2nmv@q4gykxnezkff>
-References: <20240208093657.19617-1-pchelkin@ispras.ru>
+	s=arc-20240116; t=1707462578; c=relaxed/simple;
+	bh=2BecjwjxWB2L3ulwqYvp9rQ/5AQPmxbNsodwlauhfRM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=R/LfB5nlLU9vd6qOMNVvvX1hxE+QOa7w3Q5luddXen3/Tp/3qgkPhIWtOgPrjQNWiR+BSUDK4x+L7ErEzAdVh5k0s7+GQ94PXJTomlhXNtzIdui51NKZjU8QDqHJvlgsl/lRIhO4EtU7vFFa6I7Ri66e73ft87eY7PUmbWacFGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de; spf=pass smtp.mailfrom=posteo.de; dkim=pass (2048-bit key) header.d=posteo.de header.i=@posteo.de header.b=LUTcD4HZ; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.de
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 86BD424002B
+	for <stable@vger.kernel.org>; Fri,  9 Feb 2024 08:09:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.de; s=2017;
+	t=1707462574; bh=2BecjwjxWB2L3ulwqYvp9rQ/5AQPmxbNsodwlauhfRM=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version:From;
+	b=LUTcD4HZIKhxNe17j2uLNmMpvxEADiXNnEJ9e2h54tnhoZfwg8TXsXIEMflZZElCX
+	 IEk8trTg+fF3K7xaPnmu/FJaf70d0n6VMpeC008QjRLFZ/C+38AhsP5hWqz7uUjCbe
+	 rjnFJJcedm6CoKCH9vQvQK6V/xKcv+LrQR9o4Wy1hyZxUmScWJIKGfDY6ZOjTankgH
+	 ewzrkTiQvgIileXrJZ+ppNWe1kcrduSfxJ+3lWM7Xbu8soSpg261EFfFIMIvoi/KvO
+	 Tpn2UmnPCnMenmEO16bZ+aX2LXwi8eDnMX21msT0pvIm7JRabQUmElU99MsFsCnyqD
+	 oT2icYXwWzsfQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4TWQ2f0klvz9rxK;
+	Fri,  9 Feb 2024 08:09:29 +0100 (CET)
+Message-ID: <fdfcc3b6e1a884bb986acf072bcc13611eae8bdd.camel@posteo.de>
+Subject: Re: [PATCH 5.4 058/194] mtd: Fix gluebi NULL pointer dereference
+ caused by ftl notifier
+From: Martin Kepplinger-Novakovic <martink@posteo.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, ZhaoLong Wang <wangzhaolong1@huawei.com>, 
+ Zhihao Cheng <chengzhihao1@huawei.com>, Richard Weinberger
+ <richard@nod.at>, Miquel Raynal <miquel.raynal@bootlin.com>, Sasha Levin
+ <sashal@kernel.org>,  linux-mtd@lists.infradead.org, vigneshr@ti.com,
+ dpervushin@embeddedalley.com,  Artem.Bityutskiy@nokia.com,
+ linux-kernel@vger.kernel.org, yi.zhang@huawei.com,  yangerkun@huawei.com,
+ Henri Roosen <Henri.Roosen@ginzinger.com>, Melchior Franz
+ <Melchior.Franz@ginzinger.com>
+Date: Fri, 09 Feb 2024 07:09:29 +0000
+In-Reply-To: <20240122235721.687806578@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
+	 <20240122235721.687806578@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240208093657.19617-1-pchelkin@ispras.ru>
-X-Spam-Level: 
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=lPwB5hIf;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=PADFRAJP
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-1.01 / 50.00];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	 TO_DN_SOME(0.00)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_TRACE(0.00)[suse.de:+];
-	 MX_GOOD(-0.01)[];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 BAYES_HAM(-0.00)[39.25%];
-	 ARC_NA(0.00)[];
-	 R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 FROM_HAS_DN(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 MIME_GOOD(-0.10)[text/plain];
-	 DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	 DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	 RCPT_COUNT_TWELVE(0.00)[12];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 MID_RHS_NOT_FQDN(0.50)[];
-	 RCVD_TLS_ALL(0.00)[]
-X-Spam-Score: -1.01
-X-Rspamd-Queue-Id: A9E611F7DE
-X-Spam-Flag: NO
 
-On Thu, Feb 08, 2024 at 12:36:57PM +0300, Fedor Pchelkin wrote:
-> IO and WQE buffers are allocated once per HW and can be reused later. If
-> WQE buffers allocation fails then the whole allocation is marked as failed
-> but already created IO array internal objects are not freed. hw->io is
-> freed but not nullified in that specific case - it may become a problem
-> later as efct_hw_setup_io() is supposed to be reusable for the same HW.
-> 
-> While at it, use kcalloc instead of kmalloc_array/memset-zero combination
-> and get rid of some needless NULL assignments: nullifying hw->io[i]
-> elements just before freeing hw->io is not really useful.
-> 
-> Found by Linux Verification Center (linuxtesting.org).
-> 
-> Fixes: 4df84e846624 ("scsi: elx: efct: Driver initialization routines")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+QW0gTW9udGFnLCBkZW0gMjIuMDEuMjAyNCB1bSAxNTo1NiAtMDgwMCBzY2hyaWViIEdyZWcgS3Jv
+YWgtSGFydG1hbjoKPiA1LjQtc3RhYmxlIHJldmlldyBwYXRjaC7CoCBJZiBhbnlvbmUgaGFzIGFu
+eSBvYmplY3Rpb25zLCBwbGVhc2UgbGV0IG1lCj4ga25vdy4KPiAKPiAtLS0tLS0tLS0tLS0tLS0t
+LS0KPiAKPiBGcm9tOiBaaGFvTG9uZyBXYW5nIDx3YW5nemhhb2xvbmcxQGh1YXdlaS5jb20+Cj4g
+Cj4gWyBVcHN0cmVhbSBjb21taXQgYTQzYmRjMzc2ZGVhYjVmZmYxY2ViOTNkY2E1NWJjYWI4ZGJk
+YzFkNiBdCj4gCj4gSWYgYm90aCBmdGwua28gYW5kIGdsdWViaS5rbyBhcmUgbG9hZGVkLCB0aGUg
+bm90aWZpZXIgb2YgZnRsCj4gdHJpZ2dlcnMgTlVMTCBwb2ludGVyIGRlcmVmZXJlbmNlIHdoZW4g
+dHJ5aW5nIHRvIGFjY2Vzcwo+IOKAmGdsdWViaS0+ZGVzY+KAmSBpbiBnbHVlYmlfcmVhZCgpLgo+
+IAo+IHViaV9nbHVlYmlfaW5pdAo+IMKgIHViaV9yZWdpc3Rlcl92b2x1bWVfbm90aWZpZXIKPiDC
+oMKgwqAgdWJpX2VudW1lcmF0ZV92b2x1bWVzCj4gwqDCoMKgwqDCoCB1Ymlfbm90aWZ5X2FsbAo+
+IMKgwqDCoMKgwqDCoMKgIGdsdWViaV9ub3RpZnnCoMKgwqAgbmItPm5vdGlmaWVyX2NhbGwoKQo+
+IMKgwqDCoMKgwqDCoMKgwqDCoCBnbHVlYmlfY3JlYXRlCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oCBtdGRfZGV2aWNlX3JlZ2lzdGVyCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbXRkX2Rl
+dmljZV9wYXJzZV9yZWdpc3Rlcgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBhZGRf
+bXRkX2RldmljZQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgYmxrdHJhbnNf
+bm90aWZ5X2FkZMKgwqAgbm90LT5hZGQoKQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgIGZ0bF9hZGRfbXRkwqDCoMKgwqDCoMKgwqDCoCB0ci0+YWRkX210ZCgpCj4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHNjYW5faGVhZGVyCj4gwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBtdGRfcmVhZAo+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG10ZF9yZWFk
+X29vYgo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCBtdGRfcmVhZF9vb2Jfc3RkCj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBnbHVlYmlfcmVhZMKgwqAgbXRkLT5yZWFkKCkKPiDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCBnbHVlYmktPmRlc2MgLSBOVUxMCj4gCj4gRGV0YWlsZWQgcmVwcm9kdWN0aW9uIGluZm9y
+bWF0aW9uIGF2YWlsYWJsZSBhdCB0aGUgTGluayBbMV0sCj4gCj4gSW4gdGhlIG5vcm1hbCBjYXNl
+LCBvYnRhaW4gZ2x1ZWJpLT5kZXNjIGluIHRoZSBnbHVlYmlfZ2V0X2RldmljZSgpLAo+IGFuZCBh
+Y2Nlc3MgZ2x1ZWJpLT5kZXNjIGluIHRoZSBnbHVlYmlfcmVhZCgpLiBIb3dldmVyLAo+IGdsdWVi
+aV9nZXRfZGV2aWNlKCkgaXMgbm90IGV4ZWN1dGVkIGluIGFkdmFuY2UgaW4gdGhlCj4gZnRsX2Fk
+ZF9tdGQoKSBwcm9jZXNzLCB3aGljaCBsZWFkcyB0byBOVUxMIHBvaW50ZXIgZGVyZWZlcmVuY2Uu
+Cj4gCj4gVGhlIHNvbHV0aW9uIGZvciB0aGUgZ2x1ZWJpIG1vZHVsZSBpcyB0byBydW4gamZmczIg
+b24gdGhlIFVCSQo+IHZvbHVtZSB3aXRob3V0IGNvbnNpZGVyaW5nIHdvcmtpbmcgd2l0aCBmdGwg
+b3IgbXRkYmxvY2sgWzJdLgo+IFRoZXJlZm9yZSwgdGhpcyBwcm9ibGVtIGNhbiBiZSBhdm9pZGVk
+IGJ5IHByZXZlbnRpbmcgZ2x1ZWJpIGZyb20KPiBjcmVhdGluZyB0aGUgbXRkYmxvY2sgZGV2aWNl
+IGFmdGVyIGNyZWF0aW5nIG10ZCBwYXJ0aXRpb24gb2YgdGhlCj4gdHlwZSBNVERfVUJJVk9MVU1F
+Lgo+IAo+IEZpeGVzOiAyYmEzZDc2YTFlMjkgKCJVQkk6IG1ha2UgZ2x1ZWJpIGEgc2VwYXJhdGUg
+bW9kdWxlIikKPiBMaW5rOiBodHRwczovL2J1Z3ppbGxhLmtlcm5lbC5vcmcvc2hvd19idWcuY2dp
+P2lkPTIxNzk5MsKgWzFdCj4gTGluazoKPiBodHRwczovL2xvcmUua2VybmVsLm9yZy9sa21sLzQ0
+MTEwNzEwMC4yMzczNC4xNjk3OTA0NTgwMjUyLkphdmFNYWlsLnppbWJyYUBub2QuYXQvCj4gwqBb
+Ml0KPiBTaWduZWQtb2ZmLWJ5OiBaaGFvTG9uZyBXYW5nIDx3YW5nemhhb2xvbmcxQGh1YXdlaS5j
+b20+Cj4gUmV2aWV3ZWQtYnk6IFpoaWhhbyBDaGVuZyA8Y2hlbmd6aGloYW8xQGh1YXdlaS5jb20+
+Cj4gQWNrZWQtYnk6IFJpY2hhcmQgV2VpbmJlcmdlciA8cmljaGFyZEBub2QuYXQ+Cj4gU2lnbmVk
+LW9mZi1ieTogTWlxdWVsIFJheW5hbCA8bWlxdWVsLnJheW5hbEBib290bGluLmNvbT4KPiBMaW5r
+Ogo+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xpbnV4LW10ZC8yMDIzMTIyMDAyNDYxOS4yMTM4
+NjI1LTEtd2FuZ3poYW9sb25nMUBodWF3ZWkuY29tCj4gU2lnbmVkLW9mZi1ieTogU2FzaGEgTGV2
+aW4gPHNhc2hhbEBrZXJuZWwub3JnPgo+IC0tLQo+IMKgZHJpdmVycy9tdGQvbXRkX2Jsa2RldnMu
+YyB8IDQgKystLQo+IMKgMSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMiBkZWxldGlv
+bnMoLSkKPiAKPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tdGQvbXRkX2Jsa2RldnMuYyBiL2RyaXZl
+cnMvbXRkL210ZF9ibGtkZXZzLmMKPiBpbmRleCAwYzA1Zjc3ZjliMjEuLmRkMGQwYmY1ZjU3ZiAx
+MDA2NDQKPiAtLS0gYS9kcml2ZXJzL210ZC9tdGRfYmxrZGV2cy5jCj4gKysrIGIvZHJpdmVycy9t
+dGQvbXRkX2Jsa2RldnMuYwo+IEBAIC01MzMsNyArNTMzLDcgQEAgc3RhdGljIHZvaWQgYmxrdHJh
+bnNfbm90aWZ5X2FkZChzdHJ1Y3QgbXRkX2luZm8KPiAqbXRkKQo+IMKgewo+IMKgwqDCoMKgwqDC
+oMKgwqBzdHJ1Y3QgbXRkX2Jsa3RyYW5zX29wcyAqdHI7Cj4gwqAKPiAtwqDCoMKgwqDCoMKgwqBp
+ZiAobXRkLT50eXBlID09IE1URF9BQlNFTlQpCj4gK8KgwqDCoMKgwqDCoMKgaWYgKG10ZC0+dHlw
+ZSA9PSBNVERfQUJTRU5UIHx8IG10ZC0+dHlwZSA9PSBNVERfVUJJVk9MVU1FKQo+IMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgcmV0dXJuOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoGxp
+c3RfZm9yX2VhY2hfZW50cnkodHIsICZibGt0cmFuc19tYWpvcnMsIGxpc3QpCj4gQEAgLTU3Niw3
+ICs1NzYsNyBAQCBpbnQgcmVnaXN0ZXJfbXRkX2Jsa3RyYW5zKHN0cnVjdCBtdGRfYmxrdHJhbnNf
+b3BzCj4gKnRyKQo+IMKgwqDCoMKgwqDCoMKgwqBsaXN0X2FkZCgmdHItPmxpc3QsICZibGt0cmFu
+c19tYWpvcnMpOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoG10ZF9mb3JfZWFjaF9kZXZpY2UobXRk
+KQo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqBpZiAobXRkLT50eXBlICE9IE1URF9B
+QlNFTlQpCj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoGlmIChtdGQtPnR5cGUgIT0g
+TVREX0FCU0VOVCAmJiBtdGQtPnR5cGUgIT0KPiBNVERfVUJJVk9MVU1FKQo+IMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHRyLT5hZGRfbXRkKHRyLCBtdGQp
+Owo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoG11dGV4X3VubG9jaygmbXRkX3RhYmxlX211dGV4KTsK
+CkhpIEdyZWcsIGhpIHBhdGNoLWRldmVsb3BlcnMsCgp3YWl0IGEgc2Vjb25kLiB0aGlzIGFscmVh
+ZHkgd2VudCBpbnRvIHY1LjQuMjY4IGJ1dCBzdGlsbDogRG9lc24ndCB0aGlzCmJyZWFrIHVzZXJz
+cGFjZT8KCkFjY29yZGluZyB0bwpodHRwczovL2xvcmUua2VybmVsLm9yZy9sa21sLzQ0MTEwNzEw
+MC4yMzczNC4xNjk3OTA0NTgwMjUyLkphdmFNYWlsLnppbWJyYUBub2QuYXQvCndoZXJlIHRoaXMg
+c29sdXRpb24gc2VlbXMgdG8gY29tZSBmcm9tLCB0aGUgYmVoYXZpb3VyIGNoYW5nZXM6ICJubwpt
+dGRibG9jayAoaGVuY2UsIGFsc28gbm8gRlRMcykgb24gdG9wIG9mIGdsdWViaS4iCgpJIGZlbGwg
+YWNjcm9zcyB0aGlzIGJlY2F1c2Ugb2YgYW4gb3V0LW9mLXRyZWUgbW9kdWxlIHRoYXQgZG9lcwpz
+eXNfbW91bnQoKSBhbiBtdGRibG9jaywgc28gSSB3b24ndCBjb21wbGFpbiBhYm91dCBteSBjb2Rl
+IHNwZWNpZmljYWxseQo6KSBCdXQgZG9lc24ndCBpdCBicmVhayBtb3VudGluZywgc2F5LCBqZmZz
+MiBpbnNpZGUgYW4gdWJpIHZpYQptdGRibG9jaz8gSWYgc28sIGlzIHRoaXMgcmVhbGx5IHNvbWV0
+aGluZyB0aGF0IHlvdSB3YW50IHRvIHNlZQpiYWNrcG9ydGVkIHRvIG9sZCBrZXJuZWxzPwoKT3Ig
+ZGlmZmVyZW50bHkgcHV0OiBIYXMgdGhpcyBwYXRjaCBiZWVuIHBpY2tlZCB1cCBmb3Igb2xkIHN0
+YWJsZQprZXJuZWxzIGJ5IHNjcmlwdHMgb3IgYnkgYSBodW1hbj8KCkkganVzdCB3YW50IHRvIG1h
+a2Ugc3VyZSwgYW5kIHdobyBrbm93cywgaXQgbWlnaHQgaGVscCBvdGhlcnMgdG9vLCB3aG8Kd291
+bGQganVzdCBkbyBhIChwb3NzaWJseSBkYW5nZXJvdXM/KSByZXZlcnQgaW4gdGhlaXIgdHJlZXMu
+Cgp0aGFua3MhCiAgICAgICAgICAgICAgICAgICAgICAgICAgbWFydGluCgoK
 
-The patch looks okay. Though I think this funktion leaks all over the
-place memory as soon we take the error path. Could you also prepare
-a fix for these path while you are at it?
-
-Thanks!
-Daniel
 
