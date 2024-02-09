@@ -1,144 +1,123 @@
-Return-Path: <stable+bounces-19387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FA5584FB7B
-	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 19:04:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A660884FBAB
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 19:13:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8FF71F2158E
-	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 18:04:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B9A71F24078
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 18:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8117B7E785;
-	Fri,  9 Feb 2024 18:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802BC7F495;
+	Fri,  9 Feb 2024 18:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="kIDfjqvM"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="zClRmySY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AA37BB16
-	for <stable@vger.kernel.org>; Fri,  9 Feb 2024 18:04:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8517EF01
+	for <stable@vger.kernel.org>; Fri,  9 Feb 2024 18:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707501862; cv=none; b=r6sYZzMKwLSoo7aa9RYBnfnvm/nanhVkWN04loTjoaMC1WcKkTkvDpjaI1HJT1havtquvORwE0FjSd/AE126k1tOygGFJw5cq66hiDSQl5Vo2w59tcXgoDW1btwDAjDQbnVmNnAv5cEyzdbvLovke/71y+iqTGPCJ/cV+y54EQk=
+	t=1707502384; cv=none; b=ptNBKG6QuCzLpbluiBeKW12elAJcgXCMapeR70sWX3xUgSINygLkMEzDjtt9LJgP8u7zFNM4a/Bypmwr6k0bb9ndbdtMIrdYAGLJ4rU7fsrNRcjJDcJJkEsMGNhxzR1f2L0xwljFoV3Gz+isJUd2jq5bVgF0pL2LTwObZ3hFh4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707501862; c=relaxed/simple;
-	bh=3hTF6N1ANm2yriMckJqJh/LAcF3RTOt1KkfLxNqJcHY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XHV2TsAmkALYnh6t+0a4EH+UmxUk3UNFUZYGQo8sgoYan+oa9zx+FiDUqNu3zaiZ+4llB2/SEUIizfBpfFLgKcq3+izRGAesDVEyTyx/DI9QqP2ypX/520YbtmXFFxK2abkt6aXMsozPwSsdNab1SnpxX+RNSN/VnboeuZNp2zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=kIDfjqvM; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-33b5bc9fdabso212622f8f.0
-        for <stable@vger.kernel.org>; Fri, 09 Feb 2024 10:04:19 -0800 (PST)
+	s=arc-20240116; t=1707502384; c=relaxed/simple;
+	bh=aauKJJj9TU85XOv1eBB6c9GF/CDXW241tDNbIsbTAl0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Kx0SmubSjxWlBDQuJNvy2E4PPJcwKqTggzCXg9VZsuqYSiD3SA/AVvgs6DYiuqpp8rfS2D/pvSS5aFmTY8k8lwRxaaF33zLvQOn8U/oCnuE6SUodXQTKUXhWFvBCZT8BOxoTXxq4Pc+1fNR5Wyc0PvNFSEQJT9nKP7mK6v5q5DA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=zClRmySY; arc=none smtp.client-ip=209.85.166.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-363f0a9cf87so1343535ab.0
+        for <stable@vger.kernel.org>; Fri, 09 Feb 2024 10:13:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1707501858; x=1708106658; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=DDGOwrrqt5c3Zj0l8FVanxJvubypQgqlJ0WTKt1ARoo=;
-        b=kIDfjqvMro5XY8ZI3EpWANpJ0tfI1Q8NzbtsWW6Oxbv+HXZaSN3cFmYM9eVw0xiAP/
-         W4d8nxOCcth7rVYUSsQLijhmtavkk+gtzN95FoLMt00BP8NzamKbW1NFtmX7ok05Aedb
-         zhD7UCIZk18ZoNhUeUKZOjsOdboxRb6tPa+Ro=
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1707502381; x=1708107181; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FapmDDtx1ab5pMc+0Vo68lEXcL/wuQcJAlemfNfLS20=;
+        b=zClRmySY03sKiUF7DrWHgKQk44bj2LzADVrB0T/16q/CyT2SZzICeecQkF4TCTMAof
+         jX4j9eGTaVcxSGSdJepJXjHZ/rbNWVP0xibmeqYwBX3VCHIJCajc/2SQl/a4E6W3o/eH
+         vPblxk5ytzpOladOjmD32Hdo55FRhBniPWBgxxYaAljncTYYFWRxAsZF3+c48VjkSZIY
+         yd1gFBfMuwwyDZ1uQ+39bcvtu9m4/zlHiI5BGM0r2LO83TJ2ThxRHiNwICM/vBvkJILd
+         DEfUFRBbhzj5JKOvE7qf1WnN3T0RWAt+XsZsFef6bGhBHgAOhyNu6rKvMSCl8cRZq5+I
+         FYAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707501858; x=1708106658;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1707502381; x=1708107181;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DDGOwrrqt5c3Zj0l8FVanxJvubypQgqlJ0WTKt1ARoo=;
-        b=cB8VvOhHB3UntsBSQfGyZeQL6iMygnSAchO3X6I4L2Q6T4r8ua5WS+kINFO2paisB3
-         2QA2C/rPI844y2Cha2nK7oC11FPzYE8fH4z7SdU3+MZpNpMJpsHQanlN+T4TL3JYLs0i
-         V9w4ve1JEbyiAILd5jOUjqI3ZfsSgSL0MsLp3EJ/c6Hk4DLp8S8APEEg0j49AMM05f0S
-         lXqcFbCJ9qQoMeBlsOa8xDXDFJNGJuzM6q5Tt/Z1XfpqHsCtA19U1vG5AnPan+TNd1Ln
-         3a0Y0P+GFknh+R7Ce3HO+O5DsblnzoIjlf8w7nk7Pl/JLtTJTHaKyztxTsbbH4XVN+r0
-         e2qg==
-X-Gm-Message-State: AOJu0YyGgA7Hp6Tsq2Kz8klNa56S4QPqmmT8Qz5K+jv9J99uiCu64Q9K
-	OgFXvjAT6AsTjTPPGgb2YlCYO/KJRmzraQzQccMVE0VEYC9GcDO9+hqDDZz8Qc4FZkTtNq10D4b
-	l
-X-Google-Smtp-Source: AGHT+IGXQlxTxZvCi09N0bXjgAnY+PwIla/QEH2uBkCQD9xG+jLnikT7a+FS3ULZvbqJIUceELaKig==
-X-Received: by 2002:a05:6000:16ce:b0:33b:51dd:753f with SMTP id h14-20020a05600016ce00b0033b51dd753fmr1750262wrf.0.1707501858002;
-        Fri, 09 Feb 2024 10:04:18 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWMUr7hIHhkGh5qUfKz0UED6a0VCHBGRbg3U4UIQ6RHg7hHEeaYtgljXxEDaBJcu1ao3NQ/ZZpSwz7uasTIFfxB/vxFl6Jo6V5ynGoL3LpV2PDRkHEKa877tJWLpmYb14cfwAG4meFkTTTCRfIgIcVeNsrysLTBzLifMdII9YeGhVnkkfA4ienLNrLcvve9cGDepZ+ZEYZWJ+9D/xjxQ4X/Y/MN2XUflOs62jxQkhkq+ojaMfwEmYys8ey4hM99/pnL6/avsNCzYnJMOfOK9d+oc6yzzqQms1CIRQpaVOFF5FFm8JRzTpWGDnAkaIQu
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
-        by smtp.gmail.com with ESMTPSA id v10-20020a5d4b0a000000b0033b4d603e13sm2357576wrq.51.2024.02.09.10.04.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Feb 2024 10:04:17 -0800 (PST)
-Date: Fri, 9 Feb 2024 19:04:15 +0100
-From: Daniel Vetter <daniel@ffwll.ch>
-To: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-Cc: dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-	intel-gfx@lists.freedesktop.org, christian.koenig@amd.com,
-	alexander.deucher@amd.com, matthew.auld@intel.com,
-	mario.limonciello@amd.com, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/buddy: Fix alloc_range() error handling code
-Message-ID: <ZcZpH3hwBjv7s8WK@phenom.ffwll.local>
-References: <20240209152624.1970-1-Arunpravin.PaneerSelvam@amd.com>
+        bh=FapmDDtx1ab5pMc+0Vo68lEXcL/wuQcJAlemfNfLS20=;
+        b=wbRcxmCwZtb7Df2rN5hl3bypu+yp7iMyLYnHBTVCfzFua5NsSYPx4k3mj+g97BJUtV
+         pE8WUehY4obaN5n9XbNEOqviDfPEdtgHHNS1x7mqoAxh9glyQiNbv7GNnHedzdszZddC
+         2IUlMW7ADDzgFB81RfqV7PdOINaYFHf3HxYRZCgzCOeQ+Go0aH/2VloiyKZHcLIOWLCZ
+         kJnTyIVZHo4wZIMipBG0a9EyCVK6n98jf7W6VxjxnMm1xXBf7pBFckUjGK4KrQyDLoFf
+         H4zVttJ9dNLVX0Z//4jLxmUEQjP1k5xoL8SNOf8Z2armgSEEz45CH1R+dyFUK5gG7qva
+         +ARQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVaSuzGbfWshaH+boiKA1hBIFgpkMBfNzrFSbGpWPNrg0wCIvTMI4nAKTTDNxX/1BJl9KGSSET5izAocVYevo0cCXv7b3hC
+X-Gm-Message-State: AOJu0YwOBQGcab4THxagT33fyH12aVRLCmIE+48wEqY53vDWRbDxQMKV
+	ZSP2QB931UQ0vz0BSRZk28btEh0srjS3YQ6dI7ucHOL3OECHfHxkdtZkhu/weQU=
+X-Google-Smtp-Source: AGHT+IG/V88bpIyU8MOKlWCUKNcfIklsMyf56DRgdFVH3lW39zsw1OZpNq415AOZXL5kGbPXMGoo8g==
+X-Received: by 2002:a6b:6716:0:b0:7c4:965:f8c0 with SMTP id b22-20020a6b6716000000b007c40965f8c0mr123712ioc.2.1707502380948;
+        Fri, 09 Feb 2024 10:13:00 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV+hAq4woSYvYtLnH423Qm3mhJbvXxVa7UwEPhsPlwjUX0A7IfbUQbHYADXBYY/E+Bljzv/m44Q/izmIs3QRM6n8TUYEdJ6BJ6v6v+eVt7Aef5f2qZuJzpxUKS0869z0Wd1znFVpE2zv5V5JxByMjX66t7kviHbyIroazTFaZPra7mM7t/WjFi08xobQHwkrq31SMiY2hBbObTqLSVVjp+FrILKbaFFFlwI6lfcOU/RzrNBRE/DPspLHe5we0jD7R2lFaO90YeghIbl6es=
+Received: from [192.168.1.116] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id eq22-20020a0566384e3600b0047356b21448sm107308jab.132.2024.02.09.10.12.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 09 Feb 2024 10:13:00 -0800 (PST)
+Message-ID: <9a7294ef-6812-43bb-af50-a2b4659f2d15@kernel.dk>
+Date: Fri, 9 Feb 2024 11:12:59 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240209152624.1970-1-Arunpravin.PaneerSelvam@amd.com>
-X-Operating-System: Linux phenom 6.6.11-amd64 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] fs, USB gadget: Rework kiocb cancellation
+Content-Language: en-US
+To: Christian Brauner <brauner@kernel.org>
+Cc: Bart Van Assche <bvanassche@acm.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, Avi Kivity <avi@scylladb.com>,
+ Sandeep Dhavale <dhavale@google.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+References: <20240208215518.1361570-1-bvanassche@acm.org>
+ <9e83c34a-63ab-47ea-9c06-14303dbbeaa9@kernel.dk>
+ <20240209-katapultieren-lastkraftwagen-d28bbc0a92b2@brauner>
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <20240209-katapultieren-lastkraftwagen-d28bbc0a92b2@brauner>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Feb 09, 2024 at 08:56:24PM +0530, Arunpravin Paneer Selvam wrote:
-> Few users have observed display corruption when they boot
-> the machine to KDE Plasma or playing games. We have root
-> caused the problem that whenever alloc_range() couldn't
-> find the required memory blocks the function was returning
-> SUCCESS in some of the corner cases.
+On 2/9/24 2:34 AM, Christian Brauner wrote:
+>> Why don't you just keep ki_cancel() and just change it to a void return
+>> that takes an aio_kiocb? Then you don't need this odd switch, or adding
+>> an opcode field just for this. That seems cleaner.
+>>
+>> Outside of these little nits, looks alright. I'd still love to kill the
+>> silly cancel code just for the gadget bits, but that's for another day.
 > 
-> The right approach would be if the total allocated size
-> is less than the required size, the function should
-> return -ENOSPC.
-> 
-> Cc:  <stable@vger.kernel.org> # 6.7+
-> Fixes: 0a1844bf0b53 ("drm/buddy: Improve contiguous memory allocation")
-> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3097
-> Tested-by: Mario Limonciello <mario.limonciello@amd.com>
-> Link: https://patchwork.kernel.org/project/dri-devel/patch/20240207174456.341121-1-Arunpravin.PaneerSelvam@amd.com/
-> Acked-by: Christian König <christian.koenig@amd.com>
-> Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-> Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+> Well, I'd prefer to kill it if we can asap. Because then we can lose
+> that annoying file_operations addition. That really rubs me the wrong way.
 
-New unit test for this would be most excellent - these kind of missed edge
-cases is exactly what kunit is for. Can you please follow up with, since
-we don't want to hold up the bugfix for longer?
--Sima
+Greg, can you elaborate on how useful cancel is for gadgets? Is it one
+of those things that was wired up "just because", or does it have
+actually useful cases?
 
-> ---
->  drivers/gpu/drm/drm_buddy.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
-> index f57e6d74fb0e..c1a99bf4dffd 100644
-> --- a/drivers/gpu/drm/drm_buddy.c
-> +++ b/drivers/gpu/drm/drm_buddy.c
-> @@ -539,6 +539,12 @@ static int __alloc_range(struct drm_buddy *mm,
->  	} while (1);
->  
->  	list_splice_tail(&allocated, blocks);
-> +
-> +	if (total_allocated < size) {
-> +		err = -ENOSPC;
-> +		goto err_free;
-> +	}
-> +
->  	return 0;
->  
->  err_undo:
-> -- 
-> 2.25.1
-> 
+Because cancel, internally in aio, makes sense on eg a poll request. But
+we don't need extra support for that, that's all internal to aio. It
+doesn't make sense for O_DIRECT IO on a regular file, as there's no way
+to cancel that anyway.
+
+Reason I'm asking is that we have this broken cancel infrastructure that
+we can either attempt to make work, at a cost of adding an operation to
+the file_operations struct, or we can just get rid of it.
 
 -- 
-Daniel Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+Jens Axboe
+
 
