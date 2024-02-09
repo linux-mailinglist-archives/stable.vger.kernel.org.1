@@ -1,123 +1,90 @@
-Return-Path: <stable+bounces-19388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A660884FBAB
-	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 19:13:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B6B84FBD9
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 19:31:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B9A71F24078
-	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 18:13:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 019BD28A763
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 18:31:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 802BC7F495;
-	Fri,  9 Feb 2024 18:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0574657321;
+	Fri,  9 Feb 2024 18:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="zClRmySY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s6PF/grW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f170.google.com (mail-il1-f170.google.com [209.85.166.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8517EF01
-	for <stable@vger.kernel.org>; Fri,  9 Feb 2024 18:13:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C2854F85;
+	Fri,  9 Feb 2024 18:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707502384; cv=none; b=ptNBKG6QuCzLpbluiBeKW12elAJcgXCMapeR70sWX3xUgSINygLkMEzDjtt9LJgP8u7zFNM4a/Bypmwr6k0bb9ndbdtMIrdYAGLJ4rU7fsrNRcjJDcJJkEsMGNhxzR1f2L0xwljFoV3Gz+isJUd2jq5bVgF0pL2LTwObZ3hFh4o=
+	t=1707503479; cv=none; b=O9QfhOyjg1NFQS9Hn4qw6dPw0O0HFJgWuQOI0+y4OspVtKkUr03uS5WOGGii1WYzpyjQ0UczhrmQyzE7Zol27I6Ed/nKyGtLJpz/B3dGk+tTAYHD3ZBeXMP1gPI6KKKsTtnqAwKTIV2e+54VB+jR0Eo29YiMvLqMTlo5V/bXoBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707502384; c=relaxed/simple;
-	bh=aauKJJj9TU85XOv1eBB6c9GF/CDXW241tDNbIsbTAl0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Kx0SmubSjxWlBDQuJNvy2E4PPJcwKqTggzCXg9VZsuqYSiD3SA/AVvgs6DYiuqpp8rfS2D/pvSS5aFmTY8k8lwRxaaF33zLvQOn8U/oCnuE6SUodXQTKUXhWFvBCZT8BOxoTXxq4Pc+1fNR5Wyc0PvNFSEQJT9nKP7mK6v5q5DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=zClRmySY; arc=none smtp.client-ip=209.85.166.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-il1-f170.google.com with SMTP id e9e14a558f8ab-363f0a9cf87so1343535ab.0
-        for <stable@vger.kernel.org>; Fri, 09 Feb 2024 10:13:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1707502381; x=1708107181; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FapmDDtx1ab5pMc+0Vo68lEXcL/wuQcJAlemfNfLS20=;
-        b=zClRmySY03sKiUF7DrWHgKQk44bj2LzADVrB0T/16q/CyT2SZzICeecQkF4TCTMAof
-         jX4j9eGTaVcxSGSdJepJXjHZ/rbNWVP0xibmeqYwBX3VCHIJCajc/2SQl/a4E6W3o/eH
-         vPblxk5ytzpOladOjmD32Hdo55FRhBniPWBgxxYaAljncTYYFWRxAsZF3+c48VjkSZIY
-         yd1gFBfMuwwyDZ1uQ+39bcvtu9m4/zlHiI5BGM0r2LO83TJ2ThxRHiNwICM/vBvkJILd
-         DEfUFRBbhzj5JKOvE7qf1WnN3T0RWAt+XsZsFef6bGhBHgAOhyNu6rKvMSCl8cRZq5+I
-         FYAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707502381; x=1708107181;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FapmDDtx1ab5pMc+0Vo68lEXcL/wuQcJAlemfNfLS20=;
-        b=wbRcxmCwZtb7Df2rN5hl3bypu+yp7iMyLYnHBTVCfzFua5NsSYPx4k3mj+g97BJUtV
-         pE8WUehY4obaN5n9XbNEOqviDfPEdtgHHNS1x7mqoAxh9glyQiNbv7GNnHedzdszZddC
-         2IUlMW7ADDzgFB81RfqV7PdOINaYFHf3HxYRZCgzCOeQ+Go0aH/2VloiyKZHcLIOWLCZ
-         kJnTyIVZHo4wZIMipBG0a9EyCVK6n98jf7W6VxjxnMm1xXBf7pBFckUjGK4KrQyDLoFf
-         H4zVttJ9dNLVX0Z//4jLxmUEQjP1k5xoL8SNOf8Z2armgSEEz45CH1R+dyFUK5gG7qva
-         +ARQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVaSuzGbfWshaH+boiKA1hBIFgpkMBfNzrFSbGpWPNrg0wCIvTMI4nAKTTDNxX/1BJl9KGSSET5izAocVYevo0cCXv7b3hC
-X-Gm-Message-State: AOJu0YwOBQGcab4THxagT33fyH12aVRLCmIE+48wEqY53vDWRbDxQMKV
-	ZSP2QB931UQ0vz0BSRZk28btEh0srjS3YQ6dI7ucHOL3OECHfHxkdtZkhu/weQU=
-X-Google-Smtp-Source: AGHT+IG/V88bpIyU8MOKlWCUKNcfIklsMyf56DRgdFVH3lW39zsw1OZpNq415AOZXL5kGbPXMGoo8g==
-X-Received: by 2002:a6b:6716:0:b0:7c4:965:f8c0 with SMTP id b22-20020a6b6716000000b007c40965f8c0mr123712ioc.2.1707502380948;
-        Fri, 09 Feb 2024 10:13:00 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV+hAq4woSYvYtLnH423Qm3mhJbvXxVa7UwEPhsPlwjUX0A7IfbUQbHYADXBYY/E+Bljzv/m44Q/izmIs3QRM6n8TUYEdJ6BJ6v6v+eVt7Aef5f2qZuJzpxUKS0869z0Wd1znFVpE2zv5V5JxByMjX66t7kviHbyIroazTFaZPra7mM7t/WjFi08xobQHwkrq31SMiY2hBbObTqLSVVjp+FrILKbaFFFlwI6lfcOU/RzrNBRE/DPspLHe5we0jD7R2lFaO90YeghIbl6es=
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id eq22-20020a0566384e3600b0047356b21448sm107308jab.132.2024.02.09.10.12.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Feb 2024 10:13:00 -0800 (PST)
-Message-ID: <9a7294ef-6812-43bb-af50-a2b4659f2d15@kernel.dk>
-Date: Fri, 9 Feb 2024 11:12:59 -0700
+	s=arc-20240116; t=1707503479; c=relaxed/simple;
+	bh=8OBu+LxePOLOnmiVLOUigvWdhDY3l0XMehSH9FAPASo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HTwG5EKmtCfHXYqhKAyYaOXxfRu0krTo+7ibKeB82CQzf2RdzJc8T6DXl9wW+ASLoUrtokRCkfhnDvKZnl4cnM+s8D2ERtZZPtQEPPEPNJPS5eZ6a8Th9GvWQy3Ehvae1dMx6Iva78SrLP8iaXn+JbltzprcLObtIelshx1sZS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s6PF/grW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F58EC433F1;
+	Fri,  9 Feb 2024 18:31:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707503479;
+	bh=8OBu+LxePOLOnmiVLOUigvWdhDY3l0XMehSH9FAPASo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=s6PF/grWZroBlno3PlKGZ8Ecy4AvebuVDeT7yoLE1scyxPXxggR2TkGuORZY8az9A
+	 xr78RQVgBAhvQVND+bqj7qv+WeeU3HxgMVNdkjq3SVN4Tn5DEeDBMUrjjVi4BPLZGQ
+	 zJLJQFer1tUFGSaTCPfwPltRR3DjDdiXm1lofYoIMYqToSQ05vnJ/Xr0wzm0pjAZCX
+	 yB1AIsB3LB13Cklaz6NkLmjxQv2oPoF4rzjpTXbi+TusqbQM8hAm3aTZf08SDFU2r6
+	 QIe2G1flruNZC0qMs+zEsGABdztaOPSK3pru/PvRG14uGZYyqMJ4vZBU62PCvUdGGk
+	 atFiOaftuQUeg==
+From: Will Deacon <will@kernel.org>
+To: Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Cc: kernel-team@android.com,
+	Will Deacon <will@kernel.org>,
+	stable@vger.kernel.org,
+	Dave Martin <Dave.Martin@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] arm64/signal: Don't assume that TIF_SVE means we saved SVE state
+Date: Fri,  9 Feb 2024 18:31:06 +0000
+Message-Id: <170749646399.2626752.9932899949301214148.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20240130-arm64-sve-signal-regs-v2-1-9fc6f9502782@kernel.org>
+References: <20240130-arm64-sve-signal-regs-v2-1-9fc6f9502782@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] fs, USB gadget: Rework kiocb cancellation
-Content-Language: en-US
-To: Christian Brauner <brauner@kernel.org>
-Cc: Bart Van Assche <bvanassche@acm.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>, Avi Kivity <avi@scylladb.com>,
- Sandeep Dhavale <dhavale@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-References: <20240208215518.1361570-1-bvanassche@acm.org>
- <9e83c34a-63ab-47ea-9c06-14303dbbeaa9@kernel.dk>
- <20240209-katapultieren-lastkraftwagen-d28bbc0a92b2@brauner>
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <20240209-katapultieren-lastkraftwagen-d28bbc0a92b2@brauner>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 2/9/24 2:34 AM, Christian Brauner wrote:
->> Why don't you just keep ki_cancel() and just change it to a void return
->> that takes an aio_kiocb? Then you don't need this odd switch, or adding
->> an opcode field just for this. That seems cleaner.
->>
->> Outside of these little nits, looks alright. I'd still love to kill the
->> silly cancel code just for the gadget bits, but that's for another day.
+On Tue, 30 Jan 2024 15:43:53 +0000, Mark Brown wrote:
+> When we are in a syscall we will only save the FPSIMD subset even though
+> the task still has access to the full register set, and on context switch
+> we will only remove TIF_SVE when loading the register state. This means
+> that the signal handling code should not assume that TIF_SVE means that
+> the register state is stored in SVE format, it should instead check the
+> format that was recorded during save.
 > 
-> Well, I'd prefer to kill it if we can asap. Because then we can lose
-> that annoying file_operations addition. That really rubs me the wrong way.
+> [...]
 
-Greg, can you elaborate on how useful cancel is for gadgets? Is it one
-of those things that was wired up "just because", or does it have
-actually useful cases?
+Applied to arm64 (for-next/fixes), thanks!
 
-Because cancel, internally in aio, makes sense on eg a poll request. But
-we don't need extra support for that, that's all internal to aio. It
-doesn't make sense for O_DIRECT IO on a regular file, as there's no way
-to cancel that anyway.
+[1/1] arm64/signal: Don't assume that TIF_SVE means we saved SVE state
+      https://git.kernel.org/arm64/c/61da7c8e2a60
 
-Reason I'm asking is that we have this broken cancel infrastructure that
-we can either attempt to make work, at a cost of adding an operation to
-the file_operations struct, or we can just get rid of it.
-
+Cheers,
 -- 
-Jens Axboe
+Will
 
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
 
