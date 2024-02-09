@@ -1,265 +1,156 @@
-Return-Path: <stable+bounces-19381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4CA84F614
-	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 14:37:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0802184F85B
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 16:19:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9FDD28377A
-	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 13:37:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CB851C21993
+	for <lists+stable@lfdr.de>; Fri,  9 Feb 2024 15:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7F23C68E;
-	Fri,  9 Feb 2024 13:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635056A329;
+	Fri,  9 Feb 2024 15:19:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="Okd7x1tc"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="acc8kzb8"
 X-Original-To: stable@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2041.outbound.protection.outlook.com [40.107.236.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A968E3C6B9
-	for <stable@vger.kernel.org>; Fri,  9 Feb 2024 13:37:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707485825; cv=none; b=W/0a1r5TK4Se0m+CPQ5yx/XXhsFrIwbfR0lZtL0S6nHfB6sLz1UwIi59wcp5xPXQF2C/3NfK3RXAOwbLnh4LRSO8lUQaOM0hKWIrLCfLDWKRf8eXAPWlgdRYqglsLiWRQQdeFjmuEf5iQ8QK3QePVsfFOgJ9QAA3l9q3JwaU9hI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707485825; c=relaxed/simple;
-	bh=kfTVrwcpX3p4AJNgFqVOizgY7/PPieRyaJ8WISQuaK4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ALKZC3KfSSKqiY5wcnACkijMZdAt1+IeXg0Nyyj5y0D/n/wvClAhgIOhucNiqXPY6huY4WfjO+HOSwLRFTOzXkSLG/FaRulGpoG73OgwCOox+BOvVO7sEIivAAJeEF6OGdKKvjsw6ggXbqh02exAA63lvBPX3eNLPDD2TK3SMhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=Okd7x1tc; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 419DQV2U025580;
-	Fri, 9 Feb 2024 14:35:48 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	selector1; bh=eCEkKbZGZPL3zRpBq/852hOYd7stcJAFijx6CGG5eU4=; b=Ok
-	d7x1tc9V/Hkn6VKrH0MPwWzDV8LmBIB4KBOB42nxxy8Cuh2NRlkz0XEM2WMhg3hz
-	NvoBoUB12VDKBVUDUaPoabiJd0F2cQChnkMpV6P7pSiGs+cJ0lcYRFMifSKQQmU5
-	Qoq/TSV8xDNUJ9je6dy2jsJb3bru8u48liColUWBqraDBhGheS2QhuFOtSlLMEq+
-	H3iSE+m5XrO34kpVpEJSV6/Mn8RJoqOmRVIu94bbmo8qh2MESUz+Zj1sjE2cwsDU
-	L1bFwqaQBujWG8qGaGB8GMa3xOfJexQNvrbWH08xE3OptgHxYVtewfbJRKmrqnBD
-	FtHPnMXHJvio26K0dnBg==
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3w1f6414p5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 Feb 2024 14:35:47 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 7FAE410004F;
-	Fri,  9 Feb 2024 14:35:46 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node3.st.com [10.75.129.71])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 6BBDA22FA2C;
-	Fri,  9 Feb 2024 14:35:46 +0100 (CET)
-Received: from [10.201.22.200] (10.201.22.200) by SHFDAG1NODE3.st.com
- (10.75.129.71) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 9 Feb
- 2024 14:35:45 +0100
-Message-ID: <cce57281-4149-459f-b741-0f3c08af7d20@foss.st.com>
-Date: Fri, 9 Feb 2024 14:35:44 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6310628DB5
+	for <stable@vger.kernel.org>; Fri,  9 Feb 2024 15:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707491960; cv=fail; b=nQcvEYFVYHVUmpWGQeXarEkNoKx4LNL106OD1Z/w1tCWbGfOEzosXZFL19gUjkRb3qqT+92UkaTKz8rt7VL0owXC542wDMZX1T3roceDB7mPRc1a1IAnhKlOHP08BnJDG8W/aVNsSFsI4o1aoAaLVJUIp5taU4dOJWWn1RFVrj4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707491960; c=relaxed/simple;
+	bh=0MgLBmyyKTNg2xjBN3zdSMHZGXrPWql34riNSHsC8LQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kyAtTBQ2Irs038NMh5DcsSdNPPfSjCNN0vUTxsGGKC5rCt/d07b3o/4B840vZWeWk3URFiYZqHrPBYJNBD+5A8/YvS8C9o0H8pSye1FJG+4sjvCqBuKHsJPjgBNFN432coq4mj6WsOIe0qAj/kdb5sZdSKf9IZ3B7MYZ9hClfcg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=acc8kzb8; arc=fail smtp.client-ip=40.107.236.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=StR/oWnxTjpr7YLMZG9bCfPNUVx4hb5K2K32TfKx3ACpEgsJlmHBC2JdClZMY69ygo9aPTkIZTrNnbXq3tKS5QiG2bMryuLNWmyleQvLHAz5t88CLFLgeQ/bJGwN9M3mfFgVL6HxvNxMcPd7VPKn8pCY2A0BZ1H9Ytvcxmoyh0gEA5r/BCS1rBaXf9kVayyjkrreBSyp3Umu5pltgDeMSChxU0ro7DcEijEXAuY4uyOoYViXzqIBSuRvcJrlFhMPaHgMAl5GRXdJJTrX9zTAiJbGc577qtbb4dzKCiOgqMBM0oEkG+/Jdr3rdprJwpId06TxJmOGP9QdWoYRkF5Qzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=MOKi/AnzingsugwJpWyU60BSPTcIGERc7VvHneATWM4=;
+ b=MqSotjR0lkJ9e8AKUO8HMZpvStH1zw3wcmqwfyrmMlyku0rTQs+ptNYDPqLaC/mhcChDfyNRFY7ziQvw61qe8a61axEBqugmXPZg5ZGgXAc4sl78n87ndcr4j2lvzLY9wVYtasM3w8l+Q1fCmZ4+usG5/pGdon4E43VUwvonRM1yYNxPz/5vVW7NwIF0Nu2S7CO/XHc+XC+65Ul6btc7Nqd0XwN3b3FYCZSBEDQqGA32JFwmmBWOsHCJau2kB17a6flYD4THzfyrfxK0W1zqZgOfH01MmmAR6GLhKBTUKr30kqA3uI+x1he5BVEoySl4GfCf9JKNuHHtYI1esaZjCQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=MOKi/AnzingsugwJpWyU60BSPTcIGERc7VvHneATWM4=;
+ b=acc8kzb8Z7U1KZf+LGnXlz8GwCk3iPv/UpL8zeCvlhYIi55UfrsjGhSDz+5GP9FFcDyBAC4HJO2uwKMwY+dsOgQzycq4thKHLHDGbh8DoVRsW0saBxgSTc3qozXwb5exSdcSeqHt7TGT6bgEcvPDVUOd5joFkdhkLWa1pakjN10=
+Received: from BYAPR04CA0028.namprd04.prod.outlook.com (2603:10b6:a03:40::41)
+ by MW3PR12MB4443.namprd12.prod.outlook.com (2603:10b6:303:2d::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.14; Fri, 9 Feb
+ 2024 15:19:12 +0000
+Received: from CO1PEPF000044F2.namprd05.prod.outlook.com
+ (2603:10b6:a03:40:cafe::fd) by BYAPR04CA0028.outlook.office365.com
+ (2603:10b6:a03:40::41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.26 via Frontend
+ Transport; Fri, 9 Feb 2024 15:19:11 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000044F2.mail.protection.outlook.com (10.167.241.72) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7249.19 via Frontend Transport; Fri, 9 Feb 2024 15:19:11 +0000
+Received: from amd-X570-AORUS-ELITE.amd.com (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Fri, 9 Feb 2024 09:19:08 -0600
+From: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+To: <dri-devel@lists.freedesktop.org>, <amd-gfx@lists.freedesktop.org>,
+	<intel-gfx@lists.freedesktop.org>
+CC: <christian.koenig@amd.com>, <alexander.deucher@amd.com>,
+	<matthew.auld@intel.com>, <mario.limonciello@amd.com>, "Arunpravin Paneer
+ Selvam" <Arunpravin.PaneerSelvam@amd.com>, <stable@vger.kernel.org>
+Subject: [PATCH] drm/buddy: Fix alloc_range() error handling code
+Date: Fri, 9 Feb 2024 20:48:51 +0530
+Message-ID: <20240209151851.1811-1-Arunpravin.PaneerSelvam@amd.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] mtd: rawnand: Clarify conditions to enable continuous
- reads
-Content-Language: en-US
-To: Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger
-	<richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        Tudor Ambarus
-	<tudor.ambarus@linaro.org>,
-        Pratyush Yadav <pratyush@kernel.org>,
-        Michael
- Walle <michael@walle.cc>, <linux-mtd@lists.infradead.org>
-CC: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-        Julien Su
-	<juliensu@mxic.com.tw>, Jaime Liao <jaimeliao@mxic.com.tw>,
-        Jaime Liao
-	<jaimeliao.tw@gmail.com>,
-        Alvin Zhou <alvinzhou@mxic.com.tw>, <eagle.alexander923@gmail.com>,
-        <mans@mansr.com>, <martin@geanix.com>,
-        =?UTF-8?Q?Sean_Nyekj=C3=A6r?= <sean@geanix.com>,
-        <stable@vger.kernel.org>
-References: <20231222113730.786693-1-miquel.raynal@bootlin.com>
-From: Christophe Kerello <christophe.kerello@foss.st.com>
-In-Reply-To: <20231222113730.786693-1-miquel.raynal@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE3.st.com
- (10.75.129.71)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-09_11,2024-02-08_01,2023-05-22_02
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F2:EE_|MW3PR12MB4443:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3da4db65-97a8-4789-8094-08dc29827808
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	XyC1xwrRqIcgm9q4mFLRQvmDf0mzYnbhrJt9CpIYY0CTwJWtnjbJ0TYCuwFyzfbKBG2QlvLal58D1l/95vMHyN7PnzAcq93xdvrtyyas5uo1l+E/reXZD1+BSLtBbeMzjaNfO0btxcYcdKJlCN6mDc6MHAT5U8pfIpm13lFYVxwN/Fu3mwJi1tv6r4DQ3zGU6e/DChOKwXDwSLK0gCV0bhQ0fCGEbfFYEmclil+1lZVG/0H3pCWzl4nxdNltXnYkOd2rZFOlwNrcmq00cr8EGLKJZBvKVrxAHfzo4Z08yoBeSr1w0KN+WwNxZUMfravadBT7IVF5T9HcrmoNeEU+Ook4G7yBtOWbGqVuH7oq52irwuYc9mdX4DGMYSHQXmdPEqDZoDQj94dSA5nfLyKIHZW+hrfFQK9sjSq1MoKGLZL85mwIYQQ/2F2a5DW25xnLPk4OubE6DUG17z4CBjDx6vyv8ptKRKoX6djvtNsyuZMSrittiL4sZKRR5659zlkzYX5h4W4eHwDBwYAfnuITc99DThNgN6wBLV53X1GLqOAj54yeilxF/44R1fmQriuNTYhEokw+PBr55UCgUXSpgR7rzermGgMtubGuGcjgRVEYhjkCHVA+gzE7atPq6qmZ
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(136003)(39860400002)(396003)(376002)(230922051799003)(186009)(82310400011)(64100799003)(451199024)(1800799012)(36840700001)(40470700004)(46966006)(110136005)(70586007)(70206006)(54906003)(316002)(41300700001)(2906002)(5660300002)(8936002)(83380400001)(86362001)(4326008)(8676002)(966005)(1076003)(7696005)(6666004)(36756003)(26005)(16526019)(2616005)(81166007)(356005)(82740400003)(478600001)(426003)(336012);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2024 15:19:11.4515
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3da4db65-97a8-4789-8094-08dc29827808
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CO1PEPF000044F2.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR12MB4443
 
-Hi Miquel,
+Few users have observed display corruption when they boot
+the machine to KDE Plasma or playing games. We have root
+caused the problem that whenever alloc_range() couldn't
+find the required memory blocks the function was returning
+SUCCESS in some of the corner cases.
 
-I am testing last nand/next branch with the MP1 board, and i get an 
-issue since this patch was applied.
+The right approach would be if the total allocated size
+is less than the required size, the function should
+return -ENOSPC.
 
-When I read the SLC NAND using nandump tool (reading page 0 and page 1), 
-the OOB is not displayed at expected. For page 1, oob is displayed when 
-for page 0 the first data of the page are displayed.
+Cc:  <stable@vger.kernel.org> # 6.7+
+Fixes: 0a1844bf0b53 ("drm/buddy: Improve contiguous memory allocation")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3097
+Tested-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240207174456.341121-1-Arunpravin.PaneerSelvam@amd.com/
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+---
+ drivers/gpu/drm/drm_buddy.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-The nanddump command used is: nanddump -c -o -l 0x2000 /dev/mtd9
+diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
+index f57e6d74fb0e..c1a99bf4dffd 100644
+--- a/drivers/gpu/drm/drm_buddy.c
++++ b/drivers/gpu/drm/drm_buddy.c
+@@ -539,6 +539,12 @@ static int __alloc_range(struct drm_buddy *mm,
+ 	} while (1);
+ 
+ 	list_splice_tail(&allocated, blocks);
++
++	if (total_allocated < size) {
++		err = -ENOSPC;
++		goto err_free;
++	}
++
+ 	return 0;
+ 
+ err_undo:
+-- 
+2.25.1
 
-Page 0:
-   OOB Data: 7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
-|.ELF............|
-   OOB Data: 03 00 28 00 01 00 00 00 a4 03 00 00 34 00 00 00 
-|..(.........4...|
-   OOB Data: 7c 11 00 00 00 04 00 05 34 00 20 00 06 00 28 00 
-||.......4. ...(.|
-   OOB Data: 1b 00 1a 00 01 00 00 00 00 00 00 00 00 00 00 00 
-|................|
-   OOB Data: 00 00 00 00 10 05 00 00 10 05 00 00 05 00 00 00 
-|................|
-   OOB Data: 00 00 01 00 01 00 00 00 e8 0e 00 00 e8 0e 01 00 
-|................|
-   OOB Data: e8 0e 01 00 44 01 00 00 48 01 00 00 06 00 00 00 
-|....D...H.......|
-   OOB Data: 00 00 01 00 02 00 00 00 f0 0e 00 00 f0 0e 01 00 
-|................|
-   OOB Data: f0 0e 01 00 10 01 00 00 10 01 00 00 06 00 00 00 
-|................|
-   OOB Data: 04 00 00 00 04 00 00 00 f4 00 00 00 f4 00 00 00 
-|................|
-   OOB Data: f4 00 00 00 44 00 00 00 44 00 00 00 04 00 00 00 
-|....D...D.......|
-   OOB Data: 04 00 00 00 51 e5 74 64 00 00 00 00 00 00 00 00 
-|....Q.td........|
-   OOB Data: 00 00 00 00 00 00 00 00 00 00 00 00 06 00 00 00 
-|................|
-   OOB Data: 10 00 00 00 52 e5 74 64 e8 0e 00 00 e8 0e 01 00 
-|....R.td........|
-
-Page 1:
-   OOB Data: ff ff 94 25 8c 3c c7 44 e7 c0 b7 b0 92 5e 50 fb 
-|...%.<.D.....^P.|
-   OOB Data: 80 ca a3 de e2 73 b4 4e 58 39 fe b4 85 76 65 31 
-|.....s.NX9...ve1|
-   OOB Data: 48 86 91 f3 58 0b 59 df 2c 08 75 8b 6f 48 36 a6 
-|H...X.Y.,.u.oH6.|
-   OOB Data: bc 16 61 58 db 52 08 75 8b 6f 48 36 a6 bc 16 61 
-|..aX.R.u.oH6...a|
-   OOB Data: 58 db 52 08 75 8b 6f 48 36 a6 bc 16 61 58 db 52 
-|X.R.u.oH6...aX.R|
-   OOB Data: 08 75 8b 6f 48 36 a6 bc 16 61 58 db 52 08 75 8b 
-|.u.oH6...aX.R.u.|
-   OOB Data: 6f 48 36 a6 bc 16 61 58 db 52 ff ff ff ff ff ff 
-|oH6...aX.R......|
-   OOB Data: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
-|................|
-   OOB Data: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
-|................|
-   OOB Data: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
-|................|
-   OOB Data: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
-|................|
-   OOB Data: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
-|................|
-   OOB Data: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
-|................|
-   OOB Data: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 
-|................|
-
-I have checked what is happening in rawnand_enable_cont_reads function,
-and for page 0, con_read.ongoing = true when for page 1 con_read.ongoing 
-= false
-
-page 0:
-[   51.785623] rawnand_enable_cont_reads: page=0, col=0, readlen=4096, 
-mtd->writesize=4096
-[   51.793751] rawnand_enable_cont_reads: end_page=1, end_col=0
-[   51.799356] rawnand_enable_cont_reads: con_read.ongoing=1
-
-page 1:
-[   53.493337] rawnand_enable_cont_reads: page=1, col=0, readlen=4096, 
-mtd->writesize=4096
-[   53.501413] rawnand_enable_cont_reads: end_page=1, end_col=0
-[   53.507013] rawnand_enable_cont_reads: con_read.ongoing=0
-
-I do not expect con_read.ongoing set to true when we read one page.
-
-I have also dumped what happened when we read the bad block table and it 
-is also strange for me in particular the value end_page.
-
-[    1.581940] nand: device found, Manufacturer ID: 0x2c, Chip ID: 0xd3
-[    1.581966] nand: Micron MT29F8G08ABACAH4
-[    1.581974] nand: 1024 MiB, SLC, erase size: 256 KiB, page size: 
-4096, OOB size: 224
-[    1.582379] rawnand_enable_cont_reads: page=262080, col=0, readlen=5, 
-mtd->writesize=4096
-[    1.582411] rawnand_enable_cont_reads: end_page=0, end_col=5
-[    1.582419] rawnand_enable_cont_reads: con_read.ongoing=0
-[    1.585817] Bad block table found at page 262080, version 0x01
-[    1.585943] rawnand_enable_cont_reads: page=262080, col=0, readlen=5, 
-mtd->writesize=4096
-[    1.585960] rawnand_enable_cont_reads: end_page=0, end_col=5
-[    1.585968] rawnand_enable_cont_reads: con_read.ongoing=0
-[    1.586677] rawnand_enable_cont_reads: page=262016, col=0, readlen=5, 
-mtd->writesize=4096
-[    1.586700] rawnand_enable_cont_reads: end_page=0, end_col=5
-[    1.586708] rawnand_enable_cont_reads: con_read.ongoing=0
-[    1.587139] Bad block table found at page 262016, version 0x01
-[    1.587168] rawnand_enable_cont_reads: page=262081, col=5, 
-readlen=1019, mtd->writesize=4096
-[    1.587181] rawnand_enable_cont_reads: end_page=0, end_col=1024
-[    1.587189] rawnand_enable_cont_reads: con_read.ongoing=0
-[    1.587672] rawnand_enable_cont_reads: page=262081, col=1024, 
-readlen=5, mtd->writesize=4096
-[    1.587692] rawnand_enable_cont_reads: end_page=0, end_col=1029
-[    1.587700] rawnand_enable_cont_reads: con_read.ongoing=0
-
-I currently do not understand the logic implemented but there is 
-something suspect around end_page variable.
-
-end_page = DIV_ROUND_UP(col + readlen, mtd->writesize);
-=> So, if i have well understood, end_page is the number of pages we are 
-going to read.
-
-if (page + 1 > end_page) {
-=> We are comparing the page that we are starting to read with the 
-number of pages to read and not the last page to read
-
-chip->cont_read.first_page = page;
-chip->cont_read.last_page = end_page;
-=> first_page is the first page to read and last page is the number of 
-pages to read.
-
-Before this patch,
-chip->cont_read.last_page = page + ((readlen >> chip->page_shift) & 
-chip->pagemask);
-=> last page was the last page to read.
-
-Regards,
-Christophe Kerello.
-
-On 12/22/23 12:37, Miquel Raynal wrote:
-> On Fri, 2023-12-15 at 12:32:08 UTC, Miquel Raynal wrote:
->> The current logic is probably fine but is a bit convoluted. Plus, we
->> don't want partial pages to be part of the sequential operation just in
->> case the core would optimize the page read with a subpage read (which
->> would break the sequence). This may happen on the first and last page
->> only, so if the start offset or the end offset is not aligned with a
->> page boundary, better avoid them to prevent any risk.
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 003fe4b9545b ("mtd: rawnand: Support for sequential cache reads")
->> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> 
-> Applied to https://git.kernel.org/pub/scm/linux/kernel/git/mtd/linux.git mtd/next.
-> 
-> Miquel
-> 
-> ______________________________________________________
-> Linux MTD discussion mailing list
-> http://lists.infradead.org/mailman/listinfo/linux-mtd/
 
