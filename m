@@ -1,82 +1,79 @@
-Return-Path: <stable+bounces-19418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1215F85063A
-	for <lists+stable@lfdr.de>; Sat, 10 Feb 2024 21:15:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A8AB85063B
+	for <lists+stable@lfdr.de>; Sat, 10 Feb 2024 21:15:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 961ABB2323D
-	for <lists+stable@lfdr.de>; Sat, 10 Feb 2024 20:15:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BA46B232A1
+	for <lists+stable@lfdr.de>; Sat, 10 Feb 2024 20:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1EB5F562;
-	Sat, 10 Feb 2024 20:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80565F84E;
+	Sat, 10 Feb 2024 20:15:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="EMQhKQvN"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="LCHCdwfp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E5A364BA
-	for <stable@vger.kernel.org>; Sat, 10 Feb 2024 20:15:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAA8F364BA
+	for <stable@vger.kernel.org>; Sat, 10 Feb 2024 20:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707596109; cv=none; b=GyVtql+4L3FQgde5dOYut0LQr2rAHOI3hSnZDY2u881mUwCv7QNv8YWWsL+g0KF7aReqc4FL2k2exqRtOrmN1h1cNx7WiCBVL5EgTAYI/f3bj9V83PZHmBEfK/gQ+UtlZrWPj64Z1zM2KNjoF0IdRxyFXndyiXpCzEkeHZ7nMgU=
+	t=1707596112; cv=none; b=a7NyFt0tipHz1ITrtlUrah0ee8CHfySeTH3YzfR+axqRKzo3psGKEam/5dh1cmARzl3mKGgDHrLk8oCCS642MQnmr7pjKQtdIkeXx+Iifdd3W76jZl0cELe5vgBP4vOSBMb0ZS7TYWZgSkQdj9xPmdGKFbjwlHoYuFuvyqgtZqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707596109; c=relaxed/simple;
-	bh=sDKX/ZoksEgxhu1g8MGNR9uAFBXZhSCAea1BG3MsrEc=;
+	s=arc-20240116; t=1707596112; c=relaxed/simple;
+	bh=m/NXUc1VZ8Smj80YlAE3HAq4Zy6w/PpfniMxJeIy1FM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lF7vdfXWJ2sU4OGACWumpN6FeLnISPX23n9idjBvlS9dRqETkUfsyA8nhUo9vSAkDhKUdhcqp/A0KMjZmHAOmmAYaVOFf/JMobN5wc/5qdHaEo7LsJee9Qt313PZMk40Qa1i/FUkbb/9/3kiBLk3vVEyGbmwc1/i3jgAbF31JVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=EMQhKQvN; arc=none smtp.client-ip=209.85.214.179
+	 MIME-Version; b=JfurD94aQHmkF+Cfi15oPcpxQQIjA0LCom3tVewyZP7wntX+MSWEbrKfo7yae8T3fouUJ6atHCQ1Rmzv8lKOTsPEVnNQHcA3JBeIvTQtSHqJJXUXK4QlAuLRZVWy8GxwKq5Wua+FQ9lhV3t0Q1/RVqF7aDYv5+Ju1YxFc0+mx08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=LCHCdwfp; arc=none smtp.client-ip=209.85.214.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1d93ddd76adso15831415ad.2
-        for <stable@vger.kernel.org>; Sat, 10 Feb 2024 12:15:07 -0800 (PST)
+Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-1d8da50bffaso10749285ad.2
+        for <stable@vger.kernel.org>; Sat, 10 Feb 2024 12:15:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1707596106; x=1708200906; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1707596108; x=1708200908; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=x/vTLOdHNLZWi3BglK90aBfaZ0elqtlMQQeMO9Hjwdc=;
-        b=EMQhKQvN9kec4regTAzCQbUxpWqEA4+40PSUvRH2WiJ/B5HX2B8lskuZ+kRwFchbCU
-         VKxtcQoO7sx+P3xJT9OcuKc6INxEM0VYQ0LEM3PwP0AJtSStnSxOD4gPmpQAcr1l5ivY
-         /z4I+q3mCZ0qm0bh2ekE06YpnwGKpkZVFQMkw=
+        bh=Xbbr2A+bDrMBn7NKapXWZGiR9sSHrgSHnUCaZm45/X4=;
+        b=LCHCdwfp9ZY1ISvGmPESXmRUGxZqehKoxE0bynJ0zx0J6FQ7yl+bxXmGK6dL0eJuL6
+         z0XhPY7OIzaOGa4MTBkEKAOyxAUdaxwUGN51IfSX9h8iDvsKqX/h3DovGUdgcFuKDHjc
+         DgbGlD3hnPLL/Gm8hZmTnElJ19GPcehpU8gP0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707596106; x=1708200906;
+        d=1e100.net; s=20230601; t=1707596108; x=1708200908;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=x/vTLOdHNLZWi3BglK90aBfaZ0elqtlMQQeMO9Hjwdc=;
-        b=pUdp/O8PhPElXhY234+7qDRI+FaIdncme7AVIy0X8AVVk4V8U5/EcNhJoEhGnkCjy8
-         OMbiH92+X6oHCSkO+jj1R35REbYcFoKQNGnEKHEEoueSRg74fpavfqRE3UEtA1/gykDs
-         RecqOymqoCsqT2GLUQG2Nj6bNWInjNPevc8h7QFVk7Nz3kxFN1NTsacOpGh2tsgcs16b
-         2iDhOyuMQPGkEyX2JjCpEv+Jxq0oEtew7lNt8F5s9NWsSsPH4PWTFf+m1gHpc1suLyOD
-         VM54NV2q0wUPn/y259BZ7Pu+o48lfcd3xpIu+rKoYzgbLlFIXXsxD+Mif/OkIOSSVRHa
-         2GRg==
-X-Gm-Message-State: AOJu0Yw4Qh8XuQVlmpAWm9IGA3yP2SQUOlGVAblidJEchvoZ0ePKPYuj
-	q6e9/oxzrPQpEqJHrRKehWbxL6y0stNaS6UXnbbPb17S6pYwYHAXno5BxACHmyTY74Jjsv5Vy9a
-	6kJAsQW3l5akJBa1MLf+IyfAk8nrYQdUmONe+bR4qw9s1Qg8oPns3eedtyd+4HygSniR2xJnKhW
-	VuvDpMHRilCGfd3mrq+qYq7CbJU9ANUYDddFsR2ckW/dO3tkFEUyFLaJY=
-X-Google-Smtp-Source: AGHT+IFd1BciB8ZwzKtfFlMkVTHb8tFqqdq+EX3BQSZ+ktBd9w//CWdpr0b38Honjwj3YrkKc6QvZw==
-X-Received: by 2002:a17:902:d48b:b0:1d9:bff2:67d3 with SMTP id c11-20020a170902d48b00b001d9bff267d3mr3285578plg.0.1707596106510;
-        Sat, 10 Feb 2024 12:15:06 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXFMg7lA5q6QN1tukZU3ZoM1tNnQkBG3gC6a1S8ocOJpUeOHE3tj2V9t9XOgN0fWF9sDGPy22F/SBnfkB2EyV2yY8oHapyqv82ZJdknx+Q6l+wkxeL5BoqYqCgDsZJzkjf2L6DKjyarpLXztzNSvfnu4LYSCqksue8AYyT8++6LgPNY1nMw5uncdVHKd3LkXBquk9Le235egwKaN4V1mwXF6EKaCcUGJrIG4pYUL+XCBg==
+        bh=Xbbr2A+bDrMBn7NKapXWZGiR9sSHrgSHnUCaZm45/X4=;
+        b=JorFn5CUEbZi4Wt7rSwRmqLf7hTeE5/DBeiY6d+u+h+ZS/JPicWxMAA/5pOEq5s9Cz
+         ErJuD/s9r4S7kGL8OkmoqLhuW7co3cLWutiZjLlNZ6ZrXqZynfbD1BSsdt2hOGj9OkKn
+         9/jCsSIYQy72ZTvRYTHQippX3hqnPBWPUz8giczFECKYLXqRXu3+vcQrFxl8QG4PMDTK
+         WyHoe84NuBhzZb4WmOPoCV/83lRdd2vVr/j31rLdW9+AMQ7qcxoBtYGl/pIkhB78DYHj
+         rClsFbUd1k5sGuKQP58i1H9eordR7hMr9VjjOXKKkxQzjj8J3cCgamIfYG4bNUDTXOF4
+         zy6g==
+X-Gm-Message-State: AOJu0Yxktk4EgQ1Q6w/mTo1lhEOFzhYKxF3FAngi4Z5qnVAAOx1NFV6y
+	x/t7+z3mPaCX4sUD9DaGimW+C7DDU1XWslPW7wOLZNk18bzWHt7jdrjVnTUpJ+HHkZ0M9FbBEfj
+	YyuqlvWkBUki6aqiYgORNGQSDUfI9r+5/nPFwmefHCn7qeIKNf6oN3u10UFVBy4P608pnOw23oX
+	/DPquaUHpOOpkzrnLbpUUbOQaooOsFKeu0Nnv+TlgkPN3RfEdAvuDyrtZXZw==
+X-Google-Smtp-Source: AGHT+IFStWWdW6cr6XNqVfToFDgphunjsemCEP1FxPcZxO8olLnrP5VdlDybSerUhyF7EbYCFlBYLA==
+X-Received: by 2002:a17:903:40c1:b0:1d9:5d56:9f1f with SMTP id t1-20020a17090340c100b001d95d569f1fmr3026214pld.24.1707596107986;
+        Sat, 10 Feb 2024 12:15:07 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWCvz89UP5AFzvh/icQrtQ9oZJszK2AY4/H3IQYHat8X1LEiAHX1CArvoCplJcTDGIJjKgPmNK6zi1lj4dyDaBo2BZqhUs4W/t39CWOUScFT9no/2qdUXbnUHkuCi8bLFTiXNR0
 Received: from bguruswamy-virtual-machine.eng.vmware.com ([66.170.99.2])
-        by smtp.gmail.com with ESMTPSA id kd5-20020a17090313c500b001d944e8f0fdsm3424767plb.32.2024.02.10.12.15.05
+        by smtp.gmail.com with ESMTPSA id kd5-20020a17090313c500b001d944e8f0fdsm3424767plb.32.2024.02.10.12.15.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Feb 2024 12:15:06 -0800 (PST)
+        Sat, 10 Feb 2024 12:15:07 -0800 (PST)
 From: Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
 To: stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
 Cc: ajay.kaher@broadcom.com,
-	tapas.kundu@broadcom.com,
-	Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.10.y 3/3] smb: client: fix parsing of SMB3.1.1 POSIX create context
-Date: Sun, 11 Feb 2024 01:44:44 +0530
-Message-Id: <20240210201445.3089482-3-guruswamy.basavaiah@broadcom.com>
+	tapas.kundu@broadcom.com
+Subject: [PATCH 5.10.y 0/3] Backport Fixes to 5.10.y
+Date: Sun, 11 Feb 2024 01:44:45 +0530
+Message-Id: <20240210201445.3089482-4-guruswamy.basavaiah@broadcom.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240210201445.3089482-1-guruswamy.basavaiah@broadcom.com>
 References: <20240210201445.3089482-1-guruswamy.basavaiah@broadcom.com>
@@ -88,41 +85,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Paulo Alcantara <pc@manguebit.com>
+Here are the three backported patches aimed at addressing a potential
+crash and an actual crash.
 
-[ Upstream commit 76025cc2285d9ede3d717fe4305d66f8be2d9346 ]
+Patch 1 Fix potential OOB access in receive_encrypted_standard() if
+server returned a large shdr->NextCommand in cifs.
 
-The data offset for the SMB3.1.1 POSIX create context will always be
-8-byte aligned so having the check 'noff + nlen >= doff' in
-smb2_parse_contexts() is wrong as it will lead to -EINVAL because noff
-+ nlen == doff.
+Patch 2 fix validate offsets and lengths before dereferencing create
+contexts in smb2_parse_contexts().
 
-Fix the sanity check to correctly handle aligned create context data.
+Patch 3 fix issue in patch 2.
 
-Fixes: af1689a9b770 ("smb: client: fix potential OOBs in smb2_parse_contexts()")
-Signed-off-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[Guru:smb2_parse_contexts()  is present in file smb2ops.c,
-smb2ops.c file location is changed, modified patch accordingly.]
-Signed-off-by: Guruswamy Basavaiah <guruswamy.basavaiah@broadcom.com>
----
- fs/cifs/smb2pdu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The original patches were authored by Paulo Alcantara <pc@manguebit.com>.
+Original Patches:
+1. eec04ea11969 ("smb: client: fix OOB in receive_encrypted_standard()")
+2. af1689a9b770 ("smb: client: fix potential OOBs in smb2_parse_contexts()")
+3. 76025cc2285d ("smb: client: fix parsing of SMB3.1.1 POSIX create context")
 
-diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
-index 71df2357c64f..5b49c36bd00d 100644
---- a/fs/cifs/smb2pdu.c
-+++ b/fs/cifs/smb2pdu.c
-@@ -2031,7 +2031,7 @@ int smb2_parse_contexts(struct TCP_Server_Info *server,
- 
- 		noff = le16_to_cpu(cc->NameOffset);
- 		nlen = le16_to_cpu(cc->NameLength);
--		if (noff + nlen >= doff)
-+		if (noff + nlen > doff)
- 			return -EINVAL;
- 
- 		name = (char *)cc + noff;
--- 
-2.25.1
+Please review and consider applying these patches.
 
+https://lore.kernel.org/all/2023121834-semisoft-snarl-49ad@gregkh/
+
+fs/cifs/smb2ops.c   |  4 +++-
+fs/cifs/smb2pdu.c   | 93 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------------------------
+fs/cifs/smb2proto.h | 12 +++++++-----
+3 files changed, 66 insertions(+), 43 deletions(-)
 
