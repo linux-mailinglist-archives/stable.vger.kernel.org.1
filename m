@@ -1,229 +1,129 @@
-Return-Path: <stable+bounces-19398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25EB85013C
-	for <lists+stable@lfdr.de>; Sat, 10 Feb 2024 01:33:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DE8850156
+	for <lists+stable@lfdr.de>; Sat, 10 Feb 2024 01:50:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3396F1F27942
-	for <lists+stable@lfdr.de>; Sat, 10 Feb 2024 00:33:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 487C91C224C2
+	for <lists+stable@lfdr.de>; Sat, 10 Feb 2024 00:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5112107;
-	Sat, 10 Feb 2024 00:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E22311FDA;
+	Sat, 10 Feb 2024 00:49:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="hlUkaadt"
 X-Original-To: stable@vger.kernel.org
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1E046B3;
-	Sat, 10 Feb 2024 00:33:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35EDBEAEE
+	for <stable@vger.kernel.org>; Sat, 10 Feb 2024 00:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707525198; cv=none; b=EVv9amN7po6R4SUYSqFXYh7A9olv1L9DuoCNdL0ZxDAd7TChFKh1wUays20BfOYdao40WvG78AzTdcDFr09A+g6QO6fTTGhnijgVF84CxSsvL+v62DEJ52GQ6hB8tiGwxo6YnIAVZG4IcRjAqh3a6hsA7L9dQEmIwNPkf614RLk=
+	t=1707526142; cv=none; b=JOD7Uajxhus23EiqXNiwRxv4uLgSEJiq0Ndk7mWXAwcxHpryMvkIgBUg71FzF6KD5tV/TZojPdDCq7cl46gJR5sYxIuvTX2B5hLbARsEmzRUGaGs1XHwMCkfEp/Jw3HvRK4+hi5z8jPerz98Uwxqg6C1owF9cdUaq4yCG2N8Aa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707525198; c=relaxed/simple;
-	bh=CSw8FLjbOKmeCyZoKciRVteX2Z7MbqpbK9QJvOVY2Uc=;
+	s=arc-20240116; t=1707526142; c=relaxed/simple;
+	bh=hrEhIt0za4zXX+4YcZvr59C24AojcEa8uuOYHTznHjw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XuFDFoLfC1uhQigTYyneP7k3VLlZDb9ClLyjXlJ5hx24lFo+gDx1lTvPWl22tzrTXKkBlmWYgPodEhdM5jvqmde9DEWeBk0KK8sm9q95crlFztAjuVyDYzxd31K9ggluRX+6O0bZfLGJw4gMRmz2dWjEmALBE7y5dlBK5bjPfDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 77CA072C8F5;
-	Sat, 10 Feb 2024 03:33:14 +0300 (MSK)
-Received: from altlinux.org (sole.flsd.net [185.75.180.6])
-	by imap.altlinux.org (Postfix) with ESMTPSA id 6AA4D36D0246;
-	Sat, 10 Feb 2024 03:33:14 +0300 (MSK)
-Date: Sat, 10 Feb 2024 03:33:14 +0300
-From: Vitaly Chikunov <vt@altlinux.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: Kees Cook <keescook@chromium.org>, linux-cifs@vger.kernel.org
-Subject: Re: [PATCH] cifs: Convert struct fealist away from 1-element array
-Message-ID: <20240210003314.jyrvg57z6ox3is5u@altlinux.org>
-References: <20230215000832.never.591-kees@kernel.org>
- <qjyfz2xftsbch6aozgplxyjfyqnuhn7j44udrucls4pqa5ey35@adxvvrdtagqf>
- <202402091559.52D7C2AC@keescook>
+	 Content-Type:Content-Disposition:In-Reply-To; b=uIqI6jjbZe+Lra7p7dEFNx32lzc1uAEz+H/vUKO8W4iVAPJ2moKj/lpLavs+mVFO5MiwsyuZl3DrAeruv8Y1HW+ZRO8haftHQOKdEH831NYL38t9Nl/Hy1OGKJyYHJcUfhUsTFpFHeKlGBsHC9yHEgVXJSNpNPGwSZpp9LRQkWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=hlUkaadt; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1d95d67ff45so12438485ad.2
+        for <stable@vger.kernel.org>; Fri, 09 Feb 2024 16:49:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1707526141; x=1708130941; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xhIOsBixkq6X+I5UtLFYmEvlA1q4nQi2Uk71zOMtrW4=;
+        b=hlUkaadtwYDpofzNbUrSFlSfW4QPT7DehDRAeXEGwQQ3YKAh66LeMQaUf2u9raSBwn
+         hurC/Y7sOQ+PyWV+fz8A00w2KaTAkkTpfRfGrRJBRjzFcJS5yHvRT6785IFQcq8W+1Im
+         oZ6oZ7XLhZ4RIPUMEq1o6d2SowNNHktGoh4OI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707526141; x=1708130941;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xhIOsBixkq6X+I5UtLFYmEvlA1q4nQi2Uk71zOMtrW4=;
+        b=jerLd7wnYDKxW5abvv5eb3vY9JCjTna2t0g/lQdCJAMl0b1j4p1zhk4EAfgez0+yqL
+         6OSZ80yJnd9N3lmiQgUIBv7HTQ4L/VBW86ha51jpcAah+fyO07pYNGnlt2wKh98JfqqG
+         xfZX+kfoXNypAYBWrvOMgx4CxVYsknR5yvNzIkAUogiuHLyl0fot7nEAZYwcWsmJwY3p
+         jH1EFCjIWuYVY7rviCWjxDF//YPtvtjcA6FOxjgAhrXHfEdF6Ngy6K4Aho1p0ZIKIWEU
+         X5SuirRduDtAjOHdbOZFYlWFSHmEpmM9SPGs9hIP1GnyFhgnid+/zn8BYjj6A/PkKUuz
+         E9sw==
+X-Gm-Message-State: AOJu0Yy5hQJT5nnMS/s06mgz3STRxjMzQVQl9knrdvjGWAPB/xiavWrv
+	D4LbmO2xp7xQPcq0gwg2N3luLdGi11OgxpKz3/HlK9IsgrAe5IOZHESE9wL/WA==
+X-Google-Smtp-Source: AGHT+IGqFQmp48EV/HeK/ohKlHb7zxUA5fEEZHeG+9UTzYyujZAJTn94wWRhwDxrqBopNav53lCKsg==
+X-Received: by 2002:a17:902:ea09:b0:1d9:b8cb:3665 with SMTP id s9-20020a170902ea0900b001d9b8cb3665mr1167619plg.36.1707526140735;
+        Fri, 09 Feb 2024 16:49:00 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVI0SOI2E3VC0AE0of9/MYFRR0yVYQzthkFmv0JW7fA/SJQhhnnI3Nj5OEsNvrtNcdRFhHpOf5u+C3DGYEj7y1QmZKG9DqmJxhSLGKUmKRtiym081eBwXvmlPvnPoRFbYozaBCVcEzpfdzvKL5XsE6na+cvYGSIz8z/iw3GGz5NgMjZyC8x1ylmlUU500p9eC7PsDUz3qdjaUJ4lDemv8WJ00f0xgTx30k9IBXOA4ukuDuItip5wN0tqF2XRRURTeOK4zFlkc/U1xMHtLiGXHCiJxbOfRkGuI6qbhSgFvTKnpkPDxwJIq+B0WYaKEtx/pSF/bhP69oEmAjzAfeoA5ZDA9/FFXosjMJlFihIuYBkey/d
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id h3-20020a170902748300b001d9eef9892asm2062122pll.174.2024.02.09.16.49.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Feb 2024 16:49:00 -0800 (PST)
+Date: Fri, 9 Feb 2024 16:48:59 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: masahiroy@kernel.org, nicolas@fjasle.eu, ndesaulniers@google.com,
+	morbo@google.com, justinstitt@google.com, maskray@google.com,
+	linux-kbuild@vger.kernel.org, bpf@vger.kernel.org,
+	llvm@lists.linux.dev, patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] kbuild: Fix changing ELF file type for output of gen_btf
+ for big endian
+Message-ID: <202402091648.2B8D95062B@keescook>
+References: <20240208-fix-elf-type-btf-vmlinux-bin-o-big-endian-v1-1-cb3112491edc@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=koi8-r
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <202402091559.52D7C2AC@keescook>
+In-Reply-To: <20240208-fix-elf-type-btf-vmlinux-bin-o-big-endian-v1-1-cb3112491edc@kernel.org>
 
-Greg, Sasha,
+On Thu, Feb 08, 2024 at 01:21:06PM -0700, Nathan Chancellor wrote:
+> Commit 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+> changed the ELF type of .btf.vmlinux.bin.o from ET_EXEC to ET_REL via
+> dd, which works fine for little endian platforms:
+> 
+>    00000000  7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+>   -00000010  03 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
+>   +00000010  01 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |................|
+> 
+> However, for big endian platforms, it changes the wrong byte, resulting
+> in an invalid ELF file type, which ld.lld rejects:
+> 
+>    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+>   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+>   +00000010  01 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+> 
+>   Type:                              <unknown>: 103
+> 
+>   ld.lld: error: .btf.vmlinux.bin.o: unknown file type
+> 
+> Fix this by using a different seek value for dd when targeting big
+> endian, so that the correct byte gets changed and everything works
+> correctly for all linkers.
+> 
+>    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF............|
+>   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+>   +00000010  00 01 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |................|
+> 
+>   Type:                              REL (Relocatable file)
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+> Link: https://github.com/llvm/llvm-project/pull/75643
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 
-Can you please backport this commit (below) to a stable 6.1.y tree, it's
-confirmed be Kees this could cause kernel panic due to false positive
-strncpy fortify, and this is already happened for some users.
+Yeah, looks good to me.
 
-Thanks,
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
-On Fri, Feb 09, 2024 at 04:02:32PM -0800, Kees Cook wrote:
-> On Sat, Feb 10, 2024 at 01:13:06AM +0300, Vitaly Chikunov wrote:
-> > 
-> > On Tue, Feb 14, 2023 at 04:08:39PM -0800, Kees Cook wrote:
-> > > The kernel is globally removing the ambiguous 0-length and 1-element
-> > > arrays in favor of flexible arrays, so that we can gain both compile-time
-> > > and run-time array bounds checking[1].
-> > > 
-> > > While struct fealist is defined as a "fake" flexible array (via a
-> > > 1-element array), it is only used for examination of the first array
-> > > element. Walking the list is performed separately, so there is no reason
-> > > to treat the "list" member of struct fealist as anything other than a
-> > > single entry. Adjust the struct and code to match.
-> > > 
-> > > Additionally, struct fea uses the "name" member either as a dynamic
-> > > string, or is manually calculated from the start of the struct. Redefine
-> > > the member as a flexible array.
-> > > 
-> > > No machine code output differences are produced after these changes.
-> > > 
-> > > [1] For lots of details, see both:
-> > >     https://docs.kernel.org/process/deprecated.html#zero-length-and-one-element-arrays
-> > >     https://people.kernel.org/kees/bounded-flexible-arrays-in-c
-> > > 
-> > > Cc: Steve French <sfrench@samba.org>
-> > > Cc: Paulo Alcantara <pc@cjr.nz>
-> > > Cc: Ronnie Sahlberg <lsahlber@redhat.com>
-> > > Cc: Shyam Prasad N <sprasad@microsoft.com>
-> > > Cc: Tom Talpey <tom@talpey.com>
-> > > Cc: linux-cifs@vger.kernel.org
-> > > Cc: samba-technical@lists.samba.org
-> > > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > > ---
-> > >  fs/cifs/cifspdu.h |  4 ++--
-> > >  fs/cifs/cifssmb.c | 16 ++++++++--------
-> > >  2 files changed, 10 insertions(+), 10 deletions(-)
-> > > 
-> > > diff --git a/fs/cifs/cifspdu.h b/fs/cifs/cifspdu.h
-> > > index 623caece2b10..add73be4902c 100644
-> > > --- a/fs/cifs/cifspdu.h
-> > > +++ b/fs/cifs/cifspdu.h
-> > > @@ -2583,7 +2583,7 @@ struct fea {
-> > >  	unsigned char EA_flags;
-> > >  	__u8 name_len;
-> > >  	__le16 value_len;
-> > > -	char name[1];
-> > > +	char name[];
-> > >  	/* optionally followed by value */
-> > >  } __attribute__((packed));
-> > >  /* flags for _FEA.fEA */
-> > > @@ -2591,7 +2591,7 @@ struct fea {
-> > >  
-> > >  struct fealist {
-> > >  	__le32 list_len;
-> > > -	struct fea list[1];
-> > > +	struct fea list;
-> > >  } __attribute__((packed));
-> > >  
-> > >  /* used to hold an arbitrary blob of data */
-> > > diff --git a/fs/cifs/cifssmb.c b/fs/cifs/cifssmb.c
-> > > index 60dd4e37030a..7c587157d030 100644
-> > > --- a/fs/cifs/cifssmb.c
-> > > +++ b/fs/cifs/cifssmb.c
-> > > @@ -5787,7 +5787,7 @@ CIFSSMBQAllEAs(const unsigned int xid, struct cifs_tcon *tcon,
-> > >  
-> > >  	/* account for ea list len */
-> > >  	list_len -= 4;
-> > > -	temp_fea = ea_response_data->list;
-> > > +	temp_fea = &ea_response_data->list;
-> > >  	temp_ptr = (char *)temp_fea;
-> > >  	while (list_len > 0) {
-> > >  		unsigned int name_len;
-> > > @@ -5902,7 +5902,7 @@ CIFSSMBSetEA(const unsigned int xid, struct cifs_tcon *tcon,
-> > >  	else
-> > >  		name_len = strnlen(ea_name, 255);
-> > >  
-> > > -	count = sizeof(*parm_data) + ea_value_len + name_len;
-> > > +	count = sizeof(*parm_data) + 1 + ea_value_len + name_len;
-> > >  	pSMB->MaxParameterCount = cpu_to_le16(2);
-> > >  	/* BB find max SMB PDU from sess */
-> > >  	pSMB->MaxDataCount = cpu_to_le16(1000);
-> > > @@ -5926,14 +5926,14 @@ CIFSSMBSetEA(const unsigned int xid, struct cifs_tcon *tcon,
-> > >  	byte_count = 3 /* pad */  + params + count;
-> > >  	pSMB->DataCount = cpu_to_le16(count);
-> > >  	parm_data->list_len = cpu_to_le32(count);
-> > > -	parm_data->list[0].EA_flags = 0;
-> > > +	parm_data->list.EA_flags = 0;
-> > >  	/* we checked above that name len is less than 255 */
-> > > -	parm_data->list[0].name_len = (__u8)name_len;
-> > > +	parm_data->list.name_len = (__u8)name_len;
-> > >  	/* EA names are always ASCII */
-> > >  	if (ea_name)
-> > > -		strncpy(parm_data->list[0].name, ea_name, name_len);
-> > > -	parm_data->list[0].name[name_len] = 0;
-> > > -	parm_data->list[0].value_len = cpu_to_le16(ea_value_len);
-> > > +		strncpy(parm_data->list.name, ea_name, name_len);
-> > 
-> > Could non-applying this patch cause false-positive fortify_panic?
-> > We got a bug report from user of 6.1.73:
-> > 
-> >    Jan 24 15:15:20 kalt2test.dpt.local kernel: detected buffer overflow in strncpy
-> 
-> Yes, this seems likely. I would backport this change.
-> 
-> >    Jan 24 15:15:20 kalt2test.dpt.local kernel: ------------[ cut here ]------------
-> >    Jan 24 15:15:20 kalt2test.dpt.local kernel: kernel BUG at lib/string_helpers.c:1027!
-> >    ...
-> >    Jan 24 15:15:20 kalt2test.dpt.local kernel: Call Trace:
-> >    Jan 24 15:15:20 kalt2test.dpt.local kernel:  CIFSSMBSetEA.cold+0xc/0x18 [cifs]
-> >    Jan 24 15:15:20 kalt2test.dpt.local kernel:  cifs_xattr_set+0x596/0x690 [cifs]
-> >    Jan 24 15:15:20 kalt2test.dpt.local kernel:  __vfs_removexattr+0x52/0x70
-> >    Jan 24 15:15:20 kalt2test.dpt.local kernel:  __vfs_removexattr_locked+0xbc/0x150
-> >    Jan 24 15:15:20 kalt2test.dpt.local kernel:  vfs_removexattr+0x56/0x100
-> >    Jan 24 15:15:20 kalt2test.dpt.local kernel:  removexattr+0x58/0x90
-> >    Jan 24 15:15:20 kalt2test.dpt.local kernel:  __ia32_sys_fremovexattr+0x80/0xa0
-> >    Jan 24 15:15:20 kalt2test.dpt.local kernel:  int80_emulation+0xa9/0x110
-> >    Jan 24 15:15:20 kalt2test.dpt.local kernel:  asm_int80_emulation+0x16/0x20
-> 
-> This appears to be a compat call?
-> 
-> -Kees
-> 
-> > 
-> > I don't find this patch appled to stable/linux-6.1.y.
-> > 
-> > Thanks,
-> > 
-> > ps. (Unfortunately `CIFSSMBSetEA+0xc` address is not resolvable to the
-> > actual line inside of CIFSSMBSetEA pointing just to the head of it.
-> > 
-> >    (gdb) l *CIFSSMBSetEA+0xc
-> >    0x6de3c is in CIFSSMBSetEA (fs/smb/client/cifssmb.c:5776).
-> >    5771    int
-> >    5772    CIFSSMBSetEA(const unsigned int xid, struct cifs_tcon *tcon,
-> >    5773                 const char *fileName, const char *ea_name, const void *ea_value,
-> >    5774                 const __u16 ea_value_len, const struct nls_table *nls_codepage,
-> >    5775                 struct cifs_sb_info *cifs_sb)
-> >    5776    {
-> >    5777            struct smb_com_transaction2_spi_req *pSMB = NULL;
-> >    5778            struct smb_com_transaction2_spi_rsp *pSMBr = NULL;
-> >    5779            struct fealist *parm_data;
-> >    5780            int name_len;
-> > 
-> > But there is only one strncpy there.
-> > 
-> > > +	parm_data->list.name[name_len] = '\0';
-> > > +	parm_data->list.value_len = cpu_to_le16(ea_value_len);
-> > >  	/* caller ensures that ea_value_len is less than 64K but
-> > >  	we need to ensure that it fits within the smb */
-> > >  
-> > > @@ -5941,7 +5941,7 @@ CIFSSMBSetEA(const unsigned int xid, struct cifs_tcon *tcon,
-> > >  	     negotiated SMB buffer size BB */
-> > >  	/* if (ea_value_len > buffer_size - 512 (enough for header)) */
-> > >  	if (ea_value_len)
-> > > -		memcpy(parm_data->list[0].name+name_len+1,
-> > > +		memcpy(parm_data->list.name + name_len + 1,
-> > >  		       ea_value, ea_value_len);
-> > >  
-> > >  	pSMB->TotalDataCount = pSMB->DataCount;
-> > > -- 
-> > > 2.34.1
-> > > 
-> 
-> -- 
-> Kees Cook
+-- 
+Kees Cook
 
