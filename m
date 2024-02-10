@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-19400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D513B8503DC
-	for <lists+stable@lfdr.de>; Sat, 10 Feb 2024 11:19:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D05C18503DD
+	for <lists+stable@lfdr.de>; Sat, 10 Feb 2024 11:21:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D60F1C21AC9
-	for <lists+stable@lfdr.de>; Sat, 10 Feb 2024 10:19:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F5101C219A1
+	for <lists+stable@lfdr.de>; Sat, 10 Feb 2024 10:21:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F350364BE;
-	Sat, 10 Feb 2024 10:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5310364B8;
+	Sat, 10 Feb 2024 10:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WHah1jB9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWSz3RN3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3915C3611E;
-	Sat, 10 Feb 2024 10:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AAB136132;
+	Sat, 10 Feb 2024 10:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707560389; cv=none; b=I9Sx+B66VUsjelUezwtSxdQ8MqDlpC1+Nfqk9PYBSJxwC+LC/4M6Eiyj2zmPONPPQ2ElbhIV+SWhqKDLe7ucoOTa6bxMqfTPtGk+gKZDUAatXFOGqOseLycx4Bw3nUPfutAEzcWAs9gTgk28hhvJ4QfdHxuWavWy05CDKhHXDFc=
+	t=1707560462; cv=none; b=BEMGoyKezM2OX/NQjDWwmIG17+PvUn/IyUlvRO5p8H5HXCbNP5qHmZvGBpATuW+9dU5vYv3AIz8CjY6k6xzphfJ9axccED11lr5+exLwzt0fCaMQ0vgtt9vm9d1EB1hcN/XjS8hmUUqxSlg5Kw+Mzq4QiaCFYvFscDrMRF+8B7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707560389; c=relaxed/simple;
-	bh=U4L/V+ABFf+Rk1CyuuovGhbfOcNDDFyBQe+o6V1dDQs=;
+	s=arc-20240116; t=1707560462; c=relaxed/simple;
+	bh=jwDkwqD9xadpWe0tlX2hjpeWUF5VC1o0HlE1/3FcU+E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YsyflUziVwFrKQc42dRgskUWueEgpMs7osQTepUPJx+pFkXWG2lmhhZY+htg5IvTIPbfOA/j7UweN2CAKUtOuU6/FH/NC+MYXcHocrRrYeGZpAFXVjfsagHWgV8fj7+QghNUygiruOboJVJZUYyMUB1Ahi70X4lsUDNfFLDbVU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WHah1jB9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B300C433F1;
-	Sat, 10 Feb 2024 10:19:48 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=hRtCCB+AEC9l7iFF5HLW/ojss3U5OiRlHzagEIIBBI/yQHwjllVj7wflyP94G7keGXsW8gnNLs982fxcEr4dOg3nTQb7v0T1S/xVrh8M64IjEqMittrLpN8OZfw10gpomrJWl09zBauRVD8bp+cIoOBDGBrC3lXbDwz8MAqSJac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWSz3RN3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5D5C433C7;
+	Sat, 10 Feb 2024 10:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707560388;
-	bh=U4L/V+ABFf+Rk1CyuuovGhbfOcNDDFyBQe+o6V1dDQs=;
+	s=korg; t=1707560462;
+	bh=jwDkwqD9xadpWe0tlX2hjpeWUF5VC1o0HlE1/3FcU+E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WHah1jB97SgtPCNqsQrn1Ea0m8qois01ICUpo9qlNYTWX+smgRQ5hzaJV5cbQfv0Y
-	 66/lgNZ23i0hxRiHg9zi0JBUtEh/iY6qsvNLV4+xi7XKdgqHYsKnLgg8xk32vaVEWY
-	 WcITKsvBi8vqCGXqGa4a9PzMAtjQzfxGk0sUyyEk=
-Date: Sat, 10 Feb 2024 10:19:46 +0000
+	b=RWSz3RN3B8YKdVgFsnvSw3yEXQPoCrxGWKISaYCFtXYtkv98fvfE5hsS/cGO3435U
+	 IjgeEhgi92tyiI9m5h7AoFg+3KTDRGioy0htjTEqRBDt49N+d1lOKMI1a11VLg3afA
+	 +5TQtNRMk2ROlvGz+RhDMWTBvPAeucJmZb06oF7M=
+Date: Sat, 10 Feb 2024 10:20:58 +0000
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Vitaly Chikunov <vt@altlinux.org>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	Kees Cook <keescook@chromium.org>, linux-cifs@vger.kernel.org
-Subject: Re: [PATCH] cifs: Convert struct fealist away from 1-element array
-Message-ID: <2024021034-populace-aerospace-03f3@gregkh>
-References: <20230215000832.never.591-kees@kernel.org>
- <qjyfz2xftsbch6aozgplxyjfyqnuhn7j44udrucls4pqa5ey35@adxvvrdtagqf>
- <202402091559.52D7C2AC@keescook>
- <20240210003314.jyrvg57z6ox3is5u@altlinux.org>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+	Avi Kivity <avi@scylladb.com>, Sandeep Dhavale <dhavale@google.com>,
+	Jens Axboe <axboe@kernel.dk>, stable@vger.kernel.org
+Subject: Re: [PATCH v3] fs, USB gadget: Remove libaio I/O cancellation support
+Message-ID: <2024021022-ahoy-vintage-b210@gregkh>
+References: <20240209193026.2289430-1-bvanassche@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,16 +57,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240210003314.jyrvg57z6ox3is5u@altlinux.org>
+In-Reply-To: <20240209193026.2289430-1-bvanassche@acm.org>
 
-On Sat, Feb 10, 2024 at 03:33:14AM +0300, Vitaly Chikunov wrote:
-> Greg, Sasha,
+On Fri, Feb 09, 2024 at 11:30:26AM -0800, Bart Van Assche wrote:
+> Originally io_cancel() only supported cancelling USB reads and writes.
+> If I/O was cancelled successfully, information about the cancelled I/O
+> operation was copied to the data structure the io_cancel() 'result'
+> argument points at. Commit 63b05203af57 ("[PATCH] AIO: retry
+> infrastructure fixes and enhancements") changed the io_cancel() behavior
+> from reporting status information via the 'result' argument into
+> reporting status information on the completion ring. Commit 41003a7bcfed
+> ("aio: remove retry-based AIO") accidentally changed the behavior into
+> not reporting a completion event on the completion ring for cancelled
+> requests. This is a bug because successful cancellation leads to an iocb
+> leak in user space. Since this bug was introduced more than ten years
+> ago and since nobody has complained since then, remove support for I/O
+> cancellation. Keep support for cancellation of IOCB_CMD_POLL requests.
 > 
-> Can you please backport this commit (below) to a stable 6.1.y tree, it's
-> confirmed be Kees this could cause kernel panic due to false positive
-> strncpy fortify, and this is already happened for some users.
+> Calling kiocb_set_cancel_fn() without knowing whether the caller
+> submitted a struct kiocb or a struct aio_kiocb is unsafe. The
+> following call trace illustrates that without this patch an
+> out-of-bounds write happens if I/O is submitted by io_uring (from a
+> phone with an ARM CPU and kernel 6.1):
+> 
+> WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
+> Call trace:
+>  kiocb_set_cancel_fn+0x9c/0xa8
+>  ffs_epfile_read_iter+0x144/0x1d0
+>  io_read+0x19c/0x498
+>  io_issue_sqe+0x118/0x27c
+>  io_submit_sqes+0x25c/0x5fc
+>  __arm64_sys_io_uring_enter+0x104/0xab0
+>  invoke_syscall+0x58/0x11c
+>  el0_svc_common+0xb4/0xf4
+>  do_el0_svc+0x2c/0xb0
+>  el0_svc+0x2c/0xa4
+>  el0t_64_sync_handler+0x68/0xb4
+>  el0t_64_sync+0x1a4/0x1a8
+> 
+> Cc: Christoph Hellwig <hch@lst.de>
+> Cc: Avi Kivity <avi@scylladb.com>
+> Cc: Sandeep Dhavale <dhavale@google.com>
+> Cc: Jens Axboe <axboe@kernel.dk>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Fixes: 63b05203af57 ("[PATCH] AIO: retry infrastructure fixes and enhancements")
 
-What is the git commit id?
+I can't see this git id in Linus's tree, are you sure it is correct?
 
 thanks,
 
