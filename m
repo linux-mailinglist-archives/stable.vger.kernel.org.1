@@ -1,117 +1,95 @@
-Return-Path: <stable+bounces-19428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E848508A8
-	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 11:39:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 154E0850945
+	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 13:47:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 334872827BC
-	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 10:39:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 776892879C4
+	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 12:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2BA55A4DC;
-	Sun, 11 Feb 2024 10:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J46tEfeY"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567A044C73;
+	Sun, 11 Feb 2024 12:47:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6877159B68;
-	Sun, 11 Feb 2024 10:39:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.134.136.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F392E851;
+	Sun, 11 Feb 2024 12:46:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707647974; cv=none; b=hgn1C5EnOez59l5rzUqtxnsNB37C21h7G6Okx0zo0uH1/yZ2scRGlhPHn0Blaq6ttvWm7vUBbAOX4PG4z1JDdcX+Zd6NMVfbW8+S3oTNpsaMfRLX55Y2BOS+U2g7u3EiqdpMkR5IY+92R0egMoiW7R9nLCkacD33rBJy+6YukrE=
+	t=1707655622; cv=none; b=Ijo8pOaV1WvVpli0ycqSU1/XfcVevzYUVZvXS66rS2udR+6NEt1Tqnx1FPfMIhdJsJ2JzKZ4P6+9JyyCXqxubYMW2WTY7P2LPvr97KCV3mfEq/pNtLZkFr+fHdifh2HR/rHl0tNNA4nyxB8MKqjW35xJvu+i2iK3emulWISlQm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707647974; c=relaxed/simple;
-	bh=8gZKK1OoDTGMFjs2+UcM47OnjAJcJ+AHRt+E/isRwKE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LAaS70rqaw1XPsZpmSg42RppiVdO8lnwflTP8sXOFIXe9PUp2wWX5A4oPihRQIKEZlwgArUapxg4Huq4kvaCOsE1Zd7hw8uSBl4LEmh9b8tC3kQxqFY/BmH+UV610mTxxA1HuF88iRVj8orJmCLUeVI6H27TRMwidt0PWLNSfPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J46tEfeY; arc=none smtp.client-ip=134.134.136.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707647972; x=1739183972;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=8gZKK1OoDTGMFjs2+UcM47OnjAJcJ+AHRt+E/isRwKE=;
-  b=J46tEfeY83mzps4NagsHWQRAlqlehLRT6AiDWTHRX0t6vVMNVobu9dDq
-   f8vIAf+djsoc9qVCpqiOorwzIIadiz+5ajQfpQbSnZ+lJhWy4+k9ZzRBC
-   jKrkvbFH0yp8IIxgRfukN3auI7fBG5ekD+3Uq39LQPWVRu20z66i3qhgL
-   e4LxNYdfsIFluzZrTH6ibVHZicahgqHMIEXqGzvZoOQJ3PK0CKniAl4Yl
-   h+lNqr3aRmKr8ihZm6XIoKl6kirbEl17mBfG5KTO/nXys14nM7JLCXk5C
-   mw8P1ISEPIUEfGwb4kdw3tD5+v7nBbc8Wc3a7+3MRVEQHG5jc6bzYzWf7
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10980"; a="396053102"
-X-IronPort-AV: E=Sophos;i="6.05,260,1701158400"; 
-   d="scan'208";a="396053102"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2024 02:39:31 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,260,1701158400"; 
-   d="scan'208";a="2631669"
-Received: from twinkler-lnx.jer.intel.com ([10.12.231.216])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2024 02:39:30 -0800
-From: Tomas Winkler <tomas.winkler@intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexander Usyskin <alexander.usyskin@intel.com>,
-	Vitaly Lubart <vitaly.lubart@intel.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Tomas Winkler <tomas.winkler@intel.com>
-Subject: [char-misc 2/2] mei: me: add arrow lake point H DID
-Date: Sun, 11 Feb 2024 12:39:12 +0200
-Message-ID: <20240211103912.117105-2-tomas.winkler@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240211103912.117105-1-tomas.winkler@intel.com>
-References: <20240211103912.117105-1-tomas.winkler@intel.com>
+	s=arc-20240116; t=1707655622; c=relaxed/simple;
+	bh=g01oYKENux7WU+WmZJ3B6XY2TJekh2CQzkEEp1gxiqo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HULrNf/RfdIgFJVw6aIYHWM3MiZuYhYgkipwHECPcRk41pzWqZEmLiUNH5ocwRy5NaON6dfhZroIrofuM2BAGWgyTZ74FG5m2s5R1GcJwKq6PV/RySnIhzByB0w/qwoBwbHcS6T5eBUvlsdIDwKU44/bNdTCD7rkuxO2lgMcVcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rZ9EW-0005Hj-Sy; Sun, 11 Feb 2024 13:46:56 +0100
+Message-ID: <afb2124c-84dd-4273-8a91-ca0e16f417d1@leemhuis.info>
+Date: Sun, 11 Feb 2024 13:46:56 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] 6.7.0: ASoC: SOF: refactoring breaks sof-rt5682
+ audio on chromebook; successfully bisected
+Content-Language: en-US, de-DE
+To: Mole Shang <135e2@135e2.dev>, stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
+ pierre-louis.bossart@linux.intel.com, peter.ujfalusi@linux.intel.com,
+ ranjani.sridharan@linux.intel.com, sound-open-firmware@alsa-project.org
+References: <6013930.lOV4Wx5bFT@ayana>
+From: "Linux regression tracking #update (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <6013930.lOV4Wx5bFT@ayana>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1707655620;fe1cf99f;
+X-HE-SMSGID: 1rZ9EW-0005Hj-Sy
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+On 02.02.24 04:12, Mole Shang wrote:
+> I'm relatively new here, first time reporting a regression, so apologies in 
+> advance if I'm doing something wrong.
+> 
+> I'm using Arch Linux (linux-mainline kernel) on my chromebook Acer Spin 713-2W 
+> (Voxel), and after upgrading linux-mainline from 6.7-rc4 to 6.7-rc5 the audio 
+> setup isn't working anymore. Firstly I suspected its some changes in the sof-
+> firmware, yet got no luck in upgrading sof-firmware (2023.09.2 -> 2023.12). 
+> 
+> On certain chromebooks, audio setup needs custom ALSA ucm confs [1], but after 
+> contacting the chromebook-linux-audio developer [2], I think it's not a conf 
+> problem, but rather a kernel regression.
+> 
+> After hours of bisecting, the first bad commit 31ed8da (ASoC: SOF: sof-audio: 
+> Modify logic for enabling/disabling topology cores) ensures the regression. 
+> demsg log pasted below:
 
-Add Arrow Lake H device id.
+Thx for reporting this.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
----
- drivers/misc/mei/hw-me-regs.h | 1 +
- drivers/misc/mei/pci-me.c     | 1 +
- 2 files changed, 2 insertions(+)
+For the record, in case anyone lands here and wonders if nothing
+happened. The discussion moved elsewhere and a fix is heading towards
+mainline currently:
 
-diff --git a/drivers/misc/mei/hw-me-regs.h b/drivers/misc/mei/hw-me-regs.h
-index b10536e4974dbdeed046f4f0..aac36750d2c54a658debcca5 100644
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -113,6 +113,7 @@
- 
- #define MEI_DEV_ID_MTL_M      0x7E70  /* Meteor Lake Point M */
- #define MEI_DEV_ID_ARL_S      0x7F68  /* Arrow Lake Point S */
-+#define MEI_DEV_ID_ARL_H      0x7770  /* Arrow Lake Point H */
- 
- /*
-  * MEI HW Section
-diff --git a/drivers/misc/mei/pci-me.c b/drivers/misc/mei/pci-me.c
-index 1a614fb7fdb675e77bcb6be8..8cf636c5403225f7588a2428 100644
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -120,6 +120,7 @@ static const struct pci_device_id mei_me_pci_tbl[] = {
- 
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_MTL_M, MEI_ME_PCH15_CFG)},
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_H, MEI_ME_PCH15_CFG)},
- 
- 	/* required last entry */
- 	{0, }
--- 
-2.43.0
+#regzbot link: https://github.com/thesofproject/linux/issues/4807
+#regzbot monitor:
+https://lore.kernel.org/all/20240208133432.1688-1-peter.ujfalusi@linux.intel.com/
+#regzbot fix: ASoC: SOF: ipc3-topology: Fix pipeline tear down logic
+#regzbot ignore-activity
 
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
 
