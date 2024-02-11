@@ -1,120 +1,87 @@
-Return-Path: <stable+bounces-19425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ACE18507DC
-	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 06:28:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC26850838
+	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 09:49:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 827C32853CC
-	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 05:28:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D0F31F22A75
+	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 08:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A00171BF;
-	Sun, 11 Feb 2024 05:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A655859148;
+	Sun, 11 Feb 2024 08:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="vGOWWNwR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9OO97ll"
 X-Original-To: stable@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC6C12E59;
-	Sun, 11 Feb 2024 05:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8F4CA7A;
+	Sun, 11 Feb 2024 08:49:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707629292; cv=none; b=OYQRvK39qHMMAxLViEPOFtHKGX7Zag0JMFBoGwJBZ+G7SM8ZUnUhlOyvXzPbd+xJXd5xN0C3LTiPWRFmQI8wf+P1xP/ja4vcsBacEwBXrW7jAcuYEdl+1VekyyznJQfOrMmhApq4IuJg8v5F0A4CcthjKwoc7jIZY30w9h4oewU=
+	t=1707641387; cv=none; b=L600MAGXOTQ+okDG3oFCZ6yiUbE9m3B8PNACqB7ZatwbBQfFN05VwRHM7iA46q/jAEcunlm2LopKN4eunrpKTIS7P50EclRrMJ4NxJeWxS6lXnm/4x6I43NMreS4K06QMAfjxMQnYlAT4Cqwh05HKJ2Pv/uKbQnfvB8CwPAL9UE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707629292; c=relaxed/simple;
-	bh=mAZEulojYIR6tmfvP6+XGG8ArY0BK8jF6DxxlJ/nlYg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kEM6AqgQnRkkJ2MJ6iWrnq9skeMoPKdTzc21VBgs9HsJscnq6vZa8gDJyv3dbU6Rjlk2BCC4cNQIRW3sISXOBnpsdn1Svn9cra/z4Lc8WuurB9aeeR1NL/5kxlhhEzDPqgXAR7Lf0RbdXXKcdpLrBuivX9TZYlTMdG3NDnt+TGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=vGOWWNwR; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=ZbGAi9XelCY7QexlvxqZcifEK3+YdqIlzW8v8T7xhO8=; b=vGOWWNwREyr+Z6OHIRexqEUzxS
-	eb2rHKPOxjqc/OGGq5L18QhyZG76MtClXkc596cmFrawAqck5KYO6fuJ1K8+P+dcEZOqGQuVFzUmt
-	FgnxIhBJA/CVWKOhipfG4L21GxE+qmOrGd6/RKaGtWoNF5+J2UutXkAFAlk0aloZToqK/STwht0DQ
-	GKOEJvqCz3tJjY7LiGRPmgJdlhDgkF64d+tStnykfuvHApMNicjgCMKnUbMZRZ093R6QIvwFyZfDv
-	KIfea6OMciGosT1OqjHHb+YbLDTxU65sElFABWXPjV6dDwNLP67AB4C/IIz4sIvKnA3tMm6ylldJb
-	EJPe76ig==;
-Received: from [50.53.50.0] (helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rZ2Nt-00000002My9-1Fad;
-	Sun, 11 Feb 2024 05:28:09 +0000
-From: Randy Dunlap <rdunlap@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: Randy Dunlap <rdunlap@infradead.org>,
-	Igor Zhbanov <izh1979@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	sparclinux@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@oracle.com>,
-	Nick Alcock <nick.alcock@oracle.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	stable@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andreas Larsson <andreas@gaisler.com>
-Subject: [PATCH v5] sparc: vDSO: fix return value of __setup handler
-Date: Sat, 10 Feb 2024 21:28:08 -0800
-Message-ID: <20240211052808.22635-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1707641387; c=relaxed/simple;
+	bh=lSj2qY4HiMS3eGrEt2eQjGBTR7Ml2UU11vfPYYcwVjg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TX5+lqyIGwVFheQTe8HzcF7LIkR8PflCfJucJaXFpBSsGgdW8je4vXt5Gjn1DCJFURHQ7e74FBwxMhhRqqJpA1w8QmRKQ7IzZ7RTNSpTdNP17+VpRhMZ3sUb+n5DSx9WkGJHL5AIjQpKjGoXAFOwGO4MrIgKH2kmYezCgf6QzS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9OO97ll; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7074CC433F1;
+	Sun, 11 Feb 2024 08:49:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1707641386;
+	bh=lSj2qY4HiMS3eGrEt2eQjGBTR7Ml2UU11vfPYYcwVjg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b9OO97llZFUovYlha9NUjmRcncomElHxPvZI3iaunAe19dSwauzUyeYEKRFLgw7IX
+	 YVgdPW7z8AVKwRoHQDmCJMm+/SDW/SRCiJMFySyL1YDfwRlnKVe/vmZ79/A1awEneY
+	 nyvHr+K+RgdHmrnKIPz+VkuP9S+YXIviYfVS7Syo=
+Date: Sun, 11 Feb 2024 08:49:44 +0000
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Bart Van Assche <bvanassche@acm.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+	Avi Kivity <avi@scylladb.com>, Sandeep Dhavale <dhavale@google.com>,
+	Jens Axboe <axboe@kernel.dk>, stable@vger.kernel.org
+Subject: Re: [PATCH v3] fs, USB gadget: Remove libaio I/O cancellation support
+Message-ID: <2024021158-drippy-fifteen-8af1@gregkh>
+References: <20240209193026.2289430-1-bvanassche@acm.org>
+ <2024021022-ahoy-vintage-b210@gregkh>
+ <e955c7c5-019a-41c6-99f7-f8e3dbee652d@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <e955c7c5-019a-41c6-99f7-f8e3dbee652d@acm.org>
 
-__setup() handlers should return 1 to obsolete_checksetup() in
-init/main.c to indicate that the boot option has been handled.
-A return of 0 causes the boot option/value to be listed as an Unknown
-kernel parameter and added to init's (limited) argument or environment
-strings. Also, error return codes don't mean anything to
-obsolete_checksetup() -- only non-zero (usually 1) or zero.
-So return 1 from vdso_setup().
+On Sat, Feb 10, 2024 at 08:55:44AM -0800, Bart Van Assche wrote:
+> On 2/10/24 02:20, Greg Kroah-Hartman wrote:
+> > On Fri, Feb 09, 2024 at 11:30:26AM -0800, Bart Van Assche wrote:
+> > > Fixes: 63b05203af57 ("[PATCH] AIO: retry infrastructure fixes and enhancements")
+> > 
+> > I can't see this git id in Linus's tree, are you sure it is correct?
+> 
+> Thanks Greg for having looked this up. I had not yet realized this but that
+> git commit ID comes from a historic tree. Is there a standard way for referring
+> to patches from historic trees? See also
 
-Fixes: 9a08862a5d2e ("vDSO for sparc")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: Igor Zhbanov <izh1979@gmail.com>
-Link: lore.kernel.org/r/64644a2f-4a20-bab3-1e15-3b2cdd0defe3@omprussia.ru
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: sparclinux@vger.kernel.org
-Cc: Dan Carpenter <dan.carpenter@oracle.com>
-Cc: Nick Alcock <nick.alcock@oracle.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Andreas Larsson <andreas@gaisler.com>
----
-v2: correct the Fixes: tag (Dan Carpenter)
-v3: add more Cc's;
-    correct Igor's email address;
-    change From: Igor to Reported-by: Igor;
-v4: add Arnd to Cc: list
-v5: add Andreas to Cc: list
+Which historical git tree?  We have lots as you point out:
 
- arch/sparc/vdso/vma.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+> https://stackoverflow.com/questions/3264283/linux-kernel-historical-git-repository-with-full-history
 
-diff -- a/arch/sparc/vdso/vma.c b/arch/sparc/vdso/vma.c
---- a/arch/sparc/vdso/vma.c
-+++ b/arch/sparc/vdso/vma.c
-@@ -449,9 +449,8 @@ static __init int vdso_setup(char *s)
- 	unsigned long val;
- 
- 	err = kstrtoul(s, 10, &val);
--	if (err)
--		return err;
--	vdso_enabled = val;
--	return 0;
-+	if (!err)
-+		vdso_enabled = val;
-+	return 1;
- }
- __setup("vdso=", vdso_setup);
+That's fine, and I can handle it for really old ones, I should populate
+my local "find the fixes tag" logic to include the historical trees as
+well, but it rarely comes up like this :)
+
+thanks, I'll queue this in a day or so when I get back to the USB patch
+review.
+
+greg k-h
 
