@@ -1,125 +1,186 @@
-Return-Path: <stable+bounces-19421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 302448506CB
-	for <lists+stable@lfdr.de>; Sat, 10 Feb 2024 22:59:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8B058507A5
+	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 04:13:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C05D81F21670
-	for <lists+stable@lfdr.de>; Sat, 10 Feb 2024 21:59:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8C091C228CA
+	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 03:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF33D5FDB4;
-	Sat, 10 Feb 2024 21:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F269DDAF;
+	Sun, 11 Feb 2024 03:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="ID/GQKVs"
-X-Original-To: Stable@vger.kernel.org
-Received: from mx1.sberdevices.ru (mx1.sberdevices.ru [37.18.73.165])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R5JpxjZf"
+X-Original-To: stable@vger.kernel.org
+Received: from mail-pg1-f196.google.com (mail-pg1-f196.google.com [209.85.215.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC8436B01;
-	Sat, 10 Feb 2024 21:55:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.18.73.165
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAD823A3;
+	Sun, 11 Feb 2024 03:13:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707602142; cv=none; b=gcID0NnYBYxcrJ30+Y+J5NZoDeXLCohMdbjhmtacaKaFXtlRckhiJ7bcIn3N+wFngLddj/IhguyMuv+fmideKkdMyr5vP0BuV4wn19nuLcAaiau3eF0RcSQlRPN2vhhbYrsLN58F1eREGSPNeNAf3AoD7sz/ZaISf6GjUjtQrt4=
+	t=1707621232; cv=none; b=R5PbmbCblLQCoNW5wUa9P3vxRnXaRDy23DfXZoZJJMuvC2t9PNqJadZ5OmvB9tZOPClr9NlGOSptGKU2srLvDjOc2QNuhPTCKc5OPkxQ08yJCjTAaFVhjjs+stxRXmrOOyyJ3Z/O9lZZe20aMuz+jCLaE0wwV3kftQAkxsKAQZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707602142; c=relaxed/simple;
-	bh=z7rtINVttpPeGX3Q2hKXdZ2D1BRaxoQHZOCRV0NBzFM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gRaMSwN80JYgLmCGNnOu+J92j7+FbYOjY0BIpnV7q6o76f9SEa/45gvr9LtoKp2I4ANUz9nibz7YoaOYzsuBhcr9cOyyvAjamKukgM1mZfemZA/NdRrBKNty1/IwxYj5aAM+pfcvP571lHfWgywP2j80D93Qii+e2N/KCek1f40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=salutedevices.com; spf=pass smtp.mailfrom=salutedevices.com; dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b=ID/GQKVs; arc=none smtp.client-ip=37.18.73.165
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=salutedevices.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=salutedevices.com
-Received: from p-infra-ksmg-sc-msk01 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id BF461100003;
-	Sun, 11 Feb 2024 00:55:28 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru BF461100003
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=mail; t=1707602128;
-	bh=xi31YeeyyS/qFrw1DkmjVjOshSdKKbDhOyJw6MvaMJY=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=ID/GQKVsNci/VPuG6OlDS1TawQiIkMl2MhlcFJi3FsFUkAHzQjapxSzWvBdqeKYNk
-	 x9/nxqvI+m3gqaIluUH6YneQ4B07/QPZoDnziWMCoZ5N2X4cOFvoalvgxFmEB3QymO
-	 znjpXcQprfDMJHpOTQhpzosa6FEE1NqT7F4b/BlqyKI/WxnF0VDkqDhkGcXc5yc/uC
-	 66aNtPE4FvEr+IgCUUOaK+VIOFd7DhDM4+BsSV/Okrr+gWsMG85xiRNDK7AW9LDMrz
-	 XtgrsqEY+Dn/I3bPQvbCtIf3TesjzvWrTV5iBZZBT7vhnfvY0Uhk1psFgVJJLLOPro
-	 jEXeP9hdf1EHA==
-Received: from smtp.sberdevices.ru (p-i-exch-sc-m01.sberdevices.ru [172.16.192.107])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.sberdevices.ru (Postfix) with ESMTPS;
-	Sun, 11 Feb 2024 00:55:28 +0300 (MSK)
-Received: from localhost.localdomain (100.64.160.123) by
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Sun, 11 Feb 2024 00:55:28 +0300
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>, Richard Weinberger
-	<richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, Neil Armstrong
-	<neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, Jerome
- Brunet <jbrunet@baylibre.com>, Martin Blumenstingl
-	<martin.blumenstingl@googlemail.com>, Yixun Lan <yixun.lan@amlogic.com>,
-	Jianxin Pan <jianxin.pan@amlogic.com>
-CC: <oxffffaa@gmail.com>, <linux-mtd@lists.infradead.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-amlogic@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <kernel@sberdevices.ru>, Arseniy Krasnov
-	<avkrasnov@salutedevices.com>, <Stable@vger.kernel.org>
-Subject: [PATCH v1] mtd: rawnand: meson: fix scrambling mode value in command macro
-Date: Sun, 11 Feb 2024 00:45:51 +0300
-Message-ID: <20240210214551.441610-1-avkrasnov@salutedevices.com>
-X-Mailer: git-send-email 2.35.0
+	s=arc-20240116; t=1707621232; c=relaxed/simple;
+	bh=x84n/2w4JvLcHrEBE5NUKz5qywxqmkIhTiloRi5dhHs=;
+	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=I4hP+2WKOQzyciTl9OP7iu/D22W/UJqD0YPeV3wQANjwvTs25QnO51G8m0yPfjH94FMwEeXmkDoXC2+eni0nKKqqwDtMUxc1MgAEf/D9a/SiuhZLw6Uz9FaPEguHnupvurrXvzD5+iiiVAillBe8pA5tZNU/oiuEq0y+2uF9hgc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R5JpxjZf; arc=none smtp.client-ip=209.85.215.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f196.google.com with SMTP id 41be03b00d2f7-5d8b519e438so1860353a12.1;
+        Sat, 10 Feb 2024 19:13:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707621230; x=1708226030; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2N9wy+XHTqk/bKuRYddF7chtEtJDXYRh+U5N1MNqftU=;
+        b=R5JpxjZfAKn+/40U+ZsSaScEhIAkLvX2yn8EvcmxVsFaHaRSEvf5CbrWVc8Fq/Ha8S
+         aZwZpfMbsVRffWTnxgzl5Ld/DYKLvRuiR2Je+Pq3Rr/YszAqJKErt7ms0Y/+zfuKBRzy
+         QC/NPYZkkAtoyT8XNinb+SKiPtgE7X1NElFaJrumW8mWTJH8XG4uHA81WCDsgUdsoaMd
+         1ThI/7ASuvmtpLiP7TcvXGt6SwW+mkiMgrY7rnyWTYmYOdwLuU33OwKy9CVLG1jyg1fv
+         nPKz01WmvkzGyF8MTAbYjeUZu4UNSfv3KMGJEwbVol+BCpbJNIgkuRn9YMEd2QUhueXv
+         P6wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707621230; x=1708226030;
+        h=content-transfer-encoding:in-reply-to:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2N9wy+XHTqk/bKuRYddF7chtEtJDXYRh+U5N1MNqftU=;
+        b=BVtuQGFI5Vi22CBvUBNtYYEPexAZTnTx/Uic5I8DySroUuDGik2PlL3j/iyXtWnS6E
+         8WkYV7X6r6LA35IYk5pVS9otCSTicMtH4tZCmJfp3Nu8QHSUzXeUfSZ7HGHRGMgiKTKn
+         PF3c6xpeFqfMbMbmURb3tBCzyHK/XQpo3G31C0h+KJQ8hQqkvtC+9NKTGmg3cOWj59cj
+         dUMzowDWPbfElRPbnC0jNAPxFnUPHR0eISR20CxI55nsMmjR7OML3dRg51vY7SrNK6ea
+         WKOKbgS87uldAy6+HBmk1WjhHiet67JgdKGNS0HZ4Z0KbjqiXb7NBsuraMLg5A1AI2hk
+         4zaw==
+X-Gm-Message-State: AOJu0Yxnm6MD6bpc2TzV0cHFbspS9/EVTz36qfamK0hWukNnac6rnK9a
+	49iwYjiYSa1Qqf2guRItBf8jJJKQMeBK68PQVcgqAhrcxggfdSpy
+X-Google-Smtp-Source: AGHT+IFNlFCkvUYbm/KobGvtpiio3fZbegrlImmMeF6yWBX0dEfw8vGW6IAvdpiXn9+5LCeGtGagTg==
+X-Received: by 2002:a05:6a00:1d1f:b0:6dd:b12f:c394 with SMTP id a31-20020a056a001d1f00b006ddb12fc394mr3606387pfx.32.1707621230460;
+        Sat, 10 Feb 2024 19:13:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCW4wLxcBRS7OjTmHnTiz6XNtNA0JbcC01wTTi1vwU9W5Z57rebEG9CE6Toy8xFKXn7wSXRmRjl9Gtt1cMWtkZWF4kMjA4T5Haro1dqWmxTzkaBgzRQ=
+Received: from [127.0.0.1] ([212.107.28.51])
+        by smtp.gmail.com with ESMTPSA id j25-20020aa783d9000000b006e0826bf44csm3053158pfn.172.2024.02.10.19.13.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 10 Feb 2024 19:13:50 -0800 (PST)
+From: Celeste Liu <coelacanthushex@gmail.com>
+X-Google-Original-From: Celeste Liu <CoelacanthusHex@gmail.com>
+Message-ID: <36af140d-63fd-4339-a4ed-b0068bfb5918@gmail.com>
+Date: Sun, 11 Feb 2024 11:13:46 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] btrfs: handle missing chunk mapping more gracefully
+Content-Language: en-GB-large
+To: Qu Wenruo <quwenruo.btrfs@gmx.com>, wqu@suse.com
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+References: <9b53f585503429f5c81eeb222f1e2cb8014807f5.1677722020.git.wqu@suse.com>
+ <20240210143411.393544-1-CoelacanthusHex@gmail.com>
+ <4fc1b0c6-f84d-43c7-b396-695658c7fcb4@gmx.com>
+In-Reply-To: <4fc1b0c6-f84d-43c7-b396-695658c7fcb4@gmx.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) To
- p-i-exch-sc-m01.sberdevices.ru (172.16.192.107)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 183344 [Feb 10 2024]
-X-KSMG-AntiSpam-Version: 6.1.0.3
-X-KSMG-AntiSpam-Envelope-From: avkrasnov@salutedevices.com
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 7 0.3.7 6d6bf5bd8eea7373134f756a2fd73e9456bb7d1a, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;smtp.sberdevices.ru:5.0.1,7.1.1;salutedevices.com:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;100.64.160.123:7.1.2, FromAlignment: s, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2024/02/10 18:28:00 #23491490
-X-KSMG-AntiVirus-Status: Clean, skipped
 
-Scrambling mode is enabled by value (1 << 19). NFC_CMD_SCRAMBLER_ENABLE
-is already (1 << 19), so there is no need to shift it again in CMDRWGEN
-macro.
+On 2024-02-11 03:58, Qu Wenruo wrote:
 
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Cc: <Stable@vger.kernel.org>
-Fixes: 8fae856c5350 ("mtd: rawnand: meson: add support for Amlogic NAND flash controller")
----
- drivers/mtd/nand/raw/meson_nand.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> 
+> On 2024/2/11 01:04, Celeste Liu wrote:
+>> On 3/2/23 09:54, Qu Wenruo wrote:
+>>> [BUG]
+>>> During my scrub rework, I did a stupid thing like this:
+>>>
+>>>           bio->bi_iter.bi_sector = stripe->logical;
+>>>           btrfs_submit_bio(fs_info, bio, stripe->mirror_num);
+>>>
+>>> Above bi_sector assignment is using logical address directly, which
+>>> lacks ">> SECTOR_SHIFT".
+>>>
+>>> This results a read on a range which has no chunk mapping.
+>>>
+>>> This results the following crash:
+>>>
+>>>    BTRFS critical (device dm-1): unable to find logical 11274289152 length 65536
+>>>    assertion failed: !IS_ERR(em), in fs/btrfs/volumes.c:6387
+>>>    ------------[ cut here ]------------
+>>>
+>>> Sure this is all my fault, but this shows a possible problem in real
+>>> world, that some bitflip in file extents/tree block can point to
+>>> unmapped ranges, and trigger above ASSERT(), or if CONFIG_BTRFS_ASSERT
+>>> is not configured, cause invalid pointer.
+>>>
+>>> [PROBLEMS]
+>>> In above call chain, we just don't handle the possible error from
+>>> btrfs_get_chunk_map() inside __btrfs_map_block().
+>>>
+>>> [FIX]
+>>> The fix is pretty straightforward, just replace the ASSERT() with proper
+>>> error handling.
+>>>
+>>> Signed-off-by: Qu Wenruo <wqu@suse.com>
+>>> ---
+>>> Changelog:
+>>> v2:
+>>> - Rebased to latest misc-next
+>>>     The error path in bio.c is already fixed, thus only need to replace
+>>>     the ASSERT() in __btrfs_map_block().
+>>> ---
+>>>    fs/btrfs/volumes.c | 3 ++-
+>>>    1 file changed, 2 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+>>> index 4d479ac233a4..93bc45001e68 100644
+>>> --- a/fs/btrfs/volumes.c
+>>> +++ b/fs/btrfs/volumes.c
+>>> @@ -6242,7 +6242,8 @@ int __btrfs_map_block(struct btrfs_fs_info *fs_info, enum btrfs_map_op op,
+>>>            return -EINVAL;
+>>>
+>>>        em = btrfs_get_chunk_map(fs_info, logical, *length);
+>>> -    ASSERT(!IS_ERR(em));
+>>> +    if (IS_ERR(em))
+>>> +        return PTR_ERR(em);
+>>>
+>>>        map = em->map_lookup;
+>>>        data_stripes = nr_data_stripes(map);
+>>
+>> This bug affects 6.1.y LTS branch but no backport commit of this fix in
+>> 6.1.y branch. Please include it. Thanks.
+>>
+> Just want to make sure, are you hitting the ASSERT()?
 
-diff --git a/drivers/mtd/nand/raw/meson_nand.c b/drivers/mtd/nand/raw/meson_nand.c
-index cdb58aca59c0..2a96a87cf79c 100644
---- a/drivers/mtd/nand/raw/meson_nand.c
-+++ b/drivers/mtd/nand/raw/meson_nand.c
-@@ -63,7 +63,7 @@
- #define CMDRWGEN(cmd_dir, ran, bch, short_mode, page_size, pages)	\
- 	(								\
- 		(cmd_dir)			|			\
--		((ran) << 19)			|			\
-+		(ran)				|			\
- 		((bch) << 14)			|			\
- 		((short_mode) << 13)		|			\
- 		(((page_size) & 0x7f) << 6)	|			\
--- 
-2.35.0
+No, in non-debug build, ASSERT() is noop. So em will be a pointer whose
+value is errno and there is no any error handle for it. And then it
+trigger kernel NULL Pointer Dereference exception in btrfs_get_io_geometry()
+with em->map_lookup (Of course, it's not 0 but 0x5a
+(-EINVAL + offsetof(map_lookup)). But it still is a illegal memory access),
+this kernel thread was killed but the lock hold by this thread are not
+released. After that, all fs operations was block by the lock.
+
+> 
+> If so, please provide the calltrace and btrfs-check output to pin down
+> the cause.
+
+It doesn't happen on my machine, I've notified the finder to send a
+backtrace to the mailing list
+
+> Just backporting the patch is only to make it a little more graceful,
+> but won't solve the root problem.
+
+No. In non debug build, ASSERT() is noop so it lead that there is no any
+error handle code. There is no RAII/SBRM, unexpected exit will lead the
+resources will not be released correctly. If it has unique holder (e.g. mutex),
+it will break all other code that need this resource!
+
+> 
+> Thanks,
+> Qu
 
 
