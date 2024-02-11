@@ -1,87 +1,114 @@
-Return-Path: <stable+bounces-19426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC26850838
-	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 09:49:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D488508A6
+	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 11:39:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D0F31F22A75
-	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 08:49:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BD711C20FF8
+	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 10:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A655859148;
-	Sun, 11 Feb 2024 08:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1855A104;
+	Sun, 11 Feb 2024 10:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9OO97ll"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fnU3eqby"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F8F4CA7A;
-	Sun, 11 Feb 2024 08:49:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924AF59B45;
+	Sun, 11 Feb 2024 10:39:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=134.134.136.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707641387; cv=none; b=L600MAGXOTQ+okDG3oFCZ6yiUbE9m3B8PNACqB7ZatwbBQfFN05VwRHM7iA46q/jAEcunlm2LopKN4eunrpKTIS7P50EclRrMJ4NxJeWxS6lXnm/4x6I43NMreS4K06QMAfjxMQnYlAT4Cqwh05HKJ2Pv/uKbQnfvB8CwPAL9UE=
+	t=1707647972; cv=none; b=O7UukPgwVBx2NXHzZ1PrxqihLb7LXwZ7JK4neCUKjd3mcvluub/JgmeGZ+k5cU3ZlUOl6G9sV6D84+wkjfGAl/GqMp399Ge/HUZ6R8u6SWyFmGNCqmIDoRANYY8c0b5k1CQAGk5Cwa7/7YlYoz2h/xNJqx/pCogOc2KkTedW5vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707641387; c=relaxed/simple;
-	bh=lSj2qY4HiMS3eGrEt2eQjGBTR7Ml2UU11vfPYYcwVjg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TX5+lqyIGwVFheQTe8HzcF7LIkR8PflCfJucJaXFpBSsGgdW8je4vXt5Gjn1DCJFURHQ7e74FBwxMhhRqqJpA1w8QmRKQ7IzZ7RTNSpTdNP17+VpRhMZ3sUb+n5DSx9WkGJHL5AIjQpKjGoXAFOwGO4MrIgKH2kmYezCgf6QzS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9OO97ll; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7074CC433F1;
-	Sun, 11 Feb 2024 08:49:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707641386;
-	bh=lSj2qY4HiMS3eGrEt2eQjGBTR7Ml2UU11vfPYYcwVjg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b9OO97llZFUovYlha9NUjmRcncomElHxPvZI3iaunAe19dSwauzUyeYEKRFLgw7IX
-	 YVgdPW7z8AVKwRoHQDmCJMm+/SDW/SRCiJMFySyL1YDfwRlnKVe/vmZ79/A1awEneY
-	 nyvHr+K+RgdHmrnKIPz+VkuP9S+YXIviYfVS7Syo=
-Date: Sun, 11 Feb 2024 08:49:44 +0000
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-	Avi Kivity <avi@scylladb.com>, Sandeep Dhavale <dhavale@google.com>,
-	Jens Axboe <axboe@kernel.dk>, stable@vger.kernel.org
-Subject: Re: [PATCH v3] fs, USB gadget: Remove libaio I/O cancellation support
-Message-ID: <2024021158-drippy-fifteen-8af1@gregkh>
-References: <20240209193026.2289430-1-bvanassche@acm.org>
- <2024021022-ahoy-vintage-b210@gregkh>
- <e955c7c5-019a-41c6-99f7-f8e3dbee652d@acm.org>
+	s=arc-20240116; t=1707647972; c=relaxed/simple;
+	bh=m415TQ2f6zPniNTVAv0NuTKu+4yIMix/PsLmcmvOR1c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KckgnEZQZyk4uFcAtbICR1KcbcnL+gGf7Yd4pF9UOA9LH6P3U9i+h4kdt1vmMJ9Te5zVqKkQakDmlzFxE21uqeJpw2CcPsdRYEhUtit30NGjb6axpq1mcYnhaFU1gGqYDbSB3qyJiQmZZ1mfZlACWaM6qY2Ao2hWl826M9Dvlro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fnU3eqby; arc=none smtp.client-ip=134.134.136.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707647970; x=1739183970;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=m415TQ2f6zPniNTVAv0NuTKu+4yIMix/PsLmcmvOR1c=;
+  b=fnU3eqbyBf3P1dAgAiE68fFNoY9zxqu0WmtCXDDpWysxL6BJC8IT0uGT
+   Tzvm/kMep3P9HnFWyAJuBDGH4cji2T+Q/fXXV6A7Cqb19pvjOSIyfxIsI
+   +eiMxNhQ6wm8UbiTDm8vR9csELZ2mQtFaCHkwfpGnKnSaE9/yJulfZJnv
+   5XRzh4qFSmTk/DM09I/aBGUqRUaw+G65Rcyf9ZRTIh+OfhKMuygYI1zcF
+   AQGa8vwVupDADO+KakK6zGkc2BFGPmyjkW3DDivb6gHpIO37ymhiML3Yv
+   ySohXMlLc4ei0Oa52Dfk3CMJMpNFHu0sIztKlaQLWrHt1ZhCmSGE3TMx2
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10980"; a="396053097"
+X-IronPort-AV: E=Sophos;i="6.05,260,1701158400"; 
+   d="scan'208";a="396053097"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2024 02:39:29 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,260,1701158400"; 
+   d="scan'208";a="2631665"
+Received: from twinkler-lnx.jer.intel.com ([10.12.231.216])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2024 02:39:28 -0800
+From: Tomas Winkler <tomas.winkler@intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexander Usyskin <alexander.usyskin@intel.com>,
+	Vitaly Lubart <vitaly.lubart@intel.com>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Tomas Winkler <tomas.winkler@intel.com>
+Subject: [char-misc 1/2] mei: me: add arrow lake point S DID
+Date: Sun, 11 Feb 2024 12:39:11 +0200
+Message-ID: <20240211103912.117105-1-tomas.winkler@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e955c7c5-019a-41c6-99f7-f8e3dbee652d@acm.org>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Feb 10, 2024 at 08:55:44AM -0800, Bart Van Assche wrote:
-> On 2/10/24 02:20, Greg Kroah-Hartman wrote:
-> > On Fri, Feb 09, 2024 at 11:30:26AM -0800, Bart Van Assche wrote:
-> > > Fixes: 63b05203af57 ("[PATCH] AIO: retry infrastructure fixes and enhancements")
-> > 
-> > I can't see this git id in Linus's tree, are you sure it is correct?
-> 
-> Thanks Greg for having looked this up. I had not yet realized this but that
-> git commit ID comes from a historic tree. Is there a standard way for referring
-> to patches from historic trees? See also
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-Which historical git tree?  We have lots as you point out:
+Add Arrow Lake S device id.
 
-> https://stackoverflow.com/questions/3264283/linux-kernel-historical-git-repository-with-full-history
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+---
+ drivers/misc/mei/hw-me-regs.h | 1 +
+ drivers/misc/mei/pci-me.c     | 1 +
+ 2 files changed, 2 insertions(+)
 
-That's fine, and I can handle it for really old ones, I should populate
-my local "find the fixes tag" logic to include the historical trees as
-well, but it rarely comes up like this :)
+diff --git a/drivers/misc/mei/hw-me-regs.h b/drivers/misc/mei/hw-me-regs.h
+index 961e5d53a27a8c4221b4b33c..b10536e4974dbdeed046f4f0 100644
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -112,6 +112,7 @@
+ #define MEI_DEV_ID_RPL_S      0x7A68  /* Raptor Lake Point S */
+ 
+ #define MEI_DEV_ID_MTL_M      0x7E70  /* Meteor Lake Point M */
++#define MEI_DEV_ID_ARL_S      0x7F68  /* Arrow Lake Point S */
+ 
+ /*
+  * MEI HW Section
+diff --git a/drivers/misc/mei/pci-me.c b/drivers/misc/mei/pci-me.c
+index 676d566f38ddfd2cbb5c167f..1a614fb7fdb675e77bcb6be8 100644
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -119,6 +119,7 @@ static const struct pci_device_id mei_me_pci_tbl[] = {
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_RPL_S, MEI_ME_PCH15_CFG)},
+ 
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_MTL_M, MEI_ME_PCH15_CFG)},
++	{MEI_PCI_DEVICE(MEI_DEV_ID_ARL_S, MEI_ME_PCH15_CFG)},
+ 
+ 	/* required last entry */
+ 	{0, }
+-- 
+2.43.0
 
-thanks, I'll queue this in a day or so when I get back to the USB patch
-review.
-
-greg k-h
 
