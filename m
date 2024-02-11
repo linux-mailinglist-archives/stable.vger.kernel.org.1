@@ -1,95 +1,135 @@
-Return-Path: <stable+bounces-19429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154E0850945
-	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 13:47:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9C0B850956
+	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 14:04:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 776892879C4
-	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 12:47:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFF481C211E1
+	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 13:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567A044C73;
-	Sun, 11 Feb 2024 12:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FB759B40;
+	Sun, 11 Feb 2024 13:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GhF+6sLO"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F392E851;
-	Sun, 11 Feb 2024 12:46:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766BD1E480;
+	Sun, 11 Feb 2024 13:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707655622; cv=none; b=Ijo8pOaV1WvVpli0ycqSU1/XfcVevzYUVZvXS66rS2udR+6NEt1Tqnx1FPfMIhdJsJ2JzKZ4P6+9JyyCXqxubYMW2WTY7P2LPvr97KCV3mfEq/pNtLZkFr+fHdifh2HR/rHl0tNNA4nyxB8MKqjW35xJvu+i2iK3emulWISlQm4=
+	t=1707656668; cv=none; b=C2bRafU5z4KXjqj1KbLLSb11bZmfZNgweSe74NaUfHxt5o2CBf5xNBYvGE+EDNuevh2HInewNDft6RLrlslw3tBohf4XnRgqvQbJ/MF0ArEiDOS2CyyNqRSEMKACDZfNXJ7Mc/MgCzOVP9CvB730cVf28l7MTZgBl+keuRTqG2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707655622; c=relaxed/simple;
-	bh=g01oYKENux7WU+WmZJ3B6XY2TJekh2CQzkEEp1gxiqo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HULrNf/RfdIgFJVw6aIYHWM3MiZuYhYgkipwHECPcRk41pzWqZEmLiUNH5ocwRy5NaON6dfhZroIrofuM2BAGWgyTZ74FG5m2s5R1GcJwKq6PV/RySnIhzByB0w/qwoBwbHcS6T5eBUvlsdIDwKU44/bNdTCD7rkuxO2lgMcVcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rZ9EW-0005Hj-Sy; Sun, 11 Feb 2024 13:46:56 +0100
-Message-ID: <afb2124c-84dd-4273-8a91-ca0e16f417d1@leemhuis.info>
-Date: Sun, 11 Feb 2024 13:46:56 +0100
+	s=arc-20240116; t=1707656668; c=relaxed/simple;
+	bh=ZBgZA9ODcwNHYL2nZ5Frn5vjDI+vzGIrSTkZZkxY+l4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TFvrSt7Zr5L32hG5kap8VRY/oqPYgZsr2WmHqlYJONZjCD1MPtnQwxQS36sg86/Oc/Zdgl2EYqytMeXEUWUl/tjMH2R16riVLm6yRwG3TzkBNYd2HU4OTnG/j+dc9+Kzriohr5ocseIyaef3h/ZlpO3O+jl8vHSIPX045PrQEVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GhF+6sLO; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1707656666; x=1739192666;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ZBgZA9ODcwNHYL2nZ5Frn5vjDI+vzGIrSTkZZkxY+l4=;
+  b=GhF+6sLONpRNaFKAYF9xL0ID+nJqJgFFQyKp+7nkRidixwZUsm7KSV6v
+   olxyt8+DlTMRTNuyIK6UtZGxRvKXvfc6vQmAIOOZLlP58t2jd5OQFuxAM
+   3EQzxNHOSuPkpkPvXdhtQeVca9pRrEspT2Iv1YDdGjHE5n0UMVPnisRq4
+   np2au9cjBZj6np3lvUa43egBnTEGl8Y1JMcnLr2mTOKV57eOn8+YzKeLJ
+   FbkvxGxdhLB8L1qvWoISjx2aJE6NH0MTnHmSPWfrKO7toetegNBShjAA0
+   ZqZsOfnMJaptLC2Y/UgYCL0of35ROMJZZc3Jk4EtFAY0CwDxYyo8ij3/6
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10980"; a="1756092"
+X-IronPort-AV: E=Sophos;i="6.05,261,1701158400"; 
+   d="scan'208";a="1756092"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2024 05:04:23 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,261,1701158400"; 
+   d="scan'208";a="2407111"
+Received: from twinkler-lnx.jer.intel.com ([10.12.231.216])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2024 05:04:21 -0800
+From: Tomas Winkler <tomas.winkler@intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexander Usyskin <alexander.usyskin@intel.com>,
+	Vitaly Lubart <vitaly.lubart@intel.com>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Tomas Winkler <tomas.winkler@intel.com>
+Subject: [char-misc-next] mei: gsc_proxy: match component when GSC is on different bus
+Date: Sun, 11 Feb 2024 15:04:08 +0200
+Message-ID: <20240211130408.3478-1-tomas.winkler@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] 6.7.0: ASoC: SOF: refactoring breaks sof-rt5682
- audio on chromebook; successfully bisected
-Content-Language: en-US, de-DE
-To: Mole Shang <135e2@135e2.dev>, stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
- pierre-louis.bossart@linux.intel.com, peter.ujfalusi@linux.intel.com,
- ranjani.sridharan@linux.intel.com, sound-open-firmware@alsa-project.org
-References: <6013930.lOV4Wx5bFT@ayana>
-From: "Linux regression tracking #update (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <6013930.lOV4Wx5bFT@ayana>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1707655620;fe1cf99f;
-X-HE-SMSGID: 1rZ9EW-0005Hj-Sy
+Content-Transfer-Encoding: 8bit
 
-On 02.02.24 04:12, Mole Shang wrote:
-> I'm relatively new here, first time reporting a regression, so apologies in 
-> advance if I'm doing something wrong.
-> 
-> I'm using Arch Linux (linux-mainline kernel) on my chromebook Acer Spin 713-2W 
-> (Voxel), and after upgrading linux-mainline from 6.7-rc4 to 6.7-rc5 the audio 
-> setup isn't working anymore. Firstly I suspected its some changes in the sof-
-> firmware, yet got no luck in upgrading sof-firmware (2023.09.2 -> 2023.12). 
-> 
-> On certain chromebooks, audio setup needs custom ALSA ucm confs [1], but after 
-> contacting the chromebook-linux-audio developer [2], I think it's not a conf 
-> problem, but rather a kernel regression.
-> 
-> After hours of bisecting, the first bad commit 31ed8da (ASoC: SOF: sof-audio: 
-> Modify logic for enabling/disabling topology cores) ensures the regression. 
-> demsg log pasted below:
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-Thx for reporting this.
+On Arrow Lake S systems, MEI is no longer strictly connected to bus 0,
+while graphics remain exclusively on bus 0. Adapt the component
+matching logic to accommodate this change:
 
-For the record, in case anyone lands here and wonders if nothing
-happened. The discussion moved elsewhere and a fix is heading towards
-mainline currently:
+Original behavior: Required both MEI and graphics to be on the same
+bus 0.
 
-#regzbot link: https://github.com/thesofproject/linux/issues/4807
-#regzbot monitor:
-https://lore.kernel.org/all/20240208133432.1688-1-peter.ujfalusi@linux.intel.com/
-#regzbot fix: ASoC: SOF: ipc3-topology: Fix pipeline tear down logic
-#regzbot ignore-activity
+New behavior: Only enforces graphics to be on bus 0 (integrated),
+allowing MEI to reside on any bus.
+This ensures compatibility with Arrow Lake S and maintains functionality
+for the legacy systems.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
+---
+Requires 'mei: me: add arrow lake point S DID'
+https://lore.kernel.org/lkml/20240211103912.117105-1-tomas.winkler@intel.com/
+
+ drivers/misc/mei/gsc_proxy/mei_gsc_proxy.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/misc/mei/gsc_proxy/mei_gsc_proxy.c b/drivers/misc/mei/gsc_proxy/mei_gsc_proxy.c
+index be52b113aea937c7c658e06c..89364bdbb1290f5726a34945 100644
+--- a/drivers/misc/mei/gsc_proxy/mei_gsc_proxy.c
++++ b/drivers/misc/mei/gsc_proxy/mei_gsc_proxy.c
+@@ -96,7 +96,8 @@ static const struct component_master_ops mei_component_master_ops = {
+  *
+  *    The function checks if the device is pci device and
+  *    Intel VGA adapter, the subcomponent is SW Proxy
+- *    and the parent of MEI PCI and the parent of VGA are the same PCH device.
++ *    and the VGA is on the bus 0 reserved for built-in devices
++ *    to reject discrete GFX.
+  *
+  * @dev: master device
+  * @subcomponent: subcomponent to match (I915_COMPONENT_SWPROXY)
+@@ -123,7 +124,8 @@ static int mei_gsc_proxy_component_match(struct device *dev, int subcomponent,
+ 	if (subcomponent != I915_COMPONENT_GSC_PROXY)
+ 		return 0;
+ 
+-	return component_compare_dev(dev->parent, ((struct device *)data)->parent);
++	/* Only built-in GFX */
++	return (pdev->bus->number == 0);
+ }
+ 
+ static int mei_gsc_proxy_probe(struct mei_cl_device *cldev,
+@@ -146,7 +148,7 @@ static int mei_gsc_proxy_probe(struct mei_cl_device *cldev,
+ 	}
+ 
+ 	component_match_add_typed(&cldev->dev, &master_match,
+-				  mei_gsc_proxy_component_match, cldev->dev.parent);
++				  mei_gsc_proxy_component_match, NULL);
+ 	if (IS_ERR_OR_NULL(master_match)) {
+ 		ret = -ENOMEM;
+ 		goto err_exit;
+-- 
+2.43.0
+
 
