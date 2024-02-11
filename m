@@ -1,135 +1,94 @@
-Return-Path: <stable+bounces-19430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C0B850956
-	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 14:04:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D182A85097B
+	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 14:54:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFF481C211E1
-	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 13:04:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B5541F24345
+	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 13:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FB759B40;
-	Sun, 11 Feb 2024 13:04:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GhF+6sLO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B92E5B5C5;
+	Sun, 11 Feb 2024 13:54:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766BD1E480;
-	Sun, 11 Feb 2024 13:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC695B5AC
+	for <stable@vger.kernel.org>; Sun, 11 Feb 2024 13:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707656668; cv=none; b=C2bRafU5z4KXjqj1KbLLSb11bZmfZNgweSe74NaUfHxt5o2CBf5xNBYvGE+EDNuevh2HInewNDft6RLrlslw3tBohf4XnRgqvQbJ/MF0ArEiDOS2CyyNqRSEMKACDZfNXJ7Mc/MgCzOVP9CvB730cVf28l7MTZgBl+keuRTqG2U=
+	t=1707659645; cv=none; b=HrY/Ifm9C6F6ueVDGhTZoReUq2IDynm8+pvsCCXTQiEZVizUJJz+ul4S722ujosOJOC0PzflbKS8sTpSEtbAiEXevxLawHHEqYD2B9biHxXXLu1X5a9W5pnuVJyEkUYe5H6aiVUXqbICDbcpisc3ffLXc2tJYOEFvlQNyoWdSkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707656668; c=relaxed/simple;
-	bh=ZBgZA9ODcwNHYL2nZ5Frn5vjDI+vzGIrSTkZZkxY+l4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TFvrSt7Zr5L32hG5kap8VRY/oqPYgZsr2WmHqlYJONZjCD1MPtnQwxQS36sg86/Oc/Zdgl2EYqytMeXEUWUl/tjMH2R16riVLm6yRwG3TzkBNYd2HU4OTnG/j+dc9+Kzriohr5ocseIyaef3h/ZlpO3O+jl8vHSIPX045PrQEVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GhF+6sLO; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1707656666; x=1739192666;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=ZBgZA9ODcwNHYL2nZ5Frn5vjDI+vzGIrSTkZZkxY+l4=;
-  b=GhF+6sLONpRNaFKAYF9xL0ID+nJqJgFFQyKp+7nkRidixwZUsm7KSV6v
-   olxyt8+DlTMRTNuyIK6UtZGxRvKXvfc6vQmAIOOZLlP58t2jd5OQFuxAM
-   3EQzxNHOSuPkpkPvXdhtQeVca9pRrEspT2Iv1YDdGjHE5n0UMVPnisRq4
-   np2au9cjBZj6np3lvUa43egBnTEGl8Y1JMcnLr2mTOKV57eOn8+YzKeLJ
-   FbkvxGxdhLB8L1qvWoISjx2aJE6NH0MTnHmSPWfrKO7toetegNBShjAA0
-   ZqZsOfnMJaptLC2Y/UgYCL0of35ROMJZZc3Jk4EtFAY0CwDxYyo8ij3/6
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10980"; a="1756092"
-X-IronPort-AV: E=Sophos;i="6.05,261,1701158400"; 
-   d="scan'208";a="1756092"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2024 05:04:23 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,261,1701158400"; 
-   d="scan'208";a="2407111"
-Received: from twinkler-lnx.jer.intel.com ([10.12.231.216])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2024 05:04:21 -0800
-From: Tomas Winkler <tomas.winkler@intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexander Usyskin <alexander.usyskin@intel.com>,
-	Vitaly Lubart <vitaly.lubart@intel.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Tomas Winkler <tomas.winkler@intel.com>
-Subject: [char-misc-next] mei: gsc_proxy: match component when GSC is on different bus
-Date: Sun, 11 Feb 2024 15:04:08 +0200
-Message-ID: <20240211130408.3478-1-tomas.winkler@intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1707659645; c=relaxed/simple;
+	bh=QfskRQ2tZ6z9kHMofE2PlUlWAZ+urn2hRUM0gskw7w0=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=A0weBT+AW6dkmOUHve69syta5QDJLVAiTyN9KVrc58N7naDKH6uoJw5M37nbyAuasf6F+6aYuKS5o26xeVrTFIHw+vxz592mAhmSvp2o7tpPBeKDTXzliKdkYzQ/kvfiqpfVWftLnU1zA3rh41SwCemkSqCWly1aXw8sXd/8XX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-363abe44869so23677295ab.3
+        for <stable@vger.kernel.org>; Sun, 11 Feb 2024 05:54:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707659643; x=1708264443;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ADU4lvVGHE+3HsoT81VTSwjst6sh3uN/uviuVPMtQJo=;
+        b=m6ZgtAZvoJ18WMbLtmIjQURj/eREJZyN4SGWKIVwc7MO1GTrul5BquXjylhjg+6Wc9
+         Iof/lhRfMIgAt+ZY4O8H8HCDBcMWXSU9OBT5037WrugeCZKuU/8NLIfKA7aMf74j4HqM
+         Xu+MUcY7ZaCNs5Mi6NgC2qDObUN0sU1Qtk+AW6n63DPupkMMwfed3o103w25h094HrTp
+         J0o7lC7Mcy58HS/Cvr37a7AYwgZVQxgseVk1HrDDkr7xwDwHU0CfemFMDZVTH0QQMwvR
+         566bzmw9vQd3bq+8uDjJ/ySIt/INzqF2ZuO66ZuPO2WvLd7d+8rTjTTI9PmqiJOPUspD
+         ijTQ==
+X-Gm-Message-State: AOJu0YwIdQ5o+LA56qkKtgx6sSEt138hWXDPkQaJJqkBDUzodPYBvHrN
+	eePyBWxxwZsv9zOLSbgukx8YJqTw+HQQRzT5T6JYTbIi8M/DpgptnLIEFHRfLXIRm/UfX1ZJXjd
+	NaG3rFnsdsFlZPQecqnd4xFmJEQOa0sCui43ylDRaXmelUgsHLuqEo3I=
+X-Google-Smtp-Source: AGHT+IEz0MKD6kefqXkAR8vdX7DHm+pBCnj4hCMq0YjZ2b81XNvAEYMDkgb9lwV3dq8/C/1XVyKqbkLkaD23oLLgYdyAf2Qpun4S
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:1d02:b0:363:d720:a9d0 with SMTP id
+ i2-20020a056e021d0200b00363d720a9d0mr383219ila.3.1707659642864; Sun, 11 Feb
+ 2024 05:54:02 -0800 (PST)
+Date: Sun, 11 Feb 2024 05:54:02 -0800
+In-Reply-To: <0000000000001655710600710dd0@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000690cfd06111b7ee6@google.com>
+Subject: Re: [syzbot] [ext4?] KASAN: out-of-bounds Read in ext4_ext_remove_space
+From: syzbot <syzbot+6e5f2db05775244c73b7@syzkaller.appspotmail.com>
+To: achender@linux.vnet.ibm.com, achender@us.ibm.com, adilger.kernel@dilger.ca, 
+	alex@clusterfs.com, axboe@kernel.dk, brauner@kernel.org, jack@suse.cz, 
+	kernel@collabora.com, linux-ext4@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, syzkaller-bugs@googlegroups.com, tytso@mit.edu, 
+	usama.anjum@collabora.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+syzbot suspects this issue was fixed by commit:
 
-On Arrow Lake S systems, MEI is no longer strictly connected to bus 0,
-while graphics remain exclusively on bus 0. Adapt the component
-matching logic to accommodate this change:
+commit 6f861765464f43a71462d52026fbddfc858239a5
+Author: Jan Kara <jack@suse.cz>
+Date:   Wed Nov 1 17:43:10 2023 +0000
 
-Original behavior: Required both MEI and graphics to be on the same
-bus 0.
+    fs: Block writes to mounted block devices
 
-New behavior: Only enforces graphics to be on bus 0 (integrated),
-allowing MEI to reside on any bus.
-This ensures compatibility with Arrow Lake S and maintains functionality
-for the legacy systems.
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=1764f648180000
+start commit:   e6fda526d9db Merge tag 'arm64-fixes' of git://git.kernel.o..
+git tree:       upstream
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1e3d5175079af5a4
+dashboard link: https://syzkaller.appspot.com/bug?extid=6e5f2db05775244c73b7
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=16a56679a80000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14d76b5da80000
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Signed-off-by: Tomas Winkler <tomas.winkler@intel.com>
----
-Requires 'mei: me: add arrow lake point S DID'
-https://lore.kernel.org/lkml/20240211103912.117105-1-tomas.winkler@intel.com/
+If the result looks correct, please mark the issue as fixed by replying with:
 
- drivers/misc/mei/gsc_proxy/mei_gsc_proxy.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+#syz fix: fs: Block writes to mounted block devices
 
-diff --git a/drivers/misc/mei/gsc_proxy/mei_gsc_proxy.c b/drivers/misc/mei/gsc_proxy/mei_gsc_proxy.c
-index be52b113aea937c7c658e06c..89364bdbb1290f5726a34945 100644
---- a/drivers/misc/mei/gsc_proxy/mei_gsc_proxy.c
-+++ b/drivers/misc/mei/gsc_proxy/mei_gsc_proxy.c
-@@ -96,7 +96,8 @@ static const struct component_master_ops mei_component_master_ops = {
-  *
-  *    The function checks if the device is pci device and
-  *    Intel VGA adapter, the subcomponent is SW Proxy
-- *    and the parent of MEI PCI and the parent of VGA are the same PCH device.
-+ *    and the VGA is on the bus 0 reserved for built-in devices
-+ *    to reject discrete GFX.
-  *
-  * @dev: master device
-  * @subcomponent: subcomponent to match (I915_COMPONENT_SWPROXY)
-@@ -123,7 +124,8 @@ static int mei_gsc_proxy_component_match(struct device *dev, int subcomponent,
- 	if (subcomponent != I915_COMPONENT_GSC_PROXY)
- 		return 0;
- 
--	return component_compare_dev(dev->parent, ((struct device *)data)->parent);
-+	/* Only built-in GFX */
-+	return (pdev->bus->number == 0);
- }
- 
- static int mei_gsc_proxy_probe(struct mei_cl_device *cldev,
-@@ -146,7 +148,7 @@ static int mei_gsc_proxy_probe(struct mei_cl_device *cldev,
- 	}
- 
- 	component_match_add_typed(&cldev->dev, &master_match,
--				  mei_gsc_proxy_component_match, cldev->dev.parent);
-+				  mei_gsc_proxy_component_match, NULL);
- 	if (IS_ERR_OR_NULL(master_match)) {
- 		ret = -ENOMEM;
- 		goto err_exit;
--- 
-2.43.0
-
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
