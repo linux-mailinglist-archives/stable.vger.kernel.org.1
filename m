@@ -1,160 +1,72 @@
-Return-Path: <stable+bounces-19434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 865C7850A20
-	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 16:50:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6257E850A34
+	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 17:02:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A41E01C20AF0
-	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 15:50:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EB892841F7
+	for <lists+stable@lfdr.de>; Sun, 11 Feb 2024 16:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 854FA5B689;
-	Sun, 11 Feb 2024 15:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m0nFFH5C"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFEC75C611;
+	Sun, 11 Feb 2024 16:02:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.itouring.de (mail.itouring.de [85.10.202.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967FB2AE74;
-	Sun, 11 Feb 2024 15:50:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7815B689;
+	Sun, 11 Feb 2024 16:02:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.10.202.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707666621; cv=none; b=Id/lU9PlIh/ETXXZ9mSsFXoTiKlzN9PjbX3JHfzTzVRAUP2tAxJRb1du1enjEZrrzMCQ7DyEwC5B+Fosu/D9ay6ciC34+2tYVOgmk0NzshsPBXhNHiMGvllp1fkq7tWsWJcLS2w3OekOD8ap1ldT2ZTx2IeO46cAnCN+ZboSAzA=
+	t=1707667361; cv=none; b=E/5Wb4Fhmgt7LQrvWYwc1kUKH8w0MmPHEJ8HqzRogVE3PEZgZkecGUem8SjO56Nyyt+L8ULjI3tkhU3WoH3Qozx50oDjHkSmpauXCwZ4v5RQLRHUT+PK4k6yFjDwIMNXZA8hdHhkztCfYSdQCF2pm2CnVmL/oSwEdDxiqLJXpzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707666621; c=relaxed/simple;
-	bh=1AeHJtrdMgjm8OhokFhnF96FWl3RsoojhDf2i8SMJ0U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bqxE6b9LiXbGBozzPY6g71vVUWcEHH3BEndplH7H9C2UksTcmmzuGDVYu5nVvScz18Z0wpxHcgFFTUOkgdzv2sxhMSEMIfJtk0AOiHOsWWji2+BP2DhqgHwy4wR+f65yi30dZoYka9Kl2KfY8rDbbPQ84YhnddLAnjKwzY0UMbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m0nFFH5C; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-410cd2c7f27so1494055e9.0;
-        Sun, 11 Feb 2024 07:50:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707666618; x=1708271418; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C6yl3f+TEf2QrklR8BNS/51tQjJKHqU6ha2GsC+d38E=;
-        b=m0nFFH5C7Y0yOpqOLiN4rL917TWCu2KYzHtGUDzkZGPcwuzNOImnNjYF3p7NN8GQMW
-         8qOKRFv2EojqkMCqIdhKBt/SjFh58Du/oRUApIUjMRSUmi6aT5D+XqX9BFwGAt1J/ZPu
-         MleGcAbk3cs23gCM3d1KyDb5IStex1vAAaGCM8dvZWve0N6ZujPcC+0DyvrZb6KdaJQq
-         VFw8JjaP0k0XXcU+5alDPvgdOLuqUJBmjDn3ueDkLlCOqrEwK31Qa7QGGqaKnvP7er9X
-         kNYfH5zlv/hLcvJh6rlqDJl1PsTj4jLWFARNVN+eVYcjDS4JXxYEgJ6M0pkbvI6fiMJq
-         2MKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707666618; x=1708271418;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=C6yl3f+TEf2QrklR8BNS/51tQjJKHqU6ha2GsC+d38E=;
-        b=I/6CwhD9Lx9speyXqPTBph86HBIXuk2jFVI20jAZSP807GFta1XOIP4yIP568XGOB6
-         eoX46lRko2lF+wTYmoNqS1ZScJ1nuXbYTJSJfOG3RpbXMSiX0FH7r47kkcyF9T5y8qoD
-         UkmFgmQ8S1BfH6JhsZUsau8PXA6ANtoXL3SMdUKvTg1H89M0ZSeoZe6M7vU2MKjoxzbp
-         +KSj0Q2d9c9QTFR+pf9cPh92rqAC35BTQKmUcxSAZw+PwNlhdsQH5IqhM6k+ZUxal6jt
-         vhjnr4QPDLqwteXWtDcJCRtzBK/tENrEv7PA9OgbLZXbcFPpR3agJ33bT3zK/PgsDLww
-         IRSA==
-X-Forwarded-Encrypted: i=1; AJvYcCWcy4R6dzbEpgI99gIvPrPHByCCO0Os1lDLz/YK4NusQjzZ0R+AiZ5RI9NOog3PvL4z/hSVjX0nEDDfqFXZsqnhiCiTtlM/giu6d1SWX3hl/ClsZWaXzO/SDGYV4yQHAQ00RaYLiL0zUVbvPmajA5goZvTdTL59e3yLfr8VoGcT
-X-Gm-Message-State: AOJu0YzwHTgzjY1AmIny3dY3sjs9/2jezFILPuSgbatDS99gPnkdD/nL
-	TXZzud9n6hSEjX/uaiWl5z7anNnSx1Rbh+b0vwzKSUCrKqbBZZ4v5LSnBsQa6rNR5bR5Hgf94St
-	wS+tHAlKm8J43MGTzF5EJ0Jrm8/O4XsR1
-X-Google-Smtp-Source: AGHT+IEDuC8Y6MShKtfyIVwfeyPOlr88Fy7/UO6jB0atzdVY8bM1sR6qCNBEEnbJk7goT4IAttwPF9w63WmgJuVvaUY=
-X-Received: by 2002:a5d:64c6:0:b0:33b:734f:3a8d with SMTP id
- f6-20020a5d64c6000000b0033b734f3a8dmr3355234wri.4.1707666617436; Sun, 11 Feb
- 2024 07:50:17 -0800 (PST)
+	s=arc-20240116; t=1707667361; c=relaxed/simple;
+	bh=b/FTp5wr7CP8Mhnbmc++m9Krji2RO/vpS0OpJ7CX8NE=;
+	h=Subject:To:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=f19i66PJ/RIuE5WwcGYOYhxex5zYv8BIUzHh9i2h7MtnGGCSQmmt64jl03QvWF/Jq/fkobDOQlMC+tNAUHJbSZtz5E6CovNdfkiMjnUQDpr7EBk0iU+7ugjG3wBsH3ALUTW/03URS6Cc5sbPEWQNMwo5wR6bPhEHYLkz9Nsqbjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com; spf=pass smtp.mailfrom=applied-asynchrony.com; arc=none smtp.client-ip=85.10.202.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=applied-asynchrony.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=applied-asynchrony.com
+Received: from tux.applied-asynchrony.com (p5ddd7ec8.dip0.t-ipconnect.de [93.221.126.200])
+	by mail.itouring.de (Postfix) with ESMTPSA id 86AAF103702;
+	Sun, 11 Feb 2024 17:02:29 +0100 (CET)
+Received: from [192.168.100.221] (hho.applied-asynchrony.com [192.168.100.221])
+	by tux.applied-asynchrony.com (Postfix) with ESMTP id 31DCBF01605;
+	Sun, 11 Feb 2024 17:02:29 +0100 (CET)
+Subject: Re: I/O errors while writing to external Transcend XS-2000 4TB SSD
+To: Martin Steigerwald <martin@lichtvoll.de>, stable@vger.kernel.org,
+ regressions@lists.linux.dev, linux-usb@vger.kernel.org
+References: <1854085.atdPhlSkOF@lichtvoll.de>
+From: =?UTF-8?Q?Holger_Hoffst=c3=a4tte?= <holger@applied-asynchrony.com>
+Organization: Applied Asynchrony, Inc.
+Message-ID: <5264d425-fc13-6a77-2dbf-6853479051a0@applied-asynchrony.com>
+Date: Sun, 11 Feb 2024 17:02:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240117114742.2587779-1-badhri@google.com> <ZcVPHtPt2Dppe_9q@finisterre.sirena.org.uk>
-In-Reply-To: <ZcVPHtPt2Dppe_9q@finisterre.sirena.org.uk>
-From: =?UTF-8?Q?G=C3=A1bor_Stefanik?= <netrolller.3d@gmail.com>
-Date: Sun, 11 Feb 2024 16:50:09 +0100
-Message-ID: <CA+XFjirAZ8y9SyddEdwt_CfDpP0TFqAYJ0vG4bhWWsrNewJPFQ@mail.gmail.com>
-Subject: Re: [PATCH v2] Revert "usb: typec: tcpm: fix cc role at port reset"
-To: Mark Brown <broonie@kernel.org>
-Cc: Badhri Jagan Sridharan <badhri@google.com>, gregkh@linuxfoundation.org, linux@roeck-us.net, 
-	heikki.krogerus@linux.intel.com, kyletso@google.com, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, rdbabiera@google.com, 
-	amitsd@google.com, stable@vger.kernel.org, frank.wang@rock-chips.com, 
-	regressions@leemhuis.info
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1854085.atdPhlSkOF@lichtvoll.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 
-That's exactly what I predicted would happen.
+On 2024-02-11 16:42, Martin Steigerwald wrote:
+> Hi!
+> I am trying to put data on an external Kingston XS-2000 4 TB SSD using
+> self-compiled Linux 6.7.4 kernel and encrypted BCacheFS. I do not think
+> BCacheFS has any part in the errors I see, but if you disagree feel free
+> to CC the BCacheFS mailing list as you reply.
 
-Mark Brown <broonie@kernel.org> ezt =C3=ADrta (id=C5=91pont: 2024. febr. 8.=
-, Cs, 23:03):
->
-> On Wed, Jan 17, 2024 at 11:47:42AM +0000, Badhri Jagan Sridharan wrote:
-> > This reverts commit 1e35f074399dece73d5df11847d4a0d7a6f49434.
-> >
-> > Given that ERROR_RECOVERY calls into PORT_RESET for Hi-Zing
-> > the CC pins, setting CC pins to default state during PORT_RESET
-> > breaks error recovery.
->
-> Between -rc2 and -rc3 I started seeing boot issues in mainline on
-> rk3399-roc-pc running arm64 defconfig, a bisection identified this patch
-> as having broken things.  The issues manifest as a hang while loading
-> modules from the initd, you can see a full boot log at:
->
->    https://lava.sirena.org.uk/scheduler/job/558789
->
-> which shows a bunch of video drivers loading at the end of the log but I
-> suspect that's not related the actual failure.  A successful boot can be
-> seen here:
->
->    https://lava.sirena.org.uk/scheduler/job/559222
->
-> I do note that the board is powered by USB PD, I've got it connected to
-> a PD power supply which seems potentially relevant to the commit.  The
-> board had been working for a long time, at least as far as boot to
-> initrd goes.
->
-> Full bisect log:
->
-> git bisect start
-> # status: waiting for both good and bad commits
-> # bad: [54be6c6c5ae8e0d93a6c4641cb7528eb0b6ba478] Linux 6.8-rc3
-> git bisect bad 54be6c6c5ae8e0d93a6c4641cb7528eb0b6ba478
-> # status: waiting for good commit(s), bad commit known
-> # good: [41bccc98fb7931d63d03f326a746ac4d429c1dd3] Linux 6.8-rc2
-> git bisect good 41bccc98fb7931d63d03f326a746ac4d429c1dd3
-> # good: [4f18d3fd2975c943be91522d86257806374881b9] Merge tag 'iommu-fixes=
--v6.8-rc2' of git://git.kernel.org/pub/scm/linux/kernel/git/joro/iommu
-> git bisect good 4f18d3fd2975c943be91522d86257806374881b9
-> # good: [6b89b6af459fdd6f2741d0c2e33c67af8193697e] Merge tag 'gfs2-v6.8-r=
-c2-revert' of git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2
-> git bisect good 6b89b6af459fdd6f2741d0c2e33c67af8193697e
-> # good: [bdda52cc664caaf030fdaf51dd715ef5d1f14a26] Merge tag 'i2c-for-6.8=
--rc3' of git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux
-> git bisect good bdda52cc664caaf030fdaf51dd715ef5d1f14a26
-> # bad: [0214960971939697f1499239398874cfc3a52d69] Merge tag 'tty-6.8-rc3'=
- of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty
-> git bisect bad 0214960971939697f1499239398874cfc3a52d69
-> # bad: [3caf2b2ad7334ef35f55b95f3e1b138c6f77b368] usb: ulpi: Fix debugfs =
-directory leak
-> git bisect bad 3caf2b2ad7334ef35f55b95f3e1b138c6f77b368
-> # good: [7c4650ded49e5b88929ecbbb631efb8b0838e811] xhci: handle isoc Babb=
-le and Buffer Overrun events properly
-> git bisect good 7c4650ded49e5b88929ecbbb631efb8b0838e811
-> # good: [cc509b6a47e7c8998d9e41c273191299d5d9d631] usb: chipidea: core: h=
-andle power lost in workqueue
-> git bisect good cc509b6a47e7c8998d9e41c273191299d5d9d631
-> # good: [b2d2d7ea0dd09802cf5a0545bf54d8ad8987d20c] usb: f_mass_storage: f=
-orbid async queue when shutdown happen
-> git bisect good b2d2d7ea0dd09802cf5a0545bf54d8ad8987d20c
-> # bad: [b717dfbf73e842d15174699fe2c6ee4fdde8aa1f] Revert "usb: typec: tcp=
-m: fix cc role at port reset"
-> git bisect bad b717dfbf73e842d15174699fe2c6ee4fdde8aa1f
-> # good: [032178972f8e992b90f9794a13265fec8c8314b0] usb: gadget: pch_udc: =
-fix an Excess kernel-doc warning
-> git bisect good 032178972f8e992b90f9794a13265fec8c8314b0
-> # first bad commit: [b717dfbf73e842d15174699fe2c6ee4fdde8aa1f] Revert "us=
-b: typec: tcpm: fix cc role at port reset"
+This is indeed a known bug with bcachefs on USB-connected devices.
+Apply the following commit:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/fs/bcachefs?id=3e44f325f6f75078cdcd44cd337f517ba3650d05
+
+This and some other commits are already scheduled for -stable.
+
+Holger
 
