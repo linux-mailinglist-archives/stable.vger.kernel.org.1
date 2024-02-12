@@ -1,225 +1,114 @@
-Return-Path: <stable+bounces-19478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF3CF8518A0
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 17:05:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8A78518CF
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 17:17:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 761A8281B74
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 16:05:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F21931C2134B
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 16:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F048F3D0A8;
-	Mon, 12 Feb 2024 16:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H5xdMN8S"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D893D0C9;
+	Mon, 12 Feb 2024 16:17:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE1EF3CF7C;
-	Mon, 12 Feb 2024 16:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A833D0B6;
+	Mon, 12 Feb 2024 16:17:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707753947; cv=none; b=Ll8sEDlvBoAd+htlwcFM0wKxvoSwD7HkdUPXSh05as3qpSw4n8gP8iqdqgaO3+t3UQHphwEgbIuaTtHpbN251MdWslZuULx288WaeQRv1cXSyqucqse6dSxQe6HI8i8EVUpekIn3U5kmWJLEft5Ejsu42NGUCiGB4TaDnFC914E=
+	t=1707754623; cv=none; b=XFpIcMo+wADh4TZIX5BQBpfK3DkkuGswYjIpcgGDFEyr2uqINJnCcg7e5y5hKQY7B4aZCNuZmZHpFhxGv474jBj1Yja9J1ySdj1iu/+ThsNfXsyhlNNvSpLSVmvM6rZ/Yh27DQmWicsUsErrW2uvfiHk0l4OFb/Pyz6YitFtYIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707753947; c=relaxed/simple;
-	bh=PVnetzBOH34x39uT5RM+QQRj/93uXMs1sWHwvNANQ6o=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gk+sp0NWqrqJxR5Osj3lv0OCnKMo0KNtyeJDgLjM7kqLWtmNusYOoUkv4KxfOhHW4GsRqW1qzW8lscXk4/X+iOlOZ6HuUYv/rHRTRKJ4QP172x9WJw3Nm/Qfy+fH1Y/jZDTKGQ1GvjKeJl1uOkkHPv/KH5u9+I41gQ4WJ63epv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H5xdMN8S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBDAC433F1;
-	Mon, 12 Feb 2024 16:05:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707753947;
-	bh=PVnetzBOH34x39uT5RM+QQRj/93uXMs1sWHwvNANQ6o=;
-	h=From:To:Cc:Subject:Date:From;
-	b=H5xdMN8SecoFM2W/G3J7KfIOpJOnULuNUcgoL/oKLg+ZvqYE8eBBWyT7L0b4BgeEA
-	 r6Mg4hTrtKolVsF88U6R0kRFAYAFOIp8pZTkobZGOnTBdxWy/yVkCDJC3AoJ9g/Q+E
-	 e4hyC3eaXDryq0JjXntd5Tc4YZjfAUQSP6foWOBRcK/8vj96RXPdlaomFK7fimemr8
-	 emUcBjiaJeJgLwJs8dteLhJUMMfqO4QHR02erWvns5fg99wVhGblS77HQGgKCG6Z4+
-	 5KIeItZ6PxyG5kjQUbwpx7kJx3SDjb3tPCATr93wm7q+0j05rJSnibgGlbnsTZtyT9
-	 VvRpHhLWmYG+g==
-From: Chao Yu <chao@kernel.org>
-To: stable@vger.kernel.org
-Cc: linux-f2fs-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	Sheng Yong <shengyong@oppo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.1] f2fs: add helper to check compression level
-Date: Tue, 13 Feb 2024 00:05:30 +0800
-Message-Id: <20240212160530.1017205-1-chao@kernel.org>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1707754623; c=relaxed/simple;
+	bh=XiSCSWQLPVABFex+zdas6pNksSgMX3x6uGMmE8PYqjo=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=V9E/lX84xJNNQFbj5xmwEjHgEF8DQshE11Z/FAa15L8vhtPKiKaKp4OEbMB0BKmcG1F3fBuIBWHZ2ZoHBHBwWEy8zZnjhzpgHBnstSwo11oIkQhMENvZfggrpul8OWvl6Fn6WYqS/hGMP+xoqTVpXNrqWSONy4KHohHVWDb1S10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rZYzK-0002Kc-Tp; Mon, 12 Feb 2024 17:16:58 +0100
+Message-ID: <f9f89284-0f48-4971-ad8d-86938a82fafc@leemhuis.info>
+Date: Mon, 12 Feb 2024 17:16:58 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US, de-DE
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
+ David Laight <David.Laight@ACULAB.COM>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: [regression] linux-6.6.y, minmax: virtual memory exhausted in i586
+ chroot during kernel compilation
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1707754621;0deb7cf8;
+X-HE-SMSGID: 1rZYzK-0002Kc-Tp
 
-From: Sheng Yong <shengyong@oppo.com>
+Hi Greg, Sasha, and David,
 
-commit c571fbb5b59a3741e48014faa92c2f14bc59fe50 upstream.
+I noticed a regression report in bugzilla.kernel.org that seems to be
+specific to the linux-6.6.y series:
 
-This patch adds a helper function to check if compression level is
-valid.
+Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=218484 :
 
-Meanwhile, this patch fixes a reported issue [1]:
+> After upgrading to version 6.6.16, the kernel compilation on a i586
+> arch (on a 32bit chroot in a 64bit host) fails with a message:
+> 
+> virtual memory exhausted: Cannot allocate memory
+> 
+> this happens even lowering the number of parallel compilation
+> threads. On a x86_64 arch the same problem doesn't occur. It's not
+> clear whether some weird recursion is triggered that exhausts the
+> memory, but it seems that the problem is caused by the patchset
+> 'minmax' added to the 6.6.16 version, in particular it seems caused
+> by these patches:
+> 
+> - minmax-allow-min-max-clamp-if-the-arguments-have-the-same-signedness.patch
+> - minmax-fix-indentation-of-__cmp_once-and-__clamp_once.patch
+> - minmax-allow-comparisons-of-int-against-unsigned-char-short.patch
+> - minmax-relax-check-to-allow-comparison-between-unsigned-arguments-and-signed-constants.patch
+> 
+> Reverting those patches fixes the memory exhaustion problem during compilation.
 
-The issue is easily reproducible by:
+The reporter later added:
 
-1. dd if=/dev/zero of=test.img count=100 bs=1M
-2. mkfs.f2fs -f -O compression,extra_attr ./test.img
-3. mount -t f2fs -o compress_algorithm=zstd:6,compress_chksum,atgc,gc_merge,lazytime ./test.img /mnt
+> From a quick test the same problem doesn't occur in 6.8-rc4.
+See the ticket for more details.
 
-resulting in
+Note, you have to use bugzilla to reach the reporter, as I sadly[1] can
+not CCed them in mails like this.
 
-[   60.789982] F2FS-fs (loop0): invalid zstd compress level: 6
+[TLDR for the rest of this mail: I'm adding this report to the list of
+tracked Linux kernel regressions; the text you find below is based on a
+few templates paragraphs you might have encountered already in similar
+form.]
 
-A bugzilla report has been submitted in
-https://bugzilla.kernel.org/show_bug.cgi?id=218471
+BTW, let me use this mail to also add the report to the list of tracked
+regressions to ensure it's doesn't fall through the cracks:
 
-[1] https://lore.kernel.org/lkml/ZcWDOjKEnPDxZ0Or@google.com/T/
+#regzbot introduced: 204c653d5d0c79940..9487d93f172acef
+https://bugzilla.kernel.org/show_bug.cgi?id=218484
+#regzbot title: minmax: virtual memory exhausted in 6.6.16 with i586 chroot
+#regzbot ignore-activity
 
-The root cause is commit 00e120b5e4b5 ("f2fs: assign default compression
-level") tries to check low boundary of compress level w/ zstd_min_clevel(),
-however, since commit e0c1b49f5b67 ("lib: zstd: Upgrade to latest upstream
-zstd version 1.4.10"), zstd supports negative compress level, it cast type
-for negative value returned from zstd_min_clevel() to unsigned int in below
-check condition, result in repored issue.
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
-	if (level < zstd_min_clevel() || ...
-
-This patch fixes this issue by casting type for level to int before
-comparison.
-
-Fixes: 00e120b5e4b5 ("f2fs: assign default compression level")
-Signed-off-by: Sheng Yong <shengyong@oppo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Chao Yu <chao@kernel.org>
----
- fs/f2fs/compress.c | 27 +++++++++++++++++++++++++++
- fs/f2fs/f2fs.h     |  2 ++
- fs/f2fs/super.c    |  4 ++--
- 3 files changed, 31 insertions(+), 2 deletions(-)
-
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index 4cb58e8d699e..4e83cfa1b073 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -55,6 +55,7 @@ struct f2fs_compress_ops {
- 	int (*init_decompress_ctx)(struct decompress_io_ctx *dic);
- 	void (*destroy_decompress_ctx)(struct decompress_io_ctx *dic);
- 	int (*decompress_pages)(struct decompress_io_ctx *dic);
-+	bool (*is_level_valid)(int level);
- };
- 
- static unsigned int offset_in_cluster(struct compress_ctx *cc, pgoff_t index)
-@@ -322,11 +323,21 @@ static int lz4_decompress_pages(struct decompress_io_ctx *dic)
- 	return 0;
- }
- 
-+static bool lz4_is_level_valid(int lvl)
-+{
-+#ifdef CONFIG_F2FS_FS_LZ4HC
-+	return !lvl || (lvl >= LZ4HC_MIN_CLEVEL && lvl <= LZ4HC_MAX_CLEVEL);
-+#else
-+	return lvl == 0;
-+#endif
-+}
-+
- static const struct f2fs_compress_ops f2fs_lz4_ops = {
- 	.init_compress_ctx	= lz4_init_compress_ctx,
- 	.destroy_compress_ctx	= lz4_destroy_compress_ctx,
- 	.compress_pages		= lz4_compress_pages,
- 	.decompress_pages	= lz4_decompress_pages,
-+	.is_level_valid		= lz4_is_level_valid,
- };
- #endif
- 
-@@ -490,6 +501,11 @@ static int zstd_decompress_pages(struct decompress_io_ctx *dic)
- 	return 0;
- }
- 
-+static bool zstd_is_level_valid(int lvl)
-+{
-+	return lvl >= zstd_min_clevel() && lvl <= zstd_max_clevel();
-+}
-+
- static const struct f2fs_compress_ops f2fs_zstd_ops = {
- 	.init_compress_ctx	= zstd_init_compress_ctx,
- 	.destroy_compress_ctx	= zstd_destroy_compress_ctx,
-@@ -497,6 +513,7 @@ static const struct f2fs_compress_ops f2fs_zstd_ops = {
- 	.init_decompress_ctx	= zstd_init_decompress_ctx,
- 	.destroy_decompress_ctx	= zstd_destroy_decompress_ctx,
- 	.decompress_pages	= zstd_decompress_pages,
-+	.is_level_valid		= zstd_is_level_valid,
- };
- #endif
- 
-@@ -555,6 +572,16 @@ bool f2fs_is_compress_backend_ready(struct inode *inode)
- 	return f2fs_cops[F2FS_I(inode)->i_compress_algorithm];
- }
- 
-+bool f2fs_is_compress_level_valid(int alg, int lvl)
-+{
-+	const struct f2fs_compress_ops *cops = f2fs_cops[alg];
-+
-+	if (cops->is_level_valid)
-+		return cops->is_level_valid(lvl);
-+
-+	return lvl == 0;
-+}
-+
- static mempool_t *compress_page_pool;
- static int num_compress_pages = 512;
- module_param(num_compress_pages, uint, 0444);
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 5c76ba764b71..e5a9498b89c0 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -4219,6 +4219,7 @@ bool f2fs_compress_write_end(struct inode *inode, void *fsdata,
- int f2fs_truncate_partial_cluster(struct inode *inode, u64 from, bool lock);
- void f2fs_compress_write_end_io(struct bio *bio, struct page *page);
- bool f2fs_is_compress_backend_ready(struct inode *inode);
-+bool f2fs_is_compress_level_valid(int alg, int lvl);
- int f2fs_init_compress_mempool(void);
- void f2fs_destroy_compress_mempool(void);
- void f2fs_decompress_cluster(struct decompress_io_ctx *dic, bool in_task);
-@@ -4283,6 +4284,7 @@ static inline bool f2fs_is_compress_backend_ready(struct inode *inode)
- 	/* not support compression */
- 	return false;
- }
-+static inline bool f2fs_is_compress_level_valid(int alg, int lvl) { return false; }
- static inline struct page *f2fs_compress_control_page(struct page *page)
- {
- 	WARN_ON_ONCE(1);
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 3805162dcef2..0c0d0671febe 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -628,7 +628,7 @@ static int f2fs_set_lz4hc_level(struct f2fs_sb_info *sbi, const char *str)
- 	if (kstrtouint(str + 1, 10, &level))
- 		return -EINVAL;
- 
--	if (level < LZ4HC_MIN_CLEVEL || level > LZ4HC_MAX_CLEVEL) {
-+	if (!f2fs_is_compress_level_valid(COMPRESS_LZ4, level)) {
- 		f2fs_info(sbi, "invalid lz4hc compress level: %d", level);
- 		return -EINVAL;
- 	}
-@@ -666,7 +666,7 @@ static int f2fs_set_zstd_level(struct f2fs_sb_info *sbi, const char *str)
- 	if (kstrtouint(str + 1, 10, &level))
- 		return -EINVAL;
- 
--	if (level < zstd_min_clevel() || level > zstd_max_clevel()) {
-+	if (!f2fs_is_compress_level_valid(COMPRESS_ZSTD, level)) {
- 		f2fs_info(sbi, "invalid zstd compress level: %d", level);
- 		return -EINVAL;
- 	}
--- 
-2.40.1
-
+[1] because bugzilla.kernel.org tells users upon registration their
+"email address will never be displayed to logged out users"
 
