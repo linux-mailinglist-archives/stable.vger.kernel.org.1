@@ -1,113 +1,95 @@
-Return-Path: <stable+bounces-19481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36DC851A20
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 17:54:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5284851D8E
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 20:04:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B5EC1F24172
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 16:54:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2096288F21
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 19:04:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E123E49E;
-	Mon, 12 Feb 2024 16:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QazmYjNS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58BB647772;
+	Mon, 12 Feb 2024 19:04:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFF33D565;
-	Mon, 12 Feb 2024 16:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 7745646444
+	for <stable@vger.kernel.org>; Mon, 12 Feb 2024 19:04:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.131.102.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707756819; cv=none; b=T3bscHW8rqqFPhxNmbfhbad/8/0avyLV4Dumv2AZ16xD4O+oZkRbeND1N3hNZtxKTUfzPjchfHtIhQpIbBi8ZQs/WYkdrurD6Jhu5/EMFofJCp80QxbvwvFjAIzkfnoF2p3DMU2Ffaiy3T/TQiFyw98a43HnUHcmV3jC09pXsGk=
+	t=1707764679; cv=none; b=mc8NxCSsNkv9Lj6E7JlCNfLYocQJI421MwvswcKrLktrPMDPTtF+RcYuwMZHb8J7yMF9EkqOT94uKADeSkrx55NVAoEvcbVQUqwVqKKmWXssnX0fsab5CxxC27Mrgq2b5xOYmg2pG1FgKEsO0PJlfTM4XFIE/NiY1q7S2h7FprA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707756819; c=relaxed/simple;
-	bh=mFlQy5tvAhpclwFJjCDguvWh8qyMMwHvkbQ54iBIAmw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L2KuGIf8VnS+3eu1CLT1yd6fP4Z/4wB/y8HSbEhLvZKz0vkXKyjVOjeG8GX0BR8Sw+XpmmGqgGSw6TXkO8uLqRChIqUP7d1aJT5ms5GHKRxTMCYMGY9sda5A4iAfBbCUc2XpIC/61802pIq3Fc6/hNSwtRvzkNahgtObwchmKas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QazmYjNS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1915C43394;
-	Mon, 12 Feb 2024 16:53:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707756818;
-	bh=mFlQy5tvAhpclwFJjCDguvWh8qyMMwHvkbQ54iBIAmw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QazmYjNSyuroI/MJ8mMKecXHVW5sxOkWkFowEUaf8GAOZB+a9A050hSJnzs2a11eI
-	 IJbeObTk2s8AqG8fQC3tBleFxU2HldiJzT/XbYZU+n4mmc/iNiO+lA6u6bRyNLLwxF
-	 pPQFzowW2rK+LM/PWFyNHWzeBkQbjU5jumldM+TxJXnSo1/vMqJDIsPsFOnquPneLE
-	 CFiuelrBWXjfaTdPXAaKo/HOenF46p0KRRBe7wPmd4jlYKhtvJ3OKfaMIdg9NZPwUC
-	 unUw2Gd+4A4yutjXN+LT13lpw+tk+i8zIbgbpAZwlly0EqTb3izU7gbV7NkRMUcR0y
-	 b9TR7sW40xLYQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1rZZZ2-000000007N7-2kAz;
-	Mon, 12 Feb 2024 17:53:52 +0100
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	linux-arm-msm@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 05/10] arm64: dts: qcom: sc8280xp-x13s: limit pcie4 link speed
-Date: Mon, 12 Feb 2024 17:50:38 +0100
-Message-ID: <20240212165043.26961-6-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240212165043.26961-1-johan+linaro@kernel.org>
-References: <20240212165043.26961-1-johan+linaro@kernel.org>
+	s=arc-20240116; t=1707764679; c=relaxed/simple;
+	bh=L88DGTxBYgIkeriiYxq9PZjYUYpswT+GoOTTkCN5DvQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UD2f5FHIwFeD+DYCe9614zvo8iISaaP5lnZgssv9GxBxxrtEB1yut/IWPZ5DyOgDirLI/0FEAeXnkSWXQHnYGWAwCz70/l33pt5QFW6M9vKyo2GkIg9w0FCSi4Nr6QDsqFrsDfqZoLDl+5d0VU/clLPsWR7KRq6uuXkImsB7hnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=netrider.rowland.org; arc=none smtp.client-ip=192.131.102.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
+Received: (qmail 345404 invoked by uid 1000); 12 Feb 2024 14:04:31 -0500
+Date: Mon, 12 Feb 2024 14:04:31 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Oliver Neukum <oneukum@suse.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+  Ricardo Ribalda <ribalda@chromium.org>,
+  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+  Mauro Carvalho Chehab <mchehab@kernel.org>, linux-usb@vger.kernel.org,
+  linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+  stable@vger.kernel.org
+Subject: Re: [PATCH v4] media: ucvideo: Add quirk for Logitech Rally Bar
+Message-ID: <6aade777-d97c-4c65-b542-14ce5b39abb6@rowland.harvard.edu>
+References: <20240108-rallybar-v4-1-a7450641e41b@chromium.org>
+ <20240204105227.GB25334@pendragon.ideasonboard.com>
+ <ca89eb86-a566-422c-9448-d8d5254d54b8@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ca89eb86-a566-422c-9448-d8d5254d54b8@suse.com>
 
-Limit the WiFi PCIe link speed to Gen2 speed (500 GB/s), which is the
-speed that the boot firmware has brought up the link at (and that
-Windows uses).
+On Mon, Feb 12, 2024 at 01:22:42PM +0100, Oliver Neukum wrote:
+> On 04.02.24 11:52, Laurent Pinchart wrote:
+> > Hi Ricardo,
+> > 
+> > Thank you for the patch.
+> 
+> Hi,
+> 
+> sorry for commenting on this late, but this patch has
+> a fundamental issue. In fact this issue is the reason the
+> handling for quirks is in usbcore at all.
+> 
+> If you leave the setting/clearing of this flag to a driver you
+> are introducing a race condition. The driver may or may not be
+> present at the time a device is enumerated. And you have
+> no idea how long the autosuspend delay is on a system
+> and what its default policy is regarding suspending
+> devices.
+> That means that a device can have been suspended and
+> resumed before it is probed. On a device that needs
+> RESET_RESUME, we are in trouble.
 
-This is specifically needed to avoid a large amount of link errors when
-restarting the link during boot (but which are currently not reported).
+Not necessarily.  If the driver knows that one of these devices may 
+already have been suspend and resumed, it can issue its own preemptive 
+reset at probe time.
 
-This may potentially also help with intermittent failures to download
-the ath11k firmware during boot which can be seen when there is a
-longer delay between restarting the link and loading the WiFi driver
-(e.g. when using full disk encryption).
+> The inverse issue will arise if a device does not react
+> well to RESET_RESUME. You cannot rule out that a device
+> that must not be reset will be reset.
 
-Fixes: 123b30a75623 ("arm64: dts: qcom: sc8280xp-x13s: enable WiFi controller")
-Cc: stable@vger.kernel.org      # 6.2
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts | 2 ++
- 1 file changed, 2 insertions(+)
+That's a separate issue, with its own list of potential problems.
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-index 511d53d9c5a1..ff4b896b1bbf 100644
---- a/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-+++ b/arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-@@ -863,6 +863,8 @@ &pcie3a_phy {
- };
- 
- &pcie4 {
-+	max-link-speed = <2>;
-+
- 	perst-gpios = <&tlmm 141 GPIO_ACTIVE_LOW>;
- 	wake-gpios = <&tlmm 139 GPIO_ACTIVE_LOW>;
- 
--- 
-2.43.0
+> I am sorry, but it seems to me that the exceptions need
+> to go into usbcore.
 
+If we do then we may want to come up with a better scheme for seeing 
+which devices need to have a quirk flag set.  A static listing probably 
+won't be good enough; the decision may have to be made dynamically.
+
+Alan Stern
 
