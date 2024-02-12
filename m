@@ -1,129 +1,130 @@
-Return-Path: <stable+bounces-19492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D438185218F
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 23:40:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A189385218D
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 23:39:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 130271C229D9
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 22:40:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31E50B21744
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 22:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC264D9F8;
-	Mon, 12 Feb 2024 22:39:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="L2Dy9W00"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B7C74EB3D;
+	Mon, 12 Feb 2024 22:39:30 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0245D4F885;
-	Mon, 12 Feb 2024 22:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C99734EB3A;
+	Mon, 12 Feb 2024 22:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707777587; cv=none; b=cbJruVj0B4NuaWcAgKVmBqxNXJZely3f8bqAUZN5TfhsULCcrCn+vPRVd8dDmuSyFUnPvnyyhQDX4MceJLWybDIGb35wty3wa9wUzRT6DP4uaeHswyad0oW9gtArQGhtPMPSoDC1dt9hlLL7wpxce7YOp/MKbpktcztlqst6jVw=
+	t=1707777569; cv=none; b=Xqg5dFoQwzwgBaOi/8S8WyR7JTWl/fa09ZNPwjwtnSjViAsxn1RugObUMLPLOv1NjdpFR/J7eyROgnv5k4GGqzI+mt+w6Nhsvt6dM9O76CmA9tXE3SAda/XrZw+YnVnnobqxmFmZVOOyGMDRRJQVy5TdC3klsU/PoYX4WT9yBro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707777587; c=relaxed/simple;
-	bh=Gbq6N9yaMNPEmQq/1JXGM3VVTsxorM+XxrcI+HHAiCY=;
-	h=Date:To:From:Subject:Message-Id; b=bGkmeRm9DeRaVlv0C8l+t8jOe/MaLZUMAWkw6NiePBZyezG2pp4UssNSeJBxha5TVZmZgWYv2UeziaGnaz3vp3A6MxZIfJea7FVdmL+5MAB1eQBtZbbh1khHWMeVL21JU7UTAleYwMhdR3fzJ6jBj458dmY6EmyBlp34wl8vb+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=L2Dy9W00; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A04C433F1;
-	Mon, 12 Feb 2024 22:39:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1707777586;
-	bh=Gbq6N9yaMNPEmQq/1JXGM3VVTsxorM+XxrcI+HHAiCY=;
-	h=Date:To:From:Subject:From;
-	b=L2Dy9W00SsJoF1uMzI7v9VbSIcWF9bKmfT6darMm8EIrxGwWLuo/cjUSyjS3FugdD
-	 ySGiMOSLFRsXeiwdTq+dgWZTc5Yzcrk8Si3WEhkSbskcsQDbXLAa+lWh01/VfK+ZNz
-	 TjA9h/8RIV6s1tYGybSQuyohwIkG3XmXNAy5+BtU=
-Date: Mon, 12 Feb 2024 14:39:45 -0800
-To: mm-commits@vger.kernel.org,vincenzo.frascino@arm.com,stable@vger.kernel.org,ryabinin.a.a@gmail.com,glider@google.com,elver@google.com,dvyukov@google.com,andreyknvl@gmail.com,arnd@arndb.de,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kasan-test-avoid-gcc-warning-for-intentional-overflow.patch added to mm-unstable branch
-Message-Id: <20240212223946.52A04C433F1@smtp.kernel.org>
+	s=arc-20240116; t=1707777569; c=relaxed/simple;
+	bh=chCgSI9YJkrGnYJm8WBzd/jHa1AAREfUA3WwG3qlx2U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OJJwnWzg59I6ME+x/w8mnU0IW/o0QYSKLoVI4Jk7QNLIeOnISZBXyoKypbOxJQEEJikNiVNyLPlZeM9u+ogcDB2J0xH2zy1AFMGUo/PDw0fbJtzqUSz1rXVaO3cKSAzRwvZn9fndDyitU4pFAFseKe4D9QZH6WQvcz9daowqVZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D304C433C7;
+	Mon, 12 Feb 2024 22:39:28 +0000 (UTC)
+Date: Mon, 12 Feb 2024 17:40:11 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Tim Chen <tim.c.chen@linux.intel.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, Linux trace kernel
+ <linux-trace-kernel@vger.kernel.org>, Masami Hiramatsu
+ <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Vincent Donnefort <vdonnefort@google.com>, Sven Schnelle
+ <svens@linux.ibm.com>, Mete Durlu <meted@linux.ibm.com>, stable
+ <stable@vger.kernel.org>
+Subject: Re: [PATCH] tracing: Fix wasted memory in saved_cmdlines logic
+Message-ID: <20240212174011.068211d9@gandalf.local.home>
+In-Reply-To: <dfa253e01ba9164abdd47da489c2a3da5da5cc93.camel@linux.intel.com>
+References: <20240208105328.7e73f71d@rorschach.local.home>
+	<dfa253e01ba9164abdd47da489c2a3da5da5cc93.camel@linux.intel.com>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Mon, 12 Feb 2024 14:08:29 -0800
+Tim Chen <tim.c.chen@linux.intel.com> wrote:
 
-The patch titled
-     Subject: kasan/test: avoid gcc warning for intentional overflow
-has been added to the -mm mm-unstable branch.  Its filename is
-     kasan-test-avoid-gcc-warning-for-intentional-overflow.patch
+> > Now, instead of saving only 128 comms by default, by using this wasted
+> > space at the end of the structure it can save over 8000 comms and even
+> > saves space by removing the need for allocating the other array.  
+> 
+> The change looks good to me code wise.  But it seems like we are still
+> overallocating as we can now accommodate 8000 comms when 128
+> was asked for.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kasan-test-avoid-gcc-warning-for-intentional-overflow.patch
+That's because that memory is allocated regardless of if we only asked for
+128. Why not use it?
 
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+> 
+> Wonder if we can reduce the default ask to 127 comm so we don't have to
+> go to the next page order?
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+The internal structure does power of 2 allocations, and is just a little
+over 128k in size, causing 256k to be allocated, which leaves just under
+128k of wasted memory. And on top of that, the old way even allocated
+another array. So instead, since this is already allocated, we just use it.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Now I may add a way to also include the other counter too, so that we can
+have both, and will make the default slightly smaller.
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+We have three arrays:
 
-------------------------------------------------------
-From: Arnd Bergmann <arnd@arndb.de>
-Subject: kasan/test: avoid gcc warning for intentional overflow
-Date: Mon, 12 Feb 2024 12:15:52 +0100
+ map_pid_to_cmdline[] which is the bulk of the allocation.
+ map_cmdline_to_pid[] - which is cmdline_num * sizeof(int)
+ saved_cmdlines[] - which is cmdline_num * TASK_COMM_LEN(16).
 
-The out-of-bounds test allocates an object that is three bytes too short
-in order to validate the bounds checking.  Starting with gcc-14, this
-causes a compile-time warning as gcc has grown smart enough to understand
-the sizeof() logic:
+The first one above is a static array, the second is a pointer, and the
+third is the end of the structure that uses the rest of wasted space. Now,
+instead of allocating the map_cmdline_to_pid[], we could add that at the
+end.
 
-mm/kasan/kasan_test.c: In function 'kmalloc_oob_16':
-mm/kasan/kasan_test.c:443:14: error: allocation of insufficient size '13' for type 'struct <anonymous>' with size '16' [-Werror=alloc-size]
-  443 |         ptr1 = kmalloc(sizeof(*ptr1) - 3, GFP_KERNEL);
-      |              ^
+The following patch drops the default down to 6000 (which is also more than
+enough) but also saves from allocating another array.
 
-Hide the actual computation behind a RELOC_HIDE() that ensures
-the compiler misses the intentional bug.
+-- Steve
 
-Link: https://lkml.kernel.org/r/20240212111609.869266-1-arnd@kernel.org
-Fixes: 3f15801cdc23 ("lib: add kasan test module")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Marco Elver <elver@google.com>
-Cc: Vincenzo Frascino <vincenzo.frascino@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/kasan/kasan_test.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
---- a/mm/kasan/kasan_test.c~kasan-test-avoid-gcc-warning-for-intentional-overflow
-+++ a/mm/kasan/kasan_test.c
-@@ -440,7 +440,8 @@ static void kmalloc_oob_16(struct kunit
- 	/* This test is specifically crafted for the generic mode. */
- 	KASAN_TEST_NEEDS_CONFIG_ON(test, CONFIG_KASAN_GENERIC);
+diff --git a/kernel/trace/trace_sched_switch.c b/kernel/trace/trace_sched_switch.c
+index e4fbcc3bede5..0c60e4bcdd31 100644
+--- a/kernel/trace/trace_sched_switch.c
++++ b/kernel/trace/trace_sched_switch.c
+@@ -201,7 +201,7 @@ static struct saved_cmdlines_buffer *allocate_cmdlines_buffer(unsigned int val)
+ 	int order;
  
--	ptr1 = kmalloc(sizeof(*ptr1) - 3, GFP_KERNEL);
-+	/* RELOC_HIDE to prevent gcc from warning about short alloc */
-+	ptr1 = RELOC_HIDE(kmalloc(sizeof(*ptr1) - 3, GFP_KERNEL), 0);
- 	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, ptr1);
+ 	/* Figure out how much is needed to hold the given number of cmdlines */
+-	orig_size = sizeof(*s) + val * TASK_COMM_LEN;
++	orig_size = sizeof(*s) + val * (TASK_COMM_LEN + sizeof(int));
+ 	order = get_order(orig_size);
+ 	size = 1 << (order + PAGE_SHIFT);
+ 	page = alloc_pages(GFP_KERNEL, order);
+@@ -212,16 +212,10 @@ static struct saved_cmdlines_buffer *allocate_cmdlines_buffer(unsigned int val)
+ 	memset(s, 0, sizeof(*s));
  
- 	ptr2 = kmalloc(sizeof(*ptr2), GFP_KERNEL);
-_
-
-Patches currently in -mm which might be from arnd@arndb.de are
-
-mm-damon-dbgfs-implement-deprecation-notice-file-fix.patch
-kasan-test-avoid-gcc-warning-for-intentional-overflow.patch
-
+ 	/* Round up to actual allocation */
+-	val = (size - sizeof(*s)) / TASK_COMM_LEN;
++	val = (size - sizeof(*s)) / (TASK_COMM_LEN + sizeof(int));
+ 	s->cmdline_num = val;
+ 
+-	s->map_cmdline_to_pid = kmalloc_array(val,
+-					      sizeof(*s->map_cmdline_to_pid),
+-					      GFP_KERNEL);
+-	if (!s->map_cmdline_to_pid) {
+-		free_saved_cmdlines_buffer(s);
+-		return NULL;
+-	}
++	s->map_cmdline_to_pid = (unsigned *)(s->saved_cmdlines + val * TASK_COMM_LEN);
+ 
+ 	s->cmdline_idx = 0;
+ 	memset(&s->map_pid_to_cmdline, NO_CMDLINE_MAP,
 
