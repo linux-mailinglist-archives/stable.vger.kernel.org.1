@@ -1,112 +1,113 @@
-Return-Path: <stable+bounces-19464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5315851195
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 11:55:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D85D8511F1
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 12:15:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FF74B25EC6
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 10:55:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD32D281F2D
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 11:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2242BAE9;
-	Mon, 12 Feb 2024 10:54:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nSGgCuYB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0330C2BAF0;
+	Mon, 12 Feb 2024 11:15:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB9C2555B;
-	Mon, 12 Feb 2024 10:54:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CD717752;
+	Mon, 12 Feb 2024 11:15:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707735262; cv=none; b=jrWeH+vIXvYcmbgrz4rwXrS/rQ9YbIsGqNm9UyzJ+q+iY4dIydn613HZR0LEVMu14qQS7c0jlQVgvTXbTMYMZzeRhTBRi4QRy1lQztL1l6mllKTyqZF6xKVxyEHQAQi0AJxrG3W5szTo3POO+/VNRbY84bwxRYp+mos6cUYr5k8=
+	t=1707736525; cv=none; b=ZI0HIwa+BnddKOhRvHpUNiu5+mcBt6Pbtey32LoCHpPFwM+V7d7kojJiheHBqREk7VhKjdThCMwTLSV9hevKCueKCUvPeR33a0PsQ5aEpNOGuB8vJdcogUPLsKBrm7Y4BI7Z6cTQRjRhlACuMazUfNISav2nc0AjWmKEGf3bnvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707735262; c=relaxed/simple;
-	bh=I6euxNxNU8o6q+fS/THeaLsXmcMYc805VACZ871eUbA=;
+	s=arc-20240116; t=1707736525; c=relaxed/simple;
+	bh=JMpsucFdRskS8XGAMyw49niAtH6NbsYPLDv/RJ0EHQw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Cu67zVQybwY2f+TO3kxgY19CcTUHmnPBMhvXjyjrXN9/t0xYK8uiXS0OC2RK4Iao47hyMWf3/gNe3yEye7pCcF4NLuqosvnRkN0qSJLmnUgREykDo8nc3T2O73OspHv2NcVFXs6ub2VvdoUSPyCjzDMuK5ZAF0jS+3zZQw0cMfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nSGgCuYB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A00C433C7;
-	Mon, 12 Feb 2024 10:54:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707735261;
-	bh=I6euxNxNU8o6q+fS/THeaLsXmcMYc805VACZ871eUbA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nSGgCuYBLI7mmVkw3MKSEpB9h3hkmm25fpfDfy3Lq69Lj9SJgTNjYP55TRcCnqEWW
-	 edVkVia5352NYMnTNFc+ZE83R0Ej0W7ksASgHlzoLkBsLRp1KFrtYGZnPKEtcVS9t2
-	 Ak7660ebGDG8ni+/pqmysmvvIaCvoT6GTp/hVe6t/K31jk1An+EezweGKYFIloytA3
-	 0KW+RiRql8DCimPhClQcZD+ZxU4Afl+KXx1MvsvJjIFxlzMlgjNJ0aiTatTzBMGggt
-	 aJTAaE1h24Rfv4tuDQ8gwoyeFuI0hIBg/NCPO5KTSRr8MCHKGGDGg0UM4KF+e3O8h7
-	 uALf7TkVJMLjA==
-Date: Mon, 12 Feb 2024 11:54:15 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
-	linux-fsdevel@vger.kernel.org, Christoph Hellwig <hch@lst.de>, Avi Kivity <avi@scylladb.com>, 
-	Sandeep Dhavale <dhavale@google.com>, Jens Axboe <axboe@kernel.dk>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v3] fs, USB gadget: Remove libaio I/O cancellation support
-Message-ID: <20240212-heilt-leerlauf-a6befe24ee67@brauner>
-References: <20240209193026.2289430-1-bvanassche@acm.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=C+1C6mgwtx7j4liXhx5yzHruN1JNVoua9a5TCvf1nDxm+WK1TO04If7jFLYnlY+nAvW6cE4XMuuWjd1+D6Ezw10zhj6RbhQcH//2UAK/KHPMKGVQHA/6h+EuU3alb1xXMt/Emtgw4YlnfsLe7VlURboG3VWQHH3c2MToMeTlUcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 6D86921DED;
+	Mon, 12 Feb 2024 11:15:22 +0000 (UTC)
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 512CA13212;
+	Mon, 12 Feb 2024 11:15:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id tXKXE8r9yWWLFAAAn2gu4w
+	(envelope-from <dsterba@suse.cz>); Mon, 12 Feb 2024 11:15:22 +0000
+Date: Mon, 12 Feb 2024 12:14:50 +0100
+From: David Sterba <dsterba@suse.cz>
+To: Qu Wenruo <wqu@suse.com>
+Cc: linux-btrfs@vger.kernel.org, HAN Yuwei <hrx@bupt.moe>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] btrfs: reject zoned RW mount if sectorsize is smaller
+ than page size
+Message-ID: <20240212111450.GZ355@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <2a19a500ccb297397018dac23d30106977153d62.1707714970.git.wqu@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240209193026.2289430-1-bvanassche@acm.org>
+In-Reply-To: <2a19a500ccb297397018dac23d30106977153d62.1707714970.git.wqu@suse.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	 REPLY(-4.00)[]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 6D86921DED
+X-Spam-Level: 
+X-Spam-Score: -4.00
+X-Spam-Flag: NO
 
-On Fri, Feb 09, 2024 at 11:30:26AM -0800, Bart Van Assche wrote:
-> Originally io_cancel() only supported cancelling USB reads and writes.
-> If I/O was cancelled successfully, information about the cancelled I/O
-> operation was copied to the data structure the io_cancel() 'result'
-> argument points at. Commit 63b05203af57 ("[PATCH] AIO: retry
-> infrastructure fixes and enhancements") changed the io_cancel() behavior
-> from reporting status information via the 'result' argument into
-> reporting status information on the completion ring. Commit 41003a7bcfed
-> ("aio: remove retry-based AIO") accidentally changed the behavior into
-> not reporting a completion event on the completion ring for cancelled
-> requests. This is a bug because successful cancellation leads to an iocb
-> leak in user space. Since this bug was introduced more than ten years
-> ago and since nobody has complained since then, remove support for I/O
-> cancellation. Keep support for cancellation of IOCB_CMD_POLL requests.
+On Mon, Feb 12, 2024 at 03:46:15PM +1030, Qu Wenruo wrote:
+> [BUG]
+> There is a bug report that with zoned device and sectorsize is smaller
+> than page size (aka, subpage), btrfs would crash with a very basic
+> workload:
 > 
-> Calling kiocb_set_cancel_fn() without knowing whether the caller
-> submitted a struct kiocb or a struct aio_kiocb is unsafe. The
-> following call trace illustrates that without this patch an
-> out-of-bounds write happens if I/O is submitted by io_uring (from a
-> phone with an ARM CPU and kernel 6.1):
+>  # getconfig PAGESIZE
+>  16384
+>  # mkfs.btrfs -f $dev -s 4k
+>  # mount $dev $mnt
+>  # $fsstress -w -n 8 -s 1707820327 -v -d $mnt
+>  # umount $mnt
 > 
-> WARNING: CPU: 3 PID: 368 at fs/aio.c:598 kiocb_set_cancel_fn+0x9c/0xa8
-> Call trace:
->  kiocb_set_cancel_fn+0x9c/0xa8
->  ffs_epfile_read_iter+0x144/0x1d0
->  io_read+0x19c/0x498
->  io_issue_sqe+0x118/0x27c
->  io_submit_sqes+0x25c/0x5fc
->  __arm64_sys_io_uring_enter+0x104/0xab0
->  invoke_syscall+0x58/0x11c
->  el0_svc_common+0xb4/0xf4
->  do_el0_svc+0x2c/0xb0
->  el0_svc+0x2c/0xa4
->  el0t_64_sync_handler+0x68/0xb4
->  el0t_64_sync+0x1a4/0x1a8
+> The crash would look like this (with CONFIG_BTRFS_ASSERT enabled):
 > 
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Avi Kivity <avi@scylladb.com>
-> Cc: Sandeep Dhavale <dhavale@google.com>
-> Cc: Jens Axboe <axboe@kernel.dk>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Fixes: 63b05203af57 ("[PATCH] AIO: retry infrastructure fixes and enhancements")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-> ---
+>  assertion failed: block_start != EXTENT_MAP_HOLE, in fs/btrfs/extent_io.c:1384
 
-Great,
-Reviewed-by: Christian Brauner <brauner@kernel.org>
+This is the same as what Josef fixed in
+https://github.com/btrfs/linux/commit/400bb013912dac637c7d6826407be580ea8ef9cc
+"btrfs: don't drop extent_map for free space inode on write error"
+but not on zoned+subpage, is it really a different error you're fixing?
+
+[...]
+> [WORKAROUND]
+> A proper fix requires some big changes to delalloc workload, to allow
+> extent_write_locked_range() to handle multiple different entries with
+> the same @locked_page.
+> 
+> So for now, disable read-write support for subpage zoned btrfs.
+> 
+> The problem can only be solved if subpage btrfs can handle subpage
+> compression, which need quite some work on the delalloc procedure for
+> the @locked_page handling.
+
+Ok, this on itself is a valid reason to disable the support.
 
