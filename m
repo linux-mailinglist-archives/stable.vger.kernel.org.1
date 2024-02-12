@@ -1,277 +1,223 @@
-Return-Path: <stable+bounces-19455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6963B850D41
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 05:48:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5DE0850D56
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 06:16:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A636A28622E
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 04:48:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A7751F23E27
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 05:16:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 848BE5235;
-	Mon, 12 Feb 2024 04:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB715666;
+	Mon, 12 Feb 2024 05:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QhlgprOy"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="lNvrkQvC";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="lNvrkQvC"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775F120E3;
-	Mon, 12 Feb 2024 04:48:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3199F53A1;
+	Mon, 12 Feb 2024 05:16:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707713311; cv=none; b=C9W4sgAMdsNsBG32TDisgNekqQUNF3IsrqByzNkOQgrLgUOlGvEbFWbtzQuLH4T0+nJwdGp1wSgJyqwCegf52sXL+cm8jWLp5ERg5fyTqEfVz94lqab1+EIedLJJJ2QDFjf/IBn5m4s5w/V3o8gRyu5pZM8GklJCf66emVAhfdM=
+	t=1707714984; cv=none; b=SmCkaX/04BTC1sW9TonedhmuakQeNa3+IEY0x2j/00+ONarKJ8YEz0gCY84kXv2nFu7yDtoYBzBDGx/zxMTXntdsLNK+1yvHHSYYYO0lGvmpgjdFRM7liQ4+fjKj5y89hZiht8fX8mZXo2vkEcy9IfjhB+VDEJCcgd69lllKdyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707713311; c=relaxed/simple;
-	bh=2j4VpkWC4R5pcQNZydHEGsOnLT4Cg7pbEmYh0ErBB0E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=scl1bUgb/QQ/p/ypLn7jedjy2H3/Wp6/RjwJD7kkE84E0YPyoqlgZq9obBpMVK4Ms+oCYIIesBABe5mL9UEmEKd75EZ6JCxIYveAJFCTviVDhw0wT5ZqM/z/I7wvPxn6+Q2FkofyW7gTBdKOUbUupNR2TFIYPNDNgnKshOSc1mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QhlgprOy; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41C4mJRa017764;
-	Mon, 12 Feb 2024 04:48:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:date:subject:mime-version:content-type
-	:content-transfer-encoding:message-id:to:cc; s=qcppdkim1; bh=/cl
-	5/cJVjA1AuLY1yXo9p8OLXxbg1hPEuGeYZ+5oyJY=; b=QhlgprOyLYjfnsH8axz
-	i6zK42MFJ8oCsozYvlj73cdOYilF59kVRSJ1UbSd4Fesnas+/oHNtF6ZYmHjtOhH
-	MfFXM1aNkvoaWAgkoYNLJuC5P9ky5JJK+16f5c0K/Ja7JJmo+PJij38743BHtUMM
-	Qg+q/JwWWAtNCyo+TLONtZ5Ybgq6UQwYkp8BU+4hr19lt8F5D1oTnCrzWCsmX2K1
-	j0AExSVWqOG5ujVGmzy9oe4Y+Ye8mY8C0QZiwU2i8hQsUBlahBjUc8CBW6+zZk2b
-	J6aQ/pCzUWg5OStvLYHeCuCGrTqUvGCLdNt3DiKWgYX/IhtGDHlCwTJ+aZkuTsQJ
-	dvQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w62jttg5f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Feb 2024 04:48:18 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41C4mIl3017525
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 Feb 2024 04:48:18 GMT
-Received: from hu-mkshah-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Sun, 11 Feb 2024 20:48:15 -0800
-From: Maulik Shah <quic_mkshah@quicinc.com>
-Date: Mon, 12 Feb 2024 10:18:08 +0530
-Subject: [PATCH v3] soc: qcom: rpmh-rsc: Enhance check for VRM in-flight
- request
+	s=arc-20240116; t=1707714984; c=relaxed/simple;
+	bh=bSzd70Fv2tVgOJB5bDYgU8eEhaPHAgucz0QzJipnpok=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lotbyIPL4vEpmahXI3mrwjfzaHDi5KdIqttB2Pqy2nMJgGHXDpDf7QiGHlpE7OM5jWX1f0TcERcWzk/PmjNefZKSj3jHlVUYZLYubq9lcKykNujtG3mBBlRh/eV5c8rORMwNq0qLXacuO8OKcffM50VqWaRHaueeSp+cqtruppc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=lNvrkQvC; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=lNvrkQvC; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4F19521D01;
+	Mon, 12 Feb 2024 05:16:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1707714980; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=z57g6+uOw4u4+qwFbmWv12De2SUiR27Xai/f04LplRE=;
+	b=lNvrkQvCvZLbyrQQ27DWHNgRTiMtde/jHU6bRIoONm3dpbzsVgUinCOHD/Hyws2bvNh/G1
+	ocH6ujGTFH8ZYgcVlateEg2BfVClyTSX5sgpgQttGLtwQy6JA40yNOcT2Y/MzKWNBZAyR/
+	l7i3SSrdWYglxdUvozAmfuvWZ7alwC8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1707714980; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=z57g6+uOw4u4+qwFbmWv12De2SUiR27Xai/f04LplRE=;
+	b=lNvrkQvCvZLbyrQQ27DWHNgRTiMtde/jHU6bRIoONm3dpbzsVgUinCOHD/Hyws2bvNh/G1
+	ocH6ujGTFH8ZYgcVlateEg2BfVClyTSX5sgpgQttGLtwQy6JA40yNOcT2Y/MzKWNBZAyR/
+	l7i3SSrdWYglxdUvozAmfuvWZ7alwC8=
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id C0E0E13212;
+	Mon, 12 Feb 2024 05:16:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id BiW4IKKpyWUqRQAAn2gu4w
+	(envelope-from <wqu@suse.com>); Mon, 12 Feb 2024 05:16:18 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: HAN Yuwei <hrx@bupt.moe>,
+	stable@vger.kernel.org
+Subject: [PATCH] btrfs: reject zoned RW mount if sectorsize is smaller than page size
+Date: Mon, 12 Feb 2024 15:46:15 +1030
+Message-ID: <2a19a500ccb297397018dac23d30106977153d62.1707714970.git.wqu@suse.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240212-rpmh-rsc-fixes-v3-1-1be0d705dbb5@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAAejyWUC/12MywrCMBAAf6Xs2ZW8aKkn/0M8pHFj9tCkbrQIp
- f9u8CJ4HIaZDSoJU4VTt4HQypVLbmAPHYTk852Qb43BKOOU0QplmRNKDRj5TRXtYPww+sn2boI
- WLUJf0ZrLtXGUMuMzCfnfRuvxf7Ma1EjOBOVHsn1U58eLA+dwDGWGff8AM2ZjUKgAAAA=
-To: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio
-	<konrad.dybcio@linaro.org>
-CC: <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <quic_eberman@quicinc.com>, <quic_collinsd@quicinc.com>,
-        <quic_lsrao@quicinc.com>, <stable@vger.kernel.org>,
-        Maulik Shah
-	<quic_mkshah@quicinc.com>
-X-Mailer: b4 0.12.5-dev-2aabd
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1707713295; l=6336;
- i=quic_mkshah@quicinc.com; s=20240109; h=from:subject:message-id;
- bh=2j4VpkWC4R5pcQNZydHEGsOnLT4Cg7pbEmYh0ErBB0E=;
- b=S0gnTRSi9710XLXydakUisJsuwaBXSPFC3s6BXaj31II7kAivvdVvqZwyvomOvTTJSrd4yeHF
- eoxrSFweU0bBET4uzHGIsKcKp46iscFqwkLJE0dw6/tCRfPiFHkHCCm
-X-Developer-Key: i=quic_mkshah@quicinc.com; a=ed25519;
- pk=bd9h5FIIliUddIk8p3BlQWBlzKEQ/YW5V+fe759hTWQ=
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: XIXesB56Vx-JkBQfwc0OPBtsj4rTKljJ
-X-Proofpoint-ORIG-GUID: XIXesB56Vx-JkBQfwc0OPBtsj4rTKljJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-12_02,2024-02-08_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 clxscore=1011
- suspectscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
- lowpriorityscore=0 spamscore=0 mlxscore=0 malwarescore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2401310000 definitions=main-2402120034
+Content-Transfer-Encoding: 8bit
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Level: 
+X-Spam-Score: 0.70
+X-Spamd-Result: default: False [0.70 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 RCPT_COUNT_THREE(0.00)[3];
+	 R_MISSING_CHARSET(2.50)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 TO_DN_SOME(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 MID_CONTAINS_FROM(1.00)[];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-3.00)[100.00%]
+X-Spam-Flag: NO
 
-Each RPMh VRM accelerator resource has 3 or 4 contiguous 4-byte aligned
-addresses associated with it. These control voltage, enable state, mode,
-and in legacy targets, voltage headroom. The current in-flight request
-checking logic looks for exact address matches. Requests for different
-addresses of the same RPMh resource as thus not detected as in-flight.
+[BUG]
+There is a bug report that with zoned device and sectorsize is smaller
+than page size (aka, subpage), btrfs would crash with a very basic
+workload:
 
-Add new cmd-db API cmd_db_match_resource_addr() to enhance the in-flight
-request check for VRM requests by ignoring the address offset.
+ # getconfig PAGESIZE
+ 16384
+ # mkfs.btrfs -f $dev -s 4k
+ # mount $dev $mnt
+ # $fsstress -w -n 8 -s 1707820327 -v -d $mnt
+ # umount $mnt
 
-This ensures that only one request is allowed to be in-flight for a given
-VRM resource. This is needed to avoid scenarios where request commands are
-carried out by RPMh hardware out-of-order leading to LDO regulator
-over-current protection triggering.
+The crash would look like this (with CONFIG_BTRFS_ASSERT enabled):
 
-Fixes: 658628e7ef78 ("drivers: qcom: rpmh-rsc: add RPMH controller for QCOM SoCs")
-cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
-Signed-off-by: Maulik Shah <quic_mkshah@quicinc.com>
+ assertion failed: block_start != EXTENT_MAP_HOLE, in fs/btrfs/extent_io.c:1384
+ ------------[ cut here ]------------
+ kernel BUG at fs/btrfs/extent_io.c:1384!
+ CPU: 0 PID: 872 Comm: kworker/u9:2 Tainted: G           OE      6.8.0-rc3-custom+ #7
+ Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20231122-12.fc39 11/22/2023
+ Workqueue: writeback wb_workfn (flush-btrfs-8)
+ pc : __extent_writepage_io+0x404/0x460 [btrfs]
+ lr : __extent_writepage_io+0x404/0x460 [btrfs]
+ Call trace:
+  __extent_writepage_io+0x404/0x460 [btrfs]
+  extent_write_locked_range+0x16c/0x460 [btrfs]
+  run_delalloc_cow+0x88/0x118 [btrfs]
+  btrfs_run_delalloc_range+0x128/0x228 [btrfs]
+  writepage_delalloc+0xb8/0x178 [btrfs]
+  __extent_writepage+0xc8/0x3a0 [btrfs]
+  extent_write_cache_pages+0x1cc/0x460 [btrfs]
+  extent_writepages+0x8c/0x120 [btrfs]
+  btrfs_writepages+0x18/0x30 [btrfs]
+  do_writepages+0x94/0x1f8
+  __writeback_single_inode+0x4c/0x388
+  writeback_sb_inodes+0x208/0x4b0
+  wb_writeback+0x118/0x3c0
+  wb_do_writeback+0xbc/0x388
+  wb_workfn+0x80/0x240
+  process_one_work+0x154/0x3c8
+  worker_thread+0x2bc/0x3e0
+  kthread+0xf4/0x108
+  ret_from_fork+0x10/0x20
+ Code: 9102c021 90000be0 91378000 9402bf53 (d4210000)
+ ---[ end trace 0000000000000000 ]---
+
+[CAUSE]
+There are several factors causing the problem:
+
+1. __extent_writepage_io() requires all dirty ranges to have delalloc
+   executed
+   This can be solved by adding @start and @len parameter to only submit
+   IO for a subset of the page, and update several involved helpers to
+   do subpage checks.
+
+   So this is not a big deal.
+
+2. Subpage only accepts for full page aligned ranges for
+   extent_write_locked_range()
+   For zoned device, regular COW is switched to utilize
+   extent_write_locked_range() to submit the IO.
+
+   But the caller, run_delalloc_cow() can be called to run on a subpage
+   range, e.g.
+
+   0     4K     8K    12K     16K
+   |/////|      |/////|
+
+   Where |///| is the dirtied range.
+
+   In that case, btrfs_run_delalloc_range() would call run_delalloc_cow(),
+   which would call extent_write_locked_range() for [0, 4K), and unlock
+   the whole [0, 16K) page.
+
+   But btrfs_run_delalloc_range() would again be called for range [8K,
+   12K), as there are still dirty range left.
+   In that case, since the whole page is already unlocked by previous
+   iteration, and would cause different ASSERT()s inside
+   extent_write_locked_range().
+
+   That's also why compression for subpage cases require fully page
+   aligned range.
+
+[WORKAROUND]
+A proper fix requires some big changes to delalloc workload, to allow
+extent_write_locked_range() to handle multiple different entries with
+the same @locked_page.
+
+So for now, disable read-write support for subpage zoned btrfs.
+
+The problem can only be solved if subpage btrfs can handle subpage
+compression, which need quite some work on the delalloc procedure for
+the @locked_page handling.
+
+Reported-by: HAN Yuwei <hrx@bupt.moe>
+Link: https://lore.kernel.org/all/1ACD2E3643008A17+da260584-2c7f-432a-9e22-9d390aae84cc@bupt.moe/
+CC: stable@vger.kernel.org # 5.10+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
 ---
-Changes in v3:
-- Fix s-o-b chain
-- Add cmd-db API to compare addresses
-- Reuse already defined resource types in cmd-db
-- Add Fixes tag and Cc to stable
-- Retain Reviewed-by tag of v2
-- Link to v2: https://lore.kernel.org/r/20240119-rpmh-rsc-fixes-v2-1-e42c0a9e36f0@quicinc.com
-Changes in v2:
-- Use GENMASK() and FIELD_GET()
-- Link to v1: https://lore.kernel.org/r/20240117-rpmh-rsc-fixes-v1-1-71ee4f8f72a4@quicinc.com
----
- drivers/soc/qcom/cmd-db.c   | 41 +++++++++++++++++++++++++++++++++++------
- drivers/soc/qcom/rpmh-rsc.c |  3 ++-
- include/soc/qcom/cmd-db.h   | 10 +++++++++-
- 3 files changed, 46 insertions(+), 8 deletions(-)
+ fs/btrfs/disk-io.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/qcom/cmd-db.c b/drivers/soc/qcom/cmd-db.c
-index a5fd68411bed..e87682b9755e 100644
---- a/drivers/soc/qcom/cmd-db.c
-+++ b/drivers/soc/qcom/cmd-db.c
-@@ -1,6 +1,10 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* Copyright (c) 2016-2018, 2020, The Linux Foundation. All rights reserved. */
-+/*
-+ * Copyright (c) 2016-2018, 2020, The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
-+ */
- 
-+#include <linux/bitfield.h>
- #include <linux/debugfs.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -15,8 +19,8 @@
- 
- #define NUM_PRIORITY		2
- #define MAX_SLV_ID		8
--#define SLAVE_ID_MASK		0x7
--#define SLAVE_ID_SHIFT		16
-+#define SLAVE_ID(addr)		FIELD_GET(GENMASK(19, 16), addr)
-+#define VRM_ADDR(addr)		FIELD_GET(GENMASK(19, 4), addr)
- 
- /**
-  * struct entry_header: header for each entry in cmddb
-@@ -221,9 +225,34 @@ const void *cmd_db_read_aux_data(const char *id, size_t *len)
- EXPORT_SYMBOL_GPL(cmd_db_read_aux_data);
- 
- /**
-- * cmd_db_read_slave_id - Get the slave ID for a given resource address
-+ * cmd_db_match_resource_addr - Compare if both Resource addresses are same
-+ *
-+ * @addr1: Resource address to compare
-+ * @addr2: Resource address to compare
-+ *
-+ * Return: true on matching addresses, false otherwise
-+ */
-+bool cmd_db_match_resource_addr(u32 addr1, u32 addr2)
-+{
-+	/*
-+	 * Each RPMh VRM accelerator resource has 3 or 4 contiguous 4-byte
-+	 * aligned addresses associated with it. Ignore the offset to check
-+	 * for VRM requests.
-+	 */
-+	if (SLAVE_ID(addr1) == CMD_DB_HW_VRM
-+	    && VRM_ADDR(addr1) == VRM_ADDR(addr2))
-+		return true;
-+	else if (addr1 == addr2)
-+		return true;
-+	else
-+		return false;
-+}
-+EXPORT_SYMBOL_GPL(cmd_db_match_resource_addr);
-+
-+/**
-+ * cmd_db_read_slave_id - Get the slave ID for a given resource name
-  *
-- * @id: Resource id to query the DB for version
-+ * @id: Resource id to query the DB for slave id
-  *
-  * Return: cmd_db_hw_type enum on success, CMD_DB_HW_INVALID on error
-  */
-@@ -238,7 +267,7 @@ enum cmd_db_hw_type cmd_db_read_slave_id(const char *id)
- 		return CMD_DB_HW_INVALID;
- 
- 	addr = le32_to_cpu(ent->addr);
--	return (addr >> SLAVE_ID_SHIFT) & SLAVE_ID_MASK;
-+	return SLAVE_ID(addr);
- }
- EXPORT_SYMBOL_GPL(cmd_db_read_slave_id);
- 
-diff --git a/drivers/soc/qcom/rpmh-rsc.c b/drivers/soc/qcom/rpmh-rsc.c
-index a021dc71807b..daf64be966fe 100644
---- a/drivers/soc/qcom/rpmh-rsc.c
-+++ b/drivers/soc/qcom/rpmh-rsc.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-  * Copyright (c) 2016-2018, The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2023-2024, Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #define pr_fmt(fmt) "%s " fmt, KBUILD_MODNAME
-@@ -557,7 +558,7 @@ static int check_for_req_inflight(struct rsc_drv *drv, struct tcs_group *tcs,
- 		for_each_set_bit(j, &curr_enabled, MAX_CMDS_PER_TCS) {
- 			addr = read_tcs_cmd(drv, drv->regs[RSC_DRV_CMD_ADDR], i, j);
- 			for (k = 0; k < msg->num_cmds; k++) {
--				if (addr == msg->cmds[k].addr)
-+				if (cmd_db_match_resource_addr(msg->cmds[k].addr, addr))
- 					return -EBUSY;
- 			}
- 		}
-diff --git a/include/soc/qcom/cmd-db.h b/include/soc/qcom/cmd-db.h
-index c8bb56e6852a..47a6cab75e63 100644
---- a/include/soc/qcom/cmd-db.h
-+++ b/include/soc/qcom/cmd-db.h
-@@ -1,5 +1,8 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--/* Copyright (c) 2016-2018, The Linux Foundation. All rights reserved. */
-+/*
-+ * Copyright (c) 2016-2018, The Linux Foundation. All rights reserved.
-+ * Copyright (c) 2024, Qualcomm Innovation Center, Inc. All rights reserved.
-+ */
- 
- #ifndef __QCOM_COMMAND_DB_H__
- #define __QCOM_COMMAND_DB_H__
-@@ -21,6 +24,8 @@ u32 cmd_db_read_addr(const char *resource_id);
- 
- const void *cmd_db_read_aux_data(const char *resource_id, size_t *len);
- 
-+bool cmd_db_match_resource_addr(u32 addr1, u32 addr2);
-+
- enum cmd_db_hw_type cmd_db_read_slave_id(const char *resource_id);
- 
- int cmd_db_ready(void);
-@@ -31,6 +36,9 @@ static inline u32 cmd_db_read_addr(const char *resource_id)
- static inline const void *cmd_db_read_aux_data(const char *resource_id, size_t *len)
- { return ERR_PTR(-ENODEV); }
- 
-+static inline bool cmd_db_match_resource_addr(u32 addr1, u32 addr2)
-+{ return false; }
-+
- static inline enum cmd_db_hw_type cmd_db_read_slave_id(const char *resource_id)
- { return -ENODEV; }
- 
-
----
-base-commit: 615d300648869c774bd1fe54b4627bb0c20faed4
-change-id: 20240210-rpmh-rsc-fixes-372a79ab364b
-
-Best regards,
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index c3ab268533ca..85cd23aebdd6 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -3193,7 +3193,8 @@ int btrfs_check_features(struct btrfs_fs_info *fs_info, bool is_rw_mount)
+ 	 * part of @locked_page.
+ 	 * That's also why compression for subpage only work for page aligned ranges.
+ 	 */
+-	if (fs_info->sectorsize < PAGE_SIZE && btrfs_is_zoned(fs_info) && is_rw_mount) {
++	if (fs_info->sectorsize < PAGE_SIZE &&
++	    btrfs_fs_incompat(fs_info, ZONED) && is_rw_mount) {
+ 		btrfs_warn(fs_info,
+ 	"no zoned read-write support for page size %lu with sectorsize %u",
+ 			   PAGE_SIZE, fs_info->sectorsize);
 -- 
-Maulik Shah <quic_mkshah@quicinc.com>
+2.43.0
 
 
