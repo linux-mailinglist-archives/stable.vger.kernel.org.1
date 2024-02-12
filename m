@@ -1,274 +1,247 @@
-Return-Path: <stable+bounces-19487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D59851EEF
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 21:54:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05542851EFF
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 21:58:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45CCAB20B73
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 20:54:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF07F283BBF
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 20:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BF5481B4;
-	Mon, 12 Feb 2024 20:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C2B4A9BF;
+	Mon, 12 Feb 2024 20:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="my3XTC7j"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CCTwhuFI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DAA647773;
-	Mon, 12 Feb 2024 20:54:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EF5481B4
+	for <stable@vger.kernel.org>; Mon, 12 Feb 2024 20:58:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707771257; cv=none; b=lA0nmDDLk83NTTS18cWA7AqcHyuqJB89KZnAN6RrUjhXh1k/OAodhua9l8rSjZVLUmSGTEXZ3b+b5ZaqlpL34rFGTQcT0ZT7GWhVGpT9zb6+2Vpu6GncmiQZIOmLIvXZDEJPlcqm+F1e6vNC37AKF9//MLgP58RY6Co90p4Hk8Q=
+	t=1707771527; cv=none; b=ROPRsTxcJFoWrC8c7IJq8/Bg3ftrasmKiQNXqcIx3I653MOiSYpKVjaOhCfejBGziokZVjM9gsG0aN+aa5QNOmNCzkLRGLqvXrkgFv204jG2GyZ3BCAy1TnmngyIqlcEu+z/GXnMkI6NYmOFJbaD3pR32Ahgv3kAby+WauF7d9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707771257; c=relaxed/simple;
-	bh=e0Y2K+OeOPboQwWu5APzMxeIa3Yk8X5guW2Gc3Ynh/o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UY0qoucegSc5SGD+dgFjROMSX8IuVPNo71F0xQGKVAIjcreRjpJmN4rMovhzAGU8jmGlJqQ8pbiMYZ50RTDzRYhs2EeoG/CVLTNbTYMj+JS8YXCnMaK+sEPNLdT9ofg2qRSCxQSF/n11srv4DNuIXGajPsxL01womw7eSAPTk2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=my3XTC7j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A51C433F1;
-	Mon, 12 Feb 2024 20:54:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707771256;
-	bh=e0Y2K+OeOPboQwWu5APzMxeIa3Yk8X5guW2Gc3Ynh/o=;
-	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-	b=my3XTC7jclLSgldFl4v19FtloHXvkGzrgehyjlVP9k4ycoxijfIUqZKq5ByQVTYnx
-	 lxobzJeaOdGshLjbUnjKD58OLIqK3WXjRGJUCDO2HBrasP1BViaXOGWkJFKMLMQznd
-	 5D+gk3MR6o+XILyA4mEdudLt20+fX/WKBvmW45KyaWiZa0manokfgQ97+uOFXo8zvQ
-	 v/e3Sp3az5I3ksdQY8hZhwuak0KenVjkc1WOuHNuSXuMV7vERo+rcLLzo9Bjc+lOmu
-	 NkLsU3k9UMwIphZfAMg/sBhckPsNU/8Id4ShUYUgdZ2a/56B8j4+o0OajB65Ub94Cr
-	 CScNzqs5NyA1w==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-	id 9761FCE0DEC; Mon, 12 Feb 2024 12:54:16 -0800 (PST)
-Date: Mon, 12 Feb 2024 12:54:16 -0800
-From: "Paul E. McKenney" <paulmck@kernel.org>
-To: Zqiang <qiang.zhang1211@gmail.com>
-Cc: joel@joelfernandes.org, gregkh@linuxfoundation.org,
-	chenzhongjin@huawei.com, rcu@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] linux-5.10/rcu-tasks: Eliminate deadlocks involving
- do_exit() and RCU tasks
-Message-ID: <998c99e5-555d-47ec-876d-f6fe52aa4eaf@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20240207110951.27831-1-qiang.zhang1211@gmail.com>
+	s=arc-20240116; t=1707771527; c=relaxed/simple;
+	bh=9aZrduLHPhwchB6kNHNikaEVFm/ONCC/mCvRhMW/vaM=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=cqYwSXPtccttGbh6cQ0KKk6F42LSKerfJzS5BTi/7XGPOIvWwMO+PoA4HUaIhSCLcrcTrcCCtkhQ9E1nLIYqtBbtuUqc4acFkWoOHhzqjB8yMzfBAjDKY/cAeB+7hwQaQtDx/Vh16gQpP9B/fkSms5vauerQ7mZzk1J+DM4AW2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrife.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CCTwhuFI; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrife.bounces.google.com
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-60492d6bfc0so47742717b3.2
+        for <stable@vger.kernel.org>; Mon, 12 Feb 2024 12:58:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1707771524; x=1708376324; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Mo8jVM974dvJUVpMsMP++m6OpTvmquf2DlZQ0DJKRH4=;
+        b=CCTwhuFIsRZC2cnien2xm5/4SJvG0/5cgpUgMw3bs6Ga+9uwLKxNEr7RsUUYnCYsRU
+         opj9c7pYZLEqQIqhFj9WhFnh0DogrVbaN4eeIYC+MaXyHPOtszcttvEdbuZeU737GCut
+         ht6A+BqUQ1WggPLGHdldlh29BKdtlY6yo//NdLtT9U+d3uWtLm9R3+6LLabfOPmmh00b
+         gzzFY2YdZHVTPVniJkTn3jckqib3tecbqrbao6uSuYHGONQhHdF7DoxXcEs+un1RaVRe
+         BYdR3JnOqg/l6OI9q9e01zvwzEjxamta4Lw1lfdiOq3S/5ZgpDabz6inqrHyGH3XXhMv
+         f39Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707771524; x=1708376324;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Mo8jVM974dvJUVpMsMP++m6OpTvmquf2DlZQ0DJKRH4=;
+        b=cKOPjGlEY/W4a/dIbCxTeLo+U4UoxaSgMpXrVIdLATUJe5BYzwD5MJ/dedcKitKLNC
+         HOFeN4ltgR/MH0OV7FpmF1LjlI+WVIlKxxUr9VJkKLILsOO7GCAe8Roy7c9tCJYXHH9v
+         B2SUOlSMCEezLgtpekpTV1nDEyb62aL1tplQv7DttRf8sfmpVNVDzE6raT9/SNFt9S+o
+         /8c8BF5zAtUxD7g79oepZVlzYyVtu7GLP0ciyRjuVjC/cU+8LJ+1MJIwSqsIHjjKCzyb
+         /9ifA/maJpRmj91BjRpIqj7TOTv0LgNjrdeW9Y8ULurt6OCoscW9NDZqN6FCsMGaRP/S
+         JWEA==
+X-Gm-Message-State: AOJu0Yyk4QA5QwTA1/IPyCpt3a4ilxg/lR0VqPAsiAwM/975jqoLe3vo
+	rfK86Lz12n8hARujGDYf+p3XrqoZQ3GqyctMbIMB65uzzrMDc1gvukEIaRPv6DWtxv1GdgNpti5
+	vgX0gCEaYJaD4Gf4oAmN3xgYGL82Fzd6ouzegs5KhQsDKk8PxTxvB71fpns4kSqwMHft6Vvmu3+
+	wkvtkOu6fMz6gunzUJAg4gLhn3Wmg=
+X-Google-Smtp-Source: AGHT+IGv9SSyAG+JAstgAumoC+5OAlTg6d+vtOJFhsUsLSYLhQ55GHS1u1+jpnI9RFn7y1sqqoE93Ehxqw==
+X-Received: from jrife.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:9f])
+ (user=jrife job=sendgmr) by 2002:a0d:d787:0:b0:5ff:a885:65b with SMTP id
+ z129-20020a0dd787000000b005ffa885065bmr1419122ywd.10.1707771524567; Mon, 12
+ Feb 2024 12:58:44 -0800 (PST)
+Date: Mon, 12 Feb 2024 14:58:25 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240207110951.27831-1-qiang.zhang1211@gmail.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.687.g38aa6559b0-goog
+Message-ID: <20240212205824.1015380-2-jrife@google.com>
+Subject: [PATCH 6.1.y] fs: dlm: don't put dlm_local_addrs on heap
+From: Jordan Rife <jrife@google.com>
+To: stable@vger.kernel.org
+Cc: ccaulfie@redhat.com, teigland@redhat.com, sashal@kernel.org, 
+	cluster-devel@redhat.com, valentin@vrvis.at, aahringo@redhat.com, 
+	carnil@debian.org, Jordan Rife <jrife@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Feb 07, 2024 at 07:09:51PM +0800, Zqiang wrote:
-> From: Paul E. McKenney <paulmck@kernel.org>
-> 
-> commit bc31e6cb27a9334140ff2f0a209d59b08bc0bc8c upstream.
-> 
-> Holding a mutex across synchronize_rcu_tasks() and acquiring
-> that same mutex in code called from do_exit() after its call to
-> exit_tasks_rcu_start() but before its call to exit_tasks_rcu_stop()
-> results in deadlock.  This is by design, because tasks that are far
-> enough into do_exit() are no longer present on the tasks list, making
-> it a bit difficult for RCU Tasks to find them, let alone wait on them
-> to do a voluntary context switch.  However, such deadlocks are becoming
-> more frequent.  In addition, lockdep currently does not detect such
-> deadlocks and they can be difficult to reproduce.
-> 
-> In addition, if a task voluntarily context switches during that time
-> (for example, if it blocks acquiring a mutex), then this task is in an
-> RCU Tasks quiescent state.  And with some adjustments, RCU Tasks could
-> just as well take advantage of that fact.
-> 
-> This commit therefore eliminates these deadlock by replacing the
-> SRCU-based wait for do_exit() completion with per-CPU lists of tasks
-> currently exiting.  A given task will be on one of these per-CPU lists for
-> the same period of time that this task would previously have been in the
-> previous SRCU read-side critical section.  These lists enable RCU Tasks
-> to find the tasks that have already been removed from the tasks list,
-> but that must nevertheless be waited upon.
-> 
-> The RCU Tasks grace period gathers any of these do_exit() tasks that it
-> must wait on, and adds them to the list of holdouts.  Per-CPU locking
-> and get_task_struct() are used to synchronize addition to and removal
-> from these lists.
-> 
-> Link: https://lore.kernel.org/all/20240118021842.290665-1-chenzhongjin@huawei.com/
-> 
-> Reported-by: Chen Zhongjin <chenzhongjin@huawei.com>
-> Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-> Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+From: Alexander Aring <aahringo@redhat.com>
 
-And this one also looks good, though it would also be good to get other
-eyes on it.
+commit c51c9cd8addcfbdc097dbefd59f022402183644b upstream
 
-And again, thank you for putting this together!
+This patch removes to allocate the dlm_local_addr[] pointers on the
+heap. Instead we directly store the type of "struct sockaddr_storage".
+This removes function deinit_local() because it was freeing memory only.
 
-							Thanx, Paul
+Backport e11dea8 ("dlm: use kernel_connect() and kernel_bind()") to
+Linux stable 6.1 caused a regression. The original patch expected
+dlm_local_addrs[0] to be of type sockaddr_storage, because c51c9cd ("fs:
+dlm: don't put dlm_local_addrs on heap") changed its type from
+sockaddr_storage* to sockaddr_storage in Linux 6.5+ while in older Linux
+versions this is still the original sockaddr_storage*.
 
-> ---
->  include/linux/sched.h |  1 +
->  init/init_task.c      |  1 +
->  kernel/fork.c         |  1 +
->  kernel/rcu/tasks.h    | 54 ++++++++++++++++++++++++++++---------------
->  4 files changed, 39 insertions(+), 18 deletions(-)
-> 
-> diff --git a/include/linux/sched.h b/include/linux/sched.h
-> index aa015416c569..80499f7ab39a 100644
-> --- a/include/linux/sched.h
-> +++ b/include/linux/sched.h
-> @@ -740,6 +740,7 @@ struct task_struct {
->  	u8				rcu_tasks_idx;
->  	int				rcu_tasks_idle_cpu;
->  	struct list_head		rcu_tasks_holdout_list;
-> +	struct list_head                rcu_tasks_exit_list;
->  #endif /* #ifdef CONFIG_TASKS_RCU */
->  
->  #ifdef CONFIG_TASKS_TRACE_RCU
-> diff --git a/init/init_task.c b/init/init_task.c
-> index 5fa18ed59d33..59454d6e2c2a 100644
-> --- a/init/init_task.c
-> +++ b/init/init_task.c
-> @@ -151,6 +151,7 @@ struct task_struct init_task
->  	.rcu_tasks_holdout = false,
->  	.rcu_tasks_holdout_list = LIST_HEAD_INIT(init_task.rcu_tasks_holdout_list),
->  	.rcu_tasks_idle_cpu = -1,
-> +	.rcu_tasks_exit_list = LIST_HEAD_INIT(init_task.rcu_tasks_exit_list),
->  #endif
->  #ifdef CONFIG_TASKS_TRACE_RCU
->  	.trc_reader_nesting = 0,
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 633b0af1d1a7..86803165aa00 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -1699,6 +1699,7 @@ static inline void rcu_copy_process(struct task_struct *p)
->  	p->rcu_tasks_holdout = false;
->  	INIT_LIST_HEAD(&p->rcu_tasks_holdout_list);
->  	p->rcu_tasks_idle_cpu = -1;
-> +	INIT_LIST_HEAD(&p->rcu_tasks_exit_list);
->  #endif /* #ifdef CONFIG_TASKS_RCU */
->  #ifdef CONFIG_TASKS_TRACE_RCU
->  	p->trc_reader_nesting = 0;
-> diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-> index c5624ab0580c..901cd7bc78ed 100644
-> --- a/kernel/rcu/tasks.h
-> +++ b/kernel/rcu/tasks.h
-> @@ -81,9 +81,6 @@ static struct rcu_tasks rt_name =					\
->  	.kname = #rt_name,						\
->  }
->  
-> -/* Track exiting tasks in order to allow them to be waited for. */
-> -DEFINE_STATIC_SRCU(tasks_rcu_exit_srcu);
-> -
->  /* Avoid IPIing CPUs early in the grace period. */
->  #define RCU_TASK_IPI_DELAY (IS_ENABLED(CONFIG_TASKS_TRACE_RCU_READ_MB) ? HZ / 2 : 0)
->  static int rcu_task_ipi_delay __read_mostly = RCU_TASK_IPI_DELAY;
-> @@ -383,6 +380,9 @@ static void rcu_tasks_wait_gp(struct rcu_tasks *rtp)
->  // rates from multiple CPUs.  If this is required, per-CPU callback lists
->  // will be needed.
->  
-> +static LIST_HEAD(rtp_exit_list);
-> +static DEFINE_RAW_SPINLOCK(rtp_exit_list_lock);
-> +
->  /* Pre-grace-period preparation. */
->  static void rcu_tasks_pregp_step(void)
->  {
-> @@ -416,15 +416,18 @@ static void rcu_tasks_pertask(struct task_struct *t, struct list_head *hop)
->  /* Processing between scanning taskslist and draining the holdout list. */
->  static void rcu_tasks_postscan(struct list_head *hop)
->  {
-> +	unsigned long flags;
-> +	struct task_struct *t;
-> +
->  	/*
->  	 * Exiting tasks may escape the tasklist scan. Those are vulnerable
->  	 * until their final schedule() with TASK_DEAD state. To cope with
->  	 * this, divide the fragile exit path part in two intersecting
->  	 * read side critical sections:
->  	 *
-> -	 * 1) An _SRCU_ read side starting before calling exit_notify(),
-> -	 *    which may remove the task from the tasklist, and ending after
-> -	 *    the final preempt_disable() call in do_exit().
-> +	 * 1) A task_struct list addition before calling exit_notify(),
-> +	 *    which may remove the task from the tasklist, with the
-> +	 *    removal after the final preempt_disable() call in do_exit().
->  	 *
->  	 * 2) An _RCU_ read side starting with the final preempt_disable()
->  	 *    call in do_exit() and ending with the final call to schedule()
-> @@ -433,7 +436,12 @@ static void rcu_tasks_postscan(struct list_head *hop)
->  	 * This handles the part 1). And postgp will handle part 2) with a
->  	 * call to synchronize_rcu().
->  	 */
-> -	synchronize_srcu(&tasks_rcu_exit_srcu);
-> +	raw_spin_lock_irqsave(&rtp_exit_list_lock, flags);
-> +	list_for_each_entry(t, &rtp_exit_list, rcu_tasks_exit_list) {
-> +		if (list_empty(&t->rcu_tasks_holdout_list))
-> +			rcu_tasks_pertask(t, hop);
-> +	}
-> +	raw_spin_unlock_irqrestore(&rtp_exit_list_lock, flags);
->  }
->  
->  /* See if tasks are still holding out, complain if so. */
-> @@ -498,7 +506,6 @@ static void rcu_tasks_postgp(struct rcu_tasks *rtp)
->  	 *
->  	 * In addition, this synchronize_rcu() waits for exiting tasks
->  	 * to complete their final preempt_disable() region of execution,
-> -	 * cleaning up after synchronize_srcu(&tasks_rcu_exit_srcu),
->  	 * enforcing the whole region before tasklist removal until
->  	 * the final schedule() with TASK_DEAD state to be an RCU TASKS
->  	 * read side critical section.
-> @@ -591,25 +598,36 @@ static void show_rcu_tasks_classic_gp_kthread(void)
->  #endif /* #ifndef CONFIG_TINY_RCU */
->  
->  /*
-> - * Contribute to protect against tasklist scan blind spot while the
-> - * task is exiting and may be removed from the tasklist. See
-> - * corresponding synchronize_srcu() for further details.
-> + * Protect against tasklist scan blind spot while the task is exiting and
-> + * may be removed from the tasklist.  Do this by adding the task to yet
-> + * another list.
->   */
-> -void exit_tasks_rcu_start(void) __acquires(&tasks_rcu_exit_srcu)
-> +void exit_tasks_rcu_start(void)
->  {
-> -	current->rcu_tasks_idx = __srcu_read_lock(&tasks_rcu_exit_srcu);
-> +	unsigned long flags;
-> +	struct task_struct *t = current;
-> +
-> +	WARN_ON_ONCE(!list_empty(&t->rcu_tasks_exit_list));
-> +	get_task_struct(t);
-> +	raw_spin_lock_irqsave(&rtp_exit_list_lock, flags);
-> +	list_add(&t->rcu_tasks_exit_list, &rtp_exit_list);
-> +	raw_spin_unlock_irqrestore(&rtp_exit_list_lock, flags);
->  }
->  
->  /*
-> - * Contribute to protect against tasklist scan blind spot while the
-> - * task is exiting and may be removed from the tasklist. See
-> - * corresponding synchronize_srcu() for further details.
-> + * Remove the task from the "yet another list" because do_exit() is now
-> + * non-preemptible, allowing synchronize_rcu() to wait beyond this point.
->   */
-> -void exit_tasks_rcu_stop(void) __releases(&tasks_rcu_exit_srcu)
-> +void exit_tasks_rcu_stop(void)
->  {
-> +	unsigned long flags;
->  	struct task_struct *t = current;
->  
-> -	__srcu_read_unlock(&tasks_rcu_exit_srcu, t->rcu_tasks_idx);
-> +	WARN_ON_ONCE(list_empty(&t->rcu_tasks_exit_list));
-> +	raw_spin_lock_irqsave(&rtp_exit_list_lock, flags);
-> +	list_del_init(&t->rcu_tasks_exit_list);
-> +	raw_spin_unlock_irqrestore(&rtp_exit_list_lock, flags);
-> +	put_task_struct(t);
->  }
->  
->  /*
-> -- 
-> 2.17.1
-> 
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
+Signed-off-by: Jordan Rife <jrife@google.com>
+Tested-by: Valentin Kleibel <valentin@vrvis.at>
+Fixes: e11dea8f5033 ("dlm: use kernel_connect() and kernel_bind()")
+Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1063338
+Link: https://lore.kernel.org/stable/20240209162658.70763-2-jrife@google.com/T/#u
+Cc: <stable@vger.kernel.org> # 6.1.x
+---
+ fs/dlm/lowcomms.c | 36 +++++++++++-------------------------
+ 1 file changed, 11 insertions(+), 25 deletions(-)
+
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 72f34f96d0155..e26af8c23aa80 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -174,7 +174,7 @@ static LIST_HEAD(dlm_node_addrs);
+ static DEFINE_SPINLOCK(dlm_node_addrs_spin);
+ 
+ static struct listen_connection listen_con;
+-static struct sockaddr_storage *dlm_local_addr[DLM_MAX_ADDR_COUNT];
++static struct sockaddr_storage dlm_local_addr[DLM_MAX_ADDR_COUNT];
+ static int dlm_local_count;
+ int dlm_allow_conn;
+ 
+@@ -398,7 +398,7 @@ static int nodeid_to_addr(int nodeid, struct sockaddr_storage *sas_out,
+ 	if (!sa_out)
+ 		return 0;
+ 
+-	if (dlm_local_addr[0]->ss_family == AF_INET) {
++	if (dlm_local_addr[0].ss_family == AF_INET) {
+ 		struct sockaddr_in *in4  = (struct sockaddr_in *) &sas;
+ 		struct sockaddr_in *ret4 = (struct sockaddr_in *) sa_out;
+ 		ret4->sin_addr.s_addr = in4->sin_addr.s_addr;
+@@ -727,7 +727,7 @@ static void add_sock(struct socket *sock, struct connection *con)
+ static void make_sockaddr(struct sockaddr_storage *saddr, uint16_t port,
+ 			  int *addr_len)
+ {
+-	saddr->ss_family =  dlm_local_addr[0]->ss_family;
++	saddr->ss_family =  dlm_local_addr[0].ss_family;
+ 	if (saddr->ss_family == AF_INET) {
+ 		struct sockaddr_in *in4_addr = (struct sockaddr_in *)saddr;
+ 		in4_addr->sin_port = cpu_to_be16(port);
+@@ -1167,7 +1167,7 @@ static int sctp_bind_addrs(struct socket *sock, uint16_t port)
+ 	int i, addr_len, result = 0;
+ 
+ 	for (i = 0; i < dlm_local_count; i++) {
+-		memcpy(&localaddr, dlm_local_addr[i], sizeof(localaddr));
++		memcpy(&localaddr, &dlm_local_addr[i], sizeof(localaddr));
+ 		make_sockaddr(&localaddr, port, &addr_len);
+ 
+ 		if (!i)
+@@ -1187,7 +1187,7 @@ static int sctp_bind_addrs(struct socket *sock, uint16_t port)
+ /* Get local addresses */
+ static void init_local(void)
+ {
+-	struct sockaddr_storage sas, *addr;
++	struct sockaddr_storage sas;
+ 	int i;
+ 
+ 	dlm_local_count = 0;
+@@ -1195,21 +1195,10 @@ static void init_local(void)
+ 		if (dlm_our_addr(&sas, i))
+ 			break;
+ 
+-		addr = kmemdup(&sas, sizeof(*addr), GFP_NOFS);
+-		if (!addr)
+-			break;
+-		dlm_local_addr[dlm_local_count++] = addr;
++		memcpy(&dlm_local_addr[dlm_local_count++], &sas, sizeof(sas));
+ 	}
+ }
+ 
+-static void deinit_local(void)
+-{
+-	int i;
+-
+-	for (i = 0; i < dlm_local_count; i++)
+-		kfree(dlm_local_addr[i]);
+-}
+-
+ static struct writequeue_entry *new_writequeue_entry(struct connection *con)
+ {
+ 	struct writequeue_entry *entry;
+@@ -1575,7 +1564,7 @@ static void dlm_connect(struct connection *con)
+ 	}
+ 
+ 	/* Create a socket to communicate with */
+-	result = sock_create_kern(&init_net, dlm_local_addr[0]->ss_family,
++	result = sock_create_kern(&init_net, dlm_local_addr[0].ss_family,
+ 				  SOCK_STREAM, dlm_proto_ops->proto, &sock);
+ 	if (result < 0)
+ 		goto socket_err;
+@@ -1786,7 +1775,6 @@ void dlm_lowcomms_stop(void)
+ 	foreach_conn(free_conn);
+ 	srcu_read_unlock(&connections_srcu, idx);
+ 	work_stop();
+-	deinit_local();
+ 
+ 	dlm_proto_ops = NULL;
+ }
+@@ -1803,7 +1791,7 @@ static int dlm_listen_for_all(void)
+ 	if (result < 0)
+ 		return result;
+ 
+-	result = sock_create_kern(&init_net, dlm_local_addr[0]->ss_family,
++	result = sock_create_kern(&init_net, dlm_local_addr[0].ss_family,
+ 				  SOCK_STREAM, dlm_proto_ops->proto, &sock);
+ 	if (result < 0) {
+ 		log_print("Can't create comms socket: %d", result);
+@@ -1842,7 +1830,7 @@ static int dlm_tcp_bind(struct socket *sock)
+ 	/* Bind to our cluster-known address connecting to avoid
+ 	 * routing problems.
+ 	 */
+-	memcpy(&src_addr, dlm_local_addr[0], sizeof(src_addr));
++	memcpy(&src_addr, &dlm_local_addr[0], sizeof(src_addr));
+ 	make_sockaddr(&src_addr, 0, &addr_len);
+ 
+ 	result = kernel_bind(sock, (struct sockaddr *)&src_addr,
+@@ -1899,7 +1887,7 @@ static int dlm_tcp_listen_bind(struct socket *sock)
+ 	int addr_len;
+ 
+ 	/* Bind to our port */
+-	make_sockaddr(dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
++	make_sockaddr(&dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
+ 	return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
+ 			   addr_len);
+ }
+@@ -1992,7 +1980,7 @@ int dlm_lowcomms_start(void)
+ 
+ 	error = work_start();
+ 	if (error)
+-		goto fail_local;
++		goto fail;
+ 
+ 	dlm_allow_conn = 1;
+ 
+@@ -2022,8 +2010,6 @@ int dlm_lowcomms_start(void)
+ fail_proto_ops:
+ 	dlm_allow_conn = 0;
+ 	work_stop();
+-fail_local:
+-	deinit_local();
+ fail:
+ 	return error;
+ }
+-- 
+2.43.0.687.g38aa6559b0-goog
+
 
