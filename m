@@ -1,114 +1,136 @@
-Return-Path: <stable+bounces-19479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8A78518CF
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 17:17:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D70B9851A1F
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 17:54:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F21931C2134B
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 16:17:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91DF2281941
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 16:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D893D0C9;
-	Mon, 12 Feb 2024 16:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D53B3D984;
+	Mon, 12 Feb 2024 16:53:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kFI5Baa4"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A833D0B6;
-	Mon, 12 Feb 2024 16:17:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A9D3D39F;
+	Mon, 12 Feb 2024 16:53:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707754623; cv=none; b=XFpIcMo+wADh4TZIX5BQBpfK3DkkuGswYjIpcgGDFEyr2uqINJnCcg7e5y5hKQY7B4aZCNuZmZHpFhxGv474jBj1Yja9J1ySdj1iu/+ThsNfXsyhlNNvSpLSVmvM6rZ/Yh27DQmWicsUsErrW2uvfiHk0l4OFb/Pyz6YitFtYIA=
+	t=1707756819; cv=none; b=fwuHpYyKazjftVYW7clq+JHfnHLgYmX9PCkBS5mUBelOC3WXOEIspVnKWvjhaABxS3jfOInEsaJVhKNQe5neNFt6v8M4SFmt7gqRFO0qU8kJNXNZWSedoW/c1qlR3dA8Q1u0nqCq7p7S6HThah/UcFKDNoUanJVbgs9urPyJ0FM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707754623; c=relaxed/simple;
-	bh=XiSCSWQLPVABFex+zdas6pNksSgMX3x6uGMmE8PYqjo=;
-	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=V9E/lX84xJNNQFbj5xmwEjHgEF8DQshE11Z/FAa15L8vhtPKiKaKp4OEbMB0BKmcG1F3fBuIBWHZ2ZoHBHBwWEy8zZnjhzpgHBnstSwo11oIkQhMENvZfggrpul8OWvl6Fn6WYqS/hGMP+xoqTVpXNrqWSONy4KHohHVWDb1S10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1rZYzK-0002Kc-Tp; Mon, 12 Feb 2024 17:16:58 +0100
-Message-ID: <f9f89284-0f48-4971-ad8d-86938a82fafc@leemhuis.info>
-Date: Mon, 12 Feb 2024 17:16:58 +0100
+	s=arc-20240116; t=1707756819; c=relaxed/simple;
+	bh=vk+Lt5I2JfW5rauqD9RI4ZcRRxFOCwrY7DdoHCOyR8M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Xzp80FPJMtFQdEYdxQwtCYENiHSKJc584kJRqHMCtdd1dzEHHbC3pUex7Nx2StQgilZVitn2TWWnqi69puR8pwD3ABlEDzXf3Raw9kslT2GE0zZlu3uUeHlhoncsPmsgpurhwEMB9QmfCxYDQuV7vN4Vymjt5CIOxOSsT0JqIfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kFI5Baa4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA0DC433B1;
+	Mon, 12 Feb 2024 16:53:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707756818;
+	bh=vk+Lt5I2JfW5rauqD9RI4ZcRRxFOCwrY7DdoHCOyR8M=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=kFI5Baa47zDEkpiFIS+is9qV7PpYX7LBgeSj8eFnmELiHBK4oOOFLZe6uIRYPyBcl
+	 57uA+HZ3iEbEEJ1Ns03MItwhGmiU3ySRcTsjiUKSLwAYmaQpABdds7j4kyW8IQVgkj
+	 bSdOta3yIMNyykDASx8gYDSHf88hIQ2HcBPufi5lJ5iIh2e7iQF30W7GB+0zmYbzfp
+	 W7Vqbg0oqM2yxNvVXsgiysSEt3Us24ynKTYcnhKGhtDG8J0vc030TWkvNBVsMoZpOh
+	 40fUWUb/1Tf2VNcO+OEZzLqVW1F7Z2JO3A+fB3zewCFIeIrvgJfHMZET3tk7kd0aLb
+	 SnTK1bjvPJ9Qw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1rZZZ2-000000007N3-282y;
+	Mon, 12 Feb 2024 17:53:52 +0100
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Bjorn Andersson <andersson@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 03/10] arm64: dts: qcom: sc8280xp: add missing PCIe minimum OPP
+Date: Mon, 12 Feb 2024 17:50:36 +0100
+Message-ID: <20240212165043.26961-4-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240212165043.26961-1-johan+linaro@kernel.org>
+References: <20240212165043.26961-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US, de-DE
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>,
- David Laight <David.Laight@ACULAB.COM>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Linux kernel regressions list <regressions@lists.linux.dev>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: [regression] linux-6.6.y, minmax: virtual memory exhausted in i586
- chroot during kernel compilation
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1707754621;0deb7cf8;
-X-HE-SMSGID: 1rZYzK-0002Kc-Tp
+Content-Transfer-Encoding: 8bit
 
-Hi Greg, Sasha, and David,
+Add the missing PCIe CX performance level votes to avoid relying on
+other drivers (e.g. USB or UFS) to maintain the nominal performance
+level required for Gen3 speeds.
 
-I noticed a regression report in bugzilla.kernel.org that seems to be
-specific to the linux-6.6.y series:
+Fixes: 813e83157001 ("arm64: dts: qcom: sc8280xp/sa8540p: add PCIe2-4 nodes")
+Cc: stable@vger.kernel.org      # 6.2
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ arch/arm64/boot/dts/qcom/sc8280xp.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=218484 :
+diff --git a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+index ae41b3051819..36382b1bd965 100644
+--- a/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8280xp.dtsi
+@@ -1780,6 +1780,7 @@ pcie4: pcie@1c00000 {
+ 			reset-names = "pci";
+ 
+ 			power-domains = <&gcc PCIE_4_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
+ 
+ 			phys = <&pcie4_phy>;
+ 			phy-names = "pciephy";
+@@ -1878,6 +1879,7 @@ pcie3b: pcie@1c08000 {
+ 			reset-names = "pci";
+ 
+ 			power-domains = <&gcc PCIE_3B_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
+ 
+ 			phys = <&pcie3b_phy>;
+ 			phy-names = "pciephy";
+@@ -1976,6 +1978,7 @@ pcie3a: pcie@1c10000 {
+ 			reset-names = "pci";
+ 
+ 			power-domains = <&gcc PCIE_3A_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
+ 
+ 			phys = <&pcie3a_phy>;
+ 			phy-names = "pciephy";
+@@ -2077,6 +2080,7 @@ pcie2b: pcie@1c18000 {
+ 			reset-names = "pci";
+ 
+ 			power-domains = <&gcc PCIE_2B_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
+ 
+ 			phys = <&pcie2b_phy>;
+ 			phy-names = "pciephy";
+@@ -2175,6 +2179,7 @@ pcie2a: pcie@1c20000 {
+ 			reset-names = "pci";
+ 
+ 			power-domains = <&gcc PCIE_2A_GDSC>;
++			required-opps = <&rpmhpd_opp_nom>;
+ 
+ 			phys = <&pcie2a_phy>;
+ 			phy-names = "pciephy";
+-- 
+2.43.0
 
-> After upgrading to version 6.6.16, the kernel compilation on a i586
-> arch (on a 32bit chroot in a 64bit host) fails with a message:
-> 
-> virtual memory exhausted: Cannot allocate memory
-> 
-> this happens even lowering the number of parallel compilation
-> threads. On a x86_64 arch the same problem doesn't occur. It's not
-> clear whether some weird recursion is triggered that exhausts the
-> memory, but it seems that the problem is caused by the patchset
-> 'minmax' added to the 6.6.16 version, in particular it seems caused
-> by these patches:
-> 
-> - minmax-allow-min-max-clamp-if-the-arguments-have-the-same-signedness.patch
-> - minmax-fix-indentation-of-__cmp_once-and-__clamp_once.patch
-> - minmax-allow-comparisons-of-int-against-unsigned-char-short.patch
-> - minmax-relax-check-to-allow-comparison-between-unsigned-arguments-and-signed-constants.patch
-> 
-> Reverting those patches fixes the memory exhaustion problem during compilation.
-
-The reporter later added:
-
-> From a quick test the same problem doesn't occur in 6.8-rc4.
-See the ticket for more details.
-
-Note, you have to use bugzilla to reach the reporter, as I sadly[1] can
-not CCed them in mails like this.
-
-[TLDR for the rest of this mail: I'm adding this report to the list of
-tracked Linux kernel regressions; the text you find below is based on a
-few templates paragraphs you might have encountered already in similar
-form.]
-
-BTW, let me use this mail to also add the report to the list of tracked
-regressions to ensure it's doesn't fall through the cracks:
-
-#regzbot introduced: 204c653d5d0c79940..9487d93f172acef
-https://bugzilla.kernel.org/show_bug.cgi?id=218484
-#regzbot title: minmax: virtual memory exhausted in 6.6.16 with i586 chroot
-#regzbot ignore-activity
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
-
-[1] because bugzilla.kernel.org tells users upon registration their
-"email address will never be displayed to logged out users"
 
