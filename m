@@ -1,95 +1,95 @@
-Return-Path: <stable+bounces-19482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5284851D8E
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 20:04:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FCBC851DE0
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 20:28:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2096288F21
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 19:04:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C43BAB236F3
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 19:28:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58BB647772;
-	Mon, 12 Feb 2024 19:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E40946548;
+	Mon, 12 Feb 2024 19:28:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 7745646444
-	for <stable@vger.kernel.org>; Mon, 12 Feb 2024 19:04:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.131.102.5
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A335845C18;
+	Mon, 12 Feb 2024 19:28:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707764679; cv=none; b=mc8NxCSsNkv9Lj6E7JlCNfLYocQJI421MwvswcKrLktrPMDPTtF+RcYuwMZHb8J7yMF9EkqOT94uKADeSkrx55NVAoEvcbVQUqwVqKKmWXssnX0fsab5CxxC27Mrgq2b5xOYmg2pG1FgKEsO0PJlfTM4XFIE/NiY1q7S2h7FprA=
+	t=1707766087; cv=none; b=AEc0/w1QsblWTslJ++Oy6YTS+uHZnDTMRwacyYcIoZe7dCAaXdp6CCGeL2OXXGiFPXt9OI+X4BiwnhgzZ5OTGRSFMsbo0NAsGBCEUS/BCuhRMtrawhpzWoqoyS49DGfdj/xg7FT+g1F6dEP03sMzaHpiFmUAnPIGjNfSNA1M7nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707764679; c=relaxed/simple;
-	bh=L88DGTxBYgIkeriiYxq9PZjYUYpswT+GoOTTkCN5DvQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UD2f5FHIwFeD+DYCe9614zvo8iISaaP5lnZgssv9GxBxxrtEB1yut/IWPZ5DyOgDirLI/0FEAeXnkSWXQHnYGWAwCz70/l33pt5QFW6M9vKyo2GkIg9w0FCSi4Nr6QDsqFrsDfqZoLDl+5d0VU/clLPsWR7KRq6uuXkImsB7hnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu; spf=pass smtp.mailfrom=netrider.rowland.org; arc=none smtp.client-ip=192.131.102.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
-Received: (qmail 345404 invoked by uid 1000); 12 Feb 2024 14:04:31 -0500
-Date: Mon, 12 Feb 2024 14:04:31 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Oliver Neukum <oneukum@suse.com>
-Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-  Ricardo Ribalda <ribalda@chromium.org>,
-  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-  Mauro Carvalho Chehab <mchehab@kernel.org>, linux-usb@vger.kernel.org,
-  linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-  stable@vger.kernel.org
-Subject: Re: [PATCH v4] media: ucvideo: Add quirk for Logitech Rally Bar
-Message-ID: <6aade777-d97c-4c65-b542-14ce5b39abb6@rowland.harvard.edu>
-References: <20240108-rallybar-v4-1-a7450641e41b@chromium.org>
- <20240204105227.GB25334@pendragon.ideasonboard.com>
- <ca89eb86-a566-422c-9448-d8d5254d54b8@suse.com>
+	s=arc-20240116; t=1707766087; c=relaxed/simple;
+	bh=oX3KI5dCCNi1lSCS7AZPVFpiNTbUOTFE6Qw6GTFVYfg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Cb1ApQ92DGjaektsQxXgt3+KZQePT8e1pdrKI1IuGzM0BsKwG0+Pr5mhkDPnvOkQFg3QFuAaAUwv17/XnDAsNQSyemmKaY3wNFsKKUqMuCab7BoyXdVCeiQfbFlAmTKRloDDsukpH6dIkyqOiVbUZS8j3s38DejiKCeieCZDjsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3c03d6e5e56so773391b6e.1;
+        Mon, 12 Feb 2024 11:28:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707766084; x=1708370884;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oX3KI5dCCNi1lSCS7AZPVFpiNTbUOTFE6Qw6GTFVYfg=;
+        b=C957Dtt399uxFpCkOKTfHilhJ3F9cAWJ9ykhnsqpRLVuZx0mKhPcEpoQqGYc0S+Ea5
+         un3OZNEfsnxq4yPQ5h/MGL+2l6ncUCmT/fm5AcdQBXJzk8FaWeJnz1n9d+xKHLW4qH/S
+         p8ICBCtZ2ebGsVCN6yprsJLARxcRANyoIGX5bTi2H3qeXnz5/uK3OlWteZpThrILCZmd
+         cjacHb9vHUTB+e/jUdmkyUGaJ4QZDBZYlec7/JleGMuSOrwF8seUHQxmDWvJClxkJnzH
+         4O1kRk+iUiN4PCeKg5ZWevbJJhDUirIuT1LpZYtWHDcj05/PNMvgNKOC2mebeFi/yrVo
+         ixvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVFrSx6t9mc1+B7wg9wMKgWmNqv0OPtTVXOWzd0WQ5kccqW8PncMT0sFIlueZRXcBDBHicVBEBIjTxQlWKeVePjdurHpy1tDryajmtPmOBHdTlHH4NCBplSbQcOoXSIVzjcKxBdbQ==
+X-Gm-Message-State: AOJu0Yz0zhsF3nURnY105opP4OA5wFMYK/EbzeefPwXSTl9uAjO5gEye
+	ZJRsUPmqvS8x0KcAvHUiH0w44fPRuZxoPGngqMGr0DIL0OI3fDMl
+X-Google-Smtp-Source: AGHT+IFMBXa2YD/yLM0Waohsogq5i8wTlUdjTol9bgBe6MJf+GTMNm+LdMm374K0IlJBpgnDgzkYFg==
+X-Received: by 2002:a05:6358:999e:b0:179:1f8b:445a with SMTP id j30-20020a056358999e00b001791f8b445amr9498668rwb.22.1707766084516;
+        Mon, 12 Feb 2024 11:28:04 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVL0aDYPOurhVg9Tka+0JLdWIiBkmMJJBL8zm6g1WGJkuzxB2I6DlVsZsVi3ZSzjybTeGj4Q1sSUpyooxcCQkl3fnf9hI7lpVVBsWk7JcUq0WEmxHzwT0IPZPvqEMojnH0CzlhSfbHzDrtVkGq5++fQesKpboNJ6CCJYOBfTh79czGAMzJ8J2nZ2ySQb8iPWhUxupasjkH0mhasf8CH6xEvddEJLR+noLjCtScJV/wE+K4qVpjs3Q8vWBmBFg==
+Received: from ?IPV6:2620:0:1000:8411:dfc4:6edd:16dd:210a? ([2620:0:1000:8411:dfc4:6edd:16dd:210a])
+        by smtp.gmail.com with ESMTPSA id w13-20020aa7858d000000b006e03b82016asm5905491pfn.33.2024.02.12.11.28.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 12 Feb 2024 11:28:04 -0800 (PST)
+Message-ID: <4e47c7d4-ece3-4b8e-a4df-80d212f673fb@acm.org>
+Date: Mon, 12 Feb 2024 11:28:02 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ca89eb86-a566-422c-9448-d8d5254d54b8@suse.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] fs, USB gadget: Rework kiocb cancellation
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jens Axboe <axboe@kernel.dk>, Christian Brauner <brauner@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, Avi Kivity <avi@scylladb.com>,
+ Sandeep Dhavale <dhavale@google.com>, stable@vger.kernel.org
+References: <20240208215518.1361570-1-bvanassche@acm.org>
+ <9e83c34a-63ab-47ea-9c06-14303dbbeaa9@kernel.dk>
+ <20240209-katapultieren-lastkraftwagen-d28bbc0a92b2@brauner>
+ <9a7294ef-6812-43bb-af50-a2b4659f2d15@kernel.dk>
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <9a7294ef-6812-43bb-af50-a2b4659f2d15@kernel.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Feb 12, 2024 at 01:22:42PM +0100, Oliver Neukum wrote:
-> On 04.02.24 11:52, Laurent Pinchart wrote:
-> > Hi Ricardo,
-> > 
-> > Thank you for the patch.
-> 
-> Hi,
-> 
-> sorry for commenting on this late, but this patch has
-> a fundamental issue. In fact this issue is the reason the
-> handling for quirks is in usbcore at all.
-> 
-> If you leave the setting/clearing of this flag to a driver you
-> are introducing a race condition. The driver may or may not be
-> present at the time a device is enumerated. And you have
-> no idea how long the autosuspend delay is on a system
-> and what its default policy is regarding suspending
-> devices.
-> That means that a device can have been suspended and
-> resumed before it is probed. On a device that needs
-> RESET_RESUME, we are in trouble.
+On 2/9/24 10:12, Jens Axboe wrote:
+> Greg, can you elaborate on how useful cancel is for gadgets? Is it one
+> of those things that was wired up "just because", or does it have
+> actually useful cases?
 
-Not necessarily.  If the driver knows that one of these devices may 
-already have been suspend and resumed, it can issue its own preemptive 
-reset at probe time.
+I found two use cases in the Android Open Source Project and have submitted
+CLs that request to remove the io_cancel() calls from that code. Although I
+think I understand why these calls were added, the race conditions that
+these io_cancel() calls try to address cannot be addressed completely by
+calling io_cancel().
 
-> The inverse issue will arise if a device does not react
-> well to RESET_RESUME. You cannot rule out that a device
-> that must not be reset will be reset.
+Bart.
 
-That's a separate issue, with its own list of potential problems.
-
-> I am sorry, but it seems to me that the exceptions need
-> to go into usbcore.
-
-If we do then we may want to come up with a better scheme for seeing 
-which devices need to have a quirk flag set.  A static listing probably 
-won't be good enough; the decision may have to be made dynamically.
-
-Alan Stern
 
