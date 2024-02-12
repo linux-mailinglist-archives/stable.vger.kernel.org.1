@@ -1,148 +1,277 @@
-Return-Path: <stable+bounces-19485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3159851ECE
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 21:42:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B745851EEE
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 21:53:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ED9F1C21A67
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 20:42:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2167A283B05
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 20:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A0B2481B4;
-	Mon, 12 Feb 2024 20:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DA9487A7;
+	Mon, 12 Feb 2024 20:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="abzzEBuw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GT6Tq+GH"
 X-Original-To: stable@vger.kernel.org
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [95.215.58.172])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E1142AAF
-	for <stable@vger.kernel.org>; Mon, 12 Feb 2024 20:42:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A19481D7;
+	Mon, 12 Feb 2024 20:53:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707770553; cv=none; b=DssGUfO4eFQrdzhYPoIm2XzeZIP26sNYirStcic/0nwt+tFhaOid9okrWheD1B69WDHnAr23hhcntYj2HOGXS5AJZ9N84nONwANe22FIRfjfYx1dPrtrvGZm4hm2WyH6Uqy0WC0YUQQCGsk2W3UI5Dr745fsPqnrcTDGcLYxayk=
+	t=1707771208; cv=none; b=Y+qG+0TGT/4bcP3lD3jztfwo618jtxL6vHlZAmccFiBn2u1mWjTq92yZkJM90MtWVCfSfdKGb37zi7xzW3dr/Aot1WcLHVJSrPnsLgTs014821ktrCfUBKB5npSu8YmWiIKsRNwK7wfwwD8FbgNewjUa7yogyUF/P4FlMs1T+y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707770553; c=relaxed/simple;
-	bh=AkzjM/MFik3gQffQSPfJIif8jEQKCQAulCjbf4PA/lY=;
+	s=arc-20240116; t=1707771208; c=relaxed/simple;
+	bh=BPg19Mwdf8b2z2juUF//qE5eiYikuu1R6wMSYPuE/zw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QBx39qXAaoxntFnCnp8X1B0kUWP6T26lFmAjGpxvOWA7kucW5siQpYgM3XGIhAX+tWlScmfUxDewoGWphm76amqyHUnDUWvjPvh9s5Jdp+BrWixtd2Af+GSDaetBeJa+duC/psRsIqYJkgmGfovS0S42AupVsKWuczfDm7am3aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=abzzEBuw; arc=none smtp.client-ip=95.215.58.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Mon, 12 Feb 2024 15:42:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1707770549;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wk5/3LiMu1qZi5/LfqpfNetrRAwSWbOpLB6vhC/S/Z0=;
-	b=abzzEBuw28TfrE7mwtg2kz5RRM0VVFREAfxvkuNQimtrOJgtDawQToSlM4Co2Xn5o1N9TE
-	YhB8ryqzTAlS1sJgX0CcP25XaFEmKP+enHui78SN5lDgf6/pVx73FOwS5Zni2WBtZ9NaVA
-	tb4gM58fcwO09h78OJm+YzcuT8/eXVA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Martin Steigerwald <martin@lichtvoll.de>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
-	linux-usb@vger.kernel.org, 
-	Holger =?utf-8?Q?Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>, linux-bcachefs@vger.kernel.org, linux-block@vger.kernel.org
-Subject: Re: I/O errors while writing to external Transcend XS-2000 4TB SSD
-Message-ID: <ypeck262h6ccdnsxzo46vydzygh2y6coe3d4mvgermaaeo5ygg@4nvailbg7ay3>
-References: <1854085.atdPhlSkOF@lichtvoll.de>
- <5444405.Sb9uPGUboI@lichtvoll.de>
- <mqlu3q3npll5wxq5cfuxejcxtdituyydkjdz3pxnpqqmpbs2cl@tox3ulilhaq2>
- <6599603.G0QQBjFxQf@lichtvoll.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=QEb4d3rjCC/a4i7NqSUSedXEMvb18w+LqrzNRgp8tSEL684kwtPTXeTfL6bqu5IoDO6Fy4VL5OaYIU5GeN39sJj8bWzFnZCpXDnNV4p34gV2AVcYHBKb2BGPI5nawd52ZFyhAuuDsPESTwCH9wBIpN36NtA5lCs//l88PmODGQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GT6Tq+GH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDFDC433F1;
+	Mon, 12 Feb 2024 20:53:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707771208;
+	bh=BPg19Mwdf8b2z2juUF//qE5eiYikuu1R6wMSYPuE/zw=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=GT6Tq+GHvj6TBbeHjtkWzhAfu4YcU94yNqhZIz2zwCJ6YQKWL4cL/WoKPzbvGg42/
+	 XYqir6GFyfxeq+nHJPJF5bsld3JsDfu1S+JRwEjprvGPBwgnHoV6qfjtVjoMJSaARG
+	 YP1mgNKPYG7u/dnqC67oUZO8ABn2u9rP7eCmKh5asa7E467hwi8DAh+9Qu2ybc7BxA
+	 IusG8nPcMeImb16ws4YxT039FNWWsUJHiETw01IJIVVJx+Rh8DIlSzcZyoT98dynv5
+	 ZqOeR9g2xD88j6FjZ3GFi6i0AwhAiljr29kFcKGXT+LdMrLpEQgZdfLl3L7xx/wf/U
+	 Wz2ZvH+5q3nNQ==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id D58E7CE0DEC; Mon, 12 Feb 2024 12:53:27 -0800 (PST)
+Date: Mon, 12 Feb 2024 12:53:27 -0800
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Zqiang <qiang.zhang1211@gmail.com>
+Cc: joel@joelfernandes.org, gregkh@linuxfoundation.org,
+	chenzhongjin@huawei.com, rcu@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] linux-4.19/rcu-tasks: Eliminate deadlocks involving
+ do_exit() and RCU tasks
+Message-ID: <292d4bdd-2af5-4e9d-884b-3e07725669f9@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20240207110846.25168-1-qiang.zhang1211@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6599603.G0QQBjFxQf@lichtvoll.de>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20240207110846.25168-1-qiang.zhang1211@gmail.com>
 
-On Mon, Feb 12, 2024 at 04:52:09PM +0100, Martin Steigerwald wrote:
-> Kent Overstreet - 11.02.24, 19:51:32 CET:
-> > On Sun, Feb 11, 2024 at 06:06:27PM +0100, Martin Steigerwald wrote:
-> […]
-> > > CC'ing BCacheFS mailing list.
-> > > 
-> > > My original mail is here:
-> > > 
-> > > https://lore.kernel.org/linux-usb/5264d425-fc13-6a77-2dbf-6853479051a0
-> > > @applied-asynchrony.com/T/ #m5ec9ecad1240edfbf41ad63c7aeeb6aa6ea38a5e
-> > > 
-> > > Holger Hoffstätte - 11.02.24, 17:02:29 CET:
-> > > > On 2024-02-11 16:42, Martin Steigerwald wrote:
-> > > > > Hi!
-> > > > > I am trying to put data on an external Kingston XS-2000 4 TB SSD
-> > > > > using
-> > > > > self-compiled Linux 6.7.4 kernel and encrypted BCacheFS. I do not
-> > > > > think BCacheFS has any part in the errors I see, but if you
-> > > > > disagree
-> > > > > feel free to CC the BCacheFS mailing list as you reply.
-> > > > 
-> > > > This is indeed a known bug with bcachefs on USB-connected devices.
-> > > > Apply the following commit:
-> > > > 
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/c
-> > > > ommi t/fs/bcachefs?id=3e44f325f6f75078cdcd44cd337f517ba3650d05
-> > > > 
-> > > > This and some other commits are already scheduled for -stable.
-> > > 
-> > > Thanks!
-> > > 
-> > > Oh my. I was aware of some bug fixes coming for stable. I briefly
-> > > looked through them, but now I did not make a connection.
-> > > 
-> > > I will wait for 6.7.5 and retry then I bet.
-> > 
-> > That doesn't look related - the device claims to not support flush or
-> > fua, and the bug resulted in us not sending flush/fua devices; the main
-> > thing people would see without that patch, on 6.8, would be an immediate
-> > -EOPNOTSUP on the first flush journal write.
-> > 
-> > He only got errors after an hour or so, or 10 minutes with UAS disabled;
-> > we send flushes once a second. Sounds like a screwy device.
+On Wed, Feb 07, 2024 at 07:08:46PM +0800, Zqiang wrote:
+> From: Paul E. McKenney <paulmck@kernel.org>
 > 
-> Thanks for that explanation, Kent.
+> commit bc31e6cb27a9334140ff2f0a209d59b08bc0bc8c upstream.
 > 
-> I am the one with that external Transcend XS 2000 4 TB SSD and I
-> specifically did not CC bcachefs mailing list at the beginning as after
-> seeing things like
+> Holding a mutex across synchronize_rcu_tasks() and acquiring
+> that same mutex in code called from do_exit() after its call to
+> exit_tasks_rcu_start() but before its call to exit_tasks_rcu_stop()
+> results in deadlock.  This is by design, because tasks that are far
+> enough into do_exit() are no longer present on the tasks list, making
+> it a bit difficult for RCU Tasks to find them, let alone wait on them
+> to do a voluntary context switch.  However, such deadlocks are becoming
+> more frequent.  In addition, lockdep currently does not detect such
+> deadlocks and they can be difficult to reproduce.
 > 
-> [33963.462694] sd 0:0:0:0: [sda] tag#10 uas_zap_pending 0 uas-tag 1 inflight: CMD 
-> [33963.462708] sd 0:0:0:0: [sda] tag#10 CDB: Write(16) 8a 00 00 00 00 00 82 c1 bc 00 00 00 04 00 00 00
-> […]
-> [33963.592872] sd 0:0:0:0: [sda] tag#10 FAILED Result: hostbyte=DID_RESET driverbyte=DRIVER_OK cmd_age=182s
+> In addition, if a task voluntarily context switches during that time
+> (for example, if it blocks acquiring a mutex), then this task is in an
+> RCU Tasks quiescent state.  And with some adjustments, RCU Tasks could
+> just as well take advantage of that fact.
 > 
-> I thought some quirks in the device to be at fault.
+> This commit therefore eliminates these deadlock by replacing the
+> SRCU-based wait for do_exit() completion with per-CPU lists of tasks
+> currently exiting.  A given task will be on one of these per-CPU lists for
+> the same period of time that this task would previously have been in the
+> previous SRCU read-side critical section.  These lists enable RCU Tasks
+> to find the tasks that have already been removed from the tasks list,
+> but that must nevertheless be waited upon.
 > 
-> However while Sandisk Extreme Pro 2 TB claims to support DPO and FUA I see
+> The RCU Tasks grace period gathers any of these do_exit() tasks that it
+> must wait on, and adds them to the list of holdouts.  Per-CPU locking
+> and get_task_struct() are used to synchronize addition to and removal
+> from these lists.
 > 
-> Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+> Link: https://lore.kernel.org/all/20240118021842.290665-1-chenzhongjin@huawei.com/
 > 
-> also with other devices like external Toshiba Canvio 4 TB hard disks. Using
-> LUKS encrypted BTRFS on those I never saw any timeout while writing out
-> data issue with any of those hard disks. Also with disabled write cache
-> any cache flush / FUA request should be a no-op anyway? These hard disks
-> have been doing a ton of backup workloads without any issues, but so far
-> only with BTRFS.
-> 
-> I may test the Transcend XS2000 with BTRFS to see whether it makes a
-> difference, however I really like to use it with BCacheFS and I do not really
-> like to use LUKS for external devices. According to the kernel log I still
-> don't really think those errors at the block layer were about anything
-> filesystem specific, but what  do I know?
+> Reported-by: Chen Zhongjin <chenzhongjin@huawei.com>
+> Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+> Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
 
-It's definitely not unheard of for one specific filesystem to be
-tickling driver/device bugs and not others.
+This looks good to me, though it would be good to get other eyes on it.
 
-I wonder what it would take to dump the outstanding requests on device
-timeout.
+Thank you for putting this together!!!
+
+							Thanx, Paul
+
+> ---
+>  include/linux/sched.h |  1 +
+>  init/init_task.c      |  1 +
+>  kernel/fork.c         |  1 +
+>  kernel/rcu/update.c   | 65 ++++++++++++++++++++++++++++++-------------
+>  4 files changed, 49 insertions(+), 19 deletions(-)
+> 
+> diff --git a/include/linux/sched.h b/include/linux/sched.h
+> index fd4899236037..0b555d8e9d5e 100644
+> --- a/include/linux/sched.h
+> +++ b/include/linux/sched.h
+> @@ -679,6 +679,7 @@ struct task_struct {
+>  	u8				rcu_tasks_idx;
+>  	int				rcu_tasks_idle_cpu;
+>  	struct list_head		rcu_tasks_holdout_list;
+> +	struct list_head                rcu_tasks_exit_list;
+>  #endif /* #ifdef CONFIG_TASKS_RCU */
+>  
+>  	struct sched_info		sched_info;
+> diff --git a/init/init_task.c b/init/init_task.c
+> index 994ffe018120..f741cbfd891c 100644
+> --- a/init/init_task.c
+> +++ b/init/init_task.c
+> @@ -139,6 +139,7 @@ struct task_struct init_task
+>  	.rcu_tasks_holdout = false,
+>  	.rcu_tasks_holdout_list = LIST_HEAD_INIT(init_task.rcu_tasks_holdout_list),
+>  	.rcu_tasks_idle_cpu = -1,
+> +	.rcu_tasks_exit_list = LIST_HEAD_INIT(init_task.rcu_tasks_exit_list),
+>  #endif
+>  #ifdef CONFIG_CPUSETS
+>  	.mems_allowed_seq = SEQCNT_ZERO(init_task.mems_allowed_seq),
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index b65871600507..d416d16df62f 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -1626,6 +1626,7 @@ static inline void rcu_copy_process(struct task_struct *p)
+>  	p->rcu_tasks_holdout = false;
+>  	INIT_LIST_HEAD(&p->rcu_tasks_holdout_list);
+>  	p->rcu_tasks_idle_cpu = -1;
+> +	INIT_LIST_HEAD(&p->rcu_tasks_exit_list);
+>  #endif /* #ifdef CONFIG_TASKS_RCU */
+>  }
+>  
+> diff --git a/kernel/rcu/update.c b/kernel/rcu/update.c
+> index 81688a133552..5227cb5c1bea 100644
+> --- a/kernel/rcu/update.c
+> +++ b/kernel/rcu/update.c
+> @@ -527,7 +527,8 @@ static DECLARE_WAIT_QUEUE_HEAD(rcu_tasks_cbs_wq);
+>  static DEFINE_RAW_SPINLOCK(rcu_tasks_cbs_lock);
+>  
+>  /* Track exiting tasks in order to allow them to be waited for. */
+> -DEFINE_STATIC_SRCU(tasks_rcu_exit_srcu);
+> +static LIST_HEAD(rtp_exit_list);
+> +static DEFINE_RAW_SPINLOCK(rtp_exit_list_lock);
+>  
+>  /* Control stall timeouts.  Disable with <= 0, otherwise jiffies till stall. */
+>  #define RCU_TASK_STALL_TIMEOUT (HZ * 60 * 10)
+> @@ -661,6 +662,17 @@ static void check_holdout_task(struct task_struct *t,
+>  	sched_show_task(t);
+>  }
+>  
+> +static void rcu_tasks_pertask(struct task_struct *t, struct list_head *hop)
+> +{
+> +	if (t != current && READ_ONCE(t->on_rq) &&
+> +			!is_idle_task(t)) {
+> +		get_task_struct(t);
+> +		t->rcu_tasks_nvcsw = READ_ONCE(t->nvcsw);
+> +		WRITE_ONCE(t->rcu_tasks_holdout, true);
+> +		list_add(&t->rcu_tasks_holdout_list, hop);
+> +	}
+> +}
+> +
+>  /* RCU-tasks kthread that detects grace periods and invokes callbacks. */
+>  static int __noreturn rcu_tasks_kthread(void *arg)
+>  {
+> @@ -726,14 +738,7 @@ static int __noreturn rcu_tasks_kthread(void *arg)
+>  		 */
+>  		rcu_read_lock();
+>  		for_each_process_thread(g, t) {
+> -			if (t != current && READ_ONCE(t->on_rq) &&
+> -			    !is_idle_task(t)) {
+> -				get_task_struct(t);
+> -				t->rcu_tasks_nvcsw = READ_ONCE(t->nvcsw);
+> -				WRITE_ONCE(t->rcu_tasks_holdout, true);
+> -				list_add(&t->rcu_tasks_holdout_list,
+> -					 &rcu_tasks_holdouts);
+> -			}
+> +			rcu_tasks_pertask(t, &rcu_tasks_holdouts);
+>  		}
+>  		rcu_read_unlock();
+>  
+> @@ -744,8 +749,12 @@ static int __noreturn rcu_tasks_kthread(void *arg)
+>  		 * where they have disabled preemption, allowing the
+>  		 * later synchronize_sched() to finish the job.
+>  		 */
+> -		synchronize_srcu(&tasks_rcu_exit_srcu);
+> -
+> +		raw_spin_lock_irqsave(&rtp_exit_list_lock, flags);
+> +		list_for_each_entry(t, &rtp_exit_list, rcu_tasks_exit_list) {
+> +			if (list_empty(&t->rcu_tasks_holdout_list))
+> +				rcu_tasks_pertask(t, &rcu_tasks_holdouts);
+> +		}
+> +		raw_spin_unlock_irqrestore(&rtp_exit_list_lock, flags);
+>  		/*
+>  		 * Each pass through the following loop scans the list
+>  		 * of holdout tasks, removing any that are no longer
+> @@ -802,8 +811,7 @@ static int __noreturn rcu_tasks_kthread(void *arg)
+>  		 *
+>  		 * In addition, this synchronize_sched() waits for exiting
+>  		 * tasks to complete their final preempt_disable() region
+> -		 * of execution, cleaning up after the synchronize_srcu()
+> -		 * above.
+> +		 * of execution.
+>  		 */
+>  		synchronize_sched();
+>  
+> @@ -834,20 +842,39 @@ static int __init rcu_spawn_tasks_kthread(void)
+>  }
+>  core_initcall(rcu_spawn_tasks_kthread);
+>  
+> -/* Do the srcu_read_lock() for the above synchronize_srcu().  */
+> +/*
+> + * Protect against tasklist scan blind spot while the task is exiting and
+> + * may be removed from the tasklist.  Do this by adding the task to yet
+> + * another list.
+> + */
+>  void exit_tasks_rcu_start(void)
+>  {
+> +	unsigned long flags;
+> +	struct task_struct *t = current;
+> +
+> +	WARN_ON_ONCE(!list_empty(&t->rcu_tasks_exit_list));
+> +	get_task_struct(t);
+>  	preempt_disable();
+> -	current->rcu_tasks_idx = __srcu_read_lock(&tasks_rcu_exit_srcu);
+> +	raw_spin_lock_irqsave(&rtp_exit_list_lock, flags);
+> +	list_add(&t->rcu_tasks_exit_list, &rtp_exit_list);
+> +	raw_spin_unlock_irqrestore(&rtp_exit_list_lock, flags);
+>  	preempt_enable();
+>  }
+>  
+> -/* Do the srcu_read_unlock() for the above synchronize_srcu().  */
+> +/*
+> + * Remove the task from the "yet another list" because do_exit() is now
+> + * non-preemptible, allowing synchronize_rcu() to wait beyond this point.
+> + */
+>  void exit_tasks_rcu_finish(void)
+>  {
+> -	preempt_disable();
+> -	__srcu_read_unlock(&tasks_rcu_exit_srcu, current->rcu_tasks_idx);
+> -	preempt_enable();
+> +	unsigned long flags;
+> +	struct task_struct *t = current;
+> +
+> +	WARN_ON_ONCE(list_empty(&t->rcu_tasks_exit_list));
+> +	raw_spin_lock_irqsave(&rtp_exit_list_lock, flags);
+> +	list_del_init(&t->rcu_tasks_exit_list);
+> +	raw_spin_unlock_irqrestore(&rtp_exit_list_lock, flags);
+> +	put_task_struct(t);
+>  }
+>  
+>  #endif /* #ifdef CONFIG_TASKS_RCU */
+> -- 
+> 2.17.1
+> 
 
