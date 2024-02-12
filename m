@@ -1,156 +1,104 @@
-Return-Path: <stable+bounces-19494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22762852242
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 00:03:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF66885225F
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 00:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE0101F221E5
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 23:03:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57E0EB22A10
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 23:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F236C4EB33;
-	Mon, 12 Feb 2024 23:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75A04F885;
+	Mon, 12 Feb 2024 23:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CcL0TO5D";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="44lnw3ED"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ia8ck2Sb"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93BDE50268;
-	Mon, 12 Feb 2024 23:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F26E4F610;
+	Mon, 12 Feb 2024 23:21:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707779022; cv=none; b=ZkA+8F2eI+WVR6JeqmjG4TRTzpi2YwQdxXXQX4dDg6C/88mge9daJRK6vKxOfPvDLi3odDdP96n4/23nwtLQIbt8Lix4YPRG9MAwmMVBlIF/3l8PxuAA0oZAG1rN9Cy9npsFC5KZ9nIoeQVHJs9nAFLjx7z/r52RpQNQpJT+NEc=
+	t=1707780110; cv=none; b=ZviS7ELztHyx9rGWO15eFUE2SS3BeaZBQE1cIInJKBrrmE2NYQc6wT9SRaCE8xYh2bRKDqo9GlwJCDsTlPRso1TjFUpiDYmnmeFIVOJJ/2I0zC6NEyu3DzrQKuxI+9+Vo0P5IVNmTWH5YTFCcTyzJM1dhvspM/5Wwf6RawPGFSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707779022; c=relaxed/simple;
-	bh=o00fLGDQ5IUs5ESmZiFEk2pxwiuRloTFln7XGgCfXQY=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=Ru321GwyJVerNkn9Ho8h/HDcs4nO7WMIS34kvqoyou88yARQ1utO3A4GZg+m7IXRMeOt9pmjabrF500q1NFiFwvLBxmVtS6dI++orHNZCuvleJ2MKf9rhs/lpuVB5yi0wvlE61EPRvYvjGhuP4hvwALXvliOdfL2dBinejp9hAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CcL0TO5D; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=44lnw3ED; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 12 Feb 2024 23:03:37 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1707779018;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=eWzBm5Plzn16axCsOV4GgMj1z/Hv3hBUjuZkX+T6jRM=;
-	b=CcL0TO5DKvFDGMZMY9FPFafGngcx1eQCjGDhkzO7RskwtStDfH4f06giCUY6JZ5wb7r+Ll
-	LvlvUInlCA9taR1f06991qaBJZ2i1b4zTM4FD+xEYac1CoRE6n6HttsiAurYRut8Wd0AmE
-	f4jI/1EgHJbVLqitLLVv1eLmD0si/a2mLaxjEBlnYJwcQmG8cYDhgoujsu55t8U5yvizHy
-	fZBYXnDhESm06sBTHseqAunyPkTRmhKINEEMH4NZL1ZJmJXxrn2vmWDTeiUrD4uPUdT0c+
-	HDQcDppTZ3gqiifCMUp4T0mr4qp+dJImbIo7apKfPx6rTUGa0hWG7BakjcN8/w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1707779018;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=eWzBm5Plzn16axCsOV4GgMj1z/Hv3hBUjuZkX+T6jRM=;
-	b=44lnw3EDMSz+f8YcRsAs8lpng3pQTbCCDPIm7hEuYn4r8xzA00iOaIxk9OivepBIjtdRpC
-	i8u0JVDXCMcGrSCw==
-From: "tip-bot2 for Steve Wahl" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/mm/ident_map: Use gbpages only where full GB
- page should be mapped.
-Cc: Steve Wahl <steve.wahl@hpe.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1707780110; c=relaxed/simple;
+	bh=M+NK3H9EAiRTnxuj1er58hwV2l+kEdV/fbZVFA3drmM=;
+	h=Date:To:From:Subject:Message-Id; b=UxJaOn5n8ZAh10wftGemtoPGdZLBko1CjvnQNz4BseujtFRc8dsCtxGiG8+Ee+q5hq6fgbqj/bnPmprQnMvhUnNzryzSaq9xpLa4fZ1N5nE5oc1b9V9JbwjcE/vg5h2NmDW1IvX2UtjvHoCcRaLY8tV0+byZf5/hFrOZkPY2xC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ia8ck2Sb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE37FC433C7;
+	Mon, 12 Feb 2024 23:21:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1707780109;
+	bh=M+NK3H9EAiRTnxuj1er58hwV2l+kEdV/fbZVFA3drmM=;
+	h=Date:To:From:Subject:From;
+	b=ia8ck2SbzDuPE4SMrtpmXtFJXAFJPgCQfaqvLfo5GwBXPZ/kVQH+/pdi3OZiw+Qi/
+	 SqIcksbC7wlrJSGsrQcY816aJHvHqYaVzfQouaTZ4bWI8iIQwIZ9WZoatrR+E1AFA2
+	 ezEyWz4S+qgEg/MVK5JcUQ/mGyRhY5XHB2LgoFfU=
+Date: Mon, 12 Feb 2024 15:21:49 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,david@redhat.com,anshuman.khandual@arm.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [withdrawn] fs-proc-task_mmu-add-display-flag-for-vm_mayoverlay.patch removed from -mm tree
+Message-Id: <20240212232149.BE37FC433C7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Message-ID: <170777901796.398.6658653813355920802.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
 
-The following commit has been merged into the x86/urgent branch of tip:
 
-Commit-ID:     d794734c9bbfe22f86686dc2909c25f5ffe1a572
-Gitweb:        https://git.kernel.org/tip/d794734c9bbfe22f86686dc2909c25f5ffe1a572
-Author:        Steve Wahl <steve.wahl@hpe.com>
-AuthorDate:    Fri, 26 Jan 2024 10:48:41 -06:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 12 Feb 2024 14:53:42 -08:00
+The quilt patch titled
+     Subject: fs/proc/task_mmu: add display flag for VM_MAYOVERLAY
+has been removed from the -mm tree.  Its filename was
+     fs-proc-task_mmu-add-display-flag-for-vm_mayoverlay.patch
 
-x86/mm/ident_map: Use gbpages only where full GB page should be mapped.
+This patch was dropped because it was withdrawn
 
-When ident_pud_init() uses only gbpages to create identity maps, large
-ranges of addresses not actually requested can be included in the
-resulting table; a 4K request will map a full GB.  On UV systems, this
-ends up including regions that will cause hardware to halt the system
-if accessed (these are marked "reserved" by BIOS).  Even processor
-speculation into these regions is enough to trigger the system halt.
+------------------------------------------------------
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: fs/proc/task_mmu: add display flag for VM_MAYOVERLAY
+Date: Thu, 8 Feb 2024 14:18:05 +0530
 
-Only use gbpages when map creation requests include the full GB page
-of space.  Fall back to using smaller 2M pages when only portions of a
-GB page are included in the request.
+VM_UFFD_MISSING flag is mutually exclussive with VM_MAYOVERLAY flag as
+they both use the same bit position i.e 0x00000200 in the vm_flags.  Let's
+update show_smap_vma_flags() to display the correct flags depending on
+CONFIG_MMU.
 
-No attempt is made to coalesce mapping requests. If a request requires
-a map entry at the 2M (pmd) level, subsequent mapping requests within
-the same 1G region will also be at the pmd level, even if adjacent or
-overlapping such requests could have been combined to map a full
-gbpage.  Existing usage starts with larger regions and then adds
-smaller regions, so this should not have any great consequence.
-
-[ dhansen: fix up comment formatting, simplifty changelog ]
-
-Signed-off-by: Steve Wahl <steve.wahl@hpe.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240126164841.170866-1-steve.wahl%40hpe.com
+Link: https://lkml.kernel.org/r/20240208084805.1252337-1-anshuman.khandual@arm.com
+Fixes: b6b7a8faf05c ("mm/nommu: don't use VM_MAYSHARE for MAP_PRIVATE mappings")
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- arch/x86/mm/ident_map.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/arch/x86/mm/ident_map.c b/arch/x86/mm/ident_map.c
-index 968d700..f50cc21 100644
---- a/arch/x86/mm/ident_map.c
-+++ b/arch/x86/mm/ident_map.c
-@@ -26,18 +26,31 @@ static int ident_pud_init(struct x86_mapping_info *info, pud_t *pud_page,
- 	for (; addr < end; addr = next) {
- 		pud_t *pud = pud_page + pud_index(addr);
- 		pmd_t *pmd;
-+		bool use_gbpage;
- 
- 		next = (addr & PUD_MASK) + PUD_SIZE;
- 		if (next > end)
- 			next = end;
- 
--		if (info->direct_gbpages) {
--			pud_t pudval;
-+		/* if this is already a gbpage, this portion is already mapped */
-+		if (pud_large(*pud))
-+			continue;
-+
-+		/* Is using a gbpage allowed? */
-+		use_gbpage = info->direct_gbpages;
- 
--			if (pud_present(*pud))
--				continue;
-+		/* Don't use gbpage if it maps more than the requested region. */
-+		/* at the begining: */
-+		use_gbpage &= ((addr & ~PUD_MASK) == 0);
-+		/* ... or at the end: */
-+		use_gbpage &= ((next & ~PUD_MASK) == 0);
-+
-+		/* Never overwrite existing mappings */
-+		use_gbpage &= !pud_present(*pud);
-+
-+		if (use_gbpage) {
-+			pud_t pudval;
- 
--			addr &= PUD_MASK;
- 			pudval = __pud((addr - info->offset) | info->page_flag);
- 			set_pud(pud, pudval);
- 			continue;
+ fs/proc/task_mmu.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+--- a/fs/proc/task_mmu.c~fs-proc-task_mmu-add-display-flag-for-vm_mayoverlay
++++ a/fs/proc/task_mmu.c
+@@ -681,7 +681,11 @@ static void show_smap_vma_flags(struct s
+ 		[ilog2(VM_HUGEPAGE)]	= "hg",
+ 		[ilog2(VM_NOHUGEPAGE)]	= "nh",
+ 		[ilog2(VM_MERGEABLE)]	= "mg",
++#ifdef CONFIG_MMU
+ 		[ilog2(VM_UFFD_MISSING)]= "um",
++#else
++		[ilog2(VM_MAYOVERLAY)]	= "ov",
++#endif /* CONFIG_MMU */
+ 		[ilog2(VM_UFFD_WP)]	= "uw",
+ #ifdef CONFIG_ARM64_MTE
+ 		[ilog2(VM_MTE)]		= "mt",
+_
+
+Patches currently in -mm which might be from anshuman.khandual@arm.com are
+
+mm-memblock-add-memblock_rsrv_noinit-into-flagname-array.patch
+mm-cma-dont-treat-bad-input-arguments-for-cma_alloc-as-its-failure.patch
+mm-cma-drop-config_cma_debug.patch
+mm-cma-make-max_cma_areas-=-config_cma_areas.patch
+mm-cma-add-sysfs-file-release_pages_success.patch
+
 
