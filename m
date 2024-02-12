@@ -1,97 +1,193 @@
-Return-Path: <stable+bounces-19476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C30D8517ED
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 16:28:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF88851875
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 16:52:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58C86282BD7
-	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 15:28:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87041285661
+	for <lists+stable@lfdr.de>; Mon, 12 Feb 2024 15:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ECE13C092;
-	Mon, 12 Feb 2024 15:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hmTE8CP6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD9E3CF5C;
+	Mon, 12 Feb 2024 15:52:22 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.lichtvoll.de (luna.lichtvoll.de [194.150.191.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D333C470
-	for <stable@vger.kernel.org>; Mon, 12 Feb 2024 15:28:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD643CF45;
+	Mon, 12 Feb 2024 15:52:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.150.191.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707751695; cv=none; b=gA96GbBXoUNAYBw90WKhK3pOnT6GeeeLyjULaM6S4CJyIySDQWdkbJVrtfFpZs+nKkk2LnFiTStKk/OGts5Oqcqmavnp8AFCVgQxJBV/Sc3WdpMmTCEdmiSVjVITrdVahSQt4hLpQ+9KM/FRLapC8tqZ7VDGDX2ex1z4ojpHSis=
+	t=1707753142; cv=none; b=dFhsrK8HKWTE41VFVQifodiIRWdYLtZohSf2QhPZN2zXlLAvgSlGt/0OeybTPwaIQ2dks2f/AyOqJTagczHDjzkaGjsdsiDjntJQb4/O/cFT5eWQzH1QJTD6fPXcIzpVdXZm2oH1NgLDxQBlZBG2ZZC02OUSgXCnVYdm0soaVE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707751695; c=relaxed/simple;
-	bh=+Uesfua+CvJPDWq17ArzMv4ITuUC1A14TVjd7UU+nrs=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=iWe3S5cvOyYCHAsO7gepUIWEhSfLAqE3R9D2rSkS7uT3v/kJCgRfto0zNtdk5QCQ2A7y8ViFV+AK/XmNsWB6uNVXLNFU6rCz9kqCBkEok5bsB133Csui341iCisChYwcVPPsQeddbfR/I0jw7DVowuBtVhP73yMTcArS36nJmRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hmTE8CP6; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-6e06c06c0f6so2506138b3a.0
-        for <stable@vger.kernel.org>; Mon, 12 Feb 2024 07:28:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707751693; x=1708356493; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=wVQqSLmG6k2OkxB3p97oV/K3kbotGud22eLraa0EYmk=;
-        b=hmTE8CP6lKNfJjjTXuAbiukSCqdOa9meDerlgGtycmSMeptbKSznYCIlFPbG7Y/FBS
-         zCBsI31VxkahzLHp5edr7LUedMaf1DbAppQQGUUhJ/JbfouD9qQVs17WSK90B49BTC48
-         AosqaCOuBtSSPJVR80zLXfRTlDJVS5qATNBApjr2tE6U70/QegetWENkTpN4aDCgisHK
-         aTB4A55yga3aUnWVAwKK8aPjAymDV8R0e/L70Wz75t+vgDnkwhnXgnDeHC2wgnyT4EjL
-         fPE7xQ/1OHJbJ1Jp7sn40CRdnL3elXhWjn0QoN9kmmhBoR+ntP/AjHswgJxmDmDKCG9O
-         PUfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707751693; x=1708356493;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wVQqSLmG6k2OkxB3p97oV/K3kbotGud22eLraa0EYmk=;
-        b=fMYFYx2shGzB8HW5GGmGp5iSwW1Iki9cC9uGY/mG9eXnLGHVasCt63LU3B8eaWmabc
-         xpbR75/e3yXyBBrK9TM+SMG1i51nAJsNCkyGWYr5zkKNp6OrXd3lv2EV0vdbj4XIjiXE
-         GiEABFdbDZL3iMWkF6v3S9wgaBC4CiB+cpbsFE1pReg9mLwAuRcLQXk61ruF3pabo1vO
-         DtD5EECwI5L8k+9u7u1HBAkFQXDCFCbHZ3yXZyzQwI0k5Qm6MxDGeFcwH5UXQkpJFHdF
-         leG+mZ+F5/mCV1tbeSLFRr4sZWMbRTMxuuOs1D/8L0MH4t7DqpCdTScTVJR/cQQLr3Oa
-         8yxQ==
-X-Gm-Message-State: AOJu0YxromfVX+wQkOqnsNmGl+cpXb0kTuLI3eq+Kt1t1eXh5X9pDlcU
-	0g3ZWgkiFAj7f2Ea1pC+5prIRIcb2UPJjh6zXaXWVIGgKH4Max257xtuXhfLFowyuEahfDttJ91
-	5wuHhmfgXc+O7yymj/OPmMOr+TTHaxZhKqk0=
-X-Google-Smtp-Source: AGHT+IGjCcUB9s7vN4LY7VVmdgp0VYcLtZ+6VXRAyZJTcrgcfOP4hBoTCUF3kXOunAufL7lewgzCoKW3TAZW7GZj0t8=
-X-Received: by 2002:a05:6a20:9d91:b0:19e:b614:685c with SMTP id
- mu17-20020a056a209d9100b0019eb614685cmr8696283pzb.22.1707751693250; Mon, 12
- Feb 2024 07:28:13 -0800 (PST)
+	s=arc-20240116; t=1707753142; c=relaxed/simple;
+	bh=gv2GhH8lA7e+BegMfuoFr5juDlHcR6ol8Y92EvU+GNY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SrodZAp3X81XLCbG8KfD69TxCTFn1ubIHdEtxfIiu9pILdkZS2/+pdiTUfjedevdF0Cxkyq6uKNcxxpmJBC2iL8mWe58+j6y3jKEroy9qZGKOvQFXynhU27Vyaxdwz0I3MQdmH1VsdrpZESr2hcbnQvoUwQL2Z/Tw7uTj9mkesE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lichtvoll.de; spf=pass smtp.mailfrom=lichtvoll.de; arc=none smtp.client-ip=194.150.191.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lichtvoll.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lichtvoll.de
+Received: from 127.0.0.1 (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (secp384r1) server-digest SHA384)
+	(No client certificate requested)
+	by mail.lichtvoll.de (Postfix) with ESMTPSA id EBF968978A1;
+	Mon, 12 Feb 2024 16:52:10 +0100 (CET)
+Authentication-Results: mail.lichtvoll.de;
+	auth=pass smtp.auth=martin smtp.mailfrom=martin@lichtvoll.de
+From: Martin Steigerwald <martin@lichtvoll.de>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+ linux-usb@vger.kernel.org,
+ Holger =?ISO-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>,
+ linux-bcachefs@vger.kernel.org
+Subject: Re: I/O errors while writing to external Transcend XS-2000 4TB SSD
+Date: Mon, 12 Feb 2024 16:52:09 +0100
+Message-ID: <6599603.G0QQBjFxQf@lichtvoll.de>
+In-Reply-To: <mqlu3q3npll5wxq5cfuxejcxtdituyydkjdz3pxnpqqmpbs2cl@tox3ulilhaq2>
+References:
+ <1854085.atdPhlSkOF@lichtvoll.de> <5444405.Sb9uPGUboI@lichtvoll.de>
+ <mqlu3q3npll5wxq5cfuxejcxtdituyydkjdz3pxnpqqmpbs2cl@tox3ulilhaq2>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Leo M <lmartinho03l@gmail.com>
-Date: Mon, 12 Feb 2024 16:28:02 +0100
-Message-ID: <CAJbWX8JREQs7wFtFOfkhXTNhP1wPg2qTUQAJVnUMDkMDFmNBFg@mail.gmail.com>
-Subject: af_iucv kernel module fails to load on bootup / manual start via modprobe
-To: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset="UTF-8"
 
-Hello,
+Kent Overstreet - 11.02.24, 19:51:32 CET:
+> On Sun, Feb 11, 2024 at 06:06:27PM +0100, Martin Steigerwald wrote:
+[=E2=80=A6]
+> > CC'ing BCacheFS mailing list.
+> >=20
+> > My original mail is here:
+> >=20
+> > https://lore.kernel.org/linux-usb/5264d425-fc13-6a77-2dbf-6853479051a0
+> > @applied-asynchrony.com/T/ #m5ec9ecad1240edfbf41ad63c7aeeb6aa6ea38a5e
+> >=20
+> > Holger Hoffst=C3=A4tte - 11.02.24, 17:02:29 CET:
+> > > On 2024-02-11 16:42, Martin Steigerwald wrote:
+> > > > Hi!
+> > > > I am trying to put data on an external Kingston XS-2000 4 TB SSD
+> > > > using
+> > > > self-compiled Linux 6.7.4 kernel and encrypted BCacheFS. I do not
+> > > > think BCacheFS has any part in the errors I see, but if you
+> > > > disagree
+> > > > feel free to CC the BCacheFS mailing list as you reply.
+> > >=20
+> > > This is indeed a known bug with bcachefs on USB-connected devices.
+> > > Apply the following commit:
+> > >=20
+> > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/c
+> > > ommi t/fs/bcachefs?id=3D3e44f325f6f75078cdcd44cd337f517ba3650d05
+> > >=20
+> > > This and some other commits are already scheduled for -stable.
+> >=20
+> > Thanks!
+> >=20
+> > Oh my. I was aware of some bug fixes coming for stable. I briefly
+> > looked through them, but now I did not make a connection.
+> >=20
+> > I will wait for 6.7.5 and retry then I bet.
+>=20
+> That doesn't look related - the device claims to not support flush or
+> fua, and the bug resulted in us not sending flush/fua devices; the main
+> thing people would see without that patch, on 6.8, would be an immediate
+> -EOPNOTSUP on the first flush journal write.
+>=20
+> He only got errors after an hour or so, or 10 minutes with UAS disabled;
+> we send flushes once a second. Sounds like a screwy device.
 
-* update to 5.10.197 included upstream changes from 6.x kernel.
-* in particular this:
-  * https://lore.kernel.org/all/20230917191101.257176910@linuxfoundation.org/
-  * this isn't an issue with the upstream state in the 6.x kernel as
-the problems this change might cause are alleviated by this commit
-that altered the way the iucv_if symbol was loaded:
-     * https://github.com/torvalds/linux/commit/4eb9eda6ba64114d98827e2870e024d5ab7cd35b
+Thanks for that explanation, Kent.
 
-In the current state the symbol is not loaded correctly and the
-feature is not working properly.
+I am the one with that external Transcend XS 2000 4 TB SSD and I
+specifically did not CC bcachefs mailing list at the beginning as after
+seeing things like
 
-This issue hasn't been resolved still and is in a broken state up to
-the current 5.10.x version. Is it possible to include this fix in the
-next 5.10.x version?
+[33963.462694] sd 0:0:0:0: [sda] tag#10 uas_zap_pending 0 uas-tag 1 infligh=
+t: CMD=20
+[33963.462708] sd 0:0:0:0: [sda] tag#10 CDB: Write(16) 8a 00 00 00 00 00 82=
+ c1 bc 00 00 00 04 00 00 00
+[=E2=80=A6]
+[33963.592872] sd 0:0:0:0: [sda] tag#10 FAILED Result: hostbyte=3DDID_RESET=
+ driverbyte=3DDRIVER_OK cmd_age=3D182s
 
-Sincerely,
-Leonardo Martinho
+I thought some quirks in the device to be at fault.
+
+However while Sandisk Extreme Pro 2 TB claims to support DPO and FUA I see
+
+Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+
+also with other devices like external Toshiba Canvio 4 TB hard disks. Using
+LUKS encrypted BTRFS on those I never saw any timeout while writing out
+data issue with any of those hard disks. Also with disabled write cache
+any cache flush / FUA request should be a no-op anyway? These hard disks
+have been doing a ton of backup workloads without any issues, but so far
+only with BTRFS.
+
+I may test the Transcend XS2000 with BTRFS to see whether it makes a
+difference, however I really like to use it with BCacheFS and I do not real=
+ly
+like to use LUKS for external devices. According to the kernel log I still
+don't really think those errors at the block layer were about anything
+filesystem specific, but what  do I know?
+
+With UAS enabled for Transcend XS2000 I see:
+
+Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+
+This sounds about right: Without cache flush / FUA request disable write
+cache.
+
+With UAS disabled, using only usb-storage, however I see:
+
+Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+
+Which appears to be broken to me: If it cannot do cache flush / FUA it
+should have write cache disabled.
+
+Thus I removed the quirk to disable UAS again. It did not help anyway.
+
+However when I look at the output of "hdparm -I" for that Transcend XS2000
+none of this makes sense. Cause it blatantly advertises to support
+
+[=E2=80=A6]
+           *    Mandatory FLUSH_CACHE
+           *    FLUSH_CACHE_EXT
+[=E2=80=A6]
+           *    WRITE_{DMA|MULTIPLE}_FUA_EXT
+[=E2=80=A6]
+
+It has firmware revision S9K00107. I see whether I can get this updated
+in case any update is available. Which is not obvious to me as Kingston
+only offers to download a Windows application to update the firmware.
+
+I asked them how to do an update on Linux. But am also prepared to run to
+a friend with Windows system to do the update.
+
+There is no urgency in this, so let's see whether a firmware update may
+fix anything. In case someone has any additional insight, feel free to add
+it. Otherwise I consider it case closed unless I retest with either Linux
+kernel 6.7.5 or 6.8-rc4 and/or after having made a firmware update
+if available.
+
+Maybe also some other quirks would need to be enabled for that
+device? I tested it with:
+
+% cat /etc/modprobe.d/disable-uas.conf
+# Does not work with external SSD Transcend XS2000 4TB
+options usb-storage quirks=3D0951:176b:u
+
+but as explained that did not help and thus I disabled UAS disabling
+quirk again.
+
+Best,
+=2D-=20
+Martin
+
+
 
