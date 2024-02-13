@@ -1,69 +1,56 @@
-Return-Path: <stable+bounces-20019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37CAE853871
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:37:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E0D853752
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:24:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E78D5288535
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:37:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2DBF2822CA
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDEE45FF19;
-	Tue, 13 Feb 2024 17:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6588A5FEEB;
+	Tue, 13 Feb 2024 17:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXBv5nQ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xb25z7fo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DE65F56B;
-	Tue, 13 Feb 2024 17:36:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210625FBB5;
+	Tue, 13 Feb 2024 17:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845793; cv=none; b=MHf4HE6asIjiG8dU2TQB1ry70/6AJxLDwcKyVhY3HZFwLpQ7ZFdWSFdrUdo9/IT88/mGQlZrUXQ3o3q8k8M0Pkg8OqGYQc1DUQp7YUeaUwWue7Z2zYZTCg1L9pp1C7YsfFS9r1FodcOyF5HnG8Sf9Lz9kpSPMLQnM9cSSapu9CI=
+	t=1707845043; cv=none; b=qzrHk56T0Acqi+yhiw2SzeAfzl3yVRVefiWP2Ukqumv48I92Kr8Dj5vJoR0nJT8qkQpoz1u2/IfXvzAf4vyxmTIK6qjCnDnIPQvcuRjpGRfBjv222W5nzlmVrVC7yF6M+4F3xJ5gtXe/ONhg2nWDhOYQvn7nouAlxFf8+zxBi6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845793; c=relaxed/simple;
-	bh=dRYnGlZwBbQUU50vYG5nu0Z3/o+/WT6EJp0GaSzSIUQ=;
+	s=arc-20240116; t=1707845043; c=relaxed/simple;
+	bh=sW+R2FT3CVS+OSBW91LQ1iCQJuC5Vq2wiilst4Bl0Y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YtBVCO/J9QHVreivKYJHLJKqCzMfq575vniK6VUIiynydLfE3HP4JVep12XSeZ8G3Aov1291C+Akj25tOg1cN9rfE1rRhgQoZP4E9xUYNdYyBSZZG5nsAN7P/vqfKNjpvBLAclAVEm6qRbAn3AN0A1gGnTjjHIs234AqLTZyBg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YXBv5nQ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AF2C433F1;
-	Tue, 13 Feb 2024 17:36:32 +0000 (UTC)
+	 MIME-Version; b=VL9osV3oq+dklUAgACjGMvoS0p+4V6nzCO5yYRxrQjStBtoa1xAWiFX8HG+H04C+xL1vKHBvoKegPCEbz718vfqy6ahvq+Y5TRAql1abgwETr2n/l0xbag2AvIVvfpPlJJvfdhsfF6kMPj59iE9HGN4Hnai/eWksV2M3BipKw3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xb25z7fo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF3EC43390;
+	Tue, 13 Feb 2024 17:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845793;
-	bh=dRYnGlZwBbQUU50vYG5nu0Z3/o+/WT6EJp0GaSzSIUQ=;
+	s=korg; t=1707845043;
+	bh=sW+R2FT3CVS+OSBW91LQ1iCQJuC5Vq2wiilst4Bl0Y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YXBv5nQ+AaCq+0UGiHzJlWI9jUGaRwYMP1A/KPnQPF/D24qWGiyCvmoPsdXE6Fwl0
-	 29x9xVlXxqHPT7ZBfyQ5kxXJXxxT3krZLuy7JY3qfAfspXFwnf6M3lWw2cr6rFp668
-	 ppaca09ni2pBh+fuGXVuAw3A5BfD9FUwpTEzTkEM=
+	b=Xb25z7foH2xdTKxzDsTar+yBLk8NurdKn/5UWP+iBUrZafgno8nEY7eid1oyq7zpt
+	 q3y6PNQA+WFLZSoTW1xob4GVRj/BtJm2qoho2UvC8vqU+rg0oS+Pz0f/e6ptx6uNVz
+	 0r+yfANY1jsQnAgUiq+nAWMP2dhJZ6gPHc21UHAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arend van Spriel <aspriel@gmail.com>,
-	Franky Lin <franky.lin@broadcom.com>,
-	Hante Meuleman <hante.meuleman@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Chi-hsien Lin <chi-hsien.lin@infineon.com>,
-	Ian Lin <ian.lin@infineon.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Wright Feng <wright.feng@cypress.com>,
-	Hector Martin <marcan@marcan.st>,
-	linux-wireless@vger.kernel.org,
-	brcm80211-dev-list.pdl@broadcom.com,
-	Kees Cook <keescook@chromium.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 030/124] wifi: brcmfmac: Adjust n_channels usage for __counted_by
-Date: Tue, 13 Feb 2024 18:20:52 +0100
-Message-ID: <20240213171854.611417368@linuxfoundation.org>
+Subject: [PATCH 6.1 07/64] dmaengine: fix is_slave_direction() return false when DMA_DEV_TO_DEV
+Date: Tue, 13 Feb 2024 18:20:53 +0100
+Message-ID: <20240213171844.966411874@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,67 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 5bdda0048c8d1bbe2019513b2d6200cc0d09c7bd ]
+[ Upstream commit a22fe1d6dec7e98535b97249fdc95c2be79120bb ]
 
-After commit e3eac9f32ec0 ("wifi: cfg80211: Annotate struct
-cfg80211_scan_request with __counted_by"), the compiler may enforce
-dynamic array indexing of req->channels to stay below n_channels. As a
-result, n_channels needs to be increased _before_ accessing the newly
-added array index. Increment it first, then use "i" for the prior index.
-Solves this warning in the coming GCC that has __counted_by support:
+is_slave_direction() should return true when direction is DMA_DEV_TO_DEV.
 
-../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c: In function 'brcmf_internal_escan_add_info':
-../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:3783:46: warning: operation on 'req->
-n_channels' may be undefined [-Wsequence-point]
- 3783 |                 req->channels[req->n_channels++] = chan;
-      |                               ~~~~~~~~~~~~~~~^~
-
-Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
-Cc: Arend van Spriel <aspriel@gmail.com>
-Cc: Franky Lin <franky.lin@broadcom.com>
-Cc: Hante Meuleman <hante.meuleman@broadcom.com>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: Chi-hsien Lin <chi-hsien.lin@infineon.com>
-Cc: Ian Lin <ian.lin@infineon.com>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Cc: Wright Feng <wright.feng@cypress.com>
-Cc: Hector Martin <marcan@marcan.st>
-Cc: linux-wireless@vger.kernel.org
-Cc: brcm80211-dev-list.pdl@broadcom.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240126223150.work.548-kees@kernel.org
+Fixes: 49920bc66984 ("dmaengine: add new enum dma_transfer_direction")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240123172842.3764529-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ include/linux/dmaengine.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 667462369a32..44cea18dd20e 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -3779,8 +3779,10 @@ static int brcmf_internal_escan_add_info(struct cfg80211_scan_request *req,
- 		if (req->channels[i] == chan)
- 			break;
- 	}
--	if (i == req->n_channels)
--		req->channels[req->n_channels++] = chan;
-+	if (i == req->n_channels) {
-+		req->n_channels++;
-+		req->channels[i] = chan;
-+	}
+diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
+index c923f4e60f24..3576c6e89fea 100644
+--- a/include/linux/dmaengine.h
++++ b/include/linux/dmaengine.h
+@@ -954,7 +954,8 @@ static inline int dmaengine_slave_config(struct dma_chan *chan,
  
- 	for (i = 0; i < req->n_ssids; i++) {
- 		if (req->ssids[i].ssid_len == ssid_len &&
+ static inline bool is_slave_direction(enum dma_transfer_direction direction)
+ {
+-	return (direction == DMA_MEM_TO_DEV) || (direction == DMA_DEV_TO_MEM);
++	return (direction == DMA_MEM_TO_DEV) || (direction == DMA_DEV_TO_MEM) ||
++	       (direction == DMA_DEV_TO_DEV);
+ }
+ 
+ static inline struct dma_async_tx_descriptor *dmaengine_prep_slave_single(
 -- 
 2.43.0
 
