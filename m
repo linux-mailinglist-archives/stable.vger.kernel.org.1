@@ -1,122 +1,112 @@
-Return-Path: <stable+bounces-20124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C1D1853E8C
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 23:25:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1F1B853F12
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 23:48:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7656C1F26F4E
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 22:25:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BFD7B2907A
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 22:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC54626A1;
-	Tue, 13 Feb 2024 22:25:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B9E627E6;
+	Tue, 13 Feb 2024 22:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D6pWQb1U"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tq8N/7YA"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D71062158
-	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 22:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D321626DB;
+	Tue, 13 Feb 2024 22:46:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707863137; cv=none; b=l7KWl/b+D6zCQvg+UhdwbjCyA+97bhehF8H3KpvxjlATTzuXPOLIpYLRLJSpV5MMK3GvpWrOoKUZd4/2LnoW8mshbERGCDHRBfCeZBlW2BOmoa/8EjQGDM/aAXxiKPXkFQX0+bCM/9OkUg4EXQ89BfOiwJOZDLsVnQzzBg0XMhI=
+	t=1707864379; cv=none; b=csUMN2n8Nm3V1wUYF+AizW5gvvWZtp6spHG6doZmPOt063yN0TxMoRYYua0bcGbnGkv0M979JTxcZ52/luERgR6o1t6DZr0A9oRKGYzMVmyUe9346XfrqoWhEnQcynRRSK5AD6pKZMum5Kzgh6oWxWSAaqBlq3TrqPHqoc0CYdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707863137; c=relaxed/simple;
-	bh=SI3shktrX4HINcYJVC974f91I6xkc56CaOZn4QD2LpY=;
+	s=arc-20240116; t=1707864379; c=relaxed/simple;
+	bh=nhQahWR8qxaBAcqLn38WkwfH3WZavzBYN8qTFJQXPx0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eycEIMBRDCu70Sw3JOqWHzF+3mAKeL+bQaWKXFcnDxQMVs+q38nyD1jfNBJGE8Ik07j6xz8r+j9LUiBt7TPEsekSO3CkiIA5NBwxstryoEV/r/PG0IeX4zkgqlW5ApDgd4idOWp/gL6gLidaRC3lTmOi6Bz55K5JGvt84G6TsTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D6pWQb1U; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1707863134;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0zN8IxTd9DLdZiajIVz77TiDGZaCMDEd7tzeTNMH5Qo=;
-	b=D6pWQb1U1yMjy0ScQLhUCBg31AGHI/ZjsPqfm4FWHQhTB/eKyoVNRs9WOgLTfBUD9QozG8
-	56uoOR5agIWPvSwkm/PymcDIDI7kMCrxUZqPKqNVILfVyRNJ8YuzYa6ayPKivKTKQt62O/
-	e83fneYDmsjpu0/XXfRxnTrHYsaQoM8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-507-dbiGPd79PPa1mgc5teSoXQ-1; Tue, 13 Feb 2024 17:25:31 -0500
-X-MC-Unique: dbiGPd79PPa1mgc5teSoXQ-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-33ce55b80e6so106213f8f.2
-        for <stable@vger.kernel.org>; Tue, 13 Feb 2024 14:25:31 -0800 (PST)
+	 To:Cc:Content-Type; b=ZpnSs3gNfv/WRYD+Jh2+DilDM4VePfyRUs/w9MZwwSFDfYekK/ElX0hDKNO/bf8hkpf+CrWxJ2zlMoDrDhLCOp4coB1VP6VqBePBGccbiMrz4SuPcFIZrfKIEBSaaMa13F9qGBjJUddhVjpxwNLSgjscSAXaqA+AWOdzR1vJhec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tq8N/7YA; arc=none smtp.client-ip=209.85.221.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-4c02a92d563so537047e0c.3;
+        Tue, 13 Feb 2024 14:46:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707864376; x=1708469176; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=GVpdqfFjdBVaR9nwEwM/0QGjipjHAXDN3BcD9vceeaE=;
+        b=Tq8N/7YAcgYFhkaCKD8sdqvN1yIUORveC9OtWnvT9VF4to102wEBC0NpU919Bpelhi
+         ZjbYBGVbs8qpsHL27Y0dhOLygXKalZda80gjpLm9FPlvFNM0YdJg9avnpKVt+HsWN2U+
+         Txsq918kO12F4anRcP0hKnfLlDj5Bn8W2+HuBeooMI67Pf7EOUaRP2fVqietzbp+Enh/
+         jbze1DZm369x66Z01vNXKbWGMH7lJ+NtSuEkXMV9g+WJp6tWPdX+OQVHPThyqTtzniEc
+         UsNPGAydqkSrEkicoVwlpcl7vKcXsjrP1b/+OlBMZiLYKz0j93aVBYJuhPSfrsLTQ6tN
+         +yag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707863130; x=1708467930;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0zN8IxTd9DLdZiajIVz77TiDGZaCMDEd7tzeTNMH5Qo=;
-        b=b7B8iQnrT745sLf3rJUzTYu9ZVUD5EbLe7RP99ni+cTk9e+3zpYa/W5ZD0wbYht5Uf
-         M8uUfoAx4Omp3cPfhUXIKw5FAHTDGXzpQfUdAjgKtKbhHt2Mxyty0GOaWBKKIWUkk/fO
-         uVmi8L2jPudMVlYJsZ1HU232WBe1zZqIIe04B8gOCvMFSSGLj+YLb1UrvLinmnD4kZ7T
-         1H2G/TYDMfuoY+QXD+RKOgG7rew+gK2LC1SEOz7BSmB4W4MyEMIYgbu/I+/k5H+cBMeb
-         iPP8TKuxbgAJTx9KG4tk1C4EFEAwduUrzTD0LeEQPeiv0tHmbWm4tPCeq9NYLR6e4oIV
-         DdaA==
-X-Forwarded-Encrypted: i=1; AJvYcCVhQryg2FGJ202cWyH3bciHS0Mei1+MrXWQ59klmNMETftVZbwPmGx+L75pTRS20d919MxSgcCUAGwomwqZAGAvaJsw0+H1
-X-Gm-Message-State: AOJu0Yz2374CvrPS93E9OF5qYoySPwt3SIu+5RfTL81evXny0sPG/UfL
-	bteGjKmJQ7tziLr50XftGNSyULCRNDjoTprY7YKifEl44qjqW+C4uYR2mmoCK+m2KPzl07ZYbBq
-	xors+gbf6ctg3Pz/vXV6VWSHeeGBdFIOCH4lAP7bXvD2CxuML9YFF1hoIstfh2ZHvmh4eAwA8HY
-	9J6u4XMY0SzxPEmMBvADUPe/lFGrd3
-X-Received: by 2002:a5d:62cc:0:b0:33c:e2b0:600e with SMTP id o12-20020a5d62cc000000b0033ce2b0600emr457123wrv.32.1707863130148;
-        Tue, 13 Feb 2024 14:25:30 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEpDxI/1ABJ8jxCmM4EEqjpASCtGW/vicnp2/NOEK+1DZlZOJK4JIxwJcACRJWQ3PmDfKng/CMvaYkQtmA8JAE=
-X-Received: by 2002:a5d:62cc:0:b0:33c:e2b0:600e with SMTP id
- o12-20020a5d62cc000000b0033ce2b0600emr457105wrv.32.1707863129799; Tue, 13 Feb
- 2024 14:25:29 -0800 (PST)
+        d=1e100.net; s=20230601; t=1707864376; x=1708469176;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GVpdqfFjdBVaR9nwEwM/0QGjipjHAXDN3BcD9vceeaE=;
+        b=bfUAbA61B1EawkPnaXPsRKnyOoaKCHFtVWxeSH1cNMrBiKr3pMjEIbU6R3v8EhdrrR
+         1FZ8imm9o3mlqZbklag3cdhnIbvGa/g82A82oC39u8k2VZqoG3ipGZBOdlVwVUTh58/W
+         24R2BkSyMzzojlbFztcTKoJp3rdRb82irz8sbSCYKNMDfTHoTOkyGnNveDWIaGyXRJPQ
+         5KmbnS/2qUMF1Yoc1yV4GDPBduqLtPO7htXhdrUIXpEyGtOKl+oFF8E1Z7H0E/5sYJ6c
+         LZ30hj8UJN/6aWY99lpg7hzHnkR9s6CBeKXZMynv+kPG0jNbMwavyYROc5eArYNwRqqg
+         aBwA==
+X-Forwarded-Encrypted: i=1; AJvYcCWrem4rMhjmA1nlPJfuv7TRk09T2EkQ7Z4CcOgbZYu8vPKoi5O1RCtkyBQcdv+9je63AT81g+8zrNEaDAh4pFOpCjM8fuNsiSufvmoH
+X-Gm-Message-State: AOJu0YxICFEI7hpBY8zsCMloEmFZnLo/HpcjRZwCxzR9FzzR2Fy03yhS
+	lS4kPtXlVce7RvHfagLYOxjKT6U/iGzfwG/zgNMWWn7EFZn6Vra+LAfdFexXG9pZ1Qy3ypT1rVe
+	YDBenwYnSni/OMHxehxvDoMQAFHM=
+X-Google-Smtp-Source: AGHT+IFr4MBTJKL2nB1kW6w5abiX+mdZ5GRxVWRdrOLH2lAoHrSyGQW1BfYX0o+Ye3+dgWTiyGU+ANr1XAuIGwUtD5U=
+X-Received: by 2002:a1f:eb04:0:b0:4bd:29f7:53c4 with SMTP id
+ j4-20020a1feb04000000b004bd29f753c4mr1014391vkh.1.1707864376266; Tue, 13 Feb
+ 2024 14:46:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240131230902.1867092-1-pbonzini@redhat.com> <2b5e6d68-007e-48bd-be61-9a354be2ccbf@intel.com>
- <CABgObfa_7ZAq1Kb9G=ehkzHfc5if3wnFi-kj3MZLE3oYLrArdQ@mail.gmail.com>
- <CABgObfbetwO=4whrCE+cFfCPJa0nsK=h6sQAaoamJH=UqaJqTg@mail.gmail.com>
- <CABgObfbUcG5NyKhLOnihWKNVM0OZ7zb9R=ADzq7mjbyOCg3tUw@mail.gmail.com> <eefbce80-18c5-42e7-8cde-3a352d5811de@intel.com>
-In-Reply-To: <eefbce80-18c5-42e7-8cde-3a352d5811de@intel.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 13 Feb 2024 23:25:17 +0100
-Message-ID: <CABgObfZ9od1XNVR_Xc6dBrvCDs3v=FwDLx6EZA_53W4kAo8jnA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] x86/cpu: fix invalid MTRR mask values for SEV or TME
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Zixi Chen <zixchen@redhat.com>, Adam Dunlap <acdunlap@google.com>, 
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	Kai Huang <kai.huang@intel.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@kernel.org>, x86@kernel.org, 
-	stable@vger.kernel.org
+References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+From: Allen <allen.lkml@gmail.com>
+Date: Tue, 13 Feb 2024 14:46:04 -0800
+Message-ID: <CAOMdWSJy+-KrWK5P0JKMjS=j=fCONhLiR+sLKB4vUSo5R2M-dw@mail.gmail.com>
+Subject: Re: [PATCH 6.1 00/64] 6.1.78-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 13, 2024 at 11:02=E2=80=AFPM Dave Hansen <dave.hansen@intel.com=
-> wrote:
+> This is the start of the stable review cycle for the 6.1.78 release.
+> There are 64 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> On 2/13/24 07:45, Paolo Bonzini wrote:
-> > Ping, either for applying the original patches or for guidance on how
-> > to proceed.
+> Responses should be made by Thu, 15 Feb 2024 17:18:29 +0000.
+> Anything received after that time might be too late.
 >
-> Gah, all of the gunk that get_cpu_address_sizes() touches are out of
-> control.
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.78-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
 >
-> They (phys/virt_bits and clflush) need to get consolidated back to a
-> single copy that gets set up *once* in early boot and then read by
-> everyone else.
+> thanks,
 >
-> I've got a series to do that, but it's got its tentacles
-> in quite a few places.  They're not great backporting material.
+> greg k-h
 
-Yes, same for mine. I probably digressed in a different direction than
-you, but there will be conflicts almost surely. I can post my stuff in
-the next few days.
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
 
-Paolo
+Tested-by: Allen Pais <apais@linux.microsoft.com>
 
+Thanks.
 
