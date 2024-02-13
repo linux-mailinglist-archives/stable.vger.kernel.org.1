@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-19903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D04D8537CD
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BEE853764
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:25:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C1C5B24047
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80B0E28B705
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C745FF05;
-	Tue, 13 Feb 2024 17:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92285FEFF;
+	Tue, 13 Feb 2024 17:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkPPWHSP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCKC+Qas"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 326725FEFA;
-	Tue, 13 Feb 2024 17:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FC95FDD8;
+	Tue, 13 Feb 2024 17:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845387; cv=none; b=eXPpzO/1qLGNi+KeN81XL/jYZtrPAwIUiz6valpZTpgT5hZCmsD4MhGIrrREUWkauje8J5Ck1NVbuvUTUFkCKT78wOFn4EESDNcO0ltk1Ywak2kkvLMjwca41H94YQ26DDkh4xIMM3vnkmKaSyVtmpzLJbaVSGffsSwpD2BznxA=
+	t=1707845092; cv=none; b=F5FcZTam/dUki2WYV+/TKCjRsj8EIbymOyyueUD/1ZmBG5OMxqyehtVttXk5QzvUIsSQ1DDrVtlDjdOMoT2UNqiayBolVQw9GS3gP7ogQbVJCxM88eqxlGU3q3jcNWIO75lpIoTpbZbNH0milwMWHYFIobk7hP8UcLSseUL4zyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845387; c=relaxed/simple;
-	bh=vaS8YpPlZYytTbVFKFSsZNEnBTAzyernxAfaRyvEOyc=;
+	s=arc-20240116; t=1707845092; c=relaxed/simple;
+	bh=AEGq9F/uWwiLmYDtmOAKN1oZDSnAf46vP+JF6nBKhHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kk9BYmlk4p1YpBPgNgMaZCFNezeUaimGX3xvNsah1MmTpYRYvZ2/cVjvsryqkBRzVkAfLkG40INnfBN79CH5qllP/a2AmgiAWdxj7XVDlrbsUeBJPU65pgcglEL/2muwkBEqmqUMh9Xa6sx9gENibf5MLg2/7spQiyWOZthHT1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CkPPWHSP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C6A0C433C7;
-	Tue, 13 Feb 2024 17:29:46 +0000 (UTC)
+	 MIME-Version; b=EqiV7YD4BFAFJtrqz+KfBTppV8ilEa5DZQPPZVhCaof6wpfTb0HQ5tDUudbxCeGvTipDE3YCS//7dK2r9fQ5StZHJPctBzdqvDqbE31zhlPXXPoR2W0LonYF83xXmHDRhkgWW1RutiAKIhSXpEYaHl49LurCLZqenwyfjwAvCKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCKC+Qas; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D647DC433C7;
+	Tue, 13 Feb 2024 17:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845387;
-	bh=vaS8YpPlZYytTbVFKFSsZNEnBTAzyernxAfaRyvEOyc=;
+	s=korg; t=1707845092;
+	bh=AEGq9F/uWwiLmYDtmOAKN1oZDSnAf46vP+JF6nBKhHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CkPPWHSPmJMlq5EEm/Gid4F2Mje35GSc93sUATJH8Ed42byEWQoOBwuKK3CLYE9Gi
-	 g5s6xcNXp8tmnDedYwOw+SIeqynkeDcP+M0E+sDPkPpp10tXKlKiuT97asYfoP2y5v
-	 +7OrWXW70goi1eBMYUnHkws+qi16k+Oz1MFjj4Qw=
+	b=oCKC+QasxJw2PvF3KYszKa9ucObNK2evDMJsuIjhT5TwUhBeZmAuhOqLMF7TMHyXE
+	 ZSkv4guKMEINZwn0yTsYuGlRxwMX4dG9nKBUK54ZiuIwJvdzbfWtBUKi07nccAgjgV
+	 xOF/nmstZjqye0pOpZkSfkbr1BcXt7Bxe4pk8hV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Zhenyu Wang <zhenyuw@linux.intel.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 064/121] drm/i915/gvt: Fix uninitialized variable in handle_mmio()
+Subject: [PATCH 6.1 27/64] rxrpc: Fix response to PING RESPONSE ACKs to a dead call
 Date: Tue, 13 Feb 2024 18:21:13 +0100
-Message-ID: <20240213171854.863854078@linuxfoundation.org>
+Message-ID: <20240213171845.609427939@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +68,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 47caa96478b99d6d1199b89467cc3e5a6cc754ee ]
+[ Upstream commit 6f769f22822aa4124b556339781b04d810f0e038 ]
 
-This code prints the wrong variable in the warning message.  It should
-print "i" instead of "info->offset".  On the first iteration "info" is
-uninitialized leading to a crash and on subsequent iterations it prints
-the previous offset instead of the current one.
+Stop rxrpc from sending a DUP ACK in response to a PING RESPONSE ACK on a
+dead call.  We may have initiated the ping but the call may have beaten the
+response to completion.
 
-Fixes: e0f74ed4634d ("i915/gvt: Separate the MMIO tracking table from GVT-g")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Zhenyu Wang <zhenyuw@linux.intel.com>
-Link: http://patchwork.freedesktop.org/patch/msgid/11957c20-b178-4027-9b0a-e32e9591dd7c@moroto.mountain
-Reviewed-by: Zhenyu Wang <zhenyuw@linux.intel.com>
+Fixes: 18bfeba50dfd ("rxrpc: Perform terminal call ACK/ABORT retransmission from conn processor")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gvt/handlers.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/rxrpc/conn_event.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/gvt/handlers.c b/drivers/gpu/drm/i915/gvt/handlers.c
-index a9f7fa9b90bd..d30f8814d9b1 100644
---- a/drivers/gpu/drm/i915/gvt/handlers.c
-+++ b/drivers/gpu/drm/i915/gvt/handlers.c
-@@ -2850,8 +2850,7 @@ static int handle_mmio(struct intel_gvt_mmio_table_iter *iter, u32 offset,
- 	for (i = start; i < end; i += 4) {
- 		p = intel_gvt_find_mmio_info(gvt, i);
- 		if (p) {
--			WARN(1, "dup mmio definition offset %x\n",
--				info->offset);
-+			WARN(1, "dup mmio definition offset %x\n", i);
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index aab069701398..5d91ef562ff7 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -41,6 +41,14 @@ static void rxrpc_conn_retransmit_call(struct rxrpc_connection *conn,
  
- 			/* We return -EEXIST here to make GVT-g load fail.
- 			 * So duplicated MMIO can be found as soon as
+ 	_enter("%d", conn->debug_id);
+ 
++	if (sp && sp->hdr.type == RXRPC_PACKET_TYPE_ACK) {
++		if (skb_copy_bits(skb, sizeof(struct rxrpc_wire_header),
++				  &pkt.ack, sizeof(pkt.ack)) < 0)
++			return;
++		if (pkt.ack.reason == RXRPC_ACK_PING_RESPONSE)
++			return;
++	}
++
+ 	chan = &conn->channels[channel];
+ 
+ 	/* If the last call got moved on whilst we were waiting to run, just
 -- 
 2.43.0
 
