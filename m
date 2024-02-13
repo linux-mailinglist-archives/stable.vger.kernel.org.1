@@ -1,181 +1,132 @@
-Return-Path: <stable+bounces-19709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5581853125
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 14:01:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36CD985318E
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 14:16:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 051221C26596
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 13:01:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFB1FB23293
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 13:16:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD25524B8;
-	Tue, 13 Feb 2024 13:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4089455776;
+	Tue, 13 Feb 2024 13:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="LVe/YATb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pcFd190R"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50C651C57
-	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 13:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0173E55765
+	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 13:16:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707829236; cv=none; b=Zony1wC13dTpAcJGm+I+2SXkKafh1+e7Cay5i0bzFu5m2lFYYTrfsCRHq9Kk3g5kPFCQ7JaXNqdoZCl2cGamXH1VtC9wSRkBADsM6RE5juflf9NgwwJP05TOd8zGstHfh2lQTXfgXT2lfC52zbSBC2tWhj0zN9PndeGgEmZb9Dg=
+	t=1707830203; cv=none; b=fXmnACvCw8mSApte+1rV19xxxn+Xei8aHlF+Pk6lBDxmc/nhN+LjHBgitYmTfjVf8pk7PL9zMKh0nlLu7lu2JIwOphwABjfTIDwcwd9tyU35NwwIVWKPv2oObqHjr+KgqRt6vC3PWyHS1wiu45fG8ZtOl6BF2KaikDuG+qmE+Ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707829236; c=relaxed/simple;
-	bh=K04YCkFeapXIJWcjEdPQ2NUnnj6It0Sw3FvoZy/Fg4k=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=eUGMLCSnxyVO6CZR3CAb1P0W9X+0YNqGHCSE4+Sc36/dKwnhAHZBc+Gi847Jz2gdn+vRIy09Ppvk80yIfu8KzbJHOpq7576CY+cqESyKT7NK7xOmK2jAMIoAQDbo6LAnX0jFbh1nHbdRafTk66GMr5v27bCbT0VhdmqGjJC95to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=LVe/YATb; arc=none smtp.client-ip=99.78.197.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1707829236; x=1739365236;
-  h=message-id:date:mime-version:to:from:subject:
-   content-transfer-encoding;
-  bh=K04YCkFeapXIJWcjEdPQ2NUnnj6It0Sw3FvoZy/Fg4k=;
-  b=LVe/YATbn86ZEDYcfby8no6Ns98YJGdcVOzodr01KNlWY0jCO17JPrij
-   N8/SnPXWLHXp+HQ1NZE/pTYf5QNTnNNQtjQkpEpjSTZbCZFJb5QGO72Wk
-   DVbuL1vExPxaAnNjcvxgnK6OwLJFZJI+8o9DiSO0lOMD/c48s2Rk7BnQA
-   w=;
-X-IronPort-AV: E=Sophos;i="6.06,157,1705363200"; 
-   d="scan'208";a="272942268"
-Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.214])
-  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2024 13:00:33 +0000
-Received: from EX19MTAEUC001.ant.amazon.com [10.0.17.79:2249]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.39.22:2525] with esmtp (Farcaster)
- id 170e0906-b5d7-4572-9061-9c997a03b206; Tue, 13 Feb 2024 13:00:31 +0000 (UTC)
-X-Farcaster-Flow-ID: 170e0906-b5d7-4572-9061-9c997a03b206
-Received: from EX19D003EUA004.ant.amazon.com (10.252.50.128) by
- EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Tue, 13 Feb 2024 13:00:31 +0000
-Received: from [10.95.81.9] (10.95.81.9) by EX19D003EUA004.ant.amazon.com
- (10.252.50.128) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 13 Feb
- 2024 13:00:30 +0000
-Message-ID: <67c3ec91-2879-4a6e-9213-b147aaef74ff@amazon.de>
-Date: Tue, 13 Feb 2024 14:00:25 +0100
+	s=arc-20240116; t=1707830203; c=relaxed/simple;
+	bh=EW95ZBjSr3jWR6/q5X7UfOdsV0YEgFJVBXILrXjbWzg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SDm6DF2UZ3smbBvnkC7oWl4fwYA2w4rgHhJvtbmT7ZF6lk98spsnMl9sywdVQ6uI5VLOBi5F/BV0EAo/hIQ6ajeq1QGEs+7dIV7OPJwkTY3FsgPEPJGYCfGGSOfe20DgnXPFXR9TMAnyDNQxjFeopF9Lo71NSV1S1XRB4C9hzX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pcFd190R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7309C43390;
+	Tue, 13 Feb 2024 13:16:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1707830202;
+	bh=EW95ZBjSr3jWR6/q5X7UfOdsV0YEgFJVBXILrXjbWzg=;
+	h=Subject:To:Cc:From:Date:From;
+	b=pcFd190RSxDwKATHfH5qGNX3sAtAGzoUCIuPzORLRYY7Q50Eapa3wWgUwlF5DDi9P
+	 CJgyZhTMuTlsHS4AjU7NOV7JRG18DW9yQ5Vcd6V4tEa4CFOZ50PGjFcb+H3YIUzX6j
+	 vtOCF/L04H/811moNwbrqlo9pAtsMQAAuHxUXCDI=
+Subject: FAILED: patch "[PATCH] io_uring/net: fix sr->len for IORING_OP_RECV with MSG_WAITALL" failed to apply to 5.15-stable tree
+To: axboe@kernel.dk
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 13 Feb 2024 14:16:39 +0100
+Message-ID: <2024021339-flick-facsimile-65c3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: <stable@vger.kernel.org>
-From: "Doebel, Bjoern" <doebel@amazon.de>
-Subject: Backport commit fc4992458e0a ("fs/ntfs3: Add null pointer checks")
-X-ClientProxiedBy: EX19D033UWA003.ant.amazon.com (10.13.139.42) To
- EX19D003EUA004.ant.amazon.com (10.252.50.128)
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-SGksCgpwbGVhc2UgYmFja3BvcnQgY29tbWl0IGZjNDk5MjQ1OGUwYSAoImZzL250ZnMzOiBBZGQg
-bnVsbCBwb2ludGVyIGNoZWNrcyIpIHRvIHRoZSA1LjE1IGFuZCA2LjEgc3RhYmxlIGJyYW5jaGVz
-LgoKQ29tbWl0IG1lc3NhZ2UKCiIiIgpBZGRlZCBudWxsIHBvaW50ZXIgY2hlY2tzIGluIGZ1bmN0
-aW9uIG50ZnNfc2VjdXJpdHlfaW5pdC4KQWxzbyBhZGRlZCBsZTMyX3RvX2NwdSBpbiBmdW5jdGlv
-bnMgbnRmc19zZWN1cml0eV9pbml0IGFuZCBpbmR4X3JlYWQuCiIiIgoKV2UgYXJlIGFibGUgdG8g
-cmVwcm9kdWNlIGJlbG93IFN5emthbGxlciByZXBvcnQgb24gdGhlc2UgdHdvIHN0YWJsZSBidWls
-ZHMuIFRoZSBpc3N1ZSBkb2VzIG5vdCByZXByb2R1Y2Ugb24gdXBzdHJlYW0sIG9sZGVyLCBvciBu
-ZXdlciBMVFMgcmVsZWFzZXMuIEFib3ZlIHBhdGNoIGZpeGVzIHRoZSBpc3N1ZS4KCkJlc3QgcmVn
-YXJkcywKQmpvZXJuCgoKZ2VuZXJhbCBwcm90ZWN0aW9uIGZhdWx0LCBwcm9iYWJseSBmb3Igbm9u
-LWNhbm9uaWNhbCBhZGRyZXNzIDB4ZGZmZmZjMDAwMDAwMDAwMDogMDAwMCBbIzFdIFBSRUVNUFQg
-U01QIEtBU0FOIE5PUFRJCktBU0FOOiBudWxsLXB0ci1kZXJlZiBpbiByYW5nZSBbMHgwMDAwMDAw
-MDAwMDAwMDAwLTB4MDAwMDAwMDAwMDAwMDAwN10KQ1BVOiAxIFBJRDogMTEyODMgQ29tbTogc3l6
-LWV4ZWN1dG9yLjcgTm90IHRhaW50ZWQgNi4xLjc0ICMzMQpIYXJkd2FyZSBuYW1lOiBRRU1VIFN0
-YW5kYXJkIFBDIChpNDQwRlggKyBQSUlYLCAxOTk2KSwgQklPUyAxLjE2LjAtZGViaWFuLTEuMTYu
-MC01IDA0LzAxLzIwMTQKUklQOiAwMDEwOm50ZnNfc2VjdXJpdHlfaW5pdCsweDU2MS8weGFjMCBm
-cy9udGZzMy9mc250ZnMuYzoxODY1CkNvZGU6IDAzIGZmIDQxIDgzIGZlIDFmIDBmIDg2IGY4IDAz
-IDAwIDAwIGU4IGI4IDViIDAzIGZmIDRjIDAxIGUzIGU4IGIwIDViIDAzIGZmIDQ4IDg5IGRhIDQ4
-IGI4IDAwIDAwIDAwIDAwIDAwIGZjIGZmIGRmIDQ4IGMxIGVhIDAzIDwwZj4gYjYgMTQgMDIgNDgg
-ODkgZDggODMgZTAgMDcgODMgYzAgMDMgMzggZDAgN2MgMDggODQgZDIgMGYgODUgY2EKUlNQOiAw
-MDE4OmZmZmZjOTAwMTI0MTdhNjAgRUZMQUdTOiAwMDAxMDI0NgpSQVg6IGRmZmZmYzAwMDAwMDAw
-MDAgUkJYOiAwMDAwMDAwMDAwMDAwMDAwIFJDWDogZmZmZmM5MDAwN2IwYzAwMApSRFg6IDAwMDAw
-MDAwMDAwMDAwMDAgUlNJOiBmZmZmZmZmZjgyNzk2MWMwIFJESTogMDAwMDAwMDAwMDAwMDAwNQpS
-QlA6IGZmZmY4ODgwMjQ1MDMwMDAgUjA4OiAwMDAwMDAwMDAwMDAwMDA1IFIwOTogMDAwMDAwMDAw
-MDAwMDAxZgpSMTA6IDAwMDAwMDAwMDAwMDAwMDAgUjExOiAwMDAwMDAwMGE1YWEzNWZmIFIxMjog
-ZmZmZjg4ODAyMDU0MzIzMApSMTM6IGZmZmY4ODgwMTgyZjA1ZDAgUjE0OiAwMDAwMDAwMDAwMDAw
-MDAwIFIxNTogMDAwMDAwMDAwMDAwMDBjOApGUzrCoCAwMDAwN2Y2YmI5MTRkNmMwKDAwMDApIEdT
-OmZmZmY4ODgwNWFiMDAwMDAoMDAwMCkga25sR1M6MDAwMDAwMDAwMDAwMDAwMApDUzrCoCAwMDEw
-IERTOiAwMDAwIEVTOiAwMDAwIENSMDogMDAwMDAwMDA4MDA1MDAzMwpDUjI6IDAwMDA3ZjdhYjkz
-MmZmODAgQ1IzOiAwMDAwMDAwMDU1M2VlMDAxIENSNDogMDAwMDAwMDAwMDc3MmVlMApEUjA6IDAw
-MDAwMDAwMDAwMDAwMDAgRFIxOiAwMDAwMDAwMDAwMDAwMDAwIERSMjogMDAwMDAwMDAwMDAwMDAw
-MApEUjM6IDAwMDAwMDAwMDAwMDAwMDAgRFI2OiAwMDAwMDAwMGZmZmUwZmYwIERSNzogMDAwMDAw
-MDAwMDAwMDQwMApQS1JVOiA1NTU1NTU1NApDYWxsIFRyYWNlOgogwqA8VEFTSz4KbG9vcDY6IGRl
-dGVjdGVkIGNhcGFjaXR5IGNoYW5nZSBmcm9tIDAgdG8gNDA5NgpudGZzMzogVW5rbm93biBwYXJh
-bWV0ZXIgJ2lFOe+/vU5EXO+/ve+/ve+/vVg4K2TUp++/vSrvv73vv70nCiDCoG50ZnNfZmlsbF9z
-dXBlcisweDFmYWYvMHgyMmMwIGZzL250ZnMzL3N1cGVyLmM6MTIzOAogwqBnZXRfdHJlZV9iZGV2
-KzB4NDBhLzB4NzAwIGZzL3N1cGVyLmM6MTM1NQogwqB2ZnNfZ2V0X3RyZWUrMHg4Ni8weDJlMCBm
-cy9zdXBlci5jOjE1NjIKIMKgZG9fbmV3X21vdW50KzB4MmQ1LzB4NjMwIGZzL25hbWVzcGFjZS5j
-OjMwNDAKIMKgcGF0aF9tb3VudCsweDRjNC8weDE3ZTAgZnMvbmFtZXNwYWNlLmM6MzM3MAogwqBk
-b19tb3VudCBmcy9uYW1lc3BhY2UuYzozMzgzIFtpbmxpbmVdCiDCoF9fZG9fc3lzX21vdW50IGZz
-L25hbWVzcGFjZS5jOjM1OTEgW2lubGluZV0KIMKgX19zZV9zeXNfbW91bnQgZnMvbmFtZXNwYWNl
-LmM6MzU2OCBbaW5saW5lXQogwqBfX3g2NF9zeXNfbW91bnQrMHgyODcvMHgzMTAgZnMvbmFtZXNw
-YWNlLmM6MzU2OAogwqBkb19zeXNjYWxsX3g2NCBhcmNoL3g4Ni9lbnRyeS9jb21tb24uYzo1MSBb
-aW5saW5lXQogwqBkb19zeXNjYWxsXzY0KzB4MzcvMHg5MCBhcmNoL3g4Ni9lbnRyeS9jb21tb24u
-Yzo4MQogwqBlbnRyeV9TWVNDQUxMXzY0X2FmdGVyX2h3ZnJhbWUrMHg2NC8weGNlClJJUDogMDAz
-MzoweDdmNmJiODQ2Mzc3ZQpDb2RlOiAwZiAxZiA0MCAwMCA0OCBjNyBjMiBiOCBmZiBmZiBmZiBm
-NyBkOCA2NCA4OSAwMiBiOCBmZiBmZiBmZiBmZiBjMyA2NiAwZiAxZiA0NCAwMCAwMCBmMyAwZiAx
-ZSBmYSA0OSA4OSBjYSBiOCBhNSAwMCAwMCAwMCAwZiAwNSA8NDg+IDNkIDAxIGYwIGZmIGZmIDcz
-IDAxIGMzIDQ4IGM3IGMxIGI4IGZmIGZmIGZmIGY3IGQ4IDY0IDg5IDAxIDQ4ClJTUDogMDAyYjow
-MDAwN2Y2YmI5MTRjZWM4IEVGTEFHUzogMDAwMDAyMDIgT1JJR19SQVg6IDAwMDAwMDAwMDAwMDAw
-YTUKUkFYOiBmZmZmZmZmZmZmZmZmZmRhIFJCWDogMDAwMDdmNmJiOTE0Y2Y2MCBSQ1g6IDAwMDA3
-ZjZiYjg0NjM3N2UKUkRYOiAwMDAwMDAwMDIwMDFmNmMwIFJTSTogMDAwMDAwMDAyMDAxZjcwMCBS
-REk6IDAwMDA3ZjZiYjkxNGNmMjAKUkJQOiAwMDAwMDAwMDIwMDFmNmMwIFIwODogMDAwMDdmNmJi
-OTE0Y2Y2MCBSMDk6IDAwMDAwMDAwMDAwMDAwYzAKUjEwOiAwMDAwMDAwMDAwMDAwMGMwIFIxMTog
-MDAwMDAwMDAwMDAwMDIwMiBSMTI6IDAwMDAwMDAwMjAwMWY3MDAKUjEzOiAwMDAwN2Y2YmI5MTRj
-ZjIwIFIxNDogMDAwMDAwMDAwMDAxZjZmOSBSMTU6IDAwMDAwMDAwMjAwMDAwODAKIMKgPC9UQVNL
-PgpNb2R1bGVzIGxpbmtlZCBpbjoKLS0tWyBlbmQgdHJhY2UgMDAwMDAwMDAwMDAwMDAwMCBdLS0t
-ClJJUDogMDAxMDpudGZzX3NlY3VyaXR5X2luaXQrMHg1NjEvMHhhYzAgZnMvbnRmczMvZnNudGZz
-LmM6MTg2NQpDb2RlOiAwMyBmZiA0MSA4MyBmZSAxZiAwZiA4NiBmOCAwMyAwMCAwMCBlOCBiOCA1
-YiAwMyBmZiA0YyAwMSBlMyBlOCBiMCA1YiAwMyBmZiA0OCA4OSBkYSA0OCBiOCAwMCAwMCAwMCAw
-MCAwMCBmYyBmZiBkZiA0OCBjMSBlYSAwMyA8MGY+IGI2IDE0IDAyIDQ4IDg5IGQ4IDgzIGUwIDA3
-IDgzIGMwIDAzIDM4IGQwIDdjIDA4IDg0IGQyIDBmIDg1IGNhClJTUDogMDAxODpmZmZmYzkwMDEy
-NDE3YTYwIEVGTEFHUzogMDAwMTAyNDYKUkFYOiBkZmZmZmMwMDAwMDAwMDAwIFJCWDogMDAwMDAw
-MDAwMDAwMDAwMCBSQ1g6IGZmZmZjOTAwMDdiMGMwMDAKUkRYOiAwMDAwMDAwMDAwMDAwMDAwIFJT
-STogZmZmZmZmZmY4Mjc5NjFjMCBSREk6IDAwMDAwMDAwMDAwMDAwMDUKUkJQOiBmZmZmODg4MDI0
-NTAzMDAwIFIwODogMDAwMDAwMDAwMDAwMDAwNSBSMDk6IDAwMDAwMDAwMDAwMDAwMWYKUjEwOiAw
-MDAwMDAwMDAwMDAwMDAwIFIxMTogMDAwMDAwMDBhNWFhMzVmZiBSMTI6IGZmZmY4ODgwMjA1NDMy
-MzAKUjEzOiBmZmZmODg4MDE4MmYwNWQwIFIxNDogMDAwMDAwMDAwMDAwMDAwMCBSMTU6IDAwMDAw
-MDAwMDAwMDAwYzgKRlM6wqAgMDAwMDdmNmJiOTE0ZDZjMCgwMDAwKSBHUzpmZmZmODg4MDVhYjAw
-MDAwKDAwMDApIGtubEdTOjAwMDAwMDAwMDAwMDAwMDAKQ1M6wqAgMDAxMCBEUzogMDAwMCBFUzog
-MDAwMCBDUjA6IDAwMDAwMDAwODAwNTAwMzMKQ1IyOiAwMDAwN2Y3YWI5MzJmZjgwIENSMzogMDAw
-MDAwMDA1NTNlZTAwMSBDUjQ6IDAwMDAwMDAwMDA3NzJlZTAKRFIwOiAwMDAwMDAwMDAwMDAwMDAw
-IERSMTogMDAwMDAwMDAwMDAwMDAwMCBEUjI6IDAwMDAwMDAwMDAwMDAwMDAKRFIzOiAwMDAwMDAw
-MDAwMDAwMDAwIERSNjogMDAwMDAwMDBmZmZlMGZmMCBEUjc6IDAwMDAwMDAwMDAwMDA0MDAKUEtS
-VTogNTU1NTU1NTQKLS0tLS0tLS0tLS0tLS0tLQpDb2RlIGRpc2Fzc2VtYmx5IChiZXN0IGd1ZXNz
-KToKIMKgwqAgMDrCoMKgwqAgMDMgZmbCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoCBhZGTCoMKgwqAgJWVkaSwlZWRpCiDCoMKgIDI6wqDCoMKgIDQxIDgzIGZlIDFmwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgY21wwqDCoMKgICQweDFmLCVyMTRkCiDCoMKgIDY6wqDCoMKg
-IDBmIDg2IGY4IDAzIDAwIDAwwqDCoMKgwqDCoMKgwqAgamJlwqDCoMKgIDB4NDA0CiDCoMKgIGM6
-wqDCoMKgIGU4IGI4IDViIDAzIGZmwqDCoMKgwqDCoMKgwqDCoMKgwqAgY2FsbMKgwqAgMHhmZjAz
-NWJjOQogwqAgMTE6wqDCoMKgIDRjIDAxIGUzwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgYWRkwqDCoMKgICVyMTIsJXJieAogwqAgMTQ6wqDCoMKgIGU4IGIwIDViIDAzIGZmwqDCoMKg
-wqDCoMKgwqDCoMKgwqAgY2FsbMKgwqAgMHhmZjAzNWJjOQogwqAgMTk6wqDCoMKgIDQ4IDg5IGRh
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbW92wqDCoMKgICVyYngsJXJkeAogwqAg
-MWM6wqDCoMKgIDQ4IGI4IDAwIDAwIDAwIDAwIDAwwqDCoMKgwqAgbW92YWJzICQweGRmZmZmYzAw
-MDAwMDAwMDAsJXJheAogwqAgMjM6wqDCoMKgIGZjIGZmIGRmCiDCoCAyNjrCoMKgwqAgNDggYzEg
-ZWEgMDPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzaHLCoMKgwqAgJDB4MywlcmR4CiogMmE6
-wqDCoMKgIDBmIGI2IDE0IDAywqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbW92emJsICglcmR4
-LCVyYXgsMSksJWVkeCA8LS0gdHJhcHBpbmcgaW5zdHJ1Y3Rpb24KIMKgIDJlOsKgwqDCoCA0OCA4
-OSBkOMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG1vdsKgwqDCoCAlcmJ4LCVyYXgK
-IMKgIDMxOsKgwqDCoCA4MyBlMCAwN8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGFu
-ZMKgwqDCoCAkMHg3LCVlYXgKIMKgIDM0OsKgwqDCoCA4MyBjMCAwM8KgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgIGFkZMKgwqDCoCAkMHgzLCVlYXgKIMKgIDM3OsKgwqDCoCAzOCBkMMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNtcMKgwqDCoCAlZGwsJWFsCiDC
-oCAzOTrCoMKgwqAgN2MgMDjCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBq
-bMKgwqDCoMKgIDB4NDMKIMKgIDNiOsKgwqDCoCA4NCBkMsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgIHRlc3TCoMKgICVkbCwlZGwKIMKgIDNkOsKgwqDCoCAwZsKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIC5ieXRlIDB4ZgogwqAgM2U6wqDC
-oMKgIDg1IGNhwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdGVzdMKgwqAg
-JWVjeCwlZWR4CgoKCkFtYXpvbiBEZXZlbG9wbWVudCBDZW50ZXIgR2VybWFueSBHbWJICktyYXVz
-ZW5zdHIuIDM4CjEwMTE3IEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBTY2hs
-YWVnZXIsIEpvbmF0aGFuIFdlaXNzCkVpbmdldHJhZ2VuIGFtIEFtdHNnZXJpY2h0IENoYXJsb3R0
-ZW5idXJnIHVudGVyIEhSQiAxNDkxNzMgQgpTaXR6OiBCZXJsaW4KVXN0LUlEOiBERSAyODkgMjM3
-IDg3OQoKCg==
+
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 72bd80252feeb3bef8724230ee15d9f7ab541c6e
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021339-flick-facsimile-65c3@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+72bd80252fee ("io_uring/net: fix sr->len for IORING_OP_RECV with MSG_WAITALL and buffers")
+f9ead18c1058 ("io_uring: split network related opcodes into its own file")
+e0da14def1ee ("io_uring: move statx handling to its own file")
+a9c210cebe13 ("io_uring: move epoll handler to its own file")
+4cf90495281b ("io_uring: add a dummy -EOPNOTSUPP prep handler")
+99f15d8d6136 ("io_uring: move uring_cmd handling to its own file")
+cd40cae29ef8 ("io_uring: split out open/close operations")
+453b329be5ea ("io_uring: separate out file table handling code")
+f4c163dd7d4b ("io_uring: split out fadvise/madvise operations")
+0d5847274037 ("io_uring: split out fs related sync/fallocate functions")
+531113bbd5bf ("io_uring: split out splice related operations")
+11aeb71406dd ("io_uring: split out filesystem related operations")
+e28683bdfc2f ("io_uring: move nop into its own file")
+5e2a18d93fec ("io_uring: move xattr related opcodes to its own file")
+97b388d70b53 ("io_uring: handle completions in the core")
+de23077eda61 ("io_uring: set completion results upfront")
+e27f928ee1cb ("io_uring: add io_uring_types.h")
+4d4c9cff4f70 ("io_uring: define a request type cleanup handler")
+890968dc0336 ("io_uring: unify struct io_symlink and io_hardlink")
+9a3a11f977f9 ("io_uring: convert iouring_cmd to io_cmd_type")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 72bd80252feeb3bef8724230ee15d9f7ab541c6e Mon Sep 17 00:00:00 2001
+From: Jens Axboe <axboe@kernel.dk>
+Date: Thu, 1 Feb 2024 06:42:36 -0700
+Subject: [PATCH] io_uring/net: fix sr->len for IORING_OP_RECV with MSG_WAITALL
+ and buffers
+
+If we use IORING_OP_RECV with provided buffers and pass in '0' as the
+length of the request, the length is retrieved from the selected buffer.
+If MSG_WAITALL is also set and we get a short receive, then we may hit
+the retry path which decrements sr->len and increments the buffer for
+a retry. However, the length is still zero at this point, which means
+that sr->len now becomes huge and import_ubuf() will cap it to
+MAX_RW_COUNT and subsequently return -EFAULT for the range as a whole.
+
+Fix this by always assigning sr->len once the buffer has been selected.
+
+Cc: stable@vger.kernel.org
+Fixes: 7ba89d2af17a ("io_uring: ensure recv and recvmsg handle MSG_WAITALL correctly")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+
+diff --git a/io_uring/net.c b/io_uring/net.c
+index a12ff69e6843..43bc9a5f96f9 100644
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -923,6 +923,7 @@ int io_recv(struct io_kiocb *req, unsigned int issue_flags)
+ 		if (!buf)
+ 			return -ENOBUFS;
+ 		sr->buf = buf;
++		sr->len = len;
+ 	}
+ 
+ 	ret = import_ubuf(ITER_DEST, sr->buf, len, &msg.msg_iter);
 
 
