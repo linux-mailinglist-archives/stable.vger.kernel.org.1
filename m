@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-20015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E314185386C
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:37:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6970853742
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:23:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 215201C26566
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:37:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 659FD1F22D83
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8705FEE9;
-	Tue, 13 Feb 2024 17:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47695FEEB;
+	Tue, 13 Feb 2024 17:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhbWrN05"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzCPnBf1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CAFC1EB22;
-	Tue, 13 Feb 2024 17:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815935FDD7;
+	Tue, 13 Feb 2024 17:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845781; cv=none; b=f/Lv4Y4VBTVYF/F5IQ7sKEZU5vPELXsZmmsnTE0MNDmpmHK+xDXlT4dls6Zt1SMhJrfwjjhjl/FngYEYBuEG/r0M/javpbfkosVsP/paW1SDZsBhcr6UJI80ZsNHTlU3Hc+ITcdVXh9djkhwZElxFyis6Zx3x5CTFNWaJmfC0I8=
+	t=1707845010; cv=none; b=kFxR3XZfKn/pleeyMIcfv/QNlggfORMwYqpyi2E22ue/CQDS1O5qEzWT7qL7zqgAAepdNPzMbsFawBPF27eM3The3+L0wazj2YKQUmOZzPFv+fP49rqenlJvVYnJfe2/5rbYbFf2MFju+SduKL7EyRgLmWNxVnzcxa6FL949d7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845781; c=relaxed/simple;
-	bh=1BOYO40ETrHhy4e7JufNCETC7zze+aMSWO8lRZ49Rok=;
+	s=arc-20240116; t=1707845010; c=relaxed/simple;
+	bh=QtLEdwc1BwNIApD42AkMlF1m2lxlLJRFBke0H0nY7jE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hEIEiBzRjP8rGxGthfkulkpoKpAx/hO7m3LGLYud/d+4eAsG3aTzw8rNQHUQqylyklGSliAfiRxPXguQThnWeMhw3g3hwdHADO6mOAlAnNusDb+oFJVY/5IMt3P+dmVo7JfoAWq5cBgQ/NlF3LCL69vqeb4gIaJcg4i+E4SaFys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhbWrN05; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65AE3C433F1;
-	Tue, 13 Feb 2024 17:36:20 +0000 (UTC)
+	 MIME-Version; b=JdWf8Hz7bD+MHue7vVntxDJfoIrLyYOiG3jtAjFFnc6TPjLD46J1horGOZnj3glFLYMN+QjojFtgtwWjfx13p9KZNWTBcSB5ECRQQ0vKukbNZQCKotF85xZnuB2Si4u6+Z4S0dqMaLeEfQaIyJNj5AETsy+YXNnICmTbwWnhdA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzCPnBf1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C76C433C7;
+	Tue, 13 Feb 2024 17:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845780;
-	bh=1BOYO40ETrHhy4e7JufNCETC7zze+aMSWO8lRZ49Rok=;
+	s=korg; t=1707845010;
+	bh=QtLEdwc1BwNIApD42AkMlF1m2lxlLJRFBke0H0nY7jE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LhbWrN05VxmaZBysJ4pbL47tWe/51myc6OBPCtNXLL7rCfwzW/NeyJHTHouI1C2Fl
-	 EH98sd1obQuJa6oxuNf7DtSopTovkdrgXW+N4MuE2TWyw1X33u3i+L2IUg1d8EHNR5
-	 2orF4m9iB/LQ4UvUl8V7JjID++twxCmnJikXw1YM=
+	b=LzCPnBf1/0o+R8V1b0J/qlD9KmX29Z0e+9SUnVoZ3JpNG2vrgG7NflrQOI67wMWVN
+	 5B+wbbteMogKsTRNj7hCqz/etINjotKcJYzqpfdxDa0A3aZGjAjZI2HQVQ0/dFh0YU
+	 WMSCis/u93PUu9yC/pkK0XYhivP5lz7UIe5NTvHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	Guanhua Gao <guanhua.gao@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 026/124] wifi: mac80211: fix RCU use in TDLS fast-xmit
+Subject: [PATCH 6.1 02/64] dmaengine: fsl-dpaa2-qdma: Fix the size of dma pools
 Date: Tue, 13 Feb 2024 18:20:48 +0100
-Message-ID: <20240213171854.494015499@linuxfoundation.org>
+Message-ID: <20240213171844.797348933@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Guanhua Gao <guanhua.gao@nxp.com>
 
-[ Upstream commit 9480adfe4e0f0319b9da04b44e4eebd5ad07e0cd ]
+[ Upstream commit b73e43dcd7a8be26880ef8ff336053b29e79dbc5 ]
 
-This looks up the link under RCU protection, but isn't
-guaranteed to actually have protection. Fix that.
+In case of long format of qDMA command descriptor, there are one frame
+descriptor, three entries in the frame list and two data entries. So the
+size of dma_pool_create for these three fields should be the same with
+the total size of entries respectively, or the contents may be overwritten
+by the next allocated descriptor.
 
-Fixes: 8cc07265b691 ("wifi: mac80211: handle TDLS data frames with MLO")
-Link: https://msgid.link/20240129155348.8a9c0b1e1d89.I553f96ce953bb41b0b877d592056164dec20d01c@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 7fdf9b05c73b ("dmaengine: fsl-dpaa2-qdma: Add NXP dpaa2 qDMA controller driver for Layerscape SoCs")
+Signed-off-by: Guanhua Gao <guanhua.gao@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240118162917.2951450-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index ed4fdf655343..a94feb6b579b 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3100,10 +3100,11 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
- 			/* DA SA BSSID */
- 			build.da_offs = offsetof(struct ieee80211_hdr, addr1);
- 			build.sa_offs = offsetof(struct ieee80211_hdr, addr2);
-+			rcu_read_lock();
- 			link = rcu_dereference(sdata->link[tdls_link_id]);
--			if (WARN_ON_ONCE(!link))
--				break;
--			memcpy(hdr->addr3, link->u.mgd.bssid, ETH_ALEN);
-+			if (!WARN_ON_ONCE(!link))
-+				memcpy(hdr->addr3, link->u.mgd.bssid, ETH_ALEN);
-+			rcu_read_unlock();
- 			build.hdr_len = 24;
- 			break;
- 		}
+diff --git a/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c b/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c
+index 8dd40d00a672..6b829d347417 100644
+--- a/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c
++++ b/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c
+@@ -38,15 +38,17 @@ static int dpaa2_qdma_alloc_chan_resources(struct dma_chan *chan)
+ 	if (!dpaa2_chan->fd_pool)
+ 		goto err;
+ 
+-	dpaa2_chan->fl_pool = dma_pool_create("fl_pool", dev,
+-					      sizeof(struct dpaa2_fl_entry),
+-					      sizeof(struct dpaa2_fl_entry), 0);
++	dpaa2_chan->fl_pool =
++		dma_pool_create("fl_pool", dev,
++				 sizeof(struct dpaa2_fl_entry) * 3,
++				 sizeof(struct dpaa2_fl_entry), 0);
++
+ 	if (!dpaa2_chan->fl_pool)
+ 		goto err_fd;
+ 
+ 	dpaa2_chan->sdd_pool =
+ 		dma_pool_create("sdd_pool", dev,
+-				sizeof(struct dpaa2_qdma_sd_d),
++				sizeof(struct dpaa2_qdma_sd_d) * 2,
+ 				sizeof(struct dpaa2_qdma_sd_d), 0);
+ 	if (!dpaa2_chan->sdd_pool)
+ 		goto err_fl;
 -- 
 2.43.0
 
