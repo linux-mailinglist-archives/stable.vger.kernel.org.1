@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-19894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF218537C2
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C79853743
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:23:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 703E0B22DCF
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A40DC1F23257
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5F25FEF0;
-	Tue, 13 Feb 2024 17:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93C65FDD8;
+	Tue, 13 Feb 2024 17:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBJKx3u3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOCyXBW8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDD65F54E;
-	Tue, 13 Feb 2024 17:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884805FBB5;
+	Tue, 13 Feb 2024 17:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845357; cv=none; b=Ystg54vaAxYyq0xoT2CWca9jmrGp5M3j5qYUMHAuTs5jg7LL+9D1cUtpcyycNNrlBq9ncDo59qF6DgYSuSHuDtsozf47DUvyRnJ02bsdqUnJb54Kwkuk4/cCa88B0V9QX7oz7HnWYAYCy0gkAuP5jjj0F/qgan3YQl6MIXlVCew=
+	t=1707845013; cv=none; b=TBoqDb49mzhoCBvRuoA4Oklf0sJb5RHlHJH8CW+ug4CoaqFm7A/leX7ndBAuKdqsNM4aE25C23PT+3vt1UolmRz4SwXtjsI6Q9N0y+t3aT8SYr1hDuzOxfX9PvKJbb0HkTBry6VHrJUWU/L0fg1aam79FupIr6U5Je0Vl0abJCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845357; c=relaxed/simple;
-	bh=HGRMdyOj6VLTFhu/2SQGWLzV6PWbC7sbLR/hZ9dvhhA=;
+	s=arc-20240116; t=1707845013; c=relaxed/simple;
+	bh=LS8XPzuqW+p3dYTHcaYV7E8WL1FYgP9zJwR/gI5o5ZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=brFLr45FGYv9OizUr4fY6GcUP2gvT759IQPmBbgJEjlZG+ZIvVjokhRqEyYakKvthIVGct+AghuTRw3wrM/HJWPAG9y+vGoOCKn30t67bC+Upec6Q15O8EE1OUUFdhL93JXT8FyZ0DbJatfF38+7iKVwIZ9QYiiIFqPl+oCB52w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBJKx3u3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FE7C433C7;
-	Tue, 13 Feb 2024 17:29:16 +0000 (UTC)
+	 MIME-Version; b=ax/Ib989xj+3bfYxIxOGR8OQFWW/nkxkg/5BbNJMjJ2y9Tps26Qr1Q5oAZauRGd8qDSOPmtVqzhttjLCsw1uoqqmREtzqztsf3CoJq80gJMCLfdy949jntESYasaPVWgo3cIMCU5N/oTZKQJcnYoAvKHerJE293II4zpCSzTnnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOCyXBW8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B9FC433F1;
+	Tue, 13 Feb 2024 17:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845357;
-	bh=HGRMdyOj6VLTFhu/2SQGWLzV6PWbC7sbLR/hZ9dvhhA=;
+	s=korg; t=1707845013;
+	bh=LS8XPzuqW+p3dYTHcaYV7E8WL1FYgP9zJwR/gI5o5ZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SBJKx3u3sXZPwWGFmGj+c/xFVBp8tkDa9NGccPBNoAIhQ9U8Wquh34fohMJimhI3y
-	 9UOTC0FZm+uv7zf0BzcikPvGz268BsKWr4QrJ9yemMzt8hf8PO6r2VlOLoAKvG8F4j
-	 xzJsYbpfKp6eDD3y8oD5I4Z451DNq+tZQWgSIq3Y=
+	b=bOCyXBW8laMQh/9Cx6Jae1KPVl8bFNwq0RszVKkCs+kvwKfZF3Gn3tGjQCc37miAM
+	 eUmgAIR1KmLUIduJp0Z8UGsrbnkbM0550O6qLYrKrTopD0Vyh4lq/ybUKdVTEpOjZO
+	 C6EW7TzSGdQZGA+HBFmfoyXWJSLnKOhJ4MtqU6Ns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Jiri Pirko <jiri@nvidia.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/121] tsnep: Fix mapping for zero copy XDP_TX action
-Date: Tue, 13 Feb 2024 18:21:05 +0100
-Message-ID: <20240213171854.630841428@linuxfoundation.org>
+Subject: [PATCH 6.1 20/64] atm: idt77252: fix a memleak in open_card_ubr0
+Date: Tue, 13 Feb 2024 18:21:06 +0100
+Message-ID: <20240213171845.368667967@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit d7f5fb33cf77247b7bf9a871aaeea72ca4f51ad7 ]
+[ Upstream commit f3616173bf9be9bf39d131b120d6eea4e6324cb5 ]
 
-For XDP_TX action xdp_buff is converted to xdp_frame. The conversion is
-done by xdp_convert_buff_to_frame(). The memory type of the resulting
-xdp_frame depends on the memory type of the xdp_buff. For page pool
-based xdp_buff it produces xdp_frame with memory type
-MEM_TYPE_PAGE_POOL. For zero copy XSK pool based xdp_buff it produces
-xdp_frame with memory type MEM_TYPE_PAGE_ORDER0.
+When alloc_scq fails, card->vcs[0] (i.e. vc) should be freed. Otherwise,
+in the following call chain:
 
-tsnep_xdp_xmit_back() is not prepared for that and uses always the page
-pool buffer type TSNEP_TX_TYPE_XDP_TX. This leads to invalid mappings
-and the transmission of undefined data.
+idt77252_init_one
+  |-> idt77252_dev_open
+        |-> open_card_ubr0
+              |-> alloc_scq [failed]
+  |-> deinit_card
+        |-> vfree(card->vcs);
 
-Improve tsnep_xdp_xmit_back() to use the generic buffer type
-TSNEP_TX_TYPE_XDP_NDO for zero copy XDP_TX.
+card->vcs is freed and card->vcs[0] is leaked.
 
-Fixes: 3fc2333933fd ("tsnep: Add XDP socket zero-copy RX support")
-Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/engleder/tsnep_main.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/atm/idt77252.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
-index 08e113e785a7..4f36b29d66c8 100644
---- a/drivers/net/ethernet/engleder/tsnep_main.c
-+++ b/drivers/net/ethernet/engleder/tsnep_main.c
-@@ -668,17 +668,25 @@ static void tsnep_xdp_xmit_flush(struct tsnep_tx *tx)
+diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
+index 49cb4537344a..2daf50d4cd47 100644
+--- a/drivers/atm/idt77252.c
++++ b/drivers/atm/idt77252.c
+@@ -2930,6 +2930,8 @@ open_card_ubr0(struct idt77252_dev *card)
+ 	vc->scq = alloc_scq(card, vc->class);
+ 	if (!vc->scq) {
+ 		printk("%s: can't get SCQ.\n", card->name);
++		kfree(card->vcs[0]);
++		card->vcs[0] = NULL;
+ 		return -ENOMEM;
+ 	}
  
- static bool tsnep_xdp_xmit_back(struct tsnep_adapter *adapter,
- 				struct xdp_buff *xdp,
--				struct netdev_queue *tx_nq, struct tsnep_tx *tx)
-+				struct netdev_queue *tx_nq, struct tsnep_tx *tx,
-+				bool zc)
- {
- 	struct xdp_frame *xdpf = xdp_convert_buff_to_frame(xdp);
- 	bool xmit;
-+	u32 type;
- 
- 	if (unlikely(!xdpf))
- 		return false;
- 
-+	/* no page pool for zero copy */
-+	if (zc)
-+		type = TSNEP_TX_TYPE_XDP_NDO;
-+	else
-+		type = TSNEP_TX_TYPE_XDP_TX;
-+
- 	__netif_tx_lock(tx_nq, smp_processor_id());
- 
--	xmit = tsnep_xdp_xmit_frame_ring(xdpf, tx, TSNEP_TX_TYPE_XDP_TX);
-+	xmit = tsnep_xdp_xmit_frame_ring(xdpf, tx, type);
- 
- 	/* Avoid transmit queue timeout since we share it with the slow path */
- 	if (xmit)
-@@ -1222,7 +1230,7 @@ static bool tsnep_xdp_run_prog(struct tsnep_rx *rx, struct bpf_prog *prog,
- 	case XDP_PASS:
- 		return false;
- 	case XDP_TX:
--		if (!tsnep_xdp_xmit_back(rx->adapter, xdp, tx_nq, tx))
-+		if (!tsnep_xdp_xmit_back(rx->adapter, xdp, tx_nq, tx, false))
- 			goto out_failure;
- 		*status |= TSNEP_XDP_TX;
- 		return true;
-@@ -1272,7 +1280,7 @@ static bool tsnep_xdp_run_prog_zc(struct tsnep_rx *rx, struct bpf_prog *prog,
- 	case XDP_PASS:
- 		return false;
- 	case XDP_TX:
--		if (!tsnep_xdp_xmit_back(rx->adapter, xdp, tx_nq, tx))
-+		if (!tsnep_xdp_xmit_back(rx->adapter, xdp, tx_nq, tx, true))
- 			goto out_failure;
- 		*status |= TSNEP_XDP_TX;
- 		return true;
 -- 
 2.43.0
 
