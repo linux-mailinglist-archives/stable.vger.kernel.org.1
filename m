@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-19842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 024AC853781
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:26:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A86648537FE
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:31:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 932D71F23DF0
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:26:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60BBE286223
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE6B5FEF6;
-	Tue, 13 Feb 2024 17:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7922C5F54E;
+	Tue, 13 Feb 2024 17:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azq83frp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tvx9i4hN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB6C5FB90;
-	Tue, 13 Feb 2024 17:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393A65FF04;
+	Tue, 13 Feb 2024 17:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845171; cv=none; b=WAqz0jIHI5PWKDAtLjUJHWK0r3V213J8oTQ2kVkeBj2lzvwF1MaKicRp7Hj4XZjanqdqO/xn431ySqMv6Gs9Gyip4V3dlMBpkWw7J5SPxf7vGEavZ+k5xW2wKvDuqa0PWyHTauD3g86SXsFLXEVkhbbLRcutbdXWT9XAplwD8p0=
+	t=1707845512; cv=none; b=ISqIhKkTuqmVRN30jO+iBtS8EeX6bTXUPlJYTXy6hdcIA4srUrxi29a43Vt0TGVN3IhlR9aF8vrB9V3jMX2BPK3LI1sW8tJFoShpQCBjPF3j+zcm9PmUTqTuntTuUNX6XUesNMNwIiG9TVcNxMlIaKcy5dfQpfyUtI1kkg0odgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845171; c=relaxed/simple;
-	bh=zZSXT8qLKc7v5j0P3TXPAdEwW0Vcc7YzIFPhwPa6nJ8=;
+	s=arc-20240116; t=1707845512; c=relaxed/simple;
+	bh=NwDOQWDxBz74iyOVe9VEfDQZA3n7v/QOi+0SvyrtvGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cnAIxNkqSfLakwpZF7F1cj6emnsoVEcveqotpxPTHuf5ktHh+wHQ/e2wMv6XlkHt6sGo6dg2WeUI0ZZ0AnGtAAJ4eJTRVtZGBNjAw/tXVoCWdI2Pp3WZMtCJDr5jX84E7SfHYUgTBIufBKkeap+X0XF00618Y23hKLxRaVJ4888=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azq83frp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD10C433C7;
-	Tue, 13 Feb 2024 17:26:10 +0000 (UTC)
+	 MIME-Version; b=CXUVkowV56qRC760pboWUmjR4jVS/4OUS3s4tMPWUpuK2/hlKpPykQSRD9lE9v8VMyHv6nuy7RvNhLYDMro+y0ReSVWyJh16FrLz55OUjHMEWhV5EgNTNjv7S3hkGtlARTwmq++BYRoT51wXui+Wh90BYeW+HTZbRzBg2y+5Wjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tvx9i4hN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A974CC433C7;
+	Tue, 13 Feb 2024 17:31:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845170;
-	bh=zZSXT8qLKc7v5j0P3TXPAdEwW0Vcc7YzIFPhwPa6nJ8=;
+	s=korg; t=1707845512;
+	bh=NwDOQWDxBz74iyOVe9VEfDQZA3n7v/QOi+0SvyrtvGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azq83frpbDIg9P6KbesR0M++bHR289P9eRNfBbE1PHCwqpic+P5XLnz0Pcz1x09DE
-	 t7iximG4MlU0yu/pk9gKO323FxE0nRxv/DP7273dCPsBkH/8XWU9dwvVHFLsNvEmJb
-	 9KCLxBcXFjtgarNJIcSBeiMxwCC73GiWlNgpUULc=
+	b=Tvx9i4hNIDqKXRpF+tIi/NIdLXvsrv+nuMfTVjMakrFqLXFYCO2idAkFfKS7sa2MG
+	 jGfCytS68fhWuHaIfi+4Pocc0Mi6Kh7Oj+EQtbDYRe22OPzlZB3XAiunpetqTh5yro
+	 OrRBYTDvEUChJHvT646LYv5Rc8b2GO1Ekk8g7Xow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Marciniszyn <mike.marciniszyn@intel.com>,
-	Shiraz Saleem <shiraz.saleem@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.1 61/64] RDMA/irdma: Fix support for 64k pages
-Date: Tue, 13 Feb 2024 18:21:47 +0100
-Message-ID: <20240213171846.658731660@linuxfoundation.org>
+	Alexander Tsoy <alexander@tsoy.me>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 099/121] ALSA: usb-audio: Add delay quirk for MOTU M Series 2nd revision
+Date: Tue, 13 Feb 2024 18:21:48 +0100
+Message-ID: <20240213171855.883850347@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marciniszyn <mike.marciniszyn@intel.com>
+From: Alexander Tsoy <alexander@tsoy.me>
 
-commit 03769f72d66edab82484449ed594cb6b00ae0223 upstream.
+commit d915a6850e27efb383cd4400caadfe47792623df upstream.
 
-Virtual QP and CQ require a 4K HW page size but the driver passes
-PAGE_SIZE to ib_umem_find_best_pgsz() instead.
+Audio control requests that sets sampling frequency sometimes fail on
+this card. Adding delay between control messages eliminates that problem.
 
-Fix this by using the appropriate 4k value in the bitmap passed to
-ib_umem_find_best_pgsz().
-
-Fixes: 693a5386eff0 ("RDMA/irdma: Split mr alloc and free into new functions")
-Link: https://lore.kernel.org/r/20231129202143.1434-4-shiraz.saleem@intel.com
-Signed-off-by: Mike Marciniszyn <mike.marciniszyn@intel.com>
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217601
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Alexander Tsoy <alexander@tsoy.me>
+Link: https://lore.kernel.org/r/20240124130239.358298-1-alexander@tsoy.me
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/irdma/verbs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/infiniband/hw/irdma/verbs.c
-+++ b/drivers/infiniband/hw/irdma/verbs.c
-@@ -2825,7 +2825,7 @@ static struct ib_mr *irdma_reg_user_mr(s
- 	iwmr->ibmr.pd = pd;
- 	iwmr->ibmr.device = pd->device;
- 	iwmr->ibmr.iova = virt;
--	iwmr->page_size = PAGE_SIZE;
-+	iwmr->page_size = SZ_4K;
- 
- 	if (req.reg_type == IRDMA_MEMREG_TYPE_MEM) {
- 		iwmr->page_size = ib_umem_find_best_pgsz(region,
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2073,6 +2073,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
+ 	DEVICE_FLG(0x0763, 0x2031, /* M-Audio Fast Track C600 */
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
++	DEVICE_FLG(0x07fd, 0x000b, /* MOTU M Series 2nd hardware revision */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x08bb, 0x2702, /* LineX FM Transmitter */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x0951, 0x16ad, /* Kingston HyperX */
 
 
 
