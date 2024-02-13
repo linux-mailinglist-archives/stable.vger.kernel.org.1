@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-20079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6FCF8538BB
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:40:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95787853822
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:33:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96B4E1F212B2
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:40:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5153C2831F1
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D342A5FF13;
-	Tue, 13 Feb 2024 17:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1915FF07;
+	Tue, 13 Feb 2024 17:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ovyRKu/N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KP0QkcQg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DCA1E502;
-	Tue, 13 Feb 2024 17:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BB15F54E;
+	Tue, 13 Feb 2024 17:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707846009; cv=none; b=ceL4GfeXloc1GR/Li4BgnA7mKc8H8ESbOKpKmGxcB1b/b0qysdPcCyt8foZIUQ0WqUTqQxInXqkeVFekXMGXbaCfgdODDEPcVgwofBc8yw3EbJOhMDf24YaHZ0//zzICn9CuWtu6b97v8jNYDaUYD8GZp8dtRFI9P4NfZGFL/dE=
+	t=1707845611; cv=none; b=ikTgRGFDkb/0c+SR8+PYboBJu5HyArbMWdAV55GxD5/KtcbIAyiP738R43OpwREqkR2wqCvynimOJo8PheFWTPBto8EK0CLO36SisY2D8PbCL26sMBwKGH+EoTGbj/iJYw8f8wXIPT0YjVk6rC3LHYsROVev3MEsDTheD1z7/lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707846009; c=relaxed/simple;
-	bh=B/YFYWz/tpzUXXCnHc0qnwirZpBdiLbaKooF4o8elnY=;
+	s=arc-20240116; t=1707845611; c=relaxed/simple;
+	bh=X6mnyXjCH4iopVWBxJOqNcK24PrLcxb3aW4hWrpqm7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U+UuCfaQ9iPKyKa7I/qIBft5R7V/OI6ZAVjmBKaQbMf9F4UXAdO5bZHYSOcNmP8MuoDtItDhuz1jdqzA3X0FXD2kA3AKOnqJ3CkfebjQfEijohm63DqKG3ER1U+1kNQJ8Q8XSJ3tTFNGhuoi4AXhO012FkBfN+7UCxXDzr8evlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ovyRKu/N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19C3C433F1;
-	Tue, 13 Feb 2024 17:40:08 +0000 (UTC)
+	 MIME-Version; b=MhmwRAuczNv2ud8Mv6uaDiyu4XNaUllWC011cvPY6TGW09oekqD65ZsF/oS09vX1h8oniv0K0nMjjOcszriNHNaWe5NzrRix/wzZb5JMl9ZibwvBjNs9jFjedX5Ywt5PVzrOIq5u7Lt5CteTi+3UclXfEuCjHJaXquEElnHmCKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KP0QkcQg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4013C433F1;
+	Tue, 13 Feb 2024 17:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707846009;
-	bh=B/YFYWz/tpzUXXCnHc0qnwirZpBdiLbaKooF4o8elnY=;
+	s=korg; t=1707845611;
+	bh=X6mnyXjCH4iopVWBxJOqNcK24PrLcxb3aW4hWrpqm7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ovyRKu/NYrSWt1eFFovdGW3oPJhxlntdXS/+0VUZRJCHri+5VpbKsCvJKSYarP15u
-	 /GjX46NsJcJ0iTXpY33wTHqw58b+av2URuyPSF73q3U6uyx0/bZUOHDBm2R7BW/qZ0
-	 BJmzevJHKBpeHIjwNTn3NH5gHlOt94NTomXmETdw=
+	b=KP0QkcQgWJkZT9yXeFXsR0qHTZNAb2DgvjAWmzXNAHhhq9ozJo8cOt+1ubLA/0krY
+	 dqB8pMTsu2tONQnNcnpxstPBQx2LIrBtcdnTsy/Z9vsfII/M2w6Ns5YP7h8Vf5SU8F
+	 Rg2iaH9zHEV5aUMSujokgd0OiVD4aoAIBlBA9EEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	JackBB Wu <wojackbb@gmail.com>,
+	Leonard Dallmayr <leonard.dallmayr@mailbox.org>,
 	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.7 090/124] USB: serial: qcserial: add new usb-id for Dell Wireless DW5826e
-Date: Tue, 13 Feb 2024 18:21:52 +0100
-Message-ID: <20240213171856.361113958@linuxfoundation.org>
+Subject: [PATCH 6.6 104/121] USB: serial: cp210x: add ID for IMST iM871A-USB
+Date: Tue, 13 Feb 2024 18:21:53 +0100
+Message-ID: <20240213171856.027054908@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: JackBB Wu <wojackbb@gmail.com>
+From: Leonard Dallmayr <leonard.dallmayr@mailbox.org>
 
-commit 129690fb229a20b6e563a77a2c85266acecf20bc upstream.
+commit 12b17b4eb82a41977eb848048137b5908d52845c upstream.
 
-Add support for Dell DW5826e with USB-id 0x413c:0x8217 & 0x413c:0x8218.
+The device IMST USB-Stick for Smart Meter is a rebranded IMST iM871A-USB
+Wireless M-Bus USB-adapter. It is used to read wireless water, gas and
+electricity meters.
 
-It is 0x413c:0x8217
-T:  Bus=02 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#=  4 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=413c ProdID=8217 Rev= 5.04
-S:  Manufacturer=DELL
-S:  Product=COMPAL Electronics EXM-G1A
-S:  SerialNumber=359302940050401
-C:* #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=qcserial
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=qcserial
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=qcserial
-E:  Ad=86(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:* If#= 8 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-It is 0x413c:0x8218
-T:  Bus=02 Lev=01 Prnt=01 Port=05 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.10 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=413c ProdID=8218 Rev= 0.00
-S:  Manufacturer=DELL
-S:  Product=COMPAL Electronics EXM-G1A
-S:  SerialNumber=359302940050401
-C:* #Ifs= 1 Cfg#= 1 Atr=a0 MxPwr=  2mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=qcserial
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: JackBB Wu <wojackbb@gmail.com>
+Signed-off-by: Leonard Dallmayr <leonard.dallmayr@mailbox.org>
 Cc: stable@vger.kernel.org
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/qcserial.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/serial/cp210x.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/serial/qcserial.c
-+++ b/drivers/usb/serial/qcserial.c
-@@ -184,6 +184,8 @@ static const struct usb_device_id id_tab
- 	{DEVICE_SWI(0x413c, 0x81d0)},   /* Dell Wireless 5819 */
- 	{DEVICE_SWI(0x413c, 0x81d1)},   /* Dell Wireless 5818 */
- 	{DEVICE_SWI(0x413c, 0x81d2)},   /* Dell Wireless 5818 */
-+	{DEVICE_SWI(0x413c, 0x8217)},	/* Dell Wireless DW5826e */
-+	{DEVICE_SWI(0x413c, 0x8218)},	/* Dell Wireless DW5826e QDL */
- 
- 	/* Huawei devices */
- 	{DEVICE_HWI(0x03f0, 0x581d)},	/* HP lt4112 LTE/HSPA+ Gobi 4G Modem (Huawei me906e) */
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -146,6 +146,7 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(0x10C4, 0x85F8) }, /* Virtenio Preon32 */
+ 	{ USB_DEVICE(0x10C4, 0x8664) }, /* AC-Services CAN-IF */
+ 	{ USB_DEVICE(0x10C4, 0x8665) }, /* AC-Services OBD-IF */
++	{ USB_DEVICE(0x10C4, 0x87ED) }, /* IMST USB-Stick for Smart Meter */
+ 	{ USB_DEVICE(0x10C4, 0x8856) },	/* CEL EM357 ZigBee USB Stick - LR */
+ 	{ USB_DEVICE(0x10C4, 0x8857) },	/* CEL EM357 ZigBee USB Stick */
+ 	{ USB_DEVICE(0x10C4, 0x88A4) }, /* MMB Networks ZigBee USB Device */
 
 
 
