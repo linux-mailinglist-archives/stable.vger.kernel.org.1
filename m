@@ -1,73 +1,81 @@
-Return-Path: <stable+bounces-19691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E4A5852BFD
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 10:11:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2287852C31
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 10:25:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52B6128207F
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 09:10:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DB8F1F2276E
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 09:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8A1224E0;
-	Tue, 13 Feb 2024 09:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3BD621A0D;
+	Tue, 13 Feb 2024 09:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="IAj6MF1E";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="ScCDbNo+"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X1R3rqI3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81AB20309;
-	Tue, 13 Feb 2024 09:10:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A370321A0A
+	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 09:25:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707815439; cv=none; b=V8IL2pBYKfZv7ci/OluArwTS+6b/qs/OB8qkP7FAPXKwYFp6uQ3k1WgpV3rO3xlTrB9kVDl1+lhcIoXvrNWPyY0/Ne2FysXFH3FPLs6bf/ohmskQ8K/B3ykqyM7MrI7/Jdc8VceeiDBtVy+9P7qbhdtwUmr98+dGUeu3PxlgKjo=
+	t=1707816331; cv=none; b=UUPHBUCt1Ap3fauCgbSTMiSxgT7hcCetmw6BoGDieEB6eVi75t+fk3zkC1jyLHPBqLHwyutThsC1XPpwYiSCrZvk2qgyA7flJ8KvnD98V+o+w0EnGqF8j72kIy4/Gze3nG65JOb+EVG3NtmjhP2YKnf+VzlSW0HwEPgK5qyNLFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707815439; c=relaxed/simple;
-	bh=LApdyHHAYnVddAUmlJa941jC9ygSRkeHAqK6zUw36zo=;
+	s=arc-20240116; t=1707816331; c=relaxed/simple;
+	bh=sujtu4NMxU2gZVPbuuJEqTD1dbdhb+S8T8DifR8NKDc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BjWFG5fgUaO7gAYRnldA8Na2UOoMYnTagzM3nqbJDOAMV+uKjxoIcQ2kkdzJxajyHpIOJjzrP5nzRMLYQ6CnObk5raATMR6coJ7uv05fjXbPkQ0AnW4Kay7w3+hOBm1DJXWRSwcMKzQOCgjdfhgjROIV8+2ejPAjlmLfPfJ6T90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=IAj6MF1E; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=ScCDbNo+; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id BB412211A3;
-	Tue, 13 Feb 2024 09:10:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1707815435; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	 In-Reply-To:Content-Type; b=fGIPUlumBBJFMDXduG3h70T2yUnfwxro/IDEOXVPqGK9zNuXtus2zqoxr0ptZoH3E/MxXEr3sLx3nt9iSgpIzgWGze6YzWX66dgAax8t6AZjZn+Hyr1OcNusb+OWv77Jt+rZo0VQ3XZCP08AVakibx+KxMl32/vIc3ABf202SeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=X1R3rqI3; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1707816328;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2dBHyPlf5pqwHmlpBwT/zIVP0+EJA4iC+DUxlKWaHfo=;
-	b=IAj6MF1EgCsSh15iPa9hS0zQwWHahdobn0sXraThyI/Gn+L1/Iy46uSfvw3XG+Q8GQ1y7V
-	YFMpQSmXkcZfcf/vhPE221h9MvV3zOTXuDsPKtg42KQtPnuLw+LtDotnJ0OmECOz1seJyp
-	MlF2Bo5TgjNCGErnVMTW0kkEsOH52Og=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1707815434; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2dBHyPlf5pqwHmlpBwT/zIVP0+EJA4iC+DUxlKWaHfo=;
-	b=ScCDbNo+7YVxtanr4RTnJ3Kh5K8Ou9076cv3r2+jRgjTXLBEsnVFk3/OX2Zaylpe0nQFex
-	bexyFOoR0ufhcNF0md8VJitf7Fu6H86qOUjY7zcA+Gh+gV9SstaDsM+kKHMB0kMr/zDBZc
-	TFLu57g9WDc2jKKx2NMxT6N/ScTUks0=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 59BDC13404;
-	Tue, 13 Feb 2024 09:10:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id vXMTFAoyy2UvVAAAD6G6ig
-	(envelope-from <jgross@suse.com>); Tue, 13 Feb 2024 09:10:34 +0000
-Message-ID: <49c3795f-7827-4e30-90d6-e49b2aa1a5bc@suse.com>
-Date: Tue, 13 Feb 2024 10:10:33 +0100
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=X4kmwrh4gzNF5CpDnNaGSP3k+zfl5ZApFZSnmdKbDz4=;
+	b=X1R3rqI3GItlXK4YglsomKXfGB7jEDnYqiWpBFnVxg7t+rUMPdfBhPZ25aa59Xez5u+eut
+	T1lA8g2RCxMMAqDMnQL6qQn0eVcb4/ygORGHf7sAxmz+u9fIDB/SUDz1jCtVY2TKL/YPmd
+	2t6/MAk/lgJ+Sj+BmSNDesgg34br8xQ=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-479-nkeHJHQFMMyN1f_ZyhhntA-1; Tue, 13 Feb 2024 04:25:25 -0500
+X-MC-Unique: nkeHJHQFMMyN1f_ZyhhntA-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-33b28f50eadso302412f8f.1
+        for <stable@vger.kernel.org>; Tue, 13 Feb 2024 01:25:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707816324; x=1708421124;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X4kmwrh4gzNF5CpDnNaGSP3k+zfl5ZApFZSnmdKbDz4=;
+        b=d4PAkM6HhiueoN1xds0a2dSfT5R37j9oF6UHQQ1x9REg0CX2elgHAZC4k7jlxeZj8U
+         4QMOJIo3t0fws0OFDpY0EBBwn9o901oKTWtTfg98kNeTABciZnsQo3OK9oN6ICKhsHWt
+         Q+KqpRVCYXuXlC4wEHcnbGdM3bOPfVniWa7xZKcZeASO0hfXl9gmfmxRzvH+1UVmMDvd
+         yaJ9FwEsvSe622/0iUoJBOL1OPSI8xI483cmI/8jJB+YWX6YYZlU9KwW27Vdn2O6nUOS
+         8Tp8rTiDChP+VNZ/d8j8SfCMhe4yXyLp042XaqdW5VXoeUbyQSnk32+lKZT4bCxIK9tl
+         yGCA==
+X-Gm-Message-State: AOJu0YzAjcvNW9jA9CGHUuRGXKwaHivb6mfaEj+HZ7420uBxjwwRdRwa
+	qtHEQEsq6AQtyDv0yGmocfD66NQ6mfJTKJUXnhfKcMsi6hMeip8JBQyoT1LUNifbPS4C48n5ZX5
+	CR1pHrnDEtrT1s1ndJhjXGHIPewCuDRg6N/d8PMjJv/LXs35d1AtMoA==
+X-Received: by 2002:adf:f591:0:b0:33c:d595:cc3f with SMTP id f17-20020adff591000000b0033cd595cc3fmr914224wro.71.1707816324095;
+        Tue, 13 Feb 2024 01:25:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEd9dEvtt3w1MkGlqf68DU/PwjIE8HXOR1QNpcK+9SqYYxbt0usxkLd9wMX4Rj16mCABXtKGA==
+X-Received: by 2002:adf:f591:0:b0:33c:d595:cc3f with SMTP id f17-20020adff591000000b0033cd595cc3fmr914206wro.71.1707816323690;
+        Tue, 13 Feb 2024 01:25:23 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWuyDj+XtS4VCd0lKswGAOQpYuC6x4P+P3/A3pTFiaZfqonxDzkeWER4NdZtDW/V51bo8ES1CNNAor2e9c99KGa1DdY6ciKKeejAh/TsFWj3X//xGR8ZVvR9i1cGbEwv44+1gWTBq1tTL5GMbVUqkgcnCUyRr9UOFja2Cj6IFhyGw8K76i53WvD5JG4YMLV8DNKx8K0oFnwCSnalaeeuPpl9rXWqjwSwps6O/d18q1JfNAqFyA8nIvJfRhUUpcXzn/xbVG3H5U3pGzO+Leirq+mfTA3aB3uBnxgCPxWBsnktMIsLS2FYpX6
+Received: from ?IPV6:2003:cb:c70a:4d00:b968:9e7a:af8b:adf7? (p200300cbc70a4d00b9689e7aaf8badf7.dip0.t-ipconnect.de. [2003:cb:c70a:4d00:b968:9e7a:af8b:adf7])
+        by smtp.gmail.com with ESMTPSA id bt9-20020a056000080900b0033b75d0993esm7810202wrb.74.2024.02.13.01.25.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Feb 2024 01:25:23 -0800 (PST)
+Message-ID: <a683e199-ce8a-4534-a21e-65f2528415a6@redhat.com>
+Date: Tue, 13 Feb 2024 10:25:22 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,165 +83,149 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] xen/events: close evtchn after mapping cleanup
+Subject: Re: [PATCH] mm/huge_memory: fix swap entry values of tail pages of
+ THP
+To: Charan Teja Kalla <quic_charante@quicinc.com>,
+ gregkh@linuxfoundation.org, akpm@linux-foundation.org, willy@infradead.org,
+ vbabka@suse.cz, dhowells@redhat.com, surenb@google.com
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ # see patch description <stable@vger.kernel.org>
+References: <1707814102-22682-1-git-send-email-quic_charante@quicinc.com>
 Content-Language: en-US
-To: Maximilian Heyne <mheyne@amazon.de>
-Cc: Julien Grall <jgrall@amazon.com>, stable@vger.kernel.org,
- Andrew Panyakin <apanyaki@amazon.com>,
- Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- Rahul Singh <rahul.singh@arm.com>, David Woodhouse <dwmw@amazon.co.uk>,
- Viresh Kumar <viresh.kumar@linaro.org>,
- Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
- Jeremy Fitzhardinge <jeremy.fitzhardinge@citrix.com>,
- xen-devel@lists.xenproject.org, linux-kernel@vger.kernel.org
-References: <20240124163130.31324-1-mheyne@amazon.de>
-From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-In-Reply-To: <20240124163130.31324-1-mheyne@amazon.de>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzSREYXZpZCBIaWxk
+ ZW5icmFuZCA8ZGF2aWRAcmVkaGF0LmNvbT7CwZgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQW
+ AgMBAh4BAheAAhkBFiEEG9nKrXNcTDpGDfzKTd4Q9wD/g1oFAl8Ox4kFCRKpKXgACgkQTd4Q
+ 9wD/g1oHcA//a6Tj7SBNjFNM1iNhWUo1lxAja0lpSodSnB2g4FCZ4R61SBR4l/psBL73xktp
+ rDHrx4aSpwkRP6Epu6mLvhlfjmkRG4OynJ5HG1gfv7RJJfnUdUM1z5kdS8JBrOhMJS2c/gPf
+ wv1TGRq2XdMPnfY2o0CxRqpcLkx4vBODvJGl2mQyJF/gPepdDfcT8/PY9BJ7FL6Hrq1gnAo4
+ 3Iv9qV0JiT2wmZciNyYQhmA1V6dyTRiQ4YAc31zOo2IM+xisPzeSHgw3ONY/XhYvfZ9r7W1l
+ pNQdc2G+o4Di9NPFHQQhDw3YTRR1opJaTlRDzxYxzU6ZnUUBghxt9cwUWTpfCktkMZiPSDGd
+ KgQBjnweV2jw9UOTxjb4LXqDjmSNkjDdQUOU69jGMUXgihvo4zhYcMX8F5gWdRtMR7DzW/YE
+ BgVcyxNkMIXoY1aYj6npHYiNQesQlqjU6azjbH70/SXKM5tNRplgW8TNprMDuntdvV9wNkFs
+ 9TyM02V5aWxFfI42+aivc4KEw69SE9KXwC7FSf5wXzuTot97N9Phj/Z3+jx443jo2NR34XgF
+ 89cct7wJMjOF7bBefo0fPPZQuIma0Zym71cP61OP/i11ahNye6HGKfxGCOcs5wW9kRQEk8P9
+ M/k2wt3mt/fCQnuP/mWutNPt95w9wSsUyATLmtNrwccz63XOwU0EVcufkQEQAOfX3n0g0fZz
+ Bgm/S2zF/kxQKCEKP8ID+Vz8sy2GpDvveBq4H2Y34XWsT1zLJdvqPI4af4ZSMxuerWjXbVWb
+ T6d4odQIG0fKx4F8NccDqbgHeZRNajXeeJ3R7gAzvWvQNLz4piHrO/B4tf8svmRBL0ZB5P5A
+ 2uhdwLU3NZuK22zpNn4is87BPWF8HhY0L5fafgDMOqnf4guJVJPYNPhUFzXUbPqOKOkL8ojk
+ CXxkOFHAbjstSK5Ca3fKquY3rdX3DNo+EL7FvAiw1mUtS+5GeYE+RMnDCsVFm/C7kY8c2d0G
+ NWkB9pJM5+mnIoFNxy7YBcldYATVeOHoY4LyaUWNnAvFYWp08dHWfZo9WCiJMuTfgtH9tc75
+ 7QanMVdPt6fDK8UUXIBLQ2TWr/sQKE9xtFuEmoQGlE1l6bGaDnnMLcYu+Asp3kDT0w4zYGsx
+ 5r6XQVRH4+5N6eHZiaeYtFOujp5n+pjBaQK7wUUjDilPQ5QMzIuCL4YjVoylWiBNknvQWBXS
+ lQCWmavOT9sttGQXdPCC5ynI+1ymZC1ORZKANLnRAb0NH/UCzcsstw2TAkFnMEbo9Zu9w7Kv
+ AxBQXWeXhJI9XQssfrf4Gusdqx8nPEpfOqCtbbwJMATbHyqLt7/oz/5deGuwxgb65pWIzufa
+ N7eop7uh+6bezi+rugUI+w6DABEBAAHCwXwEGAEIACYCGwwWIQQb2cqtc1xMOkYN/MpN3hD3
+ AP+DWgUCXw7HsgUJEqkpoQAKCRBN3hD3AP+DWrrpD/4qS3dyVRxDcDHIlmguXjC1Q5tZTwNB
+ boaBTPHSy/Nksu0eY7x6HfQJ3xajVH32Ms6t1trDQmPx2iP5+7iDsb7OKAb5eOS8h+BEBDeq
+ 3ecsQDv0fFJOA9ag5O3LLNk+3x3q7e0uo06XMaY7UHS341ozXUUI7wC7iKfoUTv03iO9El5f
+ XpNMx/YrIMduZ2+nd9Di7o5+KIwlb2mAB9sTNHdMrXesX8eBL6T9b+MZJk+mZuPxKNVfEQMQ
+ a5SxUEADIPQTPNvBewdeI80yeOCrN+Zzwy/Mrx9EPeu59Y5vSJOx/z6OUImD/GhX7Xvkt3kq
+ Er5KTrJz3++B6SH9pum9PuoE/k+nntJkNMmQpR4MCBaV/J9gIOPGodDKnjdng+mXliF3Ptu6
+ 3oxc2RCyGzTlxyMwuc2U5Q7KtUNTdDe8T0uE+9b8BLMVQDDfJjqY0VVqSUwImzTDLX9S4g/8
+ kC4HRcclk8hpyhY2jKGluZO0awwTIMgVEzmTyBphDg/Gx7dZU1Xf8HFuE+UZ5UDHDTnwgv7E
+ th6RC9+WrhDNspZ9fJjKWRbveQgUFCpe1sa77LAw+XFrKmBHXp9ZVIe90RMe2tRL06BGiRZr
+ jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <1707814102-22682-1-git-send-email-quic_charante@quicinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Level: 
-X-Spam-Score: -3.38
-X-Spamd-Result: default: False [-3.38 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 XM_UA_NO_VERSION(0.01)[];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
-	 MIME_GOOD(-0.10)[text/plain];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 RCPT_COUNT_TWELVE(0.00)[13];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[11.amazon:url,amazon.de:email,suse.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 R_MIXED_CHARSET(0.91)[subject];
-	 RCVD_TLS_ALL(0.00)[];
-	 MID_RHS_MATCH_FROM(0.00)[]
-X-Spam-Flag: NO
 
-On 24.01.24 17:31, Maximilian Heyne wrote:
-> shutdown_pirq and startup_pirq are not taking the
-> irq_mapping_update_lock because they can't due to lock inversion. Both
-> are called with the irq_desc->lock being taking. The lock order,
-> however, is first irq_mapping_update_lock and then irq_desc->lock.
-> 
-> This opens multiple races:
-> - shutdown_pirq can be interrupted by a function that allocates an event
->    channel:
-> 
->    CPU0                        CPU1
->    shutdown_pirq {
->      xen_evtchn_close(e)
->                                __startup_pirq {
->                                  EVTCHNOP_bind_pirq
->                                    -> returns just freed evtchn e
->                                  set_evtchn_to_irq(e, irq)
->                                }
->      xen_irq_info_cleanup() {
->        set_evtchn_to_irq(e, -1)
->      }
->    }
-> 
->    Assume here event channel e refers here to the same event channel
->    number.
->    After this race the evtchn_to_irq mapping for e is invalid (-1).
-> 
-> - __startup_pirq races with __unbind_from_irq in a similar way. Because
->    __startup_pirq doesn't take irq_mapping_update_lock it can grab the
->    evtchn that __unbind_from_irq is currently freeing and cleaning up. In
->    this case even though the event channel is allocated, its mapping can
->    be unset in evtchn_to_irq.
-> 
-> The fix is to first cleanup the mappings and then close the event
-> channel. In this way, when an event channel gets allocated it's
-> potential previous evtchn_to_irq mappings are guaranteed to be unset already.
-> This is also the reverse order of the allocation where first the event
-> channel is allocated and then the mappings are setup.
-> 
-> On a 5.10 kernel prior to commit 3fcdaf3d7634 ("xen/events: modify internal
-> [un]bind interfaces"), we hit a BUG like the following during probing of NVMe
-> devices. The issue is that during nvme_setup_io_queues, pci_free_irq
-> is called for every device which results in a call to shutdown_pirq.
-> With many nvme devices it's therefore likely to hit this race during
-> boot because there will be multiple calls to shutdown_pirq and
-> startup_pirq are running potentially in parallel.
-> 
->    ------------[ cut here ]------------
->    blkfront: xvda: barrier or flush: disabled; persistent grants: enabled; indirect descriptors: enabled; bounce buffer: enabled
->    kernel BUG at drivers/xen/events/events_base.c:499!
->    invalid opcode: 0000 [#1] SMP PTI
->    CPU: 44 PID: 375 Comm: kworker/u257:23 Not tainted 5.10.201-191.748.amzn2.x86_64 #1
->    Hardware name: Xen HVM domU, BIOS 4.11.amazon 08/24/2006
->    Workqueue: nvme-reset-wq nvme_reset_work
->    RIP: 0010:bind_evtchn_to_cpu+0xdf/0xf0
->    Code: 5d 41 5e c3 cc cc cc cc 44 89 f7 e8 2b 55 ad ff 49 89 c5 48 85 c0 0f 84 64 ff ff ff 4c 8b 68 30 41 83 fe ff 0f 85 60 ff ff ff <0f> 0b 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 0f 1f 44 00 00
->    RSP: 0000:ffffc9000d533b08 EFLAGS: 00010046
->    RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000006
->    RDX: 0000000000000028 RSI: 00000000ffffffff RDI: 00000000ffffffff
->    RBP: ffff888107419680 R08: 0000000000000000 R09: ffffffff82d72b00
->    R10: 0000000000000000 R11: 0000000000000000 R12: 00000000000001ed
->    R13: 0000000000000000 R14: 00000000ffffffff R15: 0000000000000002
->    FS:  0000000000000000(0000) GS:ffff88bc8b500000(0000) knlGS:0000000000000000
->    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->    CR2: 0000000000000000 CR3: 0000000002610001 CR4: 00000000001706e0
->    DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
->    DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
->    Call Trace:
->     ? show_trace_log_lvl+0x1c1/0x2d9
->     ? show_trace_log_lvl+0x1c1/0x2d9
->     ? set_affinity_irq+0xdc/0x1c0
->     ? __die_body.cold+0x8/0xd
->     ? die+0x2b/0x50
->     ? do_trap+0x90/0x110
->     ? bind_evtchn_to_cpu+0xdf/0xf0
->     ? do_error_trap+0x65/0x80
->     ? bind_evtchn_to_cpu+0xdf/0xf0
->     ? exc_invalid_op+0x4e/0x70
->     ? bind_evtchn_to_cpu+0xdf/0xf0
->     ? asm_exc_invalid_op+0x12/0x20
->     ? bind_evtchn_to_cpu+0xdf/0xf0
->     ? bind_evtchn_to_cpu+0xc5/0xf0
->     set_affinity_irq+0xdc/0x1c0
->     irq_do_set_affinity+0x1d7/0x1f0
->     irq_setup_affinity+0xd6/0x1a0
->     irq_startup+0x8a/0xf0
->     __setup_irq+0x639/0x6d0
->     ? nvme_suspend+0x150/0x150
->     request_threaded_irq+0x10c/0x180
->     ? nvme_suspend+0x150/0x150
->     pci_request_irq+0xa8/0xf0
->     ? __blk_mq_free_request+0x74/0xa0
->     queue_request_irq+0x6f/0x80
->     nvme_create_queue+0x1af/0x200
->     nvme_create_io_queues+0xbd/0xf0
->     nvme_setup_io_queues+0x246/0x320
->     ? nvme_irq_check+0x30/0x30
->     nvme_reset_work+0x1c8/0x400
->     process_one_work+0x1b0/0x350
->     worker_thread+0x49/0x310
->     ? process_one_work+0x350/0x350
->     kthread+0x11b/0x140
->     ? __kthread_bind_mask+0x60/0x60
->     ret_from_fork+0x22/0x30
->    Modules linked in:
->    ---[ end trace a11715de1eee1873 ]---
-> 
-> Fixes: d46a78b05c0e ("xen: implement pirq type event channels")
-> Cc: stable@vger.kernel.org
-> Co-debugged-by: Andrew Panyakin <apanyaki@amazon.com>
-> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+On 13.02.24 09:48, Charan Teja Kalla wrote:
+> An anon THP page is first added to swap cache before reclaiming it.
+> Initially, each tail page contains the proper swap entry value(stored in
+> ->private field) which is filled from add_to_swap_cache(). After
 
-Reviewed-by: Juergen Gross <jgross@suse.com>
+This is a stable-only fix? In that case, it make sense to indicate that 
+in the patch subject [PATCH STABLE vX.Y].
+
+But it's always odd to have stable-only fixes, the docs [1] don't cover 
+that (maybe they should? or I missed it).
+
+[1] https://www.kernel.org/doc/Documentation/process/stable-kernel-rules.rst
 
 
-Juergen
+So we are migrating a THP that was added to the swapcache. Do you have a 
+reproducer?
+
+> migrating the THP page sitting on the swap cache, only the swap entry of
+> the head page is filled(see folio_migrate_mapping()).
+> 
+> Now when this page is tried to split(one case is when this page is again
+> migrated, see migrate_pages()->try_split_thp()), the tail pages
+> ->private is not stored with proper swap entry values.  When this tail
+> page is now try to be freed, as part of it delete_from_swap_cache() is
+> called which operates on the wrong swap cache index and eventually
+> replaces the wrong swap cache index with shadow/NULL value, frees the
+> page.
+
+But what if we don't split the THP after migration. Is there anything 
+else that can go wrong?
+
+It's sufficient to look where upstream calls page_swap_entry():
+
+For example, do_swap_page() will never be able to make progress, because 
+the swap entry of the page does not correspond to the swap entry in the 
+PTE? It can easily fault on a swap PTE that refers a THP subpage in the 
+swapcache.
+
+So unless I am missing something, only fixing this up during the split 
+is insufficient. You have to fix it up during migration.
+
+> 
+> This leads to the state with a swap cache containing the freed page.
+> This issue can manifest in many forms and the most common thing observed
+> is the rcu stall during the swapin (see mapping_get_entry()).
+> 
+> On the recent kernels, this issues is indirectly getting fixed with the
+> series[1], to be specific[2].
+> 
+> When tried to back port this series, it is observed many merge
+> conflicts and also seems dependent on many other changes. As backporting
+> to LTS branches is not a trivial one, the similar change from [2] is
+> picked as a fix.
+
+The fix is in
+
+commit cfeed8ffe55b37fa10286aaaa1369da00cb88440
+Author: David Hildenbrand <david@redhat.com>
+Date:   Mon Aug 21 18:08:46 2023 +0200
+
+     mm/swap: stop using page->private on tail pages for THP_SWAP
+
+> 
+> [1] https://lore.kernel.org/all/20230821160849.531668-1-david@redhat.com/
+> [2] https://lore.kernel.org/all/20230821160849.531668-5-david@redhat.com/
+> 
+> Closes: https://lore.kernel.org/linux-mm/69cb784f-578d-ded1-cd9f-c6db04696336@quicinc.com/
+> Fixes: 3417013e0d18 ("mm/migrate: Add folio_migrate_mapping()")
+> Cc: <stable@vger.kernel.org> # see patch description, applicable to <=6.1
+> Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
+
+3417013e0d18 went into 5.16.
+
+cfeed8ffe55b3 went into 6.6.
+
+So only 6.1 is affected.
+
+
+Isn't there a way to bite the bullet and backport that series to 6.1 
+instead?
+
+-- 
+Cheers,
+
+David / dhildenb
 
 
