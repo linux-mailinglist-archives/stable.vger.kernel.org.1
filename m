@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-19841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEAEE853780
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:26:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5DE8538C1
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:40:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D46D1C272BB
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:26:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B8732822EB
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:40:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7104E5FB86;
-	Tue, 13 Feb 2024 17:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2C25F54E;
+	Tue, 13 Feb 2024 17:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cg86WUsV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBbSc5+8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA4C5F54E;
-	Tue, 13 Feb 2024 17:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5F9A93C;
+	Tue, 13 Feb 2024 17:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845168; cv=none; b=rDtTuFGku9H+MOTgepkTKvmdRW2PNPPPYzHC5Zeq9HslOXCUQAyl8W/44Bspn6FRjtnw+gTxcsQTQs3EtQBOq7+VAMt3nSQ1dFw/P53IkbykFOWa3Iqr02QXmZvwLK6dgbNqpHOYlgWPhDUtzeua5160frCWC+NwtV5W4ccKTg8=
+	t=1707846027; cv=none; b=YOnZusRSVCmkrj+0ateec50CUbM5tYcHTQVny617JvLyn6FUUsSZmnaf4TsAU6751zYfF97fUrby21FfA1ses7zUtibULgURHjeyBRJwN/NJqsgooV66boJs47NBQ7nAklsJuxhYr04Wt1xmssiGQeqkz88wTa/geWmIKgsejkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845168; c=relaxed/simple;
-	bh=djLbFt4MQ8xIx3jvoHhcqYgA+nZFjsJAGUBMRHCsHsk=;
+	s=arc-20240116; t=1707846027; c=relaxed/simple;
+	bh=xWdJaLPrKs9nhgJpjP/w3ReGlv5gpueNT1HxSYc0mQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PMDEbWi4gDar+tla3th7pn+uFYV9TKDpsdcfK1lOcr6uot0GFpuaqv/p++7sX0LaFz1BYI0RfjI2sU24rZRc/ItEDEAltee6h3YuYHAD4NakqaXndOdUMLxisjXzfel6+zjP4beqmZRc71Hn8NQGmAcXo3Xxi9+/OAfJKt6z83k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cg86WUsV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4217FC433C7;
-	Tue, 13 Feb 2024 17:26:07 +0000 (UTC)
+	 MIME-Version; b=jfXz8wTwcld9xTM+DyqmfnrGfHTYQLVwyi4ziK0Fpt18azuoRPW7V8X3Ih4RrTP7fdvqeLVqYsy7Vg5mW90hkuMeBO+F8CjHT8Eq00UdMmpBDOhS8Dmh0wSHS44Fgkk6X4bqqagepl6a0RZb+blnSEYmXOTRf4p0pwhhTvgwWtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBbSc5+8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9B6C433C7;
+	Tue, 13 Feb 2024 17:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845167;
-	bh=djLbFt4MQ8xIx3jvoHhcqYgA+nZFjsJAGUBMRHCsHsk=;
+	s=korg; t=1707846027;
+	bh=xWdJaLPrKs9nhgJpjP/w3ReGlv5gpueNT1HxSYc0mQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cg86WUsVOhy9PnvKG8qsAb6rise84dRXD0PnPAUEax/9q6PGQ8xeSOEIYzIy5VrjK
-	 1CJoLS71ZbUZvdlZf65H/RTirMC5e641z9t+uHWLGVg2pb4HTE6TtY3Qi0tsPr/c8L
-	 wcQltJOkuOfwVFOmXFvOjVg2Fcz7vhE4BA44xYi4=
+	b=jBbSc5+8woLMw1CM+P3tgZvWe+pTc8reHY6m7dr5NttxC3d81laRW5blfqNR8wRox
+	 5JWBl11VAzqcMBEDtRqHJEo3rTky8TsWdc0nrCsWhVBL2TN1ULawKEUWCQkv12rVne
+	 2FNkVr1B9LoqAkQvQ4ZhrMF0MA9KBE3zG8mSTA/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prathu Baronia <prathubaronia2011@gmail.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>
-Subject: [PATCH 6.1 60/64] vhost: use kzalloc() instead of kmalloc() followed by memset()
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Daniel Wagner <dwagner@suse.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 084/124] nvme-host: fix the updating of the firmware version
 Date: Tue, 13 Feb 2024 18:21:46 +0100
-Message-ID: <20240213171846.629933212@linuxfoundation.org>
+Message-ID: <20240213171856.187716402@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prathu Baronia <prathubaronia2011@gmail.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-commit 4d8df0f5f79f747d75a7d356d9b9ea40a4e4c8a9 upstream.
+[ Upstream commit f0377ff97509f5a4921993d5d61da000361bd884 ]
 
-Use kzalloc() to allocate new zeroed out msg node instead of
-memsetting a node allocated with kmalloc().
+The original code didn't update the firmware version if the
+"next slot" of the AFI register isn't zero or if the
+"current slot" field is zero; in those cases it assumed
+that a reset was needed.
 
-Signed-off-by: Prathu Baronia <prathubaronia2011@gmail.com>
-Message-Id: <20230522085019.42914-1-prathubaronia2011@gmail.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, the NVMe specification doesn't exclude the possibility that
+the "next slot" value is equal to the "current slot" value,
+meaning that the same firmware slot will be activated after performing
+a controller level reset; in this case a reset is clearly not
+necessary and we can safely update the firmware version.
+
+Modify the code so the kernel will report that a Controller Level Reset
+is needed only in the following cases:
+
+1) If the "current slot" field is zero. This is invalid and means that
+   something is wrong, a reset is needed.
+
+or
+
+2) if the "next slot" field isn't zero AND it's not equal to the
+   "current slot" value. This means that at the next reset a different
+   firmware slot will be activated.
+
+Fixes: 983a338b96c8 ("nvme: update firmware version after commit")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Daniel Wagner <dwagner@suse.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/vhost.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/nvme/host/core.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -2588,12 +2588,11 @@ EXPORT_SYMBOL_GPL(vhost_disable_notify);
- /* Create a new message. */
- struct vhost_msg_node *vhost_new_msg(struct vhost_virtqueue *vq, int type)
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 60f14019f981..86149275ccb8 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -4107,6 +4107,7 @@ static bool nvme_ctrl_pp_status(struct nvme_ctrl *ctrl)
+ static void nvme_get_fw_slot_info(struct nvme_ctrl *ctrl)
  {
--	struct vhost_msg_node *node = kmalloc(sizeof *node, GFP_KERNEL);
-+	/* Make sure all padding within the structure is initialized. */
-+	struct vhost_msg_node *node = kzalloc(sizeof(*node), GFP_KERNEL);
- 	if (!node)
- 		return NULL;
+ 	struct nvme_fw_slot_info_log *log;
++	u8 next_fw_slot, cur_fw_slot;
  
--	/* Make sure all padding within the structure is initialized. */
--	memset(&node->msg, 0, sizeof node->msg);
- 	node->vq = vq;
- 	node->msg.type = type;
- 	return node;
+ 	log = kmalloc(sizeof(*log), GFP_KERNEL);
+ 	if (!log)
+@@ -4118,13 +4119,15 @@ static void nvme_get_fw_slot_info(struct nvme_ctrl *ctrl)
+ 		goto out_free_log;
+ 	}
+ 
+-	if (log->afi & 0x70 || !(log->afi & 0x7)) {
++	cur_fw_slot = log->afi & 0x7;
++	next_fw_slot = (log->afi & 0x70) >> 4;
++	if (!cur_fw_slot || (next_fw_slot && (cur_fw_slot != next_fw_slot))) {
+ 		dev_info(ctrl->device,
+ 			 "Firmware is activated after next Controller Level Reset\n");
+ 		goto out_free_log;
+ 	}
+ 
+-	memcpy(ctrl->subsys->firmware_rev, &log->frs[(log->afi & 0x7) - 1],
++	memcpy(ctrl->subsys->firmware_rev, &log->frs[cur_fw_slot - 1],
+ 		sizeof(ctrl->subsys->firmware_rev));
+ 
+ out_free_log:
+-- 
+2.43.0
+
 
 
 
