@@ -1,218 +1,144 @@
-Return-Path: <stable+bounces-19677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF318852794
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 03:47:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20EBA8527C6
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 04:37:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E87A285767
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 02:47:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43AF51C227FA
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 03:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 204DD883B;
-	Tue, 13 Feb 2024 02:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BAB2A93D;
+	Tue, 13 Feb 2024 03:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K5NZstl8"
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="SvBXWl4W"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7493579D9
-	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 02:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E232E8F5F
+	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 03:37:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707792469; cv=none; b=r0OKdLbcZSdmt4d5xoXEER7H5Z3OS7WN8eN8QUZBWp5oxNWz3mpdNRC4/FajiudAq2gaCDHuMFG0AQs8cq4wV1/TFNNCcbQLxELk9t/BxgtQb1Vm4+RApSXdW1Uy4SuC+1XPR4JESGAILlL1pwzp/w5gGSZmJy0IIcGMvke0tQM=
+	t=1707795469; cv=none; b=WDZ+GdFMDkjJj4LHUNaZbgQ68NV65YbHTO570aHuv56VvUzdqtkZtOXgm7SJN/Oygupa/DC0j+PXq4Lz8CpOKyHapFNqiKcrGcPglj5U0Y1SVFxKzdWMUVKBK/fqVZB94wAnUkFrCZPzr/gz8DaDCnUuuUF3OuRG64OfF0IV3Sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707792469; c=relaxed/simple;
-	bh=1ENHKjt3Uc2mr1Ke1IQDakTrAi2JOlr6brAtfQuPsQY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KMY8o31882xo5kVqp/6JrPXmgTpHv4HkSzKYQkXHSfmHpbJ/MvcFdUeo6qC82QY3sQmF1qWJNc9QAcOCazg3CyZqTWYCnYSgjTpuyvaJPeApG6KyUWsJJsN8tDrluC9hFdwmCuyaajBNRUrQwzZ6lvOi92D2vU3O1b3Xjz1B3c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K5NZstl8; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-56037115bb8so3974a12.0
-        for <stable@vger.kernel.org>; Mon, 12 Feb 2024 18:47:47 -0800 (PST)
+	s=arc-20240116; t=1707795469; c=relaxed/simple;
+	bh=whB7Ohz/aZw41jDLmsNbB2EZqD6VWqw1GxgDMy7wNzw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YYh8Oqlx3dDuKHqa3m+qJnLDP/rwU1gAfOe7SCDg0OHeyHxh/pdJdZ6eVLe9T8ZhJVprO6lmeqeKibURlBKRzafmaL7Ae0jVExY4O03IAEYbEkoJAVFWrOdlNYjjPfXylND/oRjlIBNEENH6pk6yYCcGTXFqINl0KWbwW/5uHvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=SvBXWl4W; arc=none smtp.client-ip=209.85.167.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-3c02b993a5aso2150436b6e.1
+        for <stable@vger.kernel.org>; Mon, 12 Feb 2024 19:37:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1707792466; x=1708397266; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=sifive.com; s=google; t=1707795467; x=1708400267; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zgrUTvQOJUYDuKbHFZKlpKXYvoGRnWvQmByrFkbKhpY=;
-        b=K5NZstl8qsnTB4L+YhEd/c41q/HMQ3SwCDTHWmJwIicsWrz2N360xTNTDlnu7w35QG
-         Y0kf+E+UGbsbYVo6fpDweisjB414TuJD5ooCK+RGxInaO4FGlojeLTnyivwB5fakT3dr
-         5ag7eaA2K7mCoeCVrkns021oA14wiWdKCLIIXsh8F4+qCOXpm8D4FwvT6Z+GOz82Ze89
-         kc6qfWvoCgh9bFFPzLMTJlzR5BS2aOzhLNurkU8UM5SlmkhxwvKFQN40GXhB2XT0vGEG
-         izkA5/6ufUszmOPeKGIcgnuLgwqKBVEFX5H4r+/+e8oYySHMbE4Yh3Dvvvx8bKO+mMOO
-         PV0w==
+        bh=DbCTJ5IGhkP1LmE7TbGdUdt79kYAcBAyFyeC8QWmnbA=;
+        b=SvBXWl4WKjxR5Y3T4VaBEtbfraAgYkc6DGXqjjJNhrjAo3vODTqocVNk8XZE+89vMe
+         25c2j+Zz/fHPAhE+zswA3Y1ecBRLnB6jUSMI9oVZkWa94c+8HlI/EVl1Wi2Pm2QuGsxZ
+         bHopgMvFVS5V9F8GrzW7cxpAeIg7gtV0JSluyqf9zp8Pn2ZdTOtkV82nPVhxqe2dzdHY
+         STlOTg6tdsJXP2p2tg1ths9t3gbvYM5kv67I3VvNKSrEDYAscoWkPsOwry3OpxiJlXBJ
+         EDuvkPQybc7wRsWpUVXZt6XPVWBw+Ot/AoEhToxpkVJjgU+YvMOHW032WbQO5bC1eqGV
+         dHUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707792466; x=1708397266;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1707795467; x=1708400267;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zgrUTvQOJUYDuKbHFZKlpKXYvoGRnWvQmByrFkbKhpY=;
-        b=j3wiQXend3LWRGVkmMS113kehetvtdXheWVKKLQilxQalJdA8YONRZ06XK3U4ur805
-         f1AS8u7YwJ+yBR/EtvTcz2cwDG6JPcDgJxOuCj4sHcaYHZbda7deJyh3vUfH/d7z8wFH
-         P7ewn2MXj8yQLj0xgFfyfvwfidQQth8rJHUB0Cf/tcHy+Rahq6P1VA1lP6sRFlxdUq7u
-         cVuqoo2wxscV72gcZ2TjbucqwR6+DX8GFD+rBCt4FM5Z7ytBRCvzTOIb/4YiqliatzTj
-         ODtfC72k/09/mEIb44XVDdQGXS3DwgEin5U+/NZMX3+ZWerp7PxkCEwNo2ppn9AmmpA9
-         pd9Q==
-X-Gm-Message-State: AOJu0Yx5wmVKkVhLZWk6Mi0Klw/cPeA3eY6EacYFPne+dj3/9slPgXQh
-	aRjZa84OniFnHv2/JOxDJwq1E7MwetFkPrbaIwP+ZQPLBWpHagh/4RGPIrwV0J1HKml+DqjZrBW
-	Ne2NyDYXbcPgdn9hPbz78yKI2IKDweL94Wiuo
-X-Google-Smtp-Source: AGHT+IEct+r39gbb5nT7BKUPki00osiOdxLM8JznhwylxUtmHwxRUvLEwmdDrymuS+ebBIImPsxnRRZuVs2lgoq7LJ8=
-X-Received: by 2002:a50:9f21:0:b0:561:519f:85c4 with SMTP id
- b30-20020a509f21000000b00561519f85c4mr67882edf.4.1707792465570; Mon, 12 Feb
- 2024 18:47:45 -0800 (PST)
+        bh=DbCTJ5IGhkP1LmE7TbGdUdt79kYAcBAyFyeC8QWmnbA=;
+        b=dBU5n8eMauplh7YLKZzKC4THOe3YM6UAsOyQS9uMQ/GFxpSMH4TYJ02VORjR+FCm7b
+         K9RwUPwqHq1WArd2zdXUqCt6R8mvReyi/UJecOaX4kA7Dc68mQHjJlP8HYb5NieHODMf
+         1Pj4d2dINX5BiVtgIWWhdx558BfHSVFAO41tUBTAxxRyo90N5KfXz/FU3SKEUaZ7rUM6
+         emW6JOeji8w8lNg72s8fBi9oWBauW8+VdFV+mMMX6W9jYCgfb69as24FJuouIaCxG8EH
+         aXV5mjBKtrrNhluQvTGgS3XVo/Pm58C0vx1KZLvMt6XDR+fnqGK4LMoV1tbO7544HIza
+         JIuw==
+X-Forwarded-Encrypted: i=1; AJvYcCURBF3/WV/s5tXDwjakTi66HrSIcMEZ18hWJOmUgMMj4/KKm0UkYzVkX8J/XGFnTX1F3zl2XFbcZB5qrVJaYMgDRo0+LwkF
+X-Gm-Message-State: AOJu0Ywax7DXOJYLkx3/nr9Y9Dgu711FwVPo9G6i/b8+0DMt7r77oVXJ
+	CM7b5j4G/C929AgIK/PfR+uD7scVjxY+dpYV7N5UBgmH+2LAc7LMcQkQ8Mz32ko=
+X-Google-Smtp-Source: AGHT+IE+bElS9VOEBRZYkJMFWhhPq2JzIWq5hlj3C9o2gaDkJNP1gz6btAf9jVpFKefBHdsEY+u7+g==
+X-Received: by 2002:a05:6808:298d:b0:3c0:2a95:d3c6 with SMTP id ex13-20020a056808298d00b003c02a95d3c6mr8180720oib.23.1707795466997;
+        Mon, 12 Feb 2024 19:37:46 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVG/9tEvERy1/zBWmZWATN9vy2GlKgAccgGMVroA50EeE7/5k30EBoGfGzSPQVGrAPHngcjrgBYvF+RvNslSmRsSoRygVpR8QgfaonMsrMhR8Acp+tY2Km1utekPImLqFVD+seoCQDmoakBzopdLkYZdAgIlb3PDYm9oavZ06D3knOGVT+4oc8cObDPMQHZZNXQ3vsaHWtRonDxS4SpF6AEPKFEoBLA/OuzoSULbJ3HoFmYvyFM
+Received: from sw06.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id v11-20020a056a00148b00b006e0334e3dd9sm6188633pfu.76.2024.02.12.19.37.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Feb 2024 19:37:46 -0800 (PST)
+From: Samuel Holland <samuel.holland@sifive.com>
+To: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Andrew Jones <ajones@ventanamicro.com>,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Stefan O'Rear <sorear@fastmail.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	stable@vger.kernel.org
+Subject: [PATCH -fixes v2 1/4] riscv: Fix enabling cbo.zero when running in M-mode
+Date: Mon, 12 Feb 2024 19:37:32 -0800
+Message-ID: <20240213033744.4069020-2-samuel.holland@sifive.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240213033744.4069020-1-samuel.holland@sifive.com>
+References: <20240213033744.4069020-1-samuel.holland@sifive.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240212-fix-elf-type-btf-vmlinux-bin-o-big-endian-v2-1-22c0a6352069@kernel.org>
- <CAK7LNATK=8V+BroyN+uo9OynkfR6s6HtRgh=LF7yan7cPkbaTA@mail.gmail.com>
-In-Reply-To: <CAK7LNATK=8V+BroyN+uo9OynkfR6s6HtRgh=LF7yan7cPkbaTA@mail.gmail.com>
-From: Fangrui Song <maskray@google.com>
-Date: Mon, 12 Feb 2024 18:47:32 -0800
-Message-ID: <CAFP8O3LVgVRsrBAmJKV02bw2yrHziTFeRtJsnqx0iXieYMTJUg@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: Fix changing ELF file type for output of
- gen_btf for big endian
-To: Nathan Chancellor <nathan@kernel.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, nicolas@fjasle.eu, ndesaulniers@google.com, 
-	morbo@google.com, justinstitt@google.com, keescook@chromium.org, 
-	linux-kbuild@vger.kernel.org, bpf@vger.kernel.org, llvm@lists.linux.dev, 
-	patches@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 12, 2024 at 6:16=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
->
-> On Tue, Feb 13, 2024 at 11:06=E2=80=AFAM Nathan Chancellor <nathan@kernel=
-.org> wrote:
-> >
-> > Commit 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
-> > changed the ELF type of .btf.vmlinux.bin.o to ET_REL via dd, which work=
-s
-> > fine for little endian platforms:
-> >
-> >    00000000  7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF...=
-.........|
-> >   -00000010  03 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |.......=
-.........|
-> >   +00000010  01 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |.......=
-.........|
-> >
-> > However, for big endian platforms, it changes the wrong byte, resulting
-> > in an invalid ELF file type, which ld.lld rejects:
-> >
-> >    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF...=
-.........|
-> >   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.......=
-.........|
-> >   +00000010  01 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.......=
-.........|
-> >
-> >   Type:                              <unknown>: 103
-> >
-> >   ld.lld: error: .btf.vmlinux.bin.o: unknown file type
-> >
-> > Fix this by updating the entire 16-bit e_type field rather than just a
-> > single byte, so that everything works correctly for all platforms and
-> > linkers.
-> >
-> >    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF...=
-.........|
-> >   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.......=
-.........|
-> >   +00000010  00 01 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.......=
-.........|
-> >
-> >   Type:                              REL (Relocatable file)
-> >
-> > While in the area, update the comment to mention that binutils 2.35+
-> > matches LLD's behavior of rejecting an ET_EXEC input, which occurred
-> > after the comment was added.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
-> > Link: https://github.com/llvm/llvm-project/pull/75643
-> > Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
-> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+When the kernel is running in M-mode, the CBZE bit must be set in the
+menvcfg CSR, not in senvcfg.
 
-Thanks for updating the comment.
+Cc: <stable@vger.kernel.org>
+Fixes: 43c16d51a19b ("RISC-V: Enable cbo.zero in usermode")
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+---
 
-Reviewed-by: Fangrui Song <maskray@google.com>
+(no changes since v1)
 
->
-> Thanks.
->
-> I will wait for a few days until
-> the reviewers come back to give Reviewed-by again.
->
->
->
->
->
-> > ---
-> > Changes in v2:
-> > - Rather than change the seek value for dd, update the entire e_type
-> >   field (Masahiro). Due to this change, I did not carry forward the
-> >   tags of v1.
-> > - Slightly update commit message to remove mention of ET_EXEC, which
-> >   does not match the dump (Masahiro).
-> > - Update comment to mention binutils 2.35+ has the same behavior as LLD
-> >   (Fangrui).
-> > - Link to v1: https://lore.kernel.org/r/20240208-fix-elf-type-btf-vmlin=
-ux-bin-o-big-endian-v1-1-cb3112491edc@kernel.org
-> > ---
-> >  scripts/link-vmlinux.sh | 9 +++++++--
-> >  1 file changed, 7 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
-> > index a432b171be82..7862a8101747 100755
-> > --- a/scripts/link-vmlinux.sh
-> > +++ b/scripts/link-vmlinux.sh
-> > @@ -135,8 +135,13 @@ gen_btf()
-> >         ${OBJCOPY} --only-section=3D.BTF --set-section-flags .BTF=3Dall=
-oc,readonly \
-> >                 --strip-all ${1} ${2} 2>/dev/null
-> >         # Change e_type to ET_REL so that it can be used to link final =
-vmlinux.
-> > -       # Unlike GNU ld, lld does not allow an ET_EXEC input.
-> > -       printf '\1' | dd of=3D${2} conv=3Dnotrunc bs=3D1 seek=3D16 stat=
-us=3Dnone
-> > +       # GNU ld 2.35+ and lld do not allow an ET_EXEC input.
-> > +       if is_enabled CONFIG_CPU_BIG_ENDIAN; then
-> > +               et_rel=3D'\0\1'
-> > +       else
-> > +               et_rel=3D'\1\0'
-> > +       fi
-> > +       printf "${et_rel}" | dd of=3D${2} conv=3Dnotrunc bs=3D1 seek=3D=
-16 status=3Dnone
-> >  }
-> >
-> >  # Create ${2} .S file with all symbols from the ${1} object file
-> >
-> > ---
-> > base-commit: 54be6c6c5ae8e0d93a6c4641cb7528eb0b6ba478
-> > change-id: 20240208-fix-elf-type-btf-vmlinux-bin-o-big-endian-dbc55a1e1=
-296
-> >
-> > Best regards,
-> > --
-> > Nathan Chancellor <nathan@kernel.org>
-> >
-> >
->
->
-> --
-> Best Regards
-> Masahiro Yamada
->
+ arch/riscv/include/asm/csr.h   | 2 ++
+ arch/riscv/kernel/cpufeature.c | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
+diff --git a/arch/riscv/include/asm/csr.h b/arch/riscv/include/asm/csr.h
+index 510014051f5d..2468c55933cd 100644
+--- a/arch/riscv/include/asm/csr.h
++++ b/arch/riscv/include/asm/csr.h
+@@ -424,6 +424,7 @@
+ # define CSR_STATUS	CSR_MSTATUS
+ # define CSR_IE		CSR_MIE
+ # define CSR_TVEC	CSR_MTVEC
++# define CSR_ENVCFG	CSR_MENVCFG
+ # define CSR_SCRATCH	CSR_MSCRATCH
+ # define CSR_EPC	CSR_MEPC
+ # define CSR_CAUSE	CSR_MCAUSE
+@@ -448,6 +449,7 @@
+ # define CSR_STATUS	CSR_SSTATUS
+ # define CSR_IE		CSR_SIE
+ # define CSR_TVEC	CSR_STVEC
++# define CSR_ENVCFG	CSR_SENVCFG
+ # define CSR_SCRATCH	CSR_SSCRATCH
+ # define CSR_EPC	CSR_SEPC
+ # define CSR_CAUSE	CSR_SCAUSE
+diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
+index 89920f84d0a3..c5b13f7dd482 100644
+--- a/arch/riscv/kernel/cpufeature.c
++++ b/arch/riscv/kernel/cpufeature.c
+@@ -950,7 +950,7 @@ arch_initcall(check_unaligned_access_all_cpus);
+ void riscv_user_isa_enable(void)
+ {
+ 	if (riscv_cpu_has_extension_unlikely(smp_processor_id(), RISCV_ISA_EXT_ZICBOZ))
+-		csr_set(CSR_SENVCFG, ENVCFG_CBZE);
++		csr_set(CSR_ENVCFG, ENVCFG_CBZE);
+ }
+ 
+ #ifdef CONFIG_RISCV_ALTERNATIVE
+-- 
+2.43.0
 
---=20
-=E5=AE=8B=E6=96=B9=E7=9D=BF
 
