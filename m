@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-19993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D790585384D
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:35:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD346853754
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:24:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 936CD28BED7
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:35:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E00201C24FAC
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0ED604D5;
-	Tue, 13 Feb 2024 17:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D035FEF5;
+	Tue, 13 Feb 2024 17:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KU0pr54z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oP+4EznN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A48F6024A;
-	Tue, 13 Feb 2024 17:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E6B5FBB5;
+	Tue, 13 Feb 2024 17:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845699; cv=none; b=kVewkAD/thcwJMt88bBZ0Lyl6wqGGapPsXLnR1mNJus98JOCAmFrkN4WfaEfKIlz6B8hxhzvRIcddx/ytgvH3WXNVgFEOHUedbQ9rMJQtpjQJ2olJSZnQ8ye3io+kUehwVZjQQ81kaDB/eUvcQ34YXb+7rlE+ha0OPfoTaRuMIo=
+	t=1707845049; cv=none; b=rosiQ6ix3gjELkeA6QCh78CUtmSBtoVHsV5EfBSEx6HVweVd+v562R2iwhaLaNriwcoiwdO2GWen6RaEKinfNX3/MPWBE6jwxJXg4GSW3jgMufZZCEJtEuN9SynGRSYh05AzTd7ETGZpUcudg3/7yjtgGaIlpNgcPnOmYDX8pBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845699; c=relaxed/simple;
-	bh=NcEjaMmrjIcqpAOk18KdVE6dnJ63LfdN7O8fzAAt4Ms=;
+	s=arc-20240116; t=1707845049; c=relaxed/simple;
+	bh=gc0FHloRS0ChVS0Ox/uefuTdDlV3GXirQFFkAugniwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TaE8Wz1X3QRDk8fTA1xNVlSiEJu/ZfW4Q4h8QmdUFq/7ZiWBRtFnjcdcQrfz0vDbeOWymdSftT2lDfpLKBWCKdhgIUxmPZbdt6Ysrb/aq83U4eKZJir0BWrXU837YRpvgEmxCkSDwYBqRHLc3/EJ09vvcRK/7zfbGrozplTL8+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KU0pr54z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29ACC43394;
-	Tue, 13 Feb 2024 17:34:58 +0000 (UTC)
+	 MIME-Version; b=C8dLApuT8+a2bsFD+VbJk3WTIvDCU1Mxbe9pXXj8Kbynlx7X1jVT+g+/nVEaWJN8sBBARFAOIDxPCmGawcf2yK+UxlCj+39nG87Asrdsad50Q6r2nnYep3JxKSTv0NLt/Q11hdYjLtAr5Fuz1lLIox0uuyIz9Ejvi4CG/9CbI48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oP+4EznN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F5FC433C7;
+	Tue, 13 Feb 2024 17:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845699;
-	bh=NcEjaMmrjIcqpAOk18KdVE6dnJ63LfdN7O8fzAAt4Ms=;
+	s=korg; t=1707845049;
+	bh=gc0FHloRS0ChVS0Ox/uefuTdDlV3GXirQFFkAugniwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KU0pr54zEDTau8hyKyVKy0nQOyaBPXivZPgS/nwwfOFUcGeOv7U3+rH0S7VbPiayk
-	 PFMTiOA0w2FrSKXq7kSkJltEfICQDWDIG+T2cFf1NWMobwjN3/N2FfV8uaapN50mTz
-	 /TDrIld2EXsA3TGEHwTB0WqA+YR48K2ogcvqTbJE=
+	b=oP+4EznN4aKmiOeLRmrG7vgGwEcEUra4edLmycAU2W6EE1LteWRkw0Ox99C7+TmZj
+	 /Eu8TlX5UTdAaErk6rRqvzJtis1OW7/DEbau2fe5mniiOxK6n36KjfatyYin5JaRBB
+	 P5lPuOgH4EFEAQf/sd7XUVfk/FgGLO2Z+l/akRUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 033/124] selftests: net: cut more slack for gro fwd tests.
+Subject: [PATCH 6.1 09/64] cifs: failure to add channel on iface should bump up weight
 Date: Tue, 13 Feb 2024 18:20:55 +0100
-Message-ID: <20240213171854.698733384@linuxfoundation.org>
+Message-ID: <20240213171845.025211463@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit cb9f4a30fb85e1f4f149ada595a67899adb3db19 ]
+[ Upstream commit 6aac002bcfd554aff6d3ebb55e1660d078d70ab0 ]
 
-The udpgro_fwd.sh self-tests are somewhat unstable. There are
-a few timing constraints the we struggle to meet on very slow
-environments.
+After the interface selection policy change to do a weighted
+round robin, each iface maintains a weight_fulfilled. When the
+weight_fulfilled reaches the total weight for the iface, we know
+that the weights can be reset and ifaces can be allocated from
+scratch again.
 
-Instead of skipping the whole tests in such envs, increase the
-test resilience WRT very slow hosts: increase the inter-packets
-timeouts, avoid resetting the counters every second and finally
-disable reduce the background traffic noise.
+During channel allocation failures on a particular channel,
+weight_fulfilled is not incremented. If a few interfaces are
+inactive, we could end up in a situation where the active
+interfaces are all allocated for the total_weight, and inactive
+ones are all that remain. This can cause a situation where
+no more channels can be allocated further.
 
-Tested with:
+This change fixes it by increasing weight_fulfilled, even when
+channel allocation failure happens. This could mean that if
+there are temporary failures in channel allocation, the iface
+weights may not strictly be adhered to. But that's still okay.
 
-for I in $(seq 1 100); do
-	./tools/testing/selftests/kselftest_install/run_kselftest.sh \
-		-t net:udpgro_fwd.sh || exit -1
-done
-
-in a slow environment.
-
-Fixes: a062260a9d5f ("selftests: net: add UDP GRO forwarding self-tests")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/f4b6b11064a0d39182a9ae6a853abae3e9b4426a.1706812005.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/udpgro_fwd.sh     | 14 ++++++++++++--
- tools/testing/selftests/net/udpgso_bench_rx.c |  2 +-
- 2 files changed, 13 insertions(+), 3 deletions(-)
+ fs/smb/client/sess.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/net/udpgro_fwd.sh b/tools/testing/selftests/net/udpgro_fwd.sh
-index d6b9c759043c..9cd5e885e91f 100755
---- a/tools/testing/selftests/net/udpgro_fwd.sh
-+++ b/tools/testing/selftests/net/udpgro_fwd.sh
-@@ -39,6 +39,10 @@ create_ns() {
- 	for ns in $NS_SRC $NS_DST; do
- 		ip netns add $ns
- 		ip -n $ns link set dev lo up
-+
-+		# disable route solicitations to decrease 'noise' traffic
-+		ip netns exec $ns sysctl -qw net.ipv6.conf.default.router_solicitations=0
-+		ip netns exec $ns sysctl -qw net.ipv6.conf.all.router_solicitations=0
- 	done
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index 634035bcb934..b8e14bcd2c68 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -248,6 +248,8 @@ int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
+ 					 &iface->sockaddr,
+ 					 rc);
+ 				kref_put(&iface->refcount, release_iface);
++				/* failure to add chan should increase weight */
++				iface->weight_fulfilled++;
+ 				continue;
+ 			}
  
- 	ip link add name veth$SRC type veth peer name veth$DST
-@@ -80,6 +84,12 @@ create_vxlan_pair() {
- 		create_vxlan_endpoint $BASE$ns veth$ns $BM_NET_V6$((3 - $ns)) vxlan6$ns 6
- 		ip -n $BASE$ns addr add dev vxlan6$ns $OL_NET_V6$ns/24 nodad
- 	done
-+
-+	# preload neighbur cache, do avoid some noisy traffic
-+	local addr_dst=$(ip -j -n $BASE$DST link show dev vxlan6$DST  |jq -r '.[]["address"]')
-+	local addr_src=$(ip -j -n $BASE$SRC link show dev vxlan6$SRC  |jq -r '.[]["address"]')
-+	ip -n $BASE$DST neigh add dev vxlan6$DST lladdr $addr_src $OL_NET_V6$SRC
-+	ip -n $BASE$SRC neigh add dev vxlan6$SRC lladdr $addr_dst $OL_NET_V6$DST
- }
- 
- is_ipv6() {
-@@ -119,7 +129,7 @@ run_test() {
- 	# not enable GRO
- 	ip netns exec $NS_DST $ipt -A INPUT -p udp --dport 4789
- 	ip netns exec $NS_DST $ipt -A INPUT -p udp --dport 8000
--	ip netns exec $NS_DST ./udpgso_bench_rx -C 1000 -R 10 -n 10 -l 1300 $rx_args &
-+	ip netns exec $NS_DST ./udpgso_bench_rx -C 2000 -R 100 -n 10 -l 1300 $rx_args &
- 	local spid=$!
- 	wait_local_port_listen "$NS_DST" 8000 udp
- 	ip netns exec $NS_SRC ./udpgso_bench_tx $family -M 1 -s 13000 -S 1300 -D $dst
-@@ -168,7 +178,7 @@ run_bench() {
- 	# bind the sender and the receiver to different CPUs to try
- 	# get reproducible results
- 	ip netns exec $NS_DST bash -c "echo 2 > /sys/class/net/veth$DST/queues/rx-0/rps_cpus"
--	ip netns exec $NS_DST taskset 0x2 ./udpgso_bench_rx -C 1000 -R 10  &
-+	ip netns exec $NS_DST taskset 0x2 ./udpgso_bench_rx -C 2000 -R 100  &
- 	local spid=$!
- 	wait_local_port_listen "$NS_DST" 8000 udp
- 	ip netns exec $NS_SRC taskset 0x1 ./udpgso_bench_tx $family -l 3 -S 1300 -D $dst
-diff --git a/tools/testing/selftests/net/udpgso_bench_rx.c b/tools/testing/selftests/net/udpgso_bench_rx.c
-index f35a924d4a30..1cbadd267c96 100644
---- a/tools/testing/selftests/net/udpgso_bench_rx.c
-+++ b/tools/testing/selftests/net/udpgso_bench_rx.c
-@@ -375,7 +375,7 @@ static void do_recv(void)
- 			do_flush_udp(fd);
- 
- 		tnow = gettimeofday_ms();
--		if (tnow > treport) {
-+		if (!cfg_expected_pkt_nr && tnow > treport) {
- 			if (packets)
- 				fprintf(stderr,
- 					"%s rx: %6lu MB/s %8lu calls/s\n",
 -- 
 2.43.0
 
