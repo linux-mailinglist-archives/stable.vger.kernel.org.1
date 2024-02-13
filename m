@@ -1,69 +1,57 @@
-Return-Path: <stable+bounces-19761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 457CA853587
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:03:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC9F8535A4
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:07:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE937B26862
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 16:03:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DC1D1F285E0
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 16:07:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3595B5F55B;
-	Tue, 13 Feb 2024 16:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B9D60267;
+	Tue, 13 Feb 2024 16:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KKCU/dDh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HpC+xxk7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA04F5F48A;
-	Tue, 13 Feb 2024 16:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965276025B;
+	Tue, 13 Feb 2024 16:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707840180; cv=none; b=XnoSBgjADhEwHOKrRQaDiDidNArNsME1+dKa5NgwxJLfXmT24LjeuKBh1pwLnSacExI1BsFDAytcGfZmYCexfbQOMpST45oQSx6SdRSJEAiYZw23Eaxn1uuhaZcgEPrHQFsH1PpCNGniHz9bxT8+Hg4XN1KEFycHpAvm0nfxh4Y=
+	t=1707840361; cv=none; b=ckBCBAiRxImlno3/T5qO6jOrYUulbemxlWj9EFg9vkarrkn8Ru6mVnw2PPnaOhMZJCE1LRgEokghcPuUYYuGumM9BUoUtdrbZ4VP9oSo5WnUUyfKwObxICFNcv6rPkl6Y40O4LO8Xsk9tNx1GQlpf1NFe7H21CBgoDp+FGYsYsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707840180; c=relaxed/simple;
-	bh=raewERgjnOaT1e4+EDmQFCjp+2Q+nD/RhhrjpVO2oiA=;
+	s=arc-20240116; t=1707840361; c=relaxed/simple;
+	bh=8IrZp1R6Id5dnAPQaTPV1kv7PcWpRQgZiextr7aFPgs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=humhp7feYN5H0bUtlYb/4pggrEEJoRN66/Y2cSWkkzU5dpB2/DS5QG7Ka6Ahm/KvqoS4OrUqBlZxx6ix4gc1Sh+BRiZNILU+WBnA/f8kArRwGVCg8GuZyISSwIM1qNsw0IJnp9zR+NiTBKj+AFjQXNfpt7RIPUW9TfGKYQVkXGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KKCU/dDh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E84C433F1;
-	Tue, 13 Feb 2024 16:02:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707840179;
-	bh=raewERgjnOaT1e4+EDmQFCjp+2Q+nD/RhhrjpVO2oiA=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=TOlrpyAowLi9nLbdfXe/BHSQ0fHxRn83ZAiBX9J3z4lJYsawI+Jx7hpcGWJ/nUtDYgcCEHv0vWe6WXz6ANfPUX83yPyXG6WWkWyZ42W4evQGx7Sv4eEcYZTLjjOA3g0NQOJtNMsETFxTZWU0rll7EZ1w4M1UWfQZGjoWbYme3WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HpC+xxk7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54887C433C7;
+	Tue, 13 Feb 2024 16:06:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1707840361;
+	bh=8IrZp1R6Id5dnAPQaTPV1kv7PcWpRQgZiextr7aFPgs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KKCU/dDhcjf0FYDMeJlnF2d1lTWHBDod3yoygbRluKaVtF2rNY0FqBkPP3ihYEhxe
-	 MduQWcNBtMVSAEB2FPalhUAeV7tR0wd93T/iob7anoMyfGj/wHM0c5p56fXYxFl6K+
-	 xzZYE7E2PDu+x1g6LE4IZY72wFLBp4HWBtJRiwrynhTZFbpxxhuuAW7/Li71TBQIzu
-	 fKFZm9dCMp2FuUmo65A/nZ2k3XnnmWG15H6S1ZQPUokMz92sHgDDLeLNTxWL243RTJ
-	 7fdaSQbAjve1e8C5yYV7PWyQVAXyxvsVU8Itn4RADKLXkU/hyISFQ9Tn/oIheRh3OL
-	 9kadbBY5NJ6Og==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1rZvFb-000000001ga-3I2Y;
-	Tue, 13 Feb 2024 17:03:15 +0100
-Date: Tue, 13 Feb 2024 17:03:15 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Matthias Kaehlcke <mka@chromium.org>
-Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	linux-bluetooth@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Doug Anderson <dianders@chromium.org>,
-	Stephen Boyd <swboyd@chromium.org>
-Subject: Re: [PATCH] Bluetooth: qca: fix device-address endianness
-Message-ID: <ZcuSwy0quwKoZkkm@hovoldconsulting.com>
-References: <20231227180306.6319-1-johan+linaro@kernel.org>
- <Zct_tB-y7HbZU1dp@hovoldconsulting.com>
- <ZcuQ2qRX0zsLSVRL@google.com>
+	b=HpC+xxk7dsmGsS1klQiOYCtvx6SRk+i18WHGYIJ9m76XsA7lICyPtbdD/Zmq9NgJg
+	 UdVSkS6nCzOyFanbdyUtMRKA6v/znfAccvaYRlsUpJSIQ/dy40h3j11X877fP+bVnS
+	 huOtfjQXil86hwRFyNJTynz/n6SmVB6+MzbrgWHU=
+Date: Tue, 13 Feb 2024 17:05:57 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: David Laight <David.Laight@aculab.com>
+Cc: Linux regressions mailing list <regressions@lists.linux.dev>,
+	Sasha Levin <sashal@kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [regression] linux-6.6.y, minmax: virtual memory exhausted in
+ i586 chroot during kernel compilation
+Message-ID: <2024021331-famished-underpass-1080@gregkh>
+References: <f9f89284-0f48-4971-ad8d-86938a82fafc@leemhuis.info>
+ <2024021318-shifty-daybed-fca8@gregkh>
+ <699726f6-8f5d-4482-8c27-8ea47a483f8a@leemhuis.info>
+ <19d0ed563ba0449dac089b95456026dd@AcuMS.aculab.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,53 +60,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZcuQ2qRX0zsLSVRL@google.com>
+In-Reply-To: <19d0ed563ba0449dac089b95456026dd@AcuMS.aculab.com>
 
-On Tue, Feb 13, 2024 at 03:55:06PM +0000, Matthias Kaehlcke wrote:
-> On Tue, Feb 13, 2024 at 03:41:56PM +0100, Johan Hovold wrote:
-> > On Wed, Dec 27, 2023 at 07:03:06PM +0100, Johan Hovold wrote:
-> > > The WCN6855 firmware on the Lenovo ThinkPad X13s expects the Bluetooth
-> > > device address in MSB order when setting it using the
-> > > EDL_WRITE_BD_ADDR_OPCODE command.
-
-> > > Reverse the little-endian address before setting it to make sure that
-> > > the address can be configured using tools like btmgmt or using the
-> > > 'local-bd-address' devicetree property.
-> > > 
-> > > Note that this can potentially break systems with boot firmware which
-> > > has started relying on the broken behaviour and is incorrectly passing
-> > > the address via devicetree in MSB order.
-> > > 
-> > > Fixes: 5c0a1001c8be ("Bluetooth: hci_qca: Add helper to set device address")
-> > > Cc: stable@vger.kernel.org      # 5.1
-> > > Cc: Balakrishna Godavarthi <quic_bgodavar@quicinc.com>
-> > > Cc: Matthias Kaehlcke <mka@chromium.org>
-> > > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+On Tue, Feb 13, 2024 at 03:13:10PM +0000, David Laight wrote:
+> From: Linux regression tracking (Thorsten Leemhuis)
+> > Sent: 13 February 2024 15:01
 > > 
-> > Can we go ahead and merge this one to get this fixed in 6.8?
+> > On 13.02.24 15:50, Greg KH wrote:
+> > > On Mon, Feb 12, 2024 at 05:16:58PM +0100, Linux regression tracking (Thorsten Leemhuis) wrote:
+> > >>
+> > >> I noticed a regression report in bugzilla.kernel.org that seems to be
+> > >> specific to the linux-6.6.y series:
+> > >>
+> > >> Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=218484 :
+> > >>
+> > >>> After upgrading to version 6.6.16, the kernel compilation on a i586
+> > >>> arch (on a 32bit chroot in a 64bit host) fails with a message:
+> > >>>
+> > >>> virtual memory exhausted: Cannot allocate memory
+> > >>>
+> > >>> this happens even lowering the number of parallel compilation
+> > >>> threads. On a x86_64 arch the same problem doesn't occur. It's not
+> > >>> clear whether some weird recursion is triggered that exhausts the
+> > >>> memory, but it seems that the problem is caused by the patchset
+> > >>> 'minmax' added to the 6.6.16 version, in particular it seems caused
+> > >>> by these patches:
+> > >>>
+> > >>> - minmax-allow-min-max-clamp-if-the-arguments-have-the-same-signedness.patch
+> > >>> - minmax-fix-indentation-of-__cmp_once-and-__clamp_once.patch
+> > >>> - minmax-allow-comparisons-of-int-against-unsigned-char-short.patch
+> > >>> - minmax-relax-check-to-allow-comparison-between-unsigned-arguments-and-signed-constants.patch
+> > >>>
+> > >>> Reverting those patches fixes the memory exhaustion problem during compilation.
+> > >>
+> > >> The reporter later added:
+> > >>
+> > >>> From a quick test the same problem doesn't occur in 6.8-rc4.
+> > >> See the ticket for more details.
+> > >
+> > > I think this was already fixed in 6.7 or Linus's tree, but I can't seem
+> > > to find the commit at the moment.
 > > 
-> > I've spoken to Bjorn Andersson at Qualcomm about this and he is in
-> > favour of doing so. The only people actually using the devicetree
-> > property should be the Chromium team and they control their own boot
-> > firmware and should be able to update it in lockstep (and Android uses
-> > some custom hacks to set the address that are not in mainline).
+> > I thought so as well, but was in the same situation. But your comment
+> > made me look again and now I found it: that was 31e97d7c9ae3de ("media:
+> > solo6x10: replace max(a, min(b, c)) by clamp(b, a, c)"), which indeed is
+> > not yet in 6.6.y.
 > 
-> Unfortunately it's not as trivial as it sounds for Chrome OS. The boot
-> firmware is controlled by Chrome OS, however for any baseboard (e.g.
-> 'trogdor') there is a larger number binary firmware packages, one
-> for every model derived from that baseboard. There can be dozens of
-> models. Chrome OS Firmware releases are qualified and rolled out per
-> model. FW qual may involve the ODM, usually there are multiple ODMs
-> per board. In an absolute emergency it would be possible to coordinate
-> a qual and synced rollout for all models, but it's definitely
-> non-trivial in terms of operations.
+> The code is actually (now) doing:
+> 	clamp(b, clamp(c, a, d), d)
+> but previously was four nested min()/max().
+> Even the a/b/c/d aren't trivial.
+> It always was a pretty long line, but the longer expansions made it explode.
+> 
+> I was mildly surprised to see the minmax changes backported.
+> Not complaining though.
 
-Ok, fair enough.
+They were needed to fix build errors in a different driver that was
+depending on the type checking changes in them.  That's why I added
+them.
 
-Could you please provide a list of the compatible strings that you guys
-currently use and I can add new compatible strings for those, while
-keeping the current ones for backwards compatibility with older boot
-firmware?
+> But 31e97d7c9ae3de needs backporting as well.
 
-Johan
+Now queued up, thanks.
+
+greg k-h
 
