@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-20005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6DE2853859
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:36:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD018537C3
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E95AF1C238BA
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:36:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F1C21C23AA9
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E7260269;
-	Tue, 13 Feb 2024 17:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0EF75FEFD;
+	Tue, 13 Feb 2024 17:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHX1cDQx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DilIjqsr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743CD5FF19;
-	Tue, 13 Feb 2024 17:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB105F54E;
+	Tue, 13 Feb 2024 17:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845743; cv=none; b=rL4ljQooBXVtFcKLce5ZQlS4PvaPt79p/0P0OXkwgqyNAVeVucfJeXBCOTKWw3fAFWnxKpV6lgkLKBiwYxYRIXD9qL8J8Q6T3yd/xYmrLZQhTSoYjRVO2cJ9io3P/IWuvjtQHdP57LMgWe7Uk9lV+g6PEL1d1zdmM8j25t4g/Ns=
+	t=1707845360; cv=none; b=GITRgAwLhG6fYVUWCmf1/G2tsdxWAWIljKh9H5/zKMzUR/sbftLcb2Ar6Lsy/ZC4MfF8WWrRh7KiHZCXpC2zKayOxxTyD+en/KgMQHiQE4JFvDAIwTKN0cnz4XFc0vVqkYARRXkhdHydWPzEn0VQ/r1g6GwSY73wSDu+RZP6iik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845743; c=relaxed/simple;
-	bh=xVw0g+wV7KN5RAJ8qFIfWI0qfKiKnXQSn8DCpr0ISSU=;
+	s=arc-20240116; t=1707845360; c=relaxed/simple;
+	bh=ncIRK+/s4mJ/gQKbU5TnV6SzvK8m9pFurqJTsXs+nj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B6FuxtUQhBmpfsc8tFtigOf/kz4oLQ6/ECxZIxPYg00lihlw2mEKbtDZ7SoSm3arhM9In+ARWnIA6TSHLyZbxFdaeZ/YulQ6Qf4rpeUZxAnaO2DZKdE2puAu4I6wlkypcNlHmyZXuiK6nTsn0VwvoSYWbKsf46ld8J2VCLmfDj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHX1cDQx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E3FC433F1;
-	Tue, 13 Feb 2024 17:35:42 +0000 (UTC)
+	 MIME-Version; b=mMUvJ0qqwZQBlyv34Xd+nrbnps7MwiEijTvu96F9oSm9D8oJjvyOh7XNWDbCSeS60ym1/CtOeIPoZLjjbwkf1clj4/UdfvJrxk6Y+o2pFsrPK5VT49SpS5ZbWsEmk0zYCBDfw5mWVdxYdLPMNhi5DT+CirpNBKoBuSKHjNAvDGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DilIjqsr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90EFC433F1;
+	Tue, 13 Feb 2024 17:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845743;
-	bh=xVw0g+wV7KN5RAJ8qFIfWI0qfKiKnXQSn8DCpr0ISSU=;
+	s=korg; t=1707845360;
+	bh=ncIRK+/s4mJ/gQKbU5TnV6SzvK8m9pFurqJTsXs+nj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LHX1cDQxbrLuBfC9VWoB/t0AZWtDh5CX+0qxlTrfYd/cWXzz7mHR9fj+GN9MZg+WH
-	 sPsKSVEUyMO4HbWuJhQwpuKRNVOnFLn6BEwP3QOjQOvKGd5+Pi0cybZqePYNP4jzFp
-	 zP17H7hXp9LgKpezlKqd4t1skOf0A6K8ZrXMI9r0=
+	b=DilIjqsrsvjpm8hidxpNtLMu/yDyz9N+TrDSHESyjkClSd4x6Lgi2AaTnK+zWWN+E
+	 z0PHJ3BjbLRnUeZKJP9Hr2A9JJkvn1WMzSHvMjrEWPFWResdoBPhBVMrGNS5ElNxMO
+	 RxBiIZgbQKj3eNbTmA7Nf9ADFq0GPc/2+Mr3Oc4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Antoine Tenart <atenart@kernel.org>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 044/124] hwmon: (coretemp) Fix out-of-bounds memory access
+Subject: [PATCH 6.6 057/121] tunnels: fix out of bounds access when building IPv6 PMTU error
 Date: Tue, 13 Feb 2024 18:21:06 +0100
-Message-ID: <20240213171855.025006423@linuxfoundation.org>
+Message-ID: <20240213171854.659620947@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit 4e440abc894585a34c2904a32cd54af1742311b3 ]
+[ Upstream commit d75abeec401f8c86b470e7028a13fcdc87e5dd06 ]
 
-Fix a bug that pdata->cpu_map[] is set before out-of-bounds check.
-The problem might be triggered on systems with more than 128 cores per
-package.
+If the ICMPv6 error is built from a non-linear skb we get the following
+splat,
 
-Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240202092144.71180-2-rui.zhang@intel.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: fdaf0c8629d4 ("hwmon: (coretemp) Fix bogus core_id to attr name mapping")
+  BUG: KASAN: slab-out-of-bounds in do_csum+0x220/0x240
+  Read of size 4 at addr ffff88811d402c80 by task netperf/820
+  CPU: 0 PID: 820 Comm: netperf Not tainted 6.8.0-rc1+ #543
+  ...
+   kasan_report+0xd8/0x110
+   do_csum+0x220/0x240
+   csum_partial+0xc/0x20
+   skb_tunnel_check_pmtu+0xeb9/0x3280
+   vxlan_xmit_one+0x14c2/0x4080
+   vxlan_xmit+0xf61/0x5c00
+   dev_hard_start_xmit+0xfb/0x510
+   __dev_queue_xmit+0x7cd/0x32a0
+   br_dev_queue_push_xmit+0x39d/0x6a0
+
+Use skb_checksum instead of csum_partial who cannot deal with non-linear
+SKBs.
+
+Fixes: 4cb47a8644cc ("tunnels: PMTU discovery support for directly bridged IP packets")
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/coretemp.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ net/ipv4/ip_tunnel_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
-index ba82d1e79c13..e78c76919111 100644
---- a/drivers/hwmon/coretemp.c
-+++ b/drivers/hwmon/coretemp.c
-@@ -509,18 +509,14 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
- 	if (pkg_flag) {
- 		attr_no = PKG_SYSFS_ATTR_NO;
- 	} else {
--		index = ida_alloc(&pdata->ida, GFP_KERNEL);
-+		index = ida_alloc_max(&pdata->ida, NUM_REAL_CORES - 1, GFP_KERNEL);
- 		if (index < 0)
- 			return index;
-+
- 		pdata->cpu_map[index] = topology_core_id(cpu);
- 		attr_no = index + BASE_SYSFS_ATTR_NO;
- 	}
+diff --git a/net/ipv4/ip_tunnel_core.c b/net/ipv4/ip_tunnel_core.c
+index 586b1b3e35b8..80ccd6661aa3 100644
+--- a/net/ipv4/ip_tunnel_core.c
++++ b/net/ipv4/ip_tunnel_core.c
+@@ -332,7 +332,7 @@ static int iptunnel_pmtud_build_icmpv6(struct sk_buff *skb, int mtu)
+ 	};
+ 	skb_reset_network_header(skb);
  
--	if (attr_no > MAX_CORE_DATA - 1) {
--		err = -ERANGE;
--		goto ida_free;
--	}
--
- 	tdata = init_temp_data(cpu, pkg_flag);
- 	if (!tdata) {
- 		err = -ENOMEM;
+-	csum = csum_partial(icmp6h, len, 0);
++	csum = skb_checksum(skb, skb_transport_offset(skb), len, 0);
+ 	icmp6h->icmp6_cksum = csum_ipv6_magic(&nip6h->saddr, &nip6h->daddr, len,
+ 					      IPPROTO_ICMPV6, csum);
+ 
 -- 
 2.43.0
 
