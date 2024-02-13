@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-19999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB4A853852
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:36:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8CB85373B
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:23:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A1321C224ED
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:36:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D62AFB221F3
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481E56024C;
-	Tue, 13 Feb 2024 17:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6EF5FEFD;
+	Tue, 13 Feb 2024 17:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mi2QupGy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hccx/BD3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033C75FF0E;
-	Tue, 13 Feb 2024 17:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3775FEF5;
+	Tue, 13 Feb 2024 17:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845720; cv=none; b=Hn+sTUCARJ+fI3A35sl+G9pPn0h0rWwuxvbpAiuBvImYkMratBohfbp2fH5k26Mmh5XaRgvOzav2lUbsU+e62KPxWRoVudomiwRB5zeLbCtNPntL7/lTPNAfjTVv/w0y5t58fqlHTPJpKd/Utsg58P+KuCBiYQJG+OTVRY7o8Gg=
+	t=1707844988; cv=none; b=FYofZguUda3iUMScBblydRqXXptEENLk3rliXu7hJImGlboPvI4daUnKJbFDd0T91d6aKUWBbJxplf7L8HbQGlhYD5fUCs481/xo35kSiDU8kW7wnnbZJ0VZMwhNv+GK7KPYY9drZJf0Rd9NPYGyW1QdVtK5rWNPTO5sbFxza8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845720; c=relaxed/simple;
-	bh=X8b0CZV+ZsVoWJHzzLVrnMfZjz4qKswL7IhlZScpOWg=;
+	s=arc-20240116; t=1707844988; c=relaxed/simple;
+	bh=DvV7JvJK0KiR9KKG6g+fKdy5bjSvg3I5620tK/Gbs54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PemiQMfivnhz6UfIE1GShkbStlBV+ud9v8AVkfw+gtN+F4GVEaRO9mm9VHdUDQzRuJPFieHashXDlQOeBTaBeRmFSCGTAS8UTZW69dG+nFFodqf2GGQd7Mb3E8IH9FhOGV6NnQMHSBMn9zhDgmNaWn0i9dzPBxv5YQaswWUovGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mi2QupGy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BDEAC43390;
-	Tue, 13 Feb 2024 17:35:17 +0000 (UTC)
+	 MIME-Version; b=rnLYATJ5xF3KwZvS4mAIzh9PvXty3eZFCEHFqdH3jvhpw9XqvAP/jUqh9oBs4wV8l/xmY3toWpUbHgDwpzXXbHF4OK4LwqEypi6cJipBpwJdVnuPurEIesue/TFv+Q4dD7Tx477NFSDl+djccwQTBUrjnvNqSRtoBGfIJSQmEEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hccx/BD3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F345C433F1;
+	Tue, 13 Feb 2024 17:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845718;
-	bh=X8b0CZV+ZsVoWJHzzLVrnMfZjz4qKswL7IhlZScpOWg=;
+	s=korg; t=1707844987;
+	bh=DvV7JvJK0KiR9KKG6g+fKdy5bjSvg3I5620tK/Gbs54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mi2QupGyBQOr+6JQTX2QTP6qVb1oZiUhNmI6KILwMDfYCIlbk3Jznyb63C5X8WSkm
-	 +NUSrlVDhbxbU9ZzemgBOk654ybBLkQSZpYMuRe/MTjnYMfGa1BP4f4tM5U2ZhP3l6
-	 WEyYFwve2keUcMxc1z1tuub0hDp4eO+72d33tQOo=
+	b=hccx/BD3PWhyfrovh+D18VhB8r5aRchVXCmYaFSJI3PK9YN+EPvPAf5d3muokwDoF
+	 1SGoHmlMAuOdZDz4HO0MFP+joTJBRkowF8EkH8gKhpWQHumpHUxyk2WLdpezq2i9UE
+	 JLr/ti39qXkk97oKwHaDTy6lv7D8MAkj7M06udLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerhard Engleder <gerhard@engleder-embedded.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 039/124] tsnep: Fix mapping for zero copy XDP_TX action
+Subject: [PATCH 6.1 15/64] netdevsim: avoid potential loop in nsim_dev_trap_report_work()
 Date: Tue, 13 Feb 2024 18:21:01 +0100
-Message-ID: <20240213171854.873418144@linuxfoundation.org>
+Message-ID: <20240213171845.206368942@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerhard Engleder <gerhard@engleder-embedded.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d7f5fb33cf77247b7bf9a871aaeea72ca4f51ad7 ]
+[ Upstream commit ba5e1272142d051dcc57ca1d3225ad8a089f9858 ]
 
-For XDP_TX action xdp_buff is converted to xdp_frame. The conversion is
-done by xdp_convert_buff_to_frame(). The memory type of the resulting
-xdp_frame depends on the memory type of the xdp_buff. For page pool
-based xdp_buff it produces xdp_frame with memory type
-MEM_TYPE_PAGE_POOL. For zero copy XSK pool based xdp_buff it produces
-xdp_frame with memory type MEM_TYPE_PAGE_ORDER0.
+Many syzbot reports include the following trace [1]
 
-tsnep_xdp_xmit_back() is not prepared for that and uses always the page
-pool buffer type TSNEP_TX_TYPE_XDP_TX. This leads to invalid mappings
-and the transmission of undefined data.
+If nsim_dev_trap_report_work() can not grab the mutex,
+it should rearm itself at least one jiffie later.
 
-Improve tsnep_xdp_xmit_back() to use the generic buffer type
-TSNEP_TX_TYPE_XDP_NDO for zero copy XDP_TX.
+[1]
+Sending NMI from CPU 1 to CPUs 0:
+NMI backtrace for cpu 0
+CPU: 0 PID: 32383 Comm: kworker/0:2 Not tainted 6.8.0-rc2-syzkaller-00031-g861c0981648f #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
+Workqueue: events nsim_dev_trap_report_work
+ RIP: 0010:bytes_is_nonzero mm/kasan/generic.c:89 [inline]
+ RIP: 0010:memory_is_nonzero mm/kasan/generic.c:104 [inline]
+ RIP: 0010:memory_is_poisoned_n mm/kasan/generic.c:129 [inline]
+ RIP: 0010:memory_is_poisoned mm/kasan/generic.c:161 [inline]
+ RIP: 0010:check_region_inline mm/kasan/generic.c:180 [inline]
+ RIP: 0010:kasan_check_range+0x101/0x190 mm/kasan/generic.c:189
+Code: 07 49 39 d1 75 0a 45 3a 11 b8 01 00 00 00 7c 0b 44 89 c2 e8 21 ed ff ff 83 f0 01 5b 5d 41 5c c3 48 85 d2 74 4f 48 01 ea eb 09 <48> 83 c0 01 48 39 d0 74 41 80 38 00 74 f2 eb b6 41 bc 08 00 00 00
+RSP: 0018:ffffc90012dcf998 EFLAGS: 00000046
+RAX: fffffbfff258af1e RBX: fffffbfff258af1f RCX: ffffffff8168eda3
+RDX: fffffbfff258af1f RSI: 0000000000000004 RDI: ffffffff92c578f0
+RBP: fffffbfff258af1e R08: 0000000000000000 R09: fffffbfff258af1e
+R10: ffffffff92c578f3 R11: ffffffff8acbcbc0 R12: 0000000000000002
+R13: ffff88806db38400 R14: 1ffff920025b9f42 R15: ffffffff92c578e8
+FS:  0000000000000000(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000c00994e078 CR3: 000000002c250000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <NMI>
+ </NMI>
+ <TASK>
+  instrument_atomic_read include/linux/instrumented.h:68 [inline]
+  atomic_read include/linux/atomic/atomic-instrumented.h:32 [inline]
+  queued_spin_is_locked include/asm-generic/qspinlock.h:57 [inline]
+  debug_spin_unlock kernel/locking/spinlock_debug.c:101 [inline]
+  do_raw_spin_unlock+0x53/0x230 kernel/locking/spinlock_debug.c:141
+  __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:150 [inline]
+  _raw_spin_unlock_irqrestore+0x22/0x70 kernel/locking/spinlock.c:194
+  debug_object_activate+0x349/0x540 lib/debugobjects.c:726
+  debug_work_activate kernel/workqueue.c:578 [inline]
+  insert_work+0x30/0x230 kernel/workqueue.c:1650
+  __queue_work+0x62e/0x11d0 kernel/workqueue.c:1802
+  __queue_delayed_work+0x1bf/0x270 kernel/workqueue.c:1953
+  queue_delayed_work_on+0x106/0x130 kernel/workqueue.c:1989
+  queue_delayed_work include/linux/workqueue.h:563 [inline]
+  schedule_delayed_work include/linux/workqueue.h:677 [inline]
+  nsim_dev_trap_report_work+0x9c0/0xc80 drivers/net/netdevsim/dev.c:842
+  process_one_work+0x886/0x15d0 kernel/workqueue.c:2633
+  process_scheduled_works kernel/workqueue.c:2706 [inline]
+  worker_thread+0x8b9/0x1290 kernel/workqueue.c:2787
+  kthread+0x2c6/0x3a0 kernel/kthread.c:388
+  ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+  ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
+ </TASK>
 
-Fixes: 3fc2333933fd ("tsnep: Add XDP socket zero-copy RX support")
-Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 012ec02ae441 ("netdevsim: convert driver to use unlocked devlink API during init/fini")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20240201175324.3752746-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/engleder/tsnep_main.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/net/netdevsim/dev.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
-index 9aeff2b37a61..64eadd320798 100644
---- a/drivers/net/ethernet/engleder/tsnep_main.c
-+++ b/drivers/net/ethernet/engleder/tsnep_main.c
-@@ -719,17 +719,25 @@ static void tsnep_xdp_xmit_flush(struct tsnep_tx *tx)
+diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+index c3fbdd6b68ba..f3fa4bd12116 100644
+--- a/drivers/net/netdevsim/dev.c
++++ b/drivers/net/netdevsim/dev.c
+@@ -835,14 +835,14 @@ static void nsim_dev_trap_report_work(struct work_struct *work)
+ 				      trap_report_dw.work);
+ 	nsim_dev = nsim_trap_data->nsim_dev;
  
- static bool tsnep_xdp_xmit_back(struct tsnep_adapter *adapter,
- 				struct xdp_buff *xdp,
--				struct netdev_queue *tx_nq, struct tsnep_tx *tx)
-+				struct netdev_queue *tx_nq, struct tsnep_tx *tx,
-+				bool zc)
- {
- 	struct xdp_frame *xdpf = xdp_convert_buff_to_frame(xdp);
- 	bool xmit;
-+	u32 type;
+-	/* For each running port and enabled packet trap, generate a UDP
+-	 * packet with a random 5-tuple and report it.
+-	 */
+ 	if (!devl_trylock(priv_to_devlink(nsim_dev))) {
+-		schedule_delayed_work(&nsim_dev->trap_data->trap_report_dw, 0);
++		schedule_delayed_work(&nsim_dev->trap_data->trap_report_dw, 1);
+ 		return;
+ 	}
  
- 	if (unlikely(!xdpf))
- 		return false;
- 
-+	/* no page pool for zero copy */
-+	if (zc)
-+		type = TSNEP_TX_TYPE_XDP_NDO;
-+	else
-+		type = TSNEP_TX_TYPE_XDP_TX;
-+
- 	__netif_tx_lock(tx_nq, smp_processor_id());
- 
--	xmit = tsnep_xdp_xmit_frame_ring(xdpf, tx, TSNEP_TX_TYPE_XDP_TX);
-+	xmit = tsnep_xdp_xmit_frame_ring(xdpf, tx, type);
- 
- 	/* Avoid transmit queue timeout since we share it with the slow path */
- 	if (xmit)
-@@ -1273,7 +1281,7 @@ static bool tsnep_xdp_run_prog(struct tsnep_rx *rx, struct bpf_prog *prog,
- 	case XDP_PASS:
- 		return false;
- 	case XDP_TX:
--		if (!tsnep_xdp_xmit_back(rx->adapter, xdp, tx_nq, tx))
-+		if (!tsnep_xdp_xmit_back(rx->adapter, xdp, tx_nq, tx, false))
- 			goto out_failure;
- 		*status |= TSNEP_XDP_TX;
- 		return true;
-@@ -1323,7 +1331,7 @@ static bool tsnep_xdp_run_prog_zc(struct tsnep_rx *rx, struct bpf_prog *prog,
- 	case XDP_PASS:
- 		return false;
- 	case XDP_TX:
--		if (!tsnep_xdp_xmit_back(rx->adapter, xdp, tx_nq, tx))
-+		if (!tsnep_xdp_xmit_back(rx->adapter, xdp, tx_nq, tx, true))
- 			goto out_failure;
- 		*status |= TSNEP_XDP_TX;
- 		return true;
++	/* For each running port and enabled packet trap, generate a UDP
++	 * packet with a random 5-tuple and report it.
++	 */
+ 	list_for_each_entry(nsim_dev_port, &nsim_dev->port_list, list) {
+ 		if (!netif_running(nsim_dev_port->ns->netdev))
+ 			continue;
 -- 
 2.43.0
 
