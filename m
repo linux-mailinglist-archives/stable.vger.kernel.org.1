@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-19839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D7D485377E
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:26:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA3A853891
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:38:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D14B1F20EFA
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:26:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59DB31F207BE
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CE45FF1C;
-	Tue, 13 Feb 2024 17:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D902060279;
+	Tue, 13 Feb 2024 17:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ds8Wi1tT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fy6WSUW/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E6F5FF10;
-	Tue, 13 Feb 2024 17:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D731EB22;
+	Tue, 13 Feb 2024 17:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845161; cv=none; b=bas0i7PT6gRYmMgD+grbpBZUsu1BDo8wvbNapDYWiuRonanaegkurWJOE674zT7yxWw8sr76x9q7sQ8CPFIr1+KDyIsXs6+cQGurqKpXoaWE7w5hFdUiVDTHchxf9BG8BOk8BW/EOguffEto3bigQxfvwmWv2js5CSV2nQD41eo=
+	t=1707845878; cv=none; b=Acx+U9ALJUlAgZrcvRUq8Q0WvQM/V0kgk4ukNGcvlSJi70y+zhI884VW3t5GPhCyE7aL91u5two+lhsFcKXny84O6EMMXhDEH/mqYpLyuiHBE89ctqbZi+cgmJb2qcbh0WDwhBIlnhvHYQyY1dU0K6R1J7tD+3ZViB1rqLBJkf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845161; c=relaxed/simple;
-	bh=nXGqAOJ3vYFZsqaWHAq2v+8VaoWf53fnX0LuHdeD5Hs=;
+	s=arc-20240116; t=1707845878; c=relaxed/simple;
+	bh=o1Yalo5tkqf20UxD+WRX+7KNPX48M8qtaBo0qEUnmgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y6rW05mLedf5TFh2wIb4AL1b+qVyu1+DdRYvB+mS8D/M1NxW5gBWKt9Aku3VrJcbjyzf4mSYWNY6YlHG2TP3agZ2SrvbuGAF4BkS5acCRPV+8Qgh0I8HUXoqfe88LsaCwxe0GyUN1/76Glyd66beBL0wpsrEcqAHh9aHJdnpr3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ds8Wi1tT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9706C43390;
-	Tue, 13 Feb 2024 17:26:00 +0000 (UTC)
+	 MIME-Version; b=mMLsXDHcyOAkld90rogpbUNL2zDdeE8mOMsBl8U1wk+Syf40OGTtAW9JQmrmMVf1nCVuQG9QwHxI++UpziLh4RwSHYgdFF8qn9arU8OYSeqvnj8jflBcI20TT1lsAVV9S4LAkWovqK8b+Q3cl2dgvqGehOkEMLVzL0BKzp0BiCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fy6WSUW/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B54C43330;
+	Tue, 13 Feb 2024 17:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845161;
-	bh=nXGqAOJ3vYFZsqaWHAq2v+8VaoWf53fnX0LuHdeD5Hs=;
+	s=korg; t=1707845878;
+	bh=o1Yalo5tkqf20UxD+WRX+7KNPX48M8qtaBo0qEUnmgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ds8Wi1tT1/H1EuN+Xx1KpNKfea9ZFXuqPDQNSJBDemNOGDOOZRT+qjUUpU5pGu5Pa
-	 5khYqgVSB157i5z324Yx+V1/eaxDCKqJ3Owes659TElaO/ZkivAvNod0Z73HcFY+fT
-	 1CmXWQXTmNRm9X1d7EZ777lu95Y92x8LaYn0WZTY=
+	b=fy6WSUW/KuwWKJXlaYt3kmBQYzBItEiSn84AU5AjNiXCRARnA+aFXFrs1BMAaizbt
+	 DEODDMNGM5FB4jVbQlH3xuU8IdlT9VgxVdb99XRgE8Vzzbu0NZlEQxzcyAopvB+B67
+	 g7p1Y1fV8wuvE3hhovHPM2QeOe52ZLUt0/2ID1uY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 58/64] io_uring/net: fix sr->len for IORING_OP_RECV with MSG_WAITALL and buffers
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 082/124] riscv: Fix arch_hugetlb_migration_supported() for NAPOT
 Date: Tue, 13 Feb 2024 18:21:44 +0100
-Message-ID: <20240213171846.562845992@linuxfoundation.org>
+Message-ID: <20240213171856.130172015@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-commit 72bd80252feeb3bef8724230ee15d9f7ab541c6e upstream.
+[ Upstream commit ce68c035457bdd025a9961e0ba2157323090c581 ]
 
-If we use IORING_OP_RECV with provided buffers and pass in '0' as the
-length of the request, the length is retrieved from the selected buffer.
-If MSG_WAITALL is also set and we get a short receive, then we may hit
-the retry path which decrements sr->len and increments the buffer for
-a retry. However, the length is still zero at this point, which means
-that sr->len now becomes huge and import_ubuf() will cap it to
-MAX_RW_COUNT and subsequently return -EFAULT for the range as a whole.
+arch_hugetlb_migration_supported() must be reimplemented to add support
+for NAPOT hugepages, which is done here.
 
-Fix this by always assigning sr->len once the buffer has been selected.
-
-Cc: stable@vger.kernel.org
-Fixes: 7ba89d2af17a ("io_uring: ensure recv and recvmsg handle MSG_WAITALL correctly")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 82a1a1f3bfb6 ("riscv: mm: support Svnapot in hugetlb page")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240130120114.106003-1-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/riscv/include/asm/hugetlb.h |  3 +++
+ arch/riscv/mm/hugetlbpage.c      | 16 +++++++++++++---
+ 2 files changed, 16 insertions(+), 3 deletions(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -875,6 +875,7 @@ retry_multishot:
- 		if (!buf)
- 			return -ENOBUFS;
- 		sr->buf = buf;
-+		sr->len = len;
- 	}
+diff --git a/arch/riscv/include/asm/hugetlb.h b/arch/riscv/include/asm/hugetlb.h
+index 4c5b0e929890..20f9c3ba2341 100644
+--- a/arch/riscv/include/asm/hugetlb.h
++++ b/arch/riscv/include/asm/hugetlb.h
+@@ -11,6 +11,9 @@ static inline void arch_clear_hugepage_flags(struct page *page)
+ }
+ #define arch_clear_hugepage_flags arch_clear_hugepage_flags
  
- 	ret = import_single_range(ITER_DEST, sr->buf, len, &iov, &msg.msg_iter);
++bool arch_hugetlb_migration_supported(struct hstate *h);
++#define arch_hugetlb_migration_supported arch_hugetlb_migration_supported
++
+ #ifdef CONFIG_RISCV_ISA_SVNAPOT
+ #define __HAVE_ARCH_HUGE_PTE_CLEAR
+ void huge_pte_clear(struct mm_struct *mm, unsigned long addr,
+diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
+index 87af75ee7186..e7b69281875b 100644
+--- a/arch/riscv/mm/hugetlbpage.c
++++ b/arch/riscv/mm/hugetlbpage.c
+@@ -364,7 +364,7 @@ void huge_pte_clear(struct mm_struct *mm,
+ 		pte_clear(mm, addr, ptep);
+ }
+ 
+-static __init bool is_napot_size(unsigned long size)
++static bool is_napot_size(unsigned long size)
+ {
+ 	unsigned long order;
+ 
+@@ -392,7 +392,7 @@ arch_initcall(napot_hugetlbpages_init);
+ 
+ #else
+ 
+-static __init bool is_napot_size(unsigned long size)
++static bool is_napot_size(unsigned long size)
+ {
+ 	return false;
+ }
+@@ -409,7 +409,7 @@ int pmd_huge(pmd_t pmd)
+ 	return pmd_leaf(pmd);
+ }
+ 
+-bool __init arch_hugetlb_valid_size(unsigned long size)
++static bool __hugetlb_valid_size(unsigned long size)
+ {
+ 	if (size == HPAGE_SIZE)
+ 		return true;
+@@ -421,6 +421,16 @@ bool __init arch_hugetlb_valid_size(unsigned long size)
+ 		return false;
+ }
+ 
++bool __init arch_hugetlb_valid_size(unsigned long size)
++{
++	return __hugetlb_valid_size(size);
++}
++
++bool arch_hugetlb_migration_supported(struct hstate *h)
++{
++	return __hugetlb_valid_size(huge_page_size(h));
++}
++
+ #ifdef CONFIG_CONTIG_ALLOC
+ static __init int gigantic_pages_init(void)
+ {
+-- 
+2.43.0
+
 
 
 
