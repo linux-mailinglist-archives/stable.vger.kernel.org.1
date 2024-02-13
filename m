@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-19925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B37C68537E9
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:31:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC5A853885
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:38:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70A9428604C
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:31:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C38E31C265B6
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:38:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F1F5FF05;
-	Tue, 13 Feb 2024 17:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DEF604DF;
+	Tue, 13 Feb 2024 17:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nWokEbCS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOs1eifA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82375F54E;
-	Tue, 13 Feb 2024 17:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537A3A93C;
+	Tue, 13 Feb 2024 17:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845466; cv=none; b=BAZqgPfCaQBDRfXCuQfh28ElLvZHNyZlayedxozEBg72dJzroJl8F26xVx8zbuGArSC+hOrcu4+WZzfXt6GZuSTVwuA4M0atLy/BZUopT+/9hLAzphAlb+YvCu5FIXaCYs4MzLzLZLouev+qiOjAzrcZu+Ewj6Qn9lqkT5QK7dk=
+	t=1707845849; cv=none; b=qG7rKfDpZzN18ew94+JQPyN2F7SNVm2/cyhjWT1/YZRzEgrQzHaiKuaZJ4iL57UPTcHHvaCWknOtg+LPo9nMbPUCNJ3ZtZ0VAn0y/cLr3CpR9DQhhbilY9Y4CbFdsbf3uwAueVdisa+dfg6UjcdZ2gMmroMGydBxgZd22x3pd/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845466; c=relaxed/simple;
-	bh=FypfKiNBKjgdHH1F1PAmuxCqCc5HZFg/rS+peVauS5w=;
+	s=arc-20240116; t=1707845849; c=relaxed/simple;
+	bh=oR6fjsbodhjmPlPMku2wi6ObbfLdNM6sr5yYSMqcdR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QDu4yKPnLbg+3VJpTadVmybPSQ1vY9n5/W55Ie7zrgGiTw2xZ3O2d6MTCCsRwI0E9QfXeIJstFc30Vwa8ByIyeuz2Z+8IeolNeYB1aXLvwFFxBnfEz2uh84wn3G5UJ98C+hken/9r9ls/DimIfAwaB+iXPEpkcUIZO520FiDCwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nWokEbCS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246C5C433C7;
-	Tue, 13 Feb 2024 17:31:05 +0000 (UTC)
+	 MIME-Version; b=LWSwTtNTrl0g9u3BmX5sTC1ynlNpYUFjNhKRPPP7nYA0VVr/mrBRgt20mfFczZYem4W/SXxlEWOjn4ggIsxcSpq4oS71oKlYka6+x7qs5hDvAidsgAi8IrCWOvtk37k/zu7QVyYpQrCHMk5U49dFPqIsTrHJqeAr+Ot0Ii7VTeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOs1eifA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AFEC433F1;
+	Tue, 13 Feb 2024 17:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845466;
-	bh=FypfKiNBKjgdHH1F1PAmuxCqCc5HZFg/rS+peVauS5w=;
+	s=korg; t=1707845849;
+	bh=oR6fjsbodhjmPlPMku2wi6ObbfLdNM6sr5yYSMqcdR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nWokEbCSeS5rwXrL5SFM6wQr7IfV44+3Mozl+8pLinoHfxpyde2jOA3cGssNHnxbU
-	 UrfE14BMnIucCIDRBuVMxKY9o7Y+uVqVjg+yyo+poifokobdhHFrXYUTp7y1S6MJqD
-	 9olna5I6Ko/Px62weQ4Kqjo+pmsfcj1sTCF5/ZGI=
+	b=rOs1eifAw1lRy2Ag2lxzt6WhEHiEighLpH8FBWfbKitDcygjO3Pw0qvdKvtm6C353
+	 SB6CJyZXHzJpMk6W4+ApVLdogDASox1TxbVD2Td22fe625TV5tOWrF7H+erNprhigk
+	 ZALV/qw7Rw71kv5CR4gxlHaPHPICW9dcodWGnbxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Vincent Chen <vincent.chen@sifive.com>,
 	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
 	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH 6.6 087/121] riscv: Improve flush_tlb_kernel_range()
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 074/124] riscv: mm: execute local TLB flush after populating vmemmap
 Date: Tue, 13 Feb 2024 18:21:36 +0100
-Message-ID: <20240213171855.533305508@linuxfoundation.org>
+Message-ID: <20240213171855.899103453@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,132 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Vincent Chen <vincent.chen@sifive.com>
 
-[ Upstream commit 5e22bfd520ea8740e9a20314d2a890baf304c9d2 ]
+[ Upstream commit d9807d60c145836043ffa602328ea1d66dc458b1 ]
 
-This function used to simply flush the whole tlb of all harts, be more
-subtile and try to only flush the range.
+The spare_init() calls memmap_populate() many times to create VA to PA
+mapping for the VMEMMAP area, where all "struct page" are located once
+CONFIG_SPARSEMEM_VMEMMAP is defined. These "struct page" are later
+initialized in the zone_sizes_init() function. However, during this
+process, no sfence.vma instruction is executed for this VMEMMAP area.
+This omission may cause the hart to fail to perform page table walk
+because some data related to the address translation is invisible to the
+hart. To solve this issue, the local_flush_tlb_kernel_range() is called
+right after the sparse_init() to execute a sfence.vma instruction for this
+VMEMMAP area, ensuring that all data related to the address translation
+is visible to the hart.
 
-The problem is that we can only use PAGE_SIZE as stride since we don't know
-the size of the underlying mapping and then this function will be improved
-only if the size of the region to flush is < threshold * PAGE_SIZE.
-
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com> # On RZ/Five SMARC
-Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
-Tested-by: Samuel Holland <samuel.holland@sifive.com>
-Link: https://lore.kernel.org/r/20231030133027.19542-5-alexghiti@rivosinc.com
+Fixes: d95f1a542c3d ("RISC-V: Implement sparsemem")
+Signed-off-by: Vincent Chen <vincent.chen@sifive.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240117140333.2479667-1-vincent.chen@sifive.com
+Fixes: 7a92fc8b4d20 ("mm: Introduce flush_cache_vmap_early()")
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Stable-dep-of: d9807d60c145 ("riscv: mm: execute local TLB flush after populating vmemmap")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/tlbflush.h | 11 +++++-----
- arch/riscv/mm/tlbflush.c          | 34 ++++++++++++++++++++++---------
- 2 files changed, 30 insertions(+), 15 deletions(-)
+ arch/riscv/include/asm/tlbflush.h | 1 +
+ arch/riscv/mm/init.c              | 4 ++++
+ arch/riscv/mm/tlbflush.c          | 3 ++-
+ 3 files changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/arch/riscv/include/asm/tlbflush.h b/arch/riscv/include/asm/tlbflush.h
-index 170a49c531c6..8f3418c5f172 100644
+index a60416bbe190..51664ae4852e 100644
 --- a/arch/riscv/include/asm/tlbflush.h
 +++ b/arch/riscv/include/asm/tlbflush.h
-@@ -40,6 +40,7 @@ void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
- void flush_tlb_page(struct vm_area_struct *vma, unsigned long addr);
- void flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 		     unsigned long end);
-+void flush_tlb_kernel_range(unsigned long start, unsigned long end);
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- #define __HAVE_ARCH_FLUSH_PMD_TLB_RANGE
- void flush_pmd_tlb_range(struct vm_area_struct *vma, unsigned long start,
-@@ -56,15 +57,15 @@ static inline void flush_tlb_range(struct vm_area_struct *vma,
- 	local_flush_tlb_all();
- }
+@@ -67,6 +67,7 @@ static inline void flush_tlb_kernel_range(unsigned long start,
  
--#define flush_tlb_mm(mm) flush_tlb_all()
--#define flush_tlb_mm_range(mm, start, end, page_size) flush_tlb_all()
--#endif /* !CONFIG_SMP || !CONFIG_MMU */
--
- /* Flush a range of kernel pages */
- static inline void flush_tlb_kernel_range(unsigned long start,
- 	unsigned long end)
- {
--	flush_tlb_all();
-+	local_flush_tlb_all();
- }
+ #define flush_tlb_mm(mm) flush_tlb_all()
+ #define flush_tlb_mm_range(mm, start, end, page_size) flush_tlb_all()
++#define local_flush_tlb_kernel_range(start, end) flush_tlb_all()
+ #endif /* !CONFIG_SMP || !CONFIG_MMU */
  
-+#define flush_tlb_mm(mm) flush_tlb_all()
-+#define flush_tlb_mm_range(mm, start, end, page_size) flush_tlb_all()
-+#endif /* !CONFIG_SMP || !CONFIG_MMU */
-+
  #endif /* _ASM_RISCV_TLBFLUSH_H */
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index ad77ed410d4d..ee224fe18d18 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -1385,6 +1385,10 @@ void __init misc_mem_init(void)
+ 	early_memtest(min_low_pfn << PAGE_SHIFT, max_low_pfn << PAGE_SHIFT);
+ 	arch_numa_init();
+ 	sparse_init();
++#ifdef CONFIG_SPARSEMEM_VMEMMAP
++	/* The entire VMEMMAP region has been populated. Flush TLB for this region */
++	local_flush_tlb_kernel_range(VMEMMAP_START, VMEMMAP_END);
++#endif
+ 	zone_sizes_init();
+ 	arch_reserve_crashkernel();
+ 	memblock_dump_all();
 diff --git a/arch/riscv/mm/tlbflush.c b/arch/riscv/mm/tlbflush.c
-index 88fa8b18ca22..8723adc884c7 100644
+index 8aadc5f71c93..1f90721d22e9 100644
 --- a/arch/riscv/mm/tlbflush.c
 +++ b/arch/riscv/mm/tlbflush.c
-@@ -96,20 +96,27 @@ static void __flush_tlb_range(struct mm_struct *mm, unsigned long start,
- 			      unsigned long size, unsigned long stride)
- {
- 	struct flush_tlb_range_data ftd;
--	struct cpumask *cmask = mm_cpumask(mm);
-+	const struct cpumask *cmask;
- 	unsigned long asid = FLUSH_TLB_NO_ASID;
--	unsigned int cpuid;
- 	bool broadcast;
- 
--	if (cpumask_empty(cmask))
--		return;
-+	if (mm) {
-+		unsigned int cpuid;
-+
-+		cmask = mm_cpumask(mm);
-+		if (cpumask_empty(cmask))
-+			return;
- 
--	cpuid = get_cpu();
--	/* check if the tlbflush needs to be sent to other CPUs */
--	broadcast = cpumask_any_but(cmask, cpuid) < nr_cpu_ids;
-+		cpuid = get_cpu();
-+		/* check if the tlbflush needs to be sent to other CPUs */
-+		broadcast = cpumask_any_but(cmask, cpuid) < nr_cpu_ids;
- 
--	if (static_branch_unlikely(&use_asid_allocator))
--		asid = atomic_long_read(&mm->context.id) & asid_mask;
-+		if (static_branch_unlikely(&use_asid_allocator))
-+			asid = atomic_long_read(&mm->context.id) & asid_mask;
-+	} else {
-+		cmask = cpu_online_mask;
-+		broadcast = true;
-+	}
- 
- 	if (broadcast) {
- 		if (riscv_use_ipi_for_rfence()) {
-@@ -127,7 +134,8 @@ static void __flush_tlb_range(struct mm_struct *mm, unsigned long start,
- 		local_flush_tlb_range_asid(start, size, stride, asid);
- 	}
- 
--	put_cpu();
-+	if (mm)
-+		put_cpu();
+@@ -66,9 +66,10 @@ static inline void local_flush_tlb_range_asid(unsigned long start,
+ 		local_flush_tlb_range_threshold_asid(start, size, stride, asid);
  }
  
- void flush_tlb_mm(struct mm_struct *mm)
-@@ -152,6 +160,12 @@ void flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
++/* Flush a range of kernel pages without broadcasting */
+ void local_flush_tlb_kernel_range(unsigned long start, unsigned long end)
  {
- 	__flush_tlb_range(vma->vm_mm, start, end - start, PAGE_SIZE);
+-	local_flush_tlb_range_asid(start, end, PAGE_SIZE, FLUSH_TLB_NO_ASID);
++	local_flush_tlb_range_asid(start, end - start, PAGE_SIZE, FLUSH_TLB_NO_ASID);
  }
-+
-+void flush_tlb_kernel_range(unsigned long start, unsigned long end)
-+{
-+	__flush_tlb_range(NULL, start, end - start, PAGE_SIZE);
-+}
-+
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- void flush_pmd_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 			unsigned long end)
+ 
+ static void __ipi_flush_tlb_all(void *info)
 -- 
 2.43.0
 
