@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-19862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E53B85379F
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:27:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5CEB853826
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:33:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EFB1B289AE
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:27:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 825141F2A427
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548395FF19;
-	Tue, 13 Feb 2024 17:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDEEF5FF07;
+	Tue, 13 Feb 2024 17:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLm6QPAH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJjfmNm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C305F54E;
-	Tue, 13 Feb 2024 17:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E70AD55;
+	Tue, 13 Feb 2024 17:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845241; cv=none; b=MsvXuoO9zj8fsOPvOWrIdFjZQNMOOyqkJeOZvpRyw+W99mxhYY0i8LDrpxEyAR9/IMzDeD6BJ5zlma8thFR7hrBsGfOxEiurNwnXUKy0p5ociGR4RFvk+zolFxflehydW1381nXT6hkBESGfeD9El3h+++toNhtt1x+ssOjWOCI=
+	t=1707845624; cv=none; b=MB+3FjZNj0GPSqZoqBpynJWhHJCWVQXCAXvPU662ppp82KEzOvA1lFJZNcz6Cmi5uxoUuN22nx7Fhk8rV9CC+VhdrIPN5O+IOLe4QlNIJvtq4ElbuVcQQH2HAV7n8JqnqPCWGjwUOfv911ZjJma6TRZAFb9IfYZk++Ji98JkYmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845241; c=relaxed/simple;
-	bh=B44iKJQRA5fa6sCfs/7UzpINMeiotHqjtFrah0aKq0Q=;
+	s=arc-20240116; t=1707845624; c=relaxed/simple;
+	bh=vd91lTmEgNEQLcZqteSwK7Q/h/dV7OpteUgB9SacPvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RHBx7cePy69dBu9bZQBEvKqmINQY+PiKFOmksdSf21aFr02Lf3eRdNphXagg0RDeZUQoFJNAYIwDCXMEiSktQlUfuXPiKjEMBQNtRU2S6NdPsXZ3nEffNHnflN+Bq5/gsG5nwWBcPwYhI+FYa21imG1QTonvIcixDJo29ILStwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLm6QPAH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40606C433F1;
-	Tue, 13 Feb 2024 17:27:20 +0000 (UTC)
+	 MIME-Version; b=pR80bmVTQ3RAUqjxKEXhgtgnTuq1s4afnJsISdkDCZQkGtqhf8sPw74648VFYiBMVDFrGXwR6K3mdeLss5wrWnBlJciFSebhE2k4rFlrVaRuU3iTz0djbvqO1MoeQctdeFlGFiHXgyFOEo65tqg8Gx9ww6U50Nn2xnNafc6FXW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJjfmNm+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCEDEC433F1;
+	Tue, 13 Feb 2024 17:33:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845240;
-	bh=B44iKJQRA5fa6sCfs/7UzpINMeiotHqjtFrah0aKq0Q=;
+	s=korg; t=1707845624;
+	bh=vd91lTmEgNEQLcZqteSwK7Q/h/dV7OpteUgB9SacPvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eLm6QPAHxEbVoVFrYMWgczHodRJSQgcIvX1Kumgd+GRhxWJ9338w5nG2B9ITz6Erq
-	 e37pBHx4m313n4L7sOsAlp/oO8+XUjsL45pAA6QtgZtjEI9fNWTv47qsscXEZBeXdj
-	 8v2W276mZIRA9ZHPdJ+zDsQDa5nQ91b3DtsC09lg=
+	b=pJjfmNm+1rVxHKJh8NPwVXzAN0moWWX/aLg0AqzeMeehWkjqi3e19qlxqfe6UnSKJ
+	 /VYV94mStfXImUPgiAOnUa0OjZoQEWvfaHwQ4jyyEIIEzNPy+4ewA7zIQsya69FzQl
+	 dLRpVp14kOuizgrri/I3NzI9ALCxWM5PfFLKMNyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cheng Lin <cheng.lin130@zte.com.cn>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/121] xfs: introduce protection for drop nlink
-Date: Tue, 13 Feb 2024 18:20:33 +0100
-Message-ID: <20240213171853.679407295@linuxfoundation.org>
+Subject: [PATCH 6.7 012/124] dmaengine: fix is_slave_direction() return false when DMA_DEV_TO_DEV
+Date: Tue, 13 Feb 2024 18:20:34 +0100
+Message-ID: <20240213171854.093211965@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cheng Lin <cheng.lin130@zte.com.cn>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 2b99e410b28f5a75ae417e6389e767c7745d6fce upstream.
+[ Upstream commit a22fe1d6dec7e98535b97249fdc95c2be79120bb ]
 
-When abnormal drop_nlink are detected on the inode,
-return error, to avoid corruption propagation.
+is_slave_direction() should return true when direction is DMA_DEV_TO_DEV.
 
-Signed-off-by: Cheng Lin <cheng.lin130@zte.com.cn>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Fixes: 49920bc66984 ("dmaengine: add new enum dma_transfer_direction")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240123172842.3764529-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_inode.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ include/linux/dmaengine.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
-index 4d55f58d99b7..fb85c5c81745 100644
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -918,6 +918,13 @@ xfs_droplink(
- 	xfs_trans_t *tp,
- 	xfs_inode_t *ip)
- {
-+	if (VFS_I(ip)->i_nlink == 0) {
-+		xfs_alert(ip->i_mount,
-+			  "%s: Attempt to drop inode (%llu) with nlink zero.",
-+			  __func__, ip->i_ino);
-+		return -EFSCORRUPTED;
-+	}
-+
- 	xfs_trans_ichgtime(tp, ip, XFS_ICHGTIME_CHG);
+diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
+index 3df70d6131c8..752dbde4cec1 100644
+--- a/include/linux/dmaengine.h
++++ b/include/linux/dmaengine.h
+@@ -953,7 +953,8 @@ static inline int dmaengine_slave_config(struct dma_chan *chan,
  
- 	drop_nlink(VFS_I(ip));
+ static inline bool is_slave_direction(enum dma_transfer_direction direction)
+ {
+-	return (direction == DMA_MEM_TO_DEV) || (direction == DMA_DEV_TO_MEM);
++	return (direction == DMA_MEM_TO_DEV) || (direction == DMA_DEV_TO_MEM) ||
++	       (direction == DMA_DEV_TO_DEV);
+ }
+ 
+ static inline struct dma_async_tx_descriptor *dmaengine_prep_slave_single(
 -- 
 2.43.0
 
