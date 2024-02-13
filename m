@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-19803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E0D853752
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:24:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA437853846
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:35:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2DBF2822CA
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:24:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED3BD1C21105
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6588A5FEEB;
-	Tue, 13 Feb 2024 17:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6266027B;
+	Tue, 13 Feb 2024 17:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xb25z7fo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZ2nsJez"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210625FBB5;
-	Tue, 13 Feb 2024 17:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD836026B;
+	Tue, 13 Feb 2024 17:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845043; cv=none; b=qzrHk56T0Acqi+yhiw2SzeAfzl3yVRVefiWP2Ukqumv48I92Kr8Dj5vJoR0nJT8qkQpoz1u2/IfXvzAf4vyxmTIK6qjCnDnIPQvcuRjpGRfBjv222W5nzlmVrVC7yF6M+4F3xJ5gtXe/ONhg2nWDhOYQvn7nouAlxFf8+zxBi6I=
+	t=1707845692; cv=none; b=r+jPLPeeXwv1jcRxOa8w7i9xZ5nPCCivTZMIJU/dmFexqehl1wSSfkDpQrnjgORmfXm/oTMSfN2Dk6fGDfTsJgydMiw2ApwXK7vXkugoNamPRXw7MlszJB56H5mjjEHV8l+HAbA0pmR4fpzEB4xrL2Sf7YEhN/DsYOWIge9o4EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845043; c=relaxed/simple;
-	bh=sW+R2FT3CVS+OSBW91LQ1iCQJuC5Vq2wiilst4Bl0Y4=;
+	s=arc-20240116; t=1707845692; c=relaxed/simple;
+	bh=L2MD9NCEGlgwmPtoRQ9JCJyYQ5AjyjIXbLf412IkTeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VL9osV3oq+dklUAgACjGMvoS0p+4V6nzCO5yYRxrQjStBtoa1xAWiFX8HG+H04C+xL1vKHBvoKegPCEbz718vfqy6ahvq+Y5TRAql1abgwETr2n/l0xbag2AvIVvfpPlJJvfdhsfF6kMPj59iE9HGN4Hnai/eWksV2M3BipKw3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xb25z7fo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF3EC43390;
-	Tue, 13 Feb 2024 17:24:02 +0000 (UTC)
+	 MIME-Version; b=lckQJ8nCaAwjolIClGaF/aDgsrA7x8st7rxuq3DM4NmiHw12azoGikLMuwJmS7JUAw77MhQsOUFHKKxgXoFhqAvt4DhxAXfco5SXPvh2ZWC6HbFW3qOLYYQaVndLXRc/6iDudyrdolPZhedTf9C8XCOMQ8ENY6Xqp+WfMrs81EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZ2nsJez; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAC3C433C7;
+	Tue, 13 Feb 2024 17:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845043;
-	bh=sW+R2FT3CVS+OSBW91LQ1iCQJuC5Vq2wiilst4Bl0Y4=;
+	s=korg; t=1707845692;
+	bh=L2MD9NCEGlgwmPtoRQ9JCJyYQ5AjyjIXbLf412IkTeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xb25z7foH2xdTKxzDsTar+yBLk8NurdKn/5UWP+iBUrZafgno8nEY7eid1oyq7zpt
-	 q3y6PNQA+WFLZSoTW1xob4GVRj/BtJm2qoho2UvC8vqU+rg0oS+Pz0f/e6ptx6uNVz
-	 0r+yfANY1jsQnAgUiq+nAWMP2dhJZ6gPHc21UHAc=
+	b=lZ2nsJezwPWtpSgoJRXqxvnlu6yyZrEX/ZdnT/+NxsVgVwAuI740M29gt67/a6vqS
+	 uPUnNoJi6aTYjAZlIAErbBiDdGPUM5cWH9sxbC/MCrHNz6gSF4B7W72NA+KTT3Wa0R
+	 3uKCGQMbZvOXAgOUuP0bxNGV+BmY6ZKQjWPkUbj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 07/64] dmaengine: fix is_slave_direction() return false when DMA_DEV_TO_DEV
+Subject: [PATCH 6.7 031/124] netdevsim: avoid potential loop in nsim_dev_trap_report_work()
 Date: Tue, 13 Feb 2024 18:20:53 +0100
-Message-ID: <20240213171844.966411874@linuxfoundation.org>
+Message-ID: <20240213171854.640696852@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a22fe1d6dec7e98535b97249fdc95c2be79120bb ]
+[ Upstream commit ba5e1272142d051dcc57ca1d3225ad8a089f9858 ]
 
-is_slave_direction() should return true when direction is DMA_DEV_TO_DEV.
+Many syzbot reports include the following trace [1]
 
-Fixes: 49920bc66984 ("dmaengine: add new enum dma_transfer_direction")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240123172842.3764529-1-Frank.Li@nxp.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+If nsim_dev_trap_report_work() can not grab the mutex,
+it should rearm itself at least one jiffie later.
+
+[1]
+Sending NMI from CPU 1 to CPUs 0:
+NMI backtrace for cpu 0
+CPU: 0 PID: 32383 Comm: kworker/0:2 Not tainted 6.8.0-rc2-syzkaller-00031-g861c0981648f #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
+Workqueue: events nsim_dev_trap_report_work
+ RIP: 0010:bytes_is_nonzero mm/kasan/generic.c:89 [inline]
+ RIP: 0010:memory_is_nonzero mm/kasan/generic.c:104 [inline]
+ RIP: 0010:memory_is_poisoned_n mm/kasan/generic.c:129 [inline]
+ RIP: 0010:memory_is_poisoned mm/kasan/generic.c:161 [inline]
+ RIP: 0010:check_region_inline mm/kasan/generic.c:180 [inline]
+ RIP: 0010:kasan_check_range+0x101/0x190 mm/kasan/generic.c:189
+Code: 07 49 39 d1 75 0a 45 3a 11 b8 01 00 00 00 7c 0b 44 89 c2 e8 21 ed ff ff 83 f0 01 5b 5d 41 5c c3 48 85 d2 74 4f 48 01 ea eb 09 <48> 83 c0 01 48 39 d0 74 41 80 38 00 74 f2 eb b6 41 bc 08 00 00 00
+RSP: 0018:ffffc90012dcf998 EFLAGS: 00000046
+RAX: fffffbfff258af1e RBX: fffffbfff258af1f RCX: ffffffff8168eda3
+RDX: fffffbfff258af1f RSI: 0000000000000004 RDI: ffffffff92c578f0
+RBP: fffffbfff258af1e R08: 0000000000000000 R09: fffffbfff258af1e
+R10: ffffffff92c578f3 R11: ffffffff8acbcbc0 R12: 0000000000000002
+R13: ffff88806db38400 R14: 1ffff920025b9f42 R15: ffffffff92c578e8
+FS:  0000000000000000(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000000c00994e078 CR3: 000000002c250000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <NMI>
+ </NMI>
+ <TASK>
+  instrument_atomic_read include/linux/instrumented.h:68 [inline]
+  atomic_read include/linux/atomic/atomic-instrumented.h:32 [inline]
+  queued_spin_is_locked include/asm-generic/qspinlock.h:57 [inline]
+  debug_spin_unlock kernel/locking/spinlock_debug.c:101 [inline]
+  do_raw_spin_unlock+0x53/0x230 kernel/locking/spinlock_debug.c:141
+  __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:150 [inline]
+  _raw_spin_unlock_irqrestore+0x22/0x70 kernel/locking/spinlock.c:194
+  debug_object_activate+0x349/0x540 lib/debugobjects.c:726
+  debug_work_activate kernel/workqueue.c:578 [inline]
+  insert_work+0x30/0x230 kernel/workqueue.c:1650
+  __queue_work+0x62e/0x11d0 kernel/workqueue.c:1802
+  __queue_delayed_work+0x1bf/0x270 kernel/workqueue.c:1953
+  queue_delayed_work_on+0x106/0x130 kernel/workqueue.c:1989
+  queue_delayed_work include/linux/workqueue.h:563 [inline]
+  schedule_delayed_work include/linux/workqueue.h:677 [inline]
+  nsim_dev_trap_report_work+0x9c0/0xc80 drivers/net/netdevsim/dev.c:842
+  process_one_work+0x886/0x15d0 kernel/workqueue.c:2633
+  process_scheduled_works kernel/workqueue.c:2706 [inline]
+  worker_thread+0x8b9/0x1290 kernel/workqueue.c:2787
+  kthread+0x2c6/0x3a0 kernel/kthread.c:388
+  ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+  ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
+ </TASK>
+
+Fixes: 012ec02ae441 ("netdevsim: convert driver to use unlocked devlink API during init/fini")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20240201175324.3752746-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/dmaengine.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/netdevsim/dev.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/dmaengine.h b/include/linux/dmaengine.h
-index c923f4e60f24..3576c6e89fea 100644
---- a/include/linux/dmaengine.h
-+++ b/include/linux/dmaengine.h
-@@ -954,7 +954,8 @@ static inline int dmaengine_slave_config(struct dma_chan *chan,
+diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
+index b4d3b9cde8bd..92a7a36b93ac 100644
+--- a/drivers/net/netdevsim/dev.c
++++ b/drivers/net/netdevsim/dev.c
+@@ -835,14 +835,14 @@ static void nsim_dev_trap_report_work(struct work_struct *work)
+ 				      trap_report_dw.work);
+ 	nsim_dev = nsim_trap_data->nsim_dev;
  
- static inline bool is_slave_direction(enum dma_transfer_direction direction)
- {
--	return (direction == DMA_MEM_TO_DEV) || (direction == DMA_DEV_TO_MEM);
-+	return (direction == DMA_MEM_TO_DEV) || (direction == DMA_DEV_TO_MEM) ||
-+	       (direction == DMA_DEV_TO_DEV);
- }
+-	/* For each running port and enabled packet trap, generate a UDP
+-	 * packet with a random 5-tuple and report it.
+-	 */
+ 	if (!devl_trylock(priv_to_devlink(nsim_dev))) {
+-		schedule_delayed_work(&nsim_dev->trap_data->trap_report_dw, 0);
++		schedule_delayed_work(&nsim_dev->trap_data->trap_report_dw, 1);
+ 		return;
+ 	}
  
- static inline struct dma_async_tx_descriptor *dmaengine_prep_slave_single(
++	/* For each running port and enabled packet trap, generate a UDP
++	 * packet with a random 5-tuple and report it.
++	 */
+ 	list_for_each_entry(nsim_dev_port, &nsim_dev->port_list, list) {
+ 		if (!netif_running(nsim_dev_port->ns->netdev))
+ 			continue;
 -- 
 2.43.0
 
