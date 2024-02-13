@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-19805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD346853754
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:24:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D03BD853732
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:22:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E00201C24FAC
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:24:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EC071C25619
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D035FEF5;
-	Tue, 13 Feb 2024 17:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E02D5FEEB;
+	Tue, 13 Feb 2024 17:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oP+4EznN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIauKu3N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E6B5FBB5;
-	Tue, 13 Feb 2024 17:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B375FDB5;
+	Tue, 13 Feb 2024 17:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845049; cv=none; b=rosiQ6ix3gjELkeA6QCh78CUtmSBtoVHsV5EfBSEx6HVweVd+v562R2iwhaLaNriwcoiwdO2GWen6RaEKinfNX3/MPWBE6jwxJXg4GSW3jgMufZZCEJtEuN9SynGRSYh05AzTd7ETGZpUcudg3/7yjtgGaIlpNgcPnOmYDX8pBQ=
+	t=1707844971; cv=none; b=fjERVr+4RThKeIBtosf6Wd61f1DdMbKyxUshEJaRglR2m3IB/qNUY/1hvxS7hXFr8MBP10VwIQC3EGOD0wtJUZMIfq7bukvWPVJZhaaRlTGEpr5Zomh5b5PDY0s7AobRfaM9aB+5u3sUo1q9WsC1cM9J4c0ESRvfGUDMrwcQRS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845049; c=relaxed/simple;
-	bh=gc0FHloRS0ChVS0Ox/uefuTdDlV3GXirQFFkAugniwQ=;
+	s=arc-20240116; t=1707844971; c=relaxed/simple;
+	bh=bdLXMGvPlKF1CxIUjlGlMLxoLma9xb4ih6fspqDLDYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C8dLApuT8+a2bsFD+VbJk3WTIvDCU1Mxbe9pXXj8Kbynlx7X1jVT+g+/nVEaWJN8sBBARFAOIDxPCmGawcf2yK+UxlCj+39nG87Asrdsad50Q6r2nnYep3JxKSTv0NLt/Q11hdYjLtAr5Fuz1lLIox0uuyIz9Ejvi4CG/9CbI48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oP+4EznN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F5FC433C7;
-	Tue, 13 Feb 2024 17:24:08 +0000 (UTC)
+	 MIME-Version; b=t8D/Ac4EOnapNom1Gqpdf/cYQ4m9+DzzjCIGRiEzUeBB86TQMg4ODBtQi8D4KlhnlKy6blOxML0sH4/VHZ4nztzESvc8gQxsVbjz+HriabfZuARBz22XgC6ATdrJqHZJXGm9lrPMbRKr75tCY8bEaak54Pu3p5ewVtGttytdRPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIauKu3N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F56C433F1;
+	Tue, 13 Feb 2024 17:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845049;
-	bh=gc0FHloRS0ChVS0Ox/uefuTdDlV3GXirQFFkAugniwQ=;
+	s=korg; t=1707844970;
+	bh=bdLXMGvPlKF1CxIUjlGlMLxoLma9xb4ih6fspqDLDYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oP+4EznN4aKmiOeLRmrG7vgGwEcEUra4edLmycAU2W6EE1LteWRkw0Ox99C7+TmZj
-	 /Eu8TlX5UTdAaErk6rRqvzJtis1OW7/DEbau2fe5mniiOxK6n36KjfatyYin5JaRBB
-	 P5lPuOgH4EFEAQf/sd7XUVfk/FgGLO2Z+l/akRUc=
+	b=JIauKu3NaCt854rQ4h7btdkudUxcOulP+qAk6UbEVOZBcB8MHy0L7WuuieGYu+t3Z
+	 ekVUO9t8dh+ZOaYfwQSUjfYiW9BBq7b0ay/iz6bflnjMFflF+jfuf6sRJ1XbBGJVL/
+	 R7li4rWEoIbfpzFZOk0ugwlrol5LkSx4vqXAfNnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Kuogee Hsieh <quic_khsieh@quicinc.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 09/64] cifs: failure to add channel on iface should bump up weight
-Date: Tue, 13 Feb 2024 18:20:55 +0100
-Message-ID: <20240213171845.025211463@linuxfoundation.org>
+Subject: [PATCH 6.1 10/64] drm/msms/dp: fixed link clock divider bits be over written in BPC unknown case
+Date: Tue, 13 Feb 2024 18:20:56 +0100
+Message-ID: <20240213171845.055023409@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
 In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
 References: <20240213171844.702064831@linuxfoundation.org>
@@ -66,49 +67,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Kuogee Hsieh <quic_khsieh@quicinc.com>
 
-[ Upstream commit 6aac002bcfd554aff6d3ebb55e1660d078d70ab0 ]
+[ Upstream commit 77e8aad5519e04f6c1e132aaec1c5f8faf41844f ]
 
-After the interface selection policy change to do a weighted
-round robin, each iface maintains a weight_fulfilled. When the
-weight_fulfilled reaches the total weight for the iface, we know
-that the weights can be reset and ifaces can be allocated from
-scratch again.
+Since the value of DP_TEST_BIT_DEPTH_8 is already left shifted, in the
+BPC unknown case, the additional shift causes spill over to the other
+bits of the [DP_CONFIGURATION_CTRL] register.
+Fix this by changing the return value of dp_link_get_test_bits_depth()
+in the BPC unknown case to (DP_TEST_BIT_DEPTH_8 >> DP_TEST_BIT_DEPTH_SHIFT).
 
-During channel allocation failures on a particular channel,
-weight_fulfilled is not incremented. If a few interfaces are
-inactive, we could end up in a situation where the active
-interfaces are all allocated for the total_weight, and inactive
-ones are all that remain. This can cause a situation where
-no more channels can be allocated further.
-
-This change fixes it by increasing weight_fulfilled, even when
-channel allocation failure happens. This could mean that if
-there are temporary failures in channel allocation, the iface
-weights may not strictly be adhered to. But that's still okay.
-
-Fixes: a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
+Signed-off-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/573989/
+Link: https://lore.kernel.org/r/1704917931-30133-1-git-send-email-quic_khsieh@quicinc.com
+[quic_abhinavk@quicinc.com: fix minor checkpatch warning to align with opening braces]
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/dp/dp_ctrl.c |  5 -----
+ drivers/gpu/drm/msm/dp/dp_link.c | 10 +++++++---
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index 634035bcb934..b8e14bcd2c68 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -248,6 +248,8 @@ int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
- 					 &iface->sockaddr,
- 					 rc);
- 				kref_put(&iface->refcount, release_iface);
-+				/* failure to add chan should increase weight */
-+				iface->weight_fulfilled++;
- 				continue;
- 			}
+diff --git a/drivers/gpu/drm/msm/dp/dp_ctrl.c b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+index 103eef9f059a..b20701893e5b 100644
+--- a/drivers/gpu/drm/msm/dp/dp_ctrl.c
++++ b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+@@ -133,11 +133,6 @@ static void dp_ctrl_config_ctrl(struct dp_ctrl_private *ctrl)
+ 	tbd = dp_link_get_test_bits_depth(ctrl->link,
+ 			ctrl->panel->dp_mode.bpp);
  
+-	if (tbd == DP_TEST_BIT_DEPTH_UNKNOWN) {
+-		pr_debug("BIT_DEPTH not set. Configure default\n");
+-		tbd = DP_TEST_BIT_DEPTH_8;
+-	}
+-
+ 	config |= tbd << DP_CONFIGURATION_CTRL_BPC_SHIFT;
+ 
+ 	/* Num of Lanes */
+diff --git a/drivers/gpu/drm/msm/dp/dp_link.c b/drivers/gpu/drm/msm/dp/dp_link.c
+index cb66d1126ea9..3c7884c85f61 100644
+--- a/drivers/gpu/drm/msm/dp/dp_link.c
++++ b/drivers/gpu/drm/msm/dp/dp_link.c
+@@ -1172,6 +1172,9 @@ void dp_link_reset_phy_params_vx_px(struct dp_link *dp_link)
+ u32 dp_link_get_test_bits_depth(struct dp_link *dp_link, u32 bpp)
+ {
+ 	u32 tbd;
++	struct dp_link_private *link;
++
++	link = container_of(dp_link, struct dp_link_private, dp_link);
+ 
+ 	/*
+ 	 * Few simplistic rules and assumptions made here:
+@@ -1189,12 +1192,13 @@ u32 dp_link_get_test_bits_depth(struct dp_link *dp_link, u32 bpp)
+ 		tbd = DP_TEST_BIT_DEPTH_10;
+ 		break;
+ 	default:
+-		tbd = DP_TEST_BIT_DEPTH_UNKNOWN;
++		drm_dbg_dp(link->drm_dev, "bpp=%d not supported, use bpc=8\n",
++			   bpp);
++		tbd = DP_TEST_BIT_DEPTH_8;
+ 		break;
+ 	}
+ 
+-	if (tbd != DP_TEST_BIT_DEPTH_UNKNOWN)
+-		tbd = (tbd >> DP_TEST_BIT_DEPTH_SHIFT);
++	tbd = (tbd >> DP_TEST_BIT_DEPTH_SHIFT);
+ 
+ 	return tbd;
+ }
 -- 
 2.43.0
 
