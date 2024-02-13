@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-20046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D736E853893
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:38:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 487DA853775
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:25:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B26D1F21231
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:38:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B3A81C26851
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7436B6027F;
-	Tue, 13 Feb 2024 17:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E03F15FDB5;
+	Tue, 13 Feb 2024 17:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WdH7F6sC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOVrU46a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C037A93C;
-	Tue, 13 Feb 2024 17:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0E45F54E;
+	Tue, 13 Feb 2024 17:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845885; cv=none; b=dO0tvksYt2tqjFZN5HES9ovpSBQyhHgXWPHvnSwf7ip80yCpyliRJAQPYRvqsOHvK8lGQyiq2Am6edU+ML4wB8nsfczBsIBlYdzXGIAwgFFCgZqM8SVyVT640t0elVQxvGPqUoNTUYzmXEBLjrpnhertnqCbgfjet1l4v/uXteU=
+	t=1707845145; cv=none; b=Z59FSSs+gFMEPqRTK64W1Y3PvdM3LrtBTCBFL23qBffOSyzr6IyKm3NO/IUPVqqgdqnBbRrPMxVY2LNQbGJHyz9FOdiDqVkwiJo8stPDc8H24fkV4bdBtOBQE1UnhGA6KP/2mdE7NEBchPLFRijRq8rbWlOzrtnOlnqhElOIa8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845885; c=relaxed/simple;
-	bh=VQInYca/90D1tz1h8NDOEf7JG09O3ZAQzXy/LWAIsA4=;
+	s=arc-20240116; t=1707845145; c=relaxed/simple;
+	bh=n+vbUVJacupOe2zSjVqJ1kb3+0VxFRheCVPG2spDcVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QcF8JiK2sLdUNyRd5Xip9qT0+Ex2qfN6W9KuBkBNpib2aZXCIoCPLi+ct8NueAqKqURzPJecu+t6SLGmWtt7cU9Luaa+qTMoCzC15WISTr5Msuu06ETN4gPFqlA2353quC2L1ae4bZ+hCihiafVwEquVJClW4yuZW677jx6Jc6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WdH7F6sC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A270C433F1;
-	Tue, 13 Feb 2024 17:38:04 +0000 (UTC)
+	 MIME-Version; b=Beq5nMg0qSbQB2wAnlP1bxcxRjNzwPw7QHNyX5+hCHd1RwIy9RhrUKcH88LYPD/CMhAvo+j22znHhgvxXwA8S53itD8ZycEeJ3MpRgU2yw7Zqub38lTEZQRP5dhFiKBVx33JIRUXZBmd/EQ/DWCKUn9tckoyqRQrqkmq/Pg6Fu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOVrU46a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A6EC433F1;
+	Tue, 13 Feb 2024 17:25:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845885;
-	bh=VQInYca/90D1tz1h8NDOEf7JG09O3ZAQzXy/LWAIsA4=;
+	s=korg; t=1707845145;
+	bh=n+vbUVJacupOe2zSjVqJ1kb3+0VxFRheCVPG2spDcVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WdH7F6sCZq7N9VWgbFgg0852emaqqlIeM2QROu8gpZGZfgMUMRu+COTxEsq4f6NjN
-	 tOn1cEOh9a3/LeHoyjo4pD2TRprNGbBcpVhRfjvbEZ9ucAa2SmKcmCEez/ppHXS7gX
-	 6AzylsaxOwG/MRCvzrlt9hIQX3TQYvuc6eW4HiVg=
+	b=eOVrU46asEDnAvxaQUtm84KNgclcu0UBqhLVK1Z9hd26NincXyvzVhPpRO6MmAGnq
+	 7bvze1yS4zwTZm3pPJSVtK/A0a1NVQeW8HjAsuv7NtuUFc/TUbK62sRRx5MXzuI9By
+	 C3Vczt/raxV0sOutCY7fCAgvsCdWtVnhOu+snmuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 056/124] devlink: avoid potential loop in devlink_rel_nested_in_notify_work()
+Subject: [PATCH 6.1 32/64] netfilter: nft_compat: narrow down revision to unsigned 8-bits
 Date: Tue, 13 Feb 2024 18:21:18 +0100
-Message-ID: <20240213171855.376184376@linuxfoundation.org>
+Message-ID: <20240213171845.762469084@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Pirko <jiri@nvidia.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 58086721b7781c3e35b19c9b78c8f5a791070ba3 ]
+[ Upstream commit 36fa8d697132b4bed2312d700310e8a78b000c84 ]
 
-In case devlink_rel_nested_in_notify_work() can not take the devlink
-lock mutex. Convert the work to delayed work and in case of reschedule
-do it jiffie later and avoid potential looping.
+xt_find_revision() expects u8, restrict it to this datatype.
 
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Fixes: c137743bce02 ("devlink: introduce object and nested devlink relationship infra")
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20240205171114.338679-1-jiri@resnulli.us
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/devlink/core.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/netfilter/nft_compat.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/devlink/core.c b/net/devlink/core.c
-index 6984877e9f10..cbf8560c9375 100644
---- a/net/devlink/core.c
-+++ b/net/devlink/core.c
-@@ -46,7 +46,7 @@ struct devlink_rel {
- 		u32 obj_index;
- 		devlink_rel_notify_cb_t *notify_cb;
- 		devlink_rel_cleanup_cb_t *cleanup_cb;
--		struct work_struct notify_work;
-+		struct delayed_work notify_work;
- 	} nested_in;
+diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
+index 6952da7dfc02..d583ba50f181 100644
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -135,7 +135,7 @@ static void nft_target_eval_bridge(const struct nft_expr *expr,
+ 
+ static const struct nla_policy nft_target_policy[NFTA_TARGET_MAX + 1] = {
+ 	[NFTA_TARGET_NAME]	= { .type = NLA_NUL_STRING },
+-	[NFTA_TARGET_REV]	= { .type = NLA_U32 },
++	[NFTA_TARGET_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
+ 	[NFTA_TARGET_INFO]	= { .type = NLA_BINARY },
  };
  
-@@ -70,7 +70,7 @@ static void __devlink_rel_put(struct devlink_rel *rel)
- static void devlink_rel_nested_in_notify_work(struct work_struct *work)
- {
- 	struct devlink_rel *rel = container_of(work, struct devlink_rel,
--					       nested_in.notify_work);
-+					       nested_in.notify_work.work);
- 	struct devlink *devlink;
+@@ -418,7 +418,7 @@ static void nft_match_eval(const struct nft_expr *expr,
  
- 	devlink = devlinks_xa_get(rel->nested_in.devlink_index);
-@@ -96,13 +96,13 @@ static void devlink_rel_nested_in_notify_work(struct work_struct *work)
- 	return;
+ static const struct nla_policy nft_match_policy[NFTA_MATCH_MAX + 1] = {
+ 	[NFTA_MATCH_NAME]	= { .type = NLA_NUL_STRING },
+-	[NFTA_MATCH_REV]	= { .type = NLA_U32 },
++	[NFTA_MATCH_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
+ 	[NFTA_MATCH_INFO]	= { .type = NLA_BINARY },
+ };
  
- reschedule_work:
--	schedule_work(&rel->nested_in.notify_work);
-+	schedule_delayed_work(&rel->nested_in.notify_work, 1);
- }
- 
- static void devlink_rel_nested_in_notify_work_schedule(struct devlink_rel *rel)
- {
- 	__devlink_rel_get(rel);
--	schedule_work(&rel->nested_in.notify_work);
-+	schedule_delayed_work(&rel->nested_in.notify_work, 0);
- }
- 
- static struct devlink_rel *devlink_rel_alloc(void)
-@@ -123,8 +123,8 @@ static struct devlink_rel *devlink_rel_alloc(void)
- 	}
- 
- 	refcount_set(&rel->refcount, 1);
--	INIT_WORK(&rel->nested_in.notify_work,
--		  &devlink_rel_nested_in_notify_work);
-+	INIT_DELAYED_WORK(&rel->nested_in.notify_work,
-+			  &devlink_rel_nested_in_notify_work);
- 	return rel;
- }
+@@ -721,7 +721,7 @@ static int nfnl_compat_get_rcu(struct sk_buff *skb,
+ static const struct nla_policy nfnl_compat_policy_get[NFTA_COMPAT_MAX+1] = {
+ 	[NFTA_COMPAT_NAME]	= { .type = NLA_NUL_STRING,
+ 				    .len = NFT_COMPAT_NAME_MAX-1 },
+-	[NFTA_COMPAT_REV]	= { .type = NLA_U32 },
++	[NFTA_COMPAT_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
+ 	[NFTA_COMPAT_TYPE]	= { .type = NLA_U32 },
+ };
  
 -- 
 2.43.0
