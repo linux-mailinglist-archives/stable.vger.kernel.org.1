@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-20080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 342DC8538BD
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:40:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDE8B85380E
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:32:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B863EB29EC5
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:40:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C8FD1C2153D
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F0A5FDDF;
-	Tue, 13 Feb 2024 17:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3665FF05;
+	Tue, 13 Feb 2024 17:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIaiq6vU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhJBjvTE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96BCC128;
-	Tue, 13 Feb 2024 17:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DB55F54E;
+	Tue, 13 Feb 2024 17:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707846012; cv=none; b=anmo9hfsGR8yLhpOwHBnattiazNR7VTCh4/YXpTk1WRqtKgQAWlH+2dr4nmsdSWp/r/j2d0wMsv0jwizQtwKUFfYqvh1LbGPSxjsO7NFnau31IpVHgnFMk0A/H8OdBIETe6Qw6D03HHhrNWCrI2FTteiojCpdZiEWKSYJD64qfg=
+	t=1707845555; cv=none; b=ZPpgs9sHAdUtSvTHWvIjoAQiTBEN7MN2EzJHbbIqizb2cuoem+5E3P9zLRLWd5YgBzeX/gAepQuhfTexcvOCW5g04VEhin9AlfuG307cmkBLx9DS3B19vD2htV9mvWuGhxUIxT5WpXd8mADNJSunq4QzzjYV5W8gJY4qfoEfPC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707846012; c=relaxed/simple;
-	bh=tdOpTC2YxRFPTLS2BLrg4/Il8klWVnh7RB8+Vb43ICw=;
+	s=arc-20240116; t=1707845555; c=relaxed/simple;
+	bh=TmYtdWRlgP16Xcv5i0RH2N8Lgphc47Xirlvnx3CgYto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hM486c0dK+g/fgQzkFNb4NG5141QrowiojbpWArOIFksrDAdBA+j33B34qIpsauTSS7o5NcewbhplRjLCTW+wSJ4OuFBg+inOYOZA4ErGny95Nno3PEjTKSDg7g1IJqggPV818zi6JKd2DoNr+seAu32J6G7C3ZAz/L+TNGv4S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIaiq6vU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FA5C433F1;
-	Tue, 13 Feb 2024 17:40:11 +0000 (UTC)
+	 MIME-Version; b=WzqYxa6zahU5R1HC0TVvj4Z5lgnBmJxiXbTYTxIqNIOOiN6rw3of29UemggApF/jly9yDLCzQk/Me7lMp2GUG14Ie4g9HxkzfV49b30C9GmHEUVQolRGSZ0IjZAT2vyPOoz+xxuz9EIYYF82WgJ/ixck9FvhTkVEEGDpA2paR/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhJBjvTE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3594CC43394;
+	Tue, 13 Feb 2024 17:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707846012;
-	bh=tdOpTC2YxRFPTLS2BLrg4/Il8klWVnh7RB8+Vb43ICw=;
+	s=korg; t=1707845554;
+	bh=TmYtdWRlgP16Xcv5i0RH2N8Lgphc47Xirlvnx3CgYto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QIaiq6vURYMh00+FBwygTiwlZmZPWV9u+el1H9KwkwzPfZxF3JtuVLwbEWoIoHp3j
-	 i1ehdbwSkfL6NBBXzpRlBtTpqmIWuyAZP8pDooznJokahQvM0hN8SJGiQOLOEoiBOC
-	 kZRs5iRVCzWz5jatwEMgGhhZyL5Kjw0nLZCsejKk=
+	b=rhJBjvTEK9NZMxSbvhsQARQTbypMdV/3oziAM+XdvirapgjCBFgpXcGXBlgTAtcTu
+	 Dg6aYku2UjiXqi4Kx4mFBMly/kE+zdD8WG1rCMEjWse5wJeu5zcmwlfZ+y16gxzQ7F
+	 froGVVRWm/ZDglJngcfbm20xl5j2bJXGLCtDm5L0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puliang Lu <puliang.lu@fibocom.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.7 091/124] USB: serial: option: add Fibocom FM101-GL variant
-Date: Tue, 13 Feb 2024 18:21:53 +0100
-Message-ID: <20240213171856.389741129@linuxfoundation.org>
+	Frank Wang <frank.wang@rock-chips.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.6 105/121] Revert "usb: typec: tcpm: fix cc role at port reset"
+Date: Tue, 13 Feb 2024 18:21:54 +0100
+Message-ID: <20240213171856.056990515@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puliang Lu <puliang.lu@fibocom.com>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-commit b4a1f4eaf1d798066affc6ad040f76eb1a16e1c9 upstream.
+commit b717dfbf73e842d15174699fe2c6ee4fdde8aa1f upstream.
 
-Update the USB serial option driver support for the Fibocom
-FM101-GL
-LTE modules as there are actually several different variants.
-- VID:PID 2cb7:01a3, FM101-GL are laptop M.2 cards (with
-MBIM interfaces for /Linux/Chrome OS)
+This reverts commit 1e35f074399dece73d5df11847d4a0d7a6f49434.
 
-0x01a3:mbim,gnss
+Given that ERROR_RECOVERY calls into PORT_RESET for Hi-Zing
+the CC pins, setting CC pins to default state during PORT_RESET
+breaks error recovery.
 
-Here are the outputs of usb-devices:
+4.5.2.2.2.1 ErrorRecovery State Requirements
+The port shall not drive VBUS or VCONN, and shall present a
+high-impedance to ground (above zOPEN) on its CC1 and CC2 pins.
 
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=01a3 Rev=05.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom FM101-GL Module
-S:  SerialNumber=5ccd5cd4
-C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+Hi-Zing the CC pins is the inteded behavior for PORT_RESET.
+CC pins are set to default state after tErrorRecovery in
+PORT_RESET_WAIT_OFF.
 
-Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
+4.5.2.2.2.2 Exiting From ErrorRecovery State
+A Sink shall transition to Unattached.SNK after tErrorRecovery.
+A Source shall transition to Unattached.SRC after tErrorRecovery.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Cc: Frank Wang <frank.wang@rock-chips.com>
+Fixes: 1e35f074399d ("usb: typec: tcpm: fix cc role at port reset")
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20240117114742.2587779-1-badhri@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/typec/tcpm/tcpm.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2269,6 +2269,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a2, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a4, 0xff),			/* Fibocom FM101-GL (laptop MBIM) */
- 	  .driver_info = RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -4862,8 +4862,7 @@ static void run_state_machine(struct tcp
+ 		break;
+ 	case PORT_RESET:
+ 		tcpm_reset_port(port);
+-		tcpm_set_cc(port, tcpm_default_state(port) == SNK_UNATTACHED ?
+-			    TYPEC_CC_RD : tcpm_rp_cc(port));
++		tcpm_set_cc(port, TYPEC_CC_OPEN);
+ 		tcpm_set_state(port, PORT_RESET_WAIT_OFF,
+ 			       PD_T_ERROR_RECOVERY);
+ 		break;
 
 
 
