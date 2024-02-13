@@ -1,67 +1,58 @@
-Return-Path: <stable+bounces-19971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15116853825
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:33:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E53B85379F
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47A361C214F5
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:33:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EFB1B289AE
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E04F5FF07;
-	Tue, 13 Feb 2024 17:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548395FF19;
+	Tue, 13 Feb 2024 17:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qe5bh/dO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLm6QPAH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA35AD55;
-	Tue, 13 Feb 2024 17:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C305F54E;
+	Tue, 13 Feb 2024 17:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845621; cv=none; b=KnERPXcl7/21FuexC/eMx4nC4DM/J5TXwiRe1T46Q+T32t2j5q3utmmnMA2ODc1WeuVjp5Wr+0E9k9mBEBQYbHEvs53eg2mGK/QVjHmEh0s2DApKeFUpgAhWvSco/HE3WTVB7+HI21UCO3gQ6MInRrTHVmIHE+4y2O2s13TCmBc=
+	t=1707845241; cv=none; b=MsvXuoO9zj8fsOPvOWrIdFjZQNMOOyqkJeOZvpRyw+W99mxhYY0i8LDrpxEyAR9/IMzDeD6BJ5zlma8thFR7hrBsGfOxEiurNwnXUKy0p5ociGR4RFvk+zolFxflehydW1381nXT6hkBESGfeD9El3h+++toNhtt1x+ssOjWOCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845621; c=relaxed/simple;
-	bh=Lbm0sAo5PR876wGKBrtGQmSQH8Sb4ZSJ1UqwVpqnea0=;
+	s=arc-20240116; t=1707845241; c=relaxed/simple;
+	bh=B44iKJQRA5fa6sCfs/7UzpINMeiotHqjtFrah0aKq0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eiLCTFaBbyx7njVy1oEN5ZdpPg6NtxPXPOKQwrM20bZd0SH0PZArGpcUyqtw9d3CAaQHgUIkkdgRN6adylJHW6cQPQtibY2RflmYt6e1M8XJei8ZT9a5onnof5CPOsOx0rrqcXfthfOsKqe3Gl42aT4LareMq6WkO9J/8m92GFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qe5bh/dO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71110C433F1;
-	Tue, 13 Feb 2024 17:33:40 +0000 (UTC)
+	 MIME-Version; b=RHBx7cePy69dBu9bZQBEvKqmINQY+PiKFOmksdSf21aFr02Lf3eRdNphXagg0RDeZUQoFJNAYIwDCXMEiSktQlUfuXPiKjEMBQNtRU2S6NdPsXZ3nEffNHnflN+Bq5/gsG5nwWBcPwYhI+FYa21imG1QTonvIcixDJo29ILStwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLm6QPAH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40606C433F1;
+	Tue, 13 Feb 2024 17:27:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845621;
-	bh=Lbm0sAo5PR876wGKBrtGQmSQH8Sb4ZSJ1UqwVpqnea0=;
+	s=korg; t=1707845240;
+	bh=B44iKJQRA5fa6sCfs/7UzpINMeiotHqjtFrah0aKq0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qe5bh/dO84tT8B2HfIc7/9zyFEAONddfGtCeyG44O/IWKRdrgQtFy7y/ziiYDXNpR
-	 RI2Fsuh3VRP2SAmWvLMO8MqhZ3UxhlC9eLsxrdvhsLtFFDSNhcIZtFtkVSb8k8tNUO
-	 iEeLpDn2BPxCNPuMY6jrXy3SM1wzZgPDqvsjqNic=
+	b=eLm6QPAHxEbVoVFrYMWgczHodRJSQgcIvX1Kumgd+GRhxWJ9338w5nG2B9ITz6Erq
+	 e37pBHx4m313n4L7sOsAlp/oO8+XUjsL45pAA6QtgZtjEI9fNWTv47qsscXEZBeXdj
+	 8v2W276mZIRA9ZHPdJ+zDsQDa5nQ91b3DtsC09lg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Changbin Du <changbin.du@huawei.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Yang Jihong <yangjihong1@huawei.com>,
+	Cheng Lin <cheng.lin130@zte.com.cn>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 011/124] perf evlist: Fix evlist__new_default() for > 1 core PMU
+Subject: [PATCH 6.6 024/121] xfs: introduce protection for drop nlink
 Date: Tue, 13 Feb 2024 18:20:33 +0100
-Message-ID: <20240213171854.064122081@linuxfoundation.org>
+Message-ID: <20240213171853.679407295@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,100 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Cheng Lin <cheng.lin130@zte.com.cn>
 
-[ Upstream commit 7814fe24a6211a610db0b408d87420403b5b7a36 ]
+commit 2b99e410b28f5a75ae417e6389e767c7745d6fce upstream.
 
-The 'Session topology' test currently fails with this message when
-evlist__new_default() opens more than one event:
+When abnormal drop_nlink are detected on the inode,
+return error, to avoid corruption propagation.
 
-  32: Session topology                                                :
-  --- start ---
-  templ file: /tmp/perf-test-vv5YzZ
-  Using CPUID 0x00000000410fd070
-  Opening: unknown-hardware:HG
-  ------------------------------------------------------------
-  perf_event_attr:
-    type                             0 (PERF_TYPE_HARDWARE)
-    config                           0xb00000000
-    disabled                         1
-  ------------------------------------------------------------
-  sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8 = 4
-  Opening: unknown-hardware:HG
-  ------------------------------------------------------------
-  perf_event_attr:
-    type                             0 (PERF_TYPE_HARDWARE)
-    config                           0xa00000000
-    disabled                         1
-  ------------------------------------------------------------
-  sys_perf_event_open: pid 0  cpu -1  group_fd -1  flags 0x8 = 5
-  non matching sample_type
-  FAILED tests/topology.c:73 can't get session
-  ---- end ----
-  Session topology: FAILED!
-
-This is because when re-opening the file and parsing the header, Perf
-expects that any file that has more than one event has the sample ID
-flag set. Perf record already sets the flag in a similar way when there
-is more than one event, so add the same logic to evlist__new_default().
-
-evlist__new_default() is only currently used in tests, so I don't
-expect this change to have any other side effects. The other tests that
-use it don't save and re-open the file so don't hit this issue.
-
-The session topology test has been failing on Arm big.LITTLE platforms
-since commit 251aa040244a3b17 ("perf parse-events: Wildcard most
-"numeric" events") when evlist__new_default() started opening multiple
-events for 'cycles'.
-
-Fixes: 251aa040244a3b17 ("perf parse-events: Wildcard most "numeric" events")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: James Clark <james.clark@arm.com>
-[ This was failing as well on a Rocket Lake Refresh/14700k Intel hybrid system - Arnaldo ]
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Tested-by: Kan Liang <kan.liang@linux.intel.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Changbin Du <changbin.du@huawei.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Yang Jihong <yangjihong1@huawei.com>
-Closes: https://lore.kernel.org/lkml/CAP-5=fWVQ-7ijjK3-w1q+k2WYVNHbAcejb-xY0ptbjRw476VKA@mail.gmail.com/
-Link: https://lore.kernel.org/r/20240124094358.489372-1-james.clark@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Cheng Lin <cheng.lin130@zte.com.cn>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/evlist.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/xfs/xfs_inode.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/perf/util/evlist.c b/tools/perf/util/evlist.c
-index e36da58522ef..b0ed14a6da9d 100644
---- a/tools/perf/util/evlist.c
-+++ b/tools/perf/util/evlist.c
-@@ -103,7 +103,14 @@ struct evlist *evlist__new_default(void)
- 	err = parse_event(evlist, can_profile_kernel ? "cycles:P" : "cycles:Pu");
- 	if (err) {
- 		evlist__delete(evlist);
--		evlist = NULL;
-+		return NULL;
+diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
+index 4d55f58d99b7..fb85c5c81745 100644
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -918,6 +918,13 @@ xfs_droplink(
+ 	xfs_trans_t *tp,
+ 	xfs_inode_t *ip)
+ {
++	if (VFS_I(ip)->i_nlink == 0) {
++		xfs_alert(ip->i_mount,
++			  "%s: Attempt to drop inode (%llu) with nlink zero.",
++			  __func__, ip->i_ino);
++		return -EFSCORRUPTED;
 +	}
 +
-+	if (evlist->core.nr_entries > 1) {
-+		struct evsel *evsel;
-+
-+		evlist__for_each_entry(evlist, evsel)
-+			evsel__set_sample_id(evsel, /*can_sample_identifier=*/false);
- 	}
+ 	xfs_trans_ichgtime(tp, ip, XFS_ICHGTIME_CHG);
  
- 	return evlist;
+ 	drop_nlink(VFS_I(ip));
 -- 
 2.43.0
 
