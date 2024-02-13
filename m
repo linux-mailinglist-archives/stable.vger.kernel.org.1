@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-19743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E598F8533C6
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 15:56:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFB578533E3
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 15:59:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 819131F2CBA7
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 14:56:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43AF3B229E7
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 14:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A82F58105;
-	Tue, 13 Feb 2024 14:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29F8B58AB4;
+	Tue, 13 Feb 2024 14:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVsOjqGB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIO4gYTF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D0995FDC4
-	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 14:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBE8B58105;
+	Tue, 13 Feb 2024 14:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707836138; cv=none; b=am5+g/N60dlLCwY5UyNxRn4UyiV32EVCEOvAK+dLE/pewLnUMZsd37n41H/4JJVih5qVr0ilca7c0SlZaSW8z0klswymLJcYjPJsUmKl6q2+DQs6D1ag0jrhfAlhHGuHcuytQlge6DRMM40BgmCzRLP/kZ++KkOqxKbK2NHO42s=
+	t=1707836238; cv=none; b=cqeO1m1ntMyDZ7yDpcbrjS/0xMP8paNs3hpEkaYyEdoxmZplLcUMRKinchBoQZEX2AdLe6lUu1cxaIan0d1G4Sgb8MIEh8ernOr7NUn6JZY3xmgGj6PZbh/g1RyPTrHZjzZVRcAToEllKy8sUaldPwvQdswpK3/VEyoXO5Q/L/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707836138; c=relaxed/simple;
-	bh=r8Mh4ca9rAZ97DwnNOs0vNtsz8aDyVwYb2EAd3PGy6E=;
+	s=arc-20240116; t=1707836238; c=relaxed/simple;
+	bh=I3cgIB4It1MqQprbSzFE4+Lf/lqV5JUhGmN4TYaSTuM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n+RsInS0lLHwDTm6nzF+8iHBQklAtn5y81OyirZhj2MlUhFZGMT9Hhr3+Fht/uKZ/C+nMEHnJm6isusFkccAueJwrLix6/Mj9VY2R82kCLLldWZByDT00dsucBRGGW4LR8YkUxlTDHVMeFjJhCYrflH8AdUllQ7Pmjwl/0ww9AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVsOjqGB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C7BC433C7;
-	Tue, 13 Feb 2024 14:55:36 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=e3NTxCRUSnAFaU7hHgWTKuIY+U52ygTdchAgTac+2r9vC5l+y1rjyHzxjr55zjacIlWlyUbPyXdIfWUkyqUhRsiCrpSYeDKuWmsn3Js5l/zcxSD1voeMX4Wyi0Ud7nNtt6O2Mbyh+82zsMZnJMtYt3f4q42KS4ZH6pwZ6vYDiMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIO4gYTF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA8E3C433C7;
+	Tue, 13 Feb 2024 14:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707836137;
-	bh=r8Mh4ca9rAZ97DwnNOs0vNtsz8aDyVwYb2EAd3PGy6E=;
+	s=korg; t=1707836237;
+	bh=I3cgIB4It1MqQprbSzFE4+Lf/lqV5JUhGmN4TYaSTuM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=xVsOjqGBMdomFIyZbigNwlG/6mnRs/yX5NdAhe6UCrqgX6sn5jYPF5bbD9A2eepaf
-	 BF0ifHnZlg6V503dTGOML0jb/QnmXoJJe4OVJv5aAlm3oPEEezD3SlHupVCoh6lWqZ
-	 sUtsP9i4JKc3AH0JXtkGw2LqJcLompJqYfevC+nA=
-Date: Tue, 13 Feb 2024 15:55:34 +0100
+	b=qIO4gYTFZgRqso784204fbBphcuVdCKXzKeTaUw9zhIwXpP+8rf5uNOSkkZ1pU+Kq
+	 U4us3gpMK5/3C+h8kaUQaxNUIhra11KD3mqYaSAk3MKjzLvljLnUOBGWGmQRRax3hN
+	 Ftnk8Qs1POrxTk6Jm/TXI3j4X4ttWdj7oI1AdxDg=
+Date: Tue, 13 Feb 2024 15:57:14 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: "Marciniszyn, Mike" <mike.marciniszyn@intel.com>
-Cc: Sasha Levin <sashal@kernel.org>,
-	"Saleem, Shiraz" <shiraz.saleem@intel.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.1.y] RDMA/irdma: Ensure iWarp QP queue memory is OS
- paged aligned
-Message-ID: <2024021314-predator-scientist-84cd@gregkh>
-References: <20240207163240.433-1-shiraz.saleem@intel.com>
- <Zcj1JyNJww8njJFv@sashalap>
- <SA1PR11MB6895D85EBD4BEFDCEC57AAD286482@SA1PR11MB6895.namprd11.prod.outlook.com>
+To: Chao Yu <chao@kernel.org>
+Cc: stable@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org, Sheng Yong <shengyong@oppo.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: Re: [PATCH 6.1] f2fs: add helper to check compression level
+Message-ID: <2024021307-clumsily-worrier-10d7@gregkh>
+References: <20240212160530.1017205-1-chao@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,24 +55,17 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <SA1PR11MB6895D85EBD4BEFDCEC57AAD286482@SA1PR11MB6895.namprd11.prod.outlook.com>
+In-Reply-To: <20240212160530.1017205-1-chao@kernel.org>
 
-On Mon, Feb 12, 2024 at 01:02:52PM +0000, Marciniszyn, Mike wrote:
-> > >Fixes: e965ef0e7b2c ("RDMA/irdma: Split QP handler into
-> > >irdma_reg_user_mr_type_qp")
-> > 
-> > Is this fixes tag incorrect? there's no e965ef0e7b2c in 6.1.
-> > 
+On Tue, Feb 13, 2024 at 12:05:30AM +0800, Chao Yu wrote:
+> From: Sheng Yong <shengyong@oppo.com>
 > 
-> The fixes was correct for upstream.   The context change forced the re-port of patch and the Fixes is not appropriate for the older context.
+> commit c571fbb5b59a3741e48014faa92c2f14bc59fe50 upstream.
+> 
+> This patch adds a helper function to check if compression level is
+> valid.
 
-I do not understand, what context change?
-
-> You can drop if you want.
-
-Is it needed for 6.1.y or not?
-
-confused,
+Now queued up, thanks.
 
 greg k-h
 
