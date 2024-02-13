@@ -1,127 +1,172 @@
-Return-Path: <stable+bounces-19737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE1785338B
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 15:50:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A34E885339A
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 15:52:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43E8EB22AB3
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 14:50:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1D42B21FAD
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 14:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC07958106;
-	Tue, 13 Feb 2024 14:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7445B04B;
+	Tue, 13 Feb 2024 14:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8bAWb1u"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rLJi+XbP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7817D58105;
-	Tue, 13 Feb 2024 14:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5C358126
+	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 14:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707835803; cv=none; b=Bnc0QRdNNNsLrxE/Dq+1P7MnQfkDHYaYIqZt6PPiuWAdyrf5hki7vY2qld4wlSp3hAW27Im9k6NlCWNgjdMdia5m+cbotQXCmA12kRHQ/hVNzHv3CIttcjXLtr7K/XBHp0QhjRurvTVaoNwMYr2AjRR4deIEdiG8NMx+YHxE65Q=
+	t=1707835913; cv=none; b=q3hkkQIAPulcbK0uICbaPV/+D5pSonuH0+EQ6piaaGMkJiIUKR+G2A9sJ9oryGSAdzlzuzXIuiBZymBSnyJjcBNJ6HswYt+fXuUApmrM8Zm1hw8ytv77aw8MFzyMFBigHBW2dncIfZHfZsQ5oSsLviRh0ju2f0fsQMGyaLA1v9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707835803; c=relaxed/simple;
-	bh=AfXNvoDPfGxO4Tl8E8xiaQRy/lU+RIhza61C8gLWqgw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tU8I8nUbyIyf14Zc9RU6xhyiIiIlVRxlI6ykoGpZvBkYKktfvwnyPZd7tECjX+gFhta4hT+J32mV68mSSVKR2aMKxDL1x78dgaMbpFFLy4TnKJZT0zs8XkGij35uS8nmLJHMEsQ79BZyLMljftUdnjeLGLSv53Cx3HO052YBWuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8bAWb1u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B44C43390;
-	Tue, 13 Feb 2024 14:50:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707835803;
-	bh=AfXNvoDPfGxO4Tl8E8xiaQRy/lU+RIhza61C8gLWqgw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=w8bAWb1ukEFNJfV6I2vn9aEwQWg/6XlUcLZXRxIfEHyaq/vDunwdWzBzqwvRy2JZC
-	 5YZNHPpJJMmkwg/F54tsVm13wCIJAwJPBcZYFLnyle0g6oRhilqmDU6qfC5DAda5Tz
-	 GmSKMn1lNhq5em/cXN5EWFt7A+5ctRgLZtbzHI7g=
-Date: Tue, 13 Feb 2024 15:50:00 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: Sasha Levin <sashal@kernel.org>, David Laight <David.Laight@aculab.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [regression] linux-6.6.y, minmax: virtual memory exhausted in
- i586 chroot during kernel compilation
-Message-ID: <2024021318-shifty-daybed-fca8@gregkh>
-References: <f9f89284-0f48-4971-ad8d-86938a82fafc@leemhuis.info>
+	s=arc-20240116; t=1707835913; c=relaxed/simple;
+	bh=RT+W1llQ2r6hGJ2t8R1MHmof1Jb0u4B+SyQ/6sc6Ooo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PWzyhIS3RVdiMGTL1G3xS+78smmr0+MkweqTWYhC6aPF4pfib/hZgXOdcz+P9OR+vjikbur7l3uo1e64HAhAz2PML6gGGDJ0qSaejxK+us3xw7pTxCuw3wf4ccfm4V4Kb37QUPLR2E3VmMlIJ4vnKQ2Uipi0l1mfoHDxQXgPXXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rLJi+XbP; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-560530f4e21so10452a12.1
+        for <stable@vger.kernel.org>; Tue, 13 Feb 2024 06:51:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1707835909; x=1708440709; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AMWDpGfDclpJH/Ggj2FwXDcO3lILA0riLoFGeoe6y8s=;
+        b=rLJi+XbPHgA+xjmPulEAK8ADas8+q4elMrkva0fxiNioZbQ9mG0V9PnDduUW3zyegK
+         kidLXmXdYDehgpmFcpCvcw4/QZiz9zW0gcw9+HHAny5O+t+DiGaU6gxbroufLZdBwT91
+         ex07EHVLL47ptjx5FUasZCPSsrDfL2oIG2d1ZNnM+wOel/QFg3A3ceBzdYk2MqiJG4HT
+         SgVS6SurZ6uPFlkojlnhaogpXvkfjMueRkuWAikclG6JIs80h5NgciWp2oR/dRoA4htM
+         1ig0s5vMt6befWsq4YDf300GHY5y+hGBuKrtTbEoQi2daUApb7FvGdQ6RRbRec+u4s/M
+         vaLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707835909; x=1708440709;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AMWDpGfDclpJH/Ggj2FwXDcO3lILA0riLoFGeoe6y8s=;
+        b=UjWe01T2ZvJmnxoZQy37IkW3Nst9mj1dOipBU2b1IhJ2Con/OW10YJn8P7tX5KwaxE
+         ARcLrYalBaKyfmJDWjr9Lq1xFHjLULDol9LjI70fSn8hqP02DaZGiutyPxuksRYVRNyB
+         TKjTQ0eDhAL8kV81EIPT5onbMKgH2m+thgIPM3A/hVqBz3HH23zzlSKbiUJD1GmHcWjx
+         MMYYnwO1Qg9VsCLtzxIAlSve/YKW8thLlPa4zV69pNXrFgzmtb0/F84nFi7WMkhCwQtB
+         XS9E2zYkBKI7mS+JmFtIWifVSCWrg0+TLM6mB/S/qly01nAt3Khl0LNhfbK4OOSn7JCG
+         pVcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWutCufkZqx2yvZ37yEgPzQKZhMqQO3hltLxK4hAziQVoi753zj26nB8LvUcw0GFyrK2qKejS4VBPR5TwQLEvCuFs4fXkN8
+X-Gm-Message-State: AOJu0YwObvHCq2zM20bSUAm8v2h64nTpM8FMbU0ltqjPXO1xF8GXsSuV
+	wSokekWRFrTs9ksxRzIAMKH2+HU121lX43OtzJJ//rtXmDvHxhM4MVkZp6le3Yaio5wWJHV2bg+
+	Vi2HpjAeyPe1eE9KfWoxPwr5Y+s69rTDkRLG4
+X-Google-Smtp-Source: AGHT+IGfqYACGEjUOI7V/Rpir4fZ5TMPFFsY+2iSCEWPhBFRoQxs5ewCRgGTA1Fws5XWHQJLWgigu9RN1cYbpTwOfTE=
+X-Received: by 2002:a50:d581:0:b0:562:deb:df00 with SMTP id
+ v1-20020a50d581000000b005620debdf00mr47709edi.4.1707835909232; Tue, 13 Feb
+ 2024 06:51:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f9f89284-0f48-4971-ad8d-86938a82fafc@leemhuis.info>
+References: <20240203190927.19669-1-petr@tesarici.cz> <ea1567d9-ce66-45e6-8168-ac40a47d1821@roeck-us.net>
+ <Zct5qJcZw0YKx54r@xhacker>
+In-Reply-To: <Zct5qJcZw0YKx54r@xhacker>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 13 Feb 2024 15:51:35 +0100
+Message-ID: <CANn89i+4tVWezqr=BYZ5AF=9EgV2EPqhdHun=u=ga32CEJ4BXQ@mail.gmail.com>
+Subject: Re: [PATCH net v3] net: stmmac: protect updates of 64-bit statistics counters
+To: Jisheng Zhang <jszhang@kernel.org>
+Cc: Guenter Roeck <linux@roeck-us.net>, Petr Tesarik <petr@tesarici.cz>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu <joabreu@synopsys.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Chen-Yu Tsai <wens@csie.org>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
+	"open list:STMMAC ETHERNET DRIVER" <netdev@vger.kernel.org>, 
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>, 
+	"moderated list:ARM/STM32 ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:ARM/Allwinner sunXi SoC support" <linux-sunxi@lists.linux.dev>, Marc Haber <mh+netdev@zugschlus.de>, 
+	Andrew Lunn <andrew@lunn.ch>, Florian Fainelli <f.fainelli@gmail.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 12, 2024 at 05:16:58PM +0100, Linux regression tracking (Thorsten Leemhuis) wrote:
-> Hi Greg, Sasha, and David,
-> 
-> I noticed a regression report in bugzilla.kernel.org that seems to be
-> specific to the linux-6.6.y series:
-> 
-> Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=218484 :
-> 
-> > After upgrading to version 6.6.16, the kernel compilation on a i586
-> > arch (on a 32bit chroot in a 64bit host) fails with a message:
-> > 
-> > virtual memory exhausted: Cannot allocate memory
-> > 
-> > this happens even lowering the number of parallel compilation
-> > threads. On a x86_64 arch the same problem doesn't occur. It's not
-> > clear whether some weird recursion is triggered that exhausts the
-> > memory, but it seems that the problem is caused by the patchset
-> > 'minmax' added to the 6.6.16 version, in particular it seems caused
-> > by these patches:
-> > 
-> > - minmax-allow-min-max-clamp-if-the-arguments-have-the-same-signedness.patch
-> > - minmax-fix-indentation-of-__cmp_once-and-__clamp_once.patch
-> > - minmax-allow-comparisons-of-int-against-unsigned-char-short.patch
-> > - minmax-relax-check-to-allow-comparison-between-unsigned-arguments-and-signed-constants.patch
-> > 
-> > Reverting those patches fixes the memory exhaustion problem during compilation.
-> 
-> The reporter later added:
-> 
-> > From a quick test the same problem doesn't occur in 6.8-rc4.
-> See the ticket for more details.
-> 
-> Note, you have to use bugzilla to reach the reporter, as I sadly[1] can
-> not CCed them in mails like this.
-> 
-> [TLDR for the rest of this mail: I'm adding this report to the list of
-> tracked Linux kernel regressions; the text you find below is based on a
-> few templates paragraphs you might have encountered already in similar
-> form.]
-> 
-> BTW, let me use this mail to also add the report to the list of tracked
-> regressions to ensure it's doesn't fall through the cracks:
-> 
-> #regzbot introduced: 204c653d5d0c79940..9487d93f172acef
-> https://bugzilla.kernel.org/show_bug.cgi?id=218484
-> #regzbot title: minmax: virtual memory exhausted in 6.6.16 with i586 chroot
-> #regzbot ignore-activity
-> 
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> --
-> Everything you wanna know about Linux kernel regression tracking:
-> https://linux-regtracking.leemhuis.info/about/#tldr
-> If I did something stupid, please tell me, as explained on that page.
-> 
-> [1] because bugzilla.kernel.org tells users upon registration their
-> "email address will never be displayed to logged out users"
+On Tue, Feb 13, 2024 at 3:29=E2=80=AFPM Jisheng Zhang <jszhang@kernel.org> =
+wrote:
+>
+> On Sun, Feb 11, 2024 at 08:30:21PM -0800, Guenter Roeck wrote:
+> > Hi,
+> >
+> > On Sat, Feb 03, 2024 at 08:09:27PM +0100, Petr Tesarik wrote:
+> > > As explained by a comment in <linux/u64_stats_sync.h>, write side of =
+struct
+> > > u64_stats_sync must ensure mutual exclusion, or one seqcount update c=
+ould
+> > > be lost on 32-bit platforms, thus blocking readers forever. Such lock=
+ups
+> > > have been observed in real world after stmmac_xmit() on one CPU raced=
+ with
+> > > stmmac_napi_poll_tx() on another CPU.
+> > >
+> > > To fix the issue without introducing a new lock, split the statics in=
+to
+> > > three parts:
+> > >
+> > > 1. fields updated only under the tx queue lock,
+> > > 2. fields updated only during NAPI poll,
+> > > 3. fields updated only from interrupt context,
+> > >
+> > > Updates to fields in the first two groups are already serialized thro=
+ugh
+> > > other locks. It is sufficient to split the existing struct u64_stats_=
+sync
+> > > so that each group has its own.
+> > >
+> > > Note that tx_set_ic_bit is updated from both contexts. Split this cou=
+nter
+> > > so that each context gets its own, and calculate their sum to get the=
+ total
+> > > value in stmmac_get_ethtool_stats().
+> > >
+> > > For the third group, multiple interrupts may be processed by differen=
+t CPUs
+> > > at the same time, but interrupts on the same CPU will not nest. Move =
+fields
+> > > from this group to a newly created per-cpu struct stmmac_pcpu_stats.
+> > >
+> > > Fixes: 133466c3bbe1 ("net: stmmac: use per-queue 64 bit statistics wh=
+ere necessary")
+> > > Link: https://lore.kernel.org/netdev/Za173PhviYg-1qIn@torres.zugschlu=
+s.de/t/
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Petr Tesarik <petr@tesarici.cz>
+> >
+> > This patch results in a lockdep splat. Backtrace and bisect results att=
+ached.
+> >
+> > Guenter
+> >
+> > ---
+> > [   33.736728] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > [   33.736805] WARNING: inconsistent lock state
+> > [   33.736953] 6.8.0-rc4 #1 Tainted: G                 N
+> > [   33.737080] --------------------------------
+> > [   33.737155] inconsistent {HARDIRQ-ON-W} -> {IN-HARDIRQ-W} usage.
+> > [   33.737309] kworker/0:2/39 [HC1[1]:SC0[2]:HE0:SE0] takes:
+> > [   33.737459] ef792074 (&syncp->seq#2){?...}-{0:0}, at: sun8i_dwmac_dm=
+a_interrupt+0x9c/0x28c
+> > [   33.738206] {HARDIRQ-ON-W} state was registered at:
+> > [   33.738318]   lock_acquire+0x11c/0x368
+> > [   33.738431]   __u64_stats_update_begin+0x104/0x1ac
+> > [   33.738525]   stmmac_xmit+0x4d0/0xc58
+>
+> interesting lockdep splat...
+> stmmac_xmit() operates on txq_stats->q_syncp, while the
+> sun8i_dwmac_dma_interrupt() operates on pcpu's priv->xstats.pcpu_stats
+> they are different syncp. so how does lockdep splat happen.
 
-I think this was already fixed in 6.7 or Linus's tree, but I can't seem
-to find the commit at the moment.
-
-What file is causing the compiler to crash?  Is it some video or media
-driver?
-
-thanks,
-
-greg k-h
+Right, I do not see anything obvious yet.
 
