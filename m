@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-19859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5834985379B
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:27:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D95385383E
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:34:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C7E81F26754
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:27:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9C7528BD87
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8C6D604A7;
-	Tue, 13 Feb 2024 17:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DB060252;
+	Tue, 13 Feb 2024 17:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zflo49Hl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SbA/7ivh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8834604A2;
-	Tue, 13 Feb 2024 17:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E582A6025D;
+	Tue, 13 Feb 2024 17:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845231; cv=none; b=Ef9Pv+4NMcxMl8TGTDruskmFrYgxrPAA6oCPAIXpdc9HxFjpVWmOqbVq8g1K00FpkWJL9C5r4tHzwfZHJFfY43rxtA603dxEzdsK91/L5OfEB1yvxi51hrzWclhUs13teHPvLdJ5NjyHJYXvwl+Du5F/mdWx5k8y9rFunzkte6A=
+	t=1707845678; cv=none; b=cNVS6BedbxRykbw8BAvlCR3cxDwXZH0nvCIIBzYcd/L/U10bXj2IreEvf7r8pWeTYMIqlkmfgVHfe5tg+2Fi4jE6tpYV1qEu9MrVCfFeA0ItQW0XhVSpW6lDeGgZX2e1UKTcV6VuOxOVqGlwLBHH5dhpHELHrsQEoUkN1LYjf9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845231; c=relaxed/simple;
-	bh=lf+81m3atBnHGtptCL17eaCPafRpuW42ccj6wzpeEM0=;
+	s=arc-20240116; t=1707845678; c=relaxed/simple;
+	bh=QKHR4CArzhn0b9EkhnWXjjD+4VciSNy1EGMAmC6ZcKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vkp6+wu1FvWXVcms5t6UP5dwpHp2XmckGW48aPxYGqkz5RWG8taKiafa5n/rtiPlqw/KAtfgiu2UCpfDP4KFcHanCzQ88SISPNM6SkwADY/vO+ZoIqV3dR77tDfxqSzOlwvIQnU0Mc4O+LwMhgQ+hNHrjFbNc7NkW0vtuFlR4WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zflo49Hl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE59C433F1;
-	Tue, 13 Feb 2024 17:27:10 +0000 (UTC)
+	 MIME-Version; b=J7f2PQcsKRwIdXN/9QV9Ozz+0/Px/KcxjEFvEwqArLnauoPZkmZneNlFDcU7ihE+pquNFizuQm6hZCOmnxrYy2CjbixAGT3amaBHAoPIYXUJnCYpg2qkbClrlV8XnBPIDZqM8le6gx8rqYMbS5aiR83DsId7ZQ3gu+utadNiPHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SbA/7ivh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8864C43399;
+	Tue, 13 Feb 2024 17:34:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845231;
-	bh=lf+81m3atBnHGtptCL17eaCPafRpuW42ccj6wzpeEM0=;
+	s=korg; t=1707845677;
+	bh=QKHR4CArzhn0b9EkhnWXjjD+4VciSNy1EGMAmC6ZcKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zflo49Hlt5puZwVux+pHmDSm/0I2sQiqa0i63kTZ5o5NLDxAdCIt8Q0F032JzO25L
-	 7kRBnRclapG3bkU0DK6uQBbdCjcjN7ZwKV5l8Y7R1f3JNCroBbvguzzCAi+C2rhmUA
-	 nQ051f/MpHnVGi98N4xEo9AY7BRCQ7Otcq2occPE=
+	b=SbA/7ivhFmEge0B2q++tAfOAdnErj2j+J8kxHjqBJJHs/kechhdX1bZtXyfSxdLS+
+	 fsfF7CmFPQVQSnGQe0pQsM9iv06TJawlZ14nVZzJWnt/1/eiD9yxXHMWQOstZ2kzCV
+	 mpgoxbiF8gdyLlVbntzpPem7d/eJd9jb+zhFjFoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	Chandan Babu R <chandanbabu@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ben Gainey <ben.gainey@arm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/121] xfs: rt stubs should return negative errnos when rt disabled
-Date: Tue, 13 Feb 2024 18:20:30 +0100
-Message-ID: <20240213171853.590352799@linuxfoundation.org>
+Subject: [PATCH 6.7 009/124] perf tests: Add perf script test
+Date: Tue, 13 Feb 2024 18:20:31 +0100
+Message-ID: <20240213171854.003349208@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +70,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Ian Rogers <irogers@google.com>
 
-commit c2988eb5cff75c02bc57e02c323154aa08f55b78 upstream.
+[ Upstream commit bb177a85e82b37d3b76e65f3f773e8502be49d9b ]
 
-When realtime support is not compiled into the kernel, these functions
-should return negative errnos, not positive errnos.  While we're at it,
-fix a broken macro declaration.
+Start a new set of shell tests for testing perf script. The initial
+contribution is checking that some perf db-export functionality works
+as reported in this regression by Ben Gainey <ben.gainey@arm.com>:
+https://lore.kernel.org/lkml/20231207140911.3240408-1-ben.gainey@arm.com/
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Tested-by: Ben Gainey <ben.gainey@arm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20231207174057.1482161-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 2dac1f089add ("perf test: Fix 'perf script' tests on s390")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_rtalloc.h | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ tools/perf/tests/shell/script.sh | 66 ++++++++++++++++++++++++++++++++
+ 1 file changed, 66 insertions(+)
+ create mode 100755 tools/perf/tests/shell/script.sh
 
-diff --git a/fs/xfs/xfs_rtalloc.h b/fs/xfs/xfs_rtalloc.h
-index 3b2f1b499a11..65c284e9d33e 100644
---- a/fs/xfs/xfs_rtalloc.h
-+++ b/fs/xfs/xfs_rtalloc.h
-@@ -141,17 +141,17 @@ int xfs_rtalloc_extent_is_free(struct xfs_mount *mp, struct xfs_trans *tp,
- 			       bool *is_free);
- int xfs_rtalloc_reinit_frextents(struct xfs_mount *mp);
- #else
--# define xfs_rtallocate_extent(t,b,min,max,l,f,p,rb)    (ENOSYS)
--# define xfs_rtfree_extent(t,b,l)                       (ENOSYS)
--# define xfs_rtfree_blocks(t,rb,rl)			(ENOSYS)
--# define xfs_rtpick_extent(m,t,l,rb)                    (ENOSYS)
--# define xfs_growfs_rt(mp,in)                           (ENOSYS)
--# define xfs_rtalloc_query_range(t,l,h,f,p)             (ENOSYS)
--# define xfs_rtalloc_query_all(m,t,f,p)                 (ENOSYS)
--# define xfs_rtbuf_get(m,t,b,i,p)                       (ENOSYS)
--# define xfs_verify_rtbno(m, r)			(false)
--# define xfs_rtalloc_extent_is_free(m,t,s,l,i)          (ENOSYS)
--# define xfs_rtalloc_reinit_frextents(m)                (0)
-+# define xfs_rtallocate_extent(t,b,min,max,l,f,p,rb)	(-ENOSYS)
-+# define xfs_rtfree_extent(t,b,l)			(-ENOSYS)
-+# define xfs_rtfree_blocks(t,rb,rl)			(-ENOSYS)
-+# define xfs_rtpick_extent(m,t,l,rb)			(-ENOSYS)
-+# define xfs_growfs_rt(mp,in)				(-ENOSYS)
-+# define xfs_rtalloc_query_range(m,t,l,h,f,p)		(-ENOSYS)
-+# define xfs_rtalloc_query_all(m,t,f,p)			(-ENOSYS)
-+# define xfs_rtbuf_get(m,t,b,i,p)			(-ENOSYS)
-+# define xfs_verify_rtbno(m, r)				(false)
-+# define xfs_rtalloc_extent_is_free(m,t,s,l,i)		(-ENOSYS)
-+# define xfs_rtalloc_reinit_frextents(m)		(0)
- static inline int		/* error */
- xfs_rtmount_init(
- 	xfs_mount_t	*mp)	/* file system mount structure */
-@@ -162,7 +162,7 @@ xfs_rtmount_init(
- 	xfs_warn(mp, "Not built with CONFIG_XFS_RT");
- 	return -ENOSYS;
- }
--# define xfs_rtmount_inodes(m)  (((mp)->m_sb.sb_rblocks == 0)? 0 : (ENOSYS))
-+# define xfs_rtmount_inodes(m)  (((mp)->m_sb.sb_rblocks == 0)? 0 : (-ENOSYS))
- # define xfs_rtunmount_inodes(m)
- #endif	/* CONFIG_XFS_RT */
- 
+diff --git a/tools/perf/tests/shell/script.sh b/tools/perf/tests/shell/script.sh
+new file mode 100755
+index 000000000000..5ae7bd0031a8
+--- /dev/null
++++ b/tools/perf/tests/shell/script.sh
+@@ -0,0 +1,66 @@
++#!/bin/sh
++# perf script tests
++# SPDX-License-Identifier: GPL-2.0
++
++set -e
++
++temp_dir=$(mktemp -d /tmp/perf-test-script.XXXXXXXXXX)
++
++perfdatafile="${temp_dir}/perf.data"
++db_test="${temp_dir}/db_test.py"
++
++err=0
++
++cleanup()
++{
++	trap - EXIT TERM INT
++	sane=$(echo "${temp_dir}" | cut -b 1-21)
++	if [ "${sane}" = "/tmp/perf-test-script" ] ; then
++		echo "--- Cleaning up ---"
++		rm -f "${temp_dir}/"*
++		rmdir "${temp_dir}"
++	fi
++}
++
++trap_cleanup()
++{
++	cleanup
++	exit 1
++}
++
++trap trap_cleanup EXIT TERM INT
++
++
++test_db()
++{
++	echo "DB test"
++
++	# Check if python script is supported
++	libpython=$(perf version --build-options | grep python | grep -cv OFF)
++	if [ "${libpython}" != "1" ] ; then
++		echo "SKIP: python scripting is not supported"
++		err=2
++		return
++	fi
++
++	cat << "_end_of_file_" > "${db_test}"
++perf_db_export_mode = True
++perf_db_export_calls = False
++perf_db_export_callchains = True
++
++def sample_table(*args):
++    print(f'sample_table({args})')
++
++def call_path_table(*args):
++    print(f'call_path_table({args}')
++_end_of_file_
++	perf record -g -o "${perfdatafile}" true
++	perf script -i "${perfdatafile}" -s "${db_test}"
++	echo "DB test [Success]"
++}
++
++test_db
++
++cleanup
++
++exit $err
 -- 
 2.43.0
 
