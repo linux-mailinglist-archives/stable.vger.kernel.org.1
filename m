@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-19995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEEAC85384F
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:36:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F63E853733
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:22:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69FB3283C2D
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:36:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D21F51C24DFF
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255D6604AA;
-	Tue, 13 Feb 2024 17:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ADCE5FEE0;
+	Tue, 13 Feb 2024 17:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WITzLOxs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4SILU40"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65CE604A2;
-	Tue, 13 Feb 2024 17:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11A05FDB5;
+	Tue, 13 Feb 2024 17:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845705; cv=none; b=Zkiq5WdoUSJjkMjm2l0kY7Sgua6BS/hpTm+uy4wBjib00LMpU3NY8V8CTMTS4cO7E5vIoZWsk6YJqSXwSdETDphtnzskG/RrGZPKAwtzpH31EsVqM8PP+6gS3jUHmvmjfY2whZqg7Cerb0oLCsyk4/r5+It7xth0pBqUZSnxC4k=
+	t=1707844975; cv=none; b=g2WTBl+uv5KlXqqOOO9aCDN/7JOWLH63s07Divs8O5u3xNNxdukA1vyyPkSA7TMebMsi5yDgAZwpKw6D8OEc5HrXYAaYyzGoBgV4EmkmT/ssjpFg+Ssq5WrQPaiMsi4Z0sWW18MOCOcUEuMW2N9IJ0iVkIR9riL6t4jf1cc4thM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845705; c=relaxed/simple;
-	bh=jiplrRBAbriW+aJem5kzACGGHOYqV6tl68AWzmcrB54=;
+	s=arc-20240116; t=1707844975; c=relaxed/simple;
+	bh=ggorJiLnHNfhONmO5V+lCLm/Uq1GkFOGmgn6tuDFUMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tmv7KA7QbvF6tFordXHvY6D+Q8gKixZ1Pwdj/fQRoOE41muHElYlvGYTlP4Bz3EsMLsWfiqtCrYUJZ5yAu7xQvdUTvP4jD296xQQ4PaSCkmElit8fCLRWhzX/jOudUy6wy6WIZDmE+VAYBISg6CtVbtBkLGXaitcbFMx8+Pnd1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WITzLOxs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CB30C433F1;
-	Tue, 13 Feb 2024 17:35:05 +0000 (UTC)
+	 MIME-Version; b=c97moWs/NsncrrdbUJqMLTYmStThLXmpN5x1LvAEdDSinQUAmlQVT1pxqlkwIKzKQXhRy30f+Uyt4iyIJ6xy6x6iZEL7NZg+NGQvTwYNUCgjxrDpTnkQ0jBTtRN0orpvjEis1XBs6PcQxZLvg53yGoFub/mB5TStT5qJjc0DaTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4SILU40; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9813C433C7;
+	Tue, 13 Feb 2024 17:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845705;
-	bh=jiplrRBAbriW+aJem5kzACGGHOYqV6tl68AWzmcrB54=;
+	s=korg; t=1707844974;
+	bh=ggorJiLnHNfhONmO5V+lCLm/Uq1GkFOGmgn6tuDFUMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WITzLOxsN/5T33E+DXRYZKaJDRcL/kyRJ5MDKLmc6OuEx1MKrkEtGP2kFIHk0ttHj
-	 mpyev5sfRtkLd6f1uk14it5cejKUoo/NpCA46QE7qrLaGU7NlJsHaTCIlm2EUEUtuO
-	 g3ord8AYWHLQgNzpdWGJE5u9htxmNVH8yPcjp4+I=
+	b=r4SILU40cELaTsvdAuMcn1nLG1b13JF080UNTX5IxqhXTYjki8dM7yswpuJKER06n
+	 Ad7iKIvsWsskAaMi1moamBUi/43r+EUj20ttj0OI1tJzChp5hJOcoxkp5vKzUBEzLQ
+	 FkUdl1JIPGxTAokv/NtToF1PJKatoxVrmYo3DSW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Kuogee Hsieh <quic_khsieh@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 035/124] selftests/net: convert pmtu.sh to run it in unique namespace
+Subject: [PATCH 6.1 11/64] drm/msm/dp: return correct Colorimetry for DP_TEST_DYNAMIC_RANGE_CEA case
 Date: Tue, 13 Feb 2024 18:20:57 +0100
-Message-ID: <20240213171854.758439078@linuxfoundation.org>
+Message-ID: <20240213171845.084647237@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Kuogee Hsieh <quic_khsieh@quicinc.com>
 
-[ Upstream commit 378f082eaf3760cd7430fbcb1e4f8626bb6bc0ae ]
+[ Upstream commit fcccdafd91f8bdde568b86ff70848cf83f029add ]
 
-pmtu test use /bin/sh, so we need to source ./lib.sh instead of lib.sh
-Here is the test result after conversion.
+MSA MISC0 bit 1 to 7 contains Colorimetry Indicator Field.
+dp_link_get_colorimetry_config() returns wrong colorimetry value
+in the DP_TEST_DYNAMIC_RANGE_CEA case in the current implementation.
+Hence fix this problem by having dp_link_get_colorimetry_config()
+return defined CEA RGB colorimetry value in the case of
+DP_TEST_DYNAMIC_RANGE_CEA.
 
- # ./pmtu.sh
- TEST: ipv4: PMTU exceptions                                         [ OK ]
- TEST: ipv4: PMTU exceptions - nexthop objects                       [ OK ]
- TEST: ipv6: PMTU exceptions                                         [ OK ]
- TEST: ipv6: PMTU exceptions - nexthop objects                       [ OK ]
- ...
- TEST: ipv4: list and flush cached exceptions - nexthop objects      [ OK ]
- TEST: ipv6: list and flush cached exceptions                        [ OK ]
- TEST: ipv6: list and flush cached exceptions - nexthop objects      [ OK ]
- TEST: ipv4: PMTU exception w/route replace                          [ OK ]
- TEST: ipv4: PMTU exception w/route replace - nexthop objects        [ OK ]
- TEST: ipv6: PMTU exception w/route replace                          [ OK ]
- TEST: ipv6: PMTU exception w/route replace - nexthop objects        [ OK ]
+Changes in V2:
+-- drop retrieving colorimetry from colorspace
+-- drop dr = link->dp_link.test_video.test_dyn_range assignment
 
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: e71e016ad0f6 ("selftests: net: fix tcp listener handling in pmtu.sh")
+Changes in V3:
+-- move defined MISCr0a Colorimetry vale to dp_reg.h
+-- rewording commit title
+-- rewording commit text to more precise describe this patch
+
+Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
+Signed-off-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/574888/
+Link: https://lore.kernel.org/r/1705526010-597-1-git-send-email-quic_khsieh@quicinc.com
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/pmtu.sh | 27 +++++++++------------------
- 1 file changed, 9 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/msm/dp/dp_link.c | 12 +++++++-----
+ drivers/gpu/drm/msm/dp/dp_reg.h  |  3 +++
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
-index 4a5f031be232..8518eaacf4b5 100755
---- a/tools/testing/selftests/net/pmtu.sh
-+++ b/tools/testing/selftests/net/pmtu.sh
-@@ -198,8 +198,7 @@
- # - pmtu_ipv6_route_change
- #	Same as above but with IPv6
+diff --git a/drivers/gpu/drm/msm/dp/dp_link.c b/drivers/gpu/drm/msm/dp/dp_link.c
+index 3c7884c85f61..ceb382fa56d5 100644
+--- a/drivers/gpu/drm/msm/dp/dp_link.c
++++ b/drivers/gpu/drm/msm/dp/dp_link.c
+@@ -7,6 +7,7 @@
  
--# Kselftest framework requirement - SKIP code is 4.
--ksft_skip=4
-+source ./lib.sh
+ #include <drm/drm_print.h>
  
- PAUSE_ON_FAIL=no
- VERBOSE=0
-@@ -268,16 +267,6 @@ tests="
- 	pmtu_ipv4_route_change		ipv4: PMTU exception w/route replace	1
- 	pmtu_ipv6_route_change		ipv6: PMTU exception w/route replace	1"
++#include "dp_reg.h"
+ #include "dp_link.h"
+ #include "dp_panel.h"
  
--NS_A="ns-A"
--NS_B="ns-B"
--NS_C="ns-C"
--NS_R1="ns-R1"
--NS_R2="ns-R2"
--ns_a="ip netns exec ${NS_A}"
--ns_b="ip netns exec ${NS_B}"
--ns_c="ip netns exec ${NS_C}"
--ns_r1="ip netns exec ${NS_R1}"
--ns_r2="ip netns exec ${NS_R2}"
- # Addressing and routing for tests with routers: four network segments, with
- # index SEGMENT between 1 and 4, a common prefix (PREFIX4 or PREFIX6) and an
- # identifier ID, which is 1 for hosts (A and B), 2 for routers (R1 and R2).
-@@ -543,13 +532,17 @@ setup_ip6ip6() {
+@@ -1075,7 +1076,7 @@ int dp_link_process_request(struct dp_link *dp_link)
+ 
+ int dp_link_get_colorimetry_config(struct dp_link *dp_link)
+ {
+-	u32 cc;
++	u32 cc = DP_MISC0_COLORIMERY_CFG_LEGACY_RGB;
+ 	struct dp_link_private *link;
+ 
+ 	if (!dp_link) {
+@@ -1089,10 +1090,11 @@ int dp_link_get_colorimetry_config(struct dp_link *dp_link)
+ 	 * Unless a video pattern CTS test is ongoing, use RGB_VESA
+ 	 * Only RGB_VESA and RGB_CEA supported for now
+ 	 */
+-	if (dp_link_is_video_pattern_requested(link))
+-		cc = link->dp_link.test_video.test_dyn_range;
+-	else
+-		cc = DP_TEST_DYNAMIC_RANGE_VESA;
++	if (dp_link_is_video_pattern_requested(link)) {
++		if (link->dp_link.test_video.test_dyn_range &
++					DP_TEST_DYNAMIC_RANGE_CEA)
++			cc = DP_MISC0_COLORIMERY_CFG_CEA_RGB;
++	}
+ 
+ 	return cc;
  }
+diff --git a/drivers/gpu/drm/msm/dp/dp_reg.h b/drivers/gpu/drm/msm/dp/dp_reg.h
+index 268602803d9a..176a503ece9c 100644
+--- a/drivers/gpu/drm/msm/dp/dp_reg.h
++++ b/drivers/gpu/drm/msm/dp/dp_reg.h
+@@ -129,6 +129,9 @@
+ #define DP_MISC0_COLORIMETRY_CFG_SHIFT		(0x00000001)
+ #define DP_MISC0_TEST_BITS_DEPTH_SHIFT		(0x00000005)
  
- setup_namespaces() {
-+	setup_ns NS_A NS_B NS_C NS_R1 NS_R2
- 	for n in ${NS_A} ${NS_B} ${NS_C} ${NS_R1} ${NS_R2}; do
--		ip netns add ${n} || return 1
--
- 		# Disable DAD, so that we don't have to wait to use the
- 		# configured IPv6 addresses
- 		ip netns exec ${n} sysctl -q net/ipv6/conf/default/accept_dad=0
- 	done
-+	ns_a="ip netns exec ${NS_A}"
-+	ns_b="ip netns exec ${NS_B}"
-+	ns_c="ip netns exec ${NS_C}"
-+	ns_r1="ip netns exec ${NS_R1}"
-+	ns_r2="ip netns exec ${NS_R2}"
- }
++#define DP_MISC0_COLORIMERY_CFG_LEGACY_RGB	(0)
++#define DP_MISC0_COLORIMERY_CFG_CEA_RGB		(0x04)
++
+ #define REG_DP_VALID_BOUNDARY			(0x00000030)
+ #define REG_DP_VALID_BOUNDARY_2			(0x00000034)
  
- setup_veth() {
-@@ -839,7 +832,7 @@ setup_bridge() {
- 	run_cmd ${ns_a} ip link set br0 up
- 
- 	run_cmd ${ns_c} ip link add veth_C-A type veth peer name veth_A-C
--	run_cmd ${ns_c} ip link set veth_A-C netns ns-A
-+	run_cmd ${ns_c} ip link set veth_A-C netns ${NS_A}
- 
- 	run_cmd ${ns_a} ip link set veth_A-C up
- 	run_cmd ${ns_c} ip link set veth_C-A up
-@@ -944,9 +937,7 @@ cleanup() {
- 	done
- 	socat_pids=
- 
--	for n in ${NS_A} ${NS_B} ${NS_C} ${NS_R1} ${NS_R2}; do
--		ip netns del ${n} 2> /dev/null
--	done
-+	cleanup_all_ns
- 
- 	ip link del veth_A-C			2>/dev/null
- 	ip link del veth_A-R1			2>/dev/null
 -- 
 2.43.0
 
