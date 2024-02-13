@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-19828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C3085376F
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:25:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D03B85388A
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:38:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 324B028D2B9
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:25:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 091DC2853A4
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E5E5FF0A;
-	Tue, 13 Feb 2024 17:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A05F5F56B;
+	Tue, 13 Feb 2024 17:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bjOpcuD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkU6yxJM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441FF5FEFE;
-	Tue, 13 Feb 2024 17:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB89A93C;
+	Tue, 13 Feb 2024 17:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845125; cv=none; b=gQEsTT+Q+9blzm3BrytD8EhO40nTHmnRyf0j3cnbXnfiuZMp9LTT5MzdQJs4Kh8Bj7P6Ia72jljwM8zRCtWpwCAAKwTdh9kxdbeoCS3bPw/77+CYlq8oLCnv2LTRnFptzB46cLH3qSgHSlJdil+Iu7C7X8uoNXcUerpNUBqrUH0=
+	t=1707845865; cv=none; b=QTCv0SmAs9yd0Ta5c7Eyx7cYIRhVeUKtYnhGjxgIV2mPoOuu4XxXcVMQ9Bg8lgh7eBBYKqkpf23AhUwYOb+qUmXP3pz4fisVHdNwP844ahV4jrciZP9gtZX8tqSQLW95neKi5Saao2FdJ9AHJ19a0yI7eHEBn6QPTaoq7FUhm+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845125; c=relaxed/simple;
-	bh=QX5VOy/lj6xWBIcbfkN/VtZhbLV1paXakFWr2/gx2MI=;
+	s=arc-20240116; t=1707845865; c=relaxed/simple;
+	bh=s6hPUiXo93quv15tVP/37Q+VMaMbOWDwernpWy3RX4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gVGe7xQhwI2FOEHdAHEdUBRiS4HVhiZEGYHhN2SeDi40Ej14p9V7h89k+puNqSKDZI2LRUOdgTZ4DbQngA3scuVo02CbWw+uI8GAz3/ZqSgayOjZtM00IPOonWH/Aya52e2rYTW9x+vHNtFOCoQOg8Z1S00tVNh8/OifrriPhgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bjOpcuD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B066C433F1;
-	Tue, 13 Feb 2024 17:25:24 +0000 (UTC)
+	 MIME-Version; b=qzpGFjb/paLuWBGgVyeNSeXN8J4flzRMHF+aEAPn3gghC47kWEyEd6aiyd8lyWWfb4AD+FG2Oyzi8btB3n19I6f5uHj4MwWCwBKKYQyIjO9t4GN0RqCEdAzVz7b/WsaWNsFQI7BeDI6whtwliLuJx43zhHh/1cil0qy6Dnmr8Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkU6yxJM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3331AC433C7;
+	Tue, 13 Feb 2024 17:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845125;
-	bh=QX5VOy/lj6xWBIcbfkN/VtZhbLV1paXakFWr2/gx2MI=;
+	s=korg; t=1707845865;
+	bh=s6hPUiXo93quv15tVP/37Q+VMaMbOWDwernpWy3RX4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bjOpcuD1os/Cv1bVcbHlqEds9p5OYbJlsrtslzIuGO6weURK7iCQxTL/fWftS2Br+
-	 LhjE6j5Zgx6v4862kLeK0gJm3x2V2FhochNZtheNvm4PhaE+005lYkJ3m1/g+yrz7d
-	 xtzezPw/3S/V5aiKecWI9YP2u/DJMedjbHyySiPk=
+	b=RkU6yxJMIyZ1W3IMjaLBAm/tXDmmmabtaf+4oQHjpyKyaojg//R9l+egWcIzxq076
+	 VvE3G9vh7B6BmG6txJCGIovjYLA7aLCuvWHW9nnpj8cahzq3VmAQI97AM3RUDnP8cj
+	 LV5H5svtPxMcZKAXQKV7gV6esFeTBzdxfaj8Rrqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.1 54/64] xhci: handle isoc Babble and Buffer Overrun events properly
-Date: Tue, 13 Feb 2024 18:21:40 +0100
-Message-ID: <20240213171846.431299262@linuxfoundation.org>
+	Xiubo Li <xiubli@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 079/124] libceph: rename read_sparse_msg_*() to read_partial_sparse_msg_*()
+Date: Tue, 13 Feb 2024 18:21:41 +0100
+Message-ID: <20240213171856.044012375@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-commit 7c4650ded49e5b88929ecbbb631efb8b0838e811 upstream.
+[ Upstream commit ee97302fbc0c98a25732d736fc73aaf4d62c4128 ]
 
-xHCI 4.9 explicitly forbids assuming that the xHC has released its
-ownership of a multi-TRB TD when it reports an error on one of the
-early TRBs. Yet the driver makes such assumption and releases the TD,
-allowing the remaining TRBs to be freed or overwritten by new TDs.
+These functions are supposed to behave like other read_partial_*()
+handlers: the contract with messenger v1 is that the handler bails if
+the area of the message it's responsible for is already processed.
+This comes up when handling short reads from the socket.
 
-The xHC should also report completion of the final TRB due to its IOC
-flag being set by us, regardless of prior errors. This event cannot
-be recognized if the TD has already been freed earlier, resulting in
-"Transfer event TRB DMA ptr not part of current TD" error message.
+[ idryomov: changelog ]
 
-Fix this by reusing the logic for processing isoc Transaction Errors.
-This also handles hosts which fail to report the final completion.
-
-Fix transfer length reporting on Babble errors. They may be caused by
-device malfunction, no guarantee that the buffer has been filled.
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240125152737.2983959-5-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Acked-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Stable-dep-of: 8e46a2d068c9 ("libceph: just wait for more data to be available on the socket")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/ceph/messenger_v1.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2381,9 +2381,13 @@ static int process_isoc_td(struct xhci_h
- 	case COMP_BANDWIDTH_OVERRUN_ERROR:
- 		frame->status = -ECOMM;
- 		break;
--	case COMP_ISOCH_BUFFER_OVERRUN:
- 	case COMP_BABBLE_DETECTED_ERROR:
-+		sum_trbs_for_length = true;
-+		fallthrough;
-+	case COMP_ISOCH_BUFFER_OVERRUN:
- 		frame->status = -EOVERFLOW;
-+		if (ep_trb != td->last_trb)
-+			td->error_mid_td = true;
- 		break;
- 	case COMP_INCOMPATIBLE_DEVICE_ERROR:
- 	case COMP_STALL_ERROR:
+diff --git a/net/ceph/messenger_v1.c b/net/ceph/messenger_v1.c
+index f9a50d7f0d20..4cb60bacf5f5 100644
+--- a/net/ceph/messenger_v1.c
++++ b/net/ceph/messenger_v1.c
+@@ -991,7 +991,7 @@ static inline int read_partial_message_section(struct ceph_connection *con,
+ 	return read_partial_message_chunk(con, section, sec_len, crc);
+ }
+ 
+-static int read_sparse_msg_extent(struct ceph_connection *con, u32 *crc)
++static int read_partial_sparse_msg_extent(struct ceph_connection *con, u32 *crc)
+ {
+ 	struct ceph_msg_data_cursor *cursor = &con->in_msg->cursor;
+ 	bool do_bounce = ceph_test_opt(from_msgr(con->msgr), RXBOUNCE);
+@@ -1026,7 +1026,7 @@ static int read_sparse_msg_extent(struct ceph_connection *con, u32 *crc)
+ 	return 1;
+ }
+ 
+-static int read_sparse_msg_data(struct ceph_connection *con)
++static int read_partial_sparse_msg_data(struct ceph_connection *con)
+ {
+ 	struct ceph_msg_data_cursor *cursor = &con->in_msg->cursor;
+ 	bool do_datacrc = !ceph_test_opt(from_msgr(con->msgr), NOCRC);
+@@ -1043,7 +1043,7 @@ static int read_sparse_msg_data(struct ceph_connection *con)
+ 							 con->v1.in_sr_len,
+ 							 &crc);
+ 		else if (cursor->sr_resid > 0)
+-			ret = read_sparse_msg_extent(con, &crc);
++			ret = read_partial_sparse_msg_extent(con, &crc);
+ 
+ 		if (ret <= 0) {
+ 			if (do_datacrc)
+@@ -1254,7 +1254,7 @@ static int read_partial_message(struct ceph_connection *con)
+ 			return -EIO;
+ 
+ 		if (m->sparse_read)
+-			ret = read_sparse_msg_data(con);
++			ret = read_partial_sparse_msg_data(con);
+ 		else if (ceph_test_opt(from_msgr(con->msgr), RXBOUNCE))
+ 			ret = read_partial_msg_data_bounce(con);
+ 		else
+-- 
+2.43.0
+
 
 
 
