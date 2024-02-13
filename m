@@ -1,106 +1,160 @@
-Return-Path: <stable+bounces-19721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77BD8853217
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 14:39:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B55DF85324B
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 14:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C68628210B
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 13:39:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 403DF1F2251E
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 13:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DFFA55E72;
-	Tue, 13 Feb 2024 13:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D26D056471;
+	Tue, 13 Feb 2024 13:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MzmCUkwA"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="H7NRehpK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2040.outbound.protection.outlook.com [40.107.93.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C2D56449
-	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 13:39:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707831569; cv=none; b=fb+73PDNRyQEreRY5jzYqJZ85/CDcsNSGSiwp8t2L1E26X7y8R1LnjKQKG4j0NJHmnmbT7nWzP926cenwsdmBTY92OiCFoTOJolJkNP1uWy75yvrZNGl2RXOlELEVmMnTTSHUfYRY1bWE+8jp6SCQByU5YT0b5CMTQQKn0X7/tA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707831569; c=relaxed/simple;
-	bh=aHDbXR4j17Pd/YbFFL1AbFg1r61BHyv5j9CRgT9Z1iw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BGzPVLC4DhqGwFJdza/xc9Io23E48gl4kknGc2PVx7dLvBRA5PVroMTGRifE2ROqWLy/TjcX/MhgCGs3UGnQdHoyZL+5jim1N8VZCs2/mV3PHyWhtP68VLcgfPKhX6MrmSvPVu1o75ulOCrenMckaiGNrvs+u1AWQVmoTXiwQ9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MzmCUkwA; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a3122b70439so561438466b.3
-        for <stable@vger.kernel.org>; Tue, 13 Feb 2024 05:39:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707831566; x=1708436366; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aHDbXR4j17Pd/YbFFL1AbFg1r61BHyv5j9CRgT9Z1iw=;
-        b=MzmCUkwAT4YENgapEf1SG/hV26KFij6w2Ev6PLwwEBne+W+1qQCYZ5BXZQnnqvI0rK
-         3ARVg9a8a4/YtKS8BbsegnYOlxdStueTGJISiTcG1pCgU0cetoL9LYU9PcN/t/9gt+48
-         l8GoEadlzYqN90Q2WX7mc8r8AZws+3ggIVG2suKhCbv8v4YWZPD5yx0uZlz/RR30E3k/
-         akB/48M8RuI3GDRzS6C3nXitmEkWdRmKtz+nm8lkf+LaPxfEIZCb/tt1KEkS2ZyM/Kdg
-         /Aaf3HwlMJpXhtb8CAvVhGrkKOTJQpJ7gXHZXMXXhtKwu/5mTTnRiDRZWlJ7zmpmVOOV
-         2owQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707831566; x=1708436366;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aHDbXR4j17Pd/YbFFL1AbFg1r61BHyv5j9CRgT9Z1iw=;
-        b=RNsljmwKyh2I0luGrSDcapOZbb9W2xuNr8Q1fbTVT6ev4tjCAK6qenV9/nv8lwKuho
-         k9e5aoy42/FO/Cg81MgoHrhr+Y1mCjLwdwHAsf2IP2/SMkE4LACtI4aP9+DYs86a8cid
-         Psy1Wxm0A4tNqbmAgQOYgDSrA2imphMc001AeCQ/HFHeHJSQYhaoWTJcqzVw6dgUdpbj
-         YT9xczm4Jg43CaRHb7MgtCZH1qVDCSJLXiCY9DRdK0PVi/7qlNsqx2TcReUvmMBtsDHc
-         WwLLOZhBX2UEqleuAlrDZCH0K9ePTBcGZnZSDR7B0b/w7OAwZ41dLYVs+xbHzA2KMRPz
-         h6lA==
-X-Forwarded-Encrypted: i=1; AJvYcCVoBQD1Teg6EKB4ReBMUETLCPgwbxjfKJgrdTyzsfqVv26iuzX28FL3g6YsR8hkKiVK7sDEUtTsjdb1cP7hvDIRkvc3DAb1
-X-Gm-Message-State: AOJu0YyXXYnWfqfHcuYW4L7VUZZAUdXLTwhpJrdKIgY8vdqT8ivmKTn4
-	lkIjCQbkYCzGaxK7B/qiFnzW/mfqPkKXdDCGME3BeIPHHsN5vuyr
-X-Google-Smtp-Source: AGHT+IGe4y8qFNBGqhNgEahYPGRyJ7Jvj7mb5qEcxt7W8WzKmpqmEQ1V9zIhyLzgJz1HauzbsgOYXw==
-X-Received: by 2002:a17:906:f88c:b0:a3c:8770:3795 with SMTP id lg12-20020a170906f88c00b00a3c87703795mr4450122ejb.15.1707831566050;
-        Tue, 13 Feb 2024 05:39:26 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXl10t/YBRDHmZV8lo3s4EtmgR3ZOzkFAJt4B04XO3DXEpV1ulcqUlRhN9i2aW4aJwcQ3u4Zah4mXzepG76x5SwB/S+oT/H
-Received: from foxbook (acgn20.neoplus.adsl.tpnet.pl. [83.9.241.20])
-        by smtp.gmail.com with ESMTPSA id tj13-20020a170907c24d00b00a38a705121csm1295366ejc.47.2024.02.13.05.39.25
-        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
-        Tue, 13 Feb 2024 05:39:25 -0800 (PST)
-Date: Tue, 13 Feb 2024 14:39:21 +0100
-From: =?UTF-8?B?TWljaGHFgg==?= Pecio <michal.pecio@gmail.com>
-To: <gregkh@linuxfoundation.org>
-Cc: mathias.nyman@linux.intel.com, <stable@vger.kernel.org>
-Subject: Re: FAILED: patch "[PATCH] xhci: handle isoc Babble and Buffer
- Overrun events properly" failed to apply to 5.10-stable tree
-Message-ID: <20240213143921.25a6f291@foxbook>
-In-Reply-To: <2024021308-hardness-undercook-6840@gregkh>
-References: <2024021308-hardness-undercook-6840@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D824053814
+	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 13:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707832354; cv=fail; b=We4UcGSvAHNhjOSVuc25xjO8ytVnK3evtR0oRxlSs0zsUCbYoASSgdoSreUAWc833PskTRA+PKs7sEgEbvxjnq6MNUGPJBMShIGVEoUTvhWyqlRACEGGFk+m1l0Dn837JoKycVzZNVrRbBv7HICpFU5nq/KMydVoygvpBZ5WTyw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707832354; c=relaxed/simple;
+	bh=3s9b+l8cAtrkdFRSRa+uWlun1hhC2asd1F1Qw9AZVB0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mEdnUdVGNVK7fpgz/jX2A83mOR03JThWzem+vxvW6clNZ/SUymzFphpS4D7W4w10a8IEihEx7jeIOyLfKQDR6H7XMMmcXdecwKlHtGztJyktsWbWwn/jDHL/by38gSrz49k/EN9P71nR/Pqu/E3WodZTAonSN0cyHbPikIp/gNo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=H7NRehpK; arc=fail smtp.client-ip=40.107.93.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=b7GsuWZOue09rq2+bfZi6sQ8TYwpAY/2YbLUUCK6mjfJDxJumehJoNc0AvCyTio3dPbtYCaLaq/ONni8R/pyy8uRo8ygh0jKz1t2Y6ZhuOiAuRL+bU1tmu57tuMBgh61g8l8gIOuIFPagDeHi99apciJIS7nie1IOPK64msoa1TXE7GYW6kFoMszxoE/+Q/ZQHjfaR2fWuIH9P2+QQhg8KbeyNeM2wj7XNQVTLIjPxe9MsVNmMXfloyj3NgtT5xsM/krsWZj21H04nyLZO5A5mxOdbMtc2Fv4ENQ+vLSb6GeVchOCNLVj9lcKCa/SI/jwkbC0m/RaiAjN3prsMLYnA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qkdu6Myyqg8Cmg4PTCDnX9YhrNcYLp3uOeKpuuacY9c=;
+ b=PDkh3DRKr0zm87HRBB5KvOZcJ6cxhaq8sthf0aUDhnTCl/8duydm7wyA0CNi3KMYdU+eh3nDfEoxjN6/mbwGP+mTd2CJ4esPfNhcs6iA7K1CdTO1DwU18sdgjdPqvai2pbG70hXzGSeIsv2XFIsSlA6JlpqJZLVzZ0e0isNE73HxTLW2X7sFGzP0D70KRVLbE0L16FbxO5tm+1zB9i/ZdwybKgvtwCnAvQauDGDLtE4yCGVkVC6+JFP20POWumcGRDR526oBMIyVGUCBaW3ZdZqxTq46aJhBFY4Cp2BPFehc21wkGqpCUGvfYniurqGUMonmgqTrUSmK5d+PxAhW2A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qkdu6Myyqg8Cmg4PTCDnX9YhrNcYLp3uOeKpuuacY9c=;
+ b=H7NRehpK2QMevVH3yod4JheWK9cteY++5naOgSEtKTnM76NJyKlSa60JTN782MWI3B2AK1IzyUWtTblXUyz0FaS8q2BNi/CmEg+N0ZsDQevQ8rygr04xJFCGiTgnSFiz4W0G4ekgpeqPHCDxIDp2GnOsbbRyJTzSYbsixh2WQyI=
+Received: from BN0PR04CA0152.namprd04.prod.outlook.com (2603:10b6:408:eb::7)
+ by DM6PR12MB4894.namprd12.prod.outlook.com (2603:10b6:5:209::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.25; Tue, 13 Feb
+ 2024 13:52:27 +0000
+Received: from BN2PEPF000044A2.namprd02.prod.outlook.com
+ (2603:10b6:408:eb:cafe::98) by BN0PR04CA0152.outlook.office365.com
+ (2603:10b6:408:eb::7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.39 via Frontend
+ Transport; Tue, 13 Feb 2024 13:52:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN2PEPF000044A2.mail.protection.outlook.com (10.167.243.153) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7292.25 via Frontend Transport; Tue, 13 Feb 2024 13:52:26 +0000
+Received: from amd-X570-AORUS-ELITE.amd.com (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 13 Feb 2024 07:52:23 -0600
+From: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+To: <dri-devel@lists.freedesktop.org>, <amd-gfx@lists.freedesktop.org>,
+	<intel-gfx@lists.freedesktop.org>
+CC: <christian.koenig@amd.com>, <alexander.deucher@amd.com>,
+	<matthew.auld@intel.com>, <mario.limonciello@amd.com>, <daniel@ffwll.ch>,
+	Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH 1/2] drm/buddy: Fix alloc_range() error handling code
+Date: Tue, 13 Feb 2024 19:22:02 +0530
+Message-ID: <20240213135203.348050-1-Arunpravin.PaneerSelvam@amd.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A2:EE_|DM6PR12MB4894:EE_
+X-MS-Office365-Filtering-Correlation-Id: eafe824f-e4fc-4818-7cb5-08dc2c9b037d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	DyqHOr59FuRgZPvbb8CHwvCdvrT4uqVQvvTfqFGkxMhXprg+7OlGUrTuVs7vzI118Kr5unSIWZOxm+soYYvFWa6p8Dn6hgsQKj7GaGcx/1PvZB45EkRbAKDseD9O8WJ1GXPzw3agm74EMFsCtSEsjVOjuGMZBZUQoGA2hnPcjEebw/iD91Xhnt62Kov/aWrTociJFFx3uVWlGDMnKsh/L//XIqlulqwfaEOBYyRhpy4e4gA/wkU8G5mmkm3jw5UzU4pQxdIzcXj81LYfVQsQtjBswSrRUXdZ2+R3ivL8Rv4IvuibDOVu+592316Ru1H9sbxgpw/JzDiLEQimE3lRIefF/5MGbxg6EnoRKUXiQtD//NBCday24ptwsUNgQ2pP4KNMNE5+/2mW6JiMmXTThAC/E0wOulZotRx5TCMV0d9s4MBVAAfUFgBVJEmrLC8tJ6dbGVxpKHr+4VAvY+R3lrVYYUR5jozh/NamCtZ2JW24jtuuY5gi4PeHrD94jxA65aFc9SKp0ksMc9RorXUH3tZZ9xHhkA261TQ+9vg+S7fDZ76DiJ/3R/eY7ceq56QF2qBz2URAfrLebkyKqt7CSQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(39860400002)(396003)(346002)(376002)(230922051799003)(1800799012)(64100799003)(451199024)(186009)(82310400011)(46966006)(40470700004)(36840700001)(8936002)(8676002)(5660300002)(70206006)(70586007)(2906002)(4326008)(16526019)(36756003)(81166007)(356005)(82740400003)(86362001)(83380400001)(110136005)(478600001)(316002)(7696005)(54906003)(6666004)(966005)(1076003)(26005)(426003)(41300700001)(336012)(2616005);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2024 13:52:26.9407
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: eafe824f-e4fc-4818-7cb5-08dc2c9b037d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000044A2.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4894
 
-Hi,
+Few users have observed display corruption when they boot
+the machine to KDE Plasma or playing games. We have root
+caused the problem that whenever alloc_range() couldn't
+find the required memory blocks the function was returning
+SUCCESS in some of the corner cases.
 
-> The patch below does not apply to the 5.10-stable tree.
-> [...]
-> From 7c4650ded49e5b88929ecbbb631efb8b0838e811 Mon Sep 17 00:00:00 2001
-> From: Michal Pecio <michal.pecio@gmail.com>
-> Date: Thu, 25 Jan 2024 17:27:37 +0200
-> Subject: [PATCH] xhci: handle isoc Babble and Buffer Overrun events
+The right approach would be if the total allocated size
+is less than the required size, the function should
+return -ENOSPC.
 
-This patch depends on its parent 5372c65e1311 ("xhci: process isoc TD
-properly when there was a transaction error mid TD.").
+Cc: <stable@vger.kernel.org> # 6.7+
+Fixes: 0a1844bf0b53 ("drm/buddy: Improve contiguous memory allocation")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3097
+Tested-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240207174456.341121-1-Arunpravin.PaneerSelvam@amd.com/
+Acked-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
+---
+ drivers/gpu/drm/drm_buddy.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-The parent commit appears to be missing from your 5.10 and earlier
-queues for some reason, hence the breakage.
+diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
+index f57e6d74fb0e..c1a99bf4dffd 100644
+--- a/drivers/gpu/drm/drm_buddy.c
++++ b/drivers/gpu/drm/drm_buddy.c
+@@ -539,6 +539,12 @@ static int __alloc_range(struct drm_buddy *mm,
+ 	} while (1);
+ 
+ 	list_splice_tail(&allocated, blocks);
++
++	if (total_allocated < size) {
++		err = -ENOSPC;
++		goto err_free;
++	}
++
+ 	return 0;
+ 
+ err_undo:
 
-Regards,
-Michal
+base-commit: 2c80a2b715df75881359d07dbaacff8ad411f40e
+-- 
+2.25.1
+
 
