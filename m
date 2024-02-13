@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-20083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F5DE8538C1
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:40:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC258537FB
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:31:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B8732822EB
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:40:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A877228619E
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2C25F54E;
-	Tue, 13 Feb 2024 17:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3428E5F54E;
+	Tue, 13 Feb 2024 17:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBbSc5+8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtSb+jIk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A5F9A93C;
-	Tue, 13 Feb 2024 17:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64E65F56B;
+	Tue, 13 Feb 2024 17:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707846027; cv=none; b=YOnZusRSVCmkrj+0ateec50CUbM5tYcHTQVny617JvLyn6FUUsSZmnaf4TsAU6751zYfF97fUrby21FfA1ses7zUtibULgURHjeyBRJwN/NJqsgooV66boJs47NBQ7nAklsJuxhYr04Wt1xmssiGQeqkz88wTa/geWmIKgsejkM=
+	t=1707845506; cv=none; b=E7xYJ/GFyPLkI2gmgRR29ANiNANeThMJrIfCY0L4aREoukrMs+K+eh9R91+2X2L5AFrRRDk4FwkXODgRx7JiNVk20h3GC4iDVJ+yFn/qiAKatHjaeMOhi9Bk8dNeFYSTNLewGljWnGPCUCNXqMApJqq1Z7/oJAy9oRqDy+cFV7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707846027; c=relaxed/simple;
-	bh=xWdJaLPrKs9nhgJpjP/w3ReGlv5gpueNT1HxSYc0mQ4=;
+	s=arc-20240116; t=1707845506; c=relaxed/simple;
+	bh=VGGKE5ppvxRax8i/AsDWAJ6fohwXGYxPLs/gSN8yv/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jfXz8wTwcld9xTM+DyqmfnrGfHTYQLVwyi4ziK0Fpt18azuoRPW7V8X3Ih4RrTP7fdvqeLVqYsy7Vg5mW90hkuMeBO+F8CjHT8Eq00UdMmpBDOhS8Dmh0wSHS44Fgkk6X4bqqagepl6a0RZb+blnSEYmXOTRf4p0pwhhTvgwWtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBbSc5+8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E9B6C433C7;
-	Tue, 13 Feb 2024 17:40:26 +0000 (UTC)
+	 MIME-Version; b=WHXjyM+GT88w8TxByGkB/k4g7nePb0QSVcN9KCIAL2/+CrkFGMfJVTPHhE4Bh7hZSWy1EaJUdJG87ihv/P04flewrNbYrXBAt3lNeX75hPbZVGklQPsZLhHm3PnCiXBkFii1HEkzqUeA8wb10VAN5u6ye3Zz8IDPYK2FimcW4p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtSb+jIk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1729FC433F1;
+	Tue, 13 Feb 2024 17:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707846027;
-	bh=xWdJaLPrKs9nhgJpjP/w3ReGlv5gpueNT1HxSYc0mQ4=;
+	s=korg; t=1707845505;
+	bh=VGGKE5ppvxRax8i/AsDWAJ6fohwXGYxPLs/gSN8yv/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jBbSc5+8woLMw1CM+P3tgZvWe+pTc8reHY6m7dr5NttxC3d81laRW5blfqNR8wRox
-	 5JWBl11VAzqcMBEDtRqHJEo3rTky8TsWdc0nrCsWhVBL2TN1ULawKEUWCQkv12rVne
-	 2FNkVr1B9LoqAkQvQ4ZhrMF0MA9KBE3zG8mSTA/w=
+	b=FtSb+jIk2Udn7jeccru0DHHEFZabXqNL2kV0XxPsEwrzNhH9pkgIq6D+2zt2Z/zmJ
+	 1hBz26KPyiBc2LFojER2epLWjNvS97MLRdS/fGCLMfBFDGFf9Nw+Atje3xBa4E7PtD
+	 0qXr6k3RS3OplD8GZhsJH24MUFHzN7C6/Nm3/dKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Daniel Wagner <dwagner@suse.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Ben Dooks <ben.dooks@codethink.co.uk>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 084/124] nvme-host: fix the updating of the firmware version
+Subject: [PATCH 6.6 097/121] riscv: declare overflow_stack as exported from traps.c
 Date: Tue, 13 Feb 2024 18:21:46 +0100
-Message-ID: <20240213171856.187716402@linuxfoundation.org>
+Message-ID: <20240213171855.827215010@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Ben Dooks <ben.dooks@codethink.co.uk>
 
-[ Upstream commit f0377ff97509f5a4921993d5d61da000361bd884 ]
+[ Upstream commit 2cf963787529f615f7c93bdcf13a5e82029e7f38 ]
 
-The original code didn't update the firmware version if the
-"next slot" of the AFI register isn't zero or if the
-"current slot" field is zero; in those cases it assumed
-that a reset was needed.
+The percpu area overflow_stacks is exported from arch/riscv/kernel/traps.c
+for use in the entry code, but is not declared anywhere. Add the relevant
+declaration to arch/riscv/include/asm/stacktrace.h to silence the following
+sparse warning:
 
-However, the NVMe specification doesn't exclude the possibility that
-the "next slot" value is equal to the "current slot" value,
-meaning that the same firmware slot will be activated after performing
-a controller level reset; in this case a reset is clearly not
-necessary and we can safely update the firmware version.
+arch/riscv/kernel/traps.c:395:1: warning: symbol '__pcpu_scope_overflow_stack' was not declared. Should it be static?
 
-Modify the code so the kernel will report that a Controller Level Reset
-is needed only in the following cases:
+We don't add the stackinfo_get_overflow() call as for some of the other
+architectures as this doesn't seem to be used yet, so just silence the
+warning.
 
-1) If the "current slot" field is zero. This is invalid and means that
-   something is wrong, a reset is needed.
-
-or
-
-2) if the "next slot" field isn't zero AND it's not equal to the
-   "current slot" value. This means that at the next reset a different
-   firmware slot will be activated.
-
-Fixes: 983a338b96c8 ("nvme: update firmware version after commit")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Daniel Wagner <dwagner@suse.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Fixes: be97d0db5f44 ("riscv: VMAP_STACK overflow detection thread-safe")
+Link: https://lore.kernel.org/r/20231123134214.81481-1-ben.dooks@codethink.co.uk
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/riscv/include/asm/stacktrace.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 60f14019f981..86149275ccb8 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4107,6 +4107,7 @@ static bool nvme_ctrl_pp_status(struct nvme_ctrl *ctrl)
- static void nvme_get_fw_slot_info(struct nvme_ctrl *ctrl)
- {
- 	struct nvme_fw_slot_info_log *log;
-+	u8 next_fw_slot, cur_fw_slot;
+diff --git a/arch/riscv/include/asm/stacktrace.h b/arch/riscv/include/asm/stacktrace.h
+index f7e8ef2418b9..b1495a7e06ce 100644
+--- a/arch/riscv/include/asm/stacktrace.h
++++ b/arch/riscv/include/asm/stacktrace.h
+@@ -21,4 +21,9 @@ static inline bool on_thread_stack(void)
+ 	return !(((unsigned long)(current->stack) ^ current_stack_pointer) & ~(THREAD_SIZE - 1));
+ }
  
- 	log = kmalloc(sizeof(*log), GFP_KERNEL);
- 	if (!log)
-@@ -4118,13 +4119,15 @@ static void nvme_get_fw_slot_info(struct nvme_ctrl *ctrl)
- 		goto out_free_log;
- 	}
- 
--	if (log->afi & 0x70 || !(log->afi & 0x7)) {
-+	cur_fw_slot = log->afi & 0x7;
-+	next_fw_slot = (log->afi & 0x70) >> 4;
-+	if (!cur_fw_slot || (next_fw_slot && (cur_fw_slot != next_fw_slot))) {
- 		dev_info(ctrl->device,
- 			 "Firmware is activated after next Controller Level Reset\n");
- 		goto out_free_log;
- 	}
- 
--	memcpy(ctrl->subsys->firmware_rev, &log->frs[(log->afi & 0x7) - 1],
-+	memcpy(ctrl->subsys->firmware_rev, &log->frs[cur_fw_slot - 1],
- 		sizeof(ctrl->subsys->firmware_rev));
- 
- out_free_log:
++
++#ifdef CONFIG_VMAP_STACK
++DECLARE_PER_CPU(unsigned long [OVERFLOW_STACK_SIZE/sizeof(long)], overflow_stack);
++#endif /* CONFIG_VMAP_STACK */
++
+ #endif /* _ASM_RISCV_STACKTRACE_H */
 -- 
 2.43.0
 
