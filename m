@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-19703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E033B852F1F
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 12:25:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A15A852FC7
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 12:44:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BEBD1F21EA5
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 11:25:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10E5C283AD7
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 11:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CDF138DD9;
-	Tue, 13 Feb 2024 11:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065D8376FC;
+	Tue, 13 Feb 2024 11:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="VzqN+8Yr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QiErncEu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4B338DDF;
-	Tue, 13 Feb 2024 11:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B1A374DB;
+	Tue, 13 Feb 2024 11:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707823316; cv=none; b=bzwASqMXMj7bB+iBiL8F2/Di+FHz+RtwcAvEbgklpl/npX4asFSgWouA1yc0Cmtto6B3JcNOfVzIc6QCCGj+2VgR8UPVQbxFfJ52ToA23LPrjo3HFHT51eavJa+lSXZFzuWPZzdLijIXFjIdkJqbQK1o+lccRDhvYLWbYqm6UaQ=
+	t=1707824692; cv=none; b=pWIvbWpFJScPGkbM6P/b1vQt6hqlxR7T2Wk4V2Wqj1MU0sCNB2EmmNIDIzHdiPlgioUb0DPTqQ5oyDNJMTJ5uMDDMIv7KtYjfQnek+p4HDD7P9D8YekenUV3a+FDJ2ovu4YOKgOJln8RP33c8Nh3DVM8RLbncx7yrGN7x68BBIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707823316; c=relaxed/simple;
-	bh=ePi7b1L8+8ZVCVaSbDzz3it0zkxtnGBp2AkmJlONslA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=j3ONPnwgXeRLMvJjgbQgeYX/gEPlsUuAZnzthM3UPP1214TGKL+6pQScgbdv/WZM3+nHh/vf0BqYg+7wRtRhlnPV4sHjBevNSRCUPOJXBULVjeedDxHFA0iz4L3SCycghOmF2A2d4U0Gxgl9ZMrzhggoTYdDpOXPYmzH0Vcan9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=VzqN+8Yr; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (unknown [5.170.16.17])
-	by mail11.truemail.it (Postfix) with ESMTPA id 1BAE620FCD;
-	Tue, 13 Feb 2024 12:21:51 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1707823311;
-	bh=ePi7b1L8+8ZVCVaSbDzz3it0zkxtnGBp2AkmJlONslA=; h=From:To:Subject;
-	b=VzqN+8YrhaAH5gFOKOiKHNv5ot8N4b+dQmpn+TsRdwQGqy6O1k5ZUsoSKz3UMjTHd
-	 QqqIJfLJEuzkYWXjuz2n9Z66RzE/7dfkbD6ceGdl9rOkTAJ6NtevIfzQDgzvpbacrE
-	 PrwZ0DY+V2cezvwDxhUyYfFD3XToC7llcOYXQZFOBcMWA2wYRezDTHBAl08Dv1mVGQ
-	 Ym0xDPQdScBccV/LX/96IftYdMGlfeyWOuq/OWSfbEkJ1CMnUszGZRA6SZUA137h0t
-	 b9XEFTeofAMWBAKsbpYeYrhDyvG1DtUnVqJSNlSkjP/Ntp0H3kXLha9yvNfPhNvk+Y
-	 633QCgKlW2Ziw==
-Date: Tue, 13 Feb 2024 12:21:46 +0100
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alexander Stein <alexander.stein@ew.tq-group.com>,
+	s=arc-20240116; t=1707824692; c=relaxed/simple;
+	bh=YsA5rcnQOqQefsgkqKUHu8Tcv5mndPsFn90D+UEQJHQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oU9S1toKrQenrTs7pYNxI1n93f21kz1Bs7kZx7oJ618kA8cnTIzgDE2qLVJhnB/aryZBtNIQWO6HMX9JUV0w9H2eWtbTC7tWKNBN8MccjwWTZwrW4Xelxkj4uje42mhc9dh/x4PjDI296w20sqW9GMB4yVNRF3Of9V3sAKnOfM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QiErncEu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C6CAC433F1;
+	Tue, 13 Feb 2024 11:44:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1707824691;
+	bh=YsA5rcnQOqQefsgkqKUHu8Tcv5mndPsFn90D+UEQJHQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QiErncEuoyi8s1KPCXYV5phn5M8hM+j0J3fGc2+jIZyiVxzwEqvhnwjS/DFFTa+8B
+	 6ZDRFXR5Ja9uyaf3cmL+bW3vn6YdLg04ZHDg4+4od9Cd65KDHwAf6n7IiLhdXcl6FC
+	 lDhtgbS/vDOh5OjWTQ0IswHaK7nf6LEeNiXYZI1I=
+Date: Tue, 13 Feb 2024 12:44:48 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
 	Shawn Guo <shawnguo@kernel.org>, linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, regressions@lists.linux.dev,
 	Max Krummenacher <max.krummenacher@toradex.com>,
 	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: Regression, i.MX7 boot failure, Linux v6.1.77
-Message-ID: <20240213112146.GA5874@francesco-nb>
+Subject: Re: Regression, i.MX7 boot failure, Linux v6.1.77
+Message-ID: <2024021300-traverse-anyplace-7910@gregkh>
+References: <20240213112146.GA5874@francesco-nb>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,33 +58,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20240213112146.GA5874@francesco-nb>
 
-Hello Sasha,
-kernel v6.1.77 introduces a regression, with a boot failure, on i.MX7,
-with commit db30f469ae8b ("ARM: dts: imx7s: Fix nand-controller #size-cells").
+On Tue, Feb 13, 2024 at 12:21:46PM +0100, Francesco Dolcini wrote:
+> Hello Sasha,
+> kernel v6.1.77 introduces a regression, with a boot failure, on i.MX7,
+> with commit db30f469ae8b ("ARM: dts: imx7s: Fix nand-controller #size-cells").
+> 
+> The issue is known [1][2], changing `#size-cells = <0>` is formally
+> correct, but do not play well with the firmware that are deployed on
+> those embedded devices, leading to a boot failure.
+> 
+> A mitigation was implemented in the Linux kernel,
+> commit 84549c816dc3 ("mtd: parsers: ofpart: add workaround for #size-cells 0")
+> that was merged into v6.3, the firmware was also fixed, however existing
+> device using old firmware will not boot anymore if updating to a newer
+> kernel.
+> 
+> I would ask you to drop such a patch from any stable patches queue and
+> not backport it to any older kernel.
+> 
+> To fix v6.1.y I see two options:
+>  - backport 84549c816dc3
+>  - revert db30f469ae8b
+> 
+> What do you prefer? Should I send myself a patch?
 
-The issue is known [1][2], changing `#size-cells = <0>` is formally
-correct, but do not play well with the firmware that are deployed on
-those embedded devices, leading to a boot failure.
+Backport would be best, that way we are in sync with newer releases.
 
-A mitigation was implemented in the Linux kernel,
-commit 84549c816dc3 ("mtd: parsers: ofpart: add workaround for #size-cells 0")
-that was merged into v6.3, the firmware was also fixed, however existing
-device using old firmware will not boot anymore if updating to a newer
-kernel.
+I'll go queue it up now, thanks.
 
-I would ask you to drop such a patch from any stable patches queue and
-not backport it to any older kernel.
-
-To fix v6.1.y I see two options:
- - backport 84549c816dc3
- - revert db30f469ae8b
-
-What do you prefer? Should I send myself a patch?
-
-[1] https://lore.kernel.org/all/Y4dgBTGNWpM6SQXI@francesco-nb.int.toradex.com/
-[2] https://lore.kernel.org/all/20221202071900.1143950-1-francesco@dolcini.it/
-
-Francesco
-
+greg k-h
 
