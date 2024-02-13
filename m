@@ -1,128 +1,143 @@
-Return-Path: <stable+bounces-19689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45390852BB3
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 09:54:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA628852BF8
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 10:10:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7C0AB23C74
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 08:54:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6500728206A
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 09:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1CE1B598;
-	Tue, 13 Feb 2024 08:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371FF208C3;
+	Tue, 13 Feb 2024 09:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ksqZQxr+"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="k3WNDCip"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D381175AC;
-	Tue, 13 Feb 2024 08:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8E91B273;
+	Tue, 13 Feb 2024 09:10:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707814452; cv=none; b=NCX/bkt+lnCtZDccwHB54RJ+lKvsvU8X2yDG+iAwz8+Wgb7Xo6j+sO4COfy71dG0F7VQqfqapwnB55LWdFOXbPuW6wR0+tQiQrCMsMMgmF+5t3owIJBUKQJYq7ZmkEdOqc0GZ7EQMTmKbv5c4A2tyr7UFRR2Pg7BgWurbZa0TY4=
+	t=1707815429; cv=none; b=WxxLRrIWWJJcbr8AK4z8O1lkAdpiZLp51FDCN7SV/ltoR6bHxkog1r4l1VhlGXqimps33XMEUCMANcEzks04kwVLBF3TgkBfSvP5MgQO+hQ7PA0/2yxl9onICYlF2FtAp+yNMryt2UpBTRpPj1wHXFluDcHnBt85oPCICBk18L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707814452; c=relaxed/simple;
-	bh=yH5iJuFTV0xeh1KPzyvaw7lEQZTLFezfU6BQWvs75tI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XyS992iyUbgs/5afjzTHA0L/fzMG1x1UUBx6PhKBZGdKr45oFJlfNlzFdaw0Za4LrRLSyQXucIt0X84+c4zKubcexvSwCSIYRB4NKh/PINVqszutNQVXmQXWCHB7SslA5vZpTf8ljvzBc0yQzSXJkFJD5hvpubskG6wHzVmFMbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ksqZQxr+; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=yGL5RRER78TPI6/TiT3IpzYTDrtbMwQINDuYFmVqcUA=; b=ksqZQxr+Ouc3OlY5xP98g9Wgyd
-	BZWIl8ArFuzArbQXWvjoph8FqJbcYxuIGBeyeeP/D50cRmaHpURkm2QubuzDTd8KiXRYSljDFhLHN
-	XDpSq0faHyyPbLudLg3JHaUHdozASMCJC2AU3+5MhDUpWV6VFlp38tJlC9vrDvrqrW/6VKqSXzRHG
-	3jRYlNOOgB9Ddy+PDL1sSe99jgHJ+SYz41vc5tg5LyW1L6D3YNZgLwS4gfkUbFnK0pFJqFozHGPKT
-	Z/n4ghaL0NWvUbaudjGBFKWfV4WEDPnuC1RmVRnDs2ee3zC+FQQzEo+bYaX7nirme5L8y0CgxKPC9
-	Yy5c86lA==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rZoYG-0000000DIJX-19uR;
-	Tue, 13 Feb 2024 08:54:04 +0000
-Date: Tue, 13 Feb 2024 08:54:04 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Charan Teja Kalla <quic_charante@quicinc.com>
-Cc: gregkh@linuxfoundation.org, akpm@linux-foundation.org, vbabka@suse.cz,
-	dhowells@redhat.com, david@redhat.com, surenb@google.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	# see patch description <stable@vger.kernel.org>
-Subject: Re: [PATCH] mm/huge_memory: fix swap entry values of tail pages of
- THP
-Message-ID: <ZcsuLLhNPPylU-hi@casper.infradead.org>
-References: <1707814102-22682-1-git-send-email-quic_charante@quicinc.com>
+	s=arc-20240116; t=1707815429; c=relaxed/simple;
+	bh=R8R7lZbqyir1X5V99j2RDN+30uNU2eW0kHTHyCiLY44=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=k/ARKlWbDacaI27n8JayyUCNOBBW5aFbaibd2tbn9VY18gw+Uf6NPkDyv1zcAfVlLOforXNWVRFq+tS0IwIZt2LiFXVvoN0hh6IIyLUbC/0up8hldSv9bMOKrzyZIR/803xEq1bBJrRhsENJNN+wC7B4Yx7ZU8jbFehFTa2Ekz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=k3WNDCip; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41D90DcC024107;
+	Tue, 13 Feb 2024 09:10:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=50qwoBL1qZUcAT1DGTn4Ldk2t5cnvbQ47VWB0Xov2Ag=; b=k3
+	WNDCipSlVk/SSLwh7LmBCCTV2oUzK9QxNxIWKdrUiFlvvmIsVDIKBfunERblcIFH
+	faaQi4JQvEIrFOTL3ukgpwrG8CDGM5BQfWc7IxFvn5X+0GwiSfb0f/+vZRJ1vLNy
+	4shQMdWQfohXjM+rPJ93KFATaAHZtLnR0R2ZutF2Uk3vbSzu7qVRMHCwLBqz6oxj
+	DvBuyVRihkheHh09mg19JzUvKfvlPw4+M2qARymF8Wen7LQ9V4KyvcoZxZTWVyut
+	mkL1RyZA0SzpaCo+bn1hKAi/9xZZgrAFEzqSbZaRZdJLVKj+v32KHGbgb0f7lXp9
+	xlbInF9TecfIv2CRq1IA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w7gse2hgt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 Feb 2024 09:10:09 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41D9A8Ea032524
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 Feb 2024 09:10:08 GMT
+Received: from [10.214.66.164] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 13 Feb
+ 2024 01:10:05 -0800
+Message-ID: <50d61d66-e17c-55b9-23f4-ceea93e81e68@quicinc.com>
+Date: Tue, 13 Feb 2024 14:40:02 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1707814102-22682-1-git-send-email-quic_charante@quicinc.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] mm/huge_memory: fix swap entry values of tail pages of
+ THP
+To: Matthew Wilcox <willy@infradead.org>
+CC: <gregkh@linuxfoundation.org>, <akpm@linux-foundation.org>,
+        <vbabka@suse.cz>, <dhowells@redhat.com>, <david@redhat.com>,
+        <surenb@google.com>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>,
+        #
+ see patch description <stable@vger.kernel.org>
+References: <1707814102-22682-1-git-send-email-quic_charante@quicinc.com>
+ <ZcsuLLhNPPylU-hi@casper.infradead.org>
+Content-Language: en-US
+From: Charan Teja Kalla <quic_charante@quicinc.com>
+In-Reply-To: <ZcsuLLhNPPylU-hi@casper.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: bYcMl3QYj68A3s_ZMeMrEvrIklLd6DO1
+X-Proofpoint-ORIG-GUID: bYcMl3QYj68A3s_ZMeMrEvrIklLd6DO1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-13_04,2024-02-12_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 adultscore=0 spamscore=0 clxscore=1015 phishscore=0
+ malwarescore=0 mlxscore=0 bulkscore=0 mlxlogscore=999 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402130071
 
-On Tue, Feb 13, 2024 at 02:18:10PM +0530, Charan Teja Kalla wrote:
-> An anon THP page is first added to swap cache before reclaiming it.
-> Initially, each tail page contains the proper swap entry value(stored in
-> ->private field) which is filled from add_to_swap_cache(). After
-> migrating the THP page sitting on the swap cache, only the swap entry of
-> the head page is filled(see folio_migrate_mapping()).
-> 
-> Now when this page is tried to split(one case is when this page is again
-> migrated, see migrate_pages()->try_split_thp()), the tail pages
-> ->private is not stored with proper swap entry values.  When this tail
-> page is now try to be freed, as part of it delete_from_swap_cache() is
-> called which operates on the wrong swap cache index and eventually
-> replaces the wrong swap cache index with shadow/NULL value, frees the
-> page.
-> 
-> This leads to the state with a swap cache containing the freed page.
-> This issue can manifest in many forms and the most common thing observed
-> is the rcu stall during the swapin (see mapping_get_entry()).
-> 
-> On the recent kernels, this issues is indirectly getting fixed with the
-> series[1], to be specific[2].
-> 
-> When tried to back port this series, it is observed many merge
-> conflicts and also seems dependent on many other changes. As backporting
-> to LTS branches is not a trivial one, the similar change from [2] is
-> picked as a fix.
-> 
-> [1] https://lore.kernel.org/all/20230821160849.531668-1-david@redhat.com/
-> [2] https://lore.kernel.org/all/20230821160849.531668-5-david@redhat.com/
+Thanks Matthew!!
 
-I am deeply confused by this commit message.
-
-Are you saying there is a problem in current HEAD which this fixes, or
-are you saying that this problem has already been fixed, and this patch
-is for older kernels?
-
-> Closes: https://lore.kernel.org/linux-mm/69cb784f-578d-ded1-cd9f-c6db04696336@quicinc.com/
-> Fixes: 3417013e0d18 ("mm/migrate: Add folio_migrate_mapping()")
-> Cc: <stable@vger.kernel.org> # see patch description, applicable to <=6.1
-> Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
-> ---
->  mm/huge_memory.c | 2 ++
->  1 file changed, 2 insertions(+)
+On 2/13/2024 2:24 PM, Matthew Wilcox wrote:
+> I am deeply confused by this commit message.
 > 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 5957794..cc5273f 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -2477,6 +2477,8 @@ static void __split_huge_page_tail(struct page *head, int tail,
->  	if (!folio_test_swapcache(page_folio(head))) {
->  		VM_WARN_ON_ONCE_PAGE(page_tail->private != 0, page_tail);
->  		page_tail->private = 0;
-> +	} else {
-> +		set_page_private(page_tail, (unsigned long)head->private + tail);
->  	}
->  
->  	/* Page flags must be visible before we make the page non-compound. */
-> -- 
-> 2.7.4
-> 
+> Are you saying there is a problem in current HEAD which this fixes, or
+> are you saying that this problem has already been fixed, and this patch
+> is for older kernels?
+
+Sorry, I meant this patch is __only for older kernels__. We are seeing
+this issue on 6.1 LTS kernel.
+
+At least I am not expecting this issue on the HEAD of the linux-next branch.
+
+Seems the below message is not clear from my side to say that:
+a) why this issue won't be seen on the latest kernel and
+b) the problems associated with the respective patches in back porting
+to LTS branch?
+
+"On the recent kernels, this issues is indirectly getting fixed with the
+series[1], to be specific[2].
+
+When tried to back port this series, it is observed many merge
+conflicts and also seems dependent on many other changes. As backporting
+to LTS branches is not a trivial one, the similar change from [2] is
+picked as a fix.
+
+[1] https://lore.kernel.org/all/20230821160849.531668-1-david@redhat.com/
+[2] https://lore.kernel.org/all/20230821160849.531668-5-david@redhat.com/"
+
+IOW, the below couple of line is ensuring the proper swap entry is
+stored in the tail pages which is somehow missed on the older kernels.
+
+static void __split_huge_page_tail(struct folio *folio, int tail,
+ 		struct lruvec *lruvec, struct list_head *list)
+{
+     .............
++	if (folio_test_swapcache(folio))
++		new_folio->swap.val = folio->swap.val + tail;
+     .............
+}
+
+Thanks.
 
