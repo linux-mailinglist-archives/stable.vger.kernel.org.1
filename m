@@ -1,288 +1,208 @@
-Return-Path: <stable+bounces-20097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E531853975
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 19:08:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74FDC8539B7
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 19:16:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C33D28B704
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:08:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D65C11F247C7
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE4C605C4;
-	Tue, 13 Feb 2024 18:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4208D605B1;
+	Tue, 13 Feb 2024 18:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eL3O0Krv"
+	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="SHOGLMNv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp102.iad3a.emailsrvr.com (smtp102.iad3a.emailsrvr.com [173.203.187.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA063604DC;
-	Tue, 13 Feb 2024 18:07:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494605FBB3
+	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 18:16:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.203.187.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707847671; cv=none; b=dYVxlcHCpajOkTYZugldx73AMUwo2IYNFrRGOIZNXCN6tJv7+RtGqv1SPX5zE5kwzHKToLWZc/sVgMbGu3NRubJkxn5fNlrqsUb+e30Ok9fidZItJl1NZhSAZ5iMK/WxTysb0qiKw+LjW3aAjvwZeEFWY0nPCSyWbqP/fcqUBcU=
+	t=1707848211; cv=none; b=YRwdKMAosmmiZ77ycTBvDo7cYkiIx5n7FplVgO46/DY89zuloM3fzRZutTdmSDL+ic9ejhJb0+IT7ChNOnx6hxqbYOnMI+VrHzlX3uAAzpopTvmKISW/0G/ijQ+yA9iOMJu2tX0LBBf6XxSkL6M7HzmtKJYnXFGqvnGQweBQzGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707847671; c=relaxed/simple;
-	bh=HnDwSNeITfZAoSGDBaUlH072w267+77KHOXAmmBVZrA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bws87gID8YiY4MpMUBWQUsyCIJ+X/yFKQ7KBP9Wh0DJllmriGz4AkHAxe2Tp9f5DLFXHZRVrWUjrlWj+Wy/wKpJZ/up//RRJQkpgR6jj5ez9uzxeokJfDlOqz4anvessZxhdHbE0XzeI7l+bU7N8DBBBMC+kIlDJ8zx+vqbYFno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eL3O0Krv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D4AC433C7;
-	Tue, 13 Feb 2024 18:07:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707847671;
-	bh=HnDwSNeITfZAoSGDBaUlH072w267+77KHOXAmmBVZrA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eL3O0KrvOFjYX838nsO2Hl5O82NKygqlfY7EWs5mXUPvckXPZbVDzGGR3GforFDWB
-	 FRHlMW4gxjZFzQb/IGqmo+iyxqEuyrsKPHwNwlHwPJTgPXg638dvntiEtT6P+ZQ7be
-	 IvyxNr/gQ8XpFod2ojl3NMsa1t1AtOdyy+JbEyCRmzZWNR+96MJuPTVl9JbRShyWk8
-	 eyfV+VENV46DFDRd2sf1+FgYm7fN/Qxg/UPJMC3U8d/jvqbbt9ZSTuvCtQBlBFTgT+
-	 Kl1oWReW0SdfTUpbOlig+FLSD8iq8CFI0FcD8pH3Jnqfd457bb4tgzCE+q4Qly7doc
-	 bwoUcQGL60d/Q==
-Date: Tue, 13 Feb 2024 18:07:47 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Samuel Holland <samuel.holland@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Stefan O'Rear <sorear@fastmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH -fixes v2 3/4] riscv: Add ISA extension parsing for Sm
- and Ss
-Message-ID: <20240213-dangle-taco-2742f6087a3e@spud>
-References: <20240213033744.4069020-1-samuel.holland@sifive.com>
- <20240213033744.4069020-4-samuel.holland@sifive.com>
+	s=arc-20240116; t=1707848211; c=relaxed/simple;
+	bh=pjbuxl8oRQ0+R+g36gg/gBcvAmBulWkgzcftiFFzEzc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r5Uq1/Gixpj0Fs8u+RBcW/ibvz2+Jcafh5XuLhl99Y71xCpb0QWZYLYu5/Q/0A9wimh7qtTvqTXjS/FE5Nares9Xdqe33XUzsI/z5GaL2B1ZjHuDE1DKEfOLZMaeji994t3DmjMVj9rEl7Kl8GUywQHrMSZnJN3MrC+isp76enM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=SHOGLMNv; arc=none smtp.client-ip=173.203.187.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+	s=20221208-6x11dpa4; t=1707847819;
+	bh=pjbuxl8oRQ0+R+g36gg/gBcvAmBulWkgzcftiFFzEzc=;
+	h=From:To:Subject:Date:From;
+	b=SHOGLMNv4peTulwzUKMCjCrkHdXPCQtzjvUY+5UrWYuajT9QGy2WRexnZM/yWArAs
+	 21aO1AbTAWmhXg5Lg/qSCLLVS0pIOi7DZqaQAvQ0Djju3ofC7QTy8OqCeqGP9QpdHn
+	 aeoxWzuP+LDqrC8kd8TdHGRMBD6rl2Xi28slCsXQ=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp29.relay.iad3a.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 4D98124EB0;
+	Tue, 13 Feb 2024 13:10:18 -0500 (EST)
+From: Ian Abbott <abbotti@mev.co.uk>
+To: linux-kernel@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] comedi: comedi_test: Prevent timers rescheduling during deletion
+Date: Tue, 13 Feb 2024 18:10:04 +0000
+Message-ID: <20240213181004.105072-1-abbotti@mev.co.uk>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="GOvnA6XK3oSYaT7y"
-Content-Disposition: inline
-In-Reply-To: <20240213033744.4069020-4-samuel.holland@sifive.com>
+Content-Transfer-Encoding: 8bit
+X-Classification-ID: 969d28ca-18e8-4879-92d9-b2ffe5639bd8-1-1
 
+The comedi_test devices have a couple of timers (ai_timer and ao_timer)
+that can be started to simulate hardware interrupts.  Their expiry
+functions normally reschedule the timer.  The driver code calls either
+del_timer_sync() or del_timer() to delete the timers from the queue, but
+does not currently prevent the timers from rescheduling themselves so
+synchronized deletion may be ineffective.
 
---GOvnA6XK3oSYaT7y
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Add a couple of boolean members (one for each timer: ai_timer_enable and
+ao_timer_enable) to the device private data structure to indicate
+whether the timers are allowed to reschedule themselves.  Set the member
+to true when adding the timer to the queue, and to false when deleting
+the timer from the queue in the waveform_ai_cancel() and
+waveform_ao_cancel() functions.
 
-On Mon, Feb 12, 2024 at 07:37:34PM -0800, Samuel Holland wrote:
-> Previously, all extension version numbers were ignored. However, the
-> version number is important for these two extensions. The simplest way
-> to implement this is to use a separate bitmap bit for each supported
-> version, with each successive version implying all of the previous ones.
-> This allows alternatives and riscv_has_extension_[un]likely() to work
-> naturally.
->=20
-> To avoid duplicate extensions in /proc/cpuinfo, the new successor_id
-> field allows hiding all but the newest implemented version of an
-> extension.
->=20
-> Cc: <stable@vger.kernel.org> # v6.7+
-> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-> ---
->=20
-> Changes in v2:
->  - New patch for v2
->=20
->  arch/riscv/include/asm/cpufeature.h |  1 +
->  arch/riscv/include/asm/hwcap.h      |  8 ++++++
->  arch/riscv/kernel/cpu.c             |  5 ++++
->  arch/riscv/kernel/cpufeature.c      | 42 +++++++++++++++++++++++++----
->  4 files changed, 51 insertions(+), 5 deletions(-)
->=20
-> diff --git a/arch/riscv/include/asm/cpufeature.h b/arch/riscv/include/asm=
-/cpufeature.h
-> index 0bd11862b760..ac71384e7bc4 100644
-> --- a/arch/riscv/include/asm/cpufeature.h
-> +++ b/arch/riscv/include/asm/cpufeature.h
-> @@ -61,6 +61,7 @@ struct riscv_isa_ext_data {
->  	const char *property;
->  	const unsigned int *subset_ext_ids;
->  	const unsigned int subset_ext_size;
-> +	const unsigned int successor_id;
->  };
-> =20
->  extern const struct riscv_isa_ext_data riscv_isa_ext[];
-> diff --git a/arch/riscv/include/asm/hwcap.h b/arch/riscv/include/asm/hwca=
-p.h
-> index 5340f818746b..5b51aa1db15b 100644
-> --- a/arch/riscv/include/asm/hwcap.h
-> +++ b/arch/riscv/include/asm/hwcap.h
-> @@ -80,13 +80,21 @@
->  #define RISCV_ISA_EXT_ZFA		71
->  #define RISCV_ISA_EXT_ZTSO		72
->  #define RISCV_ISA_EXT_ZACAS		73
-> +#define RISCV_ISA_EXT_SM1p11		74
-> +#define RISCV_ISA_EXT_SM1p12		75
-> +#define RISCV_ISA_EXT_SS1p11		76
-> +#define RISCV_ISA_EXT_SS1p12		77
-> =20
->  #define RISCV_ISA_EXT_MAX		128
->  #define RISCV_ISA_EXT_INVALID		U32_MAX
-> =20
->  #ifdef CONFIG_RISCV_M_MODE
-> +#define RISCV_ISA_EXT_Sx1p11		RISCV_ISA_EXT_SM1p11
-> +#define RISCV_ISA_EXT_Sx1p12		RISCV_ISA_EXT_SM1p12
->  #define RISCV_ISA_EXT_SxAIA		RISCV_ISA_EXT_SMAIA
->  #else
-> +#define RISCV_ISA_EXT_Sx1p11		RISCV_ISA_EXT_SS1p11
-> +#define RISCV_ISA_EXT_Sx1p12		RISCV_ISA_EXT_SS1p12
->  #define RISCV_ISA_EXT_SxAIA		RISCV_ISA_EXT_SSAIA
->  #endif
-> =20
-> diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
-> index d11d6320fb0d..2e6b90ed0d51 100644
-> --- a/arch/riscv/kernel/cpu.c
-> +++ b/arch/riscv/kernel/cpu.c
-> @@ -215,6 +215,11 @@ static void print_isa(struct seq_file *f, const unsi=
-gned long *isa_bitmap)
->  		if (!__riscv_isa_extension_available(isa_bitmap, riscv_isa_ext[i].id))
->  			continue;
-> =20
-> +		/* Only show the newest implemented version of an extension */
-> +		if (riscv_isa_ext[i].successor_id !=3D RISCV_ISA_EXT_INVALID &&
-> +		    __riscv_isa_extension_available(isa_bitmap, riscv_isa_ext[i].succe=
-ssor_id))
-> +			continue;
-> +
->  		/* Only multi-letter extensions are split by underscores */
->  		if (strnlen(riscv_isa_ext[i].name, 2) !=3D 1)
->  			seq_puts(f, "_");
-> diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeatur=
-e.c
-> index c5b13f7dd482..8e10b50120e9 100644
-> --- a/arch/riscv/kernel/cpufeature.c
-> +++ b/arch/riscv/kernel/cpufeature.c
-> @@ -113,23 +113,29 @@ static bool riscv_isa_extension_check(int id)
->  	return true;
->  }
-> =20
-> -#define _RISCV_ISA_EXT_DATA(_name, _id, _subset_exts, _subset_exts_size)=
- {	\
-> +#define _RISCV_ISA_EXT_DATA(_name, _id, _subset_exts, _subset_exts_size,=
- _successor) {	\
->  	.name =3D #_name,								\
->  	.property =3D #_name,							\
->  	.id =3D _id,								\
->  	.subset_ext_ids =3D _subset_exts,						\
-> -	.subset_ext_size =3D _subset_exts_size					\
-> +	.subset_ext_size =3D _subset_exts_size,					\
-> +	.successor_id =3D _successor,						\
->  }
-> =20
-> -#define __RISCV_ISA_EXT_DATA(_name, _id) _RISCV_ISA_EXT_DATA(_name, _id,=
- NULL, 0)
-> +#define __RISCV_ISA_EXT_DATA(_name, _id) \
-> +	_RISCV_ISA_EXT_DATA(_name, _id, NULL, 0, RISCV_ISA_EXT_INVALID)
-> =20
->  /* Used to declare pure "lasso" extension (Zk for instance) */
->  #define __RISCV_ISA_EXT_BUNDLE(_name, _bundled_exts) \
-> -	_RISCV_ISA_EXT_DATA(_name, RISCV_ISA_EXT_INVALID, _bundled_exts, ARRAY_=
-SIZE(_bundled_exts))
-> +	_RISCV_ISA_EXT_DATA(_name, RISCV_ISA_EXT_INVALID, \
-> +			    _bundled_exts, ARRAY_SIZE(_bundled_exts), RISCV_ISA_EXT_INVALID)
-> =20
->  /* Used to declare extensions that are a superset of other extensions (Z=
-vbb for instance) */
->  #define __RISCV_ISA_EXT_SUPERSET(_name, _id, _sub_exts) \
-> -	_RISCV_ISA_EXT_DATA(_name, _id, _sub_exts, ARRAY_SIZE(_sub_exts))
-> +	_RISCV_ISA_EXT_DATA(_name, _id, _sub_exts, ARRAY_SIZE(_sub_exts), RISCV=
-_ISA_EXT_INVALID)
-> +
-> +#define __RISCV_ISA_EXT_VERSION(_name, _id, _preds, _preds_size, _succes=
-sor) \
-> +	_RISCV_ISA_EXT_DATA(_name, _id, _preds, _preds_size, _successor)
-> =20
->  static const unsigned int riscv_zk_bundled_exts[] =3D {
->  	RISCV_ISA_EXT_ZBKB,
-> @@ -201,6 +207,16 @@ static const unsigned int riscv_zvbb_exts[] =3D {
->  	RISCV_ISA_EXT_ZVKB
->  };
-> =20
-> +static const unsigned int riscv_sm_ext_versions[] =3D {
-> +	RISCV_ISA_EXT_SM1p11,
-> +	RISCV_ISA_EXT_SM1p12,
-> +};
-> +
-> +static const unsigned int riscv_ss_ext_versions[] =3D {
-> +	RISCV_ISA_EXT_SS1p11,
-> +	RISCV_ISA_EXT_SS1p12,
-> +};
-> +
->  /*
->   * The canonical order of ISA extension names in the ISA string is defin=
-ed in
->   * chapter 27 of the unprivileged specification.
-> @@ -299,8 +315,16 @@ const struct riscv_isa_ext_data riscv_isa_ext[] =3D {
->  	__RISCV_ISA_EXT_DATA(zvksh, RISCV_ISA_EXT_ZVKSH),
->  	__RISCV_ISA_EXT_BUNDLE(zvksg, riscv_zvksg_bundled_exts),
->  	__RISCV_ISA_EXT_DATA(zvkt, RISCV_ISA_EXT_ZVKT),
-> +	__RISCV_ISA_EXT_VERSION(sm1p11, RISCV_ISA_EXT_SM1p11, riscv_sm_ext_vers=
-ions, 0,
-> +				RISCV_ISA_EXT_SM1p12),
-> +	__RISCV_ISA_EXT_VERSION(sm1p12, RISCV_ISA_EXT_SM1p12, riscv_sm_ext_vers=
-ions, 1,
-> +				RISCV_ISA_EXT_INVALID),
->  	__RISCV_ISA_EXT_DATA(smaia, RISCV_ISA_EXT_SMAIA),
->  	__RISCV_ISA_EXT_DATA(smstateen, RISCV_ISA_EXT_SMSTATEEN),
-> +	__RISCV_ISA_EXT_VERSION(ss1p11, RISCV_ISA_EXT_SS1p11, riscv_ss_ext_vers=
-ions, 0,
-> +				RISCV_ISA_EXT_SS1p12),
-> +	__RISCV_ISA_EXT_VERSION(ss1p12, RISCV_ISA_EXT_SS1p12, riscv_ss_ext_vers=
-ions, 1,
-> +				RISCV_ISA_EXT_INVALID),
->  	__RISCV_ISA_EXT_DATA(ssaia, RISCV_ISA_EXT_SSAIA),
->  	__RISCV_ISA_EXT_DATA(sscofpmf, RISCV_ISA_EXT_SSCOFPMF),
->  	__RISCV_ISA_EXT_DATA(sstc, RISCV_ISA_EXT_SSTC),
-> @@ -414,6 +438,14 @@ static void __init riscv_parse_isa_string(unsigned l=
-ong *this_hwcap, struct risc
->  				;
-> =20
->  			++ext_end;
-> +
-> +			/*
-> +			 * As a special case for the Sm and Ss extensions, where the version
-> +			 * number is important, include it in the extension name.
-> +			 */
-> +			if (ext_end - ext =3D=3D 2 && tolower(ext[0]) =3D=3D 's' &&
-> +			    (tolower(ext[1]) =3D=3D 'm' || tolower(ext[1]) =3D=3D 's'))
-> +				ext_end =3D isa;
->  			break;
->  		default:
->  			/*
+The del_timer_sync() function is also called from the waveform_detach()
+function, but the timer enable members will already be set to false when
+that function is called, so no change is needed there.
 
+Fixes: 403fe7f34e33 ("staging: comedi: comedi_test: fix timer race conditions")
+Cc: <stable@vger.kernel.org> # 4.4+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+---
+ drivers/comedi/drivers/comedi_test.c | 37 +++++++++++++++++++++++++---
+ 1 file changed, 33 insertions(+), 4 deletions(-)
 
-Hmm, looking at all of this (especially this hack to the "old" parser),
-I feel more like these should be promoted to a property of their own.
-The "old" parser was designed to handle numbers, and here when you're
-interested in the values behind the numbers (which is a first iirc), you
-don't make any use of that. I don't really want to see a world where
-we have every single iteration of smNpM under the sun in the property,
-because there's a fair bit of churn in the isa. Granted, this applies to
-all the various, the difference for me is the level of churn.
-Or maybe we can still with the properties you have, but instead of
-treating them like any other extension, handle these separately,
-focusing on the numbering, so that only having the exact version
-supported by a cpu is possible.
+diff --git a/drivers/comedi/drivers/comedi_test.c b/drivers/comedi/drivers/comedi_test.c
+index 30ea8b53ebf8..7fefe0de0bcc 100644
+--- a/drivers/comedi/drivers/comedi_test.c
++++ b/drivers/comedi/drivers/comedi_test.c
+@@ -87,6 +87,8 @@ struct waveform_private {
+ 	struct comedi_device *dev;	/* parent comedi device */
+ 	u64 ao_last_scan_time;		/* time of previous AO scan in usec */
+ 	unsigned int ao_scan_period;	/* AO scan period in usec */
++	bool ai_timer_enable:1;		/* should AI timer be running? */
++	bool ao_timer_enable:1;		/* should AO timer be running? */
+ 	unsigned short ao_loopbacks[N_CHANS];
+ };
+ 
+@@ -232,12 +234,18 @@ static void waveform_ai_timer(struct timer_list *t)
+ 	if (cmd->stop_src == TRIG_COUNT && async->scans_done >= cmd->stop_arg) {
+ 		async->events |= COMEDI_CB_EOA;
+ 	} else {
++		unsigned long flags;
++
+ 		if (devpriv->ai_convert_time > now)
+ 			time_increment = devpriv->ai_convert_time - now;
+ 		else
+ 			time_increment = 1;
+-		mod_timer(&devpriv->ai_timer,
+-			  jiffies + usecs_to_jiffies(time_increment));
++		spin_lock_irqsave(&dev->spinlock, flags);
++		if (devpriv->ai_timer_enable) {
++			mod_timer(&devpriv->ai_timer,
++				  jiffies + usecs_to_jiffies(time_increment));
++		}
++		spin_unlock_irqrestore(&dev->spinlock, flags);
+ 	}
+ 
+ overrun:
+@@ -352,6 +360,7 @@ static int waveform_ai_cmd(struct comedi_device *dev,
+ 	struct comedi_cmd *cmd = &s->async->cmd;
+ 	unsigned int first_convert_time;
+ 	u64 wf_current;
++	unsigned long flags;
+ 
+ 	if (cmd->flags & CMDF_PRIORITY) {
+ 		dev_err(dev->class_dev,
+@@ -393,9 +402,12 @@ static int waveform_ai_cmd(struct comedi_device *dev,
+ 	 * Seem to need an extra jiffy here, otherwise timer expires slightly
+ 	 * early!
+ 	 */
++	spin_lock_irqsave(&dev->spinlock, flags);
++	devpriv->ai_timer_enable = true;
+ 	devpriv->ai_timer.expires =
+ 		jiffies + usecs_to_jiffies(devpriv->ai_convert_period) + 1;
+ 	add_timer(&devpriv->ai_timer);
++	spin_unlock_irqrestore(&dev->spinlock, flags);
+ 	return 0;
+ }
+ 
+@@ -403,7 +415,11 @@ static int waveform_ai_cancel(struct comedi_device *dev,
+ 			      struct comedi_subdevice *s)
+ {
+ 	struct waveform_private *devpriv = dev->private;
++	unsigned long flags;
+ 
++	spin_lock_irqsave(&dev->spinlock, flags);
++	devpriv->ai_timer_enable = false;
++	spin_unlock_irqrestore(&dev->spinlock, flags);
+ 	if (in_softirq()) {
+ 		/* Assume we were called from the timer routine itself. */
+ 		del_timer(&devpriv->ai_timer);
+@@ -494,9 +510,14 @@ static void waveform_ao_timer(struct timer_list *t)
+ 	} else {
+ 		unsigned int time_inc = devpriv->ao_last_scan_time +
+ 					devpriv->ao_scan_period - now;
++		unsigned long flags;
+ 
+-		mod_timer(&devpriv->ao_timer,
+-			  jiffies + usecs_to_jiffies(time_inc));
++		spin_lock_irqsave(&dev->spinlock, flags);
++		if (devpriv->ao_timer_enable) {
++			mod_timer(&devpriv->ao_timer,
++				  jiffies + usecs_to_jiffies(time_inc));
++		}
++		spin_unlock_irqrestore(&dev->spinlock, flags);
+ 	}
+ 
+ underrun:
+@@ -510,6 +531,7 @@ static int waveform_ao_inttrig_start(struct comedi_device *dev,
+ 	struct waveform_private *devpriv = dev->private;
+ 	struct comedi_async *async = s->async;
+ 	struct comedi_cmd *cmd = &async->cmd;
++	unsigned long flags;
+ 
+ 	if (trig_num != cmd->start_arg)
+ 		return -EINVAL;
+@@ -517,9 +539,12 @@ static int waveform_ao_inttrig_start(struct comedi_device *dev,
+ 	async->inttrig = NULL;
+ 
+ 	devpriv->ao_last_scan_time = ktime_to_us(ktime_get());
++	spin_lock_irqsave(&dev->spinlock, flags);
++	devpriv->ao_timer_enable = true;
+ 	devpriv->ao_timer.expires =
+ 		jiffies + usecs_to_jiffies(devpriv->ao_scan_period);
+ 	add_timer(&devpriv->ao_timer);
++	spin_unlock_irqrestore(&dev->spinlock, flags);
+ 
+ 	return 1;
+ }
+@@ -602,8 +627,12 @@ static int waveform_ao_cancel(struct comedi_device *dev,
+ 			      struct comedi_subdevice *s)
+ {
+ 	struct waveform_private *devpriv = dev->private;
++	unsigned long flags;
+ 
+ 	s->async->inttrig = NULL;
++	spin_lock_irqsave(&dev->spinlock, flags);
++	devpriv->ao_timer_enable = false;
++	spin_unlock_irqrestore(&dev->spinlock, flags);
+ 	if (in_softirq()) {
+ 		/* Assume we were called from the timer routine itself. */
+ 		del_timer(&devpriv->ao_timer);
+-- 
+2.43.0
 
-I'm still pretty undecided, I'd like to think about this a little bit,
-but I think we can do better here.
-
---GOvnA6XK3oSYaT7y
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZcuv8wAKCRB4tDGHoIJi
-0u1UAP46bW+atJw8FGI+FQSeWo9h/8Xpryu+Khk+y2K/oh96wAD/ekaiohckVSPQ
-xv2rgXgJkf7b7QqzrLCDBY0tXO1oTgM=
-=hUmi
------END PGP SIGNATURE-----
-
---GOvnA6XK3oSYaT7y--
 
