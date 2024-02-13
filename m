@@ -1,96 +1,116 @@
-Return-Path: <stable+bounces-19701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B0A852E30
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 11:40:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25259852E41
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 11:47:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4E971C236EC
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 10:40:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C4CD1F25385
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 10:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00553249F5;
-	Tue, 13 Feb 2024 10:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26E70250E2;
+	Tue, 13 Feb 2024 10:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXpkIAiN"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="TmEu4/T4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E9724211;
-	Tue, 13 Feb 2024 10:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2895D1775C;
+	Tue, 13 Feb 2024 10:47:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707820849; cv=none; b=OGp31whUYRfkDTezPIGjzuPIoSg/BA8NXIRNYoIk3jktV6h5iMDJxRVveLWpmv5vtjOHVAMuGQ68o/A8qYOYe0TmPgw+ij+fR77fgX87LcYvI2UzZe2Gh53AF0xXn1EBoE69y4u1cjaYPbS/7PwMYjsmVemR4bqZ0aY9Mg6ccVI=
+	t=1707821245; cv=none; b=ZssUiCFkslxCBRdCeqac/qGtNBF3AJi9I3DshU+cUQr1mJSE/Ve6n5AjXbpTj/EgiGDHQpsve2FExC7qRcT0aTktFqTL8yEGwWFWP+V2HatjVUa/jN3OUBnB4qoY0CikR/m4qWxKOPxT9nDOWZ6hWA97Ib/mL7VQ9eQyyPk7SVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707820849; c=relaxed/simple;
-	bh=SdIGO8QRRKMoXA7F/J7F9sC/SL5JznJ15MYEyHmCxPk=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=V1sihb+/YGUhCf/LczOnluRUB4I6yrvFBJoCfJR4PqNaPVZPaG9PaC1TWh8SKCxhxvpJWDoExAViSW3yPD67ZUaCT9hUn+1wFCdkutYvtLiFUAD6Tzz6VF3IjTfDJTgUhcpY/5ifN3+x77RlIYGbrfgPFngRv64EOFkXfux7X9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXpkIAiN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE77C433C7;
-	Tue, 13 Feb 2024 10:40:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707820849;
-	bh=SdIGO8QRRKMoXA7F/J7F9sC/SL5JznJ15MYEyHmCxPk=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=GXpkIAiNAFGIbfIZW3p754J3SEDKkHXA+dNFDpW00G9nL7keajK5XWRlTQlz8PzBs
-	 Wn802fyk1KU+OeA0Mzj98Aw1jjrLJb0kEebxXy9/ZnCXLQSyDIJyNgbnjknMtDhXg6
-	 kw7YKO5F4TIsoEDP/w0pfrwpUXk1mHPvfOwuLf8uiUudio6qdsWKbjAGynxBMjUhZy
-	 zkfU/OfSH4wTAc1ChXM0XTpjycxG04uP4nc6q9xU3mwlvhDuB1x/vwrMO8BeYI6aFZ
-	 7UrODPu74DpUU6s9ZTqOOFmr+QcxdKWxZSGSAU0EGCMI/xwodZ/diLmBJIb8+lNNV1
-	 awik2N49Y7syQ==
-Date: Tue, 13 Feb 2024 11:40:50 +0100 (CET)
-From: Jiri Kosina <jikos@kernel.org>
-To: "Tobita, Tatsunosuke" <tatsunosuke.wacom@gmail.com>
-cc: linux-input@vger.kernel.org, 
-    Benjamin Tissoires <benjamin.tissoires@redhat.com>, 
-    Ping Cheng <pinglinux@gmail.com>, Jason Gerecke <killertofu@gmail.com>, 
-    Aaron Armstrong Skomra <skomra@gmail.com>, 
-    Joshua Dickens <Joshua@Joshua-Dickens.com>, 
-    Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>, 
-    Jason Gerecke <jason.gerecke@wacom.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] HID: wacom: generic: Avoid reporting a serial of
- '0' to userspace
-In-Reply-To: <20240201044055.23367-1-tatsunosuke.wacom@gmail.com>
-Message-ID: <nycvar.YFH.7.76.2402131140250.21798@cbobk.fhfr.pm>
-References: <20240201044055.23367-1-tatsunosuke.wacom@gmail.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+	s=arc-20240116; t=1707821245; c=relaxed/simple;
+	bh=LuZVB9/U46GxT3gi1nHL2CZ0+ZTFaMf0rDsOE7bl3hk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uYOwy8fdnzpRniTJOkdVxnE5L5lU6RhNqGtst0Yk0bWEXJMpkSECmDrNrwSoMUdcT0WTcQBhnFvfUTkTUXKkJFEG/mgxP3myTLY3gcnm5zkugkVYFL4kMsb3We+RIZJ5SjmpmaV5Jg4kzeUypfPNJar4N090MfGVQEMVbe1qCog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=TmEu4/T4; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (unknown [109.130.69.237])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1569C675;
+	Tue, 13 Feb 2024 11:47:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1707821240;
+	bh=LuZVB9/U46GxT3gi1nHL2CZ0+ZTFaMf0rDsOE7bl3hk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TmEu4/T4muelKKgbtFKqcPolTwHWbmCtPpMzX1aE0RScaQOkVU/BGQgyw6wrWKzCD
+	 ruxiLIkknUu5+KyeEq5ajNihe/TYwdmADq3l6qko5002lmZCjS4dv4J2QvBQXbf9+2
+	 cX5Q1mqXJZFRmShzYgg4q5TfIhlfbBNL2BMKFsRs=
+Date: Tue, 13 Feb 2024 12:47:25 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Oliver Neukum <oneukum@suse.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4] media: ucvideo: Add quirk for Logitech Rally Bar
+Message-ID: <20240213104725.GC5012@pendragon.ideasonboard.com>
+References: <20240108-rallybar-v4-1-a7450641e41b@chromium.org>
+ <20240204105227.GB25334@pendragon.ideasonboard.com>
+ <ca89eb86-a566-422c-9448-d8d5254d54b8@suse.com>
+ <6aade777-d97c-4c65-b542-14ce5b39abb6@rowland.harvard.edu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <6aade777-d97c-4c65-b542-14ce5b39abb6@rowland.harvard.edu>
 
-On Thu, 1 Feb 2024, Tobita, Tatsunosuke wrote:
+On Mon, Feb 12, 2024 at 02:04:31PM -0500, Alan Stern wrote:
+> On Mon, Feb 12, 2024 at 01:22:42PM +0100, Oliver Neukum wrote:
+> > On 04.02.24 11:52, Laurent Pinchart wrote:
+> > > Hi Ricardo,
+> > > 
+> > > Thank you for the patch.
+> > 
+> > Hi,
+> > 
+> > sorry for commenting on this late, but this patch has
+> > a fundamental issue. In fact this issue is the reason the
+> > handling for quirks is in usbcore at all.
+> > 
+> > If you leave the setting/clearing of this flag to a driver you
+> > are introducing a race condition. The driver may or may not be
+> > present at the time a device is enumerated. And you have
+> > no idea how long the autosuspend delay is on a system
+> > and what its default policy is regarding suspending
+> > devices.
+> > That means that a device can have been suspended and
+> > resumed before it is probed. On a device that needs
+> > RESET_RESUME, we are in trouble.
+> 
+> Not necessarily.  If the driver knows that one of these devices may 
+> already have been suspend and resumed, it can issue its own preemptive 
+> reset at probe time.
+> 
+> > The inverse issue will arise if a device does not react
+> > well to RESET_RESUME. You cannot rule out that a device
+> > that must not be reset will be reset.
+> 
+> That's a separate issue, with its own list of potential problems.
+> 
+> > I am sorry, but it seems to me that the exceptions need
+> > to go into usbcore.
+> 
+> If we do then we may want to come up with a better scheme for seeing 
+> which devices need to have a quirk flag set.  A static listing probably 
+> won't be good enough; the decision may have to be made dynamically.
 
-> From: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
-> 
-> The xf86-input-wacom driver does not treat '0' as a valid serial
-> number and will drop any input report which contains an
-> MSC_SERIAL = 0 event. The kernel driver already takes care to
-> avoid sending any MSC_SERIAL event if the value of serial[0] == 0
-> (which is the case for devices that don't actually report a
-> serial number), but this is not quite sufficient.
-> Only the lower 32 bits of the serial get reported to userspace,
-> so if this portion of the serial is zero then there can still
-> be problems.
-> 
-> This commit allows the driver to report either the lower 32 bits
-> if they are non-zero or the upper 32 bits otherwise.
-> 
-> Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-> Signed-off-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
-> Fixes: f85c9dc678a5 ("HID: wacom: generic: Support tool ID and additional tool types")
-> CC: stable@vger.kernel.org # v4.10
-
-Applied to hid.git#for-6.8/upstream-fixes.
+I don't mind either way personally. Oliver, could you try to find a good
+solution with Ricardo ? I'll merge the outcome.
 
 -- 
-Jiri Kosina
-SUSE Labs
+Regards,
 
+Laurent Pinchart
 
