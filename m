@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-19921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 055908537E5
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:30:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD91E853881
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:38:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2989C1C26A0A
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:30:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 345351F21DBB
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E91C5FF06;
-	Tue, 13 Feb 2024 17:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038E6604D9;
+	Tue, 13 Feb 2024 17:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqa7eAm+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="krsojuoI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088255F56B;
-	Tue, 13 Feb 2024 17:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B8760277;
+	Tue, 13 Feb 2024 17:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845452; cv=none; b=rZ4ALziyQH/51BOrPySLEZ9CgNpYuoTjfIR2iPFLb6pZwumyhN7R65j7eXbQn5uktizySjlBxFsVHOGy0mMhdPn1vkUU2TCZFYaoz0OyE6f4oVch9/3RTT+BMsZ/yG/uqGIREGFzdbIHSCnxwNLQgAQOQflaP3Z8XchOL0LEMno=
+	t=1707845836; cv=none; b=QempQIYZ6OugiVoeh48+quEMTS0NDZ0FjjPKrvrecAN0pGkGrlyFi2UfsV0vMi13Gkqyw6h0v3AKP2+PmyKfmWxtx6pgCceUiVqgJ/n1bwHkVkQUVnmTPHlOJzykqxPuFqtw9xVEmkJ0krBVRLLSqYcv8n9vRNn9RVyCB0i7X0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845452; c=relaxed/simple;
-	bh=fTqjiApxrACzdvyf2OupHz8xI+sRb4Dl09Nm47G4GOk=;
+	s=arc-20240116; t=1707845836; c=relaxed/simple;
+	bh=e56wKDZQJmmLFruSozm3HNed8+wsifn/Ctp0kL2fJac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n+EPhUNPBoOzWgPyeJTDP8ra9tMn/WfQvcoEAO/reeP+6zDGoNEqUt0W7uu0b0MWETe5IAkH7qrlta+UhI/z68xkCvse548lZIsUME2rq2z3MUaF1HSVRFirUvNG6k4dh84bgVZIBpyOO848xEq9/kenz2WhFTsAkNOJmiSrX5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqa7eAm+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E3DC433C7;
-	Tue, 13 Feb 2024 17:30:51 +0000 (UTC)
+	 MIME-Version; b=OlFUIY5jx4WJNrivUrnOg+KSDoRvqPXZhk9E1OCjnUgO62k6TaIyIUvBMdj87qHGn+dhq99BtFAxfCrpiwTiR1N/UAedpFUwnQ+G67QGe6VvLcHXsGrrBc/e7CSrjww1XMwDboNDZs9D1XJFp/KOv/IRhQOt3EFVowjzhmNXxO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=krsojuoI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26243C433C7;
+	Tue, 13 Feb 2024 17:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845451;
-	bh=fTqjiApxrACzdvyf2OupHz8xI+sRb4Dl09Nm47G4GOk=;
+	s=korg; t=1707845836;
+	bh=e56wKDZQJmmLFruSozm3HNed8+wsifn/Ctp0kL2fJac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oqa7eAm+qT49C+QHWAcd0r7EAl2tZIbp+8qCu2vk7+JEtgjXt6zTgKPYmC7Y7/+Pd
-	 LHXohMdJKZAFIo80DgUsq5C3n5CT7LTD9WpKHjWGohEopA10XJrkqXgMugAFU8wrFt
-	 KSaQGSkrVS8jBOZ/c22+1MZqKeXcwp15zJPfjXqM=
+	b=krsojuoIGT/you8q9dzvyhWSB5iPoliXnPNcN/45cRVU9PTBeD+HLEqIwedKKw0gO
+	 6Knuld7YNhfN8Qg8c9UeM3rfoCdA2xZqu9gpG6e7scQURc47LB/FpsqhgSfgLZs+CL
+	 cRTbTZVzOPct7Kz0Fv+lYpCw+S5hiQFpAQhjVBrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Florian Westphal <fw@strlen.de>,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/121] netfilter: nft_set_pipapo: remove scratch_aligned pointer
-Date: Tue, 13 Feb 2024 18:21:32 +0100
-Message-ID: <20240213171855.411659822@linuxfoundation.org>
+Subject: [PATCH 6.7 071/124] netfilter: nft_set_pipapo: remove scratch_aligned pointer
+Date: Tue, 13 Feb 2024 18:21:33 +0100
+Message-ID: <20240213171855.813513238@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -91,10 +91,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 10 insertions(+), 39 deletions(-)
 
 diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index b6bca59b7ba6..8e9b20077966 100644
+index dd6d81ddcff3..3089c4ca8fff 100644
 --- a/net/netfilter/nft_set_pipapo.c
 +++ b/net/netfilter/nft_set_pipapo.c
-@@ -1116,6 +1116,7 @@ static void pipapo_free_scratch(const struct nft_pipapo_match *m, unsigned int c
+@@ -1125,6 +1125,7 @@ static void pipapo_free_scratch(const struct nft_pipapo_match *m, unsigned int c
  		return;
  
  	mem = s;
@@ -102,7 +102,7 @@ index b6bca59b7ba6..8e9b20077966 100644
  	kfree(mem);
  }
  
-@@ -1135,6 +1136,7 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
+@@ -1144,6 +1145,7 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
  		struct nft_pipapo_scratch *scratch;
  #ifdef NFT_PIPAPO_ALIGN
  		void *scratch_aligned;
@@ -110,7 +110,7 @@ index b6bca59b7ba6..8e9b20077966 100644
  #endif
  		scratch = kzalloc_node(struct_size(scratch, map,
  						   bsize_max * 2) +
-@@ -1153,8 +1155,6 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
+@@ -1162,8 +1164,6 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
  
  		pipapo_free_scratch(clone, i);
  
@@ -119,7 +119,7 @@ index b6bca59b7ba6..8e9b20077966 100644
  #ifdef NFT_PIPAPO_ALIGN
  		/* Align &scratch->map (not the struct itself): the extra
  		 * %NFT_PIPAPO_ALIGN_HEADROOM bytes passed to kzalloc_node()
-@@ -1166,8 +1166,12 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
+@@ -1175,8 +1175,12 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
  
  		scratch_aligned = NFT_PIPAPO_LT_ALIGN(&scratch->map);
  		scratch_aligned -= offsetof(struct nft_pipapo_scratch, map);
@@ -133,7 +133,7 @@ index b6bca59b7ba6..8e9b20077966 100644
  	}
  
  	return 0;
-@@ -1320,11 +1324,6 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
+@@ -1331,11 +1335,6 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
  	if (!new->scratch)
  		goto out_scratch;
  
@@ -145,7 +145,7 @@ index b6bca59b7ba6..8e9b20077966 100644
  	for_each_possible_cpu(i)
  		*per_cpu_ptr(new->scratch, i) = NULL;
  
-@@ -1377,9 +1376,6 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
+@@ -1388,9 +1387,6 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
  out_scratch_realloc:
  	for_each_possible_cpu(i)
  		pipapo_free_scratch(new, i);
@@ -155,7 +155,7 @@ index b6bca59b7ba6..8e9b20077966 100644
  out_scratch:
  	free_percpu(new->scratch);
  	kfree(new);
-@@ -1666,11 +1662,7 @@ static void pipapo_free_match(struct nft_pipapo_match *m)
+@@ -1673,11 +1669,7 @@ static void pipapo_free_match(struct nft_pipapo_match *m)
  	for_each_possible_cpu(i)
  		pipapo_free_scratch(m, i);
  
@@ -167,7 +167,7 @@ index b6bca59b7ba6..8e9b20077966 100644
  	pipapo_free_fields(m);
  
  	kfree(m);
-@@ -2165,16 +2157,6 @@ static int nft_pipapo_init(const struct nft_set *set,
+@@ -2171,16 +2163,6 @@ static int nft_pipapo_init(const struct nft_set *set,
  	for_each_possible_cpu(i)
  		*per_cpu_ptr(m->scratch, i) = NULL;
  
@@ -184,7 +184,7 @@ index b6bca59b7ba6..8e9b20077966 100644
  	rcu_head_init(&m->rcu);
  
  	nft_pipapo_for_each_field(f, i, m) {
-@@ -2205,9 +2187,6 @@ static int nft_pipapo_init(const struct nft_set *set,
+@@ -2211,9 +2193,6 @@ static int nft_pipapo_init(const struct nft_set *set,
  	return 0;
  
  out_free:
@@ -194,7 +194,7 @@ index b6bca59b7ba6..8e9b20077966 100644
  	free_percpu(m->scratch);
  out_scratch:
  	kfree(m);
-@@ -2261,9 +2240,6 @@ static void nft_pipapo_destroy(const struct nft_ctx *ctx,
+@@ -2267,9 +2246,6 @@ static void nft_pipapo_destroy(const struct nft_ctx *ctx,
  
  		nft_set_pipapo_match_destroy(ctx, set, m);
  
@@ -204,7 +204,7 @@ index b6bca59b7ba6..8e9b20077966 100644
  		for_each_possible_cpu(cpu)
  			pipapo_free_scratch(m, cpu);
  		free_percpu(m->scratch);
-@@ -2278,9 +2254,6 @@ static void nft_pipapo_destroy(const struct nft_ctx *ctx,
+@@ -2284,9 +2260,6 @@ static void nft_pipapo_destroy(const struct nft_ctx *ctx,
  		if (priv->dirty)
  			nft_set_pipapo_match_destroy(ctx, set, m);
  
@@ -215,7 +215,7 @@ index b6bca59b7ba6..8e9b20077966 100644
  			pipapo_free_scratch(priv->clone, cpu);
  		free_percpu(priv->clone->scratch);
 diff --git a/net/netfilter/nft_set_pipapo.h b/net/netfilter/nft_set_pipapo.h
-index 75b1340c6335..a4a58812c108 100644
+index d3bc1551694f..f59a0cd81105 100644
 --- a/net/netfilter/nft_set_pipapo.h
 +++ b/net/netfilter/nft_set_pipapo.h
 @@ -133,10 +133,12 @@ struct nft_pipapo_field {
