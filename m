@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-20004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6273853858
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:36:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF218537C2
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8D561C219B1
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:36:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 703E0B22DCF
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A464660260;
-	Tue, 13 Feb 2024 17:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5F25FEF0;
+	Tue, 13 Feb 2024 17:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVHAFSDt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBJKx3u3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617C5AD55;
-	Tue, 13 Feb 2024 17:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDD65F54E;
+	Tue, 13 Feb 2024 17:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845740; cv=none; b=Ue4NyFwTjhra9/7ch41tDF2yq2bd8j0waMW4ItcRaU/7vCYgOx63+2zcuLai5dVtZ44MX9VL1nbb1tws0TXFq5BfLDbOFJAVldvLF3bzLy5VLs/5PxKy9f57dsnJqlgGkN4Nc3y0TAp7tNxF9H81zzsdFuOCBlH53CmyLsb+OkE=
+	t=1707845357; cv=none; b=Ystg54vaAxYyq0xoT2CWca9jmrGp5M3j5qYUMHAuTs5jg7LL+9D1cUtpcyycNNrlBq9ncDo59qF6DgYSuSHuDtsozf47DUvyRnJ02bsdqUnJb54Kwkuk4/cCa88B0V9QX7oz7HnWYAYCy0gkAuP5jjj0F/qgan3YQl6MIXlVCew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845740; c=relaxed/simple;
-	bh=SaOv5pqg6XCQEEjnO+4K8fSK/GoMYzKol24M1UjBB+M=;
+	s=arc-20240116; t=1707845357; c=relaxed/simple;
+	bh=HGRMdyOj6VLTFhu/2SQGWLzV6PWbC7sbLR/hZ9dvhhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rz0EwLOA2/G3lLhFprZG7pAjLKyWoWt2i3QuHmkZh1DFJr9wLJYrVbObjXQnvB4lVmvOEHTv74ghsXGEdz7KkbtNfPmmnq0eKJVit3v0qrZrulqxtqqjVWg0koQJQNuL6zI2Dts5AIzqISG788FQNpfQgj5YgE41igLczjLhMjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVHAFSDt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA39AC433F1;
-	Tue, 13 Feb 2024 17:35:39 +0000 (UTC)
+	 MIME-Version; b=brFLr45FGYv9OizUr4fY6GcUP2gvT759IQPmBbgJEjlZG+ZIvVjokhRqEyYakKvthIVGct+AghuTRw3wrM/HJWPAG9y+vGoOCKn30t67bC+Upec6Q15O8EE1OUUFdhL93JXT8FyZ0DbJatfF38+7iKVwIZ9QYiiIFqPl+oCB52w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBJKx3u3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4FE7C433C7;
+	Tue, 13 Feb 2024 17:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845740;
-	bh=SaOv5pqg6XCQEEjnO+4K8fSK/GoMYzKol24M1UjBB+M=;
+	s=korg; t=1707845357;
+	bh=HGRMdyOj6VLTFhu/2SQGWLzV6PWbC7sbLR/hZ9dvhhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oVHAFSDtD5cdM4WxYuwZyEDClSvCZ0234TPUAaxAKHxj/8LWXW15mpf/20zOHOcqA
-	 0JxeNyFLLXFv0fDHSnRTkGJ/53vxI0oSSkG59TVXqPzUAvRFUh3LMi13aRrOA/Hi8a
-	 QEJiloM9ji0YHS+YG6LCYgAdjfX+eUqKcKx8917Y=
+	b=SBJKx3u3sXZPwWGFmGj+c/xFVBp8tkDa9NGccPBNoAIhQ9U8Wquh34fohMJimhI3y
+	 9UOTC0FZm+uv7zf0BzcikPvGz268BsKWr4QrJ9yemMzt8hf8PO6r2VlOLoAKvG8F4j
+	 xzJsYbpfKp6eDD3y8oD5I4Z451DNq+tZQWgSIq3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Loic Prylli <lprylli@netflix.com>,
-	Alexander Hansen <alexander.hansen@9elements.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 043/124] hwmon: (aspeed-pwm-tacho) mutex for tach reading
+Subject: [PATCH 6.6 056/121] tsnep: Fix mapping for zero copy XDP_TX action
 Date: Tue, 13 Feb 2024 18:21:05 +0100
-Message-ID: <20240213171854.995599982@linuxfoundation.org>
+Message-ID: <20240213171854.630841428@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Loic Prylli <lprylli@netflix.com>
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
 
-[ Upstream commit 1168491e7f53581ba7b6014a39a49cfbbb722feb ]
+[ Upstream commit d7f5fb33cf77247b7bf9a871aaeea72ca4f51ad7 ]
 
-the ASPEED_PTCR_RESULT Register can only hold the result for a
-single fan input. Adding a mutex to protect the register until the
-reading is done.
+For XDP_TX action xdp_buff is converted to xdp_frame. The conversion is
+done by xdp_convert_buff_to_frame(). The memory type of the resulting
+xdp_frame depends on the memory type of the xdp_buff. For page pool
+based xdp_buff it produces xdp_frame with memory type
+MEM_TYPE_PAGE_POOL. For zero copy XSK pool based xdp_buff it produces
+xdp_frame with memory type MEM_TYPE_PAGE_ORDER0.
 
-Signed-off-by: Loic Prylli <lprylli@netflix.com>
-Signed-off-by: Alexander Hansen <alexander.hansen@9elements.com>
-Fixes: 2d7a548a3eff ("drivers: hwmon: Support for ASPEED PWM/Fan tach")
-Link: https://lore.kernel.org/r/121d888762a1232ef403cf35230ccf7b3887083a.1699007401.git.alexander.hansen@9elements.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+tsnep_xdp_xmit_back() is not prepared for that and uses always the page
+pool buffer type TSNEP_TX_TYPE_XDP_TX. This leads to invalid mappings
+and the transmission of undefined data.
+
+Improve tsnep_xdp_xmit_back() to use the generic buffer type
+TSNEP_TX_TYPE_XDP_NDO for zero copy XDP_TX.
+
+Fixes: 3fc2333933fd ("tsnep: Add XDP socket zero-copy RX support")
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/aspeed-pwm-tacho.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/engleder/tsnep_main.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwmon/aspeed-pwm-tacho.c b/drivers/hwmon/aspeed-pwm-tacho.c
-index 997df4b40509..b2ae2176f11f 100644
---- a/drivers/hwmon/aspeed-pwm-tacho.c
-+++ b/drivers/hwmon/aspeed-pwm-tacho.c
-@@ -193,6 +193,8 @@ struct aspeed_pwm_tacho_data {
- 	u8 fan_tach_ch_source[16];
- 	struct aspeed_cooling_device *cdev[8];
- 	const struct attribute_group *groups[3];
-+	/* protects access to shared ASPEED_PTCR_RESULT */
-+	struct mutex tach_lock;
- };
+diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
+index 08e113e785a7..4f36b29d66c8 100644
+--- a/drivers/net/ethernet/engleder/tsnep_main.c
++++ b/drivers/net/ethernet/engleder/tsnep_main.c
+@@ -668,17 +668,25 @@ static void tsnep_xdp_xmit_flush(struct tsnep_tx *tx)
  
- enum type { TYPEM, TYPEN, TYPEO };
-@@ -527,6 +529,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
- 	u8 fan_tach_ch_source, type, mode, both;
- 	int ret;
+ static bool tsnep_xdp_xmit_back(struct tsnep_adapter *adapter,
+ 				struct xdp_buff *xdp,
+-				struct netdev_queue *tx_nq, struct tsnep_tx *tx)
++				struct netdev_queue *tx_nq, struct tsnep_tx *tx,
++				bool zc)
+ {
+ 	struct xdp_frame *xdpf = xdp_convert_buff_to_frame(xdp);
+ 	bool xmit;
++	u32 type;
  
-+	mutex_lock(&priv->tach_lock);
+ 	if (unlikely(!xdpf))
+ 		return false;
+ 
++	/* no page pool for zero copy */
++	if (zc)
++		type = TSNEP_TX_TYPE_XDP_NDO;
++	else
++		type = TSNEP_TX_TYPE_XDP_TX;
 +
- 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0);
- 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0x1 << fan_tach_ch);
+ 	__netif_tx_lock(tx_nq, smp_processor_id());
  
-@@ -544,6 +548,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
- 		ASPEED_RPM_STATUS_SLEEP_USEC,
- 		usec);
+-	xmit = tsnep_xdp_xmit_frame_ring(xdpf, tx, TSNEP_TX_TYPE_XDP_TX);
++	xmit = tsnep_xdp_xmit_frame_ring(xdpf, tx, type);
  
-+	mutex_unlock(&priv->tach_lock);
-+
- 	/* return -ETIMEDOUT if we didn't get an answer. */
- 	if (ret)
- 		return ret;
-@@ -903,6 +909,7 @@ static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
-+	mutex_init(&priv->tach_lock);
- 	priv->regmap = devm_regmap_init(dev, NULL, (__force void *)regs,
- 			&aspeed_pwm_tacho_regmap_config);
- 	if (IS_ERR(priv->regmap))
+ 	/* Avoid transmit queue timeout since we share it with the slow path */
+ 	if (xmit)
+@@ -1222,7 +1230,7 @@ static bool tsnep_xdp_run_prog(struct tsnep_rx *rx, struct bpf_prog *prog,
+ 	case XDP_PASS:
+ 		return false;
+ 	case XDP_TX:
+-		if (!tsnep_xdp_xmit_back(rx->adapter, xdp, tx_nq, tx))
++		if (!tsnep_xdp_xmit_back(rx->adapter, xdp, tx_nq, tx, false))
+ 			goto out_failure;
+ 		*status |= TSNEP_XDP_TX;
+ 		return true;
+@@ -1272,7 +1280,7 @@ static bool tsnep_xdp_run_prog_zc(struct tsnep_rx *rx, struct bpf_prog *prog,
+ 	case XDP_PASS:
+ 		return false;
+ 	case XDP_TX:
+-		if (!tsnep_xdp_xmit_back(rx->adapter, xdp, tx_nq, tx))
++		if (!tsnep_xdp_xmit_back(rx->adapter, xdp, tx_nq, tx, true))
+ 			goto out_failure;
+ 		*status |= TSNEP_XDP_TX;
+ 		return true;
 -- 
 2.43.0
 
