@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-19832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C2A853773
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:25:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF8A853882
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:38:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CFDB21F23506
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:25:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17859284E41
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D675FB90;
-	Tue, 13 Feb 2024 17:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3234660270;
+	Tue, 13 Feb 2024 17:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHrXjLAK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IX6f0s3w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CCA5F54E;
-	Tue, 13 Feb 2024 17:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4262A93C;
+	Tue, 13 Feb 2024 17:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845138; cv=none; b=W5TrNXu4qa0rLvcqgyGxWO9F/ak0u4xkiiLPkNBlhV7rCivt7YT7yd7Hku4yymEl7aLTvsO9kkb9Jq1KsoHmAAcmvSUuXTPYErzZ74enkzFnsnQtrz6KmUgkXx4f2Ag/xwcDAEMqCl1XO0b/qYRqYUMj9AHzL9UcwNxv4wYtl8U=
+	t=1707845840; cv=none; b=XKKBGxfo1Qwk6tHXXw/IxqDUxDo67NEAh9EF6BFqzEjKDFYUgGJxzYH45olLQhUdGA79qo0hPL0Hy8pc7jUHBmbH1zZWSi8Cfm/ftav3sgxDMoYiy9ExBu32mwdNi/iqA3ul80Dk2P+w/gCmsjGaO/1KsYR8us98aDdkTqUhYrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845138; c=relaxed/simple;
-	bh=bXMaHipN+gdwwcoWXkRnL4Zu7e+Z+VCtDWRefIbqit8=;
+	s=arc-20240116; t=1707845840; c=relaxed/simple;
+	bh=1Mw0Mmsj/7ldoPtsQ0Cjhr9IgMH7zn1KiyIhIVn8y10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1gzMGrnUHuokkUGcrcknPmd8iwBbxPi5Dcj6oitjtsfszx7SQSNB9p8N+CaoJrBM+KA2wJcnNm78/GHd55WpIAO/dYfTpFmXrZE0CNe57T82i3HAcoGObUQOeUHFURx8R2ECykbcPoDIwjSSpUqwRAWNh3lOSWHMn8pffbLV/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHrXjLAK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9C2C433C7;
-	Tue, 13 Feb 2024 17:25:37 +0000 (UTC)
+	 MIME-Version; b=sNxeIjcqNd5yZM3aq+wpKfH1fDL+eWONOry8W8dECe93272d6mowN6UeJqwi5odtAtDwoNDNONvluhW53/49eQWyH9sR1tI6lvFYijYsKprB2UzeJosXQQpQ92ZiK6STjVZhIB2Hj/5I13ONR8TzI3LwX6CwXqYeAnGm7fQGXCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IX6f0s3w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46F21C433F1;
+	Tue, 13 Feb 2024 17:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845138;
-	bh=bXMaHipN+gdwwcoWXkRnL4Zu7e+Z+VCtDWRefIbqit8=;
+	s=korg; t=1707845839;
+	bh=1Mw0Mmsj/7ldoPtsQ0Cjhr9IgMH7zn1KiyIhIVn8y10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CHrXjLAK+qy1lAgvV3smxgeOlQonuj9SoXlfe4FABcomu926FD3VhGlWVzM3TfqTF
-	 +6nhjAWERBy+Fxh0p6Ok9JRD4/c6wiGJGGvb0OcK8IyQNQLQ1v13yloQcySLAhY9aW
-	 MkQSM3eOcism4gpTjVKgVw1914EvayJEEdgnIpbY=
+	b=IX6f0s3w/iyNpTtt6cEa1j8aYiJMNZEqfWZrhkxqfBU9jSk0dY0xPnQA8SjMkw3Zc
+	 EW75+eyIiF83tqRp0+013Qhe95cdt4QFYp1NfmVpGIjN3gSRvhLrMpt6QQJ5jlcT0c
+	 W57/xJ17ffW2DWSh0ZM2hYjPX9viDEdCFKc6yd6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Tung Nguyen <tung.q.nguyen@dektech.com.au>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	syzbot+c5da1f087c9e4ec6c933@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 30/64] ppp_async: limit MRU to 64K
+	syzbot+5142b87a9abc510e14fa@syzkaller.appspotmail.com
+Subject: [PATCH 6.7 054/124] tipc: Check the bearer type before calling tipc_udp_nl_bearer_add()
 Date: Tue, 13 Feb 2024 18:21:16 +0100
-Message-ID: <20240213171845.698115144@linuxfoundation.org>
+Message-ID: <20240213171855.318529920@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit cb88cb53badb8aeb3955ad6ce80b07b598e310b8 ]
+[ Upstream commit 3871aa01e1a779d866fa9dfdd5a836f342f4eb87 ]
 
-syzbot triggered a warning [1] in __alloc_pages():
+syzbot reported the following general protection fault [1]:
 
-WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp)
+general protection fault, probably for non-canonical address 0xdffffc0000000010: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000080-0x0000000000000087]
+...
+RIP: 0010:tipc_udp_is_known_peer+0x9c/0x250 net/tipc/udp_media.c:291
+...
+Call Trace:
+ <TASK>
+ tipc_udp_nl_bearer_add+0x212/0x2f0 net/tipc/udp_media.c:646
+ tipc_nl_bearer_add+0x21e/0x360 net/tipc/bearer.c:1089
+ genl_family_rcv_msg_doit+0x1fc/0x2e0 net/netlink/genetlink.c:972
+ genl_family_rcv_msg net/netlink/genetlink.c:1052 [inline]
+ genl_rcv_msg+0x561/0x800 net/netlink/genetlink.c:1067
+ netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2544
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1076
+ netlink_unicast_kernel net/netlink/af_netlink.c:1341 [inline]
+ netlink_unicast+0x53b/0x810 net/netlink/af_netlink.c:1367
+ netlink_sendmsg+0x8b7/0xd70 net/netlink/af_netlink.c:1909
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg+0xd5/0x180 net/socket.c:745
+ ____sys_sendmsg+0x6ac/0x940 net/socket.c:2584
+ ___sys_sendmsg+0x135/0x1d0 net/socket.c:2638
+ __sys_sendmsg+0x117/0x1e0 net/socket.c:2667
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-Willem fixed a similar issue in commit c0a2a1b0d631 ("ppp: limit MRU to 64K")
+The cause of this issue is that when tipc_nl_bearer_add() is called with
+the TIPC_NLA_BEARER_UDP_OPTS attribute, tipc_udp_nl_bearer_add() is called
+even if the bearer is not UDP.
 
-Adopt the same sanity check for ppp_async_ioctl(PPPIOCSMRU)
+tipc_udp_is_known_peer() called by tipc_udp_nl_bearer_add() assumes that
+the media_ptr field of the tipc_bearer has an udp_bearer type object, so
+the function goes crazy for non-UDP bearers.
 
-[1]:
+This patch fixes the issue by checking the bearer type before calling
+tipc_udp_nl_bearer_add() in tipc_nl_bearer_add().
 
- WARNING: CPU: 1 PID: 11 at mm/page_alloc.c:4543 __alloc_pages+0x308/0x698 mm/page_alloc.c:4543
-Modules linked in:
-CPU: 1 PID: 11 Comm: kworker/u4:0 Not tainted 6.8.0-rc2-syzkaller-g41bccc98fb79 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-Workqueue: events_unbound flush_to_ldisc
-pstate: 204000c5 (nzCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : __alloc_pages+0x308/0x698 mm/page_alloc.c:4543
- lr : __alloc_pages+0xc8/0x698 mm/page_alloc.c:4537
-sp : ffff800093967580
-x29: ffff800093967660 x28: ffff8000939675a0 x27: dfff800000000000
-x26: ffff70001272ceb4 x25: 0000000000000000 x24: ffff8000939675c0
-x23: 0000000000000000 x22: 0000000000060820 x21: 1ffff0001272ceb8
-x20: ffff8000939675e0 x19: 0000000000000010 x18: ffff800093967120
-x17: ffff800083bded5c x16: ffff80008ac97500 x15: 0000000000000005
-x14: 1ffff0001272cebc x13: 0000000000000000 x12: 0000000000000000
-x11: ffff70001272cec1 x10: 1ffff0001272cec0 x9 : 0000000000000001
-x8 : ffff800091c91000 x7 : 0000000000000000 x6 : 000000000000003f
-x5 : 00000000ffffffff x4 : 0000000000000000 x3 : 0000000000000020
-x2 : 0000000000000008 x1 : 0000000000000000 x0 : ffff8000939675e0
-Call trace:
-  __alloc_pages+0x308/0x698 mm/page_alloc.c:4543
-  __alloc_pages_node include/linux/gfp.h:238 [inline]
-  alloc_pages_node include/linux/gfp.h:261 [inline]
-  __kmalloc_large_node+0xbc/0x1fc mm/slub.c:3926
-  __do_kmalloc_node mm/slub.c:3969 [inline]
-  __kmalloc_node_track_caller+0x418/0x620 mm/slub.c:4001
-  kmalloc_reserve+0x17c/0x23c net/core/skbuff.c:590
-  __alloc_skb+0x1c8/0x3d8 net/core/skbuff.c:651
-  __netdev_alloc_skb+0xb8/0x3e8 net/core/skbuff.c:715
-  netdev_alloc_skb include/linux/skbuff.h:3235 [inline]
-  dev_alloc_skb include/linux/skbuff.h:3248 [inline]
-  ppp_async_input drivers/net/ppp/ppp_async.c:863 [inline]
-  ppp_asynctty_receive+0x588/0x186c drivers/net/ppp/ppp_async.c:341
-  tty_ldisc_receive_buf+0x12c/0x15c drivers/tty/tty_buffer.c:390
-  tty_port_default_receive_buf+0x74/0xac drivers/tty/tty_port.c:37
-  receive_buf drivers/tty/tty_buffer.c:444 [inline]
-  flush_to_ldisc+0x284/0x6e4 drivers/tty/tty_buffer.c:494
-  process_one_work+0x694/0x1204 kernel/workqueue.c:2633
-  process_scheduled_works kernel/workqueue.c:2706 [inline]
-  worker_thread+0x938/0xef4 kernel/workqueue.c:2787
-  kthread+0x288/0x310 kernel/kthread.c:388
-  ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:860
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-and-tested-by: syzbot+c5da1f087c9e4ec6c933@syzkaller.appspotmail.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240205171004.1059724-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ef20cd4dd163 ("tipc: introduce UDP replicast")
+Reported-and-tested-by: syzbot+5142b87a9abc510e14fa@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=5142b87a9abc510e14fa [1]
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Tung Nguyen <tung.q.nguyen@dektech.com.au>
+Link: https://lore.kernel.org/r/20240131152310.4089541-1-syoshida@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_async.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/tipc/bearer.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ppp/ppp_async.c b/drivers/net/ppp/ppp_async.c
-index 15a179631903..abc65c4d7a30 100644
---- a/drivers/net/ppp/ppp_async.c
-+++ b/drivers/net/ppp/ppp_async.c
-@@ -469,6 +469,10 @@ ppp_async_ioctl(struct ppp_channel *chan, unsigned int cmd, unsigned long arg)
- 	case PPPIOCSMRU:
- 		if (get_user(val, p))
- 			break;
-+		if (val > U16_MAX) {
-+			err = -EINVAL;
-+			break;
+diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
+index 2cde375477e3..878415c43527 100644
+--- a/net/tipc/bearer.c
++++ b/net/tipc/bearer.c
+@@ -1086,6 +1086,12 @@ int tipc_nl_bearer_add(struct sk_buff *skb, struct genl_info *info)
+ 
+ #ifdef CONFIG_TIPC_MEDIA_UDP
+ 	if (attrs[TIPC_NLA_BEARER_UDP_OPTS]) {
++		if (b->media->type_id != TIPC_MEDIA_TYPE_UDP) {
++			rtnl_unlock();
++			NL_SET_ERR_MSG(info->extack, "UDP option is unsupported");
++			return -EINVAL;
 +		}
- 		if (val < PPP_MRU)
- 			val = PPP_MRU;
- 		ap->mru = val;
++
+ 		err = tipc_udp_nl_bearer_add(b,
+ 					     attrs[TIPC_NLA_BEARER_UDP_OPTS]);
+ 		if (err) {
 -- 
 2.43.0
 
