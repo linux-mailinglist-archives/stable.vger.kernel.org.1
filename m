@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-19900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C708537C9
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C3B853753
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:24:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 459A01F2902E
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54E761C24FB4
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:24:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DA85FF01;
-	Tue, 13 Feb 2024 17:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A7E5FEF6;
+	Tue, 13 Feb 2024 17:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gLc3bjGF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqFwJmYr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BE55F54E;
-	Tue, 13 Feb 2024 17:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371D65FBB5;
+	Tue, 13 Feb 2024 17:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845378; cv=none; b=POv/pmVH4J+gS2DOk0CLlQRhqBGjxLAKJ4POJ9EQiaFyUTZa9uhEhop0brtd1OofKvyBQ1aIRQkerqmy0CoumMx2Zao2YJbRRXEC0ajTGa1RMbEsn7iGArtfciXRzjJ8gB0Di8TQAG1zJd08yz0krj3toLMVxLywK3ScX8ZRy7A=
+	t=1707845046; cv=none; b=IqGNW1ynXUgH2BD12eCsGolMj8iymrMbz0G75XZaQSdUJoFcX1IjTSJQwnYiJo4UGIriWewhP1Uw+WjvQdd6FFajtpYTlic+zSncHVwPNIo6iQonBh/7qPwmUJRmwsx1nxeJtrt0xwDsrSHKC8EV1N37bFyRJHwkzsKqXI0WaaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845378; c=relaxed/simple;
-	bh=YtRTiqpQ07KK6jqVhbjI3Ce+xi9n3uycWKHMxWtW4U4=;
+	s=arc-20240116; t=1707845046; c=relaxed/simple;
+	bh=HTQooeRfp0yKB1fgASEUDS9hGpmiw5Nw00KRBesflKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACp72/wEDccf5XQenfGSwVFaxkLDcp7IZaJmynMnw1IWLfGcS3T0xlZPqc7EAb0D7w5mwOIyLApXDHt/L0lEWYaZp6aHr7wn28IrybUO8c9IsOnctojIeRYncu8gvkGXldLZ+DcbtDwzwQrXJomsOo4yvQLlqUyAEUTBPiCrP4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gLc3bjGF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB98C433F1;
-	Tue, 13 Feb 2024 17:29:36 +0000 (UTC)
+	 MIME-Version; b=czrE7vip+F23t7uSlY5716lF0m1Sq1Z3OeaYOhlDjA0j6uPEE8RLPW+xieYeEGeCsUaFhZ6Dz7wqGFkzqVk0ckhcJiE0xCTy83S33ZL43YbGJlODr+InzaVKk9ljciEg8qmHsEZw+XQioNO96V3IB0B9zi+lHftLTf4bcNMFqJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqFwJmYr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EEE7C433F1;
+	Tue, 13 Feb 2024 17:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845377;
-	bh=YtRTiqpQ07KK6jqVhbjI3Ce+xi9n3uycWKHMxWtW4U4=;
+	s=korg; t=1707845046;
+	bh=HTQooeRfp0yKB1fgASEUDS9hGpmiw5Nw00KRBesflKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gLc3bjGF7v64zUk6WN6qNGe/gtuxLuWjpVRJDOWgFNvO+CJwLJehAt9bhNZJUDZx2
-	 KYisHbRzerBz0r8oNNkcSzvCtB7UnDZYBTa5HrLa+WZ6j8SEm+DBplDSSdDYsOlbUm
-	 T/wSA4Zk8eQHGlqiJvCTddrVjXJ70udRi2LnAB48=
+	b=hqFwJmYrycKWevfhAYa4aiWXNXk2AxTQk8t2zVbJJCt5z9LvFvohQx4LN0UCNivn+
+	 L/pUH9ZUxKBOW8QxnIWHgrrPkgw6/EG+YCuOUzeqs35tFB+IbyrbHzrG8lSA7y230m
+	 WxnyivQMrua/9nt4IsZfePMVeS2UUbHeSMfrkP/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 044/121] wifi: mac80211: fix RCU use in TDLS fast-xmit
-Date: Tue, 13 Feb 2024 18:20:53 +0100
-Message-ID: <20240213171854.284441896@linuxfoundation.org>
+Subject: [PATCH 6.1 08/64] phy: ti: phy-omap-usb2: Fix NULL pointer dereference for SRP
+Date: Tue, 13 Feb 2024 18:20:54 +0100
+Message-ID: <20240213171844.995690005@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 9480adfe4e0f0319b9da04b44e4eebd5ad07e0cd ]
+[ Upstream commit 7104ba0f1958adb250319e68a15eff89ec4fd36d ]
 
-This looks up the link under RCU protection, but isn't
-guaranteed to actually have protection. Fix that.
+If the external phy working together with phy-omap-usb2 does not implement
+send_srp(), we may still attempt to call it. This can happen on an idle
+Ethernet gadget triggering a wakeup for example:
 
-Fixes: 8cc07265b691 ("wifi: mac80211: handle TDLS data frames with MLO")
-Link: https://msgid.link/20240129155348.8a9c0b1e1d89.I553f96ce953bb41b0b877d592056164dec20d01c@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+configfs-gadget.g1 gadget.0: ECM Suspend
+configfs-gadget.g1 gadget.0: Port suspended. Triggering wakeup
+...
+Unable to handle kernel NULL pointer dereference at virtual address
+00000000 when execute
+...
+PC is at 0x0
+LR is at musb_gadget_wakeup+0x1d4/0x254 [musb_hdrc]
+...
+musb_gadget_wakeup [musb_hdrc] from usb_gadget_wakeup+0x1c/0x3c [udc_core]
+usb_gadget_wakeup [udc_core] from eth_start_xmit+0x3b0/0x3d4 [u_ether]
+eth_start_xmit [u_ether] from dev_hard_start_xmit+0x94/0x24c
+dev_hard_start_xmit from sch_direct_xmit+0x104/0x2e4
+sch_direct_xmit from __dev_queue_xmit+0x334/0xd88
+__dev_queue_xmit from arp_solicit+0xf0/0x268
+arp_solicit from neigh_probe+0x54/0x7c
+neigh_probe from __neigh_event_send+0x22c/0x47c
+__neigh_event_send from neigh_resolve_output+0x14c/0x1c0
+neigh_resolve_output from ip_finish_output2+0x1c8/0x628
+ip_finish_output2 from ip_send_skb+0x40/0xd8
+ip_send_skb from udp_send_skb+0x124/0x340
+udp_send_skb from udp_sendmsg+0x780/0x984
+udp_sendmsg from __sys_sendto+0xd8/0x158
+__sys_sendto from ret_fast_syscall+0x0/0x58
+
+Let's fix the issue by checking for send_srp() and set_vbus() before
+calling them. For USB peripheral only cases these both could be NULL.
+
+Fixes: 657b306a7bdf ("usb: phy: add a new driver for omap usb2 phy")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20240128120556.8848-1-tony@atomide.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/phy/ti/phy-omap-usb2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index d45d4be63dd8..5481acbfc1d4 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -3086,10 +3086,11 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
- 			/* DA SA BSSID */
- 			build.da_offs = offsetof(struct ieee80211_hdr, addr1);
- 			build.sa_offs = offsetof(struct ieee80211_hdr, addr2);
-+			rcu_read_lock();
- 			link = rcu_dereference(sdata->link[tdls_link_id]);
--			if (WARN_ON_ONCE(!link))
--				break;
--			memcpy(hdr->addr3, link->u.mgd.bssid, ETH_ALEN);
-+			if (!WARN_ON_ONCE(!link))
-+				memcpy(hdr->addr3, link->u.mgd.bssid, ETH_ALEN);
-+			rcu_read_unlock();
- 			build.hdr_len = 24;
- 			break;
- 		}
+diff --git a/drivers/phy/ti/phy-omap-usb2.c b/drivers/phy/ti/phy-omap-usb2.c
+index 31a775877f6e..63c45809943f 100644
+--- a/drivers/phy/ti/phy-omap-usb2.c
++++ b/drivers/phy/ti/phy-omap-usb2.c
+@@ -116,7 +116,7 @@ static int omap_usb_set_vbus(struct usb_otg *otg, bool enabled)
+ {
+ 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
+ 
+-	if (!phy->comparator)
++	if (!phy->comparator || !phy->comparator->set_vbus)
+ 		return -ENODEV;
+ 
+ 	return phy->comparator->set_vbus(phy->comparator, enabled);
+@@ -126,7 +126,7 @@ static int omap_usb_start_srp(struct usb_otg *otg)
+ {
+ 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
+ 
+-	if (!phy->comparator)
++	if (!phy->comparator || !phy->comparator->start_srp)
+ 		return -ENODEV;
+ 
+ 	return phy->comparator->start_srp(phy->comparator);
 -- 
 2.43.0
 
