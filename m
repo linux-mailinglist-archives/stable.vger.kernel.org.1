@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-20059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07FFD8538A5
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:39:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C197A853821
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:33:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C27B1F21222
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:39:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A5DFB24EF2
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05176025C;
-	Tue, 13 Feb 2024 17:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44B7A5FF0C;
+	Tue, 13 Feb 2024 17:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgrwCL8Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6jsrM2p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD0E660241;
-	Tue, 13 Feb 2024 17:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02BEA5F54E;
+	Tue, 13 Feb 2024 17:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845927; cv=none; b=BdUvoIK2uQO56uncNCTppI/fKeHXj7v/tq8GyH8Fm0cMRG4ILrdJKaW27GnRk6yaMdtiOAXi93pQDn8r2wPpglo2LjZBVJ06vVJz34In+nXBCLCSB+7bprkn6hLg/sh84A4WUD1BLSS8Q9xRYJstV2lxKVeD/h8/dBBAiRPj6to=
+	t=1707845608; cv=none; b=Uu0kbbsd13Q95V8KHl/eS44Qsn+882bBQtFYO5qel5AkLsQMAq48/ErOmVXbUTLpp+CAdOBTQfGmmuert/IWwSWyEouMgQa640X7UqKYj2NgU5PZ7jqmu47a/5ywNnlHI7I9gYAuXT9taaodIoU3ZEbd+B6GL9aZZX2sgLbfdIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845927; c=relaxed/simple;
-	bh=IO6KuneD7vUOlV1tx1HOqNB+rLV/HYvI31TLFxZJAeo=;
+	s=arc-20240116; t=1707845608; c=relaxed/simple;
+	bh=qzp0UQ+sS/sLbd9wsx/BwgqvV3EFixOTnv8O4ao00JU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=APMxQ7COWA/7u0woXVuL4KJbiFg4WhPXy1JOOetInsyNamhCi+/JuYHclg3PbisO0p92j4Uhy3tea/yksSwL/uQyiL9PWHREgVn+JGLNZFjpSXzmfW9ZfoXOIMNmjZedI6caRlAvVM5o4w7rS1ribX/fpTNKqU9ZQHOGKwrSQww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgrwCL8Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F12AC43390;
-	Tue, 13 Feb 2024 17:38:46 +0000 (UTC)
+	 MIME-Version; b=H2SfwP8QpzAgu5a2NiggKbDamzw5CHwasI9XeBowoYopBVI83mhBXpbRkEQNNJiY40e/0JFKuB8tx3bTiUBIfyOHSGbPsCKSwXCH+WDmvdmzLAP49Cev+DL3SnZerlDVhPCpFfCQVTCSmEw0Nw02xlq7YB5jdXUESAafSm7/0AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6jsrM2p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591F3C433C7;
+	Tue, 13 Feb 2024 17:33:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845927;
-	bh=IO6KuneD7vUOlV1tx1HOqNB+rLV/HYvI31TLFxZJAeo=;
+	s=korg; t=1707845607;
+	bh=qzp0UQ+sS/sLbd9wsx/BwgqvV3EFixOTnv8O4ao00JU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lgrwCL8YjaB8o/rxIyRoD6YNd6rD54PXWuBfRI0Jny4yOfZ1vRp/pjYD9dd3EQ3pU
-	 8HZUSW1NPWq4MTJo4GBjIGXHxVKM/hKWwGh4S96niiUtRlPtw5ABl41uAbaYqdLLnR
-	 BofROm0NDFiWAEcjdWU2qbXxt1n9+gjRaLQl32zU=
+	b=k6jsrM2pYfRQb/RSUxnN6xOODzL2JzH6BWxvKZIEEtLuur4IWUZhd3o9IxxwcAatH
+	 xduU81hgxzkwFoHyXhSWfI1XBuywLGr6xbdHsbg9NVqbggqWIqgoDQI18NHeey415R
+	 mEgYJK5Hn+Qmbi6iHaQjpoCkMxYrAdRfaMbfG/6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.7 099/124] xhci: handle isoc Babble and Buffer Overrun events properly
-Date: Tue, 13 Feb 2024 18:22:01 +0100
-Message-ID: <20240213171856.622995429@linuxfoundation.org>
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 113/121] Input: i8042 - fix strange behavior of touchpad on Clevo NS70PU
+Date: Tue, 13 Feb 2024 18:22:02 +0100
+Message-ID: <20240213171856.287681293@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-commit 7c4650ded49e5b88929ecbbb631efb8b0838e811 upstream.
+commit a60e6c3918d20848906ffcdfcf72ca6a8cfbcf2e upstream.
 
-xHCI 4.9 explicitly forbids assuming that the xHC has released its
-ownership of a multi-TRB TD when it reports an error on one of the
-early TRBs. Yet the driver makes such assumption and releases the TD,
-allowing the remaining TRBs to be freed or overwritten by new TDs.
+When closing the laptop lid with an external screen connected, the mouse
+pointer has a constant movement to the lower right corner. Opening the
+lid again stops this movement, but after that the touchpad does no longer
+register clicks.
 
-The xHC should also report completion of the final TRB due to its IOC
-flag being set by us, regardless of prior errors. This event cannot
-be recognized if the TD has already been freed earlier, resulting in
-"Transfer event TRB DMA ptr not part of current TD" error message.
+The touchpad is connected both via i2c-hid and PS/2, the predecessor of
+this device (NS70MU) has the same layout in this regard and also strange
+behaviour caused by the psmouse and the i2c-hid driver fighting over
+touchpad control. This fix is reusing the same workaround by just
+disabling the PS/2 aux port, that is only used by the touchpad, to give the
+i2c-hid driver the lone control over the touchpad.
 
-Fix this by reusing the logic for processing isoc Transaction Errors.
-This also handles hosts which fail to report the final completion.
+v2: Rebased on current master
 
-Fix transfer length reporting on Babble errors. They may be caused by
-device malfunction, no guarantee that the buffer has been filled.
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240125152737.2983959-5-mathias.nyman@linux.intel.com
+Link: https://lore.kernel.org/r/20231205163602.16106-1-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-ring.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/input/serio/i8042-acpipnpio.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2393,9 +2393,13 @@ static int process_isoc_td(struct xhci_h
- 	case COMP_BANDWIDTH_OVERRUN_ERROR:
- 		frame->status = -ECOMM;
- 		break;
--	case COMP_ISOCH_BUFFER_OVERRUN:
- 	case COMP_BABBLE_DETECTED_ERROR:
-+		sum_trbs_for_length = true;
-+		fallthrough;
-+	case COMP_ISOCH_BUFFER_OVERRUN:
- 		frame->status = -EOVERFLOW;
-+		if (ep_trb != td->last_trb)
-+			td->error_mid_td = true;
- 		break;
- 	case COMP_INCOMPATIBLE_DEVICE_ERROR:
- 	case COMP_STALL_ERROR:
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1210,6 +1210,12 @@ static const struct dmi_system_id i8042_
+ 	},
+ 	{
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "NS5x_7xPU"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
++	},
++	{
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "NJ50_70CU"),
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
 
 
 
