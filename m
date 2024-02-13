@@ -1,136 +1,96 @@
-Return-Path: <stable+bounces-19700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F06B852E22
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 11:38:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91B0A852E30
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 11:40:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BFCD283219
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 10:38:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4E971C236EC
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 10:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD17D250FE;
-	Tue, 13 Feb 2024 10:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00553249F5;
+	Tue, 13 Feb 2024 10:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1zcUeppW";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QMbHKsru"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXpkIAiN"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AE4249EA;
-	Tue, 13 Feb 2024 10:38:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E9724211;
+	Tue, 13 Feb 2024 10:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707820727; cv=none; b=W9fMi4JtJ3lOIwJ+b6zp1rFFRU3J/Aucoq+U1PzG7LraJ1Ckuwh6+Dj1XxJrpb/Y1poDTuVKhdbmrGFUN9qAZ0iDcE9jztN1xuj7IAB5w+yxeQGkO4nJG1AjEyqAIVodaZAiQWUAww/B3OJtuH3ePnEETyx5UtxwZPAcK1XXdWc=
+	t=1707820849; cv=none; b=OGp31whUYRfkDTezPIGjzuPIoSg/BA8NXIRNYoIk3jktV6h5iMDJxRVveLWpmv5vtjOHVAMuGQ68o/A8qYOYe0TmPgw+ij+fR77fgX87LcYvI2UzZe2Gh53AF0xXn1EBoE69y4u1cjaYPbS/7PwMYjsmVemR4bqZ0aY9Mg6ccVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707820727; c=relaxed/simple;
-	bh=Uy1WRLvsRPh+dMpNYNJnzvWJK9kiQUrzvYENMWgy88Y=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=bVZ8l4MwxLSUVZY8R3nf44J2uGbgIKMXcEyC+k8m0AitfbxgOCo/BVmpGvG7ZarlIRmanIFAEZVQ4RdXR+8TvmaybnXUa4Ifhs7UHSLZ06f9WIusrBFhCfy7vMWGhawCCNSZDISnCJUvTRhPY8ncaqoW3VzvKtskDsuD3MC0pbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1zcUeppW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QMbHKsru; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 13 Feb 2024 10:38:43 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1707820724;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/3QWOyLixGt1iJ/I+f3IkJUKSIdZzuFVyhqA5gxCtk0=;
-	b=1zcUeppW3kbdnbhIfa2NMM3y4GQpjMFZfnrQSlCPWdLJRaHVY50eEzmsZwu8/AOen6D5wP
-	+J4IerZZVhjCtaO8x+KeU0HJx5Ky9wXhYSg4WgRHotDBbfzjyBpMXaqvAPXg9mu3RYyIEi
-	8jIC3+dZvOeySlbEYY9TbBts2Zv3qzGnfHa69nTY8UG9MiyBonSJhOxDrCe8NUWJ1CdfuE
-	aoBUWK64STXewwKWjv67czapwiyxqpIYToPmbKeiPbfmM33flGw/oVIKVtk0GDTxilLJ2L
-	anYdagit/SIJgPU5J2NeXphyPAreaaA0yVcFyZdWui5AXKJezRezeKFEZ3T+iw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1707820724;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/3QWOyLixGt1iJ/I+f3IkJUKSIdZzuFVyhqA5gxCtk0=;
-	b=QMbHKsrupmFLaukr6i6TYcqvun3kvbPA8LX6HMjpeE6Mzt12yAmedwESqXoOTlfsQrcGFJ
-	9cMyNI1plbTCLIAw==
-From: "tip-bot2 for Marc Zyngier" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: irq/urgent] irqchip/gic-v3-its: Restore quirk probing for
- ACPI-based systems
-Cc: Marc Zyngier <maz@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Lorenzo Pieralisi <lpieralisi@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20240213101206.2137483-3-maz@kernel.org>
-References: <20240213101206.2137483-3-maz@kernel.org>
+	s=arc-20240116; t=1707820849; c=relaxed/simple;
+	bh=SdIGO8QRRKMoXA7F/J7F9sC/SL5JznJ15MYEyHmCxPk=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=V1sihb+/YGUhCf/LczOnluRUB4I6yrvFBJoCfJR4PqNaPVZPaG9PaC1TWh8SKCxhxvpJWDoExAViSW3yPD67ZUaCT9hUn+1wFCdkutYvtLiFUAD6Tzz6VF3IjTfDJTgUhcpY/5ifN3+x77RlIYGbrfgPFngRv64EOFkXfux7X9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXpkIAiN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE77C433C7;
+	Tue, 13 Feb 2024 10:40:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707820849;
+	bh=SdIGO8QRRKMoXA7F/J7F9sC/SL5JznJ15MYEyHmCxPk=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=GXpkIAiNAFGIbfIZW3p754J3SEDKkHXA+dNFDpW00G9nL7keajK5XWRlTQlz8PzBs
+	 Wn802fyk1KU+OeA0Mzj98Aw1jjrLJb0kEebxXy9/ZnCXLQSyDIJyNgbnjknMtDhXg6
+	 kw7YKO5F4TIsoEDP/w0pfrwpUXk1mHPvfOwuLf8uiUudio6qdsWKbjAGynxBMjUhZy
+	 zkfU/OfSH4wTAc1ChXM0XTpjycxG04uP4nc6q9xU3mwlvhDuB1x/vwrMO8BeYI6aFZ
+	 7UrODPu74DpUU6s9ZTqOOFmr+QcxdKWxZSGSAU0EGCMI/xwodZ/diLmBJIb8+lNNV1
+	 awik2N49Y7syQ==
+Date: Tue, 13 Feb 2024 11:40:50 +0100 (CET)
+From: Jiri Kosina <jikos@kernel.org>
+To: "Tobita, Tatsunosuke" <tatsunosuke.wacom@gmail.com>
+cc: linux-input@vger.kernel.org, 
+    Benjamin Tissoires <benjamin.tissoires@redhat.com>, 
+    Ping Cheng <pinglinux@gmail.com>, Jason Gerecke <killertofu@gmail.com>, 
+    Aaron Armstrong Skomra <skomra@gmail.com>, 
+    Joshua Dickens <Joshua@Joshua-Dickens.com>, 
+    Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>, 
+    Jason Gerecke <jason.gerecke@wacom.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] HID: wacom: generic: Avoid reporting a serial of
+ '0' to userspace
+In-Reply-To: <20240201044055.23367-1-tatsunosuke.wacom@gmail.com>
+Message-ID: <nycvar.YFH.7.76.2402131140250.21798@cbobk.fhfr.pm>
+References: <20240201044055.23367-1-tatsunosuke.wacom@gmail.com>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <170782072338.398.14487986832885043977.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 
-The following commit has been merged into the irq/urgent branch of tip:
+On Thu, 1 Feb 2024, Tobita, Tatsunosuke wrote:
 
-Commit-ID:     8b02da04ad978827e5ccd675acf170198f747a7a
-Gitweb:        https://git.kernel.org/tip/8b02da04ad978827e5ccd675acf170198f747a7a
-Author:        Marc Zyngier <maz@kernel.org>
-AuthorDate:    Tue, 13 Feb 2024 10:12:05 
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 13 Feb 2024 11:29:52 +01:00
+> From: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
+> 
+> The xf86-input-wacom driver does not treat '0' as a valid serial
+> number and will drop any input report which contains an
+> MSC_SERIAL = 0 event. The kernel driver already takes care to
+> avoid sending any MSC_SERIAL event if the value of serial[0] == 0
+> (which is the case for devices that don't actually report a
+> serial number), but this is not quite sufficient.
+> Only the lower 32 bits of the serial get reported to userspace,
+> so if this portion of the serial is zero then there can still
+> be problems.
+> 
+> This commit allows the driver to report either the lower 32 bits
+> if they are non-zero or the upper 32 bits otherwise.
+> 
+> Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+> Signed-off-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
+> Fixes: f85c9dc678a5 ("HID: wacom: generic: Support tool ID and additional tool types")
+> CC: stable@vger.kernel.org # v4.10
 
-irqchip/gic-v3-its: Restore quirk probing for ACPI-based systems
+Applied to hid.git#for-6.8/upstream-fixes.
 
-While refactoring the way the ITSs are probed, the handling of quirks
-applicable to ACPI-based platforms was lost. As a result, systems such as
-HIP07 lose their GICv4 functionnality, and some other may even fail to
-boot, unless they are configured to boot with DT.
+-- 
+Jiri Kosina
+SUSE Labs
 
-Move the enabling of quirks into its_probe_one(), making it common to all
-firmware implementations.
-
-Fixes: 9585a495ac93 ("irqchip/gic-v3-its: Split allocation from initialisation of its_node")
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240213101206.2137483-3-maz@kernel.org
-
----
- drivers/irqchip/irq-gic-v3-its.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index fec1b58..250b456 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -5091,6 +5091,8 @@ static int __init its_probe_one(struct its_node *its)
- 	u32 ctlr;
- 	int err;
- 
-+	its_enable_quirks(its);
-+
- 	if (is_v4(its)) {
- 		if (!(its->typer & GITS_TYPER_VMOVP)) {
- 			err = its_compute_its_list_map(its);
-@@ -5442,7 +5444,6 @@ static int __init its_of_probe(struct device_node *node)
- 		if (!its)
- 			return -ENOMEM;
- 
--		its_enable_quirks(its);
- 		err = its_probe_one(its);
- 		if (err)  {
- 			its_node_destroy(its);
 
