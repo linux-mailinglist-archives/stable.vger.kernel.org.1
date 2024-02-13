@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-19877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFF238537AC
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:28:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8D8853731
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:22:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E38311C212A4
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:28:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDD6C28271D
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2543C5FEEB;
-	Tue, 13 Feb 2024 17:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8AD5FDD7;
+	Tue, 13 Feb 2024 17:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EukAMN3D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bn3AHGI+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6FD75F54E;
-	Tue, 13 Feb 2024 17:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5565FEE0;
+	Tue, 13 Feb 2024 17:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845290; cv=none; b=iiV8vi+KSgqunjY/N3swk7vXw7rZuwW0HkMZj2CKwiXTtu07dksSgaT/rGEuQcXU17QEkksz5+DPUcnj+GDlGxOAH5mnzoPcnU8ZjptGCaBtx5PLmiO26Tbn+IBoYLuuFwauABiuUNnEFRmcMDnCXtckRhiGXZhvjeP6/0dbu6Q=
+	t=1707844968; cv=none; b=Z+FSB9NpKH3xupM91B/znDjdW6syDGXSIYLFKb3bbfZfHghat4npIUoPv9bg9fM79Qd8JGidYS012qVBDHSvedrZuOHzop4AW6Mzyu3xYHnW/iYRZ9jwS4eJyQr3ahTT8/9gRtylljP09O9aQOySCjMhEV5X1QjlkkyLWqERyEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845290; c=relaxed/simple;
-	bh=vST47Lg784gNDJYF3VAgSCFPUfRgoAhJOLhq2TkRXrM=;
+	s=arc-20240116; t=1707844968; c=relaxed/simple;
+	bh=3g8Nemr0zMza+0JOPJ9o5aIFMdCU9upyTCLAiz9Co2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cA/soMA/AlCtEBXhxzwI6ve3skP9z7B/5WKHGlJZ6s5RWUc1/Yj5zxssRrbR7kd3QHfVbnlUKPsj0qZIzhI5K5gCrceVg6hsXSAVwiJHxZxcB2sX4iiplLvhs9yP1+LY4PrshFdYGyEXFNterHGmIN5Wsb7JZ6eWUhB2cfgPo8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EukAMN3D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FEE3C433F1;
-	Tue, 13 Feb 2024 17:28:10 +0000 (UTC)
+	 MIME-Version; b=BDnd0MUaCnZDLYvBQkuZwXBWVBdSeKfOBKpb7jisVh+OXkzbbORi/B75Vl8/m139Gj1x5apk1LB4HyodRJ6/tRm5G2nZds0BvCWYsr4Sb7rt+ItphjvVeGfapBp9SX8sKQlwDAdJ8Z3JLL20OVEEHsVs2uwisf2M1t5g0g3I5Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bn3AHGI+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D32C433F1;
+	Tue, 13 Feb 2024 17:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845290;
-	bh=vST47Lg784gNDJYF3VAgSCFPUfRgoAhJOLhq2TkRXrM=;
+	s=korg; t=1707844967;
+	bh=3g8Nemr0zMza+0JOPJ9o5aIFMdCU9upyTCLAiz9Co2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EukAMN3DUpcmA1mcjjf8mupQqTDhuOTSFSv90fYs1ECnr13TpWotvPcfRIUADoQ6w
-	 LxDXAHHkqJTo0DgzhgjF7uM3sVsrY4q0tTqCJRls51iBjnTn/2h/VBYm3pveIO9G5j
-	 UFf3xOsOEqAnVQFHJdnpVfkoOja9tlek190j2mP4=
+	b=bn3AHGI+9bMZlM97eXMsFjKn7Xctw3WTV2eZQXZYKtBef55DEde9ZRPT3LUrjs1Fl
+	 VB9EladAuYqdMrH4WrDjIIsT5FLWpg+m/bbxcidFIdWVSOZFo0p6YefGXzqjCH7nmU
+	 jCc5U3VfZ0XceSfwCqUY+noQRZMxj7v6q5+wYQgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuogee Hsieh <quic_khsieh@quicinc.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 038/121] drm/msms/dp: fixed link clock divider bits be over written in BPC unknown case
+Subject: [PATCH 6.1 01/64] ext4: regenerate buddy after block freeing failed if under fc replay
 Date: Tue, 13 Feb 2024 18:20:47 +0100
-Message-ID: <20240213171854.112022152@linuxfoundation.org>
+Message-ID: <20240213171844.758023871@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuogee Hsieh <quic_khsieh@quicinc.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 77e8aad5519e04f6c1e132aaec1c5f8faf41844f ]
+[ Upstream commit c9b528c35795b711331ed36dc3dbee90d5812d4e ]
 
-Since the value of DP_TEST_BIT_DEPTH_8 is already left shifted, in the
-BPC unknown case, the additional shift causes spill over to the other
-bits of the [DP_CONFIGURATION_CTRL] register.
-Fix this by changing the return value of dp_link_get_test_bits_depth()
-in the BPC unknown case to (DP_TEST_BIT_DEPTH_8 >> DP_TEST_BIT_DEPTH_SHIFT).
+This mostly reverts commit 6bd97bf273bd ("ext4: remove redundant
+mb_regenerate_buddy()") and reintroduces mb_regenerate_buddy(). Based on
+code in mb_free_blocks(), fast commit replay can end up marking as free
+blocks that are already marked as such. This causes corruption of the
+buddy bitmap so we need to regenerate it in that case.
 
-Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
-Signed-off-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/573989/
-Link: https://lore.kernel.org/r/1704917931-30133-1-git-send-email-quic_khsieh@quicinc.com
-[quic_abhinavk@quicinc.com: fix minor checkpatch warning to align with opening braces]
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reported-by: Jan Kara <jack@suse.cz>
+Fixes: 6bd97bf273bd ("ext4: remove redundant mb_regenerate_buddy()")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240104142040.2835097-4-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_ctrl.c |  5 -----
- drivers/gpu/drm/msm/dp/dp_link.c | 10 +++++++---
- 2 files changed, 7 insertions(+), 8 deletions(-)
+ fs/ext4/mballoc.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_ctrl.c b/drivers/gpu/drm/msm/dp/dp_ctrl.c
-index 77a8d9366ed7..fb588fde298a 100644
---- a/drivers/gpu/drm/msm/dp/dp_ctrl.c
-+++ b/drivers/gpu/drm/msm/dp/dp_ctrl.c
-@@ -135,11 +135,6 @@ static void dp_ctrl_config_ctrl(struct dp_ctrl_private *ctrl)
- 	tbd = dp_link_get_test_bits_depth(ctrl->link,
- 			ctrl->panel->dp_mode.bpp);
- 
--	if (tbd == DP_TEST_BIT_DEPTH_UNKNOWN) {
--		pr_debug("BIT_DEPTH not set. Configure default\n");
--		tbd = DP_TEST_BIT_DEPTH_8;
--	}
--
- 	config |= tbd << DP_CONFIGURATION_CTRL_BPC_SHIFT;
- 
- 	/* Num of Lanes */
-diff --git a/drivers/gpu/drm/msm/dp/dp_link.c b/drivers/gpu/drm/msm/dp/dp_link.c
-index 6375daaeb98e..487867979557 100644
---- a/drivers/gpu/drm/msm/dp/dp_link.c
-+++ b/drivers/gpu/drm/msm/dp/dp_link.c
-@@ -1211,6 +1211,9 @@ void dp_link_reset_phy_params_vx_px(struct dp_link *dp_link)
- u32 dp_link_get_test_bits_depth(struct dp_link *dp_link, u32 bpp)
- {
- 	u32 tbd;
-+	struct dp_link_private *link;
-+
-+	link = container_of(dp_link, struct dp_link_private, dp_link);
- 
- 	/*
- 	 * Few simplistic rules and assumptions made here:
-@@ -1228,12 +1231,13 @@ u32 dp_link_get_test_bits_depth(struct dp_link *dp_link, u32 bpp)
- 		tbd = DP_TEST_BIT_DEPTH_10;
- 		break;
- 	default:
--		tbd = DP_TEST_BIT_DEPTH_UNKNOWN;
-+		drm_dbg_dp(link->drm_dev, "bpp=%d not supported, use bpc=8\n",
-+			   bpp);
-+		tbd = DP_TEST_BIT_DEPTH_8;
- 		break;
- 	}
- 
--	if (tbd != DP_TEST_BIT_DEPTH_UNKNOWN)
--		tbd = (tbd >> DP_TEST_BIT_DEPTH_SHIFT);
-+	tbd = (tbd >> DP_TEST_BIT_DEPTH_SHIFT);
- 
- 	return tbd;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index c1515daf1def..40903c172a34 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1118,6 +1118,24 @@ void ext4_mb_generate_buddy(struct super_block *sb,
+ 	atomic64_add(period, &sbi->s_mb_generation_time);
  }
+ 
++static void mb_regenerate_buddy(struct ext4_buddy *e4b)
++{
++	int count;
++	int order = 1;
++	void *buddy;
++
++	while ((buddy = mb_find_buddy(e4b, order++, &count)))
++		mb_set_bits(buddy, 0, count);
++
++	e4b->bd_info->bb_fragments = 0;
++	memset(e4b->bd_info->bb_counters, 0,
++		sizeof(*e4b->bd_info->bb_counters) *
++		(e4b->bd_sb->s_blocksize_bits + 2));
++
++	ext4_mb_generate_buddy(e4b->bd_sb, e4b->bd_buddy,
++		e4b->bd_bitmap, e4b->bd_group, e4b->bd_info);
++}
++
+ /* The buddy information is attached the buddy cache inode
+  * for convenience. The information regarding each group
+  * is loaded via ext4_mb_load_buddy. The information involve
+@@ -1796,6 +1814,8 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
+ 			ext4_mark_group_bitmap_corrupted(
+ 				sb, e4b->bd_group,
+ 				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
++		} else {
++			mb_regenerate_buddy(e4b);
+ 		}
+ 		goto done;
+ 	}
 -- 
 2.43.0
 
