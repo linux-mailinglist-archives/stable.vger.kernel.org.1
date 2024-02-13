@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-20009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2729853863
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:37:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 803E18537C8
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55822B29DFC
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:37:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04E7EB23A9F
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FEB6605C7;
-	Tue, 13 Feb 2024 17:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4FC5FF05;
+	Tue, 13 Feb 2024 17:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4872YC2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4cOh0sb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B052605C1;
-	Tue, 13 Feb 2024 17:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AEA35FEFD;
+	Tue, 13 Feb 2024 17:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845756; cv=none; b=mX3LAa1Xx6Ta15kLG5cwZ4NRZAzww1kZi1s56kFsI1SroGpRGa06kC00HTvEctIk3HJLvC+1Eag+l95kclKzW0Z+gx6ZkpW1vNFtz19mQRWXY6fJrzqr5nIi0YhsEINlY1codIJgqHydUMcLR7AVYpbkTxgMulmcLxBvNBoAw5E=
+	t=1707845374; cv=none; b=Y2k7dbz3F9/c/nK9eOyqXD5OeLZyTPOxZFeEviJpT0lM+x5wKZHOY65GkAtuYuP/V6+f0uBieqbhFws5Ij5pvL/oL85vh3JqVJqeYrTQ2KkQzZ0WVniTJg+O+dD+wB+TP20nihItBwDve/pbPk6a8PMEyqiSRz1o5cQf0w7yE0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845756; c=relaxed/simple;
-	bh=dohQ7W3ep41G7ZgXAOaNDn8ouWcG9bxnxbnfMyecECE=;
+	s=arc-20240116; t=1707845374; c=relaxed/simple;
+	bh=2Bjp44ywFoN0PazWgQc3fZjNp3L2A9eyV2AIf3ku824=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SzKk2VESr7BRoNLuqxhSBjKCjKr8nBzSsvxG+0QrNaq9/U6GF/BdsGeqfqMcVDeB84hurURCPesFwU3DqM/iehtuCD01u05qsx8z+Yf35WMK9xiQd5xqmRguvFTF4Kv+YyHck/jS7K/pM4sUWCMOBrhRQKxKrM/hazeB66Xkv5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4872YC2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837E0C433F1;
-	Tue, 13 Feb 2024 17:35:55 +0000 (UTC)
+	 MIME-Version; b=aR8hXXw+N2/M98Op21jTlUGDBK7iqMCvUSQNHSobTjmdvfqt39t0tNgJv+OR1Q/q9CJA1uI6heAN3MudzJopg8xOvR2R8d8Yaavw/+QuSSXMEz0AQEVUcQGf2zbweNoCqNoMJ8uE3bjG72QZpFuvcBPWfT5s4VcV1Z0dE7kmJDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4cOh0sb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 732B3C433C7;
+	Tue, 13 Feb 2024 17:29:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845755;
-	bh=dohQ7W3ep41G7ZgXAOaNDn8ouWcG9bxnxbnfMyecECE=;
+	s=korg; t=1707845373;
+	bh=2Bjp44ywFoN0PazWgQc3fZjNp3L2A9eyV2AIf3ku824=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E4872YC2tUAzvBQ7Hs1rQ9R4j0ZAFIaQIsq0kY/zJdPIXd/wFUN3eraBCuOT+Due0
-	 qERrhtvqwUTTYp2ufHRh0VrVvJA0hiVmD0Qcjeu+WeO/CnBdtd/GReugruVgq6Mq2E
-	 N95RtTjXbshTo1lKJ4s2eQr/01hZjmU6lK5/kZXw=
+	b=b4cOh0sbNqkx7u74fHi2pHvoaAceqSsGemkn6RJqzxwEcrlog4kyZfPPWALXfJ8gV
+	 +BZlrqQmCbI4IPQIEYdMq+tIPIpdmF0xMgBqvxQ3eeqQE97/MAsDRcWxLAVwqfV7hX
+	 5Zjzb15/oEMcJDxoduSvShpWnCvv2pst0QM8Upmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Beaton <mjsbeaton@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 048/124] x86/efistub: Use 1:1 file:memory mapping for PE/COFF .compat section
+Subject: [PATCH 6.6 061/121] hwmon: (coretemp) Fix out-of-bounds memory access
 Date: Tue, 13 Feb 2024 18:21:10 +0100
-Message-ID: <20240213171855.139118700@linuxfoundation.org>
+Message-ID: <20240213171854.775517574@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Zhang Rui <rui.zhang@intel.com>
 
-[ Upstream commit 1ad55cecf22f05f1c884adf63cc09d3c3e609ebf ]
+[ Upstream commit 4e440abc894585a34c2904a32cd54af1742311b3 ]
 
-The .compat section is a dummy PE section that contains the address of
-the 32-bit entrypoint of the 64-bit kernel image if it is bootable from
-32-bit firmware (i.e., CONFIG_EFI_MIXED=y)
+Fix a bug that pdata->cpu_map[] is set before out-of-bounds check.
+The problem might be triggered on systems with more than 128 cores per
+package.
 
-This section is only 8 bytes in size and is only referenced from the
-loader, and so it is placed at the end of the memory view of the image,
-to avoid the need for padding it to 4k, which is required for sections
-appearing in the middle of the image.
-
-Unfortunately, this violates the PE/COFF spec, and even if most EFI
-loaders will work correctly (including the Tianocore reference
-implementation), PE loaders do exist that reject such images, on the
-basis that both the file and memory views of the file contents should be
-described by the section headers in a monotonically increasing manner
-without leaving any gaps.
-
-So reorganize the sections to avoid this issue. This results in a slight
-padding overhead (< 4k) which can be avoided if desired by disabling
-CONFIG_EFI_MIXED (which is only needed in rare cases these days)
-
-Fixes: 3e3eabe26dc8 ("x86/boot: Increase section and file alignment to 4k/512")
-Reported-by: Mike Beaton <mjsbeaton@gmail.com>
-Link: https://lkml.kernel.org/r/CAHzAAWQ6srV6LVNdmfbJhOwhBw5ZzxxZZ07aHt9oKkfYAdvuQQ%40mail.gmail.com
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
+Signed-off-by: Zhang Rui <rui.zhang@intel.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240202092144.71180-2-rui.zhang@intel.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: fdaf0c8629d4 ("hwmon: (coretemp) Fix bogus core_id to attr name mapping")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/header.S | 14 ++++++--------
- arch/x86/boot/setup.ld |  6 +++---
- 2 files changed, 9 insertions(+), 11 deletions(-)
+ drivers/hwmon/coretemp.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/boot/header.S b/arch/x86/boot/header.S
-index b2771710ed98..a1bbedd989e4 100644
---- a/arch/x86/boot/header.S
-+++ b/arch/x86/boot/header.S
-@@ -106,8 +106,7 @@ extra_header_fields:
- 	.word	0				# MinorSubsystemVersion
- 	.long	0				# Win32VersionValue
- 
--	.long	setup_size + ZO__end + pecompat_vsize
--						# SizeOfImage
-+	.long	setup_size + ZO__end		# SizeOfImage
- 
- 	.long	salign				# SizeOfHeaders
- 	.long	0				# CheckSum
-@@ -143,7 +142,7 @@ section_table:
- 	.ascii	".setup"
- 	.byte	0
- 	.byte	0
--	.long	setup_size - salign 		# VirtualSize
-+	.long	pecompat_fstart - salign 	# VirtualSize
- 	.long	salign				# VirtualAddress
- 	.long	pecompat_fstart - salign	# SizeOfRawData
- 	.long	salign				# PointerToRawData
-@@ -156,8 +155,8 @@ section_table:
- #ifdef CONFIG_EFI_MIXED
- 	.asciz	".compat"
- 
--	.long	8				# VirtualSize
--	.long	setup_size + ZO__end		# VirtualAddress
-+	.long	pecompat_fsize			# VirtualSize
-+	.long	pecompat_fstart			# VirtualAddress
- 	.long	pecompat_fsize			# SizeOfRawData
- 	.long	pecompat_fstart			# PointerToRawData
- 
-@@ -172,17 +171,16 @@ section_table:
- 	 * modes this image supports.
- 	 */
- 	.pushsection ".pecompat", "a", @progbits
--	.balign	falign
--	.set	pecompat_vsize, salign
-+	.balign	salign
- 	.globl	pecompat_fstart
- pecompat_fstart:
- 	.byte	0x1				# Version
- 	.byte	8				# Size
- 	.word	IMAGE_FILE_MACHINE_I386		# PE machine type
- 	.long	setup_size + ZO_efi32_pe_entry	# Entrypoint
-+	.byte	0x0				# Sentinel
- 	.popsection
- #else
--	.set	pecompat_vsize, 0
- 	.set	pecompat_fstart, setup_size
- #endif
- 	.ascii	".text"
-diff --git a/arch/x86/boot/setup.ld b/arch/x86/boot/setup.ld
-index 83bb7efad8ae..3a2d1360abb0 100644
---- a/arch/x86/boot/setup.ld
-+++ b/arch/x86/boot/setup.ld
-@@ -24,6 +24,9 @@ SECTIONS
- 	.text		: { *(.text .text.*) }
- 	.text32		: { *(.text32) }
- 
-+	.pecompat	: { *(.pecompat) }
-+	PROVIDE(pecompat_fsize = setup_size - pecompat_fstart);
+diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
+index ba82d1e79c13..e78c76919111 100644
+--- a/drivers/hwmon/coretemp.c
++++ b/drivers/hwmon/coretemp.c
+@@ -509,18 +509,14 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
+ 	if (pkg_flag) {
+ 		attr_no = PKG_SYSFS_ATTR_NO;
+ 	} else {
+-		index = ida_alloc(&pdata->ida, GFP_KERNEL);
++		index = ida_alloc_max(&pdata->ida, NUM_REAL_CORES - 1, GFP_KERNEL);
+ 		if (index < 0)
+ 			return index;
 +
- 	. = ALIGN(16);
- 	.rodata		: { *(.rodata*) }
+ 		pdata->cpu_map[index] = topology_core_id(cpu);
+ 		attr_no = index + BASE_SYSFS_ATTR_NO;
+ 	}
  
-@@ -36,9 +39,6 @@ SECTIONS
- 	. = ALIGN(16);
- 	.data		: { *(.data*) }
- 
--	.pecompat	: { *(.pecompat) }
--	PROVIDE(pecompat_fsize = setup_size - pecompat_fstart);
+-	if (attr_no > MAX_CORE_DATA - 1) {
+-		err = -ERANGE;
+-		goto ida_free;
+-	}
 -
- 	.signature	: {
- 		setup_sig = .;
- 		LONG(0x5a5aaa55)
+ 	tdata = init_temp_data(cpu, pkg_flag);
+ 	if (!tdata) {
+ 		err = -ENOMEM;
 -- 
 2.43.0
 
