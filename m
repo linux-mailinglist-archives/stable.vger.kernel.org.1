@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-19881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 784298537B1
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:28:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65CA285374B
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:23:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E9A228379A
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:28:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0511F1F23282
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4C45FEF7;
-	Tue, 13 Feb 2024 17:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31FC25FEE0;
+	Tue, 13 Feb 2024 17:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gYT1GtqI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j3jwCFTt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2AC5F56B;
-	Tue, 13 Feb 2024 17:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B3F5FDB5;
+	Tue, 13 Feb 2024 17:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845304; cv=none; b=hGEHN2IM6bjYgkLboQ5z5QhlMgUP9bmK5GN2MSMKyY68aNjJD7VeermGvPihpohEeMWtUsy1/pXP0KcK9k6INuahLtdKy7JdL2S0qYTGCXIR7ebsiKYJA4T1WGs5jpp5+44YtadIhq3Kv31IA2AOy7hj32NuV+GNY0ayBKIWAt4=
+	t=1707845034; cv=none; b=fV+mb9q5eZ4l4GD4Egm/7NSwjYKDCV3XyNvEiSA9a1pwKUjkBYXXaGprmt6Oq8E2K5oOP5SV+Y5fov2lofd0uqAnVkJLPvciHiwfQUDqz82iJK+vkO5u4VjMgEcz/PghJj/zraj5xjQIdj1KgQlHb6MNV+q9bOJsQVSd+Gz4WO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845304; c=relaxed/simple;
-	bh=7m1a6zxxujqA3j0x2TL9jJj26I55zfjN6c7IwMh+Y90=;
+	s=arc-20240116; t=1707845034; c=relaxed/simple;
+	bh=BciVfmgLf2y/2co8oVe5o5ECGoSncEIJ0njqLzZmEZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CsxyoB735I/OdZPs7cxHNZrpTGWaF5IgHWEeCITj6FMqpEV6IOOKiQx3AcLH7ihRILDFo/CKWsypfO4cid3yGalxB2ejOL1Mk20VKsPJBQOMS1rdxK/uQNzSLlViChoJeIJRrSbO0YhIqPkCmex5r7tTRLu8KhzYdolhMHOCt2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gYT1GtqI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82920C433F1;
-	Tue, 13 Feb 2024 17:28:23 +0000 (UTC)
+	 MIME-Version; b=REgzJmqiUbuVtQbJeOQtWpq2JNfCX7+/pJomp43l/upFf8OfY+XvFqQxjh2WEnxTduRXxPZ2KtxPWVpaLwlHHub5zGcH2v/QYq5PHsumCnwf39BSLeuJx4K4CeSHRJ/miPng8TGADZxSrl8I3xdYYKqba8becH+k/Ysv87S0HAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j3jwCFTt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0632C433C7;
+	Tue, 13 Feb 2024 17:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845304;
-	bh=7m1a6zxxujqA3j0x2TL9jJj26I55zfjN6c7IwMh+Y90=;
+	s=korg; t=1707845033;
+	bh=BciVfmgLf2y/2co8oVe5o5ECGoSncEIJ0njqLzZmEZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gYT1GtqIHho7JAR9w2Fo8rBc8ORNNUZ0dq12M1FU36sK2O3uxVRaC+pdgQ2Sih/QP
-	 O1G3yLS5lnc9vsxM49lNNQiVFMzu+sQbBpu0iADgOwMx/VGmxqXN1HPo9W+xtaO+uZ
-	 nClmKYn+kZs5BfZ7nHUNm8ZzJ1aJ24i9uKVSzw0g=
+	b=j3jwCFTto/w0ZdGK4/1nOtx44w4kNVq1kitun/UB/zHkczFpscDMmA1doui0XUZMV
+	 PQTcqvGtJWZh1D1kbv45LbUgEBJhMfSSjpes4RCS3c3aJTaLcPeQQwUvEcQZdQOBo8
+	 KGS0CAxCaayM4CvM7Lp5su9jVx8yk9uMIylSYC+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 041/121] x86/efistub: Give up if memory attribute protocol returns an error
+Subject: [PATCH 6.1 04/64] dmaengine: fsl-qdma: Fix a memory leak related to the status queue DMA
 Date: Tue, 13 Feb 2024 18:20:50 +0100
-Message-ID: <20240213171854.197828144@linuxfoundation.org>
+Message-ID: <20240213171844.869158801@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,122 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit a7a6a01f88e87dec4bf2365571dd2dc7403d52d0 ]
+[ Upstream commit 968bc1d7203d384e72afe34124a1801b7af76514 ]
 
-The recently introduced EFI memory attributes protocol should be used
-if it exists to ensure that the memory allocation created for the kernel
-permits execution. This is needed for compatibility with tightened
-requirements related to Windows logo certification for x86 PCs.
+This dma_alloc_coherent() is undone in the remove function, but not in the
+error handling path of fsl_qdma_probe().
 
-Currently, we simply strip the execute protect (XP) attribute from the
-entire range, but this might be rejected under some firmware security
-policies, and so in a subsequent patch, this will be changed to only
-strip XP from the executable region that runs early, and make it
-read-only (RO) as well.
+Switch to the managed version to fix the issue in the probe and simplify
+the remove function.
 
-In order to catch any issues early, ensure that the memory attribute
-protocol works as intended, and give up if it produces spurious errors.
-
-Note that the DXE services based fallback was always based on best
-effort, so don't propagate any errors returned by that API.
-
-Fixes: a1b87d54f4e4 ("x86/efistub: Avoid legacy decompressor when doing EFI boot")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/a0ef5d0f5a47381617ef339df776ddc68ce48173.1704621515.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/libstub/x86-stub.c | 24 ++++++++++++++----------
- drivers/firmware/efi/libstub/x86-stub.h |  4 ++--
- 2 files changed, 16 insertions(+), 12 deletions(-)
+ drivers/dma/fsl-qdma.c | 17 +++++------------
+ 1 file changed, 5 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
-index 70b325a2f1f3..5d0934ae7dc8 100644
---- a/drivers/firmware/efi/libstub/x86-stub.c
-+++ b/drivers/firmware/efi/libstub/x86-stub.c
-@@ -223,8 +223,8 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
- 	}
- }
- 
--void efi_adjust_memory_range_protection(unsigned long start,
--					unsigned long size)
-+efi_status_t efi_adjust_memory_range_protection(unsigned long start,
-+						unsigned long size)
- {
- 	efi_status_t status;
- 	efi_gcd_memory_space_desc_t desc;
-@@ -236,13 +236,17 @@ void efi_adjust_memory_range_protection(unsigned long start,
- 	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
- 
- 	if (memattr != NULL) {
--		efi_call_proto(memattr, clear_memory_attributes, rounded_start,
--			       rounded_end - rounded_start, EFI_MEMORY_XP);
--		return;
-+		status = efi_call_proto(memattr, clear_memory_attributes,
-+					rounded_start,
-+					rounded_end - rounded_start,
-+					EFI_MEMORY_XP);
-+		if (status != EFI_SUCCESS)
-+			efi_warn("Failed to clear EFI_MEMORY_XP attribute\n");
-+		return status;
- 	}
- 
- 	if (efi_dxe_table == NULL)
--		return;
-+		return EFI_SUCCESS;
- 
+diff --git a/drivers/dma/fsl-qdma.c b/drivers/dma/fsl-qdma.c
+index 045ead46ec8f..5cc887acb05b 100644
+--- a/drivers/dma/fsl-qdma.c
++++ b/drivers/dma/fsl-qdma.c
+@@ -563,11 +563,11 @@ static struct fsl_qdma_queue
  	/*
- 	 * Don't modify memory region attributes, they are
-@@ -255,7 +259,7 @@ void efi_adjust_memory_range_protection(unsigned long start,
- 		status = efi_dxe_call(get_memory_space_descriptor, start, &desc);
+ 	 * Buffer for queue command
+ 	 */
+-	status_head->cq = dma_alloc_coherent(&pdev->dev,
+-					     sizeof(struct fsl_qdma_format) *
+-					     status_size,
+-					     &status_head->bus_addr,
+-					     GFP_KERNEL);
++	status_head->cq = dmam_alloc_coherent(&pdev->dev,
++					      sizeof(struct fsl_qdma_format) *
++					      status_size,
++					      &status_head->bus_addr,
++					      GFP_KERNEL);
+ 	if (!status_head->cq) {
+ 		devm_kfree(&pdev->dev, status_head);
+ 		return NULL;
+@@ -1272,8 +1272,6 @@ static void fsl_qdma_cleanup_vchan(struct dma_device *dmadev)
  
- 		if (status != EFI_SUCCESS)
--			return;
-+			break;
+ static int fsl_qdma_remove(struct platform_device *pdev)
+ {
+-	int i;
+-	struct fsl_qdma_queue *status;
+ 	struct device_node *np = pdev->dev.of_node;
+ 	struct fsl_qdma_engine *fsl_qdma = platform_get_drvdata(pdev);
  
- 		next = desc.base_address + desc.length;
+@@ -1282,11 +1280,6 @@ static int fsl_qdma_remove(struct platform_device *pdev)
+ 	of_dma_controller_free(np);
+ 	dma_async_device_unregister(&fsl_qdma->dma_dev);
  
-@@ -280,8 +284,10 @@ void efi_adjust_memory_range_protection(unsigned long start,
- 				 unprotect_start,
- 				 unprotect_start + unprotect_size,
- 				 status);
-+			break;
- 		}
- 	}
-+	return EFI_SUCCESS;
+-	for (i = 0; i < fsl_qdma->block_number; i++) {
+-		status = fsl_qdma->status[i];
+-		dma_free_coherent(&pdev->dev, sizeof(struct fsl_qdma_format) *
+-				status->n_cq, status->cq, status->bus_addr);
+-	}
+ 	return 0;
  }
  
- static void setup_unaccepted_memory(void)
-@@ -837,9 +843,7 @@ static efi_status_t efi_decompress_kernel(unsigned long *kernel_entry)
- 
- 	*kernel_entry = addr + entry;
- 
--	efi_adjust_memory_range_protection(addr, kernel_total_size);
--
--	return EFI_SUCCESS;
-+	return efi_adjust_memory_range_protection(addr, kernel_total_size);
- }
- 
- static void __noreturn enter_kernel(unsigned long kernel_addr,
-diff --git a/drivers/firmware/efi/libstub/x86-stub.h b/drivers/firmware/efi/libstub/x86-stub.h
-index 2748bca192df..4433d0f97441 100644
---- a/drivers/firmware/efi/libstub/x86-stub.h
-+++ b/drivers/firmware/efi/libstub/x86-stub.h
-@@ -7,8 +7,8 @@ extern struct boot_params *boot_params_pointer asm("boot_params");
- extern void trampoline_32bit_src(void *, bool);
- extern const u16 trampoline_ljmp_imm_offset;
- 
--void efi_adjust_memory_range_protection(unsigned long start,
--					unsigned long size);
-+efi_status_t efi_adjust_memory_range_protection(unsigned long start,
-+						unsigned long size);
- 
- #ifdef CONFIG_X86_64
- efi_status_t efi_setup_5level_paging(void);
 -- 
 2.43.0
 
