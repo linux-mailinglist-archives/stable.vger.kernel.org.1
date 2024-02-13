@@ -1,121 +1,199 @@
-Return-Path: <stable+bounces-20116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275E8853D0F
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 22:24:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74852853DB7
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 22:55:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 981CDB25A3A
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 21:24:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE1DD1F2BEF0
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 21:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4937A4501B;
-	Tue, 13 Feb 2024 21:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DhYmxRIb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6FE6216E;
+	Tue, 13 Feb 2024 21:54:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02olkn2055.outbound.protection.outlook.com [40.92.48.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9973627F4;
-	Tue, 13 Feb 2024 21:15:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707858936; cv=none; b=de9r9qhqAAeCfZuj+PK5hm8mOS4F0aDakixtd/u2UL0vbdagc1YlL/eZmlnPbPrFuD9QvoPmokT4TKKyuhF/yfHwAlOF9nJzRXRTp7cpzZ7Qoe+cWhRQe43KTbKkAC9WLFL7LBa20wmNEDuz6sD1jMt4kR1ItejdFsJQ6G/RzJw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707858936; c=relaxed/simple;
-	bh=EbEBam2DPhvqop6UPMlhU9nHqFEE/WOYvpjAwdknIyI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BfluEzzW0MY0q+oWfYmdTkn2G1ZHPGvFB/Xby/6t2bNVQOCkW1Yfw45Wh2nq1tbxiqS7f6jwPk9zuRtYwRmPDQouTKwMqIgvB3hJLgnHcw552yOXr/cD34ME0B8DbqcER8lDwmeWN4T/zbqPH1p8wrdKo2Z85fzBRnQG8HIrnIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DhYmxRIb; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6e0f4e3bc59so1110197b3a.0;
-        Tue, 13 Feb 2024 13:15:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1707858934; x=1708463734; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xCH4mpJrtdkHcy5Gp3rBryy4KbkaCk76Oc9ftECoQB0=;
-        b=DhYmxRIbs/jntz2S3Ae3CUSlz15TxesZuDK4/slfyrpi/JRnjjG3w5a9srXoyK1vHN
-         fZaLxVlHo1IWBHpJrJRamGbxvi/TWIS2t6wuTb2Frlz32LKf3+i1eBZcGFN0Xhl8CbHl
-         VqsRigRHYyJljzg6Cbu+ZZoolJ2xEyP7gVntmj6t3fCjwafZWMlAix8W8eK5pIJSrxGi
-         JrUgqytQVH+X43jD4Z1f44SC22eVFNaWdywLKOIqsRa1iY1PG76WAOm9mnir/q18/3m0
-         hLHse+YSg/+oORMB/ouJIBoBn1yV4wqLLY4cvJcQ9dpOAIjZxu4n/PeVvg86GUA9zJF3
-         +zCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707858934; x=1708463734;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xCH4mpJrtdkHcy5Gp3rBryy4KbkaCk76Oc9ftECoQB0=;
-        b=Al4ypYcIMX1emtx7kYt/reQ0S5bwVIchNdjiMjW8tU6PjNSLrxeCUUP6ofgpX6/kO8
-         7hceitkeB6OhgGJcZAxrj/X6L8rDl8lZMyum6l6LHzJk5+wW1LVvO2xiXf9MsJD8rXS3
-         Ki/XN9qrNZ0QxUSf5pB34P/1D+KwFEq2r4SaeDdz1bFzoIXq8K5EE+Ejn/z2UJs8t45R
-         q+MWECFi5nHQP1AobM7NDRS66WTULr6zKKT/VZkWv9+pNSuPSAJWhcH176Ad7KoVkkYE
-         u6A4oFc3m56Grh+pL1TnVAf2B3sqOt97IEEPlLWIU86T8J3Malhfq06elt33pj4+uQCv
-         JYdg==
-X-Forwarded-Encrypted: i=1; AJvYcCUQWkZMvHRb7Q87qePKZh09m8dPO9v2B4ZxXbq6fA7ZbQF1n28nSJvht5eotYl4kdYBL7PNj8T1lamSDp2meA1KYgHSxYx6kJYfMJCLwVSptSVJratKjF9oYCIzD80pshIVFmh0
-X-Gm-Message-State: AOJu0YzCkvGpyqTPfoOS/kFCgnV//A1U5/YclFsSsChKSJO3YqqHbTzE
-	5O8+GABqpv041FxSmnHm1EKUoUqbJxh4cItj04Yav7DQdwIimr+ohc7tJD1faHw=
-X-Google-Smtp-Source: AGHT+IGMozuO4ZP0nMkADvUX4ufkSliK3mf9oJHd92aYPZ65CwU4TZenkgsud0N4B7N3eB0WZm8/YA==
-X-Received: by 2002:a05:6a00:9381:b0:6dd:da40:948d with SMTP id ka1-20020a056a00938100b006ddda40948dmr545635pfb.25.1707858933002;
-        Tue, 13 Feb 2024 13:15:33 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCX8XUpZd/YAPzW6iYQ6tCsx5stATh8kC0YbNlBIcaDgobZPKh2cA1T2EG8lJU4QutuO/nhD8Mt+huYQP19ha4iF4sCUIa1Xlk3OLK+/L1lWnEIYGYMinF4+RGT+ET5R/WFU0UVLhCNykVM9GYZTQxOsW/lLeTnER8+pxGr8Upg57yc3JHyA0L279wZCQAAAETRGKSMI2vVFm0NGRR7nuC75FzzXW06J40pM3RYQSrmPRNDohtMPCpe3KWignFkC2t9BKKXt3NG5/YeXa5JJbzUyxpJ6OykYZo7Gyhyrc2GKE7guaafmYRUzXG4+3lrS7r7LnzIQQ6CVnMaxg1U2/xTDkJnoz8abMAUmj/6CgfflwOUQ6ACdpBDV0yms88DVuxEUrUkZBzEBi+bU+DUFMtt6mqf6Sa0Z6CwxaIRf4QC18PiPHuPvFjnW8Nk3IEJBxAfUIANl/zKBRDNz/2kjfPddO9PTtPThK5SQjG5I285XJP/x6WYo6tg1LkNGSOj/6rVqv/9EbJ1K
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id q6-20020aa79826000000b006e07eb192ffsm7838008pfl.44.2024.02.13.13.15.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Feb 2024 13:15:32 -0800 (PST)
-Message-ID: <bc81f220-8e88-47f3-b8a0-fc4ea23284df@gmail.com>
-Date: Tue, 13 Feb 2024 13:15:30 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65006280F;
+	Tue, 13 Feb 2024 21:54:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.48.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1707861273; cv=fail; b=pjiAW8qRciAnhx8qXHFjOdJk75K2xImECZjrj9wtkPcC4UHeoJUxrlNcJN1G0jtpBaItxqQKHrdFl49tt/hkrDvLNLSpAJhzw4sp/Q86BWlkpezc6KWAVuCx+HLTmVA3ppGuHUTCKaF7N0wtLJDI+a/rI8BUzElEjHuxZiB8zZY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1707861273; c=relaxed/simple;
+	bh=U+Ke6YQ2CH57ecVsPCfgQMxnQIrWzyh1vUwb1rbL3QI=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=kRlHvqKrByiQY5Y1mA/hsSV8oqejKFmokoDNDjW5k2GUliaQ0TFvmOhz3IcGDG9VusOSzpqX6jE5PR5MTj8jaupm0dFpJrZW0EnV8lPx3b10QjBvM3gcXlxnIrluCHgWdIeJoFMEdkZyaTMnMkkRZftZmwD8BpupTlXhGBCFzq4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.co.uk; spf=pass smtp.mailfrom=live.co.uk; arc=fail smtp.client-ip=40.92.48.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.co.uk
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OokSdNjH1Ot/FQlpJt/hJuFfRoTvUC8ymvC7TurbPFh8l2fGsHu9prwfuj75wPxCG0CSFYlCvvMJ9eWimAOlsdxsZA6tyjZzJqW0sr7tXE5TBE32fEFVXWgTwTp1rHHj6P3UVDlLPeISmBTSzfls2maR0CvLH6o3WG5Y/6hy43Y+WmZCcTFNW/35fx4O36c8WeqnxsAoqcgzINVnhb8bi2UQvE2vVd/SycCWedVILlS5GGG+de2qlZEl+exZoffB40Uscsr3InwiV5a+SJP8koIGql2FoZd6dKCx9yyDaO7FsaSTNSXxCXNH0BILJ6AJtLTQWF9fCIal7BUdIZtrHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=fyyEMqc8UtLmunplqVFG7L1yK2gkbZO99TtUQExK4Oo=;
+ b=Xqjc8TClqGALptenGO6ddsWMQuXVQCUmhy8nYzplzmVU0JGOfsY6TjCvTlYpI8hDrG2BU1q5Li3r76vB7Kmj456N9UWrI9j7wCfATqa5WOtyM0PyJrHZ+3bZka0LQA0/4E7nRwiNS3cMefyJmQ2ZvhKJEl4NDb6jK05m9xlomjWuohe/RoGJTMfRtZq0SxUp7D3egiS4SK3S/3dU/Fmpdl3U6ekZdo68jap2KujHUDbqsWg9S7fxBBQgnQokpkh/hDvJ2D8PrWKw/qPo8y/E+MYFsXvJ+/WSOjU24vzXiyUApCHPQ8XKVSPRr1X8l2paecq7MurAcw8sOEX/Gnmg2g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from DU0PR02MB7899.eurprd02.prod.outlook.com (2603:10a6:10:347::11)
+ by DB3PR0202MB9201.eurprd02.prod.outlook.com (2603:10a6:10:43f::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7270.35; Tue, 13 Feb
+ 2024 21:54:29 +0000
+Received: from DU0PR02MB7899.eurprd02.prod.outlook.com
+ ([fe80::d9bc:2ca3:7e77:9b47]) by DU0PR02MB7899.eurprd02.prod.outlook.com
+ ([fe80::d9bc:2ca3:7e77:9b47%7]) with mapi id 15.20.7270.036; Tue, 13 Feb 2024
+ 21:54:28 +0000
+From: Cameron Williams <cang1@live.co.uk>
+To: johan@kernel.org,
+	gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org
+Cc: Cameron Williams <cang1@live.co.uk>,
+	stable@vger.kernel.org,
+	linux-usb@vger.kernel.org
+Subject: [PATCH] usb: serial: Add device ID for cp210x
+Date: Tue, 13 Feb 2024 21:53:29 +0000
+Message-ID:
+ <DU0PR02MB7899B4A2A35EFE1B350E6F97C44F2@DU0PR02MB7899.eurprd02.prod.outlook.com>
+X-Mailer: git-send-email 2.43.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [IcQugbF7hp8bVnlelUVHmFodLzpS5lFy]
+X-ClientProxiedBy: LO4P123CA0072.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:153::23) To DU0PR02MB7899.eurprd02.prod.outlook.com
+ (2603:10a6:10:347::11)
+X-Microsoft-Original-Message-ID: <20240213215347.3798-2-cang1@live.co.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 00/64] 6.1.78-rc1 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com
-References: <20240213171844.702064831@linuxfoundation.org>
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR02MB7899:EE_|DB3PR0202MB9201:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0dc3c89d-fc60-48fa-db83-08dc2cde597f
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	K56UO4QUZO/qPviFomVyldOLFDv1n+f5/COjiJsRHw/CLUYBaloxVfuGpTA2HGI8qbYia+fKAJiKv+UuOFYXJJEwEO3jCKPL+IBgd1ylivIH+IGt4VdCf7FY788pNCK8+pRKXK7q8Q1jVue4N3RGP67fO+D40Vv+lA707jCS82XcVhmwhwnskUUkSlQRRZ1zjDUPPvLCQN3qsklt0TLoJVb6lsCvj5UUC6Rfhr9T0O/b8W6+iCuJpzKsAvvY/rGvV8r7XbxoAV9FZZ/y6hDYMU/c3W+rgvjCV4cSx0wNnBve+lkHw3Xj9BVZahOiyvhEWW8NDw7X6BunFxBKihqe/StdcqhGcw/l/jesvNoIvQ5fnE1hiM7NLjn5+m0X9dpmoRPQuMysZ1SxcTVHjsuDPQTdohfx9UH0h4DeoOtoEr1+sDP+Co6TC3oO07pk4X1fJSJOTtRUWevA+U8yidZ2FKFEE+MssENtoQgtrbz+pRd02GKVAmsTu9j9OCh+eXyHRNB7fNYBqDOgBhciiPo24LHuDDPUB5oUm7YTyLlwov8vEW4KfHLaMEAwthbjfWNf96MK7hfhtN5U4KpRUxwrgcFda28BNdQGmA+pX61OePi5lOXSmC5/hkqeJyvx7WNN
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?es1wSSQHu9uhWVL3KY+Tip84l/Aj2Rw0tZA+GUFb6zjvxafBhZ2WTcI6Q7gK?=
+ =?us-ascii?Q?Kc4lQI8xppPRkJoSW8DyruAyPshmVEA/wtVioEdnqIO+yJm5mRYfQnwgk8fi?=
+ =?us-ascii?Q?8bx+th/YKbzeyLfdR/YLPDsqw5k55eCWINJwzqnhzfYggJkUAOl1uDCc5h1e?=
+ =?us-ascii?Q?SPQka+0gs92Q2vWD8tT4AbaojumEc4U5oZQGYZVXWFyPIhbXxBNV9p2hlx2I?=
+ =?us-ascii?Q?P2Ug1zbPgCI6JwnVaJ/erBTnyc21Jy3X/PBMtl6N+YmHuwbAspZnhoroaNeG?=
+ =?us-ascii?Q?7K2Rooeu7AtCtsVSmoEeiasZ1/LkNZr0dG6SQk/gUY/eoiC+DUPjB1CQm0JS?=
+ =?us-ascii?Q?22s7rws/KiH/vh1ievQ0MRcEnge4CKJu1NVTaMop/hZVN/o1LIFbOqB8yv+P?=
+ =?us-ascii?Q?Qj2aLkQuEfCddSXYlW3k0+OOk9KkCMR1idgoo4288nofXbG4m3UxZQpoWWbi?=
+ =?us-ascii?Q?iLtzLpikHE3nNrB7rL3wv1wUcuS7WW06GEW2yDMxdb4iG+rKWVk/gk5UlDx5?=
+ =?us-ascii?Q?ycuXc1A0jBk/wvRblGSyrBieAu4FYM6DBDjEe4jtn/Wqgg734FrLNPzZ52Dq?=
+ =?us-ascii?Q?P2+1HutCKwP63+gD5EmexPOCaYyhO9salTLlwDvNMr+1A7JFqHOZ/Rf7k9qn?=
+ =?us-ascii?Q?nqdqKSIWrO4AzGSXyzWVjdGXwCHW0MhU+mFgbZlERNizKT9QURRRHaIsXbIC?=
+ =?us-ascii?Q?pIDqKlHSs90xjq2u6NCNKBeeEtKg+Uo8FsBl+E+SqxuQvIwAngxaYfFnT75I?=
+ =?us-ascii?Q?bSl3U8jAe7x/RbvyUz+sjk/0SIvoZ1tFzq4FefuUdipzBPGdIpFGOyK9towl?=
+ =?us-ascii?Q?3xP6rKnEZJ9SxjtAcf9RocvSQ9LI9sXdiS4Z72SldVsPxiLk+MbbJxqYD9L5?=
+ =?us-ascii?Q?XK/PA9xb+jPLaQMRkAU+llkG17M6K9g2ORLZL8rcfa6NUe6GM0LADKbxtPhO?=
+ =?us-ascii?Q?7HJrjyiO2uXrBU9pAXO5TGpd4xFPgO6j3Wa53E0P0FbVLwD/BKqJmFV+ijL0?=
+ =?us-ascii?Q?37DcXGB/RKWsjBSVexDJHoTLy7xsrD3QQeNWPp/oPEaQ89QV07hVXubNHsY6?=
+ =?us-ascii?Q?NK67c0Yq/qdgantV5vNMRz8F3gnwSRcdG7z0q0WoCXak3WMEW4pwD963UJ5N?=
+ =?us-ascii?Q?/49+bKt2ARGBmZ1jnlugOen00XnuZeNYCt6NPFZ/lNxxfchtXwaHPC9UP45i?=
+ =?us-ascii?Q?ZKY+SS85bF7SiBIlCGcH8e7WV3rsy4u+wqPxzg=3D=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-bcc80.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0dc3c89d-fc60-48fa-db83-08dc2cde597f
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR02MB7899.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2024 21:54:27.9213
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR0202MB9201
 
-On 2/13/24 09:20, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.78 release.
-> There are 64 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 15 Feb 2024 17:18:29 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.78-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Add device ID for a (probably fake) CP2102 UART device.
+lsusb -v output:
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               1.10
+  bDeviceClass            0 [unknown]
+  bDeviceSubClass         0 [unknown]
+  bDeviceProtocol         0
+  bMaxPacketSize0        64
+  idVendor           0x11ca VeriFone Inc
+  idProduct          0x0212 Verifone USB to Printer
+  bcdDevice            1.00
+  iManufacturer           1 Silicon Labs
+  iProduct                2 Verifone USB to Printer
+  iSerial                 3 0001
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength       0x0020
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0
+    bmAttributes         0x80
+      (Bus Powered)
+    MaxPower              100mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           2
+      bInterfaceClass       255 Vendor Specific Class
+      bInterfaceSubClass      0 [unknown]
+      bInterfaceProtocol      0
+      iInterface              2 Verifone USB to Printer
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x01  EP 1 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0040  1x 64 bytes
+        bInterval               0
+Device Status:     0x0000
+  (Bus Powered)
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Cc: stable@vger.kernel.org
+Cc: linux-usb@vger.kernel.org
+---
+ drivers/usb/serial/cp210x.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/usb/serial/cp210x.c b/drivers/usb/serial/cp210x.c
+index 923e0ed85..d339d81f6 100644
+--- a/drivers/usb/serial/cp210x.c
++++ b/drivers/usb/serial/cp210x.c
+@@ -177,6 +177,7 @@ static const struct usb_device_id id_table[] = {
+ 	{ USB_DEVICE(0x10C4, 0xF004) }, /* Elan Digital Systems USBcount50 */
+ 	{ USB_DEVICE(0x10C5, 0xEA61) }, /* Silicon Labs MobiData GPRS USB Modem */
+ 	{ USB_DEVICE(0x10CE, 0xEA6A) }, /* Silicon Labs MobiData GPRS USB Modem 100EU */
++	{ USB_DEVICE(0x11CA, 0x0212) }, /* Verifone USB to Printer (UART, CP2102) */
+ 	{ USB_DEVICE(0x12B8, 0xEC60) }, /* Link G4 ECU */
+ 	{ USB_DEVICE(0x12B8, 0xEC62) }, /* Link G4+ ECU */
+ 	{ USB_DEVICE(0x13AD, 0x9999) }, /* Baltech card reader */
 -- 
-Florian
+2.43.1
 
 
