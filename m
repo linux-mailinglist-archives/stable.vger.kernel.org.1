@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-20003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAD3A853857
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:36:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C1688537C1
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 874E928C6AB
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:36:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCA572845D2
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D586026B;
-	Tue, 13 Feb 2024 17:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6765FEEF;
+	Tue, 13 Feb 2024 17:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17gEjnb9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZFxKYJE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 773895FDD6;
-	Tue, 13 Feb 2024 17:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397295F54E;
+	Tue, 13 Feb 2024 17:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845737; cv=none; b=jmIL2chdMTOpf+WQy9Y0JG9pkkzG5IUTqxmvyE4eifFK66ay59gCVWggZfLE3JmJOxbnOOhixbhEk1IkBllYBKPjFNPF1R7LU3eAIBythMCQnUF0k/3Tc86IJm48JZLia/TL4GPoARggRRzp/9KucNFfALaixkGIO8lEZFZsVqM=
+	t=1707845354; cv=none; b=HSFmee4tbK0D2dZvD8M4DeaWZY4aWibX0DUouY2XhpShrHDzQSNMstUx+mXehN3wvtfQfZlGNT3HAgnlGi1iHqdbZSwRYZaN1I/kh45wT1Tm7HNeEMthjxJ9+0O0EwyvS+f926oG48903CKJO7JN/T+PdtkA2gwXr53R1HY4r3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845737; c=relaxed/simple;
-	bh=n5+VFOli/xyFCyD/lVQW4wyA93fPx0EbNEtR9McT7OU=;
+	s=arc-20240116; t=1707845354; c=relaxed/simple;
+	bh=J4pdbmSADvFO7GVwsPmZoj7P+sgE7PcRBWLWYcL9D44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mkn5NjNh8ZCicROqgU+Avk1vgCqf7YjHFPUPo8NjQCTEPvOwXU3MVhv31EmxVDhRAtyxNR70I5cA9gdkXKOZUuK1FMyBjREdD3J73BPNNUWxG381J8ntp0dEHjL89oPAt6qZ4aS6OK6OCkmikJktcDsT2PnCb2aStpOcd8g0uEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17gEjnb9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755F2C433C7;
-	Tue, 13 Feb 2024 17:35:36 +0000 (UTC)
+	 MIME-Version; b=WDjdaG9pb5Ry3s2TfXtNFNKIcEPKnnVLISu6pk8XAiarj1wF2wZjG5/9GJed/RdqQbahogmXpKWZgvljGkgI37MRUFyhJAUrERhojUIfQtRPU7kbcwJ1/U9ySfViLN0qJmyi1b5OsXWXcWdOiv0MbyPE7ZYJIJheby5yFNhj85c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZFxKYJE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93139C433F1;
+	Tue, 13 Feb 2024 17:29:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845736;
-	bh=n5+VFOli/xyFCyD/lVQW4wyA93fPx0EbNEtR9McT7OU=;
+	s=korg; t=1707845354;
+	bh=J4pdbmSADvFO7GVwsPmZoj7P+sgE7PcRBWLWYcL9D44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=17gEjnb9NO3vjdF83J/bAdgWH7ApNy1n7uHV84pKJG3NIHjukC2PJ1rYC7S0u8kHE
-	 WS++5cyYRWgJlzVEL+2B+BKX5G1Fv2fssh/MZv1zIb+tpnRDlfYUIoMWpTxxLs7NBG
-	 QhDooGNHaZ23kUSt+6abqvzTv9a1Y0OzkMb5m7U8=
+	b=DZFxKYJEK+B652DNDeSBfhpIZHtV3mLmMcpeh8/5gx1AJeV9D2ocNFGBPhIMuZTdw
+	 4Pbg8Lodj4UmXDjnM5oE53m+tcjpM2ZII3GdHnQjqbEkUbLgwkUxm10dAEhEw0lrHx
+	 JCZ5LYEi4WiV6rpmGTkPe6rIkykXRlpidNlJKwko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Jiri Pirko <jiri@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 042/124] octeontx2-pf: Fix a memleak otx2_sq_init
+Subject: [PATCH 6.6 055/121] selftests: net: avoid just another constant wait
 Date: Tue, 13 Feb 2024 18:21:04 +0100
-Message-ID: <20240213171854.966132031@linuxfoundation.org>
+Message-ID: <20240213171854.602620364@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit b09b58e31b0f43d76f79b9943da3fb7c2843dcbb ]
+[ Upstream commit 691bb4e49c98a47bc643dd808453136ce78b15b4 ]
 
-When qmem_alloc and pfvf->hw_ops->sq_aq_init fails, sq->sg should be
-freed to prevent memleak.
+Using hard-coded constant timeout to wait for some expected
+event is deemed to fail sooner or later, especially in slow
+env.
 
-Fixes: c9c12d339d93 ("octeontx2-pf: Add support for PTP clock")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Acked-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Our CI has spotted another of such race:
+   # TEST: ipv6: cleanup of cached exceptions - nexthop objects          [FAIL]
+   #   can't delete veth device in a timely manner, PMTU dst likely leaked
+
+Replace the crude sleep with a loop looking for the expected condition
+at low interval for a much longer range.
+
+Fixes: b3cc4f8a8a41 ("selftests: pmtu: add explicit tests for PMTU exceptions cleanup")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/fd5c745e9bb665b724473af6a9373a8c2a62b247.1706812005.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/marvell/octeontx2/nic/otx2_common.c   | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/pmtu.sh | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 7ca6941ea0b9..02d0b707aea5 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -951,8 +951,11 @@ int otx2_sq_init(struct otx2_nic *pfvf, u16 qidx, u16 sqb_aura)
- 	if (pfvf->ptp && qidx < pfvf->hw.tx_queues) {
- 		err = qmem_alloc(pfvf->dev, &sq->timestamps, qset->sqe_cnt,
- 				 sizeof(*sq->timestamps));
--		if (err)
-+		if (err) {
-+			kfree(sq->sg);
-+			sq->sg = NULL;
- 			return err;
-+		}
- 	}
- 
- 	sq->head = 0;
-@@ -968,7 +971,14 @@ int otx2_sq_init(struct otx2_nic *pfvf, u16 qidx, u16 sqb_aura)
- 	sq->stats.bytes = 0;
- 	sq->stats.pkts = 0;
- 
--	return pfvf->hw_ops->sq_aq_init(pfvf, qidx, sqb_aura);
-+	err = pfvf->hw_ops->sq_aq_init(pfvf, qidx, sqb_aura);
-+	if (err) {
-+		kfree(sq->sg);
-+		sq->sg = NULL;
-+		return err;
-+	}
-+
-+	return 0;
- 
+diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
+index f0febc19baae..d65fdd407d73 100755
+--- a/tools/testing/selftests/net/pmtu.sh
++++ b/tools/testing/selftests/net/pmtu.sh
+@@ -1957,6 +1957,13 @@ check_command() {
+ 	return 0
  }
  
++check_running() {
++	pid=${1}
++	cmd=${2}
++
++	[ "$(cat /proc/${pid}/cmdline 2>/dev/null | tr -d '\0')" = "{cmd}" ]
++}
++
+ test_cleanup_vxlanX_exception() {
+ 	outer="${1}"
+ 	encap="vxlan"
+@@ -1987,11 +1994,12 @@ test_cleanup_vxlanX_exception() {
+ 
+ 	${ns_a} ip link del dev veth_A-R1 &
+ 	iplink_pid=$!
+-	sleep 1
+-	if [ "$(cat /proc/${iplink_pid}/cmdline 2>/dev/null | tr -d '\0')" = "iplinkdeldevveth_A-R1" ]; then
+-		err "  can't delete veth device in a timely manner, PMTU dst likely leaked"
+-		return 1
+-	fi
++	for i in $(seq 1 20); do
++		check_running ${iplink_pid} "iplinkdeldevveth_A-R1" || return 0
++		sleep 0.1
++	done
++	err "  can't delete veth device in a timely manner, PMTU dst likely leaked"
++	return 1
+ }
+ 
+ test_cleanup_ipv6_exception() {
 -- 
 2.43.0
 
