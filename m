@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-19878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E205E8537AE
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:28:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E314185386C
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:37:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B1A61F20F23
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:28:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 215201C26566
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60AC55FEEF;
-	Tue, 13 Feb 2024 17:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8705FEE9;
+	Tue, 13 Feb 2024 17:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUb05yDy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhbWrN05"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3EA5F54E;
-	Tue, 13 Feb 2024 17:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CAFC1EB22;
+	Tue, 13 Feb 2024 17:36:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845294; cv=none; b=qN0dlMJ34GY4OAyR2FHlvY1YcdbcvmojvoRm5hU+Tukw7Xgn/26JoB4NGgCQ84R7syEC0adkvwlzkxfGIxfqDqCB8C6/++vR8ikMnPNN0fjujz/tusUK+NTX7NPVOW6kT6yJdD3OrB0GrnCcN9CoDOBEkSMB28W9G7XWmopp0uc=
+	t=1707845781; cv=none; b=f/Lv4Y4VBTVYF/F5IQ7sKEZU5vPELXsZmmsnTE0MNDmpmHK+xDXlT4dls6Zt1SMhJrfwjjhjl/FngYEYBuEG/r0M/javpbfkosVsP/paW1SDZsBhcr6UJI80ZsNHTlU3Hc+ITcdVXh9djkhwZElxFyis6Zx3x5CTFNWaJmfC0I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845294; c=relaxed/simple;
-	bh=3d7+YEjPH0VOHK9QiPomf7bTZ0NF7TF7P+BmvUC3CEs=;
+	s=arc-20240116; t=1707845781; c=relaxed/simple;
+	bh=1BOYO40ETrHhy4e7JufNCETC7zze+aMSWO8lRZ49Rok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=URYf932CSTDCUZ6+l4m5cKN3E1hxttBbC2u9sCF5+MjgU7WFRx6IeNzb83glru1NxCxQKD+O1K6r381Rj09/BJYhSjTABnSaUaFCYpokHnWoPS3d2+nTeK/jYP2zKDelSd1jMo6o6bqqnuqo2DXie52c7CkWcWCgGvZWjdFx0SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUb05yDy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786CBC433F1;
-	Tue, 13 Feb 2024 17:28:13 +0000 (UTC)
+	 MIME-Version; b=hEIEiBzRjP8rGxGthfkulkpoKpAx/hO7m3LGLYud/d+4eAsG3aTzw8rNQHUQqylyklGSliAfiRxPXguQThnWeMhw3g3hwdHADO6mOAlAnNusDb+oFJVY/5IMt3P+dmVo7JfoAWq5cBgQ/NlF3LCL69vqeb4gIaJcg4i+E4SaFys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhbWrN05; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65AE3C433F1;
+	Tue, 13 Feb 2024 17:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845294;
-	bh=3d7+YEjPH0VOHK9QiPomf7bTZ0NF7TF7P+BmvUC3CEs=;
+	s=korg; t=1707845780;
+	bh=1BOYO40ETrHhy4e7JufNCETC7zze+aMSWO8lRZ49Rok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AUb05yDyrVIKMa6fWa96XWBym6WAj457rXVETCUnMzy0TmKQWQthIuCQoa3iPJRuL
-	 Yv1BeC4zv8ZuRaYdRsaPIFgj0ucdje+/D2PDssF35lK6jZmmgZwJQS4E8njditLgt5
-	 DIY8KTEGf3H7agoKhjK/WuYtS2+sXLO7n6+LDUtA=
+	b=LhbWrN05VxmaZBysJ4pbL47tWe/51myc6OBPCtNXLL7rCfwzW/NeyJHTHouI1C2Fl
+	 EH98sd1obQuJa6oxuNf7DtSopTovkdrgXW+N4MuE2TWyw1X33u3i+L2IUg1d8EHNR5
+	 2orF4m9iB/LQ4UvUl8V7JjID++twxCmnJikXw1YM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuogee Hsieh <quic_khsieh@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/121] drm/msm/dp: return correct Colorimetry for DP_TEST_DYNAMIC_RANGE_CEA case
+Subject: [PATCH 6.7 026/124] wifi: mac80211: fix RCU use in TDLS fast-xmit
 Date: Tue, 13 Feb 2024 18:20:48 +0100
-Message-ID: <20240213171854.140425885@linuxfoundation.org>
+Message-ID: <20240213171854.494015499@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuogee Hsieh <quic_khsieh@quicinc.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit fcccdafd91f8bdde568b86ff70848cf83f029add ]
+[ Upstream commit 9480adfe4e0f0319b9da04b44e4eebd5ad07e0cd ]
 
-MSA MISC0 bit 1 to 7 contains Colorimetry Indicator Field.
-dp_link_get_colorimetry_config() returns wrong colorimetry value
-in the DP_TEST_DYNAMIC_RANGE_CEA case in the current implementation.
-Hence fix this problem by having dp_link_get_colorimetry_config()
-return defined CEA RGB colorimetry value in the case of
-DP_TEST_DYNAMIC_RANGE_CEA.
+This looks up the link under RCU protection, but isn't
+guaranteed to actually have protection. Fix that.
 
-Changes in V2:
--- drop retrieving colorimetry from colorspace
--- drop dr = link->dp_link.test_video.test_dyn_range assignment
-
-Changes in V3:
--- move defined MISCr0a Colorimetry vale to dp_reg.h
--- rewording commit title
--- rewording commit text to more precise describe this patch
-
-Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
-Signed-off-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/574888/
-Link: https://lore.kernel.org/r/1705526010-597-1-git-send-email-quic_khsieh@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: 8cc07265b691 ("wifi: mac80211: handle TDLS data frames with MLO")
+Link: https://msgid.link/20240129155348.8a9c0b1e1d89.I553f96ce953bb41b0b877d592056164dec20d01c@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_link.c | 12 +++++++-----
- drivers/gpu/drm/msm/dp/dp_reg.h  |  3 +++
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ net/mac80211/tx.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_link.c b/drivers/gpu/drm/msm/dp/dp_link.c
-index 487867979557..25950171caf3 100644
---- a/drivers/gpu/drm/msm/dp/dp_link.c
-+++ b/drivers/gpu/drm/msm/dp/dp_link.c
-@@ -7,6 +7,7 @@
- 
- #include <drm/drm_print.h>
- 
-+#include "dp_reg.h"
- #include "dp_link.h"
- #include "dp_panel.h"
- 
-@@ -1114,7 +1115,7 @@ int dp_link_process_request(struct dp_link *dp_link)
- 
- int dp_link_get_colorimetry_config(struct dp_link *dp_link)
- {
--	u32 cc;
-+	u32 cc = DP_MISC0_COLORIMERY_CFG_LEGACY_RGB;
- 	struct dp_link_private *link;
- 
- 	if (!dp_link) {
-@@ -1128,10 +1129,11 @@ int dp_link_get_colorimetry_config(struct dp_link *dp_link)
- 	 * Unless a video pattern CTS test is ongoing, use RGB_VESA
- 	 * Only RGB_VESA and RGB_CEA supported for now
- 	 */
--	if (dp_link_is_video_pattern_requested(link))
--		cc = link->dp_link.test_video.test_dyn_range;
--	else
--		cc = DP_TEST_DYNAMIC_RANGE_VESA;
-+	if (dp_link_is_video_pattern_requested(link)) {
-+		if (link->dp_link.test_video.test_dyn_range &
-+					DP_TEST_DYNAMIC_RANGE_CEA)
-+			cc = DP_MISC0_COLORIMERY_CFG_CEA_RGB;
-+	}
- 
- 	return cc;
- }
-diff --git a/drivers/gpu/drm/msm/dp/dp_reg.h b/drivers/gpu/drm/msm/dp/dp_reg.h
-index ea85a691e72b..78785ed4b40c 100644
---- a/drivers/gpu/drm/msm/dp/dp_reg.h
-+++ b/drivers/gpu/drm/msm/dp/dp_reg.h
-@@ -143,6 +143,9 @@
- #define DP_MISC0_COLORIMETRY_CFG_SHIFT		(0x00000001)
- #define DP_MISC0_TEST_BITS_DEPTH_SHIFT		(0x00000005)
- 
-+#define DP_MISC0_COLORIMERY_CFG_LEGACY_RGB	(0)
-+#define DP_MISC0_COLORIMERY_CFG_CEA_RGB		(0x04)
-+
- #define REG_DP_VALID_BOUNDARY			(0x00000030)
- #define REG_DP_VALID_BOUNDARY_2			(0x00000034)
- 
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index ed4fdf655343..a94feb6b579b 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -3100,10 +3100,11 @@ void ieee80211_check_fast_xmit(struct sta_info *sta)
+ 			/* DA SA BSSID */
+ 			build.da_offs = offsetof(struct ieee80211_hdr, addr1);
+ 			build.sa_offs = offsetof(struct ieee80211_hdr, addr2);
++			rcu_read_lock();
+ 			link = rcu_dereference(sdata->link[tdls_link_id]);
+-			if (WARN_ON_ONCE(!link))
+-				break;
+-			memcpy(hdr->addr3, link->u.mgd.bssid, ETH_ALEN);
++			if (!WARN_ON_ONCE(!link))
++				memcpy(hdr->addr3, link->u.mgd.bssid, ETH_ALEN);
++			rcu_read_unlock();
+ 			build.hdr_len = 24;
+ 			break;
+ 		}
 -- 
 2.43.0
 
