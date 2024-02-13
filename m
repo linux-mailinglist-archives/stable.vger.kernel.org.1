@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-19826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9FB85376D
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:25:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98A6D853888
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:38:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3750C1F230FE
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:25:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 371B21F211E8
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9ED5FEF0;
-	Tue, 13 Feb 2024 17:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863B05FF0B;
+	Tue, 13 Feb 2024 17:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2u43duS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PoVud0Vb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8885F54E;
-	Tue, 13 Feb 2024 17:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4413BA93C;
+	Tue, 13 Feb 2024 17:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845118; cv=none; b=ixN3kiWKNsWO1PuXZxukwImkCeb0G/8sJdb0Q8A07MX+2UFok1Kt4srqcfNNHV69HnyB4nyl+O3l5XVHYxdVxem8cxN6salMI0Eul294V2V9iOpYgN4WcHVwKU3yMm7AoMHmpAir7GrU6ERoQlMSI8mYViB11xFq6UMcxb+1YQ8=
+	t=1707845859; cv=none; b=DiQsDClrMDWEjnsK4VfYKAWyT/E+kEig6Xl/QQDKMq4zHGVwHCtVojfXCJUNwWpgqizUSF1njz5wFw06qAxW7V8uN1/BRmDuucArwoVs/mAjYJHlBfl7zzipzxAfkBNN02+TU0iTdU5WmdhEaCCt1NiWGEJKu8zasysLPebUciw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845118; c=relaxed/simple;
-	bh=MuC3jRzOltyQPTUwSV9kkZSQ+XkaeMNshE+4nzBouns=;
+	s=arc-20240116; t=1707845859; c=relaxed/simple;
+	bh=qJ8zJTZVWDXXWjDyLj4A1qhtnGC1i3xx59XG+Uj20Xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dNxLISbZv1WJXB5I3kU8tUZfYUeRZkNAkhGMX5n91Te+DIke9UtMnZ76RTG+epxvaPrpIkwgBkUP/J/CS2MI1knodgR/IJxNLodoYTL8PcGcDue95+jp/uBD20nI9O0YLxAkmN2WG1QAPQNmQ3XPl78THtYuU1RNKK+JYYCYVgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2u43duS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8CE7C433C7;
-	Tue, 13 Feb 2024 17:25:17 +0000 (UTC)
+	 MIME-Version; b=G9olvH2ByMKRLSOCjFk0dSZ60z3De8wkKGoqkMXp8tutprjfNAL2rWIrHQSbcR6R6AEnAQ+01mz/NqkGuOTf6S5dclSaIeUKgHSBH+K/CkBaUmjMLJTRQoFsL8vwWvPxXWaONLUflgav3yXA5LCNdJrt/x5VSeRJQ//nLHZN88M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PoVud0Vb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D4E4C433C7;
+	Tue, 13 Feb 2024 17:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845118;
-	bh=MuC3jRzOltyQPTUwSV9kkZSQ+XkaeMNshE+4nzBouns=;
+	s=korg; t=1707845859;
+	bh=qJ8zJTZVWDXXWjDyLj4A1qhtnGC1i3xx59XG+Uj20Xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y2u43duSHzOkniqhIW26cgFxtIrQ6QYCM8uzsPdTHFGDtcWDMl52nWC2ky8B/3N/E
-	 wrYysswYGcm6QPTZhWIVbIpzIh2ilo7v+2CHaTA8+gTUyFauBPj2D0G1pnJFMfNElc
-	 aexSJwmbN3LddpEK4Y7OMiTtE+WywX0IF2xUMy9c=
+	b=PoVud0Vb4nuPFIuxJms0eogqCPtc7ePAnyDQ5HiKhnPcedfTWohS4TsA7yxICG4pU
+	 M/nps760qJdnFwry2rijVXLBGDz6Xi8iDZ2E7m/RtmRxCyhxXk9g4Qway/ofYvs7FF
+	 523hr9EczJ9/8dboR3091pJlcCnnYSTBCZbQzuoA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prashanth K <quic_prashk@quicinc.com>
-Subject: [PATCH 6.1 52/64] usb: host: xhci-plat: Add support for XHCI_SG_TRB_CACHE_SIZE_QUIRK
-Date: Tue, 13 Feb 2024 18:21:38 +0100
-Message-ID: <20240213171846.372244974@linuxfoundation.org>
+	Sathya Prakash Veerichetty <safhya.prakash@broadcom.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 077/124] scsi: core: Move scsi_host_busy() out of host lock if it is for per-command
+Date: Tue, 13 Feb 2024 18:21:39 +0100
+Message-ID: <20240213171855.985765955@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <quic_prashk@quicinc.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 520b391e3e813c1dd142d1eebb3ccfa6d08c3995 upstream.
+[ Upstream commit 4e6c9011990726f4d175e2cdfebe5b0b8cce4839 ]
 
-Upstream commit bac1ec551434 ("usb: xhci: Set quirk for
-XHCI_SG_TRB_CACHE_SIZE_QUIRK") introduced a new quirk in XHCI
-which fixes XHC timeout, which was seen on synopsys XHCs while
-using SG buffers. Currently this quirk can only be set using
-xhci private data. But there are some drivers like dwc3/host.c
-which adds adds quirks using software node for xhci device.
-Hence set this xhci quirk by iterating over device properties.
+Commit 4373534a9850 ("scsi: core: Move scsi_host_busy() out of host lock
+for waking up EH handler") intended to fix a hard lockup issue triggered by
+EH. The core idea was to move scsi_host_busy() out of the host lock when
+processing individual commands for EH. However, a suggested style change
+inadvertently caused scsi_host_busy() to remain under the host lock. Fix
+this by calling scsi_host_busy() outside the lock.
 
-Cc: stable@vger.kernel.org # 5.11
-Fixes: bac1ec551434 ("usb: xhci: Set quirk for XHCI_SG_TRB_CACHE_SIZE_QUIRK")
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Link: https://lore.kernel.org/r/20240116055816.1169821-3-quic_prashk@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4373534a9850 ("scsi: core: Move scsi_host_busy() out of host lock for waking up EH handler")
+Cc: Sathya Prakash Veerichetty <safhya.prakash@broadcom.com>
+Cc: Bart Van Assche <bvanassche@acm.org>
+Cc: Ewan D. Milne <emilne@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240203024521.2006455-1-ming.lei@redhat.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-plat.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/scsi_error.c | 3 ++-
+ drivers/scsi/scsi_lib.c   | 4 +++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -301,6 +301,9 @@ static int xhci_plat_probe(struct platfo
- 		if (device_property_read_bool(tmpdev, "quirk-broken-port-ped"))
- 			xhci->quirks |= XHCI_BROKEN_PORT_PED;
+diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
+index 3328b175a832..43eff1107038 100644
+--- a/drivers/scsi/scsi_error.c
++++ b/drivers/scsi/scsi_error.c
+@@ -282,11 +282,12 @@ static void scsi_eh_inc_host_failed(struct rcu_head *head)
+ {
+ 	struct scsi_cmnd *scmd = container_of(head, typeof(*scmd), rcu);
+ 	struct Scsi_Host *shost = scmd->device->host;
++	unsigned int busy = scsi_host_busy(shost);
+ 	unsigned long flags;
  
-+		if (device_property_read_bool(tmpdev, "xhci-sg-trb-cache-size-quirk"))
-+			xhci->quirks |= XHCI_SG_TRB_CACHE_SIZE_QUIRK;
+ 	spin_lock_irqsave(shost->host_lock, flags);
+ 	shost->host_failed++;
+-	scsi_eh_wakeup(shost, scsi_host_busy(shost));
++	scsi_eh_wakeup(shost, busy);
+ 	spin_unlock_irqrestore(shost->host_lock, flags);
+ }
+ 
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index 1fb80eae9a63..df5ac03d5d6c 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -278,9 +278,11 @@ static void scsi_dec_host_busy(struct Scsi_Host *shost, struct scsi_cmnd *cmd)
+ 	rcu_read_lock();
+ 	__clear_bit(SCMD_STATE_INFLIGHT, &cmd->state);
+ 	if (unlikely(scsi_host_in_recovery(shost))) {
++		unsigned int busy = scsi_host_busy(shost);
 +
- 		device_property_read_u32(tmpdev, "imod-interval-ns",
- 					 &xhci->imod_interval);
+ 		spin_lock_irqsave(shost->host_lock, flags);
+ 		if (shost->host_failed || shost->host_eh_scheduled)
+-			scsi_eh_wakeup(shost, scsi_host_busy(shost));
++			scsi_eh_wakeup(shost, busy);
+ 		spin_unlock_irqrestore(shost->host_lock, flags);
  	}
+ 	rcu_read_unlock();
+-- 
+2.43.0
+
 
 
 
