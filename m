@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-20037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77AD4853887
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:38:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9FB85376D
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:25:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B3B91F2061D
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:38:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3750C1F230FE
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7661E5FF05;
-	Tue, 13 Feb 2024 17:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9ED5FEF0;
+	Tue, 13 Feb 2024 17:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDvc9UBI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2u43duS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E13A93C;
-	Tue, 13 Feb 2024 17:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8885F54E;
+	Tue, 13 Feb 2024 17:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845856; cv=none; b=N0hUPuC+isFFOlBVf3gmU+kJKpgkqzRxbfjyzyyEBf2mzSoKj05459RCEkWkCpMGUR2MKc7MqbmwMxI4J01e3Dd+c1grf3evrRIv7hg7zy8OY6XrmIQgpTzmAs/zceASyGijPIN5EIByn5h6v8PShnNVrWHP338uprK9VnBWPUw=
+	t=1707845118; cv=none; b=ixN3kiWKNsWO1PuXZxukwImkCeb0G/8sJdb0Q8A07MX+2UFok1Kt4srqcfNNHV69HnyB4nyl+O3l5XVHYxdVxem8cxN6salMI0Eul294V2V9iOpYgN4WcHVwKU3yMm7AoMHmpAir7GrU6ERoQlMSI8mYViB11xFq6UMcxb+1YQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845856; c=relaxed/simple;
-	bh=Vmik+8OSdWZidL1Bzm90Ta3FzUda74iueP+hMOdLQc8=;
+	s=arc-20240116; t=1707845118; c=relaxed/simple;
+	bh=MuC3jRzOltyQPTUwSV9kkZSQ+XkaeMNshE+4nzBouns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNCOTfpzeOObEiMVoPX6pbMLr1eRda230eL8DkFOcjO91Rrr313sV0x6o3qHLK9mkf00vn3D5AgcL0mM9YqcUmRuvlfCkujIsRhu/D7VaQohG616ZJw80F3ZH+eXms5YYf5NV5JMrQxQ9v0fjPNmJu6UyWzgkDTmmL7CW9ASc5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDvc9UBI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7363BC433C7;
-	Tue, 13 Feb 2024 17:37:35 +0000 (UTC)
+	 MIME-Version; b=dNxLISbZv1WJXB5I3kU8tUZfYUeRZkNAkhGMX5n91Te+DIke9UtMnZ76RTG+epxvaPrpIkwgBkUP/J/CS2MI1knodgR/IJxNLodoYTL8PcGcDue95+jp/uBD20nI9O0YLxAkmN2WG1QAPQNmQ3XPl78THtYuU1RNKK+JYYCYVgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2u43duS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8CE7C433C7;
+	Tue, 13 Feb 2024 17:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845855;
-	bh=Vmik+8OSdWZidL1Bzm90Ta3FzUda74iueP+hMOdLQc8=;
+	s=korg; t=1707845118;
+	bh=MuC3jRzOltyQPTUwSV9kkZSQ+XkaeMNshE+4nzBouns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WDvc9UBIYpvlYgL/6cqjiGFtophN1yGCUgbeu9BQLQvR1QcABoPheJsvXxEpIM9uN
-	 118bAU4zrr/RzZ65Fc1kEPpLJcnOzkyjfNxE/UT0yB3Ea3ZIw4Ll4b1fS8Foziiz1f
-	 lgnxs8PKKjEickbgRc0ZIflRJ+cZLzBKKECRCjto=
+	b=y2u43duSHzOkniqhIW26cgFxtIrQ6QYCM8uzsPdTHFGDtcWDMl52nWC2ky8B/3N/E
+	 wrYysswYGcm6QPTZhWIVbIpzIh2ilo7v+2CHaTA8+gTUyFauBPj2D0G1pnJFMfNElc
+	 aexSJwmbN3LddpEK4Y7OMiTtE+WywX0IF2xUMy9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 076/124] riscv: Fix hugetlb_mask_last_page() when NAPOT is enabled
+	Prashanth K <quic_prashk@quicinc.com>
+Subject: [PATCH 6.1 52/64] usb: host: xhci-plat: Add support for XHCI_SG_TRB_CACHE_SIZE_QUIRK
 Date: Tue, 13 Feb 2024 18:21:38 +0100
-Message-ID: <20240213171855.956840388@linuxfoundation.org>
+Message-ID: <20240213171846.372244974@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Prashanth K <quic_prashk@quicinc.com>
 
-[ Upstream commit a179a4bfb694f80f2709a1d0398469e787acb974 ]
+commit 520b391e3e813c1dd142d1eebb3ccfa6d08c3995 upstream.
 
-When NAPOT is enabled, a new hugepage size is available and then we need
-to make hugetlb_mask_last_page() aware of that.
+Upstream commit bac1ec551434 ("usb: xhci: Set quirk for
+XHCI_SG_TRB_CACHE_SIZE_QUIRK") introduced a new quirk in XHCI
+which fixes XHC timeout, which was seen on synopsys XHCs while
+using SG buffers. Currently this quirk can only be set using
+xhci private data. But there are some drivers like dwc3/host.c
+which adds adds quirks using software node for xhci device.
+Hence set this xhci quirk by iterating over device properties.
 
-Fixes: 82a1a1f3bfb6 ("riscv: mm: support Svnapot in hugetlb page")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240117195741.1926459-3-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 5.11
+Fixes: bac1ec551434 ("usb: xhci: Set quirk for XHCI_SG_TRB_CACHE_SIZE_QUIRK")
+Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+Link: https://lore.kernel.org/r/20240116055816.1169821-3-quic_prashk@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/mm/hugetlbpage.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/usb/host/xhci-plat.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
-index 24c0179565d8..87af75ee7186 100644
---- a/arch/riscv/mm/hugetlbpage.c
-+++ b/arch/riscv/mm/hugetlbpage.c
-@@ -125,6 +125,26 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
- 	return pte;
- }
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -301,6 +301,9 @@ static int xhci_plat_probe(struct platfo
+ 		if (device_property_read_bool(tmpdev, "quirk-broken-port-ped"))
+ 			xhci->quirks |= XHCI_BROKEN_PORT_PED;
  
-+unsigned long hugetlb_mask_last_page(struct hstate *h)
-+{
-+	unsigned long hp_size = huge_page_size(h);
++		if (device_property_read_bool(tmpdev, "xhci-sg-trb-cache-size-quirk"))
++			xhci->quirks |= XHCI_SG_TRB_CACHE_SIZE_QUIRK;
 +
-+	switch (hp_size) {
-+#ifndef __PAGETABLE_PMD_FOLDED
-+	case PUD_SIZE:
-+		return P4D_SIZE - PUD_SIZE;
-+#endif
-+	case PMD_SIZE:
-+		return PUD_SIZE - PMD_SIZE;
-+	case napot_cont_size(NAPOT_CONT64KB_ORDER):
-+		return PMD_SIZE - napot_cont_size(NAPOT_CONT64KB_ORDER);
-+	default:
-+		break;
-+	}
-+
-+	return 0UL;
-+}
-+
- static pte_t get_clear_contig(struct mm_struct *mm,
- 			      unsigned long addr,
- 			      pte_t *ptep,
--- 
-2.43.0
-
+ 		device_property_read_u32(tmpdev, "imod-interval-ns",
+ 					 &xhci->imod_interval);
+ 	}
 
 
 
