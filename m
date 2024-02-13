@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-19913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845C18537DB
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:30:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D790585384D
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:35:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DCBD28B4DC
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:30:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 936CD28BED7
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B6AF5FEFF;
-	Tue, 13 Feb 2024 17:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0ED604D5;
+	Tue, 13 Feb 2024 17:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/tFrcwz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KU0pr54z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CEE5F56B;
-	Tue, 13 Feb 2024 17:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A48F6024A;
+	Tue, 13 Feb 2024 17:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845426; cv=none; b=PoPSS1KjzVmfrRVopF+6i8s+4XM9C4GNbruwm3xxbEt++uRw4MxZcK+fhrZeJV9hUx/6TPE0FcWPd9Dmoxe11WQqHJWPaurkKl4OTuiJpbe0tIab6bMy69egQHISq8GYJ1Ivi6iBOnM+ZWAqDhohjXe0slLgm69dyut4CROcmPc=
+	t=1707845699; cv=none; b=kVewkAD/thcwJMt88bBZ0Lyl6wqGGapPsXLnR1mNJus98JOCAmFrkN4WfaEfKIlz6B8hxhzvRIcddx/ytgvH3WXNVgFEOHUedbQ9rMJQtpjQJ2olJSZnQ8ye3io+kUehwVZjQQ81kaDB/eUvcQ34YXb+7rlE+ha0OPfoTaRuMIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845426; c=relaxed/simple;
-	bh=il5t/aeEsqDwUIjakmaDPgfJtDHIEl6lx8bhjIYuJDc=;
+	s=arc-20240116; t=1707845699; c=relaxed/simple;
+	bh=NcEjaMmrjIcqpAOk18KdVE6dnJ63LfdN7O8fzAAt4Ms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YhjpcicoPWTv/CuwGxUBVINSfrCXpDNhndKO5hZdHh9UcMiYotOXLzjjPxIZsMOt30AG0hOfw+5Pod1Xea62NF1C1jn07OhGV8GVhpd0Ytq3CEEXqbvtZmh4lTYD6/xjyWK5a7rMiFbVVZqzZoVRUsqiZ9W/qn1lVyS5CXYPvYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/tFrcwz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60132C433F1;
-	Tue, 13 Feb 2024 17:30:25 +0000 (UTC)
+	 MIME-Version; b=TaE8Wz1X3QRDk8fTA1xNVlSiEJu/ZfW4Q4h8QmdUFq/7ZiWBRtFnjcdcQrfz0vDbeOWymdSftT2lDfpLKBWCKdhgIUxmPZbdt6Ysrb/aq83U4eKZJir0BWrXU837YRpvgEmxCkSDwYBqRHLc3/EJ09vvcRK/7zfbGrozplTL8+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KU0pr54z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C29ACC43394;
+	Tue, 13 Feb 2024 17:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845425;
-	bh=il5t/aeEsqDwUIjakmaDPgfJtDHIEl6lx8bhjIYuJDc=;
+	s=korg; t=1707845699;
+	bh=NcEjaMmrjIcqpAOk18KdVE6dnJ63LfdN7O8fzAAt4Ms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T/tFrcwzQcKlWcsupwn1DV3zZ1/TMYullDk/wvgTglD9GixwPJ6B7Nn9WpP7ic+az
-	 UxZYlO0IRxipLNn1Z7aSIHqeUhyIjbsUVHhCsftxu/NdB+z9Wg2FFeG+Kys/WSpkMI
-	 iEaP71MS/mvSNF2IlN/kL7Od43EPCkM1mB4rPSG8=
+	b=KU0pr54zEDTau8hyKyVKy0nQOyaBPXivZPgS/nwwfOFUcGeOv7U3+rH0S7VbPiayk
+	 PFMTiOA0w2FrSKXq7kSkJltEfICQDWDIG+T2cFf1NWMobwjN3/N2FfV8uaapN50mTz
+	 /TDrIld2EXsA3TGEHwTB0WqA+YR48K2ogcvqTbJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/121] wifi: iwlwifi: exit eSR only after the FW does
+Subject: [PATCH 6.7 033/124] selftests: net: cut more slack for gro fwd tests.
 Date: Tue, 13 Feb 2024 18:20:55 +0100
-Message-ID: <20240213171854.341170843@linuxfoundation.org>
+Message-ID: <20240213171854.698733384@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 16867c38bcd3be2eb9016a3198a096f93959086e ]
+[ Upstream commit cb9f4a30fb85e1f4f149ada595a67899adb3db19 ]
 
-Currently the driver exits eSR by calling
-iwl_mvm_esr_mode_inactive() before updating the FW
-(by deactivating one of the links), and therefore before
-sending the EML frame notifying that we are no longer in eSR.
+The udpgro_fwd.sh self-tests are somewhat unstable. There are
+a few timing constraints the we struggle to meet on very slow
+environments.
 
-This is wrong for several reasons:
-1. The driver sends SMPS activation frames when we are still in eSR
-   and SMPS should be disabled when in eSR
-2. The driver restores RLC configuration as it was before eSR
-   entering, and RLC command shouldn't be sent in eSR
+Instead of skipping the whole tests in such envs, increase the
+test resilience WRT very slow hosts: increase the inter-packets
+timeouts, avoid resetting the counters every second and finally
+disable reduce the background traffic noise.
 
-Fix this by calling iwl_mvm_esr_mode_inactive() after FW update
+Tested with:
 
-Fixes: 12bacfc2c065 ("wifi: iwlwifi: handle eSR transitions")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://msgid.link/20240201155157.d8d9dc277d4e.Ib5aee0fd05e35b1da7f18753eb3c8fa0a3f872f3@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+for I in $(seq 1 100); do
+	./tools/testing/selftests/kselftest_install/run_kselftest.sh \
+		-t net:udpgro_fwd.sh || exit -1
+done
+
+in a slow environment.
+
+Fixes: a062260a9d5f ("selftests: net: add UDP GRO forwarding self-tests")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://lore.kernel.org/r/f4b6b11064a0d39182a9ae6a853abae3e9b4426a.1706812005.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/udpgro_fwd.sh     | 14 ++++++++++++--
+ tools/testing/selftests/net/udpgso_bench_rx.c |  2 +-
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index 1e58f0234293..2d1fd7ac8577 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -435,6 +435,9 @@ __iwl_mvm_mld_unassign_vif_chanctx(struct iwl_mvm *mvm,
- 		mvmvif->ap_ibss_active = false;
- 	}
- 
-+	iwl_mvm_link_changed(mvm, vif, link_conf,
-+			     LINK_CONTEXT_MODIFY_ACTIVE, false);
+diff --git a/tools/testing/selftests/net/udpgro_fwd.sh b/tools/testing/selftests/net/udpgro_fwd.sh
+index d6b9c759043c..9cd5e885e91f 100755
+--- a/tools/testing/selftests/net/udpgro_fwd.sh
++++ b/tools/testing/selftests/net/udpgro_fwd.sh
+@@ -39,6 +39,10 @@ create_ns() {
+ 	for ns in $NS_SRC $NS_DST; do
+ 		ip netns add $ns
+ 		ip -n $ns link set dev lo up
 +
- 	if (iwl_mvm_is_esr_supported(mvm->fwrt.trans) && n_active > 1) {
- 		int ret = iwl_mvm_esr_mode_inactive(mvm, vif);
++		# disable route solicitations to decrease 'noise' traffic
++		ip netns exec $ns sysctl -qw net.ipv6.conf.default.router_solicitations=0
++		ip netns exec $ns sysctl -qw net.ipv6.conf.all.router_solicitations=0
+ 	done
  
-@@ -446,9 +449,6 @@ __iwl_mvm_mld_unassign_vif_chanctx(struct iwl_mvm *mvm,
- 	if (vif->type == NL80211_IFTYPE_MONITOR)
- 		iwl_mvm_mld_rm_snif_sta(mvm, vif);
+ 	ip link add name veth$SRC type veth peer name veth$DST
+@@ -80,6 +84,12 @@ create_vxlan_pair() {
+ 		create_vxlan_endpoint $BASE$ns veth$ns $BM_NET_V6$((3 - $ns)) vxlan6$ns 6
+ 		ip -n $BASE$ns addr add dev vxlan6$ns $OL_NET_V6$ns/24 nodad
+ 	done
++
++	# preload neighbur cache, do avoid some noisy traffic
++	local addr_dst=$(ip -j -n $BASE$DST link show dev vxlan6$DST  |jq -r '.[]["address"]')
++	local addr_src=$(ip -j -n $BASE$SRC link show dev vxlan6$SRC  |jq -r '.[]["address"]')
++	ip -n $BASE$DST neigh add dev vxlan6$DST lladdr $addr_src $OL_NET_V6$SRC
++	ip -n $BASE$SRC neigh add dev vxlan6$SRC lladdr $addr_dst $OL_NET_V6$DST
+ }
  
--	iwl_mvm_link_changed(mvm, vif, link_conf,
--			     LINK_CONTEXT_MODIFY_ACTIVE, false);
--
- 	if (switching_chanctx)
- 		return;
- 	mvmvif->link[link_id]->phy_ctxt = NULL;
+ is_ipv6() {
+@@ -119,7 +129,7 @@ run_test() {
+ 	# not enable GRO
+ 	ip netns exec $NS_DST $ipt -A INPUT -p udp --dport 4789
+ 	ip netns exec $NS_DST $ipt -A INPUT -p udp --dport 8000
+-	ip netns exec $NS_DST ./udpgso_bench_rx -C 1000 -R 10 -n 10 -l 1300 $rx_args &
++	ip netns exec $NS_DST ./udpgso_bench_rx -C 2000 -R 100 -n 10 -l 1300 $rx_args &
+ 	local spid=$!
+ 	wait_local_port_listen "$NS_DST" 8000 udp
+ 	ip netns exec $NS_SRC ./udpgso_bench_tx $family -M 1 -s 13000 -S 1300 -D $dst
+@@ -168,7 +178,7 @@ run_bench() {
+ 	# bind the sender and the receiver to different CPUs to try
+ 	# get reproducible results
+ 	ip netns exec $NS_DST bash -c "echo 2 > /sys/class/net/veth$DST/queues/rx-0/rps_cpus"
+-	ip netns exec $NS_DST taskset 0x2 ./udpgso_bench_rx -C 1000 -R 10  &
++	ip netns exec $NS_DST taskset 0x2 ./udpgso_bench_rx -C 2000 -R 100  &
+ 	local spid=$!
+ 	wait_local_port_listen "$NS_DST" 8000 udp
+ 	ip netns exec $NS_SRC taskset 0x1 ./udpgso_bench_tx $family -l 3 -S 1300 -D $dst
+diff --git a/tools/testing/selftests/net/udpgso_bench_rx.c b/tools/testing/selftests/net/udpgso_bench_rx.c
+index f35a924d4a30..1cbadd267c96 100644
+--- a/tools/testing/selftests/net/udpgso_bench_rx.c
++++ b/tools/testing/selftests/net/udpgso_bench_rx.c
+@@ -375,7 +375,7 @@ static void do_recv(void)
+ 			do_flush_udp(fd);
+ 
+ 		tnow = gettimeofday_ms();
+-		if (tnow > treport) {
++		if (!cfg_expected_pkt_nr && tnow > treport) {
+ 			if (packets)
+ 				fprintf(stderr,
+ 					"%s rx: %6lu MB/s %8lu calls/s\n",
 -- 
 2.43.0
 
