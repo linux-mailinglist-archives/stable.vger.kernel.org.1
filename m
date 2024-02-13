@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-19808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C921853758
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:24:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F660853896
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:38:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F21F1C25F13
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:24:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B391E1F20585
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951A860245;
-	Tue, 13 Feb 2024 17:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983A0604AC;
+	Tue, 13 Feb 2024 17:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AW8LeTuw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8nH0wJ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5104B5FF15;
-	Tue, 13 Feb 2024 17:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5191C604A2;
+	Tue, 13 Feb 2024 17:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845059; cv=none; b=FYfd1MFmuuvUAQLXjI9D+uYPyas7+q9nqRg8yyOI1Oesh2fF88vLi7RTzhVjdeKhdgJpZHi3O/oruokHQDHHkYNYbqx2Nlzi7CUiIHypLH6AZpeCFEdPCGmDFAASDz5cFlSozDWKWOnXsME4qGMCYZn8zkEs8TEXjVGs4/L0Dvg=
+	t=1707845895; cv=none; b=epMREfV0A8EU3sYPH0oIBAzjDvlQJeydCQCwxvRGk5u4QrZu5BhhQZ410eUghpflHR3e4CCmHPogDOMHqm+5KXfUMnD9E0HVVBgMHBeqyTsW+hVTa9fgXF98bnEPCtvI5LeKHshWA0Wak033Tt0cj+X9E9ZwVfywHFDTRl+RRD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845059; c=relaxed/simple;
-	bh=gU1/CUZjFJe1SvYdIcqH9+xhLf1c7ZiALBliIWyc/AY=;
+	s=arc-20240116; t=1707845895; c=relaxed/simple;
+	bh=yg7qLzvf2scllfXp0qsSZxD6Za9fm+iXPcq9x355oZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bp44SAu2O1RB9sIrgTfSNJxS5tP19sSYrhtY8TAr1U1lO2OerHv3EeLnWzRKQ01DnOQ3zs4Ota/apLlCr6YtRJ2PBz+Z/yrUiFeLvuUWF2Bygx8ogkS4XR5zF46iK6MygbFe8S7Wl37Gy6aVtbpntcSLh7Y+tgrqPOe6BjAtqgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AW8LeTuw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC67C433C7;
-	Tue, 13 Feb 2024 17:24:18 +0000 (UTC)
+	 MIME-Version; b=El4bJQ36IB1tUZYVUXhEAvqNaq1VO+0GaBXNGEh6O/v6v+QUf982nj8nIT7n+BIEjNgf9CgbunXe7+yLE4XC00bw8+dJmmA+Tmx7n/+NNq8gcqP2aS8O4wzGTO7TuwPqidhf7lJuR+vhCEwj/fwZTg/tMId5mZ9JzJWM1lBWgj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8nH0wJ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A895CC433C7;
+	Tue, 13 Feb 2024 17:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845059;
-	bh=gU1/CUZjFJe1SvYdIcqH9+xhLf1c7ZiALBliIWyc/AY=;
+	s=korg; t=1707845895;
+	bh=yg7qLzvf2scllfXp0qsSZxD6Za9fm+iXPcq9x355oZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AW8LeTuw+/rfCluDC2skkIYYYaHe1MjOSXC3QubywGTpOPlT4gLXCl+Zooe+SbnLj
-	 YKS6T/p7uY7mxKhDNSREqT5b4TD2TiTSMxUGRJ+D+9uaDGlGoSPyVPDAmlrjST2own
-	 AgNcNvpFp8TAN/A98H7qXqqekE5FK1636Ck71pUU=
+	b=A8nH0wJ1CWKK3cY2n0MVYbJwtobPN1pn6MoLjPhFY5Z48x7mQpw2oqCxfpvllRo4F
+	 e/xdWOekvi1qkruqCHFswx+6DUjRrbHbrbX/R8VNE2OF3lunqWoBMRPKFn4paCuPWl
+	 p7tTJ7K6NTtK1ch1eC/Zn30pOGsi+/rXrPt9yop4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Li <Roman.Li@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 35/64] drm/amd/display: Implement bounds check for stream encoder creation in DCN301
+Subject: [PATCH 6.7 059/124] netfilter: nft_compat: narrow down revision to unsigned 8-bits
 Date: Tue, 13 Feb 2024 18:21:21 +0100
-Message-ID: <20240213171845.852112250@linuxfoundation.org>
+Message-ID: <20240213171855.462407884@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,56 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 58fca355ad37dcb5f785d9095db5f748b79c5dc2 ]
+[ Upstream commit 36fa8d697132b4bed2312d700310e8a78b000c84 ]
 
-'stream_enc_regs' array is an array of dcn10_stream_enc_registers
-structures. The array is initialized with four elements, corresponding
-to the four calls to stream_enc_regs() in the array initializer. This
-means that valid indices for this array are 0, 1, 2, and 3.
+xt_find_revision() expects u8, restrict it to this datatype.
 
-The error message 'stream_enc_regs' 4 <= 5 below, is indicating that
-there is an attempt to access this array with an index of 5, which is
-out of bounds. This could lead to undefined behavior
-
-Here, eng_id is used as an index to access the stream_enc_regs array. If
-eng_id is 5, this would result in an out-of-bounds access on the
-stream_enc_regs array.
-
-Thus fixing Buffer overflow error in dcn301_stream_encoder_create
-reported by Smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn301/dcn301_resource.c:1011 dcn301_stream_encoder_create() error: buffer overflow 'stream_enc_regs' 4 <= 5
-
-Fixes: 3a83e4e64bb1 ("drm/amd/display: Add dcn3.01 support to DC (v2)")
-Cc: Roman Li <Roman.Li@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_compat.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c
-index f04595b750ab..5ec3f50a72ac 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c
-@@ -1014,7 +1014,7 @@ static struct stream_encoder *dcn301_stream_encoder_create(enum engine_id eng_id
- 	vpg = dcn301_vpg_create(ctx, vpg_inst);
- 	afmt = dcn301_afmt_create(ctx, afmt_inst);
+diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
+index f0eeda97bfcd..001b6841a4b6 100644
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -135,7 +135,7 @@ static void nft_target_eval_bridge(const struct nft_expr *expr,
  
--	if (!enc1 || !vpg || !afmt) {
-+	if (!enc1 || !vpg || !afmt || eng_id >= ARRAY_SIZE(stream_enc_regs)) {
- 		kfree(enc1);
- 		kfree(vpg);
- 		kfree(afmt);
+ static const struct nla_policy nft_target_policy[NFTA_TARGET_MAX + 1] = {
+ 	[NFTA_TARGET_NAME]	= { .type = NLA_NUL_STRING },
+-	[NFTA_TARGET_REV]	= { .type = NLA_U32 },
++	[NFTA_TARGET_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
+ 	[NFTA_TARGET_INFO]	= { .type = NLA_BINARY },
+ };
+ 
+@@ -419,7 +419,7 @@ static void nft_match_eval(const struct nft_expr *expr,
+ 
+ static const struct nla_policy nft_match_policy[NFTA_MATCH_MAX + 1] = {
+ 	[NFTA_MATCH_NAME]	= { .type = NLA_NUL_STRING },
+-	[NFTA_MATCH_REV]	= { .type = NLA_U32 },
++	[NFTA_MATCH_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
+ 	[NFTA_MATCH_INFO]	= { .type = NLA_BINARY },
+ };
+ 
+@@ -724,7 +724,7 @@ static int nfnl_compat_get_rcu(struct sk_buff *skb,
+ static const struct nla_policy nfnl_compat_policy_get[NFTA_COMPAT_MAX+1] = {
+ 	[NFTA_COMPAT_NAME]	= { .type = NLA_NUL_STRING,
+ 				    .len = NFT_COMPAT_NAME_MAX-1 },
+-	[NFTA_COMPAT_REV]	= { .type = NLA_U32 },
++	[NFTA_COMPAT_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
+ 	[NFTA_COMPAT_TYPE]	= { .type = NLA_U32 },
+ };
+ 
 -- 
 2.43.0
 
