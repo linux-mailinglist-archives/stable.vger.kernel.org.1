@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-19874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CE88537AA
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:28:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCBFC853845
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:35:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 995AC283420
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:28:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 325971F2A5C5
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519BF5FEF7;
-	Tue, 13 Feb 2024 17:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A531160245;
+	Tue, 13 Feb 2024 17:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x31UvlsL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgVwIld2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF835F54E;
-	Tue, 13 Feb 2024 17:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348D85FF05;
+	Tue, 13 Feb 2024 17:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845281; cv=none; b=iOit1CwVsENa+XubTSqN4NPtDHfxKENvkTj3GizIBguPYBnkmt6qduCAFhVjrJMYT7gsrGC2fBIMLcPd5Ofh2CebOlo97gPlIkeIzRxn0TaMSDMOEaGrn/9MxFcweR2D62JvzWilA1jfrsFPcW182yDC0PgrVeqgPvBaBeI0zfU=
+	t=1707845689; cv=none; b=HxBUXZS72PlKpe4qkcYm2RB2rLiv7l8e8SUPyIzAVwrLuzWT0nRJK6S5Zf+VMzQG1d2sDlNU1as+Z6BX87yJCLX2qN0PoGwcPQ1RuhjAadKcT3d6oODRLO2O23SXmPsI3MXYp0A7XLnlW+9PVxhoK3pqJYfT1qSTpBcBC8fIDVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845281; c=relaxed/simple;
-	bh=UN/1UDSI+kv8k7SSD3JDFtdV0K50JFMi05WBE3TL3tU=;
+	s=arc-20240116; t=1707845689; c=relaxed/simple;
+	bh=vt2xaN+67h1aBlqR+1Gob+CJIsA+raoGw5JbvumC4bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BIjrkv9tNcDENyTVgaLbmQPgdTuZ5Vk5+ji1kRuZSRadHFq6IALgIep6EeV5wd135QNbv8az+XVSJ+LZpKL/hhqzHGvluc5Fz91rsPRAcWX5AgbVrYfuu5BKrLNbduAefRNhBEazT5L4ULV0ykpvSMfrIuPRXNdf/CdTv0qWLDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x31UvlsL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BFE8C433C7;
-	Tue, 13 Feb 2024 17:27:59 +0000 (UTC)
+	 MIME-Version; b=Qpg0AyXEeciyjUPQLSr1X4HmX8Q34iB2e9BmHppjswYHqSTpqSqL7VjyhRnu7R6lXQp2uxufUvGQFOeI6ygl3sO9R6HUnlISi6McjKXxE3GcVESMi/oBHFJxxw07mcUvL432EIhM4Sx0qrqmwdMzZatwyJwGnS/9vk8hxQaksOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bgVwIld2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF5AC433C7;
+	Tue, 13 Feb 2024 17:34:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845280;
-	bh=UN/1UDSI+kv8k7SSD3JDFtdV0K50JFMi05WBE3TL3tU=;
+	s=korg; t=1707845689;
+	bh=vt2xaN+67h1aBlqR+1Gob+CJIsA+raoGw5JbvumC4bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x31UvlsL4nTvCBd5ArxJh0jZ1UnLGY35sp+kd+bZTr3Xqz+tS9NpxyYQGWT44lmgN
-	 JrEsVa6IzRU+/6SBSKmc4Hcuv0BEoYr9LeuzsrU37R8adORc7SO5LHBS81QYu2b4Kw
-	 0ZCQ5tc7W7dnK0jYjXNzVWxNc/Qz2qUmZ4fZdwv4=
+	b=bgVwIld26r9hbnWVJ7PsRfWgxDg+mclCEGc6TxiWB90LAGaKchXStjh9TNQNcLudU
+	 Id8VkaN8exA2W+OhXql2IYjwPFTvyG1l2zAHzOi8KZjtY/lZPwD6Z2CR4KSWvc/QmU
+	 xMd5O47hw1Q/4PiZJIMM/3W394gayp1ESytCct80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
+	Furong Xu <0x1207@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/121] xfs: dquot recovery does not validate the recovered dquot
+Subject: [PATCH 6.7 022/124] net: stmmac: xgmac: fix handling of DPP safety error for DMA channels
 Date: Tue, 13 Feb 2024 18:20:44 +0100
-Message-ID: <20240213171854.016580894@linuxfoundation.org>
+Message-ID: <20240213171854.378999933@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Furong Xu <0x1207@gmail.com>
 
-commit 9c235dfc3d3f901fe22acb20f2ab37ff39f2ce02 upstream.
+[ Upstream commit 46eba193d04f8bd717e525eb4110f3c46c12aec3 ]
 
-When we're recovering ondisk quota records from the log, we need to
-validate the recovered buffer contents before writing them to disk.
+Commit 56e58d6c8a56 ("net: stmmac: Implement Safety Features in
+XGMAC core") checks and reports safety errors, but leaves the
+Data Path Parity Errors for each channel in DMA unhandled at all, lead to
+a storm of interrupt.
+Fix it by checking and clearing the DMA_DPP_Interrupt_Status register.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Fixes: 56e58d6c8a56 ("net: stmmac: Implement Safety Features in XGMAC core")
+Signed-off-by: Furong Xu <0x1207@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_dquot_item_recover.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/common.h  |  1 +
+ .../net/ethernet/stmicro/stmmac/dwxgmac2.h    |  3 +
+ .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 57 ++++++++++++++++++-
+ 3 files changed, 60 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_dquot_item_recover.c b/fs/xfs/xfs_dquot_item_recover.c
-index db2cb5e4197b..2c2720ce6923 100644
---- a/fs/xfs/xfs_dquot_item_recover.c
-+++ b/fs/xfs/xfs_dquot_item_recover.c
-@@ -19,6 +19,7 @@
- #include "xfs_log.h"
- #include "xfs_log_priv.h"
- #include "xfs_log_recover.h"
-+#include "xfs_error.h"
+diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
+index e3f650e88f82..588e44d57f29 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -216,6 +216,7 @@ struct stmmac_safety_stats {
+ 	unsigned long mac_errors[32];
+ 	unsigned long mtl_errors[32];
+ 	unsigned long dma_errors[32];
++	unsigned long dma_dpp_errors[32];
+ };
  
- STATIC void
- xlog_recover_dquot_ra_pass2(
-@@ -152,6 +153,19 @@ xlog_recover_dquot_commit_pass2(
- 				 XFS_DQUOT_CRC_OFF);
+ /* Number of fields in Safety Stats */
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
+index a4e8b498dea9..7d7133ef4994 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
+@@ -319,6 +319,8 @@
+ #define XGMAC_RXCEIE			BIT(4)
+ #define XGMAC_TXCEIE			BIT(0)
+ #define XGMAC_MTL_ECC_INT_STATUS	0x000010cc
++#define XGMAC_MTL_DPP_CONTROL		0x000010e0
++#define XGMAC_DDPP_DISABLE		BIT(0)
+ #define XGMAC_MTL_TXQ_OPMODE(x)		(0x00001100 + (0x80 * (x)))
+ #define XGMAC_TQS			GENMASK(25, 16)
+ #define XGMAC_TQS_SHIFT			16
+@@ -401,6 +403,7 @@
+ #define XGMAC_DCEIE			BIT(1)
+ #define XGMAC_TCEIE			BIT(0)
+ #define XGMAC_DMA_ECC_INT_STATUS	0x0000306c
++#define XGMAC_DMA_DPP_INT_STATUS	0x00003074
+ #define XGMAC_DMA_CH_CONTROL(x)		(0x00003100 + (0x80 * (x)))
+ #define XGMAC_SPH			BIT(24)
+ #define XGMAC_PBLx8			BIT(16)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+index a74e71db79f9..e7eccc0c406f 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -830,6 +830,43 @@ static const struct dwxgmac3_error_desc dwxgmac3_dma_errors[32]= {
+ 	{ false, "UNKNOWN", "Unknown Error" }, /* 31 */
+ };
+ 
++static const char * const dpp_rx_err = "Read Rx Descriptor Parity checker Error";
++static const char * const dpp_tx_err = "Read Tx Descriptor Parity checker Error";
++static const struct dwxgmac3_error_desc dwxgmac3_dma_dpp_errors[32] = {
++	{ true, "TDPES0", dpp_tx_err },
++	{ true, "TDPES1", dpp_tx_err },
++	{ true, "TDPES2", dpp_tx_err },
++	{ true, "TDPES3", dpp_tx_err },
++	{ true, "TDPES4", dpp_tx_err },
++	{ true, "TDPES5", dpp_tx_err },
++	{ true, "TDPES6", dpp_tx_err },
++	{ true, "TDPES7", dpp_tx_err },
++	{ true, "TDPES8", dpp_tx_err },
++	{ true, "TDPES9", dpp_tx_err },
++	{ true, "TDPES10", dpp_tx_err },
++	{ true, "TDPES11", dpp_tx_err },
++	{ true, "TDPES12", dpp_tx_err },
++	{ true, "TDPES13", dpp_tx_err },
++	{ true, "TDPES14", dpp_tx_err },
++	{ true, "TDPES15", dpp_tx_err },
++	{ true, "RDPES0", dpp_rx_err },
++	{ true, "RDPES1", dpp_rx_err },
++	{ true, "RDPES2", dpp_rx_err },
++	{ true, "RDPES3", dpp_rx_err },
++	{ true, "RDPES4", dpp_rx_err },
++	{ true, "RDPES5", dpp_rx_err },
++	{ true, "RDPES6", dpp_rx_err },
++	{ true, "RDPES7", dpp_rx_err },
++	{ true, "RDPES8", dpp_rx_err },
++	{ true, "RDPES9", dpp_rx_err },
++	{ true, "RDPES10", dpp_rx_err },
++	{ true, "RDPES11", dpp_rx_err },
++	{ true, "RDPES12", dpp_rx_err },
++	{ true, "RDPES13", dpp_rx_err },
++	{ true, "RDPES14", dpp_rx_err },
++	{ true, "RDPES15", dpp_rx_err },
++};
++
+ static void dwxgmac3_handle_dma_err(struct net_device *ndev,
+ 				    void __iomem *ioaddr, bool correctable,
+ 				    struct stmmac_safety_stats *stats)
+@@ -841,6 +878,13 @@ static void dwxgmac3_handle_dma_err(struct net_device *ndev,
+ 
+ 	dwxgmac3_log_error(ndev, value, correctable, "DMA",
+ 			   dwxgmac3_dma_errors, STAT_OFF(dma_errors), stats);
++
++	value = readl(ioaddr + XGMAC_DMA_DPP_INT_STATUS);
++	writel(value, ioaddr + XGMAC_DMA_DPP_INT_STATUS);
++
++	dwxgmac3_log_error(ndev, value, false, "DMA_DPP",
++			   dwxgmac3_dma_dpp_errors,
++			   STAT_OFF(dma_dpp_errors), stats);
+ }
+ 
+ static int
+@@ -881,6 +925,12 @@ dwxgmac3_safety_feat_config(void __iomem *ioaddr, unsigned int asp,
+ 	value |= XGMAC_TMOUTEN; /* FSM Timeout Feature */
+ 	writel(value, ioaddr + XGMAC_MAC_FSM_CONTROL);
+ 
++	/* 5. Enable Data Path Parity Protection */
++	value = readl(ioaddr + XGMAC_MTL_DPP_CONTROL);
++	/* already enabled by default, explicit enable it again */
++	value &= ~XGMAC_DDPP_DISABLE;
++	writel(value, ioaddr + XGMAC_MTL_DPP_CONTROL);
++
+ 	return 0;
+ }
+ 
+@@ -914,7 +964,11 @@ static int dwxgmac3_safety_feat_irq_status(struct net_device *ndev,
+ 		ret |= !corr;
  	}
  
-+	/* Validate the recovered dquot. */
-+	fa = xfs_dqblk_verify(log->l_mp, dqb, dq_f->qlf_id);
-+	if (fa) {
-+		XFS_CORRUPTION_ERROR("Bad dquot after recovery",
-+				XFS_ERRLEVEL_LOW, mp, dqb,
-+				sizeof(struct xfs_dqblk));
-+		xfs_alert(mp,
-+ "Metadata corruption detected at %pS, dquot 0x%x",
-+				fa, dq_f->qlf_id);
-+		error = -EFSCORRUPTED;
-+		goto out_release;
-+	}
-+
- 	ASSERT(dq_f->qlf_size == 2);
- 	ASSERT(bp->b_mount == mp);
- 	bp->b_flags |= _XBF_LOGRECOVERY;
+-	err = dma & (XGMAC_DEUIS | XGMAC_DECIS);
++	/* DMA_DPP_Interrupt_Status is indicated by MCSIS bit in
++	 * DMA_Safety_Interrupt_Status, so we handle DMA Data Path
++	 * Parity Errors here
++	 */
++	err = dma & (XGMAC_DEUIS | XGMAC_DECIS | XGMAC_MCSIS);
+ 	corr = dma & XGMAC_DECIS;
+ 	if (err) {
+ 		dwxgmac3_handle_dma_err(ndev, ioaddr, corr, stats);
+@@ -930,6 +984,7 @@ static const struct dwxgmac3_error {
+ 	{ dwxgmac3_mac_errors },
+ 	{ dwxgmac3_mtl_errors },
+ 	{ dwxgmac3_dma_errors },
++	{ dwxgmac3_dma_dpp_errors },
+ };
+ 
+ static int dwxgmac3_safety_feat_dump(struct stmmac_safety_stats *stats,
 -- 
 2.43.0
 
