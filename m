@@ -1,51 +1,65 @@
-Return-Path: <stable+bounces-19731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEA62853350
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 15:38:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B40F85335C
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 15:41:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A46528B476
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 14:38:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9B53286FED
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 14:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F39E43E47E;
-	Tue, 13 Feb 2024 14:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E3E56748;
+	Tue, 13 Feb 2024 14:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9PwzjTQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KTbqkkuS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3CF1DFE3;
-	Tue, 13 Feb 2024 14:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19041E529;
+	Tue, 13 Feb 2024 14:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707835093; cv=none; b=ofKjNEeuzRaSke7fqqbgTY5MPokdtbt1ylX/VN2W1Xnn9H1JgDXQ+GZNdLcA+uzkNLh0VczDWctEG+f2frG2M9iHYqA1Mpd3M8K85uOc4mSXMEfiMCI8l405X0HVJFIT59Vm9eIEBH22EhsvEEbCG0m9JWdbWUTuK13hE0zMk7g=
+	t=1707835300; cv=none; b=NVkuh6KrWJwBE9CWApg/BmeAkZ/4ZSJ904gmDNfOI8ReVF83DkgAvFcwGbqpgAXwiUf1hVLiOHV7LAavkVfGJXgGJfcHGquVTPHYHnBBs/O6SfCi93egNBS3gMQWzs5cof8XZ03M6k5l4nDzkaWUQAkGXnwoIJbB8Kefs7XkdG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707835093; c=relaxed/simple;
-	bh=qo9f7339OiVSnIqYU8i+7TfOZV/04hMxcDASphcjwvo=;
+	s=arc-20240116; t=1707835300; c=relaxed/simple;
+	bh=3FaIpb2tO3xwMxqfhDPf3xKwredvzh+qclLg9QTU2Aw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ip5QFevnr+LLC2/VxPv3/UAmElmVQos1fc5gEqkiokk+zR+AH0NTaf1BEC2bK7hlIDkKdfwY55DBPqGuC3jRAnOc3DbZhwLy3GoCpGqJmF674Rf2ZUBAKndXymriFKIX9iQoVujS6M1vuuFaSxSMJBMFlzCeJaKwJZ5pungGJnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9PwzjTQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F22C433C7;
-	Tue, 13 Feb 2024 14:38:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707835093;
-	bh=qo9f7339OiVSnIqYU8i+7TfOZV/04hMxcDASphcjwvo=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=uf017AHrt1/O4mNGHLDK/bp6Xq1jQiMGbvRvusciXrmi1m6o/jlA0XOf/eEqjNxEv4cjjGur2XsdKW737kdvstJo8cTeMI4Q4ZnIYIRhJf82Lx0CqgRd/jKE0YAcTqSeCZGObA6edCIBKoHzW9O/9EVI0SmGs72VqFaw/9qOz9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KTbqkkuS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF6BC433C7;
+	Tue, 13 Feb 2024 14:41:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1707835300;
+	bh=3FaIpb2tO3xwMxqfhDPf3xKwredvzh+qclLg9QTU2Aw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=x9PwzjTQHmrRwNH6qXXUgvU2IMSO2TXW3jguB5W6NGrwgdYAE+VZvfdYhRFniK97O
-	 g3f3g4p4nVWxkfUoGemmrji7KA8KXk5rxrbAbZ4kVc+t1IwENu0YTDFKC9zYc+lDKv
-	 TVuiCZiAiWRHf28RXC2W8q1cWR8jTnqerbkRWYvk=
-Date: Tue, 13 Feb 2024 15:38:10 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: linux-bcachefs@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [GIT PULL] bcachefs stable updates for v6.7
-Message-ID: <2024021307-reactive-woven-8543@gregkh>
-References: <6yl6zvu2pa3mz7irsaax5ivp6kh3dae5kaslvst7yafmg6672g@mskleu2vjfp2>
+	b=KTbqkkuSVWxD8Cd4KI8EMEQ6uSh8NP9kXnjOSwweuPSp7MvKyEujKabSjlCt89RrA
+	 +Xrg7orBllVYqODtOxgj81S14b4FSJiQ9tNl/uezVYeRGk1m1Fyg1j0bI41KW669TX
+	 rCtaJ3mSQSNP+JTg8T3Jt5cjxpUji0CjtusWsctr0TU1RaeTkgkAlCb8Uc21qrMKtO
+	 QBCZWUCiEsaphO3Cg9sCrQ2MDtpDLlfuaWlsYWlQG/6PuEpaSeLB8bWM6lpfuc6H+Y
+	 5ZNWxqMUH4DQaSOVoZFroExonN6SRn1SlcgvmkcaZvuL2JLO3uUC6NKUX8Oj9sP1kF
+	 UNoVtem33Ot5g==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rZtyu-000000000KV-05UP;
+	Tue, 13 Feb 2024 15:41:56 +0100
+Date: Tue, 13 Feb 2024 15:41:56 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	linux-bluetooth@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+	Matthias Kaehlcke <mka@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>
+Subject: Re: [PATCH] Bluetooth: qca: fix device-address endianness
+Message-ID: <Zct_tB-y7HbZU1dp@hovoldconsulting.com>
+References: <20231227180306.6319-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,36 +68,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6yl6zvu2pa3mz7irsaax5ivp6kh3dae5kaslvst7yafmg6672g@mskleu2vjfp2>
+In-Reply-To: <20231227180306.6319-1-johan+linaro@kernel.org>
 
-On Thu, Feb 08, 2024 at 08:14:39PM -0500, Kent Overstreet wrote:
-> Hi Greg, few stable updates for you -
-> 
-> Cheers,
-> Kent
-> 
-> The following changes since commit 0dd3ee31125508cd67f7e7172247f05b7fd1753a:
-> 
->   Linux 6.7 (2024-01-07 12:18:38 -0800)
-> 
-> are available in the Git repository at:
-> 
->   https://evilpiepirate.org/git/bcachefs.git tags/bcachefs-for-v6.7-stable-20240208
-> 
-> for you to fetch changes up to f1582f4774ac7c30c5460a8c7a6e5a82b9ce5a6a:
-> 
->   bcachefs: time_stats: Check for last_event == 0 when updating freq stats (2024-02-08 15:33:11 -0500)
+Hi Luiz,
 
-This didn't work well :(
+On Wed, Dec 27, 2023 at 07:03:06PM +0100, Johan Hovold wrote:
+> The WCN6855 firmware on the Lenovo ThinkPad X13s expects the Bluetooth
+> device address in MSB order when setting it using the
+> EDL_WRITE_BD_ADDR_OPCODE command.
+> 
+> Presumably, this is the case for all non-ROME devices which all use the
+> EDL_WRITE_BD_ADDR_OPCODE command for this (unlike the ROME devices which
+> use a different command and expect the address in LSB order).
+> 
+> Reverse the little-endian address before setting it to make sure that
+> the address can be configured using tools like btmgmt or using the
+> 'local-bd-address' devicetree property.
+> 
+> Note that this can potentially break systems with boot firmware which
+> has started relying on the broken behaviour and is incorrectly passing
+> the address via devicetree in MSB order.
+> 
+> Fixes: 5c0a1001c8be ("Bluetooth: hci_qca: Add helper to set device address")
+> Cc: stable@vger.kernel.org      # 5.1
+> Cc: Balakrishna Godavarthi <quic_bgodavar@quicinc.com>
+> Cc: Matthias Kaehlcke <mka@chromium.org>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 
-All of the original git commit ids are gone, and for me to look them up
-and add them back by hand is a pain.  I'll do it this time, but next
-time can you please include them in the commit somewhere (cherry-pick -x
-will do it automatically for you)
+Can we go ahead and merge this one to get this fixed in 6.8?
 
-Let's see if I can figure it out...
+I've spoken to Bjorn Andersson at Qualcomm about this and he is in
+favour of doing so. The only people actually using the devicetree
+property should be the Chromium team and they control their own boot
+firmware and should be able to update it in lockstep (and Android uses
+some custom hacks to set the address that are not in mainline).
 
-thanks,
-
-greg k-h
+Johan
 
