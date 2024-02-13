@@ -1,181 +1,90 @@
-Return-Path: <stable+bounces-20095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D15AD853906
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:54:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C3F85393F
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 19:00:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CC331F24827
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:54:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B77B1F234BE
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:00:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9FD605BF;
-	Tue, 13 Feb 2024 17:53:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF80604D3;
+	Tue, 13 Feb 2024 17:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="0Y7ohKHl";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="H1eVfOT8"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="NgDeUBF9"
 X-Original-To: stable@vger.kernel.org
-Received: from fout6-smtp.messagingengine.com (fout6-smtp.messagingengine.com [103.168.172.149])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53052605A6;
-	Tue, 13 Feb 2024 17:53:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A007C604D6;
+	Tue, 13 Feb 2024 17:57:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707846819; cv=none; b=Y3ZRSjmGxKhG9LV9jDM6tRPvGXgnw0qgndM0iRtjmZPer9NoSr5KPi6XveIGu79c2Ngu0mKMV8YaUa/db8p25PPkIFjTi0/ot2r+VbepLvaPxkvcwAXh8bW5h0OGS8qXxS3aM8avnxPLg6OidqiLZ66yEwB5PgcZ4gBVkU/pvuM=
+	t=1707847024; cv=none; b=fkyusORyI3iAqUMMUdBf6CCcVTJQ++CKOqoGuyKXUfKXKupqNwqwFogiYeXaNtrkYS4Ko778dEwJeku8y0C+lb+kmjXLRDvm5L7z5C/e7iblJ1pRPpptdU6oHS1nqMuV9g6Gjh+6SVbv7sUv8O+nJBEk1NUe+aad2kYRrRfZn2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707846819; c=relaxed/simple;
-	bh=bIx87ZWq9KbmlT/JzqFTsMtpo1cfuGEVBiegMksFiPg=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=QhnXJkydkXkUDdl+l8gTHrQ6wbaH6SLF2CR6J1GWhlbsMqXX4VJheKTRS8B0msCiJQsn52pSL1ioTxc9WIYos5VbN5/4RorHSdWjbK2lMTuPtghDcf1nqg4c8sJsnHo5RYjhbUJiS6ePfQTJAkmgf06sibBRpUdEZKSMSFNik6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=0Y7ohKHl; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=H1eVfOT8; arc=none smtp.client-ip=103.168.172.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 3EDDB1380117;
-	Tue, 13 Feb 2024 12:53:36 -0500 (EST)
-Received: from imap50 ([10.202.2.100])
-  by compute3.internal (MEProxy); Tue, 13 Feb 2024 12:53:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
-	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1707846816; x=1707933216; bh=8mleJuj679
-	ygYILvbygRdHtWVUTucGcTJaSJeTlmfSc=; b=0Y7ohKHlcN0B2CiZQYA9AC5ENc
-	Zv/8+O8gMIzzih9c+jerfLp5GbyaTjP8s1mZ7qfRnYtEWhsJ2mRLplEd8Dnt9zJd
-	G6Y6zRK/e7u5hIzQ2P37ptDWM51obLZ9ipfY+VSSf5sYdwY5pccTAFhGfhWQS6JA
-	iqp/KdeuECcXeIVKyR7KrMMOAVIZADFrsMG/tg8F1APG5g4uycEHXAwU9utt+TUJ
-	3NwaLPY6CYuRtkmxDu9oFFe3DxTBIvftD0K55zl0L8DGuhzleWqkO+yOMJw8IiLq
-	SO4+IDUsC2zEecFEdbg7CmZQfmX4bOAk6d1shiMs+gRZT9kDWTEvn7pr+3/Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1707846816; x=1707933216; bh=8mleJuj679ygYILvbygRdHtWVUTu
-	cGcTJaSJeTlmfSc=; b=H1eVfOT89hwGomwg92IfjH45ZXEHrY7WWx3vPo4QQ+9a
-	e7ibPHKThKuzxp/ouyDdMN7zjowHIIH/96bFRvqGqPXKWW0HbXc4jyynVufsEjxs
-	dRUMN31OUnMkWhqDCNjWs/Cx+ZwkMdGjHIju2hmenKe25L3zk3pkv3aG+xpQvNXQ
-	yYEL2dzpHrxQZtufAB4KMnOlKBamDeHrDzgjH7VwWFNPqecQt4MxzTzAkj9LPG6w
-	MYnwswea+qYSy9GMGKCKbH7IwMzRkCgraMhmA41oqG6Gt5NqiIOGWd5UiSgPTQuI
-	dgXevKTg9HMPnhHR2jp2WP11dHU6ez9/vO3+XyNaFA==
-X-ME-Sender: <xms:oKzLZUzV_Nv5_w1roqANU7J0xXueW_kEGm4joO7_l-vJvMJa0G9hBg>
-    <xme:oKzLZYQ1T6SHmZe49RarxmLZohwHf5_nCPc050pMP0BhlAajoeICJY5zY5wqjwWUQ
-    0-YkakFJtcjiFcwcA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehgddutdeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedfufht
-    vghfrghnucfqkdftvggrrhdfuceoshhorhgvrghrsehfrghsthhmrghilhdrtghomheqne
-    cuggftrfgrthhtvghrnhepjeeuheegtdeuteeghfehjeejiefghfeifeejheduvdeugedt
-    hfehvefggefgkedtnecuffhomhgrihhnpehinhhfrhgruggvrggurdhorhhgnecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepshhorhgvrghrsehf
-    rghsthhmrghilhdrtghomh
-X-ME-Proxy: <xmx:oKzLZWW53uSyE72lD3GcDr0irq3sqpib_7aEMTC7mEoHgpbXLusyUA>
-    <xmx:oKzLZSgaZVEzBLyWABNm9R29_pT1MMP0uq8Z_KqohshrgzFU1xRoRg>
-    <xmx:oKzLZWDXr4b8Bm0AiVifXcpDBYmdOPB1f_9TZ01Gj6t1ptAHGZsxTA>
-    <xmx:oKzLZd7y8Ss2SnFThD2JCwQq7cXmXZV35dgdpadlt4ZYy8cofgVBMA>
-Feedback-ID: i84414492:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id F154A1700096; Tue, 13 Feb 2024 12:53:35 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-144-ge5821d614e-fm-20240125.002-ge5821d61
+	s=arc-20240116; t=1707847024; c=relaxed/simple;
+	bh=ZfGvzDCTe9a+DFtINWX17OrD88EuGKTt6NUPw5nB0LE=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=uwUSJsemjja+Gh8Z+nya/lR9Cqy89GAfPHPhMcfC5tdRvb51Tu0Z8e/2DadtgURa3OriF4wgN/8ddQHJnMmZ6mYvgGPuTb5nIg7bV9covkYVa2fbQ/VF7OmIWkzlFDsFtsgQnKng/tEPiD8ZvS6pQiWvKXHtRS0iVJxpdM2leG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=NgDeUBF9; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1707847019; x=1708451819; i=rwarsow@gmx.de;
+	bh=ZfGvzDCTe9a+DFtINWX17OrD88EuGKTt6NUPw5nB0LE=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+	b=NgDeUBF9xCP4apaBzBYGm5iDyuAp1yr1CHpRvs9/UIV8GN8ZvBT6iV3uUcwZk52F
+	 Vu/HM9sQ844mGrqNVuiznelHO+u9Pl+68+5LzYsEI42GODFMre9WcKFzNZxRorCdo
+	 odAtFlGSDKpFbLpCfNqe+oRowV1xIMHPp75i5SMtV3WV/n076TnHWqj5pcI/rbkaP
+	 QH5tUR5Ax5KDVPAGmZ5i2TTpgLT5KWMAXm9I5Lbw/GP5oMV2aRCqeVSsNbdnT4KO8
+	 uP9aPU3i4TGH2GZcDOQ0CxQf7bUHNtg7H7l+Idj5SyF/Ms+Q+aeg0td3qn2lXRzQj
+	 9UEFNdJAANi+hvs0QQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.32.74]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M7K3Y-1rdFsl08fE-007pG5; Tue, 13
+ Feb 2024 18:56:59 +0100
+Message-ID: <44295870-24ff-46c3-9c4c-30eb83ca178c@gmx.de>
+Date: Tue, 13 Feb 2024 18:56:58 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <937f0593-0bc8-4df3-aa0e-9059acfd7636@app.fastmail.com>
-In-Reply-To: <20240213-86af3b49821630b5bdd76c0a@orel>
-References: <20240213033744.4069020-1-samuel.holland@sifive.com>
- <20240213033744.4069020-5-samuel.holland@sifive.com>
- <20240213-86af3b49821630b5bdd76c0a@orel>
-Date: Tue, 13 Feb 2024 12:53:15 -0500
-From: "Stefan O'Rear" <sorear@fastmail.com>
-To: "Andrew Jones" <ajones@ventanamicro.com>,
- "Samuel Holland" <samuel.holland@sifive.com>
-Cc: "Palmer Dabbelt" <palmer@dabbelt.com>, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH -fixes v2 4/4] riscv: Save/restore envcfg CSR during CPU suspend
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.7 000/124] 6.7.5-rc1 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:CaH4zo7vm23UZUWQP0BforgngbfSbDA4mtKLxy5jm55Sj7AKnzB
+ fnHznHPa5R+qYgCLPFPQBENcPUPSwre8tvkBpDGq599RJG2npo0w4MLEUIEu8YXFyJUl9/J
+ cx7ng3HNtkFAmguPuc8xmCxuGUb5R7tjhT1Xy2mfO5ZLMpACdsnAmzSRLEU32x5gw9XZai1
+ ++wuPTBImRSZFaQpdN0vQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:kmTuslMsvi4=;e1PjQULZcocIW1GCnfuUpRXzgax
+ hwqBaxtd24jkGOfWbYH2cDoB3bd53wi1N9IdJTt8pN0n4Sx1gOp630RVY3f+tTMngnL33SWfH
+ iyYmzfZ7bxYaEbYOpj1n9TilTwtikqg0xWUPlM7mhVSfH8lT23h4NuXYDeri3pREvafQ4W2If
+ z2uskhjGrl0fM452Ag+rbFXh+B83QHNgjbmr+ydlZ23TnxtN4Trrj7EWUCoSH6aI0SG3kx9Xp
+ Y+RjfPiwfWCzSAyvbofjXIlfDDkw7ynxSK2cnZTMjBsQwq40V4ZxZ9D7iHmtbbD+N7qDEWvb+
+ 0cqm/5/eRnICQG5z6rxqrpBJNUDrnErChB+HdNNpt7cKkNdWsT9F+i1fEbm6+FKoqFSJsH+n0
+ wo579ay8vBljKkNeEew9SoEtJjcyd2OtjbG4FXFfStoYhFUfaWkXag3Q+YqRn7e+06R+N47h4
+ 6+nYoJNNExR1zOCMeAOzm8/LdkZ+ndKarj/xDt2wCsuXiAIghB7g6Ou7aQlwyijhUHlsCD7CJ
+ c9+I+6h1fxsj7g+NOQqN5l5UbQCnAyxLnlsms0iM4gUrs/xjoTXrjayhNdqpLxWIJYN7ULbmH
+ AeP0OVsF7MLh0cS+c5TP8oMh2n1va2HmFKMzjyM8M4/ENjMzMTeOexsFxWJyFnb2wSAS/+PCk
+ vZ6Ty7asgKSZWTRiFYB4BYd1XhxfN6j+Os+1qyaa2mfW6OyjGnL2BiRuyscUOoH5cZmd8OVhA
+ SIBCK5UeZ0D251jq+F3U7noHu4b28X0jKEYvxBvOmsLPxRZi7CWEtRIQp1oX+NPVgapXqPh+l
+ 5Lu6++WZOSpDd74cHF6HgqnFHtqcUSmcRqgRAZuZ4edBU=
 
+Hi Greg
 
+*no* regressions here on x86_64 (RKL, Intel 11th Gen.CPU)
 
-On Tue, Feb 13, 2024, at 9:49 AM, Andrew Jones wrote:
-> On Mon, Feb 12, 2024 at 07:37:35PM -0800, Samuel Holland wrote:
->> The value of the [ms]envcfg CSR is lost when entering a nonretentive
->> idle state, so the CSR must be rewritten when resuming the CPU.
->> 
->> Cc: <stable@vger.kernel.org> # v6.7+
->> Fixes: 43c16d51a19b ("RISC-V: Enable cbo.zero in usermode")
->> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
->> ---
->> 
->> Changes in v2:
->>  - Check for privileged ISA v1.12 instead of the specific CSR
->>  - Use riscv_has_extension_likely() instead of new ALTERNATIVE()s
->> 
->>  arch/riscv/include/asm/suspend.h | 1 +
->>  arch/riscv/kernel/suspend.c      | 4 ++++
->>  2 files changed, 5 insertions(+)
->> 
->> diff --git a/arch/riscv/include/asm/suspend.h b/arch/riscv/include/asm/suspend.h
->> index 02f87867389a..491296a335d0 100644
->> --- a/arch/riscv/include/asm/suspend.h
->> +++ b/arch/riscv/include/asm/suspend.h
->> @@ -14,6 +14,7 @@ struct suspend_context {
->>  	struct pt_regs regs;
->>  	/* Saved and restored by high-level functions */
->>  	unsigned long scratch;
->> +	unsigned long envcfg;
->>  	unsigned long tvec;
->>  	unsigned long ie;
->>  #ifdef CONFIG_MMU
->> diff --git a/arch/riscv/kernel/suspend.c b/arch/riscv/kernel/suspend.c
->> index 239509367e42..be03615486ed 100644
->> --- a/arch/riscv/kernel/suspend.c
->> +++ b/arch/riscv/kernel/suspend.c
->> @@ -15,6 +15,8 @@
->>  void suspend_save_csrs(struct suspend_context *context)
->>  {
->>  	context->scratch = csr_read(CSR_SCRATCH);
->> +	if (riscv_has_extension_likely(RISCV_ISA_EXT_Sx1p12))
->> +		context->envcfg = csr_read(CSR_ENVCFG);
->>  	context->tvec = csr_read(CSR_TVEC);
->>  	context->ie = csr_read(CSR_IE);
->>  
->> @@ -36,6 +38,8 @@ void suspend_save_csrs(struct suspend_context *context)
->>  void suspend_restore_csrs(struct suspend_context *context)
->>  {
->>  	csr_write(CSR_SCRATCH, context->scratch);
->> +	if (riscv_has_extension_likely(RISCV_ISA_EXT_Sx1p12))
->> +		csr_write(CSR_ENVCFG, context->envcfg);
->>  	csr_write(CSR_TVEC, context->tvec);
->>  	csr_write(CSR_IE, context->ie);
->>  
->> -- 
->> 2.43.0
->>
->
-> We're still exposing Zicboz to userspace in hwprobe when only
-> RISCV_ISA_EXT_ZICBOZ is present, which will be the case for anything that
-> either doesn't implement 1.12, but does implement Zicboz, or maybe does
-> implement 1.12, but hasn't started putting Ss1p12 in its ISA string yet
-> (e.g. QEMU). We should either stop exposing Zicboz to userspace in those
-> cases (since it won't work) or rethink how we want to determine whether
-> or not we have envcfg CSRs.
+Thanks
 
-opensbi treats the existence of menvcfg as sufficient evidence to prove that
-the hart supports 1.12.  I wouldn't object to having Zicboz imply Ss1p12/Sm1p12.
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
--s
-
-> Thanks,
-> drew
->
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
 
