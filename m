@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-19891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FAC68537BE
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E58085373D
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:23:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 727481C2082B
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 090431F2297A
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCFC05FEEB;
-	Tue, 13 Feb 2024 17:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37595FF12;
+	Tue, 13 Feb 2024 17:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqZwDoV0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mr98902L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBB25F54E;
-	Tue, 13 Feb 2024 17:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A2D5FBB5;
+	Tue, 13 Feb 2024 17:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845347; cv=none; b=kSYFdxFq2Vxqs+3OnS+ekabbagkcUgzsWnlBeSqSxNMU+F/Xweyh0QgrMmV5ekeI3frfVHTvtwHRc7yBVWEjoG37fD+DKHKbm5XpMfJ4JUKbO4I9/0SwyF/Kgzbw9Nq5VYaYiAF0rjFDmxKl+u+JEfKy2iaT9xxeWwnDeLQz9+w=
+	t=1707844991; cv=none; b=qwNt5rjxc0HnrMbNj1f7RFhsJrhr/9rbTRevzcCN5XEypVAqkxOxoRXZXJ1js60ke8k4M2oNTN/HN5g20INOPPBjC5uzbL8nX7rCk/4jEnnrXrv2HXaTCVuaR3T3cyxG4rzQZriDSt4cBW2xke3BChLlQDiYB0EViNOqGLdQBcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845347; c=relaxed/simple;
-	bh=F1XJUdLRdi+g8y0cSc46yVKLWTnic4oDroLYChA1XFs=;
+	s=arc-20240116; t=1707844991; c=relaxed/simple;
+	bh=sWP6xPceu80LrzM3CdIQuo9Aq/BzkbixxBbd2/t7BpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZbrUTEGQCKSWWG94fTq7tbVr3ID/n89TI9Vh0Vqu9yhQZRculUBtmcQLPBlyt6s43K0vPhLFmN1vHWAEdPH6YPQ38UUMz5U3mIqZv7mh4LAWG3xE/gWVmFKYAioj3hHx15KVy19UN3FRHG6FbTv92Pvu27pDjRkkit9J6VedGFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqZwDoV0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC21C433F1;
-	Tue, 13 Feb 2024 17:29:06 +0000 (UTC)
+	 MIME-Version; b=AlWUxwMPDgR+cHB2V258klVWPuY5AveqsNGyl2JhDRsGIA1MXd5VhoapFbJR/skNqa/TMMQy2a/Fz+pkH6yQkr4vzto+XVbTA7FakMb49ipKVkxrdMlE6QU3wjrf3cKBer7z27tkO0zRPVuBxXXxdeSEcNp8WeVeE6HZMgOOsys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mr98902L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91990C43399;
+	Tue, 13 Feb 2024 17:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845347;
-	bh=F1XJUdLRdi+g8y0cSc46yVKLWTnic4oDroLYChA1XFs=;
+	s=korg; t=1707844991;
+	bh=sWP6xPceu80LrzM3CdIQuo9Aq/BzkbixxBbd2/t7BpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iqZwDoV0NvKF2fLYCLPLpk0hhpNlCmMN8SL9yJa3Gu4zScvadWsH5Jy0p/7FtAzCw
-	 qH1z7F89Lg7KkUOGJDmaqJwazK8haFaBb0l1AuKoXFzSF71il+P3vIXIm5+62fhVsY
-	 +9CDQTWQqI0LBtzVvyzw428C/0kkPau7KDXndSBw=
+	b=Mr98902LOfgvxSewME66O7kxlIl1wR20S2OMg3aSsQnrHIqZIQoJPisWIEGkiNiAg
+	 rjsWGo0/FFCLQ2qnTcObMpAsCLathhlZdlC46AcvVUaP0jN9qBs7pNf+bZe8GyeHI1
+	 +iWeXkdWybNBS9uefz2gVACfup+gS+RfVviYFkbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Yujie Liu <yujie.liu@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Jiri Pirko <jiri@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/121] selftests/net: change shebang to bash to support "source"
+Subject: [PATCH 6.1 16/64] net: atlantic: Fix DMA mapping for PTP hwts ring
 Date: Tue, 13 Feb 2024 18:21:02 +0100
-Message-ID: <20240213171854.544334114@linuxfoundation.org>
+Message-ID: <20240213171845.234380389@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yujie Liu <yujie.liu@intel.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit 05d92cb0e919239c29b3a26da1f76f1e18fed7d3 ]
+[ Upstream commit 2e7d3b67630dfd8f178c41fa2217aa00e79a5887 ]
 
-The patch set [1] added a general lib.sh in net selftests, and converted
-several test scripts to source the lib.sh.
+Function aq_ring_hwts_rx_alloc() maps extra AQ_CFG_RXDS_DEF bytes
+for PTP HWTS ring but then generic aq_ring_free() does not take this
+into account.
+Create and use a specific function to free HWTS ring to fix this
+issue.
 
-unicast_extensions.sh (converted in [1]) and pmtu.sh (converted in [2])
-have a /bin/sh shebang which may point to various shells in different
-distributions, but "source" is only available in some of them. For
-example, "source" is a built-it function in bash, but it cannot be
-used in dash.
+Trace:
+[  215.351607] ------------[ cut here ]------------
+[  215.351612] DMA-API: atlantic 0000:4b:00.0: device driver frees DMA memory with different size [device address=0x00000000fbdd0000] [map size=34816 bytes] [unmap size=32768 bytes]
+[  215.351635] WARNING: CPU: 33 PID: 10759 at kernel/dma/debug.c:988 check_unmap+0xa6f/0x2360
+...
+[  215.581176] Call Trace:
+[  215.583632]  <TASK>
+[  215.585745]  ? show_trace_log_lvl+0x1c4/0x2df
+[  215.590114]  ? show_trace_log_lvl+0x1c4/0x2df
+[  215.594497]  ? debug_dma_free_coherent+0x196/0x210
+[  215.599305]  ? check_unmap+0xa6f/0x2360
+[  215.603147]  ? __warn+0xca/0x1d0
+[  215.606391]  ? check_unmap+0xa6f/0x2360
+[  215.610237]  ? report_bug+0x1ef/0x370
+[  215.613921]  ? handle_bug+0x3c/0x70
+[  215.617423]  ? exc_invalid_op+0x14/0x50
+[  215.621269]  ? asm_exc_invalid_op+0x16/0x20
+[  215.625480]  ? check_unmap+0xa6f/0x2360
+[  215.629331]  ? mark_lock.part.0+0xca/0xa40
+[  215.633445]  debug_dma_free_coherent+0x196/0x210
+[  215.638079]  ? __pfx_debug_dma_free_coherent+0x10/0x10
+[  215.643242]  ? slab_free_freelist_hook+0x11d/0x1d0
+[  215.648060]  dma_free_attrs+0x6d/0x130
+[  215.651834]  aq_ring_free+0x193/0x290 [atlantic]
+[  215.656487]  aq_ptp_ring_free+0x67/0x110 [atlantic]
+...
+[  216.127540] ---[ end trace 6467e5964dd2640b ]---
+[  216.132160] DMA-API: Mapped at:
+[  216.132162]  debug_dma_alloc_coherent+0x66/0x2f0
+[  216.132165]  dma_alloc_attrs+0xf5/0x1b0
+[  216.132168]  aq_ring_hwts_rx_alloc+0x150/0x1f0 [atlantic]
+[  216.132193]  aq_ptp_ring_alloc+0x1bb/0x540 [atlantic]
+[  216.132213]  aq_nic_init+0x4a1/0x760 [atlantic]
 
-Refer to other scripts that were converted together, simply change the
-shebang to bash to fix the following issues when the default /bin/sh
-points to other shells.
-
-not ok 51 selftests: net: unicast_extensions.sh # exit=1
-
-v1 -> v2:
-  - Fix pmtu.sh which has the same issue as unicast_extensions.sh,
-    suggested by Hangbin
-  - Change the style of the "source" line to be consistent with other
-    tests, suggested by Hangbin
-
-Link: https://lore.kernel.org/all/20231202020110.362433-1-liuhangbin@gmail.com/ [1]
-Link: https://lore.kernel.org/all/20231219094856.1740079-1-liuhangbin@gmail.com/ [2]
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Fixes: 378f082eaf37 ("selftests/net: convert pmtu.sh to run it in unique namespace")
-Fixes: 0f4765d0b48d ("selftests/net: convert unicast_extensions.sh to run it in unique namespace")
-Signed-off-by: Yujie Liu <yujie.liu@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Link: https://lore.kernel.org/r/20231229131931.3961150-1-yujie.liu@intel.com
+Fixes: 94ad94558b0f ("net: aquantia: add PTP rings infrastructure")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20240201094752.883026-1-ivecera@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: e71e016ad0f6 ("selftests: net: fix tcp listener handling in pmtu.sh")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/pmtu.sh               | 4 ++--
- tools/testing/selftests/net/unicast_extensions.sh | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/aquantia/atlantic/aq_ptp.c  |  4 ++--
+ drivers/net/ethernet/aquantia/atlantic/aq_ring.c | 13 +++++++++++++
+ drivers/net/ethernet/aquantia/atlantic/aq_ring.h |  1 +
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
-index 8518eaacf4b5..3f118e3f1c66 100755
---- a/tools/testing/selftests/net/pmtu.sh
-+++ b/tools/testing/selftests/net/pmtu.sh
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
- #
- # Check that route PMTU values match expectations, and that initial device MTU
-@@ -198,7 +198,7 @@
- # - pmtu_ipv6_route_change
- #	Same as above but with IPv6
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
+index abd4832e4ed2..5acb3e16b567 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
+@@ -993,7 +993,7 @@ int aq_ptp_ring_alloc(struct aq_nic_s *aq_nic)
+ 	return 0;
  
--source ./lib.sh
-+source lib.sh
+ err_exit_hwts_rx:
+-	aq_ring_free(&aq_ptp->hwts_rx);
++	aq_ring_hwts_rx_free(&aq_ptp->hwts_rx);
+ err_exit_ptp_rx:
+ 	aq_ring_free(&aq_ptp->ptp_rx);
+ err_exit_ptp_tx:
+@@ -1011,7 +1011,7 @@ void aq_ptp_ring_free(struct aq_nic_s *aq_nic)
  
- PAUSE_ON_FAIL=no
- VERBOSE=0
-diff --git a/tools/testing/selftests/net/unicast_extensions.sh b/tools/testing/selftests/net/unicast_extensions.sh
-index b7a2cb9e7477..f52aa5f7da52 100755
---- a/tools/testing/selftests/net/unicast_extensions.sh
-+++ b/tools/testing/selftests/net/unicast_extensions.sh
-@@ -1,4 +1,4 @@
--#!/bin/sh
-+#!/bin/bash
- # SPDX-License-Identifier: GPL-2.0
- #
- # By Seth Schoen (c) 2021, for the IPv4 Unicast Extensions Project
-@@ -28,7 +28,7 @@
- # These tests provide an easy way to flip the expected result of any
- # of these behaviors for testing kernel patches that change them.
+ 	aq_ring_free(&aq_ptp->ptp_tx);
+ 	aq_ring_free(&aq_ptp->ptp_rx);
+-	aq_ring_free(&aq_ptp->hwts_rx);
++	aq_ring_hwts_rx_free(&aq_ptp->hwts_rx);
  
--source ./lib.sh
-+source lib.sh
+ 	aq_ptp_skb_ring_release(&aq_ptp->skb_ring);
+ }
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+index 9c314fe14ab6..0eaaba3a18ee 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+@@ -919,6 +919,19 @@ void aq_ring_free(struct aq_ring_s *self)
+ 	}
+ }
  
- # nettest can be run from PATH or from same directory as this selftest
- if ! which nettest >/dev/null; then
++void aq_ring_hwts_rx_free(struct aq_ring_s *self)
++{
++	if (!self)
++		return;
++
++	if (self->dx_ring) {
++		dma_free_coherent(aq_nic_get_dev(self->aq_nic),
++				  self->size * self->dx_size + AQ_CFG_RXDS_DEF,
++				  self->dx_ring, self->dx_ring_pa);
++		self->dx_ring = NULL;
++	}
++}
++
+ unsigned int aq_ring_fill_stats_data(struct aq_ring_s *self, u64 *data)
+ {
+ 	unsigned int count;
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h b/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
+index 52847310740a..d627ace850ff 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
+@@ -210,6 +210,7 @@ int aq_ring_rx_fill(struct aq_ring_s *self);
+ int aq_ring_hwts_rx_alloc(struct aq_ring_s *self,
+ 			  struct aq_nic_s *aq_nic, unsigned int idx,
+ 			  unsigned int size, unsigned int dx_size);
++void aq_ring_hwts_rx_free(struct aq_ring_s *self);
+ void aq_ring_hwts_rx_clean(struct aq_ring_s *self, struct aq_nic_s *aq_nic);
+ 
+ unsigned int aq_ring_fill_stats_data(struct aq_ring_s *self, u64 *data);
 -- 
 2.43.0
 
