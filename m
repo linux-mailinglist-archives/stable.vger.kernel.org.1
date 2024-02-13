@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-20062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BACB08538A9
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:39:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0E05853812
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:32:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58ACD1F219D7
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:39:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DF26281F1D
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0050760263;
-	Tue, 13 Feb 2024 17:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49B85FF0A;
+	Tue, 13 Feb 2024 17:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0k3IOWJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0OGHhL0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D775FF16;
-	Tue, 13 Feb 2024 17:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A215F54E;
+	Tue, 13 Feb 2024 17:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845937; cv=none; b=Gvvux5AsFaWIGqDIwd02BulMIlcuokXdEIosREsbhdFc18DuI9yQ3JvNftLqdY9g5Z6Jx4po34RBtkYMS9K1Xtu+My7fkskN6LeQ2orgAEAgwLCM4iPO36g/wPNAoegqImklj7Ki8UHVKQ1S34cAW+uvpR62h4FxwqUTZls+/8c=
+	t=1707845561; cv=none; b=Kvh5G+QWmEvEn2MSZZ0a+0nAokm6TuiRjuAlXqL6g1JXFrzfO/1d2dYIbLy9FRUXR1/YmDSc1CZJIZjYeWWaoMnlEjj/qSekt1WZY1lN5yxfBNgF3uLlzys9R0oN35pMMF00xCiO+6Q1bnSs369aIo4Hga7RRtbQRr3zBQn4q/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845937; c=relaxed/simple;
-	bh=ShjExyYhQoHxXEq4bLezq7g4PjJAE/Fo/o6xTr4Cd5Y=;
+	s=arc-20240116; t=1707845561; c=relaxed/simple;
+	bh=BAovPU9nt+qNEmgcEoLqFL8c6x7SBF18DrxB4AvK7Fs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rZEOCzsE5tck9feGeukGvGJ173J2u0+tRgXwDo86k1RrJ/1JWyEdv7iEt4PxsQLYJYm4PY8vsTGb/Oj6jCkktJQwnlodnJHoYV0b5CztTwXmr8+oS/7Zj3G3Ue0+8KYdvsrOxYRk03yGrZ4E75YzN/4bkGHL9wxL/x/MUq7FXBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0k3IOWJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 149CEC433F1;
-	Tue, 13 Feb 2024 17:38:56 +0000 (UTC)
+	 MIME-Version; b=oNefmjfyTVjbgqR6RaM5Yi7Kgl9/hXu1CQ0C2z4EAujmvKVU+2INOQS8vdnW2RJcf2Tq/02xOo2sMBTqI11SKfcB0MiH5Jjwvp3hK33WI1wXhOcpe0vsY+U4IAQAafEYRLA2lGndUbNMSHe3NKgnEhGG5evmTwHPlQUHHks0mBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0OGHhL0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC288C433C7;
+	Tue, 13 Feb 2024 17:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845937;
-	bh=ShjExyYhQoHxXEq4bLezq7g4PjJAE/Fo/o6xTr4Cd5Y=;
+	s=korg; t=1707845561;
+	bh=BAovPU9nt+qNEmgcEoLqFL8c6x7SBF18DrxB4AvK7Fs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L0k3IOWJ3qwjJGAevO26lGI34Jev9600G1D0uS6RKChLvO7IWrZJDYCHyU7OXLxRU
-	 8D0oLwfKTJ1OW0/pDjxRGoNPEtrY1TY9WDbxnQqQz9nSCjpXF18fwvaxEsNfrUaV2Z
-	 wlcG0v4spJLyE5MMSLcEZk9ci9muD0AYeywRAGUw=
+	b=d0OGHhL01dYB42QGXvyVMY0UNeqypBHk5xvnztemTuSvOSlgC6oB0c+UL/gZh3E1y
+	 E/VXXNWsQU3IYZfARgumn9OtKoOVleoIJwKobEjQMaxKnnYhLG3Rhsyum0m6NXAxLu
+	 sRfWTPgBj1Sp1HKscnizlhVO6QDJTWTH0ESgTbR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.7 102/124] Input: i8042 - fix strange behavior of touchpad on Clevo NS70PU
+	Ted Chang <tedchang2010@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 115/121] Revert "ASoC: amd: Add new dmi entries for acp5x platform"
 Date: Tue, 13 Feb 2024 18:22:04 +0100
-Message-ID: <20240213171856.709267937@linuxfoundation.org>
+Message-ID: <20240213171856.344243501@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit a60e6c3918d20848906ffcdfcf72ca6a8cfbcf2e upstream.
+This reverts commit c87011986fad043ce31a5e749f113540a179a73f which is
+commit c3ab23a10771bbe06300e5374efa809789c65455 upstream.
 
-When closing the laptop lid with an external screen connected, the mouse
-pointer has a constant movement to the lower right corner. Opening the
-lid again stops this movement, but after that the touchpad does no longer
-register clicks.
-
-The touchpad is connected both via i2c-hid and PS/2, the predecessor of
-this device (NS70MU) has the same layout in this regard and also strange
-behaviour caused by the psmouse and the i2c-hid driver fighting over
-touchpad control. This fix is reusing the same workaround by just
-disabling the PS/2 aux port, that is only used by the touchpad, to give the
-i2c-hid driver the lone control over the touchpad.
-
-v2: Rebased on current master
-
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231205163602.16106-1-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Link: https://lore.kernel.org/r/CAD_nV8BG0t7US=+C28kQOR==712MPfZ9m-fuKksgoZCgrEByCw@mail.gmail.com
+Reported-by: Ted Chang <tedchang2010@gmail.com>
+Cc: Takashi Iwai <tiwai@suse.de>
+Cc: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ sound/soc/amd/acp-config.c |   15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1210,6 +1210,12 @@ static const struct dmi_system_id i8042_
+--- a/sound/soc/amd/acp-config.c
++++ b/sound/soc/amd/acp-config.c
+@@ -3,7 +3,7 @@
+ // This file is provided under a dual BSD/GPLv2 license. When using or
+ // redistributing this file, you may do so under either license.
+ //
+-// Copyright(c) 2021, 2023 Advanced Micro Devices, Inc.
++// Copyright(c) 2021 Advanced Micro Devices, Inc.
+ //
+ // Authors: Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
+ //
+@@ -45,19 +45,6 @@ static const struct config_entry config_
+ 				},
+ 			},
+ 			{}
+-		},
+-	},
+-	{
+-		.flags = FLAG_AMD_LEGACY,
+-		.device = ACP_PCI_DEV_ID,
+-		.dmi_table = (const struct dmi_system_id []) {
+-			{
+-				.matches = {
+-					DMI_MATCH(DMI_SYS_VENDOR, "Valve"),
+-					DMI_MATCH(DMI_PRODUCT_NAME, "Jupiter"),
+-				},
+-			},
+-			{}
+ 		},
  	},
  	{
- 		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "NS5x_7xPU"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
-+	},
-+	{
-+		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "NJ50_70CU"),
- 		},
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
 
 
 
