@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-19865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29608537A1
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:27:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F074D85382E
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:34:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A64F21F21386
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:27:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FD2C28CF3A
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CAD60250;
-	Tue, 13 Feb 2024 17:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D1D604AC;
+	Tue, 13 Feb 2024 17:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VGtJYdj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vN2UIJMD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CCF60241;
-	Tue, 13 Feb 2024 17:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65908604AB;
+	Tue, 13 Feb 2024 17:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845250; cv=none; b=bFELrRmuPtU14jcvUmxPDmK1oLX8hhNA4fJdefQEQ0JVUSNXDNsEEMIX4VNtazn7P2DM9Hb/Z3AIVSIC4yzKdIOZuc+MeLtDH0uUd4AMra3ENyYlrixxg3tT/cAbGlX2fDx7rKruF6Xw6LpaCk73VofbfE4R5U0m2QNSLF2+YPA=
+	t=1707845634; cv=none; b=cPXhZO/PIGPOSUZpQUz5bCfOWzkmgjvCInT7skaEIopoO5HJKjUfGmH26zMxxFj8B2BUalhjcF/uAl+pTy6KZ8TND9wFrBdq+KeEi4sAsyS2ZEKINrI+oPOa2YejN7/9VTTHJgwzlSf7JTDVHpiVKJj7/Q2bskMySBMLMJjY8XM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845250; c=relaxed/simple;
-	bh=Tja3WL4hwf9REFdFMI8Qz4wec3l9XCF7zdG68txrtHA=;
+	s=arc-20240116; t=1707845634; c=relaxed/simple;
+	bh=6+o/bc7tL0/dZTEp5Kh5yKFIcvXlY2o+tsEerln5J34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d7x6/+rE4tUQQN8VXTgh7LXHbitX4B3+tNlavVoJHjMajgjm+zQR+c+JnRiR/5Eu3HdTcSOSQIBY/i+vq2kosJdR0aeIZRHASUiujimpai9kHb4cebpPNnaGL+L/QY5EALSyBt9GSDticRE57dJSsEoCWgcftIEPJ0wbAhEIMFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VGtJYdj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B500C433F1;
-	Tue, 13 Feb 2024 17:27:29 +0000 (UTC)
+	 MIME-Version; b=GVHCwL5DXDufW3y4Jtta+oTW7zyeo2T0EJyrW92Nm8vaSood5TFOC3FG6xquAfURom4b2WUwbuSUlR3RGdDyvYaf9DPUYWTPt3FMGlXc5e0j7rj1cOvP4r1NzMjmdiLmLFse8AcNuN/Dz80mfSlm8RZGT3MEG4e6++1NdFExX1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vN2UIJMD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2A5C433F1;
+	Tue, 13 Feb 2024 17:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845250;
-	bh=Tja3WL4hwf9REFdFMI8Qz4wec3l9XCF7zdG68txrtHA=;
+	s=korg; t=1707845634;
+	bh=6+o/bc7tL0/dZTEp5Kh5yKFIcvXlY2o+tsEerln5J34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0VGtJYdjPddTT0TUhTOZxq8c8Zu+2oi1oM7zef/tV699pXzCjkhqSM0MemwKZhxJh
-	 OnmMLwiLqpTpY9CA5GY8vEGy3oHm+gbweItXJPNwugaJS1J0Z1XX/hBmzf9BhWgXU1
-	 olLOYsZrJByV+01w1FQU8wZ8J7afPKC0Uw+hfcmU=
+	b=vN2UIJMDVA7iT9vKFPCJaKPXfWmwMi0Cg3tNiMz83CYrzmz42WKOCQDAoHnd3PHai
+	 oQhoNkuQHez1VoACU9U4IqwlKxoTqqfqTGuRfR+ZxsonujCrhWn3WID7eZSlCavq9d
+	 Rt0y/1eyjbc2oAO9cZkAr9i49/t74tPAWY3p6224=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/121] xfs: factor out xfs_defer_pending_abort
-Date: Tue, 13 Feb 2024 18:20:36 +0100
-Message-ID: <20240213171853.768352112@linuxfoundation.org>
+Subject: [PATCH 6.7 015/124] cifs: failure to add channel on iface should bump up weight
+Date: Tue, 13 Feb 2024 18:20:37 +0100
+Message-ID: <20240213171854.179418063@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit 2a5db859c6825b5d50377dda9c3cc729c20cad43 upstream.
+[ Upstream commit 6aac002bcfd554aff6d3ebb55e1660d078d70ab0 ]
 
-Factor out xfs_defer_pending_abort() from xfs_defer_trans_abort(), which
-not use transaction parameter, so it can be used after the transaction
-life cycle.
+After the interface selection policy change to do a weighted
+round robin, each iface maintains a weight_fulfilled. When the
+weight_fulfilled reaches the total weight for the iface, we know
+that the weights can be reset and ifaces can be allocated from
+scratch again.
 
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+During channel allocation failures on a particular channel,
+weight_fulfilled is not incremented. If a few interfaces are
+inactive, we could end up in a situation where the active
+interfaces are all allocated for the total_weight, and inactive
+ones are all that remain. This can cause a situation where
+no more channels can be allocated further.
+
+This change fixes it by increasing weight_fulfilled, even when
+channel allocation failure happens. This could mean that if
+there are temporary failures in channel allocation, the iface
+weights may not strictly be adhered to. But that's still okay.
+
+Fixes: a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_defer.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ fs/smb/client/sess.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/xfs/libxfs/xfs_defer.c b/fs/xfs/libxfs/xfs_defer.c
-index bcfb6a4203cd..88388e12f8e7 100644
---- a/fs/xfs/libxfs/xfs_defer.c
-+++ b/fs/xfs/libxfs/xfs_defer.c
-@@ -245,21 +245,18 @@ xfs_defer_create_intents(
- 	return ret;
- }
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index a16e175731eb..a1b973456471 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -269,6 +269,8 @@ int cifs_try_adding_channels(struct cifs_ses *ses)
+ 					 &iface->sockaddr,
+ 					 rc);
+ 				kref_put(&iface->refcount, release_iface);
++				/* failure to add chan should increase weight */
++				iface->weight_fulfilled++;
+ 				continue;
+ 			}
  
--/* Abort all the intents that were committed. */
- STATIC void
--xfs_defer_trans_abort(
--	struct xfs_trans		*tp,
--	struct list_head		*dop_pending)
-+xfs_defer_pending_abort(
-+	struct xfs_mount		*mp,
-+	struct list_head		*dop_list)
- {
- 	struct xfs_defer_pending	*dfp;
- 	const struct xfs_defer_op_type	*ops;
- 
--	trace_xfs_defer_trans_abort(tp, _RET_IP_);
--
- 	/* Abort intent items that don't have a done item. */
--	list_for_each_entry(dfp, dop_pending, dfp_list) {
-+	list_for_each_entry(dfp, dop_list, dfp_list) {
- 		ops = defer_op_types[dfp->dfp_type];
--		trace_xfs_defer_pending_abort(tp->t_mountp, dfp);
-+		trace_xfs_defer_pending_abort(mp, dfp);
- 		if (dfp->dfp_intent && !dfp->dfp_done) {
- 			ops->abort_intent(dfp->dfp_intent);
- 			dfp->dfp_intent = NULL;
-@@ -267,6 +264,16 @@ xfs_defer_trans_abort(
- 	}
- }
- 
-+/* Abort all the intents that were committed. */
-+STATIC void
-+xfs_defer_trans_abort(
-+	struct xfs_trans		*tp,
-+	struct list_head		*dop_pending)
-+{
-+	trace_xfs_defer_trans_abort(tp, _RET_IP_);
-+	xfs_defer_pending_abort(tp->t_mountp, dop_pending);
-+}
-+
- /*
-  * Capture resources that the caller said not to release ("held") when the
-  * transaction commits.  Caller is responsible for zero-initializing @dres.
 -- 
 2.43.0
 
