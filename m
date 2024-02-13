@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-19892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 286608537C0
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7F3853856
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:36:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB0F21F28B20
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 391F428A6AA
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247AB5FEF0;
-	Tue, 13 Feb 2024 17:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0D05FF0C;
+	Tue, 13 Feb 2024 17:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uPAdZLaU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeWmdzZF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59875F54E;
-	Tue, 13 Feb 2024 17:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3E25F54E;
+	Tue, 13 Feb 2024 17:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845350; cv=none; b=csp/DGjllLQ2XgN9DCvWUzRzyv60jqTnnIRZYCwIDQXnwY1K7qcRVSCzlK+4Fau1pgnBVSVKK+qvcK+OO3R0F1Jsvc4+dpnoHp8WmqSotSQvBpFbQfs8yi946Aap63BL6CdSgvFNShOmyL7s6yxuGyjfTQUL8UQ/slWD2SPx6Uw=
+	t=1707845733; cv=none; b=lDb1YF37UCttXDERRSj8uA2zOGktVz/qqIQz7tnhw6byFtc9OYdkGMOkZhIvEo3EBJo5UwacqAKuDUnDa1yPFYo4mJS1ypQ/ERpOl+yDpTixf90vrSu5r6V4BzSs5E+EQsFMnsqpoziD7Npmx0lHgZ8ZbJjSS7iRTNA2xHQX/7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845350; c=relaxed/simple;
-	bh=yyOnRfagP7PeA8BSp751pAXqrlR28ocGEvpaHSEOU0g=;
+	s=arc-20240116; t=1707845733; c=relaxed/simple;
+	bh=PclkyM56UjPBwkajAxIRCHdrMHh+9BwNFdGJZsOY7lI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YIg6MBlnvv1L6/53VX44cilYDRf9Mmjhh76JrRm6l5E9LL21HlFMyyUZCTZ0zaYduJFXOJ3wnCMYN/IffalCB/UsjRiiHFIwb6Mdc8SkEyxmmOkBcFSRaXcrL/GwIUX7BBKGZTkJWpUSUz5CWfBbILyhlLtAvOvH6lePyHx9VZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uPAdZLaU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DDCC433F1;
-	Tue, 13 Feb 2024 17:29:10 +0000 (UTC)
+	 MIME-Version; b=JuONoIxE5l8WzOBSMInurDMvOdsA8FUsnf37M4WYCp6KWJAABFHWqwg4KhOKu0zkcPH/D8n5Gooj+eFKC2l4bL4M34yUEWNNcK+aeJirc3yj/5OCMoUJE01JJv4YLmPMXc11PABjTvIDnWvP4V81VT6RD5VVx0EUZWIkaii0ny8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeWmdzZF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3526AC433F1;
+	Tue, 13 Feb 2024 17:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845350;
-	bh=yyOnRfagP7PeA8BSp751pAXqrlR28ocGEvpaHSEOU0g=;
+	s=korg; t=1707845733;
+	bh=PclkyM56UjPBwkajAxIRCHdrMHh+9BwNFdGJZsOY7lI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uPAdZLaUN5SjVUBUR6MUKVpzYBZFtGElosAZtEeGvNRU7YOFeXPKjK1OYgo4LgCfp
-	 h4tTCR6RJ3uyBVvpqD8SmAHL6FotfjAYp0RNwCg31+AJT6Bb0sxnCCMcOzUjdE5nMO
-	 AWogV+fDeMbQH8sXzcl2RZaWkagPRCaNq+iLNfIE=
+	b=zeWmdzZFVbIPCySInwnPE/AZT1R63QPFzdUODsO9eMa9l1C5ffYdoMPIXXdZB7ZO9
+	 ywdb28h93oBZruJu9bAd6zqlSsqhUxrbYxOVfRK6goolBhhhGeR8LoYp71v+MxyffD
+	 nshWvvPgAlh2tmY/3aHCLqlyt2Q8chvTr/zDkMxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 054/121] selftests: net: fix tcp listener handling in pmtu.sh
+Subject: [PATCH 6.7 041/124] atm: idt77252: fix a memleak in open_card_ubr0
 Date: Tue, 13 Feb 2024 18:21:03 +0100
-Message-ID: <20240213171854.574030453@linuxfoundation.org>
+Message-ID: <20240213171854.936889317@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit e71e016ad0f6e641a7898b8cda5f62f8e2beb2f1 ]
+[ Upstream commit f3616173bf9be9bf39d131b120d6eea4e6324cb5 ]
 
-The pmtu.sh test uses a few TCP listener in a problematic way:
-It hard-codes a constant timeout to wait for the listener starting-up
-in background. That introduces unneeded latency and on very slow and
-busy host it can fail.
+When alloc_scq fails, card->vcs[0] (i.e. vc) should be freed. Otherwise,
+in the following call chain:
 
-Additionally the test starts again the same listener in the same
-namespace on the same port, just after the previous connection
-completed. Fast host can attempt starting the new server before the
-old one really closed the socket.
+idt77252_init_one
+  |-> idt77252_dev_open
+        |-> open_card_ubr0
+              |-> alloc_scq [failed]
+  |-> deinit_card
+        |-> vfree(card->vcs);
 
-Address the issues using the wait_local_port_listen helper and
-explicitly waiting for the background listener process exit.
+card->vcs is freed and card->vcs[0] is leaked.
 
-Fixes: 136a1b434bbb ("selftests: net: test vxlan pmtu exceptions with tcp")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/f8e8f6d44427d8c45e9f6a71ee1a321047452087.1706812005.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/pmtu.sh | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/atm/idt77252.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
-index 3f118e3f1c66..f0febc19baae 100755
---- a/tools/testing/selftests/net/pmtu.sh
-+++ b/tools/testing/selftests/net/pmtu.sh
-@@ -199,6 +199,7 @@
- #	Same as above but with IPv6
+diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
+index e327a0229dc1..e7f713cd70d3 100644
+--- a/drivers/atm/idt77252.c
++++ b/drivers/atm/idt77252.c
+@@ -2930,6 +2930,8 @@ open_card_ubr0(struct idt77252_dev *card)
+ 	vc->scq = alloc_scq(card, vc->class);
+ 	if (!vc->scq) {
+ 		printk("%s: can't get SCQ.\n", card->name);
++		kfree(card->vcs[0]);
++		card->vcs[0] = NULL;
+ 		return -ENOMEM;
+ 	}
  
- source lib.sh
-+source net_helper.sh
- 
- PAUSE_ON_FAIL=no
- VERBOSE=0
-@@ -1336,13 +1337,15 @@ test_pmtu_ipvX_over_bridged_vxlanY_or_geneveY_exception() {
- 			TCPDST="TCP:[${dst}]:50000"
- 		fi
- 		${ns_b} socat -T 3 -u -6 TCP-LISTEN:50000 STDOUT > $tmpoutfile &
-+		local socat_pid=$!
- 
--		sleep 1
-+		wait_local_port_listen ${NS_B} 50000 tcp
- 
- 		dd if=/dev/zero status=none bs=1M count=1 | ${target} socat -T 3 -u STDIN $TCPDST,connect-timeout=3
- 
- 		size=$(du -sb $tmpoutfile)
- 		size=${size%%/tmp/*}
-+		wait ${socat_pid}
- 
- 		[ $size -ne 1048576 ] && err "File size $size mismatches exepcted value in locally bridged vxlan test" && return 1
- 	done
 -- 
 2.43.0
 
