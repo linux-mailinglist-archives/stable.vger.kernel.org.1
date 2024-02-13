@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-19987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F1585383D
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:34:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5834985379B
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:27:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7B9C1C25F13
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:34:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C7E81F26754
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819CA60261;
-	Tue, 13 Feb 2024 17:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8C6D604A7;
+	Tue, 13 Feb 2024 17:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZBLQuhI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zflo49Hl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4DB5FF1E;
-	Tue, 13 Feb 2024 17:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8834604A2;
+	Tue, 13 Feb 2024 17:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845674; cv=none; b=NJrXwnKzs2Jcm4o70BoeL+ItDI52ac2HFy/9DB0DV+EmH6qNJ9DvQXolLAQeJtvjJnl5a2/mEoDhKISpA4LePZwkl5bznTpcANiQadppHG3P8R3zWNrNDwB/cSqKTpawxO8QdiCc2XX4diA039Dl1dKkLZTIXeQaH4xxIoIB1cs=
+	t=1707845231; cv=none; b=Ef9Pv+4NMcxMl8TGTDruskmFrYgxrPAA6oCPAIXpdc9HxFjpVWmOqbVq8g1K00FpkWJL9C5r4tHzwfZHJFfY43rxtA603dxEzdsK91/L5OfEB1yvxi51hrzWclhUs13teHPvLdJ5NjyHJYXvwl+Du5F/mdWx5k8y9rFunzkte6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845674; c=relaxed/simple;
-	bh=LT8ivqJ3leH3LCQaD0NIX1nsrprmlYAKV6x6TfhJp0E=;
+	s=arc-20240116; t=1707845231; c=relaxed/simple;
+	bh=lf+81m3atBnHGtptCL17eaCPafRpuW42ccj6wzpeEM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ha05S9zRazYeO+vh8PBUNy8CJwCE1PlbYwKhy+fJvo5MANJ/aMNDiyRLpMsLklFGsigY9JTuGVDqcGAqbFyD/Lvov3aB0SZcM5Zsv+77T3CVwZZxCPg5Sn8pYueh+eplkmmRgVew7EUgyT20s32umOwhaw/Gg1juzG5BKeaqSBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZBLQuhI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94293C433C7;
-	Tue, 13 Feb 2024 17:34:33 +0000 (UTC)
+	 MIME-Version; b=Vkp6+wu1FvWXVcms5t6UP5dwpHp2XmckGW48aPxYGqkz5RWG8taKiafa5n/rtiPlqw/KAtfgiu2UCpfDP4KFcHanCzQ88SISPNM6SkwADY/vO+ZoIqV3dR77tDfxqSzOlwvIQnU0Mc4O+LwMhgQ+hNHrjFbNc7NkW0vtuFlR4WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zflo49Hl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE59C433F1;
+	Tue, 13 Feb 2024 17:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845674;
-	bh=LT8ivqJ3leH3LCQaD0NIX1nsrprmlYAKV6x6TfhJp0E=;
+	s=korg; t=1707845231;
+	bh=lf+81m3atBnHGtptCL17eaCPafRpuW42ccj6wzpeEM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZBLQuhI7Z+zhsceW7szo+JM016uWkeFFiRx8McUy3OxYtgFSHanuerkmjJO8h3H5
-	 iK1sJTmzRWpeqy5S2alz1TEHwvqd8yzvkOxQ6UbImAYYisZk9yC77A8nVeJ5HyHQpn
-	 ocs7Fcpcc1s8vMhV1ypuHJa9+v82ITwRI2nL0LmI=
+	b=Zflo49Hlt5puZwVux+pHmDSm/0I2sQiqa0i63kTZ5o5NLDxAdCIt8Q0F032JzO25L
+	 7kRBnRclapG3bkU0DK6uQBbdCjcjN7ZwKV5l8Y7R1f3JNCroBbvguzzCAi+C2rhmUA
+	 nQ051f/MpHnVGi98N4xEo9AY7BRCQ7Otcq2occPE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Vinod Koul <vkoul@kernel.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
+	Chandan Babu R <chandanbabu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 008/124] phy: renesas: rcar-gen3-usb2: Fix returning wrong error code
+Subject: [PATCH 6.6 021/121] xfs: rt stubs should return negative errnos when rt disabled
 Date: Tue, 13 Feb 2024 18:20:30 +0100
-Message-ID: <20240213171853.973961686@linuxfoundation.org>
+Message-ID: <20240213171853.590352799@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 249abaf3bf0dd07f5ddebbb2fe2e8f4d675f074e ]
+commit c2988eb5cff75c02bc57e02c323154aa08f55b78 upstream.
 
-Even if device_create_file() returns error code,
-rcar_gen3_phy_usb2_probe() will return zero because the "ret" is
-variable shadowing.
+When realtime support is not compiled into the kernel, these functions
+should return negative errnos, not positive errnos.  While we're at it,
+fix a broken macro declaration.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202312161021.gOLDl48K-lkp@intel.com/
-Fixes: 441a681b8843 ("phy: rcar-gen3-usb2: fix implementation for runtime PM")
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20240105093703.3359949-1-yoshihiro.shimoda.uh@renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/renesas/phy-rcar-gen3-usb2.c | 4 ----
- 1 file changed, 4 deletions(-)
+ fs/xfs/xfs_rtalloc.h | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-index e53eace7c91e..6387c0d34c55 100644
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -673,8 +673,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 	channel->irq = platform_get_irq_optional(pdev, 0);
- 	channel->dr_mode = rcar_gen3_get_dr_mode(dev->of_node);
- 	if (channel->dr_mode != USB_DR_MODE_UNKNOWN) {
--		int ret;
--
- 		channel->is_otg_channel = true;
- 		channel->uses_otg_pins = !of_property_read_bool(dev->of_node,
- 							"renesas,no-otg-pins");
-@@ -738,8 +736,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 		ret = PTR_ERR(provider);
- 		goto error;
- 	} else if (channel->is_otg_channel) {
--		int ret;
--
- 		ret = device_create_file(dev, &dev_attr_role);
- 		if (ret < 0)
- 			goto error;
+diff --git a/fs/xfs/xfs_rtalloc.h b/fs/xfs/xfs_rtalloc.h
+index 3b2f1b499a11..65c284e9d33e 100644
+--- a/fs/xfs/xfs_rtalloc.h
++++ b/fs/xfs/xfs_rtalloc.h
+@@ -141,17 +141,17 @@ int xfs_rtalloc_extent_is_free(struct xfs_mount *mp, struct xfs_trans *tp,
+ 			       bool *is_free);
+ int xfs_rtalloc_reinit_frextents(struct xfs_mount *mp);
+ #else
+-# define xfs_rtallocate_extent(t,b,min,max,l,f,p,rb)    (ENOSYS)
+-# define xfs_rtfree_extent(t,b,l)                       (ENOSYS)
+-# define xfs_rtfree_blocks(t,rb,rl)			(ENOSYS)
+-# define xfs_rtpick_extent(m,t,l,rb)                    (ENOSYS)
+-# define xfs_growfs_rt(mp,in)                           (ENOSYS)
+-# define xfs_rtalloc_query_range(t,l,h,f,p)             (ENOSYS)
+-# define xfs_rtalloc_query_all(m,t,f,p)                 (ENOSYS)
+-# define xfs_rtbuf_get(m,t,b,i,p)                       (ENOSYS)
+-# define xfs_verify_rtbno(m, r)			(false)
+-# define xfs_rtalloc_extent_is_free(m,t,s,l,i)          (ENOSYS)
+-# define xfs_rtalloc_reinit_frextents(m)                (0)
++# define xfs_rtallocate_extent(t,b,min,max,l,f,p,rb)	(-ENOSYS)
++# define xfs_rtfree_extent(t,b,l)			(-ENOSYS)
++# define xfs_rtfree_blocks(t,rb,rl)			(-ENOSYS)
++# define xfs_rtpick_extent(m,t,l,rb)			(-ENOSYS)
++# define xfs_growfs_rt(mp,in)				(-ENOSYS)
++# define xfs_rtalloc_query_range(m,t,l,h,f,p)		(-ENOSYS)
++# define xfs_rtalloc_query_all(m,t,f,p)			(-ENOSYS)
++# define xfs_rtbuf_get(m,t,b,i,p)			(-ENOSYS)
++# define xfs_verify_rtbno(m, r)				(false)
++# define xfs_rtalloc_extent_is_free(m,t,s,l,i)		(-ENOSYS)
++# define xfs_rtalloc_reinit_frextents(m)		(0)
+ static inline int		/* error */
+ xfs_rtmount_init(
+ 	xfs_mount_t	*mp)	/* file system mount structure */
+@@ -162,7 +162,7 @@ xfs_rtmount_init(
+ 	xfs_warn(mp, "Not built with CONFIG_XFS_RT");
+ 	return -ENOSYS;
+ }
+-# define xfs_rtmount_inodes(m)  (((mp)->m_sb.sb_rblocks == 0)? 0 : (ENOSYS))
++# define xfs_rtmount_inodes(m)  (((mp)->m_sb.sb_rblocks == 0)? 0 : (-ENOSYS))
+ # define xfs_rtunmount_inodes(m)
+ #endif	/* CONFIG_XFS_RT */
+ 
 -- 
 2.43.0
 
