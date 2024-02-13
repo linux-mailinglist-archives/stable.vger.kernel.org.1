@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-19827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69E2D85376E
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:25:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D348537EC
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DBB51C266AA
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:25:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0D1C28532A
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:31:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E945FEFA;
-	Tue, 13 Feb 2024 17:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A185FEFF;
+	Tue, 13 Feb 2024 17:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzs8zG0S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5DmPTyS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB445FBB5;
-	Tue, 13 Feb 2024 17:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B805F54E;
+	Tue, 13 Feb 2024 17:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845121; cv=none; b=YJyjEv1ef1eONF3bUac/paR4JTpvGMoBOnGOkhN1ZlcY9hKYBNN1xZYfwUmg26aUpuafubNp1LmTaL5Y71tIfd7+Zy4x3bVmmr7GhwmBiEXPIrm/36ckYH/22gP/QQfCAmaunzoAdRLtXgFcWfI6s7C38tbO7CsGnixbTAytxjQ=
+	t=1707845476; cv=none; b=P39TdunPnyld/3lBbM0na6n/FB/s1S4dmW0l6EzQiiEzHL4CYo744Q06FzvtUmk83alq4jwuh5kqdH3UT/I47rGLWYlnKBFSFiH2dD30qEsHAnmqEaRQ6lp9Yr6+dFlYwnY53Ud3tVtClwK/c+uizJLOF2Fga0Zz3S6dBycnov0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845121; c=relaxed/simple;
-	bh=DlY/qvP5OeuX2Dg49+3oREk3twCCSc587LrrfNv/l/8=;
+	s=arc-20240116; t=1707845476; c=relaxed/simple;
+	bh=0iZ4PCApV3lIfloDMe3TXZIcMVJPUaRCjPwJqEMC+p8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oSSG1tYdnhAkjMIAAZI8AQilESP5aHiBfSUojboIxyaLSG++eNTmdY/R7px7p3oUkLPedlFm/ASmJb5V3abThVZ1rjbaxMdPRYobIkGC5V3UcX6l7AkEm3PKY82MvU7Q+Es7qb/uFsyjyAkSkdL1gVTyfumAFIMOA6l8MeCCKU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzs8zG0S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40FB9C433F1;
-	Tue, 13 Feb 2024 17:25:21 +0000 (UTC)
+	 MIME-Version; b=eQzQGQQuSzScOuphBC73HkhphfJISan1fKI+AiAHbW5X8sfbaxyQVB3JmtZDnBCwVMTnhP53x1bY17boRSI3xHM7SOoI5jl5Gv9afYZBHoIT3buL6vES6aY1SnYcACeb9X5R8HpPRZ2ccksFtglJRwOPZ6N4eWXDSeo4/rHW4ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5DmPTyS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 621DBC433C7;
+	Tue, 13 Feb 2024 17:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845121;
-	bh=DlY/qvP5OeuX2Dg49+3oREk3twCCSc587LrrfNv/l/8=;
+	s=korg; t=1707845475;
+	bh=0iZ4PCApV3lIfloDMe3TXZIcMVJPUaRCjPwJqEMC+p8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gzs8zG0SEWGJ2VUO5Avpr4+1mTuPuMldkW+MYNp9D65RcosZHIHHLQvVqTArkwOEl
-	 MAcm0we2FFj0sn6nm+PUsfXSVYFab+O8Mpx0QIRAtZP7XsvU4bKyUgYtDKddWpef/X
-	 gyz3pKk3kZHYt/IPkOQ5CiPjO6ZE4IEbbbUSd6do=
+	b=e5DmPTySEvrI8NWfv1r1CW66MC5vAmfzUWFfxP/HQPpxwJLWo522kFNGoOJREUZMy
+	 4xI2Vdl+lALUiPIqxLJEbNfc5xzXjJM71g/wwIktrsggw8GRmjIMThgR0znaQGL1oR
+	 Hfzkcbhr/uSEyidNC+wo4hVpKj9t4dS/RQXKCuCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Micha=C5=82=20Pecio?= <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.1 53/64] xhci: process isoc TD properly when there was a transaction error mid TD.
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 090/121] riscv: Fix set_huge_pte_at() for NAPOT mapping
 Date: Tue, 13 Feb 2024 18:21:39 +0100
-Message-ID: <20240213171846.401480216@linuxfoundation.org>
+Message-ID: <20240213171855.621402235@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,182 +60,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-commit 5372c65e1311a16351ef03dd096ff576e6477674 upstream.
+[ Upstream commit 1458eb2c9d88ad4b35eb6d6a4aa1d43d8fbf7f62 ]
 
-The last TRB of a isoc TD might not trigger an event if there was
-an error event for a TRB mid TD. This is seen on a NEC Corporation
-uPD720200 USB 3.0 Host
+As stated by the privileged specification, we must clear a NAPOT
+mapping and emit a sfence.vma before setting a new translation.
 
-After an error mid a multi-TRB TD the xHC should according to xhci 4.9.1
-generate events for passed TRBs with IOC flag set if it proceeds to the
-next TD. This event is either a copy of the original error, or a
-"success" transfer event.
-
-If that event is missing then the driver and xHC host get out of sync as
-the driver is still expecting a transfer event for that first TD, while
-xHC host is already sending events for the next TD in the list.
-This leads to
-"Transfer event TRB DMA ptr not part of current TD" messages.
-
-As a solution we tag the isoc TDs that get error events mid TD.
-If an event doesn't match the first TD, then check if the tag is
-set, and event points to the next TD.
-In that case give back the fist TD and process the next TD normally
-
-Make sure TD status and transferred length stay valid in both cases
-with and without final TD completion event.
-
-Reported-by: Michał Pecio <michal.pecio@gmail.com>
-Closes: https://lore.kernel.org/linux-usb/20240112235205.1259f60c@foxbook/
-Tested-by: Michał Pecio <michal.pecio@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240125152737.2983959-4-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 82a1a1f3bfb6 ("riscv: mm: support Svnapot in hugetlb page")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240117195741.1926459-2-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-ring.c |   74 ++++++++++++++++++++++++++++++++++---------
- drivers/usb/host/xhci.h      |    1 
- 2 files changed, 61 insertions(+), 14 deletions(-)
+ arch/riscv/mm/hugetlbpage.c | 42 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 40 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2363,6 +2363,9 @@ static int process_isoc_td(struct xhci_h
- 	/* handle completion code */
- 	switch (trb_comp_code) {
- 	case COMP_SUCCESS:
-+		/* Don't overwrite status if TD had an error, see xHCI 4.9.1 */
-+		if (td->error_mid_td)
-+			break;
- 		if (remaining) {
- 			frame->status = short_framestatus;
- 			if (xhci->quirks & XHCI_TRUST_TX_LENGTH)
-@@ -2388,8 +2391,9 @@ static int process_isoc_td(struct xhci_h
- 		break;
- 	case COMP_USB_TRANSACTION_ERROR:
- 		frame->status = -EPROTO;
-+		sum_trbs_for_length = true;
- 		if (ep_trb != td->last_trb)
--			return 0;
-+			td->error_mid_td = true;
- 		break;
- 	case COMP_STOPPED:
- 		sum_trbs_for_length = true;
-@@ -2409,6 +2413,9 @@ static int process_isoc_td(struct xhci_h
- 		break;
- 	}
- 
-+	if (td->urb_length_set)
-+		goto finish_td;
-+
- 	if (sum_trbs_for_length)
- 		frame->actual_length = sum_trb_lengths(xhci, ep->ring, ep_trb) +
- 			ep_trb_len - remaining;
-@@ -2417,6 +2424,14 @@ static int process_isoc_td(struct xhci_h
- 
- 	td->urb->actual_length += frame->actual_length;
- 
-+finish_td:
-+	/* Don't give back TD yet if we encountered an error mid TD */
-+	if (td->error_mid_td && ep_trb != td->last_trb) {
-+		xhci_dbg(xhci, "Error mid isoc TD, wait for final completion event\n");
-+		td->urb_length_set = true;
-+		return 0;
-+	}
-+
- 	return finish_td(xhci, ep, ep_ring, td, trb_comp_code);
+diff --git a/arch/riscv/mm/hugetlbpage.c b/arch/riscv/mm/hugetlbpage.c
+index b52f0210481f..24c0179565d8 100644
+--- a/arch/riscv/mm/hugetlbpage.c
++++ b/arch/riscv/mm/hugetlbpage.c
+@@ -177,13 +177,36 @@ pte_t arch_make_huge_pte(pte_t entry, unsigned int shift, vm_flags_t flags)
+ 	return entry;
  }
  
-@@ -2801,17 +2816,51 @@ static int handle_tx_event(struct xhci_h
- 		}
++static void clear_flush(struct mm_struct *mm,
++			unsigned long addr,
++			pte_t *ptep,
++			unsigned long pgsize,
++			unsigned long ncontig)
++{
++	struct vm_area_struct vma = TLB_FLUSH_VMA(mm, 0);
++	unsigned long i, saddr = addr;
++
++	for (i = 0; i < ncontig; i++, addr += pgsize, ptep++)
++		ptep_get_and_clear(mm, addr, ptep);
++
++	flush_tlb_range(&vma, saddr, addr);
++}
++
++/*
++ * When dealing with NAPOT mappings, the privileged specification indicates that
++ * "if an update needs to be made, the OS generally should first mark all of the
++ * PTEs invalid, then issue SFENCE.VMA instruction(s) covering all 4 KiB regions
++ * within the range, [...] then update the PTE(s), as described in Section
++ * 4.2.1.". That's the equivalent of the Break-Before-Make approach used by
++ * arm64.
++ */
+ void set_huge_pte_at(struct mm_struct *mm,
+ 		     unsigned long addr,
+ 		     pte_t *ptep,
+ 		     pte_t pte,
+ 		     unsigned long sz)
+ {
+-	unsigned long hugepage_shift;
++	unsigned long hugepage_shift, pgsize;
+ 	int i, pte_num;
  
- 		if (!ep_seg) {
--			if (!ep->skip ||
--			    !usb_endpoint_xfer_isoc(&td->urb->ep->desc)) {
--				/* Some host controllers give a spurious
--				 * successful event after a short transfer.
--				 * Ignore it.
--				 */
--				if ((xhci->quirks & XHCI_SPURIOUS_SUCCESS) &&
--						ep_ring->last_td_was_short) {
--					ep_ring->last_td_was_short = false;
--					goto cleanup;
-+
-+			if (ep->skip && usb_endpoint_xfer_isoc(&td->urb->ep->desc)) {
-+				skip_isoc_td(xhci, td, ep, status);
-+				goto cleanup;
-+			}
-+
-+			/*
-+			 * Some hosts give a spurious success event after a short
-+			 * transfer. Ignore it.
-+			 */
-+			if ((xhci->quirks & XHCI_SPURIOUS_SUCCESS) &&
-+			    ep_ring->last_td_was_short) {
-+				ep_ring->last_td_was_short = false;
-+				goto cleanup;
-+			}
-+
-+			/*
-+			 * xhci 4.10.2 states isoc endpoints should continue
-+			 * processing the next TD if there was an error mid TD.
-+			 * So host like NEC don't generate an event for the last
-+			 * isoc TRB even if the IOC flag is set.
-+			 * xhci 4.9.1 states that if there are errors in mult-TRB
-+			 * TDs xHC should generate an error for that TRB, and if xHC
-+			 * proceeds to the next TD it should genete an event for
-+			 * any TRB with IOC flag on the way. Other host follow this.
-+			 * So this event might be for the next TD.
-+			 */
-+			if (td->error_mid_td &&
-+			    !list_is_last(&td->td_list, &ep_ring->td_list)) {
-+				struct xhci_td *td_next = list_next_entry(td, td_list);
-+
-+				ep_seg = trb_in_td(xhci, td_next->start_seg, td_next->first_trb,
-+						   td_next->last_trb, ep_trb_dma, false);
-+				if (ep_seg) {
-+					/* give back previous TD, start handling new */
-+					xhci_dbg(xhci, "Missing TD completion event after mid TD error\n");
-+					ep_ring->dequeue = td->last_trb;
-+					ep_ring->deq_seg = td->last_trb_seg;
-+					inc_deq(xhci, ep_ring);
-+					xhci_td_cleanup(xhci, td, ep_ring, td->status);
-+					td = td_next;
- 				}
-+			}
-+
-+			if (!ep_seg) {
- 				/* HC is busted, give up! */
- 				xhci_err(xhci,
- 					"ERROR Transfer event TRB DMA ptr not "
-@@ -2823,9 +2872,6 @@ static int handle_tx_event(struct xhci_h
- 					  ep_trb_dma, true);
- 				return -ESHUTDOWN;
- 			}
--
--			skip_isoc_td(xhci, td, ep, status);
--			goto cleanup;
- 		}
- 		if (trb_comp_code == COMP_SHORT_PACKET)
- 			ep_ring->last_td_was_short = true;
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1570,6 +1570,7 @@ struct xhci_td {
- 	struct xhci_segment	*bounce_seg;
- 	/* actual_length of the URB has already been set */
- 	bool			urb_length_set;
-+	bool			error_mid_td;
- 	unsigned int		num_trbs;
- };
+ 	if (sz >= PGDIR_SIZE)
+@@ -198,7 +221,22 @@ void set_huge_pte_at(struct mm_struct *mm,
+ 		hugepage_shift = PAGE_SHIFT;
  
+ 	pte_num = sz >> hugepage_shift;
+-	for (i = 0; i < pte_num; i++, ptep++, addr += (1 << hugepage_shift))
++	pgsize = 1 << hugepage_shift;
++
++	if (!pte_present(pte)) {
++		for (i = 0; i < pte_num; i++, ptep++, addr += pgsize)
++			set_ptes(mm, addr, ptep, pte, 1);
++		return;
++	}
++
++	if (!pte_napot(pte)) {
++		set_ptes(mm, addr, ptep, pte, 1);
++		return;
++	}
++
++	clear_flush(mm, addr, ptep, pgsize, pte_num);
++
++	for (i = 0; i < pte_num; i++, ptep++, addr += pgsize)
+ 		set_pte_at(mm, addr, ptep, pte);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
