@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-19856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06F3B853797
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:27:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0558E853787
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:26:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AC9FB287EE
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:27:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96E7B1F24CBA
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8838B6025C;
-	Tue, 13 Feb 2024 17:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84C55FDB5;
+	Tue, 13 Feb 2024 17:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fbQR6eOr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpzUnTMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478FE5FF0E;
-	Tue, 13 Feb 2024 17:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B025F56B;
+	Tue, 13 Feb 2024 17:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845222; cv=none; b=mce2DxYYt4AqR0pHBFglMvgsesFNUU7M05+xpfR8yMuCV/9UHzHwNa5pDh9KPZtQMK32u31nAOCByAtK60xHmPMFXsnguoM0HFmgc2mIcECcvNjXjVfswOhwEe4MSOBiKdzmuGow/Ap9YgoIxST5qNPnabTEVZxftufdJv+ufgc=
+	t=1707845191; cv=none; b=sMSgeI0a3NHBHpKWVKyLYWiDkCs0OsHd5WjElbssdtSyyPQl2Jmfl8/OOhVBVso7j3N7/svppodxc8hhiP6jz8wO/zrlltIwZO+9RrTmazyRpr8OAnzfhNW0xwMzec1HOIqECy9RhQVCVQm+tSDA+d7TIYMBnpgpAQximH4dYQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845222; c=relaxed/simple;
-	bh=CXw9R1Gz53J4ucnuQDW1iWqtZdnseBP9KUzcGavDPrw=;
+	s=arc-20240116; t=1707845191; c=relaxed/simple;
+	bh=RfXyzkYmCxD56I0c0OxIt8MdL9lP43BZeY7axMCxVgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CJYJX67pXy4lXdJi1mDDCXc+6PvJ4LhaNNKCRmyTx4E5nyz9vpUxZRNOhsAeTTcN8EnBYi0wgEu6Qj0rYaAfZIEmjtzCaaWB/ED1Hc+UZheq2kCJKE0aALQSTyexMzdWmZ3XKIi+1ka2LMlqQXsS4BlA8aKE+URhsiX1EG3QIp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fbQR6eOr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4CBC433F1;
-	Tue, 13 Feb 2024 17:27:01 +0000 (UTC)
+	 MIME-Version; b=nwY/zBHziDsym6hfS36Q7Sk5F33WU9rzyUptevD82O4Q3Bo1DvuqnNoqyp6i1tKbt8jlylsNRKR3gE1jFU2OaCuZSo4587r6TSdHFf0upf/+7CH6WIwKU+gKYV7oYZjyy9WJuQd0kv6/OKBdNkiW2FNWosvqE3yvm2VgJ3uQwlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpzUnTMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03FA5C433C7;
+	Tue, 13 Feb 2024 17:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845221;
-	bh=CXw9R1Gz53J4ucnuQDW1iWqtZdnseBP9KUzcGavDPrw=;
+	s=korg; t=1707845190;
+	bh=RfXyzkYmCxD56I0c0OxIt8MdL9lP43BZeY7axMCxVgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fbQR6eOrfNDpMwgDY7ouzYV+QP1Dipu912rCkD1SEW+9ER2FTwuYUFbhZFJvA2rQM
-	 Ehf3tCE97T7y76tmwdlFpQAOe5Hg9oyxobjH61zg98F3UY271CmZu/yxUnwNAEyJg7
-	 cQz5u2/dKSVLyk2k5Ny6zSx6HwBaDvYfHkHDLr3U=
+	b=mpzUnTMz4ifzJRARzN5uDRhkw5HdN41GH0oTmttrKcGtBm7rgkkN7TUw1Bok5/kd+
+	 mCYFqsXC1ZS8/UD2YPyvISKrAc3dv2M5gJjxQarCLBWNSGOdjVDwN/yF+YNjpNFsmt
+	 YLH01/t547ZVZZoLIliScg6uFpzSbq+sfpKpTMXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Lindgren <tony@atomide.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/121] phy: ti: phy-omap-usb2: Fix NULL pointer dereference for SRP
-Date: Tue, 13 Feb 2024 18:20:18 +0100
-Message-ID: <20240213171853.228770654@linuxfoundation.org>
+Subject: [PATCH 6.6 010/121] cifs: avoid redundant calls to disable multichannel
+Date: Tue, 13 Feb 2024 18:20:19 +0100
+Message-ID: <20240213171853.258037716@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
 In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
 References: <20240213171852.948844634@linuxfoundation.org>
@@ -66,73 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 7104ba0f1958adb250319e68a15eff89ec4fd36d ]
+[ Upstream commit e77e15fa5eb1c830597c5ca53ea7af973bae2f78 ]
 
-If the external phy working together with phy-omap-usb2 does not implement
-send_srp(), we may still attempt to call it. This can happen on an idle
-Ethernet gadget triggering a wakeup for example:
+When the server reports query network interface info call
+as unsupported following a tree connect, it means that
+multichannel is unsupported, even if the server capabilities
+report otherwise.
 
-configfs-gadget.g1 gadget.0: ECM Suspend
-configfs-gadget.g1 gadget.0: Port suspended. Triggering wakeup
-...
-Unable to handle kernel NULL pointer dereference at virtual address
-00000000 when execute
-...
-PC is at 0x0
-LR is at musb_gadget_wakeup+0x1d4/0x254 [musb_hdrc]
-...
-musb_gadget_wakeup [musb_hdrc] from usb_gadget_wakeup+0x1c/0x3c [udc_core]
-usb_gadget_wakeup [udc_core] from eth_start_xmit+0x3b0/0x3d4 [u_ether]
-eth_start_xmit [u_ether] from dev_hard_start_xmit+0x94/0x24c
-dev_hard_start_xmit from sch_direct_xmit+0x104/0x2e4
-sch_direct_xmit from __dev_queue_xmit+0x334/0xd88
-__dev_queue_xmit from arp_solicit+0xf0/0x268
-arp_solicit from neigh_probe+0x54/0x7c
-neigh_probe from __neigh_event_send+0x22c/0x47c
-__neigh_event_send from neigh_resolve_output+0x14c/0x1c0
-neigh_resolve_output from ip_finish_output2+0x1c8/0x628
-ip_finish_output2 from ip_send_skb+0x40/0xd8
-ip_send_skb from udp_send_skb+0x124/0x340
-udp_send_skb from udp_sendmsg+0x780/0x984
-udp_sendmsg from __sys_sendto+0xd8/0x158
-__sys_sendto from ret_fast_syscall+0x0/0x58
+When this happens, cifs_chan_skip_or_disable is called to
+disable multichannel on the client. However, we only need
+to call this when multichannel is currently setup.
 
-Let's fix the issue by checking for send_srp() and set_vbus() before
-calling them. For USB peripheral only cases these both could be NULL.
-
-Fixes: 657b306a7bdf ("usb: phy: add a new driver for omap usb2 phy")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20240128120556.8848-1-tony@atomide.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: f591062bdbf4 ("cifs: handle servers that still advertise multichannel after disabling")
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/ti/phy-omap-usb2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/smb2pdu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/ti/phy-omap-usb2.c b/drivers/phy/ti/phy-omap-usb2.c
-index 762d3de8b3c5..6bd3c7492330 100644
---- a/drivers/phy/ti/phy-omap-usb2.c
-+++ b/drivers/phy/ti/phy-omap-usb2.c
-@@ -116,7 +116,7 @@ static int omap_usb_set_vbus(struct usb_otg *otg, bool enabled)
- {
- 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
+diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+index f5006aa97f5b..5d9c87d2e1e0 100644
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -410,7 +410,7 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
+ 		rc = SMB3_request_interfaces(xid, tcon, false);
+ 		free_xid(xid);
  
--	if (!phy->comparator)
-+	if (!phy->comparator || !phy->comparator->set_vbus)
- 		return -ENODEV;
- 
- 	return phy->comparator->set_vbus(phy->comparator, enabled);
-@@ -126,7 +126,7 @@ static int omap_usb_start_srp(struct usb_otg *otg)
- {
- 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
- 
--	if (!phy->comparator)
-+	if (!phy->comparator || !phy->comparator->start_srp)
- 		return -ENODEV;
- 
- 	return phy->comparator->start_srp(phy->comparator);
+-		if (rc == -EOPNOTSUPP) {
++		if (rc == -EOPNOTSUPP && ses->chan_count > 1) {
+ 			/*
+ 			 * some servers like Azure SMB server do not advertise
+ 			 * that multichannel has been disabled with server
 -- 
 2.43.0
 
