@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-19804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21C3B853753
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:24:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3E028537D9
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:30:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54E761C24FB4
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:24:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50B491F292BF
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A7E5FEF6;
-	Tue, 13 Feb 2024 17:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F265FF15;
+	Tue, 13 Feb 2024 17:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hqFwJmYr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6FE31Tm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371D65FBB5;
-	Tue, 13 Feb 2024 17:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E875FF05;
+	Tue, 13 Feb 2024 17:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845046; cv=none; b=IqGNW1ynXUgH2BD12eCsGolMj8iymrMbz0G75XZaQSdUJoFcX1IjTSJQwnYiJo4UGIriWewhP1Uw+WjvQdd6FFajtpYTlic+zSncHVwPNIo6iQonBh/7qPwmUJRmwsx1nxeJtrt0xwDsrSHKC8EV1N37bFyRJHwkzsKqXI0WaaU=
+	t=1707845419; cv=none; b=X/fyQ0Bhf47xzybvtWpXu/j1+nVVQ3NTA0nkQ05F6oDQvA7q8CGfFWX1jAD5DDiaZXIS8H1cSHiPGWHHAEyHZYoEHVN0hdHmyzTx2hn4C+wtqD7NP6CI/+xTYbly+NtE/0kg/u2T16KcTSPXmqoPRTtjwRfYDc5dna8lkWaBaBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845046; c=relaxed/simple;
-	bh=HTQooeRfp0yKB1fgASEUDS9hGpmiw5Nw00KRBesflKg=;
+	s=arc-20240116; t=1707845419; c=relaxed/simple;
+	bh=OfAzuEx5ulQeaus8m5bqSMVvAxWwPOtGcgdVUBE2uaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=czrE7vip+F23t7uSlY5716lF0m1Sq1Z3OeaYOhlDjA0j6uPEE8RLPW+xieYeEGeCsUaFhZ6Dz7wqGFkzqVk0ckhcJiE0xCTy83S33ZL43YbGJlODr+InzaVKk9ljciEg8qmHsEZw+XQioNO96V3IB0B9zi+lHftLTf4bcNMFqJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hqFwJmYr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EEE7C433F1;
-	Tue, 13 Feb 2024 17:24:05 +0000 (UTC)
+	 MIME-Version; b=ntrjTKiKulfHceM//kBRzrUqdd1OuvuGQ8bydr3BrctFRcPOs6TOaWwHtn8x6TGBbN0ZfsdVb3FvUqAiUW72LyjnUxuP3GSzUShuQ12uvygrcTWSfyZbWLq3Q9B9VuxIRoKCx1X0YcgY18reQdIKBn1kI86poYwGeGE4TdANWCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6FE31Tm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6728FC433F1;
+	Tue, 13 Feb 2024 17:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845046;
-	bh=HTQooeRfp0yKB1fgASEUDS9hGpmiw5Nw00KRBesflKg=;
+	s=korg; t=1707845418;
+	bh=OfAzuEx5ulQeaus8m5bqSMVvAxWwPOtGcgdVUBE2uaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hqFwJmYrycKWevfhAYa4aiWXNXk2AxTQk8t2zVbJJCt5z9LvFvohQx4LN0UCNivn+
-	 L/pUH9ZUxKBOW8QxnIWHgrrPkgw6/EG+YCuOUzeqs35tFB+IbyrbHzrG8lSA7y230m
-	 WxnyivQMrua/9nt4IsZfePMVeS2UUbHeSMfrkP/M=
+	b=D6FE31TmIUJI2J+so/0+ByzrkwKwekFnJZTXk/tz+3KcjFh7jYVCGKabg2B3orwGH
+	 1fffnXJ1LU18bC8lPVaWvnNHWMBH+nQdQ6v9C/T5ZGoVdCjQRkwORLFI5dqL0ky5tm
+	 ZrknD1Ce2ez+bpOjdsaZjA7quIb6uFCmtOUlnr60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Lindgren <tony@atomide.com>,
-	Vinod Koul <vkoul@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 08/64] phy: ti: phy-omap-usb2: Fix NULL pointer dereference for SRP
+Subject: [PATCH 6.6 045/121] wifi: mac80211: fix waiting for beacons logic
 Date: Tue, 13 Feb 2024 18:20:54 +0100
-Message-ID: <20240213171844.995690005@linuxfoundation.org>
+Message-ID: <20240213171854.312723760@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 7104ba0f1958adb250319e68a15eff89ec4fd36d ]
+[ Upstream commit a0b4f2291319c5d47ecb196b90400814fdcfd126 ]
 
-If the external phy working together with phy-omap-usb2 does not implement
-send_srp(), we may still attempt to call it. This can happen on an idle
-Ethernet gadget triggering a wakeup for example:
+This should be waiting if we don't have a beacon yet,
+but somehow I managed to invert the logic. Fix that.
 
-configfs-gadget.g1 gadget.0: ECM Suspend
-configfs-gadget.g1 gadget.0: Port suspended. Triggering wakeup
-...
-Unable to handle kernel NULL pointer dereference at virtual address
-00000000 when execute
-...
-PC is at 0x0
-LR is at musb_gadget_wakeup+0x1d4/0x254 [musb_hdrc]
-...
-musb_gadget_wakeup [musb_hdrc] from usb_gadget_wakeup+0x1c/0x3c [udc_core]
-usb_gadget_wakeup [udc_core] from eth_start_xmit+0x3b0/0x3d4 [u_ether]
-eth_start_xmit [u_ether] from dev_hard_start_xmit+0x94/0x24c
-dev_hard_start_xmit from sch_direct_xmit+0x104/0x2e4
-sch_direct_xmit from __dev_queue_xmit+0x334/0xd88
-__dev_queue_xmit from arp_solicit+0xf0/0x268
-arp_solicit from neigh_probe+0x54/0x7c
-neigh_probe from __neigh_event_send+0x22c/0x47c
-__neigh_event_send from neigh_resolve_output+0x14c/0x1c0
-neigh_resolve_output from ip_finish_output2+0x1c8/0x628
-ip_finish_output2 from ip_send_skb+0x40/0xd8
-ip_send_skb from udp_send_skb+0x124/0x340
-udp_send_skb from udp_sendmsg+0x780/0x984
-udp_sendmsg from __sys_sendto+0xd8/0x158
-__sys_sendto from ret_fast_syscall+0x0/0x58
-
-Let's fix the issue by checking for send_srp() and set_vbus() before
-calling them. For USB peripheral only cases these both could be NULL.
-
-Fixes: 657b306a7bdf ("usb: phy: add a new driver for omap usb2 phy")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20240128120556.8848-1-tony@atomide.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 74e1309acedc ("wifi: mac80211: mlme: look up beacon elems only if needed")
+Link: https://msgid.link/20240131164856.922701229546.I239b379e7cee04608e73c016b737a5245e5b23dd@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/ti/phy-omap-usb2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac80211/mlme.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/phy/ti/phy-omap-usb2.c b/drivers/phy/ti/phy-omap-usb2.c
-index 31a775877f6e..63c45809943f 100644
---- a/drivers/phy/ti/phy-omap-usb2.c
-+++ b/drivers/phy/ti/phy-omap-usb2.c
-@@ -116,7 +116,7 @@ static int omap_usb_set_vbus(struct usb_otg *otg, bool enabled)
- {
- 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 73f8df03d159..d9e716f38b0e 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -7727,8 +7727,7 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
  
--	if (!phy->comparator)
-+	if (!phy->comparator || !phy->comparator->set_vbus)
- 		return -ENODEV;
- 
- 	return phy->comparator->set_vbus(phy->comparator, enabled);
-@@ -126,7 +126,7 @@ static int omap_usb_start_srp(struct usb_otg *otg)
- {
- 	struct omap_usb *phy = phy_to_omapusb(otg->usb_phy);
- 
--	if (!phy->comparator)
-+	if (!phy->comparator || !phy->comparator->start_srp)
- 		return -ENODEV;
- 
- 	return phy->comparator->start_srp(phy->comparator);
+ 		rcu_read_lock();
+ 		beacon_ies = rcu_dereference(req->bss->beacon_ies);
+-
+-		if (beacon_ies) {
++		if (!beacon_ies) {
+ 			/*
+ 			 * Wait up to one beacon interval ...
+ 			 * should this be more if we miss one?
 -- 
 2.43.0
 
