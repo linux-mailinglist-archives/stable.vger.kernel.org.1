@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-20045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E63B853892
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:38:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F71C85377F
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:26:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51C211C26637
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:38:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B70AB1C273A6
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315FB60272;
-	Tue, 13 Feb 2024 17:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004525FDDF;
+	Tue, 13 Feb 2024 17:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHvtwj+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIUFV0WE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFC90A93C;
-	Tue, 13 Feb 2024 17:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23725FBB5;
+	Tue, 13 Feb 2024 17:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845882; cv=none; b=lHLCFsh78zv7PSIBz8waOB6Y3orc0j0QiTXbr9h7M9nlVvgqOik1lpk0yA9qhO1/GQZ6KzODb/BPsq5H81xAEORK1XnKQqCdxGFhAHh4i7nm6oETLO2mrnvDGxakB17OHr3DiLQNCc6Kj7mQyk5+lvxs/nC5W2ONH3oTnQiJ2mY=
+	t=1707845164; cv=none; b=QlDsQycLtfDHOtawCKzAv3rrFDAULto0Q653md2Fjrwp17ZqQaW4K9xdW1z2l7r6a1v44L2MnqQ/vWR826belVbnzXADl1mQErA4AjE5Khy/YE6w6Gb9QUmNhFBFtj7F6loSEZ4SFz/wCJ4FWxW6frL3JMI+pbiLw22mEaPI+0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845882; c=relaxed/simple;
-	bh=AHYyHA/8OUICtCYjn7CtE6Yf4axhd/f5j/p2EmN8pyc=;
+	s=arc-20240116; t=1707845164; c=relaxed/simple;
+	bh=m4aqpmSgiBFt2gb/qZXXOWcCOl4kyjx9afM2Duz8TH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AAL9NM+DG5kshBNtziHQvA2p8IAQwI0VupGV+NFgjvnvGBdzg9LPqdEfBHDqlBmLl3gP8LyqAW0xknRC6QCyZ+wShavCvXgatS/S2zt1TI4oU8j+UMu20JJnV/v1fteVEzsaVfFFnqFxqzLZtxmId0FBBRDynYb8ZlwjlNVja0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHvtwj+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45914C433F1;
-	Tue, 13 Feb 2024 17:38:01 +0000 (UTC)
+	 MIME-Version; b=LFUj5XIQK/QSVVt/2DOSKnEK9Z9rP356SA9jKeBoV/AWXHIqoY70ilztUvgq8hjctTldorHgnBaZRZE/I5+dOLUQ51TQ5wond7AqEm/LpuVE4dysyDd/qWXhKC/p277czuzDemiczW/XKS1eLPWhS3aW3oFlyiCGEWU4lSDw814=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIUFV0WE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 118BCC433C7;
+	Tue, 13 Feb 2024 17:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845881;
-	bh=AHYyHA/8OUICtCYjn7CtE6Yf4axhd/f5j/p2EmN8pyc=;
+	s=korg; t=1707845164;
+	bh=m4aqpmSgiBFt2gb/qZXXOWcCOl4kyjx9afM2Duz8TH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pHvtwj+YDBMetoErSy0k9W9dwF93CnzbZG8IwsPtMYWES/rED2oljdc0mNEr70I7y
-	 t70ABkCTQugGrwr+zGU/zWt9IdxhPf7E8KQrj6oZAZC/Jlcvf6T2nJQglqglUFHJ45
-	 70cNV8FnDLA4A/2N0uF3rAPWivwusx4Zjs4WdKJE=
+	b=NIUFV0WEV29JEUWnRo54dU/c3GIl4Yfo33QPpbft+yRl6w2i8owx7fdehYxPtvKc5
+	 GNfOWJ+zTN7WVC5SMVpJoGhEplegm4vydDpy5B3cKKHf4nFYpDrR/FmwLg9hoAaAgP
+	 uww45U3E/sFhMpDDWb1MXlNXTWIMGalhjuhn8fZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Ted Chang <tedchang2010@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 083/124] riscv: declare overflow_stack as exported from traps.c
+Subject: [PATCH 6.1 59/64] Revert "ASoC: amd: Add new dmi entries for acp5x platform"
 Date: Tue, 13 Feb 2024 18:21:45 +0100
-Message-ID: <20240213171856.159322269@linuxfoundation.org>
+Message-ID: <20240213171846.592477759@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Dooks <ben.dooks@codethink.co.uk>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 2cf963787529f615f7c93bdcf13a5e82029e7f38 ]
+This reverts commit 48ad42cd95acc2da22b38497f22d53cb433863a1 which is
+commit c3ab23a10771bbe06300e5374efa809789c65455 upstream.
 
-The percpu area overflow_stacks is exported from arch/riscv/kernel/traps.c
-for use in the entry code, but is not declared anywhere. Add the relevant
-declaration to arch/riscv/include/asm/stacktrace.h to silence the following
-sparse warning:
-
-arch/riscv/kernel/traps.c:395:1: warning: symbol '__pcpu_scope_overflow_stack' was not declared. Should it be static?
-
-We don't add the stackinfo_get_overflow() call as for some of the other
-architectures as this doesn't seem to be used yet, so just silence the
-warning.
-
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Fixes: be97d0db5f44 ("riscv: VMAP_STACK overflow detection thread-safe")
-Link: https://lore.kernel.org/r/20231123134214.81481-1-ben.dooks@codethink.co.uk
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/CAD_nV8BG0t7US=+C28kQOR==712MPfZ9m-fuKksgoZCgrEByCw@mail.gmail.com
+Reported-by: Ted Chang <tedchang2010@gmail.com>
+Cc: Takashi Iwai <tiwai@suse.de>
+Cc: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/stacktrace.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/soc/amd/acp-config.c |   15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
-diff --git a/arch/riscv/include/asm/stacktrace.h b/arch/riscv/include/asm/stacktrace.h
-index f7e8ef2418b9..b1495a7e06ce 100644
---- a/arch/riscv/include/asm/stacktrace.h
-+++ b/arch/riscv/include/asm/stacktrace.h
-@@ -21,4 +21,9 @@ static inline bool on_thread_stack(void)
- 	return !(((unsigned long)(current->stack) ^ current_stack_pointer) & ~(THREAD_SIZE - 1));
- }
- 
-+
-+#ifdef CONFIG_VMAP_STACK
-+DECLARE_PER_CPU(unsigned long [OVERFLOW_STACK_SIZE/sizeof(long)], overflow_stack);
-+#endif /* CONFIG_VMAP_STACK */
-+
- #endif /* _ASM_RISCV_STACKTRACE_H */
--- 
-2.43.0
-
+--- a/sound/soc/amd/acp-config.c
++++ b/sound/soc/amd/acp-config.c
+@@ -3,7 +3,7 @@
+ // This file is provided under a dual BSD/GPLv2 license. When using or
+ // redistributing this file, you may do so under either license.
+ //
+-// Copyright(c) 2021, 2023 Advanced Micro Devices, Inc.
++// Copyright(c) 2021 Advanced Micro Devices, Inc.
+ //
+ // Authors: Ajit Kumar Pandey <AjitKumar.Pandey@amd.com>
+ //
+@@ -33,19 +33,6 @@ static const struct config_entry config_
+ 				},
+ 			},
+ 			{}
+-		},
+-	},
+-	{
+-		.flags = FLAG_AMD_LEGACY,
+-		.device = ACP_PCI_DEV_ID,
+-		.dmi_table = (const struct dmi_system_id []) {
+-			{
+-				.matches = {
+-					DMI_MATCH(DMI_SYS_VENDOR, "Valve"),
+-					DMI_MATCH(DMI_PRODUCT_NAME, "Jupiter"),
+-				},
+-			},
+-			{}
+ 		},
+ 	},
+ 	{
 
 
 
