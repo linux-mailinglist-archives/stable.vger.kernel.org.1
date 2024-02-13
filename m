@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-19843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA95853782
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:26:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AF0F8538AB
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:39:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3D161F246B3
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:26:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E29C1C266C8
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9799D5FEFA;
-	Tue, 13 Feb 2024 17:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D47F5FDDF;
+	Tue, 13 Feb 2024 17:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YrRNg3C3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7wsgpqh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503AD5FB90;
-	Tue, 13 Feb 2024 17:26:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D7C5FF0B;
+	Tue, 13 Feb 2024 17:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845174; cv=none; b=tzkwvQtNYKe2HDAWeZOuZiFy1Up2WR6X+x0Ivm4L1Jw8UIBCwdOB1nJl9ogsmf04OeY/08+eJeIJUONYNlacuZNx/Vb4HrCx+RpqUAB+JJQ92g+rlkNWy1VhMhoRGknZdiPDPoXxGB9eVuFcKa65mNEV/zOUBo/zBbmbs/csbTE=
+	t=1707845949; cv=none; b=I+b2qI8fsffifAhzuqi/V3JgdixT/aJZkejYJtIzjTaYrYSbwksg2OSgdVyG2chkvj59Usrz+xb0ikxGKReGA1QB/+hdeAhQHd/6hpW2Xt1NSnZFMR5C5xg2qw0F3H5RMBjalxdRZdrAGzbMgGvhXVpCf1pglg2u0N7IUxE0s6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845174; c=relaxed/simple;
-	bh=gW+yIj16YQ5xtmJhdirfRSSTcX8r7QLbwldz35qDcMA=;
+	s=arc-20240116; t=1707845949; c=relaxed/simple;
+	bh=X13TC1xQg2vaGq8qcIfXM6BKJzrrINLYCUuabn256Vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7Fx/ns6FJXJA58eeBOi3rWq4xnOwc3D3VYdogoMKs8+0LqtRLsFrURZZLAW8EMgiNl/9K1QxFAnqCKh2bD91NW2tmhEcZSLvGYCBDHgFbES2cD7dL61IlXna8pboLREEshhBsymmENnP1Msf2MXOrIrcY1A/CnE8yJKTFmGLSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YrRNg3C3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C91C433C7;
-	Tue, 13 Feb 2024 17:26:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YmyLvGQMPKAnchzw5SEjCmdcXkSQ7f6QJkugrB/t3Qd3kciLDF8ahcdYhDfuJbRIYEklYUaXdIMyCHVQDCbvrSt6A4gSiUdDgZjIHU2UfmyoDpP9I3PgQhb7f5wepHSwvHEFYxKdgMTPiUxg9sdsO23idHfywMeJK2Urb61aQJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7wsgpqh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEB1C433C7;
+	Tue, 13 Feb 2024 17:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845174;
-	bh=gW+yIj16YQ5xtmJhdirfRSSTcX8r7QLbwldz35qDcMA=;
+	s=korg; t=1707845949;
+	bh=X13TC1xQg2vaGq8qcIfXM6BKJzrrINLYCUuabn256Vg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YrRNg3C33MBxA4+FAKrbfdIWkCzLiaVqS3oG0cP01/V7MQ4MGhD9OCi8lqv/pk02q
-	 rhHxsZoQ8ExGAV+/U04k3pv/nW4Iox1bvshQE00+bd5DKIgA3jHW+X6dMfZrLYgCnG
-	 KUNtnzV8Gd7VxS/UfTbrAiNyxcGpVgeqkaW9GgN4=
+	b=z7wsgpqhQbpdX7kq6H3tD3PRZPpJwI03espgaRZwqnbGK3wrD07xAeeE4R46xRTPJ
+	 w6of3u1Wed26GdoQBIPeJsSkfgmpq54dccM0n9OsTTSGkNHrm9UWGJwdqfWqewKcmj
+	 ANWIJkkDIJz3ia+Nq0DbkncSg2skOovK2h0WgN10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheng Yong <shengyong@oppo.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.1 62/64] f2fs: add helper to check compression level
+	=?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
+	Tejun Heo <tj@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 086/124] blk-iocost: Fix an UBSAN shift-out-of-bounds warning
 Date: Tue, 13 Feb 2024 18:21:48 +0100
-Message-ID: <20240213171846.687877423@linuxfoundation.org>
+Message-ID: <20240213171856.245393440@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,167 +61,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheng Yong <shengyong@oppo.com>
+From: Tejun Heo <tj@kernel.org>
 
-commit c571fbb5b59a3741e48014faa92c2f14bc59fe50 upstream.
+[ Upstream commit 2a427b49d02995ea4a6ff93a1432c40fa4d36821 ]
 
-This patch adds a helper function to check if compression level is
-valid.
+When iocg_kick_delay() is called from a CPU different than the one which set
+the delay, @now may be in the past of @iocg->delay_at leading to the
+following warning:
 
-Meanwhile, this patch fixes a reported issue [1]:
+  UBSAN: shift-out-of-bounds in block/blk-iocost.c:1359:23
+  shift exponent 18446744073709 is too large for 64-bit type 'u64' (aka 'unsigned long long')
+  ...
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x79/0xc0
+   __ubsan_handle_shift_out_of_bounds+0x2ab/0x300
+   iocg_kick_delay+0x222/0x230
+   ioc_rqos_merge+0x1d7/0x2c0
+   __rq_qos_merge+0x2c/0x80
+   bio_attempt_back_merge+0x83/0x190
+   blk_attempt_plug_merge+0x101/0x150
+   blk_mq_submit_bio+0x2b1/0x720
+   submit_bio_noacct_nocheck+0x320/0x3e0
+   __swap_writepage+0x2ab/0x9d0
 
-The issue is easily reproducible by:
+The underflow itself doesn't really affect the behavior in any meaningful
+way; however, the past timestamp may exaggerate the delay amount calculated
+later in the code, which shouldn't be a material problem given the nature of
+the delay mechanism.
 
-1. dd if=/dev/zero of=test.img count=100 bs=1M
-2. mkfs.f2fs -f -O compression,extra_attr ./test.img
-3. mount -t f2fs -o compress_algorithm=zstd:6,compress_chksum,atgc,gc_merge,lazytime ./test.img /mnt
+If @now is in the past, this CPU is racing another CPU which recently set up
+the delay and there's nothing this CPU can contribute w.r.t. the delay.
+Let's bail early from iocg_kick_delay() in such cases.
 
-resulting in
-
-[   60.789982] F2FS-fs (loop0): invalid zstd compress level: 6
-
-A bugzilla report has been submitted in
-https://bugzilla.kernel.org/show_bug.cgi?id=218471
-
-[1] https://lore.kernel.org/lkml/ZcWDOjKEnPDxZ0Or@google.com/T/
-
-The root cause is commit 00e120b5e4b5 ("f2fs: assign default compression
-level") tries to check low boundary of compress level w/ zstd_min_clevel(),
-however, since commit e0c1b49f5b67 ("lib: zstd: Upgrade to latest upstream
-zstd version 1.4.10"), zstd supports negative compress level, it cast type
-for negative value returned from zstd_min_clevel() to unsigned int in below
-check condition, result in repored issue.
-
-	if (level < zstd_min_clevel() || ...
-
-This patch fixes this issue by casting type for level to int before
-comparison.
-
-Fixes: 00e120b5e4b5 ("f2fs: assign default compression level")
-Signed-off-by: Sheng Yong <shengyong@oppo.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Breno Leitão <leitao@debian.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 5160a5a53c0c ("blk-iocost: implement delay adjustment hysteresis")
+Link: https://lore.kernel.org/r/ZVvc9L_CYk5LO1fT@slm.duckdns.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/compress.c |   27 +++++++++++++++++++++++++++
- fs/f2fs/f2fs.h     |    2 ++
- fs/f2fs/super.c    |    4 ++--
- 3 files changed, 31 insertions(+), 2 deletions(-)
+ block/blk-iocost.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -55,6 +55,7 @@ struct f2fs_compress_ops {
- 	int (*init_decompress_ctx)(struct decompress_io_ctx *dic);
- 	void (*destroy_decompress_ctx)(struct decompress_io_ctx *dic);
- 	int (*decompress_pages)(struct decompress_io_ctx *dic);
-+	bool (*is_level_valid)(int level);
- };
+diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+index 089fcb9cfce3..7ee8d85c2c68 100644
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -1353,6 +1353,13 @@ static bool iocg_kick_delay(struct ioc_gq *iocg, struct ioc_now *now)
  
- static unsigned int offset_in_cluster(struct compress_ctx *cc, pgoff_t index)
-@@ -322,11 +323,21 @@ static int lz4_decompress_pages(struct d
- 	return 0;
- }
+ 	lockdep_assert_held(&iocg->waitq.lock);
  
-+static bool lz4_is_level_valid(int lvl)
-+{
-+#ifdef CONFIG_F2FS_FS_LZ4HC
-+	return !lvl || (lvl >= LZ4HC_MIN_CLEVEL && lvl <= LZ4HC_MAX_CLEVEL);
-+#else
-+	return lvl == 0;
-+#endif
-+}
++	/*
++	 * If the delay is set by another CPU, we may be in the past. No need to
++	 * change anything if so. This avoids decay calculation underflow.
++	 */
++	if (time_before64(now->now, iocg->delay_at))
++		return false;
 +
- static const struct f2fs_compress_ops f2fs_lz4_ops = {
- 	.init_compress_ctx	= lz4_init_compress_ctx,
- 	.destroy_compress_ctx	= lz4_destroy_compress_ctx,
- 	.compress_pages		= lz4_compress_pages,
- 	.decompress_pages	= lz4_decompress_pages,
-+	.is_level_valid		= lz4_is_level_valid,
- };
- #endif
- 
-@@ -490,6 +501,11 @@ static int zstd_decompress_pages(struct
- 	return 0;
- }
- 
-+static bool zstd_is_level_valid(int lvl)
-+{
-+	return lvl >= zstd_min_clevel() && lvl <= zstd_max_clevel();
-+}
-+
- static const struct f2fs_compress_ops f2fs_zstd_ops = {
- 	.init_compress_ctx	= zstd_init_compress_ctx,
- 	.destroy_compress_ctx	= zstd_destroy_compress_ctx,
-@@ -497,6 +513,7 @@ static const struct f2fs_compress_ops f2
- 	.init_decompress_ctx	= zstd_init_decompress_ctx,
- 	.destroy_decompress_ctx	= zstd_destroy_decompress_ctx,
- 	.decompress_pages	= zstd_decompress_pages,
-+	.is_level_valid		= zstd_is_level_valid,
- };
- #endif
- 
-@@ -555,6 +572,16 @@ bool f2fs_is_compress_backend_ready(stru
- 	return f2fs_cops[F2FS_I(inode)->i_compress_algorithm];
- }
- 
-+bool f2fs_is_compress_level_valid(int alg, int lvl)
-+{
-+	const struct f2fs_compress_ops *cops = f2fs_cops[alg];
-+
-+	if (cops->is_level_valid)
-+		return cops->is_level_valid(lvl);
-+
-+	return lvl == 0;
-+}
-+
- static mempool_t *compress_page_pool;
- static int num_compress_pages = 512;
- module_param(num_compress_pages, uint, 0444);
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -4219,6 +4219,7 @@ bool f2fs_compress_write_end(struct inod
- int f2fs_truncate_partial_cluster(struct inode *inode, u64 from, bool lock);
- void f2fs_compress_write_end_io(struct bio *bio, struct page *page);
- bool f2fs_is_compress_backend_ready(struct inode *inode);
-+bool f2fs_is_compress_level_valid(int alg, int lvl);
- int f2fs_init_compress_mempool(void);
- void f2fs_destroy_compress_mempool(void);
- void f2fs_decompress_cluster(struct decompress_io_ctx *dic, bool in_task);
-@@ -4283,6 +4284,7 @@ static inline bool f2fs_is_compress_back
- 	/* not support compression */
- 	return false;
- }
-+static inline bool f2fs_is_compress_level_valid(int alg, int lvl) { return false; }
- static inline struct page *f2fs_compress_control_page(struct page *page)
- {
- 	WARN_ON_ONCE(1);
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -628,7 +628,7 @@ static int f2fs_set_lz4hc_level(struct f
- 	if (kstrtouint(str + 1, 10, &level))
- 		return -EINVAL;
- 
--	if (level < LZ4HC_MIN_CLEVEL || level > LZ4HC_MAX_CLEVEL) {
-+	if (!f2fs_is_compress_level_valid(COMPRESS_LZ4, level)) {
- 		f2fs_info(sbi, "invalid lz4hc compress level: %d", level);
- 		return -EINVAL;
- 	}
-@@ -666,7 +666,7 @@ static int f2fs_set_zstd_level(struct f2
- 	if (kstrtouint(str + 1, 10, &level))
- 		return -EINVAL;
- 
--	if (level < zstd_min_clevel() || level > zstd_max_clevel()) {
-+	if (!f2fs_is_compress_level_valid(COMPRESS_ZSTD, level)) {
- 		f2fs_info(sbi, "invalid zstd compress level: %d", level);
- 		return -EINVAL;
- 	}
+ 	/* calculate the current delay in effect - 1/2 every second */
+ 	tdelta = now->now - iocg->delay_at;
+ 	if (iocg->delay)
+-- 
+2.43.0
+
 
 
 
