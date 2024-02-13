@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-19932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2138537F4
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:31:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACFA85388F
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:38:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27D0F28605B
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:31:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09FA51F21277
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F055FF1C;
-	Tue, 13 Feb 2024 17:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA5060269;
+	Tue, 13 Feb 2024 17:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lcXWumLY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jm9EG7Pt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5707D5FF0C;
-	Tue, 13 Feb 2024 17:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D513A93C;
+	Tue, 13 Feb 2024 17:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845488; cv=none; b=vDOiX3R2PMHYCNTgx2eb6CHMa6tEa4+Y7FMMgf0ldzLe3qpETlSCrjfZ8aWNTZRXTOz7hJDw7111+XMtYGLVkrDN4TgVbr8KaseasJzLK7qU6t2fNHNZjcRlpXGMD6GPPaMHi5vWTT2eVQey/9PHDakObQJCdkupY9VTRrRgSgk=
+	t=1707845872; cv=none; b=PShE0B/4Doyl+NHZuVaMn2rNecMhCnHhJZ4ulLYBPp4cU8HL7yug9R5/INnG3wbNPzJqQUZlEUMUlQhaBblwqaDsOy01iU7fNEzmx6HqE7/oqawe051qP0YYVTTdZfRo+3HwQG0NslHXE1nP5e8umILO8nbln72ndbd6pigNBTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845488; c=relaxed/simple;
-	bh=lzrTaNbcS/oVZZc4e2Vx4tK0RdZ6TwLXvTQi277+J2U=;
+	s=arc-20240116; t=1707845872; c=relaxed/simple;
+	bh=l++1Cg9qxu/BNTxov1Tf+tvnDXkR7/eEctAJB8kY0iw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BPx2VZwLc88MYV3+8bzhTNBmrUWR+lYYgZUceRyn/TQKpRvmFjFGcGRVH1myF7XXx/lbPYim2Dp8/lXgB3fxxmpylO1QUptcAHEm5lgdyVa5Gu2VXAg6NVH111kWIPWTHjub5MP7Hdq2bvBr1XadcSlkm6d7Gv1MRkAudUgBtSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lcXWumLY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB3DC433F1;
-	Tue, 13 Feb 2024 17:31:27 +0000 (UTC)
+	 MIME-Version; b=Bh3d6JHWq8MB3F99StUuwwOb8YYn3PRyfSfPHMVyYEZUp7AJ3GIObe48uOUnh4NLTGveSbOrC66bZlT9XsnmEjndjQfm/MP7N48TnzcTKSFd+L0WRnQ2GeqGQcFyA1NUSXU908qNQprPZP7pimVCcik1CBR16Ke5fwZiHM+iDyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jm9EG7Pt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9881C433B1;
+	Tue, 13 Feb 2024 17:37:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845487;
-	bh=lzrTaNbcS/oVZZc4e2Vx4tK0RdZ6TwLXvTQi277+J2U=;
+	s=korg; t=1707845872;
+	bh=l++1Cg9qxu/BNTxov1Tf+tvnDXkR7/eEctAJB8kY0iw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lcXWumLYMiGJqy5VSmgG1pOtd7FasHjCafstm2U57n1UWMJFdOPpO9dPfRUaSfK++
-	 wTBf4pi59y7qyAz0gUIOFlnbiDKps1pML77vRGLUDVmu7loKretSxBkOQ/Tyo7caIk
-	 xSTKKbXn6agnFTd6CyOn8uBRnk1S8dmo0IxHEXFc=
+	b=jm9EG7PthG5GOwdDAkK6yynoxCg7m++D8woTIeefCKeV5BfVNDzDXlZIkhjjdAVEB
+	 fh4OKlhuANIvmVycFjx+VbQqqKXDeq/qNWfHPWcY/Pla/iSnPw77ycYLgr2xbCibt0
+	 XNIxZuAUea/KNijds4kDD9Xw/28R/kPjn8Bvp1/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/121] riscv: Flush the tlb when a page directory is freed
-Date: Tue, 13 Feb 2024 18:21:42 +0100
-Message-ID: <20240213171855.706765912@linuxfoundation.org>
+Subject: [PATCH 6.7 081/124] ceph: always set initial i_blkbits to CEPH_FSCRYPT_BLOCK_SHIFT
+Date: Tue, 13 Feb 2024 18:21:43 +0100
+Message-ID: <20240213171856.101684882@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit 97cf301fa42e8ea6e0a24de97bc0abcdc87d9504 ]
+[ Upstream commit bbb20ea993f46743f7429092ddc52f1a5c5428ef ]
 
-The riscv privileged specification mandates to flush the TLB whenever a
-page directory is modified, so add that to tlb_flush().
+The fscrypt code will use i_blkbits to setup ci_data_unit_bits when
+allocating the new inode, but ceph will initiate i_blkbits ater when
+filling the inode, which is too late. Since ci_data_unit_bits will only
+be used by the fscrypt framework so initiating i_blkbits with
+CEPH_FSCRYPT_BLOCK_SHIFT is safe.
 
-Fixes: c5e9b2c2ae82 ("riscv: Improve tlb_flush()")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Link: https://lore.kernel.org/r/20240128120405.25876-1-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Link: https://tracker.ceph.com/issues/64035
+Fixes: 5b1188847180 ("fscrypt: support crypto data unit size less than filesystem block size")
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/tlb.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ceph/inode.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/riscv/include/asm/tlb.h b/arch/riscv/include/asm/tlb.h
-index 1eb5682b2af6..50b63b5c15bd 100644
---- a/arch/riscv/include/asm/tlb.h
-+++ b/arch/riscv/include/asm/tlb.h
-@@ -16,7 +16,7 @@ static void tlb_flush(struct mmu_gather *tlb);
- static inline void tlb_flush(struct mmu_gather *tlb)
- {
- #ifdef CONFIG_MMU
--	if (tlb->fullmm || tlb->need_flush_all)
-+	if (tlb->fullmm || tlb->need_flush_all || tlb->freed_tables)
- 		flush_tlb_mm(tlb->mm);
- 	else
- 		flush_tlb_mm_range(tlb->mm, tlb->start, tlb->end,
+diff --git a/fs/ceph/inode.c b/fs/ceph/inode.c
+index 0679240f06db..7d41c3e03476 100644
+--- a/fs/ceph/inode.c
++++ b/fs/ceph/inode.c
+@@ -78,6 +78,8 @@ struct inode *ceph_new_inode(struct inode *dir, struct dentry *dentry,
+ 	if (!inode)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	inode->i_blkbits = CEPH_FSCRYPT_BLOCK_SHIFT;
++
+ 	if (!S_ISLNK(*mode)) {
+ 		err = ceph_pre_init_acls(dir, mode, as_ctx);
+ 		if (err < 0)
 -- 
 2.43.0
 
