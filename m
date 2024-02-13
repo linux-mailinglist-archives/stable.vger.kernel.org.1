@@ -1,109 +1,123 @@
-Return-Path: <stable+bounces-19748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FEE2853456
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 16:12:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0990F85345F
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 16:13:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 355182886FB
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 15:12:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B00F1C20932
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 15:13:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E2F55C39;
-	Tue, 13 Feb 2024 15:09:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O82mdty/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E98857884;
+	Tue, 13 Feb 2024 15:13:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EDD55780;
-	Tue, 13 Feb 2024 15:09:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29429224D5
+	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 15:13:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.58.86.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707836982; cv=none; b=XW5/LH6luJsrs56Cj4yUFa1njktTAKXJoC3lnMK9RjfOoFD3vbxfCq+d7Z/ifAGyjwxKbMuG7+xnZZSDMXI/gOsswQMI5h7vAZpkGAwGEBwod/hCRdfq9RwkjK1D5K431qKc1YDhIyEheY6aKl4MFGLeDwP6gM80rx9wONieads=
+	t=1707837226; cv=none; b=crXAd04Joz2g4UgESCMR6OJ9acIoDeq6969YvPfadcMLrEjga6M1j3uUn36pm7+944JaJN1iusAnyraQPO7hFdZXBF7uJ6aB4JO/ve8QZhqOjNTlT1JTc6PuDsJlsck4/vSJdwHrF3CL/26mPpEqhFYvnMhIggLEM5w0DzBL1ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707836982; c=relaxed/simple;
-	bh=d/SbQewKw97qHMcT4YLu0I9/NAOZ0hdPBAZpUB60RQ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PFAmkPLlMI/qHkF9K4OjJop0hTU/Y5xZRuWLB+d3gW4ocxE0YsGIYZ5Sug55Z0HD+lXPlUbH7dwSqKdVnBRyrgUv28hb+Sun43un/u8soF4oAycvcFaJsprTH9f+vSG29aIPNDHKxu8R4xlIFAAEckJmjVYntWOsvdxTRDQPlwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O82mdty/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BF90C433C7;
-	Tue, 13 Feb 2024 15:09:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707836982;
-	bh=d/SbQewKw97qHMcT4YLu0I9/NAOZ0hdPBAZpUB60RQ8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O82mdty/hIg37bZ628amycXSBelVC+v3pWEIaN4x4Aibw2Eo4LNZndhemHyVrEBCY
-	 PJzD93+3rSjq3Po+k9RZLruxyiu6qvpwX9iHBbhM0caNj7akpWNiJ6MJ9X2lhPmkmh
-	 zRGuXo1fIkHOifOJbS/fP3RntrJ30Qb3MMvdqxYc=
-Date: Tue, 13 Feb 2024 16:09:38 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: Sasha Levin <sashal@kernel.org>, David Laight <David.Laight@aculab.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [regression] linux-6.6.y, minmax: virtual memory exhausted in
+	s=arc-20240116; t=1707837226; c=relaxed/simple;
+	bh=8KPyWe9stjzGGJsVY/s44g6n2RpSaiIkyPJ+qCe1wd4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=TaaIpvATCk47EIimYG3SJaIHyDpCx0Wcew1GdKt5a+nOiHb9hv3qhrc0oEL1FWs3HorQ11RIQAngEGRinIKwf0bi/hLAeEaKE6wacWt1cYj5h4EaMN1LkIfszkJrc50UhX3gPq02ZmS3in3JLrFD2brYhiEgbgS626AfpN4Pggo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM; spf=pass smtp.mailfrom=aculab.com; arc=none smtp.client-ip=185.58.86.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-273-lEQwB4gHM9KjbBLuWWIRRQ-1; Tue, 13 Feb 2024 15:13:32 +0000
+X-MC-Unique: lEQwB4gHM9KjbBLuWWIRRQ-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Tue, 13 Feb
+ 2024 15:13:11 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Tue, 13 Feb 2024 15:13:11 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: Linux regressions mailing list <regressions@lists.linux.dev>, Greg KH
+	<gregkh@linuxfoundation.org>
+CC: Sasha Levin <sashal@kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>
+Subject: RE: [regression] linux-6.6.y, minmax: virtual memory exhausted in
  i586 chroot during kernel compilation
-Message-ID: <2024021327-granular-boogieman-de5e@gregkh>
+Thread-Topic: [regression] linux-6.6.y, minmax: virtual memory exhausted in
+ i586 chroot during kernel compilation
+Thread-Index: AQHaXo14VMsoJQsDY0O/2RIXE3d9xLEIXyJQ
+Date: Tue, 13 Feb 2024 15:13:10 +0000
+Message-ID: <19d0ed563ba0449dac089b95456026dd@AcuMS.aculab.com>
 References: <f9f89284-0f48-4971-ad8d-86938a82fafc@leemhuis.info>
  <2024021318-shifty-daybed-fca8@gregkh>
  <699726f6-8f5d-4482-8c27-8ea47a483f8a@leemhuis.info>
+In-Reply-To: <699726f6-8f5d-4482-8c27-8ea47a483f8a@leemhuis.info>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <699726f6-8f5d-4482-8c27-8ea47a483f8a@leemhuis.info>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-On Tue, Feb 13, 2024 at 04:01:23PM +0100, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 13.02.24 15:50, Greg KH wrote:
-> > On Mon, Feb 12, 2024 at 05:16:58PM +0100, Linux regression tracking (Thorsten Leemhuis) wrote:
-> >>
-> >> I noticed a regression report in bugzilla.kernel.org that seems to be
-> >> specific to the linux-6.6.y series:
-> >>
-> >> Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=218484 :
-> >>
-> >>> After upgrading to version 6.6.16, the kernel compilation on a i586
-> >>> arch (on a 32bit chroot in a 64bit host) fails with a message:
-> >>>
-> >>> virtual memory exhausted: Cannot allocate memory
-> >>>
-> >>> this happens even lowering the number of parallel compilation
-> >>> threads. On a x86_64 arch the same problem doesn't occur. It's not
-> >>> clear whether some weird recursion is triggered that exhausts the
-> >>> memory, but it seems that the problem is caused by the patchset
-> >>> 'minmax' added to the 6.6.16 version, in particular it seems caused
-> >>> by these patches:
-> >>>
-> >>> - minmax-allow-min-max-clamp-if-the-arguments-have-the-same-signedness.patch
-> >>> - minmax-fix-indentation-of-__cmp_once-and-__clamp_once.patch
-> >>> - minmax-allow-comparisons-of-int-against-unsigned-char-short.patch
-> >>> - minmax-relax-check-to-allow-comparison-between-unsigned-arguments-and-signed-constants.patch
-> >>>
-> >>> Reverting those patches fixes the memory exhaustion problem during compilation.
-> >>
-> >> The reporter later added:
-> >>
-> >>> From a quick test the same problem doesn't occur in 6.8-rc4.
-> >> See the ticket for more details.
-> >
-> > I think this was already fixed in 6.7 or Linus's tree, but I can't seem
-> > to find the commit at the moment.
-> 
-> I thought so as well, but was in the same situation. But your comment
-> made me look again and now I found it: that was 31e97d7c9ae3de ("media:
-> solo6x10: replace max(a, min(b, c)) by clamp(b, a, c)"), which indeed is
-> not yet in 6.6.y.
+RnJvbTogTGludXggcmVncmVzc2lvbiB0cmFja2luZyAoVGhvcnN0ZW4gTGVlbWh1aXMpDQo+IFNl
+bnQ6IDEzIEZlYnJ1YXJ5IDIwMjQgMTU6MDENCj4gDQo+IE9uIDEzLjAyLjI0IDE1OjUwLCBHcmVn
+IEtIIHdyb3RlOg0KPiA+IE9uIE1vbiwgRmViIDEyLCAyMDI0IGF0IDA1OjE2OjU4UE0gKzAxMDAs
+IExpbnV4IHJlZ3Jlc3Npb24gdHJhY2tpbmcgKFRob3JzdGVuIExlZW1odWlzKSB3cm90ZToNCj4g
+Pj4NCj4gPj4gSSBub3RpY2VkIGEgcmVncmVzc2lvbiByZXBvcnQgaW4gYnVnemlsbGEua2VybmVs
+Lm9yZyB0aGF0IHNlZW1zIHRvIGJlDQo+ID4+IHNwZWNpZmljIHRvIHRoZSBsaW51eC02LjYueSBz
+ZXJpZXM6DQo+ID4+DQo+ID4+IFF1b3RpbmcgZnJvbSBodHRwczovL2J1Z3ppbGxhLmtlcm5lbC5v
+cmcvc2hvd19idWcuY2dpP2lkPTIxODQ4NCA6DQo+ID4+DQo+ID4+PiBBZnRlciB1cGdyYWRpbmcg
+dG8gdmVyc2lvbiA2LjYuMTYsIHRoZSBrZXJuZWwgY29tcGlsYXRpb24gb24gYSBpNTg2DQo+ID4+
+PiBhcmNoIChvbiBhIDMyYml0IGNocm9vdCBpbiBhIDY0Yml0IGhvc3QpIGZhaWxzIHdpdGggYSBt
+ZXNzYWdlOg0KPiA+Pj4NCj4gPj4+IHZpcnR1YWwgbWVtb3J5IGV4aGF1c3RlZDogQ2Fubm90IGFs
+bG9jYXRlIG1lbW9yeQ0KPiA+Pj4NCj4gPj4+IHRoaXMgaGFwcGVucyBldmVuIGxvd2VyaW5nIHRo
+ZSBudW1iZXIgb2YgcGFyYWxsZWwgY29tcGlsYXRpb24NCj4gPj4+IHRocmVhZHMuIE9uIGEgeDg2
+XzY0IGFyY2ggdGhlIHNhbWUgcHJvYmxlbSBkb2Vzbid0IG9jY3VyLiBJdCdzIG5vdA0KPiA+Pj4g
+Y2xlYXIgd2hldGhlciBzb21lIHdlaXJkIHJlY3Vyc2lvbiBpcyB0cmlnZ2VyZWQgdGhhdCBleGhh
+dXN0cyB0aGUNCj4gPj4+IG1lbW9yeSwgYnV0IGl0IHNlZW1zIHRoYXQgdGhlIHByb2JsZW0gaXMg
+Y2F1c2VkIGJ5IHRoZSBwYXRjaHNldA0KPiA+Pj4gJ21pbm1heCcgYWRkZWQgdG8gdGhlIDYuNi4x
+NiB2ZXJzaW9uLCBpbiBwYXJ0aWN1bGFyIGl0IHNlZW1zIGNhdXNlZA0KPiA+Pj4gYnkgdGhlc2Ug
+cGF0Y2hlczoNCj4gPj4+DQo+ID4+PiAtIG1pbm1heC1hbGxvdy1taW4tbWF4LWNsYW1wLWlmLXRo
+ZS1hcmd1bWVudHMtaGF2ZS10aGUtc2FtZS1zaWduZWRuZXNzLnBhdGNoDQo+ID4+PiAtIG1pbm1h
+eC1maXgtaW5kZW50YXRpb24tb2YtX19jbXBfb25jZS1hbmQtX19jbGFtcF9vbmNlLnBhdGNoDQo+
+ID4+PiAtIG1pbm1heC1hbGxvdy1jb21wYXJpc29ucy1vZi1pbnQtYWdhaW5zdC11bnNpZ25lZC1j
+aGFyLXNob3J0LnBhdGNoDQo+ID4+PiAtIG1pbm1heC1yZWxheC1jaGVjay10by1hbGxvdy1jb21w
+YXJpc29uLWJldHdlZW4tdW5zaWduZWQtYXJndW1lbnRzLWFuZC1zaWduZWQtY29uc3RhbnRzLnBh
+dGNoDQo+ID4+Pg0KPiA+Pj4gUmV2ZXJ0aW5nIHRob3NlIHBhdGNoZXMgZml4ZXMgdGhlIG1lbW9y
+eSBleGhhdXN0aW9uIHByb2JsZW0gZHVyaW5nIGNvbXBpbGF0aW9uLg0KPiA+Pg0KPiA+PiBUaGUg
+cmVwb3J0ZXIgbGF0ZXIgYWRkZWQ6DQo+ID4+DQo+ID4+PiBGcm9tIGEgcXVpY2sgdGVzdCB0aGUg
+c2FtZSBwcm9ibGVtIGRvZXNuJ3Qgb2NjdXIgaW4gNi44LXJjNC4NCj4gPj4gU2VlIHRoZSB0aWNr
+ZXQgZm9yIG1vcmUgZGV0YWlscy4NCj4gPg0KPiA+IEkgdGhpbmsgdGhpcyB3YXMgYWxyZWFkeSBm
+aXhlZCBpbiA2Ljcgb3IgTGludXMncyB0cmVlLCBidXQgSSBjYW4ndCBzZWVtDQo+ID4gdG8gZmlu
+ZCB0aGUgY29tbWl0IGF0IHRoZSBtb21lbnQuDQo+IA0KPiBJIHRob3VnaHQgc28gYXMgd2VsbCwg
+YnV0IHdhcyBpbiB0aGUgc2FtZSBzaXR1YXRpb24uIEJ1dCB5b3VyIGNvbW1lbnQNCj4gbWFkZSBt
+ZSBsb29rIGFnYWluIGFuZCBub3cgSSBmb3VuZCBpdDogdGhhdCB3YXMgMzFlOTdkN2M5YWUzZGUg
+KCJtZWRpYToNCj4gc29sbzZ4MTA6IHJlcGxhY2UgbWF4KGEsIG1pbihiLCBjKSkgYnkgY2xhbXAo
+YiwgYSwgYykiKSwgd2hpY2ggaW5kZWVkIGlzDQo+IG5vdCB5ZXQgaW4gNi42LnkuDQoNClRoZSBj
+b2RlIGlzIGFjdHVhbGx5IChub3cpIGRvaW5nOg0KCWNsYW1wKGIsIGNsYW1wKGMsIGEsIGQpLCBk
+KQ0KYnV0IHByZXZpb3VzbHkgd2FzIGZvdXIgbmVzdGVkIG1pbigpL21heCgpLg0KRXZlbiB0aGUg
+YS9iL2MvZCBhcmVuJ3QgdHJpdmlhbC4NCkl0IGFsd2F5cyB3YXMgYSBwcmV0dHkgbG9uZyBsaW5l
+LCBidXQgdGhlIGxvbmdlciBleHBhbnNpb25zIG1hZGUgaXQgZXhwbG9kZS4NCg0KSSB3YXMgbWls
+ZGx5IHN1cnByaXNlZCB0byBzZWUgdGhlIG1pbm1heCBjaGFuZ2VzIGJhY2twb3J0ZWQuDQpOb3Qg
+Y29tcGxhaW5pbmcgdGhvdWdoLg0KDQpCdXQgMzFlOTdkN2M5YWUzZGUgbmVlZHMgYmFja3BvcnRp
+bmcgYXMgd2VsbC4NCg0KKFNvbWVvbmUgcmVhbGx5IG91Z2h0IHRvIGxvb2sgYXQgdGhlIHNvbG82
+eDEwIGRyaXZlci4NCkl0IHJlYWxseSBvdWdodCB0byBiZSBjYWNoaW5nIHNvbWUgb2YgdGhvc2Ug
+dmFsdWVzLg0KSSBhbHNvIHN1c3BlY3QgKG5vdCBsb29rZWQpIHRoYXQgaWYgdGhlIHZhbHVlcyBk
+byBnZXQgY2xhbXBlZCAoYWJvdmUpDQppdCBqdXN0IHdvbnQgd29yayBhdCBhbGwuKQ0KDQoJRGF2
+aWQNCg0KLQ0KUmVnaXN0ZXJlZCBBZGRyZXNzIExha2VzaWRlLCBCcmFtbGV5IFJvYWQsIE1vdW50
+IEZhcm0sIE1pbHRvbiBLZXluZXMsIE1LMSAxUFQsIFVLDQpSZWdpc3RyYXRpb24gTm86IDEzOTcz
+ODYgKFdhbGVzKQ0K
 
-Yes, that's the one, thanks!
-
-I've queued it up now.
-
-greg k-h
 
