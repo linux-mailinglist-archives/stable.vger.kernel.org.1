@@ -1,74 +1,39 @@
-Return-Path: <stable+bounces-19745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9417F8533E6
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 16:00:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E5985341A
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 16:04:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5188C28594A
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 15:00:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDB2028E688
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 15:04:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310595DF3A;
-	Tue, 13 Feb 2024 14:57:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="1w1D3P3V"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5325F551;
+	Tue, 13 Feb 2024 15:01:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF6F5DF28
-	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 14:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66A05F54C;
+	Tue, 13 Feb 2024 15:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707836250; cv=none; b=RuJ8skdoSKPny8TwCQqUYPqdGeIFKY8rOmvD7VbQAIqxROQkRXLGlol+4GDyA9zzsAO4YuXa8aWVP1xs9edXXk6zpvw/+6/2Y6euhbQtM5RUoSIgB5hBQ0gStXsyALbVJlo6exDzPst8lAgExUaYw/0Nadhs+ZR68r5XIjw5+FA=
+	t=1707836495; cv=none; b=V4oI+gqvcxjOCOJZyhs6h2elpmA+n0Zf6iGpumDlNB3gJoYDA5uwxj8ids+T1G9t24HqjktFvxMGjBdp7szHgwbNv2DNoMC7G0S8LA/IdxqpTWLRNuoIsCnJ6NOpO4TqnwVw6LmVrWgaemD6g8AXkzcoKVoBqWtofF3ZHgpyrg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707836250; c=relaxed/simple;
-	bh=CjVfG8eWC7tKwA2jEz2VMp5kPGyZctdiNWrGAn2qzY4=;
+	s=arc-20240116; t=1707836495; c=relaxed/simple;
+	bh=80vLXOiXoOCTx/vCIvNl7N6ccNiqxnQSQ6P0aZ2qKGI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=atQPubJl3mXTr3U4RpFpAeXh8HKZJtI/c6JHANgihNaPg+lFu0msQWMvKJAMRUaAcwVNKh1TLOHWHC7/ypsQ6iEfoGmpokQTwJA5zs7V0U3AreGGNeFpaYG5bfYHxO8LP8oEDUd4HP1Df81k43rb54J4Cje2jJfJWXkplVDwFv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=1w1D3P3V; arc=none smtp.client-ip=209.85.166.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-io1-f46.google.com with SMTP id ca18e2360f4ac-7bf3283c18dso38818239f.0
-        for <stable@vger.kernel.org>; Tue, 13 Feb 2024 06:57:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1707836246; x=1708441046; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Os+w+30wm2W4q0/QefX8a7m9ywg+DRye3vRu+KJKVDQ=;
-        b=1w1D3P3ViBeNP8ExCjUfoH6g3BCMvhTAhbf+t7Bei33ZdEY0Fu5ZuJbvD7ITUn1f3Q
-         RjZ9Qn77qJdx76ZNEN7yXuGyCY1ScelC1OJLTCWVTo1WowsMuLkPVQKFsqf55hsJ/+1y
-         nPo9cswU+voepQTE/cskeZpmD7R1VCj216F6Dyk0/ZNgSxlCdQLwp+J+WI9jMj3fB7Ie
-         c809SDwTWvtzh/TowVGKVHZ+O8jhrvMDf/R8t44zZuuoJMJyejm8S+A6KW4oQishdLHG
-         6XWzV2dmo5a6qoex8AfIwWLAVwnP4fo5c9P/eAHWmU5ixIth8aXx2Pzcgx/PCFdtC0dG
-         aMhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1707836246; x=1708441046;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Os+w+30wm2W4q0/QefX8a7m9ywg+DRye3vRu+KJKVDQ=;
-        b=DNM3fxdOTivBAPjS6HX3+owM4CJvefqWb2IzPpPGxQ3e9ExD3Zis2SbeQCb1wN3SyD
-         oclBBmn9eB/w9WxzgW25EVdV1KoQ3P8putd510+tDwFKwqgp/0/duq7FMNRaPbY0SR6E
-         JwxdgUr/UdE4t/w1Q/8oSxQ2Yv6KktR44Z075bvJiHpgCGqUubnUwwYKP4PvPGBma7vC
-         tOJenj1/x0qkg3aGQ8BxfKXUOSpqkUXFMGHS/864Xq/Bc5EdZ6JUIKr/T6ytV5bIk+KF
-         0gSpA2v+yaWeBCq/N1giALNmzow5oy1yYpyEK+PlDgC2QFnfGZ2RqZMozDXUprqxNZx6
-         l6yw==
-X-Gm-Message-State: AOJu0Yz/Xh1JJtvDWcpcFFEZD5MZcEjGZeNf68fNASFxtr/qqb88iC+9
-	xv/BebxVEu7bGAlSxEuOy4kUQNcWYZy9BJtxTpL9FzIfepKJ2gHLHIgUj+ZxEsjGn32GHu2kmF6
-	T
-X-Google-Smtp-Source: AGHT+IEl7+rou1XRhqWcA2in++Y82uqd+ovAuRIpCWoBwGt3hxeRvigSBcOFT9dbSRsHHI9kvIq81A==
-X-Received: by 2002:a05:6602:2c41:b0:7c4:5898:11d0 with SMTP id x1-20020a0566022c4100b007c4589811d0mr9221759iov.1.1707836246277;
-        Tue, 13 Feb 2024 06:57:26 -0800 (PST)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id f6-20020a02cac6000000b0046eb587003dsm1900651jap.127.2024.02.13.06.57.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Feb 2024 06:57:25 -0800 (PST)
-Message-ID: <22be60b9-f51f-44e5-9568-55e31954daa7@kernel.dk>
-Date: Tue, 13 Feb 2024 07:57:25 -0700
+	 In-Reply-To:Content-Type; b=P1Tpjgu2RUyLeUzmFbDWcQQIPFZj8Z4o1wQxqUgp9HM1DHA6GNasJXye3I2HwBW8Abtv8p+Vnp9sh11qQeMN39PsRDJSQtIPjahuOXkiLhkCR2igpjjJRnm3fGmz9Q1I3lTrms5P6Wx3ymwlilhocWBFJ5p8jSApIhiaRtbIHcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rZuHl-0006qk-4S; Tue, 13 Feb 2024 16:01:25 +0100
+Message-ID: <699726f6-8f5d-4482-8c27-8ea47a483f8a@leemhuis.info>
+Date: Tue, 13 Feb 2024 16:01:23 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,38 +41,67 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] io_uring/net: fix sr->len for
- IORING_OP_RECV with MSG_WAITALL" failed to apply to 5.15-stable tree
-Content-Language: en-US
-To: gregkh@linuxfoundation.org
-Cc: stable@vger.kernel.org
-References: <2024021339-flick-facsimile-65c3@gregkh>
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2024021339-flick-facsimile-65c3@gregkh>
+Subject: Re: [regression] linux-6.6.y, minmax: virtual memory exhausted in
+ i586 chroot during kernel compilation
+Content-Language: en-US, de-DE
+To: Greg KH <gregkh@linuxfoundation.org>,
+ Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: Sasha Levin <sashal@kernel.org>, David Laight <David.Laight@aculab.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>
+References: <f9f89284-0f48-4971-ad8d-86938a82fafc@leemhuis.info>
+ <2024021318-shifty-daybed-fca8@gregkh>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <2024021318-shifty-daybed-fca8@gregkh>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1707836493;cb9dcd70;
+X-HE-SMSGID: 1rZuHl-0006qk-4S
 
-On 2/13/24 6:16 AM, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 5.15-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
-> 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 72bd80252feeb3bef8724230ee15d9f7ab541c6e
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021339-flick-facsimile-65c3@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+On 13.02.24 15:50, Greg KH wrote:
+> On Mon, Feb 12, 2024 at 05:16:58PM +0100, Linux regression tracking (Thorsten Leemhuis) wrote:
+>>
+>> I noticed a regression report in bugzilla.kernel.org that seems to be
+>> specific to the linux-6.6.y series:
+>>
+>> Quoting from https://bugzilla.kernel.org/show_bug.cgi?id=218484 :
+>>
+>>> After upgrading to version 6.6.16, the kernel compilation on a i586
+>>> arch (on a 32bit chroot in a 64bit host) fails with a message:
+>>>
+>>> virtual memory exhausted: Cannot allocate memory
+>>>
+>>> this happens even lowering the number of parallel compilation
+>>> threads. On a x86_64 arch the same problem doesn't occur. It's not
+>>> clear whether some weird recursion is triggered that exhausts the
+>>> memory, but it seems that the problem is caused by the patchset
+>>> 'minmax' added to the 6.6.16 version, in particular it seems caused
+>>> by these patches:
+>>>
+>>> - minmax-allow-min-max-clamp-if-the-arguments-have-the-same-signedness.patch
+>>> - minmax-fix-indentation-of-__cmp_once-and-__clamp_once.patch
+>>> - minmax-allow-comparisons-of-int-against-unsigned-char-short.patch
+>>> - minmax-relax-check-to-allow-comparison-between-unsigned-arguments-and-signed-constants.patch
+>>>
+>>> Reverting those patches fixes the memory exhaustion problem during compilation.
+>>
+>> The reporter later added:
+>>
+>>> From a quick test the same problem doesn't occur in 6.8-rc4.
+>> See the ticket for more details.
+>
+> I think this was already fixed in 6.7 or Linus's tree, but I can't seem
+> to find the commit at the moment.
 
-Turns out this issue doesn't exist in 5.10/5.15-stable, so you can ignore
-those two failures.
+I thought so as well, but was in the same situation. But your comment
+made me look again and now I found it: that was 31e97d7c9ae3de ("media:
+solo6x10: replace max(a, min(b, c)) by clamp(b, a, c)"), which indeed is
+not yet in 6.6.y.
 
--- 
-Jens Axboe
+> What file is causing the compiler to crash?  Is it some video or media
+> driver?
 
-
+HTH, Ciao, Thorsten
 
