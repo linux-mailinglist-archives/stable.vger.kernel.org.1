@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-19711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D4FA85318F
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 14:16:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2864E85319C
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 14:19:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22A49B20BA5
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 13:16:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE0ADB20DC1
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 13:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2761455760;
-	Tue, 13 Feb 2024 13:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595C755776;
+	Tue, 13 Feb 2024 13:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0UQSSwd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0PzxSfe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD427482DA
-	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 13:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD822BB14
+	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 13:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707830211; cv=none; b=QuGLS4cgku3A66h1ngHkIpU+4Kk5/MlIEUvd95XXwserMRws0pqaWB56NPsHM2F9r1rrOOHC6tSkQbj81fxScIO8jlo00Q00I+6Kyqw0+PqmldooBe25R4QTDGfpagt0UBh70W0QOHTeR1D8amw/elb7iI+XEbMzf/WhtQx9VP8=
+	t=1707830372; cv=none; b=WQOzNK0k3BZn3IZEbRty5btmEnAUCEruU/IUtwlHhWQ7Lcp3Rivb5kpNy8vEI99v6n0PWY+JuqeHcNCl3kZYvya1muSvp9ddPeYLWTFrsykzgrBvZcwVPYuaQc7IgdHfxtBQCUuadt10teH5OPxLbmPSz1UZyFl5FwjyDhXsGr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707830211; c=relaxed/simple;
-	bh=0ZumayCGot+LCYab3hqX+R45LyOdiCGNXHe0an0k0PY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ixNEWXm/quImvKOrkml4VzCawSJfDQqm5Te+wG4uCJNe3ioD4THRvFxReC5Euj00+A5IxtXRCAHl4HhpH7aNZTRD5kaqRk+Un3zhfhNAMip0eJKeHFaT48kMyahTTw8Eyt0CWOYfhiZtvpjODMav1Nwmi0xEf5c0p6mjbej2GwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0UQSSwd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB32C433C7;
-	Tue, 13 Feb 2024 13:16:50 +0000 (UTC)
+	s=arc-20240116; t=1707830372; c=relaxed/simple;
+	bh=ZhXD94FCOxBNfsx4kXghaUaLK6xOrgbTajAEF8lJbO8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=X4zWRfaNZvDMnzITo2lFazb3cxq4Kwwx0VHnqrjI2wkDdvxdLEj4s9fF5mHFZZD9jRvYOZyOALO/eVeES3X3YGlFpS80w4qhlOLf5WwKw+g/VLAqdsbZ0DMtoiWSe5BnGNw4dbJh3QjmmclCT25Vr7DJblrzLFYhqEBHXrtDohA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0PzxSfe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28115C433C7;
+	Tue, 13 Feb 2024 13:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707830211;
-	bh=0ZumayCGot+LCYab3hqX+R45LyOdiCGNXHe0an0k0PY=;
+	s=korg; t=1707830371;
+	bh=ZhXD94FCOxBNfsx4kXghaUaLK6xOrgbTajAEF8lJbO8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=e0UQSSwdq5Uo8ocvj8u7PED9oSt6cr4x9oZgZ4YXCWTPFxMRsq1A6SyQAw+kBwex4
-	 CIkZhUurOcFBpd4jpvwlhdOEoSIHdDEmvHVIWxCllVuXnivMauEHtakXtKnKENg91f
-	 xHnAIjw3lpoFfvtwnJcyzej+E+nZWrMSWco1Jyg8=
-Subject: FAILED: patch "[PATCH] io_uring/net: fix sr->len for IORING_OP_RECV with MSG_WAITALL" failed to apply to 5.10-stable tree
+	b=a0PzxSfe55LVJlBovF/ZkVrom/nHjGOTWTPV6UYTFoMntbbG4atmsWtvShG39RXYc
+	 L8fn6XTpR17DCY9n9DSeTfTEymikRWheq4+xI1z4QW4u2cBtQRvc+rxUrdXE9Na2Xn
+	 kSaBGAJ0Mr/zIiwItU8ue0aFGLsO0B2iEO79PS0A=
+Subject: FAILED: patch "[PATCH] io_uring/net: limit inline multishot retries" failed to apply to 6.7-stable tree
 To: axboe@kernel.dk
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 13 Feb 2024 14:16:40 +0100
-Message-ID: <2024021340-playable-subsiding-a8db@gregkh>
+Date: Tue, 13 Feb 2024 14:19:28 +0100
+Message-ID: <2024021328-washboard-crevice-aaa0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.7-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
 git checkout FETCH_HEAD
-git cherry-pick -x 72bd80252feeb3bef8724230ee15d9f7ab541c6e
+git cherry-pick -x 76b367a2d83163cf19173d5cb0b562acbabc8eac
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021340-playable-subsiding-a8db@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021328-washboard-crevice-aaa0@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
 
 Possible dependencies:
 
-72bd80252fee ("io_uring/net: fix sr->len for IORING_OP_RECV with MSG_WAITALL and buffers")
-f9ead18c1058 ("io_uring: split network related opcodes into its own file")
-e0da14def1ee ("io_uring: move statx handling to its own file")
-a9c210cebe13 ("io_uring: move epoll handler to its own file")
-4cf90495281b ("io_uring: add a dummy -EOPNOTSUPP prep handler")
-99f15d8d6136 ("io_uring: move uring_cmd handling to its own file")
-cd40cae29ef8 ("io_uring: split out open/close operations")
-453b329be5ea ("io_uring: separate out file table handling code")
-f4c163dd7d4b ("io_uring: split out fadvise/madvise operations")
-0d5847274037 ("io_uring: split out fs related sync/fallocate functions")
-531113bbd5bf ("io_uring: split out splice related operations")
-11aeb71406dd ("io_uring: split out filesystem related operations")
-e28683bdfc2f ("io_uring: move nop into its own file")
-5e2a18d93fec ("io_uring: move xattr related opcodes to its own file")
-97b388d70b53 ("io_uring: handle completions in the core")
-de23077eda61 ("io_uring: set completion results upfront")
-e27f928ee1cb ("io_uring: add io_uring_types.h")
-4d4c9cff4f70 ("io_uring: define a request type cleanup handler")
-890968dc0336 ("io_uring: unify struct io_symlink and io_hardlink")
-9a3a11f977f9 ("io_uring: convert iouring_cmd to io_cmd_type")
+76b367a2d831 ("io_uring/net: limit inline multishot retries")
+91e5d765a82f ("io_uring/net: un-indent mshot retry path in io_recv_finish()")
 
 thanks,
 
@@ -96,37 +78,88 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 72bd80252feeb3bef8724230ee15d9f7ab541c6e Mon Sep 17 00:00:00 2001
+From 76b367a2d83163cf19173d5cb0b562acbabc8eac Mon Sep 17 00:00:00 2001
 From: Jens Axboe <axboe@kernel.dk>
-Date: Thu, 1 Feb 2024 06:42:36 -0700
-Subject: [PATCH] io_uring/net: fix sr->len for IORING_OP_RECV with MSG_WAITALL
- and buffers
+Date: Mon, 29 Jan 2024 12:00:58 -0700
+Subject: [PATCH] io_uring/net: limit inline multishot retries
 
-If we use IORING_OP_RECV with provided buffers and pass in '0' as the
-length of the request, the length is retrieved from the selected buffer.
-If MSG_WAITALL is also set and we get a short receive, then we may hit
-the retry path which decrements sr->len and increments the buffer for
-a retry. However, the length is still zero at this point, which means
-that sr->len now becomes huge and import_ubuf() will cap it to
-MAX_RW_COUNT and subsequently return -EFAULT for the range as a whole.
+If we have multiple clients and some/all are flooding the receives to
+such an extent that we can retry a LOT handling multishot receives, then
+we can be starving some clients and hence serving traffic in an
+imbalanced fashion.
 
-Fix this by always assigning sr->len once the buffer has been selected.
+Limit multishot retry attempts to some arbitrary value, whose only
+purpose serves to ensure that we don't keep serving a single connection
+for way too long. We default to 32 retries, which should be more than
+enough to provide fairness, yet not so small that we'll spend too much
+time requeuing rather than handling traffic.
 
 Cc: stable@vger.kernel.org
-Fixes: 7ba89d2af17a ("io_uring: ensure recv and recvmsg handle MSG_WAITALL correctly")
+Depends-on: 704ea888d646 ("io_uring/poll: add requeue return code from poll multishot handling")
+Depends-on: 1e5d765a82f ("io_uring/net: un-indent mshot retry path in io_recv_finish()")
+Depends-on: e84b01a880f6 ("io_uring/poll: move poll execution helpers higher up")
+Fixes: b3fdea6ecb55 ("io_uring: multishot recv")
+Fixes: 9bb66906f23e ("io_uring: support multishot in recvmsg")
+Link: https://github.com/axboe/liburing/issues/1043
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
 diff --git a/io_uring/net.c b/io_uring/net.c
-index a12ff69e6843..43bc9a5f96f9 100644
+index 740c6bfa5b59..a12ff69e6843 100644
 --- a/io_uring/net.c
 +++ b/io_uring/net.c
-@@ -923,6 +923,7 @@ int io_recv(struct io_kiocb *req, unsigned int issue_flags)
- 		if (!buf)
- 			return -ENOBUFS;
- 		sr->buf = buf;
-+		sr->len = len;
- 	}
+@@ -60,6 +60,7 @@ struct io_sr_msg {
+ 	unsigned			len;
+ 	unsigned			done_io;
+ 	unsigned			msg_flags;
++	unsigned			nr_multishot_loops;
+ 	u16				flags;
+ 	/* initialised and used only by !msg send variants */
+ 	u16				addr_len;
+@@ -70,6 +71,13 @@ struct io_sr_msg {
+ 	struct io_kiocb 		*notif;
+ };
  
- 	ret = import_ubuf(ITER_DEST, sr->buf, len, &msg.msg_iter);
++/*
++ * Number of times we'll try and do receives if there's more data. If we
++ * exceed this limit, then add us to the back of the queue and retry from
++ * there. This helps fairness between flooding clients.
++ */
++#define MULTISHOT_MAX_RETRY	32
++
+ static inline bool io_check_multishot(struct io_kiocb *req,
+ 				      unsigned int issue_flags)
+ {
+@@ -611,6 +619,7 @@ int io_recvmsg_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe)
+ 		sr->msg_flags |= MSG_CMSG_COMPAT;
+ #endif
+ 	sr->done_io = 0;
++	sr->nr_multishot_loops = 0;
+ 	return 0;
+ }
+ 
+@@ -654,12 +663,20 @@ static inline bool io_recv_finish(struct io_kiocb *req, int *ret,
+ 	 */
+ 	if (io_fill_cqe_req_aux(req, issue_flags & IO_URING_F_COMPLETE_DEFER,
+ 				*ret, cflags | IORING_CQE_F_MORE)) {
++		struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
++		int mshot_retry_ret = IOU_ISSUE_SKIP_COMPLETE;
++
+ 		io_recv_prep_retry(req);
+ 		/* Known not-empty or unknown state, retry */
+-		if (cflags & IORING_CQE_F_SOCK_NONEMPTY || msg->msg_inq == -1)
+-			return false;
++		if (cflags & IORING_CQE_F_SOCK_NONEMPTY || msg->msg_inq == -1) {
++			if (sr->nr_multishot_loops++ < MULTISHOT_MAX_RETRY)
++				return false;
++			/* mshot retries exceeded, force a requeue */
++			sr->nr_multishot_loops = 0;
++			mshot_retry_ret = IOU_REQUEUE;
++		}
+ 		if (issue_flags & IO_URING_F_MULTISHOT)
+-			*ret = IOU_ISSUE_SKIP_COMPLETE;
++			*ret = mshot_retry_ret;
+ 		else
+ 			*ret = -EAGAIN;
+ 		return true;
 
 
