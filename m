@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-20065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824148538AE
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:39:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E4A853814
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:32:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E24B7B264C1
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:39:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31852283FB8
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E18B57885;
-	Tue, 13 Feb 2024 17:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084DE5FF0E;
+	Tue, 13 Feb 2024 17:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asi6Bw9l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVIgzi4N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4DF5FF04;
-	Tue, 13 Feb 2024 17:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA9E65FDDF;
+	Tue, 13 Feb 2024 17:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845952; cv=none; b=m+fkgh8ojPeELI6IeAwxMG2N87PvreuuKMUlSHm139piQeO4v6YAISSMlnFdSM5CwLQ0TcFHOLrncw0ZyCe0QmYNj77EzgjskvaswQNDYKwZKR7hRWyYEjXsnS4LDdYyzAYG9zRWsezE8oWI8nhk6Hn4YW5wOxP5wYvFZQ5/V3A=
+	t=1707845567; cv=none; b=FNjrlzp5PojUlnJgy3zVBIbxOuA4IQGiln2nhIjh8SwIkNnoS9noxQUZj4E4UcLwb63kglyAq63YjNXJXEOgk5wus3TfxUL0k5/f7IXo6AdN4l5V37FbcWwMfd+x6uRREhgT1FoiC3aPZ31W3Mt+YNAzFP5eaGkroiL2V/e7Fo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845952; c=relaxed/simple;
-	bh=nbgkVGmzcpsgH1eLTbVcXFUPdixJ8ImJDCAKXvkOenQ=;
+	s=arc-20240116; t=1707845567; c=relaxed/simple;
+	bh=6DvIEJQ7cQNB0HrkYxHzhU07II9VkVbEYYxRZhIY1Rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gOxCzoCNP0acdLGL/deY352NXnc4YO54RdAsYLgZhB8JNN4+IdeJRRr/NjRplknGvPWNN6qFvbyD5vTOaxRn8hWsvRj+IDjZC/WPetPGHSRRbG+9OiyRt1jRABNdD65xQJZAuYI3DcqOfWAVLwpjo2XfJGegaO5SOJxLyli5Eg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asi6Bw9l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2421BC433C7;
-	Tue, 13 Feb 2024 17:39:11 +0000 (UTC)
+	 MIME-Version; b=jYz6BlSV6gqzWgGo4You1A0WEsQvFjVhtLsTGKLNZJ4R7gWV6uvg5Jaz3B6+uu+g5O9b/FR3KdtRhOWESGhsQxdqS8o+npiynzg5yEwWKJg5m6opZ1mDX4XqYHYDmJTjU2WaPLBYt1n6xFc/KYwkodAemh/gMUN6rrqs4US/REM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVIgzi4N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D86AC433F1;
+	Tue, 13 Feb 2024 17:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845952;
-	bh=nbgkVGmzcpsgH1eLTbVcXFUPdixJ8ImJDCAKXvkOenQ=;
+	s=korg; t=1707845567;
+	bh=6DvIEJQ7cQNB0HrkYxHzhU07II9VkVbEYYxRZhIY1Rc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=asi6Bw9ldmLapBIedYBi5z44+gUwl4Ev6BUfCJbJZ+WLsyHRgsSHGqgXkDOlCYlXO
-	 Ar60l4rfY9lzHUGSTEg58uJ/lN2kxGjQVI4/edW6nB701PtYcNs+Jo4XpofGWWh8E2
-	 JjBSNpIKD17ooJRYmM8GfizAQjoquRGcKpIxxHNI=
+	b=PVIgzi4N02E/trMsRLZb/Wi2O3CgFfVOYKifdhKopCcBsJvl0fkgCXHpgCcJ1tNBj
+	 3Bm5o4A0Dicu571hPXdvMu/cp+nyh29A+X9n/WQYMVNGUb8pKKpt8oZP9tw7DFJvqc
+	 1WDIyBuknH6lKmw8mFgBB+Q+Je8xim7jHluCIBhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Eilon Rinat <eilon.rinat@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.7 104/124] wifi: iwlwifi: mvm: fix a battery life regression
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 117/121] io_uring/net: fix sr->len for IORING_OP_RECV with MSG_WAITALL and buffers
 Date: Tue, 13 Feb 2024 18:22:06 +0100
-Message-ID: <20240213171856.766729935@linuxfoundation.org>
+Message-ID: <20240213171856.403075045@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 1fa942f31665ea5dc5d4d95893dd13723eaa97cc upstream.
+commit 72bd80252feeb3bef8724230ee15d9f7ab541c6e upstream.
 
-Fix the DBG_CONFIG_TOKEN to not enable debug components that would
-prevent the device to save power.
+If we use IORING_OP_RECV with provided buffers and pass in '0' as the
+length of the request, the length is retrieved from the selected buffer.
+If MSG_WAITALL is also set and we get a short receive, then we may hit
+the retry path which decrements sr->len and increments the buffer for
+a retry. However, the length is still zero at this point, which means
+that sr->len now becomes huge and import_ubuf() will cap it to
+MAX_RW_COUNT and subsequently return -EFAULT for the range as a whole.
 
-Fixes: fc2fe0a5e856 ("wifi: iwlwifi: fw: disable firmware debug asserts")
+Fix this by always assigning sr->len once the buffer has been selected.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Eilon Rinat <eilon.rinat@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240128084842.90d2600edc27.Id657ea2f0ddb131f5f9d0ac39aeb8c88754fe54b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 7ba89d2af17a ("io_uring: ensure recv and recvmsg handle MSG_WAITALL correctly")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/api/debug.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/net.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/debug.h
-@@ -531,7 +531,7 @@ enum iwl_fw_dbg_config_cmd_type {
- }; /* LDBG_CFG_CMD_TYPE_API_E_VER_1 */
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -902,6 +902,7 @@ retry_multishot:
+ 		if (!buf)
+ 			return -ENOBUFS;
+ 		sr->buf = buf;
++		sr->len = len;
+ 	}
  
- /* this token disables debug asserts in the firmware */
--#define IWL_FW_DBG_CONFIG_TOKEN 0x00011301
-+#define IWL_FW_DBG_CONFIG_TOKEN 0x00010001
- 
- /**
-  * struct iwl_fw_dbg_config_cmd - configure FW debug
+ 	ret = import_ubuf(ITER_DEST, sr->buf, len, &msg.msg_iter);
 
 
 
