@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-19959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DD3C853819
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:33:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2642D8538B0
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:39:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 447ED284D8B
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:33:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5983C1C26756
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278D55FF13;
-	Tue, 13 Feb 2024 17:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7970A5FF13;
+	Tue, 13 Feb 2024 17:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgQKsznj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0dqGBay"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4A35FF04;
-	Tue, 13 Feb 2024 17:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B05C128;
+	Tue, 13 Feb 2024 17:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845580; cv=none; b=u2luSgYSEc8ZVVDuhMmbhHV73avR/kaY2/OUfdtpJVtpWp0qoj7Mr8fQEGak2zh9Ey/62b6YhF4aTk4cFp1PZHVB/IAnLI83Fu1lTnp5ZKnEsDkVyikkgPZoGjliZYPZTeeE4Fk9fq3H6vwsd2VmhBzkwZd3btmnVYxTS2oy9Rw=
+	t=1707845971; cv=none; b=psX2RorvMtsvPxIhD3BjI+2ZZW6X0ODCphU4LC1zaeT4CLaYgW8TNMhYcC/FRBZwMS/od0h65Oqdf181tlyprmA08zabgNPO+iYzOdNPWs9jqvmGh6H5h9/dEjRTSF7VDzqUtvyVjshfGrvBhVzrdWtp5t7rd3jrNDqZjdekSw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845580; c=relaxed/simple;
-	bh=68kODWO5pCInrNMn7qcYvAvb/zymbaBZjEsVavyWf0A=;
+	s=arc-20240116; t=1707845971; c=relaxed/simple;
+	bh=xbmfULTMzYFdNHGygOs11RDNeON0qU7BlllXGoWSXEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cWmninMsWRmIILFTIE3DFDKvf+vs08WmlK5PFfKsssQTHEH0txQh4Dv+jQNERDr43d2QMmqaiFSVKo37ArtK+LnDaYHviuAv0++g4hShhSk78RZTx0Ew8zGFtkfjBSELEWr5Ppg5A7ZyEIQ2JDDqRfwQeYMivWFALWbOKGIGPxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgQKsznj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36904C433C7;
-	Tue, 13 Feb 2024 17:33:00 +0000 (UTC)
+	 MIME-Version; b=W/r3YNa4a8wC6gEg4TRiSl9C2BsxSDHou59WmkGV2wtGM5jOZDA02Sk2ce9M1gQprJxA694zZtv5W6t3HenwXEZKVEsDU7g/uymANvVkRvGpE2HpqR9cr9EzS8qOzriJzy8dzAjOZwa23tQ1fH6PlSeRMFwzMtR+njYrFoRwp/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n0dqGBay; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DAE7C43390;
+	Tue, 13 Feb 2024 17:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845580;
-	bh=68kODWO5pCInrNMn7qcYvAvb/zymbaBZjEsVavyWf0A=;
+	s=korg; t=1707845971;
+	bh=xbmfULTMzYFdNHGygOs11RDNeON0qU7BlllXGoWSXEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YgQKsznjgRyp/IH/FqNP8nMTGeT/oygyvuPzMcXdkUVJ5Z3KrvgYNi6O1De96kLp/
-	 dgRhwCIpg/haC0s+cFUX6cn+KX98/EiMMLpvwUg5euJC4mX+JYCt+8Yfo3eDPW5HdT
-	 oJ0rQcnhpEXpDACgXochdMGjFFi0QU+imlRkBCmE=
+	b=n0dqGBayZHRiBkE62lxG+eAgKwP77h3WaCb7fj/szFcuYznWKAWa9HvcukwDyaDDX
+	 52nUI25ybbSnORJAQu5E6wY+ymhIs3QGbIXHlAHZSPigPWIHR/tdF4qQGRk4mQTWN1
+	 WmvSEMIxeLs2GyRr5IYnI60HpYlSAducpsciIcl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 121/121] io_uring/net: limit inline multishot retries
+Subject: [PATCH 6.7 108/124] io_uring/rw: ensure poll based multishot read retries appropriately
 Date: Tue, 13 Feb 2024 18:22:10 +0100
-Message-ID: <20240213171856.517414389@linuxfoundation.org>
+Message-ID: <20240213171856.882957889@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,94 +60,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Jens Axboe <axboe@kernel.dk>
 
-Commit 76b367a2d83163cf19173d5cb0b562acbabc8eac upstream.
+commit c79f52f0656eeb3e4a12f7f358f760077ae111b6 upstream.
 
-If we have multiple clients and some/all are flooding the receives to
-such an extent that we can retry a LOT handling multishot receives, then
-we can be starving some clients and hence serving traffic in an
-imbalanced fashion.
+io_read_mshot() always relies on poll triggering retries, and this works
+fine as long as we do a retry per size of the buffer being read. The
+buffer size is given by the size of the buffer(s) in the given buffer
+group ID.
 
-Limit multishot retry attempts to some arbitrary value, whose only
-purpose serves to ensure that we don't keep serving a single connection
-for way too long. We default to 32 retries, which should be more than
-enough to provide fairness, yet not so small that we'll spend too much
-time requeuing rather than handling traffic.
+But if we're reading less than what is available, then we don't always
+get to read everything that is available. For example, if the buffers
+available are 32 bytes and we have 64 bytes to read, then we'll
+correctly read the first 32 bytes and then wait for another poll trigger
+before we attempt the next read. This next poll trigger may never
+happen, in which case we just sit forever and never make progress, or it
+may trigger at some point in the future, and now we're just delivering
+the available data much later than we should have.
+
+io_read_mshot() could do retries itself, but that is wasteful as we'll
+be going through all of __io_read() again, and most likely in vain.
+Rather than do that, bump our poll reference count and have
+io_poll_check_events() do one more loop and check with vfs_poll() if we
+have more data to read. If we do, io_read_mshot() will get invoked again
+directly and we'll read the next chunk.
+
+io_poll_multishot_retry() must only get called from inside
+io_poll_issue(), which is our multishot retry handler, as we know we
+already "own" the request at this point.
 
 Cc: stable@vger.kernel.org
-Depends-on: 704ea888d646 ("io_uring/poll: add requeue return code from poll multishot handling")
-Depends-on: 1e5d765a82f ("io_uring/net: un-indent mshot retry path in io_recv_finish()")
-Depends-on: e84b01a880f6 ("io_uring/poll: move poll execution helpers higher up")
-Fixes: b3fdea6ecb55 ("io_uring: multishot recv")
-Fixes: 9bb66906f23e ("io_uring: support multishot in recvmsg")
-Link: https://github.com/axboe/liburing/issues/1043
+Link: https://github.com/axboe/liburing/issues/1041
+Fixes: fc68fcda0491 ("io_uring/rw: add support for IORING_OP_READ_MULTISHOT")
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/net.c |   23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ io_uring/poll.h |    9 +++++++++
+ io_uring/rw.c   |   10 +++++++++-
+ 2 files changed, 18 insertions(+), 1 deletion(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -60,6 +60,7 @@ struct io_sr_msg {
- 	unsigned			len;
- 	unsigned			done_io;
- 	unsigned			msg_flags;
-+	unsigned			nr_multishot_loops;
- 	u16				flags;
- 	/* initialised and used only by !msg send variants */
- 	u16				addr_len;
-@@ -70,6 +71,13 @@ struct io_sr_msg {
- 	struct io_kiocb 		*notif;
+--- a/io_uring/poll.h
++++ b/io_uring/poll.h
+@@ -24,6 +24,15 @@ struct async_poll {
+ 	struct io_poll		*double_poll;
  };
  
 +/*
-+ * Number of times we'll try and do receives if there's more data. If we
-+ * exceed this limit, then add us to the back of the queue and retry from
-+ * there. This helps fairness between flooding clients.
++ * Must only be called inside issue_flags & IO_URING_F_MULTISHOT, or
++ * potentially other cases where we already "own" this poll request.
 + */
-+#define MULTISHOT_MAX_RETRY	32
++static inline void io_poll_multishot_retry(struct io_kiocb *req)
++{
++	atomic_inc(&req->poll_refs);
++}
 +
- static inline bool io_check_multishot(struct io_kiocb *req,
- 				      unsigned int issue_flags)
- {
-@@ -611,6 +619,7 @@ int io_recvmsg_prep(struct io_kiocb *req
- 		sr->msg_flags |= MSG_CMSG_COMPAT;
- #endif
- 	sr->done_io = 0;
-+	sr->nr_multishot_loops = 0;
- 	return 0;
- }
+ int io_poll_add_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe);
+ int io_poll_add(struct io_kiocb *req, unsigned int issue_flags);
  
-@@ -654,12 +663,20 @@ static inline bool io_recv_finish(struct
- 	 */
- 	if (io_fill_cqe_req_aux(req, issue_flags & IO_URING_F_COMPLETE_DEFER,
- 				*ret, cflags | IORING_CQE_F_MORE)) {
-+		struct io_sr_msg *sr = io_kiocb_to_cmd(req, struct io_sr_msg);
-+		int mshot_retry_ret = IOU_ISSUE_SKIP_COMPLETE;
-+
- 		io_recv_prep_retry(req);
- 		/* Known not-empty or unknown state, retry */
--		if (cflags & IORING_CQE_F_SOCK_NONEMPTY || msg->msg_inq == -1)
--			return false;
-+		if (cflags & IORING_CQE_F_SOCK_NONEMPTY || msg->msg_inq == -1) {
-+			if (sr->nr_multishot_loops++ < MULTISHOT_MAX_RETRY)
-+				return false;
-+			/* mshot retries exceeded, force a requeue */
-+			sr->nr_multishot_loops = 0;
-+			mshot_retry_ret = IOU_REQUEUE;
-+		}
- 		if (issue_flags & IO_URING_F_MULTISHOT)
--			*ret = IOU_ISSUE_SKIP_COMPLETE;
-+			*ret = mshot_retry_ret;
- 		else
- 			*ret = -EAGAIN;
- 		return true;
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -18,6 +18,7 @@
+ #include "opdef.h"
+ #include "kbuf.h"
+ #include "rsrc.h"
++#include "poll.h"
+ #include "rw.h"
+ 
+ struct io_rw {
+@@ -956,8 +957,15 @@ int io_read_mshot(struct io_kiocb *req,
+ 		if (io_fill_cqe_req_aux(req,
+ 					issue_flags & IO_URING_F_COMPLETE_DEFER,
+ 					ret, cflags | IORING_CQE_F_MORE)) {
+-			if (issue_flags & IO_URING_F_MULTISHOT)
++			if (issue_flags & IO_URING_F_MULTISHOT) {
++				/*
++				 * Force retry, as we might have more data to
++				 * be read and otherwise it won't get retried
++				 * until (if ever) another poll is triggered.
++				 */
++				io_poll_multishot_retry(req);
+ 				return IOU_ISSUE_SKIP_COMPLETE;
++			}
+ 			return -EAGAIN;
+ 		}
+ 	}
 
 
 
