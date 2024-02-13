@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-20030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62FF6853880
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:38:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 055908537E5
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:30:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 180D51F22152
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:38:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2989C1C26A0A
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7592604BC;
-	Tue, 13 Feb 2024 17:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E91C5FF06;
+	Tue, 13 Feb 2024 17:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWnqKJq1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqa7eAm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756AB6025F;
-	Tue, 13 Feb 2024 17:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088255F56B;
+	Tue, 13 Feb 2024 17:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845833; cv=none; b=U3jUV7fTA0aIBP8fIiyCkpJACz5otS19sCff08mtKOBSl7Og6ysXc9ckoTLJDM2mpaEQEsGOc0mMXdEle6Vdr45eAQA7Ggr6caVBW/tk9YBcqnOMHtdsKIvUKnSeI8NsiTb1t6rat16JIafQObAr3I0+TKzle9bqqagJdequVvE=
+	t=1707845452; cv=none; b=rZ4ALziyQH/51BOrPySLEZ9CgNpYuoTjfIR2iPFLb6pZwumyhN7R65j7eXbQn5uktizySjlBxFsVHOGy0mMhdPn1vkUU2TCZFYaoz0OyE6f4oVch9/3RTT+BMsZ/yG/uqGIREGFzdbIHSCnxwNLQgAQOQflaP3Z8XchOL0LEMno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845833; c=relaxed/simple;
-	bh=k1aAWdKBgYDxdyIcDOKCvNsyAcdeiJycqNsG/I9ySdg=;
+	s=arc-20240116; t=1707845452; c=relaxed/simple;
+	bh=fTqjiApxrACzdvyf2OupHz8xI+sRb4Dl09Nm47G4GOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3xgHL1hRdJANrQaTnznObsLwuKQb9uGq0vMrVFf7yrVOba8vQhkutjvVIAWtwdM9K8lZeQDSNlmqOzkQOzOwFhRbvY0dGu8fUitEXA83tiPV8bjex04wcWJuk+9v871RG5/9odRygfqKRj1Z8hsMcwrSE8wYVaXICuPTYUYSOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWnqKJq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F8FC433C7;
-	Tue, 13 Feb 2024 17:37:12 +0000 (UTC)
+	 MIME-Version; b=n+EPhUNPBoOzWgPyeJTDP8ra9tMn/WfQvcoEAO/reeP+6zDGoNEqUt0W7uu0b0MWETe5IAkH7qrlta+UhI/z68xkCvse548lZIsUME2rq2z3MUaF1HSVRFirUvNG6k4dh84bgVZIBpyOO848xEq9/kenz2WhFTsAkNOJmiSrX5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqa7eAm+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E3DC433C7;
+	Tue, 13 Feb 2024 17:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845833;
-	bh=k1aAWdKBgYDxdyIcDOKCvNsyAcdeiJycqNsG/I9ySdg=;
+	s=korg; t=1707845451;
+	bh=fTqjiApxrACzdvyf2OupHz8xI+sRb4Dl09Nm47G4GOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OWnqKJq1xVU+3NZ+n0PO6A9qUN+XIgGN8zonFFuaA3aPAb7jwMlT5F8Wgqmg37bbt
-	 ONZW4NKwnI7LwokXP4jilj4CRkLzyUbbmxKLFL7hu5NXOWaJYJ/7Hs9MfGw6elogEQ
-	 wahCg2+JmlG0VxJfOG8gBkRwubNCqVaYI0prUOxA=
+	b=oqa7eAm+qT49C+QHWAcd0r7EAl2tZIbp+8qCu2vk7+JEtgjXt6zTgKPYmC7Y7/+Pd
+	 LHXohMdJKZAFIo80DgUsq5C3n5CT7LTD9WpKHjWGohEopA10XJrkqXgMugAFU8wrFt
+	 KSaQGSkrVS8jBOZ/c22+1MZqKeXcwp15zJPfjXqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Florian Westphal <fw@strlen.de>,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 070/124] netfilter: nft_set_pipapo: add helper to release pcpu scratch area
+Subject: [PATCH 6.6 083/121] netfilter: nft_set_pipapo: remove scratch_aligned pointer
 Date: Tue, 13 Feb 2024 18:21:32 +0100
-Message-ID: <20240213171855.784908927@linuxfoundation.org>
+Message-ID: <20240213171855.411659822@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +63,204 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 47b1c03c3c1a119435480a1e73f27197dc59131d ]
+[ Upstream commit 5a8cdf6fd860ac5e6d08d72edbcecee049a7fec4 ]
 
-After next patch simple kfree() is not enough anymore, so add
-a helper for it.
+use ->scratch for both avx2 and the generic implementation.
 
+After previous change the scratch->map member is always aligned properly
+for AVX2, so we can just use scratch->map in AVX2 too.
+
+The alignoff delta is stored in the scratchpad so we can reconstruct
+the correct address to free the area again.
+
+Fixes: 7400b063969b ("nft_set_pipapo: Introduce AVX2-based lookup implementation")
 Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
 Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 5a8cdf6fd860 ("netfilter: nft_set_pipapo: remove scratch_aligned pointer")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ net/netfilter/nft_set_pipapo.c      | 41 +++++------------------------
+ net/netfilter/nft_set_pipapo.h      |  6 ++---
+ net/netfilter/nft_set_pipapo_avx2.c |  2 +-
+ 3 files changed, 10 insertions(+), 39 deletions(-)
 
 diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 535df7a95374..dd6d81ddcff3 100644
+index b6bca59b7ba6..8e9b20077966 100644
 --- a/net/netfilter/nft_set_pipapo.c
 +++ b/net/netfilter/nft_set_pipapo.c
-@@ -1110,6 +1110,24 @@ static void pipapo_map(struct nft_pipapo_match *m,
- 		f->mt[map[i].to + j].e = e;
+@@ -1116,6 +1116,7 @@ static void pipapo_free_scratch(const struct nft_pipapo_match *m, unsigned int c
+ 		return;
+ 
+ 	mem = s;
++	mem -= s->align_off;
+ 	kfree(mem);
  }
  
-+/**
-+ * pipapo_free_scratch() - Free per-CPU map at original (not aligned) address
-+ * @m:		Matching data
-+ * @cpu:	CPU number
-+ */
-+static void pipapo_free_scratch(const struct nft_pipapo_match *m, unsigned int cpu)
-+{
-+	struct nft_pipapo_scratch *s;
-+	void *mem;
-+
-+	s = *per_cpu_ptr(m->scratch, cpu);
-+	if (!s)
-+		return;
-+
-+	mem = s;
-+	kfree(mem);
-+}
-+
- /**
-  * pipapo_realloc_scratch() - Reallocate scratch maps for partial match results
-  * @clone:	Copy of matching data with pending insertions and deletions
-@@ -1142,7 +1160,7 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
- 			return -ENOMEM;
- 		}
+@@ -1135,6 +1136,7 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
+ 		struct nft_pipapo_scratch *scratch;
+ #ifdef NFT_PIPAPO_ALIGN
+ 		void *scratch_aligned;
++		u32 align_off;
+ #endif
+ 		scratch = kzalloc_node(struct_size(scratch, map,
+ 						   bsize_max * 2) +
+@@ -1153,8 +1155,6 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
  
--		kfree(*per_cpu_ptr(clone->scratch, i));
-+		pipapo_free_scratch(clone, i);
+ 		pipapo_free_scratch(clone, i);
  
- 		*per_cpu_ptr(clone->scratch, i) = scratch;
+-		*per_cpu_ptr(clone->scratch, i) = scratch;
+-
+ #ifdef NFT_PIPAPO_ALIGN
+ 		/* Align &scratch->map (not the struct itself): the extra
+ 		 * %NFT_PIPAPO_ALIGN_HEADROOM bytes passed to kzalloc_node()
+@@ -1166,8 +1166,12 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
  
-@@ -1369,7 +1387,7 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
+ 		scratch_aligned = NFT_PIPAPO_LT_ALIGN(&scratch->map);
+ 		scratch_aligned -= offsetof(struct nft_pipapo_scratch, map);
+-		*per_cpu_ptr(clone->scratch_aligned, i) = scratch_aligned;
++		align_off = scratch_aligned - (void *)scratch;
++
++		scratch = scratch_aligned;
++		scratch->align_off = align_off;
+ #endif
++		*per_cpu_ptr(clone->scratch, i) = scratch;
  	}
+ 
+ 	return 0;
+@@ -1320,11 +1324,6 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
+ 	if (!new->scratch)
+ 		goto out_scratch;
+ 
+-#ifdef NFT_PIPAPO_ALIGN
+-	new->scratch_aligned = alloc_percpu(*new->scratch_aligned);
+-	if (!new->scratch_aligned)
+-		goto out_scratch;
+-#endif
+ 	for_each_possible_cpu(i)
+ 		*per_cpu_ptr(new->scratch, i) = NULL;
+ 
+@@ -1377,9 +1376,6 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
  out_scratch_realloc:
  	for_each_possible_cpu(i)
--		kfree(*per_cpu_ptr(new->scratch, i));
-+		pipapo_free_scratch(new, i);
- #ifdef NFT_PIPAPO_ALIGN
- 	free_percpu(new->scratch_aligned);
- #endif
-@@ -1653,7 +1671,7 @@ static void pipapo_free_match(struct nft_pipapo_match *m)
- 	int i;
- 
+ 		pipapo_free_scratch(new, i);
+-#ifdef NFT_PIPAPO_ALIGN
+-	free_percpu(new->scratch_aligned);
+-#endif
+ out_scratch:
+ 	free_percpu(new->scratch);
+ 	kfree(new);
+@@ -1666,11 +1662,7 @@ static void pipapo_free_match(struct nft_pipapo_match *m)
  	for_each_possible_cpu(i)
--		kfree(*per_cpu_ptr(m->scratch, i));
-+		pipapo_free_scratch(m, i);
+ 		pipapo_free_scratch(m, i);
  
- #ifdef NFT_PIPAPO_ALIGN
- 	free_percpu(m->scratch_aligned);
-@@ -2253,7 +2271,7 @@ static void nft_pipapo_destroy(const struct nft_ctx *ctx,
- 		free_percpu(m->scratch_aligned);
- #endif
+-#ifdef NFT_PIPAPO_ALIGN
+-	free_percpu(m->scratch_aligned);
+-#endif
+ 	free_percpu(m->scratch);
+-
+ 	pipapo_free_fields(m);
+ 
+ 	kfree(m);
+@@ -2165,16 +2157,6 @@ static int nft_pipapo_init(const struct nft_set *set,
+ 	for_each_possible_cpu(i)
+ 		*per_cpu_ptr(m->scratch, i) = NULL;
+ 
+-#ifdef NFT_PIPAPO_ALIGN
+-	m->scratch_aligned = alloc_percpu(struct nft_pipapo_scratch *);
+-	if (!m->scratch_aligned) {
+-		err = -ENOMEM;
+-		goto out_free;
+-	}
+-	for_each_possible_cpu(i)
+-		*per_cpu_ptr(m->scratch_aligned, i) = NULL;
+-#endif
+-
+ 	rcu_head_init(&m->rcu);
+ 
+ 	nft_pipapo_for_each_field(f, i, m) {
+@@ -2205,9 +2187,6 @@ static int nft_pipapo_init(const struct nft_set *set,
+ 	return 0;
+ 
+ out_free:
+-#ifdef NFT_PIPAPO_ALIGN
+-	free_percpu(m->scratch_aligned);
+-#endif
+ 	free_percpu(m->scratch);
+ out_scratch:
+ 	kfree(m);
+@@ -2261,9 +2240,6 @@ static void nft_pipapo_destroy(const struct nft_ctx *ctx,
+ 
+ 		nft_set_pipapo_match_destroy(ctx, set, m);
+ 
+-#ifdef NFT_PIPAPO_ALIGN
+-		free_percpu(m->scratch_aligned);
+-#endif
  		for_each_possible_cpu(cpu)
--			kfree(*per_cpu_ptr(m->scratch, cpu));
-+			pipapo_free_scratch(m, cpu);
+ 			pipapo_free_scratch(m, cpu);
  		free_percpu(m->scratch);
- 		pipapo_free_fields(m);
- 		kfree(m);
-@@ -2270,7 +2288,7 @@ static void nft_pipapo_destroy(const struct nft_ctx *ctx,
- 		free_percpu(priv->clone->scratch_aligned);
- #endif
- 		for_each_possible_cpu(cpu)
--			kfree(*per_cpu_ptr(priv->clone->scratch, cpu));
-+			pipapo_free_scratch(priv->clone, cpu);
- 		free_percpu(priv->clone->scratch);
+@@ -2278,9 +2254,6 @@ static void nft_pipapo_destroy(const struct nft_ctx *ctx,
+ 		if (priv->dirty)
+ 			nft_set_pipapo_match_destroy(ctx, set, m);
  
- 		pipapo_free_fields(priv->clone);
+-#ifdef NFT_PIPAPO_ALIGN
+-		free_percpu(priv->clone->scratch_aligned);
+-#endif
+ 		for_each_possible_cpu(cpu)
+ 			pipapo_free_scratch(priv->clone, cpu);
+ 		free_percpu(priv->clone->scratch);
+diff --git a/net/netfilter/nft_set_pipapo.h b/net/netfilter/nft_set_pipapo.h
+index 75b1340c6335..a4a58812c108 100644
+--- a/net/netfilter/nft_set_pipapo.h
++++ b/net/netfilter/nft_set_pipapo.h
+@@ -133,10 +133,12 @@ struct nft_pipapo_field {
+ /**
+  * struct nft_pipapo_scratch - percpu data used for lookup and matching
+  * @map_index:	Current working bitmap index, toggled between field matches
++ * @align_off:	Offset to get the originally allocated address
+  * @map:	store partial matching results during lookup
+  */
+ struct nft_pipapo_scratch {
+ 	u8 map_index;
++	u32 align_off;
+ 	unsigned long map[];
+ };
+ 
+@@ -144,16 +146,12 @@ struct nft_pipapo_scratch {
+  * struct nft_pipapo_match - Data used for lookup and matching
+  * @field_count		Amount of fields in set
+  * @scratch:		Preallocated per-CPU maps for partial matching results
+- * @scratch_aligned:	Version of @scratch aligned to NFT_PIPAPO_ALIGN bytes
+  * @bsize_max:		Maximum lookup table bucket size of all fields, in longs
+  * @rcu			Matching data is swapped on commits
+  * @f:			Fields, with lookup and mapping tables
+  */
+ struct nft_pipapo_match {
+ 	int field_count;
+-#ifdef NFT_PIPAPO_ALIGN
+-	struct nft_pipapo_scratch * __percpu *scratch_aligned;
+-#endif
+ 	struct nft_pipapo_scratch * __percpu *scratch;
+ 	size_t bsize_max;
+ 	struct rcu_head rcu;
+diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
+index 78213c73af2e..90e275bb3e5d 100644
+--- a/net/netfilter/nft_set_pipapo_avx2.c
++++ b/net/netfilter/nft_set_pipapo_avx2.c
+@@ -1139,7 +1139,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
+ 	 */
+ 	kernel_fpu_begin_mask(0);
+ 
+-	scratch = *raw_cpu_ptr(m->scratch_aligned);
++	scratch = *raw_cpu_ptr(m->scratch);
+ 	if (unlikely(!scratch)) {
+ 		kernel_fpu_end();
+ 		return false;
 -- 
 2.43.0
 
