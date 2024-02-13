@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-19848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0558E853787
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:26:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E5E8537BD
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96E7B1F24CBA
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:26:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA29CB2322E
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84C55FDB5;
-	Tue, 13 Feb 2024 17:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 867385FF08;
+	Tue, 13 Feb 2024 17:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpzUnTMz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJJErNAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B025F56B;
-	Tue, 13 Feb 2024 17:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438EA5FF01;
+	Tue, 13 Feb 2024 17:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845191; cv=none; b=sMSgeI0a3NHBHpKWVKyLYWiDkCs0OsHd5WjElbssdtSyyPQl2Jmfl8/OOhVBVso7j3N7/svppodxc8hhiP6jz8wO/zrlltIwZO+9RrTmazyRpr8OAnzfhNW0xwMzec1HOIqECy9RhQVCVQm+tSDA+d7TIYMBnpgpAQximH4dYQM=
+	t=1707845338; cv=none; b=JDlpCGBdBVKIlhcnCymkZl0vo3kC4hhJRrfBftEGM3NJThr/XA+qt2f/fQJ33leNyaNMEca7Ge1YMBJMGZHmtzfSAlCtoTOu5ALlaec0Dj/CFUmK05zKzzsnoPMy8hPzzzCQOcFikuieJDu1TH10zCPqBOrKR38gEWznaloCbCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845191; c=relaxed/simple;
-	bh=RfXyzkYmCxD56I0c0OxIt8MdL9lP43BZeY7axMCxVgI=;
+	s=arc-20240116; t=1707845338; c=relaxed/simple;
+	bh=0oMQ5db5LsP/zOMMXIHr30aZjM37SwB6Kx+gVzEaPVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nwY/zBHziDsym6hfS36Q7Sk5F33WU9rzyUptevD82O4Q3Bo1DvuqnNoqyp6i1tKbt8jlylsNRKR3gE1jFU2OaCuZSo4587r6TSdHFf0upf/+7CH6WIwKU+gKYV7oYZjyy9WJuQd0kv6/OKBdNkiW2FNWosvqE3yvm2VgJ3uQwlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpzUnTMz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03FA5C433C7;
-	Tue, 13 Feb 2024 17:26:29 +0000 (UTC)
+	 MIME-Version; b=pN5Dv8dqzZBRcNuFFXj3X9pavgYT+RxEdttgq8uRZw1ftvulm04LKGMOIbDkbDf9cAifT4JHGgjOGjXCv1UEybV9qqhSDXZG/9hXjS19fJGUsiN9poi/L+jorfI9YMiWQqSSlpGyEiI7Q47xyFHz1Z2NZFAdvDk1A6v5nmGKtAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJJErNAs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E368C43394;
+	Tue, 13 Feb 2024 17:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845190;
-	bh=RfXyzkYmCxD56I0c0OxIt8MdL9lP43BZeY7axMCxVgI=;
+	s=korg; t=1707845337;
+	bh=0oMQ5db5LsP/zOMMXIHr30aZjM37SwB6Kx+gVzEaPVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mpzUnTMz4ifzJRARzN5uDRhkw5HdN41GH0oTmttrKcGtBm7rgkkN7TUw1Bok5/kd+
-	 mCYFqsXC1ZS8/UD2YPyvISKrAc3dv2M5gJjxQarCLBWNSGOdjVDwN/yF+YNjpNFsmt
-	 YLH01/t547ZVZZoLIliScg6uFpzSbq+sfpKpTMXU=
+	b=RJJErNAs2RKr22xF7CPoc6FYp/wkRWHFOP4xUL9SxrjebeAHJjHq6ABVZc1ZJKWIy
+	 7tRjACumTvoUdqOQHLK3MTejw0+TlsKFsGSpJM4Ha9bcLVL4vtMZxpoeTsAF7A56z5
+	 BbTXHQpkFgLneIhcWoNsMOtw6zrIvpti9vkqyNZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Shyam Prasad N <sprasad@microsoft.com>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/121] cifs: avoid redundant calls to disable multichannel
-Date: Tue, 13 Feb 2024 18:20:19 +0100
-Message-ID: <20240213171853.258037716@linuxfoundation.org>
+Subject: [PATCH 6.6 011/121] cifs: failure to add channel on iface should bump up weight
+Date: Tue, 13 Feb 2024 18:20:20 +0100
+Message-ID: <20240213171853.287476307@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
 In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
 References: <20240213171852.948844634@linuxfoundation.org>
@@ -68,38 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit e77e15fa5eb1c830597c5ca53ea7af973bae2f78 ]
+[ Upstream commit 6aac002bcfd554aff6d3ebb55e1660d078d70ab0 ]
 
-When the server reports query network interface info call
-as unsupported following a tree connect, it means that
-multichannel is unsupported, even if the server capabilities
-report otherwise.
+After the interface selection policy change to do a weighted
+round robin, each iface maintains a weight_fulfilled. When the
+weight_fulfilled reaches the total weight for the iface, we know
+that the weights can be reset and ifaces can be allocated from
+scratch again.
 
-When this happens, cifs_chan_skip_or_disable is called to
-disable multichannel on the client. However, we only need
-to call this when multichannel is currently setup.
+During channel allocation failures on a particular channel,
+weight_fulfilled is not incremented. If a few interfaces are
+inactive, we could end up in a situation where the active
+interfaces are all allocated for the total_weight, and inactive
+ones are all that remain. This can cause a situation where
+no more channels can be allocated further.
 
-Fixes: f591062bdbf4 ("cifs: handle servers that still advertise multichannel after disabling")
+This change fixes it by increasing weight_fulfilled, even when
+channel allocation failure happens. This could mean that if
+there are temporary failures in channel allocation, the iface
+weights may not strictly be adhered to. But that's still okay.
+
+Fixes: a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
 Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2pdu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/sess.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index f5006aa97f5b..5d9c87d2e1e0 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -410,7 +410,7 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
- 		rc = SMB3_request_interfaces(xid, tcon, false);
- 		free_xid(xid);
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index 62596299a396..a20a5d0836dc 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -263,6 +263,8 @@ int cifs_try_adding_channels(struct cifs_ses *ses)
+ 					 &iface->sockaddr,
+ 					 rc);
+ 				kref_put(&iface->refcount, release_iface);
++				/* failure to add chan should increase weight */
++				iface->weight_fulfilled++;
+ 				continue;
+ 			}
  
--		if (rc == -EOPNOTSUPP) {
-+		if (rc == -EOPNOTSUPP && ses->chan_count > 1) {
- 			/*
- 			 * some servers like Azure SMB server do not advertise
- 			 * that multichannel has been disabled with server
 -- 
 2.43.0
 
