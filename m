@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-19942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91C8A853802
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:32:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBDE853875
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:37:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4CE99282E7C
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:32:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D7811F24F46
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2DA5FF08;
-	Tue, 13 Feb 2024 17:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EC556025D;
+	Tue, 13 Feb 2024 17:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLQsULGA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubfopOBj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5BE5F54E;
-	Tue, 13 Feb 2024 17:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5AE5F56B;
+	Tue, 13 Feb 2024 17:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845525; cv=none; b=osOEiyhe0W21080B6XjZmgczNQdYSvM0fpEWuiwIX0FAv/haUjW2zRCgdipThKJWT/RrFQx+1Pasn1TvcjLLbNRjIOvlcgmanRbCubTLHEoaFB2oPXK4IxCM+yWPptof7ODCzEA1CJ6QCWR8pL4DneyuYEwUOocdEx3oi8Fx6RU=
+	t=1707845811; cv=none; b=nnL6qq7P3FYxKfq915nbdIPdmJCeC0QKgh7I7jpTxGRXMnRshzpQM+oH36veqN+leIvYPyXvlevhMSoiBUAFhBa2lcMJbNPzjn0nldd25UuwWreTja3ZtDd4wPjY6dIUMRz/lPH9DJK5Wxg3sxEK+vKx2nCXIB4nAUVbzFpFmBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845525; c=relaxed/simple;
-	bh=r8iICHTfFp4acybiWok1qjkwFtw1gcAeWy1QmelsiBE=;
+	s=arc-20240116; t=1707845811; c=relaxed/simple;
+	bh=dpuZa8X2snUq9jU07SQaXr71XgrPWXwMxEN03kvZTZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uO1iMwnYU2o0ZRLKZqSkM1XBcS+O406UH6kmXQRhBMpwdF77vn4ZKxjHIPvR6xVk/y6nrdyrUU/L+f9/aY+0hIvWhF4T6UAHL/CKtpVEyuLXsOjgqXc8oBXGudn2qvLB/DC0hIAomvY792XFdwGVjpRmWEvhqXzwskyJc340Xqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLQsULGA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 963FBC433F1;
-	Tue, 13 Feb 2024 17:32:04 +0000 (UTC)
+	 MIME-Version; b=GvsdYniOavBvGS9oxwc0llj/oWNaAHtI6BIKKincIGRH5R3Qcbx6l/MdXHI5CK+yjNRvIPts6FrAeSDzMLaEaVYx9/pFatjDfQ+JJxD+kBV2E1hf8nLlizCKwoChnBxt944vDxXDy04/ctMjb7MFyoqxG4LQUuyNqVKUs345viI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubfopOBj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C5AC433F1;
+	Tue, 13 Feb 2024 17:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845525;
-	bh=r8iICHTfFp4acybiWok1qjkwFtw1gcAeWy1QmelsiBE=;
+	s=korg; t=1707845811;
+	bh=dpuZa8X2snUq9jU07SQaXr71XgrPWXwMxEN03kvZTZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OLQsULGAZtlKqNzZqoEKhGKQKey70JL9QB0iFtuh+2qeGPEtr+oUCNBU3MBYJIp8c
-	 K685IstCG+SAD6H4AQ6ltLlGp3c2DsDsZ1eMvmPY6t2XXY+6GyO8NuECDR829h77r/
-	 NhZv71BcAyvt3BBmMTombODbSiBle+hmcJ8j0H8Y=
+	b=ubfopOBjNSjUEFRrJagOIuz5byMKCOLDLAphHuq6dRnM7s7enSMeeVpmmlCFm7s1A
+	 i3LlkGeYAVSbeqzRzRD4ePnzuDEQI2X8VGRSzNAO/dKa4yp42AiH8SxDySiK7OwcaR
+	 mS29E9NACoG5VLXwir30s1tH72jVxHDdM7fPx6ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Yongqiang Sun <yongqiang.sun@amd.com>,
+	Anthony Koo <Anthony.Koo@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 076/121] netfilter: nft_compat: restrict match/target protocol to u16
+Subject: [PATCH 6.7 063/124] drm/amd/display: Add NULL test for timing generator in dcn21_set_pipe()
 Date: Tue, 13 Feb 2024 18:21:25 +0100
-Message-ID: <20240213171855.210559257@linuxfoundation.org>
+Message-ID: <20240213171855.577553039@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +66,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit d694b754894c93fb4d71a7f3699439dec111decc ]
+[ Upstream commit 66951d98d9bf45ba25acf37fe0747253fafdf298 ]
 
-xt_check_{match,target} expects u16, but NFTA_RULE_COMPAT_PROTO is u32.
+In "u32 otg_inst = pipe_ctx->stream_res.tg->inst;"
+pipe_ctx->stream_res.tg could be NULL, it is relying on the caller to
+ensure the tg is not NULL.
 
-NLA_POLICY_MAX(NLA_BE32, 65535) cannot be used because .max in
-nla_policy is s16, see 3e48be05f3c7 ("netlink: add attribute range
-validation to policy").
-
-Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 474ac4a875ca ("drm/amd/display: Implement some asic specific abm call backs.")
+Cc: Yongqiang Sun <yongqiang.sun@amd.com>
+Cc: Anthony Koo <Anthony.Koo@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Anthony Koo <Anthony.Koo@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_compat.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ .../amd/display/dc/hwss/dcn21/dcn21_hwseq.c   | 24 +++++++++++--------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
-index ed71d5ecbe0a..1f9474fefe84 100644
---- a/net/netfilter/nft_compat.c
-+++ b/net/netfilter/nft_compat.c
-@@ -200,6 +200,7 @@ static const struct nla_policy nft_rule_compat_policy[NFTA_RULE_COMPAT_MAX + 1]
- static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c
+index a9cd39f77360..5c7f380a84f9 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c
+@@ -206,28 +206,32 @@ void dcn21_set_abm_immediate_disable(struct pipe_ctx *pipe_ctx)
+ void dcn21_set_pipe(struct pipe_ctx *pipe_ctx)
  {
- 	struct nlattr *tb[NFTA_RULE_COMPAT_MAX+1];
-+	u32 l4proto;
- 	u32 flags;
- 	int err;
- 
-@@ -218,7 +219,12 @@ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
- 	if (flags & NFT_RULE_COMPAT_F_INV)
- 		*inv = true;
- 
--	*proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
-+	l4proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
-+	if (l4proto > U16_MAX)
-+		return -EINVAL;
+ 	struct abm *abm = pipe_ctx->stream_res.abm;
+-	uint32_t otg_inst = pipe_ctx->stream_res.tg->inst;
++	struct timing_generator *tg = pipe_ctx->stream_res.tg;
+ 	struct panel_cntl *panel_cntl = pipe_ctx->stream->link->panel_cntl;
+ 	struct dmcu *dmcu = pipe_ctx->stream->ctx->dc->res_pool->dmcu;
++	uint32_t otg_inst;
 +
-+	*proto = l4proto;
++	if (!abm && !tg && !panel_cntl)
++		return;
 +
- 	return 0;
++	otg_inst = tg->inst;
+ 
+ 	if (dmcu) {
+ 		dce110_set_pipe(pipe_ctx);
+ 		return;
+ 	}
+ 
+-	if (abm && panel_cntl) {
+-		if (abm->funcs && abm->funcs->set_pipe_ex) {
+-			abm->funcs->set_pipe_ex(abm,
++	if (abm->funcs && abm->funcs->set_pipe_ex) {
++		abm->funcs->set_pipe_ex(abm,
+ 					otg_inst,
+ 					SET_ABM_PIPE_NORMAL,
+ 					panel_cntl->inst,
+ 					panel_cntl->pwrseq_inst);
+-		} else {
+-				dmub_abm_set_pipe(abm, otg_inst,
+-						SET_ABM_PIPE_NORMAL,
+-						panel_cntl->inst,
+-						panel_cntl->pwrseq_inst);
+-		}
++	} else {
++		dmub_abm_set_pipe(abm, otg_inst,
++				  SET_ABM_PIPE_NORMAL,
++				  panel_cntl->inst,
++				  panel_cntl->pwrseq_inst);
+ 	}
  }
  
 -- 
