@@ -1,87 +1,142 @@
-Return-Path: <stable+bounces-19694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73EEF852CED
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 10:50:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3DD0852D16
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 10:54:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 127B41F23763
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 09:50:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DF91281E2B
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 09:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BC852F90;
-	Tue, 13 Feb 2024 09:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46ABC3A1B5;
+	Tue, 13 Feb 2024 09:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2X6gYDC"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jjB0/Tk6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7431552F83;
-	Tue, 13 Feb 2024 09:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71ECE39FDA;
+	Tue, 13 Feb 2024 09:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707817384; cv=none; b=on7nNiBxY3O42FvgrxYLDou/HFchmaLipQWC0bRSBbxMwzhO0mTs0Eob6fpl4V0JjqLaiXlLbKHLx8NFEUq51iJ+hwfq68LxFmdWYiALdkzd8a7uN5TEnlKKNiYnBrcQ6CxMY0c4LyCKSE8n8ly39MY+qL54YEmxRSXf+ZMXEdo=
+	t=1707817883; cv=none; b=t8hFjpcLfQ2mmK0f4G/MMdqL+mD/q8ySKPej/a75YJ0kj2bw35aN7FmAtuqMeel3JU8TREoZrTItgtjXkB3+QmP6ZLflt0AUz8awn6O+dhx4kzn8TH4zD4hRn0KASQw+aqaGZlTDbzw94dRsyL6DlDFOHXy2i7agfQHOoRAzscc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707817384; c=relaxed/simple;
-	bh=QpTYMbV/On63JHEAg+7gEa8nlefPffxwNn6vcdnnLGg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HYB3XOUdXQGW65sqqhZPlyqy6j2RofTt9rlVLrRj3ElSzxsnigoMfpaM9vLNy1/xKAKWAqtFeKf46/YJqxcISSslISptDapkxVHq/s4+Knv9U7bucw6ob9ko7JmzK1Ipyt3vvK1JcVElQfUs/Ze8MqD0r42vBVFU73f7Q0n2who=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2X6gYDC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575ABC433C7;
-	Tue, 13 Feb 2024 09:43:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707817384;
-	bh=QpTYMbV/On63JHEAg+7gEa8nlefPffxwNn6vcdnnLGg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K2X6gYDCmsXjOXHrQHqlESxPVKAE1j3B5raB7tjWKI59nnQeHDkdp7+44+gAk1xHQ
-	 vk8lkx//bMQWk1MDnE1SSUrOGe34c026khjTAU0nf+MHtQRpyEXn1phgf1MC/Q1vt7
-	 pGhCsFwAQmvdhHTCl+1QYMY3kNGnj8q7YI6IIY84=
-Date: Tue, 13 Feb 2024 10:43:01 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Roman Smirnov <r.smirnov@omp.ru>
-Cc: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Karina Yankevich <k.yankevich@omp.ru>,
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
-	Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>
-Subject: Re: [PATCH 5.10/5.15 v2 0/1 RFC] mm/truncate: fix WARNING in
- ext4_set_page_dirty()
-Message-ID: <2024021331-skyline-dicing-c695@gregkh>
-References: <20240125130947.600632-1-r.smirnov@omp.ru>
- <ZbJrAvCIufx1K2PU@casper.infradead.org>
- <20240129091124.vbyohvklcfkrpbyp@quack3>
- <Zbe5NBKrugBpRpM-@casper.infradead.org>
- <20240129160939.jgrhzrh5l2paezvp@quack3>
- <d25ec449ffce4e568637a418edc4221c@omp.ru>
+	s=arc-20240116; t=1707817883; c=relaxed/simple;
+	bh=9lRUh6+nf6rRUkRuDEgbxLNFISG29zSAHH9fpqqsAIo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=OFuv2vr9l/4OrFGJxJuY52A2bkTHFes109ByRs5VGPeBoQO+UxDKiT6VLTAkVP68F1rU5mw/5Sop38fMw30RmYy9mDzn1EcyZWV13iLWnWGxcjvv9jgt8Y5Tw+Rjx9OwQ5cvyjny5iiKRXd2ZUHngzUaGiJkcnPUtYI1jKQbpqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jjB0/Tk6; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41D9VqQE029331;
+	Tue, 13 Feb 2024 09:51:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=bf69VGDVwFoPu6tmc5FcL69h7xGtSS3ikkJnZ40Cf78=; b=jj
+	B0/Tk6G/5Qy0zNCmQZ7qXL51XM+xYlWvn0/nR1WYjOclvnnL8I91flDfdmGGg4V2
+	3Ine9FtzkTjEGFEzXQ/rg06h6nUtpURlQeq8acvikzy7JrDHsrYryRoB3DooZogU
+	FFyLQ/2hmXTOz5D35yDuw2oOHumvSShbVJfBLYyD7kBsApII7gCeiiLqrvxdQGcO
+	lLlJGeF/pcpJNzaemIgRZv5axWU12GNUR6G8gCim36Cup+Cv3V8aElXbBVeqc5Wm
+	pATsYrANOboq26jgltP7mfGeEn2UwXsB2H1Z5g/OtaDlCdwP1ohWUlitzNo35jBG
+	t+Plh83Z7BmklnBQdEFQ==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w7ju7abv8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 Feb 2024 09:51:18 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41D9pHuZ031528
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 Feb 2024 09:51:17 GMT
+Received: from [10.218.34.181] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 13 Feb
+ 2024 01:51:13 -0800
+Message-ID: <6c7dc71c-9251-4c84-a134-82104b5f924e@quicinc.com>
+Date: Tue, 13 Feb 2024 15:21:09 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d25ec449ffce4e568637a418edc4221c@omp.ru>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] soc: qcom: rpmh-rsc: Enhance check for VRM in-flight
+ request
+To: Mukesh Ojha <quic_mojha@quicinc.com>,
+        Subbaraman Narayanamurthy
+	<quic_subbaram@quicinc.com>
+CC: <andersson@kernel.org>, <konrad.dybcio@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_collinsd@quicinc.com>, <quic_eberman@quicinc.com>,
+        <quic_lsrao@quicinc.com>, <stable@vger.kernel.org>
+References: <20240212-rpmh-rsc-fixes-v3-1-1be0d705dbb5@quicinc.com>
+ <20240213035203.2492516-1-quic_subbaram@quicinc.com>
+ <9ad7967f-0a6a-96ed-1433-832f76752059@quicinc.com>
+Content-Language: en-US
+From: "Maulik Shah (mkshah)" <quic_mkshah@quicinc.com>
+In-Reply-To: <9ad7967f-0a6a-96ed-1433-832f76752059@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: rVDi3cE8v9WeVVlNZehbWNcaF_IJ1OOi
+X-Proofpoint-GUID: rVDi3cE8v9WeVVlNZehbWNcaF_IJ1OOi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-13_04,2024-02-12_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ mlxlogscore=732 lowpriorityscore=0 spamscore=0 clxscore=1015
+ priorityscore=1501 mlxscore=0 malwarescore=0 suspectscore=0 phishscore=0
+ adultscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402130076
 
-On Tue, Feb 13, 2024 at 07:07:18AM +0000, Roman Smirnov wrote:
-> Is there something else to do to make the patch accepted?
+Hi,
 
-What patch?  No context here...
+On 2/13/2024 11:24 AM, Mukesh Ojha wrote:
+> 
+> 
+> On 2/13/2024 9:22 AM, Subbaraman Narayanamurthy wrote:
+>> Hi Maulik,
+>>
+>>> +bool cmd_db_match_resource_addr(u32 addr1, u32 addr2)
+>>> +{
+>>
+>> <snip>
+>>
+>>> +    if (SLAVE_ID(addr1) == CMD_DB_HW_VRM
+>>> +        && VRM_ADDR(addr1) == VRM_ADDR(addr2))
+>>> +        return true;
+>>> +    else if (addr1 == addr2)
+>>> +        return true;
+>>> +    else
+>>> +        return false;
+>>
+>> Minor..it would be better if you modify it as following.
+>>
+>> +    if (addr1 == addr2)
+>> +        return true;
+>> +    else if (SLAVE_ID(addr1) == CMD_DB_HW_VRM
+>> +        && VRM_ADDR(addr1) == VRM_ADDR(addr2))
+>> +        return true;
+>> +
+>> +    return false;
+> 
+> Even better if it becomes one statement for true rest with
+> false..
 
-Also, for obvious reasons, we don't apply "RFC" patches as you yourself
-don't think they are good enough to be merged :(
+Thanks for the review.
 
-thanks,
+I will fix in v4, will wait for sometime if there are any other comments 
+to take care along with this.
 
-greg k-h
+Thanks,
+Maulik
+
 
