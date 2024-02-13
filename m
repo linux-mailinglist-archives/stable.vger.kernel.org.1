@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-19949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5681F85380A
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:32:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E32CC853766
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:25:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13EDD282F59
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:32:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B62C28BC66
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F1C45FF07;
-	Tue, 13 Feb 2024 17:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C855FF1C;
+	Tue, 13 Feb 2024 17:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="texWPkua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/v93+jy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0195F54E;
-	Tue, 13 Feb 2024 17:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F21435FB86;
+	Tue, 13 Feb 2024 17:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845548; cv=none; b=eM+jTvxPF3476Ofz4DkRZM64pqGy8XpzOtwH8CHte2/okrMzraPNEjYfpBNx1XZoqdAjHp1NEZQ+TzBhx7S8QGyDq1aZ7X62ikOiEYJwVgaFnR/aHM6nELvByoBH/x/byPIn06VcpjgHh1wB9pvzaxedgNnrH0oNpx0Wwlkp3Ls=
+	t=1707845096; cv=none; b=hXw1KcNSnbEBdmKJ9QfWYnL2Hx9PG9DX6o3aqfoeASZkauvt7GWJFk9x491glB6WZICrSVpSCGrVjBwdnnt0UIItraeS4E9yFwKNghx1mLFbtXD3SF9pl+S/U2AAAO/IXxYE5LzWRBensGwuRfcFyGAYgDudJvTxr/pS2IyK3+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845548; c=relaxed/simple;
-	bh=MNZIiiX3wpBkMFYJNkrHxZFB5SbRZJkRrAL0UL0UjBM=;
+	s=arc-20240116; t=1707845096; c=relaxed/simple;
+	bh=fqo85R6LP6aLnBN3Gwaf7l7KnEXDvnsErtsfLUHLeUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YpA1jXIhm6Jh/BDHqTM+Xk49ZDBPc1LEJtqamtrEhG/Wa1LxQc6dcRMwbvvZVBd3w9+a1Zugzmw/Y1vFG/UtUY+t9VUfITDBHnHbVoiIvcPgWX2VbhJdCL48yrvdx9p3iVBIw0/ehCOOdNz4B5MrlS72zuOdNVZqky6++qaphMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=texWPkua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99397C433F1;
-	Tue, 13 Feb 2024 17:32:27 +0000 (UTC)
+	 MIME-Version; b=dfj0y4TzAc7J+2db7us6YYofg3D98R2CEnN8v+K4KIR+Epb7N5b4vSNqo/CXGdJwdKFV8TjpO5EebdE9XBLZ42E+7Y4B0RjLVFTQ1RTc7vdI7SMX9x9ul+vKxSORqJKtStePUqqtuGPFjJOJRs1XzOXQJqUtkLv8rJvvV99j8/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/v93+jy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57CE8C433C7;
+	Tue, 13 Feb 2024 17:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845548;
-	bh=MNZIiiX3wpBkMFYJNkrHxZFB5SbRZJkRrAL0UL0UjBM=;
+	s=korg; t=1707845095;
+	bh=fqo85R6LP6aLnBN3Gwaf7l7KnEXDvnsErtsfLUHLeUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=texWPkuaQwNTAPQvZFZSJ6mURnPEkO4OaVEUm9nLZZd2uCj89UvNB4DtN7kFUM76e
-	 dwJm9BgpW8Z/acYB8LvSqAYWOJQpEVhgu9OQ5IR0FTP6j51bOHgZ7BVKJevOZ07I5W
-	 b/4E7RbPXMJK3pu5byeS7u50tbPK2wDHGpT+FMJo=
+	b=f/v93+jy7obON2GwWwQOy/8ZQ1eO5Wm+nr3LrJmwmgEoJN12Q4r80VexieLEJozDC
+	 qV/BAGdl74yZizFJmn0vEb3JUeria9OZO5Qoa4PlOcgyNFViZE9vBKv29t6nZ4BW19
+	 T2fO5TblyNHQb3cuQ4S2NUdbIhPVyx4k+jeBY66Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/121] netfilter: nft_set_pipapo: add helper to release pcpu scratch area
+	Alexander Tsoy <alexander@tsoy.me>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 45/64] ALSA: usb-audio: Add delay quirk for MOTU M Series 2nd revision
 Date: Tue, 13 Feb 2024 18:21:31 +0100
-Message-ID: <20240213171855.383381029@linuxfoundation.org>
+Message-ID: <20240213171846.160580034@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Alexander Tsoy <alexander@tsoy.me>
 
-[ Upstream commit 47b1c03c3c1a119435480a1e73f27197dc59131d ]
+commit d915a6850e27efb383cd4400caadfe47792623df upstream.
 
-After next patch simple kfree() is not enough anymore, so add
-a helper for it.
+Audio control requests that sets sampling frequency sometimes fail on
+this card. Adding delay between control messages eliminates that problem.
 
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 5a8cdf6fd860 ("netfilter: nft_set_pipapo: remove scratch_aligned pointer")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217601
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Alexander Tsoy <alexander@tsoy.me>
+Link: https://lore.kernel.org/r/20240124130239.358298-1-alexander@tsoy.me
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_pipapo.c | 28 +++++++++++++++++++++++-----
- 1 file changed, 23 insertions(+), 5 deletions(-)
+ sound/usb/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 58e595a84cd0..b6bca59b7ba6 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1101,6 +1101,24 @@ static void pipapo_map(struct nft_pipapo_match *m,
- 		f->mt[map[i].to + j].e = e;
- }
- 
-+/**
-+ * pipapo_free_scratch() - Free per-CPU map at original (not aligned) address
-+ * @m:		Matching data
-+ * @cpu:	CPU number
-+ */
-+static void pipapo_free_scratch(const struct nft_pipapo_match *m, unsigned int cpu)
-+{
-+	struct nft_pipapo_scratch *s;
-+	void *mem;
-+
-+	s = *per_cpu_ptr(m->scratch, cpu);
-+	if (!s)
-+		return;
-+
-+	mem = s;
-+	kfree(mem);
-+}
-+
- /**
-  * pipapo_realloc_scratch() - Reallocate scratch maps for partial match results
-  * @clone:	Copy of matching data with pending insertions and deletions
-@@ -1133,7 +1151,7 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
- 			return -ENOMEM;
- 		}
- 
--		kfree(*per_cpu_ptr(clone->scratch, i));
-+		pipapo_free_scratch(clone, i);
- 
- 		*per_cpu_ptr(clone->scratch, i) = scratch;
- 
-@@ -1358,7 +1376,7 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
- 	}
- out_scratch_realloc:
- 	for_each_possible_cpu(i)
--		kfree(*per_cpu_ptr(new->scratch, i));
-+		pipapo_free_scratch(new, i);
- #ifdef NFT_PIPAPO_ALIGN
- 	free_percpu(new->scratch_aligned);
- #endif
-@@ -1646,7 +1664,7 @@ static void pipapo_free_match(struct nft_pipapo_match *m)
- 	int i;
- 
- 	for_each_possible_cpu(i)
--		kfree(*per_cpu_ptr(m->scratch, i));
-+		pipapo_free_scratch(m, i);
- 
- #ifdef NFT_PIPAPO_ALIGN
- 	free_percpu(m->scratch_aligned);
-@@ -2247,7 +2265,7 @@ static void nft_pipapo_destroy(const struct nft_ctx *ctx,
- 		free_percpu(m->scratch_aligned);
- #endif
- 		for_each_possible_cpu(cpu)
--			kfree(*per_cpu_ptr(m->scratch, cpu));
-+			pipapo_free_scratch(m, cpu);
- 		free_percpu(m->scratch);
- 		pipapo_free_fields(m);
- 		kfree(m);
-@@ -2264,7 +2282,7 @@ static void nft_pipapo_destroy(const struct nft_ctx *ctx,
- 		free_percpu(priv->clone->scratch_aligned);
- #endif
- 		for_each_possible_cpu(cpu)
--			kfree(*per_cpu_ptr(priv->clone->scratch, cpu));
-+			pipapo_free_scratch(priv->clone, cpu);
- 		free_percpu(priv->clone->scratch);
- 
- 		pipapo_free_fields(priv->clone);
--- 
-2.43.0
-
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2071,6 +2071,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
+ 	DEVICE_FLG(0x0763, 0x2031, /* M-Audio Fast Track C600 */
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
++	DEVICE_FLG(0x07fd, 0x000b, /* MOTU M Series 2nd hardware revision */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x08bb, 0x2702, /* LineX FM Transmitter */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x0951, 0x16ad, /* Kingston HyperX */
 
 
 
