@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-19974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3721E85382C
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:34:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F29608537A1
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:27:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE8711F2A4AE
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:34:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A64F21F21386
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:27:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335E360262;
-	Tue, 13 Feb 2024 17:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14CAD60250;
+	Tue, 13 Feb 2024 17:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsP7kHsw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VGtJYdj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E645D6025A;
-	Tue, 13 Feb 2024 17:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CCF60241;
+	Tue, 13 Feb 2024 17:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845631; cv=none; b=jYzplAXBFZgeIgRs8D5UR0H9QsK6EG3zNsJEVMhPwEiQAmww5yeUL8YLYzs/VnwbHBaH7bd+h6I9qimEGPB0t4LQxsLuuMXDuePPS+dFV5Q9bLFZsAW2j+6cIfIXcdJRb/2jonGiMFVkl8JQf5lp4pDTVf5S2GbOIDdwDGzHq/M=
+	t=1707845250; cv=none; b=bFELrRmuPtU14jcvUmxPDmK1oLX8hhNA4fJdefQEQ0JVUSNXDNsEEMIX4VNtazn7P2DM9Hb/Z3AIVSIC4yzKdIOZuc+MeLtDH0uUd4AMra3ENyYlrixxg3tT/cAbGlX2fDx7rKruF6Xw6LpaCk73VofbfE4R5U0m2QNSLF2+YPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845631; c=relaxed/simple;
-	bh=3YMAMW9u+o0KHvl2aIDJoWCn5Q1woWiy0jMltdoh5XE=;
+	s=arc-20240116; t=1707845250; c=relaxed/simple;
+	bh=Tja3WL4hwf9REFdFMI8Qz4wec3l9XCF7zdG68txrtHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P4SvuFfRwpDCicHIfN4xPIvZ/IwSXuD4i1HyeD79GVcJ6VOCheQ15MC3h5S3SMIkCFTJJsZnn+l/N7m8krAw7Z5vlv4Fr1e6oHuuYapcbZ2mzUVDYippVkZO3ZgzAVUzXxF250ZSbAVhSTK14aqOtca41DZU9NtJ3XhMPfvh+yc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lsP7kHsw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47286C433C7;
-	Tue, 13 Feb 2024 17:33:50 +0000 (UTC)
+	 MIME-Version; b=d7x6/+rE4tUQQN8VXTgh7LXHbitX4B3+tNlavVoJHjMajgjm+zQR+c+JnRiR/5Eu3HdTcSOSQIBY/i+vq2kosJdR0aeIZRHASUiujimpai9kHb4cebpPNnaGL+L/QY5EALSyBt9GSDticRE57dJSsEoCWgcftIEPJ0wbAhEIMFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VGtJYdj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B500C433F1;
+	Tue, 13 Feb 2024 17:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845630;
-	bh=3YMAMW9u+o0KHvl2aIDJoWCn5Q1woWiy0jMltdoh5XE=;
+	s=korg; t=1707845250;
+	bh=Tja3WL4hwf9REFdFMI8Qz4wec3l9XCF7zdG68txrtHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lsP7kHswhlzW7jtftysiAogQKeuHXYRN+k5ougyJ5nVMRSd+DmuWltJ2A4L6n0xSp
-	 471yvXo4jYTp221J8QMwM/TzemtY+O8OOE5vIykVur0b1MZMTVfv9nCCl5+0G2s4kJ
-	 Vs6xDrg43Yh3bigFb9ZHvMFq373pbGA15LsKBWKw=
+	b=0VGtJYdjPddTT0TUhTOZxq8c8Zu+2oi1oM7zef/tV699pXzCjkhqSM0MemwKZhxJh
+	 OnmMLwiLqpTpY9CA5GY8vEGy3oHm+gbweItXJPNwugaJS1J0Z1XX/hBmzf9BhWgXU1
+	 olLOYsZrJByV+01w1FQU8wZ8J7afPKC0Uw+hfcmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Long Li <leo.lilong@huawei.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 014/124] cifs: avoid redundant calls to disable multichannel
+Subject: [PATCH 6.6 027/121] xfs: factor out xfs_defer_pending_abort
 Date: Tue, 13 Feb 2024 18:20:36 +0100
-Message-ID: <20240213171854.150669724@linuxfoundation.org>
+Message-ID: <20240213171853.768352112@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Long Li <leo.lilong@huawei.com>
 
-[ Upstream commit e77e15fa5eb1c830597c5ca53ea7af973bae2f78 ]
+commit 2a5db859c6825b5d50377dda9c3cc729c20cad43 upstream.
 
-When the server reports query network interface info call
-as unsupported following a tree connect, it means that
-multichannel is unsupported, even if the server capabilities
-report otherwise.
+Factor out xfs_defer_pending_abort() from xfs_defer_trans_abort(), which
+not use transaction parameter, so it can be used after the transaction
+life cycle.
 
-When this happens, cifs_chan_skip_or_disable is called to
-disable multichannel on the client. However, we only need
-to call this when multichannel is currently setup.
-
-Fixes: f591062bdbf4 ("cifs: handle servers that still advertise multichannel after disabling")
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2pdu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/libxfs/xfs_defer.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index f5006aa97f5b..5d9c87d2e1e0 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -410,7 +410,7 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon,
- 		rc = SMB3_request_interfaces(xid, tcon, false);
- 		free_xid(xid);
+diff --git a/fs/xfs/libxfs/xfs_defer.c b/fs/xfs/libxfs/xfs_defer.c
+index bcfb6a4203cd..88388e12f8e7 100644
+--- a/fs/xfs/libxfs/xfs_defer.c
++++ b/fs/xfs/libxfs/xfs_defer.c
+@@ -245,21 +245,18 @@ xfs_defer_create_intents(
+ 	return ret;
+ }
  
--		if (rc == -EOPNOTSUPP) {
-+		if (rc == -EOPNOTSUPP && ses->chan_count > 1) {
- 			/*
- 			 * some servers like Azure SMB server do not advertise
- 			 * that multichannel has been disabled with server
+-/* Abort all the intents that were committed. */
+ STATIC void
+-xfs_defer_trans_abort(
+-	struct xfs_trans		*tp,
+-	struct list_head		*dop_pending)
++xfs_defer_pending_abort(
++	struct xfs_mount		*mp,
++	struct list_head		*dop_list)
+ {
+ 	struct xfs_defer_pending	*dfp;
+ 	const struct xfs_defer_op_type	*ops;
+ 
+-	trace_xfs_defer_trans_abort(tp, _RET_IP_);
+-
+ 	/* Abort intent items that don't have a done item. */
+-	list_for_each_entry(dfp, dop_pending, dfp_list) {
++	list_for_each_entry(dfp, dop_list, dfp_list) {
+ 		ops = defer_op_types[dfp->dfp_type];
+-		trace_xfs_defer_pending_abort(tp->t_mountp, dfp);
++		trace_xfs_defer_pending_abort(mp, dfp);
+ 		if (dfp->dfp_intent && !dfp->dfp_done) {
+ 			ops->abort_intent(dfp->dfp_intent);
+ 			dfp->dfp_intent = NULL;
+@@ -267,6 +264,16 @@ xfs_defer_trans_abort(
+ 	}
+ }
+ 
++/* Abort all the intents that were committed. */
++STATIC void
++xfs_defer_trans_abort(
++	struct xfs_trans		*tp,
++	struct list_head		*dop_pending)
++{
++	trace_xfs_defer_trans_abort(tp, _RET_IP_);
++	xfs_defer_pending_abort(tp->t_mountp, dop_pending);
++}
++
+ /*
+  * Capture resources that the caller said not to release ("held") when the
+  * transaction commits.  Caller is responsible for zero-initializing @dres.
 -- 
 2.43.0
 
