@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-19788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C8CB85373B
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:23:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9398537BF
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D62AFB221F3
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:23:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE5E5B2110B
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6EF5FEFD;
-	Tue, 13 Feb 2024 17:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 166B65FF01;
+	Tue, 13 Feb 2024 17:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hccx/BD3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDtSi7R0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3775FEF5;
-	Tue, 13 Feb 2024 17:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9495FEFD;
+	Tue, 13 Feb 2024 17:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707844988; cv=none; b=FYofZguUda3iUMScBblydRqXXptEENLk3rliXu7hJImGlboPvI4daUnKJbFDd0T91d6aKUWBbJxplf7L8HbQGlhYD5fUCs481/xo35kSiDU8kW7wnnbZJ0VZMwhNv+GK7KPYY9drZJf0Rd9NPYGyW1QdVtK5rWNPTO5sbFxza8Q=
+	t=1707845344; cv=none; b=p+wCkzDCy6p68zCXgCOPKm0TXSenDZYs3KrHVK21sh9//uTABqEJfGNVs64lrAQNcLiE0gWjlvQS1A6qjxol5xMaz5DkfwkDFvIvEyzi4aCK/59Og31pj/td82P8PqAWtUPwrrrmqVmpsiqlsOMfp9U24bjPIW2obVfS91fppIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707844988; c=relaxed/simple;
-	bh=DvV7JvJK0KiR9KKG6g+fKdy5bjSvg3I5620tK/Gbs54=;
+	s=arc-20240116; t=1707845344; c=relaxed/simple;
+	bh=za1PH2+4VMqiwjATHvLAt/SQlU0/Uw0ImHPTIpoU4Cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rnLYATJ5xF3KwZvS4mAIzh9PvXty3eZFCEHFqdH3jvhpw9XqvAP/jUqh9oBs4wV8l/xmY3toWpUbHgDwpzXXbHF4OK4LwqEypi6cJipBpwJdVnuPurEIesue/TFv+Q4dD7Tx477NFSDl+djccwQTBUrjnvNqSRtoBGfIJSQmEEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hccx/BD3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F345C433F1;
-	Tue, 13 Feb 2024 17:23:07 +0000 (UTC)
+	 MIME-Version; b=DpcQOhmyWpHr5a6FNQbG+Vsi+nyLGy9vcgzG4ShwhD1GNWdyIKveSrJUGhnurmrJSMblyhKhc4P3/BZTelUf9bVVcbLxykujrtUK/rQT/3f1FxsxZRwKDPS9RxX06ukPvrMvK+qZ+V63Tia+i6qsTR1ssCK6UJu3c/E368lmLe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDtSi7R0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0467C433F1;
+	Tue, 13 Feb 2024 17:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707844987;
-	bh=DvV7JvJK0KiR9KKG6g+fKdy5bjSvg3I5620tK/Gbs54=;
+	s=korg; t=1707845344;
+	bh=za1PH2+4VMqiwjATHvLAt/SQlU0/Uw0ImHPTIpoU4Cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hccx/BD3PWhyfrovh+D18VhB8r5aRchVXCmYaFSJI3PK9YN+EPvPAf5d3muokwDoF
-	 1SGoHmlMAuOdZDz4HO0MFP+joTJBRkowF8EkH8gKhpWQHumpHUxyk2WLdpezq2i9UE
-	 JLr/ti39qXkk97oKwHaDTy6lv7D8MAkj7M06udLU=
+	b=kDtSi7R0SrmVJYilhJlAL0VC/HEVj2lWeQKu960D3DNxhpLZZEeF980jIWz4z/QHT
+	 1crYYjfie7TpY+L6+8UJt00Y777AcSPwoPGoePcnza3OKUA1dxrsfVPKClsFQ1VkH2
+	 1gJPeMJi/mAPOJxpqgGm2xwpWnqtvrEWRbTyGUpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 15/64] netdevsim: avoid potential loop in nsim_dev_trap_report_work()
+Subject: [PATCH 6.6 052/121] selftests/net: convert pmtu.sh to run it in unique namespace
 Date: Tue, 13 Feb 2024 18:21:01 +0100
-Message-ID: <20240213171845.206368942@linuxfoundation.org>
+Message-ID: <20240213171854.515622895@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit ba5e1272142d051dcc57ca1d3225ad8a089f9858 ]
+[ Upstream commit 378f082eaf3760cd7430fbcb1e4f8626bb6bc0ae ]
 
-Many syzbot reports include the following trace [1]
+pmtu test use /bin/sh, so we need to source ./lib.sh instead of lib.sh
+Here is the test result after conversion.
 
-If nsim_dev_trap_report_work() can not grab the mutex,
-it should rearm itself at least one jiffie later.
+ # ./pmtu.sh
+ TEST: ipv4: PMTU exceptions                                         [ OK ]
+ TEST: ipv4: PMTU exceptions - nexthop objects                       [ OK ]
+ TEST: ipv6: PMTU exceptions                                         [ OK ]
+ TEST: ipv6: PMTU exceptions - nexthop objects                       [ OK ]
+ ...
+ TEST: ipv4: list and flush cached exceptions - nexthop objects      [ OK ]
+ TEST: ipv6: list and flush cached exceptions                        [ OK ]
+ TEST: ipv6: list and flush cached exceptions - nexthop objects      [ OK ]
+ TEST: ipv4: PMTU exception w/route replace                          [ OK ]
+ TEST: ipv4: PMTU exception w/route replace - nexthop objects        [ OK ]
+ TEST: ipv6: PMTU exception w/route replace                          [ OK ]
+ TEST: ipv6: PMTU exception w/route replace - nexthop objects        [ OK ]
 
-[1]
-Sending NMI from CPU 1 to CPUs 0:
-NMI backtrace for cpu 0
-CPU: 0 PID: 32383 Comm: kworker/0:2 Not tainted 6.8.0-rc2-syzkaller-00031-g861c0981648f #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-Workqueue: events nsim_dev_trap_report_work
- RIP: 0010:bytes_is_nonzero mm/kasan/generic.c:89 [inline]
- RIP: 0010:memory_is_nonzero mm/kasan/generic.c:104 [inline]
- RIP: 0010:memory_is_poisoned_n mm/kasan/generic.c:129 [inline]
- RIP: 0010:memory_is_poisoned mm/kasan/generic.c:161 [inline]
- RIP: 0010:check_region_inline mm/kasan/generic.c:180 [inline]
- RIP: 0010:kasan_check_range+0x101/0x190 mm/kasan/generic.c:189
-Code: 07 49 39 d1 75 0a 45 3a 11 b8 01 00 00 00 7c 0b 44 89 c2 e8 21 ed ff ff 83 f0 01 5b 5d 41 5c c3 48 85 d2 74 4f 48 01 ea eb 09 <48> 83 c0 01 48 39 d0 74 41 80 38 00 74 f2 eb b6 41 bc 08 00 00 00
-RSP: 0018:ffffc90012dcf998 EFLAGS: 00000046
-RAX: fffffbfff258af1e RBX: fffffbfff258af1f RCX: ffffffff8168eda3
-RDX: fffffbfff258af1f RSI: 0000000000000004 RDI: ffffffff92c578f0
-RBP: fffffbfff258af1e R08: 0000000000000000 R09: fffffbfff258af1e
-R10: ffffffff92c578f3 R11: ffffffff8acbcbc0 R12: 0000000000000002
-R13: ffff88806db38400 R14: 1ffff920025b9f42 R15: ffffffff92c578e8
-FS:  0000000000000000(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000c00994e078 CR3: 000000002c250000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <NMI>
- </NMI>
- <TASK>
-  instrument_atomic_read include/linux/instrumented.h:68 [inline]
-  atomic_read include/linux/atomic/atomic-instrumented.h:32 [inline]
-  queued_spin_is_locked include/asm-generic/qspinlock.h:57 [inline]
-  debug_spin_unlock kernel/locking/spinlock_debug.c:101 [inline]
-  do_raw_spin_unlock+0x53/0x230 kernel/locking/spinlock_debug.c:141
-  __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:150 [inline]
-  _raw_spin_unlock_irqrestore+0x22/0x70 kernel/locking/spinlock.c:194
-  debug_object_activate+0x349/0x540 lib/debugobjects.c:726
-  debug_work_activate kernel/workqueue.c:578 [inline]
-  insert_work+0x30/0x230 kernel/workqueue.c:1650
-  __queue_work+0x62e/0x11d0 kernel/workqueue.c:1802
-  __queue_delayed_work+0x1bf/0x270 kernel/workqueue.c:1953
-  queue_delayed_work_on+0x106/0x130 kernel/workqueue.c:1989
-  queue_delayed_work include/linux/workqueue.h:563 [inline]
-  schedule_delayed_work include/linux/workqueue.h:677 [inline]
-  nsim_dev_trap_report_work+0x9c0/0xc80 drivers/net/netdevsim/dev.c:842
-  process_one_work+0x886/0x15d0 kernel/workqueue.c:2633
-  process_scheduled_works kernel/workqueue.c:2706 [inline]
-  worker_thread+0x8b9/0x1290 kernel/workqueue.c:2787
-  kthread+0x2c6/0x3a0 kernel/kthread.c:388
-  ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
- </TASK>
-
-Fixes: 012ec02ae441 ("netdevsim: convert driver to use unlocked devlink API during init/fini")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20240201175324.3752746-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: e71e016ad0f6 ("selftests: net: fix tcp listener handling in pmtu.sh")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/dev.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ tools/testing/selftests/net/pmtu.sh | 27 +++++++++------------------
+ 1 file changed, 9 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/netdevsim/dev.c b/drivers/net/netdevsim/dev.c
-index c3fbdd6b68ba..f3fa4bd12116 100644
---- a/drivers/net/netdevsim/dev.c
-+++ b/drivers/net/netdevsim/dev.c
-@@ -835,14 +835,14 @@ static void nsim_dev_trap_report_work(struct work_struct *work)
- 				      trap_report_dw.work);
- 	nsim_dev = nsim_trap_data->nsim_dev;
+diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
+index 4a5f031be232..8518eaacf4b5 100755
+--- a/tools/testing/selftests/net/pmtu.sh
++++ b/tools/testing/selftests/net/pmtu.sh
+@@ -198,8 +198,7 @@
+ # - pmtu_ipv6_route_change
+ #	Same as above but with IPv6
  
--	/* For each running port and enabled packet trap, generate a UDP
--	 * packet with a random 5-tuple and report it.
--	 */
- 	if (!devl_trylock(priv_to_devlink(nsim_dev))) {
--		schedule_delayed_work(&nsim_dev->trap_data->trap_report_dw, 0);
-+		schedule_delayed_work(&nsim_dev->trap_data->trap_report_dw, 1);
- 		return;
- 	}
+-# Kselftest framework requirement - SKIP code is 4.
+-ksft_skip=4
++source ./lib.sh
  
-+	/* For each running port and enabled packet trap, generate a UDP
-+	 * packet with a random 5-tuple and report it.
-+	 */
- 	list_for_each_entry(nsim_dev_port, &nsim_dev->port_list, list) {
- 		if (!netif_running(nsim_dev_port->ns->netdev))
- 			continue;
+ PAUSE_ON_FAIL=no
+ VERBOSE=0
+@@ -268,16 +267,6 @@ tests="
+ 	pmtu_ipv4_route_change		ipv4: PMTU exception w/route replace	1
+ 	pmtu_ipv6_route_change		ipv6: PMTU exception w/route replace	1"
+ 
+-NS_A="ns-A"
+-NS_B="ns-B"
+-NS_C="ns-C"
+-NS_R1="ns-R1"
+-NS_R2="ns-R2"
+-ns_a="ip netns exec ${NS_A}"
+-ns_b="ip netns exec ${NS_B}"
+-ns_c="ip netns exec ${NS_C}"
+-ns_r1="ip netns exec ${NS_R1}"
+-ns_r2="ip netns exec ${NS_R2}"
+ # Addressing and routing for tests with routers: four network segments, with
+ # index SEGMENT between 1 and 4, a common prefix (PREFIX4 or PREFIX6) and an
+ # identifier ID, which is 1 for hosts (A and B), 2 for routers (R1 and R2).
+@@ -543,13 +532,17 @@ setup_ip6ip6() {
+ }
+ 
+ setup_namespaces() {
++	setup_ns NS_A NS_B NS_C NS_R1 NS_R2
+ 	for n in ${NS_A} ${NS_B} ${NS_C} ${NS_R1} ${NS_R2}; do
+-		ip netns add ${n} || return 1
+-
+ 		# Disable DAD, so that we don't have to wait to use the
+ 		# configured IPv6 addresses
+ 		ip netns exec ${n} sysctl -q net/ipv6/conf/default/accept_dad=0
+ 	done
++	ns_a="ip netns exec ${NS_A}"
++	ns_b="ip netns exec ${NS_B}"
++	ns_c="ip netns exec ${NS_C}"
++	ns_r1="ip netns exec ${NS_R1}"
++	ns_r2="ip netns exec ${NS_R2}"
+ }
+ 
+ setup_veth() {
+@@ -839,7 +832,7 @@ setup_bridge() {
+ 	run_cmd ${ns_a} ip link set br0 up
+ 
+ 	run_cmd ${ns_c} ip link add veth_C-A type veth peer name veth_A-C
+-	run_cmd ${ns_c} ip link set veth_A-C netns ns-A
++	run_cmd ${ns_c} ip link set veth_A-C netns ${NS_A}
+ 
+ 	run_cmd ${ns_a} ip link set veth_A-C up
+ 	run_cmd ${ns_c} ip link set veth_C-A up
+@@ -944,9 +937,7 @@ cleanup() {
+ 	done
+ 	socat_pids=
+ 
+-	for n in ${NS_A} ${NS_B} ${NS_C} ${NS_R1} ${NS_R2}; do
+-		ip netns del ${n} 2> /dev/null
+-	done
++	cleanup_all_ns
+ 
+ 	ip link del veth_A-C			2>/dev/null
+ 	ip link del veth_A-R1			2>/dev/null
 -- 
 2.43.0
 
