@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-20040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D03B85388A
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:38:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D56188537F2
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:31:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 091DC2853A4
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:38:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1458A1C27CA5
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A05F5F56B;
-	Tue, 13 Feb 2024 17:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30DB95FF0B;
+	Tue, 13 Feb 2024 17:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkU6yxJM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiyfgNl2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB89A93C;
-	Tue, 13 Feb 2024 17:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38905FF04;
+	Tue, 13 Feb 2024 17:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845865; cv=none; b=QTCv0SmAs9yd0Ta5c7Eyx7cYIRhVeUKtYnhGjxgIV2mPoOuu4XxXcVMQ9Bg8lgh7eBBYKqkpf23AhUwYOb+qUmXP3pz4fisVHdNwP844ahV4jrciZP9gtZX8tqSQLW95neKi5Saao2FdJ9AHJ19a0yI7eHEBn6QPTaoq7FUhm+c=
+	t=1707845482; cv=none; b=u8yV7Bc0CIAvWSrU3mrrsYvNVNsvc/3WyB9EfyxFPlMjoZrIO1tokrhAYqQ7e/FfFKsrWAzug46x027FGETC/oUZqO587T/z0NnZuQNv+HwPeclh0zrrebcQ/DNqOqsMrBHM9NUU6GfV8XaEYSqfI1qX7vufF6tew+iwzCQioqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845865; c=relaxed/simple;
-	bh=s6hPUiXo93quv15tVP/37Q+VMaMbOWDwernpWy3RX4s=;
+	s=arc-20240116; t=1707845482; c=relaxed/simple;
+	bh=asIUaragKVUQXRLdBI5dCr551Fg8Et+qLNRUoUsTHpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qzpGFjb/paLuWBGgVyeNSeXN8J4flzRMHF+aEAPn3gghC47kWEyEd6aiyd8lyWWfb4AD+FG2Oyzi8btB3n19I6f5uHj4MwWCwBKKYQyIjO9t4GN0RqCEdAzVz7b/WsaWNsFQI7BeDI6whtwliLuJx43zhHh/1cil0qy6Dnmr8Go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkU6yxJM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3331AC433C7;
-	Tue, 13 Feb 2024 17:37:44 +0000 (UTC)
+	 MIME-Version; b=o2Rr+FnFjfm8PAdNf3m4Z0yDOnUl9ine1GfK7mRP9CV6PmZiuBHJEm/IHDOut4tYJtVfHG0GzQy0SMYYtbjIUVgCdVl8b0wEhiALihSeQfIpCCCtxRPnY8LGYQzYOrR3+4qxWjGtZXTrtvkf7QqcoBv3OYB1B9GTmd7vIQmt2fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiyfgNl2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54ED4C433C7;
+	Tue, 13 Feb 2024 17:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845865;
-	bh=s6hPUiXo93quv15tVP/37Q+VMaMbOWDwernpWy3RX4s=;
+	s=korg; t=1707845481;
+	bh=asIUaragKVUQXRLdBI5dCr551Fg8Et+qLNRUoUsTHpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RkU6yxJMIyZ1W3IMjaLBAm/tXDmmmabtaf+4oQHjpyKyaojg//R9l+egWcIzxq076
-	 VvE3G9vh7B6BmG6txJCGIovjYLA7aLCuvWHW9nnpj8cahzq3VmAQI97AM3RUDnP8cj
-	 LV5H5svtPxMcZKAXQKV7gV6esFeTBzdxfaj8Rrqo=
+	b=TiyfgNl29FwqZC2mmUjO+FFb8bYcU5gL1K69T3Bzgi6ybaZ2vFo350tT67vys02Pi
+	 D8/kzYY1foweQisGjS34pip23SaAcw7URNHjxbthLBhUGGcm5phbcxW1hKIye11NGM
+	 2uulG2099qzKxU06QHrRy7fTvlRX4tn6q1vR7FYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiubo Li <xiubli@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Ilya Dryomov <idryomov@gmail.com>,
+	Sathya Prakash Veerichetty <safhya.prakash@broadcom.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 079/124] libceph: rename read_sparse_msg_*() to read_partial_sparse_msg_*()
+Subject: [PATCH 6.6 092/121] scsi: core: Move scsi_host_busy() out of host lock if it is for per-command
 Date: Tue, 13 Feb 2024 18:21:41 +0100
-Message-ID: <20240213171856.044012375@linuxfoundation.org>
+Message-ID: <20240213171855.677750345@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiubo Li <xiubli@redhat.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit ee97302fbc0c98a25732d736fc73aaf4d62c4128 ]
+[ Upstream commit 4e6c9011990726f4d175e2cdfebe5b0b8cce4839 ]
 
-These functions are supposed to behave like other read_partial_*()
-handlers: the contract with messenger v1 is that the handler bails if
-the area of the message it's responsible for is already processed.
-This comes up when handling short reads from the socket.
+Commit 4373534a9850 ("scsi: core: Move scsi_host_busy() out of host lock
+for waking up EH handler") intended to fix a hard lockup issue triggered by
+EH. The core idea was to move scsi_host_busy() out of the host lock when
+processing individual commands for EH. However, a suggested style change
+inadvertently caused scsi_host_busy() to remain under the host lock. Fix
+this by calling scsi_host_busy() outside the lock.
 
-[ idryomov: changelog ]
-
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
-Acked-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Stable-dep-of: 8e46a2d068c9 ("libceph: just wait for more data to be available on the socket")
+Fixes: 4373534a9850 ("scsi: core: Move scsi_host_busy() out of host lock for waking up EH handler")
+Cc: Sathya Prakash Veerichetty <safhya.prakash@broadcom.com>
+Cc: Bart Van Assche <bvanassche@acm.org>
+Cc: Ewan D. Milne <emilne@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240203024521.2006455-1-ming.lei@redhat.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/messenger_v1.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/scsi/scsi_error.c | 3 ++-
+ drivers/scsi/scsi_lib.c   | 4 +++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/ceph/messenger_v1.c b/net/ceph/messenger_v1.c
-index f9a50d7f0d20..4cb60bacf5f5 100644
---- a/net/ceph/messenger_v1.c
-+++ b/net/ceph/messenger_v1.c
-@@ -991,7 +991,7 @@ static inline int read_partial_message_section(struct ceph_connection *con,
- 	return read_partial_message_chunk(con, section, sec_len, crc);
+diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
+index 3328b175a832..43eff1107038 100644
+--- a/drivers/scsi/scsi_error.c
++++ b/drivers/scsi/scsi_error.c
+@@ -282,11 +282,12 @@ static void scsi_eh_inc_host_failed(struct rcu_head *head)
+ {
+ 	struct scsi_cmnd *scmd = container_of(head, typeof(*scmd), rcu);
+ 	struct Scsi_Host *shost = scmd->device->host;
++	unsigned int busy = scsi_host_busy(shost);
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(shost->host_lock, flags);
+ 	shost->host_failed++;
+-	scsi_eh_wakeup(shost, scsi_host_busy(shost));
++	scsi_eh_wakeup(shost, busy);
+ 	spin_unlock_irqrestore(shost->host_lock, flags);
  }
  
--static int read_sparse_msg_extent(struct ceph_connection *con, u32 *crc)
-+static int read_partial_sparse_msg_extent(struct ceph_connection *con, u32 *crc)
- {
- 	struct ceph_msg_data_cursor *cursor = &con->in_msg->cursor;
- 	bool do_bounce = ceph_test_opt(from_msgr(con->msgr), RXBOUNCE);
-@@ -1026,7 +1026,7 @@ static int read_sparse_msg_extent(struct ceph_connection *con, u32 *crc)
- 	return 1;
- }
- 
--static int read_sparse_msg_data(struct ceph_connection *con)
-+static int read_partial_sparse_msg_data(struct ceph_connection *con)
- {
- 	struct ceph_msg_data_cursor *cursor = &con->in_msg->cursor;
- 	bool do_datacrc = !ceph_test_opt(from_msgr(con->msgr), NOCRC);
-@@ -1043,7 +1043,7 @@ static int read_sparse_msg_data(struct ceph_connection *con)
- 							 con->v1.in_sr_len,
- 							 &crc);
- 		else if (cursor->sr_resid > 0)
--			ret = read_sparse_msg_extent(con, &crc);
-+			ret = read_partial_sparse_msg_extent(con, &crc);
- 
- 		if (ret <= 0) {
- 			if (do_datacrc)
-@@ -1254,7 +1254,7 @@ static int read_partial_message(struct ceph_connection *con)
- 			return -EIO;
- 
- 		if (m->sparse_read)
--			ret = read_sparse_msg_data(con);
-+			ret = read_partial_sparse_msg_data(con);
- 		else if (ceph_test_opt(from_msgr(con->msgr), RXBOUNCE))
- 			ret = read_partial_msg_data_bounce(con);
- 		else
+diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
+index dfdffe55c5a6..552809bca350 100644
+--- a/drivers/scsi/scsi_lib.c
++++ b/drivers/scsi/scsi_lib.c
+@@ -278,9 +278,11 @@ static void scsi_dec_host_busy(struct Scsi_Host *shost, struct scsi_cmnd *cmd)
+ 	rcu_read_lock();
+ 	__clear_bit(SCMD_STATE_INFLIGHT, &cmd->state);
+ 	if (unlikely(scsi_host_in_recovery(shost))) {
++		unsigned int busy = scsi_host_busy(shost);
++
+ 		spin_lock_irqsave(shost->host_lock, flags);
+ 		if (shost->host_failed || shost->host_eh_scheduled)
+-			scsi_eh_wakeup(shost, scsi_host_busy(shost));
++			scsi_eh_wakeup(shost, busy);
+ 		spin_unlock_irqrestore(shost->host_lock, flags);
+ 	}
+ 	rcu_read_unlock();
 -- 
 2.43.0
 
