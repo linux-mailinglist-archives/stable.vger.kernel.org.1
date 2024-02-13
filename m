@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-19898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699718537C7
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2ED285385F
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:36:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5616B21489
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A57228DEE0
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4955FEF0;
-	Tue, 13 Feb 2024 17:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1C6604C1;
+	Tue, 13 Feb 2024 17:35:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PH7DplKZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ckmiz5p+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3D15F54E;
-	Tue, 13 Feb 2024 17:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE597604BF;
+	Tue, 13 Feb 2024 17:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845370; cv=none; b=VaycIj4w5TJQK2MkQNkrz5Aatv9NemOuJgaKttIAWwEVL09+G0l8f4hRY0fWZAYz++dB/1u89s8iPajikE4nDFYJduahdBTD+79QTK8u669VpVjUf1o9nfTUAOfYjiUvNcHAe4p1gkDjxKI9FjMYqpFq80ixvvEba8h0Pv6wuOQ=
+	t=1707845753; cv=none; b=i+ZecUzOGSLiXNNNxWvwzrC38wBIvNuROf2zkMUo66eZMFn3cIt4MhMpvz4r4lKxDQoNu8cXzIgIqydI9/0BYCKQJUoEPAtr7KKHns2jfSofnlp3W/E0z21ue2OVRO2js8yij4szFzAnDJyb2dV1dPOZ6DOV7NvzUn1e8YlcllE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845370; c=relaxed/simple;
-	bh=llKe5h3+dPIwblvvUSUdYEgvpJlbocVaPYjSIbmE8So=;
+	s=arc-20240116; t=1707845753; c=relaxed/simple;
+	bh=Qkl2lQO7eyQ0SPavBtfbIrV56R2VMvFwVTgN4GiRUXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gESG5F4wFEli0lQxoSjvBuUPr4cuTxrjIScjVOwFX8Vo/O1/N7G2PTJtL6rsizd3cfpt2Dx5r34IcH8t11TKwHtSwhBPbg8+DSQCFq+RnpI1zNcH2mRmmBIoOY8+p1b34uc29GXCaeKUNTnDApF0F11CoR1vR5pWgvJ2Qr/jwDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PH7DplKZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EB7FC433F1;
-	Tue, 13 Feb 2024 17:29:29 +0000 (UTC)
+	 MIME-Version; b=JfH+4aNuWNSiiggIncbTbux4GTaFsxnxeHfXoKhEklTqtVZLqz8YTCUT4Z0IhNfIxQMO3zI73J9y7kO0tLg4rWY8O+QX1g3GFFx8b1+twjnkmE6Jf7D03gW+82sGEXJ7zVT0m0QRWMkYFIsgtq2uj+ypqcb3jcV5IAwodTcBkD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ckmiz5p+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6336FC43390;
+	Tue, 13 Feb 2024 17:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845370;
-	bh=llKe5h3+dPIwblvvUSUdYEgvpJlbocVaPYjSIbmE8So=;
+	s=korg; t=1707845752;
+	bh=Qkl2lQO7eyQ0SPavBtfbIrV56R2VMvFwVTgN4GiRUXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PH7DplKZrgHRiAowSD3ifFCwHkQjzrkcUNfrlJgvH+l4vfNH3b8cR+aYOMZQxvIEC
-	 cljbdrk+n7uClPYLnMzCGxWRd+Mho8Rm+OB1+9bZyhI7ovyZERZfC5rE2QnXUF3Amg
-	 QC5GvstMQV4M+wWDN7ksVLw6yLjHFo4FiBK/u5sg=
+	b=Ckmiz5p+gpKgKuAxWJ2U7mCqD0yS3RNr13TDB/JFEg/qTLSBiO+o477vtjTvona+L
+	 kZNYiTygNua2mNkjzW1Rs/dRy+QCVgLUksSXmj6DgvbbqSNpu+iaC2oky+DuRIUBKA
+	 dp8JcONXedqBI8EzKbyc3l4dr3VYtJwD0LxRJgY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Loic Prylli <lprylli@netflix.com>,
-	Alexander Hansen <alexander.hansen@9elements.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Zhenyu Wang <zhenyuw@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/121] hwmon: (aspeed-pwm-tacho) mutex for tach reading
+Subject: [PATCH 6.7 047/124] drm/i915/gvt: Fix uninitialized variable in handle_mmio()
 Date: Tue, 13 Feb 2024 18:21:09 +0100
-Message-ID: <20240213171854.746214180@linuxfoundation.org>
+Message-ID: <20240213171855.110630068@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Loic Prylli <lprylli@netflix.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 1168491e7f53581ba7b6014a39a49cfbbb722feb ]
+[ Upstream commit 47caa96478b99d6d1199b89467cc3e5a6cc754ee ]
 
-the ASPEED_PTCR_RESULT Register can only hold the result for a
-single fan input. Adding a mutex to protect the register until the
-reading is done.
+This code prints the wrong variable in the warning message.  It should
+print "i" instead of "info->offset".  On the first iteration "info" is
+uninitialized leading to a crash and on subsequent iterations it prints
+the previous offset instead of the current one.
 
-Signed-off-by: Loic Prylli <lprylli@netflix.com>
-Signed-off-by: Alexander Hansen <alexander.hansen@9elements.com>
-Fixes: 2d7a548a3eff ("drivers: hwmon: Support for ASPEED PWM/Fan tach")
-Link: https://lore.kernel.org/r/121d888762a1232ef403cf35230ccf7b3887083a.1699007401.git.alexander.hansen@9elements.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: e0f74ed4634d ("i915/gvt: Separate the MMIO tracking table from GVT-g")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Zhenyu Wang <zhenyuw@linux.intel.com>
+Link: http://patchwork.freedesktop.org/patch/msgid/11957c20-b178-4027-9b0a-e32e9591dd7c@moroto.mountain
+Reviewed-by: Zhenyu Wang <zhenyuw@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/aspeed-pwm-tacho.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/i915/gvt/handlers.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/aspeed-pwm-tacho.c b/drivers/hwmon/aspeed-pwm-tacho.c
-index 997df4b40509..b2ae2176f11f 100644
---- a/drivers/hwmon/aspeed-pwm-tacho.c
-+++ b/drivers/hwmon/aspeed-pwm-tacho.c
-@@ -193,6 +193,8 @@ struct aspeed_pwm_tacho_data {
- 	u8 fan_tach_ch_source[16];
- 	struct aspeed_cooling_device *cdev[8];
- 	const struct attribute_group *groups[3];
-+	/* protects access to shared ASPEED_PTCR_RESULT */
-+	struct mutex tach_lock;
- };
+diff --git a/drivers/gpu/drm/i915/gvt/handlers.c b/drivers/gpu/drm/i915/gvt/handlers.c
+index a9f7fa9b90bd..d30f8814d9b1 100644
+--- a/drivers/gpu/drm/i915/gvt/handlers.c
++++ b/drivers/gpu/drm/i915/gvt/handlers.c
+@@ -2850,8 +2850,7 @@ static int handle_mmio(struct intel_gvt_mmio_table_iter *iter, u32 offset,
+ 	for (i = start; i < end; i += 4) {
+ 		p = intel_gvt_find_mmio_info(gvt, i);
+ 		if (p) {
+-			WARN(1, "dup mmio definition offset %x\n",
+-				info->offset);
++			WARN(1, "dup mmio definition offset %x\n", i);
  
- enum type { TYPEM, TYPEN, TYPEO };
-@@ -527,6 +529,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
- 	u8 fan_tach_ch_source, type, mode, both;
- 	int ret;
- 
-+	mutex_lock(&priv->tach_lock);
-+
- 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0);
- 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0x1 << fan_tach_ch);
- 
-@@ -544,6 +548,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
- 		ASPEED_RPM_STATUS_SLEEP_USEC,
- 		usec);
- 
-+	mutex_unlock(&priv->tach_lock);
-+
- 	/* return -ETIMEDOUT if we didn't get an answer. */
- 	if (ret)
- 		return ret;
-@@ -903,6 +909,7 @@ static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
-+	mutex_init(&priv->tach_lock);
- 	priv->regmap = devm_regmap_init(dev, NULL, (__force void *)regs,
- 			&aspeed_pwm_tacho_regmap_config);
- 	if (IS_ERR(priv->regmap))
+ 			/* We return -EEXIST here to make GVT-g load fail.
+ 			 * So duplicated MMIO can be found as soon as
 -- 
 2.43.0
 
