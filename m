@@ -1,54 +1,68 @@
-Return-Path: <stable+bounces-19693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AEC6852CC8
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 10:46:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73EEF852CED
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 10:50:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA8D128B998
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 09:46:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 127B41F23763
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 09:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8D324B59;
-	Tue, 13 Feb 2024 09:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BC852F90;
+	Tue, 13 Feb 2024 09:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t3BLbJLW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2X6gYDC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14856381CF;
-	Tue, 13 Feb 2024 09:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7431552F83;
+	Tue, 13 Feb 2024 09:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707817299; cv=none; b=YqNQEIP1eZou3GulewtKHGAYea9BcrzYI8Xflgl1hLd/QxXWJVKvjFuBuu2s/EC74cVIYWXKUgWDwanJk2CThEqwZJTF7LDF4KJG/lMHiVXVpVP0SMD79WC1SOPF/i4mwqb8MusaO/CVJxywRXMS/O6LNNw4emggMEBuX2heCzg=
+	t=1707817384; cv=none; b=on7nNiBxY3O42FvgrxYLDou/HFchmaLipQWC0bRSBbxMwzhO0mTs0Eob6fpl4V0JjqLaiXlLbKHLx8NFEUq51iJ+hwfq68LxFmdWYiALdkzd8a7uN5TEnlKKNiYnBrcQ6CxMY0c4LyCKSE8n8ly39MY+qL54YEmxRSXf+ZMXEdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707817299; c=relaxed/simple;
-	bh=Z/UeRF0PUC7eWwdhWXuxUx7yfttwjE8TQV6RnN3Itw4=;
+	s=arc-20240116; t=1707817384; c=relaxed/simple;
+	bh=QpTYMbV/On63JHEAg+7gEa8nlefPffxwNn6vcdnnLGg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n4Exg1inwiA7u5/ZGcsllPUcy4WgUMUjArnLVUZ/wrb4dkjY/e0Wr75HSU/X5+b+N2qh5E/B75PrgznHcDSv+lv4v0Ivqwox3FOcI+fOgwvZXuoSr786OIWzxB9v5Atdl4fMbBElisW7TRSLNBNjQkgbzrxDXny3+WXjDFTK8tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t3BLbJLW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407C7C433F1;
-	Tue, 13 Feb 2024 09:41:38 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=HYB3XOUdXQGW65sqqhZPlyqy6j2RofTt9rlVLrRj3ElSzxsnigoMfpaM9vLNy1/xKAKWAqtFeKf46/YJqxcISSslISptDapkxVHq/s4+Knv9U7bucw6ob9ko7JmzK1Ipyt3vvK1JcVElQfUs/Ze8MqD0r42vBVFU73f7Q0n2who=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2X6gYDC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575ABC433C7;
+	Tue, 13 Feb 2024 09:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707817298;
-	bh=Z/UeRF0PUC7eWwdhWXuxUx7yfttwjE8TQV6RnN3Itw4=;
+	s=korg; t=1707817384;
+	bh=QpTYMbV/On63JHEAg+7gEa8nlefPffxwNn6vcdnnLGg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t3BLbJLW5bXJxoyt4FKCsJFZe99A2CkiIGuDf+4VFnDlEdMoD4AWSLvRgFZQtJbMd
-	 mBYuQpULiUn539XaDFyA8S3R8Ggv9ddc3qCpW2FTqnHhb0d4l4QHgOt/6f5cad0ZjJ
-	 Mclpt6wzkmboOeBHslg6R0W2Lggj5f99sTkm5o2E=
-Date: Tue, 13 Feb 2024 10:41:35 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Charan Teja Kalla <quic_charante@quicinc.com>
-Cc: akpm@linux-foundation.org, willy@infradead.org, vbabka@suse.cz,
-	dhowells@redhat.com, david@redhat.com, surenb@google.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	# see patch description <stable@vger.kernel.org>
-Subject: Re: [PATCH] mm/huge_memory: fix swap entry values of tail pages of
- THP
-Message-ID: <2024021309-predict-scrubber-d6f3@gregkh>
-References: <1707814102-22682-1-git-send-email-quic_charante@quicinc.com>
+	b=K2X6gYDCmsXjOXHrQHqlESxPVKAE1j3B5raB7tjWKI59nnQeHDkdp7+44+gAk1xHQ
+	 vk8lkx//bMQWk1MDnE1SSUrOGe34c026khjTAU0nf+MHtQRpyEXn1phgf1MC/Q1vt7
+	 pGhCsFwAQmvdhHTCl+1QYMY3kNGnj8q7YI6IIY84=
+Date: Tue, 13 Feb 2024 10:43:01 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Roman Smirnov <r.smirnov@omp.ru>
+Cc: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Karina Yankevich <k.yankevich@omp.ru>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"linux-ext4@vger.kernel.org" <linux-ext4@vger.kernel.org>,
+	Theodore Ts'o <tytso@mit.edu>,
+	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>
+Subject: Re: [PATCH 5.10/5.15 v2 0/1 RFC] mm/truncate: fix WARNING in
+ ext4_set_page_dirty()
+Message-ID: <2024021331-skyline-dicing-c695@gregkh>
+References: <20240125130947.600632-1-r.smirnov@omp.ru>
+ <ZbJrAvCIufx1K2PU@casper.infradead.org>
+ <20240129091124.vbyohvklcfkrpbyp@quack3>
+ <Zbe5NBKrugBpRpM-@casper.infradead.org>
+ <20240129160939.jgrhzrh5l2paezvp@quack3>
+ <d25ec449ffce4e568637a418edc4221c@omp.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,47 +71,15 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1707814102-22682-1-git-send-email-quic_charante@quicinc.com>
+In-Reply-To: <d25ec449ffce4e568637a418edc4221c@omp.ru>
 
-On Tue, Feb 13, 2024 at 02:18:10PM +0530, Charan Teja Kalla wrote:
-> An anon THP page is first added to swap cache before reclaiming it.
-> Initially, each tail page contains the proper swap entry value(stored in
-> ->private field) which is filled from add_to_swap_cache(). After
-> migrating the THP page sitting on the swap cache, only the swap entry of
-> the head page is filled(see folio_migrate_mapping()).
-> 
-> Now when this page is tried to split(one case is when this page is again
-> migrated, see migrate_pages()->try_split_thp()), the tail pages
-> ->private is not stored with proper swap entry values.  When this tail
-> page is now try to be freed, as part of it delete_from_swap_cache() is
-> called which operates on the wrong swap cache index and eventually
-> replaces the wrong swap cache index with shadow/NULL value, frees the
-> page.
-> 
-> This leads to the state with a swap cache containing the freed page.
-> This issue can manifest in many forms and the most common thing observed
-> is the rcu stall during the swapin (see mapping_get_entry()).
-> 
-> On the recent kernels, this issues is indirectly getting fixed with the
-> series[1], to be specific[2].
+On Tue, Feb 13, 2024 at 07:07:18AM +0000, Roman Smirnov wrote:
+> Is there something else to do to make the patch accepted?
 
-Then why can we not take that series?  Taking one-off patches almost
-ALWAYS causes future problems, what are you going to do to prevent that
-here (merge and logic problems).
+What patch?  No context here...
 
-> When tried to back port this series, it is observed many merge
-> conflicts and also seems dependent on many other changes. As backporting
-> to LTS branches is not a trivial one, the similar change from [2] is
-> picked as a fix.
-> 
-> [1] https://lore.kernel.org/all/20230821160849.531668-1-david@redhat.com/
-> [2] https://lore.kernel.org/all/20230821160849.531668-5-david@redhat.com/
-
-Again, please try to take the original series, ESPECIALLY for stuff in
--mm which is tricky and likely to blow up in odd ways in the future.
-
-So I will not take this unless the -mm maintainers agree it really is
-the only way forward.
+Also, for obvious reasons, we don't apply "RFC" patches as you yourself
+don't think they are good enough to be merged :(
 
 thanks,
 
