@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-19887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A31118537BB
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65CF885383A
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:34:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F01B2831B7
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:28:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 992BC1C24AFF
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111495FF05;
-	Tue, 13 Feb 2024 17:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 550775FF0B;
+	Tue, 13 Feb 2024 17:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lK0ywoEt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDLz9Ypm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17F75FEFA;
-	Tue, 13 Feb 2024 17:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134BC5FB94;
+	Tue, 13 Feb 2024 17:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845334; cv=none; b=PnNr7G0dJZnrWcwF+f+RJF/nX2ISxOyFkai1AlgAeszEk5+ijAYm5i8VHuv7PtPsAXgTDHEn/UBvP/QhOpF97O/uQfKAA+ddvLkyHpl36E++1wgFNif/n69W8ZfAcwKwBM1+3csR3UFUgoqmoeo51CKx+25IFSGl1tT//AQ9rwE=
+	t=1707845671; cv=none; b=QS2n7ZQAHNt7I6uVi3Yqh8SZCF51ZBb8nbcyOlap56QeTpi4xCCumWZ3WGMVlfz7Uwx3zI7OOJG3ZUhbLJKwcJcd4dRcISS5RYtjI+177XYG1PFbsIquhLYUFumbei/BUf0I+//iAhKDm18CTC2R53nWua4VhLfAlbs97MIKMZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845334; c=relaxed/simple;
-	bh=uzDmbKXD0rCs+cXKJ59LeVwgrYsF9N6uRRIxhbbqao4=;
+	s=arc-20240116; t=1707845671; c=relaxed/simple;
+	bh=T1x4CsDJPPFQgGuw+N3EAOpNajp4grN5F36KvZ8qZ9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TjVgBCacOxKGgX8jFtSrD7Z4LY3ynj9GYFtlciTIYuK3o6JvzpjGI6YooTp33kjZO4AXZXNkyB1VfqX3tzsUHSjFMV67e39ZE/T2nsy/+ofMcUJ9tBqCkZaIya7wRU+bRiOODEVojMmwnI45YW07Z+hGV3V66uAQ9FLheBl4A+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lK0ywoEt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23FECC433B1;
-	Tue, 13 Feb 2024 17:28:53 +0000 (UTC)
+	 MIME-Version; b=k+5LUGKIoC3UpbBTX4Vf09poN/whcLUc/f0GValPDBkQPYayOdzQ3g8/4DCfeoDlOPn1RuVtZV+JzPQMpEuQ8WWK1WV+Cc292HiLJhntg+Zab99g/dQqYhCdGaXwN29/fORx1TKyZ8hMviuOxj6kuLfJUA95IcigYNjZj6U0Qzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDLz9Ypm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C28FC433C7;
+	Tue, 13 Feb 2024 17:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845334;
-	bh=uzDmbKXD0rCs+cXKJ59LeVwgrYsF9N6uRRIxhbbqao4=;
+	s=korg; t=1707845670;
+	bh=T1x4CsDJPPFQgGuw+N3EAOpNajp4grN5F36KvZ8qZ9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lK0ywoEtlPDaZiGNjcRn3dmzSlcn06a5QMp1/CG2DLK8mdj1nbrsrUu3CO3LmVody
-	 jC/HYsdYPwwI+5tl1Ew1Yu94UY75PPm63cBBWdTV34vzzSTcVAoca1baK9tvrFEnKy
-	 fxrMJFGVjxB63u9jTOYOl8ZBcDSB/v4vy3ec2dSo=
+	b=gDLz9YpmzUqny767ClanaC8X3zLVgIJhZW3g8JssHgXPN2/v48yY3P8Er1YLlVKw8
+	 PR+7oyf2uYl2dwempaWAaLaBQiZWALyQ0KnI6A5a33cSji6yzdwmQbR5vacoRhLjJF
+	 3Q4HHGkmWZjTGK+sAnYTjq/Wzqi2QBnHOYO1vZx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	Chandan Babu R <chandanbabu@kernel.org>,
+	Mantas Pucka <mantas@8devices.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/121] xfs: prevent rt growfs when quota is enabled
+Subject: [PATCH 6.7 007/124] phy: qcom-qmp-usb: fix serdes init sequence for IPQ6018
 Date: Tue, 13 Feb 2024 18:20:29 +0100
-Message-ID: <20240213171853.560831248@linuxfoundation.org>
+Message-ID: <20240213171853.944332886@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Mantas Pucka <mantas@8devices.com>
 
-commit b73494fa9a304ab95b59f07845e8d7d36e4d23e0 upstream.
+[ Upstream commit 62a5df451ab911421da96655fcc4d1e269ff6e2f ]
 
-Quotas aren't (yet) supported with realtime, so we shouldn't allow
-userspace to set up a realtime section when quotas are enabled, even if
-they attached one via mount options.  IOWS, you shouldn't be able to do:
+Commit 23fd679249df ("phy: qcom-qmp: add USB3 PHY support for IPQ6018")
+noted that IPQ6018 init is identical to IPQ8074. Yet downstream uses
+separate serdes init sequence for IPQ6018. Since already existing IPQ9574
+serdes init sequence is identical, just reuse it and fix failing USB3 mode
+in IPQ6018.
 
-# mkfs.xfs -f /dev/sda
-# mount /dev/sda /mnt -o rtdev=/dev/sdb,usrquota
-# xfs_growfs -r /mnt
-
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Fixes: 23fd679249df ("phy: qcom-qmp: add USB3 PHY support for IPQ6018")
+Signed-off-by: Mantas Pucka <mantas@8devices.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/1706026160-17520-3-git-send-email-mantas@8devices.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_rtalloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/qualcomm/phy-qcom-qmp-usb.c | 20 +++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
-index 16534e9873f6..31fd65b3aaa9 100644
---- a/fs/xfs/xfs_rtalloc.c
-+++ b/fs/xfs/xfs_rtalloc.c
-@@ -954,7 +954,7 @@ xfs_growfs_rt(
- 		return -EINVAL;
+diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
+index 896a37c1e592..a3719719e2e0 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
+@@ -1325,6 +1325,24 @@ static const struct qmp_usb_offsets qmp_usb_offsets_v5 = {
+ 	.rx		= 0x1000,
+ };
  
- 	/* Unsupported realtime features. */
--	if (xfs_has_rmapbt(mp) || xfs_has_reflink(mp))
-+	if (xfs_has_rmapbt(mp) || xfs_has_reflink(mp) || xfs_has_quota(mp))
- 		return -EOPNOTSUPP;
++static const struct qmp_phy_cfg ipq6018_usb3phy_cfg = {
++	.lanes			= 1,
++
++	.offsets		= &qmp_usb_offsets_ipq8074,
++
++	.serdes_tbl		= ipq9574_usb3_serdes_tbl,
++	.serdes_tbl_num		= ARRAY_SIZE(ipq9574_usb3_serdes_tbl),
++	.tx_tbl			= msm8996_usb3_tx_tbl,
++	.tx_tbl_num		= ARRAY_SIZE(msm8996_usb3_tx_tbl),
++	.rx_tbl			= ipq8074_usb3_rx_tbl,
++	.rx_tbl_num		= ARRAY_SIZE(ipq8074_usb3_rx_tbl),
++	.pcs_tbl		= ipq8074_usb3_pcs_tbl,
++	.pcs_tbl_num		= ARRAY_SIZE(ipq8074_usb3_pcs_tbl),
++	.vreg_list		= qmp_phy_vreg_l,
++	.num_vregs		= ARRAY_SIZE(qmp_phy_vreg_l),
++	.regs			= qmp_v3_usb3phy_regs_layout,
++};
++
+ static const struct qmp_phy_cfg ipq8074_usb3phy_cfg = {
+ 	.lanes			= 1,
  
- 	nrblocks = in->newblocks;
+@@ -2233,7 +2251,7 @@ static int qmp_usb_probe(struct platform_device *pdev)
+ static const struct of_device_id qmp_usb_of_match_table[] = {
+ 	{
+ 		.compatible = "qcom,ipq6018-qmp-usb3-phy",
+-		.data = &ipq8074_usb3phy_cfg,
++		.data = &ipq6018_usb3phy_cfg,
+ 	}, {
+ 		.compatible = "qcom,ipq8074-qmp-usb3-phy",
+ 		.data = &ipq8074_usb3phy_cfg,
 -- 
 2.43.0
 
