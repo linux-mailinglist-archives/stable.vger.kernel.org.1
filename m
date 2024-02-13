@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-19911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3E028537D9
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:30:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49861853847
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:35:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50B491F292BF
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:30:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F26491F2A649
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F265FF15;
-	Tue, 13 Feb 2024 17:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4B460254;
+	Tue, 13 Feb 2024 17:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6FE31Tm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVIVajHd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E875FF05;
-	Tue, 13 Feb 2024 17:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A53B5FEE7;
+	Tue, 13 Feb 2024 17:34:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845419; cv=none; b=X/fyQ0Bhf47xzybvtWpXu/j1+nVVQ3NTA0nkQ05F6oDQvA7q8CGfFWX1jAD5DDiaZXIS8H1cSHiPGWHHAEyHZYoEHVN0hdHmyzTx2hn4C+wtqD7NP6CI/+xTYbly+NtE/0kg/u2T16KcTSPXmqoPRTtjwRfYDc5dna8lkWaBaBo=
+	t=1707845696; cv=none; b=YdJwYKero9lSc0T8BFLxRZ1I7/BuiLgoBsAFnKOb9IbmsLrvh+YoqN/56fQo5bRMr3e8bNqRlR8COaPH8BdmgiC9SPuf3LOlo6ekZLqJopSBAeY3arCZ89w1I5h0VwAKgcokoksDNR64i68LcE0wXuAH2jxsANy5DQPjbleCQ0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845419; c=relaxed/simple;
-	bh=OfAzuEx5ulQeaus8m5bqSMVvAxWwPOtGcgdVUBE2uaU=;
+	s=arc-20240116; t=1707845696; c=relaxed/simple;
+	bh=NkSWPGyXjyLiq1u52ep4gbAPeJj+8/TX5rWhUnT8Q7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntrjTKiKulfHceM//kBRzrUqdd1OuvuGQ8bydr3BrctFRcPOs6TOaWwHtn8x6TGBbN0ZfsdVb3FvUqAiUW72LyjnUxuP3GSzUShuQ12uvygrcTWSfyZbWLq3Q9B9VuxIRoKCx1X0YcgY18reQdIKBn1kI86poYwGeGE4TdANWCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6FE31Tm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6728FC433F1;
-	Tue, 13 Feb 2024 17:30:18 +0000 (UTC)
+	 MIME-Version; b=aQiWXtsANBeCmxLXUxBk0+Q1UTDpS0TAwu8bNsGDEB4EJD3CEahqX/ipQKkxJL1eiWtjnnBR0N4ARcS/t971WgFlObfgWFSX91rIyNTF+YH+/Z5B2rfruWzrm0RIrtsJ2OmyXQwSCFKqAq0LgkTviosb28Plk/rbDpRMaTkZFGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVIVajHd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF65C433C7;
+	Tue, 13 Feb 2024 17:34:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845418;
-	bh=OfAzuEx5ulQeaus8m5bqSMVvAxWwPOtGcgdVUBE2uaU=;
+	s=korg; t=1707845696;
+	bh=NkSWPGyXjyLiq1u52ep4gbAPeJj+8/TX5rWhUnT8Q7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6FE31TmIUJI2J+so/0+ByzrkwKwekFnJZTXk/tz+3KcjFh7jYVCGKabg2B3orwGH
-	 1fffnXJ1LU18bC8lPVaWvnNHWMBH+nQdQ6v9C/T5ZGoVdCjQRkwORLFI5dqL0ky5tm
-	 ZrknD1Ce2ez+bpOjdsaZjA7quIb6uFCmtOUlnr60=
+	b=tVIVajHdfhQ1agTHLyBAjAxinBZOlOUSEeRpYqK2YEmyrQVv7wsCiLKDqOt0xqTwh
+	 J0gK6JLIMV/TigckfEJ8BG5IMeABA39mizct8VSVLPeyRpnVGGfHFJ+JV2ixnunH0D
+	 pn6B9kDScr8qKIqGuLLhDNlBraNNlijkpAL680gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 045/121] wifi: mac80211: fix waiting for beacons logic
+Subject: [PATCH 6.7 032/124] net: atlantic: Fix DMA mapping for PTP hwts ring
 Date: Tue, 13 Feb 2024 18:20:54 +0100
-Message-ID: <20240213171854.312723760@linuxfoundation.org>
+Message-ID: <20240213171854.670425420@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit a0b4f2291319c5d47ecb196b90400814fdcfd126 ]
+[ Upstream commit 2e7d3b67630dfd8f178c41fa2217aa00e79a5887 ]
 
-This should be waiting if we don't have a beacon yet,
-but somehow I managed to invert the logic. Fix that.
+Function aq_ring_hwts_rx_alloc() maps extra AQ_CFG_RXDS_DEF bytes
+for PTP HWTS ring but then generic aq_ring_free() does not take this
+into account.
+Create and use a specific function to free HWTS ring to fix this
+issue.
 
-Fixes: 74e1309acedc ("wifi: mac80211: mlme: look up beacon elems only if needed")
-Link: https://msgid.link/20240131164856.922701229546.I239b379e7cee04608e73c016b737a5245e5b23dd@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Trace:
+[  215.351607] ------------[ cut here ]------------
+[  215.351612] DMA-API: atlantic 0000:4b:00.0: device driver frees DMA memory with different size [device address=0x00000000fbdd0000] [map size=34816 bytes] [unmap size=32768 bytes]
+[  215.351635] WARNING: CPU: 33 PID: 10759 at kernel/dma/debug.c:988 check_unmap+0xa6f/0x2360
+...
+[  215.581176] Call Trace:
+[  215.583632]  <TASK>
+[  215.585745]  ? show_trace_log_lvl+0x1c4/0x2df
+[  215.590114]  ? show_trace_log_lvl+0x1c4/0x2df
+[  215.594497]  ? debug_dma_free_coherent+0x196/0x210
+[  215.599305]  ? check_unmap+0xa6f/0x2360
+[  215.603147]  ? __warn+0xca/0x1d0
+[  215.606391]  ? check_unmap+0xa6f/0x2360
+[  215.610237]  ? report_bug+0x1ef/0x370
+[  215.613921]  ? handle_bug+0x3c/0x70
+[  215.617423]  ? exc_invalid_op+0x14/0x50
+[  215.621269]  ? asm_exc_invalid_op+0x16/0x20
+[  215.625480]  ? check_unmap+0xa6f/0x2360
+[  215.629331]  ? mark_lock.part.0+0xca/0xa40
+[  215.633445]  debug_dma_free_coherent+0x196/0x210
+[  215.638079]  ? __pfx_debug_dma_free_coherent+0x10/0x10
+[  215.643242]  ? slab_free_freelist_hook+0x11d/0x1d0
+[  215.648060]  dma_free_attrs+0x6d/0x130
+[  215.651834]  aq_ring_free+0x193/0x290 [atlantic]
+[  215.656487]  aq_ptp_ring_free+0x67/0x110 [atlantic]
+...
+[  216.127540] ---[ end trace 6467e5964dd2640b ]---
+[  216.132160] DMA-API: Mapped at:
+[  216.132162]  debug_dma_alloc_coherent+0x66/0x2f0
+[  216.132165]  dma_alloc_attrs+0xf5/0x1b0
+[  216.132168]  aq_ring_hwts_rx_alloc+0x150/0x1f0 [atlantic]
+[  216.132193]  aq_ptp_ring_alloc+0x1bb/0x540 [atlantic]
+[  216.132213]  aq_nic_init+0x4a1/0x760 [atlantic]
+
+Fixes: 94ad94558b0f ("net: aquantia: add PTP rings infrastructure")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20240201094752.883026-1-ivecera@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/aquantia/atlantic/aq_ptp.c  |  4 ++--
+ drivers/net/ethernet/aquantia/atlantic/aq_ring.c | 13 +++++++++++++
+ drivers/net/ethernet/aquantia/atlantic/aq_ring.h |  1 +
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 73f8df03d159..d9e716f38b0e 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -7727,8 +7727,7 @@ int ieee80211_mgd_assoc(struct ieee80211_sub_if_data *sdata,
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
+index abd4832e4ed2..5acb3e16b567 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
+@@ -993,7 +993,7 @@ int aq_ptp_ring_alloc(struct aq_nic_s *aq_nic)
+ 	return 0;
  
- 		rcu_read_lock();
- 		beacon_ies = rcu_dereference(req->bss->beacon_ies);
--
--		if (beacon_ies) {
-+		if (!beacon_ies) {
- 			/*
- 			 * Wait up to one beacon interval ...
- 			 * should this be more if we miss one?
+ err_exit_hwts_rx:
+-	aq_ring_free(&aq_ptp->hwts_rx);
++	aq_ring_hwts_rx_free(&aq_ptp->hwts_rx);
+ err_exit_ptp_rx:
+ 	aq_ring_free(&aq_ptp->ptp_rx);
+ err_exit_ptp_tx:
+@@ -1011,7 +1011,7 @@ void aq_ptp_ring_free(struct aq_nic_s *aq_nic)
+ 
+ 	aq_ring_free(&aq_ptp->ptp_tx);
+ 	aq_ring_free(&aq_ptp->ptp_rx);
+-	aq_ring_free(&aq_ptp->hwts_rx);
++	aq_ring_hwts_rx_free(&aq_ptp->hwts_rx);
+ 
+ 	aq_ptp_skb_ring_release(&aq_ptp->skb_ring);
+ }
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+index cda8597b4e14..f7433abd6591 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+@@ -919,6 +919,19 @@ void aq_ring_free(struct aq_ring_s *self)
+ 	}
+ }
+ 
++void aq_ring_hwts_rx_free(struct aq_ring_s *self)
++{
++	if (!self)
++		return;
++
++	if (self->dx_ring) {
++		dma_free_coherent(aq_nic_get_dev(self->aq_nic),
++				  self->size * self->dx_size + AQ_CFG_RXDS_DEF,
++				  self->dx_ring, self->dx_ring_pa);
++		self->dx_ring = NULL;
++	}
++}
++
+ unsigned int aq_ring_fill_stats_data(struct aq_ring_s *self, u64 *data)
+ {
+ 	unsigned int count;
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h b/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
+index 52847310740a..d627ace850ff 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
+@@ -210,6 +210,7 @@ int aq_ring_rx_fill(struct aq_ring_s *self);
+ int aq_ring_hwts_rx_alloc(struct aq_ring_s *self,
+ 			  struct aq_nic_s *aq_nic, unsigned int idx,
+ 			  unsigned int size, unsigned int dx_size);
++void aq_ring_hwts_rx_free(struct aq_ring_s *self);
+ void aq_ring_hwts_rx_clean(struct aq_ring_s *self, struct aq_nic_s *aq_nic);
+ 
+ unsigned int aq_ring_fill_stats_data(struct aq_ring_s *self, u64 *data);
 -- 
 2.43.0
 
