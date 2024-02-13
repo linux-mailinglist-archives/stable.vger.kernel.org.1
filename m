@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-19920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F06D08537E4
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:30:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9C4A853899
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:39:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FF3A1C2677C
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:30:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64F4E280ECF
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B725FEFF;
-	Tue, 13 Feb 2024 17:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CFE604CB;
+	Tue, 13 Feb 2024 17:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koHUJR8O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0+AWTYbQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5347D5F54E;
-	Tue, 13 Feb 2024 17:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A2C604C6;
+	Tue, 13 Feb 2024 17:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845449; cv=none; b=MoRBCkbipgvVgIWtpM7hQcl06A/hFNKxLR6QNwatueSfOG4qXsk6gkeOsaCtNnMw7GB/vw+nsJsNbexIU5VQ7bffZ+M1daA09KvF5sfyPzzeLUFqSNbrQfPT/xhoHlAHAscIe3VsmZbIk+n08bZDuyO+V6S1J0u83uSpzRPFiVU=
+	t=1707845902; cv=none; b=ruhcnaFX8ReHdyeBemYMVICpgbDJ7tyjmGZsX5xOSSObsm716Oi6tYza+QwlvX5RnMDFvkc6JCKdglCETEweljl+b/mQeBI1jYkn92IfwpV8r9DGEfRgwLcy+wJVSXs7aiYGgfpNR7o+MvNDwdo2qZFS+DFlGbslfUczESQ9cEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845449; c=relaxed/simple;
-	bh=kE98pQ5ztQamhDjpJSMmRqd+HvD0OYpH3DBrpyI6BuM=;
+	s=arc-20240116; t=1707845902; c=relaxed/simple;
+	bh=RSocL0YsfRu9ekn6CdXfQvucoEA2zpXmmg9CXiYf6yg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sRvXv+ZaS7DSYfgwHxdXAdoQIOUlTIxj3J7x4satHP3FnleKGLRAmOF6UVkqm/l4qFO+R97PsSFDSYKdhyNzL4PbGNMjGQpeeWLxcKrfh9VFAKIpz+XMn8p47Xl019YnxnKQRVjH1qRLg8FtDcDvFzR07k2vyZzTdUtXA4SgcXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koHUJR8O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D20C433F1;
-	Tue, 13 Feb 2024 17:30:48 +0000 (UTC)
+	 MIME-Version; b=SvK+G/B4KZaXwYiYeod2ejoDSUmR2c8hLr6PWSv531bkbp4o7X/fqL3FFGIb/NgUcAHRprT0SFGlRrktJPBjY3vC+WS9Pw+tKrTIrb+G6ApIpXzumjl92gMPc7pNncmG32bpSPViJkWKQ/yX3DA5UCp+zBGl+0ipBXJPSjnvBPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0+AWTYbQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0969AC43399;
+	Tue, 13 Feb 2024 17:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845448;
-	bh=kE98pQ5ztQamhDjpJSMmRqd+HvD0OYpH3DBrpyI6BuM=;
+	s=korg; t=1707845901;
+	bh=RSocL0YsfRu9ekn6CdXfQvucoEA2zpXmmg9CXiYf6yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=koHUJR8Oa8hScFDH4nZvQ1w1XX5i+kvS19sDHxEE5c4Bg3tqOyZ7VZJVZNyr4AMA5
-	 uezU52EkrrhDF/tO/EL5t8pJ+YH9qAYnB2rSo2oeZgq7iksxO5gUWOM1YgzoEGItcS
-	 tiAQ1Gu3rE2W4nxdpDfZqJxfbD/MfznkmpREZO48=
+	b=0+AWTYbQdyoU2+lU9adKMvOSgnR10Y/cQw9JfuWhAIRCyqlzqJKtbx2gvHeKNwntM
+	 ltdRILboc3nVmz6FZbAtFtKkcTeMdAQqXLgyuK/UqZ0cZqjzmWWH+7Ak1uSYzvyQms
+	 Q27ty3QRkXc2dSuIz1wkJnQ/WQCPndDJTYnqsNMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/121] netfilter: nft_compat: narrow down revision to unsigned 8-bits
+Subject: [PATCH 6.7 061/124] netfilter: nft_compat: restrict match/target protocol to u16
 Date: Tue, 13 Feb 2024 18:21:23 +0100
-Message-ID: <20240213171855.153704032@linuxfoundation.org>
+Message-ID: <20240213171855.519828603@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 36fa8d697132b4bed2312d700310e8a78b000c84 ]
+[ Upstream commit d694b754894c93fb4d71a7f3699439dec111decc ]
 
-xt_find_revision() expects u8, restrict it to this datatype.
+xt_check_{match,target} expects u16, but NFTA_RULE_COMPAT_PROTO is u32.
+
+NLA_POLICY_MAX(NLA_BE32, 65535) cannot be used because .max in
+nla_policy is s16, see 3e48be05f3c7 ("netlink: add attribute range
+validation to policy").
 
 Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_compat.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/netfilter/nft_compat.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
 diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
-index f0eeda97bfcd..001b6841a4b6 100644
+index ed71d5ecbe0a..1f9474fefe84 100644
 --- a/net/netfilter/nft_compat.c
 +++ b/net/netfilter/nft_compat.c
-@@ -135,7 +135,7 @@ static void nft_target_eval_bridge(const struct nft_expr *expr,
+@@ -200,6 +200,7 @@ static const struct nla_policy nft_rule_compat_policy[NFTA_RULE_COMPAT_MAX + 1]
+ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
+ {
+ 	struct nlattr *tb[NFTA_RULE_COMPAT_MAX+1];
++	u32 l4proto;
+ 	u32 flags;
+ 	int err;
  
- static const struct nla_policy nft_target_policy[NFTA_TARGET_MAX + 1] = {
- 	[NFTA_TARGET_NAME]	= { .type = NLA_NUL_STRING },
--	[NFTA_TARGET_REV]	= { .type = NLA_U32 },
-+	[NFTA_TARGET_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
- 	[NFTA_TARGET_INFO]	= { .type = NLA_BINARY },
- };
+@@ -218,7 +219,12 @@ static int nft_parse_compat(const struct nlattr *attr, u16 *proto, bool *inv)
+ 	if (flags & NFT_RULE_COMPAT_F_INV)
+ 		*inv = true;
  
-@@ -419,7 +419,7 @@ static void nft_match_eval(const struct nft_expr *expr,
- 
- static const struct nla_policy nft_match_policy[NFTA_MATCH_MAX + 1] = {
- 	[NFTA_MATCH_NAME]	= { .type = NLA_NUL_STRING },
--	[NFTA_MATCH_REV]	= { .type = NLA_U32 },
-+	[NFTA_MATCH_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
- 	[NFTA_MATCH_INFO]	= { .type = NLA_BINARY },
- };
- 
-@@ -724,7 +724,7 @@ static int nfnl_compat_get_rcu(struct sk_buff *skb,
- static const struct nla_policy nfnl_compat_policy_get[NFTA_COMPAT_MAX+1] = {
- 	[NFTA_COMPAT_NAME]	= { .type = NLA_NUL_STRING,
- 				    .len = NFT_COMPAT_NAME_MAX-1 },
--	[NFTA_COMPAT_REV]	= { .type = NLA_U32 },
-+	[NFTA_COMPAT_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
- 	[NFTA_COMPAT_TYPE]	= { .type = NLA_U32 },
- };
+-	*proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
++	l4proto = ntohl(nla_get_be32(tb[NFTA_RULE_COMPAT_PROTO]));
++	if (l4proto > U16_MAX)
++		return -EINVAL;
++
++	*proto = l4proto;
++
+ 	return 0;
+ }
  
 -- 
 2.43.0
