@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-20058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3115F8538A4
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:39:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F49485381F
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:33:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56BD41C26721
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:39:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF555284BAB
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD3960259;
-	Tue, 13 Feb 2024 17:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D6A5FF04;
+	Tue, 13 Feb 2024 17:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHz41qgE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eLwaiaIu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5DC65FF17;
-	Tue, 13 Feb 2024 17:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3610A5F54E;
+	Tue, 13 Feb 2024 17:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845924; cv=none; b=n5DJRBuVqvfLqqdfy56/1F0+QeWf8kUW6iDGNQUQXC8++5umKLoQuVq15mW8JGKbgJVwPQCgAZ1Siq+aZQ0HsSStEe5sXpLeGr3QmIJDXtOK1hgFEwIENXOdf9vuuRenaFTTZHE0rLBaS1++N/PZa3aS/3aclbuukr0rXE7lLpQ=
+	t=1707845601; cv=none; b=pKjJNwbMUWdkAfl7hcd3yAtINFVjN4y/J+flwCgzPwFH07S9rSzzhp+GNMVVwX3s+6pkjUc7QHZIfEQqo2yHMhYV7BshlK1LB86r2xR6hYs7qytqh1NqF7pmuF19f4W8qD20zU68sbX1VjnMbX+zADfR//GVCxmbdZge3NqX+Ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845924; c=relaxed/simple;
-	bh=DXkUfBpeQdiN9d98QrXbpDqwi3c+Uq3DmzWEVsBf7zw=;
+	s=arc-20240116; t=1707845601; c=relaxed/simple;
+	bh=0K3n0oAWn1asTuBXpuYIKf1aclXVI9AdsGM/2SD2LX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c6mjjtJrSFWMU68qOWzWPVzpwjch0wNLszFz4OekyiTzw0WZQK6cG7zrwaOExvhZU0RXi1T5X288d/+eZ3vcEXcyVDUhtBOvBzwz6HDhs3UlZdHY27Y/iIGdYrdOCD2mdcvxk7yW4cQDAdC5fLyaxwCdN0xp/a3e/+27WkjD2zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHz41qgE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A28C433F1;
-	Tue, 13 Feb 2024 17:38:43 +0000 (UTC)
+	 MIME-Version; b=IbuGXakH0nfi12Oqf5w3NXtG0CzEUvFY2gkChl5CSnh4eoOWHVyfs7oaQikUOAW+xnLGCT7S61DWdaQgVtEjIuSgbdsW/YOUy40EQSElnv61zgPOe5+90RRrSfym/9uO1YOj6ckewwnVGrceuCX3xiM3LkwBUnhrPL/APAFpdmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eLwaiaIu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C98C433C7;
+	Tue, 13 Feb 2024 17:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845924;
-	bh=DXkUfBpeQdiN9d98QrXbpDqwi3c+Uq3DmzWEVsBf7zw=;
+	s=korg; t=1707845601;
+	bh=0K3n0oAWn1asTuBXpuYIKf1aclXVI9AdsGM/2SD2LX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHz41qgEXIZsY6iu/EOiEWjNiEQ0LXbjyJsu7ZmXHb3AaTChGGWWevxwy/nmif1cz
-	 gXdE0OBpf/JmcUsARQReoBGiBaXYl0KMbLvG31/yGgD8F599uCINuf9jfMQdXHOMKh
-	 IFOtPSxj92JYOxg3mdoK7xPNOV7MAUqoy0A/fPOY=
+	b=eLwaiaIuV71YlAM+XS6QwldaodtLrW3GGBq0aWH5jI0nN2p5x2F8JUKxSm9q84IEM
+	 LNVKaa8/0YzpAHIpUK5FBGgV2Ag000SZkZixHV4ZocUOisq/wg1OU4CVdsvqbZbbrk
+	 KFqT9LgRUPMxmJGI1z9XKnZlAzDhSkW62csUOj1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Micha=C5=82=20Pecio?= <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.7 098/124] xhci: process isoc TD properly when there was a transaction error mid TD.
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 111/121] usb: dwc3: pci: add support for the Intel Arrow Lake-H
 Date: Tue, 13 Feb 2024 18:22:00 +0100
-Message-ID: <20240213171856.593015803@linuxfoundation.org>
+Message-ID: <20240213171856.230923645@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,182 +59,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-commit 5372c65e1311a16351ef03dd096ff576e6477674 upstream.
+commit de4b5b28c87ccae4da268a53c5df135437f5cfde upstream.
 
-The last TRB of a isoc TD might not trigger an event if there was
-an error event for a TRB mid TD. This is seen on a NEC Corporation
-uPD720200 USB 3.0 Host
+This patch adds the necessary PCI ID for Intel Arrow Lake-H
+devices.
 
-After an error mid a multi-TRB TD the xHC should according to xhci 4.9.1
-generate events for passed TRBs with IOC flag set if it proceeds to the
-next TD. This event is either a copy of the original error, or a
-"success" transfer event.
-
-If that event is missing then the driver and xHC host get out of sync as
-the driver is still expecting a transfer event for that first TD, while
-xHC host is already sending events for the next TD in the list.
-This leads to
-"Transfer event TRB DMA ptr not part of current TD" messages.
-
-As a solution we tag the isoc TDs that get error events mid TD.
-If an event doesn't match the first TD, then check if the tag is
-set, and event points to the next TD.
-In that case give back the fist TD and process the next TD normally
-
-Make sure TD status and transferred length stay valid in both cases
-with and without final TD completion event.
-
-Reported-by: Michał Pecio <michal.pecio@gmail.com>
-Closes: https://lore.kernel.org/linux-usb/20240112235205.1259f60c@foxbook/
-Tested-by: Michał Pecio <michal.pecio@gmail.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240125152737.2983959-4-mathias.nyman@linux.intel.com
+Link: https://lore.kernel.org/r/20240115092820.1454492-1-heikki.krogerus@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-ring.c |   74 ++++++++++++++++++++++++++++++++++---------
- drivers/usb/host/xhci.h      |    1 
- 2 files changed, 61 insertions(+), 14 deletions(-)
+ drivers/usb/dwc3/dwc3-pci.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -2375,6 +2375,9 @@ static int process_isoc_td(struct xhci_h
- 	/* handle completion code */
- 	switch (trb_comp_code) {
- 	case COMP_SUCCESS:
-+		/* Don't overwrite status if TD had an error, see xHCI 4.9.1 */
-+		if (td->error_mid_td)
-+			break;
- 		if (remaining) {
- 			frame->status = short_framestatus;
- 			if (xhci->quirks & XHCI_TRUST_TX_LENGTH)
-@@ -2400,8 +2403,9 @@ static int process_isoc_td(struct xhci_h
- 		break;
- 	case COMP_USB_TRANSACTION_ERROR:
- 		frame->status = -EPROTO;
-+		sum_trbs_for_length = true;
- 		if (ep_trb != td->last_trb)
--			return 0;
-+			td->error_mid_td = true;
- 		break;
- 	case COMP_STOPPED:
- 		sum_trbs_for_length = true;
-@@ -2421,6 +2425,9 @@ static int process_isoc_td(struct xhci_h
- 		break;
- 	}
+--- a/drivers/usb/dwc3/dwc3-pci.c
++++ b/drivers/usb/dwc3/dwc3-pci.c
+@@ -51,6 +51,8 @@
+ #define PCI_DEVICE_ID_INTEL_MTLP		0x7ec1
+ #define PCI_DEVICE_ID_INTEL_MTLS		0x7f6f
+ #define PCI_DEVICE_ID_INTEL_MTL			0x7e7e
++#define PCI_DEVICE_ID_INTEL_ARLH		0x7ec1
++#define PCI_DEVICE_ID_INTEL_ARLH_PCH		0x777e
+ #define PCI_DEVICE_ID_INTEL_TGL			0x9a15
+ #define PCI_DEVICE_ID_AMD_MR			0x163a
  
-+	if (td->urb_length_set)
-+		goto finish_td;
-+
- 	if (sum_trbs_for_length)
- 		frame->actual_length = sum_trb_lengths(xhci, ep->ring, ep_trb) +
- 			ep_trb_len - remaining;
-@@ -2429,6 +2436,14 @@ static int process_isoc_td(struct xhci_h
+@@ -421,6 +423,8 @@ static const struct pci_device_id dwc3_p
+ 	{ PCI_DEVICE_DATA(INTEL, MTLP, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, MTL, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, MTLS, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, ARLH, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, ARLH_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, TGL, &dwc3_pci_intel_swnode) },
  
- 	td->urb->actual_length += frame->actual_length;
- 
-+finish_td:
-+	/* Don't give back TD yet if we encountered an error mid TD */
-+	if (td->error_mid_td && ep_trb != td->last_trb) {
-+		xhci_dbg(xhci, "Error mid isoc TD, wait for final completion event\n");
-+		td->urb_length_set = true;
-+		return 0;
-+	}
-+
- 	return finish_td(xhci, ep, ep_ring, td, trb_comp_code);
- }
- 
-@@ -2807,17 +2822,51 @@ static int handle_tx_event(struct xhci_h
- 		}
- 
- 		if (!ep_seg) {
--			if (!ep->skip ||
--			    !usb_endpoint_xfer_isoc(&td->urb->ep->desc)) {
--				/* Some host controllers give a spurious
--				 * successful event after a short transfer.
--				 * Ignore it.
--				 */
--				if ((xhci->quirks & XHCI_SPURIOUS_SUCCESS) &&
--						ep_ring->last_td_was_short) {
--					ep_ring->last_td_was_short = false;
--					goto cleanup;
-+
-+			if (ep->skip && usb_endpoint_xfer_isoc(&td->urb->ep->desc)) {
-+				skip_isoc_td(xhci, td, ep, status);
-+				goto cleanup;
-+			}
-+
-+			/*
-+			 * Some hosts give a spurious success event after a short
-+			 * transfer. Ignore it.
-+			 */
-+			if ((xhci->quirks & XHCI_SPURIOUS_SUCCESS) &&
-+			    ep_ring->last_td_was_short) {
-+				ep_ring->last_td_was_short = false;
-+				goto cleanup;
-+			}
-+
-+			/*
-+			 * xhci 4.10.2 states isoc endpoints should continue
-+			 * processing the next TD if there was an error mid TD.
-+			 * So host like NEC don't generate an event for the last
-+			 * isoc TRB even if the IOC flag is set.
-+			 * xhci 4.9.1 states that if there are errors in mult-TRB
-+			 * TDs xHC should generate an error for that TRB, and if xHC
-+			 * proceeds to the next TD it should genete an event for
-+			 * any TRB with IOC flag on the way. Other host follow this.
-+			 * So this event might be for the next TD.
-+			 */
-+			if (td->error_mid_td &&
-+			    !list_is_last(&td->td_list, &ep_ring->td_list)) {
-+				struct xhci_td *td_next = list_next_entry(td, td_list);
-+
-+				ep_seg = trb_in_td(xhci, td_next->start_seg, td_next->first_trb,
-+						   td_next->last_trb, ep_trb_dma, false);
-+				if (ep_seg) {
-+					/* give back previous TD, start handling new */
-+					xhci_dbg(xhci, "Missing TD completion event after mid TD error\n");
-+					ep_ring->dequeue = td->last_trb;
-+					ep_ring->deq_seg = td->last_trb_seg;
-+					inc_deq(xhci, ep_ring);
-+					xhci_td_cleanup(xhci, td, ep_ring, td->status);
-+					td = td_next;
- 				}
-+			}
-+
-+			if (!ep_seg) {
- 				/* HC is busted, give up! */
- 				xhci_err(xhci,
- 					"ERROR Transfer event TRB DMA ptr not "
-@@ -2829,9 +2878,6 @@ static int handle_tx_event(struct xhci_h
- 					  ep_trb_dma, true);
- 				return -ESHUTDOWN;
- 			}
--
--			skip_isoc_td(xhci, td, ep, status);
--			goto cleanup;
- 		}
- 		if (trb_comp_code == COMP_SHORT_PACKET)
- 			ep_ring->last_td_was_short = true;
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1547,6 +1547,7 @@ struct xhci_td {
- 	struct xhci_segment	*bounce_seg;
- 	/* actual_length of the URB has already been set */
- 	bool			urb_length_set;
-+	bool			error_mid_td;
- 	unsigned int		num_trbs;
- };
- 
+ 	{ PCI_DEVICE_DATA(AMD, NL_USB, &dwc3_pci_amd_swnode) },
 
 
 
