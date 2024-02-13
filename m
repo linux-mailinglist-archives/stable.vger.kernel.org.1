@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-19983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D14C3853836
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:34:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8A28537B7
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A5741F2A5B7
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:34:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50FE11C20E3A
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199E96025D;
-	Tue, 13 Feb 2024 17:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90AB45FF0B;
+	Tue, 13 Feb 2024 17:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXM+vdVd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXAakjtL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB2A35FB94;
-	Tue, 13 Feb 2024 17:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9EE5FEFE;
+	Tue, 13 Feb 2024 17:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845660; cv=none; b=oVxkHN2cWyYKMTdxlSlAPi1bhA8CScQU8dqe/tD3TM+a/drJy9zchZQnRByNkAnriCZt6McW0F5Oz+5xXDj2DKrnSX4Vu5h13iOMW0EczCzpBXLLzBiPTNEV9tGcOdemK5FR+OWxYymAASCm6cci80H8zAn/iXt7uwK0LArwja8=
+	t=1707845319; cv=none; b=Qy2LXm7/Qq6ICYCITjpkDAhjElJ8ov6GXUP33ZvyR6/12wYYTFns/SYs3piRE7A4uYHyaVueA6PvxA0gxErpyq+MSleR47VESnFmIH6N6QBzGcXefr/RYXRbSeUVVChzlkUTtYHVCnkD1OugCJu7L5UJWrQl3sZKc4b41EszRK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845660; c=relaxed/simple;
-	bh=cKPS5WXbtisoaurWvntlclN30EbkHrp3/y06cw+7wfc=;
+	s=arc-20240116; t=1707845319; c=relaxed/simple;
+	bh=xrNYXVv1mFQK7bH4jAANWwYkQIQfo8rDQP62tzH28F4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XaUmhnQN92eKUtca1U4xI7B+ZCvXHzNXKah/zYNViVCiY8dJI00wujeq03F7twrpyS9bRt7ofuvmXRfBbcHsrgUTtVqJ/Z3aC4u6IbhbEdXoh/XJVJKNF7L9L2JB//h1TiSNaj1Yyaqjc+1uxMx7QVvQhNVMLC93QTabkEL0xYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXM+vdVd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30003C433F1;
-	Tue, 13 Feb 2024 17:34:19 +0000 (UTC)
+	 MIME-Version; b=HvLL/xe0BJBfECEf2O8JzzoUeUdG6qq2f6s8Jiq9kVJRTZlbznnojw014FDBQJO+IXw+iGgH/TAzWkvIAK/8OH9ooIQrLrqPwSpxCfArXodfRyqTNAj0c/CH9SJTqVdkWNuBmrL29OQ6lYscoMO4VvN2kok/hM94B+vf4uVrN0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXAakjtL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8539C43390;
+	Tue, 13 Feb 2024 17:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845660;
-	bh=cKPS5WXbtisoaurWvntlclN30EbkHrp3/y06cw+7wfc=;
+	s=korg; t=1707845319;
+	bh=xrNYXVv1mFQK7bH4jAANWwYkQIQfo8rDQP62tzH28F4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PXM+vdVdUANqFjX4zlhGOBGtpTWO0UKvIlF+XTc59yXK1SNbqYl38adLcDNXsH2XB
-	 +sbC6PdGfeccpVH710WnfEEh4r71/FqtTXWWDqbaphzgMmwCW/2tYB+ZGuD0WJzgG6
-	 xVzHMLoIzGvPe8qXt2rlfAtiKIbNyRcgkjy5XZeU=
+	b=IXAakjtL+d0x2yW+QOGhkT7cAuuPIe8Z76E2BMHNDUTwhB3D6C7HApeLh+6PXSW99
+	 +Y3tuA8bbCMTEtx+9WieSbnCZC9h5Rrc6mG2R3xdRKM3op4Vin+GS+hmcZgkDFfDzT
+	 N0etl9oGxQUuK0ZlFvu6Gq1Q42ELtdb2tsPKOafM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Vinod Koul <vkoul@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
+	Chandan Babu R <chandanbabu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 004/124] dmaengine: fsl-qdma: Fix a memory leak related to the status queue DMA
+Subject: [PATCH 6.6 017/121] MAINTAINERS: add Catherine as xfs maintainer for 6.6.y
 Date: Tue, 13 Feb 2024 18:20:26 +0100
-Message-ID: <20240213171853.856786154@linuxfoundation.org>
+Message-ID: <20240213171853.473953498@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Catherine Hoang <catherine.hoang@oracle.com>
 
-[ Upstream commit 968bc1d7203d384e72afe34124a1801b7af76514 ]
+This is an attempt to direct the bots and humans that are testing
+LTS 6.6.y towards the maintainer of xfs in the 6.6.y tree.
 
-This dma_alloc_coherent() is undone in the remove function, but not in the
-error handling path of fsl_qdma_probe().
-
-Switch to the managed version to fix the issue in the probe and simplify
-the remove function.
-
-Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/a0ef5d0f5a47381617ef339df776ddc68ce48173.1704621515.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/fsl-qdma.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/dma/fsl-qdma.c b/drivers/dma/fsl-qdma.c
-index 47cb28468049..38409e06040a 100644
---- a/drivers/dma/fsl-qdma.c
-+++ b/drivers/dma/fsl-qdma.c
-@@ -563,11 +563,11 @@ static struct fsl_qdma_queue
- 	/*
- 	 * Buffer for queue command
- 	 */
--	status_head->cq = dma_alloc_coherent(&pdev->dev,
--					     sizeof(struct fsl_qdma_format) *
--					     status_size,
--					     &status_head->bus_addr,
--					     GFP_KERNEL);
-+	status_head->cq = dmam_alloc_coherent(&pdev->dev,
-+					      sizeof(struct fsl_qdma_format) *
-+					      status_size,
-+					      &status_head->bus_addr,
-+					      GFP_KERNEL);
- 	if (!status_head->cq) {
- 		devm_kfree(&pdev->dev, status_head);
- 		return NULL;
-@@ -1268,8 +1268,6 @@ static void fsl_qdma_cleanup_vchan(struct dma_device *dmadev)
+diff --git a/MAINTAINERS b/MAINTAINERS
+index dd5de540ec0b..40312bb550f0 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -23630,6 +23630,7 @@ F:	include/xen/arm/swiotlb-xen.h
+ F:	include/xen/swiotlb-xen.h
  
- static void fsl_qdma_remove(struct platform_device *pdev)
- {
--	int i;
--	struct fsl_qdma_queue *status;
- 	struct device_node *np = pdev->dev.of_node;
- 	struct fsl_qdma_engine *fsl_qdma = platform_get_drvdata(pdev);
- 
-@@ -1277,12 +1275,6 @@ static void fsl_qdma_remove(struct platform_device *pdev)
- 	fsl_qdma_cleanup_vchan(&fsl_qdma->dma_dev);
- 	of_dma_controller_free(np);
- 	dma_async_device_unregister(&fsl_qdma->dma_dev);
--
--	for (i = 0; i < fsl_qdma->block_number; i++) {
--		status = fsl_qdma->status[i];
--		dma_free_coherent(&pdev->dev, sizeof(struct fsl_qdma_format) *
--				status->n_cq, status->cq, status->bus_addr);
--	}
- }
- 
- static const struct of_device_id fsl_qdma_dt_ids[] = {
+ XFS FILESYSTEM
++M:	Catherine Hoang <catherine.hoang@oracle.com>
+ M:	Chandan Babu R <chandan.babu@oracle.com>
+ R:	Darrick J. Wong <djwong@kernel.org>
+ L:	linux-xfs@vger.kernel.org
 -- 
 2.43.0
 
