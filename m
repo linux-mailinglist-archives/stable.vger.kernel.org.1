@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-20021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 114E8853873
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:37:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5501F8537D0
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:30:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2B0728A7C6
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:37:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FDBC2866B5
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13CB460257;
-	Tue, 13 Feb 2024 17:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156195FF04;
+	Tue, 13 Feb 2024 17:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H7dDeMkq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0WYpsIe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C743E5F56B;
-	Tue, 13 Feb 2024 17:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FFB5F54E;
+	Tue, 13 Feb 2024 17:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845804; cv=none; b=tdviCAupsFwHj4CUjtJdONq0fHF2CCuasrmooyYPVkHsddNsdPH3GhiOdzxPRKrTWNWqSqtvqyp8OzA70qec533MXnapmiQX4J94c1LB0jbx+IoMmLAeOUUrqgy4zZWaRnOTVjy5V6+YPtfbBro8PzXe1Rqs+rCH/RQ1U7PPimA=
+	t=1707845398; cv=none; b=j771/fWEvbX3asihBbbGVu2UPdT1AOeUN1Ga4q9VLhcTAJAabd1J3l5RydBlo+L/QLUEgxr09USJLSngWPcSLhpf1KtV6Ol0v3on8SjFKq5CaNOB0E4tUGX3yqmhelnAbfVIxaqnPzf5uVdjigtDJBRFUVSonp3uiLV/uOeuTKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845804; c=relaxed/simple;
-	bh=Jrg+Wu2wXsdf6fj3lADd4LXy3y0bjk/MOnCsn4wiTTQ=;
+	s=arc-20240116; t=1707845398; c=relaxed/simple;
+	bh=4bF9ZFUbg6oXkB+jqIL6zw+SN7KlEnqXk2StyX9Tqpg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5+qzWCT09NZIF17JyvzWefhY2815ZeUibw1Hy/nhnCEFBCopXoKcNt1tcLh62QDG+R9YuwujboVmxYAMg7Bcefx10fumViUGqkPmUacn40PExT7jeaf3ti7FtsJh/aE/nHRSvmkklad7TlOjPGxgrRPPmrlAQgJLwub53qXV/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7dDeMkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C07C433F1;
-	Tue, 13 Feb 2024 17:36:44 +0000 (UTC)
+	 MIME-Version; b=nu7Janxr5lLXx3RJC/2rjud+r9JNc7VmMMzoPgGkyJSqQQ6HdfT1rfL9kZfHvCQkq+9Zkvw79PEsal3QkH6ipA3RDOiDKlYAKqcvatZxjy/tOdzFm/eloNNuuxW1aNA0FgpVrNIw8XU5F/p/ej9MFpWAqe+7QGZYdHaHuu/8HaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m0WYpsIe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C5BC433F1;
+	Tue, 13 Feb 2024 17:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845804;
-	bh=Jrg+Wu2wXsdf6fj3lADd4LXy3y0bjk/MOnCsn4wiTTQ=;
+	s=korg; t=1707845398;
+	bh=4bF9ZFUbg6oXkB+jqIL6zw+SN7KlEnqXk2StyX9Tqpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H7dDeMkq1Bg3NKlsOXwUXOs+/OZHkPidbZbqsNfAswdvgsYN+fyYm2olOwPehZt4T
-	 VR4xmuGa+CV0AUl6T+M03wQWnfzkYFhj4gJpSAZk0rM25z2CLW0wcK7O7ZvO8TRDhJ
-	 d7ZsTXs4bJbJacF/MHxjYC7qL3HIGtcpwznmfpCw=
+	b=m0WYpsIe3AJx+iaDxaQdAxzVbbpUvbIvboW/4az97gM/qqw4DwQpv8PCjCeOBZqc+
+	 mK457/nshE2c/WWaEUrtWt4txk4BCwES2CwONPqT60UhZvHn2m0TPuG87CHxWTJe8Q
+	 dmC/u4tbYmHMUEl46G46OYRaCrb6xYlpY6bUvRUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Xin Long <lucien.xin@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
 	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 053/124] selftests: net: let big_tcp test cope with slow env
+Subject: [PATCH 6.6 066/121] rxrpc: Fix delayed ACKs to not set the reference serial number
 Date: Tue, 13 Feb 2024 18:21:15 +0100
-Message-ID: <20240213171855.289076798@linuxfoundation.org>
+Message-ID: <20240213171854.922021478@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +68,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit a19747c3b9bf6476cc36d0a3a5ef0ff92999169e ]
+[ Upstream commit e7870cf13d20f56bfc19f9c3e89707c69cf104ef ]
 
-In very slow environments, most big TCP cases including
-segmentation and reassembly of big TCP packets have a good
-chance to fail: by default the TCP client uses write size
-well below 64K. If the host is low enough autocorking is
-unable to build real big TCP packets.
+Fix the construction of delayed ACKs to not set the reference serial number
+as they can't be used as an RTT reference.
 
-Address the issue using much larger write operations.
-
-Note that is hard to observe the issue without an extremely
-slow and/or overloaded environment; reduce the TCP transfer
-time to allow for much easier/faster reproducibility.
-
-Fixes: 6bb382bcf742 ("selftests: add a selftest for big tcp")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Xin Long <lucien.xin@gmail.com>
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/big_tcp.sh | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/rxrpc/ar-internal.h | 1 -
+ net/rxrpc/call_event.c  | 6 +-----
+ 2 files changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/net/big_tcp.sh b/tools/testing/selftests/net/big_tcp.sh
-index cde9a91c4797..2db9d15cd45f 100755
---- a/tools/testing/selftests/net/big_tcp.sh
-+++ b/tools/testing/selftests/net/big_tcp.sh
-@@ -122,7 +122,9 @@ do_netperf() {
- 	local netns=$1
+diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
+index 668fdc94b299..f6375772fa93 100644
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -692,7 +692,6 @@ struct rxrpc_call {
+ 	/* Receive-phase ACK management (ACKs we send). */
+ 	u8			ackr_reason;	/* reason to ACK */
+ 	u16			ackr_sack_base;	/* Starting slot in SACK table ring */
+-	rxrpc_serial_t		ackr_serial;	/* serial of packet being ACK'd */
+ 	rxrpc_seq_t		ackr_window;	/* Base of SACK window */
+ 	rxrpc_seq_t		ackr_wtop;	/* Base of SACK window */
+ 	unsigned int		ackr_nr_unacked; /* Number of unacked packets */
+diff --git a/net/rxrpc/call_event.c b/net/rxrpc/call_event.c
+index e363f21a2014..c61efe08695d 100644
+--- a/net/rxrpc/call_event.c
++++ b/net/rxrpc/call_event.c
+@@ -43,8 +43,6 @@ void rxrpc_propose_delay_ACK(struct rxrpc_call *call, rxrpc_serial_t serial,
+ 	unsigned long expiry = rxrpc_soft_ack_delay;
+ 	unsigned long now = jiffies, ack_at;
  
- 	[ "$NF" = "6" ] && serip=$SERVER_IP6
--	ip net exec $netns netperf -$NF -t TCP_STREAM -H $serip 2>&1 >/dev/null
-+
-+	# use large write to be sure to generate big tcp packets
-+	ip net exec $netns netperf -$NF -t TCP_STREAM -l 1 -H $serip -- -m 262144 2>&1 >/dev/null
- }
+-	call->ackr_serial = serial;
+-
+ 	if (rxrpc_soft_ack_delay < expiry)
+ 		expiry = rxrpc_soft_ack_delay;
+ 	if (call->peer->srtt_us != 0)
+@@ -373,7 +371,6 @@ static void rxrpc_send_initial_ping(struct rxrpc_call *call)
+ bool rxrpc_input_call_event(struct rxrpc_call *call, struct sk_buff *skb)
+ {
+ 	unsigned long now, next, t;
+-	rxrpc_serial_t ackr_serial;
+ 	bool resend = false, expired = false;
+ 	s32 abort_code;
  
- do_test() {
+@@ -423,8 +420,7 @@ bool rxrpc_input_call_event(struct rxrpc_call *call, struct sk_buff *skb)
+ 	if (time_after_eq(now, t)) {
+ 		trace_rxrpc_timer(call, rxrpc_timer_exp_ack, now);
+ 		cmpxchg(&call->delay_ack_at, t, now + MAX_JIFFY_OFFSET);
+-		ackr_serial = xchg(&call->ackr_serial, 0);
+-		rxrpc_send_ACK(call, RXRPC_ACK_DELAY, ackr_serial,
++		rxrpc_send_ACK(call, RXRPC_ACK_DELAY, 0,
+ 			       rxrpc_propose_ack_ping_for_lost_ack);
+ 	}
+ 
 -- 
 2.43.0
 
