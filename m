@@ -1,108 +1,141 @@
-Return-Path: <stable+bounces-19682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A07485281A
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 06:05:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EF4E852864
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 06:54:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1A541F2452E
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 05:05:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C42EFB22CFC
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 05:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35FB11711;
-	Tue, 13 Feb 2024 05:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996F1125B4;
+	Tue, 13 Feb 2024 05:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="xdjjI/uG"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FgAQ9zs9"
 X-Original-To: stable@vger.kernel.org
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C7D256A;
-	Tue, 13 Feb 2024 05:05:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.111.4.29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE60A134CB;
+	Tue, 13 Feb 2024 05:54:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707800722; cv=none; b=YREzsEIvTBECr0ZmHlsP4oDg+DjX6ZMEyDT34Cq7jLY/Js9gGtu1/+QicjdRG8m9nqR6UK7LEfl25umhSlabALKUlRRsL0TqnWXi0nzWWH/XYh0A/zm7NmPV3S+3kopxQM1HJivOSLnXYVj2UQ2b7W/+Z41VieAf+mOpNuRcp7U=
+	t=1707803683; cv=none; b=MBRu7M2bqlZKoC/xmToT+sGVLz8Y73VGObGIU4Co7Ts4bKeoZLZyA5rH68t2BGZiqryZilxETGp3sSZ0IVro7aXcH8nbLtAu2k1iaBwLKe5DFXkSNHSGi0bx68ZK8GmHiT96kEbjjb8/c5fEmi5VLMqM2NCSGRdhGlCsp4iCT40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707800722; c=relaxed/simple;
-	bh=WSKMr6gkDr1yf6ORzy09m9ta4RLYmTrh742X0+WP1LY=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=XamtYqAq/Jtr8yRgLxlyM6gT8GPWDrfeGyQDXJL8RTsC8P1+UFl+eO7UE6X24TxmUQ0E7yM6Aom1LS6gHAkMvD1FUmSGlQbmzfAOl+/+d1s6AxD2AyiUiusBU8ezXQaPxowdGJEmwfTAYywgPn+GGOrIAnBcP/1Y4Je/N1V7LtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=none smtp.mailfrom=linux-m68k.org; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=xdjjI/uG; arc=none smtp.client-ip=66.111.4.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux-m68k.org
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-	by mailout.nyi.internal (Postfix) with ESMTP id 248045C00D5;
-	Tue, 13 Feb 2024 00:05:18 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute7.internal (MEProxy); Tue, 13 Feb 2024 00:05:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1707800718; x=1707887118; bh=Rocq4MWumvMfC9CyxYv4ihUWxIMl
-	w/77e/N5Du0lMQc=; b=xdjjI/uGXdt7OIXCZrX8j28ZTCn++0Lx1WEuVWn7Oxab
-	Mb5LLyl1kI1PHe0zaoq0TG7U/ka/tJ7K5sKQ2wc7YWHwTILEue56nt06LxCfKgec
-	Yv2D7BT5xB7BJVgbFNXJwBQeDoswOe+SWKUpc5NKx/lcr8t1c+B5bFnutya/c6nk
-	V+1jpO3qjae/4+dwSpPplp3Qyu7Z9PmszxXRHD9fS1HcrB+pxREsEpN38WRXFJmj
-	UMLyuwAhrzK8Lmu+MfKie6omTOEoL9tgn4XvsaAJ8tSN7UivKZ3qkgKAZFWVSlpb
-	slRyocSnKSzcl4B8TV/l7vuX0klGS7LXG3BPI11IpQ==
-X-ME-Sender: <xms:jfjKZfadPvel9h4Le3UmYdVErNmOb9Ydb2Dy_li4FCyPrMaZCMFDtg>
-    <xme:jfjKZeZhUsJtMonr_KkAdXn7QJXZyFE8G7K6AMtEbxGUzfu62p1KRs4nYwEWB2F7_
-    yaSnEOtHnxjQQHYjJc>
-X-ME-Received: <xmr:jfjKZR-rcGxIMoJ7NJqifnQ9nNYdDXaG0WnvfAWrYlSGW8wA2XFcDv-Kfvw_JOPAtFdIjkb4mKLKW0dUTCV4e-R3Eqmw6-Ej4R8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudeggdekudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefujgfkfhggtgesthdtredttddtvdenucfhrhhomhephfhinhhnucfv
-    hhgrihhnuceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrth
-    htvghrnhepleeuheelheekgfeuvedtveetjeekhfffkeeffffftdfgjeevkeegfedvueeh
-    ueelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepfh
-    hthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgh
-X-ME-Proxy: <xmx:jfjKZVoiLk1QPYRNKclOLt2EWgb7kRqQ3bZ0jQMimdtz2_IDtDALVw>
-    <xmx:jfjKZapAvUIdAS5x8xYtmM-U2pe1EMXtOx0n2bwDQ9uk5A__KTmBrw>
-    <xmx:jfjKZbTgS_zOcxyUOkDpwdljxJKmwlNJOmLi7EKJ3Yuu7gFx5pfwPg>
-    <xmx:jvjKZTlgZFtTygnCkeKIPM5yjVQ73b_4O_1lfrKg91uEqDL6s2yR6Q>
-Feedback-ID: i58a146ae:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 13 Feb 2024 00:05:14 -0500 (EST)
-Date: Tue, 13 Feb 2024 16:05:40 +1100 (AEDT)
-From: Finn Thain <fthain@linux-m68k.org>
-To: Ulrich Hecht <uli@fpond.eu>
-cc: Al Viro <viro@zeniv.linux.org.uk>, Michael Schmitz <schmitzmic@gmail.com>, 
-    Geert Uytterhoeven <geert@linux-m68k.org>, linux-m68k@vger.kernel.org, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH RFC v2 4/8] m68k: Handle arrivals of multiple signals
- correctly
-In-Reply-To: <522961735.202648.1707732123771@webmail.strato.com>
-Message-ID: <f3022b02-9859-1af1-1913-4215a12c1da8@linux-m68k.org>
-References: <20240205023236.9325-1-schmitzmic@gmail.com> <20240205023236.9325-5-schmitzmic@gmail.com> <CAMuHMdUMwQSEwDQ3tsmChutY3P0VQUA0A8jg63NxfyrmxfKWXQ@mail.gmail.com> <401b6911-e6ed-3e9f-9dcc-d4f951c6beef@gmail.com> <1501038841.1120470.1707393238298@webmail.strato.com>
- <34d37f57-3146-8aa0-7828-2df2d1679ee4@linux-m68k.org> <522961735.202648.1707732123771@webmail.strato.com>
+	s=arc-20240116; t=1707803683; c=relaxed/simple;
+	bh=JcJOQfOGs3Nd12dE0t8lktdd+IGLHzqX6FYs7yU4MB8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=SRrv32yXC/ags4HqwQ2YdsqYkRNr4h7LHvyhUJ2Kjf2QZDBhm0sR20tln/mS41bMiPvw1b9KSXm2XSg8C1zeqXb+Gja7/G7SrajcOTGrV+QH0v71wRNf0uvmFE+V6rPHQHWm5xBWY8m1Xt25EhdB/dMT+adBI1aozRuG1BSI35w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=FgAQ9zs9; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41D5455N027331;
+	Tue, 13 Feb 2024 05:54:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=NDJEgqD0UrZ14pM1kBz9TXy8QgN9x+UJgD+MBzF8irw=; b=Fg
+	AQ9zs9mSCyYd3dzWIj9zmPTNV+eionR9iWAhi5UeElf2yZAZKIo9Aqf7Y2PGGUrz
+	K2HXWPkmMfi7vnXYzpV1rRVFbgrSeQGB9dzfHaGiO+5Y0jeEb1p1OK4XiYixWcDC
+	wkWoZJf2fO/ioV3FMkpz6GHQxD2t9jEX83jw9VuGPD2C1MLd+Y8rSrrPaQELJDhY
+	5KSbduvvPnERkItSeNeGLjklaRydXseiYaucvm6dWZgiM5em01fiMFL110tbVe+j
+	oBwaJXjNTTeiFzT8a9DO9S0GXQgNgps9Fvc2Sl8cS6bco9t3SP7m2zB32jzLdIpt
+	5cJqW6843+OzLYRatY7A==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w7wfy8ewa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 Feb 2024 05:54:37 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 41D5saM2005379
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 Feb 2024 05:54:36 GMT
+Received: from [10.214.66.81] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 12 Feb
+ 2024 21:54:33 -0800
+Message-ID: <9ad7967f-0a6a-96ed-1433-832f76752059@quicinc.com>
+Date: Tue, 13 Feb 2024 11:24:30 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v3] soc: qcom: rpmh-rsc: Enhance check for VRM in-flight
+ request
+Content-Language: en-US
+To: Subbaraman Narayanamurthy <quic_subbaram@quicinc.com>,
+        <quic_mkshah@quicinc.com>
+CC: <andersson@kernel.org>, <konrad.dybcio@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <quic_collinsd@quicinc.com>, <quic_eberman@quicinc.com>,
+        <quic_lsrao@quicinc.com>, <stable@vger.kernel.org>
+References: <20240212-rpmh-rsc-fixes-v3-1-1be0d705dbb5@quicinc.com>
+ <20240213035203.2492516-1-quic_subbaram@quicinc.com>
+From: Mukesh Ojha <quic_mojha@quicinc.com>
+In-Reply-To: <20240213035203.2492516-1-quic_subbaram@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: aKWrJLp_GdD2C3_ZRx5pHSvmB5INVu_b
+X-Proofpoint-ORIG-GUID: aKWrJLp_GdD2C3_ZRx5pHSvmB5INVu_b
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-13_02,2024-02-12_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=427
+ priorityscore=1501 clxscore=1015 mlxscore=0 lowpriorityscore=0 bulkscore=0
+ phishscore=0 malwarescore=0 impostorscore=0 spamscore=0 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402130043
 
-[Cc: stable]
 
-On Mon, 12 Feb 2024, Ulrich Hecht wrote:
+
+On 2/13/2024 9:22 AM, Subbaraman Narayanamurthy wrote:
+> Hi Maulik,
+> 
+>> +bool cmd_db_match_resource_addr(u32 addr1, u32 addr2)
+>> +{
+> 
+> <snip>
+> 
+>> +	if (SLAVE_ID(addr1) == CMD_DB_HW_VRM
+>> +	    && VRM_ADDR(addr1) == VRM_ADDR(addr2))
+>> +		return true;
+>> +	else if (addr1 == addr2)
+>> +		return true;
+>> +	else
+>> +		return false;
+> 
+> Minor..it would be better if you modify it as following.
+> 
+> +	if (addr1 == addr2)
+> +		return true;
+> +	else if (SLAVE_ID(addr1) == CMD_DB_HW_VRM
+> +	    && VRM_ADDR(addr1) == VRM_ADDR(addr2))
+> +		return true;
+> +
+> +	return false;
+
+Even better if it becomes one statement for true rest with
+false..
+> 
+> -Subbaraman
+> 
+> --
+> The Qualcomm Innovation Center, Inc. is a member of the Code Aurora Forum,
+> a Linux Foundation Collaborative Project.
+
+Probably, you don't want to include this in your reply.
+
+-Mukesh
 
 > 
-> > On 02/08/2024 11:51 PM CET Finn Thain <fthain@linux-m68k.org> wrote:
-> > Ulrich, I imagine that you would normally receive fixes via the 
-> > corresponding -stable trees. If Michael's series went into 
-> > stable/linux-4.19.y you could cherry-pick from there for your v4.4.y tree 
-> > and maybe avoid some merge conflicts that way.
-> 
-> That would work for me.
-> 
-
-OK. Here's the relevant commit. It fixes bd6f56a75bb2 which first appeared 
-in v2.6.38-rc1. I believe this can be cherry-picked without any conflicts.
-
-50e43a573344 m68k: Update ->thread.esp0 before calling syscall_trace() in ret_from_signal
 
