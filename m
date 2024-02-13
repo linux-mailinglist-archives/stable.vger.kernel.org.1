@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-19871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E5F8537A7
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:28:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E8B6853834
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D97EE2821D6
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:28:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE28D1F2A5E7
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A136A5FF0B;
-	Tue, 13 Feb 2024 17:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8381660243;
+	Tue, 13 Feb 2024 17:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKkSYq1J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhfU5HW4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3655FEFF;
-	Tue, 13 Feb 2024 17:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428FCAD55;
+	Tue, 13 Feb 2024 17:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845270; cv=none; b=LGcLs9oA2qEn9V++XKjv10lowb4J3XdpijeegrepNbLMqqGOJtP8E7r/ihIvrTQggaH6RPkh19WDpkXi4v4sPIt99vl7lc+eSTbqf9LBcudz//T/oos9Jz5AznH6gKBOJko5WIGBXs+U/i2U8b+ZYpW6lH0ueEtIWAJYoIju5Z8=
+	t=1707845654; cv=none; b=Eose/JTQRLHyWK4jofsqClYSSnAJ5n9qKdkScHxutUDA67YaIR9T4w/9yeBI8K73ozZz4DGVLhob1hy3FY+QGImW8wrWEQJBnzSwAmBsWaD5j4YKT+pnHgMNQ+mrrTAh9K3GJE4RZLWkgswXWAXgr47PtPdwMjT9dJe+ewinWoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845270; c=relaxed/simple;
-	bh=GnZQgJDZZKYf4cMDN12j/zmF8F8j5zijFwxmFfz9dPQ=;
+	s=arc-20240116; t=1707845654; c=relaxed/simple;
+	bh=B333NfeITKiolNdBwohX4Sc9O10wf74jmr5civ+oxeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MLnvcBi7mwY/ee01cCx96PxrXj1nYWHKBBUbjxDOqjwWAnKZhr2K/nWC0OWtcSoyl+n1lDFek3vmrpkTj6DTrcUgGzr0UkDj/UPaHseG+Dh/LLkJJ//1LUgV4rUo9jsPpBVp84xMEPpda5yl5QA9VNF7HGsf+ors7NmCHVhBh5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKkSYq1J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC95AC433C7;
-	Tue, 13 Feb 2024 17:27:49 +0000 (UTC)
+	 MIME-Version; b=L5t3tb4qvPRM4zvcQu/car1hoYiNwixnwslJH+/YkdfwjtnPBO4lepDGltKJxo85ZwCyv8VwQEUxew2juNhpjpF3eCvGHrINvfI+4kxJbHbzEBG4CnTQz4Qhxd9TWq3PnC1m7LnzrVga8GKj4xBKIUBstR3sKIEkDRcZvxKD6Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhfU5HW4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C1C8C43390;
+	Tue, 13 Feb 2024 17:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845270;
-	bh=GnZQgJDZZKYf4cMDN12j/zmF8F8j5zijFwxmFfz9dPQ=;
+	s=korg; t=1707845654;
+	bh=B333NfeITKiolNdBwohX4Sc9O10wf74jmr5civ+oxeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FKkSYq1Jxzwwv80NGFRnkk4wHOceBp0wAcCEW+oFoWX8hv6WERy2c1Geo2csPcZEY
-	 lL7eEnRfxBFXY5511lunSBK2ySNm8pf7OgKkmLnaq5mzsV55zjMaRIBYw9kUqG48bv
-	 ZI7PuWMgcXCof58JJoZzw9b8kjC9LZb1EUEDyIBs=
+	b=vhfU5HW4KwfH+Oj6IDAShYsEj0JyOIEfO2X+hG6pBaNGU3hdPcMdn9tGI6rlE3nBC
+	 UP4Hbc92rD6ELVeKjtkrPw0UdSaK4LrPzsEN3qlGEmE2pUiuaowpc90aq1hWlCmhML
+	 0NGxPYrUSM7CAHGQKpqk0NPLUywLUOXALuxXZ4dA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
-	Anthony Iliopoulos <ailiop@suse.com>,
-	Dave Chinner <dchinner@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/121] xfs: fix again select in kconfig XFS_ONLINE_SCRUB_STATS
-Date: Tue, 13 Feb 2024 18:20:41 +0100
-Message-ID: <20240213171853.926570658@linuxfoundation.org>
+Subject: [PATCH 6.7 020/124] x86/efistub: Give up if memory attribute protocol returns an error
+Date: Tue, 13 Feb 2024 18:20:42 +0100
+Message-ID: <20240213171854.322552854@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +59,124 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthony Iliopoulos <ailiop@suse.com>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-commit a2e4388adfa44684c7c428a5a5980efe0d75e13e upstream.
+[ Upstream commit a7a6a01f88e87dec4bf2365571dd2dc7403d52d0 ]
 
-Commit 57c0f4a8ea3a attempted to fix the select in the kconfig entry
-XFS_ONLINE_SCRUB_STATS by selecting XFS_DEBUG, but the original
-intention was to select DEBUG_FS, since the feature relies on debugfs to
-export the related scrub statistics.
+The recently introduced EFI memory attributes protocol should be used
+if it exists to ensure that the memory allocation created for the kernel
+permits execution. This is needed for compatibility with tightened
+requirements related to Windows logo certification for x86 PCs.
 
-Fixes: 57c0f4a8ea3a ("xfs: fix select in config XFS_ONLINE_SCRUB_STATS")
+Currently, we simply strip the execute protect (XP) attribute from the
+entire range, but this might be rejected under some firmware security
+policies, and so in a subsequent patch, this will be changed to only
+strip XP from the executable region that runs early, and make it
+read-only (RO) as well.
 
-Reported-by: Holger Hoffstätte <holger@applied-asynchrony.com>
-Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+In order to catch any issues early, ensure that the memory attribute
+protocol works as intended, and give up if it produces spurious errors.
+
+Note that the DXE services based fallback was always based on best
+effort, so don't propagate any errors returned by that API.
+
+Fixes: a1b87d54f4e4 ("x86/efistub: Avoid legacy decompressor when doing EFI boot")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/efi/libstub/x86-stub.c | 24 ++++++++++++++----------
+ drivers/firmware/efi/libstub/x86-stub.h |  4 ++--
+ 2 files changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/fs/xfs/Kconfig b/fs/xfs/Kconfig
-index ed0bc8cbc703..567fb37274d3 100644
---- a/fs/xfs/Kconfig
-+++ b/fs/xfs/Kconfig
-@@ -147,7 +147,7 @@ config XFS_ONLINE_SCRUB_STATS
- 	bool "XFS online metadata check usage data collection"
- 	default y
- 	depends on XFS_ONLINE_SCRUB
--	select XFS_DEBUG
-+	select DEBUG_FS
- 	help
- 	  If you say Y here, the kernel will gather usage data about
- 	  the online metadata check subsystem.  This includes the number
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 0d510c9a06a4..cb0be88c8131 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -223,8 +223,8 @@ static void retrieve_apple_device_properties(struct boot_params *boot_params)
+ 	}
+ }
+ 
+-void efi_adjust_memory_range_protection(unsigned long start,
+-					unsigned long size)
++efi_status_t efi_adjust_memory_range_protection(unsigned long start,
++						unsigned long size)
+ {
+ 	efi_status_t status;
+ 	efi_gcd_memory_space_desc_t desc;
+@@ -236,13 +236,17 @@ void efi_adjust_memory_range_protection(unsigned long start,
+ 	rounded_end = roundup(start + size, EFI_PAGE_SIZE);
+ 
+ 	if (memattr != NULL) {
+-		efi_call_proto(memattr, clear_memory_attributes, rounded_start,
+-			       rounded_end - rounded_start, EFI_MEMORY_XP);
+-		return;
++		status = efi_call_proto(memattr, clear_memory_attributes,
++					rounded_start,
++					rounded_end - rounded_start,
++					EFI_MEMORY_XP);
++		if (status != EFI_SUCCESS)
++			efi_warn("Failed to clear EFI_MEMORY_XP attribute\n");
++		return status;
+ 	}
+ 
+ 	if (efi_dxe_table == NULL)
+-		return;
++		return EFI_SUCCESS;
+ 
+ 	/*
+ 	 * Don't modify memory region attributes, they are
+@@ -255,7 +259,7 @@ void efi_adjust_memory_range_protection(unsigned long start,
+ 		status = efi_dxe_call(get_memory_space_descriptor, start, &desc);
+ 
+ 		if (status != EFI_SUCCESS)
+-			return;
++			break;
+ 
+ 		next = desc.base_address + desc.length;
+ 
+@@ -280,8 +284,10 @@ void efi_adjust_memory_range_protection(unsigned long start,
+ 				 unprotect_start,
+ 				 unprotect_start + unprotect_size,
+ 				 status);
++			break;
+ 		}
+ 	}
++	return EFI_SUCCESS;
+ }
+ 
+ static void setup_unaccepted_memory(void)
+@@ -805,9 +811,7 @@ static efi_status_t efi_decompress_kernel(unsigned long *kernel_entry)
+ 
+ 	*kernel_entry = addr + entry;
+ 
+-	efi_adjust_memory_range_protection(addr, kernel_total_size);
+-
+-	return EFI_SUCCESS;
++	return efi_adjust_memory_range_protection(addr, kernel_total_size);
+ }
+ 
+ static void __noreturn enter_kernel(unsigned long kernel_addr,
+diff --git a/drivers/firmware/efi/libstub/x86-stub.h b/drivers/firmware/efi/libstub/x86-stub.h
+index 37c5a36b9d8c..1c20e99a6494 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.h
++++ b/drivers/firmware/efi/libstub/x86-stub.h
+@@ -5,8 +5,8 @@
+ extern void trampoline_32bit_src(void *, bool);
+ extern const u16 trampoline_ljmp_imm_offset;
+ 
+-void efi_adjust_memory_range_protection(unsigned long start,
+-					unsigned long size);
++efi_status_t efi_adjust_memory_range_protection(unsigned long start,
++						unsigned long size);
+ 
+ #ifdef CONFIG_X86_64
+ efi_status_t efi_setup_5level_paging(void);
 -- 
 2.43.0
 
