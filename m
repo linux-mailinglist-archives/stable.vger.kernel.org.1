@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-20064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AF0F8538AB
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:39:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4166853783
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:26:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E29C1C266C8
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:39:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44EEBB280E7
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:26:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D47F5FDDF;
-	Tue, 13 Feb 2024 17:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9CF5FEFE;
+	Tue, 13 Feb 2024 17:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7wsgpqh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PC/lHFVY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D7C5FF0B;
-	Tue, 13 Feb 2024 17:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7712A5F54E;
+	Tue, 13 Feb 2024 17:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845949; cv=none; b=I+b2qI8fsffifAhzuqi/V3JgdixT/aJZkejYJtIzjTaYrYSbwksg2OSgdVyG2chkvj59Usrz+xb0ikxGKReGA1QB/+hdeAhQHd/6hpW2Xt1NSnZFMR5C5xg2qw0F3H5RMBjalxdRZdrAGzbMgGvhXVpCf1pglg2u0N7IUxE0s6c=
+	t=1707845177; cv=none; b=dodWM4FHt7SqisZhhgC/z/dOTyw5gyTdUdIMO0FHM31z/QN+wzFH2AVuhXCJUSQKoCH9BC9ISZHV2PJq3cgCeuB30QAcYX2vzi4xWhXqTmyvlV0lQOE5xWhUDeLCQ1zri2EohegPrGgQNsG1HYdGqsMKF8dDBjp61+6rsAcaaOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845949; c=relaxed/simple;
-	bh=X13TC1xQg2vaGq8qcIfXM6BKJzrrINLYCUuabn256Vg=;
+	s=arc-20240116; t=1707845177; c=relaxed/simple;
+	bh=haBlRJkP6HZTqmrsStmIwrNNPM5Je9Rut+2jHUXCbNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YmyLvGQMPKAnchzw5SEjCmdcXkSQ7f6QJkugrB/t3Qd3kciLDF8ahcdYhDfuJbRIYEklYUaXdIMyCHVQDCbvrSt6A4gSiUdDgZjIHU2UfmyoDpP9I3PgQhb7f5wepHSwvHEFYxKdgMTPiUxg9sdsO23idHfywMeJK2Urb61aQJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z7wsgpqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEB1C433C7;
-	Tue, 13 Feb 2024 17:39:08 +0000 (UTC)
+	 MIME-Version; b=sssw3UG2v2fqe7QVtVUdWnHiynoNT03kHwS4/ipFAzsY8+08r5BapCPjY2d+suuS/Se7bEIUlgx80uPxtgTtWE5XpYjxpS95O6q6F5gcYRh4Xxn6ljEKVyibh0gp0RexbfQOoiE6abEztVAHYpT0RFIpnbzJ3GmkcQRPe+NfHeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PC/lHFVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25BCC433C7;
+	Tue, 13 Feb 2024 17:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845949;
-	bh=X13TC1xQg2vaGq8qcIfXM6BKJzrrINLYCUuabn256Vg=;
+	s=korg; t=1707845177;
+	bh=haBlRJkP6HZTqmrsStmIwrNNPM5Je9Rut+2jHUXCbNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z7wsgpqhQbpdX7kq6H3tD3PRZPpJwI03espgaRZwqnbGK3wrD07xAeeE4R46xRTPJ
-	 w6of3u1Wed26GdoQBIPeJsSkfgmpq54dccM0n9OsTTSGkNHrm9UWGJwdqfWqewKcmj
-	 ANWIJkkDIJz3ia+Nq0DbkncSg2skOovK2h0WgN10=
+	b=PC/lHFVYc8XzLA9E0ihPI0DOMFb61P5PIzBFZbftanlClYsc2zniJpjYO7bqtPQB5
+	 FCc0f0LGfFOrKu60/h7e4T4rghsq+j5OuGxGlJhdcXHgcmEoT575hQ8KXiJhhQ7hya
+	 P3GQxb7raxHnx6Ro/DtYsgGkjXcXF87slzarnuVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Breno=20Leit=C3=A3o?= <leitao@debian.org>,
-	Tejun Heo <tj@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 086/124] blk-iocost: Fix an UBSAN shift-out-of-bounds warning
-Date: Tue, 13 Feb 2024 18:21:48 +0100
-Message-ID: <20240213171856.245393440@linuxfoundation.org>
+	Keith Busch <kbusch@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 63/64] block: treat poll queue enter similarly to timeouts
+Date: Tue, 13 Feb 2024 18:21:49 +0100
+Message-ID: <20240213171846.717757238@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +59,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 2a427b49d02995ea4a6ff93a1432c40fa4d36821 ]
+commit 33391eecd63158536fb5257fee5be3a3bdc30e3c upstream.
 
-When iocg_kick_delay() is called from a CPU different than the one which set
-the delay, @now may be in the past of @iocg->delay_at leading to the
-following warning:
+We ran into an issue where a production workload would randomly grind to
+a halt and not continue until the pending IO had timed out. This turned
+out to be a complicated interaction between queue freezing and polled
+IO:
 
-  UBSAN: shift-out-of-bounds in block/blk-iocost.c:1359:23
-  shift exponent 18446744073709 is too large for 64-bit type 'u64' (aka 'unsigned long long')
-  ...
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x79/0xc0
-   __ubsan_handle_shift_out_of_bounds+0x2ab/0x300
-   iocg_kick_delay+0x222/0x230
-   ioc_rqos_merge+0x1d7/0x2c0
-   __rq_qos_merge+0x2c/0x80
-   bio_attempt_back_merge+0x83/0x190
-   blk_attempt_plug_merge+0x101/0x150
-   blk_mq_submit_bio+0x2b1/0x720
-   submit_bio_noacct_nocheck+0x320/0x3e0
-   __swap_writepage+0x2ab/0x9d0
+1) You have an application that does polled IO. At any point in time,
+   there may be polled IO pending.
 
-The underflow itself doesn't really affect the behavior in any meaningful
-way; however, the past timestamp may exaggerate the delay amount calculated
-later in the code, which shouldn't be a material problem given the nature of
-the delay mechanism.
+2) You have a monitoring application that issues a passthrough command,
+   which is marked with side effects such that it needs to freeze the
+   queue.
 
-If @now is in the past, this CPU is racing another CPU which recently set up
-the delay and there's nothing this CPU can contribute w.r.t. the delay.
-Let's bail early from iocg_kick_delay() in such cases.
+3) Passthrough command is started, which calls blk_freeze_queue_start()
+   on the device. At this point the queue is marked frozen, and any
+   attempt to enter the queue will fail (for non-blocking) or block.
 
-Reported-by: Breno Leitão <leitao@debian.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Fixes: 5160a5a53c0c ("blk-iocost: implement delay adjustment hysteresis")
-Link: https://lore.kernel.org/r/ZVvc9L_CYk5LO1fT@slm.duckdns.org
+4) Now the driver calls blk_mq_freeze_queue_wait(), which will return
+   when the queue is quiesced and pending IO has completed.
+
+5) The pending IO is polled IO, but any attempt to poll IO through the
+   normal iocb_bio_iopoll() -> bio_poll() will fail when it gets to
+   bio_queue_enter() as the queue is frozen. Rather than poll and
+   complete IO, the polling threads will sit in a tight loop attempting
+   to poll, but failing to enter the queue to do so.
+
+The end result is that progress for either application will be stalled
+until all pending polled IO has timed out. This causes obvious huge
+latency issues for the application doing polled IO, but also long delays
+for passthrough command.
+
+Fix this by treating queue enter for polled IO just like we do for
+timeouts. This allows quick quiesce of the queue as we still poll and
+complete this IO, while still disallowing queueing up new IO.
+
+Reviewed-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-iocost.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ block/blk-core.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-iocost.c b/block/blk-iocost.c
-index 089fcb9cfce3..7ee8d85c2c68 100644
---- a/block/blk-iocost.c
-+++ b/block/blk-iocost.c
-@@ -1353,6 +1353,13 @@ static bool iocg_kick_delay(struct ioc_gq *iocg, struct ioc_now *now)
+--- a/block/blk-core.c
++++ b/block/blk-core.c
+@@ -864,7 +864,16 @@ int bio_poll(struct bio *bio, struct io_
+ 	 */
+ 	blk_flush_plug(current->plug, false);
  
- 	lockdep_assert_held(&iocg->waitq.lock);
- 
+-	if (bio_queue_enter(bio))
 +	/*
-+	 * If the delay is set by another CPU, we may be in the past. No need to
-+	 * change anything if so. This avoids decay calculation underflow.
++	 * We need to be able to enter a frozen queue, similar to how
++	 * timeouts also need to do that. If that is blocked, then we can
++	 * have pending IO when a queue freeze is started, and then the
++	 * wait for the freeze to finish will wait for polled requests to
++	 * timeout as the poller is preventer from entering the queue and
++	 * completing them. As long as we prevent new IO from being queued,
++	 * that should be all that matters.
 +	 */
-+	if (time_before64(now->now, iocg->delay_at))
-+		return false;
-+
- 	/* calculate the current delay in effect - 1/2 every second */
- 	tdelta = now->now - iocg->delay_at;
- 	if (iocg->delay)
--- 
-2.43.0
-
++	if (!percpu_ref_tryget(&q->q_usage_counter))
+ 		return 0;
+ 	if (queue_is_mq(q)) {
+ 		ret = blk_mq_poll(q, cookie, iob, flags);
 
 
 
