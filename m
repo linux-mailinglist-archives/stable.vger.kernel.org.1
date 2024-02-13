@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-20024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C1AA853876
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:37:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5160A853805
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:32:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF08F1C26541
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:37:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83D7F1C2620D
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31DA60261;
-	Tue, 13 Feb 2024 17:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A1E5FF04;
+	Tue, 13 Feb 2024 17:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r5/ygZRh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SGwWDgE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806EE1EB22;
-	Tue, 13 Feb 2024 17:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13455F54E;
+	Tue, 13 Feb 2024 17:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845814; cv=none; b=BOslIf+tXSHtx07hHQ0WtFFS13ReZoEOudpLHtq04Of5wcqREq/99M+XxR4ZU5IVSBZy6mo5TEWV861aZedEZSUpi//7mnWwopPbgDy5ERnJ4Hn0rwF3ilaYkqE+yrbhxWQ+PAIOPpiC/OUSWczJVvkBnsZFOdw2akVnFOVdh2k=
+	t=1707845535; cv=none; b=r5mV/l4Nx1yGLoQs6K1BbdNm57wd83jUEW4CwHK5czJu1ECk81L2finBPQQwASyL+IyQCYyXR8+PHnLGCsWE2zvr546NwVazpDosZcKdSUVvKzCzqBfCliRx/PdVzOuyMEzXoof4lFgayY8mM5EokSQBFhroknMN5BsoamqTyyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845814; c=relaxed/simple;
-	bh=+qDK9M73/x9Uogp0GuTcIrrqh51XnPa5kc9uSZU9/Rs=;
+	s=arc-20240116; t=1707845535; c=relaxed/simple;
+	bh=EbWAPEy4ekzfZ9MuNLLJCnRfzWs1dREZF4n7E0btWyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mUke2bfM+uftRBprA5/LXDcLlEYr4OTpYXzrKmqzcJARktd083d+8s6Gx3xJfHED7EDCwVjYKYPU3SzmQDvpjAWdkg3pRXFHyQTSWDAwuTNAW8HrWsx6sxUkzbAIC+A2Y6U/U5DpWqBGAb7Ifa/I0ldmWv41ko0h9/IXIRJclNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r5/ygZRh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00007C433C7;
-	Tue, 13 Feb 2024 17:36:53 +0000 (UTC)
+	 MIME-Version; b=NITNHYmWLzcSAFCJE1Z7RgLP9FsNnP1PwpvQju+kvtspZKCLeqw2QNZ5OXmhuP8pstgWoK63Cwcm2IfpMXUS5sCmhZ1F9TAhnZ9tPjeYeZYDcMOhBd95G/NBWUoyDvpbW2EQG1bDHi2IRUWmp0oK7sDqJEdrFYzgR914yB2XB0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SGwWDgE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B815EC433F1;
+	Tue, 13 Feb 2024 17:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845814;
-	bh=+qDK9M73/x9Uogp0GuTcIrrqh51XnPa5kc9uSZU9/Rs=;
+	s=korg; t=1707845535;
+	bh=EbWAPEy4ekzfZ9MuNLLJCnRfzWs1dREZF4n7E0btWyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r5/ygZRhJcNObPL87ggOQKEj/h+KGOIbNIiV8+xQ9aYEi01ebsYtrp0yqE2bHP17c
-	 Xvi8HvjPEgccmRuyzh7UqMjeeQ9hSvMy0B6vR1orKwr2D4hpqBS8cxVj/aptek6S4B
-	 Ift4YEjU3yraSSI49K7s8qMXYMc6ia3NFrjqwE6s=
+	b=2SGwWDgEstj2x0J6kzx9ZPKm2Q9EJb1UHamsc0Wrvc/bIJ4891nZcYXo9idacI1BE
+	 9X7fqS2KeFGO8dXMGrHJsbm8Q7Q9IXXmsIahaonEPLlZliTcMiY0XG2Oo9SNBM8t5Y
+	 lAenGFQeFR6dN8qlVvOKc8kEibkRLbOPQAXJIuOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Li <Roman.Li@amd.com>,
+	Yongqiang Sun <yongqiang.sun@amd.com>,
+	Anthony Koo <Anthony.Koo@amd.com>,
 	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
 	Aurabindo Pillai <aurabindo.pillai@amd.com>,
 	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Roman Li <roman.li@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 064/124] drm/amd/display: Implement bounds check for stream encoder creation in DCN301
-Date: Tue, 13 Feb 2024 18:21:26 +0100
-Message-ID: <20240213171855.606776403@linuxfoundation.org>
+Subject: [PATCH 6.6 078/121] drm/amd/display: Add NULL test for timing generator in dcn21_set_pipe()
+Date: Tue, 13 Feb 2024 18:21:27 +0100
+Message-ID: <20240213171855.268962975@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,56 +66,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 58fca355ad37dcb5f785d9095db5f748b79c5dc2 ]
+[ Upstream commit 66951d98d9bf45ba25acf37fe0747253fafdf298 ]
 
-'stream_enc_regs' array is an array of dcn10_stream_enc_registers
-structures. The array is initialized with four elements, corresponding
-to the four calls to stream_enc_regs() in the array initializer. This
-means that valid indices for this array are 0, 1, 2, and 3.
+In "u32 otg_inst = pipe_ctx->stream_res.tg->inst;"
+pipe_ctx->stream_res.tg could be NULL, it is relying on the caller to
+ensure the tg is not NULL.
 
-The error message 'stream_enc_regs' 4 <= 5 below, is indicating that
-there is an attempt to access this array with an index of 5, which is
-out of bounds. This could lead to undefined behavior
-
-Here, eng_id is used as an index to access the stream_enc_regs array. If
-eng_id is 5, this would result in an out-of-bounds access on the
-stream_enc_regs array.
-
-Thus fixing Buffer overflow error in dcn301_stream_encoder_create
-reported by Smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn301/dcn301_resource.c:1011 dcn301_stream_encoder_create() error: buffer overflow 'stream_enc_regs' 4 <= 5
-
-Fixes: 3a83e4e64bb1 ("drm/amd/display: Add dcn3.01 support to DC (v2)")
-Cc: Roman Li <Roman.Li@amd.com>
+Fixes: 474ac4a875ca ("drm/amd/display: Implement some asic specific abm call backs.")
+Cc: Yongqiang Sun <yongqiang.sun@amd.com>
+Cc: Anthony Koo <Anthony.Koo@amd.com>
 Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
 Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Roman Li <roman.li@amd.com>
+Reviewed-by: Anthony Koo <Anthony.Koo@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../drm/amd/display/dc/dcn21/dcn21_hwseq.c    | 24 +++++++++++--------
+ 1 file changed, 14 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c
-index f3b75f283aa2..ce04caf35d80 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c
-@@ -999,7 +999,7 @@ static struct stream_encoder *dcn301_stream_encoder_create(enum engine_id eng_id
- 	vpg = dcn301_vpg_create(ctx, vpg_inst);
- 	afmt = dcn301_afmt_create(ctx, afmt_inst);
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_hwseq.c
+index 7238930e6383..1b08749b084b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn21/dcn21_hwseq.c
+@@ -206,28 +206,32 @@ void dcn21_set_abm_immediate_disable(struct pipe_ctx *pipe_ctx)
+ void dcn21_set_pipe(struct pipe_ctx *pipe_ctx)
+ {
+ 	struct abm *abm = pipe_ctx->stream_res.abm;
+-	uint32_t otg_inst = pipe_ctx->stream_res.tg->inst;
++	struct timing_generator *tg = pipe_ctx->stream_res.tg;
+ 	struct panel_cntl *panel_cntl = pipe_ctx->stream->link->panel_cntl;
+ 	struct dmcu *dmcu = pipe_ctx->stream->ctx->dc->res_pool->dmcu;
++	uint32_t otg_inst;
++
++	if (!abm && !tg && !panel_cntl)
++		return;
++
++	otg_inst = tg->inst;
  
--	if (!enc1 || !vpg || !afmt) {
-+	if (!enc1 || !vpg || !afmt || eng_id >= ARRAY_SIZE(stream_enc_regs)) {
- 		kfree(enc1);
- 		kfree(vpg);
- 		kfree(afmt);
+ 	if (dmcu) {
+ 		dce110_set_pipe(pipe_ctx);
+ 		return;
+ 	}
+ 
+-	if (abm && panel_cntl) {
+-		if (abm->funcs && abm->funcs->set_pipe_ex) {
+-			abm->funcs->set_pipe_ex(abm,
++	if (abm->funcs && abm->funcs->set_pipe_ex) {
++		abm->funcs->set_pipe_ex(abm,
+ 					otg_inst,
+ 					SET_ABM_PIPE_NORMAL,
+ 					panel_cntl->inst,
+ 					panel_cntl->pwrseq_inst);
+-		} else {
+-				dmub_abm_set_pipe(abm, otg_inst,
+-						SET_ABM_PIPE_NORMAL,
+-						panel_cntl->inst,
+-						panel_cntl->pwrseq_inst);
+-		}
++	} else {
++		dmub_abm_set_pipe(abm, otg_inst,
++				  SET_ABM_PIPE_NORMAL,
++				  panel_cntl->inst,
++				  panel_cntl->pwrseq_inst);
+ 	}
+ }
+ 
 -- 
 2.43.0
 
