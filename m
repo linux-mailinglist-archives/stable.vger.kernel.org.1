@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-19785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A545853736
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:23:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 320EA8537DF
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:30:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C5E61C24F90
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:22:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64A941C268F7
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C995FDD8;
-	Tue, 13 Feb 2024 17:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1D75F56B;
+	Tue, 13 Feb 2024 17:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2C72Ta1u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tetp/Via"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AD95FBB5;
-	Tue, 13 Feb 2024 17:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEA645F54E;
+	Tue, 13 Feb 2024 17:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707844978; cv=none; b=Y+SAUlLSWfmsGUQD0674yi7v3In1GWgvyGOXY5XPozumYtyVm91lw3GQQaLkl4keTnohoVZqg0+1II20Ovxb5Q6HpuD4f8vxDGc/hgjQRO0fjLR6uOx7ozAC0SahzK9UxNcb9B3SHibGxxH33xMI39TvmpOv1NzSSKhxOrkKLK0=
+	t=1707845436; cv=none; b=A+ha7SmG3g/TcU0ptVJQLx4KSmBWpFNbnNdYMCmUQ6xnwC+1DKrSKGsix9cQ2BDmoYzBQv3f1HxcnxqRj6oOqvIueqteTXwN+/WLtYLvEYa9MpYEpwEbZQpqt5Z2/2B296wumB224aVf0AmvyjOvgvFu447aq9sabFzaYMPdv8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707844978; c=relaxed/simple;
-	bh=AnOQoQvnUieirpDHhhoGKLvZ+J0r9X/JEigTsXokEzo=;
+	s=arc-20240116; t=1707845436; c=relaxed/simple;
+	bh=fA/LYaRAh7SMVOZatT1gNri84hGIdfqzeoZZig1mS1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HghrxJfJBTetj9RSgocswwT/zki2IKRgo4tmDOMStnebSIjWf48C4hf4MdkgEzwDUci1xEYsFDeBeKJUXCWC1jDDhOr+QCZNebRe6sb3RWmnaNyKcGyccAETMjjhIexSrfb64xSYcNkBBrIYKNzBZqQSxxd+c05Dy4ZMXoh4qIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2C72Ta1u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 120CCC433F1;
-	Tue, 13 Feb 2024 17:22:56 +0000 (UTC)
+	 MIME-Version; b=SUPOQFkuprQbKEJ2RbpchcvYv9MzYyX8T3mYt90GvSABT2bRX0DEwIuzNtTk6cA3acoTKVpkni13jQA4X48ghuqVQwk9Tp2hI7eyZJzfP4GgMmvH+5dmKZs655R9rksaYH+1AgYuREIaK23LOoqKV6jOatQEHmRt8fmXM6xbaqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tetp/Via; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 046CFC433F1;
+	Tue, 13 Feb 2024 17:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707844977;
-	bh=AnOQoQvnUieirpDHhhoGKLvZ+J0r9X/JEigTsXokEzo=;
+	s=korg; t=1707845435;
+	bh=fA/LYaRAh7SMVOZatT1gNri84hGIdfqzeoZZig1mS1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2C72Ta1uOD6r+7Hr5RFGrV3RHYaLwD7B8OYxdB6HeF0Q4NefKRXIBC7SRloGzJFzy
-	 acTtvgSe34/tcS/IB+UFqQpqs3Y0e1vQBlCuAK8Co9bNKvMVEI63C9TCFv0OlO6oME
-	 +1FBZ5jIUJDybHwCU3uQYGQDNg7mYLb4+LkPeHI4=
+	b=Tetp/Viaw6OqTomEJ5d7gwGGQbaE4UU380gnb0ZG5i4Oj0SZaBZmw7mMG+PDNu3uH
+	 wdLOQmZQBiWiVNRJLwUy3zUuQ1ahe8yB3GRT3jWVcpC0EWankugIPKX+OGAye/FRGW
+	 cdULgNy9wWcbM25o0q/hV2WedSGytgsXc5hk2pVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 12/64] drm/msm/dpu: check for valid hw_pp in dpu_encoder_helper_phys_cleanup
+Subject: [PATCH 6.6 049/121] net: atlantic: Fix DMA mapping for PTP hwts ring
 Date: Tue, 13 Feb 2024 18:20:58 +0100
-Message-ID: <20240213171845.115540581@linuxfoundation.org>
+Message-ID: <20240213171854.428474298@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit 7f3d03c48b1eb6bc45ab20ca98b8b11be25f9f52 ]
+[ Upstream commit 2e7d3b67630dfd8f178c41fa2217aa00e79a5887 ]
 
-The commit 8b45a26f2ba9 ("drm/msm/dpu: reserve cdm blocks for writeback
-in case of YUV output") introduced a smatch warning about another
-conditional block in dpu_encoder_helper_phys_cleanup() which had assumed
-hw_pp will always be valid which may not necessarily be true.
+Function aq_ring_hwts_rx_alloc() maps extra AQ_CFG_RXDS_DEF bytes
+for PTP HWTS ring but then generic aq_ring_free() does not take this
+into account.
+Create and use a specific function to free HWTS ring to fix this
+issue.
 
-Lets fix the other conditional block by making sure hw_pp is valid
-before dereferencing it.
+Trace:
+[  215.351607] ------------[ cut here ]------------
+[  215.351612] DMA-API: atlantic 0000:4b:00.0: device driver frees DMA memory with different size [device address=0x00000000fbdd0000] [map size=34816 bytes] [unmap size=32768 bytes]
+[  215.351635] WARNING: CPU: 33 PID: 10759 at kernel/dma/debug.c:988 check_unmap+0xa6f/0x2360
+...
+[  215.581176] Call Trace:
+[  215.583632]  <TASK>
+[  215.585745]  ? show_trace_log_lvl+0x1c4/0x2df
+[  215.590114]  ? show_trace_log_lvl+0x1c4/0x2df
+[  215.594497]  ? debug_dma_free_coherent+0x196/0x210
+[  215.599305]  ? check_unmap+0xa6f/0x2360
+[  215.603147]  ? __warn+0xca/0x1d0
+[  215.606391]  ? check_unmap+0xa6f/0x2360
+[  215.610237]  ? report_bug+0x1ef/0x370
+[  215.613921]  ? handle_bug+0x3c/0x70
+[  215.617423]  ? exc_invalid_op+0x14/0x50
+[  215.621269]  ? asm_exc_invalid_op+0x16/0x20
+[  215.625480]  ? check_unmap+0xa6f/0x2360
+[  215.629331]  ? mark_lock.part.0+0xca/0xa40
+[  215.633445]  debug_dma_free_coherent+0x196/0x210
+[  215.638079]  ? __pfx_debug_dma_free_coherent+0x10/0x10
+[  215.643242]  ? slab_free_freelist_hook+0x11d/0x1d0
+[  215.648060]  dma_free_attrs+0x6d/0x130
+[  215.651834]  aq_ring_free+0x193/0x290 [atlantic]
+[  215.656487]  aq_ptp_ring_free+0x67/0x110 [atlantic]
+...
+[  216.127540] ---[ end trace 6467e5964dd2640b ]---
+[  216.132160] DMA-API: Mapped at:
+[  216.132162]  debug_dma_alloc_coherent+0x66/0x2f0
+[  216.132165]  dma_alloc_attrs+0xf5/0x1b0
+[  216.132168]  aq_ring_hwts_rx_alloc+0x150/0x1f0 [atlantic]
+[  216.132193]  aq_ptp_ring_alloc+0x1bb/0x540 [atlantic]
+[  216.132213]  aq_nic_init+0x4a1/0x760 [atlantic]
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Fixes: ae4d721ce100 ("drm/msm/dpu: add an API to reset the encoder related hw blocks")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/574878/
-Link: https://lore.kernel.org/r/20240117194109.21609-1-quic_abhinavk@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: 94ad94558b0f ("net: aquantia: add PTP rings infrastructure")
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20240201094752.883026-1-ivecera@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/aquantia/atlantic/aq_ptp.c  |  4 ++--
+ drivers/net/ethernet/aquantia/atlantic/aq_ring.c | 13 +++++++++++++
+ drivers/net/ethernet/aquantia/atlantic/aq_ring.h |  1 +
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index 38d38f923df6..25245ef386db 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -2053,7 +2053,7 @@ void dpu_encoder_helper_phys_cleanup(struct dpu_encoder_phys *phys_enc)
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
+index abd4832e4ed2..5acb3e16b567 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
+@@ -993,7 +993,7 @@ int aq_ptp_ring_alloc(struct aq_nic_s *aq_nic)
+ 	return 0;
+ 
+ err_exit_hwts_rx:
+-	aq_ring_free(&aq_ptp->hwts_rx);
++	aq_ring_hwts_rx_free(&aq_ptp->hwts_rx);
+ err_exit_ptp_rx:
+ 	aq_ring_free(&aq_ptp->ptp_rx);
+ err_exit_ptp_tx:
+@@ -1011,7 +1011,7 @@ void aq_ptp_ring_free(struct aq_nic_s *aq_nic)
+ 
+ 	aq_ring_free(&aq_ptp->ptp_tx);
+ 	aq_ring_free(&aq_ptp->ptp_rx);
+-	aq_ring_free(&aq_ptp->hwts_rx);
++	aq_ring_hwts_rx_free(&aq_ptp->hwts_rx);
+ 
+ 	aq_ptp_skb_ring_release(&aq_ptp->skb_ring);
+ }
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+index cda8597b4e14..f7433abd6591 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.c
+@@ -919,6 +919,19 @@ void aq_ring_free(struct aq_ring_s *self)
  	}
+ }
  
- 	/* reset the merge 3D HW block */
--	if (phys_enc->hw_pp->merge_3d) {
-+	if (phys_enc->hw_pp && phys_enc->hw_pp->merge_3d) {
- 		phys_enc->hw_pp->merge_3d->ops.setup_3d_mode(phys_enc->hw_pp->merge_3d,
- 				BLEND_3D_NONE);
- 		if (phys_enc->hw_ctl->ops.update_pending_flush_merge_3d)
-@@ -2069,7 +2069,7 @@ void dpu_encoder_helper_phys_cleanup(struct dpu_encoder_phys *phys_enc)
- 	if (phys_enc->hw_wb)
- 		intf_cfg.wb = phys_enc->hw_wb->idx;
++void aq_ring_hwts_rx_free(struct aq_ring_s *self)
++{
++	if (!self)
++		return;
++
++	if (self->dx_ring) {
++		dma_free_coherent(aq_nic_get_dev(self->aq_nic),
++				  self->size * self->dx_size + AQ_CFG_RXDS_DEF,
++				  self->dx_ring, self->dx_ring_pa);
++		self->dx_ring = NULL;
++	}
++}
++
+ unsigned int aq_ring_fill_stats_data(struct aq_ring_s *self, u64 *data)
+ {
+ 	unsigned int count;
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h b/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
+index 52847310740a..d627ace850ff 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ring.h
+@@ -210,6 +210,7 @@ int aq_ring_rx_fill(struct aq_ring_s *self);
+ int aq_ring_hwts_rx_alloc(struct aq_ring_s *self,
+ 			  struct aq_nic_s *aq_nic, unsigned int idx,
+ 			  unsigned int size, unsigned int dx_size);
++void aq_ring_hwts_rx_free(struct aq_ring_s *self);
+ void aq_ring_hwts_rx_clean(struct aq_ring_s *self, struct aq_nic_s *aq_nic);
  
--	if (phys_enc->hw_pp->merge_3d)
-+	if (phys_enc->hw_pp && phys_enc->hw_pp->merge_3d)
- 		intf_cfg.merge_3d = phys_enc->hw_pp->merge_3d->idx;
- 
- 	if (ctl->ops.reset_intf_cfg)
+ unsigned int aq_ring_fill_stats_data(struct aq_ring_s *self, u64 *data);
 -- 
 2.43.0
 
