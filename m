@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-19876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C797A8537AD
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:28:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 344F8853868
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:37:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 572F0B28ADD
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:28:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66BD51C265B6
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB795FEEF;
-	Tue, 13 Feb 2024 17:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FCDF6027A;
+	Tue, 13 Feb 2024 17:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEJKQPwn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJuNDY2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976095F54E;
-	Tue, 13 Feb 2024 17:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C94C60273;
+	Tue, 13 Feb 2024 17:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845287; cv=none; b=F4AjFGG6rLG4yF1VjWqMTsXxh41XiYhmf+lai4TxEz1r04+m6nY3BLNHZ5/zCq3PzlfKp31uvxQpg6RFQmSFsaayhBsaqW3o1PHs6FgPkGuKcIKqX8mQRzLTxH+0AMQv4eTUkHe3ysHvZu/KySXBoH9VpoAeiZ3Jue0BegRtrTU=
+	t=1707845765; cv=none; b=uZ3tLLnyB0Qf852NUenuGKclms97qH4TOs68s1gSGwEKVVEPd0i44Qa0hNK55nT0mpj4W25RvGLsbT7qPz+uwTs9b7WW+gj3C9yjc5ue32WRybxTaJ6tKaIrO0Zyc5jt0vYcP97tOCErdYG8uIkotzn22KjIDlIUDZ7iPVun/Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845287; c=relaxed/simple;
-	bh=Dj+NthXWLp22VvUg/igrJZFcSWlFlqvjSJeVXjIaQfU=;
+	s=arc-20240116; t=1707845765; c=relaxed/simple;
+	bh=GFTqCrtgzadH0GryzepExGZARR4yzwP16wqP48qw7vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KWoVmuv78Hxc0ddF5BDyYsZiE70/X8PeFD4BiWEG30/M+Qa9pW60D3WmrjWL4Ov+03P67RySyB0gT/S++QgUT5yJ8MmUeY1gDe45E4KnSqXiibT+Ihjal2ZYqL9SQk75lUybsV5IR1ifjT/LRc+kcHBu7GnXcxH2Gf514MbLdMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEJKQPwn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81DBC433F1;
-	Tue, 13 Feb 2024 17:28:06 +0000 (UTC)
+	 MIME-Version; b=kUA3fv+DxKfbzyzAYdchYrvHh6baT4IdTOURCILmvW50s3fkk96nR7GA1n6FtekOfPKGfrQmh6AScsBj+QLsJkj0bm4KSAf4epB6GIg8mNWmZb8UVcNEftR9nV8yeCjSgfHyfVd9lSu+n1HcwMsrqtpshYWVljnr5XrECB1KlnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJuNDY2V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF606C433C7;
+	Tue, 13 Feb 2024 17:36:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845287;
-	bh=Dj+NthXWLp22VvUg/igrJZFcSWlFlqvjSJeVXjIaQfU=;
+	s=korg; t=1707845765;
+	bh=GFTqCrtgzadH0GryzepExGZARR4yzwP16wqP48qw7vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NEJKQPwnU75vr9ABl905cYfwCVnKAJMncx3fBf7ClJUPyXvRVWWsLILEUBN2y0bMM
-	 9sontuq+ki7tg5WaNtvHBuSFtZKNiQE8CWAwlIeK/vIwk1NWS0XVI/mzG4CfANNfx9
-	 4NNZAJB78yuDl/bKu5KoUQlJ6te/yGfzGoJl6xs0=
+	b=IJuNDY2VHQ2heAGgA4RIWAtSk5VDmAVs5gmLwuvnTeu1s0VzahEC3Obu9oV14ilB2
+	 DgLL3EV8BPr1AeMCb1ctGCrOVj7JHD9fJaMQhIa65ZAfX+v3wyba3u5eFo1Nn1yxkh
+	 oMpopQ9XP7MI0TnJ3fXlFKpim07nPKt3RS+Y8g6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	Chandan Babu R <chandanbabu@kernel.org>,
+	coldolt <andypalmadi@gmail.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 037/121] xfs: respect the stable writes flag on the RT device
+Subject: [PATCH 6.7 024/124] wifi: cfg80211: detect stuck ECSA element in probe resp
 Date: Tue, 13 Feb 2024 18:20:46 +0100
-Message-ID: <20240213171854.082664630@linuxfoundation.org>
+Message-ID: <20240213171854.436586611@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,86 +63,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 9c04138414c00ae61421f36ada002712c4bac94a upstream.
+[ Upstream commit 177fbbcb4ed6b306c1626a277fac3fb1c495a4c7 ]
 
-Update the per-folio stable writes flag dependening on which device an
-inode resides on.
+We recently added some validation that we don't try to
+connect to an AP that is currently in a channel switch
+process, since that might want the channel to be quiet
+or we might not be able to connect in time to hear the
+switching in a beacon. This was in commit c09c4f31998b
+("wifi: mac80211: don't connect to an AP while it's in
+a CSA process").
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20231025141020.192413-5-hch@lst.de
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+However, we promptly got a report that this caused new
+connection failures, and it turns out that the AP that
+we now cannot connect to is permanently advertising an
+extended channel switch announcement, even with quiet.
+The AP in question was an Asus RT-AC53, with firmware
+3.0.0.4.380_10760-g21a5898.
+
+As a first step, attempt to detect that we're dealing
+with such a situation, so mac80211 can use this later.
+
+Reported-by: coldolt <andypalmadi@gmail.com>
+Closes: https://lore.kernel.org/linux-wireless/CAJvGw+DQhBk_mHXeu6RTOds5iramMW2FbMB01VbKRA4YbHHDTA@mail.gmail.com/
+Fixes: c09c4f31998b ("wifi: mac80211: don't connect to an AP while it's in a CSA process")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20240129131413.246972c8775e.Ibf834d7f52f9951a353b6872383da710a7358338@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_inode.h | 8 ++++++++
- fs/xfs/xfs_ioctl.c | 8 ++++++++
- fs/xfs/xfs_iops.c  | 7 +++++++
- 3 files changed, 23 insertions(+)
+ include/net/cfg80211.h |  4 +++
+ net/wireless/scan.c    | 59 +++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 62 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_inode.h b/fs/xfs/xfs_inode.h
-index 3dc47937da5d..3beb470f1892 100644
---- a/fs/xfs/xfs_inode.h
-+++ b/fs/xfs/xfs_inode.h
-@@ -569,6 +569,14 @@ extern void xfs_setup_inode(struct xfs_inode *ip);
- extern void xfs_setup_iops(struct xfs_inode *ip);
- extern void xfs_diflags_to_iflags(struct xfs_inode *ip, bool init);
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 4ecfb06c413d..8f2c48761833 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -2865,6 +2865,8 @@ struct cfg80211_bss_ies {
+  *	own the beacon_ies, but they're just pointers to the ones from the
+  *	@hidden_beacon_bss struct)
+  * @proberesp_ies: the information elements from the last Probe Response frame
++ * @proberesp_ecsa_stuck: ECSA element is stuck in the Probe Response frame,
++ *	cannot rely on it having valid data
+  * @hidden_beacon_bss: in case this BSS struct represents a probe response from
+  *	a BSS that hides the SSID in its beacon, this points to the BSS struct
+  *	that holds the beacon data. @beacon_ies is still valid, of course, and
+@@ -2900,6 +2902,8 @@ struct cfg80211_bss {
+ 	u8 chains;
+ 	s8 chain_signal[IEEE80211_MAX_CHAINS];
  
-+static inline void xfs_update_stable_writes(struct xfs_inode *ip)
++	u8 proberesp_ecsa_stuck:1;
++
+ 	u8 bssid_index;
+ 	u8 max_bssid_indicator;
+ 
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index f819ca3891fc..3f49f5c69916 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1725,6 +1725,61 @@ static void cfg80211_update_hidden_bsses(struct cfg80211_internal_bss *known,
+ 	}
+ }
+ 
++static void cfg80211_check_stuck_ecsa(struct cfg80211_registered_device *rdev,
++				      struct cfg80211_internal_bss *known,
++				      const struct cfg80211_bss_ies *old)
 +{
-+	if (bdev_stable_writes(xfs_inode_buftarg(ip)->bt_bdev))
-+		mapping_set_stable_writes(VFS_I(ip)->i_mapping);
-+	else
-+		mapping_clear_stable_writes(VFS_I(ip)->i_mapping);
++	const struct ieee80211_ext_chansw_ie *ecsa;
++	const struct element *elem_new, *elem_old;
++	const struct cfg80211_bss_ies *new, *bcn;
++
++	if (known->pub.proberesp_ecsa_stuck)
++		return;
++
++	new = rcu_dereference_protected(known->pub.proberesp_ies,
++					lockdep_is_held(&rdev->bss_lock));
++	if (WARN_ON(!new))
++		return;
++
++	if (new->tsf - old->tsf < USEC_PER_SEC)
++		return;
++
++	elem_old = cfg80211_find_elem(WLAN_EID_EXT_CHANSWITCH_ANN,
++				      old->data, old->len);
++	if (!elem_old)
++		return;
++
++	elem_new = cfg80211_find_elem(WLAN_EID_EXT_CHANSWITCH_ANN,
++				      new->data, new->len);
++	if (!elem_new)
++		return;
++
++	bcn = rcu_dereference_protected(known->pub.beacon_ies,
++					lockdep_is_held(&rdev->bss_lock));
++	if (bcn &&
++	    cfg80211_find_elem(WLAN_EID_EXT_CHANSWITCH_ANN,
++			       bcn->data, bcn->len))
++		return;
++
++	if (elem_new->datalen != elem_old->datalen)
++		return;
++	if (elem_new->datalen < sizeof(struct ieee80211_ext_chansw_ie))
++		return;
++	if (memcmp(elem_new->data, elem_old->data, elem_new->datalen))
++		return;
++
++	ecsa = (void *)elem_new->data;
++
++	if (!ecsa->mode)
++		return;
++
++	if (ecsa->new_ch_num !=
++	    ieee80211_frequency_to_channel(known->pub.channel->center_freq))
++		return;
++
++	known->pub.proberesp_ecsa_stuck = 1;
 +}
 +
- /*
-  * When setting up a newly allocated inode, we need to call
-  * xfs_finish_inode_setup() once the inode is fully instantiated at
-diff --git a/fs/xfs/xfs_ioctl.c b/fs/xfs/xfs_ioctl.c
-index be69e7be713e..535f6d38cdb5 100644
---- a/fs/xfs/xfs_ioctl.c
-+++ b/fs/xfs/xfs_ioctl.c
-@@ -1149,6 +1149,14 @@ xfs_ioctl_setattr_xflags(
- 	ip->i_diflags2 = i_flags2;
+ static bool
+ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
+ 			  struct cfg80211_internal_bss *known,
+@@ -1744,8 +1799,10 @@ cfg80211_update_known_bss(struct cfg80211_registered_device *rdev,
+ 		/* Override possible earlier Beacon frame IEs */
+ 		rcu_assign_pointer(known->pub.ies,
+ 				   new->pub.proberesp_ies);
+-		if (old)
++		if (old) {
++			cfg80211_check_stuck_ecsa(rdev, known, old);
+ 			kfree_rcu((struct cfg80211_bss_ies *)old, rcu_head);
++		}
+ 	}
  
- 	xfs_diflags_to_iflags(ip, false);
-+
-+	/*
-+	 * Make the stable writes flag match that of the device the inode
-+	 * resides on when flipping the RT flag.
-+	 */
-+	if (rtflag != XFS_IS_REALTIME_INODE(ip) && S_ISREG(VFS_I(ip)->i_mode))
-+		xfs_update_stable_writes(ip);
-+
- 	xfs_trans_ichgtime(tp, ip, XFS_ICHGTIME_CHG);
- 	xfs_trans_log_inode(tp, ip, XFS_ILOG_CORE);
- 	XFS_STATS_INC(mp, xs_ig_attrchg);
-diff --git a/fs/xfs/xfs_iops.c b/fs/xfs/xfs_iops.c
-index 2b3b05c28e9e..b8ec045708c3 100644
---- a/fs/xfs/xfs_iops.c
-+++ b/fs/xfs/xfs_iops.c
-@@ -1298,6 +1298,13 @@ xfs_setup_inode(
- 	gfp_mask = mapping_gfp_mask(inode->i_mapping);
- 	mapping_set_gfp_mask(inode->i_mapping, (gfp_mask & ~(__GFP_FS)));
- 
-+	/*
-+	 * For real-time inodes update the stable write flags to that of the RT
-+	 * device instead of the data device.
-+	 */
-+	if (S_ISREG(inode->i_mode) && XFS_IS_REALTIME_INODE(ip))
-+		xfs_update_stable_writes(ip);
-+
- 	/*
- 	 * If there is no attribute fork no ACL can exist on this inode,
- 	 * and it can't have any file capabilities attached to it either.
+ 	if (rcu_access_pointer(new->pub.beacon_ies)) {
 -- 
 2.43.0
 
