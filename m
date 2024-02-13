@@ -1,149 +1,144 @@
-Return-Path: <stable+bounces-19696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72ABD852D8E
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 11:12:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85C9A852DD3
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 11:26:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A59FC1C22499
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 10:12:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4155A2889BB
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 10:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BDCC2261A;
-	Tue, 13 Feb 2024 10:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C8C2261F;
+	Tue, 13 Feb 2024 10:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oVHtuQSS"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GwkPBvLE";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="FTIkVehm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD195225D5;
-	Tue, 13 Feb 2024 10:12:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04308225CE;
+	Tue, 13 Feb 2024 10:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707819133; cv=none; b=pILWZN2DfGZzqQMwlyn4ospe/lWE/+6Rmk2rn2gwJyNAaqZrel1BLHDvBlbkIoF2S4hyjcXSnxCB9mD1DrZBB7EGr43tx/E7kWyfQwgKgawGCDykLqKYJ6JoKjG44lRE6c+OW4XAGGCSy9H43fM1tusaOjvQ/iDRKy+THjAWWSM=
+	t=1707820004; cv=none; b=Yyb4xzoZIaFkgfmItnJAf/URA4B73uf1k4p2ahxCb/YdYvG1zeEuJAc7X2x2TLaLAUbot4eVg9kv0kgAjX9DJASgbBxyTb99lbhCpLh+wH+G4SBZY45YLv8hWA49mTYGi0etingxREW71H0lecNt9x8PyiSpiIxaNtjpTwU17G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707819133; c=relaxed/simple;
-	bh=mMMxy/y9GolMEAEGUBmVL1XVh2uwo1cUPLjZV/60nHA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Is4VShz02+FMk8PVLPhfHLyEnPxWpNJh8wPDIn/57wskv+emKcu3neIpivA4NKMRD1lUwwT6COWjq+vxF0kc5Qm/9a18bsVRW4zMDaYYlhuek2MKtKrSyIBTlcY0GZEJJ6pfbqySwlvgCLqlhHL49D3dbadqTsQSvSlOZxAduJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oVHtuQSS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72445C433B1;
-	Tue, 13 Feb 2024 10:12:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707819133;
-	bh=mMMxy/y9GolMEAEGUBmVL1XVh2uwo1cUPLjZV/60nHA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oVHtuQSS5rAbZ1AVPeHYrpxwnfcRK7mrTyqmOX+JCeYl70dD1z2PApTqhGHYevjO5
-	 N3K2/evL/evnJP6U0fIerZuDwbV62Mut9wppUt1iB7KOHNpYXq1mj4jNrAbIMQ2E/O
-	 bqaGQEjAdZftbh4sh+lzDSQzbxJaKFuluhC9yyAluDfRPxJBlKxjOA9gI5IOG+qNzR
-	 0ilHFl59zQZGIFg0HFmi16PkNxPqgrcKEg/OBkpCeC59Zlz4+smmvsrhmqAdv9M8xR
-	 XloDmzKogJbl5rD2j4qiqkATI63NHX71toptdVRjNUsXU0mtEFpihjwu9G2DO3FgmI
-	 VJpqC1Qszz61w==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1rZplr-002j7r-AO;
-	Tue, 13 Feb 2024 10:12:11 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: Thomas Gleixner <tglx@linutronix.de>
-Cc: Kunkun Jiang <jiangkunkun@huawei.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 3/3] irqchip/gic-v3-its: Fix GICv4.1 VPE affinity update
-Date: Tue, 13 Feb 2024 10:12:06 +0000
-Message-Id: <20240213101206.2137483-4-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240213101206.2137483-1-maz@kernel.org>
-References: <20240213101206.2137483-1-maz@kernel.org>
+	s=arc-20240116; t=1707820004; c=relaxed/simple;
+	bh=aBnhq06nlMMvbU7IDlpipxtNtoUmHZ45y8K4GgkpUWs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Zxil/62HoUGi1RceahtHa18EnjErE2kcV21abwz1qTGp6FYQnSArIH1TAybzu1LIHmgPJ45WP/q2jprxmSxaG1vqj6mmvHWAFSRUx1vDpVKTTrJOaVmDcT4n5gp1rvI5YS50Cp5/skl71JMNQbfWVDLKPrQ8EWe0vjQi3OpWIuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GwkPBvLE; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=FTIkVehm; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1707820001;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OirENwRVffLhqg4vLQeXmmc6qTeG6AWtBgzm4/Fep7o=;
+	b=GwkPBvLE/NQAAT43xtyROcGSWgUiucZZB2ec2g3VMikr5ObnhcXmo+RS5IDSmyM1OUGiEd
+	7xS8uBH10ljyxTHAf0TgsO0vUhc8J3cUumyVjdF+tArJNZ5Cb6qbN81/2L4SUuNb1n+xeM
+	lTUKLPRc+bLsZCgPNl5jfAbi8uQEAR9a7o0M/zk8iHPMQOA0sGKzpV8m4ycyLpvhMqIrTG
+	BzH2/fE2hX0EICezQmdB7T4kOaTHuSMg8g41lIojVhpEATsMu34Fr+weMIBkrFDgJ1m7zJ
+	smGA9OsZA5tjREuhcauzD90erNoGucb+l9Ok3++FJGDwNXwNBXF9bmy5HX/vxA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1707820001;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OirENwRVffLhqg4vLQeXmmc6qTeG6AWtBgzm4/Fep7o=;
+	b=FTIkVehmdBJJQ8PbMU0GBBiXWHp+VmaePW7Fc9q0HvKZTnjeSpYgSUQrZkAOitKr3WDpHK
+	rs9WULSDRQ3oSFCA==
+To: Nam Cao <namcao@linutronix.de>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Samuel Holland
+ <samuel@sholland.org>, Marc Zyngier <maz@kernel.org>, Guo Ren
+ <guoren@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org
+Cc: Nam Cao <namcao@linutronix.de>, stable@vger.kernel.org
+Subject: Re: [PATCH v2] irqchip/sifive-plic: enable interrupt if needed
+ before EOI
+In-Reply-To: <20240131081933.144512-1-namcao@linutronix.de>
+References: <20240131081933.144512-1-namcao@linutronix.de>
+Date: Tue, 13 Feb 2024 11:26:40 +0100
+Message-ID: <87wmr8hd7j.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: tglx@linutronix.de, jiangkunkun@huawei.com, lpieralisi@kernel.org, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Content-Type: text/plain
 
-When updating the affinity of a VPE, we currently skip the VMOVP
-command if the two CPUs are part of the same VPE affinity.
+Nam!
 
-But this is wrong, as the doorbell corresponding to this VPE
-is still delivered on the 'old' CPU, which screws up the balancing.
-Furthermore, offlining that 'old' CPU results in doorbell interrupts
-generated for this VPE being discarded.
+On Wed, Jan 31 2024 at 09:19, Nam Cao wrote:
+> RISC-V PLIC cannot "end-of-interrupt" (EOI) disabled interrupts, as
+> explained in the description of Interrupt Completion in the PLIC spec:
+>
+> "The PLIC signals it has completed executing an interrupt handler by
+> writing the interrupt ID it received from the claim to the claim/complete
+> register. The PLIC does not check whether the completion ID is the same
+> as the last claim ID for that target. If the completion ID does not match
+> an interrupt source that *is currently enabled* for the target, the
+> completion is silently ignored."
+>
+> Commit 69ea463021be ("irqchip/sifive-plic: Fixup EOI failed when masked")
+> ensured that EOI is successful by enabling interrupt first, before EOI.
+>
+> Commit a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask
+> operations") removed the interrupt enabling code from the previous
+> commit, because it assumes that interrupt should already be enabled at the
+> point of EOI. However, this is incorrect: there is a window after a hart
+> claiming an interrupt and before irq_desc->lock getting acquired,
+> interrupt can be disabled during this window. Thus, EOI can be invoked
+> while the interrupt is disabled, effectively nullify this EOI. This
+> results in the interrupt never gets asserted again, and the device who
+> uses this interrupt appears frozen.
 
-The harsh reality is that we cannot easily elide VMOVP when
-a set_affinity request occurs. It needs to be obeyed, and if
-an optimisation is to be made, it is at the point where the affinity
-change request is made (such as in KVM).
+Nice detective work!
 
-Drop the VMOVP elision altogether, and only use the vpe_table_mask
-to try and stay within the same ITS affinity group if at all possible.
+> Make sure that interrupt is really enabled before EOI.
+>
+> Fixes: a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask operations")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> ---
+> v2:
+>   - add unlikely() for optimization
+>   - re-word commit message to make it clearer
+>
+>  drivers/irqchip/irq-sifive-plic.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+> index e1484905b7bd..0a233e9d9607 100644
+> --- a/drivers/irqchip/irq-sifive-plic.c
+> +++ b/drivers/irqchip/irq-sifive-plic.c
+> @@ -148,7 +148,13 @@ static void plic_irq_eoi(struct irq_data *d)
+>  {
+>  	struct plic_handler *handler = this_cpu_ptr(&plic_handlers);
+>  
+> -	writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
+> +	if (unlikely(irqd_irq_disabled(d))) {
+> +		plic_toggle(handler, d->hwirq, 1);
+> +		writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
+> +		plic_toggle(handler, d->hwirq, 0);
 
-Fixes: dd3f050a216e (irqchip/gic-v4.1: Implement the v4.1 flavour of VMOVP)
-Reported-by: Kunkun Jiang <jiangkunkun@huawei.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
----
- drivers/irqchip/irq-gic-v3-its.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+It's unfortunate to have this condition in the hotpath, though it should
+be cache hot, easy to predict and compared to the writel() completely in
+the noise.
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 250b4562f308..53abd4779914 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -3826,8 +3826,9 @@ static int its_vpe_set_affinity(struct irq_data *d,
- 				bool force)
- {
- 	struct its_vpe *vpe = irq_data_get_irq_chip_data(d);
--	int from, cpu = cpumask_first(mask_val);
-+	struct cpumask common, *table_mask;
- 	unsigned long flags;
-+	int from, cpu;
- 
- 	/*
- 	 * Changing affinity is mega expensive, so let's be as lazy as
-@@ -3843,19 +3844,22 @@ static int its_vpe_set_affinity(struct irq_data *d,
- 	 * taken on any vLPI handling path that evaluates vpe->col_idx.
- 	 */
- 	from = vpe_to_cpuid_lock(vpe, &flags);
--	if (from == cpu)
--		goto out;
--
--	vpe->col_idx = cpu;
-+	table_mask = gic_data_rdist_cpu(from)->vpe_table_mask;
- 
- 	/*
--	 * GICv4.1 allows us to skip VMOVP if moving to a cpu whose RD
--	 * is sharing its VPE table with the current one.
-+	 * If we are offered another CPU in the same GICv4.1 ITS
-+	 * affinity, pick this one. Otherwise, any CPU will do.
- 	 */
--	if (gic_data_rdist_cpu(cpu)->vpe_table_mask &&
--	    cpumask_test_cpu(from, gic_data_rdist_cpu(cpu)->vpe_table_mask))
-+	if (table_mask && cpumask_and(&common, mask_val, table_mask))
-+		cpu = cpumask_test_cpu(from, &common) ? from : cpumask_first(&common);
-+	else
-+		cpu = cpumask_first(mask_val);
-+
-+	if (from == cpu)
- 		goto out;
- 
-+	vpe->col_idx = cpu;
-+
- 	its_send_vmovp(vpe);
- 	its_vpe_db_proxy_move(vpe, from, cpu);
- 
--- 
-2.39.2
+> +	} else {
+> +		writel(d->hwirq, handler->hart_base + CONTEXT_CLAIM);
+> +	}
+>  }
 
+Can the RISCV folks please have a look at this?
+
+Thanks,
+
+        tglx
 
