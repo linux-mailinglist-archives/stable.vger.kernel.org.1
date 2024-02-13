@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-20075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F0E8538B7
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:40:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A79FE8538B9
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:40:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A29B81F217DB
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:40:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 645DD286EC9
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13D4057885;
-	Tue, 13 Feb 2024 17:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB10857885;
+	Tue, 13 Feb 2024 17:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sY8P6YRL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0XJfKOA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C250EA93C;
-	Tue, 13 Feb 2024 17:39:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8636BA93C;
+	Tue, 13 Feb 2024 17:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845995; cv=none; b=jsZC8WeoRA2kozLn8Bn4GsJi/8hU8Knk+ikz4rtxLLtKypklGR3e/d2gYSXm+rdLI9YGYNL58Mdegl0PpAAZFQqgf50uJiPdVAt9Y7VIYNH3n6CSoLYgxhe+Rg8sAMOfTloysJS6hGUHX8DSR54QxBxwR0ceayFqs92a55FS9/s=
+	t=1707846002; cv=none; b=PCUD1VtmGZLWvhVkjuTsKrM/Y/reHu0l60xAbl6uam34Ynek6sR+2RvF6lZzkOtFjH9Uc2xo6vKwGB2+tZVI1rGGIpSTMfo0CNgrFTEc1x8TcwjCF/+/Udr5MMW+03QU9lms7S2+Hdg9TzLuO7Pg4yli5SAmr4LSq8tNg249fzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845995; c=relaxed/simple;
-	bh=E8QRCELMxBGLuk3SFYdPjAOFEnsHPBKo5NSoJLFE5fY=;
+	s=arc-20240116; t=1707846002; c=relaxed/simple;
+	bh=nsYipW2AEAK05xVrORWvb6qtf0MsdWV1Y4H3SH4uRm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BH0m68TEedPDXCChmrupq7su6RT9/j15HAywk0ljTiv9kIonrGJ/8TjiDN7uAGYdTAUkBIO8ZOtJm++5frx1lntuKNEAdUlEtVasbNP5ZWE0RkG7XNwWY2YxWlQcLtqe4kU77NwbBnKcmtJRWeXO0zxi091BJT2GM6aatry3TI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sY8P6YRL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 237E9C433F1;
-	Tue, 13 Feb 2024 17:39:54 +0000 (UTC)
+	 MIME-Version; b=OVmAshUhSRV03BSnhy8I8JLfZ5vwXQbu6R2kAeLK/csQFqsAXeZ/A71zyUcXc7fuTKpgvT+M/tc+liLafp1L9k4S0RJ4WhvnN/OFtmI5hbKYe7qYHkbM0tB2q9QgehXNQa2G4RqwxqUElnshiW6aMRBs0EdSArZlhfofMfGKnKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0XJfKOA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7C3C433C7;
+	Tue, 13 Feb 2024 17:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845995;
-	bh=E8QRCELMxBGLuk3SFYdPjAOFEnsHPBKo5NSoJLFE5fY=;
+	s=korg; t=1707846002;
+	bh=nsYipW2AEAK05xVrORWvb6qtf0MsdWV1Y4H3SH4uRm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sY8P6YRLKa+Py+xJfRFFIhQjdF+H4sKoFeEFCdZ3/DBStWYZnhBUQO5dzzPjmr9xi
-	 kYWUSwcFm+UWviCRVEeeF67hWEeKgnZK3V602qJEeboK3elpMUluI7gFAOZ3zU2C+d
-	 T5mXu1XdZtyWKMDGDymeTJct/KyHj4v8ovEyIUOM=
+	b=C0XJfKOA9C/tqN4axjHgqkWbmU0KQo8/ln9f+VXw9tuP0PurDwL5U44sTf/SapYaP
+	 sJy9awWLckmHW8Bf1dSNW6UsxA7fbBmSNb4lUxRkR8cxCdM8d96x+1RrFl22t4StCO
+	 xKAkVR9U5T+/d+LP/AdJLAVMTBgSWczc0UVHG9Yk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Tsoy <alexander@tsoy.me>,
+	Julian Sikorski <belegdol+github@gmail.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.7 087/124] ALSA: usb-audio: Add delay quirk for MOTU M Series 2nd revision
-Date: Tue, 13 Feb 2024 18:21:49 +0100
-Message-ID: <20240213171856.274340196@linuxfoundation.org>
+Subject: [PATCH 6.7 088/124] ALSA: usb-audio: Add a quirk for Yamaha YIT-W12TX transmitter
+Date: Tue, 13 Feb 2024 18:21:50 +0100
+Message-ID: <20240213171856.302997717@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
 In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
 References: <20240213171853.722912593@linuxfoundation.org>
@@ -65,17 +65,16 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Tsoy <alexander@tsoy.me>
+From: Julian Sikorski <belegdol+github@gmail.com>
 
-commit d915a6850e27efb383cd4400caadfe47792623df upstream.
+commit a969210066054ea109d8b7aff29a9b1c98776841 upstream.
 
-Audio control requests that sets sampling frequency sometimes fail on
-this card. Adding delay between control messages eliminates that problem.
+The device fails to initialize otherwise, giving the following error:
+[ 3676.671641] usb 2-1.1: 1:1: cannot get freq at ep 0x1
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217601
+Signed-off-by: Julian Sikorski <belegdol+github@gmail.com>
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Alexander Tsoy <alexander@tsoy.me>
-Link: https://lore.kernel.org/r/20240124130239.358298-1-alexander@tsoy.me
+Link: https://lore.kernel.org/r/20240123084935.2745-1-belegdol+github@gmail.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -84,15 +83,15 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/sound/usb/quirks.c
 +++ b/sound/usb/quirks.c
-@@ -2073,6 +2073,8 @@ static const struct usb_audio_quirk_flag
+@@ -2031,6 +2031,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_CTL_MSG_DELAY_1M | QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x0499, 0x1509, /* Steinberg UR22 */
  		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
- 	DEVICE_FLG(0x0763, 0x2031, /* M-Audio Fast Track C600 */
- 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
-+	DEVICE_FLG(0x07fd, 0x000b, /* MOTU M Series 2nd hardware revision */
-+		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x08bb, 0x2702, /* LineX FM Transmitter */
- 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
- 	DEVICE_FLG(0x0951, 0x16ad, /* Kingston HyperX */
++	DEVICE_FLG(0x0499, 0x3108, /* Yamaha YIT-W12TX */
++		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x04d8, 0xfeea, /* Benchmark DAC1 Pre */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
+ 	DEVICE_FLG(0x04e8, 0xa051, /* Samsung USBC Headset (AKG) */
 
 
 
