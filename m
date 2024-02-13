@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-19917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40A488537E0
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:30:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11E81853737
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:23:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFBF5284144
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:30:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DC331F22B8C
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3FA5FF0D;
-	Tue, 13 Feb 2024 17:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1795FDDF;
+	Tue, 13 Feb 2024 17:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8dxtE5J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDjj23/Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5025FDDF;
-	Tue, 13 Feb 2024 17:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6839E5FBB5;
+	Tue, 13 Feb 2024 17:23:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845439; cv=none; b=KOKXIfzYcGrRCuh1pMsAuM/f55XlXB6eO9ZFSMaTjrHN87IxsBLDfdEG5tLPfACnjqPLfJgUzEXXMV+jWwksFzKm3KGlXn8P1JjCVTi137HH0/4oWTx6u+TRJYiIuzHvXGlVYZzmVDmhkULfePO9L1ZIiupN53eTdDJyS3zBx1I=
+	t=1707844981; cv=none; b=PJhtu2l7AnhBtL8dQhDJMxhSvB6j+e8pmUQj9KQHVDKQY5YV5ZuyoRCvB7hK+kslOgpEwEKd9X9zqKOGFXAab91sqOQAcjpk5Q9WjVp5eich5DOxCXuW5W/XtfYnXGiKpoxMjUiXSwt+rNB7WpSWI+vfojAUN/95IkboNcEiVQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845439; c=relaxed/simple;
-	bh=CpbPyGJw029ckf5abzVXdAL+OmNWOPufzqaPgbPTyqQ=;
+	s=arc-20240116; t=1707844981; c=relaxed/simple;
+	bh=5Kdk7Vwgp/L3US98cxoielYPd+J/NvazOhmkXsReiC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hvA7FtPvC/XSa73wJkWw/45eN2j5859TXvOsniVILnNiJ87veMUWUJMv4q+hFKLfB5Z2MknB2Ozm1mgy3vuzB/wilAqP5BCGbdiE45yEtXhUqpEKWmqYm7UDHSzfcPy13Q9YT1Q8GfCS0pufB6+RiYwUHGnR7n+Jc1GNZ/+skgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8dxtE5J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F98DC433F1;
-	Tue, 13 Feb 2024 17:30:38 +0000 (UTC)
+	 MIME-Version; b=Mm2k+SZ7oqC6PanlwVesaQwYM7dBJiztf9N+B81jU7Wcxjfjds5DlqCjLcx+JJoCIwr/RO6Zs0RB9zwRVwLRGIQRcbRDulVVmKpcTkiMbGHH7UCVisAXuoF5LRj7SCQt1HLL6LVvT6uC//bC0+74fsTcxpVmt62WbDzvLVkvuto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDjj23/Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7B0C433C7;
+	Tue, 13 Feb 2024 17:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845438;
-	bh=CpbPyGJw029ckf5abzVXdAL+OmNWOPufzqaPgbPTyqQ=;
+	s=korg; t=1707844981;
+	bh=5Kdk7Vwgp/L3US98cxoielYPd+J/NvazOhmkXsReiC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y8dxtE5JDUODiVLoMWsX99J4br5GsmgNmAyq/8Dsr7mJrxJmuzuJrb8eBIzoQs75B
-	 DQxU+uxCVtRzIWxu62rvlKWdsaelITUn8Tyi9ZZxbxMbEc01SF8h/2FPLrhV3Uyy/3
-	 kXdl/lX0de3+jKiB2LZyEi+WgKXgXCiq6inTX0Gg=
+	b=hDjj23/Z2kn1qIw/7Ma70kcCHHDDPEoCjb/E47gHPnzl3NAkYxcK+YJ2u8L4/bwYw
+	 3oPh02SRtQCZ2vDP8EXigoTEeAkm1bD8pVY2E84cMssQwFE5x8tVMTIFMRAAd+kyIi
+	 WZzUXNiTNRk9Y0zH1ndbVLkrS5vPLs5VMZ7Krixg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Furong Xu <0x1207@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/121] selftests: net: cut more slack for gro fwd tests.
+Subject: [PATCH 6.1 13/64] net: stmmac: xgmac: fix handling of DPP safety error for DMA channels
 Date: Tue, 13 Feb 2024 18:20:59 +0100
-Message-ID: <20240213171854.458189587@linuxfoundation.org>
+Message-ID: <20240213171845.145451196@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +63,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Furong Xu <0x1207@gmail.com>
 
-[ Upstream commit cb9f4a30fb85e1f4f149ada595a67899adb3db19 ]
+[ Upstream commit 46eba193d04f8bd717e525eb4110f3c46c12aec3 ]
 
-The udpgro_fwd.sh self-tests are somewhat unstable. There are
-a few timing constraints the we struggle to meet on very slow
-environments.
+Commit 56e58d6c8a56 ("net: stmmac: Implement Safety Features in
+XGMAC core") checks and reports safety errors, but leaves the
+Data Path Parity Errors for each channel in DMA unhandled at all, lead to
+a storm of interrupt.
+Fix it by checking and clearing the DMA_DPP_Interrupt_Status register.
 
-Instead of skipping the whole tests in such envs, increase the
-test resilience WRT very slow hosts: increase the inter-packets
-timeouts, avoid resetting the counters every second and finally
-disable reduce the background traffic noise.
-
-Tested with:
-
-for I in $(seq 1 100); do
-	./tools/testing/selftests/kselftest_install/run_kselftest.sh \
-		-t net:udpgro_fwd.sh || exit -1
-done
-
-in a slow environment.
-
-Fixes: a062260a9d5f ("selftests: net: add UDP GRO forwarding self-tests")
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/f4b6b11064a0d39182a9ae6a853abae3e9b4426a.1706812005.git.pabeni@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 56e58d6c8a56 ("net: stmmac: Implement Safety Features in XGMAC core")
+Signed-off-by: Furong Xu <0x1207@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/udpgro_fwd.sh     | 14 ++++++++++++--
- tools/testing/selftests/net/udpgso_bench_rx.c |  2 +-
- 2 files changed, 13 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/common.h  |  1 +
+ .../net/ethernet/stmicro/stmmac/dwxgmac2.h    |  3 +
+ .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 57 ++++++++++++++++++-
+ 3 files changed, 60 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/udpgro_fwd.sh b/tools/testing/selftests/net/udpgro_fwd.sh
-index d6b9c759043c..9cd5e885e91f 100755
---- a/tools/testing/selftests/net/udpgro_fwd.sh
-+++ b/tools/testing/selftests/net/udpgro_fwd.sh
-@@ -39,6 +39,10 @@ create_ns() {
- 	for ns in $NS_SRC $NS_DST; do
- 		ip netns add $ns
- 		ip -n $ns link set dev lo up
-+
-+		# disable route solicitations to decrease 'noise' traffic
-+		ip netns exec $ns sysctl -qw net.ipv6.conf.default.router_solicitations=0
-+		ip netns exec $ns sysctl -qw net.ipv6.conf.all.router_solicitations=0
- 	done
+diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
+index 54bb072aeb2d..c11d62685624 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -209,6 +209,7 @@ struct stmmac_safety_stats {
+ 	unsigned long mac_errors[32];
+ 	unsigned long mtl_errors[32];
+ 	unsigned long dma_errors[32];
++	unsigned long dma_dpp_errors[32];
+ };
  
- 	ip link add name veth$SRC type veth peer name veth$DST
-@@ -80,6 +84,12 @@ create_vxlan_pair() {
- 		create_vxlan_endpoint $BASE$ns veth$ns $BM_NET_V6$((3 - $ns)) vxlan6$ns 6
- 		ip -n $BASE$ns addr add dev vxlan6$ns $OL_NET_V6$ns/24 nodad
- 	done
+ /* Number of fields in Safety Stats */
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
+index 880a75bf2eb1..e67a880ebf64 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
+@@ -282,6 +282,8 @@
+ #define XGMAC_RXCEIE			BIT(4)
+ #define XGMAC_TXCEIE			BIT(0)
+ #define XGMAC_MTL_ECC_INT_STATUS	0x000010cc
++#define XGMAC_MTL_DPP_CONTROL		0x000010e0
++#define XGMAC_DDPP_DISABLE		BIT(0)
+ #define XGMAC_MTL_TXQ_OPMODE(x)		(0x00001100 + (0x80 * (x)))
+ #define XGMAC_TQS			GENMASK(25, 16)
+ #define XGMAC_TQS_SHIFT			16
+@@ -364,6 +366,7 @@
+ #define XGMAC_DCEIE			BIT(1)
+ #define XGMAC_TCEIE			BIT(0)
+ #define XGMAC_DMA_ECC_INT_STATUS	0x0000306c
++#define XGMAC_DMA_DPP_INT_STATUS	0x00003074
+ #define XGMAC_DMA_CH_CONTROL(x)		(0x00003100 + (0x80 * (x)))
+ #define XGMAC_SPH			BIT(24)
+ #define XGMAC_PBLx8			BIT(16)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+index c2181c277291..c24cd019460a 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -789,6 +789,43 @@ static const struct dwxgmac3_error_desc dwxgmac3_dma_errors[32]= {
+ 	{ false, "UNKNOWN", "Unknown Error" }, /* 31 */
+ };
+ 
++static const char * const dpp_rx_err = "Read Rx Descriptor Parity checker Error";
++static const char * const dpp_tx_err = "Read Tx Descriptor Parity checker Error";
++static const struct dwxgmac3_error_desc dwxgmac3_dma_dpp_errors[32] = {
++	{ true, "TDPES0", dpp_tx_err },
++	{ true, "TDPES1", dpp_tx_err },
++	{ true, "TDPES2", dpp_tx_err },
++	{ true, "TDPES3", dpp_tx_err },
++	{ true, "TDPES4", dpp_tx_err },
++	{ true, "TDPES5", dpp_tx_err },
++	{ true, "TDPES6", dpp_tx_err },
++	{ true, "TDPES7", dpp_tx_err },
++	{ true, "TDPES8", dpp_tx_err },
++	{ true, "TDPES9", dpp_tx_err },
++	{ true, "TDPES10", dpp_tx_err },
++	{ true, "TDPES11", dpp_tx_err },
++	{ true, "TDPES12", dpp_tx_err },
++	{ true, "TDPES13", dpp_tx_err },
++	{ true, "TDPES14", dpp_tx_err },
++	{ true, "TDPES15", dpp_tx_err },
++	{ true, "RDPES0", dpp_rx_err },
++	{ true, "RDPES1", dpp_rx_err },
++	{ true, "RDPES2", dpp_rx_err },
++	{ true, "RDPES3", dpp_rx_err },
++	{ true, "RDPES4", dpp_rx_err },
++	{ true, "RDPES5", dpp_rx_err },
++	{ true, "RDPES6", dpp_rx_err },
++	{ true, "RDPES7", dpp_rx_err },
++	{ true, "RDPES8", dpp_rx_err },
++	{ true, "RDPES9", dpp_rx_err },
++	{ true, "RDPES10", dpp_rx_err },
++	{ true, "RDPES11", dpp_rx_err },
++	{ true, "RDPES12", dpp_rx_err },
++	{ true, "RDPES13", dpp_rx_err },
++	{ true, "RDPES14", dpp_rx_err },
++	{ true, "RDPES15", dpp_rx_err },
++};
 +
-+	# preload neighbur cache, do avoid some noisy traffic
-+	local addr_dst=$(ip -j -n $BASE$DST link show dev vxlan6$DST  |jq -r '.[]["address"]')
-+	local addr_src=$(ip -j -n $BASE$SRC link show dev vxlan6$SRC  |jq -r '.[]["address"]')
-+	ip -n $BASE$DST neigh add dev vxlan6$DST lladdr $addr_src $OL_NET_V6$SRC
-+	ip -n $BASE$SRC neigh add dev vxlan6$SRC lladdr $addr_dst $OL_NET_V6$DST
+ static void dwxgmac3_handle_dma_err(struct net_device *ndev,
+ 				    void __iomem *ioaddr, bool correctable,
+ 				    struct stmmac_safety_stats *stats)
+@@ -800,6 +837,13 @@ static void dwxgmac3_handle_dma_err(struct net_device *ndev,
+ 
+ 	dwxgmac3_log_error(ndev, value, correctable, "DMA",
+ 			   dwxgmac3_dma_errors, STAT_OFF(dma_errors), stats);
++
++	value = readl(ioaddr + XGMAC_DMA_DPP_INT_STATUS);
++	writel(value, ioaddr + XGMAC_DMA_DPP_INT_STATUS);
++
++	dwxgmac3_log_error(ndev, value, false, "DMA_DPP",
++			   dwxgmac3_dma_dpp_errors,
++			   STAT_OFF(dma_dpp_errors), stats);
  }
  
- is_ipv6() {
-@@ -119,7 +129,7 @@ run_test() {
- 	# not enable GRO
- 	ip netns exec $NS_DST $ipt -A INPUT -p udp --dport 4789
- 	ip netns exec $NS_DST $ipt -A INPUT -p udp --dport 8000
--	ip netns exec $NS_DST ./udpgso_bench_rx -C 1000 -R 10 -n 10 -l 1300 $rx_args &
-+	ip netns exec $NS_DST ./udpgso_bench_rx -C 2000 -R 100 -n 10 -l 1300 $rx_args &
- 	local spid=$!
- 	wait_local_port_listen "$NS_DST" 8000 udp
- 	ip netns exec $NS_SRC ./udpgso_bench_tx $family -M 1 -s 13000 -S 1300 -D $dst
-@@ -168,7 +178,7 @@ run_bench() {
- 	# bind the sender and the receiver to different CPUs to try
- 	# get reproducible results
- 	ip netns exec $NS_DST bash -c "echo 2 > /sys/class/net/veth$DST/queues/rx-0/rps_cpus"
--	ip netns exec $NS_DST taskset 0x2 ./udpgso_bench_rx -C 1000 -R 10  &
-+	ip netns exec $NS_DST taskset 0x2 ./udpgso_bench_rx -C 2000 -R 100  &
- 	local spid=$!
- 	wait_local_port_listen "$NS_DST" 8000 udp
- 	ip netns exec $NS_SRC taskset 0x1 ./udpgso_bench_tx $family -l 3 -S 1300 -D $dst
-diff --git a/tools/testing/selftests/net/udpgso_bench_rx.c b/tools/testing/selftests/net/udpgso_bench_rx.c
-index f35a924d4a30..1cbadd267c96 100644
---- a/tools/testing/selftests/net/udpgso_bench_rx.c
-+++ b/tools/testing/selftests/net/udpgso_bench_rx.c
-@@ -375,7 +375,7 @@ static void do_recv(void)
- 			do_flush_udp(fd);
+ static int
+@@ -838,6 +882,12 @@ dwxgmac3_safety_feat_config(void __iomem *ioaddr, unsigned int asp,
+ 	value |= XGMAC_TMOUTEN; /* FSM Timeout Feature */
+ 	writel(value, ioaddr + XGMAC_MAC_FSM_CONTROL);
  
- 		tnow = gettimeofday_ms();
--		if (tnow > treport) {
-+		if (!cfg_expected_pkt_nr && tnow > treport) {
- 			if (packets)
- 				fprintf(stderr,
- 					"%s rx: %6lu MB/s %8lu calls/s\n",
++	/* 5. Enable Data Path Parity Protection */
++	value = readl(ioaddr + XGMAC_MTL_DPP_CONTROL);
++	/* already enabled by default, explicit enable it again */
++	value &= ~XGMAC_DDPP_DISABLE;
++	writel(value, ioaddr + XGMAC_MTL_DPP_CONTROL);
++
+ 	return 0;
+ }
+ 
+@@ -871,7 +921,11 @@ static int dwxgmac3_safety_feat_irq_status(struct net_device *ndev,
+ 		ret |= !corr;
+ 	}
+ 
+-	err = dma & (XGMAC_DEUIS | XGMAC_DECIS);
++	/* DMA_DPP_Interrupt_Status is indicated by MCSIS bit in
++	 * DMA_Safety_Interrupt_Status, so we handle DMA Data Path
++	 * Parity Errors here
++	 */
++	err = dma & (XGMAC_DEUIS | XGMAC_DECIS | XGMAC_MCSIS);
+ 	corr = dma & XGMAC_DECIS;
+ 	if (err) {
+ 		dwxgmac3_handle_dma_err(ndev, ioaddr, corr, stats);
+@@ -887,6 +941,7 @@ static const struct dwxgmac3_error {
+ 	{ dwxgmac3_mac_errors },
+ 	{ dwxgmac3_mtl_errors },
+ 	{ dwxgmac3_dma_errors },
++	{ dwxgmac3_dma_dpp_errors },
+ };
+ 
+ static int dwxgmac3_safety_feat_dump(struct stmmac_safety_stats *stats,
 -- 
 2.43.0
 
