@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-19997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77314853853
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:36:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A488537E0
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:30:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1733EB299D0
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:36:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFBF5284144
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A306024B;
-	Tue, 13 Feb 2024 17:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3FA5FF0D;
+	Tue, 13 Feb 2024 17:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gd/ys8PE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8dxtE5J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F1A5FF07;
-	Tue, 13 Feb 2024 17:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5025FDDF;
+	Tue, 13 Feb 2024 17:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845712; cv=none; b=f30N8qqMega9JStO6n+mg1JuY7/+k1yPcf3KOtZN9f4xa4Fm2ZqHPc8vDbYmJXwYf2UM+Zq6QiIkuOEpcRcJq8tijTgjl/z9YjIN6Y+2LbnEcPJHNDECWAabLr2+MzVtdMi2rW1u10EXdiC3kxbZaWlVd+sGdxj5bJ+pcXPWa78=
+	t=1707845439; cv=none; b=KOKXIfzYcGrRCuh1pMsAuM/f55XlXB6eO9ZFSMaTjrHN87IxsBLDfdEG5tLPfACnjqPLfJgUzEXXMV+jWwksFzKm3KGlXn8P1JjCVTi137HH0/4oWTx6u+TRJYiIuzHvXGlVYZzmVDmhkULfePO9L1ZIiupN53eTdDJyS3zBx1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845712; c=relaxed/simple;
-	bh=E/Cu5d+kOj4S2Nyl5CFtp4hKfK66MlwWRu85GImAdh0=;
+	s=arc-20240116; t=1707845439; c=relaxed/simple;
+	bh=CpbPyGJw029ckf5abzVXdAL+OmNWOPufzqaPgbPTyqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ko0okz+mCCliJSGjMzyAMNOjWXxyDq7+BAOJZUVFBa0YDbJ1HlNPo2n+2vg8LlR4YK2mF46A/8gfn4TeNd+ioksfDGlsWUqRapucTYXoAlwK/MsJg4shIcLXNnxC2nZqnWtvTFFeKDu7Fy2OfLpb0o/Y5CwbufpPmfKy3AISCdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gd/ys8PE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78E8FC433F1;
-	Tue, 13 Feb 2024 17:35:11 +0000 (UTC)
+	 MIME-Version; b=hvA7FtPvC/XSa73wJkWw/45eN2j5859TXvOsniVILnNiJ87veMUWUJMv4q+hFKLfB5Z2MknB2Ozm1mgy3vuzB/wilAqP5BCGbdiE45yEtXhUqpEKWmqYm7UDHSzfcPy13Q9YT1Q8GfCS0pufB6+RiYwUHGnR7n+Jc1GNZ/+skgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8dxtE5J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F98DC433F1;
+	Tue, 13 Feb 2024 17:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845712;
-	bh=E/Cu5d+kOj4S2Nyl5CFtp4hKfK66MlwWRu85GImAdh0=;
+	s=korg; t=1707845438;
+	bh=CpbPyGJw029ckf5abzVXdAL+OmNWOPufzqaPgbPTyqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gd/ys8PE2e9WJPOw20nWOX8gkKpoo8NZIyH+K0zOyWxIbDFc+jO71odulRq1WswB5
-	 xwsqt103s8VMoSezD5mrFanK6lCgNGBSbqGO7Wv53MYTwgPl30mUP/D17GD3QGdTdb
-	 H9ck2Xvlxy0I4n/r1VPC60GDT7LXnpHBJAk44jW8=
+	b=y8dxtE5JDUODiVLoMWsX99J4br5GsmgNmAyq/8Dsr7mJrxJmuzuJrb8eBIzoQs75B
+	 DQxU+uxCVtRzIWxu62rvlKWdsaelITUn8Tyi9ZZxbxMbEc01SF8h/2FPLrhV3Uyy/3
+	 kXdl/lX0de3+jKiB2LZyEi+WgKXgXCiq6inTX0Gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	David Ahern <dsahern@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 037/124] selftests: net: fix tcp listener handling in pmtu.sh
+Subject: [PATCH 6.6 050/121] selftests: net: cut more slack for gro fwd tests.
 Date: Tue, 13 Feb 2024 18:20:59 +0100
-Message-ID: <20240213171854.815524681@linuxfoundation.org>
+Message-ID: <20240213171854.458189587@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit e71e016ad0f6e641a7898b8cda5f62f8e2beb2f1 ]
+[ Upstream commit cb9f4a30fb85e1f4f149ada595a67899adb3db19 ]
 
-The pmtu.sh test uses a few TCP listener in a problematic way:
-It hard-codes a constant timeout to wait for the listener starting-up
-in background. That introduces unneeded latency and on very slow and
-busy host it can fail.
+The udpgro_fwd.sh self-tests are somewhat unstable. There are
+a few timing constraints the we struggle to meet on very slow
+environments.
 
-Additionally the test starts again the same listener in the same
-namespace on the same port, just after the previous connection
-completed. Fast host can attempt starting the new server before the
-old one really closed the socket.
+Instead of skipping the whole tests in such envs, increase the
+test resilience WRT very slow hosts: increase the inter-packets
+timeouts, avoid resetting the counters every second and finally
+disable reduce the background traffic noise.
 
-Address the issues using the wait_local_port_listen helper and
-explicitly waiting for the background listener process exit.
+Tested with:
 
-Fixes: 136a1b434bbb ("selftests: net: test vxlan pmtu exceptions with tcp")
+for I in $(seq 1 100); do
+	./tools/testing/selftests/kselftest_install/run_kselftest.sh \
+		-t net:udpgro_fwd.sh || exit -1
+done
+
+in a slow environment.
+
+Fixes: a062260a9d5f ("selftests: net: add UDP GRO forwarding self-tests")
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/f8e8f6d44427d8c45e9f6a71ee1a321047452087.1706812005.git.pabeni@redhat.com
+Link: https://lore.kernel.org/r/f4b6b11064a0d39182a9ae6a853abae3e9b4426a.1706812005.git.pabeni@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/pmtu.sh | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/udpgro_fwd.sh     | 14 ++++++++++++--
+ tools/testing/selftests/net/udpgso_bench_rx.c |  2 +-
+ 2 files changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
-index 3f118e3f1c66..f0febc19baae 100755
---- a/tools/testing/selftests/net/pmtu.sh
-+++ b/tools/testing/selftests/net/pmtu.sh
-@@ -199,6 +199,7 @@
- #	Same as above but with IPv6
- 
- source lib.sh
-+source net_helper.sh
- 
- PAUSE_ON_FAIL=no
- VERBOSE=0
-@@ -1336,13 +1337,15 @@ test_pmtu_ipvX_over_bridged_vxlanY_or_geneveY_exception() {
- 			TCPDST="TCP:[${dst}]:50000"
- 		fi
- 		${ns_b} socat -T 3 -u -6 TCP-LISTEN:50000 STDOUT > $tmpoutfile &
-+		local socat_pid=$!
- 
--		sleep 1
-+		wait_local_port_listen ${NS_B} 50000 tcp
- 
- 		dd if=/dev/zero status=none bs=1M count=1 | ${target} socat -T 3 -u STDIN $TCPDST,connect-timeout=3
- 
- 		size=$(du -sb $tmpoutfile)
- 		size=${size%%/tmp/*}
-+		wait ${socat_pid}
- 
- 		[ $size -ne 1048576 ] && err "File size $size mismatches exepcted value in locally bridged vxlan test" && return 1
+diff --git a/tools/testing/selftests/net/udpgro_fwd.sh b/tools/testing/selftests/net/udpgro_fwd.sh
+index d6b9c759043c..9cd5e885e91f 100755
+--- a/tools/testing/selftests/net/udpgro_fwd.sh
++++ b/tools/testing/selftests/net/udpgro_fwd.sh
+@@ -39,6 +39,10 @@ create_ns() {
+ 	for ns in $NS_SRC $NS_DST; do
+ 		ip netns add $ns
+ 		ip -n $ns link set dev lo up
++
++		# disable route solicitations to decrease 'noise' traffic
++		ip netns exec $ns sysctl -qw net.ipv6.conf.default.router_solicitations=0
++		ip netns exec $ns sysctl -qw net.ipv6.conf.all.router_solicitations=0
  	done
+ 
+ 	ip link add name veth$SRC type veth peer name veth$DST
+@@ -80,6 +84,12 @@ create_vxlan_pair() {
+ 		create_vxlan_endpoint $BASE$ns veth$ns $BM_NET_V6$((3 - $ns)) vxlan6$ns 6
+ 		ip -n $BASE$ns addr add dev vxlan6$ns $OL_NET_V6$ns/24 nodad
+ 	done
++
++	# preload neighbur cache, do avoid some noisy traffic
++	local addr_dst=$(ip -j -n $BASE$DST link show dev vxlan6$DST  |jq -r '.[]["address"]')
++	local addr_src=$(ip -j -n $BASE$SRC link show dev vxlan6$SRC  |jq -r '.[]["address"]')
++	ip -n $BASE$DST neigh add dev vxlan6$DST lladdr $addr_src $OL_NET_V6$SRC
++	ip -n $BASE$SRC neigh add dev vxlan6$SRC lladdr $addr_dst $OL_NET_V6$DST
+ }
+ 
+ is_ipv6() {
+@@ -119,7 +129,7 @@ run_test() {
+ 	# not enable GRO
+ 	ip netns exec $NS_DST $ipt -A INPUT -p udp --dport 4789
+ 	ip netns exec $NS_DST $ipt -A INPUT -p udp --dport 8000
+-	ip netns exec $NS_DST ./udpgso_bench_rx -C 1000 -R 10 -n 10 -l 1300 $rx_args &
++	ip netns exec $NS_DST ./udpgso_bench_rx -C 2000 -R 100 -n 10 -l 1300 $rx_args &
+ 	local spid=$!
+ 	wait_local_port_listen "$NS_DST" 8000 udp
+ 	ip netns exec $NS_SRC ./udpgso_bench_tx $family -M 1 -s 13000 -S 1300 -D $dst
+@@ -168,7 +178,7 @@ run_bench() {
+ 	# bind the sender and the receiver to different CPUs to try
+ 	# get reproducible results
+ 	ip netns exec $NS_DST bash -c "echo 2 > /sys/class/net/veth$DST/queues/rx-0/rps_cpus"
+-	ip netns exec $NS_DST taskset 0x2 ./udpgso_bench_rx -C 1000 -R 10  &
++	ip netns exec $NS_DST taskset 0x2 ./udpgso_bench_rx -C 2000 -R 100  &
+ 	local spid=$!
+ 	wait_local_port_listen "$NS_DST" 8000 udp
+ 	ip netns exec $NS_SRC taskset 0x1 ./udpgso_bench_tx $family -l 3 -S 1300 -D $dst
+diff --git a/tools/testing/selftests/net/udpgso_bench_rx.c b/tools/testing/selftests/net/udpgso_bench_rx.c
+index f35a924d4a30..1cbadd267c96 100644
+--- a/tools/testing/selftests/net/udpgso_bench_rx.c
++++ b/tools/testing/selftests/net/udpgso_bench_rx.c
+@@ -375,7 +375,7 @@ static void do_recv(void)
+ 			do_flush_udp(fd);
+ 
+ 		tnow = gettimeofday_ms();
+-		if (tnow > treport) {
++		if (!cfg_expected_pkt_nr && tnow > treport) {
+ 			if (packets)
+ 				fprintf(stderr,
+ 					"%s rx: %6lu MB/s %8lu calls/s\n",
 -- 
 2.43.0
 
