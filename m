@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-19923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7375A8537E7
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:31:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0461085376A
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:25:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1262C1F292E6
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:31:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B661728BF16
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4AB5FF05;
-	Tue, 13 Feb 2024 17:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCA45FF0C;
+	Tue, 13 Feb 2024 17:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPHAJjoy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxrfUK+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7CC5F54E;
-	Tue, 13 Feb 2024 17:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB505F54E;
+	Tue, 13 Feb 2024 17:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845460; cv=none; b=t6h3k4t9CT9AyESVYjjzZ6d0Yq3MNs9hJD5e7aXaXFIwZUIozSzUQXqVNyCDY3w+al5su6687vc9tv/QZMoUX26FYboZTavGUicqa2F40skh29kCbP1rK9vJSUjYNecDVtr2UDno9M8ur5lqidfT5fCBOz/gUSNcAMEVGF04smA=
+	t=1707845109; cv=none; b=iT+Hdhe0lnKzPDtdsKPDlvMW5uXiLTQVzB0/9WYP4ZDfQlJlJzSoAvo/GlcqPkUpcYp0D1DbDRWxVKX8tmmnunaTS4rN3ADxn1qALhe6xy/pWll9dt1Ez8EXBpOhZxOuMD+Q8nxCrMKdunJKPwC3UqaSXSJ517fjJBaVjrC3ONI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845460; c=relaxed/simple;
-	bh=M+wWHcTnLY6iwoot4roxS2zWxR0g3oDJ8IZ1PRFp3pM=;
+	s=arc-20240116; t=1707845109; c=relaxed/simple;
+	bh=dwoonEc7BpdSaAS0XxaqzaU5tjeKtqKKBxRtW9VPEpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PSb2z93bXmiW7tPBZ35UH3IR6XCkjz0fmf21yQYN0IgRw8p0y2eG/CDcoPFzXIZFZIkK44NUNyANE/b+vwjehjiENaKu9omb76jBXfrvfauEEm3EL+AdExAnN0Hwj8avnpygJVR4r8Gmn41ohiYmcQ2u9zWAfQd2qnGCvfnafYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPHAJjoy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB82AC433C7;
-	Tue, 13 Feb 2024 17:30:57 +0000 (UTC)
+	 MIME-Version; b=U/4S1PQo9P0rQebLJVmvsbHpB/9g9bSfx4YgJG+rqzD/y75hYJiM78AE/dE0BtI+ZMSmWBNkeOM6dKB8Kl7cWSSQRUUiqh5RhI3jM/1KL8eqhVVwgwymWRMeNREvQDYl3xb1iwOQK4Yoa1ShiSPuVIt+3yoPLtH7iM33mGHYq30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxrfUK+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D031C433C7;
+	Tue, 13 Feb 2024 17:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845458;
-	bh=M+wWHcTnLY6iwoot4roxS2zWxR0g3oDJ8IZ1PRFp3pM=;
+	s=korg; t=1707845108;
+	bh=dwoonEc7BpdSaAS0XxaqzaU5tjeKtqKKBxRtW9VPEpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pPHAJjoywW/zbYNYIchYaZXzOLfY2vO5eNmkmnR48nfqujAt1XorzXh+Zj0iXwR8q
-	 NDkow3ycnzjtjVvbduhIzuCpJ5x89ikQGuJglYiz1O/omLDkM1xJUUYxuG/QRRXTdy
-	 t5vZ3Cq4qvVk5gRYZSZ6UAFdC3vC+vA98My3TGRI=
+	b=AxrfUK+WCR41VnuMpR/FkpcH/reBZO3iQZoopl23J8T7WlCOdmUzQHPHUyS/jqBDV
+	 xlQj/+FQDxi1eVDZr3y3Kld/ud5y7vTbS5dJ/deqdm3pzqW5FjJxAhUNkwGOxA/adL
+	 QBNCbc6ClDv5Z/7qKfOlx7Hct7VsIiCZtqWZD4bA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH 6.6 085/121] riscv: Improve tlb_flush()
-Date: Tue, 13 Feb 2024 18:21:34 +0100
-Message-ID: <20240213171855.473974449@linuxfoundation.org>
+	Puliang Lu <puliang.lu@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 49/64] USB: serial: option: add Fibocom FM101-GL variant
+Date: Tue, 13 Feb 2024 18:21:35 +0100
+Message-ID: <20240213171846.285769954@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Puliang Lu <puliang.lu@fibocom.com>
 
-[ Upstream commit c5e9b2c2ae82231d85d9650854e7b3e97dde33da ]
+commit b4a1f4eaf1d798066affc6ad040f76eb1a16e1c9 upstream.
 
-For now, tlb_flush() simply calls flush_tlb_mm() which results in a
-flush of the whole TLB. So let's use mmu_gather fields to provide a more
-fine-grained flush of the TLB.
+Update the USB serial option driver support for the Fibocom
+FM101-GL
+LTE modules as there are actually several different variants.
+- VID:PID 2cb7:01a3, FM101-GL are laptop M.2 cards (with
+MBIM interfaces for /Linux/Chrome OS)
 
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
-Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com> # On RZ/Five SMARC
-Link: https://lore.kernel.org/r/20231030133027.19542-2-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Stable-dep-of: d9807d60c145 ("riscv: mm: execute local TLB flush after populating vmemmap")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+0x01a3:mbim,gnss
+
+Here are the outputs of usb-devices:
+
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=01a3 Rev=05.04
+S:  Manufacturer=Fibocom Wireless Inc.
+S:  Product=Fibocom FM101-GL Module
+S:  SerialNumber=5ccd5cd4
+C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+
+Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/tlb.h      | 8 +++++++-
- arch/riscv/include/asm/tlbflush.h | 3 +++
- arch/riscv/mm/tlbflush.c          | 7 +++++++
- 3 files changed, 17 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/include/asm/tlb.h b/arch/riscv/include/asm/tlb.h
-index 120bcf2ed8a8..1eb5682b2af6 100644
---- a/arch/riscv/include/asm/tlb.h
-+++ b/arch/riscv/include/asm/tlb.h
-@@ -15,7 +15,13 @@ static void tlb_flush(struct mmu_gather *tlb);
- 
- static inline void tlb_flush(struct mmu_gather *tlb)
- {
--	flush_tlb_mm(tlb->mm);
-+#ifdef CONFIG_MMU
-+	if (tlb->fullmm || tlb->need_flush_all)
-+		flush_tlb_mm(tlb->mm);
-+	else
-+		flush_tlb_mm_range(tlb->mm, tlb->start, tlb->end,
-+				   tlb_get_unmap_size(tlb));
-+#endif
- }
- 
- #endif /* _ASM_RISCV_TLB_H */
-diff --git a/arch/riscv/include/asm/tlbflush.h b/arch/riscv/include/asm/tlbflush.h
-index a09196f8de68..f5c4fb0ae642 100644
---- a/arch/riscv/include/asm/tlbflush.h
-+++ b/arch/riscv/include/asm/tlbflush.h
-@@ -32,6 +32,8 @@ static inline void local_flush_tlb_page(unsigned long addr)
- #if defined(CONFIG_SMP) && defined(CONFIG_MMU)
- void flush_tlb_all(void);
- void flush_tlb_mm(struct mm_struct *mm);
-+void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
-+			unsigned long end, unsigned int page_size);
- void flush_tlb_page(struct vm_area_struct *vma, unsigned long addr);
- void flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 		     unsigned long end);
-@@ -52,6 +54,7 @@ static inline void flush_tlb_range(struct vm_area_struct *vma,
- }
- 
- #define flush_tlb_mm(mm) flush_tlb_all()
-+#define flush_tlb_mm_range(mm, start, end, page_size) flush_tlb_all()
- #endif /* !CONFIG_SMP || !CONFIG_MMU */
- 
- /* Flush a range of kernel pages */
-diff --git a/arch/riscv/mm/tlbflush.c b/arch/riscv/mm/tlbflush.c
-index 77be59aadc73..fa03289853d8 100644
---- a/arch/riscv/mm/tlbflush.c
-+++ b/arch/riscv/mm/tlbflush.c
-@@ -132,6 +132,13 @@ void flush_tlb_mm(struct mm_struct *mm)
- 	__flush_tlb_range(mm, 0, -1, PAGE_SIZE);
- }
- 
-+void flush_tlb_mm_range(struct mm_struct *mm,
-+			unsigned long start, unsigned long end,
-+			unsigned int page_size)
-+{
-+	__flush_tlb_range(mm, start, end - start, page_size);
-+}
-+
- void flush_tlb_page(struct vm_area_struct *vma, unsigned long addr)
- {
- 	__flush_tlb_range(vma->vm_mm, addr, PAGE_SIZE, PAGE_SIZE);
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2269,6 +2269,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a2, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
++	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a4, 0xff),			/* Fibocom FM101-GL (laptop MBIM) */
+ 	  .driver_info = RSVD(4) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
 
 
 
