@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-19823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0461085376A
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:25:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98C3C8537E8
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:31:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B661728BF16
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:25:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 522EA28604C
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCA45FF0C;
-	Tue, 13 Feb 2024 17:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3805FF04;
+	Tue, 13 Feb 2024 17:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxrfUK+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXVaTK+G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB505F54E;
-	Tue, 13 Feb 2024 17:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD45A5F54E;
+	Tue, 13 Feb 2024 17:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845109; cv=none; b=iT+Hdhe0lnKzPDtdsKPDlvMW5uXiLTQVzB0/9WYP4ZDfQlJlJzSoAvo/GlcqPkUpcYp0D1DbDRWxVKX8tmmnunaTS4rN3ADxn1qALhe6xy/pWll9dt1Ez8EXBpOhZxOuMD+Q8nxCrMKdunJKPwC3UqaSXSJ517fjJBaVjrC3ONI=
+	t=1707845463; cv=none; b=QgrUPm1TkxvKJvXryPPrKCx1NY4IB/B3JHGN3faFn7evoqV0l1dbKMJzpx/vxQTY0Sw/atwZMiGTdIzd+0JFZWkqBbJq3itAhSHn1W7vJQVm6+ujGCzXkHRk53OYqzgBuy0X0rok4VBjD9uzdT6YQkMhk9HpHD/4+jVigE2j3OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845109; c=relaxed/simple;
-	bh=dwoonEc7BpdSaAS0XxaqzaU5tjeKtqKKBxRtW9VPEpc=;
+	s=arc-20240116; t=1707845463; c=relaxed/simple;
+	bh=F9v8kQHq7ZysUclbNo48gEsDFZyPxBLi54rbU97FygE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/4S1PQo9P0rQebLJVmvsbHpB/9g9bSfx4YgJG+rqzD/y75hYJiM78AE/dE0BtI+ZMSmWBNkeOM6dKB8Kl7cWSSQRUUiqh5RhI3jM/1KL8eqhVVwgwymWRMeNREvQDYl3xb1iwOQK4Yoa1ShiSPuVIt+3yoPLtH7iM33mGHYq30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxrfUK+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D031C433C7;
-	Tue, 13 Feb 2024 17:25:08 +0000 (UTC)
+	 MIME-Version; b=jsEkr2n/Jc3tTe7UmW9L4T85LdX60q2dStq/6mOkvMmTthdLRTasyAyCQN5I8SiTqvN0N5MBsgsjgiOR5dVjRXjaImdQK57RdbRcxQHJ5tZsgdOIgmH+lWDZ7jyuwVlW0phyM8w2+RC1HLd2QZqniZv4v7cj8r4fXbO+f0Lz4nY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXVaTK+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0708C433F1;
+	Tue, 13 Feb 2024 17:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845108;
-	bh=dwoonEc7BpdSaAS0XxaqzaU5tjeKtqKKBxRtW9VPEpc=;
+	s=korg; t=1707845463;
+	bh=F9v8kQHq7ZysUclbNo48gEsDFZyPxBLi54rbU97FygE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AxrfUK+WCR41VnuMpR/FkpcH/reBZO3iQZoopl23J8T7WlCOdmUzQHPHUyS/jqBDV
-	 xlQj/+FQDxi1eVDZr3y3Kld/ud5y7vTbS5dJ/deqdm3pzqW5FjJxAhUNkwGOxA/adL
-	 QBNCbc6ClDv5Z/7qKfOlx7Hct7VsIiCZtqWZD4bA=
+	b=LXVaTK+G5f4YWe9+kAYo9chHhxjzgWaJIKUn5lbabDeMh8SbfMIrXmNcMJsrGYhJG
+	 B+2iLbCoYo2nIkuAkI76YpOfVKbSHGmT1nkETMWfbcjczy6MJxVKX2cFzJOKrhSqY4
+	 gdbKXeCB5Uf2DUAQRaJ7kXtQSA/RYh4HbznHlKeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puliang Lu <puliang.lu@fibocom.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 49/64] USB: serial: option: add Fibocom FM101-GL variant
+	Mayuresh Chitale <mchitale@ventanamicro.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH 6.6 086/121] riscv: Make __flush_tlb_range() loop over pte instead of flushing the whole tlb
 Date: Tue, 13 Feb 2024 18:21:35 +0100
-Message-ID: <20240213171846.285769954@linuxfoundation.org>
+Message-ID: <20240213171855.503811457@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +66,309 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puliang Lu <puliang.lu@fibocom.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-commit b4a1f4eaf1d798066affc6ad040f76eb1a16e1c9 upstream.
+[ Upstream commit 9d4e8d5fa7dbbb606b355f40d918a1feef821bc5 ]
 
-Update the USB serial option driver support for the Fibocom
-FM101-GL
-LTE modules as there are actually several different variants.
-- VID:PID 2cb7:01a3, FM101-GL are laptop M.2 cards (with
-MBIM interfaces for /Linux/Chrome OS)
+Currently, when the range to flush covers more than one page (a 4K page or
+a hugepage), __flush_tlb_range() flushes the whole tlb. Flushing the whole
+tlb comes with a greater cost than flushing a single entry so we should
+flush single entries up to a certain threshold so that:
+threshold * cost of flushing a single entry < cost of flushing the whole
+tlb.
 
-0x01a3:mbim,gnss
-
-Here are the outputs of usb-devices:
-
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=01a3 Rev=05.04
-S:  Manufacturer=Fibocom Wireless Inc.
-S:  Product=Fibocom FM101-GL Module
-S:  SerialNumber=5ccd5cd4
-C:  #Ifs= 3 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=81(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-
-Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Co-developed-by: Mayuresh Chitale <mchitale@ventanamicro.com>
+Signed-off-by: Mayuresh Chitale <mchitale@ventanamicro.com>
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com> # On RZ/Five SMARC
+Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
+Tested-by: Samuel Holland <samuel.holland@sifive.com>
+Link: https://lore.kernel.org/r/20231030133027.19542-4-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Stable-dep-of: d9807d60c145 ("riscv: mm: execute local TLB flush after populating vmemmap")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/riscv/include/asm/sbi.h      |   3 -
+ arch/riscv/include/asm/tlbflush.h |   3 +
+ arch/riscv/kernel/sbi.c           |  32 +++------
+ arch/riscv/mm/tlbflush.c          | 115 +++++++++++++++---------------
+ 4 files changed, 72 insertions(+), 81 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2269,6 +2269,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0111, 0xff) },			/* Fibocom FM160 (MBIM mode) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a0, 0xff) },			/* Fibocom NL668-AM/NL652-EU (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a2, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
-+	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a3, 0xff) },			/* Fibocom FM101-GL (laptop MBIM) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x01a4, 0xff),			/* Fibocom FM101-GL (laptop MBIM) */
- 	  .driver_info = RSVD(4) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2df3, 0x9d03, 0xff) },			/* LongSung M5710 */
+diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
+index 5b4a1bf5f439..b79d0228144f 100644
+--- a/arch/riscv/include/asm/sbi.h
++++ b/arch/riscv/include/asm/sbi.h
+@@ -273,9 +273,6 @@ void sbi_set_timer(uint64_t stime_value);
+ void sbi_shutdown(void);
+ void sbi_send_ipi(unsigned int cpu);
+ int sbi_remote_fence_i(const struct cpumask *cpu_mask);
+-int sbi_remote_sfence_vma(const struct cpumask *cpu_mask,
+-			   unsigned long start,
+-			   unsigned long size);
+ 
+ int sbi_remote_sfence_vma_asid(const struct cpumask *cpu_mask,
+ 				unsigned long start,
+diff --git a/arch/riscv/include/asm/tlbflush.h b/arch/riscv/include/asm/tlbflush.h
+index f5c4fb0ae642..170a49c531c6 100644
+--- a/arch/riscv/include/asm/tlbflush.h
++++ b/arch/riscv/include/asm/tlbflush.h
+@@ -11,6 +11,9 @@
+ #include <asm/smp.h>
+ #include <asm/errata_list.h>
+ 
++#define FLUSH_TLB_MAX_SIZE      ((unsigned long)-1)
++#define FLUSH_TLB_NO_ASID       ((unsigned long)-1)
++
+ #ifdef CONFIG_MMU
+ extern unsigned long asid_mask;
+ 
+diff --git a/arch/riscv/kernel/sbi.c b/arch/riscv/kernel/sbi.c
+index c672c8ba9a2a..5a62ed1da453 100644
+--- a/arch/riscv/kernel/sbi.c
++++ b/arch/riscv/kernel/sbi.c
+@@ -11,6 +11,7 @@
+ #include <linux/reboot.h>
+ #include <asm/sbi.h>
+ #include <asm/smp.h>
++#include <asm/tlbflush.h>
+ 
+ /* default SBI version is 0.1 */
+ unsigned long sbi_spec_version __ro_after_init = SBI_SPEC_VERSION_DEFAULT;
+@@ -376,32 +377,15 @@ int sbi_remote_fence_i(const struct cpumask *cpu_mask)
+ }
+ EXPORT_SYMBOL(sbi_remote_fence_i);
+ 
+-/**
+- * sbi_remote_sfence_vma() - Execute SFENCE.VMA instructions on given remote
+- *			     harts for the specified virtual address range.
+- * @cpu_mask: A cpu mask containing all the target harts.
+- * @start: Start of the virtual address
+- * @size: Total size of the virtual address range.
+- *
+- * Return: 0 on success, appropriate linux error code otherwise.
+- */
+-int sbi_remote_sfence_vma(const struct cpumask *cpu_mask,
+-			   unsigned long start,
+-			   unsigned long size)
+-{
+-	return __sbi_rfence(SBI_EXT_RFENCE_REMOTE_SFENCE_VMA,
+-			    cpu_mask, start, size, 0, 0);
+-}
+-EXPORT_SYMBOL(sbi_remote_sfence_vma);
+-
+ /**
+  * sbi_remote_sfence_vma_asid() - Execute SFENCE.VMA instructions on given
+- * remote harts for a virtual address range belonging to a specific ASID.
++ * remote harts for a virtual address range belonging to a specific ASID or not.
+  *
+  * @cpu_mask: A cpu mask containing all the target harts.
+  * @start: Start of the virtual address
+  * @size: Total size of the virtual address range.
+- * @asid: The value of address space identifier (ASID).
++ * @asid: The value of address space identifier (ASID), or FLUSH_TLB_NO_ASID
++ * for flushing all address spaces.
+  *
+  * Return: 0 on success, appropriate linux error code otherwise.
+  */
+@@ -410,8 +394,12 @@ int sbi_remote_sfence_vma_asid(const struct cpumask *cpu_mask,
+ 				unsigned long size,
+ 				unsigned long asid)
+ {
+-	return __sbi_rfence(SBI_EXT_RFENCE_REMOTE_SFENCE_VMA_ASID,
+-			    cpu_mask, start, size, asid, 0);
++	if (asid == FLUSH_TLB_NO_ASID)
++		return __sbi_rfence(SBI_EXT_RFENCE_REMOTE_SFENCE_VMA,
++				    cpu_mask, start, size, 0, 0);
++	else
++		return __sbi_rfence(SBI_EXT_RFENCE_REMOTE_SFENCE_VMA_ASID,
++				    cpu_mask, start, size, asid, 0);
+ }
+ EXPORT_SYMBOL(sbi_remote_sfence_vma_asid);
+ 
+diff --git a/arch/riscv/mm/tlbflush.c b/arch/riscv/mm/tlbflush.c
+index fa03289853d8..88fa8b18ca22 100644
+--- a/arch/riscv/mm/tlbflush.c
++++ b/arch/riscv/mm/tlbflush.c
+@@ -8,28 +8,50 @@
+ 
+ static inline void local_flush_tlb_all_asid(unsigned long asid)
+ {
+-	__asm__ __volatile__ ("sfence.vma x0, %0"
+-			:
+-			: "r" (asid)
+-			: "memory");
++	if (asid != FLUSH_TLB_NO_ASID)
++		__asm__ __volatile__ ("sfence.vma x0, %0"
++				:
++				: "r" (asid)
++				: "memory");
++	else
++		local_flush_tlb_all();
+ }
+ 
+ static inline void local_flush_tlb_page_asid(unsigned long addr,
+ 		unsigned long asid)
+ {
+-	__asm__ __volatile__ ("sfence.vma %0, %1"
+-			:
+-			: "r" (addr), "r" (asid)
+-			: "memory");
++	if (asid != FLUSH_TLB_NO_ASID)
++		__asm__ __volatile__ ("sfence.vma %0, %1"
++				:
++				: "r" (addr), "r" (asid)
++				: "memory");
++	else
++		local_flush_tlb_page(addr);
+ }
+ 
+-static inline void local_flush_tlb_range(unsigned long start,
+-		unsigned long size, unsigned long stride)
++/*
++ * Flush entire TLB if number of entries to be flushed is greater
++ * than the threshold below.
++ */
++static unsigned long tlb_flush_all_threshold __read_mostly = 64;
++
++static void local_flush_tlb_range_threshold_asid(unsigned long start,
++						 unsigned long size,
++						 unsigned long stride,
++						 unsigned long asid)
+ {
+-	if (size <= stride)
+-		local_flush_tlb_page(start);
+-	else
+-		local_flush_tlb_all();
++	unsigned long nr_ptes_in_range = DIV_ROUND_UP(size, stride);
++	int i;
++
++	if (nr_ptes_in_range > tlb_flush_all_threshold) {
++		local_flush_tlb_all_asid(asid);
++		return;
++	}
++
++	for (i = 0; i < nr_ptes_in_range; ++i) {
++		local_flush_tlb_page_asid(start, asid);
++		start += stride;
++	}
+ }
+ 
+ static inline void local_flush_tlb_range_asid(unsigned long start,
+@@ -37,8 +59,10 @@ static inline void local_flush_tlb_range_asid(unsigned long start,
+ {
+ 	if (size <= stride)
+ 		local_flush_tlb_page_asid(start, asid);
+-	else
++	else if (size == FLUSH_TLB_MAX_SIZE)
+ 		local_flush_tlb_all_asid(asid);
++	else
++		local_flush_tlb_range_threshold_asid(start, size, stride, asid);
+ }
+ 
+ static void __ipi_flush_tlb_all(void *info)
+@@ -51,7 +75,7 @@ void flush_tlb_all(void)
+ 	if (riscv_use_ipi_for_rfence())
+ 		on_each_cpu(__ipi_flush_tlb_all, NULL, 1);
+ 	else
+-		sbi_remote_sfence_vma(NULL, 0, -1);
++		sbi_remote_sfence_vma_asid(NULL, 0, FLUSH_TLB_MAX_SIZE, FLUSH_TLB_NO_ASID);
+ }
+ 
+ struct flush_tlb_range_data {
+@@ -68,18 +92,12 @@ static void __ipi_flush_tlb_range_asid(void *info)
+ 	local_flush_tlb_range_asid(d->start, d->size, d->stride, d->asid);
+ }
+ 
+-static void __ipi_flush_tlb_range(void *info)
+-{
+-	struct flush_tlb_range_data *d = info;
+-
+-	local_flush_tlb_range(d->start, d->size, d->stride);
+-}
+-
+ static void __flush_tlb_range(struct mm_struct *mm, unsigned long start,
+ 			      unsigned long size, unsigned long stride)
+ {
+ 	struct flush_tlb_range_data ftd;
+ 	struct cpumask *cmask = mm_cpumask(mm);
++	unsigned long asid = FLUSH_TLB_NO_ASID;
+ 	unsigned int cpuid;
+ 	bool broadcast;
+ 
+@@ -89,39 +107,24 @@ static void __flush_tlb_range(struct mm_struct *mm, unsigned long start,
+ 	cpuid = get_cpu();
+ 	/* check if the tlbflush needs to be sent to other CPUs */
+ 	broadcast = cpumask_any_but(cmask, cpuid) < nr_cpu_ids;
+-	if (static_branch_unlikely(&use_asid_allocator)) {
+-		unsigned long asid = atomic_long_read(&mm->context.id) & asid_mask;
+-
+-		if (broadcast) {
+-			if (riscv_use_ipi_for_rfence()) {
+-				ftd.asid = asid;
+-				ftd.start = start;
+-				ftd.size = size;
+-				ftd.stride = stride;
+-				on_each_cpu_mask(cmask,
+-						 __ipi_flush_tlb_range_asid,
+-						 &ftd, 1);
+-			} else
+-				sbi_remote_sfence_vma_asid(cmask,
+-							   start, size, asid);
+-		} else {
+-			local_flush_tlb_range_asid(start, size, stride, asid);
+-		}
++
++	if (static_branch_unlikely(&use_asid_allocator))
++		asid = atomic_long_read(&mm->context.id) & asid_mask;
++
++	if (broadcast) {
++		if (riscv_use_ipi_for_rfence()) {
++			ftd.asid = asid;
++			ftd.start = start;
++			ftd.size = size;
++			ftd.stride = stride;
++			on_each_cpu_mask(cmask,
++					 __ipi_flush_tlb_range_asid,
++					 &ftd, 1);
++		} else
++			sbi_remote_sfence_vma_asid(cmask,
++						   start, size, asid);
+ 	} else {
+-		if (broadcast) {
+-			if (riscv_use_ipi_for_rfence()) {
+-				ftd.asid = 0;
+-				ftd.start = start;
+-				ftd.size = size;
+-				ftd.stride = stride;
+-				on_each_cpu_mask(cmask,
+-						 __ipi_flush_tlb_range,
+-						 &ftd, 1);
+-			} else
+-				sbi_remote_sfence_vma(cmask, start, size);
+-		} else {
+-			local_flush_tlb_range(start, size, stride);
+-		}
++		local_flush_tlb_range_asid(start, size, stride, asid);
+ 	}
+ 
+ 	put_cpu();
+@@ -129,7 +132,7 @@ static void __flush_tlb_range(struct mm_struct *mm, unsigned long start,
+ 
+ void flush_tlb_mm(struct mm_struct *mm)
+ {
+-	__flush_tlb_range(mm, 0, -1, PAGE_SIZE);
++	__flush_tlb_range(mm, 0, FLUSH_TLB_MAX_SIZE, PAGE_SIZE);
+ }
+ 
+ void flush_tlb_mm_range(struct mm_struct *mm,
+-- 
+2.43.0
+
 
 
 
