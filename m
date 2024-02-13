@@ -1,171 +1,131 @@
-Return-Path: <stable+bounces-19765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA588535C7
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:15:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A090A8535C8
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:16:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16A8028B823
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 16:15:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 289E5B296BC
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 16:16:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626765F861;
-	Tue, 13 Feb 2024 16:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5651B5F57E;
+	Tue, 13 Feb 2024 16:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBM8xcfR"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="r1S/rt+n";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PR4A++XQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233245DF29
-	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 16:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0045D91C
+	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 16:16:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.111.4.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707840940; cv=none; b=RCTioOVmSRCnCoUPu07KMIxazNa7GTiPOVrTXq4zsH2Njn5vja10Nv7xG69sbUrr6yaV7+GLMVjxJKBIICIMenTdRoG3aPL6VNb3Q11YnSk352mqDRqS+wvoTog1vBzEAApc8aoplO9krSGoEXGBx01RFLEcaTOo1iAJj5ePC/c=
+	t=1707841004; cv=none; b=d+HM5D5Jn9PYG/UIGUYQkNKWJULmWjDYw1JOn8qWkLt8OPxLte8wC0AO7D/jjpS8UxiAxav3JwIqJAaQ5hGwtnEEAwjHeclX6Hf32+lMSxNvlO8FAMfEvieN+aV/JmdhvKR5yy1L8bfCvWTKBijzxHEajQzccl7OWTMkV1bYalg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707840940; c=relaxed/simple;
-	bh=akd0A5+FmfHrTd9vUQMWkmJOUf4lxMShaaRQUOV3zlg=;
+	s=arc-20240116; t=1707841004; c=relaxed/simple;
+	bh=Lb3H5K/WCGFk3Yt+9NS0WUd1oWmI4vkJZFWnOp19FmU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m6Gdt9B81F1BRcO8Ts20EJNH7XT9kE/tTsOCpuAbeMrXCkLpb5o3a/swM9fb/JjUXJA6WrGu5Jek/64cAYpbc/AdOB9gtU3r/WBWR/nA6MtHGyBRAm8fFaH6B8Vow3MXDDVDMd399+ikuj2WKNls1Scq0oBeeYoaJFRzlCaQgmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBM8xcfR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F62C433C7;
-	Tue, 13 Feb 2024 16:15:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707840939;
-	bh=akd0A5+FmfHrTd9vUQMWkmJOUf4lxMShaaRQUOV3zlg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iBM8xcfRSCm64UrQ2GkQla4BA01wVEolQ3FXHTvMmwJ4/nZONgrD+8IVYQe5NsRW7
-	 I2v+bWOz0s0pWa499CvQoZRjo5REFhSfeKwkh3oF9Q//j1qlu60i2NNH25hp1Qwgso
-	 iXXs38Ta7VRvLPUbgIZgDf6LOKeW/sY2fc/9UgCM=
-Date: Tue, 13 Feb 2024 17:15:36 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] io_uring/net: limit inline multishot
- retries" failed to apply to 6.6-stable tree
-Message-ID: <2024021304-flypaper-oat-7707@gregkh>
-References: <2024021330-twice-pacify-2be5@gregkh>
- <57ad4fde-f1f4-405b-a1cb-8a1af9471da4@kernel.dk>
+	 Content-Type:Content-Disposition:In-Reply-To; b=mdrJDtpBgnvmKwSeUBUlG1kUYE4mJV/nuibM8kG4GZoEyTwIG+vGS4SRzDFnuAjmWVP8+TR7dT7w/M9dTl5LU3/OB0NOKoZmOk7FCfFU39iQm3ktHFacxuIwqHlAjNacoHgiBtogDKJ0ddRzA9BOEOHu9kLx9y+iJk6MTMAfzN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=r1S/rt+n; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PR4A++XQ; arc=none smtp.client-ip=66.111.4.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailout.nyi.internal (Postfix) with ESMTP id C50675C010C;
+	Tue, 13 Feb 2024 11:16:40 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Tue, 13 Feb 2024 11:16:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1707841000;
+	 x=1707927400; bh=y0mFfNBCNC0LIC86g9r3yn6KcOxFnPMqV4ImjNXHxM8=; b=
+	r1S/rt+naWpsKB3/PjYMf/npOgk914M1X/h3sygiWtUh6KKCBQKnfoDepm1uZZAA
+	SraUyUtminHHMCgTvRI+OJYUmFlSEbtqCcGdDIxwOoFs93OwRdBW1F25uUhLK2O1
+	uI4L1HIeNN0fCBRe9MT1rOkabKbRa6upHFrmw+0jFONNFCUen/vGgxT5XThZUOnB
+	kwqTQimNeGkqijFb+Dc2ZePfRPJ158ddyxPRgv21qXkxFC5O2ce+L4Lzr5wwDN44
+	dOld1ZueWITy7eq4v+VmONKsLlELExmkSr5L5liRMxbwy/4lJUpqMjAPsEhVtfEI
+	QKzqUHOVqHT/8cBdlXlNLQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1707841000; x=
+	1707927400; bh=y0mFfNBCNC0LIC86g9r3yn6KcOxFnPMqV4ImjNXHxM8=; b=P
+	R4A++XQIFtUQgvy+QbvDB2SEJhFPkRHUtT5JqYEI418P1IwID9RCE0NlcY6VQr2k
+	JzLB03jSDH7+U2WISsizwVpHjWm/70JipZ5pIU+0xm5KeS4hbx5/dBgPXXF1QAeW
+	XNaiPXVSc4cWyNSxmBGFIJhs8m/36URldrBh3xqUeqSSyW+0aVcbf5V2qMnvlsEx
+	giMhIYHHpIIKQk0ui+jgFz8rDfK+Yni4Vy+Y5g9LJT6ctKot3nRXuP4sc8xluvmg
+	VeKBQw8hSZQ3iCXzhwOFItk+g0Kz50nN6POv9H1vN7tgfIF7X/DQP9z72E6ZwkGf
+	ipoxr9iah/9NvZD7fxdlw==
+X-ME-Sender: <xms:6JXLZa2_6SXWll39U7zDtX1tmKYwfIGQ3NAHxpdXAKrco5A1e1mE7Q>
+    <xme:6JXLZdEmLigABEsRQHwO5k827KD-X_RiEMS7RGle5tXJLgBQPhj6j0RQ5-qORpCDE
+    hu5krBnW3Jf7Q>
+X-ME-Received: <xmr:6JXLZS6lkpB-bHIH5Aj3mzQ8zot8LE9nHxUITIRt4vU-g3LY07pYmBu-XSVwu5jDrAVzqbGPCsFYpqdGFGdi6wkoJ5UUNs2AAQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehgdekiecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepleehhe
+    duudeugeegjefgheeuudffheevueekgfekueefledtjeetieeutdekkeelnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:6JXLZb0UI74D1278IJ_S1KVRvHBXCgmS0ckSQY6Js2b2Cq2oqn4N2A>
+    <xmx:6JXLZdFmEbqYRxpUnvUcC2gKbF8_80NDGNxZgysH8yeezz-cJbAz2w>
+    <xmx:6JXLZU8pW2NbS1tK9BuqaUgrzHM4c845nYcK_kaVdOv2NxkW9fvYPw>
+    <xmx:6JXLZWP5f8AewIEPejTXyw-hSjT571UQN_O4booT0i_npTMeil2xPw>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 13 Feb 2024 11:16:40 -0500 (EST)
+Date: Tue, 13 Feb 2024 17:16:38 +0100
+From: Greg KH <greg@kroah.com>
+To: Jeffrey E Altman <jaltman@auristor.com>
+Cc: stable@vger.kernel.org, Michael Lass <bevan@bi-co.net>
+Subject: Re: Backport request: commit fe92f874f091 ("net: Fix from address in
+ memcpy_to_iter_csum()")
+Message-ID: <2024021329-gains-slouchy-142b@gregkh>
+References: <20240131155220.82641-1-bevan@bi-co.net>
+ <33391482-8c4d-4c27-8be7-f2d014c3ca9a@auristor.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <57ad4fde-f1f4-405b-a1cb-8a1af9471da4@kernel.dk>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <33391482-8c4d-4c27-8be7-f2d014c3ca9a@auristor.com>
 
-On Tue, Feb 13, 2024 at 07:52:53AM -0700, Jens Axboe wrote:
-> On 2/13/24 6:19 AM, gregkh@linuxfoundation.org wrote:
-> > 
-> > The patch below does not apply to the 6.6-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> > 
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> > 
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x 76b367a2d83163cf19173d5cb0b562acbabc8eac
-> > # <resolve conflicts, build, test, etc.>
-> > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021330-twice-pacify-2be5@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+On Tue, Feb 13, 2024 at 10:53:44AM -0500, Jeffrey E Altman wrote:
+> Please backport to stable 6.7 the following patch which was merged upstream
+> as
 > 
-> Here's the series for 6.6-stable.
+> commit fe92f874f09145a6951deacaa4961390238bbe0d
+> Author: Michael Lass <bevan@bi-co.net>
+> Date:   Wed Jan 31 16:52:20 2024 +0100
 > 
-> -- 
-> Jens Axboe
+>     net: Fix from address in memcpy_to_iter_csum()
+> 
+>     While inlining csum_and_memcpy() into memcpy_to_iter_csum(), the from
+>     address passed to csum_partial_copy_nocheck() was accidentally changed.
+>     This causes a regression in applications using UDP, as for example
+>     OpenAFS, causing loss of datagrams.
+> 
+>     Fixes: dc32bff195b4 ("iov_iter, net: Fold in csum_and_memcpy()")
+>     Cc: David Howells <dhowells@redhat.com>
+>     Cc: stable@vger.kernel.org
+>     Cc: regressions@lists.linux.dev
+>     Signed-off-by: Michael Lass <bevan@bi-co.net>
+>     Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+>     Acked-by: David Howells <dhowells@redhat.com>
+>     Signed-off-by: David S. Miller <davem@davemloft.net>
 > 
 
-> From 582cc8795c22337041abc7ee06f9de34f1592922 Mon Sep 17 00:00:00 2001
-> From: Jens Axboe <axboe@kernel.dk>
-> Date: Mon, 29 Jan 2024 11:52:54 -0700
-> Subject: [PATCH 1/4] io_uring/poll: move poll execution helpers higher up
-> 
-> Commit e84b01a880f635e3084a361afba41f95ff500d12 upstream.
-> 
-> In preparation for calling __io_poll_execute() higher up, move the
-> functions to avoid forward declarations.
-> 
-> No functional changes in this patch.
-> 
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> ---
->  io_uring/poll.c | 30 +++++++++++++++---------------
->  1 file changed, 15 insertions(+), 15 deletions(-)
-> 
-> diff --git a/io_uring/poll.c b/io_uring/poll.c
-> index a4084acaff91..a2f21ae093dc 100644
-> --- a/io_uring/poll.c
-> +++ b/io_uring/poll.c
-> @@ -226,6 +226,30 @@ enum {
->  	IOU_POLL_REISSUE = 3,
->  };
->  
-> +static void __io_poll_execute(struct io_kiocb *req, int mask)
-> +{
-> +	io_req_set_res(req, mask, 0);
-> +	/*
-> +	 * This is useful for poll that is armed on behalf of another
-> +	 * request, and where the wakeup path could be on a different
-> +	 * CPU. We want to avoid pulling in req->apoll->events for that
-> +	 * case.
-> +	 */
-> +	if (req->opcode == IORING_OP_POLL_ADD)
-> +		req->io_task_work.func = io_poll_task_func;
-> +	else
-> +		req->io_task_work.func = io_apoll_task_func;
-> +
-> +	trace_io_uring_task_add(req, mask);
-> +	io_req_task_work_add(req);
-> +}
-> +
-> +static inline void io_poll_execute(struct io_kiocb *req, int res)
-> +{
-> +	if (io_poll_get_ownership(req))
-> +		__io_poll_execute(req, res);
-> +}
-> +
->  /*
->   * All poll tw should go through this. Checks for poll events, manages
->   * references, does rewait, etc.
-> @@ -372,30 +396,6 @@ static void io_apoll_task_func(struct io_kiocb *req, bool *locked)
->  		io_req_complete_failed(req, ret);
->  }
->  
-> -static void __io_poll_execute(struct io_kiocb *req, int mask)
-> -{
-> -	io_req_set_res(req, mask, 0);
-> -	/*
-> -	 * This is useful for poll that is armed on behalf of another
-> -	 * request, and where the wakeup path could be on a different
-> -	 * CPU. We want to avoid pulling in req->apoll->events for that
-> -	 * case.
-> -	 */
-> -	if (req->opcode == IORING_OP_POLL_ADD)
-> -		req->io_task_work.func = io_poll_task_func;
-> -	else
-> -		req->io_task_work.func = io_apoll_task_func;
-> -
-> -	trace_io_uring_task_add(req, mask);
-> -	io_req_task_work_add(req);
-> -}
-> -
-> -static inline void io_poll_execute(struct io_kiocb *req, int res)
-> -{
-> -	if (io_poll_get_ownership(req))
-> -		__io_poll_execute(req, res);
-> -}
-> -
-
-This first patch fails to apply to the 6.6.y tree, are you sure you made
-it against the correct one?  These functions do not look like this to
-me.
-
-confused,
+Now queued up, thanks.
 
 greg k-h
 
