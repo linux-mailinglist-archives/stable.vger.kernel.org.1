@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-19847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2D6853785
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:26:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75603853788
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:26:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C0D61F24CBA
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:26:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1468D1F237DC
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDF45FEF6;
-	Tue, 13 Feb 2024 17:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5C75FEEF;
+	Tue, 13 Feb 2024 17:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWBSm+pC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8JlKH7w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5F95FDA8;
-	Tue, 13 Feb 2024 17:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF895F54E;
+	Tue, 13 Feb 2024 17:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845187; cv=none; b=gMK5L4lMlA6oyASH+VP40/5Ldgb4I8N0SYOsHoHVnaCStLI9K8lvkh81tjXqRL9KwwqxnmBZKzBjGRS5gPYccqx6p/S8+Kw5Rt5zKZAMoHaj3BlhhZoEDr/oLtYH0dgUgpQDzc6iK0acR4SXLBjhaWpdK6Bn2tqYCGwP+k4TOic=
+	t=1707845193; cv=none; b=cIlGHx24igjcBQBlGX/tHH/GBQiyvA2HphJ7rquhTToB/Q1cMiMgztsLC6zoG75E3V/Q5K840Nf3sNVsClpime6TzjvkJIO8Vktqyx+vkmz2nHIm5uNn/b+So699lFDMjn0kxCusDqKceKZ1WvoPCYc1dVV9QyBxCxnimWUQMTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845187; c=relaxed/simple;
-	bh=8fuReOTt0Yq86Ic/HI7q2hGLsZow9vroO4NPyv77vdc=;
+	s=arc-20240116; t=1707845193; c=relaxed/simple;
+	bh=dg0CObtt0ZxiKsn0Yu2iDi1Y4EbVOSMJF37kcPWBHio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EKXaX3zvxLW0I7HaXgguYfoYUobPS5FsFV46tmfB0V977F1SBDkEynSIrjwFJml5J05DM+kmko+T8NriZBw3VaSF6YoO68llqSh5YwPjh0G/mpd5p5F2q638y4dqw9XoTmUQiQck20L4IAN3pennRSJ5ziWCXO+52tUupvWnJGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWBSm+pC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB61DC43394;
-	Tue, 13 Feb 2024 17:26:26 +0000 (UTC)
+	 MIME-Version; b=FJg3P/c2PoAuiRK9YyUetNhFRsvZMM7fFaT9g1+9AA95QWkU/N0FcA7LcUpAo0W9/nH0Z/7R9TjoqV7K+oUDW69UvucVOhmdyfXG2t0O1QdsOJ5uu1l3aaxqmUBbIcksp33M7F0BCdZAHx3ypc12pmjFzSkL1n+lx+8oT5ZEfkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8JlKH7w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BFF7C433F1;
+	Tue, 13 Feb 2024 17:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845187;
-	bh=8fuReOTt0Yq86Ic/HI7q2hGLsZow9vroO4NPyv77vdc=;
+	s=korg; t=1707845193;
+	bh=dg0CObtt0ZxiKsn0Yu2iDi1Y4EbVOSMJF37kcPWBHio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWBSm+pCuc7YKgv85rWVZTEOgbT6WmXru8LRE7wR1njeELTfxFa2/Rhg2npnwBt5o
-	 vAum+C7bFTqykRnJ6WKiPD7/+isY+e99TjUwF8VmeQ/gmTnz9DQ6fFwB8smn9RZKYG
-	 Btwac1lhe5OtHmpnL9ZpFRSpGBcMFyMIII7Nf7co=
+	b=d8JlKH7w+5pWUisVXQ4zHRK/8R5h0AkuEYkD0WsXssOtXvI5MfGMP5xtszIGfmbFT
+	 umvgD0P3cyIli0DtwHxhBLSW+3cF9P6BQdHBdNQ30S7165fyL3GE14kVZdzJwMChV4
+	 BmE0TDsd94XQoCfTHeQ12GoeszcIL71JigECiXDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Guanhua Gao <guanhua.gao@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 001/121] ext4: regenerate buddy after block freeing failed if under fc replay
-Date: Tue, 13 Feb 2024 18:20:10 +0100
-Message-ID: <20240213171852.994776726@linuxfoundation.org>
+Subject: [PATCH 6.6 002/121] dmaengine: fsl-dpaa2-qdma: Fix the size of dma pools
+Date: Tue, 13 Feb 2024 18:20:11 +0100
+Message-ID: <20240213171853.023775762@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
 In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
 References: <20240213171852.948844634@linuxfoundation.org>
@@ -67,65 +67,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Guanhua Gao <guanhua.gao@nxp.com>
 
-[ Upstream commit c9b528c35795b711331ed36dc3dbee90d5812d4e ]
+[ Upstream commit b73e43dcd7a8be26880ef8ff336053b29e79dbc5 ]
 
-This mostly reverts commit 6bd97bf273bd ("ext4: remove redundant
-mb_regenerate_buddy()") and reintroduces mb_regenerate_buddy(). Based on
-code in mb_free_blocks(), fast commit replay can end up marking as free
-blocks that are already marked as such. This causes corruption of the
-buddy bitmap so we need to regenerate it in that case.
+In case of long format of qDMA command descriptor, there are one frame
+descriptor, three entries in the frame list and two data entries. So the
+size of dma_pool_create for these three fields should be the same with
+the total size of entries respectively, or the contents may be overwritten
+by the next allocated descriptor.
 
-Reported-by: Jan Kara <jack@suse.cz>
-Fixes: 6bd97bf273bd ("ext4: remove redundant mb_regenerate_buddy()")
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-4-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 7fdf9b05c73b ("dmaengine: fsl-dpaa2-qdma: Add NXP dpaa2 qDMA controller driver for Layerscape SoCs")
+Signed-off-by: Guanhua Gao <guanhua.gao@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240118162917.2951450-1-Frank.Li@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 1fd4ed19060d..529ca47da035 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1232,6 +1232,24 @@ void ext4_mb_generate_buddy(struct super_block *sb,
- 	atomic64_add(period, &sbi->s_mb_generation_time);
- }
+diff --git a/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c b/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c
+index a42a37634881..da91bc9a8e6f 100644
+--- a/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c
++++ b/drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c
+@@ -38,15 +38,17 @@ static int dpaa2_qdma_alloc_chan_resources(struct dma_chan *chan)
+ 	if (!dpaa2_chan->fd_pool)
+ 		goto err;
  
-+static void mb_regenerate_buddy(struct ext4_buddy *e4b)
-+{
-+	int count;
-+	int order = 1;
-+	void *buddy;
+-	dpaa2_chan->fl_pool = dma_pool_create("fl_pool", dev,
+-					      sizeof(struct dpaa2_fl_entry),
+-					      sizeof(struct dpaa2_fl_entry), 0);
++	dpaa2_chan->fl_pool =
++		dma_pool_create("fl_pool", dev,
++				 sizeof(struct dpaa2_fl_entry) * 3,
++				 sizeof(struct dpaa2_fl_entry), 0);
 +
-+	while ((buddy = mb_find_buddy(e4b, order++, &count)))
-+		mb_set_bits(buddy, 0, count);
-+
-+	e4b->bd_info->bb_fragments = 0;
-+	memset(e4b->bd_info->bb_counters, 0,
-+		sizeof(*e4b->bd_info->bb_counters) *
-+		(e4b->bd_sb->s_blocksize_bits + 2));
-+
-+	ext4_mb_generate_buddy(e4b->bd_sb, e4b->bd_buddy,
-+		e4b->bd_bitmap, e4b->bd_group, e4b->bd_info);
-+}
-+
- /* The buddy information is attached the buddy cache inode
-  * for convenience. The information regarding each group
-  * is loaded via ext4_mb_load_buddy. The information involve
-@@ -1920,6 +1938,8 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
- 			ext4_mark_group_bitmap_corrupted(
- 				sb, e4b->bd_group,
- 				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
-+		} else {
-+			mb_regenerate_buddy(e4b);
- 		}
- 		goto done;
- 	}
+ 	if (!dpaa2_chan->fl_pool)
+ 		goto err_fd;
+ 
+ 	dpaa2_chan->sdd_pool =
+ 		dma_pool_create("sdd_pool", dev,
+-				sizeof(struct dpaa2_qdma_sd_d),
++				sizeof(struct dpaa2_qdma_sd_d) * 2,
+ 				sizeof(struct dpaa2_qdma_sd_d), 0);
+ 	if (!dpaa2_chan->sdd_pool)
+ 		goto err_fl;
 -- 
 2.43.0
 
