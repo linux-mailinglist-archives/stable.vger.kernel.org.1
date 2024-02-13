@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-19979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89DF6853832
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:34:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E5F8537A7
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:28:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44043282FBC
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:34:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D97EE2821D6
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB36C5FDDF;
-	Tue, 13 Feb 2024 17:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A136A5FF0B;
+	Tue, 13 Feb 2024 17:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTHJh5Hv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKkSYq1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A485FEE7;
-	Tue, 13 Feb 2024 17:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3655FEFF;
+	Tue, 13 Feb 2024 17:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845647; cv=none; b=sm39S2DW/61Tg+ut4smeXB5QPejgUkGO5e9svncezNHik74+w3kpywc5TyOkwZYzo7OieTI821D2MfBwsIXB+ZtAh+LNKlMcqHuWnsmDmlobfkpx37VOkEtSPNBUOgJXBDXBnV7kf9H2sICp71F87LiNNcoRRVLzShgb3NYSlOs=
+	t=1707845270; cv=none; b=LGcLs9oA2qEn9V++XKjv10lowb4J3XdpijeegrepNbLMqqGOJtP8E7r/ihIvrTQggaH6RPkh19WDpkXi4v4sPIt99vl7lc+eSTbqf9LBcudz//T/oos9Jz5AznH6gKBOJko5WIGBXs+U/i2U8b+ZYpW6lH0ueEtIWAJYoIju5Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845647; c=relaxed/simple;
-	bh=BqlAvf+YZWC7Z8DtOZlxzX1C3UAgM/zntHYjvKeDlJc=;
+	s=arc-20240116; t=1707845270; c=relaxed/simple;
+	bh=GnZQgJDZZKYf4cMDN12j/zmF8F8j5zijFwxmFfz9dPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AEBQB4mBSo8o3TGcCUj1/i+GFBhHby87BuZ+8iYBF8yj+2PrsFGS6bEoXXrogO/lGi4rhYk6w5oRezqk5IIIZ7f3OcfNEWIvT5UyU46voxTJEWqfcAwlY77UJeSeEnubDdF6SpdShegXXhpIzHYT/CCcwSIvtEINbmcG6PBRKCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTHJh5Hv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD8FC433F1;
-	Tue, 13 Feb 2024 17:34:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MLnvcBi7mwY/ee01cCx96PxrXj1nYWHKBBUbjxDOqjwWAnKZhr2K/nWC0OWtcSoyl+n1lDFek3vmrpkTj6DTrcUgGzr0UkDj/UPaHseG+Dh/LLkJJ//1LUgV4rUo9jsPpBVp84xMEPpda5yl5QA9VNF7HGsf+ors7NmCHVhBh5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKkSYq1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC95AC433C7;
+	Tue, 13 Feb 2024 17:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845647;
-	bh=BqlAvf+YZWC7Z8DtOZlxzX1C3UAgM/zntHYjvKeDlJc=;
+	s=korg; t=1707845270;
+	bh=GnZQgJDZZKYf4cMDN12j/zmF8F8j5zijFwxmFfz9dPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OTHJh5Hvqo0Lz6KrEKy/l5JZ7WDEXZ37LaOvIcJyEn2kSLTEKFNl9Pp38kGqnf/pV
-	 fb6Gsd6MHcWzcyApZpo8Mzfn1s7S7fXaZHL/7UIw86UQXpedyzrBmoxzY5yS6agbLe
-	 krweOw1MppSWeTh4MSZtG+aPu/H7Fd29L4psnYV0=
+	b=FKkSYq1Jxzwwv80NGFRnkk4wHOceBp0wAcCEW+oFoWX8hv6WERy2c1Geo2csPcZEY
+	 lL7eEnRfxBFXY5511lunSBK2ySNm8pf7OgKkmLnaq5mzsV55zjMaRIBYw9kUqG48bv
+	 ZI7PuWMgcXCof58JJoZzw9b8kjC9LZb1EUEDyIBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Holger=20Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
+	Anthony Iliopoulos <ailiop@suse.com>,
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Catherine Hoang <catherine.hoang@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 019/124] wifi: iwlwifi: mvm: skip adding debugfs symlink for reconfig
+Subject: [PATCH 6.6 032/121] xfs: fix again select in kconfig XFS_ONLINE_SCRUB_STATS
 Date: Tue, 13 Feb 2024 18:20:41 +0100
-Message-ID: <20240213171854.294181441@linuxfoundation.org>
+Message-ID: <20240213171853.926570658@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +64,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Anthony Iliopoulos <ailiop@suse.com>
 
-[ Upstream commit 3a3ef3940798e85121066a859127e72a528dc32a ]
+commit a2e4388adfa44684c7c428a5a5980efe0d75e13e upstream.
 
-The function to add an interface may be called without a previous
-removal if the HW is being reconfigured. As such, only add the symlink
-if the hardware is not being reconfigured due to a HW_RESTART.
+Commit 57c0f4a8ea3a attempted to fix the select in the kconfig entry
+XFS_ONLINE_SCRUB_STATS by selecting XFS_DEBUG, but the original
+intention was to select DEBUG_FS, since the feature relies on debugfs to
+export the related scrub statistics.
 
-Fixes: c36235acb34f ("wifi: iwlwifi: mvm: rework debugfs handling")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240123200528.314395eacda4.I5823e962c3c3674b942383733debd10b3fe903e2@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 57c0f4a8ea3a ("xfs: fix select in config XFS_ONLINE_SCRUB_STATS")
+
+Reported-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c     | 6 ++++--
- drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 3 ++-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ fs/xfs/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index a64600f0ed9f..586334eee056 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1586,7 +1586,8 @@ static int iwl_mvm_mac_add_interface(struct ieee80211_hw *hw,
- 	 */
- 	if (vif->type == NL80211_IFTYPE_AP ||
- 	    vif->type == NL80211_IFTYPE_ADHOC) {
--		iwl_mvm_vif_dbgfs_add_link(mvm, vif);
-+		if (!test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status))
-+			iwl_mvm_vif_dbgfs_add_link(mvm, vif);
- 		ret = 0;
- 		goto out;
- 	}
-@@ -1626,7 +1627,8 @@ static int iwl_mvm_mac_add_interface(struct ieee80211_hw *hw,
- 			iwl_mvm_chandef_get_primary_80(&vif->bss_conf.chandef);
- 	}
- 
--	iwl_mvm_vif_dbgfs_add_link(mvm, vif);
-+	if (!test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status))
-+		iwl_mvm_vif_dbgfs_add_link(mvm, vif);
- 
- 	if (!test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status) &&
- 	    vif->type == NL80211_IFTYPE_STATION && !vif->p2p &&
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index 61170173f917..1f36e934ef69 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -81,7 +81,8 @@ static int iwl_mvm_mld_mac_add_interface(struct ieee80211_hw *hw,
- 		ieee80211_hw_set(mvm->hw, RX_INCLUDES_FCS);
- 	}
- 
--	iwl_mvm_vif_dbgfs_add_link(mvm, vif);
-+	if (!test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status))
-+		iwl_mvm_vif_dbgfs_add_link(mvm, vif);
- 
- 	if (!test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status) &&
- 	    vif->type == NL80211_IFTYPE_STATION && !vif->p2p &&
+diff --git a/fs/xfs/Kconfig b/fs/xfs/Kconfig
+index ed0bc8cbc703..567fb37274d3 100644
+--- a/fs/xfs/Kconfig
++++ b/fs/xfs/Kconfig
+@@ -147,7 +147,7 @@ config XFS_ONLINE_SCRUB_STATS
+ 	bool "XFS online metadata check usage data collection"
+ 	default y
+ 	depends on XFS_ONLINE_SCRUB
+-	select XFS_DEBUG
++	select DEBUG_FS
+ 	help
+ 	  If you say Y here, the kernel will gather usage data about
+ 	  the online metadata check subsystem.  This includes the number
 -- 
 2.43.0
 
