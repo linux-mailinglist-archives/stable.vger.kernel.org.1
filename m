@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-19861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D51C485379D
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:27:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 348B7853824
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:33:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ABE8283D7C
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:27:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5499282C32
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F055FF1E;
-	Tue, 13 Feb 2024 17:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6567D5FF04;
+	Tue, 13 Feb 2024 17:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLcNmpX6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKEMiK7w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080025FF19;
-	Tue, 13 Feb 2024 17:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B2AAD55;
+	Tue, 13 Feb 2024 17:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845238; cv=none; b=WOL/UFHJTPkYEjSu+wz1uj+BY7H0T6iYFcglRX82NXQl4L2ELhEh1QHySbpYgR3KX1FYHUhHVdNIymd39cd2P8Wyb24QvZy+xxP9WTEZmeH/xrl8IUNpg396XKZBlnCtI5LbHNtQyNqupnv5eJt10wJB2mWHkwQl4GizkASQnCA=
+	t=1707845618; cv=none; b=C/5eKwqcA3OjzdK9CQ89kAnWd8SymeV4LrdCZYYJfTpNAAHEfaMRqScgLwCLCrRCnXRPoC7yOKXx0kjv/cpl2/koX4DKP1lsBvjh4w//DU94z/AJHd//Hmp2fG0JyQ6rFBgUmfnze5l9HQd7xh6iEeX/OZEW/mDoXBuoRAJt8PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845238; c=relaxed/simple;
-	bh=S1KFbAp3ocWHr6a32XFIEvDpb4a7KWFn761OJWkixLk=;
+	s=arc-20240116; t=1707845618; c=relaxed/simple;
+	bh=MXsLK+V06Uj0SIRMzzloo/8KG+urlFSDPuZKP6jgeyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mWCGnr7q7EicLDBBc3vIHFbBww0+8Bsxaz6ZI3JZ0ozNt8PTKxR0SqbTQ9mcMG1FFBy1oHpAbZl6tftz6DUJmYbVqCUnr4JziD91oNLKlpb1F1grMfsjZjp/9lodZiwkajEDIhNtKT1O3qhbDf4d/qjJ61DCSu9w/oCMXpllYLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLcNmpX6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 115FCC433F1;
-	Tue, 13 Feb 2024 17:27:16 +0000 (UTC)
+	 MIME-Version; b=UuWiD/IElp5G1QgLPdpYr6JaRYc2ZLHYjhzqTBIbzt50O5uVqOpRdbigsCSrxXD7cR9fkP+Qv1tDhmjXD+tWTk6j1YvogGnl8+N13ZV+Pg22mqIZsj9ayhBDY5vYW56NyAPJuAB8fSbqxaAf7eb2ZFL+NrsN9YoFV/0DzbC0UWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKEMiK7w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A2FFC433F1;
+	Tue, 13 Feb 2024 17:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845237;
-	bh=S1KFbAp3ocWHr6a32XFIEvDpb4a7KWFn761OJWkixLk=;
+	s=korg; t=1707845618;
+	bh=MXsLK+V06Uj0SIRMzzloo/8KG+urlFSDPuZKP6jgeyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uLcNmpX6DhXFdH/8ank08E8FckQbwo81JTfjgQHQZrkohWi61Yd3XRdW73AcXq15v
-	 NyKXIH+T51IJe+UPoLTjcV4qHC4hASoL7iVLDwpP8/5F+DIANQrUsdEL5ai5Z6Y9dy
-	 LTWeGzW89t0t655CqW9mBvHnilwsF/U/QRS0bAQA=
+	b=dKEMiK7wUNmLFdaeORRg1mCZQx2LVBJhMlozQ6oGWdpiuk3P0ierRb7uo/PyOTRQe
+	 Z6+hCKYTVkZ9pLSGL5sLAZEFysDW+EvdG8eNFO29V6YjoN/6JCtHIgjqnLMwfmknNp
+	 I9v0Ll+Z7x0lDBDHrJvjPHfCkk7Ax86Fcnor/XtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	Chandan Babu R <chandanbabu@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/121] xfs: make sure maxlen is still congruent with prod when rounding down
+Subject: [PATCH 6.7 010/124] perf test: Fix perf script tests on s390
 Date: Tue, 13 Feb 2024 18:20:32 +0100
-Message-ID: <20240213171853.650236500@linuxfoundation.org>
+Message-ID: <20240213171854.034168794@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,119 +68,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-commit f6a2dae2a1f52ea23f649c02615d073beba4cc35 upstream.
+[ Upstream commit 2dac1f089add90a45d93fe8217938281532b86c7 ]
 
-In commit 2a6ca4baed62, we tried to fix an overflow problem in the
-realtime allocator that was caused by an overly large maxlen value
-causing xfs_rtcheck_range to run off the end of the realtime bitmap.
-Unfortunately, there is a subtle bug here -- maxlen (and minlen) both
-have to be aligned with @prod, but @prod can be larger than 1 if the
-user has set an extent size hint on the file, and that extent size hint
-is larger than the realtime extent size.
+In linux next repo, test case 'perf script tests' fails on s390.
 
-If the rt free space extents are not aligned to this file's extszhint
-because other files without extent size hints allocated space (or the
-number of rt extents is similarly not aligned), then it's possible that
-maxlen after clamping to sb_rextents will no longer be aligned to prod.
-The allocation will succeed just fine, but we still trip the assertion.
+The root case is a command line invocation of 'perf record' with
+call-graph information. On s390 only DWARF formatted call-graphs are
+supported and only on software events.
 
-Fix the problem by reducing maxlen by any misalignment with prod.  While
-we're at it, split the assertions into two so that we can tell which
-value had the bad alignment.
+Change the command line parameters for s390.
 
-Fixes: 2a6ca4baed62 ("xfs: make sure the rt allocator doesn't run off the end")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Output before:
+
+  # perf test 89
+  89: perf script tests              : FAILED!
+  #
+
+Output after:
+
+  # perf test 89
+  89: perf script tests              : Ok
+  #
+
+Fixes: 0dd5041c9a0eaf8c ("perf addr_location: Add init/exit/copy functions")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240125100351.936262-1-tmricht@linux.ibm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_rtalloc.c | 31 ++++++++++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 5 deletions(-)
+ tools/perf/tests/shell/script.sh | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
-index 31fd65b3aaa9..0e4e2df08aed 100644
---- a/fs/xfs/xfs_rtalloc.c
-+++ b/fs/xfs/xfs_rtalloc.c
-@@ -211,6 +211,23 @@ xfs_rtallocate_range(
- 	return error;
+diff --git a/tools/perf/tests/shell/script.sh b/tools/perf/tests/shell/script.sh
+index 5ae7bd0031a8..2973adab445d 100755
+--- a/tools/perf/tests/shell/script.sh
++++ b/tools/perf/tests/shell/script.sh
+@@ -54,7 +54,14 @@ def sample_table(*args):
+ def call_path_table(*args):
+     print(f'call_path_table({args}')
+ _end_of_file_
+-	perf record -g -o "${perfdatafile}" true
++	case $(uname -m)
++	in s390x)
++		cmd_flags="--call-graph dwarf -e cpu-clock";;
++	*)
++		cmd_flags="-g";;
++	esac
++
++	perf record $cmd_flags -o "${perfdatafile}" true
+ 	perf script -i "${perfdatafile}" -s "${db_test}"
+ 	echo "DB test [Success]"
  }
- 
-+/*
-+ * Make sure we don't run off the end of the rt volume.  Be careful that
-+ * adjusting maxlen downwards doesn't cause us to fail the alignment checks.
-+ */
-+static inline xfs_extlen_t
-+xfs_rtallocate_clamp_len(
-+	struct xfs_mount	*mp,
-+	xfs_rtblock_t		startrtx,
-+	xfs_extlen_t		rtxlen,
-+	xfs_extlen_t		prod)
-+{
-+	xfs_extlen_t		ret;
-+
-+	ret = min(mp->m_sb.sb_rextents, startrtx + rtxlen) - startrtx;
-+	return rounddown(ret, prod);
-+}
-+
- /*
-  * Attempt to allocate an extent minlen<=len<=maxlen starting from
-  * bitmap block bbno.  If we don't get maxlen then use prod to trim
-@@ -248,7 +265,7 @@ xfs_rtallocate_extent_block(
- 	     i <= end;
- 	     i++) {
- 		/* Make sure we don't scan off the end of the rt volume. */
--		maxlen = min(mp->m_sb.sb_rextents, i + maxlen) - i;
-+		maxlen = xfs_rtallocate_clamp_len(mp, i, maxlen, prod);
- 
- 		/*
- 		 * See if there's a free extent of maxlen starting at i.
-@@ -355,7 +372,8 @@ xfs_rtallocate_extent_exact(
- 	int		isfree;		/* extent is free */
- 	xfs_rtblock_t	next;		/* next block to try (dummy) */
- 
--	ASSERT(minlen % prod == 0 && maxlen % prod == 0);
-+	ASSERT(minlen % prod == 0);
-+	ASSERT(maxlen % prod == 0);
- 	/*
- 	 * Check if the range in question (for maxlen) is free.
- 	 */
-@@ -438,7 +456,9 @@ xfs_rtallocate_extent_near(
- 	xfs_rtblock_t	n;		/* next block to try */
- 	xfs_rtblock_t	r;		/* result block */
- 
--	ASSERT(minlen % prod == 0 && maxlen % prod == 0);
-+	ASSERT(minlen % prod == 0);
-+	ASSERT(maxlen % prod == 0);
-+
- 	/*
- 	 * If the block number given is off the end, silently set it to
- 	 * the last block.
-@@ -447,7 +467,7 @@ xfs_rtallocate_extent_near(
- 		bno = mp->m_sb.sb_rextents - 1;
- 
- 	/* Make sure we don't run off the end of the rt volume. */
--	maxlen = min(mp->m_sb.sb_rextents, bno + maxlen) - bno;
-+	maxlen = xfs_rtallocate_clamp_len(mp, bno, maxlen, prod);
- 	if (maxlen < minlen) {
- 		*rtblock = NULLRTBLOCK;
- 		return 0;
-@@ -638,7 +658,8 @@ xfs_rtallocate_extent_size(
- 	xfs_rtblock_t	r;		/* result block number */
- 	xfs_suminfo_t	sum;		/* summary information for extents */
- 
--	ASSERT(minlen % prod == 0 && maxlen % prod == 0);
-+	ASSERT(minlen % prod == 0);
-+	ASSERT(maxlen % prod == 0);
- 	ASSERT(maxlen != 0);
- 
- 	/*
 -- 
 2.43.0
 
