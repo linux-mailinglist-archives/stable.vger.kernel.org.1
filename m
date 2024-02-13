@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-20018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F4A85386E
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:37:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D065853751
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:24:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3493D283A31
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:37:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEFDC1F22C6D
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B12435FF0D;
-	Tue, 13 Feb 2024 17:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAC15FF0B;
+	Tue, 13 Feb 2024 17:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9lF9lYQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVK3G9vp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB281EB22;
-	Tue, 13 Feb 2024 17:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD665FF07;
+	Tue, 13 Feb 2024 17:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845790; cv=none; b=EUYjNkLZo3NqrE5loTzrzj+KLqTQpqUPvSWnj8PKbzDyH02BkEx32JKi0KCaNEQfbdnQu12M1r1IaRb1adDZJPT+wNNM6NuH2gFftj7+X9iQkx8fxeD7mB6K1njzlgayrqeG3N2pKybeX0GIIjENEkqFGF7/rbSVwEtZRUc5sXQ=
+	t=1707845040; cv=none; b=ZajGwDJ+Kyg0J0IdRDkKoRd9EoY7Vj8ngLZ7QyEQPeGUEn8kkGmcGzEQ9BEgs35ibOMENhG4gux9iMlxm6qPzPxpkLd6lpfT3Y5J5ee4pAowIoD/ZqAtuBqNs5uMFoWnMHOXeFvRZIlVPRlOLODr4/gkrVxAGloxYtXbipLQa+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845790; c=relaxed/simple;
-	bh=7L0w9XNh4e0xuxWg1D6qqpcrOsJ5GkAgHc2uzxkkrA0=;
+	s=arc-20240116; t=1707845040; c=relaxed/simple;
+	bh=7uNpw8bvpXsphonMicvUMR8rFrYIvLvZAhO09/Vmi84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aYjO7Zskt6jUsRZcayCuI0xEXRwUPpgVzOPWdTWPHcbuAWAXesDK3Y3CSrL1v4gZl4RIfdEh0zuvWwgZOOup1+AMHDC0Txorz8Pan++RXOd4A8ACAoINXGnE/SRmQENmkY1krmbpTi2mpEMAuG8bBAfDPCkzz+obae5/250K8IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9lF9lYQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FBCC43390;
-	Tue, 13 Feb 2024 17:36:29 +0000 (UTC)
+	 MIME-Version; b=DQFf7Jw0iL75UVgJKjT1VSF/sRH8JjQWn8aRHGGAiig6oCBS5m4TXAWIGSdeNalrXLufv9FXC4bgAzPeu4/u5F82z1vUbRLVbA5ZiYtTCoVqzEdNyE0+MF6uV5qmrPXsqNi4r27L+WSH3SIAnesVbtOwB5ibF2LlDDSqCD8/ICk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVK3G9vp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516FFC43390;
+	Tue, 13 Feb 2024 17:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845790;
-	bh=7L0w9XNh4e0xuxWg1D6qqpcrOsJ5GkAgHc2uzxkkrA0=;
+	s=korg; t=1707845039;
+	bh=7uNpw8bvpXsphonMicvUMR8rFrYIvLvZAhO09/Vmi84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j9lF9lYQSUbezzL7g6UKaunz3QygGayOANS1tYUY6SMB/dXjbz0Bg9ep5PO/O8P/t
-	 mEjHp24bPBTA9+QnmmC540A9nII01jSoSJjPjVkp4Tl5xr0dAkSODWKtVYwMlB7xSN
-	 oeIyhVER9l1+O/xlrfSHA+V56VIs/hzCcNuWPqeM=
+	b=rVK3G9vpL4pzIyYfwC1zLT6ihbOf24wMayu3X8HySh1qjdohCqhtLRhtQQH5Q5ah2
+	 tf8oMqHTaE0loGYCWfXshTD60ExoZhIssga/Q8HrGntV2DqndZgX9jMAnNory7Rn5L
+	 O8s7w5Lo7s403syuKwZV/JDgm3NwR+fUVssuLerw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 029/124] wifi: iwlwifi: exit eSR only after the FW does
-Date: Tue, 13 Feb 2024 18:20:51 +0100
-Message-ID: <20240213171854.582382053@linuxfoundation.org>
+Subject: [PATCH 6.1 06/64] phy: renesas: rcar-gen3-usb2: Fix returning wrong error code
+Date: Tue, 13 Feb 2024 18:20:52 +0100
+Message-ID: <20240213171844.927393909@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-[ Upstream commit 16867c38bcd3be2eb9016a3198a096f93959086e ]
+[ Upstream commit 249abaf3bf0dd07f5ddebbb2fe2e8f4d675f074e ]
 
-Currently the driver exits eSR by calling
-iwl_mvm_esr_mode_inactive() before updating the FW
-(by deactivating one of the links), and therefore before
-sending the EML frame notifying that we are no longer in eSR.
+Even if device_create_file() returns error code,
+rcar_gen3_phy_usb2_probe() will return zero because the "ret" is
+variable shadowing.
 
-This is wrong for several reasons:
-1. The driver sends SMPS activation frames when we are still in eSR
-   and SMPS should be disabled when in eSR
-2. The driver restores RLC configuration as it was before eSR
-   entering, and RLC command shouldn't be sent in eSR
-
-Fix this by calling iwl_mvm_esr_mode_inactive() after FW update
-
-Fixes: 12bacfc2c065 ("wifi: iwlwifi: handle eSR transitions")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://msgid.link/20240201155157.d8d9dc277d4e.Ib5aee0fd05e35b1da7f18753eb3c8fa0a3f872f3@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202312161021.gOLDl48K-lkp@intel.com/
+Fixes: 441a681b8843 ("phy: rcar-gen3-usb2: fix implementation for runtime PM")
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20240105093703.3359949-1-yoshihiro.shimoda.uh@renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index 1f36e934ef69..893b69fc841b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -438,6 +438,9 @@ __iwl_mvm_mld_unassign_vif_chanctx(struct iwl_mvm *mvm,
- 		mvmvif->ap_ibss_active = false;
- 	}
- 
-+	iwl_mvm_link_changed(mvm, vif, link_conf,
-+			     LINK_CONTEXT_MODIFY_ACTIVE, false);
-+
- 	if (iwl_mvm_is_esr_supported(mvm->fwrt.trans) && n_active > 1) {
- 		int ret = iwl_mvm_esr_mode_inactive(mvm, vif);
- 
-@@ -449,9 +452,6 @@ __iwl_mvm_mld_unassign_vif_chanctx(struct iwl_mvm *mvm,
- 	if (vif->type == NL80211_IFTYPE_MONITOR)
- 		iwl_mvm_mld_rm_snif_sta(mvm, vif);
- 
--	iwl_mvm_link_changed(mvm, vif, link_conf,
--			     LINK_CONTEXT_MODIFY_ACTIVE, false);
+diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+index 9de617ca9daa..7e61c6b278a7 100644
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -675,8 +675,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
+ 	channel->irq = platform_get_irq_optional(pdev, 0);
+ 	channel->dr_mode = rcar_gen3_get_dr_mode(dev->of_node);
+ 	if (channel->dr_mode != USB_DR_MODE_UNKNOWN) {
+-		int ret;
 -
- 	if (switching_chanctx)
- 		return;
- 	mvmvif->link[link_id]->phy_ctxt = NULL;
+ 		channel->is_otg_channel = true;
+ 		channel->uses_otg_pins = !of_property_read_bool(dev->of_node,
+ 							"renesas,no-otg-pins");
+@@ -740,8 +738,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
+ 		ret = PTR_ERR(provider);
+ 		goto error;
+ 	} else if (channel->is_otg_channel) {
+-		int ret;
+-
+ 		ret = device_create_file(dev, &dev_attr_role);
+ 		if (ret < 0)
+ 			goto error;
 -- 
 2.43.0
 
