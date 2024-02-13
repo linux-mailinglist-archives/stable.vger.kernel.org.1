@@ -1,156 +1,181 @@
-Return-Path: <stable+bounces-19708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E38085311D
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 14:00:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5581853125
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 14:01:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8326FB24B0F
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 13:00:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 051221C26596
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 13:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4B14F610;
-	Tue, 13 Feb 2024 13:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD25524B8;
+	Tue, 13 Feb 2024 13:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VA6cFnoF"
+	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="LVe/YATb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-80006.amazon.com (smtp-fw-80006.amazon.com [99.78.197.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0204F5FD
-	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 13:00:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50C651C57
+	for <stable@vger.kernel.org>; Tue, 13 Feb 2024 13:00:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707829204; cv=none; b=eOy/+VmQrVVwI7fThqCWDE/rivBO1otkpY8ZZzyAZrvGh5fbU944FxXmlz50BlkyggD+xYQ3ETNDbq6dmMBVtAa7qquO0GHPpolc9rj6pM7iitJbdMEt8Ziv+MDQ29coC50Y8fyql4FVcfVRGXSi8hBQ1MGMWuaAhdM+UdAsmJo=
+	t=1707829236; cv=none; b=Zony1wC13dTpAcJGm+I+2SXkKafh1+e7Cay5i0bzFu5m2lFYYTrfsCRHq9Kk3g5kPFCQ7JaXNqdoZCl2cGamXH1VtC9wSRkBADsM6RE5juflf9NgwwJP05TOd8zGstHfh2lQTXfgXT2lfC52zbSBC2tWhj0zN9PndeGgEmZb9Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707829204; c=relaxed/simple;
-	bh=N8g9rWs7i7FIOn21ZfBl3kGqiGTwjCiQVWdpiPUD/9I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uYncYSINBBtH3Y43B66xggv2S/ArWEIsXbxd7udXJGm0aeiJXoSUb+WhgfOOvw/JxJJhC14/oNE5UeU6sxZapvhaxHGa13xjuUKMY/iIvJEPkIOGIz6xP6A0GOCHKIV5RYQr/8CXDZ0TVf66xQlRuV4X7/c/fxnVutqXrReTqaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VA6cFnoF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4514C433F1;
-	Tue, 13 Feb 2024 13:00:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707829204;
-	bh=N8g9rWs7i7FIOn21ZfBl3kGqiGTwjCiQVWdpiPUD/9I=;
-	h=Subject:To:Cc:From:Date:From;
-	b=VA6cFnoF9sRj67LAQHEZ9O7F/nmiw2RUfpF+EoIppRRv64J96d7YzX2g8CpR3Smp5
-	 314OfBG58Rz3+t+Jr8jvIHWvS9ThcNVdIjrqle2pHp5CPOu860bS5Lg8GLbPGVnV3U
-	 1m628GkGYvX5t2fMv6C9ZZgqtTGBuxYWQySzMiwM=
-Subject: FAILED: patch "[PATCH] hrtimer: Report offline hrtimer enqueue" failed to apply to 4.19-stable tree
-To: frederic@kernel.org,paulmck@kernel.org,tglx@linutronix.de
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 13 Feb 2024 14:00:00 +0100
-Message-ID: <2024021300-sagging-enhance-9113@gregkh>
+	s=arc-20240116; t=1707829236; c=relaxed/simple;
+	bh=K04YCkFeapXIJWcjEdPQ2NUnnj6It0Sw3FvoZy/Fg4k=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=eUGMLCSnxyVO6CZR3CAb1P0W9X+0YNqGHCSE4+Sc36/dKwnhAHZBc+Gi847Jz2gdn+vRIy09Ppvk80yIfu8KzbJHOpq7576CY+cqESyKT7NK7xOmK2jAMIoAQDbo6LAnX0jFbh1nHbdRafTk66GMr5v27bCbT0VhdmqGjJC95to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=LVe/YATb; arc=none smtp.client-ip=99.78.197.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1707829236; x=1739365236;
+  h=message-id:date:mime-version:to:from:subject:
+   content-transfer-encoding;
+  bh=K04YCkFeapXIJWcjEdPQ2NUnnj6It0Sw3FvoZy/Fg4k=;
+  b=LVe/YATbn86ZEDYcfby8no6Ns98YJGdcVOzodr01KNlWY0jCO17JPrij
+   N8/SnPXWLHXp+HQ1NZE/pTYf5QNTnNNQtjQkpEpjSTZbCZFJb5QGO72Wk
+   DVbuL1vExPxaAnNjcvxgnK6OwLJFZJI+8o9DiSO0lOMD/c48s2Rk7BnQA
+   w=;
+X-IronPort-AV: E=Sophos;i="6.06,157,1705363200"; 
+   d="scan'208";a="272942268"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80006.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Feb 2024 13:00:33 +0000
+Received: from EX19MTAEUC001.ant.amazon.com [10.0.17.79:2249]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.39.22:2525] with esmtp (Farcaster)
+ id 170e0906-b5d7-4572-9061-9c997a03b206; Tue, 13 Feb 2024 13:00:31 +0000 (UTC)
+X-Farcaster-Flow-ID: 170e0906-b5d7-4572-9061-9c997a03b206
+Received: from EX19D003EUA004.ant.amazon.com (10.252.50.128) by
+ EX19MTAEUC001.ant.amazon.com (10.252.51.155) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Tue, 13 Feb 2024 13:00:31 +0000
+Received: from [10.95.81.9] (10.95.81.9) by EX19D003EUA004.ant.amazon.com
+ (10.252.50.128) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 13 Feb
+ 2024 13:00:30 +0000
+Message-ID: <67c3ec91-2879-4a6e-9213-b147aaef74ff@amazon.de>
+Date: Tue, 13 Feb 2024 14:00:25 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: <stable@vger.kernel.org>
+From: "Doebel, Bjoern" <doebel@amazon.de>
+Subject: Backport commit fc4992458e0a ("fs/ntfs3: Add null pointer checks")
+X-ClientProxiedBy: EX19D033UWA003.ant.amazon.com (10.13.139.42) To
+ EX19D003EUA004.ant.amazon.com (10.252.50.128)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x dad6a09f3148257ac1773cd90934d721d68ab595
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024021300-sagging-enhance-9113@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
-
-Possible dependencies:
-
-dad6a09f3148 ("hrtimer: Report offline hrtimer enqueue")
-5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
-f61eff83cec9 ("hrtimer: Prepare support for PREEMPT_RT")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From dad6a09f3148257ac1773cd90934d721d68ab595 Mon Sep 17 00:00:00 2001
-From: Frederic Weisbecker <frederic@kernel.org>
-Date: Mon, 29 Jan 2024 15:56:36 -0800
-Subject: [PATCH] hrtimer: Report offline hrtimer enqueue
-
-The hrtimers migration on CPU-down hotplug process has been moved
-earlier, before the CPU actually goes to die. This leaves a small window
-of opportunity to queue an hrtimer in a blind spot, leaving it ignored.
-
-For example a practical case has been reported with RCU waking up a
-SCHED_FIFO task right before the CPUHP_AP_IDLE_DEAD stage, queuing that
-way a sched/rt timer to the local offline CPU.
-
-Make sure such situations never go unnoticed and warn when that happens.
-
-Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
-Reported-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240129235646.3171983-4-boqun.feng@gmail.com
-
-diff --git a/include/linux/hrtimer.h b/include/linux/hrtimer.h
-index 87e3bedf8eb0..641c4567cfa7 100644
---- a/include/linux/hrtimer.h
-+++ b/include/linux/hrtimer.h
-@@ -157,6 +157,7 @@ enum  hrtimer_base_type {
-  * @max_hang_time:	Maximum time spent in hrtimer_interrupt
-  * @softirq_expiry_lock: Lock which is taken while softirq based hrtimer are
-  *			 expired
-+ * @online:		CPU is online from an hrtimers point of view
-  * @timer_waiters:	A hrtimer_cancel() invocation waits for the timer
-  *			callback to finish.
-  * @expires_next:	absolute time of the next event, is required for remote
-@@ -179,7 +180,8 @@ struct hrtimer_cpu_base {
- 	unsigned int			hres_active		: 1,
- 					in_hrtirq		: 1,
- 					hang_detected		: 1,
--					softirq_activated       : 1;
-+					softirq_activated       : 1,
-+					online			: 1;
- #ifdef CONFIG_HIGH_RES_TIMERS
- 	unsigned int			nr_events;
- 	unsigned short			nr_retries;
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 760793998cdd..edb0f821dcea 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -1085,6 +1085,7 @@ static int enqueue_hrtimer(struct hrtimer *timer,
- 			   enum hrtimer_mode mode)
- {
- 	debug_activate(timer, mode);
-+	WARN_ON_ONCE(!base->cpu_base->online);
- 
- 	base->cpu_base->active_bases |= 1 << base->index;
- 
-@@ -2183,6 +2184,7 @@ int hrtimers_prepare_cpu(unsigned int cpu)
- 	cpu_base->softirq_next_timer = NULL;
- 	cpu_base->expires_next = KTIME_MAX;
- 	cpu_base->softirq_expires_next = KTIME_MAX;
-+	cpu_base->online = 1;
- 	hrtimer_cpu_base_init_expiry_lock(cpu_base);
- 	return 0;
- }
-@@ -2250,6 +2252,7 @@ int hrtimers_cpu_dying(unsigned int dying_cpu)
- 	smp_call_function_single(ncpu, retrigger_next_event, NULL, 0);
- 
- 	raw_spin_unlock(&new_base->lock);
-+	old_base->online = 0;
- 	raw_spin_unlock(&old_base->lock);
- 
- 	return 0;
+SGksCgpwbGVhc2UgYmFja3BvcnQgY29tbWl0IGZjNDk5MjQ1OGUwYSAoImZzL250ZnMzOiBBZGQg
+bnVsbCBwb2ludGVyIGNoZWNrcyIpIHRvIHRoZSA1LjE1IGFuZCA2LjEgc3RhYmxlIGJyYW5jaGVz
+LgoKQ29tbWl0IG1lc3NhZ2UKCiIiIgpBZGRlZCBudWxsIHBvaW50ZXIgY2hlY2tzIGluIGZ1bmN0
+aW9uIG50ZnNfc2VjdXJpdHlfaW5pdC4KQWxzbyBhZGRlZCBsZTMyX3RvX2NwdSBpbiBmdW5jdGlv
+bnMgbnRmc19zZWN1cml0eV9pbml0IGFuZCBpbmR4X3JlYWQuCiIiIgoKV2UgYXJlIGFibGUgdG8g
+cmVwcm9kdWNlIGJlbG93IFN5emthbGxlciByZXBvcnQgb24gdGhlc2UgdHdvIHN0YWJsZSBidWls
+ZHMuIFRoZSBpc3N1ZSBkb2VzIG5vdCByZXByb2R1Y2Ugb24gdXBzdHJlYW0sIG9sZGVyLCBvciBu
+ZXdlciBMVFMgcmVsZWFzZXMuIEFib3ZlIHBhdGNoIGZpeGVzIHRoZSBpc3N1ZS4KCkJlc3QgcmVn
+YXJkcywKQmpvZXJuCgoKZ2VuZXJhbCBwcm90ZWN0aW9uIGZhdWx0LCBwcm9iYWJseSBmb3Igbm9u
+LWNhbm9uaWNhbCBhZGRyZXNzIDB4ZGZmZmZjMDAwMDAwMDAwMDogMDAwMCBbIzFdIFBSRUVNUFQg
+U01QIEtBU0FOIE5PUFRJCktBU0FOOiBudWxsLXB0ci1kZXJlZiBpbiByYW5nZSBbMHgwMDAwMDAw
+MDAwMDAwMDAwLTB4MDAwMDAwMDAwMDAwMDAwN10KQ1BVOiAxIFBJRDogMTEyODMgQ29tbTogc3l6
+LWV4ZWN1dG9yLjcgTm90IHRhaW50ZWQgNi4xLjc0ICMzMQpIYXJkd2FyZSBuYW1lOiBRRU1VIFN0
+YW5kYXJkIFBDIChpNDQwRlggKyBQSUlYLCAxOTk2KSwgQklPUyAxLjE2LjAtZGViaWFuLTEuMTYu
+MC01IDA0LzAxLzIwMTQKUklQOiAwMDEwOm50ZnNfc2VjdXJpdHlfaW5pdCsweDU2MS8weGFjMCBm
+cy9udGZzMy9mc250ZnMuYzoxODY1CkNvZGU6IDAzIGZmIDQxIDgzIGZlIDFmIDBmIDg2IGY4IDAz
+IDAwIDAwIGU4IGI4IDViIDAzIGZmIDRjIDAxIGUzIGU4IGIwIDViIDAzIGZmIDQ4IDg5IGRhIDQ4
+IGI4IDAwIDAwIDAwIDAwIDAwIGZjIGZmIGRmIDQ4IGMxIGVhIDAzIDwwZj4gYjYgMTQgMDIgNDgg
+ODkgZDggODMgZTAgMDcgODMgYzAgMDMgMzggZDAgN2MgMDggODQgZDIgMGYgODUgY2EKUlNQOiAw
+MDE4OmZmZmZjOTAwMTI0MTdhNjAgRUZMQUdTOiAwMDAxMDI0NgpSQVg6IGRmZmZmYzAwMDAwMDAw
+MDAgUkJYOiAwMDAwMDAwMDAwMDAwMDAwIFJDWDogZmZmZmM5MDAwN2IwYzAwMApSRFg6IDAwMDAw
+MDAwMDAwMDAwMDAgUlNJOiBmZmZmZmZmZjgyNzk2MWMwIFJESTogMDAwMDAwMDAwMDAwMDAwNQpS
+QlA6IGZmZmY4ODgwMjQ1MDMwMDAgUjA4OiAwMDAwMDAwMDAwMDAwMDA1IFIwOTogMDAwMDAwMDAw
+MDAwMDAxZgpSMTA6IDAwMDAwMDAwMDAwMDAwMDAgUjExOiAwMDAwMDAwMGE1YWEzNWZmIFIxMjog
+ZmZmZjg4ODAyMDU0MzIzMApSMTM6IGZmZmY4ODgwMTgyZjA1ZDAgUjE0OiAwMDAwMDAwMDAwMDAw
+MDAwIFIxNTogMDAwMDAwMDAwMDAwMDBjOApGUzrCoCAwMDAwN2Y2YmI5MTRkNmMwKDAwMDApIEdT
+OmZmZmY4ODgwNWFiMDAwMDAoMDAwMCkga25sR1M6MDAwMDAwMDAwMDAwMDAwMApDUzrCoCAwMDEw
+IERTOiAwMDAwIEVTOiAwMDAwIENSMDogMDAwMDAwMDA4MDA1MDAzMwpDUjI6IDAwMDA3ZjdhYjkz
+MmZmODAgQ1IzOiAwMDAwMDAwMDU1M2VlMDAxIENSNDogMDAwMDAwMDAwMDc3MmVlMApEUjA6IDAw
+MDAwMDAwMDAwMDAwMDAgRFIxOiAwMDAwMDAwMDAwMDAwMDAwIERSMjogMDAwMDAwMDAwMDAwMDAw
+MApEUjM6IDAwMDAwMDAwMDAwMDAwMDAgRFI2OiAwMDAwMDAwMGZmZmUwZmYwIERSNzogMDAwMDAw
+MDAwMDAwMDQwMApQS1JVOiA1NTU1NTU1NApDYWxsIFRyYWNlOgogwqA8VEFTSz4KbG9vcDY6IGRl
+dGVjdGVkIGNhcGFjaXR5IGNoYW5nZSBmcm9tIDAgdG8gNDA5NgpudGZzMzogVW5rbm93biBwYXJh
+bWV0ZXIgJ2lFOe+/vU5EXO+/ve+/ve+/vVg4K2TUp++/vSrvv73vv70nCiDCoG50ZnNfZmlsbF9z
+dXBlcisweDFmYWYvMHgyMmMwIGZzL250ZnMzL3N1cGVyLmM6MTIzOAogwqBnZXRfdHJlZV9iZGV2
+KzB4NDBhLzB4NzAwIGZzL3N1cGVyLmM6MTM1NQogwqB2ZnNfZ2V0X3RyZWUrMHg4Ni8weDJlMCBm
+cy9zdXBlci5jOjE1NjIKIMKgZG9fbmV3X21vdW50KzB4MmQ1LzB4NjMwIGZzL25hbWVzcGFjZS5j
+OjMwNDAKIMKgcGF0aF9tb3VudCsweDRjNC8weDE3ZTAgZnMvbmFtZXNwYWNlLmM6MzM3MAogwqBk
+b19tb3VudCBmcy9uYW1lc3BhY2UuYzozMzgzIFtpbmxpbmVdCiDCoF9fZG9fc3lzX21vdW50IGZz
+L25hbWVzcGFjZS5jOjM1OTEgW2lubGluZV0KIMKgX19zZV9zeXNfbW91bnQgZnMvbmFtZXNwYWNl
+LmM6MzU2OCBbaW5saW5lXQogwqBfX3g2NF9zeXNfbW91bnQrMHgyODcvMHgzMTAgZnMvbmFtZXNw
+YWNlLmM6MzU2OAogwqBkb19zeXNjYWxsX3g2NCBhcmNoL3g4Ni9lbnRyeS9jb21tb24uYzo1MSBb
+aW5saW5lXQogwqBkb19zeXNjYWxsXzY0KzB4MzcvMHg5MCBhcmNoL3g4Ni9lbnRyeS9jb21tb24u
+Yzo4MQogwqBlbnRyeV9TWVNDQUxMXzY0X2FmdGVyX2h3ZnJhbWUrMHg2NC8weGNlClJJUDogMDAz
+MzoweDdmNmJiODQ2Mzc3ZQpDb2RlOiAwZiAxZiA0MCAwMCA0OCBjNyBjMiBiOCBmZiBmZiBmZiBm
+NyBkOCA2NCA4OSAwMiBiOCBmZiBmZiBmZiBmZiBjMyA2NiAwZiAxZiA0NCAwMCAwMCBmMyAwZiAx
+ZSBmYSA0OSA4OSBjYSBiOCBhNSAwMCAwMCAwMCAwZiAwNSA8NDg+IDNkIDAxIGYwIGZmIGZmIDcz
+IDAxIGMzIDQ4IGM3IGMxIGI4IGZmIGZmIGZmIGY3IGQ4IDY0IDg5IDAxIDQ4ClJTUDogMDAyYjow
+MDAwN2Y2YmI5MTRjZWM4IEVGTEFHUzogMDAwMDAyMDIgT1JJR19SQVg6IDAwMDAwMDAwMDAwMDAw
+YTUKUkFYOiBmZmZmZmZmZmZmZmZmZmRhIFJCWDogMDAwMDdmNmJiOTE0Y2Y2MCBSQ1g6IDAwMDA3
+ZjZiYjg0NjM3N2UKUkRYOiAwMDAwMDAwMDIwMDFmNmMwIFJTSTogMDAwMDAwMDAyMDAxZjcwMCBS
+REk6IDAwMDA3ZjZiYjkxNGNmMjAKUkJQOiAwMDAwMDAwMDIwMDFmNmMwIFIwODogMDAwMDdmNmJi
+OTE0Y2Y2MCBSMDk6IDAwMDAwMDAwMDAwMDAwYzAKUjEwOiAwMDAwMDAwMDAwMDAwMGMwIFIxMTog
+MDAwMDAwMDAwMDAwMDIwMiBSMTI6IDAwMDAwMDAwMjAwMWY3MDAKUjEzOiAwMDAwN2Y2YmI5MTRj
+ZjIwIFIxNDogMDAwMDAwMDAwMDAxZjZmOSBSMTU6IDAwMDAwMDAwMjAwMDAwODAKIMKgPC9UQVNL
+PgpNb2R1bGVzIGxpbmtlZCBpbjoKLS0tWyBlbmQgdHJhY2UgMDAwMDAwMDAwMDAwMDAwMCBdLS0t
+ClJJUDogMDAxMDpudGZzX3NlY3VyaXR5X2luaXQrMHg1NjEvMHhhYzAgZnMvbnRmczMvZnNudGZz
+LmM6MTg2NQpDb2RlOiAwMyBmZiA0MSA4MyBmZSAxZiAwZiA4NiBmOCAwMyAwMCAwMCBlOCBiOCA1
+YiAwMyBmZiA0YyAwMSBlMyBlOCBiMCA1YiAwMyBmZiA0OCA4OSBkYSA0OCBiOCAwMCAwMCAwMCAw
+MCAwMCBmYyBmZiBkZiA0OCBjMSBlYSAwMyA8MGY+IGI2IDE0IDAyIDQ4IDg5IGQ4IDgzIGUwIDA3
+IDgzIGMwIDAzIDM4IGQwIDdjIDA4IDg0IGQyIDBmIDg1IGNhClJTUDogMDAxODpmZmZmYzkwMDEy
+NDE3YTYwIEVGTEFHUzogMDAwMTAyNDYKUkFYOiBkZmZmZmMwMDAwMDAwMDAwIFJCWDogMDAwMDAw
+MDAwMDAwMDAwMCBSQ1g6IGZmZmZjOTAwMDdiMGMwMDAKUkRYOiAwMDAwMDAwMDAwMDAwMDAwIFJT
+STogZmZmZmZmZmY4Mjc5NjFjMCBSREk6IDAwMDAwMDAwMDAwMDAwMDUKUkJQOiBmZmZmODg4MDI0
+NTAzMDAwIFIwODogMDAwMDAwMDAwMDAwMDAwNSBSMDk6IDAwMDAwMDAwMDAwMDAwMWYKUjEwOiAw
+MDAwMDAwMDAwMDAwMDAwIFIxMTogMDAwMDAwMDBhNWFhMzVmZiBSMTI6IGZmZmY4ODgwMjA1NDMy
+MzAKUjEzOiBmZmZmODg4MDE4MmYwNWQwIFIxNDogMDAwMDAwMDAwMDAwMDAwMCBSMTU6IDAwMDAw
+MDAwMDAwMDAwYzgKRlM6wqAgMDAwMDdmNmJiOTE0ZDZjMCgwMDAwKSBHUzpmZmZmODg4MDVhYjAw
+MDAwKDAwMDApIGtubEdTOjAwMDAwMDAwMDAwMDAwMDAKQ1M6wqAgMDAxMCBEUzogMDAwMCBFUzog
+MDAwMCBDUjA6IDAwMDAwMDAwODAwNTAwMzMKQ1IyOiAwMDAwN2Y3YWI5MzJmZjgwIENSMzogMDAw
+MDAwMDA1NTNlZTAwMSBDUjQ6IDAwMDAwMDAwMDA3NzJlZTAKRFIwOiAwMDAwMDAwMDAwMDAwMDAw
+IERSMTogMDAwMDAwMDAwMDAwMDAwMCBEUjI6IDAwMDAwMDAwMDAwMDAwMDAKRFIzOiAwMDAwMDAw
+MDAwMDAwMDAwIERSNjogMDAwMDAwMDBmZmZlMGZmMCBEUjc6IDAwMDAwMDAwMDAwMDA0MDAKUEtS
+VTogNTU1NTU1NTQKLS0tLS0tLS0tLS0tLS0tLQpDb2RlIGRpc2Fzc2VtYmx5IChiZXN0IGd1ZXNz
+KToKIMKgwqAgMDrCoMKgwqAgMDMgZmbCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoCBhZGTCoMKgwqAgJWVkaSwlZWRpCiDCoMKgIDI6wqDCoMKgIDQxIDgzIGZlIDFmwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgY21wwqDCoMKgICQweDFmLCVyMTRkCiDCoMKgIDY6wqDCoMKg
+IDBmIDg2IGY4IDAzIDAwIDAwwqDCoMKgwqDCoMKgwqAgamJlwqDCoMKgIDB4NDA0CiDCoMKgIGM6
+wqDCoMKgIGU4IGI4IDViIDAzIGZmwqDCoMKgwqDCoMKgwqDCoMKgwqAgY2FsbMKgwqAgMHhmZjAz
+NWJjOQogwqAgMTE6wqDCoMKgIDRjIDAxIGUzwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqAgYWRkwqDCoMKgICVyMTIsJXJieAogwqAgMTQ6wqDCoMKgIGU4IGIwIDViIDAzIGZmwqDCoMKg
+wqDCoMKgwqDCoMKgwqAgY2FsbMKgwqAgMHhmZjAzNWJjOQogwqAgMTk6wqDCoMKgIDQ4IDg5IGRh
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbW92wqDCoMKgICVyYngsJXJkeAogwqAg
+MWM6wqDCoMKgIDQ4IGI4IDAwIDAwIDAwIDAwIDAwwqDCoMKgwqAgbW92YWJzICQweGRmZmZmYzAw
+MDAwMDAwMDAsJXJheAogwqAgMjM6wqDCoMKgIGZjIGZmIGRmCiDCoCAyNjrCoMKgwqAgNDggYzEg
+ZWEgMDPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBzaHLCoMKgwqAgJDB4MywlcmR4CiogMmE6
+wqDCoMKgIDBmIGI2IDE0IDAywqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgbW92emJsICglcmR4
+LCVyYXgsMSksJWVkeCA8LS0gdHJhcHBpbmcgaW5zdHJ1Y3Rpb24KIMKgIDJlOsKgwqDCoCA0OCA4
+OSBkOMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIG1vdsKgwqDCoCAlcmJ4LCVyYXgK
+IMKgIDMxOsKgwqDCoCA4MyBlMCAwN8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGFu
+ZMKgwqDCoCAkMHg3LCVlYXgKIMKgIDM0OsKgwqDCoCA4MyBjMCAwM8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIGFkZMKgwqDCoCAkMHgzLCVlYXgKIMKgIDM3OsKgwqDCoCAzOCBkMMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNtcMKgwqDCoCAlZGwsJWFsCiDC
+oCAzOTrCoMKgwqAgN2MgMDjCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBq
+bMKgwqDCoMKgIDB4NDMKIMKgIDNiOsKgwqDCoCA4NCBkMsKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgIHRlc3TCoMKgICVkbCwlZGwKIMKgIDNkOsKgwqDCoCAwZsKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIC5ieXRlIDB4ZgogwqAgM2U6wqDC
+oMKgIDg1IGNhwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgdGVzdMKgwqAg
+JWVjeCwlZWR4CgoKCkFtYXpvbiBEZXZlbG9wbWVudCBDZW50ZXIgR2VybWFueSBHbWJICktyYXVz
+ZW5zdHIuIDM4CjEwMTE3IEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1bmc6IENocmlzdGlhbiBTY2hs
+YWVnZXIsIEpvbmF0aGFuIFdlaXNzCkVpbmdldHJhZ2VuIGFtIEFtdHNnZXJpY2h0IENoYXJsb3R0
+ZW5idXJnIHVudGVyIEhSQiAxNDkxNzMgQgpTaXR6OiBCZXJsaW4KVXN0LUlEOiBERSAyODkgMjM3
+IDg3OQoKCg==
 
 
