@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-19893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1688537C1
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37309853740
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:23:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCA572845D2
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 694591C25D86
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6765FEEF;
-	Tue, 13 Feb 2024 17:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7696D5FEFA;
+	Tue, 13 Feb 2024 17:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZFxKYJE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YSlqW/ZH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397295F54E;
-	Tue, 13 Feb 2024 17:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339D75FEF0;
+	Tue, 13 Feb 2024 17:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845354; cv=none; b=HSFmee4tbK0D2dZvD8M4DeaWZY4aWibX0DUouY2XhpShrHDzQSNMstUx+mXehN3wvtfQfZlGNT3HAgnlGi1iHqdbZSwRYZaN1I/kh45wT1Tm7HNeEMthjxJ9+0O0EwyvS+f926oG48903CKJO7JN/T+PdtkA2gwXr53R1HY4r3Y=
+	t=1707844998; cv=none; b=ZhVjNevzvgdk6t6IqNSkpZAM3pCXIxQr1yd9hpM9jXLNvsURPQARtxDDwMsHxM7fVXaaakkfHSLJI5iIgGVQF+yOnnT4H3cuBTzUbh+LJ+Y1er8poUUrUrXn9AiuzQbzNX0njVDgfYdeQUzFeLflsOtgwMWjk7s+z1SQztAXK8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845354; c=relaxed/simple;
-	bh=J4pdbmSADvFO7GVwsPmZoj7P+sgE7PcRBWLWYcL9D44=;
+	s=arc-20240116; t=1707844998; c=relaxed/simple;
+	bh=3h5HWLhO9MdaLK6mSpemL5r/faIlEB+qtzlNOFytjT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WDjdaG9pb5Ry3s2TfXtNFNKIcEPKnnVLISu6pk8XAiarj1wF2wZjG5/9GJed/RdqQbahogmXpKWZgvljGkgI37MRUFyhJAUrERhojUIfQtRPU7kbcwJ1/U9ySfViLN0qJmyi1b5OsXWXcWdOiv0MbyPE7ZYJIJheby5yFNhj85c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZFxKYJE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93139C433F1;
-	Tue, 13 Feb 2024 17:29:13 +0000 (UTC)
+	 MIME-Version; b=AjVIOjmXAbzkd2FVnoBMow4GXnh9yC36KUtLai5NKYckR7NG81nXrXW+0U4T1n3DRLD2SB3JYlPdxkbWpjUpKVwLr7xNtkvmTDiCsvxUKlx2nWrUk7Oz9OyhfkyPzhKsY0RaBsOMQd6boYl3DGMgZ5uCC+pyeC3TNJrzXKdvXE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YSlqW/ZH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57196C433F1;
+	Tue, 13 Feb 2024 17:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845354;
-	bh=J4pdbmSADvFO7GVwsPmZoj7P+sgE7PcRBWLWYcL9D44=;
+	s=korg; t=1707844998;
+	bh=3h5HWLhO9MdaLK6mSpemL5r/faIlEB+qtzlNOFytjT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZFxKYJEK+B652DNDeSBfhpIZHtV3mLmMcpeh8/5gx1AJeV9D2ocNFGBPhIMuZTdw
-	 4Pbg8Lodj4UmXDjnM5oE53m+tcjpM2ZII3GdHnQjqbEkUbLgwkUxm10dAEhEw0lrHx
-	 JCZ5LYEi4WiV6rpmGTkPe6rIkykXRlpidNlJKwko=
+	b=YSlqW/ZHTQsixpTNrzMybkiF3GHHO5jBc947kkDVHhMvZuhKbPivymewqXq7q611J
+	 kLbxdFpKWYeLWapWeo4bhY9pPMZC1QLszFQIXWjBnMju41+AN8DeJeoUuRUGNJeshN
+	 bC7L4jRiVBuGS/PUCotWQhUDSO32Qc7xkiM7r+ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	David Ahern <dsahern@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 055/121] selftests: net: avoid just another constant wait
+Subject: [PATCH 6.1 18/64] selftests: net: avoid just another constant wait
 Date: Tue, 13 Feb 2024 18:21:04 +0100
-Message-ID: <20240213171854.602620364@linuxfoundation.org>
+Message-ID: <20240213171845.308783619@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -93,10 +93,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 13 insertions(+), 5 deletions(-)
 
 diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
-index f0febc19baae..d65fdd407d73 100755
+index 1b6e484e586d..00ab4c6e4044 100755
 --- a/tools/testing/selftests/net/pmtu.sh
 +++ b/tools/testing/selftests/net/pmtu.sh
-@@ -1957,6 +1957,13 @@ check_command() {
+@@ -1928,6 +1928,13 @@ check_command() {
  	return 0
  }
  
@@ -110,7 +110,7 @@ index f0febc19baae..d65fdd407d73 100755
  test_cleanup_vxlanX_exception() {
  	outer="${1}"
  	encap="vxlan"
-@@ -1987,11 +1994,12 @@ test_cleanup_vxlanX_exception() {
+@@ -1958,11 +1965,12 @@ test_cleanup_vxlanX_exception() {
  
  	${ns_a} ip link del dev veth_A-R1 &
  	iplink_pid=$!
