@@ -1,57 +1,69 @@
-Return-Path: <stable+bounces-19783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D03BD853732
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:22:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 904F78537DD
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:30:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EC071C25619
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:22:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4781128B63B
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E02D5FEEB;
-	Tue, 13 Feb 2024 17:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED275FF07;
+	Tue, 13 Feb 2024 17:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIauKu3N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQjQIywL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B375FDB5;
-	Tue, 13 Feb 2024 17:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6CE5F54E;
+	Tue, 13 Feb 2024 17:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707844971; cv=none; b=fjERVr+4RThKeIBtosf6Wd61f1DdMbKyxUshEJaRglR2m3IB/qNUY/1hvxS7hXFr8MBP10VwIQC3EGOD0wtJUZMIfq7bukvWPVJZhaaRlTGEpr5Zomh5b5PDY0s7AobRfaM9aB+5u3sUo1q9WsC1cM9J4c0ESRvfGUDMrwcQRS4=
+	t=1707845429; cv=none; b=SOLCpIlC75g5jP1vtWAXJxuEd1ETWHUnRtbyGloaIQvSt27nLbVKA28VzgxjqEx2uLUm7twWaGKOzm6H6tCLhl6xL3KCz7CtcYAMigqshs4E6O1CUWPOVSByQgbBAEXWCYUUxOmuwLrT+qpehgxoZnAuBeoqHwqdQtkeEUIA25s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707844971; c=relaxed/simple;
-	bh=bdLXMGvPlKF1CxIUjlGlMLxoLma9xb4ih6fspqDLDYo=;
+	s=arc-20240116; t=1707845429; c=relaxed/simple;
+	bh=z8a7KXxzlJCy1KAGomN+QSyEvuuTq4eK+r2ZO0KkfOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t8D/Ac4EOnapNom1Gqpdf/cYQ4m9+DzzjCIGRiEzUeBB86TQMg4ODBtQi8D4KlhnlKy6blOxML0sH4/VHZ4nztzESvc8gQxsVbjz+HriabfZuARBz22XgC6ATdrJqHZJXGm9lrPMbRKr75tCY8bEaak54Pu3p5ewVtGttytdRPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIauKu3N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F56C433F1;
-	Tue, 13 Feb 2024 17:22:50 +0000 (UTC)
+	 MIME-Version; b=fPoIYP2Chkm5aWL2nKll+UJWmB6ghKXRtfJb4uRwlTQzmeuPlorzP44197+sKHlyEbvaNCvjONdu1TC7b6ebD1JF9mR1z/AyfvN/7g17lr64povsiwK4LquGFiCj5sL3QQ+Yzyz4j047eq/0SN3iSXuq5MtPITOLT5GApB7WOfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQjQIywL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702EAC433C7;
+	Tue, 13 Feb 2024 17:30:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707844970;
-	bh=bdLXMGvPlKF1CxIUjlGlMLxoLma9xb4ih6fspqDLDYo=;
+	s=korg; t=1707845429;
+	bh=z8a7KXxzlJCy1KAGomN+QSyEvuuTq4eK+r2ZO0KkfOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JIauKu3NaCt854rQ4h7btdkudUxcOulP+qAk6UbEVOZBcB8MHy0L7WuuieGYu+t3Z
-	 ekVUO9t8dh+ZOaYfwQSUjfYiW9BBq7b0ay/iz6bflnjMFflF+jfuf6sRJ1XbBGJVL/
-	 R7li4rWEoIbfpzFZOk0ugwlrol5LkSx4vqXAfNnI=
+	b=CQjQIywLuq2CTMrLI+4RBE02BX7zz3Ded56ThVRt1T9LcMlIJji29Hddhlbs6PDZD
+	 EvYxCbN5/PZj2cYZCA8Sp76sGqoG0CRJgv8MpdqHnMNOwTDTtUtUvRgrvIuGBV0qdf
+	 AbweLs7C8EMpmtKPYo0ffEFaNz+j6Uj5tLLDK70Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuogee Hsieh <quic_khsieh@quicinc.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Arend van Spriel <aspriel@gmail.com>,
+	Franky Lin <franky.lin@broadcom.com>,
+	Hante Meuleman <hante.meuleman@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Chi-hsien Lin <chi-hsien.lin@infineon.com>,
+	Ian Lin <ian.lin@infineon.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Wright Feng <wright.feng@cypress.com>,
+	Hector Martin <marcan@marcan.st>,
+	linux-wireless@vger.kernel.org,
+	brcm80211-dev-list.pdl@broadcom.com,
+	Kees Cook <keescook@chromium.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 10/64] drm/msms/dp: fixed link clock divider bits be over written in BPC unknown case
+Subject: [PATCH 6.6 047/121] wifi: brcmfmac: Adjust n_channels usage for __counted_by
 Date: Tue, 13 Feb 2024 18:20:56 +0100
-Message-ID: <20240213171845.055023409@linuxfoundation.org>
+Message-ID: <20240213171854.370100539@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +75,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuogee Hsieh <quic_khsieh@quicinc.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 77e8aad5519e04f6c1e132aaec1c5f8faf41844f ]
+[ Upstream commit 5bdda0048c8d1bbe2019513b2d6200cc0d09c7bd ]
 
-Since the value of DP_TEST_BIT_DEPTH_8 is already left shifted, in the
-BPC unknown case, the additional shift causes spill over to the other
-bits of the [DP_CONFIGURATION_CTRL] register.
-Fix this by changing the return value of dp_link_get_test_bits_depth()
-in the BPC unknown case to (DP_TEST_BIT_DEPTH_8 >> DP_TEST_BIT_DEPTH_SHIFT).
+After commit e3eac9f32ec0 ("wifi: cfg80211: Annotate struct
+cfg80211_scan_request with __counted_by"), the compiler may enforce
+dynamic array indexing of req->channels to stay below n_channels. As a
+result, n_channels needs to be increased _before_ accessing the newly
+added array index. Increment it first, then use "i" for the prior index.
+Solves this warning in the coming GCC that has __counted_by support:
 
-Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
-Signed-off-by: Kuogee Hsieh <quic_khsieh@quicinc.com>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/573989/
-Link: https://lore.kernel.org/r/1704917931-30133-1-git-send-email-quic_khsieh@quicinc.com
-[quic_abhinavk@quicinc.com: fix minor checkpatch warning to align with opening braces]
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c: In function 'brcmf_internal_escan_add_info':
+../drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:3783:46: warning: operation on 'req->
+n_channels' may be undefined [-Wsequence-point]
+ 3783 |                 req->channels[req->n_channels++] = chan;
+      |                               ~~~~~~~~~~~~~~~^~
+
+Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
+Cc: Arend van Spriel <aspriel@gmail.com>
+Cc: Franky Lin <franky.lin@broadcom.com>
+Cc: Hante Meuleman <hante.meuleman@broadcom.com>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Chi-hsien Lin <chi-hsien.lin@infineon.com>
+Cc: Ian Lin <ian.lin@infineon.com>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Cc: Wright Feng <wright.feng@cypress.com>
+Cc: Hector Martin <marcan@marcan.st>
+Cc: linux-wireless@vger.kernel.org
+Cc: brcm80211-dev-list.pdl@broadcom.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240126223150.work.548-kees@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_ctrl.c |  5 -----
- drivers/gpu/drm/msm/dp/dp_link.c | 10 +++++++---
- 2 files changed, 7 insertions(+), 8 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_ctrl.c b/drivers/gpu/drm/msm/dp/dp_ctrl.c
-index 103eef9f059a..b20701893e5b 100644
---- a/drivers/gpu/drm/msm/dp/dp_ctrl.c
-+++ b/drivers/gpu/drm/msm/dp/dp_ctrl.c
-@@ -133,11 +133,6 @@ static void dp_ctrl_config_ctrl(struct dp_ctrl_private *ctrl)
- 	tbd = dp_link_get_test_bits_depth(ctrl->link,
- 			ctrl->panel->dp_mode.bpp);
- 
--	if (tbd == DP_TEST_BIT_DEPTH_UNKNOWN) {
--		pr_debug("BIT_DEPTH not set. Configure default\n");
--		tbd = DP_TEST_BIT_DEPTH_8;
--	}
--
- 	config |= tbd << DP_CONFIGURATION_CTRL_BPC_SHIFT;
- 
- 	/* Num of Lanes */
-diff --git a/drivers/gpu/drm/msm/dp/dp_link.c b/drivers/gpu/drm/msm/dp/dp_link.c
-index cb66d1126ea9..3c7884c85f61 100644
---- a/drivers/gpu/drm/msm/dp/dp_link.c
-+++ b/drivers/gpu/drm/msm/dp/dp_link.c
-@@ -1172,6 +1172,9 @@ void dp_link_reset_phy_params_vx_px(struct dp_link *dp_link)
- u32 dp_link_get_test_bits_depth(struct dp_link *dp_link, u32 bpp)
- {
- 	u32 tbd;
-+	struct dp_link_private *link;
-+
-+	link = container_of(dp_link, struct dp_link_private, dp_link);
- 
- 	/*
- 	 * Few simplistic rules and assumptions made here:
-@@ -1189,12 +1192,13 @@ u32 dp_link_get_test_bits_depth(struct dp_link *dp_link, u32 bpp)
- 		tbd = DP_TEST_BIT_DEPTH_10;
- 		break;
- 	default:
--		tbd = DP_TEST_BIT_DEPTH_UNKNOWN;
-+		drm_dbg_dp(link->drm_dev, "bpp=%d not supported, use bpc=8\n",
-+			   bpp);
-+		tbd = DP_TEST_BIT_DEPTH_8;
- 		break;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 2a90bb24ba77..6049f9a761d9 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -3780,8 +3780,10 @@ static int brcmf_internal_escan_add_info(struct cfg80211_scan_request *req,
+ 		if (req->channels[i] == chan)
+ 			break;
  	}
+-	if (i == req->n_channels)
+-		req->channels[req->n_channels++] = chan;
++	if (i == req->n_channels) {
++		req->n_channels++;
++		req->channels[i] = chan;
++	}
  
--	if (tbd != DP_TEST_BIT_DEPTH_UNKNOWN)
--		tbd = (tbd >> DP_TEST_BIT_DEPTH_SHIFT);
-+	tbd = (tbd >> DP_TEST_BIT_DEPTH_SHIFT);
- 
- 	return tbd;
- }
+ 	for (i = 0; i < req->n_ssids; i++) {
+ 		if (req->ssids[i].ssid_len == ssid_len &&
 -- 
 2.43.0
 
