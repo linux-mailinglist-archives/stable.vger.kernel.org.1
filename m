@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-19814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31FA9853760
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:25:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 813EB853877
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:37:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C22481F237A4
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:25:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 200111F221C7
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA925FF17;
-	Tue, 13 Feb 2024 17:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7036027D;
+	Tue, 13 Feb 2024 17:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJDBiRZV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JGrrWMes"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C59A5FF10;
-	Tue, 13 Feb 2024 17:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC0D60271;
+	Tue, 13 Feb 2024 17:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845079; cv=none; b=awRlcvEqeCUv/01as1+EAhhnFACroK6W7bL3qp7cAaTPLNgJO1ZPsMF5D0DYwRjnn32w3qSwi65vbji+9F0h/WblR4sZphdNiRty4rdWseZm2y+UCk4bypk+WQzAqY4fsIpLT5Y4bbaR4Fx+vfFNUNQcsKz8tdTM+x9RtbMl3Co=
+	t=1707845817; cv=none; b=MQf5VpTXi9C5w/5l4w2MwTKC5TXHZvCRj6nBbiecNgGIq4b8H4OfEse9t8uSwNrid2zIIq1Kik2uEiuzlsIcJx3uwFk88wGhumsN1qrgtbNKik+fGHwQHSi6ar9lSccTBwZTt6n7tYxqUrUhBrrOAJxDGM5u6oWDYTw75sO2pNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845079; c=relaxed/simple;
-	bh=EfYLTaaW/mifBJZZ2HlJyPwh+t/zUHTHF0io/kLAQbA=;
+	s=arc-20240116; t=1707845817; c=relaxed/simple;
+	bh=Xc0cCv6woxABUSBUPr0d/amMam1laWniGllXhMyF71o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGsoC6U6oiBYVmbxaJ0vy5jNJmhVs6X0+RKx+UtvCwGflVjl+UJ4om+TobSPqvl5Eequ8ylfAE35IjNkS2smJSL6ztF22sT/UcRC0CEWzgJa7u7er2YaVrvSBK5/rGAH/AakUQPF1gz6glrGBbQqyc1gj4baHgNWlrGg7JvzVAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJDBiRZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E269C433C7;
-	Tue, 13 Feb 2024 17:24:38 +0000 (UTC)
+	 MIME-Version; b=gWqUgAuoCvN0jzQ2uKR+EraPz9R0uLewWexRmSBUmT0iA3mNF6UaBSIlK8T2IEhdoDN0Q2vO7Z7wy0QWmXQSCWBdm8HwLn6SzHyfrVBksqzmuetjzQ+JVYEFdB0ZDCKubCiNQ3hejEOq44dZY1XPsQ1tXW9F/2d6lDGX2l1vaYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JGrrWMes; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BFAC433C7;
+	Tue, 13 Feb 2024 17:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845078;
-	bh=EfYLTaaW/mifBJZZ2HlJyPwh+t/zUHTHF0io/kLAQbA=;
+	s=korg; t=1707845817;
+	bh=Xc0cCv6woxABUSBUPr0d/amMam1laWniGllXhMyF71o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fJDBiRZVlB6gz7OzlrN1Q4uU3goBUs4pMaPnqYIDdk7MrUUi9a9vnNNtVJhsu5TAT
-	 CuwavkB6lhVgO8KHnSI88VGmmLk5VfH2CefPmPSpcAXNOrm/G/+9aBlcA0SNt9yoFV
-	 Zvhg/O0n7ZkervqF+XHISI4xVHMq8/WON8feUbOk=
+	b=JGrrWMesKmambkHe+H/WjlSV5ojkOe1gCeTzxJyyy9gwEIaHUvwYeV1L3TGfxoO7B
+	 D9lTA3kpvQ5nil+7ZglOosRRopivGotza91gnlfTfkopnzG9W8rQCDhr3DX/j1mGy1
+	 l5O7j3iXu16pR6tcbAldzPyyHBY+gUb/vHH/qcRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathya Prakash Veerichetty <safhya.prakash@broadcom.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 41/64] scsi: core: Move scsi_host_busy() out of host lock if it is for per-command
+Subject: [PATCH 6.7 065/124] netfilter: nft_set_pipapo: remove static in nft_pipapo_get()
 Date: Tue, 13 Feb 2024 18:21:27 +0100
-Message-ID: <20240213171846.043137952@linuxfoundation.org>
+Message-ID: <20240213171855.636074656@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 4e6c9011990726f4d175e2cdfebe5b0b8cce4839 ]
+[ Upstream commit ab0beafd52b98dfb8b8244b2c6794efbc87478db ]
 
-Commit 4373534a9850 ("scsi: core: Move scsi_host_busy() out of host lock
-for waking up EH handler") intended to fix a hard lockup issue triggered by
-EH. The core idea was to move scsi_host_busy() out of the host lock when
-processing individual commands for EH. However, a suggested style change
-inadvertently caused scsi_host_busy() to remain under the host lock. Fix
-this by calling scsi_host_busy() outside the lock.
+This has slipped through when reducing memory footprint for set
+elements, remove it.
 
-Fixes: 4373534a9850 ("scsi: core: Move scsi_host_busy() out of host lock for waking up EH handler")
-Cc: Sathya Prakash Veerichetty <safhya.prakash@broadcom.com>
-Cc: Bart Van Assche <bvanassche@acm.org>
-Cc: Ewan D. Milne <emilne@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240203024521.2006455-1-ming.lei@redhat.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 9dad402b89e8 ("netfilter: nf_tables: expose opaque set element as struct nft_elem_priv")
+Reported-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_error.c | 3 ++-
- drivers/scsi/scsi_lib.c   | 4 +++-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ net/netfilter/nft_set_pipapo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
-index 66290961c47c..cfa6f0edff17 100644
---- a/drivers/scsi/scsi_error.c
-+++ b/drivers/scsi/scsi_error.c
-@@ -277,11 +277,12 @@ static void scsi_eh_inc_host_failed(struct rcu_head *head)
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 7252fcdae349..a65617cd8e2e 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -603,7 +603,7 @@ static struct nft_elem_priv *
+ nft_pipapo_get(const struct net *net, const struct nft_set *set,
+ 	       const struct nft_set_elem *elem, unsigned int flags)
  {
- 	struct scsi_cmnd *scmd = container_of(head, typeof(*scmd), rcu);
- 	struct Scsi_Host *shost = scmd->device->host;
-+	unsigned int busy = scsi_host_busy(shost);
- 	unsigned long flags;
+-	static struct nft_pipapo_elem *e;
++	struct nft_pipapo_elem *e;
  
- 	spin_lock_irqsave(shost->host_lock, flags);
- 	shost->host_failed++;
--	scsi_eh_wakeup(shost, scsi_host_busy(shost));
-+	scsi_eh_wakeup(shost, busy);
- 	spin_unlock_irqrestore(shost->host_lock, flags);
- }
- 
-diff --git a/drivers/scsi/scsi_lib.c b/drivers/scsi/scsi_lib.c
-index 0e7e9f1e5a02..5c5954b78585 100644
---- a/drivers/scsi/scsi_lib.c
-+++ b/drivers/scsi/scsi_lib.c
-@@ -280,9 +280,11 @@ static void scsi_dec_host_busy(struct Scsi_Host *shost, struct scsi_cmnd *cmd)
- 	rcu_read_lock();
- 	__clear_bit(SCMD_STATE_INFLIGHT, &cmd->state);
- 	if (unlikely(scsi_host_in_recovery(shost))) {
-+		unsigned int busy = scsi_host_busy(shost);
-+
- 		spin_lock_irqsave(shost->host_lock, flags);
- 		if (shost->host_failed || shost->host_eh_scheduled)
--			scsi_eh_wakeup(shost, scsi_host_busy(shost));
-+			scsi_eh_wakeup(shost, busy);
- 		spin_unlock_irqrestore(shost->host_lock, flags);
- 	}
- 	rcu_read_unlock();
+ 	e = pipapo_get(net, set, (const u8 *)elem->key.val.data,
+ 		       nft_genmask_cur(net));
 -- 
 2.43.0
 
