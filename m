@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-19885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CC238537B9
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:28:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CD7853837
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:34:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 037FD2811B4
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:28:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CCD81C26491
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FDE5FEEF;
-	Tue, 13 Feb 2024 17:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B865FF0A;
+	Tue, 13 Feb 2024 17:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4PBTAv8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nNoV8q0C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37165F54E;
-	Tue, 13 Feb 2024 17:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A745FB94;
+	Tue, 13 Feb 2024 17:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845322; cv=none; b=jXnwzN2s1wjSOC34NYXkWQ91r0D8aPnDfKP/pKgAw141crSDjuwZhUBRPpIvGXONO0F9g+gMT2TfPFk5/9cR57sOhdJZwQaOM8Tl6qaWsH9sR218Yugjn5IE3mZ2gvyNF+Ymhq56eii+brrL3/9ONSP/sHCIIBr0R6lg4RjFMOg=
+	t=1707845664; cv=none; b=hmp6tdgmb1jQpBWWxMORgpaK/rm6Xry3ol196tBB9vx2hGdXsSlsePr7v21C1bV3iFoVVf3gCKqEIEYrCHZ6Gu12J+o+uX7/80t9OFV8FqXf5+hQb2bEA9r18mJUNKjy0zHLCdEnGkYWkeGfST5roprLUL16UwVb3ldyLLYTkeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845322; c=relaxed/simple;
-	bh=Pz/dtNfXTn6niUnUxXTxyH5OKF35bNaSsafrOBWElFI=;
+	s=arc-20240116; t=1707845664; c=relaxed/simple;
+	bh=aghmLEnVEYI9/B5V3oQG13YBFuk80sYEYjTyAq/ZGyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=turY1/9duK3lXYlj12sppEeaAPgko8XBeemZGqQBPoPd4EPtNeye6Z+Esdtqsx2xnS5MR4fohULnD8U9f2uVomZYoOpMi37bsVC3sAHkiaXWPHS1DiLaSjWwhVDec6FlNpquzFauV+pbwWPsD3paba1+g8gkQbKkHmQ5apXNbPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4PBTAv8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD59C433C7;
-	Tue, 13 Feb 2024 17:28:41 +0000 (UTC)
+	 MIME-Version; b=mDrBgvmB3K8J1SQtue9KEjITkfc6QGE5QyivsQeE+Jv2X6FCtqJ6Xi+FcGnUZnhoolnIlVgt42zkhhvaQC3ADJzT9OlgSCFe9nhSzUKqUpn0pwVzXs9WRhJ7vDLq/DS6YvavaIhVaD1cckHmWvDhgIrBbwLRHXbMWgghC6U/Gks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nNoV8q0C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05E5C433F1;
+	Tue, 13 Feb 2024 17:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845322;
-	bh=Pz/dtNfXTn6niUnUxXTxyH5OKF35bNaSsafrOBWElFI=;
+	s=korg; t=1707845664;
+	bh=aghmLEnVEYI9/B5V3oQG13YBFuk80sYEYjTyAq/ZGyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g4PBTAv8XzHCgcNKVt6q357PpdMCt1vpd/XsQhj4ZHxLYbLoWNV5cjeuF7fDWj3Am
-	 taxHAHg3I7TxZHjokdDdDIre8QMARK+t8m0qabEQ4eWaEt3TY3uhXOWmCizn9MoGrl
-	 x67aVAqT3ITNG21hRxXOGPoOdg9cv6G/BbzMF62I=
+	b=nNoV8q0CqrkBCX+32w2J4jYT9x9x5uAe6RiNDywMAQ9ojLLnCCS4zCVnemnFetmZ2
+	 ztmSKstHzAoZsgmMYUw7Y6D3vGM9n3vXI3UwU7VsTxW7lGMj1yJ5vczeZv6+GErSiX
+	 rN8bYIXonMP22j1R+OvoDNzBJceXpFq20T6aDlcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Catherine Hoang <catherine.hoang@oracle.com>,
-	Chandan Babu R <chandanbabu@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 018/121] xfs: bump max fsgeom struct version
+Subject: [PATCH 6.7 005/124] dmaengine: fsl-qdma: Fix a memory leak related to the queue command DMA
 Date: Tue, 13 Feb 2024 18:20:27 +0100
-Message-ID: <20240213171853.503034834@linuxfoundation.org>
+Message-ID: <20240213171853.885608233@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 9488062805943c2d63350d3ef9e4dc093799789a upstream.
+[ Upstream commit 3aa58cb51318e329d203857f7a191678e60bb714 ]
 
-The latest version of the fs geometry structure is v5.  Bump this
-constant so that xfs_db and mkfs calls to libxfs_fs_geometry will fill
-out all the fields.
+This dma_alloc_coherent() is undone neither in the remove function, nor in
+the error handling path of fsl_qdma_probe().
 
-IOWs, this commit is a no-op for the kernel, but will be useful for
-userspace reporting in later changes.
+Switch to the managed version to fix both issues.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Catherine Hoang <catherine.hoang@oracle.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Fixes: b092529e0aa0 ("dmaengine: fsl-qdma: Add qDMA controller driver for Layerscape SoCs")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/7f66aa14f59d32b13672dde28602b47deb294e1f.1704621515.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_sb.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/fsl-qdma.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/xfs/libxfs/xfs_sb.h b/fs/xfs/libxfs/xfs_sb.h
-index a5e14740ec9a..19134b23c10b 100644
---- a/fs/xfs/libxfs/xfs_sb.h
-+++ b/fs/xfs/libxfs/xfs_sb.h
-@@ -25,7 +25,7 @@ extern uint64_t	xfs_sb_version_to_features(struct xfs_sb *sbp);
+diff --git a/drivers/dma/fsl-qdma.c b/drivers/dma/fsl-qdma.c
+index 38409e06040a..3a5595a1d442 100644
+--- a/drivers/dma/fsl-qdma.c
++++ b/drivers/dma/fsl-qdma.c
+@@ -514,11 +514,11 @@ static struct fsl_qdma_queue
+ 			queue_temp = queue_head + i + (j * queue_num);
  
- extern int	xfs_update_secondary_sbs(struct xfs_mount *mp);
- 
--#define XFS_FS_GEOM_MAX_STRUCT_VER	(4)
-+#define XFS_FS_GEOM_MAX_STRUCT_VER	(5)
- extern void	xfs_fs_geometry(struct xfs_mount *mp, struct xfs_fsop_geom *geo,
- 				int struct_version);
- extern int	xfs_sb_read_secondary(struct xfs_mount *mp,
+ 			queue_temp->cq =
+-			dma_alloc_coherent(&pdev->dev,
+-					   sizeof(struct fsl_qdma_format) *
+-					   queue_size[i],
+-					   &queue_temp->bus_addr,
+-					   GFP_KERNEL);
++			dmam_alloc_coherent(&pdev->dev,
++					    sizeof(struct fsl_qdma_format) *
++					    queue_size[i],
++					    &queue_temp->bus_addr,
++					    GFP_KERNEL);
+ 			if (!queue_temp->cq)
+ 				return NULL;
+ 			queue_temp->block_base = fsl_qdma->block_base +
 -- 
 2.43.0
 
