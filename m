@@ -1,83 +1,128 @@
-Return-Path: <stable+bounces-19684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68BB85298E
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 08:07:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C48852A5F
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 09:00:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C92721C22782
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 07:07:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49622283EB5
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 08:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6742171BF;
-	Tue, 13 Feb 2024 07:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF880179A5;
+	Tue, 13 Feb 2024 08:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Eva6ASnJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F331114291;
-	Tue, 13 Feb 2024 07:07:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E46917983;
+	Tue, 13 Feb 2024 08:00:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707808047; cv=none; b=XxDsxEyJ9MPFssNkEt8XI5yjfY3HD0rYnqnmXxy6m0TyjaaRAk4U9iwseQLp3bKyAm8pOPF7skzMu0QzaIN1gAriw6H7OSY3EPIGwpyVXMiY9VSiio8WU8hTO3jLTF3pPqoLgO1IwjtNg6yZN0nt+1E/EbBhvgKJKjiDsd3XRnc=
+	t=1707811223; cv=none; b=cc839eTCAGy4QtkcqYBUkREXNAJMM/j2IxFY9qWN7dp15xKJ3E9EroWaoEWPkERKZWERDwwnHnyu/joOZN7v8X48GVU+bAQ4jFjNgWb1fSXePXSkM+jqkWhpUPj8ndVKkxBs6Tao/8gZssHyUIZqeunwy4Yf6fGoLSLx3sbBfk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707808047; c=relaxed/simple;
-	bh=O6d/vJXQj7Gc9Eo1VuCw/vG3wPs+yLmqdGjxCSZb1oU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=uMaqaSTRTq/Ehdct0/W7m4gK+s5O6kLKh208FW0dirEmF9EHgMz/Txv+ULiEfH3R+8DbaUiuD1QeZkJLiQHTc4lVgvHOf/8rKz57GDn7mjjtSZju2m5g8vHBsyBrAMAJrri4UHVOx995pMovnAh5B5EtilNskw4dBnienuGf2WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from msexch01.omp.ru (10.188.4.12) by msexch02.omp.ru (10.188.4.13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 13 Feb
- 2024 10:07:18 +0300
-Received: from msexch01.omp.ru ([fe80::485b:1c4a:fb7f:c753]) by
- msexch01.omp.ru ([fe80::485b:1c4a:fb7f:c753%5]) with mapi id 15.02.1258.012;
- Tue, 13 Feb 2024 10:07:18 +0300
-From: Roman Smirnov <r.smirnov@omp.ru>
-To: Jan Kara <jack@suse.cz>, Matthew Wilcox <willy@infradead.org>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>, Sergey Shtylyov
-	<s.shtylyov@omp.ru>, Karina Yankevich <k.yankevich@omp.ru>,
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "linux-ext4@vger.kernel.org"
-	<linux-ext4@vger.kernel.org>, Theodore Ts'o <tytso@mit.edu>, Andreas Dilger
-	<adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>
-Subject: Re: [PATCH 5.10/5.15 v2 0/1 RFC] mm/truncate: fix WARNING in
- ext4_set_page_dirty()
-Thread-Topic: [PATCH 5.10/5.15 v2 0/1 RFC] mm/truncate: fix WARNING in
- ext4_set_page_dirty()
-Thread-Index: AQHaT4/Qs4jFNwbjC0COwuMxHerW67DqXhoAgAX2vwCAAFxZAIAAGIKAgBcs0mw=
-Date: Tue, 13 Feb 2024 07:07:18 +0000
-Message-ID: <d25ec449ffce4e568637a418edc4221c@omp.ru>
-References: <20240125130947.600632-1-r.smirnov@omp.ru>
- <ZbJrAvCIufx1K2PU@casper.infradead.org>
- <20240129091124.vbyohvklcfkrpbyp@quack3>
- <Zbe5NBKrugBpRpM-@casper.infradead.org>,<20240129160939.jgrhzrh5l2paezvp@quack3>
-In-Reply-To: <20240129160939.jgrhzrh5l2paezvp@quack3>
-Accept-Language: ru-RU, en-US
-Content-Language: ru-RU
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-kse-serverinfo: msexch02.omp.ru, 9
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: Clean, bases: 2/13/2024 4:30:00 AM
-x-kse-attachment-filter-triggered-rules: Clean
-x-kse-attachment-filter-triggered-filters: Clean
-x-kse-bulkmessagesfiltering-scan-result: InTheLimit
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1707811223; c=relaxed/simple;
+	bh=VoMnRaSamnWIppKxRAr8QX4lMcoE34DxAKai2ygPKGQ=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=toqHhpLYA5ADOfmOY2qeGUv8PvSKHwN+Ma2z1BbD71bi3YsUIIGxjUJILRORrzxE8Pq/b3deYJQybXQniUgEBb5NUfaOvKCG7uQkpxoe080Sk1JDv+jyUGbkVOK9/V+IDv+8djp+QAJVm1eHWS+/9v3f7NU8i3JJE5hmfhJ11BE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Eva6ASnJ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41D6P2xg017338;
+	Tue, 13 Feb 2024 08:00:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id; s=qcppdkim1; bh=cVkgK/2fBVNS
+	K//CdIwIUFNslMWRKP83ena1wl35pqw=; b=Eva6ASnJ/+uvxdORYUlhxc75S/EE
+	RnyOk3YRMDJK4/Uf80JnPJZ5lsUJkdXCRubMKEdiInYGu/YfI7+O8IkBZCkqyhoW
+	vQj/eyRClAI5eUtHaYPDYInEDRs8pOuyq61P2657HBg/ZwVL51yQxnAP5Q15s3k0
+	ZNsBEn09upuLzpDlMhNfQJ7Lmbhw0Hd+ZOHs1oCcpWtPqHNTrHNdDV+YznwTe3Eq
+	oOiNkWQ3Mg8AyENhy63isacTlswZ6LFg2R+O1qOwQXJ1cUI6qsYFOP+igYDjtrxH
+	X0bF+Br5yuP0LKeOZt25jvvqMLucTasFecAkRIJAd+jmwU6kvzE3YapP8Q==
+Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3w7tans0eh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 Feb 2024 08:00:18 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 41D7w88S023112;
+	Tue, 13 Feb 2024 08:00:13 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTP id 3w627kkfnn-1;
+	Tue, 13 Feb 2024 08:00:13 +0000
+Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 41D80Dqk025478;
+	Tue, 13 Feb 2024 08:00:13 GMT
+Received: from hu-maiyas-hyd.qualcomm.com (hu-audityab-hyd.qualcomm.com [10.147.244.159])
+	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTP id 41D80DOw025473;
+	Tue, 13 Feb 2024 08:00:13 +0000
+Received: by hu-maiyas-hyd.qualcomm.com (Postfix, from userid 207879)
+	id 38B835001A8; Tue, 13 Feb 2024 13:30:12 +0530 (+0530)
+From: Auditya Bhattaram <quic_audityab@quicinc.com>
+To: andersson@kernel.org, konrad.dybcio@linaro.org
+Cc: linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Auditya Bhattaram <quic_audityab@quicinc.com>
+Subject: [PATCH v4] soc: qcom: mdt_loader: Add Upperbounds check for program header access
+Date: Tue, 13 Feb 2024 13:30:10 +0530
+Message-Id: <20240213080010.16924-1-quic_audityab@quicinc.com>
+X-Mailer: git-send-email 2.17.1
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 8CyY1HOmZj5bcnTO8AYUO7CFp0KxC2eU
+X-Proofpoint-ORIG-GUID: 8CyY1HOmZj5bcnTO8AYUO7CFp0KxC2eU
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-13_04,2024-02-12_03,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 malwarescore=0
+ clxscore=1015 lowpriorityscore=0 spamscore=0 impostorscore=0
+ mlxlogscore=999 bulkscore=0 priorityscore=1501 suspectscore=0 adultscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2401310000 definitions=main-2402130061
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
 
-Is there something else to do to make the patch accepted?=
+hash_index is evaluated by looping phdrs till QCOM_MDT_TYPE_HASH
+is found. Add an upperbound check to phdrs to access within elf size.
+
+Fixes: 64fb5eb87d58 ("soc: qcom: mdt_loader: Allow hash to reside in any segment")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Auditya Bhattaram <quic_audityab@quicinc.com>
+Acked-by: Mukesh Ojha <quic_mojha@quicinc.com>
+---
+Changes in v4:
+ - Added additional prints incase of Invalid access.
+Link to v3 https://lore.kernel.org/stable/1c91c653-cebe-4407-bdd6-cfc73b64c0fb@quicinc.com
+Link to v2 https://lore.kernel.org/linux-arm-msm/9773d189-c896-d5c5-804c-e086c24987b4@quicinc.com/T/#t
+Link to v1 https://lore.kernel.org/linux-arm-msm/5d7a3b97-d840-4863-91a0-32c1d8e7532f@linaro.org/T/#t
+---
+ drivers/soc/qcom/mdt_loader.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/soc/qcom/mdt_loader.c b/drivers/soc/qcom/mdt_loader.c
+index 6f177e46fa0f..1a79a7bba468 100644
+--- a/drivers/soc/qcom/mdt_loader.c
++++ b/drivers/soc/qcom/mdt_loader.c
+@@ -145,6 +143,13 @@ void *qcom_mdt_read_metadata(const struct firmware *fw, size_t *data_len,
+ 	if (phdrs[0].p_type == PT_LOAD)
+ 		return ERR_PTR(-EINVAL);
+
++	if (((size_t)(phdrs + ehdr->e_phnum)) > ((size_t)ehdr + fw->size)) {
++		dev_err(dev,
++			"Invalid phdrs access for fw: %s, e_phnum: %u, fw->size: %zu\n",
++			fw_name, ehdr->e_phnum, fw->size);
++		return ERR_PTR(-EINVAL);
++	}
++
+ 	for (i = 1; i < ehdr->e_phnum; i++) {
+ 		if ((phdrs[i].p_flags & QCOM_MDT_TYPE_MASK) == QCOM_MDT_TYPE_HASH) {
+ 			hash_segment = i;
+--
+2.17.1
+
 
