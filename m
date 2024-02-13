@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-19912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA77A8537DA
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:30:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C921853758
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:24:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E3CA1F29299
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:30:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F21F1C25F13
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBDC5FF05;
-	Tue, 13 Feb 2024 17:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951A860245;
+	Tue, 13 Feb 2024 17:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUPIyNvN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AW8LeTuw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FE95F54E;
-	Tue, 13 Feb 2024 17:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5104B5FF15;
+	Tue, 13 Feb 2024 17:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845422; cv=none; b=t/QOoaimu0PGH9cBjprlSA64BVJvUTOrKRNpL8oVNtMinrqCczkeNuNkg21diKsrtLzqbMvtVvsG51DNyuDkkLEGcZiDqVPa0SVZl1DKL8LsFBgvxxQmBw6S9eOAKRMKGKGemQBeCcHkUlP7JfUdnJwQrx/gP0N25ISP00ytJN8=
+	t=1707845059; cv=none; b=FYfd1MFmuuvUAQLXjI9D+uYPyas7+q9nqRg8yyOI1Oesh2fF88vLi7RTzhVjdeKhdgJpZHi3O/oruokHQDHHkYNYbqx2Nlzi7CUiIHypLH6AZpeCFEdPCGmDFAASDz5cFlSozDWKWOnXsME4qGMCYZn8zkEs8TEXjVGs4/L0Dvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845422; c=relaxed/simple;
-	bh=9O40NIgiArQNRjDhjHJFZqTAZxXPco6n4G7BV9sj+ik=;
+	s=arc-20240116; t=1707845059; c=relaxed/simple;
+	bh=gU1/CUZjFJe1SvYdIcqH9+xhLf1c7ZiALBliIWyc/AY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nwJ7XN1Hl/t85+abffqzebfm7kKFzX5nUDsTGcFxDbPZcq2zbxU74pOt0wLz1s/Vq+YKMDADJscTckpuDQbpBGl4j258ucNz2dqLvxfBhK9jmwRgdCOVCxHuO1/onuwJpqBxTMZJpuiemVsPqBhEZhbPcDVg2vN83oqf7Hr/PYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUPIyNvN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF07CC433F1;
-	Tue, 13 Feb 2024 17:30:21 +0000 (UTC)
+	 MIME-Version; b=Bp44SAu2O1RB9sIrgTfSNJxS5tP19sSYrhtY8TAr1U1lO2OerHv3EeLnWzRKQ01DnOQ3zs4Ota/apLlCr6YtRJ2PBz+Z/yrUiFeLvuUWF2Bygx8ogkS4XR5zF46iK6MygbFe8S7Wl37Gy6aVtbpntcSLh7Y+tgrqPOe6BjAtqgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AW8LeTuw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC67C433C7;
+	Tue, 13 Feb 2024 17:24:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845422;
-	bh=9O40NIgiArQNRjDhjHJFZqTAZxXPco6n4G7BV9sj+ik=;
+	s=korg; t=1707845059;
+	bh=gU1/CUZjFJe1SvYdIcqH9+xhLf1c7ZiALBliIWyc/AY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gUPIyNvNkA4Czi2Oh/SavgBLMp1xOW6bTx2QYtN4mOFWQc/nQy3IJiNtmuCDBTKBx
-	 aMkMTCepL//CDiyaMlqgdu0oM0bqNRhH+KOPMAQ45Ra+z/YeIXWgZ9wpyL/fWTGaxI
-	 z0wDUAr/csyNnOs8vkkcuf9BLwVZDp1K8jVxg12k=
+	b=AW8LeTuw+/rfCluDC2skkIYYYaHe1MjOSXC3QubywGTpOPlT4gLXCl+Zooe+SbnLj
+	 YKS6T/p7uY7mxKhDNSREqT5b4TD2TiTSMxUGRJ+D+9uaDGlGoSPyVPDAmlrjST2own
+	 AgNcNvpFp8TAN/A98H7qXqqekE5FK1636Ck71pUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+c5da1f087c9e4ec6c933@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 072/121] ppp_async: limit MRU to 64K
+	Roman Li <Roman.Li@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 35/64] drm/amd/display: Implement bounds check for stream encoder creation in DCN301
 Date: Tue, 13 Feb 2024 18:21:21 +0100
-Message-ID: <20240213171855.096447322@linuxfoundation.org>
+Message-ID: <20240213171845.852112250@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +66,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit cb88cb53badb8aeb3955ad6ce80b07b598e310b8 ]
+[ Upstream commit 58fca355ad37dcb5f785d9095db5f748b79c5dc2 ]
 
-syzbot triggered a warning [1] in __alloc_pages():
+'stream_enc_regs' array is an array of dcn10_stream_enc_registers
+structures. The array is initialized with four elements, corresponding
+to the four calls to stream_enc_regs() in the array initializer. This
+means that valid indices for this array are 0, 1, 2, and 3.
 
-WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp)
+The error message 'stream_enc_regs' 4 <= 5 below, is indicating that
+there is an attempt to access this array with an index of 5, which is
+out of bounds. This could lead to undefined behavior
 
-Willem fixed a similar issue in commit c0a2a1b0d631 ("ppp: limit MRU to 64K")
+Here, eng_id is used as an index to access the stream_enc_regs array. If
+eng_id is 5, this would result in an out-of-bounds access on the
+stream_enc_regs array.
 
-Adopt the same sanity check for ppp_async_ioctl(PPPIOCSMRU)
+Thus fixing Buffer overflow error in dcn301_stream_encoder_create
+reported by Smatch:
+drivers/gpu/drm/amd/amdgpu/../display/dc/resource/dcn301/dcn301_resource.c:1011 dcn301_stream_encoder_create() error: buffer overflow 'stream_enc_regs' 4 <= 5
 
-[1]:
-
- WARNING: CPU: 1 PID: 11 at mm/page_alloc.c:4543 __alloc_pages+0x308/0x698 mm/page_alloc.c:4543
-Modules linked in:
-CPU: 1 PID: 11 Comm: kworker/u4:0 Not tainted 6.8.0-rc2-syzkaller-g41bccc98fb79 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
-Workqueue: events_unbound flush_to_ldisc
-pstate: 204000c5 (nzCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : __alloc_pages+0x308/0x698 mm/page_alloc.c:4543
- lr : __alloc_pages+0xc8/0x698 mm/page_alloc.c:4537
-sp : ffff800093967580
-x29: ffff800093967660 x28: ffff8000939675a0 x27: dfff800000000000
-x26: ffff70001272ceb4 x25: 0000000000000000 x24: ffff8000939675c0
-x23: 0000000000000000 x22: 0000000000060820 x21: 1ffff0001272ceb8
-x20: ffff8000939675e0 x19: 0000000000000010 x18: ffff800093967120
-x17: ffff800083bded5c x16: ffff80008ac97500 x15: 0000000000000005
-x14: 1ffff0001272cebc x13: 0000000000000000 x12: 0000000000000000
-x11: ffff70001272cec1 x10: 1ffff0001272cec0 x9 : 0000000000000001
-x8 : ffff800091c91000 x7 : 0000000000000000 x6 : 000000000000003f
-x5 : 00000000ffffffff x4 : 0000000000000000 x3 : 0000000000000020
-x2 : 0000000000000008 x1 : 0000000000000000 x0 : ffff8000939675e0
-Call trace:
-  __alloc_pages+0x308/0x698 mm/page_alloc.c:4543
-  __alloc_pages_node include/linux/gfp.h:238 [inline]
-  alloc_pages_node include/linux/gfp.h:261 [inline]
-  __kmalloc_large_node+0xbc/0x1fc mm/slub.c:3926
-  __do_kmalloc_node mm/slub.c:3969 [inline]
-  __kmalloc_node_track_caller+0x418/0x620 mm/slub.c:4001
-  kmalloc_reserve+0x17c/0x23c net/core/skbuff.c:590
-  __alloc_skb+0x1c8/0x3d8 net/core/skbuff.c:651
-  __netdev_alloc_skb+0xb8/0x3e8 net/core/skbuff.c:715
-  netdev_alloc_skb include/linux/skbuff.h:3235 [inline]
-  dev_alloc_skb include/linux/skbuff.h:3248 [inline]
-  ppp_async_input drivers/net/ppp/ppp_async.c:863 [inline]
-  ppp_asynctty_receive+0x588/0x186c drivers/net/ppp/ppp_async.c:341
-  tty_ldisc_receive_buf+0x12c/0x15c drivers/tty/tty_buffer.c:390
-  tty_port_default_receive_buf+0x74/0xac drivers/tty/tty_port.c:37
-  receive_buf drivers/tty/tty_buffer.c:444 [inline]
-  flush_to_ldisc+0x284/0x6e4 drivers/tty/tty_buffer.c:494
-  process_one_work+0x694/0x1204 kernel/workqueue.c:2633
-  process_scheduled_works kernel/workqueue.c:2706 [inline]
-  worker_thread+0x938/0xef4 kernel/workqueue.c:2787
-  kthread+0x288/0x310 kernel/kthread.c:388
-  ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:860
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-and-tested-by: syzbot+c5da1f087c9e4ec6c933@syzkaller.appspotmail.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240205171004.1059724-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 3a83e4e64bb1 ("drm/amd/display: Add dcn3.01 support to DC (v2)")
+Cc: Roman Li <Roman.Li@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_async.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ppp/ppp_async.c b/drivers/net/ppp/ppp_async.c
-index fbaaa8c102a1..e94a4b08fd63 100644
---- a/drivers/net/ppp/ppp_async.c
-+++ b/drivers/net/ppp/ppp_async.c
-@@ -460,6 +460,10 @@ ppp_async_ioctl(struct ppp_channel *chan, unsigned int cmd, unsigned long arg)
- 	case PPPIOCSMRU:
- 		if (get_user(val, p))
- 			break;
-+		if (val > U16_MAX) {
-+			err = -EINVAL;
-+			break;
-+		}
- 		if (val < PPP_MRU)
- 			val = PPP_MRU;
- 		ap->mru = val;
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c
+index f04595b750ab..5ec3f50a72ac 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_resource.c
+@@ -1014,7 +1014,7 @@ static struct stream_encoder *dcn301_stream_encoder_create(enum engine_id eng_id
+ 	vpg = dcn301_vpg_create(ctx, vpg_inst);
+ 	afmt = dcn301_afmt_create(ctx, afmt_inst);
+ 
+-	if (!enc1 || !vpg || !afmt) {
++	if (!enc1 || !vpg || !afmt || eng_id >= ARRAY_SIZE(stream_enc_regs)) {
+ 		kfree(enc1);
+ 		kfree(vpg);
+ 		kfree(afmt);
 -- 
 2.43.0
 
