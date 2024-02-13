@@ -1,356 +1,223 @@
-Return-Path: <stable+bounces-20112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9223853C5E
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 21:43:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0CD853C75
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 21:53:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F1FA28AD73
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 20:43:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 316DF1C227A1
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 20:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F7B612EA;
-	Tue, 13 Feb 2024 20:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E03562160;
+	Tue, 13 Feb 2024 20:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="mdsrOfIR";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="APCMk9yc"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b="OVfsxu8f"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh2-smtp.messagingengine.com (fhigh2-smtp.messagingengine.com [103.168.172.153])
+Received: from smtp.domeneshop.no (smtp.domeneshop.no [194.63.252.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338F010A2D;
-	Tue, 13 Feb 2024 20:43:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880225FF03;
+	Tue, 13 Feb 2024 20:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.63.252.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707857031; cv=none; b=dZN5d7c4GgWt0R2uMrv1uLDXjhpYehmR7gWrgJNbd6bTRIRqA+UTlx34+/uS9wObmIZNo1WIkSbUTnVotFn3468n0c8O4ky77jg/Y0ldEcpLGKBmn2aNYBrou6D2iTquSUzUmz3/m9F26raapgtzW/3izeqwQAK3Oz/4sITWHcs=
+	t=1707857552; cv=none; b=YrSu86UddSUFpplDwL8zckC8Cgiw0UZUZTNbLoZztDtFOI5rb4gZWBe9YcM6gb1TfjMEuUFj8NwJuXaP+bdNkrsnfXQEsNsb1VadVOCXHqrkn8NYhHdjSidO2S3bEId//uNhZth5ZsgwkBq2HLkgKRjZEbuukqLICYJSzsbeavo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707857031; c=relaxed/simple;
-	bh=wYHGaLKWU6FctAX/6W2B9gjyrBVbuoHS3Rm6X0DCXXg=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=IDI081rC5W818EISgrlG6zgFOF+/QDXVfgO1OH/iXbV5jHAIqCpLytTQubvIK09VyccUok1uie7G1ZBeKTqpOC2gLclFjzSnJhoj0bopgfUAa7H3Sgktdir0dvQPvqDcYiqkwGkoEmd6e2AdRtGjC21bUvzZ3w6/CMbVmqjOt+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=mdsrOfIR; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=APCMk9yc; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 1EE0011400A4;
-	Tue, 13 Feb 2024 15:43:48 -0500 (EST)
-Received: from imap50 ([10.202.2.100])
-  by compute3.internal (MEProxy); Tue, 13 Feb 2024 15:43:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
-	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1707857028; x=1707943428; bh=9OOmF4pYqt
-	XuBz4zzoo2PViV8gq+6G2Gr1SyfFs2L0o=; b=mdsrOfIRMTLE+KzlAHK4gRcDAW
-	DERHhF46I23MjK+hG7uAvS9kBxkxqsQW+ybT+1QwFRo7Nt1l5oJsiSFgZ1GkEQJI
-	zt3u2qjAsupJj8fS8LP3AIme9xLqc79DSq4A6yPZfWzJrWcADgGo+/3ZPoKary88
-	Hief6PxQ/Wz48ERA+nVIZ0nHXhGGc1A2wtCEcM6wwHE1HM60EJIHsgK9A+oscq9W
-	l4BqiYperxvrqsCceqcW/GgWHz2PDU8J431bheSXt+HXC38/Yh63YKI4TI6theF5
-	QGGEoXC1JFWdeUWcOe7Jz7BFEEShOZwY472QIAucBKB5Bx5xGC99r/FyxO8g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1707857028; x=1707943428; bh=9OOmF4pYqtXuBz4zzoo2PViV8gq+
-	6G2Gr1SyfFs2L0o=; b=APCMk9yc7zbXzM+mSQRegQucVXB3ItPq96JphwRCM6DQ
-	IAmLoCZsbRT1zeSsAZthcd7HR2OgVRit7h9wjIUSNG+CkQnLaSccZzktm4wNh0np
-	kfsg8c3d6VjujXb9XnxY9nRxbvoeBfyWoeip+3gNLi/+iNTSxBWforUCLO7ywgHv
-	XPhp+S/V7/E4rIXdFDb41Qi9Xk8uZRDwkkT7lM6QzTLsByrJmJm5UyFSJMtAeJJN
-	zAlNi4DKwx6mMluuh59MonfODUlPYHKIv/LwRrFVFZ+D5H59vT74Uy8AJD0otUZT
-	f4+NBuiRaBZpAPxbck9CJKDI4s6dYbzyfQpa/FgdqQ==
-X-ME-Sender: <xms:g9TLZbZaN4dNmeYvZVw6SL4XrPC968Hi5G5bVxeUGH40tE-DZGJ1aQ>
-    <xme:g9TLZaY_zwmTbrf7_1tZbK11TulF9fsX8_EIlcBj6Exsq0jgLzYCAx759hcmujcx0
-    Mq91e9HByz55TGhQQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrudehgddugedtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedfufht
-    vghfrghnucfqkdftvggrrhdfuceoshhorhgvrghrsehfrghsthhmrghilhdrtghomheqne
-    cuggftrfgrthhtvghrnhepjeeuheegtdeuteeghfehjeejiefghfeifeejheduvdeugedt
-    hfehvefggefgkedtnecuffhomhgrihhnpehinhhfrhgruggvrggurdhorhhgnecuvehluh
-    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepshhorhgvrghrsehf
-    rghsthhmrghilhdrtghomh
-X-ME-Proxy: <xmx:g9TLZd-V1fjkmckVB6yKD6pJbYk_LjpO08dXakmC0jMYkmNWHVDfyA>
-    <xmx:g9TLZRqWDqgTZySOKSC3Dnz8F7JaG6evcF9_phBpZ8R2xhsGPK2JWQ>
-    <xmx:g9TLZWoJTdG-wSWZfZp9r-NwQ6Hj1VpAsUVWPHsrt_JkyyBYu0EPiw>
-    <xmx:hNTLZXfZqMnphaUmd_ftQtNVomJB2ZanR4-2cLKGmI9xAJn4uY-wlQ>
-Feedback-ID: i84414492:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id D2AE41700093; Tue, 13 Feb 2024 15:43:47 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-144-ge5821d614e-fm-20240125.002-ge5821d61
+	s=arc-20240116; t=1707857552; c=relaxed/simple;
+	bh=64I1TgtHDDIt6/p7AHX6u2hXP67VwmvVIRlSAqFWpzA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lffe9PcQ4Ab37s2gsy6gTOacuhpWWo/jmNXEZbp55j4RPXQLzy6IDFWU4cE8R8rcZiTSe4Xjye8T670bORy64rUUI2JHKVTEoPeLe7OBBKojATWlWKiJ+GalqFYosL+3rHUpsPwAfgfjjTgAaop3LHKCUv7DwfHxbJwQuKNwFj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu; spf=pass smtp.mailfrom=fjasle.eu; dkim=pass (2048-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b=OVfsxu8f; arc=none smtp.client-ip=194.63.252.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fjasle.eu
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fjasle.eu;
+	s=ds202307; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=AynPBu8jS0YBZE5dCSOc1gqeyaauXcsGk9RK7JNo4+E=; b=OVfsxu8fyN677OC6MCjrWC9Msm
+	YgE2jZ+MuT/ObdYNvqwDd6jNqdDDlQOn2T90JuFIa7XQrz7hc5Wnv4DiXOa1s+XDGZMYwxV6TAOzl
+	+7beOSD+8xCsjHSh3NqSEBumSecmG3el6PHcJOQs5kdxdUqPtSgqgyIqTTIRF+galECY/WVS1zOYs
+	hDliJrLgHjS0DluetlyEa26cfpoEc4hNyACTh02TGjewGvA6tuJ22l6h2hcxuFSEy8pRjvXfAulb5
+	WJT9oRkUsCJsnsAQ0oInuuKqbQTsvj1fPwW6g9q3/vgI+2w8htu+kUvHX6WZKk//xtPYkA8LX0n7m
+	z1HvapMA==;
+Received: from [2001:9e8:9d1:8401:6f0:21ff:fe91:394] (port=36842 helo=bergen.fjasle.eu)
+	by smtp.domeneshop.no with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <nicolas@fjasle.eu>)
+	id 1rZzlN-00HT8U-CK;
+	Tue, 13 Feb 2024 21:52:21 +0100
+Date: Tue, 13 Feb 2024 21:52:14 +0100
+From: Nicolas Schier <nicolas@fjasle.eu>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>, ndesaulniers@google.com,
+	morbo@google.com, justinstitt@google.com, keescook@chromium.org,
+	maskray@google.com, linux-kbuild@vger.kernel.org,
+	bpf@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] kbuild: Fix changing ELF file type for output of
+ gen_btf for big endian
+Message-ID: <ZcvWfsv1ohV5qHSI@bergen.fjasle.eu>
+References: <20240212-fix-elf-type-btf-vmlinux-bin-o-big-endian-v2-1-22c0a6352069@kernel.org>
+ <CAK7LNATK=8V+BroyN+uo9OynkfR6s6HtRgh=LF7yan7cPkbaTA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <b7ad2bd4-a19e-486e-8be2-3b56f288d5d0@app.fastmail.com>
-In-Reply-To: <ff3bd436-12f8-4cde-881d-89a005ad85c0@sifive.com>
-References: <20240213033744.4069020-1-samuel.holland@sifive.com>
- <20240213033744.4069020-4-samuel.holland@sifive.com>
- <20240213-dangle-taco-2742f6087a3e@spud>
- <ff3bd436-12f8-4cde-881d-89a005ad85c0@sifive.com>
-Date: Tue, 13 Feb 2024 15:43:27 -0500
-From: "Stefan O'Rear" <sorear@fastmail.com>
-To: "Samuel Holland" <samuel.holland@sifive.com>,
- "Conor Dooley" <conor@kernel.org>
-Cc: "Palmer Dabbelt" <palmer@dabbelt.com>,
- "Andrew Jones" <ajones@ventanamicro.com>, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH -fixes v2 3/4] riscv: Add ISA extension parsing for Sm and Ss
-Content-Type: text/plain
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="k3DOEzKl6wHMV12g"
+Content-Disposition: inline
+In-Reply-To: <CAK7LNATK=8V+BroyN+uo9OynkfR6s6HtRgh=LF7yan7cPkbaTA@mail.gmail.com>
+X-Operating-System: Debian GNU/Linux trixie/sid
+Jabber-ID: nicolas@jabber.no
 
-On Tue, Feb 13, 2024, at 3:22 PM, Samuel Holland wrote:
-> On 2024-02-13 12:07 PM, Conor Dooley wrote:
->> On Mon, Feb 12, 2024 at 07:37:34PM -0800, Samuel Holland wrote:
->>> Previously, all extension version numbers were ignored. However, the
->>> version number is important for these two extensions. The simplest way
->>> to implement this is to use a separate bitmap bit for each supported
->>> version, with each successive version implying all of the previous ones.
->>> This allows alternatives and riscv_has_extension_[un]likely() to work
->>> naturally.
->>>
->>> To avoid duplicate extensions in /proc/cpuinfo, the new successor_id
->>> field allows hiding all but the newest implemented version of an
->>> extension.
->>>
->>> Cc: <stable@vger.kernel.org> # v6.7+
->>> Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
->>> ---
->>>
->>> Changes in v2:
->>>  - New patch for v2
->>>
->>>  arch/riscv/include/asm/cpufeature.h |  1 +
->>>  arch/riscv/include/asm/hwcap.h      |  8 ++++++
->>>  arch/riscv/kernel/cpu.c             |  5 ++++
->>>  arch/riscv/kernel/cpufeature.c      | 42 +++++++++++++++++++++++++----
->>>  4 files changed, 51 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/arch/riscv/include/asm/cpufeature.h b/arch/riscv/include/asm/cpufeature.h
->>> index 0bd11862b760..ac71384e7bc4 100644
->>> --- a/arch/riscv/include/asm/cpufeature.h
->>> +++ b/arch/riscv/include/asm/cpufeature.h
->>> @@ -61,6 +61,7 @@ struct riscv_isa_ext_data {
->>>  	const char *property;
->>>  	const unsigned int *subset_ext_ids;
->>>  	const unsigned int subset_ext_size;
->>> +	const unsigned int successor_id;
->>>  };
->>>  
->>>  extern const struct riscv_isa_ext_data riscv_isa_ext[];
->>> diff --git a/arch/riscv/include/asm/hwcap.h b/arch/riscv/include/asm/hwcap.h
->>> index 5340f818746b..5b51aa1db15b 100644
->>> --- a/arch/riscv/include/asm/hwcap.h
->>> +++ b/arch/riscv/include/asm/hwcap.h
->>> @@ -80,13 +80,21 @@
->>>  #define RISCV_ISA_EXT_ZFA		71
->>>  #define RISCV_ISA_EXT_ZTSO		72
->>>  #define RISCV_ISA_EXT_ZACAS		73
->>> +#define RISCV_ISA_EXT_SM1p11		74
->>> +#define RISCV_ISA_EXT_SM1p12		75
->>> +#define RISCV_ISA_EXT_SS1p11		76
->>> +#define RISCV_ISA_EXT_SS1p12		77
->>>  
->>>  #define RISCV_ISA_EXT_MAX		128
->>>  #define RISCV_ISA_EXT_INVALID		U32_MAX
->>>  
->>>  #ifdef CONFIG_RISCV_M_MODE
->>> +#define RISCV_ISA_EXT_Sx1p11		RISCV_ISA_EXT_SM1p11
->>> +#define RISCV_ISA_EXT_Sx1p12		RISCV_ISA_EXT_SM1p12
->>>  #define RISCV_ISA_EXT_SxAIA		RISCV_ISA_EXT_SMAIA
->>>  #else
->>> +#define RISCV_ISA_EXT_Sx1p11		RISCV_ISA_EXT_SS1p11
->>> +#define RISCV_ISA_EXT_Sx1p12		RISCV_ISA_EXT_SS1p12
->>>  #define RISCV_ISA_EXT_SxAIA		RISCV_ISA_EXT_SSAIA
->>>  #endif
->>>  
->>> diff --git a/arch/riscv/kernel/cpu.c b/arch/riscv/kernel/cpu.c
->>> index d11d6320fb0d..2e6b90ed0d51 100644
->>> --- a/arch/riscv/kernel/cpu.c
->>> +++ b/arch/riscv/kernel/cpu.c
->>> @@ -215,6 +215,11 @@ static void print_isa(struct seq_file *f, const unsigned long *isa_bitmap)
->>>  		if (!__riscv_isa_extension_available(isa_bitmap, riscv_isa_ext[i].id))
->>>  			continue;
->>>  
->>> +		/* Only show the newest implemented version of an extension */
->>> +		if (riscv_isa_ext[i].successor_id != RISCV_ISA_EXT_INVALID &&
->>> +		    __riscv_isa_extension_available(isa_bitmap, riscv_isa_ext[i].successor_id))
->>> +			continue;
->>> +
->>>  		/* Only multi-letter extensions are split by underscores */
->>>  		if (strnlen(riscv_isa_ext[i].name, 2) != 1)
->>>  			seq_puts(f, "_");
->>> diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
->>> index c5b13f7dd482..8e10b50120e9 100644
->>> --- a/arch/riscv/kernel/cpufeature.c
->>> +++ b/arch/riscv/kernel/cpufeature.c
->>> @@ -113,23 +113,29 @@ static bool riscv_isa_extension_check(int id)
->>>  	return true;
->>>  }
->>>  
->>> -#define _RISCV_ISA_EXT_DATA(_name, _id, _subset_exts, _subset_exts_size) {	\
->>> +#define _RISCV_ISA_EXT_DATA(_name, _id, _subset_exts, _subset_exts_size, _successor) {	\
->>>  	.name = #_name,								\
->>>  	.property = #_name,							\
->>>  	.id = _id,								\
->>>  	.subset_ext_ids = _subset_exts,						\
->>> -	.subset_ext_size = _subset_exts_size					\
->>> +	.subset_ext_size = _subset_exts_size,					\
->>> +	.successor_id = _successor,						\
->>>  }
->>>  
->>> -#define __RISCV_ISA_EXT_DATA(_name, _id) _RISCV_ISA_EXT_DATA(_name, _id, NULL, 0)
->>> +#define __RISCV_ISA_EXT_DATA(_name, _id) \
->>> +	_RISCV_ISA_EXT_DATA(_name, _id, NULL, 0, RISCV_ISA_EXT_INVALID)
->>>  
->>>  /* Used to declare pure "lasso" extension (Zk for instance) */
->>>  #define __RISCV_ISA_EXT_BUNDLE(_name, _bundled_exts) \
->>> -	_RISCV_ISA_EXT_DATA(_name, RISCV_ISA_EXT_INVALID, _bundled_exts, ARRAY_SIZE(_bundled_exts))
->>> +	_RISCV_ISA_EXT_DATA(_name, RISCV_ISA_EXT_INVALID, \
->>> +			    _bundled_exts, ARRAY_SIZE(_bundled_exts), RISCV_ISA_EXT_INVALID)
->>>  
->>>  /* Used to declare extensions that are a superset of other extensions (Zvbb for instance) */
->>>  #define __RISCV_ISA_EXT_SUPERSET(_name, _id, _sub_exts) \
->>> -	_RISCV_ISA_EXT_DATA(_name, _id, _sub_exts, ARRAY_SIZE(_sub_exts))
->>> +	_RISCV_ISA_EXT_DATA(_name, _id, _sub_exts, ARRAY_SIZE(_sub_exts), RISCV_ISA_EXT_INVALID)
->>> +
->>> +#define __RISCV_ISA_EXT_VERSION(_name, _id, _preds, _preds_size, _successor) \
->>> +	_RISCV_ISA_EXT_DATA(_name, _id, _preds, _preds_size, _successor)
->>>  
->>>  static const unsigned int riscv_zk_bundled_exts[] = {
->>>  	RISCV_ISA_EXT_ZBKB,
->>> @@ -201,6 +207,16 @@ static const unsigned int riscv_zvbb_exts[] = {
->>>  	RISCV_ISA_EXT_ZVKB
->>>  };
->>>  
->>> +static const unsigned int riscv_sm_ext_versions[] = {
->>> +	RISCV_ISA_EXT_SM1p11,
->>> +	RISCV_ISA_EXT_SM1p12,
->>> +};
->>> +
->>> +static const unsigned int riscv_ss_ext_versions[] = {
->>> +	RISCV_ISA_EXT_SS1p11,
->>> +	RISCV_ISA_EXT_SS1p12,
->>> +};
->>> +
->>>  /*
->>>   * The canonical order of ISA extension names in the ISA string is defined in
->>>   * chapter 27 of the unprivileged specification.
->>> @@ -299,8 +315,16 @@ const struct riscv_isa_ext_data riscv_isa_ext[] = {
->>>  	__RISCV_ISA_EXT_DATA(zvksh, RISCV_ISA_EXT_ZVKSH),
->>>  	__RISCV_ISA_EXT_BUNDLE(zvksg, riscv_zvksg_bundled_exts),
->>>  	__RISCV_ISA_EXT_DATA(zvkt, RISCV_ISA_EXT_ZVKT),
->>> +	__RISCV_ISA_EXT_VERSION(sm1p11, RISCV_ISA_EXT_SM1p11, riscv_sm_ext_versions, 0,
->>> +				RISCV_ISA_EXT_SM1p12),
->>> +	__RISCV_ISA_EXT_VERSION(sm1p12, RISCV_ISA_EXT_SM1p12, riscv_sm_ext_versions, 1,
->>> +				RISCV_ISA_EXT_INVALID),
->>>  	__RISCV_ISA_EXT_DATA(smaia, RISCV_ISA_EXT_SMAIA),
->>>  	__RISCV_ISA_EXT_DATA(smstateen, RISCV_ISA_EXT_SMSTATEEN),
->>> +	__RISCV_ISA_EXT_VERSION(ss1p11, RISCV_ISA_EXT_SS1p11, riscv_ss_ext_versions, 0,
->>> +				RISCV_ISA_EXT_SS1p12),
->>> +	__RISCV_ISA_EXT_VERSION(ss1p12, RISCV_ISA_EXT_SS1p12, riscv_ss_ext_versions, 1,
->>> +				RISCV_ISA_EXT_INVALID),
->>>  	__RISCV_ISA_EXT_DATA(ssaia, RISCV_ISA_EXT_SSAIA),
->>>  	__RISCV_ISA_EXT_DATA(sscofpmf, RISCV_ISA_EXT_SSCOFPMF),
->>>  	__RISCV_ISA_EXT_DATA(sstc, RISCV_ISA_EXT_SSTC),
->>> @@ -414,6 +438,14 @@ static void __init riscv_parse_isa_string(unsigned long *this_hwcap, struct risc
->>>  				;
->>>  
->>>  			++ext_end;
->>> +
->>> +			/*
->>> +			 * As a special case for the Sm and Ss extensions, where the version
->>> +			 * number is important, include it in the extension name.
->>> +			 */
->>> +			if (ext_end - ext == 2 && tolower(ext[0]) == 's' &&
->>> +			    (tolower(ext[1]) == 'm' || tolower(ext[1]) == 's'))
->>> +				ext_end = isa;
->>>  			break;
->>>  		default:
->>>  			/*
->> 
->> 
->> Hmm, looking at all of this (especially this hack to the "old" parser),
->> I feel more like these should be promoted to a property of their own.
->> The "old" parser was designed to handle numbers, and here when you're
->> interested in the values behind the numbers (which is a first iirc), you
->> don't make any use of that. I don't really want to see a world where
->
-> I had a version of this code that parsed the numbers and stored them as integers
-> in `struct riscv_isainfo`. It didn't work with of_property_match_string() as
-> used for riscv,isa-extensions, since that function expects the extension name to
-> be the full string. Either we would need to change the code to parse a version
-> number out of each string in the riscv,isa-extensions list (and make the binding
-> a bunch of regexes), or we need a separate "extension" entry (and DT binding
-> entry) for each supported version.
 
-Version numbers aren't real, there's no compatibility promise that we can
-consistently rely on so we treat riscv,isa-extensions as simply containing
-alphanumeric extensions.  This was an intentional part of simplifying riscv,isa
-into riscv,isa-extensions.
+--k3DOEzKl6wHMV12g
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> I chose the second option, and as a consequence I didn't actually need to parse
-> the integer value in the ISA string code path either.
->
->> we have every single iteration of smNpM under the sun in the property,
->> because there's a fair bit of churn in the isa. Granted, this applies to
->> all the various, the difference for me is the level of churn.
->
-> Indeed. In fact, one thought I had while looking at this code is that we should
-> be ignoring any extension in the ISA string with a version < 1.0 or >= 2.0,
-> since those won't be compatible with what we expect.
+On Tue 13 Feb 2024 11:15:40 GMT, Masahiro Yamada wrote:
+> On Tue, Feb 13, 2024 at 11:06=E2=80=AFAM Nathan Chancellor=20
+> <nathan@kernel.org> wrote:
+> >
+> > Commit 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+> > changed the ELF type of .btf.vmlinux.bin.o to ET_REL via dd, which works
+> > fine for little endian platforms:
+> >
+> >    00000000  7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF...=
+=2E........|
+> >   -00000010  03 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |.......=
+=2E........|
+> >   +00000010  01 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |.......=
+=2E........|
+> >
+> > However, for big endian platforms, it changes the wrong byte, resulting
+> > in an invalid ELF file type, which ld.lld rejects:
+> >
+> >    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF...=
+=2E........|
+> >   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.......=
+=2E........|
+> >   +00000010  01 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.......=
+=2E........|
+> >
+> >   Type:                              <unknown>: 103
+> >
+> >   ld.lld: error: .btf.vmlinux.bin.o: unknown file type
+> >
+> > Fix this by updating the entire 16-bit e_type field rather than just a
+> > single byte, so that everything works correctly for all platforms and
+> > linkers.
+> >
+> >    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF...=
+=2E........|
+> >   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.......=
+=2E........|
+> >   +00000010  00 01 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.......=
+=2E........|
+> >
+> >   Type:                              REL (Relocatable file)
+> >
+> > While in the area, update the comment to mention that binutils 2.35+
+> > matches LLD's behavior of rejecting an ET_EXEC input, which occurred
+> > after the comment was added.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+> > Link: https://github.com/llvm/llvm-project/pull/75643
+> > Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
+> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+>=20
+>=20
+> Thanks.
+>=20
+> I will wait for a few days until
+> the reviewers come back to give Reviewed-by again.
 
-I might go further and say that we should only accept specific exact versions of
-extensions other than Ss/Sm.  This could be revisited after the recent "semver
-for ISA extensions" policy is tested at least once under real-world conditions.
+thanks, v2 looks even better.
 
-Right now we have two ratified versions of Ss/Sm, soon to be three, and one
-ratified version of all other extensions.  I hardly think this is an excessive
-amount of churn.
+Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
 
->> Or maybe we can still with the properties you have, but instead of
->> treating them like any other extension, handle these separately,
->> focusing on the numbering, so that only having the exact version
->> supported by a cpu is possible.
->
-> Maybe I'm misunderstanding what you're saying here, but it is already the case
-> that the DT for a CPU would only contain the exact version of the privileged ISA
-> supported by that CPU.
+> > ---
+> > Changes in v2:
+> > - Rather than change the seek value for dd, update the entire e_type
+> >   field (Masahiro). Due to this change, I did not carry forward the
+> >   tags of v1.
+> > - Slightly update commit message to remove mention of ET_EXEC, which
+> >   does not match the dump (Masahiro).
+> > - Update comment to mention binutils 2.35+ has the same behavior as LLD
+> >   (Fangrui).
+> > - Link to v1: https://lore.kernel.org/r/20240208-fix-elf-type-btf-vmlin=
+ux-bin-o-big-endian-v1-1-cb3112491edc@kernel.org
+> > ---
+> >  scripts/link-vmlinux.sh | 9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+> > index a432b171be82..7862a8101747 100755
+> > --- a/scripts/link-vmlinux.sh
+> > +++ b/scripts/link-vmlinux.sh
+> > @@ -135,8 +135,13 @@ gen_btf()
+> >         ${OBJCOPY} --only-section=3D.BTF --set-section-flags .BTF=3Dall=
+oc,readonly \
+> >                 --strip-all ${1} ${2} 2>/dev/null
+> >         # Change e_type to ET_REL so that it can be used to link final =
+vmlinux.
+> > -       # Unlike GNU ld, lld does not allow an ET_EXEC input.
+> > -       printf '\1' | dd of=3D${2} conv=3Dnotrunc bs=3D1 seek=3D16 stat=
+us=3Dnone
+> > +       # GNU ld 2.35+ and lld do not allow an ET_EXEC input.
+> > +       if is_enabled CONFIG_CPU_BIG_ENDIAN; then
+> > +               et_rel=3D'\0\1'
+> > +       else
+> > +               et_rel=3D'\1\0'
+> > +       fi
+> > +       printf "${et_rel}" | dd of=3D${2} conv=3Dnotrunc bs=3D1 seek=3D=
+16 status=3Dnone
+> >  }
+> >
+> >  # Create ${2} .S file with all symbols from the ${1} object file
+> >
+> > ---
+> > base-commit: 54be6c6c5ae8e0d93a6c4641cb7528eb0b6ba478
+> > change-id: 20240208-fix-elf-type-btf-vmlinux-bin-o-big-endian-dbc55a1e1=
+296
+> >
+> > Best regards,
+> > --
+> > Nathan Chancellor <nathan@kernel.org>
+> >
+> >
+>=20
+>=20
+> --=20
+> Best Regards
+> Masahiro Yamada
 
-If privileged spec versions are boolean extensions, then you would say "ss1p11",
-"ss1p12", "ss1p13" as separate/simultaneous extensions.  This is needed in order
-to allow simple support checks as described in the riscv,isa-extensions cover
-letter.
+--k3DOEzKl6wHMV12g
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> With this implementation, the fact that the integer version gets expanded to a
-> series of flags is supposed to be invisible in the DT and to userspace. I
-> realize I don't quite succeed there: putting "ss1p13" in the ISA string should
-> work, but does not.
->
->> I'm still pretty undecided, I'd like to think about this a little bit,
->> but I think we can do better here.
->
-> Sure, no problem. I'm happy to implement whatever we agree on. Though one
-> consideration I had is that this is all in support of fixing a bug in v6.7, so I
-> wanted the changes to be backportable.
->
-> I suppose the easy way out for backporting is to check for RISCV_ISA_EXT_ZICBOZ
-> for now, and then solve the larger problem once there is some other user of the
-> envcfg CSR (or another Ss1p12 feature).
+-----BEGIN PGP SIGNATURE-----
 
-I support that course of action.
+iQIzBAABCAAdFiEEh0E3p4c3JKeBvsLGB1IKcBYmEmkFAmXL1nkACgkQB1IKcBYm
+EmknARAA2E4GEywHnpFzwMKgFe11O30rRL3/W2ji1MkLji9oI5NquTUJZ6Qw/9Nc
+LT69QvkdpCrRX+zpqqI+hCV5CsyXzUKbOmcd0FQ3F6jxB35QM4ko1sYLJBcw3Xau
+waRdyD0agJ3IbcF85/f3xIvUk33Qhm55yMzLx/IZl7YKwI3/E4iO3JSWY1IfijMo
+l9fWpu7ZOSHrbglfgONr3GPt9vLwVBP5hXxwbkbR9r2VRL8Mc5oHHFMJYcY4y3bF
+wQVT7Fsz++dgnxD8VoyBBtVWrmrFx9pc/3sGbgK6tECwuVKd4ZzeGi0uRaB94Shy
+AoigytM4RQo8CxDhI3E952P1IYStX3yitI6hVcYcpOK6rOikKqwc9SZvmOyNbleY
+mUkeddNa3TA90BIJ1TdG+SFWdpfbx1R516pkagHLkt89jYq4uvb5pDs4QO65umxN
+D0OMvKaRBpPZNmy90557DA4s0BOhs6DZWmCGWR/nsz7h5zPHi7kDVwH4I7M+1VI6
+L2hQXFIYWvY17HAXHXyULgefp4bEhnvCCAzckkf6edpVdzloBhYWkzoGQn9eoERP
+NT9cRMElIP5s7ejDDaB5fwog6K5oNg6Wjbce2aV0Kpb8QTx2pDT1aw2Ml+RUm83N
+kiAoHupA7gVA1dio5hG1x7KZDHwK6CfhzhPFGnfFa0wNs7iWqmU=
+=ghs2
+-----END PGP SIGNATURE-----
 
--s
-
-> Regards,
-> Samuel
->
->
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+--k3DOEzKl6wHMV12g--
 
