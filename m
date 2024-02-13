@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-20027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C039853879
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:37:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FDD9853762
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:25:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32C6E283762
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:37:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79E161F23754
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471D36026F;
-	Tue, 13 Feb 2024 17:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393ED5FEF0;
+	Tue, 13 Feb 2024 17:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJowJNdE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMHWPced"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A786027F;
-	Tue, 13 Feb 2024 17:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB925FEE0;
+	Tue, 13 Feb 2024 17:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845824; cv=none; b=op8CO1rOIPw2t7+c1ey+8NS3e3PYThgvJtdxRKeOpqrzkt5++Bnb18+y3bwEPefOi0hUNHeVT6LOd8VUvgAE/Gn/AXLO9EN71AYw7oaw14NM0UMZBvZU84RA832ttAhxDih1utuk5E/c1ZBnZVgwo+HsrExwP6aiwMt2swM3OT0=
+	t=1707845086; cv=none; b=HR97rEsbJibGXX6H9CL9PCv8XQwvA5k2tdQFgHwAMy6ORPmIyqLRUGWOiwkFQFbPS9W4fQiFNOyso78BKLgLQO6dzUbsaTqEqkL/lCAVOYQf2LKjxw9j01MJVHTVg4L/T8v++xJbau7QEZ3iSQyzfxihgSh4Wp8aBTT+rHIT88g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845824; c=relaxed/simple;
-	bh=mCd8iCfSGmK5XBrvuVqS3wUGlW5X/titwObVEE/THcI=;
+	s=arc-20240116; t=1707845086; c=relaxed/simple;
+	bh=nzU3qD00r6cFrlBgO/9U9nxYU8cEUmdpEIzw/2SzK7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MDAYDnIPHNfEMm7zAL4EDfqNAjJMGbFLGu2GQi6ImkwoPVH+07luqzO+DOobkutVo3ocslcqh8E0znq7HgzZd1A8O3pLwCiEUKu7A88mV6fOV2OYSYOnwj+iDFFvNlBzvfLlDcQhC/mC+mt5yFEEeiOIMRaLnQ6ucIlQMxVaJ1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJowJNdE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7244FC433C7;
-	Tue, 13 Feb 2024 17:37:03 +0000 (UTC)
+	 MIME-Version; b=s/cqgWflu+NIz2TF6m4Xh3rDucZ6qbT0+vE00JFGOoB3iB2ZXAth1mTw3UKiakTBVMNE/OghfmacLO+IwmP3S8AIf64m4dw+V1Lk7FfmiObNHaQSRYsv3gaStHZvlYYtjbO12OhN/PXiQZcgGAXijqSJOSUreOVACi8Bbt8adPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMHWPced; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105A9C433C7;
+	Tue, 13 Feb 2024 17:24:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845823;
-	bh=mCd8iCfSGmK5XBrvuVqS3wUGlW5X/titwObVEE/THcI=;
+	s=korg; t=1707845085;
+	bh=nzU3qD00r6cFrlBgO/9U9nxYU8cEUmdpEIzw/2SzK7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QJowJNdEE0+1sZEb/T8IxXXgohDONm4bANlHNzVTK0nSxVvK3nAmShoxMiBI3/Rjd
-	 5grrYTHfljISnurxHG50xBG3tO4JBDsp+Rc6/OP+BmanoTdzg2QTUN1ASeXAZujvtf
-	 wp7Y5mFvps+5mNZwT1Tvm6ql1GjN0TMif5NzLNYk=
+	b=pMHWPcedshQlrW709H71DP+7SVJXLjcbPMHs3Wz01rXawI5L0MzjkZbzxHKekVPi7
+	 Td+JgOoJuh+rCoOeIVw3aGvXuGy05vuM6XPvc8QdzJXqryZLZLPtSA9t+Cwqzc6TEu
+	 6a+MKmmGB97s85EeRFpnw3lSc6SuPg6PNdiwL5Lk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Alexander Aring <aahringo@redhat.com>,
+	David Teigland <teigland@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 067/124] netfilter: nf_tables: use timestamp to check for set element timeout
+Subject: [PATCH 6.1 43/64] fs: dlm: dont put dlm_local_addrs on heap
 Date: Tue, 13 Feb 2024 18:21:29 +0100
-Message-ID: <20240213171855.698522431@linuxfoundation.org>
+Message-ID: <20240213171846.101403878@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
-References: <20240213171853.722912593@linuxfoundation.org>
+In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
+References: <20240213171844.702064831@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,322 +62,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Alexander Aring <aahringo@redhat.com>
 
-[ Upstream commit 7395dfacfff65e9938ac0889dafa1ab01e987d15 ]
+[ Upstream commit c51c9cd8addcfbdc097dbefd59f022402183644b ]
 
-Add a timestamp field at the beginning of the transaction, store it
-in the nftables per-netns area.
+This patch removes to allocate the dlm_local_addr[] pointers on the
+heap. Instead we directly store the type of "struct sockaddr_storage".
+This removes function deinit_local() because it was freeing memory only.
 
-Update set backend .insert, .deactivate and sync gc path to use the
-timestamp, this avoids that an element expires while control plane
-transaction is still unfinished.
-
-.lookup and .update, which are used from packet path, still use the
-current time to check if the element has expired. And .get path and dump
-also since this runs lockless under rcu read size lock. Then, there is
-async gc which also needs to check the current time since it runs
-asynchronously from a workqueue.
-
-Fixes: c3e1b005ed1c ("netfilter: nf_tables: add set element timeout support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h | 16 ++++++++++++++--
- net/netfilter/nf_tables_api.c     |  4 +++-
- net/netfilter/nft_set_hash.c      |  8 +++++++-
- net/netfilter/nft_set_pipapo.c    | 18 +++++++++++-------
- net/netfilter/nft_set_rbtree.c    | 11 +++++++----
- 5 files changed, 42 insertions(+), 15 deletions(-)
+ fs/dlm/lowcomms.c | 38 ++++++++++++--------------------------
+ 1 file changed, 12 insertions(+), 26 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 4e8ecabc5f25..62013d018411 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -798,10 +798,16 @@ static inline struct nft_set_elem_expr *nft_set_ext_expr(const struct nft_set_ex
- 	return nft_set_ext(ext, NFT_SET_EXT_EXPRESSIONS);
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 72f34f96d015..2c797eb519da 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -174,7 +174,7 @@ static LIST_HEAD(dlm_node_addrs);
+ static DEFINE_SPINLOCK(dlm_node_addrs_spin);
+ 
+ static struct listen_connection listen_con;
+-static struct sockaddr_storage *dlm_local_addr[DLM_MAX_ADDR_COUNT];
++static struct sockaddr_storage dlm_local_addr[DLM_MAX_ADDR_COUNT];
+ static int dlm_local_count;
+ int dlm_allow_conn;
+ 
+@@ -398,7 +398,7 @@ static int nodeid_to_addr(int nodeid, struct sockaddr_storage *sas_out,
+ 	if (!sa_out)
+ 		return 0;
+ 
+-	if (dlm_local_addr[0]->ss_family == AF_INET) {
++	if (dlm_local_addr[0].ss_family == AF_INET) {
+ 		struct sockaddr_in *in4  = (struct sockaddr_in *) &sas;
+ 		struct sockaddr_in *ret4 = (struct sockaddr_in *) sa_out;
+ 		ret4->sin_addr.s_addr = in4->sin_addr.s_addr;
+@@ -727,7 +727,7 @@ static void add_sock(struct socket *sock, struct connection *con)
+ static void make_sockaddr(struct sockaddr_storage *saddr, uint16_t port,
+ 			  int *addr_len)
+ {
+-	saddr->ss_family =  dlm_local_addr[0]->ss_family;
++	saddr->ss_family =  dlm_local_addr[0].ss_family;
+ 	if (saddr->ss_family == AF_INET) {
+ 		struct sockaddr_in *in4_addr = (struct sockaddr_in *)saddr;
+ 		in4_addr->sin_port = cpu_to_be16(port);
+@@ -1167,7 +1167,7 @@ static int sctp_bind_addrs(struct socket *sock, uint16_t port)
+ 	int i, addr_len, result = 0;
+ 
+ 	for (i = 0; i < dlm_local_count; i++) {
+-		memcpy(&localaddr, dlm_local_addr[i], sizeof(localaddr));
++		memcpy(&localaddr, &dlm_local_addr[i], sizeof(localaddr));
+ 		make_sockaddr(&localaddr, port, &addr_len);
+ 
+ 		if (!i)
+@@ -1187,7 +1187,7 @@ static int sctp_bind_addrs(struct socket *sock, uint16_t port)
+ /* Get local addresses */
+ static void init_local(void)
+ {
+-	struct sockaddr_storage sas, *addr;
++	struct sockaddr_storage sas;
+ 	int i;
+ 
+ 	dlm_local_count = 0;
+@@ -1195,21 +1195,10 @@ static void init_local(void)
+ 		if (dlm_our_addr(&sas, i))
+ 			break;
+ 
+-		addr = kmemdup(&sas, sizeof(*addr), GFP_NOFS);
+-		if (!addr)
+-			break;
+-		dlm_local_addr[dlm_local_count++] = addr;
++		memcpy(&dlm_local_addr[dlm_local_count++], &sas, sizeof(sas));
+ 	}
  }
  
--static inline bool nft_set_elem_expired(const struct nft_set_ext *ext)
-+static inline bool __nft_set_elem_expired(const struct nft_set_ext *ext,
-+					  u64 tstamp)
+-static void deinit_local(void)
+-{
+-	int i;
+-
+-	for (i = 0; i < dlm_local_count; i++)
+-		kfree(dlm_local_addr[i]);
+-}
+-
+ static struct writequeue_entry *new_writequeue_entry(struct connection *con)
  {
- 	return nft_set_ext_exists(ext, NFT_SET_EXT_EXPIRATION) &&
--	       time_is_before_eq_jiffies64(*nft_set_ext_expiration(ext));
-+	       time_after_eq64(tstamp, *nft_set_ext_expiration(ext));
-+}
-+
-+static inline bool nft_set_elem_expired(const struct nft_set_ext *ext)
-+{
-+	return __nft_set_elem_expired(ext, get_jiffies_64());
- }
- 
- static inline struct nft_set_ext *nft_set_elem_ext(const struct nft_set *set,
-@@ -1750,6 +1756,7 @@ struct nftables_pernet {
- 	struct list_head	notify_list;
- 	struct mutex		commit_mutex;
- 	u64			table_handle;
-+	u64			tstamp;
- 	unsigned int		base_seq;
- 	unsigned int		gc_seq;
- 	u8			validate_state;
-@@ -1762,6 +1769,11 @@ static inline struct nftables_pernet *nft_pernet(const struct net *net)
- 	return net_generic(net, nf_tables_net_id);
- }
- 
-+static inline u64 nft_net_tstamp(const struct net *net)
-+{
-+	return nft_pernet(net)->tstamp;
-+}
-+
- #define __NFT_REDUCE_READONLY	1UL
- #define NFT_REDUCE_READONLY	(void *)__NFT_REDUCE_READONLY
- 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 0e07f110a539..04c5aa4debc7 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -9744,6 +9744,7 @@ struct nft_trans_gc *nft_trans_gc_catchall_async(struct nft_trans_gc *gc,
- struct nft_trans_gc *nft_trans_gc_catchall_sync(struct nft_trans_gc *gc)
- {
- 	struct nft_set_elem_catchall *catchall, *next;
-+	u64 tstamp = nft_net_tstamp(gc->net);
- 	const struct nft_set *set = gc->set;
- 	struct nft_elem_priv *elem_priv;
- 	struct nft_set_ext *ext;
-@@ -9753,7 +9754,7 @@ struct nft_trans_gc *nft_trans_gc_catchall_sync(struct nft_trans_gc *gc)
- 	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
- 		ext = nft_set_elem_ext(set, catchall->elem);
- 
--		if (!nft_set_elem_expired(ext))
-+		if (!__nft_set_elem_expired(ext, tstamp))
- 			continue;
- 
- 		gc = nft_trans_gc_queue_sync(gc, GFP_KERNEL);
-@@ -10539,6 +10540,7 @@ static bool nf_tables_valid_genid(struct net *net, u32 genid)
- 	bool genid_ok;
- 
- 	mutex_lock(&nft_net->commit_mutex);
-+	nft_net->tstamp = get_jiffies_64();
- 
- 	genid_ok = genid == 0 || nft_net->base_seq == genid;
- 	if (!genid_ok)
-diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
-index 6c2061bfdae6..6968a3b34236 100644
---- a/net/netfilter/nft_set_hash.c
-+++ b/net/netfilter/nft_set_hash.c
-@@ -36,6 +36,7 @@ struct nft_rhash_cmp_arg {
- 	const struct nft_set		*set;
- 	const u32			*key;
- 	u8				genmask;
-+	u64				tstamp;
- };
- 
- static inline u32 nft_rhash_key(const void *data, u32 len, u32 seed)
-@@ -62,7 +63,7 @@ static inline int nft_rhash_cmp(struct rhashtable_compare_arg *arg,
- 		return 1;
- 	if (nft_set_elem_is_dead(&he->ext))
- 		return 1;
--	if (nft_set_elem_expired(&he->ext))
-+	if (__nft_set_elem_expired(&he->ext, x->tstamp))
- 		return 1;
- 	if (!nft_set_elem_active(&he->ext, x->genmask))
- 		return 1;
-@@ -87,6 +88,7 @@ bool nft_rhash_lookup(const struct net *net, const struct nft_set *set,
- 		.genmask = nft_genmask_cur(net),
- 		.set	 = set,
- 		.key	 = key,
-+		.tstamp  = get_jiffies_64(),
- 	};
- 
- 	he = rhashtable_lookup(&priv->ht, &arg, nft_rhash_params);
-@@ -106,6 +108,7 @@ nft_rhash_get(const struct net *net, const struct nft_set *set,
- 		.genmask = nft_genmask_cur(net),
- 		.set	 = set,
- 		.key	 = elem->key.val.data,
-+		.tstamp  = get_jiffies_64(),
- 	};
- 
- 	he = rhashtable_lookup(&priv->ht, &arg, nft_rhash_params);
-@@ -131,6 +134,7 @@ static bool nft_rhash_update(struct nft_set *set, const u32 *key,
- 		.genmask = NFT_GENMASK_ANY,
- 		.set	 = set,
- 		.key	 = key,
-+		.tstamp  = get_jiffies_64(),
- 	};
- 
- 	he = rhashtable_lookup(&priv->ht, &arg, nft_rhash_params);
-@@ -175,6 +179,7 @@ static int nft_rhash_insert(const struct net *net, const struct nft_set *set,
- 		.genmask = nft_genmask_next(net),
- 		.set	 = set,
- 		.key	 = elem->key.val.data,
-+		.tstamp	 = nft_net_tstamp(net),
- 	};
- 	struct nft_rhash_elem *prev;
- 
-@@ -216,6 +221,7 @@ nft_rhash_deactivate(const struct net *net, const struct nft_set *set,
- 		.genmask = nft_genmask_next(net),
- 		.set	 = set,
- 		.key	 = elem->key.val.data,
-+		.tstamp	 = nft_net_tstamp(net),
- 	};
- 
- 	rcu_read_lock();
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index a65617cd8e2e..ffce43e14561 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -504,6 +504,7 @@ bool nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
-  * @set:	nftables API set representation
-  * @data:	Key data to be matched against existing elements
-  * @genmask:	If set, check that element is active in given genmask
-+ * @tstamp:	timestamp to check for expired elements
-  *
-  * This is essentially the same as the lookup function, except that it matches
-  * key data against the uncommitted copy and doesn't use preallocated maps for
-@@ -513,7 +514,8 @@ bool nft_pipapo_lookup(const struct net *net, const struct nft_set *set,
-  */
- static struct nft_pipapo_elem *pipapo_get(const struct net *net,
- 					  const struct nft_set *set,
--					  const u8 *data, u8 genmask)
-+					  const u8 *data, u8 genmask,
-+					  u64 tstamp)
- {
- 	struct nft_pipapo_elem *ret = ERR_PTR(-ENOENT);
- 	struct nft_pipapo *priv = nft_set_priv(set);
-@@ -566,7 +568,7 @@ static struct nft_pipapo_elem *pipapo_get(const struct net *net,
- 			goto out;
- 
- 		if (last) {
--			if (nft_set_elem_expired(&f->mt[b].e->ext))
-+			if (__nft_set_elem_expired(&f->mt[b].e->ext, tstamp))
- 				goto next_match;
- 			if ((genmask &&
- 			     !nft_set_elem_active(&f->mt[b].e->ext, genmask)))
-@@ -606,7 +608,7 @@ nft_pipapo_get(const struct net *net, const struct nft_set *set,
- 	struct nft_pipapo_elem *e;
- 
- 	e = pipapo_get(net, set, (const u8 *)elem->key.val.data,
--		       nft_genmask_cur(net));
-+		       nft_genmask_cur(net), get_jiffies_64());
- 	if (IS_ERR(e))
- 		return ERR_CAST(e);
- 
-@@ -1173,6 +1175,7 @@ static int nft_pipapo_insert(const struct net *net, const struct nft_set *set,
- 	struct nft_pipapo_match *m = priv->clone;
- 	u8 genmask = nft_genmask_next(net);
- 	struct nft_pipapo_elem *e, *dup;
-+	u64 tstamp = nft_net_tstamp(net);
- 	struct nft_pipapo_field *f;
- 	const u8 *start_p, *end_p;
- 	int i, bsize_max, err = 0;
-@@ -1182,7 +1185,7 @@ static int nft_pipapo_insert(const struct net *net, const struct nft_set *set,
- 	else
- 		end = start;
- 
--	dup = pipapo_get(net, set, start, genmask);
-+	dup = pipapo_get(net, set, start, genmask, tstamp);
- 	if (!IS_ERR(dup)) {
- 		/* Check if we already have the same exact entry */
- 		const struct nft_data *dup_key, *dup_end;
-@@ -1204,7 +1207,7 @@ static int nft_pipapo_insert(const struct net *net, const struct nft_set *set,
- 
- 	if (PTR_ERR(dup) == -ENOENT) {
- 		/* Look for partially overlapping entries */
--		dup = pipapo_get(net, set, end, nft_genmask_next(net));
-+		dup = pipapo_get(net, set, end, nft_genmask_next(net), tstamp);
+ 	struct writequeue_entry *entry;
+@@ -1575,7 +1564,7 @@ static void dlm_connect(struct connection *con)
  	}
  
- 	if (PTR_ERR(dup) != -ENOENT) {
-@@ -1560,6 +1563,7 @@ static void pipapo_gc(struct nft_set *set, struct nft_pipapo_match *m)
- {
- 	struct nft_pipapo *priv = nft_set_priv(set);
- 	struct net *net = read_pnet(&set->net);
-+	u64 tstamp = nft_net_tstamp(net);
- 	int rules_f0, first_rule = 0;
- 	struct nft_pipapo_elem *e;
- 	struct nft_trans_gc *gc;
-@@ -1594,7 +1598,7 @@ static void pipapo_gc(struct nft_set *set, struct nft_pipapo_match *m)
- 		/* synchronous gc never fails, there is no need to set on
- 		 * NFT_SET_ELEM_DEAD_BIT.
- 		 */
--		if (nft_set_elem_expired(&e->ext)) {
-+		if (__nft_set_elem_expired(&e->ext, tstamp)) {
- 			priv->dirty = true;
+ 	/* Create a socket to communicate with */
+-	result = sock_create_kern(&init_net, dlm_local_addr[0]->ss_family,
++	result = sock_create_kern(&init_net, dlm_local_addr[0].ss_family,
+ 				  SOCK_STREAM, dlm_proto_ops->proto, &sock);
+ 	if (result < 0)
+ 		goto socket_err;
+@@ -1786,7 +1775,6 @@ void dlm_lowcomms_stop(void)
+ 	foreach_conn(free_conn);
+ 	srcu_read_unlock(&connections_srcu, idx);
+ 	work_stop();
+-	deinit_local();
  
- 			gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
-@@ -1769,7 +1773,7 @@ static void *pipapo_deactivate(const struct net *net, const struct nft_set *set,
- {
- 	struct nft_pipapo_elem *e;
+ 	dlm_proto_ops = NULL;
+ }
+@@ -1803,7 +1791,7 @@ static int dlm_listen_for_all(void)
+ 	if (result < 0)
+ 		return result;
  
--	e = pipapo_get(net, set, data, nft_genmask_next(net));
-+	e = pipapo_get(net, set, data, nft_genmask_next(net), nft_net_tstamp(net));
- 	if (IS_ERR(e))
- 		return NULL;
+-	result = sock_create_kern(&init_net, dlm_local_addr[0]->ss_family,
++	result = sock_create_kern(&init_net, dlm_local_addr[0].ss_family,
+ 				  SOCK_STREAM, dlm_proto_ops->proto, &sock);
+ 	if (result < 0) {
+ 		log_print("Can't create comms socket: %d", result);
+@@ -1842,7 +1830,7 @@ static int dlm_tcp_bind(struct socket *sock)
+ 	/* Bind to our cluster-known address connecting to avoid
+ 	 * routing problems.
+ 	 */
+-	memcpy(&src_addr, dlm_local_addr[0], sizeof(src_addr));
++	memcpy(&src_addr, &dlm_local_addr[0], sizeof(src_addr));
+ 	make_sockaddr(&src_addr, 0, &addr_len);
  
-diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-index baa3fea4fe65..5fd74f993988 100644
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -313,6 +313,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 	struct nft_rbtree *priv = nft_set_priv(set);
- 	u8 cur_genmask = nft_genmask_cur(net);
- 	u8 genmask = nft_genmask_next(net);
-+	u64 tstamp = nft_net_tstamp(net);
- 	int d;
+ 	result = kernel_bind(sock, (struct sockaddr *)&src_addr,
+@@ -1899,9 +1887,9 @@ static int dlm_tcp_listen_bind(struct socket *sock)
+ 	int addr_len;
  
- 	/* Descend the tree to search for an existing element greater than the
-@@ -360,7 +361,7 @@ static int __nft_rbtree_insert(const struct net *net, const struct nft_set *set,
- 		/* perform garbage collection to avoid bogus overlap reports
- 		 * but skip new elements in this transaction.
- 		 */
--		if (nft_set_elem_expired(&rbe->ext) &&
-+		if (__nft_set_elem_expired(&rbe->ext, tstamp) &&
- 		    nft_set_elem_active(&rbe->ext, cur_genmask)) {
- 			const struct nft_rbtree_elem *removed_end;
+ 	/* Bind to our port */
+-	make_sockaddr(dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
++	make_sockaddr(&dlm_local_addr[0], dlm_config.ci_tcp_port, &addr_len);
+ 	return kernel_bind(sock, (struct sockaddr *)&dlm_local_addr[0],
+-			   addr_len);
++		           addr_len);
+ }
  
-@@ -551,6 +552,7 @@ nft_rbtree_deactivate(const struct net *net, const struct nft_set *set,
- 	const struct nft_rbtree *priv = nft_set_priv(set);
- 	const struct rb_node *parent = priv->root.rb_node;
- 	u8 genmask = nft_genmask_next(net);
-+	u64 tstamp = nft_net_tstamp(net);
- 	int d;
+ static const struct dlm_proto_ops dlm_tcp_ops = {
+@@ -1992,7 +1980,7 @@ int dlm_lowcomms_start(void)
  
- 	while (parent != NULL) {
-@@ -571,7 +573,7 @@ nft_rbtree_deactivate(const struct net *net, const struct nft_set *set,
- 				   nft_rbtree_interval_end(this)) {
- 				parent = parent->rb_right;
- 				continue;
--			} else if (nft_set_elem_expired(&rbe->ext)) {
-+			} else if (__nft_set_elem_expired(&rbe->ext, tstamp)) {
- 				break;
- 			} else if (!nft_set_elem_active(&rbe->ext, genmask)) {
- 				parent = parent->rb_left;
-@@ -624,9 +626,10 @@ static void nft_rbtree_gc(struct nft_set *set)
- {
- 	struct nft_rbtree *priv = nft_set_priv(set);
- 	struct nft_rbtree_elem *rbe, *rbe_end = NULL;
-+	struct net *net = read_pnet(&set->net);
-+	u64 tstamp = nft_net_tstamp(net);
- 	struct rb_node *node, *next;
- 	struct nft_trans_gc *gc;
--	struct net *net;
+ 	error = work_start();
+ 	if (error)
+-		goto fail_local;
++		goto fail;
  
- 	set  = nft_set_container_of(priv);
- 	net  = read_pnet(&set->net);
-@@ -648,7 +651,7 @@ static void nft_rbtree_gc(struct nft_set *set)
- 			rbe_end = rbe;
- 			continue;
- 		}
--		if (!nft_set_elem_expired(&rbe->ext))
-+		if (!__nft_set_elem_expired(&rbe->ext, tstamp))
- 			continue;
+ 	dlm_allow_conn = 1;
  
- 		gc = nft_trans_gc_queue_sync(gc, GFP_KERNEL);
+@@ -2022,8 +2010,6 @@ int dlm_lowcomms_start(void)
+ fail_proto_ops:
+ 	dlm_allow_conn = 0;
+ 	work_stop();
+-fail_local:
+-	deinit_local();
+ fail:
+ 	return error;
+ }
 -- 
 2.43.0
 
