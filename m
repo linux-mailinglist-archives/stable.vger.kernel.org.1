@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-19950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DE485380C
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:32:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F06D08537E4
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:30:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A4C91C20E3A
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:32:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FF3A1C2677C
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6795FF08;
-	Tue, 13 Feb 2024 17:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B725FEFF;
+	Tue, 13 Feb 2024 17:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kPD3WWJZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koHUJR8O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577895F54E;
-	Tue, 13 Feb 2024 17:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5347D5F54E;
+	Tue, 13 Feb 2024 17:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845551; cv=none; b=I+1mUSBAnsfDdYO0U6+I/pAv37oawMFdd1RuuaR4i58oGMpUlUTIgZs71THGnalB/Ebj+dsHhCsL7c+T8TQaTpvPzse3UwEjAjFln5qg/oiy4WKntpiWvfaE8WyyRIRnFnkNmIYAg9trBaHQ2+0YtpTIRcBaFFxEZ8cvd59JHLw=
+	t=1707845449; cv=none; b=MoRBCkbipgvVgIWtpM7hQcl06A/hFNKxLR6QNwatueSfOG4qXsk6gkeOsaCtNnMw7GB/vw+nsJsNbexIU5VQ7bffZ+M1daA09KvF5sfyPzzeLUFqSNbrQfPT/xhoHlAHAscIe3VsmZbIk+n08bZDuyO+V6S1J0u83uSpzRPFiVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845551; c=relaxed/simple;
-	bh=BVP8A5xP5/Obj8bflOPRUFtiuP4rB1oloHsbXTjR6g4=;
+	s=arc-20240116; t=1707845449; c=relaxed/simple;
+	bh=kE98pQ5ztQamhDjpJSMmRqd+HvD0OYpH3DBrpyI6BuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I3R/XlJlPArg22YN0VVfjHpNPjxhypSQnqSaikACPUyGs7r3tUhqpplFGElYEYV1zQBngRTJrublOcoDIazxSb+YVcCs4RMJJviBcP8qmHEfkXGIoVouC1XlWjax8vhLhN2J/mXsFu4q5iaRAkgNkpnj0crz0mn1Sewl4V4x41Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kPD3WWJZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F5FC433C7;
-	Tue, 13 Feb 2024 17:32:30 +0000 (UTC)
+	 MIME-Version; b=sRvXv+ZaS7DSYfgwHxdXAdoQIOUlTIxj3J7x4satHP3FnleKGLRAmOF6UVkqm/l4qFO+R97PsSFDSYKdhyNzL4PbGNMjGQpeeWLxcKrfh9VFAKIpz+XMn8p47Xl019YnxnKQRVjH1qRLg8FtDcDvFzR07k2vyZzTdUtXA4SgcXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koHUJR8O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D20C433F1;
+	Tue, 13 Feb 2024 17:30:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845551;
-	bh=BVP8A5xP5/Obj8bflOPRUFtiuP4rB1oloHsbXTjR6g4=;
+	s=korg; t=1707845448;
+	bh=kE98pQ5ztQamhDjpJSMmRqd+HvD0OYpH3DBrpyI6BuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kPD3WWJZvB0kwk6/Sg9iR011om8RZSEo5qymDBeRNPkdC547yLAFOMzT7mTzNkcQz
-	 6tt6L7IuUtUTirkaKFu+dWxfx1gzgygaD7e3KSPtzt/RO8q2FnNBBoKHN1OhtEKATB
-	 C+DHzm7mLzQhQLayAfFhmutm95r4lgPV2yS5l/fI=
+	b=koHUJR8Oa8hScFDH4nZvQ1w1XX5i+kvS19sDHxEE5c4Bg3tqOyZ7VZJVZNyr4AMA5
+	 uezU52EkrrhDF/tO/EL5t8pJ+YH9qAYnB2rSo2oeZgq7iksxO5gUWOM1YgzoEGItcS
+	 tiAQ1Gu3rE2W4nxdpDfZqJxfbD/MfznkmpREZO48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/121] selftests: cmsg_ipv6: repeat the exact packet
-Date: Tue, 13 Feb 2024 18:21:22 +0100
-Message-ID: <20240213171855.125304519@linuxfoundation.org>
+Subject: [PATCH 6.6 074/121] netfilter: nft_compat: narrow down revision to unsigned 8-bits
+Date: Tue, 13 Feb 2024 18:21:23 +0100
+Message-ID: <20240213171855.153704032@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
 In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
 References: <20240213171852.948844634@linuxfoundation.org>
@@ -67,54 +65,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 4b00d0c513da58b68df015968721b11396fe4ab3 ]
+[ Upstream commit 36fa8d697132b4bed2312d700310e8a78b000c84 ]
 
-cmsg_ipv6 test requests tcpdump to capture 4 packets,
-and sends until tcpdump quits. Only the first packet
-is "real", however, and the rest are basic UDP packets.
-So if tcpdump doesn't start in time it will miss
-the real packet and only capture the UDP ones.
+xt_find_revision() expects u8, restrict it to this datatype.
 
-This makes the test fail on slow machine (no KVM or with
-debug enabled) 100% of the time, while it passes in fast
-environments.
-
-Repeat the "real" / expected packet.
-
-Fixes: 9657ad09e1fa ("selftests: net: test IPV6_TCLASS")
-Fixes: 05ae83d5a4a2 ("selftests: net: test IPV6_HOPLIMIT")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 0ca743a55991 ("netfilter: nf_tables: add compatibility layer for x_tables")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/cmsg_ipv6.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nft_compat.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/cmsg_ipv6.sh b/tools/testing/selftests/net/cmsg_ipv6.sh
-index 330d0b1ceced..c921750ca118 100755
---- a/tools/testing/selftests/net/cmsg_ipv6.sh
-+++ b/tools/testing/selftests/net/cmsg_ipv6.sh
-@@ -91,7 +91,7 @@ for ovr in setsock cmsg both diff; do
- 	check_result $? 0 "TCLASS $prot $ovr - pass"
+diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
+index f0eeda97bfcd..001b6841a4b6 100644
+--- a/net/netfilter/nft_compat.c
++++ b/net/netfilter/nft_compat.c
+@@ -135,7 +135,7 @@ static void nft_target_eval_bridge(const struct nft_expr *expr,
  
- 	while [ -d /proc/$BG ]; do
--	    $NSEXE ./cmsg_sender -6 -p u $TGT6 1234
-+	    $NSEXE ./cmsg_sender -6 -p $p $m $((TOS2)) $TGT6 1234
- 	done
+ static const struct nla_policy nft_target_policy[NFTA_TARGET_MAX + 1] = {
+ 	[NFTA_TARGET_NAME]	= { .type = NLA_NUL_STRING },
+-	[NFTA_TARGET_REV]	= { .type = NLA_U32 },
++	[NFTA_TARGET_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
+ 	[NFTA_TARGET_INFO]	= { .type = NLA_BINARY },
+ };
  
- 	tcpdump -r $TMPF -v 2>&1 | grep "class $TOS2" >> /dev/null
-@@ -128,7 +128,7 @@ for ovr in setsock cmsg both diff; do
- 	check_result $? 0 "HOPLIMIT $prot $ovr - pass"
+@@ -419,7 +419,7 @@ static void nft_match_eval(const struct nft_expr *expr,
  
- 	while [ -d /proc/$BG ]; do
--	    $NSEXE ./cmsg_sender -6 -p u $TGT6 1234
-+	    $NSEXE ./cmsg_sender -6 -p $p $m $LIM $TGT6 1234
- 	done
+ static const struct nla_policy nft_match_policy[NFTA_MATCH_MAX + 1] = {
+ 	[NFTA_MATCH_NAME]	= { .type = NLA_NUL_STRING },
+-	[NFTA_MATCH_REV]	= { .type = NLA_U32 },
++	[NFTA_MATCH_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
+ 	[NFTA_MATCH_INFO]	= { .type = NLA_BINARY },
+ };
  
- 	tcpdump -r $TMPF -v 2>&1 | grep "hlim $LIM[^0-9]" >> /dev/null
+@@ -724,7 +724,7 @@ static int nfnl_compat_get_rcu(struct sk_buff *skb,
+ static const struct nla_policy nfnl_compat_policy_get[NFTA_COMPAT_MAX+1] = {
+ 	[NFTA_COMPAT_NAME]	= { .type = NLA_NUL_STRING,
+ 				    .len = NFT_COMPAT_NAME_MAX-1 },
+-	[NFTA_COMPAT_REV]	= { .type = NLA_U32 },
++	[NFTA_COMPAT_REV]	= NLA_POLICY_MAX(NLA_BE32, 255),
+ 	[NFTA_COMPAT_TYPE]	= { .type = NLA_U32 },
+ };
+ 
 -- 
 2.43.0
 
