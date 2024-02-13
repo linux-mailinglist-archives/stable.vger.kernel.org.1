@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-19802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D065853751
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:24:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AFD18537BC
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEFDC1F22C6D
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:24:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01B9628478E
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAC15FF0B;
-	Tue, 13 Feb 2024 17:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A3295F54E;
+	Tue, 13 Feb 2024 17:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVK3G9vp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hucUIpX0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBD665FF07;
-	Tue, 13 Feb 2024 17:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397FA5FDDF;
+	Tue, 13 Feb 2024 17:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845040; cv=none; b=ZajGwDJ+Kyg0J0IdRDkKoRd9EoY7Vj8ngLZ7QyEQPeGUEn8kkGmcGzEQ9BEgs35ibOMENhG4gux9iMlxm6qPzPxpkLd6lpfT3Y5J5ee4pAowIoD/ZqAtuBqNs5uMFoWnMHOXeFvRZIlVPRlOLODr4/gkrVxAGloxYtXbipLQa+o=
+	t=1707845341; cv=none; b=qoEaUYYPyh63r12pA1foDfv2NHF3TFaIXLPCzDaAqVcRlqU8pqF3LCsa4UqBkhaWHhcZSK+RhodUUdv179kKKzWI888Ghu9LcXYu9FVW9E6bwAbHyyHjrA9pV2pSfGuyTvMtMlKtl0biSdo65KYDxfqzRBRfUuB4HyD0w+OFZgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845040; c=relaxed/simple;
-	bh=7uNpw8bvpXsphonMicvUMR8rFrYIvLvZAhO09/Vmi84=;
+	s=arc-20240116; t=1707845341; c=relaxed/simple;
+	bh=NEzzuMHrSbfkFCtESDq5CmFerpBMHER15MowVVXqvSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DQFf7Jw0iL75UVgJKjT1VSF/sRH8JjQWn8aRHGGAiig6oCBS5m4TXAWIGSdeNalrXLufv9FXC4bgAzPeu4/u5F82z1vUbRLVbA5ZiYtTCoVqzEdNyE0+MF6uV5qmrPXsqNi4r27L+WSH3SIAnesVbtOwB5ibF2LlDDSqCD8/ICk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVK3G9vp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516FFC43390;
-	Tue, 13 Feb 2024 17:23:59 +0000 (UTC)
+	 MIME-Version; b=hqNN4FzUl08BQerEMAfKQdyy+kt/1LJagIS1iauWmZuVryFUHWyj9P/6jd78aZhbrPAhQ9ubTlDIqiPFVg5akcVEOx6Lr9+tvr50Y/9DJF+BESIpGPuZ+ks+qkTYX/HDufg1xlwUv0Qfk+UmFaa+zGl4FzSlBWp3GSwB6N2b93c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hucUIpX0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92642C433C7;
+	Tue, 13 Feb 2024 17:29:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845039;
-	bh=7uNpw8bvpXsphonMicvUMR8rFrYIvLvZAhO09/Vmi84=;
+	s=korg; t=1707845341;
+	bh=NEzzuMHrSbfkFCtESDq5CmFerpBMHER15MowVVXqvSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rVK3G9vpL4pzIyYfwC1zLT6ihbOf24wMayu3X8HySh1qjdohCqhtLRhtQQH5Q5ah2
-	 tf8oMqHTaE0loGYCWfXshTD60ExoZhIssga/Q8HrGntV2DqndZgX9jMAnNory7Rn5L
-	 O8s7w5Lo7s403syuKwZV/JDgm3NwR+fUVssuLerw=
+	b=hucUIpX02vS18C9yu4BXUsasZeAJ/NJsQ5cwJdbQJoN0rwZHKm7xrom83roYRa27x
+	 ovQpu9GwhLRuXYgEzsBO1jyeEbyH9bzGXW4AHuHTsQPlGg63ZGNWEiN1vEV7+KX5vu
+	 /E4BfMLViXsHzdQJvUpdjMkLO/SK8hOQkCik1qak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Vinod Koul <vkoul@kernel.org>,
+	Furong Xu <0x1207@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 06/64] phy: renesas: rcar-gen3-usb2: Fix returning wrong error code
+Subject: [PATCH 6.6 043/121] net: stmmac: xgmac: fix handling of DPP safety error for DMA channels
 Date: Tue, 13 Feb 2024 18:20:52 +0100
-Message-ID: <20240213171844.927393909@linuxfoundation.org>
+Message-ID: <20240213171854.255902184@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +63,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Furong Xu <0x1207@gmail.com>
 
-[ Upstream commit 249abaf3bf0dd07f5ddebbb2fe2e8f4d675f074e ]
+[ Upstream commit 46eba193d04f8bd717e525eb4110f3c46c12aec3 ]
 
-Even if device_create_file() returns error code,
-rcar_gen3_phy_usb2_probe() will return zero because the "ret" is
-variable shadowing.
+Commit 56e58d6c8a56 ("net: stmmac: Implement Safety Features in
+XGMAC core") checks and reports safety errors, but leaves the
+Data Path Parity Errors for each channel in DMA unhandled at all, lead to
+a storm of interrupt.
+Fix it by checking and clearing the DMA_DPP_Interrupt_Status register.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202312161021.gOLDl48K-lkp@intel.com/
-Fixes: 441a681b8843 ("phy: rcar-gen3-usb2: fix implementation for runtime PM")
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20240105093703.3359949-1-yoshihiro.shimoda.uh@renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 56e58d6c8a56 ("net: stmmac: Implement Safety Features in XGMAC core")
+Signed-off-by: Furong Xu <0x1207@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/renesas/phy-rcar-gen3-usb2.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/common.h  |  1 +
+ .../net/ethernet/stmicro/stmmac/dwxgmac2.h    |  3 +
+ .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 57 ++++++++++++++++++-
+ 3 files changed, 60 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-index 9de617ca9daa..7e61c6b278a7 100644
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -675,8 +675,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 	channel->irq = platform_get_irq_optional(pdev, 0);
- 	channel->dr_mode = rcar_gen3_get_dr_mode(dev->of_node);
- 	if (channel->dr_mode != USB_DR_MODE_UNKNOWN) {
--		int ret;
--
- 		channel->is_otg_channel = true;
- 		channel->uses_otg_pins = !of_property_read_bool(dev->of_node,
- 							"renesas,no-otg-pins");
-@@ -740,8 +738,6 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 		ret = PTR_ERR(provider);
- 		goto error;
- 	} else if (channel->is_otg_channel) {
--		int ret;
--
- 		ret = device_create_file(dev, &dev_attr_role);
- 		if (ret < 0)
- 			goto error;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
+index 1e996c29043d..3d4f34e178a8 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -216,6 +216,7 @@ struct stmmac_safety_stats {
+ 	unsigned long mac_errors[32];
+ 	unsigned long mtl_errors[32];
+ 	unsigned long dma_errors[32];
++	unsigned long dma_dpp_errors[32];
+ };
+ 
+ /* Number of fields in Safety Stats */
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
+index a4e8b498dea9..7d7133ef4994 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
+@@ -319,6 +319,8 @@
+ #define XGMAC_RXCEIE			BIT(4)
+ #define XGMAC_TXCEIE			BIT(0)
+ #define XGMAC_MTL_ECC_INT_STATUS	0x000010cc
++#define XGMAC_MTL_DPP_CONTROL		0x000010e0
++#define XGMAC_DDPP_DISABLE		BIT(0)
+ #define XGMAC_MTL_TXQ_OPMODE(x)		(0x00001100 + (0x80 * (x)))
+ #define XGMAC_TQS			GENMASK(25, 16)
+ #define XGMAC_TQS_SHIFT			16
+@@ -401,6 +403,7 @@
+ #define XGMAC_DCEIE			BIT(1)
+ #define XGMAC_TCEIE			BIT(0)
+ #define XGMAC_DMA_ECC_INT_STATUS	0x0000306c
++#define XGMAC_DMA_DPP_INT_STATUS	0x00003074
+ #define XGMAC_DMA_CH_CONTROL(x)		(0x00003100 + (0x80 * (x)))
+ #define XGMAC_SPH			BIT(24)
+ #define XGMAC_PBLx8			BIT(16)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+index a74e71db79f9..e7eccc0c406f 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
+@@ -830,6 +830,43 @@ static const struct dwxgmac3_error_desc dwxgmac3_dma_errors[32]= {
+ 	{ false, "UNKNOWN", "Unknown Error" }, /* 31 */
+ };
+ 
++static const char * const dpp_rx_err = "Read Rx Descriptor Parity checker Error";
++static const char * const dpp_tx_err = "Read Tx Descriptor Parity checker Error";
++static const struct dwxgmac3_error_desc dwxgmac3_dma_dpp_errors[32] = {
++	{ true, "TDPES0", dpp_tx_err },
++	{ true, "TDPES1", dpp_tx_err },
++	{ true, "TDPES2", dpp_tx_err },
++	{ true, "TDPES3", dpp_tx_err },
++	{ true, "TDPES4", dpp_tx_err },
++	{ true, "TDPES5", dpp_tx_err },
++	{ true, "TDPES6", dpp_tx_err },
++	{ true, "TDPES7", dpp_tx_err },
++	{ true, "TDPES8", dpp_tx_err },
++	{ true, "TDPES9", dpp_tx_err },
++	{ true, "TDPES10", dpp_tx_err },
++	{ true, "TDPES11", dpp_tx_err },
++	{ true, "TDPES12", dpp_tx_err },
++	{ true, "TDPES13", dpp_tx_err },
++	{ true, "TDPES14", dpp_tx_err },
++	{ true, "TDPES15", dpp_tx_err },
++	{ true, "RDPES0", dpp_rx_err },
++	{ true, "RDPES1", dpp_rx_err },
++	{ true, "RDPES2", dpp_rx_err },
++	{ true, "RDPES3", dpp_rx_err },
++	{ true, "RDPES4", dpp_rx_err },
++	{ true, "RDPES5", dpp_rx_err },
++	{ true, "RDPES6", dpp_rx_err },
++	{ true, "RDPES7", dpp_rx_err },
++	{ true, "RDPES8", dpp_rx_err },
++	{ true, "RDPES9", dpp_rx_err },
++	{ true, "RDPES10", dpp_rx_err },
++	{ true, "RDPES11", dpp_rx_err },
++	{ true, "RDPES12", dpp_rx_err },
++	{ true, "RDPES13", dpp_rx_err },
++	{ true, "RDPES14", dpp_rx_err },
++	{ true, "RDPES15", dpp_rx_err },
++};
++
+ static void dwxgmac3_handle_dma_err(struct net_device *ndev,
+ 				    void __iomem *ioaddr, bool correctable,
+ 				    struct stmmac_safety_stats *stats)
+@@ -841,6 +878,13 @@ static void dwxgmac3_handle_dma_err(struct net_device *ndev,
+ 
+ 	dwxgmac3_log_error(ndev, value, correctable, "DMA",
+ 			   dwxgmac3_dma_errors, STAT_OFF(dma_errors), stats);
++
++	value = readl(ioaddr + XGMAC_DMA_DPP_INT_STATUS);
++	writel(value, ioaddr + XGMAC_DMA_DPP_INT_STATUS);
++
++	dwxgmac3_log_error(ndev, value, false, "DMA_DPP",
++			   dwxgmac3_dma_dpp_errors,
++			   STAT_OFF(dma_dpp_errors), stats);
+ }
+ 
+ static int
+@@ -881,6 +925,12 @@ dwxgmac3_safety_feat_config(void __iomem *ioaddr, unsigned int asp,
+ 	value |= XGMAC_TMOUTEN; /* FSM Timeout Feature */
+ 	writel(value, ioaddr + XGMAC_MAC_FSM_CONTROL);
+ 
++	/* 5. Enable Data Path Parity Protection */
++	value = readl(ioaddr + XGMAC_MTL_DPP_CONTROL);
++	/* already enabled by default, explicit enable it again */
++	value &= ~XGMAC_DDPP_DISABLE;
++	writel(value, ioaddr + XGMAC_MTL_DPP_CONTROL);
++
+ 	return 0;
+ }
+ 
+@@ -914,7 +964,11 @@ static int dwxgmac3_safety_feat_irq_status(struct net_device *ndev,
+ 		ret |= !corr;
+ 	}
+ 
+-	err = dma & (XGMAC_DEUIS | XGMAC_DECIS);
++	/* DMA_DPP_Interrupt_Status is indicated by MCSIS bit in
++	 * DMA_Safety_Interrupt_Status, so we handle DMA Data Path
++	 * Parity Errors here
++	 */
++	err = dma & (XGMAC_DEUIS | XGMAC_DECIS | XGMAC_MCSIS);
+ 	corr = dma & XGMAC_DECIS;
+ 	if (err) {
+ 		dwxgmac3_handle_dma_err(ndev, ioaddr, corr, stats);
+@@ -930,6 +984,7 @@ static const struct dwxgmac3_error {
+ 	{ dwxgmac3_mac_errors },
+ 	{ dwxgmac3_mtl_errors },
+ 	{ dwxgmac3_dma_errors },
++	{ dwxgmac3_dma_dpp_errors },
+ };
+ 
+ static int dwxgmac3_safety_feat_dump(struct stmmac_safety_stats *stats,
 -- 
 2.43.0
 
