@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-19901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09C628537CA
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:29:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EC9F853864
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:37:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4F4A284735
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:29:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 478CF283CE3
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4887F5F54E;
-	Tue, 13 Feb 2024 17:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED43605BD;
+	Tue, 13 Feb 2024 17:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fu6gjg2b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xnf8V1qZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CED5FF17;
-	Tue, 13 Feb 2024 17:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4D1604BC;
+	Tue, 13 Feb 2024 17:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845380; cv=none; b=lXvPlhtoKa+FsIOb1BzLriDCXNPmGkF++DZHTwbTilmIEvC4DVBdpmQdhfoop0DqAJU1dEb5+IFRZfjDFla1U3aIpgakfSKgNPo+XJXBOjtHDJfnSLAHyXQ8U7sV/ImyjpKrJ0vJhQ3he3+1rUewf+xB339RHcbjyjW3dGjXfAY=
+	t=1707845759; cv=none; b=FN+dWc5uBhoDba++ndW0fHXpXPVYwWPUo2EEzmmQMtTikJBtMV7F1Q1cHn7W0HfW/MPrlueJXdLkouVRoDMUbMeAhphOxtnzYTx6lynzlp2MxA/W9RgDC52/No70y41bVdcGRHwb3OUwKVuqYIMN3TNZZOw59O2Lzil1J8hIgOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845380; c=relaxed/simple;
-	bh=akBmmAWVa6FlhJEcE3tNuLD3zXvYGjoISR+AQxPf7Mg=;
+	s=arc-20240116; t=1707845759; c=relaxed/simple;
+	bh=FAVQ1lVItBMoTTt2BSjI2ICT+LS7/vdy0HzpaSO1NXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hLT8/c7Ykxwjz6iResziNEEAhUP8Dm1OFPeeEN13ZCqf1iurYvZMYgJq81jnYTK8i8++N5U5NFKOahfKzUuRoL/tXZZ4xHKA9js9zqmH2C0cl8Xr20S/wIdaWUSaoukJDCshfFeKOIdEqjzSUEtQXolXsQHpQkAH1yCyRBje/WI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fu6gjg2b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A87C433F1;
-	Tue, 13 Feb 2024 17:29:39 +0000 (UTC)
+	 MIME-Version; b=p3WqnnUJmhKt1214BqJQr0Q+z3Rvt+NaChfQBpKT7Iu1ysnYvM1Qlh8DvxsB2c5TNfLEInJE5BJIq0m3NlGoYQpk7huKfKwv/CFud6Aqhzi1J/0lBytR92RhHwrsZTxUM0ug1QLKtznNNJ7ZFoegZbGLhRSUxPUCqhYC77T93eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xnf8V1qZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB431C433C7;
+	Tue, 13 Feb 2024 17:35:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845380;
-	bh=akBmmAWVa6FlhJEcE3tNuLD3zXvYGjoISR+AQxPf7Mg=;
+	s=korg; t=1707845759;
+	bh=FAVQ1lVItBMoTTt2BSjI2ICT+LS7/vdy0HzpaSO1NXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fu6gjg2bxGf5Akqp6L3TMaT0Nq+DELNUh5+ZkXVRskcI6LaBAxSjAQqXOHmZ4VIEv
-	 1552MrYUnkQ4DSUDax5AT89GZ/vaaD6nAUFcoUVDaoFaDMkICd3FQoh1s9vcgoxd0a
-	 iWyQsN0Qv2lX52G8iv+0ANAu4xOIe2swHVS9Oi2M=
+	b=xnf8V1qZD//KMLMWnjoFh1/d/aAqMb/a0bR5+5LwWkkx2LpXaa4veGDdxHykSEeoV
+	 wRyuRc/Yz8GJXXXhlAtbkqfdi/zTs6uT9LeBp2rMuxX/PH9rDwMuD8fcRArXGEGiEF
+	 I73PHquPBAsqPqJnI65zr2z0tBk6/927ZQQZ8nsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Rui <rui.zhang@intel.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 062/121] hwmon: (coretemp) Fix bogus core_id to attr name mapping
+Subject: [PATCH 6.7 049/124] rxrpc: Fix generation of serial numbers to skip zero
 Date: Tue, 13 Feb 2024 18:21:11 +0100
-Message-ID: <20240213171854.804993324@linuxfoundation.org>
+Message-ID: <20240213171855.167470143@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
-References: <20240213171852.948844634@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,153 +68,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Rui <rui.zhang@intel.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit fdaf0c8629d4524a168cb9e4ad4231875749b28c ]
+[ Upstream commit f31041417bf7f4a4df8b3bfb52cb31bbe805b934 ]
 
-Before commit 7108b80a542b ("hwmon/coretemp: Handle large core ID
-value"), there is a fixed mapping between
-1. cpu_core_id
-2. the index in pdata->core_data[] array
-3. the sysfs attr name, aka "tempX_"
-The later two always equal cpu_core_id + 2.
+In the Rx protocol, every packet generated is marked with a per-connection
+monotonically increasing serial number.  This number can be referenced in
+an ACK packet generated in response to an incoming packet - thereby
+allowing the sender to use this for RTT determination, amongst other
+things.
 
-After the commit, pdata->core_data[] index is got from ida so that it
-can handle sparse core ids and support more cores within a package.
+However, if the reference field in the ACK is zero, it doesn't refer to any
+incoming packet (it could be a ping to find out if a packet got lost, for
+example) - so we shouldn't generate zero serial numbers.
 
-However, the commit erroneously maps the sysfs attr name to
-pdata->core_data[] index instead of cpu_core_id + 2.
+Fix the generation of serial numbers to retry if it comes up with a zero.
 
-As a result, the code is not aligned with the comments, and brings user
-visible changes in hwmon sysfs on systems with sparse core id.
+Furthermore, since the serial numbers are only ever allocated within the
+I/O thread this connection is bound to, there's no need for atomics so
+remove that too.
 
-For example, before commit 7108b80a542b ("hwmon/coretemp: Handle large
-core ID value"),
-/sys/class/hwmon/hwmon2/temp2_label:Core 0
-/sys/class/hwmon/hwmon2/temp3_label:Core 1
-/sys/class/hwmon/hwmon2/temp4_label:Core 2
-/sys/class/hwmon/hwmon2/temp5_label:Core 3
-/sys/class/hwmon/hwmon2/temp6_label:Core 4
-/sys/class/hwmon/hwmon3/temp10_label:Core 8
-/sys/class/hwmon/hwmon3/temp11_label:Core 9
-after commit,
-/sys/class/hwmon/hwmon2/temp2_label:Core 0
-/sys/class/hwmon/hwmon2/temp3_label:Core 1
-/sys/class/hwmon/hwmon2/temp4_label:Core 2
-/sys/class/hwmon/hwmon2/temp5_label:Core 3
-/sys/class/hwmon/hwmon2/temp6_label:Core 4
-/sys/class/hwmon/hwmon2/temp7_label:Core 8
-/sys/class/hwmon/hwmon2/temp8_label:Core 9
-
-Restore the previous behavior and rework the code, comments and variable
-names to avoid future confusions.
-
-Fixes: 7108b80a542b ("hwmon/coretemp: Handle large core ID value")
-Signed-off-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://lore.kernel.org/r/20240202092144.71180-3-rui.zhang@intel.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/coretemp.c | 32 +++++++++++++++++++-------------
- 1 file changed, 19 insertions(+), 13 deletions(-)
+ net/rxrpc/ar-internal.h | 16 +++++++++++++++-
+ net/rxrpc/conn_event.c  |  2 +-
+ net/rxrpc/output.c      |  8 ++++----
+ net/rxrpc/proc.c        |  2 +-
+ net/rxrpc/rxkad.c       |  4 ++--
+ 5 files changed, 23 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/hwmon/coretemp.c b/drivers/hwmon/coretemp.c
-index e78c76919111..95f4c0b00b2d 100644
---- a/drivers/hwmon/coretemp.c
-+++ b/drivers/hwmon/coretemp.c
-@@ -419,7 +419,7 @@ static ssize_t show_temp(struct device *dev,
- }
+diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
+index 5d5b19f20d1e..efbe82926769 100644
+--- a/net/rxrpc/ar-internal.h
++++ b/net/rxrpc/ar-internal.h
+@@ -507,7 +507,7 @@ struct rxrpc_connection {
+ 	enum rxrpc_call_completion completion;	/* Completion condition */
+ 	s32			abort_code;	/* Abort code of connection abort */
+ 	int			debug_id;	/* debug ID for printks */
+-	atomic_t		serial;		/* packet serial number counter */
++	rxrpc_serial_t		tx_serial;	/* Outgoing packet serial number counter */
+ 	unsigned int		hi_serial;	/* highest serial number received */
+ 	u32			service_id;	/* Service ID, possibly upgraded */
+ 	u32			security_level;	/* Security level selected */
+@@ -819,6 +819,20 @@ static inline bool rxrpc_sending_to_client(const struct rxrpc_txbuf *txb)
  
- static int create_core_attrs(struct temp_data *tdata, struct device *dev,
--			     int attr_no)
-+			     int index)
- {
- 	int i;
- 	static ssize_t (*const rd_ptr[TOTAL_ATTRS]) (struct device *dev,
-@@ -431,13 +431,20 @@ static int create_core_attrs(struct temp_data *tdata, struct device *dev,
- 	};
+ #include <trace/events/rxrpc.h>
  
- 	for (i = 0; i < tdata->attr_size; i++) {
-+		/*
-+		 * We map the attr number to core id of the CPU
-+		 * The attr number is always core id + 2
-+		 * The Pkgtemp will always show up as temp1_*, if available
-+		 */
-+		int attr_no = tdata->is_pkg_data ? 1 : tdata->cpu_core_id + 2;
++/*
++ * Allocate the next serial number on a connection.  0 must be skipped.
++ */
++static inline rxrpc_serial_t rxrpc_get_next_serial(struct rxrpc_connection *conn)
++{
++	rxrpc_serial_t serial;
 +
- 		snprintf(tdata->attr_name[i], CORETEMP_NAME_LENGTH,
- 			 "temp%d_%s", attr_no, suffixes[i]);
- 		sysfs_attr_init(&tdata->sd_attrs[i].dev_attr.attr);
- 		tdata->sd_attrs[i].dev_attr.attr.name = tdata->attr_name[i];
- 		tdata->sd_attrs[i].dev_attr.attr.mode = 0444;
- 		tdata->sd_attrs[i].dev_attr.show = rd_ptr[i];
--		tdata->sd_attrs[i].index = attr_no;
-+		tdata->sd_attrs[i].index = index;
- 		tdata->attrs[i] = &tdata->sd_attrs[i].dev_attr.attr;
- 	}
- 	tdata->attr_group.attrs = tdata->attrs;
-@@ -495,26 +502,25 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
- 	struct platform_data *pdata = platform_get_drvdata(pdev);
- 	struct cpuinfo_x86 *c = &cpu_data(cpu);
- 	u32 eax, edx;
--	int err, index, attr_no;
-+	int err, index;
++	serial = conn->tx_serial;
++	if (serial == 0)
++		serial = 1;
++	conn->tx_serial = serial + 1;
++	return serial;
++}
++
+ /*
+  * af_rxrpc.c
+  */
+diff --git a/net/rxrpc/conn_event.c b/net/rxrpc/conn_event.c
+index 95f4bc206b3d..ec5eae60ab0c 100644
+--- a/net/rxrpc/conn_event.c
++++ b/net/rxrpc/conn_event.c
+@@ -117,7 +117,7 @@ void rxrpc_conn_retransmit_call(struct rxrpc_connection *conn,
+ 	iov[2].iov_base	= &ack_info;
+ 	iov[2].iov_len	= sizeof(ack_info);
  
- 	if (!housekeeping_cpu(cpu, HK_TYPE_MISC))
- 		return 0;
+-	serial = atomic_inc_return(&conn->serial);
++	serial = rxrpc_get_next_serial(conn);
  
- 	/*
--	 * Find attr number for sysfs:
--	 * We map the attr number to core id of the CPU
--	 * The attr number is always core id + 2
--	 * The Pkgtemp will always show up as temp1_*, if available
-+	 * Get the index of tdata in pdata->core_data[]
-+	 * tdata for package: pdata->core_data[1]
-+	 * tdata for core: pdata->core_data[2] .. pdata->core_data[NUM_REAL_CORES + 1]
- 	 */
- 	if (pkg_flag) {
--		attr_no = PKG_SYSFS_ATTR_NO;
-+		index = PKG_SYSFS_ATTR_NO;
- 	} else {
- 		index = ida_alloc_max(&pdata->ida, NUM_REAL_CORES - 1, GFP_KERNEL);
- 		if (index < 0)
- 			return index;
+ 	pkt.whdr.epoch		= htonl(conn->proto.epoch);
+ 	pkt.whdr.cid		= htonl(conn->proto.cid | channel);
+diff --git a/net/rxrpc/output.c b/net/rxrpc/output.c
+index a0906145e829..4a292f860ae3 100644
+--- a/net/rxrpc/output.c
++++ b/net/rxrpc/output.c
+@@ -216,7 +216,7 @@ int rxrpc_send_ack_packet(struct rxrpc_call *call, struct rxrpc_txbuf *txb)
+ 	iov[0].iov_len	= sizeof(txb->wire) + sizeof(txb->ack) + n;
+ 	len = iov[0].iov_len;
  
- 		pdata->cpu_map[index] = topology_core_id(cpu);
--		attr_no = index + BASE_SYSFS_ATTR_NO;
-+		index += BASE_SYSFS_ATTR_NO;
- 	}
+-	serial = atomic_inc_return(&conn->serial);
++	serial = rxrpc_get_next_serial(conn);
+ 	txb->wire.serial = htonl(serial);
+ 	trace_rxrpc_tx_ack(call->debug_id, serial,
+ 			   ntohl(txb->ack.firstPacket),
+@@ -302,7 +302,7 @@ int rxrpc_send_abort_packet(struct rxrpc_call *call)
+ 	iov[0].iov_base	= &pkt;
+ 	iov[0].iov_len	= sizeof(pkt);
  
- 	tdata = init_temp_data(cpu, pkg_flag);
-@@ -540,20 +546,20 @@ static int create_core_data(struct platform_device *pdev, unsigned int cpu,
- 		if (get_ttarget(tdata, &pdev->dev) >= 0)
- 			tdata->attr_size++;
+-	serial = atomic_inc_return(&conn->serial);
++	serial = rxrpc_get_next_serial(conn);
+ 	pkt.whdr.serial = htonl(serial);
  
--	pdata->core_data[attr_no] = tdata;
-+	pdata->core_data[index] = tdata;
+ 	iov_iter_kvec(&msg.msg_iter, WRITE, iov, 1, sizeof(pkt));
+@@ -334,7 +334,7 @@ int rxrpc_send_data_packet(struct rxrpc_call *call, struct rxrpc_txbuf *txb)
+ 	_enter("%x,{%d}", txb->seq, txb->len);
  
- 	/* Create sysfs interfaces */
--	err = create_core_attrs(tdata, pdata->hwmon_dev, attr_no);
-+	err = create_core_attrs(tdata, pdata->hwmon_dev, index);
- 	if (err)
- 		goto exit_free;
+ 	/* Each transmission of a Tx packet needs a new serial number */
+-	serial = atomic_inc_return(&conn->serial);
++	serial = rxrpc_get_next_serial(conn);
+ 	txb->wire.serial = htonl(serial);
  
- 	return 0;
- exit_free:
--	pdata->core_data[attr_no] = NULL;
-+	pdata->core_data[index] = NULL;
- 	kfree(tdata);
- ida_free:
- 	if (!pkg_flag)
--		ida_free(&pdata->ida, index);
-+		ida_free(&pdata->ida, index - BASE_SYSFS_ATTR_NO);
- 	return err;
- }
+ 	if (test_bit(RXRPC_CONN_PROBING_FOR_UPGRADE, &conn->flags) &&
+@@ -558,7 +558,7 @@ void rxrpc_send_conn_abort(struct rxrpc_connection *conn)
  
+ 	len = iov[0].iov_len + iov[1].iov_len;
+ 
+-	serial = atomic_inc_return(&conn->serial);
++	serial = rxrpc_get_next_serial(conn);
+ 	whdr.serial = htonl(serial);
+ 
+ 	iov_iter_kvec(&msg.msg_iter, WRITE, iov, 2, len);
+diff --git a/net/rxrpc/proc.c b/net/rxrpc/proc.c
+index 682636d3b060..208312c244f6 100644
+--- a/net/rxrpc/proc.c
++++ b/net/rxrpc/proc.c
+@@ -181,7 +181,7 @@ static int rxrpc_connection_seq_show(struct seq_file *seq, void *v)
+ 		   atomic_read(&conn->active),
+ 		   state,
+ 		   key_serial(conn->key),
+-		   atomic_read(&conn->serial),
++		   conn->tx_serial,
+ 		   conn->hi_serial,
+ 		   conn->channels[0].call_id,
+ 		   conn->channels[1].call_id,
+diff --git a/net/rxrpc/rxkad.c b/net/rxrpc/rxkad.c
+index b52dedcebce0..6b32d61d4cdc 100644
+--- a/net/rxrpc/rxkad.c
++++ b/net/rxrpc/rxkad.c
+@@ -664,7 +664,7 @@ static int rxkad_issue_challenge(struct rxrpc_connection *conn)
+ 
+ 	len = iov[0].iov_len + iov[1].iov_len;
+ 
+-	serial = atomic_inc_return(&conn->serial);
++	serial = rxrpc_get_next_serial(conn);
+ 	whdr.serial = htonl(serial);
+ 
+ 	ret = kernel_sendmsg(conn->local->socket, &msg, iov, 2, len);
+@@ -721,7 +721,7 @@ static int rxkad_send_response(struct rxrpc_connection *conn,
+ 
+ 	len = iov[0].iov_len + iov[1].iov_len + iov[2].iov_len;
+ 
+-	serial = atomic_inc_return(&conn->serial);
++	serial = rxrpc_get_next_serial(conn);
+ 	whdr.serial = htonl(serial);
+ 
+ 	rxrpc_local_dont_fragment(conn->local, false);
 -- 
 2.43.0
 
