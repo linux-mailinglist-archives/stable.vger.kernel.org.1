@@ -1,644 +1,869 @@
-Return-Path: <stable+bounces-19989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB348853843
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:35:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED888537A4
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:28:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A170E281168
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:35:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F8221F21585
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207185FF0C;
-	Tue, 13 Feb 2024 17:34:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375BC5FEFE;
+	Tue, 13 Feb 2024 17:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRa++/hQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ijmY5I/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70F0604BD;
-	Tue, 13 Feb 2024 17:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C315FB86;
+	Tue, 13 Feb 2024 17:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845685; cv=none; b=YhW43rFd+QAobLmRSm9+LG94qsDEmbIJDZn8kCrxl1jSf4cR+L9l8BvFroWLKKgt6d4zle3GJ0MvIRKyJ7vFZBKjDHndB1tHvuiWp+pJHKMYQ+0o7NXBScIZDKNnwG+4pEeKFtSqM7SU48wOTZYUy4L8vxDzzvxaqD65VB3lHHA=
+	t=1707845264; cv=none; b=Tc2oHopy9hIp9WClI/p9V6gX7VCK5IzfK5aI8E/zjxDtT1yPIphK5yyty4dHuSHgTJMHgmAzMQnj/GHkeUn9HDUg1rbvx8UT3/K1TfTcfwhWzkVrgh6CCwVeMohtqq63JIGseJke5cG7vZxnhS1anX9j3OsdfJ5300N/5o1fAlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845685; c=relaxed/simple;
-	bh=GV2QdQB0vkU7eVa6yMelbRa+PtlnXdkWnm/afzY1AHw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rPPgpIChYKnlnuA9SmIWhHhehzTorEfNGEjGQqSGriDlLXQ3ERSi+DCegcSjnOZNucdkYWPhTS/u7MnLXjljkZR6zyWvh9SXbXe9ygG3/BRx0zhGp7rgYlNu84XZwI5haAzuSauzKpVAVRUfr2cP6bZeSV3+kfW2q2YIrucD7ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRa++/hQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD91C433C7;
-	Tue, 13 Feb 2024 17:34:45 +0000 (UTC)
+	s=arc-20240116; t=1707845264; c=relaxed/simple;
+	bh=rl4i7L+NTyv3WQb4WETk2vY4yPAf1Fwag5/YgetR3KE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=drRW1PqcXkJ6qV92schGlxggizqa0URD+HWJ++uPyIvE6r+4TNRO20+BYkrdGKfLApeXxL/UKd/4yPdOI5ZEHF6QJfagQm3dFLbj9tqZUg1rmX76EhL9pK4HHzqtu8EnSxcHCbXQqgCw8m6MNDxwumA+GqBU4fCX61EdDeuOkC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ijmY5I/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15064C433C7;
+	Tue, 13 Feb 2024 17:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845685;
-	bh=GV2QdQB0vkU7eVa6yMelbRa+PtlnXdkWnm/afzY1AHw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=iRa++/hQPxp4hEqxrHRkD85EQyH5mXe7dWmCupnFigN+6qsPHvCsx+GObXj2IMGBM
-	 tOyqpe1hKnvbhhaQDACPRPnE3Wtr/NIqn48aTpr/XfwTpuR0pNbns8undg5L7qTHaa
-	 unB84rnJM0m7yWdnQ7IbjILprBSdcscEaGanw8iQ=
+	s=korg; t=1707845263;
+	bh=rl4i7L+NTyv3WQb4WETk2vY4yPAf1Fwag5/YgetR3KE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=0ijmY5I/bHbFuyRyQNMCZ+tM1m5c2rPJZg9H2ONl3J+IJ56oYmY49uEPOo0amcTcE
+	 AvhX9cNQ3I3QoPPnYfZoC3y82sLA8tpTyQ5STJuAKsNjW7fpNwsy2n1ZNOtzgdtWxS
+	 vejN7iUQBBaCkTwJBNU/Pq4AbOCxVd1BAouHCpwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: [PATCH 6.7 000/124] 6.7.5-rc1 review
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Alice Ryhl <aliceryhl@google.com>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.6 013/121] rust: upgrade to Rust 1.72.1
 Date: Tue, 13 Feb 2024 18:20:22 +0100
-Message-ID: <20240213171853.722912593@linuxfoundation.org>
+Message-ID: <20240213171853.356641988@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
+In-Reply-To: <20240213171852.948844634@linuxfoundation.org>
+References: <20240213171852.948844634@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.5-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.7.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.7.5-rc1
-X-KernelTest-Deadline: 2024-02-15T17:18+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.7.5 release.
-There are 124 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Thu, 15 Feb 2024 17:18:29 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.5-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-and the diffstat can be found below.
+From: Miguel Ojeda <ojeda@kernel.org>
 
-thanks,
+commit ae6df65dabc3f8bd89663d96203963323e266d90 upstream.
 
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.7.5-rc1
-
-Michael Lass <bevan@bi-co.net>
-    net: Fix from address in memcpy_to_iter_csum()
-
-Jens Axboe <axboe@kernel.dk>
-    io_uring/net: limit inline multishot retries
-
-Jens Axboe <axboe@kernel.dk>
-    io_uring/poll: add requeue return code from poll multishot handling
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "ASoC: amd: Add new dmi entries for acp5x platform"
-
-Kent Overstreet <kent.overstreet@linux.dev>
-    bcachefs: time_stats: Check for last_event == 0 when updating freq stats
-
-Guoyu Ou <benogy@gmail.com>
-    bcachefs: unlock parent dir if entry is not found in subvolume deletion
-
-Christoph Hellwig <hch@lst.de>
-    bcachefs: fix incorrect usage of REQ_OP_FLUSH
-
-Su Yue <glass.su@suse.com>
-    bcachefs: grab s_umount only if snapshotting
-
-Su Yue <glass.su@suse.com>
-    bcachefs: kvfree bch_fs::snapshots in bch2_fs_snapshots_exit
-
-Kent Overstreet <kent.overstreet@linux.dev>
-    bcachefs: bch2_kthread_io_clock_wait() no longer sleeps until full amount
-
-Kent Overstreet <kent.overstreet@linux.dev>
-    bcachefs: Add missing bch2_moving_ctxt_flush_all()
-
-Daniel Hill <daniel@gluo.nz>
-    bcachefs: rebalance should wakeup on shutdown if disabled
-
-Kent Overstreet <kent.overstreet@linux.dev>
-    bcachefs: Don't pass memcmp() as a pointer
-
-Al Viro <viro@zeniv.linux.org.uk>
-    bch2_ioctl_subvolume_destroy(): fix locking
-
-Al Viro <viro@zeniv.linux.org.uk>
-    new helper: user_path_locked_at()
-
-Johan Hovold <johan+linaro@kernel.org>
-    PCI/ASPM: Fix deadlock when enabling ASPM
-
-Jens Axboe <axboe@kernel.dk>
-    io_uring/rw: ensure poll based multishot read retries appropriately
-
-Jens Axboe <axboe@kernel.dk>
-    io_uring/net: un-indent mshot retry path in io_recv_finish()
-
-Jens Axboe <axboe@kernel.dk>
-    io_uring/poll: move poll execution helpers higher up
-
-Jens Axboe <axboe@kernel.dk>
-    io_uring/net: fix sr->len for IORING_OP_RECV with MSG_WAITALL and buffers
-
-Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-    wifi: iwlwifi: mvm: fix a battery life regression
-
-Hans de Goede <hdegoede@redhat.com>
-    Input: atkbd - skip ATKBD_CMD_SETLEDS when skipping ATKBD_CMD_GETID
-
-Werner Sembach <wse@tuxedocomputers.com>
-    Input: i8042 - fix strange behavior of touchpad on Clevo NS70PU
-
-Frederic Weisbecker <frederic@kernel.org>
-    hrtimer: Report offline hrtimer enqueue
-
-Heikki Krogerus <heikki.krogerus@linux.intel.com>
-    usb: dwc3: pci: add support for the Intel Arrow Lake-H
-
-Michal Pecio <michal.pecio@gmail.com>
-    xhci: handle isoc Babble and Buffer Overrun events properly
-
-Mathias Nyman <mathias.nyman@linux.intel.com>
-    xhci: process isoc TD properly when there was a transaction error mid TD.
-
-Prashanth K <quic_prashk@quicinc.com>
-    usb: host: xhci-plat: Add support for XHCI_SG_TRB_CACHE_SIZE_QUIRK
-
-Prashanth K <quic_prashk@quicinc.com>
-    usb: dwc3: host: Set XHCI_SG_TRB_CACHE_SIZE_QUIRK
-
-Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-    x86/lib: Revert to _ASM_EXTABLE_UA() for {get,put}_user() fixups
-
-Mario Limonciello <mario.limonciello@amd.com>
-    Revert "drm/amd/pm: fix the high voltage and temperature issue"
-
-Badhri Jagan Sridharan <badhri@google.com>
-    Revert "usb: typec: tcpm: fix cc role at port reset"
-
-Leonard Dallmayr <leonard.dallmayr@mailbox.org>
-    USB: serial: cp210x: add ID for IMST iM871A-USB
-
-Puliang Lu <puliang.lu@fibocom.com>
-    USB: serial: option: add Fibocom FM101-GL variant
-
-JackBB Wu <wojackbb@gmail.com>
-    USB: serial: qcserial: add new usb-id for Dell Wireless DW5826e
-
-Sean Young <sean@mess.org>
-    ALSA: usb-audio: add quirk for RODE NT-USB+
-
-Julian Sikorski <belegdol+github@gmail.com>
-    ALSA: usb-audio: Add a quirk for Yamaha YIT-W12TX transmitter
-
-Alexander Tsoy <alexander@tsoy.me>
-    ALSA: usb-audio: Add delay quirk for MOTU M Series 2nd revision
-
-Tejun Heo <tj@kernel.org>
-    blk-iocost: Fix an UBSAN shift-out-of-bounds warning
-
-Muhammad Usama Anjum <usama.anjum@collabora.com>
-    selftests: core: include linux/close_range.h for CLOSE_RANGE_* macros
-
-Maurizio Lombardi <mlombard@redhat.com>
-    nvme-host: fix the updating of the firmware version
-
-Ben Dooks <ben.dooks@codethink.co.uk>
-    riscv: declare overflow_stack as exported from traps.c
-
-Alexandre Ghiti <alexghiti@rivosinc.com>
-    riscv: Fix arch_hugetlb_migration_supported() for NAPOT
-
-Xiubo Li <xiubli@redhat.com>
-    ceph: always set initial i_blkbits to CEPH_FSCRYPT_BLOCK_SHIFT
-
-Xiubo Li <xiubli@redhat.com>
-    libceph: just wait for more data to be available on the socket
-
-Xiubo Li <xiubli@redhat.com>
-    libceph: rename read_sparse_msg_*() to read_partial_sparse_msg_*()
-
-Alexandre Ghiti <alexghiti@rivosinc.com>
-    riscv: Flush the tlb when a page directory is freed
-
-Ming Lei <ming.lei@redhat.com>
-    scsi: core: Move scsi_host_busy() out of host lock if it is for per-command
-
-Alexandre Ghiti <alexghiti@rivosinc.com>
-    riscv: Fix hugetlb_mask_last_page() when NAPOT is enabled
-
-Alexandre Ghiti <alexghiti@rivosinc.com>
-    riscv: Fix set_huge_pte_at() for NAPOT mapping
-
-Vincent Chen <vincent.chen@sifive.com>
-    riscv: mm: execute local TLB flush after populating vmemmap
-
-Alexandre Ghiti <alexghiti@rivosinc.com>
-    mm: Introduce flush_cache_vmap_early()
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    fs/ntfs3: Fix an NULL dereference bug
-
-Florian Westphal <fw@strlen.de>
-    netfilter: nft_set_pipapo: remove scratch_aligned pointer
-
-Florian Westphal <fw@strlen.de>
-    netfilter: nft_set_pipapo: add helper to release pcpu scratch area
-
-Florian Westphal <fw@strlen.de>
-    netfilter: nft_set_pipapo: store index in scratch maps
-
-Florian Westphal <fw@strlen.de>
-    netfilter: nfnetlink_queue: un-break NF_REPEAT
-
-Pablo Neira Ayuso <pablo@netfilter.org>
-    netfilter: nf_tables: use timestamp to check for set element timeout
-
-Pablo Neira Ayuso <pablo@netfilter.org>
-    netfilter: nft_ct: reject direction for ct id
-
-Pablo Neira Ayuso <pablo@netfilter.org>
-    netfilter: nft_set_pipapo: remove static in nft_pipapo_get()
-
-Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-    drm/amd/display: Implement bounds check for stream encoder creation in DCN301
-
-Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-    drm/amd/display: Add NULL test for 'timing generator' in 'dcn21_set_pipe()'
-
-Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-    drm/amd/display: Fix 'panel_cntl' could be null in 'dcn21_set_backlight_level()'
-
-Pablo Neira Ayuso <pablo@netfilter.org>
-    netfilter: nft_compat: restrict match/target protocol to u16
-
-Pablo Neira Ayuso <pablo@netfilter.org>
-    netfilter: nft_compat: reject unused compat flag
-
-Pablo Neira Ayuso <pablo@netfilter.org>
-    netfilter: nft_compat: narrow down revision to unsigned 8-bits
-
-Jakub Kicinski <kuba@kernel.org>
-    selftests: cmsg_ipv6: repeat the exact packet
-
-Eric Dumazet <edumazet@google.com>
-    ppp_async: limit MRU to 64K
-
-Jiri Pirko <jiri@resnulli.us>
-    devlink: avoid potential loop in devlink_rel_nested_in_notify_work()
-
-Kuniyuki Iwashima <kuniyu@amazon.com>
-    af_unix: Call kfree_skb() for dead unix_(sk)->oob_skb in GC.
-
-Shigeru Yoshida <syoshida@redhat.com>
-    tipc: Check the bearer type before calling tipc_udp_nl_bearer_add()
-
-Paolo Abeni <pabeni@redhat.com>
-    selftests: net: let big_tcp test cope with slow env
-
-David Howells <dhowells@redhat.com>
-    rxrpc: Fix counting of new acks and nacks
-
-David Howells <dhowells@redhat.com>
-    rxrpc: Fix response to PING RESPONSE ACKs to a dead call
-
-David Howells <dhowells@redhat.com>
-    rxrpc: Fix delayed ACKs to not set the reference serial number
-
-David Howells <dhowells@redhat.com>
-    rxrpc: Fix generation of serial numbers to skip zero
-
-Ard Biesheuvel <ardb@kernel.org>
-    x86/efistub: Use 1:1 file:memory mapping for PE/COFF .compat section
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    drm/i915/gvt: Fix uninitialized variable in handle_mmio()
-
-Eric Dumazet <edumazet@google.com>
-    inet: read sk->sk_family once in inet_recv_error()
-
-Zhang Rui <rui.zhang@intel.com>
-    hwmon: (coretemp) Fix bogus core_id to attr name mapping
-
-Zhang Rui <rui.zhang@intel.com>
-    hwmon: (coretemp) Fix out-of-bounds memory access
-
-Loic Prylli <lprylli@netflix.com>
-    hwmon: (aspeed-pwm-tacho) mutex for tach reading
-
-Zhipeng Lu <alexious@zju.edu.cn>
-    octeontx2-pf: Fix a memleak otx2_sq_init
-
-Zhipeng Lu <alexious@zju.edu.cn>
-    atm: idt77252: fix a memleak in open_card_ubr0
-
-Antoine Tenart <atenart@kernel.org>
-    tunnels: fix out of bounds access when building IPv6 PMTU error
-
-Gerhard Engleder <gerhard@engleder-embedded.com>
-    tsnep: Fix mapping for zero copy XDP_TX action
-
-Paolo Abeni <pabeni@redhat.com>
-    selftests: net: avoid just another constant wait
-
-Paolo Abeni <pabeni@redhat.com>
-    selftests: net: fix tcp listener handling in pmtu.sh
-
-Yujie Liu <yujie.liu@intel.com>
-    selftests/net: change shebang to bash to support "source"
-
-Hangbin Liu <liuhangbin@gmail.com>
-    selftests/net: convert pmtu.sh to run it in unique namespace
-
-Hangbin Liu <liuhangbin@gmail.com>
-    selftests/net: convert unicast_extensions.sh to run it in unique namespace
-
-Paolo Abeni <pabeni@redhat.com>
-    selftests: net: cut more slack for gro fwd tests.
-
-Ivan Vecera <ivecera@redhat.com>
-    net: atlantic: Fix DMA mapping for PTP hwts ring
-
-Eric Dumazet <edumazet@google.com>
-    netdevsim: avoid potential loop in nsim_dev_trap_report_work()
-
-Kees Cook <keescook@chromium.org>
-    wifi: brcmfmac: Adjust n_channels usage for __counted_by
-
-Miri Korenblit <miriam.rachel.korenblit@intel.com>
-    wifi: iwlwifi: exit eSR only after the FW does
-
-Johannes Berg <johannes.berg@intel.com>
-    wifi: mac80211: fix waiting for beacons logic
-
-Johannes Berg <johannes.berg@intel.com>
-    wifi: mac80211: fix unsolicited broadcast probe config
-
-Johannes Berg <johannes.berg@intel.com>
-    wifi: mac80211: fix RCU use in TDLS fast-xmit
-
-Johannes Berg <johannes.berg@intel.com>
-    wifi: mac80211: improve CSA/ECSA connection refusal
-
-Johannes Berg <johannes.berg@intel.com>
-    wifi: cfg80211: detect stuck ECSA element in probe resp
-
-Benjamin Berg <benjamin.berg@intel.com>
-    wifi: cfg80211: consume both probe response and beacon IEs
-
-Furong Xu <0x1207@gmail.com>
-    net: stmmac: xgmac: fix handling of DPP safety error for DMA channels
-
-Ard Biesheuvel <ardb@kernel.org>
-    x86/efistub: Avoid placing the kernel below LOAD_PHYSICAL_ADDR
-
-Ard Biesheuvel <ardb@kernel.org>
-    x86/efistub: Give up if memory attribute protocol returns an error
-
-Benjamin Berg <benjamin.berg@intel.com>
-    wifi: iwlwifi: mvm: skip adding debugfs symlink for reconfig
-
-Abhinav Kumar <quic_abhinavk@quicinc.com>
-    drm/msm/dpu: check for valid hw_pp in dpu_encoder_helper_phys_cleanup
-
-Kuogee Hsieh <quic_khsieh@quicinc.com>
-    drm/msm/dp: return correct Colorimetry for DP_TEST_DYNAMIC_RANGE_CEA case
-
-Kuogee Hsieh <quic_khsieh@quicinc.com>
-    drm/msms/dp: fixed link clock divider bits be over written in BPC unknown case
-
-Shyam Prasad N <sprasad@microsoft.com>
-    cifs: failure to add channel on iface should bump up weight
-
-Shyam Prasad N <sprasad@microsoft.com>
-    cifs: avoid redundant calls to disable multichannel
-
-Tony Lindgren <tony@atomide.com>
-    phy: ti: phy-omap-usb2: Fix NULL pointer dereference for SRP
-
-Frank Li <Frank.Li@nxp.com>
-    dmaengine: fix is_slave_direction() return false when DMA_DEV_TO_DEV
-
-James Clark <james.clark@arm.com>
-    perf evlist: Fix evlist__new_default() for > 1 core PMU
-
-Thomas Richter <tmricht@linux.ibm.com>
-    perf test: Fix 'perf script' tests on s390
-
-Ian Rogers <irogers@google.com>
-    perf tests: Add perf script test
-
-Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-    phy: renesas: rcar-gen3-usb2: Fix returning wrong error code
-
-Mantas Pucka <mantas@8devices.com>
-    phy: qcom-qmp-usb: fix serdes init sequence for IPQ6018
-
-Mantas Pucka <mantas@8devices.com>
-    phy: qcom-qmp-usb: fix register offsets for ipq8074/ipq6018
-
-Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-    dmaengine: fsl-qdma: Fix a memory leak related to the queue command DMA
-
-Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-    dmaengine: fsl-qdma: Fix a memory leak related to the status queue DMA
-
-Jai Luthra <j-luthra@ti.com>
-    dmaengine: ti: k3-udma: Report short packet errors
-
-Guanhua Gao <guanhua.gao@nxp.com>
-    dmaengine: fsl-dpaa2-qdma: Fix the size of dma pools
-
-Baokun Li <libaokun1@huawei.com>
-    ext4: regenerate buddy after block freeing failed if under fc replay
-
-
--------------
-
-Diffstat:
-
- Makefile                                           |   4 +-
- arch/arc/include/asm/cacheflush.h                  |   1 +
- arch/arm/include/asm/cacheflush.h                  |   2 +
- arch/csky/abiv1/inc/abi/cacheflush.h               |   1 +
- arch/csky/abiv2/inc/abi/cacheflush.h               |   1 +
- arch/m68k/include/asm/cacheflush_mm.h              |   1 +
- arch/mips/include/asm/cacheflush.h                 |   2 +
- arch/nios2/include/asm/cacheflush.h                |   1 +
- arch/parisc/include/asm/cacheflush.h               |   1 +
- arch/riscv/include/asm/cacheflush.h                |   3 +-
- arch/riscv/include/asm/hugetlb.h                   |   3 +
- arch/riscv/include/asm/stacktrace.h                |   5 +
- arch/riscv/include/asm/tlb.h                       |   2 +-
- arch/riscv/include/asm/tlbflush.h                  |   2 +
- arch/riscv/mm/hugetlbpage.c                        |  78 ++++++++++++-
- arch/riscv/mm/init.c                               |   4 +
- arch/riscv/mm/tlbflush.c                           |   6 +
- arch/sh/include/asm/cacheflush.h                   |   1 +
- arch/sparc/include/asm/cacheflush_32.h             |   1 +
- arch/sparc/include/asm/cacheflush_64.h             |   1 +
- arch/x86/boot/header.S                             |  14 +--
- arch/x86/boot/setup.ld                             |   6 +-
- arch/x86/lib/getuser.S                             |  24 ++--
- arch/x86/lib/putuser.S                             |  20 ++--
- arch/xtensa/include/asm/cacheflush.h               |   6 +-
- block/blk-iocost.c                                 |   7 ++
- drivers/atm/idt77252.c                             |   2 +
- drivers/dma/fsl-dpaa2-qdma/dpaa2-qdma.c            |  10 +-
- drivers/dma/fsl-qdma.c                             |  28 ++---
- drivers/dma/ti/k3-udma.c                           |  10 +-
- drivers/firmware/efi/libstub/efistub.h             |   3 +-
- drivers/firmware/efi/libstub/kaslr.c               |   2 +-
- drivers/firmware/efi/libstub/randomalloc.c         |  12 +-
- drivers/firmware/efi/libstub/x86-stub.c            |  25 ++--
- drivers/firmware/efi/libstub/x86-stub.h            |   4 +-
- drivers/firmware/efi/libstub/zboot.c               |   2 +-
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c         |  24 ++--
- .../drm/amd/display/dc/dcn301/dcn301_resource.c    |   2 +-
- .../drm/amd/display/dc/hwss/dcn21/dcn21_hwseq.c    |  63 +++++-----
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c          |  33 +-----
- drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h      |   1 -
- .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c   |   8 +-
- .../gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c   |   8 +-
- drivers/gpu/drm/i915/gvt/handlers.c                |   3 +-
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c        |   4 +-
- drivers/gpu/drm/msm/dp/dp_ctrl.c                   |   5 -
- drivers/gpu/drm/msm/dp/dp_link.c                   |  22 ++--
- drivers/gpu/drm/msm/dp/dp_reg.h                    |   3 +
- drivers/hwmon/aspeed-pwm-tacho.c                   |   7 ++
- drivers/hwmon/coretemp.c                           |  40 ++++---
- drivers/input/keyboard/atkbd.c                     |  13 ++-
- drivers/input/serio/i8042-acpipnpio.h              |   6 +
- drivers/net/ethernet/aquantia/atlantic/aq_ptp.c    |   4 +-
- drivers/net/ethernet/aquantia/atlantic/aq_ring.c   |  13 +++
- drivers/net/ethernet/aquantia/atlantic/aq_ring.h   |   1 +
- drivers/net/ethernet/engleder/tsnep_main.c         |  16 ++-
- .../ethernet/marvell/octeontx2/nic/otx2_common.c   |  14 ++-
- drivers/net/ethernet/stmicro/stmmac/common.h       |   1 +
- drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h     |   3 +
- .../net/ethernet/stmicro/stmmac/dwxgmac2_core.c    |  57 ++++++++-
- drivers/net/netdevsim/dev.c                        |   8 +-
- drivers/net/ppp/ppp_async.c                        |   4 +
- .../broadcom/brcm80211/brcmfmac/cfg80211.c         |   6 +-
- drivers/net/wireless/intel/iwlwifi/fw/api/debug.h  |   2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |   6 +-
- .../net/wireless/intel/iwlwifi/mvm/mld-mac80211.c  |   9 +-
- drivers/nvme/host/core.c                           |   7 +-
- drivers/pci/bus.c                                  |  49 +++++---
- drivers/pci/controller/dwc/pcie-qcom.c             |   2 +-
- drivers/pci/pci.c                                  |  78 ++++++++-----
- drivers/pci/pci.h                                  |   4 +-
- drivers/pci/pcie/aspm.c                            |  13 ++-
- drivers/phy/qualcomm/phy-qcom-qmp-usb.c            |  30 ++++-
- drivers/phy/renesas/phy-rcar-gen3-usb2.c           |   4 -
- drivers/phy/ti/phy-omap-usb2.c                     |   4 +-
- drivers/scsi/scsi_error.c                          |   3 +-
- drivers/scsi/scsi_lib.c                            |   4 +-
- drivers/usb/dwc3/dwc3-pci.c                        |   4 +
- drivers/usb/dwc3/host.c                            |   4 +-
- drivers/usb/host/xhci-plat.c                       |   3 +
- drivers/usb/host/xhci-ring.c                       |  80 ++++++++++---
- drivers/usb/host/xhci.h                            |   1 +
- drivers/usb/serial/cp210x.c                        |   1 +
- drivers/usb/serial/option.c                        |   1 +
- drivers/usb/serial/qcserial.c                      |   2 +
- drivers/usb/typec/tcpm/tcpm.c                      |   3 +-
- fs/bcachefs/clock.c                                |   4 +-
- fs/bcachefs/fs-io.c                                |   2 +-
- fs/bcachefs/fs-ioctl.c                             |  42 +++----
- fs/bcachefs/journal_io.c                           |   3 +-
- fs/bcachefs/move.c                                 |   2 +-
- fs/bcachefs/move.h                                 |   1 +
- fs/bcachefs/rebalance.c                            |  13 ++-
- fs/bcachefs/replicas.c                             |  10 +-
- fs/bcachefs/snapshot.c                             |   2 +-
- fs/bcachefs/util.c                                 |   5 +-
- fs/ceph/inode.c                                    |   2 +
- fs/ext4/mballoc.c                                  |  20 ++++
- fs/namei.c                                         |  16 ++-
- fs/ntfs3/ntfs_fs.h                                 |   2 +-
- fs/smb/client/sess.c                               |   2 +
- fs/smb/client/smb2pdu.c                            |   2 +-
- include/asm-generic/cacheflush.h                   |   6 +
- include/linux/ceph/messenger.h                     |   2 +-
- include/linux/dmaengine.h                          |   3 +-
- include/linux/hrtimer.h                            |   4 +-
- include/linux/namei.h                              |   1 +
- include/linux/pci.h                                |   5 +
- include/net/cfg80211.h                             |   4 +
- include/net/netfilter/nf_tables.h                  |  16 ++-
- include/trace/events/rxrpc.h                       |   8 +-
- include/uapi/linux/netfilter/nf_tables.h           |   2 +
- io_uring/io_uring.h                                |   7 ++
- io_uring/net.c                                     |  54 ++++++---
- io_uring/poll.c                                    |  49 ++++----
- io_uring/poll.h                                    |   9 ++
- io_uring/rw.c                                      |  10 +-
- kernel/time/hrtimer.c                              |   3 +
- mm/percpu.c                                        |   8 +-
- net/ceph/messenger_v1.c                            |  33 +++---
- net/ceph/messenger_v2.c                            |   4 +-
- net/ceph/osd_client.c                              |   9 +-
- net/core/datagram.c                                |   2 +-
- net/devlink/core.c                                 |  12 +-
- net/ipv4/af_inet.c                                 |   6 +-
- net/ipv4/ip_tunnel_core.c                          |   2 +-
- net/mac80211/cfg.c                                 |  14 +--
- net/mac80211/mlme.c                                | 106 ++++++++++++-----
- net/mac80211/tx.c                                  |   7 +-
- net/netfilter/nf_tables_api.c                      |   4 +-
- net/netfilter/nfnetlink_queue.c                    |  13 ++-
- net/netfilter/nft_compat.c                         |  17 ++-
- net/netfilter/nft_ct.c                             |   3 +
- net/netfilter/nft_set_hash.c                       |   8 +-
- net/netfilter/nft_set_pipapo.c                     | 128 +++++++++++----------
- net/netfilter/nft_set_pipapo.h                     |  18 ++-
- net/netfilter/nft_set_pipapo_avx2.c                |  17 ++-
- net/netfilter/nft_set_rbtree.c                     |  11 +-
- net/rxrpc/ar-internal.h                            |  37 ++++--
- net/rxrpc/call_event.c                             |  12 +-
- net/rxrpc/call_object.c                            |   1 +
- net/rxrpc/conn_event.c                             |  10 +-
- net/rxrpc/input.c                                  | 115 +++++++++++++++---
- net/rxrpc/output.c                                 |   8 +-
- net/rxrpc/proc.c                                   |   2 +-
- net/rxrpc/rxkad.c                                  |   4 +-
- net/tipc/bearer.c                                  |   6 +
- net/unix/garbage.c                                 |  11 ++
- net/wireless/scan.c                                |  63 +++++++++-
- sound/soc/amd/acp-config.c                         |  15 +--
- sound/usb/quirks.c                                 |   6 +
- tools/perf/tests/shell/script.sh                   |  73 ++++++++++++
- tools/perf/util/evlist.c                           |   9 +-
- tools/testing/selftests/core/close_range_test.c    |   1 +
- tools/testing/selftests/net/big_tcp.sh             |   4 +-
- tools/testing/selftests/net/cmsg_ipv6.sh           |   4 +-
- tools/testing/selftests/net/pmtu.sh                |  52 +++++----
- tools/testing/selftests/net/udpgro_fwd.sh          |  14 ++-
- tools/testing/selftests/net/udpgso_bench_rx.c      |   2 +-
- tools/testing/selftests/net/unicast_extensions.sh  |  93 +++++++--------
- 160 files changed, 1538 insertions(+), 715 deletions(-)
+This is the third upgrade to the Rust toolchain, from 1.71.1 to 1.72.1
+(i.e. the latest) [1].
+
+See the upgrade policy [2] and the comments on the first upgrade in
+commit 3ed03f4da06e ("rust: upgrade to Rust 1.68.2").
+
+# Unstable features
+
+No unstable features (that we use) were stabilized.
+
+Therefore, the only unstable feature allowed to be used outside
+the `kernel` crate is still `new_uninit`, though other code to be
+upstreamed may increase the list.
+
+Please see [3] for details.
+
+# Other improvements
+
+Previously, the compiler could incorrectly generate a `.eh_frame`
+section under `-Cpanic=abort`. We were hitting this bug when debug
+assertions were enabled (`CONFIG_RUST_DEBUG_ASSERTIONS=y`) [4]:
+
+      LD      .tmp_vmlinux.kallsyms1
+    ld.lld: error: <internal>:(.eh_frame) is being placed in '.eh_frame'
+
+Gary fixed the issue in Rust 1.72.0 [5].
+
+# Required changes
+
+For the upgrade, the following changes are required:
+
+  - A call to `Box::from_raw` in `rust/kernel/sync/arc.rs` now requires
+    an explicit `drop()` call. See previous patch for details.
+
+# `alloc` upgrade and reviewing
+
+The vast majority of changes are due to our `alloc` fork being upgraded
+at once.
+
+There are two kinds of changes to be aware of: the ones coming from
+upstream, which we should follow as closely as possible, and the updates
+needed in our added fallible APIs to keep them matching the newer
+infallible APIs coming from upstream.
+
+Instead of taking a look at the diff of this patch, an alternative
+approach is reviewing a diff of the changes between upstream `alloc` and
+the kernel's. This allows to easily inspect the kernel additions only,
+especially to check if the fallible methods we already have still match
+the infallible ones in the new version coming from upstream.
+
+Another approach is reviewing the changes introduced in the additions in
+the kernel fork between the two versions. This is useful to spot
+potentially unintended changes to our additions.
+
+To apply these approaches, one may follow steps similar to the following
+to generate a pair of patches that show the differences between upstream
+Rust and the kernel (for the subset of `alloc` we use) before and after
+applying this patch:
+
+    # Get the difference with respect to the old version.
+    git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
+    git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
+        cut -d/ -f3- |
+        grep -Fv README.md |
+        xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
+    git -C linux diff --patch-with-stat --summary -R > old.patch
+    git -C linux restore rust/alloc
+
+    # Apply this patch.
+    git -C linux am rust-upgrade.patch
+
+    # Get the difference with respect to the new version.
+    git -C rust checkout $(linux/scripts/min-tool-version.sh rustc)
+    git -C linux ls-tree -r --name-only HEAD -- rust/alloc |
+        cut -d/ -f3- |
+        grep -Fv README.md |
+        xargs -IPATH cp rust/library/alloc/src/PATH linux/rust/alloc/PATH
+    git -C linux diff --patch-with-stat --summary -R > new.patch
+    git -C linux restore rust/alloc
+
+Now one may check the `new.patch` to take a look at the additions (first
+approach) or at the difference between those two patches (second
+approach). For the latter, a side-by-side tool is recommended.
+
+Link: https://github.com/rust-lang/rust/blob/stable/RELEASES.md#version-1721-2023-09-19 [1]
+Link: https://rust-for-linux.com/rust-version-policy [2]
+Link: https://github.com/Rust-for-Linux/linux/issues/2 [3]
+Closes: https://github.com/Rust-for-Linux/linux/issues/1012 [4]
+Link: https://github.com/rust-lang/rust/pull/112403 [5]
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reviewed-by: Björn Roy Baron <bjorn3_gh@protonmail.com>
+Link: https://lore.kernel.org/r/20230823160244.188033-3-ojeda@kernel.org
+[ Used 1.72.1 instead of .0 (no changes in `alloc`) and reworded
+  to mention that we hit the `.eh_frame` bug under debug assertions. ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ Documentation/process/changes.rst |    2 
+ rust/alloc/alloc.rs               |    9 -
+ rust/alloc/boxed.rs               |   10 +
+ rust/alloc/lib.rs                 |   10 -
+ rust/alloc/vec/drain_filter.rs    |  199 --------------------------------------
+ rust/alloc/vec/extract_if.rs      |  115 +++++++++++++++++++++
+ rust/alloc/vec/mod.rs             |  106 +++++++++-----------
+ scripts/min-tool-version.sh       |    2 
+ 8 files changed, 187 insertions(+), 266 deletions(-)
+ delete mode 100644 rust/alloc/vec/drain_filter.rs
+ create mode 100644 rust/alloc/vec/extract_if.rs
+
+--- a/Documentation/process/changes.rst
++++ b/Documentation/process/changes.rst
+@@ -31,7 +31,7 @@ you probably needn't concern yourself wi
+ ====================== ===============  ========================================
+ GNU C                  5.1              gcc --version
+ Clang/LLVM (optional)  11.0.0           clang --version
+-Rust (optional)        1.71.1           rustc --version
++Rust (optional)        1.72.1           rustc --version
+ bindgen (optional)     0.65.1           bindgen --version
+ GNU make               3.82             make --version
+ bash                   4.2              bash --version
+--- a/rust/alloc/alloc.rs
++++ b/rust/alloc/alloc.rs
+@@ -6,8 +6,10 @@
+ 
+ #[cfg(not(test))]
+ use core::intrinsics;
++#[cfg(all(bootstrap, not(test)))]
+ use core::intrinsics::{min_align_of_val, size_of_val};
+ 
++#[cfg(all(bootstrap, not(test)))]
+ use core::ptr::Unique;
+ #[cfg(not(test))]
+ use core::ptr::{self, NonNull};
+@@ -40,7 +42,6 @@ extern "Rust" {
+     #[rustc_nounwind]
+     fn __rust_alloc_zeroed(size: usize, align: usize) -> *mut u8;
+ 
+-    #[cfg(not(bootstrap))]
+     static __rust_no_alloc_shim_is_unstable: u8;
+ }
+ 
+@@ -98,7 +99,6 @@ pub unsafe fn alloc(layout: Layout) -> *
+     unsafe {
+         // Make sure we don't accidentally allow omitting the allocator shim in
+         // stable code until it is actually stabilized.
+-        #[cfg(not(bootstrap))]
+         core::ptr::read_volatile(&__rust_no_alloc_shim_is_unstable);
+ 
+         __rust_alloc(layout.size(), layout.align())
+@@ -339,14 +339,15 @@ unsafe fn exchange_malloc(size: usize, a
+     }
+ }
+ 
+-#[cfg_attr(not(test), lang = "box_free")]
++#[cfg(all(bootstrap, not(test)))]
++#[lang = "box_free"]
+ #[inline]
+ // This signature has to be the same as `Box`, otherwise an ICE will happen.
+ // When an additional parameter to `Box` is added (like `A: Allocator`), this has to be added here as
+ // well.
+ // For example if `Box` is changed to  `struct Box<T: ?Sized, A: Allocator>(Unique<T>, A)`,
+ // this function has to be changed to `fn box_free<T: ?Sized, A: Allocator>(Unique<T>, A)` as well.
+-pub(crate) unsafe fn box_free<T: ?Sized, A: Allocator>(ptr: Unique<T>, alloc: A) {
++unsafe fn box_free<T: ?Sized, A: Allocator>(ptr: Unique<T>, alloc: A) {
+     unsafe {
+         let size = size_of_val(ptr.as_ref());
+         let align = min_align_of_val(ptr.as_ref());
+--- a/rust/alloc/boxed.rs
++++ b/rust/alloc/boxed.rs
+@@ -1215,8 +1215,16 @@ impl<T: ?Sized, A: Allocator> Box<T, A>
+ 
+ #[stable(feature = "rust1", since = "1.0.0")]
+ unsafe impl<#[may_dangle] T: ?Sized, A: Allocator> Drop for Box<T, A> {
++    #[inline]
+     fn drop(&mut self) {
+-        // FIXME: Do nothing, drop is currently performed by compiler.
++        // the T in the Box is dropped by the compiler before the destructor is run
++
++        let ptr = self.0;
++
++        unsafe {
++            let layout = Layout::for_value_raw(ptr.as_ptr());
++            self.1.deallocate(From::from(ptr.cast()), layout)
++        }
+     }
+ }
+ 
+--- a/rust/alloc/lib.rs
++++ b/rust/alloc/lib.rs
+@@ -58,6 +58,11 @@
+ //! [`Rc`]: rc
+ //! [`RefCell`]: core::cell
+ 
++// To run alloc tests without x.py without ending up with two copies of alloc, Miri needs to be
++// able to "empty" this crate. See <https://github.com/rust-lang/miri-test-libstd/issues/4>.
++// rustc itself never sets the feature, so this line has no affect there.
++#![cfg(any(not(feature = "miri-test-libstd"), test, doctest))]
++//
+ #![allow(unused_attributes)]
+ #![stable(feature = "alloc", since = "1.36.0")]
+ #![doc(
+@@ -77,11 +82,6 @@
+ ))]
+ #![no_std]
+ #![needs_allocator]
+-// To run alloc tests without x.py without ending up with two copies of alloc, Miri needs to be
+-// able to "empty" this crate. See <https://github.com/rust-lang/miri-test-libstd/issues/4>.
+-// rustc itself never sets the feature, so this line has no affect there.
+-#![cfg(any(not(feature = "miri-test-libstd"), test, doctest))]
+-//
+ // Lints:
+ #![deny(unsafe_op_in_unsafe_fn)]
+ #![deny(fuzzy_provenance_casts)]
+--- a/rust/alloc/vec/drain_filter.rs
++++ /dev/null
+@@ -1,199 +0,0 @@
+-// SPDX-License-Identifier: Apache-2.0 OR MIT
+-
+-use crate::alloc::{Allocator, Global};
+-use core::mem::{ManuallyDrop, SizedTypeProperties};
+-use core::ptr;
+-use core::slice;
+-
+-use super::Vec;
+-
+-/// An iterator which uses a closure to determine if an element should be removed.
+-///
+-/// This struct is created by [`Vec::drain_filter`].
+-/// See its documentation for more.
+-///
+-/// # Example
+-///
+-/// ```
+-/// #![feature(drain_filter)]
+-///
+-/// let mut v = vec![0, 1, 2];
+-/// let iter: std::vec::DrainFilter<'_, _, _> = v.drain_filter(|x| *x % 2 == 0);
+-/// ```
+-#[unstable(feature = "drain_filter", reason = "recently added", issue = "43244")]
+-#[derive(Debug)]
+-pub struct DrainFilter<
+-    'a,
+-    T,
+-    F,
+-    #[unstable(feature = "allocator_api", issue = "32838")] A: Allocator = Global,
+-> where
+-    F: FnMut(&mut T) -> bool,
+-{
+-    pub(super) vec: &'a mut Vec<T, A>,
+-    /// The index of the item that will be inspected by the next call to `next`.
+-    pub(super) idx: usize,
+-    /// The number of items that have been drained (removed) thus far.
+-    pub(super) del: usize,
+-    /// The original length of `vec` prior to draining.
+-    pub(super) old_len: usize,
+-    /// The filter test predicate.
+-    pub(super) pred: F,
+-    /// A flag that indicates a panic has occurred in the filter test predicate.
+-    /// This is used as a hint in the drop implementation to prevent consumption
+-    /// of the remainder of the `DrainFilter`. Any unprocessed items will be
+-    /// backshifted in the `vec`, but no further items will be dropped or
+-    /// tested by the filter predicate.
+-    pub(super) panic_flag: bool,
+-}
+-
+-impl<T, F, A: Allocator> DrainFilter<'_, T, F, A>
+-where
+-    F: FnMut(&mut T) -> bool,
+-{
+-    /// Returns a reference to the underlying allocator.
+-    #[unstable(feature = "allocator_api", issue = "32838")]
+-    #[inline]
+-    pub fn allocator(&self) -> &A {
+-        self.vec.allocator()
+-    }
+-
+-    /// Keep unyielded elements in the source `Vec`.
+-    ///
+-    /// # Examples
+-    ///
+-    /// ```
+-    /// #![feature(drain_filter)]
+-    /// #![feature(drain_keep_rest)]
+-    ///
+-    /// let mut vec = vec!['a', 'b', 'c'];
+-    /// let mut drain = vec.drain_filter(|_| true);
+-    ///
+-    /// assert_eq!(drain.next().unwrap(), 'a');
+-    ///
+-    /// // This call keeps 'b' and 'c' in the vec.
+-    /// drain.keep_rest();
+-    ///
+-    /// // If we wouldn't call `keep_rest()`,
+-    /// // `vec` would be empty.
+-    /// assert_eq!(vec, ['b', 'c']);
+-    /// ```
+-    #[unstable(feature = "drain_keep_rest", issue = "101122")]
+-    pub fn keep_rest(self) {
+-        // At this moment layout looks like this:
+-        //
+-        //  _____________________/-- old_len
+-        // /                     \
+-        // [kept] [yielded] [tail]
+-        //        \_______/ ^-- idx
+-        //                \-- del
+-        //
+-        // Normally `Drop` impl would drop [tail] (via .for_each(drop), ie still calling `pred`)
+-        //
+-        // 1. Move [tail] after [kept]
+-        // 2. Update length of the original vec to `old_len - del`
+-        //    a. In case of ZST, this is the only thing we want to do
+-        // 3. Do *not* drop self, as everything is put in a consistent state already, there is nothing to do
+-        let mut this = ManuallyDrop::new(self);
+-
+-        unsafe {
+-            // ZSTs have no identity, so we don't need to move them around.
+-            if !T::IS_ZST && this.idx < this.old_len && this.del > 0 {
+-                let ptr = this.vec.as_mut_ptr();
+-                let src = ptr.add(this.idx);
+-                let dst = src.sub(this.del);
+-                let tail_len = this.old_len - this.idx;
+-                src.copy_to(dst, tail_len);
+-            }
+-
+-            let new_len = this.old_len - this.del;
+-            this.vec.set_len(new_len);
+-        }
+-    }
+-}
+-
+-#[unstable(feature = "drain_filter", reason = "recently added", issue = "43244")]
+-impl<T, F, A: Allocator> Iterator for DrainFilter<'_, T, F, A>
+-where
+-    F: FnMut(&mut T) -> bool,
+-{
+-    type Item = T;
+-
+-    fn next(&mut self) -> Option<T> {
+-        unsafe {
+-            while self.idx < self.old_len {
+-                let i = self.idx;
+-                let v = slice::from_raw_parts_mut(self.vec.as_mut_ptr(), self.old_len);
+-                self.panic_flag = true;
+-                let drained = (self.pred)(&mut v[i]);
+-                self.panic_flag = false;
+-                // Update the index *after* the predicate is called. If the index
+-                // is updated prior and the predicate panics, the element at this
+-                // index would be leaked.
+-                self.idx += 1;
+-                if drained {
+-                    self.del += 1;
+-                    return Some(ptr::read(&v[i]));
+-                } else if self.del > 0 {
+-                    let del = self.del;
+-                    let src: *const T = &v[i];
+-                    let dst: *mut T = &mut v[i - del];
+-                    ptr::copy_nonoverlapping(src, dst, 1);
+-                }
+-            }
+-            None
+-        }
+-    }
+-
+-    fn size_hint(&self) -> (usize, Option<usize>) {
+-        (0, Some(self.old_len - self.idx))
+-    }
+-}
+-
+-#[unstable(feature = "drain_filter", reason = "recently added", issue = "43244")]
+-impl<T, F, A: Allocator> Drop for DrainFilter<'_, T, F, A>
+-where
+-    F: FnMut(&mut T) -> bool,
+-{
+-    fn drop(&mut self) {
+-        struct BackshiftOnDrop<'a, 'b, T, F, A: Allocator>
+-        where
+-            F: FnMut(&mut T) -> bool,
+-        {
+-            drain: &'b mut DrainFilter<'a, T, F, A>,
+-        }
+-
+-        impl<'a, 'b, T, F, A: Allocator> Drop for BackshiftOnDrop<'a, 'b, T, F, A>
+-        where
+-            F: FnMut(&mut T) -> bool,
+-        {
+-            fn drop(&mut self) {
+-                unsafe {
+-                    if self.drain.idx < self.drain.old_len && self.drain.del > 0 {
+-                        // This is a pretty messed up state, and there isn't really an
+-                        // obviously right thing to do. We don't want to keep trying
+-                        // to execute `pred`, so we just backshift all the unprocessed
+-                        // elements and tell the vec that they still exist. The backshift
+-                        // is required to prevent a double-drop of the last successfully
+-                        // drained item prior to a panic in the predicate.
+-                        let ptr = self.drain.vec.as_mut_ptr();
+-                        let src = ptr.add(self.drain.idx);
+-                        let dst = src.sub(self.drain.del);
+-                        let tail_len = self.drain.old_len - self.drain.idx;
+-                        src.copy_to(dst, tail_len);
+-                    }
+-                    self.drain.vec.set_len(self.drain.old_len - self.drain.del);
+-                }
+-            }
+-        }
+-
+-        let backshift = BackshiftOnDrop { drain: self };
+-
+-        // Attempt to consume any remaining elements if the filter predicate
+-        // has not yet panicked. We'll backshift any remaining elements
+-        // whether we've already panicked or if the consumption here panics.
+-        if !backshift.drain.panic_flag {
+-            backshift.drain.for_each(drop);
+-        }
+-    }
+-}
+--- /dev/null
++++ b/rust/alloc/vec/extract_if.rs
+@@ -0,0 +1,115 @@
++// SPDX-License-Identifier: Apache-2.0 OR MIT
++
++use crate::alloc::{Allocator, Global};
++use core::ptr;
++use core::slice;
++
++use super::Vec;
++
++/// An iterator which uses a closure to determine if an element should be removed.
++///
++/// This struct is created by [`Vec::extract_if`].
++/// See its documentation for more.
++///
++/// # Example
++///
++/// ```
++/// #![feature(extract_if)]
++///
++/// let mut v = vec![0, 1, 2];
++/// let iter: std::vec::ExtractIf<'_, _, _> = v.extract_if(|x| *x % 2 == 0);
++/// ```
++#[unstable(feature = "extract_if", reason = "recently added", issue = "43244")]
++#[derive(Debug)]
++#[must_use = "iterators are lazy and do nothing unless consumed"]
++pub struct ExtractIf<
++    'a,
++    T,
++    F,
++    #[unstable(feature = "allocator_api", issue = "32838")] A: Allocator = Global,
++> where
++    F: FnMut(&mut T) -> bool,
++{
++    pub(super) vec: &'a mut Vec<T, A>,
++    /// The index of the item that will be inspected by the next call to `next`.
++    pub(super) idx: usize,
++    /// The number of items that have been drained (removed) thus far.
++    pub(super) del: usize,
++    /// The original length of `vec` prior to draining.
++    pub(super) old_len: usize,
++    /// The filter test predicate.
++    pub(super) pred: F,
++}
++
++impl<T, F, A: Allocator> ExtractIf<'_, T, F, A>
++where
++    F: FnMut(&mut T) -> bool,
++{
++    /// Returns a reference to the underlying allocator.
++    #[unstable(feature = "allocator_api", issue = "32838")]
++    #[inline]
++    pub fn allocator(&self) -> &A {
++        self.vec.allocator()
++    }
++}
++
++#[unstable(feature = "extract_if", reason = "recently added", issue = "43244")]
++impl<T, F, A: Allocator> Iterator for ExtractIf<'_, T, F, A>
++where
++    F: FnMut(&mut T) -> bool,
++{
++    type Item = T;
++
++    fn next(&mut self) -> Option<T> {
++        unsafe {
++            while self.idx < self.old_len {
++                let i = self.idx;
++                let v = slice::from_raw_parts_mut(self.vec.as_mut_ptr(), self.old_len);
++                let drained = (self.pred)(&mut v[i]);
++                // Update the index *after* the predicate is called. If the index
++                // is updated prior and the predicate panics, the element at this
++                // index would be leaked.
++                self.idx += 1;
++                if drained {
++                    self.del += 1;
++                    return Some(ptr::read(&v[i]));
++                } else if self.del > 0 {
++                    let del = self.del;
++                    let src: *const T = &v[i];
++                    let dst: *mut T = &mut v[i - del];
++                    ptr::copy_nonoverlapping(src, dst, 1);
++                }
++            }
++            None
++        }
++    }
++
++    fn size_hint(&self) -> (usize, Option<usize>) {
++        (0, Some(self.old_len - self.idx))
++    }
++}
++
++#[unstable(feature = "extract_if", reason = "recently added", issue = "43244")]
++impl<T, F, A: Allocator> Drop for ExtractIf<'_, T, F, A>
++where
++    F: FnMut(&mut T) -> bool,
++{
++    fn drop(&mut self) {
++        unsafe {
++            if self.idx < self.old_len && self.del > 0 {
++                // This is a pretty messed up state, and there isn't really an
++                // obviously right thing to do. We don't want to keep trying
++                // to execute `pred`, so we just backshift all the unprocessed
++                // elements and tell the vec that they still exist. The backshift
++                // is required to prevent a double-drop of the last successfully
++                // drained item prior to a panic in the predicate.
++                let ptr = self.vec.as_mut_ptr();
++                let src = ptr.add(self.idx);
++                let dst = src.sub(self.del);
++                let tail_len = self.old_len - self.idx;
++                src.copy_to(dst, tail_len);
++            }
++            self.vec.set_len(self.old_len - self.del);
++        }
++    }
++}
+--- a/rust/alloc/vec/mod.rs
++++ b/rust/alloc/vec/mod.rs
+@@ -74,10 +74,10 @@ use crate::boxed::Box;
+ use crate::collections::{TryReserveError, TryReserveErrorKind};
+ use crate::raw_vec::RawVec;
+ 
+-#[unstable(feature = "drain_filter", reason = "recently added", issue = "43244")]
+-pub use self::drain_filter::DrainFilter;
++#[unstable(feature = "extract_if", reason = "recently added", issue = "43244")]
++pub use self::extract_if::ExtractIf;
+ 
+-mod drain_filter;
++mod extract_if;
+ 
+ #[cfg(not(no_global_oom_handling))]
+ #[stable(feature = "vec_splice", since = "1.21.0")]
+@@ -618,22 +618,20 @@ impl<T> Vec<T> {
+     /// Using memory that was allocated elsewhere:
+     ///
+     /// ```rust
+-    /// #![feature(allocator_api)]
+-    ///
+-    /// use std::alloc::{AllocError, Allocator, Global, Layout};
++    /// use std::alloc::{alloc, Layout};
+     ///
+     /// fn main() {
+     ///     let layout = Layout::array::<u32>(16).expect("overflow cannot happen");
+     ///
+     ///     let vec = unsafe {
+-    ///         let mem = match Global.allocate(layout) {
+-    ///             Ok(mem) => mem.cast::<u32>().as_ptr(),
+-    ///             Err(AllocError) => return,
+-    ///         };
++    ///         let mem = alloc(layout).cast::<u32>();
++    ///         if mem.is_null() {
++    ///             return;
++    ///         }
+     ///
+     ///         mem.write(1_000_000);
+     ///
+-    ///         Vec::from_raw_parts_in(mem, 1, 16, Global)
++    ///         Vec::from_raw_parts(mem, 1, 16)
+     ///     };
+     ///
+     ///     assert_eq!(vec, &[1_000_000]);
+@@ -876,19 +874,22 @@ impl<T, A: Allocator> Vec<T, A> {
+     /// Using memory that was allocated elsewhere:
+     ///
+     /// ```rust
+-    /// use std::alloc::{alloc, Layout};
++    /// #![feature(allocator_api)]
++    ///
++    /// use std::alloc::{AllocError, Allocator, Global, Layout};
+     ///
+     /// fn main() {
+     ///     let layout = Layout::array::<u32>(16).expect("overflow cannot happen");
++    ///
+     ///     let vec = unsafe {
+-    ///         let mem = alloc(layout).cast::<u32>();
+-    ///         if mem.is_null() {
+-    ///             return;
+-    ///         }
++    ///         let mem = match Global.allocate(layout) {
++    ///             Ok(mem) => mem.cast::<u32>().as_ptr(),
++    ///             Err(AllocError) => return,
++    ///         };
+     ///
+     ///         mem.write(1_000_000);
+     ///
+-    ///         Vec::from_raw_parts(mem, 1, 16)
++    ///         Vec::from_raw_parts_in(mem, 1, 16, Global)
+     ///     };
+     ///
+     ///     assert_eq!(vec, &[1_000_000]);
+@@ -2507,7 +2508,7 @@ impl<T: Clone, A: Allocator> Vec<T, A> {
+         let len = self.len();
+ 
+         if new_len > len {
+-            self.extend_with(new_len - len, ExtendElement(value))
++            self.extend_with(new_len - len, value)
+         } else {
+             self.truncate(new_len);
+         }
+@@ -2545,7 +2546,7 @@ impl<T: Clone, A: Allocator> Vec<T, A> {
+         let len = self.len();
+ 
+         if new_len > len {
+-            self.try_extend_with(new_len - len, ExtendElement(value))
++            self.try_extend_with(new_len - len, value)
+         } else {
+             self.truncate(new_len);
+             Ok(())
+@@ -2684,26 +2685,10 @@ impl<T, A: Allocator, const N: usize> Ve
+     }
+ }
+ 
+-// This code generalizes `extend_with_{element,default}`.
+-trait ExtendWith<T> {
+-    fn next(&mut self) -> T;
+-    fn last(self) -> T;
+-}
+-
+-struct ExtendElement<T>(T);
+-impl<T: Clone> ExtendWith<T> for ExtendElement<T> {
+-    fn next(&mut self) -> T {
+-        self.0.clone()
+-    }
+-    fn last(self) -> T {
+-        self.0
+-    }
+-}
+-
+-impl<T, A: Allocator> Vec<T, A> {
++impl<T: Clone, A: Allocator> Vec<T, A> {
+     #[cfg(not(no_global_oom_handling))]
+-    /// Extend the vector by `n` values, using the given generator.
+-    fn extend_with<E: ExtendWith<T>>(&mut self, n: usize, mut value: E) {
++    /// Extend the vector by `n` clones of value.
++    fn extend_with(&mut self, n: usize, value: T) {
+         self.reserve(n);
+ 
+         unsafe {
+@@ -2715,15 +2700,15 @@ impl<T, A: Allocator> Vec<T, A> {
+ 
+             // Write all elements except the last one
+             for _ in 1..n {
+-                ptr::write(ptr, value.next());
++                ptr::write(ptr, value.clone());
+                 ptr = ptr.add(1);
+-                // Increment the length in every step in case next() panics
++                // Increment the length in every step in case clone() panics
+                 local_len.increment_len(1);
+             }
+ 
+             if n > 0 {
+                 // We can write the last element directly without cloning needlessly
+-                ptr::write(ptr, value.last());
++                ptr::write(ptr, value);
+                 local_len.increment_len(1);
+             }
+ 
+@@ -2731,8 +2716,8 @@ impl<T, A: Allocator> Vec<T, A> {
+         }
+     }
+ 
+-    /// Try to extend the vector by `n` values, using the given generator.
+-    fn try_extend_with<E: ExtendWith<T>>(&mut self, n: usize, mut value: E) -> Result<(), TryReserveError> {
++    /// Try to extend the vector by `n` clones of value.
++    fn try_extend_with(&mut self, n: usize, value: T) -> Result<(), TryReserveError> {
+         self.try_reserve(n)?;
+ 
+         unsafe {
+@@ -2744,15 +2729,15 @@ impl<T, A: Allocator> Vec<T, A> {
+ 
+             // Write all elements except the last one
+             for _ in 1..n {
+-                ptr::write(ptr, value.next());
++                ptr::write(ptr, value.clone());
+                 ptr = ptr.add(1);
+-                // Increment the length in every step in case next() panics
++                // Increment the length in every step in case clone() panics
+                 local_len.increment_len(1);
+             }
+ 
+             if n > 0 {
+                 // We can write the last element directly without cloning needlessly
+-                ptr::write(ptr, value.last());
++                ptr::write(ptr, value);
+                 local_len.increment_len(1);
+             }
+ 
+@@ -3210,6 +3195,12 @@ impl<T, A: Allocator> Vec<T, A> {
+     /// If the closure returns false, the element will remain in the vector and will not be yielded
+     /// by the iterator.
+     ///
++    /// If the returned `ExtractIf` is not exhausted, e.g. because it is dropped without iterating
++    /// or the iteration short-circuits, then the remaining elements will be retained.
++    /// Use [`retain`] with a negated predicate if you do not need the returned iterator.
++    ///
++    /// [`retain`]: Vec::retain
++    ///
+     /// Using this method is equivalent to the following code:
+     ///
+     /// ```
+@@ -3228,10 +3219,10 @@ impl<T, A: Allocator> Vec<T, A> {
+     /// # assert_eq!(vec, vec![1, 4, 5]);
+     /// ```
+     ///
+-    /// But `drain_filter` is easier to use. `drain_filter` is also more efficient,
++    /// But `extract_if` is easier to use. `extract_if` is also more efficient,
+     /// because it can backshift the elements of the array in bulk.
+     ///
+-    /// Note that `drain_filter` also lets you mutate every element in the filter closure,
++    /// Note that `extract_if` also lets you mutate every element in the filter closure,
+     /// regardless of whether you choose to keep or remove it.
+     ///
+     /// # Examples
+@@ -3239,17 +3230,17 @@ impl<T, A: Allocator> Vec<T, A> {
+     /// Splitting an array into evens and odds, reusing the original allocation:
+     ///
+     /// ```
+-    /// #![feature(drain_filter)]
++    /// #![feature(extract_if)]
+     /// let mut numbers = vec![1, 2, 3, 4, 5, 6, 8, 9, 11, 13, 14, 15];
+     ///
+-    /// let evens = numbers.drain_filter(|x| *x % 2 == 0).collect::<Vec<_>>();
++    /// let evens = numbers.extract_if(|x| *x % 2 == 0).collect::<Vec<_>>();
+     /// let odds = numbers;
+     ///
+     /// assert_eq!(evens, vec![2, 4, 6, 8, 14]);
+     /// assert_eq!(odds, vec![1, 3, 5, 9, 11, 13, 15]);
+     /// ```
+-    #[unstable(feature = "drain_filter", reason = "recently added", issue = "43244")]
+-    pub fn drain_filter<F>(&mut self, filter: F) -> DrainFilter<'_, T, F, A>
++    #[unstable(feature = "extract_if", reason = "recently added", issue = "43244")]
++    pub fn extract_if<F>(&mut self, filter: F) -> ExtractIf<'_, T, F, A>
+     where
+         F: FnMut(&mut T) -> bool,
+     {
+@@ -3260,7 +3251,7 @@ impl<T, A: Allocator> Vec<T, A> {
+             self.set_len(0);
+         }
+ 
+-        DrainFilter { vec: self, idx: 0, del: 0, old_len, pred: filter, panic_flag: false }
++        ExtractIf { vec: self, idx: 0, del: 0, old_len, pred: filter }
+     }
+ }
+ 
+@@ -3290,9 +3281,14 @@ impl<'a, T: Copy + 'a, A: Allocator + 'a
+ 
+ /// Implements comparison of vectors, [lexicographically](Ord#lexicographical-comparison).
+ #[stable(feature = "rust1", since = "1.0.0")]
+-impl<T: PartialOrd, A: Allocator> PartialOrd for Vec<T, A> {
++impl<T, A1, A2> PartialOrd<Vec<T, A2>> for Vec<T, A1>
++where
++    T: PartialOrd,
++    A1: Allocator,
++    A2: Allocator,
++{
+     #[inline]
+-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
++    fn partial_cmp(&self, other: &Vec<T, A2>) -> Option<Ordering> {
+         PartialOrd::partial_cmp(&**self, &**other)
+     }
+ }
+--- a/scripts/min-tool-version.sh
++++ b/scripts/min-tool-version.sh
+@@ -31,7 +31,7 @@ llvm)
+ 	fi
+ 	;;
+ rustc)
+-	echo 1.71.1
++	echo 1.72.1
+ 	;;
+ bindgen)
+ 	echo 0.65.1
 
 
 
