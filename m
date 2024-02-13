@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-19796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-20007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0AE853745
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:23:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD2785385B
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 18:36:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BBE4282F89
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:23:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 192C22860F4
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 17:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66005FDD8;
-	Tue, 13 Feb 2024 17:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AF060271;
+	Tue, 13 Feb 2024 17:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAaIofdi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VM71hAs3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C395FBB5;
-	Tue, 13 Feb 2024 17:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C72B760265;
+	Tue, 13 Feb 2024 17:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707845020; cv=none; b=CU73FbdO15s52lVdyqxmz+sRD4qjM2VAtfmCvx0RHMbaaAG//V4AfnpKhpJANqTndzz3IXgzYSczbZi/+k//ZQiK7+mJzA5/36iHJJZ6e4G4UY63R4P/BfS09p9PflcV18cO9n0dtD03bbFG8t1autjKLDY3D1az2Qr//G6Qj7U=
+	t=1707845749; cv=none; b=KALGk6pKywgwR6W7f8bZDhxmA55X1EPRbfVcyGos8qhpJIAb5OFOubOv2o9WtOJ6ePEsb0rGwXE+wswBJOHjCVNqulI+wAyWUUQigqyG9Yzi7hpjdceVgixLKaDRSStCvt0r/gwi5wt+vEASTI+xlCnh960TMB8A66UDA+KhXGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707845020; c=relaxed/simple;
-	bh=F8FGg0KhfaYDrYp+USm4WBjknsJyjx+zBvYZrVDnRq0=;
+	s=arc-20240116; t=1707845749; c=relaxed/simple;
+	bh=nrUiDywq7zh6vITPUJMX2iIB8GYLWmGw/l7A+KmaRZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BVVJD9NBRmay8Z5r6x3JHKU5a+/rTG8FWcnVSYnT55wOc5nodBh0nCtUjHZEYqInFRDg4IPlD2xR18iuFSpm2bHeAf5n7qX0rfxk1qBBwKP4/AaIVOHMu4lEsbxyDOMHQB5bfG97WorttOhiSxb5WxNNy7kI+Bez3NbFVEYo6Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HAaIofdi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA63C433F1;
-	Tue, 13 Feb 2024 17:23:39 +0000 (UTC)
+	 MIME-Version; b=RO/NTbMjDMY/7qYfCfVpIDqlgBzM5BDcRheEjlBUuHp+HiEqovTeHGr7QMJSYaHNPLxutqDMYjngmZ1xfFj6dsNDZBvBqUdgL0lmX06EtYuTXU/PvjNFcp2yqE1SD0rjIiN/FOd5jMLH82FlwOR3R8yTzjcVZSvtPaRqNFfn2lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VM71hAs3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D513C43394;
+	Tue, 13 Feb 2024 17:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1707845020;
-	bh=F8FGg0KhfaYDrYp+USm4WBjknsJyjx+zBvYZrVDnRq0=;
+	s=korg; t=1707845749;
+	bh=nrUiDywq7zh6vITPUJMX2iIB8GYLWmGw/l7A+KmaRZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HAaIofdi2QW7A+v39PgidpEt0X61EHjNdMMyPFr/sfZIuUYOPdvVY45mXzm5Pa/cU
-	 gL2PM0u5d4mtY+NllDv+/fzYtLPHtFtQk7LDivfOME2cW+Bo7wBDP1NrwCuaKBnFjR
-	 mPAAFuO9jK20x5x63vLe+nW6f7SM+MWohexeHwIE=
+	b=VM71hAs3AZRj7chYbmg0iOqbZrMBibxm873uOqGC3wzy9JY1Jy3D6Ur4zWZQNc5yc
+	 oTTXg86D+Un7YJND5ImToCiOhZMyTLJsXh3zsWhMhh0LVhRVYp8PPBzQvMjT5qVe0F
+	 xNrIMCYVAroEBIywUupL2OdlKhMftPyCRidF8tk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Loic Prylli <lprylli@netflix.com>,
-	Alexander Hansen <alexander.hansen@9elements.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 22/64] hwmon: (aspeed-pwm-tacho) mutex for tach reading
+Subject: [PATCH 6.7 046/124] inet: read sk->sk_family once in inet_recv_error()
 Date: Tue, 13 Feb 2024 18:21:08 +0100
-Message-ID: <20240213171845.444302085@linuxfoundation.org>
+Message-ID: <20240213171855.081723871@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.1
-In-Reply-To: <20240213171844.702064831@linuxfoundation.org>
-References: <20240213171844.702064831@linuxfoundation.org>
+In-Reply-To: <20240213171853.722912593@linuxfoundation.org>
+References: <20240213171853.722912593@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Loic Prylli <lprylli@netflix.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 1168491e7f53581ba7b6014a39a49cfbbb722feb ]
+[ Upstream commit eef00a82c568944f113f2de738156ac591bbd5cd ]
 
-the ASPEED_PTCR_RESULT Register can only hold the result for a
-single fan input. Adding a mutex to protect the register until the
-reading is done.
+inet_recv_error() is called without holding the socket lock.
 
-Signed-off-by: Loic Prylli <lprylli@netflix.com>
-Signed-off-by: Alexander Hansen <alexander.hansen@9elements.com>
-Fixes: 2d7a548a3eff ("drivers: hwmon: Support for ASPEED PWM/Fan tach")
-Link: https://lore.kernel.org/r/121d888762a1232ef403cf35230ccf7b3887083a.1699007401.git.alexander.hansen@9elements.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+IPv6 socket could mutate to IPv4 with IPV6_ADDRFORM
+socket option and trigger a KCSAN warning.
+
+Fixes: f4713a3dfad0 ("net-timestamp: make tcp_recvmsg call ipv6_recv_error for AF_INET6 socks")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/aspeed-pwm-tacho.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/ipv4/af_inet.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/aspeed-pwm-tacho.c b/drivers/hwmon/aspeed-pwm-tacho.c
-index d11f674e3dc3..51f321bcd778 100644
---- a/drivers/hwmon/aspeed-pwm-tacho.c
-+++ b/drivers/hwmon/aspeed-pwm-tacho.c
-@@ -194,6 +194,8 @@ struct aspeed_pwm_tacho_data {
- 	u8 fan_tach_ch_source[16];
- 	struct aspeed_cooling_device *cdev[8];
- 	const struct attribute_group *groups[3];
-+	/* protects access to shared ASPEED_PTCR_RESULT */
-+	struct mutex tach_lock;
- };
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index 1c58bd72e124..e59962f34caa 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -1628,10 +1628,12 @@ EXPORT_SYMBOL(inet_current_timestamp);
  
- enum type { TYPEM, TYPEN, TYPEO };
-@@ -528,6 +530,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
- 	u8 fan_tach_ch_source, type, mode, both;
- 	int ret;
- 
-+	mutex_lock(&priv->tach_lock);
+ int inet_recv_error(struct sock *sk, struct msghdr *msg, int len, int *addr_len)
+ {
+-	if (sk->sk_family == AF_INET)
++	unsigned int family = READ_ONCE(sk->sk_family);
 +
- 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0);
- 	regmap_write(priv->regmap, ASPEED_PTCR_TRIGGER, 0x1 << fan_tach_ch);
- 
-@@ -545,6 +549,8 @@ static int aspeed_get_fan_tach_ch_rpm(struct aspeed_pwm_tacho_data *priv,
- 		ASPEED_RPM_STATUS_SLEEP_USEC,
- 		usec);
- 
-+	mutex_unlock(&priv->tach_lock);
-+
- 	/* return -ETIMEDOUT if we didn't get an answer. */
- 	if (ret)
- 		return ret;
-@@ -904,6 +910,7 @@ static int aspeed_pwm_tacho_probe(struct platform_device *pdev)
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
- 		return -ENOMEM;
-+	mutex_init(&priv->tach_lock);
- 	priv->regmap = devm_regmap_init(dev, NULL, (__force void *)regs,
- 			&aspeed_pwm_tacho_regmap_config);
- 	if (IS_ERR(priv->regmap))
++	if (family == AF_INET)
+ 		return ip_recv_error(sk, msg, len, addr_len);
+ #if IS_ENABLED(CONFIG_IPV6)
+-	if (sk->sk_family == AF_INET6)
++	if (family == AF_INET6)
+ 		return pingv6_ops.ipv6_recv_error(sk, msg, len, addr_len);
+ #endif
+ 	return -EINVAL;
 -- 
 2.43.0
 
