@@ -1,131 +1,244 @@
-Return-Path: <stable+bounces-19671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B56F4852540
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 02:09:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4BED852698
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 02:37:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44565B2208A
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 01:09:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0451C1C24E6B
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 01:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88930130E30;
-	Tue, 13 Feb 2024 00:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B937A225B2;
+	Tue, 13 Feb 2024 00:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S1gUXy5l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HH6dqeeM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C44912FF9F;
-	Tue, 13 Feb 2024 00:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705F764CE6;
+	Tue, 13 Feb 2024 00:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707783874; cv=none; b=MMF1q11CdVHRzoeXCDwfx7T3lB3czQ3U3gnMv7pJftmOGlCqZlTb9j6sDkc/t8SOmiC2mKDDifWvAHCm/iDP79eDJAT7wdd+zePD+EK6+J2kiPYg0tyZhmd/SN8f+IyNxNKGpY7wXDnJ1xgCdRsIZtv/wbROEefg64QYTM34PKg=
+	t=1707785746; cv=none; b=CXFokEZ7sx+0U+RFY0yRhKRWJflFTPKtHqVEx3lrJWJDAVPWeT4qeeLTMNepCuwFHsS9I/DO9qy8hIs5QS5hMzTwb0TTDbKnZgYcpFPFqMrhcovhXQwpRyeu6PFPBW53c1sN0FZtVzS7ppRY0DTeFcylrQv9yl+5Fh0yK+R9yRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707783874; c=relaxed/simple;
-	bh=rhuXYerQHZC6UdHTJf1qEji2BMPpaTsxTWmwvNQMbHk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hSgAOhjizfoFQyZxkB42xLaul7KmaVDg0acqqPJCgpelLUywOYYep++Zho9fTaDgFWMy5zR0ofUcrqHwR5+w2yhvZOu0+3yxXGFjUeajPGFoDRfV1elVJBnkqXcF0z+FrsbIhKNEX0hwmqPRe956QNtHcz+T0xgtEuCgUhpx4Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S1gUXy5l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C9BC43394;
-	Tue, 13 Feb 2024 00:24:32 +0000 (UTC)
+	s=arc-20240116; t=1707785746; c=relaxed/simple;
+	bh=x5LbtggR4Z3xaic6f6M9HxtLNo4SYpCsgxFez8n4Mqs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u5ej6mFN+6o1TMq7ScucUhCPQHv5kq9ph6vPEteThxn6Ix8HEy7Ugwhd96e2SOrS9xgtVlYMgyki373/kslfY+O9Znt4kuHVGNN9WkT/alMbKm2UcfOWIt/ixDRtNuIT/0ZaTj6j77ig1Y78pODwX3fNqUJ2XAhdnCL8CuLJeQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HH6dqeeM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CECC43330;
+	Tue, 13 Feb 2024 00:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707783873;
-	bh=rhuXYerQHZC6UdHTJf1qEji2BMPpaTsxTWmwvNQMbHk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S1gUXy5lOylZdSHvxcfIf2aVxOjtEx73dhjU2zGH1g9Lb9gtj0WWNQ6t7RHtgf4AL
-	 +E13ZpiikSKofvZBkhZOBtH35VWKwuEEsnG6J8GJBT6TsJhLOZ03KP5L6CvsBEVisS
-	 BoseR6CUlIXvGCSzihlNoRXgIAiZPrLHYtbjHi7WDtD05pfa6GDUKG/jMUihnuy/C+
-	 AA4wZgws/TQypi+KI/qiQMbK+ed27jw08si4762tYhtQn0TmqzZjIjhVKVNbjxWqSv
-	 NZWLnG5FqtmqcBmKdL+zFFMnWfrLocWp/JA3iPQCPJoYepfgtlA5UZMLww51SoBkZ0
-	 ui6DNZax7xf3Q==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Yi Sun <yi.sun@unisoc.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>,
-	mst@redhat.com,
-	jasowang@redhat.com,
-	virtualization@lists.linux.dev,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 3/3] virtio-blk: Ensure no requests in virtqueues before deleting vqs.
-Date: Mon, 12 Feb 2024 19:24:27 -0500
-Message-ID: <20240213002428.673310-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240213002428.673310-1-sashal@kernel.org>
-References: <20240213002428.673310-1-sashal@kernel.org>
+	s=k20201202; t=1707785746;
+	bh=x5LbtggR4Z3xaic6f6M9HxtLNo4SYpCsgxFez8n4Mqs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=HH6dqeeMCz4ysgu5nOyiSwKFIVRhElfGwxll//vyMwoV5+dzYmBVbWne9Epn50sHC
+	 Xv64bndEVgi2v47iqTNtM91j1nUk8TZQ1xRburn2kU7BqBRzGs7b8TwCGsHJX9xsOn
+	 6XC256+nLTPFY/DiJ2hRMNRwmfmXB/gRcvckxZOMU8oU+hDjlN/2+9CnvrF+5lAbkZ
+	 9wg3/lc5jeMv2lguto4nh62ncD0EFC5BV2yx+oFrL8Lo1xyDIKd3mXOdYKJ5BeUClh
+	 UL1LRqm8+32I59VUAuWI7VMQ5XB6maGbHVorypG2rBo3VOkVYBPLO6lT9BxDxn9uI+
+	 JQUndQiOOdjJw==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2d0e2adfeefso38320771fa.2;
+        Mon, 12 Feb 2024 16:55:45 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWPuBdLRyV5H7NSPO8/1387sQWdMDNnYGsOUIJpZjrrxNxDyIWJKIcTeZUHkOoi9NyfDfLq6cPL5lp1Nxp9f/ep6C4ysSXOcxVBF8Wr2av2gyXxYZ4pvEX8PBLVq1brvZ/33omMUQYiS8ucBYUPJ+slDW71TggnrEG2
+X-Gm-Message-State: AOJu0YwFFjB3gzVYtz9nGEsnF1yYbosgmK00ZUZUKaxMilYWXOP2jGn4
+	DxGTT7qhhtSjRbSYoOBwfmOEc5YTujFuR5vFjUz7nIwgjAq+z6qSDA+MF66QvuIkrxJkRstB9Fl
+	371jlvAFbwKGpBBNzDe4CVdPncbk=
+X-Google-Smtp-Source: AGHT+IHKL6G3yu5doOJaxyZoeQuHPK6LLjZ7gg1ZT1vESg0Rl9kdoUbQ0BifEkJzoizI59vLRa0vB/zcugpsMQjVSQc=
+X-Received: by 2002:ac2:4245:0:b0:511:4268:3a54 with SMTP id
+ m5-20020ac24245000000b0051142683a54mr5659125lfl.29.1707785744497; Mon, 12 Feb
+ 2024 16:55:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.306
-Content-Transfer-Encoding: 8bit
+References: <20240208-fix-elf-type-btf-vmlinux-bin-o-big-endian-v1-1-cb3112491edc@kernel.org>
+In-Reply-To: <20240208-fix-elf-type-btf-vmlinux-bin-o-big-endian-v1-1-cb3112491edc@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 13 Feb 2024 09:55:07 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAT1+K87M2f_8enCydaKgDPLP9E1ex-as85eC2hB49bkBA@mail.gmail.com>
+Message-ID: <CAK7LNAT1+K87M2f_8enCydaKgDPLP9E1ex-as85eC2hB49bkBA@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: Fix changing ELF file type for output of gen_btf
+ for big endian
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: nicolas@fjasle.eu, ndesaulniers@google.com, morbo@google.com, 
+	justinstitt@google.com, keescook@chromium.org, maskray@google.com, 
+	linux-kbuild@vger.kernel.org, bpf@vger.kernel.org, llvm@lists.linux.dev, 
+	patches@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Yi Sun <yi.sun@unisoc.com>
+On Fri, Feb 9, 2024 at 5:21=E2=80=AFAM Nathan Chancellor <nathan@kernel.org=
+> wrote:
+>
+> Commit 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+> changed the ELF type of .btf.vmlinux.bin.o from ET_EXEC to ET_REL via
+> dd, which works fine for little endian platforms:
+>
+>    00000000  7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF.....=
+.......|
+>   -00000010  03 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |.........=
+.......|
 
-[ Upstream commit 4ce6e2db00de8103a0687fb0f65fd17124a51aaa ]
 
-Ensure no remaining requests in virtqueues before resetting vdev and
-deleting virtqueues. Otherwise these requests will never be completed.
-It may cause the system to become unresponsive.
 
-Function blk_mq_quiesce_queue() can ensure that requests have become
-in_flight status, but it cannot guarantee that requests have been
-processed by the device. Virtqueues should never be deleted before
-all requests become complete status.
+I am afraid this dump is confusing.
 
-Function blk_mq_freeze_queue() ensure that all requests in virtqueues
-become complete status. And no requests can enter in virtqueues.
+The byte stream "03 00" is ET_DYN, as specified in ELF:
 
-Signed-off-by: Yi Sun <yi.sun@unisoc.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Link: https://lore.kernel.org/r/20240129085250.1550594-1-yi.sun@unisoc.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/block/virtio_blk.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index 8b3bf11329ba..8e4c431efc6c 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -943,14 +943,15 @@ static int virtblk_freeze(struct virtio_device *vdev)
- {
- 	struct virtio_blk *vblk = vdev->priv;
- 
-+	/* Ensure no requests in virtqueues before deleting vqs. */
-+	blk_mq_freeze_queue(vblk->disk->queue);
-+
- 	/* Ensure we don't receive any more interrupts */
- 	vdev->config->reset(vdev);
- 
- 	/* Make sure no work handler is accessing the device. */
- 	flush_work(&vblk->config_work);
- 
--	blk_mq_quiesce_queue(vblk->disk->queue);
--
- 	vdev->config->del_vqs(vdev);
- 	kfree(vblk->vqs);
- 
-@@ -968,7 +969,7 @@ static int virtblk_restore(struct virtio_device *vdev)
- 
- 	virtio_device_ready(vdev);
- 
--	blk_mq_unquiesce_queue(vblk->disk->queue);
-+	blk_mq_unfreeze_queue(vblk->disk->queue);
- 	return 0;
- }
- #endif
--- 
-2.43.0
 
+  Name        Value
+  ------------------
+  ET_REL        1
+  ET_EXEC       2
+  ET_DYN        3
+
+
+
+It disagrees with your commit message "from ET_EXEC to ET_REL"
+
+The dump for the old ELF was "02 00", wasn't it?
+
+
+
+
+
+>   +00000010  01 00 b7 00 01 00 00 00  00 00 00 80 00 80 ff ff  |.........=
+.......|
+>
+> However, for big endian platforms, it changes the wrong byte, resulting
+> in an invalid ELF file type, which ld.lld rejects:
+
+
+Fangrui pointed out this is true for inutils >=3D 2.35
+
+
+
+>
+>    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF.....=
+.......|
+>   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.........=
+.......|
+>   +00000010  01 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.........=
+.......|
+
+ -  00 02
+ +  01 02
+
+
+
+>
+>   Type:                              <unknown>: 103
+>
+>   ld.lld: error: .btf.vmlinux.bin.o: unknown file type
+>
+> Fix this by using a different seek value for dd when targeting big
+> endian, so that the correct byte gets changed and everything works
+> correctly for all linkers.
+>
+>    00000000  7f 45 4c 46 02 02 01 00  00 00 00 00 00 00 00 00  |.ELF.....=
+.......|
+>   -00000010  00 03 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.........=
+.......|
+
+
+Ditto.
+
+
+
+
+>   +00000010  00 01 00 16 00 00 00 01  00 00 00 00 00 10 00 00  |.........=
+.......|
+>
+>   Type:                              REL (Relocatable file)
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 90ceddcb4950 ("bpf: Support llvm-objcopy for vmlinux BTF")
+> Link: https://github.com/llvm/llvm-project/pull/75643
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+>  scripts/link-vmlinux.sh | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
+>
+> diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+> index a432b171be82..8a9f48b3cb32 100755
+> --- a/scripts/link-vmlinux.sh
+> +++ b/scripts/link-vmlinux.sh
+> @@ -135,8 +135,15 @@ gen_btf()
+>         ${OBJCOPY} --only-section=3D.BTF --set-section-flags .BTF=3Dalloc=
+,readonly \
+>                 --strip-all ${1} ${2} 2>/dev/null
+>         # Change e_type to ET_REL so that it can be used to link final vm=
+linux.
+> -       # Unlike GNU ld, lld does not allow an ET_EXEC input.
+> -       printf '\1' | dd of=3D${2} conv=3Dnotrunc bs=3D1 seek=3D16 status=
+=3Dnone
+> +       # Unlike GNU ld, lld does not allow an ET_EXEC input. Make sure t=
+he correct
+> +       # byte gets changed with big endian platforms, otherwise e_type m=
+ay be an
+> +       # invalid value.
+> +       if is_enabled CONFIG_CPU_BIG_ENDIAN; then
+> +               seek=3D17
+> +       else
+> +               seek=3D16
+> +       fi
+> +       printf '\1' | dd of=3D${2} conv=3Dnotrunc bs=3D1 seek=3D${seek} s=
+tatus=3Dnone
+>  }
+>
+>  # Create ${2} .S file with all symbols from the ${1} object file
+
+
+
+Do you want to send v2 to update the commit description?
+
+
+The current code will work, but another approach might be to
+update both byte 16 and byte 17 because e_type is a 16-bit field.
+
+
+It works without relying on the MSB of the previous e_type being zero.
+The comment does not need updating because the intention is obvious
+from the code.
+
+
+if is_enabled CONFIG_CPU_BIG_ENDIAN; then
+        et_rel=3D'\0\1'
+else
+        et_rel=3D'\1\0'
+fi
+
+printf "${et_rel}" | dd of=3D${2} conv=3Dnotrunc bs=3D1 seek=3D16 status=3D=
+none
+
+
+
+
+
+
+
+
+
+
+> ---
+> base-commit: 54be6c6c5ae8e0d93a6c4641cb7528eb0b6ba478
+> change-id: 20240208-fix-elf-type-btf-vmlinux-bin-o-big-endian-dbc55a1e129=
+6
+>
+> Best regards,
+> --
+> Nathan Chancellor <nathan@kernel.org>
+>
+
+
+--=20
+Best Regards
+Masahiro Yamada
 
