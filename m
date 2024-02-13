@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-19557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-19558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3AE08523D6
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 01:35:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B88DB8523D9
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 01:35:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B5972834CA
-	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 00:35:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA9A91C21E64
+	for <lists+stable@lfdr.de>; Tue, 13 Feb 2024 00:35:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4325EE6F;
-	Tue, 13 Feb 2024 00:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AFD65F;
+	Tue, 13 Feb 2024 00:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GRRXB4xp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jks511qW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853E65E3D8;
-	Tue, 13 Feb 2024 00:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE6A10FF;
+	Tue, 13 Feb 2024 00:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1707783627; cv=none; b=mWoSm2lzfzut24fWQ+8GzJAihHSW1yvfDMsoafntKJvLPOpQCJZdOvmrQLDc/ZUOGfgB1AlDmLumWe1qe8L3Fi55j3YXZ3dF4svoZzP2kPvzQ1Oy09/cnPxn6Fono0OyPShKw5ifcJ3D2bKtQn2DhQkmPeeYoSmePsKgSszwXyk=
+	t=1707783654; cv=none; b=iCzn5uN5r1Ot0+pZJLwlId03ZX4c414kSn2UmcB4wlomNZ9uKk5Qy7aPx3pfCTCGlKTuLycFmdmBf8895rJ8hZtIdRqUsPIsEVqKbLA5toHsxpIlcayQLR0D8GenA7+sDLp0njPW3ioaoXmk88ZufIhzKYVZX5FXe7AcWh+0xRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1707783627; c=relaxed/simple;
-	bh=qIgkZEou6CY3oQ44pL6wtxoTEC5coA5fu972N8E9At0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m+9X4itr/x1dA7GZp43zf+Eno/8TRMIYWsIMsTwBYyTjivyo50Z8/DhLTbwy7ZzHaT6dya9sM8l4D71Guk/U6nTe7xg6k/0g3hIm8bSXVJlufHS6o5JHsK0FOjk4sCvYfG3jgb9/kEKS2Qff+CfW1g719/LY+c7aqR6ZjZRiaXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GRRXB4xp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227D3C433F1;
-	Tue, 13 Feb 2024 00:20:26 +0000 (UTC)
+	s=arc-20240116; t=1707783654; c=relaxed/simple;
+	bh=DdzK22q+qsA1FusfEyCR6OfvhS+La0DV+WT2cEim5mw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WPFOEE/9XUrrsy/V3uzP/7N/ZtA/l7SRVFDGKL6XKUXODsrlm+wCYJTE//V7Ei5H719cS18XkQgEnJn5AZYm1cBRFsby6AU0zU87ReL1l9N6N5RTYC8ft+rTh01My/LUWmi/o7w6aYSdSk8aqwX0TRvSnnsIFt1aU8Vbh3MoBFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jks511qW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA18C433C7;
+	Tue, 13 Feb 2024 00:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1707783627;
-	bh=qIgkZEou6CY3oQ44pL6wtxoTEC5coA5fu972N8E9At0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GRRXB4xpxXKZzwj/xxpgeumzqZIqe1mgVdgr5ECTsUk5azyHvCmJCadpOlPwcnm1u
-	 PVmnCqU6UbPUQHpZiwiXEAfEvGjsZHM6cA47mQ8RhQ9CgPWZm7FfHfKwulrb2i2+/I
-	 /SM5qeFotA9eNW6/iTZkrSxld+6NKzFMByIfZj3FSvLf34b0kPi2V178PzVTmxYegV
-	 FGbshCxUaraQkF1qye6ItTmrkf7UDaXAXlte43wsKL/VoZqvzZWaJBL7zIcJBXPBNV
-	 +I0BTiLcWSMDpvvT47C2GfgfXJPepEF+D3N8+6zM8FQ3UvryB5DgGfSAndDNqBiZlO
-	 RY1FYxVeU1ulQ==
+	s=k20201202; t=1707783654;
+	bh=DdzK22q+qsA1FusfEyCR6OfvhS+La0DV+WT2cEim5mw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Jks511qWpabRviuxoCXeL75aIG56oEoSigLTMMqGEKg6ZiQpYBLjhy1xOX+kZWQsq
+	 Mak8tt+gEhsuRTvmEXomfp/PYTNXtIoQfifBJSlGO4nGEKbH7Wq3Aib/S+iu0/JRH2
+	 PLv5J16H5ozfsDe7xi0ymzHIxdhKAg0HOtq6kfd7yQFpIs4jFP6PBIig7JHFbBre4A
+	 XGY3wAFPH+6ldaQTn2Zk29vsw4k0QOZ89zN3ljN6XNVIv5t4TydIcow2k6Ll9lLxM+
+	 3dHuLDyVeQTaeCjXB2qXnJfsZ+wzj6r3Uixg3I4S4ZYE6BFNuVoBlS6Yrmz34tbgy/
+	 21rAcQKgDw0xw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Steve French <stfrench@microsoft.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
+Cc: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>,
-	sfrench@samba.org,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: [PATCH AUTOSEL 6.7 58/58] smb3: clarify mount warning
-Date: Mon, 12 Feb 2024 19:18:04 -0500
-Message-ID: <20240213001837.668862-58-sashal@kernel.org>
+	ntfs3@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.6 01/51] fs/ntfs3: Improve alternative boot processing
+Date: Mon, 12 Feb 2024 19:19:38 -0500
+Message-ID: <20240213002052.670571-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240213001837.668862-1-sashal@kernel.org>
-References: <20240213001837.668862-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,39 +58,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.7.4
+X-stable-base: Linux 6.6.16
 Content-Transfer-Encoding: 8bit
 
-From: Steve French <stfrench@microsoft.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit a5cc98eba2592d6e3c5a4351319595ddde2a5901 ]
+[ Upstream commit c39de951282df9a60ef70664e4378d88006b2670 ]
 
-When a user tries to use the "sec=krb5p" mount parameter to encrypt
-data on connection to a server (when authenticating with Kerberos), we
-indicate that it is not supported, but do not note the equivalent
-recommended mount parameter ("sec=krb5,seal") which turns on encryption
-for that mount (and uses Kerberos for auth).  Update the warning message.
-
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/super.c | 35 +++++++++++++++++------------------
+ 1 file changed, 17 insertions(+), 18 deletions(-)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index a3493da12ad1..86de889bd8b2 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -210,7 +210,7 @@ cifs_parse_security_flavors(struct fs_context *fc, char *value, struct smb3_fs_c
+diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
+index f763e3256ccc..aa3b2c262ab6 100644
+--- a/fs/ntfs3/super.c
++++ b/fs/ntfs3/super.c
+@@ -865,6 +865,7 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
+ 	u16 fn, ao;
+ 	u8 cluster_bits;
+ 	u32 boot_off = 0;
++	sector_t boot_block = 0;
+ 	const char *hint = "Primary boot";
  
- 	switch (match_token(value, cifs_secflavor_tokens, args)) {
- 	case Opt_sec_krb5p:
--		cifs_errorf(fc, "sec=krb5p is not supported!\n");
-+		cifs_errorf(fc, "sec=krb5p is not supported. Use sec=krb5,seal instead\n");
- 		return 1;
- 	case Opt_sec_krb5i:
- 		ctx->sign = true;
+ 	/* Save original dev_size. Used with alternative boot. */
+@@ -872,11 +873,11 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
+ 
+ 	sbi->volume.blocks = dev_size >> PAGE_SHIFT;
+ 
+-	bh = ntfs_bread(sb, 0);
++read_boot:
++	bh = ntfs_bread(sb, boot_block);
+ 	if (!bh)
+-		return -EIO;
++		return boot_block ? -EINVAL : -EIO;
+ 
+-check_boot:
+ 	err = -EINVAL;
+ 
+ 	/* Corrupted image; do not read OOB */
+@@ -1107,26 +1108,24 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
+ 	}
+ 
+ out:
+-	if (err == -EINVAL && !bh->b_blocknr && dev_size0 > PAGE_SHIFT) {
++	brelse(bh);
++
++	if (err == -EINVAL && !boot_block && dev_size0 > PAGE_SHIFT) {
+ 		u32 block_size = min_t(u32, sector_size, PAGE_SIZE);
+ 		u64 lbo = dev_size0 - sizeof(*boot);
+ 
+-		/*
+-	 	 * Try alternative boot (last sector)
+-		 */
+-		brelse(bh);
+-
+-		sb_set_blocksize(sb, block_size);
+-		bh = ntfs_bread(sb, lbo >> blksize_bits(block_size));
+-		if (!bh)
+-			return -EINVAL;
+-
++		boot_block = lbo >> blksize_bits(block_size);
+ 		boot_off = lbo & (block_size - 1);
+-		hint = "Alternative boot";
+-		dev_size = dev_size0; /* restore original size. */
+-		goto check_boot;
++		if (boot_block && block_size >= boot_off + sizeof(*boot)) {
++			/*
++			 * Try alternative boot (last sector)
++			 */
++			sb_set_blocksize(sb, block_size);
++			hint = "Alternative boot";
++			dev_size = dev_size0; /* restore original size. */
++			goto read_boot;
++		}
+ 	}
+-	brelse(bh);
+ 
+ 	return err;
+ }
 -- 
 2.43.0
 
